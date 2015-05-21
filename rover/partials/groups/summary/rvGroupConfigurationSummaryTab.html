@@ -32,10 +32,9 @@
             </div>
             <div class="entry break full-width">
                 <a ng-click="openDemographicsPopup();" class="button white brand-text" translate>DEMOGRAPHICS</a>
-                <a ng-click ="openBillingInformation();" class="button blue" ng-if="groupConfigData.summary.posting_account_billing_info" translate>BILLING_INFORMATION</a>
-                <a ng-click ="openBillingInformation();" class="button blue" ng-if="!groupConfigData.summary.posting_account_billing_info" translate>ADD_BILLING_INFO</a>                               
+                <a ng-click="openBillingInformation();" class="button blue" ng-if="groupConfigData.summary.posting_account_billing_info" translate>BILLING_INFORMATION</a>
+                <a ng-click="openBillingInformation();" class="button blue" ng-if="!groupConfigData.summary.posting_account_billing_info" translate>ADD_BILLING_INFO</a>
             </div>
-
         </div>
         <div class="holder right">
             <strong class="h3" translate>ROOM_BLOCK_SUMMARY</strong>
@@ -98,13 +97,17 @@
             <div class="entry full-width with-button">
                 <label for="group-rate" translate>RATE</label>
                 <div class="select">
-                    <select id="group-rate" ng-model="groupConfigData.summary.rate" iscroll-stop-propagation><optgroup>Group Rates</optgroup>
-                        <option value="" selected>Select Rate</option>                        
+                    <select id="group-rate" ng-model="groupConfigData.summary.rate" iscroll-stop-propagation>
+                        <optgroup>Group Rates</optgroup>
+                        <option value="" ng-if="!groupConfigData.summary.rate" selected>Select Rate</option>
                         <option value="-1" ng-selected="groupConfigData.summary.rate == -1">Custom Rate</option>
-                        <optgroup label="Group Rates"></optgroup>
-                        <!-- ... repeat for all rates -->
-                        <option ng-repeat="rate in groupSummaryData.rates" value="rate.id">{{rate.name}}</option>
-                        <optgroup label="Company/ Travel Agent Contract"></optgroup>
+                        <optgroup ng-show="!!groupSummaryData.rates.length" label="Group Rates">
+                            <!-- ... repeat for all rates -->
+                            <option ng-repeat="rate in groupSummaryData.rates" value="rate.id">{{rate.name}}</option>
+                        </optgroup>
+                        <optgroup ng-show="!!groupSummaryData.contractedRates.length" label="Company/ Travel Agent Contract">
+                            <option ng-repeat="rate in groupSummaryData.contractedRates" value="rate.id">{{rate.name}}</option>
+                        </optgroup>
                     </select>
                 </div>
                 <a ng-click="isInAddMode() ? manageAddons() : viewAddons()" class="button with-icon" ng-class="{'brand-colors' : !isInAddMode() , 'grey' : isInAddMode()}">

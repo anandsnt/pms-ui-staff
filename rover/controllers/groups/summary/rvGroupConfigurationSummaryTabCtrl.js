@@ -10,8 +10,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			promptMandatoryDemographics: false,
 			isDemographicsPopupOpen: false,
 			newNote: "",
-			rates:[]
+			rates: [],
+			contractedRates: [],
 		}
+
 		$s = $scope;
 
 		var summaryMemento = {};
@@ -19,9 +21,14 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 		var fetchApplicableRates = function() {
 			var onFetchRatesSuccess = function(data) {
-					console.log(data);
-					// TODO : redo the array here
-					groupSummaryData.rates = data.results;
+					// split result to contracted vs others for enabling grouping on the dropdown
+					$scope.groupSummaryData.rates = _.where(data.results, {
+						is_contracted: false
+					});
+
+					$scope.groupSummaryData.contractedRates = _.where(data.results, {
+						is_contracted: true
+					});
 				},
 				onFetchRatesFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
@@ -30,15 +37,16 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$scope.callAPI(rvGroupConfigurationSrv.getRates, {
 				successCallBack: onFetchRatesSuccess,
 				failureCallBack: onFetchRatesFailure,
-				params:{
-					from_date: '2015-01-03',
-					to_date: '2015-01-04',
-					company_id : ($scope.groupConfigData.summary.travel_agent && $scope.groupConfigData.summary.company.id) || null,
+				params: {
+					from_date: $filter('date')(tzIndependentDate($scope.groupConfigData.summary.block_from), 'yyyy-MM-dd'),
+					to_date: $filter('date')(tzIndependentDate($scope.groupConfigData.summary.block_to), 'yyyy-MM-dd'),
+					company_id: ($scope.groupConfigData.summary.company && $scope.groupConfigData.summary.company.id) || null,
 					travel_agent_id: ($scope.groupConfigData.summary.travel_agent && $scope.groupConfigData.summary.travel_agent.id) || null
 				}
 			});
 
 		}
+
 
 		var initGroupSummaryView = function() {
 			// Have a handler to update the summary - IFF in edit mode
@@ -54,10 +62,24 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			}
 
 			// Fetch rates to show in dropdown
-			if(!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to){
+			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
 				fetchApplicableRates();
 			}
 
+			// Initalize a listener for discard of group
+			$scope.$on('DISCARD_GROUP', function() {
+				//reset Rates array
+				$scope.groupSummaryData.rates = [];
+				$scope.groupSummaryData.contractedRates = [];
+			});
+
+			// Redo rates list while modifying attached cards to the group
+			$scope.$on('CARDS_CHANGED', function() {
+				// Fetch rates to show in dropdown
+				if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
+					fetchApplicableRates();
+				}
+			});
 		}
 
 		/**
@@ -96,6 +118,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				//setting the min date for end Date
 				$scope.toDateOptions.minDate = $scope.groupConfigData.summary.block_from;
 
+				if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
+					fetchApplicableRates();
+				}
+
 				//we are in outside of angular world
 				runDigestCycle();
 			}
@@ -115,6 +141,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			},
 			onSelect: function(date, datePickerObj) {
 				$scope.groupConfigData.summary.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+
+				if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
+					fetchApplicableRates();
+				}
 
 				//we are in outside of angular world
 				runDigestCycle();

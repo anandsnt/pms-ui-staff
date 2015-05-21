@@ -148,11 +148,11 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				$scope.updateGroupSummary();
 			};
 			//Reload the summary tab contents before switching
-			if(tab === "SUMMARY" || tab === "ACCOUNT"){
+			if (tab === "SUMMARY" || tab === "ACCOUNT") {
 				$scope.refreshSummaryTab();
 			};
 			//Preload the transaction data when we switch to transactions tab
-			if(tab === "TRANSACTIONS"){
+			if (tab === "TRANSACTIONS") {
 				preLoadTransactionsData();
 			} else {
 				$scope.groupConfigData.activeTab = tab;
@@ -165,7 +165,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
 		};
 
-		var preLoadTransactionsData = function(){
+		var preLoadTransactionsData = function() {
 			var onTransactionFetchSuccess = function(data) {
 
 				$scope.$emit('hideloader');
@@ -265,6 +265,11 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 							$scope.errorMessage = errorMessage;
 						};
 
+					// Defaulting to custom rate in case rate has not been selected on creation of the group
+					if (!$scope.groupConfigData.summary.rate) {
+						$scope.groupConfigData.summary.rate = -1; // -1 is being used as 'rate-id' for custom rate
+					}
+
 					$scope.callAPI(rvGroupConfigurationSrv.saveGroupSummary, {
 						successCallBack: onGroupSaveSuccess,
 						failureCallBack: onGroupSaveFailure,
@@ -334,17 +339,21 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		 */
 		$scope.discardNewGroup = function() {
 			$scope.groupConfigData.summary = angular.copy(rvGroupConfigurationSrv.baseConfigurationSummary);
+			$scope.$broadcast('DISCARD_GROUP');
 		}
 
 		$scope.onCompanyCardChange = function() {
 			if ($scope.groupConfigData.summary.company && $scope.groupConfigData.summary.company.name === "") {
-				$scope.groupConfigData.summary.company = null
+				$scope.groupConfigData.summary.company = null;
+				$scope.$broadcast('CARDS_CHANGED');
+
 			}
 		}
 
 		$scope.onTravelAgentCardChange = function() {
 			if ($scope.groupConfigData.summary.travel_agent && $scope.groupConfigData.summary.travel_agent.name === "") {
 				$scope.groupConfigData.summary.travel_agent = null
+				$scope.$broadcast('CARDS_CHANGED');
 			}
 		}
 
@@ -385,6 +394,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 					$scope.groupConfigData.summary.company.name = ui.item.label;
 					$scope.groupConfigData.summary.company.id = ui.item.value;
 					if (!$scope.isInAddMode()) $scope.updateGroupSummary();
+					$scope.$broadcast('CARDS_CHANGED');
 					runDigestCycle();
 					return false;
 				},
@@ -421,6 +431,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 					this.value = ui.item.label;
 					$scope.groupConfigData.summary.travel_agent.name = ui.item.label;
 					$scope.groupConfigData.summary.travel_agent.id = ui.item.value;
+					$scope.$broadcast('CARDS_CHANGED');
 					if (!$scope.isInAddMode()) $scope.updateGroupSummary();
 					runDigestCycle();
 					return false;
