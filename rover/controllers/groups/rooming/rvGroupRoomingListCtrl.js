@@ -993,7 +993,14 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return - None
          */
         var addPrintOrientation = function() {
-            $( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
+            $( 'body' ).append( "<style id='print-orientation'>@page { size: landscape; }</style>" );
+        };
+        /**
+         * remove the print orientation before printing
+         * @return - None
+         */
+        var removePrintOrientation = function() {
+        $( '#print-orientation' ).remove();
         };
 
         /**
@@ -1001,9 +1008,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return - None
          */
         $scope.printRoomingList = function()
-        {
-            console.log("Implementing Print");
-           // scrollToTop();
+        {           
             $scope.isPrintRoomList = true;
             addPrintOrientation();
             $timeout(function() {            
@@ -1019,8 +1024,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             $timeout(function() {
                 $scope.isPrintRoomList = false;
                 // CICO-9569 to solve the hotel logo issue                
-                $("header .h2").addClass('text-hide');
-                // remove the orientation after similar delay
+                $("header .h2").addClass('text-hide');                
                 removePrintOrientation();
             }, 100);
         }     
