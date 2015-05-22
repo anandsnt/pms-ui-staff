@@ -19,7 +19,7 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$state
 		var successCallbackFetch = function(data){
 			$scope.$emit('hideLoader');			
 			$scope.currentClickedElement = -1;
-			$scope.totalCount = data.users.length;
+			$scope.totalCount = data.total_count;
 			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
 			$scope.data = data.users;
 			$scope.currentPage = params.page();
