@@ -135,6 +135,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 				that.roomTypeRates = data; 
 				var calendarData = that.calculateRoomTypeViewCalData();
 				calendarData.type = "ROOM_TYPES_LIST";
+                                calendarData.room_type_restrictions = data.room_type_restrictions;
 				//Pass the rate details to the controller
 				calendarData.selectedRateDetails = selectedRate;
 				deferred.resolve(calendarData);
