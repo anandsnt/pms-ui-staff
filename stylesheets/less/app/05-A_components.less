@@ -12904,6 +12904,17 @@
                                 }
                             }
                         }
+
+                        &.deposit-icon {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            float: none;
+                            text-indent: 0;
+                            text-align: center;
+                            background: @yellow;
+                            color: @red;
+                        } 
                     }
                 }
 
@@ -13035,6 +13046,20 @@
                                     .square(30px);
                                 }
                             }
+
+                            &.deposit-icon {
+                                font-size: 24px;
+                                width: 40px;
+                            } 
+                        }
+
+                        &.deposit-required {
+                            span {
+                                &.occupied {
+                                    text-indent: 60px;
+                                    &:after { left: 40px; }
+                                }
+                            }
                         }
                     }
 
@@ -13162,6 +13187,20 @@
                                     background-position: 5px -2955px;
                                     #calc-position > .left(50, 12);
                                     .square(24px);
+                                }
+                            }
+
+                            &.deposit-icon {
+                                font-size: 14px;
+                                width: 20px;
+                            }  
+                        }
+
+                        &.deposit-required {
+                            span {
+                                &.occupied {
+                                    text-indent: 40px;
+                                    &:after { left: 20px; }
                                 }
                             }
                         }
