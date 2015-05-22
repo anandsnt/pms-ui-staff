@@ -31,7 +31,8 @@
 			               {{route.bill_no}}
 			            </div>
 			            <div class="bill" ng-show="route.is_routed_to_different_reservation">
-			               <span class="label" ng-show="route.room_no == ''" >ROOM</span>
+			               <span class="label" ng-show="route.room_no == ''">ROOM</span>
+			               <span class="label" ng-show="route.room_no != ''">Room #</span>
 			               {{route.room_no}}
 			            </div>
 			         </a>
