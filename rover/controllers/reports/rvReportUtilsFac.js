@@ -498,16 +498,11 @@ sntRover.factory('RVReportUtilsFac', [
                             type         : 'FAUX_SELECT',
                             filter       : filter,
                             show         : false,
-                            selectAll    : true,
+                            selectAll    : false,
                             defaultTitle : 'Select Guarantees',
-                            title        : 'All Selected',
+                            title        : 'Select Guarantees',
                             data         : angular.copy( data.guaranteeTypes )
                         };
-
-                        // since select all is true
-                        _.each(reportItem['hasGuaranteeType']['data'], function(each) {
-                            each.selected = true;
-                        });
                     };
                 };
 

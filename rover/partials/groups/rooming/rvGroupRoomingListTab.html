@@ -1,10 +1,11 @@
 <form id="group-rooming-list" name="group-rooming-list" class="form card-tab inner-header rooming-list" ng-controller="rvGroupRoomingListCtrl">
 <div id="group-room-list-header" class="tab-header">
-    <div class="search-form has-dates" ng-class="{'open': isAddingMode}"> <!-- Toggle class "open" when button on L4 is clicked (that will open the form). For new groups / when no reservations in rooming list, have class "open" there by default (e.g. make the form opened by default) -->
+    <div class="search-form has-dates" ng-class="{'open': isAddingMode && !groupConfigData.summary.is_cancelled}"> <!-- Toggle class "open" when button on L4 is clicked (that will open the form). For new groups / when no reservations in rooming list, have class "open" there by default (e.g. make the form opened by default) -->
         <div class="entry filter">
             <button type="button" class="button icons icon-add-60" 
                 ng-click="toggleDisplayingMode()"
-                ng-class="{'icon-add-60': isAddingMode, 'icon-remove-60': !isAddingMode}"> <!-- Remove class "icon-add-60" with "icon-remove-60" when clicked -->
+                ng-class="{'icon-add-60': isAddingMode, 'icon-remove-60': !isAddingMode , 'hidden' : !!groupConfigData.summary.is_cancelled}"> 
+                <!-- Remove class "icon-add-60" with "icon-remove-60" when clicked -->
                 {{'GROUP_ADD_RESERVATIONS'|translate}}
             </button>
         </div>
@@ -123,10 +124,10 @@
     <!-- Rooming List Header -->
     <ul class="rooming-list-header" ng-show="!shouldShowNoReservations()">
         <li class="check">
-            <label class="checkbox inline" for="rooming-list-all"> 
+            <label class="checkbox inline" for="rooming-list-all" ng-class="{'disabled' : !!groupConfigData.summary.is_cancelled}"> 
                 <span class="icon-form icon-checkbox" 
                     ng-class="{'checked': whetherAllReservationsSelected(), 'semi-checked': whetherReservationsArePartiallySelected()}"></span> <!-- Add class "checked" if checked or all items in rooming list are selected. Add class "semi-checked" (and make sure it has no class "checked") when not all items in the rooming list are selected -->
-                <input id="rooming-list-all" value="{value}" type="checkbox" ng-click="selectOrUnSelectAllReservation()" />
+                <input id="rooming-list-all" ng-disabled="!!groupConfigData.summary.is_cancelled" type="checkbox" ng-click="selectOrUnSelectAllReservation()" />
             </label>
         </li>
         <li class="room sort" ng-class="getSortClass('room_no')" ng-click="sortBy('room_no')">{{'GROUP_ROOM'|translate}}</li>
@@ -158,9 +159,9 @@
             <li class="reservation rooming-list" ng-repeat="reservation in reservations">
 
                 <div class="check">
-                    <label class="checkbox inline" for="guest-id"> 
+                    <label class="checkbox inline" for="guest-id" ng-class="{'disabled' : !!groupConfigData.summary.is_cancelled}"> 
                         <span class="icon-form icon-checkbox" ng-class="{'checked': isReservationInSelectedReservation(reservation)}"></span> <!-- Add class "checked" if checked -->
-                        <input id="guest-id" value="{Guest}" type="checkbox" ng-click="addOrRemoveFromSelectedReservation(reservation)">
+                        <input id="guest-id" value="{Guest}" type="checkbox" ng-click="addOrRemoveFromSelectedReservation(reservation)" ng-disabled="!!groupConfigData.summary.is_cancelled">
                     </label>
                 </div>
                 <a ng-click="showEditReservationPopup(reservation)">
