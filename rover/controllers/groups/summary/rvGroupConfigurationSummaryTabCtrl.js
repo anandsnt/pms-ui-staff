@@ -302,6 +302,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {Boolean}
 		 */
 		$scope.isCancellable = function() {
+
 			return (rvPermissionSrv.getPermissionValue('CANCEL_GROUP') && !!$scope.groupConfigData.summary.is_cancelled || ($scope.groupConfigData.summary.total_checked_in_reservations == 0 && parseFloat($scope.groupConfigData.summary.balance) == 0.0));
 		}
 

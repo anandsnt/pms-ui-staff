@@ -6,7 +6,8 @@ var GlobalApp = function(){
     this.iBeaconLinker = null;
     this.enableURLChange = true;
     try{
-          this.MLIOperator = new MLIOperation();
+    	this.desktopCardReader = new DesktopCardOperations();
+        this.MLIOperator = new MLIOperation();
     }
         catch(er){
     };
