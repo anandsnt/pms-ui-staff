@@ -13,7 +13,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 		
 		var deferred = $q.defer();
 		var url = '/admin/users.json';
-		ADBaseWebSrvV2.getJSON(url).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url ,params).then(function(data) {
 				/*_.each (data.users, function (item) {
 					item.is_locked = true;
 				});*/
@@ -30,8 +30,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
     * @param {object} id of the clicked user
     * @return {object} users details json
     */
-	this.getUserDetails = function(data){
-		
+	this.getUserDetails = function(data){		
 		var id = data.id;
 		var deferred = $q.defer();
 		var url = '/admin/users/'+id+'/edit.json';

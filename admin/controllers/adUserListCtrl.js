@@ -3,6 +3,7 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$state
 	$scope.hotelId = $stateParams.id;
 	$scope.isAdminSnt = false;
 	$scope.$emit("changedSelectedMenu", 0);
+	ADBaseTableCtrl.call(this, $scope, ngTableParams);
    /**
     * To check whether logged in user is sntadmin or hoteladmin
     */	
@@ -12,38 +13,38 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$state
    /**
     * To fetch the list of users
     */
-	$scope.listUsers = function(){
+	$scope.fetchTableData = function($defer, params){
+		var getParams = $scope.calculateGetParams(params);
+		getParams.isAdminSnt = $scope.isAdminSnt;
 		var successCallbackFetch = function(data){
-			$scope.$emit('hideLoader');
-			$scope.data = data;
-			
-		    // REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
-		    $scope.tableParams = new ngTableParams({
-		        page: 1,            // show first page
-		        count: $scope.data.users.length,    // count per page - Need to change when on pagination implemntation
+			$scope.$emit('hideLoader');			
+			$scope.currentClickedElement = -1;
+			$scope.totalCount = data.users.length;
+			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
+			$scope.data = data.users;
+			$scope.currentPage = params.page();
+        	params.total(data.total_count);
+            $defer.resolve($scope.data);
+		};		
+		$scope.invokeApi(ADUserSrv.fetch, getParams, successCallbackFetch);
+	};
+
+
+	$scope.loadTable = function(){
+		$scope.tableParams = new ngTableParams({
+		        page: 1,  // show first page
+		        count: $scope.displyCount, // count per page
 		        sorting: {
-		            name: 'asc'     // initial sorting
+		            name: 'asc' // initial sorting
 		        }
 		    }, {
-		        total: $scope.data.users.length, // length of data
-		        getData: function($defer, params) {
-		            // use build-in angular filter
-		            var orderedData = params.sorting() ?
-		                                $filter('orderBy')($scope.data.users, params.orderBy()) :
-		                                $scope.data.users;
-		            $scope.orderedData = orderedData;
-		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-		        }
-		    });
-			
-		};
-		$scope.invokeApi(ADUserSrv.fetch, {'isAdminSnt':$scope.isAdminSnt} , successCallbackFetch);	
+		        total: 0, // length of data
+		        getData: $scope.fetchTableData
+		    }
+		);
 	};
-	
-   /**
-    * Invoking function to list users
-    */
-	$scope.listUsers(); 
+
+	$scope.loadTable();
    /**
     * To Activate/Inactivate user
     * @param {string} user id 
