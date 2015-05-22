@@ -11,6 +11,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
     'ngDialog',
     'rvGroupConfigurationSrv',
     '$state',
+    '$window',
     function($scope,
         $rootScope,
         rvGroupRoomingListSrv,
@@ -22,7 +23,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         $q,
         ngDialog,
         rvGroupConfigurationSrv,
-        $state) {
+        $state, $window) {
 
         BaseCtrl.call(this, $scope);
 
@@ -986,8 +987,46 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                     });
                 }, 150)
             }
-        }
+        }       
+        /**
+         * add the print orientation before printing
+         * @return - None
+         */
+        var addPrintOrientation = function() {
+            $( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
+        };
 
+        /**
+         * Function to print Rooming list.
+         * @return - None
+         */
+        $scope.printRoomingList = function()
+        {
+            console.log("Implementing Print");
+           // scrollToTop();
+            $scope.isPrintRoomList = true;
+            addPrintOrientation();
+            $timeout(function() {
+            $("header .logo").addClass('logo-hide');
+            $("header .h2").addClass('text-hide');                
+                //Printing,Js excution is paused
+                $window.print();
+                if ( sntapp.cordovaLoaded ) {
+                    cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+                };
+            }, 100);            
+            //Printing Complete,js excution resumes.
+            $timeout(function() {
+                $scope.isPrintRoomList = false;
+
+                // CICO-9569 to solve the hotel logo issue
+                $("header .logo").removeClass('logo-hide');
+                $("header .h2").addClass('text-hide');
+
+                // remove the orientation after similar delay
+                removePrintOrientation();
+            }, 100);
+        }     
         /**
          * Function to initialise room block details
          * @return - None
