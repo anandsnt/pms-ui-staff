@@ -881,11 +881,23 @@
                         }
                     }
 
-                    /* AR bills ***/
+                    /* AR Transactions ***/
                     &.transaction {
                         a,
                         .faux-anchor {
                             position: relative;
+
+                            .group-info {
+                                font-size: 24px;
+                                line-height: 50px;
+                                text-align: center;
+                                font-weight: 600;
+                                color: @grey3;
+                                margin-right: 20px;
+                                background-color: @grey1;
+                                .square(50px);
+                                .pull-left;
+                            }
 
                             .data {
                                 .calc-width(70, 150);

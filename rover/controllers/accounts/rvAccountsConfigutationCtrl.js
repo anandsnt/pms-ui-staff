@@ -10,7 +10,8 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 	'$state',
 	'rvPermissionSrv',
 	'rvAccountTransactionsSrv',
-	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvAccountsConfigurationSrv, rvGroupConfigurationSrv, accountData, $state, rvPermissionSrv, rvAccountTransactionsSrv) {
+	'$vault',
+	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvAccountsConfigurationSrv, rvGroupConfigurationSrv, accountData, $state, rvPermissionSrv, $vault, rvAccountTransactionsSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -63,11 +64,26 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		var setBackNavigation = function() {
 			// TODO : Currently hardcoded to go to groups search.. 
 			// Change the same according to the requirements
-			$rootScope.setPrevState = {
-				title: $filter('translate')('ACCOUNTS'),
-				callback: 'updateAndBack',
-				scope: $scope
-			};
+			if($stateParams.isFromCards) {
+				$rootScope.setPrevState = {
+					title: $filter('translate')('ACCOUNTS'),
+					callback: 'updateAndBack',
+					scope: $scope
+				};
+
+			} else {
+				$rootScope.setPrevState = {
+					title: 'AR Transactions',
+					name: 'rover.companycarddetails',
+					param: {
+						id: $vault.get('cardId'),
+						type: $vault.get('type'),
+						query: $vault.get('query'),
+						isBackFromStaycard: true
+					}
+				};
+			}
+			
 
 			//setting title and things
 			setTitle();
