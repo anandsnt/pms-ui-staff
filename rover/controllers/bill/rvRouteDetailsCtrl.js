@@ -11,7 +11,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.showCreditCardDropDown = false;
     $scope.isShownExistingCCPayment = false;
 
-    var arrivalDate = new Date($scope.reservation.reservation_card.arrival_date),
+    var arrivalDate = new Date($scope.reservation.reservation_card.arrival_date),        
         defaultRouteFromDate = $rootScope.businessDate > arrivalDate ? $rootScope.businessDate : arrivalDate;
         
     $scope.routeDates = {
@@ -21,12 +21,12 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 
     $scope.routingDateFromOptions = {       
         dateFormat : "dd-mm-yy",
-        minDate : $scope.routeDates.from,
+        minDate : arrivalDate,
         maxDate : $scope.routeDates.to
     };
     $scope.routingDateToOptions = {       
         dateFormat : "dd-mm-yy",
-        minDate : $scope.routeDates.from,
+        minDate : arrivalDate,
         maxDate : $scope.routeDates.to
     };
 
