@@ -1006,9 +1006,9 @@ sntRover.controller('rvGroupRoomingListCtrl', [
            // scrollToTop();
             $scope.isPrintRoomList = true;
             addPrintOrientation();
-            $timeout(function() {
-            $("header .logo").addClass('logo-hide');
-            $("header .h2").addClass('text-hide');                
+            $timeout(function() {            
+            $(".nav-bar h1  ").addClass('text-hide');            
+            $(".cards .cards-wrapper .cards-header .card-header form .masked-input"). addClass('text-hide');                            
                 //Printing,Js excution is paused
                 $window.print();
                 if ( sntapp.cordovaLoaded ) {
@@ -1018,11 +1018,8 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             //Printing Complete,js excution resumes.
             $timeout(function() {
                 $scope.isPrintRoomList = false;
-
-                // CICO-9569 to solve the hotel logo issue
-                $("header .logo").removeClass('logo-hide');
+                // CICO-9569 to solve the hotel logo issue                
                 $("header .h2").addClass('text-hide');
-
                 // remove the orientation after similar delay
                 removePrintOrientation();
             }, 100);
