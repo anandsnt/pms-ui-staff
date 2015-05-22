@@ -208,7 +208,7 @@ sntRover
 				var choosedReservation = util.copyReservation ($scope.gridProps.currentResizeItem);
 
 				//we are only allowing the RESERVED reservations date transfer
-				if (choosedReservation.reservation_status === 'check-in') {
+				if (choosedReservation.reservation_status === 'reserved') {
 					dateSelectedInEditMode (choosedReservation, going_date);
 				}
 				else {
