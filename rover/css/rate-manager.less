@@ -521,6 +521,14 @@ thead tr th {
         }
     }
   }
+  > div {
+        .isHistory-cell-content{
+            border-top: 5px solid rgba(0,0,0, 0.1);
+            border-left: 10px solid rgba(0,0,0, 0.1);
+            border-right: 10px solid rgba(0,0,0,0.1);
+            border-bottom: 5px solid rgba(0,0,0, 0.1);
+        }
+    }
 
     .isHistory-cell-content{
         opacity:0.4 !important; 
@@ -1488,6 +1496,7 @@ padding-top: 80px;
   padding-right: 20px;
   padding-left: 18px;
   margin-left: 0;
+  overflow: auto;
   em{
     font-size:14px;
   }
@@ -1771,6 +1780,17 @@ padding-top: 80px;
     float: left; 
     overflow: hidden;
 }
+
+.expandedFirstRow{
+    height: 170px !important;
+}
+.apply-all-div{
+    height: 35px;
+    margin-top: 5px
+}
+.apply-all-button{
+    float: right;
+}
 .first-row-cell{
     border-top: 10px solid rgba(0, 0, 0, 0.0) !important;
     border-bottom: 10px solid rgba(0, 0, 0, 0.0) !important;
@@ -1785,7 +1805,22 @@ padding-top: 80px;
         }
     }
 }
+.history_cell_container{
+   border-top: 5px solid rgba(0,0,0, 0.1) !important;
+   border-left: 10px solid rgba(0,0,0, 0.1) !important;
+   border-right: 10px solid rgba(0,0,0,0.1) !important;
+   border-bottom: 5px solid rgba(0,0,0, 0.1) !important;
+}
 .hasOverride-label{
     color:#F69312;
-    
+}
+
+.expandedContainerWeekend{
+   border-top: 5px solid rgba(0,0,0, 0.1) !important;
+   border-left: 10px solid rgba(0,0,0, 0.1) !important;
+   border-right: 10px solid rgba(0,0,0,0.1) !important;
+   border-bottom: 5px solid rgba(0,0,0, 0.1) !important;
+}
+.expandedFirstRow{
+    height: 170px !important;
 }

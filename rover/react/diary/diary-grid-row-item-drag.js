@@ -94,7 +94,7 @@ var GridRowItemDrag = React.createClass({
 			return;
 		}
 		
-		if(props.currentDragItem.reservation_status !== 'check-in'  && 
+		if(props.currentDragItem.reservation_status !== 'reserved'  && 
 			props.currentDragItem.reservation_status !== 'inhouse'){
 			return;
 		}		
@@ -407,6 +407,7 @@ var GridRowItemDrag = React.createClass({
 			className:   props.className + className,
 			children:    props.children,
 			
-		}));
+		}
+		));
 	}
 });

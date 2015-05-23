@@ -339,7 +339,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     "contact_phone": null,
                     "contact_email": null
                 },
-                 "future_reservation_count": 0
+                "future_reservation_count": 0
             };
         };
 
@@ -385,8 +385,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 if (isOccupancyConfigured(roomIndex)) {
                     $scope.reservationData.rooms[roomIndex].varyingOccupancy = $scope.reservationUtils.isVaryingOccupancy(roomIndex);
                     $scope.computeTotalStayCost(reset);
-                    if(reset){
-                        $scope.saveReservation(false,false,roomIndex);
+                    if (reset) {
+                        $scope.saveReservation(false, false, roomIndex);
                     }
                     var activeRoom = $scope.reservationData.rooms[roomIndex].roomTypeId;
                     var currOccupancy = parseInt($scope.reservationData.rooms[roomIndex].numChildren) +
@@ -776,7 +776,17 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                  */
 
                 // we are sending the arrivaldate as in case of varying occupancies, it is ASSUMED that we go forward with the first day's occupancy
-                var taxApplied = $scope.calculateTax($scope.reservationData.arrivalDate, finalRate, addon.taxDetail, roomIndex, true);
+                if (!!addon.is_inclusive) {
+                    var taxApplied = {
+                        inclusive: 0.0,
+                        exclusive: 0.0,
+                        stayInclusive: 0.0,
+                        stayExclusive: 0.0,
+                        taxDescription: []
+                    }
+                } else {
+                    var taxApplied = $scope.calculateTax($scope.reservationData.arrivalDate, finalRate, addon.taxDetail || addon.taxes, roomIndex, true);
+                }
 
                 // Go through the tax applied and update the calculations such that
                 // When Add-on items are being added to a reservation, their respective tax should also be added to the reservation summary screen, to 
@@ -1321,7 +1331,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 if ($scope.reservationData.paymentType.type.value !== null) {
                     angular.forEach($scope.reservationData.paymentMethods, function(item, index) {
                         if ($scope.reservationData.paymentType.type.value == item.value) {
-                            data.payment_type.type_id = ($scope.reservationData.paymentType.type.value === "CC") ? $scope.reservationData.selectedPaymentId : item.id;
+                            if($scope.reservationData.paymentType.type.value === "CC"){
+                              data.payment_type.payment_method_id =  $scope.reservationData.selectedPaymentId
+                            }
+                            else{
+                              data.payment_type.type_id = item.id;
+                            }                            
                         }
                     });
                     data.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear == "" || $scope.reservationData.paymentType.ccDetails.expYear == "") ? "" : "20" + $scope.reservationData.paymentType.ccDetails.expYear + "-" +
@@ -1875,7 +1890,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                     if ($scope.reservationsListArray) {
                         angular.forEach($scope.reservationsListArray.reservations, function(reservation, key) {
-                            if (key == index) {
+                            if (!index || key == index) {
                                 reservation.deposit_amount = data.deposit_amount;
                                 totalDepositOnRateUpdate = parseFloat(totalDepositOnRateUpdate) + parseFloat(data.deposit_amount);
                             } else {
@@ -1933,10 +1948,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         postData.reservationId = $scope.reservationData.reservationId;
                     }
 
-                    postData.addons = $scope.viewState.existingAddons;
-
-
+                    // postData.addons = $scope.viewState.existingAddons;
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
+
                 } else {
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
                 }

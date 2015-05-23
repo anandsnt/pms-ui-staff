@@ -105,6 +105,27 @@
 
             </fieldset>
             <fieldset class="holder right">
+
+                <div class="form-title">
+                    <h3><span translate>TO_SECTION_LABEL</span></h3>
+                </div>
+                <div class="entry full-width">
+                    <ul class="boxes cms-tree">
+                        <li class="section" ng-repeat="section in data.parent_section">
+                            <div class="sort">
+                                <span class="cms-name">{{section.name}}</span>
+                                <div class="cms-delete">
+                                    <a class="icons icon-delete" ng-click="deleteParentSection($index)">Delete</a>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="add">
+                            <a  class="add-new-button open-modal" ng-click= "openAddParentModal(true)" translate>ADD_SECTION_LABEL</a>
+                        </li>
+                    </ul>
+                </div>
+
                 <div class="form-title">
                     <h3><span translate> TO_CATEGORY_LABEL</span></h3>
                 </div>
@@ -120,7 +141,7 @@
                         </li>
                         
                         <li class="add">
-                            <a  class="add-new-button open-modal" ng-click = "openAddCategoryModal()" translate>ADD_CATEGORY_LABEL</a>
+                            <a  class="add-new-button open-modal" ng-click = "openAddParentModal(false)" translate>ADD_CATEGORY_LABEL</a>
                         </li>
                     </ul>
                 </div>        

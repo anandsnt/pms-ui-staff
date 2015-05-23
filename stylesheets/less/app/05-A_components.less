@@ -881,11 +881,23 @@
                         }
                     }
 
-                    /* AR bills ***/
+                    /* AR Transactions ***/
                     &.transaction {
                         a,
                         .faux-anchor {
                             position: relative;
+
+                            .group-info {
+                                font-size: 24px;
+                                line-height: 50px;
+                                text-align: center;
+                                font-weight: 600;
+                                color: @grey3;
+                                margin-right: 20px;
+                                background-color: @grey1;
+                                .square(50px);
+                                .pull-left;
+                            }
 
                             .data {
                                 .calc-width(70, 150);
@@ -4975,27 +4987,30 @@
                     color: @textColor;
                     text-transform: uppercase;
                     position: relative;
+                    background-position: 85% 50%;
                     .size(60px, 80px);
                     .clickable;
 
                     .icons {
                         position: absolute;
-                        top: 15px;
-                        left: 15px;
-                        .size(24px, 30px);
-                    }
+                        height: 24px;
 
-                    .label { 
-                        width: 100%;
-                        float: none;
-                        line-height: 14px;
-                        .show; 
-                    }
+                        &.icon-signature { 
+                            top: 15px; 
+                            left: 15px;
+                            width: 30px;
+                        }
 
-                    &.has-arrow { background-position: 90% 50%; }
+                        &.icon-smartphone { 
+                            top: 18px; 
+                            left: 20px;
+                            width: 20px;
+                        }
+                    }
 
                     &.active { 
                         height: 70px; 
+                        background-position: 85% 42%;
                         #border-radius > .bottom(0);
                         .box-shadow(1px 0 0 rgba(0,0,0,.15));
                     }
@@ -5092,7 +5107,7 @@
                     .checkbox {
                         margin: 0;
                         padding: 0;
-                        .size(35px, 50px);
+                        .size(35px, 60px);
 
                         .icon-form { 
                             top: 7px; 
@@ -5163,6 +5178,8 @@
                                 &.green,
                                 &.green strong { color: @green; }
                             }
+
+                            &.action { padding: 10px 0; }
                         }
 
                         &.active {
@@ -5220,6 +5237,17 @@
                         text-align: center;
                         width: 100%;
                     }
+                }
+
+                /* Charges Accepted ***/
+                &.charges-accepted {
+                    text-align: center;
+                    padding: 10px;
+                    background: @white;
+                    #border-radius > .rounded();
+                    .box-shadow();
+
+                    em { .show; }
                 }
             }
         }
@@ -12888,6 +12916,17 @@
                                 }
                             }
                         }
+
+                        &.deposit-icon {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            float: none;
+                            text-indent: 0;
+                            text-align: center;
+                            background: @yellow;
+                            color: @red;
+                        } 
                     }
                 }
 
@@ -13019,6 +13058,20 @@
                                     .square(30px);
                                 }
                             }
+
+                            &.deposit-icon {
+                                font-size: 24px;
+                                width: 40px;
+                            } 
+                        }
+
+                        &.deposit-required {
+                            span {
+                                &.occupied {
+                                    text-indent: 60px;
+                                    &:after { left: 40px; }
+                                }
+                            }
                         }
                     }
 
@@ -13146,6 +13199,20 @@
                                     background-position: 5px -2955px;
                                     #calc-position > .left(50, 12);
                                     .square(24px);
+                                }
+                            }
+
+                            &.deposit-icon {
+                                font-size: 14px;
+                                width: 20px;
+                            }  
+                        }
+
+                        &.deposit-required {
+                            span {
+                                &.occupied {
+                                    text-indent: 40px;
+                                    &:after { left: 20px; }
                                 }
                             }
                         }

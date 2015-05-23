@@ -13,16 +13,16 @@
 		<span class="icons icon-wallet"></span> 
 		{{ 'PAY' | translate }}
 	</button>
-	<button type="button" ng-click="clickedEmail()" class="button with-icon blue">
+	<button type="button" ng-click="clickedEmail()" class="button with-icon blue" ng-show="isStandAlone">
 		 <span class="icons icon-email"></span> 
 		 E-mail
 	</button>
-	<button type="button" ng-click="clickedPrint()" class="button with-icon blue"> 
+	<button type="button" ng-click="clickedPrint()" class="button with-icon blue" ng-show="isStandAlone"> 
 		<span class="icons icon-print"></span> 
 		Invoice
 	</button>
 	<!-- Button to print registration card, show only for check ins  -->
-	<button type="button" ng-click="printRegistrationCard()" class="button with-icon brand-colors">
+	<button ng-show="isStandAlone && clickedButton == 'checkinButton'" type="button" ng-click="printRegistrationCard()" class="button with-icon brand-colors">
 		<span class="icons icon-print"></span> 
 		Registration Card
 	</button>
@@ -40,11 +40,11 @@
 			<span class="icons icon-wallet"></span> 
 			{{ 'PAY' | translate }}  
 		</button>
-		<button type="button" ng-click="clickedEmail()" class="button with-icon blue">
+		<button type="button" ng-click="clickedEmail()" class="button with-icon blue" ng-show="isStandAlone">
 			 <span class="icons icon-email"></span> 
 			 E-mail
 		</button>
-		<button type="button" ng-click="clickedPrint()" class="button with-icon blue"> 
+		<button type="button" ng-click="clickedPrint()" class="button with-icon blue" ng-show="isStandAlone"> 
 			<span class="icons icon-print"></span> 
 			Print
 		</button>
@@ -52,9 +52,9 @@
 </div>
 
 <!-- View signature -->
-<div class="signature" ng-show="reservationBillData.signature_details.is_signed" ng-click="showSignature()">
-	<button type="button" class="toggle signature-toggle has-arrow" ng-class="{'active':showSignedSignature }">
-		<span class="icons icon-signature"></span> 
+<div class="signature" ng-show="isSigned() || isChargeAccepted()" ng-click="showSignature()">
+	<button type="button" class="toggle has-arrow">
+		<span class="icons" ng-class="{'icon-signature' : isSigned(), 'icon-smartphone' : isChargeAccepted()}"></span> 
 	</button type="button">
 </div>
 
@@ -97,11 +97,17 @@
 </div>
 
 <!-- Signature -->
-<div class="details signature-wrapper" ng-show="showSignedSignature">
-	<figure>
-		<img ng-src="{{reservationBillData.signature_details.signed_image}}" alt="" />
-	</figure>
-	<span class="signature-date" translate>SIGNED <em> {{reservationBillData.signature_details.signed_date|date:dateFormat}} {{reservationBillData.signature_details.signed_time}}</em> </span>
+<div class="details" ng-class="{'signature-wrapper' : isSigned(), 'charges-accepted' : isChargeAccepted()}" ng-show="showSignedSignature">
+	<div ng-if="isSigned()">
+		<figure>
+			<img ng-src="{{reservationBillData.signature_details.signed_image}}" alt="" />
+		</figure>
+		<span class="signature-date" translate>SIGNED <em> {{reservationBillData.signature_details.signed_date|date:dateFormat}} {{reservationBillData.signature_details.signed_time}}</em> </span>
+	</div>
+	<div ng-if="isChargeAccepted()">
+		Charges Accepted VIA On-Line Check-In
+        <em>{{reservationBillData.charges_accepted_at | date:dateFormat}}</em>
+	</div>
 </div>
 
 <!-- Total Stay Fees -->
@@ -123,10 +129,10 @@
 			<tr class="active edit">
 				<td colspan="3" class="total-label">
 					<!-- Show email and print buttons -->
-					<button type="button" ng-click="clickedEmail()" class="button with-icon only-icon blue">
+					<button type="button" ng-click="clickedEmail()" class="button with-icon only-icon blue" ng-show="isStandAlone">
 						 <span class="icons icon-email"></span> 
 					</button>
-					<button type="button" ng-click="clickedPrint()" class="button with-icon only-icon blue"> 
+					<button type="button" ng-click="clickedPrint()" class="button with-icon only-icon blue" ng-show="isStandAlone"> 
 						<span class="icons icon-print"></span> 
 					</button> 
 					<span translate>STAY_FEES_AS_OF</span>

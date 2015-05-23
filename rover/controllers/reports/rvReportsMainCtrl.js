@@ -34,6 +34,9 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.heading = listTitle;
 		$scope.$emit("updateRoverLeftMenu", "reports");
 
+		//refer angular.isArray in scope
+		$scope.isArray = angular.isArray;
+
 
 		$scope.reportList = reportsResponse.results;
 		$scope.reportCount = reportsResponse.total_count;
@@ -44,14 +47,12 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.chargeGroups = chargeGroups;
 		$scope.chargeCodes = chargeCodes;
 
-		// make all the guarantee type unselected
 		// make all the charge groups selected by default
-		// make all the charge codes selected by default
-		_.each([$scope.guaranteeTypes, $scope.chargeGroups], function (dataArry) {
-			_.each(dataArry, function(item) {
-				item.selected = true;
-			});
-		});
+		// _.each([$scope.chargeGroups], function (dataArry) {
+		// 	_.each(dataArry, function(item) {
+		// 		item.selected = true;
+		// 	});
+		// });
 
 		$scope.markets = markets;
 		$scope.sources = sources;
@@ -360,212 +361,9 @@ sntRover.controller('RVReportsMainCtrl', [
         };
 
 
-		var chosenList = [
-			'chosenIncludeNotes',
-			'chosenIncludeCancelled',
-			'chosenIncludeVip',
-			'chosenIncludeNoShow',
-			'chosenShowGuests',
-			'chosenIncludeRoverUsers',
-			'chosenIncludeZestUsers',
-			'chosenIncludeZestWebUsers',
-			'chosenVariance',
-			'chosenLastYear',
-			'chosenGuaranteeType',
-			'chosenIncludeDepositPaid',
-			'chosenIncludeDepositDue',
-			'chosenIncludeDepositPastDue',
-			'chosenDueInArrivals',
-			'chosenDueOutDepartures',
-			'chosenIncludeNew',
-			'chosenIncludeBoth'
-		];
-
-		var hasList = [
-			'hasIncludeNotes',
-			'hasIncludeCancelled',
-			'hasIncludeVip',
-			'hasIncludeNoShow',
-			'hasShowGuests',
-			'hasIncludeRoverUsers',
-			'hasIncludeZestUsers',
-			'hasIncludeZestWebUsers',
-			'hasVariance',
-			'hasLastYear',
-			'hasGuaranteeType',
-			'hasIncludeDepositPaid',
-			'hasIncludeDepositDue',
-			'hasIncludeDepositPastDue',
-			'hasDueInArrivals',
-			'hasDueOutDepartures',
-			'hasIncludeNew',
-			'hasIncludeBoth'
-		];
 
 
 
-
-
-
-		var closeAllMultiSelects = function() {
-			_.each($scope.reportList, function(item) {
-				if ( item.hasOwnProperty('fauxSelectOpen') ) {
-					item.fauxSelectOpen = false;
-				};
-				if ( item.hasOwnProperty('selectDisplayOpen') ) {
-					item.selectDisplayOpen = false;
-				};
-				if ( item.hasOwnProperty('selectMarketsOpen') ) {
-					item.selectMarketsOpen = false;
-				};
-				if ( item.hasOwnProperty('selectGuaranteeOpen') ) {
-					item.selectGuaranteeOpen = false;
-				};
-				if ( item.hasOwnProperty('selectChargeGroupOpen') ) {
-					item.selectChargeGroupOpen = false;
-				};
-				if ( item.hasOwnProperty('selectChargeCodeOpen') ) {
-					item.selectChargeCodeOpen = false;
-				};
-			});
-			$timeout(function(){
-				$scope.refreshScroller('report-list-scroll');
-				$scope.myScroll['report-list-scroll'].refresh();
-			},300);
-		}
-
-		// common faux select method
-		$scope.fauxSelectClicked = function(e, item) {
-			// if clicked outside, close the open dropdowns
-			if (!e) {
-				closeAllMultiSelects();
-				return;
-			};
-
-			if (!item) {
-				return;
-			};
-
-			e.stopPropagation();
-			item.fauxSelectOpen = item.fauxSelectOpen ? false : true;
-
-			$scope.fauxOptionClicked(e, item);
-		};
-		$scope.fauxOptionClicked = function(e, item) {
-			e && e.stopPropagation();
-
-			var selectCount = 0,
-				maxCount = 0,
-				eachTitle = '';
-
-			item.fauxTitle = '';
-			for (var i = 0, j = chosenList.length; i < j; i++) {
-				if (item.hasOwnProperty(chosenList[i])) {
-					maxCount++;
-					if (item[chosenList[i]] == true) {
-						selectCount++;
-						eachTitle = item[hasList[i]].description;
-					};
-				};
-			};
-
-			if (selectCount == 0) {
-				item.fauxTitle = 'Select';
-			} else if (selectCount == 1) {
-				item.fauxTitle = eachTitle;
-			} else if (selectCount > 1) {
-				item.fauxTitle = selectCount + ' Selected';
-			};
-
-			if (item.hasSourceMarketFilter) {
-				var selectCount = 0;
-				if (item.showMarket) {
-					selectCount++;
-					item.displayTitle = item.hasMarket.description;
-				};
-				if (item.showSource) {
-					selectCount++;
-					item.displayTitle = item.hasSource.description;
-				};
-
-				if (selectCount > 1) {
-					item.displayTitle = selectCount + ' Selected';
-				} else if (selectCount == 0) {
-					item.displayTitle = 'Select';
-				};
-			}
-			// CICO-10202
-			$scope.$emit('report.filter.change');
-		};
-
-		// specific for Source and Markets reports
-		$scope.selectDisplayClicked = function(e, item) {
-			var selectCount = 0;
-
-			// if clicked outside, close the open dropdowns
-			if (!e) {
-				closeAllMultiSelects();
-				return;
-			};
-
-			if (!item) {
-				return;
-			};
-
-			e.stopPropagation();
-			item.selectDisplayOpen = item.selectDisplayOpen ? false : true;
-
-			$scope.fauxOptionClicked(e, item);
-		};
-
-		// //specific for markets
-		// $scope.selectMarketsClicked = function(e, item) {
-		// 	var selectCount = 0;
-		// 	$timeout(function(){
-		// 		$scope.refreshScroller('report-list-scroll');
-		// 		$scope.myScroll['report-list-scroll'].refresh();
-		// 	},300);
-		// 	// if clicked outside, close the open dropdowns
-		// 	if (!e) {
-		// 		closeAllMultiSelects();
-		// 		return;
-		// 	};
-		// 	if (!item) {
-		// 		return;
-		// 	};
-
-		// 	e.stopPropagation();
-		// 	item.selectMarketsOpen = item.selectMarketsOpen ? false : true;
-
-		// 	if (!item) {
-		// 		return;
-		// 	};
-		// 	e.stopPropagation();
-
-		// };
-		// $scope.fauxMarketOptionClicked = function(item,allMarkets) {
-		// 	if(allMarkets){
-		// 		_.each($scope.reportsState.markets, function(market){
-		// 			market.selected = !!item.allMarketsSelected;
-		// 		});
-		// 	} else {
-		// 		var selectedData = _.where($scope.reportsState.markets, {
-		// 			selected: true
-		// 		});
-
-		// 		item.allMarketsSelected = selectedData.length == $scope.reportsState.markets.length;
-
-		// 		if (selectedData.length == 0) {
-		// 			item.marketTitle = "Select";
-		// 		} else if (selectedData.length == 1) {
-		// 			item.marketTitle = selectedData[0].name;
-		// 		} else if (selectedData.length > 1) {
-		// 			item.marketTitle = selectedData.length + "Selected";
-		// 		}
-		// 	}
-		// 	// CICO-10202
-		// 	$scope.$emit('report.filter.change');
-		// };
 
 
 		$scope.catchFauxSelectClick = function(e, currentFaux) {
@@ -579,70 +377,89 @@ sntRover.controller('RVReportsMainCtrl', [
 				});
 			});
 		};
-		$scope.toggleFauxSelect = function(e, list) {
+		$scope.toggleFauxSelect = function(e, fauxDS) {
 			$timeout(function(){
 				$scope.refreshScroller('report-list-scroll');
 				$scope.myScroll['report-list-scroll'].refresh();
 			}, 100);
 
-			if ( !e ) {
-				closeAllMultiSelects();
+			if ( !e || !fauxDS ) {
 				return;
 			};
 
-			if ( !list ) {
-				return;
-			};
-
-			list.show = !list.show;
+			fauxDS.show = !fauxDS.show;
 		};
-		$scope.fauxSelectChange = function(list, allTapped) {
+		$scope.fauxSelectChange = function(reportItem, fauxDS, allTapped) {
 			var selectedItems;
 
-			if ( allTapped ) {
-				if ( list.selectAll ) {
-					list.title = 'All Selected';
-				} else {
-					list.title = list.defaultTitle;
+			var updateQuickFlags = function() {
+				if ( !reportItem['hasGeneralOptions']['data'].length ) {
+					return;
 				};
 
-				_.each(list.data, function(each) {
-					each.selected = list.selectAll;
+				reportItem.chosenNotes          = false;
+				reportItem.chosenShowGuests     = false;
+				reportItem.chosenCancelled      = false;
+				reportItem.chosenShowRateAdjust = false;
+
+				_.each(fauxDS.data, function(item) {
+					switch ( item.paramKey.toUpperCase() ) {
+						case 'INCLUDE_NOTES':
+							reportItem.chosenNotes = item.selected;
+							break;
+
+						case 'SHOW_GUESTS':
+							reportItem.chosenShowGuests = item.selected;
+							break;
+
+						case 'INCLUDE_CANCELLED':
+						case 'INCLUDE_CANCELED':
+							reportItem.chosenCancelled = item.selected;
+							break;
+
+						case 'SHOW_RATE_ADJUSTMENTS_ONLY':
+							reportItem.chosenShowRateAdjust = item.selected;
+							break;
+
+						default:
+							break;
+					};
 				});
+			};
+
+			if ( allTapped ) {
+				if ( fauxDS.selectAll ) {
+					fauxDS.title = 'All Selected';
+				} else {
+					fauxDS.title = fauxDS.defaultTitle;
+				};
+
+				_.each(fauxDS.data, function(each) {
+					each.selected = fauxDS.selectAll;
+				});
+
+				updateQuickFlags();
 			} else {
-				selectedItems = _.where(list.data, { selected: true });
+				selectedItems = _.where(fauxDS.data, { selected: true });
 
 				if ( selectedItems.length == 0 ) {
-					list.title = list.defaultTitle;
+					fauxDS.title = fauxDS.defaultTitle;
 				} else if ( selectedItems.length == 1 ) {
-					list.title = selectedItems[0].description || selectedItems[0].name;
-				} else if ( selectedItems.length == list.data.length ) {
-					list.selectAll = true;
-					list.title = 'All Selected';
+					fauxDS.title = selectedItems[0].description || selectedItems[0].name;
+				} else if ( selectedItems.length == fauxDS.data.length ) {
+					fauxDS.selectAll = true;
+					fauxDS.title = 'All Selected';
 				} else {
-					list.selectAll = false;
-					list.title = selectedItems.length + ' Selected';
+					fauxDS.selectAll = false;
+					fauxDS.title = selectedItems.length + ' Selected';
 				};
+
+				updateQuickFlags();
 
 				// CICO-10202
 				$scope.$emit( 'report.filter.change' );
 			};
 		};
-
-
-
-
-
-		$scope.showFauxSelect = function(item) {
-			if (!item) {
-				return false;
-			};
-
-			return _.find(hasList, function(has) {
-				return has != 'hasIncludeComapnyTaGroup' && item.hasOwnProperty(has);
-			}) ? true : false;
-		};
-
 
 
 
@@ -812,218 +629,31 @@ sntRover.controller('RVReportsMainCtrl', [
 				};
 			};
 
-			// include notes
-			if (chosenReport.hasOwnProperty('hasIncludeNotes')) {
-				key = chosenReport.hasIncludeNotes.value.toLowerCase();
-				if ( chosenReport.chosenIncludeNotes ) {
-					params[key] = true;
-					/**/
-					$scope.appliedFilter.options.push( chosenReport.hasIncludeNotes.description );
-				};
+
+
+			if ( chosenReport.hasOwnProperty('hasGeneralOptions') && chosenReport['hasGeneralOptions']['data'].length ) {
+				_.each(chosenReport['hasGeneralOptions']['data'], function(each) {
+					if ( each.selected ) {
+						key = each.paramKey;
+						params[key] = true;
+						/**/
+						$scope.appliedFilter.options.push( each.description );
+					} else if ( !each.selected && each.mustSend ) {
+						key = each.paramKey;
+						params[key] = false;
+					};
+				});
 			};
 
-			// include user ids
-			if (chosenReport.hasOwnProperty('hasIncludeVip')) {
-				key = chosenReport.hasIncludeVip.value.toLowerCase();
-				if ( chosenReport.chosenIncludeVip ) {
-					params[key] = true;
-					/**/
-					$scope.appliedFilter.options.push( chosenReport.hasIncludeVip.description );
-				};
-			};
-
-			// include cancelled
-			if (chosenReport.hasOwnProperty('hasIncludeCancelled')) {
-				key = chosenReport.hasIncludeCancelled.value.toLowerCase();
-				if ( chosenReport.chosenIncludeCancelled ) {
-					params[key] = true;
-					/**/
-					$scope.appliedFilter.options.push( chosenReport.hasIncludeCancelled.description );
-				};
-			};
-
-			// include no show
-			if (chosenReport.hasOwnProperty('hasIncludeNoShow')) {
-				key = chosenReport.hasIncludeNoShow.value.toLowerCase();
-				if ( chosenReport.chosenIncludeNoShow ) {
-					params[key] = true;
-					/**/
-					$scope.appliedFilter.options.push( chosenReport.hasIncludeNoShow.description );
-				};
-			};
-
-			// include rover users
-			if (chosenReport.hasOwnProperty('hasIncludeRoverUsers')) {
-				key = chosenReport.hasIncludeRoverUsers.value.toLowerCase();
-				if ( chosenReport.chosenIncludeRoverUsers ) {
-					params[key] = true;
-					/**/
-					$scope.appliedFilter.options.push( chosenReport.hasIncludeRoverUsers.description );
-				};
-			};
-
-			// include zest users
-			if (chosenReport.hasOwnProperty('hasIncludeZestUsers')) {
-				key = chosenReport.hasIncludeZestUsers.value.toLowerCase();
-				if ( chosenReport.chosenIncludeZestUsers ) {
-					params[key] = true;
-					/**/
-					$scope.appliedFilter.options.push( chosenReport.hasIncludeZestUsers.description );
-				};
-			};
-
-			// include zest web users
-			if (chosenReport.hasOwnProperty('hasIncludeZestWebUsers')) {
-				key = chosenReport.hasIncludeZestWebUsers.value.toLowerCase();
-				if ( chosenReport.chosenIncludeZestWebUsers ) {
-					params[key] = true;
-					/**/
-					$scope.appliedFilter.options.push( chosenReport.hasIncludeZestWebUsers.description );
-				};
-			};
-
-			// include show guests
-			if (chosenReport.hasOwnProperty('hasShowGuests')) {
-				key = chosenReport.hasShowGuests.value.toLowerCase();
-				if ( chosenReport.chosenShowGuests ) {
-					params[key] = true;
-					/**/
-					$scope.appliedFilter.options.push( chosenReport.hasShowGuests.description );
-				};
-			};
-
-			// include include deposit paid
-			if (chosenReport.hasOwnProperty('hasIncludeDepositPaid')) {
-				key = chosenReport.hasIncludeDepositPaid.value.toLowerCase();
-
-				// additional overhead required by API
-				// we are to send either true or false anyway
-				// no mater if the flag is chosen or not
-				params[key] = chosenReport.chosenIncludeDepositPaid ? true : false;
-				/**/
-				if ( chosenReport.chosenIncludeDepositPaid ) {
-					$scope.appliedFilter.options.push( chosenReport.hasIncludeDepositPaid.description );
-				};
-			};
-
-			// include include deposit due
-			if (chosenReport.hasOwnProperty('hasIncludeDepositDue')) {
-				key = chosenReport.hasIncludeDepositDue.value.toLowerCase();
-
-				// additional overhead required by API
-				// we are to send either true or false anyway
-				// no mater if the flag is chosen or not
-				params[key] = chosenReport.chosenIncludeDepositDue ? true : false;
-				/**/
-				if ( chosenReport.chosenIncludeDepositDue ) {
-					$scope.appliedFilter.options.push( chosenReport.hasIncludeDepositDue.description );
-				};
-			};
-
-			// include include deposit past due
-			if (chosenReport.hasOwnProperty('hasIncludeDepositPastDue')) {
-				key = chosenReport.hasIncludeDepositPastDue.value.toLowerCase();
-
-				// additional overhead required by API
-				// we are to send either true or false anyway
-				// no mater if the flag is chosen or not
-				params[key] = chosenReport.chosenIncludeDepositPastDue ? true : false;
-				/**/
-				if ( chosenReport.chosenIncludeDepositPastDue ) {
-					$scope.appliedFilter.options.push( chosenReport.hasIncludeDepositPastDue.description );
-				};
-			};
-
-			// include due in arrivals option
-			if (chosenReport.hasOwnProperty('hasDueInArrivals')) {
-				key = chosenReport.hasDueInArrivals.value.toLowerCase();
-				if ( chosenReport.chosenDueInArrivals ) {
-					params[key] = true;
-					/**/
-					$scope.appliedFilter.options.push( chosenReport.hasDueInArrivals.description );
-				};
-			};
-
-			// include due out departure option
-			if (chosenReport.hasOwnProperty('hasDueOutDepartures')) {
-				key = chosenReport.hasDueOutDepartures.value.toLowerCase();
-				if ( chosenReport.chosenDueOutDepartures ) {
-					params[key] = true;
-					/**/
-					$scope.appliedFilter.options.push( chosenReport.hasDueOutDepartures.description );
-				};
-			};
-
-            // include new option
-			if (chosenReport.hasOwnProperty('hasIncludeNew')) {
-				key = chosenReport.hasIncludeNew.value.toLowerCase();
-				if ( chosenReport.chosenIncludeNew ) {
-					params[key] = true;
-					/**/
-					$scope.appliedFilter.options.push( chosenReport.hasIncludeNew.description );
-				};
-			};
-
-            // include both option
-			if (chosenReport.hasOwnProperty('hasIncludeBoth')) {
-				key = chosenReport.hasIncludeBoth.value.toLowerCase();
-				if ( chosenReport.chosenIncludeBoth ) {
-					params[key] = true;
-					/**/
-					$scope.appliedFilter.options.push( chosenReport.hasIncludeBoth.description );
-				};
-			};
-
-			// include market
-			if (chosenReport.hasOwnProperty('hasMarket')) {
-				key = chosenReport.hasMarket.value.toLowerCase();
-				if ( chosenReport.showMarket ) {
-					params[key] = true;
-					/**/
-					$scope.appliedFilter.display.push( chosenReport.hasMarket.description );
-				};
-			};
-
-			// include source
-			if (chosenReport.hasOwnProperty('hasSource')) {
-				key = chosenReport.hasSource.value.toLowerCase();
-				if ( chosenReport.showSource ) {
-					params[key] = true;
-					/**/
-					$scope.appliedFilter.display.push( chosenReport.hasSource.description );
-				};
-			};
-
-			// include origin
-			if (chosenReport.hasOwnProperty('hasOrigin')) {
-				key = chosenReport.hasOrigin.value.toLowerCase();
-				if ( chosenReport.showOrigin ) {
-					params[key] = true;
-					/**/
-					$scope.appliedFilter.display.push( chosenReport.hasOrigin.description );
-				};
-			};
-
-
-
-			// include variance
-			if (chosenReport.hasOwnProperty('hasVariance')) {
-				key = chosenReport.hasVariance.value.toLowerCase();
-				if ( chosenReport.chosenVariance ) {
-					params[key] = true;
-					/**/
-					$scope.appliedFilter.options.push( chosenReport.hasVariance.description );
-				};
-			};
-
-			// include last year
-			if (chosenReport.hasOwnProperty('hasLastYear')) {
-				key = chosenReport.hasLastYear.value.toLowerCase();
-				if ( chosenReport.chosenLastYear ) {
-					params[key] = true;
-					/**/
-					$scope.appliedFilter.options.push( chosenReport.hasLastYear.description );
-				};
+			if ( chosenReport.hasOwnProperty('hasDisplay') && chosenReport['hasDisplay']['data'].length ) {
+				_.each(chosenReport['hasDisplay']['data'], function(each) {
+					if ( each.selected ) {
+						key = each.paramKey;
+						params[key] = true;
+						/**/
+						$scope.appliedFilter.display.push( each.description );
+					};
+				});
 			};
 
 
@@ -1052,8 +682,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 					// in case if all markets are selected
 					if ( chosenReport['hasMarketsList']['data'].length == selected.length ) {
-						$scope.appliedFilter.markets = [];
-						$scope.appliedFilter.markets.push( 'All Markets' );
+						$scope.appliedFilter.markets = ['All Markets'];
 					};
 				};
 			};
@@ -1073,8 +702,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 					// in case if all sources are selected
 					if ( chosenReport['hasSourcesList']['data'].length == selected.length ) {
-						$scope.appliedFilter.sources = [];
-						$scope.appliedFilter.sources.push( 'All Sources' );
+						$scope.appliedFilter.sources = ['All Sources'];
 					};
 				};
 			};
@@ -1094,8 +722,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 					// in case if all origins are selected
 					if ( chosenReport['hasOriginsList']['data'].length == selected.length ) {
-						$scope.appliedFilter.origins = [];
-						$scope.appliedFilter.origins.push( 'All Origins' );
+						$scope.appliedFilter.origins = ['All Origins'];
 					};
 				};
 			};
@@ -1115,8 +742,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 					// in case if all guarantee type is selected
 					if ( chosenReport['hasGuaranteeType']['data'].length == selected.length ) {
-						$scope.appliedFilter.guarantees = [];
-						$scope.appliedFilter.guarantees.push( 'All Guarantees' );
+						$scope.appliedFilter.guarantees = ['All Guarantees'];
 					};
 				};
 			};
@@ -1136,8 +762,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 					// in case if all charge groups is selected
 					if ( chosenReport['hasByChargeGroup']['data'].length == selected.length ) {
-						$scope.appliedFilter.chargeGroups = [];
-						$scope.appliedFilter.chargeGroups.push( 'All Groups' );
+						$scope.appliedFilter.chargeGroups = ['All Groups'];
 					};
 				};
 			};
@@ -1157,8 +782,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 					// in case if all charge code is selected
 					if ( chosenReport['hasByChargeCode']['data'].length == selected.length ) {
-						$scope.appliedFilter.chargeCode = [];
-						$scope.appliedFilter.chargeCode.push( 'All Codes' );
+						$scope.appliedFilter.chargeCode = ['All Codes'];
 					};
 				};
 			};
@@ -1254,6 +878,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				$rootScope.$broadcast('report.API.failure');
 			};
 
+			$scope.clearErrorMessage();
 			$scope.invokeApi(RVreportsSrv.fetchReportDetails, params, sucssCallback, errorCallback);
 		};
 

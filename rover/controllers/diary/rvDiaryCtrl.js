@@ -208,7 +208,7 @@ sntRover
 				var choosedReservation = util.copyReservation ($scope.gridProps.currentResizeItem);
 
 				//we are only allowing the RESERVED reservations date transfer
-				if (choosedReservation.reservation_status === 'check-in') {
+				if (choosedReservation.reservation_status === 'reserved') {
 					dateSelectedInEditMode (choosedReservation, going_date);
 				}
 				else {
@@ -775,7 +775,8 @@ sntRover
 	    			payment_method_used: next.occupancy.payment_method_used,
 	    			payment_method_description: next.occupancy.payment_method_description,
 	    			payment_details: next.occupancy.payment_details
-	    		}
+	    		},
+	    		demographics: next.occupancy.demographics
 			};
 			dataToPassConfirmScreen.rooms = [];
 			dataToPassConfirmScreen.rooms.push(rooms);

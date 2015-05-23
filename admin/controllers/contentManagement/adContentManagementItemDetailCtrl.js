@@ -20,7 +20,8 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	            "website_url": "",
 	            "description": "",
 	            "addon_id":"",
-	            "parent_category": []
+	            "parent_category": [],
+	            "parent_section": []
             }
 
     $scope.fetchAddons = function(){
@@ -76,6 +77,8 @@ $scope.getSelectedAddonPrice = function(){
 			$scope.initialIcon =  $scope.data.image;
 			if(data.page_template == 'ADDON'){
 				$scope.fetchAddons();
+			}else{
+				$scope.$emit('hideLoader');
 			}
 		}
 		$scope.invokeApi(ADContentManagementSrv.fetchComponent, $stateParams.id , fetchItemSuccessCallback);
@@ -99,9 +102,9 @@ $scope.getSelectedAddonPrice = function(){
 	 *The param isSection == true, implies the modal is for assigning sections
 	 *Otherwise the modal is for assigning categories
     */
-	$scope.openAddCategoryModal = function(){
-		$scope.isSection = false;
-		
+	$scope.openAddParentModal = function(isSection){
+		$scope.isSection = isSection;
+		$scope.componentList = [];
           ngDialog.open({
                 template: '/assets/partials/contentManagement/adContentManagementAssignComponentModal.html',
                 controller: 'ADContentManagementAssignComponentCtrl',
@@ -146,6 +149,10 @@ $scope.getSelectedAddonPrice = function(){
 	/* Function to remove the category from selected list*/
 	$scope.deleteParentCategory = function(index){
 		$scope.data.parent_category.splice(index, 1);
+	}
+	/* Function to remove the section from selected list*/
+	$scope.deleteParentSection = function(index){
+		$scope.data.parent_section.splice(index, 1);
 	}
 	/* Listener to know that the current category is deleted.
 	 * Need to go back to preveous state in this case

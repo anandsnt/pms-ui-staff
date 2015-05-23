@@ -9,7 +9,9 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 	'accountData',
 	'$state',
 	'rvPermissionSrv',
-	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvAccountsConfigurationSrv, rvGroupConfigurationSrv, accountData, $state, rvPermissionSrv) {
+	'rvAccountTransactionsSrv',
+	'$vault',
+	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvAccountsConfigurationSrv, rvGroupConfigurationSrv, accountData, $state, rvPermissionSrv, $vault, rvAccountTransactionsSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -62,11 +64,26 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		var setBackNavigation = function() {
 			// TODO : Currently hardcoded to go to groups search.. 
 			// Change the same according to the requirements
-			$rootScope.setPrevState = {
-				title: $filter('translate')('ACCOUNTS'),
-				callback: 'updateAndBack',
-				scope: $scope
-			};
+			if($stateParams.isFromCards) {
+				$rootScope.setPrevState = {
+					title: $filter('translate')('ACCOUNTS'),
+					callback: 'updateAndBack',
+					scope: $scope
+				};
+
+			} else {
+				$rootScope.setPrevState = {
+					title: 'AR Transactions',
+					name: 'rover.companycarddetails',
+					param: {
+						id: $vault.get('cardId'),
+						type: $vault.get('type'),
+						query: $vault.get('query'),
+						isBackFromStaycard: true
+					}
+				};
+			}
+			
 
 			//setting title and things
 			setTitle();
@@ -130,17 +147,51 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 				// $scope.$broadcast("UPDATE_ACCOUNT_SUMMARY");
 			}
 			
-			//Reload the summary tab contents before switching
+			//Reload the summary tab contents before switching to it
 			if(tab === "ACCOUNT"){
 				refreshSummaryTab();
-			}
-			else{
+			} else if(tab === "TRANSACTIONS"){ //Preload the transaction data when we switch to transactions tab
+				preLoadTransactionsData();
+				return false;
+			} else{
 				// Switching from SUMMARY tab - 
 				// Check for any updation => lets save it.
 				$scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
 			}
 
 			$scope.accountConfigData.activeTab = tab;
+		};
+
+		var preLoadTransactionsData = function(){
+			var onTransactionFetchSuccess = function(data) {
+
+				$scope.$emit('hideloader');
+				$scope.transactionsDetails = data;
+				$scope.accountConfigData.activeTab = 'TRANSACTIONS';
+
+				/*
+				 * Adding billValue and oldBillValue with data. Adding with each bills fees details
+				 * To handle move to bill action
+				 * Added same value to two different key because angular is two way binding
+				 * Check in HTML moveToBillAction
+				 */
+				angular.forEach($scope.transactionsDetails.bills, function(value, key) {
+					angular.forEach(value.total_fees.fees_details, function(feesValue, feesKey) {
+
+						feesValue.billValue = value.bill_number; //Bill value append with bill details
+						feesValue.oldBillValue = value.bill_number; // oldBillValue used to identify the old billnumber
+					});
+				});
+
+			}
+			var params = {
+				"account_id": $scope.accountConfigData.summary.posting_account_id
+			}
+			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, {
+				successCallBack: onTransactionFetchSuccess,
+				params: params
+			});
+
 		};
 
 		var refreshSummaryTab = function() {
