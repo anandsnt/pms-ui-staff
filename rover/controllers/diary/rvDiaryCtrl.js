@@ -207,12 +207,12 @@ sntRover
 			else if (isOnEditMode) {
 				var choosedReservation = util.copyReservation ($scope.gridProps.currentResizeItem);
 
-				//we are only allowing the RESERVED reservations date transfer
-				if (choosedReservation.reservation_status === 'reserved') {
+				//we are only allowing the RESERVED/CHECKING-IN reservations date transfer
+				if (choosedReservation.reservation_status === 'reserved' || choosedReservation.reservation_status === 'check-in' ) {
 					dateSelectedInEditMode (choosedReservation, going_date);
 				}
 				else {
-					$scope.message = ['ONLY RESERVATION WITH RESERVED STATUS MOVE IS ALLOWED'];
+					$scope.message = ['ONLY FUTURE/CHECKING-IN RESERVATION IS ALLOWED TO MOVE'];
 					openMessageShowingPopup();
 					return;
 				}
