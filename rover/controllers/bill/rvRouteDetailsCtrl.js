@@ -9,35 +9,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.paymentDetails = null;
     $scope.swipedCardDataToSave = {};
     $scope.showCreditCardDropDown = false;
-    $scope.isShownExistingCCPayment = false;
-
-    var arrivalDate = new Date($scope.reservation.reservation_card.arrival_date),        
-        defaultRouteFromDate = $rootScope.businessDate > arrivalDate ? $rootScope.businessDate : arrivalDate;
-        
-    $scope.routeDates = {
-        from : defaultRouteFromDate,
-        to : new Date($scope.reservation.reservation_card.departure_date)
-    };    
-
-    $scope.routingDateFromOptions = {       
-        dateFormat : "dd-mm-yy",
-        minDate : arrivalDate,
-        maxDate : $scope.routeDates.to
-    };
-    $scope.routingDateToOptions = {       
-        dateFormat : "dd-mm-yy",
-        minDate : arrivalDate,
-        maxDate : $scope.routeDates.to
-    };
-
-    /**
-        Watch the changes on from and to dates and set their min/max limits within
-        the allowed range
-    **/
-    $scope.$watch('routeDates', function() {      
-      $scope.routingDateFromOptions.maxDate = $scope.routeDates.to,
-      $scope.routingDateToOptions.minDate   = $scope.routeDates.from;
-    }, true);
+    $scope.isShownExistingCCPayment = false;       
    
     if($scope.selectedEntity.credit_card_details != undefined && $scope.selectedEntity.credit_card_details.hasOwnProperty('payment_type_description')){
     	
@@ -938,5 +910,43 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         $scope.$on('CHANGE_IS_MANUAL', function(e, value){
         	$scope.sixIsManual = value;
         });
+
+        if($scope.reservation) {
+            var arrivalDate = new Date($scope.reservation.reservation_card.arrival_date),        
+            defaultRouteFromDate = $rootScope.businessDate > arrivalDate ? $rootScope.businessDate : arrivalDate;
+            
+            $scope.routeDates = {
+                from : defaultRouteFromDate,
+                to : new Date($scope.reservation.reservation_card.departure_date)
+            };    
+
+            $scope.routingDateFromOptions = {       
+                dateFormat : "dd-mm-yy",
+                minDate : arrivalDate,
+                maxDate : $scope.routeDates.to
+            };
+            $scope.routingDateToOptions = {       
+                dateFormat : "dd-mm-yy",
+                minDate : arrivalDate,
+                maxDate : $scope.routeDates.to
+            };
+
+            /**
+                Watch the changes on from and to dates and set their min/max limits within
+                the allowed range
+            **/
+            $scope.$watch('routeDates', function() {      
+              $scope.routingDateFromOptions.maxDate = $scope.routeDates.to,
+              $scope.routingDateToOptions.minDate   = $scope.routeDates.from;
+            }, true); 
+        } 
+
+        /**
+            Checks whether the billing information is taken form the stay card
+             or via some other path
+        **/
+        $scope.isFromStayCard = function() {
+            return ($scope.reservation != null && $scope.reservation != undefined);
+        }
 
 }]);

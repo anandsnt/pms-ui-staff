@@ -2,18 +2,20 @@
 	<fieldset class="content-left">
 		<div id="entity-details" class="entity-details scrollable">
 			<div class="wrapper">
-				<div class="title">
-                        Date Range
-                </div>
-                <div class="entry">
-                    <div class="has-datepicker">
-                        <label for="routing-range-from">From</label>
-                        <input id="routing-range-from" ui-date="routingDateFromOptions" class="range-datepicker" ng-model="routeDates.from" readonly />
-                    </div>
-                    <div class="has-datepicker">
-                        <label for="routing-range-to">To</label>
-                        <input id="routing-range-to" ui-date="routingDateToOptions"  class="range-datepicker" ng-model="routeDates.to" readonly />
-                    </div>
+				<div ng-show="isFromStayCard()">
+					<div class="title">
+	                        Date Range
+	                </div>
+	                <div class="entry">
+	                    <div class="has-datepicker">
+	                        <label for="routing-range-from">From</label>
+	                        <input id="routing-range-from" ui-date="routingDateFromOptions" class="range-datepicker" ng-model="routeDates.from" readonly />
+	                    </div>
+	                    <div class="has-datepicker">
+	                        <label for="routing-range-to">To</label>
+	                        <input id="routing-range-to" ui-date="routingDateToOptions"  class="range-datepicker" ng-model="routeDates.to" readonly />
+	                    </div>
+	                </div>
                 </div>
 				<div class="title">
 					{{'ENTITY' | translate}}
