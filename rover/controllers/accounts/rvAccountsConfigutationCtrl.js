@@ -70,7 +70,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 					scope: $scope
 				};
 
-			} else {
+			} else if ($stateParams.isFromArTransactions) {
 				$rootScope.setPrevState = {
 					title: 'AR Transactions',
 					name: 'rover.companycarddetails',
