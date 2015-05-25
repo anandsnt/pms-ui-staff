@@ -1828,5 +1828,31 @@ sntRover.controller('RVbillCardController',
 	$scope.setupReviewStatusArray();
 
 	$scope.calculateBillDaysWidth();
+
+
+	$scope.clickedReverseCheckoutButton = function(){
+
+			var reservationId = $scope.reservationBillData.reservation_id,
+	    		confirmationNumber = $scope.reservationBillData.confirm_no;
+
+			var reverseCheckoutsuccess = function(data){
+				$scope.$emit("hideLoader");
+					
+				//if error go to stay card and show popup
+				//else go to staycard and refresh 
+				if(data.status === "success"){
+					$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber, "isrefresh": true});
+				}
+				else{
+					$scope.reverseCheckoutDetails.data.is_reverse_checkout_failed  = true;
+					$scope.reverseCheckoutDetails.data.errormessage= data.message;
+					$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber});	
+				};				 		
+			};
+
+			var data ={"reservation_id" : $scope.reservationBillData.reservation_id};
+			$scope.invokeApi(RVBillCardSrv.completeReverseCheckout,data,reverseCheckoutsuccess);
+			
+	};
 	
 }]);

@@ -10,7 +10,7 @@ sntRover.controller('reservationActionsController', [
 	'RVSearchSrv',
 	'RVDepositBalanceSrv',
 	'$filter',
-	'RVChargeItems','RVPaymentSrv',
+	'RVChargeItems','RVPaymentSrv','rvPermissionSrv',
 	function($rootScope, 
 		$scope, 
 		ngDialog, 
@@ -22,10 +22,31 @@ sntRover.controller('reservationActionsController', [
 		RVSearchSrv,
 		RVDepositBalanceSrv, 
 		$filter,
-		RVChargeItems,RVPaymentSrv) {
+		RVChargeItems,RVPaymentSrv,rvPermissionSrv) {
 
 
 		BaseCtrl.call(this, $scope);
+
+		/*
+		* The reverse checkout button is to be shown if all the following conditions are satisfied
+		* -departure date <= busssiness date
+		* -status === checkedout
+		* -has permission
+		* -is stand alone hotel
+		* - hourly turned off
+		*/
+		var departureDatePassedbusinessDate = (new Date($scope.reservationData.reservation_card.departure_date) <= new Date($rootScope.businessDate) || $scope.reservationData.reservation_card.departure_date === $rootScope.businessDate);
+       	$scope.showReverseCheckout = $scope.reservationData.reservation_card.reservation_status === "CHECKEDOUT"
+										&& departureDatePassedbusinessDate
+	   									 && rvPermissionSrv.getPermissionValue ('REVERSE_CHECK_OUT') && $rootScope.isStandAlone && !$rootScope.isHourlyRateOn;
+
+	    $scope.reverseCheckout = function(reservationId, clickedButton) {	
+			$state.go("rover.reservation.staycard.billcard", {
+				"reservationId": reservationId,
+				"clickedButton": clickedButton,
+				"userId": $scope.guestCardData.userId
+			});
+		};
 		
 		//Since API is returning "true"/"false"
 		//TODO: Ask Rashila to to it from the API itself
