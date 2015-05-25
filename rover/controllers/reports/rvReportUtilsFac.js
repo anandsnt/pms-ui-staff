@@ -35,6 +35,21 @@ sntRover.factory('RVReportUtilsFac', [
 
 
 
+
+        /**
+         * A simple getter to returned the actual report name form __reportNames dict
+         * @param  {String} name The capitalized standard report name
+         * @return {String}      The actual report name
+         */
+        factory.getName = function (name) {
+            return __reportNames[name] ? __reportNames[name] : undefined;
+        };
+
+
+
+
+
+
         /**
          * This is a function that can return CG & CC with no payment entries or only payment entries
          * @param  {Array} chargeGroupsAry Array of charge groups
@@ -52,6 +67,7 @@ sntRover.factory('RVReportUtilsFac', [
             if ( setting == 'REMOVE_PAYMENTS' ) {
                 _.each(chargeGroupsAry, function (each) {
                     if ( each.name !== 'Payments' ) {
+                        each.selected = true;
                         newChargeGroupsAry.push(each);
                     } else {
                         paymentId = each.id;
@@ -64,6 +80,7 @@ sntRover.factory('RVReportUtilsFac', [
                     });
 
                     if ( !cgAssociated ) {
+                        each.selected = true;
                         newChargeCodesAry.push(each);
                     };
                 });
@@ -76,6 +93,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                 if ( !!paymentEntry ) {
                     paymentId = paymentEntry.id;
+                    paymentEntry.selected = true;
                     newChargeGroupsAry.push(paymentEntry);
 
                     _.each(chargeCodesAry, function (each) {
@@ -84,6 +102,7 @@ sntRover.factory('RVReportUtilsFac', [
                         });
 
                         if ( !!cgAssociated ) {
+                            each.selected = true;
                             newChargeCodesAry.push(each);
                         };
                     });
@@ -143,7 +162,8 @@ sntRover.factory('RVReportUtilsFac', [
             'DUE_IN_ARRIVALS'    : true,
             'DUE_OUT_DEPARTURES' : true,
             'INCLUDE_NEW'        : true,
-            'INCLUDE_BOTH'       : true
+            'INCLUDE_BOTH'       : true,
+            'SHOW_RATE_ADJUSTMENTS_ONLY' : true
         };
 
         var __displayFilterNames = {
@@ -196,20 +216,6 @@ sntRover.factory('RVReportUtilsFac', [
                 description : filter.description,
                 selected    : false,
             });
-        };
-
-
-
-
-
-
-        /**
-         * A simple getter to returned the actual report name form __reportNames dict
-         * @param  {String} name The capitalized standard report name
-         * @return {String}      The actual report name
-         */
-        factory.getName = function (name) {
-            return __reportNames[name] ? __reportNames[name] : undefined;
         };
 
 

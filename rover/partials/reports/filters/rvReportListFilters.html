@@ -138,11 +138,11 @@
     <div class="faux-select-options" ng-class="{ 'hidden': !item.hasGeneralOptions.show }">
         <label class="checkbox inline" ng-show="item.hasGeneralOptions.data.length > 1">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasGeneralOptions.selectAll }"></span>
-            <input type="checkbox" ng-model="item.hasGeneralOptions.selectAll" ng-change="fauxSelectChange(item.hasGeneralOptions, true)" name="room-filters"> Select All
+            <input type="checkbox" ng-model="item.hasGeneralOptions.selectAll" ng-change="fauxSelectChange(item, item.hasGeneralOptions, true)" name="room-filters"> Select All
         </label>
         <label class="checkbox inline" ng-repeat="option in item.hasGeneralOptions.data">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : option.selected }"></span>
-            <input type="checkbox" ng-model="option.selected" ng-change="fauxSelectChange(item.hasGeneralOptions)" name="room-filters"> {{ option.description }}
+            <input type="checkbox" ng-model="option.selected" ng-change="fauxSelectChange(item, item.hasGeneralOptions)" name="room-filters"> {{ option.description }}
         </label>
     </div>
 </div>
@@ -164,11 +164,11 @@
     <div class="faux-select-options" ng-class="{ 'hidden': !item.hasGuaranteeType.show }">
         <label class="checkbox inline" ng-show="item.hasGuaranteeType.data.length > 1">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasGuaranteeType.selectAll }"></span>
-            <input type="checkbox" ng-model="item.hasGuaranteeType.selectAll" ng-change="fauxSelectChange(item.hasGuaranteeType, true)" name="room-filters"> Select All
+            <input type="checkbox" ng-model="item.hasGuaranteeType.selectAll" ng-change="fauxSelectChange(item, item.hasGuaranteeType, true)" name="room-filters"> Select All
         </label>
         <label class="checkbox inline" ng-repeat="type in item.hasGuaranteeType.data">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : type.selected}"></span>
-            <input type="checkbox" ng-model="type.selected" ng-change="fauxSelectChange(item.hasGuaranteeType)" name="room-filters"> {{ type.name }}
+            <input type="checkbox" ng-model="type.selected" ng-change="fauxSelectChange(item, item.hasGuaranteeType)" name="room-filters"> {{ type.name }}
         </label>
     </div>
 </div>
@@ -179,11 +179,11 @@
     <div class="faux-select-options" ng-class="{ 'hidden': !item.hasByChargeGroup.show }">
         <label class="checkbox inline" ng-show="item.hasByChargeGroup.data.length > 1">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasByChargeGroup.selectAll }"></span>
-            <input type="checkbox" ng-model="item.hasByChargeGroup.selectAll" ng-change="fauxSelectChange(item.hasByChargeGroup, true)" name="room-filters"> Select All
+            <input type="checkbox" ng-model="item.hasByChargeGroup.selectAll" ng-change="fauxSelectChange(item, item.hasByChargeGroup, true)" name="room-filters"> Select All
         </label>
         <label class="checkbox inline" ng-repeat="group in item.hasByChargeGroup.data">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : group.selected}"></span>
-            <input type="checkbox" ng-model="group.selected" ng-change="fauxSelectChange(item.hasByChargeGroup)" name="room-filters"> {{ group.description }}
+            <input type="checkbox" ng-model="group.selected" ng-change="fauxSelectChange(item, item.hasByChargeGroup)" name="room-filters"> {{ group.description }}
         </label>
     </div>
 </div>
@@ -194,11 +194,11 @@
     <div class="faux-select-options" ng-class="{ 'hidden': !item.hasByChargeCode.show }">
         <label class="checkbox inline" ng-show="item.hasByChargeCode.data.length > 1">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasByChargeCode.selectAll }"></span>
-            <input type="checkbox" ng-model="item.hasByChargeCode.selectAll" ng-change="fauxSelectChange(item.hasByChargeCode, true)" name="room-filters"> Select All
+            <input type="checkbox" ng-model="item.hasByChargeCode.selectAll" ng-change="fauxSelectChange(item, item.hasByChargeCode, true)" name="room-filters"> Select All
         </label>
         <label class="checkbox inline" ng-repeat="code in item.hasByChargeCode.data">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : code.selected}"></span>
-            <input type="checkbox" ng-model="code.selected" ng-change="fauxSelectChange(item.hasByChargeCode)" name="room-filters"> {{ code.description }}
+            <input type="checkbox" ng-model="code.selected" ng-change="fauxSelectChange(item, item.hasByChargeCode)" name="room-filters"> {{ code.description }}
         </label>
     </div>
 </div>
@@ -209,11 +209,11 @@
     <div class="faux-select-options" ng-class="{ 'hidden': !item.hasDisplay.show }">
         <label class="checkbox inline" ng-show="item.hasDisplay.data.length > 1">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasDisplay.selectAll }"></span>
-            <input type="checkbox" ng-model="item.hasDisplay.selectAll" ng-change="fauxSelectChange(item.hasDisplay, true)" name="room-filters"> Select All
+            <input type="checkbox" ng-model="item.hasDisplay.selectAll" ng-change="fauxSelectChange(item, item.hasDisplay, true)" name="room-filters"> Select All
         </label>
         <label class="checkbox inline" ng-repeat="display in item.hasDisplay.data">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : display.selected }"></span>
-            <input type="checkbox" ng-model="display.selected" ng-change="fauxSelectChange(item.hasDisplay)" name="room-filters"> {{ display.description }}
+            <input type="checkbox" ng-model="display.selected" ng-change="fauxSelectChange(item, item.hasDisplay)" name="room-filters"> {{ display.description }}
         </label>
     </div>
 </div>
@@ -241,11 +241,11 @@
     <div class="faux-select-options" ng-class="{ 'hidden': !item.hasMarketsList.show }">
         <label class="checkbox inline" ng-show="item.hasMarketsList.data.length > 1">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasMarketsList.selectAll }"></span>
-            <input type="checkbox" ng-model="item.hasMarketsList.selectAll" ng-change="fauxSelectChange(item.hasMarketsList, true)" name="room-filters"> Select All
+            <input type="checkbox" ng-model="item.hasMarketsList.selectAll" ng-change="fauxSelectChange(item, item.hasMarketsList, true)" name="room-filters"> Select All
         </label>
         <label class="checkbox inline" ng-repeat="market in item.hasMarketsList.data">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : market.selected}"></span>
-            <input type="checkbox" ng-model="market.selected" ng-change="fauxSelectChange(item.hasMarketsList)" name="room-filters"> {{ market.name }}
+            <input type="checkbox" ng-model="market.selected" ng-change="fauxSelectChange(item, item.hasMarketsList)" name="room-filters"> {{ market.name }}
         </label>
     </div>
 </div>
@@ -256,11 +256,11 @@
     <div class="faux-select-options" ng-class="{ 'hidden': !item.hasSourcesList.show }">
         <label class="checkbox inline" ng-show="item.hasSourcesList.data.length > 1">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasSourcesList.selectAll }"></span>
-            <input type="checkbox" ng-model="item.hasSourcesList.selectAll" ng-change="fauxSelectChange(item.hasSourcesList, true)" name="room-filters"> Select All
+            <input type="checkbox" ng-model="item.hasSourcesList.selectAll" ng-change="fauxSelectChange(item, item.hasSourcesList, true)" name="room-filters"> Select All
         </label>
         <label class="checkbox inline" ng-repeat="source in item.hasSourcesList.data">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : source.selected}"></span>
-            <input type="checkbox" ng-model="source.selected" ng-change="fauxSelectChange(item.hasSourcesList)" name="room-filters"> {{ source.name }}
+            <input type="checkbox" ng-model="source.selected" ng-change="fauxSelectChange(item, item.hasSourcesList)" name="room-filters"> {{ source.name }}
         </label>
     </div>
 </div>
@@ -271,11 +271,11 @@
     <div class="faux-select-options" ng-class="{ 'hidden': !item.hasOriginsList.show }">
         <label class="checkbox inline" ng-show="item.hasOriginsList.data.length > 1">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasOriginsList.selectAll }"></span>
-            <input type="checkbox" ng-model="item.hasOriginsList.selectAll" ng-change="fauxSelectChange(item.hasOriginsList, true)" name="room-filters"> Select All
+            <input type="checkbox" ng-model="item.hasOriginsList.selectAll" ng-change="fauxSelectChange(item, item.hasOriginsList, true)" name="room-filters"> Select All
         </label>
         <label class="checkbox inline" ng-repeat="origin in item.hasOriginsList.data">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : origin.selected}"></span>
-            <input type="checkbox" ng-model="origin.selected" ng-change="fauxSelectChange(item.hasOriginsList)" name="room-filters"> {{ origin.name }}
+            <input type="checkbox" ng-model="origin.selected" ng-change="fauxSelectChange(item, item.hasOriginsList)" name="room-filters"> {{ origin.name }}
         </label>
     </div>
 </div>
