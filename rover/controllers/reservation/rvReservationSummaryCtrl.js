@@ -1161,6 +1161,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             $scope.shouldShowMarket = true;
             $scope.shouldShowSource = true;
             $scope.shouldShowOriginOfBooking = true;
+            $scope.shouldShowSegments = true;
 
             $scope.demographics = ($scope.reservationData.rooms[index] && $scope.reservationData.rooms[index].demographics) || angular.copy($scope.reservationData.demographics);
 
@@ -1169,6 +1170,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 $scope.shouldShowMarket = ($scope.otherData.marketIsForced) ? true : false;
                 $scope.shouldShowSource = ($scope.otherData.sourceIsForced) ? true : false;
                 $scope.shouldShowOriginOfBooking = ($scope.otherData.originIsForced) ? true : false;
+                $scope.shouldShowSegments = ($scope.otherData.segmentsIsForced) ? true : false;
             }
             ngDialog.open({
                 template: '/assets/partials/reservation/rvReservationDemographicsPopup.html',

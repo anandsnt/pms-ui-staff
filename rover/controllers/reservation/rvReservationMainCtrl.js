@@ -100,7 +100,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         market: '',
                         source: '',
                         reservationType: '',
-                        origin: ''
+                        origin: '',
+                        segment: ''
                     }
                 }],
                 totalTaxAmount: 0, //This is for ONLY exclusive taxes
@@ -215,6 +216,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.otherData.sourceIsForced = baseSearchData.settings.force_source_code;
             $scope.otherData.originIsForced = baseSearchData.settings.force_origin_of_booking;
             $scope.otherData.reservationTypeIsForced = baseSearchData.settings.force_reservation_type;
+            $scope.otherData.segmentsIsForced = baseSearchData.settings.force_segments;
             $scope.otherData.isAddonEnabled = baseSearchData.settings.is_addon_on;
 
             $scope.guestCardData = {};
@@ -988,6 +990,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationData.demographics.market = reservationDetails.reservation_card.market_segment_id == null ? "" : reservationDetails.reservation_card.market_segment_id;
             $scope.reservationData.demographics.source = reservationDetails.reservation_card.source_id == null ? "" : reservationDetails.reservation_card.source_id;
             $scope.reservationData.demographics.origin = reservationDetails.reservation_card.booking_origin_id == null ? "" : reservationDetails.reservation_card.booking_origin_id;
+            $scope.reservationData.demographics.segment = reservationDetails.reservation_card.segment_id == null ? "" : reservationDetails.reservation_card.segment_id;
+
 
             //Put them in a room too
             $scope.reservationData.rooms[0].demographics = angular.copy($scope.reservationData.demographics);
@@ -1271,6 +1275,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.otherData.origins = baseData.demographics.origins;
             $scope.otherData.reservationTypes = baseData.demographics.reservationTypes;
             // call this. no sure how we can pass date from here
+            // 
+            $scope.otherData.segmentsEnabled = baseData.demographics.is_use_segments;
+            $scope.otherData.segments = baseData.demographics.segments;
             $scope.checkOccupancyLimit();
         };
 
@@ -1331,12 +1338,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 if ($scope.reservationData.paymentType.type.value !== null) {
                     angular.forEach($scope.reservationData.paymentMethods, function(item, index) {
                         if ($scope.reservationData.paymentType.type.value == item.value) {
-                            if($scope.reservationData.paymentType.type.value === "CC"){
-                              data.payment_type.payment_method_id =  $scope.reservationData.selectedPaymentId
+                            if ($scope.reservationData.paymentType.type.value === "CC") {
+                                data.payment_type.payment_method_id = $scope.reservationData.selectedPaymentId
+                            } else {
+                                data.payment_type.type_id = item.id;
                             }
-                            else{
-                              data.payment_type.type_id = item.id;
-                            }                            
                         }
                     });
                     data.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear == "" || $scope.reservationData.paymentType.ccDetails.expYear == "") ? "" : "20" + $scope.reservationData.paymentType.ccDetails.expYear + "-" +
