@@ -3,8 +3,8 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	
 	$scope.textInQueryBox = "";
   	$scope.isReservationActive = true;
-  	$scope.results.cards = [];
-	$scope.results.reservations = [];
+  	//$scope.results.cards = [];
+	//$scope.results.reservations = [];
   	
   	var scrollerOptions = {click: true, preventDefault: false};
     $scope.setScroller('cards_search_scroller', scrollerOptions);
@@ -39,9 +39,10 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
   	*/
 	$scope.queryEntered = function(){
 		if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
-			$scope.results.cards = [];
+			$scope.results = {};
+			/*$scope.results.cards = [];
 			$scope.results.accounts = [];
-			$scope.results.reservations = [];
+			$scope.results.reservations = [];*/
 		}
 		else{
 	    	displayFilteredResultsCards();
@@ -59,10 +60,11 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	};
   	var searchSuccessCards = function(data){
 		$scope.$emit("hideLoader");
-		$scope.results.cards = [];
+		$scope.results = data;
+		/*$scope.results.cards = [];
 		$scope.results.cards = data.accounts;
 		$scope.results.accounts = [];
-		$scope.results.accounts = data.groups;
+		$scope.results.accounts = data.groups;*/
 		setTimeout(function(){$scope.refreshScroller('cards_search_scroller');}, 750);
 	};
   	/**
@@ -73,11 +75,11 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	    //show everything, means no filtering    
 	    if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
 	      //based on 'is_row_visible' parameter we are showing the data in the template      
-	      for(var i = 0; i < $scope.results.cards.length; i++){
-	          $scope.results.cards[i].is_row_visible = true;
-	      }
 	      for(var i = 0; i < $scope.results.accounts.length; i++){
 	          $scope.results.accounts[i].is_row_visible = true;
+	      }
+	      for(var i = 0; i < $scope.results.posting_accounts.length; i++){
+	          $scope.results.posting_accounts[i].is_row_visible = true;
 	      }   
 	      
 	      // we have changed data, so we are refreshing the scrollerbar
@@ -88,29 +90,29 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	      var visibleElementsCount = 0;
 	      //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 	      //if it is zero, then we will request for webservice
-	      for(var i = 0; i < $scope.results.cards.length; i++){
-	        value = $scope.results.cards[i];
-	        if (($scope.escapeNull(value.account_first_name).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 || 
-	            ($scope.escapeNull(value.account_last_name).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ) 
-	            {
-	               $scope.results.cards[i].is_row_visible = true;
-	               visibleElementsCount++;
-	            }
-	        else {
-	          $scope.results.cards[i].is_row_visible = false;
-	        }
-	              
-	      }
-
 	      for(var i = 0; i < $scope.results.accounts.length; i++){
 	        value = $scope.results.accounts[i];
-	        if (($scope.escapeNull(value.account_name).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 )
+	        if (($scope.escapeNull(value.account_first_name).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 || 
+	            ($scope.escapeNull(value.account_last_name).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ) 
 	            {
 	               $scope.results.accounts[i].is_row_visible = true;
 	               visibleElementsCount++;
 	            }
 	        else {
 	          $scope.results.accounts[i].is_row_visible = false;
+	        }
+	              
+	      }
+
+	      for(var i = 0; i < $scope.results.posting_accounts.length; i++){
+	        value = $scope.results.posting_accounts[i];
+	        if (($scope.escapeNull(value.account_name).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 )
+	            {
+	               $scope.results.posting_accounts[i].is_row_visible = true;
+	               visibleElementsCount++;
+	            }
+	        else {
+	          $scope.results.posting_accounts[i].is_row_visible = false;
 	        }
 	              
 	      }

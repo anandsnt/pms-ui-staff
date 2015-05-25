@@ -71,7 +71,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     * function to handle entity selection from the 'All Routes' screen and the 'select entity' screen
     */
 	$scope.selectEntity = function(index,type){
-
+console.log("TYPE ="+type);
 		$scope.isEntitySelected = true;
         $scope.isInitialPage = false;
         if(type === 'ATTACHED_ENTITY' || type === 'ROUTES'){
@@ -80,8 +80,8 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             
             if($scope.selectedEntity.entity_type !='RESERVATION')  
                    $scope.selectedEntity.guest_id = null; 
-            if($scope.selectedEntity.entity_type == "GROUP"){
-                $scope.selectedEntity.entity_type = "POSTING_ACCOUNT";
+            if($scope.selectedEntity.entity_type == "GROUP" || $scope.selectedEntity.entity_type == "HOUSE"){
+                //$scope.selectedEntity.entity_type = "POSTING_ACCOUNT";
             }
             else{
                 $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;
@@ -105,8 +105,8 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			};
 			
         }
-        else if(type === 'CARDS'){
-        	var data = $scope.results.cards[index];
+        else if(type === 'ACCOUNT'){
+        	var data = $scope.results.accounts[index];
         	$scope.selectedEntity = {
 			    "id": data.id,
 			    "name": data.account_name,
@@ -128,8 +128,8 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 $scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
             }
         }
-        else if(type === 'ACCOUNTS'){
-            var data = $scope.results.accounts[index];
+        else if(type === 'POSTING_ACCOUNT'){
+            var data = $scope.results.posting_accounts[index];
             $scope.selectedEntity = {
                 "id": data.id,
                 "name": data.account_name,
@@ -139,7 +139,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 "is_new" : true,
                 "selected_payment" : "",
                 "credit_card_details": {},
-                "entity_type": 'POSTING_ACCOUNT'
+                "entity_type": data.account_type
             };
         }
 	};
