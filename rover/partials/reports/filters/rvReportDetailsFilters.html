@@ -180,7 +180,8 @@
         <div class="settings-content" ng-if="chosenReport.hasSingleDateFilter" ng-class="{'hidden': !filterItemsToggle.item_18}">
             <div class="entry date-range">
                 <div class="has-datepicker">
-                    <input type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.singleValueDate" readonly>
+                    <input ng-if="chosenReport.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptions" ng-model="chosenReport.singleValueDate" readonly>
+                    <input ng-if="!chosenReport.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.singleValueDate" readonly>
                 </div>
             </div>
         </div>

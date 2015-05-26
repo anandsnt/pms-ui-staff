@@ -29,7 +29,8 @@ sntRover.factory('RVReportUtilsFac', [
             'DAILY_TRANSACTIONS'           : 'Daily Transactions',
             'DAILY_PAYMENTS'               : 'Daily Payments',
             'FORECAST_BY_DATE'             : 'Forecast',
-            'ROOMS_QUEUED'                 : 'Rooms Queued'
+            'ROOMS_QUEUED'                 : 'Rooms Queued',
+            'MARKET_SEGMENT_STATISTICS_REPORT' : 'Market Segment Statistics Report'
         };
 
 
@@ -148,7 +149,6 @@ sntRover.factory('RVReportUtilsFac', [
             'VIP_ONLY'           : true,
             'INCLUDE_VARIANCE'   : true,
             'INCLUDE_LAST_YEAR'  : true,
-            'INCLUDE_ORIGIN'     : true,
             'INCLUDE_CANCELLED'  : true,
             'INCLUDE_CANCELED'   : true,
             'INCLUDE_NO_SHOW'    : true,
@@ -167,8 +167,10 @@ sntRover.factory('RVReportUtilsFac', [
         };
 
         var __displayFilterNames = {
-            'INCLUDE_MARKET' : true,
-            'INCLUDE_SOURCE' : true
+            'INCLUDE_MARKET'  : true,
+            'INCLUDE_SOURCE'  : true,
+            'INCLUDE_ORIGIN'  : true,
+            'INCLUDE_SEGMENT' : true
         };
 
         /**
@@ -290,12 +292,16 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['reportIconCls'] = 'icon-report icon-transactions';
                     break;
 
+                case __reportNames['ROOMS_QUEUED']:
+                    reportItem['reportIconCls'] = 'icons guest-status icon-queued';
+                    break;
+
                 case __reportNames['FORECAST_BY_DATE']:
                     reportItem['reportIconCls'] = 'icon-report';
                     break;
 
-                case __reportNames['ROOMS_QUEUED']:
-                    reportItem['reportIconCls'] = 'icons guest-status icon-queued';
+                case __reportNames['MARKET_SEGMENT_STATISTICS_REPORT']:
+                    reportItem['reportIconCls'] = 'icon-report';
                     break;
 
                 default:
@@ -368,13 +374,14 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['showRemoveArrivalDate'] = true;
                     break;
 
+                case __reportNames['FORECAST_BY_DATE']:
                 case __reportNames['DAILY_TRANSACTIONS']:
                 case __reportNames['DAILY_PAYMENTS']:
                     reportItem['hasDateLimit'] = false;
                     break;
 
-                case __reportNames['FORECAST_BY_DATE']:
-                    reportItem['hasDateLimit'] = false;
+                case __reportNames['MARKET_SEGMENT_STATISTICS_REPORT']:
+                    reportItem['hasDateLimit'] = true;
                     break;
 
                 case __reportNames['ROOMS_QUEUED']:
@@ -790,7 +797,14 @@ sntRover.factory('RVReportUtilsFac', [
                 // date range must be yesterday - relative to current business date
                 case __reportNames['DAILY_TRANSACTIONS']:
                 case __reportNames['DAILY_PAYMENTS']:
+                case __reportNames['MARKET_SEGMENT_STATISTICS_REPORT']:
                     reportItem['singleValueDate']  = _getDates.yesterday;
+                    break;
+
+                // dates range must be the current business date
+                case __reportNames['FORECAST_BY_DATE']:
+                    reportItem['fromDate']  = _getDates.businessDate;
+                    reportItem['untilDate'] = _getDates.aMonthAfter;
                     break;
 
                 // by default date range must be from a week ago to current business date
@@ -825,7 +839,8 @@ sntRover.factory('RVReportUtilsFac', [
                 'businessDate' : new Date(_year, _month, _date),
                 'yesterday'    : new Date(_year, _month, _date - 1),
                 'aWeekAgo'     : new Date(_year, _month, _date - 7),
-                'aWeekAfter'   : new Date(_year, _month, _date + 7)
+                'aWeekAfter'   : new Date(_year, _month, _date + 7),
+                'aMonthAfter'  : new Date(_year, _month, _date + 30)
             };
 
             if ( parseInt(xDays) != NaN ) {
