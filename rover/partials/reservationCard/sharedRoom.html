@@ -1,31 +1,39 @@
-<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-click="clearErrorMessage()" ng-cloak>
-    <form ng-show="!shouldShowWaiting" method="post" action="deposit-required" id="deposit-required" name="deposit-required" class="modal-content form deposit-required"><!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
+<div id="modal" style="max-height: 390px;" ng-class="{'modal-show': modalOpened}" role="dialog" ng-click="clearErrorMessage()" ng-cloak>
+    <form ng-show="!shouldShowWaiting" style="max-height: 445px; background: url('/assets/texture.png') repeat scroll 0 0 #fcfcfc" method="post" action="deposit-required" id="deposit-required" name="deposit-required" class="modal-content form deposit-required"><!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
         <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
        <span class="h2 message">Room {{sharedReservationData.room_number}}</span>
        <span class="text">Shared Reservations</span>
-       <div class="shared-reservations scrollable"> <!-- Sort this list by name, including the current guest as well -->
-        <ul class="wrapper">
+       <div class="shared-reservations scrollable" style="max-height: 270px; overflow-y: auto;"> <!-- Sort this list by name, including the current guest as well -->
+        <ul class="wrapper" style="overflow-y: auto;">
             <!-- Room shared with guests: -->
-            
-            
-            <li ng-repeat="sharer in sharedReservationData.sharers">
+            <li ng-if="sharedReservationData.sharers.length > 0" ng-repeat="sharer in sharedReservationData.sharers">
                 <!-- If accompany guest add class="accompany" -->
-                
-                
-                
                 <table class="sharer-div" style="background-color: lightgrey; width: 100%;">
-                  <tr style="display: inline-block;">
-                    <th><img src="{{sharer.guest_details.avatar}}" alt="" /></th>
-                    <th><h3 class="sharer-name" style="float:left">{{sharer.guest_details.last_name}}, {{sharer.guest_details.first_name}} (last,first) </h3>
+                  <tr class='outset-block' click-touch="goToSharedReservation(sharer.guest_details.reservation_id, sharer.guest_details.confirmation_id',sharer.guest_details.last_name+','+sharer.guest_details.first_name); closeDialog()">
+                    <th><img src="{{sharer.guest_details.avatar}}" alt="" style="min-width:75px; min-height: 60px;"/></th>
+                    <th><h3 class="sharer-name" style="float:left; font-weight: 600;">{{sharer.guest_details.last_name}}, {{sharer.guest_details.first_name}} (last,first) </h3>
                     <br /><span class="sharer-confirmation">{{sharer.guest_details.reservation_id}}(conf #)</span>
                     </th>
-                    <th>chkin img</th>
+                    <th style="width:100%"></th>
+                    <th style='padding-right: 5px'>chkin img</th>
                   </tr>
                 </table>
             </li>
-            
-            
+            <!--
+             <li ng-if="sharedReservationData.sharers.length == 0" ng-repeat="t in getTimes(6) track by $index">
+                <table class="sharer-div" style="background-color: lightgrey; width: 100%;">
+                  <tr class='outset-block' click-touch="goToSharedReservation('1329838','102584','Guy, This'); closeDialog()">
+                    <th><img src="guest-avatar" alt="" style="min-width:75px; min-height: 60px;"/></th>
+                    <th><h3 class="sharer-name" style="float:left; font-weight: 600;">Fuller,Mike </h3>
+                    <br /><span class="sharer-confirmation">102584-conf</span>
+                    </th>
+                    <th style="width:100%"></th>
+                    <th style='padding-right: 5px'>chkin img</th>
+                  </tr>
+                </table>
+            </li> 
+            -->
             <!-- Show current stay card record like this:
             <li class="active">
                 <figure class="guest-image"> // If accompany guest add class "accompany"
@@ -41,8 +49,8 @@
             </li> -->
         </ul>
     </div>
-    <div class="actions">
-        <button type="button" class="button blank">Close</button>
+    <div class="actions" style="border-top:1px solid rgba(0, 0, 0, 0.1); margin-top: 5px;">
+        <button type="button" class="button blank" ng-click="closeDialog()">Close</button>
     </div>
             
     </form>

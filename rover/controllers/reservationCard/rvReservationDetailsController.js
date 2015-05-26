@@ -776,5 +776,12 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			});
 			$scope.closeDialog();
 		}
+                
+                $rootScope.$on('SETPREV_RESERVATION',function(evt, fullname){
+                    setNavigationBookMark();
+                    $rootScope.setPrevState = {
+                            title: fullname
+                    };
+                });
 	}
 ]);

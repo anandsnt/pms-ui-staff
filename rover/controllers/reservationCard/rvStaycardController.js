@@ -1,5 +1,5 @@
-sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog', '$timeout',
-	function($scope, RVGuestCardSrv, ngDialog, $timeout) {
+sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardSrv', 'ngDialog', '$timeout',
+	function($scope, $rootScope, RVGuestCardSrv, ngDialog, $timeout) {
 
 		// Browser chokes when he tries to do the following two thing at the same time:
 		// 		1. Slide in staycard
@@ -46,16 +46,32 @@ sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog
 			$scope.guestCardData.contactInfo.first_name = data.guest_details.first_name;
 			$scope.guestCardData.contactInfo.last_name = data.guest_details.last_name;
 			$scope.guestCardData.contactInfo.avatar = data.guest_details.avatar;
-                        console.log('stay card guest data');
-                        console.log(data);
-                        console.log('$scope.guestCardData');
-                        console.log($scope.guestCardData)
                         $scope.sharedReservationData = {};
                         
                         $scope.sharedReservationData.room_number = '15';
                         $scope.sharedReservationData.sharers = data.sharers;
                         
 		});
+                $scope.goToSharedReservation = function(reservation_no, confirmation_no, fullname){
+                    $scope.isLoading = true;
+                    $rootScope.$broadcast('showLoading');
+                    $scope.$broadcast('showLoading');
+                    setTimeout(function(){
+                        var data = {
+                            confirmation_no: confirmation_no,
+                            reservation_no: reservation_no,
+                            fullname: fullname
+                        };
+                            $rootScope.viaSharerName = fullname;
+                            $rootScope.$broadcast('LOAD_SHARED_RESERVATION',data);
+                    },200);
+                 
+                };
+                
+                $scope.getTimes=function(n){
+                    return new Array(n);
+               };
+
 
 		$scope.$on('reservationCardClicked', function() {
 			$scope.$broadcast('reservationCardisClicked');
@@ -104,8 +120,6 @@ sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog
 		};
                 
                 $scope.showRoomSharerPopup = function() {
-                    console.log('show popup for shared reservations');
-
                     ngDialog.open({
                         template: '/assets/partials/reservationCard/sharedRoom.html',
                         //controller: '',//using this controller

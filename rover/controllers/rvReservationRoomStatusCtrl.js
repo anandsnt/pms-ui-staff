@@ -198,9 +198,16 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
         
         $scope.$watch('reservationData.reservation_card.room_number',function(){
             var room = '12';
-           console.log('room number changed');
            $scope.$emit('staycard-room-number-change',room);
-            
+           if ($rootScope.viaSharerPopup){
+                $rootScope.$broadcast('SETPREV_RESERVATION',$rootScope.viaSharerName);
+                $rootScope.viaSharerPopup = false;
+           }
+        });
+        
+        $rootScope.$on('VIA_SHARER_ON',function(fullname){
+            $scope.reservationData.viaSharerName = fullname;
+            $rootScope.viaSharerPopup = true;
         });
 
 	
