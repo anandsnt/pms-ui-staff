@@ -446,7 +446,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     occupancy[m.room_type]      = angular.lowercase(room_type.name); 
                     occupancy[m.status]         = angular.lowercase(occupancy[m.status]);
                     if(occupancy[m.status]          === 'reserved') {
-                        occupancy[m.status]         = 'check-in';
+                        occupancy[m.status]         = 'reserved';
                     } else if(occupancy[m.status]   === 'checkedin') {
                         occupancy[m.status]         = 'inhouse';
                     } else if(occupancy[m.status]   === 'checkedout') {

@@ -319,12 +319,25 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 				$vault.set('type', $stateParams.type);
 				$vault.set('query', $stateParams.query);
 
-				$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
-					id: $scope.arTransactionDetails.ar_transactions[index].reservation_id,
-					confirmationId: $scope.arTransactionDetails.ar_transactions[index].reservation_confirm_no,
-					isrefresh: true,
-					isFromCards: true
-				});
+				var associatedType = $scope.arTransactionDetails.ar_transactions[index].associated_type,
+					associatedId = $scope.arTransactionDetails.ar_transactions[index].associated_id;
+
+				if(associatedType == 'Reservation') {
+					$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+						id: associatedId,
+						confirmationId: $scope.arTransactionDetails.ar_transactions[index].reservation_confirm_no,
+						isrefresh: true,
+						isFromCards: true
+					});
+				} else if (associatedType == 'PostingAccount') {
+					$state.go('rover.accounts.config',{
+						id: associatedId,
+						activeTab: 'ACCOUNT',
+						isFromCards: true
+					});
+				}
+
+				
 			}
 		};
 

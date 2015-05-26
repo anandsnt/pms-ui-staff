@@ -95,6 +95,55 @@ var GridRowItem = React.createClass({
 
 	},
 
+	__get_class_for_reservation_span: function(){
+		var props = this.props,
+			state = this.state,
+			data  = props.data,
+			m     = props.meta.occupancy,
+			is_temp_reservation = (data[m.status] === 'available');
+
+		//if not availability check, this reservation was already there
+		var className  = (!is_temp_reservation ? 'occupied ' : '');
+
+			//when we select a particular reservation
+			className += (state.editing ? ' editing' : '');
+
+			//we have to show striped reservation when we select a availability check reservation
+			className += (is_temp_reservation && data.selected ? ' reserved' : '');
+
+		//guest status mapping
+		switch (data[m.status]) {
+			case 'reserved':
+				className += ' check-in ';
+				break;
+
+			case 'checking_in':
+				className += ' check-in ';
+				break;				
+
+			case 'checkedin':
+				className += ' inhouse ';
+				break;
+
+			case 'checkedout':
+				className += ' check-out ';
+				break;	
+			case 'checking_out':
+				className += ' departed ';
+				break;
+
+			case 'noshow':
+				className += ' no-show ';
+				break;					
+			default:				
+				className += ' ' + data[m.status];
+				break;
+		}
+
+		return className;
+									  								
+	},
+
 	render: function() {
 
 		var props 					= this.props,
@@ -110,13 +159,15 @@ var GridRowItem = React.createClass({
 			end_time_ms 			= !state.resizing ? data[m.end_date] : state.currentResizeItem[m.end_date],
 			maintenance_time_span 	= data[m.maintenance] * px_per_int, 
 			reservation_time_span 	= (end_time_ms - start_time_ms) * px_per_ms,  
-			is_temp_reservation 	= data[m.status] === 'available',
+			
 			innerText 				= this.__formInnerText(data, m),
-			className 				= (!is_temp_reservation ? 'occupied ' : '') + 
-																data[m.status] + (state.editing ? ' editing' : '') + 
-																(is_temp_reservation && data.selected ? ' reserved' : ''),
+		
 			houseKeepingTaskStyle	= this.__formHouseKeepingStyle(data, display, m, end_time_ms),
-			left 					= (start_time_ms - x_origin) * px_per_ms + 'px';
+			left 					= (start_time_ms - x_origin) * px_per_ms + 'px',
+			is_balance_present	 	= data.is_balance_present,
+			show_outstanding_indicator = (data.reservation_status === 'check-in' && is_balance_present),
+			row_item_class 			= 'occupancy-block' + ( state.editing ? ' editing' : '') 
+										+ (show_outstanding_indicator ? ' deposit-required': '');
 
 			
 		var start_date = new Date(start_time_ms);
@@ -138,13 +189,17 @@ var GridRowItem = React.createClass({
 			if(dateForCalculatingLeft.isOnDST()){
 				left = (dateForCalculatingLeft.getTime() +3600000 - x_origin) * px_per_ms + 'px';
 			}
+		}
 
-
+		var styleForDepositIcon = {};
+		if (!show_outstanding_indicator) {
+			styleForDepositIcon.display = 'none';
+			styleForDepositIcon.width = '0px';
 		}
 
 		return GridRowItemDrag({
 			key: 				data.key,
-			className: 		    'occupancy-block' + (state.editing ? ' editing' : ''),
+			className: 		    row_item_class,
 			row_data: 			row_data,
 			meta:               props.meta,
 			data:  				data,
@@ -156,6 +211,7 @@ var GridRowItem = React.createClass({
 			__onDragStart:  	props.__onDragStart,
 			__onDragStop: 		props.__onDragStop,
 			__onResizeCommand: 	props.__onResizeCommand,
+			show_outstanding_indicator: show_outstanding_indicator,
 			currentDragItem:    props.currentResizeItem,
 			style: 			   { 
 				display: 'block',
@@ -163,11 +219,16 @@ var GridRowItem = React.createClass({
 			}
 		}, 
 		React.DOM.span({
-			className: className,
+			className: this.__get_class_for_reservation_span(),
 			style: { 
 				width: reservation_time_span + 'px' 
 			}
-		}, innerText),
+		}, 
+		React.DOM.span({
+			className: show_outstanding_indicator ? 'deposit-icon' : '',
+			style: styleForDepositIcon
+		}, display.currency_symbol), 
+		innerText),
 		React.DOM.span({
 			className: 'maintenance',
 			style: houseKeepingTaskStyle

@@ -1,0 +1,416 @@
+@charset: "utf-8";
+/*Accent colors*/
+@white:#fff;
+@black:#000;
+@red:#ae4031;
+@light-black:#010101;
+@grey:#AEACAD;
+@brown:#997047;
+@light-red:#d1614e;
+
+
+.header-bg{
+    background: linear-gradient(to bottom, #52320b 0%,#825212 100%) !important;
+}
+.red-bg{
+	background:@red;
+}
+.light-red-bg{
+	background:@light-red;
+}
+
+.black-text{
+	color:@black !important;
+}
+.light-black-text{
+	color: @light-black !important;
+}
+.grey-text{
+	color:@grey !important;
+}
+.brown-text{
+	color:@brown !important;
+}
+.red-text{
+	color:@red !important;
+}
+
+
+body{
+	background-color: #faefd3 !important; 
+	background-image: none;
+}
+
+.jumbotron .container{
+	width:100%;
+	.container-fluid{
+		padding:0 !important;
+	}
+}
+
+
+.jumbotron .check-inout-wrapper{
+	border:none !important;
+}
+
+.room-number-text{
+	text-align:left;
+}
+
+.checkout-status{
+	border-top:none !important;
+	border-bottom:none !important;
+}
+
+.headtext{
+	font-size:44px !important;
+}
+.chekout-time{
+	font-size:24px !important;
+}
+
+.container-top-padding{
+	padding-top:50px !important;
+}
+.room_container{
+	form{
+		.room-number-text{
+			font-size:16px  !important;
+		}
+	}
+}
+.shadow {
+	background: none repeat scroll 0 0 #efefef;
+   -moz-box-shadow:    inset 2px 2px 3px #d1d1d1;
+   -webkit-box-shadow: inset 2px 2px 3px #d1d1d1;
+    box-shadow:         inset 2px 2px 3px #d1d1d1;
+    border: medium none !important;
+}
+
+.room-input{
+	height:50px !important;
+}
+
+.img-responsive.img-center{
+	max-width:auto !important;
+	max-height:auto !important;
+	padding:0 !important;
+}
+.logoImage {
+    height: auto !important;
+    width: auto !important;
+}
+
+.margin-10{
+	margin-top:10px;
+}
+
+.verti-ruler {
+    background: none repeat scroll 0 0 #D3D3D3;
+}
+.msg-head,.msg-body{
+	color:@black !important;
+}
+.balancevalue{
+	color:@black !important;
+}
+.key-delivery-message {
+	text-align:center;
+}
+
+
+
+/* ----------------late checkout options page----------------- */
+
+.checkouttime1 {
+    background: none repeat scroll 0 0 #d36250;
+}
+.checkouttime2 {
+    background: none repeat scroll 0 0 #ae4031;
+}
+.checkouttime3 {
+    background: none repeat scroll 0 0 #922715;
+}
+.checkout-later-back-button,.no-thanks a{
+	color: #bbb !important;
+}
+
+
+.no-thanks
+{
+	a,a:hover{
+		text-decoration:underline  !important;
+		color:@black  !important;
+	}
+}
+.questions
+{
+	a,a:hover{
+		text-decoration:underline  !important;
+		color:@red  !important;
+	}
+}
+/* ------------------------------------------------------------------- */
+
+/* --------------------checkout confirmation page---------------------- */
+
+.jumbotron .headtext{
+	color:@black;
+}
+.chekout-time,.base-text,.cabin-number-text, .ccv-text{
+	color:@black !important;
+}
+.col-xs-12.checkoutnow.single,.link-btn.with-bg{
+	background:@red;
+}
+/* -------------------------------------------------------------------- */
+
+/* -------------------------checkout balance page----------------------- */
+.accept-charges-button.single{
+	background:@red;
+	color:@white;
+}
+
+.viewbill-toggle{
+	a,a:hover{
+		color:@red !important;
+	}
+}
+
+.now-later-options{
+	a,a:hover{
+		color:@white !important;
+	}
+}
+a, a:hover {
+    color: @black !important;
+}
+/* --------------------------------------------------------------------------- */
+
+/* ----------------------------checkout later page--------------------------- */
+.back-to-checkout{
+	padding:5% !important;
+}
+
+.backbtn {
+    left: 10%;    
+}
+.checkout-later-back-button{
+	color:#fff;
+}
+
+/* --------------------------------------------------------------------------- */
+
+/*------------------------------- date picker starts here---------------------*/
+
+.date-picker-header-bg{
+  background: linear-gradient(to bottom, #52320b 0%,#825212 100%) !important;
+  padding: 2%;
+}
+.pickadate-cell li {
+ border: 1px solid #fff;
+}
+
+.date-picker-back,.date-picker-ok{
+	color:@white !important;
+}
+.date-picker-wrap{
+  background-color: #faeed4 !important;
+  background-image: none;
+}
+.pickadate-cell .pickadate-disabled,
+.pickadate-cell .pickadate-disabled a {
+  color: @grey !important;
+}
+
+.date-picker-ok{
+  padding-top: 0px;
+  background:  none !important;
+  color:#fff;
+}
+
+.departure-date{
+   p:first-child{
+       color:@white;
+   }
+  
+}
+.pickadate-centered-heading, .pickadate-cell .pickadate-head{
+	color:#18171c;
+}
+
+.pickadate-cell .pickadate-disabled, .pickadate-cell .pickadate-enabled, .pickadate-cell .pickadate-outofrange-disabled{
+    background-color:#e1d7be !important;
+}
+.pickadate-cell .pickadate-active{
+    background-color:@red !important;
+    color:@white !important;
+}
+.pickadate-cell .pickadate-enabled, .pickadate-prev,.pickadate-next {
+    color:#18171c !important;
+}
+.pickadate-controls{
+    a, a:hover
+    {
+        color:#18171c !important;
+    }
+}
+
+.pickadate-cell{
+	.pickadate-active{
+		color:#fff !important;
+	}
+}
+
+
+/*-------------------------------------------------------------------------*/
+
+
+/*---- checkin reservation details ---*/
+.checkin-button{
+	color:@white;
+	background:@red;
+}
+.room_details,.dateContent{
+	color:@black;
+}
+.bottom-border{
+	border-bottom: 1px solid @grey !important;
+}
+.stay-details{
+	font-size:44px !important;
+	font-family: 'Source Sans Pro';
+	font-weight: lighter;
+}
+.cabin_number_field{
+	.eta-text{
+		font-size:18px !important;
+	}
+}
+.upgrade-details .upgrades-btn{
+	background-color: @red;
+}
+
+/* responsive starts here */
+@media (min-width: 992px) {
+	.jumbotron .check-inout-wrapper{
+  		padding: 40px 0 !important;
+  	}
+  	.now-later-options.cabin-number{
+  		max-width:280px !important;
+  	}
+  	.side-padding {
+    	padding-left:140px;
+    	padding-right:140px;
+	}
+	.checkin-button-padding{
+		padding-top:20%;
+	}
+	.checkin-key-padding{
+		padding-top:10px !important;
+	}
+	.chekin-heading{
+		font-size:44px !important;
+	}
+	.chekin-heading{
+		font-size:44px !important;
+	}
+
+	.row.checkin-wrapper.pre-checkin-final {
+    	max-width: 80%;
+	}
+	.key-delivery-message{
+		font-size:18px !important;
+	}
+
+}
+
+@media (max-width: 992px) {
+	.padding-10{
+  		padding: 0px 10px !important;
+  	}
+  	.jumbotron .checkin-wrapper{
+  		padding: 25px 0 !important;
+  	}
+
+}
+
+@media (max-width: 480px) {
+	
+
+	.chekin-heading{
+		font-size:24px !important;
+	}
+
+	.foot-text.second-in {
+	    padding: 0 40px !important;
+	}
+	.checkout-time-container{
+		span{
+			font-size:16px !important;
+		}
+	}
+	.chekout-time{
+		font-size:16px !important;
+	}
+
+	.headtext{
+		.main-heading{
+			font-size:30px !important;
+		}		
+		font-size:30px !important;
+	}
+	.headtext{
+		font-size:30px !important;
+	}
+	.cabin_number_field{
+		padding-top:20px;
+	}
+	.now-later-options.cabin-number{
+  		max-width:280px !important;
+  		margin:0 auto;
+  	}
+  	.container-top-padding{
+		padding-top:20px !important;
+	}
+	.extra-head-pad{
+		padding-top:10px;
+		padding-bottom:10px;
+	}
+	.msg-head.thanks-msg{
+		font-size:28px !important;
+		padding:5% !important;
+	}
+	.backbtn{
+		visibility:hidden;	
+	}
+	.stay-details{
+		font-size:26px !important;
+	}
+	.cabin_number_field{
+		.eta-text{
+			font-size:12px !important;
+		}
+	}
+	.room-upgrade-reject{
+		font-size:14px;
+	}
+	.row.checkin-wrapper.pre-checkin-final {
+    	.conf-num{
+    		padding-bottom:10px;
+    		margin:10px;
+    	}
+	}
+	.key-delivery-message {
+	    font-size: 16px;
+	    padding: 0 10% !important;
+	}
+	.latecheckout-charged{
+		margin-top:10% !important;
+	}
+}
+
+.row.checkin-wrapper.line-top.checkin-details.no-bottom-padding {
+    padding-bottom: 0 !important;
+}
+

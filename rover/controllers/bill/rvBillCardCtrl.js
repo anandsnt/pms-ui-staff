@@ -41,6 +41,10 @@ sntRover.controller('RVbillCardController',
 	};
 	$scope.encoderTypes = [];
 
+	// Flag for CC auth permission
+    $scope.hasCCAuthPermission = function() {
+        return rvPermissionSrv.getPermissionValue ('OVERRIDE_CC_AUTHORIZATION');    
+    };
 
 	// Setup ng-scroll for 'registration-content' , 'bill-tab-scroller' , 'billDays'
 	var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: true, mouseWheel: false};
@@ -922,6 +926,10 @@ sntRover.controller('RVbillCardController',
 		$scope.clickedCompleteCheckin();
 	};
 
+	$scope.continueAfterSuccessAuth = function(){
+		$scope.triggerKeyCreationProcess();
+	};
+	
 	// Normal checkin process success.
 	$scope.completeCheckinSuccessCallback = function(data){
 		// CICO-6109 : Without Authorization flow ..
@@ -1123,11 +1131,12 @@ sntRover.controller('RVbillCardController',
 	 		    	$scope.isInProgressScreen = true;
 	 		    	$scope.isSuccessScreen = false;
 	 		    	$scope.isFailureScreen = false;
+	 		    	$scope.isCCAuthPermission = $scope.hasCCAuthPermission();
 	 		    	
 	 		    	ngDialog.open({
 						template: '/assets/partials/bill/ccAuthorization.html',
 						className: '',
-						closeByDocument: true,
+						closeByDocument: false,
 						scope: $scope
 					});
 					data.authorize_credit_card = true;
@@ -1819,5 +1828,31 @@ sntRover.controller('RVbillCardController',
 	$scope.setupReviewStatusArray();
 
 	$scope.calculateBillDaysWidth();
+
+
+	$scope.clickedReverseCheckoutButton = function(){
+
+			var reservationId = $scope.reservationBillData.reservation_id,
+	    		confirmationNumber = $scope.reservationBillData.confirm_no;
+
+			var reverseCheckoutsuccess = function(data){
+				$scope.$emit("hideLoader");
+					
+				//if error go to stay card and show popup
+				//else go to staycard and refresh 
+				if(data.status === "success"){
+					$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber, "isrefresh": true});
+				}
+				else{
+					$scope.reverseCheckoutDetails.data.is_reverse_checkout_failed  = true;
+					$scope.reverseCheckoutDetails.data.errormessage= data.message;
+					$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber});	
+				};				 		
+			};
+
+			var data ={"reservation_id" : $scope.reservationBillData.reservation_id};
+			$scope.invokeApi(RVBillCardSrv.completeReverseCheckout,data,reverseCheckoutsuccess);
+			
+	};
 	
 }]);
