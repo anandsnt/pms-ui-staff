@@ -14,6 +14,15 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
          * We create an empty myScroll here. ng-iscroll will see this item, and use the same.
          * Note: If a subscope requires another iScroll, this approach may not work.
          */
+        
+        $scope.applyAllShow = '';
+        $scope.lastClickedApply = '';
+        $scope.firstrun = true;
+        $scope.initDefault = true;
+        
+        $scope.activityObj = {};
+        $scope.activityObj.changedField = '';
+        
         $scope.$parent.myScroll = [];
         $scope.isWeekend = function (date) {
             //get the 'day' format, sat/sun and return true if its considered a weekend
@@ -25,6 +34,13 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                 return false;
             }
         };
+        
+        
+	$scope.$on("applyAllActivity", function(){
+                if (typeof arguments[1].via !== typeof undefined){
+                $scope.viaSection = arguments[1].via;
+            }
+	});
 
         BaseCtrl.call(this, $scope);
 
@@ -129,6 +145,51 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                 }
             }
         };
+        
+        
+        $scope.ready = {};
+        $scope.ready.single = true;
+        $scope.ready.double = true;
+        $scope.ready.extra_adult = true;
+        $scope.ready.child = true;
+        
+	$scope.$on("setReadyButton", function(){
+                var obj = arguments[1].via;
+                switch(obj){
+                    case 'single':
+                                $scope.ready.single = true;
+
+                                $scope.ready.double = false;
+                                $scope.ready.extra_adult = false;
+                                $scope.ready.child = false;
+                            break;
+                            
+                    case 'extra_adult':
+                                $scope.ready.extra_adult = true;
+
+                                $scope.ready.double = false;
+                                $scope.ready.single = false;
+                                $scope.ready.child = false;
+                            break;
+                            
+                    case 'child':
+                                $scope.ready.child = true;
+
+                                $scope.ready.double = false;
+                                $scope.ready.extra_adult = false;
+                                $scope.ready.single = false;
+                            break;
+                            
+                    case 'double':
+                                $scope.ready.double = true;
+
+                                $scope.ready.single = false;
+                                $scope.ready.extra_adult = false;
+                                $scope.ready.child = false;
+                            break;
+                }
+	});
+        
 
         /**
          * @returns totalnumber of dates {Number} to be displayed
@@ -140,7 +201,25 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
             return parseInt(numColumns);
         };
 
-
+        $scope.showButtonReady = true;
+        $scope.showButton = function(a, s){
+            if ($scope.showButtonReady === true || typeof $scope.showButtonReady === typeof undefined){
+                if (s !== $scope.viaSection){
+                    return true;
+                } else if (a !== '' && s !== ''){
+                    return false;
+                } else {
+                	if ($scope.ready[$scope.viaSection]){
+                		return false;
+                	}
+                        if ($scope.lastClickedApply !== s){
+                            return true;
+                        } else return false;
+                }
+            } else if ($scope.viaSection !== ''){
+                	return true;
+                } else return false;
+        };
 
         var loadTable = function () {
             $scope.currentExpandedRow = -1;//reset the expanded row
@@ -171,21 +250,6 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                     }
 
                     $scope.calendarData = data;
-                    /*    
-                     if ($scope.calendarMode === 'ROOM_TYPE_VIEW'){
-                     var dates = data.dates;
-                     if (typeof data.data === typeof []){
-                     if (data.data.length > 0){
-                     data.data.isHourly = true;
-                     if (data.data.length > 1){
-                     //this is an override on the default rate
-                     //   data.data[1][dates[0]].overrides = [];
-                     //   data.data[1][dates[0]].overrides.push('single');
-                     }
-                     }
-                     }
-                     }
-                     */
                     $scope.$emit('hideLoader');
                 };
 
@@ -338,7 +402,6 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
             $scope.calendarMode = "RATE_VIEW";
             $scope.ratesDisplayed.length = 0;
             //Update the rates displayed list - show in topbar
-            //for( var i in $scope.currentFilterData.rates_selected_list){
             for (var i = 0, len = rates_selected.length; i < len; i++) {
                 rates_displayed.push(rates_selected[i]);
             }
@@ -356,7 +419,6 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
             loadTable();
 
         });
-
 
 
         /**

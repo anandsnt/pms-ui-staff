@@ -81,7 +81,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
         $scope.hasPermissionToUpdateRates = function () {
             return (rvPermissionSrv.getPermissionValue('UPDATE_RATE_PRICE'));
         };
-
         /**
          * method to determine whether the user has permission to update Rate Mgr - Restrictions
          * @return {Boolean}
@@ -154,10 +153,48 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
 
             //Flag to check if the rate set amounts are configured for the selected date
             $scope.data.hasAmountConfigured = true;
-
-
-
             selectedDateInfo = {};
+            
+            //detect change on data values and update watch obj accordingly
+            $scope.$watch("data.single_extra_amnt", function(to, from, evt){
+                var via = 'single';
+                var d = {};
+                d.to = to;
+                d.from = from;
+                d.via = via;
+                $scope.$emit('setReadyButton',d);
+                $scope.$emit('applyAllActivity',d);
+            });  
+            $scope.$watch("data.double_extra_amnt", function(to, from, evt){
+
+                var via = 'double';
+                var d = {};
+                d.to = to;
+                d.from = from;
+                d.via = via;
+                $scope.$emit('setReadyButton',d);
+                $scope.$emit('applyAllActivity',d);
+            });  
+            $scope.$watch("data.extra_adult_extra_amnt", function(to, from, evt){
+
+                var via = 'extra_adult';
+                var d = {};
+                d.to = to;
+                d.from = from;
+                d.via = via;
+                $scope.$emit('setReadyButton',d);
+                $scope.$emit('applyAllActivity',d);
+            });  
+            $scope.$watch("data.child_extra_amnt", function(to, from, evt){
+
+                var via = 'child';
+                var d = {};
+                d.to = to;
+                d.from = from;
+                d.via = via;
+                $scope.$emit('setReadyButton',d);
+                $scope.$emit('applyAllActivity',d);
+            });  
 
             $scope.$on('apply-all-price-adjust', function (evt, data) {
                 var d = data, setVia = data.setFromValue;
@@ -410,6 +447,8 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
 
         };
 
+
+
         $scope.updatePopupWidth = function () {
             var width = 270;
             if ($scope.data.showEditView) {
@@ -467,7 +506,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
 
                 }
             }
-
             return datesList;
         };
 
