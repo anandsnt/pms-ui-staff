@@ -419,10 +419,17 @@
       }
     }
     .first-row {
-      height: 67px !important;
+      height: 71px !important;
       text-align: right;
       padding: 20px;
       vertical-align: middle;  
+      
+      
+    &.force-align {
+        border-style:solid;
+        border-width: 1px;
+        border-color: transparent;
+    }
       
       img {
         cursor: pointer;
@@ -492,19 +499,19 @@ thead tr th {
     border-top: 5px solid rgba(0,0,0, 0.2);
     border-left: 10px solid rgba(0,0,0, 0.2);
     border-right: 10px solid rgba(0,0,0,0.2);
-    border-bottom: 5px solid rgba(0,0,0, 0.2);
+    border-bottom: 6px solid rgba(0,0,0, 0.2);
     border-radius: 0px 0px 0px 0px;
     &.weekend_day{
         border-top: 5px solid rgba(0,0,0, 0.05);
         border-left: 10px solid rgba(0,0,0, 0.05);
         border-right: 10px solid rgba(0,0,0,0.05);
-        border-bottom: 5px solid rgba(0,0,0, 0.05);
+        border-bottom: 6px solid rgba(0,0,0, 0.05);
     }
     &.history_cell_container{
-        border-top: 5px solid rgba(0,0,0, 0.1);
-        border-left: 10px solid rgba(0,0,0, 0.1);
-        border-right: 10px solid rgba(0,0,0,0.1);
-        border-bottom: 5px solid rgba(0,0,0, 0.1);
+        border-top: 5px solid rgba(0,0,0, 0.1) !important;
+        border-left: 10px solid rgba(0,0,0, 0.1) !important;
+        border-right: 10px solid rgba(0,0,0,0.1) !important;
+        border-bottom: 6px solid rgba(0,0,0, 0.1) !important;
     }
     
     .cell-content {
@@ -526,7 +533,7 @@ thead tr th {
             border-top: 5px solid rgba(0,0,0, 0.1);
             border-left: 10px solid rgba(0,0,0, 0.1);
             border-right: 10px solid rgba(0,0,0,0.1);
-            border-bottom: 5px solid rgba(0,0,0, 0.1);
+            border-bottom: 6px solid rgba(0,0,0, 0.1);
         }
     }
 
@@ -541,6 +548,7 @@ thead tr th {
     border-style:solid;
     border-width:0px;
     border-color:transparent;//forces tables inline when multi-scrolling
+    
   }
 
   .cell-overlay {
@@ -1841,7 +1849,7 @@ padding-top: 80px;
             border-top: 5px solid rgba(0,0,0, 0.1) !important;
             border-left: 10px solid rgba(0,0,0, 0.1) !important;
             border-right: 10px solid rgba(0,0,0,0.1) !important;
-            border-bottom: 5px solid rgba(0,0,0, 0.1) !important;
+            border-bottom: 6px solid rgba(0,0,0, 0.1) !important;
         }
     }
 }
@@ -1849,7 +1857,7 @@ padding-top: 80px;
    border-top: 5px solid rgba(0,0,0, 0.1) !important;
    border-left: 10px solid rgba(0,0,0, 0.1) !important;
    border-right: 10px solid rgba(0,0,0,0.1) !important;
-   border-bottom: 5px solid rgba(0,0,0, 0.1) !important;
+   border-bottom: 6px solid rgba(0,0,0, 0.1) !important;
 }
 .hasOverride-label{
     color:#F69312 !important;
@@ -1859,7 +1867,7 @@ padding-top: 80px;
    border-top: 5px solid rgba(0,0,0, 0.1) !important;
    border-left: 10px solid rgba(0,0,0, 0.1) !important;
    border-right: 10px solid rgba(0,0,0,0.1) !important;
-   border-bottom: 5px solid rgba(0,0,0, 0.1) !important;
+   border-bottom: 6px solid rgba(0,0,0, 0.1) !important;
 }
 .expandedFirstRow{
     height: 170px !important;

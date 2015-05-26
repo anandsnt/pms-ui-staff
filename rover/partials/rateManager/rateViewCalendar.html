@@ -1,5 +1,5 @@
 <div class="scrollBound">
-<div class='scrollTable pinnedLeft' scroll-position="initScrollBind()" style="overflow:hidden;height:{{uiOptions.tableHeight}}px;">
+<div class='scrollTable pinnedLeft' scroll-position="initScrollBind()" style="overflow:hidden;height:{{uiOptions.tableHeight}}px; margin-top: 4px;">
     <table class='rate-calendar' style="width: 220px;">
         <thead>
             <tr>
@@ -21,13 +21,6 @@
             <tr>
         </thead>
         <tbody>
-            <tr ng-if="calendarData.data.length > 1">
-                <td class="first-row cell" style="height: 71px">
-                    <span class="bolder">All Rates</span><span>&nbsp;</span>
-                </td>
-            </tr>
-
-            <tr class="cell first-row-cell" ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last && loading === false}" ng-show="calendarMode === 'RATE_VIEW'">
                 <td class="cell" style="padding: 20px; padding-right: 5px; overflow:visible;">
                     <div class="bolder buttonToggleContainer">
                         <button class="button rm-buttonToggle" ng-class="activeToggleButton == 'Rates' ? 'orange' : 'grey'" style="margin-bottom:4px; margin-top:-5px;" ng-click="toggleAllRates()">All Rates</button><br>
@@ -35,10 +28,9 @@
                     </div>
                     
                 </td>
-            </tr>
 
             <tr class="cell" ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last && loading === false}" ng-show="calendarMode === 'RATE_VIEW'">
-                <td class="first-row">
+                <td class="first-row force-align">
                     <div ng-click="goToRoomTypeCalendarView(rate)">
                         <span bindonce bo-html="rate.name" title="{{rate.name}}"></span>
                         <span> 
