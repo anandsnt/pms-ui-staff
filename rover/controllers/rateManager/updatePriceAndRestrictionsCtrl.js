@@ -83,98 +83,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
         };
 
         /**
-         * method to determine whether the user has permission to update Rate Mgr - Rate Prices
-         * @return {Boolean}
-         */
-        $scope.clearOverrides = function (data) {
-            $scope.$emit('showLoader');
-            var onsuccess = function (successData) {
-                $scope.refreshCalendar();
-                ngDialog.close();
-            };
-            data.room_type_id = data.selectedRoomType;
-
-            $scope.invokeApi(RateMngrCalendarSrv.updateRoomTypeOverride, data, onsuccess);
-        };
-
-
-        $scope.hasOverrideValue = function (date, room_type) {
-            for (var i in $scope.overrideByDate) {
-                if ($scope.overrideByDate[i].date === date) {
-                    for (var n in $scope.overrideByDate[i].room_types_with_override) {
-                        if ($scope.overrideByDate[i].room_types_with_override[n].toLowerCase() === room_type.toLowerCase()) {
-                            return 'true';
-                        }
-                    }
-                }
-            }
-            return 'false';
-        };
-        $scope.hasAnyOverride = function () {
-            $scope.overrideByDate = [];
-            //date > room type > occupancy
-            var all = $scope.current_overrides, d, occupancyOverrides;
-            for (var x in all) {
-                d = all[x].date;
-                var occupancyOverrides, room_types_with_override = [], room_types_parent = [], occupancies_with_override = [];
-                for (var i in all[x].room_types) {
-                    room_types_parent.push({
-                        'name': all[x].room_types[i].room_type.name,
-                        'with_override': all[x].room_types[i].has_override
-                    });
-
-                    if (all[x].room_types[i].has_override) {
-                        if (all[x].room_types[i].has_override.length > 0) {
-                            room_types_with_override.push(all[x].room_types[i].room_type.name);
-                            if (all[x].room_types[i].has_override) {
-                                occupancies_with_override = all[x].room_types[i].has_override;
-                            }
-                        }
-                    }
-
-                }
-                if (room_types_with_override.length > 0) {
-                    occupancyOverrides = 'true';
-                }
-                $scope.overrideByDate.push({
-                    'date': d,
-                    'occupancies_with_override': occupancies_with_override,
-                    'room_types_with_override': room_types_with_override,
-                    'room_types': room_types_parent,
-                    'overrides': occupancyOverrides
-                });
-            }
-            return $scope.hasOverrideValue($scope.popupData.selectedDate, $scope.data.selected_room_type);
-        };
-
-
-
-
-        $scope.hasOverride = function (a, label) {
-            var room_type = $scope.data.selected_room_type, ovrride,
-                    o = a.roomRateOverrides;
-
-            var selected_info;
-            if (o.room_types) {
-                for (var i in o.room_types) {
-                    if (o.room_types[i].room_type.name === room_type) {
-                        selected_info = o.room_types[i];
-                    }
-                }
-                $scope.hasAnyOverride();
-                var lbl = label.toLowerCase();
-                for (var w in selected_info.has_override) {
-                    if (selected_info.has_override[w].toLowerCase() === lbl) {
-                        $scope.selected_has_override = 'true';
-                        return true;
-                    }
-                }
-                $scope.selected_has_override = 'false';
-                return false;
-            }
-            return false;
-        };
-        /**
          * method to determine whether the user has permission to update Rate Mgr - Restrictions
          * @return {Boolean}
          */
@@ -718,6 +626,100 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
 
         };
 
+
+        $scope.clearOverrides = function (data) {
+            $scope.$emit('showLoader');
+            var onsuccess = function (successData) {
+                $scope.refreshCalendar();
+                ngDialog.close();
+            };
+            data.room_type_id = data.selectedRoomType;
+
+            $scope.invokeApi(RateMngrCalendarSrv.updateRoomTypeOverride, data, onsuccess);
+        };
+
+
+        $scope.hasOverrideValue = function (date, room_type) {
+            for (var i in $scope.overrideByDate) {
+                if ($scope.overrideByDate[i].date === date) {
+                    for (var n in $scope.overrideByDate[i].room_types_with_override) {
+                        if ($scope.overrideByDate[i].room_types_with_override[n] && room_type){
+                            if ($scope.overrideByDate[i].room_types_with_override[n].toLowerCase() === room_type.toLowerCase()) {
+                                return 'true';
+                            }
+                        }
+                    }
+                }
+            }
+            return 'false';
+        };
+        $scope.hasAnyOverride = function () {
+            $scope.overrideByDate = [];
+            //date > room type > occupancy
+            var all = $scope.current_overrides, d, occupancyOverrides;
+            for (var x in all) {
+                d = all[x].date;
+                var occupancyOverrides, room_types_with_override = [], room_types_parent = [], occupancies_with_override = [];
+                for (var i in all[x].room_types) {
+                    room_types_parent.push({
+                        'name': all[x].room_types[i].room_type.name,
+                        'with_override': all[x].room_types[i].has_override
+                    });
+
+                    if (all[x].room_types[i].has_override) {
+                        if (all[x].room_types[i].has_override.length > 0) {
+                            room_types_with_override.push(all[x].room_types[i].room_type.name);
+                            if (all[x].room_types[i].has_override) {
+                                occupancies_with_override = all[x].room_types[i].has_override;
+                            }
+                        }
+                    }
+
+                }
+                if (room_types_with_override.length > 0) {
+                    occupancyOverrides = 'true';
+                }
+                $scope.overrideByDate.push({
+                    'date': d,
+                    'occupancies_with_override': occupancies_with_override,
+                    'room_types_with_override': room_types_with_override,
+                    'room_types': room_types_parent,
+                    'overrides': occupancyOverrides
+                });
+            }
+            return $scope.hasOverrideValue($scope.popupData.selectedDate, $scope.data.selected_room_type);
+        };
+
+
+
+
+        $scope.hasOverride = function (a, label) {
+            var room_type = $scope.data.selected_room_type, ovrride,
+                    o = a.roomRateOverrides;
+
+            var selected_info;
+            if (o){
+                if (o.room_types) {
+                    for (var i in o.room_types) {
+                        if (o.room_types[i].room_type.name === room_type) {
+                            selected_info = o.room_types[i];
+                        }
+                    }
+                    $scope.hasAnyOverride();
+                    var lbl = label.toLowerCase();
+                    for (var w in selected_info.has_override) {
+                        if (selected_info.has_override[w].toLowerCase() === lbl) {
+                            $scope.selected_has_override = 'true';
+                            return true;
+                        }
+                    }
+                    $scope.selected_has_override = 'false';
+                    return false;
+                }
+
+                return false;
+            }
+        };
 
         $scope.init();
 
