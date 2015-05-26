@@ -253,12 +253,12 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             var data = {};
             data.id = $scope.reservationData.reservation_id;
             if($scope.reservationData.reservation_id != $scope.selectedEntity.id && $scope.selectedEntity.entity_type == 'RESERVATION'){
-                        data.to_bill = $scope.first_bill_id;
-            }else{
+                data.to_bill = $scope.first_bill_id;
+            }
+            else{
                 data.to_bill = $scope.selectedEntity.to_bill;
             }
             data.is_new = $scope.selectedEntity.is_new;
-            
             
             $scope.invokeApi(RVBillinginfoSrv.fetchAvailableChargeCodes, data, successCallback, errorCallback);
     };	
@@ -376,7 +376,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 						return;
                     } 
 
-                     //default to last item when there is no bill no.
+                    //default to last item when there is no bill no.
                     var billNo = $scope.selectedEntity.bill_no;
                     if($scope.selectedEntity.entity_type == 'GROUP' || $scope.selectedEntity.entity_type == 'HOUSE'){
                         $scope.selectedEntity.to_bill = firstBillId;
@@ -385,8 +385,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                     else $scope.selectedEntity.to_bill = $scope.selectedEntity.to_bill;
 
                     $scope.fetchAvailableChargeCodes();
-                  //}
             };
+
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
                 $scope.$emit('displayErrorMessage',errorMessage);
@@ -533,8 +533,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	        }
 	              
 	      }
-	      // we have changed data, so we are refreshing the scrollerbar
-	      //$scope.refreshScroller('cards_search_scroller');    
+	         
 	      $scope.refreshScroller('chargeCodesList');              
 	    }
   	};
@@ -581,7 +580,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             if($scope.billingEntity !== "TRAVEL_AGENT_DEFAULT_BILLING" &&
                 $scope.billingEntity !== "COMPANY_CARD_DEFAULT_BILLING"&&
                 $scope.billingEntity !== "GROUP_DEFAULT_BILLING"){
-                $scope.selectedEntity.reservation_id=$scope.reservationData.reservation_id;      
+                $scope.selectedEntity.reservation_id = $scope.reservationData.reservation_id;      
             }
            
             /*
@@ -621,8 +620,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	        	$scope.billingEntity === "GROUP_DEFAULT_BILLING"){
 
                 var params =  angular.copy($scope.selectedEntity);
-                if($scope.billingEntity === "GROUP_DEFAULT_BILLING" && ($scope.selectedEntity.entity_type ==="GROUP" || $scope.selectedEntity.entity_type ==="HOUSE")){
-                    params.entity_type  = 'GROUP';
+                if($scope.billingEntity === "GROUP_DEFAULT_BILLING" && ($scope.selectedEntity.entity_type == "GROUP" || $scope.selectedEntity.entity_type == "HOUSE")){
+                    params.entity_type  = $scope.selectedEntity.entity_type;
                 }
 	            $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, params, defaultRoutingSaveSuccess);
 	        }
@@ -741,10 +740,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                     $scope.billingEntity === "COMPANY_CARD_DEFAULT_BILLING"||
                 $scope.billingEntity === "GROUP_DEFAULT_BILLING") {
             		var params = angular.copy( $scope.selectedEntity);
-                    if($scope.billingEntity === "GROUP_DEFAULT_BILLING" && ($scope.selectedEntity.entity_type ==="GROUP" || $scope.selectedEntity.entity_type ==="HOUSE")){
-                        params.entity_type  = 'GROUP';
+                    if($scope.billingEntity === "GROUP_DEFAULT_BILLING" && ($scope.selectedEntity.entity_type == "GROUP" || $scope.selectedEntity.entity_type == "HOUSE")){
+                        params.entity_type  = $scope.selectedEntity.entity_type;
                     }
-
                     $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, params, defaultRoutingSaveSuccess, $scope.errorCallback);
                 }
                 else {

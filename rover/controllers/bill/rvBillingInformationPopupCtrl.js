@@ -30,13 +30,6 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			$scope.closeDialog();
 		};
 
-     
-    // $scope.$watch(
-    //         function() { return $scope.errorMessage; },
-    //         function(error) {
-    //             $scope.refreshScroller('homeScroll');
-    //         }
-    //     );
     /**
     * function to get label for all routes and add routes button
     */
@@ -71,7 +64,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     * function to handle entity selection from the 'All Routes' screen and the 'select entity' screen
     */
 	$scope.selectEntity = function(index,type){
-console.log("TYPE ="+type);
+
 		$scope.isEntitySelected = true;
         $scope.isInitialPage = false;
         if(type === 'ATTACHED_ENTITY' || type === 'ROUTES'){
@@ -147,7 +140,7 @@ console.log("TYPE ="+type);
     /*function to select the attached entity
     */
     $scope.selectAttachedEntity = function(index,type){
-console.log(type);
+
             $scope.isEntitySelected = true;
             $scope.isInitialPage = false;
             //TODO: Remove commented out code
