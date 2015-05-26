@@ -289,7 +289,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 		$scope.updateGroupSummary = function() {
 
 			if (rvPermissionSrv.getPermissionValue('EDIT_GROUP_SUMMARY')) {
-				if (angular.equals($scope.groupSummaryMemento, $scope.groupConfigData.summary)) {
+				if (angular.equals($scope.groupSummaryMemento, $scope.groupConfigData.summary) || $scope.groupConfigData.summary.is_cancelled) {
 					return false;
 				}
 				var onGroupUpdateSuccess = function(data) {
