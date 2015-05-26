@@ -40,7 +40,7 @@
                         <li ng-class="showActiveBill($index)" ng-click="setActiveBill($index)" ng-repeat="billTab in transactionsDetails.bills">
                             <a class="bill-toggle">
                                 <div class="price"><span>{{'BILL' |translate}} #{{billTab.bill_number}}</span>
-                                	{{currencySymbol}}{{billTab.total_fees.total_amount | number: precisonZero}}
+                                	{{currencySymbol}}{{billTab.total_fees.balance_amount | number: precisonZero}}
                                 </div>
                             </a>
                         </li>
