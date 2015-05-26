@@ -25,7 +25,7 @@
                         </td>
                         <td>
                             <span>BILL TO:</span>
-                            <strong>{{ printRegCardData.name }}</strong>
+                            <strong>{{ printRegCardData.bill_to.name }}</strong>
                             <strong ng-if="printRegCardData.bill_to.street1 || printRegCardData.bill_to.street2">{{ printRegCardData.bill_to.street1 }} {{ printRegCardData.bill_to.street2 }}</strong>
                             <strong>
                                 <label ng-if="printRegCardData.bill_to.city"> {{ printRegCardData.bill_to.city }},  </label>
