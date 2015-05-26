@@ -104,7 +104,8 @@
             <!-- Show only if room is assigned -->
             <!-- if room is assigned -->
             <span ng-if="isStandAlone && !room.canAssign" class="{{ room.assigned_staff.class }}">{{ room.assigned_staff.name }}</span>
-            <span ng-if="isStandAlone && room.canAssign" class="{{ room.assigned_staff.class }}" ng-click="$event.stopPropagation(); openAssignRoomModal(room);">{{ room.assigned_staff.name }}</span>
+            <span ng-if="isStandAlone && room.canAssign && isHourlyRateOn" class="{{ room.assigned_staff.class }}" ng-click="$event.stopPropagation();">{{ room.assigned_staff.name }}</span>
+            <span ng-if="isStandAlone && room.canAssign && !isHourlyRateOn" class="{{ room.assigned_staff.class }}" ng-click="$event.stopPropagation(); openAssignRoomModal(room);">{{ room.assigned_staff.name }}</span>
             <!-- Show only if room is not in service -->
             <span bo-if="room.ooOsTitle" bo-text="room.ooOsTitle" class="service-status"></span>
           </div>
