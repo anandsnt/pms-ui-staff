@@ -686,7 +686,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					market: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.market_segment_id) ? '' : tData.rooms[index].demographics.market_segment_id,
 					source: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.source_id) ? '' : tData.rooms[index].demographics.source_id,
 					reservationType: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.reservation_type_id) ? '' : tData.rooms[index].demographics.reservation_type_id,
-					origin: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.booking_origin_id )? '' : tData.rooms[index].demographics.booking_origin_id
+					origin: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.booking_origin_id )? '' : tData.rooms[index].demographics.booking_origin_id,
+					segment: (typeof tData.rooms[index].segment === "undefined" || !tData.rooms[index].demographics.segment_id )? '' : tData.rooms[index].demographics.segment_id
 				}
 
 				// put the same stuff in the reservationData obj as well

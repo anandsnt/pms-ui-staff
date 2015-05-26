@@ -40,7 +40,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         };
 
         $scope.summaryState = {
-            forceDemographicsData: false
+            forceDemographicsData: false,
+            computedSegment: false
         }
 
 
@@ -515,6 +516,26 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 // Setup fees info
                 $scope.feeData.feesInfo = $scope.reservationData.selected_payment_fees_details;
                 $scope.setupFeeData();
+
+                // CICO-15107 --
+                var aptSegment = ""; //Variable to store the suitable segment ID 
+                angular.forEach($scope.otherData.segments, function(segment) {
+                    if ($scope.reservationData.stayDays.length < segment.los) {
+                        if (!aptSegment)
+                            aptSegment = segment.value;
+                    }
+                })
+
+                if (!!aptSegment) {
+                    $scope.summaryState.computedSegment = true
+                }
+                
+                $scope.reservationData.demographics.segment = aptSegment;
+                angular.forEach($scope.reservationData.rooms, function(room) {
+                    if (!!room.demographics) {
+                        room.demographics.segment = $scope.reservationData.demographics.segment;
+                    }
+                })
 
 
             }
@@ -1161,6 +1182,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             $scope.shouldShowMarket = true;
             $scope.shouldShowSource = true;
             $scope.shouldShowOriginOfBooking = true;
+            $scope.shouldShowSegments = true;
 
             $scope.demographics = ($scope.reservationData.rooms[index] && $scope.reservationData.rooms[index].demographics) || angular.copy($scope.reservationData.demographics);
 
@@ -1169,6 +1191,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 $scope.shouldShowMarket = ($scope.otherData.marketIsForced) ? true : false;
                 $scope.shouldShowSource = ($scope.otherData.sourceIsForced) ? true : false;
                 $scope.shouldShowOriginOfBooking = ($scope.otherData.originIsForced) ? true : false;
+                $scope.shouldShowSegments = ($scope.otherData.segmentsIsForced) ? true : false;
             }
             ngDialog.open({
                 template: '/assets/partials/reservation/rvReservationDemographicsPopup.html',

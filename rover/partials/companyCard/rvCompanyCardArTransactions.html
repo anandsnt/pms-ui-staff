@@ -85,10 +85,10 @@
                     
                     <div class="faux-anchor" class="guest-{reservation-status}"> 
                         <figure class="guest-image">
-                            <img src="{{transaction.guest_image}}" alt="" />
+                            <img src="{{transaction.icon_url}}" alt="" />
                             <span class="vip" ng-if="transaction.guest_is_vip">VIP</span>
                         </figure>
-                        <div class="data">
+                        <div class="data" ng-if="transaction.associated_type == 'Reservation'">
                             <h2><span>{{transaction.guest_first_name}}</span> <span>{{transaction.guest_last_name}}</span></h2>
                             <span class="confirmation">{{transaction.reservation_confirm_no}}</span>
                             <div class="arrival">
@@ -103,6 +103,24 @@
                                 <time>
                                     <span class="date">{{transaction.reservation_dep_date| date : dateFormat}}</span>
                                     <span ng-if="transaction.is_hourly" class="time">{{getTimeConverted(transaction.reservation_dep_time)}}</span>
+                                </time>                                
+                            </div>
+                        </div>
+                        <div class="data" ng-if="transaction.associated_type == 'PostingAccount'">
+                            <h2><span>{{transaction.account_name}}</span></h2>
+                            <span class="confirmation">{{transaction.account_number}}</span>
+                            <div class="arrival">
+                                <span class="guest-status small-icon check-in">CHECK-IN</span>
+                                <time>
+                                    <span class="date">{{transaction.from_date| date : dateFormat}}</span>
+                                    <span ng-if="transaction.is_hourly" class="time"></span>
+                                </time>
+                            </div>
+                            <div class="departure">
+                                <span class="guest-status small-icon check-out">CHECK_OUT</span>
+                                <time>
+                                    <span class="date">{{transaction.to_date| date : dateFormat}}</span>
+                                    <span ng-if="transaction.is_hourly" class="time"></span>
                                 </time>                                
                             </div>
                         </div>
