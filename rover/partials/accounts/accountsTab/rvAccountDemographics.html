@@ -74,6 +74,27 @@
         </div>
 
 
+        <!-- [<[< SEGMENTS >]>] -->
+        <div class="entry margin" ng-show="accountSummaryData.demographics.is_use_segments">
+            <label for="segment">
+                Segment
+                <!-- <strong ng-show="">*</strong> -->
+            </label>
+            <div class="select">
+                <select iscroll-stop-propagation name="segment" id="segment" 
+                    ng-class="{'placeholder': !accountConfigData.summary.demographics.segment_id}" 
+                    ng-model="accountConfigData.summary.demographics.segment_id">
+                    <option value="" selected translate>SEGMENT_PLACEHOLDER</option>
+                    <option ng-repeat="segment in accountSummaryData.demographics.segments" 
+                        value="{{segment.value}}" 
+                        ng-selected="segment.value == accountConfigData.summary.demographics.segment_id">
+                        {{segment.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+
         <div class="actions">
             <button type="button" 
                 class="button blank" 

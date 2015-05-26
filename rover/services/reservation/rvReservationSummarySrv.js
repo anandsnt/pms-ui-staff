@@ -21,7 +21,7 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
             rvBaseWebSrvV2.getJSON(url).then(function(data) {
                 that.reservationData.demographics.is_use_segments = data.is_use_segments;
                 that.reservationData.demographics.segments = data.segments;
-                that.segments = data.segments;
+                deferred.resolve(that.reservationData);
             }, function(errorMessage) {
                 deferred.reject(errorMessage);
             });
@@ -76,7 +76,6 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
                         that.reservationData.demographics.reservationTypes.push(data.reservation_types[i]);
                     }
                 }
-                deferred.resolve(that.reservationData);
             }, function(errorMessage) {
                 deferred.reject(errorMessage);
             });

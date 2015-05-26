@@ -53,11 +53,11 @@
         </div>
 
         <div class="entry margin" ng-show="shouldShowSegments">
-            <label for="origin">Origin of Booking<strong ng-show="otherData.segmentsIsForced">*</strong>
+            <label for="origin">Segments<strong ng-show="otherData.segmentsIsForced">*</strong>
             </label>
             <div class="select">
-                <select iscroll-stop-propagation name="origin" id="origin" ng-class="{'placeholder': demographics.segment == ''}" ng-model="demographics.segment">
-                    <option value="" translate>ORIGIN_BOOKING_PLACEHOLDER</option>
+                <select iscroll-stop-propagation name="origin" id="origin" ng-class="{'placeholder': demographics.segment == ''}" ng-model="demographics.segment" ng-disabled="!!demographics.segment && !!summaryState.computedSegment">
+                    <option value="" translate>SEGMENT_PLACEHOLDER</option>
                     <option ng-repeat="segment in otherData.segments" value="{{segment.value}}" ng-selected="segment.value==demographics.segment">{{segment.name}}</option>
                 </select>
             </div>

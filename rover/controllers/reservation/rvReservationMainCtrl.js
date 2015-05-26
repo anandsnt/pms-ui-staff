@@ -1441,6 +1441,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 data.source_id = parseInt(demographicsData.source);
                 data.market_segment_id = parseInt(demographicsData.market);
                 data.booking_origin_id = parseInt(demographicsData.origin);
+                data.segment_id = parseInt(demographicsData.segment);
             }
 
             data.confirmation_email = $scope.reservationData.guest.sendConfirmMailTo;
@@ -1974,6 +1975,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 $scope.otherData.originsEnabled = data.demographics.is_use_origins;
                 $scope.otherData.origins = data.demographics.origins;
                 $scope.otherData.reservationTypes = data.demographics.reservationTypes;
+                $scope.otherData.segmentsEnabled = baseData.demographics.is_use_segments;
+                $scope.otherData.segments = baseData.demographics.segments;
                 $scope.$emit('hideLoader');
             };
             var fetchFailure = function(data) {
