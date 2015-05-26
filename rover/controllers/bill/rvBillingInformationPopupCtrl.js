@@ -128,7 +128,7 @@ console.log("TYPE ="+type);
                 $scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
             }
         }
-        else if(type === 'POSTING_ACCOUNT'){
+        else if(type === 'GROUP' || type === 'HOUSE'){
             var data = $scope.results.posting_accounts[index];
             $scope.selectedEntity = {
                 "id": data.id,
@@ -147,7 +147,7 @@ console.log("TYPE ="+type);
     /*function to select the attached entity
     */
     $scope.selectAttachedEntity = function(index,type){
-
+console.log(type);
             $scope.isEntitySelected = true;
             $scope.isInitialPage = false;
             //TODO: Remove commented out code
@@ -204,10 +204,10 @@ console.log("TYPE ="+type);
                 }];             
                 $scope.selectedEntity.entity_type = "TRAVEL_AGENT";                
             }
-            else if(type == 'POSTING_ACCOUNT' || type =='GROUP'){
-                $scope.selectedEntity.id = $scope.attachedEntities.group_details.id;
-                $scope.selectedEntity.name = $scope.attachedEntities.group_details.name;
-                $scope.selectedEntity.entity_type = "POSTING_ACCOUNT";            
+            else if(type =='GROUP' || type == 'HOUSE'){
+                $scope.selectedEntity.id = $scope.attachedEntities.posting_account.id;
+                $scope.selectedEntity.name = $scope.attachedEntities.posting_account.name;
+                $scope.selectedEntity.entity_type = type;          
             }
     };
 
@@ -309,14 +309,18 @@ console.log("TYPE ="+type);
         $scope.fetchRoutes();
         $scope.attachedEntities = [];
        
-    } else {
+    } 
+    else {
         if($scope.billingEntity == "TRAVEL_AGENT_DEFAULT_BILLING"){
             $scope.selectAttachedEntity('', 'TRAVEL_AGENT');
-        } else if($scope.billingEntity == "COMPANY_CARD_DEFAULT_BILLING") {
+        }
+        else if($scope.billingEntity == "COMPANY_CARD_DEFAULT_BILLING") {
             $scope.selectAttachedEntity('', 'COMPANY_CARD');
-        } else if($scope.billingEntity == "GROUP_DEFAULT_BILLING") {
-            $scope.selectAttachedEntity('', 'POSTING_ACCOUNT');
-        } else {
+        }
+        else if($scope.billingEntity == "GROUP_DEFAULT_BILLING") {
+            $scope.selectAttachedEntity('', 'GROUP');
+        }
+        else {
             $scope.isInitialPage = true;
             $scope.fetchRoutes();
             $scope.attachedEntities = [];

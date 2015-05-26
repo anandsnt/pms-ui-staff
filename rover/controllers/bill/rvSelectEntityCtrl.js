@@ -3,8 +3,9 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	
 	$scope.textInQueryBox = "";
   	$scope.isReservationActive = true;
-  	//$scope.results.cards = [];
-	//$scope.results.reservations = [];
+  	$scope.results.accounts = [];
+	$scope.results.posting_accounts  = [];
+	$scope.results.reservations = [];
   	
   	var scrollerOptions = {click: true, preventDefault: false};
     $scope.setScroller('cards_search_scroller', scrollerOptions);
@@ -16,10 +17,9 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.setScroller('entities', scrollerOptions);  
 
     setTimeout(function(){
-                $scope.refreshScroller('entities'); 
-                }, 
-            500);
-
+        $scope.refreshScroller('entities'); 
+        }, 
+    500);
 
     /**
     * Single digit search done based on the settings in admin
@@ -39,10 +39,9 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
   	*/
 	$scope.queryEntered = function(){
 		if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
-			$scope.results = {};
-			/*$scope.results.cards = [];
 			$scope.results.accounts = [];
-			$scope.results.reservations = [];*/
+			$scope.results.posting_accounts  = [];
+			$scope.results.reservations = [];
 		}
 		else{
 	    	displayFilteredResultsCards();
@@ -59,12 +58,12 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	  	$scope.refreshScroller('entities');
 	};
   	var searchSuccessCards = function(data){
+  		console.log(data);
 		$scope.$emit("hideLoader");
-		$scope.results = data;
-		/*$scope.results.cards = [];
-		$scope.results.cards = data.accounts;
 		$scope.results.accounts = [];
-		$scope.results.accounts = data.groups;*/
+		$scope.results.accounts = data.accounts;
+		$scope.results.posting_accounts = [];
+		$scope.results.posting_accounts = data.posting_accounts;
 		setTimeout(function(){$scope.refreshScroller('cards_search_scroller');}, 750);
 	};
   	/**
@@ -135,11 +134,10 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	  	for(var i = 0; i < $scope.results.reservations.length; i++){
 	  		if(($scope.results.reservations[i].id != $scope.reservationData.reservation_id) && ($scope.results.reservations[i].reservation_status == 'CHECKING_IN' || $scope.results.reservations[i].reservation_status == 'CHECKEDIN' || $scope.results.reservations[i].reservation_status == 'CHECKING_OUT')){
 
-	  				filteredResults.push($scope.results.reservations[i]);
-	  				
-	  			}
+	  			filteredResults.push($scope.results.reservations[i]);
 	  		}
-	  		$scope.results.reservations = filteredResults;
+  		}
+  		$scope.results.reservations = filteredResults;
 	};
 	
 	/**
