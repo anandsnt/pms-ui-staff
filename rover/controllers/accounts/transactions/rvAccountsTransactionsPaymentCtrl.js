@@ -512,45 +512,79 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			};		
 		};
 
+		var showCreateArAccountPopup  = function(account_id){
+			    ngDialog.close();
+			    $scope.account_id = account_id;
+			    $scope.is_auto_assign_ar_numbers = $scope.ArDetails.is_auto_assign_ar_numbers;
+				ngDialog.open({
+					template: '/assets/partials/payment/rvAccountReceivableMessagePopup.html',
+					controller: 'RVAccountReceivableMessagePopupCtrl',
+					className: '',
+					scope: $scope
+				});
+		};
+				
+
 		// select to which AR account payment has to be done
 		$scope.selectArAccount = function(type){
 			if(type === "company"){
-				proceedPayment("company"); 
+				if($scope.ArDetails.company_ar_attached){
+					proceedPayment("company");
+				}
+				else{
+					showCreateArAccountPopup($scope.ArDetails.company_id)
+				}				
 			}
 			else{
-				proceedPayment("travel_agent"); 
+				if($scope.ArDetails.travel_agent_ar_attached){
+					proceedPayment("travel_agent");
+				}
+				else{
+					showCreateArAccountPopup($scope.ArDetails.travel_agent_id)
+				} 
 			};
 		};
 
+		$scope.showErrorPopup = function(errorMessage){
+			$scope.status = "error";
+			$scope.popupMessage = errorMessage;
+			ngDialog.open({
+	    		template: '/assets/partials/validateCheckin/rvShowValidation.html',
+	    		controller: 'RVShowValidationErrorCtrl',
+	    		className: '',
+	    		scope: $scope
+	    	});
+		};
 
 		var checkIfARAccountisPresent = function(){
 			
 			var successArCheck = function(data){
-
+				$scope.ArDetails = data;
 				//if both company and travel agent AR accounts are present
-				if(data.company_attached && data.travel_agent_attached){
+				if(data.company_present && data.travel_agent_present){
 					$scope.showArSelection = true;
-				}else if(data.company_attached){
-					proceedPayment("company"); 
+				}else if(data.company_present){
+					if(data.company_ar_attached){
+						proceedPayment("company"); 
+					}
+					else{
+						showCreateArAccountPopup($scope.ArDetails.company_id)
+					}					
 				}
-				else if(data.travel_agent_attached){
-					proceedPayment("travel_agent");
+				else if(data.travel_agent_present){
+					if(data.travel_agent_ar_attached){
+						proceedPayment("travel_agent");
+					}
+					else{
+						showCreateArAccountPopup($scope.ArDetails.travel_agent_id)
+					}
+					
 				}
 				else{
 					//close payment popup
 					ngDialog.close();
 					//notify user that AR account is not attached
-					$scope.showErrorPopup = function(errorMessage){
-						$scope.status = "error";
-						$scope.popupMessage = errorMessage;
-						ngDialog.open({
-				    		template: '/assets/partials/validateCheckin/rvShowValidation.html',
-				    		controller: 'RVShowValidationErrorCtrl',
-				    		className: '',
-				    		scope: $scope
-				    	});
-					};
-					$scope.showErrorPopup($filter('translate')('ACCOUNT_ID_NIL_MESSAGE'));
+					$scope.showErrorPopup($filter('translate')('ACCOUNT_ID_NIL_MESSAGE_PAYMENT'));
 				};
 			};
             var params = {
