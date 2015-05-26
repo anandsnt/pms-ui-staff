@@ -1,0 +1,33 @@
+<section id="replacing-div-second" class="content current" ng-hide="isLoading" ng-click="clearErrorMessage()">
+    <div>
+        <header class="content-title float">
+            <h2 translate>RATE_SEQUENCE</h2>
+            <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
+        </header>
+        <section class="content-scroll">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <form class="form float">
+                <div class="form-title full-width">
+                    <h3><span translate>ROOM_AND_RATES_SCREEN</span></h3>
+                </div>
+                <fieldset class="holder left">
+                    <ad-checkbox is-checked="reservationSettingsData.disable_cc_swipe" label="{{ 'DISABLE_CC_SWIPE_AT_CHECK_IN' | translate}}" div-class="full-width"></ad-checkbox>
+                </fieldset>
+                <div class="form-title full-width">
+                    <h3><span translate>RATE_MANAGER</span></h3>
+                </div>
+                <div class="form-title full-width">
+                    <h3><span translate>DASHBOARD</span></h3>
+                </div>
+                <div class="actions float">
+                    <button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()" translate>
+                        CANCEL
+                    </button>
+                    <button type="button" id="save" class="button green" ng-click="saveClick()" translate>
+                        SAVE_CHANGES
+                    </button>
+                </div>
+            </form>
+        </section>
+    </div>
+</section>
