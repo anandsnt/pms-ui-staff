@@ -1,0 +1,49 @@
+<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-click="clearErrorMessage()" ng-cloak>
+    <form ng-show="!shouldShowWaiting" method="post" action="deposit-required" id="deposit-required" name="deposit-required" class="modal-content form deposit-required"><!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
+        <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+       <span class="h2 message">Room {{sharedReservationData.room_number}}</span>
+       <span class="text">Shared Reservations</span>
+       <div class="shared-reservations scrollable"> <!-- Sort this list by name, including the current guest as well -->
+        <ul class="wrapper">
+            <!-- Room shared with guests: -->
+            
+            
+            <li ng-repeat="sharer in sharedReservationData.sharers">
+                <!-- If accompany guest add class="accompany" -->
+                
+                
+                
+                <table class="sharer-div" style="background-color: lightgrey; width: 100%;">
+                  <tr style="display: inline-block;">
+                    <th><img src="{{sharer.guest_details.avatar}}" alt="" /></th>
+                    <th><h3 class="sharer-name" style="float:left">{{sharer.guest_details.last_name}}, {{sharer.guest_details.first_name}} (last,first) </h3>
+                    <br /><span class="sharer-confirmation">{{sharer.guest_details.reservation_id}}(conf #)</span>
+                    </th>
+                    <th>chkin img</th>
+                  </tr>
+                </table>
+            </li>
+            
+            
+            <!-- Show current stay card record like this:
+            <li class="active">
+                <figure class="guest-image"> // If accompany guest add class "accompany"
+                    <img src="{primary-guest-image}" alt="" />
+                    // if it's accompanying guest, show this as well:
+                    <img src="{accompanying-guest-image-or-avatar}" alt="" />
+                </figure>
+                <div class="data">
+                    <h2>{Lastname}, {Firstname}</h2>
+                    <span class="confirmation">{Res #.}</span>
+                </div>
+                <span class="guest-status {reservation-status}">{reservation-status}</span>
+            </li> -->
+        </ul>
+    </div>
+    <div class="actions">
+        <button type="button" class="button blank">Close</button>
+    </div>
+            
+    </form>
+</div>

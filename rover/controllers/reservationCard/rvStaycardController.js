@@ -46,6 +46,15 @@ sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog
 			$scope.guestCardData.contactInfo.first_name = data.guest_details.first_name;
 			$scope.guestCardData.contactInfo.last_name = data.guest_details.last_name;
 			$scope.guestCardData.contactInfo.avatar = data.guest_details.avatar;
+                        console.log('stay card guest data');
+                        console.log(data);
+                        console.log('$scope.guestCardData');
+                        console.log($scope.guestCardData)
+                        $scope.sharedReservationData = {};
+                        
+                        $scope.sharedReservationData.room_number = '15';
+                        $scope.sharedReservationData.sharers = data.sharers;
+                        
 		});
 
 		$scope.$on('reservationCardClicked', function() {
@@ -93,6 +102,16 @@ sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog
 				scope: $scope
 			});
 		};
+                
+                $scope.showRoomSharerPopup = function() {
+                    console.log('show popup for shared reservations');
+
+                    ngDialog.open({
+                        template: '/assets/partials/reservationCard/sharedRoom.html',
+                        //controller: '',//using this controller
+                        scope: $scope
+                    });
+                };
 
 	}
 ]);
