@@ -41,6 +41,10 @@ sntRover.controller('RVbillCardController',
 	};
 	$scope.encoderTypes = [];
 
+	// Flag for CC auth permission
+    $scope.hasCCAuthPermission = function() {
+        return rvPermissionSrv.getPermissionValue ('OVERRIDE_CC_AUTHORIZATION');    
+    };
 
 	// Setup ng-scroll for 'registration-content' , 'bill-tab-scroller' , 'billDays'
 	var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: true, mouseWheel: false};
@@ -922,6 +926,10 @@ sntRover.controller('RVbillCardController',
 		$scope.clickedCompleteCheckin();
 	};
 
+	$scope.continueAfterSuccessAuth = function(){
+		$scope.triggerKeyCreationProcess();
+	};
+	
 	// Normal checkin process success.
 	$scope.completeCheckinSuccessCallback = function(data){
 		// CICO-6109 : Without Authorization flow ..
@@ -1123,11 +1131,12 @@ sntRover.controller('RVbillCardController',
 	 		    	$scope.isInProgressScreen = true;
 	 		    	$scope.isSuccessScreen = false;
 	 		    	$scope.isFailureScreen = false;
+	 		    	$scope.isCCAuthPermission = $scope.hasCCAuthPermission();
 	 		    	
 	 		    	ngDialog.open({
 						template: '/assets/partials/bill/ccAuthorization.html',
 						className: '',
-						closeByDocument: true,
+						closeByDocument: false,
 						scope: $scope
 					});
 					data.authorize_credit_card = true;
@@ -1804,6 +1813,16 @@ sntRover.controller('RVbillCardController',
 			data.billIndex = key;
 			$scope.reviewStatusArray.push(data);
 		});
+	};
+
+	// Checks whether the user has signed or not
+	$scope.isSigned = function() {
+		return ($scope.reservationBillData.signature_details.is_signed == "true");
+	};
+
+	//Checks whether the user has accepted the charges during web check-in
+	$scope.isChargeAccepted = function() {
+		return $scope.reservationBillData.is_charges_accepted_from_mobile_web;
 	};
 
 	$scope.setupReviewStatusArray();

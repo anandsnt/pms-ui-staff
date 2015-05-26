@@ -359,6 +359,7 @@ sntRover.controller('roverController',
       $scope.showHotelSwitchList = false;
       //save contact info in guestcard if any changes has been done -CICO-14273
       $scope.$broadcast('saveContactInfo');
+      $scope.$broadcast('SAVELIKES');
     };
 
     $scope.toggleHotelList = function(e) {

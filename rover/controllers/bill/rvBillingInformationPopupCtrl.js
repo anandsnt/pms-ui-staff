@@ -30,13 +30,6 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			$scope.closeDialog();
 		};
 
-     
-    // $scope.$watch(
-    //         function() { return $scope.errorMessage; },
-    //         function(error) {
-    //             $scope.refreshScroller('homeScroll');
-    //         }
-    //     );
     /**
     * function to get label for all routes and add routes button
     */
@@ -77,11 +70,14 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         if(type === 'ATTACHED_ENTITY' || type === 'ROUTES'){
         	$scope.selectedEntity = $scope.routes[index];
             $scope.selectedEntity.is_new = (type == 'ATTACHED_ENTITY')? true: false; 
-            $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;
+            
             if($scope.selectedEntity.entity_type !='RESERVATION')  
                    $scope.selectedEntity.guest_id = null; 
-            if($scope.selectedEntity.entity_type == "GROUP"){
-                $scope.selectedEntity.entity_type = "POSTING_ACCOUNT";
+            if($scope.selectedEntity.entity_type == "GROUP" || $scope.selectedEntity.entity_type == "HOUSE"){
+                //$scope.selectedEntity.entity_type = "POSTING_ACCOUNT";
+            }
+            else{
+                $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;
             }
         }
         else if(type === 'RESERVATIONS'){
@@ -102,8 +98,8 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			};
 			
         }
-        else if(type === 'CARDS'){
-        	var data = $scope.results.cards[index];
+        else if(type === 'ACCOUNT'){
+        	var data = $scope.results.accounts[index];
         	$scope.selectedEntity = {
 			    "id": data.id,
 			    "name": data.account_name,
@@ -125,8 +121,8 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 $scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
             }
         }
-        else if(type === 'ACCOUNTS'){
-            var data = $scope.results.accounts[index];
+        else if(type === 'GROUP' || type === 'HOUSE'){
+            var data = $scope.results.posting_accounts[index];
             $scope.selectedEntity = {
                 "id": data.id,
                 "name": data.account_name,
@@ -136,7 +132,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 "is_new" : true,
                 "selected_payment" : "",
                 "credit_card_details": {},
-                "entity_type": 'POSTING_ACCOUNT'
+                "entity_type": data.account_type
             };
         }
 	};
@@ -201,10 +197,10 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 }];             
                 $scope.selectedEntity.entity_type = "TRAVEL_AGENT";                
             }
-            else if(type == 'POSTING_ACCOUNT' || type =='GROUP'){
-                $scope.selectedEntity.id = $scope.attachedEntities.group_details.id;
-                $scope.selectedEntity.name = $scope.attachedEntities.group_details.name;
-                $scope.selectedEntity.entity_type = "POSTING_ACCOUNT";            
+            else if(type =='GROUP' || type == 'HOUSE'){
+                $scope.selectedEntity.id = $scope.attachedEntities.posting_account.id;
+                $scope.selectedEntity.name = $scope.attachedEntities.posting_account.name;
+                $scope.selectedEntity.entity_type = type;          
             }
     };
 
@@ -306,14 +302,18 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         $scope.fetchRoutes();
         $scope.attachedEntities = [];
        
-    } else {
+    } 
+    else {
         if($scope.billingEntity == "TRAVEL_AGENT_DEFAULT_BILLING"){
             $scope.selectAttachedEntity('', 'TRAVEL_AGENT');
-        } else if($scope.billingEntity == "COMPANY_CARD_DEFAULT_BILLING") {
+        }
+        else if($scope.billingEntity == "COMPANY_CARD_DEFAULT_BILLING") {
             $scope.selectAttachedEntity('', 'COMPANY_CARD');
-        } else if($scope.billingEntity == "GROUP_DEFAULT_BILLING") {
-            $scope.selectAttachedEntity('', 'POSTING_ACCOUNT');
-        } else {
+        }
+        else if($scope.billingEntity == "GROUP_DEFAULT_BILLING") {
+            $scope.selectAttachedEntity('', 'GROUP');
+        }
+        else {
             $scope.isInitialPage = true;
             $scope.fetchRoutes();
             $scope.attachedEntities = [];
