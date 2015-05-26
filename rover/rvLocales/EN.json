@@ -202,7 +202,8 @@
     "RATE_MANAGER_TITLE": "Rate Manager",
     "CHANGE_STAY_DATES_TITLE": "Change Stay Dates",
     "SETTINGS":"Settings",
-    "CAHNGE_PASSWORD":"Change Password"
+    "CAHNGE_PASSWORD":"Change Password",
+    "WEBSOCKET_CONNECTION_ERROR":"Could not connect to the card handler service. The card swipe facility will not be available for this session."
 
 ,
 	
@@ -677,6 +678,7 @@
     "SOURCE_PLACEHOLDER":"Select Source",
     "ORIGIN_BOOKING_LABEL":"Origin of Booking",
     "ORIGIN_BOOKING_PLACEHOLDER":"Select Origin of Booking",
+    "SEGMENT_PLACEHOLDER":"Select Segment",
     "SEND_CONFIRMATION_TO_FOLLOWING_EMAIL_ADDRESSES": "Send confirmation to the following email address(es)",
     "GUEST_EMAIL_ADDRESS": "Guest Email Address",
     "ADDITIONAL_EMAIL_ADDRESS": "Additional Email Address",

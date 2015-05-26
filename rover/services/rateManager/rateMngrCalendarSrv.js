@@ -27,16 +27,17 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	};
 
 	this.updateRoomTypeOverride = function(data){
-		var url =  '/api/daily_rates';	//change
-		var deferred = $q.defer();
-			BaseWebSrvV2.postJSON(url).then(function(data) {
-				deferred.resolve(data);
-			},function(data){
-				deferred.reject(data);
-			});
-		return deferred.promise;
+            data.date = data.selectedDate; data.rate_id = data.selectedRate;
+            //rate_id, date, room_type_id need to be included to clear rates
+            var url =  '/api/daily_rates/'+data.selectedRate+'/remove_custom_rate?';
+            var deferred = $q.defer();
+                    BaseWebSrvV2.postJSON(url, data).then(function(data) {
+                            deferred.resolve(data);
+                    },function(data){
+                            deferred.reject(data);
+                    });
+            return deferred.promise;
 	};
-
 
 	/**
     * To fetch All Calendar data
@@ -135,6 +136,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 				that.roomTypeRates = data; 
 				var calendarData = that.calculateRoomTypeViewCalData();
 				calendarData.type = "ROOM_TYPES_LIST";
+                                calendarData.room_type_restrictions = data.room_type_restrictions;
 				//Pass the rate details to the controller
 				calendarData.selectedRateDetails = selectedRate;
 				deferred.resolve(calendarData);

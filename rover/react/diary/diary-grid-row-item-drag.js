@@ -94,8 +94,11 @@ var GridRowItemDrag = React.createClass({
 			return;
 		}
 		
-		if(props.currentDragItem.reservation_status !== 'check-in'  && 
-			props.currentDragItem.reservation_status !== 'inhouse'){
+		//we will allow to move checkingin/future reservation horizontally as well as vertically
+		//in-house reservation: we will allow to move vertically only (Room change only)
+		if(props.currentDragItem.reservation_status !== 'reserved'  && 
+			props.currentDragItem.reservation_status !== 'inhouse'  && 
+			props.currentDragItem.reservation_status !== 'check-in' ){
 			return;
 		}		
 
@@ -407,6 +410,7 @@ var GridRowItemDrag = React.createClass({
 			className:   props.className + className,
 			children:    props.children,
 			
-		}));
+		}
+		));
 	}
 });

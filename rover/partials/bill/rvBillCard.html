@@ -91,7 +91,7 @@
             		<!-- Bills summary navigation-->
                 	<div class="bill-tabs scrollable" ng-iscroll="bill-tab-scroller" ng-iscroll-delay="100">
                 		<ul class="wrapper" style="width:{{getWidthForBillTabsScroll()}}px">
-                			<li ng-click="setActiveBill($index)" ng-class="showActiveBill($index)" ng-repeat="billTab in reservationBillData.bills">
+                			<li click-touch="setActiveBill($index)" ng-class="showActiveBill($index)" ng-repeat="billTab in reservationBillData.bills">
 								<div class="bill-toggle">
 									<div class="price" ng-hide="billTab.total_amount=='SR'">
 										<span translate>BILL #{{billTab.bill_number}}</span>
@@ -147,7 +147,7 @@
 									</li>
 
 									<!-- packages -->
-									<li class="package active" ng-click="showAddons($index)" ng-repeat="addons in billData.addons">
+									<li class="package active" click-touch="showAddons($index)" ng-repeat="addons in billData.addons">
 										<div class="toggle" ng-class="{'active': $index == showAddonIndex}"> 
 											<span class="expense"> {{addons.title}}</span> 
 											<span class="price" ng-show="addons.package_type != 'PACKAGES'">{{addons.package_type}}</span> 

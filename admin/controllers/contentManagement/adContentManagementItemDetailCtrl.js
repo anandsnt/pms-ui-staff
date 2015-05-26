@@ -20,7 +20,8 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	            "website_url": "",
 	            "description": "",
 	            "addon_id":"",
-	            "parent_category": []
+	            "parent_category": [],
+	            "parent_section": []
             }
 
     $scope.fetchAddons = function(){
