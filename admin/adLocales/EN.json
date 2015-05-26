@@ -287,6 +287,8 @@
 "ADDON_LABEL": "Add On",
 "ADDON_DESCRIPTION_LABEL": "Add On Description",
 "ADDON_PRICE_LABEL": "Add On Price",
+"ADDON_MIN_DURATION_LABEL": "Minimum duration [days]",
+"ADDON_MAX_ORDER_LABEL": "Maximum order",
 "DESCRIPTION_LABEL": "Description",
 "PHONE_LABEL": "Phone",
 "ADDRESS_LABEL": "Address",
