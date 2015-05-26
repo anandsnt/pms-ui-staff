@@ -69,6 +69,14 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			var urlString = dateString + rateString + rateTypeString + nameCardString;
 			//var url =  '/sample_json/rate_manager/daily_rates.json';	
 			BaseWebSrvV2.getJSON(urlString).then(function(data) {
+                            
+                            if (fetchingRooms){
+                                //convert the data to act like rates, to update the view
+                            }
+                            
+                            
+                            
+                            
 				that.dailyRates = data; 
 
 				var calendarData = that.calculateRateViewCalData();
@@ -263,6 +271,87 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	
 		this.hasAnyHourlyRate = this.checkIfAnyHourlyRatePresent(that.dailyRates.results[0].rates);
 		// Format restriction Types as required by UI, and make it a dict for easy lookup 
+                 if (fetchingRooms){
+                    console.log('fetching rooms to calculate view cal data');
+                    that.dailyRates.results = [];
+                    var r, all_rate_restrictions = [], date, rates = [];
+                    var _id, _name, _restrictions = [], isHourly;
+                    
+                    var allRoomTypes = [];
+                    
+                    for (var x in that.dailyRates.result.room_types){
+                        r = that.dailyRates.result.room_types[x];
+                        date = r.date;
+                        for (var rt in r.room_type){
+                            if (typeof allRoomTypes[rt.name] !== typeof 'str'){
+                                allRoomTypes[rt.name] = rt.name;
+                            }
+                        }
+                        
+                        rates.push({
+                            id:0,
+                            date: date
+                        });
+                        that.dailyRates.results.push({
+                            date: date,
+                            rates: []
+                        });
+                    }
+                    
+                    //////////////////////
+                    //////////////////////
+                    //////////////////////
+                    
+                    //for each date, find the cooresponding room details
+                    var _date;
+                    for (var i in that.dailyRates.results){
+                        _date = that.dailyRates.results[i].date;
+                        console.log('find: '+_date);
+                        if (typeof that.dailyRates.results[i].rates !== typeof []){
+                            that.dailyRates.results[i].rates = [];
+                        }
+                        /*
+                         * for all the room types for a date:
+                         *   if that date is found in a rate w/ date,
+                         *   --> push into 'rates', Room Type -name-, -id-, -isHourly-, & -restrictions-[]
+                         */
+                        
+                      /*  for (var r in that.dailyRates.result.room_types){
+                            
+                        console.log(that.dailyRates.result.room_types[r]);
+                        if (that.dailyRates.result.room_types[r].date == _date){
+                            console.log(that.dailyRates.result[r]);
+                            
+                            //if the room type is already in the rates array,
+                            //dont add it, otherwise go ahead
+                            
+                            for (var rr in that.dailyRates.results[i].rates){
+                                if (that.dailyRates.results[i].rates[rr].name ===)
+                            }
+                            
+                            that.dailyRates.results[i].rates.push({
+                                id: '',
+                                name: ''
+                            })
+                            
+                            */
+                            /*
+                        }
+                                that.dailyRates.result[r].rates.push({
+                                    id: 
+                                })
+                        */
+                         //   }
+                        //}
+                        
+                        
+                    }
+                    
+                    
+                    
+                    console.log('swapping data sets');
+                    console.log(that.dailyRates.results);
+                }
 		var formattedRestrictionTypes = {};
 		angular.forEach(that.allRestrictionTypes, function(item){
 			formattedRestrictionTypes[item.id]= that.getRestrictionUIElements(item);
@@ -282,7 +371,6 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                     'id': totalRestrictions,
                     'value': "HAS_RESTRICTIONS"};
                 formattedRestrictionTypes[totalRestrictions] = baseRestrictionItem;
-                
                 
 		calendarData.restriction_types = formattedRestrictionTypes;
 		
