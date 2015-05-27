@@ -60,7 +60,7 @@
                 </div>
                 <div class="entry full-width" ng-hide="data.page_template=='SCREEN'">
                     <label for="item-image"><span translate>ITEM_IMAGE_LABEL</span><span translate>IMAGE_SPEC</span></label>
-                    <div class="file-upload with-preview large-preview">
+                    <div class="file-upload with-preview large-preview cms-item-image-picker">
                         <span class="input">{{fileName}}</span>
                         <input type="file" name="item-image" ng-model="data.image" app-filereader id="item-image" />
                         <button type="button" ng-if="data.image != null && data.image != ''" class="button brand-colors" translate>REPLACE_IMAGE_LABEL</button>
