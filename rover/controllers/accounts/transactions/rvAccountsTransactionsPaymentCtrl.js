@@ -466,9 +466,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		* Payment actions 
 		*/
 
-		var proceedPayment = function(arType){
-
-			$scope.errorMessage = "";
+		var setUpPaymentParams = function(arType){
 			var params = {
 				"data_to_pass": {
 					"bill_number": $scope.renderData.billNumberSelected,
@@ -489,7 +487,13 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 				if($scope.feeData.feesInfo)
 					params.data_to_pass.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
 			};
-	
+			return params;
+		}
+
+		var proceedPayment = function(arType){
+
+			$scope.errorMessage = "";
+			var params = setUpPaymentParams(arType);	
 			if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual && $scope.saveData.paymentType == "CC"){
 				params.data_to_pass.is_emv_request = true;
 				$scope.shouldShowWaiting = true;
@@ -513,15 +517,10 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		};
 
 		var showCreateArAccountPopup  = function(account_id){
-			    ngDialog.close();
-			    $scope.account_id = account_id;
-			    $scope.is_auto_assign_ar_numbers = $scope.ArDetails.is_auto_assign_ar_numbers;
-				ngDialog.open({
-					template: '/assets/partials/payment/rvAccountReceivableMessagePopup.html',
-					controller: 'RVAccountReceivableMessagePopupCtrl',
-					className: '',
-					scope: $scope
-				});
+			ngDialog.close();
+			var paymentDetails = setUpPaymentParams(); 
+			var data = {"account_id":account_id,"is_auto_assign_ar_numbers": $scope.ArDetails.is_auto_assign_ar_numbers,"paymentDetails":paymentDetails}
+			$scope.$emit('arAccountWillBeCreated',data);
 		};
 				
 
