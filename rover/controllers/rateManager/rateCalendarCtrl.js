@@ -252,7 +252,8 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                             for (var x in $scope.calendarData.data){
                                 if (x < $scope.calendarData.room_types_all.length){
                                     d = $scope.calendarData.data[x];
-                                    $scope.calendarData.data[x].name = $scope.calendarData.room_types_all[x];
+                                    $scope.calendarData.data[x].name = $scope.calendarData.room_types_all[x].name;
+                                    $scope.calendarData.data[x].room_type_id = $scope.calendarData.room_types_all[x].room_type_id;
                                     $scope.calendarData.data_new.push($scope.calendarData.data[x])
                                 } else {
                                     delete $scope.calendarData.data[x];

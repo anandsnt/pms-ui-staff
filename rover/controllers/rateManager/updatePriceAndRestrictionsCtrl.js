@@ -651,8 +651,9 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
             var data = {};
             data.rate_id = $scope.popupData.selectedRate;
 
-            if ($scope.popupData.fromRoomTypeView) {
+            if ($scope.popupData.fromRoomTypeView || $scope.ratesRoomsToggle == 'ROOMS') {
                 data.room_type_id = $scope.popupData.selectedRoomType;
+                delete data.rate_id;
             }
             data.details = calculateDetailsToSave(datesSelected);
             var saveRestrictionSuccess = function () {

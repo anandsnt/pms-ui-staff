@@ -89,7 +89,12 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                                 
                                 calendarData.room_types_all = [];
                                 for (var i in data.room_type_restrictions[0].room_types){
-                                    calendarData.room_types_all.push(data.room_type_restrictions[0].room_types[i].room_type.name);
+                                    
+                                calendarData.room_types_all.push({
+                                    room_type_id:data.room_type_restrictions[0].room_types[i].room_type.id,
+                                    name:data.room_type_restrictions[0].room_types[i].room_type.name
+                                });
+                                    
                                 }
                                 
 				//If only one rate exists in the search results, 

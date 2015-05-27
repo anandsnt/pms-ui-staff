@@ -125,7 +125,7 @@
 
                 <td bindonce ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-repeat="date in calendarData.dates track by $index" class="cell" >
                     <div class="cell-container" ng-class="{{isHistoryDate(date)}} ? 'history_cell_container' : ''"  ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" >
-                        <div ng-if="!isHistoryDate(date)" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, rate.id, '', 'RATE_TYPE', false)">
+                        <div ng-if="!isHistoryDate(date)" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, rate.id, rate.room_type_id, 'RATE_TYPE', false)">
                             <div>
                                 <div>
                                     <div>
@@ -266,7 +266,7 @@
 
                 <td bindonce ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-repeat="date in calendarData.dates track by $index"class="cell" >
                     <div class="cell-container" ng-class="{{isHistoryDate(date)}} ? 'history_cell_container' : ''"  ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" >
-                        <div ng-if="!isHistoryDate(date)" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, rate.id, '', 'RATE_TYPE', false)">
+                        <div ng-if="!isHistoryDate(date)" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, rate.id, rate.room_type_id, 'RATE_TYPE', false)">
                             <div>
                                 <div>
                                     <div>
