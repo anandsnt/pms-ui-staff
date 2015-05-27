@@ -233,6 +233,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                 }
 
                 var calenderDataFetchSuccess = function (data) {
+                    
                     //Set the calendar type
                     if (data.type === 'ROOM_TYPES_LIST') {
                         $scope.calendarMode = "ROOM_TYPE_VIEW";
@@ -251,6 +252,23 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
 
                     $scope.calendarData = data;
                     $scope.$emit('hideLoader');
+                    if ($scope.ratesRoomsToggle == 'ROOMS'){
+                            var roomTypeRs = data.room_type_restrictions;
+                            var d, prevName, maxRows = $scope.calendarData.room_types_all.length;
+                            for (var x in $scope.calendarData){
+                                
+                                if (x < maxRows){
+                                d = $scope.calendarData[x];
+                                prevName = d.name;
+                                $scope.calendarData[x].name = $scope.calendarData.room_types_all[x];
+                            } else {
+                                delete $scope.calendarData[x];
+                            }
+                            }
+                            
+                            
+                            
+                    }
                 };
 
                 //Set the current business date value to the service. Done for calculating the history dates
