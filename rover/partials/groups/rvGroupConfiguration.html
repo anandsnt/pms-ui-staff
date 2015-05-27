@@ -41,7 +41,7 @@
                         <a>Room Block Details</a>
                     </li>
                     <li ng-click="switchTabTo('ACCOUNT')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ACCOUNT'}">
-                        <a>Account</a>
+                        <a id="AccountTab">Account</a>
                     </li>
                     <li ng-show="shouldShowRoomingListTab()" class="with-filters" ng-click="switchTabTo('ROOMING')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ROOMING'}">
                         <a>Rooming List</a>

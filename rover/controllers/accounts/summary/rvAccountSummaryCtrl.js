@@ -68,7 +68,9 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 
 			if (!$scope.isInAddMode()) {
 				$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
-					callUpdate();
+					if (targetElement.id != 'AccountTab') {
+						callUpdate();
+					}
 				});
 				$scope.$on("UPDATE_ACCOUNT_SUMMARY", function(event, targetElement) {
 					callUpdate();
