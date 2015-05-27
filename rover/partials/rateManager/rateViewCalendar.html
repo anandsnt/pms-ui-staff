@@ -63,7 +63,7 @@
         <tbody>
             <tr ng-if="calendarData.data.length > 1">
 
-                <td bindonce ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-repeat="date in calendarData.dates track by $index"class="cell" >
+                <td ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-repeat="date in calendarData.dates track by $index" class="cell" >
                     <div class="cell-container" ng-class="{{isHistoryDate(date)}} ? 'history_cell_container' : ''"  ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" >
                         <div ng-if="!isHistoryDate(date)" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'RATE_TYPE', true)">
                             <div>
@@ -123,7 +123,7 @@
 
             <tr ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last && loading === false}" ng-show="calendarMode === 'RATE_VIEW'">
 
-                <td bindonce ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-repeat="date in calendarData.dates track by $index" class="cell" >
+                <td ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-repeat="date in calendarData.dates track by $index" class="cell" >
                     <div class="cell-container" ng-class="{{isHistoryDate(date)}} ? 'history_cell_container' : ''"  ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" >
                         <div ng-if="!isHistoryDate(date)" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, rate.id, rate.room_type_id, 'RATE_TYPE', false)">
                             <div>
@@ -203,7 +203,7 @@
         <tbody>
             <tr ng-if="calendarData.data.length > 1">
 
-                <td bindonce ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-repeat="date in calendarData.dates track by $index"class="cell" >
+                <td ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-repeat="date in calendarData.dates track by $index"class="cell" >
                     <div class="cell-container" ng-class="{{isHistoryDate(date)}} ? 'history_cell_container' : ''"  ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" >
                         <div ng-if="!isHistoryDate(date)" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'RATE_TYPE', true)">
                             <div>
@@ -264,7 +264,7 @@
 
             <tr ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last && loading === false}" ng-show="calendarMode === 'RATE_VIEW'">
 
-                <td bindonce ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-repeat="date in calendarData.dates track by $index"class="cell" >
+                <td ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-repeat="date in calendarData.dates track by $index"class="cell" >
                     <div class="cell-container" ng-class="{{isHistoryDate(date)}} ? 'history_cell_container' : ''"  ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" >
                         <div ng-if="!isHistoryDate(date)" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, rate.id, rate.room_type_id, 'RATE_TYPE', false)">
                             <div>
@@ -326,10 +326,10 @@
 </div>
 <div class='pinned-bottom'>
 <ul class="restriction-legends" >
-    <li bindonce ng-repeat="restrictionType in calendarData.restriction_types">
+    <li ng-repeat="restrictionType in calendarData.restriction_types">
         <span class="restriction-icon {{restrictionType.background_class}} {{restrictionType.icon}}" 
-              bo-html="restrictionType.days"></span>	
-        <span bo-html="restrictionType.description"></span>
+             >{{restrictionType.days}}</span>	
+        <span >{{restrictionType.description}}</span>
     </li>
 </ul>
     </div>
