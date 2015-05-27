@@ -193,6 +193,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.rightColSpan = 4;
 					break;
 
+				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
+					$scope.leftColSpan = 12;
+					$scope.rightColSpan = 12;
+					break;
+
 				default:
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 2;
@@ -361,6 +366,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.hasReportTotals    = false;
 					$scope.showReportHeader   = true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/rvForecastReport.html';
+					break;
+
+				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
+					$scope.hasReportTotals    = false;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/rvForecastGuestGroupReport.html';
 					break;
 
 				default:
