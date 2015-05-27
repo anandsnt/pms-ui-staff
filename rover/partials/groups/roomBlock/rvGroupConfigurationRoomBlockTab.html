@@ -272,8 +272,7 @@
                             <input type="text" 
                                 rv-delay-textbox 
                                 delay="100" 
-                                function-to-fire="bookingDataChanging" 
-                                ng-disabled="!!groupConfigData.summary.is_cancelled"
+                                function-to-fire="bookingDataChanging"                                 
                                 ng-model="dateData.triple_pickup" 
                                 class="cell" disabled />
 
@@ -292,6 +291,7 @@
                                 rv-delay-textbox 
                                 delay="100" 
                                 function-to-fire="bookingDataChanging" 
+                                ng-disabled="!!groupConfigData.summary.is_cancelled"
                                 ng-model="dateData.quadruple" class="cell" />
 
                             <input type="text" 
