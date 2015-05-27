@@ -32,7 +32,8 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 				'reservation_type_id': parseInt($scope.reservationParentData.demographics.reservationType),
 				'source_id': parseInt($scope.reservationParentData.demographics.source),
 				'market_segment_id': parseInt($scope.reservationParentData.demographics.market),
-				'booking_origin_id': parseInt($scope.reservationParentData.demographics.origin)
+				'booking_origin_id': parseInt($scope.reservationParentData.demographics.origin),
+				'segment_id' : parseInt($scope.reservationParentData.demographics.segment)
 			}, updateSuccess, updateFailure);
 		}
 	}

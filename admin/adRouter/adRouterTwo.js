@@ -12,6 +12,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/holdStatus'
 		});
 
+		$stateProvider.state('admin.segment', {
+			templateUrl: '/assets/partials/segments/adSegments.html',
+			controller: 'ADReservationSegmentsCtrl',
+			url : '/segments'
+		});
+
 		$stateProvider.state('admin.rates', {
 			templateUrl: '/assets/partials/rates/adRatesList.html',
 			controller: 'ADRatesListCtrl',
