@@ -193,6 +193,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.rightColSpan = 4;
 					break;
 
+				case reportUtils.getName('MARKET_SEGMENT_STATISTICS_REPORT'):
+					$scope.leftColSpan = 8;
+					$scope.rightColSpan = 8;
+					break;
+
 				default:
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 2;
