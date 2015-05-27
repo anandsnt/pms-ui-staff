@@ -47,13 +47,6 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.chargeGroups = chargeGroups;
 		$scope.chargeCodes = chargeCodes;
 
-		// make all the charge groups selected by default
-		// _.each([$scope.chargeGroups], function (dataArry) {
-		// 	_.each(dataArry, function(item) {
-		// 		item.selected = true;
-		// 	});
-		// });
-
 		$scope.markets = markets;
 		$scope.sources = sources;
 		$scope.origins = origins;
