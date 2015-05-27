@@ -538,5 +538,36 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 
 		initAccountTransactionsView();
 
+		//Direct Bill payment starts here
+
+		var proceedPayment = function(arType){
+			var successPayment = function(){
+				$scope.$emit('hideLoader');
+				//Fetch data again to refresh the screen with new data
+				getTransactionDetails();
+				$scope.diretBillpaymentData = {};
+			}
+			$scope.callAPI(rvAccountTransactionsSrv.submitPaymentOnBill, {
+				successCallBack: successPayment,
+				params: $scope.diretBillpaymentData
+			});	
+		};
+
+		$rootScope.$on('arAccountCreated',function(){
+			 proceedPayment();
+		});
+		//setUp data from the payament modal for future usage
+		$scope.$on('arAccountWillBeCreated',function(e,arg){
+			    $scope.account_id = arg.account_id;
+			    $scope.is_auto_assign_ar_numbers = arg.is_auto_assign_ar_numbers;
+			    $scope.diretBillpaymentData = arg.paymentDetails;
+				ngDialog.open({
+					template: '/assets/partials/payment/rvAccountReceivableMessagePopup.html',
+					controller: 'RVAccountReceivableMessagePopupCtrl',
+					className: '',
+					scope: $scope
+				});
+		});
+
 	}
 ]);
