@@ -43,16 +43,26 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 		});
 
 		$scope.$on('staycardGuestData', function(event, data) {
+                    
 			$scope.guestCardData.contactInfo.first_name = data.guest_details.first_name;
 			$scope.guestCardData.contactInfo.last_name = data.guest_details.last_name;
+			$scope.guestCardData.contactInfo.confirmation_num = data.guest_details.confirmation_num;
+                        
 			$scope.guestCardData.contactInfo.avatar = data.guest_details.avatar;
                         $scope.sharedReservationData = {};
                         
-                        $scope.sharedReservationData.room_number = '15';
+                        $scope.sharedReservationData.room_number = '15';//update from api
+                        for (var x in data.sharers){
+                            data.sharers[x].guest_details.first_last = data.sharers[x].guest_details.last_name+', '+data.sharers[x].guest_details.first_name;
+                        }
                         $scope.sharedReservationData.sharers = data.sharers;
                         
 		});
-                $scope.goToSharedReservation = function(reservation_no, confirmation_no, fullname){
+                $scope.goToSharedReservation = function(sharer){
+                    var fullname = $scope.guestCardData.contactInfo.first_name+' '+$scope.guestCardData.contactInfo.last_name,
+                            reservation_no = sharer.guest_details.reservation_id,
+                            confirmation_no = sharer.confirm_no;
+                    
                     $scope.isLoading = true;
                     $rootScope.$broadcast('showLoading');
                     $scope.$broadcast('showLoading');
