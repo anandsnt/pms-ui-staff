@@ -221,6 +221,21 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                 } else return false;
         };
 
+
+        $scope.everyRestriction = [];
+        $scope.getRestrictionsForDateRoomType = function(date, room_type_name){
+          for (var x in $scope.everyRestriction){
+            if ($scope.everyRestriction[x].date == date){
+                for (var i in $scope.everyRestriction[x].room_types){
+                    if (room_type_name === $scope.everyRestriction[x].room_types[i].room_type.name){
+                        return $scope.everyRestriction[x].room_types[i].restriction_overrides;
+                    }
+                }
+            }
+          }
+        };
+        
+
         var loadTable = function () {
             $scope.currentExpandedRow = -1;//reset the expanded row
             $scope.loading = true;
@@ -248,48 +263,22 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
 
                     
                     if ($scope.ratesRoomsToggle == 'ROOMS'){
-                            var d, room_type_restriction_date, room_type_array_item;
+                                    $scope.everyRestriction = $scope.calendarData.room_type_restrictions;
+                            var d, rm_type, r_date, rm_type_name;
                             $scope.calendarData.data_new = [];
                             for (var x in $scope.calendarData.data){
                                 if (x < $scope.calendarData.room_types_all.length){
                                     d = $scope.calendarData.data[x];
                                     $scope.calendarData.data[x].name = $scope.calendarData.room_types_all[x].name;
                                     $scope.calendarData.data[x].room_type_id = $scope.calendarData.room_types_all[x].room_type_id;
-                                   
-                                    for (var abc in $scope.calendarData.room_type_restrictions){
-                                        room_type_restriction_date = $scope.calendarData.room_type_restrictions[abc].date;
-                                        for (var rmr in $scope.calendarData.room_type_restrictions[abc].room_types){
-                                                room_type_array_item = $scope.calendarData.room_type_restrictions[abc].room_types[rmr];
-
-                                                for (var xo in $scope.calendarData.data){
-                                                        if (room_type_array_item.id === $scope.calendarData.data[xo].room_type_id){
-                                                                
-                                                               if (room_type_array_item.restriction_overrides.length > 0){
-                                                                        //date //room_type
-                                                                       for (var ender in $scope.calendarData.data){
-                                                                               if ($scope.calendarData.data[ender].room_type_id === room_type_array_item.id){
-                                                                                       $scope.calendarData.data[ender][room_type_restriction_date] = room_type_array_item.restriction_overrides
-                                                                               }
-                                                                       }
-                                                               
-
-                                                               }
-
-
-                                                        }
-                                                }
-
-
-
-                                        }
-
-                                    }
+                                    
                                      $scope.calendarData.data_new.push($scope.calendarData.data[x]);
 
                                 } else {
                                     delete $scope.calendarData.data[x];
                                 }
                             }
+                            
                             
                             //push the room_type restriction into the all_rates object
                             //per date/room_type
@@ -313,11 +302,18 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                                     }
                                     
                                 }
-                                
-                                
-                                
                             }
-                            console.log($scope.calendarData)
+                            
+                                  for (var ev in $scope.calendarData.data){
+                                        rm_type = $scope.calendarData.data[ev];
+                                        rm_type_name = $scope.calendarData.data[ev].name;
+                                        
+                                        for (var xi = 0; xi < $scope.calendarData.dates.length; xi++){
+                                            r_date = $scope.calendarData.dates[xi];
+                                            $scope.calendarData.data[ev][r_date] = $scope.getRestrictionsForDateRoomType(r_date, rm_type_name);
+                                        }
+                                        
+                                    }
                             $scope.calendarData.data = $scope.calendarData.data_new;
                             data.data = $scope.calendarData.data;
                         }
@@ -346,7 +342,6 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
             }, 200);
         };
 
-        
         $scope.$on('showRatesBtnClicked',function(){
             $scope.ratesRoomsToggle = 'RATES';
             $scope.activeToggleButton = 'Rates';
@@ -527,6 +522,16 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
          * Set scope variables to be passed to the popup.
          */
         $scope.showUpdatePriceAndRestrictionsDialog = function (date, rate, roomType, type, isForAllData) {
+            
+              if ($scope.ratesRoomsToggle === 'ROOMS'){
+                  var roomTypeName;
+                for (var i in $scope.calendarData.room_types_all){
+                        if ($scope.calendarData.room_types_all[i].room_type_id === roomType){
+                                roomTypeName = $scope.calendarData.room_types_all[i].name;
+                        }
+                }
+                   $scope.popupData.room_restrictions = $scope.getRestrictionsForDateRoomType(date, roomTypeName);
+            }
             $scope.popupData.selectedDate = date;
             $scope.popupData.selectedRate = rate;
             if (rate === "") {

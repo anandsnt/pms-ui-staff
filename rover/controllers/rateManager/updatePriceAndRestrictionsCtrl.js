@@ -338,6 +338,9 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
 
             var restrictionTypes = {};
             var rTypes = dclone($scope.calendarData.restriction_types);
+            if ($scope.ratesRoomsToggle === 'ROOMS'){
+                selectedDateInfo = $scope.popupData.room_restrictions;
+            }
             for (var i in rTypes) {
                 restrictionTypes[rTypes[i].id] = rTypes[i];
                 var item = rTypes[i];
@@ -663,6 +666,12 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
             var saveRestrictionSuccess = function () {
                 $scope.refreshCalendar();
                 ngDialog.close();
+                
+                $scope.$emit('showLoader');
+                setTimeout(function(){
+                        $scope.$emit('showLoader');
+                        $scope.refreshCalendar();
+                }, 100)
             };
 
             $scope.invokeApi(UpdatePriceAndRestrictionsSrv.savePriceAndRestrictions, data, saveRestrictionSuccess);
