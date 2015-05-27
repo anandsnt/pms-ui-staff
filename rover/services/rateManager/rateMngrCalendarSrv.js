@@ -84,6 +84,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 
 				var calendarData = that.calculateRateViewCalData();
                                 calendarData.room_type_restrictions = data.room_type_restrictions;
+                                
                                 calendarData.total_room_types = data.room_type_restrictions[0].room_types.length;
                                 
                                 calendarData.room_types_all = [];

@@ -245,30 +245,29 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                         $scope.calendarMode = "RATE_VIEW";
                     }
 
+
+                    if ($scope.ratesRoomsToggle == 'ROOMS'){
+                            var d;
+                                   $scope.calendarData.data_new = [];
+                            for (var x in $scope.calendarData.data){
+                                if (x < $scope.calendarData.room_types_all.length){
+                                    d = $scope.calendarData.data[x];
+                                    $scope.calendarData.data[x].name = $scope.calendarData.room_types_all[x];
+                                    $scope.calendarData.data_new.push($scope.calendarData.data[x])
+                                } else {
+                                    delete $scope.calendarData.data[x];
+                                }
+                            }
+                            $scope.calendarData.data = $scope.calendarData.data_new;
+                            data.data = $scope.calendarData.data;
+                        }
+                            
                     if (typeof data.selectedRateDetails !== 'undefined') {
                         $scope.currentSelectedRate = data.selectedRateDetails;
                         $scope.ratesDisplayed.push(data.selectedRateDetails);
                     }
-
                     $scope.calendarData = data;
                     $scope.$emit('hideLoader');
-                    if ($scope.ratesRoomsToggle == 'ROOMS'){
-                            var roomTypeRs = data.room_type_restrictions;
-                            var d, prevName, maxRows = $scope.calendarData.room_types_all.length;
-                            for (var x in $scope.calendarData){
-                                
-                                if (x < maxRows){
-                                d = $scope.calendarData[x];
-                                prevName = d.name;
-                                $scope.calendarData[x].name = $scope.calendarData.room_types_all[x];
-                            } else {
-                                delete $scope.calendarData[x];
-                            }
-                            }
-                            
-                            
-                            
-                    }
                 };
 
                 //Set the current business date value to the service. Done for calculating the history dates
@@ -380,6 +379,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
          * Click handler for up-arrows in rate_view_calendar
          */
         $scope.goToRoomTypeCalendarView = function (rate) {
+            if ($scope.ratesRoomsToggle !== 'ROOMS'){
             $scope.$emit('showLoader');
             $scope.loading = true;
             setTimeout(function () {
@@ -390,7 +390,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                 $scope.calendarMode = "ROOM_TYPE_VIEW";
                 loadTable(rate.id);
             }, 200);
-
+        }
         };
         /**
          * Handle openall/closeall button clicks
