@@ -33,7 +33,8 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		var individualAvailableRooms = [];
 
 		//CICO-13590: 
-		var bookedRooms 		= []
+		var bookedRooms 		= [];
+		var individualBookedRooms = [];
 		var groupTotalRooms 	= [];
 		var groupTotalPickedUp 	= [];
 		var isHourlyRateOn 		= RVHotelDetailsSrv.hotelDetails.is_hourly_rate_on;
@@ -43,6 +44,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 
 		//web service response is arrogant!!, requested to change. no use
 		// before looking into the code, please have good look in the webservice response.
+		// Also please console the end data model, so that you will get clarity when looking the code
 		//creating list of room types
 		for(var i = 0; i < roomAvailabilityData.room_types.length; i++){
 			individualAvailableRooms.push({
@@ -50,6 +52,13 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 				'name'	: roomAvailabilityData.room_types[i].name,
 				'availableRoomNumberList': []
 			})
+
+			//CICO-13590:
+			individualBookedRooms.push ({
+				'id' 	: roomAvailabilityData.room_types[i].id, 
+				'name'	: roomAvailabilityData.room_types[i].name,
+				'bookedNumberList': []
+			});
 		}
 
 		for(i = 0; i < roomAvailabilityData.results.length; i++){
@@ -67,10 +76,20 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 
 			//CICO-13590
 			if (!isHourlyRateOn) { //we are enabling this for non-hourly hotels only
-				currentRow.group = {total_rooms: 10, total_pickups: 9};
 				bookedRooms.push (currentRow.house.sold);
-				groupTotalRooms.push (currentRow.group.total_rooms);
-				groupTotalPickedUp.push (currentRow.group.total_pickups);
+				groupTotalRooms.push (currentRow.house.group_total_rooms);
+				groupTotalPickedUp.push (currentRow.house.group_total_pickups);
+			
+				for(var j = 0; j < currentRow.room_types.length; j++){
+					var id = currentRow.room_types[j].id;
+					for(var k = 0; k < individualBookedRooms.length; k++){
+						if(individualBookedRooms[k].id == id){
+							individualBookedRooms[k].bookedNumberList.push(currentRow.room_types[j].sold);
+							break;
+						}
+					}
+				}				
+
 			}
 
 			//web service response is arrogant!!, requested to change. no use :(
@@ -109,11 +128,12 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		if (!isHourlyRateOn) {
 			_.extend (gridData, 
 			{
+				'bookedRooms' 		: bookedRooms,
+				'individualBookedRooms': individualBookedRooms,
 				'groupTotalRooms'	: groupTotalRooms,
 				'groupTotalPickedUp': groupTotalPickedUp
 			});
 		}
-
 		return gridData;		
 	}
 

@@ -3,17 +3,13 @@
 			
 		<!-- Navbar -->
 		<header class="nav-bar" role="banner">
-			<div class="switch-button" ng-class="{'on': availabilityToShow=='room'}" ng-click="setAvailability()">
-				<input name="availability-toggle" id="availability-toggle" value="availability" type="checkbox" />
-				<label class="data-off">
-					<span class="value">Availability</span>
-					<span class="switch-icon">House Status</span>
-				</label>
-				<label class="data-on">
-					<span class="switch-icon">Availability</span>
-					<span class="value">House Status</span>
-				</label>
-			</div>
+			<div class="select">
+				<select id="availability-toggle" ng-model="availabilityToShow" ng-change="setAvailability()">
+					<option value="room" ng-selected="availabilityToShow=='room'">Availability</option>
+					<option value="house" ng-selected="availabilityToShow=='house'">House Status</option>
+					<option value="groups" ng-selected="availabilityToShow=='groups'" ng-hide="true">Groups</option>
+				</select>
+ 			</div>
 
 			<!-- Logo -->
 			<div class="logo">
