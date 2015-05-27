@@ -246,17 +246,46 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                     }
 
 
+                    
                     if ($scope.ratesRoomsToggle == 'ROOMS'){
-                            var d;
+                            var d, room_type_restriction_date, room_type_array_item;
                             $scope.calendarData.data_new = [];
                             for (var x in $scope.calendarData.data){
                                 if (x < $scope.calendarData.room_types_all.length){
                                     d = $scope.calendarData.data[x];
-                                    
                                     $scope.calendarData.data[x].name = $scope.calendarData.room_types_all[x].name;
                                     $scope.calendarData.data[x].room_type_id = $scope.calendarData.room_types_all[x].room_type_id;
-                                    $scope.calendarData.data_new.push($scope.calendarData.data[x]);
-                                    
+                                   
+                                    for (var abc in $scope.calendarData.room_type_restrictions){
+                                        room_type_restriction_date = $scope.calendarData.room_type_restrictions[abc].date;
+                                        for (var rmr in $scope.calendarData.room_type_restrictions[abc].room_types){
+                                                room_type_array_item = $scope.calendarData.room_type_restrictions[abc].room_types[rmr];
+
+                                                for (var xo in $scope.calendarData.data){
+                                                        if (room_type_array_item.id === $scope.calendarData.data[xo].room_type_id){
+                                                                
+                                                               if (room_type_array_item.restriction_overrides.length > 0){
+                                                                        //date //room_type
+                                                                       for (var ender in $scope.calendarData.data){
+                                                                               if ($scope.calendarData.data[ender].room_type_id === room_type_array_item.id){
+                                                                                       $scope.calendarData.data[ender][room_type_restriction_date] = room_type_array_item.restriction_overrides
+                                                                               }
+                                                                       }
+                                                               
+
+                                                               }
+
+
+                                                        }
+                                                }
+
+
+
+                                        }
+
+                                    }
+                                     $scope.calendarData.data_new.push($scope.calendarData.data[x]);
+
                                 } else {
                                     delete $scope.calendarData.data[x];
                                 }
@@ -288,6 +317,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                                 
                                 
                             }
+                            console.log($scope.calendarData)
                             $scope.calendarData.data = $scope.calendarData.data_new;
                             data.data = $scope.calendarData.data;
                         }
