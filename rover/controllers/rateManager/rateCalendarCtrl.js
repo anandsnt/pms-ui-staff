@@ -248,16 +248,45 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
 
                     if ($scope.ratesRoomsToggle == 'ROOMS'){
                             var d;
-                                   $scope.calendarData.data_new = [];
+                            $scope.calendarData.data_new = [];
                             for (var x in $scope.calendarData.data){
                                 if (x < $scope.calendarData.room_types_all.length){
                                     d = $scope.calendarData.data[x];
+                                    
                                     $scope.calendarData.data[x].name = $scope.calendarData.room_types_all[x].name;
                                     $scope.calendarData.data[x].room_type_id = $scope.calendarData.room_types_all[x].room_type_id;
-                                    $scope.calendarData.data_new.push($scope.calendarData.data[x])
+                                    $scope.calendarData.data_new.push($scope.calendarData.data[x]);
+                                    
                                 } else {
                                     delete $scope.calendarData.data[x];
                                 }
+                            }
+                            
+                            //push the room_type restriction into the all_rates object
+                            //per date/room_type
+                            var room_type_id, date, rs, rs_ri;
+                            for (var a in $scope.calendarData.data_new){
+                                room_type_id = $scope.calendarData.data_new[a].room_type_id;
+                                date = $scope.calendarData.dates[a];
+                                
+                                for (var b in $scope.calendarData.room_type_restrictions){
+                                    rs = $scope.calendarData.room_type_restrictions[b];
+                                    if (rs.date === date){
+                                        for (var ri in rs.room_types){
+                                            rs_ri = rs.room_types[ri];
+                                            if (rs_ri.room_type.id === room_type_id){
+                                                for (var c in rs_ri.restriction_overrides){
+                                                    $scope.calendarData.room_type_restrictions[b].room_types[ri].restriction_overrides[c].type_id = rs_ri.restriction_overrides.restriction_type_id;
+                                                }
+                                                 $scope.calendarData.all_rates[date] = rs_ri.restriction_overrides;
+                                            }
+                                        }
+                                    }
+                                    
+                                }
+                                
+                                
+                                
                             }
                             $scope.calendarData.data = $scope.calendarData.data_new;
                             data.data = $scope.calendarData.data;

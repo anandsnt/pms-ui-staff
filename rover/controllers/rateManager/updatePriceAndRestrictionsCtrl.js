@@ -324,7 +324,11 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
             } else {
                 for (var i in $scope.calendarData.data) {
                     if ($scope.calendarData.data[i].id == $scope.popupData.selectedRate) {
+                        
                         selectedDateInfo = $scope.calendarData.data[i][$scope.popupData.selectedDate];
+                        if (selectedDateInfo = []){
+                            selectedDateInfo = $scope.calendarData.all_rates[$scope.popupData.selectedDate];
+                        }
                         $scope.data.id = $scope.calendarData.data[i].id;
                         $scope.data.name = $scope.calendarData.data[i].name;
                         $scope.data.isHourly = $scope.calendarData.data[i].isHourly;
