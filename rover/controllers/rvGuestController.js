@@ -289,9 +289,15 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			}
 			if (getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])) {
 				//save contact info
-				$scope.$broadcast('saveContactInfo');
-				$scope.$broadcast('SAVELIKES');
-				if (parseInt($scope.eventTimestamp)) {
+				//-- IFF there is a valid card
+				if (!$scope.viewState.isAddNewCard) {
+					$scope.$broadcast('saveContactInfo');
+					$scope.$broadcast('SAVELIKES');
+				}
+				// -- to handle consecutive clicks for iPad
+				var isIpad = navigator.userAgent.match(/iPad/i) != null;
+
+				if (isIpad && parseInt($scope.eventTimestamp)) {
 					if (($event.timeStamp - $scope.eventTimestamp) < 100) {
 						return;
 					}
@@ -332,12 +338,9 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 
 		$scope.checkOutsideClick = function(targetElement) {
-			if ($scope.cardVisible) {
+			if ($scope.cardVisible && !$scope.viewState.isAddNewCard) {
 				$scope.$broadcast('saveContactInfo');
 				$scope.$broadcast('SAVELIKES');
-			}
-			if ($(targetElement).closest(".rover-header").length < 1 && $(targetElement).closest(".stay-card-alerts").length < 1 && $(targetElement).closest(".guest-card").length < 1 && $(targetElement).closest(".ngdialog").length < 1 && $(targetElement).find("#loading").length < 1 && $(targetElement).closest("#loading").length < 1 && $(targetElement).closest('.nav-toggle').length < 1) {
-				$scope.closeGuestCard();
 			}
 		};
 
