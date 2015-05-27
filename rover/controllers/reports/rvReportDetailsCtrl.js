@@ -417,6 +417,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 					template = '/assets/partials/reports/rvRoomQueuedReportRow.html';
 					break;
 
+				case reportUtils.getName('MARKET_SEGMENT_STATISTICS_REPORT'):
+					template = '/assets/partials/reports/rvMarketSegmentStatReportRow.html';
+					break;
+
 				default:
 					template = '/assets/partials/reports/rvCommonReportRow.html';
 					break;
