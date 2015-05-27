@@ -103,14 +103,12 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 	    */
 		$scope.savePayment = function(){
 			
-			
 			$scope.saveData.reservation_id = $scope.reservationData.reservation_id;
 			$scope.saveData.session_id = MLISessionId;
 			$scope.saveData.mli_token = $scope.saveData.card_number.substr($scope.saveData.card_number.length - 4);			
 			$scope.saveData.card_expiry = $scope.saveData.card_expiry_month+"/"+$scope.saveData.card_expiry_year;
 			
 			$scope.paymentAdded($scope.saveData);
-
 		};
 		/**
 	    * function to set the selected payment type
