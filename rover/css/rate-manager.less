@@ -155,82 +155,103 @@
 }
 
 .topbar {
-  height: 50px;
-  line-height: 50px;
+  padding-left: 40px;
+  height: 60px;
   width: 100%;
-  background: #FFFFFF;
-  border: 1px solid #FCFCFC;
+  background: #fcfcfc;
+  box-shadow: 0 1px 1px rgba(0,0,0,.1);
 
-  ul:not(.display-mode) {
+  .info {
     float: left;
-    margin-left: 40px;
-    height: 100%;
+    margin: 10px 0;
+    overflow: hidden;
+    width: 85%;
+    width: ~"calc(100% - 130px)";
 
-    li { 
-        display: inline-block;
-        float: left;
-        font-size: 14px;
-        line-height: normal;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+    li {
+      float: left;
+      display: block;
+      font-size: 14px;
+      line-height: 20px;
+      color: #202225;
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 0;
 
-        h6 {
-          color: #9D9D9D;
-          min-width: 200px;
-          text-transform: uppercase;
-          margin-top: 7px;
-          font-size: 12px;
+      strong { 
+        display: block;
+        font-size: 12px;
+        line-height: 10px;
+        font-weight: 400; 
+        color: #9d9d9d;
+        margin-top: 10px;
+      }
+      
+      .back-button {
+        display: block;
+        padding-right: 0;
+        box-shadow: none;
+      }
+        
+      &.back,
+      &.dates {
+        margin-right: 10px;
+        padding-right: 10px;
+        border-right: 1px solid rgba(0,0,0,.1);
+      }
+      &.back { 
+        width: 100px; 
+        margin-left: -10px;
+      }
+      &.dates { width: 180px; }
+      &.rates { width: ~"calc(100% - 190px)" }
+      &.card {
+        margin-left: 10px;
+        padding-left: 10px;
+        border-left: 1px solid rgba(0,0,0,.1);
+      }
+    }
+
+    /* With back / Name Card ***/
+    &.has-back {
+      li {
+        &.rates { width: ~"calc(100% - 290px)" }
+      }
+    }
+
+    &.has-card {
+      li {
+        &.rates { width: ~"calc(60% - 100px)" }
+        &.card { width: ~"calc(40% - 100px)" }
+      }
+
+      &.has-back {
+        li {
+          &.rates { width: ~"calc(60% - 150px)" }
+          &.card { width: ~"calc(40% - 150px)" }
         }
-
-        span{
-          text-transform: uppercase;
-          font-size:14px;
-        }
-
-        .button {
-          float:right !important;
-        }
-
-        .back-button {
-          display: block;
-          line-height: 40px; //normal;
-          margin-top: 5px; //14px;
-        }
-    } 
-
-    li:not(.ng-hide) + li:not(.ng-hide)::before {
-        content: "|";
-        color: #DDDDDD;
-        float: left;
-        font-size: 35px;
-        line-height: normal;
-        margin: 0 15px;
+      }
     }
   }
 
   .display-mode {
-      width: 100px;
+      width: 120px;
       float: right;
 
       li {
+          float: left;
           display: block;
           margin: 0;
           cursor: pointer;
-          width: 50px; 
-          height: 50px; 
-          float: left;
+          width: 60px; 
+          height: 60px; 
 
-          &:first-child { 
-            -webkit-box-shadow: 1px 0 0 rgba(0,0,0,.1);
-            -moz-box-shadow: 1px 0 0 rgba(0,0,0,.1);
-            box-shadow: 1px 0 0 rgba(0,0,0,.1);
-          }
+          &:first-child {  box-shadow: 1px 0 0 rgba(0,0,0,.1); }
 
           &.active {
               position: relative;
-              -webkit-box-shadow: none;
-              -moz-box-shadow: none;
               box-shadow: none;
               background-image: -moz-linear-gradient(top, #ffb319, #ff860d);
               background-image: -ms-linear-gradient(top, #ffb319, #ff860d);
@@ -254,14 +275,14 @@
               }
           }
 
-          .icon-grid {
-            background-position: 13px -4525px;
-            &.active { background-position: 14px -4585px; }
+          .icon-grid { 
+            background-position: 19px -4520px;
+            &.active { background-position: 19px -4580px; }
           }
 
-          .icon-graph {
-            background-position: 13px -4640px;
-            &.active { background-position: 13px -4640px; }
+          .icon-graph { 
+            background-position: 18px -4635px;
+            &.active { background-position: 18px -4695px; }
           }
       }
   }
@@ -328,11 +349,7 @@
   }
 
 .content {
-  clear:both;
-  margin-top: 80px; //40px;
-
-  
-
+  top: 130px;
   
   .calendar, .graph {
     display: block;
