@@ -10,14 +10,14 @@
 <!-- Report content -->
 <div id="report-content" class="report-content scrollable" ng-hide="hasNoResults" ng-class="{ 'with-pagination': (!disablePrevBtn || !disableNextBtn) }" ng-iscroll="report-details-scroll">
     <div class="wrapper">
-        <table class="guest-reports forecast-reports">
+        <table class="forecast-reports">
             <thead>
                 <tr class="top-row">
                     <th class="date"></th>
                     <th colspan="3" class="break">Guest Counts</th>
                     <th colspan="3" class="break">Group Counts</th>
                     <th colspan="2" class="break">Room %</th>
-                    <th colspan="3" class="break">Revenue</th>
+                    <th colspan="2" class="break">Revenue</th>
                     <th colspan="2">Last Year</th>
                 </tr>
                 <!-- <tr class="bottom-row">
@@ -38,8 +38,7 @@
                     <th><span>OCC</span></th>
                     <th class="break"><span>AVL</span></th>
                     <th><span>ROM</span></th>
-                    <th><span>ADR</span></th>
-                    <th class="break"><span>PAR</span></th>
+                    <th class="break"><span>ADR/PAR</span></th>
                     <th><span>LY</span></th>
                     <th><span>VAR</span></th>
                 </tr>
