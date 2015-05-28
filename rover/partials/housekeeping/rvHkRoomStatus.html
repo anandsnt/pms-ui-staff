@@ -54,8 +54,8 @@
 </form>
 
 <ul id="my-worksheet-options" class="worksheet-options" ng-show="!!hasActiveWorkSheet">
-    <li ng-click="changeView('summary')" ng-class="{'active': currentView == 'summary'}">Summary</li>
-    <li ng-click="changeView('rooms')" ng-class="{'active': currentView == 'rooms'}">Rooms</li>
+    <li click-touch="changeView('summary')" ng-class="{'active': currentView == 'summary'}">Summary</li>
+    <li click-touch="changeView('rooms')" ng-class="{'active': currentView == 'rooms'}">Rooms</li>
 </ul>
 
 <ul id="my-worksheet-summary" class="worksheet-summary" ng-if="!!hasActiveWorkSheet" ng-class="{'hidden': currentView == 'rooms'}"> <!-- Add class 'hidden' should be removed when "Rooms" is selected in #my-worksheet-options -->

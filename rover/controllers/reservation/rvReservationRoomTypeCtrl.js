@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'RVReservationBaseSearchSrv', '$timeout', '$state', 'ngDialog', '$sce', '$stateParams', 'dateFilter', '$filter', 'rvPermissionSrv',
-	function($rootScope, $scope, roomRates, RVReservationBaseSearchSrv, $timeout, $state, ngDialog, $sce, $stateParams, dateFilter, $filter, rvPermissionSrv) {
+sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'sortOrder', 'RVReservationBaseSearchSrv', '$timeout', '$state', 'ngDialog', '$sce', '$stateParams', 'dateFilter', '$filter', 'rvPermissionSrv',
+	function($rootScope, $scope, roomRates, sortOrder, RVReservationBaseSearchSrv, $timeout, $state, ngDialog, $sce, $stateParams, dateFilter, $filter, rvPermissionSrv) {
 
 
 		// smart switch btw edit reservation flow and create reservation flow
@@ -62,6 +62,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 		// $scope.activeMode = "ROOM_RATE";
 		$scope.stateCheck = {
+			sortOrder: sortOrder.value,
 			rateSelected: {
 				allDays: false,
 				oneDay: false,
@@ -232,16 +233,27 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			//sort the rooms by levels
 
-
-			$scope.displayData.allRooms.sort(function(a, b) {
-				var room1AvgPerNight = parseInt($scope.roomAvailability[a.id].averagePerNight);
-				var room2AvgPerNight = parseInt($scope.roomAvailability[b.id].averagePerNight);
-				if (room1AvgPerNight < room2AvgPerNight)
-					return -1;
-				if (room1AvgPerNight > room2AvgPerNight)
-					return 1;
-				return 0;
-			});
+			if ($scope.stateCheck.sortOrder == "HIGH_TO_LOW") {
+				$scope.displayData.allRooms.sort(function(a, b) {
+					var room1AvgPerNight = parseInt($scope.roomAvailability[a.id].averagePerNight);
+					var room2AvgPerNight = parseInt($scope.roomAvailability[b.id].averagePerNight);
+					if (room1AvgPerNight < room2AvgPerNight)
+						return 1;
+					if (room1AvgPerNight > room2AvgPerNight)
+						return -1;
+					return 0;
+				});
+			} else {
+				$scope.displayData.allRooms.sort(function(a, b) {
+					var room1AvgPerNight = parseInt($scope.roomAvailability[a.id].averagePerNight);
+					var room2AvgPerNight = parseInt($scope.roomAvailability[b.id].averagePerNight);
+					if (room1AvgPerNight < room2AvgPerNight)
+						return -1;
+					if (room1AvgPerNight > room2AvgPerNight)
+						return 1;
+					return 0;
+				});
+			}
 
 			$scope.displayData.allRooms.sort(function(a, b) {
 				if (a.level < b.level)

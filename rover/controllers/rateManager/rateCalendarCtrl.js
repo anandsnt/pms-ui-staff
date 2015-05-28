@@ -221,6 +221,21 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                 } else return false;
         };
 
+
+        $scope.everyRestriction = [];
+        $scope.getRestrictionsForDateRoomType = function(date, room_type_name){
+          for (var x in $scope.everyRestriction){
+            if ($scope.everyRestriction[x].date == date){
+                for (var i in $scope.everyRestriction[x].room_types){
+                    if (room_type_name === $scope.everyRestriction[x].room_types[i].room_type.name){
+                        return $scope.everyRestriction[x].room_types[i].restriction_overrides;
+                    }
+                }
+            }
+          }
+        };
+        
+
         var loadTable = function () {
             $scope.currentExpandedRow = -1;//reset the expanded row
             $scope.loading = true;
@@ -233,6 +248,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                 }
 
                 var calenderDataFetchSuccess = function (data) {
+                    
                     //Set the calendar type
                     if (data.type === 'ROOM_TYPES_LIST') {
                         $scope.calendarMode = "ROOM_TYPE_VIEW";
@@ -244,11 +260,68 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                         $scope.calendarMode = "RATE_VIEW";
                     }
 
+
+                    
+                    if ($scope.ratesRoomsToggle == 'ROOMS'){
+                                    $scope.everyRestriction = $scope.calendarData.room_type_restrictions;
+                            var d, rm_type, r_date, rm_type_name;
+                            $scope.calendarData.data_new = [];
+                            for (var x in $scope.calendarData.data){
+                                if (x < $scope.calendarData.room_types_all.length){
+                                    d = $scope.calendarData.data[x];
+                                    $scope.calendarData.data[x].name = $scope.calendarData.room_types_all[x].name;
+                                    $scope.calendarData.data[x].room_type_id = $scope.calendarData.room_types_all[x].room_type_id;
+                                    
+                                     $scope.calendarData.data_new.push($scope.calendarData.data[x]);
+
+                                } else {
+                                    delete $scope.calendarData.data[x];
+                                }
+                            }
+                            
+                            
+                            //push the room_type restriction into the all_rates object
+                            //per date/room_type
+                            var room_type_id, date, rs, rs_ri;
+                            for (var a in $scope.calendarData.data_new){
+                                room_type_id = $scope.calendarData.data_new[a].room_type_id;
+                                date = $scope.calendarData.dates[a];
+                                
+                                for (var b in $scope.calendarData.room_type_restrictions){
+                                    rs = $scope.calendarData.room_type_restrictions[b];
+                                    if (rs.date === date){
+                                        for (var ri in rs.room_types){
+                                            rs_ri = rs.room_types[ri];
+                                            if (rs_ri.room_type.id === room_type_id){
+                                                for (var c in rs_ri.restriction_overrides){
+                                                    $scope.calendarData.room_type_restrictions[b].room_types[ri].restriction_overrides[c].type_id = rs_ri.restriction_overrides.restriction_type_id;
+                                                }
+                                                 $scope.calendarData.all_rates[date] = rs_ri.restriction_overrides;
+                                            }
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                            
+                                  for (var ev in $scope.calendarData.data){
+                                        rm_type = $scope.calendarData.data[ev];
+                                        rm_type_name = $scope.calendarData.data[ev].name;
+                                        
+                                        for (var xi = 0; xi < $scope.calendarData.dates.length; xi++){
+                                            r_date = $scope.calendarData.dates[xi];
+                                            $scope.calendarData.data[ev][r_date] = $scope.getRestrictionsForDateRoomType(r_date, rm_type_name);
+                                        }
+                                        
+                                    }
+                            $scope.calendarData.data = $scope.calendarData.data_new;
+                            data.data = $scope.calendarData.data;
+                        }
+                            
                     if (typeof data.selectedRateDetails !== 'undefined') {
                         $scope.currentSelectedRate = data.selectedRateDetails;
                         $scope.ratesDisplayed.push(data.selectedRateDetails);
                     }
-
                     $scope.calendarData = data;
                     $scope.$emit('hideLoader');
                 };
@@ -269,7 +342,29 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
             }, 200);
         };
 
-        function finalizeCapture() {
+        $scope.$on('showRatesBtnClicked',function(){
+            $scope.ratesRoomsToggle = 'RATES';
+            $scope.activeToggleButton = 'Rates';
+        });
+        
+        $scope.toggleAllRates = function(){
+            if ($scope.ratesRoomsToggle !== 'RATES'){
+                $scope.ratesRoomsToggle = 'RATES';
+                $scope.activeToggleButton = 'Rates';
+                loadTable();
+            }
+        };
+        
+        $scope.toggleAllRooms = function(){
+            if ($scope.ratesRoomsToggle !== 'ROOMS'){
+                $scope.ratesRoomsToggle = 'ROOMS';
+                $scope.activeToggleButton = 'Rooms';
+                loadTable();
+            }
+        };
+
+
+	function finalizeCapture() {
             $scope.initScrollBind();
             $scope.loading = false;
             $scope.currentFilterData.filterConfigured = true;
@@ -339,6 +434,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
          * Click handler for up-arrows in rate_view_calendar
          */
         $scope.goToRoomTypeCalendarView = function (rate) {
+            if ($scope.ratesRoomsToggle !== 'ROOMS'){
             $scope.$emit('showLoader');
             $scope.loading = true;
             setTimeout(function () {
@@ -349,7 +445,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                 $scope.calendarMode = "ROOM_TYPE_VIEW";
                 loadTable(rate.id);
             }, 200);
-
+        }
         };
         /**
          * Handle openall/closeall button clicks
@@ -426,6 +522,16 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
          * Set scope variables to be passed to the popup.
          */
         $scope.showUpdatePriceAndRestrictionsDialog = function (date, rate, roomType, type, isForAllData) {
+            
+              if ($scope.ratesRoomsToggle === 'ROOMS'){
+                  var roomTypeName;
+                for (var i in $scope.calendarData.room_types_all){
+                        if ($scope.calendarData.room_types_all[i].room_type_id === roomType){
+                                roomTypeName = $scope.calendarData.room_types_all[i].name;
+                        }
+                }
+                   $scope.popupData.room_restrictions = $scope.getRestrictionsForDateRoomType(date, roomTypeName);
+            }
             $scope.popupData.selectedDate = date;
             $scope.popupData.selectedRate = rate;
             if (rate === "") {
