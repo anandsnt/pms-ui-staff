@@ -1,5 +1,5 @@
 <div class="topbar float">
-	<ul class="info" ng-class="{'has-back' : backbuttonEnabled, 'has-card' : currentFilterData.name_cards.length > 0}">
+	<ul class="info" ng-class="{'has-back' : backbuttonEnabled, 'has-rates' : ratesDisplayed.length > 0, 'has-card' : currentFilterData.name_cards.length > 0}">
 		<li class="back" ng-show="backbuttonEnabled">
 			<a ng-click="backButtonClicked()" class="back-button">Back</a>
 		</li>

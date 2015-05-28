@@ -204,33 +204,39 @@
       &.back { 
         width: 100px; 
         margin-left: -10px;
+        font-size: 16px;
       }
       &.dates { width: 180px; }
-      &.rates { width: ~"calc(100% - 190px)" }
-      &.card {
-        margin-left: 10px;
-        padding-left: 10px;
-        border-left: 1px solid rgba(0,0,0,.1);
+      &.rates { max-width: ~"calc(100% - 190px)" }
+    }
+
+    /* Conditional classes ***/
+    &.has-back {
+      li {
+        &.rates { max-width: ~"calc(100% - 290px)" }
       }
     }
 
-    /* With back / Name Card ***/
-    &.has-back {
+    &.has-rates {
       li {
-        &.rates { width: ~"calc(100% - 290px)" }
+        &.card {
+          margin-left: 10px;
+          padding-left: 10px;
+          border-left: 1px solid rgba(0,0,0,.1);
+        }
       }
     }
 
     &.has-card {
       li {
-        &.rates { width: ~"calc(60% - 100px)" }
-        &.card { width: ~"calc(40% - 100px)" }
+        &.rates { max-width: ~"calc(60% - 100px)" }
+        &.card { max-width: ~"calc(40% - 100px)" }
       }
 
       &.has-back {
         li {
-          &.rates { width: ~"calc(60% - 150px)" }
-          &.card { width: ~"calc(40% - 150px)" }
+          &.rates { max-width: ~"calc(60% - 150px)" }
+          &.card { max-width: ~"calc(40% - 150px)" }
         }
       }
     }
