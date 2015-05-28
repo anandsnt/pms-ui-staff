@@ -1,7 +1,7 @@
 <div class="block-item item-room" ng-controller="reservationRoomStatus" ng-class="addHasButtonClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_upsell_available)" ng-init="">
     <h3 class="block-title">
         Room
-        <button ng-controller="staycardController" ng-click="showRoomSharerPopup()" type="button" class="button blue">Shared</button>
+        <button ng-controller="staycardController" ng-click="showRoomSharerPopup()" type="button" class="button blue" ng-hide="sharedReservationData.sharers.length === 0">Shared</button>
 	</h3>
 
 	<!-- Room Assignment screen is not available for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' reservations -->
