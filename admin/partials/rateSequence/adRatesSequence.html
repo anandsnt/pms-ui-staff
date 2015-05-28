@@ -1,0 +1,51 @@
+<section id="replacing-div-second" class="content current" ng-hide="isLoading" ng-cloak ng-click="clearErrorMessage()">
+    <div>
+        <header class="content-title float">
+            <h2 translate>RATE_SEQUENCE</h2>
+            <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
+        </header>
+        <section class="content-scroll">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <form class="form float">
+                <div class="form-title full-width">
+                    <h3><span translate>ROOM_AND_RATES_SCREEN</span></h3>
+                </div>
+                <fieldset class="holder left">
+                    <div ng-repeat="option in sequenceState.availableOptions.room_rate" class="entry radio-check full-width" ng-click="changePreference('room_rates',option)">
+                        <label class="checkbox" ng-class="{'checked': isChecked}">
+                            <span class="icon-form icon-checkbox" ng-class="{'checked': sequenceState.selectedOptions.room_rates.id == option.id}"></span> {{option.description}}
+                        </label>
+                    </div>
+                </fieldset>
+                <div class="form-title full-width">
+                    <h3><span translate>RATE_MANAGER</span></h3>
+                </div>
+                <fieldset class="holder left">
+                    <div ng-repeat="option in sequenceState.availableOptions.rate_manager" class="entry radio-check full-width" ng-click="changePreference('rate_manager',option)">
+                        <label class="checkbox" ng-class="{'checked': isChecked}">
+                            <span class="icon-form icon-checkbox" ng-class="{'checked': sequenceState.selectedOptions.rate_manager.id == option.id}"></span> {{option.description}}
+                        </label>
+                    </div>
+                </fieldset>
+                <div class="form-title full-width">
+                    <h3><span translate>DASHBOARD</span></h3>
+                </div>
+                <fieldset class="holder left">
+                    <div ng-repeat="option in sequenceState.availableOptions.dashboard" class="entry radio-check full-width" ng-click="changePreference('dashboard',option)">
+                        <label class="checkbox" ng-class="{'checked': isChecked}">
+                            <span class="icon-form icon-checkbox" ng-class="{'checked': sequenceState.selectedOptions.dashboard.id == option.id}"></span> {{option.description}}
+                        </label>
+                    </div>
+                </fieldset>
+                <div class="actions float">
+                    <button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()" translate>
+                        CANCEL
+                    </button>
+                    <button type="button" id="save" class="button green" ng-click="saveRateSortPreferences()" translate>
+                        SAVE_CHANGES
+                    </button>
+                </div>
+            </form>
+        </section>
+    </div>
+</section>

@@ -58,7 +58,6 @@
 "EVERYONE":"Everyone",
 "SPECIFIC_USERS":"Specific User(s)",
 "EXTERNAL_CHECKIN":"External Checkin",
-"EXTERNAL_CHECKOUT":"External Checkout",
 
 "MESSAGE":"Message",
 "IN_APP":"in App",
@@ -284,9 +283,6 @@
 "GENERAL_LABEL": "General Information",
 "LINK_LABEL": "Link",
 "SCREEN_LABEL": "Screen",
-"ADDON_LABEL": "Add On",
-"ADDON_DESCRIPTION_LABEL": "Add On Description",
-"ADDON_PRICE_LABEL": "Add On Price",
 "DESCRIPTION_LABEL": "Description",
 "PHONE_LABEL": "Phone",
 "ADDRESS_LABEL": "Address",
@@ -571,9 +567,13 @@
 ,
 
 
-"RATE_TYPES":"Rate Types",
-"RATE_TYPE":"Rate Type",
-"RATE_TYPE_PLACEHOLDER":"Enter rate type",
+"RATE_TYPES": "Rate Types",
+"RATE_TYPE": "Rate Type",
+"RATE_TYPE_PLACEHOLDER": "Enter rate type",
+"RATE_SEQUENCE": "Rate Sequence",
+"ROOM_AND_RATES_SCREEN": "Room and Rates Screen",
+"RATE_MANAGER": "Rate Manager",
+"DASHBOARD": "Dashboard",
 
 
 "MARKET":"Markets",
@@ -794,9 +794,7 @@
 
 "GUEST_CHECKOUT_SETUP":"Guest Checkout Setup",
 "SEND_CHECKOUT_EMAIL":"Send Checkout Email",
-"SEND_CHECKOUT_NOTIFICATON_EMAIL":"Send check out notification email to all DUE OUT guests at",
-"SEND_ZEST_CHECKOUT_ALERT_LABEL":"Send zest app alert to all DUE OUT guests at",
-"SEND_ZEST_CHECKOUT_NOTIFICATION_ALERT" : "SEND APP ALERT TO ALL DUE OUT GUESTS",
+"SEND_CHECKOUT_NOTIFICATON_EMAIL":"Sent check out notification email to all DUE OUT guests at",
 "CC_GUARENTEED_LABEL":"Only if Reservation is CC guaranteed",
 "CASH_PAYMENT_LABEL":"Only if Reservation is CASH payment",
 "WEB_CHEKOUT_ALERT_LABEL":"Web Check Out staff alert",
@@ -828,11 +826,4 @@
 "EXCLUDE_ROOM_TYPES":"EXCLUDE ROOM TYPES",
 "EXCLUDED_ROOM_TYPES":"EXCLUDED ROOM TYPES"
 
-,
-
-
-"ADDON_SETUP_HEADER": "Addon Setup",
-"GUEST_ACTIONS_SWITCH_LABEL": "Guest Actions With ADD ONS",
-"DISPLAY_ADDONS_SWITCH_LABEL": "Display purchased Add Ons",
-"ALLOW_CANCELLATION_SWITCH_LABEL": "Allow cancellation of purchased Add Ons",
-"AVAILABLE_ADDONS_SWITCH_LABEL" : "Display available Add Ons and enable purchasing"}
+}
