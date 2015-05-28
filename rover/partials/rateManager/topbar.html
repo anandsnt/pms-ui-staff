@@ -6,10 +6,10 @@
 		<li ng-show="currentFilterData.name_cards.length > 0"><h6>Name Card</h6><span ng-repeat="card in currentFilterData.name_cards">{{card.account_name}}{{$last ? '' : ', '}}</span></li>
 	</ul>
 	<ul class="display-mode" >
-		<li ng-click="showCalendarView()" class="active" ng-class="{'active' : displayMode == 'CALENDAR'}">
+		<li click-touch="showCalendarView()" class="active" ng-class="{'active' : displayMode == 'CALENDAR'}">
 			<span class="icons icon-navbar only-icon icon-grid active" ng-class="{'active' : displayMode == 'CALENDAR'}">Show grid</span>
 		</li>
-		<li ng-click="showGraphView()" ng-class="{'active' : displayMode == 'GRAPH'}">
+		<li click-touch="showGraphView()" ng-class="{'active' : displayMode == 'GRAPH'}">
 			<span class="icons icon-navbar only-icon icon-graph" ng-class="{'active' : displayMode == 'GRAPH'}">Show graph</span>
 		</li>
 	</ul>
