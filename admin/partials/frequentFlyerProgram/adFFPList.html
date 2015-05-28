@@ -4,15 +4,22 @@
 		<header class="content-title float">
 			<h2 translate>FREQUENT_FLYER_PROGRAMS</h2>
 			<span class="count">({{ ffp.length}})</span>
+                        <div class="header-title">
+                        <h2 translate> USE_FREQUENT_FLYERS </h2>
+                            <div name="active-inactive-toggle" class="switch-button single header-switch-btn" ng-class="{ on: use_ffp }" ng-click="activateMainInactivate()">
+                                <input type="checkbox">
+                                <span class="switch-icon"></span>
+                            </div>
+                        </div>
 		</header>
-		<section class="content-scroll">
+		<section class="content-scroll" ng-class="{'overlay' : !use_ffp}">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<table class="grid datatable table " ng-table="tableParams" template-pagination="nil">
 				<tbody >
 					<tr ffp-id="{{item.id}}" ng-repeat = "item in ffp">
 						<td data-title="'Airline'" sortable="'airline'"><strong> {{item.airline}} </strong></td>
 						<td data-title="'Program name'" sortable="'program_name'">{{item.program_name}} </td>
-						<td data-title="'Active'" class="activate">
+						<td data-title="'Active'" class="activate aligned-right">
 							<div class="entry" >
 								<label></label>
 								<div class="switch-button single"  ng-class="{ on : item.is_active }">

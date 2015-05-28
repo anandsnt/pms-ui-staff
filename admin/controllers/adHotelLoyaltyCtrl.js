@@ -141,19 +141,16 @@ admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', 
 			"value": loyaltyId
 		};
 		var successCallbackActivateInactivate = function(data){
-			$scope.data.hotel_loyalty_program[index].is_active = (currentStatus == "true" ? "false" : "true");
+			$scope.data.hotel_loyalty_program[index].is_active = (currentStatus == "true" ? false : true);
 			$scope.$emit('hideLoader');
 		};
 		$scope.invokeApi(ADHotelLoyaltySrv.activateInactivate, data , successCallbackActivateInactivate);
 	};
-
-
 	$scope.activateMainInactivate = function(currentStatus){
-		var nextStatus = (($scope.data.use_hlp == "true") ? "false" : "true");
+		var nextStatus = !$scope.data.use_hlp;
 		var data = {
 			"set_active": nextStatus
 		};
-
 		var successCallbackActivateMainInactivate = function(data){
 			$scope.data.use_hlp = !$scope.data.use_hlp;
 			$scope.$emit('hideLoader');
