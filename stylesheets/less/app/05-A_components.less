@@ -2193,6 +2193,25 @@
                                         &.full-width { padding-top: 0; }
                                     }
 
+                                    &.with-button,
+                                    &.only-button { 
+                                        .button {
+                                            position: relative;
+
+                                            .count {
+                                                position: absolute;
+                                                top: -6px;
+                                                right: -6px;
+                                                font-size: 12px;
+                                                line-height: 24px;
+                                                color: @white;
+                                                background-color: @softRedStart;
+                                                #border-radius > .rounded(24px);
+                                                .square(24px);
+                                            }
+                                        }
+                                    }
+
                                     &.with-button {
                                         .float;
 
@@ -2216,17 +2235,6 @@
                                                     top: 10px;
                                                     left: 10px;
                                                     margin-left: 0;
-                                                }
-
-                                                .count {
-                                                    position: absolute;
-                                                    top: -6px;
-                                                    right: -6px;
-                                                    font-size: 12px;
-                                                    line-height: 24px;
-                                                    background-color: @softRedStart;
-                                                    #border-radius > .rounded(24px);
-                                                    .square(24px);
                                                 }
                                             }
                                         }
