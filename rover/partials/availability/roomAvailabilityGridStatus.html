@@ -46,7 +46,7 @@
 				<tr class="room-details main" ng-if="!isHourlyRateOn">
 					<th class="heading rows-toggle" ng-click="toggleShowRoomTypeWiseBookedRooms()">Booked Rooms</th>
 					<td  ng-repeat="bookedRoom in data.bookedRooms track by $index">
-						<div class="inner" ng-bind="bookedRoom"></div>
+						<div class="inner green" ng-bind="bookedRoom"></div>
 					</td>
 				</tr>							
 				<tr class="room-details" ng-if="!isHourlyRateOn" ng-class="{'hidden': !showRoomTypeWiseBookedRooms }"  ng-repeat="individualBookedRoomList in data.individualBookedRooms track by $index">
