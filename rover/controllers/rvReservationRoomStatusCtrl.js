@@ -197,8 +197,6 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 	};
         
         $scope.$watch('reservationData.reservation_card.room_number',function(){
-            var room = '12';
-           $scope.$emit('staycard-room-number-change',room);
            if ($rootScope.viaSharerPopup){
                 $rootScope.$broadcast('SETPREV_RESERVATION',$rootScope.viaSharerName);
                 $rootScope.viaSharerPopup = false;

@@ -51,7 +51,7 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 			$scope.guestCardData.contactInfo.avatar = data.guest_details.avatar;
                         $scope.sharedReservationData = {};
                         
-                        $scope.sharedReservationData.room_number = '15';//update from api
+                        $scope.sharedReservationData.room_number = '';//update from api
                         for (var x in data.sharers){
                             data.sharers[x].guest_details.first_last = data.sharers[x].guest_details.last_name+', '+data.sharers[x].guest_details.first_name;
                         }
@@ -59,23 +59,27 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
                         
 		});
                 $scope.goToSharedReservation = function(sharer){
-                    var fullname = $scope.guestCardData.contactInfo.first_name+' '+$scope.guestCardData.contactInfo.last_name,
-                            reservation_no = sharer.guest_details.reservation_id,
-                            confirmation_no = sharer.confirm_no;
+                    if (!sharer.active){
+                        
+                        var fullname = $scope.guestCardData.contactInfo.first_name+' '+$scope.guestCardData.contactInfo.last_name,
+                                reservation_no = sharer.guest_details.reservation_id,
+                                confirmation_no = sharer.confirm_no;
+
+                        $scope.isLoading = true;
+                        $rootScope.$broadcast('showLoading');
+                        $scope.$broadcast('showLoading');
+                        setTimeout(function(){
+                            var data = {
+                                confirmation_no: confirmation_no,
+                                reservation_no: reservation_no,
+                                fullname: fullname
+                            };
+                                $rootScope.viaSharerName = fullname;
+                                $rootScope.$broadcast('LOAD_SHARED_RESERVATION',data);
+                        },200);
                     
-                    $scope.isLoading = true;
-                    $rootScope.$broadcast('showLoading');
-                    $scope.$broadcast('showLoading');
-                    setTimeout(function(){
-                        var data = {
-                            confirmation_no: confirmation_no,
-                            reservation_no: reservation_no,
-                            fullname: fullname
-                        };
-                            $rootScope.viaSharerName = fullname;
-                            $rootScope.$broadcast('LOAD_SHARED_RESERVATION',data);
-                    },200);
-                 
+                    
+                    }
                 };
                 
                 $scope.getTimes=function(n){
