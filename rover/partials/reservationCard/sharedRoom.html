@@ -13,7 +13,7 @@
                   <tr class='outset-block' click-touch="goToSharedReservation({{sharer}});  closeDialog()">
                         <th><img src="{{sharer.guest_details.avatar}}" alt="" class="sharer-avater"/></th>
                         <th><h3 class="sharer-name" style="float:left; font-weight: 600;">{{sharer.guest_details.last_name}}, {{sharer.guest_details.first_name}} </h3>
-                        <br /><span class="sharer-confirmation">{{sharer.guest_details.reservation_id}}</span>
+                        <br /><span class="sharer-confirmation">{{sharer.confirm_no}}</span>
                         </th>
                         <th style="width:100%"></th><th>
                             <span ng-if="sharer.reservation_status === 'CHECKEDOUT'" class="guest-status check-out sharer-status-icon" ></span>
@@ -26,7 +26,7 @@
                   <tr class='outset-block' click-touch="goToSharedReservation({{sharer}})">
                         <th><img src="{{sharer.guest_details.avatar}}" alt="" class="sharer-avater"/></th>
                         <th><h3 class="sharer-name" style="float:left; font-weight: 600;">{{sharer.guest_details.last_name}}, {{sharer.guest_details.first_name}} </h3>
-                        <br /><span class="sharer-confirmation">{{sharer.guest_details.reservation_id}}</span>
+                        <br /><span class="sharer-confirmation">{{sharer.confirm_no}}</span>
                         </th>
                         <th style="width:100%"></th><th>
                             <span ng-if="sharer.reservation_status === 'CHECKEDOUT'" class="guest-status check-out sharer-status-icon" ></span>
