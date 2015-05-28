@@ -15,7 +15,6 @@ admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', 
 			$scope.$emit('hideLoader');
 			$scope.data = data;
 			$scope.currentClickedElement = -1;
-		
 			$scope.isAddMode = false;
 		};
 		$scope.invokeApi(ADHotelLoyaltySrv.fetch, {} , successCallbackFetch);	
@@ -146,6 +145,20 @@ admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', 
 			$scope.$emit('hideLoader');
 		};
 		$scope.invokeApi(ADHotelLoyaltySrv.activateInactivate, data , successCallbackActivateInactivate);
+	};
+
+
+	$scope.activateMainInactivate = function(currentStatus){
+		var nextStatus = (($scope.data.use_hlp == "true") ? "false" : "true");
+		var data = {
+			"set_active": nextStatus
+		};
+
+		var successCallbackActivateMainInactivate = function(data){
+			$scope.data.use_hlp = !$scope.data.use_hlp;
+			$scope.$emit('hideLoader');
+		};
+		$scope.invokeApi(ADHotelLoyaltySrv.switchMainToggle, data , successCallbackActivateMainInactivate);
 	};
 
 	$scope.getEditStatusForLevel = function(index){

@@ -6,6 +6,7 @@
 				{{data.hotel_loyalty_program.length}}
 				) </span>
 			<a id="add-new-button" class="action add" ng-click="addNewHotelLoyalty()" translate>ADD_NEW</a>
+			<ad-toggle-button ng-class="{{data.use_hlp}} ? 'on' : ''" div-class="header-title" ng-click="activateMainInactivate()" label="{{'USE_LOYALTY' | translate}}"></ad-toggle-button>
 		</header>
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
