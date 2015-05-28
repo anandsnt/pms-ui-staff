@@ -314,6 +314,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/rates_addons'
 		});
 
+		$stateProvider.state('admin.ratesSequence', {
+			templateUrl: '/assets/partials/rateSequence/adRatesSequence.html',
+			controller: 'ADRatesSequenceCtrl',
+			url : '/rates_sequence'
+		});
+
 		$stateProvider.state('admin.userRoles', {
 			templateUrl: '/assets/partials/UserRoles/adUserRoles.html',
 			controller: 'ADUserRolesCtrl',
