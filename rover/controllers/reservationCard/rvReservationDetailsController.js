@@ -1,8 +1,6 @@
 sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter',
 	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter) {
 
-
-
 		// pre setups for back button
 		var backTitle,
 			backParam,
@@ -794,5 +792,12 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			openRoomOccupiedPopup();
 			$scope.initreverseCheckoutDetails();
 		};
+                
+    $rootScope.$on('SETPREV_RESERVATION',function(evt, fullname){
+        setNavigationBookMark();
+        $rootScope.setPrevState = {
+                title: fullname
+        };
+    });
 	}
 ]);
