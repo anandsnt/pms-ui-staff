@@ -213,9 +213,39 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		}
 	);
 
-
 	init();
 
+	$scope.isScreenSwitchDisabled = function(){
+          var delivery_types = ['EXTERNAL_CHECKIN', 'EXTERNAL_CHECKOUT'];
 
+          if(delivery_types.indexOf($scope.campaignData.audience_type) > -1 
+          	&& delivery_types.indexOf($scope.campaignData.delivery_details) > -1 &&
+          	 delivery_types.indexOf($scope.campaignData.audience_type) == delivery_types.indexOf($scope.campaignData.delivery_details)){
+          	return false;
+          }
+          return true;
+	}
+
+	$scope.$watch(function(){
+		return $scope.campaignData.delivery_details;
+	}, function(value) {
+			if($scope.isScreenSwitchDisabled()){
+                 $scope.campaignData.target_type = "";
+				 $scope.campaignData.screen_type_id = "";
+			}
+			
+		}
+	);
+
+	$scope.$watch(function(){
+		return $scope.campaignData.audience_type;
+	}, function(value) {
+			if($scope.isScreenSwitchDisabled()){
+                 $scope.campaignData.target_type = "";
+				 $scope.campaignData.screen_type_id = "";
+			}
+			
+		}
+	);
 	
 }]);
