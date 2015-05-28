@@ -85,10 +85,10 @@
          <!-- Search results, show instead of attached entities when searching -->
          
         <ul id="filter-entities" class="modal-options" ng-show="textInQueryBox!=''">
-			<li ng-click="toggleClicked(true)" ng-class="{'active':isReservationActive}" translate>
+			<li click-touch="toggleClicked(true)" ng-class="{'active':isReservationActive}" translate>
 				RESERVATIONS
 			</li>
-			<li ng-click="toggleClicked(false)" ng-class="{'active':!isReservationActive}" translate>
+			<li click-touch="toggleClicked(false)" ng-class="{'active':!isReservationActive}" translate>
 				ACCOUNTS_AND_CARDS
 			</li>
 		</ul>
