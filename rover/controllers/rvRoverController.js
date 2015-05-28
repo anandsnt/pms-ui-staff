@@ -107,6 +107,8 @@ sntRover.controller('roverController',
     $rootScope.paymentGateway = hotelDetails.payment_gateway;
     $rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
     $rootScope.isAddonOn = hotelDetails.is_addon_on;
+    $rootScope.desktopSwipeEnabled = hotelDetails.allow_desktop_swipe;
+	$rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
     //set MLI Merchant Id
     try {
       sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
@@ -477,13 +479,22 @@ sntRover.controller('roverController',
       $scope.$broadcast('SWIPE_ACTION', data);
     };
 
-    $scope.failureCallBackSwipe = function() {};
+    $scope.failureCallBackSwipe = function(errorMessage) {
+    	$scope.errorMessage = errorMessage;
+    	if($rootScope.desktopSwipeEnabled){
+    		$rootScope.showWebsocketConnectionError();
+    	}
+    };
 
     var options = {};
     options["successCallBack"] = $scope.successCallBackSwipe;
     options["failureCallBack"] = $scope.failureCallBackSwipe;
 
     $scope.numberOfCordovaCalls = 0;
+
+    var initiateDesktopCardReader = function(){
+    	sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options);
+    }
 
     $scope.initiateCardReader = function() {
       if (sntapp.cardSwipeDebug === true) {
@@ -512,9 +523,14 @@ sntRover.controller('roverController',
      * Time out is to call set Browser
      */
     if ($rootScope.paymentGateway != "sixpayments") {
-      setTimeout(function() {
-        $scope.initiateCardReader();
-      }, 2000);
+		if($rootScope.desktopSwipeEnabled){
+			initiateDesktopCardReader();
+		} else {
+     		//Time out is to call set Browser
+			setTimeout(function() {
+			  $scope.initiateCardReader();
+			}, 2000);
+		}
     }
 
 
@@ -575,6 +591,16 @@ sntRover.controller('roverController',
           window.scrollTo(0, 0);
         }, 700);
       }
+    };
+
+    $rootScope.showWebsocketConnectionError = function() {
+    	$scope.$emit('hideLoader');
+        ngDialog.open({
+          template: '/assets/partials/desktopSwipe/rvWebsocketConnectionError.html',
+          className: 'ngdialog-theme-default1 modal-theme1',
+          closeByDocument: false,
+          scope: $scope
+        });
     };
 
     /**
