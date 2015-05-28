@@ -10,23 +10,38 @@
 <!-- Report content -->
 <div id="report-content" class="report-content scrollable" ng-hide="hasNoResults" ng-class="{ 'with-pagination': (!disablePrevBtn || !disableNextBtn) }" ng-iscroll="report-details-scroll">
     <div class="wrapper">
-        <table class="forecast-reports">
+        <table class="guest-reports forecast-reports">
             <thead>
                 <tr class="top-row">
                     <th class="date"></th>
                     <th colspan="3" class="break">Guest Counts</th>
-                    <th colspan="6" class="break">Group Counts & GTD</th>
-                    <th colspan="3" class="break">Total Counts</th>
-                    <th colspan="4" class="break">Room Percentage</th>
-                    <th colspan="5" class="break">Revenue</th>
+                    <th colspan="3" class="break">Group Counts</th>
+                    <th colspan="2" class="break">Room %</th>
+                    <th colspan="3" class="break">Revenue</th>
                     <th colspan="2">Last Year</th>
                 </tr>
-                <tr class="bottom-row">
+                <!-- <tr class="bottom-row">
                     <th ng-repeat="item in subHeaders track by $index" ng-class="{ 'date': $index == 0, 'break': $index == 8 }">
                         <span>
                             {{ item }}
                         </span>
                     </th>
+                </tr> -->
+                <tr class="bottom-row">
+                    <th><span>Date</span></th>
+                    <th><span>ARR</span></th>
+                    <th><span>INH</span></th>
+                    <th class="break"><span>DEP</span></th>
+                    <th><span>ARR</span></th>
+                    <th><span>INH</span></th>
+                    <th class="break"><span>DEP</span></th>
+                    <th><span>OCC</span></th>
+                    <th class="break"><span>AVL</span></th>
+                    <th><span>ROM</span></th>
+                    <th><span>ADR</span></th>
+                    <th class="break"><span>PAR</span></th>
+                    <th><span>LY</span></th>
+                    <th><span>VAR</span></th>
                 </tr>
             </thead>
             

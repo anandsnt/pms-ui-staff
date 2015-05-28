@@ -5,31 +5,66 @@
 		<span>OOO: {{ each.ooo_count }}</span>
 	</td>
 
-	<td>{{ each.guest_arrival_count }}</td>
-	<td>{{ each.guest_inhouse_count }}</td>
-	<td class="break">{{ each.guest_departure_count }}</td>
 
-	<td>{{ each.group_arrival_count }}</td>
-	<td>{{ each.group_arrival_gtd }}</td>
-	<td>{{ each.group_inhouse_count }}</td>
-	<td>{{ each.group_occupied_rooms_gtd }}</td>
-	<td>{{ each.group_departure_count }}</td>
-	<td class="break">{{ each.group_departure_gtd }}</td>
+	<td>
+		<span class="guest-status check-in">check-in</span>
+		<time>
+			<span>Count: {{ each.guest_arrival_count }}</span>
+		</time>
+	</td>
+	<td>
+		<span class="guest-status inhouse">inhouse</span>
+		<time>
+			<span>Count: {{ each.guest_inhouse_count }}</span>
+		</time>
+	</td>
+	<td class="break">
+		<span class="guest-status check-out">check-out</span>
+		<time>
+			<span>Count: {{ each.guest_departure_count }}</span>
+		</time>
+	</td>
 
-	<td>{{ each.total_arrival_count }}</td>
-	<td>{{ each.total_inhouse_count }}</td>
-	<td class="break">{{ each.total_departure_count }}</td>
 
-	<td>{{ each.guest_occupied_room_percentage }}</td>
-	<td>{{ each.group_occupied_room_percentage }}</td>
-	<td>{{ each.total_occupied_room_percentage }}</td>
+	<td>
+		<span class="guest-status check-in">check-in</span>
+		<time>
+			<span>Count: {{ each.group_arrival_count }}</span>
+			<span>GTD: {{ each.group_arrival_gtd }}</span>
+		</time>
+	</td>
+	<td>
+		<span class="guest-status inhouse">inhouse</span>
+		<time>
+			<span>Count: {{ each.group_arrival_count }}</span>
+			<span>GTD: {{ each.group_arrival_gtd }}</span>
+		</time>
+	</td>
+	<td class="break">
+		<span class="guest-status check-out">check-out</span>
+		<time>
+			<span>Count: {{ each.group_departure_count }}</span>
+			<span>GTD: {{ each.group_departure_gtd }}</span>
+		</time>
+	</td>
+		
+
+	<td>
+		<span class="data status">Guest: {{ each.guest_occupied_room_percentage }}</span>
+		<span class="data status">Group: {{ each.group_occupied_room_percentage }}</span>
+		<span class="data status">Total: {{ each.total_occupied_room_percentage }}</span>
+	</td>
 	<td class="break">{{ each.total_available_room_percentage }}</td>
 
-	<td>{{ each.guest_room_revenue | currency:currencySymbol:2 }}</td>
-	<td>{{ each.group_room_revenue | currency:currencySymbol:2 }}</td>
-	<td>{{ each.total_room_revenue | currency:currencySymbol:2 }}</td>
+
+	<td>
+		<span class="data status">Guest: {{ each.guest_room_revenue | currency:currencySymbol:2 }}</span>
+		<span class="data status">Group: {{ each.group_room_revenue | currency:currencySymbol:2 }}</span>
+		<span class="data status">Total: {{ each.total_room_revenue | currency:currencySymbol:2 }}</span>
+	</td>
 	<td>{{ each.adr | currency:currencySymbol:2 }}</td>
 	<td class="break">{{ each.rev_par | currency:currencySymbol:2 }}</td>
+
 
 	<td>{{ each.actual_rooms_last_year }}</td>
 	<td ng-class="{ 'red': (each.variance * 1) < 0 }">{{ each.variance }}</td>
