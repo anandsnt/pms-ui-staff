@@ -19,3 +19,24 @@
     <td>{{ each.ytd_adr | currency:currencySymbol:2 }}</td>
 	<td>{{ each.ytd_variance }}</td>
 </tr>
+<tr class="total" ng-if="resultsTotalRow">
+	<td class="date">Totals</td>
+
+	<td>{{ resultsTotalRow.net_total_revenue | currency:currencySymbol:2 }}</td>
+	<td>{{ resultsTotalRow.net_no_of_bookings }}</td>
+	<td>{{ resultsTotalRow.net_room_nights }}</td>
+	<td>{{ resultsTotalRow.net_adr | currency:currencySymbol:2 }}</td>
+	<td><!-- keep this empty cell --></td>
+
+	<td>{{ resultsTotalRow.net_mtd_total_revenue | currency:currencySymbol:2 }}</td>
+	<td>{{ resultsTotalRow.net_mtd_no_of_bookings }}</td>
+	<td>{{ resultsTotalRow.net_mtd_room_nights }}</td>
+	<td>{{ resultsTotalRow.net_mtd_adr | currency:currencySymbol:2 }}</td>
+	<td><!-- keep this empty cell --></td>
+
+	<td>{{ resultsTotalRow.net_ytd_total_revenue | currency:currencySymbol:2 }}</td>
+	<td>{{ resultsTotalRow.net_ytd_no_of_bookings }}</td>
+	<td>{{ resultsTotalRow.net_ytd_room_nights }}</td>
+	<td>{{ resultsTotalRow.net_ytd_adr | currency:currencySymbol:2 }}</td>
+	<td><!-- keep this empty cell --></td>
+</tr>

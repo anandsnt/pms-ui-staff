@@ -122,6 +122,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
 				case reportUtils.getName('WEB_CHECK_OUT_CONVERSION'):
+				case reportUtils.getName('MARKET_SEGMENT_STATISTICS_REPORT'):
 					$scope.isLargeReport = true;
 					break;
 
