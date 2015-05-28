@@ -1,17 +1,9 @@
 <div class="block-item item-room" ng-controller="reservationRoomStatus" ng-class="addHasButtonClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_upsell_available)" ng-init="">
-    <table style='border-bottom:1px solid rgba(0, 0, 0, 0.1)'>
-        <th style='width: 50px; padding-top: 5px;'>
-    <h3 class="block-title" style='margin-bottom: 0px; border-bottom: 0px; margin-right: 5px;'>Room
-            <!-- Sharer for overlay:-->
+    <h3 class="block-title">
+        Room
+        <button ng-controller="staycardController" ng-click="showRoomSharerPopup()" type="button" class="button blue">Shared</button>
 	</h3>
-    </th>
-    <th><h3>
-        	<span class="sharer-label"><button ng-controller="staycardController" ng-click="showRoomSharerPopup()" type="button" class="button blue" style="padding: 0px 8px 0px 8px; font-size: small; font-weight: 600; height:17px; line-height: 10px; box-sizing: border-box;">Shared</button></span>
-	</h3>
-    </th>
-    <th style='width: 100%;'></th>
-    </table>
-    
+
 	<!-- Room Assignment screen is not available for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' reservations -->
 	<!-- The arrows are removed and room assignment buttons are not clickable in that case -->
 	<a class="next-view no-auto-bind" ng-click="goToroomAssignment()" ng-class="getRoomClass(reservationData.reservation_card.reservation_status)">
