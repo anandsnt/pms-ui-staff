@@ -11,9 +11,10 @@ sntRover.controller('RVReportsMainCtrl', [
 	'markets',
 	'sources',
 	'origins',
+	'codeSettings',
 	'$timeout',
 	'RVReportUtilsFac',
-	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter, activeUserList, guaranteeTypes, chargeGroups, chargeCodes, markets, sources, origins, $timeout, reportUtils) {
+	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter, activeUserList, guaranteeTypes, chargeGroups, chargeCodes, markets, sources, origins, codeSettings, $timeout, reportUtils) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -50,6 +51,8 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.markets = markets;
 		$scope.sources = sources;
 		$scope.origins = origins;
+
+		$scope.codeSettings = codeSettings;
 
 
 

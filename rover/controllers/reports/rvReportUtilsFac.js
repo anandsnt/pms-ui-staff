@@ -525,7 +525,24 @@ sntRover.factory('RVReportUtilsFac', [
 
                 // fill up DS for display combo box
                 if ( __displayFilterNames[filter.value] ) {
-                    __pushDisplayData( reportItem, filter );
+
+                    //__pushDisplayData( reportItem, filter );
+                    //
+                    // QUICK PATCH
+                    // TODO: replace with a better solution
+                    if ( reportItem.title == __reportNames['MARKET_SEGMENT_STATISTICS_REPORT'] ) {
+                        if ( filter.value == 'INCLUDE_MARKET' && data.codeSettings['is_market_on'] ) {
+                            __pushDisplayData( reportItem, filter );
+                        } else if ( filter.value == 'INCLUDE_ORIGIN' && data.codeSettings['is_origin_on'] ) {
+                            __pushDisplayData( reportItem, filter );
+                        } else if ( filter.value == 'INCLUDE_SEGMENT' && data.codeSettings['is_segments_on'] ) {
+                            __pushDisplayData( reportItem, filter );
+                        } else if ( filter.value == 'INCLUDE_SOURCE' && data.codeSettings['is_source_on'] ) {
+                            __pushDisplayData( reportItem, filter );
+                        };
+                    } else {
+                        __pushDisplayData( reportItem, filter );
+                    };
                 };
 
 
