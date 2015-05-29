@@ -10,7 +10,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			promptMandatoryDemographics: false,
 			isDemographicsPopupOpen: false,
 			newNote: "",
-			existingHoldStatus: parseInt($scope.groupConfigData.summary.hold_status) //This is required to reset Cancel when selected in dropdown but not proceeded with in the popup
+			existingHoldStatus: parseInt($scope.groupConfigData.summary.hold_status), //This is required to reset Cancel when selected in dropdown but not proceeded with in the popup
+			computedSegment: false
 		}
 
 		$s = $scope;
@@ -94,6 +95,26 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				runDigestCycle();
 			}
 		};
+
+		$scope.computeSegment = function() {
+			// CICO-15107 --
+			var aptSegment = ""; //Variable to store the suitable segment ID 
+			if (!!$scope.groupConfigData.summary.to && !!$scope.groupConfigData.summary.from) {
+				var dayDiff = Math.floor((Date.parse($scope.groupConfigData.summary.to) - Date.parse($scope.groupConfigData.summary.from)) / 86400000);
+				angular.forEach($scope.otherData.segments, function(segment) {
+					if (dayDiff < segment.los) {
+						if (!aptSegment)
+							aptSegment = segment.value;
+					}
+				});
+				if (!!aptSegment) {
+					$scope.summaryState.computedSegment = true
+				}
+				$scope.reservationData.demographics.segment = aptSegment;
+			} else {
+				return false;
+			}
+		}
 
 		$scope.releaseDateOptions = {
 			showOn: 'button',
