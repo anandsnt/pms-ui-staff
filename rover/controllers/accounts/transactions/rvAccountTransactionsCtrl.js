@@ -551,6 +551,7 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		};
 
 		$rootScope.$on('arAccountCreated',function(){
+			 $scope.diretBillpaymentData.data_to_pass.is_new_ar_account = true;
 			 proceedPayment();
 		});
 		//setUp data from the payament modal for future usage

@@ -275,7 +275,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		*
 		*/
 
-		var fetchPaymentMethods = function(directBillNeeded){
+		var fetchPaymentMethods = function(){
 			
 			var onPaymnentFetchSuccess = function(data) {
 				$scope.renderData.paymentTypes =  data; 
@@ -294,7 +294,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 				successCallBack: onPaymnentFetchSuccess,
 				failureCallBack: onPaymnentFetchFailure,
 				params: {
-					direct_bill: $scope.isFromGroups
+					direct_bill: true
 				}
 			});
 		};
@@ -516,9 +516,9 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			};		
 		};
 
-		var showCreateArAccountPopup  = function(account_id){
+		var showCreateArAccountPopup  = function(account_id,arType){
 			ngDialog.close();
-			var paymentDetails = setUpPaymentParams(); 
+			var paymentDetails = setUpPaymentParams(arType); 
 			var data = {"account_id":account_id,"is_auto_assign_ar_numbers": $scope.ArDetails.is_auto_assign_ar_numbers,"paymentDetails":paymentDetails}
 			$scope.$emit('arAccountWillBeCreated',data);
 		};
@@ -531,7 +531,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 					proceedPayment("company");
 				}
 				else{
-					showCreateArAccountPopup($scope.ArDetails.company_id)
+					showCreateArAccountPopup($scope.ArDetails.company_id,"company")
 				}				
 			}
 			else{
@@ -539,7 +539,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 					proceedPayment("travel_agent");
 				}
 				else{
-					showCreateArAccountPopup($scope.ArDetails.travel_agent_id)
+					showCreateArAccountPopup($scope.ArDetails.travel_agent_id,"travel_agent")
 				} 
 			};
 		};
@@ -603,7 +603,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		    // if payment is from groups and payment type is direct bill
 		    // we check if AR account is present or not
 		    // if not present we inform the user with a popup	
-			($scope.isFromGroups && $scope.saveData.paymentType ==="DB") ? checkIfARAccountisPresent():proceedPayment();
+			($scope.saveData.paymentType ==="DB") ? checkIfARAccountisPresent():proceedPayment();
 		};
 
 }]);
