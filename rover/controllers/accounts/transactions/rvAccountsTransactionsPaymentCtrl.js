@@ -275,7 +275,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		*
 		*/
 
-		var fetchPaymentMethods = function(directBillNeeded){
+		var fetchPaymentMethods = function(){
 			
 			var onPaymnentFetchSuccess = function(data) {
 				$scope.renderData.paymentTypes =  data; 
@@ -294,7 +294,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 				successCallBack: onPaymnentFetchSuccess,
 				failureCallBack: onPaymnentFetchFailure,
 				params: {
-					direct_bill: $scope.isFromGroups
+					direct_bill: true
 				}
 			});
 		};
@@ -603,7 +603,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		    // if payment is from groups and payment type is direct bill
 		    // we check if AR account is present or not
 		    // if not present we inform the user with a popup	
-			($scope.isFromGroups && $scope.saveData.paymentType ==="DB") ? checkIfARAccountisPresent():proceedPayment();
+			($scope.saveData.paymentType ==="DB") ? checkIfARAccountisPresent():proceedPayment();
 		};
 
 }]);
