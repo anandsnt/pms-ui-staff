@@ -475,6 +475,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             if (date instanceof Date) {
                 date = new tzIndependentDate(date).toComponents().date.toDateString();
             }
+
             var taxDescription = [];
             var adults = $scope.reservationData.rooms[roomIndex].stayDates[date].guests.adults;
             var children = $scope.reservationData.rooms[roomIndex].stayDates[date].guests.children;
@@ -529,31 +530,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         taxCalculated = parseFloat(multiplicity * parseFloat(taxData.amount));
                     }
 
-                    taxesLookUp[taxData.id] = taxCalculated;
-                    if (forAddons && taxData.post_type == 'NIGHT') {
-                        /**
-                         * CICO-9576
-                         * QA Comment
-                         * 1. the tax amount seems to multiply twice with the number of nights. It shows correctly for 1 nights stays, but for 2 nights it is x4, for 3 nights x6 etc.
-                         * 1 adult 3 nights
-                         * Room per night $100, add on per night $20 .. 
-                         * Both room and addon have charge codes of 12.5% and 2% on base +12.5% and have post type night
-                         *
-                         * Hence the multiplication as reported by Nicole.
-                         * tax for $300 12.5% should be: 37.50
-                           tax for $60 breakfast 12.5% should be: 7.50
-                           so total $45
-                           but it shows $60 because it takes the 7.50 *3
-                           (resv is for 3 nights)
-                           if I make a resv for 1 night it shows correctly
-                           same for the 2% tax
-                         *
-                         * Hence not multiplying the nights with the price in the case of the addon
-                         * // taxesLookUp[taxData.id] = parseFloat(taxCalculated) * parseFloat(nights);
-                         */
-
-                        taxesLookUp[taxData.id] = parseFloat(taxCalculated);
-                    }
+                    taxesLookUp[taxData.id] = parseFloat(taxCalculated);
 
                     if (taxData.post_type == 'NIGHT') { // NIGHT tax computations
                         if (isInclusive) {
@@ -563,9 +540,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         }
                     } else { // STAY tax computations                 
                         if (isInclusive) {
-                            taxInclusiveStayTotal = parseFloat(taxInclusiveTotal) + parseFloat(taxCalculated);
+                            taxInclusiveStayTotal = parseFloat(taxInclusiveStayTotal) + parseFloat(taxCalculated);
                         } else {
-                            taxExclusiveStayTotal = parseFloat(taxExclusiveTotal) + parseFloat(taxCalculated);
+                            taxExclusiveStayTotal = parseFloat(taxExclusiveStayTotal) + parseFloat(taxCalculated);
                         }
                     }
                     taxDescription.push({
@@ -579,8 +556,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 }
             });
             return {
-                inclusive: taxInclusiveTotal,
+                inclusiveTotal: parseFloat(taxInclusiveTotal) + parseFloat(taxInclusiveStayTotal),
+                exclusiveTotal: parseFloat(taxExclusiveTotal) + parseFloat(taxExclusiveStayTotal),
                 exclusive: taxExclusiveTotal,
+                inclusive: taxInclusiveTotal,
                 stayInclusive: taxInclusiveStayTotal,
                 stayExclusive: taxExclusiveStayTotal,
                 taxDescription: taxDescription
@@ -622,8 +601,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         };
 
         var processTaxInfo = function(taxApplied, roomIndex, date) {
-            var taxAmount = 0,
-                taxAll = 0,
+            var taxAmount = 0.0,
+                taxAll = 0.0,
                 currentTaxes = $scope.reservationData.taxDetails;
 
             _.each(taxApplied.taxDescription, function(description) {
@@ -655,8 +634,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         currentTaxes[taxId].amount = currentTaxes[taxId].amount > description.amount ? currentTaxes[taxId].amount : description.amount;
                     }
                 }
-                taxAmount = parseFloat(taxApplied.exclusive);
-                taxAll = parseFloat(taxApplied.exclusive) + parseFloat(taxApplied.inclusive); // CICO-10161
+                taxAmount = parseFloat(taxApplied.exclusiveTotal);
+                taxAll = parseFloat(taxApplied.exclusiveTotal) + parseFloat(taxApplied.inclusiveTotal); // CICO-10161
             });
 
             return {
@@ -670,6 +649,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
         // CICO-17090
         $scope.computeTotalStayCost = function(reset) {
+
             $scope.reservationData.taxDetails = {}; // -- RESET existing tax info
             $scope.reservationData.totalStayCost = 0.0;
             $scope.reservationData.totalTaxAmount = 0.0;
@@ -696,7 +676,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         var todaysRate = stay.rate.id;
                         if (!todaysRate || todaysRate == null) {
                             // ERROR! - NO RATE SELECTED FOR THIS RESERVATION - THIS DAY
-                            console.warn("No rate id available for room: " + roomIndex + ",for date: " + date);
+                            // console.warn("No rate id available for room: " + roomIndex + ",for date: " + date);
                         } else {
                             var todaysMetaData = $scope.reservationData.rateDetails[roomIndex][date][todaysRate];
                             var todaysTaxes = todaysMetaData.taxes;
@@ -748,6 +728,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                             // --------------------------------------------------------------------------------//
                             { // STEP FOUR -- compute tax for rate
                                 if (!!todaysTaxes && !!todaysTaxes.length) {
+                                    if (parseFloat(taxableRateAmount) < 0.0) taxableRateAmount = 0.0;
                                     var computedTaxes = processTaxInfo($scope.calculateTax(date, taxableRateAmount, todaysTaxes, roomIndex), roomIndex, date);
                                     roomMetaData.totalTaxes = parseFloat(roomMetaData.totalTaxes) + parseFloat(computedTaxes.taxAmount);
                                     roomMetaData.taxesInclusiveExclusive = parseFloat(roomMetaData.taxesInclusiveExclusive) + parseFloat(computedTaxes.taxAll); // CICO-10161
@@ -759,8 +740,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     }
                 });
                 //cumulative total of all stay costs 
-                $scope.reservationData.totalStayCost = $scope.reservationData.totalStayCost + parseFloat(currentRoom.rateTotal) + parseFloat(roomMetaData.addOnCumulative) + parseFloat(roomMetaData.totalTaxes);
-                $scope.reservationData.totalTax = roomMetaData.taxesInclusiveExclusive;
+                $scope.reservationData.totalTaxAmount = parseFloat($scope.reservationData.totalTaxAmount) + parseFloat(roomMetaData.totalTaxes);
+                $scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(currentRoom.rateTotal) + parseFloat(roomMetaData.addOnCumulative) + parseFloat(roomMetaData.totalTaxes);
+                $scope.reservationData.totalTax = parseFloat($scope.reservationData.totalTax) + parseFloat(roomMetaData.taxesInclusiveExclusive);
             });
         }
 
