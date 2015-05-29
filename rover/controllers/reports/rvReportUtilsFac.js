@@ -29,7 +29,9 @@ sntRover.factory('RVReportUtilsFac', [
             'DAILY_TRANSACTIONS'           : 'Daily Transactions',
             'DAILY_PAYMENTS'               : 'Daily Payments',
             'FORECAST_BY_DATE'             : 'Forecast',
-            'ROOMS_QUEUED'                 : 'Rooms Queued'
+            'ROOMS_QUEUED'                 : 'Rooms Queued',
+            'FORECAST_GUEST_GROUPS'        : 'Forecast Guests & Groups',
+            'MARKET_SEGMENT_STATISTICS_REPORT' : 'Market Segment Statistics Report'
         };
 
 
@@ -148,7 +150,6 @@ sntRover.factory('RVReportUtilsFac', [
             'VIP_ONLY'           : true,
             'INCLUDE_VARIANCE'   : true,
             'INCLUDE_LAST_YEAR'  : true,
-            'INCLUDE_ORIGIN'     : true,
             'INCLUDE_CANCELLED'  : true,
             'INCLUDE_CANCELED'   : true,
             'INCLUDE_NO_SHOW'    : true,
@@ -167,8 +168,10 @@ sntRover.factory('RVReportUtilsFac', [
         };
 
         var __displayFilterNames = {
-            'INCLUDE_MARKET' : true,
-            'INCLUDE_SOURCE' : true
+            'INCLUDE_MARKET'  : true,
+            'INCLUDE_SOURCE'  : true,
+            'INCLUDE_ORIGIN'  : true,
+            'INCLUDE_SEGMENT' : true
         };
 
         /**
@@ -290,12 +293,20 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['reportIconCls'] = 'icon-report icon-transactions';
                     break;
 
+                case __reportNames['ROOMS_QUEUED']:
+                    reportItem['reportIconCls'] = 'icons guest-status icon-queued';
+                    break;
+
                 case __reportNames['FORECAST_BY_DATE']:
                     reportItem['reportIconCls'] = 'icon-report';
                     break;
 
-                case __reportNames['ROOMS_QUEUED']:
-                    reportItem['reportIconCls'] = 'icons guest-status icon-queued';
+                case __reportNames['MARKET_SEGMENT_STATISTICS_REPORT']:
+                    reportItem['reportIconCls'] = 'icon-report';
+                    break;
+
+                case __reportNames['FORECAST_GUEST_GROUPS']:
+                    reportItem['reportIconCls'] = 'icon-report';
                     break;
 
                 default:
@@ -368,13 +379,14 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['showRemoveArrivalDate'] = true;
                     break;
 
+                case __reportNames['FORECAST_BY_DATE']:
                 case __reportNames['DAILY_TRANSACTIONS']:
                 case __reportNames['DAILY_PAYMENTS']:
                     reportItem['hasDateLimit'] = false;
                     break;
 
-                case __reportNames['FORECAST_BY_DATE']:
-                    reportItem['hasDateLimit'] = false;
+                case __reportNames['MARKET_SEGMENT_STATISTICS_REPORT']:
+                    reportItem['hasDateLimit'] = true;
                     break;
 
                 case __reportNames['ROOMS_QUEUED']:
@@ -518,7 +530,24 @@ sntRover.factory('RVReportUtilsFac', [
 
                 // fill up DS for display combo box
                 if ( __displayFilterNames[filter.value] ) {
-                    __pushDisplayData( reportItem, filter );
+
+                    //__pushDisplayData( reportItem, filter );
+                    //
+                    // QUICK PATCH
+                    // TODO: replace with a better solution
+                    if ( reportItem.title == __reportNames['MARKET_SEGMENT_STATISTICS_REPORT'] ) {
+                        if ( filter.value == 'INCLUDE_MARKET' && data.codeSettings['is_market_on'] ) {
+                            __pushDisplayData( reportItem, filter );
+                        } else if ( filter.value == 'INCLUDE_ORIGIN' && data.codeSettings['is_origin_on'] ) {
+                            __pushDisplayData( reportItem, filter );
+                        } else if ( filter.value == 'INCLUDE_SEGMENT' && data.codeSettings['is_segments_on'] ) {
+                            __pushDisplayData( reportItem, filter );
+                        } else if ( filter.value == 'INCLUDE_SOURCE' && data.codeSettings['is_source_on'] ) {
+                            __pushDisplayData( reportItem, filter );
+                        };
+                    } else {
+                        __pushDisplayData( reportItem, filter );
+                    };
                 };
 
 
@@ -790,7 +819,15 @@ sntRover.factory('RVReportUtilsFac', [
                 // date range must be yesterday - relative to current business date
                 case __reportNames['DAILY_TRANSACTIONS']:
                 case __reportNames['DAILY_PAYMENTS']:
+                case __reportNames['MARKET_SEGMENT_STATISTICS_REPORT']:
                     reportItem['singleValueDate']  = _getDates.yesterday;
+                    break;
+
+                // dates range must be the current business date
+                case __reportNames['FORECAST_BY_DATE']:
+                case __reportNames['FORECAST_GUEST_GROUPS']:
+                    reportItem['fromDate']  = _getDates.businessDate;
+                    reportItem['untilDate'] = _getDates.aMonthAfter;
                     break;
 
                 // by default date range must be from a week ago to current business date
@@ -825,7 +862,8 @@ sntRover.factory('RVReportUtilsFac', [
                 'businessDate' : new Date(_year, _month, _date),
                 'yesterday'    : new Date(_year, _month, _date - 1),
                 'aWeekAgo'     : new Date(_year, _month, _date - 7),
-                'aWeekAfter'   : new Date(_year, _month, _date + 7)
+                'aWeekAfter'   : new Date(_year, _month, _date + 7),
+                'aMonthAfter'  : new Date(_year, _month, _date + 30),
             };
 
             if ( parseInt(xDays) != NaN ) {

@@ -21,6 +21,13 @@ sntRover.factory('RVReportParserFac', [
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseNumeralData( reportName, apiResponse, options );
             }
 
+            // a very special parser for daily transaction report
+            // in future we may make this check generic, if more
+            // reports API structure follows the same pattern
+            else if ( reportName == reportUtils.getName('MARKET_SEGMENT_STATISTICS_REPORT') ) {
+                return _.isEmpty(apiResponse) ? apiResponse : $_parseUndefined( reportName, apiResponse, options );
+            }
+
             // otherwise a super parser for reports that can be grouped by
             else if ( !!options['groupedByKey'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseDataToSubArrays( reportName, apiResponse, options['groupedByKey'] );
@@ -342,6 +349,34 @@ sntRover.factory('RVReportParserFac', [
             return returnAry;
         };
 
+
+
+
+
+        function $_parseUndefined ( reportName, apiResponse, options ) {
+            // the report is an array of objects
+
+            var returnAry = [],
+                undefAry  = [],
+                codeName;
+
+            var i, j;
+
+            for (i = 0, j = apiResponse.length; i < j; i++) {
+                codeName = apiResponse[i]['code']
+                if ( codeName.indexOf('Undefined') > -1 ) {
+                    undefAry.push( apiResponse[i] );
+                } else {
+                    returnAry.push( apiResponse[i] );
+                };
+            };
+
+            for (i = 0, j = undefAry.length; i < j; i++) {
+                returnAry.push( undefAry[i] );
+            };
+
+            return returnAry;
+        };
 
 
 

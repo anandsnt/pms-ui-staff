@@ -529,7 +529,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 if (!!aptSegment) {
                     $scope.summaryState.computedSegment = true
                 }
-                
+
                 $scope.reservationData.demographics.segment = aptSegment;
                 angular.forEach($scope.reservationData.rooms, function(room) {
                     if (!!room.demographics) {
@@ -1227,6 +1227,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                             }
                             if ($scope.otherData.originIsForced && isValid) {
                                 isValid = demographicsData.origin != "";
+                            }
+                            if ($scope.otherData.segmentsIsForced && isValid) {
+                                isValid = demographicsData.segment != "";
                             }
                         }
                     });

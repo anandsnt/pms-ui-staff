@@ -174,5 +174,19 @@ sntRover.service('RVreportsSrv', [
 
 			return deferred.promise;
 		};
+
+		this.fetchCodeSettings = function() {
+			var deferred = $q.defer(),
+				url = '/api/reports/code_settings';
+
+			rvBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
 	}
 ]);
