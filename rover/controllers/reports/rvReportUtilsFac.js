@@ -12,24 +12,25 @@ sntRover.factory('RVReportUtilsFac', [
 
         /** @type {Object} A standard dict that can act as a central report name look uo */
         var __reportNames = {
-            'CHECK_IN_CHECK_OUT'               : 'Check In / Check Out',
-            'UPSELL'                           : 'Upsell',
-            'WEB_CHECK_OUT_CONVERSION'         : 'Web Check Out Conversion',
-            'WEB_CHECK_IN_CONVERSION'          : 'Web Check In Conversion',
-            'LATE_CHECK_OUT'                   : 'Late Check Out',
-            'IN_HOUSE_GUEST'                   : 'In-House Guests',
-            'ARRIVAL'                          : 'Arrival',
-            'DEPARTURE'                        : 'Departure',
-            'BOOKING_SOURCE_MARKET_REPORT'     : 'Booking Source & Market Report',
-            'CANCELLATION_NO_SHOW'             : 'Cancellation & No Show',
-            'DEPOSIT_REPORT'                   : 'Deposit Report',
-            'LOGIN_AND_OUT_ACTIVITY'           : 'Login and out Activity',
-            'OCCUPANCY_REVENUE_SUMMARY'        : 'Occupancy & Revenue Summary',
-            'RESERVATIONS_BY_USER'             : 'Reservations By User',
-            'DAILY_TRANSACTIONS'               : 'Daily Transactions',
-            'DAILY_PAYMENTS'                   : 'Daily Payments',
-            'FORECAST_BY_DATE'                 : 'Forecast',
-            'ROOMS_QUEUED'                     : 'Rooms Queued',
+            'CHECK_IN_CHECK_OUT'           : 'Check In / Check Out',
+            'UPSELL'                       : 'Upsell',
+            'WEB_CHECK_OUT_CONVERSION'     : 'Web Check Out Conversion',
+            'WEB_CHECK_IN_CONVERSION'      : 'Web Check In Conversion',
+            'LATE_CHECK_OUT'               : 'Late Check Out',
+            'IN_HOUSE_GUEST'               : 'In-House Guests',
+            'ARRIVAL'                      : 'Arrival',
+            'DEPARTURE'                    : 'Departure',
+            'BOOKING_SOURCE_MARKET_REPORT' : 'Booking Source & Market Report',
+            'CANCELLATION_NO_SHOW'         : 'Cancellation & No Show',
+            'DEPOSIT_REPORT'               : 'Deposit Report',
+            'LOGIN_AND_OUT_ACTIVITY'       : 'Login and out Activity',
+            'OCCUPANCY_REVENUE_SUMMARY'    : 'Occupancy & Revenue Summary',
+            'RESERVATIONS_BY_USER'         : 'Reservations By User',
+            'DAILY_TRANSACTIONS'           : 'Daily Transactions',
+            'DAILY_PAYMENTS'               : 'Daily Payments',
+            'FORECAST_BY_DATE'             : 'Forecast',
+            'ROOMS_QUEUED'                 : 'Rooms Queued',
+            'FORECAST_GUEST_GROUPS'        : 'Forecast Guests & Groups',
             'MARKET_SEGMENT_STATISTICS_REPORT' : 'Market Segment Statistics Report'
         };
 
@@ -301,6 +302,10 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case __reportNames['MARKET_SEGMENT_STATISTICS_REPORT']:
+                    reportItem['reportIconCls'] = 'icon-report';
+                    break;
+
+                case __reportNames['FORECAST_GUEST_GROUPS']:
                     reportItem['reportIconCls'] = 'icon-report';
                     break;
 
@@ -820,6 +825,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                 // dates range must be the current business date
                 case __reportNames['FORECAST_BY_DATE']:
+                case __reportNames['FORECAST_GUEST_GROUPS']:
                     reportItem['fromDate']  = _getDates.businessDate;
                     reportItem['untilDate'] = _getDates.aMonthAfter;
                     break;
@@ -857,7 +863,7 @@ sntRover.factory('RVReportUtilsFac', [
                 'yesterday'    : new Date(_year, _month, _date - 1),
                 'aWeekAgo'     : new Date(_year, _month, _date - 7),
                 'aWeekAfter'   : new Date(_year, _month, _date + 7),
-                'aMonthAfter'  : new Date(_year, _month, _date + 30)
+                'aMonthAfter'  : new Date(_year, _month, _date + 30),
             };
 
             if ( parseInt(xDays) != NaN ) {

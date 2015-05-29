@@ -194,6 +194,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.rightColSpan = 4;
 					break;
 
+				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
+					$scope.leftColSpan = 6;
+					$scope.rightColSpan = 7;
+					break;
+
 				case reportUtils.getName('MARKET_SEGMENT_STATISTICS_REPORT'):
 					$scope.leftColSpan = 8;
 					$scope.rightColSpan = 8;
@@ -369,6 +374,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.detailsTemplateUrl = '/assets/partials/reports/rvForecastReport.html';
 					break;
 
+				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
+					$scope.hasReportTotals    = false;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/rvForecastGuestGroupReport.html';
+					break;
+
 				default:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
@@ -421,6 +432,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportUtils.getName('ROOMS_QUEUED'):
 					template = '/assets/partials/reports/rvRoomQueuedReportRow.html';
+					break;
+
+				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
+					template = '/assets/partials/reports/rvForecastGuestGroupReportRow.html';
 					break;
 
 				case reportUtils.getName('MARKET_SEGMENT_STATISTICS_REPORT'):
@@ -672,6 +687,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
 				case reportUtils.getName('DAILY_TRANSACTIONS'):
 				case reportUtils.getName('DAILY_PAYMENTS'):
+				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
 					orientation = 'landscape';
 					break;
 
