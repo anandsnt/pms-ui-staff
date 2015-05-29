@@ -17,14 +17,18 @@
                         </th>
                         <th style="width:100%"></th><th>
                             <span ng-if="sharer.reservation_status === 'CHECKING_OUT'" class="guest-status check-out sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'CHECKEDOUT'" class="guest-status check-out sharer-status-icon" ></span>
                             <span ng-if="sharer.reservation_status === 'CHECKING_IN'"  class="guest-status  check-in sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'CHECKEDIN'"  class="guest-status  check-in sharer-status-icon" ></span>
                             <span ng-if="sharer.reservation_status === 'RESERVED'"  class="guest-status  check-in sharer-status-icon" ></span>
                             <span ng-if="sharer.reservation_status === 'NOSHOW_CURRENT'"  class="guest-status  icon-title no-show sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'NOSHOW'"  class="guest-status  icon-title no-show sharer-status-icon" ></span>
                             <span ng-if="sharer.reservation_status === 'CANCELED'"  class="guest-status  cancel sharer-status-icon" ></span>
                             <span ng-if="sharer.reservation_status === 'PRE_CHECKIN'"  class="guest-status  pre-check-in sharer-status-icon" ></span>
                             <span ng-if="sharer.reservation_status === 'DEPARTED'"  class="guest-status  departed sharer-status-icon" ></span>
                             
                             <span ng-if="sharer.reservation_status === 'CHECKEDIN' && sharer.is_opted_late_checkout === true" class="guest-status  late-check-out sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'CHECKING_IN' && sharer.is_opted_late_checkout === true" class="guest-status  late-check-out sharer-status-icon" ></span>
                         </th>  
                     </tr>
                 </table>
@@ -36,14 +40,18 @@
                         </th>
                         <th style="width:100%"></th><th>
                             <span ng-if="sharer.reservation_status === 'CHECKING_OUT'" class="guest-status check-out sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'CHECKEDOUT'" class="guest-status check-out sharer-status-icon" ></span>
                             <span ng-if="sharer.reservation_status === 'CHECKING_IN'"  class="guest-status  check-in sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'CHECKEDIN'"  class="guest-status  check-in sharer-status-icon" ></span>
                             <span ng-if="sharer.reservation_status === 'RESERVED'"  class="guest-status  check-in sharer-status-icon" ></span>
                             <span ng-if="sharer.reservation_status === 'NOSHOW_CURRENT'"  class="guest-status  icon-title no-show sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'NOSHOW'"  class="guest-status  icon-title no-show sharer-status-icon" ></span>
                             <span ng-if="sharer.reservation_status === 'CANCELED'"  class="guest-status  cancel sharer-status-icon" ></span>
                             <span ng-if="sharer.reservation_status === 'PRE_CHECKIN'"  class="guest-status  pre-check-in sharer-status-icon" ></span>
                             <span ng-if="sharer.reservation_status === 'DEPARTED'"  class="guest-status  departed sharer-status-icon" ></span>
                             
                             <span ng-if="sharer.reservation_status === 'CHECKEDIN' && sharer.is_opted_late_checkout === true" class="guest-status  late-check-out sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'CHECKING_IN' && sharer.is_opted_late_checkout === true" class="guest-status  late-check-out sharer-status-icon" ></span>
                         </th>
                     </tr>
                 </table>
