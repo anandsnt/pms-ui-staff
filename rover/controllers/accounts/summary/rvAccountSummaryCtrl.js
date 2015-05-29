@@ -2,15 +2,6 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 	function($scope, $rootScope, $filter, $stateParams, rvAccountsConfigurationSrv, RVReservationSummarySrv, ngDialog, rvPermissionSrv) {
 		BaseCtrl.call(this, $scope);
 
-		$scope.setScroller("rvAccountSummaryScroller");
-
-		$scope.accountSummaryData = {
-			promptMandatoryDemographics: false,
-			isDemographicsPopupOpen: false,
-			newNote: "",
-			demographics: null
-		}
-
 		var summaryMemento = {};
 
 
@@ -51,11 +42,21 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 					}
 				});
 			} else {
-				console.warn('No Permission for EDIT_ACCOUNT');
+				$scope.$emit('showErrorMessage', ['Sorry, Changes will not get saved as you don\'t have enough permission'])
 			}
 		}
 
 		var initAccountSummaryView = function() {
+
+			$scope.setScroller("rvAccountSummaryScroller");
+
+			$scope.accountSummaryData = {
+				promptMandatoryDemographics: false,
+				isDemographicsPopupOpen: false,
+				newNote: "",
+				demographics: null
+			}
+			summaryMemento = angular.copy($scope.accountConfigData.summary);
 			// Have a handler to update the summary - IFF in edit mode
 			var callUpdate = function() {
 				if (!angular.equals(summaryMemento, $scope.accountConfigData.summary) && !$scope.accountSummaryData.isDemographicsPopupOpen) {
@@ -68,6 +69,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 
 			if (!$scope.isInAddMode()) {
 				$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
+					console.log('ouseide');
 					if (targetElement.id != 'AccountTab') {
 						callUpdate();
 					}
@@ -239,6 +241,44 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			}
 		}
 
+		/**
+		 * success call back of summary details fetch
+		 * @param  {[type]} data [description]
+		 * @return {[type]}      [description]
+		 */
+		var onAccountSummaryDetailsFetchSuccess = function(data) {
+			$scope.accountConfigData.summary = data;
+		}
+
+		/**
+		 * when we are switching between tabs, we need to update the summary data
+		 * @return undefined
+		 */
+		var refreshSummaryData = function(){
+			var params = {
+				"accountId": $scope.accountConfigData.summary.posting_account_id
+			};
+			var options = {				
+				params: params,
+				successCallBack: onAccountSummaryDetailsFetchSuccess
+			};
+
+			$scope.callAPI(rvAccountsConfigurationSrv.getAccountSummary, options);
+		}
+
 		initAccountSummaryView();
+
+		/**
+		 * When there is a TAB switch, we will get this. We will initialize things from here
+		 * @param  {Object} event           
+		 * @param  {String} currentTab - Active tab in the view
+		 * @return undefined
+		 */
+		$scope.$on ('ACCOUNT_TAB_SWITCHED', function(event, currentTab){
+			if (currentTab === "ACCOUNT") {
+				initAccountSummaryView();
+				refreshSummaryData();
+			}
+		});		
 	}
 ]);
