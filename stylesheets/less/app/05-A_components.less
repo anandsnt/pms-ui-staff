@@ -78,9 +78,7 @@
 
                                 span { .show; }
 
-                                &.weekend {
-                                    background-color: rgba(95,131,146,1);
-                                }
+                                &.weekend { background-color: rgba(95,131,146,1); }
                             }
 
                             &.heading { background: transparent; }
@@ -98,7 +96,19 @@
                                 text-align: center;
                                 vertical-align: middle;
 
-                                .inner { line-height: 50px; }
+                                .inner { 
+                                    line-height: 50px; 
+
+                                    &.negative { 
+                                        color: @red;
+                                        font-weight: 600;
+                                    }
+                                    
+                                    &.warning {
+                                        color: @orange;
+                                        font-weight: 600;
+                                    }
+                                }
                             }
                         }
                     }
@@ -202,7 +212,7 @@
                             border-spacing: 5px 0;
 
                             col {
-                                width: 160px;
+                                width: 180px;
 
                                 &.grid-col {
                                     background-color: rgba(0,0,0,.1);
@@ -251,6 +261,8 @@
                                             margin: 0 5px 5px 5px;
                                             background-color: @white;
                                             #border-radius > .rounded();
+
+                                            &.last-row { margin-bottom: 0; }
                                         }
                                     }
 
@@ -258,17 +270,93 @@
                                         &:not(.main) {
                                             th,
                                             td { font-style: italic; }
+
+                                            &:nth-child(odd) { 
+                                                td  { 
+                                                    .inner { 
+                                                        background-color: lighten(@blue, 28);
+                                                        &.green { background-color: lighten(@green, 40); }
+                                                    }
+                                                }
+                                            }
+
+                                            &:nth-child(even) { 
+                                                td { 
+                                                    .inner { 
+                                                        background-color: lighten(@blue, 24);
+                                                        &.green { background-color: lighten(@green, 36); }
+                                                    }
+                                                }
+                                            }
                                         }
 
-                                        &:nth-child(odd) {
-                                            td  {
-                                                .inner { background-color: #ebf1f6; }
+                                        &.main {
+                                            td { 
+                                                .inner { 
+                                                   background-color: lighten(@blue, 28);
+                                                    &.green { background-color: lighten(@green, 40); }
+                                                }
                                             }
                                         }
-                                        &:nth-child(even) {
-                                            td {
-                                                .inner { background-color: #dce7f0; }
+                                    }
+
+                                    &.group-details {
+                                        .rows-toggle {
+                                            padding: 0;
+                                            text-align: left;
+                                            background: rgba(0,0,0,.1);
+
+                                            .inner { 
+                                                line-height: 40px;
+                                                padding: 5px 10px;
+                                                margin: 5px 5px 0 5px;
+                                                background: @white; 
+                                                #border-radius > .rounded();
+                                                .float;
+
+                                                .name {
+                                                    padding-right: 20px;
+                                                    background: @arrowDown 100% 50% no-repeat; 
+                                                }
+
+                                                .next-view {
+                                                    font-size: 16px;
+                                                    line-height: 40px;
+                                                    font-weight: 600;
+                                                    color: @logoPrimary;
+                                                    padding: 0 30px 0 10px;
+                                                    height: 40px;
+                                                    .transition();
+                                                    .pull-right;
+
+                                                    &:hover,
+                                                    &:active { color: @textColor; }
+                                                }
                                             }
+
+                                            &.active {
+                                                background: rgba(0,0,0,.1);
+
+                                                .inner { 
+                                                    margin-bottom: 5px;
+
+                                                    .name { background-image: @arrowUp; }
+                                                }
+                                            }
+                                        }
+
+                                        &.last-group-row {
+                                            .rows-toggle {
+                                                .inner { margin-bottom: 5px; }
+                                            }
+                                        }
+                                    }
+
+                                    &.group-details-row {
+                                        .button { line-height: 50px; }
+
+                                        &.last-row { 
+                                            .button { margin-bottom: 0; }
                                         }
                                     }
                                 }

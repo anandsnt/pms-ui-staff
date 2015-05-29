@@ -148,11 +148,11 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				$scope.updateGroupSummary();
 			};
 			//Reload the summary tab contents before switching
-			if(tab === "SUMMARY" || tab === "ACCOUNT"){
+			if (tab === "SUMMARY" || tab === "ACCOUNT") {
 				$scope.refreshSummaryTab();
 			};
 			//Preload the transaction data when we switch to transactions tab
-			if(tab === "TRANSACTIONS"){
+			if (tab === "TRANSACTIONS") {
 				preLoadTransactionsData();
 			} else {
 				$scope.groupConfigData.activeTab = tab;
@@ -165,7 +165,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
 		};
 
-		var preLoadTransactionsData = function(){
+		var preLoadTransactionsData = function() {
 			var onTransactionFetchSuccess = function(data) {
 
 				$scope.$emit('hideloader');
@@ -301,6 +301,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 					onGroupUpdateFailure = function(errorMessage) {
 						//client controllers should get an infromation whether updation was a failure
 						$scope.$broadcast("FAILED_TO_UPDATE_GROUP_INFO", errorMessage);
+						$scope.errorMessage = errorMessage;
 						return false;
 					};
 

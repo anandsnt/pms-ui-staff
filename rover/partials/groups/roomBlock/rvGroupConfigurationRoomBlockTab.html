@@ -39,6 +39,7 @@
                     ng-disabled="shouldDisableHoldStatusChange()">
                     <option ng-repeat="holdstatus in holdStatusList" 
                         value="{{holdstatus.id}}" 
+                        ng-hide="holdstatus.name == 'Cancel' && holdstatus.is_system && selectedHoldStatus!=holdstatus.id"
                         ng-selected="selectedHoldStatus === holdstatus.id">
                         {{holdstatus.name}}
                     </option>
