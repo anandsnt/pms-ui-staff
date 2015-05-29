@@ -23,7 +23,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			// Have a handler to update the summary - IFF in edit mode
 			if (!$scope.isInAddMode()) {
 				$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
-					if (targetElement.id!="cancel-action" && !angular.equals(summaryMemento, $scope.groupConfigData.summary) && !$scope.groupSummaryData.isDemographicsPopupOpen) {
+					if (targetElement.id != "cancel-action" && !angular.equals(summaryMemento, $scope.groupConfigData.summary) && !$scope.groupSummaryData.isDemographicsPopupOpen) {
 						//data has changed
 						summaryMemento = angular.copy($scope.groupConfigData.summary);
 						//call the updateGroupSummary method from the parent controller
@@ -31,6 +31,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					}
 				});
 			}
+
+			$scope.computeSegment();
 		}
 
 		/**
@@ -69,8 +71,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				}
 				//setting the min date for end Date
 				$scope.toDateOptions.minDate = $scope.groupConfigData.summary.block_from;
-
 				//we are in outside of angular world
+				//
+				$scope.computeSegment();
 				runDigestCycle();
 			}
 		};
@@ -90,29 +93,45 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			},
 			onSelect: function(date, datePickerObj) {
 				$scope.groupConfigData.summary.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
-
 				//we are in outside of angular world
+				$scope.computeSegment();
 				runDigestCycle();
 			}
 		};
 
 		$scope.computeSegment = function() {
 			// CICO-15107 --
-			var aptSegment = ""; //Variable to store the suitable segment ID 
-			if (!!$scope.groupConfigData.summary.to && !!$scope.groupConfigData.summary.from) {
-				var dayDiff = Math.floor((Date.parse($scope.groupConfigData.summary.to) - Date.parse($scope.groupConfigData.summary.from)) / 86400000);
-				angular.forEach($scope.otherData.segments, function(segment) {
-					if (dayDiff < segment.los) {
-						if (!aptSegment)
-							aptSegment = segment.value;
+			var onFetchDemographicsSuccess = function(demographicsData) {
+					$scope.groupSummaryData.demographics = demographicsData.demographics;
+					updateSegment();
+				},
+				onFetchDemographicsFailure = function(errorMessage) {
+					console.log(errorMessage);
+				},
+				updateSegment = function() {
+					var aptSegment = ""; //Variable to store the suitable segment ID 
+					if (!!$scope.groupConfigData.summary.block_to && !!$scope.groupConfigData.summary.block_from) {
+						var dayDiff = Math.floor((new tzIndependentDate($scope.groupConfigData.summary.block_to) - new tzIndependentDate($scope.groupConfigData.summary.block_from)) / 86400000);
+						angular.forEach($scope.groupSummaryData.demographics.segments, function(segment) {
+							if (dayDiff < segment.los) {
+								if (!aptSegment)
+									aptSegment = segment.value;
+							}
+						});
+						$scope.groupSummaryData.computedSegment = !!aptSegment;
+						$scope.groupConfigData.summary.demographics.segment_id = aptSegment;
+					} else {
+						return false;
 					}
+				};
+
+			if ($scope.groupSummaryData.demographics === null) {
+				$scope.callAPI(RVReservationSummarySrv.fetchInitialData, {
+					successCallBack: onFetchDemographicsSuccess,
+					failureCallBack: onFetchDemographicsFailure
 				});
-				if (!!aptSegment) {
-					$scope.summaryState.computedSegment = true
-				}
-				$scope.reservationData.demographics.segment = aptSegment;
 			} else {
-				return false;
+				updateSegment();
 			}
 		}
 
@@ -153,6 +172,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$scope.errorMessage = "";
 			var showDemographicsPopup = function() {
 					$scope.groupSummaryData.isDemographicsPopupOpen = true;
+					// $scope.computeSegment();
+
 					demographicsMemento = angular.copy($scope.groupConfigData.summary.demographics);
 					ngDialog.open({
 						template: '/assets/partials/groups/summary/groupDemographicsPopup.html',
