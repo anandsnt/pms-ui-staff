@@ -38,13 +38,13 @@
             <div id="account-card-content" class="card-tabs card-content">
                 <!-- Group tabs navigation -->
                 <ul id="account-card-tabs-nav" class="card-tabs-nav no-print">
-                    <li ng-click="switchTabTo('ACCOUNT')"  ng-class="{'ui-tabs-active' : accountConfigData.activeTab == 'ACCOUNT'}">
+                    <li click-touch="switchTabTo('ACCOUNT')"  ng-class="{'ui-tabs-active' : accountConfigData.activeTab == 'ACCOUNT'}">
                         <a translate>SUMMARY</a>
                     </li>
-                    <li ng-click="switchTabTo('TRANSACTIONS')" ng-class="{'ui-tabs-active' : accountConfigData.activeTab == 'TRANSACTIONS'}">
+                    <li click-touch="switchTabTo('TRANSACTIONS')" ng-class="{'ui-tabs-active' : accountConfigData.activeTab == 'TRANSACTIONS'}">
                         <a translate>TRANSACTIONS</a>
                     </li>
-                    <li ng-click="switchTabTo('ACTIVITY')" ng-class="{'ui-tabs-active' : accountConfigData.activeTab == 'ACTIVITY'}">
+                    <li click-touch="switchTabTo('ACTIVITY')" ng-class="{'ui-tabs-active' : accountConfigData.activeTab == 'ACTIVITY'}">
                         <a translate>ACTIVITY_LOG</a>
                     </li>
                 </ul>

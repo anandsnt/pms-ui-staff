@@ -98,7 +98,8 @@
 <div class="single-date" ng-if="item.hasSingleDateFilter">
     <label>Date</label>
     <div class="has-datepicker">
-        <input type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.singleValueDate">
+        <input ng-if="item.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptions" ng-model="item.singleValueDate" readonly>
+        <input ng-if="!item.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.singleValueDate" readonly>
     </div>
 </div>
 

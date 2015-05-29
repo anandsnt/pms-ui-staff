@@ -140,13 +140,13 @@
 
                     <div class="entry full-width" ng-show="data.page_template=='ADDON'">
                        <label for="addon-description"><span translate>ADDON_DESCRIPTION_LABEL </span></label>
-                       <input type="text" name="addon-description" id="addon-description" ng-disabled = "true" readonly="true"
+                       <input type="text" class = "cms-addon-texts" name="addon-description" id="addon-description" ng-disabled = "true" readonly="true"
                        value="{{getSelectedAddonDescription()}}" />
                     </div> 
 
                     <div class="entry full-width" ng-show="data.page_template=='ADDON'">
                         <label for="addon-price"><span translate>ADDON_PRICE_LABEL </span></label>
-                        <input type="text" name="addon-price" id="addon-price"  ng-disabled = "true" readonly="true" value="{{getSelectedAddonPrice()}}" />
+                        <input type="text" class = "cms-addon-texts" name="addon-price" id="addon-price"  ng-disabled = "true" readonly="true" value="{{getSelectedAddonPrice()}}" />
                     </div>
                      <ad-dropdown label="{{'ADDON_MIN_DURATION_LABEL' | translate}}" label-in-drop-down="{{'ADDON_MIN_DURATION_LABEL' | translate}}" list="min_duration_values" selected-Id='data.addon_min_duration' required='no' selbox-class='placeholder' ng-show="data.page_template=='ADDON'"></ad-dropdown>  
 

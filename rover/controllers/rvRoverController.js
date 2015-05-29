@@ -109,7 +109,7 @@ sntRover.controller('roverController',
     $rootScope.isAddonOn = hotelDetails.is_addon_on;
     $rootScope.desktopSwipeEnabled = hotelDetails.allow_desktop_swipe;
 	$rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
-    
+
     //set MLI Merchant Id
     try {
       sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
@@ -494,7 +494,7 @@ sntRover.controller('roverController',
     $scope.numberOfCordovaCalls = 0;
 
     var initiateDesktopCardReader = function(){
-    	//var portNumber = '8126';
+
     	sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options);
     }
 
@@ -533,7 +533,6 @@ sntRover.controller('roverController',
 			}, 2000);
 		}
 
-      
     }
 
 
@@ -597,6 +596,7 @@ sntRover.controller('roverController',
     };
 
     $rootScope.showWebsocketConnectionError = function() {
+
 
       // Hide loading message
       $scope.$emit('hideLoader');

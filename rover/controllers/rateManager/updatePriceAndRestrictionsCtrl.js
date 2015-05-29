@@ -324,7 +324,11 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
             } else {
                 for (var i in $scope.calendarData.data) {
                     if ($scope.calendarData.data[i].id == $scope.popupData.selectedRate) {
+                        
                         selectedDateInfo = $scope.calendarData.data[i][$scope.popupData.selectedDate];
+                        if (selectedDateInfo = []){
+                            selectedDateInfo = $scope.calendarData.all_rates[$scope.popupData.selectedDate];
+                        }
                         $scope.data.id = $scope.calendarData.data[i].id;
                         $scope.data.name = $scope.calendarData.data[i].name;
                         $scope.data.isHourly = $scope.calendarData.data[i].isHourly;
@@ -334,6 +338,9 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
 
             var restrictionTypes = {};
             var rTypes = dclone($scope.calendarData.restriction_types);
+            if ($scope.ratesRoomsToggle === 'ROOMS'){
+                selectedDateInfo = $scope.popupData.room_restrictions;
+            }
             for (var i in rTypes) {
                 restrictionTypes[rTypes[i].id] = rTypes[i];
                 var item = rTypes[i];
@@ -651,13 +658,20 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
             var data = {};
             data.rate_id = $scope.popupData.selectedRate;
 
-            if ($scope.popupData.fromRoomTypeView) {
+            if ($scope.popupData.fromRoomTypeView || $scope.ratesRoomsToggle == 'ROOMS') {
                 data.room_type_id = $scope.popupData.selectedRoomType;
+                delete data.rate_id;
             }
             data.details = calculateDetailsToSave(datesSelected);
             var saveRestrictionSuccess = function () {
                 $scope.refreshCalendar();
                 ngDialog.close();
+                
+                $scope.$emit('showLoader');
+                setTimeout(function(){
+                        $scope.$emit('showLoader');
+                        $scope.refreshCalendar();
+                }, 100)
             };
 
             $scope.invokeApi(UpdatePriceAndRestrictionsSrv.savePriceAndRestrictions, data, saveRestrictionSuccess);

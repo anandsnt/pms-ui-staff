@@ -52,7 +52,8 @@ sntRover.controller('RVReportListCrl', [
                     'chargeCodes'    : $scope.$parent.chargeCodes,
                     'markets'        : $scope.$parent.markets,
                     'sources'        : $scope.$parent.sources,
-                    'origins'        : $scope.$parent.origins
+                    'origins'        : $scope.$parent.origins,
+                    'codeSettings'   : $scope.$parent.codeSettings
                 });
 
 

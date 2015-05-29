@@ -23,7 +23,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			// Have a handler to update the summary - IFF in edit mode
 			if (!$scope.isInAddMode()) {
 				$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
-					if (!angular.equals(summaryMemento, $scope.groupConfigData.summary) && !$scope.groupSummaryData.isDemographicsPopupOpen) {
+					if (targetElement.id!="cancel-action" && !angular.equals(summaryMemento, $scope.groupConfigData.summary) && !$scope.groupSummaryData.isDemographicsPopupOpen) {
 						//data has changed
 						summaryMemento = angular.copy($scope.groupConfigData.summary);
 						//call the updateGroupSummary method from the parent controller

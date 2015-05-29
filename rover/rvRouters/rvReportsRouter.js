@@ -33,6 +33,9 @@ angular.module('reportsModule', [])
             },
             origins: function(RVreportsSrv) {
                 return RVreportsSrv.fetchBookingOrigins();
+            },
+            codeSettings: function(RVreportsSrv) {
+                return RVreportsSrv.fetchCodeSettings();
             }
         }
     });
