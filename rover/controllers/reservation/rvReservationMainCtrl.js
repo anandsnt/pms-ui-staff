@@ -637,12 +637,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 taxAmount = parseFloat(taxApplied.exclusiveTotal);
                 taxAll = parseFloat(taxApplied.exclusiveTotal) + parseFloat(taxApplied.inclusiveTotal); // CICO-10161
             });
-
-            return {
-                taxAmount: taxAmount,
-                taxAll: taxAll
-            }
-
         }
 
         //-----------------------------------------------------------------------------------------------------------//
@@ -716,9 +710,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                                     // -- Calculate the tax for add-ons --
                                     // --------------------------------------------------------------------------------//
                                     { // STEP THREE -- compute tax for addons
-                                        var computedTaxes = processTaxInfo($scope.calculateTax(date, finalRate, addon.taxDetail || addon.taxes, roomIndex, true), roomIndex, date);
-                                        roomMetaData.totalTaxes = parseFloat(roomMetaData.totalTaxes) + parseFloat(computedTaxes.taxAmount);
-                                        roomMetaData.taxesInclusiveExclusive = parseFloat(roomMetaData.taxesInclusiveExclusive) + parseFloat(computedTaxes.taxAll); // CICO-10161
+                                        processTaxInfo($scope.calculateTax(date, finalRate, addon.taxDetail || addon.taxes, roomIndex, true), roomIndex, date);
                                     }
                                 });
 
@@ -729,16 +721,18 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                             { // STEP FOUR -- compute tax for rate
                                 if (!!todaysTaxes && !!todaysTaxes.length) {
                                     if (parseFloat(taxableRateAmount) < 0.0) taxableRateAmount = 0.0;
-                                    var computedTaxes = processTaxInfo($scope.calculateTax(date, taxableRateAmount, todaysTaxes, roomIndex), roomIndex, date);
-                                    roomMetaData.totalTaxes = parseFloat(roomMetaData.totalTaxes) + parseFloat(computedTaxes.taxAmount);
-                                    roomMetaData.taxesInclusiveExclusive = parseFloat(roomMetaData.taxesInclusiveExclusive) + parseFloat(computedTaxes.taxAll); // CICO-10161
+                                    processTaxInfo($scope.calculateTax(date, taxableRateAmount, todaysTaxes, roomIndex), roomIndex, date);
                                 }
                             }
-
-
                         }
                     }
                 });
+
+                angular.forEach($scope.reservationData.taxDetails, function(tax) {
+                    if (!tax.isInclusive) roomMetaData.totalTaxes = parseFloat(roomMetaData.totalTaxes) + parseFloat(tax.amount); // add only exclusive taxes here
+                    roomMetaData.taxesInclusiveExclusive = parseFloat(roomMetaData.taxesInclusiveExclusive) + parseFloat(tax.amount);
+                });
+
                 //cumulative total of all stay costs 
                 $scope.reservationData.totalTaxAmount = parseFloat($scope.reservationData.totalTaxAmount) + parseFloat(roomMetaData.totalTaxes);
                 $scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(currentRoom.rateTotal) + parseFloat(roomMetaData.addOnCumulative) + parseFloat(roomMetaData.totalTaxes);
