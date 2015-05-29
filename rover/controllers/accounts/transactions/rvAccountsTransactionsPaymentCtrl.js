@@ -516,9 +516,9 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			};		
 		};
 
-		var showCreateArAccountPopup  = function(account_id){
+		var showCreateArAccountPopup  = function(account_id,arType){
 			ngDialog.close();
-			var paymentDetails = setUpPaymentParams(); 
+			var paymentDetails = setUpPaymentParams(arType); 
 			var data = {"account_id":account_id,"is_auto_assign_ar_numbers": $scope.ArDetails.is_auto_assign_ar_numbers,"paymentDetails":paymentDetails}
 			$scope.$emit('arAccountWillBeCreated',data);
 		};
@@ -531,7 +531,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 					proceedPayment("company");
 				}
 				else{
-					showCreateArAccountPopup($scope.ArDetails.company_id)
+					showCreateArAccountPopup($scope.ArDetails.company_id,"company")
 				}				
 			}
 			else{
@@ -539,7 +539,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 					proceedPayment("travel_agent");
 				}
 				else{
-					showCreateArAccountPopup($scope.ArDetails.travel_agent_id)
+					showCreateArAccountPopup($scope.ArDetails.travel_agent_id,"travel_agent")
 				} 
 			};
 		};
