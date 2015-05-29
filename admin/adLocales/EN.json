@@ -287,6 +287,8 @@
 "ADDON_LABEL": "Add On",
 "ADDON_DESCRIPTION_LABEL": "Add On Description",
 "ADDON_PRICE_LABEL": "Add On Price",
+"ADDON_MIN_DURATION_LABEL": "Minimum duration [days]",
+"ADDON_MAX_ORDER_LABEL": "Maximum order",
 "DESCRIPTION_LABEL": "Description",
 "PHONE_LABEL": "Phone",
 "ADDRESS_LABEL": "Address",
@@ -571,9 +573,13 @@
 ,
 
 
-"RATE_TYPES":"Rate Types",
-"RATE_TYPE":"Rate Type",
-"RATE_TYPE_PLACEHOLDER":"Enter rate type",
+"RATE_TYPES": "Rate Types",
+"RATE_TYPE": "Rate Type",
+"RATE_TYPE_PLACEHOLDER": "Enter rate type",
+"RATE_SEQUENCE": "Rate Sequence",
+"ROOM_AND_RATES_SCREEN": "Room and Rates Screen",
+"RATE_MANAGER": "Rate Manager",
+"DASHBOARD": "Dashboard",
 
 
 "MARKET":"Markets",
@@ -594,7 +600,12 @@
 "FORCE_RESERVATION_TYPE": "FORCE RESERVATION TYPE",
 "FORCE_MARKET_CODE": "FORCE MARKET CODE",
 "FORCE_ORIGIN_OF_BOOKING": "FORCE ORIGIN OF BOOKING",
-"CC_AUTHORIZATION_for_STAY_EXTENSIONS" :"CC AUTHORIZATION for STAY EXTENSIONS"
+"CC_AUTHORIZATION_for_STAY_EXTENSIONS" :"CC AUTHORIZATION for STAY EXTENSIONS",
+"USE_SEGMENTS": "Use Segments",
+"SEGMENTS":"Segments",
+"SEGMENTS_NAME_PLACEHOLDER":"Name of Segment",
+"SEGMENTS_LOS_PLACEHOLDER":"Length of Stay",
+"LOS":"Length of Stay"
 ,
 
     "ROOMS":"Rooms",

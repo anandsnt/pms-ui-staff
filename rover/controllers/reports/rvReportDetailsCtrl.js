@@ -122,6 +122,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
 				case reportUtils.getName('WEB_CHECK_OUT_CONVERSION'):
+				case reportUtils.getName('MARKET_SEGMENT_STATISTICS_REPORT'):
 					$scope.isLargeReport = true;
 					break;
 
@@ -194,8 +195,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
-					$scope.leftColSpan = 12;
-					$scope.rightColSpan = 12;
+					$scope.leftColSpan = 6;
+					$scope.rightColSpan = 7;
+					break;
+
+				case reportUtils.getName('MARKET_SEGMENT_STATISTICS_REPORT'):
+					$scope.leftColSpan = 8;
+					$scope.rightColSpan = 8;
 					break;
 
 				default:
@@ -430,6 +436,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
 					template = '/assets/partials/reports/rvForecastGuestGroupReportRow.html';
+					break;
+
+				case reportUtils.getName('MARKET_SEGMENT_STATISTICS_REPORT'):
+					template = '/assets/partials/reports/rvMarketSegmentStatReportRow.html';
 					break;
 
 				default:

@@ -174,7 +174,7 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		RVReservationCardSrv.checkinDateForDiary = $scope.reservationData.reservation_card.arrival_date.replace(/-/g, '/');
 		$state.go('rover.diary', {
 			reservation_id: $scope.reservationData.reservation_card.reservation_id,
-			checkin_date: $scope.reservationData.reservation_card.arrival_date,
+			checkin_date: $scope.reservationData.reservation_card.arrival_date
 		});
 	}
 	/**
@@ -195,6 +195,18 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		}
 		
 	};
+        
+        $scope.$watch('reservationData.reservation_card.room_number',function(){
+           if ($rootScope.viaSharerPopup){
+                $rootScope.$broadcast('SETPREV_RESERVATION',$rootScope.viaSharerName);
+                $rootScope.viaSharerPopup = false;
+           }
+        });
+        
+        $rootScope.$on('VIA_SHARER_ON',function(fullname){
+            $scope.reservationData.viaSharerName = fullname;
+            $rootScope.viaSharerPopup = true;
+        });
 
 	
 }]);

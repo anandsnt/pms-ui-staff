@@ -1760,9 +1760,21 @@ padding-top: 80px;
   min-width: 800px;
   margin: auto;
   .ui-state-highlight { 
-    color: #202225;
+    color: #82c3de;//cico-17059
     background: rgba(0, 0, 0, 0.05);
+    
   }
+}
+
+.ui-datepicker-days-cell-over.ui-datepicker-current-day.ui-datepicker-today{
+    > a.ui-state-active.ui-state-default{
+           color: #fcfcfc !important;
+           text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15) !important;
+           background-image: -moz-linear-gradient(top, #ffb319, #ff860d) !important;
+           background-image: -ms-linear-gradient(top, #ffb319, #ff860d) !important;
+           background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffb319), to(#ff860d)) !important;
+           background-image: -webkit-linear-gradient(top, #ffb319, #ff860d) !important;
+    }
 }
 
 .highcharts-axis-labels.highcharts-xaxis-labels{
