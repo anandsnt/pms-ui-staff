@@ -430,6 +430,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         };
         var params = {};
         params.id = $scope.selectedEntity.id;
+        params.entity_type = $scope.selectedEntity.entity_type;
         
         $scope.invokeApi(RVBillinginfoSrv.fetchDefaultAccountRouting, params, successCallback);
     };
