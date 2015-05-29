@@ -668,11 +668,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     // EXCLUDE departure date from cost computations - EXCEPT for SINGLE DAY(zero nights) reservations
                     if ((date == roomMetaData.arrival || date != roomMetaData.departure)) {
                         var todaysRate = stay.rate.id;
-                        if (!todaysRate || todaysRate == null) {
+                        if (!todaysRate || todaysRate == null || !$scope.reservationData.rateDetails.length) {
                             // ERROR! - NO RATE SELECTED FOR THIS RESERVATION - THIS DAY
                             // console.warn("No rate id available for room: " + roomIndex + ",for date: " + date);
                         } else {
-                            var todaysMetaData = $scope.reservationData.rateDetails[roomIndex][date][todaysRate];
+                            var todaysMetaData = $scope.reservationData.rateDetails[roomIndex] && $scope.reservationData.rateDetails[roomIndex][date] && $scope.reservationData.rateDetails[roomIndex][date][todaysRate];
                             var todaysTaxes = todaysMetaData.taxes;
                             // --------------------------------------------------------------------------------//
                             // -- Calculate the rate amount for the Room for that rate for that day --
