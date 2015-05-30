@@ -11729,7 +11729,7 @@
 
                     /* 3rd level **/
                     .grid-items {
-                        table-layout: auto;
+                        table-layout: fixed;
                         border-collapse: separate;
                         border-spacing: 0 10px;
                         margin: 0 20px 10px 20px;
@@ -11741,6 +11741,14 @@
                             padding: 0 10px;
                             white-space: normal;
                             overflow: visible;
+
+                            input {
+                                font-size: 14px;
+                                line-height: 1em;
+                                min-height: 20px;
+                                padding: 10px;
+                                margin-left: 10px;
+                            }
                         }
 
                         thead {
@@ -11753,7 +11761,11 @@
 
                         tbody {
                             tr {
-                                //&:nth-child(even) {
+                                td { 
+                                    vertical-align: top;
+                                    word-wrap: break-word;
+                                }
+
                                 &:nth-child(odd) {
                                     td {
                                         padding: 10px;
@@ -11763,6 +11775,40 @@
                             }
                         }
                     }
+
+                    /* CC Transactions ***/
+                    &.cc-transactions {
+
+                        .toggle {
+                            .name {  margin-right: 0; }
+                        }
+                        
+                        /* 1st level ***/
+                        .grid-group {
+                            > .toggle {
+                                font-size: 18px;
+                                line-height: 40px;
+                                text-transform: none;
+                                font-weight: 600;
+
+                                .name { .calc-width(100, 110); }
+
+                                &.green { color: @green; }
+                                &.red { color: @red; }
+                                &.grey { color: @grey3; }                                   
+                            }
+                        } 
+
+                        /* 2nd level ***/
+                        .grid-charge {
+                            > .toggle {
+                                .name { .calc-width(100, 90); }
+                            }
+                        }
+
+                        /* 3rd level **/
+                        .grid-items { table-layout: auto; }
+                    } 
                 }
 
                 /* Cashier shifts ***/
