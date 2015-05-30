@@ -520,22 +520,33 @@ sntRover.controller('roverController',
       }
     };
 
+    // Method to check whether the rover is accessed via devices or not.
+    var isAccessedFromDevice = function(){
+        var isDevice = false; //initiate as false
+        // device detection
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+          isDevice = true;
+        }
+        return isDevice;
+    };
+
     /*
      * Start Card reader now!.
      */
     if ($rootScope.paymentGateway != "sixpayments") {
-		if($rootScope.desktopSwipeEnabled){
-			initiateDesktopCardReader();
-		} else {
-     		//Time out is to call set Browser
-			setTimeout(function() {
-			  $scope.initiateCardReader();
-			}, 2000);
-		}
-
-      
+  		/* Enabling desktop Swipe if we access the app from desktop ( not from devices) and  
+       * desktopSwipeEnabled flag is true
+      */
+      if($rootScope.desktopSwipeEnabled && !isAccessedFromDevice()){
+  			initiateDesktopCardReader();
+  		}
+      else {
+       	//Time out is to call set Browser
+  			setTimeout(function() {
+  			  $scope.initiateCardReader();
+  			}, 2000);
+  		}
     }
-
 
     /*
      * To show add new payment modal
