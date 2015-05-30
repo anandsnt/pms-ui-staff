@@ -20,7 +20,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		$scope.billingInfoModalOpened = false;
 
 		var initGroupSummaryView = function() {
-			// Have a handler to update the summary - IFF in edit mode
+			// Have a handler to update the summary - IFF in edit mode		
 			if (!$scope.isInAddMode()) {
 				$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
 					if (targetElement.id != "cancel-action" && !angular.equals(summaryMemento, $scope.groupConfigData.summary) && !$scope.groupSummaryData.isDemographicsPopupOpen) {
@@ -169,7 +169,14 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 */
 		var demographicsMemento = {};
 		$scope.openDemographicsPopup = function() {
+			if ($scope.isInAddMode()) {
+				// If the group has not been saved yet, prompt user for the same
+				$scope.errorMessage = ["Please save the group first"];
+				return;
+			}
+
 			$scope.errorMessage = "";
+
 			var showDemographicsPopup = function() {
 					$scope.groupSummaryData.isDemographicsPopupOpen = true;
 					// $scope.computeSegment();
