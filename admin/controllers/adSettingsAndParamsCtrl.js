@@ -8,6 +8,7 @@ admin.controller('settingsAndParamsCtrl',['$scope','settingsAndParamsSrv','setti
     $scope.data = settingsAndParamsData.business_date;
     $scope.chargeCodes = chargeCodes;
     $scope.selected_charge_code = settingsAndParamsData.no_show_charge_code_id;
+    $scope.selected_group_charge_code = settingsAndParamsData.group_charge_code_id;
   
     /**
     * To handle save button action
@@ -52,7 +53,8 @@ admin.controller('settingsAndParamsCtrl',['$scope','settingsAndParamsSrv','setti
             };
         }
         var selectedChargeCode = ( typeof $scope.selected_charge_code == 'undefined' ) ? "" : $scope.selected_charge_code;
-        var dataToSend = { "no_show_charge_code_id" : selectedChargeCode , "business_date" : $scope.data };
+        var groupChargeCode = ( typeof $scope.selected_group_charge_code == 'undefined' ) ? "" : $scope.selected_group_charge_code;
+        var dataToSend = { "no_show_charge_code_id" : selectedChargeCode , "business_date" : $scope.data,"group_charge_code_id":groupChargeCode };
         
         $scope.invokeApi(settingsAndParamsSrv.saveSettingsAndParamsSrv, dataToSend ,saveDetailsSuccessCallback);
     };
