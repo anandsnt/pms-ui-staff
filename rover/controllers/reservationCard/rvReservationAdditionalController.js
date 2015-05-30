@@ -5,6 +5,22 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			hideDetails: true // TODO : make this flag true before sending to CR
 		}
 
+		$scope.isSegmentAutoComputed = function() {
+			var currentSegment = $scope.reservationParentData.demographics.segment,
+				aptSegment = "";
+			if (!!currentSegment) {
+				angular.forEach($scope.otherData.segments, function(segment) {
+					if ($scope.reservationData.reservation_card.total_nights < segment.los) {
+						if (!aptSegment)
+							aptSegment = segment.value;
+					}
+				});
+				return !!aptSegment && aptSegment == currentSegment;
+			} else {
+				return false;
+			}
+		}
+
 		$scope.updateAdditionalDetails = function() {
 			console.log('updateAdditionalDetails', $scope.reservationParentData.demographics);
 			var updateSuccess = function(data) {
@@ -33,7 +49,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 				'source_id': parseInt($scope.reservationParentData.demographics.source),
 				'market_segment_id': parseInt($scope.reservationParentData.demographics.market),
 				'booking_origin_id': parseInt($scope.reservationParentData.demographics.origin),
-				'segment_id' : parseInt($scope.reservationParentData.demographics.segment)
+				'segment_id': parseInt($scope.reservationParentData.demographics.segment)
 			}, updateSuccess, updateFailure);
 		}
 	}
