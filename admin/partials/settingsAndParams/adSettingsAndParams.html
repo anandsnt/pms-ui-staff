@@ -67,7 +67,7 @@
 								<div class="select">
 									<select class="placeholder" ng-model="selected_group_charge_code">
 										<option value="" ng-selected="selected_group_charge_code == ''"translate>SELECT_CHARGE_CODE</option>
-										<option ng-selected="selected_group_charge_code == charge_code.charge_code" value="{{charge_code.charge_code}}" ng-repeat="charge_code in chargeCodes" >{{charge_code.charge_code+' '+charge_code.description}}</option>
+										<option ng-selected="selected_group_charge_code == charge_code.value" value="{{charge_code.value}}" ng-repeat="charge_code in chargeCodes" >{{charge_code.charge_code+' '+charge_code.description}}</option>
 									</select>
 								</div>
 						</div>
