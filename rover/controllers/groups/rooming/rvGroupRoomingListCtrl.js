@@ -349,10 +349,12 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * when a tab switch is there, parant controller will propogate
          * API, we will get this event, we are using this to fetch new room block deails
          */
-        /*$scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab){
+        $scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab){
             if (activeTab !== 'ROOMING') return;
-            $scope.fetchRoomingDetails();
-        });*/
+
+            //calling initially required APIs
+            callInitialAPIs();        
+        });
 
         /**
          * [initializeVariables description]
@@ -1009,11 +1011,10 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             initializeVariables();
 
             //pagination
-            initialisePagination();
-
+            initialisePagination();            
+            
             //calling initially required APIs
-            callInitialAPIs();
-
+            //callInitialAPIs();
         }();
     }
 ]);

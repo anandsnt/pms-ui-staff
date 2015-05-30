@@ -1,8 +1,6 @@
 sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv', 'RVReservationCardSrv', 'rvUtilSrv', '$state',
 	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state) {
-		BaseCtrl.call(this, $scope);
-
-		$scope.setScroller("groupSummaryScroller");
+		
 
 		$scope.groupSummaryData = {
 			releaseOnDate: $rootScope.businessDate,
@@ -12,8 +10,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			newNote: "",
 			existingHoldStatus: parseInt($scope.groupConfigData.summary.hold_status) //This is required to reset Cancel when selected in dropdown but not proceeded with in the popup
 		}
-
-		$s = $scope;
 
 		var summaryMemento = {};
 		$scope.billingInfoModalOpened = false;
@@ -43,76 +39,93 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			}
 		};
 
-		$scope.fromDateOptions = {
-			showOn: 'button',
-			dateFormat: $rootScope.jqDateFormat,
-			numberOfMonths: 1,
-			yearRange: '-1:',
-			disabled: $scope.groupConfigData.summary.is_cancelled,
-			minDate: tzIndependentDate($rootScope.businessDate),
-			beforeShow: function(input, inst) {
-				$('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
-			},
-			onClose: function(dateText, inst) {
-				$('#ui-datepicker-overlay').remove();
-			},
-			onSelect: function(date, datePickerObj) {
-				$scope.groupConfigData.summary.block_from = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
-				if ($scope.groupConfigData.summary.release_date.toString().trim() == '') {
-					$scope.groupConfigData.summary.release_date = $scope.groupConfigData.summary.block_from;
+		/**
+		 * when from date choosed, this function will fire
+		 * @param  {Object} date          
+		 * @param  {Object} datePickerObj
+		 * @return undefined
+		 */
+		var fromDateChoosed = function(date, datePickerObj) {
+			$scope.groupConfigData.summary.block_from = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+
+			//referring data source
+			var refData = $scope.groupConfigData.summary; 
+			if (refData.release_date.toString().trim() == '') {
+				$scope.groupConfigData.summary.release_date = refData.block_from;
+			}
+
+			// we will clear end date if chosen start date is greater than end date
+			if (refData.block_from > refData.block_to) {
+				$scope.groupConfigData.summary.block_to = '';
+			}
+			//setting the min date for end Date
+			$scope.toDateOptions.minDate = refData.block_from;
+
+			//we are in outside of angular world
+			runDigestCycle();
+		}
+
+		/**
+		 * when to date choosed, this function will fire
+		 * @param  {Object} date          
+		 * @param  {Object} datePickerObj 
+		 * @return undefined            
+		 */
+		var toDateChoosed = function(date, datePickerObj) {
+			$scope.groupConfigData.summary.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+
+			//we are in outside of angular world
+			runDigestCycle();
+		}
+
+		/**
+		 * when release date choosed, this function will fire
+		 * @param  {Object} date          
+		 * @param  {Object} datePickerObj 
+		 * @return undefined            
+		 */
+		var releaseDateChoosed = function(date, datePickerObj) {
+			$scope.groupConfigData.summary.release_date = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+
+			//we are in outside of angular world
+			runDigestCycle();
+		}
+
+		/**
+		 * to set date picker option for summary view
+		 * @return {undefined} [description]
+		 */
+		var setDatePickerOptions = function() {
+			//date picker options - Common
+			var commonDateOptions = {
+				showOn: 'button',
+				dateFormat: $rootScope.jqDateFormat,
+				numberOfMonths: 1,
+				yearRange: '-1:',
+				disabled: $scope.groupConfigData.summary.is_cancelled,
+				minDate: tzIndependentDate($rootScope.businessDate),
+				beforeShow: function(input, inst) {
+					$('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
+				},
+				onClose: function(dateText, inst) {
+					$('#ui-datepicker-overlay').remove();
 				}
+			};
 
-				// we will clear end date if chosen start date is greater than end date
-				if ($scope.groupConfigData.summary.block_from > $scope.groupConfigData.summary.block_to) {
-					$scope.groupConfigData.summary.block_to = '';
-				}
-				//setting the min date for end Date
-				$scope.toDateOptions.minDate = $scope.groupConfigData.summary.block_from;
+			//from Date options
+			$scope.fromDateOptions = _.extend({
+				onSelect: fromDateChoosed
+			}, commonDateOptions);
 
-				//we are in outside of angular world
-				runDigestCycle();
-			}
-		};
+			//to date options
+			$scope.toDateOptions = _.extend({
+				onSelect: toDateChoosed
+			}, commonDateOptions);		
 
-		$scope.toDateOptions = {
-			showOn: 'button',
-			dateFormat: $rootScope.jqDateFormat,
-			numberOfMonths: 1,
-			yearRange: '-1:',
-			disabled: $scope.groupConfigData.summary.is_cancelled,
-			minDate: tzIndependentDate($rootScope.businessDate),
-			beforeShow: function(input, inst) {
-				$('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
-			},
-			onClose: function(dateText, inst) {
-				$('#ui-datepicker-overlay').remove();
-			},
-			onSelect: function(date, datePickerObj) {
-				$scope.groupConfigData.summary.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
-
-				//we are in outside of angular world
-				runDigestCycle();
-			}
-		};
-
-		$scope.releaseDateOptions = {
-			showOn: 'button',
-			dateFormat: $rootScope.jqDateFormat,
-			numberOfMonths: 1,
-			yearRange: '-1:',
-			minDate: tzIndependentDate($rootScope.businessDate),
-			beforeShow: function(input, inst) {
-				$('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
-			},
-			onClose: function(dateText, inst) {
-				$('#ui-datepicker-overlay').remove();
-			},
-			onSelect: function(date, datePickerObj) {
-				$scope.groupConfigData.summary.release_date = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
-
-				//we are in outside of angular world
-				runDigestCycle();
-			}
+			//release date options
+			$scope.releaseDateOptions = _.extend({
+				onSelect: releaseDateChoosed
+			}, commonDateOptions);					
 		};
 
 		/**
@@ -518,5 +531,25 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
 			};
 		});
+
+		/**
+		 * Function used to initialize summary view
+		 * @return undefined
+		 */
+		var initializeMe = function() {
+			BaseCtrl.call(this, $scope);
+
+			//summary scroller
+			$scope.setScroller("groupSummaryScroller");
+
+			//updating the left side menu
+			$scope.$emit("updateRoverLeftMenu", "menuCreateGroup");
+
+			//IF you are looking for where the hell the API is CALLING
+			//scroll above, and look for the event 'GROUP_TAB_SWITCHED'
+
+			//date related setups and things
+			setDatePickerOptions();			
+		}();
 	}
 ]);

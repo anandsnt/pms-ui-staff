@@ -149,11 +149,11 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			};
 			//Reload the summary tab contents before switching
 			if (tab === "SUMMARY" || tab === "ACCOUNT") {
-				$scope.refreshSummaryTab();
+				//$scope.refreshSummaryTab();
 			};
 			//Preload the transaction data when we switch to transactions tab
 			if (tab === "TRANSACTIONS") {
-				preLoadTransactionsData();
+				//preLoadTransactionsData();
 			} else {
 				$scope.groupConfigData.activeTab = tab;
 			}
@@ -477,6 +477,17 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			//setting title and things
 			setTitle();
 		}
+
+		/**
+		 * When we recieve the error message from its child controllers, we have to show them
+		 * @param  {Object} event 
+		 * @param  {String} errorMessage)
+		 * @return undefined
+		 */
+		$scope.$on('showErrorMessage', function(event, errorMessage){
+			$scope.errorMessage = errorMessage;
+			runDigestCycle();
+		});
 
 		/**
 		 * function to initialize things for group config.

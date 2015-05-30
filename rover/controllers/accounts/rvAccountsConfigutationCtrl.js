@@ -316,6 +316,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		 */
 		$scope.$on('showErrorMessage', function(event, errorMessage){
 			$scope.errorMessage = errorMessage;
+			runDigestCycle();
 		});
 
 		/**
