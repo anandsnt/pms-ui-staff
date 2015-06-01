@@ -27,7 +27,8 @@
 
             <!-- Reports table content -->
             <tbody ng-repeat="item in results" ng-include="'/assets/partials/reports/rvMarketSegmentStatReportRow.html'"></tbody>
-
+            
+            <!-- Reports table total content -->
             <tbody ng-if="resultsTotalRow"  ng-include="'/assets/partials/reports/rvMarketSegmentStatReportTotalRow.html'"></tbody>
         </table>
     </div>
