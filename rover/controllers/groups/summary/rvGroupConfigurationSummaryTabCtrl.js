@@ -2,31 +2,22 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state) {
 		
 
-		$scope.groupSummaryData = {
-			releaseOnDate: $rootScope.businessDate,
-			demographics: null,
-			promptMandatoryDemographics: false,
-			isDemographicsPopupOpen: false,
-			newNote: "",
-			existingHoldStatus: parseInt($scope.groupConfigData.summary.hold_status) //This is required to reset Cancel when selected in dropdown but not proceeded with in the popup
-		}
-
-		var summaryMemento = {};
-		$scope.billingInfoModalOpened = false;
-
-		var initGroupSummaryView = function() {
-			// Have a handler to update the summary - IFF in edit mode
-			if (!$scope.isInAddMode()) {
-				$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
-					if (!angular.equals(summaryMemento, $scope.groupConfigData.summary) && !$scope.groupSummaryData.isDemographicsPopupOpen) {
-						//data has changed
-						summaryMemento = angular.copy($scope.groupConfigData.summary);
-						//call the updateGroupSummary method from the parent controller
-						$scope.updateGroupSummary();
-					}
-				});
+		var summaryMemento, demographicsMemento;	
+		
+		/**
+		 * Whether our summary data has changed
+		 * used to remove the unneccessary API calls
+		 * @return {Boolean} [description]
+		 */
+		var whetherSummaryDataChanged = function (){
+			var currentSummaryData = $scope.groupConfigData.summary;
+			for (key in summaryMemento){
+				if (currentSummaryData[key] !== summaryMemento[key]) {
+					return false;
+				}
 			}
-		}
+			return true;
+		};
 
 		/**
 		 * to run angular digest loop,
@@ -38,6 +29,37 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				$scope.$digest();
 			}
 		};
+
+		/**
+		 * we have to save when the user clicked outside of summary tab
+		 * @param  {Object} event - Angular Event
+		 * @param  {Object} data  - the clicked element
+		 * @return undefined
+		 */
+		$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
+			
+			if ($scope.isInAddMode() || targetElement.id == 'summary' || 
+				whetherSummaryDataChanged() ||
+				$scope.groupSummaryData.isDemographicsPopupOpen) {
+
+				return;
+			}
+
+			//call the updateGroupSummary method from the parent controller
+			$scope.updateGroupSummary();
+		});
+
+		/**
+		 * if there is any update triggered from some where else, we will get this
+		 * event with latest data
+		 * @param  {Object} event - Angular Event
+		 * @param  {Object} data  - new Summary data
+		 * @return undefined
+		 */
+		$scope.$on('UPDATED_GROUP_INFO', function(event, data){
+			//data has changed
+			summaryMemento = angular.copy($scope.groupConfigData.summary);
+		});
 
 		/**
 		 * when from date choosed, this function will fire
@@ -139,8 +161,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		/**
 		 * Demographics Popup Handler
 		 * @return undefined
-		 */
-		var demographicsMemento = {};
+		 */		
 		$scope.openDemographicsPopup = function() {
 			$scope.errorMessage = "";
 			var showDemographicsPopup = function() {
@@ -207,7 +228,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				$scope.errorMessage = ["Please save the group to save Demographics"];
 				return;
 			}
-
+			console.log('save demographcis');
 			$scope.updateGroupSummary();
 			$scope.closeDialog();
 		}
@@ -303,6 +324,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 						closeByEscape: false
 					});
 				} else {
+					console.log('on hold status');
 					$scope.updateGroupSummary();
 					$scope.groupSummaryData.existingHoldStatus = parseInt($scope.groupConfigData.summary.hold_status);
 
@@ -484,7 +506,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			});
 		}
 
-		initGroupSummaryView();
 
 		var getPassData = function() {
 			var passData = {
@@ -533,6 +554,67 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		});
 
 		/**
+		 * we will update the summary data, when we got this one
+		 * @param  {Object} data
+		 * @return undefined
+		 */
+		var fetchSuccessOfSummaryData = function (data) {
+			$scope.groupConfigData.summary = _.extend($scope.groupConfigData.summary, data.groupSummary);
+
+			summaryMemento = _.extend({}, $scope.groupConfigData.summary);			
+		};
+
+		/**
+		 * method to fetch summary data
+		 * @return undefined
+		 */
+		var fetchSummaryData = function() {
+			var params = {
+				"groupId": $scope.groupConfigData.summary.group_id
+			};
+			var options = {
+				successCallBack: fetchSuccessOfSummaryData,
+				params: params
+			};
+
+			$scope.callAPI(rvGroupConfigurationSrv.getGroupSummary, options);
+		};
+
+		/**
+		 * when a tab switch is there, parant controller will propogate an event
+		 * we will use this to fetch summary data
+		 */
+		$scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab) {
+			if (activeTab !== 'SUMMARY') return;
+			fetchSummaryData();
+		});
+
+		/**
+		 * [initializeVariables description]
+		 * @param  {[type]} argument [description]
+		 * @return {[type]}          [description]
+		 */
+		var initializeVariables = function (argument) {
+			
+			$scope.groupSummaryData = {
+				releaseOnDate: $rootScope.businessDate,
+				demographics: null,
+				promptMandatoryDemographics: false,
+				isDemographicsPopupOpen: false,
+				newNote: "",
+
+				//This is required to reset Cancel when selected in dropdown but not proceeded with in the popup
+				existingHoldStatus: parseInt($scope.groupConfigData.summary.hold_status) 
+			};
+
+			$scope.billingInfoModalOpened = false;
+
+			//we use this to ensure that we will call the API only if there is any change in the data
+			summaryMemento = _.extend({}, $scope.groupConfigData.summary);
+			demographicsMemento = {};
+		};
+
+		/**
 		 * Function used to initialize summary view
 		 * @return undefined
 		 */
@@ -545,11 +627,14 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			//updating the left side menu
 			$scope.$emit("updateRoverLeftMenu", "menuCreateGroup");
 
+			//we have a list of scope varibales which we wanted to initialize
+			initializeVariables ();
+
 			//IF you are looking for where the hell the API is CALLING
 			//scroll above, and look for the event 'GROUP_TAB_SWITCHED'
 
 			//date related setups and things
-			setDatePickerOptions();			
+			setDatePickerOptions();				
 		}();
 	}
 ]);

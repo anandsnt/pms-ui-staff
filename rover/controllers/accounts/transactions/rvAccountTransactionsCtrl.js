@@ -679,6 +679,18 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				callInitialAPIs();
 			}
 		});
+		
+		/**
+		 * When there is a TAB switch, we will get this. We will initialize things from here
+		 * @param  {[type]} event             [description]
+		 * @param  {[type]} currentTab){		} [description]
+		 * @return {[type]}                   [description]
+		 */
+		$scope.$on ('GROUP_TAB_SWITCHED', function(event, currentTab){
+			if (currentTab === "TRANSACTIONS") {				
+				callInitialAPIs();
+			}
+		});		
 
 	}
 ]);

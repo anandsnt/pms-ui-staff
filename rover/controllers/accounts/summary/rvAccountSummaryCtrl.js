@@ -68,8 +68,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			}
 
 			if (!$scope.isInAddMode()) {
-				$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
-					console.log('ouseide');
+				$scope.$on("OUTSIDECLICKED", function(event, targetElement) {				
 					if (targetElement.id != 'AccountTab') {
 						callUpdate();
 					}
@@ -248,6 +247,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		 */
 		var onAccountSummaryDetailsFetchSuccess = function(data) {
 			$scope.accountConfigData.summary = data;
+			summaryMemento = angular.copy($scope.accountConfigData.summary);
 		}
 
 		/**
@@ -279,6 +279,19 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				initAccountSummaryView();
 				refreshSummaryData();
 			}
-		});		
+		});	
+
+		/**
+		 * When there is a TAB switch, we will get this. We will initialize things from here
+		 * @param  {Object} event           
+		 * @param  {String} currentTab - Active tab in the view
+		 * @return undefined
+		 */
+		$scope.$on ('GROUP_TAB_SWITCHED', function(event, currentTab){
+			if (currentTab === "ACCOUNT") {
+				initAccountSummaryView();
+				refreshSummaryData();
+			}
+		});			
 	}
 ]);

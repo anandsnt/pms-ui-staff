@@ -34,8 +34,8 @@
             <div  id="group-card-content" class="card-tabs card-content">
                 <!-- Group tabs navigation -->
                 <ul id="group-card-tabs-nav" class="card-tabs-nav no-print">
-                    <li ng-click="switchTabTo('SUMMARY')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'SUMMARY'}">
-                        <a>Summary</a>
+                    <li  ng-click="switchTabTo('SUMMARY')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'SUMMARY'}">
+                        <a id="summary">Summary</a>
                     </li>
                     <li class="with-filters" ng-click="switchTabTo('ROOM_BLOCK')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ROOM_BLOCK'}">
                         <a>Room Block Details</a>
