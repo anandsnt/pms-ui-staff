@@ -2,6 +2,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 	function($rootScope, $scope, RVReservationSummarySrv) {
 		BaseCtrl.call(this, $scope);
 		$scope.additionalDetails = {
+			segmentAvailable: !!$scope.reservationParentData.demographics.segment,
 			hideDetails: true // TODO : make this flag true before sending to CR
 		}
 
