@@ -482,7 +482,8 @@ sntRover.controller('roverController',
     $scope.failureCallBackSwipe = function(errorMessage) {
     	$scope.errorMessage = errorMessage;
     	if($rootScope.desktopSwipeEnabled){
-    		$rootScope.showWebsocketConnectionError();
+    		console.log("Could not connect to desktop card reader");
+    		//$rootScope.showWebsocketConnectionError();
     	}
     };
 
