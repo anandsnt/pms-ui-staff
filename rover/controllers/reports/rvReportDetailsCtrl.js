@@ -380,6 +380,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.detailsTemplateUrl = '/assets/partials/reports/rvForecastGuestGroupReport.html';
 					break;
 
+				case reportUtils.getName('MARKET_SEGMENT_STATISTICS_REPORT'):
+					$scope.hasReportTotals    = false;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/rvMarketSegmentStatReport.html';
+					break;
+
 				default:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
