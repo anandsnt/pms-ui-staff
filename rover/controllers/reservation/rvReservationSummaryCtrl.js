@@ -520,7 +520,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 // CICO-15107 --
                 var aptSegment = ""; //Variable to store the suitable segment ID 
                 angular.forEach($scope.otherData.segments, function(segment) {
-                    if ($scope.reservationData.stayDays.length < segment.los) {
+                    if ($scope.reservationData.stayDays.length - 1 < segment.los) {
                         if (!aptSegment)
                             aptSegment = segment.value;
                     }
