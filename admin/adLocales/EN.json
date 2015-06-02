@@ -548,7 +548,7 @@
 "DAILY_UPSELL":"Daily Upsell",
 "TARGETS":"Targets",
 "TARGET":"Target",
-"UPSELL_ONE_NIGHT_STAYS":"Upsell 1 Night Stays Only",
+"UPSELL_ONE_NIGHT_STAYS":"Upsell 1 Night Stays Only (All Room Types)",
 "FORCE_UPSELL":"Force Upsell",
 "ROOM_LEVEL_TARGETS":"Room Level Targets ",
 "LEVEL_ONE":"Level 1",
@@ -568,14 +568,21 @@
 "CHARGE":"Charge",
 "LIMITED_LATE_CHECK_OUTS_BY_ROOM_TYPE":"LIMITED LATE CHECK OUT'S BY ROOM TYPE",
 "ADD_ROOM_TYPE":"Add room type",
-"MAX_PER_DAY":" Max per day"
+"MAX_PER_DAY":" Max per day",
+"LIMIT_UPSELL_OFFERS_FOR_FOLLOWING_ROOM_TYPES_BY_MAX_LOS": "LIMIT UPSELL OFFERS FOR FOLLOWING ROOM TYPES BY MAX LOS",
+"ALLOW_ROVER_OVERWRITE": "ALLOW ROVER OVERWRITE",
+"MAX_LOS": "MAX LOS"
 
 ,
 
 
-"RATE_TYPES":"Rate Types",
-"RATE_TYPE":"Rate Type",
-"RATE_TYPE_PLACEHOLDER":"Enter rate type",
+"RATE_TYPES": "Rate Types",
+"RATE_TYPE": "Rate Type",
+"RATE_TYPE_PLACEHOLDER": "Enter rate type",
+"RATE_SEQUENCE": "Rate Sequence",
+"ROOM_AND_RATES_SCREEN": "Room and Rates Screen",
+"RATE_MANAGER": "Rate Manager",
+"DASHBOARD": "Dashboard",
 
 
 "MARKET":"Markets",
@@ -601,7 +608,8 @@
 "SEGMENTS":"Segments",
 "SEGMENTS_NAME_PLACEHOLDER":"Name of Segment",
 "SEGMENTS_LOS_PLACEHOLDER":"Length of Stay",
-"LOS":"Length of Stay"
+"LOS":"Length of Stay",
+"FORCE_SEGMENT": "FORCE SEGMENT"
 ,
 
     "ROOMS":"Rooms",
@@ -744,7 +752,8 @@
     "CANCELLATION_CHARGE_CODE":"Cancellation Charge Code",
     "SELECT_CHARGE_CODE":"Select Charge Code",
     "NO_SHOW_CHARGE_CODE":"No show charge code",
-    "ADDONS_FOR_RESERVATIONS" : "Add-ons for Reservations"
+    "ADDONS_FOR_RESERVATIONS" : "Add-ons for Reservations",
+    "CUSTOM_GROUP_RATE_CHARGE_CODE":"Custom Group Rate Charge Code"
 ,	
 	"SETTINGS_AND_PARAMS":"Settings & Parameters",
     "CHANGE_BUSSINESS_DAY":"Change Business Day",

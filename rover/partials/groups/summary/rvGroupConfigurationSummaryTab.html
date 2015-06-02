@@ -1,8 +1,8 @@
 <form id="group-summary" name="group-summary" ng-click="clearErrorMessage()" class="form card-tab scrollable" ng-controller="rvGroupConfigurationSummaryTab" ng-iscroll="groupSummaryScroller" ng-iscroll-delay="500" outside-click-handler>
     <div class="wrapper">
-        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="holder left">
             <strong class="h3" translate>GROUP_INFO</strong>
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div class="entry full-width">
                 <label for="group-name">
                     {{ 'NAME' | translate}}
@@ -31,7 +31,7 @@
                 <input id="group-email" ng-model="groupConfigData.summary.contact_email" type="text" />
             </div>
             <div class="entry break full-width">
-                <a ng-click="openDemographicsPopup();" class="button white brand-text" translate>DEMOGRAPHICS</a>
+                <a ng-click="openDemographicsPopup();" class="button" ng-class="{'grey': isInAddMode(), 'white brand-text': !isInAddMode()}" translate>DEMOGRAPHICS</a>
                 <a ng-click="openBillingInformation();" class="button blue" ng-if="groupConfigData.summary.posting_account_billing_info" translate>BILLING_INFORMATION</a>
                 <a ng-click="openBillingInformation();" class="button blue" ng-if="!groupConfigData.summary.posting_account_billing_info" translate>ADD_BILLING_INFO</a>
             </div>
@@ -46,7 +46,7 @@
                 <!-- value="{Start Date - not earlier than business or arrival date, not after departure date}" -->
                 <!--<input id="group-block-from" ng-if="!isInAddMode()" type="text" value="{{groupConfigData.summary.block_from | date:dateFormat}}" readonly />-->
                 <!-- If new group, add class "datepicker" -->
-                <input id="group-block-from" class="datepicker" type="text" ui-date="fromDateOptions" value="{{groupConfigData.summary.block_from|date:dateFormat}}" rv-clear-text-box listen-this="groupConfigData.summary.block_from" readonly ng-class="{'not-selected': !groupConfigData.summary.block_from}"/>
+                <input id="group-block-from" class="datepicker" type="text" ui-date="fromDateOptions" value="{{groupConfigData.summary.block_from|date:dateFormat}}" rv-clear-text-box listen-this="groupConfigData.summary.block_from" readonly ng-class="{'not-selected': !groupConfigData.summary.block_from}" />
             </div>
             <div class="entry has-datepicker">
                 <label for="group-block-to">

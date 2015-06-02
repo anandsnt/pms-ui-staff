@@ -432,6 +432,7 @@ body { overflow: hidden; }
 		}
 
 		.switch-button,
+		.select,
 		.back-button,
 		.logo  { .hide; }
 
@@ -521,6 +522,14 @@ body { overflow: hidden; }
                     .data-off { left: auto; right: -100%; }
                     .data-on { left: auto; right: 0; }
                 }
+			}
+
+			.select {
+				position: absolute;
+				top: 10px;
+				left: 10px;
+				.size(40px, 160px);
+				.show;
 			}
 
 			.back-button {

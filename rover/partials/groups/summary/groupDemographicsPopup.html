@@ -100,7 +100,8 @@
             <div class="select">
                 <select iscroll-stop-propagation name="segment" id="segment" 
                     ng-class="{'placeholder': !groupConfigData.summary.demographics.segment_id}" 
-                    ng-model="groupConfigData.summary.demographics.segment_id">
+                    ng-model="groupConfigData.summary.demographics.segment_id"
+                    ng-disabled="!!groupConfigData.summary.demographics.segment_id && !!groupSummaryData.computedSegment">
                     <option value="" selected translate>SEGMENT_PLACEHOLDER</option>
                     <option ng-repeat="segment in groupSummaryData.demographics.segments" 
                         value="{{segment.value}}" 

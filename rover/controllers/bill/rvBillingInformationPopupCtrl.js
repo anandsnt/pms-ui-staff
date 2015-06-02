@@ -43,6 +43,20 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     $scope.setReloadOption = function(option){
         $scope.isReloadNeeded = option;
     }
+    /*
+     *   Method to check whether the routing for a group/house already exist
+     */
+    var isRoutingForPostingAccountExist = function(){
+        var routeToPostingAccountExist = false;
+        var routesList = dclone($scope.routes,[]);
+        for(var i = 0; i < routesList.length; i++){
+            if(routesList[i].entity_type == "GROUP" || routesList[i].entity_type == "HOUSE"){
+                routeToPostingAccountExist = true;
+                return routeToPostingAccountExist;
+            }
+        }
+        return routeToPostingAccountExist;
+    };
     /**
     * function to handle the click 'all routes' and 'add routes' button
     */
@@ -64,7 +78,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     * function to handle entity selection from the 'All Routes' screen and the 'select entity' screen
     */
 	$scope.selectEntity = function(index,type){
-
+        $scope.errorMessage = "";
 		$scope.isEntitySelected = true;
         $scope.isInitialPage = false;
         if(type === 'ATTACHED_ENTITY' || type === 'ROUTES'){
@@ -122,18 +136,26 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             }
         }
         else if(type === 'GROUP' || type === 'HOUSE'){
-            var data = $scope.results.posting_accounts[index];
-            $scope.selectedEntity = {
-                "id": data.id,
-                "name": data.account_name,
-                "bill_no": "",
-                "attached_charge_codes": [],
-                "attached_billing_groups": [],
-                "is_new" : true,
-                "selected_payment" : "",
-                "credit_card_details": {},
-                "entity_type": data.account_type
-            };
+            if(isRoutingForPostingAccountExist()){
+                $scope.errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
+                $scope.isEntitySelected = false;
+                $scope.isInitialPage = true;
+            }
+            else{
+                var data = $scope.results.posting_accounts[index];
+                $scope.selectedEntity = {
+                    "id": data.id,
+                    "name": data.account_name,
+                    "bill_no": "",
+                    "attached_charge_codes": [],
+                    "attached_billing_groups": [],
+                    "is_new" : true,
+                    "selected_payment" : "",
+                    "credit_card_details": {},
+                    "entity_type": data.account_type
+                };
+            }
+            
         }
 	};
 
@@ -141,6 +163,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     */
     $scope.selectAttachedEntity = function(index,type){
 
+            $scope.errorMessage = "";
             $scope.isEntitySelected = true;
             $scope.isInitialPage = false;
             //TODO: Remove commented out code
@@ -198,9 +221,16 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 $scope.selectedEntity.entity_type = "TRAVEL_AGENT";                
             }
             else if(type =='GROUP' || type == 'HOUSE'){
-                $scope.selectedEntity.id = $scope.attachedEntities.posting_account.id;
-                $scope.selectedEntity.name = $scope.attachedEntities.posting_account.name;
-                $scope.selectedEntity.entity_type = type;          
+                if(isRoutingForPostingAccountExist()){
+                    $scope.errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
+                    $scope.isEntitySelected = false;
+                    $scope.isInitialPage = true;
+                }
+                else{
+                    $scope.selectedEntity.id = $scope.attachedEntities.posting_account.id;
+                    $scope.selectedEntity.name = $scope.attachedEntities.posting_account.name;
+                    $scope.selectedEntity.entity_type = type;    
+                }      
             }
     };
 

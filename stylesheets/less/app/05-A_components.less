@@ -78,9 +78,7 @@
 
                                 span { .show; }
 
-                                &.weekend {
-                                    background-color: rgba(95,131,146,1);
-                                }
+                                &.weekend { background-color: rgba(95,131,146,1); }
                             }
 
                             &.heading { background: transparent; }
@@ -98,7 +96,19 @@
                                 text-align: center;
                                 vertical-align: middle;
 
-                                .inner { line-height: 50px; }
+                                .inner { 
+                                    line-height: 50px; 
+
+                                    &.negative { 
+                                        color: @red;
+                                        font-weight: 600;
+                                    }
+                                    
+                                    &.warning {
+                                        color: @orange;
+                                        font-weight: 600;
+                                    }
+                                }
                             }
                         }
                     }
@@ -202,7 +212,7 @@
                             border-spacing: 5px 0;
 
                             col {
-                                width: 160px;
+                                width: 180px;
 
                                 &.grid-col {
                                     background-color: rgba(0,0,0,.1);
@@ -251,6 +261,8 @@
                                             margin: 0 5px 5px 5px;
                                             background-color: @white;
                                             #border-radius > .rounded();
+
+                                            &.last-row { margin-bottom: 0; }
                                         }
                                     }
 
@@ -258,17 +270,93 @@
                                         &:not(.main) {
                                             th,
                                             td { font-style: italic; }
+
+                                            &:nth-child(odd) { 
+                                                td  { 
+                                                    .inner { 
+                                                        background-color: lighten(@blue, 28);
+                                                        &.green { background-color: lighten(@green, 40); }
+                                                    }
+                                                }
+                                            }
+
+                                            &:nth-child(even) { 
+                                                td { 
+                                                    .inner { 
+                                                        background-color: lighten(@blue, 24);
+                                                        &.green { background-color: lighten(@green, 36); }
+                                                    }
+                                                }
+                                            }
                                         }
 
-                                        &:nth-child(odd) {
-                                            td  {
-                                                .inner { background-color: #ebf1f6; }
+                                        &.main {
+                                            td { 
+                                                .inner { 
+                                                   background-color: lighten(@blue, 28);
+                                                    &.green { background-color: lighten(@green, 40); }
+                                                }
                                             }
                                         }
-                                        &:nth-child(even) {
-                                            td {
-                                                .inner { background-color: #dce7f0; }
+                                    }
+
+                                    &.group-details {
+                                        .rows-toggle {
+                                            padding: 0;
+                                            text-align: left;
+                                            background: rgba(0,0,0,.1);
+
+                                            .inner { 
+                                                line-height: 40px;
+                                                padding: 5px 10px;
+                                                margin: 5px 5px 0 5px;
+                                                background: @white; 
+                                                #border-radius > .rounded();
+                                                .float;
+
+                                                .name {
+                                                    padding-right: 20px;
+                                                    background: @arrowDown 100% 50% no-repeat; 
+                                                }
+
+                                                .next-view {
+                                                    font-size: 16px;
+                                                    line-height: 40px;
+                                                    font-weight: 600;
+                                                    color: @logoPrimary;
+                                                    padding: 0 30px 0 10px;
+                                                    height: 40px;
+                                                    .transition();
+                                                    .pull-right;
+
+                                                    &:hover,
+                                                    &:active { color: @textColor; }
+                                                }
                                             }
+
+                                            &.active {
+                                                background: rgba(0,0,0,.1);
+
+                                                .inner { 
+                                                    margin-bottom: 5px;
+
+                                                    .name { background-image: @arrowUp; }
+                                                }
+                                            }
+                                        }
+
+                                        &.last-group-row {
+                                            .rows-toggle {
+                                                .inner { margin-bottom: 5px; }
+                                            }
+                                        }
+                                    }
+
+                                    &.group-details-row {
+                                        .button { line-height: 50px; }
+
+                                        &.last-row { 
+                                            .button { margin-bottom: 0; }
                                         }
                                     }
                                 }
@@ -4062,6 +4150,18 @@
                 .float;
                 .show;
 
+                /* Title ***/
+                .block-title {
+                    .button {
+                        float: none;
+                        font-size: 12px;
+                        line-height: 16px;
+                        margin: -2px 0 0 5px;
+                        padding: 0 5px;
+                        height: 18px;
+                    }
+                }
+
                 /* Block contents ***/
                 .next-view,
                 .no-view {
@@ -4135,12 +4235,7 @@
                         margin-right: 20px;
                     }
 
-                    .button {
-                        margin-right: 10px;
-                        .pull-left;
-
-                        &:last-child { margin: 0; }
-                    }
+                    
 
                     &.has-buttons {
                         .next-view,
@@ -4190,7 +4285,7 @@
                         margin-right: 10px;
                         height: 60px;
                         padding: 0 15px;
-                        .calc-width(100, 75);
+                        .calc-width(100, 85);
 
                         .selected {
                             line-height: 50px;
@@ -7359,36 +7454,66 @@
                     table-layout: fixed;
 
                     .red { color: @red; }
-
+                    
                     thead {
                         tr {
-                            th {
-                                padding: 0;
+                            th { 
+                                text-align: left;
                                 vertical-align: top;
-                                line-height: 35px;
+                                padding: 0; 
 
                                 span {
                                     color: @white;
                                     padding: 0 10px;
-                                    margin-right: 5px;
                                     background-color: darken(@grey2, 10);
-                                    height: 35px;
-                                    .calc-width(100, 5);
+                                    height: 30px;
                                     .show;
                                     .nowrap();
-                                    .box-shadow(1px 1px 0 rgba(0,0,0,.3)); 
+                                    .box-shadow(1px 1px 0 rgba(0,0,0,.3));
+
+                                    &.sort {
+                                        cursor: pointer;
+                                        background: darken(@grey2, 10) @arrowSort no-repeat 95% 50%;
+                                        padding-right: 40px;
+
+                                        &.sorting-asc { background-image: @arrowSortAsc; }
+                                        &.sorting-desc { background-image: @arrowSortDesc; }
+                                    }
                                 }
                             }
 
                             &.top-row {
-                                [colspan] { 
-                                    font-size: 16px;
-                                    text-align: center;
-                                    color: @white;
-                                    background-color: @gcard; 
-                                    width: 30%;
+                                th {
+                                    font-size: 15px;
+                                    line-height: 30px;
+                                    
+                                    &.date,
+                                    &.code { font-size: 15px; }
 
-                                    &.break { width: 70%; }
+                                    &[colspan] { 
+                                        color: @white;
+                                        background-color: @gcard; 
+                                        text-align: center;
+                                    }
+                                }
+                            }
+
+                            &.bottom-row {
+                                th {
+                                    font-size: 14px;
+                                    line-height: 1.5;
+                                    vertical-align: middle;
+
+                                    span {
+                                        line-height: 30px;
+                                        margin-right: 5px;
+                                        height: 30px;
+                                        .calc-width(100, 5);
+                                    }
+
+                                    &:last-child {
+                                        span { width: 100%; }
+                                    }
                                 }
                             }
                         }
@@ -7405,13 +7530,30 @@
                                 }
                             }
 
-                            &.total {
+                            &.total,
+                            &.grouped {
                                 td { 
-                                    font-size: 16px;
                                     font-weight: 600;
-                                    background-color: transparent;
                                     vertical-align: top;
                                     padding-top: 0;
+                                }
+                            }
+
+                            &.total {
+                                td { background-color: transparent; }
+                            }
+
+                            &.grouped {
+                                td {
+                                    text-transform: uppercase;
+                                    padding: 0;
+                                }
+                            }
+
+                            &.undefined {
+                                td {
+                                    color: @grey3;
+                                    font-style: italic;
                                 }
                             }
                         }
@@ -7437,14 +7579,170 @@
                         }
                     }
 
-                    .date { 
-                        width: 100px;
-                        
-                        span { 
-                            vertical-align: middle;
-                            .show;
+                    .date { width: 100px; }
+
+                    .code { width: 120px; }
+
+                    &.medium-grid,
+                    &.large-grid {
+                        table-layout: auto;
+                        border-collapse: collapse;
+                        border-spacing: 0;
+
+                        thead {
+                            tr {
+                                th {
+                                    &.break { 
+                                        padding-right: 0; 
+                                        border-right: 2px solid rgba(0,0,0,.3); 
+                                    }
+                                }
+
+                                &.bottom-row {
+                                    th { 
+                                        text-align: center;
+                                        border-right: 1px solid @grey2;
+                                        border-bottom: 1px solid @grey2;
+
+                                        &.break { border-right: 2px solid rgba(0,0,0,.3); }
+
+                                        &:last-child { border-right: 0; }
+                                    }
+                                }
+                            }
                         }
-                    }                
+
+                        tfoot {
+                            td { padding-top: 10px; }
+                        }
+
+                        tbody {
+                            tr {
+                                td {
+                                    padding: 5px;
+                                    text-align: center;
+                                    border-bottom: 1px solid @grey2;
+                                    border-right: 1px solid @grey2;
+
+                                    &.date,
+                                    &.code { text-align: left; }
+
+                                    &.break { border-right: 2px solid rgba(0,0,0,.3); }
+
+                                    &:last-child { border-right: 0; }
+                                }
+
+                                &.grouped {
+                                    td {
+                                        color: @grey3;
+                                        font-weight: 400;
+                                        background-color: transparent;
+
+                                        strong {
+                                            font-size: 15px;
+                                            font-weight: 600;
+                                            color: @textColor;
+                                        }
+
+                                        &.break { border-right: 2px solid rgba(0,0,0,.3); }
+                                    }
+                                }
+
+                                &:not(.grouped) {
+                                    &:nth-child(odd) {
+                                        td { background-color: @grey1; }
+                                    }
+
+                                    &.weekend {
+                                        td { background-color: rgba(0,0,0,.05); }
+                                    }
+                                }
+
+                                &.total {
+                                    td { 
+                                        background-color: transparent; 
+                                        border-bottom: 0;
+                                    }
+                                }
+                            }
+                        }
+
+                        .break {
+                            position: static;
+                            padding-right: auto;
+
+                            &:after { .hide; }
+                        }                    
+                    }
+
+                    &.medium-grid {
+                        tbody {
+                            tr {
+                                &.grouped {
+                                    td {
+                                        padding-top: 40px;
+                                    }
+
+                                    &:first-child {
+                                        td { padding-top: 5px; }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    &.large-grid {
+                        tbody {
+                            tr {
+                                td {
+                                    &.vertical { 
+                                        text-align: left; 
+                                        padding: 0;
+
+                                        .row {
+                                            padding: 5px; 
+                                            border-bottom: 1px solid rgba(0,0,0,.1);
+                                            .show;
+
+                                            strong {
+                                                font-weight: 400;
+                                                
+                                                em { 
+                                                    font-size: 12px;
+                                                    padding-left: 5px;
+                                                    color: @grey3; 
+                                                    width: 80px;
+                                                }
+                                            }
+
+                                            &.cells {
+                                                display: flex;
+
+                                                strong { 
+                                                    width: 50%;
+                                                    overflow: hidden;
+                                                    .pull-left;
+
+                                                    &:first-child { 
+                                                        display: flex-start;
+                                                        text-align: left;
+                                                        border-right: 1px solid rgba(0,0,0,.1);
+                                                    } 
+
+                                                    &:last-child { 
+                                                        display: flex-end;
+                                                        text-align: right;
+                                                    }
+                                                }
+                                            }
+
+                                            &:last-child { border-bottom: 0; }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }        
                 }
 
                 &.occupancy-footer { .hide; }
@@ -11741,7 +12039,7 @@
 
                     /* 3rd level **/
                     .grid-items {
-                        table-layout: auto;
+                        table-layout: fixed;
                         border-collapse: separate;
                         border-spacing: 0 10px;
                         margin: 0 20px 10px 20px;
@@ -11765,7 +12063,11 @@
 
                         tbody {
                             tr {
-                                //&:nth-child(even) {
+                                td { 
+                                    vertical-align: top;
+                                    word-wrap: break-word;
+                                }
+                        
                                 &:nth-child(odd) {
                                     td {
                                         padding: 10px;

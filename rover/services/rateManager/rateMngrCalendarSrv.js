@@ -73,6 +73,19 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 				that.dailyRates = data; 
 
 				var calendarData = that.calculateRateViewCalData();
+                                calendarData.room_type_restrictions = data.room_type_restrictions;
+                                
+                                calendarData.total_room_types = data.room_type_restrictions[0].room_types.length;
+                                
+                                calendarData.room_types_all = [];
+                                for (var i in data.room_type_restrictions[0].room_types){
+                                    
+                                calendarData.room_types_all.push({
+                                    room_type_id:data.room_type_restrictions[0].room_types[i].room_type.id,
+                                    name:data.room_type_restrictions[0].room_types[i].room_type.name
+                                });
+                                    
+                                }
 				//If only one rate exists in the search results, 
 				//then room type calendar for that rate should be displayed.
 				//Fetch the room type details for that rate.

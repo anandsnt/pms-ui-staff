@@ -109,7 +109,7 @@ sntRover.controller('roverController',
     $rootScope.isAddonOn = hotelDetails.is_addon_on;
     $rootScope.desktopSwipeEnabled = hotelDetails.allow_desktop_swipe;
 	$rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
-    
+
     //set MLI Merchant Id
     try {
       sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
@@ -483,7 +483,8 @@ sntRover.controller('roverController',
     $scope.failureCallBackSwipe = function(errorMessage) {
     	$scope.errorMessage = errorMessage;
     	if($rootScope.desktopSwipeEnabled){
-    		$rootScope.showWebsocketConnectionError();
+    		console.log("Could not connect to desktop card reader");
+    		//$rootScope.showWebsocketConnectionError();
     	}
     };
 
@@ -494,7 +495,7 @@ sntRover.controller('roverController',
     $scope.numberOfCordovaCalls = 0;
 
     var initiateDesktopCardReader = function(){
-    	//var portNumber = '8126';
+
     	sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options);
     }
 
@@ -520,22 +521,33 @@ sntRover.controller('roverController',
       }
     };
 
+    // Method to check whether the rover is accessed via devices or not.
+    var isAccessedFromDevice = function(){
+        var isDevice = false; //initiate as false
+        // device detection
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+          isDevice = true;
+        }
+        return isDevice;
+    };
+
     /*
      * Start Card reader now!.
      */
     if ($rootScope.paymentGateway != "sixpayments") {
-		if($rootScope.desktopSwipeEnabled){
-			initiateDesktopCardReader();
-		} else {
-     		//Time out is to call set Browser
-			setTimeout(function() {
-			  $scope.initiateCardReader();
-			}, 2000);
-		}
-
-      
+  		/* Enabling desktop Swipe if we access the app from desktop ( not from devices) and  
+       * desktopSwipeEnabled flag is true
+      */
+      if($rootScope.desktopSwipeEnabled && !isAccessedFromDevice()){
+  			initiateDesktopCardReader();
+  		}
+      else {
+       	//Time out is to call set Browser
+  			setTimeout(function() {
+  			  $scope.initiateCardReader();
+  			}, 2000);
+  		}
     }
-
 
     /*
      * To show add new payment modal
@@ -597,6 +609,7 @@ sntRover.controller('roverController',
     };
 
     $rootScope.showWebsocketConnectionError = function() {
+
 
       // Hide loading message
       $scope.$emit('hideLoader');
