@@ -1,0 +1,23 @@
+<tr class="total">
+   <td class="code break">Totals</td>
+
+     <td>{{ resultsTotalRow.revenue_today | currency:currencySymbol:2 }}</td>
+     <td>{{ resultsTotalRow.revenue_mtd | currency:currencySymbol:2 }}</td>
+     <td class="break">{{ resultsTotalRow.revenue_ytd | currency:currencySymbol:2 }}</td>
+
+     <td>{{ resultsTotalRow.bookings_today }}</td>
+     <td>{{ resultsTotalRow.bookings_mtd }}</td>
+     <td class="break">{{ resultsTotalRow.bookings_ytd }}</td>
+
+     <td>{{ resultsTotalRow.room_nights_today }}</td>
+     <td>{{ resultsTotalRow.room_nights_mtd }}</td>
+     <td class="break">{{ resultsTotalRow.room_nights_ytd }}</td>
+
+     <td>{{ resultsTotalRow.adr_today | currency:currencySymbol:2 }}</td>
+     <td>{{ resultsTotalRow.adr_mtd | currency:currencySymbol:2 }}</td>
+     <td class="break">{{ resultsTotalRow.adr_ytd | currency:currencySymbol:2 }}</td>
+
+     <td>{{ resultsTotalRow.percentage_today }}%</td>
+     <td>{{ resultsTotalRow.percentage_mtd }}%</td>
+     <td class="break">{{ resultsTotalRow.percentage_ytd }}%</td>  
+</tr>

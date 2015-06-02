@@ -1051,25 +1051,39 @@ table {
                     }
                 }
 
+                &.large-grid {
+                    tr {
+                        th,
+                        td {
+                            font-size: 9pt;
+                            padding: 4pt 2pt;
+                        }
+                    }
+                }
+
                 &.forecast-reports {
                     thead {
-                        th { 
-                            text-align: center; 
+                        tr {
+                            th { 
+                                &.date { background-color: transparent; }
 
-                            &.date { background-color: transparent; }
+                                &.break { 
+                                    position: relative;
+                                    padding-right: 16pt;
 
-                            &.break { 
-                                position: relative;
-                                padding-right: 16pt;
-
-                                &:after {
-                                    content: "";
-                                    position: absolute;
-                                    top: 0;
-                                    right: 0;
-                                    background: #fff;
-                                    .size(100%, 16pt);
+                                    &:after {
+                                        content: "";
+                                        position: absolute;
+                                        top: 0;
+                                        right: 0;
+                                        background: #fff;
+                                        .size(100%, 16pt);
+                                    }
                                 }
+                            }
+
+                            &.top-row {
+                                th { text-align: center; }
                             }
                         }
                     }
@@ -1087,7 +1101,7 @@ table {
 
                             &.weekend {
                                 td { 
-                                    color: @grey3;
+                                    color: @grey4;
                                     font-style: italic;
                                 }
                             }
@@ -1097,6 +1111,138 @@ table {
                                     font-size: 11pt;
                                     font-weight: 600;
                                     border: 0;
+                                }
+                            }
+                        }
+                    }
+
+                    &.medium-grid,
+                    &.large-grid {
+                        thead {
+                            tr {
+                                th {
+                                    text-align: center;
+
+                                    &.break { 
+                                        position: static;
+                                        padding-right: 0;
+                                        border-right: 2px solid @grey2; 
+
+                                        &:after { .hide; }
+                                    }
+
+                                    &:last-child { border-right: 0; }
+                                }
+
+                                &.bottom-row {
+                                    th { 
+                                        border-right: 1px solid @grey2;
+                                        border-bottom: 1px solid @grey2;
+
+                                        &.break { border-right: 2px solid @grey2; }
+
+                                        &:last-child { border-right: 0; }
+                                    }
+                                }
+                            }
+                        }
+
+                        tbody {
+                            tr {
+                                td { 
+                                    text-align: center; 
+                                    border-right: 1px solid @grey2;
+
+                                    &.date,
+                                    &.code { text-align: left; }
+
+                                    &.break { border-right: 2px solid @grey2; }
+
+                                    &:last-child { border-right: 0; }
+                                }
+
+                                &.grouped {
+                                    page-break-inside: avoid;
+                                    page-break-after: auto;
+
+                                    td {
+                                        color: @grey3;
+                                        font-weight: 400;
+                                        background-color: transparent;
+
+                                        strong {
+                                            font-size: 11pt;
+                                            font-weight: 600;
+                                            color: @textColor;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    &.medium-grid {
+                        tbody {
+                            tr {
+                                &.grouped {
+                                    td { padding-top: 18pt; }
+
+                                    &:first-child {
+                                        td { padding-top: 4pt; }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    &.large-grid {
+                        tbody {
+                            tr {
+                                td {
+                                    &.vertical { 
+                                        text-align: left; 
+                                        padding: 0;
+
+                                        .row {
+                                            padding: 4pt;
+                                            border-bottom: 1px solid @grey2;
+                                            .show;
+
+                                            strong {
+                                                font-weight: 400;
+                                                
+                                                em { 
+                                                    font-size: 12px;
+                                                    padding-left: 1pt;
+                                                    color: @grey3; 
+                                                }
+                                            }
+
+                                            &.cells {
+                                                display: flex;
+
+                                                strong { 
+                                                    width: 50%;
+                                                    overflow: hidden;
+                                                    .pull-left;
+
+                                                    &:first-child { 
+                                                        display: flex-start;
+                                                        text-align: left;
+                                                        border-right: 1px solid rgba(0,0,0,.1);
+                                                    } 
+
+                                                    &:last-child { 
+                                                        display: flex-end;
+                                                        text-align: right;
+                                                        padding-left: 1pt;
+                                                    }
+                                                }
+                                            }
+
+                                            &:last-child { border-bottom: 0; }
+                                        }
+                                    }
                                 }
                             }
                         }

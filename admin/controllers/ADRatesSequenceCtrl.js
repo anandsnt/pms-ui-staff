@@ -45,7 +45,8 @@ admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchor
 			$scope.invokeApi(ADRateSequenceSrv.save, {
 				"room_rates": $scope.sequenceState.selectedOptions['room_rates'].id,
 				"rate_manager": $scope.sequenceState.selectedOptions['rate_manager'].id,
-				"dashboard": $scope.sequenceState.selectedOptions['dashboard'].id
+				"dashboard": $scope.sequenceState.selectedOptions['dashboard'].id,
+				"dashboard_is_rate": $scope.sequenceState.selectedOptions['dashboard'].value === 'RATE'
 			}, onSaveSuccess);
 		}
 
