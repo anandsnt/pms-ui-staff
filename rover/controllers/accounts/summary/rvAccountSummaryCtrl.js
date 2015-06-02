@@ -46,6 +46,21 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			}
 		}
 
+		/**
+		 * Whether our summary data has changed
+		 * used to remove the unneccessary API calls
+		 * @return {Boolean} [description]
+		 */
+		var whetherSummaryDataChanged = function (){
+			var currentSummaryData = $scope.accountConfigData.summary;
+			for (key in summaryMemento){
+				if (currentSummaryData[key] !== summaryMemento[key]) {
+					return false;
+				}
+			}
+			return true;
+		};		
+
 		var initAccountSummaryView = function() {
 
 			$scope.setScroller("rvAccountSummaryScroller");
@@ -59,7 +74,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			summaryMemento = angular.copy($scope.accountConfigData.summary);
 			// Have a handler to update the summary - IFF in edit mode
 			var callUpdate = function() {
-				if (!angular.equals(summaryMemento, $scope.accountConfigData.summary) && !$scope.accountSummaryData.isDemographicsPopupOpen) {
+				if (!whetherSummaryDataChanged() && !$scope.accountSummaryData.isDemographicsPopupOpen) {
 					//data has changed
 					summaryMemento = angular.copy($scope.accountConfigData.summary);
 					//call the updateAccountSummary method from the parent controller

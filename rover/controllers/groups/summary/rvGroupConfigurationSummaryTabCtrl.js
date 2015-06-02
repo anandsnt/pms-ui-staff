@@ -39,6 +39,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
 			
 			if ($scope.isInAddMode() || targetElement.id == 'summary' || 
+				targetElement.id == "cancel-action" || //TODO: Need to check with Dilip/Shiju PC for more about this
 				whetherSummaryDataChanged() ||
 				$scope.groupSummaryData.isDemographicsPopupOpen) {
 
@@ -200,10 +201,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		$scope.openBillingInformation = function() {
 			console.log($scope.accountConfigData.summary.posting_account_name);
 			$scope.attachedEntities = {};
-			$scope.attachedEntities.group_details = {};
-			$scope.attachedEntities.group_details.id = $scope.groupConfigData.summary.group_id;
-			$scope.attachedEntities.group_details.name = $scope.accountConfigData.summary.posting_account_name;
-			$scope.attachedEntities.group_details.logo = "GROUP_DEFAULT";
+			$scope.attachedEntities.posting_account = {};
+			$scope.attachedEntities.posting_account.id = $scope.groupConfigData.summary.group_id;
+			$scope.attachedEntities.posting_account.name = $scope.accountConfigData.summary.posting_account_name;
+			$scope.attachedEntities.posting_account.logo = "GROUP_DEFAULT";
 			$scope.billingEntity = "GROUP_DEFAULT_BILLING";
 
 			$scope.billingInfoModalOpened = true;

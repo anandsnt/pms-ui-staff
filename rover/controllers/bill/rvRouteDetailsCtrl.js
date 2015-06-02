@@ -418,7 +418,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 		        $scope.renderAddedPayment.cardExpiry = data.credit_card_details.card_expiry;
 		        $scope.renderAddedPayment.endingWith = data.credit_card_details.card_number;
 		        $scope.renderAddedPayment.creditCardType = data.credit_card_details.card_code;
-		        $scope.isAddPayment = true;
+		        $scope.isAddPayment = false;
 		        if(data.credit_card_details.payment_type != 'CC'){
 		        	 $scope.showCreditCardDropDown = true;
 		        } else {
@@ -430,6 +430,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         };
         var params = {};
         params.id = $scope.selectedEntity.id;
+        params.entity_type = $scope.selectedEntity.entity_type;
         
         $scope.invokeApi(RVBillinginfoSrv.fetchDefaultAccountRouting, params, successCallback);
     };

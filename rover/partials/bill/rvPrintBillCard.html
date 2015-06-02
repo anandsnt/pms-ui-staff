@@ -93,7 +93,7 @@
         </tfoot>
 
         <tbody>
-            <tr ng-repeat="item in printData.charge_details_list">
+            <tr ng-repeat="item in printData.charge_details_list" ng-show="!item.is_tax">
                 <td>{{item.date | date:dateFormat}}</td>
                 <td class="description">
                     <span>{{item.description}}</span>

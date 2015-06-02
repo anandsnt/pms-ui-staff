@@ -4273,7 +4273,7 @@
                         margin-right: 10px;
                         height: 60px;
                         padding: 0 15px;
-                        .calc-width(100, 75);
+                        .calc-width(100, 85);
 
                         .selected {
                             line-height: 50px;
@@ -11824,7 +11824,7 @@
 
                     /* 3rd level **/
                     .grid-items {
-                        table-layout: auto;
+                        table-layout: fixed;
                         border-collapse: separate;
                         border-spacing: 0 10px;
                         margin: 0 20px 10px 20px;
@@ -11848,7 +11848,11 @@
 
                         tbody {
                             tr {
-                                //&:nth-child(even) {
+                                td { 
+                                    vertical-align: top;
+                                    word-wrap: break-word;
+                                }
+                        
                                 &:nth-child(odd) {
                                     td {
                                         padding: 10px;
