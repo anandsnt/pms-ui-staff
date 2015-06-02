@@ -938,7 +938,7 @@
 
 					&.connecting { height: 260px; }
 					&.not-connected { height: 320px; }
-					&.connected { height: 500px; }
+					&.connected { height: 540px; }
 					&.completed { height: 320px; }
 				}
 
@@ -1011,14 +1011,15 @@
 
 					&.print-key {
 
+						.notice { font-size: 14px; }
+
 						.status { 
-							padding-top: 120px;
+							padding-top: 110px;
 							font-size: 14px;
 							.show; 
 
 							&.pending { 
 								color: @logoPrimary; 
-								margin-top: 40px;
 							}
 
 							&.error { 
@@ -1026,14 +1027,17 @@
 								margin: 20px 0;
 							}
 							
-							&.success { 
-								color: @green; 
-								margin-top: 30px;
-							}
+							&.success { color: @green; }
+						}
+
+						.actions {
+							padding-top: 10px;
+							margin-top: 10px;
+							border-top: 1px solid rgba(0,0,0,.1);
 						}
 
 						#print-keys {
-							padding-top: 20px;
+							padding-top: 10px;
 
 							label:not(.only-number) { text-align: left; }
 
@@ -1071,7 +1075,7 @@
 							.action { 
 								margin: 0; 
 								padding-top: 20px;
-							}				
+							}						
 						}
 						
 						&.connected { 
