@@ -685,7 +685,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                             // console.warn("No rate id available for room: " + roomIndex + ",for date: " + date);
                         } else {
                             var todaysMetaData = $scope.reservationData.rateDetails[roomIndex] && $scope.reservationData.rateDetails[roomIndex][date] && $scope.reservationData.rateDetails[roomIndex][date][todaysRate];
-                            var todaysTaxes = todaysMetaData.taxes;
+                            if (!todaysMetaData) return;
                             // --------------------------------------------------------------------------------//
                             // -- Calculate the rate amount for the Room for that rate for that day --
                             // --------------------------------------------------------------------------------//
@@ -731,9 +731,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                             // -- Calculate the tax on adjusted rate amount for that day --
                             // --------------------------------------------------------------------------------//
                             { // STEP FOUR -- compute tax for rate
-                                if (!!todaysTaxes && !!todaysTaxes.length) {
+                                if (!!todaysMetaData && !!todaysMetaData.taxes && !!todaysMetaData.taxes.length) {
                                     if (parseFloat(taxableRateAmount) < 0.0) taxableRateAmount = 0.0;
-                                    processTaxInfo($scope.calculateTax(date, taxableRateAmount, todaysTaxes, roomIndex), roomIndex, date);
+                                    processTaxInfo($scope.calculateTax(date, taxableRateAmount, todaysMetaData.taxes, roomIndex), roomIndex, date);
                                 }
                             }
                         }

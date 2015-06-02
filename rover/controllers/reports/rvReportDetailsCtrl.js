@@ -380,6 +380,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.detailsTemplateUrl = '/assets/partials/reports/rvForecastGuestGroupReport.html';
 					break;
 
+				case reportUtils.getName('MARKET_SEGMENT_STATISTICS_REPORT'):
+					$scope.hasReportTotals    = false;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/rvMarketSegmentStatReport.html';
+					break;
+
 				default:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
@@ -469,7 +475,17 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			// clear old results and update total counts
 			$scope.netTotalCount = $scope.$parent.totalCount;
-			$scope.uiTotalCount  = !!$scope.$parent.results ? $scope.$parent.results.length : 0;
+
+			if ( typeof $scope.$parent.results == 'array' ) {
+				$scope.uiTotalCount = $scope.$parent.results.length;
+			} else if ( typeof $scope.$parent.results == 'object' ) {
+				$scope.uiTotalCount = 0;
+				_.each($scope.$parent.results, function(item) {
+					if ( typeof item == 'array' ) {
+						$scope.uiTotalCount += item.length;
+					};
+				});
+			};
 
 			if ( $scope.netTotalCount == 0 && $scope.uiTotalCount == 0 ) {
 				$scope.disablePrevBtn = true;
@@ -777,6 +793,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 			alert( 'Download Full Report API yet to be completed/implemented/integrated' );
 		};
 
+		$scope.hasSubString = function(subString, string) {
+			var string    = string.toLowerCase(),
+				subString = subString.toLowerCase();
+
+			return string.indexOf( subString ) > -1;
+		};
 
 
 
