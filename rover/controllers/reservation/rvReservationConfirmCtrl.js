@@ -270,6 +270,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				justCreatedRes: true
 			}
 			$scope.otherData.reservationCreated = true;
+			$scope.reservationData.rateDetails = [];
 			$state.go('rover.reservation.staycard.reservationcard.reservationdetails', stateParams);
 
 		};
