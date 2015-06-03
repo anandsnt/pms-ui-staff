@@ -13,8 +13,12 @@ var DesktopCardOperations = function(){
 
 	var createConnection = function(){
 		//ws = new WebSocket("wss://localhost:" + that.portNumber);
-		ws = new WebSocket("wss://localhost:" + that.portNumber +"/CCSwipeService");
-
+		try{
+			ws = new WebSocket("wss://localhost:" + that.portNumber +"/CCSwipeService");
+		}
+		catch(e){
+			console.warn("Could not connect to card reader. Please check if the port number is valid!!");
+		}
 
 		//Triggers when websocket connection is established.
 	    ws.onopen = function () {

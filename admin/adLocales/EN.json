@@ -608,7 +608,8 @@
 "SEGMENTS":"Segments",
 "SEGMENTS_NAME_PLACEHOLDER":"Name of Segment",
 "SEGMENTS_LOS_PLACEHOLDER":"Length of Stay",
-"LOS":"Length of Stay"
+"LOS":"Length of Stay",
+"FORCE_SEGMENT": "FORCE SEGMENT"
 ,
 
     "ROOMS":"Rooms",
@@ -751,7 +752,8 @@
     "CANCELLATION_CHARGE_CODE":"Cancellation Charge Code",
     "SELECT_CHARGE_CODE":"Select Charge Code",
     "NO_SHOW_CHARGE_CODE":"No show charge code",
-    "ADDONS_FOR_RESERVATIONS" : "Add-ons for Reservations"
+    "ADDONS_FOR_RESERVATIONS" : "Add-ons for Reservations",
+    "CUSTOM_GROUP_RATE_CHARGE_CODE":"Custom Group Rate Charge Code"
 ,	
 	"SETTINGS_AND_PARAMS":"Settings & Parameters",
     "CHANGE_BUSSINESS_DAY":"Change Business Day",
@@ -840,10 +842,13 @@
 "CHECK_IN_COMPLETE_CONFIRMATION_SCREEN_TEXT": "CHECK IN COMPLETE CONFIRMATION SCREEN TEXT",
 "EXCLUDE_FOLLOWING_ROOM_TYPES_FROM_EMAIL_INVITE":"EXCLUDE FOLLOWING ROOM TYPES FROM EMAIL INVITE",
 "EXCLUDE_ROOM_TYPES":"EXCLUDE ROOM TYPES",
-"EXCLUDED_ROOM_TYPES":"EXCLUDED ROOM TYPES",
+"EXCLUDED_ROOM_TYPES":"EXCLUDED ROOM TYPES"
+
+,
+
+
 "ADDON_SETUP_HEADER": "Addon Setup",
 "GUEST_ACTIONS_SWITCH_LABEL": "Guest Actions With ADD ONS",
 "DISPLAY_ADDONS_SWITCH_LABEL": "Display purchased Add Ons",
 "ALLOW_CANCELLATION_SWITCH_LABEL": "Allow cancellation of purchased Add Ons",
-"AVAILABLE_ADDONS_SWITCH_LABEL" : "Display available Add Ons and enable purchasing"
-}
+"AVAILABLE_ADDONS_SWITCH_LABEL" : "Display available Add Ons and enable purchasing"}

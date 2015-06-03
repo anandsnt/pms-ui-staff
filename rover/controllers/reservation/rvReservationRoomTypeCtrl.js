@@ -231,30 +231,18 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					$scope.roomAvailability[this.id].rates.length > 0 && $scope.roomAvailability[this.id].level != null;
 			});
 
+			// always list roomtypes within a level in increasing order of their default rates 
+			$scope.displayData.allRooms.sort(function(a, b) {
+				var room1AvgPerNight = parseInt($scope.roomAvailability[a.id].averagePerNight);
+				var room2AvgPerNight = parseInt($scope.roomAvailability[b.id].averagePerNight);
+				if (room1AvgPerNight < room2AvgPerNight)
+					return -1;
+				if (room1AvgPerNight > room2AvgPerNight)
+					return 1;
+				return 0;
+			});
+
 			//sort the rooms by levels
-
-			if ($scope.stateCheck.sortOrder == "HIGH_TO_LOW") {
-				$scope.displayData.allRooms.sort(function(a, b) {
-					var room1AvgPerNight = parseInt($scope.roomAvailability[a.id].averagePerNight);
-					var room2AvgPerNight = parseInt($scope.roomAvailability[b.id].averagePerNight);
-					if (room1AvgPerNight < room2AvgPerNight)
-						return 1;
-					if (room1AvgPerNight > room2AvgPerNight)
-						return -1;
-					return 0;
-				});
-			} else {
-				$scope.displayData.allRooms.sort(function(a, b) {
-					var room1AvgPerNight = parseInt($scope.roomAvailability[a.id].averagePerNight);
-					var room2AvgPerNight = parseInt($scope.roomAvailability[b.id].averagePerNight);
-					if (room1AvgPerNight < room2AvgPerNight)
-						return -1;
-					if (room1AvgPerNight > room2AvgPerNight)
-						return 1;
-					return 0;
-				});
-			}
-
 			$scope.displayData.allRooms.sort(function(a, b) {
 				if (a.level < b.level)
 					return -1;
@@ -767,6 +755,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							});
 						}
 						//Sort the candidate rooms to get the one with the least average rate
+
 						candidateRooms.sort(function(a, b) {
 							if (parseInt(a.averagePerNight) < parseInt(b.averagePerNight))
 								return -1;
@@ -774,6 +763,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 								return 1;
 							return 0;
 						});
+
 						//append the appropriate room to the list to be displayed
 						if (candidateRooms.length > 0) {
 							var selectedRoom = $($scope.displayData.allRooms).filter(function() {
@@ -815,6 +805,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							});
 						}
 						//Sort the candidate rooms to get the one with the least average rate
+
 						candidateRooms.sort(function(a, b) {
 							if (a.averagePerNight < b.averagePerNight)
 								return -1;
@@ -822,6 +813,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 								return 1;
 							return 0;
 						});
+
+
 						//append the appropriate room to the list to be displayed
 						if (candidateRooms.length > 0) {
 							var selectedRoom = $($scope.displayData.allRooms).filter(function() {
@@ -1220,15 +1213,29 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				// var value = rooms[id];
 
 				//step4 : sort the rates within each room
-				value.rates.sort(function(a, b) {
-					var averageA = parseFloat(value.total[a].average);
-					var averageB = parseFloat(value.total[b].average);
-					if (averageA < averageB)
-						return -1;
-					if (averageA > averageB)
-						return 1;
-					return 0;
-				});
+				if ($scope.stateCheck.sortOrder == "HIGH_TO_LOW") {
+					value.rates.sort(function(a, b) {
+						var averageA = parseFloat(value.total[a].average);
+						var averageB = parseFloat(value.total[b].average);
+						if (averageA > averageB)
+							return -1;
+						if (averageA < averageB)
+							return 1;
+						return 0;
+					});
+
+				} else {
+					value.rates.sort(function(a, b) {
+						var averageA = parseFloat(value.total[a].average);
+						var averageB = parseFloat(value.total[b].average);
+						if (averageA < averageB)
+							return -1;
+						if (averageA > averageB)
+							return 1;
+						return 0;
+					});
+
+				}
 
 				//Step 4a [CICO-7792] Bring the corporate rates to the top
 				/*  https://stayntouch.atlassian.net/browse/CICO-7792
@@ -1236,22 +1243,23 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				 *	both with active, valid contracts,
 				 *	display the Company first, then the Travel Agent.
 				 */
-				value.rates.sort(function(a, b) {
-					if ($scope.displayData.allRates[a].account_id != null && $scope.displayData.allRates[b].account_id != null) {
-						if (parseInt($scope.displayData.allRates[a].account_id) == parseInt($scope.reservationDetails.companyCard.id)) {
+				if (!!$scope.reservationDetails.companyCard.id || !!$scope.reservationDetails.travelAgent.id) {
+					value.rates.sort(function(a, b) {
+						if ($scope.displayData.allRates[a].account_id != null && $scope.displayData.allRates[b].account_id != null) {
+							if (parseInt($scope.displayData.allRates[a].account_id) == parseInt($scope.reservationDetails.companyCard.id)) {
+								return -1;
+							}
+							if (parseInt($scope.displayData.allRates[b].account_id) == parseInt($scope.reservationDetails.companyCard.id)) {
+								return 1;
+							}
+						}
+						if ($scope.displayData.allRates[a].account_id != null)
 							return -1;
-						}
-						if (parseInt($scope.displayData.allRates[b].account_id) == parseInt($scope.reservationDetails.companyCard.id)) {
+						if ($scope.displayData.allRates[b].account_id != null)
 							return 1;
-						}
-					}
-					if ($scope.displayData.allRates[a].account_id != null)
-						return -1;
-					if ($scope.displayData.allRates[b].account_id != null)
-						return 1;
-					return 0;
-				});
-
+						return 0;
+					});
+				}
 				//TODO: Caluculate the default ID
 				if (value.rates.length > 0) {
 					value.defaultRate = value.rates[0];
