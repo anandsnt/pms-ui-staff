@@ -100,8 +100,9 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			$scope.accountConfigData = {
 				summary: summaryData.accountSummary
 			}
-
-			$scope.groupConfigData.summary.release_date = $scope.groupConfigData.summary.block_from;
+			if(!$scope.groupConfigData.summary.release_date){
+				$scope.groupConfigData.summary.release_date = $scope.groupConfigData.summary.block_from;
+			}
 
 			if (!$scope.isInAddMode()) {
 				$scope.groupConfigData.summary.block_from = new tzIndependentDate($scope.groupConfigData.summary.block_from);
@@ -280,6 +281,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				var summaryData = _.extend({}, $scope.groupConfigData.summary);
 				summaryData.block_from = $filter('date')(summaryData.block_from, $rootScope.dateFormatForAPI);
 				summaryData.block_to = $filter('date')(summaryData.block_to, $rootScope.dateFormatForAPI);
+				summaryData.release_date = $filter('date')(summaryData.release_date, $rootScope.dateFormatForAPI);
 				$scope.callAPI(rvGroupConfigurationSrv.updateGroupSummary, {
 					successCallBack: onGroupUpdateSuccess,
 					failureCallBack: onGroupUpdateFailure,
