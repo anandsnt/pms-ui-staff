@@ -13,6 +13,12 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url : '/hoteldetails/edit'
 		});
 
+		$stateProvider.state('admin.propertyInterfaceSetup', {
+			templateUrl: '/assets/partials/property/propertyInterfaceSetup.html',
+			controller: 'ADPropertyInterfaceSetupCtrl',
+			url : '/propertyinterface/setup'
+		});
+
 
 		$stateProvider.state('admin.permissions', {
 			templateUrl: '/assets/partials/hotel/adUserRolePermissions.html',
