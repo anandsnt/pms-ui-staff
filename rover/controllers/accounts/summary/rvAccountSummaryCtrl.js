@@ -54,7 +54,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		var whetherSummaryDataChanged = function (){
 			var currentSummaryData = $scope.accountConfigData.summary;
 			for (key in summaryMemento){
-				if (currentSummaryData[key] !== summaryMemento[key]) {
+				if (!_.isEqual(currentSummaryData[key], summaryMemento[key])) {
 					return false;
 				}
 			}

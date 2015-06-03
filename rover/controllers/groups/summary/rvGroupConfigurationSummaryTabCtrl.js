@@ -12,7 +12,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		var whetherSummaryDataChanged = function (){
 			var currentSummaryData = $scope.groupConfigData.summary;
 			for (key in summaryMemento){
-				if (currentSummaryData[key] !== summaryMemento[key]) {
+				if (!_.isEqual(currentSummaryData[key], summaryMemento[key])) {
 					return false;
 				}
 			}
@@ -37,14 +37,16 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return undefined
 		 */
 		$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
-			
 			if ($scope.isInAddMode() || targetElement.id == 'summary' || 
 				targetElement.id == "cancel-action" || //TODO: Need to check with Dilip/Shiju PC for more about this
 				whetherSummaryDataChanged() ||
-				$scope.groupSummaryData.isDemographicsPopupOpen) {
+				$scope.groupSummaryData.isDemographicsPopupOpen || $scope.isUpdateInProgress) {
 
 				return;
 			}
+
+			//yes, summary data update is in progress
+			$scope.isUpdateInProgress = true;
 
 			//call the updateGroupSummary method from the parent controller
 			$scope.updateGroupSummary();
@@ -60,6 +62,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		$scope.$on('UPDATED_GROUP_INFO', function(event, data){
 			//data has changed
 			summaryMemento = angular.copy($scope.groupConfigData.summary);
+			$scope.isUpdateInProgress = false;
 		});
 
 		/**
@@ -588,6 +591,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		$scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab) {
 			if (activeTab !== 'SUMMARY') return;
 			fetchSummaryData();
+
+			//we are resetting the API call in progress check variable
+			$scope.isUpdateInProgress = false;
 		});
 
 		/**
@@ -613,6 +619,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			//we use this to ensure that we will call the API only if there is any change in the data
 			summaryMemento = _.extend({}, $scope.groupConfigData.summary);
 			demographicsMemento = {};
+
+			//since we are recieving two ouside click event on tapping outside, we wanted to check and act
+			$scope.isUpdateInProgress = false;
 		};
 
 		/**
