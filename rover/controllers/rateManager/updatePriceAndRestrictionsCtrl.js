@@ -656,12 +656,15 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
             var datesSelected = getAllSelectedDates();
 
             var data = {};
-            data.rate_id = $scope.popupData.selectedRate;
-
-            if ($scope.popupData.fromRoomTypeView || $scope.ratesRoomsToggle == 'ROOMS') {
-                data.room_type_id = $scope.popupData.selectedRoomType;
-                delete data.rate_id;
+             data.rate_id = $scope.popupData.selectedRate;
+            if ($scope.ratesRoomsToggle !== 'RATES'){
+                if ($scope.popupData.fromRoomTypeView || $scope.ratesRoomsToggle == 'ROOMS') {
+                    data.room_type_id = $scope.popupData.selectedRoomType;
+                    delete data.rate_id;
+                }
             }
+            
+            data.room_type_id = $scope.popupData.selectedRoomType;
             data.details = calculateDetailsToSave(datesSelected);
             var saveRestrictionSuccess = function () {
                 $scope.refreshCalendar();
