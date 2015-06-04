@@ -4,7 +4,7 @@
             <div id="notification-message" ng-include="'/assets/partials/common/notification_message.html'"></div>
         </div>
         <!-- Frequent Flyer Program -->
-        <div class="holder left">
+        <div class="holder left" ng-hide='!hotelFrequentFlyerProgramEnabled'>
             <strong class="h3" translate>FREQUENT_FLYER_PROGRAM</strong>
             <a class="active-item item-loyalty" ng-repeat="freaquentLoyalty in loyaltyData.userMemberships.frequentFlyerProgram track by freaquentLoyalty.id" ng-click="showDeleteModal(freaquentLoyalty.id, $index, 'FFP')">
                <span class="value code">{{freaquentLoyalty.membership_type}}</span>
@@ -16,7 +16,7 @@
         </div>
 
         <!-- Hotel Loyalty Program -->
-        <div class="holder right">
+        <div class="holder right" ng-hide='!hotelLoyaltyProgramEnabled'>
             <strong class="h3" translate>HOTEL_LOYALTY_PROGRAM</strong>
             <a class="active-item item-loyalty" ng-repeat="hotelLoyalty in loyaltyData.userMemberships.hotelLoyaltyProgram track by hotelLoyalty.id" ng-click="showDeleteModal(hotelLoyalty.id, $index, 'HLP')">
                 <span class="value code">{{hotelLoyalty.membership_type}}</span>
