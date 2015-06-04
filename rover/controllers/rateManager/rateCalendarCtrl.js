@@ -14,7 +14,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
          * We create an empty myScroll here. ng-iscroll will see this item, and use the same.
          * Note: If a subscope requires another iScroll, this approach may not work.
          */
-        
+        $scope.hideRoomsDownArrow = false;
         $scope.applyAllShow = '';
         $scope.lastClickedApply = '';
         $scope.firstrun = true;
@@ -234,7 +234,6 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
             }
           }
         };
-        
 
         var loadTable = function () {
             $scope.currentExpandedRow = -1;//reset the expanded row
@@ -733,4 +732,12 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
         };
 
         $scope.init();
+        
+        $scope.$watch('ratesRoomsToggle',function(){
+            if ($scope.ratesRoomsToggle === 'ROOMS'){
+                $scope.hideRoomsDownArrow = true;
+            } else {
+                $scope.hideRoomsDownArrow = false;
+            }
+        });
     }]);
