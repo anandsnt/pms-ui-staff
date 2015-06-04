@@ -1,0 +1,50 @@
+<section id="replacing-div-first" class="content current ">
+	<div id="users_list" data-view="UsersListView">
+		<!-- Property Setup List -->
+		<section>
+			<header class="content-title float">
+                            <h2 translate>PROPERTY_INTERFACE_SETUP</h2>
+                            <span class="count">({{totalCount}})</span>
+                            <a ng-click ="goBackToPreviousState()" class="action back" translate>BACK</a></header>
+			<section class="content-scroll">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			
+			<table id="property_interface_list" class="grid datatable table" ng-table="tableParams"
+			template-pagination="custom/pager">
+				<tr ng-repeat="item in interfaceList">
+					<td data-title="'Name'" sortable="'description'"><a class="title">{{item.description}} </a></td>
+					<td data-title="'Active'" user="2" id="activate-inactivate-button_2" header-class="activate"  class="activate activate-inactivate-button">
+                                            <label for=""></label>
+                                            <div class="switch-button single" ng-class="{ on : item.active == true }" ng-click="activateInactivate(item.name, item.active, $index)">
+                                                    <input type="checkbox" value="" name="" id="">
+                                                    <span class="switch-icon"></span>
+                                            </div>
+					</td>
+				</tr>
+			</table>
+		</section>
+		<!--Custom pagination footer goes here-->
+		<script type="text/ng-template" id="custom/pager">
+			<div class = "pager">
+				<span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
+				<span ng-show="totalCount==0">Showing 0 items</span>
+				<ul class="ng-cloak">
+	              	<li ng-repeat="page in pages"
+		                ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}"
+		                ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+	
+		                <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
+		                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
+		                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+		                
+		                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+		                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
+		                <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
+		          	</li>
+	            </ul>
+	        </div>
+		</script>
+		<!--end-->
+		</section>
+	</div>
+</section>
