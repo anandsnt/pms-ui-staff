@@ -4,12 +4,7 @@ admin.controller('ADPropertyInterfaceSetupCtrl', ['$scope', '$controller', 'ADHo
         $scope.errorMessage = '';
         $scope.successMessage = '';
         $scope.isLoading = true;
-        $scope.interfaceList = [{
-                id: 1,
-                name: 'Telephone Interface',
-                is_active: true,
-                can_delete: true
-        }];
+        $scope.interfaceList = [];
     
         $scope.totalCount = 0;
 
@@ -20,25 +15,29 @@ admin.controller('ADPropertyInterfaceSetupCtrl', ['$scope', '$controller', 'ADHo
             $scope.$emit('hideLoader');
             
             $scope.interfaceList = data.data;
-            console.log('interfaceList: ',interfaceList);
             $scope.totalCount = $scope.interfaceList.length;
+            
         };
 
         $scope.fetchList = function () {
             $scope.invokeApi(ADHotelPropertyInterfaceSrv.fetchList, {}, $scope.fetchListSuccessCallback);
         };
 
-        $scope.activateInactivate = function(id, currentStatus, index){
-		var nextStatus = (currentStatus == "true" ? "false" : "true");
+        $scope.activateInactivate = function(name, currentStatus, index){
+		var nextStatus = (currentStatus == true ? false : true);
 		var data = {
 			"set_active": nextStatus,
-			"id": id
+			"id": name
 		};
 		var successCallbackActivateInactivate = function(data){
-			$scope.interfaceList[index].is_active = (currentStatus == "true" ? "false" : "true");
+			$scope.interfaceList[index].active = nextStatus;
 			$scope.$emit('hideLoader');
 		};
-		$scope.invokeApi(ADHotelPropertyInterfaceSrv.activateInactivate, data , successCallbackActivateInactivate);
+                if (nextStatus){
+                    $scope.invokeApi(ADHotelPropertyInterfaceSrv.activate, data , successCallbackActivateInactivate);
+                } else {
+                    $scope.invokeApi(ADHotelPropertyInterfaceSrv.deActivate, data , successCallbackActivateInactivate);
+                }
 	};
 
         $scope.fetchList();
