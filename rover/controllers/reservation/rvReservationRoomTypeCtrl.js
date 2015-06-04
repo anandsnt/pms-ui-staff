@@ -1139,10 +1139,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							total: [],
 							defaultRate: 0,
 							averagePerNight: 0,
-							description: roomDetails[d.id].description
+							description: roomDetails[d.id].description,
+							availabilityNumbers: {}
 						};
 					}
 					//CICO-6619 || currOccupancy > roomDetails[d.id].max_occupancy
+					rooms[d.id].availabilityNumbers[for_date] = d.availability;
 					if (d.availability < 1) {
 						// rooms[d.id].availability = false;
 					}
@@ -1167,7 +1169,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							taxes: taxes,
 							rateBreakUp: d,
 							day: new tzIndependentDate(for_date),
-							availabilityCount: d.availability
+							availabilityCount: rooms[d.room_type_id].availabilityNumbers[for_date]//d.availability
 						};
 
 						//calculate tax for the current day
