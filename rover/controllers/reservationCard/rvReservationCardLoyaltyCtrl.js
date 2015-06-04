@@ -4,6 +4,7 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
 
         $scope.selectedLoyaltyID = "";
         $scope.selectedLoyalty = {};
+        $scope.hotelLoyaltyProgramEnabled = true;
 
         $scope.showSelectedLoyalty = function() {
             var display = true;
@@ -116,7 +117,30 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
             params.membership_id = $scope.selectedLoyaltyID;
             $scope.invokeApi(RVLoyaltyProgramSrv.selectLoyalty, params, successCallback, errorCallback);
         };
-
+        
+        $scope.$on('detect-hlps-ffp-active-status',function(evt,data){
+           if (data.userMemberships.use_hlp){
+               $scope.loyaltyProgramsActive(true);
+           } else {
+               $scope.loyaltyProgramsActive(false);
+           }
+           
+           
+           if (data.userMemberships.use_ffp){
+               $scope.ffpProgramsActive(true);
+           } else {
+               $scope.ffpProgramsActive(false);
+           }
+           
+            
+        });
+        
+        $scope.loyaltyProgramsActive = function(b){
+          $scope.hotelLoyaltyProgramEnabled = b;
+        };
+        $scope.ffpProgramsActive = function(b){
+          $scope.hotelFrequentFlyerProgramEnabled = b;
+        };
 
     }
 ]);
