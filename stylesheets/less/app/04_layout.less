@@ -794,6 +794,12 @@ body { overflow: hidden; }
 		}
 
 		&.no-filter-no-options { .show; }
+
+		&.has-refresh {
+			.entry.refresh {
+				.hide;
+			}
+		}
 	}
 
 	/* 600px+		 		==============================*/
@@ -870,6 +876,43 @@ body { overflow: hidden; }
 					}
 				}
 			}
+
+			&.has-refresh {
+				.entry.refresh {
+					.show;
+					margin: 0 0 0 10px;
+					padding: 0 0 0 10px;
+					float: right;
+					width: 50px;
+					border-left: 1px solid rgba(0, 0, 0, .1);
+				}
+
+				.entry.options {
+					margin: 0;
+					float: left;
+				}
+
+				&.has-options {
+					.entry.search {
+						.calc-width(40, 50);
+					}
+
+					.entry.options {
+						.calc-width(60, 70);
+					}
+
+					&.single-option {
+						.entry.search {
+							.calc-width(60, 50);
+						}
+
+						.entry.options {
+							.calc-width(40, 70);
+						}
+					}
+				}
+			}
+
 		}
 	}
 
@@ -994,7 +1037,30 @@ body { overflow: hidden; }
 						}
 					}
 				}
-			}			
+			}
+
+			&.has-refresh {
+				&.has-options {
+					.entry.search {
+						.calc-width(40, 50);
+					}
+
+					.entry.options {
+						.calc-width(60, 70);
+					}
+
+					&.single-option {
+						.entry.search {
+							.calc-width(60, 50);
+						}
+
+						.entry.options {
+							.calc-width(40, 70);
+						}
+					}
+				}
+			}
+
 		}
 	}
 
