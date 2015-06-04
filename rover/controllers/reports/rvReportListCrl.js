@@ -18,8 +18,7 @@ sntRover.controller('RVReportListCrl', [
          * inorder to refresh after list rendering
          */
         $scope.$on("NG_REPEAT_COMPLETED_RENDERING", function(event) {
-            console.log('end');
-            $timeout($scope.refreshScroller.bind($scope, 'report-list-scroll'), 200);
+            $timeout($scope.refreshScroller.bind($scope, 'report-list-scroll'), 2001);
         });
 
         /**
