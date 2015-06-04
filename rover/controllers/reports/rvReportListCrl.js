@@ -24,6 +24,7 @@ sntRover.controller('RVReportListCrl', [
          */
         var populateMarketsList = function() {
             var callback = function(data) {
+                data.push({value: -1, name: "Unassigned", is_active: true})
                 $scope.reportsState.markets = data;
                 $scope.$emit('hideLoader');
             }
