@@ -862,7 +862,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						var configuredRate = true;
 
 						_.each(room.ratedetails, function(today, key) {
-							if (!$scope.stateCheck.stayDatesMode || $scope.stateCheck.stayDatesMode && key == $scope.stateCheck.dateModeActiveDate) {
+							if (key == $scope.reservationData.departureDate && key != $scope.reservationData.arrivalDate) {
+								//do nothing -CICO 17580 - Need not check for restrictions in case of departure date when the #nights > 0 (NOT a day reservation)
+							} else if (!$scope.stateCheck.stayDatesMode || $scope.stateCheck.stayDatesMode && key == $scope.stateCheck.dateModeActiveDate) {
 								var currDate = key;
 								//Step 1 : Check if the rates are configured for all the days of stay
 								if (typeof today[rateId] == 'undefined') {
