@@ -112,7 +112,14 @@ sntRover.factory('RVReportParserFac', [
                             travel_agent_name : makeCopy.travel_agent_name,
                             group_name        : makeCopy.group_name,
 
-                            addOns : angular.copy( makeCopy['add_ons'] )
+                            addOns       : angular.copy( makeCopy['add_ons'] ),
+                            addOnDetails : angular.copy( makeCopy['addon_details'] )
+                        };
+                        customData.push( guestData );
+                    } else {
+                        guestData = {
+                            isGuestData : true,
+                            addOnDetails : angular.copy( makeCopy['addon_details'] )
                         };
                         customData.push( guestData );
                     };
