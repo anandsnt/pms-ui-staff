@@ -6,7 +6,9 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		$scope.statusMessage = message;
 		$scope.status = status;
 	};
-
+        $rootScope.$on('MAKE_KEY_TYPE',function(evt, data){
+            $scope.keyType = data.type;
+        });
 	$scope.init = function(){
 		//CICO-11444 to fix the issue of poping up select box in ipad
 		$('#encoder-type').blur();
@@ -93,8 +95,12 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		that.isSmartbandCreateWithKeyWrite = $scope.isSmartbandCreateWithKeyWrite; //coming from popup initialization
 		//variable to maintain last successful ID from card reader, will use for smartband creation
 		that.lastSuccessfulCardIDReaded = '';
-
-		$scope.buttonText = $filter('translate')('KEY_PRINT_BUTTON_TEXT');
+                
+                if ($scope.keyType === 'New'){
+                    $scope.buttonText = $filter('translate')('KEY_PRINT_BUTTON_TEXT');
+                } else {
+                    $scope.buttonText = $filter('translate')('KEY_DUPLICATE_BUTTON_TEXT');
+                }
 
 		if($scope.keySystemVendor == 'SAFLOK_MSR'){
 			showPrintKeyOptions();
@@ -184,7 +190,12 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		that.numOfKeys = $scope.numberOfKeysSelected;
 		$scope.printedKeysCount = 0;
 		if(that.numOfKeys > 0){
-			$scope.buttonText = $filter('translate')('KEY_PRINT_BUTTON_TEXT_KEY1');
+                    if ($scope.keyType === 'New'){
+                        $scope.buttonText = $filter('translate')('KEY_PRINT_BUTTON_TEXT_KEY1');
+                    } else {
+                        $scope.buttonText = $filter('translate')('KEY_DUPLICATE_BUTTON_TEXT_KEY1');
+                    }
+                        
 		}
 		// 'printKeyStatus' is the dictionary used to monitor the printing & writing key status
 		var elementToPut = {};
@@ -250,6 +261,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 	*/
 	this.callKeyFetchAPI = function(uID){
 		$scope.$emit('hideLoader'); 
+                postParams.encode_type = $scope.keyType;
 		that.setStatusAndMessage($filter('translate')('KEY_GETTING_KEY_IMAGE_STATUS'), 'pending');
 		var reservationId = '';
 		
