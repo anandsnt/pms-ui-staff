@@ -108,6 +108,8 @@ $scope.getSelectedAddonPrice = function(){
 			$scope.initialIcon =  $scope.data.image;
 			if(data.page_template == 'ADDON'){
 				$scope.fetchAddons();
+				$scope.data.addon_max_order = $scope.data.addon_max_order == null? "" : $scope.data.addon_max_order;
+				$scope.data.addon_min_duration = $scope.data.addon_min_duration == null ? "" : $scope.data.addon_min_duration;
 			}else{
 				$scope.$emit('hideLoader');
 			}
