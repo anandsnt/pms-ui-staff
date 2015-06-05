@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'sortOrder', 'RVReservationBaseSearchSrv', '$timeout', '$state', 'ngDialog', '$sce', '$stateParams', 'dateFilter', '$filter', 'rvPermissionSrv',
-	function($rootScope, $scope, roomRates, sortOrder, RVReservationBaseSearchSrv, $timeout, $state, ngDialog, $sce, $stateParams, dateFilter, $filter, rvPermissionSrv) {
+sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'sortOrder', 'rateAddons', 'RVReservationBaseSearchSrv', '$timeout', '$state', 'ngDialog', '$sce', '$stateParams', 'dateFilter', '$filter', 'rvPermissionSrv', 'RVReservationStateService',
+	function($rootScope, $scope, roomRates, sortOrder, rateAddons, RVReservationBaseSearchSrv, $timeout, $state, ngDialog, $sce, $stateParams, dateFilter, $filter, rvPermissionSrv, RVReservationStateService) {
 
 
 		// smart switch btw edit reservation flow and create reservation flow
@@ -59,6 +59,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			'LEVELS': 'grey',
 			'RATE_NOT_CONFIGURED': 'red'
 		}
+
+		RVReservationStateService.metaData.rateAddons = angular.copy(rateAddons);
+		console.log(rateAddons);
 
 		// $scope.activeMode = "ROOM_RATE";
 		$scope.stateCheck = {
@@ -1152,6 +1155,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					var taxes = d.taxes;
 
 					$(d.room_rates).each(function(i, d) {
+						console.log(RVReservationStateService.fetchAssociatedAddons(rate_id));
 						if ($(rooms[d.room_type_id].rates).index(rate_id) < 0) {
 							rooms[d.room_type_id].rates.push(rate_id);
 						}
@@ -1162,9 +1166,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							rate_id: rate_id,
 							rate: $scope.calculateRate(d, for_date),
 							taxes: taxes,
+							addonAmount: 12.00,
 							rateBreakUp: d,
 							day: new tzIndependentDate(for_date),
-							availabilityCount: rooms[d.room_type_id].availabilityNumbers[for_date]//d.availability
+							availabilityCount: rooms[d.room_type_id].availabilityNumbers[for_date] //d.availability
 						};
 
 						//calculate tax for the current day
