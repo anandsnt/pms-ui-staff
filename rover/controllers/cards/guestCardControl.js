@@ -2,12 +2,14 @@ sntRover.controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout'
 	function($scope, RVCompanyCardSrv, $timeout, RVContactInfoSrv) {
 		$scope.searchMode = true;
 		$scope.guestCardData.selectedLoyaltyLevel = "";
+                $scope.loyaltyTabEnabled = true;
 
 		if ($scope.reservationDetails.guestCard.id != null && $scope.reservationDetails.guestCard.id != "") {
 			$scope.searchMode = false;
 		}
 
 		$scope.$on("guestSearchInitiated", function() {
+                        $scope.fetchLoyaltyStatus();
 			$scope.guestSearchIntiated = true;
 			$scope.guests = $scope.searchedGuests;
 			$scope.$broadcast("refreshGuestScroll");
@@ -33,6 +35,37 @@ sntRover.controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout'
 		$scope.$on("loyaltyLevelAvailable", function($event, level) {
 			$scope.guestCardData.selectedLoyaltyLevel = level;
 		});
+                
+                
+                $scope.$setLoyaltyStatus = function(data){
+                    if (data.active){
+                        $scope.guestCardData.loyaltyInGuestCardEnabled = true;
+                    } else {
+                        $scope.guestCardData.loyaltyInGuestCardEnabled = false;
+                    }
+                    
+                    
+                 };
+                 $scope.fetchLoyaltyStatus = function(){
+                    var loyaltyFetchsuccessCallback = function(data){
+                        $scope.$setLoyaltyStatus(data);
+                            $scope.$emit('hideLoader');
+                    };
+
+                    $scope.invokeApi(RVCompanyCardSrv.fetchHotelLoyalties,{} , loyaltyFetchsuccessCallback);
+                 };
+                 
+                $scope.$on('detect-hlps-ffp-active-status',function(evt,data){
+                    if (data.userMemberships.use_hlp || data.userMemberships.use_ffp){
+                        $scope.loyaltyTabEnabled = true;
+                    } else {
+                        $scope.loyaltyTabEnabled = false;
+                    }
+
+                });
+                 
+                 
+                 
 	}
 ]);
 

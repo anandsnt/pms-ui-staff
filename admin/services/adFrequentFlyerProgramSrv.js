@@ -30,4 +30,19 @@ function($http, $q, ADBaseWebSrv) {
 		});
 		return deferred.promise;
 	};
+	/**
+	 *   A post method to update Frequent Flyer Program for a hotel
+	 *   @param {Object} data for the Frequent Flyer Program List details.
+	 */
+	this.switchMainToggle = function(data) {
+		var deferred = $q.defer();
+		var url = '/admin/hotel/use_ffp/';
+
+		ADBaseWebSrv.postJSON(url, data).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
 }]);

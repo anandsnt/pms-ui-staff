@@ -862,7 +862,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						var configuredRate = true;
 
 						_.each(room.ratedetails, function(today, key) {
-							if (!$scope.stateCheck.stayDatesMode || $scope.stateCheck.stayDatesMode && key == $scope.stateCheck.dateModeActiveDate) {
+							if (key == $scope.reservationData.departureDate && key != $scope.reservationData.arrivalDate) {
+								//do nothing -CICO 17580 - Need not check for restrictions in case of departure date when the #nights > 0 (NOT a day reservation)
+							} else if (!$scope.stateCheck.stayDatesMode || $scope.stateCheck.stayDatesMode && key == $scope.stateCheck.dateModeActiveDate) {
 								var currDate = key;
 								//Step 1 : Check if the rates are configured for all the days of stay
 								if (typeof today[rateId] == 'undefined') {
@@ -1132,10 +1134,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							total: [],
 							defaultRate: 0,
 							averagePerNight: 0,
-							description: roomDetails[d.id].description
+							description: roomDetails[d.id].description,
+							availabilityNumbers: {}
 						};
 					}
 					//CICO-6619 || currOccupancy > roomDetails[d.id].max_occupancy
+					rooms[d.id].availabilityNumbers[for_date] = d.availability;
 					if (d.availability < 1) {
 						// rooms[d.id].availability = false;
 					}
@@ -1160,7 +1164,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							taxes: taxes,
 							rateBreakUp: d,
 							day: new tzIndependentDate(for_date),
-							availabilityCount: d.availability
+							availabilityCount: rooms[d.room_type_id].availabilityNumbers[for_date]//d.availability
 						};
 
 						//calculate tax for the current day

@@ -1,9 +1,10 @@
-sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyaltySrv','ngDialog',function($scope,RVGuestCardLoyaltySrv,ngDialog){
+sntRover.controller('RVGuestCardLoyaltyController',['$scope','$rootScope','RVGuestCardLoyaltySrv','ngDialog',function($scope,$rootScope,RVGuestCardLoyaltySrv,ngDialog){
 	BaseCtrl.call(this, $scope);
 	$scope.init = function(){
 
-		var loyaltyFetchsuccessCallback = function(data){		
+		var loyaltyFetchsuccessCallback = function(data){
 			$scope.$emit('hideLoader');
+                        $rootScope.$broadcast('detect-hlps-ffp-active-status',data);
 			$scope.loyaltyData = data;
 			$scope.checkForHotelLoyaltyLevel();
 			setTimeout(function(){
@@ -20,6 +21,7 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 		var data = {'userID':$scope.$parent.guestCardData.userId};
 		$scope.invokeApi(RVGuestCardLoyaltySrv.fetchLoyalties,data , loyaltyFetchsuccessCallback, loyaltyFetchErrorCallback, 'NONE');
 	};
+        
 	$scope.$watch(
 		function() { return ($scope.$parent.$parent.guestCardData.userId != '')?true:false; },
 		function(gustDataReady) { if(gustDataReady)$scope.init(); }
@@ -112,4 +114,30 @@ $scope.$on("loyaltyDeletionError",function(e,error){
 	$scope.$parent.myScroll['loyaltyList'].scrollTo(0,0);
 	$scope.errorMessage = error;
 });
+
+        $scope.$on('detect-hlps-ffp-active-status',function(evt,data){
+           if (data.userMemberships.use_hlp){
+               $scope.loyaltyProgramsActive(true);
+           } else {
+               $scope.loyaltyProgramsActive(false);
+           }
+           
+           
+           if (data.userMemberships.use_ffp){
+               $scope.ffpProgramsActive(true);
+           } else {
+               $scope.ffpProgramsActive(false);
+           }
+           
+           
+        });
+        
+        $scope.loyaltyProgramsActive = function(b){
+          $scope.hotelLoyaltyProgramEnabled = b;
+        };
+        $scope.ffpProgramsActive = function(b){
+          $scope.hotelFrequentFlyerProgramEnabled = b;
+        };
+        
+        
 }]);
