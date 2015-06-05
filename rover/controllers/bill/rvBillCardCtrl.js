@@ -1715,13 +1715,11 @@ sntRover.controller('RVbillCardController',
 	 	var billCount = $scope.reservationBillData.bills.length;
 		$scope.isRefreshOnBackToStaycard = true;
 		$scope.closeDialog();
-		console.log(data);
 		var fetchBillDataSuccessCallback = function(billData){
 		 	$scope.$emit('hideLoader');
 		 	reservationBillData = billData;
 		 	$scope.init(billData);
 		 	$scope.calculateBillDaysWidth();
-		 	console.log(data);
 		 	//CICO-10906 review process continues after payment.
 			if( data.bill_balance == 0.0 && $scope.isViaReviewProcess ){	
 				(billCount == data.billNumber) ? $scope.clickedCompleteCheckout() :
