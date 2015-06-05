@@ -144,20 +144,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				return;
 			}
 
-			//Save summary data on tab switch (UI)
-			if (isInSummaryTab && !$scope.isInAddMode()) {
-				$scope.updateGroupSummary();
-			};
-			//Reload the summary tab contents before switching
-			if (tab === "SUMMARY" || tab === "ACCOUNT") {
-				$scope.refreshSummaryTab();
-			};
-			//Preload the transaction data when we switch to transactions tab
-			if (tab === "TRANSACTIONS") {
-				preLoadTransactionsData();
-			} else {
-				$scope.groupConfigData.activeTab = tab;
-			}
+			$scope.groupConfigData.activeTab = tab;
 
 			//propogating an event that next clients are
 			$timeout(function() {
@@ -196,21 +183,6 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				params: params
 			});
 
-		};
-
-		$scope.refreshSummaryTab = function() {
-			var onAccountFetchSuccess = function(data) {
-				$scope.$emit('hideloader');
-				$scope.groupConfigData.summary = data.groupSummary;
-				$scope.accountConfigData.summary = data.accountSummary;
-			}
-			var params = {
-				"groupId": $scope.groupConfigData.summary.group_id
-			}
-			$scope.callAPI(rvGroupConfigurationSrv.getGroupSummary, {
-				successCallBack: onAccountFetchSuccess,
-				params: params
-			});
 		};
 
 		/**
@@ -277,7 +249,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 					$scope.errorMessage = ["Group's name, from date, to date, room release date and hold status are mandatory"];
 				}
 			} else {
-				console.warn('No Permission for CREATE_GROUP_SUMMARY');
+				$scope.$emit ("showErrorMessage", ["Sorry, you don\'t have enough permission to save the details"])
 			}
 
 		}
@@ -295,7 +267,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 				}
 				var onGroupUpdateSuccess = function(data) {
 						//client controllers should get an infromation whether updation was success
-						$scope.$broadcast("UPDATED_GROUP_INFO");
+						$scope.$broadcast("UPDATED_GROUP_INFO", angular.copy($scope.groupConfigData.summary));
 						$scope.groupSummaryMemento = angular.copy($scope.groupConfigData.summary);
 						return true;
 					},
@@ -318,7 +290,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 					}
 				});
 			} else {
-				console.warn('No Permission for EDIT_GROUP_SUMMARY');
+				$scope.$emit ("showErrorMessage", ["Sorry, the changes will not get saved as you don\'t have enough permission to update the details"])
 			}
 		}
 
@@ -479,6 +451,17 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 			//setting title and things
 			setTitle();
 		}
+
+		/**
+		 * When we recieve the error message from its child controllers, we have to show them
+		 * @param  {Object} event 
+		 * @param  {String} errorMessage)
+		 * @return undefined
+		 */
+		$scope.$on('showErrorMessage', function(event, errorMessage){
+			$scope.errorMessage = errorMessage;
+			runDigestCycle();
+		});
 
 		/**
 		 * function to initialize things for group config.

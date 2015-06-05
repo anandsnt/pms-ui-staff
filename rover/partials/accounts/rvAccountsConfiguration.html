@@ -38,21 +38,30 @@
             <div id="account-card-content" class="card-tabs card-content">
                 <!-- Group tabs navigation -->
                 <ul id="account-card-tabs-nav" class="card-tabs-nav no-print">
-                    <li click-touch="switchTabTo('ACCOUNT')"  ng-class="{'ui-tabs-active' : accountConfigData.activeTab == 'ACCOUNT'}">
+                    <li ng-click="switchTabTo('ACCOUNT')"  ng-class="{'ui-tabs-active' : accountConfigData.activeTab == 'ACCOUNT'}">
                         <a translate>SUMMARY</a>
                     </li>
-                    <li click-touch="switchTabTo('TRANSACTIONS')" ng-class="{'ui-tabs-active' : accountConfigData.activeTab == 'TRANSACTIONS'}">
+                    <li ng-click="switchTabTo('TRANSACTIONS')" ng-class="{'ui-tabs-active' : accountConfigData.activeTab == 'TRANSACTIONS'}">
                         <a translate>TRANSACTIONS</a>
                     </li>
-                    <li click-touch="switchTabTo('ACTIVITY')" ng-class="{'ui-tabs-active' : accountConfigData.activeTab == 'ACTIVITY'}">
+                    <li ng-click="switchTabTo('ACTIVITY')" ng-class="{'ui-tabs-active' : accountConfigData.activeTab == 'ACTIVITY'}">
                         <a translate>ACTIVITY_LOG</a>
                     </li>
                 </ul>
                 
                 <!--ACCOUNT, TRANSACTIONS, ACTIVITY -->
                 
-                <ng-include src="getCurrentTabUrl()">
+                <ng-include src="'/assets/partials/accounts/accountsTab/rvAccountsSummary.html'" 
+                        ng-show="accountConfigData.activeTab == 'ACCOUNT'">
                 </ng-include>
+
+                <ng-include src="'/assets/partials/accounts/transactions/rvAccountTransactions.html'" 
+                        ng-show="accountConfigData.activeTab == 'TRANSACTIONS'">
+                </ng-include>     
+                
+                <ng-include src="'/assets/partials/groups/activity/rvGroupConfigurationActivityTab.html'" 
+                        ng-show="accountConfigData.activeTab == 'ACTIVITY'">
+                </ng-include>                            
             </div>
         </div>
     </div>
