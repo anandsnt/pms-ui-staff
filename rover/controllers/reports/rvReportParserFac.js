@@ -116,6 +116,12 @@ sntRover.factory('RVReportParserFac', [
                             addOnDetails : angular.copy( makeCopy['addon_details'] )
                         };
                         customData.push( guestData );
+                    } else {
+                        guestData = {
+                            isGuestData : true,
+                            addOnDetails : angular.copy( makeCopy['addon_details'] )
+                        };
+                        customData.push( guestData );
                     };
 
                     if ( checkCancel(makeCopy) ) {
