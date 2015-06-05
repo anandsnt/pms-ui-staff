@@ -75,7 +75,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			//referring data source
 			var refData = $scope.groupConfigData.summary; 
 			if (refData.release_date.toString().trim() == '') {
-				$scope.groupConfigData.summary.release_date = refData.block_from;				
+				$scope.groupConfigData.summary.release_date = refData.block_from;	
+			}			
 
 			// we will clear end date if chosen start date is greater than end date
 			if (refData.block_from > refData.block_to) {
@@ -89,6 +90,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			//we are in outside of angular world
 			runDigestCycle();
 		}
+
 
 		/**
 		 * [computeSegment description]
