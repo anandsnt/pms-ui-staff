@@ -6,7 +6,9 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		$scope.statusMessage = message;
 		$scope.status = status;
 	};
-
+        $rootScope.$on('MAKE_KEY_TYPE',function(evt, data){
+            $scope.keyType = data.type;
+        });
 	$scope.init = function(){
 		//CICO-11444 to fix the issue of poping up select box in ipad
 		$('#encoder-type').blur();
@@ -93,8 +95,12 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		that.isSmartbandCreateWithKeyWrite = $scope.isSmartbandCreateWithKeyWrite; //coming from popup initialization
 		//variable to maintain last successful ID from card reader, will use for smartband creation
 		that.lastSuccessfulCardIDReaded = '';
-
-		$scope.buttonText = $filter('translate')('KEY_PRINT_BUTTON_TEXT');
+                
+                if ($scope.keyType === 'New'){
+                    $scope.buttonText = $filter('translate')('KEY_PRINT_BUTTON_TEXT');
+                } else {
+                    $scope.buttonText = $filter('translate')('KEY_DUPLICATE_BUTTON_TEXT');
+                }
 
 		if($scope.keySystemVendor == 'SAFLOK_MSR'){
 			showPrintKeyOptions();
@@ -184,7 +190,12 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		that.numOfKeys = $scope.numberOfKeysSelected;
 		$scope.printedKeysCount = 0;
 		if(that.numOfKeys > 0){
-			$scope.buttonText = $filter('translate')('KEY_PRINT_BUTTON_TEXT_KEY1');
+                    if ($scope.keyType === 'New'){
+                        $scope.buttonText = $filter('translate')('KEY_PRINT_BUTTON_TEXT_KEY1');
+                    } else {
+                        $scope.buttonText = $filter('translate')('KEY_DUPLICATE_BUTTON_TEXT_KEY1');
+                    }
+                        
 		}
 		// 'printKeyStatus' is the dictionary used to monitor the printing & writing key status
 		var elementToPut = {};
@@ -271,6 +282,10 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 	    	postParams.uid = "";
 
 	    }
+            
+            if ($scope.keyType === 'Duplicate'){
+                postParams.is_additional = true;
+            }
 	    that.UID = postParams.uid;
 	    if($scope.keySystemVendor == 'SAFLOK_MSR') {
 		    postParams.key_encoder_id = $scope.encoderSelected;
@@ -316,7 +331,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 			that.numOfKeys--;
 			that.printKeyStatus[index-1].printed = true;
 			$scope.printedKeysCount = index;
-			$scope.buttonText = 'Print key '+ (index+1);
+			$scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
 			//$scope.$apply();
 			if(that.numOfKeys == 0){
 				that.showKeyPrintSuccess();
@@ -373,7 +388,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 				that.numOfKeys--;
 				that.printKeyStatus[index-1].printed = true;
 				$scope.printedKeysCount = index;
-				$scope.buttonText = 'Print key '+ (index+1);
+				$scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
 				$scope.$apply();
 				if(that.numOfKeys == 0){
 					that.showKeyPrintSuccess();
@@ -433,7 +448,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 				that.setStatusAndMessage($filter('translate')('KEY_BAND_CREATED_SUCCESSFULLY'), 'success');					
 				that.printKeyStatus[index-1].printed = true;
 				$scope.printedKeysCount = index;
-				$scope.buttonText = 'Print key '+ (index+1);
+				$scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
 				$scope.$apply();								
 				return;				
 			},
@@ -444,7 +459,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 					that.setStatusAndMessage($filter('translate')('KEY_BAND_CREATED_FAILED_WRITING_BANDTYPE') + ': ' + errorObject['RVErrorDesc'], 'error');					
 					that.printKeyStatus[index-1].printed = true;
 					$scope.printedKeysCount = index;
-					$scope.buttonText = 'Print key '+ (index+1);
+                                        $scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
 					$scope.$apply();
 				}
 				else {
@@ -488,7 +503,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 			if(that.numOfKeys > 0){
 				that.printKeyStatus[index-1].printed = true;
 				$scope.printedKeysCount = index;
-				$scope.buttonText = 'Print key '+ (index+1);
+				$scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
 				$scope.$apply();			
 			}
 			else {

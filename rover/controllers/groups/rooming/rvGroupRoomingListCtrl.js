@@ -349,10 +349,12 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * when a tab switch is there, parant controller will propogate
          * API, we will get this event, we are using this to fetch new room block deails
          */
-        /*$scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab){
+        $scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab){
             if (activeTab !== 'ROOMING') return;
-            $scope.fetchRoomingDetails();
-        });*/
+
+            //calling initially required APIs
+            callInitialAPIs();        
+        });
 
         /**
          * [initializeVariables description]
@@ -729,8 +731,16 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             //date picker options - Common
             var commonDateOptions = {
                 dateFormat: $rootScope.jqDateFormat,
-                numberOfMonths: 1,
+                numberOfMonths: 1                
             };
+
+            //if we are in edit mode, we have to set the min/max date
+            if (!$scope.isInAddMode()) {
+                _.extend (commonDateOptions, 
+                    {   minDate: new tzIndependentDate(refData.block_from),
+                        maxDate: new tzIndependentDate(refData.block_to)
+                    });
+            }
 
             var commonDateOptionsForRelease = _.extend({
                 beforeShow: function(input, inst) {
@@ -754,30 +764,22 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             //date picker options - From
             $scope.fromDateOptions = _.extend({
-                minDate: new tzIndependentDate(refData.block_from),
-                maxDate: new tzIndependentDate(refData.block_to),
                 onSelect: fromDateChoosed
             }, commonDateOptions);
 
             //date picker options - Departute
             $scope.toDateOptions = _.extend({
-                minDate: new tzIndependentDate(refData.block_from),
-                maxDate: new tzIndependentDate(refData.block_to),
                 onSelect: toDateChoosed
             }, commonDateOptions);
 
 
             //date picker options - From
             $scope.reservationFromDateOptions = _.extend({
-                minDate: new tzIndependentDate(refData.block_from),
-                maxDate: new tzIndependentDate(refData.block_to),
                 onSelect: reservationFromDateChoosed
             }, commonDateOptionsForRelease);
 
             //date picker options - Departute
             $scope.reservationToDateOptions = _.extend({
-                minDate: new tzIndependentDate(refData.block_from),
-                maxDate: new tzIndependentDate(refData.block_to),
                 onSelect: reservationToDateChoosed
             }, commonDateOptionsForRelease);
 
@@ -1009,11 +1011,10 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             initializeVariables();
 
             //pagination
-            initialisePagination();
-
+            initialisePagination();            
+            
             //calling initially required APIs
-            callInitialAPIs();
-
+            //callInitialAPIs();
         }();
     }
 ]);
