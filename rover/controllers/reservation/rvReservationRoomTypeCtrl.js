@@ -1151,11 +1151,23 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				//step2: extract rooms with rate information
 				$(d.rates).each(function(i, d) {
 					var rate_id = d.id;
-
+					var adultsOnTheDay = $scope.reservationData.rooms[$scope.activeRoom].stayDates[for_date].guests.adults;
+					var childrenOnTheDay = $scope.reservationData.rooms[$scope.activeRoom].stayDates[for_date].guests.children;
 					var taxes = d.taxes;
 
 					$(d.room_rates).each(function(i, d) {
-						console.log(RVReservationStateService.fetchAssociatedAddons(rate_id));
+						associatedAddons = RVReservationStateService.fetchAssociatedAddons(rate_id);
+						var addonRate = 0.0;
+						if (associatedAddons.length > 0) {
+							angular.forEach(associatedAddons, function(addon) {
+								if (!addon.is_inclusive && ($scope.reservationData.departureDate == $scope.reservationData.arrivalDate || for_date != $scope.reservationData.departureDate)) {
+									if (addon.post_type.value == "STAY")
+										addonRate += parseFloat(RVReservationStateService.getAddonAmount(addon.amount_type.value, parseFloat(addon.amount), adultsOnTheDay, childrenOnTheDay));
+									else if (for_date == $scope.reservationData.arrivalDate)
+										addonRate += parseFloat(RVReservationStateService.getAddonAmount(addon.amount_type.value, parseFloat(addon.amount), adultsOnTheDay, childrenOnTheDay));
+								}
+							});
+						}
 						if ($(rooms[d.room_type_id].rates).index(rate_id) < 0) {
 							rooms[d.room_type_id].rates.push(rate_id);
 						}
@@ -1166,7 +1178,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							rate_id: rate_id,
 							rate: $scope.calculateRate(d, for_date),
 							taxes: taxes,
-							addonAmount: 12.00,
+							addonAmount: addonRate,
 							rateBreakUp: d,
 							day: new tzIndependentDate(for_date),
 							availabilityCount: rooms[d.room_type_id].availabilityNumbers[for_date] //d.availability
