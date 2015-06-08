@@ -1003,31 +1003,51 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         $( '#print-orientation' ).remove();
         };
 
+
+        var successCallBackOfFetchAllReservationsForPrint = function(data) {
+            var actualResevations = $scope.reservations;
+            $scope.reservations = data.results;
+            $scope.isPrintRoomList = true;
+            addPrintOrientation();
+            $timeout(function() {
+                $(".nav-bar h1  ").addClass('text-hide');
+                $("header .h2").addClass('text-hide');
+                $(".cards .cards-wrapper .cards-header .card-header form .masked-input").addClass('text-hide'); 
+                    $window.print();
+                if (sntapp.cordovaLoaded) {
+                    cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+                };
+            }, 100);
+            $timeout(function() {
+                $scope.reservations = actualResevations;
+                $scope.isPrintRoomList = false;
+                removePrintOrientation();
+            }, 300);
+        }
         /**
          * Function to print Rooming list.
          * @return - None
          */
-        $scope.printRoomingList = function()
-        {           
-            $scope.isPrintRoomList = true;
-            addPrintOrientation();
-            $timeout(function() {            
-            $(".nav-bar h1  ").addClass('text-hide');            
-            $(".cards .cards-wrapper .cards-header .card-header form .masked-input"). addClass('text-hide');                            
-                //Printing,Js excution is paused
-                $window.print();
-                if ( sntapp.cordovaLoaded ) {
-                    cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-                };
-            }, 100);            
-            //Printing Complete,js excution resumes.
-            $timeout(function() {
-                $scope.isPrintRoomList = false;
-                // CICO-9569 to solve the hotel logo issue                
-                $("header .h2").addClass('text-hide');                
-                removePrintOrientation();
-            }, 100);
-        }     
+        $scope.printRoomingList = function() {        
+            var params = {
+                group_id: $scope.groupConfigData.summary.group_id,
+                per_page: 1000
+            };
+            var options = {
+                params: params,
+                successCallBack: successCallBackOfFetchAllReservationsForPrint
+            };
+            $scope.callAPI(rvGroupRoomingListSrv.fetchReservations, options);
+        };
+        /**
+         * Function to mail Rooming list.
+         * @return - None
+         */
+         $scope.sendRoomingList = function(){
+            //implement send mail
+            console.log("send e-mail");
+         }
+         
         /**
          * Function to initialise room block details
          * @return - None
