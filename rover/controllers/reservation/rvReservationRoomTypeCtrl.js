@@ -61,7 +61,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		}
 
 		RVReservationStateService.metaData.rateAddons = angular.copy(rateAddons);
-		console.log(rateAddons);
+		RVReservationStateService.metaData.taxDetails = angular.copy(roomRates.tax_codes);
 
 		// $scope.activeMode = "ROOM_RATE";
 		$scope.stateCheck = {
@@ -1143,9 +1143,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					}
 					//CICO-6619 || currOccupancy > roomDetails[d.id].max_occupancy
 					rooms[d.id].availabilityNumbers[for_date] = d.availability;
-					if (d.availability < 1) {
-						// rooms[d.id].availability = false;
-					}
 				});
 
 				//step2: extract rooms with rate information
@@ -1156,16 +1153,31 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					var taxes = d.taxes;
 
 					$(d.room_rates).each(function(i, d) {
-						associatedAddons = RVReservationStateService.fetchAssociatedAddons(rate_id);
-						var addonRate = 0.0;
+						var associatedAddons = RVReservationStateService.fetchAssociatedAddons(rate_id),
+							addonRate = 0.0,
+							taxForAddons = 0.0,
+							addonsApplied = [],
+							inclusiveAddonsAmount = 0.0;
+
 						if (associatedAddons.length > 0) {
 							angular.forEach(associatedAddons, function(addon) {
-								if (!addon.is_inclusive && ($scope.reservationData.departureDate == $scope.reservationData.arrivalDate || for_date != $scope.reservationData.departureDate)) {
-									if (addon.post_type.value == "STAY")
-										addonRate += parseFloat(RVReservationStateService.getAddonAmount(addon.amount_type.value, parseFloat(addon.amount), adultsOnTheDay, childrenOnTheDay));
-									else if (for_date == $scope.reservationData.arrivalDate)
-										addonRate += parseFloat(RVReservationStateService.getAddonAmount(addon.amount_type.value, parseFloat(addon.amount), adultsOnTheDay, childrenOnTheDay));
+								var currentAddonAmount = parseFloat(RVReservationStateService.getAddonAmount(addon.amount_type.value, parseFloat(addon.amount), adultsOnTheDay, childrenOnTheDay)),
+									taxOnCurrentAddon = 0.0;
+								if (addon.post_type.value == "STAY" || for_date == $scope.reservationData.arrivalDate) {
+									taxOnCurrentAddon = RVReservationStateService.calculateTax(currentAddonAmount, addon.taxes, $scope.activeRoom, adultsOnTheDay, childrenOnTheDay);
+									taxForAddons = parseFloat(taxForAddons) + parseFloat(taxOnCurrentAddon.exclusive);
 								}
+								addonsApplied.push({
+									addonAmount: currentAddonAmount,
+									isInclusive: addon.is_inclusive,
+									postType: addon.post_type.value,
+									amountType: addon.amount_type.value,
+									taxBreakUp: taxOnCurrentAddon
+								});
+								if (!addon.is_inclusive && (addon.post_type.value == "STAY" || for_date == $scope.reservationData.arrivalDate))
+									addonRate = parseFloat(addonRate) + parseFloat(currentAddonAmount);
+								if (!!addon.is_inclusive && (addon.post_type.value == "STAY" || for_date == $scope.reservationData.arrivalDate))
+									inclusiveAddonsAmount = parseFloat(inclusiveAddonsAmount) + parseFloat(currentAddonAmount);
 							});
 						}
 						if ($(rooms[d.room_type_id].rates).index(rate_id) < 0) {
@@ -1174,27 +1186,43 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						if (typeof rooms[d.room_type_id].ratedetails[for_date] == 'undefined') {
 							rooms[d.room_type_id].ratedetails[for_date] = [];
 						}
+
+						var rateOnRoom = RVReservationStateService.calculateRate(d, adultsOnTheDay, childrenOnTheDay);
+						var rateOnRoomAddonAdjusted = parseFloat(rateOnRoom) - parseFloat(inclusiveAddonsAmount);
+						if (rateOnRoomAddonAdjusted < 0) rateOnRoomAddonAdjusted = 0.0;
+
 						rooms[d.room_type_id].ratedetails[for_date][rate_id] = {
 							rate_id: rate_id,
-							rate: $scope.calculateRate(d, for_date),
+							rate: rateOnRoom,
+							rateAdjusted: rateOnRoomAddonAdjusted,
 							taxes: taxes,
 							addonAmount: addonRate,
+							associatedAddons: addonsApplied,
 							rateBreakUp: d,
 							day: new tzIndependentDate(for_date),
-							availabilityCount: rooms[d.room_type_id].availabilityNumbers[for_date] //d.availability
+							availabilityCount: rooms[d.room_type_id].availabilityNumbers[for_date], //d.availability
+							taxForAddons: taxForAddons
 						};
 
 						//calculate tax for the current day
 						if (taxes && taxes.length > 0) { // Need to calculate taxes IFF there are taxes associated with the rate
-							var taxApplied = $scope.calculateTax(for_date, rooms[d.room_type_id].ratedetails[for_date][rate_id].rate, taxes, $scope.activeRoom);
-							rooms[d.room_type_id].ratedetails[for_date][rate_id].tax = parseFloat(taxApplied.inclusive) + parseFloat(taxApplied.exclusive);
-							rooms[d.room_type_id].ratedetails[for_date][rate_id].taxExclusive = parseFloat(taxApplied.exclusive);
+							var taxApplied = RVReservationStateService.calculateTax(rooms[d.room_type_id].ratedetails[for_date][rate_id].rateAdjusted, taxes, $scope.activeRoom, adultsOnTheDay, childrenOnTheDay);
+							rooms[d.room_type_id].ratedetails[for_date][rate_id].roomTax = parseFloat(taxApplied.inclusive) + parseFloat(taxApplied.exclusive);
+							rooms[d.room_type_id].ratedetails[for_date][rate_id].roomTaxExclusive = parseFloat(taxApplied.exclusive);
 						} else {
-							rooms[d.room_type_id].ratedetails[for_date][rate_id].tax = 0;
-							rooms[d.room_type_id].ratedetails[for_date][rate_id].taxExclusive = 0;
+							rooms[d.room_type_id].ratedetails[for_date][rate_id].roomtax = 0;
+							rooms[d.room_type_id].ratedetails[for_date][rate_id].roomtaxExclusive = 0;
 						}
 
-						rooms[d.room_type_id].ratedetails[for_date][rate_id].total = parseFloat(rooms[d.room_type_id].ratedetails[for_date][rate_id].taxExclusive) + parseFloat(rooms[d.room_type_id].ratedetails[for_date][rate_id].rate);
+						rooms[d.room_type_id].ratedetails[for_date][rate_id].tax = parseFloat(rooms[d.room_type_id].ratedetails[for_date][rate_id].roomTax) +
+							parseFloat(rooms[d.room_type_id].ratedetails[for_date][rate_id].taxForAddons);
+						rooms[d.room_type_id].ratedetails[for_date][rate_id].taxExclusive = parseFloat(rooms[d.room_type_id].ratedetails[for_date][rate_id].roomTax) +
+							parseFloat(rooms[d.room_type_id].ratedetails[for_date][rate_id].taxForAddons);
+
+
+						rooms[d.room_type_id].ratedetails[for_date][rate_id].total = parseFloat(rooms[d.room_type_id].ratedetails[for_date][rate_id].taxExclusive) +
+							parseFloat(rooms[d.room_type_id].ratedetails[for_date][rate_id].rate) +
+							parseFloat(rooms[d.room_type_id].ratedetails[for_date][rate_id].addonAmount);
 
 
 						if (for_date == $scope.reservationData.arrivalDate || for_date != $scope.reservationData.departureDate) {
@@ -1213,9 +1241,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							//total of all rates including taxes.
 							rooms[d.room_type_id].total[rate_id].total += rooms[d.room_type_id].ratedetails[for_date][rate_id].total;
 							//compute the tax header for the table
-							if (taxes && taxes.length > 0) {
-								rooms[d.room_type_id].total[rate_id].percent = getTaxPercent(taxes);
-							}
+							// -- CICO-17282 Tax header wont come right as we are having taxes for addons too
+							// if (taxes && taxes.length > 0) {
+							// 	rooms[d.room_type_id].total[rate_id].percent = getTaxPercent(taxes);
+							// }
 							var stayLength = $scope.reservationData.numNights;
 							// Handle single days for calculating rates
 							if (stayLength == 0) stayLength = 1;
@@ -1303,31 +1332,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$timeout(function() {
 				$scope.refreshScroller('room_types');
 			}, 100);
-		}
-
-		$scope.calculateRate = function(rateTable, forDate) {
-			// Hi Shiju, 
-			// The rate amount calculation works as follows: 
-			// 1.       1 Adult, 0 Children: Single
-			// 2.       2 Adults, 0 Children: Double
-			// 3.       3 Adults, 0 Children: Double + Extra Adult
-			// 4.       4 Adults, 0 Children: Double + 2x Extra Adult
-			// 5.       1 Adult, 1 Child: Single + Child Rate
-			// 6.       1 Adult, 2 Children: Single + 2x Child Rate
-			// 7.       2 Adults, 2 Children: Double + 2x Child Rate
-			// 8.       3 Adults, 3 Children: Double + Extra Adult + 3x Child Rate
-			// And for forth….
-			// Can we set the ADR & Total Stay calculation already now, so we can make sure it works correctly. When we add the tax, we just need to add in the extra amount. For now just add 0.00 for the tax value.
-			// Thanks,
-			// Nicki
-
-			var adults = parseInt($scope.reservationData.rooms[$scope.activeRoom].stayDates[forDate].guests.adults);
-			var children = parseInt($scope.reservationData.rooms[$scope.activeRoom].stayDates[forDate].guests.children);
-
-			var baseRoomRate = adults >= 2 ? rateTable.double : rateTable.single;
-			var extraAdults = adults >= 2 ? adults - 2 : 0;
-
-			return baseRoomRate + (extraAdults * rateTable.extra_adult) + (children * rateTable.child);
 		}
 
 		$scope.watchCount = 0;
@@ -1490,6 +1494,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		}
 
 		$scope.toggleClosedRates = function() {
+			$scope.$emit('showLoader');
 			$scope.stateCheck.showClosedRates = !$scope.stateCheck.showClosedRates;
 			init();
 		}
