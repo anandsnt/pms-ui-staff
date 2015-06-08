@@ -16,7 +16,7 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
 		};
 
 	$scope.addLoyaltyProgram = function(){
-            var params = {};
+		var params = {};
 		params.reservation_id = $scope.$parent.reservationData.reservation_card.reservation_id;		
 		params.user_id = $scope.$parent.$parent.guestCardData.userId;
 		params.user_membership = {};
@@ -40,14 +40,6 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
 	};
 
 	$scope.getFFPS = function(){
-            if ($scope.$parent.reservationData){
-                if ($scope.$parent.reservationData.use_ffp){
-                    $scope.loyaltyPrograms = [{name:"Frequent Flyer Program", code:"FFP"},{name:"Hotel Loyalty Program", code:"HLP"}];
-                } else {
-                    $scope.loyaltyPrograms = [{name:"Hotel Loyalty Program", code:"HLP"}];
-                }
-            }
-		
 		
 		var successCallbackGetFFPS = function(data){
 			$scope.setAvailableFFPS(data);
@@ -98,30 +90,18 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
 		}
 	};
 	$scope.getLoyaltyTypes = function(){
-            if ($scope.$parent.reservationData.use_ffp){
 		if($scope.selectedLoyaltyProgram == $scope.loyaltyPrograms[1].code){
 			return $scope.availableHLPS;
 		}else{
 			return $scope.availableFFPS;
 		}
-            } else {
-                if($scope.selectedLoyaltyProgram == $scope.loyaltyPrograms[0].code){
-			return $scope.availableHLPS;
-		}
-            }
 	};
 	$scope.getLoyaltyLevels = function(){
-            if ($scope.$parent.reservationData.use_ffp){
 		if($scope.selectedLoyaltyProgram == $scope.loyaltyPrograms[1].code){
 			return $scope.getLoyaltyLevelsfromCode(false);
 		}else{
 			return $scope.getLoyaltyLevelsfromCode(true);
 		} 
-            } else {
-                if($scope.selectedLoyaltyProgram == $scope.loyaltyPrograms[0].code){
-			return $scope.getLoyaltyLevelsfromCode(false);
-		}
-            }
 	};
 	$scope.getLoyaltyLevelsfromCode = function(isFFP){
 		var loyaltytypes = isFFP?$scope.availableFFPS:$scope.availableHLPS;
