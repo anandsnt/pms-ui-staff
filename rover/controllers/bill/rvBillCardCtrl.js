@@ -91,6 +91,69 @@ sntRover.controller('RVbillCardController',
 	$scope.showIncomingBillingInfo = false;
 	$scope.reservationBillData = reservationBillData;
 
+
+	//set up flags for checkbox actions
+	var billTabsData = $scope.reservationBillData.bills;
+
+	var setChargeCodesSelectedStatus = function(bool){
+		// _.each(billTabsData, function(bill) {
+
+	// var chargeCodes = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].fees_details;
+			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details
+			_.each(chargeCodes, function(chargeCode) {
+			  chargeCode.isSelected = bool;
+			});
+		// });
+		$scope.reservationBillData.isAllChargeCodeSelected = bool;
+	}
+	setChargeCodesSelectedStatus(false);
+    
+    /*
+    * Check if all the items are selected
+    */
+	$scope.isAllChargeCodesSelected = function(){
+		var isAllChargeCodesSelected = true;
+		// _.each(billTabsData, function(bill) {
+			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details
+			_.each(chargeCodes, function(chargeCode) {
+			  if(!chargeCode.isSelected){
+			  	isAllChargeCodesSelected = false;
+			  }
+			// });
+		});
+		return isAllChargeCodesSelected;
+	};
+
+	/*
+    * Check if selection is partial
+    */
+	$scope.isAnyOneChargeCodeIsExcluded = function(){
+		var isAnyOneChargeCodeIsExcluded = false;
+		var isAnyOneChargeCodeIsIncluded = false;
+
+		// _.each(billTabsData, function(bill) {
+			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details
+			var array = [];
+			_.each(chargeCodes, function(chargeCode,index) {
+				array.push(chargeCode.id)
+			  if(!chargeCode.isSelected){
+			  	isAnyOneChargeCodeIsExcluded = true;
+
+			  }
+			  else{
+			  	isAnyOneChargeCodeIsIncluded = true;
+			  	console.log(chargeCode.id)
+			  }
+			});
+			console.log(array)
+		// });
+		return isAnyOneChargeCodeIsExcluded && isAnyOneChargeCodeIsIncluded;
+	};
+
+	$scope.selectAllChargeCodeToggle = function(){
+		$scope.reservationBillData.isAllChargeCodeSelected ? setChargeCodesSelectedStatus(true) :setChargeCodesSelectedStatus(false); 
+	};
+
 	// flag to keep track of - if printing registration card and not bill card
 	$scope.isPrintRegistrationCard = false;
 
@@ -295,6 +358,7 @@ sntRover.controller('RVbillCardController',
      	$scope.calculateHeightAndRefreshScroll();
      	$scope.refreshScroller('bill-tab-scroller');
      	$scope.billingData.billingInfoTitle = ($scope.reservationBillData.routing_array.length > 0) ? $filter('translate')('BILLING_INFO_TITLE'):$filter('translate')('ADD_BILLING_INFO_TITLE');
+		setChargeCodesSelectedStatus(false);
 	};
 
 	/*
@@ -416,6 +480,7 @@ sntRover.controller('RVbillCardController',
 		$scope.currentActiveBill = billIndex;
 		$scope.showActiveBillFeesDetails = billIndex;
 		$scope.calculateHeightAndRefreshScroll();
+		setChargeCodesSelectedStatus(false);
 	};
 	/*$state
 	 * Show Addons
