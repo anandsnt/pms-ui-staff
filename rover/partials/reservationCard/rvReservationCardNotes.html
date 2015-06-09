@@ -17,7 +17,7 @@
     </div>
     <div class="block-item item-group">
         <h3 class="block-title">Group</h3>
-        <button type="button" class="has-arrow next-view" ng-if="!!reservationData.reservation_card.group_name">
+        <button type="button" class="next-view" ng-class="{'has-arrow': isStandAlone}" ng-if="!!reservationData.reservation_card.group_name" ng-click="navigateToGroup($event)">
             {{reservationData.reservation_card.group_name}}
         </button>
         <!-- If no group attached, replace button with this: -->
