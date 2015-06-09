@@ -235,7 +235,7 @@
             <div ng-include="'/assets/partials/reservationCard/rvReservationCardNotes.html'" ng-controller="rvReservationCardNotesController"></div>
 
             <!-- Accompany in guest card -->
-            <div ng-if="reservationData.reservation_card.group_name != '' || reservationData.reservation_card.accompaying_guests.length > 0" ng-include="'/assets/partials/reservationCard/accompanyGuest.html'"></div>
+            <div ng-if="reservationData.reservation_card.accompaying_guests.length > 0" ng-include="'/assets/partials/reservationCard/accompanyGuest.html'"></div>
 
             <!-- Credit card -->
             <div ng-include="'/assets/partials/reservationCard/rvReservationCardPayment.html'"></div>

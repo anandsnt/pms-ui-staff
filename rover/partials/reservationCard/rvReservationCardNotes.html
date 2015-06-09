@@ -1,16 +1,16 @@
 <div class="block-wrapper">
-    <div class="block-item item-actions" ng-hide="true">
-    <!-- <div class="block-item item-actions"> TODO: Remove the previous line and uncomment this one once the actions are implemented-->
+    <div class="block-item item-actions">
         <h3 class="block-title">Actions</h3>
         <button type="button" class="staycard-button next-view open-modal">
-        <!-- <button type="button" class="staycard-button next-view open-modal" ng-class="TODO: icon-{'no-actions' or 'actions'}"> -->
+            <!-- ng-class="TODO: icon-{'no-actions' or 'actions'}" -->
             <!-- {{TODO: Bind lenght of actions here}} -->
+            0
         </button>
     </div>
     <div class="block-item item-notes">
         <h3 class="block-title">Notes</h3>
         <button type="button" class="staycard-button next-view open-modal" 
-            ng-class="{'icon-notes': !!reservationData.reservation_card.notes.reservation_notes.length, 'icon-no-notes': !reservationData.reservation_card.notes.reservation_notes.length}"
+            ng-class="{'icon-notes': !!reservationData.reservation_card.notes.reservation_notes.length, 'icon-no-notes': !reservationData.reservation_card.notes.reservation_notes.length}" 
             ng-click="openNotesPopup();">
             {{reservationData.reservation_card.notes.reservation_notes.length}}
         </button>
