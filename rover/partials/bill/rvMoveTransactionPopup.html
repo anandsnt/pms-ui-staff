@@ -65,18 +65,18 @@
 
 				<li class="group-account" ng-show="searchResults.length !== 0" ng-repeat="item in searchResults" ng-click="targetClicked(item.entity_id)">
 					<div class="room" ng-show="item.type === 'RESERVATION'">
-						<strong>{{item.room}}</strong>
+						<strong ng-bind-html="escapeNull(item.room_no)|highlight:numberQuery:false"></strong>
 					</div>
 					<div class="data guest"  ng-show="item.type === 'RESERVATION'">
-						<h2>{{item.last_name}}, {{item.first_name}}</h2>
+						<h2 ng-bind-html="escapeNull(item.displaytext)|highlight:textQuery:false"></h2>
 					</div>
 					<div class="group-info" ng-show="item.type === 'ACCOUNT'">
-						<strong>{{item.account_num}}</strong>
+						<strong ng-bind-html="escapeNull(item.account_number)|highlight:numberQuery:false"></strong>
 						<span class="type" ng-show="item.type === 'ACCOUNT'">Group</span>
 						<span class="type" ng-show="item.type === 'GROUP'">Group</span>
 					</div>
 					<div class="data" ng-show="item.type === 'ACCOUNT'">
-						<h2>{{item.account_name}}</h2>
+						<h2 ng-bind-html="escapeNull(item.account_name)|highlight:textQuery:false"></h2>
 					</div>
 				</li>
 			</ul>
@@ -85,7 +85,7 @@
 		<!-- Actions - hidden when search is opened -->
 		<div class="actions" ng-show="targetSelected">
 			<button type="button" class="button blank" ng-click="closeDialog()">Cancel</button> 
-			<button type="button" class="button green">Move</button>
+			<button type="button" class="button green" ng-click="moveCharges()">Move</button>
 		</div>
 
 	</form>

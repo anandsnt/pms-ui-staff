@@ -13,19 +13,6 @@ sntRover.controller('RVMoveChargeCtrl',
 		};
 		initiate();
 
-		// $scope.clearTextQuery = function(){
-		// 	console.log($scope.textQuery)
-		// 	$scope.textQuery = "";
-		// 	console.log($scope.textQuery)
-		// };
-		// $scope.clearNumberQuery = function(){
-		// 	console.log($scope.numberQuery)
-		// 	$scope.numberQuery = "";
-		// 	console.log($scope.numberQuery)
-		// };
-
-
-
 		var refreshSearchList = function() { 			
 			$timeout(function() {
 				$scope.refreshScroller('search_results');
@@ -39,10 +26,11 @@ sntRover.controller('RVMoveChargeCtrl',
 				$scope.searchResults = data.results;
     			_.each($scope.searchResults, function(result,index) {
     				result.entity_id = index;
+    				result.type === 'RESERVATION' ?result.displaytext = result.last_name+', '+result.first_name : '';
     			});
     			refreshSearchList();
 			}
-			$scope.invokeApi(RVBillCardSrv.fetchSearchedItems, {}, fetchSucces);
+			$scope.invokeApi(RVBillCardSrv.fetchSearchedItems, {"text_search":$scope.textQuery,"number_search":$scope.numberQuery}, fetchSucces);
 		};
 
 		/**
@@ -66,7 +54,7 @@ sntRover.controller('RVMoveChargeCtrl',
 			_.each($scope.searchResults, function(result) {
 				if(result.entity_id === selectedId){
 					$scope.selectedTarget = result;
-					$scope.selectedTarget.displayNumber = (result.type ==="ACCOUNT" ||result.type ==="GROUP") ? result.account_num : result.conf_num;
+					$scope.selectedTarget.displayNumber = (result.type ==="ACCOUNT" ||result.type ==="GROUP") ? result.account_number : result.confirm_no;
 					$scope.selectedTarget.displaytext = (result.type ==="ACCOUNT" ||result.type ==="GROUP") ? result.account_name : (result.last_name+' ,'+result.first_name);
 					$scope.targetBillId =$scope.selectedTarget.bills[0].id;
 					$scope.targetSelected = true;
@@ -78,5 +66,14 @@ sntRover.controller('RVMoveChargeCtrl',
 		$scope.changeSelection =  function(){
 			$scope.selectedTarget = {};
 			$scope.targetSelected = false;
+		};
+
+		$scope.moveCharges = function(){
+			var params = {
+				 "from_bill": $scope.moveChargeData.fromBillId, 
+   				 "to_bill": $scope.targetBillId,
+    			 "financial_transaction_ids":$scope.moveChargeData.selectedTransactionIds
+			}
+			console.log(params);
 		};
 }]);

@@ -230,10 +230,10 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 	};
 
 
-	this.fetchSearchedItems = function(){
+	this.fetchSearchedItems = function(data){
 		var deferred = $q.defer();
-		var url = '/ui/show?format=json&json_input=reservations/reservationSearch.json';
-		BaseWebSrvV2.postJSON(url).then(function(data) {
+		var url = '/api/bills/search_for_associated?search_by_no='+data.number_search+'&search_by_name='+data.text_search;
+		BaseWebSrvV2.getJSON(url).then(function(data) {
 		   	 deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);

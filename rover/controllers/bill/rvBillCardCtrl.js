@@ -166,12 +166,14 @@ sntRover.controller('RVbillCardController',
 		//2. Confirmation number
 		//3. GuestName
 		//4. CurrentBillNumber
+		//5. Current Bill id
 		$scope.moveChargeData = {};
 		$scope.moveChargeData.selectedTransactionIds = [];
 		var firtName = (typeof $scope.guestCardData.contactInfo.first_name !== "undefined") ?$scope.guestCardData.contactInfo.first_name :"";
 		var lastName = (typeof $scope.guestCardData.contactInfo.last_name !== "undefined")  ?$scope.guestCardData.contactInfo.last_name:"";
 		$scope.moveChargeData.displayName = $scope.reservationBillData.confirm_no + ' '+lastName+' '+firtName;
 		$scope.moveChargeData.currentActiveBillNumber = parseInt($scope.currentActiveBill) + parseInt(1);
+		$scope.moveChargeData.fromBillId = billTabsData[$scope.currentActiveBill].bill_id;
 
 
 		if(chargeCodes.length>0){
