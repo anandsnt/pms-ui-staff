@@ -13,6 +13,18 @@ sntRover.controller('RVMoveChargeCtrl',
 		};
 		initiate();
 
+		// $scope.clearTextQuery = function(){
+		// 	console.log($scope.textQuery)
+		// 	$scope.textQuery = "";
+		// 	console.log($scope.textQuery)
+		// };
+		// $scope.clearNumberQuery = function(){
+		// 	console.log($scope.numberQuery)
+		// 	$scope.numberQuery = "";
+		// 	console.log($scope.numberQuery)
+		// };
+
+
 
 		var refreshSearchList = function() { 			
 			$timeout(function() {
