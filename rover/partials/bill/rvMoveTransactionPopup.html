@@ -1,6 +1,6 @@
 <div role="dialog" id="modal" class="modal-show" ng-cloak>
 	<form id="move-room" name="move-room" class="modal-content form move-charge searching"> <!-- Remove class searching when guest/account is selected -->
-		<button id="modal-close" type="button" class="modal-close"><span class="icons icon-close invert" ng-click="closeDialog()"></button>
+		<button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>
 		<span class="h2 message">Move Charge(s)</span>
 		<!-- Move From -->
 		<span class="h3">From</span>
@@ -36,24 +36,22 @@
 		<div class="holder" ng-show="targetSelected">
 			<div class="entry margin">
 				<label for="move-to-button">Account / Guest</label>
-				<button type="button" id="move-to-button" class="button with-label white blue-text">
-					<span>{Conf. No. or Code}</span>
-					<strong>{Guest or Account Name}</strong>
+				<button type="button" id="move-to-button" class="button with-label white blue-text" ng-click="changeSelection()">
+					<span>{{selectedTarget.displayNumber}}</span>
+					<strong>{{selectedTarget.displaytext}}</strong>
 					Change
 				</button>
 			</div>
 			<div class="entry">
 				<label for="move-to-bill">Bill</label>
 				<div class="select">
-					<select id="move-to-bill">
-						<option value="1" selected>1</option>
-						.. repeat
-					</select>
+					<select id="move-to-bill" ng-options="bill.id as bill.bill_number for bill in selectedTarget.bills" ng-model="targetBillId">
+				    </select>
 				</div>
 			</div>
 		</div>
 		<!-- Search results -->
-		<div class="scrollable">
+		<div class="scrollable" ng-hide="targetSelected">
 			<ul class="search-results wrapper"> 
 				<li class="no-content" ng-show="(textQuery.length<3 && numberQuery.length<3) || searchResults.length === 0">
 					<div class="info">
@@ -65,7 +63,7 @@
 					</div>
 				</li>
 
-				<li class="group-account" ng-show="searchResults.length !== 0" ng-repeat="item in searchResults">
+				<li class="group-account" ng-show="searchResults.length !== 0" ng-repeat="item in searchResults" ng-click="targetClicked(item.entity_id)">
 					<div class="room" ng-show="item.type === 'RESERVATION'">
 						<strong>{{item.room}}</strong>
 					</div>
@@ -85,8 +83,8 @@
 		</div>
 
 		<!-- Actions - hidden when search is opened -->
-		<div class="actions hidden">
-			<button type="button" class="button blank">Cancel</button> 
+		<div class="actions" ng-show="targetSelected">
+			<button type="button" class="button blank" ng-click="closeDialog()">Cancel</button> 
 			<button type="button" class="button green">Move</button>
 		</div>
 
