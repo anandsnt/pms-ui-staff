@@ -157,6 +157,43 @@ sntRover.controller('RVbillCardController',
 		$scope.reservationBillData.isAllChargeCodeSelected ? setChargeCodesSelectedStatus(true) :setChargeCodesSelectedStatus(false); 
 	};
 
+
+	$scope.moveChargesClicked = function(){
+		var billTabsData = $scope.reservationBillData.bills;
+		var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details;
+		//Data to pass to the popup
+		//1. Selected transaction ids
+		//2. Confirmation number
+		//3. GuestName
+		//4. CurrentBillNumber
+		$scope.moveChargeData = {};
+		$scope.moveChargeData.selectedTransactionIds = [];
+		var firtName = (typeof $scope.guestCardData.contactInfo.first_name !== "undefined") ?$scope.guestCardData.contactInfo.first_name :"";
+		var lastName = (typeof $scope.guestCardData.contactInfo.last_name !== "undefined")  ?$scope.guestCardData.contactInfo.last_name:"";
+		$scope.moveChargeData.displayName = $scope.reservationBillData.confirm_no + ' '+lastName+' '+firtName;
+		$scope.moveChargeData.currentActiveBillNumber = parseInt($scope.currentActiveBill) + parseInt(1);
+
+
+		if(chargeCodes.length>0){
+			_.each(chargeCodes, function(chargeCode,index) {
+				if(chargeCode.isSelected){
+					$scope.moveChargeData.selectedTransactionIds.push(chargeCode.id);
+				}
+		    });
+		    ngDialog.open({
+	    		template: '/assets/partials/bill/rvMoveTransactionPopup.html',
+	    		controller: 'RVMoveChargeCtrl',
+	    		className: '',
+	    		scope: $scope
+    		});
+		}
+		else{
+			return;
+		};
+		console.log($scope.selectedTransactionIds);
+	};
+
+
 	// flag to keep track of - if printing registration card and not bill card
 	$scope.isPrintRegistrationCard = false;
 
