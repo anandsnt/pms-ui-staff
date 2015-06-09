@@ -186,10 +186,10 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	 * @param {index} index of selected payment method
 	 */
 	$scope.editPaymentMethod = function(index) {
-		if($scope.data.payments[index].value !== 'CC'){
+		//if($scope.data.payments[index].value !== 'CC'){
 			$scope.currentClickedElement = index;
 			$scope.editData = dclone($scope.data.payments[index],["is_active"]);
-		}
+		//}
 	};
 
 	$scope.editPaymentMethodCC = function(index) {
