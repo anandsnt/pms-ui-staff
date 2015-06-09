@@ -9,8 +9,16 @@ sntRover.controller('RVMoveChargeCtrl', ['$scope',
 			$scope.targetSelected = false;
 			$scope.selectedTarget = {};
 			$scope.targetBillId = "";
+			$scope.setScroller('search_results',{'click':true, 'tap':true});
 		};
 		initiate();
+
+
+		var refreshSearchList = function() { 			
+			$timeout(function() {
+				$scope.refreshScroller('search_results');
+			}, 2000);
+		};
 
 
 		var fetchFilterdData = function(){
@@ -48,6 +56,24 @@ sntRover.controller('RVMoveChargeCtrl', ['$scope',
             "last_name": "G",
             "number_of_bills": 2,
             "bills":[{bill_number: 1, id: 1235}]
+        },
+        {
+            "conf_num": 5845,
+            "room": "123",
+            "type": "RESERVATION",
+            "first_name": "Steve",
+            "last_name": "G",
+            "number_of_bills": 2,
+            "bills":[{bill_number: 1, id: 1235}]
+        },
+        {
+            "conf_num": 545,
+            "room": "123",
+            "type": "RESERVATION",
+            "first_name": "grdgre",
+            "last_name": "G",
+            "number_of_bills": 2,
+            "bills":[{bill_number: 1, id: 1235}]
         }
     ];
 
@@ -56,6 +82,7 @@ sntRover.controller('RVMoveChargeCtrl', ['$scope',
     			_.each($scope.searchResults, function(result,index) {
     				result.entity_id = index;
     			});
+    			refreshSearchList();
 			}
 			fetchSucces();
 		};
