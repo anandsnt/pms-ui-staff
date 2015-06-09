@@ -62,9 +62,24 @@
 							<h3><span translate>SUPPORTED KEY CARD TYPES</span></h3>
 						</div>
 						<div class="entry full-width">
-							<span ng-repeat="keyType in data.available_card_types">
+							<!-- <span ng-repeat="keyType in data.available_card_types">
 								<ad-checkbox is-checked="keyType.is_selected_for_hotel" label="{{keyType.name}}"></ad-checkbox>
-							</span>
+							</span> -->
+
+							<div class="entry radio-check" label="Mifare Classic" >
+								<label class="checkbox  checked">
+									<span class="icon-form icon-checkbox ng-scope checked"></span><!-- end ngIf: spanClass != 'checkbox-background' -->
+									<input type="checkbox" ng-model="isChecked" class="ng-pristine ng-valid">
+									Mifare Classic
+								</label>
+							</div>
+							<div class="entry radio-check" label="Mifare Classic" >
+								<label class="checkbox  checked">
+									<span class="icon-form icon-checkbox ng-scope checked"></span><!-- end ngIf: spanClass != 'checkbox-background' -->
+									<input type="checkbox" ng-model="isChecked" class="ng-pristine ng-valid">
+									Mifare Classic
+								</label>
+							</div>
 						</div>
 					</fieldset>
 					<fieldset>
