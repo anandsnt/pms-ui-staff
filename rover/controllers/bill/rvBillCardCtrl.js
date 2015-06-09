@@ -93,17 +93,16 @@ sntRover.controller('RVbillCardController',
 
 
 	//set up flags for checkbox actions
-	var billTabsData = $scope.reservationBillData.bills;
+	
 
 	var setChargeCodesSelectedStatus = function(bool){
-		// _.each(billTabsData, function(bill) {
-
-	// var chargeCodes = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].fees_details;
-			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details
-			_.each(chargeCodes, function(chargeCode) {
-			  chargeCode.isSelected = bool;
-			});
-		// });
+		var billTabsData = $scope.reservationBillData.bills;
+		var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details;
+		chargeCodesId = [];
+		_.each(chargeCodes, function(chargeCode) {
+		  chargeCode.isSelected = bool;
+		  chargeCodesId.push(chargeCode.id)
+		});
 		$scope.reservationBillData.isAllChargeCodeSelected = bool;
 	}
 	setChargeCodesSelectedStatus(false);
@@ -113,14 +112,19 @@ sntRover.controller('RVbillCardController',
     */
 	$scope.isAllChargeCodesSelected = function(){
 		var isAllChargeCodesSelected = true;
-		// _.each(billTabsData, function(bill) {
-			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details
+		var billTabsData = $scope.reservationBillData.bills;
+		var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details
+		if(chargeCodes.length > 0){
 			_.each(chargeCodes, function(chargeCode) {
 			  if(!chargeCode.isSelected){
 			  	isAllChargeCodesSelected = false;
 			  }
-			// });
-		});
+			});
+		}
+		else{
+				isAllChargeCodesSelected = false;
+		}
+			
 		return isAllChargeCodesSelected;
 	};
 
@@ -130,23 +134,22 @@ sntRover.controller('RVbillCardController',
 	$scope.isAnyOneChargeCodeIsExcluded = function(){
 		var isAnyOneChargeCodeIsExcluded = false;
 		var isAnyOneChargeCodeIsIncluded = false;
-
-		// _.each(billTabsData, function(bill) {
-			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details
-			var array = [];
+		var billTabsData = $scope.reservationBillData.bills;
+		var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details
+		if(chargeCodes.length>0){
 			_.each(chargeCodes, function(chargeCode,index) {
-				array.push(chargeCode.id)
 			  if(!chargeCode.isSelected){
 			  	isAnyOneChargeCodeIsExcluded = true;
-
 			  }
 			  else{
 			  	isAnyOneChargeCodeIsIncluded = true;
-			  	console.log(chargeCode.id)
 			  }
 			});
-			console.log(array)
-		// });
+		}
+		else{
+			isAnyOneChargeCodeIsExcluded = false;
+			isAnyOneChargeCodeIsIncluded = false;
+		}
 		return isAnyOneChargeCodeIsExcluded && isAnyOneChargeCodeIsIncluded;
 	};
 
