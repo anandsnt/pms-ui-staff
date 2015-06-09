@@ -28,7 +28,7 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
                var twentyFourHrs = 86400000;
                //var unoMinute = 60000;//for debugging
               // if ((nd-$scope.lastRefreshedTimeObj.valueOf()) > unoMinute){//for debugging
-               if ((nd-$scope.lastRefreshedTimeObj.valueOf()) < twentyFourHrs){
+               if ((nd-$scope.lastRefreshedTimeObj.valueOf()) > twentyFourHrs){
                    $scope.refreshButtonEnabled = 'enabled';
                } else {
                    $scope.refreshButtonEnabled = 'disabled';
