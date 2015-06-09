@@ -430,8 +430,65 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		};
 
 
+		$scope.printData = function() {
+			$scope.returnToPage = $_page;
+
+			$_updateFilters('page', 1);
+			$_updateFilters('perPage', 1000);
+			$_callRoomsApi();
+
+			function callback (data) {
+				$_fetchRoomListCallback(data);
+				printList();
+			};
+
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {}, callback);
+		};
+
+
 
 		/* ***** ***** ***** ***** ***** */
+
+
+
+		function printList () {
+			// add the orientation
+			$( 'head' ).append( "<style id='print-orientation'>@page { size: landscape; }</style>" );
+
+			/*
+			*	=====[ READY TO PRINT ]=====
+			*/
+
+			// this will show the popup with full report
+		    $timeout(function() {
+
+		    	/*
+		    	*	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+		    	*/
+
+		        $window.print();
+		        if ( sntapp.cordovaLoaded ) {
+		            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+		        };
+		    }, 100);
+
+		    /*
+		    *	=====[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]=====
+		    */
+
+		    // in background we need to keep the report with its original state
+		    $timeout(function() {
+		    	// remove the orientation
+				$( '#print-orientation' ).remove();
+
+				// reset params to what it was before printing
+				$_page = $scope.returnToPage;
+				$_updateFilters('page', $_page);
+				$_updateFilters('perPage', 50);
+
+				$_callRoomsApi();
+		    }, 100);
+		};
 
 
 
