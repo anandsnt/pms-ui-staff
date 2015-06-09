@@ -247,7 +247,6 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                 }
 
                 var calenderDataFetchSuccess = function (data) {
-                    
                     //Set the calendar type
                     if (data.type === 'ROOM_TYPES_LIST') {
                         $scope.calendarMode = "ROOM_TYPE_VIEW";
@@ -261,23 +260,25 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
 
 
                     
-                    if ($scope.ratesRoomsToggle == 'ROOMS'){
-                                    $scope.everyRestriction = $scope.calendarData.room_type_restrictions;
-                            var d, rm_type, r_date, rm_type_name;
+                    if ($scope.ratesRoomsToggle === 'ROOMS'){
+                        $scope.calendarData.room_type_restrictions = data.room_type_restrictions;
+                        $scope.everyRestriction = $scope.calendarData.room_type_restrictions;
+                        
+                        var d, rm_type, r_date, rm_type_name;
                             $scope.calendarData.data_new = [];
+                            
                             for (var x in $scope.calendarData.data){
                                 if (x < $scope.calendarData.room_types_all.length){
                                     d = $scope.calendarData.data[x];
                                     $scope.calendarData.data[x].name = $scope.calendarData.room_types_all[x].name;
                                     $scope.calendarData.data[x].room_type_id = $scope.calendarData.room_types_all[x].room_type_id;
                                     
-                                     $scope.calendarData.data_new.push($scope.calendarData.data[x]);
+                                    $scope.calendarData.data_new.push($scope.calendarData.data[x]);
 
                                 } else {
                                     delete $scope.calendarData.data[x];
                                 }
                             }
-                            
                             
                             //push the room_type restriction into the all_rates object
                             //per date/room_type
@@ -303,16 +304,18 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                                 }
                             }
                             
-                                  for (var ev in $scope.calendarData.data){
-                                        rm_type = $scope.calendarData.data[ev];
-                                        rm_type_name = $scope.calendarData.data[ev].name;
-                                        
-                                        for (var xi = 0; xi < $scope.calendarData.dates.length; xi++){
-                                            r_date = $scope.calendarData.dates[xi];
-                                            $scope.calendarData.data[ev][r_date] = $scope.getRestrictionsForDateRoomType(r_date, rm_type_name);
-                                        }
-                                        
-                                    }
+                            
+                            for (var ev in $scope.calendarData.data){
+                                  rm_type = $scope.calendarData.data[ev];
+                                  rm_type_name = $scope.calendarData.data[ev].name;
+
+                                  for (var xi = 0; xi < $scope.calendarData.dates.length; xi++){
+                                      r_date = $scope.calendarData.dates[xi];
+                                      $scope.calendarData.data[ev][r_date] = $scope.getRestrictionsForDateRoomType(r_date, rm_type_name);
+                                  }
+                              }
+                              
+                              
                             $scope.calendarData.data = $scope.calendarData.data_new;
                             data.data = $scope.calendarData.data;
                         }
@@ -329,7 +332,9 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                 RateMngrCalendarSrv.businessDate = $rootScope.businessDate;
 
                 if ($scope.calendarMode == "RATE_VIEW") {
-                    $scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, calculateRateViewCalGetParams(), calenderDataFetchSuccess)
+                    var rateParams = calculateRateViewCalGetParams();
+                    RateMngrCalendarSrv.roomRateToggle = $scope.ratesRoomsToggle;//pass which mode is toggled RATES/ROOMS
+                    $scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, rateParams, calenderDataFetchSuccess)
                             .then(finalizeCapture);
 
                 } else {
