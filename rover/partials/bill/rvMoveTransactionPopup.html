@@ -44,6 +44,7 @@
 			</div>
 			<div class="entry">
 				<label for="move-to-bill">Bill</label>
+				{{targetBillId}}
 				<div class="select">
 					<select id="move-to-bill" ng-options="bill.id as bill.bill_number for bill in selectedTarget.bills" ng-model="targetBillId">
 				    </select>

@@ -1,5 +1,5 @@
-sntRover.controller('RVMoveChargeCtrl', ['$scope',
-	function($scope) {
+sntRover.controller('RVMoveChargeCtrl', ['$scope','$timeout',
+	function($scope,$timeout) {
 		console.log($scope.moveChargeData);
 
 		var initiate = function(){
@@ -32,7 +32,7 @@ sntRover.controller('RVMoveChargeCtrl', ['$scope',
             "first_name": "Resheil",
             "last_name": "mohammed",
             "number_of_bills": 1,
-            "bills":[{bill_number: 1, id: 1235},{bill_number: 2, id: 1235}]
+            "bills":[{bill_number: 1, id: 1235},{bill_number: 2, id: 1235},{bill_number: 3, id: 1235}]
         },
         {
             "account_id": 4324,
@@ -104,7 +104,12 @@ sntRover.controller('RVMoveChargeCtrl', ['$scope',
 					$scope.selectedTarget = result;
 					$scope.selectedTarget.displayNumber = (result.type ==="ACCOUNT" ||result.type ==="GROUP") ? result.account_num : result.conf_num;
 					$scope.selectedTarget.displaytext = (result.type ==="ACCOUNT" ||result.type ==="GROUP") ? result.account_name : (result.last_name+' ,'+result.first_name);
-					$scope.targetBillId = $scope.selectedTarget.bills[0].id;
+					// _.each($scope.selectedTarget.bills, function(bill) {
+					// 	if(bill.bill_number ===1){
+					// 		console.log(bill.bill_number+bill.id);
+							$scope.targetBillId =$scope.selectedTarget.bills[0].id;
+						// }
+					// });
 					$scope.targetSelected = true;
 				}
 		    });
