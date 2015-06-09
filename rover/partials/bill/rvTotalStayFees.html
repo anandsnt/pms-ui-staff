@@ -127,11 +127,11 @@
 				<th><span translate>CREDITS</span></th>
 				<th class="form"><span translate>BILL</span> #</th>
 				<th class="action"><span translate>EDIT</span></th>
-				<th class="action"><label class="checkbox inline">
+				<th class="action" ng-if="hasMoveToOtherBillPermission()"><label class="checkbox inline">
                     <span class="icon-form icon-checkbox" ng-class="{'checked':isAllChargeCodesSelected(),'semi-checked':isAnyOneChargeCodeIsExcluded()}"></span>
                     <input id="bill-1-all" ng-model="reservationBillData.isAllChargeCodeSelected" type="checkbox" ng-change="selectAllChargeCodeToggle()">
-                </label>
-            </th>
+               		 </label>
+           		 </th>
 			</tr>
 		</thead>
 		<!-- Total Stay fees details in CHECK IN status. -->
@@ -265,7 +265,7 @@
 						<span translate>EDIT</span> 
 					</button>
 				</td>
-				<td>
+				<td ng-if="hasMoveToOtherBillPermission()">
 	                <label class="checkbox inline"> 
 	                    <span class="icon-form icon-checkbox" ng-class="{'checked':feesData.isSelected}"></span>
 	                    <input ng-model="feesData.isSelected" type="checkbox"/>

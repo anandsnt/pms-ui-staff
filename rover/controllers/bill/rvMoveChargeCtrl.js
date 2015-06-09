@@ -1,6 +1,6 @@
 sntRover.controller('RVMoveChargeCtrl', 
-	['$scope','$timeout','RVBillCardSrv',
-	function($scope,$timeout,RVBillCardSrv) {
+	['$scope','$timeout','RVMoveChargeSrv',
+	function($scope,$timeout,RVMoveChargeSrv) {
 
 		var initiate = function(){
 			$scope.numberQuery = "";
@@ -30,7 +30,7 @@ sntRover.controller('RVMoveChargeCtrl',
     			});
     			refreshSearchList();
 			}
-			$scope.invokeApi(RVBillCardSrv.fetchSearchedItems, {"text_search":$scope.textQuery,"number_search":$scope.numberQuery}, fetchSucces);
+			$scope.invokeApi(RVMoveChargeSrv.fetchSearchedItems, {"text_search":$scope.textQuery,"number_search":$scope.numberQuery}, fetchSucces);
 		};
 
 		/**
@@ -79,7 +79,6 @@ sntRover.controller('RVMoveChargeCtrl',
 				$scope.closeDialog();
 				$scope.$emit('moveChargeSuccsess');
 			};
-			chargesMovedSuccess();
-			console.log(params);
+			$scope.invokeApi(RVMoveChargeSrv.moveChargesToTargetEntity, params, chargesMovedSuccess);
 		};
 }]);

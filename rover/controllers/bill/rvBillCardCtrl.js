@@ -93,6 +93,11 @@ sntRover.controller('RVbillCardController',
 
 
 	//set up flags for checkbox actions
+    //TO DO: set permission
+	$scope.hasMoveToOtherBillPermission = function() {
+        // return rvPermissionSrv.getPermissionValue ('hasMoveToOtherBillPermission');  
+        return true;  
+    };
 	
 
 	var setChargeCodesSelectedStatus = function(bool){
@@ -192,7 +197,6 @@ sntRover.controller('RVbillCardController',
 		else{
 			return;
 		};
-		console.log($scope.selectedTransactionIds);
 	};
 
 
@@ -389,7 +393,6 @@ sntRover.controller('RVbillCardController',
 	        }, 200);
 	    };
 		$scope.reservationBillData = reservationBillData;
-		console.log($scope.reservationBillData);
 		$scope.routingArrayCount = $scope.reservationBillData.routing_array.length;
 		$scope.incomingRoutingArrayCount = $scope.reservationBillData.incoming_routing_array.length;
 		/*
@@ -1331,7 +1334,6 @@ sntRover.controller('RVbillCardController',
 		}
 		var paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type;
 		if($rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType!="DB"){
-			console.log("Standalone - Final bill having balance to pay");
 			$scope.reservationBillData.isCheckout = true;
 			$scope.clickedPayButton(true);
 		}
