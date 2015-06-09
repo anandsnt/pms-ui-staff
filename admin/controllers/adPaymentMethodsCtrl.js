@@ -130,6 +130,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 			if(data.value == "CC"){
 				// Edited CC - LINKED RESERVATION TYPE only
 				console.log("Edited the Main Credit Card Payment method");
+				$scope.data.payments[parseInt($scope.currentClickedElement)] = data;
 			}
 			else if($scope.currentClickedElement === "new"){
 				if(data.is_cc){
