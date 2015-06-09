@@ -799,5 +799,19 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
                 title: fullname
         };
     });
+
+    // CICO-17067 PMS: Rover - Stay Card: Add manual authorization
+
+    $scope.showAuthPopUp = function(){
+    	console.log("showAuthPopUp");
+    	ngDialog.open({
+			template: '/assets/partials/reservation/rvManualAuthorization.html',
+			className: '',
+			scope: $scope
+		});
+    };
+
+
+
 	}
 ]);
