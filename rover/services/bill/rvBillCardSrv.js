@@ -228,6 +228,19 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 
 		return deferred.promise;
 	};
+
+
+	this.fetchSearchedItems = function(){
+		var deferred = $q.defer();
+		var url = '/ui/show?format=json&json_input=reservations/reservationSearch.json';
+		BaseWebSrvV2.postJSON(url).then(function(data) {
+		   	 deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+
+		return deferred.promise;
+	};
 	
    
 }]);
