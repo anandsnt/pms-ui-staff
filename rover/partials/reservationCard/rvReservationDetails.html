@@ -201,6 +201,9 @@
                     </div>
                 </li>
             </ul>
+            
+            <!-- Accompany in guest card -->
+            <div ng-if="reservationData.reservation_card.accompaying_guests.length > 0" ng-include="'/assets/partials/reservationCard/accompanyGuest.html'"></div>
 
             <form method="post" name="manage-guests" id="manage-guests" class="form" ng-show="isStandAlone">
                 <div class="entry">
@@ -231,8 +234,9 @@
 
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
-            <!-- Accompany in guest card -->
-            <div ng-if="reservationData.reservation_card.group_name != '' || reservationData.reservation_card.accompaying_guests.length > 0" ng-include="'/assets/partials/reservationCard/accompanyGuest.html'"></div>
+            <!-- Notes -->
+            <div ng-include="'/assets/partials/reservationCard/rvReservationCardNotes.html'" ng-controller="rvReservationCardNotesController"></div>
+
 
             <!-- Credit card -->
             <div ng-include="'/assets/partials/reservationCard/rvReservationCardPayment.html'"></div>
@@ -251,10 +255,7 @@
             <div ng-include="'/assets/partials/reservationCard/rvReservationCardLoyalty.html'" ng-controller="rvReservationCardLoyaltyController"></div>
 
             <!-- Additional Details -->
-            <div ng-include="'/assets/partials/reservationCard/rvReservationAdditional.html'" ng-controller="rvReservationAdditionalController" ng-if="isStandAlone"></div>
-
-            <!-- Notes -->
-            <div ng-include="'/assets/partials/reservationCard/rvReservationCardNotes.html'" ng-controller="rvReservationCardNotesController"></div>
+            <div ng-include="'/assets/partials/reservationCard/rvReservationAdditional.html'" ng-controller="rvReservationAdditionalController" ng-if="isStandAlone"></div>            
 
             <!-- Activity Log -->
             <div ng-include="'/assets/partials/reservationCard/rvReservationCardActivityLog.html'" ng-controller="rvReservationCardActivityLogCtrl"></div>

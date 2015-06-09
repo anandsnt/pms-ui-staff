@@ -3690,7 +3690,6 @@
                     }
                 }
 
-
                 .button {
                     margin-right: 20px;
 
@@ -3972,22 +3971,22 @@
             .pull-right;
 
             .balance {
-                text-align: right;
+                position: relative;
+                text-align: right; 
                 padding: 10px 0;
                 margin-bottom: 10px;
-                border-bottom: 1px solid rgba(0,0,0,.1);
+                border-bottom: 1px solid rgba(0,0,0,.1); 
 
-                .label {
+                .label { 
+                    position: absolute;
+                    top: 10px;
+                    left: 0;
                     text-align: left;
-                    line-height: 30px;
+                    line-height: 30px; 
                 }
-
-                .h1 {
-                    display: inline-block;
-
-                    &.red { color: @red; }
-                    &.green { color: @green; }
-                }
+                
+                .red { color: @red; }
+                .green { color: @green; }
             }
 
             .button {
@@ -4064,72 +4063,26 @@
                 bottom: 0;
             }
 
-            /* Additional reservation info ***/
-            .additional-info {
-                margin-bottom: 20px;
-                padding: 15px;
-                background: rgba(0,0,0,.05);
-                #border-radius > .rounded();
-
-                li {
-                    font-size: 14px;
-                    color: @textColor;
-                    padding-bottom: .25em;
-                    margin-bottom: .25em;
-                    border-bottom: 1px solid rgba(0,0,0,.1);
-
-                    span {
-                        display: inline-block;
-                        font-size: 12px;
-                        text-transform: uppercase;
-                        color: @grey3;
-                        width: 140px;
-                    }
-
-                    &:last-child {
-                        margin-bottom: 0;
-                        padding-bottom: 0;
-                        border-bottom: 0;
-                    }
-                }
-            }
-
-            /* Grouped card elements ***/
-            .block-wrapper {
-                .float;
-
-                .block-item {
-                    margin-right: 10px;
-                    clear: none;
-                    .pull-left;
-                }
-
-                &.cols-2 {
-                    .block-item {
-                        margin-right: 20px;
-                        .calc-width(50, 10);
-
-                        &:last-child { margin-right: 0; }
-                    }
-                }
-            }
-
-            /* Block title ***/
+            /* Title ***/
             .block-title {
                 color: @textColor;
                 font-size: 14px;
                 text-transform: uppercase;
+                text-align: left;
                 padding-bottom: 5px;
                 margin-bottom: 10px;
                 border-bottom: 1px solid rgba(0,0,0,.1);
+                width: 100%;
                 .float;
 
-                span {
+                span { 
                     margin: 0;
-                    .pull-right;
+                    .pull-right; 
                 }
 
-                &.has-arrow {
+                strong { font-weight: 600; }
+
+                &.has-arrow { 
                     cursor: pointer;
                     font-size: 16px;
                     line-height: 1em;
@@ -4162,171 +4115,74 @@
                     }
                 }
 
-                /* Block contents ***/
+                /* Content ***/
                 .next-view,
                 .no-view {
+                    text-align: left;
                     color: @textColor;
                     line-height: 50px;
-                    padding: 5px 15px;
+                    padding: 0 10px;
+                    .size(50px, 100%);
                 }
 
+                .select-item,
+                select { height: 50px; }
+
                 .next-view {
-                    .clickable;
+                    .clickable();
+                    
                     &.has-arrow { padding-right: 40px; }
                 }
 
-                .no-view {
-                    .faux-clickable;
+                .no-view { 
+                    .faux-clickable(); 
                     .box-shadow(none);
                 }
 
-                /* Block item - Credit card **/
+                /* Block Item - Payment Method ***/
                 &.item-payment {
                     .next-view,
-                    .no-view {
+                    .no-view { 
                         position: relative;
 
-                        .icon-swiped {
+                        .icons {
                             position: absolute;
-                            top: 15px;
-                            right: 20px;
+                            top: 10px;
+                            right: 40px;
                             margin: 0;
                         }
                     }
 
-                    .actions {
-                        .button,
-                        .add-new-button {
-                            margin-right: 10px;
-                            .size(60px, 65px);
-                            .pull-left;
-
-                            &.add-new-button { line-height: 60px; }
-                            &:last-child { margin-right: 0; }
-                        }
-                    }
-
-                    &.has-buttons {
-                        .next-view,
-                        .no-view {
-                            .calc-width(100, 150);
-
-                            .card-logo,
-                            span { margin-right: 10px; }
-
-                            .icon-swiped { right: 0; }
-                        }
-                    }
-
-                    &.has-button {
-                        .next-view,
-                        .no-view {
-                            .calc-width(100, 75);
-
-                            .icon-swiped { right: 10px; }
+                    .next-view {
+                        &:after {
+                            content: "";
+                            position: absolute;
+                            top: 23px;
+                            right: 14px;
+                            border-left: 4px solid transparent;
+                            border-right: 4px solid transparent;
+                            border-top: 4px solid @textColor;
+                            .square(0px);
                         }
                     }
                 }
 
-                /* Block item - room **/
+                /* Block Item - Room ***/
                 &.item-room {
                     .room-number,
-                    .room-status {
-                        margin-right: 20px;
+                    .room-status { 
+                        margin-right: 20px; 
                     }
 
-                    
-
-                    &.has-buttons {
-                        .next-view,
-                        .no-view { .calc-width(100, 150); }
-                    }
-
-                    &.has-button {
-                        .next-view,
-                        .no-view { .calc-width(100, 75); }
-                    }
-                }
-
-                /* Block item - Wake up / Newspaper **/
-                &.item-wake-up {
-                    margin-right: 20px;
-                    #pixel-to-percent > .width(240, 1070);
-
-                    .next-view {
-                        font-size: 24px;
-                        font-weight: 300;
-                    }
-
-                    .no-view {
-                        font-weight: 300;
-                        font-style: italic;
-                        color: @grey3;
-                    }
-                }
-
-                &.item-newspaper {
-                    margin-right: 0;
-                    #pixel-to-percent > .width(780, 1070);
-
-                    select {
-                        height: 60px;
-                        line-height: 60px;
-                        padding: 0 15px;
-                    }
-                }
-
-                /* Loyalty ***/
-                &.item-loyalty {
-                    margin-right: 0;
-                    width: 100%;
-
-                    .select-item {
-                        margin-right: 10px;
-                        height: 60px;
-                        padding: 0 15px;
-                        .calc-width(100, 85);
-
-                        .selected {
-                            line-height: 50px;
-                            padding: 5px 0;
-
-                            span {
-                                &.value.code { margin-right: 20px; }
-                                &.value.number { margin-left: 10px; }
-                            }
-                        }
-                    }
-
-                    .actions {
-                        .add-new-button {
-                            line-height: 60px;
-                            .size(60px, 65px);
-                        }
-                    }
-                }
-
-                /* Block item - Additional details **/
-                &.item-market,
-                &.item-origin,
-                &.item-type,
-                &.item-source {
-                    .calc-width(50, 10);
-
-                    select {
-                        height: 50px;
+                    .room-number {
+                        font-size: 30px;
                         line-height: 50px;
-                        padding: 0 15px;
+                        width: 100px;
+                        .pull-left;
                     }
                 }
 
-                &.item-market,
-                &.item-origin {  margin-right: 0; }
-
-                &.item-type,
-                &.item-source { margin-right: 20px; }
-
-                /* Block details - ADR **/
+                /* Block Item - ADR ***/
                 &.item-rate {
                     .next-view,
                     .no-view {
@@ -4334,10 +4190,9 @@
 
                         .number {
                             font-size: 30px;
-                            line-height: 50px;
                             vertical-align: middle;
                             font-weight: 300;
-                            margin-right: 10px;
+                            margin-right: 10px; 
                             width: 100px;
                             .pull-left;
                         }
@@ -4362,114 +4217,37 @@
                                     color: @grey3;
                                     text-transform: uppercase;
                                 }
-                            }
-                        }
-                    }
-
-                    .actions {
-                        .button {
-                            .count {
-                                position: absolute;
-                                top: -6px;
-                                right: -6px;
-                                font-size: 12px;
-                                line-height: 24px;
-                                background-color: @softRedStart;
-                                #border-radius > .rounded(24px);
-                                .square(24px);
-                            }
+                            }                 
                         }
                     }
                 }
 
-                /* Block details - notes **/
-                &.item-notes {
-                    margin-bottom: 0;
-
-                    .form {
-                        .float;
-
-                        textarea {
-                            height: 100px;
-                            #pixel-to-percent > .width(780, 1070);
-                            .pull-left;
-                        }
-
-                        .actions {
-                            #pixel-to-percent > .width(250, 1070);
-                            .pull-right;
-
-                            .select {
-                                width: 100%;
-                                margin-bottom: 10px;
-                            }
-
-                            .button {
-                                line-height: 50px;
-                                width: 100%;
-                            }
-                        }
+                /* Block item - Wake up ***/
+                &.item-wake-up { 
+                    .next-view { 
+                        font-size: 24px; 
+                        font-weight: 300; 
                     }
 
-                    .notes {
-                        margin-top: 20px;
-                        clear: both;
-                        .show;
+                    .no-view { 
+                        font-weight: 300; 
+                        font-style: italic; 
+                        color: @grey3;
+                        .clickable();
+                    }
+                } 
 
-                        li {
-                            position: relative;
-                            font-size: 14px;
-                            min-height: 40px;
-                            padding: 0 0 20px 60px;
-                            margin-bottom: 20px;
-                            border-bottom: 1px solid rgba(0,0,0,.1);
+                /* Block item - Loyalty ***/
+                &.item-loyalty { 
+                    .selected {
+                        width: 100%;
 
-                            .guest-image {
-                                position: absolute;
-                                top: 0;
-                                left: 0;
-                                .square(40px);
-
-                                .vip {
-                                    bottom: -10px;
-                                    left: 0;
-                                }
-                            }
-
-                            .note-title {
-                                font-size: 16px;
-                                text-transform: uppercase;
-
-                                h4 {
-                                    display: inline-block;
-                                    margin-right: 20px;
-                                    color: @logoPrimary;
-                                    font-size: 16px;
-                                    font-weight: 600;
-                                }
-
-                                time {
-                                    display: inline-block;
-                                    color: @grey3;
-                                    margin-right: 20px;
-                                }
-
-                                .icon-trash {
-                                    display: inline-block;
-                                    cursor: pointer;
-                                    .pull-right;
-                                }
-                            }
-
-                            &:last-child {
-                                margin-bottom: 0;
-                                border-bottom: 0;
-                            }
-                        }
+                        .value.code { margin-right: 20px; }
+                        .value.number { margin-left: 10px; }
                     }
                 }
 
-                /* Elements with buttons ***/
+                /* Rows with buttons ***/
                 &.has-buttons,
                 &.has-button {
                     .next-view,
@@ -4478,21 +4256,128 @@
 
                     .actions {
                         .pull-right;
+
+                        .add-new-button {
+                            padding: 0;
+                            line-height: 48px;
+                            .size(50px, 60px); 
+                        }
+
+                        .button {
+                            margin-right: 10px;
+                            overflow: visible;
+                            .size(50px, 60px);
+                            .pull-left;
+
+                            &.with-icon {
+                                padding-top: 25px;
+                                line-height: 25px;
+
+                                .icons { top: 10px; }
+                            }
+
+                            &:last-child { margin: 0; }
+                        }
+
+                        .count {
+                            position: absolute;
+                            top: -6px;
+                            right: -6px;
+                            font-size: 12px;
+                            line-height: 24px;
+                            background-color: @softRedStart;
+                            #border-radius > .rounded(24px);
+                            .square(24px);
+                        }
                     }
                 }
 
                 &.has-buttons {
                     .next-view,
                     .no-view,
-                    .select-item { .calc-width(100, 150); }
+                    .select-item { .calc-width(100, 140); }
+
+                    .actions { width: 130px; }
+
+                    /* CC display adjustment ***/
+                    &.item-payment {
+                        .card-logo { margin-right: 20px; }
+                        .icons { right: 30px; }
+                    }
                 }
 
                 &.has-button {
                     .next-view,
                     .no-view,
-                    .select-item { .calc-width(100, 75); }
+                    .select-item { .calc-width(100, 70); }
+
+                    .actions { width: 60px; }
                 }
             }
+
+            /* Grouped card elements ***/
+            .block-wrapper {
+                .float;
+
+                .block-item {
+                    margin-right: 20px;
+                    clear: none;
+                    .pull-left;
+
+                    .next-view,
+                    .no-view,
+                    select { width: 100%; }
+
+                    /* Actions / Notes / Group **/
+                    &.item-actions,
+                    &.item-notes { 
+                        .calc-width(20, 15); 
+
+                        .staycard-button {
+                            font-size: 30px;
+                            font-weight: 300;
+                            text-align: right;
+
+                            &.icon-actions { color: @red; }
+                            &.icon-notes { color: @blue; }
+                            
+                            &.icon-no-actions,
+                            &.icon-no-notes { color: @grey3; }
+                        }
+
+                    }
+                    
+                    &.item-group { 
+                        margin-right: 0;
+                        .calc-width(60, 15); 
+
+                        .no-group {
+                            background: rgba(0,0,0,.1);
+                            #border-radius > .rounded();
+                            .size(50px, 100%);
+                            .show;
+                        }
+                    }
+
+                    /* Wake up / Newspaper ***/
+                    &.item-wake-up { .calc-width(25, 10); }
+                    &.item-newspaper {
+                        margin-right: 0; 
+                        .calc-width(75, 10);
+                    }
+
+                    /* Additional details **/
+                    &.item-market, 
+                    &.item-origin,
+                    &.item-type,
+                    &.item-source,
+                    &.item-segment { .calc-width(50, 10); }
+
+                    &.item-market, 
+                    &.item-origin,
+                    &.item-segment {  margin-right: 0; }
+                }
+            } 
 
             &.check-in {
                 .room-number {
