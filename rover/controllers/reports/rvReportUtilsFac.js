@@ -341,6 +341,11 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['timeFilterOptions'] = factory.createTimeSlots();
                 };
 
+                // check for paid date range filter and keep a ref to that item
+                if ( filter.value === 'PAID_DATE_RANGE' ) {
+                    reportItem['hasPaidDateRange'] = filter;
+                };
+
                 // check for CICO filter and keep a ref to that item
                 // create the CICO filter options
                 if ( filter.value === 'CICO' ) {
@@ -783,6 +788,9 @@ sntRover.factory('RVReportUtilsFac', [
                     /**/
                     reportItem['fromDepositDate']  = _getDates.businessDate;
                     reportItem['untilDepositDate'] = _getDates.businessDate;
+                    /**/
+                    reportItem['fromPaidDate']  = _getDates.businessDate;
+                    reportItem['untilPaidDate'] = _getDates.businessDate;
                     break;
 
                 // date range must be yesterday - relative to current business date
