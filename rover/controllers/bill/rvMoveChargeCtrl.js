@@ -16,7 +16,7 @@ sntRover.controller('RVMoveChargeCtrl',
 		var refreshSearchList = function() { 			
 			$timeout(function() {
 				$scope.refreshScroller('search_results');
-			}, 2000);
+			}, 3000);
 		};
 
 
@@ -40,6 +40,7 @@ sntRover.controller('RVMoveChargeCtrl',
 		$scope.queryEntered = function() {
 			if (($scope.textQuery === "" || $scope.textQuery.length < 3) && ($scope.numberQuery === "" || $scope.numberQuery.length < 3 )) {
 				$scope.searchResults = [];
+				refreshSearchList();
 			} else {
 				fetchFilterdData();
 			}
