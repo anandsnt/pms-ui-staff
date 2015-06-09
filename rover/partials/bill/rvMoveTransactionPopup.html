@@ -70,12 +70,12 @@
 					<div class="data guest"  ng-show="item.type === 'RESERVATION'">
 						<h2 ng-bind-html="escapeNull(item.displaytext)|highlight:textQuery:false"></h2>
 					</div>
-					<div class="group-info" ng-show="item.type === 'ACCOUNT'">
+					<div class="group-info" ng-show="item.type === 'ACCOUNT' || item.type === 'GROUP'">
 						<strong ng-bind-html="escapeNull(item.account_number)|highlight:numberQuery:false"></strong>
-						<span class="type" ng-show="item.type === 'ACCOUNT'">Group</span>
+						<span class="type" ng-show="item.type === 'ACCOUNT'">Account</span>
 						<span class="type" ng-show="item.type === 'GROUP'">Group</span>
 					</div>
-					<div class="data" ng-show="item.type === 'ACCOUNT'">
+					<div class="data" ng-show="item.type === 'ACCOUNT' || item.type === 'GROUP'">
 						<h2 ng-bind-html="escapeNull(item.account_name)|highlight:textQuery:false"></h2>
 					</div>
 				</li>
