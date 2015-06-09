@@ -752,6 +752,8 @@
                     }
                 }
 
+                .highlight { color: @logoPrimary; }
+
                 a,
                 .faux-anchor {
                     color: @textColor;
@@ -763,8 +765,6 @@
                     .box-shadow();
                     .show;
                     .float;
-
-                    .highlight { color: @logoPrimary; }
 
                     .guest-image { margin-right: 20px; }
 
@@ -1516,7 +1516,6 @@
 
                 /* Group accounts ***/
                 &.group-account {
-                    color: @textColor;
                     line-height: 1em;
                     padding: 10px 20px;
                     margin-bottom: 10px;
@@ -1528,7 +1527,8 @@
                     .show;
                     .float;
 
-                    .group-info {
+                    .group-info,
+                    .room {
                         width: 120px;
                         margin-right: 20px;
                         .pull-left;
@@ -1544,6 +1544,14 @@
                         }
                     }
 
+                    .room {
+                        strong { 
+                            font-size: 30px;
+                            font-weight: 700;
+                            line-height: 45px;
+                        }
+                    }
+
                     .data {
                         .calc-width(100, 140);
                         .pull-left;
@@ -1552,6 +1560,10 @@
                             font-size: 21px;
                             line-height: 1.1em;
                             font-weight: 700;
+                        }
+
+                        &.guest {
+                            h2 { line-height: 45px; }
                         }
                     }
 
