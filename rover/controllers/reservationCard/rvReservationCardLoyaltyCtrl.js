@@ -121,15 +121,19 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
         $scope.$on('detect-hlps-ffp-active-status',function(evt,data){
            if (data.userMemberships.use_hlp){
                $scope.loyaltyProgramsActive(true);
+               $scope.$parent.reservationData.use_hlp = true;
            } else {
                $scope.loyaltyProgramsActive(false);
+               $scope.$parent.reservationData.use_hlp = false;
            }
            
            
            if (data.userMemberships.use_ffp){
                $scope.ffpProgramsActive(true);
+               $scope.$parent.reservationData.use_ffp = true;
            } else {
                $scope.ffpProgramsActive(false);
+               $scope.$parent.reservationData.use_ffp = false;
            }
            
             
@@ -137,9 +141,11 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
         
         $scope.loyaltyProgramsActive = function(b){
           $scope.hotelLoyaltyProgramEnabled = b;
+          $scope.$parent.reservationData.use_hlp = b;
         };
         $scope.ffpProgramsActive = function(b){
           $scope.hotelFrequentFlyerProgramEnabled = b;
+          $scope.$parent.reservationData.use_ffp = b;
         };
 
     }

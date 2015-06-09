@@ -58,15 +58,15 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         $scope.addonsData.existingAddons = [];
 
         //to set data for reverse checkout process
-        $scope.initreverseCheckoutDetails = function(){
-            $scope.reverseCheckoutDetails =   {
-                data:{
-                        is_reverse_checkout_failed:false,
-                        errormessage:""
-                     }                                            
+        $scope.initreverseCheckoutDetails = function() {
+            $scope.reverseCheckoutDetails = {
+                data: {
+                    is_reverse_checkout_failed: false,
+                    errormessage: ""
+                }
             };
-        }   
-        $scope.initreverseCheckoutDetails();             
+        }
+        $scope.initreverseCheckoutDetails();
 
         $scope.initReservationData = function() {
             $scope.hideSidebar = false;
@@ -2257,6 +2257,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 $scope.validateOccupant(room, occupantType);
                 $scope.checkOccupancyLimit(null, true, idx);
             }
+            $scope.$broadcast('SIDE_BAR_OCCUPANCY_UPDATE');
         };
     }
 
