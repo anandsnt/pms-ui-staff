@@ -111,7 +111,8 @@ sntRover.controller('RVReportsMainCtrl', [
 			item_17: false,
 			item_18: false,
 			item_19: false,
-			item_20: false
+			item_20: false,
+			item_21: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -711,6 +712,15 @@ sntRover.controller('RVReportsMainCtrl', [
 				/**/
 				$scope.appliedFilter['depositFromDate'] = angular.copy( chosenReport.fromDepositDate );
 				$scope.appliedFilter['depositToDate']   = angular.copy( chosenReport.untilDepositDate );
+			};
+
+			// include paid dates
+			if (!!chosenReport.hasPaidDateRange) {
+				params['paid_from_date'] = $filter('date')(chosenReport.fromPaidDate, 'yyyy/MM/dd');
+				params['paid_to_date']   = $filter('date')(chosenReport.untilPaidDate, 'yyyy/MM/dd');
+				/**/
+				$scope.appliedFilter['paidFromDate'] = angular.copy( chosenReport.fromPaidDate );
+				$scope.appliedFilter['paidToDate']   = angular.copy( chosenReport.untilPaidDate );
 			};
 
 			// include create dates
