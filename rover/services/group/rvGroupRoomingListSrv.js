@@ -132,7 +132,19 @@ sntRover.service('rvGroupRoomingListSrv',
 			);
 
 			return deferred.promise;
-		};	
+		};
+
+		this.emailInvoice = function(data) {
+			var deferred = $q.defer(),				
+				url = '/ui/show?format=json&json_input=groups/group_room_types_and_rates.json';
+			rvBaseWebSrvV2.postJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;
+		}	
 
 			
 	}]);

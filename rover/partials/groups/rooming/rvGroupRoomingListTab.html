@@ -94,11 +94,11 @@
             <button type="button" class="button grey" ng-hide="true">{{'GROUP_AUTO_ASSIGN_ROOMS'|translate}}</button> <!-- Replace class "grey" with "brand-colors" when rooms selected in the rooming list -->
         </li>
         <li> <!-- Don't show if there are no rooms in the rooming list -->
-            <button type="button" class="button with-icon only-icon blue" ng-show="true" ng-click="sendRoomingList()">
+            <button type="button" class="button with-icon only-icon blue" ng-hide="reservations.length ==0" ng-click="sendRoomingList()">
                 <span class="icons icon-email"></span>
                 {{'GROUP_EMAIL'|translate}}
             </button>
-            <button type="button" class="button blue with-icon only-icon" ng-click="printRoomingList()">
+            <button type="button" class="button blue with-icon only-icon" ng-hide="reservations.length ==0" ng-click="printRoomingList()">
                 <span class="icons icon-print"></span>
                 {{'GROUP_PRINT'|translate}}
             </button>
@@ -156,7 +156,7 @@
         ng-iscroll="rooming_list" ng-iscroll-delay="100"> <!-- Add class "with-pagination" if pagination is used -->
 
         <ul id="rooming-grid-list" class="search-results wrapper">
-            <li class="reservation rooming-list" ng-repeat="reservation in reservations">
+            <li class="reservation rooming-list" ng-repeat="reservation in reservations" ngrepeatend>
 
                 <div class="check">
                     <label class="checkbox inline" for="guest-id" ng-class="{'disabled' : !!groupConfigData.summary.is_cancelled}"> 
