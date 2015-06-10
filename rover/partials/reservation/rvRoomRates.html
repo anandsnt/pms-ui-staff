@@ -169,14 +169,15 @@
                                             <th translate>RESV_RATE</th>
                                             <th translate>ADD_ONS</th>
                                             <!-- <th>{{'TAX'|translate}}({{roomAvailability[room.id].total[rate].percent}})</th> -->
-                                            <th>{{'TAXES'|translate}}</th>
+                                            <th>{{'TAXES_INCL'|translate}}</th>
+                                            <th>{{'TAXES_EXCL'|translate}}</th>
                                             <th translate>RESV_TOTAL</th>
                                             <th class="edit"></th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <td colspan="4" class="total-label" translate>RESV_TOTAL_ROOM</td>
+                                            <td colspan="5" class="total-label" translate>RESV_TOTAL_ROOM</td>
                                             <td class="total-value" ng-if="!displayData.allRates[rate].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[room.id].total[rate].total | number:2}}</td>
                                             <td ng-if="displayData.allRates[rate].is_suppress_rate_on">SR</td>
                                             <td class="edit" ng-hide="true">
@@ -195,10 +196,13 @@
                                             <td ng-if="!displayData.allRates[rate].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].rate | number: 2}}</td>
                                             <td ng-if="displayData.allRates[rate].is_suppress_rate_on">SR</td>
                                             <!-- Add on -->
-                                            <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].addonAmount | number: 2}}</td>
+                                            <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on && !roomAvailability[room.id].ratedetails[day.str][rate].inclusiveAddonsExist">{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].addonAmount | number: 2}}</td>
+                                            <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on && !!roomAvailability[room.id].ratedetails[day.str][rate].inclusiveAddonsExist">INCL</td>
                                             <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>
                                             <!-- taxes -->
-                                            <td ng-if="!displayData.allRates[rate].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].tax | number: 2}}</td>
+                                            <td ng-if="!displayData.allRates[rate].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].tax.incl | number: 2}}</td>
+                                            <td ng-if="displayData.allRates[rate].is_suppress_rate_on">SR</td>
+                                            <td ng-if="!displayData.allRates[rate].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].tax.excl | number: 2}}</td>
                                             <td ng-if="displayData.allRates[rate].is_suppress_rate_on">SR</td>
                                             <td ng-if="!displayData.allRates[rate].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].total | number: 2}}</td>
                                             <td ng-if="displayData.allRates[rate].is_suppress_rate_on">SR</td>
@@ -302,14 +306,15 @@
                                     <th translate>RESV_RATE</th>
                                     <th translate>ADD_ONS</th>
                                     <!-- <th>{{'TAX'|translate}}({{roomAvailability[selectedRoom].total[rate.rate.id].percent}})</th> -->
-                                    <th>{{'TAXES'|translate}}</th>
+                                    <th>{{'TAXES_INCL'|translate}}</th>
+                                    <th>{{'TAXES_EXCL'|translate}}</th>
                                     <th translate>RESV_TOTAL</th>
                                     <th class="edit"></th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <td colspan="4" class="total-label" translate>RESV_TOTAL_ROOM</td>
+                                    <td colspan="5" class="total-label" translate>RESV_TOTAL_ROOM</td>
                                     <td class="total-value" ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].total[rate.rate.id].total | number:2}}</td>
                                     <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>
                                     <td class="edit" ng-hide="true">
@@ -328,10 +333,13 @@
                                     <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].rate | number: 2}}</td>
                                     <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>
                                     <!-- Add on -->
-                                    <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].addonAmount | number: 2}}</td>
+                                    <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on && !roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].inclusiveAddonsExist">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].addonAmount | number: 2}}</td>
+                                    <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on && !!roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].inclusiveAddonsExist">INCL</td>
                                     <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>
                                     <!-- taxes -->
-                                    <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].tax | number: 2}}</td>
+                                     <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].tax.incl | number: 2}}</td>
+                                    <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>
+                                    <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].tax.excl | number: 2}}</td>
                                     <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>
                                     <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].total | number: 2}}</td>
                                     <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>
