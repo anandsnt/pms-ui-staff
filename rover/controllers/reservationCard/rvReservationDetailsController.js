@@ -1,5 +1,5 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter',
-	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter) {
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rvPermissionSrv' ,'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter',
+	function($scope, $rootScope, rvPermissionSrv ,RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter) {
 
 		// pre setups for back button
 		var backTitle,
@@ -801,9 +801,19 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
     });
 
     // CICO-17067 PMS: Rover - Stay Card: Add manual authorization
+    $scope.authData = {
+		'authAmount' : '',
+		'manualCCAuthPermission': true
+	};
+
+	// Flag for CC auth permission
+    $scope.hasManualCCAuthPermission = function() {
+    	return true;
+        //return rvPermissionSrv.getPermissionValue ('OVERRIDE_CC_AUTHORIZATION');    
+    };
 
     $scope.showAuthPopUp = function(){
-    	console.log("showAuthPopUp");
+    	$scope.manualCCAuthPermission = $scope.hasManualCCAuthPermission();
     	ngDialog.open({
 			template: '/assets/partials/reservation/rvManualAuthorization.html',
 			className: '',
@@ -811,7 +821,71 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		});
     };
 
+    
+
+    $scope.authorize = function(){
+
+    	var authInProgress = function(){
+
+    		$scope.isInProgressScreen = true;
+	    	$scope.isSuccessScreen = false;
+	    	$scope.isFailureScreen = false;
+	    	$scope.isCCAuthPermission = true;
+    	};
+
+    	var authSuccess = function(){
+    		// With Authorization flow .: Auth success
+    		$scope.isInProgressScreen = false;
+	    	$scope.isSuccessScreen = true;
+	    	$scope.isFailureScreen = false;
+	    	$scope.cc_auth_amount = data.cc_auth_amount;
+	    	$scope.cc_auth_code = data.cc_auth_code;
+	    	$scope.reservationData.reservation_card.payment_details.auth_color_code = 'green';
+    	};
+
+    	var authFailure = function(){
+    		// With Authorization flow .: Auth declined
+	    	$scope.isInProgressScreen = false;
+	    	$scope.isSuccessScreen = false;
+	    	$scope.isFailureScreen = true;
+	    	$scope.cc_auth_amount = data.cc_auth_amount;
+	    	$scope.reservationData.reservation_card.payment_details.auth_color_code = 'red';
+
+    	};
 
 
-	}
-]);
+    	ngDialog.close(); // Closing amount popup..
+
+    	authInProgress();
+    	ngDialog.open({
+			template: '/assets/partials/bill/ccAuthorization.html',
+			className: '',
+			closeByDocument: false,
+			scope: $scope
+		});
+
+
+    	var onAuthorizationSuccess = function(response){
+    		console.log(response);
+    		$scope.$emit('hideLoader');
+    		// Trigger auth process . .
+    		authSuccess();
+    	};
+
+    	var onAuthorizationFaliure = function(errorMessage){
+    		authFailure();
+    		$scope.$emit('hideLoader');
+    		$scope.errorMessage = errorMessage;
+    	};
+
+    	var data = {
+			"payment_method_id": $scope.reservationData.reservation_card.payment_details.id,
+			"amount": $scope.authData.authAmount
+		};
+
+    	$scope.invokeApi(RVReservationCardSrv.manualAuthorization, data , onAuthorizationSuccess, onAuthorizationFaliure);
+    };
+
+
+
+}]);
