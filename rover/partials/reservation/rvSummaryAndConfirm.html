@@ -168,7 +168,7 @@
                     </form>
                 </div>
                 <ul class="total-stay-cost">
-                    <li ng-repeat="row in reservationData.taxDetails">
+                    <li ng-repeat="row in reservationData.taxInformation">
                         <span class="label" translate> {{row.description}} </span>
                         <span class="total" ng-if="reservationData.isRoomRateSuppressed">SR</span>
                         <span class="total" ng-if="!reservationData.isRoomRateSuppressed">{{currencySymbol}}{{ row.amount | number : 2}}</span>
