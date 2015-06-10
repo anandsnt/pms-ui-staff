@@ -93,10 +93,9 @@ sntRover.controller('RVbillCardController',
 
 
 	//set up flags for checkbox actions
-    //TO DO: set permission
+
 	$scope.hasMoveToOtherBillPermission = function() {
-        // return rvPermissionSrv.getPermissionValue ('hasMoveToOtherBillPermission');  
-        return true;  
+        return rvPermissionSrv.getPermissionValue ('MOVE_CHARGES_RESERVATION_ACCOUNT');  
     };
 	
 
