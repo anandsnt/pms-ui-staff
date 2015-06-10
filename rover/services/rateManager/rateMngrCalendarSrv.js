@@ -43,13 +43,22 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
     * To fetch All Calendar data
     */
 	this.fetchCalendarData = function(params){
-		//var url = {"from_date":"2014-05-20","to_date":"2014-05-27","rate_type_ids":[],"rate_ids":[51,46],"name_card_ids":[]} 
-		var deferred = $q.defer();
+		var url = "/api/daily_rates", fetchingRooms = false; 
+                if (params){
+                    if (params.roomrate == 'ROOMS'){
+                        url = url+'/room_restrictions';
+                        fetchingRooms = true;
+                    } else {
+                        fetchingRooms = false;
+                    }
+                } else {
+                    fetchingRooms = false;
+                }
+                var deferred = $q.defer();
 		var rejectDeferred = function(data){
 			deferred.reject(data);
 		};
 		var getDailyRates = function(d){
-			var url = "/api/daily_rates";
 			var dateString = url + '?from_date=' + params.from_date 
 								+ '&to_date=' + params.to_date
 								+ '&per_page=' + params.per_page;
