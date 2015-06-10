@@ -19,14 +19,14 @@
 		<div class="holder search" ng-hide="targetSelected">
 			<div class="entry margin">
 				<label for="move-to-number">Room / Account No.</label>
-				<button type="button" class="clear-query"  ng-click="numberQuery = ''" ng-class="{'visible':numberQuery.length>0}"> 
+				<button type="button" class="clear-query"  ng-click="numberQuery = '';unsetSearhList();" ng-class="{'visible':numberQuery.length>0}"> 
 					<span class="icons icon-clear-search">Clear query</span>
 				</button>
 				<input id="move-to-number" placeholder="Search by No." ng-model="numberQuery" class="search" type="text" autocomplete="off" ng-change="queryEntered()" />
 			</div>
 			<div class="entry">
 				<label for="move-to-name">Guest / Account Name</label>
-				<button type="button" class="clear-query"  ng-click="textQuery = ''" ng-class="{'visible':textQuery.length>0}"> 
+				<button type="button" class="clear-query"  ng-click="textQuery = '';unsetSearhList();" ng-class="{'visible':textQuery.length>0}"> 
 					<span class="icons icon-clear-search">Clear query</span>
 				</button>
 				<input id="move-to-name" placeholder="Search by Name" ng-model="textQuery" class="search" type="text" autocomplete="off" ng-change="queryEntered()" />

@@ -20,6 +20,10 @@ sntRover.controller('RVMoveChargeCtrl',
 			}, 3000);
 		};
 
+		$scope.unsetSearhList = function(){
+			$scope.searchResults = [];
+		};
+
 		/**
 		 * function to fetch reservation and account lists
 		 * 
@@ -45,9 +49,9 @@ sntRover.controller('RVMoveChargeCtrl',
 		 * service in change event of query box
 		 */
 		$scope.queryEntered = function() {
-			
+
 			if (($scope.textQuery === "" || $scope.textQuery.length < 3) && ($scope.numberQuery === "" || $scope.numberQuery.length < 3 )) {
-				$scope.searchResults = [];
+				$scope.unsetSearhList();
 				refreshSearchList();
 			} else {
 				fetchFilterdData();
