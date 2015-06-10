@@ -40,12 +40,19 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	/**
     * To fetch All Calendar data
     */
-        this.roomRateToggle = '';
 	this.fetchCalendarData = function(params){
-                var url = "/api/daily_rates"; 
-                    if (that.roomRateToggle === 'ROOMS'){
+		//var url = {"from_date":"2014-05-20","to_date":"2014-05-27","rate_type_ids":[],"rate_ids":[51,46],"name_card_ids":[]} 
+                var url = "/api/daily_rates", fetchingRooms = false; 
+                if (params){
+                    if (params.roomrate == 'ROOMS'){
                         url = url+'/room_restrictions';
+                        fetchingRooms = true;
+                    } else {
+                        fetchingRooms = false;
                     }
+                } else {
+                    fetchingRooms = false;
+                }
                 
 		var deferred = $q.defer();
 		var rejectDeferred = function(data){
@@ -70,40 +77,30 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			}
 
 			var urlString = dateString + rateString + rateTypeString + nameCardString;
+			//var url =  '/sample_json/rate_manager/daily_rates.json';	
 			BaseWebSrvV2.getJSON(urlString).then(function(data) {
 				that.dailyRates = data; 
+                                that.fetchingRooms = fetchingRooms;
 
 				var calendarData = that.calculateRateViewCalData();
-                                if (that.roomRateToggle === 'ROOMS'){
-                                    calendarData.room_type_restrictions = data.result.room_types;  
-                                } else {
-                                    calendarData.room_type_restrictions = data.room_type_restrictions;  
-                                }
-
-                                calendarData.total_room_types = that.getTotalRoomTypeCount(data);
+                                calendarData.room_type_restrictions = data.room_type_restrictions;
+                                
+                                calendarData.total_room_types = data.room_type_restrictions[0].room_types.length;
                                 
                                 calendarData.room_types_all = [];
-                                
-                                if (that.roomRateToggle === 'ROOMS'){
-                                    for (var i in data.result.room_types[0].room_types){
-                                        calendarData.room_types_all.push({
-                                            room_type_id:data.result.room_types[0].room_types[i].room_type.id,
-                                            name:data.result.room_types[0].room_types[i].room_type.name
-                                        });
-                                    }
-                                } else {
-                                    for (var i in data.room_type_restrictions[0].room_types){
-                                        calendarData.room_types_all.push({
-                                            room_type_id:data.room_type_restrictions[0].room_types[i].room_type.id,
-                                            name:data.room_type_restrictions[0].room_types[i].room_type.name
-                                        });
-                                    }
+                                for (var i in data.room_type_restrictions[0].room_types){
+                                    
+                                calendarData.room_types_all.push({
+                                    room_type_id:data.room_type_restrictions[0].room_types[i].room_type.id,
+                                    name:data.room_type_restrictions[0].room_types[i].room_type.name
+                                });
+                                    
                                 }
                                 
 				//If only one rate exists in the search results, 
 				//then room type calendar for that rate should be displayed.
 				//Fetch the room type details for that rate.
-				if(calendarData.data.length === 1){
+				if(calendarData.data.length == 1){
 					var roomDetailsParams = {};
 					roomDetailsParams.from_date = params.from_date;
 					roomDetailsParams.to_date = params.to_date;
@@ -126,13 +123,6 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		return deferred.promise;
 
 	};
-        this.getTotalRoomTypeCount = function(data){
-            if (that.roomRateToggle === 'ROOMS'){
-                return data.result.room_types[0].room_types.length;
-            } else {
-                return data.room_type_restrictions[0].room_types.length;
-            }
-        };
 
 	this.fetchRoomTypeCalenarData = function(params, deferred){
 
@@ -171,7 +161,6 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 				var calendarData = that.calculateRoomTypeViewCalData();
 				calendarData.type = "ROOM_TYPES_LIST";
                                 calendarData.room_type_restrictions = data.room_type_restrictions;
-                                
 				//Pass the rate details to the controller
 				calendarData.selectedRateDetails = selectedRate;
 				deferred.resolve(calendarData);
@@ -200,6 +189,12 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	};
 
 	this.checkIfAnyHourlyRatePresent = function(rateData){
+                var fetchingRooms = this.fetchingRooms;
+                if (fetchingRooms){
+                    console.log('checkIfAnyHourlyRatePresent');
+                    console.log(rateData);
+                    return false;
+                }
 		var hasHourly = false;
 		angular.forEach(rateData, function(rate){
 			if(rate.is_hourly == true){
@@ -294,22 +289,18 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 
 		return calendarData;
 	};
-        this.getDailyRateData = function(dailyRatesData, rate){
-            for (var i in dailyRatesData){
-                    if (dailyRatesData[i].id === rate.id)
-                    {
-                            return dailyRatesData[i];
-                    }
-            }
-            return null;
-        };
+
 
 	this.calculateRateViewCalData = function(){
+                var fetchingRooms = that.fetchingRooms;
 		var calendarData = {};
 	
+		this.hasAnyHourlyRate = this.checkIfAnyHourlyRatePresent(that.dailyRates.results[0].rates);
 		// Format restriction Types as required by UI, and make it a dict for easy lookup 
-                if (that.roomRateToggle === 'ROOMS'){
-                    this.hasAnyHourlyRate = false;
+                var fetchingRooms = false;
+                if (fetchingRooms){
+                    console.log('fetching rooms to calculate view cal data');
+                    this.hasAnyHourlyRate = this.checkIfAnyHourlyRatePresent(that.dailyRates.result.room_types[0].room_types);
                 } else {
                     this.hasAnyHourlyRate = this.checkIfAnyHourlyRatePresent(that.dailyRates.results[0].rates);
                 }
@@ -339,31 +330,41 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		
 		// In UI, tables are represented as rows of columns. 
 		//Input data is in opposite structure, restructuring here 
-		var datesList = [],
-                    allRatesData = {},
-                    dailyRatesData = [];
+		var datesList = [];
+		var allRatesData = {};
+		var dailyRatesData = [];
 
 		angular.forEach(that.dailyRates.results, function(item){
-                    datesList.push(item.date);
+		   	datesList.push(item.date);
 
-                    //UI requires al-rates separated from daily rates.
-                    allRatesData[item.date] = item.all_rate_restrictions;
+		   	//UI requires al-rates separated from daily rates.
+		   	allRatesData[item.date] = item.all_rate_restrictions;
 
-                    //Adjusting Daily Rate Data - we require rows of colums - not the other way.
-                    for(var ri in item.rates){
-                        var rate = item.rates[ri];
-                        //Check if this rate is already pushed.
-                        var rateData = that.getDailyRateData(dailyRatesData, rate);
-                        if (rateData === null){
-                                rateData ={
-                                        id : rate.id,
-                                        name : rate.name,
-                                        isHourly : rate.is_hourly
-                                };
-                                dailyRatesData.push(rateData);
-                        }
-                        rateData[item.date] = rate.restrictions;
-                    }
+		   	//Adjusting Daily Rate Data - we require rows of colums - not the other way.
+		   	for(var ri in item.rates){
+		   		var rate = item.rates[ri];
+		   		//Check if this rate is already pushed.
+		   		var rateData = null;
+		   		for (var i in dailyRatesData){
+	   				if (dailyRatesData[i].id == rate.id)
+	   				{
+	   		  			rateData = dailyRatesData[i];
+	   		  			//break;
+	   				}
+		   		}
+
+		   	   	if (rateData === null){
+		   			rateData ={
+		   				id : rate.id,
+		   				name : rate.name,
+		   				isHourly : rate.is_hourly
+		   			};
+		   			dailyRatesData.push(rateData);
+		   		}
+		   		rateData[item.date] = rate.restrictions;
+
+		   	}
+
 		});
 
 		calendarData.dates = datesList;
