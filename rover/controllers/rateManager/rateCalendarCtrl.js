@@ -234,7 +234,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
             }
           }
         };
-
+        $scope.reloadingRooms = 0;
         var loadTable = function () {
             $scope.currentExpandedRow = -1;//reset the expanded row
             $scope.loading = true;
@@ -322,7 +322,14 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                         $scope.ratesDisplayed.push(data.selectedRateDetails);
                     }
                     $scope.calendarData = data;
-                    $scope.$emit('hideLoader');
+                    if (!$scope.reloadingRooms){
+                        $scope.$emit('hideLoader');
+                    } else if ($scope.reloadRoomsCount >= 2){
+                        $scope.$emit('hideLoader');
+                        $scope.reloadingRooms = false;
+                    }else {
+                        ++$scope.reloadRoomsCount;
+                    }
                 };
 
                 //Set the current business date value to the service. Done for calculating the history dates
@@ -341,6 +348,14 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
             }, 200);
         };
 
+        $scope.reloadRoomsCount = 0;
+        $rootScope.$on('loadingRooms',function(){
+            $scope.reloadingRooms = true;
+            if ($scope.reloadRoomsCount >= 1){
+                $scope.reloadRoomsCount  = 0;
+            }
+            ++$scope.reloadRoomsCount;
+        });
         $scope.$on('showRatesBtnClicked',function(){
             $scope.ratesRoomsToggle = 'RATES';
             $scope.activeToggleButton = 'Rates';
@@ -714,6 +729,9 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                                         if (room_type === room_type_obj.name){
                                             if (room_type_obj.with_override){
                                                 if (room_type_obj.with_override.length > 0){
+                                                    if (occ === '_any_'){
+                                                        return true;
+                                                    }
                                                     for (var n in room_type_obj.with_override){
                                                         if (room_type_obj.with_override[n].toLowerCase() === occ.toLowerCase()){
                                                                 return 'true';
