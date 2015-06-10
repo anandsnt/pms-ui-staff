@@ -195,7 +195,9 @@
                                             <td ng-if="!displayData.allRates[rate].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].rate | number: 2}}</td>
                                             <td ng-if="displayData.allRates[rate].is_suppress_rate_on">SR</td>
                                             <!-- Add on -->
-                                            <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].addonAmount | number: 2}}</td>
+                                            inclusiveAddonsExist
+                                            <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on && !roomAvailability[room.id].ratedetails[day.str][rate].inclusiveAddonsExist">{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].addonAmount | number: 2}}</td>
+                                            <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on && !!roomAvailability[room.id].ratedetails[day.str][rate].inclusiveAddonsExist">INCL</td>
                                             <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>
                                             <!-- taxes -->
                                             <td ng-if="!displayData.allRates[rate].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].tax | number: 2}}</td>
@@ -328,7 +330,8 @@
                                     <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].rate | number: 2}}</td>
                                     <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>
                                     <!-- Add on -->
-                                    <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].addonAmount | number: 2}}</td>
+                                    <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on && !roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].inclusiveAddonsExist">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].addonAmount | number: 2}}</td>
+                                    <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on && !!roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].inclusiveAddonsExist">INCL</td>
                                     <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>
                                     <!-- taxes -->
                                     <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].tax | number: 2}}</td>

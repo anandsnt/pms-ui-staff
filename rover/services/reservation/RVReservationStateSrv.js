@@ -243,6 +243,7 @@ sntRover.service('RVReservationStateService', [
 							rate_id: rate_id,
 							rate: rateOnRoom,
 							rateAdjusted: rateOnRoomAddonAdjusted,
+							inclusiveAddonsExist: !!inclusiveAddonsAmount && !addonRate, //Can we change the 0.00 amount to INCL where add on is inclusive
 							taxes: taxes,
 							addonAmount: addonRate,
 							associatedAddons: addonsApplied,
@@ -285,9 +286,12 @@ sntRover.service('RVReservationStateService', [
 							}
 
 							//total of all rates for ADR computation
-							currentRoom.total[rate_id].totalRate += parseFloat(rooms[currentRoomId].ratedetails[for_date][rate_id].rate);
+							currentRoom.total[rate_id].totalRate = parseFloat(currentRoom.total[rate_id].totalRate) + 
+								parseFloat(currentRoomRateDetails.rate) +
+								parseFloat(currentRoomRateDetails.addonAmount);
+
 							//total of all rates including taxes.
-							currentRoom.total[rate_id].total += rooms[currentRoomId].ratedetails[for_date][rate_id].total;
+							currentRoom.total[rate_id].total += currentRoomRateDetails.total;
 							//compute the tax header for the table
 							// -- CICO-17282 Tax header wont come right as we are having taxes for addons too
 							// if (taxes && taxes.length > 0) {
@@ -296,7 +300,7 @@ sntRover.service('RVReservationStateService', [
 							var stayLength = numNights;
 							// Handle single days for calculating rates
 							if (stayLength == 0) stayLength = 1;
-							rooms[currentRoomId].total[rate_id].average = parseFloat(currentRoom.total[rate_id].totalRate / stayLength).toFixed(2);
+							rooms[currentRoomId].total[rate_id].average = parseFloat(currentRoom.total[rate_id].totalRate / stayLength);
 						}
 					})
 				})

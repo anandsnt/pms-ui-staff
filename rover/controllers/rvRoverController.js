@@ -705,8 +705,9 @@ sntRover.controller('roverController',
     /**
      * Handles the bussiness date change completion
      */
-    $rootScope.showBussinessDateChangedPopup = function() {
+    $rootScope.showBussinessDateChangedPopup = function(message) {
       $rootScope.isBussinessDateChanging = false;
+      $scope.bussinessDateMessage = message;
       // Hide loading message
       $scope.$emit('hideLoader');
       if (!$rootScope.isBussinessDateChanged) {
