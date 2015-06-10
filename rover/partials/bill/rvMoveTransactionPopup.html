@@ -51,7 +51,7 @@
 			</div>
 		</div>
 		<!-- Search results -->
-		<div class="scrollable" ng-iscroll='search_results' ng-hide="targetSelected">
+		<div class="scrollable" ng-iscroll='search_results'ng-iscroll-delay="100" ng-hide="targetSelected">
 			<ul class="search-results wrapper"> 
 				<li class="no-content" ng-show="(textQuery.length<3 && numberQuery.length<3) || searchResults.length === 0">
 					<div class="info">
