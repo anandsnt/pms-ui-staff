@@ -25,6 +25,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 				"departed"             : false,
 				"dayuse"               : false,
 				"queued"               : false,
+				"lateCheckout"         : false,
 				"floorFilterSingle"    : "",
 				"floorFilterStart"     : "",
 				"floorFilterEnd"       : "",
@@ -104,6 +105,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 				if ( filter.vacant )   { reservation_status.push('VACANT'); };
 				if ( filter.occupied ) { reservation_status.push('OCCUPIED'); };
 				if ( filter.queued )   { reservation_status.push('QUEUED'); };
+				if ( filter.lateCheckout )   { reservation_status.push('LATE_CHECKOUT'); };
 
 				// process front office status
 				if ( filter.stayover )     { front_office_status.push('STAY_OVER'); };

@@ -61,7 +61,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				|| (fromState.name === 'rover.housekeeping.roomStatus' && toState.name !== 'rover.housekeeping.roomDetails')) {
 				
 				RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
-				$scope.currentFilters = angular.copy( RVHkRoomStatusSrv.currentFilters );
 
 				localStorage.removeItem( 'roomListScrollTopPos' );
 			};
@@ -111,6 +110,12 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.roomTypes          = roomTypes;
 		$scope.floors             = floors;
+
+		$scope.singleRoomType     = { id: undefined };
+		var selRoom = _.find($scope.roomTypes, function(type) { return type.isSelected });
+		if ( selRoom ) {
+			$scope.singleRoomType.id = selRoom.id;
+		};
 
 		$scope.workTypes          = [];
 		$scope.employees          = [];
@@ -291,6 +296,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.clearFilters = function() {
 			_.each($scope.roomTypes, function(type) { type.isSelected = false; });
+			$scope.currentFilters.singleRoomType = undefined;
 			RVHkRoomStatusSrv.roomTypes = angular.copy( $scope.roomTypes );
 
 			$scope.currentFilters = RVHkRoomStatusSrv.initFilters();
@@ -427,6 +433,16 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			    };
 
 		    $scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, _data, _onAssignSuccess, _onAssignFailure);
+		};
+
+		$scope.singleRoomTypeFilter = function() {
+			_.each($scope.roomTypes, function(item) {
+				if ( item.id == $scope.singleRoomType.id ) {
+					item.isSelected = true;
+				} else {
+					item.isSelected = false;
+				};
+			});
 		};
 
 
