@@ -17,11 +17,23 @@ sntRover.controller('RVMoveChargeCtrl',
 		var refreshSearchList = function() { 			
 			$timeout(function() {
 				$scope.refreshScroller('search_results');
-			}, 3000);
+			}, 4000);
 		};
 
-		$scope.unsetSearhList = function(){
+		var unsetSearhList = function(){
 			$scope.searchResults = [];
+			refreshSearchList();
+		};
+
+		$scope.clearTextQuery = function(){
+			$scope.textQuery = '';
+			unsetSearhList();
+		};
+
+
+		$scope.clearNumberQuery = function(){
+			$scope.numberQuery = '';
+			unsetSearhList();
 		};
 
 		/**
@@ -39,6 +51,7 @@ sntRover.controller('RVMoveChargeCtrl',
     				(result.type === 'RESERVATION') ? result.displaytext = result.last_name+', '+result.first_name : '';
     			});
     			refreshSearchList();
+    			
 			};
 
 			$scope.invokeApi(RVMoveChargeSrv.fetchSearchedItems, {"text_search":$scope.textQuery,"number_search":$scope.numberQuery}, fetchSucces);
@@ -51,7 +64,7 @@ sntRover.controller('RVMoveChargeCtrl',
 		$scope.queryEntered = function() {
 
 			if (($scope.textQuery === "" || $scope.textQuery.length < 3) && ($scope.numberQuery === "" || $scope.numberQuery.length < 3 )) {
-				$scope.unsetSearhList();
+				unsetSearhList();
 				refreshSearchList();
 			} else {
 				fetchFilterdData();
