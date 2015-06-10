@@ -28,6 +28,12 @@ admin.controller('ADDateRangeModalCtrl', ['$scope',
         changeMonth: true,
         minDate: tzIndependentDate($rootScope.businessDate),
         yearRange: "0:+10",
+        beforeShowDay: function (date) {
+           if (tzIndependentDate($rootScope.businessDate) > tzIndependentDate($scope.fromDate)) {
+               return [false, ''];
+           }
+           return [true, ''];
+        },
         onSelect: function() {
 
           if (tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
