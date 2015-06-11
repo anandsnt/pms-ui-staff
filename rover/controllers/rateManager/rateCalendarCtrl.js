@@ -19,6 +19,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
         $scope.lastClickedApply = '';
         $scope.firstrun = true;
         $scope.initDefault = true;
+        $scope.activeToggleButton = 'Rates';
         
         $scope.activityObj = {};
         $scope.activityObj.changedField = '';
@@ -362,6 +363,9 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
         });
         
         $scope.toggleAllRates = function(){
+            $scope.calendarData.data = [];
+            
+            $scope.calendarData.restriction_types = [];
             if ($scope.ratesRoomsToggle !== 'RATES'){
                 $scope.ratesRoomsToggle = 'RATES';
                 $scope.activeToggleButton = 'Rates';
