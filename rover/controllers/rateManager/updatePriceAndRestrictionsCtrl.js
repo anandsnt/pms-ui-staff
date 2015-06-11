@@ -671,10 +671,10 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
                 ngDialog.close();
                 
                 $scope.$emit('showLoader');
+                $rootScope.$broadcast('loadingRooms', true);
                 setTimeout(function(){
-                        $scope.$emit('showLoader');
                         $scope.refreshCalendar();
-                }, 100)
+                }, 250);
             };
 
             $scope.invokeApi(UpdatePriceAndRestrictionsSrv.savePriceAndRestrictions, data, saveRestrictionSuccess);
@@ -729,7 +729,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
                             }
                         }
                     }
-
                 }
                 if (room_types_with_override.length > 0) {
                     occupancyOverrides = 'true';

@@ -31,7 +31,7 @@
                     <div ng-click="goToRoomTypeCalendarView(rate)">
                         <span bindonce bo-html="rate.name" title="{{rate.name}}"></span>
                         <span> 
-                            <img src="/assets/arrow-down.png" />
+                            <img src="/assets/arrow-down.png" ng-hide="hideRoomsDownArrow"/>
                         </span>
                     </div>
                 </td>
