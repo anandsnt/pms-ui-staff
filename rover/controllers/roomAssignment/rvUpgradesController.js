@@ -1,5 +1,5 @@
 
-sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgradesSrv', '$sce','$filter', 'ngDialog', function($scope, $state, $stateParams, RVUpgradesSrv, $sce, $filter, ngDialog){
+sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgradesSrv', '$sce','$filter', 'ngDialog', '$timeout', function($scope, $state, $stateParams, RVUpgradesSrv, $sce, $filter, ngDialog, $timeout){
 	
 	BaseCtrl.call(this, $scope);
 	var title = $filter('translate')('ROOM_UPGRADES_TITLE');
@@ -116,9 +116,21 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 					break;
 			}
 		}
-		$scope.$parent.errorMessage = error;
+		else {
+			$scope.$parent.errorMessage = error;
+		}
 	};	
 
+	/**
+	 * [borrowFromOtherRoomType description]
+	 * @return {[type]} [description]
+	 */
+	$scope.borrowFromOtherRoomType = function (){
+		$scope.closeDialog ();
+		$timeout(function(){
+			$scope.selectUpgrade ();
+		}, 300);
+	};
 	/*** THIS IS JUST REPEATATION OF rvUpgradesCtrl.js's upgrade. I dont 
 	*** know why upgrade is in two file and two controller, WTH.
 	***/
@@ -150,7 +162,6 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 			room_type_level	: parseInt(room_type_level),
 		});
 		
-		console.log (selectedListItem);
 		//yes. ALL set. Go!
 		var options = {
             params 			: params,

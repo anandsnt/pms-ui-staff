@@ -1,5 +1,5 @@
-sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '$stateParams', 'RVUpgradesSrv', 'RVReservationCardSrv', '$sce', '$filter', 'ngDialog',
-	function($scope, $rootScope, $state, $stateParams, RVUpgradesSrv, RVReservationCardSrv, $sce, $filter, ngDialog) {
+sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '$stateParams', 'RVUpgradesSrv', 'RVReservationCardSrv', '$sce', '$filter', 'ngDialog', '$timeout',
+	function($scope, $rootScope, $state, $stateParams, RVUpgradesSrv, RVReservationCardSrv, $sce, $filter, ngDialog, $timeout) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -181,6 +181,21 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 			}
 		};
 
+		/**
+		 * [borrowFromOtherRoomType description]
+		 * @return {[type]} [description]
+		 */
+		$scope.borrowFromOtherRoomType = function (){
+			$scope.closeDialog ();
+			$timeout(function(){
+				$scope.selectUpgrade ();
+			}, 300);
+		};
+
+
+		/*** THIS IS JUST REPEATATION OF rvUpgradesController.js's upgrade. I dont 
+		*** know why upgrade is in two file and two controller, WTH.
+		***/
 		/**
 		 * When the user select a particular room updgrade, this funciton will fire
 		 * @return undefined
