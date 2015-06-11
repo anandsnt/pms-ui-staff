@@ -4331,8 +4331,6 @@
                     /* Actions / Notes / Group **/
                     &.item-actions,
                     &.item-notes { 
-                        .calc-width(20, 15); 
-
                         .staycard-button {
                             font-size: 30px;
                             font-weight: 300;
@@ -4344,13 +4342,17 @@
                             
                             &.icon-no-actions,
                             &.icon-no-notes { color: @grey3; }
-                        }
 
+                            span { color: @textColor; }
+                        }
                     }
+
+                    &.item-actions { .calc-width(25, 15); }
+                    &.item-notes { .calc-width(20, 15); }
                     
                     &.item-group { 
                         margin-right: 0;
-                        .calc-width(60, 15); 
+                        .calc-width(55, 15); 
 
                         .no-group {
                             background: rgba(0,0,0,.1);

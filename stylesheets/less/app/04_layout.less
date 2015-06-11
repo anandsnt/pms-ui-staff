@@ -2232,7 +2232,7 @@ body { overflow: hidden; }
 
 	                .data {
 	                    margin-left: 10px;
-	                    .calc-width(100, 185);
+	                    .calc-width(50, 90);
 	                    .pull-left;
 
 	                    h1,
@@ -2251,8 +2251,27 @@ body { overflow: hidden; }
 	                    }
 	                }
 
+	                .dates {
+						margin-left: 10px;
+	                    .calc-width(50, 90);
+	                    .pull-left;
+
+						.date { 
+							font-size: 14px;
+							line-height: 20px; 
+
+							&:first-child { margin-bottom: 5px; }
+						}
+
+						.guest-status {
+							margin-right: 5px;
+							.square(20px);
+						}
+					}
+
 	                .button { 
 	                	margin-top: 5px; 
+	                	padding: 0 10px;
 	                	.show;
 	                }                
 	            }
@@ -2358,6 +2377,13 @@ body { overflow: hidden; }
 	            		&.date { position: relative; }
 
 	            		&.time { margin-left: 20px; }
+	            	}
+
+	            	.notice {
+	            		clear: both;
+	            		.show;
+
+	            		span { .show; }
 	            	}
 	            }
 
