@@ -883,6 +883,15 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		};
 
     	$scope.invokeApi(RVReservationCardSrv.manualAuthorization, data , onAuthorizationSuccess, onAuthorizationFaliure);
+
+    	$scope.continueWithoutCC = function(){
+    		console.log("continueWithoutCC");
+		};
+
+		$scope.continueAfterSuccessAuth = function(){
+			console.log("continueAfterSuccessAuth");
+		};
+
     };
 
 
