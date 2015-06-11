@@ -808,8 +808,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 
 	// Flag for CC auth permission
     $scope.hasManualCCAuthPermission = function() {
-    	return true;
-        //return rvPermissionSrv.getPermissionValue ('OVERRIDE_CC_AUTHORIZATION');    
+        return rvPermissionSrv.getPermissionValue('MANUAL_CC_AUTH');    
     };
 
     $scope.showAuthPopUp = function(){
