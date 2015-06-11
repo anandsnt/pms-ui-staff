@@ -335,6 +335,8 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 	* Calls the cordova service to write the keys
 	*/
 	this.writeKey = function(keyWriteData, index){
+		var keyData = [];
+		keyData.push(keyWriteData);
 		$scope.$emit('showLoader');
 		that.setStatusAndMessage($filter('translate')('KEY_WRITING_PROGRESS_STATUS'), 'pending');
 
@@ -382,7 +384,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 				$scope.$apply(); 
 
 			},
-			arguments: keyWriteData
+			arguments: keyData
 		};
 		if(sntapp.cardSwipeDebug){
 			sntapp.cardReader.writeKeyDataDebug(options);
