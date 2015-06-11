@@ -807,93 +807,94 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 	};
 
 	// Flag for CC auth permission
-    $scope.hasManualCCAuthPermission = function() {
+    var hasManualCCAuthPermission = function() {
         return rvPermissionSrv.getPermissionValue('MANUAL_CC_AUTH');    
     };
 
-    $scope.showAuthPopUp = function(){
-    	$scope.manualCCAuthPermission = $scope.hasManualCCAuthPermission();
+    $scope.showAuthAmountPopUp = function(){
+    	$scope.authData.manualCCAuthPermission = hasManualCCAuthPermission();
+    	$scope.authData.authAmount = "";
     	ngDialog.open({
-			template: '/assets/partials/reservation/rvManualAuthorization.html',
+			template: '/assets/partials/reservation/rvManualAuthorizationAddAmount.html',
 			className: '',
 			scope: $scope
 		});
     };
 
-    
+    var authInProgress = function(){
+    	// Manual auth in progress status
+		$scope.isInProgressScreen = true;
+    	$scope.isSuccessScreen = false;
+    	$scope.isFailureScreen = false;
+    	$scope.isCCAuthPermission = true;
+	};
 
-    $scope.authorize = function(){
+    var authSuccess = function(data){
+		// With Authorization flow .: Auth success
+		$scope.isInProgressScreen = false;
+    	$scope.isSuccessScreen = true;
+    	$scope.isFailureScreen = false;
+    	$scope.cc_auth_amount = $scope.authData.authAmount;
+    	$scope.cc_auth_code = data.auth_code;
+    	$scope.reservationData.reservation_card.payment_details.auth_color_code = 'green';
+	};
 
-    	var authInProgress = function(){
+	var authFailure = function(){
+		// With Authorization flow .: Auth declined
+    	$scope.isInProgressScreen = false;
+    	$scope.isSuccessScreen = false;
+    	$scope.isFailureScreen = true;
+    	$scope.cc_auth_amount = $scope.authData.authAmount;
+    	$scope.reservationData.reservation_card.payment_details.auth_color_code = 'red';
+	};
 
-    		$scope.isInProgressScreen = true;
-	    	$scope.isSuccessScreen = false;
-	    	$scope.isFailureScreen = false;
-	    	$scope.isCCAuthPermission = true;
-    	};
-
-    	var authSuccess = function(){
-    		// With Authorization flow .: Auth success
-    		$scope.isInProgressScreen = false;
-	    	$scope.isSuccessScreen = true;
-	    	$scope.isFailureScreen = false;
-	    	$scope.cc_auth_amount = data.cc_auth_amount;
-	    	$scope.cc_auth_code = data.cc_auth_code;
-	    	$scope.reservationData.reservation_card.payment_details.auth_color_code = 'green';
-    	};
-
-    	var authFailure = function(){
-    		// With Authorization flow .: Auth declined
-	    	$scope.isInProgressScreen = false;
-	    	$scope.isSuccessScreen = false;
-	    	$scope.isFailureScreen = true;
-	    	$scope.cc_auth_amount = data.cc_auth_amount;
-	    	$scope.reservationData.reservation_card.payment_details.auth_color_code = 'red';
-
-    	};
-
-
-    	ngDialog.close(); // Closing amount popup..
-
-    	authInProgress();
-    	ngDialog.open({
-			template: '/assets/partials/bill/ccAuthorization.html',
-			className: '',
-			closeByDocument: false,
-			scope: $scope
-		});
-
+	// Manual Auth API call ..
+    var manualAuthAPICall = function(){
 
     	var onAuthorizationSuccess = function(response){
     		console.log(response);
     		$scope.$emit('hideLoader');
-    		// Trigger auth process . .
-    		authSuccess();
+    		authSuccess(response);
     	};
 
     	var onAuthorizationFaliure = function(errorMessage){
-    		authFailure();
     		$scope.$emit('hideLoader');
     		$scope.errorMessage = errorMessage;
+    		authFailure();
     	};
 
     	var data = {
 			"payment_method_id": $scope.reservationData.reservation_card.payment_details.id,
 			"amount": $scope.authData.authAmount
 		};
-
     	$scope.invokeApi(RVReservationCardSrv.manualAuthorization, data , onAuthorizationSuccess, onAuthorizationFaliure);
-
-    	$scope.continueWithoutCC = function(){
-    		console.log("continueWithoutCC");
-		};
-
-		$scope.continueAfterSuccessAuth = function(){
-			console.log("continueAfterSuccessAuth");
-		};
-
     };
 
+    // To handle authorize button click on 'auth amount popup' ..
+    $scope.authorize = function(){
+    	ngDialog.close(); // Closing the 'auth amount popup' ..
 
+    	authInProgress();
+
+    	setTimeout(function(){
+	    	
+	    	ngDialog.open({
+				template: '/assets/partials/reservation/rvManualAuthorizationProcess.html',
+				className: '',
+				closeByDocument: false,
+				scope: $scope
+			});
+
+			manualAuthAPICall();
+
+    	}, 100);
+    };
+
+    // Handle TRY AGAIN on auth failure popup.
+    $scope.tryAgain = function(){
+		authInProgress();
+		manualAuthAPICall();
+	};
+	// CICO-17067 PMS: Rover - Stay Card: Add manual authorization ends here...
 
 }]);

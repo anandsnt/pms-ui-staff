@@ -40,7 +40,7 @@
 		<!-- CICO-17067 : If there are buttons to show, otput this as well: -->
 	    <div class="actions">
 
-	        <button ng-click="showAuthPopUp()" ng-show="reservationData.reservation_card.payment_method_used === 'CC'" type="button" class="button green with-icon">
+	        <button ng-click="showAuthAmountPopUp()" ng-show="reservationData.reservation_card.payment_method_used === 'CC'" type="button" class="button green with-icon">
 	            <span class="icons icon-cc"></span>
 	            {{ 'CC_AUTH' | translate }}
 	        </button>
