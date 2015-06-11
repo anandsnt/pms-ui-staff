@@ -62,7 +62,7 @@ sntRover.service('RVReservationStateService', [
 		 * @param  {Integer} numChildren 
 		 * @return {Object}             
 		 */
-		self.calculateTax = function(taxableAmount, taxes, roomIndex, forAddons, numAdults, numChildren) {
+		self.calculateTax = function(taxableAmount, taxes, roomIndex, numAdults, numChildren, forAddons) {
 			var taxInclusiveTotal = 0.0, //Per Night Inclusive Charges
 				taxExclusiveTotal = 0.0; //Per Night Exclusive Charges
 			// --The above two are required only for the room and rates section where we do not display the STAY taxes
@@ -105,7 +105,7 @@ sntRover.service('RVReservationStateService', [
 						taxCalculated = parseFloat(multiplicity * parseFloat(taxValue)); //In case the tax is not a percentage amount, its plain multiplication with the tax's amount_type 
 					}
 
-					taxesLookUp[taxData.id] = parseFloat(taxCalculated);
+					taxesLookUp[taxData.id] = parseFloat(taxCalculated); 	
 
 					if (taxData.post_type == 'NIGHT') { // NIGHT tax computations
 						if (isInclusive) taxInclusiveTotal = parseFloat(taxInclusiveTotal) + parseFloat(taxCalculated);
@@ -242,7 +242,7 @@ sntRover.service('RVReservationStateService', [
 								var currentAddonAmount = parseFloat(self.getAddonAmount(addon.amount_type.value, parseFloat(addon.amount), adultsOnTheDay, childrenOnTheDay)),
 									taxOnCurrentAddon = 0.0;
 								if (addon.post_type.value == "STAY" || for_date == arrival) {
-									taxOnCurrentAddon = self.calculateTax(currentAddonAmount, addon.taxes, activeRoom, adultsOnTheDay, childrenOnTheDay);
+									taxOnCurrentAddon = self.calculateTax(currentAddonAmount, addon.taxes, activeRoom, adultsOnTheDay, childrenOnTheDay, true);
 									taxForAddons.incl = parseFloat(taxForAddons.incl) + parseFloat(taxOnCurrentAddon.INCL.NIGHT);
 									taxForAddons.excl = parseFloat(taxForAddons.excl) + parseFloat(taxOnCurrentAddon.EXCL.NIGHT);
 									updateStayTaxes(taxOnCurrentAddon.taxDescription);
@@ -287,7 +287,7 @@ sntRover.service('RVReservationStateService', [
 
 						//calculate tax for the current day
 						if (taxes && taxes.length > 0) { // Need to calculate taxes IFF there are taxes associated with the rate
-							var taxApplied = self.calculateTax(currentRoomRateDetails.rateAdjusted, taxes, activeRoom, adultsOnTheDay, childrenOnTheDay);
+							var taxApplied = self.calculateTax(currentRoomRateDetails.rateAdjusted, taxes, activeRoom, adultsOnTheDay, childrenOnTheDay, false);
 							currentRoomRateDetails.roomTax = {
 								incl: parseFloat(taxApplied.INCL.NIGHT),
 								excl: parseFloat(taxApplied.EXCL.NIGHT)
