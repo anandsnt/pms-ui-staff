@@ -6,7 +6,7 @@
         <td width="10" class="delete">
             <a class="icons icon-delete large-icon" ng-click="deleteDepositeRule(rule)" translate>DELETE_RULE</a>
         </td>
-    </tr>
+    </tr>  
 
     <tr ng-show="showDepositForm">
         <td class="offset"> &nbsp; </td>
@@ -54,8 +54,9 @@
 	                        <fieldset class="holder left float col1-3">                            
 	                                <div class="entry" scrollable>
 	                                    <ul id="roles-menu" class="float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
-	                                        <li role="tab" ng-repeat ="schedule in singleRule.schedules">
+	                                        <li role="tab" ng-repeat ="schedule in singleRule.schedules" ng-click="selectSchedule($index)">
 	                                            SCHEDULE #{{$index}}
+	                                            <a class="icons icon-delete ng-scope" ng-click="deleteDepositeRule(rule)" translate="">Delete this rule</a>
 	                                        </li>
 	                                    </ul>
 	                                </div>		                            
@@ -64,7 +65,7 @@
 	                        <fieldset class="holder right float">
 
 	                            <div class="entry">
-	                                <ad-textbox styleclass="full-width" value="singleRule.amount" name="amount" id="amount" label="Amount[{{ currencySymbol }}]" placeholder="{{'ENTER_THE_AMT'|translate}}" required="yes"></ad-textbox>
+	                                <ad-textbox styleclass="full-width" value="selectedSchedule.amount" name="amount" id="amount" label="Amount[{{ currencySymbol }}]" placeholder="{{'ENTER_THE_AMT'|translate}}" required="yes"></ad-textbox>
 	                            </div>
 
 	                            <div class="entry">
@@ -74,7 +75,7 @@
 	                                        <strong>*</strong>
 	                                    </label>
 	                                    <div class="select">
-	                                        <select name="amount-type-id" id="amount-type-id" ng-model="singleRule.amount_type">
+	                                        <select name="amount-type-id" id="amount-type-id" ng-model="selectedSchedule.amount_type">
 	                                            <option value="" data-text="Not set" class="placeholder">Choose amount type</option>
 	                                            <option value="amount">{{'AMOUNT'|translate}}[{{ currencySymbol }}]</option>
 	                                            <option value="percent" translate>PERCENTAGE</option>
@@ -84,24 +85,24 @@
 	                                </div>
 	                            </div>
 
-	                            <div class="entry col1-2" ng-show="singleRule.amount_type === 'percent'">
+	                            <div class="entry col1-2" ng-show="selectedSchedule.amount_type === 'percent'">
 	                                <label for="amount-type-id">
 	                                    {{'PER_NIGHT_OR_STAY'|translate}}
 	                                    <strong>*</strong>
 	                                </label>
 	                                <div class="select">
-	                                    <select name="amount-type-id" id="amount-type-id" ng-model="singleRule.post_type_id" ng-options="type.id as type.description for type in postTypes">
+	                                    <select name="amount-type-id" id="amount-type-id" ng-model="selectedSchedule.post_type_id" ng-options="type.id as type.description for type in postTypes">
 	                                        <option value="" data-text="Not set" class="placeholder" translate>CHOOSE_NIGHT_OR_STAY</option>
 	                                    </select>
 	                                </div>
 	                            </div>
 
 	                            <div class="entry">
-	                                <ad-textbox styleclass="full-width" value="singleRule.advance_days" name="name" id="name" label="Days In advance" placeholder="{{'ENTER_THE_NUM_OF_DAYS'|translate}}"></ad-textbox>
+	                                <ad-textbox styleclass="full-width" value="selectedSchedule.advance_days" name="name" id="name" label="Days In advance" placeholder="{{'ENTER_THE_NUM_OF_DAYS'|translate}}"></ad-textbox>
 	                            </div>
 
 	                            <div class="entry col1-2">
-	                                <ad-textbox styleclass="full-width" value="singleRule.advance_days" name="name" id="name" label="Max Number of Nights" placeholder="Max Number of Nights "></ad-textbox>
+	                                <ad-textbox styleclass="full-width" value="selectedSchedule.max_no_nights" name="name" id="name" label="Max Number of Nights" placeholder="Max Number of Nights "></ad-textbox>
 	                            </div>
 
 	                            <div class="entry col1-2 radio-check">
@@ -109,9 +110,9 @@
 	                                    <strong></strong>
 	                                </label>
 	                                <label class="checkbox">
-	                                    <span class="icon-form icon-checkbox" ng-class="{ checked : singleRule.allow_deposit_edit }"></span>
+	                                    <span class="icon-form icon-checkbox" ng-class="{ checked : selectedSchedule.auto_charge_on_due_date }"></span>
 	                                    <label>AUTO CHARGE ON DUE DATE</label>
-	                                    <input type="checkbox" ng-model="singleRule.allow_deposit_edit">
+	                                    <input type="checkbox" ng-model="selectedSchedule.auto_charge_on_due_date">
 	                                </label>
 	                            </div>
 	                        </fieldset>
