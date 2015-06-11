@@ -613,25 +613,24 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         };
 
         var processTaxInfo = function(taxApplied, roomIndex, date) {
-            var taxAmount = 0.0,
-                taxAll = 0.0,
-                currentTaxes = $scope.reservationData.taxDetails;
+            var currentTaxes = $scope.reservationData.taxDetails;
 
             _.each(taxApplied.taxDescription, function(description) {
                 var taxId = description.id;
+                var taxType = description.isInclusive ? "incl" : "excl";
                 description.rate = $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id;
                 if (description.postType == "NIGHT") {
-                    if (typeof currentTaxes[taxId] == "undefined") currentTaxes[taxId] = description;
-                    else currentTaxes[taxId].amount = parseFloat(currentTaxes[taxId].amount) + parseFloat(description.amount); // add the amount here
+                    if (typeof currentTaxes[taxType][taxId] == "undefined") currentTaxes[taxType][taxId] = description;
+                    else currentTaxes[taxType][taxId].amount = parseFloat(currentTaxes[taxType][taxId].amount) + parseFloat(description.amount); // add the amount here
                 } else { //[[[[[[ PER_STAY NEEDS TO BE DONE ONLY ONCE FOR A RATE ID & TAX ID COMBO]]]]]]
-                    if (typeof currentTaxes[taxId] == "undefined") {
+                    if (typeof currentTaxes[taxType][taxId] == "undefined") {
                         // As stated earler per_stay taxes can be taken in only for the first rateId
-                        if (_.isEmpty(currentTaxes)) {
-                            currentTaxes[taxId] = description;
+                        if (_.isEmpty(currentTaxes[taxType])) {
+                            currentTaxes[taxType][taxId] = description;
                         } else {
                             //get the rateId of the first value in the $scope.reservationData.taxDetail
-                            var rateIdExisting = currentTaxes[Object.keys(currentTaxes)[0]].rate;
-                            if (rateIdExisting == description.rate) currentTaxes[taxId] = description;
+                            var rateIdExisting = currentTaxes[taxType][Object.keys(currentTaxes[taxType])[0]].rate;
+                            if (rateIdExisting == description.rate) currentTaxes[taxType][taxId] = description;
                         }
                     } else { //STAY
                         /*
@@ -643,11 +642,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                          *   ThereAgain : for now sticking to the largest tax amount of all
                          *   === TODO === Mail product team for a clarification on this!!!
                          */
-                        currentTaxes[taxId].amount = currentTaxes[taxId].amount > description.amount ? currentTaxes[taxId].amount : description.amount;
+                        currentTaxes[taxType][taxId].amount = currentTaxes[taxType][taxId].amount > description.amount ? currentTaxes[taxType][taxId].amount : description.amount;
                     }
                 }
-                taxAmount = parseFloat(taxApplied.exclusiveTotal);
-                taxAll = parseFloat(taxApplied.exclusiveTotal) + parseFloat(taxApplied.inclusiveTotal); // CICO-10161
             });
         }
 
@@ -656,7 +653,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         // CICO-17090
         $scope.computeTotalStayCost = function(reset) {
 
-            $scope.reservationData.taxDetails = {}; // -- RESET existing tax info
+            $scope.reservationData.taxDetails = {
+                incl: {},
+                excl: {}
+            }; // -- RESET existing tax info
             $scope.reservationData.totalStayCost = 0.0;
             $scope.reservationData.totalTaxAmount = 0.0;
             $scope.reservationData.totalTax = 0.0;
@@ -739,10 +739,22 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         }
                     }
                 });
-
-                angular.forEach($scope.reservationData.taxDetails, function(tax) {
-                    if (!tax.isInclusive) roomMetaData.totalTaxes = parseFloat(roomMetaData.totalTaxes) + parseFloat(tax.amount); // add only exclusive taxes here
+                 
+                $scope.reservationData.taxInformation = {};    
+                
+                angular.forEach($scope.reservationData.taxDetails.incl, function(tax) {
+                    $scope.reservationData.taxInformation = angular.copy($scope.reservationData.taxDetails.incl);    
                     roomMetaData.taxesInclusiveExclusive = parseFloat(roomMetaData.taxesInclusiveExclusive) + parseFloat(tax.amount);
+                });
+
+                angular.forEach($scope.reservationData.taxDetails.excl, function(tax, code) {
+                    roomMetaData.totalTaxes = parseFloat(roomMetaData.totalTaxes) + parseFloat(tax.amount); // add only exclusive taxes here
+                    roomMetaData.taxesInclusiveExclusive = parseFloat(roomMetaData.taxesInclusiveExclusive) + parseFloat(tax.amount);
+                    if(typeof $scope.reservationData.taxInformation[code] == 'undefined'){
+                        $scope.reservationData.taxInformation[code] = tax;
+                    }else{
+                        $scope.reservationData.taxInformation[code].amount = parseFloat($scope.reservationData.taxInformation[code].amount) + parseFloat(tax.amount);
+                    }
                 });
 
                 //cumulative total of all stay costs 
