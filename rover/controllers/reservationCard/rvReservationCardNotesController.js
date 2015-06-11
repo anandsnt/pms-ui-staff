@@ -1,42 +1,64 @@
-sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$rootScope',
-    function($scope, $filter, $rootScope) {
+sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$rootScope', 'ngDialog', '$state',
+    function($scope, $filter, $rootScope, ngDialog, $state) {
         $scope.reservationNotes = "";
         /*
          *To save the reservation note and update the ui accordingly
          */
-        var init = function(){
-            
+        var init = function() {
             var hideNotes = true;
-            if($scope.reservationData.reservation_card.notes.reservation_notes.length > 0){
+            if ($scope.reservationData.reservation_card.notes.reservation_notes.length > 0) {
                 hideNotes = false;
             }
 
             $scope.reservationNotesState = {
-                hideDetails: hideNotes 
+                hideDetails: hideNotes
             }
+
+            $scope.setScroller('reservationNotes');
         };
-        
+
+        var refreshScroller = function() {
+            $scope.refreshScroller('reservationNotes');
+        }
+
+        $scope.openNotesPopup = function() {
+            ngDialog.open({
+                template: '/assets/partials/reservationCard/rvReservationCardNotesPopup.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        }
+
+        $scope.navigateToGroup = function(event) {
+            if ($rootScope.isStandAlone && !!$scope.reservationData.reservation_card.group_id) {
+                // Navigate to Groups
+                $state.go('rover.groups.config', {
+                    id: $scope.reservationData.reservation_card.group_id,
+                    activeTab: "SUMMARY"
+                });
+            } else {
+                event.preventDefault();
+            }
+        }
 
         $scope.saveReservationNote = function() {
             if (!$scope.$parent.isNewsPaperPreferenceAvailable()) {
-                if (!$rootScope.isStandAlone){
+                if (!$rootScope.isStandAlone) {
                     $scope.reservationnote = "";
                     $scope.$parent.showFeatureNotAvailableMessage();
                     return;
                 }
-                
+
             }
             var successCallBackReservationNote = function(data) {
-
-                if(!data.is_already_existing){
-                     $scope.reservationnote = "";
+                if (!data.is_already_existing) {
+                    $scope.reservationnote = "";
                     data.topic = "GENERAL"; //$filter('translate')('DEFAULT_NOTE_TOPIC');
                     $scope.$parent.reservationData.reservation_card.notes.reservation_notes.splice(0, 0, data);
                     $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
-                    
-                    setTimeout(function() {
-                        $scope.$parent.myScroll['resultDetails'].refresh();
-                    }, 700);
+                    refreshScroller();
                 }
                 $scope.$parent.$emit('hideLoader');
             };
@@ -48,12 +70,6 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$
             $scope.invokeApi($scope.$parent.reservationCardSrv.saveReservationNote, params, successCallBackReservationNote);
         };
 
-        $scope.$on('scrollToErrorMessage', function() {
-            //scroll to top of the page where error message is shown
-            $scope.$parent.myScroll['resultDetails'].scrollTo(0, 0);
-            $scope.reservationnote = "";
-        });
-
         /*
          *To delete the reservation note and update the ui accordingly
          */
@@ -63,9 +79,7 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$
                 $scope.$parent.reservationData.reservation_card.notes.reservation_notes.splice($scope.deletedNoteIndex, 1);
                 $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
                 $scope.$parent.$emit('hideLoader');
-                setTimeout(function() {
-                    $scope.$parent.myScroll['resultDetails'].refresh();
-                }, 700);
+                refreshScroller();
             };
 
             var note_id = $scope.$parent.reservationData.reservation_card.notes.reservation_notes[index].note_id;
