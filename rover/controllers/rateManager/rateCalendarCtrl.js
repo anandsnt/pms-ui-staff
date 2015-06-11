@@ -247,6 +247,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                 }
 
                 var calenderDataFetchSuccess = function (data) {
+                    
                     //Set the calendar type
                     if (data.type === 'ROOM_TYPES_LIST') {
                         $scope.calendarMode = "ROOM_TYPE_VIEW";
@@ -258,6 +259,8 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                         $scope.calendarMode = "RATE_VIEW";
                     }
 
+
+                    
                     if ($scope.ratesRoomsToggle == 'ROOMS'){
                                     $scope.everyRestriction = $scope.calendarData.room_type_restrictions;
                             var d, rm_type, r_date, rm_type_name;
@@ -318,7 +321,6 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                         $scope.currentSelectedRate = data.selectedRateDetails;
                         $scope.ratesDisplayed.push(data.selectedRateDetails);
                     }
-
                     $scope.calendarData = data;
                     if (!$scope.reloadingRooms){
                         $scope.$emit('hideLoader');
@@ -446,6 +448,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
          * Click handler for up-arrows in rate_view_calendar
          */
         $scope.goToRoomTypeCalendarView = function (rate) {
+            if ($scope.ratesRoomsToggle !== 'ROOMS'){
             $scope.$emit('showLoader');
             $scope.loading = true;
             setTimeout(function () {
@@ -456,7 +459,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                 $scope.calendarMode = "ROOM_TYPE_VIEW";
                 loadTable(rate.id);
             }, 200);
-
+        }
         };
         /**
          * Handle openall/closeall button clicks
