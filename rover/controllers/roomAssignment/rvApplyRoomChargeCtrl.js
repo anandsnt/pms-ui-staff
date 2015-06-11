@@ -1,14 +1,33 @@
-sntRover.controller('rvApplyRoomChargeCtrl',['$scope','$rootScope', '$state', '$stateParams', 'RVRoomAssignmentSrv', 'RVUpgradesSrv', 'ngDialog','RVReservationCardSrv',  
-	function($scope, $rootScope, $state,  $stateParams, RVRoomAssignmentSrv,RVUpgradesSrv, ngDialog, RVReservationCardSrv){
+sntRover.controller('rvApplyRoomChargeCtrl',[
+	'$scope',
+	'$rootScope', 
+	'$state', 
+	'$stateParams', 
+	'RVRoomAssignmentSrv', 
+	'RVUpgradesSrv', 
+	'ngDialog',
+	'RVReservationCardSrv',  
+	'$timeout',
+	function($scope, 
+		$rootScope, 
+		$state,  
+		$stateParams, 
+		RVRoomAssignmentSrv,
+		RVUpgradesSrv, 
+		ngDialog, 
+		RVReservationCardSrv,
+		$timeout) {
 	
 	BaseCtrl.call(this, $scope);
 	$scope.noChargeDisabled = false;
 	$scope.chargeDisabled   = true;
-	$scope.roomCharge       = '';
+	$scope.roomCharge       = '';	
 
 	// CICO-17082, do we need to call the the room assigning API with forcefully assign to true
 	// currently used for group reservation
 	var wanted_to_forcefully_assign = false;
+	var choosedNoCharge = false;
+
 
 	$scope.enableDisableButtons = function(){
 		
@@ -17,7 +36,8 @@ sntRover.controller('rvApplyRoomChargeCtrl',['$scope','$rootScope', '$state', '$
 		
 	};
 	$scope.clickChargeButton = function(){
-		
+		choosedNoCharge = false;
+
 		var data = {
 			"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 			"room_no": $scope.assignedRoom.room_number,
@@ -54,9 +74,25 @@ sntRover.controller('rvApplyRoomChargeCtrl',['$scope','$rootScope', '$state', '$
         });
 	};
 
+	/**
+	 * [selectUpgrade description]
+	 * @return {[type]} [description]
+	 */
+	$scope.selectUpgrade = function() {
+		$scope.closeDialog();
+
+		$timeout(function() {
+			if (choosedNoCharge) {
+				$scope.clickedNoChargeButton ();
+			}
+			else {
+				$scope.clickChargeButton ();
+			}		
+		}, 100);
+	};
+
 	$scope.failureCallbackUpgrade = function(error) {
 		ngDialog.close();
-
 		//since we are expecting some custom http error status in the response
 		//and we are using that to differentiate among errors
 		if(error.hasOwnProperty ('httpStatus')) {
@@ -116,11 +152,12 @@ sntRover.controller('rvApplyRoomChargeCtrl',['$scope','$rootScope', '$state', '$
 
 	};
 	$scope.clickedNoChargeButton = function(){
-			
+		choosedNoCharge = true;
+
 		var data = {
-			"reservation_id": $scope.reservationData.reservation_card.reservation_id,
-			"room_no": $scope.assignedRoom.room_number,
-			forcefully_assign_room: wanted_to_forcefully_assign
+			"reservation_id" 	: $scope.reservationData.reservation_card.reservation_id,
+			"room_no" 			: $scope.assignedRoom.room_number,
+			forcefully_assign_room : wanted_to_forcefully_assign			
 		};
 		$scope.invokeApi(RVUpgradesSrv.selectUpgrade, data, $scope.successCallbackUpgrade, $scope.failureCallbackUpgrade);
 		
