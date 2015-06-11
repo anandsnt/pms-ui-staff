@@ -423,6 +423,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$scope.paymentData.reservation_card.payment_method_used = $scope.dataToSave.paymentType;
 		};
     	$scope.closeDialog();
+
+    	// Update reservation type
+		$rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id);
     };
     /*
     * save non CC
@@ -446,6 +449,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		else{	
 			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data,savePaymentSuccess);
 		};
+
+
+
 	};
 
 	
