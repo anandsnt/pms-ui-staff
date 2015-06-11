@@ -10,6 +10,18 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             }
         };
 
+        //TODO :change
+        var popupRateManagerActions= function() {
+            ngDialog.open({
+                template: '/assets/partials/rates/adRateManagerPresentPopup.html',
+                className: '',
+                closeByDocument: false,
+                scope: $scope
+            });
+        };
+        popupRateManagerActions();
+         //TODO :change
+
         $scope.$on("needToShowDateRange", function(e, id) {
             // webservice call to fetch each date range details
             fetchData(id);

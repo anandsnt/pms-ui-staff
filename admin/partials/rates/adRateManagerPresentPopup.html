@@ -1,0 +1,10 @@
+<div role="dialog" id="modal" class="modal-show model-opened" ng-cloak>
+<form method="post" action="" id="edit-charge-options" name="edit-charge" class="modal-content form edit-charge">
+	<h3 translate>RATE_MANAGER_EXITS</h3>
+    <fieldset id="charge-options" class="actions">
+        <button type="button" class="button red margin-top-bottom" ng-click="overwriteRateManger()" ng-hide="hideRemoveAndEdit" translate>OVERWRITE_RATE_MANAGER</button>
+        <button type="button" class="button blue margin-top-bottom" ng-click="dontOverwriteRateManger()" translate>DONT_OVERWRITE_RATE_MANAGER</button>
+        <button type="button" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL</button> 
+    </fieldset>
+</form>
+</div>
