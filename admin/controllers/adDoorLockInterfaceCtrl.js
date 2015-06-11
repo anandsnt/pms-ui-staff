@@ -4,6 +4,14 @@ admin.controller('ADDoorLockInterfaceCtrl',['$scope', '$rootScope','ADDoorlockIn
 
 	var init = function(){
 		fetchInterfaceDetails();
+		$scope.authenticationKeyTypes = [{
+            "value": "KEY_A",
+            "name": "Key A"
+        },
+        {
+            "value": "KEY_B",
+            "name": "Key B"
+        }];
 
 	};
 
@@ -43,7 +51,17 @@ admin.controller('ADDoorLockInterfaceCtrl',['$scope', '$rootScope','ADDoorlockIn
 
 	};
 
-
+	//check if any selected key card types require authentication
+	$scope.needToShowAuthKeys = function(){
+		var needToShowAuthKeys = false;
+		angular.forEach($scope.data.available_card_types, function(item, index) {
+			if(item.require_authentication && item.is_selected_for_hotel){
+				needToShowAuthKeys = true;
+				return false;
+			}
+        }); 
+        return needToShowAuthKeys;
+	};
 
 	init();
 
