@@ -276,6 +276,10 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	*/
 
 	var existingCardSuccess = function(data){
+		
+		// Update reservation type
+		$rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id);
+
 		$scope.paymentData.reservation_card.payment_method_used = $scope.dataToSave.paymentType;
 		$scope.paymentData.reservation_card.payment_details.card_type_image = $scope.renderData.creditCardType+".png";
 		$scope.paymentData.reservation_card.payment_details.card_number = $scope.renderData.endingWith;
