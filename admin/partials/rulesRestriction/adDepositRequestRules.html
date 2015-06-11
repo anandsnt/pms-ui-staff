@@ -1,10 +1,10 @@
 <table class="grid sub-grid">
     <tr ng-hide="showDepositForm || !showDepositList" ng-repeat="rule in depositRuleslList">
         <td class="offset"> &nbsp; </td>
-        <td ng-click="editSingleRule(rule, 'Deposit Requests')"><a href>{{ rule.name }}</a></td>
+        <td ng-click="editSingleDepositeRule(rule)"><a href>{{ rule.name }}</a></td>
         <td>{{ rule.description }}</td>
         <td width="10" class="delete">
-            <a class="icons icon-delete large-icon" ng-click="deleteDepositeRule(rule, 'Deposit Requests')" translate>DELETE_RULE</a>
+            <a class="icons icon-delete large-icon" ng-click="deleteDepositeRule(rule)" translate>DELETE_RULE</a>
         </td>
     </tr>
 
