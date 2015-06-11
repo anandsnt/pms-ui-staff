@@ -116,7 +116,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.cancelRulesList = data.results;           
                 $scope.$emit('hideLoader');
             };
-            $scope.invokeApi(ADRulesRestrictionSrv.fetchRules, { policy_type: ruleType }, callback);
+            $scope.invokeApi(ADRulesRestrictionSrv.fetchCancellationRules, { policy_type: ruleType }, callback);
         };
         var fetchRuleDepositPoliciesList = function(item) {
             // hide any open forms
@@ -206,7 +206,6 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.updateRule = true;
                 $scope.$emit('hideLoader');
             };
-
             $scope.invokeApi(ADRulesRestrictionSrv.fetchSingleDepositeRule, { id: rule.id }, callback);
         };
 
@@ -238,7 +237,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.updateRule = true;
                 $scope.$emit('hideLoader');
             };
-            $scope.invokeApi(ADRulesRestrictionSrv.fetchSingleRule, { id: rule.id }, callback);
+            $scope.invokeApi(ADRulesRestrictionSrv.fetchCancellationSingleRule, { id: rule.id }, callback);
         };
         // hide all forms
         $scope.cancelCliked = function() {

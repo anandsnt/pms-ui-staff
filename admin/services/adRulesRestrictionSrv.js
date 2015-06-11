@@ -93,9 +93,9 @@ admin.service('ADRulesRestrictionSrv', [
         * @param {object} contains page and per_page params
         * @return {object} defer promise
         */  
-        this.fetchRules = function(params) {
+        this.fetchCancellationRules = function(params) {
             var deferred = $q.defer(),
-                url      = '/api/policies';
+                url      = '/api/cancellation_policies';
 
             ADBaseWebSrvV2.getJSON(url, params)
                 .then(function(data) {
@@ -135,7 +135,7 @@ admin.service('ADRulesRestrictionSrv', [
         */  
         this.saveRule = function(params) {
             var deferred = $q.defer(),
-                url      = '/api/policies';
+                url      = '/api/cancellation_policies';
 
             ADBaseWebSrvV2.postJSON(url, params)
                 .then(function(data) {
@@ -175,7 +175,7 @@ admin.service('ADRulesRestrictionSrv', [
         */  
         this.updateRule = function(dataWith) {
             var deferred = $q.defer(),
-                url      = '/api/policies/' + dataWith.id,
+                url      = '/api/cancellation_policies/' + dataWith.id,
                 data     = _.omit(dataWith, 'id');
 
             ADBaseWebSrvV2.putJSON(url, data)
@@ -213,7 +213,7 @@ admin.service('ADRulesRestrictionSrv', [
       */  
       this.deleteRule = function(params) {
         var deferred = $q.defer(),
-            url      = '/api/policies/' + params.id;
+            url      = '/api/cancellation_policies/' + params.id;
 
         ADBaseWebSrvV2.deleteJSON(url, params)
           .then(function(data) {
@@ -246,9 +246,9 @@ admin.service('ADRulesRestrictionSrv', [
       * @param {object} contains page and per_page params
       * @return {object} defer promise
       */  
-      this.fetchSingleRule = function(params) {
+      this.fetchCancellationSingleRule = function(params) {
         var deferred = $q.defer(),
-            url      = '/api/policies/' + params.id;
+            url      = '/api/cancellation_policies/' + params.id;
 
         ADBaseWebSrvV2.getJSON(url, params)
           .then(function(data) {
