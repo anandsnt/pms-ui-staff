@@ -1,4 +1,12 @@
     "PRINT_ROOM_KEY" : "Print Room Key",
+    "PRINT_NEW_ROOM_KEY" : "Print New Key(s)",
+    "PRINT_DUPLICATE_ROOM_KEY" : "Duplicate Key(s)",
+    "WILL_NOT_VALIDATE_PREVIOUS" : " Will Not ",
+    "WILL_VALIDATE_PREVIOUS" : " Will ",
+    "THIS_KEYS_TEXT": "This",
+    "INVALIDATE_KEYS_TEXT": "Invalidate Previous Keys!",
+    
+            
     "CONNECTING_TO_KEY_CARD_READER" : "Connecting to Key Card Reader ...",
     "ERROR_CONNECTING_TO_KEY_CARD_READER" : "Error connecting to Key Card Reader!",
     "TRY_AGAIN" : "Try Again",
@@ -11,6 +19,12 @@
     "KEY_PRINT_BUTTON_TEXT_NORMAL" : "Print Key",
     "KEY_PRINT_BUTTON_TEXT_KEY1" : "Print Key 1",
     "KEY_PRINT_BUTTON_TEXT" : "Print Key",
+    "KEY_DUPLICATE_BUTTON_TEXT_NORMAL" : "Duplicate Key",
+    "KEY_DUPLICATE_BUTTON_TEXT_KEY1" : "Duplicate Key 1",
+    "KEY_DUPLICATE_BUTTON_TEXT" : "Duplicate Key",
+    
+    
+    
     "KEY_READING_STATUS" : "Reading key!",
     "KEY_UNABLE_TO_READ_STATUS" : "Unable to read the key!",
     "KEY_GETTING_KEY_IMAGE_STATUS" : "Getting key image!",

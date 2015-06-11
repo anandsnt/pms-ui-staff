@@ -122,5 +122,8 @@
     "DIARY": "Diary",
 
     "KEEP_CURRENT_RATE": "Keep current rate",
-    "CHANGE_TO_NEW_RATE": "Change to new rate"
+    "CHANGE_TO_NEW_RATE": "Change to new rate",
+    "ADD_ONS" : "Add on",
+    "TAXES_INCL" : "TAXES(INCL)",
+    "TAXES_EXCL" : "TAXES(EXCL)"
 
