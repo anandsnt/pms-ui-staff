@@ -249,7 +249,17 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
                 deferred.reject(data);
             });
             return deferred.promise;
-        }
+        };
+        this.detachGroupReservation = function(param) {
+            var deferred = $q.defer();
+            var url = '/api/group_reservations/'+ param.id +'/detach_group_reservation';
+            rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
 	}
 ]);

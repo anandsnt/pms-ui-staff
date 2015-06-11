@@ -664,7 +664,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 							data: JSON.stringify({
 								is_stay_cost_changed: response.data.is_stay_cost_changed,
 								is_assigned_room_available: response.data.is_room_available,
-								is_rate_available: response.data.is_room_type_available
+								is_rate_available: response.data.is_room_type_available,
+								is_group_reservation: response.data.is_group_reservation,
+								is_outside_group_stay_dates: response.data.outside_group_stay_dates,
+								reservation_status: $scope.reservationData.reservation_card.reservation_status
 							})
 						});
 					} else {
@@ -683,6 +686,20 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				reservation_id: $scope.reservationData.reservation_card.reservation_id
 			}, onValidationSuccess, onValidationFaliure);
 		}
+
+		$scope.detachGroupReservaton = function(){
+
+			var onDetachGroupSuccess = function(){
+				$scope.stayDatesExtendedForOutsideGroup = true;
+				$scope.changeStayDates();
+			};
+			
+			$scope.invokeApi(RVReservationCardSrv.detachGroupReservation, {
+				id: $scope.reservationData.reservation_card.reservation_id
+			}, onDetachGroupSuccess);
+
+
+		};
 
 		$scope.moveToRoomRates = function() {
 
@@ -767,15 +784,33 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			$scope.reservationParentData.arrivalDate = newArrivalDate;
 			$scope.reservationParentData.departureDate = newDepartureDate;
 			$scope.reservationParentData.rooms[0].stayDates = newStayDates;
-
 			// console.log($scope.reservationParentData);
-			$scope.saveReservation('rover.reservation.staycard.reservationcard.reservationdetails', {
-				"id": $stateParams.id,
-				"confirmationId": $stateParams.confirmationId,
-				"isrefresh": false
-			});
+
+			if($scope.stayDatesExtendedForOutsideGroup){
+				var stateParams = {
+						from_date: reservationMainData.arrivalDate,
+						to_date: reservationMainData.departureDate,
+						view: state,
+						fromState: $state.current.name,
+						company_id: $scope.$parent.reservationData.company.id,
+						travel_agent_id: $scope.$parent.reservationData.travelAgent.id
+				};
+
+				$scope.saveReservation('rover.reservation.staycard.mainCard.roomType', {
+					"id": $stateParams.id,
+					"confirmationId": $stateParams.confirmationId,
+					"isrefresh": false
+				});
+			}else{
+				$scope.saveReservation('rover.reservation.staycard.reservationcard.reservationdetails', {
+					"id": $stateParams.id,
+					"confirmationId": $stateParams.confirmationId,
+					"isrefresh": false
+				});
+			}
+
 			$scope.closeDialog();
-		}
+		};
 
 		//reverse checkout process-
 		//show room already occupied popup
