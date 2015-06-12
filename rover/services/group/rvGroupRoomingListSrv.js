@@ -136,7 +136,7 @@ sntRover.service('rvGroupRoomingListSrv',
 
 		this.emailInvoice = function(data) {
 			var deferred = $q.defer(),				
-				url = '/ui/show?format=json&json_input=groups/group_room_types_and_rates.json';
+				url = '/api/group_reservations/email_rooming_list';
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
