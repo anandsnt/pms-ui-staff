@@ -2,8 +2,6 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	var that = this;
 	that.allRestrictionTypes = [];
 
-
-
 	this.fetchAllRestrictionTypes = function(){
 		//TODO: Modify to handle case of date range changes, if needed.
 		var url =  '/api/restriction_types';	
@@ -43,7 +41,8 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
     * To fetch All Calendar data
     */
 	this.fetchCalendarData = function(params){
-		var url = "/api/daily_rates", fetchingRooms = false; 
+		//var url = {"from_date":"2014-05-20","to_date":"2014-05-27","rate_type_ids":[],"rate_ids":[51,46],"name_card_ids":[]} 
+                var url = "/api/daily_rates", fetchingRooms = false; 
                 if (params){
                     if (params.roomrate == 'ROOMS'){
                         url = url+'/room_restrictions';
@@ -54,7 +53,8 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                 } else {
                     fetchingRooms = false;
                 }
-                var deferred = $q.defer();
+                
+		var deferred = $q.defer();
 		var rejectDeferred = function(data){
 			deferred.reject(data);
 		};
@@ -79,7 +79,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			var urlString = dateString + rateString + rateTypeString + nameCardString;
 			//var url =  '/sample_json/rate_manager/daily_rates.json';	
 			BaseWebSrvV2.getJSON(urlString).then(function(data) {
-				that.dailyRates = data;
+				that.dailyRates = data; 
                                 if (fetchingRooms){
                                     data.room_type_restrictions = data.room_types;
                                 }
@@ -99,6 +99,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                                 });
                                     
                                 }
+                                
 				//If only one rate exists in the search results, 
 				//then room type calendar for that rate should be displayed.
 				//Fetch the room type details for that rate.
@@ -111,8 +112,8 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 					roomDetailsParams.isHourly = calendarData.data[0].is_hourly;
 
 					that.fetchRoomTypeCalenarData(roomDetailsParams, deferred);
-				}else{
-					calendarData.type = "RATES_LIST"
+				} else{
+					calendarData.type = "RATES_LIST";
 					deferred.resolve(calendarData);	
 				}
 				
@@ -143,7 +144,6 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 				deferred.resolve( {} );	
 				return;
 			};
-                                        
 			var url = "/api/daily_rates/" + params.id;
 			//To pass the selected rate id and name to the controller.
 			//In situations where the rate is not manually selected by user, 
@@ -165,7 +165,6 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                                 calendarData.room_type_restrictions = data.room_type_restrictions;
 				//Pass the rate details to the controller
 				calendarData.selectedRateDetails = selectedRate;
-				calendarData.is_fixed_rate = data.is_fixed_rate;
 				deferred.resolve(calendarData);
 			},rejectDeferred);
 
@@ -190,6 +189,12 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	};
 
 	this.checkIfAnyHourlyRatePresent = function(rateData){
+                var fetchingRooms = this.fetchingRooms;
+                if (fetchingRooms){
+                    console.log('checkIfAnyHourlyRatePresent');
+                    console.log(rateData);
+                    return false;
+                }
 		var hasHourly = false;
 		angular.forEach(rateData, function(rate){
 			if(rate.is_hourly == true){
@@ -287,11 +292,11 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 
 
 	this.calculateRateViewCalData = function(){
+                var fetchingRooms = that.fetchingRooms;
 		var calendarData = {};
 	
 		this.hasAnyHourlyRate = this.checkIfAnyHourlyRatePresent(that.dailyRates.results[0].rates);
 		// Format restriction Types as required by UI, and make it a dict for easy lookup 
-
                 var fetchingRooms = false;
                 if (fetchingRooms){
                     this.hasAnyHourlyRate = this.checkIfAnyHourlyRatePresent(that.dailyRates.result.room_types[0].room_types);
@@ -319,7 +324,6 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                     'id': totalRestrictions,
                     'value': "HAS_RESTRICTIONS"};
                 formattedRestrictionTypes[totalRestrictions] = baseRestrictionItem;
-                
                 
 		calendarData.restriction_types = formattedRestrictionTypes;
 		

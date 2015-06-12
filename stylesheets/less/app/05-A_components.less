@@ -3222,8 +3222,22 @@
                                             }
 
                                             .button {
+                                                padding: 0 10px;
                                                 margin-right: 10px;
                                                 .pull-left;
+
+                                                &.batch {
+                                                    font-size: 14px;
+                                                    padding: 0 0 0 40px;
+                                                    text-align: left;
+                                                    width: 120px;
+
+                                                    .icons {
+                                                        top: 10px;
+                                                        left: 10px;
+                                                        margin: 0;
+                                                    }
+                                                }
 
                                                 &:last-child { margin-right: 0; }
                                             }
@@ -4416,6 +4430,10 @@
     }
 
 /* Registration             ==============================*/
+     /* Invoice ***/
+    .invoice { .hide; }
+
+    /* Registration content ***/
     .registration-content {
         position: relative;
         .calc-height(100, 50);
@@ -4857,9 +4875,6 @@
                 }
             }           
         }
-
-        /* Invoice ***/
-        .invoice { .hide; }
 
         .registration-card { .hide; }
 
