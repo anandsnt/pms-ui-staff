@@ -250,6 +250,10 @@ sntRover.service('rvMenuSrv',
 		            action: "rover.financials.journal({ id : 0})",
 		            menuIndex: "journals"
 		        }, {
+		            title: "MENU_CC_TRANSACTIONS",
+		            action: "rover.financials.ccTransactions({ id : 0})",
+		            menuIndex: "ccTransactions"
+		        }, {
 		            title: "MENU_ACCOUNTING",
 		            action: "",
 		            menuIndex: "accounting"
