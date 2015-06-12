@@ -1,5 +1,5 @@
 <form id="group-rooming-list" name="group-rooming-list" class="form card-tab inner-header rooming-list" ng-controller="rvGroupRoomingListCtrl">
-    <div id="group-room-list-header" class="tab-header">
+    <div id="group-room-list-header" class="tab-header" ng-class="{'no-print' : isPrintRegistrationCard}">
         <div class="search-form has-dates" ng-class="{'open': isAddingMode && !groupConfigData.summary.is_cancelled}">
             <!-- Toggle class "open" when button on L4 is clicked (that will open the form). For new groups / when no reservations in rooming list, have class "open" there by default (e.g. make the form opened by default) -->
             <div class="entry filter">
@@ -92,7 +92,7 @@
                 <button type="button" class="button blue with-icon only-icon" ng-hide="true">
                     <span class="icons icon-print"></span> {{'GROUP_PRINT'|translate}}
                 </button>
-                <button type="button" class="button with-icon" ng-click="printRegistrationCards();" 
+                <button type="button" class="batch button with-icon" ng-click="printRegistrationCards();" 
                     ng-class="{'grey' : totalPickUpCount < 1,'brand-colors' : totalPickUpCount > 0}" 
                     ng-disabled="totalPickUpCount < 1">
                     <span class="icons icon-print"></span> {{'GROUP_BATCH'|translate}}
@@ -103,7 +103,7 @@
             </li>
         </ul>
     </div>
-    <div id="group-room-list-content" class="tab-details">
+    <div id="group-room-list-content" class="tab-details" ng-class="{'no-print' : isPrintRegistrationCard}">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <!-- When no rooms in list -->
         <div class="no-content" ng-show="shouldShowNoReservations()">
@@ -190,4 +190,4 @@
         </div>
     </div>
     <!-- Registration card -->
-    <div id="batchPrintCards" class="registration-card" ng-include="'/assets/partials/groups/rooming/rvBatchPrintRegistrationCards.html'"></div>
+    <div class="batch-registration-cards" ng-include="'/assets/partials/groups/rooming/rvBatchPrintRegistrationCards.html'"></div>
