@@ -41,7 +41,7 @@
                 <span class="label">Guests</span> {{ reservationParentData.rooms[0].numInfants + reservationParentData.rooms[0].numChildren + reservationParentData.rooms[0].numAdults }}
             </a>
             <!-- nights button is clickable only for the below status -->
-            <a class="button has-arrow next-view" ng-show="isNightsEnabled() && !reservationData.reservation_card.is_hourly_reservation" ng-click="extendNights()">
+            <a class="button has-arrow next-view" ng-show="shouldShowChangeStayDatesButton()" ng-click="extendNights()">
                 <span class="label">
                     Nights
                 </span> {{reservationData.reservation_card.total_nights}}
