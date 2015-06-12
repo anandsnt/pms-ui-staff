@@ -5,11 +5,11 @@ admin.controller('ADDoorLockInterfaceCtrl',['$scope', '$rootScope','ADDoorlockIn
 	var init = function(){
 		fetchInterfaceDetails();
 		$scope.authenticationKeyTypes = [{
-            "value": "KEY_A",
+            "value": "A",
             "name": "Key A"
         },
         {
-            "value": "KEY_B",
+            "value": "B",
             "name": "Key B"
         }];
 
