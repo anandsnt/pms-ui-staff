@@ -88,27 +88,32 @@ sntRover.controller('RVbillCardController',
 	//Variable used to show signed signature
 	$scope.showSignedSignature = false;
 	$scope.showBillingInfo = false;
-	$scope.showIncomingBillingInfo = false;
+	$scope.showIncomingBillingInfo = false
 	$scope.reservationBillData = reservationBillData;
 
 
 	//set up flags for checkbox actions
 
 	$scope.hasMoveToOtherBillPermission = function() {
-        return rvPermissionSrv.getPermissionValue ('MOVE_CHARGES_RESERVATION_ACCOUNT');  
+        return ($rootScope.isStandAlone && rvPermissionSrv.getPermissionValue ('MOVE_CHARGES_RESERVATION_ACCOUNT'));  
     };
 	
-
+    //only for standalone
 	var setChargeCodesSelectedStatus = function(bool){
-		var billTabsData = $scope.reservationBillData.bills;
-		var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details;
-		chargeCodesId = [];
-		_.each(chargeCodes, function(chargeCode) {
-		  chargeCode.isSelected = bool;
-		  chargeCodesId.push(chargeCode.id)
-		});
-		$scope.reservationBillData.isAllChargeCodeSelected = bool;
-	}
+		if(!$rootScope.isStandAlone){
+			return;
+		}
+		else{
+			var billTabsData = $scope.reservationBillData.bills;
+			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details;
+			chargeCodesId = [];
+			_.each(chargeCodes, function(chargeCode) {
+			  chargeCode.isSelected = bool;
+			  chargeCodesId.push(chargeCode.id)
+			});
+			$scope.reservationBillData.isAllChargeCodeSelected = bool;
+		}
+	};
 	setChargeCodesSelectedStatus(false);
     
     /*
