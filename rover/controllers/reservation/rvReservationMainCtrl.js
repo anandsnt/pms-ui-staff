@@ -2095,6 +2095,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         if (!nextStateParameters) {
                             nextStateParameters = {};
                         }
+                        console.log("heree");
+                        console.log(nextState);
+                        console.log(nextStateParameters);
+
+
                         $state.go(nextState, nextStateParameters);
                     } else {
                         $scope.$emit('hideLoader');

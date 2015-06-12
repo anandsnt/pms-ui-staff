@@ -655,8 +655,12 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			// reservation_id, arrival_date, departure_date
 			$scope.errorMessage = "";
 			var onValidationSuccess = function(response) {
+
+
 					if (response.errors.length == 0) {
 						$scope.responseValidation = response.data;
+						$scope.stayDatesExtendedForOutsideGroup = (response.data.is_group_reservation &&response.data.outside_group_stay_dates) ? true: false;
+
 						ngDialog.open({
 							template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
 							className: '',
@@ -667,7 +671,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 								is_rate_available: response.data.is_room_type_available,
 								is_group_reservation: response.data.is_group_reservation,
 								is_outside_group_stay_dates: response.data.outside_group_stay_dates,
-								reservation_status: $scope.reservationData.reservation_card.reservation_status
+								group_name: response.data.group_name,
 							})
 						});
 					} else {
@@ -686,20 +690,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				reservation_id: $scope.reservationData.reservation_card.reservation_id
 			}, onValidationSuccess, onValidationFaliure);
 		}
-
-		$scope.detachGroupReservaton = function(){
-
-			var onDetachGroupSuccess = function(){
-				$scope.stayDatesExtendedForOutsideGroup = true;
-				$scope.changeStayDates();
-			};
-			
-			$scope.invokeApi(RVReservationCardSrv.detachGroupReservation, {
-				id: $scope.reservationData.reservation_card.reservation_id
-			}, onDetachGroupSuccess);
-
-
-		};
 
 		$scope.moveToRoomRates = function() {
 
@@ -784,23 +774,18 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			$scope.reservationParentData.arrivalDate = newArrivalDate;
 			$scope.reservationParentData.departureDate = newDepartureDate;
 			$scope.reservationParentData.rooms[0].stayDates = newStayDates;
-			// console.log($scope.reservationParentData);
-
+			
+			//If it is a group reservation, which has extended the stay beyond the group staydates, then we will be taking the user to the room and rates screen after confirming the staydates
 			if($scope.stayDatesExtendedForOutsideGroup){
 				var stateParams = {
-						from_date: reservationMainData.arrivalDate,
-						to_date: reservationMainData.departureDate,
-						view: state,
+						from_date: $scope.reservationParentData.arrivalDate,
+						to_date: $scope.reservationParentData.departureDate,
 						fromState: $state.current.name,
 						company_id: $scope.$parent.reservationData.company.id,
 						travel_agent_id: $scope.$parent.reservationData.travelAgent.id
 				};
 
-				$scope.saveReservation('rover.reservation.staycard.mainCard.roomType', {
-					"id": $stateParams.id,
-					"confirmationId": $stateParams.confirmationId,
-					"isrefresh": false
-				});
+				$scope.saveReservation('rover.reservation.staycard.mainCard.roomType', stateParams);
 			}else{
 				$scope.saveReservation('rover.reservation.staycard.reservationcard.reservationdetails', {
 					"id": $stateParams.id,

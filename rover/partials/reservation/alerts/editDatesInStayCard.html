@@ -6,7 +6,7 @@
         <!-- Scenario 1: Room, Room Type, Rate & House is available  -->
         <section ng-if="ngDialogData.is_rate_available && ngDialogData.is_assigned_room_available">
             <strong class="h2 message">Stay Dates change possible</strong>
-            <span class="notice" ng-if="ngDialogData.is_outside_group_stay_dates">Reservation belongs to Group 'xxx'. Changing the dates to outside the Group's arrival & departure dates will detach the reservation from the Group & Group Billing</span>
+            <span class="notice" ng-if="ngDialogData.is_outside_group_stay_dates">Reservation belongs to Group {{ngDialogData.group_name}}. Changing the dates to outside the Group's arrival & departure dates will detach the reservation from the Group & Group Billing</span>
             <span class="notice" ng-if="ngDialogData.is_stay_cost_changed && !ngDialogData.is_outside_group_stay_dates">Total Stay Cost will change, please review rate</span>
             <!-- // Display this only if stay costs change, otherview don't. -->
 
@@ -34,8 +34,7 @@
             </div>
 
             <div class="actions">
-                <button type="button" class="button green" ng-click="changeStayDates();" ng-if="!ngDialogData.is_outside_group_stay_dates">Confirm</button>
-                <button type="button" class="button green" ng-click="detachGroupReservaton();" ng-if="ngDialogData.is_outside_group_stay_dates">Confirm</button>
+                <button type="button" class="button green" ng-click="changeStayDates();">Confirm</button>
                 <button type="button" class="button blank" ng-click="closeDialog();">Close</button>
             </div>
         </section>
