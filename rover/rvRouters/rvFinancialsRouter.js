@@ -25,7 +25,7 @@ angular.module('FinancialsModule', [])
 
     $stateProvider.state('rover.financials.ccTransactions', {
         url: '/ccTransactions/:id',
-        templateUrl: '/assets/partials/financials/ccTransactions/rvccTransactions.html',
+        templateUrl: '/assets/partials/financials/ccTransactions/rvCcTransactions.html',
         controller: 'RVccTransactionsController'
     });
 
