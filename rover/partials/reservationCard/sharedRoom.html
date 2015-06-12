@@ -1,0 +1,93 @@
+<div id="modal" style="max-height: 390px;" ng-class="{'modal-show': modalOpened}" role="dialog" ng-click="clearErrorMessage()" ng-cloak>
+    <form ng-show="!shouldShowWaiting" style="max-height: 445px; background: url('/assets/texture.png') repeat scroll 0 0 #fcfcfc" method="post" action="deposit-required" id="deposit-required" name="deposit-required" class="modal-content form deposit-required"><!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
+        <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+       <span class="h2 message">Room {{reservation.reservation_card.room_number}}</span>
+       <span class="text">Shared Reservations</span>
+       <div class="shared-reservations scrollable" style="max-height: 270px; overflow-y: auto;"> <!-- Sort this list by name, including the current guest as well -->
+        <ul class="wrapper" style="overflow-y: auto;">
+            <!-- Room shared with guests: -->
+            <li ng-if="sharedReservationData.sharers.length > 0" ng-repeat="sharer in sharedReservationData.sharers">
+                <!-- If accompany guest add class="accompany" -->
+                <table ng-if="sharer.active === false" class="sharer-div" style="background-color: lightgrey; width: 100%;" ng-class="{'sharer-active': sharer.active === true}">
+                  <tr class='outset-block' click-touch="goToSharedReservation({{sharer}});  closeDialog()">
+                        <th><img src="{{sharer.guest_details.avatar}}" alt="" class="sharer-avater"/></th>
+                        <th><h3 class="sharer-name" style="float:left; font-weight: 600;">{{sharer.guest_details.last_name}}, {{sharer.guest_details.first_name}} </h3>
+                        <br /><span class="sharer-confirmation">{{sharer.confirm_no}}</span>
+                        </th>
+                        <th style="width:100%"></th><th>
+                            <span ng-if="sharer.reservation_status === 'CHECKING_OUT'" class="guest-status check-out sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'CHECKEDOUT'" class="guest-status departed sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'CHECKING_IN'"  class="guest-status  check-in sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'CHECKEDIN'"  class="guest-status  inhouse sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'RESERVED'"  class="guest-status  check-in sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'NOSHOW_CURRENT'"  class="guest-status  icon-title no-show sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'NOSHOW'"  class="guest-status  icon-title no-show sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'CANCELED'"  class="guest-status  cancel sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'PRE_CHECKIN'"  class="guest-status  pre-check-in sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'DEPARTED'"  class="guest-status  departed sharer-status-icon" ></span>
+                            
+                            <span ng-if="sharer.reservation_status === 'CHECKEDIN' && sharer.is_opted_late_checkout === true" class="guest-status  late-check-out sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'CHECKING_IN' && sharer.is_opted_late_checkout === true" class="guest-status  late-check-out sharer-status-icon" ></span>
+                        </th>  
+                    </tr>
+                </table>
+                 <table ng-if="sharer.active === true" class="sharer-div" style="background-color: lightgrey; width: 100%;" ng-class="{'sharer-active': sharer.active === true}">
+                  <tr class='outset-block' click-touch="goToSharedReservation({{sharer}})">
+                        <th><img src="{{sharer.guest_details.avatar}}" alt="" class="sharer-avater"/></th>
+                        <th><h3 class="sharer-name" style="float:left; font-weight: 600;">{{sharer.guest_details.last_name}}, {{sharer.guest_details.first_name}} </h3>
+                        <br /><span class="sharer-confirmation">{{sharer.confirm_no}}</span>
+                        </th>
+                        <th style="width:100%"></th><th>
+                            <span ng-if="sharer.reservation_status === 'CHECKING_OUT'" class="guest-status check-out sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'CHECKEDOUT'" class="guest-status departed sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'CHECKING_IN'"  class="guest-status  check-in sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'CHECKEDIN'"  class="guest-status  inhouse sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'RESERVED'"  class="guest-status  check-in sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'NOSHOW_CURRENT'"  class="guest-status  icon-title no-show sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'NOSHOW'"  class="guest-status  icon-title no-show sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'CANCELED'"  class="guest-status  cancel sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'PRE_CHECKIN'"  class="guest-status  pre-check-in sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'DEPARTED'"  class="guest-status  departed sharer-status-icon" ></span>
+                            
+                            <span ng-if="sharer.reservation_status === 'CHECKEDIN' && sharer.is_opted_late_checkout === true" class="guest-status  late-check-out sharer-status-icon" ></span>
+                            <span ng-if="sharer.reservation_status === 'CHECKING_IN' && sharer.is_opted_late_checkout === true" class="guest-status  late-check-out sharer-status-icon" ></span>
+                        </th> 
+                    </tr>
+                </table>
+            </li>
+            <!--
+             <li ng-if="sharedReservationData.sharers.length == 0" ng-repeat="t in getTimes(6) track by $index">
+                <table class="sharer-div" style="background-color: lightgrey; width: 100%;">
+                  <tr class='outset-block' click-touch="goToSharedReservation('1329838','102584','Guy, This'); closeDialog()">
+                    <th><img src="guest-avatar" alt="" style="min-width:75px; min-height: 60px;"/></th>
+                    <th><h3 class="sharer-name" style="float:left; font-weight: 600;">Fuller,Mike </h3>
+                    <br /><span class="sharer-confirmation">102584-conf</span>
+                    </th>
+                    <th style="width:100%"></th>
+                    <th style='padding-right: 5px'>chkin img</th>
+                  </tr>
+                </table>
+            </li> 
+            -->
+            <!-- Show current stay card record like this:
+            <li class="active">
+                <figure class="guest-image"> // If accompany guest add class "accompany"
+                    <img src="{primary-guest-image}" alt="" />
+                    // if it's accompanying guest, show this as well:
+                    <img src="{accompanying-guest-image-or-avatar}" alt="" />
+                </figure>
+                <div class="data">
+                    <h2>{Lastname}, {Firstname}</h2>
+                    <span class="confirmation">{Res #.}</span>
+                </div>
+                <span class="guest-status {reservation-status}">{reservation-status}</span>
+            </li> -->
+        </ul>
+    </div>
+    <div class="actions" style="border-top:1px solid rgba(0, 0, 0, 0.1); margin-top: 5px;">
+        <button type="button" class="button blank" ng-click="closeDialog()">Close</button>
+    </div>
+            
+    </form>
+</div>

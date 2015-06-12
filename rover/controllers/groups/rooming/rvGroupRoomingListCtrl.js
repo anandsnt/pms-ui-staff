@@ -11,6 +11,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
     'ngDialog',
     'rvGroupConfigurationSrv',
     '$state',
+    '$window',
     function($scope,
         $rootScope,
         rvGroupRoomingListSrv,
@@ -22,7 +23,8 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         $q,
         ngDialog,
         rvGroupConfigurationSrv,
-        $state) {
+        $state,
+        $window) {
 
         BaseCtrl.call(this, $scope);
 
@@ -33,6 +35,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         var hasPermissionToCreateRoomingList = function() {
             return (rvPermissionSrv.getPermissionValue('CREATE_ROOMING_LIST'));
         };
+
 
 
         /**
@@ -349,10 +352,12 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * when a tab switch is there, parant controller will propogate
          * API, we will get this event, we are using this to fetch new room block deails
          */
-        /*$scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab){
+        $scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab) {
             if (activeTab !== 'ROOMING') return;
-            $scope.fetchRoomingDetails();
-        });*/
+
+            //calling initially required APIs
+            callInitialAPIs();
+        });
 
         /**
          * [initializeVariables description]
@@ -729,8 +734,16 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             //date picker options - Common
             var commonDateOptions = {
                 dateFormat: $rootScope.jqDateFormat,
-                numberOfMonths: 1,
+                numberOfMonths: 1
             };
+
+            //if we are in edit mode, we have to set the min/max date
+            if (!$scope.isInAddMode()) {
+                _.extend(commonDateOptions, {
+                    minDate: new tzIndependentDate(refData.block_from),
+                    maxDate: new tzIndependentDate(refData.block_to)
+                });
+            }
 
             var commonDateOptionsForRelease = _.extend({
                 beforeShow: function(input, inst) {
@@ -754,30 +767,22 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             //date picker options - From
             $scope.fromDateOptions = _.extend({
-                minDate: new tzIndependentDate(refData.block_from),
-                maxDate: new tzIndependentDate(refData.block_to),
                 onSelect: fromDateChoosed
             }, commonDateOptions);
 
             //date picker options - Departute
             $scope.toDateOptions = _.extend({
-                minDate: new tzIndependentDate(refData.block_from),
-                maxDate: new tzIndependentDate(refData.block_to),
                 onSelect: toDateChoosed
             }, commonDateOptions);
 
 
             //date picker options - From
             $scope.reservationFromDateOptions = _.extend({
-                minDate: new tzIndependentDate(refData.block_from),
-                maxDate: new tzIndependentDate(refData.block_to),
                 onSelect: reservationFromDateChoosed
             }, commonDateOptionsForRelease);
 
             //date picker options - Departute
             $scope.reservationToDateOptions = _.extend({
-                minDate: new tzIndependentDate(refData.block_from),
-                maxDate: new tzIndependentDate(refData.block_to),
                 onSelect: reservationToDateChoosed
             }, commonDateOptionsForRelease);
 
@@ -988,6 +993,70 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             }
         }
 
+        $scope.printRegistrationCards = function() {
+            // add the print orientation after printing
+            var removePrintOrientation = function() {
+                    $('#print-orientation').remove();
+                },
+                addPrintOrientation = function() { // add the print orientation before printing
+                    $('head').append("<style id='print-orientation'>@page { size: portrait; }</style>");
+                },
+                sucessCallback = function(data) {
+                    $scope.$emit('hideLoader');
+                    $scope.printRegCardData = data;
+                    $scope.errorMessage = "";
+
+                    // CICO-9569 to solve the hotel logo issue
+                    $("header .logo").addClass('logo-hide');
+                    $("header .h2").addClass('text-hide');
+
+                    // add the orientation
+                    addPrintOrientation();
+
+                    /*
+                     *   =====[ READY TO PRINT ]=====
+                     */
+                    // this will show the popup with full bill
+                    $scope.isPrintRegistrationCard = true;
+                    $rootScope.addNoPrintClass = true;
+
+                    $timeout(function() {
+                        /*
+                         *   =====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+                         */
+
+                        $window.print();
+                        if (sntapp.cordovaLoaded) {
+                            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+                        };
+                    }, 100);
+
+                    /*
+                     *   =====[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]=====
+                     */
+                    $timeout(function() {
+                        $scope.isPrintRegistrationCard = false;
+                        $rootScope.addNoPrintClass = false;
+                        // CICO-9569 to solve the hotel logo issue
+                        $("header .logo").removeClass('logo-hide');
+                        $("header .h2").addClass('text-hide');
+
+                        // remove the orientation after similar delay
+                        removePrintOrientation();
+                    }, 100);
+
+                },
+                failureCallback = function(errorData) {
+                    $scope.isPrintRegistrationCard = false;
+                    $scope.$emit('hideLoader');
+                    $scope.errorMessage = errorData;
+                };
+
+            $scope.invokeApi(rvGroupRoomingListSrv.fetchRegistrationCardPrintData, {
+                'group_id': $scope.groupConfigData.summary.group_id
+            }, sucessCallback, failureCallback);
+        };
+
         /**
          * Function to initialise room block details
          * @return - None
@@ -1012,8 +1081,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             initialisePagination();
 
             //calling initially required APIs
-            callInitialAPIs();
-
+            //callInitialAPIs();
         }();
     }
 ]);

@@ -7,11 +7,7 @@ angular.module('reportsModule', [])
         controller: 'RVReportsMainCtrl',
         resolve: {
             reportsResponse: function(RVreportsSrv) {
-                if ( !!RVreportsSrv ) {
-                    return RVreportsSrv.fetchReportList();
-                } else {
-                    return {};
-                }
+                return RVreportsSrv.fetchReportList();
             },
             activeUserList: function(RVreportsSrv) {
                 return RVreportsSrv.fetchActiveUsers();
@@ -33,6 +29,9 @@ angular.module('reportsModule', [])
             },
             origins: function(RVreportsSrv) {
                 return RVreportsSrv.fetchBookingOrigins();
+            },
+            codeSettings: function(RVreportsSrv) {
+                return RVreportsSrv.fetchCodeSettings();
             }
         }
     });

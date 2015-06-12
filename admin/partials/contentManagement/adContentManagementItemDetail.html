@@ -50,11 +50,17 @@
                            <span translate>SCREEN_LABEL</span> 
                         </label>
 
+                        <label class="radio" ng-class = "{'checked': data.page_template=='ADDON'}"> 
+                            <span class="icon-form icon-radio" ng-class = "{'checked': data.page_template=='ADDON'}"></span>
+                            <input type="radio" name="item-type" ng-model="data.page_template" id="link" value="ADDON" ng-change = "itemTypeSelected()"/>
+                           <span translate>ADDON_LABEL</span> 
+                        </label>
+
                     </div>
                 </div>
                 <div class="entry full-width" ng-hide="data.page_template=='SCREEN'">
                     <label for="item-image"><span translate>ITEM_IMAGE_LABEL</span><span translate>IMAGE_SPEC</span></label>
-                    <div class="file-upload with-preview large-preview">
+                    <div class="file-upload with-preview large-preview cms-item-image-picker">
                         <span class="input">{{fileName}}</span>
                         <input type="file" name="item-image" ng-model="data.image" app-filereader id="item-image" />
                         <button type="button" ng-if="data.image != null && data.image != ''" class="button brand-colors" translate>REPLACE_IMAGE_LABEL</button>
@@ -68,21 +74,44 @@
                     <label for="item-description" ><span translate>DESCRIPTION_LABEL</span> <strong ng-show="data.page_template=='SCREEN'">*</strong></label>
                     <textarea name="item-description" ng-model="data.description" id="item-description" rows="4" placeholder="Item description ..."></textarea>
                 </div>
-                <div class="entry" ng-hide="data.page_template=='SCREEN'">
+                <div class="entry" ng-hide="data.page_template=='SCREEN' || data.page_template=='ADDON'">
                     <label for="item-phone" translate>PHONE_LABEL</label>
                     <input type="text" name="item-phone" ng-model="data.phone" id="item-phone" placeholder="Enter Phone number" value="" />
                 </div>
-                <div class="entry full-width" ng-hide="data.page_template=='SCREEN'">
+                <div class="entry full-width" ng-hide="data.page_template=='SCREEN' || data.page_template=='ADDON'">
                     <label for="item-address"><span translate>ADDRESS_LABEL</span> <strong ng-show="data.page_template=='POI'">*</strong></label>
                     <input type="text" name="aitem-ddress" ng-model="data.address" id="item-address" placeholder="Enter Address" value=""  />
                 </div>
                 
-                <div class="entry full-width" ng-hide="data.page_template=='SCREEN'">
+                <div class="entry full-width" ng-hide="data.page_template=='SCREEN' || data.page_template=='ADDON'">
                     <label for="item-url"><span translate>URL_LABEL </span><strong ng-show="data.page_template=='LINK'">*</strong></label>
                     <input type="text" name="item-url" ng-model="data.website_url" id="item-url" placeholder="Enter URL" value=""  />
-                </div>        
+                </div>                
+                
+
             </fieldset>
             <fieldset class="holder right">
+
+                <div class="form-title">
+                    <h3><span translate>TO_SECTION_LABEL</span></h3>
+                </div>
+                <div class="entry full-width">
+                    <ul class="boxes cms-tree">
+                        <li class="section" ng-repeat="section in data.parent_section">
+                            <div class="sort">
+                                <span class="cms-name">{{section.name}}</span>
+                                <div class="cms-delete">
+                                    <a class="icons icon-delete" ng-click="deleteParentSection($index)">Delete</a>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="add">
+                            <a  class="add-new-button open-modal" ng-click= "openAddParentModal(true)" translate>ADD_SECTION_LABEL</a>
+                        </li>
+                    </ul>
+                </div>
+
                 <div class="form-title">
                     <h3><span translate> TO_CATEGORY_LABEL</span></h3>
                 </div>
@@ -98,10 +127,34 @@
                         </li>
                         
                         <li class="add">
-                            <a  class="add-new-button open-modal" ng-click = "openAddCategoryModal()" translate>ADD_CATEGORY_LABEL</a>
+                            <a  class="add-new-button open-modal" ng-click = "openAddParentModal(false)" translate>ADD_CATEGORY_LABEL</a>
                         </li>
                     </ul>
-                </div>        
+                </div>  
+
+
+                <div ng-show="data.page_template=='ADDON'">
+
+
+                     <ad-dropdown label="{{'EARLY_CHECKIN_ADDON' | translate}}" label-in-drop-down="{{'EARLY_CHECKIN_ADDON' | translate}}" list="addons" selected-Id='data.addon_id' required='no' selbox-class='placeholder' ng-show="data.page_template=='ADDON'"></ad-dropdown>  
+
+                    <div class="entry full-width" ng-show="data.page_template=='ADDON'">
+                       <label for="addon-description"><span translate>ADDON_DESCRIPTION_LABEL </span></label>
+                       <input type="text" class = "cms-addon-texts" name="addon-description" id="addon-description" ng-disabled = "true" readonly="true"
+                       value="{{getSelectedAddonDescription()}}" />
+                    </div> 
+
+                    <div class="entry full-width" ng-show="data.page_template=='ADDON'">
+                        <label for="addon-price"><span translate>ADDON_PRICE_LABEL </span></label>
+                        <input type="text" class = "cms-addon-texts" name="addon-price" id="addon-price"  ng-disabled = "true" readonly="true" value="{{getSelectedAddonPrice()}}" />
+                    </div>
+                     <ad-dropdown label="{{'ADDON_MIN_DURATION_LABEL' | translate}}" label-in-drop-down="{{' '}}" list="min_duration_values" selected-Id='data.addon_min_duration' required='no' selbox-class='placeholder' ng-show="data.page_template=='ADDON'"></ad-dropdown>  
+
+                     <ad-dropdown label="{{'ADDON_MAX_ORDER_LABEL' | translate}}" label-in-drop-down="{{' '}}" list="max_order_values" selected-Id='data.addon_max_order' required='no' selbox-class='placeholder' ng-show="data.page_template=='ADDON'"></ad-dropdown>
+
+                    </div>
+                </div>
+
             </fieldset>
             <div class="actions float">
                 <button type="button" ng-click="goBack()" class="button blank" translate>CANCEL</button>

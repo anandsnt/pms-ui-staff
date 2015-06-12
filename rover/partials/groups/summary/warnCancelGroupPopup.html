@@ -1,0 +1,20 @@
+<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
+    <form method="post" action="cancel-group" id="cancel-group" name="cancel-group" class="modal-content form cancel-reservation">
+        <button class="modal-close" id="modal-close" type="button" ng-click="abortCancelGroup();">
+            <span class="icons icon-close invert"></span>
+        </button>
+        <span class="h2 message">Block will be cancelled.</span>
+        <!-- When no rooms picked up:  -->
+        <span class="text" ng-hide="!!groupConfigData.summary.rooms_pickup">Block inventory will be returned to hotel availability.</span>
+        <!-- - When rooms picked up, show this instead: -->
+        <span class="text" ng-show="!!groupConfigData.summary.rooms_pickup">{{groupConfigData.summary.rooms_pickup}} attached reservations will be cancelled and inventory returned to hotel availability.</span>
+        <div class="entry full-width">
+            <label for="cancel-reason">Cancelation reason(<span>optional</span>)</label>
+            <textarea id="cancel-reason" name="cancel-reason"ng-model="cancellationReason" placeholder="Cancelling because ...." rows="2" />
+        </div>
+        <div class="actions">
+            <button id="cancel-action" type="button" class="button green" ng-click="cancelGroup(cancellationReason)">Proceed</button>
+            <button type="button" class="button blank" ng-click="abortCancelGroup();">Close</button>
+        </div>
+    </form>
+</div>

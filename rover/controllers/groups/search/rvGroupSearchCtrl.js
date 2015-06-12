@@ -36,22 +36,9 @@ sntRover.controller('rvGroupSearchCtrl', [
          * @return {String}
          */
         $scope.getClassAgainstHoldStatus = function(group) {
-            var classes = '';
-            var isSystemDefined = group.is_system_defined;
-
-            //According to Nicole's comment in CICO-13899 (Color coding)
-            if (isSystemDefined) {
-                if (group.hold_status === 'Tentative')
-                    classes = 'tentative';
-                if (group.hold_status === 'Definite')
-                    classes += ' ';
-            }
-            //for custom status
-            else {
-                if (!group.is_take_from_inventory)
-                    classes = 'tentative';
-            }
-            return classes;
+            // https://stayntouch.atlassian.net/browse/CICO-13899?focusedCommentId=42708&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-42708
+            // API returns a string value for 'is_take_from_inventory'
+            return group.is_take_from_inventory === 'true' ? '' : 'tentative';
         };
 
         var isCancelledGroup = function(group) {
@@ -82,7 +69,7 @@ sntRover.controller('rvGroupSearchCtrl', [
          * @return {String}
          */
         $scope.getGuestClassForArrival = function(group) {
-        	//"cancel" if cancelled, "check-in" if not cancelled
+            //"cancel" if cancelled, "check-in" if not cancelled
             var classes = isCancelledGroup(group) ? 'cancel' : 'check-in';
             return classes;
         };
@@ -93,7 +80,7 @@ sntRover.controller('rvGroupSearchCtrl', [
          * @return {String}
          */
         $scope.getGuestClassForDeparture = function(group) {
-        	//"cancel" if cancelled, 'check-out' if not cancelled
+            //"cancel" if cancelled, 'check-out' if not cancelled
             var classes = isCancelledGroup(group) ? 'cancel' : 'check-out';
             return classes;
         };
@@ -140,7 +127,7 @@ sntRover.controller('rvGroupSearchCtrl', [
 
         /**
          * function to stringify a string
-         * sample use case:- directive higlight filter 
+         * sample use case:- directive higlight filter
          * sometimes through error parsing speial charactes
          * @param {String}
          * @return {String}
@@ -323,7 +310,7 @@ sntRover.controller('rvGroupSearchCtrl', [
 
         /**
          * utiltiy function for setting scroller and things
-         * return - None		
+         * return - None
          */
         var setScrollerForMe = function() {
             //setting scroller things
@@ -338,7 +325,7 @@ sntRover.controller('rvGroupSearchCtrl', [
 
         /**
          * utiltiy function for setting scroller and things
-         * return - None		
+         * return - None
          */
         var refreshScrollers = function() {
             $scope.refreshScroller('result_showing_area');
@@ -412,7 +399,7 @@ sntRover.controller('rvGroupSearchCtrl', [
         };
 
         /**
-         * should we disable next button 
+         * should we disable next button
          * @return {Boolean}
          */
         $scope.isNextButtonDisabled = function() {
@@ -420,7 +407,7 @@ sntRover.controller('rvGroupSearchCtrl', [
         };
 
         /**
-         * should we disable prev button 
+         * should we disable prev button
          * @return {Boolean}
          */
         $scope.isPrevButtonDisabled = function() {

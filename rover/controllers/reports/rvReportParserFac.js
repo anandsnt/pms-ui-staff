@@ -59,9 +59,16 @@ sntRover.factory('RVReportParserFac', [
                 guestData  = {},
                 noteData   = {},
                 cancelData = {},
+                adjustData = [],
                 options    = options;
 
             var i, j;
+
+            var excludeReports = function(names) {
+                return !!_.find(names, function(n) {
+                    return n == reportName;
+                });
+            };
 
             var checkGuest = function(item) {
                 if ( !options['checkGuest'] ) {
@@ -81,18 +88,20 @@ sntRover.factory('RVReportParserFac', [
                 return !!item['notes'] && !!item['notes'].length;
             };
 
-            var excludeReports = function(names) {
-                return !!_.find(names, function(n) {
-                    return n == reportName;
-                });
-            };
-
             var checkCancel = function(item) {
                 if ( !options['checkCancel'] ) {
                     return false;
                 };
 
                 return excludeReports([reportUtils.getName('ARRIVAL'), reportUtils.getName('IN_HOUSE_GUEST')]) ? !!item['cancel_reason'] : false;
+            };
+
+            var checkRateAdjust = function(item) {
+                if ( !options['checkRateAdjust'] ) {
+                    return false;
+                };
+
+                return !!item['rate_adjustment_reasons'] && !!item['rate_adjustment_reasons'].length;
             };
 
             if ( $_isForGenericReports(reportName) ) {
@@ -102,6 +111,7 @@ sntRover.factory('RVReportParserFac', [
                     guestData  = {};
                     noteData   = {};
                     cancelData = {};
+                    adjustData = [];
 
                     if ( checkGuest(makeCopy) ) {
                         guestData = {
@@ -112,7 +122,14 @@ sntRover.factory('RVReportParserFac', [
                             travel_agent_name : makeCopy.travel_agent_name,
                             group_name        : makeCopy.group_name,
 
-                            addOns : angular.copy( makeCopy['add_ons'] )
+                            addOns       : angular.copy( makeCopy['add_ons'] ),
+                            addOnDetails : angular.copy( makeCopy['addon_details'] )
+                        };
+                        customData.push( guestData );
+                    } else {
+                        guestData = {
+                            isGuestData : true,
+                            addOnDetails : angular.copy( makeCopy['addon_details'] )
                         };
                         customData.push( guestData );
                     };
@@ -131,6 +148,14 @@ sntRover.factory('RVReportParserFac', [
                             notes      : angular.copy( makeCopy['notes'] )
                         };
                         customData.push( noteData );
+                    };
+
+                    if ( checkRateAdjust(makeCopy) ) {
+                        adjustData = {
+                            isAdjustData : true,
+                            reasons      : angular.copy( makeCopy['rate_adjustment_reasons'] )
+                        };
+                        customData.push( adjustData );
                     };
 
                     // IF: we found custom items

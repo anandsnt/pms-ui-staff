@@ -62,6 +62,7 @@
 //=require ../rover/rvMLIOperations.js
 //=require ../rover/rvSwipeOperations.js
 //=require ../rover/rvCacheVaultModule.js
+//=require ../rover/rvDesktopCardOperations.js
 //=require ../rover/rvSntApp.js
 
 //=require_tree ../rover/controllers

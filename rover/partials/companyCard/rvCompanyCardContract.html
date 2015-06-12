@@ -73,7 +73,7 @@
                 <div class="entry margin only-switch">
                     <label for="company-contract-fixed-rate" translate>FIXED_RATE</label>
                     <div ng-model="contractData.is_fixed_rate" class="switch-button full-width" ng-class="{'on': contractData.is_fixed_rate}">
-                        <input ng-click="contractData.is_fixed_rate = !contractData.is_fixed_rate" name="company-contract-fixed-rate" id="company-contract-fixed-rate" value="1" checked type="checkbox" />
+                        <input ng-disabled="!contractData.is_fixed_rate" ng-click="contractData.is_fixed_rate = !contractData.is_fixed_rate" name="company-contract-fixed-rate" id="company-contract-fixed-rate" value="1" checked type="checkbox" />
                         <label class="data-off">
                             <span class="value" translate>NO</span>
                             <span class="switch-icon" translate>YES</span>
