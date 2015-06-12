@@ -1,0 +1,107 @@
+<section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()">
+	<div>
+		<section>
+			<header class="content-title float">
+				<h2 translate>DOOR_LOCK_INTERFACE</h2>
+			</header>
+			<section class="content-scroll">
+				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+				<form name="icare-services" method="post" class="form float" action="">
+					
+					<fieldset class="holder full-width">
+						<div class="form-title">
+							<h3 translate>ROOM_KEY_SYSTEM_VENDOR</h3>
+							<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+						</div>
+						<ad-dropdown label="{{'ROOM_KEY_SYSTEM_VENDOR' | translate }}" label-in-drop-down="{{'ROOM_KEY_SYSTEM_VENDOR' | translate }}" list="data.key_systems" selected-Id='data.selected_key_system' required = "yes"></ad-dropdown>
+					</fieldset>
+
+
+					<fieldset>
+						<div class="form-title key-server-details-title">
+							<h3><span translate>PRIMARY_KEY_DETAILS_TITLE</span></h3>
+						</div>
+						<div class="entry full-width">
+						    
+							
+							<ad-textbox value="data.key_access_url" label = "{{'KEY_SYSTEM_ACCESS_URL' | translate }}" placeholder = "{{'KEY_SYSTEM_ACCESS_URL_PLACEHOLDER' | translate }}" required = "yes" ></ad-textbox>
+
+							<ad-textbox value="data.key_access_port" label = "{{'KEY_SYSTEM_ACCESS_PORT' | translate }}" placeholder = "{{'KEY_SYSTEM_ACCESS_PORT_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
+				    		
+				    		<ad-textbox value="data.key_username" label = "{{'KEY_SYSTEM_USENAME' | translate }}" placeholder = "{{'KEY_SYSTEM_USENAME_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
+
+				    		<ad-textbox value="data.key_password" inputtype="password" label = "{{'KEY_SYSTEM_PASSWORD' | translate }}" placeholder = "{{'KEY_SYSTEM_PASSWORD_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
+
+		                    <ad-textbox value="data.max_primary_retries" inputtype="text" label = "{{'NUMBER_OF_RETRIES' | translate }}" placeholder = "{{'NUMBER_OF_RETRIES_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>				
+
+						</div>
+					</fieldset>
+					<fieldset>
+
+		                <div class="form-title key-server-details-title" >
+							<h3><span translate>SECONDARY_KEY_DETAILS_TITLE</span></h3>
+						</div>
+						<div class="entry full-width">	    
+
+				    		<ad-textbox value="data.secondary_key_access_url" label = "{{'KEY_SYSTEM_ACCESS_URL' | translate }}" placeholder = "{{'KEY_SYSTEM_ACCESS_URL_PLACEHOLDER' | translate }}" required = "yes" ></ad-textbox>
+
+							<ad-textbox value="data.secondary_key_access_port" label = "{{'KEY_SYSTEM_ACCESS_PORT' | translate }}" placeholder = "{{'KEY_SYSTEM_ACCESS_PORT_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
+				    		
+				    		<ad-textbox value="data.secondary_key_username" label = "{{'KEY_SYSTEM_USENAME' | translate }}" placeholder = "{{'KEY_SYSTEM_USENAME_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
+
+				    		<ad-textbox value="data.secondary_key_password" inputtype="password" label = "{{'KEY_SYSTEM_PASSWORD' | translate }}" placeholder = "{{'KEY_SYSTEM_PASSWORD_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
+		                    
+		                    <ad-textbox value="data.max_secondary_retries" inputtype="text" label = "{{'NUMBER_OF_RETRIES' | translate }}" placeholder = "{{'NUMBER_OF_RETRIES_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
+
+		                    <ad-textbox value="data.secondary_revert_time" inputtype="text" label = "{{'REVERT_TIME' | translate }}" placeholder = "{{'REVERT_TIME_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>                    
+
+						</div>	
+					</fieldset>
+					<fieldset>
+		                <div class="form-title key-server-details-title" >
+							<h3><span translate>SUPPORTED KEY CARD TYPES</span></h3>
+						</div>
+						<div class="entry full-width">
+							<ad-checkbox is-checked="keyType.is_selected_for_hotel" label="{{keyType.name}}" ng-repeat="keyType in data.available_card_types"></ad-checkbox>
+						</div>
+					</fieldset>
+					<!--if the key system is salto and if any supported key card types require authentication, show this fiels -->
+					<fieldset>
+		                <div class="form-title key-server-details-title" >
+							<h3><span translate>MiFare AUTHENTICATION</span></h3>
+						</div>
+						<div class="entry">
+							<ad-dropdown label="{{'AUTHENTICATION_KEY_TYPE' | translate }}" label-in-drop-down="{{'AUTHENTICATION_KEY_TYPE' | translate }}" list="authenticationKeyTypes" selected-Id='data.authentication_keytype' required = "yes"></ad-dropdown>
+						</div>
+						<div class="entry full-width">
+							<ad-textbox value="data.mi_fare_authentication_key_a" label = "{{'KEY_A' | translate }}" placeholder = "{{'KEY_A_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
+
+				    		<ad-textbox value="data.mi_fare_authentication_key_b" inputtype="text" label = "{{'KEY_B' | translate }}" placeholder = "{{'KEY_B_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
+
+		                    <ad-textbox value="data.mi_fare_authentication_aid" inputtype="text" label = "{{'SECTOR_AID' | translate }}" placeholder = "{{'SECTOR_AID_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
+						</div>
+					</fieldset>
+					<fieldset>
+		                <div class="form-title key-server-details-title" >
+							<h3><span translate>OTHER SETTINGS</span></h3>
+						</div>
+						<div class="entry">
+							<ad-checkbox is-checked="data.remove_leading_zero" label="{{'REMOVE_ROOM_NUMBER_LEADING_ZEROS' | translate }}" div-class="full-width"></ad-checkbox>
+							<ad-checkbox is-checked="data.enable_remote_encoding" label="{{'ENABLE_REMOTE_ENCODING' | translate }}" div-class="full-width"></ad-checkbox>
+							<ad-checkbox is-checked="data.enable_mobile_app_key" label="{{'ENABLE_MOBILE_APP_KEY' | translate }}" div-class="full-width"></ad-checkbox>
+						</div>
+					</fieldset>
+
+					<div class="actions float">
+						<button type="button" class="button blank" ng-click="goBackToPreviousState()" translate>
+							CANCEL
+						</button>
+						<button type="button" class="button green" ng-click="clickedSave()" translate>
+							SAVE_CHANGES
+						</button>
+					</div>
+				</form>
+			</services>
+		</section>
+	</div>
+</section>
