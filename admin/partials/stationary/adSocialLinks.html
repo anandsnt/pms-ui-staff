@@ -1,6 +1,6 @@
 <div id="add-new" ng-show="currentSocialLink == 'NEW'" ng-include="'/assets/partials/stationary/adAddNewSocialLink.html'"></div>
 <div id="new-form-holder"></div>
-<table id="brands" class="grid datatable dataTable" ng-table="itemList" template-pagination="nil">
+<table id="brands" class="grid datatable dataTable" ng-table="itemList" template-pagination="nil" ng-hide="data.social_network_links.length<1">
     <tbody>
         <tr ng-repeat="socialNW in data.social_network_links track by $index">
             <td data-item="1" data-title="'Type'" ng-click="onEditSocialLink(socialNW, $index)" header-class="width-30" ng-hide="currentSocialLink === $index">
