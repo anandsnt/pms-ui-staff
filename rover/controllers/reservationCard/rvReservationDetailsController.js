@@ -436,6 +436,17 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			});
 		};
 
+		/**
+		* we will not show "Nights" button in case of hourly, isNightsEnabled()
+		* as part of CICO-17712, we are hiding it for now (group rservation)
+		* @return {Boolean}
+		*/
+		$scope.shouldShowChangeStayDatesButton = function() {
+			return ($scope.isNightsEnabled() &&
+					!$scope.reservationData.reservation_card.is_hourly_reservation && 
+					$scope.reservationData.reservation_card.group_id.trim() === '' )
+		}
+
 		$scope.isNightsEnabled = function() {
 			var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
 			if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN') {
