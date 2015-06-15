@@ -54,12 +54,12 @@
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<div class="dates notice">
             	<strong>Deposit Due</strong>
-            	<div class="scrollable" ng-iscroll="deopositdue">
+            	<div class="scrollable" ng-iscroll="deopositdue" >
                 	<ul class="wrapper ">
                     	<li ng-repeat="depositDue in depositBalanceData.data.deposit_dues" ng-class="{'paid': depositDue.paid, 'due': !depositDue.paid}"> 
                     	<!-- If in past/paid, add class "paid". If it's due, add class "due" -->
-                        {{depositDue.date}}
-                        <span>{{currencySymbol}}{{depositDue.Value}}</span>
+                        {{depositDue.due_date}}
+                        <span>{{currencySymbol}}{{depositDue.due_amount}}</span>
                     	</li>                  	
                     	                     
                 	</ul>
