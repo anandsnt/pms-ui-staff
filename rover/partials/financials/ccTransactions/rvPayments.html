@@ -1,0 +1,56 @@
+<!-- Content for Payments -->
+<div id="cc-transactions-content" class="journal-content scrollable">
+    <div class="wrapper">
+        <div class="journal-grid cc-transactions"> <!-- For print add class "print-summary" or "print-details" based on L51 checked status -->
+            <div class="grid-group">
+                <!-- Approved -->
+                <a href="#payment-approved" class="transaction-title green has-arrow toggle">
+                    <strong class="name">Approved</strong>
+                </a>
+                <div id="payment-approved" class="grid-charge hidden"> <!-- To show, remove class "hidden" when L73 is clicked -->
+                    <!-- CC Types -->
+                    <a href="#payment-approved-{cc-type}" class="transaction-title has-arrow toggle">
+                        <strong class="name">{Card Type}</strong>
+                        <span class="value">${Value}</span>
+                    </a>
+                    <table id="payment-approved-{cc-type}" class="grid-items hidden"> <!-- To show, remove class "hidden" when L78 is clicked -->
+                        <thead>
+                            <tr>
+                                <th scope="col">Date &amp; Time</th>
+                                <th scope="col">Card No.</th>
+                                <th scope="col">User</th>
+                                <th scope="col">Room No.</th>
+                                <th scope="col">Reservation No.</th>
+                                <th scope="col">Guest Name</th>
+                                <th scope="col">Auth. Code</th>
+                                <th scope="col">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{Date Time}</td>
+                                <td>{Card No.}</td>
+                                <td>{User}</td>
+                                <td>{Room No.}</td>
+                                <td>{Reservation No.}</td>
+                                <td>{Guest Name}</td>
+                                <td>{Auth. Code}</td>
+                                <td>${Amount}</td> <!-- Show negative amount if refund -->
+                            </tr>
+                            ... repeat for each record
+                        </tbody>
+                    </table>
+                    ... repeat for each card type
+                </div>
+
+                <!-- Declined -->
+                <a href="#payment-declined" class="transaction-title red has-arrow toggle">
+                    <strong class="name">Declined</strong>
+                </a>
+                <div id="payment-declined" class="grid-group hidden"> <!-- To show, remove class "hidden" when L113 is clicked -->
+                    same as L77-L109, replace "approved" with "declined" in id attributes (or don't use id's if you don't need them)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
