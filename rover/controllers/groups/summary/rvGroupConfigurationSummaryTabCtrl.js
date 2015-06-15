@@ -1,5 +1,5 @@
-sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv', 'RVReservationCardSrv', 'rvUtilSrv', '$state',
-	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state) {
+sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv', 'RVReservationCardSrv', 'rvUtilSrv', '$state', 'rvPermissionSrv',
+	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv) {
 		
 
 		var summaryMemento, demographicsMemento;	
@@ -29,7 +29,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				$scope.$digest();
 			}
 		};
-
 		/**
 		 * we have to save when the user clicked outside of summary tab
 		 * @param  {Object} event - Angular Event
@@ -44,7 +43,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 				return;
 			}
-
 			//yes, summary data update is in progress
 			$scope.isUpdateInProgress = true;
 
@@ -77,8 +75,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			//referring data source
 			var refData = $scope.groupConfigData.summary; 
 			if (refData.release_date.toString().trim() == '') {
-				$scope.groupConfigData.summary.release_date = refData.block_from;
-			}
+				$scope.groupConfigData.summary.release_date = refData.block_from;	
+			}			
 
 			// we will clear end date if chosen start date is greater than end date
 			if (refData.block_from > refData.block_to) {
@@ -87,8 +85,51 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			//setting the min date for end Date
 			$scope.toDateOptions.minDate = refData.block_from;
 
+			$scope.computeSegment();
+
 			//we are in outside of angular world
 			runDigestCycle();
+		}
+
+
+		/**
+		 * [computeSegment description]
+		 * @return {[type]} [description]
+		 */
+		$scope.computeSegment = function() {
+			// CICO-15107 --
+			var onFetchDemographicsSuccess = function(demographicsData) {
+					$scope.groupSummaryData.demographics = demographicsData.demographics;
+					updateSegment();
+				},
+				onFetchDemographicsFailure = function(errorMessage) {
+					console.log(errorMessage);
+				},
+				updateSegment = function() {
+					var aptSegment = ""; //Variable to store the suitable segment ID 
+					if (!!$scope.groupConfigData.summary.block_to && !!$scope.groupConfigData.summary.block_from) {
+						var dayDiff = Math.floor((new tzIndependentDate($scope.groupConfigData.summary.block_to) - new tzIndependentDate($scope.groupConfigData.summary.block_from)) / 86400000);
+						angular.forEach($scope.groupSummaryData.demographics.segments, function(segment) {
+							if (dayDiff < segment.los) {
+								if (!aptSegment)
+									aptSegment = segment.value;
+							}
+						});
+						$scope.groupSummaryData.computedSegment = !!aptSegment;
+						$scope.groupConfigData.summary.demographics.segment_id = aptSegment;
+					} else {
+						return false;
+					}
+				};
+
+			if ($scope.groupSummaryData.demographics === null) {
+				$scope.callAPI(RVReservationSummarySrv.fetchInitialData, {
+					successCallBack: onFetchDemographicsSuccess,
+					failureCallBack: onFetchDemographicsFailure
+				});
+			} else {
+				updateSegment();
+			}
 		}
 
 		/**
@@ -100,6 +141,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		var toDateChoosed = function(date, datePickerObj) {
 			$scope.groupConfigData.summary.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
+			$scope.computeSegment();
 			//we are in outside of angular world
 			runDigestCycle();
 		}
@@ -167,9 +209,18 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return undefined
 		 */		
 		$scope.openDemographicsPopup = function() {
+			if ($scope.isInAddMode()) {
+				// If the group has not been saved yet, prompt user for the same
+				$scope.errorMessage = ["Please save the group first"];
+				return;
+			}
+
 			$scope.errorMessage = "";
+
 			var showDemographicsPopup = function() {
 					$scope.groupSummaryData.isDemographicsPopupOpen = true;
+					// $scope.computeSegment();
+
 					demographicsMemento = angular.copy($scope.groupConfigData.summary.demographics);
 					ngDialog.open({
 						template: '/assets/partials/groups/summary/groupDemographicsPopup.html',
@@ -341,7 +392,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {Boolean}
 		 */
 		$scope.isCancellable = function() {
-			return !!$scope.groupConfigData.summary.is_cancelled || ($scope.groupConfigData.summary.total_checked_in_reservations == 0 && parseFloat($scope.groupConfigData.summary.balance) == 0.0);
+
+			return (rvPermissionSrv.getPermissionValue('CANCEL_GROUP') && !!$scope.groupConfigData.summary.is_cancelled || ($scope.groupConfigData.summary.total_checked_in_reservations == 0 && parseFloat($scope.groupConfigData.summary.balance) == 0.0));
 		}
 
 		/**
@@ -594,6 +646,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 			//we are resetting the API call in progress check variable
 			$scope.isUpdateInProgress = false;
+
+			//we have to refresh this data on tab siwtch
+			$scope.computeSegment();
 		});
 
 		/**
@@ -611,7 +666,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				newNote: "",
 
 				//This is required to reset Cancel when selected in dropdown but not proceeded with in the popup
-				existingHoldStatus: parseInt($scope.groupConfigData.summary.hold_status) 
+				existingHoldStatus: parseInt($scope.groupConfigData.summary.hold_status),
+				computedSegment: false
 			};
 
 			$scope.billingInfoModalOpened = false;
@@ -644,7 +700,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			//scroll above, and look for the event 'GROUP_TAB_SWITCHED'
 
 			//date related setups and things
-			setDatePickerOptions();				
+			setDatePickerOptions();	
+
+			$scope.computeSegment();			
 		}();
 	}
 ]);

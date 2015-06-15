@@ -109,6 +109,7 @@ sntRover.controller('roverController',
     $rootScope.isAddonOn = hotelDetails.is_addon_on;
     $rootScope.desktopSwipeEnabled = hotelDetails.allow_desktop_swipe;
 	$rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
+
     //set MLI Merchant Id
     try {
       sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
@@ -360,7 +361,7 @@ sntRover.controller('roverController',
       $scope.menuOpen = !$scope.menuOpen;      
       $scope.showHotelSwitchList = false;
       //save contact info in guestcard if any changes has been done -CICO-14273
-      $scope.$broadcast('updateContactInfo');
+      $scope.$broadcast('saveContactInfo');
       $scope.$broadcast('SAVELIKES');
     };
 
@@ -494,6 +495,7 @@ sntRover.controller('roverController',
     $scope.numberOfCordovaCalls = 0;
 
     var initiateDesktopCardReader = function(){
+
     	sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options);
     }
 
@@ -531,7 +533,6 @@ sntRover.controller('roverController',
 
     /*
      * Start Card reader now!.
-     * Time out is to call set Browser
      */
     if ($rootScope.paymentGateway != "sixpayments") {
   		/* Enabling desktop Swipe if we access the app from desktop ( not from devices) and  
@@ -608,7 +609,10 @@ sntRover.controller('roverController',
     };
 
     $rootScope.showWebsocketConnectionError = function() {
-    	$scope.$emit('hideLoader');
+
+
+      // Hide loading message
+      $scope.$emit('hideLoader');
         ngDialog.open({
           template: '/assets/partials/desktopSwipe/rvWebsocketConnectionError.html',
           className: 'ngdialog-theme-default1 modal-theme1',
@@ -701,8 +705,9 @@ sntRover.controller('roverController',
     /**
      * Handles the bussiness date change completion
      */
-    $rootScope.showBussinessDateChangedPopup = function() {
+    $rootScope.showBussinessDateChangedPopup = function(message) {
       $rootScope.isBussinessDateChanging = false;
+      $scope.bussinessDateMessage = message;
       // Hide loading message
       $scope.$emit('hideLoader');
       if (!$rootScope.isBussinessDateChanged) {

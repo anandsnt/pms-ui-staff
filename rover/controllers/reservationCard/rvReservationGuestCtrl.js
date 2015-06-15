@@ -312,7 +312,22 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			};
 
 			$scope.invokeApi(RVReservationGuestSrv.fetchGuestTabDetails, data, successCallback, errorCallback);
+                        
+                        var fetchGuestPrefSuccess = function(data){
+                            if (data.data){
+                                for (var i in data.data){
+                                    if (data.data[i].name === 'wakeup_call'){
+                                        $scope.activeWakeUp = data.data[i].active;
+                                    }
+                                }
+                            }
+                            
+                        };
+                        
+			$scope.invokeApi(RVReservationGuestSrv.fetchGuestPrefList, data, fetchGuestPrefSuccess, errorCallback);
 		};
+                $scope.activeWakeUp     = false;
+                $scope.activeNewsPapaer = false;
 
 
 		$scope.init();

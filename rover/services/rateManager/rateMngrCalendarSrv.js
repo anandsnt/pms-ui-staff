@@ -80,6 +80,9 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			//var url =  '/sample_json/rate_manager/daily_rates.json';	
 			BaseWebSrvV2.getJSON(urlString).then(function(data) {
 				that.dailyRates = data; 
+                                if (fetchingRooms){
+                                    data.room_type_restrictions = data.room_types;
+                                }
                                 that.fetchingRooms = fetchingRooms;
 
 				var calendarData = that.calculateRateViewCalData();
@@ -141,7 +144,6 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 				deferred.resolve( {} );	
 				return;
 			};
-			console.log('here');
 			var url = "/api/daily_rates/" + params.id;
 			//To pass the selected rate id and name to the controller.
 			//In situations where the rate is not manually selected by user, 
@@ -175,8 +177,6 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	};
 
 	this.updateRestrictions = function(params){
-            console.log('here');
-
 		var url =  '/api/daily_rates';	
 		var deferred = $q.defer();
 		BaseWebSrvV2.postJSON(url, params).then(function(data) {
@@ -299,7 +299,6 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		// Format restriction Types as required by UI, and make it a dict for easy lookup 
                 var fetchingRooms = false;
                 if (fetchingRooms){
-                    console.log('fetching rooms to calculate view cal data');
                     this.hasAnyHourlyRate = this.checkIfAnyHourlyRatePresent(that.dailyRates.result.room_types[0].room_types);
                 } else {
                     this.hasAnyHourlyRate = this.checkIfAnyHourlyRatePresent(that.dailyRates.results[0].rates);

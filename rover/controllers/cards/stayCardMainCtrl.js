@@ -681,13 +681,14 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				//  In case of updating a reservation from Diary
 				// the reservation's already attached demographics
 				// information must be preserved. 
-
-				//CICO-16927 - added undefined check for demographics
+			    
+			    //CICO-16927 - added undefined check for demographics
 				room.demographics = {
 					market: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.market_segment_id) ? '' : tData.rooms[index].demographics.market_segment_id,
 					source: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.source_id) ? '' : tData.rooms[index].demographics.source_id,
 					reservationType: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.reservation_type_id) ? '' : tData.rooms[index].demographics.reservation_type_id,
-					origin: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.booking_origin_id) ? '' : tData.rooms[index].demographics.booking_origin_id
+					origin: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.booking_origin_id )? '' : tData.rooms[index].demographics.booking_origin_id,
+					segment: (typeof tData.rooms[index].segment === "undefined" || !tData.rooms[index].demographics.segment_id )? '' : tData.rooms[index].demographics.segment_id
 				}
 
 				// put the same stuff in the reservationData obj as well
@@ -769,9 +770,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 		$scope.staycardClicked = function() {
 			//save contact info
-			if (!$scope.viewState.isAddNewCard && $scope.reservationDetails.guestCard && !!$scope.reservationDetails.guestCard.id) {
-				$scope.$broadcast('saveContactInfo');
-			}
+			$scope.$broadcast('saveContactInfo');
 		};
 
 	}

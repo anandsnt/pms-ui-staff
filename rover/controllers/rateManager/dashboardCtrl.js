@@ -154,8 +154,8 @@ sntRover
     };
 
     $scope.showRatesBtnClicked = function(){
-        $scope.$broadcast("showRatesBtnClicked");
         $scope.toggleLeftMenu();
+        $scope.$broadcast("showRatesBtnClicked");
         $scope.$broadcast("updateRateCalendar");
         $scope.$broadcast("updateOccupancyGraph");
         

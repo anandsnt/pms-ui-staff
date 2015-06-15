@@ -93,7 +93,9 @@ angular.module('stayCardModule', [])
                 },
                 sortOrder: function(RVReservationBaseSearchSrv) {
                     return RVReservationBaseSearchSrv.fetchSortPreferences();
-
+                },
+                rateAddons: function(RVReservationBaseSearchSrv) {
+                    return RVReservationBaseSearchSrv.fetchAddonsForRates();
                 }
             }
         });
