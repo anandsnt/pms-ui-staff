@@ -56,16 +56,11 @@
             	<strong>Deposit Due</strong>
             	<div class="scrollable" ng-iscroll="deopositdue">
                 	<ul class="wrapper ">
-                    	<li ng-repeat="depositDue in depositBalanceData.data.depositDues"> 
+                    	<li ng-repeat="depositDue in depositBalanceData.data.deposit_dues" ng-class="{'paid': depositDue.paid, 'due': !depositDue.paid}"> 
                     	<!-- If in past/paid, add class "paid". If it's due, add class "due" -->
-                        {{depositDue.date}}date
-                        <span>{{currencySymbol}}{{depositDue.Value}}value</span>
-                    	</li>
-                    	<li > 
-                    	<!-- If in past/paid, add class "paid". If it's due, add class "due" -->
-                       	date
-                        <span>$value</span>
-                    	</li>
+                        {{depositDue.date}}
+                        <span>{{currencySymbol}}{{depositDue.Value}}</span>
+                    	</li>                  	
                     	                     
                 	</ul>
             	</div>
