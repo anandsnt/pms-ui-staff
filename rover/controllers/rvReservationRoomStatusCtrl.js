@@ -187,6 +187,11 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 	};
 
 	$scope.goToRoomUpgrades = function(){
+		// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
+		if( $scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id ){
+			return false;
+		};
+		
 		$state.go("rover.reservation.staycard.upgrades", {reservation_id:$scope.reservationData.reservation_card.reservation_id, "clickedButton": "upgradeButton"});
 	}
 
@@ -209,6 +214,10 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		if($scope.hasAnySharerCheckedin()){
 			return false;
 		}
+		// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
+		if( $scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id ){
+			return false;
+		};
 
 		if($scope.reservationData.reservation_card.is_hourly_reservation){
 			gotToDiaryInEditMode ();
