@@ -749,6 +749,8 @@
 
                 .highlight { color: @logoPrimary; }
 
+                .highlight { color: @logoPrimary; }
+
                 a,
                 .faux-anchor {
                     color: @textColor;
@@ -3167,8 +3169,22 @@
                                             }
 
                                             .button {
+                                                padding: 0 10px;
                                                 margin-right: 10px;
                                                 .pull-left;
+
+                                                &.batch {
+                                                    font-size: 14px;
+                                                    padding: 0 0 0 40px;
+                                                    text-align: left;
+                                                    width: 120px;
+
+                                                    .icons {
+                                                        top: 10px;
+                                                        left: 10px;
+                                                        margin: 0;
+                                                    }
+                                                }
 
                                                 &:last-child { margin-right: 0; }
                                             }
@@ -4361,6 +4377,10 @@
     }
 
 /* Registration             ==============================*/
+     /* Invoice ***/
+    .invoice { .hide; }
+
+    /* Registration content ***/
     .registration-content {
         position: relative;
         .calc-height(100, 50);
@@ -4802,9 +4822,6 @@
                 }
             }           
         }
-
-        /* Invoice ***/
-        .invoice { .hide; }
 
         .registration-card { .hide; }
 
@@ -9179,11 +9196,11 @@
                                         #pixel-to-percent > .width(144, 668);
                                     }
 
-                                    &:nth-of-type(2) { #pixel-to-percent > .width(96, 668); }
-                                    &:nth-of-type(3) { #pixel-to-percent > .width(96, 668); }
-                                    &:nth-of-type(4) { #pixel-to-percent > .width(96, 668); }
-                                    &:nth-of-type(5) { #pixel-to-percent > .width(96, 668); }
-                                    &:nth-of-type(6) { #pixel-to-percent > .width(96, 668); }
+                                    &:nth-of-type(2) { #pixel-to-percent > .width(100, 668); }
+                                    &:nth-of-type(3) { #pixel-to-percent > .width(100, 668); }
+                                    &:nth-of-type(4) { #pixel-to-percent > .width(100, 668); }
+                                    &:nth-of-type(5) { #pixel-to-percent > .width(100, 668); }
+                                    &:nth-of-type(6) { #pixel-to-percent > .width(140, 668); }
                                     &.edit { #pixel-to-percent > .width(60, 668); }
                                 }
 

@@ -416,7 +416,8 @@
     "GROUP_EMAIL":"Email",
     "GROUP_PRINT":"Print",
     "GROUP_DOWNLOAD":"Download",
-    "ADD_BILLING_INFO":"Add billing information"
+    "ADD_BILLING_INFO":"Add billing information",
+    "GROUP_BATCH" : "Reg.card"
 
 
 
@@ -609,6 +610,7 @@
     "CHECK_PAYMENT": "CHECK PAYMENT",
     "DIRECT_PAYMENT":"DIRECT PAYMENT",
     "ADD": "Add",
+    "CC_AUTH": "CC Auth",
     "NAME": "Name",
     "IN_GUEST_CARD":"In Guest Card",
     "SELECTED" : "Selected",

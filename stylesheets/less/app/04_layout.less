@@ -946,6 +946,35 @@ body { overflow: hidden; }
 						}
 					}
 				}
+
+				&:not(.dashboard) {
+					.entry {
+						&.search { .calc-width(50, 80); }
+						&.options { 
+							padding-right: 10px;
+							margin-right: 10px;
+							border-right: 1px solid rgba(0,0,0,.1);
+							.calc-width(50, 80); 
+						}
+					}
+
+					.refresh { 
+						margin-right: 10px;
+						.show; 
+					}
+
+					&:not(.has-options) {
+						.entry {
+							&.search {
+								padding-right: 10px;
+								margin-right: 10px;
+								border-right: 1px solid rgba(0,0,0,.1);
+								.calc-width(100, 150);
+							}
+						}
+					}
+				}
+
 			}
 		}
 	}
@@ -1056,23 +1085,6 @@ body { overflow: hidden; }
 						margin-right: 0;
 						border-right: 0;
 						.calc-width(50, 10); 
-					}
-				}
-
-				&:not(.dashboard) {
-					.entry {
-						&.search { .calc-width(50, 80); }
-						&.options { 
-							padding-right: 10px;
-							margin-right: 10px;
-							border-right: 1px solid rgba(0,0,0,.1);
-							.calc-width(50, 80); 
-						}
-					}
-
-					.refresh { 
-						margin-right: 10px;
-						.show; 
 					}
 				}
 			}	
@@ -1247,6 +1259,8 @@ body { overflow: hidden; }
 				margin-right: 20px;
 				.pull-left;
 				.flex(center);
+
+				> span:not(value) { margin-right: 0; }
 
 				&.value,
 				.value {

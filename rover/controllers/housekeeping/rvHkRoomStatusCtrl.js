@@ -61,7 +61,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				|| (fromState.name === 'rover.housekeeping.roomStatus' && toState.name !== 'rover.housekeeping.roomDetails')) {
 				
 				RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
-				$scope.currentFilters = angular.copy( RVHkRoomStatusSrv.currentFilters );
 
 				localStorage.removeItem( 'roomListScrollTopPos' );
 			};
@@ -111,6 +110,12 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.roomTypes          = roomTypes;
 		$scope.floors             = floors;
+
+		$scope.singleRoomType     = { id: undefined };
+		var selRoom = _.find($scope.roomTypes, function(type) { return type.isSelected });
+		if ( selRoom ) {
+			$scope.singleRoomType.id = selRoom.id;
+		};
 
 		$scope.workTypes          = [];
 		$scope.employees          = [];
@@ -291,6 +296,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.clearFilters = function() {
 			_.each($scope.roomTypes, function(type) { type.isSelected = false; });
+			$scope.currentFilters.singleRoomType = undefined;
 			RVHkRoomStatusSrv.roomTypes = angular.copy( $scope.roomTypes );
 
 			$scope.currentFilters = RVHkRoomStatusSrv.initFilters();
@@ -429,13 +435,22 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		    $scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, _data, _onAssignSuccess, _onAssignFailure);
 		};
 
+		$scope.singleRoomTypeFilter = function() {
+			_.each($scope.roomTypes, function(item) {
+				if ( item.id == $scope.singleRoomType.id ) {
+					item.isSelected = true;
+				} else {
+					item.isSelected = false;
+				};
+			});
+		};
+
 
 		$scope.printData = function() {
 			$scope.returnToPage = $_page;
 
 			$_updateFilters('page', 1);
 			$_updateFilters('perPage', 1000);
-			$_callRoomsApi();
 
 			function callback (data) {
 				$_fetchRoomListCallback(data);
@@ -452,6 +467,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		function printList () {
+			var domRoomInsertDelay = 250;
+
 			// add the orientation
 			$( 'head' ).append( "<style id='print-orientation'>@page { size: landscape; }</style>" );
 
@@ -470,7 +487,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		        if ( sntapp.cordovaLoaded ) {
 		            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
 		        };
-		    }, 100);
+		    }, domRoomInsertDelay);
 
 		    /*
 		    *	=====[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]=====
@@ -484,10 +501,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				// reset params to what it was before printing
 				$_page = $scope.returnToPage;
 				$_updateFilters('page', $_page);
-				$_updateFilters('perPage', 50);
+				$_updateFilters('perPage', $window.innerWidth < 599 ? 25 : 50);
 
 				$_callRoomsApi();
-		    }, 100);
+		    }, domRoomInsertDelay);
 		};
 
 

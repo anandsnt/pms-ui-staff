@@ -14,7 +14,7 @@
 </div>
 
 <!-- Search form -->
-<form method="get" action="" name="rooms-search-form" id="rooms-search-form" class="search-form room-search has-options" role="search" ng-class="{'has-options': isStandAlone, 'single-option': (isStandAlone && !topFilter.byWorkType), 'showing-filters': filterOpen }">
+<form method="get" action="" name="rooms-search-form" id="rooms-search-form" class="search-form room-search" role="search" ng-class="{'has-options': isStandAlone, 'single-option': (isStandAlone && !topFilter.byWorkType), 'showing-filters': filterOpen }">
     <button type="button" id="show-filters" class="filter button white with-icon only-icon" ng-click="showFilters()">
         <span class="icons icon-filter"></span>
         <span translate>FILTER_ROOMS</span>
@@ -237,6 +237,14 @@
                     </label>
                 </div>
             </div>
+            <div class="holder" ng-if="!isStandAlone">
+                <strong class="title" translate>ROOM_TYPE_FILTER_TITLE</strong>
+                <div class="select">
+                    <select ng-options="type.id as type.name for type in roomTypes"  ng-model="singleRoomType.id" ng-change="singleRoomTypeFilter()">
+                        <option selected translate>All Room Types</option>
+                    </select>
+                </div>
+            </div>
             <div class="holder">
                 <strong class="title" translate>RESERVATION_STATUS</strong>
                 <div class="entry radio-check">
@@ -258,6 +266,13 @@
                         <span class="icon-form icon-checkbox" ng-class="{'checked' : currentFilters.queued}"></span>
                         <input name="room-filters" type="checkbox" ng-model="currentFilters.queued">
                         <label translate>SHOW_QUEUED</label>
+                    </label>
+                </div>
+                <div class="entry radio-check">
+                    <label class="checkbox">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked' : currentFilters.lateCheckout}"></span>
+                        <input name="room-filters" type="checkbox" ng-model="currentFilters.lateCheckout">
+                        <label translate>Late Checkout</label>
                     </label>
                 </div>
             </div>
