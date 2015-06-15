@@ -1219,6 +1219,7 @@
                             &.check-out { background-position: 6px -101px; }
                             &.late-check-out { background-position: 6px -1901px; }
                             &.inhouse { background-position:  5px -128px; }
+                            &.late-check-out { background-position:  6px -1901px; }
                         }
 
                         .current,
@@ -1233,7 +1234,20 @@
                             &.check-out,
                             &.late-check-out { color: @red; }
                             &.inhouse { color: @blue; }
-                        }                        
+                        }  
+
+                        &.queued {
+                            position: relative;
+
+                            .icon-queued {
+                                position: absolute;
+                                top: 0;
+                                right: 0;
+                                background-position: 0 -4173px;
+                                width: 30px;
+                                height: 30px;
+                            }
+                        }                 
                     }
 
                     .show-vacant,
@@ -1651,6 +1665,7 @@
                             &.check-out { background-position: 8px -152px; }
                             &.late-check-out { background-position: 8px -2852px;}
                             &.inhouse { background-position: 8px -192px; }
+                            &.late-check-out { background-position: 8px -2852px; }
                         }
 
                         .current,
@@ -2161,6 +2176,25 @@
                                         &.full-width { padding-top: 0; }
                                     }
 
+                                    &.with-button,
+                                    &.only-button { 
+                                        .button {
+                                            position: relative;
+
+                                            .count {
+                                                position: absolute;
+                                                top: -6px;
+                                                right: -6px;
+                                                font-size: 12px;
+                                                line-height: 24px;
+                                                color: @white;
+                                                background-color: @softRedStart;
+                                                #border-radius > .rounded(24px);
+                                                .square(24px);
+                                            }
+                                        }
+                                    }
+
                                     &.with-button {
                                         .float;
 
@@ -2184,17 +2218,6 @@
                                                     top: 10px;
                                                     left: 10px;
                                                     margin-left: 0;
-                                                }
-
-                                                .count {
-                                                    position: absolute;
-                                                    top: -6px;
-                                                    right: -6px;
-                                                    font-size: 12px;
-                                                    line-height: 24px;
-                                                    background-color: @softRedStart;
-                                                    #border-radius > .rounded(24px);
-                                                    .square(24px);
                                                 }
                                             }
                                         }

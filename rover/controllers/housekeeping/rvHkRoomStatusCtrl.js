@@ -468,7 +468,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		function printList () {
-			var domRoomInsertDelay = 250;
+			var domRoomInsertDelay = 300;
 
 			// add the orientation
 			$( 'head' ).append( "<style id='print-orientation'>@page { size: landscape; }</style>" );
@@ -479,6 +479,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			// this will show the popup with full report
 		    $timeout(function() {
+		    	$scope.$emit('hideLoader');
 
 		    	/*
 		    	*	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
