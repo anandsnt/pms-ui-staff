@@ -11637,7 +11637,8 @@
             }
 
             .display {
-                width: 330px;
+                min-width: 110px;
+                max-width: 330px;
                 .pull-right;
 
                 li {
@@ -11742,6 +11743,53 @@
                 }
 
                 &.hidden { #fade > .out(); }
+            }
+
+            &.cc-transactions {           
+                .entry {
+                    .faux-select { 
+                        &.active { width: 100%; }
+                    }
+
+                    &.date { margin-left: 20px; }
+
+                    &.filter { 
+                        margin-left: 0;
+                        width: 180px; 
+                        position: relative;
+                    }
+
+                    &.action {
+                        margin-top: 20px;
+
+                        .button { line-height: 48px; }
+                    }
+                }
+
+                .display {
+                    min-width: 140px;
+                    max-width: 420px;
+
+                    li { width: 140px; }
+                }
+
+                .faux-select-options {
+                    position: absolute;
+                    top: 70px;
+                    left: 0;
+                    padding: 10px 0 0 0;
+                    .size(auto, 100%);
+
+                    .checkbox {
+                        padding: 0 20px 0 40px;
+                        line-height: 40px;
+                        margin: 0;
+                        .box-shadow();
+                        .size(40px, 100%);
+
+                        .icon-form { left: 10px; }
+                    }
+                }
             }
         }
 
