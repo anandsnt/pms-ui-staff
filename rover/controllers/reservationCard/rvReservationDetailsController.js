@@ -863,14 +863,12 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
     var manualAuthAPICall = function(){
 
     	var onAuthorizationSuccess = function(response){
-    		console.log(response);
     		$scope.$emit('hideLoader');
     		authSuccess(response);
     	};
 
     	var onAuthorizationFaliure = function(errorMessage){
     		$scope.$emit('hideLoader');
-    		$scope.errorMessage = errorMessage;
     		authFailure();
     	};
 
