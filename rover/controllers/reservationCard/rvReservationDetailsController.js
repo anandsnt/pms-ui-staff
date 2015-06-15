@@ -214,6 +214,11 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		);
 		$scope.shouldShowGuestDetails = false;
 		$scope.toggleGuests = function() {
+			// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
+			if( $scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id ){
+				return false;
+			};
+
 			$scope.shouldShowGuestDetails = !$scope.shouldShowGuestDetails;
 			if ($scope.shouldShowGuestDetails) {
 				$scope.shouldShowTimeDetails = false;
@@ -460,6 +465,11 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		};
 
 		$scope.extendNights = function() {
+			// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
+			if( $scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id ){
+				return false;
+			};
+		
 			// TODO : This following LOC has to change if the room number changes to an array
 			// to handle multiple rooms in future
 			if ($rootScope.isStandAlone) {
