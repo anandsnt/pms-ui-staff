@@ -59,9 +59,8 @@
                     	<li ng-repeat="depositDue in depositBalanceData.data.deposit_dues" ng-class="{'paid': depositDue.paid, 'due': !depositDue.paid}"> 
                     	<!-- If in past/paid, add class "paid". If it's due, add class "due" -->
                         {{depositDue.due_date}}
-                        <span>{{currencySymbol}}{{depositDue.due_amount}}</span>
-                    	</li>                  	
-                    	                     
+                        <span>{{currencySymbol}}{{depositDue.due_amount}}</span>                    	
+                    	</li>                 
                 	</ul>
             	</div>
         	</div>
