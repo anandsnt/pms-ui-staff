@@ -1037,7 +1037,7 @@ sntRover.controller('RVbillCardController',
 
 	$scope.continueWithoutCC = function(){
 		$scope.reservationBillData.is_cc_authorize_at_checkin_enabled = false;
-		$scope.clickedCompleteCheckin();
+		$scope.clickedCompleteCheckin(true);
 	};
 
 	$scope.continueAfterSuccessAuth = function(){
@@ -1159,10 +1159,82 @@ sntRover.controller('RVbillCardController',
 			}
 		});
 		return isSharerCheckedin;
-	}
+	};
+
+	// Handle checkin process with Autherization..
+	var performCCAuthAndCheckinProcess = function(data,isCheckinWithoutAuth){
+
+		if(isCheckinWithoutAuth){
+			// Perform checkin process without authorization..
+			data.authorize_credit_card = false;
+			$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback, $scope.completeCheckinFailureCallback);
+		}
+		else if($scope.reservationBillData.is_cc_authorize_at_checkin_enabled && $scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type == "CC"){
+		    // Performing cc autherization process..
+	    	$scope.isInProgressScreen = true;
+	    	$scope.isSuccessScreen = false;
+	    	$scope.isFailureScreen = false;
+	    	$scope.isCCAuthPermission = $scope.hasCCAuthPermission();
+		    	
+		    ngDialog.open({
+				template: '/assets/partials/bill/ccAuthorization.html',
+				className: '',
+				closeByDocument: false,
+				scope: $scope
+			});
+			data.authorize_credit_card = true;
+			$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinAuthSuccessCallback, $scope.completeCheckinFailureCallback);
+		}
+	};
+
+	var setFlagForPreAuthPopup = function(){
+		// CICO-17266 Setting up flags for showing messages ..
+	    $scope.message_incoming_from_room = false;
+	    $scope.message_out_going_to_room = false;
+	    $scope.message_out_going_to_comp_tra = false;
+
+	    if($scope.reservationBillData.routing_info.incoming_from_room){
+	    	$scope.message_incoming_from_room = true;
+	    }
+	    else if($scope.reservationBillData.routing_info.out_going_to_room){
+	    	$scope.message_out_going_to_room = true;
+	    }
+	    else if($scope.reservationBillData.routing_info.out_going_to_comp_tra){
+	    	$scope.message_out_going_to_comp_tra = true;
+	    }
+	};
+
+	// CICO-17266 Considering Billing info details before Auth..
+	var showPreAuthPopupWithBillingInfo = function(data){
+
+ 		$scope.clickedFullAuth = function(){
+ 			// @params : data , isCheckinWithoutAuth: false
+			performCCAuthAndCheckinProcess(data,false);
+			ngDialog.close();
+	    };
+
+	    $scope.clickedManualAuth = function(){
+	    	// As of now , Manual auth is performed at stay card..
+			// Proceeding checkin without authorization..
+			// @params : data , isCheckinWithoutAuth :true
+			$scope.reservationBillData.is_cc_authorize_at_checkin_enabled = false;
+			performCCAuthAndCheckinProcess(data,true);
+			ngDialog.close();
+	    };
+
+	    setFlagForPreAuthPopup();
+
+	    // CICO-17266 Considering Billing info details before Auth..
+	    ngDialog.open({
+			template: '/assets/partials/bill/ccAuthAndBillingInfoConfirm.html',
+			className: '',
+			closeByDocument: false,
+			scope: $scope
+		});
+	};
 
 	// To handle complete checkin button click
-	$scope.clickedCompleteCheckin = function(){
+	$scope.clickedCompleteCheckin = function(isCheckinWithoutPreAuthPopup){
 		if($scope.hasAnySharerCheckedin()){
 			// Do nothing , Keep going checkin process , it is a sharer reservation..
 		}
@@ -1239,27 +1311,14 @@ sntRover.controller('RVbillCardController',
 					};
 	 		    }
 
-	 		    // Performing cc autherization process..
-	 		    if($scope.reservationBillData.is_cc_authorize_at_checkin_enabled && $scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type == "CC"){
-	 		    	
-	 		    	$scope.isInProgressScreen = true;
-	 		    	$scope.isSuccessScreen = false;
-	 		    	$scope.isFailureScreen = false;
-	 		    	$scope.isCCAuthPermission = $scope.hasCCAuthPermission();
-	 		    	
-	 		    	ngDialog.open({
-						template: '/assets/partials/bill/ccAuthorization.html',
-						className: '',
-						closeByDocument: false,
-						scope: $scope
-					});
-					data.authorize_credit_card = true;
-					$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinAuthSuccessCallback, $scope.completeCheckinFailureCallback);
-	 		    }
+	 		    if(typeof isCheckinWithoutPreAuthPopup != 'undefined' && isCheckinWithoutPreAuthPopup){
+	 		    	// Directly performing checkin process without pre-auth popup.
+	 		    	performCCAuthAndCheckinProcess(data,true);
+	 		    }	
 	 		    else{
-	 		    	data.authorize_credit_card = false;
-					$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback, $scope.completeCheckinFailureCallback);
-				}
+		 		    // CICO-17266 PMS: Rover - CC Auth should consider Billing Information.
+		 		    showPreAuthPopupWithBillingInfo(data);
+		 		}
 			}
 		}
 	};
