@@ -1073,6 +1073,23 @@ sntRover.controller('RVbillCardController',
 		}
 	};
 
+	var setFlagForPreAuthPopup = function(){
+		// CICO-17266 Setting up flags for showing messages ..
+	    $scope.message_incoming_from_room = false;
+	    $scope.message_out_going_to_room = false;
+	    $scope.message_out_going_to_comp_tra = false;
+
+	    if($scope.reservationBillData.routing_info.incoming_from_room){
+	    	$scope.message_incoming_from_room = true;
+	    }
+	    else if($scope.reservationBillData.routing_info.out_going_to_room){
+	    	$scope.message_out_going_to_room = true;
+	    }
+	    else if($scope.reservationBillData.routing_info.out_going_to_comp_tra){
+	    	$scope.message_out_going_to_comp_tra = true;
+	    }
+	};
+
 	// CICO-17266 Considering Billing info details before Auth..
 	var showPreAuthPopupWithBillingInfo = function(data){
 
@@ -1091,20 +1108,8 @@ sntRover.controller('RVbillCardController',
 			ngDialog.close();
 	    };
 
-	    // CICO-17266 Setting up flags for showing messages ..
-	    $scope.message_incoming_from_room = false;
-	    $scope.message_out_going_to_room = false;
-	    $scope.message_out_going_to_comp_tra = false;
+	    setFlagForPreAuthPopup();
 
-	    if($scope.reservationBillData.routing_info.incoming_from_room){
-	    	$scope.message_incoming_from_room = true;
-	    }
-	    else if($scope.reservationBillData.routing_info.out_going_to_room){
-	    	$scope.message_out_going_to_room = true;
-	    }
-	    else if($scope.reservationBillData.routing_info.out_going_to_comp_tra){
-	    	$scope.message_out_going_to_comp_tra = true;
-	    }
 	    // CICO-17266 Considering Billing info details before Auth..
 	    ngDialog.open({
 			template: '/assets/partials/bill/ccAuthAndBillingInfoConfirm.html',
