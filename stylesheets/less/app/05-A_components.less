@@ -7379,6 +7379,25 @@
                                     &.break { width: 70%; }
                                 }
                             }
+
+                            &.bottom-row {
+                                th {
+                                    font-size: 14px;
+                                    line-height: 1.5;
+                                    vertical-align: middle;
+
+                                    span {
+                                        line-height: 30px;
+                                        margin-right: 5px;
+                                        height: 30px;
+                                        .calc-width(100, 5);
+                                    }
+
+                                    &:last-child {
+                                        span { width: 100%; }
+                                    }
+                                }
+                            }
                         }
                     }
 
@@ -7393,13 +7412,28 @@
                                 }
                             }
 
+                            &.total,
+                            &.grouped {
+                                td { font-weight: 600; }
+                            }
+
                             &.total {
                                 td { 
-                                    font-size: 16px;
-                                    font-weight: 600;
                                     background-color: transparent;
-                                    vertical-align: top;
                                     padding-top: 0;
+                                    vertical-align: top;
+                                }
+                            }
+
+                            &.grouped {
+                                td {
+                                    text-transform: uppercase;
+                                    
+                                    strong {
+                                        font-size: 15px;
+                                        font-weight: 600;
+                                        color: @textColor;
+                                    }
                                 }
                             }
                         }
@@ -7425,14 +7459,171 @@
                         }
                     }
 
-                    .date { 
-                        width: 100px;
-                        
-                        span { 
-                            vertical-align: middle;
-                            .show;
+                    .date { width: 100px; }
+
+                    .code { 
+                        width: 120px; 
+
+                        &.long-code { width: 200px; }
+                    }  
+
+                    &.medium-grid,
+                    &.large-grid {
+                        table-layout: auto;
+                        border-collapse: collapse;
+                        border-spacing: 0;
+
+                        thead {
+                            tr {
+                                th {
+                                    border-right: 1px solid rgba(0,0,0,.3);
+
+                                    &.break { 
+                                        padding-right: 0; 
+                                        border-right: 2px solid rgba(0,0,0,.3); 
+                                    }
+                                }
+
+                                &.bottom-row {
+                                    th { 
+                                        text-align: center;
+                                        border-right: 1px solid @grey2;
+                                        border-bottom: 1px solid @grey2;
+
+                                        &.break { border-right: 2px solid rgba(0,0,0,.3); }
+
+                                        &:last-child { border-right: 0; }
+                                    }
+                                }
+                            }
                         }
-                    }                
+
+                        tfoot {
+                            td { padding-top: 10px; }
+                        }
+
+                        tbody {
+                            tr {
+                                td {
+                                    padding: 5px;
+                                    text-align: center;
+                                    border-bottom: 1px solid @grey2;
+                                    border-right: 1px solid @grey2;
+
+                                    &.date,
+                                    &.code { text-align: left; }
+
+                                    &.break { border-right: 2px solid rgba(0,0,0,.3); }
+
+                                    &:last-child { border-right: 0; }
+                                }
+
+                                &.grouped {
+                                    td {
+                                        color: @grey3;
+                                        font-weight: 400;
+                                        background-color: transparent;
+                                        padding: 0;
+
+                                        &.break { border-right: 2px solid rgba(0,0,0,.3); }
+                                    }
+                                }
+
+                                &:not(.grouped) {
+                                    &:nth-child(odd) {
+                                        td { background-color: @grey1; }
+                                    }
+
+                                    &.weekend {
+                                        td { background-color: rgba(0,0,0,.05); }
+                                    }
+                                }
+
+                                &.total {
+                                    td { 
+                                        background-color: transparent; 
+                                        border-bottom: 0;
+                                    }
+                                }
+                            }
+                        }
+
+                        .break {
+                            position: static;
+                            padding-right: auto;
+
+                            &:after { .hide; }
+                        }                    
+                    }
+
+                    &.medium-grid {
+                        tbody {
+                            tr {
+                                &.grouped {
+                                    td {
+                                        padding-top: 40px;
+                                    }
+
+                                    &:first-child {
+                                        td { padding-top: 5px; }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    &.large-grid {
+                        tbody {
+                            tr {
+                                td {
+                                    &.vertical { 
+                                        text-align: left; 
+                                        padding: 0;
+
+                                        .row {
+                                            padding: 5px; 
+                                            border-bottom: 1px solid rgba(0,0,0,.1);
+                                            .show;
+
+                                            strong {
+                                                font-weight: 400;
+                                                
+                                                em { 
+                                                    font-size: 12px;
+                                                    padding-left: 5px;
+                                                    color: @grey3; 
+                                                    width: 80px;
+                                                }
+                                            }
+
+                                            &.cells {
+                                                display: flex;
+
+                                                strong { 
+                                                    width: 50%;
+                                                    overflow: hidden;
+                                                    .pull-left;
+
+                                                    &:first-child { 
+                                                        display: flex-start;
+                                                        text-align: left;
+                                                        border-right: 1px solid rgba(0,0,0,.1);
+                                                    } 
+
+                                                    &:last-child { 
+                                                        display: flex-end;
+                                                        text-align: right;
+                                                    }
+                                                }
+                                            }
+
+                                            &:last-child { border-bottom: 0; }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }               
                 }
 
                 &.occupancy-footer { .hide; }
