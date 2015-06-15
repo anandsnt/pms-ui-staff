@@ -40,7 +40,7 @@
 		<!-- CICO-17067 : If there are buttons to show, otput this as well: -->
 	    <div class="actions">
 
-	        <button ng-click="showAuthAmountPopUp()" ng-show="reservationData.reservation_card.payment_method_used === 'CC'" type="button" class="button green with-icon">
+	        <button ng-click="showAuthAmountPopUp()" ng-show="displayButton(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.payment_method_used === 'CC' && isStandAlone" type="button" class="button green with-icon">
 	            <span class="icons icon-cc"></span>
 	            {{ 'CC_AUTH' | translate }}
 	        </button>
@@ -59,13 +59,6 @@
 	  			<span class="value code"></span>
 	  			{{ 'PAYMENT_NOT_ADDED' | translate }}
 		</a>
-
-		<div ng-click="showAddNewPaymentModel()" class="actions payment_actions" ng-show="displayButton(reservationData.reservation_card.reservation_status) && (reservationData.reservation_card.payment_method_used === '' || reservationData.reservation_card.payment_method_used === null)">
-			<a class="add-new-button open-modal" > + {{ 'ADD' | translate }}</a>
-		</div>
-		<div ng-click="showAddNewPaymentModel()" class="actions payment_actions" ng-show="displayButton(reservationData.reservation_card.reservation_status) &&  reservationData.reservation_card.payment_method_used !== null &&  reservationData.reservation_card.payment_method_used === 'CC'">
-			<a class="add-new-button open-modal" > + {{ 'ADD' | translate }}</a>
-		</div>
 
 	</form> 
 </span>
