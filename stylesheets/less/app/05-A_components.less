@@ -1232,7 +1232,20 @@
                             &.check-in { color: @green; }
                             &.check-out { color: @red; }
                             &.inhouse { color: @blue; }
-                        }                        
+                        }  
+
+                        &.queued {
+                            position: relative;
+
+                            .icon-queued {
+                                position: absolute;
+                                top: 0;
+                                right: 0;
+                                background-position: 0 -4173px;
+                                width: 30px;
+                                height: 30px;
+                            }
+                        }                 
                     }
 
                     .show-vacant,
@@ -1643,6 +1656,7 @@
                             &.check-in { background-position: 8px -112px; }
                             &.check-out { background-position: 8px -152px; }
                             &.inhouse { background-position: 8px -192px; }
+                            &.late-check-out { background-position: 8px -2852px; }
                         }
 
                         .current,
