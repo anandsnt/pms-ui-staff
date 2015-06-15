@@ -17,17 +17,17 @@
             </div>
         </div>
 
-        <button type="button" class="button green">New Action</button>
+        <button type="button" class="button green" ng-click='initNewAction()'>New Action</button>
     </div>
 
-    <section class="actions-content" role="main" ng-if='actions.totalCount > 0'> <!-- Add class "no-content" if no actions for room -->
+    <section class="actions-content" role="main" ng-if='actions.totalCount > 0 || actionSelected === "new"' ng-class="{'action-full-view': actions.totalCount === 0 && actionSelected === 'new'}"> <!-- Add class "no-content" if no actions for room -->
 
         <!-- Actions list -->
-        <div class="content-left">
-            <div class="scrollable"> <!-- Attach iScroll here -->
+        <div class="content-left" ng-if='actions.totalCount > 0'>
+            <div class="scrollable" ng-iscroll="rvActionListScroller" ng-iscroll-delay="500"> <!-- Attach iScroll here -->
                 <ul class="wrapper">
                     <li ng-repeat="action in actions" ng-click="selectAction(action)" ng-class="{'active': action.id == selectedAction.id}"> <!-- Add class "overdue" when past due date. Add class "active" when selected, first one should be active by default when screen is loaded -->
-                        <span class="icons icon-action icon-{{action.action_status}}" ng-class="{'active': action.id == selectedAction.id}" > <!-- makes each icon a white version for visibility when section is 'active'-->
+                        <span class="icons icon-action icon-{{action.action_status}}" ng-class="{'active': action.id == selectedAction.id, 'action-set-mid': action.over_due == false && action.action_task_type == null}"> <!-- makes each icon a white version for visibility when section is 'active'-->
                             <!-- If overdue, output "Overdue " -->
                             <!--{Alert|Trace|Request} -->
                             <span ng-if="action.over_due" class="actions-overdue-font" ng-class="{'active': action.id == selectedAction.id}" translate>OVERDUE</span><br />
@@ -45,7 +45,7 @@
         </div>
 
         <!-- Action summary -->
-        <div class="content-right" ng-show="actionSelected === true"> 
+        <div class="content-right" ng-show="actionSelected === 'selected'"> 
             <div class="summary">
                 <div id="action-summary">
                     <h3>{{selectedAction.description}}</h3>
@@ -89,42 +89,12 @@
 
                 <!-- NEW ACTION
                 When "New action" is pressed, replace L37-L70 with L74-L108:
-                    <span class="h2 message">New Action</span>
-                    <div class="entry full-width">
-                        <label for="department">Assign to Department</label>
-                        <div class="select">
-                            <select id="department" class="placeholder"> // Remove class "placeholder" when Department is selected
-                                <option value="" selected>Select department</option>
-                                <option value="{Department}">{Department}</option>
-                                ... repeat for all
-                            </select>
-                        </div>
-                    </div>
-                    <div class="entry date margin">
-                        <label for="due-date">Date Due</label>
-                        <button class="clear-query"> // Add class "visible" to show (when date is not blank)
-                            <span class="icons icon-clear-search">Clear query</span>
-                        </button>
-                        <input id="due-date" type="text" class="datepicker" value="{Due Date}" readonly />
-                    </div>
-                    <div class="entry">
-                        <label for="due-time">Time Due</label>
-                        <div class="select">
-                            <select id="due-time">
-                                <option value="00:00">00:00</option>
-                                ...
-                            </select>
-                        </div>
-                    </div>
-                    <div class="entry full-width">
-                        <label for="notes">Notes</label>
-                        <textarea id="notes" name="notes" placeholder="Enter message..."rows="4"></textarea>
-                    </div> 
-                    <div class="actions">
-                        <button type="button" class="button green">Post Action</button> 
-                        <button type="button" class="button blank">Cancel</button> 
-                    </div> 
                 -->
+                
+        
+                
+                
+                
 
                 <!-- ASSIGN 
                 When "Assign" or "Reassign" is pressed, replace L37-L70 with L113-L127:
@@ -146,6 +116,43 @@
                 -->
             </div>
         </div>
+        
+        <div class="content-right" ng-show="actionSelected === 'new'" ng-class="{'action-full-view': actions.totalCount === 0}"> 
+            <div class="summary">
+                    <span class="h2 message">New Action</span>
+                    <div class="entry full-width">
+                        <label for="department">Assign to Department</label>
+                        <div class="select">
+                            <select id="department" class="placeholder" ng-model="newAction.department" ng-options="department.name for department in departments"> 
+                                <option value="" selected>Select department</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="entry date margin" ng-click='showCalendar()'>
+                        <label for="due-date">Date Due</label>
+                        <input id="due-date" type="text" class="datepicker" value="" readonly />
+                    </div>
+                    <div class='entry actions-mid'></div>
+                      
+                    <div class="entry actions-end">
+                        <label for="due-time">Time Due</label>
+                        <div class="select">
+                            <select id="due-time" ng-model="newAction.time_due" ng-options="time.value for time in timeFieldValue">
+                                <option value="00:00"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="entry full-width">
+                        <label for="notes">Notes</label>
+                        <textarea id="notes" ng-model='newAction.notes' name="notes" placeholder="Enter message..." rows="4"></textarea>
+                    </div> 
+                    <div>
+                        <button type="button" class="button green" ng-click='postAction()'>Post Action</button> 
+                        <button type="button" class="button blank" ng-click='cancelNewAction()'>Cancel</button> 
+                    </div> 
+                </div> 
+            </div>
+                <!-- // New Action -->
   
         <!-- If no content, output this instead of left/right side:
         <div class="info">
