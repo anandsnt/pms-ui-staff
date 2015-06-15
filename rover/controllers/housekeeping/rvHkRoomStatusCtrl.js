@@ -61,6 +61,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				|| (fromState.name === 'rover.housekeeping.roomStatus' && toState.name !== 'rover.housekeeping.roomDetails')) {
 				
 				RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
+				RVHkRoomStatusSrv.resetRoomTypes();
 
 				localStorage.removeItem( 'roomListScrollTopPos' );
 			};
