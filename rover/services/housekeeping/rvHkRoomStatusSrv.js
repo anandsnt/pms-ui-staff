@@ -283,9 +283,8 @@ sntRover.service('RVHkRoomStatusSrv', [
 				BaseWebSrvV2.getJSON(url)
 					.then(function(data) {
 						this.roomTypes = data.results;
-						
-						this.resetRoomTypes();
 
+						this.resetRoomTypes();
 						deferred.resolve(this.roomTypes);
 					}.bind(this), function(data) {
 						deferred.reject(data);
@@ -542,6 +541,10 @@ sntRover.service('RVHkRoomStatusSrv', [
 					room.enterStatusClass = 'no-show';
 					break;
 			}
+
+			if ( room.is_late_checkout ) {
+				room.leaveStatusClass = 'late-check-out';
+			};
 		};
 
 		// when user edit the room on details page

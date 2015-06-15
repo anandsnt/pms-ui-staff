@@ -102,7 +102,7 @@
               <!-- Show only if applicable, {arrival-time} can be time or 'IN' if arrived -->
               <span bo-text="room.timeOrIn"></span>
             </div>
-            <div bo-if="!room.is_occupied" class="show-vacant">VACANT</div>
+            <span bo-if="room.is_queued" class="icon icon-queued"></div>
           </div>
 
           <!-- Show if room is assigned or ooo/oos -->
@@ -122,6 +122,9 @@
             <span bo-if="room.is_vip" class="vip" translate>VIP</span>
             <img bo-src-i="{{room.avatar_src}}" alt="" />
           </figure>
+            
+          <!-- Show only if room is vacant -->
+          <div bo-if="!room.is_occupied" class="show-vacant">VACANT</div>
         </a>
     </li>
 
