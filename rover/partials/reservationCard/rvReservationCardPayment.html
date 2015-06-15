@@ -50,7 +50,7 @@
 			</button>
 
 			<button  ng-click="showAddNewPaymentModel()" class="actions payment_actions" ng-show="displayButton(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.payment_method_used !== null">
-				<a class="add-new-button update-centre" > + {{ 'ADD' | translate }}</a>
+				<a class="add-new-button" > + {{ 'ADD' | translate }}</a>
 			</button>
 
 	    </div>
@@ -63,8 +63,8 @@
 		<div ng-click="showAddNewPaymentModel()" class="actions payment_actions" ng-show="displayButton(reservationData.reservation_card.reservation_status) && (reservationData.reservation_card.payment_method_used === '' || reservationData.reservation_card.payment_method_used === null)">
 			<a class="add-new-button open-modal" > + {{ 'ADD' | translate }}</a>
 		</div>
-		<div ng-click="showAddNewPaymentModel()" class="actions payment_actions" ng-show="displayButton(reservationData.reservation_card.reservation_status) &&  reservationData.reservation_card.payment_method_used !== null &&  reservationData.reservation_card.payment_method_used !== 'CC'">
-			<a class="add-new-button open-modal update-centre" > + {{ 'ADD' | translate }}</a>
+		<div ng-click="showAddNewPaymentModel()" class="actions payment_actions" ng-show="displayButton(reservationData.reservation_card.reservation_status) &&  reservationData.reservation_card.payment_method_used !== null &&  reservationData.reservation_card.payment_method_used === 'CC'">
+			<a class="add-new-button open-modal" > + {{ 'ADD' | translate }}</a>
 		</div>
 
 	</form> 

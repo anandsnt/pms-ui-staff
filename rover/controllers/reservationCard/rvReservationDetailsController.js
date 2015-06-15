@@ -214,6 +214,11 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		);
 		$scope.shouldShowGuestDetails = false;
 		$scope.toggleGuests = function() {
+			// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
+			if( $scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id ){
+				return false;
+			};
+
 			$scope.shouldShowGuestDetails = !$scope.shouldShowGuestDetails;
 			if ($scope.shouldShowGuestDetails) {
 				$scope.shouldShowTimeDetails = false;
@@ -436,6 +441,17 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			});
 		};
 
+		/**
+		* we will not show "Nights" button in case of hourly, isNightsEnabled()
+		* as part of CICO-17712, we are hiding it for now (group rservation)
+		* @return {Boolean}
+		*/
+		$scope.shouldShowChangeStayDatesButton = function() {
+			return ($scope.isNightsEnabled() &&
+					!$scope.reservationData.reservation_card.is_hourly_reservation && 
+					$scope.reservationData.reservation_card.group_id.trim() === '' )
+		}
+
 		$scope.isNightsEnabled = function() {
 			var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
 			if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN') {
@@ -449,6 +465,11 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		};
 
 		$scope.extendNights = function() {
+			// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
+			if( $scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id ){
+				return false;
+			};
+		
 			// TODO : This following LOC has to change if the room number changes to an array
 			// to handle multiple rooms in future
 			if ($rootScope.isStandAlone) {
@@ -852,14 +873,12 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
     var manualAuthAPICall = function(){
 
     	var onAuthorizationSuccess = function(response){
-    		console.log(response);
     		$scope.$emit('hideLoader');
     		authSuccess(response);
     	};
 
     	var onAuthorizationFaliure = function(errorMessage){
     		$scope.$emit('hideLoader');
-    		$scope.errorMessage = errorMessage;
     		authFailure();
     	};
 
