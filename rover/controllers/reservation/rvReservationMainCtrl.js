@@ -1182,20 +1182,59 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.checkOccupancyLimit();
         };
 
+        var openRateAdjustmentPopup = function(room, index, lastReason) {
+            var popUpData = JSON.stringify({
+                    room        : room,
+                    index       : index,
+                    lastReason  : lastReason
+            });
+
+            ngDialog.open({
+                template        : '/assets/partials/reservation/rvEditRates.html',
+                className       : 'ngdialog-theme-default',
+                scope           : $scope,
+                closeByDocument : false,
+                controller      : 'RVEditRatesCtrl',
+                closeByEscape   : false,
+                data            : popUpData
+            });
+        };
+
+        /**
+         * success callback of fetch last rate adjustment reason
+         * @return undefined
+         */
+        var successCallBackOffetchLastRateAdjustReason = function(data, successcallbackParams) {
+            var room    = successcallbackParams.room,
+                index   = successcallbackParams.index,
+                reason  = data.reason;        
+            openRateAdjustmentPopup (room, index, reason);
+        };
+
+        /**
+         * we need to show last rate adjustment reason in the popup of rate adjustment
+         * @return undefined
+         */
+        var fetchLastRateAdjustReason = function(room, index) {
+            var params = {
+                reservation_id: $scope.reservationData.reservationId
+            };
+
+            var options = {
+                params                  : params,
+                successCallBack         : successCallBackOffetchLastRateAdjustReason,
+                successCallBackParameters: {
+                    room    : room,
+                    index   : index
+                }
+            };
+            $scope.callAPI(RVReservationCardSrv.getLastRateAdjustmentReason, options);          
+        };
 
         $scope.editReservationRates = function(room, index) {
-            ngDialog.open({
-                template: '/assets/partials/reservation/rvEditRates.html',
-                className: 'ngdialog-theme-default',
-                scope: $scope,
-                closeByDocument: false,
-                controller: 'RVEditRatesCtrl',
-                closeByEscape: false,
-                data: JSON.stringify({
-                    room: room,
-                    index: index
-                })
-            });
+            //as per CICO-14354, we need to show the last rate adjustment in comment textbox,
+            //so fetching that, we will show the popup in successcallback
+            fetchLastRateAdjustReason (room, index)
         };
 
         $scope.computeReservationDataforUpdate = function(skipPaymentData, skipConfirmationEmails, roomIndex) {
