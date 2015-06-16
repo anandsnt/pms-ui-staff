@@ -21,14 +21,38 @@
                     <h3><span translate>SITEMINDER_SUB_TITLE</span> </h3>
                 </div>
 
-                <div>
-                    <label>Mappings - Activate/Inactivate</label> <br>   
-
-                    <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: data.data.product_cross_customer.active }" ng-click="toggleSMClicked()">
-                        <input type="checkbox" name="siteminder-setup-active" id="siteminder-setup-active">
-                        <span class="switch-icon"></span>
-                    </div>
-                </div>
+                
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>
+                                <label><span translate>MAPPINGS_ACTIVATE_INACTIVATE</span></label>
+                            </th>
+                            <th>
+                            </th>
+                            <th>
+                                <label><span translate>SITEMINDER_FULL_REFRESH</span></label> 
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div style="top: -25px;" name="active-inactive-toggle" class="switch-button single" ng-class="{ on: data.data.product_cross_customer.active }" ng-click="toggleSMClicked()">
+                                    <input type="checkbox" name="siteminder-setup-active" id="siteminder-setup-active">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </td>
+                            <td style="width:30%"></td>
+                            <td>
+                                <button type="button" like-type="common" id="test-connection" class="button ng-binding blue sm-refresh-btn" ng-class="{'overlay': refreshButtonEnabled === 'disabled'}"" ng-click="runFullRefresh()" translate>
+                                RUN_REFRESH_BUTTON
+                                </button>
+                                <br>
+                                <label style="font-size:smaller"><span translate>SITEMINDER_LAST_REFRESH</span>: {{lastRefreshedTimeMark}}<br> at {{lastRefreshedTimeRef}}</label> 
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
                 <br>
 
                 <ad-textbox value="data.data.product_cross_customer.tracker_user_name" name="user-name" id="user-name" label="{{'SITEMINDER_USERNAME_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
