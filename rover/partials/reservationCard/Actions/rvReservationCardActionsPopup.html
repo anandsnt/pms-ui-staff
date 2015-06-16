@@ -63,7 +63,7 @@
                         <span class="label" ng-if="selectedAction.created_by_null">Created </span>
                         {{selectedAction.created_by.name}} {{selectedAction.created_at_date}} &#8226; {{selectedAction.created_at_time}} 
                     </div>
-                    <div class="entry action-info date" ng-click="showSelectCalendar()">
+                    <div class="entry action-info date" ng-click="showSelectCalendar()" ng-class="{'overlay': selectedAction.date_completed}">
                         <label for="due-date">Date Due</label>
                         <button class="clear-query"> <!-- Add class "visible" to show (when date is not blank) -->
                             <span class="icons icon-clear-search">Clear query</span>
@@ -72,7 +72,7 @@
                     </div>
                     <div ng-show="selectCalendarShow" class="ngmodal-uidate-wrap" id="selectCalendar" ng-include="'/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html'">
                     </div>
-                    <div class="entry action-info time" ng-class="{'overlay': !selectedAction.hasDate}">
+                    <div class="entry action-info time" ng-class="{'overlay': !selectedAction.hasDate || selectedAction.date_completed}">
                         <label for="due-time">Time Due</label>
                         <div class="select">
                             <select id="due-time" ng-model="selectedAction.time_due" ng-options="time.value for time in timeFieldValue" ng-change="onTimeChange()">
@@ -80,14 +80,15 @@
                             </select>
                         </div>
                     </div>
-                    <!-- If action completed, show this as well:
-                    <div class="notice">
-                        <span>Completed By</span>
-                        {Department} {Date Completed} &#8226; {Time Completed}
-                    </div> -->
                 </div>
 
-                <div class="detail-actions col-2">
+                
+                <div class="notice" ng-show="{{selectedAction.isCompleted}}">
+                    <span>Completed By</span>
+                    {{selectedAction.completed_by.name}} {{selectedAction.date_completed}} &#8226; {{selectedAction.time_completed}}
+                </div> 
+                
+                <div class="detail-actions col-2" ng-hide="{{selectedAction.isCompleted}}">
                     <button type="button" class="button white brand-text" ng-show="!selectedAction.assigned" ng-hide="selectedAction.assigned" ng-click="assignAction()">Assign</button> <!-- Change text to "Reassign" for assigned action -->
                     <button type="button" class="button white brand-text" ng-show="selectedAction.assigned" ng-hide="!selectedAction.assigned" ng-click="reassignAction()">Re-Assign</button> <!-- Change text to "Reassign" for assigned action -->
                     <button type="button" class="button white green-text" ng-click="completeAction()">Complete</button>
@@ -109,7 +110,7 @@
                  <label for="department">Department</label>
                  <div class="select">
                      <div class="select">
-                     <select id="department" ng-class="{'placeholder': departmentsCount > 0}" ng-model="departmentSelect.selected" ng-options="department.name for department in departments"> 
+                     <select id="department-assign-action" ng-class="{'placeholder': departmentsCount > 0}" ng-model="departmentSelect.selected" ng-options="department.name for department in departments"> 
                          <option value="">Select department</option>
                      </select>
                  </div>
@@ -130,7 +131,7 @@
                     <div class="entry full-width">
                         <label for="department">Assign to Department</label>
                         <div class="select">
-                            <select id="department" class="placeholder" ng-model="newAction.department" ng-options="department.name for department in departments"> 
+                            <select id="department-new-action" class="placeholder" ng-model="newAction.department" ng-options="department.name for department in departments"> 
                                 <option value="" selected>Select department</option>
                             </select>
                         </div>
@@ -161,14 +162,7 @@
                     </div> 
                 </div> 
             </div>
-                <!-- // New Action -->
-  
-        <!-- If no content, output this instead of left/right side:
-        <div class="info">
-            <span class="icon-no-content icon-actions"></span>
-            <strong class="h1">No Actions</strong>
-            <span class="h2">All is good in Room {Room No.}</span> // Verify correct copy for this line, I made it up
-        </div>-->
+        
     </section>
     
     <section class="actions-content no-content" role="main" ng-if='actions.length === 0' >

@@ -48,6 +48,17 @@ sntRover.service('rvActionTasksSrv',['$q', 'BaseWebSrvV2', function( $q, BaseWeb
             });
             return deferred.promise;
 	};
+	this.completeAction = function(params){
+            var deferred = $q.defer();
+            var url = "/api/action_tasks/"+params.action_task.id;
+
+            BaseWebSrvV2.putJSON(url, params).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+	};
         
 	this.fetchDepartments = function(){
 		var deferred = $q.defer();
@@ -60,6 +71,8 @@ sntRover.service('rvActionTasksSrv',['$q', 'BaseWebSrvV2', function( $q, BaseWeb
 		});	
 		return deferred.promise;
 	};
+        
+        
 
 
 }]);

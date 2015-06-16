@@ -99,6 +99,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             var action = a;
             $scope.selectedAction = action;
             $scope.setRightPane('selected');
+            $scope.clearAssignSection();
         };
         $scope.setRightPane = function(toView){
             //selected, new, assign, comment
@@ -290,7 +291,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             //switch back to selected view of lastSelected
             //just change the view to selected
             $scope.setRightPane('selected');
-            $scope.departmentSelect = {};
+            $scope.clearAssignSection();
         };
         
         
@@ -311,6 +312,37 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     } else {
                         list[x].hasDate = false;
                     }
+                    
+                    
+                    //debug console.log
+                    /*
+                    if ($scope.dbug <= 0){
+                        ++$scope.dbug;
+                        if (!list[x].date_completed){
+                            list[x].isCompleted = true;
+                            list[x].date_completed = '02/15/2015';
+                            list[x].time_completed = '11:59 PM';
+                            list[x].completed_by = {};
+                            
+                            if (list[x].assigned_to !== null){
+                                list[x].completed_by.name = list[x].assigned_to.name;
+                            } else {
+                                list[x].completed_by.name = 'Mike';
+                            } 
+                        }   else {
+                            list[x].isCompleted = false;
+                        }
+                    } else {
+                        list[x].isCompleted = false;
+                    }
+                    */
+                    
+                    
+                       
+                    
+                    
+                    
+                    
                     if (list[x].created_at){
                         list[x].created_at_time = getTimeFromDateStr(list[x].created_at);
                         list[x].created_at_date = getFormattedDate(list[x].created_at);
@@ -482,6 +514,10 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 }
             });
         };
+        $scope.clearAssignSection = function(){
+            $scope.departmentSelect.selected = {};
+        };
+        
         $scope.departmentSelect = {};
         $scope.assignDepartment = function(){
             var params = $scope.getBaseParams();
@@ -492,6 +528,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 var onSuccess = function(){
                     //switch back to selected
                     $scope.actionSelected = 'selected';
+                    $scope.clearAssignSection();
                 };
                 var onFailure = function(data){
                     //show failed msg, so user can try again-?
@@ -507,7 +544,9 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         
         $scope.completeAction = function(){
             //mark the selected action as complete, notify the api
-            
+            var params = $scope.getBaseParams();
+                params.action_task.id  = $scope.selectedAction.id;
+                
         };
         
         $scope.assignAction = function(){
@@ -515,11 +554,11 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         };
         
         $scope.reassignAction = function(){
-            $scope.departmentSelect.selected = {
-                name: $scope.selectedAction.assigned_to.name,
-                value: $scope.selectedAction.assigned_to.id
-            };
             $scope.actionSelected = 'assign';
+            //console.log('setting selected: '+$scope.selectedAction.assigned_to.name);
+           // $('#department-assign-action').val($scope.selectedAction.assigned_to.name);
+            //$scope.departmentSelect.selected.name = $scope.selectedAction.assigned_to.name;
+            //console.log($scope.departmentSelect);
         };
         
         $scope.getBaseParams = function(){
