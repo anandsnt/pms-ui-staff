@@ -1,6 +1,6 @@
 
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rvPermissionSrv' ,'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter',
-	function($scope, $rootScope, rvPermissionSrv ,RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter) {
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rvPermissionSrv' ,'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter', 'RVReservationStateService',
+	function($scope, $rootScope, rvPermissionSrv ,RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter, RVReservationStateService) {
 
 		// pre setups for back button
 		var backTitle,
@@ -821,6 +821,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			
 			//If it is a group reservation, which has extended the stay beyond the group staydates, then we will be taking the user to the room and rates screen after confirming the staydates
 			if($scope.stayDatesExtendedForOutsideGroup){
+				console.log("inside");
 				var stateParams = {
 						from_date: $scope.reservationParentData.arrivalDate,
 						to_date: $scope.reservationParentData.departureDate,
@@ -828,7 +829,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 						company_id: $scope.$parent.reservationData.company.id,
 						travel_agent_id: $scope.$parent.reservationData.travelAgent.id
 				};
-
+				RVReservationStateService.setReservationFlag('outsideStaydatesForGroup', true);
 				$scope.saveReservation('rover.reservation.staycard.mainCard.roomType', stateParams);
 			}else{
 				$scope.saveReservation('rover.reservation.staycard.reservationcard.reservationdetails', {
