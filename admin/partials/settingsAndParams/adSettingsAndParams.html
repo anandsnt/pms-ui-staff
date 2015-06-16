@@ -28,7 +28,7 @@
 						</div>
 						<ad-dropdown label="{{'CC_BATCH_PROCESSING' | translate }}" label-in-drop-down="{{'CC_BATCH_PROCESSING' | translate }}" list="ccBatchProcessingOptions" selected-Id='cc_batch_processing' required = "yes"></ad-dropdown>
 						<span ng-show="cc_batch_processing === 'HOTEL'" >
-							<ad-toggle-button is-checked="cc_auto_settlement_by_eod" label="Auto-Settlement by EOD" div-class="{{cc_batch_processing}}"></ad-toggle-button>
+							<ad-toggle-button is-checked="cc_auto_settlement_by_eod" label="{{'AUTO_SETTLEMENT_BY_EOD' | translate }}" div-class="{{cc_batch_processing}}"></ad-toggle-button>
 						</span>
 					</fieldset>
 					<fieldset class="holder right">

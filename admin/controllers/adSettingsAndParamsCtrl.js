@@ -1,7 +1,6 @@
 admin.controller('settingsAndParamsCtrl',['$scope','settingsAndParamsSrv','settingsAndParamsData','chargeCodes', function($scope,settingsAndParamsSrv,settingsAndParamsData,chargeCodes){
 
 	BaseCtrl.call(this, $scope);
-	$s = $scope;
 	$scope.ccBatchProcessingOptions = [{
             "value": "PAYMENT_GATEWAY",
             "name": "Payment Gateway"
