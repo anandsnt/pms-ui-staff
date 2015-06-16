@@ -195,7 +195,21 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                     data.availableRoomCount = util.convertToInteger(data.total_rooms) - util.convertToInteger(data.total_pickedup_rooms);
                     return data;
                 });
-
+                var roomTypesAndDataNotEditable = [],roomTypesAndDataEditable=[];
+                _.map($scope.roomTypesAndData, function(data) {                   
+                    if(data.can_edit ==false){
+                        roomTypesAndDataNotEditable.push(data);
+                    }else{
+                        roomTypesAndDataEditable.push(data);
+                    }                                        
+                });
+                $scope.roomTypesAndData=[];
+                roomTypesAndDataEditable.forEach(function(data){
+                    $scope.roomTypesAndData.push(data);
+                });
+                roomTypesAndDataNotEditable.forEach(function(data){
+                    $scope.roomTypesAndData.push(data);
+                });
                 //initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
                 $scope.selectedRoomType = $scope.roomTypesAndData.length > 0 ? $scope.roomTypesAndData[0].room_type_id : undefined;
 
