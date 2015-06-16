@@ -22,7 +22,7 @@
                     <div class="entry full-width">
                         <label translate>HOTEL_PICTURE</label>
                         <div class="file-upload with-preview">
-                            <span class="input">{{hotel_picture_file}}</span>
+                            <span class="input">{{hotel_picture_file || fileName}}</span>
                             <a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-show="isLogoAvailable(data.hotel_picture)" ng-click="data.hotel_picture = 'false'"></a>
                             <input type="file" ng-model="data.hotel_picture" accept="image/*" app-filereader />
                             <button type="button" class="button brand-colors">

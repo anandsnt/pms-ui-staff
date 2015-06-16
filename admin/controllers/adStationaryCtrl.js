@@ -4,12 +4,18 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 	$scope.errorMessage = '';
 	$scope.fileName = "Choose File....";
 	$scope.location_image_file = $scope.fileName;
-
+	$scope.memento = {
+		hotel_picture: "",
+		location_image: ""
+	}
 
 	$scope.init = function() {
 
 		var successCallbackOfFetch = function(data) {
 			$scope.data = {};
+
+			$scope.memento.hotel_picture = data.hotel_picture;
+			$scope.memento.location_image = data.location_image;
 
 			$scope.socialNetworks = [];
 			_.each(data.available_social_network_types, function(social) {
@@ -26,8 +32,6 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 				sorting: {
 					name: 'asc' // initial sorting
 				}
-			}, {
-				total: 0
 			});
 			$scope.$emit('hideLoader');
 			$scope.hotelTemplateLogoPrefetched = data.location_image;
@@ -51,7 +55,14 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 	// Save changes button actions.
 	$scope.clickedSave = function() {
 
-		var postingData = dclone($scope.data, ["guest_bill_template", "hotel_logo"]);
+		var filterKeys = ["guest_bill_template", "hotel_logo"];
+		if ($scope.data.hotel_picture == $scope.memento.hotel_picture) {
+			filterKeys.push('hotel_picture')
+		}
+		if ($scope.data.location_image == $scope.memento.location_image) {
+			filterKeys.push('location_image')
+		}
+		var postingData = dclone($scope.data, filterKeys);
 		//calling the save api
 		if ($scope.hotelTemplateLogoPrefetched == postingData.location_image) {
 			postingData.location_image = "";
