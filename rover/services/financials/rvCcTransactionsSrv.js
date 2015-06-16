@@ -39,7 +39,7 @@ sntRover.service('RVccTransactionsSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWeb
     		params.date = $rootScope.businessDate;
     	}
     	var url = "/api/cc?date="+params.date;
-        RVBaseWebSrv.getJSON(url).then(function (data) {
+        BaseWebSrvV2.getJSON(url).then(function (data) {
             
             data.approved.active = false;
 			data.declined.active = false;
@@ -53,6 +53,22 @@ sntRover.service('RVccTransactionsSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWeb
 			
 			deferred.resolve(data);
 
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+    /*
+     * Service function to post batch settle
+     * @return {object} payments
+     */
+    that.submitBatch = function () {
+        var deferred = $q.defer();
+        var url = "/api/cc/batch_settle";
+
+        BaseWebSrvV2.postJSON(url).then(function (data) {
+            deferred.resolve(data);
         }, function (data) {
             deferred.reject(data);
         });

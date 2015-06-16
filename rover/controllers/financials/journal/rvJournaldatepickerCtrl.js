@@ -38,7 +38,7 @@ sntRover.controller('RVJournalDatePickerController',['$scope','$rootScope','ngDi
                 }
                 else if($scope.clickedOn === 'TRANSACTIONS'){
                   $scope.data.transactionDate = $scope.date;
-                  $scope.$emit('transactionDateChanged');
+                  $rootScope.$emit('transactionDateChanged');
                 }
                 ngDialog.close();
             }

@@ -17,6 +17,19 @@ sntRover.controller('RVccTransactionsController', ['$scope','$filter','$statePar
 		$scope.popupCalendar('TRANSACTIONS');
 	};
 
+    // Handling TransactionDate date picker click
+    $scope.clickedSubmitBatch = function(){
+        var successCallBackSubmitBatch = function(data){
+            $scope.$broadcast('showErrorMessage', "");
+            $scope.$emit('hideLoader');
+        };
+        var failureCallBackSubmitBatch = function(data){
+            $scope.$broadcast('showErrorMessage', data);
+            $scope.$emit('hideLoader');
+        };
+        $scope.invokeApi(RVccTransactionsSrv.submitBatch, {}, successCallBackSubmitBatch,  failureCallBackSubmitBatch);
+    };
+
 	// Show calendar popup.
 	$scope.popupCalendar = function(clickedOn) {
 		$scope.clickedOn = clickedOn;
@@ -28,11 +41,6 @@ sntRover.controller('RVccTransactionsController', ['$scope','$filter','$statePar
       	});
     };
 
-    // Handle change transaction date
-    $scope.$on('transactionDateChanged',function(){
-        console.log("transactionDateChanged"+$scope.data.transactionDate);
-    });
-    
     // Handle Tab switch
     $scope.activatedTab = function(index){
     	$scope.data.activeTab = index;

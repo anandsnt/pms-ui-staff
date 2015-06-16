@@ -1,19 +1,23 @@
 <!-- Content for Payments -->
-<div ng-controller="RVccPaymentsController" id="cc-transactions-content" class="journal-content scrollable">
+<div ng-controller="RVccPaymentsController" id="cc-transactions-content" class="journal-content scrollable" ng-iscroll='payment_content'>
     <div class="wrapper">
-        <div class="journal-grid cc-transactions"> <!-- For print add class "print-summary" or "print-details" based on L51 checked status -->
+
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+        <div class="journal-grid cc-transactions" ng-class="{ 'print-summary':data.isPaymentToggleSummaryActive ,'print-details':!data.isPaymentToggleSummaryActive }">
+
             <div class="grid-group">
                 <!-- Approved -->
-                <a href="#payment-approved" class="transaction-title green has-arrow toggle">
+                <a ng-click="clickedApprovedTab()" class="transaction-title green has-arrow toggle" ng-class="{'active':data.paymentData.approved.active }">
                     <strong class="name">Approved</strong>
                 </a>
-                <div id="payment-approved" class="grid-charge hidden"> <!-- To show, remove class "hidden" when L73 is clicked -->
-                    <!-- CC Types -->
-                    <a href="#payment-approved-{cc-type}" class="transaction-title has-arrow toggle">
-                        <strong class="name">{Card Type}</strong>
-                        <span class="value">${Value}</span>
+                <div ng-show="data.paymentData.approved.active" class="grid-charge" ng-repeat="item in data.paymentData.approved"> 
+                    
+                    <a ng-click="clickedApprovedTransactionItem(item)" class="transaction-title has-arrow toggle" ng-class="{'active':item.active }">
+                        <strong class="name">{{item.description}}</strong>
+                        <span class="value">{{currencySymbol}}{{item.total_amount}}</span>
                     </a>
-                    <table id="payment-approved-{cc-type}" class="grid-items hidden"> <!-- To show, remove class "hidden" when L78 is clicked -->
+                    <table ng-show="item.active" class="grid-items"> 
                         <thead>
                             <tr>
                                 <th scope="col">Date &amp; Time</th>
@@ -27,30 +31,59 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>{Date Time}</td>
-                                <td>{Card No.}</td>
-                                <td>{User}</td>
-                                <td>{Room No.}</td>
-                                <td>{Reservation No.}</td>
-                                <td>{Guest Name}</td>
-                                <td>{Auth. Code}</td>
-                                <td>${Amount}</td> <!-- Show negative amount if refund -->
+                            <tr ng-repeat="transaction in item.cc_transactions">
+                                <td>{{transaction.date}}</td>
+                                <td>{{transaction.card_no}}</td>
+                                <td>{{transaction.user}}</td>
+                                <td>{{transaction.room_no}}</td>
+                                <td>{{transaction.reservation_no}}</td>
+                                <td>{{transaction.guest_name}}</td>
+                                <td>{{transaction.auth_no}}</td>
+                                <td>{{currencySymbol}}{{transaction.amount}}</td> 
                             </tr>
-                            ... repeat for each record
                         </tbody>
                     </table>
-                    ... repeat for each card type
                 </div>
-
+            
                 <!-- Declined -->
-                <a href="#payment-declined" class="transaction-title red has-arrow toggle">
+                <a ng-click="clickedDeclinedTab()"  class="transaction-title red has-arrow toggle" ng-class="{'active':data.paymentData.declined.active }">
                     <strong class="name">Declined</strong>
                 </a>
-                <div id="payment-declined" class="grid-group hidden"> <!-- To show, remove class "hidden" when L113 is clicked -->
-                    same as L77-L109, replace "approved" with "declined" in id attributes (or don't use id's if you don't need them)
+                <div ng-show="data.paymentData.declined.active" class="grid-charge" ng-repeat="item in data.paymentData.declined"> 
+
+                    <a ng-click="clickedDeclinedTransactionItem(item)" class="transaction-title has-arrow toggle" ng-class="{'active':item.active }">
+                        <strong class="name">{{item.description}}</strong>
+                        <span class="value">{{currencySymbol}}{{item.total_amount}}</span>
+                    </a>
+                    <table ng-show="item.active" class="grid-items"> 
+                        <thead>
+                            <tr>
+                                <th scope="col">Date &amp; Time</th>
+                                <th scope="col">Card No.</th>
+                                <th scope="col">User</th>
+                                <th scope="col">Room No.</th>
+                                <th scope="col">Reservation No.</th>
+                                <th scope="col">Guest Name</th>
+                                <th scope="col">Auth. Code</th>
+                                <th scope="col">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="transaction in item.cc_transactions">
+                                <td>{{transaction.date}}</td>
+                                <td>{{transaction.card_no}}</td>
+                                <td>{{transaction.user}}</td>
+                                <td>{{transaction.room_no}}</td>
+                                <td>{{transaction.reservation_no}}</td>
+                                <td>{{transaction.guest_name}}</td>
+                                <td>{{transaction.auth_no}}</td>
+                                <td>{{currencySymbol}}{{transaction.amount}}</td> 
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
