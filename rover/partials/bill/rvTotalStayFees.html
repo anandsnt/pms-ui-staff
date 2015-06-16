@@ -162,6 +162,7 @@
 						<span translate>EDIT</span>
 					</button>
 				</td>
+				<td></td>
 			</tr>
 			<!-- Show balance -->
 			<tr class="active edit" ng-hide="showGuestBalance(reservationBillData.reservation_status)">
@@ -182,9 +183,10 @@
 				</td>
 				<td>
 					<button type="button" class="button with-icon only-icon green" ng-click='showAdvancedBillDialog()' ng-show="showPayButton"> 
-						<span class="icons icon-wallet"></span> {{ 'PAY' | translate }}</span>  
+						    <span class="icons icon-wallet"></span> {{ 'PAY' | translate }}</span>  
 					</button>
 				</td>
+				<td></td>
 			</tr>
 			<tr class="active edit" ng-show="showGuestBalance(reservationBillData.reservation_status)">
 				<td colspan="3" class="total-label"> 
@@ -201,6 +203,7 @@
 						{{totalFeesArray.balance_amount}} 
 					</strong>
 				</td>
+				<td></td>
 				<td></td>
 			</tr>
 		</tfoot>
@@ -265,7 +268,7 @@
 						<span translate>EDIT</span> 
 					</button>
 				</td>
-				<td ng-if="hasMoveToOtherBillPermission()">
+				<td class="action" ng-if="hasMoveToOtherBillPermission()">
 	                <label class="checkbox inline"> 
 	                    <span class="icon-form icon-checkbox" ng-class="{'checked':feesData.isSelected}"></span>
 	                    <input ng-model="feesData.isSelected" type="checkbox"/>

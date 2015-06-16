@@ -5,10 +5,10 @@
         <span class="h2 message">Review CC Authorization</span>
         
         <!-- If to another room, show: -->
-        <span ng-if="message_incoming_from_room" class="notice">Some charges of this reservation are being routed <strong>to another room</strong>.</span>
+        <span ng-if="message_out_going_to_room" class="notice">Some charges of this reservation are being routed <strong>to another room</strong>.</span>
 
         <!-- If from another room, show -->
-        <span ng-if="message_out_going_to_room" class="notice">Charges <strong>from another room</strong> are being routed to this reservation.</span>
+        <span ng-if="message_incoming_from_room" class="notice">Charges <strong>from another room</strong> are being routed to this reservation.</span>
 
         <!-- If to company/ta/account, show: -->
         <span ng-if="message_out_going_to_comp_tra" class="notice">Some charges for this reservation are being routed <strong>to Company / Travel Agent / Account</strong>.</span>
