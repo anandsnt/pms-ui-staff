@@ -1,5 +1,6 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rvPermissionSrv' ,'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter',
-	function($scope, $rootScope, rvPermissionSrv ,RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter) {
+
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rvPermissionSrv' ,'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter', 'RVReservationStateService',
+	function($scope, $rootScope, rvPermissionSrv ,RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter, RVReservationStateService) {
 
 		// pre setups for back button
 		var backTitle,
@@ -464,6 +465,28 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			return false;
 		};
 
+		var hasPermissionToChangeStayDates = function() {
+			return rvPermissionSrv.getPermissionValue('CHANGE_DATES_ON_GROUP_RESERVATION');
+		};
+
+		$scope.isStayDatesChangeAllowed = function(){
+			isStayDatesChangeAllowed = false;
+
+			if($rootScope.isStandAlone && 
+				!$scope.reservationData.reservation_card.is_hourly_reservation && 
+				($scope.reservationData.reservation_card.reservation_status == 'CHECKING_IN' || 
+				 $scope.reservationData.reservation_card.reservation_status == 'RESERVED')){
+
+				isStayDatesChangeAllowed = true;
+
+				if(!hasPermissionToChangeStayDates()){
+					isStayDatesChangeAllowed = false;
+				}
+			}
+			return isStayDatesChangeAllowed;
+
+		}
+
 		$scope.extendNights = function() {
 			// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
 			if( $scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id ){
@@ -681,8 +704,12 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			// reservation_id, arrival_date, departure_date
 			$scope.errorMessage = "";
 			var onValidationSuccess = function(response) {
+
+
 					if (response.errors.length == 0) {
 						$scope.responseValidation = response.data;
+						$scope.stayDatesExtendedForOutsideGroup = (response.data.is_group_reservation &&response.data.outside_group_stay_dates) ? true: false;
+
 						ngDialog.open({
 							template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
 							className: '',
@@ -690,7 +717,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 							data: JSON.stringify({
 								is_stay_cost_changed: response.data.is_stay_cost_changed,
 								is_assigned_room_available: response.data.is_room_available,
-								is_rate_available: response.data.is_room_type_available
+								is_rate_available: response.data.is_room_type_available,
+								is_group_reservation: response.data.is_group_reservation,
+								is_outside_group_stay_dates: response.data.outside_group_stay_dates,
+								group_name: response.data.group_name,
 							})
 						});
 					} else {
@@ -793,15 +823,29 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			$scope.reservationParentData.arrivalDate = newArrivalDate;
 			$scope.reservationParentData.departureDate = newDepartureDate;
 			$scope.reservationParentData.rooms[0].stayDates = newStayDates;
+			
+			//If it is a group reservation, which has extended the stay beyond the group staydates, then we will be taking the user to the room and rates screen after confirming the staydates
+			if($scope.stayDatesExtendedForOutsideGroup){
+				console.log("inside");
+				var stateParams = {
+						from_date: $scope.reservationParentData.arrivalDate,
+						to_date: $scope.reservationParentData.departureDate,
+						fromState: $state.current.name,
+						company_id: $scope.$parent.reservationData.company.id,
+						travel_agent_id: $scope.$parent.reservationData.travelAgent.id
+				};
+				RVReservationStateService.setReservationFlag('outsideStaydatesForGroup', true);
+				$scope.saveReservation('rover.reservation.staycard.mainCard.roomType', stateParams);
+			}else{
+				$scope.saveReservation('rover.reservation.staycard.reservationcard.reservationdetails', {
+					"id": $stateParams.id,
+					"confirmationId": $stateParams.confirmationId,
+					"isrefresh": false
+				});
+			}
 
-			// console.log($scope.reservationParentData);
-			$scope.saveReservation('rover.reservation.staycard.reservationcard.reservationdetails', {
-				"id": $stateParams.id,
-				"confirmationId": $stateParams.confirmationId,
-				"isrefresh": false
-			});
 			$scope.closeDialog();
-		}
+		};
 
 		//reverse checkout process-
 		//show room already occupied popup
