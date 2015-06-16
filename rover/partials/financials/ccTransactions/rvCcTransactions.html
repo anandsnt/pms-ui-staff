@@ -4,7 +4,7 @@
     <!-- Header -->
     <form method="post" action="" id="cc-transactions-header" class="journal-header cc-transactions">
         
-        <div ng-click="clickedTransactionDate()" ng-show="data.activeTab === 0" class="entry date">
+        <div ng-click="clickedTransactionDate()" ng-show="data.activeTab == 0" class="entry date">
             <label for="cc-transactions-date">Date</label>
             <div class="entry-data">
                 <input ng-model="data.transactionDate" id="cc-transactions-date" type="text" class="datepicker" value="{{data.transactionDate}}" readonly />
@@ -13,16 +13,16 @@
                 <span class="year">{{data.transactionDate | date:'y'}}</span>
             </div>
         </div>
-        <div ng-show="data.activeTab === 0" class="entry action">
+        <div ng-show="data.activeTab == 0" class="entry action">
             <button type="button" class="button green">Submit Batch</button>
         </div>
 
         <ul class="display">
-            <li ng-class="{ 'active': data.activeTab === 0 }">
+            <li ng-class="{ 'active': data.activeTab == 0 }">
                 <span ng-click="activatedTab(0)" class="icons icon-navbar icon-payments">Payments</span>
                 ${Value}
             </li>
-            <li ng-class="{ 'active': data.activeTab === 1 }">
+            <li ng-class="{ 'active': data.activeTab == 1 }">
                 <span ng-click="activatedTab(1)" class="icons icon-navbar icon-authorizations">Authorizations</span>
                 ${Value}
             </li>

@@ -6,17 +6,17 @@ sntRover.controller('RVccTransactionsController', ['$scope','$filter','$statePar
 	$scope.setTitle($filter('translate')('MENU_CC_TRANSACTIONS'));
 
 	$scope.data = {};
-	$scope.data.activeTab = $stateParams.id == '' ? 0 : $stateParams.id;
+    $scope.data.activeTab = $stateParams.id == '' ? 0 : $stateParams.id;
     $scope.data.transactionDate = $rootScope.businessDate;
     
     $scope.data.isAuthToggleSummaryActive = true;
     $scope.data.isPaymentToggleSummaryActive = true;
 	
-	/* Handling TransactionDate date picker click */
+	// Handling TransactionDate date picker click
 	$scope.clickedTransactionDate = function(){
 		$scope.popupCalendar('TRANSACTIONS');
 	};
-console.log($scope.data.activeTab);
+
 	// Show calendar popup.
 	$scope.popupCalendar = function(clickedOn) {
 		$scope.clickedOn = clickedOn;
@@ -27,10 +27,15 @@ console.log($scope.data.activeTab);
 	        scope: $scope
       	});
     };
+
+    // Handle change transaction date
+    $scope.$on('transactionDateChanged',function(){
+        console.log("transactionDateChanged"+$scope.data.transactionDate);
+    });
     
+    // Handle Tab switch
     $scope.activatedTab = function(index){
     	$scope.data.activeTab = index;
-    	
     };
 
     
