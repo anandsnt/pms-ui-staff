@@ -19,7 +19,12 @@
 
         <button type="button" class="button green" ng-click='initNewAction()'>New Action</button>
     </div>
-
+    <div ng-show="errorMessage!=''" ng-class="{notice: errorMessage!=''}" class='error error_message' ng-switch on="errorMessage.length" ng-click="clearErrorMessage()">
+            <span class="close-btn" ng-click="clearErrorMessage()"></span>
+            <span class="actions-small-font">
+                            {{errorMessage}}
+            </span>
+    </div>
     <section class="actions-content" role="main" ng-if='actions.totalCount > 0 || actionSelected === "new"' ng-class="{'action-full-view': actions.totalCount === 0 && actionSelected === 'new'}"> <!-- Add class "no-content" if no actions for room -->
 
         <!-- Actions list -->
@@ -65,12 +70,12 @@
                         </button>
                         <input id="due-date" type="text" class="datepicker" value="{{selectedAction.due_at_date}}" readonly />
                     </div>
-                    <div ng-init="selectCalInit()" ng-show="selectCalendarShow" class="ngmodal-uidate-wrap" id="selectCalendar" ng-include="'/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html'">
+                    <div ng-show="selectCalendarShow" class="ngmodal-uidate-wrap" id="selectCalendar" ng-include="'/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html'">
                     </div>
-                    <div class="entry action-info time">
+                    <div class="entry action-info time" ng-class="{'overlay': !selectedAction.hasDate}">
                         <label for="due-time">Time Due</label>
                         <div class="select">
-                            <select id="due-time" ng-model="selectedAction.time_due" ng-options="time.value for time in timeFieldValue" ng-click="onTimeChange()">
+                            <select id="due-time" ng-model="selectedAction.time_due" ng-options="time.value for time in timeFieldValue" ng-change="onTimeChange()">
                                 <option value="00:00"></option>
                             </select>
                         </div>
@@ -83,39 +88,41 @@
                 </div>
 
                 <div class="detail-actions col-2">
-                    <button type="button" class="button white brand-text">Assign</button> <!-- Change text to "Reassign" for assigned action -->
-                    <button type="button" class="button white green-text">Complete</button>
+                    <button type="button" class="button white brand-text" ng-show="!selectedAction.assigned" ng-hide="selectedAction.assigned" ng-click="assignAction()">Assign</button> <!-- Change text to "Reassign" for assigned action -->
+                    <button type="button" class="button white brand-text" ng-show="selectedAction.assigned" ng-hide="!selectedAction.assigned" ng-click="reassignAction()">Re-Assign</button> <!-- Change text to "Reassign" for assigned action -->
+                    <button type="button" class="button white green-text" ng-click="completeAction()">Complete</button>
                 </div>
 
                 <!-- NEW ACTION
                 When "New action" is pressed, replace L37-L70 with L74-L108:
                 -->
                 
-        
-                
-                
-                
 
-                <!-- ASSIGN 
-                When "Assign" or "Reassign" is pressed, replace L37-L70 with L113-L127:
-                    <span class="h2 message">Assign</span>
-                    <div class="entry full-width">
-                        <label for="department">Assign to Department</label>
-                        <div class="select">
-                            <select id="department" class="placeholder"> // Remove class "placeholder" when Department is selected
-                                <option value="" selected>Select department</option>
-                                <option value="{Department}">{Department}</option>
-                                ... repeat for all
-                            </select>
-                        </div>
-                    </div>
-                    <div class="actions">
-                        <button type="button" class="button brand-colors">Assign</button> 
-                        <button type="button" class="button blank">Cancel</button> 
-                    </div> 
-                -->
+                    
             </div>
         </div>
+        
+        <div class="content-right" ng-show="actionSelected === 'assign'"> 
+            <div class="summary">
+             <span class="h2 message">Assign</span>
+             <div class="entry full-width">
+                 <label for="department">Department</label>
+                 <div class="select">
+                     <div class="select">
+                     <select id="department" ng-class="{'placeholder': departmentsCount > 0}" ng-model="departmentSelect.selected" ng-options="department.name for department in departments"> 
+                         <option value="">Select department</option>
+                     </select>
+                 </div>
+
+                 </div>
+             </div>
+             <div class="assign-reassign">
+                 <button type="button" class="button brand-colors" ng-class="{'overlay': !departmentSelect.selected.value}" ng-click="assignDepartment()">Assign</button> 
+                 <button type="button" class="button blank" ng-click="cancelAssign()">Cancel</button> 
+             </div> 
+            </div>      
+        </div>
+        
         
         <div class="content-right" ng-show="actionSelected === 'new'" ng-class="{'action-full-view': actions.totalCount === 0}"> 
             <div class="summary">
@@ -132,11 +139,11 @@
                         <label for="due-date">Date Due</label>
                         <input id="due-date" type="text" class="datepicker" value="{{newAction.date_due}}" readonly />
                     </div>
-                    <div ng-init="newCalInit()" ng-show="newCalendarShow" class="ngmodal-uidate-wrap" id="newCalendar" ng-include="'/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html'">
+                    <div ng-show="newCalendarShow" class="ngmodal-uidate-wrap" id="newCalendar" ng-include="'/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html'">
                     </div>
                     <div class='entry actions-mid'></div>
                       
-                    <div class="entry actions-end">
+                    <div class="entry actions-end"  ng-class="{'overlay': !newAction.hasDate}">
                         <label for="due-time">Time Due</label>
                         <div class="select">
                             <select id="due-time" ng-model="newAction.time_due" ng-options="time.value for time in timeFieldValue">
