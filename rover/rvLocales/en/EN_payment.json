@@ -18,6 +18,7 @@
     "CHECK_PAYMENT": "CHECK PAYMENT",
     "DIRECT_PAYMENT":"DIRECT PAYMENT",
     "ADD": "Add",
+    "CC_AUTH": "CC Auth",
     "NAME": "Name",
     "IN_GUEST_CARD":"In Guest Card",
     "SELECTED" : "Selected",

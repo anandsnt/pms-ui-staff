@@ -65,61 +65,7 @@
 					
 				</fieldset>
 
-				<div class="entry full-width" ng-show="isRoverCheckinRFID">
-
-				    
-					
-					<ad-dropdown label="{{'ROOM_KEY_SYSTEM_VENDOR' | translate }}" label-in-drop-down="{{'ROOM_KEY_SYSTEM_VENDOR' | translate }}" list="data.key_systems" selected-Id='data.selected_key_system' required = "yes"></ad-dropdown>
-
-		    		<div>
-			    		<label class="toggle-inline-label" translate>REMOVE_LEADING_ZEROS</label>
-	                    
-	                    <div class="switch-button toggle-inline-button" ng-class="{ 'on' :data.remove_leading_zero }" ng-click="data.remove_leading_zero = !data.remove_leading_zero"> <!-- Remove class "on" when checkbox is unchecked -->
-	                        <input id="campaign-status" type="checkbox"/>
-	                        <span class="switch-icon"></span>
-	                    </div>
-                    </div>
-
-				</div>
 				
-
-				<div class="form-title key-server-details-title" ng-show="isRoverCheckinRFID">
-						<h3><span translate>PRIMARY_KEY_DETAILS_TITLE</span></h3>
-					</div>
-				<div class="entry full-width" ng-show="isRoverCheckinRFID">
-				    
-					
-					<ad-textbox value="data.key_access_url" label = "{{'KEY_SYSTEM_ACCESS_URL' | translate }}" placeholder = "{{'KEY_SYSTEM_ACCESS_URL_PLACEHOLDER' | translate }}" required = "yes" ></ad-textbox>
-
-					<ad-textbox value="data.key_access_port" label = "{{'KEY_SYSTEM_ACCESS_PORT' | translate }}" placeholder = "{{'KEY_SYSTEM_ACCESS_PORT_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
-		    		
-		    		<ad-textbox value="data.key_username" label = "{{'KEY_SYSTEM_USENAME' | translate }}" placeholder = "{{'KEY_SYSTEM_USENAME_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
-
-		    		<ad-textbox value="data.key_password" inputtype="password" label = "{{'KEY_SYSTEM_PASSWORD' | translate }}" placeholder = "{{'KEY_SYSTEM_PASSWORD_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
-
-                    <ad-textbox value="data.max_primary_retries" inputtype="text" label = "{{'NUMBER_OF_RETRIES' | translate }}" placeholder = "{{'NUMBER_OF_RETRIES_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>				
-                    
-
-				</div>
-
-                <div class="form-title key-server-details-title" ng-show="isRoverCheckinRFID">
-						<h3><span translate>SECONDARY_KEY_DETAILS_TITLE</span></h3>
-					</div>
-				<div class="entry full-width" ng-show="isRoverCheckinRFID">	    
-
-		    		<ad-textbox value="data.secondary_key_access_url" label = "{{'KEY_SYSTEM_ACCESS_URL' | translate }}" placeholder = "{{'KEY_SYSTEM_ACCESS_URL_PLACEHOLDER' | translate }}" required = "yes" ></ad-textbox>
-
-					<ad-textbox value="data.secondary_key_access_port" label = "{{'KEY_SYSTEM_ACCESS_PORT' | translate }}" placeholder = "{{'KEY_SYSTEM_ACCESS_PORT_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
-		    		
-		    		<ad-textbox value="data.secondary_key_username" label = "{{'KEY_SYSTEM_USENAME' | translate }}" placeholder = "{{'KEY_SYSTEM_USENAME_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
-
-		    		<ad-textbox value="data.secondary_key_password" inputtype="password" label = "{{'KEY_SYSTEM_PASSWORD' | translate }}" placeholder = "{{'KEY_SYSTEM_PASSWORD_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
-                    
-                    <ad-textbox value="data.max_secondary_retries" inputtype="text" label = "{{'NUMBER_OF_RETRIES' | translate }}" placeholder = "{{'NUMBER_OF_RETRIES_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
-
-                    <ad-textbox value="data.secondary_revert_time" inputtype="text" label = "{{'REVERT_TIME' | translate }}" placeholder = "{{'REVERT_TIME_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>                    
-
-				</div>
 				
 				<div class="actions float">
 					<button type="button" ng-click="goBackToPreviousState()" class="button blank add-data-inline" translate>

@@ -165,7 +165,7 @@ var GridRowItem = React.createClass({
 			houseKeepingTaskStyle	= this.__formHouseKeepingStyle(data, display, m, end_time_ms),
 			left 					= (start_time_ms - x_origin) * px_per_ms + 'px',
 			is_balance_present	 	= data.is_balance_present,
-			show_outstanding_indicator = (data.reservation_status === 'check-in' && is_balance_present),
+			show_outstanding_indicator = ((data.reservation_status === 'check-in' || data.reservation_status === 'reserved') && is_balance_present),
 			row_item_class 			= 'occupancy-block' + ( state.editing ? ' editing' : '') 
 										+ (show_outstanding_indicator ? ' deposit-required': '');
 
