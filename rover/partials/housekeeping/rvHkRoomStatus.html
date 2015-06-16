@@ -47,7 +47,7 @@
         <span translate>Refresh</span>
     </button>
 
-    <button type="button" id="refresh-data" class="button blue with-icon only-icon print" ng-click="printData()">
+    <button ng-if="isStandAlone" type="button" id="refresh-data" class="button blue with-icon only-icon print" ng-click="printData()">
         <span class="icons icon-print"></span>
         <span translate>Print</span>
     </button>

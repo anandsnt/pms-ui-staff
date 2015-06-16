@@ -189,6 +189,7 @@ admin.controller('ADRulesRestrictionCtrl', [
         };
         $scope.selectSchedule = function(index){
             $scope.selectedSchedule = $scope.singleRule.schedules[index];
+            $scope.selectedScheduleIndex = index;
         }
 
         // open the form to edit a rule
@@ -197,6 +198,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             var callback = function(data) {          
                 $scope.singleRule = data;
                 $scope.selectedSchedule =  $scope.singleRule.schedules[0];
+                $scope.selectedScheduleIndex = 0;
                 $scope.singleRule.allow_deposit_edit = (data.allow_deposit_edit !=="" &&  data.allow_deposit_edit)? true : false;
                 $scope.showCancelForm = false;
                 $scope.showDepositForm = true;              

@@ -468,18 +468,19 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		function printList () {
-			var domRoomInsertDelay = 300;
+			var domRoomInsertDelay = 400;
 
 			// add the orientation
 			$( 'head' ).append( "<style id='print-orientation'>@page { size: landscape; }</style>" );
 
+			$scope.$emit('hideLoader');
+
 			/*
 			*	=====[ READY TO PRINT ]=====
 			*/
-
+		
 			// this will show the popup with full report
 		    $timeout(function() {
-		    	$scope.$emit('hideLoader');
 
 		    	/*
 		    	*	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
@@ -690,8 +691,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		function $_postProcessRooms() {
-			var _roomCopy     = {},
-				_processCount = 0,
+			var _processCount = 0,
 				_minCount     = 13,
 				i             = 0;
 
@@ -699,7 +699,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			// else : empty and hide loader
 			if ( $scope.uiTotalCount ) {
 				_processCount = Math.min( $scope.uiTotalCount, _minCount );
-				$timeout(_firstInsert, 100);
+				_firstInsert();
 			} else {
 				$scope.rooms = [];
 				_hideLoader();
@@ -707,14 +707,13 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			function _firstInsert () {
 				for ( i = 0; i < _processCount; i++ ) {
-					_roomCopy = angular.copy( $_roomList.rooms[i] );
-					$scope.rooms.push( _roomCopy );
+					$scope.rooms.push( $_roomList.rooms[i] );
 				};
 
 				// if   : more than '_minCount' results -> load '_processCount' to last
 				// else : hide loader
 				if ( $scope.uiTotalCount > _minCount ) {
-					$timeout(_secondInsert, 100);
+					$timeout(_secondInsert, 50);
 				} else {
 					_hideLoader();
 				};
@@ -722,8 +721,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			function _secondInsert () {
 				for ( i = _processCount; i < $scope.uiTotalCount; i++ ) {
-					_roomCopy = angular.copy( $_roomList.rooms[i] );
-					$scope.rooms.push( _roomCopy );
+					$scope.rooms.push( $_roomList.rooms[i] );
 				};
 
 				_hideLoader();
