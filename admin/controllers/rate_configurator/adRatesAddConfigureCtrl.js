@@ -296,6 +296,12 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         };
 
 
+        /*
+        * When we update a rate set, we will check for any update for the same in
+        * rate manager.If there is some update we will prompt user with following options
+        * a. Override b.Don't override and c.Cancel
+        */
+
         var setData = {};
         var selectedIndex = -1;
 
@@ -348,9 +354,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
             var rateManagerCheckSuccsess = function(data){
                 $scope.$emit('hideLoader');
-                data = {};
-                data.rate_manager_update_present = false;
-                if(data.rate_manager_update_present){
+                if(data.is_custom_rate_present){
                     popupRateManagerActions();
                 }
                 else{
@@ -358,7 +362,8 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                     callSaveOrUpdateSet();
                 };         
             };
-            rateManagerCheckSuccsess();
+
+            $scope.invokeApi(ADRatesConfigureSrv.rateManagerStatusCheck, {"id":setData.id}, rateManagerCheckSuccsess);
         };
 
         //Saves the individual set
