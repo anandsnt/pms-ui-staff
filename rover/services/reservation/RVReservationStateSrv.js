@@ -294,7 +294,7 @@ sntRover.service('RVReservationStateService', [
 							};
 							updateStayTaxes(taxApplied.taxDescription);
 						} else {
-							currentRoom.ratedetails.ratedetails[for_date][rate_id].roomtax = {
+							currentRoomRateDetails.roomTax = {
 								incl: 0.0,
 								excl: 0.0
 							};
