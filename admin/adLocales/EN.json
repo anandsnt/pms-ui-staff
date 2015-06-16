@@ -698,7 +698,22 @@
 "MAINTENANCE_REASONS":"Maintenance Reasons",
 "MAINTENANCE_REASON_PLACEHOLDER":"Enter maintenance reason",
 "ROOM_KEY_DELIVERY_MESSAGE_TITLE": "Enter room key delivery message",
-"SEND_INTERFACE_REQUEST": "Send Interface Request per status type"
+"SEND_INTERFACE_REQUEST": "Send Interface Request per status type",
+"KEY_A": "Key A",
+"KEY_A_PLACEHOLDER": "Key A",
+"KEY_B": "Key B",
+"KEY_B_PLACEHOLDER": "Key B",
+"SECTOR_AID": "Sector AID",
+"SECTOR_AID_PLACEHOLDER": "Sector AID",
+"REMOVE_ROOM_NUMBER_LEADING_ZEROS": "Remove room number leading zeros",
+"ENABLE_REMOTE_ENCODING": "Enable remote encoding",
+"ENABLE_MOBILE_APP_KEY": "Enable mobile app key",
+"DOOR_LOCK_INTERFACE": "Door Lock Interface"
+
+
+
+
+
 ,    
     
     "NAME":"Name",
@@ -765,6 +780,10 @@
     "CHANGE_BUSSINESS_DAY":"Change Business Day",
     "TIME_TO_CHANGE_BUSSINESS_DATE":"Time to change business date","SITEMINDER_SETUP_HEADER": "SiteMinder Setup",
 "SITEMINDER_SUB_TITLE": "SiteMinder API Access Configuration",
+"MAPPINGS_ACTIVATE_INACTIVATE": "Mappings - Activate/Inactivate",
+"SITEMINDER_FULL_REFRESH": "Full Refresh",
+"SITEMINDER_LAST_REFRESH": "Last Refresh",
+"RUN_REFRESH_BUTTON": "Run",
 "SITEMINDER_USERNAME_LABEL": "User Name",
 "SITEMINDER_DEFAULT_BOOKING_ORIGIN": "Default Origin of Booking",
 "SITEMINDER_DEFAULT_PAYMENT_METHOD": "Default Payment Method",

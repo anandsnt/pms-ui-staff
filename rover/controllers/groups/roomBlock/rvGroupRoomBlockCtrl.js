@@ -247,7 +247,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return undefined
 		 */
 		$scope.addTripleEntryRow = function(roomType) {
-			if (!!$scope.groupConfigData.summary.is_cancelled) {
+			if (!!$scope.groupConfigData.summary.is_cancelled || !roomType.can_edit) {
 				return false;
 			}
 			_.each(roomType.dates, function(element) {
@@ -265,7 +265,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return undefined
 		 */
 		$scope.addQuadrupleEntryRow = function(roomType) {
-			if (!!$scope.groupConfigData.summary.is_cancelled) {
+			if (!!$scope.groupConfigData.summary.is_cancelled || !roomType.can_edit) {
 				return false;
 			}
 			_.each(roomType.dates, function(element) {
@@ -277,6 +277,66 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			$scope.bookingDataChanging();
 			refreshScroller();
 		};
+
+		/**
+		 * should we wanted to disable single box entry
+		 * @param {Object} [dateData] [description]
+		 * @param {Object} - Room Type data row
+		 * @return {Boolean}
+		 */
+		$scope.shouldDisableSingleEntryBox = function(dateData, roomType) {			
+			return (!roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled);
+		};
+
+		/**
+		 * should we wanted to disable double box entry
+		 * @param {Object} [dateData] [description]
+		 * @param {Object} - Room Type data row
+		 * @return {Boolean}
+		 */
+		$scope.shouldDisableDoubleEntryBox = function(dateData, roomType) {			
+			return (!roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled);
+		};
+
+		/**
+		 * should we wanted to disable triple box entry
+		 * @param {Object} [dateData] [description]
+		 * @param {Object} - Room Type data row
+		 * @return {Boolean}
+		 */
+		$scope.shouldDisableTripleEntryBox = function(dateData, roomType) {			
+			return (!roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled);
+		};
+
+		/**
+		 * should we wanted to disable Quadruple box entry
+		 * @param {Object} [dateData] [description]
+		 * @param {Object} - Room Type data row
+		 * @return {Boolean}
+		 */
+		$scope.shouldDisableQuadrupleEntryBox = function(dateData, roomType) {			
+			return (!roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled);
+		};
+
+		/**
+		 * should we wanted to disable add triple button
+		 * @param {Object} [dateData] [description]
+		 * @param {Object} - Room Type data row
+		 * @return {Boolean}
+		 */
+		$scope.shouldDisableAddTripleButton = function(roomType) {			
+			return (!roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled);
+		};
+
+		/**
+		 * should we wanted to disable add triple button
+		 * @param {Object} [dateData] [description]
+		 * @param {Object} - Room Type data row
+		 * @return {Boolean}
+		 */
+		$scope.shouldDisableAddQuadrupleButton = function(roomType) {			
+			return (!roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled);
+		};		
 
 		/**
 		 * to copy the single & single_pick up value entered in the column
