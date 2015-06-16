@@ -1,6 +1,5 @@
-
 <!-- Content -->
-<section id="cc-transactions" class="content" role="main">
+<section ng-controller="RVccTransactionsController" id="cc-transactions" class="content" role="main">
     
     <!-- Header -->
     <form method="post" action="" id="cc-transactions-header" class="journal-header cc-transactions">
@@ -8,7 +7,7 @@
         <div ng-if="data.activeTab === 0" class="entry date">
             <label for="cc-transactions-date">Date</label>
             <div class="entry-data">
-                <input id="cc-transactions-date" type="text" class="datepicker" value="{Date}" readonly />
+                <input ng-click="clickedTransactionDate()" ng-model="data.transactionDate" id="cc-transactions-date" type="text" class="datepicker" value="{{data.transactionDate}}" readonly />
                 <strong class="day">{{data.transactionDate | date:'d'}}</strong>
                 <span class="month">{{data.transactionDate | date:'MMMM'}}</span>
                 <span class="year">{{data.transactionDate | date:'y'}}</span>
@@ -19,11 +18,11 @@
         </div>
 
         <ul class="display">
-            <li class="active">
+            <li ng-class="{ 'active': data.activeTab === 0 }">
                 <span ng-click="activatedTab(0)" class="icons icon-navbar icon-payments">Payments</span>
                 ${Value}
             </li>
-            <li>
+            <li ng-class="{ 'active': data.activeTab === 1 }">
                 <span ng-click="activatedTab(1)" class="icons icon-navbar icon-authorizations">Authorizations</span>
                 ${Value}
             </li>
@@ -31,7 +30,7 @@
     </form>
 
     <!-- Print box -->
-    <form method="post" action="" id="journal-print-options" class="journal-print" role="complementary">
+    <form ng-hide="true" method="post" action="" id="journal-print-options" class="journal-print" role="complementary">
         <div class="entry">
             <div class="switch-button on">
                 <input id="cc-transactions-print" value="" type="checkbox" checked />

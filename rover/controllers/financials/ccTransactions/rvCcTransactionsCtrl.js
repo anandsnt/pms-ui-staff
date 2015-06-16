@@ -12,11 +12,11 @@ sntRover.controller('RVccTransactionsController', ['$scope','$filter','$statePar
     $scope.data.isAuthToggleSummaryActive = true;
     $scope.data.isPaymentToggleSummaryActive = true;
 	
-	/* Handling different date picker clicks */
-	$scope.clickedFromDate = function(){
+	/* Handling TransactionDate date picker click */
+	$scope.clickedTransactionDate = function(){
 		$scope.popupCalendar('TRANSACTIONS');
 	};
-	
+console.log($scope.data.activeTab);
 	// Show calendar popup.
 	$scope.popupCalendar = function(clickedOn) {
 		$scope.clickedOn = clickedOn;
@@ -30,10 +30,7 @@ sntRover.controller('RVccTransactionsController', ['$scope','$filter','$statePar
     
     $scope.activatedTab = function(index){
     	$scope.data.activeTab = index;
-    	if(index == 0) $rootScope.$broadcast('REFRESHREVENUECONTENT');
-    	else if(index == 2) $scope.$broadcast('cashierTabActive');
-    	else $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
-    	$scope.$broadcast("CLOSEPRINTBOX");
+    	
     };
 
     
