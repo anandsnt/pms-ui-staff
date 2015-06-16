@@ -137,26 +137,6 @@ sntRover.factory('RVReportParserFac', [
                         customData.push( guestData );
                     };
 
-                    // if ( checkGuest(makeCopy) ) {
-                    //     guestData = {
-                    //         isGuestData : true,
-                    //         guestNames  : angular.copy( makeCopy['accompanying_names'] ),
-
-                    //         company_name      : makeCopy.company_name,
-                    //         travel_agent_name : makeCopy.travel_agent_name,
-                    //         group_name        : makeCopy.group_name,
-
-                    //         addOns       : angular.copy( makeCopy['add_ons'] ),
-                    //         addOnDetails : angular.copy( makeCopy['addon_details'] )
-                    //     };
-                    //     customData.push( guestData );
-                    // } else {
-                    //     guestData = {
-                    //         isGuestData : true,
-                    //         addOnDetails : angular.copy( makeCopy['addon_details'] )
-                    //     };
-                    //     customData.push( guestData );
-                    // };
 
 
                     if ( checkCancel(makeCopy) ) {
@@ -240,7 +220,7 @@ sntRover.factory('RVReportParserFac', [
 
 
 
-        function $_parseDataToSubArrays ( reportName, apiResponse, groupedByKey ) {
+        function $_parseDataToSubArrays ( reportName, apiResponse, options ) {
             /****
             * OUR AIM: is to transform the api response to this format
             * [
@@ -269,7 +249,7 @@ sntRover.factory('RVReportParserFac', [
 
                 // catching cases where the value is "" due to old data
                 if ( makeCopy[groupByKey] == '' ) {
-                    makeCopy[groupByKey] = 'NA';
+                    makeCopy[groupByKey] = 'UNDEFINED';
                 };
 
                 // if the group by key value has changed
