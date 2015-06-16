@@ -416,7 +416,8 @@
     "GROUP_EMAIL":"Email",
     "GROUP_PRINT":"Print",
     "GROUP_DOWNLOAD":"Download",
-    "ADD_BILLING_INFO":"Add billing information"
+    "ADD_BILLING_INFO":"Add billing information",
+    "GROUP_BATCH" : "Reg.card"
 
 
 
@@ -609,6 +610,7 @@
     "CHECK_PAYMENT": "CHECK PAYMENT",
     "DIRECT_PAYMENT":"DIRECT PAYMENT",
     "ADD": "Add",
+    "CC_AUTH": "CC Auth",
     "NAME": "Name",
     "IN_GUEST_CARD":"In Guest Card",
     "SELECTED" : "Selected",
@@ -766,7 +768,10 @@
     "DIARY": "Diary",
 
     "KEEP_CURRENT_RATE": "Keep current rate",
-    "CHANGE_TO_NEW_RATE": "Change to new rate"
+    "CHANGE_TO_NEW_RATE": "Change to new rate",
+    "ADD_ONS" : "Add on",
+    "TAXES_INCL" : "TAXES(INCL)",
+    "TAXES_EXCL" : "TAXES(EXCL)"
 
 ,    
     

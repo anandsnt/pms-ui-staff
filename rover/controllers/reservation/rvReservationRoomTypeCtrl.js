@@ -66,10 +66,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		}
 
 		var init = function(isCallingFirstTime) {
-			var arrival = $scope.reservationData.arrivalDate,
-				departure = $scope.reservationData.departureDate;
-
 			$scope.$emit('showLoader');
+			var arrival = $scope.reservationData.arrivalDate,
+				departure = $scope.reservationData.departureDate;			
 
 			$scope.displayData.dates = [];
 			$scope.filteredRates = [];

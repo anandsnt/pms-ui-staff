@@ -1,0 +1,21 @@
+<div id="modal" class="modal-show" role="dialog">
+    <div class="modal-content confirmation">
+        <button ng-click="closeDialog()" id="modal-close" type="button" class="modal-close"><span class="icons icon-close invert"></span></button>
+
+        <span class="h2 message">Review CC Authorization</span>
+        
+        <!-- If to another room, show: -->
+        <span ng-if="message_out_going_to_room" class="notice">Some charges of this reservation are being routed <strong>to another room</strong>.</span>
+
+        <!-- If from another room, show -->
+        <span ng-if="message_incoming_from_room" class="notice">Charges <strong>from another room</strong> are being routed to this reservation.</span>
+
+        <!-- If to company/ta/account, show: -->
+        <span ng-if="message_out_going_to_comp_tra" class="notice">Some charges for this reservation are being routed <strong>to Company / Travel Agent / Account</strong>.</span>
+        
+        <div class="actions">
+            <button ng-click="clickedFullAuth()" class="button green modal-close" type="button">Full Auth as per set rule</button>
+            <button ng-click="clickedManualAuth()" class="button blue modal-close" type="button">Manual CC Auth</button>
+        </div>
+    </div>
+</div>

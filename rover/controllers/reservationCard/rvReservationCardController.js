@@ -155,6 +155,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 					"confirmationId": currentConfirmationNumber,
 					"isrefresh": true
 			});
+                        $rootScope.$broadcast('reload-loyalty-section-data',{});
 		};
 		/*
 		 * To show the payment data list

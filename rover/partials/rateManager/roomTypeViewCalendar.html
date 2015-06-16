@@ -1,5 +1,5 @@
 <div class="scrollBound">
-    <div class='scrollTable pinnedLeft' scroll-position="initScrollBind()" style="overflow:hidden; height:{{uiOptions.tableHeight}}px;">
+    <div class='scrollTable pinnedLeft' scroll-position="initScrollBind()" style="overflow:hidden; height:{{uiOptions.tableHeight}}px;; margin-top: 4px;">
         <table class='rate-calendar'>
             <thead>
                 <tr>
@@ -24,7 +24,7 @@
                 </tr>
 
                 <tr class="cell" style="height:67px" ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'expandedFirstRow': currentExpandedRow === $index}" ng-class="{'last': $last}"> 
-                    <td class="first-row">    
+                    <td class="first-row force-align">    
                         <span ng-class="{'expanded': currentExpandedRow === $index}">{{rate.name}}</span>
                         <span style="float:right" ng-hide="currentExpandedRow === $index || !!rate.is_hourly">
                             <img class="down" src="/assets/arrow-down.png" ng-click="expandRow($index)">
@@ -124,8 +124,8 @@
                             <div ng-if="!isHistoryDate(date)" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', rate.id, 'ROOM_TYPE', false)">
                                 <div>
                                     <span class="left rate-single" style='height:100%;width:100%;'>
-                                        <span ng-if ="!rate[date].isHourly && rate[date].single === null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'single') != 'false'}">{{rate[date].single}}<text ng-if="rateDateHasOverride(rate, date,'single') != 'false'" class='hasOverride-label'>*</text></span>
-                                        <span ng-if ="!rate[date].isHourly && rate[date].single !== null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'single') != 'false'}">{{rate[date].single| number : 2}}<text ng-if="rateDateHasOverride(rate, date,'single') != 'false'" class='hasOverride-label'>*</text></span>
+                                        <span ng-if ="!rate[date].isHourly && rate[date].single === null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'single') != 'false'}">{{rate[date].single}}<text ng-if="rateDateHasOverride(rate, date,'_any_') != 'false'" class='hasOverride-label'>*</text></span>
+                                        <span ng-if ="!rate[date].isHourly && rate[date].single !== null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'single') != 'false'}">{{rate[date].single| number : 2}}<text ng-if="rateDateHasOverride(rate, date,'_any_') != 'false'" class='hasOverride-label'>*</text></span>
                                         <span ng-if ="!rate[date].isHourly && rate[date].nightly === null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'nightly') != 'false'}">{{rate[date].nightly}}<text ng-if="rateDateHasOverride(rate, date,'nightly') != 'false'" class='hasOverride-label'>*</text></span>
                                         <span ng-if ="rate[date].isHourly && rate[date].nightly !== null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'nightly') != 'false'}">{{rate[date].nightly| number : 2}}<text ng-if="rateDateHasOverride(rate, date,'nightly') != 'false'" class='hasOverride-label'>*</text></span>
                                     </span>
@@ -157,8 +157,8 @@
                             <div ng-if="isHistoryDate(date)" class="cell-content isHistory-cell-content"  >
                                 <div>
                                     <span class="left rate-single" style='height:100%;width:100%;'>
-                                        <span ng-if ="!rate[date].isHourly && rate[date].single === null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'single') != 'false'}">{{rate[date].single}}<text ng-if="rateDateHasOverride(rate, date,'single') != 'false'" class='hasOverride-label'>*</text></span>
-                                        <span ng-if ="!rate[date].isHourly && rate[date].single !== null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'single') != 'false'}">{{rate[date].single| number : 2}}<text ng-if="rateDateHasOverride(rate, date,'single') != 'false'" class='hasOverride-label'>*</text></span>
+                                        <span ng-if ="!rate[date].isHourly && rate[date].single === null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'single') != 'false'}">{{rate[date].single}}<text ng-if="rateDateHasOverride(rate, date,'_any_') != 'false'" class='hasOverride-label'>*</text></span>
+                                        <span ng-if ="!rate[date].isHourly && rate[date].single !== null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'single') != 'false'}">{{rate[date].single| number : 2}}<text ng-if="rateDateHasOverride(rate, date,'_any_') != 'false'" class='hasOverride-label'>*</text></span>
                                         <span ng-if ="!rate[date].isHourly && rate[date].nightly === null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'nightly') != 'false'}">{{rate[date].nightly}}<text ng-if="rateDateHasOverride(rate, date,'nightly') != 'false'" class='hasOverride-label'>*</text></span>
                                         <span ng-if ="rate[date].isHourly && rate[date].nightly !== null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'nightly') != 'false'}">{{rate[date].nightly| number : 2}}<text ng-if="rateDateHasOverride(rate, date,'nightly') != 'false'" class='hasOverride-label'>*</text></span>
                                     </span>

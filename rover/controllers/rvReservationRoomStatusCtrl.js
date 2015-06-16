@@ -87,9 +87,10 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		return hasButton;
 	};
 	// To handle click of key icon.
-	$scope.clickedIconKey = function(event){
-		event.stopPropagation();
+	$scope.clickedIconKey = function(){
 		var keySettings = $scope.reservationData.reservation_card.key_settings;
+                console.log('clicked key icon: ');
+                console.log($scope.reservationData.reservation_card.reservation_status);
 		$scope.viewFromBillScreen = false;
 		if(keySettings === "email"){
                     ngDialog.open({
@@ -98,17 +99,20 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
                         className: '',
                         scope: $scope
                     });
-		} else { 
+		} else if ($scope.reservationData.reservation_card.reservation_status !== 'CHECKING_IN'){ 
                     ngDialog.open({
                         template: '/assets/partials/keys/rvKeyPopupNewDuplicate.html',
                         controller: 'RVKeyQRCodePopupController',
                         className: '',
                         scope: $scope
                     });	
+                } else if ($scope.reservationData.reservation_card.reservation_status === 'CHECKING_IN'){
+                    $scope.newKeyInit();
                 }
 	};
         
         $scope.keyInitPopup = function(){
+            
 		var keySettings = $scope.reservationData.reservation_card.key_settings;
 		 if(keySettings === "qr_code_tablet"){
 
@@ -183,6 +187,11 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 	};
 
 	$scope.goToRoomUpgrades = function(){
+		// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
+		if( $scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id ){
+			return false;
+		};
+		
 		$state.go("rover.reservation.staycard.upgrades", {reservation_id:$scope.reservationData.reservation_card.reservation_id, "clickedButton": "upgradeButton"});
 	}
 
@@ -205,6 +214,10 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		if($scope.hasAnySharerCheckedin()){
 			return false;
 		}
+		// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
+		if( $scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id ){
+			return false;
+		};
 
 		if($scope.reservationData.reservation_card.is_hourly_reservation){
 			gotToDiaryInEditMode ();

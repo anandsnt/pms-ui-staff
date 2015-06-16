@@ -52,7 +52,6 @@ sntRover.service('RVBaseWebSrv',['$http', '$q', '$window', function($http, $q, $
 			if(status == 406){ // 406- Network error
 				deferred.reject(response.errors);
 			} else if(status == 422){ // 406- Network error
-				console.log("base 1");
 				deferred.reject(response.errors);
 			}
  			else if(status == 501 || status == 502 || status == 503){ // 500- Internal Server Error
@@ -65,7 +64,17 @@ sntRover.service('RVBaseWebSrv',['$http', '$q', '$window', function($http, $q, $
 			else if(status == 401){ // 401- Unauthorized
 				// so lets redirect to login page
 				$window.location.href = '/logout' ;
-			}else{
+			}
+
+			//set of custom error emssage range http status
+			//
+			else if(status >= 470 && status <= 490) {	
+				var error = {};
+				error.httpStatus = status;
+				error.errorMessage = response.errors;
+				deferred.reject (error);
+			}
+			else{
 				deferred.reject(response.errors);
 			}
 

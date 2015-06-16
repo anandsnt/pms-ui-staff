@@ -7,7 +7,7 @@
       <header id="room-header" class="room-header {{ getHeaderColor() }}" role="banner" ng-class="{ 'on-hold': roomDetails.is_on_hold }"> 
           <div class="icons icon-room">
             <h1>{{ roomDetails.current_room_no }}</h1>
-            <span ng-if="isStandAlone">{{ roomDetails.room_type.name }}</span>
+            <span>{{ roomDetails.room_type.name }}</span>
           </div>
           <ul id="room-detail-options" class="display">
             <li ng-class="{ 'active': openTab === 'Guest' }" click-touch="tabSwitch('Guest')"><span class="icons icon-navbar icon-hk-guest">Guest</span></li>

@@ -1,5 +1,6 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter', 'rvPermissionSrv',
-	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter, rvPermissionSrv) {
+
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rvPermissionSrv' ,'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter',
+	function($scope, $rootScope, rvPermissionSrv ,RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter) {
 
 		// pre setups for back button
 		var backTitle,
@@ -214,6 +215,11 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		);
 		$scope.shouldShowGuestDetails = false;
 		$scope.toggleGuests = function() {
+			// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
+			if( $scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id ){
+				return false;
+			};
+
 			$scope.shouldShowGuestDetails = !$scope.shouldShowGuestDetails;
 			if ($scope.shouldShowGuestDetails) {
 				$scope.shouldShowTimeDetails = false;
@@ -436,6 +442,17 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			});
 		};
 
+		/**
+		* we will not show "Nights" button in case of hourly, isNightsEnabled()
+		* as part of CICO-17712, we are hiding it for now (group rservation)
+		* @return {Boolean}
+		*/
+		$scope.shouldShowChangeStayDatesButton = function() {
+			return ($scope.isNightsEnabled() &&
+					!$scope.reservationData.reservation_card.is_hourly_reservation && 
+					$scope.reservationData.reservation_card.group_id.trim() === '' )
+		}
+
 		$scope.isNightsEnabled = function() {
 			var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
 			if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN') {
@@ -471,6 +488,11 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		}
 
 		$scope.extendNights = function() {
+			// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
+			if( $scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id ){
+				return false;
+			};
+		
 			// TODO : This following LOC has to change if the room number changes to an array
 			// to handle multiple rooms in future
 			if ($rootScope.isStandAlone) {
@@ -841,5 +863,100 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
                 title: fullname
         };
     });
-	}
-]);
+
+    // CICO-17067 PMS: Rover - Stay Card: Add manual authorization
+    $scope.authData = {
+		'authAmount' : '',
+		'manualCCAuthPermission': true
+	};
+
+	// Flag for CC auth permission
+    var hasManualCCAuthPermission = function() {
+        return rvPermissionSrv.getPermissionValue('MANUAL_CC_AUTH');    
+    };
+
+    $scope.showAuthAmountPopUp = function(){
+    	$scope.authData.manualCCAuthPermission = hasManualCCAuthPermission();
+    	$scope.authData.authAmount = "";
+    	ngDialog.open({
+			template: '/assets/partials/reservation/rvManualAuthorizationAddAmount.html',
+			className: '',
+			scope: $scope
+		});
+    };
+
+    var authInProgress = function(){
+    	// Manual auth in progress status
+		$scope.isInProgressScreen = true;
+    	$scope.isSuccessScreen = false;
+    	$scope.isFailureScreen = false;
+    	$scope.isCCAuthPermission = true;
+	};
+
+    var authSuccess = function(data){
+		// With Authorization flow .: Auth success
+		$scope.isInProgressScreen = false;
+    	$scope.isSuccessScreen = true;
+    	$scope.isFailureScreen = false;
+    	$scope.cc_auth_amount = $scope.authData.authAmount;
+    	$scope.cc_auth_code = data.auth_code;
+    	$scope.reservationData.reservation_card.payment_details.auth_color_code = 'green';
+	};
+
+	var authFailure = function(){
+		// With Authorization flow .: Auth declined
+    	$scope.isInProgressScreen = false;
+    	$scope.isSuccessScreen = false;
+    	$scope.isFailureScreen = true;
+    	$scope.cc_auth_amount = $scope.authData.authAmount;
+    	$scope.reservationData.reservation_card.payment_details.auth_color_code = 'red';
+	};
+
+	// Manual Auth API call ..
+    var manualAuthAPICall = function(){
+
+    	var onAuthorizationSuccess = function(response){
+    		$scope.$emit('hideLoader');
+    		authSuccess(response);
+    	};
+
+    	var onAuthorizationFaliure = function(errorMessage){
+    		$scope.$emit('hideLoader');
+    		authFailure();
+    	};
+
+    	var data = {
+			"payment_method_id": $scope.reservationData.reservation_card.payment_details.id,
+			"amount": $scope.authData.authAmount
+		};
+    	$scope.invokeApi(RVReservationCardSrv.manualAuthorization, data , onAuthorizationSuccess, onAuthorizationFaliure);
+    };
+
+    // To handle authorize button click on 'auth amount popup' ..
+    $scope.authorize = function(){
+    	ngDialog.close(); // Closing the 'auth amount popup' ..
+
+    	authInProgress();
+
+    	setTimeout(function(){
+	    	
+	    	ngDialog.open({
+				template: '/assets/partials/reservation/rvManualAuthorizationProcess.html',
+				className: '',
+				closeByDocument: false,
+				scope: $scope
+			});
+
+			manualAuthAPICall();
+
+    	}, 100);
+    };
+
+    // Handle TRY AGAIN on auth failure popup.
+    $scope.tryAgain = function(){
+		authInProgress();
+		manualAuthAPICall();
+	};
+	// CICO-17067 PMS: Rover - Stay Card: Add manual authorization ends here...
+
+}]);
