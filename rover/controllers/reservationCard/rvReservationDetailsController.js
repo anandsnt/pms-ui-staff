@@ -1,5 +1,5 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter',
-	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter) {
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter', 'rvPermissionSrv',
+	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter, rvPermissionSrv) {
 
 		// pre setups for back button
 		var backTitle,
@@ -447,6 +447,28 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			}
 			return false;
 		};
+
+		var hasPermissionToChangeStayDates = function() {
+			return rvPermissionSrv.getPermissionValue('CHANGE_DATES_ON_GROUP_RESERVATION');
+		};
+
+		$scope.isStayDatesChangeAllowed = function(){
+			isStayDatesChangeAllowed = false;
+
+			if($rootScope.isStandAlone && 
+				!$scope.reservationData.reservation_card.is_hourly_reservation && 
+				($scope.reservationData.reservation_card.reservation_status == 'CHECKING_IN' || 
+				 $scope.reservationData.reservation_card.reservation_status == 'RESERVED')){
+
+				isStayDatesChangeAllowed = true;
+
+				if(!hasPermissionToChangeStayDates()){
+					isStayDatesChangeAllowed = false;
+				}
+			}
+			return isStayDatesChangeAllowed;
+
+		}
 
 		$scope.extendNights = function() {
 			// TODO : This following LOC has to change if the room number changes to an array
