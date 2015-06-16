@@ -18,6 +18,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.selectedAction.created_by;
         $scope.selectedAction.description;
         $scope.selectedAction.id;
+        $scope.selectedAction.due_at_date;
+        
         
         $scope.selectedActionMessage = '';
         $scope.selectedDepartment = '';
@@ -132,23 +134,106 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     params['assigned_to'] = $scope.newAction.department.value;
                 }
             }
-            if ($scope.newAction.time_due){
-                params['time_due'] = $scope.newAction.time_due;
-            }
-            if ($scope.newAction.date_due){
-                params['due_at'] = $scope.newAction.date_due;
-            }
-            console.log(params);
+            
+            if ($scope.newAction.time_due && $scope.newAction.date_due){
+                if ($scope.newAction.time_due.core_time){
+                var coreTime = $scope.newAction.time_due.core_time;
+                var hours, mins;
+                hours = coreTime[0]+''+coreTime[1];
+                mins = coreTime[2]+''+coreTime[3];
+                
+                var myDate = new Date($scope.newAction.date_due+' '+hours+':'+mins+':00');
+                params['due_at'] = myDate.valueOf();
+            }}
+        
             $scope.invokeApi(rvActionTasksSrv.postNewAction, params, onSuccess, onFailure);
-            
-            
         };
+        
+        
+        $scope.dateOptions = {
+             changeYear: true,
+             changeMonth: true,
+             minDate: tzIndependentDate($rootScope.businessDate),
+             yearRange: "0:+10",
+             onSelect: function(date, dateObj) {
+                 if ($scope.dateSelection !== null){
+                     if ($scope.dateSelection === 'select'){
+                         $scope.closeSelectedCalendar();
+                         $scope.selectedAction.due_at_date = date;
+                         //since this is an update, call the api to save changes
+                         $scope.saveSelectedAction();
+                     } else {
+                         $scope.closeNewCalendar();
+                         $scope.newAction.date_due = date;
+                         //this one has a save / post button
+                     };
+                 }
+            }
+        };
+        
+        $scope.saveSelectedAction = function(){
+            
+        $scope.postAction = function(){
+            var onSuccess = function(data){
+                console.info('saved!')
+                $scope.$parent.$emit('hideLoader');
+                $scope.fetchActionsList();
+                $scope.refreshScroller("rvActionListScroller");
+            };
+            var onFailure = function(data){
+                $scope.$parent.$emit('hideLoader');
+            };
+            
+            //reservation_id=1616903&action_task[description]=test
+            var params = {
+                'reservation_id':$scope.$parent.reservationData.reservation_card.reservation_id,
+                'id':$scope.selectedAction.id
+            };
+            
+            if ($scope.selectedAction.time_due && $scope.selectedAction.due_at_date){
+                if ($scope.selectedAction.time_due.core_time){
+                var coreTime = $scope.selectedAction.time_due.core_time;
+                var hours, mins;
+                hours = coreTime[0]+''+coreTime[1];
+                mins = coreTime[2]+''+coreTime[3];
+                
+                var myDate = new Date($scope.selectedAction.due_at_date+' '+hours+':'+mins+':00');
+                params['due_at'] = myDate.valueOf();
+            }}
+        
+            $scope.invokeApi(rvActionTasksSrv.putNewAction, params, onSuccess, onFailure);
+        };
+        };
+        
         $scope.showCalendar = function() {
-            ngDialog.open({
-                template:'/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html',
-                scope: $scope
-            });
+            ngDialog.open({ 
+                template: '/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html' });
         };
+        $scope.selectCalInit = function(){
+            console.log('select cal init');
+        };
+        
+        $scope.showSelectCalendar = function(){
+            $scope.dateSelection = 'select';
+            $scope.selectCalendarShow = true;
+        };
+        
+        $scope.closeSelectedCalendar = function(){
+            $scope.dateSelection = null;
+            $scope.selectCalendarShow = false;
+        };
+        
+        $scope.showNewCalendar = function(){
+            $scope.dateSelection = 'new';
+            $scope.newCalendarShow = true;
+        };
+        
+        $scope.closeNewCalendar = function(){
+            $scope.dateSelection = null;
+            $scope.newCalendarShow = false;
+        };
+        
+        
         $scope.initNewAction = function(){
             $scope.setRightPane('new');
             //$scope.selectedAction.id = -1;//de-select the selected action
@@ -401,7 +486,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                                     '2015','2030','2045','2100',
                                     '2115','2130','2145','2200',
                                     '2215','2230','2245','2300',
-                                    '2315','2330','2345','2400'
+                                    '2315','2330','2345'
         ];
         init();
     }

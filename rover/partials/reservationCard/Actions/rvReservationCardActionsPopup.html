@@ -58,20 +58,20 @@
                         <span class="label" ng-if="selectedAction.created_by_null">Created </span>
                         {{selectedAction.created_by.name}} {{selectedAction.created_at_date}} &#8226; {{selectedAction.created_at_time}} 
                     </div>
-                    <div class="entry action-info date">
+                    <div class="entry action-info date" ng-click="showSelectCalendar()">
                         <label for="due-date">Date Due</label>
                         <button class="clear-query"> <!-- Add class "visible" to show (when date is not blank) -->
                             <span class="icons icon-clear-search">Clear query</span>
                         </button>
                         <input id="due-date" type="text" class="datepicker" value="{{selectedAction.due_at_date}}" readonly />
                     </div>
+                    <div ng-init="selectCalInit()" ng-show="selectCalendarShow" class="ngmodal-uidate-wrap" id="selectCalendar" ng-include="'/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html'">
+                    </div>
                     <div class="entry action-info time">
                         <label for="due-time">Time Due</label>
                         <div class="select">
-                            <select id="due-time">
-                                <option value="00:00">00:00</option>
-                                <option value="{{selectedAction.due_at_time}}" selected>{{selectedAction.due_at_time}}</option>
-                                
+                            <select id="due-time" ng-model="selectedAction.time_due" ng-options="time.value for time in timeFieldValue" ng-click="onTimeChange()">
+                                <option value="00:00"></option>
                             </select>
                         </div>
                     </div>
@@ -128,9 +128,11 @@
                             </select>
                         </div>
                     </div>
-                    <div class="entry date margin" ng-click='showCalendar()'>
+                    <div class="entry date margin" ng-click='showNewCalendar()'>
                         <label for="due-date">Date Due</label>
-                        <input id="due-date" type="text" class="datepicker" value="" readonly />
+                        <input id="due-date" type="text" class="datepicker" value="{{newAction.date_due}}" readonly />
+                    </div>
+                    <div ng-init="newCalInit()" ng-show="newCalendarShow" class="ngmodal-uidate-wrap" id="newCalendar" ng-include="'/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html'">
                     </div>
                     <div class='entry actions-mid'></div>
                       
