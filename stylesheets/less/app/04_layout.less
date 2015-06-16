@@ -791,6 +791,12 @@ body { overflow: hidden; }
 				}
 
 				&.dashboard { .hide; }
+
+				&:not(.has-options) {
+					.entry {
+						&.search { .calc-width(100, 60); }
+					}
+				}
 			}
 
 			/* Actions ***/
@@ -969,7 +975,7 @@ body { overflow: hidden; }
 								padding-right: 10px;
 								margin-right: 10px;
 								border-right: 1px solid rgba(0,0,0,.1);
-								.calc-width(100, 150);
+								.calc-width(100, 110);
 							}
 						}
 					}
