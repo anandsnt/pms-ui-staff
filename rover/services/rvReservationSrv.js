@@ -127,7 +127,7 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 
 		this.fetchCancellationPolicies = function(param) {
 			var deferred = $q.defer();
-			var url = '/api/reservations/' + param.id + '/policies';
+			var url = '/api/reservations/' + param.id + '/cancellation_policies';
 			rvBaseWebSrvV2.getJSON(url, param).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
