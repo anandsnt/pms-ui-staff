@@ -159,6 +159,25 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 			return deferred.promise;
 		};
 
+		/**
+		 * to get the last rate adjustment reason against a reservation
+		 * @return {Promise} - After resolving we will get reason 
+		 */
+		this.getLastRateAdjustmentReason = function(params){
+			var deferred = $q.defer();
+			var url = 'api/reservations/' + params.reservation_id + '/reason_for_last_adjusted_rate';
+
+			rvBaseWebSrvV2.getJSON(url).then(
+					function(data) {
+						deferred.resolve(data);
+					}, 
+					function(data) {
+						deferred.reject(data);
+					}
+			);
+			return deferred.promise;
+		};
+
 		this.saveReservationNote = function(data) {
 			var deferred = $q.defer();
 			var url = '/reservation_notes';
@@ -249,7 +268,17 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
                 deferred.reject(data);
             });
             return deferred.promise;
-        }
+        };
+        this.detachGroupReservation = function(param) {
+            var deferred = $q.defer();
+            var url = '/api/group_reservations/'+ param.id +'/detach_group_reservation';
+            rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
         this.manualAuthorization = function(param) {
             var deferred = $q.defer();

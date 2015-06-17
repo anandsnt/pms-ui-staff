@@ -133,7 +133,7 @@ sntRover.service('RVreportsSrv', [
 		// id & description
 		this.fetchChargeCodes = function() {
 			var deferred = $q.defer(),
-				url = 'api/charge_codes';
+				url = 'api/charge_codes?is_get_all_charge_codes=true';
 
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {

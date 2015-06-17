@@ -425,6 +425,9 @@ sntRover.factory('RVReportUtilsFac', [
                 data         : []
             });
 
+            // create a name space for chosen options
+            reportItem.chosenOptions = {};
+
             // create DS for display combo box
             __setData(reportItem, 'hasDisplay', {
                 type         : 'FAUX_SELECT',
