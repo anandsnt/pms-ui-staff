@@ -17,8 +17,8 @@
             <div class="entry margin type">
                 <label for="rooming-room-type">{{'GROUP_ROOM_TYPE'|translate}}</label>
                 <div class="select">
-                    <select id="rooming-room-type" ng-model="ngDialogData.room_type_id" ng-change="changedSelectedRoomType()" ng-disabled="ngDialogData.reservationStatusFlags.isUneditable">
-                        <option value="{{roomTypeData.room_type_id}}" ng-repeat="roomTypeData in roomTypesAndData" ng-selected="roomTypeData.room_type_id == ngDialogData.room_type_id">
+                    <select id="rooming-room-type" ng-model="ngDialogData.room_type_id" ng-change="changedSelectedRoomType()" ng-disabled="shouldDisableRoomTypeChange(ngDialogData)">
+                        <option value="{{roomTypeData.room_type_id}}" ng-repeat="roomTypeData in ngDialogData.allowedRoomTypes" ng-selected="roomTypeData.room_type_id == ngDialogData.room_type_id">
                             {{roomTypeData.room_type_name}}
                         </option>
                     </select>
