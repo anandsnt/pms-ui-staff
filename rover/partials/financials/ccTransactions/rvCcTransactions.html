@@ -20,32 +20,32 @@
         <ul class="display">
             <li ng-class="{ 'active': data.activeTab == 0 }">
                 <span ng-click="activatedTab(0)" class="icons icon-navbar icon-payments">Payments</span>
-                ${Value}
+                {{currencySymbol}}
             </li>
             <li ng-class="{ 'active': data.activeTab == 1 }">
                 <span ng-click="activatedTab(1)" class="icons icon-navbar icon-authorizations">Authorizations</span>
-                ${Value}
+                {{currencySymbol}}
             </li>
         </ul>
     </form>
 
     <!-- Print box -->
-    <form ng-hide="true" method="post" action="" id="journal-print-options" class="journal-print" role="complementary">
+    <form id="journal-print-options" class="journal-print" role="complementary">
         <div class="entry">
-            <div class="switch-button on">
+            <div class="switch-button" ng-class="{'on' : data.isPaymentToggleSummaryActive }" ng-click="toggleSummaryOrDeatils()">
                 <input id="cc-transactions-print" value="" type="checkbox" checked />
                 <label class="data-off">
-                    <span class="value">Summary</span>
-                    <span class="switch-icon">Details</span>
+                    <span class="value" translate>SUMMARY</span>
+                    <span class="switch-icon" translate>DETAILS</span>
                 </label>
                 <label class="data-on">
-                    <span class="switch-icon">Summary</span>
-                    <span class="value">Details</span>
+                    <span class="switch-icon" translate>SUMMARY</span>
+                    <span class="value" translate>DETAILS</span>
                 </label>
             </div>
         </div>
         <div class="actions">
-            <button id="print-cc-transactions" type="button" class="button blue">Print</button>
+            <button ng-click="printButtonClick()" id="print-cc-transactions" type="button" class="button blue">Print</button>
         </div>
     </form>
 
