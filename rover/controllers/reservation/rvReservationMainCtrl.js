@@ -1,5 +1,6 @@
 sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData', 'RVReservationSummarySrv', 'RVReservationCardSrv', 'RVPaymentSrv', '$timeout', '$stateParams', 'RVReservationGuestSrv',
-    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv) {
+	'RVReservationStateService',
+    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService) {
 
         BaseCtrl.call(this, $scope);
 
@@ -1411,6 +1412,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     data.room_id.push(room.room_id);
                 }
             });
+
+            data.outside_group_stay_dates = RVReservationStateService.getReservationFlag('outsideStaydatesForGroup');
+
             //to delete ends here
             return data;
         };
@@ -1724,6 +1728,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 var postData = $scope.computeReservationDataforUpdate(true, true);
 
                 var saveSuccess = function(data) {
+
                     var totalDeposit = 0;
                     //calculate sum of each reservation deposits
                     $scope.reservationsListArray = data;
@@ -1824,9 +1829,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 };
 
                 var updateSuccess = function(data) {
-
                     var totalDepositOnRateUpdate = 0;
-
                     /**
                      * CICO-10195 : While extending a hourly reservation from
                      * diary the reservationListArray would be undefined
@@ -1901,6 +1904,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 } else {
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
                 }
+				//CICO-16959 We use a flag to indicate if the reservation is extended outside staydate range for the group, if it is a group reservation. Resetting this flag after passing the flag to the API.
+				RVReservationStateService.setReservationFlag('outsideStaydatesForGroup', false);
 
             }
         };
