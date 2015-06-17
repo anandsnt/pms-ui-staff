@@ -1,4 +1,4 @@
-sntRover.controller('RVccTransactionsController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVccTransactionsSrv','$timeout','$window', function($scope, $filter,$stateParams, ngDialog, $rootScope, RVccTransactionsSrv, $timeout, $window) {
+sntRover.controller('RVccTransactionsController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVccTransactionsSrv','$timeout','$window', 'rvPermissionSrv', function($scope, $filter,$stateParams, ngDialog, $rootScope, RVccTransactionsSrv, $timeout, $window, rvPermissionSrv) {
 		
 	BaseCtrl.call(this, $scope);	
 	// Setting up the screen heading and browser title.
@@ -10,6 +10,8 @@ sntRover.controller('RVccTransactionsController', ['$scope','$filter','$statePar
     $scope.data.transactionDate = $rootScope.businessDate;
     $scope.data.isToggleSummaryActive = true;
     $scope.data.paymentData = {};
+    $scope.data.authData = {};
+
 	
 	// Handling TransactionDate date picker click
 	$scope.clickedTransactionDate = function(){
@@ -43,6 +45,7 @@ sntRover.controller('RVccTransactionsController', ['$scope','$filter','$statePar
     // Handle Tab switch
     $scope.activatedTab = function(index){
     	$scope.data.activeTab = index;
+    	$scope.$emit('mainTabSwiched');
     };
 
     $scope.hasAnyElements = function(object){
@@ -52,5 +55,10 @@ sntRover.controller('RVccTransactionsController', ['$scope','$filter','$statePar
     	}
     	return hasAnyElements;
     };
+
+
+	$scope.hasPermissionToSubmitCCBatch = function() {
+		return rvPermissionSrv.getPermissionValue('SUBMIT_CC_BATCH');
+	};
     
 }]);

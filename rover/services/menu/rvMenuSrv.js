@@ -408,6 +408,7 @@ sntRover.service('rvMenuSrv',
 			'workManagement': 		['ACCESS_TASK_MANAGEMENT'],
 			'maintanance': 			['ACCESS_TASK_MAINTENANCE'],
 			'journals': 			['ACCESS_JOURNAL'],
+			'ccTransactions':   	['VIEW_CC_TRANSACTIONS'],
 
 			'accounting': 			['ACCESS_ACCOUNTING_INTERFACE'],		
 			'commisions': 			['ACCESS_COMMISSIONS'],	

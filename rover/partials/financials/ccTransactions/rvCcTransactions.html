@@ -14,17 +14,17 @@
             </div>
         </div>
         <div ng-show="data.activeTab == 0" class="entry action">
-            <button ng-click="clickedSubmitBatch()" type="button" class="button green">Submit Batch</button>
+            <button ng-click="clickedSubmitBatch()" type="button" class="button green" ng-class="{'grey': !hasPermissionToSubmitCCBatch()}" ng-disabled="!hasPermissionToSubmitCCBatch()">Submit Batch</button>
         </div>
 
         <ul class="display">
             <li ng-class="{ 'active': data.activeTab == 0 }">
                 <span ng-click="activatedTab(0)" class="icons icon-navbar icon-payments">Payments</span>
-                {{currencySymbol}}
+                {{currencySymbol}}{{data.paymentData.total_amount|number:2}}
             </li>
             <li ng-class="{ 'active': data.activeTab == 1 }">
                 <span ng-click="activatedTab(1)" class="icons icon-navbar icon-authorizations">Authorizations</span>
-                {{currencySymbol}}
+                {{currencySymbol}}{{data.authData.total_amount|number:2}}
             </li>
         </ul>
     </form>

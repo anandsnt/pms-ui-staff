@@ -5,14 +5,14 @@
         <div class="journal-grid cc-transactions"> <!-- For print add class "print-summary" or "print-details" based on L51 checked status -->
             <div class="grid-group">
                 <!-- Approved -->
-                <a class="transaction-title green toggle" ng-click="clickedApprovedTab()"  ng-class="{'active':data.approved.active, 'has-arrow': hasAnyElements(data.approved) }">
+                <a class="transaction-title green toggle" ng-click="clickedApprovedTab()"  ng-class="{'active':data.authData.approved.active, 'has-arrow': hasAnyElements(data.authData.approved) }">
                     <strong class="name">Approved</strong>
                 </a>
-                <div id="authorization-approved" class="grid-charge"  ng-repeat="item in data.approved" ng-show="data.approved.active" > <!-- To show, remove class "hidden" when L61 is clicked -->
+                <div id="authorization-approved" class="grid-charge"  ng-repeat="item in data.authData.approved" ng-show="data.authData.approved.active" > <!-- To show, remove class "hidden" when L61 is clicked -->
                     <!-- CC Types -->
                     <a ng-click="clickedApprovedTransactionItem(item)" class="transaction-title toggle" ng-class="{'active':item.active, 'has-arrow': item.cc_transactions.length > 0}">
                         <strong class="name">{{item.description}}</strong>
-                        <span class="value">{{currencySymbol}}{{item.total_amount}}</span>
+                        <span class="value">{{currencySymbol}}{{item.total_amount|number:2}}</span>
                     </a>
                     <table class="grid-items"  ng-show="item.active"> 
                         <thead>
@@ -29,27 +29,27 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="transaction in item.cc_transactions">
-                                <td>{{transaction.date}}</td>
+                                <td>{{transaction.date|date:dateFormat}} {{transaction.time}}</td>
                                 <td>{{transaction.card_no}}</td>
                                 <td>{{transaction.user}}</td>
                                 <td>{{transaction.room_no}}</td>
                                 <td>{{transaction.reservation_no}}</td>
                                 <td>{{transaction.guest_name}}</td>
                                 <td>{{transaction.auth_no}}</td>
-                                <td>{{currencySymbol}}{{transaction.amount}}</td>
+                                <td>{{currencySymbol}}{{transaction.amount|number:2}}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <!-- Declined -->
-                <a ng-click="clickedDeclinedTab()" class="transaction-title red toggle" ng-class="{'active':data.declined.active, 'has-arrow': hasAnyElements(data.declined)}">
+                <a ng-click="clickedDeclinedTab()" class="transaction-title red toggle" ng-class="{'active':data.authData.declined.active, 'has-arrow': hasAnyElements(data.authData.declined)}">
                     <strong class="name">Declined</strong>
                 </a>
-                <div id="authorization-declined" class="grid-charge" ng-repeat="item in data.declined" ng-show="data.declined.active"> <!-- To show, remove class "hidden" when L101 is clicked -->
+                <div id="authorization-declined" class="grid-charge" ng-repeat="item in data.authData.declined" ng-show="data.authData.declined.active"> <!-- To show, remove class "hidden" when L101 is clicked -->
                     <a ng-click="clickedDeclinedTransactionItem(item)" class="transaction-title toggle" ng-class="{'active':item.active, 'has-arrow': item.cc_transactions.length > 0}">
                         <strong class="name">{{item.description}}</strong>
-                        <span class="value">{{currencySymbol}}{{item.total_amount}}</span>
+                        <span class="value">{{currencySymbol}}{{item.total_amount|number:2}}</span>
                     </a>
                     <table ng-show="item.active" class="grid-items"> 
                         <thead>
@@ -66,27 +66,27 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="transaction in item.cc_transactions">
-                                <td>{{transaction.date}}</td>
+                                <td>{{transaction.date|date:dateFormat}} {{transaction.time}}</td>
                                 <td>{{transaction.card_no}}</td>
                                 <td>{{transaction.user}}</td>
                                 <td>{{transaction.room_no}}</td>
                                 <td>{{transaction.reservation_no}}</td>
                                 <td>{{transaction.guest_name}}</td>
                                 <td>{{transaction.auth_no}}</td>
-                                <td>{{currencySymbol}}{{transaction.amount}}</td> 
+                                <td>{{currencySymbol}}{{transaction.amount|number:2}}</td> 
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <!-- Reverse Authorizations -->
-                <a ng-click="clickedReversalsTab()" class="transaction-title grey toggle" ng-class="{'active':data.reversals.active, 'has-arrow': hasAnyElements(data.reversals)}">
+                <a ng-click="clickedReversalsTab()" class="transaction-title grey toggle" ng-class="{'active':data.authData.reversals.active, 'has-arrow': hasAnyElements(data.authData.reversals)}">
                     <strong class="name">Reverse Authorizations</strong>
                 </a>
-                <div id="authorization-reverse" class="grid-charge" ng-repeat="item in data.reversals" ng-show="data.reversals.active"> <!-- To show, remove class "hidden" when L109 is clicked -->
+                <div id="authorization-reverse" class="grid-charge" ng-repeat="item in data.authData.reversals" ng-show="data.authData.reversals.active"> <!-- To show, remove class "hidden" when L109 is clicked -->
                     <a ng-click="clickedReversalTransactionItem(item)" class="transaction-title toggle" ng-class="{'active':item.active, 'has-arrow': item.cc_transactions.length > 0 }">
                         <strong class="name">{{item.description}}</strong>
-                        <span class="value">{{currencySymbol}}{{item.total_amount}}</span>
+                        <span class="value">{{currencySymbol}}{{item.total_amount|number:2}}</span>
                     </a>
                     <table ng-show="item.active" class="grid-items"> 
                         <thead>
@@ -103,14 +103,14 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="transaction in item.cc_transactions">
-                                <td>{{transaction.date}}</td>
+                                <td>{{transaction.date|date:dateFormat}} {{transaction.time}}</td>
                                 <td>{{transaction.card_no}}</td>
                                 <td>{{transaction.user}}</td>
                                 <td>{{transaction.room_no}}</td>
                                 <td>{{transaction.reservation_no}}</td>
                                 <td>{{transaction.guest_name}}</td>
                                 <td>{{transaction.auth_no}}</td>
-                                <td>{{currencySymbol}}{{transaction.amount}}</td> 
+                                <td>{{currencySymbol}}{{transaction.amount|number:2}}</td> 
                             </tr>
                         </tbody>
                     </table>

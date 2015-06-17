@@ -11,9 +11,9 @@ sntRover.controller('RVccAuthorizationController', ['$scope','$filter','$statePa
 	var fetchAuthData = function(){
 		
 		var fetchAuthDataSuccess = function(data){
-			$scope.data = data;
+			$scope.data.authData = data;
 			refreshAuthorizationScroll();
-			console.log($scope.data);
+			console.log($scope.data.authData);
 		}
     	var options = {
     		successCallBack: fetchAuthDataSuccess      		
@@ -28,29 +28,33 @@ sntRover.controller('RVccAuthorizationController', ['$scope','$filter','$statePa
         }, 500);
     };
 
-
+    $scope.$on('mainTabSwiched', function(){
+		if($scope.data.activeTab == 1){
+			refreshAuthorizationScroll();
+		}
+    });
 
 	$scope.clickedApprovedTab = function(){
-		if(isEmptyObject($scope.data.approved)){
+		if(isEmptyObject($scope.data.authData.approved)){
 			return false;
 		}
-		$scope.data.approved.active = !$scope.data.approved.active;
+		$scope.data.authData.approved.active = !$scope.data.authData.approved.active;
 		refreshAuthorizationScroll();
 	};
 
 	$scope.clickedDeclinedTab = function(){
-		if(isEmptyObject($scope.data.declined)){
+		if(isEmptyObject($scope.data.authData.declined)){
 			return false;
 		}
-		$scope.data.declined.active = !$scope.data.declined.active;
+		$scope.data.authData.declined.active = !$scope.data.authData.declined.active;
 		refreshAuthorizationScroll();
 	};
 
 	$scope.clickedReversalsTab = function(){
-		if(isEmptyObject($scope.data.reversals)){
+		if(isEmptyObject($scope.data.authData.reversals)){
 			return false;
 		}
-		$scope.data.reversals.active = !$scope.data.reversals.active;
+		$scope.data.authData.reversals.active = !$scope.data.authData.reversals.active;
 		refreshAuthorizationScroll();
 	};
 
@@ -77,6 +81,7 @@ sntRover.controller('RVccAuthorizationController', ['$scope','$filter','$statePa
 		item.active = !item.active;
 		refreshAuthorizationScroll();
 	};
+
 
 	init();
     
