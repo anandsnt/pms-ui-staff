@@ -29,6 +29,14 @@ sntRover.controller('RVccAuthorizationController', ['$scope','$filter','$statePa
         }, 500);
     };
 
+    $scope.hasAnyElements = function(object){
+    	var hasAnyElements = true;
+    	if(isEmptyObject(object)){
+    		hasAnyElements = false;
+    	}
+    	return hasAnyElements;
+    };
+
 	$scope.clickedApprovedTab = function(){
 		if(isEmptyObject($scope.data.approved)){
 			return false;
@@ -62,11 +70,17 @@ sntRover.controller('RVccAuthorizationController', ['$scope','$filter','$statePa
 	};
 
 	$scope.clickedDeclinedTransactionItem = function(item){
+		if(item.cc_transactions.length === 0){
+			return false;
+		}
 		item.active = !item.active;
 		refreshAuthorizationScroll();
 	};
 
 	$scope.clickedReversalTransactionItem = function(item){
+		if(item.cc_transactions.length === 0){
+			return false;
+		}
 		item.active = !item.active;
 		refreshAuthorizationScroll();
 	};

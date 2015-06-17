@@ -5,12 +5,12 @@
         <div class="journal-grid cc-transactions"> <!-- For print add class "print-summary" or "print-details" based on L51 checked status -->
             <div class="grid-group">
                 <!-- Approved -->
-                <a class="transaction-title green has-arrow toggle" ng-click="clickedApprovedTab()"  ng-class="{'active':data.approved.active }">
+                <a class="transaction-title green toggle" ng-click="clickedApprovedTab()"  ng-class="{'active':data.approved.active, 'has-arrow': hasAnyElements(data.approved) }">
                     <strong class="name">Approved</strong>
                 </a>
                 <div id="authorization-approved" class="grid-charge"  ng-repeat="item in data.approved" ng-show="data.approved.active" > <!-- To show, remove class "hidden" when L61 is clicked -->
                     <!-- CC Types -->
-                    <a ng-click="clickedApprovedTransactionItem(item)" class="transaction-title has-arrow toggle" ng-class="{'active':item.active }" >
+                    <a ng-click="clickedApprovedTransactionItem(item)" class="transaction-title toggle" ng-class="{'active':item.active, 'has-arrow': item.cc_transactions.length > 0}">
                         <strong class="name">{{item.description}}</strong>
                         <span class="value">{{currencySymbol}}{{item.total_amount}}</span>
                     </a>
@@ -43,11 +43,11 @@
                 </div>
 
                 <!-- Declined -->
-                <a ng-click="clickedDeclinedTab()" class="transaction-title red has-arrow toggle" ng-class="{'active':data.declined.active }">
+                <a ng-click="clickedDeclinedTab()" class="transaction-title red toggle" ng-class="{'active':data.declined.active, 'has-arrow': hasAnyElements(data.declined)}">
                     <strong class="name">Declined</strong>
                 </a>
                 <div id="authorization-declined" class="grid-charge" ng-repeat="item in data.declined" ng-show="data.declined.active"> <!-- To show, remove class "hidden" when L101 is clicked -->
-                    <a ng-click="clickedDeclinedTransactionItem(item)" class="transaction-title has-arrow toggle" ng-class="{'active':item.active }">
+                    <a ng-click="clickedDeclinedTransactionItem(item)" class="transaction-title toggle" ng-class="{'active':item.active, 'has-arrow': item.cc_transactions.length > 0}">
                         <strong class="name">{{item.description}}</strong>
                         <span class="value">{{currencySymbol}}{{item.total_amount}}</span>
                     </a>
@@ -80,11 +80,11 @@
                 </div>
 
                 <!-- Reverse Authorizations -->
-                <a ng-click="clickedReversalsTab()" class="transaction-title grey has-arrow toggle" ng-class="{'active':data.reversals.active }">
+                <a ng-click="clickedReversalsTab()" class="transaction-title grey toggle" ng-class="{'active':data.reversals.active, 'has-arrow': hasAnyElements(data.reversals)}">
                     <strong class="name">Reverse Authorizations</strong>
                 </a>
                 <div id="authorization-reverse" class="grid-charge" ng-repeat="item in data.reversals" ng-show="data.reversals.active"> <!-- To show, remove class "hidden" when L109 is clicked -->
-                    <a ng-click="clickedReversalTransactionItem(item)" class="transaction-title has-arrow toggle" ng-class="{'active':item.active }">
+                    <a ng-click="clickedReversalTransactionItem(item)" class="transaction-title toggle" ng-class="{'active':item.active, 'has-arrow': item.cc_transactions.length > 0 }">
                         <strong class="name">{{item.description}}</strong>
                         <span class="value">{{currencySymbol}}{{item.total_amount}}</span>
                     </a>
