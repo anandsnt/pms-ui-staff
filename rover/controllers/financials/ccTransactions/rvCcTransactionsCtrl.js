@@ -113,5 +113,13 @@ sntRover.controller('RVccTransactionsController', ['$scope','$filter','$statePar
         $timeout(removePrintOrientation, 100);
     };
 
+    $scope.hasAnyElements = function(object){
+    	var hasAnyElements = true;
+    	if(isEmptyObject(object)){
+    		hasAnyElements = false;
+    	}
+    	return hasAnyElements;
+    };
+
     
 }]);

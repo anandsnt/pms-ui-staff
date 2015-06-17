@@ -23,19 +23,12 @@ sntRover.controller('RVccAuthorizationController', ['$scope','$filter','$statePa
 	};
 
 	var refreshAuthorizationScroll = function(){
-		console.log("refreshAuthorizationScroll");
         setTimeout(function(){
         	$scope.refreshScroller('authorization-scroll');
         }, 500);
     };
 
-    $scope.hasAnyElements = function(object){
-    	var hasAnyElements = true;
-    	if(isEmptyObject(object)){
-    		hasAnyElements = false;
-    	}
-    	return hasAnyElements;
-    };
+
 
 	$scope.clickedApprovedTab = function(){
 		if(isEmptyObject($scope.data.approved)){

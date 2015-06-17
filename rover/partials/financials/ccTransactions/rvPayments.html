@@ -8,12 +8,12 @@
 
             <div class="grid-group">
                 <!-- Approved -->
-                <a ng-click="clickedApprovedTab()" class="transaction-title green has-arrow toggle" ng-class="{'active':data.paymentData.approved.active }">
+                <a ng-click="clickedApprovedTab()" class="transaction-title green toggle" ng-class="{'active':data.paymentData.approved.active, 'has-arrow': hasAnyElements(data.paymentData.approved)}">
                     <strong class="name">Approved</strong>
                 </a>
                 <div ng-show="data.paymentData.approved.active" class="grid-charge" ng-repeat="item in data.paymentData.approved"> 
                     
-                    <a ng-click="clickedApprovedTransactionItem(item)" class="transaction-title has-arrow toggle" ng-class="{'active':item.active }">
+                    <a ng-click="clickedApprovedTransactionItem(item)" class="transaction-title toggle" ng-class="{'active':item.active, 'has-arrow': item.cc_transactions.length > 0 }">
                         <strong class="name">{{item.description}}</strong>
                         <span class="value">{{currencySymbol}}{{item.total_amount}}</span>
                     </a>
@@ -46,12 +46,12 @@
                 </div>
             
                 <!-- Declined -->
-                <a ng-click="clickedDeclinedTab()"  class="transaction-title red has-arrow toggle" ng-class="{'active':data.paymentData.declined.active }">
+                <a ng-click="clickedDeclinedTab()"  class="transaction-title red toggle" ng-class="{'active':data.paymentData.declined.active, 'has-arrow': hasAnyElements(data.paymentData.declined) }">
                     <strong class="name">Declined</strong>
                 </a>
                 <div ng-show="data.paymentData.declined.active" class="grid-charge" ng-repeat="item in data.paymentData.declined"> 
 
-                    <a ng-click="clickedDeclinedTransactionItem(item)" class="transaction-title has-arrow toggle" ng-class="{'active':item.active }">
+                    <a ng-click="clickedDeclinedTransactionItem(item)" class="transaction-title toggle" ng-class="{'active':item.active, 'has-arrow': item.cc_transactions.length > 0 }">
                         <strong class="name">{{item.description}}</strong>
                         <span class="value">{{currencySymbol}}{{item.total_amount}}</span>
                     </a>

@@ -32,21 +32,33 @@ sntRover.controller('RVccPaymentsController', ['$scope','$filter','$stateParams'
     });
 
 	$scope.clickedApprovedTab = function(){
+		if(isEmptyObject($scope.data.paymentData.approved)){
+			return false;
+		}
 		$scope.data.paymentData.approved.active = !$scope.data.paymentData.approved.active;
 		refreshPaymentScroll();
 	};
 
 	$scope.clickedDeclinedTab = function(){
+		if(isEmptyObject($scope.data.paymentData.declined)){
+			return false;
+		}
 		$scope.data.paymentData.declined.active = !$scope.data.paymentData.declined.active;
 		refreshPaymentScroll();
 	};
 
 	$scope.clickedApprovedTransactionItem = function(item){
+		if(item.cc_transactions.length === 0){
+			return false;
+		}
 		item.active = !item.active;
 		refreshPaymentScroll();
 	};
 
 	$scope.clickedDeclinedTransactionItem = function(item){
+		if(item.cc_transactions.length === 0){
+			return false;
+		}
 		item.active = !item.active;
 		refreshPaymentScroll();
 	};
