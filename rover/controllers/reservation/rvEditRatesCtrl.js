@@ -85,7 +85,13 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 		};
 
 		$scope.pastDay = function(date) {
-			return tzIndependentDate($rootScope.businessDate) > new tzIndependentDate(date);
+			// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
+			// Just to clarify: User should be able to enter custom rates at any time for a group reservation
+			if( $scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id ){
+				return tzIndependentDate($rootScope.businessDate) >= new tzIndependentDate(date);
+			} else {
+				return tzIndependentDate($rootScope.businessDate) > new tzIndependentDate(date);
+			}
 		};
 
 	}
