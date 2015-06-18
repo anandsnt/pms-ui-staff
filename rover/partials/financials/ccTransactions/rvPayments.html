@@ -4,12 +4,12 @@
 
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
-        <div class="journal-grid cc-transactions" ng-class="{ 'print-summary':data.isToggleSummaryActive ,'print-details':!data.isToggleSummaryActive }">
+        <div class="journal-grid cc-transactions print-details">
 
             <div class="grid-group">
                 <!-- Approved -->
                 <a ng-click="clickedApprovedTab()" class="transaction-title green toggle" ng-class="{'active':data.paymentData.approved.active, 'has-arrow': hasAnyElements(data.paymentData.approved)}">
-                    <strong class="name">Approved</strong>
+                    <strong class="name" translate>APPROVED</strong>
                 </a>
                 <div ng-show="data.paymentData.approved.active" class="grid-charge" ng-repeat="item in data.paymentData.approved"> 
                     
@@ -20,14 +20,14 @@
                     <table ng-show="item.active" class="grid-items"> 
                         <thead>
                             <tr>
-                                <th scope="col">Date &amp; Time</th>
-                                <th scope="col">Card No.</th>
-                                <th scope="col">User</th>
-                                <th scope="col">Room No.</th>
-                                <th scope="col">Reservation No.</th>
-                                <th scope="col">Guest Name</th>
-                                <th scope="col">Auth. Code</th>
-                                <th scope="col">Amount</th>
+                                <th scope="col">{{'DATE' | translate}} &amp; {{'TIME' | translate}}</th>
+                                <th scope="col" translate>CARD_NUMBER</th>
+                                <th scope="col" translate>USER</th>
+                                <th scope="col" translate>ROOM_NO</th>
+                                <th scope="col" translate>RESERVATION_NO</th>
+                                <th scope="col" translate>GUEST_NAME</th>
+                                <th scope="col" translate>AUTH_CODE</th>
+                                <th scope="col" translate>AMOUNT</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,7 +47,7 @@
             
                 <!-- Declined -->
                 <a ng-click="clickedDeclinedTab()"  class="transaction-title red toggle" ng-class="{'active':data.paymentData.declined.active, 'has-arrow': hasAnyElements(data.paymentData.declined) }">
-                    <strong class="name">Declined</strong>
+                    <strong class="name" translate>DECLINED</strong>
                 </a>
                 <div ng-show="data.paymentData.declined.active" class="grid-charge" ng-repeat="item in data.paymentData.declined"> 
 
@@ -58,14 +58,14 @@
                     <table ng-show="item.active" class="grid-items"> 
                         <thead>
                             <tr>
-                                <th scope="col">Date &amp; Time</th>
-                                <th scope="col">Card No.</th>
-                                <th scope="col">User</th>
-                                <th scope="col">Room No.</th>
-                                <th scope="col">Reservation No.</th>
-                                <th scope="col">Guest Name</th>
-                                <th scope="col">Auth. Code</th>
-                                <th scope="col">Amount</th>
+                            	<th scope="col">{{'DATE' | translate}} &amp; {{'TIME' | translate}}</th>
+                                <th scope="col" translate>CARD_NUMBER</th>
+                                <th scope="col" translate>USER</th>
+                                <th scope="col" translate>ROOM_NO</th>
+                                <th scope="col" translate>RESERVATION_NO</th>
+                                <th scope="col" translate>GUEST_NAME</th>
+                                <th scope="col" translate>AUTH_CODE</th>
+                                <th scope="col" translate>AMOUNT</th>
                             </tr>
                         </thead>
                         <tbody>
