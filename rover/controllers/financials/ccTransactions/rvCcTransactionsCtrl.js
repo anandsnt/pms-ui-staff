@@ -44,6 +44,11 @@ sntRover.controller('RVccTransactionsController', ['$scope','$filter','$statePar
     $scope.activatedTab = function(index){
     	$scope.data.activeTab = index;
     	$scope.$emit('mainTabSwiched');
+    	$scope.$broadcast('CLOSEPRINTBOX');
+    };
+
+    $scope.clickedOnTransactionContents = function(){
+    	$scope.$broadcast('CLOSEPRINTBOX');
     };
 
     $scope.hasAnyElements = function(object){
@@ -53,6 +58,7 @@ sntRover.controller('RVccTransactionsController', ['$scope','$filter','$statePar
     	}
     	return hasAnyElements;
     };
+
 
 	$scope.hasPermissionToSubmitCCBatch = function() {
 		return rvPermissionSrv.getPermissionValue('SUBMIT_CC_BATCH');

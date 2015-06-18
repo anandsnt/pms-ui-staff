@@ -33,11 +33,11 @@
     <form ng-controller="RVCcPrintTransactionsController" ng-class="{ 'open': data.isDrawerOpened }" ui-jq="resizable" resize ui-options="resizableOptions" style="height: {{data.printBoxHeight}}px;" ng-click="clickedDrawer($event)"id="journal-print-options" class="journal-print" role="complementary">
         <div ng-include="'/assets/partials/financials/ccTransactions/rvCcPrintBox.html'"></div>
     </form>
+	<div ng-click="clickedOnTransactionContents();">
+	    <!-- Content PAYMENTS-->
+	    <div ng-show="data.activeTab == 0" ng-include="'/assets/partials/financials/ccTransactions/rvPayments.html'"></div>
 
-    <!-- Content PAYMENTS-->
-    <div ng-show="data.activeTab == 0" ng-include="'/assets/partials/financials/ccTransactions/rvPayments.html'"></div>
-
-    <!-- Content AUTHORIZATION-->
-    <div ng-show="data.activeTab == 1" ng-include="'/assets/partials/financials/ccTransactions/rvAuthorization.html'"></div>
-
+	    <!-- Content AUTHORIZATION-->
+	    <div ng-show="data.activeTab == 1" ng-include="'/assets/partials/financials/ccTransactions/rvAuthorization.html'"></div>
+	</div>
 </section>
