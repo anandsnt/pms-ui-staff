@@ -389,41 +389,6 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.fauxSelectChange = function(reportItem, fauxDS, allTapped) {
 			var selectedItems;
 
-			var updateQuickFlags = function() {
-				if ( !reportItem['hasGeneralOptions']['data'].length ) {
-					return;
-				};
-
-				reportItem.chosenNotes          = false;
-				reportItem.chosenShowGuests     = false;
-				reportItem.chosenCancelled      = false;
-				reportItem.chosenShowRateAdjust = false;
-
-				_.each(fauxDS.data, function(item) {
-					switch ( item.paramKey.toUpperCase() ) {
-						case 'INCLUDE_NOTES':
-							reportItem.chosenNotes = item.selected;
-							break;
-
-						case 'SHOW_GUESTS':
-							reportItem.chosenShowGuests = item.selected;
-							break;
-
-						case 'INCLUDE_CANCELLED':
-						case 'INCLUDE_CANCELED':
-							reportItem.chosenCancelled = item.selected;
-							break;
-
-						case 'SHOW_RATE_ADJUSTMENTS_ONLY':
-							reportItem.chosenShowRateAdjust = item.selected;
-							break;
-
-						default:
-							break;
-					};
-				});
-			};
-
 			if ( allTapped ) {
 				if ( fauxDS.selectAll ) {
 					fauxDS.title = 'All Selected';
@@ -434,8 +399,6 @@ sntRover.controller('RVReportsMainCtrl', [
 				_.each(fauxDS.data, function(each) {
 					each.selected = fauxDS.selectAll;
 				});
-
-				updateQuickFlags();
 			} else {
 				selectedItems = _.where(fauxDS.data, { selected: true });
 
@@ -450,8 +413,6 @@ sntRover.controller('RVReportsMainCtrl', [
 					fauxDS.selectAll = false;
 					fauxDS.title = selectedItems.length + ' Selected';
 				};
-
-				updateQuickFlags();
 
 				// CICO-10202
 				$scope.$emit( 'report.filter.change' );
@@ -638,10 +599,19 @@ sntRover.controller('RVReportsMainCtrl', [
 
 
 			if ( chosenReport.hasOwnProperty('hasGeneralOptions') && chosenReport['hasGeneralOptions']['data'].length ) {
+
+				// keeping direct ref to option from 'chosenReport'
+				// reseting all
+				chosenReport.chosenOptions = {};
+
 				_.each(chosenReport['hasGeneralOptions']['data'], function(each) {
 					if ( each.selected ) {
 						key = each.paramKey;
 						params[key] = true;
+
+						// keeping direct ref to option from 'chosenReport'
+						chosenReport.chosenOptions[key] = true;
+
 						/**/
 						$scope.appliedFilter.options.push( each.description );
 					} else if ( !each.selected && each.mustSend ) {

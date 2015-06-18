@@ -127,6 +127,11 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADAddCampaignCtrl',
 			url : '/campaigns/:id/:type'
 		});
+		$stateProvider.state('admin.doorlockInterface', {
+			templateUrl: '/assets/partials/doorLockInterface/adDoorLockInterface.html',
+			controller: 'ADDoorLockInterfaceCtrl',
+			url : '/doorlockinterface'
+		});
 		
         
 });

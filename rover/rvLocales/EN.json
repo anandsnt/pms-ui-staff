@@ -105,6 +105,24 @@
 "SAVE_ROUTE": "Save Route",
 "SAVE": "Save",
 "CANCEL": "Cancel"
+,"APPROVED": "Approved",
+"DATE": "Date",
+"TIME": "Time",
+"CARD_NUMBER": "Card No.",
+"USER": "User",
+"ROOM_NO": "Room No",
+"RESERVATION_NO": "Reservation No",
+"GUEST_NAME": "Guest Name",
+"AUTH_CODE": "Auth. Code",
+"AMOUNT": "Amount",
+"DECLINED": "Declined",
+"REVERSE_AUTHORIZATIONS": "Reverse Authorizations",
+"SUBMIT_BATCH": "Submit Batch",
+"PAYMENTS": "Payments",
+"AUTHORIZATIONS": "Authorizations"
+
+
+
 ,	
 	"DRAG_AND_DROP_TO_CHANGE_STAY_DATES": "Drag & drop to change stay dates",
 	"ARRIVAL" : "Arrival",
@@ -182,6 +200,7 @@
     "MENU_FINANCIALS":"Financials",
     "MENU_ACCOUNTING":"Accounting Interface",
     "MENU_JOURNAL":"Journal",
+    "MENU_CC_TRANSACTIONS":"CC Transactions",
     "MENU_COMMISIONS":"Commissions",
     "MENU_REPORTS":"Reports",
     "MENU_GROUPS": "Groups",
@@ -417,7 +436,7 @@
     "GROUP_PRINT":"Print",
     "GROUP_DOWNLOAD":"Download",
     "ADD_BILLING_INFO":"Add billing information",
-    "GROUP_BATCH" : "Batch"
+    "GROUP_BATCH" : "Reg.card"
 
 
 
@@ -610,6 +629,7 @@
     "CHECK_PAYMENT": "CHECK PAYMENT",
     "DIRECT_PAYMENT":"DIRECT PAYMENT",
     "ADD": "Add",
+    "CC_AUTH": "CC Auth",
     "NAME": "Name",
     "IN_GUEST_CARD":"In Guest Card",
     "SELECTED" : "Selected",

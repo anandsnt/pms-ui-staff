@@ -1,0 +1,89 @@
+<!-- Content for Payments -->
+<div ng-controller="RVccPaymentsController" id="cc-transactions-content" class="journal-content scrollable" ng-iscroll='payment_content'>
+    <div class="wrapper">
+
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+        <div class="journal-grid cc-transactions print-details">
+
+            <div class="grid-group">
+                <!-- Approved -->
+                <a ng-click="clickedApprovedTab()" class="transaction-title green toggle" ng-class="{'active':data.paymentData.approved.active, 'has-arrow': hasAnyElements(data.paymentData.approved)}">
+                    <strong class="name" translate>APPROVED</strong>
+                </a>
+                <div ng-show="data.paymentData.approved.active" class="grid-charge" ng-repeat="item in data.paymentData.approved"> 
+                    
+                    <a ng-click="clickedApprovedTransactionItem(item)" class="transaction-title toggle" ng-class="{'active':item.active, 'has-arrow': item.cc_transactions.length > 0 }">
+                        <strong class="name">{{item.description}}</strong>
+                        <span class="value">{{currencySymbol}}{{item.total_amount|number:2}}</span>
+                    </a>
+                    <table ng-show="item.active" class="grid-items"> 
+                        <thead>
+                            <tr>
+                                <th scope="col">{{'DATE' | translate}} &amp; {{'TIME' | translate}}</th>
+                                <th scope="col" translate>CARD_NUMBER</th>
+                                <th scope="col" translate>USER</th>
+                                <th scope="col" translate>ROOM_NO</th>
+                                <th scope="col" translate>RESERVATION_NO</th>
+                                <th scope="col" translate>GUEST_NAME</th>
+                                <th scope="col" translate>AUTH_CODE</th>
+                                <th scope="col" translate>AMOUNT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="transaction in item.cc_transactions">
+                                <td>{{transaction.date|date:dateFormat}} {{transaction.time}}</td>
+                                <td>{{transaction.card_no}}</td>
+                                <td>{{transaction.user}}</td>
+                                <td>{{transaction.room_no}}</td>
+                                <td>{{transaction.reservation_no}}</td>
+                                <td>{{transaction.guest_name}}</td>
+                                <td>{{transaction.auth_no}}</td>
+                                <td>{{currencySymbol}}{{transaction.amount|number:2}}</td> 
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            
+                <!-- Declined -->
+                <a ng-click="clickedDeclinedTab()"  class="transaction-title red toggle" ng-class="{'active':data.paymentData.declined.active, 'has-arrow': hasAnyElements(data.paymentData.declined) }">
+                    <strong class="name" translate>DECLINED</strong>
+                </a>
+                <div ng-show="data.paymentData.declined.active" class="grid-charge" ng-repeat="item in data.paymentData.declined"> 
+
+                    <a ng-click="clickedDeclinedTransactionItem(item)" class="transaction-title toggle" ng-class="{'active':item.active, 'has-arrow': item.cc_transactions.length > 0 }">
+                        <strong class="name">{{item.description}}</strong>
+                        <span class="value">{{currencySymbol}}{{item.total_amount|number:2}}</span>
+                    </a>
+                    <table ng-show="item.active" class="grid-items"> 
+                        <thead>
+                            <tr>
+                            	<th scope="col">{{'DATE' | translate}} &amp; {{'TIME' | translate}}</th>
+                                <th scope="col" translate>CARD_NUMBER</th>
+                                <th scope="col" translate>USER</th>
+                                <th scope="col" translate>ROOM_NO</th>
+                                <th scope="col" translate>RESERVATION_NO</th>
+                                <th scope="col" translate>GUEST_NAME</th>
+                                <th scope="col" translate>AUTH_CODE</th>
+                                <th scope="col" translate>AMOUNT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="transaction in item.cc_transactions">
+                                <td>{{transaction.date|date:dateFormat}} {{transaction.time}}</td>
+                                <td>{{transaction.card_no}}</td>
+                                <td>{{transaction.user}}</td>
+                                <td>{{transaction.room_no}}</td>
+                                <td>{{transaction.reservation_no}}</td>
+                                <td>{{transaction.guest_name}}</td>
+                                <td>{{transaction.auth_no}}</td>
+                                <td>{{currencySymbol}}{{transaction.amount|number:2}}</td> 
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
