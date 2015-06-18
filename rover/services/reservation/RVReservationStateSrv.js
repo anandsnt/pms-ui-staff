@@ -6,6 +6,10 @@ sntRover.service('RVReservationStateService', [
 			taxDetails: []
 		};
 
+		self.reservationFlags = {
+		  outsideStaydatesForGroup : false
+		}
+
 
 		/**
 		 * Method to get the addons associated with a Rate
@@ -140,6 +144,14 @@ sntRover.service('RVReservationStateService', [
 				},
 				taxDescription: taxDescription
 			};
+		};
+
+		this.setReservationFlag = function(key, status){
+		   self.reservationFlags[key] = status;
+		};
+
+		this.getReservationFlag = function(key){
+		   return self.reservationFlags[key];
 		};
 
 		/**

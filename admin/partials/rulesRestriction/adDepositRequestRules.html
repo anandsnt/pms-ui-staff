@@ -52,11 +52,11 @@
                         </fieldset>
                         <fieldset>
 	                        <fieldset class="holder left float col1-3">                            
-	                                <div class="entry" scrollable>
+	                                <div class="entry" scrollable style ="overflow: scroll;max-height: 200px;overflow-x: hidden;min-height: 200px">
 	                                    <ul id="roles-menu" class="float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
-	                                        <li role="tab" ng-repeat ="schedule in singleRule.schedules" ng-click="selectSchedule($index)">
+	                                        <li role="tab" ng-repeat ="schedule in singleRule.schedules" ng-click="selectSchedule($index)" ng-class ="{ selectedschedule : selectedScheduleIndex==$index }">
 	                                            SCHEDULE #{{$index+1}}
-	                                            <a class="icons icon-delete ng-scope" ng-click="deleteSchedule($index)" translate="">Delete this rule</a>
+	                                            <a class="icons icon-delete ng-scope" ng-click="deleteSchedule($index)" translate="" style = "float: right">Delete this rule</a>
 	                                        </li>
 	                                    </ul>
 	                                </div>		                            

@@ -8,10 +8,8 @@ sntRover.controller('RVccTransactionsController', ['$scope','$filter','$statePar
 	$scope.data = {};
     $scope.data.activeTab = $stateParams.id == '' ? 0 : $stateParams.id;
     $scope.data.transactionDate = $rootScope.businessDate;
-    $scope.data.isToggleSummaryActive = true;
     $scope.data.paymentData = {};
     $scope.data.authData = {};
-
 	
 	// Handling TransactionDate date picker click
 	$scope.clickedTransactionDate = function(){
@@ -55,7 +53,6 @@ sntRover.controller('RVccTransactionsController', ['$scope','$filter','$statePar
     	}
     	return hasAnyElements;
     };
-
 
 	$scope.hasPermissionToSubmitCCBatch = function() {
 		return rvPermissionSrv.getPermissionValue('SUBMIT_CC_BATCH');
