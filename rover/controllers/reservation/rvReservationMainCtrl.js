@@ -184,40 +184,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             };
         };
 
-
-        $scope.getEmptyAccountData = function() {
-            return {
-                "address_details": {
-                    "street1": null,
-                    "street2": null,
-                    "street3": null,
-                    "city": null,
-                    "state": null,
-                    "postal_code": null,
-                    "country_id": null,
-                    "email_address": null,
-                    "phone": null
-                },
-                "account_details": {
-                    "account_name": null,
-                    "company_logo": "",
-                    "account_number": null,
-                    "accounts_receivable_number": null,
-                    "billing_information": "Test"
-                },
-                "primary_contact_details": {
-                    "contact_first_name": null,
-                    "contact_last_name": null,
-                    "contact_job_title": null,
-                    "contact_phone": null,
-                    "contact_email": null
-                },
-                "future_reservation_count": 0
-            };
-        };
-
-
-
         //CICO-7641
         var isOccupancyConfigured = function(roomIndex) {
             var rateConfigured = true;
@@ -553,53 +519,15 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationData.number_of_adults = reservationDetails.reservation_card.number_of_adults;
             $scope.reservationData.number_of_children = reservationDetails.reservation_card.number_of_children;
 
-
-            /** CICO-6135
-             *   TODO : Change the hard coded values to take the ones coming from the reservation_details API call
-             */
-            //  reservationDetails.reservation_card.departureDate ! = null
-            if (reservationDetails.reservation_card.arrival_time) {
-                var timeParts = reservationDetails.reservation_card.arrival_time.trim().split(" ");
-                //flooring to nearest 15th as the select element's options are in 15s
-                var hourMinutes = timeParts[0].split(":");
-                hourMinutes[1] = (15 * Math.round(hourMinutes[1] / 15) % 60).toString();
-                $scope.reservationData.checkinTime = {
-                        hh: hourMinutes[0].length == 1 ? "0" + hourMinutes[0] : hourMinutes[0],
-                        mm: hourMinutes[1].length == 1 ? "0" + hourMinutes[1] : hourMinutes[1],
-                        ampm: timeParts[1]
-                    }
-                    // reservationDetails.reservation_card.arrival_time = parseInt($scope.reservationData.checkinTime.hh) + ":" + $scope.reservationData.checkinTime.mm + " " + $scope.reservationData.checkinTime.ampm;
+            // CICO-6135
+            if (reservationDetails.reservation_card.arrival_time) { //  reservationDetails.reservation_card.departureDate ! = null
+                $scope.reservationData.checkinTime = RVReservationDataService.parseTime(reservationDetails.reservation_card.arrival_time);
             }
-
-
-            // Handling late checkout
-            if (reservationDetails.reservation_card.is_opted_late_checkout && reservationDetails.reservation_card.late_checkout_time) {
-                var timeParts = reservationDetails.reservation_card.late_checkout_time.trim().split(" ");
-                var hourMinutes = timeParts[0].split(":");
-                //flooring to nearest 15th as the select element's options are in 15s
-                hourMinutes[1] = (15 * Math.round(hourMinutes[1] / 15) % 60).toString();
-                $scope.reservationData.checkoutTime = {
-                        hh: hourMinutes[0].length == 1 ? "0" + hourMinutes[0] : hourMinutes[0],
-                        mm: hourMinutes[1].length == 1 ? "0" + hourMinutes[1] : hourMinutes[1],
-                        ampm: timeParts[1]
-                    }
-                    // reservationDetails.reservation_card.late_checkout_time = parseInt($scope.reservationData.checkoutTime.hh) + ":" + $scope.reservationData.checkoutTime.mm + " " + $scope.reservationData.checkoutTime.ampm;
+            if (reservationDetails.reservation_card.is_opted_late_checkout && reservationDetails.reservation_card.late_checkout_time) { // Handling late checkout
+                $scope.reservationData.checkoutTime = RVReservationDataService.parseTime(reservationDetails.reservation_card.late_checkout_time);
+            } else if (reservationDetails.reservation_card.departure_time) { //  reservationDetails.reservation_card.departureDate ! = null   
+                $scope.reservationData.checkoutTime = RVReservationDataService.parseTime(reservationDetails.reservation_card.departure_time);
             }
-            //  reservationDetails.reservation_card.departureDate ! = null   
-            else if (reservationDetails.reservation_card.departure_time) {
-                var timeParts = reservationDetails.reservation_card.departure_time.trim().split(" ");
-                var hourMinutes = timeParts[0].split(":");
-                //flooring to nearest 15th as the select element's options are in 15s
-                hourMinutes[1] = (15 * Math.round(hourMinutes[1] / 15) % 60).toString();
-                $scope.reservationData.checkoutTime = {
-                        hh: hourMinutes[0].length == 1 ? "0" + hourMinutes[0] : hourMinutes[0],
-                        mm: hourMinutes[1].length == 1 ? "0" + hourMinutes[1] : hourMinutes[1],
-                        ampm: timeParts[1]
-                    }
-                    // reservationDetails.reservation_card.departure_time = parseInt($scope.reservationData.checkoutTime.hh) + ":" + $scope.reservationData.checkoutTime.mm + " " + $scope.reservationData.checkoutTime.ampm;
-            }
-
-
 
             // cards
             $scope.reservationData.company.id = $scope.reservationListData.company_id;
@@ -1033,7 +961,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     data.confirmation_emails.push($scope.otherData.additionalEmail);
                 }
             }
-            
+
             //  CICO-8320
             //  The API request payload changes
             var stay = [];

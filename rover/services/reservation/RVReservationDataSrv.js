@@ -100,51 +100,94 @@ sntRover.service('RVReservationDataService', [
 			};
 		}
 
-		self.getSearchDataModel = function(){
+		self.getSearchDataModel = function() {
 			return {
-                guestCard: {
-                    guestFirstName: "",
-                    guestLastName: "",
-                    guestCity: "",
-                    guestLoyaltyNumber: "",
-                    email: ""
-                },
-                companyCard: {
-                    companyName: "",
-                    companyCity: "",
-                    companyCorpId: ""
-                },
-                travelAgentCard: {
-                    travelAgentName: "",
-                    travelAgentCity: "",
-                    travelAgentIATA: ""
-                }
-            };
+				guestCard: {
+					guestFirstName: "",
+					guestLastName: "",
+					guestCity: "",
+					guestLoyaltyNumber: "",
+					email: ""
+				},
+				companyCard: {
+					companyName: "",
+					companyCity: "",
+					companyCorpId: ""
+				},
+				travelAgentCard: {
+					travelAgentName: "",
+					travelAgentCity: "",
+					travelAgentIATA: ""
+				}
+			};
 		}
 
-		self.getReservationDetailsModel = function(){
+		self.getReservationDetailsModel = function() {
 			return {
-                guestCard: {
-                    id: "",
-                    futureReservations: 0
-                },
-                companyCard: {
-                    id: "",
-                    futureReservations: 0
-                },
-                travelAgent: {
-                    id: "",
-                    futureReservations: 0
-                }
-            };
+				guestCard: {
+					id: "",
+					futureReservations: 0
+				},
+				companyCard: {
+					id: "",
+					futureReservations: 0
+				},
+				travelAgent: {
+					id: "",
+					futureReservations: 0
+				}
+			};
 		}
 
-		self.getTimeModel = function(){
+		self.getEmptyAccountData = function() {
 			return {
-                hh: '',
-                mm: '00',
-                ampm: 'AM'
-            };
+				"address_details": {
+					"street1": null,
+					"street2": null,
+					"street3": null,
+					"city": null,
+					"state": null,
+					"postal_code": null,
+					"country_id": null,
+					"email_address": null,
+					"phone": null
+				},
+				"account_details": {
+					"account_name": null,
+					"company_logo": "",
+					"account_number": null,
+					"accounts_receivable_number": null,
+					"billing_information": null
+				},
+				"primary_contact_details": {
+					"contact_first_name": null,
+					"contact_last_name": null,
+					"contact_job_title": null,
+					"contact_phone": null,
+					"contact_email": null
+				},
+				"future_reservation_count": 0
+			};
+		};
+
+		self.getTimeModel = function() {
+			return {
+				hh: '',
+				mm: '00',
+				ampm: 'AM'
+			};
+		}
+
+		self.parseTime = function(timeString) {
+			var timeParts = timeString.trim().split(" ");
+			//flooring to nearest 15th as the select element's options are in 15s
+			var hourMinutes = timeParts[0].split(":");
+			hourMinutes[1] = (15 * Math.round(hourMinutes[1] / 15) % 60).toString();
+			return {
+				hh: hourMinutes[0].length == 1 ? "0" + hourMinutes[0] : hourMinutes[0],
+				mm: hourMinutes[1].length == 1 ? "0" + hourMinutes[1] : hourMinutes[1],
+				ampm: timeParts[1]
+			}
 		}
 
 	}

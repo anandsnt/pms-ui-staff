@@ -481,42 +481,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			};
 
 			$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, userId, paymentSuccess, '', 'NONE');
-		};
-
-		// This method can be used to generate payload for the reservation update API call.
-		// Note: The payment and the confirmation mails related information is not computed in this call now, as that would require moving a few variables from the 
-		// scope of RVReservationSummaryCtrl to stayCardMainCtrl
-
-		$scope.getEmptyAccountData = function() {
-			return {
-				"address_details": {
-					"street1": null,
-					"street2": null,
-					"street3": null,
-					"city": null,
-					"state": null,
-					"postal_code": null,
-					"country_id": null,
-					"email_address": null,
-					"phone": null
-				},
-				"account_details": {
-					"account_name": null,
-					"company_logo": "",
-					"account_number": null,
-					"accounts_receivable_number": null,
-					"billing_information": null
-				},
-				"primary_contact_details": {
-					"contact_first_name": null,
-					"contact_last_name": null,
-					"contact_job_title": null,
-					"contact_phone": null,
-					"contact_email": null
-				},
-				"future_reservation_count": 0
-			}
-		}
+		};	
 
 		$scope.showContractedRates = function(cardIds) {
 			// 	CICO-7792 BEGIN
