@@ -23,6 +23,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.selectedAction.assigned;
         $scope.selectedAction.due_at_date;
         $scope.selectedAction.due_at_time;
+        $scope.openingPopup = false;
         
         
         $scope.departmentSelect = {};
@@ -157,31 +158,19 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             }
             
             if ($scope.newAction.date_due){
-                var dd = $scope.newAction.date_due;
-                if (dd[2] === '-'){
-                  dd = $scope.reformatDateOption(dd, '-', '/');
-                }
-                var fullStr = dd.split('/');
-                var year = fullStr[2], month = fullStr[0], day = fullStr[1], secs = '00';
-                
-                var coreTime;
-                var hours, mins;
-                if (!$scope.newAction.time_due){
-                    coreTime = null;
-                        hours = '00';
-                        mins = '00';
-                } else if ($scope.newAction.time_due.core_time){
+                var splitChar = $scope.newAction.date_due[2];
+                var dateObj = new Date($scope.getBasicDateInMilli($scope.newAction.date_due, splitChar));
+                var coreTime, hours, mins;
                      coreTime = $scope.newAction.time_due.core_time;
-                        hours = coreTime[0]+''+coreTime[1];
-                        mins = coreTime[2]+''+coreTime[3];
-                        var d = new Date(dd);
-                        d.setHours(hours);
-                        d.setMinutes(mins);
-                        d.setSeconds(00);
-                        params['time_due'] = d.valueOf();
-                }
-                var myDate = new Date(year, month, day, hours, mins, secs);
-                params['due_at'] = myDate.valueOf();
+                        hours = parseInt(coreTime[0]+''+coreTime[1]);
+                        mins = parseInt(coreTime[2]+''+coreTime[3]);
+                
+                dateObj.setUTCHours(parseInt(hours));
+                //verify this is the correct hours to set using core_time
+                dateObj.setUTCMinutes(parseInt(mins));
+                dateObj.setUTCSeconds(0);
+                params['due_at'] = dateObj.valueOf();
+                params['time_due'] = dateObj.valueOf();
             }
             
             $scope.invokeApi(rvActionTasksSrv.postNewAction, params, onSuccess, onFailure);
@@ -204,7 +193,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 var month = ("0" + (nd.getMonth() + 1)).slice(-2);
                 var fromDateStr = nd.getFullYear()+'-'+month+'-'+day;
                 $scope.fromDate = fromDateStr;
-        }
+        };
         
         
         $scope.dateOptions = {
@@ -262,14 +251,20 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.lastSelectedItemId = $scope.selectedAction.id;
             if (typeof $scope.selectedAction.due_at_date === typeof 'string' || typeof $scope.selectedAction.due_at_date === typeof 12345){
                 var coreTime, hours, mins;
-                     coreTime = $scope.selectedAction.due_at_time.value;
+                     coreTime = $scope.selectedAction.due_at_time.core_time;
                         hours = parseInt(coreTime[0]+''+coreTime[1]);
-                        mins = parseInt(coreTime[3]+''+coreTime[4]);
+                        mins = parseInt(coreTime[2]+''+coreTime[3]);
                 
                 //have to convert the date format string to read properly
                 var splitChar = $scope.selectedAction.due_at_date[2];
                 var dateObj = new Date($scope.getBasicDateInMilli($scope.selectedAction.due_at_date, splitChar));
-                var saveDate = new Date(dateObj.getUTCFullYear(), dateObj.getUTCMonth(), dateObj.getUTCDate(), hours, mins);
+                
+                dateObj.setUTCHours(parseInt(hours));
+                //verify this is the correct hours to set using core_time
+                dateObj.setUTCMinutes(parseInt(mins));
+                dateObj.setUTCSeconds(0);
+                
+                var saveDate = dateObj;
                 params['time_due'] = saveDate.valueOf();
                 params['due_at'] = saveDate.valueOf();
                 
@@ -348,7 +343,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         var getTimeObj = function(timeVal){
             var forTime = getTimeFromDateMilli(timeVal);
             for (var i in $scope.timeFieldValue){
-                if ($scope.timeFieldValue[i].value === getTimeFromDateMilli(timeVal)){
+                if ($scope.timeFieldValue[i].value === forTime){
                     return $scope.timeFieldValue[i];
                 }
             }
@@ -388,6 +383,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     
                     if (list[x].action_status === "COMPLETED"){
                         list[x].isCompleted = true;
+                        list[x].date_completed = getFormattedDate(list[x].completed_at);
+                        list[x].time_completed = getTimeFromDateMilli(list[x].completed_at);
                         list[x].completed_by = list[x].assigned_to;
                        // list[x].date_completed = '10/27/2015';
                     }
@@ -466,6 +463,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     
                     if (list[x].action_status === "COMPLETED"){
                         list[x].isCompleted = true;
+                        list[x].date_completed = getFormattedDate(list[x].completed_at);
+                        list[x].time_completed = getTimeFromDateMilli(list[x].completed_at);
                         list[x].completed_by = list[x].assigned_to;
                       //  list[x].date_completed = '10/27/2015';
                     }
@@ -482,6 +481,10 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 $scope.setDefaultActionSelected(0);
                 $scope.$parent.$emit('hideLoader');
                 //$scope.refreshActionsList();
+                if ($scope.openingPopup){
+                    $scope.initPopup();
+                }
+                $scope.openingPopup = false;
             };
             var onFailure = function(data){
                 $scope.$parent.$emit('hideLoader');
@@ -498,8 +501,6 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         };
         var getTimeFromDateMilli = function(d){
             if (typeof d === typeof 'string'){
-               // console.log('got back: -->>> '+new Date(parseInt(d)));
-               // console.log('returning: '+formatTime(parseInt(d)))
                 return formatTime(parseInt(d));
             } else if (typeof d === typeof 12345){
                 return formatTime(d);
@@ -520,12 +521,13 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             if (typeof d === typeof 'string'){
                 var dateInMilli = parseInt(d);
                 fullDate = new Date(dateInMilli);
+                
             } else if (typeof d === typeof 12345){
                 fullDate = new Date(d);
             }
-            day = fullDate.getDate();
-            month = fullDate.getMonth()+1;
-            year = fullDate.getFullYear();
+            day = fullDate.getUTCDate();
+            month = fullDate.getUTCMonth()+1;
+            year = fullDate.getUTCFullYear();
             
             if (day < 10) 
              day = '0' + day;
@@ -586,15 +588,16 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         };
         function closeDialog() {
             $scope.fetchActionsCount();
+        $scope.actionSelected = 'selected';
             ngDialog.close();
         }
 
         var formatTime = function(timeInMs) {
             var dt = new Date(timeInMs);
 
-            var hours = dt.getHours();
-            var minutes = dt.getMinutes();
-            var seconds = dt.getSeconds();
+            var hours = dt.getUTCHours();
+            var minutes = dt.getUTCMinutes();
+            var seconds = dt.getUTCSeconds();
 
             if (hours < 10) 
              hours = '0' + hours;
@@ -665,19 +668,21 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                                     '2215','2230','2245','2300',
                                     '2315','2330','2345'
         ];
-        
-        $scope.openActionsPopup = function() {
-            $scope.fetchActionsList();
+        $scope.initPopup = function(){
             ngDialog.open({
                 template: '/assets/partials/reservationCard/Actions/rvReservationCardActionsPopup.html',
                 className: 'ngdialog-theme-default',
                 scope: $scope,
                 closeByDocument: false,
-                closeByEscape: true,
+                closeByEscape: false,
                 preCloseCallback:function(){
                     $scope.fetchActionsCount();
                 }
             });
+        };
+        $scope.openActionsPopup = function() {
+            $scope.openingPopup = true;
+            $scope.fetchActionsList();
         };
         $scope.clearAssignSection = function(){
             $scope.departmentSelect.selected = {};
@@ -734,10 +739,6 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         
         $scope.reassignAction = function(){
             $scope.actionSelected = 'assign';
-            //console.log('setting selected: '+$scope.selectedAction.assigned_to.name);
-           // $('#department-assign-action').val($scope.selectedAction.assigned_to.name);
-            //$scope.departmentSelect.selected.name = $scope.selectedAction.assigned_to.name;
-            //console.log($scope.departmentSelect);
         };
         
         $scope.getBaseParams = function(){
