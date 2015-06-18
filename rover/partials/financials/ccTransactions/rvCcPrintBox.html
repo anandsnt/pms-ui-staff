@@ -1,18 +1,5 @@
 <!-- PRINT BOX -->
 <div class="holder">
-    <div class="entry">
-        <div class="switch-button" ng-class="{'on' : data.isToggleSummaryActive }" ng-click="toggleSummaryOrDeatils()">
-            <input name="revenue-print-toggle" id="revenue-print-toggle" value="" type="checkbox" checked />
-            <label class="data-off">
-                <span class="value" translate>SUMMARY</span>
-                <span class="switch-icon" translate>DETAILS</span>
-            </label>
-            <label class="data-on">
-                <span class="switch-icon" translate>SUMMARY</span>
-                <span class="value" translate>DETAILS</span>
-            </label>
-        </div>
-    </div>
     <div class="actions">
         <button ng-click="printButtonClick()" id="print-revenue" type="button" class="button blue" translate>PRINT</button>
     </div>
