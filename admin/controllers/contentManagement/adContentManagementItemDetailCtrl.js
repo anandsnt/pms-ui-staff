@@ -7,6 +7,35 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	 $scope.fileName = "Choose file...";
 	 $scope.initialIcon = '';
 	 $scope.addons = [];
+     $scope.min_duration_values = [];
+     $scope.max_order_values = [];
+     
+
+
+     var init = function(){
+     	var  duration;
+     	
+        for(var i = 0; i < 30; i++){
+           duration = {};
+           duration.value = i + 1;
+           duration.name = duration.value;
+           $scope.min_duration_values.push(duration);
+        }
+
+
+        var  order;
+     	
+        for(var i = 0; i < 5; i++){
+           order = {};
+           order.value = i + 1;
+           order.name = order.value;
+           $scope.max_order_values.push(order);
+        }
+     }
+
+     init();    
+
+
 	 /*Initializing data, for adding a new item.
     */
 	$scope.data = {	            
@@ -20,6 +49,8 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	            "website_url": "",
 	            "description": "",
 	            "addon_id":"",
+	            "addon_min_duration":"",
+	            "addon_max_order":"",
 	            "parent_category": [],
 	            "parent_section": []
             }
@@ -77,6 +108,8 @@ $scope.getSelectedAddonPrice = function(){
 			$scope.initialIcon =  $scope.data.image;
 			if(data.page_template == 'ADDON'){
 				$scope.fetchAddons();
+				$scope.data.addon_max_order = $scope.data.addon_max_order == null? "" : $scope.data.addon_max_order;
+				$scope.data.addon_min_duration = $scope.data.addon_min_duration == null ? "" : $scope.data.addon_min_duration;
 			}else{
 				$scope.$emit('hideLoader');
 			}

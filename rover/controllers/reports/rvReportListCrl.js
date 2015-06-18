@@ -4,7 +4,8 @@ sntRover.controller('RVReportListCrl', [
     '$filter',
     'RVreportsSrv',
     'RVReportUtilsFac',
-    function($scope, $rootScope, $filter, RVreportsSrv, reportUtils) {
+    '$timeout',
+    function($scope, $rootScope, $filter, RVreportsSrv, reportUtils, $timeout) {
 
         BaseCtrl.call(this, $scope);
 
@@ -16,19 +17,8 @@ sntRover.controller('RVReportListCrl', [
          * inorder to refresh after list rendering
          */
         $scope.$on("NG_REPEAT_COMPLETED_RENDERING", function(event) {
-            $scope.refreshScroller('report-list-scroll');
+            $timeout($scope.refreshScroller.bind($scope, 'report-list-scroll'), 2001);
         });
-
-        /**
-         * This method helps to populate the markets filter in the reports for the Report and Summary Filter
-         */
-        var populateMarketsList = function() {
-            var callback = function(data) {
-                $scope.reportsState.markets = data;
-                $scope.$emit('hideLoader');
-            }
-            $scope.invokeApi(RVreportsSrv.fetchDemographicMarketSegments, {}, callback);
-        }
 
         /**
          *   Post processing fetched data to modify and add additional data
@@ -45,6 +35,8 @@ sntRover.controller('RVReportListCrl', [
                 // add required flags this report
                 reportUtils.applyFlags( reportList[i] );
 
+
+
                 // to process the filters for this report
                 reportUtils.processFilters(reportList[i], {
                     'guaranteeTypes' : $scope.$parent.guaranteeTypes,
@@ -52,12 +44,9 @@ sntRover.controller('RVReportListCrl', [
                     'chargeCodes'    : $scope.$parent.chargeCodes,
                     'markets'        : $scope.$parent.markets,
                     'sources'        : $scope.$parent.sources,
-                    'origins'        : $scope.$parent.origins
+                    'origins'        : $scope.$parent.origins,
+                    'codeSettings'   : $scope.$parent.codeSettings
                 });
-
-
-
-
 
 
 
@@ -77,6 +66,7 @@ sntRover.controller('RVReportListCrl', [
 
 
 
+
                 // CICO-8010: for Yotel make "date" default sort by filter
                 if ($rootScope.currentHotelData == 'Yotel London Heathrow') {
                     var sortDate = _.find(reportList[i].sortByOptions, function(item) {
@@ -88,7 +78,7 @@ sntRover.controller('RVReportListCrl', [
                 };
             };
 
-            $scope.refreshScroller('report-list-scroll');
+            $timeout($scope.refreshScroller.bind($scope, 'report-list-scroll'), 100);
         }($scope.$parent.reportList);
 
         // show hide filter toggle

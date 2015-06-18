@@ -1,5 +1,5 @@
-sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter',
-	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter) {
+sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter', 'RVContactInfoSrv',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter, RVContactInfoSrv) {
 		BaseCtrl.call(this, $scope);
 		//Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
@@ -82,6 +82,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.$broadcast('guestSearchStopped');
 				$scope.$broadcast('guestCardAvailable');
 				$scope.showGuestPaymentList(guestInfo);
+				RVContactInfoSrv.completeContactInfoClone = JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
 				$scope.decloneUnwantedKeysFromContactInfo = function() {
 					var unwantedKeys = ["address", "birthday", "country",
 						"is_opted_promotion_email", "job_title",
@@ -686,7 +687,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					market: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.market_segment_id) ? '' : tData.rooms[index].demographics.market_segment_id,
 					source: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.source_id) ? '' : tData.rooms[index].demographics.source_id,
 					reservationType: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.reservation_type_id) ? '' : tData.rooms[index].demographics.reservation_type_id,
-					origin: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.booking_origin_id )? '' : tData.rooms[index].demographics.booking_origin_id
+					origin: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.booking_origin_id )? '' : tData.rooms[index].demographics.booking_origin_id,
+					segment: (typeof tData.rooms[index].segment === "undefined" || !tData.rooms[index].demographics.segment_id )? '' : tData.rooms[index].demographics.segment_id
 				}
 
 				// put the same stuff in the reservationData obj as well

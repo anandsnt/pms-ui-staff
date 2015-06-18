@@ -13,7 +13,7 @@
             <textarea id="cancel-reason" name="cancel-reason"ng-model="cancellationReason" placeholder="Cancelling because ...." rows="2" />
         </div>
         <div class="actions">
-            <button type="button" class="button green" ng-click="cancelGroup(cancellationReason)">Proceed</button>
+            <button id="cancel-action" type="button" class="button green" ng-click="cancelGroup(cancellationReason)">Proceed</button>
             <button type="button" class="button blank" ng-click="abortCancelGroup();">Close</button>
         </div>
     </form>

@@ -36,6 +36,25 @@
     </div>
 </div>
 
+<div class="date-range" ng-if="item.hasPaidDateRange">
+    <label>{{ item.hasPaidDateRange.description }}</label>
+    <div class="has-datepicker">
+        <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromPaidDate" readonly>
+        <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="item.fromPaidDate" readonly>
+        <button ng-if="item.canRemoveDate" ng-class="{'visible': item.showRemove}" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromPaidDate', 'untilPaidDate')">Clear query</span>
+        </button>
+    </div>
+    <span class="span-to"> To </span>
+    <div class="has-datepicker">
+        <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilPaidDate" readonly>
+        <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.untilPaidDate" readonly>
+        <button ng-if="item.canRemoveDate" ng-class="{'visible': item.showRemove}" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'fromPaidDate', 'untilPaidDate')">Clear query</span>
+        </button>
+    </div>
+</div>
+
 <div class="date-range" ng-if="item.hasDateFilter">
     <label>{{ item.hasDateFilter.description }}</label>
     <div class="has-datepicker">
@@ -98,7 +117,8 @@
 <div class="single-date" ng-if="item.hasSingleDateFilter">
     <label>Date</label>
     <div class="has-datepicker">
-        <input type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.singleValueDate">
+        <input ng-if="item.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptions" ng-model="item.singleValueDate" readonly>
+        <input ng-if="!item.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.singleValueDate" readonly>
     </div>
 </div>
 

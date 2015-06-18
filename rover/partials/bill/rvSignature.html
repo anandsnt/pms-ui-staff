@@ -62,7 +62,7 @@
 		</div>
 		
 		<div class="actions" ng-show="($index+1) === reservationBillData.bills.length">
-			<button type="submit" ng-click="clickedCompleteCheckout()" id="complete-checkout-button" data-reseravation-status="CHECKEDIN" data-required-signature="CHECKIN" class="button red">
+			<button type="submit" click-touch="clickedCompleteCheckout()" id="complete-checkout-button" data-reseravation-status="CHECKEDIN" data-required-signature="CHECKIN" class="button red">
 				{{ 'REVIEW_BILL' | translate }}
 				{{ billData.bill_number }}
 				{{ 'AND_COMPLETE_CHECKOUT' | translate }}
@@ -74,4 +74,11 @@
 
 	</div>
 	
+</form>
+<form id="signature-pad" class="complete-registration form" ng-show="clickedButton == 'reverseCheckoutButton' && $index === 0">
+	<div class="actions">
+			<button type="submit" ng-click="clickedReverseCheckoutButton()" class="button purple">
+				REVERSE CHECKOUT
+			</button>
+		</div>
 </form>

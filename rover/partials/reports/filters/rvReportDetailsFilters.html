@@ -59,6 +59,35 @@
 
 
 
+        <!-- item_21: paid date range -->
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasPaidDateRange" ng-class="{'active': filterItemsToggle.item_21}" ng-click="toggleFilterItems('item_21')">
+            <span class="title">{{ chosenReport.hasPaidDateRange.description }}</span>
+        </a>
+        <div class="settings-content" ng-if="chosenReport.hasPaidDateRange" ng-class="{'hidden': !filterItemsToggle.item_21}">
+            <div class="entry date-range">
+                <label for="arrival-range-from">From</label>
+                <div class="has-datepicker">
+                    <input ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromPaidDate" readonly>
+                    <input ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="chosenReport.fromPaidDate" readonly>
+                    <button ng-if="chosenReport.canRemoveDate" ng-class="{'visible': chosenReport.showRemove}" class="clear-query">
+                        <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromPaidDate', 'untilPaidDate')">Clear query</span>
+                    </button>
+                </div>
+                <label for="arrival-range-to">To</label>
+                <div class="has-datepicker">
+                    <input ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilPaidDate" readonly>
+                    <input ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.untilPaidDate" readonly>
+                    <button ng-if="chosenReport.canRemoveDate" ng-class="{'visible': chosenReport.showRemove}" class="clear-query">
+                        <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'fromDepositDate', 'untilPaidDate')">Clear query</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
         <!-- item_03: date range -->
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasDateFilter" ng-class="{'active': filterItemsToggle.item_03}" ng-click="toggleFilterItems('item_03')">
             <span class="title">{{ chosenReport.hasDateFilter.description }}</span>
@@ -180,7 +209,8 @@
         <div class="settings-content" ng-if="chosenReport.hasSingleDateFilter" ng-class="{'hidden': !filterItemsToggle.item_18}">
             <div class="entry date-range">
                 <div class="has-datepicker">
-                    <input type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.singleValueDate" readonly>
+                    <input ng-if="chosenReport.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptions" ng-model="chosenReport.singleValueDate" readonly>
+                    <input ng-if="!chosenReport.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.singleValueDate" readonly>
                 </div>
             </div>
         </div>

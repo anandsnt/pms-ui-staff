@@ -143,11 +143,11 @@
                         </time>
                     </div>
                     <div class="blocked" ng-class="getClassAgainstHoldStatus(group)"> <!-- If Status = Tentative, add class "tentative" -->
-                        <strong>{{group.total_booked}}</strong>
+                        <strong>{{group.total_booked === null? '0':group.total_booked}}</strong>
                         <span>{{group.hold_status}}</span>
                     </div>
                     <div class="picked" ng-class="getClassAgainstPickedStatus(group)"> <!-- Add class "green" if No. > 0, or class "red" if cancelled -->
-                        <strong>{{group.total_picked_count}}</strong>
+                        <strong>{{group.total_picked_count === null? '0' :group.total_picked_count}}</strong>
                         <span>Picked Up</span>
                     </div>
                 </a>

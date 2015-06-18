@@ -580,7 +580,32 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			// reset the query saved into vault
 			$vault.set('searchQuery', '');
 		};
+                
+                $rootScope.$on('LOAD_SHARED_RESERVATION',function(evtObj, data){
+                    var reservationID = data.reservation_no, confirmationID = data.confirmation_no;
+                    $scope.goToSharerReservationDetails(evtObj, reservationID, confirmationID);
+                });
 
+		/**
+		 * function to execute on clicking on each result
+		 */
+		$scope.goToSharerReservationDetails = function(evtObj, reservationID, confirmationID) {
+
+			$scope.currentReservationID = reservationID;
+			$scope.currentConfirmationID = confirmationID;
+			RVSearchSrv.data = $scope.results;
+			RVSearchSrv.fromDate = $scope.fromDate;
+			RVSearchSrv.toDate = $scope.toDate;
+
+			//$scope.$emit("UpdateSearchBackbuttonCaption", "");
+                        
+                        $rootScope.viaSharerPopup = true;
+			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+				id: reservationID,
+				confirmationId: confirmationID,
+				isrefresh: true
+			});
+		};
 		/**
 		 * function to execute on clicking on each result
 		 */

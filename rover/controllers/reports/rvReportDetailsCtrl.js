@@ -122,6 +122,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
 				case reportUtils.getName('WEB_CHECK_OUT_CONVERSION'):
+				case reportUtils.getName('MARKET_SEGMENT_STATISTICS_REPORT'):
 					$scope.isLargeReport = true;
 					break;
 
@@ -191,6 +192,16 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('FORECAST_BY_DATE'):
 					$scope.leftColSpan = 8;
 					$scope.rightColSpan = 4;
+					break;
+
+				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
+					$scope.leftColSpan = 6;
+					$scope.rightColSpan = 7;
+					break;
+
+				case reportUtils.getName('MARKET_SEGMENT_STATISTICS_REPORT'):
+					$scope.leftColSpan = 8;
+					$scope.rightColSpan = 8;
 					break;
 
 				default:
@@ -317,10 +328,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			var parseAPIoptions = {
 				'groupedByKey'    : $scope.$parent.reportGroupedBy,
-				'checkNote'       : $scope.chosenReport.chosenNotes ? true : false,
-				'checkGuest'      : $scope.chosenReport.chosenShowGuests ? true : false,
-				'checkCancel'     : $scope.chosenReport.chosenCancelled ? true : false,
-				'checkRateAdjust' : $scope.chosenReport.chosenShowRateAdjust ? true : false
+				'checkNote'       : $scope.chosenReport.chosenOptions['include_notes'],
+				'checkGuest'      : $scope.chosenReport.chosenOptions['show_guests'],
+				'checkCancel'     : $scope.chosenReport.chosenOptions['include_cancelled'] || $scope.chosenReport.chosenOptions['include_cancelled'],
+				'checkRateAdjust' : $scope.chosenReport.chosenOptions['show_rate_adjustments_only']
 			};
 
 			// $scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
@@ -361,6 +372,18 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.hasReportTotals    = false;
 					$scope.showReportHeader   = true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/rvForecastReport.html';
+					break;
+
+				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
+					$scope.hasReportTotals    = false;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/rvForecastGuestGroupReport.html';
+					break;
+
+				case reportUtils.getName('MARKET_SEGMENT_STATISTICS_REPORT'):
+					$scope.hasReportTotals    = false;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/rvMarketSegmentStatReport.html';
 					break;
 
 				default:
@@ -417,6 +440,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 					template = '/assets/partials/reports/rvRoomQueuedReportRow.html';
 					break;
 
+				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
+					template = '/assets/partials/reports/rvForecastGuestGroupReportRow.html';
+					break;
+
+				case reportUtils.getName('MARKET_SEGMENT_STATISTICS_REPORT'):
+					template = '/assets/partials/reports/rvMarketSegmentStatReportRow.html';
+					break;
+
 				default:
 					template = '/assets/partials/reports/rvCommonReportRow.html';
 					break;
@@ -444,7 +475,17 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			// clear old results and update total counts
 			$scope.netTotalCount = $scope.$parent.totalCount;
-			$scope.uiTotalCount  = !!$scope.$parent.results ? $scope.$parent.results.length : 0;
+
+			if ( typeof $scope.$parent.results == 'array' ) {
+				$scope.uiTotalCount = $scope.$parent.results.length;
+			} else if ( typeof $scope.$parent.results == 'object' ) {
+				$scope.uiTotalCount = 0;
+				_.each($scope.$parent.results, function(item) {
+					if ( typeof item == 'array' ) {
+						$scope.uiTotalCount += item.length;
+					};
+				});
+			};
 
 			if ( $scope.netTotalCount == 0 && $scope.uiTotalCount == 0 ) {
 				$scope.disablePrevBtn = true;
@@ -662,6 +703,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
 				case reportUtils.getName('DAILY_TRANSACTIONS'):
 				case reportUtils.getName('DAILY_PAYMENTS'):
+				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
 					orientation = 'landscape';
 					break;
 
@@ -751,6 +793,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 			alert( 'Download Full Report API yet to be completed/implemented/integrated' );
 		};
 
+		$scope.hasSubString = function(subString, string) {
+			var string    = string.toLowerCase(),
+				subString = subString.toLowerCase();
+
+			return string.indexOf( subString ) > -1;
+		};
 
 
 

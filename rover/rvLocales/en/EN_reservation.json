@@ -48,6 +48,7 @@
     "SOURCE_PLACEHOLDER":"Select Source",
     "ORIGIN_BOOKING_LABEL":"Origin of Booking",
     "ORIGIN_BOOKING_PLACEHOLDER":"Select Origin of Booking",
+    "SEGMENT_PLACEHOLDER":"Select Segment",
     "SEND_CONFIRMATION_TO_FOLLOWING_EMAIL_ADDRESSES": "Send confirmation to the following email address(es)",
     "GUEST_EMAIL_ADDRESS": "Guest Email Address",
     "ADDITIONAL_EMAIL_ADDRESS": "Additional Email Address",
@@ -121,5 +122,8 @@
     "DIARY": "Diary",
 
     "KEEP_CURRENT_RATE": "Keep current rate",
-    "CHANGE_TO_NEW_RATE": "Change to new rate"
+    "CHANGE_TO_NEW_RATE": "Change to new rate",
+    "ADD_ONS" : "Add on",
+    "TAXES_INCL" : "TAXES(INCL)",
+    "TAXES_EXCL" : "TAXES(EXCL)"
 

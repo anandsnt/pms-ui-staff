@@ -247,7 +247,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return undefined
 		 */
 		$scope.addTripleEntryRow = function(roomType) {
-			if (!!$scope.groupConfigData.summary.is_cancelled) {
+			if (!!$scope.groupConfigData.summary.is_cancelled || !roomType.can_edit) {
 				return false;
 			}
 			_.each(roomType.dates, function(element) {
@@ -265,7 +265,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return undefined
 		 */
 		$scope.addQuadrupleEntryRow = function(roomType) {
-			if (!!$scope.groupConfigData.summary.is_cancelled) {
+			if (!!$scope.groupConfigData.summary.is_cancelled || !roomType.can_edit) {
 				return false;
 			}
 			_.each(roomType.dates, function(element) {
@@ -277,6 +277,66 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			$scope.bookingDataChanging();
 			refreshScroller();
 		};
+
+		/**
+		 * should we wanted to disable single box entry
+		 * @param {Object} [dateData] [description]
+		 * @param {Object} - Room Type data row
+		 * @return {Boolean}
+		 */
+		$scope.shouldDisableSingleEntryBox = function(dateData, roomType) {			
+			return (!roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled);
+		};
+
+		/**
+		 * should we wanted to disable double box entry
+		 * @param {Object} [dateData] [description]
+		 * @param {Object} - Room Type data row
+		 * @return {Boolean}
+		 */
+		$scope.shouldDisableDoubleEntryBox = function(dateData, roomType) {			
+			return (!roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled);
+		};
+
+		/**
+		 * should we wanted to disable triple box entry
+		 * @param {Object} [dateData] [description]
+		 * @param {Object} - Room Type data row
+		 * @return {Boolean}
+		 */
+		$scope.shouldDisableTripleEntryBox = function(dateData, roomType) {			
+			return (!roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled);
+		};
+
+		/**
+		 * should we wanted to disable Quadruple box entry
+		 * @param {Object} [dateData] [description]
+		 * @param {Object} - Room Type data row
+		 * @return {Boolean}
+		 */
+		$scope.shouldDisableQuadrupleEntryBox = function(dateData, roomType) {			
+			return (!roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled);
+		};
+
+		/**
+		 * should we wanted to disable add triple button
+		 * @param {Object} [dateData] [description]
+		 * @param {Object} - Room Type data row
+		 * @return {Boolean}
+		 */
+		$scope.shouldDisableAddTripleButton = function(roomType) {			
+			return (!roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled);
+		};
+
+		/**
+		 * should we wanted to disable add triple button
+		 * @param {Object} [dateData] [description]
+		 * @param {Object} - Room Type data row
+		 * @return {Boolean}
+		 */
+		$scope.shouldDisableAddQuadrupleButton = function(roomType) {			
+			return (!roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled);
+		};		
 
 		/**
 		 * to copy the single & single_pick up value entered in the column
@@ -445,7 +505,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 			//date picker options - End Date
 			$scope.endDateOptions = _.extend({
-				minDate: new tzIndependentDate($scope.startDate),
+				minDate: ($scope.startDate !== '') ? new tzIndependentDate($scope.startDate): new tzIndependentDate($rootScope.businessDate),
 				disabled: $scope.groupConfigData.summary.is_cancelled,
 				onSelect: onEndDatePicked
 			}, commonDateOptions);
@@ -804,6 +864,11 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		$scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab) {
 			if (activeTab !== 'ROOM_BLOCK') return;
 			$scope.fetchRoomBlockGridDetails();
+
+			//on tab switching, we have change min date
+			setDatePickers();
+
+
 		});
 
 		/**
@@ -959,18 +1024,17 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//whether the booking data changed
 			$scope.hasBookingDataChanged = false;
 
+			_.extend($scope.groupConfigData.summary, {
+				selected_room_types_and_bookings: [],
+				selected_room_types_and_occupanies: [],
+				selected_room_types_and_rates: [],
+			});
+
 			if (isInEditMode) {
 				$scope.createButtonClicked = true;
 				$scope.totalPickups = refData.summary.rooms_pickup;
 				$scope.totalRooms = refData.summary.rooms_total;
-				$scope.selectedHoldStatus = util.convertToInteger(refData.summary.hold_status);
-
-				_.extend($scope.groupConfigData.summary, {
-					selected_room_types_and_bookings: [],
-					selected_room_types_and_occupanies: [],
-					selected_room_types_and_rates: [],
-				});
-
+				$scope.selectedHoldStatus = util.convertToInteger(refData.summary.hold_status);			
 			}
 
 			//list of holding status list

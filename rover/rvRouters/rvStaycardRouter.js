@@ -90,6 +90,12 @@ angular.module('stayCardModule', [])
                     params.company_id = $stateParams.company_id;
                     params.travel_agent_id = $stateParams.travel_agent_id;
                     return RVReservationBaseSearchSrv.fetchAvailability(params);
+                },
+                sortOrder: function(RVReservationBaseSearchSrv) {
+                    return RVReservationBaseSearchSrv.fetchSortPreferences();
+                },
+                rateAddons: function(RVReservationBaseSearchSrv) {
+                    return RVReservationBaseSearchSrv.fetchAddonsForRates();
                 }
             }
         });
