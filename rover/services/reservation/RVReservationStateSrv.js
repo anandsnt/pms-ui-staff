@@ -110,7 +110,7 @@ sntRover.service('RVReservationStateService', [
 					}
 
 					taxesLookUp[taxData.id] = parseFloat(taxCalculated); 	
-					taxableAmount -= parseFloat(taxCalculated);
+					if(isInclusive) taxableAmount -= parseFloat(taxCalculated);
 
 					if (taxData.post_type == 'NIGHT') { // NIGHT tax computations
 						if (isInclusive) taxInclusiveTotal = parseFloat(taxInclusiveTotal) + parseFloat(taxCalculated);
