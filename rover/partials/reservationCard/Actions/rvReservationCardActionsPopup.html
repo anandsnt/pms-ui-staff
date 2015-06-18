@@ -4,14 +4,13 @@
 
     <div class="modal-header">
         <h1>Actions</h1>
-        <strong>Room {{$parent.reservationData.reservation_card.room_number}}</strong>
-
+        <strong ng-if="$parent.reservationData.reservation_card.room_number">Room {{$parent.reservationData.reservation_card.room_number}}</strong>
         <div class="dates">
-            <div class="date">
+            <div class="date" ng-show="hasArrivalDate">
                 <span class="guest-status small-icon check-in">check-in</span>
                 {{actions.arrivalDateString}}
             </div>
-            <div class="date">
+            <div class="date" ng-show="hasDepartureDate">
                 <span class="guest-status small-icon check-out">check-out</span>
                 {{actions.departureDateString}}
             </div>
@@ -41,7 +40,7 @@
                         </span>
                         <div class="data">
                             <h3>{{action.description}}</h3>
-                            <em>{{action.due_at_date}} &#8226; {{action.due_at_time}}</em>
+                            <em>{{action.due_at_date}} &#8226; {{action.due_at_time.value}}</em>
                         </div>
                         <span class="department">{{action.assigned_to.name}}</span>
                     </li>
@@ -73,10 +72,9 @@
                     <div ng-show="selectCalendarShow" class="ngmodal-uidate-wrap" id="selectCalendar" ng-include="'/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html'">
                     </div>
                     <div class="entry action-info time" ng-class="{'overlay': !selectedAction.hasDate || selectedAction.date_completed}">
-                        <label for="due-time">Time Due</label>
+                        <label for="selected-due-time">Time Due</label>
                         <div class="select">
-                            <select id="due-time" ng-model="selectedAction.time_due" ng-options="time.value for time in timeFieldValue" ng-change="onTimeChange()">
-                                <option value="00:00"></option>
+                            <select id="selected-due-time" ng-model="selectedAction.due_at_time" ng-options="time.value for time in timeFieldValue" ng-change="onTimeChange()">
                             </select>
                         </div>
                     </div>
@@ -94,10 +92,6 @@
                     <button type="button" class="button white green-text" ng-click="completeAction()">Complete</button>
                 </div>
 
-                <!-- NEW ACTION
-                When "New action" is pressed, replace L37-L70 with L74-L108:
-                -->
-                
 
                     
             </div>
@@ -147,7 +141,7 @@
                     <div class="entry actions-end"  ng-class="{'overlay': !newAction.hasDate}">
                         <label for="due-time">Time Due</label>
                         <div class="select">
-                            <select id="due-time" ng-model="newAction.time_due" ng-options="time.value for time in timeFieldValue">
+                            <select id="due-time" ng-model="newAction.time_due" ng-options="time.value for time in timeFieldValue" ng-init="newAction.time_due = timeFieldValue[0]">
                                 <option value="00:00"></option>
                             </select>
                         </div>
@@ -170,7 +164,8 @@
          <div class="info">
             <span class="icon-no-content icon-actions"></span>
             <strong class="h1">No Actions</strong>
-            <span class="h2">All is good in Room {{$parent.reservationData.reservation_card.room_number}}</span> 
+            <span class="h2" ng-if="$parent.reservationData.reservation_card.room_number">All is good in Room {{$parent.reservationData.reservation_card.room_number}}</span> 
+            <span class="h2" ng-if="!$parent.reservationData.reservation_card.room_number">All is good</span> 
         </div>
     </section>
 

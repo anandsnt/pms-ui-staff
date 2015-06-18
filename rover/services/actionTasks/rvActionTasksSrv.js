@@ -39,7 +39,7 @@ sntRover.service('rvActionTasksSrv',['$q', 'BaseWebSrvV2', function( $q, BaseWeb
 
 	this.updateNewAction = function(params){
             var deferred = $q.defer();
-            var url = "/api/action_tasks.json";
+            var url = "/api/action_tasks/"+params.action_task.id+".json";
 
             BaseWebSrvV2.putJSON(url, params).then(function (data) {
                 deferred.resolve(data);
@@ -48,9 +48,10 @@ sntRover.service('rvActionTasksSrv',['$q', 'BaseWebSrvV2', function( $q, BaseWeb
             });
             return deferred.promise;
 	};
+        
 	this.completeAction = function(params){
             var deferred = $q.defer();
-            var url = "/api/action_tasks/"+params.action_task.id;
+            var url = "/api/action_tasks/"+params.action_task.id;//+'&is_complete='+params.is_complete;
 
             BaseWebSrvV2.putJSON(url, params).then(function (data) {
                 deferred.resolve(data);
