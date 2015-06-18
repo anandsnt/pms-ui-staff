@@ -185,13 +185,21 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
         };
 
+         $scope.reloadPage = function() {
+            $state.go('rover.groups.config', {
+                id: $scope.groupConfigData.summary.group_id
+            }, {
+                reload: true
+            });
+        }
+
         /**
          * Handle closing of addons screen
          * @return undefined
          */
         $scope.closeGroupAddonsScreen = function() {
             $scope.groupConfigData.selectAddons = false;
-            setBackNavigation();
+            $scope.reloadPage();
         }
 
         /**
