@@ -545,7 +545,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 					break;
 			}
 
-			if ( room.is_late_checkout ) {
+			if ( room.is_late_checkout == 'true' ) {
 				room.leaveStatusClass = 'late-check-out';
 			};
 		};
