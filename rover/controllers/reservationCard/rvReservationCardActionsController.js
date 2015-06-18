@@ -22,6 +22,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.selectedAction.id;
         $scope.selectedAction.assigned;
         $scope.selectedAction.due_at_date;
+        $scope.selectedAction.due_at_time;
         
         
         $scope.departmentSelect = {};
@@ -225,6 +226,9 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                      } else {
                          $scope.newAction.hasDate = true;
                          $scope.newAction.date_due = $scope.reformatDateOption(date, '/', '-');
+                         if (!$scope.newAction.time_due){
+                             $scope.newAction.time_due = $scope.timeFieldValue[0];
+                         }
                          //this one has a save / post button
                          $scope.closeNewCalendar();
                      };
@@ -381,6 +385,12 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         list[x].created_at_time = getTimeFromDateStr(list[x].created_at);
                         list[x].created_at_date = getStrParsedFormattedDate(list[x].created_at);
                     }
+                    
+                    if (list[x].action_status === "COMPLETED"){
+                        list[x].isCompleted = true;
+                        list[x].completed_by = list[x].assigned_to;
+                       // list[x].date_completed = '10/27/2015';
+                    }
                 }
                 
                 
@@ -454,28 +464,12 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         list[x].hasDate = false;
                     }
                     
-                    //debug console.log
-                    /*
-                    if ($scope.dbug <= 0){
-                        ++$scope.dbug;
-                        if (!list[x].date_completed){
-                            list[x].isCompleted = true;
-                            list[x].date_completed = '02/15/2015';
-                            list[x].time_completed = '11:59 PM';
-                            list[x].completed_by = {};
-                            
-                            if (list[x].assigned_to !== null){
-                                list[x].completed_by.name = list[x].assigned_to.name;
-                            } else {
-                                list[x].completed_by.name = 'Mike';
-                            } 
-                        }   else {
-                            list[x].isCompleted = false;
-                        }
-                    } else {
-                        list[x].isCompleted = false;
+                    if (list[x].action_status === "COMPLETED"){
+                        list[x].isCompleted = true;
+                        list[x].completed_by = list[x].assigned_to;
+                      //  list[x].date_completed = '10/27/2015';
                     }
-                    */
+                    
                     
                     if (list[x].created_at){
                         list[x].created_at_time = getTimeFromDateStr(list[x].created_at);
@@ -754,7 +748,27 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             return params;
         };
         
-        
+        $scope.sortActionsList = function(list){
+            //take an actions list and sort it by due date, 
+            // - but also put "completed" items @ the bottom
+            // step 1. make two lists, (completed, not completed)
+            // step 2. sort both lists
+            // step 3. join lists, completed After not completed
+            //console.log(list);
+            var completed = [], not_completed = [];
+            for (var x in list){
+                if (list[x].date_completed){
+                    completed.push(list[x]);
+                } else {
+                    not_completed.push(list[x]);
+                }
+            };
+            
+            
+            
+            
+            
+        };
         
         
         init();
