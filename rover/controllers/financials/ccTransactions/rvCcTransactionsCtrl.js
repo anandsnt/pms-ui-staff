@@ -56,7 +56,6 @@ sntRover.controller('RVccTransactionsController', ['$scope','$filter','$statePar
     	return hasAnyElements;
     };
 
-
 	$scope.hasPermissionToSubmitCCBatch = function() {
 		return rvPermissionSrv.getPermissionValue('SUBMIT_CC_BATCH');
 	};

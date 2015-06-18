@@ -70,16 +70,9 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope','$rootScope','$
 
     	$scope.data.isToggleSummaryActive = !$scope.data.isToggleSummaryActive;
 
-		console.log($scope.data.isToggleSummaryActive);
-
 		var toggleStatus = $scope.data.isToggleSummaryActive;
 
-		if($scope.data.activeTab === 0){
-			$scope.$broadcast('SUMMARYORDETAILS', toggleStatus);
-		}
-		else if($scope.data.activeTab === 1){
-			$scope.$broadcast('SUMMARYORDETAILS', toggleStatus);
-		}
+		// $rootScope.$broadcast('SUMMARYORDETAILS', toggleStatus);
     };
 
     // Add the print orientation before printing
