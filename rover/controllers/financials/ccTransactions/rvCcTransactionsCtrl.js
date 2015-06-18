@@ -8,10 +8,8 @@ sntRover.controller('RVccTransactionsController', ['$scope','$filter','$statePar
 	$scope.data = {};
     $scope.data.activeTab = $stateParams.id == '' ? 0 : $stateParams.id;
     $scope.data.transactionDate = $rootScope.businessDate;
-    $scope.data.isToggleSummaryActive = false;
     $scope.data.paymentData = {};
     $scope.data.authData = {};
-
 	
 	// Handling TransactionDate date picker click
 	$scope.clickedTransactionDate = function(){

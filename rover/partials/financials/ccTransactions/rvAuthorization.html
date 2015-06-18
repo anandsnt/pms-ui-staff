@@ -2,7 +2,7 @@
 <div ng-controller="RVccAuthorizationController" id="cc-transactions-content" class="journal-content scrollable" ng-iscroll="authorization-scroll" >
     <div class="wrapper">
     	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-        <div class="journal-grid cc-transactions" ng-class="{ 'print-summary':data.isToggleSummaryActive ,'print-details':!data.isToggleSummaryActive }">
+        <div class="journal-grid cc-transactions print-details">
             <div class="grid-group">
                 <!-- Approved -->
                 <a class="transaction-title green toggle" ng-click="clickedApprovedTab()"  ng-class="{'active':data.authData.approved.active, 'has-arrow': hasAnyElements(data.authData.approved) }">
