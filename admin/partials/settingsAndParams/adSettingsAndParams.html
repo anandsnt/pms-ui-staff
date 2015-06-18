@@ -42,19 +42,20 @@
 								<div class="select select-col col1-3">
 
 									<select ng-options="hour for hour  in hours" ng-model="data.changing_hour">
-										<option style="display:none" value="">HH</option>
+										<option  value="">HH</option>
 									</select>
 
 								</div>
 								<!--  minute -->
 								<div class="select select-col col1-3">
 									<select ng-options="minute for minute  in minutes" ng-model="data.changing_minute">
-										<option style="display:none" value="">MM</option>
+										<option value="">MM</option>
 									</select>
 
 								</div>
 								<div class="select select-col col1-3">
 									<select name="hotel-checkout-primetime"class="styled" ng-model="data.business_date_prime_time">
+										<option value="">AM/PM</option>
 										<option value="AM">AM</option>
 										<option value="PM">PM</option>
 									</select>
