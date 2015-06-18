@@ -112,11 +112,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.roomTypes          = roomTypes;
 		$scope.floors             = floors;
 
-		$scope.singleRoomType     = { id: undefined };
-		var selRoom = _.find($scope.roomTypes, function(type) { return type.isSelected });
-		if ( selRoom ) {
-			$scope.singleRoomType.id = selRoom.id;
-		};
+		// $scope.singleRoomType     = { id: '', value: 'All Room Types' };
+		// var selRoom = _.find($scope.roomTypes, function(type) { return type.isSelected });
+		// if ( selRoom ) {
+		// 	$scope.singleRoomType.id = selRoom.id;
+		// };
 
 		$scope.workTypes          = [];
 		$scope.employees          = [];
@@ -296,9 +296,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		};
 
 		$scope.clearFilters = function() {
-			_.each($scope.roomTypes, function(type) { type.isSelected = false; });
-			$scope.currentFilters.singleRoomType = undefined;
-			RVHkRoomStatusSrv.roomTypes = angular.copy( $scope.roomTypes );
+			$scope.roomTypes = RVHkRoomStatusSrv.resetRoomTypes();
 
 			$scope.currentFilters = RVHkRoomStatusSrv.initFilters();
 			if ( $scope.isStandAlone ) {
@@ -436,9 +434,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		    $scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, _data, _onAssignSuccess, _onAssignFailure);
 		};
 
-		$scope.singleRoomTypeFilter = function() {
+		$scope.singleRoomTypeFiltered = function() {
 			_.each($scope.roomTypes, function(item) {
-				if ( item.id == $scope.singleRoomType.id ) {
+				if ( item.id == $scope.currentFilters.singleRoomType ) {
 					item.isSelected = true;
 				} else {
 					item.isSelected = false;

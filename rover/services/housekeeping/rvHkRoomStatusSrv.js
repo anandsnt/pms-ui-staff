@@ -32,6 +32,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 				"showAllFloors"        : true,
 				"filterByWorkType"     : false,
 				"filterByEmployeeName" : false,
+				"singleRoomType"       : false,
 				"query"                : "",
 				"page"                 : 1,
 				"perPage"              : $window.innerWidth < 599 ? 25 : 50
@@ -297,6 +298,8 @@ sntRover.service('RVHkRoomStatusSrv', [
 			angular.forEach(this.roomTypes, function(type, i) {
 				type.isSelected = false;
 			});
+
+			return this.roomTypes;
 		};
 
 
