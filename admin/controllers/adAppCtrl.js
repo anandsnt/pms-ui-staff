@@ -182,6 +182,9 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						title: "MENU_JOURNAL",
 						action: "staff#/staff/financials/journal/0"
 					}, {
+						title: "MENU_CC_TRANSACTIONS",
+						action: "staff#/staff/financials/ccTransactions/0"
+					}, {
 						title: "MENU_ACCOUNTING",
 						action: ""
 					}, {
