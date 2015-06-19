@@ -2,6 +2,8 @@ sntRover.controller('RVMoveChargeCtrl',
 	['$scope','$timeout','RVMoveChargeSrv',
 	function($scope,$timeout,RVMoveChargeSrv) {
 
+		BaseCtrl.call(this, $scope);
+		
 		var initiate = function(){			
 			$scope.numberQuery    = "";
 			$scope.textQuery      = "";
@@ -14,26 +16,42 @@ sntRover.controller('RVMoveChargeCtrl',
 
 		initiate();
 
-		var refreshSearchList = function() { 			
+		/**
+         * to run angular digest loop,
+         * will check if it is not running
+         * return - None
+         */
+        var runDigestCycle = function() {
+            if (!$scope.$$phase) {
+                $scope.$digest();
+            }
+        };
+
+
+		var refreshSearchList = function() { 
 			$timeout(function() {
 				$scope.refreshScroller('search_results');
-			}, 4000);
+			}, 500);			
 		};
 
-		var unsetSearhList = function(){
+		$scope.$on("NG_REPEAT_COMPLETED_RENDERING", function(event){
+			refreshSearchList ();
+		});
+
+		var unsetSearchList = function(){
 			$scope.searchResults = [];
 			refreshSearchList();
 		};
 
 		$scope.clearTextQuery = function(){
 			$scope.textQuery = '';
-			unsetSearhList();
+			unsetSearchList();
 		};
 
 
 		$scope.clearNumberQuery = function(){
 			$scope.numberQuery = '';
-			unsetSearhList();
+			unsetSearchList();
 		};
 
 		/**
@@ -50,8 +68,7 @@ sntRover.controller('RVMoveChargeCtrl',
     				result.entity_id = index;
     				(result.type === 'RESERVATION') ? result.displaytext = result.last_name+', '+result.first_name : '';
     			});
-    			refreshSearchList();
-    			
+    			refreshSearchList();    			
 			};
 
 			$scope.invokeApi(RVMoveChargeSrv.fetchSearchedItems, {"text_search":$scope.textQuery,"number_search":$scope.numberQuery}, fetchSucces);
@@ -64,11 +81,12 @@ sntRover.controller('RVMoveChargeCtrl',
 		$scope.queryEntered = function() {
 
 			if (($scope.textQuery === "" || $scope.textQuery.length < 3) && ($scope.numberQuery === "" || $scope.numberQuery.length < 3 )) {
-				unsetSearhList();
+				$scope.searchResults = [];
 				refreshSearchList();
 			} else {
 				fetchFilterdData();
-			}
+			};
+			runDigestCycle();
 		};
 
 		/**
