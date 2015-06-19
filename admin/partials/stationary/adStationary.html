@@ -48,20 +48,7 @@
                 <div class="entry full-width">
                     <label translate>GETTING_TO_THE_HOTEL</label>
                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.location_text"></ad-textarea>
-                </div>
-                <div class="entry full-width">
-                    <ad-checkbox is-checked="data.show_links_to_download_app" label="{{ 'SHOW_LINKS_TO_DOWNLOAD_APP' | translate}}" div-class="full-width"></ad-checkbox>
-                </div>
-                <div class="entry" ng-show="!!data.show_links_to_download_app">
-                    <ad-textbox styleclass="full-width" value="data.app_link_app_store" label="{{'APP_LINK_IN_ITUNES_STORE'| translate}}" placeholder="{{'ENTER_APP_LINK_IN_ITUNES_STORE'| translate}}"></ad-textbox>
-                </div>
-                <div class="entry" ng-show="!!data.show_links_to_download_app">
-                    <ad-textbox styleclass="full-width" value="data.app_link_google_play" label="{{'APP_LINK_IN_GOOGLE_PLAY'| translate}}" placeholder="{{'ENTER_APP_LINK_IN_GOOGLE_PLAY'| translate}}"></ad-textbox>
-                </div>
-                <div class="entry full-width" ng-show="!!data.show_links_to_download_app">
-                    <label>Marketing text for app to show on confirmation</label>
-                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.app_marketing_text"></ad-textarea>
-                </div>
+                </div>                
                 <section class="holder left">
                     <!-- 9. Location Photo -->
                     <div class="entry full-width">
@@ -87,6 +74,19 @@
                         <ad-textbox value="data.location_url_label" label="{{'LOCATION_URL_LABEL'| translate}}" placeholder="{{'ENTER_LOCATION_URL_LABEL'| translate}}"></ad-textbox>
                     </div>
                 </section>
+                <div class="entry full-width">
+                    <ad-checkbox is-checked="data.show_links_to_download_app" label="{{ 'SHOW_LINKS_TO_DOWNLOAD_APP' | translate}}" div-class="full-width"></ad-checkbox>
+                </div>
+                <div class="entry" ng-show="!!data.show_links_to_download_app">
+                    <ad-textbox styleclass="full-width" value="data.app_link_app_store" label="{{'APP_LINK_IN_ITUNES_STORE'| translate}}" placeholder="{{'ENTER_APP_LINK_IN_ITUNES_STORE'| translate}}"></ad-textbox>
+                </div>
+                <div class="entry" ng-show="!!data.show_links_to_download_app">
+                    <ad-textbox styleclass="full-width" value="data.app_link_google_play" label="{{'APP_LINK_IN_GOOGLE_PLAY'| translate}}" placeholder="{{'ENTER_APP_LINK_IN_GOOGLE_PLAY'| translate}}"></ad-textbox>
+                </div>
+                <div class="entry full-width" ng-show="!!data.show_links_to_download_app">
+                    <label>Marketing text for app to show on confirmation</label>
+                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.app_marketing_text"></ad-textarea>
+                </div>
                 <!-- 11. Social Network URLs -->
                 <div class="entry full-width">
                     SOCIAL NETWOK LINKS

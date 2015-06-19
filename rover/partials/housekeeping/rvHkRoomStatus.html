@@ -243,8 +243,8 @@
             <div class="holder" ng-if="!isStandAlone">
                 <strong class="title" translate>ROOM_TYPE_FILTER_TITLE</strong>
                 <div class="select">
-                    <select ng-options="type.id as type.name for type in roomTypes"  ng-model="singleRoomType.id" ng-change="singleRoomTypeFilter()">
-                        <option selected translate>All Room Types</option>
+                    <select ng-options="type.id as type.name for type in roomTypes"  ng-model="currentFilters.singleRoomType" ng-change="singleRoomTypeFiltered()">
+                        <option value="" selected>All Room Types</option>
                     </select>
                 </div>
             </div>
