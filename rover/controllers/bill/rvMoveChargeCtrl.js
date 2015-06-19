@@ -2,6 +2,8 @@ sntRover.controller('RVMoveChargeCtrl',
 	['$scope','$timeout','RVMoveChargeSrv',
 	function($scope,$timeout,RVMoveChargeSrv) {
 
+		BaseCtrl.call(this, $scope);
+		
 		var initiate = function(){			
 			$scope.numberQuery    = "";
 			$scope.textQuery      = "";
@@ -26,12 +28,15 @@ sntRover.controller('RVMoveChargeCtrl',
         };
 
 
-		var refreshSearchList = function() { 			
+		var refreshSearchList = function() { 
 			$timeout(function() {
 				$scope.refreshScroller('search_results');
-				// runDigestCycle();
-			}, 3000);
+			}, 500);			
 		};
+
+		$scope.$on("NG_REPEAT_COMPLETED_RENDERING", function(event){
+			refreshSearchList ();
+		});
 
 		var unsetSearchList = function(){
 			$scope.searchResults = [];
