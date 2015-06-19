@@ -86,6 +86,7 @@ sntRover.controller('RVMoveChargeCtrl',
 			} else {
 				fetchFilterdData();
 			};
+			runDigestCycle();
 		};
 
 		/**
