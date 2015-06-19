@@ -1,9 +1,21 @@
 <div class="block-wrapper">
     <div class="block-item item-actions" ng-controller="rvReservationCardActionsController">
         <h3 class="block-title">Actions</h3>
-        <button type="button" class="staycard-button next-view" ng-click="openActionsPopup();">
-            <!-- ng-class="TODO: icon-{'no-actions' or 'actions' or 'new-actions'}" -->
-            {{actions.totalCount}}
+        <button type="button" class="staycard-button next-view " ng-class="{
+                    'icon-no-actions' : actionsCount === 'none', 
+                    'icon-new-actions' : actionsCount === 'pending' || actionsCount === 'only-pending', 
+                    'icon-actions' : actionsCount === 'all-completed'
+        }" ng-click="openActionsPopup();">
+            <!-- ng-class="TODO: icon-{'no-actions' or 'actions' or 'new-actions'}" 
+            'icon-no-actions' is grey, when there are no actions
+            'icon-actions' is green, when all actions are resloved
+            'icon-new-actions' is red, when there are unresolved actions 
+            -->
+            <span ng-show="actionsCount === 'none'" ng-hide="actionsCount !== 'none'"class='actions-none'>{{actions.totalCount}}</span>
+            <span ng-show="actionsCount === 'pending'" ng-hide="actionsCount !== 'pending'"><font class='actions-pending'>{{actions.pendingCount}}</font> / {{actions.totalCount}}</span>
+            <span ng-show="actionsCount === 'only-pending'" ng-hide="actionsCount !== 'only-pending'" class='actions-pending'>{{actions.pendingCount}}</span>
+            <span ng-show="actionsCount === 'all-completed'" ng-hide="actionsCount !== 'all-completed'"class='actions-completed'>{{actions.totalCount}}</span>
+            
         </button>
     </div>
     <div class="block-item item-notes">
