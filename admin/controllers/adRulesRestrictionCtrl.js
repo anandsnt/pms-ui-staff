@@ -345,7 +345,9 @@ admin.controller('ADRulesRestrictionCtrl', [
             $scope.singleRule.schedules.splice(index , 1);            
             if($scope.singleRule.schedules.length!=0){
             $scope.selectedSchedule = $scope.singleRule.schedules[$scope.singleRule.schedules.length-1];
-            $scope.selectedScheduleIndex = $scope.singleRule.schedules.length-1;
+                if($scope.selectedScheduleIndex ==$scope.singleRule.schedules.length){
+                    $scope.selectedScheduleIndex = $scope.singleRule.schedules.length-1;    
+                }            
             }else{ 
             var newSchedule = {
                 "amount":null,
