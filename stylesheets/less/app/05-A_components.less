@@ -1217,6 +1217,7 @@
 
                             &.check-in { background-position: 6px -75px; }
                             &.check-out { background-position: 6px -101px; }
+                            &.late-check-out { background-position: 6px -1901px; }
                             &.inhouse { background-position:  5px -128px; }
                             &.late-check-out { background-position:  6px -1901px; }
                         }
@@ -1230,7 +1231,8 @@
 
                             &.current { margin-bottom: 5px; }
                             &.check-in { color: @green; }
-                            &.check-out { color: @red; }
+                            &.check-out,
+                            &.late-check-out { color: @red; }
                             &.inhouse { color: @blue; }
                         }  
 
@@ -1260,6 +1262,12 @@
                     .show-vacant { 
                         color: @grey3;
                         line-height: 50px;
+                    }
+
+                    .icon-queued { 
+                        position: absolute;
+                        top: 15px;
+                        right: 20px;
                     }
 
                     .additional-info { .hide; }
@@ -1655,6 +1663,7 @@
 
                             &.check-in { background-position: 8px -112px; }
                             &.check-out { background-position: 8px -152px; }
+                            &.late-check-out { background-position: 8px -2852px;}
                             &.inhouse { background-position: 8px -192px; }
                             &.late-check-out { background-position: 8px -2852px; }
                         }
