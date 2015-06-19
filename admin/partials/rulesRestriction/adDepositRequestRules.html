@@ -8,127 +8,98 @@
         </td>
     </tr>  
 
-    <tr ng-show="showDepositForm">
+    <tr id="add-new" class="edit-data" ng-show="showDepositForm">
         <td class="offset"> &nbsp; </td>
         <td>
-            <div style="display: block;" id="add-new" class="edit-data">
-                <div class="data-holder">
-                    <form id="add-addon" name="add-addon" class="form inline-form float">
-                        <div class="form-title">
-                            <h3>
-								<span>{{ rulesTitle }}</span>
-								{{ rulesSubtitle }}
-							</h3>
-                            <em class="status">
-								{{'MANDATORY_FIELDS_MESSAGE1'| translate}}
-								<strong>*</strong>
-								{{'MANDATORY_FIELDS_MESSAGE2'| translate}}
-							</em>
-                        </div>
-                        <fieldset class="form-title">
-                            <fieldset class="holder left float">
-                                <ad-textbox styleclass="full-width" value="singleRule.name" name="name" id="name" label="Policy name" placeholder="{{'ENTER_THE_POLICY_NAME'|translate}}" required="yes">
-                                </ad-textbox>
-                                <div class="entry full-width radio-check">
-                                    <label class="checkbox">
-                                        <span class="icon-form icon-checkbox" ng-class="{ checked : singleRule.allow_deposit_edit }"></span>
-                                        <label>Allow editing of Deposit Payment</label>
-                                        <input type="checkbox" ng-model="singleRule.allow_deposit_edit">
-                                    </label>
-                                </div>
-
-                                <div class="entry full-width radio-check">
-                                    <label class="checkbox">
-                                        <span class="icon-form icon-checkbox" ng-class="{ checked : singleRule.apply_to_all_bookings }"></span>
-                                        <label translate>APPLY_TO_ALL_BOOKINGS</label>
-                                        <input type="checkbox" ng-model="singleRule.apply_to_all_bookings">
-                                    </label>
-                                </div>
-                            </fieldset>
-                            <fieldset class="holder right float">
-                                <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="singleRule.description" name="desc" id="desc" label="Description" placeholder="{{'ENTER_THE_POLICY_DESC'|translate}}" required="yes">
-                                </ad-textarea>
-                            </fieldset>
-                        </fieldset>
-                        <fieldset>
-	                        <fieldset class="holder left float col1-3">                            
-	                                <div class="entry" scrollable style ="overflow: scroll;max-height: 200px;overflow-x: hidden;min-height: 200px">
-	                                    <ul id="roles-menu" class="float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
-	                                        <li role="tab" ng-repeat ="schedule in singleRule.schedules" ng-click="selectSchedule($index)" ng-class ="{ selectedschedule : selectedScheduleIndex==$index }">
-	                                            SCHEDULE #{{$index+1}}
-	                                            <a class="icons icon-delete ng-scope" ng-click="deleteSchedule($index)" translate="" style = "float: right">Delete this rule</a>
-	                                        </li>
-	                                    </ul>
-	                                </div>		                            
-	                        </fieldset>
-
-	                        <fieldset class="holder right float">
-
-	                            <div class="entry">
-	                                <ad-textbox styleclass="full-width" value="selectedSchedule.amount" name="amount" id="amount" label="Amount[{{ currencySymbol }}]" placeholder="{{'ENTER_THE_AMT'|translate}}" required="yes"></ad-textbox>
-	                            </div>
-
-	                            <div class="entry">
-	                                <div class="entry full-width">
-	                                    <label for="amount-type-id">
-	                                        {{'AMOUNT_TYPE'|translate}}
-	                                        <strong>*</strong>
-	                                    </label>
-	                                    <div class="select">
-	                                        <select name="amount-type-id" id="amount-type-id" ng-model="selectedSchedule.amount_type">
-	                                            <option value="" data-text="Not set" class="placeholder">Choose amount type</option>
-	                                            <option value="amount">{{'AMOUNT'|translate}}[{{ currencySymbol }}]</option>
-	                                            <option value="percent" translate>PERCENTAGE</option>
-	                                            <option value="day" translate>NIGHTS</option>
-	                                        </select>
-	                                    </div>
-	                                </div>
-	                            </div>
-
-	                            <div class="entry col1-2" ng-show="selectedSchedule.amount_type === 'percent'">
-	                                <label for="amount-type-id">
-	                                    {{'PER_NIGHT_OR_STAY'|translate}}
-	                                    <strong>*</strong>
-	                                </label>
-	                                <div class="select">
-	                                    <select name="amount-type-id" id="amount-type-id" ng-model="selectedSchedule.post_type_id" ng-options="type.id as type.description for type in postTypes">
-	                                        <option value="" data-text="Not set" class="placeholder" translate>CHOOSE_NIGHT_OR_STAY</option>
-	                                    </select>
-	                                </div>
-	                            </div>
-
-	                            <div class="entry">
-	                                <ad-textbox styleclass="full-width" value="selectedSchedule.advance_days" name="name" id="name" label="Days In advance" placeholder="{{'ENTER_THE_NUM_OF_DAYS'|translate}}"></ad-textbox>
-	                            </div>
-
-	                            <div class="entry col1-2">
-	                                <ad-textbox styleclass="full-width" value="selectedSchedule.max_no_nights" name="name" id="name" label="Max Number of Nights" placeholder="Max Number of Nights "></ad-textbox>
-	                            </div>
-
-	                            <div class="entry col1-2 radio-check">
-	                                <label>
-	                                    <strong></strong>
-	                                </label>
-	                                <label class="checkbox">
-	                                    <span class="icon-form icon-checkbox" ng-class="{ checked : selectedSchedule.auto_charge_on_due_date }"></span>
-	                                    <label>AUTO CHARGE ON DUE DATE</label>
-	                                    <input type="checkbox" ng-model="selectedSchedule.auto_charge_on_due_date">
-	                                </label>
-	                            </div>
-	                        </fieldset>
-
-	                        <fieldset class="holder left float col1-3">
-	                            <em class="action add" ng-click="addNewSchedule()" translate>Add new schedules</em>
-	                        </fieldset>
-
+            <div class="data-holder">
+                <form id="add-deposit-rule" class="form inline-form float">
+                    <div class="form-title">
+                        <h3>
+							<span>{{ rulesTitle }}</span>
+							{{ rulesSubtitle }}
+						</h3>
+                        <em class="status">
+							{{'MANDATORY_FIELDS_MESSAGE1'| translate}}
+							<strong>*</strong>
+							{{'MANDATORY_FIELDS_MESSAGE2'| translate}}
+						</em>
+                    </div>
+                    <div id="deposit-details" class="float">
+	                    <fieldset class="holder left"> 
+	                    	<ad-textbox styleclass="full-width" value="singleRule.name" name="name" id="name" label="Policy name" placeholder="{{'ENTER_THE_POLICY_NAME'|translate}}" required="yes"></ad-textbox>
+	                    	<div class="entry radio-check">
+	                            <label class="checkbox">
+	                                <span class="icon-form icon-checkbox" ng-class="{ checked : singleRule.allow_deposit_edit }"></span>
+	                                <label>Allow editing of Deposit Payment</label>
+	                                <input type="checkbox" ng-model="singleRule.allow_deposit_edit">
+	                            </label>
+	                        </div>
+	                        <div class="entry radio-check">
+	                            <label class="checkbox">
+	                                <span class="icon-form icon-checkbox" ng-class="{ checked : singleRule.apply_to_all_bookings }"></span>
+	                                <label translate>APPLY_TO_ALL_BOOKINGS</label>
+	                                <input type="checkbox" ng-model="singleRule.apply_to_all_bookings">
+	                            </label>
+	                        </div>
 	                    </fieldset>
+	                    <fieldset class="holder right"> 
+	                    	<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="singleRule.description" name="desc" id="desc" label="Description" placeholder="{{'ENTER_THE_POLICY_DESC'|translate}}" required="yes"></ad-textarea>
+	                    </fieldset>
+	                </div>
+                    <div id="deposit-schedules" class="float">
+	                    <fieldset class="holder left">
+                            <ul id="schedules-menu" class="boxes" role="tablist">
+                                <li role="tab" ng-repeat ="schedule in singleRule.schedules" ng-click="selectSchedule($index)" ng-class ="{ selectedschedule : selectedScheduleIndex==$index }">
+                                    SCHEDULE #{{$index+1}}
+                                    <button type="button" class="icons icon-delete" ng-click="deleteSchedule($index)" translate="">Delete this rule</button>
+                                </li>
+                            </ul>	 
+                            <button type="button" class="add-new-button" ng-click="addNewSchedule()" translate>+ Add Schedule</button>
+	                	</fieldset>
+	                	<fieldset class="holder right">
+	                        <ad-textbox value="selectedSchedule.amount" name="amount" id="amount" label="Amount[{{ currencySymbol }}]" placeholder="{{'ENTER_THE_AMT'|translate}}" required="yes"></ad-textbox>
+	                        <div class="entry">
+                                <label for="amount-type-id">
+                                    {{'AMOUNT_TYPE'|translate}}
+                                    <strong>*</strong>
+                                </label>
+                                <div class="select">
+                                    <select name="amount-type-id" id="amount-type-id" ng-model="selectedSchedule.amount_type">
+                                        <option value="" data-text="Not set" class="placeholder">Choose amount type</option>
+                                        <option value="amount">{{'AMOUNT'|translate}}[{{ currencySymbol }}]</option>
+                                        <option value="percent" translate>PERCENTAGE</option>
+                                        <option value="day" translate>NIGHTS</option>
+                                    </select>
+                                </div>
+	                        </div>
+	                        <div class="entry" ng-class="{disabled : selectedSchedule.amount_type !== 'percent'}">
+	                            <label for="amount-type-id">
+	                                {{'PER_NIGHT_OR_STAY'|translate}}
+	                                <strong>*</strong>
+	                            </label>
+	                            <div class="select">
+	                                <select name="amount-type-id" id="amount-type-id" ng-model="selectedSchedule.post_type_id" ng-options="type.id as type.description for type in postTypes" ng-disabled="selectedSchedule.amount_type !== 'percent'">
+	                                    <option value="" data-text="Not set" class="placeholder" translate>CHOOSE_NIGHT_OR_STAY</option>
+	                                </select>
+	                            </div>
+	                        </div>
+	                       	<ad-textbox value="selectedSchedule.advance_days" name="name" id="name" label="Days In advance" placeholder="{{'ENTER_THE_NUM_OF_DAYS'|translate}}"></ad-textbox>
+	                        <ad-textbox value="selectedSchedule.max_no_nights" name="name" id="name" label="Max Number of Nights" placeholder="Max Number of Nights "></ad-textbox>
+	                        <div class="entry radio-check full-width">
+	                            <label class="checkbox">
+	                                <span class="icon-form icon-checkbox" ng-class="{ checked : selectedSchedule.auto_charge_on_due_date }"></span>
+	                                Auto-Charge on Due Date
+	                                <input type="checkbox" ng-model="selectedSchedule.auto_charge_on_due_date">
+	                            </label>
+	                        </div>
+	                    </fieldset>
+	                </div>
 
-                        <div class="actions float">
-                            <button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancelCliked()" translate>CANCEL</button>
-                            <button type="button" like-type="common" id="update" class="button green add-data-inline" ng-click="saveUpdateDepositeRule('Deposit Requests')" translate>SAVE_CHANGES</button>
-                        </div>
-                    </form>
-                </div>
+                    <div class="actions float">
+                        <button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancelCliked()" translate>CANCEL</button>
+                        <button type="button" like-type="common" id="update" class="button green add-data-inline" ng-click="saveUpdateDepositeRule('Deposit Requests')" translate>SAVE_CHANGES</button>
+                    </div>
+                </form>
             </div>
         </td>
     </tr>

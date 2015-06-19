@@ -5,7 +5,7 @@
     <form method="post" action="" id="cc-transactions-header" class="journal-header cc-transactions">
         
         <div ng-click="clickedTransactionDate()" ng-show="data.activeTab == 0" class="entry date">
-            <label for="cc-transactions-date">Date</label>
+            <label for="cc-transactions-date" translate>DATE</label>
             <div class="entry-data">
                 <input ng-model="data.transactionDate" id="cc-transactions-date" type="text" class="datepicker" value="{{data.transactionDate}}" readonly />
                 <strong class="day">{{data.transactionDate | date:'d'}}</strong>
@@ -14,16 +14,16 @@
             </div>
         </div>
         <div ng-show="data.activeTab == 0" class="entry action">
-            <button ng-click="clickedSubmitBatch()" type="button" class="button green" ng-class="{'grey': !hasPermissionToSubmitCCBatch()}" ng-disabled="!hasPermissionToSubmitCCBatch()">Submit Batch</button>
+            <button ng-click="clickedSubmitBatch()" type="button" class="button green" ng-class="{'grey': !hasPermissionToSubmitCCBatch()}" ng-disabled="!hasPermissionToSubmitCCBatch()" translate>SUBMIT_BATCH</button>
         </div>
 
         <ul class="display">
             <li ng-class="{ 'active': data.activeTab == 0 }">
-                <span ng-click="activatedTab(0)" class="icons icon-navbar icon-payments">Payments</span>
+                <span ng-click="activatedTab(0)" class="icons icon-navbar icon-payments" translate>PAYMENTS</span>
                 {{currencySymbol}}{{data.paymentData.total_amount|number:2}}
             </li>
             <li ng-class="{ 'active': data.activeTab == 1 }">
-                <span ng-click="activatedTab(1)" class="icons icon-navbar icon-authorizations">Authorizations</span>
+                <span ng-click="activatedTab(1)" class="icons icon-navbar icon-authorizations" translate>AUTHORIZATIONS</span>
                 {{currencySymbol}}{{data.authData.total_amount|number:2}}
             </li>
         </ul>
@@ -33,11 +33,11 @@
     <form ng-controller="RVCcPrintTransactionsController" ng-class="{ 'open': data.isDrawerOpened }" ui-jq="resizable" resize ui-options="resizableOptions" style="height: {{data.printBoxHeight}}px;" ng-click="clickedDrawer($event)"id="journal-print-options" class="journal-print" role="complementary">
         <div ng-include="'/assets/partials/financials/ccTransactions/rvCcPrintBox.html'"></div>
     </form>
+	<div ng-click="clickedOnTransactionContents();">
+	    <!-- Content PAYMENTS-->
+	    <div ng-show="data.activeTab == 0" ng-include="'/assets/partials/financials/ccTransactions/rvPayments.html'"></div>
 
-    <!-- Content PAYMENTS-->
-    <div ng-show="data.activeTab == 0" ng-include="'/assets/partials/financials/ccTransactions/rvPayments.html'"></div>
-
-    <!-- Content AUTHORIZATION-->
-    <div ng-show="data.activeTab == 1" ng-include="'/assets/partials/financials/ccTransactions/rvAuthorization.html'"></div>
-
+	    <!-- Content AUTHORIZATION-->
+	    <div ng-show="data.activeTab == 1" ng-include="'/assets/partials/financials/ccTransactions/rvAuthorization.html'"></div>
+	</div>
 </section>

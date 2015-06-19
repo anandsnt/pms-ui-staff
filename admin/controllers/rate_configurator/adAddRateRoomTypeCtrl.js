@@ -51,6 +51,10 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
         $scope.nonAssignedroomTypes = [];
         $scope.assignedRoomTypes = [];
         angular.forEach($scope.availableRoomTypes, function(room_type){
+        	//CICO-15809 : Exclude psudo roomtypes
+        	if(room_type.is_pseudo){
+				return true;
+        	}
 
             if ($scope.rateData.room_type_ids.indexOf(room_type.id) >=0){
                 $scope.assignedRoomTypes.push(room_type);
