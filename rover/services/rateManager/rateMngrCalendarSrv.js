@@ -165,6 +165,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                                 calendarData.room_type_restrictions = data.room_type_restrictions;
 				//Pass the rate details to the controller
 				calendarData.selectedRateDetails = selectedRate;
+				calendarData.is_fixed_rate = data.is_fixed_rate;
 				deferred.resolve(calendarData);
 			},rejectDeferred);
 
