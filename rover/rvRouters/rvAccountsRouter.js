@@ -38,7 +38,7 @@ angular.module('accountsModule', [])
 
         //group summary : CICO-6096
         $stateProvider.state('rover.accounts.config', {
-            url: '/account/:id/:activeTab',
+            url: '/account/:id/:activeTab/:isFromCards',
             templateUrl: '/assets/partials/accounts/rvAccountsConfiguration.html',
             controller: 'rvAccountsConfigurationCtrl',
             onEnter: ['$stateParams', function($stateParams) {
