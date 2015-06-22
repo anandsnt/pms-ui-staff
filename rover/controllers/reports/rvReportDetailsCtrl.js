@@ -704,6 +704,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('DAILY_TRANSACTIONS'):
 				case reportUtils.getName('DAILY_PAYMENTS'):
 				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
+				case reportUtils.getName('MARKET_SEGMENT_STATISTICS_REPORT'):
 					orientation = 'landscape';
 					break;
 
