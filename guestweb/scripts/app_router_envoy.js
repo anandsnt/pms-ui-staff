@@ -47,11 +47,11 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
 	$stateProvider.state('checkinConfirmation', {
 	 	url: '/checkinConfirmation',
-	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	templateUrl: '/assets/preCheckin/partials/Envoy/noOption.html',
 	 	title: 'Check-in'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
-	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	templateUrl: '/assets/preCheckin/partials/Envoy/noOption.html',
 	 	title: 'Check-in'
 	 });
 	 
@@ -74,7 +74,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
     $stateProvider.state('preCheckinTripDetails', {
     	url: '/tripDetails',
-	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	templateUrl: '/assets/preCheckin/partials/Envoy/noOption.html',
 	 	controller : 'preCheckinTripDetailsController',
 	 	title: 'Trip Details'
 	 });
