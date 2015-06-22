@@ -145,19 +145,42 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {String} [class name]
          */
         $scope.getReservationClass = function(reservationStatus) {
-            var classes = {
-                "RESERVED": 'arrival',
-                "CHECKING_IN": 'check-in',
-                "CHECKEDIN": 'inhouse',
-                "CHECKING_OUT": 'check-out',
-                "CHECKEDOUT": 'departed',
-                "CANCELED": 'cancel',
-                "NOSHOW": 'no-show',
-                "NOSHOW_CURRENT": 'no-show',
-            };
-            if (reservationStatus.toUpperCase() in classes) {
-                return classes[reservationStatus.toUpperCase()];
+            var class_ = '';
+            switch(reservationStatus.toUpperCase()){
+                case "RESERVED":
+                    class_ = 'arrival'
+                    break;
+
+                case "CHECKING_IN":
+                    class_ = 'check-in'
+                    break; 
+
+                case "CHECKEDIN":
+                    class_ = 'inhouse'
+                    break;  
+
+                case "CHECKING_OUT":
+                    class_ = 'check-out'
+                    break;  
+
+                case "CHECKEDOUT":
+                    class_ = 'departed'
+                    break; 
+
+                case "CANCELED":
+                    class_ = 'cancel'
+                    break; 
+
+                case "NOSHOW": 
+                case "NOSHOW_CURRENT":
+                    class_ = 'no-show'
+                    break; 
+                
+                default:
+                    class_ = '';
+                    break;
             }
+            return class_;
         };
 
         /**
