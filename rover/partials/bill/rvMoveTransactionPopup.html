@@ -51,19 +51,26 @@
 			</div>
 		</div>
 		<!-- Search results -->
-		<div class="scrollable" ng-iscroll='search_results'ng-iscroll-delay="100" ng-hide="targetSelected">
+		<div class="scrollable" ng-iscroll='search_results' ng-iscroll-delay="100" ng-hide="targetSelected">
 			<ul class="search-results wrapper"> 
-				<li class="no-content" ng-show="(textQuery.length<3 && numberQuery.length<3) || searchResults.length === 0">
+				<!-- if no search is done -->
+				<li class="no-content" ng-show="(textQuery.length<3 && numberQuery.length<3) && searchResults.length === 0">
 					<div class="info">
 						<span class="icon-no-content icon-groups"></span>
-						<strong class="h1" ng-show="(textQuery.length<3 && numberQuery.length<3)">Find Account or Guest</strong>
-						<strong class="h1" ng-show="searchResults.length === 0 && !(textQuery.length<3 && numberQuery.length<3)">No Matches</strong>
-						<span class="h2" ng-show="(textQuery.length<3 && numberQuery.length<3)">Search by Account/Guest Name or Account/Room No.</span>
-						<span class="h2"  ng-show="searchResults.length === 0 && !(textQuery.length<3 && numberQuery.length<3)">Check that you didn't mispell the Group <strong>Name</strong> or <strong>Code</strong>.</span>
+						<strong class="h1">Find Account or Guest</strong>
+						<span class="h2">Search by Account/Guest Name or Account/Room No.</span>
+					</div>
+				</li>
+				<!-- if no search results are found -->
+				<li class="no-content" ng-show="(textQuery.length >= 3 || numberQuery.length >=3) && searchResults.length === 0">
+					<div class="info">
+						<span class="icon-no-content icon-groups"></span>
+						<strong class="h1">No Matches</strong>
+						<span class="h2">Check that you didn't mispell the Group <strong>Name</strong> or <strong>Code</strong>.</span>
 					</div>
 				</li>
 
-				<li class="group-account" ng-show="searchResults.length !== 0" ng-repeat="item in searchResults" ng-click="targetClicked(item.entity_id)">
+				<li class="group-account" ng-show="searchResults.length !== 0" ng-repeat="item in searchResults" ngrepeatend ng-click="targetClicked(item.entity_id)">
 					<div class="room" ng-show="item.type === 'RESERVATION'">
 						<strong ng-bind-html="escapeNull(item.room_no)|highlight:numberQuery:false"></strong>
 					</div>
