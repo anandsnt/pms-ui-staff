@@ -17,7 +17,7 @@ login.controller('loginRootCtrl', ['$scope', function($scope){
 	$scope.signingIn = false;
 	$scope.$on("signingIn", function(event){
 		$scope.signingIn = true;
-	})
+	});
 }]);
 
 /*
@@ -146,7 +146,40 @@ login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$st
 	 	$scope.errorMessage = errorMessage;
 	 };
 	 resetSrv.checkTokenStatus($scope.data, "", $scope.failureCallBackToken);
-	 /*
+	 
+        $scope.validPassword = false;
+        //data.password
+        $scope.validatePassword = function(data){
+            console.log('validating password');
+            
+          //check if password contains at least 1 number and has at least 8 total characters
+          //this is called on ng-change password
+          if (data){
+              if (data.password.length >= 8){
+                  console.log('here');
+                  console.log(arguments)
+                  if (alphanumeric(data.password)){
+                    $scope.validPassword = true;
+                    console.log('true');
+                  } else {
+                    $scope.validPassword = false;
+                  }
+              } else {
+                    $scope.validPassword = false;
+              }
+          } else {
+              $scope.validPassword = false;
+          }
+        };
+        var alphanumeric = function(str) {
+            var letterNumber = /^.*(?=.{8,})(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%]+$/;//at least 1 letter, least 1 number, and some special characters
+            if(str.match(letterNumber)){  
+              return true;  
+            } else {
+              return false;   
+            }  
+        };
+        /*
 	  * Submit action activate user
 	  */
 	 $scope.submit = function() {
