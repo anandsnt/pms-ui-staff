@@ -1319,6 +1319,9 @@ sntRover.controller('RVbillCardController',
 		 		    // CICO-17266 PMS: Rover - CC Auth should consider Billing Information.
 		 		    showPreAuthPopupWithBillingInfo(data);
 		 		}
+		 		else{
+		 			performCCAuthAndCheckinProcess(data,true);
+		 		}
 			}
 		}
 	};
