@@ -1,0 +1,84 @@
+<div class="jumbotron" id="check-in-out">
+	<div class="container backgroundbg" >
+		<div class="container-fluid">
+			<div class="row headerrow grey-bg">
+				<logo-image></logo-image>
+			</div>
+		</div>
+		<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+					<p class="msg-head">Your request is being processed.</p>
+					<p class="msg-body">This may take a few seconds..... please wait!</p>
+				</div>
+			
+		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+
+			<p class="msg-head">Our apologies, something went wrong, please complete your check-out at our front desk.</p></p>
+			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="blue-text">{{hotelPhone}}.</a></p>
+		</div>
+
+		<!-- contentarea starts here-->
+		<div class="container" ng-hide="isFetching || netWorkError">
+			<!-- top section starts here-->
+
+			<div class="row checkin-wrapper">
+				<div class="col-md-6 headtext centeralign pad-rt-60 payment">
+					<span class="blueText">Payment</span>
+					<p class="leadtext checkout-time-container">
+						<span class="lightcontent chekout-time fee">{{checkoutmessage}}
+						</span>
+					</p>
+					<span class="fee black-text">{{currencySymbol}}{{fee}}</span>			
+				</div>
+
+				
+				<!-- top section ends here-->
+
+
+				<div class="col-md-6 pad-lf-60 cabin-number">
+					<form >
+						<div class="row">
+							<div class="card-number-container">
+								<p class="cabin-number-text lightcontent grey-text">Card Number</p>
+								<input type="password" ng-model="cardNumber" class = "col-xs-12 textBox shadow"/> 
+							</div>
+							<div class="ccv-container">
+								<p class="cabin-number-text lightcontent grey-text">CCV#</p>
+								<input type="password" ng-model="ccv" class = "col-xs-12 textBox shadow" ng-class="{'red-border':isCVVEmpty}"/> 
+								<p class="ccv-popup-link" ng-click="showCcvPopup()"><u class="ccv-text grey-text">what is this?</u></p>
+							</div>
+						</div>
+
+						<div class="row ">
+							<div class="expiry-month-container">
+								<p class="cabin-number-text lightcontent grey-text">Expiration Date</p>
+								<div class="select-style">
+									<select ng-model="monthSelected"
+									ng-options="month.value as month.name for month in months">
+										<option value="">Month</option>
+									</select>
+								</div>
+							</div>
+							<div class="expiry-year-container">
+								<p class="cabin-number-text">&nbsp;</p>
+								<div class="select-style">
+									<select ng-model="yearSelected"
+									ng-options="year as year  for year in years">
+										<option value="">Year</option>
+									</select>
+								</div>
+							</div>
+						</div>
+
+
+						<button class="checkin-button continue-button yellow-bg" ng-click="savePaymentDetails()">
+							<span class="continue-text white-text">Continue</span>
+						</button>
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
