@@ -268,11 +268,11 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				confirmationId: $scope.reservationData.confirmNum,
 				isrefresh: true,
 				justCreatedRes: true
-			}
+			};
 			$scope.otherData.reservationCreated = true;
 			$scope.reservationData.rateDetails = [];
 			$state.go('rover.reservation.staycard.reservationcard.reservationdetails', stateParams);
-
+                        $rootScope.$broadcast('reload-loyalty-section-data',{});
 		};
 
 		/**

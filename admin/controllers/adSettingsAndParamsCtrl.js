@@ -1,6 +1,18 @@
 admin.controller('settingsAndParamsCtrl',['$scope','settingsAndParamsSrv','settingsAndParamsData','chargeCodes', function($scope,settingsAndParamsSrv,settingsAndParamsData,chargeCodes){
 
 	BaseCtrl.call(this, $scope);
+	$scope.ccBatchProcessingOptions = [{
+            "value": "PAYMENT_GATEWAY",
+            "name": "Payment Gateway"
+        },
+        {
+            "value": "HOTEL",
+            "name": "Hotel"
+        }];
+
+    $scope.cc_batch_processing = settingsAndParamsData.cc_batch_processing == null? "": settingsAndParamsData.cc_batch_processing;
+    $scope.cc_auto_settlement_by_eod = settingsAndParamsData.cc_auto_settlement_by_eod;
+
 	$scope.hours = ["01","02","03","04","05","06","07","08","09","10","11","12"];
 	$scope.minutes = ["00","15","30","45"];
 
@@ -54,7 +66,12 @@ admin.controller('settingsAndParamsCtrl',['$scope','settingsAndParamsSrv','setti
         }
         var selectedChargeCode = ( typeof $scope.selected_charge_code == 'undefined' ) ? "" : $scope.selected_charge_code;
         var groupChargeCode = ( typeof $scope.selected_group_charge_code == 'undefined' ) ? "" : $scope.selected_group_charge_code;
-        var dataToSend = { "no_show_charge_code_id" : selectedChargeCode , "business_date" : $scope.data,"group_charge_code_id":groupChargeCode };
+        var dataToSend = {	"no_show_charge_code_id" : selectedChargeCode , 
+        					"business_date" : $scope.data,
+        					"group_charge_code_id":groupChargeCode,
+        					"cc_batch_processing":$scope.cc_batch_processing,
+        					"cc_auto_settlement_by_eod":$scope.cc_auto_settlement_by_eod
+        				};
         
         $scope.invokeApi(settingsAndParamsSrv.saveSettingsAndParamsSrv, dataToSend ,saveDetailsSuccessCallback);
     };

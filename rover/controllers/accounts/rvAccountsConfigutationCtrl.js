@@ -11,7 +11,8 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 	'rvPermissionSrv',
 	'rvAccountTransactionsSrv',
 	'$vault',
-	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvAccountsConfigurationSrv, rvGroupConfigurationSrv, accountData, $state, rvPermissionSrv, $vault, rvAccountTransactionsSrv) {
+	'$timeout',
+	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvAccountsConfigurationSrv, rvGroupConfigurationSrv, accountData, $state, rvPermissionSrv, rvAccountTransactionsSrv, $vault, $timeout) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -149,10 +150,10 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			
 			//Reload the summary tab contents before switching to it
 			if(tab === "ACCOUNT"){
-				refreshSummaryTab();
+				//refreshSummaryTab();
 			} else if(tab === "TRANSACTIONS"){ //Preload the transaction data when we switch to transactions tab
-				preLoadTransactionsData();
-				return false;
+				//preLoadTransactionsData();
+				//return false;
 			} else{
 				// Switching from SUMMARY tab - 
 				// Check for any updation => lets save it.
@@ -160,71 +161,13 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			}
 
 			$scope.accountConfigData.activeTab = tab;
+			
+			//propogating an event that next clients are
+			$timeout(function() {
+				$scope.$broadcast('ACCOUNT_TAB_SWITCHED', $scope.accountConfigData.activeTab);
+			}, 100);			
 		};
-
-		var preLoadTransactionsData = function(){
-			var onTransactionFetchSuccess = function(data) {
-
-				$scope.$emit('hideloader');
-				$scope.transactionsDetails = data;
-				$scope.accountConfigData.activeTab = 'TRANSACTIONS';
-
-				/*
-				 * Adding billValue and oldBillValue with data. Adding with each bills fees details
-				 * To handle move to bill action
-				 * Added same value to two different key because angular is two way binding
-				 * Check in HTML moveToBillAction
-				 */
-				angular.forEach($scope.transactionsDetails.bills, function(value, key) {
-					angular.forEach(value.total_fees.fees_details, function(feesValue, feesKey) {
-
-						feesValue.billValue = value.bill_number; //Bill value append with bill details
-						feesValue.oldBillValue = value.bill_number; // oldBillValue used to identify the old billnumber
-					});
-				});
-
-			}
-			var params = {
-				"account_id": $scope.accountConfigData.summary.posting_account_id
-			}
-			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, {
-				successCallBack: onTransactionFetchSuccess,
-				params: params
-			});
-
-		};
-
-		var refreshSummaryTab = function() {
-
-			var onAccountFetchSuccess = function(data) {
-				$scope.$emit('hideloader');
-				$scope.accountConfigData.summary = data;
-				$scope.accountConfigData.activeTab = "ACCOUNT";
-
-			}
-			var params = {
-				"accountId": $scope.accountConfigData.summary.posting_account_id
-			}
-			$scope.callAPI(rvAccountsConfigurationSrv.getAccountSummary, {
-				successCallBack: onAccountFetchSuccess,
-				params: params
-			});
-		};
-
-		/**
-		 * to get the current tab url
-		 * @return {String}
-		 */
-		$scope.getCurrentTabUrl = function() {
-			var tabAndUrls = {
-				'ACCOUNT': '/assets/partials/accounts/accountsTab/rvAccountsSummary.html',
-				'TRANSACTIONS': '/assets/partials/accounts/transactions/rvAccountTransactions.html',
-				'ACTIVITY': '/assets/partials/groups/activity/rvGroupConfigurationActivityTab.html'
-			};
-
-			return tabAndUrls[$scope.accountConfigData.activeTab];
-		};
-
+		
 		/**
 		 * Save the new Group
 		 * @return undefined
@@ -377,10 +320,20 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 					}
 				});
 			} else {
-				console.warn('No Permission for EDIT_ACCOUNT');
+				$scope.$emit('showErrorMessage', ['Sorry, Changes will not get saved as you don\'t have enough permission'])
 			}
 		}
 
+		/**
+		 * When we recieve the error message from its child controllers, we have to show them
+		 * @param  {Object} event 
+		 * @param  {String} errorMessage)
+		 * @return undefined
+		 */
+		$scope.$on('showErrorMessage', function(event, errorMessage){
+			$scope.errorMessage = errorMessage;
+			runDigestCycle();
+		});
 
 		/**
 		 * function to initialize things for group config.

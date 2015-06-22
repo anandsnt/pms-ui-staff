@@ -1,10 +1,10 @@
 sntRover.controller('RVGuestCardLoyaltyController',['$scope','$rootScope','RVGuestCardLoyaltySrv','ngDialog',function($scope,$rootScope,RVGuestCardLoyaltySrv,ngDialog){
 	BaseCtrl.call(this, $scope);
 	$scope.init = function(){
-
 		var loyaltyFetchsuccessCallback = function(data){
 			$scope.$emit('hideLoader');
                         $rootScope.$broadcast('detect-hlps-ffp-active-status',data);
+                        $scope.$broadcast('detect-hlps-ffp-active-status',data);
 			$scope.loyaltyData = data;
 			$scope.checkForHotelLoyaltyLevel();
 			setTimeout(function(){
@@ -21,6 +21,9 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','$rootScope','RVGue
 		var data = {'userID':$scope.$parent.guestCardData.userId};
 		$scope.invokeApi(RVGuestCardLoyaltySrv.fetchLoyalties,data , loyaltyFetchsuccessCallback, loyaltyFetchErrorCallback, 'NONE');
 	};
+        $rootScope.$on('reload-loyalty-section-data',function(){
+            $scope.init();//reload loyalty when switching through staycards
+        });
         
 	$scope.$watch(
 		function() { return ($scope.$parent.$parent.guestCardData.userId != '')?true:false; },
@@ -33,14 +36,15 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','$rootScope','RVGue
 * and notify the guestcard header to display the same
 */
 $scope.checkForHotelLoyaltyLevel = function(){
+    if ($scope.$parent.$parent.guestCardData.use_hlp){
 	for(var i = 0; i < $scope.loyaltyData.userMemberships.hotelLoyaltyProgram.length; i++){
 		if($scope.loyaltyData.userMemberships.hotelLoyaltyProgram.membership_level != ""){
 			$scope.$emit('loyaltyLevelAvailable', $scope.loyaltyData.userMemberships.hotelLoyaltyProgram[i].membership_level);
 			break;
 		}
 	}
-
-}
+    }
+};
 
 
 $scope.$on('clearNotifications',function(){
@@ -118,15 +122,19 @@ $scope.$on("loyaltyDeletionError",function(e,error){
         $scope.$on('detect-hlps-ffp-active-status',function(evt,data){
            if (data.userMemberships.use_hlp){
                $scope.loyaltyProgramsActive(true);
+               $scope.$parent.guestCardData.use_hlp = true;
            } else {
                $scope.loyaltyProgramsActive(false);
+               $scope.$parent.guestCardData.use_hlp = false;
            }
            
            
            if (data.userMemberships.use_ffp){
                $scope.ffpProgramsActive(true);
+               $scope.$parent.guestCardData.use_ffp = true;
            } else {
                $scope.ffpProgramsActive(false);
+               $scope.$parent.guestCardData.use_ffp = false;
            }
            
            
@@ -134,9 +142,11 @@ $scope.$on("loyaltyDeletionError",function(e,error){
         
         $scope.loyaltyProgramsActive = function(b){
           $scope.hotelLoyaltyProgramEnabled = b;
+          $scope.$parent.guestCardData.use_ffp = b;
         };
         $scope.ffpProgramsActive = function(b){
           $scope.hotelFrequentFlyerProgramEnabled = b;
+          $scope.$parent.guestCardData.use_ffp = b;
         };
         
         

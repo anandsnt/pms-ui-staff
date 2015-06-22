@@ -5,7 +5,7 @@
 			<span class="count"> (
 				{{data.hotel_loyalty_program.length}}
 				) </span>
-			<a id="add-new-button" class="action add" ng-click="addNewHotelLoyalty()" translate>ADD_NEW</a>
+			<a ng-class="{'overlay' : !data.use_hlp}" id="add-new-button" class="action add" ng-click="addNewHotelLoyalty()" translate>ADD_NEW</a>
                         <div class="header-title">
                         <h2 translate> USE_LOYALTY </h2>
                             <div name="active-inactive-toggle" class="switch-button single header-switch-btn" ng-class="{ on: data.use_hlp }" ng-click="activateMainInactivate()">

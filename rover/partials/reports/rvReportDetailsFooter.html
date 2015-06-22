@@ -34,6 +34,14 @@
 
 
 
+		<!-- paid date range -->
+		<div ng-if="appliedFilter.paidFromDate || appliedFilter.paidToDate">
+			<label>Paid Dates - </label>
+			From: <span>{{ appliedFilter.paidFromDate | date:dateFormat }}</span> To: <span>{{ appliedFilter.paidToDate | date:dateFormat }}</span>
+		</div>
+
+
+
 		<!-- create date range -->
 		<div ng-if="appliedFilter.createFromDate || appliedFilter.createToDate">
 			<label>Create Dates - </label>

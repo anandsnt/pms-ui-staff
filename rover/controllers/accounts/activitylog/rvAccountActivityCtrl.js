@@ -33,10 +33,18 @@ sntRover.controller('rvAccountActivityCtrl', [
 			$scope.invokeApi(rvGroupAccountActivitySrv.fetchActivityLog, params, fetchCompleted);
 				
 		})		
+
 		/**
-		 *Show starts here!!!!
+		 * When there is a TAB switch, we will get this. We will initialize things from here
+		 * @param  {Object} event           
+		 * @param  {String} currentTab - Active tab in the view
+		 * @return undefined
 		 */
-		 $scope.init();
+		$scope.$on ('ACCOUNT_TAB_SWITCHED', function(event, currentTab){
+			if (currentTab === "ACTIVITY") {
+				$scope.init();
+			}
+		});
 		
 	}
 ]);

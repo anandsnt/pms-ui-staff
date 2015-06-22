@@ -1,0 +1,157 @@
+<section ng-repeat="groupReservation in printRegCardData.group_reservations">
+    <table class="hotel-guest-info">
+        <tbody>
+            <tr>
+                <td class="hotel-info">
+                    <img ng-src="{{ printRegCardData.hotel_logo }}" alt="" />
+                    <p>
+                        {{ printRegCardData.hotel_name }}
+                        <br> {{ printRegCardData.street }}
+                        <br> {{ printRegCardData.city }}, {{ printRegCardData.state }} {{printRegCardData.zipcode}}
+                        <br>
+                        <br> Ph: {{ printRegCardData.phone }}
+                    </p>
+                </td>
+                <td class="guest-info">
+                    <table class="name-addr">
+                        <tr>
+                            <td>
+                                <span>REGISTERED TO:</span>
+                                <strong>{{ groupReservation.guest_details.first_name }} {{ groupReservation.guest_details.last_name }}</strong>
+                                <strong>
+                                <label ng-if="groupReservation.guest_details.street || groupReservation.guest_details.city">
+                                    {{ groupReservation.guest_details.street }} {{ groupReservation.guest_details.city }}, 
+                                </label>
+                                <label>{{ groupReservation.guest_details.state }} {{ groupReservation.guest_details.postal_code }}</label>
+                            </strong>
+                            </td>
+                            <td>
+                                <span>BILL TO:</span>
+                                <strong>{{ groupReservation.bill_to.name }}</strong>
+                                <strong ng-if="groupReservation.bill_to.street1 || groupReservation.bill_to.street2">{{ groupReservation.bill_to.street1 }} {{ groupReservation.bill_to.street2 }}</strong>
+                                <strong>
+                                <label ng-if="groupReservation.bill_to.city"> {{ groupReservation.bill_to.city }},  </label>
+                                <label ng-if="groupReservation.bill_to.state">{{ groupReservation.bill_to.state }} </label>
+                                <label>{{ groupReservation.bill_to.postal_code }}</label>
+                            </strong>
+                            </td>
+                        </tr>
+                    </table>
+                    <table>
+                        <tr>
+                            <td>
+                                <span>ARRIVAL DATE:</span>
+                                <strong>{{ groupReservation.arrival_date | date : dateFormat }}</strong>
+                            </td>
+                            <td>
+                                <span>DEPARTURE DATE:</span>
+                                <strong>{{ groupReservation.dep_date | date : dateFormat }}</strong>
+                            </td>
+                            <td>
+                                <span>CONFIRMATION:</span>
+                                <strong>{{ groupReservation.confirm_no }}</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>ARRIVAL TIME:</span>
+                                <strong>{{ groupReservation.arrival_time }}</strong>
+                                <span>&nbsp;</span>
+                            </td>
+                            <td>
+                                <span>DEPARTURE TIME:</span>
+                                <strong>{{ groupReservation.departure_time }}</strong>
+                                <span>&nbsp;</span>
+                            </td>
+                            <td>
+                                <span>ROOM:</span>
+                                <strong>{{ groupReservation.room_number}}</strong>
+                                <span>&nbsp;</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>AMOUNT PAID:</span>
+                                <strong>{{ groupReservation.amount_paid | currency:currencySymbol:2 }}</strong>
+                            </td>
+                            <td>
+                                <span>PAYMENT:</span>
+                                <strong>{{ groupReservation.payment_type }}</strong>
+                            </td>
+                            <td>
+                                <span>ACCOUNT:</span>
+                                <strong>{{ groupReservation.account }}</strong>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="rate-initial">
+                        <tr>
+                            <td>
+                                <span>AVERAGE DAILY RATE:</span>
+                                <strong>{{ groupReservation.adr | currency:currencySymbol:2 }}</strong>
+                            </td>
+                            <td>
+                                <span>GUEST INITIALS:</span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="bill-details">
+        <thead>
+            <tr>
+                <th>DATE</th>
+                <th>RATE</th>
+                <th>TAXES</th>
+                <th>ADD-ON</th>
+                <th class="addon-price">ADD-ON PRICE</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="each in groupReservation.daily_instances_info">
+                <td>{{ each.date | date : dateFormat }}</td>
+                <td>{{ each.rate | currency:currencySymbol:2 }}</td>
+                <td>{{ each.tax | currency:currencySymbol:2 }}</td>
+                <td class="addons" colspan="2">
+                    <table>
+                        <tr ng-repeat="item in each.addons">
+                            <td>{{ item.name }}</td>
+                            <td ng-if="item.price == 'INCLUDED'">{{ item.price }}</td>
+                            <td ng-if="item.price != 'INCLUDED'">{{ item.price | currency:currencySymbol:2 }}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="guest-data-enter" ng-if="groupReservation.is_show_vehiche_info">
+        <tr>
+            <td>
+                Guest DL/ID #
+            </td>
+            <td class="details">
+                <table>
+                    <tr>
+                        <td>Vehicle Make</td>
+                        <td>Lic. Plate #</td>
+                        <td>Lic. Plate State/Prov.</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table class="terms-signature page-break">
+        <tr>
+            <td colspan="2" class="terms">{{ printRegCardData.terms_conditions }}</td>
+        </tr>
+        <tr>
+            <td>
+                <span class="signature">
+                Guest Signature
+            </span>
+            </td>
+        </tr>
+    </table>
+</section>

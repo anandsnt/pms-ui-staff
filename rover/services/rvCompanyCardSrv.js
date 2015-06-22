@@ -335,9 +335,19 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		}
                 
-		this.fetchHotelLoyalties = function(param){
+		this.fetchHotelLoyaltiesHlps = function(param){
                     var deferred = $q.defer();
                     var url =  '/staff/user_memberships/get_available_hlps.json';
+                    rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                            deferred.resolve(data);
+                    },function(data){
+                            deferred.reject(data);
+                    });
+                    return deferred.promise;	
+                };
+		this.fetchHotelLoyaltiesFfp = function(param){
+                    var deferred = $q.defer();
+                    var url =  '/staff/user_memberships/get_available_ffps.json';
                     rvBaseWebSrvV2.getJSON(url).then(function(data) {
                             deferred.resolve(data);
                     },function(data){

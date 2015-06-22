@@ -37,7 +37,12 @@
 			</span>
 
 			<span ng-show="showPrintKeyOptions">
-				<span class="h2 message" translate>PRINT_ROOM_KEY</span>
+				<span ng-if="keyType === 'New'" class="h2 message" translate>PRINT_NEW_ROOM_KEY</span>
+				<span ng-if="keyType === 'Duplicate'" class="h2 message" translate>PRINT_DUPLICATE_ROOM_KEY</span>
+                                
+                                <span ng-if="keyType === 'New'" class="validate-keys-section"><span translate>THIS_KEYS_TEXT</span> <b><span class="keys-msg-bold" translate>WILL_VALIDATE_PREVIOUS</span></b> <span translate>INVALIDATE_KEYS_TEXT</span></span>
+                                <span ng-if="keyType === 'Duplicate'" class="validate-keys-section"><span translate>THIS_KEYS_TEXT</span> <b><span class="keys-msg-bold" translate>WILL_NOT_VALIDATE_PREVIOUS</span></b> <span translate>INVALIDATE_KEYS_TEXT</span></span>
+                                
 					<em class="status icon-key" ng-class="{'success': status=='success', 'pending': status=='pending', 'error': status=='error'}">{{statusMessage}}</em>
 					<div id="print-keys">
 						<div class="entry full-width" ng-show = "keySystemVendor == 'SAFLOK_MSR'">

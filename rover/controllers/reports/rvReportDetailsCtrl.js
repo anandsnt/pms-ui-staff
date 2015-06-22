@@ -328,10 +328,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			var parseAPIoptions = {
 				'groupedByKey'    : $scope.$parent.reportGroupedBy,
-				'checkNote'       : $scope.chosenReport.chosenNotes ? true : false,
-				'checkGuest'      : $scope.chosenReport.chosenShowGuests ? true : false,
-				'checkCancel'     : $scope.chosenReport.chosenCancelled ? true : false,
-				'checkRateAdjust' : $scope.chosenReport.chosenShowRateAdjust ? true : false
+				'checkNote'       : $scope.chosenReport.chosenOptions['include_notes'],
+				'checkGuest'      : $scope.chosenReport.chosenOptions['show_guests'],
+				'checkCancel'     : $scope.chosenReport.chosenOptions['include_cancelled'] || $scope.chosenReport.chosenOptions['include_cancelled'],
+				'checkRateAdjust' : $scope.chosenReport.chosenOptions['show_rate_adjustments_only']
 			};
 
 			// $scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );

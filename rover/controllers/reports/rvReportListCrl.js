@@ -10,7 +10,6 @@ sntRover.controller('RVReportListCrl', [
         BaseCtrl.call(this, $scope);
 
         $scope.setScroller('report-list-scroll', {
-            click: true,
             preventDefault: false
         });
 
