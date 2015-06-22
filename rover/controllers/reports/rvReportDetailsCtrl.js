@@ -394,7 +394,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('COMPARISION_BY_DATE'):
 					$scope.hasReportTotals    = false;
 					$scope.showReportHeader   = true;
-					$scope.detailsTemplateUrl = '/assets/partials/reports/rvMarketSegmentStatReport.html';
+					$scope.detailsTemplateUrl = '/assets/partials/reports/comparisonStatReport/rvComparisonStatReport.html';
 					break;
 
 				default:

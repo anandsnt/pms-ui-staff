@@ -1,0 +1,43 @@
+<tr ng-repeat="(key, value) in results">
+	<td class="code long-code break">{{ key }}</td>
+	<td class="break">{{ value.today }}</td>
+	<td>{{ value.mtd | currency:currencySymbol:2 }}</td>
+	<td>{{ value.last_year_mtd | currency:currencySymbol:2 }}</td>
+	<td class="break" ng-class="{ 'red': value.mtd_variance < 0 }">{{ value.mtd_variance }}%</td>
+	<td>{{ value.ytd | currency:currencySymbol:2 }}</td>
+	<td>{{ value.last_year_ytd | currency:currencySymbol:2 }}</td>
+	<td ng-class="{ 'red': value.ytd_variance < 0 }">{{ value.ytd_variance }}%</td>
+</tr>
+<tr class="total" ng-if="resultsTotalRow">
+	<td class="code long-code break">Total Revenue</td>
+	<td class="break">{{ resultsTotalRow.today }}</td>
+	<td>{{ resultsTotalRow.mtd | currency:currencySymbol:2 }}</td>
+	<td>{{ resultsTotalRow.last_year_mtd | currency:currencySymbol:2 }}</td>
+	<td class="break" ng-class="{ 'red': resultsTotalRow.mtd_variance < 0 }">{{ resultsTotalRow.mtd_variance }}%</td>
+	<td>{{ resultsTotalRow.ytd | currency:currencySymbol:2 }}</td>
+	<td>{{ resultsTotalRow.last_year_ytd | currency:currencySymbol:2 }}</td>
+	<td ng-class="{ 'red': resultsTotalRow.ytd_variance < 0 }">{{ resultsTotalRow.ytd_variance }}%</td>
+</tr>
+
+
+
+<tr class="grouped" ng-if="revenueByChargeGroup">
+	<td class="code long-code break"><strong>Revenue by Charge Group</strong></td>
+    <td class="break">Today</td>
+    <td>MTD</td>
+    <td>Last Year MTD</td>
+    <td class="break">% Variance</td>
+    <td>YTD</td>
+    <td>Last Year YTD</td>
+    <td>% Variance</td>
+</tr>
+<tr class="grouped" ng-if="revenueByChargeGroup">
+	<td class="code long-code break"><em>{{ revenueByChargeGroup.name }}</em></td>
+	<td class="break">{{ revenueByChargeGroup.today }}</td>
+	<td>{{ revenueByChargeGroup.mtd | currency:currencySymbol:2 }}</td>
+	<td>{{ revenueByChargeGroup.last_year_mtd | currency:currencySymbol:2 }}</td>
+	<td class="break" ng-class="{ 'red': revenueByChargeGroup.mtd_variance < 0 }">{{ revenueByChargeGroup.mtd_variance }}%</td>
+	<td>{{ revenueByChargeGroup.ytd | currency:currencySymbol:2 }}</td>
+	<td>{{ revenueByChargeGroup.last_year_ytd | currency:currencySymbol:2 }}</td>
+	<td ng-class="{ 'red': revenueByChargeGroup.ytd_variance < 0 }">{{ revenueByChargeGroup.ytd_variance }}%</td>
+</tr>
