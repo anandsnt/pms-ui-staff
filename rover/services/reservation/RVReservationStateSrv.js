@@ -110,6 +110,7 @@ sntRover.service('RVReservationStateService', [
 					}
 
 					taxesLookUp[taxData.id] = parseFloat(taxCalculated); 	
+					if(isInclusive) taxableAmount -= parseFloat(taxCalculated);
 
 					if (taxData.post_type == 'NIGHT') { // NIGHT tax computations
 						if (isInclusive) taxInclusiveTotal = parseFloat(taxInclusiveTotal) + parseFloat(taxCalculated);
@@ -146,11 +147,11 @@ sntRover.service('RVReservationStateService', [
 			};
 		};
 
-		this.setReservationFlag = function(key, status){
+		self.setReservationFlag = function(key, status){
 		   self.reservationFlags[key] = status;
 		};
 
-		this.getReservationFlag = function(key){
+		self.getReservationFlag = function(key){
 		   return self.reservationFlags[key];
 		};
 

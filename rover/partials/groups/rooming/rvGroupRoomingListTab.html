@@ -66,91 +66,95 @@
                 <button type="button" class="button green" ng-click="addReservations()" translate>ADD</button>
             </div>
         </div>
-        <ul class="totals">
+    <ul class="totals">
             <li>
                 <div class="data">
                     <span class="label">{{'GROUP_PICKED_UP'|translate}}</span>
                     <span class="value">{{totalPickUpCount}}</span>
                 </div>
             </li>
-            <li>
-                <button type="button" class="button grey" ng-hide="true">{{'GROUP_CHECK_IN'|translate}}</button>
-                <!-- Replace class "grey" with "green" when rooms selected in the rooming list -->
-                <button type="button" class="button grey" ng-hide="true">{{'GROUP_CHECK_OUT'|translate}}</button>
-                <!-- Replace class "grey" with "red" when rooms selected in the rooming list -->
-            </li>
-            <li>
-                <!-- Don't show until there are new rooms added in the rooming list -->
-                <button type="button" class="button grey" ng-hide="true">{{'GROUP_AUTO_ASSIGN_ROOMS'|translate}}</button>
-                <!-- Replace class "grey" with "brand-colors" when rooms selected in the rooming list -->
-            </li>
-            <li>
-                <!-- Don't show if there are no rooms in the rooming list -->
-                <button type="button" class="button with-icon only-icon blue" ng-hide="true">
-                    <span class="icons icon-email"></span> {{'GROUP_EMAIL'|translate}}
-                </button>
-                <button type="button" class="button blue with-icon only-icon" ng-hide="true">
-                    <span class="icons icon-print"></span> {{'GROUP_PRINT'|translate}}
-                </button>
-                <button type="button" class="batch button with-icon" ng-click="printRegistrationCards();" 
-                    ng-class="{'grey' : totalPickUpCount < 1,'brand-colors' : totalPickUpCount > 0}" 
-                    ng-disabled="totalPickUpCount < 1">
-                    <span class="icons icon-print"></span> {{'GROUP_BATCH'|translate}}
-                </button>
-                <button type="button" class="button with-icon only-icon purple" ng-hide="true">
-                    <span class="icons icon-save"></span> {{'GROUP_DOWNLOAD'|translate}}
-                </button>
-            </li>
-        </ul>
+        </li>
+        <li>
+            <button type="button" class="button grey" ng-hide="true">{{'GROUP_CHECK_IN'|translate}}</button> <!-- Replace class "grey" with "green" when rooms selected in the rooming list -->
+            <button type="button" class="button grey" ng-hide="true">{{'GROUP_CHECK_OUT'|translate}}</button> <!-- Replace class "grey" with "red" when rooms selected in the rooming list -->
+        </li>
+        <li> <!-- Don't show until there are new rooms added in the rooming list -->
+            <button type="button" class="button grey" ng-hide="true">{{'GROUP_AUTO_ASSIGN_ROOMS'|translate}}</button> <!-- Replace class "grey" with "brand-colors" when rooms selected in the rooming list -->
+        </li>
+        <li> <!-- Don't show if there are no rooms in the rooming list -->
+            <button type="button" class="button with-icon only-icon blue" ng-hide="reservations.length ==0" ng-click="sendRoomingList()">
+                <span class="icons icon-email"></span>
+                {{'GROUP_EMAIL'|translate}}
+            </button>
+            <button type="button" class="button blue with-icon only-icon" ng-hide="reservations.length ==0" ng-click="printRoomingList()">
+                <span class="icons icon-print"></span>
+                {{'GROUP_PRINT'|translate}}
+            </button>
+            <button type="button" class="button with-icon only-icon purple" ng-hide="true">
+                <span class="icons icon-save"></span>
+                {{'GROUP_DOWNLOAD'|translate}}
+            </button>
+        </li>
+    </ul>
+</div>
+
+<div id="group-room-list-content" class="tab-details">
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <!-- When no rooms in list -->
+    <div class="no-content" ng-show="shouldShowNoReservations()">
+        <div class="info">
+            <span class="icon-no-content icon-reservation"></span>
+            <strong class="h1">{{'GROUP_NO_RESERVATIONS'|translate}}</strong>
+            <span class="h2">{{'GROUP_ADD_RESERVATIONS_TO_ROOMING_LIST'|translate}}</span>
+        </div>
     </div>
-    <div id="group-room-list-content" class="tab-details" ng-class="{'no-print' : isPrintRegistrationCard}">
-        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-        <!-- When no rooms in list -->
-        <div class="no-content" ng-show="shouldShowNoReservations()">
-            <div class="info">
-                <span class="icon-no-content icon-reservation"></span>
-                <strong class="h1">{{'GROUP_NO_RESERVATIONS'|translate}}</strong>
-                <span class="h2">{{'GROUP_ADD_RESERVATIONS_TO_ROOMING_LIST'|translate}}</span>
-            </div>
-        </div>
-        <!-- Rooming List Header -->
-        <ul class="rooming-list-header" ng-show="!shouldShowNoReservations()">
-            <li class="check">
-                <label class="checkbox inline" for="rooming-list-all" ng-class="{'disabled' : !!groupConfigData.summary.is_cancelled}">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked': whetherAllReservationsSelected(), 'semi-checked': whetherReservationsArePartiallySelected()}"></span>
-                    <!-- Add class "checked" if checked or all items in rooming list are selected. Add class "semi-checked" (and make sure it has no class "checked") when not all items in the rooming list are selected -->
-                    <input id="rooming-list-all" ng-disabled="!!groupConfigData.summary.is_cancelled" type="checkbox" ng-click="selectOrUnSelectAllReservation()" />
-                </label>
-            </li>
-            <li class="room sort" ng-class="getSortClass('room_no')" ng-click="sortBy('room_no')">{{'GROUP_ROOM'|translate}}</li>
-            <li class="name sort" ng-class="getSortClass('lastname')" ng-click="sortBy('lastname')">{{'GROUP_GUEST_NAME'|translate}}</li>
-            <li class="date sort" ng-class="getSortClass('arrival_date')" ng-click="sortBy('arrival_date')">{{'GROUP_ARRIVAL'|translate}}</li>
-            <li class="date sort" ng-class="getSortClass('departure_date')" ng-click="sortBy('departure_date')">{{'GROUP_DEPARTURE'|translate}}</li>
-            <li class="type sort" ng-class="getSortClass('room_type_id')" ng-click="sortBy('room_type_id')">{{'GROUP_ROOM_TYPE'|translate}}</li>
-            <li class="status sort" ng-class="getSortClass('reservation_status')" ng-click="sortBy('reservation_status')">{{'GROUP_STATUS'|translate}}</li>
-        </ul>
-        <!-- Pagination, if applicable see {_shared/pagination.html}  -->
-        <!-- Pagination -->
-        <div class="search-pagination" ng-show="shouldShowPagination()">
-            <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" translate>ACCOUNTS_NEXT</button>
-            <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" translate>ACCOUNTS_PREVIOUS</button>
-            <p>{{'ACCOUNTS_SHOWING'|translate}} <strong>{{start}}-{{end}}</strong> {{'ACCOUNTS_SHOWING_OF'|translate}} <strong id="total-count">{{totalResultCount}}</strong> {{'ACCOUNTS_ITEMS'|translate}}</p>
-        </div>
-        <!-- Rooming List Content -->
-        <div id="rooming-grid" class="rooming-grid scrollable" ng-show="!shouldShowNoReservations()" ng-class="{'with-pagination': shouldShowPagination()}" ng-iscroll="rooming_list" ng-iscroll-delay="100">
-            <!-- Add class "with-pagination" if pagination is used -->
-            <ul id="rooming-grid-list" class="search-results wrapper">
-                <li class="reservation rooming-list" ng-repeat="reservation in reservations">
-                    <div class="check">
-                        <label class="checkbox inline" for="guest-id" ng-class="{'disabled' : !!groupConfigData.summary.is_cancelled}">
-                            <span class="icon-form icon-checkbox" ng-class="{'checked': isReservationInSelectedReservation(reservation)}"></span>
-                            <!-- Add class "checked" if checked -->
-                            <input id="guest-id" value="{Guest}" type="checkbox" ng-click="addOrRemoveFromSelectedReservation(reservation)" ng-disabled="!!groupConfigData.summary.is_cancelled">
-                        </label>
-                    </div>
-                    <a ng-click="showEditReservationPopup(reservation)">
-                        <div class="data">
-                            <h2 ng-show="!isGuestBlank(reservation)">
+    
+    <!-- Rooming List Header -->
+    <ul class="rooming-list-header" ng-show="!shouldShowNoReservations()">
+        <li class="check">
+            <label class="checkbox inline" for="rooming-list-all" ng-class="{'disabled' : !!groupConfigData.summary.is_cancelled}"> 
+                <span class="icon-form icon-checkbox" 
+                    ng-class="{'checked': whetherAllReservationsSelected(), 'semi-checked': whetherReservationsArePartiallySelected()}"></span> <!-- Add class "checked" if checked or all items in rooming list are selected. Add class "semi-checked" (and make sure it has no class "checked") when not all items in the rooming list are selected -->
+                <input id="rooming-list-all" ng-disabled="!!groupConfigData.summary.is_cancelled" type="checkbox" ng-click="selectOrUnSelectAllReservation()" />
+            </label>
+        </li>
+        <li class="room sort" ng-class="getSortClass('room_no')" ng-click="sortBy('room_no')">{{'GROUP_ROOM'|translate}}</li>
+        <li class="name sort" ng-class="getSortClass('lastname')" ng-click="sortBy('lastname')">{{'GROUP_GUEST_NAME'|translate}}</li>
+        <li class="date sort" ng-class="getSortClass('arrival_date')" ng-click="sortBy('arrival_date')">{{'GROUP_ARRIVAL'|translate}}</li>
+        <li class="date sort" ng-class="getSortClass('departure_date')" ng-click="sortBy('departure_date')">{{'GROUP_DEPARTURE'|translate}}</li>
+        <li class="type sort" ng-class="getSortClass('room_type_id')" ng-click="sortBy('room_type_id')">{{'GROUP_ROOM_TYPE'|translate}}</li>
+        <li class="status sort" ng-class="getSortClass('reservation_status')" ng-click="sortBy('reservation_status')">{{'GROUP_STATUS'|translate}}</li>
+    </ul>
+
+    <!-- Pagination, if applicable
+    see {_shared/pagination.html}
+    -->
+
+    <!-- Pagination -->
+    <div class="search-pagination" ng-show="shouldShowPagination()">
+        <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" translate>ACCOUNTS_NEXT</button>
+        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" translate>ACCOUNTS_PREVIOUS</button>
+        <p>{{'ACCOUNTS_SHOWING'|translate}}  <strong>{{start}}-{{end}}</strong> {{'ACCOUNTS_SHOWING_OF'|translate}} <strong id="total-count">{{totalResultCount}}</strong> {{'ACCOUNTS_ITEMS'|translate}}</p>
+    </div>
+
+    <!-- Rooming List Content -->
+    <div id="rooming-grid" class="rooming-grid scrollable" 
+        ng-show="!shouldShowNoReservations()"
+        ng-class="{'with-pagination': shouldShowPagination()}"
+        ng-iscroll="rooming_list" ng-iscroll-delay="100"> <!-- Add class "with-pagination" if pagination is used -->
+
+        <ul id="rooming-grid-list" class="search-results wrapper">
+            <li class="reservation rooming-list" ng-repeat="reservation in reservations" ngrepeatend>
+
+                <div class="check">
+                    <label class="checkbox inline" for="guest-id" ng-class="{'disabled' : !!groupConfigData.summary.is_cancelled}"> 
+                        <span class="icon-form icon-checkbox" ng-class="{'checked': isReservationInSelectedReservation(reservation)}"></span> <!-- Add class "checked" if checked -->
+                        <input id="guest-id" value="{Guest}" type="checkbox" ng-click="addOrRemoveFromSelectedReservation(reservation)" ng-disabled="!!groupConfigData.summary.is_cancelled">
+                    </label>
+                </div>
+                <a ng-click="showEditReservationPopup(reservation)">
+                    <div class="data">
+                        <h2 ng-show="!isGuestBlank(reservation)">
                             {{reservation.lastname}}, {{reservation.firstname}}
                         </h2>
                             <h2 ng-show="isGuestBlank(reservation)">

@@ -63,24 +63,6 @@ sntRover.controller('RVccPaymentsController', ['$scope','$filter','$stateParams'
 		refreshPaymentScroll();
 	};
 
-	$scope.$on("SUMMARYORDETAILSPAYMENT",function(event , isDetailView){
-
-		console.log("isSummary"+isDetailView)
-		console.log($scope.data.activeTab);
-		if($scope.data.activeTab === 0){
-	    	
-	    	$scope.data.paymentData.approved.active = true;
-			$scope.data.paymentData.declined.active = true;
-
-	   		angular.forEach($scope.data.paymentData.approved,function(item, index) {
-	       		item.active = isDetailView;
-	       	});
-			angular.forEach($scope.data.paymentData.declined,function(item, index) {
-	       		item.active = isDetailView;
-	       	});
-		}
-	});
-
 	$scope.$on('mainTabSwiched', function(){
 		if($scope.data.activeTab == 0){
 			refreshPaymentScroll();

@@ -162,7 +162,13 @@
 						<span translate>EDIT</span>
 					</button>
 				</td>
-				<td></td>
+				<td>
+					<button type="button" class="button with-icon only-icon brand-colors open-modal" ng-if="hasMoveToOtherBillPermission()" ng-click="moveChargesClicked()">
+                    <span class="icons icon-move"></span> 
+                    Move selected
+              		</button>
+
+				</td>
 			</tr>
 			<!-- Show balance -->
 			<tr class="active edit" ng-hide="showGuestBalance(reservationBillData.reservation_status)">

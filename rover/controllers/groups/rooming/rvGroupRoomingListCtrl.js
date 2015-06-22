@@ -23,8 +23,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         $q,
         ngDialog,
         rvGroupConfigurationSrv,
-        $state,
-        $window) {
+        $state, $window) {
 
         BaseCtrl.call(this, $scope);
 
@@ -146,19 +145,42 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {String} [class name]
          */
         $scope.getReservationClass = function(reservationStatus) {
-            var classes = {
-                "RESERVED": 'arrival',
-                "CHECKING_IN": 'check-in',
-                "CHECKEDIN": 'inhouse',
-                "CHECKING_OUT": 'check-out',
-                "CHECKEDOUT": 'departed',
-                "CANCELED": 'cancel',
-                "NOSHOW": 'no-show',
-                "NOSHOW_CURRENT": 'no-show',
-            };
-            if (reservationStatus.toUpperCase() in classes) {
-                return classes[reservationStatus.toUpperCase()];
+            var class_ = '';
+            switch(reservationStatus.toUpperCase()){
+                case "RESERVED":
+                    class_ = 'arrival'
+                    break;
+
+                case "CHECKING_IN":
+                    class_ = 'check-in'
+                    break; 
+
+                case "CHECKEDIN":
+                    class_ = 'inhouse'
+                    break;  
+
+                case "CHECKING_OUT":
+                    class_ = 'check-out'
+                    break;  
+
+                case "CHECKEDOUT":
+                    class_ = 'departed'
+                    break; 
+
+                case "CANCELED":
+                    class_ = 'cancel'
+                    break; 
+
+                case "NOSHOW": 
+                case "NOSHOW_CURRENT":
+                    class_ = 'no-show'
+                    break; 
+                
+                default:
+                    class_ = '';
+                    break;
             }
+            return class_;
         };
 
         /**
@@ -1021,8 +1043,114 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                     });
                 }, 150)
             }
-        }
+        }  
 
+        /**
+        * 
+        */
+        $scope.$on('NG_REPEAT_COMPLETED_RENDERING', function(event){            
+            setTimeout(function(){
+                if ($scope.print_type == 'rooming_list') {
+                    window.print ();
+                }
+            }, 500);          
+        });
+
+        /**
+         * add the print orientation before printing
+         * @return - None
+         */
+        var addPrintOrientation = function() {
+            $( 'body' ).append( "<style id='print-orientation'>@page { size: landscape; }</style>" );
+        };
+        /**
+         * remove the print orientation before printing
+         * @return - None
+         */
+        var removePrintOrientation = function() {
+            $( '#print-orientation' ).remove();
+        };
+        /**
+         * Function - Successful callback of printRoomingList.Prints fetched Rooming List.
+         * @return - None
+         */
+
+        var successCallBackOfFetchAllReservationsForPrint = function(data) {
+            var resevationsBeforePrint = $scope.reservations;
+            $scope.reservations = data.results;
+            $scope.print_type =  'rooming_list';
+            //window.print() function excutes after DOM population,for that ngrepeatend directive used and
+            //we watch 'NG_REPEAT_COMPLETED_RENDERING'
+            addPrintOrientation();
+            var unWantedElements = $(".nav-bar h1, header .h2, .cards .cards-wrapper .cards-header .card-header form .masked-input");
+            unWantedElements.addClass('text-hide');            
+            $timeout(function() {
+                if (sntapp.cordovaLoaded) {
+                    cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+                };
+            }, 300);
+            $timeout(function() {
+                $scope.reservations = resevationsBeforePrint;
+                $scope.print_type = '';
+                removePrintOrientation();
+                unWantedElements.removeClass('text-hide')
+            }, 700);
+        }
+        /**
+         * Function to fetch Rooming list for print.
+         * @return - None
+         */
+        $scope.printRoomingList = function() {        
+            var params = {
+                group_id: $scope.groupConfigData.summary.group_id,
+                per_page: 1000
+            };
+            var options = {
+                params: params,
+                successCallBack: successCallBackOfFetchAllReservationsForPrint
+            };
+            $scope.callAPI(rvGroupRoomingListSrv.fetchReservations, options);
+        };
+        /**
+         * Function to pop up for mail Rooming list.
+         * @return - None
+         */
+         $scope.sendRoomingList = function(){           
+            if ($scope.groupConfigData && $scope.groupConfigData.summary && !!$scope.groupConfigData.summary.contact_email) {
+                $scope.sendEmail($scope.groupConfigData.summary.contact_email);
+            } else {            
+            ngDialog.open({
+                    template: '/assets/partials/groups/rooming/rvRoomingListEmailPrompt.html',
+                    className: '',
+                    scope: $scope,
+                    closeByDocument: false,
+                    closeByEscape: false                    
+                });
+            }
+        }
+        /**
+         * Function to send e-mail of Rooming list.API call goes here.
+         * @return - None
+         */
+        $scope.sendEmail = function(mailTo){
+            var mailSent = function(data) {                    
+                    $scope.closeDialog();
+                },
+                mailFailed = function(errorMessage) {
+                    $scope.errorMessage = errorMessage;
+                    $scope.closeDialog();
+                }
+            var params = {                
+                "to_address": mailTo,                
+                "group_id": $scope.groupConfigData.summary.group_id
+            }         
+            $scope.callAPI(rvGroupRoomingListSrv.emailInvoice, {
+                successCallBack: mailSent,
+                failureCallBack: mailFailed,
+                params: params
+            });
+        }
+         
         $scope.printRegistrationCards = function() {
             // add the print orientation after printing
             var removePrintOrientation = function() {

@@ -132,6 +132,18 @@ sntRover.service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 			return deferred.promise;
 		};
 
+		this.emailInvoice = function(data) {
+			var deferred = $q.defer(),				
+				url = '/api/group_reservations/email_rooming_list';
+			rvBaseWebSrvV2.postJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;
+		}	
+
 		this.fetchRegistrationCardPrintData = function(params) {
 			var deferred = $q.defer();
 			var url = '/api/reservations/' + params.group_id + '/batch_print_registration_cards';

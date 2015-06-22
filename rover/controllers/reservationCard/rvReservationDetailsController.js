@@ -282,6 +282,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			company: $scope.reservationDetails.companyCard.id,
 			agent: $scope.reservationDetails.travelAgent.id
 		};
+                //also reload the loyalty card / frequent flyer section
+                $rootScope.$broadcast('reload-loyalty-section-data',{});
 
 		$scope.reservationDetails.guestCard.id = reservationListData.guest_details.user_id == null ? "" : reservationListData.guest_details.user_id;
 		$scope.reservationDetails.companyCard.id = reservationListData.company_id == null ? "" : reservationListData.company_id;

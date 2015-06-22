@@ -2,11 +2,11 @@
 <div ng-controller="RVccAuthorizationController" id="cc-transactions-content" class="journal-content scrollable" ng-iscroll="authorization-scroll" >
     <div class="wrapper">
     	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-        <div class="journal-grid cc-transactions"> <!-- For print add class "print-summary" or "print-details" based on L51 checked status -->
+        <div class="journal-grid cc-transactions print-details">
             <div class="grid-group">
                 <!-- Approved -->
                 <a class="transaction-title green toggle" ng-click="clickedApprovedTab()"  ng-class="{'active':data.authData.approved.active, 'has-arrow': hasAnyElements(data.authData.approved) }">
-                    <strong class="name">Approved</strong>
+                    <strong class="name" translate>APPROVED</strong>
                 </a>
                 <div id="authorization-approved" class="grid-charge"  ng-repeat="item in data.authData.approved" ng-show="data.authData.approved.active" > <!-- To show, remove class "hidden" when L61 is clicked -->
                     <!-- CC Types -->
@@ -17,14 +17,14 @@
                     <table class="grid-items"  ng-show="item.active"> 
                         <thead>
                             <tr>
-                                <th scope="col">Date &amp; Time</th>
-                                <th scope="col">Card No.</th>
-                                <th scope="col">User</th>
-                                <th scope="col">Room No.</th>
-                                <th scope="col">Reservation No.</th>
-                                <th scope="col">Guest Name</th>
-                                <th scope="col">Auth. Code</th>
-                                <th scope="col">Amount</th>
+                                <th scope="col">{{'DATE' | translate}} &amp; {{'TIME' | translate}}</th>
+                                <th scope="col" translate>CARD_NUMBER</th>
+                                <th scope="col" translate>USER</th>
+                                <th scope="col" translate>ROOM_NO</th>
+                                <th scope="col" translate>RESERVATION_NO</th>
+                                <th scope="col" translate>GUEST_NAME</th>
+                                <th scope="col" translate>AUTH_CODE</th>
+                                <th scope="col" translate>AMOUNT</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,7 +44,7 @@
 
                 <!-- Declined -->
                 <a ng-click="clickedDeclinedTab()" class="transaction-title red toggle" ng-class="{'active':data.authData.declined.active, 'has-arrow': hasAnyElements(data.authData.declined)}">
-                    <strong class="name">Declined</strong>
+                    <strong class="name" translate>DECLINED</strong>
                 </a>
                 <div id="authorization-declined" class="grid-charge" ng-repeat="item in data.authData.declined" ng-show="data.authData.declined.active"> <!-- To show, remove class "hidden" when L101 is clicked -->
                     <a ng-click="clickedDeclinedTransactionItem(item)" class="transaction-title toggle" ng-class="{'active':item.active, 'has-arrow': item.cc_transactions.length > 0}">
@@ -54,14 +54,14 @@
                     <table ng-show="item.active" class="grid-items"> 
                         <thead>
                             <tr>
-                                <th scope="col">Date &amp; Time</th>
-                                <th scope="col">Card No.</th>
-                                <th scope="col">User</th>
-                                <th scope="col">Room No.</th>
-                                <th scope="col">Reservation No.</th>
-                                <th scope="col">Guest Name</th>
-                                <th scope="col">Auth. Code</th>
-                                <th scope="col">Amount</th>
+                            	<th scope="col">{{'DATE' | translate}} &amp; {{'TIME' | translate}}</th>
+                                <th scope="col" translate>CARD_NUMBER</th>
+                                <th scope="col" translate>USER</th>
+                                <th scope="col" translate>ROOM_NO</th>
+                                <th scope="col" translate>RESERVATION_NO</th>
+                                <th scope="col" translate>GUEST_NAME</th>
+                                <th scope="col" translate>AUTH_CODE</th>
+                                <th scope="col" translate>AMOUNT</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -81,7 +81,7 @@
 
                 <!-- Reverse Authorizations -->
                 <a ng-click="clickedReversalsTab()" class="transaction-title grey toggle" ng-class="{'active':data.authData.reversals.active, 'has-arrow': hasAnyElements(data.authData.reversals)}">
-                    <strong class="name">Reverse Authorizations</strong>
+                    <strong class="name" translate>REVERSE_AUTHORIZATIONS</strong>
                 </a>
                 <div id="authorization-reverse" class="grid-charge" ng-repeat="item in data.authData.reversals" ng-show="data.authData.reversals.active"> <!-- To show, remove class "hidden" when L109 is clicked -->
                     <a ng-click="clickedReversalTransactionItem(item)" class="transaction-title toggle" ng-class="{'active':item.active, 'has-arrow': item.cc_transactions.length > 0 }">
@@ -91,14 +91,14 @@
                     <table ng-show="item.active" class="grid-items"> 
                         <thead>
                             <tr>
-                                <th scope="col">Date &amp; Time</th>
-                                <th scope="col">Card No.</th>
-                                <th scope="col">User</th>
-                                <th scope="col">Room No.</th>
-                                <th scope="col">Reservation No.</th>
-                                <th scope="col">Guest Name</th>
-                                <th scope="col">Auth. Code</th>
-                                <th scope="col">Amount</th>
+                            	<th scope="col">{{'DATE' | translate}} &amp; {{'TIME' | translate}}</th>
+                                <th scope="col" translate>CARD_NUMBER</th>
+                                <th scope="col" translate>USER</th>
+                                <th scope="col" translate>ROOM_NO</th>
+                                <th scope="col" translate>RESERVATION_NO</th>
+                                <th scope="col" translate>GUEST_NAME</th>
+                                <th scope="col" translate>AUTH_CODE</th>
+                                <th scope="col" translate>AMOUNT</th>
                             </tr>
                         </thead>
                         <tbody>

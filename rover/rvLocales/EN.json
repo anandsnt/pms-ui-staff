@@ -105,6 +105,24 @@
 "SAVE_ROUTE": "Save Route",
 "SAVE": "Save",
 "CANCEL": "Cancel"
+,"APPROVED": "Approved",
+"DATE": "Date",
+"TIME": "Time",
+"CARD_NUMBER": "Card No.",
+"USER": "User",
+"ROOM_NO": "Room No",
+"RESERVATION_NO": "Reservation No",
+"GUEST_NAME": "Guest Name",
+"AUTH_CODE": "Auth. Code",
+"AMOUNT": "Amount",
+"DECLINED": "Declined",
+"REVERSE_AUTHORIZATIONS": "Reverse Authorizations",
+"SUBMIT_BATCH": "Submit Batch",
+"PAYMENTS": "Payments",
+"AUTHORIZATIONS": "Authorizations"
+
+
+
 ,	
 	"DRAG_AND_DROP_TO_CHANGE_STAY_DATES": "Drag & drop to change stay dates",
 	"ARRIVAL" : "Arrival",
