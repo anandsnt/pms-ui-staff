@@ -68,7 +68,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		var init = function(isCallingFirstTime) {
 			$scope.$emit('showLoader');
 			var arrival = $scope.reservationData.arrivalDate,
-				departure = $scope.reservationData.departureDate;			
+				departure = $scope.reservationData.departureDate;
 
 			$scope.displayData.dates = [];
 			$scope.filteredRates = [];
@@ -751,6 +751,17 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						_.each(room.ratedetails, function(today, key) {
 							if (key == $scope.reservationData.departureDate && key != $scope.reservationData.arrivalDate) {
 								//do nothing -CICO 17580 - Need not check for restrictions in case of departure date when the #nights > 0 (NOT a day reservation)
+								//--CICO-17746 Need to include departure date only for this case
+								if (typeof today[rateId].restrictions == 'undefined') {
+									today[rateId].restrictions = [];
+								}
+								if (new tzIndependentDate(key) - new tzIndependentDate($scope.reservationData.departureDate) == 0) {
+									validRate = false;
+									today[rateId].restrictions.push({
+										key: 'CLOSED_DEPARTURE',
+										value: 'CLOSED FOR DEPARTURE'
+									});
+								}
 							} else if (!$scope.stateCheck.stayDatesMode || $scope.stateCheck.stayDatesMode && key == $scope.stateCheck.dateModeActiveDate) {
 								var currDate = key;
 								//Step 1 : Check if the rates are configured for all the days of stay

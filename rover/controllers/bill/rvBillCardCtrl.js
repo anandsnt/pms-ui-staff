@@ -1315,9 +1315,12 @@ sntRover.controller('RVbillCardController',
 	 		    	// Directly performing checkin process without pre-auth popup.
 	 		    	performCCAuthAndCheckinProcess(data,true);
 	 		    }	
-	 		    else{
+	 		    else if($scope.reservationBillData.is_cc_authorize_at_checkin_enabled && $scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type == "CC"){
 		 		    // CICO-17266 PMS: Rover - CC Auth should consider Billing Information.
 		 		    showPreAuthPopupWithBillingInfo(data);
+		 		}
+		 		else{
+		 			performCCAuthAndCheckinProcess(data,true);
 		 		}
 			}
 		}

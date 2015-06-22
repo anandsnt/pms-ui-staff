@@ -145,19 +145,42 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {String} [class name]
          */
         $scope.getReservationClass = function(reservationStatus) {
-            var classes = {
-                "RESERVED": 'arrival',
-                "CHECKING_IN": 'check-in',
-                "CHECKEDIN": 'inhouse',
-                "CHECKING_OUT": 'check-out',
-                "CHECKEDOUT": 'departed',
-                "CANCELED": 'cancel',
-                "NOSHOW": 'no-show',
-                "NOSHOW_CURRENT": 'no-show',
-            };
-            if (reservationStatus.toUpperCase() in classes) {
-                return classes[reservationStatus.toUpperCase()];
+            var class_ = '';
+            switch(reservationStatus.toUpperCase()){
+                case "RESERVED":
+                    class_ = 'arrival'
+                    break;
+
+                case "CHECKING_IN":
+                    class_ = 'check-in'
+                    break; 
+
+                case "CHECKEDIN":
+                    class_ = 'inhouse'
+                    break;  
+
+                case "CHECKING_OUT":
+                    class_ = 'check-out'
+                    break;  
+
+                case "CHECKEDOUT":
+                    class_ = 'departed'
+                    break; 
+
+                case "CANCELED":
+                    class_ = 'cancel'
+                    break; 
+
+                case "NOSHOW": 
+                case "NOSHOW_CURRENT":
+                    class_ = 'no-show'
+                    break; 
+                
+                default:
+                    class_ = '';
+                    break;
             }
+            return class_;
         };
 
         /**
@@ -380,6 +403,10 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             //list of our reservations
             $scope.reservations = [];
+
+            //before printing we have to store our 'showing' reservation in some place
+            //to show after printing.
+            $scope.resevationsBeforePrint = [];
 
             //text mapping against occupancy
             $scope.occupancyTextMap = {
@@ -1023,16 +1050,51 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         }  
 
         /**
-        * 
+        * event triggered by ngrepeatend directive
+        * mainly used to referesh scroller/printing
         */
         $scope.$on('NG_REPEAT_COMPLETED_RENDERING', function(event){            
-            setTimeout(function(){
+            $timeout(function(){
                 if ($scope.print_type == 'rooming_list') {
-                    window.print ();
+                    printRoomingList ();
                 }
             }, 500);          
         });
 
+        /**
+         * to print rooming list
+         * this method requires '$scope.resevationsBeforePrint', so please check where all it is assigning
+         * @return undefined
+         */
+        var printRoomingList = function(){
+            //changing the orientation to landscape
+            addPrintOrientation();
+            
+            //yes we are printing
+            window.print ();
+
+            //if we are in the app
+            $timeout(function() {
+                if (sntapp.cordovaLoaded) {
+                    cordova.exec(
+                        function(success) {},
+                        function(error) {},
+                        'RVCardPlugin',
+                        'printWebView', []
+                    );
+                };
+            }, 300);
+
+
+            $timeout(function() {
+                $scope.print_type = '';
+                removePrintOrientation();
+                $scope.reservations = util.deepCopy($scope.resevationsBeforePrint);
+                $scope.resevationsBeforePrint = [];
+            }, 1200);
+           
+        }
+        
         /**
          * add the print orientation before printing
          * @return - None
@@ -1040,6 +1102,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         var addPrintOrientation = function() {
             $( 'body' ).append( "<style id='print-orientation'>@page { size: landscape; }</style>" );
         };
+
         /**
          * remove the print orientation before printing
          * @return - None
@@ -1047,37 +1110,24 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         var removePrintOrientation = function() {
             $( '#print-orientation' ).remove();
         };
+
         /**
          * Function - Successful callback of printRoomingList.Prints fetched Rooming List.
          * @return - None
          */
-
         var successCallBackOfFetchAllReservationsForPrint = function(data) {
-            var resevationsBeforePrint = $scope.reservations;
-            $scope.reservations = data.results;
-            $scope.print_type =  'rooming_list';
-            //window.print() function excutes after DOM population,for that ngrepeatend directive used and
-            //we watch 'NG_REPEAT_COMPLETED_RENDERING'
-            addPrintOrientation();
-            var unWantedElements = $(".nav-bar h1, header .h2, .cards .cards-wrapper .cards-header .card-header form .masked-input");
-            unWantedElements.addClass('text-hide');            
-            $timeout(function() {
-                if (sntapp.cordovaLoaded) {
-                    cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-                };
-            }, 300);
-            $timeout(function() {
-                $scope.reservations = resevationsBeforePrint;
-                $scope.print_type = '';
-                removePrintOrientation();
-                unWantedElements.removeClass('text-hide')
-            }, 700);
+            //if you are looking for where the HELL this list is printing
+            //look for "NG_REPEAT_COMPLETED_RENDERING", thanks!!
+            $scope.resevationsBeforePrint  = util.deepCopy($scope.reservations);
+            $scope.reservations         = data.results;
+            $scope.print_type           = 'rooming_list';          
         }
+
         /**
          * Function to fetch Rooming list for print.
          * @return - None
          */
-        $scope.printRoomingList = function() {        
+        $scope.fetchReservationsForPrintingRoomingList = function() {        
             var params = {
                 group_id: $scope.groupConfigData.summary.group_id,
                 per_page: 1000
