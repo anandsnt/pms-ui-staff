@@ -23,12 +23,6 @@ sntRover.service('RVreportsSrv', [
 			} else {
 				rvBaseWebSrvV2.getJSON(url)
 					.then(function(data) {
-
-						data.results.push({
-							id: 88, title: "Comparison", sub_title: "By Date", description: "Statistics Report by Comparison",
-							filters: [{value: "SINGLE_DATE", description: "Date"}, {value: "INCLUDE_TAX", description: "Include Tax"}]
-						});
-
 						this.cacheReportList = data;
 
 						// Support for Occupany from UI for now..
