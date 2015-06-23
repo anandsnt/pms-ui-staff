@@ -129,6 +129,14 @@ sntRover.controller('RVReportsMainCtrl', [
 			return !!sortBy && !!sortBy.value;
 		};
 
+		// replace any char with single space " "
+		// e.g -> filter:showValidSortBy:_
+		$scope.replaceWithSpace = function(value, tobeReplaced) {
+			console.log(arguments);
+
+			return (!value) ? '' : value.replace(/_/g, ' ');
+		};
+
 
 
 		/**

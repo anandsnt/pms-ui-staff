@@ -1,5 +1,5 @@
 <tr ng-repeat="(key, value) in results">
-	<td class="code long-code break">{{ key }}</td>
+	<td class="code long-code break">{{ key | filter:replaceWithSpace }} </td>
 	<td class="break">{{ value.today }}</td>
 	<td>{{ value.mtd | currency:currencySymbol:2 }}</td>
 	<td>{{ value.last_year_mtd | currency:currencySymbol:2 }}</td>
