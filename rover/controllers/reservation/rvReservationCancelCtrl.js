@@ -1,5 +1,5 @@
-	sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout', 'RVReservationCardSrv', '$state', '$filter',
-		function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout, RVReservationCardSrv, $state, $filter) {
+	sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout', 'RVReservationCardSrv', '$state', '$filter', '$q',
+		function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout, RVReservationCardSrv, $state, $filter, $q) {
 
 			BaseCtrl.call(this, $scope);
 			$scope.errorMessage = '';
@@ -250,28 +250,49 @@
 
 
 			var cancelReservation = function() {
-				var onCancelSuccess = function(data) {
-					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-						"id": $scope.reservationData.reservationId || $scope.reservationParentData.reservationId,
-						"confirmationId": $scope.reservationData.confirmNum || $scope.reservationParentData.confirmNum,
-						"isrefresh": false
+				var onEachCancelSuccess = function(data) {
+						// Handle individual cancellations here if reqd.
+					},
+					onCancelSuccess = function(data) {
+						$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+							"id": $scope.reservationData.reservationId || $scope.reservationParentData.reservationId,
+							"confirmationId": $scope.reservationData.confirmNum || $scope.reservationParentData.confirmNum,
+							"isrefresh": false
+						});
+						$scope.closeReservationCancelModal();
+					},
+					onCancelFailure = function(data) {
+						$scope.$emit('hideLoader');
+						$scope.errorMessage = data;
+					};
+				// CICO-15808
+				// In case of multiple reservations - all reservations need to be cancelled
+				if ($scope.reservationData && $scope.reservationData.reservationIds && $scope.reservationData.reservationIds.length > 1) {
+					var promises = []; // Use this array to push the promises returned for every call
+					$scope.$emit('showLoader');
+					// Loop through the reservation ids and call the cancel API for each of them
+					_.each($scope.reservationData.reservationIds, function(reservationId) {
+						var cancellationParameters = {
+							reason: $scope.cancellationData.reason,
+							payment_method_id: parseInt($scope.cancellationData.selectedCard) == -1 ? null : parseInt($scope.cancellationData.selectedCard),
+							id: reservationId
+						};
+						if ($scope.ngDialogData.isDisplayReference)
+							cancellationParameters.reference_text = $scope.referanceText;
+						promises.push(RVReservationCardSrv.cancelReservation(cancellationParameters).then(onEachCancelSuccess));
 					});
-					$scope.closeReservationCancelModal();
-					$scope.$emit('hideLoader');
-				};
-				var onCancelFailure = function(data) {
-					$scope.$emit('hideLoader');
-					$scope.errorMessage = data;
-				};
-				var cancellationParameters = {
-					reason: $scope.cancellationData.reason,
-					payment_method_id: parseInt($scope.cancellationData.selectedCard) == -1 ? null : parseInt($scope.cancellationData.selectedCard),
-					id: $scope.reservationData.reservationId || $scope.reservationParentData.reservationId || $scope.passData.reservationId
-				};
-				if ($scope.ngDialogData.isDisplayReference) {
-					cancellationParameters.reference_text = $scope.referanceText;
-				};
-				$scope.invokeApi(RVReservationCardSrv.cancelReservation, cancellationParameters, onCancelSuccess, onCancelFailure);
+					$q.all(promises).then(onCancelSuccess, onCancelFailure);
+				} else {
+					var cancellationParameters = {
+						reason: $scope.cancellationData.reason,
+						payment_method_id: parseInt($scope.cancellationData.selectedCard) == -1 ? null : parseInt($scope.cancellationData.selectedCard),
+						id: $scope.reservationData.reservationId || $scope.reservationParentData.reservationId || $scope.passData.reservationId
+					};
+					if ($scope.ngDialogData.isDisplayReference) {
+						cancellationParameters.reference_text = $scope.referanceText;
+					};
+					$scope.invokeApi(RVReservationCardSrv.cancelReservation, cancellationParameters, onCancelSuccess, onCancelFailure);
+				}
 			};
 
 			var successPayment = function(data) {
