@@ -96,6 +96,13 @@ angular.module('stayCardModule', [])
                 },
                 rateAddons: function(RVReservationBaseSearchSrv) {
                     return RVReservationBaseSearchSrv.fetchAddonsForRates();
+                },
+                isAddonsConfigured: function(RVReservationBaseSearchSrv, $stateParams){                    
+                    var params = {};
+                    params.from_date = $stateParams.from_date;
+                    params.to_date = $stateParams.to_date;
+                    params.is_active = true;
+                    return RVReservationBaseSearchSrv.hasAnyConfiguredAddons();
                 }
             }
         });
