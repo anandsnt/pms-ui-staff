@@ -71,7 +71,7 @@ sntRover.controller('RVMoveChargeCtrl',
     			refreshSearchList();    			
 			};
 
-			$scope.invokeApi(RVMoveChargeSrv.fetchSearchedItems, {"text_search":$scope.textQuery,"number_search":$scope.numberQuery}, fetchSucces);
+			$scope.invokeApi(RVMoveChargeSrv.fetchSearchedItems, {"text_search":$scope.textQuery,"number_search":$scope.numberQuery,"bill_id":$scope.moveChargeData.fromBillId}, fetchSucces);
 		};
 
 		/**
