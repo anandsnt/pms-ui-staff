@@ -182,6 +182,7 @@
     "MENU_FINANCIALS":"Financials",
     "MENU_ACCOUNTING":"Accounting Interface",
     "MENU_JOURNAL":"Journal",
+    "MENU_CC_TRANSACTIONS":"CC Transactions",
     "MENU_COMMISIONS":"Commissions",
     "MENU_REPORTS":"Reports",
     "MENU_GROUPS": "Groups",
@@ -417,7 +418,7 @@
     "GROUP_PRINT":"Print",
     "GROUP_DOWNLOAD":"Download",
     "ADD_BILLING_INFO":"Add billing information",
-    "GROUP_BATCH" : "Batch"
+    "GROUP_BATCH" : "Reg.card"
 
 
 
@@ -610,6 +611,7 @@
     "CHECK_PAYMENT": "CHECK PAYMENT",
     "DIRECT_PAYMENT":"DIRECT PAYMENT",
     "ADD": "Add",
+    "CC_AUTH": "CC Auth",
     "NAME": "Name",
     "IN_GUEST_CARD":"In Guest Card",
     "SELECTED" : "Selected",

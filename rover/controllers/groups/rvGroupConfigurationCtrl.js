@@ -442,7 +442,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
         var setBackNavigation = function() {
             // TODO : Currently hardcoded to go to groups search.. 
             // Change the same according to the requirements
-            if ($scope.previousState.name == "rover.reservation.staycard.reservationcard.reservationdetails") {
+            if ($scope.previousState && $scope.previousState.name == "rover.reservation.staycard.reservationcard.reservationdetails") {
                 $rootScope.setPrevState = {
                     title: 'STAYCARD',
                     name: 'rover.reservation.staycard.reservationcard.reservationdetails',

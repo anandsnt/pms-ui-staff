@@ -1159,6 +1159,16 @@
 				}
 			}
 
+			&.card-authorize {
+				width: 320px;
+
+				.actions {
+					margin-top: 20px;
+					padding-top: 19px;
+					border-top: 1px solid rgba(0,0,0,.1);
+				}
+			}
+
 			/* Advanced bill ***/
 			&.advanced-bill {
 				width: 280px;
@@ -1275,6 +1285,74 @@
 					position: relative;
 					padding: 20px;
 					.box-shadow(0 -2px 2px rgba(0,0,0,.3));
+
+					.dates {
+						padding: 20px 0;
+						margin-bottom: 20px;
+						overflow: hidden;
+
+						strong { 
+							font-size: 16px;
+							line-height: 1;
+							margin-bottom: 10px;
+							font-weight: 600;
+							.show;
+						}
+
+						.scrollable {
+							position: relative;
+							max-height: 80px;
+
+							.wrapper { padding: 0 20px; }
+
+							.iScrollVerticalScrollbar {
+								top: 0;
+								right: 10px;
+								bottom: 0;
+
+								.iScrollIndicator { background: rgba(0,0,0,.2); }
+							}
+
+							li {
+								text-align: left;
+								color: rgba(0,0,0,.4);
+		                        line-height: 1;
+		                        vertical-align: middle;
+		                        padding-bottom: 5px;
+		                        margin-bottom: 5px;
+		                        text-transform: uppercase;
+		                        width: 100%;
+		                        border-bottom: 1px solid rgba(0,0,0,.1);
+
+		                        span {
+		                            font-size: 18px;
+		                            font-weight: 300;
+		                            line-height: 1;
+		                            .show;
+		                            .pull-right;
+		                        }
+
+		                        &.paid { 
+		                        	text-decoration: line-through; 
+
+		                        	span { text-decoration: line-through;  }
+		                        }
+
+		                        &.due {
+		                        	font-weight: 600;
+		                        	color: @textColor;
+
+		                        	span { font-weight: 600; }
+		                        }
+
+		                        &:last-child { 
+		                        	padding-bottom: 0;
+		                        	margin-bottom: 0;
+		                        	border-bottom: 0;
+		                        }
+							}
+						}
+					}
 
 					.actions {
 						.button {
@@ -3454,90 +3532,180 @@
 			        &.single { margin-top: 5px; }
 			    }
 
-			    .holder {
+			    label {
+			    	font-size: 14px;
+			    	text-transform: uppercase;
+			    	margin: 0;
+			    }
+
+			    .entry {
+			    	width: 50%;
+
+			    	&.invisible { visibility: hidden; }
+
+			    	&.clear { 
+			    		float: none;
+			    		.calc-width(50, 20); 
+			    	}
+
+			    	&.margin {
+			    		margin-right: 20px;
+			    		.calc-width(50, 20); 
+			    	}
+			    }
+
+			    /* Rules listing ***/
+			    .rules {
+			    	position: relative;
+			    	max-height: 320px;
+			    	padding: 20px 0;
+			    	margin: 0 20px 11px 20px;
+			    	border-bottom: 1px solid rgba(0,0,0,.1);
+			    	.calc-width(100, 40);
+
+			    	> .wrapper { padding: 0; }
+
+			    	> .iScrollVerticalScrollbar { 
+			    		top: 0;
+			    		bottom: 10px; 
+			    		right: 0;
+			    	}
+
+			    	li {
+			    		position: relative;
+			    		padding-right: 60px;
+			    		margin-bottom: 10px;
+
+			    		.button {
+			    			line-height: 1;
+			    			font-weight: 400;
+			    			text-align: left;
+			    			padding: 0;
+			    			height: 50px;
+
+			    			strong,
+			    			em {
+			    				padding: 0 10px;
+			    				.nowrap();
+			    				.show;
+			    			}
+
+			    			strong { 
+			    				font-size: 16px;
+			    				font-weight: 600; 
+			    			}
+
+			    			em {
+			    				font-size: 13px;
+			    				text-transform: none;
+			    				color: @grey3;
+			    			}
+			    		}
+
+			    		.icons {
+			    			position: absolute;
+			    			top: 0;
+			    			right: 0;
+			    			cursor: pointer;
+			    			background-position: 15px -3745px;
+		                    .square(50px);
+		                    .faux-clickable;
+			    		}
+
+			    		&:last-child { margin-bottom: 0; }
+			    	}
+			    }
+
+			    .add-new-button {
+			    	margin: 0 20px 20px 20px; 
+			    	height: 50px;
+			    	.calc-width(100, 40);
+			    	.show; 
+			    }
+
+			    /* Rule details ***/
+			    .header {
+			    	position: relative;
 			    	padding: 20px;
+			    	z-index: 999;
+			    	.box-shadow(0 2px 2px rgba(0,0,0,.15));
 			    	.float;
 
-			    	label {
-				    	font-size: 14px;
-				    	text-transform: uppercase;
-				    	margin: 0;
-				    }
+			    	.entry {
+			    		margin-bottom: 0;
 
-				    .rules {
-				    	position: relative;
-				    	max-height: 320px;
-				    	padding-bottom: 10px;
-				    	margin-bottom: 10px;
-				    	border-bottom: 1px solid rgba(0,0,0,.1);
+			    		&.radio-check { 
+			    			margin-right: 20px;
+			    			.pull-left;
+			    			.calc-width(50, 20); 
+			    		}
+			    	}
+			    }
 
-				    	> .wrapper { padding: 0; }
+			    .holder {
+			    	.float;
 
-				    	> .iScrollVerticalScrollbar { 
-				    		top: 0;
-				    		bottom: 10px; 
-				    		right: 0;
-				    	}
+			    	.content-left,
+			    	.content-right {
+			    		height: 320px;
+			    		.pull-left;
+			    	}
 
-				    	li {
-				    		position: relative;
-				    		padding-right: 50px;
-				    		margin-bottom: 10px;
+			    	.content-left { 
+			    		width: 30%;
+			    		background-color: rgba(0,0,0,.05);
+				    	
+				    	.scrollable {
+					    	position: relative;
+					    	height: 230px;	
+					    	z-index: 99;
+					    	.show;
 
-				    		.button {
-				    			font-size: 14px;
+				    		li {
+				    			position: relative;
 				    			line-height: 40px;
-				    			font-weight: 400;
-				    			text-align: left;
-				    			padding: 0;
-				    			height: 40px;
-
-				    			strong,
-				    			em {
-				    				padding: 0 10px;
-				    				.nowrap();
-				    				.pull-left;
-				    			}
-
-				    			strong { 
-				    				font-weight: 600; 
-				    				width: 35%;
-				    			}
-
-				    			em { width: 65%; }
-				    		}
-
-				    		.icons {
-				    			position: absolute;
-				    			top: 0;
-				    			right: 0;
+				    			text-transform: uppercase;
+				    			padding: 0 40px 0 20px;
+				    			margin: 0;
+				    			border-bottom: 1px solid rgba(0,0,0,.1);
 				    			cursor: pointer;
-			                    .square(40px);
-			                    .faux-clickable;
+				    			width: 100%;
+				    			.nowrap();
+
+				    			.icons {
+				    				position: absolute;
+				    				top: 0;
+				    				right: 0;
+				    				background-position: 15px -3927px;
+				    				.square(40px);
+				    			}
+
+				    			&.active { 
+				    				border-bottom: 0;
+				    				font-weight: 600;
+				    				cursor: default;
+				    				.background(@white);
+				    			}
 				    		}
 
-				    		&:last-child { margin-bottom: 0; }
-				    	}
-				    }
+					    	.iScrollVerticalScrollbar { 
+					    		top: 5px;
+								left: 5px;
+								right: auto;
+								bottom: 5px;
 
-				    .add-new-button { 
-				    	.size(50px, 100%);
-				    	.show; 
-				    }
+								.iScrollIndicator { background: rgba(0,0,0,.1); }
+							}
+					    }
 
-				    .content-left { 
-				    	.calc-width(60, 20);
-				    	.pull-left;
+					    .add-new-button { margin-top: 20px; }
 				    }
 
 				    .content-right { 
-				    	margin-left: 20px;
-				    	padding-left: 20px;
-				    	border-left: 1px solid rgba(0,0,0,.1);
-				    	.calc-width(40, 20);
-				    	.pull-left;
+				    	padding: 20px;
+				    	width: 70%;
 				    }
-			    }			    
+			    }  
 
 				.actions {
 					text-align: center;
@@ -3669,62 +3837,98 @@
 			}
 
 			&.staycard-actions {
-				max-height: 620px;
+
+				.modal-header {
+					.dates {
+						position: absolute;
+						top: 23px;
+						left: 220px;
+
+						.date { 
+							line-height: 20px; 
+
+							&:first-child { margin-bottom: 5px; }
+						}
+
+						.guest-status {
+							margin-right: 5px;
+							.square(20px);
+						}
+					}
+				}
 
 				.actions-content {
 					position: relative;
-					.size(440px, 920px);
+					.size(540px, 920px);
 
 					.content-left {
 						.scrollable { height: 100%;}
-
-				        li { 
-				        	padding-right: 100px; 
-
-				        	.info {
-			        			.user { margin-right: 10px; }
-			        		}
-				        }
 				    }
 
 				    .content-right {
-				    	.scrollable { 
-				    		.calc-height(100, 90); 
-
-				    		&.no-actions { .calc-height(100, 20); }
-				    	}
-
-				    	li {
-				    		padding-left: 30px;
-				    		margin-bottom: 10px;
-
-				    		&:before {
-				    			content: "";
-				    			position: absolute;
-				    			top: 0;
-				    			left: 0;
-				    			background-color: @softRedStart;
-				    			.show;
-				    			.size(100%, 20px);
-				    		}
-				    	}
+				    	.summary { .calc-height(100, 40); }
 
 				    	.detail-actions {
 				    		.button { 
 				    			font-size: 16px;
-				    			width: auto; 
+				    			width: 50%; 
 				    		}
 
 				    		&.col-3 {
 				    			.button { width: 33.3333333% }
 				    		}
-				    		&.col-4 {
-				    			.button { width: 25% }
-				    		}
 				    	}
 
 				    	.add-content {
-				    		padding: 20px;
+
+				    		label { margin-bottom: 0; }
+
+							.entry:not(.full-width) {
+								.calc-width(50, 10);
+
+								&.margin { margin-right: 20px; }
+							}
+
+				    		.date {
+								position: relative;
+
+								.clear-query {
+									position: absolute;
+									top: 25px;
+									right: 0;
+									z-index: 99;
+									visibility: hidden;
+									background-color: @grey1;
+									.size(38px, 40px);
+
+									.icons {
+										position: absolute;
+										top: 12.5px;
+										right: 12.5px;
+										background-color: @grey2;
+										.hide-text;
+										.square(15px);
+										.opacity(0);
+										.show;
+										#fade > .out();
+										#border-radius > .rounded(15px);
+									}
+
+									&.visible { 
+										visibility: visible;
+
+										.icons {	
+											.opacity(100); 
+											#fade > .in(); 
+										}
+									}
+
+									&:hover,
+									&.active { 
+										.icons { background-color: @logoPrimary; }
+									}
+								}
+							}
 
 				    		.actions {
 				    			background: transparent;
@@ -3759,6 +3963,55 @@
 			/* Actions form ***/
 			&.actions-form {
 				width: 420px;
+
+				label { margin-bottom: 0; }
+
+				.entry:not(.full-width) {
+					.calc-width(50, 10);
+
+					&.margin { margin-right: 20px; }
+				}
+
+				.date {
+					position: relative;
+
+					.clear-query {
+						position: absolute;
+						top: 25px;
+						right: 0;
+						z-index: 99;
+						visibility: hidden;
+						background-color: @white;
+						.size(38px, 40px);
+
+						.icons {
+							position: absolute;
+							top: 12.5px;
+							right: 12.5px;
+							background-color: @grey2;
+							.hide-text;
+							.square(15px);
+							.opacity(0);
+							.show;
+							#fade > .out();
+							#border-radius > .rounded(15px);
+						}
+
+						&.visible { 
+							visibility: visible;
+
+							.icons {	
+								.opacity(100); 
+								#fade > .in(); 
+							}
+						}
+
+						&:hover,
+						&.active { 
+							.icons { background-color: @logoPrimary; }
+						}
+					}
+				}
 
 				.search {
 					position: relative;

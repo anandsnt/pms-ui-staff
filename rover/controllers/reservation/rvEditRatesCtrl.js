@@ -3,8 +3,8 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 	'RVReservationCardSrv',
 	function($scope, $rootScope, $stateParams, $timeout, ngDialog, RVReservationCardSrv) {
 		
-		//initially setting reason texbox as blank
-		$scope.adjustment_reason = "";
+		//As per CICO-14354, we are setting adjustment reason as the last one we entered
+		$scope.adjustment_reason = $scope.ngDialogData.lastReason;
 
 		$scope.setScroller('rateDetails');
 		$scope.refreshRateDetails = function() {
@@ -43,6 +43,7 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 			var params 				= {};
             params.reservation_id 	= getReservationID();
             params.text 			= $scope.adjustment_reason;
+            params.is_from_rate_adjustment = true;
             params.note_topic 		= 1;
 
 			var options 			= {
@@ -84,7 +85,13 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 		};
 
 		$scope.pastDay = function(date) {
-			return tzIndependentDate($rootScope.businessDate) > new tzIndependentDate(date);
+			// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
+			// Just to clarify: User should be able to enter custom rates at any time for a group reservation
+			if( $scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id ){
+				return tzIndependentDate($rootScope.businessDate) >= new tzIndependentDate(date);
+			} else {
+				return tzIndependentDate($rootScope.businessDate) > new tzIndependentDate(date);
+			}
 		};
 
 	}

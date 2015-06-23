@@ -61,6 +61,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				|| (fromState.name === 'rover.housekeeping.roomStatus' && toState.name !== 'rover.housekeeping.roomDetails')) {
 				
 				RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
+				RVHkRoomStatusSrv.resetRoomTypes();
 
 				localStorage.removeItem( 'roomListScrollTopPos' );
 			};
@@ -446,8 +447,68 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		};
 
 
+		$scope.printData = function() {
+			$scope.returnToPage = $_page;
+
+			$_updateFilters('page', 1);
+			$_updateFilters('perPage', 1000);
+
+			function callback (data) {
+				$_fetchRoomListCallback(data);
+				printList();
+			};
+
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {}, callback);
+		};
+
+
 
 		/* ***** ***** ***** ***** ***** */
+
+
+
+		function printList () {
+			var domRoomInsertDelay = 400;
+
+			// add the orientation
+			$( 'head' ).append( "<style id='print-orientation'>@page { size: landscape; }</style>" );
+
+			$scope.$emit('hideLoader');
+
+			/*
+			*	=====[ READY TO PRINT ]=====
+			*/
+		
+			// this will show the popup with full report
+		    $timeout(function() {
+
+		    	/*
+		    	*	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+		    	*/
+
+		        $window.print();
+		        if ( sntapp.cordovaLoaded ) {
+		            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+		        };
+		    }, domRoomInsertDelay);
+
+		    /*
+		    *	=====[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]=====
+		    */
+
+		    // in background we need to keep the report with its original state
+		    $timeout(function() {
+		    	// remove the orientation
+				$( '#print-orientation' ).remove();
+
+				// reset params to what it was before printing
+				$_page = $scope.returnToPage;
+				$_updateFilters('page', $_page);
+				$_updateFilters('perPage', $window.innerWidth < 599 ? 25 : 50);
+
+				$_callRoomsApi();
+		    }, domRoomInsertDelay);
+		};
 
 
 
@@ -630,8 +691,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		function $_postProcessRooms() {
-			var _roomCopy     = {},
-				_processCount = 0,
+			var _processCount = 0,
 				_minCount     = 13,
 				i             = 0;
 
@@ -639,7 +699,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			// else : empty and hide loader
 			if ( $scope.uiTotalCount ) {
 				_processCount = Math.min( $scope.uiTotalCount, _minCount );
-				$timeout(_firstInsert, 100);
+				_firstInsert();
 			} else {
 				$scope.rooms = [];
 				_hideLoader();
@@ -647,14 +707,13 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			function _firstInsert () {
 				for ( i = 0; i < _processCount; i++ ) {
-					_roomCopy = angular.copy( $_roomList.rooms[i] );
-					$scope.rooms.push( _roomCopy );
+					$scope.rooms.push( $_roomList.rooms[i] );
 				};
 
 				// if   : more than '_minCount' results -> load '_processCount' to last
 				// else : hide loader
 				if ( $scope.uiTotalCount > _minCount ) {
-					$timeout(_secondInsert, 100);
+					$timeout(_secondInsert, 50);
 				} else {
 					_hideLoader();
 				};
@@ -662,8 +721,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			function _secondInsert () {
 				for ( i = _processCount; i < $scope.uiTotalCount; i++ ) {
-					_roomCopy = angular.copy( $_roomList.rooms[i] );
-					$scope.rooms.push( _roomCopy );
+					$scope.rooms.push( $_roomList.rooms[i] );
 				};
 
 				_hideLoader();

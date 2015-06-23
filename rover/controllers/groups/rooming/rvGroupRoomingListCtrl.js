@@ -56,6 +56,19 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         };
 
         /**
+         * Function to decide whether to disable room type changing from edit reservation popup
+         * @param {Object} - reservation
+         * @return {Boolean}
+         */
+        $scope.shouldDisableRoomTypeChange = function(reservation) {
+            //as per CICO-17082, we need to show the room type in select box of edit with others
+            //but should be disabled
+            var containNonEditableRoomType = (_.pluck($scope.roomTypesAndData, 'room_type_id')
+                                        .indexOf(parseInt(reservation.room_type_id))) <= -1;
+            return (reservation.reservation_status == "CANCELED" || containNonEditableRoomType);
+        };
+
+        /**
          * Function to decide whether to show a particular occupancy
          * based on the key that we getting from the function we are deciding
          * @return {Boolean}
@@ -195,7 +208,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                     data.availableRoomCount = util.convertToInteger(data.total_rooms) - util.convertToInteger(data.total_pickedup_rooms);
                     return data;
                 });
-
                 //initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
                 $scope.selectedRoomType = $scope.roomTypesAndData.length > 0 ? $scope.roomTypesAndData[0].room_type_id : undefined;
 
@@ -885,7 +897,25 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * Function to edit a reservation from the rooming list
          */
         $scope.showEditReservationPopup = function(reservation) {
-            reservationData = angular.copy(reservation);
+            var reservationData = angular.copy(reservation);
+
+            //as per CICO-17082, we need to show the room type in select box of edit with others
+            //but should be disabled
+            var containNonEditableRoomType = (_.pluck($scope.roomTypesAndData, 'room_type_id')
+                                        .indexOf(parseInt(reservation.room_type_id))) <= -1;
+
+            if (containNonEditableRoomType) {
+                var roomTypesForEditPopup = [{
+                    room_type_id: reservation.room_type_id,
+                    room_type_name: reservation.room_type_name
+                }];
+                reservationData.allowedRoomTypes = _.union (roomTypesForEditPopup, 
+                    util.deepCopy ($scope.roomTypesAndData));
+            }
+            else {
+                 reservationData.allowedRoomTypes = (util.deepCopy ($scope.roomTypesAndData));
+            }
+
             reservationData.reservationStatusFlags = getReservationStatusFlags(reservation);
             reservationData.arrival_date = new tzIndependentDate(reservationData.arrival_date);
             reservationData.departure_date = new tzIndependentDate(reservationData.departure_date);
@@ -1002,8 +1032,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                     $('head').append("<style id='print-orientation'>@page { size: portrait; }</style>");
                 },
                 sucessCallback = function(data) {
-                   
-
                     $scope.$emit('hideLoader');
                     $scope.printRegCardData = data;
                     $scope.errorMessage = "";
@@ -1019,12 +1047,14 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                      *   =====[ READY TO PRINT ]=====
                      */
                     // this will show the popup with full bill
-                    $timeout(function() {
+                    $scope.isPrintRegistrationCard = true;
+                    $rootScope.addNoPrintClass = true;
 
+                    $timeout(function() {
                         /*
                          *   =====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
                          */
-                        $scope.isPrintRegistrationCard = true;
+
                         $window.print();
                         if (sntapp.cordovaLoaded) {
                             cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
@@ -1036,7 +1066,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                      */
                     $timeout(function() {
                         $scope.isPrintRegistrationCard = false;
-
+                        $rootScope.addNoPrintClass = false;
                         // CICO-9569 to solve the hotel logo issue
                         $("header .logo").removeClass('logo-hide');
                         $("header .h2").addClass('text-hide');

@@ -23,7 +23,7 @@ sntRover.factory('RVReportParserFac', [
 
             // otherwise a super parser for reports that can be grouped by
             else if ( !!options['groupedByKey'] ) {
-                return _.isEmpty(apiResponse) ? apiResponse : $_parseDataToSubArrays( reportName, apiResponse, options['groupedByKey'] );
+                return _.isEmpty(apiResponse) ? apiResponse : $_parseDataToSubArrays( reportName, apiResponse, options );
             }
 
             // a common parser that data into meaningful info like - notes, guests, addons, compTAgrp
@@ -71,37 +71,33 @@ sntRover.factory('RVReportParserFac', [
             };
 
             var checkGuest = function(item) {
-                if ( !options['checkGuest'] ) {
-                    return false;
-                };
+                var check = !!options['checkGuest'] && !!item['accompanying_names'] && !!item['accompanying_names'].length;
+                return check;
+            };
 
-                var guests = !!item['accompanying_names'] && !!item['accompanying_names'].length;
-                var compTravelGrp = !!item['company_name'] || !!item['travel_agent_name'] || !!item['group_name'];
-                return guests || compTravelGrp ? true : false;
+            var checkCompTrvlGrp = function(item) {
+                var check = !!item['company_name'] || !!item['travel_agent_name'] || !!item['group_name'];
+                return check;
+            };
+
+            var checkAddOns = function(item) {
+                var check = (!!item['add_ons'] && !!item['add_ons'].length) || !!item['addon_details'];
+                return check;
             };
 
             var checkNote = function(item) {
-                if ( !options['checkNote'] ) {
-                    return false;
-                };
-
-                return !!item['notes'] && !!item['notes'].length;
+                var check = !!options['checkNote'] && !!item['notes'] && !!item['notes'].length;
+                return check;
             };
 
             var checkCancel = function(item) {
-                if ( !options['checkCancel'] ) {
-                    return false;
-                };
-
-                return excludeReports([reportUtils.getName('ARRIVAL'), reportUtils.getName('IN_HOUSE_GUEST')]) ? !!item['cancel_reason'] : false;
+                var check = !!options['checkCancel'] && excludeReports([reportUtils.getName('ARRIVAL'), reportUtils.getName('IN_HOUSE_GUEST')])
+                return check ? !!item['cancel_reason'] : false;
             };
 
             var checkRateAdjust = function(item) {
-                if ( !options['checkRateAdjust'] ) {
-                    return false;
-                };
-
-                return !!item['rate_adjustment_reasons'] && !!item['rate_adjustment_reasons'].length;
+                var check = !!options['checkRateAdjust'] && !!item['rate_adjustment_reasons'] && !!item['rate_adjustment_reasons'].length;
+                return check;
             };
 
             if ( $_isForGenericReports(reportName) ) {
@@ -114,25 +110,34 @@ sntRover.factory('RVReportParserFac', [
                     adjustData = [];
 
                     if ( checkGuest(makeCopy) ) {
-                        guestData = {
+                        angular.extend(guestData, {
                             isGuestData : true,
-                            guestNames  : angular.copy( makeCopy['accompanying_names'] ),
+                            guestNames  : angular.copy( makeCopy['accompanying_names'] )
+                        });
+                    };
 
+                    if ( checkCompTrvlGrp(makeCopy) ) {
+                        angular.extend(guestData, {
+                            isGuestData       : true,
                             company_name      : makeCopy.company_name,
                             travel_agent_name : makeCopy.travel_agent_name,
-                            group_name        : makeCopy.group_name,
+                            group_name        : makeCopy.group_name
+                        });
+                    };
 
+                    if ( checkAddOns(makeCopy) ) {
+                        angular.extend(guestData, {
+                            isGuestData  : true,
                             addOns       : angular.copy( makeCopy['add_ons'] ),
                             addOnDetails : angular.copy( makeCopy['addon_details'] )
-                        };
-                        customData.push( guestData );
-                    } else {
-                        guestData = {
-                            isGuestData : true,
-                            addOnDetails : angular.copy( makeCopy['addon_details'] )
-                        };
+                        });
+                    };
+
+                    if ( _.size(guestData) ) {
                         customData.push( guestData );
                     };
+
+
 
                     if ( checkCancel(makeCopy) ) {
                         cancelData = {
@@ -142,6 +147,7 @@ sntRover.factory('RVReportParserFac', [
                         customData.push( cancelData );
                     };
 
+
                     if ( checkNote(makeCopy) ) {
                         noteData = {
                             isNoteData : true,
@@ -149,6 +155,7 @@ sntRover.factory('RVReportParserFac', [
                         };
                         customData.push( noteData );
                     };
+
 
                     if ( checkRateAdjust(makeCopy) ) {
                         adjustData = {
@@ -213,7 +220,7 @@ sntRover.factory('RVReportParserFac', [
 
 
 
-        function $_parseDataToSubArrays ( reportName, apiResponse, groupedByKey ) {
+        function $_parseDataToSubArrays ( reportName, apiResponse, options ) {
             /****
             * OUR AIM: is to transform the api response to this format
             * [
@@ -228,7 +235,7 @@ sntRover.factory('RVReportParserFac', [
 
             var returnObj         = {};
             var interMedArray     = [];
-            var groupByKey        = groupedByKey;
+            var groupByKey        = options['groupedByKey'];
             var currentGroupByVal = '';
             var makeCopy          = {};
 
@@ -242,7 +249,7 @@ sntRover.factory('RVReportParserFac', [
 
                 // catching cases where the value is "" due to old data
                 if ( makeCopy[groupByKey] == '' ) {
-                    makeCopy[groupByKey] = 'NA';
+                    makeCopy[groupByKey] = 'UNDEFINED';
                 };
 
                 // if the group by key value has changed
@@ -277,7 +284,7 @@ sntRover.factory('RVReportParserFac', [
 
 
             _.each(returnObj, function (value, key, list) {
-                returnObj[key] = angular.copy( $_parseDataToInfo(reportName, value) );
+                returnObj[key] = angular.copy( $_parseDataToInfo(reportName, value, options) );
             });
 
 
@@ -296,9 +303,6 @@ sntRover.factory('RVReportParserFac', [
                 itemCopy = {};
 
             var i, j, key, k, l;
-
-            // console.log( apiResponse );
-            // return;
 
             for (i = 0, j = apiResponse.length; i < j; i++) {
 

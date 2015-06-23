@@ -21,6 +21,9 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','$rootScope','RVGue
 		var data = {'userID':$scope.$parent.guestCardData.userId};
 		$scope.invokeApi(RVGuestCardLoyaltySrv.fetchLoyalties,data , loyaltyFetchsuccessCallback, loyaltyFetchErrorCallback, 'NONE');
 	};
+        $rootScope.$on('reload-loyalty-section-data',function(){
+            $scope.init();//reload loyalty when switching through staycards
+        });
         
 	$scope.$watch(
 		function() { return ($scope.$parent.$parent.guestCardData.userId != '')?true:false; },

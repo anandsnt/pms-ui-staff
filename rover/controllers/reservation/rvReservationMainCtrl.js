@@ -1,5 +1,6 @@
 sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData', 'RVReservationSummarySrv', 'RVReservationCardSrv', 'RVPaymentSrv', '$timeout', '$stateParams', 'RVReservationGuestSrv',
-    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv) {
+	'RVReservationStateService',
+    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService) {
 
         BaseCtrl.call(this, $scope);
 
@@ -1182,20 +1183,59 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.checkOccupancyLimit();
         };
 
+        var openRateAdjustmentPopup = function(room, index, lastReason) {
+            var popUpData = JSON.stringify({
+                    room        : room,
+                    index       : index,
+                    lastReason  : lastReason
+            });
+
+            ngDialog.open({
+                template        : '/assets/partials/reservation/rvEditRates.html',
+                className       : 'ngdialog-theme-default',
+                scope           : $scope,
+                closeByDocument : false,
+                controller      : 'RVEditRatesCtrl',
+                closeByEscape   : false,
+                data            : popUpData
+            });
+        };
+
+        /**
+         * success callback of fetch last rate adjustment reason
+         * @return undefined
+         */
+        var successCallBackOffetchLastRateAdjustReason = function(data, successcallbackParams) {
+            var room    = successcallbackParams.room,
+                index   = successcallbackParams.index,
+                reason  = data.reason;        
+            openRateAdjustmentPopup (room, index, reason);
+        };
+
+        /**
+         * we need to show last rate adjustment reason in the popup of rate adjustment
+         * @return undefined
+         */
+        var fetchLastRateAdjustReason = function(room, index) {
+            var params = {
+                reservation_id: $scope.reservationData.reservationId
+            };
+
+            var options = {
+                params                  : params,
+                successCallBack         : successCallBackOffetchLastRateAdjustReason,
+                successCallBackParameters: {
+                    room    : room,
+                    index   : index
+                }
+            };
+            $scope.callAPI(RVReservationCardSrv.getLastRateAdjustmentReason, options);          
+        };
 
         $scope.editReservationRates = function(room, index) {
-            ngDialog.open({
-                template: '/assets/partials/reservation/rvEditRates.html',
-                className: 'ngdialog-theme-default',
-                scope: $scope,
-                closeByDocument: false,
-                controller: 'RVEditRatesCtrl',
-                closeByEscape: false,
-                data: JSON.stringify({
-                    room: room,
-                    index: index
-                })
-            });
+            //as per CICO-14354, we need to show the last rate adjustment in comment textbox,
+            //so fetching that, we will show the popup in successcallback
+            fetchLastRateAdjustReason (room, index)
         };
 
         $scope.computeReservationDataforUpdate = function(skipPaymentData, skipConfirmationEmails, roomIndex) {
@@ -1372,6 +1412,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     data.room_id.push(room.room_id);
                 }
             });
+
+            data.outside_group_stay_dates = RVReservationStateService.getReservationFlag('outsideStaydatesForGroup');
+
             //to delete ends here
             return data;
         };
@@ -1685,6 +1728,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 var postData = $scope.computeReservationDataforUpdate(true, true);
 
                 var saveSuccess = function(data) {
+
                     var totalDeposit = 0;
                     //calculate sum of each reservation deposits
                     $scope.reservationsListArray = data;
@@ -1785,9 +1829,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 };
 
                 var updateSuccess = function(data) {
-
                     var totalDepositOnRateUpdate = 0;
-
                     /**
                      * CICO-10195 : While extending a hourly reservation from
                      * diary the reservationListArray would be undefined
@@ -1862,6 +1904,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 } else {
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
                 }
+				//CICO-16959 We use a flag to indicate if the reservation is extended outside staydate range for the group, if it is a group reservation. Resetting this flag after passing the flag to the API.
+				RVReservationStateService.setReservationFlag('outsideStaydatesForGroup', false);
 
             }
         };

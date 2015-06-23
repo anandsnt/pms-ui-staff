@@ -1,0 +1,170 @@
+<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog">
+    <form method="post" action="" id="staycard-actions" class="modal-content form staycard-actions">
+    <button id="modal-close" type="button" class="dark-title modal-close" ng-click="closeDialog()"><span class="icons icon-close"></button>
+
+    <div class="modal-header">
+        <h1>Actions</h1>
+        <strong>Room {{$parent.reservationData.reservation_card.room_number}}</strong>
+
+        <div class="dates">
+            <div class="date">
+                <span class="guest-status small-icon check-in">check-in</span>
+                {{actions.arrivalDateString}}
+            </div>
+            <div class="date">
+                <span class="guest-status small-icon check-out">check-out</span>
+                {{actions.departureDateString}}
+            </div>
+        </div>
+
+        <button type="button" class="button green">New Action</button>
+    </div>
+
+    <section class="actions-content" role="main" ng-if='actions.totalCount > 0'> <!-- Add class "no-content" if no actions for room -->
+
+        <!-- Actions list -->
+        <div class="content-left">
+            <div class="scrollable"> <!-- Attach iScroll here -->
+                <ul class="wrapper">
+                    <li ng-repeat="action in actions" ng-click="selectAction(action)" ng-class="{'active': action.id == selectedAction.id}"> <!-- Add class "overdue" when past due date. Add class "active" when selected, first one should be active by default when screen is loaded -->
+                        <span class="icons icon-action icon-{{action.action_status}}" ng-class="{'active': action.id == selectedAction.id}" > <!-- makes each icon a white version for visibility when section is 'active'-->
+                            <!-- If overdue, output "Overdue " -->
+                            <!--{Alert|Trace|Request} -->
+                            <span ng-if="action.over_due" class="actions-overdue-font" ng-class="{'active': action.id == selectedAction.id}" translate>OVERDUE</span><br />
+                            <span class="actions-overdue-font" ng-class="{'active': action.id == selectedAction.id}">{{action.action_task_type}}</span>
+                            
+                        </span>
+                        <div class="data">
+                            <h3>{{action.description}}</h3>
+                            <em>{{action.due_at_date}} &#8226; {{action.due_at_time}}</em>
+                        </div>
+                        <span class="department">{{action.assigned_to.name}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Action summary -->
+        <div class="content-right" ng-show="actionSelected === true"> 
+            <div class="summary">
+                <div id="action-summary">
+                    <h3>{{selectedAction.description}}</h3>
+                    <div class="info assigned">
+                        <span class="label">Assigned To</span>
+                        {{selectedAction.assigned_to.name}}
+                    </div>
+                    <div class="info created">
+                        <span class="label" ng-if="!selectedAction.created_by_null">Created By</span>
+                        <span class="label" ng-if="selectedAction.created_by_null">Created </span>
+                        {{selectedAction.created_by.name}} {{selectedAction.created_at_date}} &#8226; {{selectedAction.created_at_time}} 
+                    </div>
+                    <div class="entry action-info date">
+                        <label for="due-date">Date Due</label>
+                        <button class="clear-query"> <!-- Add class "visible" to show (when date is not blank) -->
+                            <span class="icons icon-clear-search">Clear query</span>
+                        </button>
+                        <input id="due-date" type="text" class="datepicker" value="{{selectedAction.due_at_date}}" readonly />
+                    </div>
+                    <div class="entry action-info time">
+                        <label for="due-time">Time Due</label>
+                        <div class="select">
+                            <select id="due-time">
+                                <option value="00:00">00:00</option>
+                                <option value="{{selectedAction.due_at_time}}" selected>{{selectedAction.due_at_time}}</option>
+                                
+                            </select>
+                        </div>
+                    </div>
+                    <!-- If action completed, show this as well:
+                    <div class="notice">
+                        <span>Completed By</span>
+                        {Department} {Date Completed} &#8226; {Time Completed}
+                    </div> -->
+                </div>
+
+                <div class="detail-actions col-2">
+                    <button type="button" class="button white brand-text">Assign</button> <!-- Change text to "Reassign" for assigned action -->
+                    <button type="button" class="button white green-text">Complete</button>
+                </div>
+
+                <!-- NEW ACTION
+                When "New action" is pressed, replace L37-L70 with L74-L108:
+                    <span class="h2 message">New Action</span>
+                    <div class="entry full-width">
+                        <label for="department">Assign to Department</label>
+                        <div class="select">
+                            <select id="department" class="placeholder"> // Remove class "placeholder" when Department is selected
+                                <option value="" selected>Select department</option>
+                                <option value="{Department}">{Department}</option>
+                                ... repeat for all
+                            </select>
+                        </div>
+                    </div>
+                    <div class="entry date margin">
+                        <label for="due-date">Date Due</label>
+                        <button class="clear-query"> // Add class "visible" to show (when date is not blank)
+                            <span class="icons icon-clear-search">Clear query</span>
+                        </button>
+                        <input id="due-date" type="text" class="datepicker" value="{Due Date}" readonly />
+                    </div>
+                    <div class="entry">
+                        <label for="due-time">Time Due</label>
+                        <div class="select">
+                            <select id="due-time">
+                                <option value="00:00">00:00</option>
+                                ...
+                            </select>
+                        </div>
+                    </div>
+                    <div class="entry full-width">
+                        <label for="notes">Notes</label>
+                        <textarea id="notes" name="notes" placeholder="Enter message..."rows="4"></textarea>
+                    </div> 
+                    <div class="actions">
+                        <button type="button" class="button green">Post Action</button> 
+                        <button type="button" class="button blank">Cancel</button> 
+                    </div> 
+                -->
+
+                <!-- ASSIGN 
+                When "Assign" or "Reassign" is pressed, replace L37-L70 with L113-L127:
+                    <span class="h2 message">Assign</span>
+                    <div class="entry full-width">
+                        <label for="department">Assign to Department</label>
+                        <div class="select">
+                            <select id="department" class="placeholder"> // Remove class "placeholder" when Department is selected
+                                <option value="" selected>Select department</option>
+                                <option value="{Department}">{Department}</option>
+                                ... repeat for all
+                            </select>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button type="button" class="button brand-colors">Assign</button> 
+                        <button type="button" class="button blank">Cancel</button> 
+                    </div> 
+                -->
+            </div>
+        </div>
+  
+        <!-- If no content, output this instead of left/right side:
+        <div class="info">
+            <span class="icon-no-content icon-actions"></span>
+            <strong class="h1">No Actions</strong>
+            <span class="h2">All is good in Room {Room No.}</span> // Verify correct copy for this line, I made it up
+        </div>-->
+    </section>
+    
+    <section class="actions-content no-content" role="main" ng-if='actions.length === 0' >
+        <!-- if no actions for room -->
+         <div class="info">
+            <span class="icon-no-content icon-actions"></span>
+            <strong class="h1">No Actions</strong>
+            <span class="h2">All is good in Room {{$parent.reservationData.reservation_card.room_number}}</span> 
+        </div>
+    </section>
+
+</form>
+    
+    
+</div>

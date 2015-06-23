@@ -402,14 +402,10 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		    	$scope.cc_auth_amount = data.cc_auth_amount;
 		    }
 		};
+	
+		// Handle confirmUpdates process with Autherization..
+		var performCCAuthAndconfirmUpdatesProcess = function(postParams){
 
-		$scope.confirmUpdates = function() {
-			var postParams = {
-				'room_selected': $scope.roomSelected,
-				'arrival_date': getDateString($scope.checkinDateInCalender),
-				'dep_date': getDateString($scope.checkoutDateInCalender),
-				'reservation_id': $scope.stayDetails.calendarDetails.reservation_id
-			};
 			// CICO-7306 authorization for CC.
 			if($scope.requireAuthorization && $scope.isStandAlone){
 				// Start authorization process...
@@ -431,6 +427,64 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				postParams.authorize_credit_card = false;
 				$scope.invokeApi(RVChangeStayDatesSrv.confirmUpdates, postParams, that.successCallbackConfirmUpdates, that.failureCallbackConfirmUpdates);
 			}
+		};
+
+		var setFlagForPreAuthPopup = function(){
+			// CICO-17266 Setting up flags for showing messages ..
+		    $scope.message_incoming_from_room = false;
+		    $scope.message_out_going_to_room = false;
+		    $scope.message_out_going_to_comp_tra = false;
+
+		    if($scope.availabilityDetails.routing_info.incoming_from_room){
+		    	$scope.message_incoming_from_room = true;
+		    }
+		    else if($scope.availabilityDetails.routing_info.out_going_to_room){
+		    	$scope.message_out_going_to_room = true;
+		    }
+		    else if($scope.availabilityDetails.routing_info.out_going_to_comp_tra){
+		    	$scope.message_out_going_to_comp_tra = true;
+		    }
+		};
+
+		// CICO-17266 Considering Billing info details before Auth..
+		var showPreAuthPopupWithBillingInfo = function(data){
+
+	 		$scope.clickedFullAuth = function(){
+	 			// @params : data , isCheckinWithoutAuth: false
+				performCCAuthAndconfirmUpdatesProcess(data);
+				ngDialog.close();
+		    };
+
+		    $scope.clickedManualAuth = function(){
+		    	// As of now , Manual auth is performed at stay card..
+				// Proceeding change stay dates without authorization..
+				// @params : data , isCheckinWithoutAuth :true
+				$scope.requireAuthorization = false;
+				performCCAuthAndconfirmUpdatesProcess(data);
+				ngDialog.close();
+		    };
+
+		    setFlagForPreAuthPopup();
+		    
+		    // CICO-17266 Considering Billing info details before Auth..
+		    ngDialog.open({
+				template: '/assets/partials/bill/ccAuthAndBillingInfoConfirm.html',
+				className: '',
+				closeByDocument: false,
+				scope: $scope
+			});
+		};
+
+		$scope.confirmUpdates = function() {
+			var postParams = {
+				'room_selected': $scope.roomSelected,
+				'arrival_date': getDateString($scope.checkinDateInCalender),
+				'dep_date': getDateString($scope.checkoutDateInCalender),
+				'reservation_id': $scope.stayDetails.calendarDetails.reservation_id
+			};
+
+			// CICO-17266 PMS: Rover - CC Auth should consider Billing Information.
+			showPreAuthPopupWithBillingInfo(postParams);
 		};
 		/*
 		 this function is used to check the whether the movement of dates is valid accoriding to our reqmt.

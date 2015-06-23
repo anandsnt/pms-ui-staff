@@ -41,10 +41,17 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
 
 	$scope.getFFPS = function(){
             if ($scope.$parent.reservationData){
-                if ($scope.$parent.reservationData.use_ffp){
-                    $scope.loyaltyPrograms = [{name:"Frequent Flyer Program", code:"FFP"},{name:"Hotel Loyalty Program", code:"HLP"}];
-                } else {
+                
+            var use_ffp = $scope.$parent.reservationData.use_ffp,
+                    use_hlp = $scope.$parent.reservationData.use_hlp;
+                if (use_ffp === true && use_hlp === false) {
+                    $scope.loyaltyPrograms = [{name:"Frequent Flyer Program", code:"FFP"}];
+                } else if (use_ffp === false && use_hlp === true){
                     $scope.loyaltyPrograms = [{name:"Hotel Loyalty Program", code:"HLP"}];
+                } else if (use_ffp === true && use_hlp === true){    
+                    $scope.loyaltyPrograms = [{name:"Frequent Flyer Program", code:"FFP"},{name:"Hotel Loyalty Program", code:"HLP"}];
+                } else if (use_ffp === false && use_hlp === false){
+                    $scope.loyaltyPrograms = [];
                 }
             }
 		
@@ -97,43 +104,63 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
 			$scope.availableHLPS.push(loyaltyType);
 		}
 	};
+        
 	$scope.getLoyaltyTypes = function(){
-            if ($scope.$parent.reservationData.use_ffp){
-		if($scope.selectedLoyaltyProgram == $scope.loyaltyPrograms[1].code){
-			return $scope.availableHLPS;
-		}else{
+            if ($scope.selectedLoyaltyProgram){
+             if ($scope.selectedLoyaltyProgram === 'HLP'){
+                    return $scope.availableHLPS;
+                } else if ($scope.selectedLoyaltyProgram === 'FFP'){
 			return $scope.availableFFPS;
-		}
-            } else {
-                if($scope.selectedLoyaltyProgram == $scope.loyaltyPrograms[0].code){
-			return $scope.availableHLPS;
-		}
+                } else {
+                    return [];
+                }
             }
+            
 	};
+        
 	$scope.getLoyaltyLevels = function(){
-            if ($scope.$parent.reservationData.use_ffp){
-		if($scope.selectedLoyaltyProgram == $scope.loyaltyPrograms[1].code){
-			return $scope.getLoyaltyLevelsfromCode(false);
-		}else{
-			return $scope.getLoyaltyLevelsfromCode(true);
-		} 
-            } else {
-                if($scope.selectedLoyaltyProgram == $scope.loyaltyPrograms[0].code){
-			return $scope.getLoyaltyLevelsfromCode(false);
-		}
+            if ($scope.$parent.reservationData){
+                
+            var use_ffp = $scope.$parent.reservationData.use_ffp,
+                    use_hlp = $scope.$parent.reservationData.use_hlp;
+                if (use_ffp === true && use_hlp === false) {
+                    if($scope.selectedLoyaltyProgram === $scope.loyaltyPrograms[0].code){
+			return $scope.getLoyaltyLevelsfromCode();
+                    }
+                } else if (use_ffp === false && use_hlp === true){
+                    if($scope.selectedLoyaltyProgram === $scope.loyaltyPrograms[0].code){
+			return $scope.getLoyaltyLevelsfromCode();
+                    }
+                } else if (use_ffp === true && use_hlp === true){    
+                    if($scope.selectedLoyaltyProgram === $scope.loyaltyPrograms[1].code){
+			return $scope.getLoyaltyLevelsfromCode();
+                    }else{
+                        return $scope.getLoyaltyLevelsfromCode();
+                    } 
+                } else if (use_ffp === false && use_hlp === false){
+                    $scope.loyaltyPrograms = [];
+                }
             }
+            
 	};
-	$scope.getLoyaltyLevelsfromCode = function(isFFP){
-		var loyaltytypes = isFFP?$scope.availableFFPS:$scope.availableHLPS;
-		var levels = [];
+        
+	$scope.getLoyaltyLevelsfromCode = function(){
+            var loyaltytypes, levels = [];
+            if ($scope.selectedLoyaltyProgram){
+                if ($scope.selectedLoyaltyProgram === 'HLP'){
+                    loyaltytypes = $scope.availableHLPS;
+                } else if ($scope.selectedLoyaltyProgram === 'FFP'){
+                    loyaltytypes = $scope.availableFFPS;
+                }
 		for(var i=0; i < loyaltytypes.length; i++){
 			if($scope.selectedLoyaltyType == loyaltytypes[i].code){
 				levels = loyaltytypes[i].levels;
 				break;
 			}				 
 		}
-		return levels;
-	};
+            };
+            return levels;
+        };
 
 	$scope.validate = function(){
 		

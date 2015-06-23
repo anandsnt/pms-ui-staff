@@ -1,5 +1,5 @@
-admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate',
-	function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate) {
+admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate','$timeout',
+	function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate,$timeout) {
 
 		console.log(ADAppSrv);
 
@@ -181,6 +181,9 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					submenu: [{
 						title: "MENU_JOURNAL",
 						action: "staff#/staff/financials/journal/0"
+					}, {
+						title: "MENU_CC_TRANSACTIONS",
+						action: "staff#/staff/financials/ccTransactions/0"
 					}, {
 						title: "MENU_ACCOUNTING",
 						action: ""
@@ -578,7 +581,15 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			    }
 
 		  	};
-	}
 
 
-]);
+	  	$rootScope.$on('ngDialog.opened', function(e, $dialog) {
+	        LastngDialogId = $dialog.attr('id');
+	        //to add stjepan's popup showing animation 
+	        $rootScope.modalOpened = false; 
+	        $timeout(function() { 
+	            $rootScope.modalOpened = true; 
+	        }, 300); 
+	    });
+
+}]);

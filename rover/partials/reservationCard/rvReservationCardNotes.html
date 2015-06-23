@@ -1,15 +1,14 @@
 <div class="block-wrapper">
-    <div class="block-item item-actions">
+    <div class="block-item item-actions" ng-controller="rvReservationCardActionsController">
         <h3 class="block-title">Actions</h3>
-        <button type="button" class="staycard-button next-view open-modal">
-            <!-- ng-class="TODO: icon-{'no-actions' or 'actions'}" -->
-            <!-- {{TODO: Bind lenght of actions here}} -->
-            0
+        <button type="button" class="staycard-button next-view" ng-click="openActionsPopup();">
+            <!-- ng-class="TODO: icon-{'no-actions' or 'actions' or 'new-actions'}" -->
+            {{actions.totalCount}}
         </button>
     </div>
     <div class="block-item item-notes">
         <h3 class="block-title">Notes</h3>
-        <button type="button" class="staycard-button next-view open-modal" 
+        <button type="button" class="staycard-button next-view" 
             ng-class="{'icon-notes': !!reservationData.reservation_card.notes.reservation_notes.length, 'icon-no-notes': !reservationData.reservation_card.notes.reservation_notes.length}" 
             ng-click="openNotesPopup();">
             {{reservationData.reservation_card.notes.reservation_notes.length}}
