@@ -63,7 +63,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             //as per CICO-17082, we need to show the room type in select box of edit with others
             //but should be disabled
             var containNonEditableRoomType = (_.pluck($scope.roomTypesAndData, 'room_type_id')
-                                        .indexOf(parseInt(reservation.room_type_id))) <= -1;
+                .indexOf(parseInt(reservation.room_type_id))) <= -1;
             return (reservation.reservation_status == "CANCELED" || containNonEditableRoomType);
         };
 
@@ -146,36 +146,36 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          */
         $scope.getReservationClass = function(reservationStatus) {
             var class_ = '';
-            switch(reservationStatus.toUpperCase()){
+            switch (reservationStatus.toUpperCase()) {
                 case "RESERVED":
                     class_ = 'arrival'
                     break;
 
                 case "CHECKING_IN":
                     class_ = 'check-in'
-                    break; 
+                    break;
 
                 case "CHECKEDIN":
                     class_ = 'inhouse'
-                    break;  
+                    break;
 
                 case "CHECKING_OUT":
                     class_ = 'check-out'
-                    break;  
+                    break;
 
                 case "CHECKEDOUT":
                     class_ = 'departed'
-                    break; 
+                    break;
 
                 case "CANCELED":
                     class_ = 'cancel'
-                    break; 
+                    break;
 
-                case "NOSHOW": 
+                case "NOSHOW":
                 case "NOSHOW_CURRENT":
                     class_ = 'no-show'
-                    break; 
-                
+                    break;
+
                 default:
                     class_ = '';
                     break;
@@ -928,18 +928,17 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             //as per CICO-17082, we need to show the room type in select box of edit with others
             //but should be disabled
             var containNonEditableRoomType = (_.pluck($scope.roomTypesAndData, 'room_type_id')
-                                        .indexOf(parseInt(reservation.room_type_id))) <= -1;
+                .indexOf(parseInt(reservation.room_type_id))) <= -1;
 
             if (containNonEditableRoomType) {
                 var roomTypesForEditPopup = [{
                     room_type_id: reservation.room_type_id,
                     room_type_name: reservation.room_type_name
                 }];
-                reservationData.allowedRoomTypes = _.union (roomTypesForEditPopup, 
-                    util.deepCopy ($scope.roomTypesAndData));
-            }
-            else {
-                 reservationData.allowedRoomTypes = (util.deepCopy ($scope.roomTypesAndData));
+                reservationData.allowedRoomTypes = _.union(roomTypesForEditPopup,
+                    util.deepCopy($scope.roomTypesAndData));
+            } else {
+                reservationData.allowedRoomTypes = (util.deepCopy($scope.roomTypesAndData));
             }
 
             reservationData.reservationStatusFlags = getReservationStatusFlags(reservation);
@@ -1047,18 +1046,18 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                     });
                 }, 150)
             }
-        }  
+        }
 
         /**
-        * event triggered by ngrepeatend directive
-        * mainly used to referesh scroller/printing
-        */
-        $scope.$on('NG_REPEAT_COMPLETED_RENDERING', function(event){            
-            $timeout(function(){
+         * event triggered by ngrepeatend directive
+         * mainly used to referesh scroller/printing
+         */
+        $scope.$on('NG_REPEAT_COMPLETED_RENDERING', function(event) {
+            $timeout(function() {
                 if ($scope.print_type == 'rooming_list') {
-                    printRoomingList ();
+                    printRoomingList();
                 }
-            }, 500);          
+            }, 500);
         });
 
         /**
@@ -1066,10 +1065,10 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * this method requires '$scope.resevationsBeforePrint', so please check where all it is assigning
          * @return undefined
          */
-        var printRoomingList = function(){
+        var printRoomingList = function() {
             //changing the orientation to landscape
             addPrintOrientation();
-            
+
             //as part of https://stayntouch.atlassian.net/browse/CICO-14384?focusedCommentId=48871&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-48871
             //We dont know the icon background-image loaded or not. We need to start print preview
             //only when it is loaded, this is wrong practice (accessing DOM elements from controller), but there is no option
@@ -1078,11 +1077,11 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 src = bg.replace(/(^url\()|(\)$|[\"\'])/g, ''),
                 $img = $('<img>').attr('src', src).on('load', function() {
                     //unbinding the events & removing the elements inorder to prevent memory leaks
-                    $(this).off ('load');
+                    $(this).off('load');
                     $(this).remove();
 
                     //yes we have everything we wanted
-                    window.print ();
+                    window.print();
 
                     //if we are in the app
                     $timeout(function() {
@@ -1104,15 +1103,15 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                         $scope.resevationsBeforePrint = [];
                     }, 1200);
                 });
-           
+
         }
-        
+
         /**
          * add the print orientation before printing
          * @return - None
          */
         var addPrintOrientation = function() {
-            $( 'body' ).append( "<style id='print-orientation'>@page { size: landscape; }</style>" );
+            $('body').append("<style id='print-orientation'>@page { size: landscape; }</style>");
         };
 
         /**
@@ -1120,7 +1119,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return - None
          */
         var removePrintOrientation = function() {
-            $( '#print-orientation' ).remove();
+            $('#print-orientation').remove();
         };
 
         /**
@@ -1130,16 +1129,16 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         var successCallBackOfFetchAllReservationsForPrint = function(data) {
             //if you are looking for where the HELL this list is printing
             //look for "NG_REPEAT_COMPLETED_RENDERING", thanks!!
-            $scope.resevationsBeforePrint  = util.deepCopy($scope.reservations);
-            $scope.reservations         = data.results;
-            $scope.print_type           = 'rooming_list';          
+            $scope.resevationsBeforePrint = util.deepCopy($scope.reservations);
+            $scope.reservations = data.results;
+            $scope.print_type = 'rooming_list';
         }
 
         /**
          * Function to fetch Rooming list for print.
          * @return - None
          */
-        $scope.fetchReservationsForPrintingRoomingList = function() {        
+        $scope.fetchReservationsForPrintingRoomingList = function() {
             var params = {
                 group_id: $scope.groupConfigData.summary.group_id,
                 per_page: 1000
@@ -1154,42 +1153,42 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * Function to pop up for mail Rooming list.
          * @return - None
          */
-         $scope.sendRoomingList = function(){           
-            if ($scope.groupConfigData && $scope.groupConfigData.summary && !!$scope.groupConfigData.summary.contact_email) {
-                $scope.sendEmail($scope.groupConfigData.summary.contact_email);
-            } else {            
-            ngDialog.open({
-                    template: '/assets/partials/groups/rooming/rvRoomingListEmailPrompt.html',
-                    className: '',
-                    scope: $scope,
-                    closeByDocument: false,
-                    closeByEscape: false                    
-                });
+        $scope.sendRoomingList = function() {
+                if ($scope.groupConfigData && $scope.groupConfigData.summary && !!$scope.groupConfigData.summary.contact_email) {
+                    $scope.sendEmail($scope.groupConfigData.summary.contact_email);
+                } else {
+                    ngDialog.open({
+                        template: '/assets/partials/groups/rooming/rvRoomingListEmailPrompt.html',
+                        className: '',
+                        scope: $scope,
+                        closeByDocument: false,
+                        closeByEscape: false
+                    });
+                }
             }
-        }
-        /**
-         * Function to send e-mail of Rooming list.API call goes here.
-         * @return - None
-         */
-        $scope.sendEmail = function(mailTo){
-            var mailSent = function(data) {                    
+            /**
+             * Function to send e-mail of Rooming list.API call goes here.
+             * @return - None
+             */
+        $scope.sendEmail = function(mailTo) {
+            var mailSent = function(data) {
                     $scope.closeDialog();
                 },
                 mailFailed = function(errorMessage) {
                     $scope.errorMessage = errorMessage;
                     $scope.closeDialog();
                 }
-            var params = {                
-                "to_address": mailTo,                
+            var params = {
+                "to_address": mailTo,
                 "group_id": $scope.groupConfigData.summary.group_id
-            }         
+            }
             $scope.callAPI(rvGroupRoomingListSrv.emailInvoice, {
                 successCallBack: mailSent,
                 failureCallBack: mailFailed,
                 params: params
             });
         }
-         
+
         $scope.printRegistrationCards = function() {
             // add the print orientation after printing
             var removePrintOrientation = function() {
