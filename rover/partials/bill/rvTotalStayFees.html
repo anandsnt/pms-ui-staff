@@ -139,10 +139,10 @@
 			<tr class="active edit">
 				<td colspan="3" class="total-label">
 					<!-- Show email and print buttons -->
-					<button type="button" ng-click="clickedEmail()" class="button with-icon only-icon blue" ng-show="isStandAlone">
+					<button type="button" ng-click="clickedEmail()" class="button with-icon only-icon blue inline" ng-show="isStandAlone">
 						 <span class="icons icon-email"></span> 
 					</button>
-					<button type="button" ng-click="clickedPrint()" class="button with-icon only-icon blue" ng-show="isStandAlone"> 
+					<button type="button" ng-click="clickedPrint()" class="button with-icon only-icon blue inline" ng-show="isStandAlone"> 
 						<span class="icons icon-print"></span> 
 					</button> 
 					<span translate>STAY_FEES_AS_OF</span>
@@ -167,7 +167,6 @@
                     <span class="icons icon-move"></span> 
                     Move selected
               		</button>
-
 				</td>
 			</tr>
 			<!-- Show balance -->
@@ -189,7 +188,8 @@
 				</td>
 				<td>
 					<button type="button" class="button with-icon only-icon green" ng-click='showAdvancedBillDialog()' ng-show="showPayButton"> 
-						    <span class="icons icon-wallet"></span> {{ 'PAY' | translate }}</span>  
+						<span class="icons icon-wallet"></span>
+						{{ 'PAY' | translate }}
 					</button>
 				</td>
 				<td></td>
