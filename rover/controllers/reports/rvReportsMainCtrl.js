@@ -829,7 +829,6 @@ sntRover.controller('RVReportsMainCtrl', [
 				$scope.resultsTotalRow = response.results_total_row || 0;
 				$scope.summaryCounts   = response.summary_counts || [];
 				$scope.reportGroupedBy = response.group_by || '';
-				$scope.revenueByChargeGroup = response.revenue_by_charge_group || {};
 
 				// track the total count
 				$scope.totalCount = response.total_count || 0;
