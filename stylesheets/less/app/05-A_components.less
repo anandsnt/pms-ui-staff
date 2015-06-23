@@ -1557,7 +1557,27 @@
                         }
 
                         &.guest {
+                            .calc-width(100, 260);
+
                             h2 { line-height: 45px; }
+                        }
+                    }
+
+                    .reservation {
+                        padding-top: 10px;
+                        width: 120px;
+                        .pull-left;
+
+                        .guest-status { 
+                            .square(30px); 
+                            .pull-right;
+                        }
+
+                        .date {
+                            margin-right: 10px;
+                            line-height: 30px;
+                            width: 80px;
+                            .pull-left;
                         }
                     }
 
