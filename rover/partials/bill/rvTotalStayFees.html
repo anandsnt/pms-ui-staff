@@ -163,7 +163,7 @@
 					</button>
 				</td>
 				<td>
-					<button type="button" class="button with-icon only-icon brand-colors open-modal" ng-if="hasMoveToOtherBillPermission()" ng-click="moveChargesClicked()">
+					<button type="button" class="button with-icon only-icon brand-colors open-modal" ng-show="isAllChargeCodesSelected() || isAnyOneChargeCodeIsExcluded()" ng-click="moveChargesClicked()">
                     <span class="icons icon-move"></span> 
                     Move selected
               		</button>
