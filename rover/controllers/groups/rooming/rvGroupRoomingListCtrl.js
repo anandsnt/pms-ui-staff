@@ -1278,7 +1278,9 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             initialisePagination();
 
             //calling initially required APIs
-            //callInitialAPIs();
+            // CICO-17898 The initial APIs need to be called in the scenario while we come back to the Rooming List Tab from the stay card
+            if ("rover.reservation.staycard.reservationcard.reservationdetails" === $rootScope.getPrevStateName())
+                callInitialAPIs();
         }();
     }
 ]);
