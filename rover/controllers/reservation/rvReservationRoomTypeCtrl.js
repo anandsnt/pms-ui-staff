@@ -755,13 +755,21 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 								if (typeof today[rateId].restrictions == 'undefined') {
 									today[rateId].restrictions = [];
 								}
-								if (new tzIndependentDate(key) - new tzIndependentDate($scope.reservationData.departureDate) == 0) {
-									validRate = false;
-									today[rateId].restrictions.push({
-										key: 'CLOSED_DEPARTURE',
-										value: 'CLOSED FOR DEPARTURE'
-									});
-								}
+								_.each(today[rateId].rateBreakUp.restrictions, function(restriction) {
+									switch ($scope.restrictionsMapping[restriction.restriction_type_id]) {
+										case 'CLOSED_DEPARTURE': // 3 CLOSED_DEPARTURE
+											if (new tzIndependentDate(key) - new tzIndependentDate($scope.reservationData.departureDate) == 0) {
+												validRate = false;
+												today[rateId].restrictions.push({
+													key: 'CLOSED_DEPARTURE',
+													value: 'CLOSED FOR DEPARTURE'
+												});
+											}
+											break;
+									}
+								});
+
+
 							} else if (!$scope.stateCheck.stayDatesMode || $scope.stateCheck.stayDatesMode && key == $scope.stateCheck.dateModeActiveDate) {
 								var currDate = key;
 								//Step 1 : Check if the rates are configured for all the days of stay
