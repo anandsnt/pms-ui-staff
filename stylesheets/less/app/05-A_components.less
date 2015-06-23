@@ -5182,7 +5182,11 @@
                             td { 
                                 vertical-align: middle; 
 
-                                .button { .square(40px); }
+                                .button { 
+                                    .square(40px); 
+
+                                    &:not(.inline) { .show; }
+                                }
                             }
                         }
                     }
