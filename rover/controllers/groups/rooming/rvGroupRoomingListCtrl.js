@@ -1070,28 +1070,40 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             //changing the orientation to landscape
             addPrintOrientation();
             
-            //yes we are printing
-            window.print ();
+            //as part of https://stayntouch.atlassian.net/browse/CICO-14384?focusedCommentId=48871&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-48871
+            //We dont know the icon background-image loaded or not. We need to start print preview
+            //only when it is loaded, this is wrong practice (accessing DOM elements from controller), but there is no option
+            var $container = $('#print-orientation'),
+                bg = $container.css('background-image'),
+                src = bg.replace(/(^url\()|(\)$|[\"\'])/g, ''),
+                $img = $('<img>').attr('src', src).on('load', function() {
+                    //unbinding the events & removing the elements inorder to prevent memory leaks
+                    $(this).off ('load');
+                    $(this).remove();
 
-            //if we are in the app
-            $timeout(function() {
-                if (sntapp.cordovaLoaded) {
-                    cordova.exec(
-                        function(success) {},
-                        function(error) {},
-                        'RVCardPlugin',
-                        'printWebView', []
-                    );
-                };
-            }, 300);
+                    //yes we have everything we wanted
+                    window.print ();
+
+                    //if we are in the app
+                    $timeout(function() {
+                        if (sntapp.cordovaLoaded) {
+                            cordova.exec(
+                                function(success) {},
+                                function(error) {},
+                                'RVCardPlugin',
+                                'printWebView', []
+                            );
+                        };
+                    }, 300);
 
 
-            $timeout(function() {
-                $scope.print_type = '';
-                removePrintOrientation();
-                $scope.reservations = util.deepCopy($scope.resevationsBeforePrint);
-                $scope.resevationsBeforePrint = [];
-            }, 1200);
+                    $timeout(function() {
+                        $scope.print_type = '';
+                        removePrintOrientation();
+                        $scope.reservations = util.deepCopy($scope.resevationsBeforePrint);
+                        $scope.resevationsBeforePrint = [];
+                    }, 1200);
+                });
            
         }
         
