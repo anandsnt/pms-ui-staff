@@ -28,6 +28,33 @@ sntRover.controller('RVMoveChargeCtrl',
         };
 
 
+		$scope.getGuestStatusIcon = function(reservationStatus, isLateCheckoutOn, isPrecheckin) {
+			var viewStatus = "";
+			if (isLateCheckoutOn && "CHECKING_OUT" == reservationStatus) {
+				viewStatus = "late-check-out";
+				return viewStatus;
+			}
+			if ("RESERVED" == reservationStatus && !isPrecheckin) {
+				viewStatus = "arrival";
+			} else if ("CHECKING_IN" == reservationStatus && !isPrecheckin) {
+				viewStatus = "check-in";
+			} else if ("CHECKEDIN" == reservationStatus) {
+				viewStatus = "inhouse";
+			} else if ("CHECKEDOUT" == reservationStatus) {
+				viewStatus = "departed";
+			} else if ("CHECKING_OUT" == reservationStatus) {
+				viewStatus = "check-out";
+			} else if ("CANCELED" == reservationStatus) {
+				viewStatus = "cancel";
+			} else if (("NOSHOW" == reservationStatus) || ("NOSHOW_CURRENT" == reservationStatus)) {
+				viewStatus = "no-show";
+			} else if (isPrecheckin) {
+				viewStatus = "pre-check-in";
+			}
+			return viewStatus;
+		};
+
+
 		var refreshSearchList = function() { 
 			$timeout(function() {
 				$scope.refreshScroller('search_results');
