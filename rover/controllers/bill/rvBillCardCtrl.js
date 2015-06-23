@@ -1112,7 +1112,7 @@ sntRover.controller('RVbillCardController',
 
 		//Display the key encoder popup
 		else if(keySettings === "encode"){
-			if($scope.reservationBillData.hotel_selected_key_system == 'SAFLOK_MSR' && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0){
+			if($scope.reservationBillData.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0){
 				fetchEncoderTypes();
 			} else {
 				openKeyEncodePopup();

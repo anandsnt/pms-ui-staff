@@ -16,11 +16,11 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		//If SAFLOK_MSR is the chosen encoder type, we would show a dropdown with active encoders listed.
 		/***************************CICO-11444 *****************************************/
 		$scope.encoderSelected = "";
-
+console.log($scope.encoderTypes);
 		if($scope.fromView == "checkin"){
-			$scope.keySystemVendor = $scope.reservationBillData.hotel_selected_key_system;
+			$scope.isRemoteEncodingEnabled = $scope.reservationBillData.is_remote_encoder_enabled;
 		}else{
-			$scope.keySystemVendor = $scope.reservationData.reservation_card.hotel_selected_key_system;
+			$scope.isRemoteEncodingEnabled = $scope.reservationData.reservation_card.is_remote_encoder_enabled;
 		}
 
 		if (sessionStorage.encoderSelected && sessionStorage.encoderSelected !== '') {
@@ -100,7 +100,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
                     $scope.buttonText = $filter('translate')('KEY_DUPLICATE_BUTTON_TEXT');
                 }
 
-		if($scope.keySystemVendor == 'SAFLOK_MSR'){
+		if($scope.isRemoteEncodingEnabled){
 			showPrintKeyOptions();
 		}else {
 			//Initally we check if the device is connected
@@ -115,7 +115,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 			return false;
 		}
 		if ($scope.numberOfKeysSelected > 0){
-			if($scope.keySystemVendor == 'SAFLOK_MSR' && $scope.encoderSelected == ""){
+			if($scope.isRemoteEncodingEnabled && $scope.encoderSelected == ""){
 				return false
 			}
 			return true
@@ -211,7 +211,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		if($scope.numberOfKeysSelected == 0)
 			return;
 		//CICO-11444. If saflok_msr we we ll be connecting to remote encoders in the network
-		if($scope.keySystemVendor == 'SAFLOK_MSR'){
+		if($scope.isRemoteEncodingEnabled){
 			that.callKeyFetchAPI();
 			return false;
 		}
@@ -276,7 +276,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
         if ($scope.keyType === 'Duplicate'){
             postParams.is_additional = true;
         }
-	    if($scope.keySystemVendor == 'SAFLOK_MSR') {
+	    if($scope.isRemoteEncodingEnabled) {
 		    postParams.key_encoder_id = $scope.encoderSelected;
 	    }
 	    $scope.invokeApi(RVKeyPopupSrv.fetchKeyFromServer, postParams, that.keyFetchSuccess, that.keyFetchFailed);
@@ -316,7 +316,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		}
 		//CICO-11444 if SAFLOK_MSR, we will be writing to remote encoder via print_key api call itself.
 		//No encoder is attached to ipad.
-		if($scope.keySystemVendor == 'SAFLOK_MSR'){
+		if($scope.isRemoteEncodingEnabled){
 			that.numOfKeys--;
 			that.printKeyStatus[index-1].printed = true;
 			$scope.printedKeysCount = index;
