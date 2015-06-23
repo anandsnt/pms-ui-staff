@@ -109,7 +109,7 @@ sntRover.controller('RVbillCardController',
 			chargeCodesId = [];
 			_.each(chargeCodes, function(chargeCode) {
 			  chargeCode.isSelected = bool;
-			  chargeCodesId.push(chargeCode.id)
+			  chargeCodesId.push(chargeCode.id);
 			});
 			$scope.reservationBillData.isAllChargeCodeSelected = bool;
 		}
@@ -122,19 +122,21 @@ sntRover.controller('RVbillCardController',
 	$scope.isAllChargeCodesSelected = function(){
 		var isAllChargeCodesSelected = true;
 		var billTabsData = $scope.reservationBillData.bills;
-		var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details
-		if(chargeCodes.length > 0){
-			_.each(chargeCodes, function(chargeCode) {
-			  if(!chargeCode.isSelected){
-			  	isAllChargeCodesSelected = false;
-			  }
-			});
-		}
-		else{
-				isAllChargeCodesSelected = false;
-		}
-			
-		return isAllChargeCodesSelected;
+		var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details;
+                if (chargeCodes){
+                    if(chargeCodes.length > 0){
+                        _.each(chargeCodes, function(chargeCode) {
+                          if(!chargeCode.isSelected){
+                            isAllChargeCodesSelected = false;
+                          }
+                        });
+                    } else{
+                        isAllChargeCodesSelected = false;
+                    }
+            } else{
+                isAllChargeCodesSelected = false;
+            }
+            return isAllChargeCodesSelected;
 	};
 
 	/*
@@ -1164,7 +1166,7 @@ sntRover.controller('RVbillCardController',
 	// Handle checkin process with Autherization..
 	var performCCAuthAndCheckinProcess = function(data,isCheckinWithoutAuth){
 
-		if(isCheckinWithoutAuth){
+		if(!isCheckinWithoutAuth){
 			// Perform checkin process without authorization..
 			data.authorize_credit_card = false;
 			$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback, $scope.completeCheckinFailureCallback);
