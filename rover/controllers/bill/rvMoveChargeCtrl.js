@@ -79,15 +79,17 @@ sntRover.controller('RVMoveChargeCtrl',
 		 * service in change event of query box
 		 */
 		$scope.queryEntered = function() {
-
-			if (($scope.textQuery === "" || $scope.textQuery.length < 3) && ($scope.numberQuery === "" || $scope.numberQuery.length < 3 )) {
-				$scope.searchResults = [];
-				refreshSearchList();
-			} else {
-				fetchFilterdData();
-			};
-			runDigestCycle();
+			$timeout(function() {
+				if (($scope.textQuery === "" || $scope.textQuery.length < 3) && ($scope.numberQuery === "" || $scope.numberQuery.length < 3 )) {
+					$scope.searchResults = [];
+					refreshSearchList();
+				} else {
+					fetchFilterdData();			
+				};
+				runDigestCycle();
+			}, 200);
 		};
+
 
 		/**
 		 * function to select one item from the filtered list
