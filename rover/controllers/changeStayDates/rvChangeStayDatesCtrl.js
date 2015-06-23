@@ -483,8 +483,15 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				'reservation_id': $scope.stayDetails.calendarDetails.reservation_id
 			};
 
-			// CICO-17266 PMS: Rover - CC Auth should consider Billing Information.
-			showPreAuthPopupWithBillingInfo(postParams);
+			setFlagForPreAuthPopup();
+
+			if(!$scope.message_incoming_from_room && !$scope.message_out_going_to_room && !$scope.message_out_going_to_comp_tra){
+				performCCAuthAndconfirmUpdatesProcess(postParams);
+ 		    }
+ 		    else{
+ 		    	// CICO-17266 PMS: Rover - CC Auth should consider Billing Information.
+				showPreAuthPopupWithBillingInfo(postParams);
+ 		    }
 		};
 		/*
 		 this function is used to check the whether the movement of dates is valid accoriding to our reqmt.
