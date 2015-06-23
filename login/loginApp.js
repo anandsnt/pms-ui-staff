@@ -120,6 +120,7 @@ login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$st
 	 $scope.data = {};
 	 $scope.data.token = $stateParams.token;
 	 $scope.data.user  = $stateParams.user;
+   $scope.data.username  = $stateParams.username;
 	 $scope.errorMessage = "";
 	 
 	 /*
