@@ -91,6 +91,16 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                                 calendarData.total_room_types = data.room_type_restrictions[0].room_types.length;
                                 
                                 calendarData.room_types_all = [];
+                                calendarData.isChildRate = [];
+                                var rateObj;
+                                if (data.results[0]){
+                                    for (var c in data.results[0].rates){
+                                    rateObj = data.results[0].rates[c];
+                                        if (rateObj.is_child){
+                                            calendarData.isChildRate.push(rateObj.id);
+                                        }
+                                    }
+                                }
                                 for (var i in data.room_type_restrictions[0].room_types){
                                     
                                 calendarData.room_types_all.push({
@@ -166,6 +176,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 				//Pass the rate details to the controller
 				calendarData.selectedRateDetails = selectedRate;
 				calendarData.is_fixed_rate = data.is_fixed_rate;
+				calendarData.is_child = data.is_child;
 				deferred.resolve(calendarData);
 			},rejectDeferred);
 
@@ -192,8 +203,6 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	this.checkIfAnyHourlyRatePresent = function(rateData){
                 var fetchingRooms = this.fetchingRooms;
                 if (fetchingRooms){
-                    console.log('checkIfAnyHourlyRatePresent');
-                    console.log(rateData);
                     return false;
                 }
 		var hasHourly = false;
