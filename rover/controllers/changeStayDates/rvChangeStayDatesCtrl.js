@@ -451,6 +451,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 	 		$scope.clickedFullAuth = function(){
 	 			// @params : data , isCheckinWithoutAuth: false
+	 			$scope.requireAuthorization = true;
 				performCCAuthAndconfirmUpdatesProcess(data);
 				ngDialog.close();
 		    };
@@ -486,6 +487,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			setFlagForPreAuthPopup();
 
 			if(!$scope.message_incoming_from_room && !$scope.message_out_going_to_room && !$scope.message_out_going_to_comp_tra){
+				
 				performCCAuthAndconfirmUpdatesProcess(postParams);
  		    }
  		    else{
