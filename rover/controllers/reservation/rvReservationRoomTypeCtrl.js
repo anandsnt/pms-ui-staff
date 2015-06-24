@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'sortOrder', 'rateAddons', 'RVReservationBaseSearchSrv', '$timeout', '$state', 'ngDialog', '$sce', '$stateParams', 'dateFilter', '$filter', 'rvPermissionSrv', 'RVReservationStateService',
-	function($rootScope, $scope, roomRates, sortOrder, rateAddons, RVReservationBaseSearchSrv, $timeout, $state, ngDialog, $sce, $stateParams, dateFilter, $filter, rvPermissionSrv, RVReservationStateService) {
+sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'sortOrder', 'rateAddons', 'isAddonsConfigured','RVReservationBaseSearchSrv', 'RVReservationAddonsSrv','$timeout', '$state', 'ngDialog', '$sce', '$stateParams', 'dateFilter', '$filter', 'rvPermissionSrv', 'RVReservationStateService',
+	function($rootScope, $scope, roomRates, sortOrder, rateAddons, isAddonsConfigured, RVReservationBaseSearchSrv, RVReservationAddonsSrv, $timeout, $state, ngDialog, $sce, $stateParams, dateFilter, $filter, rvPermissionSrv, RVReservationStateService) {
 		$scope.displayData = {};
 		$scope.selectedRoomType = -1;
 		$scope.expandedRoom = -1;
@@ -437,23 +437,22 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					$scope.enhanceStay();
 				}
 			}
-		}
-
-		$scope.enhanceStay = function() {
+		}		
+		$scope.enhanceStay = function() {				
 			// CICO-9429: Show Addon step only if its been set ON in admin
 			var navigate = function() {
 				if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id) {
-					if ($rootScope.isAddonOn) {
+					if ($rootScope.isAddonOn&&isAddonsConfigured) {
 						$state.go('rover.reservation.staycard.mainCard.addons', {
 							"from_date": $scope.reservationData.arrivalDate,
 							"to_date": $scope.reservationData.departureDate
 						});
-					} else {
+					} else {						
 						$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm');
 					}
 				}
 			}
-			if ($rootScope.isAddonOn) {
+			if ($rootScope.isAddonOn&&isAddonsConfigured) {		//CICO-16874   		
 				$state.go('rover.reservation.staycard.mainCard.addons', {
 					"from_date": $scope.reservationData.arrivalDate,
 					"to_date": $scope.reservationData.departureDate
@@ -1309,7 +1308,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		var initializeRoomAndRates = function() {
 			BaseCtrl.call(this, $scope);
 			$scope.heading = 'Rooms & Rates';
-			$scope.setHeadingTitle($scope.heading);
+			$scope.setHeadingTitle($scope.heading);			
 			// Initialize metaData in the ReservationStateService
 			RVReservationStateService.metaData.rateAddons = angular.copy(rateAddons);
 			RVReservationStateService.metaData.taxDetails = angular.copy(roomRates.tax_codes);
