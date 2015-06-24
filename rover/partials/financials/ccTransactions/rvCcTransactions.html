@@ -13,7 +13,7 @@
                 <span class="year">{{data.transactionDate | date:'y'}}</span>
             </div>
         </div>
-        <div ng-show="data.activeTab == 0" class="entry action">
+        <div ng-show="data.activeTab == 0 && data.paymentData.show_settle_button" class="entry action">
             <button ng-click="clickedSubmitBatch()" type="button" class="button green" ng-class="{'grey': !hasPermissionToSubmitCCBatch()}" ng-disabled="!hasPermissionToSubmitCCBatch()" translate>SUBMIT_BATCH</button>
         </div>
 
