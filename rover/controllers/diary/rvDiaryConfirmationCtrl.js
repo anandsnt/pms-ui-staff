@@ -156,7 +156,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                 params.is_active = true;
             //Fetches whether any configured addons are available.
             //CICO-16874
-            $scope.invokeApi(RVReservationBaseSearchSrv.hasAnyConfiguredAddons,params,fetchSuccess,fetchFailed);            
+            $scope.invokeApi(RVReservationBaseSearchSrv.hasAnyConfiguredAddons,params,fetchSuccess,fetchFailed); //CICO-16874           
         };
 
         // save data to $vault

@@ -452,7 +452,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					}
 				}
 			}
-			if ($rootScope.isAddonOn&&isAddonsConfigured) {				
+			if ($rootScope.isAddonOn&&isAddonsConfigured) {		//CICO-16874   		
 				$state.go('rover.reservation.staycard.mainCard.addons', {
 					"from_date": $scope.reservationData.arrivalDate,
 					"to_date": $scope.reservationData.departureDate
