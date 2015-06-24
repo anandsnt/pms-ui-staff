@@ -710,6 +710,7 @@ sntRover.controller('RVbillCardController',
 			 	passData.showDoNotAuthorize = ($scope.clickedButton == "checkinButton" && $rootScope.isStandAlone);
 				$scope.setScroller('cardsList');
 				$scope.addmode = false;
+				passData.details.hideDirectBill = true;
 		 		$scope.openPaymentDialogModal(passData, paymentData);
 
   	 	} else {
