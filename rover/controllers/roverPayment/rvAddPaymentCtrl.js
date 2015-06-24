@@ -63,7 +63,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		}, 2000);
 		
 	};
-	var paymentParams = {"direct_bill":true};
+	var showDirectBill =  (typeof $scope.passData.details.hideDirectBill !== "undefined" && $scope.passData.details.hideDirectBill) ? false : true;
+	var paymentParams = {"direct_bill":showDirectBill};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, $scope.successRender);
 
 	$scope.successPaymentList = function(data){
