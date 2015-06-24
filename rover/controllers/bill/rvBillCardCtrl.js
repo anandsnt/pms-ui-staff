@@ -1188,6 +1188,12 @@ sntRover.controller('RVbillCardController',
 			data.authorize_credit_card = true;
 			$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinAuthSuccessCallback, $scope.completeCheckinFailureCallback);
 		}
+		else{
+			console.log("NO AUTH , NOT CC");
+			// Perform checkin process without authorization..
+			data.authorize_credit_card = false;
+			$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback, $scope.completeCheckinFailureCallback);
+		}
 	};
 
 	var setFlagForPreAuthPopup = function(){
