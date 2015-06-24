@@ -710,6 +710,7 @@ sntRover.controller('RVbillCardController',
 			 	passData.showDoNotAuthorize = ($scope.clickedButton == "checkinButton" && $rootScope.isStandAlone);
 				$scope.setScroller('cardsList');
 				$scope.addmode = false;
+				passData.details.hideDirectBill = true;
 		 		$scope.openPaymentDialogModal(passData, paymentData);
 
   	 	} else {
@@ -1166,7 +1167,7 @@ sntRover.controller('RVbillCardController',
 	// Handle checkin process with Autherization..
 	var performCCAuthAndCheckinProcess = function(data,isCheckinWithoutAuth){
 
-		if(!isCheckinWithoutAuth){
+		if(isCheckinWithoutAuth){
 			// Perform checkin process without authorization..
 			data.authorize_credit_card = false;
 			$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback, $scope.completeCheckinFailureCallback);
