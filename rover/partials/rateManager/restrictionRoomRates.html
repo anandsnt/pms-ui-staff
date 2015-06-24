@@ -1,11 +1,16 @@
 <div id="restrictionPriceContainer" class="price-div" ng-if="hasPermissionToUpdateRates()">
 	<div class="restriction_text" >
 		<h4> PRICE </h4>
+                <div ng-show='calendarData.is_child' ng-hide="!calendarData.is_child" class="notice rate-mgr" >
+                    <span>Manual update is disabled for {{popupData.rate_name}} rate, as its based on another rate.</span>
+                </div> 
+                <div ng-show='!calendarData.is_child' ng-hide="calendarData.is_child">
 		<em ng-if="!data.isHourly">Adjust price for all room types</em>
 		<em ng-if="data.isHourly">Price adjustment for all Occupancies</em>
+                </div>
 	</div>
 
-	<section ng-if="data.isHourly">
+	<section ng-if="data.isHourly" ng-class="{'overlay' : calendarData.is_child == true}">
 					
 		<div class="price-fields">
                     <label ng-class="{'hasOverride-label': rateDateHasOverride(data, date,'nightly') != 'false'}">ALL OCCUPANCIES<text class="hasOverride-label" ng-if="hasAnyOverride() !== 'false'" >*</text></label>
@@ -36,7 +41,7 @@
 		</div>
 	</section>
 	
-	<section ng-if="!data.isHourly">
+	<section ng-if="!data.isHourly" ng-class="{'overlay' : calendarData.is_child == true}">
 		<div class="price-fields">
 			<label ng-if="!hasOverride(data,'SINGLE')">SINGLE</label>			
 			<label ng-if="hasOverride(data,'SINGLE')" class="hasOverride-label">SINGLE*</label>		
