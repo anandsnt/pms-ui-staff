@@ -146,13 +146,17 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                 }
                 $scope.closeWithAnimation ();
             }
+            var fetchFailed = function(errorMessage){
+                $scope.errorMessage = errorMessage;
+                $scope.closeWithAnimation();
+            }
             var params = {};
                 params.from_date = $scope.vaultSelections.arrival_date;
                 params.to_date = $scope.vaultSelections.departure_date;
                 params.is_active = true;
             //Fetches whether any configured addons are available.
             //CICO-16874
-            $scope.invokeApi(RVReservationBaseSearchSrv.hasAnyConfiguredAddons,params,fetchSuccess);            
+            $scope.invokeApi(RVReservationBaseSearchSrv.hasAnyConfiguredAddons,params,fetchSuccess,fetchFailed);            
         };
 
         // save data to $vault
