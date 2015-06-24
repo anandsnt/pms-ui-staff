@@ -1523,8 +1523,9 @@
 
                     .group-info,
                     .room {
-                        width: 120px;
                         margin-right: 20px;
+                        .size(45px, 120px);
+                        .show;
                         .pull-left;
 
                         strong,
@@ -1557,7 +1558,27 @@
                         }
 
                         &.guest {
+                            .calc-width(100, 260);
+
                             h2 { line-height: 45px; }
+                        }
+                    }
+
+                    .reservation {
+                        padding-top: 10px;
+                        width: 120px;
+                        .pull-left;
+
+                        .guest-status { 
+                            .square(30px); 
+                            .pull-right;
+                        }
+
+                        .date {
+                            margin-right: 10px;
+                            line-height: 30px;
+                            width: 80px;
+                            .pull-left;
                         }
                     }
 
@@ -5069,7 +5090,11 @@
                     }
                 }
 
-                .add-new-button { padding: 0 40px; }
+                .add-new-button { 
+                    padding: 0 40px; 
+                    height: 60px;
+                    .pull-left;
+                }
 
                 .button {
                     margin: 10px;
@@ -5182,7 +5207,11 @@
                             td { 
                                 vertical-align: middle; 
 
-                                .button { .square(40px); }
+                                .button { 
+                                    .square(40px); 
+
+                                    &:not(.inline) { .show; }
+                                }
                             }
                         }
                     }
@@ -7348,47 +7377,36 @@
                     table-layout: fixed;
 
                     .red { color: @red; }
-                    
+
                     thead {
                         tr {
-                            th { 
-                                text-align: left;
+                            th {
+                                padding: 0;
                                 vertical-align: top;
-                                padding: 0; 
+                                line-height: 35px;
 
                                 span {
                                     color: @white;
                                     padding: 0 10px;
+                                    margin-right: 5px;
                                     background-color: darken(@grey2, 10);
-                                    height: 30px;
+                                    height: 35px;
+                                    .calc-width(100, 5);
                                     .show;
                                     .nowrap();
-                                    .box-shadow(1px 1px 0 rgba(0,0,0,.3));
-
-                                    &.sort {
-                                        cursor: pointer;
-                                        background: darken(@grey2, 10) @arrowSort no-repeat 95% 50%;
-                                        padding-right: 40px;
-
-                                        &.sorting-asc { background-image: @arrowSortAsc; }
-                                        &.sorting-desc { background-image: @arrowSortDesc; }
-                                    }
+                                    .box-shadow(1px 1px 0 rgba(0,0,0,.3)); 
                                 }
                             }
 
                             &.top-row {
-                                th {
-                                    font-size: 15px;
-                                    line-height: 30px;
-                                    
-                                    &.date,
-                                    &.code { font-size: 15px; }
+                                [colspan] { 
+                                    font-size: 16px;
+                                    text-align: center;
+                                    color: @white;
+                                    background-color: @gcard; 
+                                    width: 30%;
 
-                                    &[colspan] { 
-                                        color: @white;
-                                        background-color: @gcard; 
-                                        text-align: center;
-                                    }
+                                    &.break { width: 70%; }
                                 }
                             }
 
@@ -7426,28 +7444,26 @@
 
                             &.total,
                             &.grouped {
-                                td { 
-                                    font-weight: 600;
-                                    vertical-align: top;
-                                    padding-top: 0;
-                                }
+                                td { font-weight: 600; }
                             }
 
                             &.total {
-                                td { background-color: transparent; }
+                                td { 
+                                    background-color: transparent;
+                                    padding-top: 0;
+                                    vertical-align: top;
+                                }
                             }
 
                             &.grouped {
                                 td {
                                     text-transform: uppercase;
-                                    padding: 0;
-                                }
-                            }
-
-                            &.undefined {
-                                td {
-                                    color: @grey3;
-                                    font-style: italic;
+                                    
+                                    strong {
+                                        font-size: 15px;
+                                        font-weight: 600;
+                                        color: @textColor;
+                                    }
                                 }
                             }
                         }
@@ -7475,7 +7491,11 @@
 
                     .date { width: 100px; }
 
-                    .code { width: 120px; }
+                    .code { 
+                        width: 120px; 
+
+                        &.long-code { width: 200px; }
+                    }  
 
                     &.medium-grid,
                     &.large-grid {
@@ -7486,6 +7506,8 @@
                         thead {
                             tr {
                                 th {
+                                    border-right: 1px solid rgba(0,0,0,.3);
+
                                     &.break { 
                                         padding-right: 0; 
                                         border-right: 2px solid rgba(0,0,0,.3); 
@@ -7531,12 +7553,7 @@
                                         color: @grey3;
                                         font-weight: 400;
                                         background-color: transparent;
-
-                                        strong {
-                                            font-size: 15px;
-                                            font-weight: 600;
-                                            color: @textColor;
-                                        }
+                                        padding: 0;
 
                                         &.break { border-right: 2px solid rgba(0,0,0,.3); }
                                     }
@@ -7636,7 +7653,7 @@
                                 }
                             }
                         }
-                    }        
+                    }               
                 }
 
                 &.occupancy-footer { .hide; }

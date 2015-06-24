@@ -314,5 +314,20 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
         $scope.$on('closeFilterPopup', function() {
             $scope.companyCardResults = [];
         });
+
+        /**
+         * This is a filter method used to removed expired rates from the date range selected
+         * CICO-17201
+         * https://stayntouch.atlassian.net/browse/CICO-17201?focusedCommentId=49127&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-49127
+         * -- show only rates that are active and aren't expired in the date range(when provided)
+         * @param  {Object} rate Rate object from the array of rates
+         * @return {Boolean}      True if the rate is not expired
+         */
+        $scope.removeExpiredRates = function(rate){
+            return !$scope.currentFilterData.begin_date || // Need to filter only when date range is provided
+                !$scope.currentFilterData.end_date || // Need to filter only when date range is provided
+                !rate.end_date || // Need to filter only rates which have an expiry date (end date)
+                (new tzIndependentDate($scope.currentFilterData.begin_date) < new tzIndependentDate(rate.end_date)); //Blocking only expired rates... rates expiring in the date range would still show up.
+        }
     }
 ]);
