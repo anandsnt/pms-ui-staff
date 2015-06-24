@@ -65,13 +65,13 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		var setBackNavigation = function() {
 			// TODO : Currently hardcoded to go to groups search.. 
 			// Change the same according to the requirements
+      // CICO-17777: added isFromCards to $stateParams from rvAccountRouter
 			if($stateParams.isFromCards) {
 				$rootScope.setPrevState = {
 					title: $filter('translate')('ACCOUNTS'),
 					callback: 'updateAndBack',
 					scope: $scope
 				};
-
 			} else {
 				$rootScope.setPrevState = {
 					title: 'AR Transactions',
@@ -84,11 +84,9 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 					}
 				};
 			}
-			
-
-			//setting title and things
+      //setting title and things
 			setTitle();
-		}
+		};
 
 		/**
 		 * Function to check the mandatory values while saving the reservation

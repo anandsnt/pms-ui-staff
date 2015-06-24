@@ -109,7 +109,7 @@ sntRover.controller('RVbillCardController',
 			chargeCodesId = [];
 			_.each(chargeCodes, function(chargeCode) {
 			  chargeCode.isSelected = bool;
-			  chargeCodesId.push(chargeCode.id)
+			  chargeCodesId.push(chargeCode.id);
 			});
 			$scope.reservationBillData.isAllChargeCodeSelected = bool;
 		}
@@ -122,19 +122,21 @@ sntRover.controller('RVbillCardController',
 	$scope.isAllChargeCodesSelected = function(){
 		var isAllChargeCodesSelected = true;
 		var billTabsData = $scope.reservationBillData.bills;
-		var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details
-		if(chargeCodes.length > 0){
-			_.each(chargeCodes, function(chargeCode) {
-			  if(!chargeCode.isSelected){
-			  	isAllChargeCodesSelected = false;
-			  }
-			});
-		}
-		else{
-				isAllChargeCodesSelected = false;
-		}
-			
-		return isAllChargeCodesSelected;
+		var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details;
+                if (chargeCodes){
+                    if(chargeCodes.length > 0){
+                        _.each(chargeCodes, function(chargeCode) {
+                          if(!chargeCode.isSelected){
+                            isAllChargeCodesSelected = false;
+                          }
+                        });
+                    } else{
+                        isAllChargeCodesSelected = false;
+                    }
+            } else{
+                isAllChargeCodesSelected = false;
+            }
+            return isAllChargeCodesSelected;
 	};
 
 	/*
@@ -1112,7 +1114,7 @@ sntRover.controller('RVbillCardController',
 
 		//Display the key encoder popup
 		else if(keySettings === "encode"){
-			if($scope.reservationBillData.hotel_selected_key_system == 'SAFLOK_MSR' && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0){
+			if($scope.reservationBillData.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0){
 				fetchEncoderTypes();
 			} else {
 				openKeyEncodePopup();
@@ -1164,7 +1166,7 @@ sntRover.controller('RVbillCardController',
 	// Handle checkin process with Autherization..
 	var performCCAuthAndCheckinProcess = function(data,isCheckinWithoutAuth){
 
-		if(isCheckinWithoutAuth){
+		if(!isCheckinWithoutAuth){
 			// Perform checkin process without authorization..
 			data.authorize_credit_card = false;
 			$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback, $scope.completeCheckinFailureCallback);
@@ -1311,13 +1313,21 @@ sntRover.controller('RVbillCardController',
 					};
 	 		    }
 
+	 		    setFlagForPreAuthPopup();
+
 	 		    if(typeof isCheckinWithoutPreAuthPopup != 'undefined' && isCheckinWithoutPreAuthPopup){
 	 		    	// Directly performing checkin process without pre-auth popup.
 	 		    	performCCAuthAndCheckinProcess(data,true);
-	 		    }	
-	 		    else{
+	 		    }
+	 		    else if(!$scope.message_incoming_from_room && !$scope.message_out_going_to_room && !$scope.message_out_going_to_comp_tra){
+	 		    	performCCAuthAndCheckinProcess(data,false);
+	 		    }
+	 		    else if($scope.reservationBillData.is_cc_authorize_at_checkin_enabled && $scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type == "CC"){
 		 		    // CICO-17266 PMS: Rover - CC Auth should consider Billing Information.
 		 		    showPreAuthPopupWithBillingInfo(data);
+		 		}
+		 		else{
+		 			performCCAuthAndCheckinProcess(data,true);
 		 		}
 			}
 		}

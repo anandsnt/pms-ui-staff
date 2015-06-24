@@ -6,7 +6,7 @@ sntRover.service('RMFilterOptionsSrv',['$q', 'BaseWebSrvV2', function( $q, RVBas
     */
     this.fetchRates = function(){
             var deferred = $q.defer();
-            var url =  '/api/rates?per_page=100&is_fully_configured=true';    
+            var url =  '/api/rates?per_page=100&is_fully_configured=true&is_active=true'; // CICO-17201 - Request for active rates alone
             RVBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             },function(data){

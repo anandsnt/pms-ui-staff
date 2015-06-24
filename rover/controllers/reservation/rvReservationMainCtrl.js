@@ -565,6 +565,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationData.rooms[0].rateId = [];
             $scope.reservationData.rooms[0].stayDates = {};
 
+            $scope.reservationData.rooms[0].is_package_exist = reservationDetails.reservation_card.is_package_exist; //-- Changes for CICO-17173
+            $scope.reservationData.rooms[0].package_count = reservationDetails.reservation_card.package_count; //-- Changes for CICO-17173
+
             $scope.reservationData.is_modified = false;
 
             angular.forEach(reservationDetails.reservation_card.stay_dates, function(item, index) {
@@ -991,13 +994,16 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             data.stay_dates = stay;
 
             //addons
-            data.addons = [];
-            _.each($scope.reservationData.rooms[0].addons, function(addon) {
-                data.addons.push({
-                    id: addon.id,
-                    quantity: addon.quantity
+            if (!$scope.reservationData.rooms[0].is_package_exist || //is_package_exist flag is set only while editing a reservation! -- Changes for CICO-17173
+                ($scope.reservationData.rooms[0].is_package_exist && $scope.reservationData.rooms[0].addons.length == parseInt($scope.reservationData.rooms[0].package_count))) { //-- Changes for CICO-17173
+                data.addons = [];
+                _.each($scope.reservationData.rooms[0].addons, function(addon) {
+                    data.addons.push({
+                        id: addon.id,
+                        quantity: addon.quantity
+                    });
                 });
-            });
+            }
 
             data.company_id = $scope.reservationData.company.id;
             data.travel_agent_id = $scope.reservationData.travelAgent.id;
@@ -1525,8 +1531,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 $scope.otherData.originsEnabled = data.demographics.is_use_origins;
                 $scope.otherData.origins = data.demographics.origins;
                 $scope.otherData.reservationTypes = data.demographics.reservationTypes;
-                $scope.otherData.segmentsEnabled = baseData.demographics.is_use_segments;
-                $scope.otherData.segments = baseData.demographics.segments;
+                $scope.otherData.segmentsEnabled = data.demographics.is_use_segments;
+                $scope.otherData.segments = data.demographics.segments;
                 $scope.$emit('hideLoader');
             };
             var fetchFailure = function(data) {

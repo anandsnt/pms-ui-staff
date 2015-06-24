@@ -45,7 +45,7 @@
                                 
 					<em class="status icon-key" ng-class="{'success': status=='success', 'pending': status=='pending', 'error': status=='error'}">{{statusMessage}}</em>
 					<div id="print-keys">
-						<div class="entry full-width" ng-show = "keySystemVendor == 'SAFLOK_MSR'">
+						<div class="entry full-width" ng-show = "isRemoteEncodingEnabled">
 			                <label for="encoder-type">Key Encoder</label>
 			                <div class="select">
 			                	<select id="encoder-type" name="encoder-type" class="placeholder" ng-model="encoderSelected" ng-change="selectedEncoder()">
