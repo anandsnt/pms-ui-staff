@@ -31,7 +31,8 @@ sntRover.factory('RVReportUtilsFac', [
             'FORECAST_BY_DATE'             : 'Forecast',
             'ROOMS_QUEUED'                 : 'Rooms Queued',
             'FORECAST_GUEST_GROUPS'        : 'Forecast Guests & Groups',
-            'MARKET_SEGMENT_STATISTICS_REPORT' : 'Market Segment Statistics Report'
+            'MARKET_SEGMENT_STATISTICS_REPORT' : 'Market Segment Statistics Report',
+            'COMPARISION_BY_DATE'          : 'Comparison'
         };
 
 
@@ -164,7 +165,8 @@ sntRover.factory('RVReportUtilsFac', [
             'DUE_OUT_DEPARTURES' : true,
             'INCLUDE_NEW'        : true,
             'INCLUDE_BOTH'       : true,
-            'SHOW_RATE_ADJUSTMENTS_ONLY' : true
+            'SHOW_RATE_ADJUSTMENTS_ONLY' : true,
+            'INCLUDE_TAX'        : true
         };
 
         var __displayFilterNames = {
@@ -905,6 +907,7 @@ sntRover.factory('RVReportUtilsFac', [
                 case __reportNames['DAILY_TRANSACTIONS']:
                 case __reportNames['DAILY_PAYMENTS']:
                 case __reportNames['MARKET_SEGMENT_STATISTICS_REPORT']:
+                case __reportNames['COMPARISION_BY_DATE']:
                     reportItem['singleValueDate']  = _getDates.yesterday;
                     break;
 

@@ -102,7 +102,7 @@ angular.module('stayCardModule', [])
                     params.from_date = $stateParams.from_date;
                     params.to_date = $stateParams.to_date;
                     params.is_active = true;
-                    return RVReservationBaseSearchSrv.hasAnyConfiguredAddons();
+                    return RVReservationBaseSearchSrv.hasAnyConfiguredAddons(params);
                 }
             }
         });

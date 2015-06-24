@@ -321,6 +321,9 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			$scope.reservationData.isSameCard = true;
 			$scope.otherData.reservationCreated = true;
 
+			// Clear depositData as well CICO-17912
+			$scope.reservationData.depositData = false;
+
 			$state.go('rover.reservation.search');
 		};
 

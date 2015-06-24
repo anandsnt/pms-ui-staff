@@ -120,6 +120,7 @@ login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$st
 	 $scope.data = {};
 	 $scope.data.token = $stateParams.token;
 	 $scope.data.user  = $stateParams.user;
+   $scope.data.username  = $stateParams.username;
 	 $scope.errorMessage = "";
 	 
 	 /*
@@ -150,17 +151,12 @@ login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$st
         $scope.validPassword = false;
         //data.password
         $scope.validatePassword = function(data){
-            console.log('validating password');
-            
           //check if password contains at least 1 number and has at least 8 total characters
           //this is called on ng-change password
           if (data){
               if (data.password.length >= 8){
-                  console.log('here');
-                  console.log(arguments)
                   if (alphanumeric(data.password)){
                     $scope.validPassword = true;
-                    console.log('true');
                   } else {
                     $scope.validPassword = false;
                   }
@@ -172,7 +168,7 @@ login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$st
           }
         };
         var alphanumeric = function(str) {
-            var letterNumber = /^.*(?=.{8,})(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%]+$/;//at least 1 letter, least 1 number, and some special characters
+            var letterNumber = /^.*(?=.{8,})(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%]+$/;//at least 1 letter, least 1 number, some special characters [ !@#$% ] allowed
             if(str.match(letterNumber)){  
               return true;  
             } else {

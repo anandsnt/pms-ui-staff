@@ -204,6 +204,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.rightColSpan = 8;
 					break;
 
+				case reportUtils.getName('COMPARISION_BY_DATE'):
+					$scope.leftColSpan = 4;
+					$scope.rightColSpan = 4;
+					break;
+
 				default:
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 2;
@@ -384,6 +389,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.hasReportTotals    = false;
 					$scope.showReportHeader   = true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/rvMarketSegmentStatReport.html';
+					break;
+
+				case reportUtils.getName('COMPARISION_BY_DATE'):
+					$scope.hasReportTotals    = false;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/comparisonStatReport/rvComparisonStatReport.html';
 					break;
 
 				default:

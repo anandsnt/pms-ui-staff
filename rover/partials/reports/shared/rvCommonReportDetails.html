@@ -1,0 +1,84 @@
+<div class="report-totals" ng-if="firstHalf && restHalf">
+    <ul class="col2 left-align" ng-if="firstHalf">
+        <li ng-repeat="item in firstHalf">
+            {{ item.label }}
+            <span ng-class="item.class">{{ item.value }}</span>
+        </li>
+    </ul>
+
+    <ul class="col2 right-align" ng-if="restHalf">
+        <li ng-repeat="item in restHalf">
+            {{ item.label }}
+            <span ng-class="item.class">{{ item.value }}</span>
+        </li>
+    </ul>
+</div>
+
+
+<!-- Report content -->
+<div ng-show="hasNoResults" class="report-content no-content">
+    <div class="info">
+        <span class="icon-no-content icon-reports"></span>
+        <strong class="h1">No reports found</strong>
+        <span class="h2">Try changing search criteria or modify dates</span>
+    </div>
+</div>
+
+
+<div ng-hide="hasNoResults" id="report-content" class="report-content scrollable" ng-class="{ 'no-totals': hasNoTotals, 'no-sorting': hasNoSorting, 'with-pagination': (!disablePrevBtn || !disableNextBtn) }" ng-iscroll="report-details-scroll">
+    <div class="wrapper">
+        <table ng-class="{ 'guest-reports': isGuestReport, 'large-grid': isLargeReport, 'log-reports': isLogReport, 'transaction-reports': isTransactionReport }">
+            <!-- Reports table header -->
+            <thead ng-if="!!headers.length">
+                <tr>
+                    <!-- <th ng-repeat="item in headers track by $index" colspan="{{ $first && 1 || item.span }}" ng-class="{ 'align-right' : $first }">{{ item.value }}</th> -->
+                    <!-- Fix for CICO-10246  -->
+                    <th ng-repeat="item in headers track by $index" colspan="{{ $first && 1 || item.span }}">{{ item.value }}</th>
+                </tr>
+                <tr class="bottom-row" ng-if="subHeaders">
+                    <th ng-repeat="item in subHeaders track by $index">{{ item }}</th>
+                </tr>
+            </thead>
+
+            <!-- GUEST REPORTS: Reports sort by header -->
+            <thead ng-if="!headers.length && !!subHeaders.length">
+                <!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
+                    "sorting-asc" when ASC sorting
+                    "sorting-desc" when DESC sorting -->
+                <tr>
+                    <th ng-repeat="item in subHeaders track by $index">
+                        <span ng-class="{'sort'         : !!chosenReport.sortByOptions[$index],
+                                         'sorting-asc'  : !!chosenReport.sortByOptions[$index] && chosenReport.sortByOptions[$index]['sortDir'] === true,
+                                         'sorting-desc' : !!chosenReport.sortByOptions[$index] && chosenReport.sortByOptions[$index]['sortDir'] === false
+                                     }" ng-click="sortResultBy(chosenReport.sortByOptions[$index])">{{ item }}</span>
+                    </th>
+                </tr>
+            </thead>
+
+            <!-- Reports sort by header -->
+            <thead ng-if="!headers.length && !subHeaders.length">
+                <!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
+                    "sorting-asc" when ASC sorting
+                    "sorting-desc" when DESC sorting -->
+                <tr>
+                    <th ng-repeat="sortBy in chosenReport.sortByOptions track by $index" class="{{ sortBy.description | lowercase }}" colspan="{{ sortBy.colspan }}">
+                        <span class="sort" ng-class="{'sorting-asc': (sortBy.sortDir === true), 'sorting-desc': (sortBy.sortDir === false)}" ng-click="sortResultBy(sortBy)">{{ sortBy.description }}</span>
+                    </th>
+                </tr>
+            </thead>
+
+            <!-- Reports table footer -->
+            <tfoot ng-include="'/assets/partials/reports/rvReportDetailsFooter.html'"></tfoot>
+
+            <!-- Reports table content -->
+            <tbody ng-include="parsedApiTemplate()"></tbody>
+        </table>
+    </div>
+</div>
+
+<div class="search-pagination hk-pagination" ng-show="!disablePrevBtn || !disableNextBtn">
+    <!-- removed buttons since they include +300ms delay on touch pads -->
+    <label class="button dark-grey next" ng-click="fetchNextPage()" ng-class="{'disabled': disableNextBtn}">Next</label>
+    <label class="button dark-grey prev" ng-click="fetchPrevPage()" ng-class="{'disabled': disablePrevBtn}">Previous</label>
+    <p>Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong id="total-count">{{ netTotalCount }}</strong> items</p>
+</div>
