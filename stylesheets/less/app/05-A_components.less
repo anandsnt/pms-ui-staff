@@ -7377,36 +7377,47 @@
                     table-layout: fixed;
 
                     .red { color: @red; }
-
+                    
                     thead {
                         tr {
-                            th {
-                                padding: 0;
+                            th { 
+                                text-align: left;
                                 vertical-align: top;
-                                line-height: 35px;
+                                padding: 0; 
 
                                 span {
                                     color: @white;
                                     padding: 0 10px;
-                                    margin-right: 5px;
                                     background-color: darken(@grey2, 10);
-                                    height: 35px;
-                                    .calc-width(100, 5);
+                                    height: 30px;
                                     .show;
                                     .nowrap();
-                                    .box-shadow(1px 1px 0 rgba(0,0,0,.3)); 
+                                    .box-shadow(1px 1px 0 rgba(0,0,0,.3));
+
+                                    &.sort {
+                                        cursor: pointer;
+                                        background: darken(@grey2, 10) @arrowSort no-repeat 95% 50%;
+                                        padding-right: 40px;
+
+                                        &.sorting-asc { background-image: @arrowSortAsc; }
+                                        &.sorting-desc { background-image: @arrowSortDesc; }
+                                    }
                                 }
                             }
 
                             &.top-row {
-                                [colspan] { 
-                                    font-size: 16px;
-                                    text-align: center;
-                                    color: @white;
-                                    background-color: @gcard; 
-                                    width: 30%;
+                                th {
+                                    font-size: 15px;
+                                    line-height: 30px;
+                                    
+                                    &.date,
+                                    &.code { font-size: 15px; }
 
-                                    &.break { width: 70%; }
+                                    &[colspan] { 
+                                        color: @white;
+                                        background-color: @gcard; 
+                                        text-align: center;
+                                    }
                                 }
                             }
 
@@ -7466,6 +7477,13 @@
                                     }
                                 }
                             }
+
+                            &.undefined {
+                                td {
+                                    color: @grey3;
+                                    font-style: italic;
+                                }
+                            }
                         }
                     }
 
@@ -7490,12 +7508,8 @@
                     }
 
                     .date { width: 100px; }
-
-                    .code { 
-                        width: 120px; 
-
-                        &.long-code { width: 200px; }
-                    }  
+                    .code { width: 120px; }
+                    .long-code { width: 200px; }
 
                     &.medium-grid,
                     &.large-grid {
@@ -7653,7 +7667,7 @@
                                 }
                             }
                         }
-                    }               
+                    }        
                 }
 
                 &.occupancy-footer { .hide; }
