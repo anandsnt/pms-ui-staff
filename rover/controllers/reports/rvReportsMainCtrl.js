@@ -69,6 +69,10 @@ sntRover.controller('RVReportsMainCtrl', [
 			$scope.heading = listTitle;
 			$scope.showSidebar = false;
 			$scope.resetFilterItemsToggle();
+
+			// tell report list controller to refresh scroll
+			console.log('report.list.scroll.refresh');
+			$scope.$broadcast( 'report.list.scroll.refresh' );
 		};
 
 
