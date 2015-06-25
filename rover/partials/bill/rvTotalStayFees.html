@@ -95,7 +95,7 @@
 		+ {{'ADD_PAYMENT_METHOD' | translate}}
 	</button>
 	{{feesData.description()}}
-	<button type="button" class="button with-icon only-icon brand-colors open-modal move-charge" ng-show="isAllChargeCodesSelected() || isAnyOneChargeCodeIsExcluded()" ng-click="moveChargesClicked()">
+	<button type="button" class="button with-icon only-icon brand-colors open-modal move-charge" ng-show="(isAllChargeCodesSelected() || isAnyOneChargeCodeIsExcluded())&& hasMoveToOtherBillPermission()" ng-click="moveChargesClicked()">
         <span class="icons icon-move"></span> 
             Move selected
     </button>
@@ -163,7 +163,7 @@
 					</button>
 				</td>
 				<td>
-					<button type="button" class="button with-icon only-icon brand-colors open-modal" ng-show="isAllChargeCodesSelected() || isAnyOneChargeCodeIsExcluded()" ng-click="moveChargesClicked()">
+					<button type="button" class="button with-icon only-icon brand-colors open-modal" ng-show="(isAllChargeCodesSelected() || isAnyOneChargeCodeIsExcluded())&& hasMoveToOtherBillPermission()" ng-click="moveChargesClicked()">
                     <span class="icons icon-move"></span> 
                     Move selected
               		</button>
