@@ -1,17 +1,17 @@
 sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv', 'RVReservationCardSrv', 'rvUtilSrv', '$state', 'rvPermissionSrv',
 	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv) {
-		
 
-		var summaryMemento, demographicsMemento;	
-		
+
+		var summaryMemento, demographicsMemento;
+
 		/**
 		 * Whether our summary data has changed
 		 * used to remove the unneccessary API calls
 		 * @return {Boolean} [description]
 		 */
-		var whetherSummaryDataChanged = function (){
+		var whetherSummaryDataChanged = function() {
 			var currentSummaryData = $scope.groupConfigData.summary;
-			for (key in summaryMemento){
+			for (key in summaryMemento) {
 				if (!_.isEqual(currentSummaryData[key], summaryMemento[key])) {
 					return false;
 				}
@@ -36,7 +36,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return undefined
 		 */
 		$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
-			if ($scope.isInAddMode() || targetElement.id == 'summary' || 
+			if ($scope.isInAddMode() || targetElement.id == 'summary' ||
 				targetElement.id == "cancel-action" || //TODO: Need to check with Dilip/Shiju PC for more about this
 				whetherSummaryDataChanged() ||
 				$scope.groupSummaryData.isDemographicsPopupOpen || $scope.isUpdateInProgress) {
@@ -57,7 +57,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @param  {Object} data  - new Summary data
 		 * @return undefined
 		 */
-		$scope.$on('UPDATED_GROUP_INFO', function(event, data){
+		$scope.$on('UPDATED_GROUP_INFO', function(event, data) {
 			//data has changed
 			summaryMemento = angular.copy($scope.groupConfigData.summary);
 			$scope.isUpdateInProgress = false;
@@ -73,10 +73,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$scope.groupConfigData.summary.block_from = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
 			//referring data source
-			var refData = $scope.groupConfigData.summary; 
+			var refData = $scope.groupConfigData.summary;
 			if (refData.release_date.toString().trim() == '') {
-				$scope.groupConfigData.summary.release_date = refData.block_from;	
-			}			
+				$scope.groupConfigData.summary.release_date = refData.block_from;
+			}
 
 			// we will clear end date if chosen start date is greater than end date
 			if (refData.block_from > refData.block_to) {
@@ -188,12 +188,12 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			//to date options
 			$scope.toDateOptions = _.extend({
 				onSelect: toDateChoosed
-			}, commonDateOptions);		
+			}, commonDateOptions);
 
 			//release date options
 			$scope.releaseDateOptions = _.extend({
 				onSelect: releaseDateChoosed
-			}, commonDateOptions);					
+			}, commonDateOptions);
 		};
 
 		/**
@@ -207,7 +207,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		/**
 		 * Demographics Popup Handler
 		 * @return undefined
-		 */		
+		 */
 		$scope.openDemographicsPopup = function() {
 			if ($scope.isInAddMode()) {
 				// If the group has not been saved yet, prompt user for the same
@@ -325,7 +325,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					//: Handle successful release
 					// $scope.groupConfigData.summary.release_date = $rootScope.businessDate;
 					$scope.closeDialog();
-					$scope.refreshSummaryTab();
+					fetchSummaryData();
 				},
 				onReleaseRoomsFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage
@@ -619,10 +619,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @param  {Object} data
 		 * @return undefined
 		 */
-		var fetchSuccessOfSummaryData = function (data) {
+		var fetchSuccessOfSummaryData = function(data) {
 			$scope.groupConfigData.summary = _.extend($scope.groupConfigData.summary, data.groupSummary);
 
-			summaryMemento = _.extend({}, $scope.groupConfigData.summary);			
+			summaryMemento = _.extend({}, $scope.groupConfigData.summary);
 		};
 
 		/**
@@ -661,8 +661,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @param  {[type]} argument [description]
 		 * @return {[type]}          [description]
 		 */
-		var initializeVariables = function (argument) {
-			
+		var initializeVariables = function(argument) {
+
 			$scope.groupSummaryData = {
 				releaseOnDate: $rootScope.businessDate,
 				demographics: null,
@@ -699,15 +699,15 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$scope.$emit("updateRoverLeftMenu", "menuCreateGroup");
 
 			//we have a list of scope varibales which we wanted to initialize
-			initializeVariables ();
+			initializeVariables();
 
 			//IF you are looking for where the hell the API is CALLING
 			//scroll above, and look for the event 'GROUP_TAB_SWITCHED'
 
 			//date related setups and things
-			setDatePickerOptions();	
+			setDatePickerOptions();
 
-			$scope.computeSegment();			
+			$scope.computeSegment();
 		}();
 	}
 ]);
