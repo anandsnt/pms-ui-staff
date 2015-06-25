@@ -188,9 +188,9 @@ admin.controller('ADRatesAddonsCtrl', [
 			var today = tzIndependentDate();
             var weekAfter = today.setDate(today.getDate() + 7);
 
-            // the inital dates to business date
-            $scope.singleAddon.begin_date = $scope.businessDate;
-			$scope.singleAddon.end_date   = $scope.businessDate;
+            // the inital dates to business date // CICO-17736 Addons can have blank begin-end dates
+   			$scope.singleAddon.begin_date = null;
+			$scope.singleAddon.end_date   = null;
 		};
 
 		// listen for datepicker update from ngDialog
@@ -268,13 +268,13 @@ admin.controller('ADRatesAddonsCtrl', [
 				// where the dates are not set
 				// set the date to current business date
 				if ( !$scope.singleAddon.begin_date ) {
-					$scope.singleAddon.begin_date = $scope.businessDate;
+					$scope.singleAddon.begin_date = null; // CICO-17736 Addons can have blank begin-end dates
 					$scope.singleAddon.begin_date_for_display = "";
 				}else{
 					$scope.singleAddon.begin_date_for_display = $filter('date')(tzIndependentDate($scope.singleAddon.begin_date), $rootScope.dateFormat);
 				}
 				if ( !$scope.singleAddon.end_date ) {
-					$scope.singleAddon.end_date = $scope.businessDate;
+					$scope.singleAddon.end_date = null; // CICO-17736 Addons can have blank begin-end dates
 					$scope.singleAddon.end_date_for_display = "";
 				}else{
 					$scope.singleAddon.end_date_for_display   = $filter('date')(tzIndependentDate($scope.singleAddon.end_date), $rootScope.dateFormat);
