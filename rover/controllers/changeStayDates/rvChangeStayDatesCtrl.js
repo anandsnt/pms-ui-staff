@@ -487,12 +487,14 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			setFlagForPreAuthPopup();
 
 			if(!$scope.message_incoming_from_room && !$scope.message_out_going_to_room && !$scope.message_out_going_to_comp_tra){
-				
 				performCCAuthAndconfirmUpdatesProcess(postParams);
  		    }
- 		    else{
+ 		    else if($scope.requireAuthorization){
  		    	// CICO-17266 PMS: Rover - CC Auth should consider Billing Information.
 				showPreAuthPopupWithBillingInfo(postParams);
+ 		    }
+ 		    else{
+ 		    	performCCAuthAndconfirmUpdatesProcess(postParams);
  		    }
 		};
 		/*
