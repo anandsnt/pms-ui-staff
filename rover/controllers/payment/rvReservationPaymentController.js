@@ -1,4 +1,4 @@
-sntRover.controller('reservationPaymentController',['$scope','$rootScope','rvPermissionSrv', function($scope,$rootScope,rvPermissionSrv){
+sntRover.controller('reservationPaymentController',['$scope','$rootScope', function($scope,$rootScope){
 	$scope.getHasButtonClass = function(status,isCC){
 		
 		var hasButtonClass = "has-button";
@@ -16,16 +16,9 @@ sntRover.controller('reservationPaymentController',['$scope','$rootScope','rvPer
 		if(status == 'NOSHOW' || status == 'CHECKEDOUT' || status == 'CANCELED'){
 			display = false;
 		}
-                //then check if the current user has permission
-                if (!$scope.hasPermissionToCreateKeys()){
-                    display = false;
-                }
 		return display;
 	
 	};
-        $scope.hasPermissionToCreateKeys = function() {
-			return rvPermissionSrv.getPermissionValue('CREATE_KEY');
-		};
 	// Update while changing credit card from bill screen.
 	$rootScope.$on('UPDATEDPAYMENTLIST', function(event, data) {
 			$scope.reservationData.reservation_card.payment_details.card_type_image = data.card_code+".png";
