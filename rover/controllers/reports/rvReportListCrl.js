@@ -96,5 +96,13 @@ sntRover.controller('RVReportListCrl', [
             $scope.genReport();
         };
 
+
+        var serveRefresh = $scope.$on('report.list.scroll.refresh', function() {
+            $timeout($scope.refreshScroller.bind($scope, 'report-list-scroll'), 100);
+        });
+
+        // removing event listners when scope is destroyed
+        $scope.$on( 'destroy', serveRefresh );
+
     }
 ]);
