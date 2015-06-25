@@ -320,7 +320,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					//: Handle successful release
 					// $scope.groupConfigData.summary.release_date = $rootScope.businessDate;
 					$scope.closeDialog();
-					$scope.refreshSummaryTab();
+					fetchSummaryData();
 				},
 				onReleaseRoomsFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage
