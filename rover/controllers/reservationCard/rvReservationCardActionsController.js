@@ -445,8 +445,6 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         list[x].isCompleted = true;
                         list[x].date_completed = getFormattedDate(list[x].completed_at);
                         list[x].time_completed = getCompletedTimeFromDateMilli(list[x].completed_at);
-                        list[x].completed_by = list[x].assigned_to;
-                       // list[x].date_completed = '10/27/2015';
                     }
                 }
                 
@@ -525,8 +523,6 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         list[x].isCompleted = true;
                         list[x].date_completed = getFormattedDate(list[x].completed_at);
                         list[x].time_completed = getCompletedTimeFromDateMilli(list[x].completed_at);
-                        list[x].completed_by = list[x].assigned_to;
-                      //  list[x].date_completed = '10/27/2015';
                     }
                     
                     
