@@ -27,7 +27,7 @@
 
 		<div class="price-set-title application">
 
-			<label ng-if="hasPermissionToUpdateRates()" for="cb_price" class="checkbox" ng-click="daysOptions.applyToPrice = !daysOptions.applyToPrice" ng-show="popupData.fromRoomTypeView">
+			<label ng-if="hasPermissionToUpdateRates()" for="cb_price" class="checkbox" ng-click="daysOptions.applyToPrice = !daysOptions.applyToPrice" ng-show="popupData.fromRoomTypeView" ng-hide="calendarData.is_child">
 				<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.applyToPrice}"></span>
 				<input id="cb_price" type="checkbox" ng-model="daysOptions.applyToPrice">
 				<span>APPLY TO PRICE </span> 
