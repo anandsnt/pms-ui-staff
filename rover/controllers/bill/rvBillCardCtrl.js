@@ -1041,10 +1041,12 @@ sntRover.controller('RVbillCardController',
 	$scope.continueWithoutCC = function(){
 		$scope.reservationBillData.is_cc_authorize_at_checkin_enabled = false;
 		$scope.clickedCompleteCheckin(true);
+		$scope.closeDialog();
 	};
 
 	$scope.continueAfterSuccessAuth = function(){
 		$scope.triggerKeyCreationProcess();
+		$scope.closeDialog();
 	};
 	
 	// Normal checkin process success.

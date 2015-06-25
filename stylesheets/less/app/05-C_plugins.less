@@ -3823,16 +3823,20 @@
 				}
 
 				.actions {
-					display: flex;
+					display: -webkit-box;
+				    display: -webkit-flex;
+				    display: flex;
 					.size(140px, 100%);
 					
 					textarea {
 						justify-content: flex-start;
+						-webkit-justify-content: flex-start;
 						.calc-width(100, 160);
 					}
 
 					.post {
 						justify-content: flex-end;
+						-webkit-justify-content: flex-end;
 						margin-left: 20px;
 						width: 140px;
 					}
