@@ -1,5 +1,5 @@
-sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ngDialog', 'RVKeyPopupSrv',  'RVReservationCardSrv',
-	function($state, $rootScope, $scope, ngDialog, RVKeyPopupSrv, RVReservationCardSrv){
+sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ngDialog', 'RVKeyPopupSrv',  'RVReservationCardSrv','rvPermissionSrv',
+	function($state, $rootScope, $scope, ngDialog, RVKeyPopupSrv, RVReservationCardSrv,rvPermissionSrv){
 	BaseCtrl.call(this, $scope);
 	$scope.encoderTypes = [];
 	$scope.getRoomClass = function(reservationStatus){
@@ -74,8 +74,15 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		if((reservationStatus == 'CHECKING_IN' && $scope.reservationData.reservation_card.room_number != '')|| reservationStatus == 'CHECKING_OUT' || reservationStatus == 'CHECKEDIN'){
 			showKey = true;
 		}
+                //then check if the current user has permission
+                if (!$scope.hasPermissionToCreateKeys()){
+                    showKey = false;
+                }
 		return showKey;
 	};
+        $scope.hasPermissionToCreateKeys = function() {
+                return rvPermissionSrv.getPermissionValue('CREATE_KEY');
+        };
 	$scope.addHasButtonClass = function(reservationStatus,  isUpsellAvailable){
 		var hasButton = "";
 		if($scope.showKeysButton(reservationStatus) && $scope.showUpgradeButton(reservationStatus,  isUpsellAvailable)){
