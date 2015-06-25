@@ -86,52 +86,79 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		}
 		return hasButton;
 	};
-	
 	// To handle click of key icon.
-	$scope.clickedIconKey = function(event){
-		event.stopPropagation();
+	$scope.clickedIconKey = function(){
 		var keySettings = $scope.reservationData.reservation_card.key_settings;
+                console.log('clicked key icon: ');
+                console.log($scope.reservationData.reservation_card.reservation_status);
 		$scope.viewFromBillScreen = false;
 		if(keySettings === "email"){
-			
-			ngDialog.open({
-				 template: '/assets/partials/keys/rvKeyEmailPopup.html',
-				 controller: 'RVKeyEmailPopupController',
-				 className: '',
-				 scope: $scope
-			});
-		}
-		else if(keySettings === "qr_code_tablet"){
+                    ngDialog.open({
+                        template: '/assets/partials/keys/rvKeyEmailPopup.html',
+                        controller: 'RVKeyEmailPopupController',
+                        className: '',
+                        scope: $scope
+                    });
+		} else if ($scope.reservationData.reservation_card.reservation_status !== 'CHECKING_IN'){ 
+                    ngDialog.open({
+                        template: '/assets/partials/keys/rvKeyPopupNewDuplicate.html',
+                        controller: 'RVKeyQRCodePopupController',
+                        className: '',
+                        scope: $scope
+                    });	
+                } else if ($scope.reservationData.reservation_card.reservation_status === 'CHECKING_IN'){
+                    $scope.newKeyInit();
+                }
+	};
+        
+        $scope.keyInitPopup = function(){
+            
+		var keySettings = $scope.reservationData.reservation_card.key_settings;
+		 if(keySettings === "qr_code_tablet"){
 
-			//Fetch and show the QR code in a popup
-			var	reservationId = $scope.reservationData.reservation_card.reservation_id;
+                    //Fetch and show the QR code in a popup
+                    var	reservationId = $scope.reservationData.reservation_card.reservation_id;
 
-			var successCallback = function(data){
-				$scope.$emit('hideLoader');
-				$scope.data = data;
-				ngDialog.open({
-					 template: '/assets/partials/keys/rvKeyQrcodePopup.html',
-					 controller: 'RVKeyQRCodePopupController',
-					 className: '',
-					 scope: $scope
-				});	
-			}
+                    var successCallback = function(data){
+                            $scope.$emit('hideLoader');
+                            $scope.data = data;
 
-			$scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData,{ "reservationId": reservationId }, successCallback);  
+                        ///put NEW / Duplicate here
+                            ngDialog.open({
+                                     template: '/assets/partials/keys/rvKeyQrcodePopup.html',
+                                     controller: 'RVKeyQRCodePopupController',
+                                     className: '',
+                                     scope: $scope
+                            });	
+                    };
 
-			
-			
+                    $scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData,{ "reservationId": reservationId }, successCallback);  
 		}
 		
 		//Display the key encoder popup
 		else if(keySettings === "encode"){
-			if($scope.reservationData.reservation_card.hotel_selected_key_system == 'SAFLOK_MSR' && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0){
-				fetchEncoderTypes();
-			} else {
-				openKeyEncodePopup();
-			}
+			console.log("keySettings ----" + keySettings);
+			console.log($scope.reservationData.reservation_card.is_remote_encoder_enabled);
+			console.log($scope.encoderTypes);
+                    if($scope.reservationData.reservation_card.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0){
+                        fetchEncoderTypes();
+                    } else {
+                        openKeyEncodePopup();
+                    }
 		}
-	};
+        };
+        
+        $scope.duplicateKeyInit = function(){
+            $scope.keyType = 'Duplicate';
+            $scope.keyInitPopup();
+            $rootScope.$broadcast('MAKE_KEY_TYPE',{type:'Duplicate'});
+        };
+        
+        $scope.newKeyInit = function(){
+            $scope.keyType = 'New';
+            $scope.keyInitPopup();
+            $rootScope.$broadcast('MAKE_KEY_TYPE',{type:'New'});
+        };
 
 	var openKeyEncodePopup = function(){
 		ngDialog.open({
@@ -140,15 +167,16 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		    className: '',
 		    scope: $scope
 		});
-	}
+	};
 
-	//Fetch encoder types for SAFLOK_MSR
+	//Fetch encoder types for if remote encoding enabled
 	var fetchEncoderTypes = function(){
+		console.log("fetchEncoderTypes");
 
 		var encoderFetchSuccess = function(data){
 			$scope.$emit('hideLoader');
 			$scope.encoderTypes = data;
-
+			console.log($scope.encoderTypes);
 			openKeyEncodePopup();
 		};
 
@@ -162,7 +190,7 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		$scope.$emit('hideLoader');
 	};
 
-	$scope.goToRoomUpgrades = function(){
+	$scope.goToRoomUpgrades = function(){	
 		$state.go("rover.reservation.staycard.upgrades", {reservation_id:$scope.reservationData.reservation_card.reservation_id, "clickedButton": "upgradeButton"});
 	}
 

@@ -50,18 +50,22 @@
                             <strong>{{ printRegCardData.confirm_no }}</strong>
                         </td>
                     </tr>
-                    <tr ng-if="printRegCardData.arrival_time || printRegCardData.departure_time">
+                    <tr>
                         <td>
-                            <span ng-if="printRegCardData.arrival_time">ARRIVAL TIME:</span>
-                            <strong ng-if="printRegCardData.arrival_time">{{ printRegCardData.arrival_time }}</strong>
+                            <span>ARRIVAL TIME:</span>
+                            <strong>{{ printRegCardData.arrival_time }}</strong>
                             <span>&nbsp;</span>
                         </td>
                         <td>
-                            <span ng-if="printRegCardData.departure_time">DEPARTURE TIME:</span>
-                            <strong ng-if="printRegCardData.departure_time">{{ printRegCardData.departure_time }}</strong>
+                            <span>DEPARTURE TIME:</span>
+                            <strong>{{ printRegCardData.departure_time }}</strong>
                             <span>&nbsp;</span>
                         </td>
-                        <td>&nbsp;</td>
+                        <td>
+                        	<span>ROOM:</span>
+                        	<strong>{{ printRegCardData.room_number}}</strong>
+                        	<span>&nbsp;</span>
+                        </td>
                     </tr>
                     <tr>
                         <td>

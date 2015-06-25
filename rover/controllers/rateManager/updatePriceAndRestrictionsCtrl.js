@@ -656,22 +656,25 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
             var datesSelected = getAllSelectedDates();
 
             var data = {};
-            data.rate_id = $scope.popupData.selectedRate;
-
-            if ($scope.popupData.fromRoomTypeView || $scope.ratesRoomsToggle == 'ROOMS') {
-                data.room_type_id = $scope.popupData.selectedRoomType;
-                delete data.rate_id;
+             data.rate_id = $scope.popupData.selectedRate;
+            if ($scope.ratesRoomsToggle !== 'RATES'){
+                if ($scope.popupData.fromRoomTypeView || $scope.ratesRoomsToggle == 'ROOMS') {
+                    data.room_type_id = $scope.popupData.selectedRoomType;
+                    delete data.rate_id;
+                }
             }
+            
+            data.room_type_id = $scope.popupData.selectedRoomType;
             data.details = calculateDetailsToSave(datesSelected);
             var saveRestrictionSuccess = function () {
                 $scope.refreshCalendar();
                 ngDialog.close();
                 
                 $scope.$emit('showLoader');
+                $rootScope.$broadcast('loadingRooms', true);
                 setTimeout(function(){
-                        $scope.$emit('showLoader');
                         $scope.refreshCalendar();
-                }, 100)
+                }, 250);
             };
 
             $scope.invokeApi(UpdatePriceAndRestrictionsSrv.savePriceAndRestrictions, data, saveRestrictionSuccess);
@@ -726,7 +729,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
                             }
                         }
                     }
-
                 }
                 if (room_types_with_override.length > 0) {
                     occupancyOverrides = 'true';

@@ -1,0 +1,43 @@
+<tr ng-repeat="item in results | filter:{ is_charge_group: undefined }">
+	<td class="code long-code break">{{ item.section }} </td>
+	<td class="break">{{ item.today }}</td>
+	<td>{{ item.mtd | currency:currencySymbol:2 }}</td>
+	<td>{{ item.last_year_mtd | currency:currencySymbol:2 }}</td>
+	<td class="break" ng-class="{ 'red': item.mtd_variance < 0 }">{{ item.mtd_variance }}%</td>
+	<td>{{ item.ytd | currency:currencySymbol:2 }}</td>
+	<td>{{ item.last_year_ytd | currency:currencySymbol:2 }}</td>
+	<td ng-class="{ 'red': item.ytd_variance < 0 }">{{ item.ytd_variance }}%</td>
+</tr>
+<tr class="total" ng-repeat="item in results | filter:{ is_total_revenue: true }">
+	<td class="code long-code break">{{ item.section }}</td>
+	<td class="break">{{ item.today }}</td>
+	<td>{{ item.mtd | currency:currencySymbol:2 }}</td>
+	<td>{{ item.last_year_mtd | currency:currencySymbol:2 }}</td>
+	<td class="break" ng-class="{ 'red': item.mtd_variance < 0 }">{{ item.mtd_variance }}%</td>
+	<td>{{ item.ytd | currency:currencySymbol:2 }}</td>
+	<td>{{ item.last_year_ytd | currency:currencySymbol:2 }}</td>
+	<td ng-class="{ 'red': item.ytd_variance < 0 }">{{ item.ytd_variance }}%</td>
+</tr>
+
+
+
+<tr class="grouped">
+	<td class="code long-code break"><strong>Revenue by Charge Group</strong></td>
+    <td class="break">Today</td>
+    <td>MTD</td>
+    <td>Last Year MTD</td>
+    <td class="break">% Variance</td>
+    <td>YTD</td>
+    <td>Last Year YTD</td>
+    <td>% Variance</td>
+</tr>
+<tr ng-repeat="item in results | filter:{ is_charge_group: true }">
+	<td class="code long-code break"><em>{{ item.section }}</em></td>
+	<td class="break">{{ item.today }}</td>
+	<td>{{ item.mtd | currency:currencySymbol:2 }}</td>
+	<td>{{ item.last_year_mtd | currency:currencySymbol:2 }}</td>
+	<td class="break" ng-class="{ 'red': item.mtd_variance < 0 }">{{ item.mtd_variance }}%</td>
+	<td>{{ item.ytd | currency:currencySymbol:2 }}</td>
+	<td>{{ item.last_year_ytd | currency:currencySymbol:2 }}</td>
+	<td ng-class="{ 'red': item.ytd_variance < 0 }">{{ item.ytd_variance }}%</td>
+</tr>

@@ -36,4 +36,25 @@
 "MAINTENANCE_REASONS":"Maintenance Reasons",
 "MAINTENANCE_REASON_PLACEHOLDER":"Enter maintenance reason",
 "ROOM_KEY_DELIVERY_MESSAGE_TITLE": "Enter room key delivery message",
-"SEND_INTERFACE_REQUEST": "Send Interface Request per status type"
+"SEND_INTERFACE_REQUEST": "Send Interface Request per status type",
+"KEY_A": "Key A",
+"KEY_A_PLACEHOLDER": "Key A",
+"KEY_B": "Key B",
+"KEY_B_PLACEHOLDER": "Key B",
+"SECTOR_AID": "Sector AID",
+"SECTOR_AID_PLACEHOLDER": "Sector AID",
+"REMOVE_ROOM_NUMBER_LEADING_ZEROS": "Remove room number leading zeros",
+"ENABLE_REMOTE_ENCODING": "Enable remote encoding",
+"ENABLE_MOBILE_APP_KEY": "Enable mobile app key",
+"DOOR_LOCK_INTERFACE": "Door Lock Interface",
+"SUPPORTED_KEY_CARD_TYPES": "Supported key card types",
+"MIFARE_AUTHENTICATION": "MiFare Authentication",
+"OTHER_SETTINGS" : "Other settings",
+"AUTHENTICATION_KEY_TYPE" : "Authentication key types"
+
+
+
+
+
+
+

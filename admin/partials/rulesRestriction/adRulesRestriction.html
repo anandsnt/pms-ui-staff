@@ -50,7 +50,9 @@
 								<td>
 									<span class="toggle" ng-click="toggleRulesListShow()" ng-show="showPolicyArrow()"></span>
 									<a class="inline" ng-click="toggleRulesListShow()"> {{ item.description }} </a>
-									<em class="action add" ng-click="openAddNewRule()" translate>ADD_NEW_RULE</em>
+									<em class="action add" ng-click="openAddNewRuleForCancelationPolicy()" translate ng-if="item.description =='Cancellation Penalties'">ADD_NEW_RULE </em>
+									<em class="action add" ng-click="openAddNewRuleForDepositePolicy()" translate ng-if="item.description =='Deposit Requests'">ADD_NEW_RULE </em>
+
 								</td>
 								<td class="activate text-left">
 									<div class="entry">

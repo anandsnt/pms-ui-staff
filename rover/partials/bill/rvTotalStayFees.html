@@ -22,7 +22,7 @@
 		Invoice
 	</button>
 	<!-- Button to print registration card, show only for check ins  -->
-	<button ng-show="isStandAlone && clickedButton == 'checkinButton'" type="button" ng-click="printRegistrationCard()" class="button with-icon brand-colors">
+	<button ng-show="isStandAlone" type="button" ng-click="printRegistrationCard()" class="button with-icon brand-colors">
 		<span class="icons icon-print"></span> 
 		Registration Card
 	</button>
@@ -94,6 +94,11 @@
 	<button type="button" class="add-new-button" ng-show="billData.credit_card_details.payment_type == null" ng-click="clickedAddUpdateCCButton()">
 		+ {{'ADD_PAYMENT_METHOD' | translate}}
 	</button>
+	{{feesData.description()}}
+	<button type="button" class="button with-icon only-icon brand-colors open-modal move-charge" ng-show="isAllChargeCodesSelected() || isAnyOneChargeCodeIsExcluded()" ng-click="moveChargesClicked()">
+        <span class="icons icon-move"></span> 
+            Move selected
+    </button>
 </div>
 
 <!-- Signature -->
@@ -122,6 +127,11 @@
 				<th><span translate>CREDITS</span></th>
 				<th class="form"><span translate>BILL</span> #</th>
 				<th class="action"><span translate>EDIT</span></th>
+				<th class="action" ng-if="hasMoveToOtherBillPermission()"><label class="checkbox inline">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked':isAllChargeCodesSelected(),'semi-checked':isAnyOneChargeCodeIsExcluded()}"></span>
+                    <input id="bill-1-all" ng-model="reservationBillData.isAllChargeCodeSelected" type="checkbox" ng-change="selectAllChargeCodeToggle()">
+               		 </label>
+           		 </th>
 			</tr>
 		</thead>
 		<!-- Total Stay fees details in CHECK IN status. -->
@@ -129,10 +139,10 @@
 			<tr class="active edit">
 				<td colspan="3" class="total-label">
 					<!-- Show email and print buttons -->
-					<button type="button" ng-click="clickedEmail()" class="button with-icon only-icon blue" ng-show="isStandAlone">
+					<button type="button" ng-click="clickedEmail()" class="button with-icon only-icon blue inline" ng-show="isStandAlone">
 						 <span class="icons icon-email"></span> 
 					</button>
-					<button type="button" ng-click="clickedPrint()" class="button with-icon only-icon blue" ng-show="isStandAlone"> 
+					<button type="button" ng-click="clickedPrint()" class="button with-icon only-icon blue inline" ng-show="isStandAlone"> 
 						<span class="icons icon-print"></span> 
 					</button> 
 					<span translate>STAY_FEES_AS_OF</span>
@@ -151,6 +161,12 @@
 						<span class="icons icon-pencil"></span> 
 						<span translate>EDIT</span>
 					</button>
+				</td>
+				<td>
+					<button type="button" class="button with-icon only-icon brand-colors open-modal" ng-show="isAllChargeCodesSelected() || isAnyOneChargeCodeIsExcluded()" ng-click="moveChargesClicked()">
+                    <span class="icons icon-move"></span> 
+                    Move selected
+              		</button>
 				</td>
 			</tr>
 			<!-- Show balance -->
@@ -172,9 +188,11 @@
 				</td>
 				<td>
 					<button type="button" class="button with-icon only-icon green" ng-click='showAdvancedBillDialog()' ng-show="showPayButton"> 
-						<span class="icons icon-wallet"></span> {{ 'PAY' | translate }}</span>  
+						<span class="icons icon-wallet"></span>
+						{{ 'PAY' | translate }}
 					</button>
 				</td>
+				<td></td>
 			</tr>
 			<tr class="active edit" ng-show="showGuestBalance(reservationBillData.reservation_status)">
 				<td colspan="3" class="total-label"> 
@@ -191,6 +209,7 @@
 						{{totalFeesArray.balance_amount}} 
 					</strong>
 				</td>
+				<td></td>
 				<td></td>
 			</tr>
 		</tfoot>
@@ -255,6 +274,12 @@
 						<span translate>EDIT</span> 
 					</button>
 				</td>
+				<td class="action" ng-if="hasMoveToOtherBillPermission()">
+	                <label class="checkbox inline"> 
+	                    <span class="icon-form icon-checkbox" ng-class="{'checked':feesData.isSelected}"></span>
+	                    <input ng-model="feesData.isSelected" type="checkbox"/>
+	                </label>
+            	</td>
 			</tr>
 		</tbody>
 	</table>

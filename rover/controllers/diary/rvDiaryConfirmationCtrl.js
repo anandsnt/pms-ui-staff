@@ -7,7 +7,8 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
     'rvDiaryUtil',
     '$filter',
     '$timeout',
-    function($scope, $rootScope, $state, $vault, ngDialog, rvDiarySrv, util, $filter, $timeout) {
+    'RVReservationBaseSearchSrv',
+    function($scope, $rootScope, $state, $vault, ngDialog, rvDiarySrv, util, $filter, $timeout, RVReservationBaseSearchSrv) {
         BaseCtrl.call(this, $scope);
 
         $scope.title = ($scope.selectedReservations.length > 1 ? 'these rooms' : 'this room');
@@ -126,23 +127,36 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
         $scope.routeToSummary = function() {
             /*$scope.reset_guest_details();
             $scope.reset_company_details();
-            $scope.reset_travel_details();*/
-            $scope.saveToVault('temporaryReservationDataFromDiaryScreen', $scope.vaultSelections);
-            //CICO-9429                  
-            if ($rootScope.isAddonOn) {
-                var arrival_date = $scope.vaultSelections.arrival_date;
-                var departure_date = $scope.vaultSelections.departure_date;
-                $state.go('rover.reservation.staycard.mainCard.addons', {
-                    "from_date": arrival_date,
-                    "to_date": departure_date,
-                    "reservation": 'HOURLY'
-                });
-            } else {
-                $state.go('rover.reservation.staycard.mainCard.summaryAndConfirm', {
-                    reservation: 'HOURLY'
-                });
+            $scope.reset_travel_details();*/            
+            var fetchSuccess = function(isAddonsConfigured){      
+                $scope.saveToVault('temporaryReservationDataFromDiaryScreen', $scope.vaultSelections);
+                //CICO-9429                  
+                if ($rootScope.isAddonOn&&isAddonsConfigured) {
+                    var arrival_date = $scope.vaultSelections.arrival_date;
+                    var departure_date = $scope.vaultSelections.departure_date;
+                    $state.go('rover.reservation.staycard.mainCard.addons', {
+                        "from_date": arrival_date,
+                        "to_date": departure_date,
+                        "reservation": 'HOURLY'
+                    });
+                } else {
+                    $state.go('rover.reservation.staycard.mainCard.summaryAndConfirm', {
+                        reservation: 'HOURLY'
+                    });
+                }
+                $scope.closeWithAnimation ();
             }
-            $scope.closeWithAnimation ();
+            var fetchFailed = function(errorMessage){
+                $scope.errorMessage = errorMessage;
+                $scope.closeWithAnimation();
+            }
+            var params = {};
+                params.from_date = $scope.vaultSelections.arrival_date;
+                params.to_date = $scope.vaultSelections.departure_date;
+                params.is_active = true;
+            //Fetches whether any configured addons are available.
+            //CICO-16874
+            $scope.invokeApi(RVReservationBaseSearchSrv.hasAnyConfiguredAddons,params,fetchSuccess,fetchFailed); //CICO-16874           
         };
 
         // save data to $vault

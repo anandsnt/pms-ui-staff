@@ -1,5 +1,5 @@
 <span id="reservation-card-payment" ng-controller="reservationPaymentController">
-	<form method="post" class="block-item item-payment float" ng-class="getHasButtonClass(reservationData.reservation_card.reservation_status)" action="">
+	<form method="post" class="block-item item-payment float" ng-class="getHasButtonClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.payment_method_used === 'CC')" >
 		<h3 class="block-title">
 			{{ 'PAYMENT_METHOD' | translate }}
 			<span ng-if="reservationData.reservation_card.guarentee_type && reservationData.reservation_card.guarentee_type!=''">
@@ -7,7 +7,7 @@
 			</span>
 		</h3>		
 		<!-- The credit card selection popup is not available for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' reservations -->
-		<a ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" class="next-view open-modal" ng-if="reservationData.reservation_card.payment_method_used == 'CC'" ng-click="openPaymentList()">
+		<a ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" class="next-view" ng-if="reservationData.reservation_card.payment_method_used == 'CC'" ng-click="openPaymentList()">
 			<figure class="card-logo">
 				<img ng-src="/assets/{{reservationData.reservation_card.payment_details.card_type_image}}" alt="">
 			</figure> 
@@ -31,27 +31,30 @@
 		    <!--  CC display option 5 - Not swiped, authentication failed: -->
             <span ng-show="!reservationData.reservation_card.payment_details.is_swiped && reservationData.reservation_card.payment_details.auth_color_code =='red' && isStandAlone" class="icons icon-authentication-failed">Credit card authentication failed</span>
 		</a>
-		
+
 		<a ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" class="next-view" ng-show="reservationData.reservation_card.payment_method_used !== 'CC' && reservationData.reservation_card.payment_method_used !== '' && reservationData.reservation_card.payment_method_used !== null">
 	  			<span class="value code"></span>
 	  			{{ reservationData.reservation_card.payment_method_description }}
 		</a>
-		<div  ng-click="showAddNewPaymentModel()" class="actions payment_actions" ng-show="displayButton(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.payment_method_used !== null && reservationData.reservation_card.payment_method_used === 'CC'">
-		<!-- CICO-9719 -->
-		<!-- 	<a class="button with-icon green" > 
-				<span class="icons icon-wallet"></span> {{ 'UPDATE_CC' | translate }}
-			</a> -->
-			<a class="add-new-button open-modal update-centre" > {{ 'UPDATE' | translate }}</a>
-		</div>
+		
+		<!-- CICO-17067 : If there are buttons to show, otput this as well: -->
+	    <div class="actions">
+
+	        <button ng-click="showAuthAmountPopUp()" ng-show="displayButton(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.payment_method_used === 'CC' && isStandAlone && !reservationData.reservation_card.is_hourly_reservation" type="button" class="button green with-icon">
+	            <span class="icons icon-cc"></span>
+	            {{ 'CC_AUTH' | translate }}
+	        </button>
+
+			<button  ng-click="showAddNewPaymentModel()" class="payment_actions" ng-show="displayButton(reservationData.reservation_card.reservation_status)">
+				<a class="add-new-button" > + {{ 'ADD' | translate }}</a>
+			</button>
+
+	    </div>
+		
 		<a ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" class="next-view" ng-show="reservationData.reservation_card.payment_method_used === '' || reservationData.reservation_card.payment_method_used === null" ng-click="openPaymentList()">
 	  			<span class="value code"></span>
 	  			{{ 'PAYMENT_NOT_ADDED' | translate }}
 		</a>
-		<div ng-click="showAddNewPaymentModel()" class="actions payment_actions" ng-show="displayButton(reservationData.reservation_card.reservation_status) && (reservationData.reservation_card.payment_method_used === '' || reservationData.reservation_card.payment_method_used === null)">
-			<a class="add-new-button open-modal" > + {{ 'ADD' | translate }}</a>
-		</div>
-		<div ng-click="showAddNewPaymentModel()" class="actions payment_actions" ng-show="displayButton(reservationData.reservation_card.reservation_status) &&  reservationData.reservation_card.payment_method_used !== null &&  reservationData.reservation_card.payment_method_used !== 'CC'">
-			<a class="add-new-button open-modal update-centre" > {{ 'UPDATE' | translate }}</a>
-		</div>
+
 	</form> 
 </span>

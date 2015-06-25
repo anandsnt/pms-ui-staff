@@ -1,4 +1,8 @@
 	
 	"SETTINGS_AND_PARAMS":"Settings & Parameters",
     "CHANGE_BUSSINESS_DAY":"Change Business Day",
-    "TIME_TO_CHANGE_BUSSINESS_DATE":"Time to change business date"
+    "TIME_TO_CHANGE_BUSSINESS_DATE":"Time to change business date",
+    "CC_BATCH_PROCESSING" : "CC Batch Processing",
+    "AUTO_SETTLEMENT_BY_EOD" : "Auto-Settlement by EOD"
+
+

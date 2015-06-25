@@ -53,5 +53,20 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 				'segment_id': parseInt($scope.reservationParentData.demographics.segment)
 			}, updateSuccess, updateFailure);
 		}
+
+		$rootScope.$on('UPDATERESERVATIONTYPE', function(e, data) {
+            
+            $scope.reservationParentData.demographics.reservationType = data;
+
+            var selectedReservationGuaranteeType = _.where($scope.otherData.reservationTypes, {
+				value: parseInt($scope.reservationParentData.demographics.reservationType)
+			});
+			if (selectedReservationGuaranteeType.length > 0) {
+				$scope.reservationData.reservation_card.guarentee_type = selectedReservationGuaranteeType[0].name;
+			} else {
+				$scope.reservationData.reservation_card.guarentee_type = "";
+			}
+        });
+
 	}
 ]);

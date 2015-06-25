@@ -3,7 +3,7 @@
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <!-- Header -->
         <header class="cards-header">
-            <div id="group-card-header" class="card-header">
+            <div id="group-card-header" class="card-header" ng-class="{'no-print' : addNoPrintClass}">
                 <form>
                     <div class="holder">
                         <div class="entry">
@@ -34,30 +34,48 @@
             <div  id="group-card-content" class="card-tabs card-content">
                 <!-- Group tabs navigation -->
                 <ul id="group-card-tabs-nav" class="card-tabs-nav no-print">
-                    <li click-touch="switchTabTo('SUMMARY')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'SUMMARY'}">
-                        <a>Summary</a>
+                    <li  ng-click="switchTabTo('SUMMARY')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'SUMMARY'}">
+                        <a id="summary">Summary</a>
                     </li>
                     <li class="with-filters" ng-click="switchTabTo('ROOM_BLOCK')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ROOM_BLOCK'}">
                         <a>Room Block Details</a>
                     </li>
-                    <li click-touch="switchTabTo('ACCOUNT')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ACCOUNT'}">
+                    <li ng-click="switchTabTo('ACCOUNT')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ACCOUNT'}">
                         <a id="AccountTab">Account</a>
                     </li>
                     <li ng-show="shouldShowRoomingListTab()" class="with-filters" ng-click="switchTabTo('ROOMING')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ROOMING'}">
                         <a>Rooming List</a>
                     </li>
-                    <li click-touch="switchTabTo('TRANSACTIONS')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'TRANSACTIONS'}">
+                    <li ng-click="switchTabTo('TRANSACTIONS')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'TRANSACTIONS'}">
                         <a>Transactions</a>
                     </li>
-                    <li click-touch="switchTabTo('ACTIVITY')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ACTIVITY'}">
+                    <li ng-click="switchTabTo('ACTIVITY')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ACTIVITY'}">
                         <a>Activity Log</a>
                     </li>
                 </ul>
                 <!-- Group Tab - Summary -->
                 <!-- SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY -->
-                <!-- Group Card Tab - Room Block Details -->
-                <ng-include src="getCurrentTabUrl()">
+                <!-- Group Card Tab - Room Block Details -->               
+                <ng-include src="'/assets/partials/groups/summary/rvGroupConfigurationSummaryTab.html'" 
+                        ng-show="groupConfigData.activeTab == 'SUMMARY'">
                 </ng-include>
+
+                <ng-include src="'/assets/partials/groups/roomBlock/rvGroupConfigurationRoomBlockTab.html'" 
+                        ng-show="groupConfigData.activeTab == 'ROOM_BLOCK'">
+                </ng-include>     
+                
+                <ng-include src="'/assets/partials/groups/rooming/rvGroupRoomingListTab.html'" 
+                        ng-show="groupConfigData.activeTab == 'ROOMING'">
+                </ng-include>  
+                <ng-include src="'/assets/partials/accounts/accountsTab/rvAccountsSummary.html'" 
+                        ng-show="groupConfigData.activeTab == 'ACCOUNT'">
+                </ng-include> 
+                <ng-include src="'/assets/partials/accounts/transactions/rvAccountTransactions.html'" 
+                        ng-show="groupConfigData.activeTab == 'TRANSACTIONS'">
+                </ng-include>   
+                <ng-include src="'/assets/partials/groups/activity/rvGroupConfigurationActivityTab.html'" 
+                        ng-show="groupConfigData.activeTab == 'ACTIVITY'">
+                </ng-include>                                                            
             </div>
         </div>
     </div>

@@ -127,7 +127,12 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 
 		var successCallbackSavePaymentMethod = function(data){
 
-			if($scope.currentClickedElement === "new"){
+			if(data.value == "CC"){
+				// Edited CC - LINKED RESERVATION TYPE only
+				console.log("Edited the Main Credit Card Payment method");
+				$scope.data.payments[parseInt($scope.currentClickedElement)] = data;
+			}
+			else if($scope.currentClickedElement === "new"){
 				if(data.is_cc){
 				// Added new credit card type item ( ie,'is_cc = true' )
 					$scope.data.credit_card_types.push(data);
@@ -162,8 +167,10 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	    		$scope.data.payments.push(data);
 	    	}
     		$scope.$emit('hideLoader');
-    		$scope.currentClickedElement = -1;
-    		$scope.currentClickedElementCC = -1;
+    		
+	    	$scope.currentClickedElement = -1;
+	    	$scope.currentClickedElementCC = -1;
+	    	
     	};
 
     	var dataToSend = {};
@@ -186,15 +193,17 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	 * @param {index} index of selected payment method
 	 */
 	$scope.editPaymentMethod = function(index) {
-		if($scope.data.payments[index].value !== 'CC'){
+		//if($scope.data.payments[index].value !== 'CC'){
 			$scope.currentClickedElement = index;
 			$scope.editData = dclone($scope.data.payments[index],["is_active"]);
-		}
+			$scope.editData.isEditCC = false;
+		//}
 	};
 
 	$scope.editPaymentMethodCC = function(index) {
 		$scope.currentClickedElementCC = index;
 		$scope.editData = dclone($scope.data.credit_card_types[index],["is_active"]);
+		$scope.editData.isEditCC = true;
 	};
 
 	/*

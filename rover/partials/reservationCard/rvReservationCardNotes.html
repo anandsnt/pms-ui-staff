@@ -1,37 +1,37 @@
 <div class="block-wrapper">
-    <span ng-show="reservationData.reservation_card.notes.reservation_notes.length == 0" class="block-title toggle has-arrow" ng-click="reservationNotesState.hideDetails = !reservationNotesState.hideDetails; refreshReservationDetailsScroller(100)" ng-class="{'active': !reservationNotesState.hideDetails}">
-        Add Notes
-    </span>
-    <span ng-show="reservationData.reservation_card.notes.reservation_notes.length > 0" class="block-title toggle has-arrow" ng-click="reservationNotesState.hideDetails = !reservationNotesState.hideDetails; refreshReservationDetailsScroller(100)" ng-class="{'active': !reservationNotesState.hideDetails}">
-        Notes
-    </span> 
-    <div id="{notes-id}" class="block-item item-notes has-buttons" ng-class="{'hidden': reservationNotesState.hideDetails}"> <!-- Remove class hidden when 'a.toggle' is clicked -->
-        <!-- Post note form -->
-        <form method="post" action="{action}" class="form">
-            <textarea placeholder="{{'WRITE_NOTE'|translate}}" ng-model="$parent.reservationnote" rows="2"></textarea>
-            <div class="actions">
-                <button type="button" class="button brand-colors post" ng-click="saveReservationNote()" translate>NOTES_POST</button>
-            </div>
-        </form>
-
-        <!-- Notes posted -->
-        <ul class="notes">
-            <li ng-repeat="note in reservationData.reservation_card.notes.reservation_notes">
-                <figure class="guest-image">
-                    <img ng-src="{{note.user_image}}" alt="">
-                </figure>
-                <div class="note-title">
-                    <h4> {{note.username}} </h4>
-                    <time datetime="T">
-                        <span class="time"> {{note.posted_time}}</span>
-                        <span class="date">{{note.posted_date | date:dateFormat}} </span>
-                    </time>
-                    <span class="topic"> {{note.topic}} </span>
-                    <button id="delete_note" class="icons icon-trash" ng-click="deleteReservationNote($index)" >Delete post</button>
-                </div>
-                <p ng-bind-html="note.text">
-                </p>
-            </li>            
-        </ul>
+    <div class="block-item item-actions" ng-controller="rvReservationCardActionsController">
+        <h3 class="block-title">Actions</h3>
+        <button type="button" class="staycard-button next-view " ng-class="{
+                    'icon-no-actions' : actionsCount === 'none', 
+                    'icon-new-actions' : actionsCount === 'pending' || actionsCount === 'only-pending', 
+                    'icon-actions' : actionsCount === 'all-completed'
+        }" ng-click="openActionsPopup();">
+            <!-- ng-class="TODO: icon-{'no-actions' or 'actions' or 'new-actions'}" 
+            'icon-no-actions' is grey, when there are no actions
+            'icon-actions' is green, when all actions are resloved
+            'icon-new-actions' is red, when there are unresolved actions 
+            -->
+            <span ng-show="actionsCount === 'none'" ng-hide="actionsCount !== 'none'"class='actions-none'>{{actions.totalCount}}</span>
+            <span ng-show="actionsCount === 'pending'" ng-hide="actionsCount !== 'pending'"><font class='actions-pending'>{{actions.pendingCount}}</font> / {{actions.totalCount}}</span>
+            <span ng-show="actionsCount === 'only-pending'" ng-hide="actionsCount !== 'only-pending'" class='actions-pending'>{{actions.pendingCount}}</span>
+            <span ng-show="actionsCount === 'all-completed'" ng-hide="actionsCount !== 'all-completed'"class='actions-completed'>{{actions.totalCount}}</span>
+            
+        </button>
+    </div>
+    <div class="block-item item-notes">
+        <h3 class="block-title">Notes</h3>
+        <button type="button" class="staycard-button next-view" 
+            ng-class="{'icon-notes': !!reservationData.reservation_card.notes.reservation_notes.length, 'icon-no-notes': !reservationData.reservation_card.notes.reservation_notes.length}" 
+            ng-click="openNotesPopup();">
+            {{reservationData.reservation_card.notes.reservation_notes.length}}
+        </button>
+    </div>
+    <div class="block-item item-group">
+        <h3 class="block-title">Group</h3>
+        <button type="button" class="next-view" ng-class="{'has-arrow': isStandAlone}" ng-if="!!reservationData.reservation_card.group_name" ng-click="navigateToGroup($event)">
+            {{reservationData.reservation_card.group_name}}
+        </button>
+        <!-- If no group attached, replace button with this: -->
+        <div class="no-group" ng-if="!reservationData.reservation_card.group_name"></div>
     </div>
 </div>

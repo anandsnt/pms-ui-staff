@@ -1,32 +1,38 @@
 <div id="restrictionPriceContainer" class="price-div" ng-if="hasPermissionToUpdateRates()">
 	<div class="restriction_text" >
 		<h4> PRICE </h4>
+                <div ng-show='calendarData.is_child' ng-hide="!calendarData.is_child" class="notice rate-mgr" >
+                    <span>Manual update is disabled for {{popupData.rate_name}} rate, as its based on another rate.</span>
+                </div> 
+                <div ng-show='!calendarData.is_child' ng-hide="calendarData.is_child">
 		<em ng-if="!data.isHourly">Adjust price for all room types</em>
 		<em ng-if="data.isHourly">Price adjustment for all Occupancies</em>
+                </div>
 	</div>
 
-	<section ng-if="data.isHourly">
+	<section ng-if="data.isHourly" ng-class="{'overlay' : calendarData.is_child == true}">
+					
 		<div class="price-fields">
                     <label ng-class="{'hasOverride-label': rateDateHasOverride(data, date,'nightly') != 'false'}">ALL OCCUPANCIES<text class="hasOverride-label" ng-if="hasAnyOverride() !== 'false'" >*</text></label>
 			<span ng-if = "!popupData.all_data_selected">
 				<span class="inp-field-before-or">
-					<input type="text" size="7" ng-model="data.nightly" ng-class="{'hasOverride-label': rateDateHasOverride(data, date,'nightly') != 'false'}" ng-class="{'strike-through': data.nightly_extra_amnt != ''}" ng-disabled="data.nightly_extra_amnt != '' || data.nightly == undefined" force-decimal-zero-dir>
+					<input type="text" size="7" ng-model="data.nightly" ng-class="{'hasOverride-label': rateDateHasOverride(data, date,'nightly') != 'false'}" ng-class="{'strike-through': data.nightly_extra_amnt != ''}" ng-disabled="data.nightly_extra_amnt != '' || data.nightly == undefined || calendarData.is_fixed_rate" force-decimal-zero-dir>
 				</span> 
 					<span class="or-class"> 
 						OR
 					</span> 
 			</span>
 			<span class="inp-field-after-or select">
-				<select style="width:70px;" ng-model="data.nightly_sign" ng-disabled="data.nightly == undefined">
+				<select style="width:70px;" ng-model="data.nightly_sign" ng-disabled="data.nightly == undefined || calendarData.is_fixed_rate">
 					<option ng-selected="data.nightly_sign == '+'" value="+">+</option>
 					<option ng-selected="data.nightly_sign == '-'" value="-">-</option>
 				</select> 
 			</span>
 			<span class="inp-field">
-				<input type="text"  size="7" ng-model="data.nightly_extra_amnt" ng-disabled="data.nightly == undefined">
+				<input type="text"  size="7" ng-model="data.nightly_extra_amnt" ng-disabled="data.nightly == undefined || calendarData.is_fixed_rate">
 			</span>
 			<span class="inp-field select">
-				<select style="width:70px;" ng-model="data.nightly_amnt_diff_sign" ng-disabled="data.nightly == undefined">
+				<select style="width:70px;" ng-model="data.nightly_amnt_diff_sign" ng-disabled="data.nightly == undefined || calendarData.is_fixed_rate">
 					<option ng-selected="data.nightly_amnt_diff_sign == '%'" value="%">%</option>
 					<option ng-selected="data.nightly_amnt_diff_sign == currencySymbol" value="{{currencySymbol}}">{{currencySymbol}}</option>
 				</select> 
@@ -35,23 +41,23 @@
 		</div>
 	</section>
 	
-	<section ng-if="!data.isHourly">
+	<section ng-if="!data.isHourly" ng-class="{'overlay' : calendarData.is_child == true}">
 		<div class="price-fields">
 			<label ng-if="!hasOverride(data,'SINGLE')">SINGLE</label>			
 			<label ng-if="hasOverride(data,'SINGLE')" class="hasOverride-label">SINGLE*</label>		
 			<span ng-if = "!popupData.all_data_selected"> <span class="inp-field-before-or">
-					<input type="text" size="7" ng-model="data.single" ng-class="{'strike-through': data.single_extra_amnt != '', 'hasOverride-label': hasOverride(data,'SINGLE') != false}" ng-disabled="data.single_extra_amnt != '' || data.single == undefined" force-decimal-zero-dir>
+					<input type="text" size="7" ng-model="data.single" ng-class="{'strike-through': data.single_extra_amnt != '', 'hasOverride-label': hasOverride(data,'SINGLE') != false}" ng-disabled="data.single_extra_amnt != '' || data.single == undefined || calendarData.is_fixed_rate" force-decimal-zero-dir>
 				</span> <span class="or-class"> OR</span> </span>
 			<span class="inp-field-after-or select">
-				<select style="width:70px;" ng-model="data.single_sign" ng-disabled="data.single == undefined">
+				<select style="width:70px;" ng-model="data.single_sign" ng-disabled="data.single == undefined || calendarData.is_fixed_rate">
 					<option ng-selected="data.single_sign == '+'" value="+">+</option>
 					<option ng-selected="data.single_sign == '-'" value="-">-</option>
 				</select> </span>
 			<span class="inp-field">
-				<input type="text"  size="7" ng-model="data.single_extra_amnt" ng-disabled="data.single == undefined">
+				<input type="text"  size="7" ng-model="data.single_extra_amnt" ng-disabled="data.single == undefined || calendarData.is_fixed_rate">
 			</span>
 			<span class="inp-field select">
-				<select style="width:70px;" ng-model="data.single_amnt_diff" ng-disabled="data.single == undefined">
+				<select style="width:70px;" ng-model="data.single_amnt_diff" ng-disabled="data.single == undefined || calendarData.is_fixed_rate">
 					<option ng-selected="data.single_amnt_diff == '%'" value="%">%</option>
 					<option ng-selected="data.single_amnt_diff == currencySymbol" value="{{currencySymbol}}">{{currencySymbol}}</option>
 				</select> 
@@ -66,18 +72,18 @@
 			<label ng-if="hasOverride(data,'DOUBLE')" class="hasOverride-label">DOUBLE*</label>
                         
 			<span ng-if = "!popupData.all_data_selected"> <span class="inp-field-before-or">
-					<input type="text" size="7" ng-class="{'strike-through': data.double_extra_amnt != '', 'hasOverride-label': hasOverride(data,'DOUBLE') != false}" ng-model="data.double" ng-disabled="data.double_extra_amnt!='' || data.double == undefined" force-decimal-zero-dir>
+					<input type="text" size="7" ng-class="{'strike-through': data.double_extra_amnt != '', 'hasOverride-label': hasOverride(data,'DOUBLE') != false}" ng-model="data.double" ng-disabled="data.double_extra_amnt!='' || data.double == undefined || calendarData.is_fixed_rate" force-decimal-zero-dir>
 				</span> <span class="or-class"> OR</span> </span>
 			<span class="inp-field-after-or select">
-				<select style="width:70px;" ng-model="data.double_sign" ng-disabled="data.double == undefined">
+				<select style="width:70px;" ng-model="data.double_sign" ng-disabled="data.double == undefined || calendarData.is_fixed_rate">
 					<option ng-selected="data.double_sign == '+'" value="+">+</option>
 					<option ng-selected="data.double_sign == '-'" value="-">-</option>
 				</select> </span>
 			<span class="inp-field" >
-				<input type="text" ng-model="data.double_extra_amnt" size="7" ng-disabled="data.double == undefined">
+				<input type="text" ng-model="data.double_extra_amnt" size="7" ng-disabled="data.double == undefined || calendarData.is_fixed_rate">
 			</span>
 			<span class="inp-field select">
-				<select style="width:70px;" ng-model="data.double_amnt_diff" ng-disabled="data.double == undefined">
+				<select style="width:70px;" ng-model="data.double_amnt_diff" ng-disabled="data.double == undefined || calendarData.is_fixed_rate">
 					<option ng-selected="data.double_amnt_diff == '%'" value='%'>%</option>
 					<option ng-selected="data.double_amnt_diff == currencySymbol" value='{{currencySymbol}}'>{{currencySymbol}}</option>
 				</select> 
@@ -91,18 +97,18 @@
 			<label ng-if="hasOverride(data,'EXTRA ADULT')" class="hasOverride-label">EXTRA ADULT (+{{currencySymbol}})*</label>
                         
 			<span ng-if = "!popupData.all_data_selected"> <span class="inp-field-before-or">
-					<input type="text" size="7" ng-class="{'strike-through': data.extra_adult_extra_amnt != '', 'hasOverride-label': hasOverride(data,'EXTRA ADULT') != false}" ng-model="data.extra_adult" ng-disabled="data.extra_adult_extra_amnt!='' || 'data.extra_adult == undefined'" force-decimal-zero-dir>
+					<input type="text" size="7" ng-class="{'strike-through': data.extra_adult_extra_amnt != '', 'hasOverride-label': hasOverride(data,'EXTRA ADULT') != false}" ng-model="data.extra_adult" ng-disabled="data.extra_adult_extra_amnt!='' || 'data.extra_adult == undefined' || calendarData.is_fixed_rate" force-decimal-zero-dir>
 				</span> <span class="or-class"> OR</span> </span>
 			<span class="inp-field-after-or select">
-				<select style="width:70px;" ng-model="data.extra_adult_sign" ng-disabled = 'data.extra_adult == undefined'>
+				<select style="width:70px;" ng-model="data.extra_adult_sign" ng-disabled = 'data.extra_adult == undefined || calendarData.is_fixed_rate'>
 					<option ng-selected="data.extra_adult_sign == '+'" value="+">+</option>
 					<option ng-selected="data.extra_adult_sign == '-'" value="-">-</option>
 				</select> </span>
 			<span class="inp-field">
-				<input type="text"  size="7" ng-model="data.extra_adult_extra_amnt" ng-disabled = 'data.extra_adult == undefined'>
+				<input type="text"  size="7" ng-model="data.extra_adult_extra_amnt" ng-disabled = 'data.extra_adult == undefined || calendarData.is_fixed_rate'>
 			</span>
 			<span class="inp-field select">
-				<select style="width:70px;" ng-model="data.extra_adult_amnt_diff" ng-disabled = 'data.extra_adult == undefined'>
+				<select style="width:70px;" ng-model="data.extra_adult_amnt_diff" ng-disabled = 'data.extra_adult == undefined || calendarData.is_fixed_rate'>
 					<option ng-selected="data.extra_adult_amnt_diff == '%'" value="%">%</option>
 					<option ng-selected="data.extra_adult_amnt_diff == currencySymbol" value="{{currencySymbol}}">{{currencySymbol}}</option>
 				</select> 
@@ -116,18 +122,18 @@
 			<label ng-if="hasOverride(data,'CHILD')" class="hasOverride-label">CHILD (+{{currencySymbol}})*</label>
                         
 			<span ng-if = "!popupData.all_data_selected"> <span class="inp-field-before-or">
-					<input type="text" size="7" ng-class="{'strike-through': data.child_extra_amnt != '', 'hasOverride-label': hasOverride(data,'CHILD') != false}" ng-model="data.child" ng-disabled="data.child_extra_amnt!='' || 'data.child == undefined'" force-decimal-zero-dir>
+					<input type="text" size="7" ng-class="{'strike-through': data.child_extra_amnt != '', 'hasOverride-label': hasOverride(data,'CHILD') != false}" ng-model="data.child" ng-disabled="data.child_extra_amnt!='' || 'data.child == undefined' || calendarData.is_fixed_rate" force-decimal-zero-dir>
 				</span> <span class="or-class"> OR</span> </span>
 			<span class="inp-field-after-or select">
-				<select style="width:70px;" ng-model="data.child_sign" ng-disabled = 'data.child == undefined'>
+				<select style="width:70px;" ng-model="data.child_sign" ng-disabled = 'data.child == undefined || calendarData.is_fixed_rate'>
 					<option ng-selected="data.child_sign == '+'" value="+">+</option>
 					<option ng-selected="data.child_sign == '-'" value="-">-</option>
 				</select> </span>
 			<span class="inp-field">
-				<input type="text"  size="7" ng-model="data.child_extra_amnt"  ng-disabled = 'data.child == undefined'>
+				<input type="text"  size="7" ng-model="data.child_extra_amnt"  ng-disabled = 'data.child == undefined || calendarData.is_fixed_rate'>
 			</span>
 			<span class="inp-field select">
-				<select style="width:70px;" ng-model="data.child_amnt_diff" ng-disabled = 'data.child == undefined'>
+				<select style="width:70px;" ng-model="data.child_amnt_diff" ng-disabled = 'data.child == undefined || calendarData.is_fixed_rate'>
 					<option ng-selected="data.child_amnt_diff == '%'" value="%">%</option>
 					<option ng-selected="data.child_amnt_diff == currencySymbol" value="{{currencySymbol}}">{{currencySymbol}}</option>
 				</select> 

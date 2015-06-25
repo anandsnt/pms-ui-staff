@@ -1,5 +1,5 @@
-sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter',
-	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter) {
+sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter', 'RVContactInfoSrv',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter, RVContactInfoSrv) {
 		BaseCtrl.call(this, $scope);
 		//Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
@@ -82,6 +82,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.$broadcast('guestSearchStopped');
 				$scope.$broadcast('guestCardAvailable');
 				$scope.showGuestPaymentList(guestInfo);
+				RVContactInfoSrv.completeContactInfoClone = JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
 				$scope.decloneUnwantedKeysFromContactInfo = function() {
 					var unwantedKeys = ["address", "birthday", "country",
 						"is_opted_promotion_email", "job_title",
@@ -480,42 +481,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			};
 
 			$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, userId, paymentSuccess, '', 'NONE');
-		};
-
-		// This method can be used to generate payload for the reservation update API call.
-		// Note: The payment and the confirmation mails related information is not computed in this call now, as that would require moving a few variables from the 
-		// scope of RVReservationSummaryCtrl to stayCardMainCtrl
-
-		$scope.getEmptyAccountData = function() {
-			return {
-				"address_details": {
-					"street1": null,
-					"street2": null,
-					"street3": null,
-					"city": null,
-					"state": null,
-					"postal_code": null,
-					"country_id": null,
-					"email_address": null,
-					"phone": null
-				},
-				"account_details": {
-					"account_name": null,
-					"company_logo": "",
-					"account_number": null,
-					"accounts_receivable_number": null,
-					"billing_information": null
-				},
-				"primary_contact_details": {
-					"contact_first_name": null,
-					"contact_last_name": null,
-					"contact_job_title": null,
-					"contact_phone": null,
-					"contact_email": null
-				},
-				"future_reservation_count": 0
-			}
-		}
+		};	
 
 		$scope.showContractedRates = function(cardIds) {
 			// 	CICO-7792 BEGIN

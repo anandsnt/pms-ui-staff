@@ -89,5 +89,17 @@ admin.service('ADRatesConfigureSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$rootSco
             return deferred.promise;
         };
 
+        this.rateManagerStatusCheck = function (data) {
+            var deferred = $q.defer();
+            var id = data.id;
+            var url = '/api/rate_sets/'+id+'/custom_rate_check';
+            ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
     }
 ]);

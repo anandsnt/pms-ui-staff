@@ -7,15 +7,17 @@
 		<fieldset class='holder left'>
 			<ad-checkbox is-checked="editData.is_cc" label="{{ 'CC' | translate}}" div-class="full-width" is-disabled="editData.is_system_defined"></ad-checkbox>
 			<div ng-hide="!editData.is_cc">
-				<ad-checkbox is-checked="editData.is_offline" label="{{ 'OFFLINE' | translate}}" div-class="full-width"></ad-checkbox>
+				<ad-checkbox is-disabled="editData.value == 'CC'" is-checked="editData.is_offline" label="{{ 'OFFLINE' | translate}}" div-class="full-width"></ad-checkbox>
 			</div>
+			<ad-dropdown ng-if="!editData.isEditCC" list="data.reservation_types" selected-id='editData.linked_reservation_type_id' selbox-class="placeholder" div-class="full-width" label="{{'LINKED_RESERVATION_TYPE' | translate}}"></ad-dropdown>
 		</fieldset>
+
 		<fieldset class='holder right'>
-			<ad-checkbox is-checked="editData.is_rover_only" label="{{ 'ROVER_ONLY' | translate}}" div-class="full-width" change="roverOnlyChanged()"></ad-checkbox>
+			<ad-checkbox is-disabled="editData.value == 'CC'" is-checked="editData.is_rover_only" label="{{ 'ROVER_ONLY' | translate}}" div-class="full-width" change="roverOnlyChanged()"></ad-checkbox>
 
-			<ad-checkbox is-checked="editData.is_web_only" label="{{ 'WEB_ONLY' | translate}}" div-class="full-width" change="webOnlyChanged()"></ad-checkbox>
+			<ad-checkbox is-disabled="editData.value == 'CC'" is-checked="editData.is_web_only" label="{{ 'WEB_ONLY' | translate}}" div-class="full-width" change="webOnlyChanged()"></ad-checkbox>
 
-			<ad-checkbox is-checked="editData.is_display_reference" label="{{ 'DISPLAY_REFERENCE' | translate}}" div-class="full-width"></ad-checkbox>
+			<ad-checkbox is-disabled="editData.value == 'CC'" is-checked="editData.is_display_reference" label="{{ 'DISPLAY_REFERENCE' | translate}}" div-class="full-width"></ad-checkbox>
 		</fieldset>
 		<div class='actions float'>
 			<button class='button blank edit-data-inline' id='cancel' type='button' ng-click="clickCancel()" translate>

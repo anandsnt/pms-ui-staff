@@ -53,7 +53,7 @@ sntRover.controller('RVReservationDepositController',
 		$scope.reservationData.referanceText = "";
 		$scope.isDepositEditable = ($scope.depositDetails.deposit_policy.allow_deposit_edit !== null && $scope.depositDetails.deposit_policy.allow_deposit_edit) ? true:false;
 		$scope.depositPolicyName = $scope.depositDetails.deposit_policy.description;
-		$scope.reservationData.depositAmount = $filter('number')(parseInt($scope.depositDetails.deposit_amount), 2);
+		$scope.reservationData.depositAmount = $filter('number')(($scope.depositDetails.deposit_amount), 2);
 		
 
 		$scope.closeDialog = function(){

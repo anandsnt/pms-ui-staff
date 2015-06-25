@@ -29,7 +29,7 @@
 	</td>
 
 	<td>
-		<strong ng-if="each.deposit_payment_status == 'PAID' && each.paid_date">{{ each.paid_date | date : dateFormat }}</strong>
-		<span ng-if="each.deposit_payment_status == 'PAID' && each.paid_amount" class="data">{{ each.paid_amount | currency:currencySymbol:2 }}</span>
+		<strong ng-if="each.paid_date">{{ each.paid_date | date : dateFormat }}</strong>
+		<span ng-if="each.paid_amount" class="data">{{ each.paid_amount | currency:currencySymbol:2 }}</span>
 	</td>
 </tr>

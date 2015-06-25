@@ -204,6 +204,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.rightColSpan = 8;
 					break;
 
+				case reportUtils.getName('COMPARISION_BY_DATE'):
+					$scope.leftColSpan = 4;
+					$scope.rightColSpan = 4;
+					break;
+
 				default:
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 2;
@@ -328,10 +333,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			var parseAPIoptions = {
 				'groupedByKey'    : $scope.$parent.reportGroupedBy,
-				'checkNote'       : $scope.chosenReport.chosenNotes ? true : false,
-				'checkGuest'      : $scope.chosenReport.chosenShowGuests ? true : false,
-				'checkCancel'     : $scope.chosenReport.chosenCancelled ? true : false,
-				'checkRateAdjust' : $scope.chosenReport.chosenShowRateAdjust ? true : false
+				'checkNote'       : $scope.chosenReport.chosenOptions['include_notes'],
+				'checkGuest'      : $scope.chosenReport.chosenOptions['show_guests'],
+				'checkCancel'     : $scope.chosenReport.chosenOptions['include_cancelled'] || $scope.chosenReport.chosenOptions['include_cancelled'],
+				'checkRateAdjust' : $scope.chosenReport.chosenOptions['show_rate_adjustments_only']
 			};
 
 			// $scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
@@ -384,6 +389,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.hasReportTotals    = false;
 					$scope.showReportHeader   = true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/rvMarketSegmentStatReport.html';
+					break;
+
+				case reportUtils.getName('COMPARISION_BY_DATE'):
+					$scope.hasReportTotals    = false;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/comparisonStatReport/rvComparisonStatReport.html';
 					break;
 
 				default:
@@ -704,6 +715,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('DAILY_TRANSACTIONS'):
 				case reportUtils.getName('DAILY_PAYMENTS'):
 				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
+				case reportUtils.getName('MARKET_SEGMENT_STATISTICS_REPORT'):
+				case reportUtils.getName('COMPARISION_BY_DATE'):
 					orientation = 'landscape';
 					break;
 

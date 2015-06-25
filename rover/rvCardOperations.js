@@ -209,7 +209,7 @@ var CardOperation = function(){
 	};
 
 	/**
-	* method for retrieving the UID (User ID) from Card for Safe lock
+	* method for retrieving the UID (Unique ID) from Card for Safe lock
 	* will call the success call back with user id
 	* if any error occured, will call the error call back
 	*/
@@ -218,7 +218,7 @@ var CardOperation = function(){
 		options['action'] = "getCLCardUID";		
 		that.callCordovaService(options);		
 	};
-	// debug mode of retrieving the user id	
+	// debug mode of retrieving the Unique id	
 	// please check above method (retrieveUserID) for further description
 	this.retrieveUserIDDebug = function(options){
 		var retUserID = "CB94C49T"; //Sample ID
@@ -226,6 +226,34 @@ var CardOperation = function(){
 		// we are simulating the process by calling the success call back after some time period
 		setTimeout(function(){
 			successCallBack(retUserID);
+		}, 1000);
+	};
+
+
+	/**
+	* method for retrieving the UID (User ID) from Card for Safe lock
+	* will call the success call back with user id
+	* if any error occured, will call the error call back
+	*/
+	this.retrieveCardInfo = function(options){
+		options['service'] = "RVCardPlugin";
+		options['action'] = "getCLCardInfo";		
+		that.callCordovaService(options);		
+	};
+
+	// debug mode of retrieving the card info	
+	this.retrieveCardInfoDebug = function(options){
+		//TODO: replace with sample hash
+		var retCardInfo = {
+							"card_uid" : "E3C33C7E", 
+							"card_type" : "3",
+							"card_size" : "1024",
+							"cs" : "912D8F4A79C1"
+							}; //Sample card info
+		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
+		// we are simulating the process by calling the success call back after some time period
+		setTimeout(function(){
+			successCallBack(retCardInfo);
 		}, 1000);
 	};
 

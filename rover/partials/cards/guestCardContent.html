@@ -1,4 +1,4 @@
-<div ng-controller="RVGuestCardCtrl" >
+<div ng-controller="RVGuestCardCtrl" ng-init='fetchLoyaltyStatus()'>
     
     <!-- Guest Card Content -->
     <div id="guest-card-content" class="card-tabs card-content" ng-if="!searchMode" ng-class="UICardContentCls('guest-card')">
@@ -14,7 +14,7 @@
             <li ng-class="{'ui-tabs-active': current == 'guest-credit'}" ng-click="guestCardTabSwitch('guest-credit')">
                 <a id="guest-credit">Credit Cards &amp; Payment</a>
             </li>
-            <li ng-class="{'ui-tabs-active': current == 'guest-loyalty'}" ng-click="guestCardTabSwitch('guest-loyalty')">
+            <li ng-class="{'ui-tabs-active': current == 'guest-loyalty'}" ng-click="guestCardTabSwitch('guest-loyalty')" ng-hide='!loyaltyTabEnabled'>
                 <a id="guest-loyalty">Loyalty</a>
             </li>
         </ul>

@@ -148,9 +148,9 @@
                         <label for="addon-price"><span translate>ADDON_PRICE_LABEL </span></label>
                         <input type="text" class = "cms-addon-texts" name="addon-price" id="addon-price"  ng-disabled = "true" readonly="true" value="{{getSelectedAddonPrice()}}" />
                     </div>
-                     <ad-dropdown label="{{'ADDON_MIN_DURATION_LABEL' | translate}}" label-in-drop-down="{{'ADDON_MIN_DURATION_LABEL' | translate}}" list="min_duration_values" selected-Id='data.addon_min_duration' required='no' selbox-class='placeholder' ng-show="data.page_template=='ADDON'"></ad-dropdown>  
+                     <ad-dropdown label="{{'ADDON_MIN_DURATION_LABEL' | translate}}" label-in-drop-down="{{' '}}" list="min_duration_values" selected-Id='data.addon_min_duration' required='no' selbox-class='placeholder' ng-show="data.page_template=='ADDON'"></ad-dropdown>  
 
-                     <ad-dropdown label="{{'ADDON_MAX_ORDER_LABEL' | translate}}" label-in-drop-down="{{'ADDON_MAX_ORDER_LABEL' | translate}}" list="max_order_values" selected-Id='data.addon_max_order' required='no' selbox-class='placeholder' ng-show="data.page_template=='ADDON'"></ad-dropdown>
+                     <ad-dropdown label="{{'ADDON_MAX_ORDER_LABEL' | translate}}" label-in-drop-down="{{' '}}" list="max_order_values" selected-Id='data.addon_max_order' required='no' selbox-class='placeholder' ng-show="data.page_template=='ADDON'"></ad-dropdown>
 
                     </div>
                 </div>

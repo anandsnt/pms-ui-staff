@@ -27,7 +27,7 @@
 	</td>
 	<td ng-if="each.isReport">
 		<span class="data room">{{ each.room_type }}</span>
-		<span class="data rate">{{ each.rate }} / <strong>{{ each.adr | currency:currencySymbol:2 }} ADR</strong></span>
+		<span class="data rate">{{ each.rate }} / <strong>{{ each.adr | currency:currencySymbol:2 }}</strong></span>
 	</td>
 	<td ng-if="each.isReport" class="balance red"> <!-- Add class "red" or "green" as required -->
 		{{ each.balance_amount | currency:currencySymbol:2 }}
@@ -40,10 +40,14 @@
 	<td ng-if="each.isGuestData" class="secondary guest-info" colspan="2">
 		<span ng-if="each.company_name" class="icons icon-guest-company">{{ each.company_name }}</span>
 		<span ng-if="each.travel_agent_name" class="icons icon-guest-travelagent">{{ each.travel_agent_name }}</span>
-		<span ng-if="each.group_name" class="icons icon-group">{{ each.group_name }}/span>
+		<span ng-if="each.group_name" class="icons icon-group">{{ each.group_name }}</span>
 	</td>
 	<td ng-if="each.isGuestData" class="secondary" colspan="2">
-		<span ng-repeat="name in each.addOns">{{ name }}</span>
+		<span ng-repeat="item in each.addOnDetails">
+			{{ item.name }} &#8226; 
+			<i ng-if="item.amount == 'INCL'">{{ item.amount }}</i>
+			<i ng-if="!item.amount != 'INCL'">{{ item.amount | currency:currencySymbol:2 }}</i>
+		</span>
 	</td>
 
 	<!-- notes -->

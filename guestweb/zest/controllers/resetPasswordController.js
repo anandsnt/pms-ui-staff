@@ -8,7 +8,7 @@ snt.controller('resetPasswordController', ['$rootScope','$location','$state','$s
     $scope.data.confirm_password = "";
     $scope.isPasswordReset = false;
 
-    $scope.hotelLogo = "/assets/img/Yotel/yotel-logo.png"
+    // $scope.hotelLogo = "/assets/img/Yotel/yotel-logo.png"
 
     //setup options for modal
 	$scope.opts = {

@@ -14,10 +14,7 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 
      var init = function(){
      	var  duration;
-     	duration = {};
-        duration.value = "";
-        duration.name = "Empty";
-        $scope.min_duration_values.push(duration);
+     	
         for(var i = 0; i < 30; i++){
            duration = {};
            duration.value = i + 1;
@@ -27,10 +24,7 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 
 
         var  order;
-     	order = {};
-        order.value = "";
-        order.name = "Empty";
-        $scope.max_order_values.push(order);
+     	
         for(var i = 0; i < 5; i++){
            order = {};
            order.value = i + 1;
@@ -114,6 +108,8 @@ $scope.getSelectedAddonPrice = function(){
 			$scope.initialIcon =  $scope.data.image;
 			if(data.page_template == 'ADDON'){
 				$scope.fetchAddons();
+				$scope.data.addon_max_order = $scope.data.addon_max_order == null? "" : $scope.data.addon_max_order;
+				$scope.data.addon_min_duration = $scope.data.addon_min_duration == null ? "" : $scope.data.addon_min_duration;
 			}else{
 				$scope.$emit('hideLoader');
 			}

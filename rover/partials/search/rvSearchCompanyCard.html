@@ -3,11 +3,13 @@
     <div ng-include="'/assets/partials/common/header.html'"></div>
     <form name="search-cards" id="search-cards" class="search-form" role="search" ng-class="{'enable-adding' : textInQueryBox!=''}">
         <div class="entry search">
-            <a id="clear-query" class="icons icon-clear-search" ng-click="clearResults()" ng-class="{'visible': textInQueryBox!=''}">Clear query</a>
+            <button type="button" id="clear-query" class="clear-query" ng-click="clearResults()" ng-class="{'visible': textInQueryBox!=''}">
+                <span class="icons icon-clear-search">Clear query</span>
+            </button>
             <button type="submit" name="submit" class="icons icon-search">Search</button>
             <input type="text" class="query" placeholder="Name, IATA # or Corporate ID" name="query" id="query" autocomplete="off" ng-model="textInQueryBox" ng-keyup="queryEntered()">
         </div>
-        <a class="add-new-button" data-lock="true" name="add-new-card" ng-click="addNewCard()">+ Add new</a>
+        <button type="button" class="add-new-button" data-lock="true" name="add-new-card" ng-click="addNewCard()">+ Add new</button>
     </form>
 
     <section id="find-cards" class="content scrollable" ng-iscroll="company_card_scroll" >

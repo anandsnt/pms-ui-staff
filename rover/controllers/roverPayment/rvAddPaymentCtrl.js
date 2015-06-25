@@ -63,7 +63,8 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		}, 2000);
 		
 	};
-	var paymentParams = {"direct_bill":true};
+	var showDirectBill =  (typeof $scope.passData.details.hideDirectBill !== "undefined" && $scope.passData.details.hideDirectBill) ? false : true;
+	var paymentParams = {"direct_bill":showDirectBill};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, $scope.successRender);
 
 	$scope.successPaymentList = function(data){
@@ -261,6 +262,10 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	*/
 
 	var saveNewCardSuccess = function(data){
+		
+		// Update reservation type
+		$rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id);
+
 		$scope.paymentData.reservation_card.payment_method_used = $scope.dataToSave.paymentType;
 		$scope.paymentData.reservation_card.payment_details.card_type_image = creditCardType.toLowerCase()+".png";
 		$scope.paymentData.reservation_card.payment_details.card_number = retrieveCardNumber();
@@ -272,6 +277,10 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	*/
 
 	var existingCardSuccess = function(data){
+		
+		// Update reservation type
+		$rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id);
+
 		$scope.paymentData.reservation_card.payment_method_used = $scope.dataToSave.paymentType;
 		$scope.paymentData.reservation_card.payment_details.card_type_image = $scope.renderData.creditCardType+".png";
 		$scope.paymentData.reservation_card.payment_details.card_number = $scope.renderData.endingWith;
@@ -421,6 +430,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		}else{
 			$scope.paymentData.reservation_card.payment_method_description = data.payment_type;
 			$scope.paymentData.reservation_card.payment_method_used = $scope.dataToSave.paymentType;
+
+			// Update reservation type
+			$rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id);
 		};
     	$scope.closeDialog();
     };
@@ -446,6 +458,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		else{	
 			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data,savePaymentSuccess);
 		};
+
+
+
 	};
 
 	
