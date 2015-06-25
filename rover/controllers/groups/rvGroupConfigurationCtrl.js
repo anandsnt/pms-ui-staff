@@ -185,7 +185,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
         };
 
-         $scope.reloadPage = function() {
+        $scope.reloadPage = function() {
             $state.go('rover.groups.config', {
                 id: $scope.groupConfigData.summary.group_id
             }, {
