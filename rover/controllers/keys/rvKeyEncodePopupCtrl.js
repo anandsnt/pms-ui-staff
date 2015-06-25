@@ -336,7 +336,7 @@ console.log($scope.encoderTypes);
 	*/
 	this.writeKey = function(keyWriteData, index){
 		var keyData = [];
-		keyData.push(keyWriteData);
+		keyData.push(JSON.stringify(keyWriteData));
 		$scope.$emit('showLoader');
 		that.setStatusAndMessage($filter('translate')('KEY_WRITING_PROGRESS_STATUS'), 'pending');
 
