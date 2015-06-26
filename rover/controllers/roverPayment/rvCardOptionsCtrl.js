@@ -167,9 +167,14 @@ sntRover.controller('RVCardOptionsCtrl',
 		};
 
 	    $scope.cancelCardSelection = function(){
-	    	$scope.$emit('cancelCardSelection');
-	    	$scope.cardselectedIndex = -1;
-	    	$scope.refreshIframe();
+	    	if(!$rootScope.isStandAlone){
+	    		ngDialog.close();
+	    	}
+	    	else{
+	    		$scope.$emit('cancelCardSelection');
+	    		$scope.cardselectedIndex = -1;
+	    		$scope.refreshIframe();
+	    	};
 	    };
 	    
 	    $scope.$on("RENDER_SWIPED_DATA", function(e, swipedCardDataToRender){
