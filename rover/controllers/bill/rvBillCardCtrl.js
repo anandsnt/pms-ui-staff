@@ -799,6 +799,7 @@ sntRover.controller('RVbillCardController',
 	 };
 	 $scope.clickedAddUpdateCCButton = function(){
 	 	$scope.fromViewToPaymentPopup = "billcard";
+	 	$scope.isRefreshOnBackToStaycard = true; //CICO-17739 Refresh view when returning from staycard after altering the payment method.
 	 	$scope.addNewPaymentModal();
 	 };
 	 /*
