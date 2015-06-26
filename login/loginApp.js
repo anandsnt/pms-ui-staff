@@ -27,10 +27,11 @@ login.controller('loginRootCtrl', ['$scope', function($scope){
 login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetSrv', function($scope, loginSrv, $window, $state, resetSrv){
 	 $scope.data = {};
 	 
-	 if(localStorage.email && localStorage.email!=""){
+	 if(localStorage.email){
 	 	$scope.data.email = localStorage.email;
-	 	document.getElementById("password").focus();
-	 } else {
+                document.getElementById("password").focus();
+                
+	 } else if (!localStorage.email){
 	 	document.getElementById("email").focus();
 	 }
 	 $scope.errorMessage = "";
