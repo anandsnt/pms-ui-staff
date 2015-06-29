@@ -643,6 +643,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				"details": {
 					"firstName": $scope.data.guest_details.first_name,
 					"lastName": $scope.data.guest_details.last_name,
+					"hideDirectBill":true
 				}
 			};
 			var paymentData = $scope.reservationData;
