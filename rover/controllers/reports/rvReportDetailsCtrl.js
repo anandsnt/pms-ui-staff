@@ -109,7 +109,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.isGuestReport = true;
 					break;
 
-				case reportUtils.getName('UPSELL'):
 				case reportUtils.getName('LATE_CHECK_OUT'):
 					$scope.hasNoTotals = true;
 					break;
@@ -144,8 +143,17 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// hack to set the colspan for reports details tfoot
 			switch ( $scope.chosenReport.title ) {
 				case reportUtils.getName('CHECK_IN_CHECK_OUT'):
+					if ( $scope.chosenReport.chosenCico == 'BOTH' ) {
+						$scope.leftColSpan = 6;
+						$scope.rightColSpan = 5;
+					} else {
+						$scope.leftColSpan = 4;
+						$scope.rightColSpan = 5;
+					}
+					break;
+
 				case reportUtils.getName('UPSELL'):
-					$scope.leftColSpan = 4;
+					$scope.leftColSpan = 5;
 					$scope.rightColSpan = 5;
 					break;
 
@@ -270,13 +278,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 			        $scope.restHalf[restHalfLastIndex]['class'] = 'red';
 			    };
 			} else {
-			    // NOTE: as per todays style this applies to
-			    // 'Upsell' and 'Late Check Out' only
+			    // NOTE: as per todays style this applies to Late Check Out' only
 			    if ( $scope.firstHalf[1] ) {
 			        $scope.firstHalf[1]['class'] = 'orange';
 
 			        // hack to add ($) currency in front
-			        if ( $scope.chosenReport.title === reportUtils.getName('UPSELL') || $scope.chosenReport.title === reportUtils.getName('LATE_CHECK_OUT') ) {
+			        if ( $scope.chosenReport.title === reportUtils.getName('LATE_CHECK_OUT') ) {
 			            $scope.firstHalf[1]['value'] = $rootScope.currencySymbol + $scope.firstHalf[1]['value'];
 			        };
 			    };
@@ -301,13 +308,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 			        // thus makin the value in template 'X:00 PM'
 			        results[i][ results[i].length - 2 ] += ':00 PM';
 			    }
-
-			    if ( $scope.chosenReport.title === 'Upsell' ) {
-
-			        // hack to add curency ($) symbol in front of values
-			        results[i][ results[i].length - 1 ] = $rootScope.currencySymbol + results[i][ results[i].length - 1 ];
-			        results[i][ results[i].length - 2 ] = $rootScope.currencySymbol + results[i][ results[i].length - 2 ];
-			    };
 			};
 
 
@@ -349,6 +349,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// a very different parent template / row template / content template for certain reports
 			// otherwise they all will share the same template
 			switch ( $scope.parsedApiFor ) {
+				case reportUtils.getName('UPSELL'):
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/upsellReport/rvUpsellReport.html';
+					break;
+
 				case reportUtils.getName('BOOKING_SOURCE_MARKET_REPORT'):
 					$scope.hasReportTotals    = false;
 					$scope.showReportHeader   = !_.isEmpty($scope.$parent.results.market) || !_.isEmpty($scope.$parent.results.source) ? true : false;
@@ -656,31 +662,51 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$_fetchFullReport();
 		};
 
+		// determine if we need to show pre print popup
+		// currently only for 'OCCUPANCY_REVENUE_SUMMARY' report 
 		function $_preFetchFullReport () {
-			var occupancyMaxDate = 0;
+			var allowedDateRange = 0,
+				chosenDateRange,
+				chosenVariance,
+				chosenLastYear;
 
 			if ( $scope.chosenReport.title == reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY') ) {
 
-				// fromdate <- 5 days -> untildate, so including fromdate, diff should be 4 (5 - 1)
-				if ( $scope.chosenReport.chosenVariance && $scope.chosenReport.chosenLastYear ) {
-					occupancyMaxDate = 4;
+				// get date range
+				// READ MORE: http://stackoverflow.com/questions/3224834/get-difference-between-2-dates-in-javascript#comment-3328094
+				chosenDateRange = $scope.chosenReport.untilDate.getTime() - $scope.chosenReport.fromDate.getTime();
+				chosenDateRange = ( chosenDateRange / (1000 * 60 * 60 * 24) | 0 );
+
+				console.log(chosenDateRange);
+				console.log(chosenDateRange);
+
+				// find out the user selection choices
+				chosenVariance = $scope.chosenReport.chosenOptions['include_variance'] ? true : false;
+				chosenLastYear = $scope.chosenReport.chosenOptions['include_last_year'] ? true : false;
+				
+				// fromdate <- 5 days -> untildate
+				// diff should be 4 (5 - 1), including fromdate
+				if ( chosenVariance && chosenLastYear ) {
+					allowedDateRange = 4;
 				}
 
-				// fromdate <- 10 days -> untildate, so including fromdate, diff should be 9 (10 - 1)
-				else if ( $scope.chosenReport.chosenVariance || $scope.chosenReport.chosenLastYear ) {
-					occupancyMaxDate = 9;
+				// fromdate <- 10 days -> untildate
+				// diff should be 9 (10 - 1), including fromdate
+				else if ( chosenVariance || chosenLastYear ) {
+					allowedDateRange = 9;
 				}
 
-				// fromdate <- 15 days -> untildate, so including fromdate, diff should be 14 (15 - 1)
+				// fromdate <- 15 days -> untildate, 
+				// diff should be 14 (15 - 1), including fromdate
 				else {
-					occupancyMaxDate = 14;
+					allowedDateRange = 14;
 				};
 
 				// if the current chosen dates are within
-				// the occupancyMaxDate, dont show pop
+				// the allowedDateRange, dont show pop
 				// go straight to printing
-				// (occupancyMaxDate + 1) -> since we reduced it above
-				return ($scope.chosenReport.untilDate.getDate() - $scope.chosenReport.fromDate.getDate()) > occupancyMaxDate ? true : false;
+				// (allowedDateRange + 1) -> since we reduced it above
+				return chosenDateRange > allowedDateRange ? true : false;
 			} else {
 				return false;
 			};
@@ -714,6 +740,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
 				case reportUtils.getName('DAILY_TRANSACTIONS'):
 				case reportUtils.getName('DAILY_PAYMENTS'):
+				case reportUtils.getName('FORECAST_BY_DATE'):
 				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
 				case reportUtils.getName('MARKET_SEGMENT_STATISTICS_REPORT'):
 				case reportUtils.getName('COMPARISION_BY_DATE'):
