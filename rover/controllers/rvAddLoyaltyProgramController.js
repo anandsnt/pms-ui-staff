@@ -68,21 +68,16 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
 
 	};
 	$scope.getHLPS = function(){
-		
-		var successCallbackGetHLPS = function(data){
-			$scope.setAvailableHLPS(data);
-			$scope.$emit('hideLoader');
-		};
-		var errorCallbackGetHLPS = function(errorMessage){
-			$scope.$emit('hideLoader');
-			$scope.errorMessage = errorMessage;
-		};
-		$scope.invokeApi(RVLoyaltyProgramSrv.getAvailableHLPS, "" , successCallbackGetHLPS, errorCallbackGetHLPS);
-
+            var successCallbackGetHLPS = function(data){
+                    $scope.setAvailableHLPS(data);
+                    $scope.$emit('hideLoader');
+            };
+            var errorCallbackGetHLPS = function(errorMessage){
+                    $scope.$emit('hideLoader');
+                    $scope.errorMessage = errorMessage;
+            };
+            $scope.invokeApi(RVLoyaltyProgramSrv.getAvailableHLPS, "" , successCallbackGetHLPS, errorCallbackGetHLPS);
 	};
-
-	$scope.getFFPS();
-	$scope.getHLPS();
 
 	$scope.setAvailableFFPS = function(FFPArray){
 		var loyaltyType;
