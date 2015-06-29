@@ -740,6 +740,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
 				case reportUtils.getName('DAILY_TRANSACTIONS'):
 				case reportUtils.getName('DAILY_PAYMENTS'):
+				case reportUtils.getName('FORECAST_BY_DATE'):
 				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
 				case reportUtils.getName('MARKET_SEGMENT_STATISTICS_REPORT'):
 				case reportUtils.getName('COMPARISION_BY_DATE'):
