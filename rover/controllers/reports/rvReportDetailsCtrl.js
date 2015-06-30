@@ -662,31 +662,51 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$_fetchFullReport();
 		};
 
+		// determine if we need to show pre print popup
+		// currently only for 'OCCUPANCY_REVENUE_SUMMARY' report 
 		function $_preFetchFullReport () {
-			var occupancyMaxDate = 0;
+			var allowedDateRange = 0,
+				chosenDateRange,
+				chosenVariance,
+				chosenLastYear;
 
 			if ( $scope.chosenReport.title == reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY') ) {
 
-				// fromdate <- 5 days -> untildate, so including fromdate, diff should be 4 (5 - 1)
-				if ( $scope.chosenReport.chosenVariance && $scope.chosenReport.chosenLastYear ) {
-					occupancyMaxDate = 4;
+				// get date range
+				// READ MORE: http://stackoverflow.com/questions/3224834/get-difference-between-2-dates-in-javascript#comment-3328094
+				chosenDateRange = $scope.chosenReport.untilDate.getTime() - $scope.chosenReport.fromDate.getTime();
+				chosenDateRange = ( chosenDateRange / (1000 * 60 * 60 * 24) | 0 );
+
+				console.log(chosenDateRange);
+				console.log(chosenDateRange);
+
+				// find out the user selection choices
+				chosenVariance = $scope.chosenReport.chosenOptions['include_variance'] ? true : false;
+				chosenLastYear = $scope.chosenReport.chosenOptions['include_last_year'] ? true : false;
+				
+				// fromdate <- 5 days -> untildate
+				// diff should be 4 (5 - 1), including fromdate
+				if ( chosenVariance && chosenLastYear ) {
+					allowedDateRange = 4;
 				}
 
-				// fromdate <- 10 days -> untildate, so including fromdate, diff should be 9 (10 - 1)
-				else if ( $scope.chosenReport.chosenVariance || $scope.chosenReport.chosenLastYear ) {
-					occupancyMaxDate = 9;
+				// fromdate <- 10 days -> untildate
+				// diff should be 9 (10 - 1), including fromdate
+				else if ( chosenVariance || chosenLastYear ) {
+					allowedDateRange = 9;
 				}
 
-				// fromdate <- 15 days -> untildate, so including fromdate, diff should be 14 (15 - 1)
+				// fromdate <- 15 days -> untildate, 
+				// diff should be 14 (15 - 1), including fromdate
 				else {
-					occupancyMaxDate = 14;
+					allowedDateRange = 14;
 				};
 
 				// if the current chosen dates are within
-				// the occupancyMaxDate, dont show pop
+				// the allowedDateRange, dont show pop
 				// go straight to printing
-				// (occupancyMaxDate + 1) -> since we reduced it above
-				return ($scope.chosenReport.untilDate.getDate() - $scope.chosenReport.fromDate.getDate()) > occupancyMaxDate ? true : false;
+				// (allowedDateRange + 1) -> since we reduced it above
+				return chosenDateRange > allowedDateRange ? true : false;
 			} else {
 				return false;
 			};
@@ -720,6 +740,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
 				case reportUtils.getName('DAILY_TRANSACTIONS'):
 				case reportUtils.getName('DAILY_PAYMENTS'):
+				case reportUtils.getName('FORECAST_BY_DATE'):
 				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
 				case reportUtils.getName('MARKET_SEGMENT_STATISTICS_REPORT'):
 				case reportUtils.getName('COMPARISION_BY_DATE'):
