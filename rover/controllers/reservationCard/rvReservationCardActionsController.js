@@ -53,7 +53,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 dateStr = ' ';
             }
             if (!timeStr){
-                timeStr = '';
+                timeStr = ' ';
             }
             var aDay = $scope.getDateFromDate(dateStr), aDayString = ' ';
             if (aDay){
