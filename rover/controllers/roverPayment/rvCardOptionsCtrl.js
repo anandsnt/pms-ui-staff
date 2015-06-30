@@ -108,7 +108,8 @@ sntRover.controller('RVCardOptionsCtrl',
 			payementData.tokenDetails = tokenDetails;
 			$scope.$emit("TOKEN_CREATED", payementData);
 			$scope.$digest();
-			$scope.refreshIframe();
+			//CICO-17987: This is making a bug to hide loader.
+			//$scope.refreshIframe();
 		};
 	
 
