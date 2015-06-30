@@ -2051,21 +2051,37 @@ sntRover.controller('RVbillCardController',
 	};
         
         $scope.adjustForUserTime = function(){
-            var d = new Date();
-            var n = d.getTimezoneOffset()/60*-1;//offset from utc
             if ($scope.reservationBillData.signature_details){
                 var str = $scope.reservationBillData.signature_details.signed_time_utc;
                 if (str){
-                    var splStr = str.split(':');
-                    var hour = parseInt(splStr[0]);
-                    var restOfTime = splStr[1];
-                    var newTime = hour+n;
-                    if (newTime < 10){
-                        newTime = '0'+newTime;
-                    }
-                    $scope.reservationBillData.signature_details.local_user_time = newTime+':'+restOfTime;//set for use in signature view, to see what time (locally), the signature was aquired
+                    var newTimeStr = $scope.getAdjustedTimeStr(str);
+                    $scope.reservationBillData.signature_details.local_user_time = newTimeStr;//set for use in signature view, to see what time (locally), the signature was aquired
                 }
             }
+        };
+        $scope.getAdjustedTimeStr = function(str){
+            var d = new Date();
+            var n = d.getTimezoneOffset()/60*-1;//offset from utc
+            var splStr = str.split(':');
+            var hour = parseInt(splStr[0]);
+            var restOfTime = splStr[1];
+            var a = restOfTime.split(' ');
+            var am = a[1];
+            var newTime = hour+n;
+            
+            if (newTime <= 0){//so the string doesnt end up being -03, when it should be 10, etc..
+                newTime = 12+n;
+            }
+            
+            var am = newTime < 12 ? 'AM':'PM';
+            
+            if (newTime < 10 && newTime > 0){
+                newTime = '0'+newTime;
+            } else if (newTime === 0){
+                newTime = '12';
+            }
+            
+            return newTime+':'+a[0]+' '+am;
         };
 
 	$scope.$on('moveChargeSuccsess', function() {
