@@ -2011,6 +2011,7 @@ sntRover.controller('RVbillCardController',
 
 	// Checks whether the user has signed or not
 	$scope.isSigned = function() {
+            $scope.adjustForUserTime();
 		return ($scope.reservationBillData.signature_details.is_signed == "true");
 	};
 
@@ -2048,6 +2049,24 @@ sntRover.controller('RVbillCardController',
 			$scope.invokeApi(RVBillCardSrv.completeReverseCheckout,data,reverseCheckoutsuccess);
 			
 	};
+        
+        $scope.adjustForUserTime = function(){
+            var d = new Date();
+            var n = d.getTimezoneOffset()/60*-1;//offset from utc
+            if ($scope.reservationBillData.signature_details){
+                var str = $scope.reservationBillData.signature_details.signed_time_utc;
+                if (str){
+                    var splStr = str.split(':');
+                    var hour = parseInt(splStr[0]);
+                    var restOfTime = splStr[1];
+                    var newTime = hour+n;
+                    if (newTime < 10){
+                        newTime = '0'+newTime;
+                    }
+                    $scope.reservationBillData.signature_details.local_user_time = newTime+':'+restOfTime;//set for use in signature view, to see what time (locally), the signature was aquired
+                }
+            }
+        };
 
 	$scope.$on('moveChargeSuccsess', function() {
 		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
