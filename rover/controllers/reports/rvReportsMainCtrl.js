@@ -224,12 +224,6 @@ sntRover.controller('RVReportsMainCtrl', [
 			}
 		};
 
-		$scope.reportsState = {
-			markets: []
-		};
-
-
-
 		// logic to re-show the remove date button
 		$scope.showRemoveDateBtn = function() {
 			var reportItem = $scope.touchedReport,
