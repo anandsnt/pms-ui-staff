@@ -170,7 +170,7 @@ sntRover.service('RVReservationStateService', [
 		 * @return {[type]}           [description]
 		 */
 		self.parseRoomRates = function(roomRates, arrival, departure, stayDates, activeRoom, numNights) {
-			var rooms = [],
+			var rooms = {},
 				roomDetails = [],
 				displayDates = [];
 
