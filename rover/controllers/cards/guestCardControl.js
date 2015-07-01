@@ -9,7 +9,6 @@ sntRover.controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout'
 		}
 
 		$scope.$on("guestSearchInitiated", function() {
-                        $scope.fetchLoyaltyStatus();
 			$scope.guestSearchIntiated = true;
 			$scope.guests = $scope.searchedGuests;
 			$scope.$broadcast("refreshGuestScroll");

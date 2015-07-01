@@ -704,14 +704,15 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                     reservation.departure_time  = departure_date.toComponents().time.toHourAndMinute(":", 24);
                                     reservation.departure        = departure_date.getTime();
                                     //2 is the index of array who is having reservations
-                                    var isReservationAlreadyInList = _.findWhere (data_array[2].reservations, 
+                                    var indexOfSameReservationAlreadyInList = _.findIndex (data_array[2].reservations,
                                                                     {reservation_id: reservation.reservation_id});
+                                    
+                                    data_array[2].reservations.push(reservation);
 
-                                    if(!isReservationAlreadyInList) {
+                                    if(indexOfSameReservationAlreadyInList >= 0) {
                                         //2 is the index of array who is having reservations
-                                        data_array[2].reservations.push(reservation)                                    
-                                    }
-                           
+                                        data_array[2].reservations.splice(indexOfSameReservationAlreadyInList, 1);                                   
+                                    }                          
                                 }
                                 _.reduce([
                                       InActiveRoomSlots,
