@@ -318,6 +318,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
                                 for (var i in data.data){
                                     if (data.data[i].name === 'wakeup_call'){
                                         $scope.activeWakeUp = data.data[i].active;
+                                        $scope.$emit("wakeup_call_ON",{'active':data.data[i].active});
                                     }
                                 }
                             }

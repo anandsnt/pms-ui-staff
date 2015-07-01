@@ -119,7 +119,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			}
 		};
 
-
+                //CICO-16013, moved from rvReservationGuestCtrl.js to de-duplicate api calls
+                $scope.activeWakeUp     = false;
+                
 		//CICO-10568
 		$scope.reservationData.isSameCard = false;
 
@@ -973,6 +975,12 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		authInProgress();
 		manualAuthAPICall();
 	};
-	// CICO-17067 PMS: Rover - Stay Card: Add manual authorization ends here...
-
+    // CICO-17067 PMS: Rover - Stay Card: Add manual authorization ends here...
+    
+    //>>wakeup call check after guest prefs are fetched
+        $scope.$on('wakeup_call_ON',function(evt, data){
+            if (data){
+                $scope.activeWakeUp = data.active;
+            }
+        });
 }]);
