@@ -182,7 +182,9 @@
 					</select>
 				</div>
 				<div class="entry">
-					<a class="icons icon-clear-search visible" href="" id="clear-query" ng-show="query" ng-click="clearQuery()" translate>CLEAR_QUERY</a>
+					<button type="button" class="clear-query" ng-click="clearQuery()" ng-class="{'visible':query}"> 
+						<span class="icons icon-clear-search">Clear query</span>
+					</button>
 					<button type="button" name="submit" class="icons icon-search" translate>
 						SEARCH
 					</button>
