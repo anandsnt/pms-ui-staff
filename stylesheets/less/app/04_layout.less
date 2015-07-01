@@ -1031,12 +1031,13 @@ body { overflow: hidden; }
 					
 					&.dates {
 						width: 400px;
+						.float;
 
 						.entry-data {
 							position: relative;
+							width: 190px;
 							.faux-clickable;
 							.pull-left;
-							.calc-width(50, 5);
 
 							&:first-child { margin-right: 10px; }
 
@@ -1074,6 +1075,8 @@ body { overflow: hidden; }
 						&.dates {
 							padding-right: 10px;
 							.box-shadow(~'inset 1px 0 0 rgba(0,0,0,.1), 1px 0 0 rgba(0,0,0,.1)');
+
+							.entry-data { width: 185px; }
 						}
 					}
 				}
