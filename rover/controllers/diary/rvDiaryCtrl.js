@@ -181,6 +181,24 @@ sntRover
 	//adjuested property date time (rounded to next 15min slot time)
 	$scope.adj_property_date_time 	= util.correctTime(propertyTime.hotel_time.date, propertyTime);
 
+	/**
+	 * two check whether two dates are same
+	 * @param  {Date}  date1 [description]
+	 * @param  {Date}  date2 [description]
+	 * @return {Boolean}       [description]
+	 */
+	var isTwoDatesAreDifferent = function (date1, date2) {
+		if (!(date1 instanceof Object)) {
+			date1 = new Date(date1);
+		}
+		if (!(date2 instanceof Object)) {
+			date2 = new Date(date2);
+		}	
+		
+		return (date1.getFullYear() !== date2.getFullYear() ||
+			date1.getMonth() !== date2.getMonth() ||
+			date1.getDate() !== date2.getDate());			
+	};
 
 	/*--------------------------------------------------*/
 	/*BEGIN CONFIGURATION
@@ -1122,14 +1140,23 @@ sntRover
 
 	    	roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), props.edit.originalRowItem.id);
 	    	data = $scope.gridProps.data;
-	    	util.reservationRoomTransfer($scope.gridProps.data, props.edit.originalRowItem, props.currentResizeItemRow, props.currentResizeItem);
-
+	    	util.reservationRoomTransfer($scope.gridProps.data, props.edit.originalRowItem, props.currentResizeItemRow, props.currentResizeItem);	    	
 	    	//whether it is in another date with reservation transfer
 			if (rvDiarySrv.isReservationMovingFromOneDateToAnother) {
 				//finding the reservation date to move back
 				var reservation = rvDiarySrv.movingReservationData.originalReservation;
 				var goBackDate = new tzIndependentDate (reservation.arrival);
 				goBackDate.setHours (0, 0, 0);
+				
+				if(!isTwoDatesAreDifferent ($scope.gridProps.filter.arrival_date, goBackDate)) {
+					$timeout(function(){
+			            var arrival_ms = props.filter.arrival_date.getTime(),
+			            	time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
+
+			            $scope.gridProps.display = util.deepCopy(time_set.display);
+						callDiaryAPIsAgainstNewDate(time_set.toStartDate(), time_set.toEndDate());
+					}, 0);					
+				}
 
 				//we are loading the diary with reservation date
 				$scope.gridProps.filter.arrival_date = goBackDate;
@@ -1690,12 +1717,10 @@ sntRover
 			arrival_ms = filter.arrival_date.getTime(),
 			time_set;
 		$scope.$emit('hideLoader');
-		if(newValue.getFullYear() !== oldValue.getFullYear() ||
-			newValue.getMonth() !== oldValue.getMonth() ||
-			newValue.getDate() !== oldValue.getDate()) {
+		
+		if(isTwoDatesAreDifferent (newValue, oldValue)) {          
             time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
             $scope.gridProps.display = util.deepCopy(time_set.display);
-
 			callDiaryAPIsAgainstNewDate(time_set.toStartDate(), time_set.toEndDate());
 		}
 	};

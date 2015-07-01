@@ -4,7 +4,6 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','$rootScope','RVGue
 		var loyaltyFetchsuccessCallback = function(data){
 			$scope.$emit('hideLoader');
                         $rootScope.$broadcast('detect-hlps-ffp-active-status',data);
-                        $scope.$broadcast('detect-hlps-ffp-active-status',data);
 			$scope.loyaltyData = data;
 			$scope.checkForHotelLoyaltyLevel();
 			setTimeout(function(){

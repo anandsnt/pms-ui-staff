@@ -22,9 +22,12 @@ sntRover.controller('RVCardOptionsCtrl',
 	    };
 	   
 		$scope.refreshIframe = function(){
-			var iFrame = document.getElementById('sixIframe');
-			iFrame.src = iFrame.src;
+			//in case of hotel with MLI iframe will not be present
+			if(!!$("#sixIframe").length){
+				iFrame.src = iFrame.src;
+			}			
 		};
+
 		$scope.$on('REFRESH_IFRAME', function(e){
 			 $scope.refreshIframe();
 		});
