@@ -60,8 +60,17 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 aDay = aDay.toLowerCase();
                 aDayString = aDay.substring(0,1).toUpperCase()+aDay.substring(1,3)+' ';
             }
+            //make sure timestring include '0' if < 10, ie. 09, 08, etc instead of 9, 8...
+            if (timeStr !== ' '){
+                var timeSpl = timeStr.split(':');
+                var hour = timeSpl[0];
+                var hourInt = parseInt(hour);
+                if (hour < 10){
+                    timeStr = '0'+hourInt+':'+timeSpl[1];
+                }
+            }
             if (dateStr){
-                return aDayString+$scope.flipDateFormat(dateStr)+timeStr;
+                return aDayString+$scope.flipDateFormat(dateStr)+'  '+timeStr;
             } else {
                 return timeStr;
             }
