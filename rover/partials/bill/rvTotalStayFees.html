@@ -89,13 +89,12 @@
 		<span class="name">{{billData.guest_or_company_name}}</span>
 		<span class="type">{{billData.credit_card_details.payment_type_description}}</span>
 	</button>
-
 	<!-- No Payment methods -->
 	<button type="button" class="add-new-button" ng-show="billData.credit_card_details.payment_type == null" ng-click="clickedAddUpdateCCButton()">
 		+ {{'ADD_PAYMENT_METHOD' | translate}}
 	</button>
 	{{feesData.description()}}
-	<button type="button" class="button with-icon only-icon brand-colors open-modal move-charge" ng-show="(isAllChargeCodesSelected() || isAnyOneChargeCodeIsExcluded())&& hasMoveToOtherBillPermission()" ng-click="moveChargesClicked()">
+	<button type="button" class="button with-icon only-icon brand-colors open-modal move-charge" ng-show="((isAllChargeCodesSelected() || isAnyOneChargeCodeIsExcluded())&& hasMoveToOtherBillPermission())&& isStandAlone" ng-click="moveChargesClicked()">
         <span class="icons icon-move"></span> 
             Move selected
     </button>
@@ -126,8 +125,8 @@
 				<th><span translate>FEES</span></th>
 				<th><span translate>CREDITS</span></th>
 				<th class="form"><span translate>BILL</span> #</th>
-				<th class="action"><span translate>EDIT</span></th>
-				<th class="action" ng-if="hasMoveToOtherBillPermission()"><label class="checkbox inline">
+				<th class="action" ng-if="isStandAlone"><span translate>EDIT</span></th>
+				<th class="action" ng-if="hasMoveToOtherBillPermission() && isStandAlone"><label class="checkbox inline">
                     <span class="icon-form icon-checkbox" ng-class="{'checked':isAllChargeCodesSelected(),'semi-checked':isAnyOneChargeCodeIsExcluded()}"></span>
                     <input id="bill-1-all" ng-model="reservationBillData.isAllChargeCodeSelected" type="checkbox" ng-change="selectAllChargeCodeToggle()">
                		 </label>
@@ -156,13 +155,13 @@
 						{{totalFeesArray.total_amount}}
 					</strong>
 				</td>
-				<td>
+				<td ng-if="isStandAlone">
 					<button type="button" class="button with-icon only-icon purple edit hidden"> 
 						<span class="icons icon-pencil"></span> 
 						<span translate>EDIT</span>
 					</button>
 				</td>
-				<td>
+				<td ng-if="isStandAlone">
 					<button type="button" class="button with-icon only-icon brand-colors open-modal" ng-show="(isAllChargeCodesSelected() || isAnyOneChargeCodeIsExcluded())&& hasMoveToOtherBillPermission()" ng-click="moveChargesClicked()">
                     <span class="icons icon-move"></span> 
                     Move selected
@@ -253,14 +252,14 @@
 					</strong>
 				</td>
 				<td>
-					<div class="select" ng-hide="isStandAlone">
+					<div class="select" ng-if="!isStandAlone">
 						<select iscroll-stop-propagation ng-model="feesData.billValue" ng-change="moveToBillAction(feesData.oldBillValue, $index)">
 							<option value="" disabled="disabled" class="placeholder" translate>MOVE_TO_BILL</option>
 							<option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in reservationBillData.bills"> {{billNumbers.bill_number}} </option>
 						</select>
 					</div>
 					<!-- we have to replicate code as option is not being hidden in devices -->
-					<div class="select" ng-show="isStandAlone">
+					<div class="select" ng-if="isStandAlone">
 						<select iscroll-stop-propagation ng-show="showMoveChargeDropDown()" ng-model="feesData.billValue" ng-change="moveToBillAction(feesData.oldBillValue, $index)">
 							<option value="" disabled="disabled" class="placeholder" translate>MOVE_TO_BILL</option>							
 							<option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in reservationBillData.bills"> {{billNumbers.bill_number}} </option>
@@ -268,13 +267,13 @@
 						</select>
 					</div>
 				</td>
-				<td>
+				<td ng-if="isStandAlone">
 					<button type="button" ng-show="showEditChargeButton(feesData.type.value)" class="button with-icon only-icon purple edit" ng-click="openActionsPopup(feesData.id,feesData.description[0].fees_desc,feesData.description[0].fees_amount,feesData.type.value,feesData.credits)"> 
 						<span class="icons icon-pencil"></span>
 						<span translate>EDIT</span> 
 					</button>
 				</td>
-				<td class="action" ng-if="hasMoveToOtherBillPermission()">
+				<td class="action" ng-if="hasMoveToOtherBillPermission() && isStandAlone">
 	                <label class="checkbox inline"> 
 	                    <span class="icon-form icon-checkbox" ng-class="{'checked':feesData.isSelected}"></span>
 	                    <input ng-model="feesData.isSelected" type="checkbox"/>
