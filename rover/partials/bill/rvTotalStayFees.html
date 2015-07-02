@@ -167,6 +167,9 @@
                     Move selected
               		</button>
 				</td>
+				<!-- empty td for matching up design -->
+            	<td ng-if="!isStandAlone"></td>
+            	<td ng-if="!isStandAlone"></td>
 			</tr>
 			<!-- Show balance -->
 			<tr class="active edit" ng-hide="showGuestBalance(reservationBillData.reservation_status)">
@@ -279,6 +282,9 @@
 	                    <input ng-model="feesData.isSelected" type="checkbox"/>
 	                </label>
             	</td>
+            	<!-- empty td for matching up design -->
+            	<td ng-if="!isStandAlone"></td>
+            	<td ng-if="!isStandAlone"></td>
 			</tr>
 		</tbody>
 	</table>
