@@ -88,7 +88,7 @@ $scope.setUpUpsellWindowData = function () {
          upsellWindow.hours = item.start_time == ""? "" : item.start_time.substring(0, 2);
          upsellWindow.minutes = item.start_time == ""? "" : item.start_time.substring(3, 5);
          upsellWindow.meridiem = item.start_time == ""? "AM" : item.start_time.substring(6);
-         upsellWindow.addon_id = item.addon_id == null? "" : item.addon_id;    
+         upsellWindow.addon_id = item.addon_id == null? "" : item.addon_id;   
          upsellWindow.charge = item.charge;
          $scope.upsellWindows.push(upsellWindow);
   });
@@ -135,7 +135,7 @@ $scope.setUpDefaultUpsellLevels = function () {
 
           $scope.upsellData.early_checkin_levels.push(defaultWindow);
          
-        }); 
+        });
 }
 
 $scope.setEarlyCheckinTimeForRates = function(){
@@ -164,7 +164,7 @@ $scope.validateUpsellWindowTime = function(){
   var time_window2 = new Date;
   var time_window3 = new Date;
 
-  var hrs1 = ($scope.upsellWindows[0].meridiem.localeCompare('PM') != -1)? 12 + (parseInt($scope.upsellWindows[0].hours) % 12) : (parseInt($scope.upsellWindows[0].hours) == 12)? 0 : parseInt($scope.upsellWindows[0].hours);  
+  var hrs1 = ($scope.upsellWindows[0].meridiem.localeCompare('PM') != -1)? 12 + (parseInt($scope.upsellWindows[0].hours) % 12) : (parseInt($scope.upsellWindows[0].hours) == 12)? 0 : parseInt($scope.upsellWindows[0].hours); 
   var hrs2 = ($scope.upsellWindows[1].meridiem.localeCompare('PM') != -1)? 12 + (parseInt($scope.upsellWindows[1].hours) % 12) : (parseInt($scope.upsellWindows[1].hours) == 12)? 0 : parseInt($scope.upsellWindows[1].hours);
   var hrs3 = ($scope.upsellWindows[2].meridiem.localeCompare('PM') != -1)? 12 + (parseInt($scope.upsellWindows[2].hours) % 12) : (parseInt($scope.upsellWindows[2].hours) == 12)? 0 : parseInt($scope.upsellWindows[2].hours);
   
@@ -222,7 +222,7 @@ $scope.saveClick = function(){
     // had to ovveride default error handler for custom actions.
    	var upsellEarlyCheckinSaveFailureCallback =  function(errorMessage) {
       $scope.$emit('hideLoader');
-      $scope.fetchedFailed(errorMessage);       	
+      $scope.fetchedFailed(errorMessage);     	
    	};
    	$scope.invokeApi(adUpsellEarlyCheckinService.update,$scope.upsellData,upsellEarlyCheckinSaveSuccessCallback, upsellEarlyCheckinSaveFailureCallback);
      
@@ -239,7 +239,7 @@ $scope.clickAddRoomType = function(){
       rate_item = {};
       rate_item.id = item.id;
       rate_item.name = item.name;
-			$scope.upsellData.early_checkin_rates.push(rate_item); 
+			$scope.upsellData.early_checkin_rates.push(rate_item);
       }
     });
   $scope.setRateFlag();
@@ -325,7 +325,7 @@ $scope.startWatching = function(){
         }else if($scope.upsellWindows[2].minutes == "" || $scope.upsellWindows[2].minutes == null){
             $scope.upsellWindows[2].minutes = "00";
         }       
-   });    
+   });  
 
     $scope.$watch(function(){
       return ($scope.upsell_rate.hours == "" ||$scope.upsell_rate.hours == null )? "": $scope.upsell_rate.hours;
@@ -335,7 +335,7 @@ $scope.startWatching = function(){
         }else if($scope.upsell_rate.minutes == "" || $scope.upsell_rate.minutes == null){
             $scope.upsell_rate.minutes = "00";
         }       
-   }); 
+   });
 };
 
 
