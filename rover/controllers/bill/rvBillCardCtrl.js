@@ -122,21 +122,26 @@ sntRover.controller('RVbillCardController',
 	$scope.isAllChargeCodesSelected = function(){
 		var isAllChargeCodesSelected = true;
 		var billTabsData = $scope.reservationBillData.bills;
-		var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details;
-                if (chargeCodes){
-                    if(chargeCodes.length > 0){
-                        _.each(chargeCodes, function(chargeCode) {
-                          if(!chargeCode.isSelected){
-                            isAllChargeCodesSelected = false;
-                          }
-                        });
-                    } else{
-                        isAllChargeCodesSelected = false;
-                    }
-            } else{
-                isAllChargeCodesSelected = false;
-            }
-            return isAllChargeCodesSelected;
+		if(!$rootScope.isStandAlone){
+			isAllChargeCodesSelected = false;
+		}
+		else{
+			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details;
+	        if (chargeCodes){
+	            if(chargeCodes.length > 0){
+	                _.each(chargeCodes, function(chargeCode) {
+	                  if(!chargeCode.isSelected){
+	                    isAllChargeCodesSelected = false;
+	                  }
+	                });
+	            } else{
+	                isAllChargeCodesSelected = false;
+	            }
+	        } else{
+	            isAllChargeCodesSelected = false;
+	        }
+		}			
+        return isAllChargeCodesSelected;
 	};
 
 	/*
@@ -146,21 +151,28 @@ sntRover.controller('RVbillCardController',
 		var isAnyOneChargeCodeIsExcluded = false;
 		var isAnyOneChargeCodeIsIncluded = false;
 		var billTabsData = $scope.reservationBillData.bills;
-		var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details
-		if(chargeCodes.length>0){
-			_.each(chargeCodes, function(chargeCode,index) {
-			  if(!chargeCode.isSelected){
-			  	isAnyOneChargeCodeIsExcluded = true;
-			  }
-			  else{
-			  	isAnyOneChargeCodeIsIncluded = true;
-			  }
-			});
-		}
-		else{
+		if(!$rootScope.isStandAlone){
 			isAnyOneChargeCodeIsExcluded = false;
 			isAnyOneChargeCodeIsIncluded = false;
 		}
+		else{
+			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details
+			if(chargeCodes.length>0){
+				_.each(chargeCodes, function(chargeCode,index) {
+				  if(!chargeCode.isSelected){
+				  	isAnyOneChargeCodeIsExcluded = true;
+				  }
+				  else{
+				  	isAnyOneChargeCodeIsIncluded = true;
+				  }
+				});
+			}
+			else{
+				isAnyOneChargeCodeIsExcluded = false;
+				isAnyOneChargeCodeIsIncluded = false;
+			}
+		}
+	
 		return isAnyOneChargeCodeIsExcluded && isAnyOneChargeCodeIsIncluded;
 	};
 
