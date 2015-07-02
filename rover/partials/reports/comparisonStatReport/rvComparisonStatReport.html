@@ -10,7 +10,7 @@
 <!-- Report content -->
 <div id="report-content" class="report-content scrollable" ng-hide="hasNoResults" ng-class="{ 'with-pagination': (!disablePrevBtn || !disableNextBtn) }" ng-iscroll="report-details-scroll">
     <div class="wrapper">
-        <table class="forecast-reports medium-grid">
+        <table class="forecast-reports medium-grid" ng-controller="RVComparisonReportCtrl">
             <thead>
                 <tr class="top-row">
                     <th class="long-code break"></th>
