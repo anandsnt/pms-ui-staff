@@ -1044,7 +1044,39 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         $scope.paymentTypes = [];
 
 
-        var fetcCreditCardTypes = function(cancellationCharge, nights) {
+   
+        var promptCancel = function(penalty, nights) {
+            var openCancelPopup = function(){
+                 var passData = {
+                "reservationId": $scope.reservationData.reservationId,
+                "details": {
+                    "firstName": $scope.guestCardData.contactInfo.first_name,
+                    "lastName": $scope.guestCardData.contactInfo.last_name,
+                    "creditCardTypes": $scope.creditCardTypes,
+                    "paymentTypes": $scope.paymentTypes
+                }
+                };
+
+                $scope.passData = passData;
+                ngDialog.open({
+                    template: '/assets/partials/reservationCard/rvCancelReservation.html',
+                    controller: 'RVCancelReservation',
+                    scope: $scope,
+                    data: JSON.stringify({
+                        state: 'CONFIRM',
+                        cards: false,
+                        penalty: penalty,
+                        penaltyText: (function() {
+                            if (nights) {
+                                return penalty + (penalty > 1 ? " nights" : " night");
+                            } else {
+                                return $rootScope.currencySymbol + $filter('number')(penalty, 2);
+                            }
+                        })()
+                    })
+                });
+            }
+           
             var successCallback = function(data) {
                 $scope.$emit('hideLoader');
                 $scope.paymentTypes = data;
@@ -1053,40 +1085,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         $scope.creditCardTypes = item.values;
                     };
                 });
+                openCancelPopup();
             };
             $scope.invokeApi(RVPaymentSrv.renderPaymentScreen, "", successCallback);
-        };
 
-        fetcCreditCardTypes();
-        var promptCancel = function(penalty, nights) {
-
-            var passData = {
-                "reservationId": $scope.reservationData.reservationId,
-                "details": {
-                    "firstName": $scope.guestCardData.contactInfo.first_name,
-                    "lastName": $scope.guestCardData.contactInfo.last_name,
-                    "creditCardTypes": $scope.creditCardTypes,
-                    "paymentTypes": $scope.paymentTypes
-                }
-            };
-            $scope.passData = passData;
-            ngDialog.open({
-                template: '/assets/partials/reservationCard/rvCancelReservation.html',
-                controller: 'RVCancelReservation',
-                scope: $scope,
-                data: JSON.stringify({
-                    state: 'CONFIRM',
-                    cards: false,
-                    penalty: penalty,
-                    penaltyText: (function() {
-                        if (nights) {
-                            return penalty + (penalty > 1 ? " nights" : " night");
-                        } else {
-                            return $rootScope.currencySymbol + $filter('number')(penalty, 2);
-                        }
-                    })()
-                })
-            });
         };
 
         $scope.cancelReservation = function() {
