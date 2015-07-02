@@ -505,6 +505,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             //status
             $scope.reservationData.status = reservationDetails.reservation_card.reservation_status;
 
+            //group
+            $scope.reservationData.group = {
+                id: reservationDetails.reservation_card.group_id,
+                name: reservationDetails.reservation_card.group_name
+            }
+
             // id
             $scope.reservationData.confirmNum = reservationDetails.reservation_card.confirmation_num;
             $scope.reservationData.reservationId = reservationDetails.reservation_card.reservation_id;
