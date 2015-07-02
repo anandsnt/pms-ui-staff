@@ -69,6 +69,10 @@ sntRover.controller('RVReportsMainCtrl', [
 			$scope.heading = listTitle;
 			$scope.showSidebar = false;
 			$scope.resetFilterItemsToggle();
+
+			// tell report list controller to refresh scroll
+			console.log('report.list.scroll.refresh');
+			$scope.$broadcast( 'report.list.scroll.refresh' );
 		};
 
 
@@ -107,7 +111,8 @@ sntRover.controller('RVReportsMainCtrl', [
 			item_17: false,
 			item_18: false,
 			item_19: false,
-			item_20: false
+			item_20: false,
+			item_21: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -126,6 +131,14 @@ sntRover.controller('RVReportsMainCtrl', [
 		// show only valid sort_by Options "Filter"
 		$scope.showValidSortBy = function(sortBy) {
 			return !!sortBy && !!sortBy.value;
+		};
+
+		// replace any char with single space " "
+		// e.g -> filter:showValidSortBy:_
+		$scope.replaceWithSpace = function(value, tobeReplaced) {
+			console.log(arguments);
+
+			return (!value) ? '' : value.replace(/_/g, ' ');
 		};
 
 
@@ -193,6 +206,12 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		var dbObj = reportUtils.processDate().businessDate;
 		$scope.dateChanged = function (item, dateName) {
+
+			// keep track of the report that has been
+			// touched by the user
+			$scope.touchedReport = item;
+			$scope.touchedDate = dateName;
+
 			if ( item.title == reportUtils.getName('ARRIVAL') ) {
 				if ( !angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj) ) {
 					item.chosenDueInArrivals = false;
@@ -205,108 +224,110 @@ sntRover.controller('RVReportsMainCtrl', [
 			}
 		};
 
-		$scope.reportsState = {
-			markets: []
-		};
-
-
 		// logic to re-show the remove date button
 		$scope.showRemoveDateBtn = function() {
+			var reportItem = $scope.touchedReport,
+				dateName   = $scope.touchedDate,
+				dateObj,
+				otherDatesNames,
+				otherFilledDates;
 
-			// default handler for when to show the delete button again
-			var defaultHandler = function(item, first, second) {
-				if ( (!!item[first.from] && !!item[first.until]) && (!!item[second.from] && !!item[second.until]) ) {
-					item['showRemove'] = true;
-				}
+			if ( 'object' != typeof reportItem || !reportItem.hasOwnProperty(dateName) ) {
+				return;
+			} else {
+				dateObj = reportItem[dateName];
+			}
+							
+			// 1 - if date is valid for this 'dateItem' in this 'reportItem'
+			// 2.1 - if this is the only date in this 'reportItem', enable 'showRemove'
+			// 2.2 - else find out other dates available on this 'reportItem'
+			//     - if any of the other dates have valid date value, enable 'showRemove'
+			if ( isDateValid(reportItem, dateName) ) {
+				if ( reportItem['allDates'].length == 1 ) {
+					dateObj['showRemove'] = true;
+				} else {
+					otherDatesNames = _.without( reportItem['allDates'], dateName );
 
-				$scope.$apply();
+					otherFilledDates = _.find(otherDatesNames, function(name) {
+						return isDateValid( reportItem, name );
+					});
+
+					if ( !!otherFilledDates ) {
+						dateObj['showRemove'] = true;
+						reportItem[otherFilledDates]['showRemove'] = true;
+
+						forceScopeApply();
+					};
+				};				
 			};
 
-			// "Booking Source & Market Report"
-			// custom handler for when to show the delete button again
-			var sourceReportHandler = function(item, first, second) {
-				// CICO-10200
-				// If source markets report and a date is selected, have to enable the delete button to remove the date in case both days are selected i.e. the date range has both upper and
-				// lower limits
-				if ( !!item['fromArrivalDate'] && !!item['untilArrivalDate'] ) {
-					item['showRemoveArrivalDate'] = true;
+			function isDateValid (report, name) {
+				var from  = true,
+					until = true;
 
-				}
+				var _dateObj = report[name];
 
-				if ( !!item['fromDate'] && !!item['untilDate'] ) {
-					item['showRemove'] = true;
+				if ( _dateObj.hasOwnProperty('fromModel') && report[_dateObj['fromModel']] == undefined ) {
+					from = false;
 				};
 
-				$scope.$apply();
+				if ( _dateObj.hasOwnProperty('untilModel') && report[_dateObj['untilModel']] == undefined ) {
+					until = false;
+				};
+
+				return from && until ? true : false;
 			};
 
-			// array of all in use prop name sets
-			// any future addintions must be added here
-			var propNames = [{
-				from: 'fromDate',
-				until: 'untilDate'
-			}, {
-				from: 'fromArrivalDate',
-				until: 'untilArrivalDate'
-			}, {
-				from: 'fromCancelDate',
-				until: 'untilCancelDate'
-			}, {
-				from: 'fromDepositDate',
-				until: 'untilDepositDate'
-			}];
+			function forceScopeApply () {
+				var retry = function() {
+					if ( $scope && 'function' == typeof $scope.apply ) {
+						$scope.apply();
+					} else {
+						$timeout(retry, 100);
+					}
+				};
 
-			// loop over each report
-			_.each($scope.reportList, function(item) {
+				$timeout(retry, 100);
+			};
+		};
 
-				// as of now each report can have atmost
-				// two pair of date range sets - each having 'from' and 'until'
-				var setOne = {};
-				var setTwo = {};
+		$scope.clearDateFromFilter = function(reportItem, dateName) {
+			var fromModel  = reportItem[dateName]['fromModel'],
+				untilModel = reportItem[dateName]['untilModel'],
+				otherDates = _.without( reportItem['allDates'], dateName ),
+				otherFilledDates = 0,
+				lastDate;
 
-				// loop over the propNames and
-				// create setOne and setTwo
-				_.each(propNames, function(prop) {
+			// empty dates
+			if ( reportItem.hasOwnProperty(fromModel) ) {
+				reportItem[fromModel]  = undefined;
+			};
+			if ( reportItem.hasOwnProperty(untilModel) ) {
+				reportItem[untilModel] = undefined;
+			};
 
-					// if found a matching prop name in this report
-					// should be atmost two at the moment
-					if ( item.hasOwnProperty(prop.from) && item.hasOwnProperty(prop.until) ) {
+			// hide remove date button
+			reportItem[dateName]['showRemove'] = false;
 
-						// if setOne is empty fill in that
-						if ( _.isEmpty(setOne) ) {
-							setOne.from = prop.from;
-							setOne.until = prop.until;
-						}
-						// else fill in setTwo
-						else {
-							setTwo.from = prop.from;
-							setTwo.until = prop.until;
-						};
-
+			// hide remove button for the last date
+			if ( otherDates.length == 1 ) {
+				lastDate = otherDates[0];
+				reportItem[lastDate]['showRemove'] = false;
+			} else {
+				_.each(otherDates, function(each) {
+					if ( reportItem[each]['showRemove'] ) {
+						lastDate = each;
+						otherFilledDates += 1;
 					};
 				});
 
-				// both sets are filled.
-				// TODO: in future we may have a single set rather than a pair
-				if ( !_.isEmpty(setOne) && !_.isEmpty(setTwo) ) {
-					if ( item.title == reportUtils.getName('BOOKING_SOURCE_MARKET_REPORT') ) {
-						sourceReportHandler( item, angular.copy(setOne), angular.copy(setTwo) )
-					} else {
-						defaultHandler( item, angular.copy(setOne), angular.copy(setTwo) );
-					}
+				if ( otherFilledDates == 1 ) {
+					reportItem[lastDate]['showRemove'] = false;
 				};
-			});
-		};
-
-
-		$scope.clearDateFromFilter = function(list, key1, key2, property) {
-			if (list.hasOwnProperty(key1) && list.hasOwnProperty(key2)) {
-				list[key1] = undefined;
-				list[key2] = undefined;
-				var flag = property || 'showRemove';
-				list[flag] = false;
 			};
 		};
+
+
 
 		// auto correct the CICO value;
 		var getProperCICOVal = function(type) {
@@ -388,41 +409,6 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.fauxSelectChange = function(reportItem, fauxDS, allTapped) {
 			var selectedItems;
 
-			var updateQuickFlags = function() {
-				if ( !reportItem['hasGeneralOptions']['data'].length ) {
-					return;
-				};
-
-				reportItem.chosenNotes          = false;
-				reportItem.chosenShowGuests     = false;
-				reportItem.chosenCancelled      = false;
-				reportItem.chosenShowRateAdjust = false;
-
-				_.each(fauxDS.data, function(item) {
-					switch ( item.paramKey.toUpperCase() ) {
-						case 'INCLUDE_NOTES':
-							reportItem.chosenNotes = item.selected;
-							break;
-
-						case 'SHOW_GUESTS':
-							reportItem.chosenShowGuests = item.selected;
-							break;
-
-						case 'INCLUDE_CANCELLED':
-						case 'INCLUDE_CANCELED':
-							reportItem.chosenCancelled = item.selected;
-							break;
-
-						case 'SHOW_RATE_ADJUSTMENTS_ONLY':
-							reportItem.chosenShowRateAdjust = item.selected;
-							break;
-
-						default:
-							break;
-					};
-				});
-			};
-
 			if ( allTapped ) {
 				if ( fauxDS.selectAll ) {
 					fauxDS.title = 'All Selected';
@@ -433,8 +419,6 @@ sntRover.controller('RVReportsMainCtrl', [
 				_.each(fauxDS.data, function(each) {
 					each.selected = fauxDS.selectAll;
 				});
-
-				updateQuickFlags();
 			} else {
 				selectedItems = _.where(fauxDS.data, { selected: true });
 
@@ -449,8 +433,6 @@ sntRover.controller('RVReportsMainCtrl', [
 					fauxDS.selectAll = false;
 					fauxDS.title = selectedItems.length + ' Selected';
 				};
-
-				updateQuickFlags();
 
 				// CICO-10202
 				$scope.$emit( 'report.filter.change' );
@@ -523,6 +505,15 @@ sntRover.controller('RVReportsMainCtrl', [
 				/**/
 				$scope.appliedFilter['depositFromDate'] = angular.copy( chosenReport.fromDepositDate );
 				$scope.appliedFilter['depositToDate']   = angular.copy( chosenReport.untilDepositDate );
+			};
+
+			// include paid dates
+			if (!!chosenReport.hasPaidDateRange) {
+				params['paid_from_date'] = $filter('date')(chosenReport.fromPaidDate, 'yyyy/MM/dd');
+				params['paid_to_date']   = $filter('date')(chosenReport.untilPaidDate, 'yyyy/MM/dd');
+				/**/
+				$scope.appliedFilter['paidFromDate'] = angular.copy( chosenReport.fromPaidDate );
+				$scope.appliedFilter['paidToDate']   = angular.copy( chosenReport.untilPaidDate );
 			};
 
 			// include create dates
@@ -628,10 +619,19 @@ sntRover.controller('RVReportsMainCtrl', [
 
 
 			if ( chosenReport.hasOwnProperty('hasGeneralOptions') && chosenReport['hasGeneralOptions']['data'].length ) {
+
+				// keeping direct ref to option from 'chosenReport'
+				// reseting all
+				chosenReport.chosenOptions = {};
+
 				_.each(chosenReport['hasGeneralOptions']['data'], function(each) {
 					if ( each.selected ) {
 						key = each.paramKey;
 						params[key] = true;
+
+						// keeping direct ref to option from 'chosenReport'
+						chosenReport.chosenOptions[key] = true;
+
 						/**/
 						$scope.appliedFilter.options.push( each.description );
 					} else if ( !each.selected && each.mustSend ) {

@@ -72,7 +72,8 @@
     "GROUP_EMAIL":"Email",
     "GROUP_PRINT":"Print",
     "GROUP_DOWNLOAD":"Download",
-    "ADD_BILLING_INFO":"Add billing information"
+    "ADD_BILLING_INFO":"Add billing information",
+    "GROUP_BATCH" : "Reg.card"
 
 
 

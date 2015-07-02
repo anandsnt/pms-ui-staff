@@ -1,5 +1,36 @@
-sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filter', '$stateParams', 'ngDialog', 'rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'rvAccountTransactionsSrv', 'RVChargeItems', 'RVPaymentSrv', 'RVReservationCardSrv', 'RVBillCardSrv', 'rvPermissionSrv', '$timeout', '$window',
-	function($scope, $rootScope, $filter, $stateParams, ngDialog, rvAccountsConfigurationSrv, RVReservationSummarySrv, rvAccountTransactionsSrv, RVChargeItems, RVPaymentSrv, RVReservationCardSrv, RVBillCardSrv, rvPermissionSrv, $timeout, $window) {
+sntRover.controller('rvAccountTransactionsCtrl', [
+	'$scope', 
+	'$rootScope', 
+	'$filter', 
+	'$stateParams', 
+	'ngDialog', 
+	'rvAccountsConfigurationSrv', 
+	'RVReservationSummarySrv', 
+	'rvAccountTransactionsSrv', 
+	'RVChargeItems', 
+	'RVPaymentSrv', 
+	'RVReservationCardSrv', 
+	'RVBillCardSrv', 
+	'rvPermissionSrv', 
+	'$timeout', 
+	'$window',
+	'$q',
+	function($scope, 
+		$rootScope, 
+		$filter, 
+		$stateParams, 
+		ngDialog, 
+		rvAccountsConfigurationSrv, 
+		RVReservationSummarySrv, 
+		rvAccountTransactionsSrv, 
+		RVChargeItems, 
+		RVPaymentSrv, 
+		RVReservationCardSrv, 
+		RVBillCardSrv, 
+		rvPermissionSrv, 
+		$timeout, 
+		$window, 
+		$q) {
 
 
 		BaseCtrl.call(this, $scope);
@@ -37,42 +68,48 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 
 			$scope.invoiceDate = $rootScope.businessDate;
 
-		};
+		}();
 
+		/**
+		 * Successcallback of transaction list fetch
+		 * @param  {[type]} data [description]
+		 * @return undefined
+		 */
+		var onTransactionFetchSuccess = function(data) {
+			$scope.transactionsDetails = data;
+			$scope.refreshScroller('registration-content');
+			$scope.refreshScroller('bill-tab-scroller');
+			$scope.refreshScroller('billDays');
 
+			/*
+			 * Adding billValue and oldBillValue with data. Adding with each bills fees details
+			 * To handle move to bill action
+			 * Added same value to two different key because angular is two way binding
+			 * Check in HTML moveToBillAction
+			 */
+			angular.forEach($scope.transactionsDetails.bills, function(value, key) {
+				angular.forEach(value.total_fees.fees_details, function(feesValue, feesKey) {
 
-		var getTransactionDetails = function() {
-
-			var onTransactionFetchSuccess = function(data) {
-
-				$scope.$emit('hideloader');
-				$scope.transactionsDetails = data;
-				$scope.refreshScroller('registration-content');
-				$scope.refreshScroller('bill-tab-scroller');
-				$scope.refreshScroller('billDays');
-
-				/*
-				 * Adding billValue and oldBillValue with data. Adding with each bills fees details
-				 * To handle move to bill action
-				 * Added same value to two different key because angular is two way binding
-				 * Check in HTML moveToBillAction
-				 */
-				angular.forEach($scope.transactionsDetails.bills, function(value, key) {
-					angular.forEach(value.total_fees.fees_details, function(feesValue, feesKey) {
-
-						feesValue.billValue = value.bill_number; //Bill value append with bill details
-						feesValue.oldBillValue = value.bill_number; // oldBillValue used to identify the old billnumber
-					});
+					feesValue.billValue = value.bill_number; //Bill value append with bill details
+					feesValue.oldBillValue = value.bill_number; // oldBillValue used to identify the old billnumber
 				});
+			});
 
-			}
+		}
+
+		/**
+		 * API calling method to get the transaction details
+		 * @return - undefined
+		 */
+		var getTransactionDetails = function() {
 			var params = {
 				"account_id": $scope.accountConfigData.summary.posting_account_id
-			}
-			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, {
+			};
+			var options = {
 				successCallBack: onTransactionFetchSuccess,
 				params: params
-			});
+			};
+			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, options);
 		};
 
 		/*
@@ -348,16 +385,6 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 		$scope.chargeCodeActive = false;
 		$scope.selectedChargeCode = {};
 
-		var fetchChargeCodesSuccess = function(data) {
-			$scope.chargeCodeData = data.results;
-			$scope.availableChargeCodes = data.results;
-		};
-
-		$scope.callAPI(RVBillCardSrv.fetchChargeCodes, {
-			successCallBack: fetchChargeCodesSuccess,
-			params: {}
-		});
-
 		$scope.getAllchargeCodes = function(callback) {
 			callback($scope.chargeCodeData);
 		};
@@ -533,8 +560,6 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 			}
 			//CICO-13903 End
 
-		initAccountTransactionsView();
-
 		//Direct Bill payment starts here
 
 		var proceedPayment = function(arType){
@@ -566,6 +591,107 @@ sntRover.controller('rvAccountTransactionsCtrl', ['$scope', '$rootScope', '$filt
 					scope: $scope
 				});
 		});
+
+		/**
+		 * success call back of charge code fetch,
+		 * will use this data in popup
+		 * @param  {Array of Objects}
+		 * @return undefined
+		 */
+		var fetchChargeCodesSuccess = function(data) {
+			$scope.chargeCodeData = data.results;
+			$scope.availableChargeCodes = data.results;
+		};
+
+		/**
+		 * when we have everything required to render transaction details page,
+		 * Success call back of initially required APIs
+		 * @param  {[type]} data [description]
+		 * @return {[type]}      [description]
+		 */
+		var successFetchOfAllReqdForTransactionDetails = function(data){
+			$scope.$emit('hideLoader');
+		};
+		
+		/**
+		 * when we failed in fetching any of the data required for transaction details,
+		 * failure call back of any of the initially required API
+		 * @param  {[type]} data [description]
+		 * @return {[type]}      [description]
+		 */
+		var failedToFetchOfAllReqdForTransactionDetails = function(data){
+			$scope.$emit('hideLoader');
+		};
+
+		/**
+		 * function to check whether the user has permission
+		 * to make view the transactions tab
+		 * @return {Boolean}
+		 */
+		$scope.hasPermissionToViewTransactionsTab = function() {
+			return rvPermissionSrv.getPermissionValue('ACCESS_GROUP_ACCOUNT_TRANSACTIONS');
+		};
+
+        /**
+         * we have to call multiple API on initial screen, which we can't use our normal function in teh controller
+         * depending upon the API fetch completion, loader may disappear.
+         * @return {[type]} [description]
+         */
+        var callInitialAPIs = function() {
+            if (!$scope.hasPermissionToViewTransactionsTab()) {
+                $scope.errorMessage = ['Sorry, You dont have enough permission to proceed!!'];
+                return;
+            }
+
+            var promises = [];
+            //we are not using our normal API calling since we have multiple API calls needed
+            $scope.$emit('showLoader');
+
+            //transaction details fetch
+            var paramsForTransactionDetails = {
+                account_id: $scope.accountConfigData.summary.posting_account_id
+            };
+            promises.push(rvAccountTransactionsSrv
+                .fetchTransactionDetails(paramsForTransactionDetails)
+                .then(onTransactionFetchSuccess)
+            );
+
+            //charge code fetch
+            promises.push(RVBillCardSrv
+                .fetchChargeCodes()
+                .then(fetchChargeCodesSuccess)
+            );
+
+
+            //Lets start the processing
+            $q.all(promises)
+                .then(successFetchOfAllReqdForTransactionDetails, failedToFetchOfAllReqdForTransactionDetails);
+        }
+
+
+		/**
+		 * When there is a TAB switch, we will get this. We will initialize things from here
+		 * @param  {[type]} event             [description]
+		 * @param  {[type]} currentTab){		} [description]
+		 * @return {[type]}                   [description]
+		 */
+		$scope.$on ('ACCOUNT_TAB_SWITCHED', function(event, currentTab){
+			if (currentTab === "TRANSACTIONS") {				
+				callInitialAPIs();
+			}
+		});
+		
+		/**
+		 * When there is a TAB switch, we will get this. We will initialize things from here
+		 * @param  {[type]} event             [description]
+		 * @param  {[type]} currentTab){		} [description]
+		 * @return {[type]}                   [description]
+		 */
+		$scope.$on ('GROUP_TAB_SWITCHED', function(event, currentTab){
+			if (currentTab === "TRANSACTIONS") {				
+				callInitialAPIs();
+			}
+		});		
 
 	}
 ]);

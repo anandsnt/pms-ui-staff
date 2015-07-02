@@ -57,36 +57,39 @@ sntRover.controller('RVActivityLogCtrl',[
         $scope.reportUpdateVisible = false;
     });
 
-    var datePickerCommon = {
-        dateFormat: $rootScope.jqDateFormat,
-        numberOfMonths: 1,
-        changeYear: true,
-        changeMonth: true,
-        //maxDate: tzIndependentDate($rootScope.businessDate),
-        yearRange: "-50:+50",
-        beforeShow: function(input, inst) {
-            $('#ui-datepicker-div');
-            $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
-        },
-        onClose: function(value) {
-            $('#ui-datepicker-div');
-            $('#ui-datepicker-overlay').remove();
-        }
+    var setDatePickerOptions = function(){
+        //I just changed this to a function, dont knw who written this
+        var datePickerCommon = {
+            dateFormat: $rootScope.jqDateFormat,
+            numberOfMonths: 1,
+            changeYear: true,
+            changeMonth: true,
+            //maxDate: tzIndependentDate($rootScope.businessDate),
+            yearRange: "-50:+50",
+            beforeShow: function(input, inst) {
+                $('#ui-datepicker-div');
+                $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+            },
+            onClose: function(value) {
+                $('#ui-datepicker-div');
+                $('#ui-datepicker-overlay').remove();
+            }
+        };
+
+        $scope.fromDateOptions = angular.extend({
+           // maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+            onSelect: function(value) {
+                $scope.untilDateOptions.minDate = value;
+            }
+        }, datePickerCommon);
+        $scope.untilDateOptions = angular.extend({
+           // maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+            onSelect: function(value) {
+                $scope.fromDateOptions.maxDate = value;
+            }
+        }, datePickerCommon);
     };
-
-    $scope.fromDateOptions = angular.extend({
-       // maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
-        onSelect: function(value) {
-            $scope.untilDateOptions.minDate = value;
-        }
-    }, datePickerCommon);
-    $scope.untilDateOptions = angular.extend({
-       // maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
-        onSelect: function(value) {
-            $scope.fromDateOptions.maxDate = value;
-        }
-    }, datePickerCommon);
-
+    
     $scope.isOldValue = function(value){
         if(value =="" || typeof value == "undefined" || value == null){
             return false;
@@ -356,6 +359,9 @@ sntRover.controller('RVActivityLogCtrl',[
 
         //Sorting
         $scope.initSort();
+
+        //setting date picker options
+        setDatePickerOptions();
 
         // set a back button on header
         $rootScope.setPrevState = {

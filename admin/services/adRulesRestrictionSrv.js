@@ -93,12 +93,31 @@ admin.service('ADRulesRestrictionSrv', [
         * @param {object} contains page and per_page params
         * @return {object} defer promise
         */  
-        this.fetchRules = function(params) {
+        this.fetchCancellationRules = function(params) {
             var deferred = $q.defer(),
-                url      = '/api/policies';
+                url      = '/api/cancellation_policies';
 
             ADBaseWebSrvV2.getJSON(url, params)
                 .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+        };
+        /*
+        * To fetch rules list for a particular restriction
+        * 
+        * @param {object} contains page and per_page params
+        * @return {object} defer promise
+        */  
+        this.fetchDepositeRules = function() {
+            var deferred = $q.defer(),
+                url      = '/api/deposit_policies';
+
+            ADBaseWebSrvV2.getJSON(url)
+                .then(function(data) {                    
                     deferred.resolve(data);
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
@@ -116,7 +135,26 @@ admin.service('ADRulesRestrictionSrv', [
         */  
         this.saveRule = function(params) {
             var deferred = $q.defer(),
-                url      = '/api/policies';
+                url      = '/api/cancellation_policies';
+
+            ADBaseWebSrvV2.postJSON(url, params)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+        };
+        /*
+        * Save a newly created rule under a particular restriction
+        * 
+        * @param {object} contains page and per_page params
+        * @return {object} defer promise
+        */  
+        this.saveDepositeRule = function(params) {
+            var deferred = $q.defer(),
+                url      = '/api/deposit_policies';
 
             ADBaseWebSrvV2.postJSON(url, params)
                 .then(function(data) {
@@ -128,6 +166,7 @@ admin.service('ADRulesRestrictionSrv', [
             return deferred.promise;
         };
 
+
         /*
         * update a existing rule under a particular restriction
         * 
@@ -136,7 +175,7 @@ admin.service('ADRulesRestrictionSrv', [
         */  
         this.updateRule = function(dataWith) {
             var deferred = $q.defer(),
-                url      = '/api/policies/' + dataWith.id,
+                url      = '/api/cancellation_policies/' + dataWith.id,
                 data     = _.omit(dataWith, 'id');
 
             ADBaseWebSrvV2.putJSON(url, data)
@@ -149,6 +188,23 @@ admin.service('ADRulesRestrictionSrv', [
             return deferred.promise;
         };
 
+
+        this.updateDepositeRule = function(dataWith) {
+            var deferred = $q.defer(),
+                url      = '/api/deposit_policies/' + dataWith.id,
+                data     = _.omit(dataWith, 'id');
+
+            ADBaseWebSrvV2.putJSON(url, data)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+        };
+
+
       /*
       * To delete a particular rule
       * 
@@ -157,7 +213,7 @@ admin.service('ADRulesRestrictionSrv', [
       */  
       this.deleteRule = function(params) {
         var deferred = $q.defer(),
-            url      = '/api/policies/' + params.id;
+            url      = '/api/cancellation_policies/' + params.id;
 
         ADBaseWebSrvV2.deleteJSON(url, params)
           .then(function(data) {
@@ -170,15 +226,29 @@ admin.service('ADRulesRestrictionSrv', [
       };
 
 
+      this.deleteDepositeRule = function(params) {
+        var deferred = $q.defer(),
+            url      = '/api/deposit_policies/' + params.id;
+
+        ADBaseWebSrvV2.deleteJSON(url, params)
+          .then(function(data) {
+            deferred.resolve(data);
+          }, function(errorMessage) {
+            deferred.reject(errorMessage);
+          });
+
+        return deferred.promise;
+      };
+
       /*
       * get details of a particular rule
       * 
       * @param {object} contains page and per_page params
       * @return {object} defer promise
       */  
-      this.fetchSingleRule = function(params) {
+      this.fetchCancellationSingleRule = function(params) {
         var deferred = $q.defer(),
-            url      = '/api/policies/' + params.id;
+            url      = '/api/cancellation_policies/' + params.id;
 
         ADBaseWebSrvV2.getJSON(url, params)
           .then(function(data) {
@@ -190,6 +260,20 @@ admin.service('ADRulesRestrictionSrv', [
         return deferred.promise;
       };
 
+
+      this.fetchSingleDepositeRule = function(params) {
+        var deferred = $q.defer(),
+            url      = '/api/deposit_policies/' + params.id;
+
+        ADBaseWebSrvV2.getJSON(url)
+          .then(function(data) {
+            deferred.resolve(data);
+          }, function(errorMessage) {
+            deferred.reject(errorMessage);
+          });
+
+        return deferred.promise;
+      };
 
     /**
     *   A getter method to return the charge codes list

@@ -1,9 +1,5 @@
 <span>
 	<div class="block-item1 accompany-guest">
-		<div class="group" ng-if ="reservationData.reservation_card.group_name != ''">
-			<span class="label">GROUP  </span>
-			<span class="name">{{reservationData.reservation_card.group_name}}</span>
-		</div>
 		<div class="guest" ng-if ="reservationData.reservation_card.accompaying_guests.length > 0">
 			<span class="label">ACCOMPANY GUEST </span>
 			<span class="name" ng-repeat="guest in reservationData.reservation_card.accompaying_guests">

@@ -23,6 +23,11 @@ sntRover.controller('RVroomAssignmentController',[
 	};
 		
 	BaseCtrl.call(this, $scope);
+
+	// do we need to call the the room assigning API with forcefully assign to true
+	// currently used for group reservation
+	var wanted_to_forcefully_assign = false;
+
 	var oldRoomType = '';
 	$scope.errorMessage = '';
 	var title = $filter('translate')('ROOM_ASSIGNMENT_TITLE');
@@ -225,79 +230,145 @@ sntRover.controller('RVroomAssignmentController',[
 
 		$scope.invokeApi(RVRoomAssignmentSrv.UnAssignRoom, params, successCallbackOfUnAssignRoom, failureCallBackOfUnAssignRoom);
 	};
-		
+
 	/**
-	* function to assign the new room for the reservation
-	*/
-	$scope.assignRoom = function() {
-		var successCallbackAssignRoom = function(data){
-			$scope.$emit('hideLoader');			
-			
-			$scope.reservationData.reservation_card.room_id = $scope.assignedRoom.room_id;
-			
-			$scope.reservationData.reservation_card.room_status = $scope.assignedRoom.room_status;
-			$scope.reservationData.reservation_card.fo_status = $scope.assignedRoom.fo_status;
-			$scope.reservationData.reservation_card.room_ready_status = $scope.assignedRoom.room_ready_status;
-			// CICO-7904 and CICO-9628 : update the upsell availability to staycard		
-			$scope.reservationData.reservation_card.is_upsell_available = data.is_upsell_available?"true":"false";
-			if(typeof $scope.selectedRoomType != 'undefined'){
-				$scope.reservationData.reservation_card.room_type_description = $scope.selectedRoomType.description;
-				$scope.reservationData.reservation_card.room_type_code = $scope.selectedRoomType.type;
-			}			
-
-			if(data.is_room_auto_assigned == true){
-
-				$scope.roomAssignedByOpera = data.room;
-
-				$scope.reservationData.reservation_card.room_number = data.room;
-
-				ngDialog.open({
-			          template: '/assets/partials/roomAssignment/rvRoomHasAutoAssigned.html',
-			          controller: 'rvRoomAlreadySelectedCtrl',
-			          className: 'ngdialog-theme-default',
-			          scope: $scope
-		        });
-			} else {
-				if($scope.clickedButton == "checkinButton"){
-					$scope.$emit('hideLoader');
-					$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
-				} else {
-					$scope.$emit('hideLoader');
-					$scope.backToStayCard();
-				}
-				$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
-			}
-			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
-			setTimeout(function(){
-				$scope.roomAssgnment.inProgress = false;	
-				}, 
-			3000);
-			
-		};
-		var errorCallbackAssignRoom = function(error){
-			$scope.$emit('hideLoader');
-			$scope.roomAssgnment.inProgress = false;
-			setTimeout(function(){
-				ngDialog.open({
-			          template: '/assets/partials/roomAssignment/rvRoomHasAlreadySelected.html',
-			          controller: 'rvRoomAlreadySelectedCtrl',
-			          className: 'ngdialog-theme-default',
-			          scope: $scope
-		        });
-			}, 700);
-		
-			
-			
-			//$scope.errorMessage = error;
-		};
-		var params = {};
-		params.reservation_id = parseInt($stateParams.reservation_id, 10);
-		params.room_number = $scope.assignedRoom.room_number;
-		params.without_rate_change = $scope.roomTransfer.withoutRateChange;
-		params.new_rate_amount = $scope.roomTransfer.newRoomRateChange;
-		$scope.roomAssgnment.inProgress = true;
-		$scope.invokeApi(RVRoomAssignmentSrv.assignRoom, params, successCallbackAssignRoom, errorCallbackAssignRoom);
+	 * to open the room aleady chhosed popup
+	 * @return undefined
+	 */
+	var openRoomAlreadyChoosedPopup = function() {
+		ngDialog.open(
+		{
+			template 	: '/assets/partials/roomAssignment/rvRoomHasAutoAssigned.html',
+			controller 	: 'rvRoomAlreadySelectedCtrl',
+			className 	: 'ngdialog-theme-default',
+			scope 		: $scope
+        });
 	};
+
+	/**
+	 * [successCallbackAssignRoom description]
+	 * @param  {[type]} data [description]
+	 * @return {[type]}      [description]
+	 */
+	var successCallbackAssignRoom = function(data){
+		var dataToUpdate 		= {}, 
+			assignedRoom 		= $scope.assignedRoom, 
+			selectedRoomType 	= $scope.selectedRoomType,
+			reservationData 	= $scope.reservationData.reservation_card;
+
+		_.extend (dataToUpdate, 
+		{
+			room_id 			: assignedRoom.room_id,
+			room_status 		: assignedRoom.room_status,
+			fo_status 			: assignedRoom.fo_status,
+			room_ready_status	: assignedRoom.room_ready_status,
+			is_upsell_available	: (data.is_upsell_available) ? "true" : "false",  // CICO-7904 and CICO-9628 : update the upsell availability to staycard			
+		});
+		
+		if (typeof $scope.selectedRoomType !== 'undefined') {
+			_.extend (dataToUpdate, 
+			{
+				room_type_description 	: selectedRoomType.description,
+				room_type_code 			: selectedRoomType.type
+			});
+		}		
+
+		if(data.is_room_auto_assigned && !$scope.isStandAlone) {
+			$scope.roomAssignedByOpera 	= data.room; //Shahul: I don't know who named this variable, What the...
+			dataToUpdate.room_number 	= data.room;
+			openRoomAlreadyChoosedPopup ();
+		}
+		else {
+			if($scope.clickedButton == "checkinButton") {
+				$state.go('rover.reservation.staycard.billcard', 
+					{
+						"reservationId": reservationData.reservation_id, 
+						"clickedButton": "checkinButton"
+					});
+			} 
+			else {
+				$scope.backToStayCard();
+			}
+			dataToUpdate.room_number = assignedRoom.room_number;
+		}
+
+		//updating in the central data model
+		_.extend($scope.reservationData.reservation_card, dataToUpdate);
+
+		RVReservationCardSrv
+			.updateResrvationForConfirmationNumber(reservationData.confirmation_num, $scope.reservationData);
+		
+		//Yes, its over
+		$scope.roomAssgnment.inProgress = false;		
+	};
+
+	/**
+	 * to open the room aleady chhosed popup
+	 * @return undefined
+	 */
+	var openWantedToBorrowPopup = function() {
+		ngDialog.open(
+		{
+			template 	: '/assets/partials/roomAssignment/rvGroupRoomTypeNotConfigured.html',
+			scope 		: $scope
+        });
+	};
+
+	/**
+	 * [errorCallbackAssignRoom description]
+	 * @param  {[type]} error [description]
+	 * @return {[type]}       [description]
+	 */
+	var errorCallbackAssignRoom = function(error){
+		$scope.roomAssgnment.inProgress = false;
+		//since we are expecting some custom http error status in the response
+		//and we are using that to differentiate among errors
+		if(error.hasOwnProperty ('httpStatus')) {
+			switch (error.httpStatus) {
+				case 470:
+						wanted_to_forcefully_assign = true;
+						openWantedToBorrowPopup ();
+				 	break;
+				default:
+					break;
+			}
+		}
+		else if(!$scope.isStandAlone) {		
+			setTimeout(function(){
+				openRoomAlreadyChoosedPopup ();
+			}, 700);
+		}
+
+	};
+
+	/**
+	 * function to assign the new room for the reservation
+	 * @return undefined [description]
+	 */
+	$scope.assignRoom = function() {
+
+		$scope.roomAssgnment.inProgress = true;
+
+		//API params
+		var params = {};
+		params.reservation_id 		= parseInt($stateParams.reservation_id, 10);
+		params.room_number 			= $scope.assignedRoom.room_number;
+		params.without_rate_change 	= $scope.roomTransfer.withoutRateChange;
+		params.new_rate_amount 		= $scope.roomTransfer.newRoomRateChange;
+
+		//CICO-17082 - As per design pattern
+		params.forcefully_assign_room = wanted_to_forcefully_assign;
+		
+		wanted_to_forcefully_assign = false;				
+		//yes. ALL set. Go!
+		var options = {
+            params: 			params,
+            successCallBack: 	successCallbackAssignRoom,
+            failureCallBack: 	errorCallbackAssignRoom
+        };
+        $scope.callAPI(RVRoomAssignmentSrv.assignRoom, options);			
+	};
+
 	$scope.goToNextView = function(){
 
 		if($scope.clickedButton == "checkinButton"){

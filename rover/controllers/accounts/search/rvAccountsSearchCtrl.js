@@ -123,15 +123,6 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* this function will execute
 		* @return {None}
 		*/
-		$scope.hasPermissionToEditAccount = function(){
-			return (rvPermissionSrv.getPermissionValue("EDIT_ACCOUNT"));
-		};
-
-		/**
-		* when there is any change in search query
-		* this function will execute
-		* @return {None}
-		*/
 		$scope.searchQueryChanged = function() {
 			if ($scope.isEmpty ($scope.query)){
 				return false;
@@ -352,15 +343,11 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		 * Navigate to the account configuration state for editing the account
 		 * @return undefined
 		 */
-		$scope.gotoEditAccountConfiguration = function(accountID){
-			if (!$scope.hasPermissionToEditAccount()){
-				$scope.errorMessage = ['Sorry, You have no permission to edit account!'];
-				return;
-			}
-
+		$scope.gotoEditAccountConfiguration = function(accountID){			
 			$state.go('rover.accounts.config',{
 				id: accountID,
-				activeTab: 'ACCOUNT'
+				activeTab: 'ACCOUNT',
+        isFromCards: true
 			})
 		};
 		
@@ -369,7 +356,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		 * @return undefined
 		 */
 		$scope.gotoAddNewAccount = function(){
-			$state.go ('rover.accounts.config', {'id': "NEW_ACCOUNT"});
+			$state.go ('rover.accounts.config', {'id': "NEW_ACCOUNT", isFromCards: true});
 		};
 
 		/**

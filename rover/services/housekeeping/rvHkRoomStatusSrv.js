@@ -25,12 +25,14 @@ sntRover.service('RVHkRoomStatusSrv', [
 				"departed"             : false,
 				"dayuse"               : false,
 				"queued"               : false,
+				"lateCheckout"         : false,
 				"floorFilterSingle"    : "",
 				"floorFilterStart"     : "",
 				"floorFilterEnd"       : "",
 				"showAllFloors"        : true,
 				"filterByWorkType"     : false,
 				"filterByEmployeeName" : false,
+				"singleRoomType"       : false,
 				"query"                : "",
 				"page"                 : 1,
 				"perPage"              : $window.innerWidth < 599 ? 25 : 50
@@ -104,6 +106,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 				if ( filter.vacant )   { reservation_status.push('VACANT'); };
 				if ( filter.occupied ) { reservation_status.push('OCCUPIED'); };
 				if ( filter.queued )   { reservation_status.push('QUEUED'); };
+				if ( filter.lateCheckout )   { reservation_status.push('LATE_CHECKOUT'); };
 
 				// process front office status
 				if ( filter.stayover )     { front_office_status.push('STAY_OVER'); };
@@ -275,15 +278,14 @@ sntRover.service('RVHkRoomStatusSrv', [
 			var deferred = $q.defer();
 
 			if ( this.roomTypes.length ) {
+				this.resetRoomTypes();
 				deferred.resolve(this.roomTypes);
 			} else {
 				BaseWebSrvV2.getJSON(url)
 					.then(function(data) {
 						this.roomTypes = data.results;
-						angular.forEach(this.roomTypes, function(type, i) {
-							type.isSelected = false;
-						});
 
+						this.resetRoomTypes();
 						deferred.resolve(this.roomTypes);
 					}.bind(this), function(data) {
 						deferred.reject(data);
@@ -291,6 +293,13 @@ sntRover.service('RVHkRoomStatusSrv', [
 			};
 
 			return deferred.promise;
+		};
+		this.resetRoomTypes = function() {
+			angular.forEach(this.roomTypes, function(type, i) {
+				type.isSelected = false;
+			});
+
+			return this.roomTypes;
 		};
 
 
@@ -535,6 +544,10 @@ sntRover.service('RVHkRoomStatusSrv', [
 					room.enterStatusClass = 'no-show';
 					break;
 			}
+
+			if ( room.is_late_checkout == 'true' ) {
+				room.leaveStatusClass = 'late-check-out';
+			};
 		};
 
 		// when user edit the room on details page

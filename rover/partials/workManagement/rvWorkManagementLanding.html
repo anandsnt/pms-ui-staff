@@ -14,7 +14,7 @@
             <select ng-model="stateVariables.viewingDate.work_type_id" ng-options="workType.id as workType.name for workType in workTypes" ng-change="onWorkTypeChanged()">                
             </select>
         </div>
-        <div class="entry has-datepicker">
+        <div class="has-datepicker">
             <input id="rmDateRange" placeholder="{{stateVariables.viewingDate.date | date : 'dd MMMM yyyy'}}" readonly="" maxlength="8" value="{{currentFilterData.selected_date_range}}" class="hasDatepicker"  name="">
             <button ng-click="showCalendar('RVWorkManagementSearchDatePickerController')" type="button" class="ui-datepicker-trigger" style="top: 0px">...</button>
         </div>

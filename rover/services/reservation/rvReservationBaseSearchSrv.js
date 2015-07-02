@@ -100,5 +100,26 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
             });
             return deferred.promise;
         }
+
+        this.fetchAddonsForRates = function() {
+            var deferred = $q.defer(),
+                url = '/api/addons/rate_addons';
+            RVBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data.rate_addons);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        }
+        this.hasAnyConfiguredAddons = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/addons/configured';
+            RVBaseWebSrvV2.getJSON(url, params).then(function(data) {                
+                deferred.resolve(data.addons_configured);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+            return deferred.promise;
+        };
     }
 ]);

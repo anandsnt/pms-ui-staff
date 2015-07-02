@@ -3,7 +3,7 @@
     <!-- Reservation header -->
     <div class="reservation-header" ng-init="showEditDates = false">
         <div class="actions">
-            <a ng-show="isStandAlone && !reservationData.reservation_card.is_hourly_reservation && (reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'RESERVED')" class="button dates has-arrow toggle" ng-class="{'active': showEditDates}" ng-click="showEditDates = !showEditDates">
+            <a ng-show="isStayDatesChangeAllowed()" class="button dates has-arrow toggle" ng-class="{'active': showEditDates}" ng-click="showEditDates = !showEditDates">
                 <span class="date">
                     <span class="guest-status small-icon check-in">&nbpsp;</span>
                     <span ng-show="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEEE'}}</span>
@@ -15,17 +15,23 @@
                     <span ng-hide="!isIpad">{{reservationData.reservation_card.departure_date|date:'EEE'}}</span> {{reservationData.reservation_card.departure_date|date:dateFormat}}
                 </span>
             </a>
-
-            <span ng-if="!isStandAlone || reservationData.reservation_card.is_hourly_reservation || (reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT' || reservationData.reservation_card.reservation_status == 'CHECKEDOUT')" class="date"><span class="guest-status small-icon check-in">&nbpsp;</span>
-            <span ng-show="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEEE'}}</span>
-            <span ng-hide="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEE'}}</span> {{reservationData.reservation_card.arrival_date|date:dateFormat}}
-            <span ng-show="reservationData.reservation_card.is_hourly_reservation">{{reservationData.reservation_card.arrival_time}} </span>
-            </span>
-            <span ng-if="!isStandAlone || reservationData.reservation_card.is_hourly_reservation || (reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT' || reservationData.reservation_card.reservation_status == 'CHECKEDOUT')" class="date"><span class="guest-status small-icon check-out">&nbpsp;</span>
-            <span ng-show="!isIpad">{{reservationData.reservation_card.departure_date|date:fulldayInWeek}}</span>
-            <span ng-hide="!isIpad">{{reservationData.reservation_card.departure_date|date:'EEE'}}</span> {{reservationData.reservation_card.departure_date|date:dateFormat}}
-            <span ng-show="reservationData.reservation_card.is_hourly_reservation">{{reservationData.reservation_card.departure_time}} </span>
-            </span>
+			<span ng-if="!isStayDatesChangeAllowed();">
+				<span class="date">
+	            	<span class="guest-status small-icon check-in">&nbpsp;</span>
+		            <span ng-show="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEEE'}}</span>
+		            <span ng-hide="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEE'}}</span> 
+		            {{reservationData.reservation_card.arrival_date|date:dateFormat}}
+		            <span ng-show="reservationData.reservation_card.is_hourly_reservation">{{reservationData.reservation_card.arrival_time}} </span>
+	            </span>
+	            <span class="date">
+	            	<span class="guest-status small-icon check-out">&nbpsp;</span>
+		            <span ng-show="!isIpad">{{reservationData.reservation_card.departure_date|date:fulldayInWeek}}</span>
+		            <span ng-hide="!isIpad">{{reservationData.reservation_card.departure_date|date:'EEE'}}</span> 
+		            {{reservationData.reservation_card.departure_date|date:dateFormat}}
+		            <span ng-show="reservationData.reservation_card.is_hourly_reservation">{{reservationData.reservation_card.departure_time}} </span>
+	            </span>
+			</span>
+            
 
             <a ng-click="toggleTime()" ng-class="{'not-set':!reservationData.reservation_card.arrival_time, 'active': shouldShowTimeDetails}" ng-if="!reservationData.reservation_card.is_opted_late_checkout && (reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'RESERVED')" class="button times check-in toggle">
                 <span class="icons time check-in"></span>{{reservationData.reservation_card.arrival_time ? reservationData.reservation_card.arrival_time : 'NOT SET' }}
@@ -41,7 +47,7 @@
                 <span class="label">Guests</span> {{ reservationParentData.rooms[0].numInfants + reservationParentData.rooms[0].numChildren + reservationParentData.rooms[0].numAdults }}
             </a>
             <!-- nights button is clickable only for the below status -->
-            <a class="button has-arrow next-view" ng-show="isNightsEnabled() && !reservationData.reservation_card.is_hourly_reservation" ng-click="extendNights()">
+            <a class="button has-arrow next-view" ng-show="shouldShowChangeStayDatesButton()" ng-click="extendNights()">
                 <span class="label">
                     Nights
                 </span> {{reservationData.reservation_card.total_nights}}
@@ -201,6 +207,9 @@
                     </div>
                 </li>
             </ul>
+            
+            <!-- Accompany in guest card -->
+            <div ng-if="reservationData.reservation_card.accompaying_guests.length > 0" ng-include="'/assets/partials/reservationCard/accompanyGuest.html'"></div>
 
             <form method="post" name="manage-guests" id="manage-guests" class="form" ng-show="isStandAlone">
                 <div class="entry">
@@ -231,8 +240,9 @@
 
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
-            <!-- Accompany in guest card -->
-            <div ng-if="reservationData.reservation_card.group_name != '' || reservationData.reservation_card.accompaying_guests.length > 0" ng-include="'/assets/partials/reservationCard/accompanyGuest.html'"></div>
+            <!-- Notes -->
+            <div ng-include="'/assets/partials/reservationCard/rvReservationCardNotes.html'" ng-controller="rvReservationCardNotesController"></div>
+
 
             <!-- Credit card -->
             <div ng-include="'/assets/partials/reservationCard/rvReservationCardPayment.html'"></div>
@@ -251,10 +261,7 @@
             <div ng-include="'/assets/partials/reservationCard/rvReservationCardLoyalty.html'" ng-controller="rvReservationCardLoyaltyController"></div>
 
             <!-- Additional Details -->
-            <div ng-include="'/assets/partials/reservationCard/rvReservationAdditional.html'" ng-controller="rvReservationAdditionalController" ng-if="isStandAlone"></div>
-
-            <!-- Notes -->
-            <div ng-include="'/assets/partials/reservationCard/rvReservationCardNotes.html'" ng-controller="rvReservationCardNotesController"></div>
+            <div ng-include="'/assets/partials/reservationCard/rvReservationAdditional.html'" ng-controller="rvReservationAdditionalController" ng-if="isStandAlone"></div>            
 
             <!-- Activity Log -->
             <div ng-include="'/assets/partials/reservationCard/rvReservationCardActivityLog.html'" ng-controller="rvReservationCardActivityLogCtrl"></div>

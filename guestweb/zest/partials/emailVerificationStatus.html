@@ -8,14 +8,14 @@
 			</div>
 			<div class="row">
 							
-				<div class="checkout-status centeralign checkout-now-status">
-					<p class="msg-head">Check-out is complete.</p>
-					<p class="msg-body">An email with your bill details has been sent to:</br>
-						 {{emailAddress}}.</p>
-					<p class="msg-foot">Thank you for staying with us!</p>
+				<div class="password-reset-container centeralign">
+					<p class="msg-head" ng-show="isTokenExpired">NO LONGER VALID</p><p class="msg-body" ng-show="isTokenExpired">This URL is no longer valid for verifying the email address</p>
+
+                    <p class="msg-head" ng-show="!isTokenExpired">SUCCESS</p>
+					<p class="msg-body" ng-show="!isTokenExpired">You verified your email address and completed the Sign Up for YOTEL<br/><br/>
+					Return to the app and select CONTINUE</p>					
 					
-					<p class="msg-foot">For the best rates always book direct</p>
-				</div>
+                </div>
 
 				
 			</div>

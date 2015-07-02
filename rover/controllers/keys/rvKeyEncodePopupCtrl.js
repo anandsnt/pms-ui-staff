@@ -6,7 +6,9 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		$scope.statusMessage = message;
 		$scope.status = status;
 	};
-
+        $rootScope.$on('MAKE_KEY_TYPE',function(evt, data){
+            $scope.keyType = data.type;
+        });
 	$scope.init = function(){
 		//CICO-11444 to fix the issue of poping up select box in ipad
 		$('#encoder-type').blur();
@@ -14,11 +16,11 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		//If SAFLOK_MSR is the chosen encoder type, we would show a dropdown with active encoders listed.
 		/***************************CICO-11444 *****************************************/
 		$scope.encoderSelected = "";
-
+console.log($scope.encoderTypes);
 		if($scope.fromView == "checkin"){
-			$scope.keySystemVendor = $scope.reservationBillData.hotel_selected_key_system;
+			$scope.isRemoteEncodingEnabled = $scope.reservationBillData.is_remote_encoder_enabled;
 		}else{
-			$scope.keySystemVendor = $scope.reservationData.reservation_card.hotel_selected_key_system;
+			$scope.isRemoteEncodingEnabled = $scope.reservationData.reservation_card.is_remote_encoder_enabled;
 		}
 
 		if (sessionStorage.encoderSelected && sessionStorage.encoderSelected !== '') {
@@ -50,8 +52,6 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		
     	if($scope.data.is_late_checkout) $scope.data.late_checkout_time = $scope.reservationData.reservation_card.late_checkout_time;
     	
-    	that.retrieveUID = true;
-    	that.UID = '';
 		var statusMessage = $filter('translate')('KEY_CONNECTED_STATUS');
     	that.setStatusAndMessage(statusMessage, 'success');	
     	// To check reservation status and select corresponding texts and classes.
@@ -93,10 +93,14 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		that.isSmartbandCreateWithKeyWrite = $scope.isSmartbandCreateWithKeyWrite; //coming from popup initialization
 		//variable to maintain last successful ID from card reader, will use for smartband creation
 		that.lastSuccessfulCardIDReaded = '';
+                
+                if ($scope.keyType === 'New'){
+                    $scope.buttonText = $filter('translate')('KEY_PRINT_BUTTON_TEXT');
+                } else {
+                    $scope.buttonText = $filter('translate')('KEY_DUPLICATE_BUTTON_TEXT');
+                }
 
-		$scope.buttonText = $filter('translate')('KEY_PRINT_BUTTON_TEXT');
-
-		if($scope.keySystemVendor == 'SAFLOK_MSR'){
+		if($scope.isRemoteEncodingEnabled){
 			showPrintKeyOptions();
 		}else {
 			//Initally we check if the device is connected
@@ -111,7 +115,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 			return false;
 		}
 		if ($scope.numberOfKeysSelected > 0){
-			if($scope.keySystemVendor == 'SAFLOK_MSR' && $scope.encoderSelected == ""){
+			if($scope.isRemoteEncodingEnabled && $scope.encoderSelected == ""){
 				return false
 			}
 			return true
@@ -184,7 +188,12 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		that.numOfKeys = $scope.numberOfKeysSelected;
 		$scope.printedKeysCount = 0;
 		if(that.numOfKeys > 0){
-			$scope.buttonText = $filter('translate')('KEY_PRINT_BUTTON_TEXT_KEY1');
+                    if ($scope.keyType === 'New'){
+                        $scope.buttonText = $filter('translate')('KEY_PRINT_BUTTON_TEXT_KEY1');
+                    } else {
+                        $scope.buttonText = $filter('translate')('KEY_DUPLICATE_BUTTON_TEXT_KEY1');
+                    }
+                        
 		}
 		// 'printKeyStatus' is the dictionary used to monitor the printing & writing key status
 		var elementToPut = {};
@@ -202,42 +211,34 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		if($scope.numberOfKeysSelected == 0)
 			return;
 		//CICO-11444. If saflok_msr we we ll be connecting to remote encoders in the network
-		if($scope.keySystemVendor == 'SAFLOK_MSR'){
+		if($scope.isRemoteEncodingEnabled){
 			that.callKeyFetchAPI();
 			return false;
 		}
-		that.UID = '';
 
 		$scope.writingInProgress = true;
-		if(that.retrieveUID){
-			that.getUID();
-		}
-		else{
-			that.callKeyFetchAPI();
-		}
+		that.getCardInfo();
 
 	};
 
-	/*
-	* Call cordova service to get the UID
-	*/
-	that.getUID = function(){
+	that.getCardInfo = function(){
 		that.setStatusAndMessage($filter('translate')('KEY_READING_STATUS'), 'pending');	
 		$scope.$emit('showLoader');
 		var options = {
 			'successCallBack': that.callKeyFetchAPI,
-			'failureCallBack': that.showUIDFetchFailedMsg			
+			'failureCallBack': that.showCardInfoFetchFailedMsg			
 		};
 
 		if(sntapp.cardSwipeDebug){
-			sntapp.cardReader.retrieveUserIDDebug(options);
+			sntapp.cardReader.retrieveCardInfoDebug(options);
 		}
 		else{
-			sntapp.cardReader.retrieveUserID(options);
-		}		
+			sntapp.cardReader.retrieveCardInfo(options);
+		}
+
 	};
 	
-	that.showUIDFetchFailedMsg = function(errorObject){
+	that.showCardInfoFetchFailedMsg = function(errorObject){
 		$scope.$emit('hideLoader');
 		//Asynchrounous action. so we need to notify angular that a change has occured. 
 		//It lets you to start the digestion cycle explicitly
@@ -248,7 +249,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 	/* 
 	* Server call to fetch the key data.
 	*/
-	this.callKeyFetchAPI = function(uID){
+	this.callKeyFetchAPI = function(cardInfo){
 		$scope.$emit('hideLoader'); 
 		that.setStatusAndMessage($filter('translate')('KEY_GETTING_KEY_IMAGE_STATUS'), 'pending');
 		var reservationId = '';
@@ -264,15 +265,18 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 	    	that.isAdditional = true;
 	    	var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": false};
 	    }
-	    if(typeof uID !== 'undefined'){
-	    	postParams.uid = uID;
-	    	that.lastSuccessfulCardIDReaded = uID;
+	    if(typeof cardInfo !== 'undefined'){
+	    	postParams.card_info = cardInfo;
+	    	that.lastSuccessfulCardIDReaded = cardInfo.card_uid;
 	    }else{
-	    	postParams.uid = "";
+	    	postParams.card_info = "";
 
 	    }
-	    that.UID = postParams.uid;
-	    if($scope.keySystemVendor == 'SAFLOK_MSR') {
+            
+        if ($scope.keyType === 'Duplicate'){
+            postParams.is_additional = true;
+        }
+	    if($scope.isRemoteEncodingEnabled) {
 		    postParams.key_encoder_id = $scope.encoderSelected;
 	    }
 	    $scope.invokeApi(RVKeyPopupSrv.fetchKeyFromServer, postParams, that.keyFetchSuccess, that.keyFetchFailed);
@@ -312,11 +316,11 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		}
 		//CICO-11444 if SAFLOK_MSR, we will be writing to remote encoder via print_key api call itself.
 		//No encoder is attached to ipad.
-		if($scope.keySystemVendor == 'SAFLOK_MSR'){
+		if($scope.isRemoteEncodingEnabled){
 			that.numOfKeys--;
 			that.printKeyStatus[index-1].printed = true;
 			$scope.printedKeysCount = index;
-			$scope.buttonText = 'Print key '+ (index+1);
+			$scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
 			//$scope.$apply();
 			if(that.numOfKeys == 0){
 				that.showKeyPrintSuccess();
@@ -324,30 +328,15 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 			}
 			return false;
 		}
-	    
-	    var keyData = [];
-	    //Safelock key
-	    if(Object.keys(that.keyData.key_info[0])[0] == "base64"){
-	    	keyData.push(that.keyData.key_info[0].base64);
-	    }
-	    else if(Object.keys(that.keyData.key_info[0])[0] == "image"){
-	    	keyData.push(that.keyData.key_info[0].image);
-	    }	    
-	    else{
-	    	keyData.push(that.keyData.key_info[0].t3);
-	    }
-
-	    keyData.push(Object.keys(that.keyData.key_info[0])[0]);
-	    keyData.push($scope.escapeNull(that.keyData.aid));
-	    keyData.push($scope.escapeNull(that.keyData.keyb));
-	    keyData.push($scope.escapeNull(that.UID));
-	    that.writeKey(keyData, index);
+	    that.writeKey(that.keyData, index);
 	};
 
 	/*
 	* Calls the cordova service to write the keys
 	*/
 	this.writeKey = function(keyWriteData, index){
+		var keyData = [];
+		keyData.push(JSON.stringify(keyWriteData));
 		$scope.$emit('showLoader');
 		that.setStatusAndMessage($filter('translate')('KEY_WRITING_PROGRESS_STATUS'), 'pending');
 
@@ -373,7 +362,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 				that.numOfKeys--;
 				that.printKeyStatus[index-1].printed = true;
 				$scope.printedKeysCount = index;
-				$scope.buttonText = 'Print key '+ (index+1);
+				$scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
 				$scope.$apply();
 				if(that.numOfKeys == 0){
 					that.showKeyPrintSuccess();
@@ -395,7 +384,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 				$scope.$apply(); 
 
 			},
-			arguments: keyWriteData
+			arguments: keyData
 		};
 		if(sntapp.cardSwipeDebug){
 			sntapp.cardReader.writeKeyDataDebug(options);
@@ -433,7 +422,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 				that.setStatusAndMessage($filter('translate')('KEY_BAND_CREATED_SUCCESSFULLY'), 'success');					
 				that.printKeyStatus[index-1].printed = true;
 				$scope.printedKeysCount = index;
-				$scope.buttonText = 'Print key '+ (index+1);
+				$scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
 				$scope.$apply();								
 				return;				
 			},
@@ -444,7 +433,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 					that.setStatusAndMessage($filter('translate')('KEY_BAND_CREATED_FAILED_WRITING_BANDTYPE') + ': ' + errorObject['RVErrorDesc'], 'error');					
 					that.printKeyStatus[index-1].printed = true;
 					$scope.printedKeysCount = index;
-					$scope.buttonText = 'Print key '+ (index+1);
+                                        $scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
 					$scope.$apply();
 				}
 				else {
@@ -488,7 +477,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 			if(that.numOfKeys > 0){
 				that.printKeyStatus[index-1].printed = true;
 				$scope.printedKeysCount = index;
-				$scope.buttonText = 'Print key '+ (index+1);
+				$scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
 				$scope.$apply();			
 			}
 			else {
@@ -506,6 +495,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		data.reservationId = reservationId;		
 		$scope.invokeApi(RVKeyPopupSrv.addNewSmartBand, (data), successCallbackOfAddNewSmartband_, failureCallbackOfAddNewSmartband);	
 	};
+
 	var showPrintKeyOptions = function (status){
 		//if status === false, they are not able to connect. I dont know why these type of designs
 		// we have to call failurecallback on that

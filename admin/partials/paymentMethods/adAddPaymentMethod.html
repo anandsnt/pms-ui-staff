@@ -21,6 +21,7 @@
 				<div ng-hide="!addData.is_cc">
 					<ad-checkbox is-checked="addData.is_offline" label="{{ 'OFFLINE' | translate}}" div-class="full-width"></ad-checkbox>
 				</div>
+				<ad-dropdown ng-hide="addData.is_cc" list="data.reservation_types" selected-id='addData.linked_reservation_type_id' selbox-class="placeholder" div-class="full-width" label="{{'LINKED_RESERVATION_TYPE' | translate}}"></ad-dropdown>
 			</fieldset>
 			<fieldset class='holder right'>
 				<ad-checkbox is-checked="addData.is_rover_only" label="{{ 'ROVER_ONLY' | translate}}" div-class="full-width" change="roverOnlyChanged()"></ad-checkbox>

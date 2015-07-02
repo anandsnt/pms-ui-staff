@@ -1,5 +1,5 @@
 
-sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgradesSrv', '$sce','$filter', 'ngDialog', function($scope, $state, $stateParams, RVUpgradesSrv, $sce, $filter, ngDialog){
+sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgradesSrv', '$sce','$filter', 'ngDialog', '$timeout', function($scope, $state, $stateParams, RVUpgradesSrv, $sce, $filter, ngDialog, $timeout){
 	
 	BaseCtrl.call(this, $scope);
 	var title = $filter('translate')('ROOM_UPGRADES_TITLE');
@@ -66,33 +66,111 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 	$scope.occupancyDialogSuccess = function(){
 		$scope.selectUpgrade();			
 	};
-		
-	/**
-	* function to set the upgrade option for the reservation
-	*/
-	$scope.selectUpgrade = function(index){
-		index = $scope.selectedUpgradeIndex;
-		var successCallbackselectUpgrade = function(data){
-			$scope.$emit('hideLoader');
-			$scope.selectedUpgrade.is_upsell_available = data.is_upsell_available;
-			$scope.$emit('upgradeSelected', $scope.selectedUpgrade);
-		};
-		var errorCallbackselectUpgrade = function(error){
-			$scope.$emit('hideLoader');
-			$scope.$parent.errorMessage = error;
-		};
-		var params = {};
-		params.reservation_id = parseInt($stateParams.reservation_id, 10);
-		params.room_no = $scope.upgradesList[index].upgrade_room_number;
-		params.upsell_amount_id = parseInt($scope.upgradesList[index].upsell_amount_id, 10);
-		$scope.selectedUpgrade.room_id = $scope.upgradesList[index].room_id;
-		$scope.selectedUpgrade.room_no = $scope.upgradesList[index].upgrade_room_number;
-		$scope.selectedUpgrade.room_type_name = $scope.upgradesList[index].upgrade_room_type_name;
-		$scope.selectedUpgrade.room_type_code = $scope.upgradesList[index].upgrade_room_type;
-		$scope.selectedUpgrade.room_type_level = parseInt($scope.upgradesList[index].room_type_level);
-		$scope.invokeApi(RVUpgradesSrv.selectUpgrade, params, successCallbackselectUpgrade, errorCallbackselectUpgrade);
 
+	/**
+	 * to open the room aleady chhosed popup
+	 * @return undefined
+	 */
+	var openRoomAlreadyChoosedPopup = function() {
+		ngDialog.open(
+		{
+			template 	: '/assets/partials/roomAssignment/rvRoomHasAutoAssigned.html',
+			controller 	: 'rvRoomAlreadySelectedCtrl',
+			className 	: 'ngdialog-theme-default',
+			scope 		: $scope
+        });
 	};
+
+	/**
+	 * to open the room aleady chhosed popup
+	 * @return undefined
+	 */
+	var openWantedToBorrowPopup = function() {
+		ngDialog.open(
+		{
+			template 	: '/assets/partials/upgrades/rvGroupRoomTypeNotConfigured.html',
+			scope 		: $scope
+        });
+	};
+
+	/**
+	 * API success of room upgrade
+	 * @param  {[type]} data [description]
+	 * @return undefined
+	 */
+	var successCallbackselectUpgrade = function(data) {
+		$scope.selectedUpgrade.is_upsell_available = data.is_upsell_available;
+		$scope.$emit('upgradeSelected', $scope.selectedUpgrade);
+	};
+
+	var errorCallbackselectUpgrade = function(error){
+		//since we are expecting some custom http error status in the response
+		//and we are using that to differentiate among errors
+		if(error.hasOwnProperty ('httpStatus')) {
+			switch (error.httpStatus) {
+				case 470:
+						wanted_to_forcefully_assign = true;
+						openWantedToBorrowPopup ();
+				 	break;
+				default:
+					break;
+			}
+		}
+		else {
+			$scope.$parent.errorMessage = error;
+		}
+	};	
+
+	/**
+	 * [borrowFromOtherRoomType description]
+	 * @return {[type]} [description]
+	 */
+	$scope.borrowFromOtherRoomType = function (){
+		$scope.closeDialog ();
+		$timeout(function(){
+			$scope.selectUpgrade ();
+		}, 300);
+	};
+	/*** THIS IS JUST REPEATATION OF rvUpgradesCtrl.js's upgrade. I dont 
+	*** know why upgrade is in two file and two controller, WTH.
+	***/
+
+	/**
+	 * When the user select a particular room updgrade, this funciton will fire
+	 * @return undefined
+	 */
+	$scope.selectUpgrade = function() {
+		var index 				= $scope.selectedUpgradeIndex,
+			selectedListItem 	= $scope.upgradesList[index];
+
+		var params = {};
+		
+		//CICO-17082
+		params.forcefully_assign_room 	= wanted_to_forcefully_assign;
+		wanted_to_forcefully_assign 	= false;
+
+		params.reservation_id 	= parseInt($stateParams.reservation_id, 10);
+		params.upsell_amount_id = parseInt(selectedListItem.upsell_amount_id, 10);
+		params.room_no 			= selectedListItem.upgrade_room_number; 
+
+		_.extend($scope.selectedUpgrade,
+		{
+			room_id 		: selectedListItem.room_id,
+			room_no 		: upgrade_room_number,
+			room_type_name 	: upgrade_room_type_name,
+			room_type_code 	: upgrade_room_type,
+			room_type_level	: parseInt(room_type_level),
+		});
+		
+		//yes. ALL set. Go!
+		var options = {
+            params 			: params,
+            successCallBack : successCallbackselectUpgrade,
+            failureCallBack : failureCallBackSelectUpgrade,
+            successCallBackParameters: 	{ selectedListItem: selectedListItem}
+        };
+        $scope.callAPI(RVUpgradesSrv.selectUpgrade, options);
+	};				
 
 	/**
 	* function to show and hide the upgrades detail view

@@ -127,7 +127,7 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 
 		this.fetchCancellationPolicies = function(param) {
 			var deferred = $q.defer();
-			var url = '/api/reservations/' + param.id + '/policies';
+			var url = '/api/reservations/' + param.id + '/cancellation_policies';
 			rvBaseWebSrvV2.getJSON(url, param).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -156,6 +156,25 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 			}, function(data) {
 				deferred.reject(data);
 			});
+			return deferred.promise;
+		};
+
+		/**
+		 * to get the last rate adjustment reason against a reservation
+		 * @return {Promise} - After resolving we will get reason 
+		 */
+		this.getLastRateAdjustmentReason = function(params){
+			var deferred = $q.defer();
+			var url = 'api/reservations/' + params.reservation_id + '/reason_for_last_adjusted_rate';
+
+			rvBaseWebSrvV2.getJSON(url).then(
+					function(data) {
+						deferred.resolve(data);
+					}, 
+					function(data) {
+						deferred.reject(data);
+					}
+			);
 			return deferred.promise;
 		};
 
@@ -243,6 +262,27 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 		this.validateStayDateChange = function(param) {
             var deferred = $q.defer();
             var url = '/staff/change_stay_dates/validate_stay_dates_change';
+            rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+        this.detachGroupReservation = function(param) {
+            var deferred = $q.defer();
+            var url = '/api/group_reservations/'+ param.id +'/detach_group_reservation';
+            rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.manualAuthorization = function(param) {
+            var deferred = $q.defer();
+            var url = '/api/cc/authorize';
             rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {

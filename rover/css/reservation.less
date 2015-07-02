@@ -180,7 +180,14 @@
     cursor: default !important;
     font-style: italic;
 }
-
+.status{
+    >.guest-status{
+            height: 30px;
+            width: 30px;
+            margin: 10px;
+            margin-top: 10px
+    }
+}
   .sharer-status-icon{
       padding-right: 5px;
       width: 30px !important;
@@ -208,4 +215,52 @@
       width: 60px; 
       margin-right: 5px;
       padding: 10px;
+  }
+  .actions-overdue-font{
+      font-size: smaller;
+      margin-left: -10px;
+      &.active{
+          color: white;
+      }
+  }
+  .icon-action {
+      margin-left:5px;
+  }
+  .action-time-due{
+      margin-left: 5px;
+  }
+  .actions-mid{
+      width: 10%;
+  }
+  .actions-end{
+      width: 45%;
+  }
+  .action-full-view{
+      width:100% !important;
+  }
+  .action-set-mid{
+      margin-top: 10px;
+  }
+  .assign-reassign{
+   > button{
+    width: 190px !important;  
+    display: table;
+    margin: 0 auto;
+   }
+  }
+  .actions-small-font{
+      font-size:small;
+  }
+  .action-post-btn{//fixes an opacity transition bug in chrome
+      -webkit-transform: translateZ(0);
+      display: -webkit-box !important;
+  }
+  .actions-none{
+      color:#9d9d9d !important;
+  }
+  .actions-pending{
+      color:#E63A3A !important;
+  }
+  .actions-completed{
+      color:#8ABD57 !important;
   }

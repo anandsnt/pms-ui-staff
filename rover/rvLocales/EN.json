@@ -105,6 +105,24 @@
 "SAVE_ROUTE": "Save Route",
 "SAVE": "Save",
 "CANCEL": "Cancel"
+,"APPROVED": "Approved",
+"DATE": "Date",
+"TIME": "Time",
+"CARD_NUMBER": "Card No.",
+"USER": "User",
+"ROOM_NO": "Room No",
+"RESERVATION_NO": "Reservation No",
+"GUEST_NAME": "Guest Name",
+"AUTH_CODE": "Auth. Code",
+"AMOUNT": "Amount",
+"DECLINED": "Declined",
+"REVERSE_AUTHORIZATIONS": "Reverse Authorizations",
+"SUBMIT_BATCH": "Submit Batch",
+"PAYMENTS": "Payments",
+"AUTHORIZATIONS": "Authorizations"
+
+
+
 ,	
 	"DRAG_AND_DROP_TO_CHANGE_STAY_DATES": "Drag & drop to change stay dates",
 	"ARRIVAL" : "Arrival",
@@ -182,6 +200,7 @@
     "MENU_FINANCIALS":"Financials",
     "MENU_ACCOUNTING":"Accounting Interface",
     "MENU_JOURNAL":"Journal",
+    "MENU_CC_TRANSACTIONS":"CC Transactions",
     "MENU_COMMISIONS":"Commissions",
     "MENU_REPORTS":"Reports",
     "MENU_GROUPS": "Groups",
@@ -416,7 +435,8 @@
     "GROUP_EMAIL":"Email",
     "GROUP_PRINT":"Print",
     "GROUP_DOWNLOAD":"Download",
-    "ADD_BILLING_INFO":"Add billing information"
+    "ADD_BILLING_INFO":"Add billing information",
+    "GROUP_BATCH" : "Reg.card"
 
 
 
@@ -549,6 +569,14 @@
 	"CLOSE_SHIFT":"Close Shift",
 	"CASH_SUBMITTED":"Cash submitted",
 	"CHECKS_SUBMITTED":"Checks submitted",    "PRINT_ROOM_KEY" : "Print Room Key",
+    "PRINT_NEW_ROOM_KEY" : "Print New Key(s)",
+    "PRINT_DUPLICATE_ROOM_KEY" : "Duplicate Key(s)",
+    "WILL_NOT_VALIDATE_PREVIOUS" : " Will Not ",
+    "WILL_VALIDATE_PREVIOUS" : " Will ",
+    "THIS_KEYS_TEXT": "This",
+    "INVALIDATE_KEYS_TEXT": "Invalidate Previous Keys!",
+    
+            
     "CONNECTING_TO_KEY_CARD_READER" : "Connecting to Key Card Reader ...",
     "ERROR_CONNECTING_TO_KEY_CARD_READER" : "Error connecting to Key Card Reader!",
     "TRY_AGAIN" : "Try Again",
@@ -561,6 +589,12 @@
     "KEY_PRINT_BUTTON_TEXT_NORMAL" : "Print Key",
     "KEY_PRINT_BUTTON_TEXT_KEY1" : "Print Key 1",
     "KEY_PRINT_BUTTON_TEXT" : "Print Key",
+    "KEY_DUPLICATE_BUTTON_TEXT_NORMAL" : "Duplicate Key",
+    "KEY_DUPLICATE_BUTTON_TEXT_KEY1" : "Duplicate Key 1",
+    "KEY_DUPLICATE_BUTTON_TEXT" : "Duplicate Key",
+    
+    
+    
     "KEY_READING_STATUS" : "Reading key!",
     "KEY_UNABLE_TO_READ_STATUS" : "Unable to read the key!",
     "KEY_GETTING_KEY_IMAGE_STATUS" : "Getting key image!",
@@ -595,6 +629,7 @@
     "CHECK_PAYMENT": "CHECK PAYMENT",
     "DIRECT_PAYMENT":"DIRECT PAYMENT",
     "ADD": "Add",
+    "CC_AUTH": "CC Auth",
     "NAME": "Name",
     "IN_GUEST_CARD":"In Guest Card",
     "SELECTED" : "Selected",
@@ -752,7 +787,10 @@
     "DIARY": "Diary",
 
     "KEEP_CURRENT_RATE": "Keep current rate",
-    "CHANGE_TO_NEW_RATE": "Change to new rate"
+    "CHANGE_TO_NEW_RATE": "Change to new rate",
+    "ADD_ONS" : "Add on",
+    "TAXES_INCL" : "TAXES(INCL)",
+    "TAXES_EXCL" : "TAXES(EXCL)"
 
 ,    
     

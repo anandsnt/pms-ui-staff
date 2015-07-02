@@ -268,11 +268,11 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				confirmationId: $scope.reservationData.confirmNum,
 				isrefresh: true,
 				justCreatedRes: true
-			}
+			};
 			$scope.otherData.reservationCreated = true;
 			$scope.reservationData.rateDetails = [];
 			$state.go('rover.reservation.staycard.reservationcard.reservationdetails', stateParams);
-
+                        $rootScope.$broadcast('reload-loyalty-section-data',{});
 		};
 
 		/**
@@ -320,6 +320,9 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			// Set flag to retain the card details
 			$scope.reservationData.isSameCard = true;
 			$scope.otherData.reservationCreated = true;
+
+			// Clear depositData as well CICO-17912
+			$scope.reservationData.depositData = false;
 
 			$state.go('rover.reservation.search');
 		};

@@ -129,7 +129,7 @@
 							<div id="bill-days-new" class="scrollable" ng-iscroll="billDays" ng-iscroll-delay="50">
 								<ul class="wrapper" style="width: {{billData.billDaysWidth}}px;">
 									<li class="add-new">
-										<button type="button" class="button with-icon brand-colors" ng-click="openPostCharge(billData.bill_number)">
+										<button type="button" class="button with-icon brand-colors" click-touch="openPostCharge(billData.bill_number)">
 											<span class="icons icon-charge"></span>
 											Add Charge
 										</button>
@@ -222,14 +222,14 @@
 											<td class="price" ng-show="!expense.is_inclusive"> {{currencySymbol}}{{expense.price | number: precisonTwo}} </td>
 											<td> {{expense.package}} </td>
 											<td> {{expense.quantity}} </td>
-											<td ng-show="expense.post_type=='Entire Stay'&&expense.amount_type=='Adult'">PER ADULT/PER NIGHT</td>
-											<td ng-show="expense.post_type=='Entire Stay'&&expense.amount_type=='Child'">PER CHILD/PER NIGHT</td>
-											<td ng-show="expense.post_type=='First Night'&&expense.amount_type=='Child'">PER CHILD/PER STAY</td>
-											<td ng-show="expense.post_type=='First Night'&&expense.amount_type=='Adult'">PER ADULT/PER STAY</td>
-											<td ng-show="(expense.amount_type=='Flat'||expense.amount_type=='Person')&&expense.post_type=='First Night'">PER STAY</td>
-											<td ng-show="(expense.amount_type=='Flat'||expense.amount_type=='Person')&&expense.post_type=='Entire Stay'">PER NIGHT</td>
+											<td ng-show="expense.post_type=='Entire Stay'&&expense.amount_type=='Adult'">PER ADULT/FIRST NIGHT</td>
+											<td ng-show="expense.post_type=='Entire Stay'&&expense.amount_type=='Child'">PER CHILD/FIRST NIGHT</td>
+											<td ng-show="expense.post_type=='First Night'&&expense.amount_type=='Child'">PER CHILD/PER NIGHT</td>
+											<td ng-show="expense.post_type=='First Night'&&expense.amount_type=='Adult'">PER ADULT/PER NIGHT</td>
+											<td ng-show="(expense.amount_type=='Flat'||expense.amount_type=='Person')&&expense.post_type=='First Night'">PER NIGHT</td>
+											<td ng-show="(expense.amount_type=='Flat'||expense.amount_type=='Person')&&expense.post_type=='Entire Stay'">FIRST NIGHT</td>
 											<td class="price" ng-show="expense.is_inclusive" translate> INCL </td>
-											<td ng-show="!expense.is_inclusive"> {{expense.quantity*expense.price  | number: precisonTwo}} </td>
+											<td ng-show="!expense.is_inclusive"> {{expense.effective_quantity*expense.price  | number: precisonTwo}} </td>
 										</tr>
 									</tbody>
 								</table>

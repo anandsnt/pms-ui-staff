@@ -14,11 +14,12 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
          * We create an empty myScroll here. ng-iscroll will see this item, and use the same.
          * Note: If a subscope requires another iScroll, this approach may not work.
          */
-        
+        $scope.hideRoomsDownArrow = false;
         $scope.applyAllShow = '';
         $scope.lastClickedApply = '';
         $scope.firstrun = true;
         $scope.initDefault = true;
+        $scope.activeToggleButton = 'Rates';
         
         $scope.activityObj = {};
         $scope.activityObj.changedField = '';
@@ -234,8 +235,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
             }
           }
         };
-        
-
+        $scope.reloadingRooms = 0;
         var loadTable = function () {
             $scope.currentExpandedRow = -1;//reset the expanded row
             $scope.loading = true;
@@ -259,6 +259,8 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                         $scope.calendarMode = "RATE_VIEW";
                     }
 
+
+                    
                     if ($scope.ratesRoomsToggle == 'ROOMS'){
                                     $scope.everyRestriction = $scope.calendarData.room_type_restrictions;
                             var d, rm_type, r_date, rm_type_name;
@@ -319,9 +321,15 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                         $scope.currentSelectedRate = data.selectedRateDetails;
                         $scope.ratesDisplayed.push(data.selectedRateDetails);
                     }
-
                     $scope.calendarData = data;
-                    $scope.$emit('hideLoader');
+                    if (!$scope.reloadingRooms){
+                        $scope.$emit('hideLoader');
+                    } else if ($scope.reloadRoomsCount >= 2){
+                        $scope.$emit('hideLoader');
+                        $scope.reloadingRooms = false;
+                    }else {
+                        ++$scope.reloadRoomsCount;
+                    }
                 };
 
                 //Set the current business date value to the service. Done for calculating the history dates
@@ -340,12 +348,23 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
             }, 200);
         };
 
+        $scope.reloadRoomsCount = 0;
+        $rootScope.$on('loadingRooms',function(){
+            $scope.reloadingRooms = true;
+            if ($scope.reloadRoomsCount >= 1){
+                $scope.reloadRoomsCount  = 0;
+            }
+            ++$scope.reloadRoomsCount;
+        });
         $scope.$on('showRatesBtnClicked',function(){
             $scope.ratesRoomsToggle = 'RATES';
             $scope.activeToggleButton = 'Rates';
         });
         
         $scope.toggleAllRates = function(){
+            $scope.calendarData.data = [];
+            
+            $scope.calendarData.restriction_types = [];
             if ($scope.ratesRoomsToggle !== 'RATES'){
                 $scope.ratesRoomsToggle = 'RATES';
                 $scope.activeToggleButton = 'Rates';
@@ -432,6 +451,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
          * Click handler for up-arrows in rate_view_calendar
          */
         $scope.goToRoomTypeCalendarView = function (rate) {
+            if ($scope.ratesRoomsToggle !== 'ROOMS'){
             $scope.$emit('showLoader');
             $scope.loading = true;
             setTimeout(function () {
@@ -442,7 +462,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                 $scope.calendarMode = "ROOM_TYPE_VIEW";
                 loadTable(rate.id);
             }, 200);
-
+        }
         };
         /**
          * Handle openall/closeall button clicks
@@ -555,6 +575,16 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                     return 'ngdialog-theme-default restriction-popup';
                 }
             }());
+            $scope.popupData.is_child = $scope.calendarData.is_child;
+            if ($scope.ratesDisplayed.length > 0){
+                if ($scope.ratesDisplayed[0].name){
+                    $scope.popupData.rate_name = '"'+$scope.ratesDisplayed[0].name.toUpperCase()+'"';
+                } else {
+                    $scope.popupData.rate_name = 'this';
+                }
+            } else {
+                $scope.popupData.rate_name = 'this';
+            }
 
             ngDialog.open({
                 template: '/assets/partials/rateManager/updatePriceAndRestrictions.html',
@@ -712,6 +742,9 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                                         if (room_type === room_type_obj.name){
                                             if (room_type_obj.with_override){
                                                 if (room_type_obj.with_override.length > 0){
+                                                    if (occ === '_any_'){
+                                                        return true;
+                                                    }
                                                     for (var n in room_type_obj.with_override){
                                                         if (room_type_obj.with_override[n].toLowerCase() === occ.toLowerCase()){
                                                                 return 'true';
@@ -730,4 +763,24 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
         };
 
         $scope.init();
+        
+        $scope.$watch('ratesRoomsToggle',function(){
+            if ($scope.ratesRoomsToggle === 'ROOMS'){
+                $scope.hideRoomsDownArrow = true;
+            } else {
+                $scope.hideRoomsDownArrow = false;
+            }
+        });
+        
+        $scope.rateIsChild = function(rate){
+            if ($scope.calendarData.isChildRate){
+                for (var i in $scope.calendarData.isChildRate){
+                    if ($scope.calendarData.isChildRate[i] === rate.id){
+                        return true;
+                    };
+                }
+                return false;
+            } else return false;
+        };
+        
     }]);

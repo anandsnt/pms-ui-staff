@@ -71,11 +71,11 @@
                                 <li>
                                     <em>{{room.rateName}}</em>
                                     <span class="price">
-                                        <label ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateAvg | number : 0}}</label>
+                                        <label ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateAvg | number : 2}}</label>
                                         <label ng-if="room.isSuppressed">SR</label>
                                         <span translate>AVG_NIGHT</span>
                                     <span class="total" ng-if="room.isSuppressed">SR</span>
-                                    <span class="total" ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateTotal | number : 0}}</span>
+                                    <span class="total" ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateTotal | number : 2}}</span>
                                     </span>
                                 </li>
                             </ul>

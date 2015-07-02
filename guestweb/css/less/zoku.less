@@ -1,0 +1,493 @@
+@charset: "utf-8";
+@font-face {
+    font-family: 'VAGRounded-Light';
+    src: asset-url('/assets/VAGRounded-Light.eot?') format('eot'), 
+    asset-url('/assets/VAGRounded-Light.woff') format('woff'), 
+    asset-url('/assets/VAGRounded-Light.ttf') format('truetype'), 
+    asset-url('/assets/VAGRounded-Light.svg#VAGRounded-Light') format('svg');
+}
+
+body {
+    background-color: #f5f5f5 !important; 
+    background-image: none;
+}
+
+.chekout-time {
+    color: #FFFFFF !important;
+    font-size: 15px !important;
+}
+
+.lightcontent,.leadtext {
+    font-family: 'VAGRounded-Light' !important;
+}
+
+.checkoutnow, .proceed-to-checkin {
+    background: #ac9d38;
+    color: #ffffff;
+}
+
+.jumbotron {
+    .roomnumber {
+        span {
+            border-radius: 0.25em;
+            font-weight:500 !important;
+            font-family: 'VAGRounded-Light' !important;
+            padding: 0 15px;
+            margin: 0 30px;
+        }
+    }
+    .check-inout-wrapper {
+        //border-top: none !important;
+        min-height: 300px;
+    }
+}
+
+.no-thanks {
+    text-transform: uppercase;
+    margin-top: 30px !important
+}
+
+.logo-bg {
+    background: #2a2a2a;
+    height: 80px;
+}
+
+.img-responsive.img-center.logoImage{
+        
+        content:url("/assets/img/Zoku/zoku-logo.png");
+
+    }
+
+.date-picker-wrap {
+    background: url(/assets/img/Yotel/yotel-bg-small.png) #5e305e repeat top left !important;
+}
+
+.pickadate-cell .pickadate-active {
+    background-color: #FFFFFF !important;
+}
+.pickadate-cell .pickadate-disabled, .pickadate-cell .pickadate-enabled {
+    background-color: #5E305E;
+}
+
+.container-fluid {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+.img-responsive.img-center {
+    margin: 0 auto;
+    padding: 20px 0;
+    max-width: 150px;
+    width: 65%;
+    max-height: 70px;
+}
+.with-back-btn {
+    img {
+        float: left;
+        padding-left: 30px;
+        padding-top: 10px;
+        padding-top: 0px !important;
+        padding-top: 0px !important;
+    }
+}
+
+.base-text {
+    font-style: normal !important;
+    font-size: 15px;
+}
+
+.foot-text, .jumbotron .headtext {
+    font-family: 'VAGRounded-Light' !important;
+}
+
+.checkout-later-text{
+    color: #5e305e;
+}
+
+.accept-charges-button {
+    .rel-wrapper {
+        padding: 20px 37px;
+    }
+}
+
+.now-later-options .checkoutnow,
+.now-later-options .checkoutlater, 
+.now-later-options .accept-charges-button, 
+.now-later-options .checkin {
+    text-align: center;
+    font-family: 'VAGRounded-Light' !important;
+    font-weight: 200;
+    font-size: 30px;
+    line-height: 100%;
+}
+.showbill-wrap {
+    .showbill {
+        font-family: 'Source Sans Pro' !important;
+    }
+}
+
+.checkout-status, .checkout-status p {
+    font-family: 'VAGRounded-Light' !important;
+    padding: 0 !important;
+}
+.checkout-status {
+    .msg-head {
+        font-size: 18px !important;
+    }
+    .msg-body {
+        font-size: 13px !important;
+        margin:0px 20px 30px 20px;
+    }
+    .msg-foot {
+        font-size: 18px !important;
+        margin: 40px 20px;
+    }
+}
+
+
+svg {
+    text {
+        .time {
+            font-size: 90px;
+            font-family: 'VAGRounded-Light' !important;
+        }
+        .ap {
+        font-size: 60px;
+        font-family: 'VAGRounded-Light' !important;
+        }
+    }
+}
+
+
+.late-charge {
+    .for {
+        font-size: 14px;
+        font-family: 'VAGRounded-Light' !important;
+    }
+    .amount {
+        font-size: 20px;
+        font-family: 'VAGRounded-Light' !important;
+    }
+}
+
+.jumbotron .landing-leadtext{
+    margin-top:10px;
+}
+
+/* media queries */
+
+
+
+@media (max-width: 900px) {
+
+    .backbtn{
+        visibility: hidden !important;
+    }
+    .guest-room-description{
+        color : #000 !important;
+    }
+}
+
+
+@media (min-width: 900px) {
+
+    .guest-room-description{
+        color : #af9f3b !important;
+    }
+
+    body {
+        background-color: #f5f5f5 !important; 
+        background-image: none;
+    }
+
+    .backbtn {
+        margin-top: -50px !important;
+    }
+
+    .foot-text,.balance-container{
+        margin-bottom:0px !important;
+    }
+
+    .jumbotron .roomnumber span {
+        font-size: 30px;
+        padding: 0 20px;
+    }
+
+    .jumbotron .landing-leadtext{
+        margin:20px 80px;
+        font-size: 18px !important;
+    }
+    .base-text {
+        font-size: 18px;
+    }
+
+    .leadtext.checkout-time-container,.balance-container{
+        padding-top: 0px !important;
+    }
+
+    .with-back-btn img {
+        padding-top: 0px !important;
+    }
+
+    .img-responsive.img-center.logoImage{
+        
+        content:url("/assets/img/Zoku/zoku-logo.png");
+
+    }
+    .no-thanks{
+        font-family: 'VAGRounded-Light' !important;
+    }
+    .checkout-status{
+        backbtnorder-top: none !important;
+        min-height: 300px;
+        padding: 80px 0 150px !important;
+    }
+}
+
+@media (min-width: 1000px) {
+    .container {
+        width: 900px !important;
+    }
+    .backbtn {
+        margin-top: -50px !important;
+    }
+    .with-back-btn img {
+        padding-top: 0px !important;
+    }
+    .chekout-time {
+        color: #FFFFFF !important;
+        font-size: 18px !important;
+    }
+    .currency{
+        font-size: 40px !important;
+    }
+}
+
+.pad-hz-24 {
+    padding:0 !important;
+}
+
+.later-options .rel-wrapper {
+    padding: 30px 10% 32px;
+}
+
+.later-options .rel-wrapper .hexagon-wrapper {
+    text-align: center;
+    margin-bottom: 10px;
+}
+.hex-bg {
+    background: url("/assets/img/Yotel/hexa.png") no-repeat scroll center top transparent;
+    display: block;
+    height: 100px;
+    text-align:center;
+    width:90px;
+    padding-top: 28px !important;
+}
+
+.time {
+    font-size: 35px;
+    font-family: 'VAGRounded-Light' !important;
+}
+.ap {
+    font-size: 20px;
+    font-family: 'VAGRounded-Light' !important;
+}
+
+.taxes{
+	font-size:14px !important;
+	text-transform: none;
+	font-family: 'VAGRounded-Light' !important;
+	margin-top: 1px;
+	display:block;
+}
+
+.continue-text{
+  color: #42949D !important;
+}
+.cabin-number-text,.ccv-text,.cc-error,.room-error,.cc-number-description,.room-error-button,.continue-text{
+    font-family: 'VAGRounded-Light' !important;
+}
+
+.currency{
+    font-family: 'Source Sans Pro'!important; 
+    font-weight: 500 !important;
+}
+
+.password-reset-container{
+        backbtnorder-top: none !important;
+        min-height: 300px;
+        padding: 40px 0 150px !important;
+        font-family: 'VAGRounded-Light' !important;
+        color: #000000;
+}
+
+.password-reset-container {
+    .msg-head {
+        font-size: 30px !important;
+    }
+    .msg-body {
+        font-size: 25px !important;
+        
+    }
+    .msg-foot {
+        font-size: 18px !important;
+        margin: 40px 20px;
+    }
+}
+
+.passwd-reset-labels{
+    width: 50%;
+    float:left;
+    height: 40px;
+}
+
+.passwd-reset-inputs{
+    width: 50%;
+    float: left;    
+    height: 40px;    
+    
+}
+
+.passwd-reset-inputs-with-instructions{    
+    height: 110px;    
+    
+}
+
+.passwd-reset-labels{
+    .colon{
+         display: none;
+    }
+}
+
+.passwd-reset-inputs{
+    .text-box{
+         color: black;
+         font-family: none !important;
+         line-height: initial;
+         width: 62%;
+    }
+}
+
+.passwd-reset-inputs{
+    .instructions{
+         font-size: 15px !important;
+         line-height: initial;
+         margin-left: 26px;
+         margin-top: 10px;
+         text-align: left;
+         width: 62%;
+    }
+}
+
+.passwd-reset-left-item{
+    float: left;
+    text-align: left;
+    width: 100%;
+    padding-left: 150px;
+}
+
+
+.passwd-reset-right-item{
+    float: left;
+    margin-left: 10px;
+}
+
+.passwd-reset-button{
+    width: 35%;
+    padding: 10px;
+}
+
+
+@media (max-width: 900px) {
+
+    .password-reset-container{
+        backbtnorder-top: none !important;
+        min-height: 300px;
+        padding: 40px 0 150px !important;
+        font-family: 'VAGRounded-Light' !important;
+        color: #000000;
+}
+
+.password-reset-container {
+    .msg-head {
+        font-size: 23px !important;
+    }
+    .msg-body {
+        font-size: 18px !important;
+        
+    }
+    .msg-foot {
+        font-size: 18px !important;
+        margin: 40px 20px;
+    }
+}
+
+.passwd-reset-left-item{
+    float: left;
+    text-align: left;
+    width: 100%;
+    padding-left: 20px;
+}
+
+
+.passwd-reset-right-item{
+    float: left;
+    width: 90%;
+    text-align: left;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+     .passwd-reset-labels{
+       width: 100%;  
+       margin-top: 20px;    
+       
+    }
+    .passwd-reset-inputs{
+       width: 100%;       
+       
+    }
+
+    .passwd-reset-inputs{
+    .text-box{
+         color: black;
+         font-family: none !important;
+         line-height: initial;
+         width: 90%;
+        }
+    }
+
+    .passwd-reset-inputs{
+    .instructions{
+         font-size: 15px !important;
+         line-height: initial;
+         margin-left: 20px;
+         margin-top: 10px;
+         text-align: left;
+         width: 90%;
+    }
+}
+
+    .passwd-reset-labels{
+    .colon{
+         display: initial;
+    }
+    }
+
+    .passwd-reset-inputs{
+    .colon{
+         display: none;
+    }
+}
+    .passwd-reset-button{
+       width: 80%;
+       margin: 10px;
+       height: 10%;
+    }
+
+    .zest-error-dialog{
+       margin-top: 150px !important;
+    }
+}

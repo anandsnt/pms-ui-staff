@@ -9,7 +9,7 @@
                 </label>
                 <input id="room-block-start" class="range-datepicker" 
                     placeholder="{{'SELECT_START_DATE'|translate}}" 
-                    value="{{startDate|date:dateFormat}}" 
+                    value="{{startDate|date:dateFormat}}"
                     readonly 
                     ui-date="startDateOptions" 
                     rv-clear-text-box listen-this="startDate" 
@@ -22,7 +22,7 @@
                 </label>
                 <input id="room-block-end" class="range-datepicker" 
                     placeholder="{{'SELECT_END_DATE'|translate}}" 
-                    value="{{endDate|date:dateFormat}}" 
+                    value="{{endDate|date:dateFormat}}"
                     readonly 
                     ui-date="endDateOptions" 
                     rv-clear-text-box listen-this="endDate" 
@@ -138,13 +138,13 @@
                         {{roomtype_rate.room_type_name}}
                     </p>
                     <!-- Toggle class "hidden" when .line-toggle is clicked/tapped -->
-                    <ul ng-class="{'hidden' : !roomtype_rate.isCollapsed}">
+                    <ul ng-class="{'hidden' : !roomtype_rate.isCollapsed}" >
                         <li class="line" translate>SINGLE</li>
                         <li class="line" translate>DOUBLE</li>
-                        <li class="line small add" 
+                        <li class="line small" 
                             ng-if="!shouldShowTripleEntryRow(roomtype_rate)"
                             ng-click="addTripleEntryRow(roomtype_rate)"                             
-                            ng-class="{'disabled': !!groupConfigData.summary.is_cancelled}"
+                            ng-class="{'add': !shouldDisableAddTripleButton(roomtype_rate)}"
                             translate>
                             ADD_TRIPLE
                         </li>
@@ -158,10 +158,10 @@
                             translate>
                             QUADRUPLE
                         </li>
-                        <li class="line small add" 
+                        <li class="line small" 
                             ng-if="!shouldShowQuadrupleEntryRow(roomtype_rate) && shouldShowTripleEntryRow(roomtype_rate)" 
                             ng-click="addQuadrupleEntryRow(roomtype_rate)"
-                            ng-class="{'disabled': !!groupConfigData.summary.is_cancelled}"
+                            ng-class="{'add': !shouldDisableAddQuadrupleButton(roomtype_rate)}"
                             translate>
                             ADD_QUADRUPLE
                         </li>                            
@@ -217,7 +217,7 @@
                                 rv-delay-textbox 
                                 delay="100" 
                                 function-to-fire="bookingDataChanging" 
-                                ng-disabled="!!groupConfigData.summary.is_cancelled"
+                                ng-disabled="shouldDisableSingleEntryBox(dateData, roomType)"
                                 ng-model="dateData.single" class="cell" />                              
                             <input type="text" 
                                 rv-delay-textbox 
@@ -240,7 +240,7 @@
                             <input type="text" 
                                 rv-delay-textbox 
                                 delay="100" 
-                                ng-disabled="!!groupConfigData.summary.is_cancelled"
+                                ng-disabled="shouldDisableDoubleEntryBox(dateData, roomType)"
                                 function-to-fire="bookingDataChanging" 
                                 ng-model="dateData.double" class="cell" />
 
@@ -265,7 +265,7 @@
                             <input type="text" 
                                 rv-delay-textbox 
                                 delay="100" 
-                                ng-disabled="!!groupConfigData.summary.is_cancelled"
+                                ng-disabled="shouldDisableTripleEntryBox(dateData, roomType)"
                                 function-to-fire="bookingDataChanging" 
                                 ng-model="dateData.triple" 
                                 class="cell"  />
@@ -292,7 +292,7 @@
                                 rv-delay-textbox 
                                 delay="100" 
                                 function-to-fire="bookingDataChanging" 
-                                ng-disabled="!!groupConfigData.summary.is_cancelled"
+                                ng-disabled="shouldDisableQuadrupleEntryBox(dateData, roomType)"
                                 ng-model="dateData.quadruple" class="cell" />
 
                             <input type="text" 
