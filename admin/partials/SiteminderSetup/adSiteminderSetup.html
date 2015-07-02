@@ -57,6 +57,7 @@
 
                 <ad-textbox value="data.data.product_cross_customer.tracker_user_name" name="user-name" id="user-name" label="{{'SITEMINDER_USERNAME_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
                 <ad-textbox value="data.data.product_cross_customer.tracker_pass_word" inputtype="password" name="pass-word" id="pass-word" label="{{'SITEMINDER_PASSWORD_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
+                <ad-textbox value="data.data.product_cross_customer.tracker_access_url" inputtype="access-url" name="access-url" id="access-url" label="{{'SITEMINDER_ACCESS_URL_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
                 <ad-dropdown-name name="default-origin" id="default-origin" valueproperty="value" valfor="default-origin" ng-controller="ADOriginsCtrl" property="name" list="data.booking_origins" label="{{'SITEMINDER_DEFAULT_BOOKING_ORIGIN'| translate}}" styleclass="full-width"></ad-dropdown-name>
                 <ad-dropdown-name name="default-payment" id="default-payment" valueproperty="id" valfor="default-payment" ng-controller="ADPaymentMethodsCtrl" property="description" list="data.payments" label="{{'SITEMINDER_DEFAULT_PAYMENT_METHOD'| translate}}" styleclass="full-width"  style="padding-left: 15px;"></ad-dropdown-name>
             </fieldset>
