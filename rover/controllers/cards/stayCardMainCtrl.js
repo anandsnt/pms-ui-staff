@@ -101,7 +101,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				var declonedData = $scope.decloneUnwantedKeysFromContactInfo();
 				var currentGuestCardHeaderData = declonedData;
 				$scope.$broadcast("resetGuestTab");
-				$scope.$broadcast("SHOWGUESTLIKESINFO");
+				// CICO-16013 - fixing multiple API calls on staycard loading
+				//$scope.$broadcast("SHOWGUESTLIKESINFO");
 			};
 
 			var fetchGuestcardDataFailureCallback = function(data) {

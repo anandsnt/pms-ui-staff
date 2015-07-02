@@ -2,6 +2,7 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 	function($http, $q, RVBaseWebSrv, rvBaseWebSrvV2, $rootScope) {
 
 		this.reservationData = {};
+                this.lastFetchData = {'cached':false, data: {}};
 		var that = this;
 
 		/**
@@ -36,6 +37,8 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 				var url = 'api/reservations/' + reservationId + '.json';
 
 				RVBaseWebSrv.getJSON(url).then(function(data) {
+                                        that.lastFetchData.cached = true;
+                                        that.lastFetchData.data = data;
 					that.reservationData[reservationId] = data;
 					deferred.resolve(data);
 				}, function(data) {

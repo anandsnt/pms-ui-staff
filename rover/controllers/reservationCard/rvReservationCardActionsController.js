@@ -1,5 +1,5 @@
-sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvActionTasksSrv','$state',
-    function($scope, $filter, $rootScope, ngDialog, rvActionTasksSrv, $state) {
+sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'RVReservationCardSrv','$state',
+    function($scope, $filter, $rootScope, ngDialog, rvActionTasksSrv, RVReservationCardSrv, $state) {
         $scope.reservationNotes = "";
         /*
          *To save the reservation note and update the ui accordingly
@@ -38,10 +38,32 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.populateTimeFieldValue();
             $scope.setScroller("rvActionListScroller");
 
-            $scope.fetchActionsCount();
+           //initially use the count from the staycard init request for reservation details
+           var setActionsCount = function(){
+               $scope.setInitialActionsCount(RVReservationCardSrv.lastFetchData.data);
+           };
+            $scope.$watch('RVReservationCardSrv.data',  setActionsCount);
             $scope.setUpData();
         };
-
+        
+        $scope.setInitialActionsCount = function(data){
+            if (data){
+                $scope.actions.totalCount = data.action_count;
+                $scope.actions.pendingCount = data.pending_action_count;
+                var pending = $scope.actions.pendingCount, total = $scope.actions.totalCount;
+                
+                if (total === 0 && pending === 0){
+                    $scope.actionsCount = 'none';//none, pending, all-completed
+                } else if (total > 0 && pending === 0){
+                    $scope.actionsCount = 'all-completed';
+                } else if (total > 0 && total === pending) {
+                    $scope.actionsCount = 'only-pending';
+                } else {
+                    $scope.actionsCount = 'pending';
+                }
+            }
+        };
+        
         var refreshScroller = function() {
             $scope.refreshScroller('rvActionListScroller');
         };
@@ -60,8 +82,17 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 aDay = aDay.toLowerCase();
                 aDayString = aDay.substring(0,1).toUpperCase()+aDay.substring(1,3)+' ';
             }
+            //make sure timestring include '0' if < 10, ie. 09, 08, etc instead of 9, 8...
+            if (timeStr !== ' '){
+                var timeSpl = timeStr.split(':');
+                var hour = timeSpl[0];
+                var hourInt = parseInt(hour);
+                if (hour < 10){
+                    timeStr = '0'+hourInt+':'+timeSpl[1];
+                }
+            }
             if (dateStr){
-                return aDayString+$scope.flipDateFormat(dateStr)+timeStr;
+                return aDayString+$scope.flipDateFormat(dateStr)+'  '+timeStr;
             } else {
                 return timeStr;
             }
