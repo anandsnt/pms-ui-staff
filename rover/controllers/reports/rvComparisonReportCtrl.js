@@ -19,8 +19,7 @@ sntRover.controller('RVComparisonReportCtrl', [
 				$scope.totalEntry.push( results[i] );
 			} else if ( !!results[i]['is_charge_group'] ) {
 				$scope.cgEntries.push( results[i] );
-			// } else if ( !!results[i]['is_static'] ) {
-			} else {
+			} else if ( !!results[i]['is_static'] ) {
 				processed = postProcess(results[i]);
 				$scope.staticEntries.push( processed );
 			};
