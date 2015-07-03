@@ -652,6 +652,11 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
          * Calls the API and dismiss the popup on success
          */
         $scope.saveRestriction = function () {
+            if ($scope.calendarData.is_child){
+                //manual update is disabled for rates which are based on other rates
+                $scope.daysOptions.applyToPrice = false;
+            }
+            
             //The dates to which the restriction should be applied
             var datesSelected = getAllSelectedDates();
 

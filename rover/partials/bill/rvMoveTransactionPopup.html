@@ -22,14 +22,18 @@
 				<button type="button" class="clear-query"  ng-click="clearNumberQuery()" ng-class="{'visible':numberQuery.length>0}"> 
 					<span class="icons icon-clear-search">Clear query</span>
 				</button>
-				<input id="move-to-number" placeholder="Search by No." ng-model="numberQuery" class="search" type="text" autocomplete="off" ng-change="queryEntered()" />
+				<input id="move-to-number" placeholder="Search by No." ng-model="numberQuery" class="search" type="text" autocomplete="off" rv-delay-textbox
+                delay="1000" 
+                function-to-fire="queryEntered"/>
 			</div>
 			<div class="entry">
 				<label for="move-to-name">Guest / Account Name</label>
 				<button type="button" class="clear-query"  ng-click="clearTextQuery()" ng-class="{'visible':textQuery.length>0}"> 
 					<span class="icons icon-clear-search">Clear query</span>
 				</button>
-				<input id="move-to-name" placeholder="Search by Name*, Reservation Number*" ng-model="textQuery" class="search" type="text" autocomplete="off" ng-change="queryEntered()" />
+				<input id="move-to-name" placeholder="Search by Name, Reservation Number" ng-model="textQuery" class="search" type="text" autocomplete="off" rv-delay-textbox
+                delay="1000" 
+                function-to-fire="queryEntered"/>
 			</div>
 		</div> 
 		<!-- When guest/account selected, show this and remove upper search options and lower search results-->

@@ -312,7 +312,14 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			$scope.refreshReservationDetailsScroller(3000);
 		});
 
-
+		/**
+		 * (CICO-16893) 
+		 * Whene there is any click happened reservation area, we have to refresh scroller
+		 * we will use this event to refresh scroller
+		 */
+		$scope.$on('refreshScrollerReservationDetails', function(){
+			$scope.refreshReservationDetailsScroller(500);
+		});
 
 		$scope.reservationDetailsFetchSuccessCallback = function(data) {
 
@@ -636,6 +643,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				"details": {
 					"firstName": $scope.data.guest_details.first_name,
 					"lastName": $scope.data.guest_details.last_name,
+					"hideDirectBill":true
 				}
 			};
 			var paymentData = $scope.reservationData;
