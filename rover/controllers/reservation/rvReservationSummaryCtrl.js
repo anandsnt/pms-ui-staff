@@ -68,7 +68,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             $scope.$emit("hideLoader");
             $scope.cardsList = data;
             angular.forEach($scope.cardsList, function(card, key) {
-                card.value = card.id; //For common payment HTML to work - Payment modifications story
+                //For common payment HTML to work - Payment modifications story
+                card.value = card.id;
                 delete card.id;
             });
         };
@@ -224,9 +225,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
         var addToGuestCard = function(data) {
             var dataToGuestList = {};
-            // if($scope.isSixCardSwiped){
-            //              
-            // } else 
             if ($scope.isNewCardAdded && !$scope.isSixCardSwiped) {
                 var cardName = (!$scope.newPaymentInfo.tokenDetails.isSixPayment) ?
                     $scope.newPaymentInfo.cardDetails.userName :
@@ -270,7 +268,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             data.token = (!$scope.newPaymentInfo.tokenDetails.isSixPayment) ?
                 $scope.newPaymentInfo.tokenDetails.session :
                 $scope.newPaymentInfo.tokenDetails.token_no;
-            //data.add_to_guest_card = $scope.newPaymentInfo.cardDetails.addToGuestCard;
             data.card_code = $scope.newPaymentInfo.tokenDetails.isSixPayment ?
                 getSixCreditCardType($scope.newPaymentInfo.tokenDetails.card_type).toLowerCase() :
                 $scope.newPaymentInfo.cardDetails.cardType;
@@ -307,7 +304,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             $scope.renderData.cardExpiry = $scope.cardsList[index].card_expiry;
             $scope.showCC = false;
             $scope.showSelectedCreditCard = true;
-            // CICO-9457 : Data for fees details - standalone only. 
+            // CICO-9457 : Data for fees details - standalone only.
             //CICO-13427 : API response changed from fees_information to fees_details
             if ($scope.isStandAlone) {
                 $scope.feeData.feesInfo = $scope.cardsList[index].fees_details;
@@ -438,14 +435,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             }
             return buttonClass;
         };
-        // $scope.successPayment = function(data){
-        // console.log(data);
-        // $scope.$emit('hideLoader');
-        // $scope.isSubmitButtonEnabled = true;
-        // $scope.creditCardTransactionId = data.credit_card_transaction_id;
-        // };
 
-        // set the previous state -- 
+        // set the previous state --
 
         if ($stateParams.reservation != "HOURLY") {
             if ($rootScope.isAddonOn) {
@@ -492,10 +483,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             }
         };
 
-        //  };
-        // };
-
-
         $scope.isContinueDisabled = function() {
             var depositPaid = false;
             if ($scope.depositData.isDepositRequired && $scope.reservationData.isValidDeposit) {
@@ -516,9 +503,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 // Setup fees info
                 $scope.feeData.feesInfo = $scope.reservationData.selected_payment_fees_details;
                 $scope.setupFeeData();
-
                 // CICO-15107 --
-                var aptSegment = ""; //Variable to store the suitable segment ID 
+                var aptSegment = ""; //Variable to store the suitable segment ID
                 angular.forEach($scope.otherData.segments, function(segment) {
                     if ($scope.reservationData.stayDays.length - 1 < segment.los) {
                         if (!aptSegment)
@@ -669,7 +655,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         /**
          * Fetches all the payment methods
          */
-        var paymentMethodsCopy = {}; // CICO-14193
+        var paymentMethodsCopy = {}; 
+        // CICO-14193
         var fetchPaymentMethods = function() {
             var paymentFetchSuccess = function(data) {
                 $scope.reservationData.paymentMethods = angular.copy(data);
@@ -821,7 +808,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 } else {
                     $scope.proceedCreatingReservation();
                 }
-                //              
+                //
 
             }
         };
@@ -858,10 +845,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                     $scope.reservationData.rooms[0].confirm_no = data.confirm_no;
                     $scope.reservationData.status = data.status;
                     $scope.viewState.reservationStatus.number = data.id;
-                }
-                /*
-                 * TO DO:ends here
-                 */
+                }               
 
                 $scope.viewState.reservationStatus.confirm = true;
                 $scope.reservationData.is_routing_available = false;
@@ -1013,8 +997,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 $scope.isNewCardAdded = ($rootScope.paymentGateway === 'sixpayments') ? true : false;
                 $scope.isManual = ($rootScope.paymentGateway === 'sixpayments') ? false : "";
                 refreshScrolls();
-                /*
-                 
+                /*                 
                  * Comment out .if existing cards needed remove comments
                  */
 
@@ -1027,7 +1010,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 // To handle fees details on reservation summary,
                 // While we change payment methods.
                 // Handling Credit Cards seperately.
-
                 angular.forEach(paymentMethodsCopy, function(item, key) {
                     if ((item.value == $scope.reservationData.paymentType.type.value) && (item.value != "CC")) {
                         $scope.feeData.feesInfo = item.charge_code.fees_information;
@@ -1046,7 +1028,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         /*
             If email address does not exists on Guest Card,
             and user decides to update via the Email field on the summary screen,
-            this email should be linked to the guest card. 
+            this email should be linked to the guest card.
          */
         $scope.primaryEmailEntered = function() {
             var dataToUpdate = {
@@ -1074,7 +1056,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
             $scope.isOnsiteActive = true;
             // $scope.isSixPaymentGatewayVisible = true;
-
             $scope.isIframeVisible = false;
             if ($scope.reservationData.paymentType.type.value == 'CC') {
                 $scope.isSixPaymentGatewayVisible = true;
@@ -1112,12 +1093,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 
         /**
-         * trigger the billing information popup. $scope.reservationData is the same variable used in billing info popups also. 
+         * trigger the billing information popup. $scope.reservationData is the same variable used in billing info popups also.
          So we are adding the required params to the existing $scope.reservationData, so that no other functionalities in reservation confirmation breaks.
          */
 
         $scope.openBillingInformation = function(confirm_no) {
-            //incase of multiple reservations we need to check the confirm_no to access billing 
+            //incase of multiple reservations we need to check the confirm_no to access billing
             //information
             if (confirm_no) {
                 angular.forEach($scope.reservationData.reservations, function(reservation, key) {
@@ -1263,8 +1244,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         }
 
         $scope.$on("SWIPE_ACTION", function(e, swipedCardData) {
-            // console.log("renderrrrrrrrrrrrrrrrrrrr");
-            // $scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
             var swipeOperationObj = new SwipeOperation();
             var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
             var tokenizeSuccessCallback = function(tokenValue) {
@@ -1351,18 +1330,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             }
             refreshScrolls();
         }
-
-        /**
-         * Clear guests
-         * -- DEPRECATED for CICO-16940
-         * @param  {room} room
-         * @return {undefined}
-         */
-        // $scope.clearGuests = function(room) {
-        //     room.accompanying_guest_details = null;
-        //     refreshScrolls();
-        // }
-        // 
 
         $scope.saveAccompanyingGuests = function(room, roomIndex) {
             $scope.errorMessage = "";

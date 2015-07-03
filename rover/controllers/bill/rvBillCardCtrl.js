@@ -6,27 +6,27 @@ sntRover.controller('RVbillCardController',
 	'$stateParams',
 	'RVBillCardSrv',
 	'reservationBillData',
-	'RVReservationCardSrv', 
-	'RVChargeItems', 
+	'RVReservationCardSrv',
+	'RVChargeItems',
 	'ngDialog',
 	'$filter',
-	'$window', 
+	'$window',
 	'$timeout',
-	'chargeCodeData', 
-	'$sce', 
+	'chargeCodeData',
+	'$sce',
 	'RVKeyPopupSrv',
-	'RVPaymentSrv', 
+	'RVPaymentSrv',
 	'RVSearchSrv',
 	'rvPermissionSrv',
 	function($scope, $rootScope,
-			$state, $stateParams, 
+			$state, $stateParams,
 			RVBillCardSrv, reservationBillData,
 
-			RVReservationCardSrv, RVChargeItems, 
-			ngDialog, $filter, 
+			RVReservationCardSrv, RVChargeItems,
+			ngDialog, $filter,
 
 			$window, $timeout,
-			chargeCodeData, $sce, 
+			chargeCodeData, $sce,
 
 			RVKeyPopupSrv,RVPaymentSrv,
 			RVSearchSrv, rvPermissionSrv){
@@ -43,7 +43,7 @@ sntRover.controller('RVbillCardController',
 
 	// Flag for CC auth permission
     $scope.hasCCAuthPermission = function() {
-        return rvPermissionSrv.getPermissionValue ('OVERRIDE_CC_AUTHORIZATION');    
+        return rvPermissionSrv.getPermissionValue ('OVERRIDE_CC_AUTHORIZATION');
     };
 
 	// Setup ng-scroll for 'registration-content' , 'bill-tab-scroller' , 'billDays'
@@ -95,7 +95,7 @@ sntRover.controller('RVbillCardController',
 	//set up flags for checkbox actions
 
 	$scope.hasMoveToOtherBillPermission = function() {
-        return ($rootScope.isStandAlone && rvPermissionSrv.getPermissionValue ('MOVE_CHARGES_RESERVATION_ACCOUNT'));  
+        return ($rootScope.isStandAlone && rvPermissionSrv.getPermissionValue ('MOVE_CHARGES_RESERVATION_ACCOUNT'));
     };
 	
     //only for standalone
@@ -140,7 +140,7 @@ sntRover.controller('RVbillCardController',
 	        } else{
 	            isAllChargeCodesSelected = false;
 	        }
-		}			
+		}
         return isAllChargeCodesSelected;
 	};
 
@@ -177,7 +177,7 @@ sntRover.controller('RVbillCardController',
 	};
 
 	$scope.selectAllChargeCodeToggle = function(){
-		$scope.reservationBillData.isAllChargeCodeSelected ? setChargeCodesSelectedStatus(true) :setChargeCodesSelectedStatus(false); 
+		$scope.reservationBillData.isAllChargeCodeSelected ? setChargeCodesSelectedStatus(true) :setChargeCodesSelectedStatus(false);
 	};
 
 
@@ -309,7 +309,7 @@ sntRover.controller('RVbillCardController',
 	* @return {Boolean}
 	*/
 	$scope.shouldShowEnableDisableChargeButton = function(){
-		return ($scope.clickedButton == 'checkinButton' && 
+		return ($scope.clickedButton == 'checkinButton' &&
 			!$scope.reservationBillData.is_res_posting_control_disabled);
 	};
 
@@ -319,8 +319,8 @@ sntRover.controller('RVbillCardController',
 	* @return {Boolean}
 	*/
 	$scope.showEditChargeButton = function(feesType){
-		return ($rootScope.isStandAlone && 
-				feesType!== 'TAX' && 
+		return ($rootScope.isStandAlone &&
+				feesType!== 'TAX' &&
 				$scope.hasPermissionToChangeCharges());
 	};
 
@@ -355,15 +355,15 @@ sntRover.controller('RVbillCardController',
 	// Initializing reviewStatusArray
 	$scope.reviewStatusArray = [];
 	$scope.caculateExpenseAmountForPackageAddon=function(expense_details, returnAmount){
-		var inclLength=0;		
-		angular.forEach(expense_details,function(elem){			
+		var inclLength=0;
+		angular.forEach(expense_details,function(elem){
 		if(elem.is_inclusive==true)
 		{
 			inclLength++;
 		}
 	})
 	if(inclLength==expense_details.length)
-	{		
+	{
 		return 'INCL'
 	}else if(inclLength>0&&inclLength<expense_details.length)
 	{
@@ -382,7 +382,7 @@ sntRover.controller('RVbillCardController',
 		 * Added same value to two different key because angular is two way binding
 		 * Check in HTML moveToBillAction
 		 */
-		angular.forEach(reservationBillData.bills, function(value, key) {			
+		angular.forEach(reservationBillData.bills, function(value, key) {
 			
 			
 
@@ -1005,15 +1005,15 @@ sntRover.controller('RVbillCardController',
 	};
 	
 	$scope.caculateExpenseAmountForPackageAddon=function(expense_details, returnAmount){
-		var inclLength=0;		
-		angular.forEach(expense_details,function(elem){			
+		var inclLength=0;
+		angular.forEach(expense_details,function(elem){
 		if(elem.is_inclusive==true)
 		{
 			inclLength++;
 		}
 	})
 	if(inclLength==expense_details.length)
-	{		
+	{
 		return 'INCL'
 	}else if(inclLength>0&&inclLength<expense_details.length)
 	{
@@ -1372,7 +1372,7 @@ sntRover.controller('RVbillCardController',
 		if($scope.reservationBillData.is_linked_to_group_account){
 			return false;
 		}
-		//Prompt for AR account 
+		//Prompt for AR account
 		if($scope.reservationBillData.bills[index].credit_card_details.payment_type == "DB" && $scope.reservationBillData.ar_number == null && $rootScope.isStandAlone){
 
 			if($scope.reservationBillData.account_id == null || typeof $scope.reservationBillData.account_id == 'undefined'){
@@ -1925,7 +1925,7 @@ sntRover.controller('RVbillCardController',
 		 	$scope.init(billData);
 		 	$scope.calculateBillDaysWidth();
 		 	//CICO-10906 review process continues after payment.
-			if( data.bill_balance == 0.0 && $scope.isViaReviewProcess ){	
+			if( data.bill_balance == 0.0 && $scope.isViaReviewProcess ){
 				(billCount == data.billNumber) ? $scope.clickedCompleteCheckout() :
 						$scope.clickedReviewButton(data.billNumber-1);
 			}
@@ -2046,15 +2046,15 @@ sntRover.controller('RVbillCardController',
 				$scope.$emit("hideLoader");
 					
 				//if error go to stay card and show popup
-				//else go to staycard and refresh 
+				//else go to staycard and refresh
 				if(data.status === "success"){
 					$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber, "isrefresh": true});
 				}
 				else{
 					$scope.reverseCheckoutDetails.data.is_reverse_checkout_failed  = true;
 					$scope.reverseCheckoutDetails.data.errormessage= data.message;
-					$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber});	
-				};				 		
+					$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber});
+				};
 			};
 
 			var data ={"reservation_id" : $scope.reservationBillData.reservation_id};
