@@ -77,8 +77,7 @@
 							<ad-textbox value="data.mi_fare_authentication_key_a" label = "{{'KEY_A' | translate }}" placeholder = "{{'KEY_A_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
 
 				    		<ad-textbox value="data.mi_fare_authentication_key_b" inputtype="text" label = "{{'KEY_B' | translate }}" placeholder = "{{'KEY_B_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
-
-		                    <ad-textbox value="data.mi_fare_authentication_aid" inputtype="text" label = "{{'SECTOR_AID' | translate }}" placeholder = "{{'SECTOR_AID_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
+		                    <ad-textbox value="data.mi_fare_authentication_aid" inputtype="text" label = "{{'SECTOR_AID' | translate }}" placeholder = "{{'SECTOR_AID_PLACEHOLDER' | translate }}" required = "{{data.selected_key_system == 1 ? 'yes' : ''}}" ></ad-textbox>
 						</div>
 					</fieldset>
 					<fieldset>
