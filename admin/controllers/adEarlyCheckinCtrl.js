@@ -132,7 +132,6 @@ $scope.setUpDefaultUpsellLevels = function () {
           defaultWindow.start_time = "";
           defaultWindow.addon_id = "";
           defaultWindow.charge = "";
-
           $scope.upsellData.early_checkin_levels.push(defaultWindow);
          
         });
