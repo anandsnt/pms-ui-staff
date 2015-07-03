@@ -20,7 +20,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
             $scope.errorMessage = "";
 			refreshPaymentScroll();
 		};
-		$scope.invokeApi(RVJournalSrv.fetchPaymentData, {"from":$scope.data.fromDate , "to":$scope.data.toDate}, successCallBackFetchPaymentData);
+		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, {"from":$scope.data.fromDate , "to":$scope.data.toDate}, successCallBackFetchPaymentData);
 	};
 	$scope.initPaymentData();
 
@@ -34,16 +34,34 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 
     /** Handle Expand/Collapse of Level1 **/
     $scope.clickedFirstLevel = function(index1){
+
+        var toggleItem = $scope.data.paymentData.payment_types[index1];
+
         if($scope.checkHasArrowLevel1(index1)){
-            var toggleItem = $scope.data.paymentData.payment_types[index1];
             toggleItem.active = !toggleItem.active;
             refreshPaymentScroll();
-            // When the system is in detailed view and we are collapsing each first Level
-            // We have to toggle Details to Summary on print box.
-            if(!toggleItem.active && !$scope.data.isPaymentToggleSummaryActive){
-                if($scope.isAllPaymentsCollapsed())
-                    $scope.data.isPaymentToggleSummaryActive = true;
-            }
+        }
+        else if((toggleItem.payment_type !== "Credit Card")){
+            // No data exist - Call API to fetch it
+            var successCallBackFetchPaymentDataTransactions = function(data){
+                if(data.transactions.length >0){
+                    toggleItem.transactions = data.transactions;
+                    toggleItem.active = !toggleItem.active;
+                    refreshPaymentScroller();
+                }
+                $scope.errorMessage = "";
+                $scope.$emit('hideLoader');
+            };
+
+            var postData = {
+                "from":$scope.data.fromDate ,
+                "to":$scope.data.toDate ,
+                "charge_code_id":toggleItem.id ,
+                "employee_ids" : $scope.data.selectedEmployeeList ,
+                "department_ids" : $scope.data.selectedDepartmentList
+            };
+
+            $scope.invokeApi(RVJournalSrv.fetchPaymentDataByTransactions, postData, successCallBackFetchPaymentDataTransactions);
         }
     };
     /** Handle Expand/Collapse of Level2 **/
@@ -52,6 +70,28 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
             var toggleItem = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
             toggleItem.active = !toggleItem.active;
             refreshPaymentScroll();
+        }
+        else{
+            // No data exist - Call API to fetch it
+            var successCallBackFetchPaymentDataTransactions = function(data){
+                if(data.transactions.length >0){
+                    toggleItem.transactions = data.transactions;
+                    toggleItem.active = !toggleItem.active;
+                    refreshPaymentScroller();
+                }
+                $scope.errorMessage = "";
+                $scope.$emit('hideLoader');
+            };
+
+            var postData = {
+                "from":$scope.data.fromDate ,
+                "to":$scope.data.toDate ,
+                "charge_code_id":toggleItem.charge_code_id ,
+                "employee_ids" : $scope.data.selectedEmployeeList ,
+                "department_ids" : $scope.data.selectedDepartmentList
+            };
+
+            $scope.invokeApi(RVJournalSrv.fetchPaymentDataByTransactions, postData, successCallBackFetchPaymentDataTransactions);
         }
     };
     /* To show / hide table heading section for Level2 (Credit card items) */
@@ -94,15 +134,6 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         item = $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions;
         if((typeof item !== 'undefined') && (item.length >0)) hasArrow = true;
         return hasArrow;
-    };
-
-    // To check whether all paymnt tabs are collpased or not, except the clicked index item.
-    $scope.isAllPaymentsCollapsed = function(){
-        var isAllTabsCollapsed = true;
-        angular.forEach($scope.data.paymentData.payment_types,function(payment_types, key) {
-            if(payment_types.active) isAllTabsCollapsed = false;
-        });
-        return isAllTabsCollapsed;
     };
 
     // To hanlde click inside payment tab.

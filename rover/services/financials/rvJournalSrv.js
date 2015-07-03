@@ -70,40 +70,17 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 
     ***********************************************************************************************/
 
-	this.fetchRevenueData = function(params){  /// will be removed after new implementation
-		var deferred = $q.defer();
-		var url = '/api/financial_transactions/revenue?from_date='+params.from+'&to_date='+params.to;
-		//var url = '/api/financial_transactions/revenue_by_charge_groups?from_date='+params.from+'&to_date='+params.to;
-		//var url = '/sample_json/journal/journal_revenue.json';
-		BaseWebSrvV2.getJSON(url).then(function(data) {
-			this.revenueData = data;
-
-			angular.forEach(this.revenueData.charge_groups,function(charge_groups, index1) {
-				
-				charge_groups.active = false;
-
-	            angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
-	            	charge_codes.active = false;
-	            });
-	        });
-		   	deferred.resolve(this.revenueData);
-		},function(data){
-		    deferred.reject(data);
-		});	
-		return deferred.promise;
-	};
-
 	this.fetchRevenueDataByChargeGroups = function(params){
 		var deferred = $q.defer();
 		var url = '/api/financial_transactions/revenue_by_charge_groups?from_date='+params.from+'&to_date='+params.to;
 		
 		BaseWebSrvV2.getJSON(url).then(function(data) {
-			this.revenueData = data;
-			angular.forEach(this.revenueData.charge_groups,function(charge_groups, index1) {
+			
+			angular.forEach(data.charge_groups,function(charge_groups, index1) {
 				charge_groups.active = false;
 	        });
 
-		   	deferred.resolve(this.revenueData);
+		   	deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
 		});	
@@ -129,14 +106,9 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 
 	this.fetchRevenueDataByTransactions = function(params){
 		var deferred = $q.defer();
-		var url = '/api/financial_transactions/revenue_by_transactions?from_date='+params.from+'&to_date='+params.to+'&charge_group_id='+charge_group_id+'&employee_id='+employee_id+'&department_id='+department_id;
+		var url = '/api/financial_transactions/revenue_by_transactions';
 		
-		BaseWebSrvV2.getJSON(url).then(function(data) {
-
-            angular.forEach(data.charge_codes,function(charge_codes, index2) {
-            	charge_codes.active = false;
-            });
-	        
+		BaseWebSrvV2.postJSON(url,params).then(function(data) {
 		   	deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
@@ -144,29 +116,35 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 		return deferred.promise;
 	};
 
-	this.fetchPaymentData = function(params){
+	this.fetchPaymentDataByPaymentTypes = function(params){
 		var deferred = $q.defer();
-		
-		var url = '/api/financial_transactions/payments?from_date='+params.from+'&to_date='+params.to;
-		//var url = '/api/financial_transactions/payments_by_payment_types?from_date='+params.from+'&to_date='+params.to;
-		//var url = '/sample_json/journal/journal_payments.json';
+		var url = '/api/financial_transactions/payments_by_payment_types?from_date='+params.from+'&to_date='+params.to;
+
 		BaseWebSrvV2.getJSON(url).then(function(data) {
-			this.paymentData = data;
 			
-			angular.forEach(this.paymentData.payment_types,function(payment_types, index1) {
+			angular.forEach(data.payment_types,function(payment_types, index1) {
 
 				payment_types.active = false ;
 
 				if(payment_types.payment_type == "Credit Card"){
-
 		            angular.forEach(payment_types.credit_cards,function(credit_cards, index2) {
-		            	
 		            	credit_cards.active = false ;
 		            });
 	        	}
 	        });
-		   	deferred.resolve(this.paymentData);
+		   	deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
 
+	this.fetchPaymentDataByTransactions = function(params){
+		var deferred = $q.defer();
+		var url = '/api/financial_transactions/payments_by_transactions';
+		
+		BaseWebSrvV2.postJSON(url,params).then(function(data) {
+		   	deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
 		});	

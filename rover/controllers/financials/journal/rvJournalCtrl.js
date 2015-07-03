@@ -16,7 +16,6 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.data.selectedChargeGroup = 'ALL';
     $scope.data.selectedChargeCode  = 'ALL';
     $scope.data.selectedPaymentType = 'ALL';
-    $scope.data.reportType = "";
     $scope.data.filterTitle = "All Departments";
     
     $scope.data.isActiveRevenueFilter = false;
@@ -89,14 +88,12 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
     $scope.refreshRevenueTab = function(){
         $rootScope.$broadcast('REFRESHREVENUECONTENT');
-        $rootScope.$broadcast('UpdateRevenueTabTotal');
         $scope.data.selectedChargeGroup = 'ALL';
         $scope.data.selectedChargeCode  = 'ALL';
     };
 
     $scope.refreshPaymentTab = function(){
         $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
-        $rootScope.$broadcast('UpdatePaymentTabTotal');
         $scope.data.selectedPaymentType = 'ALL';
     };
 
@@ -297,9 +294,5 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         var date = $filter('date')(date, $rootScope.dateFormat);
         return date + ', ' + time;
     };
-    // CICO-12472 Apply Employee or Department filter
-    $scope.$on('ApplyEmpOrDeptFilter',function(){
-        $scope.clickedSelectButton();
-    });
 
 }]);
