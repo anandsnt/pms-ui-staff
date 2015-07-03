@@ -13,15 +13,14 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
             $scope.data.selectedChargeGroup = 'ALL';
             $scope.data.selectedChargeCode  = 'ALL';
 			$scope.data.revenueData = data;
-            //CICO-14865 - Due to this bad architecture (calling API at diff. placed & gets the loader hidden with first API completion)
-            // and no time flexiblity, going for this BAD solution
-			$scope.$emit('I_COMPLTED_THE_API_CALL');
+            console.log(data);
             $scope.errorMessage = "";
 			refreshRevenueScroller();
             $scope.$emit("ApplyEmpOrDeptFilter");
+            $scope.$emit('hideLoader');
 
 		};
-		$scope.invokeApi(RVJournalSrv.fetchRevenueData, {"from":$scope.data.fromDate , "to":$scope.data.toDate}, successCallBackFetchRevenueData);
+		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, {"from":$scope.data.fromDate , "to":$scope.data.toDate}, successCallBackFetchRevenueData);
 	};
 	$scope.initRevenueData();
     
@@ -36,10 +35,11 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
     $rootScope.$on('toDateChanged',function(){
         $scope.initRevenueData();
     });
-
+$krish = $scope;
     /** Handle Expand/Collapse on Level1 **/
     $scope.clickedFirstLevel = function(index1){
         var toggleItem = $scope.data.revenueData.charge_groups[index1];
+        console.log(toggleItem);
         if($scope.checkHasArrowLevel1(index1)){
             toggleItem.active = !toggleItem.active;
             refreshRevenueScroller();
@@ -49,6 +49,20 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
                 if($scope.isAllRevenuesCollapsed())
                     $scope.data.isRevenueToggleSummaryActive = true;
             }
+        }
+        else{
+            // No data - Call API
+            var successCallBackFetchRevenueData = function(data){
+                console.log(data);
+                $scope.data.revenueData.charge_groups[index1].charge_codes = (data.charge_codes);
+                $scope.errorMessage = "";
+                toggleItem.active = !toggleItem.active;
+                refreshRevenueScroller();
+                $scope.$emit('hideLoader');
+            };
+            var postData = {"from":$scope.data.fromDate , "to":$scope.data.toDate , "charge_group_id":toggleItem.id };
+
+            $scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeCodes, postData, successCallBackFetchRevenueData);
         }
     };
     

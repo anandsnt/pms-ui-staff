@@ -19,14 +19,13 @@
                         <span class="number" >{{escapeNullData(level1.number)}}</span>
                         <span class="value">{{currencySymbol}}{{ getTotalAmountOfGroupItem(index1) | number: precisonTwo}}</span>
                     </a>
-
                     <!-- Second level - charge codes -->
                     <div ng-show="level1.active" ng-repeat="(index2 ,level2) in level1.charge_codes" class="grid-charge">
 
                         <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active , 'has-arrow':checkHasArrowLevel2(index1, index2)}" class="revenue-title toggle">
-                            <span class="code short-text" ng-show="level2.show">{{level2.code}}</span>
-                            <strong class="name" ng-show="level2.show">{{level2.name}}</strong>
-                            <span class="value" ng-show="level2.show">{{currencySymbol}}{{getTotalAmountOfCodeItem(index1 ,index2) | number: precisonTwo}}</span>
+                            <span class="code short-text">{{level2.code}}</span>
+                            <strong class="name">{{level2.name}}</strong>
+                            <span class="value">{{currencySymbol}}{{getTotalAmountOfCodeItem(index1 ,index2) | number: precisonTwo}}</span>
                         </a>
 
                         <!-- Third level - transactions  -->
