@@ -14,6 +14,10 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 	$scope.upgradesDescriptionStatusArray = [];
 	$scope.selectedUpgrade = {};
 	$scope.selectedUpgradeIndex = "";
+
+	// CICO-17082, do we need to call the the room assigning API with forcefully assign to true
+	// currently used for group reservation
+	var wanted_to_forcefully_assign = false;
 	/**
 	* Listener to set the room upgrades when loaded
 	*/
@@ -145,6 +149,7 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 
 		var params = {};
 		
+
 		//CICO-17082
 		params.forcefully_assign_room 	= wanted_to_forcefully_assign;
 		wanted_to_forcefully_assign 	= false;
@@ -156,17 +161,17 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 		_.extend($scope.selectedUpgrade,
 		{
 			room_id 		: selectedListItem.room_id,
-			room_no 		: upgrade_room_number,
-			room_type_name 	: upgrade_room_type_name,
-			room_type_code 	: upgrade_room_type,
-			room_type_level	: parseInt(room_type_level),
+			room_no 		: selectedListItem.upgrade_room_number,
+			room_type_name 	: selectedListItem.upgrade_room_type_name,
+			room_type_code 	: selectedListItem.upgrade_room_type,
+			room_type_level	: parseInt(selectedListItem.room_type_level),
 		});
 		
 		//yes. ALL set. Go!
 		var options = {
             params 			: params,
             successCallBack : successCallbackselectUpgrade,
-            failureCallBack : failureCallBackSelectUpgrade,
+            failureCallBack : errorCallbackselectUpgrade,
             successCallBackParameters: 	{ selectedListItem: selectedListItem}
         };
         $scope.callAPI(RVUpgradesSrv.selectUpgrade, options);
