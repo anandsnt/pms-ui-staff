@@ -157,8 +157,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		angular.forEach($scope.depositBalanceData.data.credit_card_types, function(value, key) {
 			if($scope.depositBalanceMakePaymentData.card_code.toUpperCase() === value.cardcode){
 				$scope.isDisplayReference = (value.is_display_reference)? true:false;
-			};					
-		});				
+			};
+		});
 	};
 
 	var checkReferencetextAvailableFornonCC = function(){
@@ -177,12 +177,12 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				
 
 			}
-		});		
+		});
 	};
 	$scope.changePaymentType = function(){
 		if($scope.depositBalanceMakePaymentData.payment_type === "CC"){
-			if($rootScope.paymentGateway != "sixpayments"){			
-				$scope.shouldShowMakePaymentScreen       = false; 
+			if($rootScope.paymentGateway != "sixpayments"){
+				$scope.shouldShowMakePaymentScreen       = false;
 				$scope.shouldShowExistingCards =  ($scope.cardsList.length>0) ? true :false;
 				$scope.addmode = ($scope.cardsList.length>0) ? false :true;
 				refreshScroll();
@@ -190,7 +190,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				$scope.isManual = false;
 			}
 		} else {
-				$scope.shouldShowMakePaymentScreen       = true; 
+				$scope.shouldShowMakePaymentScreen       = true;
 				$scope.addmode                 			 = false;
 				$scope.shouldShowExistingCards = false;
 				$scope.shouldCardAvailable 				 = false;
@@ -215,7 +215,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	    var cardExpiry = "";
 	    if(!$scope.cardValues.tokenDetails.isSixPayment){
 	    	cardExpiry = ($scope.cardValues.cardDetails.expiryMonth!=='' && $scope.cardValues.cardDetails.expiryYear!=='') ? "20"+$scope.cardValues.cardDetails.expiryYear+"-"+$scope.cardValues.cardDetails.expiryMonth+"-01" : "";
-	    	//To render the selected card data 
+	    	//To render the selected card data
 	    	$scope.depositBalanceMakePaymentData.card_code = getCreditCardType($scope.cardValues.cardDetails.cardType).toLowerCase();
 	    	checkReferencetextAvailableForCC();
 	    	$scope.depositBalanceMakePaymentData.ending_with = $scope.cardValues.cardDetails.cardNumber.substr($scope.cardValues.cardDetails.cardNumber.length - 4);;
@@ -229,8 +229,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		    
 		} else {
 			cardExpiry = ($scope.cardValues.tokenDetails.expiry!=='') ? "20"+$scope.cardValues.tokenDetails.expiry.substring(0, 2)+"-"+$scope.cardValues.tokenDetails.expiry.substring(2, 4)+"-01" : "";
-			$scope.shouldShowIframe 	   			 = false;	
-			$scope.shouldShowMakePaymentScreen       = true; 
+			$scope.shouldShowIframe 	   			 = false;
+			$scope.shouldShowMakePaymentScreen       = true;
 			$scope.showAddtoGuestCard    			 = false;
 			$scope.shouldShowExistingCards  		 = false;
 			$scope.addmode                 			 = false;
@@ -250,7 +250,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		   };
 		}
 		dataToApiToAddNewCard.card_code = (!$scope.cardValues.tokenDetails.isSixPayment)?
-										$scope.cardValues.cardDetails.cardType : 
+										$scope.cardValues.cardDetails.cardType :
 										getSixCreditCardType($scope.cardValues.tokenDetails.card_type).toLowerCase();
 		$scope.depositBalanceMakePaymentData.card_expiry = $scope.cardValues.tokenDetails.isSixPayment?
 					$scope.cardValues.tokenDetails.expiry.substring(2, 4)+" / "+$scope.cardValues.tokenDetails.expiry.substring(0, 2):
@@ -361,7 +361,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.feeData.totalOfValueAndFee = parseFloat(amountToPay + feesAmount).toFixed(2);
 	};
 		
-	// CICO-9457 : Data for fees details - standalone only.	
+	// CICO-9457 : Data for fees details - standalone only.
 	if($scope.isStandAlone)	{
 		if(!($rootScope.paymentGateway == "sixpayments" && !$scope.isManual && $scope.depositBalanceMakePaymentData.payment_type == "CC")){
 			
@@ -424,18 +424,18 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				} else {
 					$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successMakePayment);
 				}
-			// };		
+			// };
 
 	};
 	/*
 	 * On saving new card success
 	 * show the make payment screen and make payment button active
-	 * setting payment id 
+	 * setting payment id
 	 */
 	$scope.successSavePayment = function(data){
 		$scope.$emit("hideLoader");
-		$scope.shouldShowIframe 	   			 = false;	
-		$scope.shouldShowMakePaymentScreen       = true; 
+		$scope.shouldShowIframe 	   			 = false;
+		$scope.shouldShowMakePaymentScreen       = true;
 		$scope.showAddtoGuestCard    			 = false;
 		$scope.shouldShowExistingCards  		 = false;
 		$scope.addmode                 			 = false;
@@ -496,7 +496,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			
 			
 			$scope.authorizedCode = data.authorization_code;
-		} 
+		}
 		// else {
 			// $scope.closeDepositModal();
 		// }
@@ -512,8 +512,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	 * Show the selected cards list in make payment screen
 	 */
 	$scope.setCreditCardFromList = function(index){
-		$scope.shouldShowIframe 	   			 = false;	
-		$scope.shouldShowMakePaymentScreen       = true; 
+		$scope.shouldShowIframe 	   			 = false;
+		$scope.shouldShowMakePaymentScreen       = true;
 		$scope.showAddtoGuestCard    			 = false;
 		$scope.shouldShowExistingCards  		 = false;
 		$scope.addmode                 			 = false;
@@ -535,7 +535,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	};
 
 	/*
-	 * Card selected from centralized controler 
+	 * Card selected from centralized controler
 	 */
 	$scope.$on('cardSelected',function(e,data){
 		$scope.shouldCardAvailable 				 = true;
@@ -543,8 +543,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	});
 	
 	$scope.showAddCardSection = function(){
-		$scope.shouldShowIframe 	   			 = false;	
-		$scope.shouldShowMakePaymentScreen       = false; 
+		$scope.shouldShowIframe 	   			 = false;
+		$scope.shouldShowMakePaymentScreen       = false;
 		$scope.showAddtoGuestCard    			 = false;
 		$scope.shouldShowExistingCards  		 = true;
 		$scope.addmode                 			 = false;
@@ -552,14 +552,14 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		refreshScroll();
 	};
 	$scope.$on('cancelCardSelection',function(e,data){
-		$scope.shouldShowMakePaymentScreen       = true; 
+		$scope.shouldShowMakePaymentScreen       = true;
 		//$scope.shouldShowExistingCards  		 = false;
 		$scope.addmode                 			 = false;
 		$scope.depositBalanceMakePaymentData.payment_type = "";
 	});
 	
 	$scope.$on("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN", function(e, swipedCardDataToRender){
-		$scope.shouldShowMakePaymentScreen       = false; 
+		$scope.shouldShowMakePaymentScreen       = false;
 		$scope.addmode                 			 = true;
 		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 		//Not good

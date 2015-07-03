@@ -14,7 +14,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				'NORMAL_SEARCH': 'SEARCH_NORMAL'
 			};
 
-		// Putting this hash in parent as we have to maintain the back button in stay card even after navigating to states from stay card and coming back to the stay card.			
+		// Putting this hash in parent as we have to maintain the back button in stay card even after navigating to states from stay card and coming back to the stay card.
 		var setNavigationBookMark = function() {
 			$rootScope.stayCardStateBookMark = {
 				previousState: $scope.previousState.name,
@@ -59,7 +59,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		} else {
 			setNavigationBookMark();
 			// if we just created a reservation and came straight to staycard
-			// we should show the back button with the default text "Find Reservations"	
+			// we should show the back button with the default text "Find Reservations"
 			if ($stateParams.justCreatedRes || $scope.otherData.reservationCreated) {
 				backTitle = titleDict['NORMAL_SEARCH'];
 				backParam = {
@@ -315,7 +315,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		});
 
 		/**
-		 * (CICO-16893) 
+		 * (CICO-16893)
 		 * Whene there is any click happened reservation area, we have to refresh scroller
 		 * we will use this event to refresh scroller
 		 */
@@ -460,7 +460,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		*/
 		$scope.shouldShowChangeStayDatesButton = function() {
 			return ($scope.isNightsEnabled() &&
-					!$scope.reservationData.reservation_card.is_hourly_reservation && 
+					!$scope.reservationData.reservation_card.is_hourly_reservation &&
 					$scope.reservationData.reservation_card.group_id.trim() === '' )
 		}
 
@@ -483,9 +483,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		$scope.isStayDatesChangeAllowed = function(){
 			isStayDatesChangeAllowed = false;
 
-			if($rootScope.isStandAlone && 
-				!$scope.reservationData.reservation_card.is_hourly_reservation && 
-				($scope.reservationData.reservation_card.reservation_status == 'CHECKING_IN' || 
+			if($rootScope.isStandAlone &&
+				!$scope.reservationData.reservation_card.is_hourly_reservation &&
+				($scope.reservationData.reservation_card.reservation_status == 'CHECKING_IN' ||
 				 $scope.reservationData.reservation_card.reservation_status == 'RESERVED')){
 
 				isStayDatesChangeAllowed = true;
@@ -807,7 +807,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				if (!!existingStayDays[currentDate]) {
 					newStayDates[currentDate] = existingStayDays[currentDate];
 				} else {
-					//go to take information from the new_stay_dates coming from the API response				
+					//go to take information from the new_stay_dates coming from the API response
 
 					var newDateDetails = _.where(modifiedStayDays, {
 						reservation_date: currentDate
@@ -890,7 +890,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 
 	// Flag for CC auth permission
     var hasManualCCAuthPermission = function() {
-        return rvPermissionSrv.getPermissionValue('MANUAL_CC_AUTH');    
+        return rvPermissionSrv.getPermissionValue('MANUAL_CC_AUTH');
     };
 
     $scope.showAuthAmountPopUp = function(){

@@ -11,16 +11,16 @@ sntRover.controller('reservationActionsController', [
 	'RVDepositBalanceSrv',
 	'$filter',
 	'RVChargeItems','RVPaymentSrv','rvPermissionSrv',
-	function($rootScope, 
-		$scope, 
-		ngDialog, 
+	function($rootScope,
+		$scope,
+		ngDialog,
 		RVChargeItems,
-		$state, 
+		$state,
 		RVReservationCardSrv,
 		RVReservationSummarySrv,
 		RVHkRoomDetailsSrv,
 		RVSearchSrv,
-		RVDepositBalanceSrv, 
+		RVDepositBalanceSrv,
 		$filter,
 		RVChargeItems,RVPaymentSrv,rvPermissionSrv) {
 
@@ -40,7 +40,7 @@ sntRover.controller('reservationActionsController', [
 										&& departureDatePassedbusinessDate
 	   									 && rvPermissionSrv.getPermissionValue ('REVERSE_CHECK_OUT') && $rootScope.isStandAlone && !$rootScope.isHourlyRateOn;
 
-	    $scope.reverseCheckout = function(reservationId, clickedButton) {	
+	    $scope.reverseCheckout = function(reservationId, clickedButton) {
 			$state.go("rover.reservation.staycard.billcard", {
 				"reservationId": reservationId,
 				"clickedButton": clickedButton,
@@ -51,7 +51,7 @@ sntRover.controller('reservationActionsController', [
 		//Since API is returning "true"/"false"
 		//TODO: Ask Rashila to to it from the API itself
 		if (typeof $scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates !== "boolean") {
-			$scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates = 
+			$scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates =
 				($scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates === "true")
 		}
 
@@ -71,7 +71,7 @@ sntRover.controller('reservationActionsController', [
 			var display = false;
 			if (status == 'CHECKING_IN' || status == 'RESERVED' || status == 'CHECKEDIN' || status == 'CHECKING_OUT' ) {
 				if(status == 'CHECKING_IN' || status == 'RESERVED'){
-					/*	As per CICO-9795 : 
+					/*	As per CICO-9795 :
 						Balance field should NOT show when the guest is NOT checked in.
 					*/
 					display = false;
@@ -147,7 +147,7 @@ sntRover.controller('reservationActionsController', [
 				});
 				
 			};
-			var callback = function(data) {				
+			var callback = function(data) {
 
 				$scope.fetchedData = data;
 				$scope.invokeApi(RVChargeItems.getReservationBillDetails, $scope.reservation_id, $scope.successGetBillDetails);
@@ -203,7 +203,7 @@ sntRover.controller('reservationActionsController', [
 		$scope.depositDetails ={};
 
 		/**************************************************************************/
-		/* Entering staycard we check if any deposit is left else noraml checkin 
+		/* Entering staycard we check if any deposit is left else noraml checkin
 		/*
 		/**************************************************************************/
 		
@@ -227,7 +227,7 @@ sntRover.controller('reservationActionsController', [
 					openDepositPopup();
 				};
 				$scope.depositPopupData.isShown = true;
-			};				
+			};
 		};
 
 		/**
@@ -322,7 +322,7 @@ sntRover.controller('reservationActionsController', [
 						// Rest of the things
 						$scope.$emit('hideLoader');
 						// update the room status to reservation card
-						$scope.reservationData.reservation_card.room_ready_status = data.current_hk_status;						
+						$scope.reservationData.reservation_card.room_ready_status = data.current_hk_status;
 						$scope.reservationData.reservation_card.room_status = data.is_ready === "true" ? 'READY' : 'NOTREADY';
 						$scope.reservationData.reservation_card.fo_status = data.is_occupied === "true" ? 'OCCUPIED' : 'VACANT';
 						//CICO-14777 Yotel - Hourly Setup: Checkin with not ready room assigned should redirect to diary
@@ -348,7 +348,7 @@ sntRover.controller('reservationActionsController', [
 		});
 
 		/**************************************************************************/
-		/* Before checking in we check if any deposit is left else noraml checkin 
+		/* Before checking in we check if any deposit is left else noraml checkin
 		/*
 		/**************************************************************************/
 		var checkinDepositDetailsSuccess = function(data){
@@ -501,7 +501,7 @@ sntRover.controller('reservationActionsController', [
 			var checkCancellationPolicy = function() {
 
 				var onCancellationDetailsFetchSuccess = function(data) {
-					$scope.$emit('hideLoader');			
+					$scope.$emit('hideLoader');
 
 					// Sample Response from api/reservations/:id/policies inside the results hash
 					// calculated_penalty_amount: 40
@@ -576,8 +576,8 @@ sntRover.controller('reservationActionsController', [
 		$scope.showSmartBandsButton = function(reservationStatus, icareEnabled, hasSmartbandsAttached) {
 			var showSmartBand = false;
 			if (icareEnabled === "true") {
-				if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN' 
-					|| reservationStatus == 'CHECKEDIN' || reservationStatus == 'CHECKING_OUT' 
+				if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'
+					|| reservationStatus == 'CHECKEDIN' || reservationStatus == 'CHECKING_OUT'
 					|| reservationStatus == 'NOSHOW_CURRENT' || (reservationStatus == 'CHECKEDOUT' && hasSmartbandsAttached)) {
 					showSmartBand = true;
 				}
@@ -621,7 +621,7 @@ sntRover.controller('reservationActionsController', [
 
 			$scope.$emit('hideLoader');
 			$scope.depositBalanceData = data;
-			$scope.passData = { 
+			$scope.passData = {
 			    "details": {
 			    	"firstName": $scope.data.guest_details.first_name,
 			    	"lastName": $scope.data.guest_details.last_name,
@@ -640,8 +640,8 @@ sntRover.controller('reservationActionsController', [
 
 		/**
 		 * wanted to show deposit & blance button?
-		 * @param  {String}  reservationStatus 
-		 * @return {Boolean}                  
+		 * @param  {String}  reservationStatus
+		 * @return {Boolean}
 		 */
 		$scope.showDepositBalance = function(reservationStatus){
 			//As per CICO-15833

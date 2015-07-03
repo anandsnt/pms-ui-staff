@@ -9,7 +9,7 @@ admin.controller('ADEarlyCheckinCtrl',['$scope','$rootScope','$state','adUpsellE
 /**
 * To fetch upsell details
 *
-*/ 
+*/
 $scope.fetchUpsellDetails = function(){
     var fetchUpsellDetailsSuccessCallback = function(data) {
        
@@ -88,7 +88,7 @@ $scope.setUpUpsellWindowData = function () {
          upsellWindow.hours = item.start_time == ""? "" : item.start_time.substring(0, 2);
          upsellWindow.minutes = item.start_time == ""? "" : item.start_time.substring(3, 5);
          upsellWindow.meridiem = item.start_time == ""? "AM" : item.start_time.substring(6);
-         upsellWindow.addon_id = item.addon_id == null? "" : item.addon_id;   
+         upsellWindow.addon_id = item.addon_id == null? "" : item.addon_id;
          upsellWindow.charge = item.charge;
          $scope.upsellWindows.push(upsellWindow);
   });
@@ -111,7 +111,7 @@ $scope.isRateAvailable = function(index){
          if($scope.upsellData.early_checkin_rates[i].id == $scope.rates[index].id)
            return false;
           
-        } 
+        }
        return true;
 }
 
@@ -154,7 +154,7 @@ $scope.setUpUpsellWindowDataToSave = function () {
                  upsellWindow.addon_id = item.addon_id;
 
                  $scope.upsellData.early_checkin_levels.push(upsellWindow);
-             }             
+             }
         });
 }
 
@@ -163,7 +163,7 @@ $scope.validateUpsellWindowTime = function(){
   var time_window2 = new Date;
   var time_window3 = new Date;
 
-  var hrs1 = ($scope.upsellWindows[0].meridiem.localeCompare('PM') != -1)? 12 + (parseInt($scope.upsellWindows[0].hours) % 12) : (parseInt($scope.upsellWindows[0].hours) == 12)? 0 : parseInt($scope.upsellWindows[0].hours); 
+  var hrs1 = ($scope.upsellWindows[0].meridiem.localeCompare('PM') != -1)? 12 + (parseInt($scope.upsellWindows[0].hours) % 12) : (parseInt($scope.upsellWindows[0].hours) == 12)? 0 : parseInt($scope.upsellWindows[0].hours);
   var hrs2 = ($scope.upsellWindows[1].meridiem.localeCompare('PM') != -1)? 12 + (parseInt($scope.upsellWindows[1].hours) % 12) : (parseInt($scope.upsellWindows[1].hours) == 12)? 0 : parseInt($scope.upsellWindows[1].hours);
   var hrs3 = ($scope.upsellWindows[2].meridiem.localeCompare('PM') != -1)? 12 + (parseInt($scope.upsellWindows[2].hours) % 12) : (parseInt($scope.upsellWindows[2].hours) == 12)? 0 : parseInt($scope.upsellWindows[2].hours);
   
@@ -196,7 +196,7 @@ $scope.minutes = ["00","15","30","45"];
 /**
 * To handle switch actions
 *
-*/ 
+*/
 $scope.switchClicked = function(){
     $scope.upsellData.is_early_checkin_allowed =  !$scope.upsellData.is_early_checkin_allowed;
 };
@@ -204,13 +204,13 @@ $scope.switchClicked = function(){
 /**
 * To handle save button action
 *
-*/ 
+*/
 $scope.saveClick = function(){
 
-    if(!$scope.validateUpsellWindowTime()){      
+    if(!$scope.validateUpsellWindowTime()){
         
         return;
-    } 	
+    }
     // $scope.validateUpsellWindowTime();
     $scope.setUpUpsellWindowDataToSave();
     $scope.upsellData.early_checkin_time = ($scope.upsell_rate.hours != null && $scope.upsell_rate.hours != "")?$scope.upsell_rate.hours + ":" + $scope.upsell_rate.minutes + " " + $scope.upsell_rate.meridiem : "";
@@ -221,7 +221,7 @@ $scope.saveClick = function(){
     // had to ovveride default error handler for custom actions.
    	var upsellEarlyCheckinSaveFailureCallback =  function(errorMessage) {
       $scope.$emit('hideLoader');
-      $scope.fetchedFailed(errorMessage);     	
+      $scope.fetchedFailed(errorMessage);
    	};
    	$scope.invokeApi(adUpsellEarlyCheckinService.update,$scope.upsellData,upsellEarlyCheckinSaveSuccessCallback, upsellEarlyCheckinSaveFailureCallback);
      
@@ -288,7 +288,7 @@ $scope.isChargeRequiredForWindow = function(windowIndex){
 /**
 * To watch Upsell data
 *
-*/ 
+*/
 $scope.startWatching = function(){
     $scope.$watch(function(){
       return ($scope.upsellWindows[0].hours == "" ||$scope.upsellWindows[0].hours == null )? "": $scope.upsellWindows[0].hours;
@@ -299,7 +299,7 @@ $scope.startWatching = function(){
             $scope.upsellWindows[0].addon_id = "";
         }else if($scope.upsellWindows[0].minutes == "" || $scope.upsellWindows[0].minutes == null){
             $scope.upsellWindows[0].minutes = "00";
-        }         
+        }
    });
 
     $scope.$watch(function(){
@@ -311,7 +311,7 @@ $scope.startWatching = function(){
             $scope.upsellWindows[1].addon_id = "";
         }else if($scope.upsellWindows[1].minutes == "" || $scope.upsellWindows[1].minutes == null){
             $scope.upsellWindows[1].minutes = "00";
-        }        
+        }
    });
 
     $scope.$watch(function(){
@@ -323,8 +323,8 @@ $scope.startWatching = function(){
             $scope.upsellWindows[2].addon_id = "";
         }else if($scope.upsellWindows[2].minutes == "" || $scope.upsellWindows[2].minutes == null){
             $scope.upsellWindows[2].minutes = "00";
-        }       
-   });  
+        }
+   });
 
     $scope.$watch(function(){
       return ($scope.upsell_rate.hours == "" ||$scope.upsell_rate.hours == null )? "": $scope.upsell_rate.hours;
@@ -333,7 +333,7 @@ $scope.startWatching = function(){
             $scope.upsell_rate.minutes = "";
         }else if($scope.upsell_rate.minutes == "" || $scope.upsell_rate.minutes == null){
             $scope.upsell_rate.minutes = "00";
-        }       
+        }
    });
 };
 

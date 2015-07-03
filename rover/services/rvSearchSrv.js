@@ -11,7 +11,7 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 		
 		dataToSend.fakeDataToAvoidCache = new Date();
 		self.toDate = self.toDate == undefined ? "" : self.toDate;
-		var url =  'search.json?per_page=' + self.searchPerPage 
+		var url =  'search.json?per_page=' + self.searchPerPage
 		+ '&page=' + self.page;
 
 		if ( useCache && !!self.data ) {
@@ -35,9 +35,9 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 			},function(data){
 				deferred.reject(data);
 			});
-		}		
+		}
 		
-		return deferred.promise;		
+		return deferred.promise;
 	};
 
 	// update the reservation details of cached data

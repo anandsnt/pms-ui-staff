@@ -10,7 +10,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
             }
         };
         /* Cute workaround. ng-iscroll creates myScroll array in its Scope's $parent.
-         * Since our controller's scope is two step above the scroll div, 
+         * Since our controller's scope is two step above the scroll div,
          * We create an empty myScroll here. ng-iscroll will see this item, and use the same.
          * Note: If a subscope requires another iScroll, this approach may not work.
          */
@@ -241,7 +241,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
             $scope.loading = true;
             $scope.$emit('showLoader');
             setTimeout(function () {
-                // If only one rate is selected in the filter section, the defult view is room type calendar 
+                // If only one rate is selected in the filter section, the defult view is room type calendar
                 if ($scope.currentFilterData.rates_selected_list.length === 1) {
                     $scope.calendarMode = "ROOM_TYPE_VIEW";
                     $scope.currentSelectedRate.id = $scope.currentFilterData.rates_selected_list[0].id;
@@ -641,7 +641,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
         };
         $scope.current_overrides = [];
         /**
-         * Fetches the calendar data and update the scope variables 
+         * Fetches the calendar data and update the scope variables
          */
 
         $scope.hasOverrideValue = function (date, room_type) {
@@ -712,13 +712,13 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
         
        $scope.rateDateHasOverride = function (rate, date, occ) {//room_type, date, occupancy
            /*
-            * 
+            *
             * this is a three step check to determine if--
             *   on each specific date the room type > occupancy has an override
             *  -step 1- find the data for the given date
             *  -step 2- in the date object, find the correct room_type
             *  -step 3- using the room/type & date, determine if the occupancy 'has override'
-            *  
+            *
             */
            
             var room_type = rate.name;

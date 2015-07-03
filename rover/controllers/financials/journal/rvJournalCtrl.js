@@ -1,6 +1,6 @@
 sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVJournalSrv', 'journalResponse','$timeout',function($scope, $filter,$stateParams, ngDialog, $rootScope, RVJournalSrv, journalResponse, $timeout) {
 		
-	BaseCtrl.call(this, $scope);	
+	BaseCtrl.call(this, $scope);
 	// Setting up the screen heading and browser title.
 	$scope.$emit('HeaderChanged', $filter('translate')('MENU_JOURNAL'));
 	$scope.setTitle($filter('translate')('MENU_JOURNAL'));
@@ -56,7 +56,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
             });
         };
     };
-    retrieveCashierName();    
+    retrieveCashierName();
 
 	/* Handling different date picker clicks */
 	$scope.clickedFromDate = function(){
@@ -198,7 +198,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
             $scope.refreshRevenueTab();
             $scope.filterPaymentByDepartmentsOrEmployees();
             $scope.refreshPaymentTab();
-        } 
+        }
     };
 
     // To setup Lists of selected ids of employees and departments.

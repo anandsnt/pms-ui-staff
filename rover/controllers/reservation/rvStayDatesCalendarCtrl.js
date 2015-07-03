@@ -59,7 +59,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 				fromDate = $rootScope.businessDate;
 			}
 
-			//We can see two calendars in a row. The 2nd calendar can display 
+			//We can see two calendars in a row. The 2nd calendar can display
 			//max 13(6+7) days(the calendar has 6 rows) of its coming month
 			toDate = $scope.checkinDateInCalender.clone();
 			toDate.setMonth(toDate.getMonth() + 2);
@@ -212,7 +212,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 				date = $scope.dates[i];
 				dateDetails = $scope.availabilityDetails.results[date];
 
-				//Check if houe available for the day 
+				//Check if houe available for the day
 				houseAvailabilityForTheDay = dateDetails['house'].availability;
 				if (houseAvailabilityForTheDay <= 0) {
 					$scope.houseNotAvailableForBooking = true;
@@ -319,7 +319,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			$scope.checkoutDateInCalender = finalCheckout;
 			$scope.nights = getNumOfStayNights();
 
-			//Reload the calendar with new arrival, departure dates			
+			//Reload the calendar with new arrival, departure dates
 			$scope.refreshCalendarEvents()
 		};
 
@@ -327,7 +327,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 		 * return the rate for a given date
 		 */
 		var getRateForTheDay = function(availabilityDetails) {
-			//If no room type is selected for the room type calendar, 
+			//If no room type is selected for the room type calendar,
 			//then no need to display the rate
 			var rate = {};
 			rate.name = '';
@@ -424,7 +424,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 				//mid-stay range
 				} else if ((thisDate.getTime() > checkinDate.getTime()) && (thisDate.getTime() < checkoutDate.getTime())) {
 					calEvt.id = "availability";
-					calEvt.className = "mid-stay";					
+					calEvt.className = "mid-stay";
 				//Event is check-out
 				} else if (thisDate.getDate() == checkoutDate.getDate()&&thisDate.getMonth() == checkoutDate.getMonth()&&thisDate.getYear() == checkoutDate.getYear()) {
 					calEvt.id = "check-out";
@@ -433,10 +433,10 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 					calEvt.durationEditable = "false";
 				/**Following are for dates prior to check-in and dates after checkout*/
 				} else if (($scope.calendarType == "BEST_AVAILABLE" && dateDetails[availabilityKey].room_type_availability.availability > 0) || ($scope.calendarType == "ROOM_TYPE" && $scope.roomTypeForCalendar != "" && dateDetails[availabilityKey].room_type_availability.availability > 0)) {
-					calEvt.className = "type-available"; 
+					calEvt.className = "type-available";
 					calEvt.durationEditable = "false";
 					//TODO: verify class name
-					//room type not available but house available   
+					//room type not available but house available
 				} else if (dateDetails["house"].availability > 0) {
 					//calEvt.className = ""; //TODO: verify class name from stjepan
 					//house not available(no room available in the hotel for any room type)
@@ -555,7 +555,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 		//Click handler for cancel button in calendar screen
 		$scope.handleCancelAction = function() {
 			if($stateParams.fromState == 'STAY_CARD'){
-				$state.go("rover.reservation.staycard.reservationcard.reservationdetails", 
+				$state.go("rover.reservation.staycard.reservationcard.reservationdetails",
 					{"id" : $scope.reservationData.reservationId, "confirmationId": $scope.reservationData.confirmNum, "isrefresh": true});
 			} else{
 				$state.go($stateParams.fromState, {});
@@ -591,7 +591,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 
 		/**
 		* Click handler for the next month arrow
-		* Fetches the details for the next set of dates - 
+		* Fetches the details for the next set of dates -
 		* Starting from last fetched date to the max visible date in calendar when we change month
 		*/
 		$scope.nextButtonClickHandler = function() {
@@ -636,7 +636,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 
 		/**
 		* Click handler for the next month arrow
-		* Fetches the details for the next set of dates - 
+		* Fetches the details for the next set of dates -
 		* Stars from the first visible date in calendar when go back a month
 		* to the start date available in the availability details
 		*/
