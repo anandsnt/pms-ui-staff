@@ -73,7 +73,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		
 		$scope.data.activeChargeCodes = [];
 
-		angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
+		/*angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
 			
 			if((charge_groups.id == $scope.data.selectedChargeGroup) || ($scope.data.selectedChargeGroup == 'ALL')){
 				
@@ -100,7 +100,8 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 			else{
 				charge_groups.filterFlag = false;
 			}
-       	});
+       	});*/
+
        	$scope.data.selectedChargeCode = 'ALL';
        	$scope.chargeCodeChanged();
 
@@ -113,7 +114,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	// On changing charge code on PRINT filter
 	$scope.chargeCodeChanged = function(){
 
-		angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
+		/*angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
 
 			angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
 
@@ -131,7 +132,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 					charge_codes.filterFlag = false;
 				}
 			});
-       	});
+       	});*/
 
        	var uiValue = _.find($scope.data.activeChargeCodes, function(each) {
        		return each.id == $scope.data.selectedChargeCode;

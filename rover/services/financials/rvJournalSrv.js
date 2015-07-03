@@ -65,7 +65,7 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 
 	# All flags are of type boolean true/false.
 
-     'active': 	Used for Expand / Collapse status of each tabs on Level1 and Level2.
+     	'active': 	Used for Expand / Collapse status of each tabs on Level1 and Level2.
     			Initially everything will be collapsed , so setting as false.
 
     ***********************************************************************************************/
@@ -98,12 +98,12 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 		var url = '/api/financial_transactions/revenue_by_charge_groups?from_date='+params.from+'&to_date='+params.to;
 		
 		BaseWebSrvV2.getJSON(url).then(function(data) {
-
-			angular.forEach(data.charge_groups,function(charge_groups, index1) {
+			this.revenueData = data;
+			angular.forEach(this.revenueData.charge_groups,function(charge_groups, index1) {
 				charge_groups.active = false;
 	        });
 
-		   	deferred.resolve(data);
+		   	deferred.resolve(this.revenueData);
 		},function(data){
 		    deferred.reject(data);
 		});	
