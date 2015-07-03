@@ -1,5 +1,5 @@
-sntRover.service('RVReservationDataService', [
-	function($q, RVBaseWebSrvV2) {
+sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter',
+	function($rootScope, dateFilter) {
 		var self = this;
 
 		self.getReservationDataModel = function() {
@@ -190,5 +190,205 @@ sntRover.service('RVReservationDataService', [
 			}
 		}
 
+		self.isVaryingOccupancy = function(stayDates, arrivalDate, departureDate, numNights) {
+			// If staying for just one night then there is no chance for varying occupancy
+			if (numNights < 2) {
+				return false;
+			}
+			// If number of nights is more than one, then need to check across the occupancies 
+			var numInitialAdults = stayDates[arrivalDate].guests.adults,
+				numInitialChildren = stayDates[arrivalDate].guests.children,
+				numInitialInfants = stayDates[arrivalDate].guests.infants,
+				occupancySimilarity = _.filter(stayDates, function(stayDateInfo, date) {
+					return date != departureDate &&
+						stayDateInfo.guests.adults == numInitialAdults &&
+						stayDateInfo.guests.children == numInitialChildren &&
+						stayDateInfo.guests.infants == numInitialInfants;
+				});
+
+			return occupancySimilarity.length < numNights;
+		}
+
+		self.isVaryingRates = function(stayDates, arrivalDate, departureDate, numNights) {
+			if (numNights < 2) {
+				return false;
+			}
+			// If number of nights is more than one, then need to check across the occupancies 
+			var arrivalRate = stayDates[arrivalDate].rate.id,
+				similarRates = _.filter(stayDates, function(stayDateInfo, date) {
+					return date != departureDate && stayDateInfo.rate.id == arrivalRate;
+				});
+			return (similarRates.length < numNights);
+		}
+
+		self.parseReservationData = function(stayCard, cards) {
+			var reservationData = self.getReservationDataModel(),
+				renderData = {},
+				reservationEditMode = false,
+				isManual = false,
+				showSelectedCreditCard = false;
+			//---------------------- ReservationData -------------------------------------------------------------------------//
+			reservationData.status = stayCard.reservation_status; //status
+			reservationData.inHouse = stayCard.reservation_status == "CHECKEDIN";
+			reservationData.group = { //group
+				id: stayCard.group_id,
+				name: stayCard.group_name
+			};
+			//ID
+			reservationData.confirmNum = stayCard.confirmation_num;
+			reservationData.reservationId = stayCard.reservation_id;
+			reservationData.arrivalDate = stayCard.arrival_date;
+			reservationData.departureDate = stayCard.departure_date;
+			reservationData.numNights = stayCard.total_nights;
+			reservationData.isHourly = stayCard.is_hourly_reservation;
+			//CICO-6135
+			if (stayCard.arrival_time) { //  reservationDetails.reservation_card.departureDate ! = null
+				reservationData.checkinTime = self.parseTime(stayCard.arrival_time);
+			}
+			if (stayCard.is_opted_late_checkout && stayCard.late_checkout_time) { // Handling late checkout
+				reservationData.checkoutTime = self.parseTime(stayCard.late_checkout_time);
+			} else if (stayCard.departure_time) { //  reservationDetails.reservation_card.departureDate ! = null   
+				reservationData.checkoutTime = self.parseTime(stayCard.departure_time);
+			}
+			// Cards
+			reservationData.company.id = cards.company_id;
+			reservationData.travelAgent.id = cards.travel_agent_id;
+			reservationData.guest.id = cards.guest_details.user_id;
+			// Demographics
+			reservationData.demographics = {
+					reservationType: stayCard.reservation_type_id || "",
+					market: stayCard.market_segment_id || "",
+					source: stayCard.source_id || "",
+					origin: stayCard.booking_origin_id || "",
+					segment: stayCard.segment_id || ""
+				}
+				//Cost
+			reservationData.totalStayCost = stayCard.total_rate;
+			// ---------------------------Room Details------------------------------------------------//
+			var roomDetails = reservationData.rooms[0]; //Only a single room is possible as this is coming from stay-card
+			roomDetails.rateId = [];
+			roomDetails.demographics = angular.copy(reservationData.demographics);
+
+			/** TODO : This following LOC has to change if the room number changes to an array
+			 *			to handle multiple rooms in future
+			 */
+			roomDetails.roomNumber = stayCard.room_number;
+			roomDetails.roomTypeDescription = stayCard.room_type_description;
+			//cost
+			roomDetails.rateAvg = stayCard.avg_daily_rate;
+			roomDetails.rateTotal = stayCard.total_rate;
+			roomDetails.rateName = stayCard.is_multiple_rates ? "Multiple Rates" : stayCard.rate_name;
+			roomDetails.is_package_exist = stayCard.is_package_exist; //-- Changes for CICO-17173
+			roomDetails.package_count = stayCard.package_count; //-- Changes for CICO-17173
+
+			reservationData.is_modified = false;
+			angular.forEach(stayCard.stay_dates, function(item, index) {
+				reservationData.is_modified = item.rate.actual_amount != item.rate.modified_amount;
+				reservationData.stayDays.push({
+					date: dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd'),
+					dayOfWeek: dateFilter(new tzIndependentDate(item.date), 'EEE'),
+					day: dateFilter(new tzIndependentDate(item.date), 'dd')
+				});
+				roomDetails.stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')] = {
+						guests: {
+							adults: item.adults,
+							children: item.children,
+							infants: item.infants
+						},
+						rate: {
+							id: item.rate_id
+						},
+						rateDetails: item.rate
+					}
+					// TODO : Extend for each stay dates
+				roomDetails.rateId.push(item.rate_id);
+				if (index == 0) {
+					roomDetails.roomTypeId = item.room_type_id;
+					roomDetails.roomTypeName = stayCard.room_type_description
+				}
+			});
+			// appending departure date for UI handling since its not in API response IFF not a day reservation
+			if (parseInt(reservationData.numNights) > 0) {
+				var departure = reservationData.departureDate,
+					arrival = reservationData.arrivalDate;
+				reservationData.stayDays.push({
+					date: departure,
+					dayOfWeek: dateFilter(new tzIndependentDate(reservationData.departureDate), 'EEE'),
+					day: dateFilter(new tzIndependentDate(reservationData.departureDate), 'dd')
+				});
+				roomDetails.stayDates[departure] = roomDetails.stayDates[arrival];
+			}
+			// Payment
+			if (stayCard.payment_method_used !== "" && stayCard.payment_method_used !== null) {
+				reservationData.paymentType.type.description = stayCard.payment_method_description;
+				reservationData.paymentType.type.value = stayCard.payment_method_used;
+				if (reservationData.paymentType.type.value == "CC") { // I dont have any idea on what the following section of code does... Originally commit d1021861 --> https://github.com/StayNTouch/pms/commit/d1021861
+					var paymentDetails = stayCard.payment_details;
+					renderData.creditCardType = paymentDetails.card_type_image.replace(".png", "").toLowerCase();
+					renderData.endingWith = paymentDetails.card_number;
+					renderData.cardExpiry = paymentDetails.card_expiry;
+					renderData.isSwiped = paymentDetails.is_swiped;
+					reservationData.selectedPaymentId = paymentDetails.id;
+					//CICO-11579 - To show credit card if C&P swiped or manual.
+					//In other cases condition in HTML will work
+					if ($rootScope.paymentGateway == "sixpayments") {
+						if (paymentDetails.is_swiped) {
+							//can't set manual true..that is why added this flag.. Added in HTML too
+							reservationEditMode = true;
+						} else {
+							isManual = true;
+						}
+					}
+					showSelectedCreditCard = true;
+				}
+			}
+			/* CICO-6069
+			 *  Comments from story:
+			 *  We should show the first nights room type by default and the respective rate as 'Booked Rate'.
+			 *  If the reservation is already in house and it is midstay, it should show the current rate. Would this be possible?
+			 */
+			var arrivalDateDetails = _.findWhere(stayCard.stay_dates, {
+				date: reservationData.arrivalDate
+			});
+			roomDetails.numAdults = arrivalDateDetails.adults;
+			roomDetails.numChildren = arrivalDateDetails.children;
+			roomDetails.numInfants = arrivalDateDetails.infants;
+
+			// Find if midstay or later
+			if (new tzIndependentDate(reservationData.arrivalDate) < new tzIndependentDate($rootScope.businessDate)) {
+				reservationData.midStay = true;
+				/**
+				 * CICO-8504
+				 * Initialize occupancy to the last day
+				 * If midstay make it to that day's
+				 */
+				var lastDaydetails = _.last(stayCard.stay_dates),
+					currentDayDetails = _.findWhere(stayCard.stay_dates, {
+						date: dateFilter(new tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd')
+					});
+
+				if (!!currentDayDetails) {
+					roomDetails.numAdults = currentDayDetails.adults;
+					roomDetails.numChildren = currentDayDetails.children;
+					roomDetails.numInfants = currentDayDetails.infants;
+				} else {
+					roomDetails.numAdults = lastDaydetails.adults;
+					roomDetails.numChildren = lastDaydetails.children;
+					roomDetails.numInfants = lastDaydetails.infants;
+				}
+			}
+
+			roomDetails.varyingOccupancy = self.isVaryingOccupancy(roomDetails.stayDates, reservationData.arrivalDate, reservationData.departureDate, reservationData.numNights);
+			roomDetails.rateName = self.isVaryingRates(roomDetails.stayDates, reservationData.arrivalDate, reservationData.departureDate, reservationData.numNights) ?
+				"Multiple Rates Selected" : stayCard.package_description;
+
+			return {
+				reservationData: reservationData,
+				reservationEditMode: reservationEditMode,
+				isManual: isManual,
+				showSelectedCreditCard: showSelectedCreditCard,
+				renderData: renderData
+			}
+		}
 	}
 ]);
