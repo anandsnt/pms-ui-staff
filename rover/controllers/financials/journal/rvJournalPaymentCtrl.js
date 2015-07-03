@@ -16,10 +16,9 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 			$scope.data.paymentData = {};
             $scope.data.selectedPaymentType = 'ALL';
 			$scope.data.paymentData = data;
-			$scope.$emit('I_COMPLTED_THE_API_CALL');
+			
             $scope.errorMessage = "";
 			refreshPaymentScroll();
-            $scope.$emit("ApplyEmpOrDeptFilter");
 		};
 		$scope.invokeApi(RVJournalSrv.fetchPaymentData, {"from":$scope.data.fromDate , "to":$scope.data.toDate}, successCallBackFetchPaymentData);
 	};
@@ -57,8 +56,8 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     };
     /* To show / hide table heading section for Level2 (Credit card items) */
     $scope.isShowTableHeadingLevel2 = function(index1, index2){
-        var isShowTableHeading = false;
-        var item = $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions;
+        var isShowTableHeading = false,
+        item = $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions;
         if((typeof item !== 'undefined') && (item.length >0)){
             angular.forEach( item ,function(transactions, index) {
                 if(transactions.show) isShowTableHeading = true;
@@ -68,8 +67,8 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     };
     /* To show / hide table heading section for Level1 (Not Credit card items) */
     $scope.isShowTableHeadingLevel1 = function(index1){
-        var isShowTableHeading = false;
-        var item = $scope.data.paymentData.payment_types[index1].transactions;
+        var isShowTableHeading = false,
+        item = $scope.data.paymentData.payment_types[index1].transactions;
         if((typeof item !== 'undefined') && (item.length >0)){
             angular.forEach( item ,function(transactions, index) {
                 if(transactions.show) isShowTableHeading = true;
@@ -79,8 +78,8 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     };
     /* To hide/show arrow button for Level1 */
     $scope.checkHasArrowLevel1 = function(index){
-        var hasArrow = false;
-        var item = $scope.data.paymentData.payment_types[index];
+        var hasArrow = false,
+        item = $scope.data.paymentData.payment_types[index];
         if((typeof item.credit_cards !== 'undefined') && (item.credit_cards.length >0)){
             hasArrow = true;
         }
@@ -91,30 +90,11 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     };
     /* To hide/show arrow button for Level2 */
     $scope.checkHasArrowLevel2 = function(index1, index2){
-        var hasArrow = false;
-        var item = $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions;
+        var hasArrow = false,
+        item = $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions;
         if((typeof item !== 'undefined') && (item.length >0)) hasArrow = true;
         return hasArrow;
     };
-
-    // To get total payements amount by adding up payment type amounts.
-    $scope.getTotalOfAllPayments = function(){
-        var paymentTotal = 0;
-        angular.forEach($scope.data.paymentData.payment_types,function(payment_types, index1) {
-            if( payment_types.show && payment_types.filterFlag ){
-                paymentTotal += payment_types.amount;
-            }
-        });
-        return paymentTotal;
-    };  
-
-    // Update amount on Payment Tab header.
-    $rootScope.$on('UpdatePaymentTabTotal',function(){
-        $timeout(function() {
-            var total = $scope.getTotalOfAllPayments();
-            $scope.data.paymentData.total_payment = total;
-        }, 100);
-    });
 
     // To check whether all paymnt tabs are collpased or not, except the clicked index item.
     $scope.isAllPaymentsCollapsed = function(){

@@ -65,48 +65,25 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 
 	# All flags are of type boolean true/false.
 
-    'show' 	: 	Used to show / hide each items on Level1 , Level2 and Level 3.
-    			We will set this flag as true initially.
-    			While apply Department/Employee filter we will set this flag as false
-    			for the items we dont want to show.
-
-    'filterFlag': Used to show / hide Level1 and Level2 based on filter flag applied on print box.
-    			Initially it will be true for all items.
-
-    'active': 	Used for Expand / Collapse status of each tabs on Level1 and Level2.
+     'active': 	Used for Expand / Collapse status of each tabs on Level1 and Level2.
     			Initially everything will be collapsed , so setting as false.
 
     ***********************************************************************************************/
 
-	this.fetchRevenueData = function(params){
+	this.fetchRevenueData = function(params){  /// will be removed after new implementation
 		var deferred = $q.defer();
 		var url = '/api/financial_transactions/revenue?from_date='+params.from+'&to_date='+params.to;
+		//var url = '/api/financial_transactions/revenue_by_charge_groups?from_date='+params.from+'&to_date='+params.to;
 		//var url = '/sample_json/journal/journal_revenue.json';
 		BaseWebSrvV2.getJSON(url).then(function(data) {
 			this.revenueData = data;
-			/* 
-			 *	Initializing 'calculatedTotalAmount' as total_revenue value from api.
-			 * 	It will update while we apply filters.
-			 */
-			this.revenueData.calculatedTotalAmount = data.total_revenue;
 
 			angular.forEach(this.revenueData.charge_groups,function(charge_groups, index1) {
 				
-				// Adding Show/filterFlag/active status flag to each item.
-				charge_groups.filterFlag = true;
-				charge_groups.show 	 = true;
 				charge_groups.active = false;
 
 	            angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
-
-	            	// Adding Show/filterFlag/active status flag to each item.
-	            	charge_codes.filterFlag = true;
-	            	charge_codes.show   = true;
 	            	charge_codes.active = false;
-
-	                angular.forEach(charge_codes.transactions,function(transactions, index3) {
-	                	transactions.show = true;
-	                });
 	            });
 	        });
 		   	deferred.resolve(this.revenueData);
@@ -116,55 +93,80 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 		return deferred.promise;
 	};
 
+	this.fetchRevenueDataByChargeGroups = function(params){
+		var deferred = $q.defer();
+		var url = '/api/financial_transactions/revenue_by_charge_groups?from_date='+params.from+'&to_date='+params.to;
+		
+		BaseWebSrvV2.getJSON(url).then(function(data) {
+
+			angular.forEach(data.charge_groups,function(charge_groups, index1) {
+				charge_groups.active = false;
+	        });
+
+		   	deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
+
+	this.fetchRevenueDataByChargeCodes = function(params){
+		var deferred = $q.defer();
+		var url = '/api/financial_transactions/revenue_by_charge_groups?from_date='+params.from+'&to_date='+params.to+'&charge_group_id='+charge_group_id;
+		
+		BaseWebSrvV2.getJSON(url).then(function(data) {
+
+            angular.forEach(data.charge_codes,function(charge_codes, index2) {
+            	charge_codes.active = false;
+            });
+	        
+		   	deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
+
+	this.fetchRevenueDataByTransactions = function(params){
+		var deferred = $q.defer();
+		var url = '/api/financial_transactions/revenue_by_transactions?from_date='+params.from+'&to_date='+params.to+'&charge_group_id='+charge_group_id+'&employee_id='+employee_id+'&department_id='+department_id;
+		
+		BaseWebSrvV2.getJSON(url).then(function(data) {
+
+            angular.forEach(data.charge_codes,function(charge_codes, index2) {
+            	charge_codes.active = false;
+            });
+	        
+		   	deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
+
 	this.fetchPaymentData = function(params){
 		var deferred = $q.defer();
-		//var url = '/api/financial_transactions/payments?date='+params.date;
+		
 		var url = '/api/financial_transactions/payments?from_date='+params.from+'&to_date='+params.to;
+		//var url = '/api/financial_transactions/payments_by_payment_types?from_date='+params.from+'&to_date='+params.to;
 		//var url = '/sample_json/journal/journal_payments.json';
 		BaseWebSrvV2.getJSON(url).then(function(data) {
 			this.paymentData = data;
-			/* 
-			 *	Initializing 'calculatedTotalAmount' as total_payment value from api.
-			 * 	It will update while we apply filters.
-			 */
-			this.paymentData.calculatedTotalAmount = data.total_payment;
 			
 			angular.forEach(this.paymentData.payment_types,function(payment_types, index1) {
 
-				// Adding Show/filterFlag/active status flag to each item.
-				payment_types.filterFlag = true ;
-				payment_types.show = true ;
 				payment_types.active = false ;
 
 				if(payment_types.payment_type == "Credit Card"){
 
-					//	payment_types.amount will not provide by api for "Credit Card".
-					var cardsTotal = 0;
-
 		            angular.forEach(payment_types.credit_cards,function(credit_cards, index2) {
 		            	
-		            	// Adding Show/filterFlag/active status flag to each item.
-		            	credit_cards.filterFlag = true;
-		            	credit_cards.show = true ;
 		            	credit_cards.active = false ;
-
-		            	// 	To calculate total of amounts in credit cards array.
-		            	cardsTotal += credit_cards.amount;
-
-		                angular.forEach(credit_cards.transactions,function(transactions, index3) {
-		                	transactions.show = true;
-		                });
 		            });
-		            // Declaring "payment_types.amount" with calculated cardsTotal value.
-		            payment_types.amount = cardsTotal;
-	        	}
-	        	else{
-	        		angular.forEach(payment_types.transactions,function(transactions, index3) {
-	                	transactions.show = true;
-	                });
 	        	}
 	        });
 		   	deferred.resolve(this.paymentData);
+
 		},function(data){
 		    deferred.reject(data);
 		});	
@@ -181,7 +183,6 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 			});	
 		return deferred.promise;
 	};
-
 
 	this.reOpenCashier = function(updateData){
 		var deferred = $q.defer();	

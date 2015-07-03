@@ -13,22 +13,22 @@
             </ul>
 
             <!-- First level - payment types -->
-            <div ng-repeat="(index1 ,level1) in data.paymentData.payment_types" ng-show="level1.show && level1.filterFlag" class="grid-group">
+            <div ng-repeat="(index1 ,level1) in data.paymentData.payment_types" class="grid-group">
                 <a ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active, 'has-arrow':checkHasArrowLevel1(index1)}" class="payment-title toggle">
-                    <strong class="name" ng-show="level1.show">{{escapeNullData(level1.payment_type)}}</strong>
-                    <span class="code" ng-show="level1.show">{{escapeNullData(level1.charge_code)}}</span>  
-                    <span class="number" ng-show="level1.show">{{escapeNullData(level1.number)}}</span>
-                    <span class="value" ng-show="level1.show">{{currencySymbol}}{{ level1.amount | number: precisonTwo}}</span>
+                    <strong class="name">{{escapeNullData(level1.payment_type)}}</strong>
+                    <span class="code">{{escapeNullData(level1.charge_code)}}</span>  
+                    <span class="number">{{escapeNullData(level1.number)}}</span>
+                    <span class="value">{{currencySymbol}}{{ level1.amount | number: precisonTwo}}</span>
                 </a>
 
                 <!-- Second level - credit cards - if Payment type is Credit Card -->
                 <div ng-if="level1.payment_type == 'Credit Card'" ng-repeat="(index2 ,level2) in level1.credit_cards" ng-show="level1.active" class="grid-charge">
 
-                    <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active, 'has-arrow':checkHasArrowLevel2(index1,index2)}" ng-show="level2.show && level2.filterFlag" class="payment-title  toggle">
-                        <span class="code" ng-show="level2.show">{{escapeNullData(level2.charge_code)}}</span>
-                        <strong class="name" ng-show="level2.show">{{escapeNullData(level2.credit_card)}}</strong>  
-                        <!-- <span class="number" ng-show="level2.show">{{'-'}}</span> -->     
-                        <span class="value" ng-show="level2.show">{{currencySymbol}}{{level2.amount | number: precisonTwo}}</span>
+                    <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active, 'has-arrow':checkHasArrowLevel2(index1,index2)}" ng-show="level1.active" class="payment-title  toggle">
+                        <span class="code">{{escapeNullData(level2.charge_code)}}</span>
+                        <strong class="name">{{escapeNullData(level2.credit_card)}}</strong>  
+                        <!-- <span class="number">{{'-'}}</span> -->  
+                        <span class="value">{{currencySymbol}}{{level2.amount | number: precisonTwo}}</span>
                     </a>
 
                     <!-- Third level - transactions -->
@@ -71,14 +71,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="(index2 ,level2) in level1.transactions" ng-show="level2.show" class="grid-item">
+                            <tr ng-repeat="(index2 ,level2) in level1.transactions" class="grid-item">
                                 <td>{{level2.room}}</td>
                                 <td>{{level2.name}}</td>
                                 <td>{{level2.reservation_number}}</td>
                                 <td ng-bind-html="level2.details"></td>
                                 <td>{{getTimeString(level2.date, level2.time)}}</td>
-                                   
-                                <td>{{currencySymbol}}{{level2.credit | number: precisonTwo}}</td>                                   
+                                <td>{{currencySymbol}}{{level2.credit | number: precisonTwo}}</td>                      
                             </tr>
                         </tbody>
                     </table>
@@ -92,7 +91,7 @@
                     <span><label>Date Range - From:</label> {{ data.fromDate | date : dateFormat }} <label>To: </label>{{ data.toDate | date : dateFormat }}</span>
                     <span ng-if="data.uiSelectedPaymentType"><label>{{'PAYMENT_TYPE' | translate}} / {{'CHARGE_CODE' | translate}}: </label>  {{ data.uiSelectedPaymentType }}</span>
                 </p>
-                <p class="payment"><span translate>TOTAL</span> {{currencySymbol}}{{ getTotalOfAllPayments() | number: precisonTwo}}</p>
+                <p class="payment"><span translate>TOTAL</span> {{currencySymbol}}{{ data.paymentData.total_payment | number: precisonTwo}}</p>
             </div>
         </div>
 
