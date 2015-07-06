@@ -72,7 +72,7 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 
 	this.fetchRevenueDataByChargeGroups = function(params){
 		var deferred = $q.defer();
-		var url = '/api/financial_transactions/revenue_by_charge_groups?from_date='+params.from+'&to_date='+params.to+'&charge_group_id='params.charge_group_id;
+		var url = '/api/financial_transactions/revenue_by_charge_groups?from_date='+params.from+'&to_date='+params.to+'&charge_group_id='+params.charge_group_id;
 		
 		BaseWebSrvV2.getJSON(url).then(function(data) {
 			
