@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'sortOrder', 'rateAddons', 'isAddonsConfigured','RVReservationBaseSearchSrv', 'RVReservationAddonsSrv','$timeout', '$state', 'ngDialog', '$sce', '$stateParams', 'dateFilter', '$filter', 'rvPermissionSrv', 'RVReservationStateService',
-	function($rootScope, $scope, roomRates, sortOrder, rateAddons, isAddonsConfigured, RVReservationBaseSearchSrv, RVReservationAddonsSrv, $timeout, $state, ngDialog, $sce, $stateParams, dateFilter, $filter, rvPermissionSrv, RVReservationStateService) {
+sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'sortOrder', 'rateAddons', 'isAddonsConfigured','RVReservationBaseSearchSrv', 'RVReservationAddonsSrv','$timeout', '$state', 'ngDialog', '$sce', '$stateParams', 'dateFilter', '$filter', 'rvPermissionSrv', 'RVReservationStateService', 'RVReservationDataService',
+	function($rootScope, $scope, roomRates, sortOrder, rateAddons, isAddonsConfigured, RVReservationBaseSearchSrv, RVReservationAddonsSrv, $timeout, $state, ngDialog, $sce, $stateParams, dateFilter, $filter, rvPermissionSrv, RVReservationStateService, RVReservationDataService) {
 		$scope.displayData = {};
 		$scope.selectedRoomType = -1;
 		$scope.expandedRoom = -1;
@@ -397,7 +397,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					return false;
 				} else {
 					// TODO : Handle multiple rates selected
-					if ($scope.reservationUtils.isVaryingRates(0)) {
+					// RVReservationDataService.isVaryingRates = function(stayDates, arrivalDate, departureDate, numNights)
+					if (RVReservationDataService.isVaryingRates($scope.reservationData.rooms[$scope.activeRoom].stayDates, $scope.reservationData.arrivalDate, $scope.reservationData.departureDate, $scope.reservationData.numNights)) {
 						$scope.reservationData.rooms[$scope.activeRoom].rateName = "Multiple Rates Selected"
 					} else {
 						$scope.reservationData.rooms[0].rateName = $scope.displayData.allRates[$scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.reservationData.arrivalDate].rate.id].name;
