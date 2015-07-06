@@ -17,7 +17,9 @@ var admin = angular.module('admin',
 	'multi-select', 
 	'fauxMultiSelectModule', 
 	'eventReachedRootModule',
-	'ngClassWithoutAnimation']);
+	'ngClassWithoutAnimation',
+	'documentTouchMovePrevent',
+	'divTouchMoveStopPropogate']);
 
 //adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 admin.config(function ($httpProvider) {
