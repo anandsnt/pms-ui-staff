@@ -7,10 +7,10 @@ admin.service('ADHotelAnnouncementSrv',['$q', 'ADBaseWebSrv', function($q, ADBas
    /*
     * getter method to hotel announcement settings
     * @return {object} hotel announcement settings details
-    */	
-	this.fetchSettingsDetails = function(){		
+    */
+	this.fetchSettingsDetails = function(){
 		var deferred = $q.defer();
-		var url = '/admin/hotel/get_announcements_settings.json';	
+		var url = '/admin/hotel/get_announcements_settings.json';
 		
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
@@ -26,14 +26,14 @@ admin.service('ADHotelAnnouncementSrv',['$q', 'ADBaseWebSrv', function($q, ADBas
 	*/
 	this.saveAnnoucementSettings = function(data){
 		var deferred = $q.defer();
-		var url = '/admin/hotel/save_announcements_settings';	
+		var url = '/admin/hotel/save_announcements_settings';
 		
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
 		},function(errorMessage){
 			deferred.reject(errorMessage);
 		});
-		return deferred.promise;		
+		return deferred.promise;
 	}
 
 }]);

@@ -11,7 +11,7 @@ admin.service('ADHotelListSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/**
@@ -26,7 +26,7 @@ admin.service('ADHotelListSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 }]);

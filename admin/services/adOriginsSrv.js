@@ -10,7 +10,7 @@ admin.service('ADOriginsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/**
@@ -23,7 +23,7 @@ admin.service('ADOriginsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/*

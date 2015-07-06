@@ -24,7 +24,7 @@ function($http, $q, ADBaseWebSrvV2) {
 		    
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	
@@ -40,7 +40,7 @@ function($http, $q, ADBaseWebSrvV2) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 }]);

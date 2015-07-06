@@ -7,10 +7,10 @@ admin.service('ADItemSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
    /*
     * getter method to fetch item list
     * @return {object} room list
-    */	
+    */
 	this.fetchItemList = function(){
 		var deferred = $q.defer();
-		var url = '/admin/items/get_items.json';	
+		var url = '/admin/items/get_items.json';
 		
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
@@ -24,7 +24,7 @@ admin.service('ADItemSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
    /*
     * method to delete item
     * @param {integer} clicked item's id
-    */	
+    */
 	this.deleteItem = function(data){
 		var id = data.item_id;
 		var deferred = $q.defer();
@@ -41,7 +41,7 @@ admin.service('ADItemSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
    /*
     * method to delete item
     * @param {integer} clicked item's id
-    */	
+    */
 	this.toggleFavourite = function(data){
 		var postData = {'id': data.item_id, 'set_active': data.toggle_status};
 		var deferred = $q.defer();

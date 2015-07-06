@@ -7,10 +7,10 @@ admin.service('ADGuestReviewSetupSrv',['$q', 'ADBaseWebSrv', function($q, ADBase
    /*
     * getter method to get Guest Review setup details
     * @return {object} Guest Review setup details
-    */	
-	this.fetchGuestSetupDetails = function(){	
+    */
+	this.fetchGuestSetupDetails = function(){
 		var deferred = $q.defer();
-		var url = '/admin/get_review_settings.json';	
+		var url = '/admin/get_review_settings.json';
 		
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
@@ -26,14 +26,14 @@ admin.service('ADGuestReviewSetupSrv',['$q', 'ADBaseWebSrv', function($q, ADBase
 	*/
 	this.saveGuestReviewSetup = function(data){
 		var deferred = $q.defer();
-		var url = '/admin/update_review_settings';	
+		var url = '/admin/update_review_settings';
 		
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
 		},function(errorMessage){
 			deferred.reject(errorMessage);
 		});
-		return deferred.promise;		
+		return deferred.promise;
 	}
 
 }]);

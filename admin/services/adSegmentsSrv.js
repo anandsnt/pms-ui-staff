@@ -10,7 +10,7 @@ admin.service('ADSegmentsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, 
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 
@@ -24,7 +24,7 @@ admin.service('ADSegmentsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, 
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/*
@@ -83,7 +83,7 @@ admin.service('ADSegmentsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, 
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	

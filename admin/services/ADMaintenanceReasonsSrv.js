@@ -11,7 +11,7 @@ admin.service('ADMaintenanceReasonsSrv',['$http', '$q', 'ADBaseWebSrvV2', functi
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/*
