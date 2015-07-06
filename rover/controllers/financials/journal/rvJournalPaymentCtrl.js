@@ -14,13 +14,13 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 	$scope.initPaymentData = function(){
 		var successCallBackFetchPaymentData = function(data){
 			$scope.data.paymentData = {};
-            $scope.data.selectedPaymentType = 'ALL';
+            $scope.data.selectedPaymentType = '';
 			$scope.data.paymentData = data;
 			
             $scope.errorMessage = "";
 			refreshPaymentScroll();
 		};
-		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, {"from":$scope.data.fromDate , "to":$scope.data.toDate}, successCallBackFetchPaymentData);
+		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, { "from":$scope.data.fromDate , "to":$scope.data.toDate }, successCallBackFetchPaymentData);
 	};
 	$scope.initPaymentData();
 
@@ -68,7 +68,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     $scope.clickedSecondLevel = function(index1, index2){
 
         var toggleItem = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
-        
+
         if($scope.checkHasArrowLevel2(index1, index2)){
             toggleItem.active = !toggleItem.active;
             refreshPaymentScroll();
@@ -92,7 +92,6 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
                 "employee_ids" : $scope.data.selectedEmployeeList ,
                 "department_ids" : $scope.data.selectedDepartmentList
             };
-
             $scope.invokeApi(RVJournalSrv.fetchPaymentDataByTransactions, postData, successCallBackFetchPaymentDataTransactions);
         }
     };

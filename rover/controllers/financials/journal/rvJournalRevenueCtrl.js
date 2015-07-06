@@ -11,14 +11,14 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
         
 		var successCallBackFetchRevenueData = function(data){
 			$scope.data.revenueData = {};
-            $scope.data.selectedChargeGroup = 'ALL';
-            $scope.data.selectedChargeCode  = 'ALL';
+            $scope.data.selectedChargeGroup = '';
+            $scope.data.selectedChargeCode  = '';
 			$scope.data.revenueData = data;
             $scope.errorMessage = "";
 			refreshRevenueScroller();
             $scope.$emit('hideLoader');
 		};
-		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, {"from":$scope.data.fromDate , "to":$scope.data.toDate}, successCallBackFetchRevenueData);
+		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, { "from":$scope.data.fromDate , "to":$scope.data.toDate }, successCallBackFetchRevenueData);
 	};
 	$scope.initRevenueData();
     
@@ -54,7 +54,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
                 $scope.errorMessage = "";
                 $scope.$emit('hideLoader');
             };
-            var postData = {"from":$scope.data.fromDate , "to":$scope.data.toDate , "charge_group_id":toggleItem.id };
+            var postData = { "from":$scope.data.fromDate , "to":$scope.data.toDate , "charge_group_id":toggleItem.id };
 
             $scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeCodes, postData, successCallBackFetchRevenueDataChargeCodes);
         }

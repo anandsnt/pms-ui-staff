@@ -3,8 +3,8 @@
     <div class="entry">
         <label for="revenue-charge-group" translate>CHARGE_GROUPS</label>
         <div class="select">
-            <select ng-model="data.selectedChargeGroup" ng-change="chargeGroupChanged()"  name="revenue-charge-group" id="revenue-charge-group" ng-class="{'placeholder': data.selectedChargeGroup == 'ALL' }">
-                <option value="ALL" selected translate>ALL_CHARGE_GROUPS</option>
+            <select ng-model="data.selectedChargeGroup" ng-change="chargeGroupChanged()"  name="revenue-charge-group" id="revenue-charge-group" ng-class="{'placeholder': data.selectedChargeGroup == '' }">
+                <option value="" selected translate>ALL_CHARGE_GROUPS</option>
                 <option ng-repeat="item in data.revenueData.charge_groups" value="{{item.id}}">{{item.name}}</option>
             </select>
         </div>
@@ -12,8 +12,8 @@
     <div class="entry">
         <label for="revenue-charge-code" translate>CHARGE_CODE_NAME</label>
         <div class="select">
-            <select ng-model="data.selectedChargeCode" ng-change="chargeCodeChanged()"  name="revenue-charge-code" id="revenue-charge-code" ng-class="{'placeholder': data.selectedChargeCode == 'ALL'}">
-                <option value="ALL" selected translate>ALL_CHARGE_CODE</option>
+            <select ng-model="data.selectedChargeCode" ng-change="chargeCodeChanged()"  name="revenue-charge-code" id="revenue-charge-code" ng-class="{'placeholder': data.selectedChargeCode == ''}">
+                <option value="" selected translate>ALL_CHARGE_CODE</option>
                 <option ng-repeat="item in data.activeChargeCodes" value="{{item.id}}">{{item.name}}</option>
             </select> 
         </div>

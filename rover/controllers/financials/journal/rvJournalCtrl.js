@@ -13,9 +13,9 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 	$scope.data.filterData = journalResponse;
 	$scope.data.filterData.checkedAllDepartments = true;
     $scope.data.filterData.isSelectButtonActive = false;
-    $scope.data.selectedChargeGroup = 'ALL';
-    $scope.data.selectedChargeCode  = 'ALL';
-    $scope.data.selectedPaymentType = 'ALL';
+    $scope.data.selectedChargeGroup = '';
+    $scope.data.selectedChargeCode  = '';
+    $scope.data.selectedPaymentType = '';
     $scope.data.filterTitle = "All Departments";
   
     $scope.data.isActiveRevenueFilter = false;

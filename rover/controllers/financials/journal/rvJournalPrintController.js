@@ -78,7 +78,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 			$scope.data.revenueData = data;
 
 			if(data[0].charge_codes) $scope.data.activeChargeCodes = data[0].charge_codes;
-			
+
             $scope.errorMessage = "";
             $rootScope.$broadcast('REFRESHREVENUECONTENT');
             $scope.$emit('hideLoader');
@@ -181,7 +181,19 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 			$rootScope.$broadcast('REFRESHPAYMENTCONTENT');
 			$scope.$emit('hideLoader');
 		};
-		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, { "from":$scope.data.fromDate , "to":$scope.data.toDate , "charge_code_id" : $scope.data.selectedPaymentType }, successCallBackFetchPaymentData);
+
+		var data = { "from":$scope.data.fromDate , "to":$scope.data.toDate };
+console.log($scope.data.selectedPaymentType);
+		if($scope.data.selectedPaymentType === "ALL"){
+			data.charge_code_id = "";
+		}
+		else if($scope.data.selectedPaymentType === "" || typeof $scope.data.selectedPaymentType === "undefined"){
+			data.charge_code_id = "CC";
+		}
+		else{
+			data.charge_code_id = $scope.data.selectedPaymentType;
+		}
+		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, data , successCallBackFetchPaymentData);
 
 		var uiValue = _.find($scope.data.paymentData.payment_types, function(each) {
 			return each.id == $scope.data.selectedPaymentType;
