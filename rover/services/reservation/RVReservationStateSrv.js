@@ -10,6 +10,10 @@ sntRover.service('RVReservationStateService', [
 			outsideStaydatesForGroup: false
 		}
 
+		self.bookMark ={
+			lastPostedRate : null
+		}
+
 
 		/**
 		 * Method to get the addons associated with a Rate

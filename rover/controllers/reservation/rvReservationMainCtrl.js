@@ -976,6 +976,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             var stay = [];
             data.room_id = [];
             _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
+                RVReservationStateService.bookMark.lastPostedRate = room.stayDates[$scope.reservationData.arrivalDate].rate.id;
                 var reservationStayDetails = [];
                 if (typeof roomIndex == 'undefined' || currentRoomIndex == roomIndex) {
                     _.each(room.stayDates, function(staydata, date) {
