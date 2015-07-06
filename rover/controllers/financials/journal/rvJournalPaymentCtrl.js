@@ -144,6 +144,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         if($scope.data.isDrawerOpened){
             $rootScope.$broadcast("CLOSEPRINTBOX");
         }
+        $scope.errorMessage = "";
     };
 
 }]);

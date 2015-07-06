@@ -24,15 +24,14 @@
                 <!-- Second level - credit cards - if Payment type is Credit Card -->
                 <div ng-if="level1.payment_type == 'Credit Card'" ng-repeat="(index2 ,level2) in level1.credit_cards" ng-show="level1.active" class="grid-charge">
 
-                    <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active, 'has-arrow':checkHasArrowLevel2(index1,index2)}" ng-show="level1.active" class="payment-title  toggle">
+                    <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active, 'has-arrow':checkHasArrowLevel2(index1,index2)}" class="payment-title  toggle">
                         <span class="code">{{escapeNullData(level2.charge_code)}}</span>
                         <strong class="name">{{escapeNullData(level2.credit_card)}}</strong>  
-                        <!-- <span class="number">{{'-'}}</span> -->  
                         <span class="value">{{currencySymbol}}{{level2.amount | number: precisonTwo}}</span>
                     </a>
 
                     <!-- Third level - transactions -->
-                    <table ng-show="level2.active && level2.show" class="grid-items">
+                    <table ng-show="level2.active" class="grid-items">
                         <thead>
                             <tr ng-show="isShowTableHeadingLevel2(index1 ,index2)">
                                 <th scope="col" translate>ROOM_LABEL</th>
@@ -44,7 +43,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="(index3 ,level3) in level2.transactions" ng-show="level3.show" class="grid-item hidden1">
+                            <tr ng-repeat="(index3 ,level3) in level2.transactions" class="grid-item">
                                 <td>{{level3.room}}</td>
                                 <td>{{level3.name}}</td>
                                 <td>{{level3.reservation_number}}</td>

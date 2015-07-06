@@ -206,21 +206,6 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         }
     };
 
-    // Searching for employee/dept id in their respective selected lists.
-    $scope.searchDeptOrEmpId = function(transactions){
-        // Flag to find whether the transaction item found in departmnts/employee list.
-        var itemFoundInDeptOrEmpLists = false;
-        for( var i=0; i < $scope.data.selectedDepartmentList.length; i++ ){
-            if($scope.data.selectedDepartmentList[i] == transactions.department_id)
-                itemFoundInDeptOrEmpLists = true;
-        }
-        for( var i=0; i < $scope.data.selectedEmployeeList.length; i++ ){
-            if($scope.data.selectedEmployeeList[i] == transactions.employee_id)
-                itemFoundInDeptOrEmpLists = true;
-        }
-        return itemFoundInDeptOrEmpLists;
-    };
-
     if($stateParams.id == 0){
         // 2. Go to Financials -> Journal.
         // a) Upon logging in, default Tab should be Revenue

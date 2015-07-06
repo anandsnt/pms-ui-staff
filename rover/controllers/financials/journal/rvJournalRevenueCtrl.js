@@ -21,7 +21,14 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
             $scope.$emit('hideLoader');
 		};
 		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, { "from":$scope.data.fromDate , "to":$scope.data.toDate }, successCallBackFetchRevenueData);
-	};
+	   
+        var successCallBackFetchDepartment = function(data){
+            $scope.data.filterData.departments = data.departments;
+            $scope.$emit('hideLoader');
+        };
+        $scope.invokeApi(RVJournalSrv.fetchDepartments, {}, successCallBackFetchDepartment);
+    };
+
 	$scope.initRevenueData();
     
     $rootScope.$on('REFRESHREVENUECONTENT',function(){
@@ -131,6 +138,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
         if($scope.data.isDrawerOpened){
             $rootScope.$broadcast("CLOSEPRINTBOX");
         }
+        $scope.errorMessage = "";
     };
 
 }]);

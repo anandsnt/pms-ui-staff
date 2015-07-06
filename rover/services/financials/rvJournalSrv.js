@@ -11,31 +11,13 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 
         that.fetchCashiers = function () {
             var url = "/api/cashier_periods";
-            var data = {'date':$rootScope.businessDate}
+            var data = {'date':$rootScope.businessDate};
             BaseWebSrvV2.getJSON(url,data).then(function (data) {
                 that.filterData.cashiers = data.cashiers;
                 that.filterData.selectedCashier = data.current_user_id;
                 that.filterData.loggedInUserId 	= data.current_user_id;
                 that.filterData.cashierStatus = data.status;
                 deferred.resolve(that.filterData);
-            }, function (data) {
-                deferred.reject(data);
-            });
-        };
-        /*
-         * Service function to fetch departments
-         * @return {object} departments
-         */
-        that.fetchDepartments = function () {
-            var url = "/admin/departments.json";
-            RVBaseWebSrv.getJSON(url).then(function (data) {
-                that.filterData.departments = data.departments;
-                angular.forEach(that.filterData.departments,function(item, index) {
-		       		item.checked = false;
-		       		item.id = item.value;
-		       		delete item.value;
-		       	});
-                that.fetchCashiers();
             }, function (data) {
                 deferred.reject(data);
             });
@@ -51,13 +33,32 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 	       		delete item.full_name;
 	       		delete item.email;
 	       	});
-            that.fetchDepartments();
+            that.fetchCashiers();
         }, function (data) {
             deferred.reject(data);
         });
         return deferred.promise;
     };
 
+    /*
+     * Service function to fetch departments
+     * @return {object} departments
+     */
+    that.fetchDepartments = function () {
+    	var deferred = $q.defer();
+        var url = "/admin/departments.json";
+        RVBaseWebSrv.getJSON(url).then(function (data) {
+            angular.forEach(data.departments,function(item, index) {
+	       		item.checked = false;
+	       		item.id = item.value;
+	       		delete item.value;
+	       	});
+            deferred.resolve(data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
 
     /*********************************************************************************************
 
@@ -82,7 +83,6 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 			angular.forEach(data.charge_groups,function(charge_groups, index1) {
 				charge_groups.active = false;
 	        });
-
 		   	deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
@@ -112,6 +112,7 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 
 	this.fetchRevenueDataByTransactions = function(params){
 		var deferred = $q.defer();
+		
 		var url = '/api/financial_transactions/revenue_by_transactions';
 		
 		BaseWebSrvV2.postJSON(url,params).then(function(data) {
@@ -124,7 +125,9 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 
 	this.fetchPaymentDataByPaymentTypes = function(params){
 		var deferred = $q.defer();
+
 		if(typeof params.charge_code_id === "undefined") params.charge_code_id = "";
+
 		var url = '/api/financial_transactions/payments_by_payment_types?from_date='+params.from+'&to_date='+params.to+'&charge_code_id='+params.charge_code_id;
 
 		BaseWebSrvV2.getJSON(url).then(function(data) {

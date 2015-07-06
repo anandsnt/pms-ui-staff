@@ -116,55 +116,40 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
        	$scope.data.uiSelectedChargeCode = !!uiValue ? uiValue['name'] : '';
 	};
 
-	$scope.toggleRevenueTransactions = function(){
+	/*$scope.toggleRevenueTransactions = function(){
 		if($scope.data.isRevenueToggleSummaryActive)
 			$scope.showRevenueDetailView(false);
 		else
 			$scope.showRevenueDetailView(true);
-	};
+	};*/
 
 	// To handle Summary/Details toggle button click - REVENUE
 	$scope.toggleSummaryOrDeatilsRevenue = function(){
-		$rootScope.$broadcast('REFRESHREVENUECONTENT');
-		$scope.data.isRevenueToggleSummaryActive = !$scope.data.isRevenueToggleSummaryActive;
-		$scope.toggleRevenueTransactions();
+		console.info("------------ // DEATILS PRINT IS NOT IMPLEMENTED !! // ------------");
+		// Commenting for now - may need for PRINT imeplementation
+		// Only Summary PRINT will work now ..
+
+		//$rootScope.$broadcast('REFRESHREVENUECONTENT');
+		//$scope.data.isRevenueToggleSummaryActive = !$scope.data.isRevenueToggleSummaryActive;
+		//$scope.toggleRevenueTransactions();
 	};
 
-	$scope.togglePaymentTransactions = function(){
+	/*$scope.togglePaymentTransactions = function(){
 		if($scope.data.isPaymentToggleSummaryActive)
 			$scope.showPaymentDetailView(false);
 		else
 			$scope.showPaymentDetailView(true);
-	};
+	};*/
 
 	// To handle Summary/Details toggle button click - PAYMENT
 	$scope.toggleSummaryOrDeatilsPayment = function(){
-		$rootScope.$broadcast('REFRESHPAYMENTCONTENT');
-		$scope.data.isPaymentToggleSummaryActive = !$scope.data.isPaymentToggleSummaryActive;
-		$scope.togglePaymentTransactions();
-	};
+		console.info("------------ // DEATILS PRINT IS NOT IMPLEMENTED !! // ------------");
+		// Commenting for now - may need for PRINT imeplementation
+		// Only Summary PRINT will work now ..
 
-	/*
-     *	To handle Summary/Details view for Revenue filter.
-	 */
-	$scope.showRevenueDetailView = function(isDetailView){
-		
-		angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
-			
-            angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
-            	
-            	if(isDetailView && charge_codes.filterFlag){
-            		//Expanding Level1 and Level2 to show detailed view.
-            		charge_groups.active = true;
-            		// If charge code is having items inside, expand it.
-            		if(charge_codes.transactions.length > 0) charge_codes.active = true;
-            	}
-            	else if(!isDetailView){
-            		charge_groups.active =  false;
-            	 	charge_codes.active = false;
-            	}
-            });
-        });
+		//$rootScope.$broadcast('REFRESHPAYMENTCONTENT');
+		//$scope.data.isPaymentToggleSummaryActive = !$scope.data.isPaymentToggleSummaryActive;
+		// $scope.togglePaymentTransactions();
 	};
 
 	/** Code for Revenue Tab - PRINT BOX - filters ends here ..   **/
@@ -203,10 +188,11 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		$scope.data.uiSelectedPaymentType = !!uiValue ? uiValue['payment_type'] : '';
 	};
 
+
 	/*
      *	To handle Summary/Details view for Payments filter.
 	 */
-	$scope.showPaymentDetailView = function(isDetailView){
+	/*$scope.showPaymentDetailView = function(isDetailView){
 		
 		angular.forEach($scope.data.paymentData.payment_types,function(payment_types, index1) {
 
@@ -234,7 +220,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
         		}
         	}
         });
-	};
+	};*/
 
 	/** Code for Payment Tab - PRINT BOX - filters ends here .. **/
 
