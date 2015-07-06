@@ -80,8 +80,8 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
             };
 
             var postData = {
-                "from":$scope.data.fromDate ,
-                "to":$scope.data.toDate ,
+                "from_date":$scope.data.fromDate ,
+                "to_date":$scope.data.toDate ,
                 "charge_code_id":toggleItem.id ,
                 "employee_ids" : $scope.data.selectedEmployeeList ,
                 "department_ids" : $scope.data.selectedDepartmentList

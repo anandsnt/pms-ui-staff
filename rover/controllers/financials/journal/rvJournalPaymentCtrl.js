@@ -54,8 +54,8 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
             };
 
             var postData = {
-                "from":$scope.data.fromDate ,
-                "to":$scope.data.toDate ,
+                "from_date":$scope.data.fromDate ,
+                "to_date":$scope.data.toDate ,
                 "charge_code_id":toggleItem.id ,
                 "employee_ids" : $scope.data.selectedEmployeeList ,
                 "department_ids" : $scope.data.selectedDepartmentList
@@ -66,8 +66,10 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     };
     /** Handle Expand/Collapse of Level2 **/
     $scope.clickedSecondLevel = function(index1, index2){
+
+        var toggleItem = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
+        
         if($scope.checkHasArrowLevel2(index1, index2)){
-            var toggleItem = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
             toggleItem.active = !toggleItem.active;
             refreshPaymentScroll();
         }
@@ -84,8 +86,8 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
             };
 
             var postData = {
-                "from":$scope.data.fromDate ,
-                "to":$scope.data.toDate ,
+                "from_date":$scope.data.fromDate ,
+                "to_date":$scope.data.toDate ,
                 "charge_code_id":toggleItem.charge_code_id ,
                 "employee_ids" : $scope.data.selectedEmployeeList ,
                 "department_ids" : $scope.data.selectedDepartmentList

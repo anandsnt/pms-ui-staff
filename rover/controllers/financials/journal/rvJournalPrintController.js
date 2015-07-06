@@ -73,34 +73,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		
 		$scope.data.activeChargeCodes = [];
 
-		/*angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
-			
-			if((charge_groups.id == $scope.data.selectedChargeGroup) || ($scope.data.selectedChargeGroup == 'ALL')){
-				
-				if(charge_groups.show){
-
-					charge_groups.show = true;
-					charge_groups.filterFlag = true;
-					
-					angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
-						if(charge_codes.show){
-							charge_codes.filterFlag = true;
-
-							if($scope.data.selectedChargeGroup !== 'ALL'){
-								var obj = { "id": charge_codes.id , "name": charge_codes.name };
-			       				$scope.data.activeChargeCodes.push(obj);
-			       			}
-	       				}
-					});
-				}
-				else{
-					charge_groups.filterFlag = false;
-				}
-			}
-			else{
-				charge_groups.filterFlag = false;
-			}
-       	});*/
+		console.log($scope.data.selectedChargeGroup);
 
        	$scope.data.selectedChargeCode = 'ALL';
        	$scope.chargeCodeChanged();
@@ -114,25 +87,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	// On changing charge code on PRINT filter
 	$scope.chargeCodeChanged = function(){
 
-		/*angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
-
-			angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
-
-				if((charge_codes.id == $scope.data.selectedChargeCode) || ($scope.data.selectedChargeCode == 'ALL')){
-
-					if(charge_codes.show) {
-						charge_codes.filterFlag = true;
-						charge_groups.active = true;
-					}
-					else{
-						charge_codes.filterFlag = false;
-					}
-				}
-				else{
-					charge_codes.filterFlag = false;
-				}
-			});
-       	});*/
+		console.log($scope.data.selectedChargeCode);
 
        	var uiValue = _.find($scope.data.activeChargeCodes, function(each) {
        		return each.id == $scope.data.selectedChargeCode;
