@@ -1,4 +1,4 @@
-admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stateParams', 'ngDialog', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location', 'ADRatesAddonsSrv', 
+admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stateParams', 'ngDialog', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location', 'ADRatesAddonsSrv',
  function($scope, $state, $stateParams, ngDialog, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location, ADRatesAddonsSrv){
 	
 	$scope.errorMessage = '';
@@ -33,12 +33,12 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
         }
      }
 
-     init();    
+     init();
 
 
 	 /*Initializing data, for adding a new item.
     */
-	$scope.data = {	            
+	$scope.data = {
 	            "component_type": "PAGE",
 	            "status": false,
 	            "name": "",
@@ -57,7 +57,7 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 
     $scope.fetchAddons = function(){
     var fetchSuccessOfAddons = function(data) {
-       
+
        $scope.addons = $scope.getAddonsWithNameValues(data.results);
        $scope.$emit('hideLoader');
    };
@@ -67,7 +67,7 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
     $scope.getAddonsWithNameValues = function(addons){
         angular.forEach(addons,function(item, index) {
        item.value = item.id;
-    
+
   });
         return addons;
 };
@@ -84,7 +84,7 @@ $scope.getSelectedAddonDescription = function(){
      angular.forEach($scope.addons,function(item, index) {
        if(item.value == $scope.data.addon_id)
        	description = item.description;
-    
+
   });
      return description;
 }
@@ -94,12 +94,12 @@ $scope.getSelectedAddonPrice = function(){
 	angular.forEach($scope.addons,function(item, index) {
        if(item.value == $scope.data.addon_id)
        	price = item.amount;
-    
+
   });
      return price;
 }
 
-    
+
 	/*Function to fetch the item details
     */
 	$scope.fetchItem = function(){
@@ -125,11 +125,11 @@ $scope.getSelectedAddonPrice = function(){
 	}
 	else{
 		$scope.isAddMode = true;
-	}	
+	}
 	/*Function to return to preveous state
     */
 	$scope.goBack = function(){
-        $state.go('admin.cmscomponentSettings');                  
+        $state.go('admin.cmscomponentSettings');
 	}
 	/*Function to popup the assign parent modal.
 	 *The param isSection == true, implies the modal is for assigning sections
@@ -143,7 +143,7 @@ $scope.getSelectedAddonPrice = function(){
                 controller: 'ADContentManagementAssignComponentCtrl',
                 className: '',
                 scope: $scope
-            });              
+            });
 	}
 	/*Function to save an item
     */
@@ -154,7 +154,7 @@ $scope.getSelectedAddonPrice = function(){
 		}
 		var unwantedKeys = ["icon"];
 		if($scope.initialIcon == $scope.data.image)
-			unwantedKeys = ["icon", "image"];		
+			unwantedKeys = ["icon", "image"];
 
 		var data = dclone($scope.data, unwantedKeys);
 		$scope.invokeApi(ADContentManagementSrv.saveComponent, data , saveItemSuccessCallback);
@@ -178,7 +178,7 @@ $scope.getSelectedAddonPrice = function(){
 		}
 		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id':id} , successCallbackFetchDeleteDetails);
 
-	}	
+	}
 	/* Function to remove the category from selected list*/
 	$scope.deleteParentCategory = function(index){
 		$scope.data.parent_category.splice(index, 1);
@@ -190,7 +190,7 @@ $scope.getSelectedAddonPrice = function(){
 	/* Listener to know that the current category is deleted.
 	 * Need to go back to preveous state in this case
 	 */
-	$scope.$on('componentDeleted', function(event, data) {   
+	$scope.$on('componentDeleted', function(event, data) {
 
       $scope.goBack();
 
