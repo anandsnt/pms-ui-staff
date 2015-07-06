@@ -5,7 +5,7 @@
         <div class="select">
             <select ng-model="data.selectedChargeGroup" ng-change="chargeGroupChanged()"  name="revenue-charge-group" id="revenue-charge-group" ng-class="{'placeholder': data.selectedChargeGroup == '' }">
                 <option value="" selected translate>ALL_CHARGE_GROUPS</option>
-                <option ng-repeat="item in data.revenueData.charge_groups" value="{{item.id}}">{{item.name}}</option>
+                <option ng-repeat="item in data.activeChargeGroups" value="{{item.id}}">{{item.name}}</option>
             </select>
         </div>
     </div>
