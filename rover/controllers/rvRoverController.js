@@ -1,5 +1,5 @@
 sntRover.controller('roverController',
-  
+
   ['$rootScope', '$scope', '$state',
   '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv',
 
@@ -7,7 +7,7 @@ sntRover.controller('roverController',
   'userInfoDetails', 'RVChargeItems', '$stateParams',
 
   'rvMenuSrv', 'rvPermissionSrv', '$timeout',
-  
+
   function($rootScope, $scope, $state,
     $window, RVDashboardSrv, RVHotelDetailsSrv,
 
@@ -213,7 +213,7 @@ sntRover.controller('roverController',
 
     if ($rootScope.adminRole == "Hotel Admin")
       $scope.isHotelAdmin = true;
-    
+
 
     /**
     * menu - forming & associate logic
@@ -389,7 +389,7 @@ sntRover.controller('roverController',
     //subemenu actions
 
     $scope.subMenuAction = function(subMenu) {
-     
+
       $scope.toggleDrawerMenu();
 
       if (subMenu === "postcharges") {
@@ -639,7 +639,7 @@ sntRover.controller('roverController',
         });
       }
     };
-  
+
   //CICO-13582 Display a timeout error message, without try again button.
   //We are using the same message as that of OWS timeout as of now.
   //Keeping the two popup separate since the message may change in future.
@@ -768,7 +768,7 @@ sntRover.controller('roverController',
         scope: $scope
       });
     };
-    
+
     $scope.redirectToHotel = function(hotel_id) {
           RVHotelDetailsSrv.redirectToHotel(hotel_id).then(function(data) {
             $('body').addClass('no-animation');

@@ -1,6 +1,6 @@
 sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog){
 	BaseCtrl.call(this, $scope);
-	
+
 	$scope.isInitialPage = true;
     $scope.isEntitySelected = false;
 
@@ -84,7 +84,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         if(type === 'ATTACHED_ENTITY' || type === 'ROUTES'){
         	$scope.selectedEntity = $scope.routes[index];
             $scope.selectedEntity.is_new = (type == 'ATTACHED_ENTITY')? true: false;
-            
+
             if($scope.selectedEntity.entity_type !='RESERVATION')
                    $scope.selectedEntity.guest_id = null;
             if($scope.selectedEntity.entity_type == "GROUP" || $scope.selectedEntity.entity_type == "HOUSE"){
@@ -110,7 +110,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 "is_new" : true,
                 "credit_card_details": {}
 			};
-			
+
         }
         else if(type === 'ACCOUNT'){
         	var data = $scope.results.accounts[index];
@@ -155,7 +155,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                     "entity_type": data.account_type
                 };
             }
-            
+
         }
 	};
 
@@ -284,7 +284,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             return '';
     	else if(route.entity_type == 'TRAVEL_AGENT')
     		return 'icons icon-travel-agent';
-    	
+
     };
 
     $scope.escapeNull = function(value, replaceWith){
@@ -295,7 +295,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     * function to fetch the attached entity list
     */
     $scope.fetchRoutes = function(){
-        
+
             var successCallback = function(data) {
                  $scope.routes = data;
                  $scope.fetchEntities();
@@ -305,7 +305,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 $scope.errorMessage = errorMessage;
 
             };
-           
+
             $scope.invokeApi(RVBillinginfoSrv.fetchRoutes, $scope.reservationData.reservation_id, successCallback, errorCallback);
     };
 
@@ -313,7 +313,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     * function to fetch the attached entity list
     */
     $scope.fetchEntities = function(){
-        
+
             var successCallback = function(data) {
                 $scope.attachedEntities = data;
                  $scope.$parent.$emit('hideLoader');
@@ -321,9 +321,9 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             var errorCallback = function(errorMessage) {
                 $scope.$emit('hideLoader');
                 $scope.errorMessage = errorMessage;
-                
+
             };
-           
+
             $scope.invokeApi(RVBillinginfoSrv.fetchAttachedCards, $scope.reservationData.reservation_id, successCallback, errorCallback);
     };
 
@@ -331,7 +331,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         $scope.isInitialPage = true;
         $scope.fetchRoutes();
         $scope.attachedEntities = [];
-       
+
     }
     else {
         if($scope.billingEntity == "TRAVEL_AGENT_DEFAULT_BILLING"){
@@ -362,10 +362,10 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     */
     $scope.$on("displayErrorMessage", function(event, error){
         $scope.errorMessage = error;
-        
+
     });
-    
-    
+
+
 	$scope.handleCloseDialog = function(){
 		$scope.$emit('HANDLE_MODAL_OPENED');
 		$scope.closeDialog();
@@ -391,10 +391,10 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         data.id = $scope.contactInformation.id;
         $scope.invokeApi(RVBillinginfoSrv.deleteDefaultRouting, data, successCallback, errorCallback);
     };
-    
+
     // CICO-14951
     $scope.deleteBillingInfo = function(){
         $scope.deleteDefaultRouting();
     };
-	
+
 }]);

@@ -1,6 +1,6 @@
 sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$filter','RVLoyaltyProgramSrv', 'ngDialog', function($scope, $rootScope,$filter, RVLoyaltyProgramSrv, ngDialog){
 	BaseCtrl.call(this, $scope);
-	
+
 	$scope.availableFFPS = [];
 	$scope.availableHLPS = [];
 	$scope.loyaltyPrograms = [{name:"Frequent Flyer Program", code:"FFP"},{name:"Hotel Loyalty Program", code:"HLP"}];
@@ -8,7 +8,7 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
 	$scope.selectedLoyaltyType = "";
 	$scope.selectedLevel = "";
 	$scope.loyaltyCode = "";
-	
+
 
 	$scope.dimissLoaderAndDialog = function(){
 			$scope.$emit('hideLoader');
@@ -17,7 +17,7 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
 
 	$scope.addLoyaltyProgram = function(){
             var params = {};
-		params.reservation_id = $scope.$parent.reservationData.reservation_card.reservation_id;		
+		params.reservation_id = $scope.$parent.reservationData.reservation_card.reservation_id;
 		params.user_id = $scope.$parent.$parent.guestCardData.userId;
 		params.user_membership = {};
 		params.user_membership.membership_type = $scope.selectedLoyaltyType;
@@ -47,7 +47,7 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
                     $scope.loyaltyPrograms = [{name:"Frequent Flyer Program", code:"FFP"}];
                 } else if (use_ffp === false && use_hlp === true){
                     $scope.loyaltyPrograms = [{name:"Hotel Loyalty Program", code:"HLP"}];
-                } else if (use_ffp === true && use_hlp === true){    
+                } else if (use_ffp === true && use_hlp === true){
                     $scope.loyaltyPrograms = [{name:"Frequent Flyer Program", code:"FFP"},{name:"Hotel Loyalty Program", code:"HLP"}];
                 } else if (use_ffp === false && use_hlp === false){
                     $scope.loyaltyPrograms = [];
@@ -76,7 +76,7 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
 			$scope.availableHLPS.push(loyaltyType);
 		}
 	};
-        
+
 	$scope.getLoyaltyTypes = function(){
             if ($scope.selectedLoyaltyProgram){
              if ($scope.selectedLoyaltyProgram === 'HLP'){
@@ -87,12 +87,12 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
                     return [];
                 }
             }
-            
+
 	};
-        
+
 	$scope.getLoyaltyLevels = function(){
             if ($scope.$parent.reservationData){
-                
+
             var use_ffp = $scope.$parent.reservationData.use_ffp,
                     use_hlp = $scope.$parent.reservationData.use_hlp;
                 if (use_ffp === true && use_hlp === false) {
@@ -103,19 +103,19 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
                     if($scope.selectedLoyaltyProgram === $scope.loyaltyPrograms[0].code){
 			return $scope.getLoyaltyLevelsfromCode();
                     }
-                } else if (use_ffp === true && use_hlp === true){    
+                } else if (use_ffp === true && use_hlp === true){
                     if($scope.selectedLoyaltyProgram === $scope.loyaltyPrograms[1].code){
 			return $scope.getLoyaltyLevelsfromCode();
                     }else{
                         return $scope.getLoyaltyLevelsfromCode();
-                    } 
+                    }
                 } else if (use_ffp === false && use_hlp === false){
                     $scope.loyaltyPrograms = [];
                 }
             }
-            
+
 	};
-        
+
 	$scope.getLoyaltyLevelsfromCode = function(){
             var loyaltytypes, levels = [];
             if ($scope.selectedLoyaltyProgram){
@@ -128,14 +128,14 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
 			if($scope.selectedLoyaltyType == loyaltytypes[i].code){
 				levels = loyaltytypes[i].levels;
 				break;
-			}				 
+			}
 		}
             };
             return levels;
         };
 
 	$scope.validate = function(){
-		
+
 	};
-	
+
 }]);

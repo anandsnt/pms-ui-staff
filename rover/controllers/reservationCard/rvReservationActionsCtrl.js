@@ -47,7 +47,7 @@ sntRover.controller('reservationActionsController', [
 				"userId": $scope.guestCardData.userId
 			});
 		};
-		
+
 		//Since API is returning "true"/"false"
 		//TODO: Ask Rashila to to it from the API itself
 		if (typeof $scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates !== "boolean") {
@@ -79,7 +79,7 @@ sntRover.controller('reservationActionsController', [
 				else {
 					display = true;
 				}
-				
+
 			}
 			return display;
 		};
@@ -145,13 +145,13 @@ sntRover.controller('reservationActionsController', [
 					controller: 'RVPostChargeController',
 					scope: $scope
 				});
-				
+
 			};
 			var callback = function(data) {
 
 				$scope.fetchedData = data;
 				$scope.invokeApi(RVChargeItems.getReservationBillDetails, $scope.reservation_id, $scope.successGetBillDetails);
-				
+
 			};
 			$scope.invokeApi(RVChargeItems.fetch, $scope.reservation_id, callback);
 		};
@@ -167,7 +167,7 @@ sntRover.controller('reservationActionsController', [
 		$scope.$on('$destroy', postchargeAdded);
 		$scope.creditCardTypes = [];
 		$scope.paymentTypes = [];
-	
+
 		var openDepositPopup = function(){
 			if(($scope.reservationData.reservation_card.reservation_status === "RESERVED" || $scope.reservationData.reservation_card.reservation_status === "CHECKING_IN")){
 				var feeDetails = (typeof $scope.depositDetails.attached_card ==="undefined") ? {}: $scope.depositDetails.attached_card.fees_information;
@@ -196,7 +196,7 @@ sntRover.controller('reservationActionsController', [
 			else{
 				return;
 			};
-			
+
 		};
 
 		$scope.ifReferanceForCC = false;
@@ -206,7 +206,7 @@ sntRover.controller('reservationActionsController', [
 		/* Entering staycard we check if any deposit is left else noraml checkin
 		/*
 		/**************************************************************************/
-		
+
 
 		$scope.depositDetails.isFromCheckin = false;
 		var paymentTypes = angular.copy($scope.reservationData.paymentTypes);
@@ -251,9 +251,9 @@ sntRover.controller('reservationActionsController', [
 		};
 
 		var startCheckin = function() {
-			
-			
-			
+
+
+
 				var afterRoomUpdate = function() {
 					if (typeof $scope.guestCardData.userId != "undefined" && $scope.guestCardData.userId != "" && $scope.guestCardData.userId != null) {
 							if (($scope.reservationData.reservation_card.is_disabled_email_phone_dialog == "false" || $scope.reservationData.reservation_card.is_disabled_email_phone_dialog == "" || $scope.reservationData.reservation_card.is_disabled_email_phone_dialog == null) && ($scope.guestCardData.contactInfo.email == '' || $scope.guestCardData.contactInfo.phone == '' || $scope.guestCardData.contactInfo.email == null || $scope.guestCardData.contactInfo.phone == null)) {
@@ -263,7 +263,7 @@ sntRover.controller('reservationActionsController', [
 										controller: 'RVValidateEmailPhoneCtrl',
 										scope: $scope
 									});
-						
+
 						} else {
 							//CICO-13907 : If any sharer of the reservation is checked in, do not allow to go to room assignment or upgrades screen
 							if($scope.hasAnySharerCheckedin()){
@@ -332,8 +332,8 @@ sntRover.controller('reservationActionsController', [
 						else {
 							afterRoomUpdate();
 						}
-						
-						
+
+
 					}, function() {
 						$scope.$emit('hideLoader');
 					});
@@ -361,7 +361,7 @@ sntRover.controller('reservationActionsController', [
 			else{
 				startCheckin();
 			};
-			
+
 		};
 
 		$scope.goToCheckin = function(){
@@ -384,7 +384,7 @@ sntRover.controller('reservationActionsController', [
 		};
 
 		$scope.showRemoveFromQueue = function(isQueueRoomsOn, isReservationQueued, reservationStatus) {
-			
+
 			var displayPutInQueue = false;
 			if (reservationStatus == 'CHECKING_IN' || reservationStatus == 'NOSHOW_CURRENT') {
 				if (isQueueRoomsOn == "true" && isReservationQueued == "true") {
@@ -405,10 +405,10 @@ sntRover.controller('reservationActionsController', [
 		$scope.successRemoveFromQueueCallBack = function() {
 			$scope.$emit('hideLoader');
 			$scope.reservationData.reservation_card.is_reservation_queued = "false";
-			
+
 			RVSearchSrv.removeResultFromData($scope.reservationData.reservation_card.reservation_id);
 			$scope.$emit('UPDATE_QUEUE_ROOMS_COUNT', 'remove');
-			
+
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.reservation_id, $scope.reservationData);
 		};
 
@@ -429,7 +429,7 @@ sntRover.controller('reservationActionsController', [
 		};
 
 		var promptCancel = function(penalty, nights , isPercent) {
-			
+
 			var passData = {
 			 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
 			 		"details":{
@@ -508,7 +508,7 @@ sntRover.controller('reservationActionsController', [
 					// cancellation_policy_id: 36
 					// penalty_type: "percent"
 					// penalty_value: 20
-				
+
 					depositAmount = data.results.deposit_amount;
 					var isOutOfCancellationPeriod = (typeof data.results.cancellation_policy_id != 'undefined');
 					if (isOutOfCancellationPeriod) {
@@ -608,14 +608,14 @@ sntRover.controller('reservationActionsController', [
 		 * Show Deposit/Balance Modal
 		 */
 		$scope.showDepositBalanceModal = function(){
-			
+
 			var reservationId = $scope.reservationData.reservation_card.reservation_id;
 			var dataToSrv = {
 				"reservationId": reservationId
 			};
 			$scope.invokeApi(RVDepositBalanceSrv.getDepositBalanceData, dataToSrv, $scope.successCallBackFetchDepositBalance);
-			
-			
+
+
 		};
 		$scope.successCallBackFetchDepositBalance = function(data){
 
@@ -635,7 +635,7 @@ sntRover.controller('reservationActionsController', [
 					closeByDocument: false,
 					scope: $scope
 				});
-			
+
 		};
 
 		/**
@@ -656,11 +656,11 @@ sntRover.controller('reservationActionsController', [
 				if(isRatesSuppressed == "true"){
 					showDepositBalanceButtonWithSR = true;
 				}
-				
+
 			}
 			return showDepositBalanceButtonWithSR;
 		};
-		
+
 
 		$scope.showResendConfirmation = function(reservationStatus){
 			var showResendConfirmationFlag = false;
@@ -679,13 +679,13 @@ sntRover.controller('reservationActionsController', [
 				"emails": [$scope.guestCardData.contactInfo.email]
 			};
 			var reservationId = $scope.reservationData.reservation_card.reservation_id;
-			
+
 			var data = {
 				"postData": postData,
 				"reservationId": reservationId
 			};
 			$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data);
 		};
-		
+
 	}
 ]);

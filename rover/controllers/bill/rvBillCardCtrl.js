@@ -97,7 +97,7 @@ sntRover.controller('RVbillCardController',
 	$scope.hasMoveToOtherBillPermission = function() {
         return ($rootScope.isStandAlone && rvPermissionSrv.getPermissionValue ('MOVE_CHARGES_RESERVATION_ACCOUNT'));
     };
-	
+
     //only for standalone
 	var setChargeCodesSelectedStatus = function(bool){
 		if(!$rootScope.isStandAlone){
@@ -115,7 +115,7 @@ sntRover.controller('RVbillCardController',
 		}
 	};
 	setChargeCodesSelectedStatus(false);
-    
+
     /*
     * Check if all the items are selected
     */
@@ -172,7 +172,7 @@ sntRover.controller('RVbillCardController',
 				isAnyOneChargeCodeIsIncluded = false;
 			}
 		}
-	
+
 		return isAnyOneChargeCodeIsExcluded && isAnyOneChargeCodeIsIncluded;
 	};
 
@@ -335,7 +335,7 @@ sntRover.controller('RVbillCardController',
 	//Whatever permission of Make Payment we are assigning that
 	//removing standalone thing here
 	$scope.showPayButton = $scope.hasPermissionToMakePayment() && $rootScope.isStandAlone;
-	
+
 	//Calculate the scroll width for bill tabs in all the cases
 	$scope.getWidthForBillTabsScroll = function(){
 		var width = 0;
@@ -383,8 +383,8 @@ sntRover.controller('RVbillCardController',
 		 * Check in HTML moveToBillAction
 		 */
 		angular.forEach(reservationBillData.bills, function(value, key) {
-			
-			
+
+
 
 			//To handle fees open/close
 			value.isOpenFeesDetails = false;
@@ -429,7 +429,7 @@ sntRover.controller('RVbillCardController',
 		 * on the basis of payment type
 		 */
 	$scope.setNoPostStatus = function(){
-		
+
 		$scope.reservationBillData.roomChargeEnabled = "";
 
 		if($scope.reservationBillData.no_post == "true"){
@@ -1003,7 +1003,7 @@ sntRover.controller('RVbillCardController',
 		}
 		return dayClass;
 	};
-	
+
 	$scope.caculateExpenseAmountForPackageAddon=function(expense_details, returnAmount){
 		var inclLength=0;
 		angular.forEach(expense_details,function(elem){
@@ -1061,7 +1061,7 @@ sntRover.controller('RVbillCardController',
 		$scope.triggerKeyCreationProcess();
 		$scope.closeDialog();
 	};
-	
+
 	// Normal checkin process success.
 	$scope.completeCheckinSuccessCallback = function(data){
 		// CICO-6109 : Without Authorization flow ..
@@ -1071,7 +1071,7 @@ sntRover.controller('RVbillCardController',
 
 	// Success after autherization
 	$scope.completeCheckinAuthSuccessCallback = function(data){
-		
+
 		$scope.$emit('hideLoader');
 
 		// CICO-6109 : With Authorization flow .: Auth Success
@@ -1193,7 +1193,7 @@ sntRover.controller('RVbillCardController',
 	    	$scope.isSuccessScreen = false;
 	    	$scope.isFailureScreen = false;
 	    	$scope.isCCAuthPermission = $scope.hasCCAuthPermission();
-		    	
+
 		    ngDialog.open({
 				template: '/assets/partials/bill/ccAuthorization.html',
 				className: '',
@@ -1933,7 +1933,7 @@ sntRover.controller('RVbillCardController',
 
 		//update the bill screen and handle futher payments
 		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, fetchBillDataSuccessCallback);
-	
+
 
 	});
 
@@ -2044,7 +2044,7 @@ sntRover.controller('RVbillCardController',
 
 			var reverseCheckoutsuccess = function(data){
 				$scope.$emit("hideLoader");
-					
+
 				//if error go to stay card and show popup
 				//else go to staycard and refresh
 				if(data.status === "success"){
@@ -2059,9 +2059,9 @@ sntRover.controller('RVbillCardController',
 
 			var data ={"reservation_id" : $scope.reservationBillData.reservation_id};
 			$scope.invokeApi(RVBillCardSrv.completeReverseCheckout,data,reverseCheckoutsuccess);
-			
+
 	};
-        
+
         $scope.adjustForUserTime = function(){
             if ($scope.reservationBillData.signature_details){
                 var str = $scope.reservationBillData.signature_details.signed_time_utc;
@@ -2080,24 +2080,24 @@ sntRover.controller('RVbillCardController',
             var a = restOfTime.split(' ');
             var am = a[1];
             var newTime = hour+n;
-            
+
             if (newTime <= 0){//so the string doesnt end up being -03, when it should be 10, etc..
                 newTime = 12+n;
             }
-            
+
             var am = newTime < 12 ? 'AM':'PM';
-            
+
             if (newTime < 10 && newTime > 0){
                 newTime = '0'+newTime;
             } else if (newTime === 0){
                 newTime = '12';
             }
-            
+
             return newTime+':'+a[0]+' '+am;
         };
 
 	$scope.$on('moveChargeSuccsess', function() {
 		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
 	});
-	
+
 }]);

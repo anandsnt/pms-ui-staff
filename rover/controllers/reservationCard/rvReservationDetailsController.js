@@ -1,7 +1,6 @@
 
 sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rvPermissionSrv' ,'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter', 'RVReservationStateService',
 	function($scope, $rootScope, rvPermissionSrv ,RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter, RVReservationStateService) {
-
 		// pre setups for back button
 		var backTitle,
 			backParam,
@@ -118,10 +117,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				$('#ui-datepicker-overlay').off('click').remove();
 			}
 		};
-
                 //CICO-16013, moved from rvReservationGuestCtrl.js to de-duplicate api calls
                 $scope.activeWakeUp     = false;
-                
+
 		//CICO-10568
 		$scope.reservationData.isSameCard = false;
 
@@ -874,7 +872,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			openRoomOccupiedPopup();
 			$scope.initreverseCheckoutDetails();
 		};
-                
+
     $rootScope.$on('SETPREV_RESERVATION',function(evt, fullname){
         setNavigationBookMark();
         $rootScope.setPrevState = {
@@ -957,7 +955,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
     	authInProgress();
 
     	setTimeout(function(){
-	    	
+	
 	    	ngDialog.open({
 				template: '/assets/partials/reservation/rvManualAuthorizationProcess.html',
 				className: '',
@@ -976,7 +974,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		manualAuthAPICall();
 	};
     // CICO-17067 PMS: Rover - Stay Card: Add manual authorization ends here...
-    
+
     //>>wakeup call check after guest prefs are fetched
         $scope.$on('wakeup_call_ON',function(evt, data){
             if (data){

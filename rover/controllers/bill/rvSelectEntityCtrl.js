@@ -1,12 +1,12 @@
 sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog','RVCompanyCardSearchSrv','RVSearchSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog, RVCompanyCardSearchSrv, RVSearchSrv){
 	BaseCtrl.call(this, $scope);
-	
+
 	$scope.textInQueryBox = "";
   	$scope.isReservationActive = true;
   	$scope.results.accounts = [];
 	$scope.results.posting_accounts  = [];
 	$scope.results.reservations = [];
-  	
+
   	var scrollerOptions = {click: true, preventDefault: false};
     $scope.setScroller('cards_search_scroller', scrollerOptions);
     $scope.setScroller('res_search_scroller', scrollerOptions);
@@ -80,7 +80,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	      for(var i = 0; i < $scope.results.posting_accounts.length; i++){
 	          $scope.results.posting_accounts[i].is_row_visible = true;
 	      }
-	      
+
 	      // we have changed data, so we are refreshing the scrollerbar
 	      $scope.refreshScroller('cards_search_scroller');
 	    }
@@ -100,7 +100,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	        else {
 	          $scope.results.accounts[i].is_row_visible = false;
 	        }
-	              
+
 	      }
 
 	      for(var i = 0; i < $scope.results.posting_accounts.length; i++){
@@ -113,9 +113,9 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	        else {
 	          $scope.results.posting_accounts[i].is_row_visible = false;
 	        }
-	              
+
 	      }
-	      
+
 	      // last hope, we are looking in webservice.
 	     if(visibleElementsCount == 0){
 	        var dataDict = {'query': $scope.textInQueryBox.trim()};
@@ -139,7 +139,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
   		}
   		$scope.results.reservations = filteredResults;
 	};
-	
+
 	/**
 	* Success call back of data fetch from webservice
 	*/
@@ -169,7 +169,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	      	for(var i = 0; i < $scope.results.length; i++){
 	          $scope.results.reservations[i].is_row_visible = true;
 	      	}
-	      	
+
 			$scope.refreshScroller('res_search_scroller');
 	    }
 	    else{
@@ -218,10 +218,10 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 		}
 		$scope.invokeApi(RVSearchSrv.fetch, dataDict, searchSuccessReservations, failureCallBackofDataFetch);
 	};
-	
+
 	//Toggle between Reservations , Cards
 	$scope.toggleClicked = function(flag){
 		$scope.isReservationActive = flag;
 	};
-	
+
 }]);

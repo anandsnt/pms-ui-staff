@@ -20,7 +20,7 @@ sntRover.controller('RVPostChargeController',
 			$scope.selectedChargeItem = null;
 			$scope.isResultOnFetchedItems = true;
 			$scope.isOutsidePostCharge = false;
-			
+
 			var scrollerOptions = {preventDefault: false};
   			$scope.setScroller ('items_list', scrollerOptions);
   			$scope.setScroller ('items_summary', scrollerOptions);
@@ -50,7 +50,7 @@ sntRover.controller('RVPostChargeController',
 			// if(!$scope.isBillsFetched && $scope.reservation_id){
 			// 	$scope.invokeApi(RVChargeItems.getReservationBillDetails, $scope.reservation_id, $scope.successGetBillDetails);
 			// }
-			
+
 			// filter the items based on the chosen charge group
 			$scope.filterbyChargeGroup = function() {
 
@@ -129,7 +129,7 @@ sntRover.controller('RVPostChargeController',
 						else {
 							item.show = false;
 						}
-							
+
 					}
 				$scope.refreshScroller('items_list');
 				//}
@@ -137,9 +137,9 @@ sntRover.controller('RVPostChargeController',
 
 			// clear the filter query
 			$scope.clearQuery = function() {
-				
+
 				$scope.query = '';
-				
+
 				// show all
 				for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
 					$scope.fetchedItems[i].show = true;
@@ -239,7 +239,7 @@ sntRover.controller('RVPostChargeController',
 				angular.forEach(angular.element("#numpad-options button"), function(value, key){
 				      new FastClick(value);
 				});
-				
+
 			};
 
 			/**
@@ -560,7 +560,7 @@ sntRover.controller('RVPostChargeController',
 					};
 					//accounts or reservation bill screen check
 					isFromAccounts ? (billData.account_id = $scope.account_id):(billData.reservation_id = $scope.reservation_id);
-					
+
 					if(isFromAccounts){
 						/*
 						 * Success Callback of create bill action
@@ -569,7 +569,7 @@ sntRover.controller('RVPostChargeController',
 							$scope.$emit('hideLoader');
 							//Fetch data again to refresh the screen with new data
 							$scope.invokeApi(rvAccountTransactionsSrv.postCharges, updateParam, accountsPostcallback);
-	
+
 						};
 						$scope.invokeApi(rvAccountTransactionsSrv.createAnotherBill, billData, createBillSuccessCallback);
 					}
@@ -594,15 +594,15 @@ sntRover.controller('RVPostChargeController',
 						$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback);
 
 					}
-					
+
 				}
 				/****    CICO-6094    **/
 			};
-			
+
 			$scope.searchByRoomNumber = function(){
 				$scope.invokeApi(RVSearchSrv.fetch, {});
 			};
-			
+
 			//Will be invoked only if triggered from the menu.
 			// So always the default bill no will be 1
 			$scope.$on("UPDATED_BILLNUMBERS", function(event, data){
@@ -612,7 +612,7 @@ sntRover.controller('RVPostChargeController',
 				$scope.chargeGroup = 'FAV';
 				$scope.filterbyChargeGroup();
 			});
-			
+
 			$scope.convertToJSONString = function (string) {
 				return JSON.stringify (string);
 			};
@@ -621,20 +621,20 @@ sntRover.controller('RVPostChargeController',
 			   $scope.postCharges();
 			   $scope.isOutsidePostCharge = true;
 			});
-			
+
 			$scope.$on('RESETPOSTCHARGE', function(event, data) {
 			    $scope.selectedChargeItem = null;
 				$scope.selectedChargeItem = null;
 				$scope.isResultOnFetchedItems = false;
 				$scope.fetchedData.bill_numbers = null;
-				
+
 				for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
 					if($scope.fetchedItems[i].isChosen) {
 						$scope.fetchedItems[i].isChosen = false;
 						$scope.fetchedItems[i].count = 0;
 					}
 				}
-				
+
 				for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
 					if ( $scope.fetchedChargeCodes[i].isChosen ){
 						 $scope.fetchedChargeCodes[i].isChosen = false;
