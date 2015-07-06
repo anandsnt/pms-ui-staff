@@ -118,7 +118,7 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 
 	this.fetchPaymentDataByPaymentTypes = function(params){
 		var deferred = $q.defer();
-		var url = '/api/financial_transactions/payments_by_payment_types?from_date='+params.from+'&to_date='+params.to;
+		var url = '/api/financial_transactions/payments_by_payment_types?from_date='+params.from+'&to_date='+params.to+'&charge_code_id='+params.charge_code_id;
 
 		BaseWebSrvV2.getJSON(url).then(function(data) {
 			

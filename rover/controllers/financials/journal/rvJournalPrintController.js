@@ -73,16 +73,17 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		
 		$scope.data.activeChargeCodes = [];
 
-		console.log($scope.data.selectedChargeGroup);
-
 		var successCallBackFetchRevenueData = function(data){
 			$scope.data.revenueData = {};
 			$scope.data.revenueData = data;
+
+			if(data[0].charge_codes) $scope.data.activeChargeCodes = data[0].charge_codes;
+			
             $scope.errorMessage = "";
-			refreshRevenueScroller();
+            $rootScope.$broadcast('REFRESHREVENUECONTENT');
             $scope.$emit('hideLoader');
 		};
-		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, {"from":$scope.data.fromDate , "to":$scope.data.toDate, "charge_group_id": $scope.data.selectedChargeGroup }, successCallBackFetchRevenueData);
+		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, { "from":$scope.data.fromDate , "to":$scope.data.toDate, "charge_group_id": $scope.data.selectedChargeGroup }, successCallBackFetchRevenueData);
 
        	var uiValue = _.find($scope.data.revenueData.charge_groups, function(each) {
        		return each.id == $scope.data.selectedChargeGroup;
@@ -93,14 +94,13 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	// On changing charge code on PRINT filter
 	$scope.chargeCodeChanged = function(){
 
-		console.log($scope.data.selectedChargeCode);
-
 		var successCallBackFetchRevenueDataChargeCodes = function(data){
-			console.log(data);
-            if(data.charge_codes.length > 0){
-                
-                refreshRevenueScroller();
-            }
+			
+			$scope.data.revenueData.charge_groups[0].charge_codes = [];
+			$scope.data.revenueData.charge_groups[0].charge_codes = data.charge_codes;
+			$scope.data.revenueData.charge_groups[0].active = true;
+
+			$rootScope.$broadcast('REFRESHREVENUECONTENT');
             $scope.errorMessage = "";
             $scope.$emit('hideLoader');
         };
@@ -170,18 +170,18 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	/** Code for Payment Tab - PRINT BOX - filters starts here .. **/
 	$scope.paymentTypeChanged = function(){
 
-		console.log($scope.data.selectedPaymentType);
-
-		var successCallBackFetchRevenueData = function(data){
-			$scope.data.revenueData = {};
-            $scope.data.selectedChargeGroup = 'ALL';
-            $scope.data.selectedChargeCode  = 'ALL';
-			$scope.data.revenueData = data;
+		var successCallBackFetchPaymentData = function(data){
+			$scope.data.paymentData = {};
+			$scope.data.paymentData = data;
+			
+			if(data.payment_type == 'Credit Card'){
+				$scope.data.paymentData.payment_types[0].active = true;
+			}
             $scope.errorMessage = "";
-			refreshRevenueScroller();
-            $scope.$emit('hideLoader');
+			$rootScope.$broadcast('REFRESHPAYMENTCONTENT');
+			$scope.$emit('hideLoader');
 		};
-		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, {"from":$scope.data.fromDate , "to":$scope.data.toDate}, successCallBackFetchRevenueData);
+		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, { "from":$scope.data.fromDate , "to":$scope.data.toDate , "charge_code_id" : $scope.data.selectedPaymentType }, successCallBackFetchPaymentData);
 
 		var uiValue = _.find($scope.data.paymentData.payment_types, function(each) {
 			return each.id == $scope.data.selectedPaymentType;

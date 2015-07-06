@@ -56,7 +56,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
             var postData = {
                 "from_date":$scope.data.fromDate ,
                 "to_date":$scope.data.toDate ,
-                "charge_code_id":toggleItem.id ,
+                "charge_code_id":toggleItem.charge_code_id ,
                 "employee_ids" : $scope.data.selectedEmployeeList ,
                 "department_ids" : $scope.data.selectedDepartmentList
             };
