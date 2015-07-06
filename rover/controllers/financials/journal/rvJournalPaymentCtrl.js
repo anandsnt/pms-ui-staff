@@ -11,7 +11,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         refreshPaymentScroll();
     });
 
-	$scope.initPaymentData = function(){
+	var initPaymentData = function(){
 		var successCallBackFetchPaymentData = function(data){
 			$scope.data.paymentData = {};
             $scope.data.selectedPaymentType = '';
@@ -23,14 +23,14 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 		};
 		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, { "from":$scope.data.fromDate , "to":$scope.data.toDate }, successCallBackFetchPaymentData);
 	};
-	$scope.initPaymentData();
+	initPaymentData();
 
     $rootScope.$on('fromDateChanged',function(){
-        $scope.initPaymentData();
+        initPaymentData();
     });
 
     $rootScope.$on('toDateChanged',function(){
-        $scope.initPaymentData();
+        initPaymentData();
     });
 
     /** Handle Expand/Collapse of Level1 **/

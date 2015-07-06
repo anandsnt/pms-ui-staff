@@ -7,7 +7,15 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
         $timeout(function(){$scope.refreshScroller('revenue_content');}, 500);
     };
 
-	$scope.initRevenueData = function(){
+    var fetchDepartments = function(){
+        var successCallBackFetchDepartment = function(data){
+            $scope.data.filterData.departments = data.departments;
+            $scope.$emit('hideLoader');
+        };
+        $scope.invokeApi(RVJournalSrv.fetchDepartments, {}, successCallBackFetchDepartment);
+    };
+
+	var initRevenueData = function(){
         
 		var successCallBackFetchRevenueData = function(data){
 			$scope.data.revenueData = {};
@@ -21,26 +29,22 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
             $scope.$emit('hideLoader');
 		};
 		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, { "from":$scope.data.fromDate , "to":$scope.data.toDate }, successCallBackFetchRevenueData);
-	   
-        var successCallBackFetchDepartment = function(data){
-            $scope.data.filterData.departments = data.departments;
-            $scope.$emit('hideLoader');
-        };
-        $scope.invokeApi(RVJournalSrv.fetchDepartments, {}, successCallBackFetchDepartment);
     };
 
-	$scope.initRevenueData();
+	initRevenueData();
+    
+    fetchDepartments();
     
     $rootScope.$on('REFRESHREVENUECONTENT',function(){
         refreshRevenueScroller();
     });
 
     $rootScope.$on('fromDateChanged',function(){
-        $scope.initRevenueData();
+        initRevenueData();
     });
 
     $rootScope.$on('toDateChanged',function(){
-        $scope.initRevenueData();
+        initRevenueData();
     });
 
     /** Handle Expand/Collapse on Level1 **/
