@@ -30,6 +30,13 @@ sntRover.controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout'
 				$scope.$emit('hideLoader');
 			}, 1000);
 		});
+                $scope.$on('detect-hlps-ffp-active-status',function(evt,data){
+                    if (data.userMemberships.use_hlp || data.userMemberships.use_ffp){
+                    $scope.loyaltyTabEnabled = true;
+                   } else {
+                    $scope.loyaltyTabEnabled = true;
+                   }
+                });
 
 		$scope.$on("loyaltyLevelAvailable", function($event, level) {
 			$scope.guestCardData.selectedLoyaltyLevel = level;
