@@ -1,21 +1,15 @@
 admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout', '$location',
   function($scope, $state, ADBillingGroupSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
-	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
-	// $scope.billingGroupList = [{'name':'xxx'}, {'name':'xxx'}, {'name':'xxx'}];
-	
-
    /*
     * To fetch list of billing groups
     */
 	$scope.listBillingGroups = function(){
-		
 		var successCallbackFetch = function(data){
 			$scope.$emit('hideLoader');
 			$scope.billingGroupList = data.results;
 			$scope.currentClickedElement = -1;
-			
 		};
 	   $scope.invokeApi(ADBillingGroupSrv.fetch, {} , successCallbackFetch);
 	};
@@ -27,7 +21,6 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
     * @param {id} id of the room type
     */
 	$scope.editBillingGroup = function(index, id)	{
-		
 		var successCallbackFetchbillingGroupDetails = function(data){
 				var successCallbackFetchChargeCodes = function(data){
 				$scope.$emit('hideLoader');
@@ -43,13 +36,9 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
 			};
 			$scope.billingGroupData = data.results;
 	   		$scope.invokeApi(ADBillingGroupSrv.getChargeCodes, {}, successCallbackFetchChargeCodes);
-			
 		};
 	   $scope.invokeApi(ADBillingGroupSrv.getBillingGroupDetails, id , successCallbackFetchbillingGroupDetails);
-		
-	 	
 	};
-   
    /*
     * To get the template of edit screen
     * @param {int} index of the selected room type
@@ -66,13 +55,8 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
    * To save/update room type details
    */
    $scope.saveBillingGroup = function(){
-		
 		var unwantedKeys = [];
-		
 		var params = dclone($scope.billingGroupData, unwantedKeys);
-		
-	
-		 
     	var successCallbackSave = function(data){
     		$scope.$emit('hideLoader');
     		//Since the list is ordered. Update the ordered data
@@ -83,21 +67,17 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
     			$scope.billingGroupList[$scope.currentClickedElement].name = $scope.billingGroupData.name;
     			$scope.currentClickedElement = -1;
     		}
-    		
     	};
     	if($scope.isAddMode){
     		$scope.invokeApi(ADBillingGroupSrv.createBillingGroup, params, successCallbackSave);
     	}else{
     		$scope.invokeApi(ADBillingGroupSrv.updateBillingGroup, params, successCallbackSave);
     	}
-    	
     };
-
-    /*
+   /*
    * To delete a floor
    */
    $scope.deleteBillingGroup = function(index){
-		
 		var unwantedKeys = [];
 		var param = $scope.billingGroupList[index].id;
     	var successCallbackSave = function(){
@@ -145,7 +125,6 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
 		}
 		$scope.updateIsAllChargeCodeSelectedStatus();
 	};
-
 	/*
     * Check whether all charge code selected or not
     *
@@ -170,10 +149,8 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
 				pos = i;
 				break;
 			}
-				
 		}
 		$scope.billingGroupData.selected_charge_codes.splice(pos, 1);
-
 	};
 	/*
     * To check whether the charge code is selected or not
@@ -185,7 +162,6 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
 				return true;
 		}
 		return false;
-
 	};
 	$scope.selectOrUnselectAllChargeCodeSelected = function(){
 		if($scope.billingGroupData.isAllChargeCodeSelected){
@@ -195,7 +171,6 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
 			$scope.billingGroupData.available_charge_codes[index].isChecked = true;
 			});
 		}else{
-			
 			$scope.billingGroupData.selected_charge_codes.length = 0;
 			$scope.billingGroupData.available_charge_codes.forEach(function(chargeCode, index){
 			$scope.billingGroupData.available_charge_codes[index].isChecked = false;
@@ -203,7 +178,6 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
 
 		}
 		$scope.updateIsAllChargeCodeSelectedStatus();
-			
 	};
 	/*
     * To handle click event
@@ -215,6 +189,5 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
 		else
 		    $scope.currentClickedElement = -1;
 	};
-
 }]);
 

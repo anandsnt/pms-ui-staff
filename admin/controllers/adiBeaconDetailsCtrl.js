@@ -45,18 +45,18 @@ if(!$scope.addmode){
     *   Method to go back to previous state.
     */
   $scope.backClicked = function(){
-    
+
     if($rootScope.previousStateParam){
       $state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
     }
     else if($rootScope.previousState){
       $state.go($rootScope.previousState);
     }
-    else 
+    else
     {
       $state.go('admin.dashboard', {menu : 0});
     }
-  
+
   };
 
   /**
@@ -75,7 +75,7 @@ if(!$scope.addmode){
       $scope.data.status = ! $scope.data.status;
     }
 
-      
+
   };
 
   $scope.linkiBeacon =  function(){
@@ -86,8 +86,8 @@ if(!$scope.addmode){
       }else{
         $scope.$emit('hideLoader');
         $scope.successMessage = data.RVSuccess;
-      }  
-      
+      }
+
       $scope.$apply();
 
     };
@@ -105,7 +105,7 @@ if(!$scope.addmode){
       "majorID":$scope.data.major_id,
       "minorID":$scope.data.minor_id
       }
-     
+
     });
     var options = {
       "successCallBack": successfullyLinked,
@@ -134,7 +134,7 @@ if(!$scope.addmode){
           $scope.beaconId = data.id;
           $scope.linkBeacon();
         }
-        
+
       };
       var updateBeaconFailure = function(data){
         $scope.$emit('hideLoader');
@@ -150,7 +150,7 @@ if(!$scope.addmode){
       };
       var BeaconId = $scope.data.proximity_id+"-"+$scope.data.major_id+"-"+$scope.data.minor_id;
       if($scope.addmode){
-        var unwantedKeys = ["major_id","minor_id","proximity_id"];        
+        var unwantedKeys = ["major_id","minor_id","proximity_id"];
         updateData= dclone($scope.data, unwantedKeys);
         updateData.uuid = BeaconId;
         $scope.invokeApi(adiBeaconSettingsSrv.addBeaconDetails,updateData,updateBeaconSuccess,updateBeaconFailure);
@@ -172,7 +172,7 @@ if(!$scope.addmode){
   $scope.linkBeacon = function(){
     var linkBeaconSuccess = function(){
         $scope.$emit('hideLoader');
-        if($scope.addmode){          
+        if($scope.addmode){
           $state.go('admin.ibeaconSettings');
         }else{
           $scope.successMessage = data.RVSuccess;

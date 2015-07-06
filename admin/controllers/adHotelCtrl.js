@@ -5,16 +5,20 @@ admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParam
 	var fetchSuccess = function(data){
 		$scope.data = data;
 		$scope.$emit('hideLoader');
-		
+
 		// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
 	    $scope.tableParams = new ngTableParams({
-	        page: 1,            // show first page
-	        count: $scope.data.hotels.length,    // count per page - Need to change when on pagination implemntation
+	        // show first page
+	        page: 1,
+	        // count per page - Need to change when on pagination implemntation
+	        count: $scope.data.hotels.length,
 	        sorting: {
-	            name: 'asc'     // initial sorting
+	        	// initial sorting
+	            name: 'asc'
 	        }
 	    }, {
-	        total: $scope.data.hotels.length, // length of data
+	    	// length of data
+	        total: $scope.data.hotels.length,
 	        getData: function($defer, params) {
 	            // use build-in angular filter
 	            var orderedData = params.sorting() ?
@@ -24,14 +28,14 @@ admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParam
 	        }
 	    });
 	};
-	
+
 	$scope.invokeApi(ADHotelListSrv.fetch, {}, fetchSuccess);
-	
+
 	/**
     *   A post method to update ReservationImport for a hotel
     *   @param {String} index value for the hotel list item.
     */
-   
+
 	$scope.toggleClicked = function(hotel){
 		var confirmForReservationImport = true;
       	// show confirm if it is going turn on stage
@@ -42,15 +46,15 @@ admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParam
       	// Toggle OFF action perform without confirm box.
       	if(confirmForReservationImport){
 	      	var isResImportOn = hotel.is_res_import_on == 'true' ? false : true;
-	      	var data = {'hotel_id' :  hotel.id,  'is_res_import_on': isResImportOn };    
-	      	selectedHotel = hotel;	      	
-	      	var postSuccess = function(){	      		
+	      	var data = {'hotel_id' :  hotel.id,  'is_res_import_on': isResImportOn };
+	      	selectedHotel = hotel;
+	      	var postSuccess = function(){
 	      		selectedHotel.is_res_import_on = (selectedHotel.is_res_import_on == 'true') ? 'false' : 'true';
 				$scope.$emit('hideLoader');
 			};
 			$scope.invokeApi(ADHotelListSrv.postReservationImportToggle, data, postSuccess);
 		}
 	};
-		
+
 
 }]);

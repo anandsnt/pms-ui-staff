@@ -28,7 +28,7 @@ admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSr
 		            params.total(orderedData.length);
 		            $scope.totalPage = Math.ceil(orderedData.length/$scope.displyCount);
 		            var startIndex  = tbParams.per_page * (tbParams.page - 1);
-		            var endIndex  =      (tbParams.per_page * (tbParams.page - 1)) + tbParams.per_page;          
+		            var endIndex  =      (tbParams.per_page * (tbParams.page - 1)) + tbParams.per_page;
 		            $scope.orderedData =  orderedData.splice(startIndex, tbParams.per_page);
 		            			        
 			        $scope.data = $scope.orderedData;
@@ -58,13 +58,13 @@ admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSr
 		
 		var successCallbackFetch = function(data){
 			$scope.$emit('hideLoader');
-			$scope.emailList = data;  			          
+			$scope.emailList = data;
 			$scope.loadTable();
 
       //       $scope.tableParams = new ngTableParams({
 		    //    page: 1,            // show first page
 		    //    	count: 100,    // count per page - Need to change when on pagination implemntation
-		    //     sorting: { email: 'asc'     // initial sorting 
+		    //     sorting: { email: 'asc'     // initial sorting
 		    //     }
 		    // }, {
 		     
@@ -81,10 +81,10 @@ admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSr
 		    // });
 
 		};
-	   $scope.invokeApi(ADEmailBlackListSrv.fetch, {} , successCallbackFetch);	
+	   $scope.invokeApi(ADEmailBlackListSrv.fetch, {} , successCallbackFetch);
 	};
 	// To list blacklisted emails
-	$scope.listEmailBlackList(); 
+	$scope.listEmailBlackList();
    
    
    /*
@@ -92,7 +92,7 @@ admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSr
     * @param {int} index of the selected room type
     * @param {string} id of the room type
     */
-	$scope.getTemplateUrl = function(){		
+	$scope.getTemplateUrl = function(){
 		return "/assets/partials/EmailBlackList/adAddBlackListedEmail.html";
 	};
 
@@ -102,20 +102,20 @@ admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSr
   /*
    * To save/update room type details
    */
-   $scope.saveEmail = function(){		
+   $scope.saveEmail = function(){
 		
     	var successCallbackSave = function(data){
     		$scope.$emit('hideLoader');
     		$scope.emailList.push(data);
     		$scope.tableParams.reload();
     		$scope.emailData = {};
-    		$scope.emailData.email = "";	
+    		$scope.emailData.email = "";
     		$scope.isAddMode =false;
     	};
 
     	if($scope.emailData.email == ""){
     		$scope.errorMessage = ["The email field is empty"];
-    	}else    	
+    	}else
     	    $scope.invokeApi(ADEmailBlackListSrv.saveBlackListedEmail, $scope.emailData, successCallbackSave);
     	
     	
@@ -128,7 +128,7 @@ admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSr
 		
 		var param = $scope.emailList[index].id;
     	var successCallbackDelete = function(){
-    		$scope.$emit('hideLoader');    		
+    		$scope.$emit('hideLoader');
     		$scope.emailList.splice(index, 1);
     		$scope.tableParams.reload();
     	};
@@ -136,11 +136,11 @@ admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSr
     };
 	/*
     * To handle click event
-    */	
+    */
 	$scope.clickCancel = function(){
 		
 		$scope.isAddMode =false;
-	};	
+	};
 
 }]);
 

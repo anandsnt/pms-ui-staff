@@ -18,7 +18,7 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		},function(errorMessage){
 			deferred.reject(errorMessage);
 		});
-		
+
 		return deferred.promise;
 	};
 
@@ -43,11 +43,11 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
     * @return {object} status
     */
 	this.createRoom = function(data){
-	
+
 		var updateData = data.updateData;
 		var deferred = $q.defer();
 		var url = '/admin/hotel_rooms/';
-		
+
 		ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
 			var dataToAdd = {
 				"room_number": updateData.room_number,
@@ -76,7 +76,7 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		var roomId = data.roomId;
 		var deferred = $q.defer();
 		var url = '/admin/hotel_rooms/'+roomId+'/edit.json';
-		
+
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			that.saveRoomTypesArray(data);
 			deferred.resolve(data);
@@ -88,7 +88,7 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 	this.saveRoomTypesArray = function(data){
 		that.roomTypesArray = data.room_types;
 	};
-   
+
    /*
     * setter method for room details
     * @param {object} chain id
@@ -99,7 +99,7 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		var updateData = data.updateData;
 		var deferred = $q.defer();
 		var url = '/admin/hotel_rooms/'+id;
-		
+
 		ADBaseWebSrv.putJSON(url,updateData).then(function(data) {
 			that.updateRoomDataOnUpdate(id, "room_type", that.getRoomTypeName(updateData.room_type_id));
 			deferred.resolve(data);
@@ -120,7 +120,7 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 	    });
 	    return roomTypeName;
 	};
-	
+
 	this.updateRoomDataOnUpdate = function(roomId, param, updatedValue){
 		if(typeof that.roomsArray != 'undefined'){
 			angular.forEach(that.roomsArray.rooms, function(value, key) {
@@ -131,12 +131,12 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		     		if(param == "room_type"){
 		     			value.room_type = updatedValue;
 		     		}
-		     		
+
 		     	}
 		    });
 		}
 	};
-	
+
    /*
     * To add new chain
     * @param {object} new chain details
@@ -145,7 +145,7 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 	this.post = function(data){
 		var deferred = $q.defer();
 		var url = '/admin/hotel_rooms';
-		
+
 		ADBaseWebSrv.postJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		},function(errorMessage){

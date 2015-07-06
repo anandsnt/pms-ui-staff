@@ -8,7 +8,7 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
     this.fetch = function(){
     	var deferred = $q.defer();
     	var url = '/admin/hotel_likes/get_hotel_likes.json';
-    	
+
     	ADBaseWebSrv.getJSON(url).then(function(data) {
     		deferred.resolve(data);
     	},function(errorMessage){
@@ -26,7 +26,7 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
      	var updateData = data;
      	var deferred = $q.defer();
      	var url = '/admin/hotel_likes/add_feature_type';
-     	
+
      	ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
      		deferred.resolve(data);
      	},function(data){
@@ -43,7 +43,7 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
      	var updateData = data;
      	var deferred = $q.defer();
      	var url = '/admin/hotel_likes/activate_feature';
-     	
+
      	ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
      		deferred.resolve(data);
      	},function(data){
@@ -61,7 +61,7 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
     	var editID = data.editID;
     	var deferred = $q.defer();
     	var url = '/admin/hotel_likes/'+editID+'/edit_hotel_likes.json';
-    	
+
     	ADBaseWebSrv.getJSON(url).then(function(data) {
     		deferred.resolve(data);
     	},function(data){
@@ -80,7 +80,7 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
     	var editID = data.editID;
     	var deferred = $q.defer();
     	var url = '/admin/hotel_likes/'+editID+'/edit_hotel_likes.json';
-    	
+
 
     	ADBaseWebSrv.getJSON(url).then(function(data) {
     		deferred.resolve(data);
@@ -101,7 +101,7 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
     	var updateData = data;
     	var deferred = $q.defer();
     	var url = '/admin/hotel_likes/add_feature_type';
-    	
+
     	ADBaseWebSrv.putJSON(url,updateData).then(function(data) {
     		deferred.resolve(data);
     	},function(data){
@@ -120,7 +120,7 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
     	var updateData = data;
     	var deferred = $q.defer();
     	var url = '/admin/hotel_likes/save_custom_likes';
-    	
+
     	ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
     		deferred.resolve(data);
     	},function(data){
@@ -139,7 +139,7 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
         var updateData = {'id':id};
         var deferred = $q.defer();
         var url = '/admin/hotel_likes/delete_feature';
-        
+
         ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
             deferred.resolve(data);
         },function(data){
@@ -148,7 +148,7 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
         return deferred.promise;
     };
 
-    
+
 
 
 }]);

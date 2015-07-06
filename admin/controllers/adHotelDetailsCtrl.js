@@ -36,7 +36,7 @@ admin.controller('ADHotelDetailsCtrl', [
 		// SNT Admin -To add new hotel view
 		if($stateParams.action == "add" || $stateParams.action =="addfromSetup"){
 			$scope.title = "Add New Hotel";
-			
+
 			var fetchSuccess = function(data){
 				$scope.data = data.data;
 				$scope.data.brands = [];
@@ -49,7 +49,7 @@ admin.controller('ADHotelDetailsCtrl', [
 					$scope.data.check_in_primetime ="AM";
 					$scope.data.check_out_primetime = "AM";
 			};
-			
+
 			$scope.invokeApi(ADHotelDetailsSrv.fetchAddData, {}, fetchSuccess);
 		}
 		// SNT Admin -To edit existing hotel view
@@ -74,7 +74,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			};
 			$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id':$stateParams.id}, fetchSuccess);
 		}
-	
+
 	}
 	else if($rootScope.adminRole == "hotel-admin"){
 		// Hotel Admin -To Edit current hotel view
@@ -143,10 +143,10 @@ admin.controller('ADHotelDetailsCtrl', [
 			$scope.$emit('hideLoader');
 			$scope.successMessage = "Connection Valid";
 		};
-		
+
 		$scope.invokeApi(ADHotelDetailsSrv.testMliConnectivity, postData,testMliConnectivitySuccess);
 	};
-	
+
 	/**
     *   A post method for Add New and UPDATE Existing hotel details.
     */
@@ -161,25 +161,25 @@ admin.controller('ADHotelDetailsCtrl', [
 				$scope.$emit('hideLoader');
 				$state.go("admin.hotels");
 			};
-			
+
 			if($scope.isEdit) $scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data, postSuccess);
 			else $scope.invokeApi(ADHotelDetailsSrv.addNewHotelDeatils, data, postSuccess);
 		}
 		// Hotel Admin -To save Edit data
 		else{
-			
+
 
 		/*********** Commented out to fix CICO-8508 ****************************/
 		//template logo was not updating when existing image was removed
 		/********************************************************************/
 			if($scope.data.payment_gateway === "MLI"){
-				
+
 				var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","hotel_pms_type","is_single_digit_search","is_pms_tokenized","signature_display","hotel_list","menus","mli_hotel_code","mli_chain_code","mli_access_url", "languages","date_formats", "six_merchant_id", "six_validation_code", "is_external_references_import_on", "external_references_import_freq", "is_hold_room_import_on", "hold_room_import_freq","allow_desktop_swipe","cc_swipe_listening_port"];
 			 } else {
 			 	var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","hotel_pms_type","is_single_digit_search","is_pms_tokenized","signature_display","hotel_list","menus","mli_hotel_code","mli_chain_code","mli_access_url", "languages","date_formats", "mli_payment_gateway_url", "mli_merchant_id", "mli_api_version", "mli_api_key", "mli_site_code", "is_external_references_import_on", "external_references_import_freq", "is_hold_room_import_on", "hold_room_import_freq","allow_desktop_swipe","cc_swipe_listening_port"];
 			 }
-			
-			
+
+
 			var data = dclone($scope.data, unwantedKeys);
 			if($scope.hotelLogoPrefetched == data.hotel_logo){
 				data.hotel_logo = "";
@@ -200,7 +200,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			$scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data, postSuccess);
 		}
 	};
-	
+
 	/**
     *   Method to toggle data for 'is_pms_tokenized' as true/false.
     */
@@ -252,7 +252,7 @@ admin.controller('ADHotelDetailsCtrl', [
 		};
 
 		$scope.invokeApi(ADHotelDetailsSrv.testMLIPaymentGateway,{}, testMLIPaymentGatewaySuccess, testMLIPaymentGatewayError);
-		
+
 	};
 
 
@@ -262,13 +262,13 @@ admin.controller('ADHotelDetailsCtrl', [
 	$scope.back = function(){
 
 		if($scope.isAdminSnt) {
-			
+
     		if($scope.previousStateIsDashBoard)
     			$state.go("admin.dashboard",{"menu":0});
     		else{
     			$state.go("admin.hotels");
     		}
-  
+
 		}
 		else {
 			if($rootScope.previousStateParam){
@@ -302,5 +302,5 @@ admin.controller('ADHotelDetailsCtrl', [
     		return true;
     	else return false;
     };
-	
+
 }]);

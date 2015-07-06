@@ -1,4 +1,4 @@
-admin.controller('ADPaymentMethodsCtrl', ['$scope', '$state', 'ADPaymentMethodsSrv', '$anchorScroll', '$timeout', '$location', 
+admin.controller('ADPaymentMethodsCtrl', ['$scope', '$state', 'ADPaymentMethodsSrv', '$anchorScroll', '$timeout', '$location',
 function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location) {
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 5);
@@ -18,7 +18,6 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	 *   @param {String} index value for the credit card list.
 	 */
 	$scope.toggleClickedPayment = function(index,isFromCCGroup) {
-		
 		if(isFromCCGroup){
 			var item = $scope.data.credit_card_types[index];
 		}
@@ -167,17 +166,14 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	    		$scope.data.payments.push(data);
 	    	}
     		$scope.$emit('hideLoader');
-    		
 	    	$scope.currentClickedElement = -1;
 	    	$scope.currentClickedElementCC = -1;
-	    	
     	};
 
     	var dataToSend = {};
 
     	if($scope.currentClickedElement === "new") dataToSend = $scope.addData;
 		else dataToSend = $scope.editData;
-		
 		// If we edit system defined credit card type - call api to update credit card.
 		if( $scope.currentClickedElementCC != -1 && dataToSend.is_system_defined ){
 			$scope.invokeApi(ADPaymentMethodsSrv.saveCreditCardMethod, dataToSend , successCallbackSaveCC);
@@ -205,7 +201,6 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 		$scope.editData = dclone($scope.data.credit_card_types[index],["is_active"]);
 		$scope.editData.isEditCC = true;
 	};
-
 	/*
 	 * To get the template of edit screen
 	 * @param {int} index of the selected payment method
