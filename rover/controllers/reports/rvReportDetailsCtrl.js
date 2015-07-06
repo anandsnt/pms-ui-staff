@@ -677,9 +677,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 				chosenDateRange = $scope.chosenReport.untilDate.getTime() - $scope.chosenReport.fromDate.getTime();
 				chosenDateRange = ( chosenDateRange / (1000 * 60 * 60 * 24) | 0 );
 
-				console.log(chosenDateRange);
-				console.log(chosenDateRange);
-
 				// find out the user selection choices
 				chosenVariance = $scope.chosenReport.chosenOptions['include_variance'] ? true : false;
 				chosenLastYear = $scope.chosenReport.chosenOptions['include_last_year'] ? true : false;
@@ -743,7 +740,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('FORECAST_BY_DATE'):
 				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
 				case reportUtils.getName('MARKET_SEGMENT_STATISTICS_REPORT'):
-				case reportUtils.getName('COMPARISION_BY_DATE'):
 					orientation = 'landscape';
 					break;
 

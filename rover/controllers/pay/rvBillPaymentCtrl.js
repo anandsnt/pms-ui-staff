@@ -335,8 +335,18 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			}
 		}
 		
-		var defaultAmount = $scope.billsArray[$scope.currentActiveBill].total_fees.length >0 ?
-			$scope.billsArray[$scope.currentActiveBill].total_fees[0].balance_amount : zeroAmount;
+		var currentBillTotalFees = $scope.billsArray[$scope.currentActiveBill].total_fees;
+		var defaultAmount = zeroAmount;
+		if(currentBillTotalFees.length <= 0 ){
+			defaultAmount = zeroAmount;
+		}
+		else if(currentBillTotalFees[0].balance_amount === "SR"){
+			defaultAmount = currentBillTotalFees[0].masked_balance_amount;
+		}
+		else{
+			defaultAmount =  currentBillTotalFees[0].balance_amount
+		};
+
 		$scope.renderData.defaultPaymentAmount = parseFloat(defaultAmount).toFixed(2);
 		$scope.defaultRefundAmount = (-1)*parseFloat($scope.renderData.defaultPaymentAmount);
 		
