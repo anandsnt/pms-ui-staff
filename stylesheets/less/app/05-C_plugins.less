@@ -533,8 +533,8 @@
 						position: absolute;
 						left: 15px;
 						top: 80px; 
+						height: 180px;
 						.calc-width(100, 20);
-						.calc-height(100, 398);
 
 						> .wrapper { padding-bottom: 2px; }
 
@@ -585,7 +585,7 @@
 					#total-charge {
 						position: absolute;
 						left: 15px;
-						top: 275px;
+						bottom: 250px;
 						border-top: 2px solid rgba(0,0,0,.1);
 						padding-top: 10px;
 						font-weight: 600;
@@ -603,7 +603,7 @@
 					#numpad {
 						position: absolute;
 						left: 20px;
-						top: 334px;
+						bottom: 20px;
 						.square(230px);
 						.float;
 
@@ -656,7 +656,6 @@
 				&.extended {
 					position: relative;
 					padding-top: 90px;
-					height: 670px;
 
 					.inner-overlay {
 						position: absolute;
@@ -684,6 +683,10 @@
 							visibility: visible;
 							#fade > .in();
 						}
+					}
+
+					.content-right {
+						.scrollable { height: 90px; }
 					}
 
 					.cards {
@@ -805,7 +808,7 @@
 				        }
 
 				        &.open { 
-				        	height: 670px; 
+				        	height: 580px; 
 
 				        	.cards-wrapper {
 
@@ -817,6 +820,18 @@
 					            }
 					        }
 				        }
+					}
+
+					@media only screen and (min-height: 768px) {
+						height: 670px;
+
+						.content-right {
+							.scrollable { height: 180px; }
+						}
+
+						.cards {
+							&.open { height: 670px; }
+						}
 					}
 				}
 			}
@@ -1203,7 +1218,7 @@
 			/* Deposits / Balance ***/
             &.deposit-balance {
                 padding: 0;
-                .size(640px, 920px);
+                .size(580px, 920px);
                 .float;
 
                 .content-left,
@@ -1222,7 +1237,7 @@
                     .expenses { 
                         position: relative;
                         padding-top: 20px;
-                        .calc-height(100, 80);
+                        .calc-height(100, 60);
 
                         li {
                             color: @grey3;
@@ -1287,8 +1302,8 @@
 					.box-shadow(0 -2px 2px rgba(0,0,0,.3));
 
 					.dates {
-						padding: 20px 0;
-						margin-bottom: 20px;
+						padding: 10px 0;
+						margin-bottom: 10px;
 						overflow: hidden;
 
 						strong { 
@@ -1301,9 +1316,9 @@
 
 						.scrollable {
 							position: relative;
-							max-height: 80px;
+							max-height: 40px;
 
-							.wrapper { padding: 0 20px; }
+							.wrapper { padding: 0 10px; }
 
 							.iScrollVerticalScrollbar {
 								top: 0;
@@ -1365,6 +1380,21 @@
 								padding: 0 20px 0 0; 
 								text-align: right; 
 							}
+						}
+					}
+				}
+
+				@media only screen and (min-height: 768px) { 
+					height: 640px; 
+
+					.dates {
+						padding: 20px 0;
+						margin-bottom: 20px;
+
+						.scrollable {
+							max-height: 80px;
+
+							.wrapper { padding: 0 20px; }
 						}
 					}
 				}
@@ -2210,13 +2240,17 @@
 					}
 				}
 
-				&.searching { height: 600px; }
+				&.searching { height: 540px; }
+
+				@media only screen and (min-height: 768px) { 
+					&.searching { height: 600px; }
+				}
 			}
 
 			/* Billing information ***/
 			&.billing-information {
 				padding: 0;
-				.size(700px, 800px);
+				.size(540px, 800px);
 				.float;
 
 				.modal-header {
@@ -2824,7 +2858,11 @@
 						.content-left { width: 100%; }
 						.content-right { #fade > .out(); }
 					}
-				}    	
+				} 
+
+				@media only screen and (min-height: 768px) { 
+					height: 700px;
+				}   	
 			}
 
 			/* New card ***/
@@ -2896,7 +2934,7 @@
 			&.modify-rate {
 				padding: 0;
 				width: 540px;
-				max-height: 620px;
+				max-height: 540px;
 
 				.modal-header {
 					padding: 20px;
@@ -2916,7 +2954,7 @@
 
 				.scrollable {
 					position: relative;
-					max-height: 420px;
+					max-height: 340px;
 				}
 
 				.rate-grid {
@@ -2977,6 +3015,12 @@
 						width: auto;
 					}
 				} 
+
+				@media only screen and (min-height: 768px) { 
+					max-height: 620px;
+
+					.scrollable { max-height: 420px; }
+				}
 			}
 
 			/* Deposit required ***/
@@ -3169,7 +3213,7 @@
 				.rooms-grid {
 					position: relative;
 					margin-top: 40px;
-					max-height: 480px;
+					max-height: 380px;
 
 					.wrapper { padding: 0 20px 20px 20px; }
 
@@ -3303,6 +3347,12 @@
 						display: inline-block;
 						width: auto;
 						padding: 0 20px;
+					}
+				}
+
+				@media only screen and (min-height: 768px) { 
+					.rooms-grid {
+						max-height: 480px;
 					}
 				}
 			}
@@ -3775,7 +3825,7 @@
 			&.staycard-notes,
 			&.staycard-actions {
 				padding: 0;
-				max-height: 620px;
+				max-height: 540px;
 
 				.modal-header {
 					padding: 20px;
@@ -3810,6 +3860,10 @@
 					background-color: rgba(0,0,0,.05);
 					.box-shadow(-2px 0 2px rgba(0,0,0,.3));
 				}
+
+				@media only screen and (min-height: 768px) { 
+					max-height: 620px;
+				}
 			}
 
 			&.staycard-notes {
@@ -3817,7 +3871,7 @@
 
 				.scrollable {
 					position: relative;
-					max-height: 370px;
+					max-height: 290px;
 
 					.notes { padding: 20px; }
 				}
@@ -3840,6 +3894,10 @@
 						margin-left: 20px;
 						width: 140px;
 					}
+				}
+
+				@media only screen and (min-height: 768px) { 
+					.scrollable { max-height: 370px; }
 				}
 			}
 
@@ -3866,7 +3924,7 @@
 
 				.actions-content {
 					position: relative;
-					.size(540px, 920px);
+					.size(460px, 920px);
 
 					.content-left {
 						.scrollable { height: 100%;}
@@ -3888,7 +3946,8 @@
 
 				    	.add-content {
 
-				    		label { margin-bottom: 0; }
+				    		label,
+				    		.entry { margin-bottom: 0; }
 
 							.entry:not(.full-width) {
 								.calc-width(50, 10);
@@ -3938,11 +3997,12 @@
 							}
 
 				    		.actions {
+				    			text-align: center;
 				    			background: transparent;
 				    			height: auto;
 				    			.box-shadow(none);
 
-				    			.button { padding: 0 60px; }
+				    			.button { display: inline-block; }
 				    		}
 				    	}
 				    }
@@ -3962,7 +4022,25 @@
 						clear: both;
 						width: auto;
 						.show;
-						
+					}
+				}
+
+				@media only screen and (min-height: 768px) { 
+					.actions-content { 
+						height: 540px; 
+
+						.content-right {
+							.add-content {
+								.entry { margin-bottom: 10px; }
+
+								.actions {
+									.button {
+										padding: 0 60px;
+										.show;
+									}
+								}
+							}
+						}
 					}
 				}
 			}
