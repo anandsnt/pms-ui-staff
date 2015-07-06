@@ -34,7 +34,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
 	initRevenueData();
     
     fetchDepartments();
-    
+
     $rootScope.$on('REFRESHREVENUECONTENT',function(){
         refreshRevenueScroller();
     });
@@ -51,47 +51,43 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
     $scope.clickedFirstLevel = function(index1){
 
         var toggleItem = $scope.data.revenueData.charge_groups[index1];
+            
+        var successCallBackFetchRevenueDataChargeCodes = function(data){
+            if(data.charge_codes.length > 0){
+                toggleItem.charge_codes = data.charge_codes;
+                toggleItem.active = !toggleItem.active;
+                refreshRevenueScroller();
+            }
+            $scope.errorMessage = "";
+            $scope.$emit('hideLoader');
+        };
         
-        if($scope.checkHasArrowLevel1(index1)){
-            toggleItem.active = !toggleItem.active;
-            refreshRevenueScroller();
+        // Call api only while expanding the tab ..
+        if(!toggleItem.active){
+            var postData = { "from":$scope.data.fromDate , "to":$scope.data.toDate , "charge_group_id":toggleItem.id };
+            $scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeCodes, postData, successCallBackFetchRevenueDataChargeCodes);
         }
         else{
-            // No data exist - Call API to fetch it
-            var successCallBackFetchRevenueDataChargeCodes = function(data){
-                if(data.charge_codes.length > 0){
-                    toggleItem.charge_codes = data.charge_codes;
-                    toggleItem.active = !toggleItem.active;
-                    refreshRevenueScroller();
-                }
-                $scope.errorMessage = "";
-                $scope.$emit('hideLoader');
-            };
-            var postData = { "from":$scope.data.fromDate , "to":$scope.data.toDate , "charge_group_id":toggleItem.id };
-
-            $scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeCodes, postData, successCallBackFetchRevenueDataChargeCodes);
+            toggleItem.active = !toggleItem.active;
         }
     };
     
     /** Handle Expand/Collapse on Level2 **/
     $scope.clickedSecondLevel = function(index1, index2){
         var toggleItem = $scope.data.revenueData.charge_groups[index1].charge_codes[index2];
-        if($scope.checkHasArrowLevel2(index1, index2)){
-            toggleItem.active = !toggleItem.active;
-            refreshRevenueScroller();
-        }
-        else{
-            // No data exist - Call API to fetch it
-            var successCallBackFetchRevenueDataTransactions = function(data){
-                if(data.transactions.length >0){
-                    toggleItem.transactions = data.transactions;
-                    toggleItem.active = !toggleItem.active;
-                    refreshRevenueScroller();
-                }
-                $scope.errorMessage = "";
-                $scope.$emit('hideLoader');
-            };
+        
+        var successCallBackFetchRevenueDataTransactions = function(data){
+            if(data.transactions.length >0){
+                toggleItem.transactions = data.transactions;
+                toggleItem.active = !toggleItem.active;
+                refreshRevenueScroller();
+            }
+            $scope.errorMessage = "";
+            $scope.$emit('hideLoader');
+        };
 
+        // Call api only while expanding the tab ..
+        if(!toggleItem.active){
             var postData = {
                 "from_date":$scope.data.fromDate ,
                 "to_date":$scope.data.toDate ,
@@ -99,8 +95,10 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
                 "employee_ids" : $scope.data.selectedEmployeeList ,
                 "department_ids" : $scope.data.selectedDepartmentList
             };
-
             $scope.invokeApi(RVJournalSrv.fetchRevenueDataByTransactions, postData, successCallBackFetchRevenueDataTransactions);
+        }
+        else{
+            toggleItem.active = !toggleItem.active;
         }
     };
 

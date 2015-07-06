@@ -37,12 +37,8 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     $scope.clickedFirstLevel = function(index1){
 
         var toggleItem = $scope.data.paymentData.payment_types[index1];
-
-        if($scope.checkHasArrowLevel1(index1)){
-            toggleItem.active = !toggleItem.active;
-            refreshPaymentScroll();
-        }
-        else if((toggleItem.payment_type !== "Credit Card")){
+        
+        if((toggleItem.payment_type !== "Credit Card")){
             // No data exist - Call API to fetch it
             var successCallBackFetchPaymentDataTransactions = function(data){
                 if(data.transactions.length >0){
@@ -54,38 +50,39 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
                 $scope.$emit('hideLoader');
             };
 
-            var postData = {
-                "from_date":$scope.data.fromDate ,
-                "to_date":$scope.data.toDate ,
-                "charge_code_id":toggleItem.charge_code_id ,
-                "employee_ids" : $scope.data.selectedEmployeeList ,
-                "department_ids" : $scope.data.selectedDepartmentList
-            };
-
-            $scope.invokeApi(RVJournalSrv.fetchPaymentDataByTransactions, postData, successCallBackFetchPaymentDataTransactions);
+            // Call api only while expanding the tab ..
+            if(!toggleItem.active){
+                var postData = {
+                    "from_date":$scope.data.fromDate ,
+                    "to_date":$scope.data.toDate ,
+                    "charge_code_id":toggleItem.charge_code_id ,
+                    "employee_ids" : $scope.data.selectedEmployeeList ,
+                    "department_ids" : $scope.data.selectedDepartmentList
+                };
+                $scope.invokeApi(RVJournalSrv.fetchPaymentDataByTransactions, postData, successCallBackFetchPaymentDataTransactions);
+            }
+            else{
+                toggleItem.active = !toggleItem.active;
+            }
         }
     };
     /** Handle Expand/Collapse of Level2 **/
     $scope.clickedSecondLevel = function(index1, index2){
 
         var toggleItem = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
+        
+        var successCallBackFetchPaymentDataTransactions = function(data){
+            if(data.transactions.length >0){
+                toggleItem.transactions = data.transactions;
+                toggleItem.active = !toggleItem.active;
+                refreshPaymentScroll();
+            }
+            $scope.errorMessage = "";
+            $scope.$emit('hideLoader');
+        };
 
-        if($scope.checkHasArrowLevel2(index1, index2)){
-            toggleItem.active = !toggleItem.active;
-            refreshPaymentScroll();
-        }
-        else{
-            // No data exist - Call API to fetch it
-            var successCallBackFetchPaymentDataTransactions = function(data){
-                if(data.transactions.length >0){
-                    toggleItem.transactions = data.transactions;
-                    toggleItem.active = !toggleItem.active;
-                    refreshPaymentScroll();
-                }
-                $scope.errorMessage = "";
-                $scope.$emit('hideLoader');
-            };
-
+        // Call api only while expanding the tab ..
+        if(!toggleItem.active){
             var postData = {
                 "from_date":$scope.data.fromDate ,
                 "to_date":$scope.data.toDate ,
@@ -95,7 +92,11 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
             };
             $scope.invokeApi(RVJournalSrv.fetchPaymentDataByTransactions, postData, successCallBackFetchPaymentDataTransactions);
         }
+        else{
+            toggleItem.active = !toggleItem.active;
+        }
     };
+
     /* To show / hide table heading section for Level2 (Credit card items) */
     $scope.isShowTableHeadingLevel2 = function(index1, index2){
         var isShowTableHeading = false,
@@ -107,6 +108,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         }
         return isShowTableHeading;
     };
+
     /* To show / hide table heading section for Level1 (Not Credit card items) */
     $scope.isShowTableHeadingLevel1 = function(index1){
         var isShowTableHeading = false,
@@ -118,6 +120,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         }
         return isShowTableHeading;
     };
+
     /* To hide/show arrow button for Level1 */
     $scope.checkHasArrowLevel1 = function(index){
         var hasArrow = false,
@@ -130,6 +133,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         }
         return hasArrow;
     };
+
     /* To hide/show arrow button for Level2 */
     $scope.checkHasArrowLevel2 = function(index1, index2){
         var hasArrow = false,

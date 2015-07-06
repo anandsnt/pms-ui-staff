@@ -44,31 +44,33 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     };
     retrieveCashierName();    
 
+    // Show calendar popup.
+    var popupCalendar = function(clickedOn) {
+        $scope.clickedOn = clickedOn;
+        ngDialog.open({
+            template: '/assets/partials/financials/journal/rvJournalCalendarPopup.html',
+            controller: 'RVJournalDatePickerController',
+            className: 'single-date-picker',
+            scope: $scope
+        });
+    };
+
 	/* Handling different date picker clicks */
 	$scope.clickedFromDate = function(){
-		$scope.popupCalendar('FROM');
+		popupCalendar('FROM');
 	};
 	$scope.clickedToDate = function(){
-		$scope.popupCalendar('TO');
+		popupCalendar('TO');
 	};
 	$scope.clickedCashierDate = function(){
-		$scope.popupCalendar('CASHIER');
+		popupCalendar('CASHIER');
 	};
-	// Show calendar popup.
-	$scope.popupCalendar = function(clickedOn) {
-		$scope.clickedOn = clickedOn;
-      	ngDialog.open({
-	        template: '/assets/partials/financials/journal/rvJournalCalendarPopup.html',
-	        controller: 'RVJournalDatePickerController',
-	        className: 'single-date-picker',
-	        scope: $scope
-      	});
-    };
+	
 
     /** Employee/Departments Filter starts here ..**/
 
     // Filter by Logged in user id.
-    $scope.filterByLoggedInUser = function(){
+    var filterByLoggedInUser = function(){
         angular.forEach($scope.data.filterData.employees,function(item, index) {
             if(item.id == $scope.data.filterData.loggedInUserId ){
                 item.checked = true;
@@ -87,7 +89,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         }, 200);
 	};
 
-    $scope.refreshRevenueTab = function(){
+    /*$scope.refreshRevenueTab = function(){
         $rootScope.$broadcast('REFRESHREVENUECONTENT');
         $scope.data.selectedChargeGroup = 'ALL';
         $scope.data.selectedChargeCode  = 'ALL';
@@ -96,14 +98,55 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.refreshPaymentTab = function(){
         $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
         $scope.data.selectedPaymentType = 'ALL';
+    };*/
+
+    // Checking whether all department checkboxes are unchecked or not
+    var isAllDepartmentsUnchecked = function(){
+        var flag = true;
+        angular.forEach($scope.data.filterData.departments,function(item, index) {
+            if(item.checked) flag = false;
+        });
+        return flag;
+    };
+
+    var getSelectButtonStatus = function(){
+        if(isAllEmployeesUnchecked() && isAllDepartmentsUnchecked()){
+            $scope.data.filterData.isSelectButtonActive = false;
+        }
+        else{
+            $scope.data.filterData.isSelectButtonActive = true;
+        }
+    };
+
+    // Unchecking all checkboxes on Departments.
+    var clearAllDeptSelection = function(index){
+        angular.forEach($scope.data.filterData.departments,function(item, index) {
+            item.checked = false;
+        });
+    };
+
+    // Unchecking all checkboxes on Employees.
+    var clearAllEmployeeSelection = function(index){
+        angular.forEach($scope.data.filterData.employees,function(item, index) {
+            item.checked = false;
+        });
+    };
+
+    // Checking whether all employees checkboxes are unchecked or not
+    var isAllEmployeesUnchecked = function(){
+        var flag = true;
+        angular.forEach($scope.data.filterData.employees,function(item, index) {
+            if(item.checked) flag = false;
+        });
+        return flag;
     };
 
     // On selecting 'All Departments' radio button.
     $scope.selectAllDepartment = function(){
     	$scope.data.filterData.checkedAllDepartments = true;
-    	$scope.clearAllDeptSelection();
-        $scope.clearAllEmployeeSelection();
-        $scope.getSelectButtonStatus();
+    	clearAllDeptSelection();
+        clearAllEmployeeSelection();
+        getSelectButtonStatus();
 
         $scope.data.filterTitle = "All Departments";
     };
@@ -112,70 +155,20 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.clickedDepartment = function(index){
 
     	$scope.data.filterData.departments[index].checked = !$scope.data.filterData.departments[index].checked;
-    	$scope.getSelectButtonStatus();
+    	getSelectButtonStatus();
 
-    	if($scope.isAllDepartmentsUnchecked()) $scope.selectAllDepartment();
+    	if(isAllDepartmentsUnchecked()) $scope.selectAllDepartment();
     	else $scope.data.filterData.checkedAllDepartments = false;
     };
-
-    // Unchecking all checkboxes on Departments.
-    $scope.clearAllDeptSelection = function(index){
-    	angular.forEach($scope.data.filterData.departments,function(item, index) {
-       		item.checked = false;
-       	});
-    };
-
-    // Unchecking all checkboxes on Employees.
-    $scope.clearAllEmployeeSelection = function(index){
-        angular.forEach($scope.data.filterData.employees,function(item, index) {
-            item.checked = false;
-        });
-    };
-
-    // Checking whether all department checkboxes are unchecked or not
-    $scope.isAllDepartmentsUnchecked = function(){
-    	var isAllDepartmentsUnchecked = true;
-    	angular.forEach($scope.data.filterData.departments,function(item, index) {
-       		if(item.checked) isAllDepartmentsUnchecked = false;
-       	});
-       	return isAllDepartmentsUnchecked;
-    };
-
-    // Checking whether all employees checkboxes are unchecked or not
-    $scope.isAllEmployeesUnchecked = function(){
-        var isAllEmployeesUnchecked = true;
-        angular.forEach($scope.data.filterData.employees,function(item, index) {
-            if(item.checked) isAllEmployeesUnchecked = false;
-        });
-        return isAllEmployeesUnchecked;
-    };
-
+    
     // Clicking on each Employees check boxes.
     $scope.clickedEmployees = function(selectedIndex){
         $scope.data.filterData.employees[selectedIndex].checked = !$scope.data.filterData.employees[selectedIndex].checked;
-        $scope.getSelectButtonStatus();
-    };
-
-    $scope.getSelectButtonStatus = function(){
-        if($scope.isAllEmployeesUnchecked() && $scope.isAllDepartmentsUnchecked()){
-            $scope.data.filterData.isSelectButtonActive = false;
-        }
-        else{
-            $scope.data.filterData.isSelectButtonActive = true;
-        }
-    };
-
-    // On selecting select button.
-    $scope.clickedSelectButton = function(){
-    	
-    	if($scope.data.filterData.isSelectButtonActive){
-            $scope.setupDeptAndEmpList();
-            $scope.data.isActiveRevenueFilter = false; // Close the entire filter box
-        }
+        getSelectButtonStatus();
     };
 
     // To setup Lists of selected ids of employees and departments.
-    $scope.setupDeptAndEmpList = function(){
+    var setupDeptAndEmpList = function(){
         var filterTitle = "";
         // To get the list of departments id selected.
         $scope.data.selectedDepartmentList = [];
@@ -206,6 +199,15 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         }
     };
 
+    // On selecting select button.
+    $scope.clickedSelectButton = function(){
+        
+        if($scope.data.filterData.isSelectButtonActive){
+            setupDeptAndEmpList();
+            $scope.data.isActiveRevenueFilter = false; // Close the entire filter box
+        }
+    };
+
     if($stateParams.id == 0){
         // 2. Go to Financials -> Journal.
         // a) Upon logging in, default Tab should be Revenue
@@ -230,7 +232,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         $scope.data.cashierDate = $rootScope.businessDate;
         // b) All employee fields should default to logged in user
         $timeout(function(){
-            $scope.filterByLoggedInUser();
+            filterByLoggedInUser();
         },2000);
     }
 
