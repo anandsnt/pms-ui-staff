@@ -4,6 +4,8 @@ sntRover.controller('RVComparisonReportCtrl', [
 	'$filter',
 	'RVReportUtilsFac',
 	function($rootScope, $scope, $filter, reportUtils) {
+
+		var currencySymbol = $rootScope.currencySymbol;
 		
 		// initial data process
 		init();
@@ -24,8 +26,7 @@ sntRover.controller('RVComparisonReportCtrl', [
 		});
 		
 		function init () {
-			var results        = $scope.$parent.results,
-				currencySymbol = $rootScope.currencySymbol,
+			var results = $scope.$parent.results,
 				processed,
 				i,
 				j;
