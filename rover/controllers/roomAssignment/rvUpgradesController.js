@@ -71,19 +71,6 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 		$scope.selectUpgrade();			
 	};
 
-	/**
-	 * to open the room aleady chhosed popup
-	 * @return undefined
-	 */
-	var openRoomAlreadyChoosedPopup = function() {
-		ngDialog.open(
-		{
-			template 	: '/assets/partials/roomAssignment/rvRoomHasAutoAssigned.html',
-			controller 	: 'rvRoomAlreadySelectedCtrl',
-			className 	: 'ngdialog-theme-default',
-			scope 		: $scope
-        });
-	};
 
 	/**
 	 * to open the room aleady chhosed popup
