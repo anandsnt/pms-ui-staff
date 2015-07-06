@@ -22,7 +22,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 			    deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 		return deferred.promise;
 	};
 	/**
@@ -30,7 +30,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
     * @param {object} id of the clicked user
     * @return {object} users details json
     */
-	this.getUserDetails = function(data){		
+	this.getUserDetails = function(data){
 		var id = data.id;
 		var deferred = $q.defer();
 		var url = '/admin/users/'+id+'/edit.json';
@@ -39,7 +39,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
    /**
@@ -56,13 +56,13 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/**
-    * To update user details 
+    * To update user details
     * @param {object} data - data to be updated
-    * @return {object} 
+    * @return {object}
     */
 	this.updateUserDetails = function(data){
 		
@@ -77,14 +77,14 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 		
 	};
 	/**
-    * To add new user details 
+    * To add new user details
     * @param {object} data - data to be added
-    * @return {object} 
+    * @return {object}
     */
 	this.saveUserDetails = function(data){
 		var newDataToArray = {
@@ -104,7 +104,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 		
 	};
@@ -122,7 +122,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 		that.usersArray.users.push(newData);
 	};
 	/*
-	 * To get the department name 
+	 * To get the department name
 	 */
 	this.getDepartmentName = function(departmentId){
 		var deptName = "";
@@ -154,7 +154,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 	/**
     * To activate/inactivate user
     * @param {object} data - data to activate/inactivate
-    * @return {object} 
+    * @return {object}
     */
 	this.activateInactivate = function(data){
 		
@@ -165,14 +165,14 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 		
 	};
 	/**
     * To delete user
     * @param {object} data - data to delete
-    * @return {object} 
+    * @return {object}
     */
 	this.deleteUser = function(data){
 		
@@ -186,14 +186,14 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 		
 	};
 	/**
     * To link existing user
     * @param {object} data - data to link existing user
-    * @return {object} 
+    * @return {object}
     */
 	this.linkExistingUser = function(data){
 		
@@ -204,7 +204,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 		
 	};
@@ -221,7 +221,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 }]);

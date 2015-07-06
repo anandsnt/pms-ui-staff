@@ -2,7 +2,7 @@ admin.service('ADAppSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', functi
 
 	this.fetch = function(){
 		var deferred = $q.defer();
-		var url = '/admin/settings/menu_items.json';	
+		var url = '/admin/settings/menu_items.json';
 		// var url = '/sample_json/menu_items.json';
 		
 		var fetchSuccess = function(data){
@@ -18,7 +18,7 @@ admin.service('ADAppSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', functi
 	
 	this.redirectToHotel = function(hotel_id){
 		var deferred = $q.defer();
-		var url = '/admin/hotel_admin/update_current_hotel';	
+		var url = '/admin/hotel_admin/update_current_hotel';
 		
 		var fetchSuccess = function(data){
 			deferred.resolve(data);
@@ -34,7 +34,7 @@ admin.service('ADAppSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', functi
 	
 	this.bookMarkItem = function(data){
 		var deferred = $q.defer();
-		var url = '/admin/user_admin_bookmark';	
+		var url = '/admin/user_admin_bookmark';
 		
 		var fetchSuccess = function(data){
 			deferred.resolve(data);
@@ -49,7 +49,7 @@ admin.service('ADAppSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', functi
 	this.removeBookMarkItem = function(data){
 		var id = data.id;
 		var deferred = $q.defer();
-		var url = '/admin/user_admin_bookmark/'+id;	
+		var url = '/admin/user_admin_bookmark/'+id;
 		
 		var fetchSuccess = function(data){
 			deferred.resolve(data);
@@ -78,7 +78,7 @@ admin.service('ADAppSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', functi
 	this.hotelDetails = {};
 	this.fetchHotelDetails = function(){
 		var that = this;
-		var deferred = $q.defer();		
+		var deferred = $q.defer();
 		
 		var url = '/api/hotel_settings.json';
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {

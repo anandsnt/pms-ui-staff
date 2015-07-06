@@ -1,9 +1,9 @@
 admin.controller('ADUserDetailsCtrl',
-	[ '$scope', 
+	[ '$scope',
 	'$state',
-	'$stateParams', 
-	'ADUserSrv', 
-	'$rootScope', 
+	'$stateParams',
+	'ADUserSrv',
+	'$rootScope',
 	'ADUserRolesSrv',
 	'$timeout' ,
 	'$window',
@@ -31,7 +31,7 @@ admin.controller('ADUserDetailsCtrl',
 	$scope.errorMessage = "";
 	$scope.focusOnPassword = false;
 
-	$scope.getMyDashboards = function() { 
+	$scope.getMyDashboards = function() {
 
 		var rolesData = $scope.assignedRoles;
 		$scope.dashboardOptions = [];
@@ -66,7 +66,7 @@ admin.controller('ADUserDetailsCtrl',
 				$scope.mod = "edit";
 				$scope.userDetailsEdit(id);
 			}
-			// $scope.setMyDashboards();			
+			// $scope.setMyDashboards();
 		};
 
 		$scope.invokeApi(ADUserRolesSrv.fetchUserRoles, {}, successCallbackRoles);
@@ -76,7 +76,7 @@ admin.controller('ADUserDetailsCtrl',
 
    /**
     * To check whether logged in user is sntadmin or hoteladmin
-    */	
+    */
    // $scope.BackAction = $scope.hotelId;
 	if($rootScope.adminRole == "snt-admin"){
 		$scope.isAdminSnt = true;
@@ -97,13 +97,13 @@ admin.controller('ADUserDetailsCtrl',
 			$scope.selectedAssignedRole =-1;
 		}
 		else if(lastDropedTime == ''){
-			$scope.selectedAssignedRole = index;			
+			$scope.selectedAssignedRole = index;
 		}
 		else if(typeof lastDropedTime == 'object') { //means date
 			var currentTime = new Date();
 			var diff = currentTime - lastDropedTime;
 			if(diff <= 100){
-				$event.preventDefault();				
+				$event.preventDefault();
 			}
 			else{
 				lastDropedTime = '';
@@ -122,20 +122,20 @@ admin.controller('ADUserDetailsCtrl',
 			$scope.selectedUnassignedRole =-1;
 		}
 		else if(lastDropedTime == ''){
-			$scope.selectedUnassignedRole = index;			
+			$scope.selectedUnassignedRole = index;
 		}
 		else if(typeof lastDropedTime == 'object') { //means date
 			var currentTime = new Date();
 			var diff = currentTime - lastDropedTime;
 			if(diff <= 100){
-				$event.preventDefault();				
+				$event.preventDefault();
 			}
 			else{
 				lastDropedTime = '';
 			}
 
-		}				
-	};	
+		}
+	};
    /*
     * Handle action when clicked on right arrow button
     */
@@ -146,7 +146,7 @@ admin.controller('ADUserDetailsCtrl',
 		}
 		var newElement = $scope.assignedRoles[index];
 		$scope.unAssignedRoles.push(newElement);
-		var newElement = $scope.unAssignedRoles[index];	
+		var newElement = $scope.unAssignedRoles[index];
 		$scope.assignedRoles.splice(index, 1);
 		$scope.selectedAssignedRole = -1;
 	};
@@ -157,8 +157,8 @@ admin.controller('ADUserDetailsCtrl',
 		var index = $scope.selectedUnassignedRole;
 		if(index == -1){
 			return;
-		}	
-		var newElement = $scope.unAssignedRoles[index];	
+		}
+		var newElement = $scope.unAssignedRoles[index];
 		$scope.assignedRoles.push(newElement);
 		$scope.unAssignedRoles.splice(index, 1);
 		$scope.selectedUnassignedRole = -1;
@@ -178,7 +178,7 @@ admin.controller('ADUserDetailsCtrl',
 		var userRoles = [];
 		for(var j = 0; j < $scope.assignedRoles.length; j++){
 	 		if($scope.assignedRoles[j].value != ""){
-	 			userRoles.push($scope.assignedRoles[j].value);	
+	 			userRoles.push($scope.assignedRoles[j].value);
 	 		}
 	 	}
 		
@@ -203,9 +203,9 @@ admin.controller('ADUserDetailsCtrl',
 		}
 	};
 	/**
-    * To render edit screen - 
+    * To render edit screen -
     * @param {string} the id of the clicked user
-    * 
+    *
     */
 	$scope.userDetailsEdit = function(id){
 		var successCallbackRender = function(data){
@@ -220,13 +220,13 @@ admin.controller('ADUserDetailsCtrl',
 			}
 			$scope.data.confirm_email = $scope.data.email;
 
-			for(var i = 0; i < $scope.rolesWithDashboards.length; i++) {				
+			for(var i = 0; i < $scope.rolesWithDashboards.length; i++) {
 				if ( $scope.data.user_roles.indexOf($scope.rolesWithDashboards[i].value.toString() ) != -1 ){
 	   			 	$scope.assignedRoles.push($scope.rolesWithDashboards[i]);
 	   			 	for(var j = 0; j < $scope.unAssignedRoles.length; j++){
 	   			 		if($scope.unAssignedRoles[j].value == $scope.rolesWithDashboards[i].value){
 	   			 			$scope.unAssignedRoles.splice(j, 1);
-	   			 			break;		
+	   			 			break;
 	   			 		}
 	   			 	}
 	   			 	
@@ -267,8 +267,8 @@ admin.controller('ADUserDetailsCtrl',
 			$scope.unAssignedRoles = $scope.rolesWithDashboards.slice(0);
 			$scope.assignedRoles = [];
 			$scope.image = "/assets/preview_image.png";
-		};	
-	 	$scope.invokeApi(ADUserSrv.getAddNewDetails, '' , successCallbackRender);	
+		};
+	 	$scope.invokeApi(ADUserSrv.getAddNewDetails, '' , successCallbackRender);
 	};
    
 	/**
@@ -291,13 +291,13 @@ admin.controller('ADUserDetailsCtrl',
 		$scope.errorMessage = '';
 		if(userId == "" || userId == undefined){
 			return false;
-		}		
+		}
 		var data = {"id": userId};
 
 		//if it is in unlocking mode
 		if ($scope.isInUnlockingMode()) {
 			//if the erntered password is not matching
-			if ($scope.data.password !== $scope.data.confirm_password) {				
+			if ($scope.data.password !== $scope.data.confirm_password) {
 
 				$timeout(function(){
 					$scope.errorMessage = ["Password's deos not match"];
@@ -309,7 +309,7 @@ admin.controller('ADUserDetailsCtrl',
 			data.password = $scope.data.password;
 			data.is_trying_to_unlock = true;
 		}
-	 	$scope.invokeApi(ADUserSrv.sendInvitation,  data, successCallbackOfSendInvitation);	
+	 	$scope.invokeApi(ADUserSrv.sendInvitation,  data, successCallbackOfSendInvitation);
 	};
 
 	$scope.reachedUnAssignedRoles = function(event, ui){
@@ -318,7 +318,7 @@ admin.controller('ADUserDetailsCtrl',
 	}
 
 	$scope.reachedAssignedRoles = function(event, ui){
-		$scope.selectedUnassignedRole = -1;	
+		$scope.selectedUnassignedRole = -1;
 		lastDropedTime = new Date();
 	}
 

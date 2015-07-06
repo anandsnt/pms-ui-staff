@@ -50,7 +50,7 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.init();
 			}
 			/**
-			* $scope.fetchedData will be undefined incase the controller is initiated 
+			* $scope.fetchedData will be undefined incase the controller is initiated
 			* from admin side.So call service and assign response data.
 			*/
 			if($scope.fetchedData){
@@ -65,7 +65,7 @@ sntRover.controller('RVOutsidePostChargeController',
 			/**
 			* function used for refreshing the scroller
 			*/
-			var refreshScroller = function(){  
+			var refreshScroller = function(){
 				setTimeout(function() {
 					$scope.refreshScroller('result_showing_area_post_charg');
 				}, 500);
@@ -106,7 +106,7 @@ sntRover.controller('RVOutsidePostChargeController',
 					$scope.showInitialSearchScreen = true;
 					$scope.$apply();
 				}
-				if($scope.search.guest_company_agent.length == 0 && $scope.search.room.length == 0 
+				if($scope.search.guest_company_agent.length == 0 && $scope.search.room.length == 0
 																&& $scope.reservationsArray.length == 0){
 					$scope.showInitialSearchScreen = true;
 				}
@@ -163,7 +163,7 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.showSearchScreen = false;
 			};
 			$scope.showHideInitialSearchScreen = function(){
-				if($scope.search.guest_company_agent.length == 0 && $scope.search.room.length == 0 
+				if($scope.search.guest_company_agent.length == 0 && $scope.search.room.length == 0
 																&& $scope.reservationsArray.length == 0){
 					$scope.showInitialSearchScreen = true;
 				}
@@ -243,7 +243,7 @@ sntRover.controller('RVOutsidePostChargeController',
 		       }
 		      var valueToReturn = ((value == null || typeof value == 'undefined' ) ? newValue : value);
 		      return valueToReturn;
-		   };  
+		   };
 		
 		   /*
 		   * function to get reservation class against reservation status

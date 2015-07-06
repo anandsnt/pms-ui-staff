@@ -360,7 +360,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 else{
                     setData.overwrite_rate_manager = false;
                     callSaveOrUpdateSet();
-                };         
+                };
             };
 
             $scope.invokeApi(ADRatesConfigureSrv.rateManagerStatusCheck, {"id":setData.id}, rateManagerCheckSuccsess);
@@ -373,7 +373,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
             if (!!saveGrid && saveGrid == 'saveGrid' && !selectedSet.showRoomRate) {
                 selectedSet.showRoomRate = true;
-            }            
+            }
 
             var saveSetFailureCallback = function(errorMessage) {
                 $scope.$emit('hideLoader');
@@ -428,7 +428,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
             setData.dateRangeId = dateRangeId;
             selectedIndex = index;
-            //Check if values exist in the Rate Manager 
+            //Check if values exist in the Rate Manager
             checkForRateSetUpdateInRateManager(setData);
         };
 
@@ -456,7 +456,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             var deleteSetSuccessCallback = function(){
                 $scope.$emit('hideLoader');
                 $scope.data.sets.splice($scope.deleteSetIndex, 1);
-                ngDialog.close();                
+                ngDialog.close();
             };
             $scope.invokeApi(ADRatesConfigureSrv.deleteSet, $scope.deleteSetId, deleteSetSuccessCallback);
         };

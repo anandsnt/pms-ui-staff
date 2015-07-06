@@ -2,7 +2,7 @@ var CardOperation = function(){
 	// class for handling operations with payment device
 	
 	var that = this;
-	// function for start reading from device 
+	// function for start reading from device
 	// Note down: Currently it is recursive
 	
 	this.startReaderDebug = function(options){
@@ -38,18 +38,18 @@ var CardOperation = function(){
 			successCallBack(mechineResponse, successCallBackParameters);
 		}, 1000);
 
-	};	
+	};
 
 
 	this.startReader = function(options){
 		options['shouldCallRecursively'] = true;
-		that.listenForSingleSwipe(options);		
+		that.listenForSingleSwipe(options);
 	};
 	
 	// function used to call cordova services
 	this.callCordovaService = function(options){
 		// cordova.exec function require success and error call back
-		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;		
+		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
 		
 		// if success call back require additional parameters
@@ -66,14 +66,14 @@ var CardOperation = function(){
 			return false;
 		}
 		else if(failureCallBack == null){
-			return false;			
+			return false;
 		}
 		else if(service == null){
 			return false;
 		}
 		else if(action == null){
-			return false;			
-		}		
+			return false;
+		}
 		else{
 			//alert(cordova);
 			//alert(JSON.stringify(cordova));
@@ -98,7 +98,7 @@ var CardOperation = function(){
 								that.callRecursively(options);
 							}
 							
-						}, 
+						},
 						// if failure/error call back require any parameters
 						function(error){
 							//alert("failureCallBackParameters");
@@ -117,11 +117,11 @@ var CardOperation = function(){
 						// function name
 						action,
 						// arguments to native
-						arguments					
-					);	
+						arguments
+					);
 
 			
-		}		
+		}
 	};
 	
 	this.callRecursively = function(options){
@@ -133,7 +133,7 @@ var CardOperation = function(){
 	};
 	
 	//function for get single swipe
-	this.listenForSingleSwipe = function(options){	
+	this.listenForSingleSwipe = function(options){
 		options['service'] = "RVCardPlugin";
 		options['action'] = "observeForSwipe";
 		that.callCordovaService(options);
@@ -142,33 +142,33 @@ var CardOperation = function(){
 	// function for writing the key data
 	this.writeKeyData = function(options){
 		options['service'] = "RVCardPlugin";
-		options['action'] = "processKeyWriteOperation";		
-		that.callCordovaService(options);		
+		options['action'] = "processKeyWriteOperation";
+		that.callCordovaService(options);
 	};
 	
 	// function for stop reading from device
 	this.stopReader = function(options){
 		options['service'] = "RVCardPlugin";
-		options['action'] = "cancelSwipeObservation";		
-		that.callCordovaService(options);		
+		options['action'] = "cancelSwipeObservation";
+		that.callCordovaService(options);
 		
-	};	
+	};
 
 	/**
-	* method for stop/cancel writing operation 
+	* method for stop/cancel writing operation
 	*/
 	this.cancelWriteOperation = function(options){
 		options['service'] = "RVCardPlugin";
-		options['action'] = "cancelWriteOperation";		
-		that.callCordovaService(options);			
+		options['action'] = "cancelWriteOperation";
+		that.callCordovaService(options);
 	};
 	/**
 	* method To set the wrist band type- fixed amount/open room charge
 	*/
 	this.setBandType = function(options){
 		options['service'] = "RVCardPlugin";
-		options['action'] = "setBandType";	
-		that.callCordovaService(options);			
+		options['action'] = "setBandType";
+		that.callCordovaService(options);
 	};
 
 	this.setBandTypeDebug = function(options){
@@ -185,12 +185,12 @@ var CardOperation = function(){
 	* method for checking the device connected status
 	* will call success call back if it is fail or connected (bit confusing?)
 	* success call back with data as false if disconnected
-	* success call back with data as true if connected	
+	* success call back with data as true if connected
 	*/
 	// function to check device status
 	this.checkDeviceConnected = function(options){
 		options['service'] = "RVCardPlugin";
-		options['action'] = "checkDeviceConnectionStatus";		
+		options['action'] = "checkDeviceConnectionStatus";
 		that.callCordovaService(options);
 	};
 
@@ -205,7 +205,7 @@ var CardOperation = function(){
 		// we are simulating the process by calling the success call back after some time
 		setTimeout(function(){
 				successCallBack(deviceStatus, successCallBackParameters);
-		}, 1000);		
+		}, 1000);
 	};
 
 	/**
@@ -215,10 +215,10 @@ var CardOperation = function(){
 	*/
 	this.retrieveUserID = function(options){
 		options['service'] = "RVCardPlugin";
-		options['action'] = "getCLCardUID";		
-		that.callCordovaService(options);		
+		options['action'] = "getCLCardUID";
+		that.callCordovaService(options);
 	};
-	// debug mode of retrieving the Unique id	
+	// debug mode of retrieving the Unique id
 	// please check above method (retrieveUserID) for further description
 	this.retrieveUserIDDebug = function(options){
 		var retUserID = "CB94C49T"; //Sample ID
@@ -237,15 +237,15 @@ var CardOperation = function(){
 	*/
 	this.retrieveCardInfo = function(options){
 		options['service'] = "RVCardPlugin";
-		options['action'] = "getCLCardInfo";		
-		that.callCordovaService(options);		
+		options['action'] = "getCLCardInfo";
+		that.callCordovaService(options);
 	};
 
-	// debug mode of retrieving the card info	
+	// debug mode of retrieving the card info
 	this.retrieveCardInfoDebug = function(options){
 		//TODO: replace with sample hash
 		var retCardInfo = {
-							"card_uid" : "E3C33C7E", 
+							"card_uid" : "E3C33C7E",
 							"card_type" : "3",
 							"card_size" : "1024",
 							"cs" : "912D8F4A79C1"
@@ -259,7 +259,7 @@ var CardOperation = function(){
 
 
 	//function for linking iBeacon
-	this.linkiBeacon = function(options){	
+	this.linkiBeacon = function(options){
 		options['service'] = "RVCardPlugin";
 		options['action'] = "writeBeaconID";
 		that.callCordovaService(options);

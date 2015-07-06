@@ -1,9 +1,9 @@
 admin.controller('ADHotelDetailsCtrl', [
-							'$rootScope', 
-							'$scope', 
+							'$rootScope',
+							'$scope',
 							'ADHotelDetailsSrv',
 							'$stateParams',
-							'$state', 
+							'$state',
 							'ngDialog',
 							function($rootScope, $scope, ADHotelDetailsSrv, $stateParams, $state, ngDialog){
 
@@ -21,12 +21,12 @@ admin.controller('ADHotelDetailsCtrl', [
 	//pms start date setting calendar options
 	$scope.pmsStartDateOptions = {
 	    changeYear: true,
-	    changeMonth: true,	   
+	    changeMonth: true,
 	    yearRange: "0:+10",
 	    onSelect: function()	 {
 	    	ngDialog.close();
 	    }
-  	};	
+  	};
 	if($rootScope.adminRole == "snt-admin"){
 		$scope.isHotelChainEditable = false;
 		$scope.isAdminSnt = true;
@@ -169,9 +169,9 @@ admin.controller('ADHotelDetailsCtrl', [
 		else{
 			
 
-		/*********** Commented out to fix CICO-8508 ****************************/	
+		/*********** Commented out to fix CICO-8508 ****************************/
 		//template logo was not updating when existing image was removed
-		/********************************************************************/		
+		/********************************************************************/
 			if($scope.data.payment_gateway === "MLI"){
 				
 				var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","hotel_pms_type","is_single_digit_search","is_pms_tokenized","signature_display","hotel_list","menus","mli_hotel_code","mli_chain_code","mli_access_url", "languages","date_formats", "six_merchant_id", "six_validation_code", "is_external_references_import_on", "external_references_import_freq", "is_hold_room_import_on", "hold_room_import_freq","allow_desktop_swipe","cc_swipe_listening_port"];
@@ -181,7 +181,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			
 			
 			var data = dclone($scope.data, unwantedKeys);
-			if($scope.hotelLogoPrefetched == data.hotel_logo){ 
+			if($scope.hotelLogoPrefetched == data.hotel_logo){
 				data.hotel_logo = "";
 			}
 			if($scope.hotelTemplateLogoPrefetched == data.hotel_template_logo){
@@ -277,7 +277,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			else if($rootScope.previousState){
 				$state.go($rootScope.previousState);
 			}
-			else 
+			else
 			{
 				$state.go('admin.dashboard', {menu : 0});
 			}

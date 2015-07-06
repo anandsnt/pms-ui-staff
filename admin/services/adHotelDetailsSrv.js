@@ -6,7 +6,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', 'ADBaseWebSrvV
    var hotelDetailsData = {};
 	that.fetchAddData = function(){
 		var deferred = $q.defer();
-		var url = '/admin/hotels/new.json';	
+		var url = '/admin/hotels/new.json';
 		
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 		    // deferred.resolve(data);
@@ -14,20 +14,20 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', 'ADBaseWebSrvV
 		    that.fetchLanguages(deferred);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
-	};	
+	};
 
 	that.fetchLanguages = function(deferred){
 			
-			var url = '/api/reference_values.json?type=language';	
+			var url = '/api/reference_values.json?type=language';
 			
 			ADBaseWebSrvV2.getJSON(url).then(function(data) {
 				hotelDetailsData.languages = data;
 			    deferred.resolve(hotelDetailsData);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 			return deferred.promise;
 		};
 	/**
@@ -37,7 +37,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', 'ADBaseWebSrvV
 	that.fetchEditData = function(data){
 		var deferred = $q.defer();
 			
-		var url = '/admin/hotels/'+data.id+'/edit.json';	
+		var url = '/admin/hotels/'+data.id+'/edit.json';
 		
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			hotelDetailsData.data = data;
@@ -45,9 +45,9 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', 'ADBaseWebSrvV
 		    // deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
-	};	
+	};
 	/**
     *   An getter method to edit deatils for an existing hotel for Hotel Admin
     *   @param {Object} data - deatils of the hotel with hotel id.
@@ -60,7 +60,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', 'ADBaseWebSrvV
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/**
@@ -69,13 +69,13 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', 'ADBaseWebSrvV
     */
 	that.addNewHotelDeatils = function(data){
 		var deferred = $q.defer();
-		var url = '/admin/hotels';	
+		var url = '/admin/hotels';
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/**
@@ -84,13 +84,13 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', 'ADBaseWebSrvV
     */
 	that.updateHotelDeatils = function(data){
 		var deferred = $q.defer();
-		var url = '/admin/hotels/'+data.id;	
+		var url = '/admin/hotels/'+data.id;
 
 		ADBaseWebSrv.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/**
@@ -99,24 +99,24 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', 'ADBaseWebSrvV
     */
 	that.testMliConnectivity = function(data){
 		var deferred = $q.defer();
-		var url = '/admin/hotels/test_mli_settings';	
+		var url = '/admin/hotels/test_mli_settings';
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 
 	this.testMLIPaymentGateway = function(data){
 		var deferred = $q.defer();
-		var url = 'api/test_mli_payment_gate_way';	
+		var url = 'api/test_mli_payment_gate_way';
 		ADBaseWebSrvV2.getJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 }]);

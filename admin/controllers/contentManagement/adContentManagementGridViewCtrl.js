@@ -22,7 +22,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 			$scope.setUpLists();
 			$scope.setSections();
 			$scope.setCategories();
-			$scope.setItems();			
+			$scope.setItems();
 		};
 	   $scope.invokeApi(ADContentManagementSrv.fetchGridViewList, {} , successCallbackGridFetch);
    }
@@ -51,7 +51,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 		    $scope.sectionParams = new ngTableParams({
 		       page: 1,            // show first page
 		       	count: $scope.sections.length,    // count per page - Need to change when on pagination implemntation
-		        sorting: { name: 'asc'     // initial sorting 
+		        sorting: { name: 'asc'     // initial sorting
 		        }
 		    }, {
 		     
@@ -59,7 +59,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 		            // use build-in angular filter
 		            var orderedData = params.sorting() ?
 		                                $filter('orderBy')($scope.sections, params.orderBy()) :
-		                                $scope.sections;		            
+		                                $scope.sections;
 		                              
 		            $scope.orderedSections =  orderedData;
 		                                 
@@ -74,7 +74,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 		    $scope.categoryParams = new ngTableParams({
 		       page: 1,            // show first page
 		       	count: $scope.categories.length,    // count per page - Need to change when on pagination implemntation
-		        sorting: { name: 'asc'     // initial sorting 
+		        sorting: { name: 'asc'     // initial sorting
 		        }
 		    }, {
 		     
@@ -97,7 +97,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 		    $scope.itemParams = new ngTableParams({
 		       page: 1,            // show first page
 		       	count: $scope.items.length,    // count per page - Need to change when on pagination implemntation
-		        sorting: { name: 'asc'     // initial sorting 
+		        sorting: { name: 'asc'     // initial sorting
 		        }
 		    }, {
 		     

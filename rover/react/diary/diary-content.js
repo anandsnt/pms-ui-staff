@@ -20,7 +20,7 @@ var DiaryContent = React.createClass({
 				viewport: viewport,
 				display: display
 			},function() {
-            });  
+            });
             //, function() {
                 //this.state.iscroll.grid.scrollTo((display.x_origin - display.x_n) * display.px_per_ms, this.state.iscroll.grid.y);
                 //this.state.iscroll.timeline.scrollTo((display.x_origin - display.x_n) * display.px_per_ms, 0);
@@ -32,15 +32,15 @@ var DiaryContent = React.createClass({
 		iscroll.timeline._scrollFn();
 	},
 	__toggleRows: function(state) {
-		this.state.angular_evt.toggleRows(state, Math.abs(this.state.iscroll.grid.x) / this.state.display.px_per_ms + this.state.display.x_n); //.x_origin);	
+		this.state.angular_evt.toggleRows(state, Math.abs(this.state.iscroll.grid.x) / this.state.display.px_per_ms + this.state.display.x_n); //.x_origin);
 	},
 	__onGridScrollStart: function(iscroll_object) {
 
 	},
 	__onGridScrollEnd: function(iscroll_object) {
-		this.state.angular_evt.onScrollEnd(Math.abs(this.state.iscroll.grid.x) / this.state.display.px_per_ms + this.state.display.x_n); //x_origin);	
+		this.state.angular_evt.onScrollEnd(Math.abs(this.state.iscroll.grid.x) / this.state.display.px_per_ms + this.state.display.x_n); //x_origin);
 	},
-	__onGridScroll: function(iscroll_object) {		
+	__onGridScroll: function(iscroll_object) {
 		var el = iscroll_object, iscroll = this.state.iscroll;
 
 		switch(el) {
@@ -57,13 +57,13 @@ var DiaryContent = React.createClass({
 			break;
 		}
  
-	},	
+	},
 	__onDragStart: function(row_data, row_item_data) {
 		this.state.angular_evt.onDragStart.apply(this, Array.prototype.slice.call(arguments));
 	},
 	__onDragStop: function(e, left, top, row_item_data) {
 		var state 			= this.state,
-			props 			= this.props,			
+			props 			= this.props,
 			display 		= props.display,
 			rowHeight 		= display.row_height + display.row_height_margin,
 			viewport 		= state.viewport.element(),
@@ -73,8 +73,8 @@ var DiaryContent = React.createClass({
 			rowNumber       = (rowNumber > (display.total_rows - 1)) ? (display.total_rows - 1) : rowNumber,
 			row_data 		= state.data[rowNumber],
 			delta 			= Number((left - row_item_data.left).toFixed(3)),
-			delta_x 		= e.pageX - state.origin_x, 
-			x_origin 		= (display.x_n instanceof Date ? display.x_n.getTime() : display.x_n), 
+			delta_x 		= e.pageX - state.origin_x,
+			x_origin 		= (display.x_n instanceof Date ? display.x_n.getTime() : display.x_n),
 			px_per_int 		= display.px_per_int,
 			px_per_ms 		= display.px_per_ms;
 			
@@ -83,7 +83,7 @@ var DiaryContent = React.createClass({
 			currentResizeItem: row_item_data,
 			currentResizeItemRow: row_data
 		});
-		this.state.angular_evt.onDragEnd(row_data, row_item_data);		
+		this.state.angular_evt.onDragEnd(row_data, row_item_data);
 	},
 	/*Message transport between timeline and grid:
 	  As resize controls are arranged on timeline, the positional data
@@ -112,7 +112,7 @@ var DiaryContent = React.createClass({
 			currentResizeItemRow: row_data
 		});
 	},
-	componentDidUpdate: function(){				
+	componentDidUpdate: function(){
 		this.componentWillMount();
 
 		var props = this.props,
@@ -124,7 +124,7 @@ var DiaryContent = React.createClass({
 
 			if(scrollToPos < 0) {
 				scrollToPos = 0;
-			}					
+			}
 			
 		   
 			
@@ -146,7 +146,7 @@ var DiaryContent = React.createClass({
 
 		!!reset && setTimeout( setScrollerPositions, 500 );
 	},
-	componentDidMount: function() {		
+	componentDidMount: function() {
 		var self = this,
             state = this.state;
 
@@ -170,17 +170,17 @@ var DiaryContent = React.createClass({
         }, 1000);
        
   	},
-  	componentWillUnmount: function() {  		
+  	componentWillUnmount: function() {
   		$(window).off('resize');
   	},
-  	componentWillMount: function() {  		
+  	componentWillMount: function() {
   		var self = this;
 
-    	for(var k in this.state.iscroll) {    		
+    	for(var k in this.state.iscroll) {
     		if(Object.prototype.hasOwnProperty.call(this.state.iscroll, k)) {
     			if(this.state.iscroll[k] instanceof IScroll) {
     				setTimeout(function () {
-    					self.state.iscroll[k].refresh(); 
+    					self.state.iscroll[k].refresh();
     				}, 100);
     			}
     		}
@@ -220,7 +220,7 @@ var DiaryContent = React.createClass({
   		if(hops.call(this.props, 'viewport') && this.props.viewport !== nextProps.viewport) {
   			this.setState({
   				viewport: nextProps.viewport
-  			});  			 		
+  			});
 
   		}
 
@@ -236,14 +236,14 @@ var DiaryContent = React.createClass({
   		if(hops.call(this.props, 'filter') && this.props.filter !== nextProps.filter ) {
   			this.setState({
   				filter: nextProps.filter
-  			});	
+  			});
   		}
 
-  		if(hops.call(this.props, 'edit') && this.props.edit !== nextProps.edit) {  
+  		if(hops.call(this.props, 'edit') && this.props.edit !== nextProps.edit) {
   				
   			this.setState({
   				edit: nextProps.edit
-  			});  			
+  			});
   		}
   	},
 	getInitialState: function() {
@@ -266,7 +266,7 @@ var DiaryContent = React.createClass({
 								onDragEnd: 					scope.onDragEnd,
 								onResizeStart: 				scope.onResizeStart,
 								onResizeEnd: 				scope.onResizeEnd,
-								onScrollEnd:                scope.onScrollEnd, 
+								onScrollEnd:                scope.onScrollEnd,
 								onScrollLoadTriggerRight: 	scope.onScrollLoadTriggerRight,
 								onScrollLoadTriggerLeft: 	scope.onScrollLoadTriggerLeft,
 								completedRendering:         scope.eventAfterRendering
@@ -282,7 +282,7 @@ var DiaryContent = React.createClass({
 							iscroll: {
 				  				timeline: undefined,
 				  				rooms: undefined,
-				  				grid: undefined,				  				
+				  				grid: undefined,
 				  			},
 				  			stats: props.stats,
 				  			data : props.data
@@ -293,8 +293,8 @@ var DiaryContent = React.createClass({
 		display.px_per_hr 			= viewport.width / viewport.hours;
 		display.px_per_int  		= display.px_per_hr / display.intervals_per_hour;
 		display.px_per_ms 			= display.px_per_int / 900000;
-		display.x_0 				= viewport.row_header_right;     
-		display.total_rows			= scope.gridProps.data.length;            
+		display.x_0 				= viewport.row_header_right;
+		display.total_rows			= scope.gridProps.data.length;
 		//display.x_origin 			= filter.arrival_date.getTime();
         display.x_origin_start_time = filter.arrival_time;
         display.scrollTo            = (display.x_origin - display.x_n) * display.px_per_ms;
@@ -342,7 +342,7 @@ var DiaryContent = React.createClass({
 			__onResizeEnd:  	self.__onResizeEnd,
 			__onGridScroll: 	self.__onGridScroll,
 			__onGridScrollEnd: 	self.__onGridScrollEnd
-		}), 
+		}),
 		GridPanel({
 			refs: 					'grid',
 			viewport: 				state.viewport,
@@ -359,7 +359,7 @@ var DiaryContent = React.createClass({
 			__onGridScroll: 		self.__onGridScroll,
 			__onGridScrollEnd: 		self.__onGridScrollEnd,
 			__onDragStart: 			self.__onDragStart,
-			__onDragStop: 			self.__onDragStop	
+			__onDragStop: 			self.__onDragStop
 		})), this.props.children);
 	}
 });

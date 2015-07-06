@@ -1,23 +1,23 @@
-sntRover.controller('roverController', 
+sntRover.controller('roverController',
   
-  ['$rootScope', '$scope', '$state', 
-  '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 
+  ['$rootScope', '$scope', '$state',
+  '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv',
 
-  'ngDialog', '$translate', 'hotelDetails', 
+  'ngDialog', '$translate', 'hotelDetails',
   'userInfoDetails', 'RVChargeItems', '$stateParams',
 
   'rvMenuSrv', 'rvPermissionSrv', '$timeout',
   
-  function($rootScope, $scope, $state, 
-    $window, RVDashboardSrv, RVHotelDetailsSrv, 
+  function($rootScope, $scope, $state,
+    $window, RVDashboardSrv, RVHotelDetailsSrv,
 
-    ngDialog, $translate, hotelDetails, 
+    ngDialog, $translate, hotelDetails,
     userInfoDetails, RVChargeItems, $stateParams,
 
     rvMenuSrv, rvPermissionSrv, $timeout) {
 
 
-    $rootScope.isOWSErrorShowing = false;    
+    $rootScope.isOWSErrorShowing = false;
     if (hotelDetails.language) {
       $translate.use(hotelDetails.language.value);
       $translate.fallbackLanguage('EN');
@@ -49,7 +49,7 @@ sntRover.controller('roverController',
     $scope.currentHotelData = {
       "name":"",
       "id":""
-    };    
+    };
     angular.forEach($scope.hotelDetails.userHotelsData.hotel_list, function(hotel, index) {
           if($scope.hotelDetails.userHotelsData.current_hotel_id === hotel.hotel_id){
              $scope.currentHotelData.name = hotel.hotel_name;
@@ -220,12 +220,12 @@ sntRover.controller('roverController',
     * NOTE: Menu forming and logic and things are in service rvMenuSrv
     * @return - None
     */
-    $scope.formMenu = function() {    
+    $scope.formMenu = function() {
         // if it standalone
-        if ($rootScope.isStandAlone) { 
+        if ($rootScope.isStandAlone) {
             $scope.menu       = rvMenuSrv.getMainMenuForStandAloneRover ();
-            $scope.mobileMenu = rvMenuSrv.getMobileMenuForStandAloneRover (); 
-        } 
+            $scope.mobileMenu = rvMenuSrv.getMobileMenuForStandAloneRover ();
+        }
         //connected
         else {
             $scope.menu       = rvMenuSrv.getMainMenuForConnectedRover ();
@@ -240,8 +240,8 @@ sntRover.controller('roverController',
     * @return {Boolean}
     */
     $scope.shouldShowAvailabilityHouseButton = function() {
-        return ($rootScope.isStandAlone && 
-            rvPermissionSrv.getPermissionValue ('AVAILABILITY_HOUSE_STATUS'));     
+        return ($rootScope.isStandAlone &&
+            rvPermissionSrv.getPermissionValue ('AVAILABILITY_HOUSE_STATUS'));
     };
 
     /**
@@ -250,8 +250,8 @@ sntRover.controller('roverController',
     * @return {Boolean}
     */
     $scope.shouldShowMultiPropertySwitch = function() {
-        return (hotelDetails.userHotelsData.hotel_list.length > 0 && 
-            rvPermissionSrv.getPermissionValue ('MULTI_PROPERTY_SWITCH'));     
+        return (hotelDetails.userHotelsData.hotel_list.length > 0 &&
+            rvPermissionSrv.getPermissionValue ('MULTI_PROPERTY_SWITCH'));
     };
 
     /**
@@ -263,7 +263,7 @@ sntRover.controller('roverController',
             template: '/assets/partials/settings/rvStaffSettingModal.html',
             controller: 'RVStaffsettingsModalController',
             className: 'calendar-modal'
-        }); 
+        });
     };
 
 
@@ -332,7 +332,7 @@ sntRover.controller('roverController',
         BaseCtrl.call(this, $scope);
         $rootScope.adminRole = '';
 
-        $scope.selectedMenuIndex = 0;      
+        $scope.selectedMenuIndex = 0;
         $scope.formMenu();
 
         // if menu is open, close it
@@ -358,7 +358,7 @@ sntRover.controller('roverController',
         e.stopPropagation();
       };
 
-      $scope.menuOpen = !$scope.menuOpen;      
+      $scope.menuOpen = !$scope.menuOpen;
       $scope.showHotelSwitchList = false;
       //save contact info in guestcard if any changes has been done -CICO-14273
       $scope.$broadcast('saveContactInfo');
@@ -386,7 +386,7 @@ sntRover.controller('roverController',
       });
     };
 
-    //subemenu actions 
+    //subemenu actions
 
     $scope.subMenuAction = function(subMenu) {
      
@@ -405,7 +405,7 @@ sntRover.controller('roverController',
       else if(subMenu === "adminSettings"){
             //CICO-9816 bug fix - Akhila
             $('body').addClass('no-animation');
-            $window.location.href = "/admin";            
+            $window.location.href = "/admin";
       }
       else if(subMenu === "changePassword"){
          openUpdatePasswordPopup();
@@ -430,7 +430,7 @@ sntRover.controller('roverController',
     //
     // REASON: There is a limited amount of time b/w the two $scopes dies and come into existance
     // '$emit' and '$on' somehow get more priority, by the time they are execured, $scopes have shifted
-    // thus cancelling out animation, feels like animations are never considered 
+    // thus cancelling out animation, feels like animations are never considered
     //
     // $scope.$on("navToggled", function() {
     //   $scope.menuOpen = !$scope.menuOpen;
@@ -476,7 +476,7 @@ sntRover.controller('roverController',
     });
 
     $scope.successCallBackSwipe = function(data) {
-      // $scope.$broadcast('SWIPEHAPPENED', data);      
+      // $scope.$broadcast('SWIPEHAPPENED', data);
       $scope.$broadcast('SWIPE_ACTION', data);
     };
 
@@ -535,7 +535,7 @@ sntRover.controller('roverController',
      * Start Card reader now!.
      */
     if ($rootScope.paymentGateway != "sixpayments") {
-  		/* Enabling desktop Swipe if we access the app from desktop ( not from devices) and  
+  		/* Enabling desktop Swipe if we access the app from desktop ( not from devices) and
        * desktopSwipeEnabled flag is true
       */
       if($rootScope.desktopSwipeEnabled && !isAccessedFromDevice()){
@@ -587,8 +587,8 @@ sntRover.controller('roverController',
       document.activeElement.blur();
       $scope.$emit('hideLoader');
 
-      //to add stjepan's popup showing animation 
-      $rootScope.modalOpened = false; 
+      //to add stjepan's popup showing animation
+      $rootScope.modalOpened = false;
 
       setTimeout(function() {
         ngDialog.close();
@@ -667,11 +667,11 @@ sntRover.controller('roverController',
 
     $rootScope.$on('ngDialog.opened', function(e, $dialog) {
         LastngDialogId = $dialog.attr('id');
-        //to add stjepan's popup showing animation 
-        $rootScope.modalOpened = false; 
-        $timeout(function() { 
-            $rootScope.modalOpened = true; 
-        }, 300); 
+        //to add stjepan's popup showing animation
+        $rootScope.modalOpened = false;
+        $timeout(function() {
+            $rootScope.modalOpened = true;
+        }, 300);
     });
 
     $rootScope.showBussinessDateChangingPopup = function() {
@@ -775,5 +775,5 @@ sntRover.controller('roverController',
             $window.location.href = "/staff";
           }, function() {
           });
-    };    
+    };
 }]);
