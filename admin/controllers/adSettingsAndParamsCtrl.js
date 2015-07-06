@@ -21,11 +21,11 @@ admin.controller('settingsAndParamsCtrl',['$scope','settingsAndParamsSrv','setti
     $scope.chargeCodes = chargeCodes;
     $scope.selected_charge_code = settingsAndParamsData.no_show_charge_code_id;
     $scope.selected_group_charge_code = settingsAndParamsData.group_charge_code_id;
-  
+
     /**
     * To handle save button action
     *
-    */ 
+    */
     $scope.saveClick = function(){
 
         var saveDetailsSuccessCallback = function(){
@@ -53,8 +53,8 @@ admin.controller('settingsAndParamsCtrl',['$scope','settingsAndParamsSrv','setti
                 });
                 if(!eodSubmenuPresent)
                 {
-                    frontDeskSubmenu.push(eodSubMenu);  
-                }                
+                    frontDeskSubmenu.push(eodSubMenu);
+                }
             }
             else{
                 angular.forEach(frontDeskSubmenu, function(submenu, index) {
@@ -66,13 +66,13 @@ admin.controller('settingsAndParamsCtrl',['$scope','settingsAndParamsSrv','setti
         }
         var selectedChargeCode = ( typeof $scope.selected_charge_code == 'undefined' ) ? "" : $scope.selected_charge_code;
         var groupChargeCode = ( typeof $scope.selected_group_charge_code == 'undefined' ) ? "" : $scope.selected_group_charge_code;
-        var dataToSend = {	"no_show_charge_code_id" : selectedChargeCode , 
+        var dataToSend = {	"no_show_charge_code_id" : selectedChargeCode ,
         					"business_date" : $scope.data,
         					"group_charge_code_id":groupChargeCode,
         					"cc_batch_processing":$scope.cc_batch_processing,
         					"cc_auto_settlement_by_eod":$scope.cc_auto_settlement_by_eod
         				};
-        
+
         $scope.invokeApi(settingsAndParamsSrv.saveSettingsAndParamsSrv, dataToSend ,saveDetailsSuccessCallback);
     };
 

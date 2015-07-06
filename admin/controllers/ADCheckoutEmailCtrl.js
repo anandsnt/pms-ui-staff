@@ -21,11 +21,11 @@ admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state'
   *
   */
   $scope.showSendEmailOptions = function($defer, params){
-    
+
     $scope.emailTitle = 'Guests Checking Out';
     $scope.saveButtonTitle = 'SEND CHECKOUT EMAIL';
   	$scope.selectAllOption = false;
-    var getParams = $scope.calculateGetParams(params);  
+    var getParams = $scope.calculateGetParams(params);
     getParams.id = 'checkout';
 
     var fetchEmailListSuccessCallback = function(data) {
@@ -34,15 +34,15 @@ admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state'
         $scope.currentClickedElement = -1;
 
         $scope.totalCount = parseInt(data.total_count);
-        $scope.totalPage = Math.ceil($scope.totalCount/$scope.displyCount);   
-        
+        $scope.totalPage = Math.ceil($scope.totalCount/$scope.displyCount);
 
-        $scope.currentPage = params.page();     
+
+        $scope.currentPage = params.page();
         $scope.emailDatas  = data.due_out_guests;
 
         params.total($scope.totalCount);
         $scope.data=$scope.emailDatas;
-        $defer.resolve($scope.data);  
+        $defer.resolve($scope.data);
         angular.forEach($scope.emailDatas,function(item, index) {
           item.is_selected = false;
 
@@ -70,7 +70,7 @@ admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state'
   };
 
   $scope.loadTable();
-  
+
 /*
   * To check if all options are all selected or not
   *
@@ -94,7 +94,7 @@ admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state'
      return $scope.emailDatas.length == selectedCount;
   };
 /*
-  * To watch if all options are selcted 
+  * To watch if all options are selcted
   *
   */
   $scope.$watch("selectAllOption", function(o,n){
@@ -102,7 +102,6 @@ admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state'
       item.is_selected = $scope.selectAllOption;
     });
   });
-  
   $scope.backActionFromEmail = function(){
     $state.go('admin.checkout');
 
@@ -118,9 +117,9 @@ admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state'
 
      angular.forEach($scope.emailDatas,function(item, index) {
            item.is_selected =selectedStatus;
-       }); 
+       });
 
-    };      
+    };
 
 /*
   * To send mail

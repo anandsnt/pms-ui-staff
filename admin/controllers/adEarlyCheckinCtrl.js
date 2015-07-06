@@ -1,7 +1,7 @@
 admin.controller('ADEarlyCheckinCtrl',['$scope','$rootScope','$state','adUpsellEarlyCheckinService', 'ADChargeCodesSrv', 'ADRatesSrv', 'ADRatesAddonsSrv',  function($scope,$rootScope,$state,adUpsellEarlyCheckinService, ADChargeCodesSrv, ADRatesSrv, ADRatesAddonsSrv){
 
     BaseCtrl.call(this, $scope);
-    
+
     $scope.upsellData = {};
     $scope.upsell_rate = {};
     $scope.upsell_rate.selected_rate_id = "";
@@ -164,7 +164,7 @@ $scope.validateUpsellWindowTime = function(){
           return false;
   }
   else if(time_window2 >= time_window3){
-    
+
           $scope.fetchedFailed(["The time for upsell window-2 should be less than time for upsell window-3"]);
           return false;
   }
@@ -188,7 +188,7 @@ $scope.switchClicked = function(){
 */
 $scope.saveClick = function(){
     if(!$scope.validateUpsellWindowTime()){
-        
+
         return;
     }
     // $scope.validateUpsellWindowTime();
@@ -203,11 +203,11 @@ $scope.saveClick = function(){
       $scope.fetchedFailed(errorMessage);
    	};
    	$scope.invokeApi(adUpsellEarlyCheckinService.update,$scope.upsellData,upsellEarlyCheckinSaveSuccessCallback, upsellEarlyCheckinSaveFailureCallback);
-     
+
 };
 
 $scope.clickAddRoomType = function(){
-	//While addig a room type, making its max_late_checkouts defaults to 0.  
+	//While addig a room type, making its max_late_checkouts defaults to 0.
   if($scope.getSelectedRateIndexForID($scope.upsell_rate.selected_rate_id) != -1)
     return;
   var rate_item;

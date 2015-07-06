@@ -5,10 +5,10 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 	$scope.errorMessage = '';
 	$scope.fileName = "Choose File....";
 
-	
+
 	//inheriting from base controller
 	BaseCtrl.call(this, $scope);
-	
+
 	var roomId = $stateParams.roomId;
 
 	if(roomId){
@@ -18,7 +18,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		}
 		$scope.editMode = true;
 	}
-	
+
 	/*
 	* Success function of room details fetch
 	* Doing the operatios on data here
@@ -54,12 +54,12 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		}
 
 	};
-	
+
 	var fetchFailedOfRoomDetails = function(errorMessage){
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = errorMessage ;
 	};
-	
+
 	/*
 	* function to do operation on room likes after selecting one.
 	* param {string} group name
@@ -73,7 +73,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 						$scope.data.room_likes[i].options[j].selected = false;
 					}
 				}
-				
+
 			}
 
 		}
@@ -92,7 +92,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		    }
 	    }
 	    $scope.floors = data.floors;
-	
+
 		$scope.data.room_image = "";
 		$scope.data.room_number="";
 		$scope.data.room_type_id="";
@@ -111,7 +111,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
     {
      $scope.invokeApi(ADRoomSrv.fecthAllRoomDetails, {}, fecthAllRoomDetailsSuccessCallback, fecthAllRoomDetailsFailureCallback);
     }
-	
+
 
 	/*
 	* method for go back to previous stage, it is always room listing
@@ -156,7 +156,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		    $scope.invokeApi(ADRoomSrv.update, {'room_id': $scope.data.room_id, 'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails);
 		else
 			$scope.invokeApi(ADRoomSrv.createRoom, {'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails);
-	
+
 	};
 
 	/**

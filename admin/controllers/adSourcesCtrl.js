@@ -32,19 +32,19 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', '$anchorScroll', '$t
     * @param {int} index of the selected source
     */
 	$scope.getTemplateUrl = function(index){
-		if($scope.currentClickedElement == index){ 
+		if($scope.currentClickedElement == index){
 			 return "/assets/partials/sources/adSourcesEdit.html";
 		}
 	};
 	/*
     * To handle cancel click
-    */	
+    */
 	$scope.clickedCancel = function(){
 		if($scope.currentClickedElement != 'new'){
 			$scope.data.sources[$scope.currentClickedElement].name = $scope.preveousName;
 			$scope.preveousName = "";
 		}
-		$scope.data.name = "";		
+		$scope.data.name = "";
 		$scope.currentClickedElement = -1;
 	};
 	/*
@@ -79,7 +79,7 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', '$anchorScroll', '$t
 		};
 		if(index == undefined) var data = $scope.data.sources[$scope.currentClickedElement];
 		else var data = $scope.data.sources[index];
-		
+
   		$scope.invokeApi(ADSourcesSrv.update, data, postSuccess);
    	};
    	/*
@@ -98,6 +98,6 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', '$anchorScroll', '$t
 		};
 		$scope.invokeApi(ADSourcesSrv.deleteItem, {'value':id }, successDeletionCallback);
 	};
-	
+
 }]);
 

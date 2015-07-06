@@ -8,7 +8,7 @@ admin.controller('ADUserDetailsCtrl',
 	'$timeout' ,
 	'$window',
 	function($scope, $state, $stateParams, ADUserSrv, $rootScope, ADUserRolesSrv, $timeout, $window){
-	
+
 	BaseCtrl.call(this, $scope);
 	//navigate back to user list if no id
 	if(!$stateParams.id && !$stateParams.page =='add'){
@@ -90,7 +90,7 @@ admin.controller('ADUserDetailsCtrl',
     * @param {int} index of the clicked role
     */
 	$scope.selectAssignedRole = function($event, index){
-		
+
 
 		var lastSelectedItem =$scope.selectedAssignedRole;
 		if(lastSelectedItem == index){
@@ -181,8 +181,8 @@ admin.controller('ADUserDetailsCtrl',
 	 			userRoles.push($scope.assignedRoles[j].value);
 	 		}
 	 	}
-		
-		
+
+
 		$scope.data.user_roles = userRoles;
 		var data = dclone($scope.data, unwantedKeys);
 		// Remove user_photo field if image is not uploaded. Checking base64 encoded data exist or not
@@ -229,8 +229,8 @@ admin.controller('ADUserDetailsCtrl',
 	   			 			break;
 	   			 		}
 	   			 	}
-	   			 	
-	   			
+
+
 	    		}
 			}
 
@@ -270,7 +270,7 @@ admin.controller('ADUserDetailsCtrl',
 		};
 	 	$scope.invokeApi(ADUserSrv.getAddNewDetails, '' , successCallbackRender);
 	};
-   
+
 	/**
 	* success callback of send inivtaiton mail (API)
 	* will go back to the list of users

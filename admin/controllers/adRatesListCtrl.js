@@ -65,9 +65,9 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 	$scope.importFromPms = function(event){
 
 		event.stopPropagation();
-		
+
 		$scope.successMessage = "Collecting rates data from PMS and adding to Rover...";
-		
+
 		var fetchSuccessOfItemList = function(data){
 			$scope.$emit('hideLoader');
 			$scope.successMessage = "Completed!";
@@ -93,7 +93,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 			$scope.mouseEnterPopover = true;
 		};
 
-		//Fetch the rates only when we enter the popover area - 
+		//Fetch the rates only when we enter the popover area -
 		//no need to repeat the fetch when we hover over the area.
 		if(!$scope.mouseEnterPopover){
 			$scope.popoverRates = {};
@@ -166,7 +166,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		console.log(id);
                 */
 		if(typeof index === "undefined" || typeof id === "undefined") return "";
-		if($scope.currentClickedElement == index){ 
+		if($scope.currentClickedElement == index){
 			return "/assets/partials/rates/adRateInlineEdit.html";
 		}
 	};
@@ -186,7 +186,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
     };
    /*
     * To handle click event
-    */	
+    */
 	$scope.clickCancelForInlineEdit = function(){
 		$scope.currentClickedElement = -1;
 	};
@@ -248,12 +248,12 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 			$scope.rateDetailsForNonStandalone = {};
 			$scope.currentClickedElement = index;
 
-		 	var successCallbackRender = function(data){	
+		 	var successCallbackRender = function(data){
 		 		$scope.rateDetailsForNonStandalone = data;
 		 		$scope.$emit('hideLoader');
 		 	};
 		 	var data = {"id": rateId };
-	 		$scope.invokeApi(ADRatesSrv.getRateDetailsForNonstandalone, data , successCallbackRender);    
+	 		$scope.invokeApi(ADRatesSrv.getRateDetailsForNonstandalone, data , successCallbackRender);
 		//If standalone PMS, then the rate configurator wizard should be appeared.
 		}else{
 			$scope.showLoader();

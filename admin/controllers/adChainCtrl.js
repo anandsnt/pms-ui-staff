@@ -38,7 +38,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 				$scope.editData.lov.push({'value':'','name':''});
 			$scope.isEditmode = true;
 			$scope.fileName = ($scope.editData.ca_certificate_exists)  ? 'Certificate Attached' :'Choose file ...';
-		};		
+		};
 		$scope.invokeApi(adChainsSrv.edit,editID,editChainSuccessCallback);
 	};
   /*
@@ -48,7 +48,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 		$scope.editData   = {};
 		$scope.errorMessage ="";
 		$scope.editData.lov  = [{'value':'','name':''}];
-		$scope.formTitle = 'Add';	
+		$scope.formTitle = 'Add';
 		$scope.isAddmode = true;
 		$scope.isEditmode = false;
 		$scope.fileName = 'Choose file ...';
@@ -79,7 +79,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  			$scope.$emit('hideLoader');
  			$scope.fetchHotelChains();
  			$scope.isAddmode = false;
- 			
+
  		};
  		var addChainFailureCallback = function(errorMessage){
  			$scope.$emit('hideLoader');
@@ -121,11 +121,11 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  			//scroll to top of the page where error message is shown
 			if(angular.element( document.querySelector('.content')).find(".error_message").length) {
 	  			angular.element( document.querySelector('.content')).scrollTop(0);
-			}; 
+			};
 
 			if($scope.editData.lov.length === 0)
 				$scope.editData.lov = [{'value':'','name':''}];
- 	
+
  		}
 
  		var updateChainSuccessCallback = function(data) {
@@ -150,7 +150,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 	$scope.saveClicked = function(){
 		if($scope.isAddmode){
 			$scope.addNewChain();
-		}			
+		}
 		else{
 			$scope.updateChain($scope.editId);
 		}

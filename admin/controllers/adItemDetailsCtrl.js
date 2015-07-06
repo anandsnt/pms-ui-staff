@@ -5,11 +5,11 @@ admin.controller('ADItemDetailsCtrl', ['$scope','ADItemSrv', '$state','$statePar
 
 	$scope.errorMessage = '';
 	$scope.mod = 'edit'
-	
+
 	//inheriting from base controller
 	BaseCtrl.call(this, $scope);
-	
-	
+
+
 	var itemId = $stateParams.itemid;
 	//if itemid is null, means it is for add item form
 	if(typeof itemId === 'undefined' || itemId.trim() == ''){
@@ -20,7 +20,7 @@ admin.controller('ADItemDetailsCtrl', ['$scope','ADItemSrv', '$state','$statePar
 		$scope.$emit('hideLoader');
 		$scope.itemDetails = data;
 	};
-	
+
 	var fetchFailedOfItemDetails = function(errorMessage){
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = errorMessage ;
@@ -31,7 +31,7 @@ admin.controller('ADItemDetailsCtrl', ['$scope','ADItemSrv', '$state','$statePar
 	else{
 		$scope.invokeApi(ADItemSrv.addItemDetails, {}, fetchSuccessOfItemDetails, fetchFailedOfItemDetails);
 	}
-	
+
 
 	$scope.goBack = function(){
 		$state.go('admin.items');

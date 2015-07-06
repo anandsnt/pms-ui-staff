@@ -27,10 +27,10 @@ admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv','$anchorScroll', '$ti
 		$scope.currentClickedElement = index;
 		$scope.preveousItem = $scope.data.booking_origins[index].name;
 	};
-        
+
         $scope.setDefaultOriginSiteminder = function(){
         };
-        
+
         /*
         $scope.$watch("data.data.product_cross_customer.default_origin", function (o, n) {
             //this data is pushed in upon saving the form, retrieved from other controllers
@@ -48,13 +48,13 @@ admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv','$anchorScroll', '$ti
     * @param {int} index of the selected item
     */
 	$scope.getTemplateUrl = function(index){
-		if($scope.currentClickedElement == index){ 
+		if($scope.currentClickedElement == index){
 			 return "/assets/partials/origins/adOriginsEdit.html";
 		}
 	};
 	/*
     * To handle cancel click
-    */	
+    */
 	$scope.clickedCancel = function(){
 		if($scope.currentClickedElement != 'new'){
 			$scope.data.booking_origins[$scope.currentClickedElement].name = $scope.preveousItem;
@@ -95,7 +95,7 @@ admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv','$anchorScroll', '$ti
 		};
 		if(index == undefined) var data = $scope.data.booking_origins[$scope.currentClickedElement];
 		else var data = $scope.data.booking_origins[index];
-		
+
   		$scope.invokeApi(ADOriginsSrv.update, data, postSuccess);
    	};
    	/*
@@ -114,6 +114,6 @@ admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv','$anchorScroll', '$ti
 		};
 		$scope.invokeApi(ADOriginsSrv.deleteItem, {'value':id }, successDeletionCallback);
 	};
-	
+
 }]);
 

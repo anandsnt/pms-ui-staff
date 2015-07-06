@@ -3,7 +3,7 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adU
     BaseCtrl.call(this, $scope);
     $scope.$emit("changedSelectedMenu", 2);
     $scope.upsellData = {};
-	
+
 
 var setUpList = function(){
    //remove the selected item from drop down
@@ -156,7 +156,7 @@ $scope.$watch('upsellData.extended_checkout_charge_1', function(newValue, oldVal
 $scope.saveClick = function(){
   $scope.setUpLateCheckoutArray();
   var updateData = {};
-  
+
   updateData.is_late_checkout_set = $scope.upsellData.is_late_checkout_set;
   updateData.allowed_late_checkout = $scope.upsellData.allowed_late_checkout;
   updateData.is_exclude_guests = $scope.upsellData.is_exclude_guests;
@@ -190,7 +190,7 @@ $scope.saveClick = function(){
 			value.time = timeValue.replace(" PM", "");// To make the UI updated after success
 
 		});
-       	
+
    	};
     // had to ovveride default error handler for custom actions.
    	var upsellLateCheckoutFailureCallback =  function(errorMessage) {
@@ -201,7 +201,7 @@ $scope.saveClick = function(){
 			value.time = timeValue.replace(" PM", "");// To make the UI updated after success
 
 		});
-       	
+
    	};
    	$scope.invokeApi(adUpsellLatecheckoutService.update,updateData,upsellLateCheckoutSuccessCallback, upsellLateCheckoutFailureCallback);
 
@@ -237,7 +237,7 @@ var isRoomTypesSelected = function(){
  * Method to delete the room type.
  */
 $scope.deleteRoomType = function(value,name){
-	
+
 	var data = { "value": value , "name": name };
 	$scope.upsellData.room_types_list.push(data);
 	angular.forEach($scope.upsellData.room_types,function(item, index) {

@@ -13,7 +13,7 @@ admin.controller('ADChargeGroupsCtrl',['$scope', 'ADChargeGroupsSrv', '$anchorSc
 		$scope.data = data;
 	};
 	$scope.invokeApi(ADChargeGroupsSrv.fetch, {},fetchSuccessCallback);
-	
+
     /*
     * To render edit screen
     * @param {int} index index of selected charge groups
@@ -29,13 +29,13 @@ admin.controller('ADChargeGroupsCtrl',['$scope', 'ADChargeGroupsSrv', '$anchorSc
     * @param {string} id of the item
     */
 	$scope.getTemplateUrl = function(index){
-		if($scope.currentClickedElement == index){ 
+		if($scope.currentClickedElement == index){
 			 return "/assets/partials/chargeGroups/adChargeGroupsEdit.html";
 		}
 	};
 	/*
     * To handle cancel click
-    */	
+    */
 	$scope.clickedCancel = function(){
 		if($scope.currentClickedElement != 'new'){
 			$scope.data.charge_groups[$scope.currentClickedElement].name = $scope.preveousItem;
@@ -53,7 +53,7 @@ admin.controller('ADChargeGroupsCtrl',['$scope', 'ADChargeGroupsSrv', '$anchorSc
             $location.hash('add-new');
             $anchorScroll();
     	});
-		
+
 	};
 	/*
     * To handle save button in add new box.
@@ -94,6 +94,6 @@ admin.controller('ADChargeGroupsCtrl',['$scope', 'ADChargeGroupsSrv', '$anchorSc
 		};
 		$scope.invokeApi(ADChargeGroupsSrv.deleteItem, {'value':id }, successDeletionCallback);
 	};
-	
+
 }]);
 

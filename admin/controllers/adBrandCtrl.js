@@ -4,8 +4,8 @@ admin.controller('ADBrandCtrl',['$scope', '$rootScope','adBrandsSrv', function($
 	$scope.data = [];
 	$scope.brandDetails   = {};
    /*
-    * Variables set to show/hide forms 
-    */ 	
+    * Variables set to show/hide forms
+    */
 	$scope.isAddmode = false;
 	$scope.isEditmode = false;
    /*
@@ -37,7 +37,7 @@ admin.controller('ADBrandCtrl',['$scope', '$rootScope','adBrandsSrv', function($
 			$scope.brandDetails   = data;
 			$scope.formTitle = $scope.brandDetails.name;//To show brand name in title
 			$scope.isEditmode = true;
-		};		
+		};
 		$scope.invokeApi(adBrandsSrv.editRender,editID,editBrandsSuccessCallback);
 	};
    /*
@@ -48,7 +48,7 @@ admin.controller('ADBrandCtrl',['$scope', '$rootScope','adBrandsSrv', function($
 	};
    /*
     * Function to render add new brand screen
-    */	
+    */
 	$scope.addNew = function(){
 		$scope.brandDetails   = {};
 		$scope.errorMessage ="";
@@ -58,7 +58,7 @@ admin.controller('ADBrandCtrl',['$scope', '$rootScope','adBrandsSrv', function($
 		var addBrandsSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.brandDetails   = data;
-		};	
+		};
 		$scope.invokeApi(adBrandsSrv.addRender,{},addBrandsSuccessCallback);
 	};
    /*
