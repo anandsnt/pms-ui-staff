@@ -404,7 +404,12 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
          * Click handler for restriction on/off buttons
          * Enable disable restriction. 
          */
-        $scope.toggleRestrictions = function (id, days, selectedIndex) {
+        $scope.toggleRestrictions = function (id, days, selectedIndex, restrictionType) {
+            if (restrictionType){
+                if (restrictionType.description === 'Has Restrictions'){
+                    return;
+                }
+            }
             var action = $scope.data.restrictionTypes[id].isRestrictionEnabled;
 
             $scope.onOffRestrictions(id, (action) ? 'DISABLE' : 'ENABLE', days, selectedIndex);
