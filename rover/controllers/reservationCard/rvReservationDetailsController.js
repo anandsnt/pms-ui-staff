@@ -733,6 +733,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 								is_group_reservation: response.data.is_group_reservation,
 								is_outside_group_stay_dates: response.data.outside_group_stay_dates,
 								group_name: response.data.group_name,
+								is_invalid_move: response.data.is_invalid_move
 							})
 						});
 					} else {
