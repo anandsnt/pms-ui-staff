@@ -1,4 +1,4 @@
-sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout','$window',function($scope,$rootScope,$timeout,$window) {
+sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout','$window','RVJournalSrv',function($scope,$rootScope,$timeout,$window,RVJournalSrv) {
 	BaseCtrl.call(this, $scope);
 
 	/** Code for PRINT BOX drawer common Resize Handler starts here .. **/
