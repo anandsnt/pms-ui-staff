@@ -19,6 +19,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 			
             $scope.errorMessage = "";
 			refreshPaymentScroll();
+            $scope.$emit('hideLoader');
 		};
 		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, { "from":$scope.data.fromDate , "to":$scope.data.toDate }, successCallBackFetchPaymentData);
 	};
@@ -47,7 +48,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
                 if(data.transactions.length >0){
                     toggleItem.transactions = data.transactions;
                     toggleItem.active = !toggleItem.active;
-                    refreshPaymentScroller();
+                    refreshPaymentScroll();
                 }
                 $scope.errorMessage = "";
                 $scope.$emit('hideLoader');
@@ -79,7 +80,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
                 if(data.transactions.length >0){
                     toggleItem.transactions = data.transactions;
                     toggleItem.active = !toggleItem.active;
-                    refreshPaymentScroller();
+                    refreshPaymentScroll();
                 }
                 $scope.errorMessage = "";
                 $scope.$emit('hideLoader');
