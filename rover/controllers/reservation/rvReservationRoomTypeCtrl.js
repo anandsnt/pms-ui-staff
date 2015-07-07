@@ -434,13 +434,17 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		}
 
 		var haveAddonsChanged = function(entireSet, associatedAddons) {
-			var extraAddons = [];
-			_.each(entireSet, function(addon) {
-				if (!_.find(associatedAddons, {
-						id: addon.id
-					})) extraAddons.push(addon.id);
-			})
-			return extraAddons.length > 0;
+			if ($stateParams.fromState == "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState == "STAY_CARD") {
+				return parseInt($scope.reservationData.rooms[0].package_count) != associatedAddons.length;
+			} else {
+				var extraAddons = [];
+				_.each(entireSet, function(addon) {
+					if (!_.find(associatedAddons, {
+							id: addon.id
+						})) extraAddons.push(addon.id);
+				})
+				return extraAddons.length > 0;
+			}
 		}
 
 		$scope.enhanceStay = function() {

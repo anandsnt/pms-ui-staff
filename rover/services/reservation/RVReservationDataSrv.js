@@ -1,5 +1,5 @@
-sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter',
-	function($rootScope, dateFilter) {
+sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVReservationStateService',
+	function($rootScope, dateFilter, RVReservationStateService) {
 		var self = this;
 
 		self.getReservationDataModel = function() {
@@ -305,6 +305,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter',
 				if (index == 0) {
 					roomDetails.roomTypeId = item.room_type_id;
 					roomDetails.roomTypeName = stayCard.room_type_description
+					RVReservationStateService.bookMark.lastPostedRate = item.rate_id;
 				}
 			});
 			// appending departure date for UI handling since its not in API response IFF not a day reservation

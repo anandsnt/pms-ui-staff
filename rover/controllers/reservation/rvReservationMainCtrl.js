@@ -396,12 +396,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                                 //for every addon
                                 angular.forEach(currentRoom.addons, function(addon) {
                                     if (date == roomMetaData.arrival) addon.effectivePrice = 0.0; // RESET addon rate
-                                    var baseRate = parseFloat(addon.quantity) * parseFloat(addon.price); //calculate the base                                    
-                                    var finalRate = 0.0; //default calculated amount to the base rate
-                                    if (addon.postType.value == "STAY" || (date == roomMetaData.arrival))
-                                        finalRate = parseFloat(RVReservationStateService.getAddonAmount(addon.amountType.value, baseRate, adultsOnTheDay, childrenOnTheDay));
+                                    var baseRate = parseFloat(addon.quantity) * parseFloat(addon.price), //calculate the base                                    
+                                        finalRate = 0.0, //default calculated amount to the base rate
+                                        postType = addon.post_type || addon.postType,
+                                        amountType = addon.amount_type || addon.amountType;
+                                    if (postType.value == "STAY" || (date == roomMetaData.arrival))
+                                        finalRate = parseFloat(RVReservationStateService.getAddonAmount(amountType.value, baseRate, adultsOnTheDay, childrenOnTheDay));
                                     // cummulative sum (Not just multiplication of rate per day with the num of nights) >> Has to done at "day level" to handle the reservations with varying occupancy!
-                                    if (addon.postType.value == "STAY") addon.effectivePrice = parseFloat(addon.effectivePrice) + parseFloat(finalRate);
+                                    if (postType.value == "STAY") addon.effectivePrice = parseFloat(addon.effectivePrice) + parseFloat(finalRate);
                                     else if (date == roomMetaData.arrival) addon.effectivePrice = finalRate; //Posted only on the first Night
                                     if (!addon.is_inclusive) roomMetaData.addOnCumulative += parseFloat(finalRate);
                                     else taxableRateAmount -= parseFloat(finalRate); //reduce the addon amount from this day's calculated rate
@@ -549,7 +551,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.$broadcast('updateGuestEmail');
         });
 
-       
+
         /**
          *   Validation conditions
          *
@@ -772,13 +774,15 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             data.stay_dates = stay;
 
             //addons
-            if (!$scope.reservationData.rooms[0].is_package_exist || //is_package_exist flag is set only while editing a reservation! -- Changes for CICO-17173
+            if (!!RVReservationStateService.getReservationFlag('RATE_CHANGED') ||
+                !$scope.reservationData.rooms[0].is_package_exist || //is_package_exist flag is set only while editing a reservation! -- Changes for CICO-17173
                 ($scope.reservationData.rooms[0].is_package_exist && $scope.reservationData.rooms[0].addons.length == parseInt($scope.reservationData.rooms[0].package_count))) { //-- Changes for CICO-17173
                 data.addons = [];
+                RVReservationStateService.setReservationFlag('RATE_CHANGED', false);
                 _.each($scope.reservationData.rooms[0].addons, function(addon) {
                     data.addons.push({
                         id: addon.id,
-                        quantity: addon.quantity
+                        quantity: addon.quantity || 1
                     });
                 });
             }
