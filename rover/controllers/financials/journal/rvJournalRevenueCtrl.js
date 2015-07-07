@@ -57,6 +57,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
                 toggleItem.charge_codes = data.charge_codes;
                 toggleItem.active = !toggleItem.active;
                 refreshRevenueScroller();
+                $scope.data.selectedChargeCode  = '';
             }
             $scope.errorMessage = "";
             $scope.$emit('hideLoader');
