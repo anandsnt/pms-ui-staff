@@ -8,25 +8,24 @@
 		<div>
 			<ul>
 				<li class="restriction-type"
+                                    ng-class="{selected: ($index == restrictionsList.selectedIndex && data.showEditView)}"
 				ng-repeat="restrictionType in data.restrictionTypes"
-				ng-hide="restrictionType.isOnRate || (restrictionType.hideOnHourly == true && data.isHourly) || (!data.isHourly && !data.id && restrictionType.hideOnHourly == true && data.isHourly != false)"
-					ng-class="{selected: ($index == restrictionsList.selectedIndex && data.showEditView)}"
+				ng-hide="(restrictionType.hideOnHourly == true && data.isHourly) || 
+                                         (!data.isHourly && !data.id && restrictionType.hideOnHourly == true && data.isHourly != false)"
 					style="cursor: pointer;">
                                 
-				<div ng-if="!hasPermissionToUpdateRestrictions()" class="restrictions-container">
+				<div ng-init="hasPermissionToUpdateRestrictions()" ng-show="hasRestrictionPermissions"
+                                    ng-hide="restrictionType.description === 'Has Restrictions'" 
+                                    ng-class="{'overlay': restrictionType.isOnRate == true || hasRestrictionPermissions == false}" 
+                                     class="restrictions-container" 
+                                     ng-click="toggleRestrictions(restrictionType.id, restrictionType.days,$index, restrictionType)">
 					<span class="restriction-icon {{restrictionType.background_class}} {{restrictionType.icon}}">{{restrictionType.days}}</span>
 					<span class="text">{{restrictionType.description}}</span>
                                         
 					<span ng-show="restrictionType.isRestrictionEnabled" class="restriction-status status-on">on</span>
 					<span ng-show="!restrictionType.isRestrictionEnabled" class="restriction-status status-off">off</span>
                                 </div>
-				<div ng-if="hasPermissionToUpdateRestrictions()" class="restrictions-container" ng-click="toggleRestrictions(restrictionType.id, restrictionType.days,$index)">
-					<span class="restriction-icon {{restrictionType.background_class}} {{restrictionType.icon}}">{{restrictionType.days}}</span>
-					<span class="text">{{restrictionType.description}}</span>
-                                        
-					<span ng-show="restrictionType.isRestrictionEnabled" class="restriction-status status-on">on</span>
-					<span ng-show="!restrictionType.isRestrictionEnabled" class="restriction-status status-off">off</span>
-                                </div>
+                                    
                                     
 			</li>
 		</ul>
