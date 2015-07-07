@@ -1,5 +1,5 @@
 sntRover.service('RVReservationStateService', [
-	function($q, RVBaseWebSrvV2) {
+	function() {
 		var self = this;
 		self.metaData = {
 			rateAddons: [],
@@ -7,7 +7,12 @@ sntRover.service('RVReservationStateService', [
 		};
 
 		self.reservationFlags = {
-			outsideStaydatesForGroup: false
+			outsideStaydatesForGroup: false,
+			RATE_CHANGED: false
+		}
+
+		self.bookMark = {
+			lastPostedRate: null
 		}
 
 
