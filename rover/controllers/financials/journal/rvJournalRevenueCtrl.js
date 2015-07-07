@@ -76,10 +76,12 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
     /** Handle Expand/Collapse on Level2 **/
     $scope.clickedSecondLevel = function(index1, index2){
         var toggleItem = $scope.data.revenueData.charge_groups[index1].charge_codes[index2];
-        
+        console.log(toggleItem);
         var successCallBackFetchRevenueDataTransactions = function(data){
             if(data.transactions.length >0){
                 toggleItem.transactions = data.transactions;
+                //toggleItem.total_count = data.total_count;
+                toggleItem.end = toggleItem.start + data.transactions.length - 1;
                 toggleItem.active = !toggleItem.active;
                 refreshRevenueScroller();
             }
@@ -94,7 +96,9 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
                 "to_date":$scope.data.toDate ,
                 "charge_code_id":toggleItem.id ,
                 "employee_ids" : $scope.data.selectedEmployeeList ,
-                "department_ids" : $scope.data.selectedDepartmentList
+                "department_ids" : $scope.data.selectedDepartmentList,
+                "page_no" :  toggleItem.page_no,
+                "per_page": $scope.data.filterData.perPage
             };
             $scope.invokeApi(RVJournalSrv.fetchRevenueDataByTransactions, postData, successCallBackFetchRevenueDataTransactions);
         }

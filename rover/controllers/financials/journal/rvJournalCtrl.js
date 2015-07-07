@@ -13,6 +13,10 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 	$scope.data.filterData = journalResponse;
 	$scope.data.filterData.checkedAllDepartments = true;
     $scope.data.filterData.isSelectButtonActive = false;
+
+    $scope.data.filterData.perPage = 50;    // For pagination
+    //$scope.data.filterData.pageNo = 1;      // For pagination
+
     $scope.data.selectedChargeGroup = '';
     $scope.data.selectedChargeCode  = '';
     $scope.data.selectedPaymentType = '';
@@ -160,7 +164,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     	if(isAllDepartmentsUnchecked()) $scope.selectAllDepartment();
     	else $scope.data.filterData.checkedAllDepartments = false;
     };
-    
+
     // Clicking on each Employees check boxes.
     $scope.clickedEmployees = function(selectedIndex){
         $scope.data.filterData.employees[selectedIndex].checked = !$scope.data.filterData.employees[selectedIndex].checked;

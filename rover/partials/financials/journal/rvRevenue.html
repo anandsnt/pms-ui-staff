@@ -51,9 +51,20 @@
                                     <td>{{getTimeString(level3.date, level3.time)}}</td>
                                     <td>{{currencySymbol}}{{level3.debit | number: precisonTwo}}</td>
                                 </tr>
+
+                                <!-- Pagination row -->
+                                <tr class="pagination">
+                                    <td colspan="7">
+                                        <div class="search-pagination">
+                                            <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" translate>NEXT</button>
+                                            <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" translate>PREVIOUS</button>
+                                            <p>{{ 'SHOWING' | translate }} <strong>{{ level2.start }}-{{ level2.end }}</strong> {{ 'OF' | translate }} <strong>{{ level2.total_count }}</strong> {{ 'ITEMS' | translate }}</p>
+                                        </div>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
-                        
+
                     </div>
                 </div>
 

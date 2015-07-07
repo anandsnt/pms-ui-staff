@@ -51,6 +51,18 @@
                                 <td>{{getTimeString(level3.date, level3.time)}}</td>                              
                                 <td>{{currencySymbol}}{{level3.credit | number: precisonTwo}}</td>                                           
                             </tr>
+
+                            <!-- Pagination row -->
+                            <tr class="pagination">
+                                <td colspan="8">
+                                    <div class="search-pagination">
+                                        <button type="button" class="button dark-grey next">Next</button>
+                                        <button type="button" class="button dark-grey prev">Previous</button>
+                                        <p>Showing <strong>1-{limit}</strong> of <strong>{total}</strong> items</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            
                         </tbody>
                     </table>
                 </div>
