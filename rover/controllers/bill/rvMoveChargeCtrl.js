@@ -107,7 +107,7 @@ sntRover.controller('RVMoveChargeCtrl',
 		 */
 		$scope.queryEntered = function() {
 			$timeout(function() {
-				if (($scope.textQuery === "" || $scope.textQuery.length < 3) && ($scope.numberQuery === "" || $scope.numberQuery.length < 3 )) {
+				if (($scope.textQuery === "" || $scope.textQuery.length < 3) && ($scope.numberQuery === "" || $scope.numberQuery.length < 2 )) {
 					$scope.searchResults = [];
 					refreshSearchList();
 				} else {
