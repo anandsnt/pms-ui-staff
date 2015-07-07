@@ -138,8 +138,6 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 			
 			angular.forEach(data.payment_types,function(payment_types, index1) {
 
-				payment_types.active = false ;
-
 				if(payment_types.payment_type == "Credit Card"){
 		            angular.forEach(payment_types.credit_cards,function(credit_cards, index2) {
 		            	credit_cards.active = false ;
@@ -151,6 +149,7 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 		            });
 	        	}
 	        	else{
+	        		payment_types.active = false;
 	        		payment_types.page_no = 1;
 	            	payment_types.start = 1;
 	            	payment_types.end = 1;

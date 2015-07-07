@@ -53,12 +53,12 @@
                             </tr>
 
                             <!-- Pagination row -->
-                            <tr class="pagination">
-                                <td colspan="8">
+                            <tr class="pagination" ng-show="level2.total_count > data.filterData.perPage && level2.transactions.length > 0">
+                                <td colspan="6">
                                     <div class="search-pagination">
-                                        <button type="button" class="button dark-grey next">Next</button>
-                                        <button type="button" class="button dark-grey prev">Previous</button>
-                                        <p>Showing <strong>1-{limit}</strong> of <strong>{total}</strong> items</p>
+                                        <button type="button" class="button dark-grey next" ng-click="loadNextSet(index1, index2)" ng-disabled="isNextButtonDisabled(index1, index2)" translate>NEXT</button>
+                                        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet(index1, index2)" ng-disabled="isPrevButtonDisabled(index1, index2)" translate>PREVIOUS</button>
+                                        <p>{{ 'SHOWING' | translate }} <strong>{{ level2.start }}-{{ level2.end }}</strong> {{ 'OF' | translate }} <strong>{{ level2.total_count }}</strong> {{ 'ITEMS' | translate }}</p>
                                     </div>
                                 </td>
                             </tr>
@@ -90,6 +90,18 @@
                                 <td>{{getTimeString(level2.date, level2.time)}}</td>
                                 <td>{{currencySymbol}}{{level2.credit | number: precisonTwo}}</td>                      
                             </tr>
+
+                            <!-- Pagination row -->
+                            <tr class="pagination" ng-show="level1.total_count > data.filterData.perPage && level1.transactions.length > 0">
+                                <td colspan="6">
+                                    <div class="search-pagination">
+                                        <button type="button" class="button dark-grey next" ng-click="loadNextSet(index1,false)" ng-disabled="isNextButtonDisabled(index1,false)" translate>NEXT</button>
+                                        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet(index1,false)" ng-disabled="isPrevButtonDisabled(index1,false)" translate>PREVIOUS</button>
+                                        <p>{{ 'SHOWING' | translate }} <strong>{{ level1.start }}-{{ level1.end }}</strong> {{ 'OF' | translate }} <strong>{{ level1.total_count }}</strong> {{ 'ITEMS' | translate }}</p>
+                                    </div>
+                                </td>
+                            </tr>
+
                         </tbody>
                     </table>
                 </div>

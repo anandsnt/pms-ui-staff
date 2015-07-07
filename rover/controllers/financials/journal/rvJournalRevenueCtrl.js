@@ -168,7 +168,10 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
         $scope.errorMessage = "";
     };
 
+    // Logic for pagination starts here ..
     $scope.loadNextSet = function(index1, index2){
+        console.log(index1);
+        console.log(index2);
         var item = $scope.data.revenueData.charge_groups[index1].charge_codes[index2];
         item.page_no ++;
         item.nextAction = true;
@@ -177,6 +180,9 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
     };
 
     $scope.loadPrevSet = function(index1, index2){
+        console.log(index1);
+        console.log(index2);
+        console.log(typeof index2);
         var item = $scope.data.revenueData.charge_groups[index1].charge_codes[index2];
         item.page_no --;
         item.nextAction = false;
@@ -205,6 +211,6 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
         }
         return isDisabled;
     };
-
+    // Pagination logic ends ...
 
 }]);
