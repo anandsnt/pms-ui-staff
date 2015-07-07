@@ -2112,7 +2112,7 @@
 				}
 
 				.holder {
-					padding: 0 20px 20px 20px;
+					padding: 0 20px;
 					.float;
 
 					.entry {
@@ -2204,7 +2204,7 @@
 					position: relative;
 					background-color: rgba(0,0,0,.05);
 					#border-radius > .bottom();
-					.calc-height(100, 282);
+					.calc-height(100, 242);
 					.box-shadow(0 -2px 2px rgba(0,0,0,.15));
 
 					.wrapper { padding: 20px; }
@@ -2243,6 +2243,10 @@
 				&.searching { height: 540px; }
 
 				@media only screen and (min-height: 768px) { 
+					.holder { padding: 0 20px 20px 20px; }
+
+					.scrollable { .calc-height(100, 282); }
+					
 					&.searching { height: 600px; }
 				}
 			}
