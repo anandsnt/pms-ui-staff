@@ -104,6 +104,8 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
             	charge_codes.page_no = 1;
             	charge_codes.start = 1;
             	charge_codes.end = 1;
+            	charge_codes.nextAction = false;
+        		charge_codes.prevAction = false;
             });
 		   	deferred.resolve(data);
 		},function(data){
@@ -118,7 +120,6 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 		var url = '/api/financial_transactions/revenue_by_transactions';
 		
 		BaseWebSrvV2.postJSON(url,params).then(function(data) {
-			console.log(data);
 		   	deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
@@ -145,12 +146,16 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 		            	credit_cards.page_no = 1;
 		            	credit_cards.start = 1;
 		            	credit_cards.end = 1;
+		            	credit_cards.nextAction = false;
+        				credit_cards.prevAction = false;
 		            });
 	        	}
 	        	else{
 	        		payment_types.page_no = 1;
 	            	payment_types.start = 1;
 	            	payment_types.end = 1;
+	            	payment_types.nextAction = false;
+        			payment_types.prevAction = false;
 	        	}
 	        });
 		   	deferred.resolve(data);

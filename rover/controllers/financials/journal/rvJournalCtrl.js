@@ -13,10 +13,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 	$scope.data.filterData = journalResponse;
 	$scope.data.filterData.checkedAllDepartments = true;
     $scope.data.filterData.isSelectButtonActive = false;
-
     $scope.data.filterData.perPage = 50;    // For pagination
-    //$scope.data.filterData.pageNo = 1;      // For pagination
-
     $scope.data.selectedChargeGroup = '';
     $scope.data.selectedChargeCode  = '';
     $scope.data.selectedPaymentType = '';
@@ -69,9 +66,6 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 	$scope.clickedCashierDate = function(){
 		popupCalendar('CASHIER');
 	};
-	
-
-    /** Employee/Departments Filter starts here ..**/
 
     // Filter by Logged in user id.
     var filterByLoggedInUser = function(){
@@ -92,17 +86,6 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
             $scope.refreshScroller('department-content');
         }, 200);
 	};
-
-    /*$scope.refreshRevenueTab = function(){
-        $rootScope.$broadcast('REFRESHREVENUECONTENT');
-        $scope.data.selectedChargeGroup = 'ALL';
-        $scope.data.selectedChargeCode  = 'ALL';
-    };
-
-    $scope.refreshPaymentTab = function(){
-        $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
-        $scope.data.selectedPaymentType = 'ALL';
-    };*/
 
     // Checking whether all department checkboxes are unchecked or not
     var isAllDepartmentsUnchecked = function(){

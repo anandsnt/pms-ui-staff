@@ -14,7 +14,7 @@
                 <!-- First level - charge groups -->
                 <div class="grid-group" ng-repeat="(index1 ,level1) in data.revenueData.charge_groups">
 
-                    <a ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active, 'has-arrow':checkHasArrowLevel1(index1)}" class="revenue-title toggle">
+                    <a ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active, 'has-arrow':checkHasArrowFirstLevel(index1)}" class="revenue-title toggle">
                         <strong class="name">{{level1.name}}</strong>
                         <span class="number" >{{escapeNullData(level1.number)}}</span>
                         <span class="value">{{currencySymbol}}{{ level1.total | number: precisonTwo}}</span>
@@ -22,7 +22,7 @@
                     <!-- Second level - charge codes -->
                     <div ng-show="level1.active" ng-repeat="(index2 ,level2) in level1.charge_codes" class="grid-charge">
 
-                        <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active , 'has-arrow':checkHasArrowLevel2(index1, index2)}" class="revenue-title toggle">
+                        <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active , 'has-arrow':checkHasArrowSecondLevel(index1, index2)}" class="revenue-title toggle">
                             <span class="code short-text">{{level2.code}}</span>
                             <strong class="name">{{level2.name}}</strong>
                             <span class="value">{{currencySymbol}}{{ level2.total | number: precisonTwo}}</span>
@@ -53,11 +53,11 @@
                                 </tr>
 
                                 <!-- Pagination row -->
-                                <tr class="pagination">
+                                <tr class="pagination" ng-show="level2.total_count > data.filterData.perPage && level2.transactions.length > 0">
                                     <td colspan="7">
                                         <div class="search-pagination">
-                                            <button type="button" class="button dark-grey next" ng-click="loadNextSet(level2)" ng-disabled="isNextButtonDisabled()" translate>NEXT</button>
-                                            <button type="button" class="button dark-grey prev" ng-click="loadPrevSet(level2)" ng-disabled="isPrevButtonDisabled()" translate>PREVIOUS</button>
+                                            <button type="button" class="button dark-grey next" ng-click="loadNextSet(index1, index2)" ng-disabled="isNextButtonDisabled(index1, index2)" translate>NEXT</button>
+                                            <button type="button" class="button dark-grey prev" ng-click="loadPrevSet(index1, index2)" ng-disabled="isPrevButtonDisabled(index1, index2)" translate>PREVIOUS</button>
                                             <p>{{ 'SHOWING' | translate }} <strong>{{ level2.start }}-{{ level2.end }}</strong> {{ 'OF' | translate }} <strong>{{ level2.total_count }}</strong> {{ 'ITEMS' | translate }}</p>
                                         </div>
                                     </td>
