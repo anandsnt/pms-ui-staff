@@ -85,7 +85,9 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
          * method to determine whether the user has permission to update Rate Mgr - Restrictions
          * @return {Boolean}
          */
+        $scope.hasRestrictionPermissions = false;
         $scope.hasPermissionToUpdateRestrictions = function () {
+            $scope.hasRestrictionPermissions = (rvPermissionSrv.getPermissionValue('CHANGE_RESTRICTIONS'));
             return (rvPermissionSrv.getPermissionValue('CHANGE_RESTRICTIONS'));
         };
 
