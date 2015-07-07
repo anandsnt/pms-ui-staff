@@ -34,7 +34,7 @@ sntRover.controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout'
                     if (data.userMemberships.use_hlp || data.userMemberships.use_ffp){
                     $scope.loyaltyTabEnabled = true;
                    } else {
-                    $scope.loyaltyTabEnabled = true;
+                    $scope.loyaltyTabEnabled = false;
                    }
                 });
 
