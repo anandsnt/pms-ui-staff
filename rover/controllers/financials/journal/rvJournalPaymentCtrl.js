@@ -38,8 +38,8 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 
         var toggleItem = $scope.data.paymentData.payment_types[index1];
         
-        if((toggleItem.payment_type !== "Credit Card")){
-            // No data exist - Call API to fetch it
+        if(toggleItem.payment_type !== "Credit Card"){
+            
             var successCallBackFetchPaymentDataTransactions = function(data){
                 if(data.transactions.length >0){
                     toggleItem.transactions = data.transactions;
@@ -64,6 +64,10 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
             else{
                 toggleItem.active = !toggleItem.active;
             }
+        }
+        else{
+            // For Credit cards
+            toggleItem.active = !toggleItem.active;
         }
     };
     /** Handle Expand/Collapse of Level2 **/
