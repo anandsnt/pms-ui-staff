@@ -14,19 +14,18 @@
                                          (!data.isHourly && !data.id && restrictionType.hideOnHourly == true && data.isHourly != false)"
 					style="cursor: pointer;">
                                 
-				<div ng-init="hasPermissionToUpdateRestrictions()" ng-show="hasRestrictionPermissions"
+				<div ng-init="hasPermissionToUpdateRestrictions(restrictionType)" ng-show="hasRestrictionPermissions"
                                     ng-hide="restrictionType.description === 'Has Restrictions'" 
-                                    ng-class="{'overlay': restrictionType.isOnRate == true || hasRestrictionPermissions == false}" 
+                                    ng-class="{'overlay': restrictionType.isOnRate == true || hasRestrictionPermissions == false || getRestriction(restrictionType, 'is_on_rate') == true}" 
                                      class="restrictions-container" 
                                      ng-click="toggleRestrictions(restrictionType.id, restrictionType.days,$index, restrictionType)">
-					<span class="restriction-icon {{restrictionType.background_class}} {{restrictionType.icon}}">{{restrictionType.days}}</span>
+					<span ng-if="restrictionType.days !== ''" class="restriction-icon {{restrictionType.background_class}} {{restrictionType.icon}}">{{restrictionType.days}}</span>
+					<span ng-if="restrictionType.days === ''" class="restriction-icon {{restrictionType.background_class}} {{restrictionType.icon}}">{{getRestriction(restrictionType, 'days')}}</span>
 					<span class="text">{{restrictionType.description}}</span>
                                         
 					<span ng-show="restrictionType.isRestrictionEnabled" class="restriction-status status-on">on</span>
 					<span ng-show="!restrictionType.isRestrictionEnabled" class="restriction-status status-off">off</span>
                                 </div>
-                                    
-                                    
 			</li>
 		</ul>
 	</div>
