@@ -106,7 +106,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     };
 
     /* To show / hide table heading section for Level2 (Credit card items) */
-    $scope.isShowTableHeadingLevel2 = function(index1, index2){
+    $scope.isShowTableHeadingSecondLevel = function(index1, index2){
         var isShowTableHeading = false,
         item = $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions;
         if((typeof item !== 'undefined') && (item.length >0)){
@@ -118,7 +118,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     };
 
     /* To show / hide table heading section for Level1 (Not Credit card items) */
-    $scope.isShowTableHeadingLevel1 = function(index1){
+    $scope.isShowTableHeadingFirstLevel = function(index1){
         var isShowTableHeading = false,
         item = $scope.data.paymentData.payment_types[index1].transactions;
         if((typeof item !== 'undefined') && (item.length >0)){
@@ -130,7 +130,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     };
 
     /* To hide/show arrow button for Level1 */
-    $scope.checkHasArrowLevel1 = function(index){
+    $scope.checkHasArrowFirstLevel = function(index){
         var hasArrow = false,
         item = $scope.data.paymentData.payment_types[index];
         if((typeof item.credit_cards !== 'undefined') && (item.credit_cards.length >0)){
@@ -143,7 +143,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     };
 
     /* To hide/show arrow button for Level2 */
-    $scope.checkHasArrowLevel2 = function(index1, index2){
+    $scope.checkHasArrowSecondLevel = function(index1, index2){
         var hasArrow = false,
         item = $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions;
         if((typeof item !== 'undefined') && (item.length >0)) hasArrow = true;

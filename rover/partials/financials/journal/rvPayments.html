@@ -14,7 +14,7 @@
 
             <!-- First level - payment types -->
             <div ng-repeat="(index1 ,level1) in data.paymentData.payment_types" class="grid-group">
-                <a ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active, 'has-arrow':checkHasArrowLevel1(index1)}" class="payment-title toggle">
+                <a ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active, 'has-arrow':checkHasArrowFirstLevel(index1)}" class="payment-title toggle">
                     <strong class="name">{{escapeNullData(level1.payment_type)}}</strong>
                     <span class="code">{{escapeNullData(level1.charge_code)}}</span>  
                     <span class="number">{{escapeNullData(level1.number)}}</span>
@@ -24,7 +24,7 @@
                 <!-- Second level - credit cards - if Payment type is Credit Card -->
                 <div ng-if="level1.payment_type == 'Credit Card'" ng-repeat="(index2 ,level2) in level1.credit_cards" ng-show="level1.active" class="grid-charge">
 
-                    <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active, 'has-arrow':checkHasArrowLevel2(index1,index2)}" class="payment-title  toggle">
+                    <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active, 'has-arrow':checkHasArrowSecondLevel(index1,index2)}" class="payment-title  toggle">
                         <span class="code">{{escapeNullData(level2.charge_code)}}</span>
                         <strong class="name">{{escapeNullData(level2.credit_card)}}</strong>  
                         <span class="value">{{currencySymbol}}{{level2.amount | number: precisonTwo}}</span>
@@ -33,7 +33,7 @@
                     <!-- Third level - transactions -->
                     <table ng-show="level2.active" class="grid-items">
                         <thead>
-                            <tr ng-show="isShowTableHeadingLevel2(index1 ,index2)">
+                            <tr ng-show="isShowTableHeadingSecondLevel(index1 ,index2)">
                                 <th scope="col" translate>ROOM_LABEL</th>
                                 <th scope="col" translate>NAME</th>
                                 <th scope="col" translate>RESERVATION_NUMBER</th>
@@ -62,7 +62,7 @@
                                     </div>
                                 </td>
                             </tr>
-                            
+
                         </tbody>
                     </table>
                 </div>
@@ -72,7 +72,7 @@
                     
                     <table ng-show="level1.active" class="grid-items">
                         <thead>
-                            <tr ng-show="isShowTableHeadingLevel1(index1)">
+                            <tr ng-show="isShowTableHeadingFirstLevel(index1)">
                                 <th scope="col" translate>ROOM_LABEL</th>
                                 <th scope="col" translate>NAME</th>
                                 <th scope="col" translate>RESERVATION_NUMBER</th>
