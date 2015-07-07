@@ -61,6 +61,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         $scope.initreverseCheckoutDetails();
 
         $scope.initReservationData = function() {
+            RVReservationStateService.bookMark.lastPostedRate = null;
             $scope.hideSidebar = false;
             $scope.addonsData.existingAddons = [];
             // intialize reservation object

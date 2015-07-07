@@ -1,4 +1,4 @@
-sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'sortOrder', 'rateAddons', 'isAddonsConfigured','RVReservationBaseSearchSrv', 'RVReservationAddonsSrv','$timeout', '$state', 'ngDialog', '$sce', '$stateParams', 'dateFilter', '$filter', 'rvPermissionSrv', 'RVReservationStateService', 'RVReservationDataService',
+sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'sortOrder', 'rateAddons', 'isAddonsConfigured', 'RVReservationBaseSearchSrv', 'RVReservationAddonsSrv', '$timeout', '$state', 'ngDialog', '$sce', '$stateParams', 'dateFilter', '$filter', 'rvPermissionSrv', 'RVReservationStateService', 'RVReservationDataService',
 	function($rootScope, $scope, roomRates, sortOrder, rateAddons, isAddonsConfigured, RVReservationBaseSearchSrv, RVReservationAddonsSrv, $timeout, $state, ngDialog, $sce, $stateParams, dateFilter, $filter, rvPermissionSrv, RVReservationStateService, RVReservationDataService) {
 		$scope.displayData = {};
 		$scope.selectedRoomType = -1;
@@ -405,12 +405,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					}
 					$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[$scope.reservationData.rooms[$scope.activeRoom].roomTypeId].ratedetails;
 					$scope.computeTotalStayCost();
-
-					if ($stateParams.fromState == "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState == "STAY_CARD") {
-						$scope.saveAndGotoStayCard();
-					} else {
-						$scope.enhanceStay();
-					}
+					if ($stateParams.fromState == "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState == "STAY_CARD")
+						populateStayDates(rateId, roomId);
+					transferState();
 				}
 			}
 			// CICO-12757 : To save and go back to stay card
@@ -432,28 +429,36 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.reservationData.rooms[$scope.activeRoom].rateName = $scope.displayData.allRates[rateId].name;
 			$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[roomId].ratedetails;
 			if (!$scope.stateCheck.stayDatesMode) {
-				if ($stateParams.fromState == "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState == "STAY_CARD") {
-					$scope.saveAndGotoStayCard();
-				} else {
-					$scope.enhanceStay();
-				}
+				$scope.navigateOut();
 			}
-		}		
-		$scope.enhanceStay = function() {				
+		}
+
+		var haveAddonsChanged = function(entireSet, associatedAddons) {
+			var extraAddons = [];
+			_.each(entireSet, function(addon) {
+				if (!_.find(associatedAddons, {
+						id: addon.id
+					})) extraAddons.push(addon.id);
+			})
+			return extraAddons.length > 0;
+		}
+
+		$scope.enhanceStay = function() {
+
 			// CICO-9429: Show Addon step only if its been set ON in admin
 			var navigate = function() {
 				if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id) {
-					if ($rootScope.isAddonOn&&isAddonsConfigured) {
+					if ($rootScope.isAddonOn && isAddonsConfigured) {
 						$state.go('rover.reservation.staycard.mainCard.addons', {
 							"from_date": $scope.reservationData.arrivalDate,
 							"to_date": $scope.reservationData.departureDate
 						});
-					} else {						
+					} else {
 						$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm');
 					}
 				}
 			}
-			if ($rootScope.isAddonOn&&isAddonsConfigured) {		//CICO-16874   		
+			if ($rootScope.isAddonOn && isAddonsConfigured) { //CICO-16874   		
 				$state.go('rover.reservation.staycard.mainCard.addons', {
 					"from_date": $scope.reservationData.arrivalDate,
 					"to_date": $scope.reservationData.departureDate
@@ -583,13 +588,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				//TODO : 7641 - Update the rateDetails array in the reservationData
 				$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[roomId].ratedetails;
 				$scope.checkOccupancyLimit(null, false, $scope.activeRoom);
-
-				if ($stateParams.fromState == "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState == "STAY_CARD") {
-					populateStayDates(rateId, roomId);
-					$scope.saveAndGotoStayCard();
-				} else {
-					$scope.enhanceStay();
-				}
+				transferState();
 			}
 
 			// check whether any one of the rooms rate has isSuppressed on and turn on flag
@@ -1309,7 +1308,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		var initializeRoomAndRates = function() {
 			BaseCtrl.call(this, $scope);
 			$scope.heading = 'Rooms & Rates';
-			$scope.setHeadingTitle($scope.heading);			
+			$scope.setHeadingTitle($scope.heading);
 			// Initialize metaData in the ReservationStateService
 			RVReservationStateService.metaData.rateAddons = angular.copy(rateAddons);
 			RVReservationStateService.metaData.taxDetails = angular.copy(roomRates.tax_codes);
@@ -1317,6 +1316,45 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			init(true);
 			initEventListeners();
 			initScrollers();
+		}
+
+		$scope.navigateOut = function() {
+			if ($stateParams.fromState == "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState == "STAY_CARD") {
+				$scope.saveAndGotoStayCard();
+			} else {
+				$scope.enhanceStay();
+			}
+		}
+
+		$scope.onResetAddonsAcknowledged = function() {
+			$scope.reservationData.rooms[0].addons = RVReservationStateService.fetchAssociatedAddons($scope.reservationData.rooms[0].rateId);
+			$scope.navigateOut();
+			$scope.closeDialog();
+		}
+
+		var transferState = function() {
+			// TODO: Check if there has been a rateChange
+			if (!!RVReservationStateService.bookMark.lastPostedRate) {
+				// Identify if there are extra addons added other than those of the associated rate's
+				var associatedRateAddons = RVReservationStateService.fetchAssociatedAddons(RVReservationStateService.bookMark.lastPostedRate), // associated addons in the previous rate;
+					entireAddons = $scope.reservationData.rooms[0].addons; // Entire set of addons for the reservation (incl rate associated addons)
+
+				RVReservationStateService.setReservationFlag('RATE_CHANGED', true);
+
+				if (haveAddonsChanged(entireAddons, associatedRateAddons)) { // if user has added extra addons other than that of the associated rate -- alert the user!
+					//alert the user
+					ngDialog.open({
+						template: '/assets/partials/reservation/alerts/rateChangeAddonsAlert.html',
+						scope: $scope,
+						closeByDocument: false,
+						closeByEscape: false
+					});
+
+					return false;
+				}
+				$scope.reservationData.rooms[0].addons = RVReservationStateService.fetchAssociatedAddons($scope.reservationData.rooms[0].rateId);
+			}
+			$scope.navigateOut();
 		}
 
 		initializeRoomAndRates();
