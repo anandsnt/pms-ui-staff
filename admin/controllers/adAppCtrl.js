@@ -586,11 +586,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 	  	$rootScope.$on('ngDialog.opened', function(e, $dialog) {
 	        LastngDialogId = $dialog.attr('id');
-	        //to add stjepan's popup showing animation 
-	        $rootScope.modalOpened = false; 
-	        $timeout(function() { 
-	            $rootScope.modalOpened = true; 
-	        }, 300); 
+	        //to add stjepan's popup showing animation
+	        $rootScope.modalOpened = false;
+	        $timeout(function() {
+	            $rootScope.modalOpened = true;
+	        }, 300);
 	    });
 
 }]);

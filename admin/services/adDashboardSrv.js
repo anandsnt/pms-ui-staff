@@ -1,5 +1,5 @@
 admin.service('ADDashboardSrv',['$http', '$q', function($http, $q){
-	
+
 	var _this = this;
 
 	this.fetch = function(){
@@ -41,7 +41,7 @@ admin.service('ADDashboardSrv',['$http', '$q', function($http, $q){
 					                }
 								]
 							},
-							
+
 					        {
 					            "menu_id": 2,
 					            "menu_name": "Zest",

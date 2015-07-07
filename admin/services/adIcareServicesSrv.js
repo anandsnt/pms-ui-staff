@@ -5,7 +5,7 @@ function($http, $q, ADBaseWebSrvV2) {
     * @return {object} icare service details
     */
 	this.getIcareServices = function(){
-		
+
 		var deferred = $q.defer();
 		var url = '/api/hotel_settings/icare.json';
 
@@ -21,13 +21,13 @@ function($http, $q, ADBaseWebSrvV2) {
 			data.charge_codes = [];
 			data.charge_codes = cargeCodes;
 		    deferred.resolve(data);
-		    
+
 		},function(data){
 		    deferred.reject(data);
 		});
 		return deferred.promise;
 	};
-	
+
    /*
     * To save icare services details
     * @return {object} details of icare services

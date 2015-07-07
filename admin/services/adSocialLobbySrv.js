@@ -1,5 +1,5 @@
 admin.service('ADSocialLobbySrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
-   
+
    /*
 	* service class for Socail Lobby
 	*/
@@ -11,7 +11,7 @@ admin.service('ADSocialLobbySrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSr
 	this.fetchSettingsDetails = function(){
 		var deferred = $q.defer();
 		var url = '/admin/hotel/get_social_lobby_settings.json';
-		
+
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		},function(errorMessage){
@@ -27,7 +27,7 @@ admin.service('ADSocialLobbySrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSr
 	this.saveSocialLobbySettings = function(data){
 		var deferred = $q.defer();
 		var url = '/admin/hotel/save_social_lobby_settings';
-		
+
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
 		},function(errorMessage){

@@ -7,7 +7,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', 'ADBaseWebSrvV
 	that.fetchAddData = function(){
 		var deferred = $q.defer();
 		var url = '/admin/hotels/new.json';
-		
+
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 		    // deferred.resolve(data);
 		    hotelDetailsData.data = data;
@@ -19,9 +19,9 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', 'ADBaseWebSrvV
 	};
 
 	that.fetchLanguages = function(deferred){
-			
+
 			var url = '/api/reference_values.json?type=language';
-			
+
 			ADBaseWebSrvV2.getJSON(url).then(function(data) {
 				hotelDetailsData.languages = data;
 			    deferred.resolve(hotelDetailsData);
@@ -36,9 +36,9 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', 'ADBaseWebSrvV
     */
 	that.fetchEditData = function(data){
 		var deferred = $q.defer();
-			
+
 		var url = '/admin/hotels/'+data.id+'/edit.json';
-		
+
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			hotelDetailsData.data = data;
 			that.fetchLanguages(deferred);
@@ -55,7 +55,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', 'ADBaseWebSrvV
 	that.hotelAdminfetchEditData = function(data){
 		var deferred = $q.defer();
 		var url = '/admin/hotels/edit.json';
-		
+
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){

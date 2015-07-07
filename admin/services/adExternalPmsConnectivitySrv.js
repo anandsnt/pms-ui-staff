@@ -4,7 +4,7 @@ admin.service('ADExternalPmsConnectivitySrv',['$http', '$q', 'ADBaseWebSrv', fun
     * @return {object} external connectivity details
     */
 	this.getExternalPmsConnectivityDetails = function(){
-		
+
 		var deferred = $q.defer();
 		var url = '/admin/get_pms_connection_config.json';
 
@@ -15,7 +15,7 @@ admin.service('ADExternalPmsConnectivitySrv',['$http', '$q', 'ADBaseWebSrv', fun
 		});
 		return deferred.promise;
 	};
-	
+
    /*
     * To test connectivity
     * @param {array} data of the connectivity
@@ -49,5 +49,5 @@ admin.service('ADExternalPmsConnectivitySrv',['$http', '$q', 'ADBaseWebSrv', fun
 		});
 		return deferred.promise;
 	};
-   
+
 }]);

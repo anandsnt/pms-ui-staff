@@ -17,7 +17,7 @@ admin.service('ADUserRolePermissionSrv',['$q', 'ADBaseWebSrvV2',
 		},function(errorMessage){
 			deferred.reject(errorMessage);
 		});
-		
+
 		return deferred.promise;
 	};
 	this.addedUserRolePermission = function(params){
@@ -28,7 +28,7 @@ admin.service('ADUserRolePermissionSrv',['$q', 'ADBaseWebSrvV2',
 		},function(errorMessage){
 			deferred.reject(errorMessage);
 		});
-		
+
 		return deferred.promise;
 	};
 	this.removeUserRolePermission = function(params){
@@ -39,7 +39,7 @@ admin.service('ADUserRolePermissionSrv',['$q', 'ADBaseWebSrvV2',
 		},function(errorMessage){
 			deferred.reject(errorMessage);
 		});
-		
+
 		return deferred.promise;
 	};
 }]);

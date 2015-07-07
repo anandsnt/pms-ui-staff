@@ -1,5 +1,5 @@
 admin.service('ADItemSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
-   
+
    /*
 	* service class for item related operations
 	*/
@@ -11,7 +11,7 @@ admin.service('ADItemSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 	this.fetchItemList = function(){
 		var deferred = $q.defer();
 		var url = '/admin/items/get_items.json';
-		
+
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		},function(errorMessage){
@@ -29,7 +29,7 @@ admin.service('ADItemSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		var id = data.item_id;
 		var deferred = $q.defer();
 		var url =  "/admin/items/" + id + "/delete_item";
-		
+
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		},function(errorMessage){
@@ -46,7 +46,7 @@ admin.service('ADItemSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		var postData = {'id': data.item_id, 'set_active': data.toggle_status};
 		var deferred = $q.defer();
 		var url =  "/admin/items/toggle_favorite";
-		
+
 		ADBaseWebSrv.postJSON(url, postData).then(function(data) {
 			deferred.resolve(data);
 		},function(errorMessage){
@@ -99,5 +99,5 @@ admin.service('ADItemSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		});
 		return deferred.promise;
 	}
-  
+
 }]);

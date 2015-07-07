@@ -229,7 +229,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		/*
 			If email address does not exists on Guest Card,
 		    and user decides to update via the Email field on the summary screen,
-		    this email should be linked to the guest card. 
+		    this email should be linked to the guest card.
 		 */
 		$scope.primaryEmailEntered = function() {
 
@@ -354,9 +354,9 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		var checkAllRoomsAreReady = function() {
 			var promises = [];
 			var data = null;
-			//we are following this structure bacuse of the hideloader pblm. 
+			//we are following this structure bacuse of the hideloader pblm.
 			// we are going to call mutilple API's paralelly. So sometimes last API may complete first
-			// we need to keep loader until all api gets completed 
+			// we need to keep loader until all api gets completed
 			$scope.$emit("showLoader");
 			for (var i = 0; i < $scope.reservationData.rooms.length; i++) {
 				id = $scope.reservationData.rooms[i].room_id;
@@ -381,7 +381,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			/*
 				Please one min..
 				We create a list of promises against each API call
-				if it all resolved successfully then only we will proceed 
+				if it all resolved successfully then only we will proceed
 			*/
 			var confirmationIDs = [];
 			var promises = [];
@@ -424,12 +424,12 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		}
 
 		/**
-		 * trigger the billing information popup. $scope.reservationData is the same variable used in billing info popups also. 
+		 * trigger the billing information popup. $scope.reservationData is the same variable used in billing info popups also.
 		 So we are adding the required params to the existing $scope.reservationData, so that no other functionalities in reservation confirmation breaks.
 		 */
 
 		$scope.openBillingInformation = function(confirm_no) {
-			//incase of multiple reservations we need to check the confirm_no to access billing 
+			//incase of multiple reservations we need to check the confirm_no to access billing
 			//information
 			if (confirm_no) {
 				angular.forEach($scope.reservationData.reservations, function(reservation, key) {

@@ -34,11 +34,11 @@ admin.service('adBrandsSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, 
 	this.editRender = function(data){
 
 		var editID = data.editID;
-		
+
 		var deferred = $q.defer();
 
 		var url = '/admin/hotel_brands/'+editID+'/edit.json';
-		
+
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
@@ -67,7 +67,7 @@ admin.service('adBrandsSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, 
     * @return {object} status of save
     */
 	this.post = function(data){
-		
+
 		var deferred = $q.defer();
 		var url = '/admin/hotel_brands';
 		ADBaseWebSrv.postJSON(url,data).then(function(data) {

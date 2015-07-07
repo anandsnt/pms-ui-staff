@@ -4,7 +4,7 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
     * @return {object} grid view list json
     */
 	this.fetchGridViewList = function(){
-		
+
 		var deferred = $q.defer();
 		var url = '/api/cms_components.json';
 
@@ -21,7 +21,7 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
     * @return {object} tree view list json
     */
 	this.fetchTreeViewList = function(){
-		
+
 		var deferred = $q.defer();
 		var url = '/api/cms_components/tree_view.json';
 
@@ -38,7 +38,7 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
     * @return {object} section/category/item details json
     */
 	this.fetchComponent = function(id){
-		
+
 		var deferred = $q.defer();
 		var url = '/api/cms_components/'+ id;
 

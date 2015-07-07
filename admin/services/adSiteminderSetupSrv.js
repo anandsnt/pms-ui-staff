@@ -1,5 +1,5 @@
 admin.service('adSiteminderSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2){
-   
+
 	this.fetchSetup = function(data){
 		var deferred = $q.defer();
 		var url = 'admin/get_ota_connection_config.json';
@@ -11,8 +11,8 @@ admin.service('adSiteminderSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 		});
 		return deferred.promise;
 	};
-  
-   
+
+
 	this.testSetup = function(data){
 		var deferred = $q.defer();
 		var url = 'admin/test_ota_connection';
@@ -23,7 +23,7 @@ admin.service('adSiteminderSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 		});
 		return deferred.promise;
 	};
-        
+
 	this.fullRefresh = function(data){
             //ota/full_refresh/:interface_id
 		var deferred = $q.defer();
@@ -35,7 +35,7 @@ admin.service('adSiteminderSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 		});
 		return deferred.promise;
 	};
-        
+
 	this.saveSetup = function(data){
 		var deferred = $q.defer();
 		var url = 'admin/save_ota_connection_config';
@@ -46,7 +46,7 @@ admin.service('adSiteminderSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 		});
 		return deferred.promise;
 	};
-        
+
 	this.toggleActive = function(data){
 		var deferred = $q.defer();
 		var url = 'admin/ota/update_active/'+data.interface_id;

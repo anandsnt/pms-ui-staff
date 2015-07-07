@@ -1,5 +1,5 @@
 admin.service('ADMarketsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2){
-	
+
 	/**
     *   A getter method to return the markets list
     */
@@ -34,7 +34,7 @@ admin.service('ADMarketsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 
 		var deferred = $q.defer();
 		var url = '/api/market_segments';
-		
+
 		ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
@@ -50,7 +50,7 @@ admin.service('ADMarketsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 
 		var deferred = $q.defer();
 		var url = '/api/market_segments/'+data.value;
-		
+
 		ADBaseWebSrvV2.putJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
@@ -66,7 +66,7 @@ admin.service('ADMarketsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 
 		var deferred = $q.defer();
 		var url = '/api/market_segments/'+data.value;
-		
+
 		ADBaseWebSrvV2.deleteJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
@@ -74,5 +74,5 @@ admin.service('ADMarketsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 		});
 		return deferred.promise;
 	};
-	
+
 }]);

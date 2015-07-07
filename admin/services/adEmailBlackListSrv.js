@@ -3,7 +3,7 @@ admin.service('ADEmailBlackListSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSr
     * To fetch the list of blacklisted email
     */
 	this.fetch = function(){
-		
+
 		var deferred = $q.defer();
 		var url = '/api/hotels/get_black_listed_emails.json';
 
@@ -14,8 +14,8 @@ admin.service('ADEmailBlackListSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSr
 		});
 		return deferred.promise;
 	};
-	
-  
+
+
 	/*
     * To create blacklisted email
     */
@@ -30,7 +30,6 @@ admin.service('ADEmailBlackListSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSr
 		});
 		return deferred.promise;
 	};
-   
 	/*
     * To delete billing group data
     */

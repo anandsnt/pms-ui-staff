@@ -1,5 +1,5 @@
 admin.service('ADUserRolesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2){
-   
+
 
 	this.userRolesData  = {};
 	var that = this;
@@ -9,7 +9,7 @@ admin.service('ADUserRolesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http,
     * @return {object} users list json
     */
 	this.fetchUserRoles = function(){
-		
+
 		var deferred = $q.defer();
 
 		var fetchUserRolesData = function(){
@@ -57,7 +57,7 @@ admin.service('ADUserRolesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http,
     *
     */
 	this.assignDashboard = function(data){
-	
+
 		var deferred = $q.defer();
 		var url ='api/roles/'+data.value;
 		var updateData = {"dashboard_id":data.dashboard_id}
