@@ -72,39 +72,46 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
             toggleItem.active = !toggleItem.active;
         }
     };
-    
-    /** Handle Expand/Collapse on Level2 **/
-    $scope.clickedSecondLevel = function(index1, index2){
-        var toggleItem = $scope.data.revenueData.charge_groups[index1].charge_codes[index2];
-        console.log(toggleItem);
+
+    var loadTransactionDeatils = function(chargeCodeItem, isFromPagination){
+
         var successCallBackFetchRevenueDataTransactions = function(data){
-            if(data.transactions.length >0){
-                toggleItem.transactions = data.transactions;
-                //toggleItem.total_count = data.total_count;
-                toggleItem.end = toggleItem.start + data.transactions.length - 1;
-                toggleItem.active = !toggleItem.active;
+            //if(data.transactions.length >0){
+                chargeCodeItem.transactions = [];
+                chargeCodeItem.transactions = data.transactions;
+                chargeCodeItem.total_count = data.total_count;
+                chargeCodeItem.end = chargeCodeItem.start + data.transactions.length - 1;
+                if(!isFromPagination) chargeCodeItem.active = !chargeCodeItem.active;
                 refreshRevenueScroller();
-            }
+            //}
             $scope.errorMessage = "";
             $scope.$emit('hideLoader');
         };
 
-        // Call api only while expanding the tab ..
-        if(!toggleItem.active){
+        // Call api only while expanding the tab or on pagination Next/Prev button actions ..
+        if(!chargeCodeItem.active || isFromPagination){
             var postData = {
                 "from_date":$scope.data.fromDate ,
                 "to_date":$scope.data.toDate ,
-                "charge_code_id":toggleItem.id ,
+                "charge_code_id":chargeCodeItem.id ,
                 "employee_ids" : $scope.data.selectedEmployeeList ,
                 "department_ids" : $scope.data.selectedDepartmentList,
-                "page_no" :  toggleItem.page_no,
+                "page_no" :  chargeCodeItem.page_no,
                 "per_page": $scope.data.filterData.perPage
             };
             $scope.invokeApi(RVJournalSrv.fetchRevenueDataByTransactions, postData, successCallBackFetchRevenueDataTransactions);
         }
-        else{
-            toggleItem.active = !toggleItem.active;
+        else {
+            chargeCodeItem.active = !chargeCodeItem.active;
         }
+    };
+
+    /** Handle Expand/Collapse on Level2 **/
+    $scope.clickedSecondLevel = function(index1, index2){
+        var toggleItem = $scope.data.revenueData.charge_groups[index1].charge_codes[index2];
+        console.log(toggleItem);
+
+        loadTransactionDeatils(toggleItem, false);
     };
 
     // To show/hide table heading for Level3.
@@ -147,5 +154,19 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
         }
         $scope.errorMessage = "";
     };
+
+    $scope.loadNextSet = function(item){
+        console.log(item);
+        item.page_no ++;
+        loadTransactionDeatils(item , true);
+    };
+
+    $scope.loadPrevSet = function(item){
+        console.log(item);
+        item.page_no --;
+        loadTransactionDeatils(item, true);
+    };
+
+
 
 }]);
