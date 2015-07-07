@@ -12056,10 +12056,39 @@
                                 vertical-align: top;
                                 word-wrap: break-word;
                             }
+
                             &:nth-child(odd) {
                                 td {
                                     padding: 10px;
                                     background-color: rgba(255,255,255,.7);
+                                }
+
+                                &.pagination {
+                                    td { 
+                                        padding: 0;
+                                        background-color: transparent;
+                                    }
+                                }
+                            }
+
+                            &.pagination {
+                                td {
+                                    padding: 0;
+                                    
+                                    .search-pagination {
+                                        position: static;
+                                        left: auto;
+                                        bottom: auto;
+                                        padding: 0;
+                                        height: 40px;
+                                        background-color: transparent;
+                                        .box-shadow(none);
+
+                                        .button { font-size: 14px; }
+
+                                        &:before,
+                                        &:after { .hide; }
+                                    }
                                 }
                             }
                         }
