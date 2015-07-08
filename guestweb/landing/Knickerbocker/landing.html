@@ -1,0 +1,44 @@
+<!-- contentarea starts here-->
+<div class="jumbotron">
+	<div class="container backgroundbg">
+
+	<div class="container-fluid">
+		<div class="row headerrow brown-bg">
+			<logo-image></logo-image>
+		</div>
+	</div>
+	<div class="container"> 
+		<!-- top section starts here-->
+		<div class="row check-inout-wrapper container-top-padding">
+			<div class="col-md-6 headtext centeralign">
+				<span class="brown-text">Late Check-out?</span>
+				<p class="centeralign leadtext black-text">Check-out time is at {{checkoutTime}}. <strong class="black-text">Request a late check-out if you need more time!</strong></p>
+			</div>
+			<div class="col-md-6 no-padding now-later-options">
+				<div class="row">
+					<div class="col-xs-6 checkoutnow light-brown-bg">
+						<div class="rel-wrapper">
+							<a ui-sref="checkOutConfirmation"></a>
+							<div class="row"> Check-out<br/> now</div>
+							<div class="row icontop">
+								<img src="/assets/img/checkout_icon.png" width="48" height="48" alt="">
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6 checkoutlater brown-bg">
+						<div class="rel-wrapper">
+							<a ui-sref="checkOutLaterOptions"></a>
+							<div class="row checkout-later-text white-text">Check-out<br/>later</div>
+							<div class="row icontop checkoutlater-icon">
+								<img src="/assets/img/Galleria/checkoutlater_smalll.png" width="51" height="49" alt=""/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row clearboth">
+				<p class="centeralign foot-text black-text"><em>Come back to this page to check-out any time before {{checkoutTime}}.</em></p>
+			</div>
+		</div> 
+	</div>
+</div>

@@ -4,7 +4,7 @@
 	<div class="container ">
 		<div class="container-fluid">
 			<div class="container-fluid">
-				<div class="row headerrow grey-bg">
+				<div class="row headerrow brown-bg">
 					<logo-image></logo-image>
 				</div>
 			</div>
@@ -16,24 +16,24 @@
 			
 				<div ng-show="posted && !success && !isCheckoutCompleted && !netWorkError" class="checkout-status centeralign checkout-now-status">
 					<p class="msg-head">Our apologies, something went wrong, please complete your check-out at our front desk.</p>
-					<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="grey-text">{{hotelPhone}}.</a></p>
+					<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="black-text">{{hotelPhone}}.</a></p>
 				</div>
 
 				<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
 
 					<p class="msg-head">Our apologies, something went wrong, please complete your check-out at our front desk.</p>
 
-					<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="grey-text">{{hotelPhone}}.</a></p>
+					<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="black-text">{{hotelPhone}}.</a></p>
 				</div>
 			
 				<div ng-show="posted && success && isCheckoutCompleted && !netWorkError" class="checkout-status centeralign checkout-now-status">
-					<p class="msg-head grey-text thanks-msg">Thank you for staying with us!</p>
+					<p class="msg-head brown-text thanks-msg">Thank you for staying with us!</p>
 				</div>
 
 				<div ng-show="isCheckedout && !success" class="checkout-status centeralign checkout-now-status">
 					<p class="msg-head">It appears you have already completed your check-out.</p>
-					<p class="msg-body">For further enquiries please contact the hotel at <a href="tel: {{hotelPhone}}"class="grey-text">{{hotelPhone}}.</a></p>
-					<p class="msg-foot grey-text">Thank you!</p>
+					<p class="msg-body">For further enquiries please contact the hotel at <a href="tel: {{hotelPhone}}"class="black-text">{{hotelPhone}}.</a></p>
+					<p class="msg-foot black-text">Thank you!</p>
 				</div>
 			</div>
 		</div>
