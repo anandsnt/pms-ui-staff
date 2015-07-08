@@ -85,7 +85,16 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
             $rootScope.$broadcast('REFRESHREVENUECONTENT');
             $scope.$emit('hideLoader');
 		};
-		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, { "from":$scope.data.fromDate , "to":$scope.data.toDate, "charge_group_id": $scope.data.selectedChargeGroup }, successCallBackFetchRevenueData);
+
+		var postData = {
+            "from_date":$scope.data.fromDate,
+            "to_date":$scope.data.toDate,
+            "employee_ids" : $scope.data.selectedEmployeeList ,
+            "department_ids" : $scope.data.selectedDepartmentList,
+            "charge_group_id": $scope.data.selectedChargeGroup
+        };
+
+		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, postData, successCallBackFetchRevenueData);
 
        	var uiValue = _.find($scope.data.revenueData.charge_groups, function(each) {
        		return each.id == $scope.data.selectedChargeGroup;
@@ -107,7 +116,13 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
             $scope.errorMessage = "";
             $scope.$emit('hideLoader');
         };
-        var postData = { "from":$scope.data.fromDate , "to":$scope.data.toDate , "charge_group_id": $scope.data.selectedChargeGroup , "charge_code_id" : $scope.data.selectedChargeCode };
+
+        var postData = {
+        	"from_date":$scope.data.fromDate,
+        	"to_date":$scope.data.toDate,
+        	"charge_group_id": $scope.data.selectedChargeGroup,
+        	"charge_code_id" : $scope.data.selectedChargeCode
+        };
 
         $scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeCodes, postData, successCallBackFetchRevenueDataChargeCodes);
 
@@ -146,7 +161,13 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 			$scope.$emit('hideLoader');
 		};
 
-		var data = { "from":$scope.data.fromDate , "to":$scope.data.toDate };
+		var postData = {
+            "from_date":$scope.data.fromDate,
+            "to_date":$scope.data.toDate,
+            "employee_ids" : $scope.data.selectedEmployeeList ,
+            "department_ids" : $scope.data.selectedDepartmentList,
+            "charge_group_id": $scope.data.selectedChargeGroup
+        };
 
 		if($scope.data.selectedPaymentType === "ALL"){
 			data.charge_code_id = "";
@@ -157,7 +178,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		else{
 			data.charge_code_id = $scope.data.selectedPaymentType;
 		}
-		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, data , successCallBackFetchPaymentData);
+		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, postData , successCallBackFetchPaymentData);
 
 		var uiValue = _.find($scope.data.paymentData.payment_types, function(each) {
 			return each.id == $scope.data.selectedPaymentType;

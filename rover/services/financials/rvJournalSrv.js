@@ -76,9 +76,9 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 
 		if(typeof params.charge_group_id === "undefined") params.charge_group_id = "";
 
-		var url = '/api/financial_transactions/revenue_by_charge_groups?from_date='+params.from+'&to_date='+params.to+'&charge_group_id='+params.charge_group_id;
+		var url = '/api/financial_transactions/revenue_by_charge_groups';
 		
-		BaseWebSrvV2.getJSON(url).then(function(data) {
+		BaseWebSrvV2.postJSON(url,params).then(function(data) {
 			
 			angular.forEach(data.charge_groups,function(charge_groups, index1) {
 				charge_groups.active = false;
@@ -95,7 +95,7 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 
 		if(typeof params.charge_code_id === "undefined") params.charge_code_id = "";
 
-		var url = '/api/financial_transactions/revenue_by_charge_codes?from_date='+params.from+'&to_date='+params.to+'&charge_group_id='+params.charge_group_id+'&charge_code_id='+params.charge_code_id;
+		var url = '/api/financial_transactions/revenue_by_charge_codes?from_date='+params.from_date+'&to_date='+params.to_date+'&charge_group_id='+params.charge_group_id+'&charge_code_id='+params.charge_code_id;
 		
 		BaseWebSrvV2.getJSON(url).then(function(data) {
 
@@ -132,9 +132,9 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 
 		if(typeof params.charge_code_id === "undefined") params.charge_code_id = "";
 
-		var url = '/api/financial_transactions/payments_by_payment_types?from_date='+params.from+'&to_date='+params.to+'&charge_code_id='+params.charge_code_id;
+		var url = '/api/financial_transactions/payments_by_payment_types';
 
-		BaseWebSrvV2.getJSON(url).then(function(data) {
+		BaseWebSrvV2.postJSON(url,params).then(function(data) {
 			
 			angular.forEach(data.payment_types,function(payment_types, index1) {
 

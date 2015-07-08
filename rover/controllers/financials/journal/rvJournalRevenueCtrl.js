@@ -28,7 +28,16 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
 			refreshRevenueScroller();
             $scope.$emit('hideLoader');
 		};
-		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, { "from":$scope.data.fromDate , "to":$scope.data.toDate }, successCallBackFetchRevenueData);
+
+        var postData = {
+            "from_date":$scope.data.fromDate,
+            "to_date":$scope.data.toDate,
+            "employee_ids" : $scope.data.selectedEmployeeList ,
+            "department_ids" : $scope.data.selectedDepartmentList,
+            "charge_group_id": $scope.data.selectedChargeGroup
+        };
+
+		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, postData, successCallBackFetchRevenueData);
     };
 
 	initRevenueData();
@@ -65,7 +74,13 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
         
         // Call api only while expanding the tab ..
         if(!toggleItem.active){
-            var postData = { "from":$scope.data.fromDate , "to":$scope.data.toDate , "charge_group_id":toggleItem.id };
+
+            var postData = {
+                "from_date":$scope.data.fromDate,
+                "to_date":$scope.data.toDate,
+                "charge_group_id": toggleItem.id,
+                "charge_code_id" : ''
+            };
             $scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeCodes, postData, successCallBackFetchRevenueDataChargeCodes);
         }
         else{
@@ -179,6 +194,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
     };
 
     $scope.loadPrevSet = function(index1, index2){
+        
         var item = $scope.data.revenueData.charge_groups[index1].charge_codes[index2];
         item.page_no --;
         item.nextAction = false;

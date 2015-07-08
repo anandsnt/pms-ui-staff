@@ -17,13 +17,22 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
             $scope.data.selectedPaymentType = '';
 			$scope.data.paymentData = data;
 			$scope.data.activePaymentTypes = data.payment_types;
-            
+
             $scope.errorMessage = "";
 			refreshPaymentScroll();
             $scope.$emit('hideLoader');
 		};
-		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, { "from":$scope.data.fromDate , "to":$scope.data.toDate }, successCallBackFetchPaymentData);
+
+        var postData = {
+            "from_date":$scope.data.fromDate,
+            "to_date":$scope.data.toDate,
+            "employee_ids" : $scope.data.selectedEmployeeList ,
+            "department_ids" : $scope.data.selectedDepartmentList,
+            "charge_group_id": $scope.data.selectedChargeGroup
+        };
+		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, postData, successCallBackFetchPaymentData);
 	};
+    
 	initPaymentData();
 
     $rootScope.$on('fromDateChanged',function(){
