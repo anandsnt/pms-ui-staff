@@ -41,10 +41,14 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','$rootScope','RVGue
 $rootScope.$on('reload-loyalty-section-data',function(evt,data){
     if (data){
         if (data.reload){
-            $scope.init();//reload loyalty when switching through staycards
+            if ($rootScope.goToReservationCalled){
+                $scope.init();//reload loyalty when switching through staycards
+                $rootScope.goToReservationCalled = false;
+            }
         }
     }
 });
+
 $scope.checkForHotelLoyaltyLevel = function(){
     if ($scope.$parent.$parent.guestCardData.use_hlp){
 	for(var i = 0; i < $scope.loyaltyData.userMemberships.hotelLoyaltyProgram.length; i++){
