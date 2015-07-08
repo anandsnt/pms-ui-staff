@@ -90,7 +90,26 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
             $scope.hasRestrictionPermissions = (rvPermissionSrv.getPermissionValue('CHANGE_RESTRICTIONS'));
             return (rvPermissionSrv.getPermissionValue('CHANGE_RESTRICTIONS'));
         };
-
+        
+        $scope.getRestriction = function(d, prop){
+            if ($scope.popupData){
+              var date = $scope.popupData.selectedDate,
+                      rateId = $scope.popupData.selectedRate;
+              
+              for (var i in $scope.calendarData.data){
+                      if (rateId === $scope.calendarData.data[i].id){
+                            //each restriction in the obj
+                            if (d){
+                                for (var x in $scope.calendarData.data[i][date]){
+                                    if ($scope.calendarData.data[i][date][x].restriction_type_id === d.id){
+                                        return $scope.calendarData.data[i][date][x][prop];
+                                    }
+                                }
+                            }
+                        }
+                  }
+            }
+        };
         /**
          * For displaying the price in expanded view
          * Fetch the price info and update the $scope data variable
@@ -326,9 +345,8 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
             } else {
                 for (var i in $scope.calendarData.data) {
                     if ($scope.calendarData.data[i].id == $scope.popupData.selectedRate) {
-                        
                         selectedDateInfo = $scope.calendarData.data[i][$scope.popupData.selectedDate];
-                        if (selectedDateInfo = []){
+                        if (selectedDateInfo === []){
                             selectedDateInfo = $scope.calendarData.all_rates[$scope.popupData.selectedDate];
                         }
                         $scope.data.id = $scope.calendarData.data[i].id;
