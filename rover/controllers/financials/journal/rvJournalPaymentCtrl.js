@@ -27,12 +27,11 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
             "from_date":$scope.data.fromDate,
             "to_date":$scope.data.toDate,
             "employee_ids" : $scope.data.selectedEmployeeList ,
-            "department_ids" : $scope.data.selectedDepartmentList,
-            "charge_group_id": $scope.data.selectedChargeGroup
+            "department_ids" : $scope.data.selectedDepartmentList
         };
 		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, postData, successCallBackFetchPaymentData);
 	};
-    
+
 	initPaymentData();
 
     $rootScope.$on('fromDateChanged',function(){

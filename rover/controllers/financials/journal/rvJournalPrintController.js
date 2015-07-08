@@ -165,18 +165,17 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
             "from_date":$scope.data.fromDate,
             "to_date":$scope.data.toDate,
             "employee_ids" : $scope.data.selectedEmployeeList ,
-            "department_ids" : $scope.data.selectedDepartmentList,
-            "charge_group_id": $scope.data.selectedChargeGroup
+            "department_ids" : $scope.data.selectedDepartmentList
         };
 
 		if($scope.data.selectedPaymentType === "ALL"){
-			data.charge_code_id = "";
+			postData.charge_code_id = "";
 		}
 		else if($scope.data.selectedPaymentType === "" || typeof $scope.data.selectedPaymentType === "undefined"){
-			data.charge_code_id = "CC";
+			postData.charge_code_id = "CC";
 		}
 		else{
-			data.charge_code_id = $scope.data.selectedPaymentType;
+			postData.charge_code_id = $scope.data.selectedPaymentType;
 		}
 		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, postData , successCallBackFetchPaymentData);
 
