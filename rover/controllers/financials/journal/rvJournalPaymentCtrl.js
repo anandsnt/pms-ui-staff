@@ -16,7 +16,8 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 			$scope.data.paymentData = {};
             $scope.data.selectedPaymentType = '';
 			$scope.data.paymentData = data;
-			
+			$scope.data.activePaymentTypes = data.payment_types;
+            
             $scope.errorMessage = "";
 			refreshPaymentScroll();
             $scope.$emit('hideLoader');
@@ -33,6 +34,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         initPaymentData();
     });
 
+    // Load the transaction details
     var loadTransactionDeatils = function(chargeCodeItem, isFromPagination){
 
         var successCallBackFetchPaymentDataTransactions = function(data){

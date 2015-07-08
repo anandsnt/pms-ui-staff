@@ -73,6 +73,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
         }
     };
 
+    // Load the transaction details
     var loadTransactionDeatils = function(chargeCodeItem, isFromPagination){
 
         var successCallBackFetchRevenueDataTransactions = function(data){

@@ -117,40 +117,16 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
        	$scope.data.uiSelectedChargeCode = !!uiValue ? uiValue['name'] : '';
 	};
 
-	/*$scope.toggleRevenueTransactions = function(){
-		if($scope.data.isRevenueToggleSummaryActive)
-			$scope.showRevenueDetailView(false);
-		else
-			$scope.showRevenueDetailView(true);
-	};*/
-
 	// To handle Summary/Details toggle button click - REVENUE
 	$scope.toggleSummaryOrDeatilsRevenue = function(){
-		console.info("------------ // DEATILS PRINT IS NOT IMPLEMENTED !! // ------------");
-		// Commenting for now - may need for PRINT imeplementation
-		// Only Summary PRINT will work now ..
-
-		//$rootScope.$broadcast('REFRESHREVENUECONTENT');
-		//$scope.data.isRevenueToggleSummaryActive = !$scope.data.isRevenueToggleSummaryActive;
-		//$scope.toggleRevenueTransactions();
+		
+		$scope.data.isRevenueToggleSummaryActive = !$scope.data.isRevenueToggleSummaryActive;
 	};
-
-	/*$scope.togglePaymentTransactions = function(){
-		if($scope.data.isPaymentToggleSummaryActive)
-			$scope.showPaymentDetailView(false);
-		else
-			$scope.showPaymentDetailView(true);
-	};*/
 
 	// To handle Summary/Details toggle button click - PAYMENT
 	$scope.toggleSummaryOrDeatilsPayment = function(){
-		console.info("------------ // DEATILS PRINT IS NOT IMPLEMENTED !! // ------------");
-		// Commenting for now - may need for PRINT imeplementation
-		// Only Summary PRINT will work now ..
 
-		//$rootScope.$broadcast('REFRESHPAYMENTCONTENT');
-		//$scope.data.isPaymentToggleSummaryActive = !$scope.data.isPaymentToggleSummaryActive;
-		// $scope.togglePaymentTransactions();
+		$scope.data.isPaymentToggleSummaryActive = !$scope.data.isPaymentToggleSummaryActive;
 	};
 
 	/** Code for Revenue Tab - PRINT BOX - filters ends here ..   **/
@@ -188,40 +164,6 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		});
 		$scope.data.uiSelectedPaymentType = !!uiValue ? uiValue['payment_type'] : '';
 	};
-
-
-	/*
-     *	To handle Summary/Details view for Payments filter.
-	 */
-	/*$scope.showPaymentDetailView = function(isDetailView){
-		
-		angular.forEach($scope.data.paymentData.payment_types,function(payment_types, index1) {
-
-			if(payment_types.payment_type == "Credit Card"){
-	            angular.forEach(payment_types.credit_cards,function(credit_cards, index2) {
-	            	
-	            	if(isDetailView && credit_cards.filterFlag){
-	            		// Expanding Level1 and Level2 to show detailed view for Credit Cards.
-	            		payment_types.active = true;
-	            		// If cards having data inside , expand it.
-	            		if(credit_cards.transactions.length >0) credit_cards.active = true;
-	            	}
-	            	else if(!isDetailView){
-	            		payment_types.active = false;
-	            		credit_cards.active = false;
-	            	}
-	            });
-        	}
-        	else{
-        		if(isDetailView && payment_types.transactions.length >0){
-        			payment_types.active = true;
-        		}
-        		else if(!isDetailView){
-        			payment_types.active = false;
-        		}
-        	}
-        });
-	};*/
 
 	/** Code for Payment Tab - PRINT BOX - filters ends here .. **/
 

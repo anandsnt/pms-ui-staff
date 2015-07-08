@@ -22,6 +22,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.data.isActiveRevenueFilter = false;
     $scope.data.activeChargeGroups = [];
     $scope.data.activeChargeCodes = [];
+    $scope.data.activePaymentTypes = [];
     $scope.data.selectedDepartmentList = [];
     $scope.data.selectedEmployeeList = [];
     $scope.data.isDrawerOpened = false;
