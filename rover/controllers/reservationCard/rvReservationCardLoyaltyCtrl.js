@@ -103,6 +103,11 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
                 $scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = "";
             }
         };
+        $scope.loadLoyaltyPrograms = function(){
+            if ($scope.$parent.$parent.refreshingReservation){
+                $rootScope.$broadcast('reload-loyalty-section-data',{'reload':true});
+            }
+        };
         $scope.callSelectLoyaltyAPI = function(id) {
             $scope.selectedLoyaltyID = id;
             var successCallback = function() {
