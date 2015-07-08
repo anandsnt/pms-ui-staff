@@ -76,7 +76,9 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
             var postData = {
                 "from_date":$scope.data.fromDate,
                 "to_date":$scope.data.toDate,
-                "charge_group_id": toggleItem.id
+                "charge_group_id": toggleItem.id,
+                "employee_ids" : $scope.data.selectedEmployeeList ,
+                "department_ids" : $scope.data.selectedDepartmentList
             };
             $scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeCodes, postData, successCallBackFetchRevenueDataChargeCodes);
         }

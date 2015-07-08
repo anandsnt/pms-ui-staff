@@ -121,7 +121,9 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
         	"from_date":$scope.data.fromDate,
         	"to_date":$scope.data.toDate,
         	"charge_group_id": $scope.data.selectedChargeGroup,
-        	"charge_code_id" : $scope.data.selectedChargeCode
+        	"charge_code_id" : $scope.data.selectedChargeCode,
+        	"employee_ids" : $scope.data.selectedEmployeeList,
+            "department_ids" : $scope.data.selectedDepartmentList
         };
 
         $scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeCodes, postData, successCallBackFetchRevenueDataChargeCodes);

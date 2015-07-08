@@ -95,9 +95,9 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 
 		if(typeof params.charge_code_id === "undefined") params.charge_code_id = "";
 
-		var url = '/api/financial_transactions/revenue_by_charge_codes?from_date='+params.from_date+'&to_date='+params.to_date+'&charge_group_id='+params.charge_group_id+'&charge_code_id='+params.charge_code_id;
+		var url = '/api/financial_transactions/revenue_by_charge_codes';
 		
-		BaseWebSrvV2.getJSON(url).then(function(data) {
+		BaseWebSrvV2.postJSON(url,params).then(function(data) {
 
             angular.forEach(data.charge_codes,function(charge_codes, index2) {
             	charge_codes.active = false;
