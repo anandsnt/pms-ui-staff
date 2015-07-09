@@ -13,7 +13,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 
 	if(roomId){
 		//if roomnumber is null returning to room list
-		if(typeof roomId === 'undefined' || roomId.trim() == ''){
+		if(typeof roomId === 'undefined' || roomId.trim() === ''){
 			$state.go('admin.rooms');
 		}
 		$scope.editMode = true;
@@ -67,7 +67,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 	*/
 	$scope.changed = function(groupName, index){
 		for(var i = 0; i < $scope.data.room_likes.length; i++){
-			if($scope.data.room_likes[i].group_name == groupName){
+			if($scope.data.room_likes[i].group_name === groupName){
 				for(var j = 0; j < $scope.data.room_likes[i].options.length; j++){
 					if(j !== index){
 						$scope.data.room_likes[i].options[j].selected = false;
@@ -135,14 +135,14 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		postData.max_occupancy = $scope.data.max_occupancy;
 		// to get seletected features
 		for(var i = 0; i < $scope.data.room_features.length; i++){
-			if($scope.data.room_features[i].selected == true ){
+			if($scope.data.room_features[i].selected === true ){
 				postData.active_room_features.push($scope.data.room_features[i].value);
 			}
 		}
 		// to get seletect likes
 		for(var i = 0; i < $scope.data.room_likes.length; i++){
 			for(var j = 0; j < $scope.data.room_likes[i].options.length; j++){
-				if($scope.data.room_likes[i].options[j].selected == true){
+				if($scope.data.room_likes[i].options[j].selected === true){
 					postData.active_room_likes.push($scope.data.room_likes[i].options[j].value);
 				}
 			}

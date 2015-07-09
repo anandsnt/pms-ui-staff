@@ -36,7 +36,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.workTypeForm = 'add';
 
 		$scope.openWorkTypeForm = function(typeIndex) {
-			if (typeIndex == 'new') {
+			if (typeIndex === 'new') {
 				$scope.workTypeForm = 'add';
 				$scope.workTypeClickedElement = 'new';
 				resetEachWorkType();
@@ -173,7 +173,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.workShiftForm = 'add';
 
 		$scope.openWorkShiftForm = function(typeIndex) {
-			if (typeIndex == 'new') {
+			if (typeIndex === 'new') {
 				$scope.workShiftForm = 'add';
 				$scope.workShiftClickedElement = 'new';
 				resetEachWorkShift();
@@ -337,7 +337,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		var initateRoomTaskTimes = function(time, tasktimes) {
 			var initialTime = {};
 			_.each($scope.roomTypesList, function(room) {
-				if (tasktimes && tasktimes[room.id] == null) {
+				if (tasktimes && tasktimes[room.id] === null) {
 					initialTime[room.id] = {
 						hours: '',
 						mins: ''
@@ -388,10 +388,10 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 		$scope.updateIndividualTimes = function() {
 			_.each($scope.roomTypesList, function(room) {
-				if ($scope.eachTaskList.rooms_task_completion[room.id].hours == '') {
+				if ($scope.eachTaskList.rooms_task_completion[room.id].hours === '') {
 					$scope.eachTaskList.rooms_task_completion[room.id].hours = $scope.eachTaskList.hours;
 				}
-				if ($scope.eachTaskList.rooms_task_completion[room.id].mins == '') {
+				if ($scope.eachTaskList.rooms_task_completion[room.id].mins === '') {
 					$scope.eachTaskList.rooms_task_completion[room.id].mins = $scope.eachTaskList.mins;
 				}
 			})
@@ -404,7 +404,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				model[index] = false;
 
 				match = _.find(entry, function(id) {
-					return id == item.id;
+					return id === item.id;
 				});
 
 				if ( !!match ) {
@@ -425,7 +425,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 
 		$scope.openTaskListForm = function(typeIndex) {
-			if (typeIndex == 'new') {
+			if (typeIndex === 'new') {
 				$scope.taskListForm = 'add';
 				$scope.taskListClickedElement = 'new';
 				resetEachTaskList();

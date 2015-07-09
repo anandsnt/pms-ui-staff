@@ -32,7 +32,7 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', '$anchorScroll', '$t
     * @param {int} index of the selected source
     */
 	$scope.getTemplateUrl = function(index){
-		if($scope.currentClickedElement == index){
+		if($scope.currentClickedElement === index){
 			 return "/assets/partials/sources/adSourcesEdit.html";
 		}
 	};
@@ -77,7 +77,7 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', '$anchorScroll', '$t
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 		};
-		if(index == undefined) var data = $scope.data.sources[$scope.currentClickedElement];
+		if(index === undefined) var data = $scope.data.sources[$scope.currentClickedElement];
 		else var data = $scope.data.sources[index];
 
   		$scope.invokeApi(ADSourcesSrv.update, data, postSuccess);
@@ -91,7 +91,7 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', '$anchorScroll', '$t
 			$scope.currentClickedElement = -1;
 			// delete data from scope
 			angular.forEach($scope.data.sources,function(item, index) {
-	 			if (item.value == id) {
+	 			if (item.value === id) {
 	 				$scope.data.sources.splice(index, 1);
 	 			}
  			});

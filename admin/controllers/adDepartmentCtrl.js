@@ -53,7 +53,7 @@ admin.controller('ADDepartmentListCtrl',['$scope', '$state', 'ADDepartmentSrv', 
     */
 	$scope.getTemplateUrl = function(index, id){
 		if(typeof index === "undefined" || typeof id === "undefined") return "";
-		if($scope.currentClickedElement == index){
+		if($scope.currentClickedElement === index){
 			 	return "/assets/partials/departments/adDepartmentsEdit.html";
 		}
 	};

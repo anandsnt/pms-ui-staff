@@ -72,7 +72,7 @@ $scope.loadTable = function(){
   $scope.isAllOptionsSelected = function(){
     var selectedCount = false;
     $scope.disableSave = true;
-    if($scope.emailDatas.length ==0){
+    if($scope.emailDatas.length ===0){
       return false;
     }
      angular.forEach($scope.emailDatas,function(item, index) {
@@ -86,7 +86,7 @@ $scope.loadTable = function(){
            }
        });
 
-     return $scope.emailDatas.length == selectedCount;
+     return $scope.emailDatas.length === selectedCount;
   };
 /*
   * To watch if all options are selcted

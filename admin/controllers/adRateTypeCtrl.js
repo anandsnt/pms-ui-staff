@@ -61,7 +61,7 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 	$scope.getTemplateUrl = function(index, id) {
 		if ( typeof index === "undefined" || typeof id === "undefined")
 			return "";
-		if ($scope.currentClickedElement == index) {
+		if ($scope.currentClickedElement === index) {
 			return "/assets/partials/rateTypes/adRateTypeEdit.html";
 		}
 	};
@@ -70,7 +70,7 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 		if ( typeof index === "undefined" || typeof id === "undefined")
 			return "";
 
-		if ($scope.currentHoverElement == index) {
+		if ($scope.currentHoverElement === index) {
 			return "/assets/partials/rateTypes/adRateTypePopover.html";
 		}
 	};

@@ -113,7 +113,7 @@ admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSr
     		$scope.isAddMode =false;
     	};
 
-    	if($scope.emailData.email == ""){
+    	if($scope.emailData.email === ""){
     		$scope.errorMessage = ["The email field is empty"];
     	}else
     	    $scope.invokeApi(ADEmailBlackListSrv.saveBlackListedEmail, $scope.emailData, successCallbackSave);

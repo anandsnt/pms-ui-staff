@@ -29,7 +29,7 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
     * @param {string} id of the item
     */
 	$scope.getTemplateUrl = function(index){
-		if($scope.currentClickedElement == index){ 
+		if($scope.currentClickedElement === index){ 
 			 return "/assets/partials/maintenanceReasons/adMaintenanceReasonsEdit.html";
 		}
 	};
@@ -86,7 +86,7 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
 			$scope.currentClickedElement = -1;
 			// delete data from scope
 			angular.forEach($scope.data.maintenance_reasons,function(item, index) {
-	 			if (item.value == id) {
+	 			if (item.value === id) {
 	 				$scope.data.maintenance_reasons.splice(index, 1);
 	 			}
  			});
