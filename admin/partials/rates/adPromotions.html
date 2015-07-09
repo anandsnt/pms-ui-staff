@@ -1,4 +1,4 @@
-<section id="replacing-div-second" class="content current" ng-hide="isLoading" ng-cloak ng-click="clearErrorMessage()">
+<section id="promotions" class="content current" ng-hide="isLoading" ng-cloak ng-click="clearErrorMessage()">
     <div>
         <header class="content-title float">
             <h2 translate>Promotions</h2>
@@ -83,17 +83,60 @@
                                                         <select name="amount-type-id" id="amount-type-id" ng-model="promo.discount.type">
                                                             <option value="" data-text="Not set" class="placeholder">Choose amount type</option>
                                                             <option value="AMOUNT">{{'AMOUNT'|translate}}[{{ currencySymbol }}]</option>
-                                                            <option value="PERCENTAGE" translate>PERCENTAGE</option>                                                            <
-                                                        </select>
+                                                            <option value="PERCENTAGE" translate>PERCENTAGE</option>
+                                                            < </select>
                                                     </div>
                                                 </div>
                                             </div>
                                         </fieldset>
-                                        <fieldset class="holder right float">
-                                            <div class="entry">
-                                                <label>LINKED RATES</label>
-                                                <div multi-select input-model="state.rates" button-label="name" item-label="name" tick-property="ticked" max-labels="0" default-label="None selected" max-height="300px">
+                                        <fieldset class="holder full-width">
+                                            <div class="form-title">
+                                                <h3>
+								                    <span>Assign to&nbsp;</span>								                    
+								                    Rate
+								                </h3>
+                                                <em class="status">
+								                    <span>Assign at least to 1 Rate</span>
+								                </em>
+                                            </div>
+                                            <div class="entry has-sortable">
+                                                <label class="center_align">
+                                                    <em class="rate_roomtype_text">Available Rates</em>
+                                                </label>
+                                                <ul class="boxes sortable ui-sortable short-list" data-type="source" ng-model="promo.availableRates" data-drop="true" style="overflow-y: scroll !important;" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:'.assigned-room-types'}">
+                                                    <li ng-repeat="rate in promo.availableRates" data-drag="true" ng-model="promo.availableRates" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" class="non-assigned-room-types li-draggable" ng-click="toggleAvailableRate($index)" ng-class='{selected: state.selectedAvailableRate === $index}'>
+                                                        <span class="icons icon-handle"></span>
+                                                        <span class="icons icon-handle"></span> {{rate.name}}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="entry movers rates_mover">
+                                                <div class="top_mover">
+                                                    <span class="icons icon-mover-right to-target" data-type="target" ng-click="linkSelectedRate(promo)" ng-class="{active: state.selectedAvailableRate > -1}" data-type="source">
+                                                    	unassign room(s)
+                                                    </span>
+                                                    <span class="icons icon-mover-left to-source" data-type="source" ng-click="unlinkSelectedRate(promo)" ng-class="{active: state.selectedAssignedRate > -1}">
+                                                    	Assign room(s)
+                                                    </span>
                                                 </div>
+                                                <div>
+                                                    <div class="green_gradient icons">
+                                                        <span class="to-source green_mover icons_rates" data-type="source" ng-click="linkAllRates(promo)">Assign room(s)</span>
+                                                    </div>
+                                                    <div class="red_gradient icons">
+                                                        <span class="to-target  red_mover icons_rates" data-type="target" ng-click="unlinkAllRates(promo)">unassign room(s)</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="entry has-sortable">
+                                                <label class="center_align">
+                                                    <span class="assigned_room_text">Assigned to Rates</span></label>
+                                                <ul class="boxes sortable ui-sortable short-list" data-type="target" data-drop="true" ng-model="promo.assignedRates" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:'.non-assigned-room-types'}">
+                                                    <li ng-repeat="rate in promo.assignedRates" ng-model="promo.assignedRates" ng-click="toggleAssignedRate($index)" ng-class='{selected: state.selectedAssignedRate === $index}' class="assigned-room-types li-draggable" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" data-drag="true" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }">
+                                                        <span class="icons icon-handle"></span>
+                                                        <span class="icons icon-handle"></span> {{rate.name}}
+                                                    </li>
+                                                </ul>
                                             </div>
                                         </fieldset>
                                         <div class="actions float">

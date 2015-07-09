@@ -18,7 +18,7 @@ admin.service('ADPromotionsSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$rootScope',
 						value: 5,
 						type: 'AMOUNT'
 					},
-					linked_rates:[1,2,3]
+					linked_rates:[1572,1616]
 				},{
 					id:2,
 					name: 'Onam Offers',

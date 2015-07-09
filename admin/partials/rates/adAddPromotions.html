@@ -48,11 +48,50 @@
                 </div>
             </div>
         </fieldset>
-        <fieldset class="holder right float">
-            <div class="entry">
-                <label>LINKED RATES</label>
-                <div multi-select input-model="state.rates" button-label="name" item-label="name" tick-property="ticked" max-labels="0" default-label="None selected" max-height="300px">
+        <fieldset class="holder full-width">
+            <div class="form-title">
+                <h3>
+                    <span>Room</span>
+                    Types
+                </h3>
+                <em class="status">
+                    <span>Assign at least 1 room type</span>
+                </em>
+            </div>
+            <div class="entry has-sortable">
+                <label class="center_align">
+                    <em class="rate_roomtype_text">Available Room Types</em>
+                </label>
+                <ul class="boxes sortable ui-sortable short-list" data-type="source" data-drop="true" ng-model="nonAssignedroomTypes" style="overflow-y: scroll !important;" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:'.assigned-room-types'}">
+                    <li ng-repeat="roomtype in nonAssignedroomTypes" data-drag="true" ng-model="nonAssignedroomTypes" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" class="non-assigned-room-types li-draggable" ng-click="unAssignedRoomSelected($event, $index)" ng-class='{selected: selectedUnAssignedRoomIndex === $index}'>
+                        <span class="icons icon-handle"></span>
+                        <span class="icons icon-handle"></span> {{roomtype.name}}
+                    </li>
+                </ul>
+            </div>
+            <div class="entry movers rates_mover">
+                <div class="top_mover">
+                    <span class="icons icon-mover-right to-target" data-type="target" ng-click="topMoverightClicked()" ng-class="{active: selectedUnAssignedRoomIndex!=-1}" data-type="source">unassign room(s)</span>
+                    <span class="icons icon-mover-left to-source" data-type="source" ng-click="topMoveleftClicked()" ng-class="{active: selectedAssignedRoomIndex!=-1}">Assign room(s)</span>
                 </div>
+                <div>
+                    <div class="green_gradient icons">
+                        <span class="to-source green_mover icons_rates" data-type="source" ng-click="bottomMoverightClicked()">Assign room(s)</span>
+                    </div>
+                    <div class="red_gradient icons">
+                        <span class="to-target  red_mover icons_rates" data-type="target" ng-click="bottomMoveleftClicked()">unassign room(s)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="entry has-sortable">
+                <label class="center_align">
+                    <span class="assigned_room_text">Assigned Room Types</span></label>
+                <ul class="boxes sortable ui-sortable short-list" data-type="target" data-drop="true" ng-model="assignedRoomTypes" jqyoui-droppable="{multiple:true, onOver: 'reachedAssignedRoomTypes'}" data-jqyoui-options="{accept:'.non-assigned-room-types'}">
+                    <li ng-repeat="roomtype in assignedRoomTypes" ng-click="assignedRoomSelected($event,$index)" ng-class='{selected: selectedAssignedRoomIndex === $index}' class="assigned-room-types li-draggable" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" data-drag="true" ng-model="assignedRoomTypes" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }">
+                        <span class="icons icon-handle"></span>
+                        <span class="icons icon-handle"></span> {{roomtype.name}}
+                    </li>
+                </ul>
             </div>
         </fieldset>
         <div class="actions float">
