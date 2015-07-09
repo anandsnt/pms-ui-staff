@@ -105,8 +105,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             if ( intMins > 45 && intHrs + 1 < 12 ) {
                 intHrs += 1;
                 intMins = '00';
-            } else if ( intMins > 45 && intHrs + 1 == 12 ) {
-                if ( ampm == 'AM' ) {
+            } else if ( intMins > 45 && intHrs + 1 === 12 ) {
+                if ( ampm === 'AM' ) {
                     intHrs  = '00';
                     intMins = '00';
                     ampm    = 'PM';
@@ -115,12 +115,12 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     intMins = '00';
                     ampm    = 'AM';
                 }
-            } else if ( intMins == 15 || intMins == 30 || intMins == 45 ) {
+            } else if ( intMins === 15 || intMins === 30 || intMins === 45 ) {
                 intMins += 15;
             } else {
                 do {
                     intMins += 1;
-                    if ( intMins == 15 || intMins == 30 || intMins == 45 ) {
+                    if ( intMins === 15 || intMins === 30 || intMins === 45 ) {
                         break;
                     }
                 } while ( intMins != 15 || intMins != 30 || intMins != 45 );
@@ -202,10 +202,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
             }
 
-            if ($scope.reservationData.arrivalDate == '') {
+            if ($scope.reservationData.arrivalDate === '') {
                 $scope.reservationData.arrivalDate = dateFilter($scope.otherData.businessDate, 'yyyy-MM-dd');
             }
-            if ($scope.reservationData.departureDate == '') {
+            if ($scope.reservationData.departureDate === '') {
                 $scope.setDepartureDate();
             }
             if ($rootScope.isHourlyRateOn) {
@@ -230,7 +230,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         $scope.setDepartureDate = function() {
 
             var dateOffset = $scope.reservationData.numNights;
-            if ($scope.reservationData.numNights == null || $scope.reservationData.numNights == '') {
+            if ($scope.reservationData.numNights === null || $scope.reservationData.numNights === '') {
                 dateOffset = 1;
             }
             var newDate = tzIndependentDate($scope.reservationData.arrivalDate);
@@ -279,11 +279,11 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
          *  The rates for these days have to be popuplated in the subsequent states appropriately
          */
         var initStayDates = function(roomNumber) {
-            if (roomNumber == 0) {
+            if (roomNumber === 0) {
                 $scope.reservationData.stayDays = [];
             }
             for (var d = [], ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
-                if (roomNumber == 0) {
+                if (roomNumber === 0) {
                     $scope.reservationData.stayDays.push({
                         date: dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd'),
                         dayOfWeek: dateFilter(new tzIndependentDate(ms), 'EEE'),

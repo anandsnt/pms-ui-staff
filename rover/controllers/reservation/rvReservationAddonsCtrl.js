@@ -17,7 +17,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
         $scope.duration_of_stay = $scope.reservationData.numNights ? $scope.reservationData.numNights : 1;
 
 
-        if($stateParams.from_screen == "staycard"){
+        if($stateParams.from_screen === "staycard"){
             $scope.fromPage = "staycard";
             $rootScope.setPrevState = {
                 title: $filter('translate')('STAY_CARD'),
@@ -144,7 +144,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
         $scope.goToSummaryAndConfirm = function() {
             $scope.closePopup();
 
-            if($scope.fromPage == "staycard"){
+            if($scope.fromPage === "staycard"){
 
                 var saveData = {};
                 saveData.addons = $scope.addonsData.existingAddons;
@@ -213,7 +213,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
         $scope.selectAddon = function(addon, addonQty) {
             var alreadyAdded = false;
             angular.forEach($scope.addonsData.existingAddons,function(item, index) {
-                if(item.id == addon.id){
+                if(item.id === addon.id){
                     alreadyAdded = true;
                     item.quantity = parseInt(item.quantity) + parseInt(addonQty);
                     item.totalAmount = (item.quantity)*(item.price_per_piece);
@@ -233,7 +233,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
             }
             var elemIndex = -1;
             $($scope.reservationData.rooms[$scope.activeRoom].addons).each(function(index, elem) {
-                if (elem.id == addon.id) {
+                if (elem.id === addon.id) {
                     elemIndex = index;
                 }
             });
@@ -325,7 +325,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
 
                 //CICO-16792 - DOING THIS ONLY ON INITIAL LOAD -- FOR BUG FIXING
    
-                if(!!isInitialLoad && (typeof $scope.reservationData.reservationId =="undefined" || $scope.reservationData.reservationId == "" || $scope.reservationData.reservationId == null))
+                if(!!isInitialLoad && (typeof $scope.reservationData.reservationId ==="undefined" || $scope.reservationData.reservationId === "" || $scope.reservationData.reservationId === null))
                 {
                     if(!$scope.is_rate_addons_fetch){
                     $scope.addonsData.existingAddons=[];
@@ -333,7 +333,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                         angular.forEach(data.rate_addons,function(addon, index)
                         {
                             //Set this flag when there is Children in reservation & addon on for child.
-                            var flag=addon.amount_type.value=="CHILD"&&$scope.reservationData.rooms[$scope.activeRoom].numChildren==0;
+                            var flag=addon.amount_type.value==="CHILD"&&$scope.reservationData.rooms[$scope.activeRoom].numChildren===0;
                             if(!flag)
                             {
                                 var newAddonToReservation = {};
@@ -389,8 +389,8 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
             }
 
 
-            var chargeGroupId = paramChargeGrpId == undefined ? '' : paramChargeGrpId;
-            var is_bestseller = paramChargeGrpId == undefined ? true : false;
+            var chargeGroupId = paramChargeGrpId === undefined ? '' : paramChargeGrpId;
+            var is_bestseller = paramChargeGrpId === undefined ? true : false;
             var paramDict = {
                 'charge_group_id': chargeGroupId,
                 'is_bestseller': is_bestseller,
@@ -415,7 +415,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
          */
         $scope.fetchAddons('',true);
         $scope.setScroller("enhanceStays");
-        if ($stateParams.reservation == "HOURLY") {
+        if ($stateParams.reservation === "HOURLY") {
             init();
         }
     }
