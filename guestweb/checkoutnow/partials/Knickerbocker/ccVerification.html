@@ -13,7 +13,7 @@
 		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
 
 			<p class="msg-head">Our apologies, something went wrong, please complete your check-out at our front desk.</p></p>
-			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="grey-text">{{hotelPhone}}.</a></p>
+			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="black-text">{{hotelPhone}}.</a></p>
 		</div>
 
 		<!-- contentarea starts here-->
@@ -38,19 +38,19 @@
 					<form >
 						<div class="row">
 							<div class="card-number-container">
-								<p class="cabin-number-text lightcontent grey-text">Card Number</p>
+								<p class="cabin-number-text lightcontent black-text">Card Number</p>
 								<input type="password" ng-model="cardNumber" class = "col-xs-12 textBox shadow"/> 
 							</div>
 							<div class="ccv-container">
-								<p class="cabin-number-text lightcontent grey-text">CCV#</p>
+								<p class="cabin-number-text lightcontent black-text">CCV#</p>
 								<input type="password" ng-model="ccv" class = "col-xs-12 textBox shadow" ng-class="{'red-border':isCVVEmpty}"/> 
-								<p class="ccv-popup-link" ng-click="showCcvPopup()"><u class="ccv-text grey-text">what is this?</u></p>
+								<p class="ccv-popup-link" ng-click="showCcvPopup()"><u class="ccv-text black-text">what is this?</u></p>
 							</div>
 						</div>
 
 						<div class="row ">
 							<div class="expiry-month-container">
-								<p class="cabin-number-text lightcontent grey-text">Expiration Date</p>
+								<p class="cabin-number-text lightcontent black-text">Expiration Date</p>
 								<div class="select-style">
 									<select ng-model="monthSelected"
 									ng-options="month.value as month.name for month in months">
