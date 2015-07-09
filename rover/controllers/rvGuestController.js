@@ -1,6 +1,6 @@
-sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv',
+sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService',
 
-	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv) {
+	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService) {
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
 
@@ -921,7 +921,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		};
 
 		$scope.createNewCompany = function() {
-			$scope.companyContactInformation = $scope.getEmptyAccountData();
+			$scope.companyContactInformation = RVReservationDataService.getEmptyAccountData();
 			$scope.reservationDetails.companyCard.id = "";
 			$scope.reservationDetails.companyCard.futureReservations = 0;
 			$scope.viewState.isAddNewCard = true;
@@ -930,7 +930,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		};
 
 		$scope.createNewTravelAgent = function() {
-			$scope.travelAgentInformation = $scope.getEmptyAccountData();
+			$scope.travelAgentInformation = RVReservationDataService.getEmptyAccountData();
 			$scope.reservationDetails.travelAgent.id = "";
 			$scope.reservationDetails.travelAgent.futureReservations = 0;
 			$scope.viewState.isAddNewCard = true;

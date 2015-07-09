@@ -11,31 +11,13 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 
         that.fetchCashiers = function () {
             var url = "/api/cashier_periods";
-            var data = {'date':$rootScope.businessDate}
+            var data = {'date':$rootScope.businessDate};
             BaseWebSrvV2.getJSON(url,data).then(function (data) {
                 that.filterData.cashiers = data.cashiers;
                 that.filterData.selectedCashier = data.current_user_id;
                 that.filterData.loggedInUserId 	= data.current_user_id;
                 that.filterData.cashierStatus = data.status;
                 deferred.resolve(that.filterData);
-            }, function (data) {
-                deferred.reject(data);
-            });
-        };
-        /*
-         * Service function to fetch departments
-         * @return {object} departments
-         */
-        that.fetchDepartments = function () {
-            var url = "/admin/departments.json";
-            RVBaseWebSrv.getJSON(url).then(function (data) {
-                that.filterData.departments = data.departments;
-                angular.forEach(that.filterData.departments,function(item, index) {
-		       		item.checked = false;
-		       		item.id = item.value;
-		       		delete item.value;
-		       	});
-                that.fetchCashiers();
             }, function (data) {
                 deferred.reject(data);
             });
@@ -51,13 +33,32 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 	       		delete item.full_name;
 	       		delete item.email;
 	       	});
-            that.fetchDepartments();
+            that.fetchCashiers();
         }, function (data) {
             deferred.reject(data);
         });
         return deferred.promise;
     };
 
+    /*
+     * Service function to fetch departments
+     * @return {object} departments
+     */
+    that.fetchDepartments = function () {
+    	var deferred = $q.defer();
+        var url = "/admin/departments.json";
+        RVBaseWebSrv.getJSON(url).then(function (data) {
+            angular.forEach(data.departments,function(item, index) {
+	       		item.checked = false;
+	       		item.id = item.value;
+	       		delete item.value;
+	       	});
+            deferred.resolve(data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
 
     /*********************************************************************************************
 
@@ -65,106 +66,110 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 
 	# All flags are of type boolean true/false.
 
-    'show' 	: 	Used to show / hide each items on Level1 , Level2 and Level 3.
-    			We will set this flag as true initially.
-    			While apply Department/Employee filter we will set this flag as false
-    			for the items we dont want to show.
-
-    'filterFlag': Used to show / hide Level1 and Level2 based on filter flag applied on print box.
-    			Initially it will be true for all items.
-
-    'active': 	Used for Expand / Collapse status of each tabs on Level1 and Level2.
+     	'active': 	Used for Expand / Collapse status of each tabs on Level1 and Level2.
     			Initially everything will be collapsed , so setting as false.
 
     ***********************************************************************************************/
 
-	this.fetchRevenueData = function(params){
+	this.fetchRevenueDataByChargeGroups = function(params){
 		var deferred = $q.defer();
-		var url = '/api/financial_transactions/revenue?from_date='+params.from+'&to_date='+params.to;
-		//var url = '/sample_json/journal/journal_revenue.json';
-		BaseWebSrvV2.getJSON(url).then(function(data) {
-			this.revenueData = data;
-			/* 
-			 *	Initializing 'calculatedTotalAmount' as total_revenue value from api.
-			 * 	It will update while we apply filters.
-			 */
-			this.revenueData.calculatedTotalAmount = data.total_revenue;
 
-			angular.forEach(this.revenueData.charge_groups,function(charge_groups, index1) {
-				
-				// Adding Show/filterFlag/active status flag to each item.
-				charge_groups.filterFlag = true;
-				charge_groups.show 	 = true;
+		if(typeof params.charge_group_id === "undefined") params.charge_group_id = "";
+
+		var url = '/api/financial_transactions/revenue_by_charge_groups';
+		
+		BaseWebSrvV2.postJSON(url,params).then(function(data) {
+			
+			angular.forEach(data.charge_groups,function(charge_groups, index1) {
 				charge_groups.active = false;
-
-	            angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
-
-	            	// Adding Show/filterFlag/active status flag to each item.
-	            	charge_codes.filterFlag = true;
-	            	charge_codes.show   = true;
-	            	charge_codes.active = false;
-
-	                angular.forEach(charge_codes.transactions,function(transactions, index3) {
-	                	transactions.show = true;
-	                });
-	            });
 	        });
-		   	deferred.resolve(this.revenueData);
+		   	deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
 		});	
 		return deferred.promise;
 	};
 
-	this.fetchPaymentData = function(params){
+	this.fetchRevenueDataByChargeCodes = function(params){
 		var deferred = $q.defer();
-		//var url = '/api/financial_transactions/payments?date='+params.date;
-		var url = '/api/financial_transactions/payments?from_date='+params.from+'&to_date='+params.to;
-		//var url = '/sample_json/journal/journal_payments.json';
-		BaseWebSrvV2.getJSON(url).then(function(data) {
-			this.paymentData = data;
-			/* 
-			 *	Initializing 'calculatedTotalAmount' as total_payment value from api.
-			 * 	It will update while we apply filters.
-			 */
-			this.paymentData.calculatedTotalAmount = data.total_payment;
-			
-			angular.forEach(this.paymentData.payment_types,function(payment_types, index1) {
 
-				// Adding Show/filterFlag/active status flag to each item.
-				payment_types.filterFlag = true ;
-				payment_types.show = true ;
-				payment_types.active = false ;
+		if(typeof params.charge_code_id === "undefined") params.charge_code_id = "";
+
+		var url = '/api/financial_transactions/revenue_by_charge_codes';
+		
+		BaseWebSrvV2.postJSON(url,params).then(function(data) {
+
+            angular.forEach(data.charge_codes,function(charge_codes, index2) {
+            	charge_codes.active = false;
+            	charge_codes.page_no = 1;
+            	charge_codes.start = 1;
+            	charge_codes.end = 1;
+            	charge_codes.nextAction = false;
+        		charge_codes.prevAction = false;
+            });
+		   	deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	this.fetchRevenueDataByTransactions = function(params){
+		var deferred = $q.defer();
+		
+		var url = '/api/financial_transactions/revenue_by_transactions';
+		
+		BaseWebSrvV2.postJSON(url,params).then(function(data) {
+		   	deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
+
+	this.fetchPaymentDataByPaymentTypes = function(params){
+		var deferred = $q.defer();
+
+		if(typeof params.charge_code_id === "undefined") params.charge_code_id = "";
+
+		var url = '/api/financial_transactions/payments_by_payment_types';
+
+		BaseWebSrvV2.postJSON(url,params).then(function(data) {
+			
+			angular.forEach(data.payment_types,function(payment_types, index1) {
 
 				if(payment_types.payment_type == "Credit Card"){
-
-					//	payment_types.amount will not provide by api for "Credit Card".
-					var cardsTotal = 0;
-
 		            angular.forEach(payment_types.credit_cards,function(credit_cards, index2) {
-		            	
-		            	// Adding Show/filterFlag/active status flag to each item.
-		            	credit_cards.filterFlag = true;
-		            	credit_cards.show = true ;
 		            	credit_cards.active = false ;
-
-		            	// 	To calculate total of amounts in credit cards array.
-		            	cardsTotal += credit_cards.amount;
-
-		                angular.forEach(credit_cards.transactions,function(transactions, index3) {
-		                	transactions.show = true;
-		                });
+		            	credit_cards.page_no = 1;
+		            	credit_cards.start = 1;
+		            	credit_cards.end = 1;
+		            	credit_cards.nextAction = false;
+        				credit_cards.prevAction = false;
 		            });
-		            // Declaring "payment_types.amount" with calculated cardsTotal value.
-		            payment_types.amount = cardsTotal;
 	        	}
 	        	else{
-	        		angular.forEach(payment_types.transactions,function(transactions, index3) {
-	                	transactions.show = true;
-	                });
+	        		payment_types.active = false;
+	        		payment_types.page_no = 1;
+	            	payment_types.start = 1;
+	            	payment_types.end = 1;
+	            	payment_types.nextAction = false;
+        			payment_types.prevAction = false;
 	        	}
 	        });
-		   	deferred.resolve(this.paymentData);
+		   	deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
+
+	this.fetchPaymentDataByTransactions = function(params){
+		var deferred = $q.defer();
+		var url = '/api/financial_transactions/payments_by_transactions';
+		
+		BaseWebSrvV2.postJSON(url,params).then(function(data) {
+		   	deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
 		});	
@@ -181,7 +186,6 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 			});	
 		return deferred.promise;
 	};
-
 
 	this.reOpenCashier = function(updateData){
 		var deferred = $q.defer();	

@@ -15,14 +15,14 @@
                     <div class="scrollable" ng-iscroll="leftPanelScroll">
                             <!-- Attach iscroll here, should scroll vertically. While scrolling it should update iscoll on the right side as well -->
                             <ul class="wrapper">
-                                    <li class="main-heading" ng-class="{'double-row':chosenReport.chosenLastYear || chosenReport.chosenVariance}">{{currentHotelData.name}} </li>
+                                    <li class="main-heading" ng-class="{'double-row':chosenLastYear || chosenVariance}">{{currentHotelData.name}} </li>
                                     <!-- Add class "double-row" if showing variance or last year -->
                                     <li>Available Rooms</li>
                                     <li>Occupied Rooms</li>
                                     <li>Complimentary Rooms</li>
                                     <li>Occupied Rooms (Excl. Comp.)</li>
 
-                                    <li ng-repeat="market in reportsState.markets" ng-show="appliedFilter.markets.indexOf('All Markets') > -1 || appliedFilter.markets.indexOf(market.name) > -1"><em>{{market.name}}</em>
+                                    <li ng-repeat="market in markets" ng-show="appliedFilter.markets.indexOf('All Markets') > -1 || appliedFilter.markets.indexOf(market.name) > -1"><em>{{market.name}}</em>
                                     </li>
                                     <!-- .. repeat for all market codes -->
 
@@ -37,7 +37,7 @@
                                     <li >ADR (Incl. Comp.)</li>
                                     <li >ADR (Excl. Comp.)</li>
 
-                                    <li ng-repeat="market in reportsState.markets" ng-show="appliedFilter.markets.indexOf('All Markets') > -1 || appliedFilter.markets.indexOf(market.name) > -1"><em>{{market.name}}</em>
+                                    <li ng-repeat="market in markets" ng-show="appliedFilter.markets.indexOf('All Markets') > -1 || appliedFilter.markets.indexOf(market.name) > -1"><em>{{market.name}}</em>
                                     </li>
                                     <!-- .. repeat for all markets -->
 
@@ -60,9 +60,9 @@
                             <table class="statistics-reports">
                                     <thead>
                                             <tr>
-                                                    <th ng-repeat="date in selectedDays track by $index" colspan="{{1 + !!chosenReport.chosenLastYear + !!chosenReport.chosenVariance}}">{{date | date : shortMonthAndDate }}</th>
+                                                    <th ng-repeat="date in selectedDays track by $index" colspan="{{1 + !!chosenLastYear + !!chosenVariance}}">{{date | date : shortMonthAndDate }}</th>
                                             </tr>
-                                            <tr ng-if="chosenReport.chosenLastYear || chosenReport.chosenVariance" class="bottom-row">
+                                            <tr ng-if="chosenLastYear || chosenVariance" class="bottom-row">
                                                     <th ng-repeat="n in getNumber() track by $index" ng-class="getClass($index)">{{getHeader($index)}}</th>
                                             </tr>
                                     </thead>
@@ -73,7 +73,7 @@
                                                             {{absoulte(getValue(occupancy.key,$index))}}
                                                     </td>
                                             </tr>
-                                            <tr ng-repeat="market in reportsState.markets" ng-show="appliedFilter.markets.indexOf('All Markets') > -1 || appliedFilter.markets.indexOf(market.name) > -1" ng-init="outerIndex = $index" ng-class="{'negative' : getMarketOccupancyValue(outerIndex,$index) < 0}">
+                                            <tr ng-repeat="market in markets" ng-show="appliedFilter.markets.indexOf('All Markets') > -1 || appliedFilter.markets.indexOf(market.name) > -1" ng-init="outerIndex = $index" ng-class="{'negative' : getMarketOccupancyValue(outerIndex,$index) < 0}">
                                                     <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
                                                             {{absoulte(getMarketOccupancyValue(outerIndex,$index)) | number:0}}
                                                     </td>
@@ -89,7 +89,7 @@
                                                             {{ absoulte(getValue(revenue.key,$index)) | currency:currencySymbol:2 }}
                                                     </td>
                                             </tr>
-                                            <tr ng-repeat="market in reportsState.markets" ng-show="appliedFilter.markets.indexOf('All Markets') > -1 || appliedFilter.markets.indexOf(market.name) > -1" ng-init="outerIndex = $index" ng-class="{'negative' : getMarketRevenueValue(outerIndex,$index) < 0}">
+                                            <tr ng-repeat="market in markets" ng-show="appliedFilter.markets.indexOf('All Markets') > -1 || appliedFilter.markets.indexOf(market.name) > -1" ng-init="outerIndex = $index" ng-class="{'negative' : getMarketRevenueValue(outerIndex,$index) < 0}">
                                                     <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
                                                             {{ absoulte(getMarketRevenueValue(outerIndex,$index)) | currency:currencySymbol:2 }}
                                                     </td>

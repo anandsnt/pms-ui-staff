@@ -1,10 +1,11 @@
-<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog">
-    <form method="post" action="post-note" id="notes" class="modal-content form staycard-notes">
+<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-controller = "RVReservationNotesPopupCtrl">
+    <form method="post" action="post-note" id="notes" class="modal-content form staycard-notes" ng-click="clearMessage()">
         <button id="modal-close" type="button" class="dark-title modal-close" ng-click="closeDialog();"><span class="icons icon-close"></span></button>
         <div class="modal-header">
             <h1>Notes</h1>
             <strong ng-show="!!reservationData.reservation_card.room_number">Room {{reservationData.reservation_card.room_number}}</strong>
         </div>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="no-content" ng-if="!reservationData.reservation_card.notes.reservation_notes.length">
             <div class="info">
                 <span class="icon-no-content icon-notes"></span>
@@ -12,7 +13,7 @@
                 <span class="h2">Drop a Note for reservation #{{reservationData.reservation_card.confirmation_num}}</span>
             </div>
         </div>
-        <div id="notes-list" class="scrollable" ng-if="!!reservationData.reservation_card.notes.reservation_notes" ng-iscroll="reservationNotes">
+        <div id="notes-list" class="scrollable" ng-if="!!reservationData.reservation_card.notes.reservation_notes && reservationData.reservation_card.notes.reservation_notes.length>0" ng-iscroll="reservationNotes">
             <ul class="notes wrapper">
                 <li ng-repeat="note in reservationData.reservation_card.notes.reservation_notes">
                     <figure class="guest-image">
@@ -34,9 +35,9 @@
             </ul>
         </div>
         <div class="actions">
-            <textarea placeholder="{{'WRITE_NOTE'|translate}}" ng-model="$parent.reservationnote" rows="2"></textarea>
+            <textarea placeholder="{{'WRITE_NOTE'|translate}}" ng-model="reservationnote" rows="2"></textarea>
             <div class="post">
-                <button type="button" class="button brand-colors" ng-click="saveReservationNote()">Post</button>
+                <button type="button" class="button brand-colors" click-touch="saveReservationNote()">Post</button>
                 <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
             </div>
         </div>

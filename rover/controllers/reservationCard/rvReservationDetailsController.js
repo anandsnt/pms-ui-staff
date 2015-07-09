@@ -119,7 +119,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			}
 		};
 
-
+                //CICO-16013, moved from rvReservationGuestCtrl.js to de-duplicate api calls
+                $scope.activeWakeUp     = false;
+                
 		//CICO-10568
 		$scope.reservationData.isSameCard = false;
 
@@ -282,6 +284,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			company: $scope.reservationDetails.companyCard.id,
 			agent: $scope.reservationDetails.travelAgent.id
 		};
+                //also reload the loyalty card / frequent flyer section
+                $rootScope.$broadcast('reload-loyalty-section-data',{});
 
 		$scope.reservationDetails.guestCard.id = reservationListData.guest_details.user_id == null ? "" : reservationListData.guest_details.user_id;
 		$scope.reservationDetails.companyCard.id = reservationListData.company_id == null ? "" : reservationListData.company_id;
@@ -310,7 +314,14 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			$scope.refreshReservationDetailsScroller(3000);
 		});
 
-
+		/**
+		 * (CICO-16893) 
+		 * Whene there is any click happened reservation area, we have to refresh scroller
+		 * we will use this event to refresh scroller
+		 */
+		$scope.$on('refreshScrollerReservationDetails', function(){
+			$scope.refreshReservationDetailsScroller(500);
+		});
 
 		$scope.reservationDetailsFetchSuccessCallback = function(data) {
 
@@ -634,6 +645,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				"details": {
 					"firstName": $scope.data.guest_details.first_name,
 					"lastName": $scope.data.guest_details.last_name,
+					"hideDirectBill":true
 				}
 			};
 			var paymentData = $scope.reservationData;
@@ -721,6 +733,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 								is_group_reservation: response.data.is_group_reservation,
 								is_outside_group_stay_dates: response.data.outside_group_stay_dates,
 								group_name: response.data.group_name,
+								is_invalid_move: response.data.is_invalid_move
 							})
 						});
 					} else {
@@ -963,6 +976,12 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		authInProgress();
 		manualAuthAPICall();
 	};
-	// CICO-17067 PMS: Rover - Stay Card: Add manual authorization ends here...
-
+    // CICO-17067 PMS: Rover - Stay Card: Add manual authorization ends here...
+    
+    //>>wakeup call check after guest prefs are fetched
+        $scope.$on('wakeup_call_ON',function(evt, data){
+            if (data){
+                $scope.activeWakeUp = data.active;
+            }
+        });
 }]);

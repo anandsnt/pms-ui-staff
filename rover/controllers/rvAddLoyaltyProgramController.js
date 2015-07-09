@@ -11,10 +11,9 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
 	
 
 	$scope.dimissLoaderAndDialog = function(){
-			$scope.$emit('hideLoader');
-			$scope.closeDialog();
-		};
-
+            $scope.$emit('hideLoader');
+            $scope.closeDialog();
+        };
 	$scope.addLoyaltyProgram = function(){
             var params = {};
 		params.reservation_id = $scope.$parent.reservationData.reservation_card.reservation_id;		
@@ -39,10 +38,9 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
 		$scope.invokeApi(RVLoyaltyProgramSrv.addLoyaltyProgram, params , successCallbackaddLoyaltyProgram, errorCallbackaddLoyaltyProgram);
 	};
 
-	$scope.getFFPS = function(){
+        $scope.setupLoyaltyPrograms = function(){
             if ($scope.$parent.reservationData){
-                
-            var use_ffp = $scope.$parent.reservationData.use_ffp,
+                var use_ffp = $scope.$parent.reservationData.use_ffp,
                     use_hlp = $scope.$parent.reservationData.use_hlp;
                 if (use_ffp === true && use_hlp === false) {
                     $scope.loyaltyPrograms = [{name:"Frequent Flyer Program", code:"FFP"}];
@@ -54,36 +52,34 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
                     $scope.loyaltyPrograms = [];
                 }
             }
-		
-		
-		var successCallbackGetFFPS = function(data){
-			$scope.setAvailableFFPS(data);
-			$scope.$emit('hideLoader');
-		};
-		var errorCallbackGetFFPS = function(errorMessage){
-			$scope.$emit('hideLoader');
-			$scope.errorMessage = errorMessage;
-		};
-		$scope.invokeApi(RVLoyaltyProgramSrv.getAvailableFFPS, "" , successCallbackGetFFPS, errorCallbackGetFFPS);
+            //now setup ffps and hlps;
+            $scope.getFFPS();
+            $scope.getHLPS();
+        };
+        
+	$scope.getFFPS = function(){
+            var successCallbackGetFFPS = function(data){
+                    $scope.setAvailableFFPS(data);
+                    $scope.$emit('hideLoader');
+            };
+            var errorCallbackGetFFPS = function(errorMessage){
+                    $scope.$emit('hideLoader');
+                    $scope.errorMessage = errorMessage;
+            };
+            $scope.invokeApi(RVLoyaltyProgramSrv.getAvailableFFPS, "" , successCallbackGetFFPS, errorCallbackGetFFPS);
 
 	};
 	$scope.getHLPS = function(){
-		
-		var successCallbackGetHLPS = function(data){
-			$scope.setAvailableHLPS(data);
-			$scope.$emit('hideLoader');
-		};
-		var errorCallbackGetHLPS = function(errorMessage){
-			$scope.$emit('hideLoader');
-			$scope.errorMessage = errorMessage;
-		};
-		$scope.invokeApi(RVLoyaltyProgramSrv.getAvailableHLPS, "" , successCallbackGetHLPS, errorCallbackGetHLPS);
-
+            var successCallbackGetHLPS = function(data){
+                    $scope.setAvailableHLPS(data);
+                    $scope.$emit('hideLoader');
+            };
+            var errorCallbackGetHLPS = function(errorMessage){
+                    $scope.$emit('hideLoader');
+                    $scope.errorMessage = errorMessage;
+            };
+            $scope.invokeApi(RVLoyaltyProgramSrv.getAvailableHLPS, "" , successCallbackGetHLPS, errorCallbackGetHLPS);
 	};
-
-	$scope.getFFPS();
-	$scope.getHLPS();
-
 	$scope.setAvailableFFPS = function(FFPArray){
 		var loyaltyType;
 		for(var i=0; i < FFPArray.length; i++){
@@ -120,7 +116,6 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
         
 	$scope.getLoyaltyLevels = function(){
             if ($scope.$parent.reservationData){
-                
             var use_ffp = $scope.$parent.reservationData.use_ffp,
                     use_hlp = $scope.$parent.reservationData.use_hlp;
                 if (use_ffp === true && use_hlp === false) {
@@ -165,5 +160,6 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
 	$scope.validate = function(){
 		
 	};
-	
+        
+        $scope.setupLoyaltyPrograms();
 }]);

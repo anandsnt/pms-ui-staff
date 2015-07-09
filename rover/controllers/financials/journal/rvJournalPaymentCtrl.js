@@ -11,54 +11,110 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         refreshPaymentScroll();
     });
 
-	$scope.initPaymentData = function(){
+	var initPaymentData = function(){
 		var successCallBackFetchPaymentData = function(data){
 			$scope.data.paymentData = {};
-            $scope.data.selectedPaymentType = 'ALL';
+            $scope.data.selectedPaymentType = '';
 			$scope.data.paymentData = data;
-			$scope.$emit('I_COMPLTED_THE_API_CALL');
+			$scope.data.activePaymentTypes = data.payment_types;
+
             $scope.errorMessage = "";
 			refreshPaymentScroll();
-            $scope.$emit("ApplyEmpOrDeptFilter");
+            $scope.$emit('hideLoader');
 		};
-		$scope.invokeApi(RVJournalSrv.fetchPaymentData, {"from":$scope.data.fromDate , "to":$scope.data.toDate}, successCallBackFetchPaymentData);
+
+        var postData = {
+            "from_date":$scope.data.fromDate,
+            "to_date":$scope.data.toDate,
+            "employee_ids" : $scope.data.selectedEmployeeList ,
+            "department_ids" : $scope.data.selectedDepartmentList
+        };
+		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, postData, successCallBackFetchPaymentData);
 	};
-	$scope.initPaymentData();
+
+	initPaymentData();
 
     $rootScope.$on('fromDateChanged',function(){
-        $scope.initPaymentData();
+        initPaymentData();
     });
 
     $rootScope.$on('toDateChanged',function(){
-        $scope.initPaymentData();
+        initPaymentData();
     });
+
+    // Load the transaction details
+    var loadTransactionDeatils = function(chargeCodeItem, isFromPagination){
+
+        var successCallBackFetchPaymentDataTransactions = function(data){
+            
+            chargeCodeItem.transactions = [];
+            chargeCodeItem.transactions = data.transactions;
+            chargeCodeItem.total_count = data.total_count;
+            chargeCodeItem.end = chargeCodeItem.start + data.transactions.length - 1;
+
+            if(isFromPagination){
+                // Compute the start, end and total count parameters
+                if(chargeCodeItem.nextAction){
+                    chargeCodeItem.start = chargeCodeItem.start + $scope.data.filterData.perPage;
+                }
+                if(chargeCodeItem.prevAction){
+                    chargeCodeItem.start = chargeCodeItem.start - $scope.data.filterData.perPage;
+                }
+                chargeCodeItem.end = chargeCodeItem.start + chargeCodeItem.transactions.length - 1;
+            }
+            else if(data.transactions.length > 0){
+                chargeCodeItem.active = !chargeCodeItem.active;
+            }
+
+            refreshPaymentScroll();
+            $scope.errorMessage = "";
+            $scope.$emit('hideLoader');
+        };
+
+        // Call api only while expanding the tab or on pagination Next/Prev button actions ..
+        if(!chargeCodeItem.active || isFromPagination){
+            var postData = {
+                "from_date":$scope.data.fromDate ,
+                "to_date":$scope.data.toDate ,
+                "charge_code_id":chargeCodeItem.charge_code_id ,
+                "employee_ids" : $scope.data.selectedEmployeeList ,
+                "department_ids" : $scope.data.selectedDepartmentList,
+                "page_no" :  chargeCodeItem.page_no,
+                "per_page": $scope.data.filterData.perPage
+            };
+            $scope.invokeApi(RVJournalSrv.fetchPaymentDataByTransactions, postData, successCallBackFetchPaymentDataTransactions);
+        }
+        else{
+            chargeCodeItem.active = !chargeCodeItem.active;
+        }
+    };
 
     /** Handle Expand/Collapse of Level1 **/
     $scope.clickedFirstLevel = function(index1){
-        if($scope.checkHasArrowLevel1(index1)){
-            var toggleItem = $scope.data.paymentData.payment_types[index1];
+
+        var toggleItem = $scope.data.paymentData.payment_types[index1];
+        
+        if(toggleItem.payment_type !== "Credit Card"){
+            loadTransactionDeatils(toggleItem , false);
+        }
+        else{
+            // For Credit cards , level-2 data already exist , so just do expand/collapse only ..
             toggleItem.active = !toggleItem.active;
-            refreshPaymentScroll();
-            // When the system is in detailed view and we are collapsing each first Level
-            // We have to toggle Details to Summary on print box.
-            if(!toggleItem.active && !$scope.data.isPaymentToggleSummaryActive){
-                if($scope.isAllPaymentsCollapsed())
-                    $scope.data.isPaymentToggleSummaryActive = true;
-            }
         }
     };
-    /** Handle Expand/Collapse of Level2 **/
+
+    // Handle Expand/Collapse of Level2  Credit card section
     $scope.clickedSecondLevel = function(index1, index2){
-        if($scope.checkHasArrowLevel2(index1, index2)){
-            var toggleItem = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
-            toggleItem.active = !toggleItem.active;
-            refreshPaymentScroll();
-        }
+
+        var toggleItem = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
+        
+        loadTransactionDeatils(toggleItem , false);
     };
+
     /* To show / hide table heading section for Level2 (Credit card items) */
-    $scope.isShowTableHeadingLevel2 = function(index1, index2){
-        var isShowTableHeading = false;
-        var item = $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions;
+    $scope.isShowTableHeadingSecondLevel = function(index1, index2){
+        var isShowTableHeading = false,
+        item = $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions;
         if((typeof item !== 'undefined') && (item.length >0)){
             angular.forEach( item ,function(transactions, index) {
                 if(transactions.show) isShowTableHeading = true;
@@ -66,10 +122,11 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         }
         return isShowTableHeading;
     };
+
     /* To show / hide table heading section for Level1 (Not Credit card items) */
-    $scope.isShowTableHeadingLevel1 = function(index1){
-        var isShowTableHeading = false;
-        var item = $scope.data.paymentData.payment_types[index1].transactions;
+    $scope.isShowTableHeadingFirstLevel = function(index1){
+        var isShowTableHeading = false,
+        item = $scope.data.paymentData.payment_types[index1].transactions;
         if((typeof item !== 'undefined') && (item.length >0)){
             angular.forEach( item ,function(transactions, index) {
                 if(transactions.show) isShowTableHeading = true;
@@ -77,10 +134,11 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         }
         return isShowTableHeading;
     };
+
     /* To hide/show arrow button for Level1 */
-    $scope.checkHasArrowLevel1 = function(index){
-        var hasArrow = false;
-        var item = $scope.data.paymentData.payment_types[index];
+    $scope.checkHasArrowFirstLevel = function(index){
+        var hasArrow = false,
+        item = $scope.data.paymentData.payment_types[index];
         if((typeof item.credit_cards !== 'undefined') && (item.credit_cards.length >0)){
             hasArrow = true;
         }
@@ -89,40 +147,13 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         }
         return hasArrow;
     };
+
     /* To hide/show arrow button for Level2 */
-    $scope.checkHasArrowLevel2 = function(index1, index2){
-        var hasArrow = false;
-        var item = $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions;
+    $scope.checkHasArrowSecondLevel = function(index1, index2){
+        var hasArrow = false,
+        item = $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions;
         if((typeof item !== 'undefined') && (item.length >0)) hasArrow = true;
         return hasArrow;
-    };
-
-    // To get total payements amount by adding up payment type amounts.
-    $scope.getTotalOfAllPayments = function(){
-        var paymentTotal = 0;
-        angular.forEach($scope.data.paymentData.payment_types,function(payment_types, index1) {
-            if( payment_types.show && payment_types.filterFlag ){
-                paymentTotal += payment_types.amount;
-            }
-        });
-        return paymentTotal;
-    };  
-
-    // Update amount on Payment Tab header.
-    $rootScope.$on('UpdatePaymentTabTotal',function(){
-        $timeout(function() {
-            var total = $scope.getTotalOfAllPayments();
-            $scope.data.paymentData.total_payment = total;
-        }, 100);
-    });
-
-    // To check whether all paymnt tabs are collpased or not, except the clicked index item.
-    $scope.isAllPaymentsCollapsed = function(){
-        var isAllTabsCollapsed = true;
-        angular.forEach($scope.data.paymentData.payment_types,function(payment_types, key) {
-            if(payment_types.active) isAllTabsCollapsed = false;
-        });
-        return isAllTabsCollapsed;
     };
 
     // To hanlde click inside payment tab.
@@ -131,6 +162,68 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         if($scope.data.isDrawerOpened){
             $rootScope.$broadcast("CLOSEPRINTBOX");
         }
+        $scope.errorMessage = "";
     };
+
+    // Logic for pagination starts here ..
+    $scope.loadNextSet = function(index1, index2){
+
+        if(typeof index2 === 'undefined' || index2 === 'false' ){
+            var item = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
+        }
+        else{
+            var item = $scope.data.paymentData.payment_types[index1];
+        }
+        item.page_no ++;
+        item.nextAction = true;
+        item.prevAction = false;
+        loadTransactionDeatils(item , true);
+    };
+
+    $scope.loadPrevSet = function(index1, index2){
+        if(typeof index2 == 'undefined' || index2 === 'false'){
+            var item = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
+        }
+        else{
+            var item = $scope.data.paymentData.payment_types[index1];
+        }
+        item.page_no --;
+        item.nextAction = false;
+        item.prevAction = true;
+        loadTransactionDeatils(item, true);
+    };
+
+    $scope.isNextButtonDisabled = function(index1, index2){
+
+        if(typeof index2 == 'undefined' || index2 === 'false'){
+            var item = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
+        }
+        else{
+            var item = $scope.data.paymentData.payment_types[index1];
+        }
+        var isDisabled = false;
+
+        if(item.end >= item.total_count){
+            isDisabled = true;
+        }
+        return isDisabled;
+    };
+
+    $scope.isPrevButtonDisabled = function(index1, index2){
+
+        if(typeof index2 == 'undefined' || index2 === 'false'){
+            var item = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
+        }
+        else{
+            var item = $scope.data.paymentData.payment_types[index1];
+        }
+        var isDisabled = false;
+
+        if(item.page_no == 1){
+            isDisabled = true;
+        }
+        return isDisabled;
+    };
+    // Pagination logic ends ...
 
 }]);

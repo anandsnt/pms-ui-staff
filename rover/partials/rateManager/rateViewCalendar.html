@@ -32,7 +32,7 @@
             <tr class="cell" ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last && loading === false}" ng-show="calendarMode === 'RATE_VIEW'">
                 <td class="first-row force-align">
                     <div ng-click="goToRoomTypeCalendarView(rate)">
-                        <span title="{{rate.name}}">{{rate.name}}</span>
+                        <span ng-class="{'gray': rateIsChild(rate) == true && ratesRoomsToggle != 'ROOMS'}" title="{{rate.name}}">{{rate.name}}</span>
                         <span> 
                             <img src="/assets/arrow-down.png" ng-hide="hideRoomsDownArrow"/>
                         </span>

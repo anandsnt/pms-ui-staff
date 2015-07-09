@@ -685,6 +685,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 if (payments.length > 0) {
                     $scope.reservationData.paymentType.type = payments[0];
                 }
+
+                data.forEach(function(item) {
+                    if (item.value === 'CC') {
+                        $scope.creditCardTypes = item.credit_card_list;
+                    };
+                });
             };
             var paymentFetchError = function(data) {
                 $scope.errorMessage = data;

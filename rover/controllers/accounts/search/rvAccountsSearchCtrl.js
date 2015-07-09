@@ -346,7 +346,8 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		$scope.gotoEditAccountConfiguration = function(accountID){			
 			$state.go('rover.accounts.config',{
 				id: accountID,
-				activeTab: 'ACCOUNT'
+				activeTab: 'ACCOUNT',
+        isFromCards: true
 			})
 		};
 		
@@ -355,7 +356,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		 * @return undefined
 		 */
 		$scope.gotoAddNewAccount = function(){
-			$state.go ('rover.accounts.config', {'id': "NEW_ACCOUNT"});
+			$state.go ('rover.accounts.config', {'id': "NEW_ACCOUNT", isFromCards: true});
 		};
 
 		/**

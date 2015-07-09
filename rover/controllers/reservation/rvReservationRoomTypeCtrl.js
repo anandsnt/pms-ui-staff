@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'sortOrder', 'rateAddons', 'RVReservationBaseSearchSrv', '$timeout', '$state', 'ngDialog', '$sce', '$stateParams', 'dateFilter', '$filter', 'rvPermissionSrv', 'RVReservationStateService',
-	function($rootScope, $scope, roomRates, sortOrder, rateAddons, RVReservationBaseSearchSrv, $timeout, $state, ngDialog, $sce, $stateParams, dateFilter, $filter, rvPermissionSrv, RVReservationStateService) {
+sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'sortOrder', 'rateAddons', 'isAddonsConfigured', 'RVReservationBaseSearchSrv', 'RVReservationAddonsSrv', '$timeout', '$state', 'ngDialog', '$sce', '$stateParams', 'dateFilter', '$filter', 'rvPermissionSrv', 'RVReservationStateService', 'RVReservationDataService',
+	function($rootScope, $scope, roomRates, sortOrder, rateAddons, isAddonsConfigured, RVReservationBaseSearchSrv, RVReservationAddonsSrv, $timeout, $state, ngDialog, $sce, $stateParams, dateFilter, $filter, rvPermissionSrv, RVReservationStateService, RVReservationDataService) {
 		$scope.displayData = {};
 		$scope.selectedRoomType = -1;
 		$scope.expandedRoom = -1;
@@ -68,7 +68,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		var init = function(isCallingFirstTime) {
 			$scope.$emit('showLoader');
 			var arrival = $scope.reservationData.arrivalDate,
-				departure = $scope.reservationData.departureDate;			
+				departure = $scope.reservationData.departureDate;
 
 			$scope.displayData.dates = [];
 			$scope.filteredRates = [];
@@ -397,19 +397,17 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					return false;
 				} else {
 					// TODO : Handle multiple rates selected
-					if ($scope.reservationUtils.isVaryingRates(0)) {
+					// RVReservationDataService.isVaryingRates = function(stayDates, arrivalDate, departureDate, numNights)
+					if (RVReservationDataService.isVaryingRates($scope.reservationData.rooms[$scope.activeRoom].stayDates, $scope.reservationData.arrivalDate, $scope.reservationData.departureDate, $scope.reservationData.numNights)) {
 						$scope.reservationData.rooms[$scope.activeRoom].rateName = "Multiple Rates Selected"
 					} else {
 						$scope.reservationData.rooms[0].rateName = $scope.displayData.allRates[$scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.reservationData.arrivalDate].rate.id].name;
 					}
 					$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[$scope.reservationData.rooms[$scope.activeRoom].roomTypeId].ratedetails;
 					$scope.computeTotalStayCost();
-
-					if ($stateParams.fromState == "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState == "STAY_CARD") {
-						$scope.saveAndGotoStayCard();
-					} else {
-						$scope.enhanceStay();
-					}
+					if ($stateParams.fromState == "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState == "STAY_CARD")
+						populateStayDates(rateId, roomId);
+					transferState();
 				}
 			}
 			// CICO-12757 : To save and go back to stay card
@@ -431,19 +429,30 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.reservationData.rooms[$scope.activeRoom].rateName = $scope.displayData.allRates[rateId].name;
 			$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[roomId].ratedetails;
 			if (!$scope.stateCheck.stayDatesMode) {
-				if ($stateParams.fromState == "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState == "STAY_CARD") {
-					$scope.saveAndGotoStayCard();
-				} else {
-					$scope.enhanceStay();
-				}
+				$scope.navigateOut();
+			}
+		}
+
+		var haveAddonsChanged = function(entireSet, associatedAddons) {
+			if ($stateParams.fromState == "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState == "STAY_CARD") {
+				return parseInt($scope.reservationData.rooms[0].package_count) != associatedAddons.length;
+			} else {
+				var extraAddons = [];
+				_.each(entireSet, function(addon) {
+					if (!_.find(associatedAddons, {
+							id: addon.id
+						})) extraAddons.push(addon.id);
+				})
+				return extraAddons.length > 0;
 			}
 		}
 
 		$scope.enhanceStay = function() {
+
 			// CICO-9429: Show Addon step only if its been set ON in admin
 			var navigate = function() {
 				if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id) {
-					if ($rootScope.isAddonOn) {
+					if ($rootScope.isAddonOn && isAddonsConfigured) {
 						$state.go('rover.reservation.staycard.mainCard.addons', {
 							"from_date": $scope.reservationData.arrivalDate,
 							"to_date": $scope.reservationData.departureDate
@@ -453,7 +462,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					}
 				}
 			}
-			if ($rootScope.isAddonOn) {
+			if ($rootScope.isAddonOn && isAddonsConfigured) { //CICO-16874   		
 				$state.go('rover.reservation.staycard.mainCard.addons', {
 					"from_date": $scope.reservationData.arrivalDate,
 					"to_date": $scope.reservationData.departureDate
@@ -583,13 +592,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				//TODO : 7641 - Update the rateDetails array in the reservationData
 				$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[roomId].ratedetails;
 				$scope.checkOccupancyLimit(null, false, $scope.activeRoom);
-
-				if ($stateParams.fromState == "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState == "STAY_CARD") {
-					populateStayDates(rateId, roomId);
-					$scope.saveAndGotoStayCard();
-				} else {
-					$scope.enhanceStay();
-				}
+				transferState();
 			}
 
 			// check whether any one of the rooms rate has isSuppressed on and turn on flag
@@ -751,6 +754,25 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						_.each(room.ratedetails, function(today, key) {
 							if (key == $scope.reservationData.departureDate && key != $scope.reservationData.arrivalDate) {
 								//do nothing -CICO 17580 - Need not check for restrictions in case of departure date when the #nights > 0 (NOT a day reservation)
+								//--CICO-17746 Need to include departure date only for this case
+								if (typeof today[rateId].restrictions == 'undefined') {
+									today[rateId].restrictions = [];
+								}
+								_.each(today[rateId].rateBreakUp.restrictions, function(restriction) {
+									switch ($scope.restrictionsMapping[restriction.restriction_type_id]) {
+										case 'CLOSED_DEPARTURE': // 3 CLOSED_DEPARTURE
+											if (new tzIndependentDate(key) - new tzIndependentDate($scope.reservationData.departureDate) == 0) {
+												validRate = false;
+												today[rateId].restrictions.push({
+													key: 'CLOSED_DEPARTURE',
+													value: 'CLOSED FOR DEPARTURE'
+												});
+											}
+											break;
+									}
+								});
+
+
 							} else if (!$scope.stateCheck.stayDatesMode || $scope.stateCheck.stayDatesMode && key == $scope.stateCheck.dateModeActiveDate) {
 								var currDate = key;
 								//Step 1 : Check if the rates are configured for all the days of stay
@@ -1298,6 +1320,45 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			init(true);
 			initEventListeners();
 			initScrollers();
+		}
+
+		$scope.navigateOut = function() {
+			if ($stateParams.fromState == "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState == "STAY_CARD") {
+				$scope.saveAndGotoStayCard();
+			} else {
+				$scope.enhanceStay();
+			}
+		}
+
+		$scope.onResetAddonsAcknowledged = function() {
+			$scope.reservationData.rooms[0].addons = RVReservationStateService.fetchAssociatedAddons($scope.reservationData.rooms[0].rateId);
+			$scope.navigateOut();
+			$scope.closeDialog();
+		}
+
+		var transferState = function() {
+			// TODO: Check if there has been a rateChange
+			if (!!RVReservationStateService.bookMark.lastPostedRate) {
+				// Identify if there are extra addons added other than those of the associated rate's
+				var associatedRateAddons = RVReservationStateService.fetchAssociatedAddons(RVReservationStateService.bookMark.lastPostedRate), // associated addons in the previous rate;
+					entireAddons = $scope.reservationData.rooms[0].addons; // Entire set of addons for the reservation (incl rate associated addons)
+
+				RVReservationStateService.setReservationFlag('RATE_CHANGED', true);
+
+				if (haveAddonsChanged(entireAddons, associatedRateAddons)) { // if user has added extra addons other than that of the associated rate -- alert the user!
+					//alert the user
+					ngDialog.open({
+						template: '/assets/partials/reservation/alerts/rateChangeAddonsAlert.html',
+						scope: $scope,
+						closeByDocument: false,
+						closeByEscape: false
+					});
+
+					return false;
+				}
+				$scope.reservationData.rooms[0].addons = RVReservationStateService.fetchAssociatedAddons($scope.reservationData.rooms[0].rateId);
+			}
+			$scope.navigateOut();
 		}
 
 		initializeRoomAndRates();
