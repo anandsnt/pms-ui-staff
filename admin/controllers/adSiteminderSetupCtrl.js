@@ -109,11 +109,61 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
                 $scope.$broadcast('sm-booking-origin-updated', emitObject.default_origin);
             }
         });
-
-        // Save changes button click action
+        $scope.hasFailedMsg = function(response){
+            if (response.status == 'failure'){
+               return true;
+            } else {
+                return false;
+            }
+        };
+        $scope.getErrorMessages = function(response){
+            var errorMsg = [];
+            var formatStr = function(s){
+                var tempStr = '';
+                if (s.indexOf('_') != -1){
+                    //we pull out the ' _ ', and replace with a space, and make string uppercase
+                    tempStr = s.split('_');
+                    var fullStr = '';
+                    for (var st in tempStr){
+                         fullStr = fullStr + ' ' +tempStr[st];
+                    }
+                    return '  '+fullStr.toUpperCase();
+                } else {
+                    return '  '+s.toUpperCase();
+                }
+            };
+            var propErrs, first=true;
+            for (var k in response.errors) {
+                if (response.errors.hasOwnProperty(k)) {
+                   first=true;
+                        for (var e in response.errors[k]){
+                            if (first){
+                                    propErrs = ' ['+formatStr(k)+']'+': '+response.errors[k][e];
+                                    first = false;
+                            } else {
+                                    propErrs += ', '+response.errors[k][e];
+                            }
+                        }
+                  errorMsg.push(propErrs);
+                }
+            }
+            if (errorMsg === []){
+                return '';
+            } else {
+                return errorMsg;
+            }
+        };
+       // Save changes button click action
         $scope.saveSiteminderSetup = function () {
-            var saveSiteminderSetupSuccessCallback = function (data) {
-                $scope.successMessage = 'Siteminder Save Success';
+             var saveSiteminderSetupSuccessCallback = function (response) {
+                var failed = $scope.hasFailedMsg(response);
+                
+                if (!failed){
+                    $scope.successMessage = 'Siteminder Save Success';
+                } else {
+                    var errorMsg = $scope.getErrorMessages(response);
+                    $scope.errorMessage = 'Siteminder Save Failed. '+errorMsg;
+                }
                 $scope.isLoading = false;
                 $scope.$emit('hideLoader');
             };
