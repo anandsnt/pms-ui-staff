@@ -25,7 +25,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 			var item = $scope.data.payments[index];
 		}
 
-		var toggleOn = item.is_active == 'true' ? 'false' : 'true';
+		var toggleOn = item.is_active === 'true' ? 'false' : 'true';
 		var data = {
 			'id' : item.id,
 			'set_active' : toggleOn
@@ -42,13 +42,13 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	 *   @param {String} index value for the credit card list.
 	 */
 	$scope.toggleClickedCC = function(index) {
-		var toggleOn = $scope.data.credit_card_types[index].is_active == 'true' ? 'false' : 'true';
+		var toggleOn = $scope.data.credit_card_types[index].is_active === 'true' ? 'false' : 'true';
 		var data = {
 			'id' : $scope.data.credit_card_types[index].id,
 			'set_active' : toggleOn
 		};
 		var postSuccess = function() {
-			$scope.data.credit_card_types[index].is_active = ($scope.data.credit_card_types[index].is_active == 'true') ? 'false' : 'true';
+			$scope.data.credit_card_types[index].is_active = ($scope.data.credit_card_types[index].is_active === 'true') ? 'false' : 'true';
 			$scope.$emit('hideLoader');
 		};
 		$scope.invokeApi(ADPaymentMethodsSrv.toggleSwitchCC, data, postSuccess);
@@ -108,7 +108,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 
 	$scope.activeCCTab = function(){
 		angular.forEach($scope.data.payments,function(item, index) {
-			if(item.value == "CC" && item.is_active == "false")
+			if(item.value === "CC" && item.is_active === "false")
 				$scope.toggleClickedPayment(index,false);
 		});
 	};
@@ -125,7 +125,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 
 		var successCallbackSavePaymentMethod = function(data){
 
-			if(data.value == "CC"){
+			if(data.value === "CC"){
 				// Edited CC - LINKED RESERVATION TYPE only
 				console.log("Edited the Main Credit Card Payment method");
 				$scope.data.payments[parseInt($scope.currentClickedElement)] = data;
@@ -207,7 +207,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	$scope.getTemplateUrl = function(index) {
 		if ( typeof index === "undefined")
 			return "";
-		if ($scope.currentClickedElement == index) {
+		if ($scope.currentClickedElement === index) {
 			return "/assets/partials/paymentMethods/adEditPaymentMethod.html";
 		}
 	};
@@ -215,7 +215,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	$scope.getTemplateUrlCC = function(index) {
 		if ( typeof index === "undefined")
 			return "";
-		if ($scope.currentClickedElementCC == index) {
+		if ($scope.currentClickedElementCC === index) {
 			return "/assets/partials/paymentMethods/adEditPaymentMethod.html";
 		}
 	};

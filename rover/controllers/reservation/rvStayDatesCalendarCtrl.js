@@ -18,7 +18,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			$scope.eventSources = [];
 
 			$scope.calendarType = "ROOM_TYPE";
-			if ($scope.reservationData.rooms[0].roomTypeId == "") {
+			if ($scope.reservationData.rooms[0].roomTypeId === "") {
 				$scope.calendarType = "BEST_AVAILABLE";
 			}
 			$scope.checkinDateInCalender = $scope.confirmedCheckinDate = tzIndependentDate($scope.reservationData.arrivalDate);
@@ -113,7 +113,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			$scope.reservationData.rooms[0].roomTypeId = $scope.finalRoomType;
 			var roomTypeName = "";
 			for (var i in availabilityDetails.room_types) {
-				if (availabilityDetails.room_types[i].id == $scope.finalRoomType) {
+				if (availabilityDetails.room_types[i].id === $scope.finalRoomType) {
 					roomTypeName = availabilityDetails.room_types[i].name;
 					break;
 				}
@@ -158,7 +158,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 				stayDates[date].rate.id = rateIdForTheDate;
 				var rateName = "";
 				for (var j in availabilityDetails.rates) {
-					if (availabilityDetails.rates[j].id == rateIdForTheDate) {
+					if (availabilityDetails.rates[j].id === rateIdForTheDate) {
 						rateName = availabilityDetails.rates[j].name;
 						break;
 					}
@@ -292,7 +292,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			if ($(ui.target).attr('class').indexOf("check-in") >= 0) {
 				//If drag and drop carried in same calendar, we don't want to handle here.
 				//will be handled in 'eventDrop' (changedDateOnCalendar fn)
-				if (event.getMonth == $scope.checkinDateInCalender.getMonth()) {
+				if (event.getMonth === $scope.checkinDateInCalender.getMonth()) {
 					return false;
 				}
 				//checkin type date draging after checkout date wil not be allowed
@@ -304,7 +304,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			} else if ($(ui.target).attr('class').indexOf("check-out") >= 0) {
 				//If drag and drop carried in same calendar, we don't want to handle here.
 				//will be handled in 'eventDrop' (changedDateOnCalendar fn)
-				if (event.getMonth == $scope.checkoutDateInCalender.getMonth()) {
+				if (event.getMonth === $scope.checkoutDateInCalender.getMonth()) {
 					return false;
 				}
 				//checkout date draging before checkin date wil not be allowed
@@ -332,14 +332,14 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			var rate = {};
 			rate.name = '';
 			rate.value = '';
-			if ($scope.roomTypeForCalendar == "" && $scope.calendarType == "ROOM_TYPE") {
+			if ($scope.roomTypeForCalendar === "" && $scope.calendarType === "ROOM_TYPE") {
 				return rate;
 			} else if(typeof availabilityDetails.room_rates.single != 'undefined') {
 				rate.value = $rootScope.currencySymbol +
 					availabilityDetails.room_rates.single;
 				//Get the rate value iterating throught the rates array
 				angular.forEach($scope.availabilityDetails.rates, function(rateDetails, i) {
-					if (rateDetails.id == availabilityDetails.rate_id) {
+					if (rateDetails.id === availabilityDetails.rate_id) {
 						rate.name = rateDetails.name;
 						return false;
 					}
@@ -353,7 +353,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			var roomTypeId = availabilityDetails.room_rates.room_type_id;
 			var roomTypeName = "";
 			angular.forEach($scope.availabilityDetails.room_types, function(roomType, i) {
-				if (roomType.id == roomTypeId) {
+				if (roomType.id === roomTypeId) {
 					roomTypeName = roomType.description;
 					return false;
 				}
@@ -370,7 +370,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 
 			var availabilityKey;
 			var dateAvailability;
-			if ($scope.calendarType == "BEST_AVAILABLE") {
+			if ($scope.calendarType === "BEST_AVAILABLE") {
 				availabilityKey = 'BAR';
 			} else {
 				availabilityKey = $scope.roomTypeForCalendar;
@@ -386,13 +386,13 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 				//instead of new Date(), Fixing the timezone issue related with fullcalendar
 				thisDate = tzIndependentDate(date);
 				rate = getRateForTheDay(dateDetails[availabilityKey]);
-				calEvt.title = typeof rate.value == 'undefined'? '': rate.value;
-				calEvt.rate = typeof rate.name == 'undefined'? '': rate.name; //Displayed in tooltip
+				calEvt.title = typeof rate.value === 'undefined'? '': rate.value;
+				calEvt.rate = typeof rate.name === 'undefined'? '': rate.name; //Displayed in tooltip
 				calEvt.start = thisDate;
 				calEvt.end = thisDate;
 				calEvt.day = thisDate.getDate().toString();
 				//Displayed in tooltip
-				if ($scope.calendarType == "BEST_AVAILABLE") {
+				if ($scope.calendarType === "BEST_AVAILABLE") {
 					calEvt.roomType = getRoomTypeForBAR(dateDetails[availabilityKey]);
 				}
 
@@ -406,7 +406,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 					}
 					calEvt.durationEditable = "false";
 					//If check-in date and check-out dates are the same, show split view.
-					if (checkinDate.getDate() == checkoutDate.getDate()&&checkinDate.getMonth() == checkoutDate.getMonth()&&checkinDate.getYear() == checkoutDate.getYear()) {
+					if (checkinDate.getDate() === checkoutDate.getDate()&&checkinDate.getMonth() === checkoutDate.getMonth()&&checkinDate.getYear() === checkoutDate.getYear()) {
 						calEvt.className = "check-in split-view";
 						events.push(calEvt);
 						//checkout-event
@@ -426,13 +426,13 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 					calEvt.id = "availability";
 					calEvt.className = "mid-stay";
 				//Event is check-out
-				} else if (thisDate.getDate() == checkoutDate.getDate()&&thisDate.getMonth() == checkoutDate.getMonth()&&thisDate.getYear() == checkoutDate.getYear()) {
+				} else if (thisDate.getDate() === checkoutDate.getDate()&&thisDate.getMonth() === checkoutDate.getMonth()&&thisDate.getYear() === checkoutDate.getYear()) {
 					calEvt.id = "check-out";
 					calEvt.className = "check-out";
 					calEvt.startEditable = "true";
 					calEvt.durationEditable = "false";
 				/**Following are for dates prior to check-in and dates after checkout*/
-				} else if (($scope.calendarType == "BEST_AVAILABLE" && dateDetails[availabilityKey].room_type_availability.availability > 0) || ($scope.calendarType == "ROOM_TYPE" && $scope.roomTypeForCalendar != "" && dateDetails[availabilityKey].room_type_availability.availability > 0)) {
+				} else if (($scope.calendarType === "BEST_AVAILABLE" && dateDetails[availabilityKey].room_type_availability.availability > 0) || ($scope.calendarType === "ROOM_TYPE" && $scope.roomTypeForCalendar != "" && dateDetails[availabilityKey].room_type_availability.availability > 0)) {
 					calEvt.className = "type-available";
 					calEvt.durationEditable = "false";
 					//TODO: verify class name
@@ -478,7 +478,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 				return false;
 			}
 
-			if (event.id == 'check-in') {
+			if (event.id === 'check-in') {
 				//checkin type date draging after checkout date wil not be allowed
 				if (newDateSelected > $scope.checkoutDateInCalender) {
 					revertFunc();
@@ -486,7 +486,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 				}
 				finalCheckin = newDateSelected;
 				finalCheckout = $scope.checkoutDateInCalender;
-			} else if (event.id == "check-out") {
+			} else if (event.id === "check-out") {
 				//checkout date draging before checkin date wil not be allowed
 				if (newDateSelected < $scope.checkinDateInCalender) {
 					revertFunc();
@@ -546,15 +546,15 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 		*/
 		$scope.isRoomTypeChangeAllowed = function() {
 			var ret = true;
-			if ($scope.reservationData.status == "CHECKEDIN" ||
-				$scope.reservationData.status == "CHECKING_OUT") {
+			if ($scope.reservationData.status === "CHECKEDIN" ||
+				$scope.reservationData.status === "CHECKING_OUT") {
 				ret = false;
 			}
 			return ret;
 		};
 		//Click handler for cancel button in calendar screen
 		$scope.handleCancelAction = function() {
-			if($stateParams.fromState == 'STAY_CARD'){
+			if($stateParams.fromState === 'STAY_CARD'){
 				$state.go("rover.reservation.staycard.reservationcard.reservationdetails",
 					{"id" : $scope.reservationData.reservationId, "confirmationId": $scope.reservationData.confirmNum, "isrefresh": true});
 			} else{
@@ -568,7 +568,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 		*/
 		$scope.isPrevButtonDisabled = function() {
 			var disabled = false;
-			if (parseInt(tzIndependentDate($rootScope.businessDate).getMonth()) == parseInt($scope.leftCalendarOptions.month)) {
+			if (parseInt(tzIndependentDate($rootScope.businessDate).getMonth()) === parseInt($scope.leftCalendarOptions.month)) {
 				disabled = true;
 			}
 			return disabled
@@ -579,7 +579,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 		* Handles the forward and backward change for the calendar months
 		*/
 		var changeMonth = function(direction){
-			if(direction == 'FORWARD'){
+			if(direction === 'FORWARD'){
 				$scope.leftCalendarOptions.month = parseInt($scope.leftCalendarOptions.month) + 1;
 				$scope.rightCalendarOptions.month = parseInt($scope.rightCalendarOptions.month) + 1;
 			} else {

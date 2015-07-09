@@ -27,14 +27,14 @@ admin.controller('ADHotelDetailsCtrl', [
 	    	ngDialog.close();
 	    }
   	};
-	if($rootScope.adminRole == "snt-admin"){
+	if($rootScope.adminRole === "snt-admin"){
 		$scope.isHotelChainEditable = false;
 		$scope.isAdminSnt = true;
-		if($stateParams.action =="addfromSetup"){
+		if($stateParams.action ==="addfromSetup"){
 			$scope.previousStateIsDashBoard = true;
 		}
 		// SNT Admin -To add new hotel view
-		if($stateParams.action == "add" || $stateParams.action =="addfromSetup"){
+		if($stateParams.action === "add" || $stateParams.action ==="addfromSetup"){
 			$scope.title = "Add New Hotel";
 
 			var fetchSuccess = function(data){
@@ -53,7 +53,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			$scope.invokeApi(ADHotelDetailsSrv.fetchAddData, {}, fetchSuccess);
 		}
 		// SNT Admin -To edit existing hotel view
-		else if($stateParams.action == "edit"){
+		else if($stateParams.action === "edit"){
 			$scope.isEdit = true;
 			$scope.title = "Edit Hotel";
 			var fetchSuccess = function(data){
@@ -63,11 +63,11 @@ admin.controller('ADHotelDetailsCtrl', [
 				if(data.mli_pem_certificate_loaded){
 					$scope.fileName = "Certificate Attached";
 				}
-				if($scope.data.check_in_time.primetime == "" || typeof $scope.data.check_in_time.primetime === 'undefined'){
+				if($scope.data.check_in_time.primetime === "" || typeof $scope.data.check_in_time.primetime === 'undefined'){
 					$scope.data.check_in_time.primetime = "AM";
 					$scope.data.check_in_primetime ="AM";
 				}
-				if($scope.data.check_out_time.primetime == "" || typeof $scope.data.check_out_time.primetime === 'undefined'){
+				if($scope.data.check_out_time.primetime === "" || typeof $scope.data.check_out_time.primetime === 'undefined'){
 					$scope.data.check_out_time.primetime = "AM";
 					$scope.data.check_out_primetime = "AM";
 				}
@@ -76,7 +76,7 @@ admin.controller('ADHotelDetailsCtrl', [
 		}
 
 	}
-	else if($rootScope.adminRole == "hotel-admin"){
+	else if($rootScope.adminRole === "hotel-admin"){
 		// Hotel Admin -To Edit current hotel view
 		$scope.isEdit = true;
 		$scope.title = "Edit Hotel";
@@ -86,11 +86,11 @@ admin.controller('ADHotelDetailsCtrl', [
 			$scope.$emit('hideLoader');
 			$scope.hotelLogoPrefetched = data.hotel_logo;
 			$scope.hotelTemplateLogoPrefetched = data.hotel_template_logo;
-			if($scope.data.check_in_time.primetime == "" || typeof $scope.data.check_in_time.primetime === 'undefined'){
+			if($scope.data.check_in_time.primetime === "" || typeof $scope.data.check_in_time.primetime === 'undefined'){
 				$scope.data.check_in_time.primetime = "AM";
 				$scope.data.check_in_primetime ="AM";
 			}
-			if($scope.data.check_out_time.primetime == "" || typeof $scope.data.check_out_time.primetime === 'undefined'){
+			if($scope.data.check_out_time.primetime === "" || typeof $scope.data.check_out_time.primetime === 'undefined'){
 				$scope.data.check_out_time.primetime = "AM";
 				$scope.data.check_out_primetime = "AM";
 			}
@@ -102,7 +102,7 @@ admin.controller('ADHotelDetailsCtrl', [
 		function(){
 		return $scope.data.hotel_template_logo;
 	}, function(logo) {
-				if(logo == 'false')
+				if(logo === 'false')
 					$scope.fileName = "Choose File....";
 				$scope.hotel_template_logo_file = $scope.fileName;
 			}
@@ -110,7 +110,7 @@ admin.controller('ADHotelDetailsCtrl', [
 	$scope.$watch(function(){
 		return $scope.data.hotel_logo;
 	}, function(logo) {
-				if(logo == 'false')
+				if(logo === 'false')
 					$scope.fileName = "Choose File....";
 				$scope.hotel_logo_file = $scope.fileName;
 			}
@@ -181,10 +181,10 @@ admin.controller('ADHotelDetailsCtrl', [
 
 
 			var data = dclone($scope.data, unwantedKeys);
-			if($scope.hotelLogoPrefetched == data.hotel_logo){
+			if($scope.hotelLogoPrefetched === data.hotel_logo){
 				data.hotel_logo = "";
 			}
-			if($scope.hotelTemplateLogoPrefetched == data.hotel_template_logo){
+			if($scope.hotelTemplateLogoPrefetched === data.hotel_template_logo){
 				data.hotel_template_logo = "";
 			}
 			var postSuccess = function(){
@@ -192,7 +192,7 @@ admin.controller('ADHotelDetailsCtrl', [
 				$state.go('admin.dashboard', {menu: 0});
 				$scope.$emit('hotelNameChanged',{"new_name":$scope.data.hotel_name});
 				angular.forEach($scope.data.currency_list,function(item, index) {
-		       		if (item.id == $scope.data.default_currency) {
+		       		if (item.id === $scope.data.default_currency) {
 		       			$rootScope.currencySymbol = getCurrencySign(item.code);
 				 	}
 	       		});
@@ -205,34 +205,34 @@ admin.controller('ADHotelDetailsCtrl', [
     *   Method to toggle data for 'is_pms_tokenized' as true/false.
     */
 	$scope.toggleClicked = function(){
-		$scope.data.is_pms_tokenized = ($scope.data.is_pms_tokenized == 'true') ? 'false' : 'true';
+		$scope.data.is_pms_tokenized = ($scope.data.is_pms_tokenized === 'true') ? 'false' : 'true';
 	};
 	/**
     *   Method to toggle data for 'is_pms_tokenized' as true/false.
     */
 	$scope.doNotUpdateVideoToggleClicked = function(){
-		$scope.data.do_not_update_video_checkout = ($scope.data.do_not_update_video_checkout == 'true') ? 'false' : 'true';
+		$scope.data.do_not_update_video_checkout = ($scope.data.do_not_update_video_checkout === 'true') ? 'false' : 'true';
 	};
 
     /**
     *   Method to toggle data for 'room_status_per_room_type' as true/false.
     */
 	$scope.roomStatusUpdatePerRoomType = function(){
-		$scope.data.is_room_status_import_per_room_type_on = ($scope.data.is_room_status_import_per_room_type_on == 'true') ? 'false' : 'true';
+		$scope.data.is_room_status_import_per_room_type_on = ($scope.data.is_room_status_import_per_room_type_on === 'true') ? 'false' : 'true';
 	};
 
 	/**
     *   Method to toggle data for 'use_kiosk_entity_id_for_fetch_booking' as true/false.
     */
 	$scope.kioskEntityToggleClicked = function(){
-		$scope.data.use_kiosk_entity_id_for_fetch_booking = ($scope.data.use_kiosk_entity_id_for_fetch_booking == 'true') ? 'false' : 'true';
+		$scope.data.use_kiosk_entity_id_for_fetch_booking = ($scope.data.use_kiosk_entity_id_for_fetch_booking === 'true') ? 'false' : 'true';
 	};
 
 	/**
     *   Method to toggle data for 'use_snt_entity_id_for_checkin_checkout' as true/false.
     */
 	$scope.sntEntityToggleClicked = function(){
-		$scope.data.use_snt_entity_id_for_checkin_checkout = ($scope.data.use_snt_entity_id_for_checkin_checkout == 'true') ? 'false' : 'true';
+		$scope.data.use_snt_entity_id_for_checkin_checkout = ($scope.data.use_snt_entity_id_for_checkin_checkout === 'true') ? 'false' : 'true';
 	};
 
 	/**
@@ -289,7 +289,7 @@ admin.controller('ADHotelDetailsCtrl', [
 	$scope.$watch('data.hotel_chain', function() {
 		$scope.data.brands = [];
         angular.forEach($scope.data.chains, function(item, index) {
-                if (item.id == $scope.data.hotel_chain) {
+                if (item.id === $scope.data.hotel_chain) {
                 	$scope.data.brands = item.brands;
                 }
         });

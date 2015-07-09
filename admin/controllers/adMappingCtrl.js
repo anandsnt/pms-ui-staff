@@ -87,7 +87,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 
         $scope.clickedMenuItem = function ($event, stateToGo) {
             var currentTime = new Date();
-            if (lastDropedTime != '' && typeof lastDropedTime == 'object') {
+            if (lastDropedTime != '' && typeof lastDropedTime === 'object') {
                 var diff = currentTime - lastDropedTime;
                 if (diff <= 400) {
                     $event.preventDefault();
@@ -311,7 +311,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             available_mapping_types = $scope.editData.mapping_types,
             available_snt_values = $scope.mappingInterface.mappingTypeRefs[mapping_type];
             var valid_mapping_type = false, valid_snt_value = false, valid_external_value = false;
-            if (external_value !== '' && external_value !== " " && typeof external_value == typeof 'string'){
+            if (external_value !== '' && external_value !== " " && typeof external_value === typeof 'string'){
                 valid_external_value = true;
             }
 

@@ -29,7 +29,7 @@ admin.controller('ADChargeGroupsCtrl',['$scope', 'ADChargeGroupsSrv', '$anchorSc
     * @param {string} id of the item
     */
 	$scope.getTemplateUrl = function(index){
-		if($scope.currentClickedElement == index){
+		if($scope.currentClickedElement === index){
 			 return "/assets/partials/chargeGroups/adChargeGroupsEdit.html";
 		}
 	};
@@ -87,7 +87,7 @@ admin.controller('ADChargeGroupsCtrl',['$scope', 'ADChargeGroupsSrv', '$anchorSc
 			$scope.currentClickedElement = -1;
 			// delete data from scope
 			angular.forEach($scope.data.charge_groups,function(item, index) {
-	 			if (item.value == id) {
+	 			if (item.value === id) {
 	 				$scope.data.charge_groups.splice(index, 1);
 	 			}
  			});

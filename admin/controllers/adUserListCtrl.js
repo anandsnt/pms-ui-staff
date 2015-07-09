@@ -7,7 +7,7 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$state
    /**
     * To check whether logged in user is sntadmin or hoteladmin
     */
-	if($rootScope.adminRole == "snt-admin"){
+	if($rootScope.adminRole === "snt-admin"){
 		$scope.isAdminSnt = true;
 	}
    /**
@@ -52,13 +52,13 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$state
     * @param {num} current index
     */
 	$scope.activateInactivate = function(userId, currentStatus, index){
-		var nextStatus = (currentStatus == "true" ? "inactivate" : "activate");
+		var nextStatus = (currentStatus === "true" ? "inactivate" : "activate");
 		var data = {
 			"activity": nextStatus,
 			"id": userId
 		};
 		var successCallbackActivateInactivate = function(data){
-			$scope.data[index].is_active = (currentStatus == "true" ? "false" : "true");
+			$scope.data[index].is_active = (currentStatus === "true" ? "false" : "true");
 			$scope.$emit('hideLoader');
 		};
 		$scope.invokeApi(ADUserSrv.activateInactivate, data , successCallbackActivateInactivate);

@@ -30,7 +30,7 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
 if(!$scope.addmode){
   $scope.data = beaconDetails;
    angular.forEach($scope.beaconNeighbours, function(beaconNeighbour, index) {
-                if (beaconNeighbour.beacon_id ==$scope.beaconId) {
+                if (beaconNeighbour.beacon_id ===$scope.beaconId) {
                   $scope.beaconNeighbours.splice(index,1);
                 }
   });

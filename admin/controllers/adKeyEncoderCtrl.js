@@ -108,7 +108,7 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 	$scope.getTemplateUrl = function(index, id) {
 		if ( typeof index === "undefined" || typeof id === "undefined")
 			return "";
-		if ($scope.currentClickedElement == index) {
+		if ($scope.currentClickedElement === index) {
 			return "/assets/partials/keyEncoders/adEncoderEdit.html";
 		}
 	};

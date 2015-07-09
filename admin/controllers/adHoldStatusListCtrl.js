@@ -28,7 +28,7 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
 		$scope.currentClickedElement = index;
 		$scope.isAddMode = false;
 		$scope.data.holdStatuses.map(function(x){
-			if(x.id==id)
+			if(x.id===id)
 				{
 				$scope.holdstatusData.name =x.name;
 				$scope.holdstatusData.id =x.id;
@@ -56,7 +56,7 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
     */
 	$scope.getTemplateUrl = function(index, id){
 		if(typeof index === "undefined" || typeof id === "undefined") return "";
-		if($scope.currentClickedElement == index){
+		if($scope.currentClickedElement === index){
 			 	return "/assets/partials/holdStatus/adHoldStatusEdit.html";
 		}
 	};

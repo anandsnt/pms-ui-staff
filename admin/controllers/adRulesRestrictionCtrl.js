@@ -344,7 +344,7 @@ admin.controller('ADRulesRestrictionCtrl', [
          $scope.deleteSchedule = function(index){
             $scope.singleRule.schedules.splice(index , 1);
             if($scope.singleRule.schedules.length!=0){
-                if($scope.selectedScheduleIndex == $scope.singleRule.schedules.length){
+                if($scope.selectedScheduleIndex === $scope.singleRule.schedules.length){
                     $scope.selectedSchedule = $scope.singleRule.schedules[$scope.singleRule.schedules.length-1];
                     $scope.selectedScheduleIndex = $scope.singleRule.schedules.length-1;
                 }

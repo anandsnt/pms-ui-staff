@@ -44,7 +44,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
 
 	$scope.calculateArrayDifferance = function(source, toRemove) {
     		return source.filter(function(value){
-        	return toRemove.indexOf(value) == -1;
+        	return toRemove.indexOf(value) === -1;
     		});
 		}
 
@@ -55,7 +55,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
     	$scope.previuosAssignedPermissions.length=0;
     	$scope.permissions.forEach(function(element){
     		$scope.selectedUserRole.assigned_permissions.map(function(x){
-    			if(x ==element.value){
+    			if(x ===element.value){
     				$scope.assignedPermissions.push(element);
     				$scope.previuosAssignedPermissions.push(element);
     			}
@@ -127,13 +127,13 @@ admin.controller('ADUserRolePermissionsCtrl', [
     */
 	$scope.selectAssignedPermission = function($event, index){
 		var lastSelectedItem =$scope.selectedAssignedPermission;
-		if(lastSelectedItem == index){
+		if(lastSelectedItem === index){
 			$scope.selectedAssignedPermission =-1;
 		}
-		else if(lastDropedTime == ''){
+		else if(lastDropedTime === ''){
 			$scope.selectedAssignedPermission = index;
 		}
-		else if(typeof lastDropedTime == 'object') {
+		else if(typeof lastDropedTime === 'object') {
 			var currentTime = new Date();
 			var diff = currentTime - lastDropedTime;
 			if(diff <= 100){
@@ -150,13 +150,13 @@ admin.controller('ADUserRolePermissionsCtrl', [
     */
 	$scope.selectUnAssignedPermission = function($event, index){
 		var lastSelectedItem =$scope.selectedUnassignedPermission;
-		if(lastSelectedItem == index){
+		if(lastSelectedItem === index){
 			$scope.selectedUnassignedPermission =-1;
 		}
-		else if(lastDropedTime == ''){
+		else if(lastDropedTime === ''){
 			$scope.selectedUnassignedPermission = index;
 		}
-		else if(typeof lastDropedTime == 'object') { //means date
+		else if(typeof lastDropedTime === 'object') { //means date
 			var currentTime = new Date();
 			var diff = currentTime - lastDropedTime;
 			if(diff <= 100){
@@ -172,7 +172,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
     */
 	$scope.leftToRight = function(){
 		var index = $scope.selectedAssignedPermission;
-		if(index == -1){
+		if(index === -1){
 			return;
 		}
 		var newElement = $scope.assignedPermissions[index];
@@ -186,7 +186,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
     */
 	$scope.rightToleft = function(){
 		var index = $scope.selectedUnassignedPermission;
-		if(index == -1){
+		if(index === -1){
 			return;
 		}
 		var newElement = $scope.unAssignedPermissions[index];

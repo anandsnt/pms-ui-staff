@@ -48,7 +48,7 @@ admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv','$anchorScroll', '$ti
     * @param {int} index of the selected item
     */
 	$scope.getTemplateUrl = function(index){
-		if($scope.currentClickedElement == index){
+		if($scope.currentClickedElement === index){
 			 return "/assets/partials/origins/adOriginsEdit.html";
 		}
 	};
@@ -93,7 +93,7 @@ admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv','$anchorScroll', '$ti
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 		};
-		if(index == undefined) var data = $scope.data.booking_origins[$scope.currentClickedElement];
+		if(index === undefined) var data = $scope.data.booking_origins[$scope.currentClickedElement];
 		else var data = $scope.data.booking_origins[index];
 
   		$scope.invokeApi(ADOriginsSrv.update, data, postSuccess);
@@ -107,7 +107,7 @@ admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv','$anchorScroll', '$ti
 			$scope.currentClickedElement = -1;
 			// delete data from scope
 			angular.forEach($scope.data.booking_origins,function(item, index) {
-	 			if (item.value == id) {
+	 			if (item.value === id) {
 	 				$scope.data.booking_origins.splice(index, 1);
 	 			}
  			});

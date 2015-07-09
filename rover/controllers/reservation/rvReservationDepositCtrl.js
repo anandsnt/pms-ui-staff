@@ -168,7 +168,7 @@ sntRover.controller('RVReservationDepositController',
 		$scope.isShowFees = function(){
 			var isShowFees = false;
 			var feesData = $scope.feeData;
-			if(typeof feesData == 'undefined' || typeof feesData.feesInfo == 'undefined' || feesData.feesInfo == null){
+			if(typeof feesData === 'undefined' || typeof feesData.feesInfo === 'undefined' || feesData.feesInfo === null){
 				isShowFees = false;
 			}
 			else if((feesData.defaultAmount  >= feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount){
@@ -192,7 +192,7 @@ sntRover.controller('RVReservationDepositController',
 					minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
 				}
 
-				var totalAmount = ($scope.reservationData.depositAmount == "") ? zeroAmount :
+				var totalAmount = ($scope.reservationData.depositAmount === "") ? zeroAmount :
 								parseFloat($scope.reservationData.depositAmount);
 
 				$scope.feeData.minFees = minFees;
@@ -200,7 +200,7 @@ sntRover.controller('RVReservationDepositController',
 
 				if($scope.isShowFees()){
 
-					if(amountSymbol == "percent"){
+					if(amountSymbol === "percent"){
 						var calculatedFee = parseFloat(totalAmount * (feePercent/100));
 						$scope.feeData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
 						$scope.feeData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
@@ -232,7 +232,7 @@ sntRover.controller('RVReservationDepositController',
 					var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
 					$scope.feeData.actualFees = feesAmount;
 
-					if(amountSymbol == "percent") $scope.calculateFee();
+					if(amountSymbol === "percent") $scope.calculateFee();
 					else{
 						$scope.feeData.calculatedFee = parseFloat(feesAmount).toFixed(2);
 						$scope.feeData.totalOfValueAndFee = parseFloat(feesAmount + defaultAmount).toFixed(2);
@@ -244,8 +244,8 @@ sntRover.controller('RVReservationDepositController',
 		// CICO-12413 : To calculate Total of fees and amount to pay.
 		$scope.calculateTotalAmount = function(amount) {
 
-			var feesAmount  = (typeof $scope.feeData.calculatedFee == 'undefined' || $scope.feeData.calculatedFee == '' || $scope.feeData.calculatedFee == '-') ? zeroAmount : parseFloat($scope.feeData.calculatedFee);
-			var amountToPay = (typeof amount == 'undefined' || amount =='') ? zeroAmount : parseFloat(amount);
+			var feesAmount  = (typeof $scope.feeData.calculatedFee === 'undefined' || $scope.feeData.calculatedFee === '' || $scope.feeData.calculatedFee === '-') ? zeroAmount : parseFloat($scope.feeData.calculatedFee);
+			var amountToPay = (typeof amount === 'undefined' || amount ==='') ? zeroAmount : parseFloat(amount);
 
 			$scope.feeData.totalOfValueAndFee = parseFloat(amountToPay + feesAmount).toFixed(2);
 		};
@@ -263,7 +263,7 @@ sntRover.controller('RVReservationDepositController',
 
 
 			angular.forEach($scope.passData.details.paymentTypes, function(value, key) {
-				if(value.name == $scope.depositData.paymentType){
+				if(value.name === $scope.depositData.paymentType){
 					if($scope.depositData.paymentType != "CC"){
 						$scope.isDisplayReference = (value.is_display_reference)? true:false;
 
@@ -431,7 +431,7 @@ sntRover.controller('RVReservationDepositController',
 	*/
 	$scope.submitPayment = function(){
 
-		if($scope.reservationData.depositAmount == '' || $scope.reservationData.depositAmount == null){
+		if($scope.reservationData.depositAmount === '' || $scope.reservationData.depositAmount === null){
 			$scope.errorMessage = ["Please enter amount"];
 		} else {
 			$scope.errorMessage = "";
@@ -463,7 +463,7 @@ sntRover.controller('RVReservationDepositController',
 				dataToSrv.postData.reference_text = $scope.reservationData.referanceText;
 			};
 			$scope.isLoading =  true;
-			if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual && $scope.depositData.paymentType === 'CC'){
+			if($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.depositData.paymentType === 'CC'){
 				dataToSrv.postData.is_emv_request = true;
 				$scope.shouldShowWaiting = true;
 				RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {

@@ -47,7 +47,7 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
 	$scope.getTemplateUrl = function(index, id){
 		// if(typeof index === "undefined" || typeof id === "undefined") return "";
 		if(typeof index === "undefined" ) return "";
-		if($scope.currentClickedElement == index){
+		if($scope.currentClickedElement === index){
 			 	return "/assets/partials/billingGroups/adBillingGroupDetails.html";
 		}
 	};
@@ -145,7 +145,7 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
 	$scope.removeChargeCode = function(id){
 		var pos;
 		for(var i = 0; i < $scope.billingGroupData.selected_charge_codes.length; i++){
-			if($scope.billingGroupData.selected_charge_codes[i] == id){
+			if($scope.billingGroupData.selected_charge_codes[i] === id){
 				pos = i;
 				break;
 			}
@@ -158,7 +158,7 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
     */
 	$scope.isChecked = function(id){
 		for(var i = 0; i < $scope.billingGroupData.selected_charge_codes.length; i++){
-			if($scope.billingGroupData.selected_charge_codes[i] == id)
+			if($scope.billingGroupData.selected_charge_codes[i] === id)
 				return true;
 		}
 		return false;

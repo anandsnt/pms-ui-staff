@@ -165,7 +165,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         }
 
         $scope.initReservationDetails = function() {
-            // Initiate All Cards
+            // Initiate All Cards 
             $scope.reservationDetails = RVReservationDataService.getReservationDetailsModel();
 
             $scope.viewState = {
@@ -359,7 +359,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     addOnCumulative: 0.0
                 }
 
-                // For every Day
+                // For every Day 
                 angular.forEach(currentRoom.stayDates, function(stay, date) {
                     // EXCLUDE departure date from cost computations - EXCEPT for SINGLE DAY(zero nights) reservations
                     if ((date == roomMetaData.arrival || date != roomMetaData.departure)) {
@@ -386,7 +386,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                                     if (stay.rateDetails.actual_amount != stay.rateDetails.modified_amount)
                                         roomAmount = parseFloat(stay.rateDetails.modified_amount);
                                 }
-                                var taxableRateAmount = roomAmount; // default taxableRoomAmount to the calculated room amount. This inclusive addons are to be adjusted wrt this value!
+                                var taxableRateAmount = roomAmount; // default taxableRoomAmount to the calculated room amount. This inclusive addons are to be adjusted wrt this value!                                
                                 currentRoom.rateTotal = currentRoom.rateTotal + roomAmount; // cumulative total of all days goes to roomTotal
                             }
                             // --------------------------------------------------------------------------------//
@@ -446,7 +446,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     }
                 });
 
-                //cumulative total of all stay costs
+                //cumulative total of all stay costs 
                 $scope.reservationData.totalTaxAmount = parseFloat($scope.reservationData.totalTaxAmount) + parseFloat(roomMetaData.totalTaxes);
                 $scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(currentRoom.rateTotal) + parseFloat(roomMetaData.addOnCumulative) + parseFloat(roomMetaData.totalTaxes);
                 $scope.reservationData.totalTax = parseFloat($scope.reservationData.totalTax) + parseFloat(roomMetaData.taxesInclusiveExclusive);
@@ -493,15 +493,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         };
 
         /*
-            This function is called once the stay card loads and
+            This function is called once the stay card loads and 
             populates the $scope.reservationData object with the current reservation's data.
 
-            This is done to enable use of the $scope.reservationData object in the subsequent screens in
-            the flow from the staycards
+            This is done to enable use of the $scope.reservationData object in the subsequent screens in 
+            the flow from the staycards 
         */
 
         $scope.populateDataModel = function(reservationDetails) {
-
             var parsedStayCardData = RVReservationDataService.parseReservationData(reservationDetails.reservation_card, $scope.reservationListData);
             _.extend($scope.reservationData, parsedStayCardData.reservationData);
             // Not sure why the below four are being dumped to the scope
@@ -518,7 +517,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
          */
         $scope.stayDatesClicked = function() {
             var fromState = $state.current.name;
-            //If we are already in state for calendar/rooms&rates,
+            //If we are already in state for calendar/rooms&rates, 
             //then we only need to switch the vuew type to calendar
 
 
@@ -551,6 +550,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         $scope.$on("guestEmailChanged", function(e) {
             $scope.$broadcast('updateGuestEmail');
         });
+
 
         /**
          *   Validation conditions
@@ -606,7 +606,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.otherData.origins = baseData.demographics.origins;
             $scope.otherData.reservationTypes = baseData.demographics.reservationTypes;
             // call this. no sure how we can pass date from here
-            //
+            // 
             $scope.otherData.segmentsEnabled = baseData.demographics.is_use_segments;
             $scope.otherData.segments = baseData.demographics.segments;
             $scope.checkOccupancyLimit();
@@ -1370,16 +1370,16 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 var addOnCumulative = 0;
                 $(room.addons).each(function(i, addon) {
                     //Amount_Types
-                    // 1   ADULT
-                    // 2   CHILD
-                    // 3   PERSON
+                    // 1   ADULT   
+                    // 2   CHILD   
+                    // 3   PERSON  
                     // 4   FLAT
                     // The Amount Type is available in the amountType object of the selected addon
                     // ("AT", addon.amountType.value)
 
                     //Post Types
-                    // 1   STAY
-                    // 2   NIGHT
+                    // 1   STAY   
+                    // 2   NIGHT  
                     // The Post Type is available in the postType object of the selected addon
                     // ("PT", addon.postType.value)
 
