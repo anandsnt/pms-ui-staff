@@ -117,7 +117,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	      }
 
 	      // last hope, we are looking in webservice.
-	     if(visibleElementsCount == 0){
+	     if(visibleElementsCount === 0){
 	        var dataDict = {'query': $scope.textInQueryBox.trim()};
 	        $scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, searchSuccessCards);
 	      }
@@ -132,7 +132,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	$scope.excludeActivereservationFromsSearch = function(){
 		var filteredResults = [];
 	  	for(var i = 0; i < $scope.results.reservations.length; i++){
-	  		if(($scope.results.reservations[i].id != $scope.reservationData.reservation_id) && ($scope.results.reservations[i].reservation_status == 'CHECKING_IN' || $scope.results.reservations[i].reservation_status == 'CHECKEDIN' || $scope.results.reservations[i].reservation_status == 'CHECKING_OUT')){
+	  		if(($scope.results.reservations[i].id != $scope.reservationData.reservation_id) && ($scope.results.reservations[i].reservation_status === 'CHECKING_IN' || $scope.results.reservations[i].reservation_status === 'CHECKEDIN' || $scope.results.reservations[i].reservation_status === 'CHECKING_OUT')){
 
 	  			filteredResults.push($scope.results.reservations[i]);
 	  		}
@@ -179,7 +179,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 				return false;
 			}
 
-		    if($scope.textInQueryBox.indexOf($scope.textInQueryBox) == 0 && $scope.results.reservations.length > 0){
+		    if($scope.textInQueryBox.indexOf($scope.textInQueryBox) === 0 && $scope.results.reservations.length > 0){
 		        var value = "";
 		        //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 		        //if it is zero, then we will request for webservice
@@ -199,7 +199,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 		            	$scope.results.reservations[i].is_row_visible = false;
 		          	}
 		        }
-		        if(totalCountOfFound == 0){
+		        if(totalCountOfFound === 0){
 		        	fetchSearchResults();
 		        }
 		    }

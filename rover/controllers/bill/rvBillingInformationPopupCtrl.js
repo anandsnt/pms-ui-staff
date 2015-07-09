@@ -50,7 +50,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         var routeToPostingAccountExist = false;
         var routesList = dclone($scope.routes,[]);
         for(var i = 0; i < routesList.length; i++){
-            if(routesList[i].entity_type == "GROUP" || routesList[i].entity_type == "HOUSE"){
+            if(routesList[i].entity_type === "GROUP" || routesList[i].entity_type === "HOUSE"){
                 routeToPostingAccountExist = true;
                 return routeToPostingAccountExist;
             }
@@ -83,11 +83,11 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         $scope.isInitialPage = false;
         if(type === 'ATTACHED_ENTITY' || type === 'ROUTES'){
         	$scope.selectedEntity = $scope.routes[index];
-            $scope.selectedEntity.is_new = (type == 'ATTACHED_ENTITY')? true: false;
+            $scope.selectedEntity.is_new = (type === 'ATTACHED_ENTITY')? true: false;
 
             if($scope.selectedEntity.entity_type !='RESERVATION')
                    $scope.selectedEntity.guest_id = null;
-            if($scope.selectedEntity.entity_type == "GROUP" || $scope.selectedEntity.entity_type == "HOUSE"){
+            if($scope.selectedEntity.entity_type === "GROUP" || $scope.selectedEntity.entity_type === "HOUSE"){
                 //$scope.selectedEntity.entity_type = "POSTING_ACCOUNT";
             }
             else{
@@ -184,7 +184,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 $scope.selectedEntity.is_opted_late_checkout = $scope.reservationData.is_opted_late_checkout;
             }
 
-            if(type == 'GUEST'){
+            if(type === 'GUEST'){
                 $scope.selectedEntity.id = $scope.reservationData.reservation_id;
                 $scope.selectedEntity.guest_id = $scope.attachedEntities.primary_guest_details.id;
                 $scope.selectedEntity.name = $scope.attachedEntities.primary_guest_details.name;
@@ -193,7 +193,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                     "guest_image": $scope.attachedEntities.primary_guest_details.avatar
                 }];
                 $scope.selectedEntity.entity_type = "RESERVATION";
-            }else if(type == 'ACCOMPANY_GUEST'){
+            }else if(type === 'ACCOMPANY_GUEST'){
                 $scope.selectedEntity.id = $scope.reservationData.reservation_id;
                 $scope.selectedEntity.guest_id = $scope.attachedEntities.accompanying_guest_details[index].id;
                 $scope.selectedEntity.name = $scope.attachedEntities.accompanying_guest_details[index].name;
@@ -203,7 +203,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 }];
                 $scope.selectedEntity.has_accompanying_guests = true;
                 $scope.selectedEntity.entity_type = "RESERVATION";
-            }else if(type == 'COMPANY_CARD'){
+            }else if(type === 'COMPANY_CARD'){
                 $scope.selectedEntity.id = $scope.attachedEntities.company_card.id;
                 $scope.selectedEntity.name = $scope.attachedEntities.company_card.name;
                 $scope.selectedEntity.images = [{
@@ -211,7 +211,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                     "guest_image": $scope.attachedEntities.company_card.logo
                 }];
                 $scope.selectedEntity.entity_type = "COMPANY_CARD";
-            }else if(type == 'TRAVEL_AGENT'){
+            }else if(type === 'TRAVEL_AGENT'){
                 $scope.selectedEntity.id = $scope.attachedEntities.travel_agent.id;
                 $scope.selectedEntity.name = $scope.attachedEntities.travel_agent.name;
                 $scope.selectedEntity.images = [{
@@ -220,7 +220,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 }];
                 $scope.selectedEntity.entity_type = "TRAVEL_AGENT";
             }
-            else if(type =='GROUP' || type == 'HOUSE'){
+            else if(type ==='GROUP' || type === 'HOUSE'){
                 if(isRoutingForPostingAccountExist()){
                     $scope.errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
                     $scope.isEntitySelected = false;
@@ -239,23 +239,23 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     */
     $scope.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn){
       var viewStatus = "";
-      if(isLateCheckoutOn && "CHECKING_OUT" == reservationStatus){
+      if(isLateCheckoutOn && "CHECKING_OUT" === reservationStatus){
         viewStatus = "late-check-out";
         return viewStatus;
       }
-      if("RESERVED" == reservationStatus){
+      if("RESERVED" === reservationStatus){
         viewStatus = "arrival";
-      }else if("CHECKING_IN" == reservationStatus){
+      }else if("CHECKING_IN" === reservationStatus){
         viewStatus = "check-in";
-      }else if("CHECKEDIN" == reservationStatus){
+      }else if("CHECKEDIN" === reservationStatus){
         viewStatus = "inhouse";
-      }else if("CHECKEDOUT" == reservationStatus){
+      }else if("CHECKEDOUT" === reservationStatus){
         viewStatus = "departed";
-      }else if("CHECKING_OUT" == reservationStatus){
+      }else if("CHECKING_OUT" === reservationStatus){
         viewStatus = "check-out";
-      }else if("CANCELED" == reservationStatus){
+      }else if("CANCELED" === reservationStatus){
         viewStatus = "cancel";
-      }else if(("NOSHOW" == reservationStatus)||("NOSHOW_CURRENT" == reservationStatus)){
+      }else if(("NOSHOW" === reservationStatus)||("NOSHOW_CURRENT" === reservationStatus)){
         viewStatus = "no-show";
       }
       return viewStatus;
@@ -265,24 +265,24 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     * function to get the class for the 'li' according to the entity role
     */
 	$scope.getEntityRole = function(route){
-    	if(route.entity_type == 'RESERVATION' &&  !route.has_accompanying_guests)
+    	if(route.entity_type === 'RESERVATION' &&  !route.has_accompanying_guests)
     		return 'guest';
-    	else if(route.entity_type == 'RESERVATION')
+    	else if(route.entity_type === 'RESERVATION')
     		return 'accompany';
-    	else if(route.entity_type == 'TRAVEL_AGENT')
+    	else if(route.entity_type === 'TRAVEL_AGENT')
     		return 'travel-agent';
-    	else if(route.entity_type == 'COMPANY_CARD')
+    	else if(route.entity_type === 'COMPANY_CARD')
     		return 'company';
     };
      /**
     * function to get the class for the 'icon' according to the entity role
     */
     $scope.getEntityIconClass = function(route){
-        if(route.entity_type == 'RESERVATION' &&  route.has_accompanying_guests )
+        if(route.entity_type === 'RESERVATION' &&  route.has_accompanying_guests )
             return 'accompany';
-    	else if(route.entity_type == 'RESERVATION' || route.entity_type == 'COMPANY_CARD')
+    	else if(route.entity_type === 'RESERVATION' || route.entity_type === 'COMPANY_CARD')
             return '';
-    	else if(route.entity_type == 'TRAVEL_AGENT')
+    	else if(route.entity_type === 'TRAVEL_AGENT')
     		return 'icons icon-travel-agent';
 
     };
@@ -334,13 +334,13 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 
     }
     else {
-        if($scope.billingEntity == "TRAVEL_AGENT_DEFAULT_BILLING"){
+        if($scope.billingEntity === "TRAVEL_AGENT_DEFAULT_BILLING"){
             $scope.selectAttachedEntity('', 'TRAVEL_AGENT');
         }
-        else if($scope.billingEntity == "COMPANY_CARD_DEFAULT_BILLING") {
+        else if($scope.billingEntity === "COMPANY_CARD_DEFAULT_BILLING") {
             $scope.selectAttachedEntity('', 'COMPANY_CARD');
         }
-        else if($scope.billingEntity == "GROUP_DEFAULT_BILLING") {
+        else if($scope.billingEntity === "GROUP_DEFAULT_BILLING") {
             $scope.selectAttachedEntity('', 'GROUP');
         }
         else {
