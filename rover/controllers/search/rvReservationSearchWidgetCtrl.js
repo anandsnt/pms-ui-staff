@@ -621,7 +621,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			RVSearchSrv.fromDate = $scope.fromDate;
 			RVSearchSrv.toDate = $scope.toDate;
 
-
+                        $rootScope.goToReservationCalled = true;
 			//$scope.$emit("UpdateSearchBackbuttonCaption", "");
 			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 				id: reservationID,
