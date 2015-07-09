@@ -22,7 +22,7 @@ login.config([
 		});
 		
 		$stateProvider.state('activateuser', {
-			url: '/activate/:token/:user',
+			url: '/activate/:token/:user/:username',
 			templateUrl: '/assets/partials/activate.html',
 			controller: 'activateCtrl',
 			title: 'Activate User'

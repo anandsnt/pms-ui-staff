@@ -109,7 +109,7 @@ sntRover.controller('RVbillCardController',
 			chargeCodesId = [];
 			_.each(chargeCodes, function(chargeCode) {
 			  chargeCode.isSelected = bool;
-			  chargeCodesId.push(chargeCode.id)
+			  chargeCodesId.push(chargeCode.id);
 			});
 			$scope.reservationBillData.isAllChargeCodeSelected = bool;
 		}
@@ -122,19 +122,26 @@ sntRover.controller('RVbillCardController',
 	$scope.isAllChargeCodesSelected = function(){
 		var isAllChargeCodesSelected = true;
 		var billTabsData = $scope.reservationBillData.bills;
-		var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details
-		if(chargeCodes.length > 0){
-			_.each(chargeCodes, function(chargeCode) {
-			  if(!chargeCode.isSelected){
-			  	isAllChargeCodesSelected = false;
-			  }
-			});
+		if(!$rootScope.isStandAlone){
+			isAllChargeCodesSelected = false;
 		}
 		else{
-				isAllChargeCodesSelected = false;
-		}
-			
-		return isAllChargeCodesSelected;
+			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details;
+	        if (chargeCodes){
+	            if(chargeCodes.length > 0){
+	                _.each(chargeCodes, function(chargeCode) {
+	                  if(!chargeCode.isSelected){
+	                    isAllChargeCodesSelected = false;
+	                  }
+	                });
+	            } else{
+	                isAllChargeCodesSelected = false;
+	            }
+	        } else{
+	            isAllChargeCodesSelected = false;
+	        }
+		}			
+        return isAllChargeCodesSelected;
 	};
 
 	/*
@@ -144,21 +151,28 @@ sntRover.controller('RVbillCardController',
 		var isAnyOneChargeCodeIsExcluded = false;
 		var isAnyOneChargeCodeIsIncluded = false;
 		var billTabsData = $scope.reservationBillData.bills;
-		var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details
-		if(chargeCodes.length>0){
-			_.each(chargeCodes, function(chargeCode,index) {
-			  if(!chargeCode.isSelected){
-			  	isAnyOneChargeCodeIsExcluded = true;
-			  }
-			  else{
-			  	isAnyOneChargeCodeIsIncluded = true;
-			  }
-			});
-		}
-		else{
+		if(!$rootScope.isStandAlone){
 			isAnyOneChargeCodeIsExcluded = false;
 			isAnyOneChargeCodeIsIncluded = false;
 		}
+		else{
+			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details
+			if(chargeCodes.length>0){
+				_.each(chargeCodes, function(chargeCode,index) {
+				  if(!chargeCode.isSelected){
+				  	isAnyOneChargeCodeIsExcluded = true;
+				  }
+				  else{
+				  	isAnyOneChargeCodeIsIncluded = true;
+				  }
+				});
+			}
+			else{
+				isAnyOneChargeCodeIsExcluded = false;
+				isAnyOneChargeCodeIsIncluded = false;
+			}
+		}
+	
 		return isAnyOneChargeCodeIsExcluded && isAnyOneChargeCodeIsIncluded;
 	};
 
@@ -708,6 +722,7 @@ sntRover.controller('RVbillCardController',
 			 	passData.showDoNotAuthorize = ($scope.clickedButton == "checkinButton" && $rootScope.isStandAlone);
 				$scope.setScroller('cardsList');
 				$scope.addmode = false;
+				passData.details.hideDirectBill = true;
 		 		$scope.openPaymentDialogModal(passData, paymentData);
 
   	 	} else {
@@ -796,6 +811,7 @@ sntRover.controller('RVbillCardController',
 	 };
 	 $scope.clickedAddUpdateCCButton = function(){
 	 	$scope.fromViewToPaymentPopup = "billcard";
+	 	$scope.isRefreshOnBackToStaycard = true; //CICO-17739 Refresh view when returning from staycard after altering the payment method.
 	 	$scope.addNewPaymentModal();
 	 };
 	 /*
@@ -1038,10 +1054,12 @@ sntRover.controller('RVbillCardController',
 	$scope.continueWithoutCC = function(){
 		$scope.reservationBillData.is_cc_authorize_at_checkin_enabled = false;
 		$scope.clickedCompleteCheckin(true);
+		$scope.closeDialog();
 	};
 
 	$scope.continueAfterSuccessAuth = function(){
 		$scope.triggerKeyCreationProcess();
+		$scope.closeDialog();
 	};
 	
 	// Normal checkin process success.
@@ -1112,7 +1130,7 @@ sntRover.controller('RVbillCardController',
 
 		//Display the key encoder popup
 		else if(keySettings === "encode"){
-			if($scope.reservationBillData.hotel_selected_key_system == 'SAFLOK_MSR' && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0){
+			if($scope.reservationBillData.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0){
 				fetchEncoderTypes();
 			} else {
 				openKeyEncodePopup();
@@ -1184,6 +1202,12 @@ sntRover.controller('RVbillCardController',
 			});
 			data.authorize_credit_card = true;
 			$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinAuthSuccessCallback, $scope.completeCheckinFailureCallback);
+		}
+		else{
+			console.log("NO AUTH , NOT CC");
+			// Perform checkin process without authorization..
+			data.authorize_credit_card = false;
+			$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback, $scope.completeCheckinFailureCallback);
 		}
 	};
 
@@ -1311,13 +1335,21 @@ sntRover.controller('RVbillCardController',
 					};
 	 		    }
 
+	 		    setFlagForPreAuthPopup();
+
 	 		    if(typeof isCheckinWithoutPreAuthPopup != 'undefined' && isCheckinWithoutPreAuthPopup){
 	 		    	// Directly performing checkin process without pre-auth popup.
 	 		    	performCCAuthAndCheckinProcess(data,true);
-	 		    }	
-	 		    else{
+	 		    }
+	 		    else if(!$scope.message_incoming_from_room && !$scope.message_out_going_to_room && !$scope.message_out_going_to_comp_tra){
+	 		    	performCCAuthAndCheckinProcess(data,false);
+	 		    }
+	 		    else if($scope.reservationBillData.is_cc_authorize_at_checkin_enabled && $scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type == "CC"){
 		 		    // CICO-17266 PMS: Rover - CC Auth should consider Billing Information.
 		 		    showPreAuthPopupWithBillingInfo(data);
+		 		}
+		 		else{
+		 			performCCAuthAndCheckinProcess(data,true);
 		 		}
 			}
 		}
@@ -1991,6 +2023,7 @@ sntRover.controller('RVbillCardController',
 
 	// Checks whether the user has signed or not
 	$scope.isSigned = function() {
+            $scope.adjustForUserTime();
 		return ($scope.reservationBillData.signature_details.is_signed == "true");
 	};
 
@@ -2028,6 +2061,40 @@ sntRover.controller('RVbillCardController',
 			$scope.invokeApi(RVBillCardSrv.completeReverseCheckout,data,reverseCheckoutsuccess);
 			
 	};
+        
+        $scope.adjustForUserTime = function(){
+            if ($scope.reservationBillData.signature_details){
+                var str = $scope.reservationBillData.signature_details.signed_time_utc;
+                if (str){
+                    var newTimeStr = $scope.getAdjustedTimeStr(str);
+                    $scope.reservationBillData.signature_details.local_user_time = newTimeStr;//set for use in signature view, to see what time (locally), the signature was aquired
+                }
+            }
+        };
+        $scope.getAdjustedTimeStr = function(str){
+            var d = new Date();
+            var n = d.getTimezoneOffset()/60*-1;//offset from utc
+            var splStr = str.split(':');
+            var hour = parseInt(splStr[0]);
+            var restOfTime = splStr[1];
+            var a = restOfTime.split(' ');
+            var am = a[1];
+            var newTime = hour+n;
+            
+            if (newTime <= 0){//so the string doesnt end up being -03, when it should be 10, etc..
+                newTime = 12+n;
+            }
+            
+            var am = newTime < 12 ? 'AM':'PM';
+            
+            if (newTime < 10 && newTime > 0){
+                newTime = '0'+newTime;
+            } else if (newTime === 0){
+                newTime = '12';
+            }
+            
+            return newTime+':'+a[0]+' '+am;
+        };
 
 	$scope.$on('moveChargeSuccsess', function() {
 		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);

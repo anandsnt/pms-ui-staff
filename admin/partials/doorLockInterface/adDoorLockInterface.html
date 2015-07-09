@@ -59,7 +59,7 @@
 					</fieldset>
 					<fieldset>
 		                <div class="form-title key-server-details-title" >
-							<h3><span translate>SUPPORTED KEY CARD TYPES</span></h3>
+							<h3><span translate>SUPPORTED_KEY_CARD_TYPES</span></h3>
 						</div>
 						<div class="entry full-width">
 							<ad-checkbox is-checked="keyType.is_selected_for_hotel" label="{{keyType.name}}" ng-repeat="keyType in data.available_card_types"></ad-checkbox>
@@ -68,7 +68,7 @@
 					<!--if the key system is salto and if any supported key card types require authentication, show this fiels -->
 					<fieldset>
 		                <div class="form-title key-server-details-title" >
-							<h3><span translate>MiFare AUTHENTICATION</span></h3>
+							<h3><span translate>MIFARE_AUTHENTICATION</span></h3>
 						</div>
 						<div class="entry">
 							<ad-dropdown label="{{'AUTHENTICATION_KEY_TYPE' | translate }}" label-in-drop-down="{{'AUTHENTICATION_KEY_TYPE' | translate }}" list="authenticationKeyTypes" selected-Id='data.authentication_keytype' required = "yes"></ad-dropdown>
@@ -77,13 +77,12 @@
 							<ad-textbox value="data.mi_fare_authentication_key_a" label = "{{'KEY_A' | translate }}" placeholder = "{{'KEY_A_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
 
 				    		<ad-textbox value="data.mi_fare_authentication_key_b" inputtype="text" label = "{{'KEY_B' | translate }}" placeholder = "{{'KEY_B_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
-
 		                    <ad-textbox value="data.mi_fare_authentication_aid" inputtype="text" label = "{{'SECTOR_AID' | translate }}" placeholder = "{{'SECTOR_AID_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
 						</div>
 					</fieldset>
 					<fieldset>
 		                <div class="form-title key-server-details-title" >
-							<h3><span translate>OTHER SETTINGS</span></h3>
+							<h3><span translate>OTHER_SETTINGS</span></h3>
 						</div>
 						<div class="entry">
 							<ad-checkbox is-checked="data.remove_leading_zero" label="{{'REMOVE_ROOM_NUMBER_LEADING_ZEROS' | translate }}" div-class="full-width"></ad-checkbox>

@@ -1,5 +1,5 @@
 sntRover.service('RVReservationStateService', [
-	function($q, RVBaseWebSrvV2) {
+	function() {
 		var self = this;
 		self.metaData = {
 			rateAddons: [],
@@ -7,7 +7,12 @@ sntRover.service('RVReservationStateService', [
 		};
 
 		self.reservationFlags = {
-		  outsideStaydatesForGroup : false
+			outsideStaydatesForGroup: false,
+			RATE_CHANGED: false
+		}
+
+		self.bookMark = {
+			lastPostedRate: null
 		}
 
 
@@ -96,7 +101,7 @@ sntRover.service('RVReservationStateService', [
 
 					if (!!tax.calculation_rules.length) {
 						_.each(tax.calculation_rules, function(tax) {
-							taxableAmount = parseFloat(taxableAmount) + parseFloat(taxesLookUp[tax]);
+							taxableAmount += parseFloat(taxesLookUp[tax]);
 						});
 					}
 
@@ -109,7 +114,15 @@ sntRover.service('RVReservationStateService', [
 						taxCalculated = parseFloat(multiplicity * parseFloat(taxValue)); //In case the tax is not a percentage amount, its plain multiplication with the tax's amount_type 
 					}
 
-					taxesLookUp[taxData.id] = parseFloat(taxCalculated); 	
+					taxesLookUp[taxData.id] = parseFloat(taxCalculated);
+
+					if (!!tax.calculation_rules.length) {
+						_.each(tax.calculation_rules, function(tax) {
+							taxableAmount -= parseFloat(taxesLookUp[tax]);
+						});
+					}
+					if (isInclusive) taxableAmount -= parseFloat(taxCalculated);
+
 
 					if (taxData.post_type == 'NIGHT') { // NIGHT tax computations
 						if (isInclusive) taxInclusiveTotal = parseFloat(taxInclusiveTotal) + parseFloat(taxCalculated);
@@ -146,12 +159,12 @@ sntRover.service('RVReservationStateService', [
 			};
 		};
 
-		this.setReservationFlag = function(key, status){
-		   self.reservationFlags[key] = status;
+		self.setReservationFlag = function(key, status) {
+			self.reservationFlags[key] = status;
 		};
 
-		this.getReservationFlag = function(key){
-		   return self.reservationFlags[key];
+		self.getReservationFlag = function(key) {
+			return self.reservationFlags[key];
 		};
 
 		/**
@@ -162,7 +175,7 @@ sntRover.service('RVReservationStateService', [
 		 * @return {[type]}           [description]
 		 */
 		self.parseRoomRates = function(roomRates, arrival, departure, stayDates, activeRoom, numNights) {
-			var rooms = [],
+			var rooms = {},
 				roomDetails = [],
 				displayDates = [];
 

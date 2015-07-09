@@ -2,6 +2,8 @@ sntRover.controller('RVMoveChargeCtrl',
 	['$scope','$timeout','RVMoveChargeSrv',
 	function($scope,$timeout,RVMoveChargeSrv) {
 
+		BaseCtrl.call(this, $scope);
+		
 		var initiate = function(){			
 			$scope.numberQuery    = "";
 			$scope.textQuery      = "";
@@ -14,26 +16,69 @@ sntRover.controller('RVMoveChargeCtrl',
 
 		initiate();
 
-		var refreshSearchList = function() { 			
-			$timeout(function() {
-				$scope.refreshScroller('search_results');
-			}, 4000);
+		/**
+         * to run angular digest loop,
+         * will check if it is not running
+         * return - None
+         */
+        var runDigestCycle = function() {
+            if (!$scope.$$phase) {
+                $scope.$digest();
+            }
+        };
+
+
+		$scope.getGuestStatusIcon = function(reservationStatus, isLateCheckoutOn, isPrecheckin) {
+			var viewStatus = "";
+			if (isLateCheckoutOn && "CHECKING_OUT" == reservationStatus) {
+				viewStatus = "late-check-out";
+				return viewStatus;
+			}
+			if ("RESERVED" == reservationStatus && !isPrecheckin) {
+				viewStatus = "arrival";
+			} else if ("CHECKING_IN" == reservationStatus && !isPrecheckin) {
+				viewStatus = "check-in";
+			} else if ("CHECKEDIN" == reservationStatus) {
+				viewStatus = "inhouse";
+			} else if ("CHECKEDOUT" == reservationStatus) {
+				viewStatus = "departed";
+			} else if ("CHECKING_OUT" == reservationStatus) {
+				viewStatus = "check-out";
+			} else if ("CANCELED" == reservationStatus) {
+				viewStatus = "cancel";
+			} else if (("NOSHOW" == reservationStatus) || ("NOSHOW_CURRENT" == reservationStatus)) {
+				viewStatus = "no-show";
+			} else if (isPrecheckin) {
+				viewStatus = "pre-check-in";
+			}
+			return viewStatus;
 		};
 
-		var unsetSearhList = function(){
+
+		var refreshSearchList = function() { 
+			$timeout(function() {
+				$scope.refreshScroller('search_results');
+			}, 500);			
+		};
+
+		$scope.$on("NG_REPEAT_COMPLETED_RENDERING", function(event){
+			refreshSearchList ();
+		});
+
+		var unsetSearchList = function(){
 			$scope.searchResults = [];
 			refreshSearchList();
 		};
 
 		$scope.clearTextQuery = function(){
 			$scope.textQuery = '';
-			unsetSearhList();
+			unsetSearchList();
 		};
 
 
 		$scope.clearNumberQuery = function(){
 			$scope.numberQuery = '';
-			unsetSearhList();
+			unsetSearchList();
 		};
 
 		/**
@@ -50,11 +95,10 @@ sntRover.controller('RVMoveChargeCtrl',
     				result.entity_id = index;
     				(result.type === 'RESERVATION') ? result.displaytext = result.last_name+', '+result.first_name : '';
     			});
-    			refreshSearchList();
-    			
+    			refreshSearchList();    			
 			};
 
-			$scope.invokeApi(RVMoveChargeSrv.fetchSearchedItems, {"text_search":$scope.textQuery,"number_search":$scope.numberQuery}, fetchSucces);
+			$scope.invokeApi(RVMoveChargeSrv.fetchSearchedItems, {"text_search":$scope.textQuery,"number_search":$scope.numberQuery,"bill_id":$scope.moveChargeData.fromBillId}, fetchSucces);
 		};
 
 		/**
@@ -62,14 +106,17 @@ sntRover.controller('RVMoveChargeCtrl',
 		 * service in change event of query box
 		 */
 		$scope.queryEntered = function() {
-
-			if (($scope.textQuery === "" || $scope.textQuery.length < 3) && ($scope.numberQuery === "" || $scope.numberQuery.length < 3 )) {
-				unsetSearhList();
-				refreshSearchList();
-			} else {
-				fetchFilterdData();
-			}
+			$timeout(function() {
+				if (($scope.textQuery === "" || $scope.textQuery.length < 3) && ($scope.numberQuery === "" || $scope.numberQuery.length < 2 )) {
+					$scope.searchResults = [];
+					refreshSearchList();
+				} else {
+					fetchFilterdData();			
+				};
+				runDigestCycle();
+			}, 200);
 		};
+
 
 		/**
 		 * function to select one item from the filtered list

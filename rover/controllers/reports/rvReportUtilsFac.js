@@ -31,7 +31,8 @@ sntRover.factory('RVReportUtilsFac', [
             'FORECAST_BY_DATE'             : 'Forecast',
             'ROOMS_QUEUED'                 : 'Rooms Queued',
             'FORECAST_GUEST_GROUPS'        : 'Forecast Guests & Groups',
-            'MARKET_SEGMENT_STATISTICS_REPORT' : 'Market Segment Statistics Report'
+            'MARKET_SEGMENT_STATISTICS_REPORT' : 'Market Segment Statistics Report',
+            'COMPARISION_BY_DATE'          : 'Comparison'
         };
 
 
@@ -164,7 +165,8 @@ sntRover.factory('RVReportUtilsFac', [
             'DUE_OUT_DEPARTURES' : true,
             'INCLUDE_NEW'        : true,
             'INCLUDE_BOTH'       : true,
-            'SHOW_RATE_ADJUSTMENTS_ONLY' : true
+            'SHOW_RATE_ADJUSTMENTS_ONLY' : true,
+            'INCLUDE_TAX'        : true
         };
 
         var __displayFilterNames = {
@@ -438,6 +440,9 @@ sntRover.factory('RVReportUtilsFac', [
                 data         : []
             });
 
+            // track all the dates avaliable on this report
+            reportItem.allDates = [];
+
             // going around and taking a note on filters
             _.each(reportItem['filters'], function(filter) {
 
@@ -450,6 +455,9 @@ sntRover.factory('RVReportUtilsFac', [
                         processedCGCC = __adjustChargeGroupsCodes( data.chargeGroups, data.chargeCodes, 'ONLY_PAYMENTS' );
                     };
                 };
+
+
+
 
                 // check for date filter and keep a ref to that item
                 if ( filter.value === 'DATE_RANGE' ) {
@@ -465,32 +473,102 @@ sntRover.factory('RVReportUtilsFac', [
                     if ( reportItem['title'] == 'Booking Source & Market Report' ) {
                         reportItem['hasDateFilter']['description'] = 'Booked Date';
                     };
+
+                    // track - showRemove flag, model names.
+                    // push date name to 'allDates'
+                    angular.extend(reportItem['hasDateFilter'], {
+                        showRemove : true,
+                        fromModel  : 'fromDate',
+                        untilModel : 'untilDate'
+                    });
+                    reportItem.allDates.push( 'hasDateFilter' );
                 };
 
                 // check for cancellation date filter and keep a ref to that item
                 if ( filter.value === 'CANCELATION_DATE_RANGE' || filter.value === 'CANCELLATION_DATE_RANGE' ) {
                     reportItem['hasCancelDateFilter'] = filter;
+
+                    // track - showRemove flag, model names.
+                    // push date name to 'allDates'
+                    angular.extend(reportItem['hasCancelDateFilter'], {
+                        showRemove : true,
+                        fromModel  : 'fromCancelDate',
+                        untilModel : 'untilCancelDate'
+                    });
+                    reportItem.allDates.push( 'hasCancelDateFilter' );
                 };
 
                 // check for arrival date filter and keep a ref to that item
                 if ( filter.value === 'ARRIVAL_DATE_RANGE' ) {
                     reportItem['hasArrivalDateFilter'] = filter;
+
+                    // track - showRemove flag, model names.
+                    // push date name to 'allDates'
+                    angular.extend(reportItem['hasArrivalDateFilter'], {
+                        showRemove : true,
+                        fromModel  : 'fromArrivalDate',
+                        untilModel : 'untilArrivalDate'
+                    });
+                    reportItem.allDates.push( 'hasArrivalDateFilter' );
                 };
 
                 // check for Deposit due date range filter and keep a ref to that item
                 if ( filter.value === 'DEPOSIT_DATE_RANGE' ) {
                     reportItem['hasDepositDateFilter'] = filter;
+
+                    // track - showRemove flag, model names.
+                    // push date name to 'allDates'
+                    angular.extend(reportItem['hasDepositDateFilter'], {
+                        showRemove : true,
+                        fromModel  : 'fromDepositDate',
+                        untilModel : 'untilDepositDate'
+                    });
+                    reportItem.allDates.push( 'hasDepositDateFilter' );
                 };
 
                 // check for create date range filter and keep a ref to that item
                 if ( filter.value === 'CREATE_DATE_RANGE' ) {
                     reportItem['hasCreateDateFilter'] = filter;
+
+                    // track - showRemove flag, model names.
+                    // push date name to 'allDates'
+                    angular.extend(reportItem['hasCreateDateFilter'], {
+                        showRemove : true,
+                        fromModel  : 'fromCreateDate',
+                        untilModel : 'untilCreateDate'
+                    });
+                    reportItem.allDates.push( 'hasCreateDateFilter' );
+                };
+
+                // check for paid date range filter and keep a ref to that item
+                if ( filter.value === 'PAID_DATE_RANGE' ) {
+                    reportItem['hasPaidDateRange'] = filter;
+
+                    // track - showRemove flag, model names.
+                    // push date name to 'allDates'
+                    angular.extend(reportItem['hasPaidDateRange'], {
+                        showRemove : true,
+                        fromModel  : 'fromPaidDate',
+                        untilModel : 'untilPaidDate'
+                    });
+                    reportItem.allDates.push( 'hasPaidDateRange' );
                 };
 
                 // check for "by single date" filter and keep a ref to that item
                 if ( filter.value === 'SINGLE_DATE' ) {
                     reportItem['hasSingleDateFilter'] = filter;
+
+                    // track - showRemove flag, model names.
+                    // push date name to 'allDates'
+                    angular.extend(reportItem['hasSingleDateFilter'], {
+                        showRemove : true,
+                        fromModel  : 'singleValueDate'
+                    });
+                    reportItem.allDates.push( 'hasSingleDateFilter' );
                 };
+
+
+
 
                 // check for time filter and keep a ref to that item
                 // create std 15min stepped time slots
@@ -499,10 +577,8 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['timeFilterOptions'] = factory.createTimeSlots();
                 };
 
-                // check for paid date range filter and keep a ref to that item
-                if ( filter.value === 'PAID_DATE_RANGE' ) {
-                    reportItem['hasPaidDateRange'] = filter;
-                };
+
+
 
                 // check for CICO filter and keep a ref to that item
                 // create the CICO filter options
@@ -831,6 +907,7 @@ sntRover.factory('RVReportUtilsFac', [
                 case __reportNames['DAILY_TRANSACTIONS']:
                 case __reportNames['DAILY_PAYMENTS']:
                 case __reportNames['MARKET_SEGMENT_STATISTICS_REPORT']:
+                case __reportNames['COMPARISION_BY_DATE']:
                     reportItem['singleValueDate']  = _getDates.yesterday;
                     break;
 

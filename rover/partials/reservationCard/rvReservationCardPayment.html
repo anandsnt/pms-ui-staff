@@ -23,13 +23,13 @@
 					CC display option 2 - Swiped, and authenticated:   		class="icons icon-swiped icon-authenticated"
 					CC display option 3 - Swiped, authentication failed: 	class="icons icon-swiped icon-authentication-failed"
 			-->
-		    <span ng-show="reservationData.reservation_card.payment_details.is_swiped && isStandAlone" class="icons icon-swiped" ng-class="{'icon-authenticated':reservationData.reservation_card.payment_details.auth_color_code === 'green', 'icon-authentication-failed' : reservationData.reservation_card.payment_details.auth_color_code === 'red' }"></span> 
+		    <span ng-show="reservationData.reservation_card.payment_details.is_swiped" class="icons icon-swiped" ng-class="{'icon-authenticated':reservationData.reservation_card.payment_details.auth_color_code === 'green', 'icon-authentication-failed' : reservationData.reservation_card.payment_details.auth_color_code === 'red' }"></span> 
 		    
 		    <!--  CC display option 4 - Not swiped, authenticated:  -->
-		    <span ng-show="!reservationData.reservation_card.payment_details.is_swiped && reservationData.reservation_card.payment_details.auth_color_code =='green' && isStandAlone" class="icons icon-authenticated"></span>
+		    <span ng-show="!reservationData.reservation_card.payment_details.is_swiped && reservationData.reservation_card.payment_details.auth_color_code =='green'" class="icons icon-authenticated"></span>
 
 		    <!--  CC display option 5 - Not swiped, authentication failed: -->
-            <span ng-show="!reservationData.reservation_card.payment_details.is_swiped && reservationData.reservation_card.payment_details.auth_color_code =='red' && isStandAlone" class="icons icon-authentication-failed">Credit card authentication failed</span>
+            <span ng-show="!reservationData.reservation_card.payment_details.is_swiped && reservationData.reservation_card.payment_details.auth_color_code =='red'" class="icons icon-authentication-failed">Credit card authentication failed</span>
 		</a>
 
 		<a ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" class="next-view" ng-show="reservationData.reservation_card.payment_method_used !== 'CC' && reservationData.reservation_card.payment_method_used !== '' && reservationData.reservation_card.payment_method_used !== null">

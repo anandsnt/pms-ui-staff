@@ -273,7 +273,7 @@ sntRover.controller('RVroomAssignmentController',[
 			});
 		}		
 
-		if(data.is_room_auto_assigned) {
+		if(data.is_room_auto_assigned && !$scope.isStandAlone) {
 			$scope.roomAssignedByOpera 	= data.room; //Shahul: I don't know who named this variable, What the...
 			dataToUpdate.room_number 	= data.room;
 			openRoomAlreadyChoosedPopup ();
@@ -333,7 +333,7 @@ sntRover.controller('RVroomAssignmentController',[
 					break;
 			}
 		}
-		else {		
+		else if(!$scope.isStandAlone) {		
 			setTimeout(function(){
 				openRoomAlreadyChoosedPopup ();
 			}, 700);

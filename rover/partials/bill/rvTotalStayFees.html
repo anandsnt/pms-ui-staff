@@ -73,13 +73,13 @@
 				CC display option 2 - Swiped, and authenticated:   		class="icons icon-swiped icon-authenticated"
 				CC display option 3 - Swiped, authentication failed: 	class="icons icon-swiped icon-authentication-failed"
 		-->
-	    <span ng-show="billData.credit_card_details.is_swiped && isStandAlone" class="icons icon-swiped" ng-class="{'icon-authenticated':billData.credit_card_details.auth_color_code === 'green', 'icon-authentication-failed': billData.credit_card_details.auth_color_code === 'red' }">Credit card swiped</span>
+	    <span ng-show="billData.credit_card_details.is_swiped" class="icons icon-swiped" ng-class="{'icon-authenticated':billData.credit_card_details.auth_color_code === 'green', 'icon-authentication-failed': billData.credit_card_details.auth_color_code === 'red' }">Credit card swiped</span>
 
 	    <!--  CC display option 4 - Not swiped, authenticated:  -->
-	    <span ng-show="!billData.credit_card_details.is_swiped && billData.credit_card_details.auth_color_code =='green' && isStandAlone" class="icons icon-authenticated">Credit card authenticated</span>
+	    <span ng-show="!billData.credit_card_details.is_swiped && billData.credit_card_details.auth_color_code =='green'" class="icons icon-authenticated">Credit card authenticated</span>
 
 	    <!--  CC display option 5 - Not swiped, authentication failed:  -->
-	    <span ng-show="!billData.credit_card_details.is_swiped && billData.credit_card_details.auth_color_code =='red' && isStandAlone" class="icons icon-authentication-failed">Credit card authentication failed</span>
+	    <span ng-show="!billData.credit_card_details.is_swiped && billData.credit_card_details.auth_color_code =='red'" class="icons icon-authentication-failed">Credit card authentication failed</span>
 
 
 	</button>
@@ -89,13 +89,12 @@
 		<span class="name">{{billData.guest_or_company_name}}</span>
 		<span class="type">{{billData.credit_card_details.payment_type_description}}</span>
 	</button>
-
 	<!-- No Payment methods -->
 	<button type="button" class="add-new-button" ng-show="billData.credit_card_details.payment_type == null" ng-click="clickedAddUpdateCCButton()">
 		+ {{'ADD_PAYMENT_METHOD' | translate}}
 	</button>
 	{{feesData.description()}}
-	<button type="button" class="button with-icon only-icon brand-colors open-modal" ng-show="isAllChargeCodesSelected() || isAnyOneChargeCodeIsExcluded()" ng-click="moveChargesClicked()">
+	<button type="button" class="button with-icon only-icon brand-colors open-modal move-charge" ng-show="((isAllChargeCodesSelected() || isAnyOneChargeCodeIsExcluded())&& hasMoveToOtherBillPermission())&& isStandAlone" ng-click="moveChargesClicked()">
         <span class="icons icon-move"></span> 
             Move selected
     </button>
@@ -107,7 +106,7 @@
 		<figure>
 			<img ng-src="{{reservationBillData.signature_details.signed_image}}" alt="" />
 		</figure>
-		<span class="signature-date" translate>SIGNED <em> {{reservationBillData.signature_details.signed_date|date:dateFormat}} {{reservationBillData.signature_details.signed_time}}</em> </span>
+		<span class="signature-date" translate>SIGNED <em> {{reservationBillData.signature_details.signed_date|date:dateFormat}} {{reservationBillData.signature_details.local_user_time}}</em> </span>
 	</div>
 	<div ng-if="isChargeAccepted()">
 		Charges Accepted VIA On-Line Check-In
@@ -126,8 +125,8 @@
 				<th><span translate>FEES</span></th>
 				<th><span translate>CREDITS</span></th>
 				<th class="form"><span translate>BILL</span> #</th>
-				<th class="action"><span translate>EDIT</span></th>
-				<th class="action" ng-if="hasMoveToOtherBillPermission()"><label class="checkbox inline">
+				<th class="action" ng-if="isStandAlone"><span translate>EDIT</span></th>
+				<th class="action" ng-if="hasMoveToOtherBillPermission() && isStandAlone"><label class="checkbox inline">
                     <span class="icon-form icon-checkbox" ng-class="{'checked':isAllChargeCodesSelected(),'semi-checked':isAnyOneChargeCodeIsExcluded()}"></span>
                     <input id="bill-1-all" ng-model="reservationBillData.isAllChargeCodeSelected" type="checkbox" ng-change="selectAllChargeCodeToggle()">
                		 </label>
@@ -139,10 +138,10 @@
 			<tr class="active edit">
 				<td colspan="3" class="total-label">
 					<!-- Show email and print buttons -->
-					<button type="button" ng-click="clickedEmail()" class="button with-icon only-icon blue" ng-show="isStandAlone">
+					<button type="button" ng-click="clickedEmail()" class="button with-icon only-icon blue inline" ng-show="isStandAlone">
 						 <span class="icons icon-email"></span> 
 					</button>
-					<button type="button" ng-click="clickedPrint()" class="button with-icon only-icon blue" ng-show="isStandAlone"> 
+					<button type="button" ng-click="clickedPrint()" class="button with-icon only-icon blue inline" ng-show="isStandAlone"> 
 						<span class="icons icon-print"></span> 
 					</button> 
 					<span translate>STAY_FEES_AS_OF</span>
@@ -156,13 +155,21 @@
 						{{totalFeesArray.total_amount}}
 					</strong>
 				</td>
-				<td>
+				<td ng-if="isStandAlone">
 					<button type="button" class="button with-icon only-icon purple edit hidden"> 
 						<span class="icons icon-pencil"></span> 
 						<span translate>EDIT</span>
 					</button>
 				</td>
-				<td></td>
+				<td ng-if="isStandAlone">
+					<button type="button" class="button with-icon only-icon brand-colors open-modal" ng-show="(isAllChargeCodesSelected() || isAnyOneChargeCodeIsExcluded())&& hasMoveToOtherBillPermission()" ng-click="moveChargesClicked()">
+                    <span class="icons icon-move"></span> 
+                    Move selected
+              		</button>
+				</td>
+				<!-- empty td for matching up design -->
+            	<td ng-if="!isStandAlone"></td>
+            	<td ng-if="!isStandAlone"></td>
 			</tr>
 			<!-- Show balance -->
 			<tr class="active edit" ng-hide="showGuestBalance(reservationBillData.reservation_status)">
@@ -183,7 +190,8 @@
 				</td>
 				<td>
 					<button type="button" class="button with-icon only-icon green" ng-click='showAdvancedBillDialog()' ng-show="showPayButton"> 
-						    <span class="icons icon-wallet"></span> {{ 'PAY' | translate }}</span>  
+						<span class="icons icon-wallet"></span>
+						{{ 'PAY' | translate }}
 					</button>
 				</td>
 				<td></td>
@@ -247,14 +255,14 @@
 					</strong>
 				</td>
 				<td>
-					<div class="select" ng-hide="isStandAlone">
+					<div class="select" ng-if="!isStandAlone">
 						<select iscroll-stop-propagation ng-model="feesData.billValue" ng-change="moveToBillAction(feesData.oldBillValue, $index)">
 							<option value="" disabled="disabled" class="placeholder" translate>MOVE_TO_BILL</option>
 							<option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in reservationBillData.bills"> {{billNumbers.bill_number}} </option>
 						</select>
 					</div>
 					<!-- we have to replicate code as option is not being hidden in devices -->
-					<div class="select" ng-show="isStandAlone">
+					<div class="select" ng-if="isStandAlone">
 						<select iscroll-stop-propagation ng-show="showMoveChargeDropDown()" ng-model="feesData.billValue" ng-change="moveToBillAction(feesData.oldBillValue, $index)">
 							<option value="" disabled="disabled" class="placeholder" translate>MOVE_TO_BILL</option>							
 							<option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in reservationBillData.bills"> {{billNumbers.bill_number}} </option>
@@ -262,18 +270,21 @@
 						</select>
 					</div>
 				</td>
-				<td>
+				<td ng-if="isStandAlone">
 					<button type="button" ng-show="showEditChargeButton(feesData.type.value)" class="button with-icon only-icon purple edit" ng-click="openActionsPopup(feesData.id,feesData.description[0].fees_desc,feesData.description[0].fees_amount,feesData.type.value,feesData.credits)"> 
 						<span class="icons icon-pencil"></span>
 						<span translate>EDIT</span> 
 					</button>
 				</td>
-				<td class="action" ng-if="hasMoveToOtherBillPermission()">
+				<td class="action" ng-if="hasMoveToOtherBillPermission() && isStandAlone">
 	                <label class="checkbox inline"> 
 	                    <span class="icon-form icon-checkbox" ng-class="{'checked':feesData.isSelected}"></span>
 	                    <input ng-model="feesData.isSelected" type="checkbox"/>
 	                </label>
             	</td>
+            	<!-- empty td for matching up design -->
+            	<td ng-if="!isStandAlone"></td>
+            	<td ng-if="!isStandAlone"></td>
 			</tr>
 		</tbody>
 	</table>

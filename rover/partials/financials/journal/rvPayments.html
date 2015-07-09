@@ -13,28 +13,27 @@
             </ul>
 
             <!-- First level - payment types -->
-            <div ng-repeat="(index1 ,level1) in data.paymentData.payment_types" ng-show="level1.show && level1.filterFlag" class="grid-group">
-                <a ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active, 'has-arrow':checkHasArrowLevel1(index1)}" class="payment-title toggle">
-                    <strong class="name" ng-show="level1.show">{{escapeNullData(level1.payment_type)}}</strong>
-                    <span class="code" ng-show="level1.show">{{escapeNullData(level1.charge_code)}}</span>  
-                    <span class="number" ng-show="level1.show">{{escapeNullData(level1.number)}}</span>
-                    <span class="value" ng-show="level1.show">{{currencySymbol}}{{ level1.amount | number: precisonTwo}}</span>
+            <div ng-repeat="(index1 ,level1) in data.paymentData.payment_types" class="grid-group">
+                <a ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active, 'has-arrow':checkHasArrowFirstLevel(index1)}" class="payment-title toggle">
+                    <strong class="name">{{escapeNullData(level1.payment_type)}}</strong>
+                    <span class="code">{{escapeNullData(level1.charge_code)}}</span>  
+                    <span class="number">{{escapeNullData(level1.number)}}</span>
+                    <span class="value">{{currencySymbol}}{{ level1.amount | number: precisonTwo}}</span>
                 </a>
 
                 <!-- Second level - credit cards - if Payment type is Credit Card -->
                 <div ng-if="level1.payment_type == 'Credit Card'" ng-repeat="(index2 ,level2) in level1.credit_cards" ng-show="level1.active" class="grid-charge">
 
-                    <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active, 'has-arrow':checkHasArrowLevel2(index1,index2)}" ng-show="level2.show && level2.filterFlag" class="payment-title  toggle">
-                        <span class="code" ng-show="level2.show">{{escapeNullData(level2.charge_code)}}</span>
-                        <strong class="name" ng-show="level2.show">{{escapeNullData(level2.credit_card)}}</strong>  
-                        <!-- <span class="number" ng-show="level2.show">{{'-'}}</span> -->     
-                        <span class="value" ng-show="level2.show">{{currencySymbol}}{{level2.amount | number: precisonTwo}}</span>
+                    <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active, 'has-arrow':checkHasArrowSecondLevel(index1,index2)}" class="payment-title  toggle">
+                        <span class="code">{{escapeNullData(level2.charge_code)}}</span>
+                        <strong class="name">{{escapeNullData(level2.credit_card)}}</strong>  
+                        <span class="value">{{currencySymbol}}{{level2.amount | number: precisonTwo}}</span>
                     </a>
 
                     <!-- Third level - transactions -->
-                    <table ng-show="level2.active && level2.show" class="grid-items">
+                    <table ng-show="level2.active" class="grid-items">
                         <thead>
-                            <tr ng-show="isShowTableHeadingLevel2(index1 ,index2)">
+                            <tr ng-show="isShowTableHeadingSecondLevel(index1 ,index2)">
                                 <th scope="col" translate>ROOM_LABEL</th>
                                 <th scope="col" translate>NAME</th>
                                 <th scope="col" translate>RESERVATION_NUMBER</th>
@@ -44,7 +43,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="(index3 ,level3) in level2.transactions" ng-show="level3.show" class="grid-item hidden1">
+                            <tr ng-repeat="(index3 ,level3) in level2.transactions" class="grid-item">
                                 <td>{{level3.room}}</td>
                                 <td>{{level3.name}}</td>
                                 <td>{{level3.reservation_number}}</td>
@@ -52,6 +51,18 @@
                                 <td>{{getTimeString(level3.date, level3.time)}}</td>                              
                                 <td>{{currencySymbol}}{{level3.credit | number: precisonTwo}}</td>                                           
                             </tr>
+
+                            <!-- Pagination row -->
+                            <tr class="pagination" ng-show="level2.total_count > data.filterData.perPage && level2.transactions.length > 0">
+                                <td colspan="6">
+                                    <div class="search-pagination">
+                                        <button type="button" class="button dark-grey next" ng-click="loadNextSet(index1, index2)" ng-disabled="isNextButtonDisabled(index1, index2)" translate>NEXT</button>
+                                        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet(index1, index2)" ng-disabled="isPrevButtonDisabled(index1, index2)" translate>PREVIOUS</button>
+                                        <p>{{ 'SHOWING' | translate }} <strong>{{ level2.start }}-{{ level2.end }}</strong> {{ 'OF' | translate }} <strong>{{ level2.total_count }}</strong> {{ 'ITEMS' | translate }}</p>
+                                    </div>
+                                </td>
+                            </tr>
+
                         </tbody>
                     </table>
                 </div>
@@ -61,7 +72,7 @@
                     
                     <table ng-show="level1.active" class="grid-items">
                         <thead>
-                            <tr ng-show="isShowTableHeadingLevel1(index1)">
+                            <tr ng-show="isShowTableHeadingFirstLevel(index1)">
                                 <th scope="col" translate>ROOM_LABEL</th>
                                 <th scope="col" translate>NAME</th>
                                 <th scope="col" translate>RESERVATION_NUMBER</th>
@@ -71,15 +82,26 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="(index2 ,level2) in level1.transactions" ng-show="level2.show" class="grid-item">
+                            <tr ng-repeat="(index2 ,level2) in level1.transactions" class="grid-item">
                                 <td>{{level2.room}}</td>
                                 <td>{{level2.name}}</td>
                                 <td>{{level2.reservation_number}}</td>
                                 <td ng-bind-html="level2.details"></td>
                                 <td>{{getTimeString(level2.date, level2.time)}}</td>
-                                   
-                                <td>{{currencySymbol}}{{level2.credit | number: precisonTwo}}</td>                                   
+                                <td>{{currencySymbol}}{{level2.credit | number: precisonTwo}}</td>                      
                             </tr>
+
+                            <!-- Pagination row -->
+                            <tr class="pagination" ng-show="level1.total_count > data.filterData.perPage && level1.transactions.length > 0">
+                                <td colspan="6">
+                                    <div class="search-pagination">
+                                        <button type="button" class="button dark-grey next" ng-click="loadNextSet(index1,false)" ng-disabled="isNextButtonDisabled(index1,false)" translate>NEXT</button>
+                                        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet(index1,false)" ng-disabled="isPrevButtonDisabled(index1,false)" translate>PREVIOUS</button>
+                                        <p>{{ 'SHOWING' | translate }} <strong>{{ level1.start }}-{{ level1.end }}</strong> {{ 'OF' | translate }} <strong>{{ level1.total_count }}</strong> {{ 'ITEMS' | translate }}</p>
+                                    </div>
+                                </td>
+                            </tr>
+
                         </tbody>
                     </table>
                 </div>
@@ -92,7 +114,7 @@
                     <span><label>Date Range - From:</label> {{ data.fromDate | date : dateFormat }} <label>To: </label>{{ data.toDate | date : dateFormat }}</span>
                     <span ng-if="data.uiSelectedPaymentType"><label>{{'PAYMENT_TYPE' | translate}} / {{'CHARGE_CODE' | translate}}: </label>  {{ data.uiSelectedPaymentType }}</span>
                 </p>
-                <p class="payment"><span translate>TOTAL</span> {{currencySymbol}}{{ getTotalOfAllPayments() | number: precisonTwo}}</p>
+                <p class="payment"><span translate>TOTAL</span> {{currencySymbol}}{{ data.paymentData.total_payment | number: precisonTwo}}</p>
             </div>
         </div>
 

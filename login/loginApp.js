@@ -17,7 +17,7 @@ login.controller('loginRootCtrl', ['$scope', function($scope){
 	$scope.signingIn = false;
 	$scope.$on("signingIn", function(event){
 		$scope.signingIn = true;
-	})
+	});
 }]);
 
 /*
@@ -27,10 +27,11 @@ login.controller('loginRootCtrl', ['$scope', function($scope){
 login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetSrv', function($scope, loginSrv, $window, $state, resetSrv){
 	 $scope.data = {};
 	 
-	 if(localStorage.email && localStorage.email!=""){
+	 if(localStorage.email){
 	 	$scope.data.email = localStorage.email;
-	 	document.getElementById("password").focus();
-	 } else {
+                document.getElementById("password").focus();
+                
+	 } else if (!localStorage.email){
 	 	document.getElementById("email").focus();
 	 }
 	 $scope.errorMessage = "";
@@ -120,6 +121,7 @@ login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$st
 	 $scope.data = {};
 	 $scope.data.token = $stateParams.token;
 	 $scope.data.user  = $stateParams.user;
+   $scope.data.username  = $stateParams.username;
 	 $scope.errorMessage = "";
 	 
 	 /*
@@ -146,7 +148,35 @@ login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$st
 	 	$scope.errorMessage = errorMessage;
 	 };
 	 resetSrv.checkTokenStatus($scope.data, "", $scope.failureCallBackToken);
-	 /*
+	 
+        $scope.validPassword = false;
+        //data.password
+        $scope.validatePassword = function(data){
+          //check if password contains at least 1 number and has at least 8 total characters
+          //this is called on ng-change password
+          if (data){
+              if (data.password.length >= 8){
+                  if (alphanumeric(data.password)){
+                    $scope.validPassword = true;
+                  } else {
+                    $scope.validPassword = false;
+                  }
+              } else {
+                    $scope.validPassword = false;
+              }
+          } else {
+              $scope.validPassword = false;
+          }
+        };
+        var alphanumeric = function(str) {
+            var letterNumber = /^.*(?=.{8,})(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%]+$/;//at least 1 letter, least 1 number, some special characters [ !@#$% ] allowed
+            if(str.match(letterNumber)){  
+              return true;  
+            } else {
+              return false;   
+            }  
+        };
+        /*
 	  * Submit action activate user
 	  */
 	 $scope.submit = function() {

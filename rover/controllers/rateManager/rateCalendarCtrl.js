@@ -248,7 +248,6 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                 }
 
                 var calenderDataFetchSuccess = function (data) {
-                    
                     //Set the calendar type
                     if (data.type === 'ROOM_TYPES_LIST') {
                         $scope.calendarMode = "ROOM_TYPE_VIEW";
@@ -576,6 +575,16 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                     return 'ngdialog-theme-default restriction-popup';
                 }
             }());
+            $scope.popupData.is_child = $scope.calendarData.is_child;
+            if ($scope.ratesDisplayed.length > 0){
+                if ($scope.ratesDisplayed[0].name){
+                    $scope.popupData.rate_name = '"'+$scope.ratesDisplayed[0].name.toUpperCase()+'"';
+                } else {
+                    $scope.popupData.rate_name = 'this';
+                }
+            } else {
+                $scope.popupData.rate_name = 'this';
+            }
 
             ngDialog.open({
                 template: '/assets/partials/rateManager/updatePriceAndRestrictions.html',
@@ -762,4 +771,16 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                 $scope.hideRoomsDownArrow = false;
             }
         });
+        
+        $scope.rateIsChild = function(rate){
+            if ($scope.calendarData.isChildRate){
+                for (var i in $scope.calendarData.isChildRate){
+                    if ($scope.calendarData.isChildRate[i] === rate.id){
+                        return true;
+                    };
+                }
+                return false;
+            } else return false;
+        };
+        
     }]);

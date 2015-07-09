@@ -22,9 +22,12 @@ sntRover.controller('RVCardOptionsCtrl',
 	    };
 	   
 		$scope.refreshIframe = function(){
-			var iFrame = document.getElementById('sixIframe');
-			iFrame.src = iFrame.src;
+			//in case of hotel with MLI iframe will not be present
+			if(!!$("#sixIframe").length){
+				$("#sixIframe").src = $("#sixIframe").src;
+			}			
 		};
+
 		$scope.$on('REFRESH_IFRAME', function(e){
 			 $scope.refreshIframe();
 		});
@@ -167,9 +170,14 @@ sntRover.controller('RVCardOptionsCtrl',
 		};
 
 	    $scope.cancelCardSelection = function(){
-	    	$scope.$emit('cancelCardSelection');
-	    	$scope.cardselectedIndex = -1;
-	    	$scope.refreshIframe();
+	    	if(!$rootScope.isStandAlone){
+	    		ngDialog.close();
+	    	}
+	    	else{
+	    		$scope.$emit('cancelCardSelection');
+	    		$scope.cardselectedIndex = -1;
+	    		$scope.refreshIframe();
+	    	};
 	    };
 	    
 	    $scope.$on("RENDER_SWIPED_DATA", function(e, swipedCardDataToRender){

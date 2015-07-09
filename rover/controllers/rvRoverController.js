@@ -357,8 +357,14 @@ sntRover.controller('roverController',
       if ( !!e ) {
         e.stopPropagation();
       };
-
       $scope.menuOpen = !$scope.menuOpen;      
+	  
+	  //Bug fix for CICO-15718 
+	  //Found that the issue appears when the keyboard comes over the screen
+	  //Added workaround to focus out from the search box
+      $('#dashboard-query').focus();
+      $('#dashboard-query').blur();
+
       $scope.showHotelSwitchList = false;
       //save contact info in guestcard if any changes has been done -CICO-14273
       $scope.$broadcast('saveContactInfo');

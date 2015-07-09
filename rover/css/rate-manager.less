@@ -446,6 +446,13 @@
       text-align: right;
       padding: 20px;
       vertical-align: middle;  
+      >div{
+          >span{
+                &.gray{
+                 color:gray !important;//grey applied if rate is_based_on = true
+               }
+          }
+      }
       
       
     &.force-align {
@@ -548,6 +555,13 @@ thead tr th {
           border-radius: 0px;
           padding: 0px;
           margin: 0px;
+          > span {
+              > span {
+                  &.gray{
+                    color:gray !important;//grey applied if rate is_based_on = true
+              }
+            }
+          }
         }
     }
   }
@@ -1903,6 +1917,9 @@ td > a.ui-state-active{
 }
 .hasOverride-label{
     color:#F69312 !important;
+    &.gray{
+        color:gray !important;//grey applied if rate is_based_on = true
+    }
 }
 
 .expandedContainerWeekend{
@@ -1947,4 +1964,12 @@ td > a.ui-state-active{
   transform: rotate(3deg);
   right: 10px;
   left: auto;
+}
+.notice{
+    &.rate-mgr{
+    font-size: small !important;
+    font-weight: 500 !important;
+    font-style: italic !important;
+    text-transform: none !important;
+    }
 }

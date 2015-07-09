@@ -257,6 +257,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             };            
             $scope.singleRule.schedules.push(newSchedule);
              $scope.selectedSchedule = $scope.singleRule.schedules[$scope.singleRule.schedules.length-1];
+             $scope.selectedScheduleIndex = $scope.singleRule.schedules.length-1;
         }
 
         // save a new rule or update an edited rule
@@ -340,23 +341,28 @@ admin.controller('ADRulesRestrictionCtrl', [
             };
         }; 
 
-        $scope.deleteSchedule = function(index){
-            $scope.singleRule.schedules.splice(index , 1);
-            if(index!=0){
-            $scope.selectedSchedule = $scope.singleRule.schedules[index-1];
+         $scope.deleteSchedule = function(index){
+            $scope.singleRule.schedules.splice(index , 1);            
+            if($scope.singleRule.schedules.length!=0){            
+                if($scope.selectedScheduleIndex == $scope.singleRule.schedules.length){
+                    $scope.selectedSchedule = $scope.singleRule.schedules[$scope.singleRule.schedules.length-1];
+                    $scope.selectedScheduleIndex = $scope.singleRule.schedules.length-1;    
+                }            
             }else{ 
-                var newSchedule = {
+            var newSchedule = {
                 "amount":null,
                 "amount_type":"",
                 "auto_charge_on_due_date":false,
                 "advance_days":null,
                 "post_type_id":null
-            };            
+                };            
             $scope.singleRule.schedules.push(newSchedule); 
-             $scope.selectedSchedule = $scope.singleRule.schedules[0];
+            $scope.selectedSchedule = $scope.singleRule.schedules[0];
+            $scope.selectedScheduleIndex = 0;
             }
-        } 
-        
+        }
+
+              
         $scope.deleteDepositeRule = function(rule) {
             // keep them in local context of deleteRule function as
             // we dont know when callback will be called, so..

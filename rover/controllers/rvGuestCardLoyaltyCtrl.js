@@ -4,7 +4,6 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','$rootScope','RVGue
 		var loyaltyFetchsuccessCallback = function(data){
 			$scope.$emit('hideLoader');
                         $rootScope.$broadcast('detect-hlps-ffp-active-status',data);
-                        $scope.$broadcast('detect-hlps-ffp-active-status',data);
 			$scope.loyaltyData = data;
 			$scope.checkForHotelLoyaltyLevel();
 			setTimeout(function(){
@@ -21,9 +20,13 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','$rootScope','RVGue
 		var data = {'userID':$scope.$parent.guestCardData.userId};
 		$scope.invokeApi(RVGuestCardLoyaltySrv.fetchLoyalties,data , loyaltyFetchsuccessCallback, loyaltyFetchErrorCallback, 'NONE');
 	};
-        $rootScope.$on('reload-loyalty-section-data',function(){
-            $scope.init();//reload loyalty when switching through staycards
-        });
+        $scope.reloadOnSet = false;
+        if ($scope.reloadOnSet){
+            $rootScope.$on('reload-loyalty-section-data',function(evt,data){
+                $scope.init();//reload loyalty when switching through staycards
+            });
+            $scope.reloadOnSet = true;
+        }
         
 	$scope.$watch(
 		function() { return ($scope.$parent.$parent.guestCardData.userId != '')?true:false; },
@@ -35,6 +38,17 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','$rootScope','RVGue
 * To check for the loyalty levels in hotel loyalty section for the guest
 * and notify the guestcard header to display the same
 */
+$rootScope.$on('reload-loyalty-section-data',function(evt,data){
+    if (data){
+        if (data.reload){
+            if ($rootScope.goToReservationCalled){
+                $scope.init();//reload loyalty when switching through staycards
+                $rootScope.goToReservationCalled = false;
+            }
+        }
+    }
+});
+
 $scope.checkForHotelLoyaltyLevel = function(){
     if ($scope.$parent.$parent.guestCardData.use_hlp){
 	for(var i = 0; i < $scope.loyaltyData.userMemberships.hotelLoyaltyProgram.length; i++){
