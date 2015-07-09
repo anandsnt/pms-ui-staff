@@ -1,0 +1,67 @@
+<div class="data-holder">
+    <!-- Edit promo -->
+    <form class="form inline-form float">
+        <div class="form-title">
+            <h3 translate><span></span> ADD PROMOTION</h3>
+            <em class="status">{{'MANDATORY_FIELDS_MESSAGE1' | translate}}<strong>*</strong> {{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
+        </div>
+        <fieldset class="holder left float">
+            <ad-textbox value="newPromo.name" label="{{'NAME' | translate}}" placeholder="{{'SEGMENTS_NAME_PLACEHOLDER' | translate}}" required="yes"></ad-textbox>
+            <ad-textbox value="newPromo.code" label="{{'CODE' | translate}}" placeholder="{{'PROMO CODE' | translate}}" required="yes"></ad-textbox>
+            <div class="entry has-datepicker margin">
+                <label>{{'FROM_DATE' | translate}}
+                </label>
+                <input type="text" ng-model="newPromo.from_date" readonly="" placeholder="Select Start Date" class="date-picker-input-small">
+                <button ng-click="popupCalendar('FROM')" class="ui-datepicker-trigger date-picker-small ui-datepicker-trigger-btn" type="button">
+                    ...
+                </button>
+                <div class="date-delete-wrapper">
+                    <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="resetDate('FROM')">&nbsp;</span>
+                </div>
+            </div>
+            <div class="entry has-datepicker margin">
+                <label>{{'TO_DATE' | translate}}
+                </label>
+                <input type="text" ng-model="newPromo.to_date" readonly="" placeholder="Select End Date" class="date-picker-input-small">
+                <button ng-click="popupCalendar('TO')" class="ui-datepicker-trigger date-picker-small ui-datepicker-trigger-btn" type="button">
+                    ...
+                </button>
+                <div class="date-delete-wrapper">
+                    <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="resetDate('TO')">&nbsp;</span>
+                </div>
+            </div>
+            <div class="entry">
+                <ad-textbox styleclass="full-width" value="newPromo.discount.value" name="amount" id="amount" label="Amount[{{ currencySymbol }}]" placeholder="{{'ENTER_THE_AMT'|translate}}"></ad-textbox>
+            </div>
+            <div class="entry">
+                <div class="entry full-width">
+                    <label for="amount-type-id">
+                        {{'AMOUNT_TYPE'|translate}}
+                    </label>
+                    <div class="select">
+                        <select name="amount-type-id" id="amount-type-id" ng-model="newPromo.discount.type">
+                            <option value="" data-text="Not set" class="placeholder">Choose amount type</option>
+                            <option value="AMOUNT">{{'AMOUNT'|translate}}[{{ currencySymbol }}]</option>
+                            <option value="PERCENTAGE" translate>PERCENTAGE</option>
+                            < </select>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="holder right float">
+            <div class="entry">
+                <label>LINKED RATES</label>
+                <div multi-select input-model="state.rates" button-label="name" item-label="name" tick-property="ticked" max-labels="0" default-label="None selected" max-height="300px">
+                </div>
+            </div>
+        </fieldset>
+        <div class="actions float">
+            <button type="button" ng-click="cancelAddPromo()" class="button blank edit-data-inline" translate>
+                CANCEL
+            </button>
+            <button type="button" ng-click="saveNewPromo()" class="button green edit-data-inline" translate>
+                SAVE_CHANGES
+            </button>
+        </div>
+    </form>
+</div>

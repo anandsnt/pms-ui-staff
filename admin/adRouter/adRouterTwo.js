@@ -80,7 +80,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 					function(ADFloorSetupSrv, $stateParams) {
 						var params = {
 							floorID: $stateParams.id
-						}
+						};
 						return ADFloorSetupSrv.getFloorDetails(params);
 				}]
 			}			
@@ -318,6 +318,17 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			templateUrl: '/assets/partials/rateSequence/adRatesSequence.html',
 			controller: 'ADRatesSequenceCtrl',
 			url : '/rates_sequence'
+		});
+
+		$stateProvider.state('admin.promotions', {
+			templateUrl: '/assets/partials/rates/adPromotions.html',
+			controller: 'ADPromotionsCtrl',
+			url : '/promotions',
+			resolve:{
+				rates: function(adCheckinSrv) {
+					return adCheckinSrv.getRateCodes();
+				}
+			}			
 		});
 
 		$stateProvider.state('admin.userRoles', {
