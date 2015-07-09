@@ -1,5 +1,5 @@
-admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams','$filter','$timeout',
-	function($scope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter, $timeout){
+admin.controller('ADRatesListCtrl',['$scope', '$rootScope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams','$filter','$timeout', '$stateParams',
+	function($scope, $rootScope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter, $timeout, $stateParams){
 
 	$scope.errorMessage = '';
 	$scope.successMessage = "";
@@ -244,6 +244,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 	$scope.editRatesClicked = function(rateId, index) {
 		//If PMS connected, we show an inline edit screen for rates.
 		//Only rate name and description should be editable.
+                $stateParams.rateId = rateId;
 		if($scope.isConnectedToPMS){
 			$scope.rateDetailsForNonStandalone = {};
 			$scope.currentClickedElement = index;
