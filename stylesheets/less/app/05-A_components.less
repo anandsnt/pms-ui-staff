@@ -1101,7 +1101,7 @@
 
                         .data {
                             margin: 0 5px 0 65px;
-                            .calc-width(35, 25);
+                            .calc-width(33, 51);
 
                             h2 { 
                                 font-size: 20px;
@@ -1120,7 +1120,7 @@
 
                         .reservation-info {
                             margin-right: 5px;
-                            .calc-width(30, 25);
+                            .calc-width(34, 57);
 
                             time { line-height: 30px; }
 
@@ -1139,7 +1139,7 @@
                         .room-info {
                             text-transform: uppercase;
                             margin: 5px 5px 0 0;
-                            .calc-width(25, 15);
+                            .calc-width(20, 29);
                             .pull-left;
 
                             .room-type { 
@@ -1153,8 +1153,15 @@
                             }
                         }
 
+                        .rate {
+                            line-height: 40px;
+                            margin-right: 5px;
+                            .calc-width(13, 28);
+                            .pull-left;
+                        }
+
                         .reservation-status {
-                            .calc-width(10, 15);
+                            width: 80px;
                             .pull-left;
 
                             .guest-status {
@@ -3258,6 +3265,22 @@
                                             margin: 0 5px 0 0;
                                             .pull-left;
 
+                                            &.sort {
+                                                cursor: pointer;
+                                                padding: 0 20px 0 10px;
+                                                background-color: @grey2;
+                                                background-position: 95% 50%;
+                                                background-repeat: no-repeat;
+                                                .nowrap();
+                                                .box-shadow(1px 1px 0 rgba(0,0,0,.3));
+
+                                                &.sorting-asc,
+                                                &.sorting-desc { background-color: darken(@grey2, 10); }
+                                                
+                                                &.sorting-asc { background-image: @arrowSortAsc; }
+                                                &.sorting-desc { background-image: @arrowSortDesc; }
+                                            }
+
                                             &.check {
                                                 width: 60px;
                                                 text-align: center;
@@ -3279,29 +3302,16 @@
                                                 }
                                             }
 
-                                            &.sort {
-                                                cursor: pointer;
-                                                padding: 0 20px 0 10px;
-                                                background-color: @grey2;
-                                                background-position: 95% 50%;
-                                                background-repeat: no-repeat;
-                                                .nowrap();
-                                                .box-shadow(1px 1px 0 rgba(0,0,0,.3));
-
-                                                &.sorting-asc,
-                                                &.sorting-desc { background-color: darken(@grey2, 10); }
-                                                
-                                                &.sorting-asc { background-image: @arrowSortAsc; }
-                                                &.sorting-desc { background-image: @arrowSortDesc; }
+                                            &.status { 
+                                                width: 80px;
+                                                margin-right: 0;
                                             }
 
                                             &.room,
-                                            &.status { .calc-width(10, 15); }
-                                            &.date { .calc-width(15, 15); }
+                                            &.rate { .calc-width(13, 29); }
+                                            &.date { .calc-width(17, 30); }
                                             &.name,
-                                            &.type { .calc-width(25, 15); }
-
-                                            &:last-child { margin-right: 0; }
+                                            &.type { .calc-width(20, 29); }
                                         }
                                     }
 
