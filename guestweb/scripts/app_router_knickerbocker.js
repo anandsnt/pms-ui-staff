@@ -66,7 +66,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	title: 'Keys - Check-in'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
-	 	templateUrl: '/assets/checkin/partials/checkinSuccess.html',
+	 	templateUrl: '/assets/checkin/partials/Knickerbocker/checkinSuccess.html',
 	 	title: 'Status - Check-in'
 	 }).state('checkinArrival', {
 	 	url: '/checkinArrival',	 	
@@ -92,7 +92,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
     $stateProvider.state('preCheckinTripDetails', {
     	url: '/tripDetails',
-	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	templateUrl: '/assets/preCheckin/partials/Knickerbocker/noOption.html',
 	 	title: 'Pre Check-in'
 	}).state('preCheckinStatus', {
 		url: '/preCheckinStatus',
