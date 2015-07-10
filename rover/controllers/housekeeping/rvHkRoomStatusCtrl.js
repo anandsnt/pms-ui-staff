@@ -41,8 +41,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.heading = $filter( 'translate')('ROOM_STATUS');
 		$scope.$emit( 'updateRoverLeftMenu' , 'roomStatus' );	
 		
-
+		// set the scroller
 		$scope.setScroller('room-status-filter');
+
+
 
 		/* ***** ***** ***** ***** ***** */
 
@@ -112,12 +114,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.roomTypes          = roomTypes;
 		$scope.floors             = floors;
 
-		// $scope.singleRoomType     = { id: '', value: 'All Room Types' };
-		// var selRoom = _.find($scope.roomTypes, function(type) { return type.isSelected });
-		// if ( selRoom ) {
-		// 	$scope.singleRoomType.id = selRoom.id;
-		// };
-
 		$scope.workTypes          = [];
 		$scope.employees          = [];
 
@@ -128,6 +124,12 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.currentView = view;
 		};
 
+		// multiple room status change DS
+		$scope.multiRoomAction = {
+			selectedRooms: [],
+			selectedStatus: ''
+		};
+		$scope.anyRoomChosen = false;
 
 
 		/* ***** ***** ***** ***** ***** */
@@ -457,6 +459,17 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			};
 
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {}, callback);
+		};
+
+
+		$scope.dwada = function() {
+			if ( that ) {
+				$scope.anyRoomChosen = true;
+			} else {
+				for (var i = 0, i < j, i++) {
+					
+				}
+			};
 		};
 
 
