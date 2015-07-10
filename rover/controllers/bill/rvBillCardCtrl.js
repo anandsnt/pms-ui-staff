@@ -863,8 +863,8 @@ sntRover.controller('RVbillCardController',
 		    $scope.fetchedData.bill_numbers = bills;
 
     		ngDialog.open({
-        		template: '/assets/partials/postCharge/postCharge.html',
-        		controller: 'RVPostChargeController',
+        		template: '/assets/partials/postCharge/rvPostChargeV2.html',
+        		controller: 'RVPostChargeControllerV2',
         		className: '',
         		scope: $scope
         	});
