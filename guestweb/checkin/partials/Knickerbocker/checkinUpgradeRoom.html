@@ -2,7 +2,7 @@
 <div class="jumbotron">
 	<div class="container backgroundbg" >
 		<div class="container-fluid">
-			<div class="row headerrow brown-bg">
+			<div class="row headerrow template-bg">
 				<logo-image></logo-image>
 			</div>
 		</div>
@@ -14,17 +14,17 @@
 		<!--	show error message -->
 		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
 			<p class="msg-head">Our apologies, something went wrong, please complete your check-in at our front desk.</p>
-			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="black-text">{{hotelPhone}}.</a></p>
+			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="template-text">{{hotelPhone}}.</a></p>
 		</div>
 		<!-- contentarea starts here-->
 		<div class="container line-top  line-bottom" ng-hide="isFetching || netWorkError">
 			<!-- top section starts here-->
 			<div class="row checkin-wrapper">
 				<div class="col-md-6 pad-rt-60">
-					<div class="chekin-heading centeralign brown-text">
+					<div class="chekin-heading centeralign template-heading-text">
 						Upgrade your room?
 					</div>
-					<p class="simpleSubText black-text">
+					<p class="simpleSubText template-text">
 						Browse upgrades or continue below:
 					</p>
 				</div>

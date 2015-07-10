@@ -2,7 +2,7 @@
 <div class="jumbotron">
 	<div class="container backgroundbg" >
 		<div class="container-fluid">
-			<div class="row headerrow brown-bg">
+			<div class="row headerrow template-bg">
 				<logo-image></logo-image>
 			</div>
 		</div>
@@ -12,15 +12,15 @@
 			<div class="row checkin-wrapper no-top-bottom-padding">
 				<div class="col-md-6 pad-rt-60">
 					<div class="reservation-id centeralign">
-						<span class="res-conf-no brown-text">RESERVATION #{{confirmationNumber}}</span>
+						<span class="res-conf-no template-heading-text">RESERVATION #{{confirmationNumber}}</span>
 					</div>
 					<div class="centeralign">
-						<span class="stay-details brown-text stay-details-heading">Your Stay Details</span>
+						<span class="stay-details template-heading-text stay-details-heading">Your Stay Details</span>
 					</div>
 					<div class="date-container bottom-border">
 						<div class="row">
 							<div class="col-xs-6 reservation-dates leftalign">
-								<div class="centeralign-date brown-text">
+								<div class="centeralign-date template-heading-text">
 									ARRIVAL DATE
 								</div>
 								<div class="dateContent centeralign-date">
@@ -28,7 +28,7 @@
 								</div>
 							</div>
 							<div class="col-xs-6  reservation-dates rightalign">
-								<div class="centeralign-date brown-text">
+								<div class="centeralign-date template-heading-text">
 									DEPARTURE DATE
 								</div>
 								<div class="dateContent centeralign-date">
@@ -41,7 +41,7 @@
 					<div class="date-container no-border">
 						<div class="row">
 							<div class=" reservation-dates">
-								<div class="brown-text">
+								<div class="template-heading-text">
 									ROOM TYPE <span class="upgrades-label" ng-show="ShowupgradedLabel">UPGRADED!</span>
 								</div>
 							</div>
@@ -51,7 +51,7 @@
 						</div>
 						<div class="row" ng-show="!!reservationData.room_rate.length">
 							<div class=" reservation-dates">
-								<div class="brown-text">
+								<div class="template-heading-text">
 									RATE
 								</div>
 							</div>
@@ -61,7 +61,7 @@
 						</div>
 						<div class="row">
 							<div class=" reservation-dates ">
-								<div class="brown-text">
+								<div class="template-heading-text">
 									AVERAGE RATE PER NIGHT
 								</div>
 							</div>
@@ -69,14 +69,14 @@
 								{{reservationData.currency}} {{ (reservationData.is_rate_suppressed === 'false')? reservationData.avg_rate : '0.00' | number:2  }}
 							</div>
 						</div>
-						<div class="row applycharge black-text">
+						<div class="row applycharge template-text">
 							 <input type="checkbox" ng-click="termsClicked()" ng-model="checked"  ng-checked="checkedApplyCharges">&nbsp
 							I ACCEPT ALL TERMS AND CONDITIONS
 						</div>
 					</div></div>
 					<div class="verti-ruler"></div>
 					<div class="col-md-6 pad-lf-60">					
-						<button class="checkin-button brown-bg" ng-click="checkInButtonClicked()">
+						<button class="checkin-button template-bg" ng-click="checkInButtonClicked()">
 							<span>Check-in</span>
 							<img src="/assets/img/Galleria/checkin-white-icon-large.png" width="60" height="60" alt=""/>
 						</button>
@@ -84,7 +84,7 @@
 				</div>
 				<div class="row checkin-wrapper no-top-bottom-padding" id="error-container">
 					<div class="col-md-6 error-callus">
-						<div class="lightcontent black-text questions">
+						<div class="lightcontent template-text questions">
 							QUESTIONS? <a href="tel: {{hotelPhone}}" class="pink-text">CALL US AT  <a href="tel: {{hotelPhone}}"class="pink-text hotel-phone">{{hotelPhone}}.</a></a>
 						</div>
 					</div>

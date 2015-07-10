@@ -2,18 +2,18 @@
 <div class="jumbotron">
 	<div class="container backgroundbg" >
 		<div class="container-fluid">
-			<div class="row headerrow brown-bg">
+			<div class="row headerrow template-bg">
 				<logo-image></logo-image>
 			</div>
 		</div>
 		<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
-				<p class="msg-head brown-text">Your request is being processed.</p>
-				<p class="msg-body brown-text">This may take a few seconds..... please wait!</p>
+				<p class="msg-head template-heading-text">Your request is being processed.</p>
+				<p class="msg-body template-heading-text">This may take a few seconds..... please wait!</p>
 		</div>
 		
 		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-			<p class="msg-head black-text">Our apologies, something went wrong, please complete your check-out at our front desk.</p>
-			<p class="msg-body black-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="black-text">{{hotelPhone}}.</a></p>
+			<p class="msg-head template-text">Our apologies, something went wrong, please complete your check-out at our front desk.</p>
+			<p class="msg-body template-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="template-text">{{hotelPhone}}.</a></p>
 		</div>
 
 	<!-- contentarea starts here-->
@@ -21,18 +21,18 @@
 		<!-- top section starts here-->
 			<div class="row check-inout-wrapper">
 					<div class="col-md-6 headtext centeralign">
-						<div class=" brown-text">Ready to check-out?</div>
-						<div class="chekout-time  room-text black-text margin-10">To start please enter your room number:</div>
-						<div class="chekout-time  room-text light-black-text margin-10" ng-show ="(roomVerificationInstruction.length>0)">({{roomVerificationInstruction}})</div>
+						<div class=" template-heading-text">Ready to check-out?</div>
+						<div class="chekout-time  room-text template-text margin-10">To start please enter your room number:</div>
+						<div class="chekout-time  room-text light-template-text margin-10" ng-show ="(roomVerificationInstruction.length>0)">({{roomVerificationInstruction}})</div>
 					</div>
 				<!-- top section ends here-->
 				<div class="col-md-6 no-padding now-later-options cabin-number">
 					<form class="centeralign padding-10">
 					<div class="row cabin-number-field">
-						<p class="lightcontent chekout-time room-number-text black-text">ROOM NUMBER</p>
+						<p class="lightcontent chekout-time room-number-text template-text">ROOM NUMBER</p>
 						<input type="password" ng-model="roomNumber" class = "col-xs-12 textBox shadow room-input" placeholder="Enter Room number"/> 
 					</div>								
-							<button class="checkin-button continue-button brown-bg room-verification-continue" ng-click="continueButtonClicked()">
+							<button class="checkin-button continue-button template-bg room-verification-continue" ng-click="continueButtonClicked()">
 								<span class="continue-text white-text">Continue</span>
 							</button>				
 					</form>

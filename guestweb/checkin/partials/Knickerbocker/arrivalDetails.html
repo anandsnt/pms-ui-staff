@@ -3,7 +3,7 @@
 <div class="jumbotron">
 	<div class="container backgroundbg" >
 		<div class="container-fluid">
-			<div class="row headerrow brown-bg">
+			<div class="row headerrow template-bg">
 				<logo-image></logo-image>
 			</div>
 		</div>
@@ -14,19 +14,19 @@
 
 		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
 			<p class="msg-head">Our apologies, something went wrong, please complete your pre check-in at our front desk.</p></p>
-			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="black-text">{{hotelPhone}}.</a></p>
+			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="template-text">{{hotelPhone}}.</a></p>
 		</div>
 		<!-- contentarea starts here-->
 		<div class="container" ng-hide="isLoading || netWorkError">
 			<!-- top section starts here-->
 			<div class="row checkin-wrapper-top arrival-details">
 				<div class="pad-rt-60 pre-checkin-container-padding">
-					<div class="chekin-heading centeralign brown-text margin-10">
+					<div class="chekin-heading centeralign template-heading-text margin-10">
 						Arrival Details
 					</div>
 					<div class="date-container ">
 						<div class="row cabin_number_field ">
-							<p class="eta-text black-text">ESTIMATED ARRIVAL TIME</p>
+							<p class="eta-text template-text">ESTIMATED ARRIVAL TIME</p>
 							<div class="expiry-year-container eta-container">
 								<div class="select-style">
 									<select ng-model="stayDetails.hour"
@@ -55,13 +55,13 @@
 				</div>
 			</div>
 			<div class="row cabin_number_field">
-				<p class="eta-text black-text">LET US KNOW ANY REQUESTS OR COMMENTS</p>
+				<p class="eta-text template-text">LET US KNOW ANY REQUESTS OR COMMENTS</p>
 				<textarea rows="5" cols="50" ng-model="stayDetails.comment" class = "col-xs-12 textArea shadow grey-text" placeholder="Comments here">
 				</textarea>
 			</div>	
 
 			<div class="row cabin_number_field">			
-				<button class="checkin-button continue-button brown-bg"
+				<button class="checkin-button continue-button template-bg"
 				ng-click="postStayDetails()">
 				<span class="white-text">Continue</span>
 			</button>

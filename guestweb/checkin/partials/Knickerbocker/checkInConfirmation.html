@@ -3,7 +3,7 @@
 <div class="jumbotron">
 	<div class="container backgroundbg" >
 		<div class="container-fluid">
-			<div class="row headerrow brown-bg">
+			<div class="row headerrow template-bg">
 				<logo-image></logo-image>
 			</div>
 		</div>
@@ -15,16 +15,16 @@
 		<!--	show error message -->
 		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
 			<p class="msg-head">Our apologies, something went wrong, please complete your check-in at our front desk.</p>
-			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="black-text">{{hotelPhone}}.</a></p>
+			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="template-text">{{hotelPhone}}.</a></p>
 		</div>
 		<!-- contentarea starts here-->
 		<div class="container" ng-hide="isPosting || netWorkError || isResponseSuccess">
 			<!-- top section starts here-->
 			<div class="row checkin-wrapper">
-				<div class="col-md-6 headtext centeralign pad-rt-60 brown-text">
+				<div class="col-md-6 headtext centeralign pad-rt-60 template-heading-text">
 					<span ng-if="!isPrecheckinOnly">Ready to Check-in ?</span>
 					<span ng-if="isPrecheckinOnly">Start Pre Check-in ?</span>
-					<p class="black-text margin-10 rt-align-onlg">
+					<p class="template-text margin-10 rt-align-onlg">
 						To provide you with a
 						<strong class="reservation-details">secure check-in </strong>
 						process, please confirm the following
@@ -36,13 +36,13 @@
 				<div class="col-md-6 pad-lf-60">
 					<form >
 						<div class="row">
-							<em class="labelText black-text">DEPARTURE DATE</em>
+							<em class="labelText template-text">DEPARTURE DATE</em>
 							<span class="date-picker" ng-click="showCalender()" >
 								<input type="text " class = "col-xs-12 textBox" placeholder="{{dateFormatPlaceholder}}"  ng-model="departureDate" readonly/> 
 								<img src="/assets/img/calender_icon.png"  alt="" width="40" height="35" class="calendar-button"/></span>
 							</div>
 							<div class="row" ng-show="!isAutoCheckinOn || isCCOnFile">
-								<em class="labelText black-text">LAST 4 DIGITS OF CREDIT CARD USED</em>
+								<em class="labelText template-text">LAST 4 DIGITS OF CREDIT CARD USED</em>
 								<input type="password" ng-model="cardDigits" class = "col-xs-12 textBox" maxlength="4"/> 
 							</div>
 							<input type="submit" class="col-xs-12 textBox  link-btn with-bg nextbtn" ng-click="nextButtonClicked()" value="DONE"/>				</form>

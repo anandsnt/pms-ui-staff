@@ -2,7 +2,7 @@
 <div class="jumbotron">
 	<div class="container backgroundbg" >
 		<div class="container-fluid">
-			<div class="row headerrow brown-bg">
+			<div class="row headerrow template-bg">
 				<logo-image></logo-image>
 			</div>
 		</div>
@@ -14,7 +14,7 @@
 
 		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
 			<p class="msg-head">Our apologies, something went wrong, please complete your pre check-in at our front desk.</p></p>
-			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="black-text">{{hotelPhone}}.</a></p>
+			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="template-text">{{hotelPhone}}.</a></p>
 		</div>
 		<!-- contentarea starts here-->
 		<div class="container" ng-hide="isLoading || netWorkError">
@@ -22,7 +22,7 @@
 			<div class="row checkin-wrapper pre-checkin-final">
 				<div class="col-md-6 headtext centeralign pad-rt-60 heading">
 					Pre Check-in complete
-					<p class="grey-text margin-10 conf-num">
+					<p class="margin-10 conf-num">
 						Reservation #:{{confirmationNumber}}
 					</p>
 				</div>

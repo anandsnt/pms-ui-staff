@@ -1,7 +1,7 @@
 <div class="jumbotron">
 	<div class="container backgroundbg">
 		<div>
-			<div class="row headerrow brown-bg">
+			<div class="row headerrow template-bg">
 				<logo-image-back></logo-image-back>
 			</div>
 		</div>
@@ -11,36 +11,36 @@
 			<!-- top section starts here-->
 
 			<div ng-show="returnHome && !netWorkError" class="checkout-status centeralign checkout-now-status" >
-				<p class="msg-head black-text">Your request is being processed.</p>
-				<p class="msg-body black-text">This may take a few seconds..... please wait!</p>
+				<p class="msg-head template-text">Your request is being processed.</p>
+				<p class="msg-body template-text">This may take a few seconds..... please wait!</p>
 			</div>
 
 			<div ng-show="!returnHome && !posted && !netWorkError" class="checkout-status centeralign checkout-now-status" >
-				<p class="msg-head black-text">Your request is being processed.</p>
-				<p class="msg-body black-text">This may take a few seconds..... please wait!</p>
+				<p class="msg-head template-text">Your request is being processed.</p>
+				<p class="msg-body template-text">This may take a few seconds..... please wait!</p>
 			</div>
 
 			<div ng-show="!returnHome && posted && !success && !netWorkError" class="checkout-status centeralign checkout-now-status" >
-				<p class="msg-head black-text">Something went wrong, complete your check-out by going to or call our front desk.</p>
-				<p class="msg-body black-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="black-text">{{hotelPhone}}.</a></p>
+				<p class="msg-head template-text">Something went wrong, complete your check-out by going to or call our front desk.</p>
+				<p class="msg-body template-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="template-text">{{hotelPhone}}.</a></p>
 			</div>
 
 			<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status" >
-				<p class="msg-head black-text">Something went wrong, complete your check-out by going to or call our front desk.</p>
-				<p class="msg-body black-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="black-text">{{hotelPhone}}.</a></p>
+				<p class="msg-head template-text">Something went wrong, complete your check-out by going to or call our front desk.</p>
+				<p class="msg-body template-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="template-text">{{hotelPhone}}.</a></p>
 			</div>
 			
 			<div ng-show="!returnHome && posted && success && !netWorkError" class="row check-inout-wrapper checkout-late-sucess">
 				<div class="col-md-6 headtext centeralign">
-					<span class="brown-text">Thank you</span>
+					<span class="template-heading-text">Thank you</span>
 					<p class="leadtext">
-						<em class="lightcontent black-text chekout-late-final base-text">The following charge plus taxes will appear on your bill.</em>
+						<em class="lightcontent template-text chekout-late-final base-text">The following charge plus taxes will appear on your bill.</em>
 					</p>
 					<p class="latecheckout-charged centeralign">
-						<span class="black-text">Late Check-out ({{ lateCheckOut.time }} {{ lateCheckOut.ap }} ) .... {{currencySymbol}}{{ lateCheckOut.amount }}</span></p>
+						<span class="template-text">Late Check-out ({{ lateCheckOut.time }} {{ lateCheckOut.ap }} ) .... {{currencySymbol}}{{ lateCheckOut.amount }}</span></p>
 				</div>
 				<div class="col-md-6 no-padding now-later-options margin-top-60">
-					<a ui-sref="checkOutConfirmation" class="link-btn with-bg brown-bg back-to-checkout white-text">Done</a>
+					<a ui-sref="checkOutConfirmation" class="link-btn with-bg template-bg back-to-checkout white-text">Done</a>
 				</div>
 			</div>
 			
