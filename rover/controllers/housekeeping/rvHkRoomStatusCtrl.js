@@ -127,7 +127,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// multiple room status change DS
 		$scope.multiRoomAction = {
 			selectedRooms: [],
-			selectedStatus: ''
+			allRoomsSelected: false,
+			selectedHkStatus: ''
 		};
 		$scope.anyRoomChosen = false;
 
@@ -462,15 +463,81 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		};
 
 
-		$scope.dwada = function() {
-			if ( that ) {
+		$scope.roomSelectChange = function(item) {
+			var _value = item.selected;
+			
+			// double to make sure its a truthy value
+			if ( !! _value ) {
+				$scope.anyRoomChosen = true;
+			} else if ( _anyOtherSelected() ) {
 				$scope.anyRoomChosen = true;
 			} else {
-				for (var i = 0, i < j, i++) {
-					
-				}
+				$scope.anyRoomChosen = false;
+			};
+
+			function _anyOtherSelected () {
+				var _ret = false,
+					i, j;
+
+				for (i = 0, j = $scope.rooms.length; i < j; i++) {
+					if ( $scope.rooms[i].selected ) {
+						_ret = true;
+						break;
+					};
+				};
+
+				return _ret;
 			};
 		};
+
+		$scope.selectAllRooms = function(value) {
+			var i, j;
+
+			if ( !!value ) {
+				$scope.anyRoomChosen = true;
+			} else {
+				$scope.anyRoomChosen = false;
+			};
+
+			for (i = 0, j = $scope.rooms.length; i < j; i++) {
+				if ( !!value ) {
+					$scope.rooms[i].selected = true;
+				} else {
+					$scope.rooms[i].selected = false;
+				};
+			};
+		};
+
+		$scope.submitHkStatusChange = function() {
+			var _payload,
+				_callback,
+				i, j;
+
+			$scope.multiRoomAction.selectedRooms = [];
+
+			for (i = 0, j = $scope.rooms.length; i < j; i++) {
+				if ( $scope.rooms[i].selected ) {
+					$scope.multiRoomAction.selectedRooms.push( $scope.rooms[i].id );
+				};
+			};
+
+			// no need to send anything
+			if ( ! $scope.multiRoomAction.selectedRooms.length ) {
+				return;
+			};
+
+			_payload = {
+				'room_ids'     : $scope.multiRoomAction.selectedRooms,
+				'hk_status_id' : $scope.multiRoomAction.selectedHkStatus
+			};
+
+			_callback = function(data) {
+				$scope.$emit( 'hideLoader' );
+			};
+
+			$scope.invokeApi(RVHkRoomStatusSrv.postHkStatus, _payload, _callback);
+		};
+
 
 
 
