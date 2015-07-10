@@ -25,6 +25,7 @@ admin.controller('promotionsDatesRangeCtrl', [
 						promo.from_date = promo.to_date;
 					}
 				}
+				$scope.filterRates(promo);
 				ngDialog.close();
 			}
 		};

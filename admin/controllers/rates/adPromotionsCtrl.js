@@ -9,15 +9,18 @@ admin.controller('ADPromotionsCtrl', [
 			rates: rates.results
 		};
 
-		$scope.filterRates = function (rate) {
-			if ($scope.state.current === -1) {
-				return false;
-			}
-			var promo = $scope.state.current === 'NEW' ? $scope.state.newPromo : $scope.state.promotions[$scope.state.current];
-			if (!!promo) {
-				return ADPromotionsSrv.shouldShowRate(rate, promo.from_date, promo.to_date);
-			}
-			return false;
+		$scope.filterRates = function (promo) {
+			promo.assignedRates = [];
+			promo.availableRates = [];
+			_.each($scope.state.rates, function (rate) {
+				if (ADPromotionsSrv.shouldShowRate(rate, promo.from_date, promo.to_date)) {
+					if (_.indexOf(promo.linked_rates, rate.id) > -1) {
+						promo.assignedRates.push(rate);
+					} else {
+						promo.availableRates.push(rate);
+					}
+				}
+			});
 		};
 
 		var fetchPromotions = function () {
@@ -28,10 +31,12 @@ admin.controller('ADPromotionsCtrl', [
 					promo.assignedRates = [];
 					promo.availableRates = [];
 					_.each($scope.state.rates, function (rate) {
-						if (_.indexOf(promo.linked_rates, rate.id) > -1) {
-							promo.assignedRates.push(rate);
-						} else {
-							promo.availableRates.push(rate);
+						if (ADPromotionsSrv.shouldShowRate(rate, promo.from_date, promo.to_date)) {
+							if (_.indexOf(promo.linked_rates, rate.id) > -1) {
+								promo.assignedRates.push(rate);
+							} else {
+								promo.availableRates.push(rate);
+							}
 						}
 					});
 					$scope.state.promotions.push(promo);
