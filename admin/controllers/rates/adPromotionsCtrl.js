@@ -1,29 +1,40 @@
 admin.controller('ADPromotionsCtrl', [
-	'$scope', '$rootScope', 'ADPromotionsSrv', 'ngTableParams', 'rates', 'ngDialog',
+	'$scope', '$rootScope', 'ADPromotionsSrv', 'ngTableParams', 'activeRates', 'ngDialog',
 	function ($scope, $rootScope, ADPromotionsSrv, NgTableParams, rates, ngDialog) {
 
 
 		$scope.state = {
 			promotions: [],
-			current: false,
+			current: -1,
 			rates: rates.results
+		};
+
+		$scope.filterRates = function (rate) {
+			if ($scope.state.current === -1) {
+				return false;
+			}
+			var promo = $scope.state.current === 'NEW' ? $scope.state.newPromo : $scope.state.promotions[$scope.state.current];
+			if (!!promo) {
+				return ADPromotionsSrv.shouldShowRate(rate, promo.from_date, promo.to_date);
+			}
+			return false;
 		};
 
 		var fetchPromotions = function () {
 			// Step1 : fetch existing segments
 			function onFetchSuccess(data) {
 				$scope.$emit('hideLoader');
-				_.each(data, function (promotion) {
-					promotion.assignedRates = [];
-					promotion.availableRates = [];
+				_.each(data, function (promo) {
+					promo.assignedRates = [];
+					promo.availableRates = [];
 					_.each($scope.state.rates, function (rate) {
-						if (_.indexOf(promotion.linked_rates, rate.id) > -1) {
-							promotion.assignedRates.push(rate);
+						if (_.indexOf(promo.linked_rates, rate.id) > -1) {
+							promo.assignedRates.push(rate);
 						} else {
-							promotion.availableRates.push(rate);
+							promo.availableRates.push(rate);
 						}
 					});
-					$scope.state.promotions.push(promotion);
+					$scope.state.promotions.push(promo);
 				});
 			}
 			$scope.invokeApi(ADPromotionsSrv.fetch, {}, onFetchSuccess);
@@ -46,6 +57,8 @@ admin.controller('ADPromotionsCtrl', [
 
 		$scope.addPromo = function () {
 			$scope.state.newPromo = ADPromotionsSrv.getPromoDataModel();
+			$scope.state.newPromo.availableRates = $scope.state.rates;
+			$scope.state.newPromo.assignedRates = [];
 			$scope.state.current = 'NEW';
 		};
 
@@ -63,7 +76,7 @@ admin.controller('ADPromotionsCtrl', [
 
 		$scope.onCancelEdit = function (index) {
 			$scope.state.promotions[index] = angular.copy($scope.state.storedPromo);
-			$scope.state.current = false;
+			$scope.state.current = -1;
 		};
 
 		$scope.popupCalendar = function (dateNeeded) {
@@ -79,7 +92,7 @@ admin.controller('ADPromotionsCtrl', [
 		};
 
 		$scope.cancelAddPromo = function () {
-			$scope.state.current = false;
+			$scope.state.current = -1;
 		};
 
 		$scope.saveNewPromo = function () {};
@@ -114,19 +127,21 @@ admin.controller('ADPromotionsCtrl', [
 			}
 		};
 
-		$scope.linkAllRates = function(promo){
-			Array.prototype.push.apply( promo.assignedRates, promo.availableRates);	
+		$scope.linkAllRates = function (promo) {
+			Array.prototype.push.apply(promo.assignedRates, promo.availableRates);
 			promo.availableRates = [];
 			$scope.state.selectedAssignedRate = -1;
 			$scope.state.selectedAvailableRate = -1;
 		};
 
-		$scope.unlinkAllRates = function(promo){
-			Array.prototype.push.apply(promo.availableRates, promo.assignedRates);			
+		$scope.unlinkAllRates = function (promo) {
+			Array.prototype.push.apply(promo.availableRates, promo.assignedRates);
 			promo.assignedRates = [];
 			$scope.state.selectedAssignedRate = -1;
 			$scope.state.selectedAvailableRate = -1;
 		};
+
+
 		initPromotions();
 	}
 ]);

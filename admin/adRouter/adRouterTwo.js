@@ -325,8 +325,8 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADPromotionsCtrl',
 			url : '/promotions',
 			resolve:{
-				rates: function(adCheckinSrv) {
-					return adCheckinSrv.getRateCodes();
+				activeRates: function(ADPromotionsSrv) {
+					return ADPromotionsSrv.getActiveRates();
 				}
 			}			
 		});

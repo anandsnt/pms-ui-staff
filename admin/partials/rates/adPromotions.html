@@ -43,12 +43,14 @@
                                     <!-- Edit promo -->
                                     <form class="form inline-form float">
                                         <div class="form-title">
-                                            <h3 translate><span></span> EDIT PROMOTION</h3>
+                                            <h3 translate><span>Edit&nbsp;</span>Promotion</h3>
                                             <em class="status">{{'MANDATORY_FIELDS_MESSAGE1' | translate}}<strong>*</strong> {{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
                                         </div>
                                         <fieldset class="holder left float">
-                                            <ad-textbox value="promo.name" label="{{'NAME' | translate}}" placeholder="{{'SEGMENTS_NAME_PLACEHOLDER' | translate}}" required="yes"></ad-textbox>
-                                            <ad-textbox value="promo.name" label="{{'CODE' | translate}}" placeholder="{{'PROMO CODE' | translate}}" required="yes"></ad-textbox>
+                                            <ad-textbox value="promo.name" styleclass="full-width" label="{{'NAME' | translate}}" placeholder="{{'SEGMENTS_NAME_PLACEHOLDER' | translate}}" required="yes"></ad-textbox>
+                                            <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="promo.description" name="desc" id="desc" label="{{'DESCRIPTION' | translate}}" placeholder="Enter Promotion Description"></ad-textarea>
+                                        </fieldset>
+                                        <fieldset class="holder right float">
                                             <div class="entry has-datepicker margin">
                                                 <label>{{'FROM_DATE' | translate}}
                                                 </label>
@@ -57,7 +59,7 @@
                                                     ...
                                                 </button>
                                                 <div class="date-delete-wrapper">
-                                                    <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="resetDate('FROM')">&nbsp;</span>
+                                                    <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="promo.from_date = null">&nbsp;</span>
                                                 </div>
                                             </div>
                                             <div class="entry has-datepicker margin">
@@ -68,7 +70,7 @@
                                                     ...
                                                 </button>
                                                 <div class="date-delete-wrapper">
-                                                    <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="resetDate('TO')">&nbsp;</span>
+                                                    <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="promo.to_date = null">&nbsp;</span>
                                                 </div>
                                             </div>
                                             <div class="entry">
@@ -94,17 +96,14 @@
                                                 <h3>
 								                    <span>Assign to&nbsp;</span>								                    
 								                    Rate
-								                </h3>
-                                                <em class="status">
-								                    <span>Assign at least to 1 Rate</span>
-								                </em>
+								                </h3>                                               
                                             </div>
                                             <div class="entry has-sortable">
                                                 <label class="center_align">
                                                     <em class="rate_roomtype_text">Available Rates</em>
                                                 </label>
                                                 <ul class="boxes sortable ui-sortable short-list" data-type="source" ng-model="promo.availableRates" data-drop="true" style="overflow-y: scroll !important;" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:'.assigned-room-types'}">
-                                                    <li ng-repeat="rate in promo.availableRates" data-drag="true" ng-model="promo.availableRates" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" class="non-assigned-room-types li-draggable" ng-click="toggleAvailableRate($index)" ng-class='{selected: state.selectedAvailableRate === $index}'>
+                                                    <li ng-repeat="rate in promo.availableRates | filter:filterRates" data-drag="true" ng-model="promo.availableRates" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" class="non-assigned-room-types li-draggable" ng-click="toggleAvailableRate($index)" ng-class='{selected: state.selectedAvailableRate === $index}'>
                                                         <span class="icons icon-handle"></span>
                                                         <span class="icons icon-handle"></span> {{rate.name}}
                                                     </li>
@@ -132,7 +131,7 @@
                                                 <label class="center_align">
                                                     <span class="assigned_room_text">Assigned to Rates</span></label>
                                                 <ul class="boxes sortable ui-sortable short-list" data-type="target" data-drop="true" ng-model="promo.assignedRates" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:'.non-assigned-room-types'}">
-                                                    <li ng-repeat="rate in promo.assignedRates" ng-model="promo.assignedRates" ng-click="toggleAssignedRate($index)" ng-class='{selected: state.selectedAssignedRate === $index}' class="assigned-room-types li-draggable" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" data-drag="true" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }">
+                                                    <li ng-repeat="rate in promo.assignedRates | filter:filterRates" ng-model="promo.assignedRates" ng-click="toggleAssignedRate($index)" ng-class='{selected: state.selectedAssignedRate === $index}' class="assigned-room-types li-draggable" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" data-drag="true" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }">
                                                         <span class="icons icon-handle"></span>
                                                         <span class="icons icon-handle"></span> {{rate.name}}
                                                     </li>
