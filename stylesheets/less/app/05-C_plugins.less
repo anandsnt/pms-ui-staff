@@ -4155,6 +4155,59 @@
 					}
 				}
 			}
+
+			/* Room status update ***/
+			&.update-room-status {
+				position: relative;
+				.square(100%);
+
+				#modal-close {
+					top: 0;
+					left: 0;
+				}
+
+				.h2 { margin-bottom: 10px; }
+
+				.entry { 
+					margin-bottom: 0;
+					.float;
+
+					.radio {
+						margin-bottom: 10px;
+						.calc-width(50, 5);
+						.pull-left;
+
+						&.checked { font-weight: 600; }
+
+						&:nth-child(odd) { margin-right: 10px; }
+					} 
+				}
+
+				.actions {
+					position: absolute;
+					bottom: 0;
+					left: 0;
+					width: 100%;
+					padding: 20px;
+					border-top: 1px solid rgba(0,0,0,.1);
+				}
+
+				@media only screen and (min-width: 600px) {
+					position: static;
+					width: 320px;
+					height: auto;
+
+					#modal-close {
+						top: -20px;
+						left: -20px;
+					}
+
+					.actions {
+						position: static;
+						padding: 10px 0 0 0;
+					}
+				}
+			}
 		}
 	}
 
