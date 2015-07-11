@@ -3223,18 +3223,24 @@
 
                                     .totals {
                                         li {
-
                                             .data {
                                                 .value { text-align: center; }
                                             }
 
+                                            .checkbox {
+                                                font-size: 14px;
+                                                text-transform: uppercase;
+                                                margin-right: 10px;
+                                                .pull-left;
+                                            }
+
                                             .button {
+                                                font-size: 14px;
                                                 padding: 0 10px;
                                                 margin-right: 10px;
                                                 .pull-left;
 
                                                 &.batch {
-                                                    font-size: 14px;
                                                     padding: 0 0 0 40px;
                                                     text-align: left;
                                                     width: 120px;
@@ -4956,6 +4962,23 @@
                         .icons { top: 8px; }
                     }
                 }
+
+                .checkbox {
+                    font-size: 14px;
+                    line-height: 1;
+                    text-align: center;
+                    text-transform: uppercase;
+                    padding: 30px 0 0 0;
+                    white-space: normal;
+                    overflow: visible;
+                    width: 80px; 
+
+                    .icon-form {
+                        top: 5px;
+                        left: 50%;
+                        margin-left: -10px;
+                    }
+                }
             } 
 
             .group-overview {
@@ -5001,6 +5024,8 @@
             }
 
             .signature {
+                position: relative;
+                margin-left: 10px;
                 .pull-left;
 
                 .toggle {
@@ -5034,6 +5059,16 @@
                         #border-radius > .bottom(0);
                         .box-shadow(1px 0 0 rgba(0,0,0,.15));
                     }
+                }
+
+                &:after {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: -10px;
+                    background-color: rgba(0,0,0,.1);
+                    .show;
+                    .size(100%, 1px);
                 }
             }
 
@@ -5128,19 +5163,21 @@
                     border-spacing: 0 10px;
                     margin: 0;
 
-                    .checkbox {
-                        margin: 0;
-                        padding: 0;
-                        .size(35px, 60px);
+                    .action {
+                        .checkbox {
+                            margin: 0;
+                            padding: 0;
+                            .size(35px, 60px);
 
-                        .icon-form { 
-                            top: 7px; 
-                            left: 20px;
-                        }
+                            .icon-form { 
+                                top: 7px; 
+                                left: 20px;
+                            }
 
-                        input {
-                            min-height: 35px;
-                            line-height: 35px;
+                            input {
+                                min-height: 35px;
+                                line-height: 35px;
+                            }
                         }
                     }
 
@@ -9974,9 +10011,19 @@
                         color: @grey3;
                     }
 
-                    label { margin-bottom: 0; }
+                    label { 
+                        margin-bottom: 0;
+
+                        &.checkbox {
+                            font-size: 14px; 
+                            text-transform: uppercase; 
+                        }
+                    }
 
                     .actions {
+                        padding-top: 20px;
+                        border-top: 1px solid rgba(0,0,0,.1);
+
                         .button {
                             font-size: 18px;
                             line-height: 24px;
