@@ -393,14 +393,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 		this.fetchHkStatusList = function() {
 			var deferred = $q.defer(),
-				url = 'api/to_be_added';
-
-			// deferred.resolve([
-			//      {id: 1, value: "CLEAN", description: "Clean", ext_description: "Clean"},
-			//      {id: 3, value: "DIRTY", description: "Dirty", ext_description: "Dirty"},
-			//      {id: 2, value: "INSPECTED", description: "Inspected", ext_description: "Inspected"},
-			//      {id: 6, value: "PICKUP", description: "Pickup", ext_description: "Pickup"}
-			// ]);
+				url = 'api/rooms/hk_status_list';
 
 			BaseWebSrvV2.getJSON(url)
 				.then(function(data) {
@@ -417,7 +410,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 		// or many room at once
 		this.putHkStatusChange = function(params) {
 			var deferred = $q.defer(),
-				url = 'api/to_be_added';
+				url = 'staff_house_keeping/mass_change_house_keeping_status';
 
 			BaseWebSrvV2.putJSON(url, params)
 				.then(function(data) {
