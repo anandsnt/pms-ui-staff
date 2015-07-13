@@ -280,7 +280,10 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* Default payment method attached to that bill can be viewed in initial screen
 	*/
 	$scope.init = function(){
-		
+		$scope.splitePaymentDetail = {			
+			totalNoOfsplits:1,
+			completedSplitPayments:0
+		};		
 		// CICO-12067 Handle the case when reservationId field is undefined.
 		if(typeof $scope.reservationData.reservationId == 'undefined'){
 			$scope.reservationData.reservationId = $scope.reservationData.reservation_id;
@@ -370,17 +373,54 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.currentActiveBill = parseInt($scope.renderData.billNumberSelected) - parseInt(1);
 		$scope.renderDefaultValues();
 	};
+	/*
+	* Params - Index of clicked button starting from 1.
+	* Return - null - Updates totalNoOfsplits.
+	*/
+	$scope.spliteButtonClicked = function(index){		
+		// When first payment is made, lock all buttons into 3 possible states		
+		if($scope.splitePaymentDetail["completedSplitPayments"]===0){
+			if($scope.splitePaymentDetail["totalNoOfsplits"]>=index){				
+				$scope.splitePaymentDetail["totalNoOfsplits"]=index-1;
+			}else{
+				$scope.splitePaymentDetail["totalNoOfsplits"]=index;
+			}
+						
+		}		
+	};
+	/*
+	* Updates SplitPaymentDetail. 
+	*/
+	var updateSplitPaymentDetail = function(){
+		$scope.splitePaymentDetail["completedSplitPayments"] += 1;
+		if($scope.splitePaymentDetail["completedSplitPayments"] === $scope.splitePaymentDetail["totalNoOfsplits"]){
+			$scope.depositPaidSuccesFully = true;
+		}
+	};
+	/*
+	* Param - index - index of button start from 1.
+	* return - String classname. 
+	*/
+	$scope.classForPaymentSplitButton = function(index){
+		if(index === 1 && $scope.splitePaymentDetail["completedSplitPayments"]===0){
+			return "checked";
+		}else if(index <= $scope.splitePaymentDetail["completedSplitPayments"]){
+			return "paid";
+		}else if(index <= $scope.splitePaymentDetail["totalNoOfsplits"]){
+			return "checked";
+		}else{
+			return "disabled";
+		}
+	};
 
 	/*
 	* Success call back of success payment
 	*/
 	var successPayment = function(data){
-		$scope.$emit("hideLoader");
-		$scope.depositPaidSuccesFully = true;
-		$scope.authorizedCode = data.authorization_code;		
-		//$scope.handleCloseDialog();
-		//To refresh the view bill screen 
-		data.billNumber = $scope.renderData.billNumberSelected;
+		$scope.$emit("hideLoader");			
+		$scope.authorizedCode = data.authorization_code;
+		updateSplitPaymentDetail();
+		data.billNumber = $scope.renderData.billNumberSelected;		
 		$scope.$emit('PAYMENT_SUCCESS',data);
 		if($scope.newPaymentInfo.addToGuestCard){
 				var cardCode = $scope.defaultPaymentTypeCard;
