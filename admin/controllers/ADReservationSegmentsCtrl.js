@@ -82,7 +82,7 @@ admin.controller('ADReservationSegmentsCtrl', ['$scope', '$state', 'ADSegmentsSr
 		}
 
 
-		// on change activation 
+		// on change activation
 		$scope.onToggleActivation = function(segment) {
 			segment.is_active = !segment.is_active;
 			$scope.updateSegment(segment);

@@ -34,7 +34,7 @@ var GlobalApp = function(){
     	
     		/* Using XHR instead of $HTTP service, to avoid angular dependency, as this will be invoked from
     		 * webview of iOS / Android.
-    		 */ 
+    		 */
     		var xhr=new XMLHttpRequest(); //TODO: IE support?
     		
     		xhr.onreadystatechange=function() {
@@ -48,7 +48,7 @@ var GlobalApp = function(){
   			
 			xhr.send(); //TODO: Loading indicator
 
-    	}	
+    	}
     	
     };
 
@@ -72,7 +72,7 @@ var GlobalApp = function(){
     };
     
     // success function of coddova plugin's appending
-    this.fetchFailedOfCordovaPlugins = function(errorMessage){   
+    this.fetchFailedOfCordovaPlugins = function(errorMessage){
     	that.cordovaLoaded = false;
     };
 

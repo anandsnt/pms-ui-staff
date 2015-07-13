@@ -1,8 +1,8 @@
 admin.service('adCheckinCheckoutSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv){
 /*
-* To retrive  email list 
-* 
-*/	
+* To retrive  email list
+*
+*/
 this.fetchEmailList = function(data){
 
 	var deferred = $q.defer();
@@ -23,8 +23,8 @@ this.fetchEmailList = function(data){
 
 /*
  * To send  email
- *@param {object} emails 
-*/	
+ *@param {object} emails
+*/
 this.sendMail = function(emailData){
 	var deferred = $q.defer();
 

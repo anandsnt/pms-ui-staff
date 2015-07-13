@@ -1,8 +1,8 @@
-sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope', 
+sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 	'$stateParams', '$timeout', 'ngDialog',
 	'RVReservationCardSrv',
 	function($scope, $rootScope, $stateParams, $timeout, ngDialog, RVReservationCardSrv) {
-		
+
 		//As per CICO-14354, we are setting adjustment reason as the last one we entered
 		$scope.adjustment_reason = $scope.ngDialogData.lastReason;
 
@@ -19,15 +19,15 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 		* @return {String} - reservationID
 		*/
 		var getReservationID = function() {
-			return ($scope.reservationData.reservationId || $scope.reservationParentData.reservationId);			
+			return ($scope.reservationData.reservationId || $scope.reservationParentData.reservationId);
 		};
-		
+
 		/**
 		* utility function to get confirmation Number
 		* @return {String} - confirmation Number
 		*/
 		var getConfirmationNumber = function() {
-			return ($scope.reservationData.confirmNum || $scope.reservationParentData.confirmNum);			
+			return ($scope.reservationData.confirmNum || $scope.reservationParentData.confirmNum);
 		};
 
 		/**
@@ -36,7 +36,7 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 		*/
 		$scope.saveCommentAgainstRateChange = function() {
 			// proceed only if something entered
-			if($scope.adjustment_reason.trim() === "") 
+			if($scope.adjustment_reason.trim() === "")
 				return;
 
 			//forming the API params
@@ -47,9 +47,9 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
             params.note_topic 		= 1;
 
 			var options 			= {
-	    		params: params    		
+	    		params: params
 		    };
-		    $scope.callAPI(RVReservationCardSrv.saveReservationNote, options);			
+		    $scope.callAPI(RVReservationCardSrv.saveReservationNote, options);
 		};
 
 		$scope.save = function(room, index) {

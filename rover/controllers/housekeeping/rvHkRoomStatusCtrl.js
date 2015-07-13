@@ -41,7 +41,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// set title in header
 		$scope.setTitle($filter( 'translate')('ROOM_STATUS'));
 		$scope.heading = $filter( 'translate')('ROOM_STATUS');
-		$scope.$emit( 'updateRoverLeftMenu' , 'roomStatus' );	
+		$scope.$emit( 'updateRoverLeftMenu' , 'roomStatus' );
 		
 		// set the scroller
 		$scope.setScroller('room-status-filter');
@@ -69,7 +69,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				localStorage.removeItem( 'roomListScrollTopPos' );
 			};
-		});	
+		});
 
 
 
@@ -909,7 +909,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		var $_pullUpDownModule = function() {
 
-			// caching DOM nodes invloved 
+			// caching DOM nodes invloved
 			var $rooms        = document.getElementById( 'rooms' ),
 				$roomsList    = $rooms.children[0];
 				$refresh      = document.getElementById( 'pull-refresh-page' ),
@@ -1075,7 +1075,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			// the user stops touching the screen
 			// TODO: need to bind very similar for 'touchcancel' event
 			var touchEndHandler = function(e) {
-				var touch         = e.touches ? e.touches[0] : e, 
+				var touch         = e.touches ? e.touches[0] : e,
 					diff          = 0,
 					addTransition = '-webkit-transform 0.3s',
 					translateZero = genTranslate();
@@ -1216,7 +1216,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// stop browser bounce while swiping on filter-options element
 		angular.element( $_filterRoomsEl )
 			.on('touchmove', function(e) {
-				// e.stopPropagation(); - CICO-13434 Changed to iscroll from native scroll. 
+				// e.stopPropagation(); - CICO-13434 Changed to iscroll from native scroll.
 			});
 
 		// There are a lot of bindings that need to cleared

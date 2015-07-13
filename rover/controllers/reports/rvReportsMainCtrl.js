@@ -258,7 +258,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 						forceScopeApply();
 					};
-				};				
+				};
 			};
 
 			function isDateValid (report, name) {

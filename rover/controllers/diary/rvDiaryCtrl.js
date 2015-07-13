@@ -193,11 +193,11 @@ sntRover
 		}
 		if (!(date2 instanceof Object)) {
 			date2 = new Date(date2);
-		}	
+		}
 		
 		return (date1.getFullYear() !== date2.getFullYear() ||
 			date1.getMonth() !== date2.getMonth() ||
-			date1.getDate() !== date2.getDate());			
+			date1.getDate() !== date2.getDate());
 	};
 
 	/*--------------------------------------------------*/
@@ -1140,7 +1140,7 @@ sntRover
 
 	    	roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), props.edit.originalRowItem.id);
 	    	data = $scope.gridProps.data;
-	    	util.reservationRoomTransfer($scope.gridProps.data, props.edit.originalRowItem, props.currentResizeItemRow, props.currentResizeItem);	    	
+	    	util.reservationRoomTransfer($scope.gridProps.data, props.edit.originalRowItem, props.currentResizeItemRow, props.currentResizeItem);
 	    	//whether it is in another date with reservation transfer
 			if (rvDiarySrv.isReservationMovingFromOneDateToAnother) {
 				//finding the reservation date to move back
@@ -1155,7 +1155,7 @@ sntRover
 
 			            $scope.gridProps.display = util.deepCopy(time_set.display);
 						callDiaryAPIsAgainstNewDate(time_set.toStartDate(), time_set.toEndDate());
-					}, 0);					
+					}, 0);
 				}
 
 				//we are loading the diary with reservation date
@@ -1718,7 +1718,7 @@ sntRover
 			time_set;
 		$scope.$emit('hideLoader');
 		
-		if(isTwoDatesAreDifferent (newValue, oldValue)) {          
+		if(isTwoDatesAreDifferent (newValue, oldValue)) {
             time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
             $scope.gridProps.display = util.deepCopy(time_set.display);
 			callDiaryAPIsAgainstNewDate(time_set.toStartDate(), time_set.toEndDate());

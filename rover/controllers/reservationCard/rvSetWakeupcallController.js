@@ -1,9 +1,9 @@
 sntRover.controller('rvSetWakeupcallController',['$scope','$filter','RVSaveWakeupTimeSrv', 'ngDialog', function($scope, $filter, RVSaveWakeupTimeSrv, ngDialog){
 	BaseCtrl.call(this, $scope);
-	
+
 	$scope.hourValues = ["01", "02", "03", "04", "05", "06","07", "08", "09", "10", "11", "12"];
 	$scope.minValues = ["00", "15", "30", "45"];
-	
+
 	$scope.getHours = function(){
 			return (typeof $scope.wakeupData.wake_up_time != 'undefined')?$scope.wakeupData.wake_up_time.substr(0,2):"";
 	};
@@ -28,7 +28,7 @@ sntRover.controller('rvSetWakeupcallController',['$scope','$filter','RVSaveWakeu
 		};
 
 	$scope.saveWakeupCall = function(){
-		var params = {};		
+		var params = {};
 		params.wake_up_time = $scope.getTimeString();
 		params.day = ($scope.todaySelected)? "Today":"Tomorrow";
 		params.reservation_id = $scope.reservationData.reservation_card.reservation_id;
@@ -73,7 +73,7 @@ sntRover.controller('rvSetWakeupcallController',['$scope','$filter','RVSaveWakeu
 	$scope.validate = function(){
 		if($scope.hrs == "" || $scope.min == "" || $scope.am_pm == "")
 			return false;
-		else 
+		else
 			return true;
 	};
 	$scope.isDeletable = function(){

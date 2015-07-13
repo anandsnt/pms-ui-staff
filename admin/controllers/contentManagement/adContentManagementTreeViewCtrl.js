@@ -1,9 +1,9 @@
-admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location', 
+admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location',
  function($scope, $state, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
-	
+
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
-	
+
    /* Function to fetch the components to be listed in the tree view
     */
 	 $scope.fetchTreeViewList= function(){
@@ -11,7 +11,7 @@ admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADConte
 			$scope.$emit('hideLoader');
 			$scope.contentList = data;
 			$scope.setExpandStatus($scope.contentList);
-						
+
 		};
 	   $scope.invokeApi(ADContentManagementSrv.fetchTreeViewList, {} , successCallbackTreeFetch);
    }
@@ -24,18 +24,18 @@ admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADConte
    			data[i].isExpanded = false;
    			$scope.setExpandStatus(data[i].children);
    		}
-   }   
+   }
    /* Function to toggle the expansion status
     */
    $scope.toggleExpansion = function(index){
-   		
+
    		$scope.contentList[index].isExpanded = !$scope.contentList[index].isExpanded;
    }
 
    $scope.fetchTreeViewList();
    /* Listener for the component deletion.
     */
-   $scope.$on('componentDeleted', function(event, data) {   
+   $scope.$on('componentDeleted', function(event, data) {
 
       $scope.deleteComponentFromTree($scope.contentList, data.id);
 
@@ -52,12 +52,12 @@ admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADConte
             if(data[i].id == id){
                data.splice(i, 1);
                break;
-            }            
+            }
          }
-   } 
+   }
    /* Listener for the component status update.
     */
-   $scope.$on('statusUpdated', function(event, data) {   
+   $scope.$on('statusUpdated', function(event, data) {
 
       $scope.updateComponentStatusForTree($scope.contentList, data);
 
@@ -74,9 +74,9 @@ admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADConte
             if(data[i].id == params.id){
                data[i].status = params.status;
                break;
-            }            
+            }
          }
-   } 	
+   }
 
 }]);
 

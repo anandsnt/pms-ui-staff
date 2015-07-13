@@ -57,7 +57,7 @@ function ADBaseTableCtrl($scope, ngTableParams){
 
 		var sortField = Object.keys(sortData)[0]
 		getParams.sort_field = sortField;
-		getParams.sort_dir = sortData[sortField] == "desc"? false :true;
+		getParams.sort_dir = sortData[sortField] === "desc"? false :true;
 
 		return getParams;
 
