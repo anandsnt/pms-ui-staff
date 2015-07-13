@@ -1,5 +1,5 @@
-sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalendarSrv', 'dateFilter', 'ngDialog',
-    function ($scope, $rootScope, RateMngrCalendarSrv, dateFilter, ngDialog) {
+sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalendarSrv', 'dateFilter', 'ngDialog','$stateParams',
+    function ($scope, $rootScope, RateMngrCalendarSrv, dateFilter, ngDialog,$stateParams) {
         $scope.$parent.myScrollOptions = {
             RateCalendarCtrl: {
                 scrollX: true,
@@ -321,10 +321,11 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                         $scope.currentSelectedRate = data.selectedRateDetails;
                         $scope.ratesDisplayed.push(data.selectedRateDetails);
                     }
+                    $scope.calendarData = {};//wipe it out first..
                     $scope.calendarData = data;
-                    if (!$scope.reloadingRooms){
+                    if (!$scope.reloadingRooms){//workaround to fix the loader from disappearing too quickly
                         $scope.$emit('hideLoader');
-                    } else if ($scope.reloadRoomsCount >= 2){
+                    } else if ($scope.reloadRoomsCount >= 1){
                         $scope.$emit('hideLoader');
                         $scope.reloadingRooms = false;
                     }else {
@@ -539,7 +540,8 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
          * Set scope variables to be passed to the popup.
          */
         $scope.showUpdatePriceAndRestrictionsDialog = function (date, rate, roomType, type, isForAllData) {
-
+              $stateParams.openUpdatePriceRestrictions = true;
+              //flag to show update price restriction window
               if ($scope.ratesRoomsToggle === 'ROOMS'){
                   var roomTypeName;
                 for (var i in $scope.calendarData.room_types_all){
