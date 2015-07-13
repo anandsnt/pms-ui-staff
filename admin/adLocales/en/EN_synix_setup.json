@@ -1,0 +1,12 @@
+"SYNIX_SETUP_HEADER": "Synix Setup",
+"SYNIX_SUB_TITLE": "Synix API Access Configuration",
+"MAPPINGS_ACTIVATE_INACTIVATE": "Mappings - Activate/Inactivate",
+"SYNIX_FULL_REFRESH": "Full Refresh",
+"SYNIX_LAST_REFRESH": "Last Refresh",
+"RUN_REFRESH_BUTTON": "Run",
+"SYNIX_USERNAME_LABEL": "User Name",
+"SYNIX_DEFAULT_BOOKING_ORIGIN": "Default Origin of Booking",
+"SYNIX_DEFAULT_PAYMENT_METHOD": "Default Payment Method",
+"SYNIX_PASSWORD_LABEL": "Password",
+"SYNIX_ACCESS_URL_LABEL": "Access URL",
+"SYNIX_REQUESTOR_ID_LABEL": "Requester ID"
