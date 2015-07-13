@@ -57,7 +57,7 @@
 		</div>
 	</div>
 	<!-- New card: Call-In -->
-	<iframe ng-show="paymentGateway === 'sixpayments' && addmode" class="payment-iframe iframe-scroll" src="{{iFrameUrl}}" id="sixIframe" seamless></iframe>
+	<iframe ng-if="paymentGateway === 'sixpayments' && addmode" class="payment-iframe iframe-scroll" src="{{iFrameUrl}}" id="sixIframe" seamless></iframe>
 	<!-- Show only when creating reservation or paying the bill -->
 	<div class="actions" ng-hide="hideCancelCard">
 		<button type="button" class="button blank" ng-click="cancelCardSelection()">

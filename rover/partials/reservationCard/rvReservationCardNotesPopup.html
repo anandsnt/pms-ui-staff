@@ -1,0 +1,45 @@
+<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-controller = "RVReservationNotesPopupCtrl">
+    <form method="post" action="post-note" id="notes" class="modal-content form staycard-notes" ng-click="clearMessage()">
+        <button id="modal-close" type="button" class="dark-title modal-close" ng-click="closeDialog();"><span class="icons icon-close"></span></button>
+        <div class="modal-header">
+            <h1>Notes</h1>
+            <strong ng-show="!!reservationData.reservation_card.room_number">Room {{reservationData.reservation_card.room_number}}</strong>
+        </div>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div class="no-content" ng-if="!reservationData.reservation_card.notes.reservation_notes.length">
+            <div class="info">
+                <span class="icon-no-content icon-notes"></span>
+                <strong class="h1">No Notes</strong>
+                <span class="h2">Drop a Note for reservation #{{reservationData.reservation_card.confirmation_num}}</span>
+            </div>
+        </div>
+        <div id="notes-list" class="scrollable" ng-if="!!reservationData.reservation_card.notes.reservation_notes && reservationData.reservation_card.notes.reservation_notes.length>0" ng-iscroll="reservationNotes">
+            <ul class="notes wrapper">
+                <li ng-repeat="note in reservationData.reservation_card.notes.reservation_notes">
+                    <figure class="guest-image">
+                        <img ng-src="{{note.user_image}}" alt="">
+                    </figure>
+                    <div class="note-title">
+                        <h4>{{note.username}}</h4>
+                        <time datetime="T">
+                            <span class="time">{{note.posted_time}}</span>
+                            <span class="date">{{note.posted_date | date:dateFormat}}</span>
+                        </time>
+                        <span class="topic">{{note.topic}}</span>
+                        <button type="button" class="icons icon-trash" ng-click="deleteReservationNote($index)">Delete post</button>
+                    </div>
+                    <p ng-bind-html="note.text">
+                    </p>
+                </li>
+                <!-- ... repeat for all notes -->
+            </ul>
+        </div>
+        <div class="actions">
+            <textarea placeholder="{{'WRITE_NOTE'|translate}}" ng-model="reservationnote" rows="2"></textarea>
+            <div class="post">
+                <button type="button" class="button brand-colors" click-touch="saveReservationNote()">Post</button>
+                <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
+            </div>
+        </div>
+    </form>
+</div>

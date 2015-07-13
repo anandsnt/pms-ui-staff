@@ -5,9 +5,16 @@
 			<span class="count"> (
 				{{data.hotel_loyalty_program.length}}
 				) </span>
-			<a id="add-new-button" class="action add" ng-click="addNewHotelLoyalty()" translate>ADD_NEW</a>
+			<a ng-class="{'overlay' : !data.use_hlp}" id="add-new-button" class="action add" ng-click="addNewHotelLoyalty()" translate>ADD_NEW</a>
+                        <div class="header-title">
+                        <h2 translate> USE_LOYALTY </h2>
+                            <div name="active-inactive-toggle" class="switch-button single header-switch-btn" ng-class="{ on: data.use_hlp }" ng-click="activateMainInactivate()">
+                                <input type="checkbox">
+                                <span class="switch-icon"></span>
+                            </div>
+                        </div>
 		</header>
-		<section class="content-scroll">
+		<section class="content-scroll" ng-class="{'overlay' : !data.use_hlp}">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<div id="new-form-holder" ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/hotelLoyalty/adHotelLoyaltyAdd.html'"></div>
 			<div id="new-form-holder"></div>
@@ -19,10 +26,10 @@
 						<td class="activate" ng-hide="currentClickedElement == $index">
 							<div class="entry">
 								<label for="1"></label>
-								<div class="switch-button single" ng-class="{ on : hotelLoyalty.is_active == 'true' }" ng-click="activateInactivate(hotelLoyalty.value, hotelLoyalty.is_active, $index)">
-									<input type="checkbox" checked="checked">
-									<span class="switch-icon" ></span>
-								</div>
+                                                                <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: hotelLoyalty.is_active }" ng-click="activateInactivate(hotelLoyalty.value, hotelLoyalty.is_active, $index)">
+                                                                    <input type="checkbox">
+                                                                    <span class="switch-icon"></span>
+                                                                </div>
 							</div>
 						</td>
 						<td colspan="2" ng-include="getTemplateUrl($index,hotelLoyalty.value)"></td>

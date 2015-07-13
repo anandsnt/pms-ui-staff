@@ -1,4 +1,4 @@
-admin.controller('ADPaymentMethodsCtrl', ['$scope', '$state', 'ADPaymentMethodsSrv', '$anchorScroll', '$timeout', '$location', 
+admin.controller('ADPaymentMethodsCtrl', ['$scope', '$state', 'ADPaymentMethodsSrv', '$anchorScroll', '$timeout', '$location',
 function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location) {
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 5);
@@ -18,7 +18,6 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	 *   @param {String} index value for the credit card list.
 	 */
 	$scope.toggleClickedPayment = function(index,isFromCCGroup) {
-		
 		if(isFromCCGroup){
 			var item = $scope.data.credit_card_types[index];
 		}
@@ -26,7 +25,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 			var item = $scope.data.payments[index];
 		}
 
-		var toggleOn = item.is_active == 'true' ? 'false' : 'true';
+		var toggleOn = item.is_active === 'true' ? 'false' : 'true';
 		var data = {
 			'id' : item.id,
 			'set_active' : toggleOn
@@ -43,24 +42,24 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	 *   @param {String} index value for the credit card list.
 	 */
 	$scope.toggleClickedCC = function(index) {
-		var toggleOn = $scope.data.credit_card_types[index].is_active == 'true' ? 'false' : 'true';
+		var toggleOn = $scope.data.credit_card_types[index].is_active === 'true' ? 'false' : 'true';
 		var data = {
 			'id' : $scope.data.credit_card_types[index].id,
 			'set_active' : toggleOn
 		};
 		var postSuccess = function() {
-			$scope.data.credit_card_types[index].is_active = ($scope.data.credit_card_types[index].is_active == 'true') ? 'false' : 'true';
+			$scope.data.credit_card_types[index].is_active = ($scope.data.credit_card_types[index].is_active === 'true') ? 'false' : 'true';
 			$scope.$emit('hideLoader');
 		};
 		$scope.invokeApi(ADPaymentMethodsSrv.toggleSwitchCC, data, postSuccess);
 	};
-        
+
         $scope.meid = 'ad payment methods ctrl';
-        
-        
+
+
         $scope.$on('sm-payment-updated', function(event, val) {
             // profileObj contains; name, country and email from emitted event
-            
+
             $scope.data.data.product_cross_customer.default_payment_id = val;
              setTimeout(function () {
                 var payment = $('[valfor=value-default-payment]')[1];
@@ -68,25 +67,24 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
             }, 2000);
           //  $scope.data.product_cross_customer.default_payment_id = val;
         });
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
         /*
         $scope.$watch("data.data.product_cross_customer.default_payment_id", function (o, n) {
             //this data is pushed in upon saving the form, retrieved from other controllers
             //so watch this to push the data back in through this controller to the other controllers
             //emit this value to be pulled into other controllers
-            
             console.log(arguments);
             console.log('emitting default_payment_id value of: '+this.data.data.product_cross_customer.default_payment_id);
             $scope.$emit('sm-payment-updated', {
                 'default_payment_id': this.data.data.product_cross_customer.default_payment_id
             });
         });
-        
+
         */
 	/*
 	 * Render add payment method screen
@@ -110,7 +108,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 
 	$scope.activeCCTab = function(){
 		angular.forEach($scope.data.payments,function(item, index) {
-			if(item.value == "CC" && item.is_active == "false")
+			if(item.value === "CC" && item.is_active === "false")
 				$scope.toggleClickedPayment(index,false);
 		});
 	};
@@ -127,7 +125,12 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 
 		var successCallbackSavePaymentMethod = function(data){
 
-			if($scope.currentClickedElement === "new"){
+			if(data.value === "CC"){
+				// Edited CC - LINKED RESERVATION TYPE only
+				console.log("Edited the Main Credit Card Payment method");
+				$scope.data.payments[parseInt($scope.currentClickedElement)] = data;
+			}
+			else if($scope.currentClickedElement === "new"){
 				if(data.is_cc){
 				// Added new credit card type item ( ie,'is_cc = true' )
 					$scope.data.credit_card_types.push(data);
@@ -162,15 +165,14 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	    		$scope.data.payments.push(data);
 	    	}
     		$scope.$emit('hideLoader');
-    		$scope.currentClickedElement = -1;
-    		$scope.currentClickedElementCC = -1;
+	    	$scope.currentClickedElement = -1;
+	    	$scope.currentClickedElementCC = -1;
     	};
 
     	var dataToSend = {};
 
     	if($scope.currentClickedElement === "new") dataToSend = $scope.addData;
 		else dataToSend = $scope.editData;
-		
 		// If we edit system defined credit card type - call api to update credit card.
 		if( $scope.currentClickedElementCC != -1 && dataToSend.is_system_defined ){
 			$scope.invokeApi(ADPaymentMethodsSrv.saveCreditCardMethod, dataToSend , successCallbackSaveCC);
@@ -186,17 +188,18 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	 * @param {index} index of selected payment method
 	 */
 	$scope.editPaymentMethod = function(index) {
-		if($scope.data.payments[index].value !== 'CC'){
+		//if($scope.data.payments[index].value !== 'CC'){
 			$scope.currentClickedElement = index;
 			$scope.editData = dclone($scope.data.payments[index],["is_active"]);
-		}
+			$scope.editData.isEditCC = false;
+		//}
 	};
 
 	$scope.editPaymentMethodCC = function(index) {
 		$scope.currentClickedElementCC = index;
 		$scope.editData = dclone($scope.data.credit_card_types[index],["is_active"]);
+		$scope.editData.isEditCC = true;
 	};
-
 	/*
 	 * To get the template of edit screen
 	 * @param {int} index of the selected payment method
@@ -204,7 +207,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	$scope.getTemplateUrl = function(index) {
 		if ( typeof index === "undefined")
 			return "";
-		if ($scope.currentClickedElement == index) {
+		if ($scope.currentClickedElement === index) {
 			return "/assets/partials/paymentMethods/adEditPaymentMethod.html";
 		}
 	};
@@ -212,7 +215,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	$scope.getTemplateUrlCC = function(index) {
 		if ( typeof index === "undefined")
 			return "";
-		if ($scope.currentClickedElementCC == index) {
+		if ($scope.currentClickedElementCC === index) {
 			return "/assets/partials/paymentMethods/adEditPaymentMethod.html";
 		}
 	};

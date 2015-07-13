@@ -18,16 +18,21 @@
 						<ad-toggle-button is-checked=" data.is_auto_change_bussiness_date" label="Auto Change Business Date"></ad-toggle-button>
 
 						<div class="entry margin">
-								<label translate>NO_SHOW_CHARGE_CODE</label>
-								<div class="select">
-									<select class="placeholder" ng-model="selected_charge_code">
-										<option value="" ng-selected="selected_charge_code == ''"translate>SELECT_CHARGE_CODE</option>
-										<option ng-selected="selected_charge_code == charge_code.charge_code" value="{{charge_code.charge_code}}" ng-repeat="charge_code in chargeCodes" >{{charge_code.charge_code+' '+charge_code.description}}</option>
-									</select>
-								</div>
+							<label translate>NO_SHOW_CHARGE_CODE</label>
+							<div class="select">
+								<select class="placeholder" ng-model="selected_charge_code">
+									<option value="" ng-selected="selected_charge_code == ''"translate>SELECT_CHARGE_CODE</option>
+									<option ng-selected="selected_charge_code == charge_code.charge_code" value="{{charge_code.charge_code}}" ng-repeat="charge_code in chargeCodes" >{{charge_code.charge_code+' '+charge_code.description}}</option>
+								</select>
+							</div>
 						</div>
+						<ad-dropdown label="{{'CC_BATCH_PROCESSING' | translate }}" label-in-drop-down="{{'CC_BATCH_PROCESSING' | translate }}" list="ccBatchProcessingOptions" selected-Id='cc_batch_processing' required = "yes"></ad-dropdown>
+						<span ng-show="cc_batch_processing === 'HOTEL'" >
+							<ad-toggle-button is-checked="cc_auto_settlement_by_eod" label="{{'AUTO_SETTLEMENT_BY_EOD' | translate }}" div-class="{{cc_batch_processing}}"></ad-toggle-button>
+						</span>
 					</fieldset>
 					<fieldset class="holder right">
+						<div></div>
 
 						<div class="entry">
 							<label translate>TIME_TO_CHANGE_BUSSINESS_DATE</label>
@@ -37,19 +42,20 @@
 								<div class="select select-col col1-3">
 
 									<select ng-options="hour for hour  in hours" ng-model="data.changing_hour">
-										<option style="display:none" value="">HH</option>
+										<option  value="">HH</option>
 									</select>
 
 								</div>
 								<!--  minute -->
 								<div class="select select-col col1-3">
 									<select ng-options="minute for minute  in minutes" ng-model="data.changing_minute">
-										<option style="display:none" value="">MM</option>
+										<option value="">MM</option>
 									</select>
 
 								</div>
 								<div class="select select-col col1-3">
 									<select name="hotel-checkout-primetime"class="styled" ng-model="data.business_date_prime_time">
+										<option value="">AM/PM</option>
 										<option value="AM">AM</option>
 										<option value="PM">PM</option>
 									</select>
@@ -57,10 +63,19 @@
 							</div>
 
 						</div>
+						<div class="entry margin">
+								<label translate>CUSTOM_GROUP_RATE_CHARGE_CODE</label>
+								<div class="select">
+									<select class="placeholder" ng-model="selected_group_charge_code">
+										<option value="" ng-selected="selected_group_charge_code == ''"translate>SELECT_CHARGE_CODE</option>
+										<option ng-selected="selected_group_charge_code == charge_code.value" value="{{charge_code.value}}" ng-repeat="charge_code in chargeCodes" >{{charge_code.charge_code+' '+charge_code.description}}</option>
+									</select>
+								</div>
+						</div>
 						
 					</fieldset>
-
-				
+					
+								
 					
 					<div class="actions float">
 						<button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()"translate>

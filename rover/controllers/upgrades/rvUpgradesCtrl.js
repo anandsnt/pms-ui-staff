@@ -1,5 +1,5 @@
-sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '$stateParams', 'RVUpgradesSrv', 'RVReservationCardSrv', '$sce', '$filter', 'ngDialog',
-	function($scope, $rootScope, $state, $stateParams, RVUpgradesSrv, RVReservationCardSrv, $sce, $filter, ngDialog) {
+sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '$stateParams', 'RVUpgradesSrv', 'RVReservationCardSrv', '$sce', '$filter', 'ngDialog', '$timeout',
+	function($scope, $rootScope, $state, $stateParams, RVUpgradesSrv, RVReservationCardSrv, $sce, $filter, ngDialog, $timeout) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -31,6 +31,11 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 		$scope.upgradesDescriptionStatusArray = [];
 		$scope.clickedButton = $stateParams.clickedButton;
 		$scope.selectedUpgradeIndex = "";
+
+		// CICO-17082, do we need to call the the room assigning API with forcefully assign to true
+		// currently used for group reservation
+		var wanted_to_forcefully_assign = false;
+
 		/**
 		 * function to get all available upgrades for the reservation
 		 */
@@ -91,46 +96,119 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 			$scope.selectUpgrade();
 		};
 
-		/**
-		 * function to set the upgrade option for the reservation
-		 */
-		$scope.selectUpgrade = function() {
-			index = $scope.selectedUpgradeIndex;
-			var successCallbackselectUpgrade = function(data) {
-				$scope.$emit('hideLoader');
-				$scope.reservationData.reservation_card.room_number = selectedRoomNumber;
-				$scope.reservationData.reservation_card.room_type_description = selectedTypeDescription;
-				$scope.reservationData.reservation_card.room_type_code = selectedTypeCode;
-				$scope.reservationData.reservation_card.room_status = "READY";
-				$scope.reservationData.reservation_card.fo_status = "VACANT";
-				$scope.reservationData.reservation_card.room_ready_status = "INSPECTED";
-				// CICO-7904 and CICO-9628 : update the upsell availability to staycard		
-				$scope.reservationData.reservation_card.is_upsell_available = data.is_upsell_available ? "true" : "false";
-				RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
-				if ($scope.clickedButton == "checkinButton") {
-					$state.go('rover.reservation.staycard.billcard', {
-						"reservationId": $scope.reservationData.reservation_card.reservation_id,
-						"clickedButton": "checkinButton"
-					});
-				} else {
-					$scope.backToStayCard();
-				}
 
-			};
-			var errorCallbackselectUpgrade = function(error) {
-				$scope.$emit('hideLoader');
-				$scope.errorMessage = error;
-			};
-			var params = {};
-			params.reservation_id = parseInt($stateParams.reservation_id, 10);
-			params.room_no = $scope.upgradesList[index].upgrade_room_number
-			var selectedRoomNumber = params.room_no;
-			var selectedTypeDescription = $scope.upgradesList[index].upgrade_room_type_name;
-			var selectedTypeCode = $scope.upgradesList[index].upgrade_room_type;
-			params.upsell_amount_id = parseInt($scope.upgradesList[index].upsell_amount_id, 10);
-			$scope.invokeApi(RVUpgradesSrv.selectUpgrade, params, successCallbackselectUpgrade, errorCallbackselectUpgrade);
+		/**
+		 * to open the room aleady chhosed popup
+		 * @return undefined
+		 */
+		var openWantedToBorrowPopup = function() {
+			ngDialog.open(
+			{
+				template 	: '/assets/partials/upgrades/rvGroupRoomTypeNotConfigured.html',
+				scope 		: $scope
+	        });
+		};
+
+		/**
+		 * successcallback of select upgrade
+		 * @param {Obejct} data [API response]
+		 * @param {Object} [successCallBackParams]
+		 * @return undefined
+		 */
+		var successCallbackselectUpgrade = function(data, successCallBackParams) {
+			var selectedListItem 	= successCallBackParams.selectedListItem,
+				resrvCardData 		= $scope.reservationData.reservation_card;
+
+			_.extend( $scope.reservationData.reservation_card ,
+			{
+				room_number: 			selectedListItem.upgrade_room_number,
+				room_type_description: 	selectedListItem.upgrade_room_type_name,
+				room_type_code: 		selectedListItem.upgrade_room_type,
+				room_status: 			"READY",
+				fo_status: 				"VACANT",
+				room_ready_status: 		"INSPECTED",
+
+				// CICO-7904 and CICO-9628 : update the upsell availability to staycard	
+				is_upsell_available: 	(data.is_upsell_available ? "true" : "false")
+			});
+
+			RVReservationCardSrv
+				.updateResrvationForConfirmationNumber(resrvCardData.confirmation_num, $scope.reservationData);
+			
+			if ($scope.clickedButton == "checkinButton") {
+				$state.go('rover.reservation.staycard.billcard', {
+					"reservationId": resrvCardData.reservation_id,
+					"clickedButton": "checkinButton"
+				});
+			} 
+
+			else {
+				$scope.backToStayCard();
+			}
 
 		};
+
+		var failureCallBackSelectUpgrade = function(error) {
+			//since we are expecting some custom http error status in the response
+			//and we are using that to differentiate among errors
+			if(error.hasOwnProperty ('httpStatus')) {
+				switch (error.httpStatus) {
+					case 470:
+							wanted_to_forcefully_assign = true;
+							openWantedToBorrowPopup ();
+					 	break;
+					default:
+						break;
+				}
+			}
+			else {		
+				$scope.errorMessage = error;
+			}
+		};
+
+		/**
+		 * [borrowFromOtherRoomType description]
+		 * @return {[type]} [description]
+		 */
+		$scope.borrowFromOtherRoomType = function (){
+			$scope.closeDialog ();
+			$timeout(function(){
+				$scope.selectUpgrade ();
+			}, 300);
+		};
+
+
+		/*** THIS IS JUST REPEATATION OF rvUpgradesController.js's upgrade. I dont 
+		*** know why upgrade is in two file and two controller, WTH.
+		***/
+		/**
+		 * When the user select a particular room updgrade, this funciton will fire
+		 * @return undefined
+		 */
+		$scope.selectUpgrade = function() {
+			var index 				= $scope.selectedUpgradeIndex,
+				selectedListItem 	= $scope.upgradesList[index];
+
+			var params = {};
+			
+			//CICO-17082
+			params.forcefully_assign_room = wanted_to_forcefully_assign;
+			wanted_to_forcefully_assign = false;
+
+			params.reservation_id 	= parseInt($stateParams.reservation_id, 10);
+			params.upsell_amount_id = parseInt(selectedListItem.upsell_amount_id, 10);
+			params.room_no 			= selectedListItem.upgrade_room_number; 
+
+			//yes. ALL set. Go!
+			var options = {
+                params: 					params,
+                successCallBack: 			successCallbackselectUpgrade,
+                failureCallBack: 			failureCallBackSelectUpgrade,
+                successCallBackParameters: 	{ selectedListItem: selectedListItem}
+            };
+            $scope.callAPI(RVUpgradesSrv.selectUpgrade, options);
+		};
+
 		/**
 		 * function to show and hide the upgrades detail view
 		 */

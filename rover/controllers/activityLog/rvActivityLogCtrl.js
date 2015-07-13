@@ -1,7 +1,7 @@
 sntRover.controller('RVActivityLogCtrl',[
 	'$scope',
 	'$rootScope',
-	'$filter', 
+	'$filter',
     'activityLogResponse',
     'activeUserList',
     '$state',
@@ -19,9 +19,9 @@ sntRover.controller('RVActivityLogCtrl',[
 	* function to go back to reservation details
 	*/
 	$scope.backToStayCard = function(){
-		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", 
+		$state.go("rover.reservation.staycard.reservationcard.reservationdetails",
             {
-                id:$scope.$parent.reservation.reservation_card.reservation_id, 
+                id:$scope.$parent.reservation.reservation_card.reservation_id,
                 confirmationId:$scope.$parent.reservation.reservation_card.confirmation_num,
                 isRefresh:true
             });
@@ -57,36 +57,39 @@ sntRover.controller('RVActivityLogCtrl',[
         $scope.reportUpdateVisible = false;
     });
 
-    var datePickerCommon = {
-        dateFormat: $rootScope.jqDateFormat,
-        numberOfMonths: 1,
-        changeYear: true,
-        changeMonth: true,
-        //maxDate: tzIndependentDate($rootScope.businessDate),
-        yearRange: "-50:+50",
-        beforeShow: function(input, inst) {
-            $('#ui-datepicker-div');
-            $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
-        },
-        onClose: function(value) {
-            $('#ui-datepicker-div');
-            $('#ui-datepicker-overlay').remove();
-        }
+    var setDatePickerOptions = function(){
+        //I just changed this to a function, dont knw who written this
+        var datePickerCommon = {
+            dateFormat: $rootScope.jqDateFormat,
+            numberOfMonths: 1,
+            changeYear: true,
+            changeMonth: true,
+            //maxDate: tzIndependentDate($rootScope.businessDate),
+            yearRange: "-50:+50",
+            beforeShow: function(input, inst) {
+                $('#ui-datepicker-div');
+                $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+            },
+            onClose: function(value) {
+                $('#ui-datepicker-div');
+                $('#ui-datepicker-overlay').remove();
+            }
+        };
+
+        $scope.fromDateOptions = angular.extend({
+           // maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+            onSelect: function(value) {
+                $scope.untilDateOptions.minDate = value;
+            }
+        }, datePickerCommon);
+        $scope.untilDateOptions = angular.extend({
+           // maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+            onSelect: function(value) {
+                $scope.fromDateOptions.maxDate = value;
+            }
+        }, datePickerCommon);
     };
-
-    $scope.fromDateOptions = angular.extend({
-       // maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
-        onSelect: function(value) {
-            $scope.untilDateOptions.minDate = value;
-        }
-    }, datePickerCommon);
-    $scope.untilDateOptions = angular.extend({
-       // maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
-        onSelect: function(value) {
-            $scope.fromDateOptions.maxDate = value;
-        }
-    }, datePickerCommon);
-
+    
     $scope.isOldValue = function(value){
         if(value =="" || typeof value == "undefined" || value == null){
             return false;
@@ -131,13 +134,13 @@ sntRover.controller('RVActivityLogCtrl',[
                 params['user_id'] = $scope.user_id;
         }
         params['sort_order'] = $scope.sort_order;
-        params['sort_field'] = $scope.sort_field;       
+        params['sort_field'] = $scope.sort_field;
         $scope.invokeApi(RVActivityLogSrv.filterActivityLog, params, callback);
     }
 
     /*
     * Sorting
-    */    
+    */
     $scope.initSort =function(){
         $scope.sortOrderOfUserASC = false;
         $scope.sortOrderOfDateASC = false;
@@ -196,7 +199,7 @@ sntRover.controller('RVActivityLogCtrl',[
     * Pagination
     */
     $scope.initPaginationParams = function() {
-        if($scope.activityLogData.total_count==0){           
+        if($scope.activityLogData.total_count==0){
              $scope.start = 0;
              $scope.end =0;
         }else{
@@ -204,7 +207,7 @@ sntRover.controller('RVActivityLogCtrl',[
         $scope.end = $scope.start + $scope.activityLogData.length - 1;
         }
         $scope.page = 1;
-        $scope.perPage = 50;        
+        $scope.perPage = 50;
         $scope.nextAction = false;
         $scope.prevAction = false;
     }
@@ -257,7 +260,7 @@ sntRover.controller('RVActivityLogCtrl',[
                 label: user.email,
                 value: user.id
             });
-        });  
+        });
 
         var userAutoCompleteCommon = {
             source: function(request, response) {
@@ -266,7 +269,7 @@ sntRover.controller('RVActivityLogCtrl',[
             },
             select: function(event, ui) {
                 $scope.user_id = ui.item.value;
-                var uiValue = split(this.value);                
+                var uiValue = split(this.value);
                 uiValue.pop();
                 uiValue.push(ui.item.label);
                 uiValue.push("");
@@ -308,7 +311,7 @@ sntRover.controller('RVActivityLogCtrl',[
             }
         }, userAutoCompleteCommon);
 
-    }   
+    }
 
     
     /*
@@ -319,15 +322,15 @@ sntRover.controller('RVActivityLogCtrl',[
         $scope.refreshScroller ('report-update');
     };
     $scope.clearToDate = function()
-    {      
-        $scope.toDate ="";    
+    {
+        $scope.toDate ="";
      }
     $scope.clearFromDate = function()
-    {       
-       $scope.fromDate = "";   
+    {
+       $scope.fromDate = "";
       
     }
-    $scope.userChanged = function(){        
+    $scope.userChanged = function(){
         if($scope.userEmail==''){
            $scope.user_id=0;
         }
@@ -348,7 +351,7 @@ sntRover.controller('RVActivityLogCtrl',[
         $scope.reportUpdateWidth = resizableMinWidth;
         $scope.fromDate ='';
         $scope.toDate ='';
-        $scope.user_id = 0;        
+        $scope.user_id = 0;
 
         //Paginaton
         $scope.totalResults = activityLogResponse.total_count;
@@ -357,21 +360,24 @@ sntRover.controller('RVActivityLogCtrl',[
         //Sorting
         $scope.initSort();
 
+        //setting date picker options
+        setDatePickerOptions();
+
         // set a back button on header
         $rootScope.setPrevState = {
             title: $filter('translate')('STAY_CARD'),
             callback: 'backToStayCard',
             scope: $scope
-        };        
+        };
         
-        //setting title        
+        //setting title
         var title = $filter('translate')('ACTIVITY_LOG_TITLE');
         $scope.setTitle(title);
 
         //left side filter scrollbar
-        $scope.setScroller('report-update'); 
+        $scope.setScroller('report-update');
 
-        $scope.setScroller('report_content');       
+        $scope.setScroller('report_content');
         
         /**
         * scroller options
@@ -403,7 +409,7 @@ sntRover.controller('RVActivityLogCtrl',[
                 refreshScroller();
             }
 
-        }; 
+        };
 
         initializeAutoCompletion();
      

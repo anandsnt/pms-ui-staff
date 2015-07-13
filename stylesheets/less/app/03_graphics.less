@@ -27,62 +27,28 @@
 		&.icon-housekeeping { background-position: 0 -575px; }
 		&.icon-rates { background-position: 0 -630px; }
 		&.icon-groups { background-position: 0 -690px; }
+		&.icon-actions { background-position: 0 -750px; }
+		&.icon-notes { background-position: 0 -810px; }
 
 		@media only screen and (min-width: 600px) { 
 			background-size: 125px;
 			.size(120px, 125px); 
 
-			&.icon-search { 
-				background-position: 0 0; 
-			}
-
-			&.icon-room {
-				background-position: 0 -120px; 
-			}
-
-			&.icon-upgrades {
-				background-position: 0 -240px;
-			}
-
-			&.icon-social-lobby {
-				background-position: 0 -360px;
-			}
-
-			&.icon-messages {
-				background-position: 0 -480px;
-			}
-
-			&.icon-reviews {
-				background-position: 0 -600px;
-			}
-
-			&.icon-card {
-				background-position: 0 -720px;
-			}
-
-			&.icon-reports {
-				background-position: 0 -840px;
-			}
-
-			&.icon-cards {
-				background-position: 0 -960px;
-			}
-
-			&.icon-ok {
-				background-position: 0 -1080px;
-			}
-
-			&.icon-housekeeping {
-				background-position: 0 -1200px;
-			}
-
-			&.icon-rates {
-				background-position: 0 -1320px;
-			}
-
-			&.icon-groups { 
-				background-position: 0 -1440px; 
-			}
+			&.icon-search { background-position: 0 0; }
+			&.icon-room { background-position: 0 -120px; }
+			&.icon-upgrades { background-position: 0 -240px; }
+			&.icon-social-lobby { background-position: 0 -360px; }
+			&.icon-messages { background-position: 0 -480px; }
+			&.icon-reviews { background-position: 0 -600px; }
+			&.icon-card { background-position: 0 -720px; }
+			&.icon-reports { background-position: 0 -840px; }
+			&.icon-cards { background-position: 0 -960px; }
+			&.icon-ok { background-position: 0 -1080px; }
+			&.icon-housekeeping { background-position: 0 -1200px; }
+			&.icon-rates { background-position: 0 -1320px; }
+			&.icon-groups { background-position: 0 -1440px; }
+			&.icon-actions { background-position: 0 -1570px; }
+			&.icon-notes { background-position: 0 -1690px; }
 		}
 
 		@media @highdpi { background-image: @iconNoContent2x; }
@@ -105,162 +71,24 @@
 		}
 	}
 
-/* Global icons			==================================*/
-	.icons,
+/* Guest Status icons	==================================*/
 	.guest-status {
 		background-image: @icons;
 		background-repeat: no-repeat;
 		border: 0;
 		.show;
 
-		/* Modal icons ***/
-		&.icon-close {
-			background-position: 0 -3040px;
-			.square(24px);
-			.hide-text;
-
-			&.invert { background-position: 0 -3100px; }
-		}
-
-		&.icon-popup-alert {
-			background-position: 2px -6395px;
-			.square(50px);
-			.show;
-		}
-
-		/* Search icons ***/
-		&.icon-search {
-			background-color: transparent;
-			background-position: 0 3px;
-			.square(20px);
-			.hide-text;
-		}
-
-		&.icon-clear-search {
-			background-color: transparent;
-			background-position: 4px -696px;
-			.square(15px);
-			.hide-text;
-		}
-
-		/* Navbar icons ***/
-		&.icon-alert {
-			.square(40px);
-
-			&.late-check-out { background-position: 10px -2853px; }
-			&.queued-rooms { 
-				background-position: 5px -2778px; 
-				background-size: 80px;
-			}
-		}
-
-		&.icon-navbar {
-			padding-top: 35px;
-			height: 60px;
-
-			&.icon-grid { 
-				background-position: 19px -4520px;
-				&.active { background-position: 19px -4580px; }
-			}
-
-			&.icon-graph { 
-				background-position: 18px -4635px;
-				&.active { background-position: 18px -4695px; }
-			}
-
-			&.icon-dual { 
-				background-position: 18px -4755px;
-				&.active { background-position: 18px -4815px; }
-			}
-
-			&.icon-hk-guest { background-position: 50% -4890px; }
-			&.icon-hk-work { background-position: 50% -5010px; }
-			&.icon-hk-room { background-position: 50% -5130px; }
-			&.icon-revenue { background-position: 50% -5250px; }
-			&.icon-payments { background-position: 50% -5370px; }
-			&.icon-cashier { background-position: 50% -5490px; }
-
-			@media only screen and (min-width: 768px) {
-				&.icon-hk-guest { background-position: 50% -4880px; }
-				&.icon-hk-work { background-position: 50% -5000px; }
-				&.icon-hk-room { background-position: 50% -5120px; }
-			}
-
-			&.only-icon { 
-				padding-top: 0;
-				.hide-text; 
-			}
-		}
-
-		/* Reservation search / Guest Status Icons ***/
-		&.icon-location {  background-position: 0px -36px; }
-		&.icon-group { background-position: 0 -77px; }
-		&.icon-guest-company { background-position: 0 -758px; }
-		&.icon-guest-travelagent { background-position: 0 -818px; }
-
-		&.icon-phone { background-position: 3px -4234px; }
-		&.icon-email-grey { background-position: 2px -4293px; }
 		&.pre-check-in,
 		&.check-in { background-position: 8px -112px; }
 		&.check-out { background-position: 8px -152px; }
 		&.inhouse { background-position: 8px -192px; }
 		&.cancel { background-position: 8px -232px; }
 		&.late-check-out { background-position: 8px -2852px;}
-		
 		&.arrival,
 		&.departed { background-image: none; }
 
-		&.icon-gc-location { background-position: 10px -269px; }
-		&.icon-gc-phone { background-position: 10px -308px; }
-		&.icon-gc-email { background-position: 10px -345px; }
-		&.icon-gc-company { background-position: 10px -2588px; background-size: 90px; }
-		&.icon-gc-ta { background-position: 10px -2675px; background-size: 90px; }
-
-		&.icon-queued { 
-			background-position: 0px -4179px;
-			background-color: transparent;
-			.hide-text;
-            .square(40px);
-		}
-
-		/* Reservation Icons ***/
-		&.icon-company { background-position: 15px -3448px; }
-		&.icon-travel-agent { background-position: 15px -3566px; }
-		&.icon-group-large {
-			font-size: 18px;
-			line-height: 30px;
-			text-transform: uppercase;
-			font-weight: 600;
-			text-align: center;
-			color: @grey3;
-			background-color: @grey1;
-			background-image: none;
-			.square(30px);
-		}
-
-		&.icon-upgrade { background-position: 3px -440px; }
-		&.icon-key { background-position: 0 -500px; }
-		&.icon-plus { background-position: 3px -1000px; }
-		&.icon-email { background-position: 0 -1058px; }
-		&.icon-print { background-position: 0 -1120px; }
-		&.icon-pencil { background-position: 0 -1180px; }
-		&.icon-wallet { background-position: 0 -1240px; }	
-		&.icon-save { background-position: 0 -3280px; }	
-		&.icon-addons { background-position: 0 -6280px; }	
-		&.icon-charge { background-position: 4px -6340px; }
-		&.icon-move { background-position: -1px -6459px; }
-
-		&.icon-trash { 
-			.square(20px);
-			.hide-text;
-			background-position: 0 -1660px; 
-
-			&.invert { background-position: 2px -3160px; }
-		}
-
-		&.icon-clear { background-position: 0 -2975px; }
-
-		&.icon-signature { background-position: 0 -3220px; }
+		&.room { background-position: 5px -873px; }
+		&.nights { background-position: 5px -935px; }
 
 		&.small-icon {
 			background-size: 80px;
@@ -270,180 +98,335 @@
 			&.check-out { background-position: 6px -101px; }
 			&.inhouse { background-position:  5px -128px; }
 			&.cancel { background-position: 5px -155px; }
-			&.late-check-out { background-position: 6px -1902px; }
+			&.late-check-out { background-position: 6px -1901px; }
 		}
 
-		&.room { background-position: 5px -873px; }
-		&.nights { background-position: 5px -935px; }
-
-		&.icon-title {
-			&.check-in { background-position: 0 -553px; }
-			&.check-out { background-position: 0 -593px; }
-			&.inhouse { background-position:  0 -633px; }
-			&.cancel,
-			&.no-show { background-image: none; }
+		/* @2x Icons ***/
+		@media @highdpi {
+			background-image: @icons2x;
+			background-size: 120px;
 		}
+	}
 
-		&.icon-alarm { background-position: 0 -760px; }
-		&.icon-alarm.active { background-position: 0 -820px; }
+/* Global icons			==================================*/
+	.icons {
+		background-image: @icons;
+		background-repeat: no-repeat;
+		border: 0;
+		.show;
 
-		&.icon-filter { background-position: 0 -1300px; }
-		&.icon-filter.active { background-position: 0 -1360px; }
+		/* Modal ***/
+			&.icon-close {
+				background-position: 0 -3040px;
+				.square(24px);
+				.hide-text;
 
-		&.time { 
-			.square(30px);
-			.hide-text;
-
-			&.check-in { background-position: 10px -552px; }
-			&.check-out { background-position: 10px -592px; }
-			&.late-check-out { background-position: 10px -2913px; }
-		}
-
-		&.icon-time {
-			&.time-in { background-position: 10px -4050px; }
-			&.time-out { background-position: 10px -4110px; }
-		}
-
-		/* CC icons ***/
-		&.icon-swiped,
-		&.icon-authenticated,
-		&.icon-authentication-failed {
-			.square(30px);
-			.hide-text;
-		}
-
-		&.icon-swiped {
-			background-position: 0px -3335px;
-
-			&.icon-authenticated { background-position: 0px -6695px; }
-			&.icon-authentication-failed { background-position: 0px -6815px; }
-		}
-
-		&.icon-authenticated { background-position: 5px -6753px; }
-		&.icon-authentication-failed { background-position: 5px -6873px; }
-		
-		&.icon-cc-authorization {
-			background-position: 5px -6510px;
-			.square(50px);
-			.show;
-
-			&.success { background-position: 5px -6570px; }
-			&.failure { background-position: 5px -6630px; }
-		}
-
-		/* Housekeeping icons ***/
-		&.icon-room {
-			background-position: 0 -4350px;
-
-			@media only screen and (min-width: 768px) {
-				background-position: 0 -4415px;
+				&.invert { background-position: 0 -3100px; }
 			}
-		}
 
-		/* Work Management icons ***/
-		&.icon-location-room { background-position: 0 -5620px; }
-		&.icon-location-floor { background-position: 0 -5680px; }
-		&.icon-unassign-room { background-position: 25px -5720px; }
-		&.icon-assign-room { background-position: 25px -5780px; }
-
-		/* Diary icons ***/
-		&.icon-diary-maintenance { background-position: 0 -5920px; }
-		&.icon-diary-move-reservation { background-position: 0 -5978px; }
-		&.icon-diary-edit-reservation { background-position: 0 -6038px; }
-		&.icon-diary-ooo { background-position: 0 -6098px; }
-		&.icon-diary-oos { background-position: 0 -6158px; }
-
-		/* Social Lobby Icons ***/
-		&.icon-show-conversations {
-			background-position: 1px -2199px;
-			&.active {
-				background-position: 1px -2259px;
+			&.icon-popup-alert {
+				background-position: 2px -6395px;
+				.square(50px);
+				.show;
 			}
-		}
 
-		&.icon-comment {
-			background-color: @softRed;
-			background-position: 5px -1955px;
-		}
-		&.icon-entered {
-			background-color: @green;
-			background-position: 6px -1416px;
-		}
-		&.icon-left {
-			background-color: @red;
-			background-position: 6px -1476px;
-		}
-		&.icon-staff-white {
-			background-color: @blue;
-			background-position: 5px -2015px;
-		}
-		&.icon-staff-blue {
-			background-position: 5px -2075px;
-		}
+		/* Search ***/
+			&.icon-search {
+				background-color: transparent;
+				background-position: 0 3px;
+				.square(20px);
+				.hide-text;
+			}
 
-		&.icon-lobby-activity { 
-			background-position: 12px -1712px;
-			&.active { background-position: 12px -1770px; }
-		}
+			&.icon-clear-search {
+				background-color: transparent;
+				background-position: 4px -696px;
+				.square(15px);
+				.hide-text;
+			}
 
-		&.icon-group-activity {
-			background-position: 15px -1832px;
-			&.active { background-position: 15px -1890px; }
-		}
+		/* Navbar ***/
+			&.icon-alert {
+				.square(40px);
 
-		&.icon-messages-guests { 
-			background-position: 15px -2310px;
-			&.active { background-position: 15px -2370px; }
-		}
+				&.late-check-out { background-position: 10px -2853px; }
+				&.queued-rooms { 
+					background-position: 5px -2778px; 
+					background-size: 80px;
+				}
+			}
 
-		&.icon-messages-staff {
-			background-position: 15px -2430px;
-			&.active { background-position: 15px -2490px; }
-		}
+			&.icon-navbar {
+				padding-top: 35px;
+				height: 60px;
 
-		&.icon-pencil-blue { background-position: 3px -2137px; }
+				&.icon-grid { 
+					background-position: 19px -4520px;
+					&.active { background-position: 19px -4580px; }
+				}
 
-		/* Add / Remove Icons ***/
-		&.icon-add-60 {
-			background-position: 20px -3680px;
-			.hide-text;
-			.square(60px);
-		}
+				&.icon-graph { 
+					background-position: 18px -4635px;
+					&.active { background-position: 18px -4695px; }
+				}
 
-		&.icon-remove-60 {
-			background-position: 20px -3740px;
-			.hide-text;
-			.square(60px);
-		}
+				&.icon-dual { 
+					background-position: 18px -4755px;
+					&.active { background-position: 18px -4815px; }
+				}
 
-		&.icon-remove-40 {
-			background-position: 10px -3750px;
-			.hide-text;
-			.square(40px);
-		}
+				&.icon-hk-guest { background-position: 50% -4890px; }
+				&.icon-hk-work { background-position: 50% -5010px; }
+				&.icon-hk-room { background-position: 50% -5130px; }
+				&.icon-revenue { background-position: 50% -5250px; }
+				&.icon-payments { background-position: 50% -5370px; }
+				&.icon-cashier { background-position: 50% -5490px; }
+				&.icon-authorizations { background-position: 50% -6985px; }
 
-		&.icon-remove-10 {
-			background-color: transparent;
-			background-position: 2px -3938px;
-			.hide-text;
-			.square(14px);
-		}
+				@media only screen and (min-width: 768px) {
+					&.icon-hk-guest { background-position: 50% -4880px; }
+					&.icon-hk-work { background-position: 50% -5000px; }
+					&.icon-hk-room { background-position: 50% -5120px; }
+				}
+			}
 
-		&.icon-edit-10 {
-			background-color: transparent;
-			background-position: 2px -3998px;
-			.hide-text;
-			.square(14px);
-		}
+		/* Reservation - Search ***/
+			&.icon-location {  background-position: 0px -36px; }
+			&.icon-group { background-position: 0 -77px; }
+			&.icon-guest-company { background-position: 0 -758px; }
+			&.icon-guest-travelagent { background-position: 0 -818px; }
 
-		&.icon-ok-10 {
-			background-color: transparent;
-			background-position: 0 -5860px;
-			.hide-text;
-			.square(14px);
-		}
+			&.icon-phone { background-position: 3px -4234px; }
+			&.icon-email-grey { background-position: 2px -4293px; }
 
-		&.icon-reset { background-position: 0 -6220px; }
+			&.icon-gc-location { background-position: 10px -269px; }
+			&.icon-gc-phone { background-position: 10px -308px; }
+			&.icon-gc-email { background-position: 10px -345px; }
+			&.icon-gc-company { background-position: 10px -2588px; background-size: 90px; }
+			&.icon-gc-ta { background-position: 10px -2675px; background-size: 90px; }
+
+			&.icon-queued { 
+				background-position: 0px -4179px;
+				background-color: transparent;
+				.hide-text;
+	            .square(40px);
+			}
+
+		/* Reservation - Display ***/
+			&.icon-company { background-position: 15px -3448px; }
+			&.icon-travel-agent { background-position: 15px -3566px; }
+			&.icon-group-large {
+				font-size: 18px;
+				line-height: 30px;
+				text-transform: uppercase;
+				font-weight: 600;
+				text-align: center;
+				color: @grey3;
+				background-color: @grey1;
+				background-image: none;
+				.square(30px);
+			}
+
+			&.icon-upgrade { background-position: 3px -440px; }
+			&.icon-key { background-position: 0 -500px; }
+			&.icon-plus { background-position: 3px -1000px; }
+			&.icon-email { background-position: 0 -1058px; }
+			&.icon-print { background-position: 0 -1120px; }
+			&.icon-pencil { background-position: 0 -1180px; }
+			&.icon-wallet { background-position: 0 -1240px; }	
+			&.icon-save { background-position: 0 -3280px; }	
+			&.icon-addons { background-position: 0 -6280px; }	
+			&.icon-charge { background-position: 4px -6340px; }
+			&.icon-move { background-position: -1px -6459px; }
+			&.icon-cc { background-position: 0 -7480px; }
+
+			&.icon-trash { 
+				.square(20px);
+				.hide-text;
+				background-position: 0 -1660px; 
+
+				&.invert { background-position: 2px -3160px; }
+			}
+
+			&.icon-clear { background-position: 0 -2975px; }
+
+			&.icon-signature { background-position: 0 -3220px; }
+			&.icon-smartphone { background-position: 0 -6940px; }
+
+			&.icon-alarm { background-position: 0 -760px; }
+			&.icon-alarm.active { background-position: 0 -820px; }
+
+			&.icon-filter { background-position: 0 -1300px; }
+			&.icon-filter.active { background-position: 0 -1360px; }
+
+			&.time { 
+				.square(30px);
+				.hide-text;
+
+				&.check-in { background-position: 10px -552px; }
+				&.check-out { background-position: 10px -592px; }
+				&.late-check-out { background-position: 10px -2913px; }
+			}
+
+			&.icon-time {
+				&.time-in { background-position: 10px -4050px; }
+				&.time-out { background-position: 10px -4110px; }
+			}
+
+		/* Credit Cards ***/
+			&.icon-swiped,
+			&.icon-authenticated,
+			&.icon-authentication-failed {
+				.square(30px);
+				.hide-text;
+			}
+
+			&.icon-swiped {
+				background-position: 0px -3335px;
+
+				&.icon-authenticated { background-position: 0px -6695px; }
+				&.icon-authentication-failed { background-position: 0px -6815px; }
+			}
+
+			&.icon-authenticated { background-position: 5px -6753px; }
+			&.icon-authentication-failed { background-position: 5px -6873px; }
+			
+			&.icon-cc-authorization {
+				background-position: 5px -6510px;
+				.square(50px);
+				.show;
+
+				&.success { background-position: 5px -6570px; }
+				&.failure { background-position: 5px -6630px; }
+			}
+
+		/* Housekeeping ***/
+			&.icon-room {
+				background-position: 0 -4350px;
+
+				@media only screen and (min-width: 768px) {
+					background-position: 0 -4415px;
+				}
+			}
+
+		/* Work Management ***/
+			&.icon-location-room { background-position: 0 -5620px; }
+			&.icon-location-floor { background-position: 0 -5680px; }
+			&.icon-unassign-room { background-position: 25px -5720px; }
+			&.icon-assign-room { background-position: 25px -5780px; }
+
+		/* Diary ***/
+			&.icon-diary-maintenance { background-position: 0 -5920px; }
+			&.icon-diary-move-reservation { background-position: 0 -5978px; }
+			&.icon-diary-edit-reservation { background-position: 0 -6038px; }
+			&.icon-diary-ooo { background-position: 0 -6098px; }
+			&.icon-diary-oos { background-position: 0 -6158px; }
+
+		/* Social Lobby ***/
+			&.icon-show-conversations {
+				background-position: 1px -2199px;
+				&.active {
+					background-position: 1px -2259px;
+				}
+			}
+
+			&.icon-comment {
+				background-color: @softRed;
+				background-position: 5px -1955px;
+			}
+			&.icon-entered {
+				background-color: @green;
+				background-position: 6px -1416px;
+			}
+			&.icon-left {
+				background-color: @red;
+				background-position: 6px -1476px;
+			}
+			&.icon-staff-white {
+				background-color: @blue;
+				background-position: 5px -2015px;
+			}
+			&.icon-staff-blue {
+				background-position: 5px -2075px;
+			}
+
+			&.icon-lobby-activity { 
+				background-position: 12px -1712px;
+				&.active { background-position: 12px -1770px; }
+			}
+
+			&.icon-group-activity {
+				background-position: 15px -1832px;
+				&.active { background-position: 15px -1890px; }
+			}
+
+			&.icon-messages-guests { 
+				background-position: 15px -2310px;
+				&.active { background-position: 15px -2370px; }
+			}
+
+			&.icon-messages-staff {
+				background-position: 15px -2430px;
+				&.active { background-position: 15px -2490px; }
+			}
+
+			&.icon-pencil-blue { background-position: 3px -2137px; }
+
+		/* Add / Remove / Reset ***/
+			&.icon-add-60 {
+				background-position: 20px -3680px;
+				.hide-text;
+				.square(60px);
+			}
+
+			&.icon-remove-60 {
+				background-position: 20px -3740px;
+				.hide-text;
+				.square(60px);
+			}
+
+			&.icon-remove-40 {
+				background-position: 10px -3750px;
+				.hide-text;
+				.square(40px);
+			}
+
+			&.icon-remove-10 {
+				background-color: transparent;
+				background-position: 2px -3938px;
+				.hide-text;
+				.square(14px);
+			}
+
+			&.icon-edit-10 {
+				background-color: transparent;
+				background-position: 2px -3998px;
+				.hide-text;
+				.square(14px);
+			}
+
+			&.icon-ok-10 {
+				background-color: transparent;
+				background-position: 0 -5860px;
+				.hide-text;
+				.square(14px);
+			}
+
+			&.icon-reset { background-position: 0 -6220px; }
+
+		/* Actions ***/
+			&.icon-action {
+				
+				&.icon-unassigned { background-position: 0 -7120px; }
+				&.icon-assigned { background-position: 0 -7240px; }
+				&.icon-completed { background-position: 0 -7360px; }
+
+				&.active {
+					&.icon-unassigned { background-position: 0 -7180px; }
+					&.icon-assigned { background-position: 0 -7300px; }
+					&.icon-completed { background-position: 0 -7420px; }
+				}
+			}
 
 		/* @2x Icons ***/
 		@media @highdpi {
@@ -789,6 +772,11 @@
 		&.icon-confirmation { background-position: 0 -150px; }
 		&.icon-queue { background-position: 0 -200px; }
 		&.icon-queue.in { background-position: 0 -250px; }
+		&.icon-actions { background-position: 0 -300px; }
+		&.icon-new-actions { background-position: 0 -350px; }
+		&.icon-no-actions { background-position: 0 -400px; }
+		&.icon-notes { background-position: 0 -450px; }
+		&.icon-no-notes { background-position: 0 -500px; }
 
 		@media @highdpi {
 			background-image: @iconStayCard2x;

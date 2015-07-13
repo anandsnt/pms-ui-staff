@@ -3,59 +3,62 @@
         <!-- Add class "success" for Scenario 1 -->
         <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog();"><span class="icons icon-close invert"></span>
         </button>
-        <!-- Scenario 1: Room, Room Type, Rate & House is available  -->
-        <section ng-if="ngDialogData.is_rate_available && ngDialogData.is_assigned_room_available">
-            <strong class="h2 message">Stay Dates change possible</strong>
-            <span class="notice" ng-if="ngDialogData.is_stay_cost_changed">Total Stay Cost will change, please review rate</span>
-            <!-- // Display this only if stay costs change, otherview don't. -->
-
-            <div class="dates-update old">
-                <span class="label">From</span>
-                <ul class="details">
-                    <li class="arrival">
-                        <span class="guest-status small-icon check-in">check-in</span> {{reservation.reservation_card.arrival_date |date:dateFormat}}
-                    </li>
-                    <li class="departure">
-                        <span class="guest-status small-icon check-out">check-out</span> {{reservation.reservation_card.departure_date |date:dateFormat}}
-                    </li>
-                </ul>
-            </div>
-            <div class="dates-update">
-                <span class="label">To</span>
-                <ul class="details">
-                    <li class="arrival">
-                        <span class="guest-status small-icon check-in">check-in</span> {{editStore.arrival |date:dateFormat}}
-                    </li>
-                    <li class="departure">
-                        <span class="guest-status small-icon check-out">check-out</span> {{editStore.departure |date:dateFormat}}
-                    </li>
-                </ul>
-            </div>
-
-            <div class="actions">
-                <button type="button" class="button green" ng-click="changeStayDates();">Confirm</button>
-                <button type="button" class="button blank" ng-click="closeDialog();">Close</button>
-            </div>
+        <section ng-if="!!ngDialogData.is_invalid_move">
+             <span class="notice error">To change both Arrival & Departure Date, please navigate to the Rooms & Rates screen.</span>
+                <div class="actions">
+                    <button type="button" class="button blue" ng-click="moveToRoomRates();">Rooms &amp; Rates</button>
+                    <button type="button" class="button blank" ng-click="closeDialog();">Close</button>
+                </div>
         </section>
-
-
-        <!-- Scenario 2: Assigned Room no longer available -->
-        <section ng-if="!ngDialogData.is_assigned_room_available && !!reservationData.reservation_card.room_number">
-            <span class="notice error">Assigned Room not available for selected dates. Please re-assign room.</span>
-            <div class="actions">
-                <button type="button" class="button blank" ng-click="closeDialog();">Close</button>
-            </div>
+        <section ng-if="!ngDialogData.is_invalid_move">
+            <!-- Scenario 1: Room, Room Type, Rate & House is available  -->
+            <section ng-if="ngDialogData.is_rate_available && ngDialogData.is_assigned_room_available">
+                <strong class="h2 message">Stay Dates change possible</strong>
+                <span class="notice" ng-if="ngDialogData.is_outside_group_stay_dates">Reservation belongs to Group {{ngDialogData.group_name}}. Changing the dates to outside the Group's arrival & departure dates will detach the reservation from the Group & Group Billing</span>
+                <span class="notice" ng-if="ngDialogData.is_stay_cost_changed && !ngDialogData.is_outside_group_stay_dates">Total Stay Cost will change, please review rate</span>
+                <!-- // Display this only if stay costs change, otherview don't. -->
+                <div class="dates-update old">
+                    <span class="label">From</span>
+                    <ul class="details">
+                        <li class="arrival">
+                            <span class="guest-status small-icon check-in">check-in</span> {{reservation.reservation_card.arrival_date |date:dateFormat}}
+                        </li>
+                        <li class="departure">
+                            <span class="guest-status small-icon check-out">check-out</span> {{reservation.reservation_card.departure_date |date:dateFormat}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="dates-update">
+                    <span class="label">To</span>
+                    <ul class="details">
+                        <li class="arrival">
+                            <span class="guest-status small-icon check-in">check-in</span> {{editStore.arrival |date:dateFormat}}
+                        </li>
+                        <li class="departure">
+                            <span class="guest-status small-icon check-out">check-out</span> {{editStore.departure |date:dateFormat}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="actions">
+                    <button type="button" class="button green" ng-click="changeStayDates();">Confirm</button>
+                    <button type="button" class="button blank" ng-click="closeDialog();">Close</button>
+                </div>
+            </section>
+            <!-- Scenario 2: Assigned Room no longer available -->
+            <section ng-if="!ngDialogData.is_assigned_room_available && !!reservationData.reservation_card.room_number">
+                <span class="notice error">Assigned Room not available for selected dates. Please re-assign room.</span>
+                <div class="actions">
+                    <button type="button" class="button blank" ng-click="closeDialog();">Close</button>
+                </div>
+            </section>
+            <!-- Scenario 3: Rate or Room Type not available or restricted. -->
+            <section ng-if="!ngDialogData.is_rate_available">
+                <span class="notice error">Rate / Room Type not available for selected dates</span>
+                <div class="actions">
+                    <button type="button" class="button blue" ng-click="moveToRoomRates();">Rooms &amp; Rates</button>
+                    <button type="button" class="button blank" ng-click="closeDialog();">Close</button>
+                </div>
+            </section>
         </section>
-
-
-        <!-- Scenario 3: Rate or Room Type not available or restricted. -->
-        <section ng-if="!ngDialogData.is_rate_available">
-            <span class="notice error">Rate / Room Type not available for selected dates</span>
-            <div class="actions">
-                <button type="button" class="button blue" ng-click="moveToRoomRates();">Rooms &amp; Rates</button>
-                <button type="button" class="button blank" ng-click="closeDialog();">Close</button>
-            </div>
-        </section>
-
     </form>
 </div>

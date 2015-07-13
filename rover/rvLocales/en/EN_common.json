@@ -33,6 +33,7 @@
     "MENU_FINANCIALS":"Financials",
     "MENU_ACCOUNTING":"Accounting Interface",
     "MENU_JOURNAL":"Journal",
+    "MENU_CC_TRANSACTIONS":"CC Transactions",
     "MENU_COMMISIONS":"Commissions",
     "MENU_REPORTS":"Reports",
     "MENU_GROUPS": "Groups",
@@ -53,5 +54,6 @@
     "RATE_MANAGER_TITLE": "Rate Manager",
     "CHANGE_STAY_DATES_TITLE": "Change Stay Dates",
     "SETTINGS":"Settings",
-    "CAHNGE_PASSWORD":"Change Password"
+    "CAHNGE_PASSWORD":"Change Password",
+    "WEBSOCKET_CONNECTION_ERROR":"Could not connect to the card handler service. The card swipe facility will not be available for this session."
 

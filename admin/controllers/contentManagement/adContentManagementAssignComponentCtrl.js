@@ -1,6 +1,6 @@
-admin.controller('ADContentManagementAssignComponentCtrl',['$scope', 'ngDialog', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location', 
+admin.controller('ADContentManagementAssignComponentCtrl',['$scope', 'ngDialog', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location',
  function($scope, ngDialog, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
-	
+
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	$scope.categories = [];
@@ -8,20 +8,20 @@ admin.controller('ADContentManagementAssignComponentCtrl',['$scope', 'ngDialog',
 	$scope.selectedCategories = [];
 	$scope.selectedSections = [];
   $scope.isDataFetched = false;
-	
-   /*Function to fetch the components, 
+
+   /*Function to fetch the components,
     *to provide the option to assign parent
     */
 	$scope.fetchComponents= function(){
    		var successCallComponentFetch = function(data){
 			$scope.$emit('hideLoader');
 			$scope.componentList = data;
-			$scope.setUpLists();	
-      $scope.isDataFetched = true;		
+			$scope.setUpLists();
+      $scope.isDataFetched = true;
 		};
 	   $scope.invokeApi(ADContentManagementSrv.fetchGridViewList, {} , successCallComponentFetch);
    }
-   /*Function to split the fetched components to categories and sections, 
+   /*Function to split the fetched components to categories and sections,
     *to provide the option to assign parent
     */
    $scope.setUpLists =function(){
@@ -29,11 +29,11 @@ admin.controller('ADContentManagementAssignComponentCtrl',['$scope', 'ngDialog',
    			if($scope.componentList[i].component_type == 'SECTION'){
    				$scope.sections.push($scope.componentList[i]);
    			}else if($scope.componentList[i].component_type == 'CATEGORY'){
-   				$scope.categories.push($scope.componentList[i]);   				
+   				$scope.categories.push($scope.componentList[i]);
    			}
    		}
    }
-   /*Function to check if the component is the same as the child component, 
+   /*Function to check if the component is the same as the child component,
     *or if the component is already assigned
     */
    $scope.isComponentAvailable = function(component){
@@ -55,7 +55,7 @@ admin.controller('ADContentManagementAssignComponentCtrl',['$scope', 'ngDialog',
       }
    $scope.fetchComponents();
 
-   /*Function to toggle the add section, 
+   /*Function to toggle the add section,
     *If section not selected, it will be selected. Otherwise it will deselect the section.
     */
    $scope.sectionAdded = function(index){
@@ -64,7 +64,7 @@ admin.controller('ADContentManagementAssignComponentCtrl',['$scope', 'ngDialog',
    		else
    			$scope.selectedSections.splice($scope.selectedSections.indexOf($scope.sections[index]), 1);
    }
-   /*Function to toggle the add category, 
+   /*Function to toggle the add category,
     *If category not selected, it will be selected. Otherwise it will deselect the category.
     */
    $scope.categoryAdded = function(index){
@@ -83,7 +83,7 @@ admin.controller('ADContentManagementAssignComponentCtrl',['$scope', 'ngDialog',
    $scope.isCategorySelected = function(index){
    		return $scope.selectedCategories.indexOf($scope.categories[index]) != -1
    }
-   /*Function to add the selected sections and categories to the parent sections and and categories 
+   /*Function to add the selected sections and categories to the parent sections and and categories
     *of the component, on clicking the confirm button.
     */
    $scope.confirmClicked = function(){
@@ -97,6 +97,6 @@ admin.controller('ADContentManagementAssignComponentCtrl',['$scope', 'ngDialog',
     */
    $scope.cancelClicked = function(){
    		ngDialog.close();
-   }	 
+   }
 
 }]);

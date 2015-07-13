@@ -21,20 +21,41 @@
     <span class="data rate">{{ each.rate_name }} / <strong>{{ each.rate || 0 | currency:currencySymbol:2 }} ADR</strong></span>
     <span ng-if="each.rate_adjustment" class="data status">{{ each.rate_adjustment | currency:currencySymbol:2 }} Adjusted</span>
 </td>
-<td>
+<td ng-if="each.isReport">
     <span class="data status">{{ each.create_date | date : dateFormat }}</span>
     <span class="data status">{{ each.create_user }}</span>
 </td>
 
+
+
+
+
+
 <!-- Left blank intentionally -->
-<td ng-if="!each.isReport"></td>
+<td ng-if="each.isGuestData"></td>
 
 <!-- guest data - company, travel agent & group name -->
-<td ng-if="each.isGuestData" class="secondary guest-info" colspan="">
+<td ng-if="each.isGuestData" class="secondary guest-info">
     <span ng-if="each.company_name" class="icons icon-guest-company">{{ each.company_name }}</span>
     <span ng-if="each.travel_agent_name" class="icons icon-guest-travelagent">{{ each.travel_agent_name }}</span>
     <span ng-if="each.group_name" class="icons icon-group">{{ each.group_name }}</span>
 </td>
-<td ng-if="each.isGuestData" class="secondary" colspan="2">
+
+<!-- addons -->
+<td ng-if="each.isGuestData" class="secondary">
     <span ng-repeat="name in each.addOns">{{ name }}</span>
+</td>
+
+<!-- Left blank intentionally -->
+<td ng-if="each.isGuestData" colspan="2"></td>
+
+
+
+
+
+
+<!-- cancel reason -->
+<td ng-if="each.isAdjustData" class="secondary notes" colspan="5">
+    <strong>Adjustment Reason</strong>
+    <p ng-repeat="reason in each.reasons">{{ reason }}</p>
 </td>

@@ -4,20 +4,33 @@
 		<section>
 			<header class="content-title float">
 				<h2>Users</h2>
-				<span class="count">({{data.users.length}})</span>
+				<span class="count">({{totalCount}})</span>
 				<a id="add_new_user" class="action add" ui-sref="admin.userdetails({ page: 'add', id: '', hotelId: hotelId })">Add New</a>
 				<a id="find_existing_user" class="action link" ng-show="isAdminSnt" ui-sref="admin.linkexisting({id:hotelId})" >Link Existing</a>
 				<a id="go_back" data-type="load-details" class="action back" ng-show="isAdminSnt" ui-sref="admin.snthoteldetails({action:'edit',id:hotelId})">Back</a>
 			</header>
 			<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<!--Per_page and search starts here-->
+			<span class="count-show">Show</span>
+			<div class="select table-count rates-table-count">
+				<select ng-model="displyCount"	ng-options="opt for opt in displayCountList"></select>
+			</div>
+			<span class="count-entries">entries</span>
+				
+			<div class="entry table-search">
+				<span class="search-text">Search</span>
+				<span class="icons icon-search" name="submit" type="submit"></span>
+				<input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
+		    </div>
+		    <!--Per_page and search ends here-->
 			<table id="users_list_table" class="grid datatable table" ng-table="tableParams"
-			template-pagination="nil">
+			template-pagination="custom/pager">
 				<tr ng-repeat="user in $data">
 					<td data-title="'Name'" sortable="'full_name'"><a ui-sref="admin.userdetails({ page: 'edit', id: user.id, hotelId: hotelId, isUnlocking: false })"  class="title">{{user.full_name}} </a></td>
 					<td data-title="'Email'" sortable="'email'"> {{user.email}}  </td>
-					<td data-title="'Department'" sortable="'department'">{{user.department}}</td>
-					<td data-title="'Last Login'" sortable="'last_login'"><span class="login">{{user.last_login_date | date : dateFormat}} {{user.last_login_time}}</span></td>
+					<td data-title="'Department'" >{{user.department}}</td>
+					<td data-title="'Last Login'" ><span class="login">{{user.last_login_date | date : dateFormat}} {{user.last_login_time}}</span></td>
 					<td data-title="'Active'" user="2" id="activate-inactivate-button_2" header-class="activate"  class="activate activate-inactivate-button">
 						<div class="entry" ng-show="user.can_delete">
 							<label for=""></label>
@@ -36,6 +49,28 @@
 				</tr>
 			</table>
 		</section>
+		<!--Custom pagination footer goes here-->
+		<script type="text/ng-template" id="custom/pager">
+			<div class = "pager">
+				<span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
+				<span ng-show="totalCount==0">Showing 0 items</span>
+				<ul class="ng-cloak">
+	              	<li ng-repeat="page in pages"
+		                ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}"
+		                ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+	
+		                <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
+		                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
+		                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+		                
+		                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+		                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
+		                <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
+		          	</li>
+	            </ul>
+	        </div>
+		</script>
+		<!--end-->
 		</section>
 	</div>
 </section>

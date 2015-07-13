@@ -1,12 +1,11 @@
 <table class="grid sub-grid">
 	<tr ng-hide="showCancelForm || !showCancelList" ng-repeat="rule in cancelRulesList">
 		<td class="offset"> &nbsp; </td>
-		<td ng-click="editSingleRule(rule, 'Cancellation Penalties')"><a href>{{ rule.name }}</a></td>
-
+		<td ng-click="editSingleCancellationRule(rule)"><a href>{{ rule.name }}</a></td>
 		<td>{{ rule.description }}</td>
 
 		<td width="10" class="delete">
-			<a class="icons icon-delete large-icon" ng-click="deleteRule(rule, 'Cancellation Penalties')"translate>DELETE_RULE</a>		
+			<a class="icons icon-delete large-icon" ng-click="deleteCancellationRule(rule)"translate>DELETE_RULE</a>		
 		</td>
 	</tr>
 
@@ -149,7 +148,7 @@
 								like-type="common"
 								id="update"
 								class="button green add-data-inline"
-								ng-click="saveUpdateRule('Cancellation Penalties')" translate>SAVE_CHANGES</button>
+								ng-click="saveUpdateCancellationRule('Cancellation Penalties')" translate>SAVE_CHANGES</button>
 						</div>
 
 					</form>

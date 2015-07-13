@@ -37,16 +37,16 @@
                 <!-- Bills Nav-->
                 <div class="bill-tabs scrollable" ng-iscroll="bill-tab-scroller">
                 	<ul class="wrapper" style="width:{{getWidthForBillTabsScroll();}}px;">
-                        <li ng-class="showActiveBill($index)" ng-click="setActiveBill($index)" ng-repeat="billTab in transactionsDetails.bills">
+                        <li ng-class="showActiveBill($index)" click-touch="setActiveBill($index)" ng-repeat="billTab in transactionsDetails.bills">
                             <a class="bill-toggle">
                                 <div class="price"><span>{{'BILL' |translate}} #{{billTab.bill_number}}</span>
-                                	{{currencySymbol}}{{billTab.total_fees.total_amount | number: precisonZero}}
+                                	{{currencySymbol}}{{billTab.total_fees.balance_amount | number: precisonZero}}
                                 </div>
                             </a>
                         </li>
                         <!-- Add new bill-->
                         <li class="new-bill" ng-show="transactionsDetails.bills.length<10 && isStandAlone">
-                            <button type="button" class="button with-icon only-icon brand-colors" ng-click="createNewBill()">
+                            <button type="button" class="button with-icon only-icon brand-colors" click-touch="createNewBill()">
                                 <span class="icons icon-plus"></span>
                             </button>
                         </li>
@@ -61,13 +61,13 @@
                         <div class="scrollable" ng-iscroll="billDays">
                             <ul class="wrapper" style="width{Outer lenght of all li items}px">
                                 <li class="add-new">
-                                    <button type="button" ng-click="openPostCharge(billData.bill_number)" class="button with-icon brand-colors">
+                                    <button type="button" click-touch="openPostCharge(billData.bill_number)" class="button with-icon brand-colors">
                                         <span class="icons icon-charge"></span>
                                         {{'ADD_CHARGE' |translate}}
                                     </button>
                                 </li>
                                 <!-- TODO: active class logic -->
-                                <li class="active" ng-repeat="days in billData.days" ng-click="showDayRates($index)">
+                                <li class="active" ng-repeat="days in billData.days" click-touch="showDayRates($index)">
                                     <button class="toggle" type ="button" ng-class="{'active' : dayRates == $index}">
                                         <span class="day">{{days.date | date:'MMM'}} {{days.date | date:'dd'}}</span>
                                         <span class="price">{{currencySymbol}}{{days.total_amount | number: precisonZero}}</span>
@@ -111,11 +111,11 @@
                                 <span class="value">{{currencySymbol}}{{billData.total_fees.total_amount | number: precisonTwo}}</span>
                             </li>
                             <li class="break">
-                                <button type="button" class="button with-icon only-icon blue" ng-click="mailInvoice(billData.bill_number)">
+                                <button type="button" class="button with-icon only-icon blue" click-touch="mailInvoice(billData.bill_number)">
                                     <span class="icons icon-email"></span> 
                                     {{'EMAIL' |translate}}
                                 </button>
-                                <button data-action="print-bill" data-print="account-bill1-invoice" type="button" class="button with-icon only-icon blue" ng-click="printInvoice()">
+                                <button data-action="print-bill" data-print="account-bill1-invoice" type="button" class="button with-icon only-icon blue" click-touch="printInvoice()">
                                     <span class="icons icon-print"></span> 
                                     {{'PRINT' |translate}}
                                 </button>
@@ -126,7 +126,7 @@
                             </li>
                             <!-- Only if balance > 0:-->
                             <li>
-                                <button class="button green with-icon only-icon" ng-click="showPayemntModal()" >
+                                <button class="button green with-icon only-icon" click-touch="showPayemntModal()" >
                                     <span class="icons icon-wallet"></span>
                                     {{'PAY' |translate}}
                                 </button>
@@ -169,11 +169,11 @@
                                 <tfoot>
                                     <tr class="active edit">
                                         <td colspan="3" class="total-label">
-                                            <button type="button" class="button with-icon only-icon blue" ng-click="mailInvoice(billData.bill_number)">
+                                            <button type="button" class="button with-icon only-icon blue" click-touch="mailInvoice(billData.bill_number)">
                                                 <span class="icons icon-email"></span> 
                                                 {{'EMAIL' |translate}}
                                             </button>
-                                            <button type="button" class="button with-icon only-icon blue" ng-click="printInvoice()">
+                                            <button type="button" class="button with-icon only-icon blue" click-touch="printInvoice()">
                                                 <span class="icons icon-print"></span> 
                                                 {{'PRINT' |translate}}
                                             </button>
@@ -183,7 +183,7 @@
                                              <strong>{{currencySymbol}}{{billData.total_fees.total_amount | number: precisonTwo}}</strong>
                                         </td>
                                         <td>
-                                            <!-- <button ng-click="openActionsPopup()" class="button purple with-icon only-icon">
+                                            <!-- <button click-touch="openActionsPopup()" class="button purple with-icon only-icon">
                                                 <span class="icons icon-pencil"></span>
                                                 Edit
                                             </button> -->
@@ -199,7 +199,7 @@
                                         </td>
                                         <td>
                                             <!-- Only if balance > 0, otherwise leave blank cell -->
-                                            <button class="button green with-icon only-icon" ng-click="showPayemntModal()">
+                                            <button class="button green with-icon only-icon" click-touch="showPayemntModal()">
                                                 <span class="icons icon-wallet"></span>
                                                 {{'PAY' |translate}}
                                             </button>
@@ -246,7 +246,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <button type="button" class="button purple with-icon only-icon" ng-click="openActionsPopup(feesData.id,feesData.description[0].fees_desc,feesData.description[0].fees_amount,feesData.type.value,feesData.credits)" ng-show="showEditChargeButton(feesData.type.value)">
+                                            <button type="button" class="button purple with-icon only-icon" click-touch="openActionsPopup(feesData.id,feesData.description[0].fees_desc,feesData.description[0].fees_amount,feesData.type.value,feesData.credits)" ng-show="showEditChargeButton(feesData.type.value)">
                                                 <span class="icons icon-pencil"></span>
                                                 {{'EDIT' |translate}}
                                             </button>

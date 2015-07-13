@@ -51,6 +51,18 @@
                 </select>
             </div>
         </div>
+
+        <div class="entry margin" ng-show="shouldShowSegments">
+            <label for="origin">Segments<strong ng-show="otherData.segmentsIsForced">*</strong>
+            </label>
+            <div class="select">
+                <select iscroll-stop-propagation name="origin" id="origin" ng-class="{'placeholder': demographics.segment == ''}" ng-model="demographics.segment" ng-disabled="!!demographics.segment && !!summaryState.computedSegment">
+                    <option value="" translate>SEGMENT_PLACEHOLDER</option>
+                    <option ng-repeat="segment in otherData.segments" value="{{segment.value}}" ng-selected="segment.value==demographics.segment">{{segment.name}}</option>
+                </select>
+            </div>
+        </div>
+
         <div class="actions">
             <button type="button" class="button blank" ng-hide="summaryState.forceDemographicsData" ng-click="closeDialog()">
                 Cancel

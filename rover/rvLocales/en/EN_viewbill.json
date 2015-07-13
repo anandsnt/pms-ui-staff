@@ -96,6 +96,7 @@
 
     "BUSSINESS_DATE_HAS_CHANGED":"The Business Date has changed.",
     "ACCOUNT_ID_NIL_MESSAGE" : "No Company or Travel Agent card linked to this bill window. Please link card for Direct Bill check out.",
+    "ACCOUNT_ID_NIL_MESSAGE_PAYMENT" : "No Company or Travel Agent card linked to this bill window. Please link card for Direct Bill payment.",
     "ADVANCE_BILL_CONFIRM_TEXT" : "Create Advanced Bill?",
     "POST_CHARGES_LABEL": "Post Room Charges",
     "ADD_PAYMENT_TYPE":"Add Payment Type",

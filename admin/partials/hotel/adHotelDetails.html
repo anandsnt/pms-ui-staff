@@ -520,6 +520,25 @@
 			</button>
 
 		</fieldset>
+		<fieldset class="holder right" ng-show="isAdminSnt">
+			<div class="form-title">
+				<h3><span>Hotel</span> CC Desktop Swipe </h3>
+				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+			</div>
+
+			<div class="entry">
+				<label>Allow Desktop Swipe</label>
+				<div class="switch-button single" ng-class="{ on : data.allow_desktop_swipe == true }" ng-click="data.allow_desktop_swipe = !data.allow_desktop_swipe">
+					<input type="checkbox" value="{{data.allow_desktop_swipe}}">
+					<span class="switch-icon"></span>
+				</div>
+			</div>
+			<div class="entry">
+				<label for="mli-hotel-code"> CC Swipe Listening Port </label>
+				<input type="text" ng-model="data.cc_swipe_listening_port" value="{{data.cc_swipe_listening_port}}" placeholder="Enter CC swipe listening port" name="cc-swipe-listening-port">
+			</div>
+
+		</fieldset>
 
 		<div class="actions float">
 			<button type="button" ng-click ="back()" class="button blank">
@@ -527,9 +546,6 @@
 			</button>
 			<button type="button" ng-click="clickedSave()" class="button green">
 				Save Changes
-			</button>
-			<button type="button" ui-sref="admin.mapping({hotelId:id})"  ng-show="isAdminSnt && isEdit && data.hotel_pms_type ==='OWS'" class="button green">
-				Mappings
 			</button>
 			<button type="button" ui-sref="admin.users({id:id})" ng-show="isAdminSnt && isEdit" class="button green">
 				User Setup

@@ -57,4 +57,5 @@
     "CANCELLATION_CHARGE_CODE":"Cancellation Charge Code",
     "SELECT_CHARGE_CODE":"Select Charge Code",
     "NO_SHOW_CHARGE_CODE":"No show charge code",
-    "ADDONS_FOR_RESERVATIONS" : "Add-ons for Reservations"
+    "ADDONS_FOR_RESERVATIONS" : "Add-ons for Reservations",
+    "CUSTOM_GROUP_RATE_CHARGE_CODE":"Custom Group Rate Charge Code"

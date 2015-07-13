@@ -1,0 +1,65 @@
+<section class="content current" ng-click='clearErrorMessage()'>
+    <div class="inline-edit">
+        <header class="content-title float">
+            <h2 translate> SEGMENTS </h2>
+            <span class="count" ng-show="!!segmentData.baseData.segments.length"> ({{segmentData.baseData.segments.length}}) </span>
+            <a id="add-new-button" class="action add" ng-click="addNewSegment()" translate>ADD_NEW</a>
+            <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
+            <ad-toggle-button is-checked="segmentData.baseData.is_use_segments" ng-click="toggleSegmentsUse()" div-class="header-title" label="{{'USE_SEGMENTS'| translate}}">
+            </ad-toggle-button>
+        </header>
+        <section class="content-scroll">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div id="add-new" ng-show="segmentData.currentSegment == 'NEW'" ng-include="'/assets/partials/segments/adAddSegments.html'"></div>
+            <div id="new-form-holder"></div>
+            <table id="brands" class="grid datatable dataTable" ng-table="itemList" template-pagination="nil">
+                <tbody>
+                    <tr ng-repeat="segment in segmentData.baseData.segments track by $index">
+                        <td data-item="1" data-title="'Name'" ng-click="onEditSegment(segment, $index)" header-class="width-50" ng-hide="segmentData.currentSegment === $index">
+                            <a class="edit-data-inline">{{segment.name}}</a>
+                        </td>
+                        <td data-item="2" data-title="'Length of Stay'" ng-click="onEditSegment(segment, $index)" header-class="width-30" ng-hide="segmentData.currentSegment === $index">
+                            <a class="edit-data-inline">{{segment.los}}</a>
+                        </td>
+                        <td data-item="3" data-title="'Status'" class="" header-class="width-10" ng-hide="segmentData.currentSegment === $index">
+                            <div class="entry">
+                                <div class="switch-button single" ng-class="{ on: segment.is_active }">
+                                    <input type="checkbox" id="rates-addons" name="rates-addons" ng-click="onToggleActivation(segment)">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td header-class="width-10" data-title="'Delete'" class="delete" ng-hide="segmentData.currentSegment === $index">
+                            <a class="icons icon-delete large-icon" ng-click="deleteSegment(segment)">Delete this Segment</a>
+                        </td>
+                        <td colspan="4" ng-show="segmentData.currentSegment === $index">
+                            <div style="display: block;" id="add-new" class="edit-data">
+                                <div class="data-holder">
+                                    <!-- Edit Department -->
+                                    <form class="form inline-form float">
+                                        <div class="form-title">
+                                            <h3 translate><span></span> EDIT</h3>
+                                            <em class="status">{{'MANDATORY_FIELDS_MESSAGE1' | translate}}<strong>*</strong> {{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
+                                        </div>
+                                        <fieldset class="holder left float">
+                                            <ad-textbox value="segment.name" label="{{'NAME' | translate}}" placeholder="{{'SEGMENTS_NAME_PLACEHOLDER' | translate}}" required="yes"></ad-textbox>
+                                            <ad-textbox value="segment.los" label="{{'LOS' | translate}}" placeholder="{{'SEGMENTS_LOS_PLACEHOLDER' | translate}}" required="yes"></ad-textbox>
+                                        </fieldset>
+                                        <div class="actions float">
+                                            <button type="button" id="cancel" class="button blank edit-data-inline" ng-click="onCancelEdit($index)" translate>
+                                                CANCEL
+                                            </button>
+                                            <button type="button" id="save" class="button green edit-data-inline" ng-click="updateSegment(segment)" translate>
+                                                SAVE_CHANGES
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</section>

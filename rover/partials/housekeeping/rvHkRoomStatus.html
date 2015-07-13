@@ -14,21 +14,16 @@
 </div>
 
 <!-- Search form -->
-<form method="get" action="" name="rooms-search-form" id="rooms-search-form" class="search-form has-filters" role="search" ng-class="{'has-options': isStandAlone, 'single-option': (isStandAlone &&!topFilter.byWorkType), 'showing-filters': filterOpen }">
-    <a id="show-filters" class="filter button white with-icon only-icon" ng-click="showFilters()">
+<form method="get" action="" name="rooms-search-form" id="rooms-search-form" class="search-form room-search" role="search" ng-class="{'has-options': isStandAlone, 'single-option': (isStandAlone && !topFilter.byWorkType), 'showing-filters': filterOpen }">
+    <button type="button" id="show-filters" class="filter button white with-icon only-icon" ng-click="showFilters()">
         <span class="icons icon-filter"></span>
         <span translate>FILTER_ROOMS</span>
-    </a>
-
-    <div id="filter-actions" class="filter-actions">
-      <button class="button blank" ng-show="isFilterChcked()" ng-click="clearFilters()" type="button" translate>CLEAR</button>
-      <button type="button" class="button green" ng-click="filterDoneButtonPressed()" translate>APPLY</button>
-    </div>
+    </button>
     
     <div class="entry search">
-        <a class="clear-query" ng-show="query != ''" ng-click="clearSearch()" ng-class="{'visible': query != ''}">
+        <button type="button" class="clear-query" ng-show="query != ''" ng-click="clearSearch()" ng-class="{'visible': query != ''}">
             <span class="icons icon-clear-search ng-scope" translate>CLEAR_QUERY</span>
-        </a>
+        </button>
         <button type="submit" name="submit" class="icons icon-search" translate>MENU_SEARCH</button>
         <input name="rooms-query" id="rooms-query" class="query" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}" type="search" autocomplete="off" ng-model="query" ng-change="filterByQuery()">
     </div>
@@ -46,16 +41,27 @@
             </select>
         </div>
     </div>
-
-    <a id="refresh-data" class="filter button white with-icon only-icon" ng-click="refreshData()">
+    
+    <button type="button" id="refresh-data" class="filter button white with-icon only-icon refresh" ng-click="refreshData()">
         <span class="icons icon-reset"></span>
         <span translate>Refresh</span>
-    </a>
+    </button>
+
+    <button ng-if="isStandAlone" type="button" id="refresh-data" class="button blue with-icon only-icon print" ng-click="printData()">
+        <span class="icons icon-print"></span>
+        <span translate>Print</span>
+    </button>
+
+    <div id="filter-actions" class="filter-actions">
+      <button class="button blank" ng-show="isFilterChcked()" ng-click="clearFilters()" type="button" translate>CLEAR</button>
+      <button type="button" class="button green" ng-click="filterDoneButtonPressed()" translate>APPLY</button>
+    </div>
+
 </form>
 
 <ul id="my-worksheet-options" class="worksheet-options" ng-show="!!hasActiveWorkSheet">
-    <li ng-click="changeView('summary')" ng-class="{'active': currentView == 'summary'}">Summary</li>
-    <li ng-click="changeView('rooms')" ng-class="{'active': currentView == 'rooms'}">Rooms</li>
+    <li click-touch="changeView('summary')" ng-class="{'active': currentView == 'summary'}">Summary</li>
+    <li click-touch="changeView('rooms')" ng-class="{'active': currentView == 'rooms'}">Rooms</li>
 </ul>
 
 <ul id="my-worksheet-summary" class="worksheet-summary" ng-if="!!hasActiveWorkSheet" ng-class="{'hidden': currentView == 'rooms'}"> <!-- Add class 'hidden' should be removed when "Rooms" is selected in #my-worksheet-options -->
@@ -96,15 +102,17 @@
               <!-- Show only if applicable, {arrival-time} can be time or 'IN' if arrived -->
               <span bo-text="room.timeOrIn"></span>
             </div>
-            <div bo-if="!room.is_occupied" class="show-vacant">VACANT</div>
+            <span bo-if="room.is_queued" class="icons icon-queued"></div>
           </div>
 
           <!-- Show if room is assigned or ooo/oos -->
           <div class="additional-info" bo-class="{ 'on-hold': room.is_on_hold }">
             <!-- Show only if room is assigned -->
             <!-- if room is assigned -->
-            <span ng-if="isStandAlone && !room.canAssign" class="{{ room.assigned_staff.class }}">{{ room.assigned_staff.name }}</span>
-            <span ng-if="isStandAlone && room.canAssign" class="{{ room.assigned_staff.class }}" ng-click="$event.stopPropagation(); openAssignRoomModal(room);">{{ room.assigned_staff.name }}</span>
+            <span ng-if="isStandAlone && !room.canAssign&& isHourlyRateOn" class="{{ room.assigned_staff.class }}"></span>
+            <span ng-if="isStandAlone && !room.canAssign&& !isHourlyRateOn" class="{{ room.assigned_staff.class }}">{{ room.assigned_staff.name }}</span>
+            <span ng-if="isStandAlone && room.canAssign && isHourlyRateOn" class="{{ room.assigned_staff.class }}" ng-click="$event.stopPropagation();roomListItemClicked()"></span>
+            <span ng-if="isStandAlone && room.canAssign && !isHourlyRateOn" class="{{ room.assigned_staff.class }}" ng-click="$event.stopPropagation(); openAssignRoomModal(room);">{{ room.assigned_staff.name }}</span>
             <!-- Show only if room is not in service -->
             <span bo-if="room.ooOsTitle" bo-text="room.ooOsTitle" class="service-status"></span>
           </div>
@@ -114,6 +122,9 @@
             <span bo-if="room.is_vip" class="vip" translate>VIP</span>
             <img bo-src-i="{{room.avatar_src}}" alt="" />
           </figure>
+            
+          <!-- Show only if room is vacant -->
+          <div bo-if="!room.is_occupied" class="show-vacant">VACANT</div>
         </a>
     </li>
 
@@ -229,6 +240,14 @@
                     </label>
                 </div>
             </div>
+            <div class="holder" ng-if="!isStandAlone">
+                <strong class="title" translate>ROOM_TYPE_FILTER_TITLE</strong>
+                <div class="select">
+                    <select ng-options="type.id as type.name for type in roomTypes"  ng-model="currentFilters.singleRoomType" ng-change="singleRoomTypeFiltered()">
+                        <option value="" selected>All Room Types</option>
+                    </select>
+                </div>
+            </div>
             <div class="holder">
                 <strong class="title" translate>RESERVATION_STATUS</strong>
                 <div class="entry radio-check">
@@ -250,6 +269,13 @@
                         <span class="icon-form icon-checkbox" ng-class="{'checked' : currentFilters.queued}"></span>
                         <input name="room-filters" type="checkbox" ng-model="currentFilters.queued">
                         <label translate>SHOW_QUEUED</label>
+                    </label>
+                </div>
+                <div class="entry radio-check">
+                    <label class="checkbox">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked' : currentFilters.lateCheckout}"></span>
+                        <input name="room-filters" type="checkbox" ng-model="currentFilters.lateCheckout">
+                        <label translate>Late Checkout</label>
                     </label>
                 </div>
             </div>

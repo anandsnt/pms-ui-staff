@@ -1,16 +1,27 @@
-<div class ="topbar">
-	<ul>
-		<li ng-show="backbuttonEnabled"><a ng-click="backButtonClicked()" class="back-button">Back</a></li>
-		<li><h6>Date Range</h6>{{currentFilterData.begin_date|date : dateFormat}} to {{currentFilterData.end_date|date : dateFormat}}</li>
-		<li ng-show="ratesDisplayed.length > 0"><h6>Rate</h6><span ng-repeat="rate in ratesDisplayed">{{rate.name}}{{$last ? '' : ', '}}</span></li>
-		<li ng-show="currentFilterData.name_cards.length > 0"><h6>Name Card</h6><span ng-repeat="card in currentFilterData.name_cards">{{card.account_name}}{{$last ? '' : ', '}}</span></li>
-	</ul>
-	<ul class="display-mode" >
-		<li ng-click="showCalendarView()" class="active" ng-class="{'active' : displayMode == 'CALENDAR'}">
-			<span class="icons icon-navbar only-icon icon-grid active" ng-class="{'active' : displayMode == 'CALENDAR'}">Show grid</span>
+<div class="topbar float">
+	<ul class="info" ng-class="{'has-back' : backbuttonEnabled, 'has-rates' : ratesDisplayed.length > 0, 'has-card' : currentFilterData.name_cards.length > 0}">
+		<li class="back" ng-show="backbuttonEnabled">
+			<a ng-click="backButtonClicked()" class="back-button">Back</a>
 		</li>
-		<li ng-click="showGraphView()" ng-class="{'active' : displayMode == 'GRAPH'}">
-			<span class="icons icon-navbar only-icon icon-graph" ng-class="{'active' : displayMode == 'GRAPH'}">Show graph</span>
+		<li class="dates">
+			<strong>Date Range</strong>
+			<span>{{currentFilterData.begin_date|date : dateFormat}} to {{currentFilterData.end_date|date : dateFormat}}</span>
+		</li>
+		<li class="rates" ng-show="ratesDisplayed.length > 0">
+			<strong>Rate</strong>
+			<span ng-repeat="rate in ratesDisplayed">{{rate.name}}{{$last ? '' : ', '}}</span>
+		</li>
+		<li class="card" ng-show="currentFilterData.name_cards.length > 0">
+			<strong>Name Card</strong>
+			<span ng-repeat="card in currentFilterData.name_cards">{{card.account_name}}{{$last ? '' : ', '}}</span>
+		</li>
+	</ul>
+	<ul class="display-mode">
+		<li click-touch="showCalendarView()" class="active" ng-class="{'active' : displayMode == 'CALENDAR'}">
+			<span class="icons icon-navbar only-icon icon-grid active" ng-class="{'active' : displayMode == 'CALENDAR'}" title="Show grid"> </span>
+		</li>
+		<li click-touch="showGraphView()" ng-class="{'active' : displayMode == 'GRAPH'}">
+			<span class="icons icon-navbar only-icon icon-graph" ng-class="{'active' : displayMode == 'GRAPH'}" title="Show graph"></span>
 		</li>
 	</ul>
 </div>

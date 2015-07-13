@@ -51,8 +51,17 @@
                 
                 <!--ACCOUNT, TRANSACTIONS, ACTIVITY -->
                 
-                <ng-include src="getCurrentTabUrl()">
+                <ng-include src="'/assets/partials/accounts/accountsTab/rvAccountsSummary.html'" 
+                        ng-show="accountConfigData.activeTab == 'ACCOUNT'">
                 </ng-include>
+
+                <ng-include src="'/assets/partials/accounts/transactions/rvAccountTransactions.html'" 
+                        ng-show="accountConfigData.activeTab == 'TRANSACTIONS'">
+                </ng-include>     
+                
+                <ng-include src="'/assets/partials/groups/activity/rvGroupConfigurationActivityTab.html'" 
+                        ng-show="accountConfigData.activeTab == 'ACTIVITY'">
+                </ng-include>                            
             </div>
         </div>
     </div>

@@ -25,7 +25,7 @@
                         </td>
                         <td>
                             <span>BILL TO:</span>
-                            <strong>{{ printRegCardData.name }}</strong>
+                            <strong>{{ printRegCardData.bill_to.name }}</strong>
                             <strong ng-if="printRegCardData.bill_to.street1 || printRegCardData.bill_to.street2">{{ printRegCardData.bill_to.street1 }} {{ printRegCardData.bill_to.street2 }}</strong>
                             <strong>
                                 <label ng-if="printRegCardData.bill_to.city"> {{ printRegCardData.bill_to.city }},  </label>
@@ -39,15 +39,32 @@
                     <tr>
                         <td>
                             <span>ARRIVAL DATE:</span>
-                            <strong>{{ printRegCardData.arrival_date }}</strong>
+                            <strong>{{ printRegCardData.arrival_date | date : dateFormat }}</strong>
                         </td>
                         <td>
                             <span>DEPARTURE DATE:</span>
-                            <strong>{{ printRegCardData.dep_date }}</strong>
+                            <strong>{{ printRegCardData.dep_date | date : dateFormat }}</strong>
                         </td>
                         <td>
                             <span>CONFIRMATION:</span>
                             <strong>{{ printRegCardData.confirm_no }}</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>ARRIVAL TIME:</span>
+                            <strong>{{ printRegCardData.arrival_time }}</strong>
+                            <span>&nbsp;</span>
+                        </td>
+                        <td>
+                            <span>DEPARTURE TIME:</span>
+                            <strong>{{ printRegCardData.departure_time }}</strong>
+                            <span>&nbsp;</span>
+                        </td>
+                        <td>
+                        	<span>ROOM:</span>
+                        	<strong>{{ printRegCardData.room_number}}</strong>
+                        	<span>&nbsp;</span>
                         </td>
                     </tr>
                     <tr>
@@ -128,7 +145,7 @@
 
 <table class="terms-signature">
     <tr>
-        <td colspan="2" class="terms">{{ printRegCardData.terms_conditions }}</td>
+        <td colspan="2" class="terms" ng-bind-html="printRegCardData.terms_conditions"></td>
     </tr>
     <tr>
         <td>

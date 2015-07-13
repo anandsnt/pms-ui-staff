@@ -91,6 +91,27 @@
             </div>
         </div>
 
+        <!-- [<[< SEGMENTS >]>] -->
+        <div class="entry margin" ng-show="groupSummaryData.demographics.is_use_segments">
+            <label for="origin">
+                Segment
+                <!-- <strong ng-show="">*</strong> -->
+            </label>
+            <div class="select">
+                <select iscroll-stop-propagation name="segment" id="segment" 
+                    ng-class="{'placeholder': !groupConfigData.summary.demographics.segment_id}" 
+                    ng-model="groupConfigData.summary.demographics.segment_id"
+                    ng-disabled="!!groupConfigData.summary.demographics.segment_id && !!groupSummaryData.computedSegment">
+                    <option value="" selected translate>SEGMENT_PLACEHOLDER</option>
+                    <option ng-repeat="segment in groupSummaryData.demographics.segments" 
+                        value="{{segment.value}}" 
+                        ng-selected="segment.value == groupConfigData.summary.demographics.segment_id">
+                        {{segment.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
 
         <div class="actions">
             <button type="button" 

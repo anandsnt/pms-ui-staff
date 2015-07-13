@@ -82,7 +82,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 		this.getRoomBlockGridDetails = function(param) {
 			var deferred = $q.defer(),
 				url = '/api/groups/' + param.group_id + '/inventories';
-			//url = '/ui/show?format=json&json_input=groups/griddata.json';				
+			//url = '/ui/show?format=json&json_input=groups/griddata.json';
 			rvBaseWebSrvV2.getJSON(url).then(
 				function(data) {
 					deferred.resolve(data);
@@ -157,6 +157,22 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 
 			return deferred.promise;
 		};
+
+
+		this.cancelGroup = function(params) {
+			var deferred = $q.defer(),
+				url = '/api/groups/'+params.group_id+'/cancel';
+			rvBaseWebSrvV2.postJSON(url, params).then(
+				function(data) {
+					deferred.resolve(data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;
+		}
 
 		/**
 		 * Function to get Room type availablity as well as best availbale rate
@@ -368,8 +384,8 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 
 		this.removeRoomingListItem = function(data) {
 			var deferred = $q.defer(),
-				url = 'api/group_reservations/' + data.id;
-			rvBaseWebSrvV2.deleteJSON(url, data)
+				url = 'api/group_reservations/' + data.id + '/cancel';
+			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
 				}.bind(this), function(data) {

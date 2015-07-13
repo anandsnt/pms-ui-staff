@@ -9,23 +9,12 @@
             
             <div class="entry full-width" ng-show="guestCardData.likes.newspapers.length >0">
                 <label for="newspaper" translate>NEWSPAPER</label>
-                <!-- <input name="newspaper" id="newspaper" value="Wall Street Journal" type="text" /> -->
-                <select ng-model="guestCardData.likes.user_newspaper">
-                    <option value=""></option>
-                    <option ng-selected="newspapers.id == guestCardData.likes.user_newspaper" ng-repeat="newspapers in guestCardData.likes.newspapers" value="{{newspapers.id}}">
-                        {{newspapers.name}}
-                    </option>
-                </select>
+                <select iscroll-stop-propagation  ng-options="newspapers.id as newspapers.name for newspapers in guestCardData.likes.newspapers" ng-model="guestCardData.likes.user_newspaper">
             </div>
             
             <div class="entry full-width" ng-show="guestCardData.likes.roomtype.length >0">
                 <label for="roomtype" translate>ROOM_TYPE</label>
-                <select ng-model="guestCardData.likes.user_roomtype">
-                    <option value=""></option>
-                    <option ng-selected="roomtype.id == guestCardData.likes.user_roomtype" ng-repeat="roomtype in guestCardData.likes.roomtype" value="{{roomtype.id}}">
-                        {{roomtype.name}}
-                    </option>
-                </select>
+                <select iscroll-stop-propagation  ng-options="roomtype.id as roomtype.name for roomtype in guestCardData.likes.roomtype" ng-model="guestCardData.likes.user_roomtype">
             </div>
             
             <div class="entry radio-check" ng-show="guestCardData.likes.preferences.length >0" ng-repeat="preferences in guestCardData.likes.preferences">

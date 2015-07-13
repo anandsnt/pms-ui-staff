@@ -1,5 +1,5 @@
-sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ngDialog', 'RVKeyPopupSrv',  'RVReservationCardSrv',
-	function($state, $rootScope, $scope, ngDialog, RVKeyPopupSrv, RVReservationCardSrv){
+sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ngDialog', 'RVKeyPopupSrv',  'RVReservationCardSrv','rvPermissionSrv',
+	function($state, $rootScope, $scope, ngDialog, RVKeyPopupSrv, RVReservationCardSrv,rvPermissionSrv){
 	BaseCtrl.call(this, $scope);
 	$scope.encoderTypes = [];
 	$scope.getRoomClass = function(reservationStatus){
@@ -15,12 +15,12 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		}
 		return reservationRoomClass;
 	};
-	
+
 	$scope.getRoomStatusClass = function(reservationStatus, roomStatus, foStatus, roomReadyStatus, checkinInspectedOnly){
-		
+
 		var reservationRoomStatusClass = "";
 		if(reservationStatus == 'CHECKING_IN'){
-			
+
 			if(roomReadyStatus!=''){
 				if(foStatus == 'VACANT'){
 					switch(roomReadyStatus) {
@@ -40,22 +40,22 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 						case "PICKUP":
 							reservationRoomStatusClass = " room-orange";
 							break;
-			
+
 						case "DIRTY":
 							reservationRoomStatusClass = " room-red";
 							break;
 
 		        }
-				
+
 				} else {
 					reservationRoomStatusClass = "room-red";
 				}
-				
+
 			}
-		} 
+		}
 		return reservationRoomStatusClass;
 	};
-	
+
 	$scope.showUpgradeButton = function(reservationStatus,  isUpsellAvailable){
 		var showUpgrade = false;
 		if($scope.hasAnySharerCheckedin()){
@@ -74,8 +74,15 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		if((reservationStatus == 'CHECKING_IN' && $scope.reservationData.reservation_card.room_number != '')|| reservationStatus == 'CHECKING_OUT' || reservationStatus == 'CHECKEDIN'){
 			showKey = true;
 		}
+                //then check if the current user has permission
+                if (!$scope.hasPermissionToCreateKeys()){
+                    showKey = false;
+                }
 		return showKey;
 	};
+        $scope.hasPermissionToCreateKeys = function() {
+                return rvPermissionSrv.getPermissionValue('CREATE_KEY');
+        };
 	$scope.addHasButtonClass = function(reservationStatus,  isUpsellAvailable){
 		var hasButton = "";
 		if($scope.showKeysButton(reservationStatus) && $scope.showUpgradeButton(reservationStatus,  isUpsellAvailable)){
@@ -86,52 +93,79 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		}
 		return hasButton;
 	};
-	
 	// To handle click of key icon.
-	$scope.clickedIconKey = function(event){
-		event.stopPropagation();
+	$scope.clickedIconKey = function(){
 		var keySettings = $scope.reservationData.reservation_card.key_settings;
+                console.log('clicked key icon: ');
+                console.log($scope.reservationData.reservation_card.reservation_status);
 		$scope.viewFromBillScreen = false;
 		if(keySettings === "email"){
-			
-			ngDialog.open({
-				 template: '/assets/partials/keys/rvKeyEmailPopup.html',
-				 controller: 'RVKeyEmailPopupController',
-				 className: '',
-				 scope: $scope
-			});
+                    ngDialog.open({
+                        template: '/assets/partials/keys/rvKeyEmailPopup.html',
+                        controller: 'RVKeyEmailPopupController',
+                        className: '',
+                        scope: $scope
+                    });
+		} else if ($scope.reservationData.reservation_card.reservation_status !== 'CHECKING_IN'){
+                    ngDialog.open({
+                        template: '/assets/partials/keys/rvKeyPopupNewDuplicate.html',
+                        controller: 'RVKeyQRCodePopupController',
+                        className: '',
+                        scope: $scope
+                    });
+                } else if ($scope.reservationData.reservation_card.reservation_status === 'CHECKING_IN'){
+                    $scope.newKeyInit();
+                }
+	};
+
+        $scope.keyInitPopup = function(){
+
+		var keySettings = $scope.reservationData.reservation_card.key_settings;
+		 if(keySettings === "qr_code_tablet"){
+
+                    //Fetch and show the QR code in a popup
+                    var	reservationId = $scope.reservationData.reservation_card.reservation_id;
+
+                    var successCallback = function(data){
+                            $scope.$emit('hideLoader');
+                            $scope.data = data;
+
+                        ///put NEW / Duplicate here
+                            ngDialog.open({
+                                     template: '/assets/partials/keys/rvKeyQrcodePopup.html',
+                                     controller: 'RVKeyQRCodePopupController',
+                                     className: '',
+                                     scope: $scope
+                            });
+                    };
+
+                    $scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData,{ "reservationId": reservationId }, successCallback);
 		}
-		else if(keySettings === "qr_code_tablet"){
 
-			//Fetch and show the QR code in a popup
-			var	reservationId = $scope.reservationData.reservation_card.reservation_id;
-
-			var successCallback = function(data){
-				$scope.$emit('hideLoader');
-				$scope.data = data;
-				ngDialog.open({
-					 template: '/assets/partials/keys/rvKeyQrcodePopup.html',
-					 controller: 'RVKeyQRCodePopupController',
-					 className: '',
-					 scope: $scope
-				});	
-			}
-
-			$scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData,{ "reservationId": reservationId }, successCallback);  
-
-			
-			
-		}
-		
 		//Display the key encoder popup
 		else if(keySettings === "encode"){
-			if($scope.reservationData.reservation_card.hotel_selected_key_system == 'SAFLOK_MSR' && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0){
-				fetchEncoderTypes();
-			} else {
-				openKeyEncodePopup();
-			}
+			console.log("keySettings ----" + keySettings);
+			console.log($scope.reservationData.reservation_card.is_remote_encoder_enabled);
+			console.log($scope.encoderTypes);
+                    if($scope.reservationData.reservation_card.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0){
+                        fetchEncoderTypes();
+                    } else {
+                        openKeyEncodePopup();
+                    }
 		}
-	};
+        };
+
+        $scope.duplicateKeyInit = function(){
+            $scope.keyType = 'Duplicate';
+            $scope.keyInitPopup();
+            $rootScope.$broadcast('MAKE_KEY_TYPE',{type:'Duplicate'});
+        };
+
+        $scope.newKeyInit = function(){
+            $scope.keyType = 'New';
+            $scope.keyInitPopup();
+            $rootScope.$broadcast('MAKE_KEY_TYPE',{type:'New'});
+        };
 
 	var openKeyEncodePopup = function(){
 		ngDialog.open({
@@ -140,21 +174,22 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		    className: '',
 		    scope: $scope
 		});
-	}
+	};
 
-	//Fetch encoder types for SAFLOK_MSR
+	//Fetch encoder types for if remote encoding enabled
 	var fetchEncoderTypes = function(){
+		console.log("fetchEncoderTypes");
 
 		var encoderFetchSuccess = function(data){
 			$scope.$emit('hideLoader');
 			$scope.encoderTypes = data;
-
+			console.log($scope.encoderTypes);
 			openKeyEncodePopup();
 		};
 
 	    $scope.invokeApi(RVKeyPopupSrv.fetchActiveEncoders, {}, encoderFetchSuccess);
 	};
-	
+
 	/**
 	* function for close activity indicator.
 	*/
@@ -174,7 +209,7 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		RVReservationCardSrv.checkinDateForDiary = $scope.reservationData.reservation_card.arrival_date.replace(/-/g, '/');
 		$state.go('rover.diary', {
 			reservation_id: $scope.reservationData.reservation_card.reservation_id,
-			checkin_date: $scope.reservationData.reservation_card.arrival_date,
+			checkin_date: $scope.reservationData.reservation_card.arrival_date
 		});
 	}
 	/**
@@ -193,8 +228,20 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		}else if($scope.reservationData.reservation_card.reservation_status=="CHECKEDIN"){
 			$state.go("rover.reservation.staycard.roomassignment", {reservation_id:$scope.reservationData.reservation_card.reservation_id, room_type:$scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton"});
 		}
-		
+
 	};
 
-	
+        $scope.$watch('reservationData.reservation_card.room_number',function(){
+           if ($rootScope.viaSharerPopup){
+                $rootScope.$broadcast('SETPREV_RESERVATION',$rootScope.viaSharerName);
+                $rootScope.viaSharerPopup = false;
+           }
+        });
+
+        $rootScope.$on('VIA_SHARER_ON',function(fullname){
+            $scope.reservationData.viaSharerName = fullname;
+            $rootScope.viaSharerPopup = true;
+        });
+
+
 }]);

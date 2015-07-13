@@ -20,6 +20,7 @@
 "EVERYONE":"Everyone",
 "SPECIFIC_USERS":"Specific User(s)",
 "EXTERNAL_CHECKIN":"External Checkin",
+"EXTERNAL_CHECKOUT":"External Checkout",
 
 "MESSAGE":"Message",
 "IN_APP":"in App",

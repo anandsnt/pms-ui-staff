@@ -9,7 +9,7 @@ admin.service('ADRatesAddonsSrv', [
 		* @method GET
 		* @param {object} contains page and per_page params
 		* @return {object} defer promise
-		*/	
+		*/
 		this.fetch = function(params) {
 			var deferred = $q.defer(),
 				url      = '/api/addons',

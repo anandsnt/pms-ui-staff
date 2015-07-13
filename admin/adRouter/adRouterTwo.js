@@ -12,6 +12,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/holdStatus'
 		});
 
+		$stateProvider.state('admin.segment', {
+			templateUrl: '/assets/partials/segments/adSegments.html',
+			controller: 'ADReservationSegmentsCtrl',
+			url : '/segments'
+		});
+
 		$stateProvider.state('admin.rates', {
 			templateUrl: '/assets/partials/rates/adRatesList.html',
 			controller: 'ADRatesListCtrl',
@@ -308,6 +314,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/rates_addons'
 		});
 
+		$stateProvider.state('admin.ratesSequence', {
+			templateUrl: '/assets/partials/rateSequence/adRatesSequence.html',
+			controller: 'ADRatesSequenceCtrl',
+			url : '/rates_sequence'
+		});
+
 		$stateProvider.state('admin.userRoles', {
 			templateUrl: '/assets/partials/UserRoles/adUserRoles.html',
 			controller: 'ADUserRolesCtrl',
@@ -441,6 +453,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			templateUrl: '/assets/partials/AnalyticSetup/adAnalyticSetup.html',
 			controller: 'adAnalyticSetupCtrl',
 			url : '/analyticSetup'
+		});
+
+		$stateProvider.state('admin.zestAddons', {
+			templateUrl: '/assets/partials/zestAddonSetup/adZestAddonSetup.html',
+			controller: 'adZestAddonSetupCtrl',
+			url : '/zestAddonSetup'
 		});
                 
 		$stateProvider.state('admin.sitemindersSetup', {

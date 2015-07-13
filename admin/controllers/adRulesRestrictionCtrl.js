@@ -8,16 +8,19 @@ admin.controller('ADRulesRestrictionCtrl', [
 
         var init = function(){
             BaseCtrl.call(this, $scope);
+            // lets empty lists all before fetch
+            $scope.cancelRulesList = [];
+            $scope.depositRuleslList = [];
+            $scope.selectedSchedule =null;
             $scope.ruleList = {};
+            fetchRestrictions();
         }
-
-        init();
 
         /**
         * To fetch restrictions list
         */
-        $scope.fetchRestrictions = function() {
-            var fetchHotelLikesSuccessCallback = function(data) {
+        var fetchRestrictions = function() {
+            var fetchRestrictionsSuccessCallback = function(data) {
                 $scope.$emit('hideLoader');
 
                 $scope.ruleList = data.results;
@@ -27,16 +30,18 @@ admin.controller('ADRulesRestrictionCtrl', [
                 var cancelPolicy = _.find($scope.ruleList, function(item) {
                     return item.description === 'Cancellation Penalties';
                 });
-                $scope.fetchRuleList(cancelPolicy);
+                fetchRuleCancellationPenalitiesList(cancelPolicy);
+
 
                 // preload rules under - DEPOSIT_REQUEST
                 var depositPolicy = _.find($scope.ruleList, function(item) {
                     return item.description === 'Deposit Requests';
                 });
-                $scope.fetchRuleList(depositPolicy);
+                console.log(depositPolicy);
+                fetchRuleDepositPoliciesList(depositPolicy);
             };
 
-            $scope.invokeApi(ADRulesRestrictionSrv.fetchRestrictions, {}, fetchHotelLikesSuccessCallback);
+            $scope.invokeApi(ADRulesRestrictionSrv.fetchRestrictions, {}, fetchRestrictionsSuccessCallback);
 
             // lets fetch post_types too
             $scope.invokeApi(ADRulesRestrictionSrv.fetchRefVales, { type: 'post_type' }, function(data) {
@@ -55,8 +60,6 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.$emit('hideLoader');
             });
         };
-
-        $scope.fetchRestrictions();
 
         /*
         * To handle switch
@@ -83,7 +86,6 @@ admin.controller('ADRulesRestrictionCtrl', [
             if ( !this.item ) {
                 return;
             };
-
             // if this is sysdef return
             if ( !this.item.editable || this.item.description === 'Levels' ) {
                 return;
@@ -98,39 +100,39 @@ admin.controller('ADRulesRestrictionCtrl', [
             };
         };
 
-        // lets empty lists all before fetch
-            $scope.cancelRulesList = [];
-            $scope.depositRuleslList = [];
-
         // fetch rules under editable restrictions
-        $scope.fetchRuleList = function(item) {
 
+        var fetchRuleCancellationPenalitiesList = function(item) {
+            // hide any open forms
+            $scope.showCancelForm = false;
+            $scope.showDepositForm = false;
             // if this is sysdef return
             if ( !item.editable || item.description === 'Levels' ) {
                 return;
             };
-
-            var ruleType = item.description === 'Cancellation Penalties' ? 'CANCELLATION_POLICY' :
-                             item.description === 'Deposit Requests' ? 'DEPOSIT_REQUEST' : '';
-
+            var ruleType ='CANCELLATION_POLICY';
+            // fetch the appropriate policy
+            var callback = function(data) {
+                $scope.cancelRulesList = data.results;
+                $scope.$emit('hideLoader');
+            };
+            $scope.invokeApi(ADRulesRestrictionSrv.fetchCancellationRules, { policy_type: ruleType }, callback);
+        };
+        var fetchRuleDepositPoliciesList = function(item) {
             // hide any open forms
             $scope.showCancelForm = false;
             $scope.showDepositForm = false;
-
+            // if this is sysdef return
+            if ( !item.editable || item.description === 'Levels' ) {
+                return;
+            };
+            var ruleType = 'DEPOSIT_REQUEST';
             // fetch the appropriate policy
             var callback = function(data) {
-                if ( ruleType === 'CANCELLATION_POLICY' ) {
-                    $scope.cancelRulesList = data.results;
-                };
-
-                if ( ruleType === 'DEPOSIT_REQUEST' ) {
-                    $scope.depositRuleslList = data.results;
-                };
-
+                $scope.depositRuleslList = data.results;
                 $scope.$emit('hideLoader');
             };
-
-            $scope.invokeApi(ADRulesRestrictionSrv.fetchRules, { policy_type: ruleType }, callback);
+            $scope.invokeApi(ADRulesRestrictionSrv.fetchDepositeRules, {},callback);
         };
 
         $scope.showPolicyArrow = function() {
@@ -154,137 +156,155 @@ admin.controller('ADRulesRestrictionCtrl', [
         };
 
         // open the form to add a new rule
-        $scope.openAddNewRule = function() {
+        $scope.openAddNewRuleForDepositePolicy = function() {
+            $scope.rulesTitle = 'New';
+            $scope.updateRule = false;
+            $scope.singleRule = {};
+            $scope.singleRule.schedules =[];
+                var newSchedule = {
+                "amount":null,
+                "amount_type":"",
+                "auto_charge_on_due_date":false,
+                "advance_days":null,
+                "post_type_id":null
+                };
+            $scope.singleRule.schedules.push(newSchedule);
+            $scope.selectedSchedule =  $scope.singleRule.schedules[0];
+            // identify the restriction
+            $scope.showCancelForm = false;
+            $scope.showDepositForm = true;
+            $scope.rulesSubtitle = 'Deposit Request';
+        };
+
+        $scope.openAddNewRuleForCancelationPolicy = function() {
             $scope.rulesTitle = 'New';
             $scope.updateRule = false;
             // identify the restriction
-            if ( this.item.description === 'Cancellation Penalties' ) {
-                $scope.showCancelForm = true;
-                $scope.showDepositForm = false;
-
-                $scope.rulesSubtitle = 'Cancellation Penalty';
-
-                $scope.singleRule = {};
-                $scope.singleRule.advance_primetime = "AM";
-                $scope.singleRule.policy_type = 'CANCELLATION_POLICY';
-            }
-
-            if ( this.item.description === 'Deposit Requests' ) {
-                $scope.showCancelForm = false;
-                $scope.showDepositForm = true;
-
-                $scope.rulesSubtitle = 'Deposit Request';
-
-                $scope.singleRule = {};
-                $scope.singleRule.policy_type = 'DEPOSIT_REQUEST';
-            }
+            $scope.showCancelForm = true;
+            $scope.showDepositForm = false;
+            $scope.rulesSubtitle = 'Cancellation Penalty';
+            $scope.singleRule = {};
+            $scope.singleRule.advance_primetime = "AM";
+            $scope.singleRule.policy_type = 'CANCELLATION_POLICY';
         };
+        $scope.selectSchedule = function(index){
+            $scope.selectedSchedule = $scope.singleRule.schedules[index];
+            $scope.selectedScheduleIndex = index;
+        }
 
         // open the form to edit a rule
-        $scope.editSingleRule = function(rule, from) {
-            var rule = rule,
-                from = from;
-
+        $scope.editSingleDepositeRule = function(rule) {
+            var rule = rule;
             var callback = function(data) {
-                
-                // clear any previous data
                 $scope.singleRule = data;
-
+                $scope.selectedSchedule =  $scope.singleRule.schedules[0];
+                $scope.selectedScheduleIndex = 0;
                 $scope.singleRule.allow_deposit_edit = (data.allow_deposit_edit !=="" &&  data.allow_deposit_edit)? true : false;
-                /*var amtString = $scope.singleRule.amount + '',
-                    num       = amtString.split('.')[0],
-                    dec       = amtString.split('.')[1] * 1;
-
-                if ( dec < 9 ) {
-                    dec += '0';
-                };
-
-                $scope.singleRule.amount = num + '.' + dec;*/
-
-                if ( from === 'Cancellation Penalties' ) {
-                    $scope.singleRule.policy_type = 'CANCELLATION_POLICY';
-
-                    // need to split HH:MM into individual keys
-                    var hhmm, hh, mm, ampm;
-                    if ( $scope.singleRule.advance_time ) {
-                        var hhmm = dateFilter( $scope.singleRule.advance_time, 'hh:mm a' );
-
-                        hh = hhmm.split(':')[0];
-                        mm = hhmm.split(':')[1].split(' ')[0];  
-                        ampm = hhmm.split(':')[1].split(' ')[1];
-                        // convert string to number
-                        hh *= 1;
-                        
-                        // if ( hh > 12 ) {
-                        //     $scope.singleRule.advance_primetime = 'PM';
-                        //     hh -= 12;
-                        // } else {
-                        //     $scope.singleRule.advance_primetime = 'AM';
-                        // }
-
-                        // // padding 0 and converting back to string
-                        // if ( hh < 9 ) {
-                        //     hh = '0' + hh;
-                        // } else {
-                        //     hh += '';
-                        // }
-
-                        $scope.singleRule.advance_hour = hh;
-                        $scope.singleRule.advance_min = mm;
-                        $scope.singleRule.advance_primetime = ampm;
-                    };
-
-
-                    $scope.showCancelForm = true;
-                    $scope.showDepositForm = false;
-                }
-
-                if ( from === 'Deposit Requests' ) {
-                    $scope.singleRule.policy_type = 'DEPOSIT_REQUEST';
-
-                    $scope.showCancelForm = false;
-                    $scope.showDepositForm = true;
-                }
-
+                $scope.showCancelForm = false;
+                $scope.showDepositForm = true;
                 $scope.rulesTitle = 'Edit';
                 $scope.rulesSubtitle = $scope.singleRule.name + ' Rule';
-
                 // flag to know that we are in edit mode
                 $scope.updateRule = true;
-
                 $scope.$emit('hideLoader');
             };
-
-            $scope.invokeApi(ADRulesRestrictionSrv.fetchSingleRule, { id: rule.id }, callback);
+            $scope.invokeApi(ADRulesRestrictionSrv.fetchSingleDepositeRule, { id: rule.id }, callback);
         };
 
+        $scope.editSingleCancellationRule = function(rule) {
+            var rule = rule;
+            var callback = function(data) {
+                // clear any previous data
+                $scope.singleRule = data;
+                $scope.singleRule.allow_deposit_edit = (data.allow_deposit_edit !=="" &&  data.allow_deposit_edit)? true : false;
+                $scope.singleRule.policy_type = 'CANCELLATION_POLICY';
+                // need to split HH:MM into individual keys
+                var hhmm, hh, mm, ampm;
+                if ( $scope.singleRule.advance_time ) {
+                    var hhmm = dateFilter( $scope.singleRule.advance_time, 'hh:mm a' );
+                    hh = hhmm.split(':')[0];
+                    mm = hhmm.split(':')[1].split(' ')[0];
+                    ampm = hhmm.split(':')[1].split(' ')[1];
+                    // convert string to number
+                    hh *= 1;
+                    $scope.singleRule.advance_hour = hh;
+                    $scope.singleRule.advance_min = mm;
+                    $scope.singleRule.advance_primetime = ampm;
+                };
+                $scope.showCancelForm = true;
+                $scope.showDepositForm = false;
+                $scope.rulesTitle = 'Edit';
+                $scope.rulesSubtitle = $scope.singleRule.name + ' Rule';
+                // flag to know that we are in edit mode
+                $scope.updateRule = true;
+                $scope.$emit('hideLoader');
+            };
+            $scope.invokeApi(ADRulesRestrictionSrv.fetchCancellationSingleRule, { id: rule.id }, callback);
+        };
         // hide all forms
         $scope.cancelCliked = function() {
             $scope.showCancelForm = false;
             $scope.showDepositForm = false;
-
-            // if ( this.item.description === 'Cancellation Penalties' ) {
-            //     $scope.showCancelList = $scope.showCancelList ? false : true;
-            // };
-
-            // if ( this.item.description === 'Deposit Requests' ) {
-            //     $scope.showDepositList = $scope.showDepositList ? false : true;
-            // };
         };
 
+        $scope.addNewSchedule = function(){
+            var newSchedule = {
+                "amount":null,
+                "amount_type":"",
+                "auto_charge_on_due_date":false,
+                "advance_days":null,
+                "post_type_id":null
+            };
+            $scope.singleRule.schedules.push(newSchedule);
+             $scope.selectedSchedule = $scope.singleRule.schedules[$scope.singleRule.schedules.length-1];
+             $scope.selectedScheduleIndex = $scope.singleRule.schedules.length-1;
+        }
+
         // save a new rule or update an edited rule
-        $scope.saveUpdateRule = function(from) {
+        $scope.saveUpdateDepositeRule = function(from) {
             var from = from,
                 saveCallback,
                 updateCallback;
-            
+
+            // if we are in update (or edit) mode
+            if ( $scope.updateRule ) {
+                updateCallback = function(data) {
+                    fetchRuleDepositPoliciesList({
+                        editable: true,
+                        description: from
+                    });
+                    $scope.showDepositForm = false;
+                    // we have completed the edit
+                    $scope.updateRule = false;
+                    $scope.$emit('hideLoader');
+                };
+
+                $scope.invokeApi(ADRulesRestrictionSrv.updateDepositeRule, $scope.singleRule, updateCallback);
+            } else {
+                saveCallback = function(data) {
+                    fetchRuleDepositPoliciesList({
+                        editable: true,
+                        description: from
+                    });
+                    $scope.showDepositForm = false;
+                    $scope.$emit('hideLoader');
+                };
+
+                $scope.invokeApi(ADRulesRestrictionSrv.saveDepositeRule, $scope.singleRule, saveCallback);
+            };
+
+        };
+        // save a new rule or update an edited rule
+        $scope.saveUpdateCancellationRule = function(from) {
+            var from = from,
+                saveCallback,
+                updateCallback;
             // need to combine individuals HH:MM:ap to single hours entry
             // and remove the individuals before posting
             if ( $scope.singleRule.advance_hour || $scope.singleRule.advance_min ) {
                 $scope.singleRule.advance_time = getTimeFormated($scope.singleRule.advance_hour,
                                                                 $scope.singleRule.advance_min,
                                                                 $scope.singleRule.advance_primetime);
-
                 // remove these before sending
                 var withoutEach = _.omit($scope.singleRule, 'advance_hour');
                 withoutEach = _.omit(withoutEach, 'advance_min');
@@ -296,78 +316,78 @@ admin.controller('ADRulesRestrictionCtrl', [
             // if we are in update (or edit) mode
             if ( $scope.updateRule ) {
                 updateCallback = function(data) {
-                    if ( from === 'Cancellation Penalties' ) {
-                        $scope.fetchRuleList({
-                            editable: true,
-                            description: from
-                        });
-                        $scope.showCancelForm = false;
-                    }
-
-                    if ( from === 'Deposit Requests' ) {
-                        $scope.fetchRuleList({
-                            editable: true,
-                            description: from
-                        });
-                        $scope.showDepositForm = false;
-                    }
-
+                    fetchRuleCancellationPenalitiesList({
+                        editable: true,
+                        description: from
+                    });
+                    $scope.showCancelForm = false;
                     // we have completed the edit
                     $scope.updateRule = false;
                     $scope.$emit('hideLoader');
                 };
-
                 $scope.invokeApi(ADRulesRestrictionSrv.updateRule, $scope.singleRule, updateCallback);
             } else {
                 saveCallback = function(data) {
-                    if ( from === 'Cancellation Penalties' ) {
-                        $scope.fetchRuleList({
-                            editable: true,
-                            description: from
-                        });
-                        $scope.showCancelForm = false;
-                    }
-
-                    if ( from === 'Deposit Requests' ) {
-                        $scope.fetchRuleList({
-                            editable: true,
-                            description: from
-                        });
-                        $scope.showDepositForm = false;
-                    }
-
+                  fetchRuleCancellationPenalitiesList({
+                        editable: true,
+                        description: from
+                    });
+                    $scope.showCancelForm = false;
+                    // we have completed the edit
+                    $scope.updateRule = false;
                     $scope.$emit('hideLoader');
                 };
-
                 $scope.invokeApi(ADRulesRestrictionSrv.saveRule, $scope.singleRule, saveCallback);
             };
-
         };
 
-        // delete a rule
-        $scope.deleteRule = function(rule, from) {
+         $scope.deleteSchedule = function(index){
+            $scope.singleRule.schedules.splice(index , 1);
+            if($scope.singleRule.schedules.length!=0){
+                if($scope.selectedScheduleIndex === $scope.singleRule.schedules.length){
+                    $scope.selectedSchedule = $scope.singleRule.schedules[$scope.singleRule.schedules.length-1];
+                    $scope.selectedScheduleIndex = $scope.singleRule.schedules.length-1;
+                }
+            }else{
+            var newSchedule = {
+                "amount":null,
+                "amount_type":"",
+                "auto_charge_on_due_date":false,
+                "advance_days":null,
+                "post_type_id":null
+                };
+            $scope.singleRule.schedules.push(newSchedule);
+            $scope.selectedSchedule = $scope.singleRule.schedules[0];
+            $scope.selectedScheduleIndex = 0;
+            }
+        }
 
+              
+        $scope.deleteDepositeRule = function(rule) {
             // keep them in local context of deleteRule function as
             // we dont know when callback will be called, so..
             // didnt understand? contact someone who does; dont remove
-            var rule = rule,
-                from = from;
-
+            var rule = rule;
             var callback = function() {
-                if ( from === 'Cancellation Penalties' ) {
-                    var withoutThis = _.without( $scope.cancelRulesList, rule );
-                    $scope.cancelRulesList = withoutThis;
-                }
-
-                if ( from === 'Deposit Requests' ) {
-                    var withoutThis = _.without( $scope.depositRuleslList, rule );
-                    $scope.depositRuleslList = withoutThis;
-                }
-
+                var withoutThis = _.without( $scope.depositRuleslList, rule );
+                $scope.depositRuleslList = withoutThis;
                 $scope.$emit('hideLoader');
             };
+            $scope.invokeApi(ADRulesRestrictionSrv.deleteDepositeRule, { id: rule.id }, callback);
+        };
 
+        $scope.deleteCancellationRule = function(rule) {
+            var rule = rule;
+            var callback = function() {
+                var withoutThis = _.without( $scope.cancelRulesList, rule );
+                $scope.cancelRulesList = withoutThis;
+                $scope.$emit('hideLoader');
+            };
             $scope.invokeApi(ADRulesRestrictionSrv.deleteRule, { id: rule.id }, callback);
         };
+        /*
+        *   Initialisation
+        */
+        init();
     }
-]);	
+]);

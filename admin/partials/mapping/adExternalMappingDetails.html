@@ -41,7 +41,7 @@
                     showAddNew();" class="button blank edit-data-inline">
                     Cancel
                 </button>
-                <button type="button" ng-click="clickedSave()" class="button green edit-data-inline">
+                <button type="button" ng-click="clickedSave()" class="button green edit-data-inline" ng-class="{'ng-hide': editData.validEditSelection === 'false'}">
                     Save changes
                 </button>
             </div>

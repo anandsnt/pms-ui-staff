@@ -12,14 +12,7 @@ sntRover.controller('rvAvailabilityMainController', [
 		* function to execute when switching between availability and house keeping
 		*/
 		$scope.setAvailability = function(){
-			$scope.$emit("showLoader");
-			if($scope.availabilityToShow == 'room'){
-				$scope.availabilityToShow = 'house';				
-			}
-			else if($scope.availabilityToShow == 'house'){
-				$scope.availabilityToShow = 'room';
-			}
-			
+			$scope.$emit("showLoader");			
 		};	
 
 		/**

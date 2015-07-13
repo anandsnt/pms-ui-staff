@@ -1,5 +1,5 @@
-sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog', '$timeout',
-	function($scope, RVGuestCardSrv, ngDialog, $timeout) {
+sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardSrv', 'ngDialog', '$timeout',
+	function($scope, $rootScope, RVGuestCardSrv, ngDialog, $timeout) {
 
 		// Browser chokes when he tries to do the following two thing at the same time:
 		// 		1. Slide in staycard
@@ -24,7 +24,7 @@ sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog
 		 * To get the payment tab payments list
 		 */
 		$scope.$on('GUESTPAYMENT', function(event, paymentData) {
-			
+
 			if(paymentData.user_id){
 				$scope.paymentData = paymentData;
 			}
@@ -35,17 +35,63 @@ sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog
 
 			$scope.guestCardData.contactInfo.avatar = data.avatar;
 			$scope.guestCardData.contactInfo.vip = data.vip;
-			
+
 			$scope.countriesListForGuest = data.countries;
-			
+
 			$scope.guestCardData.userId = data.userId;
 			$scope.guestCardData.guestId = data.guestId;
 		});
 
 		$scope.$on('staycardGuestData', function(event, data) {
+
 			$scope.guestCardData.contactInfo.first_name = data.guest_details.first_name;
 			$scope.guestCardData.contactInfo.last_name = data.guest_details.last_name;
+			$scope.guestCardData.contactInfo.confirmation_num = data.guest_details.confirmation_num;
+
 			$scope.guestCardData.contactInfo.avatar = data.guest_details.avatar;
+                        $scope.sharedReservationData = {};
+                        //update from api
+                        $scope.sharedReservationData.room_number = '';
+                        for (var x in data.sharers){
+                            data.sharers[x].guest_details.first_last = data.sharers[x].guest_details.last_name+', '+data.sharers[x].guest_details.first_name;
+                        }
+                        $scope.sharedReservationData.sharers = data.sharers;
+
+		});
+                $scope.goToSharedReservation = function(sharer){
+                    if (!sharer.active){
+
+                        var fullname = $scope.guestCardData.contactInfo.first_name+' '+$scope.guestCardData.contactInfo.last_name,
+                                reservation_no = sharer.guest_details.reservation_id,
+                                confirmation_no = sharer.confirm_no;
+
+                        $scope.isLoading = true;
+                        $rootScope.$broadcast('showLoading');
+                        $scope.$broadcast('showLoading');
+                        setTimeout(function(){
+                            var data = {
+                                confirmation_no: confirmation_no,
+                                reservation_no: reservation_no,
+                                fullname: fullname
+                            };
+                                $rootScope.viaSharerName = fullname;
+                                $rootScope.$broadcast('LOAD_SHARED_RESERVATION',data);
+                        },200);
+
+
+                    }
+                };
+
+                $scope.getTimes=function(n){
+                    return new Array(n);
+               };
+
+
+
+		$scope.$on('MOUSEMOVEDOVERME', function() {
+			//(CICO-16893) inoreder to refresh scroller, we are broadcasting this
+			$scope.$broadcast('refreshScrollerReservationDetails');
+			
 		});
 
 		$scope.$on('reservationCardClicked', function() {
@@ -63,7 +109,7 @@ sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog
 			}
 		});
 
-		//setting the heading of the screen to "Search"		
+		//setting the heading of the screen to "Search"
 		$scope.menuImage = "back-arrow";
 
 		$scope.$on('HeaderChanged', function(event, data) {
@@ -71,9 +117,9 @@ sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog
 			 * CICO-9081
 			 * $scope.heading = value was creating a heading var in local scope! Hence the title was not being set for the page.
 			 * Changing code to refer the parent's heading variable to override this behaviour.
-			 */			
+			 */
 			$scope.$parent.heading = data;
-			
+
 			if(data == "Guest Bill") $scope.$parent.addNoPrintClass = true;
 			else if(data == "Stay Card") $scope.$parent.isLogoPrint = true;
 			else $scope.$parent.addNoPrintClass = false;
@@ -93,6 +139,14 @@ sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog
 				scope: $scope
 			});
 		};
+
+                $scope.showRoomSharerPopup = function() {
+                    ngDialog.open({
+                        template: '/assets/partials/reservationCard/sharedRoom.html',
+                        //controller: '',//using this controller
+                        scope: $scope
+                    });
+                };
 
 	}
 ]);

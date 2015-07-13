@@ -295,6 +295,77 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             return data;
         };
 
+
+        /*
+        * When we update a rate set, we will check for any update for the same in
+        * rate manager.If there is some update we will prompt user with following options
+        * a. Override b.Don't override and c.Cancel
+        */
+
+        var setData = {};
+        var selectedIndex = -1;
+
+        var callSaveOrUpdateSet = function(){
+
+            var saveSetSuccessCallback = function(data) {
+                $scope.$emit('hideLoader');
+
+                $scope.data.sets[selectedIndex].isSaved = true;
+
+                if (typeof data.id !== 'undefined' && data.id !== '') {
+                    $scope.data.sets[selectedIndex].id = data.id;
+                }
+
+                $scope.data.sets[selectedIndex].isEnabled = false;
+                $scope.otherData.setChanged = false;
+            };
+
+            //if set id is null, then it is a new set - save it
+            if (setData.id === null) {
+                $scope.invokeApi(ADRatesConfigureSrv.saveSet, setData, saveSetSuccessCallback);
+            //Already existing set - update
+            } else {
+                $scope.invokeApi(ADRatesConfigureSrv.updateSet, setData, saveSetSuccessCallback);
+            };
+        };
+
+        $scope.dontOverwriteRateManger = function(){
+            setData.overwrite_rate_manager = false;
+            callSaveOrUpdateSet();
+            $scope.closeDialog();
+        };
+
+        $scope.overwriteRateManger = function(){
+            setData.overwrite_rate_manager = true;
+            callSaveOrUpdateSet();
+            $scope.closeDialog();
+        };
+
+        var popupRateManagerActions= function() {
+            ngDialog.open({
+                template: '/assets/partials/rates/adRateManagerPresentPopup.html',
+                className: '',
+                closeByDocument: false,
+                scope: $scope
+            });
+        };
+
+        var checkForRateSetUpdateInRateManager = function(){
+
+            var rateManagerCheckSuccsess = function(data){
+                $scope.$emit('hideLoader');
+                if(data.is_custom_rate_present){
+                    popupRateManagerActions();
+                }
+                else{
+                    setData.overwrite_rate_manager = false;
+                    callSaveOrUpdateSet();
+                };
+            };
+
+            $scope.invokeApi(ADRatesConfigureSrv.rateManagerStatusCheck, {"id":setData.id}, rateManagerCheckSuccsess);
+        };
+
         //Saves the individual set
         $scope.saveSet = function(dateRangeId, index, saveGrid) {
 
@@ -303,19 +374,6 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             if (!!saveGrid && saveGrid == 'saveGrid' && !selectedSet.showRoomRate) {
                 selectedSet.showRoomRate = true;
             }
-
-            var saveSetSuccessCallback = function(data) {
-                $scope.$emit('hideLoader');
-
-                $scope.data.sets[index].isSaved = true;
-
-                if (typeof data.id !== 'undefined' && data.id !== '') {
-                    $scope.data.sets[index].id = data.id;
-                }
-
-                $scope.data.sets[index].isEnabled = false;
-                $scope.otherData.setChanged = false;
-            };
 
             var saveSetFailureCallback = function(errorMessage) {
                 $scope.$emit('hideLoader');
@@ -327,7 +385,6 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 $scope.otherData.setChanged = false;
                 $scope.closeDialog();
             }
-
 
             if ((!!saveGrid && saveGrid == 'saveGrid') || $scope.rateData.is_hourly_rate) {
                 selectedSet.showRoomRate = true;
@@ -342,7 +399,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 });
             }
 
-            var unwantedKeys = ["room_types", "checkout", "dawn", "dusk"],
+            var unwantedKeys = ["room_types", "checkout", "dawn", "dusk"];
                 setData = dclone($scope.data.sets[index], unwantedKeys);
 
             if ($scope.rateData.is_hourly_rate) {
@@ -370,15 +427,9 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             }
 
             setData.dateRangeId = dateRangeId;
-            //if set id is null, then it is a new set - save it
-            if (setData.id === null) {
-                $scope.invokeApi(ADRatesConfigureSrv.saveSet, setData, saveSetSuccessCallback);
-                //Already existing set - update
-            } else {
-                $scope.invokeApi(ADRatesConfigureSrv.updateSet, setData, saveSetSuccessCallback);
-            }
-
-
+            selectedIndex = index;
+            //Check if values exist in the Rate Manager
+            checkForRateSetUpdateInRateManager(setData);
         };
 
         $scope.moveAllSingleToDouble = function(index) {
@@ -405,7 +456,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             var deleteSetSuccessCallback = function(){
                 $scope.$emit('hideLoader');
                 $scope.data.sets.splice($scope.deleteSetIndex, 1);
-                ngDialog.close();                
+                ngDialog.close();
             };
             $scope.invokeApi(ADRatesConfigureSrv.deleteSet, $scope.deleteSetId, deleteSetSuccessCallback);
         };

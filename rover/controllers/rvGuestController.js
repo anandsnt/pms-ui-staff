@@ -1,12 +1,12 @@
-sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv',
+sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService',
 
-	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv) {
+	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService) {
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
 
 		$scope.dimensionsLookup = {
 			resizableMaxHeight: resizableMaxHeight,
-			cardTabContentOffset: 170, // Height of the tab menu and the header above.			
+			cardTabContentOffset: 170, // Height of the tab menu and the header above.
 		};
 
 		$scope.cardVisible = false;
@@ -82,15 +82,14 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			var dataSource = $scope.guestCardData.contactInfo;
 			var data = {
 				'firstname': dataSource.first_name,
-				'lastname': dataSource.last_name,				
+				'lastname': dataSource.last_name,
 				'vip': dataSource.vip
 			};
-			
+
 			if (dataSource.address) {
 				if ($scope.escapeNull(dataSource.address.city).toString().trim() !== '' || $scope.escapeNull(dataSource.address.state).toString().trim() !== '') {
 					data.location = (dataSource.address.city + ', ' + dataSource.address.state);
-				}
-				else {
+				} else {
 					data.location = false;
 				}
 			}
@@ -139,7 +138,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			maxHeight: resizableMaxHeight,
 			handles: 's',
 			resize: function(event, ui) {
-				if ($(this).height() > 120 && !$scope.guestCardVisible) { //against angular js principle, sorry :(				
+				if ($(this).height() > 120 && !$scope.guestCardVisible) { //against angular js principle, sorry :(
 					$scope.guestCardVisible = true;
 					$scope.cardVisible = true;
 					$scope.$emit('GUESTCARDVISIBLE', true);
@@ -257,7 +256,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					'data': currentGuestCardHeaderData,
 					'userId': $scope.guestCardData.contactInfo.user_id
 				};
-				if(typeof data.userId != 'undefined'){
+				if (typeof data.userId != 'undefined') {
 					$scope.invokeApi(RVContactInfoSrv.saveContactInfo, data, saveUserInfoSuccessCallback);
 				}
 			}
@@ -372,7 +371,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		};
 
 		$scope.cardCls = function() {
-			// evaluate 
+			// evaluate
 			var cls = $scope.UICards[0]; //  current active card
 			if ($scope.cardVisible) {
 				cls += " open";
@@ -411,7 +410,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		 */
 		$scope.closeGuestCard = function() {
 			$scope.guestCardHeight = resizableMinHeight;
-			//Check if pending removals - If yes remove 
+			//Check if pending removals - If yes remove
 			$scope.handleDrawClosing();
 			$scope.cardVisible = false;
 			$scope.guestCardVisible = false;
@@ -586,11 +585,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				}
 				$scope.$broadcast('guestSearchInitiated');
 			};
-			if ($scope.searchData.guestCard.guestFirstName != '' 
-				|| $scope.searchData.guestCard.guestLastName != '' 
-				|| $scope.searchData.guestCard.guestCity != '' 
-				|| $scope.searchData.guestCard.guestLoyaltyNumber != ''
-				|| $scope.searchData.guestCard.email != '') {
+			if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '' || $scope.searchData.guestCard.guestCity != '' || $scope.searchData.guestCard.guestLoyaltyNumber != '' || $scope.searchData.guestCard.email != '') {
 				var paramDict = {
 					'first_name': $scope.searchData.guestCard.guestFirstName,
 					'last_name': $scope.searchData.guestCard.guestLastName,
@@ -598,7 +593,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					'membership_no': $scope.searchData.guestCard.guestLoyaltyNumber,
 					'email': $scope.searchData.guestCard.email
 				};
-				if(shouldSearch()){
+				if (shouldSearch()) {
 					$scope.invokeApi(RVReservationAllCardsSrv.fetchGuests, paramDict, successCallBackFetchGuest);
 				}
 			} else {
@@ -610,19 +605,15 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		};
 
 		var previousSearchData = {
-		      'lastName': '',
-		      'firstName': '',
-		      'city': '',
-		      'loyaltyNumber': '',
-		      'email': ''
-		    }
+			'lastName': '',
+			'firstName': '',
+			'city': '',
+			'loyaltyNumber': '',
+			'email': ''
+		}
 
-		var shouldSearch = function(){
-			if( previousSearchData.lastName == $scope.searchData.guestCard.guestLastName 
-				&& previousSearchData.firstName == $scope.searchData.guestCard.guestFirstName 
-				&& previousSearchData.city == $scope.searchData.guestCard.guestCity 
-				&& previousSearchData.loyaltyNumber == $scope.searchData.guestCard.guestLoyaltyNumber
-				&& previousSearchData.email == $scope.searchData.guestCard.email ){
+		var shouldSearch = function() {
+			if (previousSearchData.lastName == $scope.searchData.guestCard.guestLastName && previousSearchData.firstName == $scope.searchData.guestCard.guestFirstName && previousSearchData.city == $scope.searchData.guestCard.guestCity && previousSearchData.loyaltyNumber == $scope.searchData.guestCard.guestLoyaltyNumber && previousSearchData.email == $scope.searchData.guestCard.email) {
 				return false;
 			}
 			previousSearchData.lastName = $scope.searchData.guestCard.guestLastName;
@@ -631,11 +622,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			previousSearchData.loyaltyNumber = $scope.searchData.guestCard.guestLoyaltyNumber;
 			previousSearchData.email = $scope.searchData.guestCard.email;
 
-			return ($scope.searchData.guestCard.guestLastName.length >= 2 
-				|| $scope.searchData.guestCard.guestFirstName.length >= 1 
-				|| $scope.searchData.guestCard.guestCity != '' 
-				|| $scope.searchData.guestCard.guestLoyaltyNumber != ''
-				|| $scope.searchData.guestCard.email != '');
+			return ($scope.searchData.guestCard.guestLastName.length >= 2 || $scope.searchData.guestCard.guestFirstName.length >= 1 || $scope.searchData.guestCard.guestCity != '' || $scope.searchData.guestCard.guestLoyaltyNumber != '' || $scope.searchData.guestCard.email != '');
 		}
 
 		$scope.searchCompany = function() {
@@ -775,11 +762,11 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			}
 		};
 		$scope.checkFuture = function(cardType, card) {
-			// Changing this reservation only will unlink the stay card from the previous company / travel agent card and assign it to the newly selected card. 
-			// Changing all reservations will move all stay cards to the new card. 
-			// This will only apply when a new company / TA card had been selected. 
+			// Changing this reservation only will unlink the stay card from the previous company / travel agent card and assign it to the newly selected card.
+			// Changing all reservations will move all stay cards to the new card.
+			// This will only apply when a new company / TA card had been selected.
 			// If no new card has been selected, the change will only ever just apply to the current reservation and the above message should not display.
-			// If multiple future reservations exist for the same Travel Agent / Company Card details, display message upon navigating away from the Stay Card 'Future reservations exist for the same Travel Agent / Company card.' 
+			// If multiple future reservations exist for the same Travel Agent / Company Card details, display message upon navigating away from the Stay Card 'Future reservations exist for the same Travel Agent / Company card.'
 			// With choice of 'Change this reservation only' and 'Change all Reservations'.
 
 			if (!$scope.isHourly) {
@@ -934,7 +921,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		};
 
 		$scope.createNewCompany = function() {
-			$scope.companyContactInformation = $scope.getEmptyAccountData();
+			$scope.companyContactInformation = RVReservationDataService.getEmptyAccountData();
 			$scope.reservationDetails.companyCard.id = "";
 			$scope.reservationDetails.companyCard.futureReservations = 0;
 			$scope.viewState.isAddNewCard = true;
@@ -943,7 +930,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		};
 
 		$scope.createNewTravelAgent = function() {
-			$scope.travelAgentInformation = $scope.getEmptyAccountData();
+			$scope.travelAgentInformation = RVReservationDataService.getEmptyAccountData();
 			$scope.reservationDetails.travelAgent.id = "";
 			$scope.reservationDetails.travelAgent.futureReservations = 0;
 			$scope.viewState.isAddNewCard = true;
@@ -991,15 +978,19 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		$scope.init();
 
 		// CICO-6049 Toggle VIP button
-		$scope.vipToggleClicked = function(){
+		$scope.vipToggleClicked = function() {
 			$scope.guestCardData.contactInfo.vip = !$scope.guestCardData.contactInfo.vip;
 			$scope.updateContactInfo();
 		};
 
 
-		$scope.guestCardClicked = function  () {
+		$scope.guestCardClicked = function() {
 			//save contact info
-			$scope.$broadcast('saveContactInfo');
+			//CICO-16965 Do IFF the card is saved - NOT in Add mode
+			if (!$scope.viewState.isAddNewCard) {
+				// Call save if NOT 'AddNewCard' mode
+				$scope.$broadcast('saveContactInfo');
+			}
 		};
 
 	}

@@ -1,89 +1,78 @@
 <form id="group-rooming-list" name="group-rooming-list" class="form card-tab inner-header rooming-list" ng-controller="rvGroupRoomingListCtrl">
-<div id="group-room-list-header" class="tab-header">
-    <div class="search-form has-dates" ng-class="{'open': isAddingMode}"> <!-- Toggle class "open" when button on L4 is clicked (that will open the form). For new groups / when no reservations in rooming list, have class "open" there by default (e.g. make the form opened by default) -->
-        <div class="entry filter">
-            <button type="button" class="button icons icon-add-60" 
-                ng-click="toggleDisplayingMode()"
-                ng-class="{'icon-add-60': isAddingMode, 'icon-remove-60': !isAddingMode}"> <!-- Remove class "icon-add-60" with "icon-remove-60" when clicked -->
-                {{'GROUP_ADD_RESERVATIONS'|translate}}
-            </button>
-        </div>
-        <div class="entry number">
-            <label for="rooming-no-of-rooms">{{'GROUP_NO__OF_ROOMS'|translate}}</label>
-            <div class="select">
-                <select id="rooming-no-of-rooms" ng-model="numberOfRooms">
-                    <option ng-repeat="roomcount in possibleNumberOfRooms" value="{{roomcount}}">{{roomcount}}</option>
-                </select>
-            </div>
-        </div>
-        <div class="entry type">
-            <label for="rooming-room-type">{{'GROUP_ROOM_TYPE'|translate}}</label>
-            <div class="select">
-                <select id="rooming-room-type" ng-model="selectedRoomType" ng-change="changedSelectedRoomType()">
-                    <option value="{{roomTypeData.room_type_id}}" ng-selected="selectedRoomType==roomTypeData.room_type_id" ng-repeat="roomTypeData in roomTypesAndData">
-                    {{roomTypeData.room_type_name}} ({{roomTypeData.availableRoomCount}})</option>
-                </select>
-            </div>
-        </div>
-        <div class="entry occupancy">
-            <label for="rooming-occupancy">{{'GROUP_OCCUPANCY'|translate}}</label>
-            <div class="select">
-                <select id="rooming-occupancy" ng-model="selectedOccupancy">
-                    <option value="1" 
-                        ng-show="shouldShowThisOccupancyAgainstRoomType('single_occupancy')">
-                        {{'GROUP_SINGLE'|translate}}                        
-                    </option>
-                    <option value="2" 
-                        ng-show="shouldShowThisOccupancyAgainstRoomType('double_occupancy')">
-                        {{'GROUP_DOUBLE'|translate}} 
-                    </option>
-                    <option value="3" 
-                        ng-show="shouldShowThisOccupancyAgainstRoomType('triple_occupancy')">
-                        {{'GROUP_TRIPLE'|translate}}                         
-                    </option>
-                    <option value="4" 
-                        ng-show="shouldShowThisOccupancyAgainstRoomType('quadruple_occupancy')">  
-                        {{'GROUP_QUADRUPLE'|translate}}                          
-                    </option>
-                </select>
-            </div>
-        </div>
-        <div class="entry date-range">
-            <div class="has-datepicker">
-                <label for="rooming-date-from" translate>FROM</label>
-                <button class="clear-query" ng-class="{'visible': !isEmpty(fromDate.toString())}" 
-                    ng-click="clearFromDate()"> <!-- Add class "visible" when date is selected -->
-                    <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
+    <div id="group-room-list-header" class="tab-header" ng-class="{'no-print' : isPrintRegistrationCard}">
+        <div class="search-form has-dates" ng-class="{'open': isAddingMode && !groupConfigData.summary.is_cancelled}">
+            <!-- Toggle class "open" when button on L4 is clicked (that will open the form). For new groups / when no reservations in rooming list, have class "open" there by default (e.g. make the form opened by default) -->
+            <div class="entry filter">
+                <button type="button" class="button icons icon-add-60" ng-click="toggleDisplayingMode()" ng-class="{'icon-add-60': isAddingMode, 'icon-remove-60': !isAddingMode , 'hidden' : !!groupConfigData.summary.is_cancelled}">
+                    <!-- Remove class "icon-add-60" with "icon-remove-60" when clicked -->
+                    {{'GROUP_ADD_RESERVATIONS'|translate}}
                 </button>
-                <input id="rooming-date-from" type="text" 
-                    class="range-datepicker green"
-                    readonly rv-clear-text-box 
-                    listen-this="fromDate"
-                    ui-date="fromDateOptions" 
-                    value="{{fromDate|date:dateFormat}}"/>
             </div>
-            <div class="has-datepicker">
-                <label for="rooming-date-to" translate>TO</label>
-                <button class="clear-query" ng-class="{'visible': !isEmpty(toDate.toString())}" ng-click="clearToDate()"> <!-- Add class "visible" when date is selected -->
-                    <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
-                </button>
-                <input id="rooming-date-to" type="text" class="range-datepicker red" readonly 
-                    ui-date="toDateOptions" 
-                    value="{{toDate|date:dateFormat}}" 
-                    rv-clear-text-box 
-                    listen-this="toDate"/>
+            <div class="entry number">
+                <label for="rooming-no-of-rooms">{{'GROUP_NO__OF_ROOMS'|translate}}</label>
+                <div class="select">
+                    <select id="rooming-no-of-rooms" ng-model="numberOfRooms">
+                        <option ng-repeat="roomcount in possibleNumberOfRooms" value="{{roomcount}}">{{roomcount}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry type">
+                <label for="rooming-room-type">{{'GROUP_ROOM_TYPE'|translate}}</label>
+                <div class="select">
+                    <select id="rooming-room-type" ng-model="selectedRoomType" ng-change="changedSelectedRoomType()">
+                        <option value="{{roomTypeData.room_type_id}}" ng-selected="selectedRoomType==roomTypeData.room_type_id" ng-repeat="roomTypeData in roomTypesAndData">
+                            {{roomTypeData.room_type_name}} ({{roomTypeData.availableRoomCount}})</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry occupancy">
+                <label for="rooming-occupancy">{{'GROUP_OCCUPANCY'|translate}}</label>
+                <div class="select">
+                    <select id="rooming-occupancy" ng-model="selectedOccupancy">
+                        <option value="1" ng-show="shouldShowThisOccupancyAgainstRoomType('single_occupancy')">
+                            {{'GROUP_SINGLE'|translate}}
+                        </option>
+                        <option value="2" ng-show="shouldShowThisOccupancyAgainstRoomType('double_occupancy')">
+                            {{'GROUP_DOUBLE'|translate}}
+                        </option>
+                        <option value="3" ng-show="shouldShowThisOccupancyAgainstRoomType('triple_occupancy')">
+                            {{'GROUP_TRIPLE'|translate}}
+                        </option>
+                        <option value="4" ng-show="shouldShowThisOccupancyAgainstRoomType('quadruple_occupancy')">
+                            {{'GROUP_QUADRUPLE'|translate}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry date-range">
+                <div class="has-datepicker">
+                    <label for="rooming-date-from" translate>FROM</label>
+                    <button class="clear-query" ng-class="{'visible': !isEmpty(fromDate.toString())}" ng-click="clearFromDate()">
+                        <!-- Add class "visible" when date is selected -->
+                        <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
+                    </button>
+                    <input id="rooming-date-from" type="text" class="range-datepicker green" readonly rv-clear-text-box listen-this="fromDate" ui-date="fromDateOptions" value="{{fromDate|date:dateFormat}}" />
+                </div>
+                <div class="has-datepicker">
+                    <label for="rooming-date-to" translate>TO</label>
+                    <button class="clear-query" ng-class="{'visible': !isEmpty(toDate.toString())}" ng-click="clearToDate()">
+                        <!-- Add class "visible" when date is selected -->
+                        <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
+                    </button>
+                    <input id="rooming-date-to" type="text" class="range-datepicker red" readonly ui-date="toDateOptions" value="{{toDate|date:dateFormat}}" rv-clear-text-box listen-this="toDate" />
+                </div>
+            </div>
+            <div class="entry action">
+                <button type="button" class="button green" ng-click="addReservations()" translate>ADD</button>
             </div>
         </div>
-        <div class="entry action">
-            <button type="button" class="button green" ng-click="addReservations()" translate>ADD</button>
-        </div>
-    </div>
-    <ul class="totals" >
-        <li>
-            <div class="data">
-                <span class="label">{{'GROUP_PICKED_UP'|translate}}</span>
-                <span class="value">{{totalPickUpCount}}</span>
-            </div>
+    <ul class="totals">
+            <li>
+                <div class="data">
+                    <span class="label">{{'GROUP_PICKED_UP'|translate}}</span>
+                    <span class="value">{{totalPickUpCount}}</span>
+                </div>
+            </li>
         </li>
         <li>
             <button type="button" class="button grey" ng-hide="true">{{'GROUP_CHECK_IN'|translate}}</button> <!-- Replace class "grey" with "green" when rooms selected in the rooming list -->
@@ -93,14 +82,19 @@
             <button type="button" class="button grey" ng-hide="true">{{'GROUP_AUTO_ASSIGN_ROOMS'|translate}}</button> <!-- Replace class "grey" with "brand-colors" when rooms selected in the rooming list -->
         </li>
         <li> <!-- Don't show if there are no rooms in the rooming list -->
-            <button type="button" class="button with-icon only-icon blue" ng-hide="true">
+            <button type="button" class="button with-icon only-icon blue" ng-hide="reservations.length ==0" ng-click="sendRoomingList()">
                 <span class="icons icon-email"></span>
                 {{'GROUP_EMAIL'|translate}}
             </button>
-            <button type="button" class="button blue with-icon only-icon" ng-hide="true">
+            <button type="button" class="button blue with-icon only-icon" ng-hide="reservations.length ==0" ng-click="fetchReservationsForPrintingRoomingList()">
                 <span class="icons icon-print"></span>
                 {{'GROUP_PRINT'|translate}}
             </button>
+            <button type="button" class="batch button with-icon" ng-click="printRegistrationCards();" 
+                    ng-class="{'grey' : totalPickUpCount < 1,'brand-colors' : totalPickUpCount > 0}" 
+                    ng-disabled="totalPickUpCount < 1">
+                    <span class="icons icon-print"></span> {{'GROUP_BATCH'|translate}}
+                </button>
             <button type="button" class="button with-icon only-icon purple" ng-hide="true">
                 <span class="icons icon-save"></span>
                 {{'GROUP_DOWNLOAD'|translate}}
@@ -109,7 +103,7 @@
     </ul>
 </div>
 
-<div id="group-room-list-content" class="tab-details">
+<div id="group-room-list-content" class="tab-details" ng-class="{'no-print' : isPrintRegistrationCard}">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <!-- When no rooms in list -->
     <div class="no-content" ng-show="shouldShowNoReservations()">
@@ -123,10 +117,10 @@
     <!-- Rooming List Header -->
     <ul class="rooming-list-header" ng-show="!shouldShowNoReservations()">
         <li class="check">
-            <label class="checkbox inline" for="rooming-list-all"> 
+            <label class="checkbox inline" for="rooming-list-all" ng-class="{'disabled' : !!groupConfigData.summary.is_cancelled}"> 
                 <span class="icon-form icon-checkbox" 
                     ng-class="{'checked': whetherAllReservationsSelected(), 'semi-checked': whetherReservationsArePartiallySelected()}"></span> <!-- Add class "checked" if checked or all items in rooming list are selected. Add class "semi-checked" (and make sure it has no class "checked") when not all items in the rooming list are selected -->
-                <input id="rooming-list-all" value="{value}" type="checkbox" ng-click="selectOrUnSelectAllReservation()" />
+                <input id="rooming-list-all" ng-disabled="!!groupConfigData.summary.is_cancelled" type="checkbox" ng-click="selectOrUnSelectAllReservation()" />
             </label>
         </li>
         <li class="room sort" ng-class="getSortClass('room_no')" ng-click="sortBy('room_no')">{{'GROUP_ROOM'|translate}}</li>
@@ -134,6 +128,7 @@
         <li class="date sort" ng-class="getSortClass('arrival_date')" ng-click="sortBy('arrival_date')">{{'GROUP_ARRIVAL'|translate}}</li>
         <li class="date sort" ng-class="getSortClass('departure_date')" ng-click="sortBy('departure_date')">{{'GROUP_DEPARTURE'|translate}}</li>
         <li class="type sort" ng-class="getSortClass('room_type_id')" ng-click="sortBy('room_type_id')">{{'GROUP_ROOM_TYPE'|translate}}</li>
+        <li class="rate sort" ng-class="getSortClass('room_rate_amount')" ng-click="sortBy('room_rate_amount')">{{'GROUP_ROOM RATE'|translate}}</li>
         <li class="status sort" ng-class="getSortClass('reservation_status')" ng-click="sortBy('reservation_status')">{{'GROUP_STATUS'|translate}}</li>
     </ul>
 
@@ -155,12 +150,12 @@
         ng-iscroll="rooming_list" ng-iscroll-delay="100"> <!-- Add class "with-pagination" if pagination is used -->
 
         <ul id="rooming-grid-list" class="search-results wrapper">
-            <li class="reservation rooming-list" ng-repeat="reservation in reservations">
+            <li class="reservation rooming-list" ng-repeat="reservation in reservations" ngrepeatend>
 
                 <div class="check">
-                    <label class="checkbox inline" for="guest-id"> 
+                    <label class="checkbox inline" for="guest-id" ng-class="{'disabled' : !!groupConfigData.summary.is_cancelled}"> 
                         <span class="icon-form icon-checkbox" ng-class="{'checked': isReservationInSelectedReservation(reservation)}"></span> <!-- Add class "checked" if checked -->
-                        <input id="guest-id" value="{Guest}" type="checkbox" ng-click="addOrRemoveFromSelectedReservation(reservation)">
+                        <input id="guest-id" value="{Guest}" type="checkbox" ng-click="addOrRemoveFromSelectedReservation(reservation)" ng-disabled="!!groupConfigData.summary.is_cancelled">
                     </label>
                 </div>
                 <a ng-click="showEditReservationPopup(reservation)">
@@ -168,42 +163,44 @@
                         <h2 ng-show="!isGuestBlank(reservation)">
                             {{reservation.lastname}}, {{reservation.firstname}}
                         </h2>
-
-                        <h2 ng-show="isGuestBlank(reservation)">
+                            <h2 ng-show="isGuestBlank(reservation)">
                             <!-- If new room, show this instead: -->
                             <span class="highlight">{{'GROUP_PENDING'|translate}}</span>
-                        </h2>  
-
-                        <span class="room" ng-show="!isRoomUnAssigned(reservation)"> <!-- Add class "unassigned" if new room -->
+                        </h2>
+                            <span class="room" ng-show="!isRoomUnAssigned(reservation)"> <!-- Add class "unassigned" if new room -->
                             {{'GROUP_ROOM'|translate}} {{reservation.room_no}}
                             <!-- If new room, show this instead: Unassigned -->
-                        </span> 
-
-                        <span class="room unassigned" ng-show="isRoomUnAssigned(reservation)"> <!-- Add class "unassigned" if new room -->
+                        </span>
+                            <span class="room unassigned" ng-show="isRoomUnAssigned(reservation)"> <!-- Add class "unassigned" if new room -->
                            {{'GROUP_UNASSIGNED'|translate}} 
-                        </span>                         
-                        |
-                        <span class="confirmation">{{reservation.confirm_no}}</span>
-                    </div>
-                    <div class="reservation-info">
-                        <div class="arrival-departure">
-                            <span class="guest-status check-in">{{'GROUP_CHECK-IN'|translate}}</span>
-                            <time datetime="{arrival timestamp}">{{formatDateForUI(reservation.arrival_date)}}</time>
+                        </span> |
+                            <span class="confirmation">{{reservation.confirm_no}}</span>
                         </div>
-                        <div class="departing">
-                            <span class="guest-status check-out">{{'GROUP_CHECK-OUT'|translate}}</span>
-                            <time datetime="{departure timestamp}">{{formatDateForUI(reservation.departure_date)}}</time>
+                        <div class="reservation-info">
+                            <div class="arrival-departure">
+                                <span class="guest-status check-in">{{'GROUP_CHECK-IN'|translate}}</span>
+                                <time datetime="{arrival timestamp}">{{formatDateForUI(reservation.arrival_date)}}</time>
+                            </div>
+                            <div class="departing">
+                                <span class="guest-status check-out">{{'GROUP_CHECK-OUT'|translate}}</span>
+                                <time datetime="{departure timestamp}">{{formatDateForUI(reservation.departure_date)}}</time>
+                            </div>
                         </div>
-                    </div>
-                    <div class="room-info">
-                        <strong class="room-type">{{reservation.room_type_name}}</strong>
-                        <em class="room-occupancy">{{occupancyTextMap[reservation.occupancy]}}</em>
-                    </div>
-                    <div class="reservation-status"> <!-- No status if it's a new room -->
-                        <span class="guest-status" ng-class="getReservationClass(reservation.reservation_status)">{{reservation.reservation_status}}</span>
-                    </div>
-                </a>
-            </li>
-        </ul>
+                        <div class="room-info">
+                            <strong class="room-type">{{reservation.room_type_name}}</strong>
+                            <em class="room-occupancy">{{occupancyTextMap[reservation.occupancy]}}</em>
+                        </div>
+                        <div class="rate">
+                            {{reservation.room_rate_amount}}
+                        </div>                        
+                        <div class="reservation-status">
+                            <!-- No status if it's a new room -->
+                            <span class="guest-status" ng-class="getReservationClass(reservation.reservation_status)">{{reservation.reservation_status}}</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
+    <!-- Registration card -->
+    <div class="batch-registration-cards" ng-include="'/assets/partials/groups/rooming/rvBatchPrintRegistrationCards.html'"></div>

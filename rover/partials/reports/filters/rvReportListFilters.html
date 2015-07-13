@@ -1,0 +1,306 @@
+<div class="date-range" ng-if="item.hasCancelDateFilter">
+    <label>{{ item.hasCancelDateFilter.description }}</label>
+    <div class="has-datepicker">
+        <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromCancelDate" ng-change="dateChanged(item, 'hasCancelDateFilter')" readonly>
+        <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="item.fromCancelDate" ng-change="dateChanged(item, 'hasCancelDateFilter')" readonly>
+        <button ng-if="item.canRemoveDate" ng-class="{'visible': item.hasCancelDateFilter.showRemove}" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'hasCancelDateFilter')">Clear query</span>
+        </button>
+    </div>
+    <span class="span-to"> To </span>
+    <div class="has-datepicker">
+        <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilCancelDate" ng-change="dateChanged(item, 'hasCancelDateFilter')" readonly>
+        <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.untilCancelDate" ng-change="dateChanged(item, 'hasCancelDateFilter')" readonly>
+        <button ng-if="item.canRemoveDate" ng-class="{'visible': item.hasCancelDateFilter.showRemove}" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'hasCancelDateFilter')">Clear query</span>
+        </button>
+    </div>
+</div>
+
+<div class="date-range" ng-if="item.hasDepositDateFilter">
+    <label>{{ item.hasDepositDateFilter.description }}</label>
+    <div class="has-datepicker">
+        <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromDepositDate" ng-change="dateChanged(item, 'hasDepositDateFilter')" readonly>
+        <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="item.fromDepositDate" ng-change="dateChanged(item, 'hasDepositDateFilter')" readonly>
+        <button ng-if="item.canRemoveDate" ng-class="{'visible': item.hasDepositDateFilter.showRemove}" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'hasDepositDateFilter')">Clear query</span>
+        </button>
+    </div>
+    <span class="span-to"> To </span>
+    <div class="has-datepicker">
+        <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilDepositDate" ng-change="dateChanged(item, 'hasDepositDateFilter')" readonly>
+        <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.untilDepositDate" ng-change="dateChanged(item, 'hasDepositDateFilter')" readonly>
+        <button ng-if="item.canRemoveDate" ng-class="{'visible': item.hasDepositDateFilter.showRemove}" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'hasDepositDateFilter')">Clear query</span>
+        </button>
+    </div>
+</div>
+
+<div class="date-range" ng-if="item.hasPaidDateRange">
+    <label>{{ item.hasPaidDateRange.description }}</label>
+    <div class="has-datepicker">
+        <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromPaidDate" ng-change="dateChanged(item, 'hasPaidDateRange')" readonly>
+        <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="item.fromPaidDate" ng-change="dateChanged(item, 'hasPaidDateRange')" readonly>
+        <button ng-if="item.canRemoveDate" ng-class="{'visible': item.hasPaidDateRange.showRemove}" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'hasPaidDateRange')">Clear query</span>
+        </button>
+    </div>
+    <span class="span-to"> To </span>
+    <div class="has-datepicker">
+        <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilPaidDate" ng-change="dateChanged(item, 'hasPaidDateRange')" readonly>
+        <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.untilPaidDate" ng-change="dateChanged(item, 'hasPaidDateRange')" readonly>
+        <button ng-if="item.canRemoveDate" ng-class="{'visible': item.hasPaidDateRange.showRemove}" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'hasPaidDateRange')">Clear query</span>
+        </button>
+    </div>
+</div>
+
+<div class="date-range" ng-if="item.hasDateFilter">
+    <label>{{ item.hasDateFilter.description }}</label>
+    <div class="has-datepicker">
+        <input ng-if="item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        <input ng-if="item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsSysLimit" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        <input ng-if="!item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        <button ng-if="item.canRemoveDate" ng-class="{'visible': item.hasDateFilter.showRemove}" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'hasDateFilter')">Clear query</span>
+        </button>
+    </div>
+    <span class="span-to"> To </span>
+    <div class="has-datepicker">
+        <input ng-if="item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        <input ng-if="item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsSysLimit" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        <input ng-if="!item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        <button ng-if="item.canRemoveDate" ng-class="{'visible': item.hasDateFilter.showRemove}" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'hasDateFilter')">Clear query</span>
+        </button>
+    </div>
+</div>
+
+<div class="date-range" ng-if="item.hasCreateDateFilter">
+    <label>{{ item.hasCreateDateFilter.description }}</label>
+    <div class="has-datepicker">
+        <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromCreateDate" ng-change="dateChanged(item, 'hasCreateDateFilter')" readonly>
+        <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="item.fromCreateDate" ng-change="dateChanged(item, 'hasCreateDateFilter')" readonly>
+        <button ng-if="item.canRemoveDate" ng-class="{'visible': item.hasCreateDateFilter.showRemove}" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'hasCreateDateFilter')">Clear query</span>
+        </button>
+    </div>
+    <span class="span-to"> To </span>
+    <div class="has-datepicker">
+        <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilCreateDate" ng-change="dateChanged(item, 'hasCreateDateFilter')" readonly>
+        <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.untilCreateDate" ng-change="dateChanged(item, 'hasCreateDateFilter')" readonly>
+        <button ng-if="item.canRemoveDate" ng-class="{'visible': item.hasCreateDateFilter.showRemove}" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'hasCreateDateFilter')">Clear query</span>
+        </button>
+    </div>
+</div>
+
+<div class="date-range" ng-if="item.hasArrivalDateFilter">
+    <label>{{ item.hasArrivalDateFilter.description }}</label>
+    <div class="has-datepicker">
+        <input ng-if="item.hasArrivalDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromArrivalDate" ng-change="dateChanged(item, 'hasArrivalDateFilter')" readonly>
+        <input ng-if="!item.hasArrivalDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="item.fromArrivalDate" ng-change="dateChanged(item, 'hasArrivalDateFilter')" readonly>
+        <button ng-if="item.canRemoveDate" ng-class="{'visible': item.hasArrivalDateFilter.showRemove}" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'hasArrivalDateFilter')">Clear query</span>
+        </button>
+    </div>
+    <span class="span-to"> To </span>
+    <div class="has-datepicker">
+        <input ng-if="item.hasArrivalDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilArrivalDate" ng-change="dateChanged(item, 'hasArrivalDateFilter')" readonly>
+        <input ng-if="!item.hasArrivalDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.untilArrivalDate" ng-change="dateChanged(item, 'hasArrivalDateFilter')" readonly>
+        <button ng-if="item.canRemoveDate" ng-class="{'visible': item.hasArrivalDateFilter.showRemove}" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'hasArrivalDateFilter')">Clear query</span>
+        </button>
+    </div>
+</div>
+
+<div class="single-date" ng-if="item.hasSingleDateFilter">
+    <label>Date</label>
+    <div class="has-datepicker">
+        <input ng-if="item.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptions" ng-model="item.singleValueDate" ng-change="dateChanged(item, 'hasSingleDateFilter')" readonly>
+        <input ng-if="!item.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.singleValueDate" ng-change="dateChanged(item, 'hasSingleDateFilter')" readonly>
+        <button ng-if="item.canRemoveDate" ng-class="{'visible': item.hasSingleDateFilter.showRemove}" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'hasSingleDateFilter')">Clear query</span>
+        </button>
+    </div>
+</div>
+
+<div class="time-range" ng-if="item.hasTimeFilter">
+    <label>{{ item.hasTimeFilter.description }}</label>
+    <div class="select">
+        <select name="time-from" ng-model="item.fromTime" ng-options="time.value as time.name for time in item.timeFilterOptions" iscroll-stop-propagation>
+            <option value="">From Time</option>
+        </select>
+    </div>
+    <span>to</span>
+    <div class="select">
+        <select name="time-to" ng-model="item.untilTime" ng-options="time.value as time.name for time in item.timeFilterOptions" iscroll-stop-propagation>
+            <option value="">Until Time</option>
+        </select>
+    </div>
+</div>
+
+<div class="filter" ng-if="item.hasCicoFilter">
+    <label>{{ item.hasCicoFilter.description }}</label>
+    <div class="select">
+        <select name="" id="" ng-model="item.chosenCico" ng-options="cico.value as cico.label for cico in item.cicoOptions" iscroll-stop-propagation>
+            <option value="">Transaction Type</option>
+        </select>
+    </div>
+</div>
+
+<div class="filter" ng-if="item.hasUserFilter">
+    <label>User</label>
+    <input class="icons icon-search" auto-complete auto-options="listUserAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Email Id" value="" autocomplete="off" ng-model="item.uiChosenUsers" report-source="reportList" report-index="{{ $index }}" report-model="chosenUsers" ul-class="find-cards" ng-focus="returnItem(item)">
+    <select multiple class="hidden" ng-model="item.chosenUsers" ng-options="user.id as user.full_name for user in activeUserList"></select>
+</div>
+
+<div class="options long-list" ng-if="item.hasGeneralOptions.data.length" ng-click="catchFauxSelectClick($event, 'hasGeneralOptions')">
+    <label for="report-options">Option(s)</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasGeneralOptions)">{{ item.hasGeneralOptions.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasGeneralOptions.show }">
+        <label class="checkbox inline" ng-show="item.hasGeneralOptions.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasGeneralOptions.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasGeneralOptions.selectAll" ng-change="fauxSelectChange(item, item.hasGeneralOptions, true)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="option in item.hasGeneralOptions.data">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : option.selected }"></span>
+            <input type="checkbox" ng-model="option.selected" ng-change="fauxSelectChange(item, item.hasGeneralOptions)" name="room-filters"> {{ option.description }}
+        </label>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="filter" ng-if="item.hasIncludeComapnyTaGroup">
+    <label>Company/TA/Group</label>
+    <input class="icons icon-search" auto-complete auto-options="listCtgAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="item.uiChosenIncludeComapnyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(item)" ng-change="removeCompTaGrpId(item)">
+    <input type="text" class="hidden" ng-model="item.chosenIncludeComapnyTaGroup">
+</div>
+
+<div class="options long-list" ng-if="item.hasGuaranteeType" ng-click="catchFauxSelectClick($event, 'hasGuaranteeType')">
+    <label for="report-options">Guarantee Type(s)</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasGuaranteeType)">{{ item.hasGuaranteeType.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasGuaranteeType.show }">
+        <label class="checkbox inline" ng-show="item.hasGuaranteeType.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasGuaranteeType.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasGuaranteeType.selectAll" ng-change="fauxSelectChange(item, item.hasGuaranteeType, true)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="type in item.hasGuaranteeType.data">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : type.selected}"></span>
+            <input type="checkbox" ng-model="type.selected" ng-change="fauxSelectChange(item, item.hasGuaranteeType)" name="room-filters"> {{ type.name }}
+        </label>
+    </div>
+</div>
+
+<div class="options long-list" ng-if="item.hasByChargeGroup" ng-click="catchFauxSelectClick($event, 'hasByChargeGroup')">
+    <label for="report-options">Charge Group(s)</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasByChargeGroup)">{{ item.hasByChargeGroup.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasByChargeGroup.show }">
+        <label class="checkbox inline" ng-show="item.hasByChargeGroup.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasByChargeGroup.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasByChargeGroup.selectAll" ng-change="fauxSelectChange(item, item.hasByChargeGroup, true)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="group in item.hasByChargeGroup.data">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : group.selected}"></span>
+            <input type="checkbox" ng-model="group.selected" ng-change="fauxSelectChange(item, item.hasByChargeGroup)" name="room-filters"> {{ group.description }}
+        </label>
+    </div>
+</div>
+
+<div class="options long-list" ng-if="item.hasByChargeCode" ng-click="catchFauxSelectClick($event, 'hasByChargeCode')">
+    <label for="report-options">Charge Code(s)</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasByChargeCode)">{{ item.hasByChargeCode.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasByChargeCode.show }">
+        <label class="checkbox inline" ng-show="item.hasByChargeCode.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasByChargeCode.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasByChargeCode.selectAll" ng-change="fauxSelectChange(item, item.hasByChargeCode, true)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="code in item.hasByChargeCode.data">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : code.selected}"></span>
+            <input type="checkbox" ng-model="code.selected" ng-change="fauxSelectChange(item, item.hasByChargeCode)" name="room-filters"> {{ code.description }}
+        </label>
+    </div>
+</div>
+
+<div class="options long-list" ng-if="item.hasDisplay.data.length" ng-click="catchFauxSelectClick($event, 'hasDisplay')">
+    <label for="report-options">Display(s)</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasDisplay)">{{ item.hasDisplay.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasDisplay.show }">
+        <label class="checkbox inline" ng-show="item.hasDisplay.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasDisplay.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasDisplay.selectAll" ng-change="fauxSelectChange(item, item.hasDisplay, true)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="display in item.hasDisplay.data">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : display.selected }"></span>
+            <input type="checkbox" ng-model="display.selected" ng-change="fauxSelectChange(item, item.hasDisplay)" name="room-filters"> {{ display.description }}
+        </label>
+    </div>
+</div>
+
+<div class="sort" ng-if="item.sortByOptions">
+    <label>Sort By</label>
+    <div class="select">
+        <select ng-model="item.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in item.sortByOptions | filter:showValidSortBy" ng-change="sortByChanged(item)" iscroll-stop-propagation>
+            <option value="">Sort By</option>
+        </select>
+    </div>
+</div>
+
+<div class="sort" ng-if="item.groupByOptions">
+    <label>Group By</label>
+    <div class="select">
+        <select ng-model="item.chosenGroupBy" ng-options="groupBy.value as groupBy.description for groupBy in item.groupByOptions" ng-change="groupByChanged(item)" iscroll-stop-propagation>
+        </select>
+    </div>
+</div>
+
+<div class="options long-list" ng-if="item.hasMarketsList" ng-click="catchFauxSelectClick($event, 'hasMarketsList')">
+    <label for="report-options">Market(s)</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasMarketsList)">{{ item.hasMarketsList.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasMarketsList.show }">
+        <label class="checkbox inline" ng-show="item.hasMarketsList.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasMarketsList.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasMarketsList.selectAll" ng-change="fauxSelectChange(item, item.hasMarketsList, true)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="market in item.hasMarketsList.data">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : market.selected}"></span>
+            <input type="checkbox" ng-model="market.selected" ng-change="fauxSelectChange(item, item.hasMarketsList)" name="room-filters"> {{ market.name }}
+        </label>
+    </div>
+</div>
+
+<div class="options long-list" ng-if="item.hasSourcesList" ng-click="catchFauxSelectClick($event, 'hasSourcesList')">
+    <label for="report-options">Source(s)</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasSourcesList)">{{ item.hasSourcesList.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasSourcesList.show }">
+        <label class="checkbox inline" ng-show="item.hasSourcesList.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasSourcesList.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasSourcesList.selectAll" ng-change="fauxSelectChange(item, item.hasSourcesList, true)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="source in item.hasSourcesList.data">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : source.selected}"></span>
+            <input type="checkbox" ng-model="source.selected" ng-change="fauxSelectChange(item, item.hasSourcesList)" name="room-filters"> {{ source.name }}
+        </label>
+    </div>
+</div>
+
+<div class="options long-list" ng-if="item.hasOriginsList" ng-click="catchFauxSelectClick($event, 'hasOriginsList')">
+    <label for="report-options">Origin(s)</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasOriginsList)">{{ item.hasOriginsList.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasOriginsList.show }">
+        <label class="checkbox inline" ng-show="item.hasOriginsList.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasOriginsList.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasOriginsList.selectAll" ng-change="fauxSelectChange(item, item.hasOriginsList, true)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="origin in item.hasOriginsList.data">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : origin.selected}"></span>
+            <input type="checkbox" ng-model="origin.selected" ng-change="fauxSelectChange(item, item.hasOriginsList)" name="room-filters"> {{ origin.name }}
+        </label>
+    </div>
+</div>
+
+<a class="button green" ng-click="setnGenReport()">Show</a>

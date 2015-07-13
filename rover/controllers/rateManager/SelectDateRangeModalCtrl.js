@@ -8,8 +8,16 @@ sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngD
 		fromDate = _.isEmpty(filterData.begin_date) ? '' : filterData.begin_date,
 		toDate = _.isEmpty(filterData.end_date) ? '' : filterData.end_date;
 
-	$scope.setUpData = function() {		
-		$scope.fromDate = fromDate;
+	$scope.setUpData = function() {	
+                if (!fromDate){
+                    var nd = new Date(businessDate);
+                    var day = ("0" + nd.getDate()).slice(-2);
+                    var month = ("0" + (nd.getMonth() + 1)).slice(-2);
+                    var fromDateStr = nd.getFullYear()+'-'+month+'-'+day;
+                    $scope.fromDate = fromDateStr;
+                } else {
+                    $scope.fromDate = fromDate;
+                }
 		$scope.toDate = toDate;
 
 		$scope.fromDateOptions = {

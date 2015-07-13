@@ -13,7 +13,7 @@ admin.service('ADReservationSettingsSrv',['$q', 'ADBaseWebSrvV2', function($q, A
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 
@@ -24,7 +24,7 @@ admin.service('ADReservationSettingsSrv',['$q', 'ADBaseWebSrvV2', function($q, A
 	this.saveChanges = function(data){
 
 		var deferred = $q.defer();
-		var url = '/api/hotel_settings/save_hotel_reservation_settings';	
+		var url = '/api/hotel_settings/save_hotel_reservation_settings';
 		ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		},function(data){

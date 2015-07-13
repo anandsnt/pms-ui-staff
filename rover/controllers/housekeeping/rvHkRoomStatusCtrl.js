@@ -39,7 +39,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// set title in header
 		$scope.setTitle($filter( 'translate')('ROOM_STATUS'));
 		$scope.heading = $filter( 'translate')('ROOM_STATUS');
-		$scope.$emit( 'updateRoverLeftMenu' , 'roomStatus' );	
+		$scope.$emit( 'updateRoverLeftMenu' , 'roomStatus' );
 		
 
 		$scope.setScroller('room-status-filter');
@@ -61,11 +61,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				|| (fromState.name === 'rover.housekeeping.roomStatus' && toState.name !== 'rover.housekeeping.roomDetails')) {
 				
 				RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
-				$scope.currentFilters = angular.copy( RVHkRoomStatusSrv.currentFilters );
+				RVHkRoomStatusSrv.resetRoomTypes();
 
 				localStorage.removeItem( 'roomListScrollTopPos' );
 			};
-		});	
+		});
 
 
 
@@ -111,6 +111,12 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.roomTypes          = roomTypes;
 		$scope.floors             = floors;
+
+		// $scope.singleRoomType     = { id: '', value: 'All Room Types' };
+		// var selRoom = _.find($scope.roomTypes, function(type) { return type.isSelected });
+		// if ( selRoom ) {
+		// 	$scope.singleRoomType.id = selRoom.id;
+		// };
 
 		$scope.workTypes          = [];
 		$scope.employees          = [];
@@ -290,8 +296,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		};
 
 		$scope.clearFilters = function() {
-			_.each($scope.roomTypes, function(type) { type.isSelected = false; });
-			RVHkRoomStatusSrv.roomTypes = angular.copy( $scope.roomTypes );
+			$scope.roomTypes = RVHkRoomStatusSrv.resetRoomTypes();
 
 			$scope.currentFilters = RVHkRoomStatusSrv.initFilters();
 			if ( $scope.isStandAlone ) {
@@ -429,9 +434,79 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		    $scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, _data, _onAssignSuccess, _onAssignFailure);
 		};
 
+		$scope.singleRoomTypeFiltered = function() {
+			_.each($scope.roomTypes, function(item) {
+				if ( item.id == $scope.currentFilters.singleRoomType ) {
+					item.isSelected = true;
+				} else {
+					item.isSelected = false;
+				};
+			});
+		};
+
+
+		$scope.printData = function() {
+			$scope.returnToPage = $_page;
+
+			$_updateFilters('page', 1);
+			$_updateFilters('perPage', 1000);
+
+			function callback (data) {
+				$_fetchRoomListCallback(data);
+				printList();
+			};
+
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {}, callback);
+		};
+
 
 
 		/* ***** ***** ***** ***** ***** */
+
+
+
+		function printList () {
+			var domRoomInsertDelay = 400;
+
+			// add the orientation
+			$( 'head' ).append( "<style id='print-orientation'>@page { size: landscape; }</style>" );
+
+			$scope.$emit('hideLoader');
+
+			/*
+			*	=====[ READY TO PRINT ]=====
+			*/
+		
+			// this will show the popup with full report
+		    $timeout(function() {
+
+		    	/*
+		    	*	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+		    	*/
+
+		        $window.print();
+		        if ( sntapp.cordovaLoaded ) {
+		            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+		        };
+		    }, domRoomInsertDelay);
+
+		    /*
+		    *	=====[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]=====
+		    */
+
+		    // in background we need to keep the report with its original state
+		    $timeout(function() {
+		    	// remove the orientation
+				$( '#print-orientation' ).remove();
+
+				// reset params to what it was before printing
+				$_page = $scope.returnToPage;
+				$_updateFilters('page', $_page);
+				$_updateFilters('perPage', $window.innerWidth < 599 ? 25 : 50);
+
+				$_callRoomsApi();
+		    }, domRoomInsertDelay);
+		};
 
 
 
@@ -614,8 +689,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		function $_postProcessRooms() {
-			var _roomCopy     = {},
-				_processCount = 0,
+			var _processCount = 0,
 				_minCount     = 13,
 				i             = 0;
 
@@ -623,7 +697,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			// else : empty and hide loader
 			if ( $scope.uiTotalCount ) {
 				_processCount = Math.min( $scope.uiTotalCount, _minCount );
-				$timeout(_firstInsert, 100);
+				_firstInsert();
 			} else {
 				$scope.rooms = [];
 				_hideLoader();
@@ -631,14 +705,13 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			function _firstInsert () {
 				for ( i = 0; i < _processCount; i++ ) {
-					_roomCopy = angular.copy( $_roomList.rooms[i] );
-					$scope.rooms.push( _roomCopy );
+					$scope.rooms.push( $_roomList.rooms[i] );
 				};
 
 				// if   : more than '_minCount' results -> load '_processCount' to last
 				// else : hide loader
 				if ( $scope.uiTotalCount > _minCount ) {
-					$timeout(_secondInsert, 100);
+					$timeout(_secondInsert, 50);
 				} else {
 					_hideLoader();
 				};
@@ -646,8 +719,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			function _secondInsert () {
 				for ( i = _processCount; i < $scope.uiTotalCount; i++ ) {
-					_roomCopy = angular.copy( $_roomList.rooms[i] );
-					$scope.rooms.push( _roomCopy );
+					$scope.rooms.push( $_roomList.rooms[i] );
 				};
 
 				_hideLoader();
@@ -715,7 +787,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		var $_pullUpDownModule = function() {
 
-			// caching DOM nodes invloved 
+			// caching DOM nodes invloved
 			var $rooms        = document.getElementById( 'rooms' ),
 				$roomsList    = $rooms.children[0];
 				$refresh      = document.getElementById( 'pull-refresh-page' ),
@@ -881,7 +953,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			// the user stops touching the screen
 			// TODO: need to bind very similar for 'touchcancel' event
 			var touchEndHandler = function(e) {
-				var touch         = e.touches ? e.touches[0] : e, 
+				var touch         = e.touches ? e.touches[0] : e,
 					diff          = 0,
 					addTransition = '-webkit-transform 0.3s',
 					translateZero = genTranslate();
@@ -1022,7 +1094,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// stop browser bounce while swiping on filter-options element
 		angular.element( $_filterRoomsEl )
 			.on('touchmove', function(e) {
-				// e.stopPropagation(); - CICO-13434 Changed to iscroll from native scroll. 
+				// e.stopPropagation(); - CICO-13434 Changed to iscroll from native scroll.
 			});
 
 		// There are a lot of bindings that need to cleared

@@ -1,4 +1,4 @@
-sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout','$window',function($scope,$rootScope,$timeout,$window) {
+sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout','$window','RVJournalSrv',function($scope,$rootScope,$timeout,$window,RVJournalSrv) {
 	BaseCtrl.call(this, $scope);
 
 	/** Code for PRINT BOX drawer common Resize Handler starts here .. **/
@@ -73,36 +73,28 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		
 		$scope.data.activeChargeCodes = [];
 
-		angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
-			
-			if((charge_groups.id == $scope.data.selectedChargeGroup) || ($scope.data.selectedChargeGroup == 'ALL')){
-				
-				if(charge_groups.show){
+		var successCallBackFetchRevenueData = function(data){
+			$scope.data.revenueData = {};
+			$scope.data.revenueData = data;
 
-					charge_groups.show = true;
-					charge_groups.filterFlag = true;
-					
-					angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
-						if(charge_codes.show){
-							charge_codes.filterFlag = true;
+			var chargeCodeList = data.charge_groups[0].charge_codes;
+			$scope.data.activeChargeCodes = ( chargeCodeList.length >0 ) ? chargeCodeList : [];
+			$scope.data.revenueData.charge_groups[0].active = true;
+            
+            $scope.errorMessage = "";
+            $rootScope.$broadcast('REFRESHREVENUECONTENT');
+            $scope.$emit('hideLoader');
+		};
 
-							if($scope.data.selectedChargeGroup !== 'ALL'){
-								var obj = { "id": charge_codes.id , "name": charge_codes.name };
-			       				$scope.data.activeChargeCodes.push(obj);
-			       			}
-	       				}
-					});
-				}
-				else{
-					charge_groups.filterFlag = false;
-				}
-			}
-			else{
-				charge_groups.filterFlag = false;
-			}
-       	});
-       	$scope.data.selectedChargeCode = 'ALL';
-       	$scope.chargeCodeChanged();
+		var postData = {
+            "from_date":$scope.data.fromDate,
+            "to_date":$scope.data.toDate,
+            "employee_ids" : $scope.data.selectedEmployeeList ,
+            "department_ids" : $scope.data.selectedDepartmentList,
+            "charge_group_id": $scope.data.selectedChargeGroup
+        };
+
+		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, postData, successCallBackFetchRevenueData);
 
        	var uiValue = _.find($scope.data.revenueData.charge_groups, function(each) {
        		return each.id == $scope.data.selectedChargeGroup;
@@ -113,25 +105,28 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	// On changing charge code on PRINT filter
 	$scope.chargeCodeChanged = function(){
 
-		angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
+		var successCallBackFetchRevenueDataChargeCodes = function(data){
+			
+			$scope.data.revenueData.charge_groups[0].charge_codes = [];
+			$scope.data.revenueData.charge_groups[0].charge_codes = data.charge_codes;
+			$scope.data.revenueData.charge_groups[0].active = true;
+			//$scope.data.revenueData.total_revenue = data.charge_codes[0].total;
 
-			angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
+			$rootScope.$broadcast('REFRESHREVENUECONTENT');
+            $scope.errorMessage = "";
+            $scope.$emit('hideLoader');
+        };
 
-				if((charge_codes.id == $scope.data.selectedChargeCode) || ($scope.data.selectedChargeCode == 'ALL')){
+        var postData = {
+        	"from_date":$scope.data.fromDate,
+        	"to_date":$scope.data.toDate,
+        	"charge_group_id": $scope.data.selectedChargeGroup,
+        	"charge_code_id" : $scope.data.selectedChargeCode,
+        	"employee_ids" : $scope.data.selectedEmployeeList,
+            "department_ids" : $scope.data.selectedDepartmentList
+        };
 
-					if(charge_codes.show) {
-						charge_codes.filterFlag = true;
-						charge_groups.active = true;
-					}
-					else{
-						charge_codes.filterFlag = false;
-					}
-				}
-				else{
-					charge_codes.filterFlag = false;
-				}
-			});
-       	});
+        $scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeCodes, postData, successCallBackFetchRevenueDataChargeCodes);
 
        	var uiValue = _.find($scope.data.activeChargeCodes, function(each) {
        		return each.id == $scope.data.selectedChargeCode;
@@ -139,55 +134,16 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
        	$scope.data.uiSelectedChargeCode = !!uiValue ? uiValue['name'] : '';
 	};
 
-	$scope.toggleRevenueTransactions = function(){
-		if($scope.data.isRevenueToggleSummaryActive)
-			$scope.showRevenueDetailView(false);
-		else
-			$scope.showRevenueDetailView(true);
-	};
-
 	// To handle Summary/Details toggle button click - REVENUE
 	$scope.toggleSummaryOrDeatilsRevenue = function(){
-		$rootScope.$broadcast('REFRESHREVENUECONTENT');
+		
 		$scope.data.isRevenueToggleSummaryActive = !$scope.data.isRevenueToggleSummaryActive;
-		$scope.toggleRevenueTransactions();
-	};
-
-	$scope.togglePaymentTransactions = function(){
-		if($scope.data.isPaymentToggleSummaryActive)
-			$scope.showPaymentDetailView(false);
-		else
-			$scope.showPaymentDetailView(true);
 	};
 
 	// To handle Summary/Details toggle button click - PAYMENT
 	$scope.toggleSummaryOrDeatilsPayment = function(){
-		$rootScope.$broadcast('REFRESHPAYMENTCONTENT');
-		$scope.data.isPaymentToggleSummaryActive = !$scope.data.isPaymentToggleSummaryActive;
-		$scope.togglePaymentTransactions();
-	};
 
-	/*
-     *	To handle Summary/Details view for Revenue filter.
-	 */
-	$scope.showRevenueDetailView = function(isDetailView){
-		
-		angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
-			
-            angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
-            	
-            	if(isDetailView && charge_codes.filterFlag){
-            		//Expanding Level1 and Level2 to show detailed view.
-            		charge_groups.active = true;
-            		// If charge code is having items inside, expand it.
-            		if(charge_codes.transactions.length > 0) charge_codes.active = true;
-            	}
-            	else if(!isDetailView){
-            		charge_groups.active =  false;
-            	 	charge_codes.active = false;
-            	}
-            });
-        });
+		$scope.data.isPaymentToggleSummaryActive = !$scope.data.isPaymentToggleSummaryActive;
 	};
 
 	/** Code for Revenue Tab - PRINT BOX - filters ends here ..   **/
@@ -195,71 +151,40 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	/** Code for Payment Tab - PRINT BOX - filters starts here .. **/
 	$scope.paymentTypeChanged = function(){
 
-		angular.forEach($scope.data.paymentData.payment_types,function(payment_types, index1) {
+		var successCallBackFetchPaymentData = function(data){
+			$scope.data.paymentData = {};
+			$scope.data.paymentData = data;
+			
+			if(data.payment_type == 'Credit Card'){
+				$scope.data.paymentData.payment_types[0].active = true;
+			}
+            $scope.errorMessage = "";
+			$rootScope.$broadcast('REFRESHPAYMENTCONTENT');
+			$scope.$emit('hideLoader');
+		};
 
-			if((payment_types.id == $scope.data.selectedPaymentType) && (payment_types.payment_type == "Credit Card")) {
-				
-				if(payment_types.show){
-					payment_types.filterFlag = true;
-					
-					angular.forEach(payment_types.credit_cards,function(credit_cards, index2) {
-						if(credit_cards.show){
-							credit_cards.filterFlag = true;
-						}
-						$scope.togglePaymentTransactions();
-					});
-				}
-				else{
-					payment_types.filterFlag = false;
-				}
-	        }
-	        else if((payment_types.id == $scope.data.selectedPaymentType) || ($scope.data.selectedPaymentType == 'ALL')){
-	        	
-	        	payment_types.filterFlag = true;
-	        	$scope.togglePaymentTransactions();
-	        }
-	        else{
-	        	payment_types.filterFlag = false;
-	        }
-        });
+		var postData = {
+            "from_date":$scope.data.fromDate,
+            "to_date":$scope.data.toDate,
+            "employee_ids" : $scope.data.selectedEmployeeList ,
+            "department_ids" : $scope.data.selectedDepartmentList
+        };
+
+		if($scope.data.selectedPaymentType === "ALL"){
+			postData.charge_code_id = "";
+		}
+		else if($scope.data.selectedPaymentType === "" || typeof $scope.data.selectedPaymentType === "undefined"){
+			postData.charge_code_id = "CC";
+		}
+		else{
+			postData.charge_code_id = $scope.data.selectedPaymentType;
+		}
+		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, postData , successCallBackFetchPaymentData);
 
 		var uiValue = _.find($scope.data.paymentData.payment_types, function(each) {
 			return each.id == $scope.data.selectedPaymentType;
 		});
 		$scope.data.uiSelectedPaymentType = !!uiValue ? uiValue['payment_type'] : '';
-	};
-
-	/*
-     *	To handle Summary/Details view for Payments filter.
-	 */
-	$scope.showPaymentDetailView = function(isDetailView){
-		
-		angular.forEach($scope.data.paymentData.payment_types,function(payment_types, index1) {
-
-			if(payment_types.payment_type == "Credit Card"){
-	            angular.forEach(payment_types.credit_cards,function(credit_cards, index2) {
-	            	
-	            	if(isDetailView && credit_cards.filterFlag){
-	            		// Expanding Level1 and Level2 to show detailed view for Credit Cards.
-	            		payment_types.active = true;
-	            		// If cards having data inside , expand it.
-	            		if(credit_cards.transactions.length >0) credit_cards.active = true;
-	            	}
-	            	else if(!isDetailView){
-	            		payment_types.active = false;
-	            		credit_cards.active = false;
-	            	}
-	            });
-        	}
-        	else{
-        		if(isDetailView && payment_types.transactions.length >0){
-        			payment_types.active = true;
-        		}
-        		else if(!isDetailView){
-        			payment_types.active = false;
-        		}
-        	}
-        });
 	};
 
 	/** Code for Payment Tab - PRINT BOX - filters ends here .. **/

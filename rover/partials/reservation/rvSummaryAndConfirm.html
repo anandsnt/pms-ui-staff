@@ -94,7 +94,7 @@
                     </div>
                 </div>
                 <!-- This here is dynamic content, depending on actual room booked -->
-                <div class="rooms" ng-repeat="room in reservationData.rooms" ng-init="roomIndex = $index">
+                <div class="rooms" ng-repeat="room in reservationData.rooms" ng-init="roomIndex = $index ; showAccompanyingGuests = false">
                     <div class="title">
                         <span translate>ROOM</span> {{room.roomNumber}}
                         <div class="count">
@@ -150,11 +150,11 @@
                         </li>   -->                   
                     </ul>
                     <div class="actions">
-                        <button type="button" class="button white blue-text" ng-class="{'grey-text': !room.confirm_no && !reservationData.confirmNum}" ng-disabled="!room.confirm_no && !reservationData.confirmNum" ng-click="openBillingInformation(room.confirm_no)">{{getBillingInfoTitle()}}</a>
-                            <button type="button" class="button white brand-text" ng-class="{'grey-text': !room.confirm_no && !reservationData.confirmNum}" ng-disabled="!room.confirm_no && !reservationData.confirmNum" ng-click="setDemographics(false, $index)">Demographics</a>
+                        <button type="button" class="button white blue-text" ng-class="{'grey-text': !room.confirm_no && !reservationData.confirmNum}" ng-disabled="!room.confirm_no && !reservationData.confirmNum" ng-click="openBillingInformation(room.confirm_no)">{{getBillingInfoTitle()}}</button>
+                            <button type="button" class="button white brand-text" ng-class="{'grey-text': !room.confirm_no && !reservationData.confirmNum}" ng-disabled="!room.confirm_no && !reservationData.confirmNum" ng-click="setDemographics(false, $index)">Demographics</button>
                     </div>
-                    <button class="add-new-button" ng-click="addGuests(room);" ng-hide="!!room.accompanying_guest_details">+ Accompanying Guest</button>
-                    <form id="room-1-accompany" class="form" ng-show="!!room.accompanying_guest_details">
+                    <button class="add-new-button" ng-click="showAccompanyingGuests = !showAccompanyingGuests; addGuests(room);" ng-hide="showAccompanyingGuests">+ Accompanying Guest</button>
+                    <form class="form" ng-show="showAccompanyingGuests">
                         <!-- Remove class hidden when button above clicked -->
                         <div class="entry" ng-repeat="guest in room.accompanying_guest_details">
                             <label>Accompanying guest {{$index + 1}}</label>
@@ -162,12 +162,13 @@
                             <input placeholder="Last Name" type="text" ng-model="guest.last_name" />
                         </div>
                         <div class="actions">
-                            <button type="button" class="button blank" ng-click="clearGuests(room)">Cancel</button>
+                        <!-- CICO-16940 1. Rename cancel as close 2. Save accompanying guests on close -->
+                            <button type="button" class="button blank" ng-click="showAccompanyingGuests = !showAccompanyingGuests; saveAccompanyingGuests(room, roomIndex);">close</button>
                         </div>
                     </form>
                 </div>
                 <ul class="total-stay-cost">
-                    <li ng-repeat="row in reservationData.taxDetails">
+                    <li ng-repeat="row in reservationData.taxInformation">
                         <span class="label" translate> {{row.description}} </span>
                         <span class="total" ng-if="reservationData.isRoomRateSuppressed">SR</span>
                         <span class="total" ng-if="!reservationData.isRoomRateSuppressed">{{currencySymbol}}{{ row.amount | number : 2}}</span>

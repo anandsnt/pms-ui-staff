@@ -64,6 +64,7 @@
     "GROUP_ARRIVAL":"Arrival",
     "GROUP_DEPARTURE":"Departure",
     "GROUP_ROOM_TYPE":"Room Type",
+    "GROUP_ROOM RATE": "Rate",
     "GROUP_STATUS":"Status",
     "GROUP_PICKED_UP":"Picked Up",
     "GROUP_CHECK_IN":"Check In",
@@ -72,7 +73,8 @@
     "GROUP_EMAIL":"Email",
     "GROUP_PRINT":"Print",
     "GROUP_DOWNLOAD":"Download",
-    "ADD_BILLING_INFO":"Add billing information"
+    "ADD_BILLING_INFO":"Add billing information",
+    "GROUP_BATCH" : "Reg.card"
 
 
 

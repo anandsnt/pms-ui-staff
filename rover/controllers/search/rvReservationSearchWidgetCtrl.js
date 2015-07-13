@@ -214,18 +214,18 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			
 
 			// if it is hiding, we need to clear the search text
-			if (!searchAreaVisibilityStatus) {				
+			if (!searchAreaVisibilityStatus) {
 				$scope.textInQueryBox = '';
 				$vault.set('searchQuery', '');
 				// hide the dashboard back button (dont remove yet)
-				// $rootScope.setPrevState.hide = true;				
+				// $rootScope.setPrevState.hide = true;
 				if (!$scope.reservationSearch) {
-					$scope.searchAreaIsHiding = true;					
+					$scope.searchAreaIsHiding = true;
 					$timeout(function() {
 						$scope.searchAreaIsHiding = false;
 						$scope.searchAreaIsOpening = false;
 						$scope.showSearchResultsArea = searchAreaVisibilityStatus;
-					}, 400)					
+					}, 400)
 				}
 				else {
 					$scope.searchAreaIsHiding = false;
@@ -352,9 +352,9 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 */
 		var displayFilteredResults = function() {
 
-			//show everything, means no filtering    
+			//show everything, means no filtering
 			if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
-				//based on 'is_row_visible' parameter we are showing the data in the template      
+				//based on 'is_row_visible' parameter we are showing the data in the template
 				for (var i = 0; i < $scope.results.length; i++) {
 					$scope.results[i].is_row_visible = true;
 				}
@@ -407,7 +407,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			} else if ($stateParams.type != undefined && query == '' && $stateParams.type !== 'SEARCH_NORMAL') {
 				dataDict.status = $stateParams.type;
 			}
-			//CICO-10323. for hotels with single digit search, 
+			//CICO-10323. for hotels with single digit search,
 			//If it is a numeric query with less than 3 digits, then lets assume it is room serach.
 			if ($rootScope.isSingleDigitSearch && !isNaN(query) && query.length < 3) {
 				dataDict.room_search = true;
@@ -580,7 +580,32 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			// reset the query saved into vault
 			$vault.set('searchQuery', '');
 		};
+                
+                $rootScope.$on('LOAD_SHARED_RESERVATION',function(evtObj, data){
+                    var reservationID = data.reservation_no, confirmationID = data.confirmation_no;
+                    $scope.goToSharerReservationDetails(evtObj, reservationID, confirmationID);
+                });
 
+		/**
+		 * function to execute on clicking on each result
+		 */
+		$scope.goToSharerReservationDetails = function(evtObj, reservationID, confirmationID) {
+
+			$scope.currentReservationID = reservationID;
+			$scope.currentConfirmationID = confirmationID;
+			RVSearchSrv.data = $scope.results;
+			RVSearchSrv.fromDate = $scope.fromDate;
+			RVSearchSrv.toDate = $scope.toDate;
+
+			//$scope.$emit("UpdateSearchBackbuttonCaption", "");
+                        
+                        $rootScope.viaSharerPopup = true;
+			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+				id: reservationID,
+				confirmationId: confirmationID,
+				isrefresh: true
+			});
+		};
 		/**
 		 * function to execute on clicking on each result
 		 */
@@ -596,7 +621,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			RVSearchSrv.fromDate = $scope.fromDate;
 			RVSearchSrv.toDate = $scope.toDate;
 
-
+                        $rootScope.goToReservationCalled = true;
 			//$scope.$emit("UpdateSearchBackbuttonCaption", "");
 			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 				id: reservationID,

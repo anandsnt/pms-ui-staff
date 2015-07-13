@@ -46,5 +46,17 @@
                 </select>
             </div>
         </div>
+
+        <!-- Market -->
+        <div class="block-item item-source" ng-if="otherData.segmentsEnabled">
+            <h3 class="block-title">Segment</h3>
+            <div class="select">
+                <select name="market" ng-class="{'placeholder':reservationParentData.demographics.segment == ''}" ng-model="reservationParentData.demographics.segment" ng-change="updateAdditionalDetails()" iscroll-stop-propagation ng-disabled="additionalDetails.segmentAvailable && isSegmentAutoComputed()"> <!-- Add  class="placeholder" when no value option is selected -->
+                    <option value="">Select Segment</option>
+                    <option ng-repeat="segment in otherData.segments" value="{{segment.value}}" ng-selected="segment.value==reservationParentData.demographics.segment">{{segment.name}}</option>
+                </select>
+            </div>
+        </div> 
+
     </div>
 </div>

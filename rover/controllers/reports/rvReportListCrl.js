@@ -4,7 +4,8 @@ sntRover.controller('RVReportListCrl', [
     '$filter',
     'RVreportsSrv',
     'RVReportUtilsFac',
-    function($scope, $rootScope, $filter, RVreportsSrv, reportUtils) {
+    '$timeout',
+    function($scope, $rootScope, $filter, RVreportsSrv, reportUtils, $timeout) {
 
         BaseCtrl.call(this, $scope);
 
@@ -16,19 +17,8 @@ sntRover.controller('RVReportListCrl', [
          * inorder to refresh after list rendering
          */
         $scope.$on("NG_REPEAT_COMPLETED_RENDERING", function(event) {
-            $scope.refreshScroller('report-list-scroll');
+            $timeout($scope.refreshScroller.bind($scope, 'report-list-scroll'), 2010);
         });
-
-        /**
-         * This method helps to populate the markets filter in the reports for the Report and Summary Filter
-         */
-        var populateMarketsList = function() {
-            var callback = function(data) {
-                $scope.reportsState.markets = data;
-                $scope.$emit('hideLoader');
-            }
-            $scope.invokeApi(RVreportsSrv.fetchDemographicMarketSegments, {}, callback);
-        }
 
         /**
          *   Post processing fetched data to modify and add additional data
@@ -45,6 +35,8 @@ sntRover.controller('RVReportListCrl', [
                 // add required flags this report
                 reportUtils.applyFlags( reportList[i] );
 
+
+
                 // to process the filters for this report
                 reportUtils.processFilters(reportList[i], {
                     'guaranteeTypes' : $scope.$parent.guaranteeTypes,
@@ -52,12 +44,9 @@ sntRover.controller('RVReportListCrl', [
                     'chargeCodes'    : $scope.$parent.chargeCodes,
                     'markets'        : $scope.$parent.markets,
                     'sources'        : $scope.$parent.sources,
-                    'origins'        : $scope.$parent.origins
+                    'origins'        : $scope.$parent.origins,
+                    'codeSettings'   : $scope.$parent.codeSettings
                 });
-
-
-
-
 
 
 
@@ -78,11 +67,6 @@ sntRover.controller('RVReportListCrl', [
 
 
 
-                // CICO-10202 start populating the markets list
-                if ( reportList[i]['title'] == 'Booking Source & Market Report' ) {
-                    populateMarketsList();
-                };
-
                 // CICO-8010: for Yotel make "date" default sort by filter
                 if ($rootScope.currentHotelData == 'Yotel London Heathrow') {
                     var sortDate = _.find(reportList[i].sortByOptions, function(item) {
@@ -92,12 +76,13 @@ sntRover.controller('RVReportListCrl', [
                         reportList[i].chosenSortBy = sortDate.value;
                     };
                 };
-
-                // call atleast once
-                $scope.fauxOptionClicked(null, reportList[i]);
             };
 
-            $scope.refreshScroller('report-list-scroll');
+            // SUPER forcing scroll refresh!
+            // 2000 is the delay for slide anim, so firing again after 2010
+            $timeout($scope.refreshScroller.bind($scope, 'report-list-scroll'), 100);
+            $timeout($scope.refreshScroller.bind($scope, 'report-list-scroll'), 2010);
+
         }($scope.$parent.reportList);
 
         // show hide filter toggle
@@ -110,6 +95,14 @@ sntRover.controller('RVReportListCrl', [
             RVreportsSrv.setChoosenReport(this.item);
             $scope.genReport();
         };
+
+
+        var serveRefresh = $scope.$on('report.list.scroll.refresh', function() {
+            $timeout($scope.refreshScroller.bind($scope, 'report-list-scroll'), 100);
+        });
+
+        // removing event listners when scope is destroyed
+        $scope.$on( 'destroy', serveRefresh );
 
     }
 ]);

@@ -23,5 +23,17 @@ sntRover.service('RVReservationGuestSrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
         
+         this.fetchGuestPrefList = function (params) {
+            var deferred = $q.defer();
+            var url = 'api/hotels/guest_preferences.json';
+
+            RVBaseWebSrvV2.getJSON(url, params).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+        
     }
 ]);

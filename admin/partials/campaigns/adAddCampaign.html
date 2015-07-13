@@ -70,11 +70,17 @@
 		                    <span translate>SPECIFIC_USERS</span>
 		                </label>                        
                         <!-- Remove class "hidden" when "Specific User(s)" option is selected. Add it back if other option is selected -->
-		                <input id="audience-specific-user" placeholder="Enter User Name" type="text" ng-show="campaignData.audience_type =='SPECIFIC_USERS'" ng-model="campaignData.specific_users" ng-disabled="campaignData.status == 'COMPLETED'" ng-class="{'disabled_text':campaignData.status == 'COMPLETED'}"/> 
+		                <input id="audience-specific-user" class = "campaign-textbox" placeholder="Enter User Name" type="text" ng-show="campaignData.audience_type =='SPECIFIC_USERS'" ng-model="campaignData.specific_users" ng-disabled="campaignData.status == 'COMPLETED'" ng-class="{'disabled_text':campaignData.status == 'COMPLETED'}"/> 
                         <label class="radio">
 		                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='EXTERNAL_CHECKIN'}"></span>
 		                    <input name="audience" id="audience-users" type="radio" value="EXTERNAL_CHECKIN" ng-model="campaignData.audience_type" ng-disabled="campaignData.status == 'COMPLETED'"/>
 		                    <span translate>EXTERNAL_CHECKIN</span>
+		                </label>
+
+		                <label class="radio">
+		                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='EXTERNAL_CHECKOUT'}"></span>
+		                    <input name="audience" id="audience-users" type="radio" value="EXTERNAL_CHECKOUT" ng-model="campaignData.audience_type" ng-disabled="campaignData.status == 'COMPLETED'"/>
+		                    <span translate>EXTERNAL_CHECKOUT</span>
 		                </label>
                            
 
@@ -123,14 +129,14 @@
 	                    {{'URL_LABEL'|translate}}
 	                   </label>
 	            
-	            <!-- Lines 97-148 are For future use, not for CICO-11909  -->
-	                  <label class="radio large"> <!-- // Add class "hidden" when "Recurring" is selected as option. Remove it if "One time" is selected as option. -->
+	            
+	                  <label class="radio large"> 
 	                         <span class="icon-form icon-radio" ng-class = "{'checked': campaignData.target_type == 'SCREEN'}"></span>
-	                        <input name="delivery-once" id="delivery-immediately" value="SCREEN" type="radio" ng-model="campaignData.target_type" />
+	                        <input name="delivery-once" id="delivery-immediately" value="SCREEN" type="radio" ng-model="campaignData.target_type" ng-disabled = "isScreenSwitchDisabled();" />
 	                        {{'SCREEN_LABEL'|translate}}
 	                  </label>
 
-                       <input type="text" id="call-target" placeholder="Button link" ng-model="campaignData.call_to_action_target" value="campaignData.call_to_action_target" ng-disabled="campaignData.status == 'COMPLETED'" ng-show="campaignData.target_type == 'URL'" ng-class="{'disabled_text':campaignData.status == 'COMPLETED'}"/>
+                       <input type="text" class = "campaign-textbox" id="call-target" placeholder="Button link" ng-model="campaignData.call_to_action_target" value="campaignData.call_to_action_target" ng-disabled="campaignData.status == 'COMPLETED'" ng-show="campaignData.target_type == 'URL'" ng-class="{'disabled_text':campaignData.status == 'COMPLETED'}"/>
 
                       <ad-dropdown label-in-drop-down="{{'SCREEN_LABEL' | translate}}" ng-if="campaignData.target_type == 'SCREEN'" ng-disabled="campaignData.status == 'COMPLETED'" list="campaignData.screen_types" selected-Id='campaignData.screen_type_id' selbox-class='placeholder'
                       ></ad-dropdown>
@@ -273,6 +279,14 @@
 	                <span class="icon-form icon-radio" ng-class = "{'checked': campaignData.delivery_details == 'EXTERNAL_CHECKIN'}"></span>
 	                <input name="delivery" id="delivery-onetime" value="EXTERNAL_CHECKIN" type="radio" ng-model="campaignData.delivery_details" ng-disabled="campaignData.status == 'COMPLETED'"/>
 	                {{'EXTERNAL_CHECKIN'|translate}}
+	            </label>
+	        </div>
+
+	        <div class="large-block" ng-class = "{'open': campaignData.delivery_details == 'EXTERNAL_CHECKOUT'}">
+	            <label class="radio large">
+	                <span class="icon-form icon-radio" ng-class = "{'checked': campaignData.delivery_details == 'EXTERNAL_CHECKOUT'}"></span>
+	                <input name="delivery" id="delivery-onetime" value="EXTERNAL_CHECKOUT" type="radio" ng-model="campaignData.delivery_details" ng-disabled="campaignData.status == 'COMPLETED'"/>
+	                {{'EXTERNAL_CHECKOUT'|translate}}
 	            </label>
 	        </div>
 

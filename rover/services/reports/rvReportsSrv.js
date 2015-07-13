@@ -133,7 +133,7 @@ sntRover.service('RVreportsSrv', [
 		// id & description
 		this.fetchChargeCodes = function() {
 			var deferred = $q.defer(),
-				url = 'api/charge_codes';
+				url = 'api/charge_codes?is_get_all_charge_codes=true';
 
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
@@ -168,6 +168,20 @@ sntRover.service('RVreportsSrv', [
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data.booking_origins);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+		this.fetchCodeSettings = function() {
+			var deferred = $q.defer(),
+				url = '/api/reports/code_settings';
+
+			rvBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data);
 				}.bind(this), function(data) {
 					deferred.reject(data);
 				});

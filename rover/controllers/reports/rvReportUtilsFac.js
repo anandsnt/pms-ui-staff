@@ -10,7 +10,7 @@ sntRover.factory('RVReportUtilsFac', [
 
 
 
-        // standard report names list
+        /** @type {Object} A standard dict that can act as a central report name look uo */
         var __reportNames = {
             'CHECK_IN_CHECK_OUT'           : 'Check In / Check Out',
             'UPSELL'                       : 'Upsell',
@@ -29,15 +29,37 @@ sntRover.factory('RVReportUtilsFac', [
             'DAILY_TRANSACTIONS'           : 'Daily Transactions',
             'DAILY_PAYMENTS'               : 'Daily Payments',
             'FORECAST_BY_DATE'             : 'Forecast',
-            'ROOMS_QUEUED'                 : 'Rooms Queued'
+            'ROOMS_QUEUED'                 : 'Rooms Queued',
+            'FORECAST_GUEST_GROUPS'        : 'Forecast Guests & Groups',
+            'MARKET_SEGMENT_STATISTICS_REPORT' : 'Market Segment Statistics Report',
+            'COMPARISION_BY_DATE'          : 'Comparison'
         };
 
 
 
 
-        // here we are trying to create CC CG objects
-        // with payments CC CG
-        // or without CC CG
+
+        /**
+         * A simple getter to returned the actual report name form __reportNames dict
+         * @param  {String} name The capitalized standard report name
+         * @return {String}      The actual report name
+         */
+        factory.getName = function (name) {
+            return __reportNames[name] ? __reportNames[name] : undefined;
+        };
+
+
+
+
+
+
+        /**
+         * This is a function that can return CG & CC with no payment entries or only payment entries
+         * @param  {Array} chargeGroupsAry Array of charge groups
+         * @param  {Array} chargeCodesAry  Array of charge codes
+         * @param  {String} setting         Remove payments or only payments
+         * @return {Object}                 Processed CG & CC
+         */
         var __adjustChargeGroupsCodes = function (chargeGroupsAry, chargeCodesAry, setting) {
             var newChargeGroupsAry = [],
                 newChargeCodesAry  = [],
@@ -48,6 +70,7 @@ sntRover.factory('RVReportUtilsFac', [
             if ( setting == 'REMOVE_PAYMENTS' ) {
                 _.each(chargeGroupsAry, function (each) {
                     if ( each.name !== 'Payments' ) {
+                        each.selected = true;
                         newChargeGroupsAry.push(each);
                     } else {
                         paymentId = each.id;
@@ -60,6 +83,7 @@ sntRover.factory('RVReportUtilsFac', [
                     });
 
                     if ( !cgAssociated ) {
+                        each.selected = true;
                         newChargeCodesAry.push(each);
                     };
                 });
@@ -72,6 +96,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                 if ( !!paymentEntry ) {
                     paymentId = paymentEntry.id;
+                    paymentEntry.selected = true;
                     newChargeGroupsAry.push(paymentEntry);
 
                     _.each(chargeCodesAry, function (each) {
@@ -80,6 +105,7 @@ sntRover.factory('RVReportUtilsFac', [
                         });
 
                         if ( !!cgAssociated ) {
+                            each.selected = true;
                             newChargeCodesAry.push(each);
                         };
                     });
@@ -96,10 +122,105 @@ sntRover.factory('RVReportUtilsFac', [
 
 
 
-        // getter method to provide the required value from
-        // private data store "__reportNames"
-        factory.getName = function (name) {
-            return __reportNames[name] ? __reportNames[name] : undefined;
+        /**
+         * A generic method to properly and effeciently set data for report filters, or anything for that matter
+         * @param  {Object} objRef   The Object where we are going to set/update the key value
+         * @param  {String} key      The name of the key
+         * @param  {Anything} value  The value to be set in objRef
+         */
+        var __setData = function(objRef, key, value) {
+
+            // if the key doesnt exist on the objRef, create it
+            if ( ! objRef.hasOwnProperty(key) ) {
+                objRef[key] = {};
+            };
+
+            // merge value when its an object, else just assign
+            if ( typeof value == 'object' ) {
+                // DAMN! Our Angular version is very very old. Cant use this:
+                // angular.merge({}, objRef[key], value );
+                $.extend( true, objRef[key], value );
+            } else {
+                objRef[key] = value;
+            };
+        };
+
+        /** @type {Object} Array of all the filter values, new values added in future can be included here */
+        var __optionFilterNames = {
+            'INCLUDE_NOTES'      : true,
+            'VIP_ONLY'           : true,
+            'INCLUDE_VARIANCE'   : true,
+            'INCLUDE_LAST_YEAR'  : true,
+            'INCLUDE_CANCELLED'  : true,
+            'INCLUDE_CANCELED'   : true,
+            'INCLUDE_NO_SHOW'    : true,
+            'SHOW_GUESTS'        : true,
+            'ROVER'              : true,
+            'ZEST'               : true,
+            'ZEST_WEB'           : true,
+            'DEPOSIT_PAID'       : true,
+            'DEPOSIT_DUE'        : true,
+            'DEPOSIT_PAST'       : true,
+            'DUE_IN_ARRIVALS'    : true,
+            'DUE_OUT_DEPARTURES' : true,
+            'INCLUDE_NEW'        : true,
+            'INCLUDE_BOTH'       : true,
+            'SHOW_RATE_ADJUSTMENTS_ONLY' : true,
+            'INCLUDE_TAX'        : true
+        };
+
+        var __displayFilterNames = {
+            'INCLUDE_MARKET'  : true,
+            'INCLUDE_SOURCE'  : true,
+            'INCLUDE_ORIGIN'  : true,
+            'INCLUDE_SEGMENT' : true
+        };
+
+        /**
+         * Create a DS representing the found filter into the general options DS
+         * @param {Object} objRef The ith report object
+         * @param {Object} filter The ith report's filter object
+         */
+        var __pushGeneralOptionData = function(objRef, filter) {
+            var selected = false;
+            var mustSend = false;
+
+            // if filter is this, make it selected by default
+            if ( objRef['title'] == __reportNames['CANCELLATION_NO_SHOW'] && { 'INCLUDE_CANCELLED':1, 'INCLUDE_CANCELED':1 }[filter.value] ) {
+                selected = true;
+                objRef['hasGeneralOptions']['title'] = filter.description;
+            };
+
+            // if filter value is either of these, make it selected by default
+            if ( { 'DUE_IN_ARRIVALS':1, 'DUE_OUT_DEPARTURES':1 }[filter.value] ) {
+                selected = true;
+                objRef['hasGeneralOptions']['title'] = filter.description;
+            };
+
+            // if filter value is either of these, must include when report submit
+            if ( { 'DEPOSIT_PAID':1, 'DEPOSIT_DUE':1, 'DEPOSIT_PAST':1 }[filter.value] ) {
+                mustSend = true;
+            };
+
+            objRef['hasGeneralOptions']['data'].push({
+                paramKey    : filter.value.toLowerCase(),
+                description : filter.description,
+                selected    : selected,
+                mustSend    : mustSend
+            });
+        };
+
+        /**
+         * Create a DS representing the found filter into the display DS
+         * @param {Object} objRef The ith report object
+         * @param {Object} filter The ith report's filter object
+         */
+        var __pushDisplayData = function(objRef, filter) {
+            objRef['hasDisplay']['data'].push({
+                paramKey    : filter.value.toLowerCase(),
+                description : filter.description,
+                selected    : false,
+            });
         };
 
 
@@ -107,7 +228,10 @@ sntRover.factory('RVReportUtilsFac', [
 
 
 
-        // report icon class to be applied
+        /**
+         * Apply the specific icon class for each report
+         * @param  {Object} reportItem The ith report
+         */
         factory.applyIconClass = function ( reportItem ) {
             switch ( reportItem['title'] ) {
                 case __reportNames['CHECK_IN_CHECK_OUT']:
@@ -171,12 +295,20 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['reportIconCls'] = 'icon-report icon-transactions';
                     break;
 
+                case __reportNames['ROOMS_QUEUED']:
+                    reportItem['reportIconCls'] = 'icons guest-status icon-queued';
+                    break;
+
                 case __reportNames['FORECAST_BY_DATE']:
                     reportItem['reportIconCls'] = 'icon-report';
                     break;
 
-                case __reportNames['ROOMS_QUEUED']:
-                    reportItem['reportIconCls'] = 'icons guest-status icon-queued';
+                case __reportNames['MARKET_SEGMENT_STATISTICS_REPORT']:
+                    reportItem['reportIconCls'] = 'icon-report';
+                    break;
+
+                case __reportNames['FORECAST_GUEST_GROUPS']:
+                    reportItem['reportIconCls'] = 'icon-report';
                     break;
 
                 default:
@@ -190,7 +322,12 @@ sntRover.factory('RVReportUtilsFac', [
 
 
 
-        // add required flags this report
+        /**
+         * The various ways a particular report can behave, all specified here
+         * @param  {Object} reportItem The ith report
+         * @TODO: Now that I think about it, this is not very efficient, we should find a better way to define and apply the behaviour.
+         * Current implementation has many dependendcy across many files. Not Good.
+         */
         factory.applyFlags = function ( reportItem ) {
 
             switch ( reportItem['title'] ) {
@@ -244,13 +381,14 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['showRemoveArrivalDate'] = true;
                     break;
 
+                case __reportNames['FORECAST_BY_DATE']:
                 case __reportNames['DAILY_TRANSACTIONS']:
                 case __reportNames['DAILY_PAYMENTS']:
                     reportItem['hasDateLimit'] = false;
                     break;
 
-                case __reportNames['FORECAST_BY_DATE']:
-                    reportItem['hasDateLimit'] = false;
+                case __reportNames['MARKET_SEGMENT_STATISTICS_REPORT']:
+                    reportItem['hasDateLimit'] = true;
                     break;
 
                 case __reportNames['ROOMS_QUEUED']:
@@ -259,9 +397,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                 default:
                     reportItem['show_filter'] = false;
-                    reportItem['hasDateLimit'] = true;
-                    // -- https://stayntouch.atlassian.net/browse/CICO-16820
-                    reportItem['hasDateLimit'] = false;
+                    reportItem['hasDateLimit'] = false;     // CICO-16820: Changed to false
                     break;
             };
         };
@@ -271,27 +407,57 @@ sntRover.factory('RVReportUtilsFac', [
 
 
 
-        // to process the report filters
+        /**
+         * Process the filters and create proper DS to show and play in UI 
+         * @param  {Object} reportItem The ith report
+         * @param  {Object} data       Additonal data sources like CG, CC, Markets, Source etc
+         */
         factory.processFilters = function ( reportItem, data ) {
-            var _hasFauxSelect,
-                _hasDisplaySelect,
-                _hasGuaranteeSelect;
 
             // pre-process charge groups and charge codes
-            var _processed_CG_CC = {};
+            var processedCGCC = {};
+
+            // create DS for options combo box
+            __setData(reportItem, 'hasGeneralOptions', {
+                type         : 'FAUX_SELECT',
+                show         : false,
+                selectAll    : false,
+                defaultTitle : 'Select Options',
+                title        : 'Select Options',
+                data         : []
+            });
+
+            // create a name space for chosen options
+            reportItem.chosenOptions = {};
+
+            // create DS for display combo box
+            __setData(reportItem, 'hasDisplay', {
+                type         : 'FAUX_SELECT',
+                show         : false,
+                selectAll    : false,
+                defaultTitle : 'Select displays',
+                title        : 'Select displays',
+                data         : []
+            });
+
+            // track all the dates avaliable on this report
+            reportItem.allDates = [];
 
             // going around and taking a note on filters
             _.each(reportItem['filters'], function(filter) {
 
-                if ( (filter.value === 'INCLUDE_CHARGE_CODE' || filter.value === 'INCLUDE_CHARGE_GROUP') && _.isEmpty(_processed_CG_CC) ) {
+                if ( (filter.value === 'INCLUDE_CHARGE_CODE' || filter.value === 'INCLUDE_CHARGE_GROUP') && _.isEmpty(processedCGCC) ) {
                     if ( reportItem['title'] == __reportNames['DAILY_TRANSACTIONS'] ) {
-                        _processed_CG_CC = __adjustChargeGroupsCodes( data.chargeGroups, data.chargeCodes, 'REMOVE_PAYMENTS' );
+                        processedCGCC = __adjustChargeGroupsCodes( data.chargeGroups, data.chargeCodes, 'REMOVE_PAYMENTS' );
                     };
 
                     if ( reportItem['title'] == __reportNames['DAILY_PAYMENTS'] ) {
-                        _processed_CG_CC = __adjustChargeGroupsCodes( data.chargeGroups, data.chargeCodes, 'ONLY_PAYMENTS' );
+                        processedCGCC = __adjustChargeGroupsCodes( data.chargeGroups, data.chargeCodes, 'ONLY_PAYMENTS' );
                     };
                 };
+
+
+
 
                 // check for date filter and keep a ref to that item
                 if ( filter.value === 'DATE_RANGE' ) {
@@ -307,32 +473,102 @@ sntRover.factory('RVReportUtilsFac', [
                     if ( reportItem['title'] == 'Booking Source & Market Report' ) {
                         reportItem['hasDateFilter']['description'] = 'Booked Date';
                     };
+
+                    // track - showRemove flag, model names.
+                    // push date name to 'allDates'
+                    angular.extend(reportItem['hasDateFilter'], {
+                        showRemove : true,
+                        fromModel  : 'fromDate',
+                        untilModel : 'untilDate'
+                    });
+                    reportItem.allDates.push( 'hasDateFilter' );
                 };
 
                 // check for cancellation date filter and keep a ref to that item
                 if ( filter.value === 'CANCELATION_DATE_RANGE' || filter.value === 'CANCELLATION_DATE_RANGE' ) {
                     reportItem['hasCancelDateFilter'] = filter;
+
+                    // track - showRemove flag, model names.
+                    // push date name to 'allDates'
+                    angular.extend(reportItem['hasCancelDateFilter'], {
+                        showRemove : true,
+                        fromModel  : 'fromCancelDate',
+                        untilModel : 'untilCancelDate'
+                    });
+                    reportItem.allDates.push( 'hasCancelDateFilter' );
                 };
 
                 // check for arrival date filter and keep a ref to that item
                 if ( filter.value === 'ARRIVAL_DATE_RANGE' ) {
                     reportItem['hasArrivalDateFilter'] = filter;
+
+                    // track - showRemove flag, model names.
+                    // push date name to 'allDates'
+                    angular.extend(reportItem['hasArrivalDateFilter'], {
+                        showRemove : true,
+                        fromModel  : 'fromArrivalDate',
+                        untilModel : 'untilArrivalDate'
+                    });
+                    reportItem.allDates.push( 'hasArrivalDateFilter' );
                 };
 
                 // check for Deposit due date range filter and keep a ref to that item
                 if ( filter.value === 'DEPOSIT_DATE_RANGE' ) {
                     reportItem['hasDepositDateFilter'] = filter;
+
+                    // track - showRemove flag, model names.
+                    // push date name to 'allDates'
+                    angular.extend(reportItem['hasDepositDateFilter'], {
+                        showRemove : true,
+                        fromModel  : 'fromDepositDate',
+                        untilModel : 'untilDepositDate'
+                    });
+                    reportItem.allDates.push( 'hasDepositDateFilter' );
                 };
 
                 // check for create date range filter and keep a ref to that item
                 if ( filter.value === 'CREATE_DATE_RANGE' ) {
                     reportItem['hasCreateDateFilter'] = filter;
+
+                    // track - showRemove flag, model names.
+                    // push date name to 'allDates'
+                    angular.extend(reportItem['hasCreateDateFilter'], {
+                        showRemove : true,
+                        fromModel  : 'fromCreateDate',
+                        untilModel : 'untilCreateDate'
+                    });
+                    reportItem.allDates.push( 'hasCreateDateFilter' );
+                };
+
+                // check for paid date range filter and keep a ref to that item
+                if ( filter.value === 'PAID_DATE_RANGE' ) {
+                    reportItem['hasPaidDateRange'] = filter;
+
+                    // track - showRemove flag, model names.
+                    // push date name to 'allDates'
+                    angular.extend(reportItem['hasPaidDateRange'], {
+                        showRemove : true,
+                        fromModel  : 'fromPaidDate',
+                        untilModel : 'untilPaidDate'
+                    });
+                    reportItem.allDates.push( 'hasPaidDateRange' );
                 };
 
                 // check for "by single date" filter and keep a ref to that item
                 if ( filter.value === 'SINGLE_DATE' ) {
                     reportItem['hasSingleDateFilter'] = filter;
+
+                    // track - showRemove flag, model names.
+                    // push date name to 'allDates'
+                    angular.extend(reportItem['hasSingleDateFilter'], {
+                        showRemove : true,
+                        fromModel  : 'singleValueDate'
+                    });
+                    reportItem.allDates.push( 'hasSingleDateFilter' );
                 };
+
+
+
 
                 // check for time filter and keep a ref to that item
                 // create std 15min stepped time slots
@@ -340,6 +576,9 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['hasTimeFilter'] = filter;
                     reportItem['timeFilterOptions'] = factory.createTimeSlots();
                 };
+
+
+
 
                 // check for CICO filter and keep a ref to that item
                 // create the CICO filter options
@@ -357,266 +596,131 @@ sntRover.factory('RVReportUtilsFac', [
                     }];
                 };
 
-                // check for include notes filter and keep a ref to that item
-                if ( filter.value === 'INCLUDE_NOTES' ) {
-                    reportItem['hasIncludeNotes'] = filter;
-                    _hasFauxSelect = true;
-                };
 
-                // check for vip filter and keep a ref to that item
-                if ( filter.value === 'VIP_ONLY' ) {
-                    reportItem['hasIncludeVip'] = filter;
-                    _hasFauxSelect = true;
-                };
 
-                // check for source and markets filter
-                if ( filter.value === 'INCLUDE_MARKET' ) {
-                    reportItem['hasMarket'] = filter;
-                    _hasDisplaySelect = true;
-                };
-
-                if ( filter.value === 'INCLUDE_SOURCE' ) {
-                    reportItem['hasSource'] = filter;
-                    _hasDisplaySelect = true;
-                };
-
-                // INCLUDE_VARIANCE
-                if ( filter.value === 'INCLUDE_VARIANCE' ) {
-                    reportItem['hasVariance'] = filter;
-                    _hasFauxSelect = true;
-                };
-
-                // INCLUDE_LASTYEAR
-                if ( filter.value === 'INCLUDE_LAST_YEAR' ) {
-                    reportItem['hasLastYear'] = filter;
-                    _hasFauxSelect = true;
-                };
-
-                // INCLUDE_VARIANCE
-                if ( filter.value === 'INCLUDE_ORIGIN' ) {
-                    reportItem['hasOrigin'] = filter;
-                    _hasFauxSelect = true;
-                };
-
-                // check for include cancelled filter and keep a ref to that item
-                if ( filter.value === 'INCLUDE_CANCELLED' || filter.value === 'INCLUDE_CANCELED' ) {
-                    reportItem['hasIncludeCancelled'] = filter;
-                    _hasFauxSelect = true;
-
-                    if (reportItem['title'] == 'Cancellation & No Show') {
-                        reportItem['chosenIncludeCancelled'] = true;
-                    };
-                };
-
-                // check for include no show filter and keep a ref to that item
-                if ( filter.value === 'INCLUDE_NO_SHOW' ) {
-                    reportItem['hasIncludeNoShow'] = filter;
-                    _hasFauxSelect = true;
-                };
-
-                // check for include no show filter and keep a ref to that item
-                if ( filter.value === 'SHOW_GUESTS' ) {
-                    reportItem['hasShowGuests'] = filter;
-                }
-
-                // check for include rover users filter and keep a ref to that item
-                if ( filter.value === 'ROVER' ) {
-                    reportItem['hasIncludeRoverUsers'] = filter;
-                    _hasFauxSelect = true;
-                };
-
-                // check for include zest users filter and keep a ref to that item
-                if ( filter.value === 'ZEST' ) {
-                    reportItem['hasIncludeZestUsers'] = filter;
-                    _hasFauxSelect = true;
-                };
-
-                // check for include zest web users filter and keep a ref to that item
-                if ( filter.value === 'ZEST_WEB' ) {
-                    reportItem['hasIncludeZestWebUsers'] = filter;
-                    _hasFauxSelect = true;
-                };
 
                 // check for include company/ta/group filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_COMPANYCARD_TA_GROUP' || filter.value === 'GROUP_COMPANY_TA_CARD' ) {
                     reportItem['hasIncludeComapnyTaGroup'] = filter;
                 };
 
-                // check for include deposit paid filter and keep a ref to that item
-                if ( filter.value === 'DEPOSIT_PAID' ) {
-                    reportItem['hasIncludeDepositPaid'] = filter;
-                    _hasFauxSelect = true;
+
+
+
+                // fill up DS for options combo box
+                if ( __optionFilterNames[filter.value] ) {
+                    __pushGeneralOptionData( reportItem, filter );
                 };
 
-                // check for include deposit due filter and keep a ref to that item
-                if ( filter.value === 'DEPOSIT_DUE' ) {
-                    reportItem['hasIncludeDepositDue'] = filter;
-                    _hasFauxSelect = true;
-                };
+                // fill up DS for display combo box
+                if ( __displayFilterNames[filter.value] ) {
 
-                // check for include deposit past due filter and keep a ref to that item
-                if ( filter.value === 'DEPOSIT_PAST' ) {
-                    reportItem['hasIncludeDepositPastDue'] = filter;
-                    _hasFauxSelect = true;
-                };
-
-                // check for due in filter and keep a ref to that item
-                if ( filter.value === 'DUE_IN_ARRIVALS' ) {
-                    reportItem['hasDueInArrivals'] = filter;
-                    reportItem['chosenDueInArrivals'] = true;
-                    _hasFauxSelect = true;
-                };
-
-                // check for due out filter and keep a ref to that item
-                if ( filter.value === 'DUE_OUT_DEPARTURES' ) {
-                    reportItem['hasDueOutDepartures'] = filter;
-                    reportItem['chosenDueOutDepartures'] = true;
-                    _hasFauxSelect = true;
-                };
-
-                // check for include new and keep a ref to that item
-                if ( filter.value === 'INCLUDE_NEW' ) {
-                    reportItem['hasIncludeNew'] = filter;
-                    _hasFauxSelect = true;
-                };
-
-                // check for include new and keep a ref to that item
-                if ( filter.value === 'INCLUDE_BOTH' ) {
-                    reportItem['hasIncludeBoth'] = filter;
-                    _hasFauxSelect = true;
-                };
-
-
-                // check for include guarantee type filter and keep a ref to that item
-                if ( filter.value === 'INCLUDE_GUARANTEE_TYPE' ) {
-                    // reportItem['hasGuaranteeType'] = filter;
-                    // reportItem['guaranteeTypes'] = angular.copy( data.guaranteeTypes );
-                    // _hasGuaranteeSelect = true;
-
-                    if ( data.guaranteeTypes.length ) {
-                        reportItem['hasGuaranteeType'] = {
-                            type         : 'FAUX_SELECT',
-                            filter       : filter,
-                            show         : false,
-                            selectAll    : true,
-                            defaultTitle : 'Select Guarantees',
-                            title        : 'All Selected',
-                            data         : angular.copy( data.guaranteeTypes )
+                    //__pushDisplayData( reportItem, filter );
+                    //
+                    // QUICK PATCH
+                    // TODO: replace with a better solution
+                    if ( reportItem.title == __reportNames['MARKET_SEGMENT_STATISTICS_REPORT'] ) {
+                        if ( filter.value == 'INCLUDE_MARKET' && data.codeSettings['is_market_on'] ) {
+                            __pushDisplayData( reportItem, filter );
+                        } else if ( filter.value == 'INCLUDE_ORIGIN' && data.codeSettings['is_origin_on'] ) {
+                            __pushDisplayData( reportItem, filter );
+                        } else if ( filter.value == 'INCLUDE_SEGMENT' && data.codeSettings['is_segments_on'] ) {
+                            __pushDisplayData( reportItem, filter );
+                        } else if ( filter.value == 'INCLUDE_SOURCE' && data.codeSettings['is_source_on'] ) {
+                            __pushDisplayData( reportItem, filter );
                         };
-
-                        // since select all is true
-                        _.each(reportItem['hasGuaranteeType']['data'], function(each) {
-                            each.selected = true;
-                        });
+                    } else {
+                        __pushDisplayData( reportItem, filter );
                     };
+                };
+
+
+
+
+                // check for "include guarantee type" and keep a ref to that item
+                // create the filter option only when there is any data
+                if ( filter.value === 'INCLUDE_GUARANTEE_TYPE' && data.guaranteeTypes.length ) {
+                    __setData(reportItem, 'hasGuaranteeType', {
+                        type         : 'FAUX_SELECT',
+                        filter       : filter,
+                        show         : false,
+                        selectAll    : false,
+                        defaultTitle : 'Select Guarantees',
+                        title        : 'Select Guarantees',
+                        data         : angular.copy( data.guaranteeTypes )
+                    });
                 };
 
                 // check for "by charge group" and keep a ref to that item
                 // create the filter option only when there is any data
-                if ( filter.value === 'INCLUDE_CHARGE_GROUP' ) {
-                    if ( _processed_CG_CC.chargeGroups.length ) {
-                        reportItem['hasByChargeGroup'] = {
-                            type         : 'FAUX_SELECT',
-                            filter       : filter,
-                            show         : false,
-                            selectAll    : true,
-                            defaultTitle : 'Select Groups',
-                            title        : 'All Selected',
-                            data         : angular.copy( _processed_CG_CC.chargeGroups )
-                        };
-
-                        // since select all is true
-                        _.each(reportItem['hasByChargeGroup']['data'], function(each) {
-                            each.selected = true;
-                        });
-                    };
+                if ( filter.value === 'INCLUDE_CHARGE_GROUP' && processedCGCC.chargeGroups.length ) {
+                    __setData(reportItem, 'hasByChargeGroup', {
+                        type         : 'FAUX_SELECT',
+                        filter       : filter,
+                        show         : false,
+                        selectAll    : true,
+                        defaultTitle : 'Select Groups',
+                        title        : 'All Selected',
+                        data         : angular.copy( processedCGCC.chargeGroups )
+                    });
                 };
 
                 // check for "by charge group" and keep a ref to that item
                 // create the filter option only when there is any data
-                if ( filter.value === 'INCLUDE_CHARGE_CODE' ) {
-                    if ( _processed_CG_CC.chargeCodes.length ) {
-                        reportItem['hasByChargeCode'] = {
-                            type         : 'FAUX_SELECT',
-                            filter       : filter,
-                            show         : false,
-                            selectAll    : true,
-                            defaultTitle : 'Select Codes',
-                            title        : 'All Selected',
-                            data         : angular.copy( _processed_CG_CC.chargeCodes )
-                        };
-
-                        // since select all is true
-                        _.each(reportItem['hasByChargeCode']['data'], function(each) {
-                            each.selected = true;
-                        });
-                    };
+                if ( filter.value === 'INCLUDE_CHARGE_CODE' && processedCGCC.chargeCodes.length ) {
+                    __setData(reportItem, 'hasByChargeCode', {
+                        type         : 'FAUX_SELECT',
+                        filter       : filter,
+                        show         : false,
+                        selectAll    : true,
+                        defaultTitle : 'Select Codes',
+                        title        : 'All Selected',
+                        data         : angular.copy( processedCGCC.chargeCodes )
+                    });
                 };
 
                 // check for "show markets" and keep a ref to that item
                 // create the filter option only when there is any data
-                if ( filter.value === 'CHOOSE_MARKET' ) {
-                    if ( data.markets.length ) {
-                        reportItem['hasMarketsList'] = {
-                            type         : 'FAUX_SELECT',
-                            filter       : filter,
-                            show         : false,
-                            selectAll    : false,
-                            defaultTitle : 'Select Markets',
-                            title        : 'Select Markets',
-                            data         : angular.copy( data.markets )
-                        };
-                    };
+                if ( filter.value === 'CHOOSE_MARKET' && data.markets.length ) {
+                    __setData(reportItem, 'hasMarketsList', {
+                        type         : 'FAUX_SELECT',
+                        filter       : filter,
+                        show         : false,
+                        selectAll    : false,
+                        defaultTitle : 'Select Markets',
+                        title        : 'Select Markets',
+                        data         : angular.copy( data.markets )
+                    });
                 };
 
                 // check for "show sources" and keep a ref to that item
                 // create the filter option only when there is any data
-                if ( filter.value === 'CHOOSE_SOURCE' ) {
-                    if ( data.sources.length ) {
-                        reportItem['hasSourcesList'] = {
-                            type         : 'FAUX_SELECT',
-                            filter       : filter,
-                            show         : false,
-                            selectAll    : false,
-                            defaultTitle : 'Select Sources',
-                            title        : 'Select Sources',
-                            data         : angular.copy( data.sources )
-                        };
-                    };
+                if ( filter.value === 'CHOOSE_SOURCE' && data.sources.length ) {
+                    __setData(reportItem, 'hasSourcesList', {
+                        type         : 'FAUX_SELECT',
+                        filter       : filter,
+                        show         : false,
+                        selectAll    : false,
+                        defaultTitle : 'Select Sources',
+                        title        : 'Select Sources',
+                        data         : angular.copy( data.sources )
+                    });
                 };
 
                 // check for "show origins" and keep a ref to that item
                 // create the filter option only when there is any data
-                if ( filter.value === 'CHOOSE_BOOKING_ORIGIN' ) {
-                    if ( data.origins.length ) {
-                        reportItem['hasOriginsList'] = {
-                            type         : 'FAUX_SELECT',
-                            filter       : filter,
-                            show         : false,
-                            selectAll    : false,
-                            defaultTitle : 'Select Origins',
-                            title        : 'Select Origins',
-                            data         : angular.copy( data.origins )
-                        };
-                    };
+                if ( filter.value === 'CHOOSE_BOOKING_ORIGIN' && data.origins.length ) {
+                    __setData(reportItem, 'hasOriginsList', {
+                        type         : 'FAUX_SELECT',
+                        filter       : filter,
+                        show         : false,
+                        selectAll    : false,
+                        defaultTitle : 'Select Origins',
+                        title        : 'Select Origins',
+                        data         : angular.copy( data.origins )
+                    });
                 };
             });
-
-            // NEW! faux select DS and logic
-            if ( _hasFauxSelect ) {
-                reportItem['fauxSelectOpen'] = false;
-                reportItem['fauxTitle'] = 'Select';
-            };
-
-            if ( _hasDisplaySelect ) {
-                reportItem['selectDisplayOpen'] = false;
-                reportItem['displayTitle'] = 'Select';
-            };
-
-            if ( _hasGuaranteeSelect ) {
-                reportItem['selectGuaranteeOpen'] = false;
-                reportItem['guaranteeTitle'] = 'Select';
-            };
         };
 
 
@@ -788,6 +892,9 @@ sntRover.factory('RVReportUtilsFac', [
                     /**/
                     reportItem['fromDepositDate']  = _getDates.businessDate;
                     reportItem['untilDepositDate'] = _getDates.businessDate;
+                    /**/
+                    reportItem['fromPaidDate']  = _getDates.businessDate;
+                    reportItem['untilPaidDate'] = _getDates.businessDate;
                     break;
 
                 // date range must be yesterday - relative to current business date
@@ -799,7 +906,16 @@ sntRover.factory('RVReportUtilsFac', [
                 // date range must be yesterday - relative to current business date
                 case __reportNames['DAILY_TRANSACTIONS']:
                 case __reportNames['DAILY_PAYMENTS']:
+                case __reportNames['MARKET_SEGMENT_STATISTICS_REPORT']:
+                case __reportNames['COMPARISION_BY_DATE']:
                     reportItem['singleValueDate']  = _getDates.yesterday;
+                    break;
+
+                // dates range must be the current business date
+                case __reportNames['FORECAST_BY_DATE']:
+                case __reportNames['FORECAST_GUEST_GROUPS']:
+                    reportItem['fromDate']  = _getDates.businessDate;
+                    reportItem['untilDate'] = _getDates.aMonthAfter;
                     break;
 
                 // by default date range must be from a week ago to current business date
@@ -834,7 +950,8 @@ sntRover.factory('RVReportUtilsFac', [
                 'businessDate' : new Date(_year, _month, _date),
                 'yesterday'    : new Date(_year, _month, _date - 1),
                 'aWeekAgo'     : new Date(_year, _month, _date - 7),
-                'aWeekAfter'   : new Date(_year, _month, _date + 7)
+                'aWeekAfter'   : new Date(_year, _month, _date + 7),
+                'aMonthAfter'  : new Date(_year, _month, _date + 30),
             };
 
             if ( parseInt(xDays) != NaN ) {

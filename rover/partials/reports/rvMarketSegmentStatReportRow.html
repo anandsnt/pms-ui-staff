@@ -1,0 +1,65 @@
+
+<tr class="grouped" ng-if="item.length">
+	<td class="code break"><strong>{{ item[0]['section'] }}</strong></td>
+	    <td>Today</td>
+	    <td>MTD</td>
+	    <td class="break">YTD</td>
+
+	    <td>Today</td>
+	    <td>MTD</td>
+	    <td class="break">YTD</td>
+
+	    <td>Today</td>
+	    <td>MTD</td>
+	    <td class="break">YTD</td>
+
+	    <td>Today</td>
+	    <td>MTD</td>
+	    <td class="break">YTD</td>
+
+	    <td>Today</td>
+	    <td>MTD</td>
+	    <td>YTD</td>
+	</tr>
+</tr>
+<tr ng-if="item.length" ng-repeat="each in item track by $index" ng-class="{ 'undefined': hasSubString('undefined', each.code) }">
+	<td class="code break">{{ each.code }}</td>
+
+	<td>{{ each.revenue_today | currency:currencySymbol:2 }}</td>
+	<td>{{ each.revenue_mtd | currency:currencySymbol:2 }}</td>
+	<td class="break">{{ each.revenue_ytd | currency:currencySymbol:2 }}</td>
+
+	<td>{{ each.bookings_today }}</td>
+	<td>{{ each.bookings_mtd }}</td>
+	<td class="break">{{ each.bookings_ytd }}</td>
+
+	<td>{{ each.room_nights_today }}</td>
+	<td>{{ each.room_nights_mtd }}</td>
+	<td class="break">{{ each.room_nights_ytd }}</td>
+
+	<td>{{ each.adr_today | currency:currencySymbol:2 }}</td>
+	<td>{{ each.adr_mtd | currency:currencySymbol:2 }}</td>
+	<td class="break">{{ each.adr_ytd | currency:currencySymbol:2 }}</td>
+
+	<td>{{ each.percentage_today }}%</td>
+	<td>{{ each.percentage_mtd }}%</td>
+	<td class="break">{{ each.percentage_ytd }}%</td>
+</tr>
+<tr ng-if="item.length" class="total">
+	<td class="code break">&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td class="break">&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td class="break">&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td class="break">&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td class="break">&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td class="break">&nbsp;</td>
+</tr>

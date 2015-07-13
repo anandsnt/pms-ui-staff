@@ -1,6 +1,6 @@
 
 
-	"STATIONARY":"Stationary",
+	"STATIONARY":"Stationery",
 	"CUSTOMIZE":"Customize",
 	"GUEST_BILL_TITLE": "Guest Bill",
 	"GUEST_BILL_TEMPLATE":"Guest Bill Template",
@@ -24,4 +24,30 @@
 	"REGISTRATION_COMMUNICATION":"Registration Communications",
 	"REGISTRATION_TEMPLATE":"Registration Template",
 	"SELECT_REGISTRATION_TEMPLATE":" Select Registration Template",
-	"SHOW_VEHICLE_INFORMATION":"Show Vehicle Information"
+	"SHOW_VEHICLE_INFORMATION":"Show Vehicle Information",
+	"SHOW_HOTEL_LOGO": "Show Hotel Logo",
+	"HOTEL_PICTURE": "Hotel Picture",
+	"SHOW_HOTEL_PICTURE" : "Show Hotel Picture",
+	"DISPLAY_ADD_ONS" : "Display Add-Ons",
+	"DISPLAY_TOTAL_STAY_COST":"Display Total Stay Cost",
+	"DISPLAY_ADR":"Display Average Daily Rate",
+	"ADD_DEPOSIT_RULES":"Add deposit rules",
+	"APP_LINK_IN_GOOGLE_PLAY" : "APP LINK IN GOOGLE PLAY",
+	"ENTER_APP_LINK_IN_GOOGLE_PLAY" : "Enter App link in Google Play",
+	"APP_LINK_IN_ITUNES_STORE" : "APP LINK IN ITUNES STORE",
+	"ENTER_APP_LINK_IN_ITUNES_STORE" : "Enter App link in iTunes Store",
+	"SHOW_LINKS_TO_DOWNLOAD_APP": "SHOW LINKS TO DOWNLOAD APP",
+	"LOCATION_URL": "Location URL",
+	"LOCATION_URL_LABEL" : "Location URL Label",
+	"ENTER_LOCATION_URL" : "Enter Location URL",
+	"ENTER_LOCATION_URL_LABEL" : "Enter Location URL Label",
+	"SELECT_SOCIAL_NETWORK" : "Select Social Network",
+	"ENTER_SOCIAL_NETWORK_URL": "Enter Social Network URL",
+	"SOCIAL_NETWORK_URL": "Social Network URL",
+	"SOCIAL_NETWORK" : "Social Network",
+	"CONFIRMATION_LETTER_TEXT" : "CONFIRMATION LETTER TEXT",
+	"SEND_CANCELLATION_LETTER":"Send Cancellation Letter"
+
+
+
+

@@ -24,6 +24,8 @@
 
 					<ad-textbox value="externalPmsConnectivityData.pms_chain_code" styleclass="full-width" name = "pms-chain-code" id = "pms-chain-code" label = "Chain Code " placeholder = "Enter  Chain Code" required = "yes" ></ad-textbox>
 
+					<ad-dropdown label-in-drop-down="Select Default Charge Code" list="externalPmsConnectivityData.pms_default_charge_code_list" selected-id='externalPmsConnectivityData.pms_default_charge_code' selbox-class="placeholder" div-class="full-width" label="POST ZERO CHARGE ON BILL IF NO ENTRIES" name = "pms-default-charge-code" id = "pms-default-charge-code"></ad-dropdown>
+
 				</fieldset>
 				<div class="actions float">
 					<button type="button" class="button blank add-data-inline" ng-click="goBackToPreviousState()">

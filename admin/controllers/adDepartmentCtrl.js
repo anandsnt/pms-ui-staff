@@ -1,5 +1,5 @@
 admin.controller('ADDepartmentListCtrl',['$scope', '$state', 'ADDepartmentSrv', '$location', '$anchorScroll', '$timeout',  function($scope, $state, ADDepartmentSrv, $location, $anchorScroll, $timeout){
-	
+
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	$scope.departmentData = {};
@@ -14,25 +14,25 @@ admin.controller('ADDepartmentListCtrl',['$scope', '$state', 'ADDepartmentSrv', 
 			$scope.currentClickedElement = -1;
 			$scope.isAddMode = false;
 		};
-		$scope.invokeApi(ADDepartmentSrv.fetch, {} , successCallbackFetch);	
+		$scope.invokeApi(ADDepartmentSrv.fetch, {} , successCallbackFetch);
 	};
 	//To list departments
-	$scope.listDepartments(); 
+	$scope.listDepartments();
    /*
     * To render edit department screen
     * @param {index} index of selected department
     * @param {id} id of the department
-    */	
+    */
 	$scope.editDepartments = function(index, id)	{
 		$scope.departmentData={};
 		$scope.currentClickedElement = index;
 		$scope.isAddMode = false;
-	 	var successCallbackRender = function(data){	
+	 	var successCallbackRender = function(data){
 	 		$scope.departmentData = data;
 	 		$scope.$emit('hideLoader');
 	 	};
 	 	var data = {"id":id };
-	 	$scope.invokeApi(ADDepartmentSrv.getDepartmentDetails, data , successCallbackRender);    
+	 	$scope.invokeApi(ADDepartmentSrv.getDepartmentDetails, data , successCallbackRender);
 	};
    /*
     * Render add department screen
@@ -53,7 +53,7 @@ admin.controller('ADDepartmentListCtrl',['$scope', '$state', 'ADDepartmentSrv', 
     */
 	$scope.getTemplateUrl = function(index, id){
 		if(typeof index === "undefined" || typeof id === "undefined") return "";
-		if($scope.currentClickedElement == index){ 
+		if($scope.currentClickedElement === index){
 			 	return "/assets/partials/departments/adDepartmentsEdit.html";
 		}
 	};
@@ -80,17 +80,17 @@ admin.controller('ADDepartmentListCtrl',['$scope', '$state', 'ADDepartmentSrv', 
     };
    /*
     * To handle click event
-    */	
+    */
 	$scope.clickCancel = function(){
 		$scope.currentClickedElement = -1;
-	};	
+	};
    /*
     * To delete department
     * @param {int} index of the selected department
     * @param {string} id of the selected department
-    */		
+    */
 	$scope.deleteDepartment = function(index, id){
-		var successCallbackDelete = function(data){	
+		var successCallbackDelete = function(data){
 	 		$scope.$emit('hideLoader');
 	 		$scope.data.departments.splice(index, 1);
 	 		$scope.currentClickedElement = -1;

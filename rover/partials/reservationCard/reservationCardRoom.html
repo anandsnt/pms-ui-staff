@@ -1,7 +1,9 @@
-<div class="block-item item-room" ng-controller="reservationRoomStatus" ng-class="addHasButtonClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_upsell_available)">
-	<h3 class="block-title">Room
-		<span class="room-red sharer-label" ng-show="reservationData.reservation_card.sharer_information.length > 0">SHARER</span>
+<div class="block-item item-room" ng-controller="reservationRoomStatus" ng-class="addHasButtonClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_upsell_available)" ng-init="">
+    <h3 class="block-title">
+        Room
+        <button ng-controller="staycardController" ng-click="showRoomSharerPopup()" type="button" class="button blue" ng-hide="sharedReservationData.sharers.length === 0">Shared</button>
 	</h3>
+
 	<!-- Room Assignment screen is not available for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' reservations -->
 	<!-- The arrows are removed and room assignment buttons are not clickable in that case -->
 	<a class="next-view no-auto-bind" ng-click="goToroomAssignment()" ng-class="getRoomClass(reservationData.reservation_card.reservation_status)">
@@ -24,7 +26,7 @@
     		Upgrade
   		</a>
 
-  		<a ng-if="showKeysButton(reservationData.reservation_card.reservation_status)" ng-click="clickedIconKey($event)" id="add-keys" class="button with-icon blue"> <!-- Add attribute data-position="bottom-right" if QR is to be shown --> 
+  		<a ng-hide="!showKeysButton(reservationData.reservation_card.reservation_status)" ng-show="showKeysButton(reservationData.reservation_card.reservation_status)" click-touch="clickedIconKey()" id="add-keys" class="button with-icon blue"> <!-- Add attribute data-position="bottom-right" if QR is to be shown --> 
     		<span class="icons icon-key"></span>
     		Keys
   		</a>

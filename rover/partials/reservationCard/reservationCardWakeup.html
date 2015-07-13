@@ -1,6 +1,6 @@
 <div class="block-wrapper">
     <!-- Wake up -->
-    <div class="block-item item-wake-up">
+    <div class="block-item item-wake-up" ng-hide='!activeWakeUp'>
         <h3 class="block-title" translate>WAKE_UP_HEADER</h3>
         <a ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" id="wakeup-time" class="next-view hover-hand"  class="open-modal next-view" ng-class="{'feature-available': isNewsPaperPreferenceAndWakeupCallAvailable()}" ng-click="showWakeupCallDialog()"> 
 			<span id="reservation_card_wake_up_time" ng-model="wake_up_time" ng-class="{'feature-available': isNewsPaperPreferenceAndWakeupCallAvailable()}" class="value text">

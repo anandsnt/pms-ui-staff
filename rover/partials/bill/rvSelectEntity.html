@@ -19,7 +19,7 @@
                   <!-- image -->
                   
                   <figure class="guest-image" >
-							<img src="{{attachedEntities.primary_guest_details.avatar}}" alt="" />
+					<img src="{{attachedEntities.primary_guest_details.avatar}}" alt="" />
 					</figure>
 
                   <!-- heading -->
@@ -45,24 +45,17 @@
                  </li>
 
                  <!-- Company card -->
-
                  <li class="entity company" ng-show="attachedEntities.hasOwnProperty('company_card')" ng-click="selectAttachedEntity(-1,'COMPANY_CARD')">
                   <!-- image -->
-                  		
                   		<figure class="guest-image" ng-if="escapeNull(attachedEntities.company_card.logo)!=''">
 	                        <img ng-src="{{attachedEntities.company_card.logo}}" alt="">
 	                	</figure>
                   		<figure class="guest-image" ng-if="escapeNull(attachedEntities.company_card.logo)==''">
 		                    <div class="guest-image icons icon-company" ></div>
-		                    
 		                </figure>
-
-
-
                   <!-- heading -->
                   <h2>{{attachedEntities.company_card.name}}</h2>
                   <!-- icon -->
-                  
                   <div class="status company" >{{attachedEntities.company_card.name}}</div>
                  </li>
 
@@ -83,48 +76,49 @@
                  </li>
 
                 <!-- If group added -->
-                <li class="entity group" ng-show="attachedEntities.hasOwnProperty('group_details')" ng-click="selectAttachedEntity(-1,'GROUP')">
+                <li class="entity group" ng-show="attachedEntities.hasOwnProperty('posting_account')" ng-click="selectAttachedEntity(-1,attachedEntities.posting_account.type)">
                     <div class="group-info">A</div>
-                    <h2>{{attachedEntities.group_details.name}}</h2>
+                    <h2>{{attachedEntities.posting_account.name}}</h2>
                 </li>
             </ul>
          </div>
          <!-- Search results, show instead of attached entities when searching -->
          
         <ul id="filter-entities" class="modal-options" ng-show="textInQueryBox!=''">
-			<li ng-click="toggleClicked(true)" ng-class="{'active':isReservationActive}" translate>
+			<li click-touch="toggleClicked(true)" ng-class="{'active':isReservationActive}" translate>
 				RESERVATIONS
 			</li>
-			<li ng-click="toggleClicked(false)" ng-class="{'active':!isReservationActive}" translate>
+			<li click-touch="toggleClicked(false)" ng-class="{'active':!isReservationActive}" translate>
 				ACCOUNTS_AND_CARDS
 			</li>
 		</ul>
 		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && !isReservationActive" ng-iscroll='cards_search_scroller' ng-iscroll-delay="100" style="height:57%;bottom: 0px; left:0px; width: 100%;overflow:hidden;">
 			<ul class="wrapper">
-				<div class="entity" ng-repeat="row in results.cards"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" ng-show="row.is_row_visible==true" ng-hide="results.cards.length == 0" ng-click="selectEntity($index,'CARDS')">
-	                <!-- image -->
-	              	<figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
-	                    <img ng-src="{{row.company_logo}}" alt="">
-	                </figure>
-	
-	                <figure class="guest-image" ng-if="escapeNull(row.company_logo)==''">
-	                    <div class="guest-image icons icon-company" ng-if="escapeNull(row.account_type)=='COMPANY'" ></div>
-	                    <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(row.account_type)=='TRAVELAGENT'" ></div>
-	                </figure>
-	                <!-- heading -->
-	                <h2 ng-bind-html="row.account_name | highlight:textInQueryBox:false"></h2>
-	                <!-- icon -->
-                  	<div class="status" ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}"></div>
-                 </div>
 
-                 <div class="entity" ng-repeat="row in results.accounts" ng-show="row.is_row_visible==true" ng-hide="results.accounts.length == 0" ng-click="selectEntity($index,'ACCOUNTS')">
+				<div class="entity" ng-repeat="row in results.accounts"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" ng-show="row.is_row_visible==true" ng-hide="results.accounts.length == 0" ng-click="selectEntity($index,'ACCOUNT')">
+                    <!-- image -->
+                	<figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
+                      <img ng-src="{{row.company_logo}}" alt="">
+                    </figure>
+
+                    <figure class="guest-image" ng-if="escapeNull(row.company_logo)==''">
+                      <div class="guest-image icons icon-company" ng-if="escapeNull(row.account_type)=='COMPANY'" ></div>
+                      <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(row.account_type)=='TRAVELAGENT'" ></div>
+                    </figure>
+                    <!-- heading -->
+                    <h2 ng-bind-html="row.account_name | highlight:textInQueryBox:false"></h2>
+                    <!-- icon -->
+                  	<div class="status" ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}"></div>
+                </div>
+
+                <div class="entity" ng-repeat="row in results.posting_accounts" ng-show="row.is_row_visible==true" ng-hide="results.posting_accounts.length == 0" ng-click="selectEntity($index, row.account_type )">
                  	<div class="group-info">A</div>
                     <h2 ng-bind-html="row.account_name | highlight:textInQueryBox:false"></h2>
-                 </div>
+                </div>
 
 			</ul>
 			<!-- No results / no content when searched query not found-->
-        	<div class="no-content" ng-show="results.cards.length==0 && textInQueryBox!='' && !isReservationActive">
+            <div class="no-content" ng-show="results.posting_accounts.length == 0 && results.accounts.length == 0 && textInQueryBox!='' && !isReservationActive">
 				<div class="info">
 					<span class="icon-no-content icon-cards"></span>
 					<strong class="h1" translate>NO_MATCH_FOUND_MSG</strong>

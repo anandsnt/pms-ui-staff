@@ -1,21 +1,21 @@
 
-var admin = angular.module('admin', 
+var admin = angular.module('admin',
 	['ui.sortable',
-	'ui.router', 
-	'ng-iscroll', 
-	'ngDragDrop', 
+	'ui.router',
+	'ng-iscroll',
+	'ngDragDrop',
 	'ngTable',
-	'ngDialog', 
-	'ngSanitize', 
-	'pascalprecht.translate', 
-	'adminModuleOne', 
+	'ngDialog',
+	'ngSanitize',
+	'pascalprecht.translate',
+	'adminModuleOne',
 	'adminModuleTwo',
-	'ui.date', 
-	'qtip2', 
-	'sharedHttpInterceptor', 
-	'orientationInputBlurModule', 
-	'multi-select', 
-	'fauxMultiSelectModule', 
+	'ui.date',
+	'qtip2',
+	'sharedHttpInterceptor',
+	'orientationInputBlurModule',
+	'multi-select',
+	'fauxMultiSelectModule',
 	'eventReachedRootModule',
 	'ngClassWithoutAnimation']);
 
@@ -24,7 +24,7 @@ admin.config(function ($httpProvider) {
   $httpProvider.interceptors.push('sharedHttpInterceptor');
 });
 
-admin.run(['$rootScope', '$state', '$stateParams','$location', function ($rootScope, $state, $stateParams, $location) {	
+admin.run(['$rootScope', '$state', '$stateParams','$location', function ($rootScope, $state, $stateParams, $location) {
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
 

@@ -4,6 +4,7 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
 
         this.reservationData = {};
         this.reservationData.demographics = {};
+
         this.fetchPaymentMethods = function() {
             var deferred = $q.defer();
             var url = '/api/hotel_settings/payment_types';
@@ -14,6 +15,17 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
             });
             return deferred.promise;
         };
+
+        this.fetchLengthSegments = function(deferred) {
+            var url = '/api/segments?is_active=true';
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                that.reservationData.demographics.is_use_segments = data.is_use_segments;
+                that.reservationData.demographics.segments = data.segments;
+                deferred.resolve(that.reservationData);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+        }
 
 
         this.fetchDemographicMarketSegments = function(deferred) {
@@ -64,7 +76,6 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
                         that.reservationData.demographics.reservationTypes.push(data.reservation_types[i]);
                     }
                 }
-                deferred.resolve(that.reservationData);
             }, function(errorMessage) {
                 deferred.reject(errorMessage);
             });
@@ -78,6 +89,7 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
             that.fetchDemographicOrigins(deferred);
             that.fetchDemographicSources(deferred);
             that.fetchDemographicReservationTypes(deferred);
+            that.fetchLengthSegments(deferred);
             return deferred.promise;
         };
 
@@ -218,8 +230,8 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
-        this.fetchDefaultRoutingInfo = function(params){
-            var deferred = $q.defer();            
+        this.fetchDefaultRoutingInfo = function(params) {
+            var deferred = $q.defer();
             var url = '/api/default_account_routings/routings_count/';
             rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
@@ -229,14 +241,14 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
-        this.applyDefaultRoutingToReservation = function(params){
+        this.applyDefaultRoutingToReservation = function(params) {
             var deferred = $q.defer();
             var url = '/api/default_account_routings/attach_reservation';
             rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
-            },function(data){
+            }, function(data) {
                 deferred.reject(data);
-            }); 
+            });
 
             return deferred.promise;
         };

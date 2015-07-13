@@ -1,6 +1,10 @@
 
 
 
-"RATE_TYPES":"Rate Types",
-"RATE_TYPE":"Rate Type",
-"RATE_TYPE_PLACEHOLDER":"Enter rate type"
+"RATE_TYPES": "Rate Types",
+"RATE_TYPE": "Rate Type",
+"RATE_TYPE_PLACEHOLDER": "Enter rate type",
+"RATE_SEQUENCE": "Rate Sequence",
+"ROOM_AND_RATES_SCREEN": "Room and Rates Screen",
+"RATE_MANAGER": "Rate Manager",
+"DASHBOARD": "Dashboard"

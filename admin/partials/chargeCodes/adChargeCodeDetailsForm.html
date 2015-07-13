@@ -24,13 +24,13 @@
 					<div class="select">
 						<select name="payment-type" ng-model = "selected_payment_type.id"   ng-change="changeSelectedPaymentType()" >
 							<option value="" ng-class="{'placeholder': selected_payment_type.id == ''}" translate>PAYMENT_TYPE</option>
-							<option value="{{paymentType.id}}" ng-selected="(paymentType.value==prefetchData.selected_payment_type && (paymentType.is_cc_type == prefetchData.is_cc_type))" ng-repeat="paymentType in prefetchData.payment_types">
+							<option ng-hide="paymentType.name == 'CC'" value="{{paymentType.id}}" ng-selected="(paymentType.value==prefetchData.selected_payment_type && (paymentType.is_cc_type == prefetchData.is_cc_type))" ng-repeat="paymentType in prefetchData.payment_types">
 							{{paymentType.description}} 
 							</option>
 						</select>
 					</div>
 				</div>
-				<div class="entry full-width" required="required" ng-show="prefetchData.selected_charge_code_type == '2'" >
+				<div class="entry full-width" required="required">
 					<label class="ng-binding" ng-hide="label.length==0" for="" >
 						{{'FEES'| translate}}
 						<strong class="" ng-show="isStandAlone"> * </strong>

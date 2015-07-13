@@ -1,141 +1,204 @@
 <section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()">
-	<div id="upsell_room_details" data-view="UpsellRoomDetailsView">
-		<section>
-			<header class="content-title float">
-				<h2 translate>DAILY_UPSELL_SETUP</h2>
-				<a id="go_back" data-type="load-details" ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
-			</header>
-			<section class="content-scroll">
-			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-			<form name="upsell_rooms" method="post" id="upsell_rooms" class="form float" action="">
-				<fieldset class="holder column">
+    <div id="upsell_room_details" data-view="UpsellRoomDetailsView">
+        <section>
+            <header class="content-title float">
+                <h2 translate>DAILY_UPSELL_SETUP</h2>
+                <a id="go_back" data-type="load-details" ng-click="goBackToPreviousState()" class="action back"
+                   translate>BACK</a>
+            </header>
+            <section class="content-scroll">
+                <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+                <form name="upsell_rooms" method="post" id="upsell_rooms" class="form float" action="">
+                    <fieldset class="holder column">
+                        <div class="entry">
+                            <label for="upsell-rooms" translate>UPSELL_ROOMS</label>
 
-					<div class="entry">
-						<label for="upsell-rooms" translate>UPSELL_ROOMS</label>
-						<div id="div-upsell-rooms" class="switch-button single" ng-class="{ on : upsellData.upsell_setup.is_upsell_on === 'true' }">
-							<input type="checkbox"  name="upsell-rooms" id="upsell-rooms" ng-click="switchClicked()">
-							<span class="switch-icon"></span>
+                            <div id="div-upsell-rooms" class="switch-button single"
+                                 ng-class="{ on : upsellData.upsell_setup.is_upsell_on === 'true' }">
+                                <input type="checkbox" name="upsell-rooms" id="upsell-rooms" ng-click="switchClicked()">
+                                <span class="switch-icon"></span>
+                            </div>
+                        </div>
 
-						</div>
-					</div>
+                    </fieldset>
+                    <fieldset class="holder left">
+                        <div class="form-title">
+                            <h3><span translate>DAILY_UPSELL</span> {{'TARGETS' | translate}} </h3>
+                        </div>
+                        <ad-textbox value="upsellData.upsell_setup.total_upsell_target_amount"
+                                    label="{{'TARGET' | translate}} [{{currencySymbol}}]"></ad-textbox>
 
-				</fieldset>
-				<fieldset class="holder left">
-					<div class="form-title">
-						<h3><span translate>DAILY_UPSELL</span> {{'TARGETS' | translate}} </h3>
-					</div>
+                        <ad-textbox value="upsellData.upsell_setup.total_upsell_target_rooms"
+                                    label="{{'ROOMS' | translate}}"></ad-textbox>
 
-					<ad-textbox value="upsellData.upsell_setup.total_upsell_target_amount"   label = "{{'TARGET' | translate}} [{{currencySymbol}}]" ></ad-textbox>
+                        <!-- Checkbox -->
+                        <div class="entry radio-check">
+                            <label class="checkbox"> <span class="icon-form icon-checkbox"
+                                                           ng-class="{ checked : upsellData.upsell_setup.is_one_night_only === 'true' }"></span>
+                                {{'UPSELL_ONE_NIGHT_STAYS' |translate}}
+                                <input type="checkbox" ng-click="oneNightcheckBoxClicked()"/>
+                            </label>
+                        </div>
 
-					<ad-textbox value="upsellData.upsell_setup.total_upsell_target_rooms"   label = "{{'ROOMS' | translate}}" ></ad-textbox>
+                        <!-- Checkbox -->
+                        <div class="entry radio-check">
+                            <label class="checkbox"> <span class="icon-form icon-checkbox"
+                                                           ng-class="{ checked : upsellData.upsell_setup.is_force_upsell === 'true' }"></span>
+                                {{'FORCE_UPSELL'|translate}}
+                                <input type="checkbox" ng-click="forceUpsellcheckBoxClicked()"/>
+                            </label>
+                        </div>
 
-					<!-- Checkbox -->
-					<div class="entry radio-check" >
-						<label class="checkbox"> <span class="icon-form icon-checkbox" ng-class="{ checked : upsellData.upsell_setup.is_one_night_only === 'true' }"></span> {{'UPSELL_ONE_NIGHT_STAYS' |translate}}
-							<input type="checkbox" ng-click="oneNightcheckBoxClicked()" />
-						</label>
-					</div>
+                    </fieldset>
+                    <fieldset class="holder right">
+                        <div class="form-title">
+                            <h3><span translate>DAILY_UPSELL</span> {{'ROOM_LEVEL_TARGETS'|translate}} </h3>
+                        </div>
+                        <input type="hidden" value="1" name="level_from_0" id="level_from_0">
+                        <input type="hidden" value="2" name="level_to_0" id="level_to_0">
 
-					<!-- Checkbox -->
-					<div class="entry radio-check" >
-						<label class="checkbox"> <span class="icon-form icon-checkbox" ng-class="{ checked : upsellData.upsell_setup.is_force_upsell === 'true' }"></span> {{'FORCE_UPSELL'|translate}}
-							<input type="checkbox"  ng-click="forceUpsellcheckBoxClicked()"/>
-						</label>
-					</div>
+                        <ad-textbox value="upsellData.upsell_amounts[0].amount"
+                                    label="Level 1 to 2  p/night [{{currencySymbol}}]"></ad-textbox>
 
-				</fieldset>
-				<fieldset class="holder right">
-					<div class="form-title">
-						<h3><span translate>DAILY_UPSELL</span> {{'ROOM_LEVEL_TARGETS'|translate}} </h3>
-					</div>
-					<input type="hidden" value="1" name="level_from_0" id="level_from_0">
-					<input type="hidden" value="2" name="level_to_0" id="level_to_0">
-					
+                        <input type="hidden" value="1" name="level_from_1" id="level_from_1">
+                        <input type="hidden" value="3" name="level_to_1" id="level_to_1">
 
+                        <ad-textbox value="upsellData.upsell_amounts[1].amount"
+                                    label="Level 1 to 3  p/night [{{currencySymbol}}]"></ad-textbox>
 
-					<ad-textbox value="upsellData.upsell_amounts[0].amount"   label = "Level 1 to 2  p/night [{{currencySymbol}}]" ></ad-textbox>
+                        <input type="hidden" value="2" name="level_from_2" id="level_from_2">
+                        <input type="hidden" value="3" name="level_to_2" id="level_to_2">
 
-					<input type="hidden" value="1" name="level_from_1" id="level_from_1">
-					<input type="hidden" value="3" name="level_to_1" id="level_to_1">
+                        <ad-textbox value="upsellData.upsell_amounts[2].amount"
+                                    label="Level 2 to 3  p/night [{{currencySymbol}}]"></ad-textbox>
 
-					<ad-textbox value="upsellData.upsell_amounts[1].amount"   label = "Level 1 to 3  p/night [{{currencySymbol}}]" ></ad-textbox>
+                        <input type="hidden" value="3" name="upsell_amounts_count" id="upsell_amounts_count">
+                        <input type="hidden" value="3" name="total_level_count" id="total_level_count">
 
-					<input type="hidden" value="2" name="level_from_2" id="level_from_2">
-					<input type="hidden" value="3" name="level_to_2" id="level_to_2">
+                        <ad-dropdown label="Charge Code" label-in-drop-down="Charge Code" list="upsellData.charge_codes"
+                                     selected-Id='upsellData.selected_charge_code' required='yes'></ad-dropdown>
 
-					<ad-textbox value="upsellData.upsell_amounts[2].amount"   label = "Level 2 to 3  p/night [{{currencySymbol}}]" ></ad-textbox>
+                    </fieldset>
+                    <div class="entry"></div>
+                    <fieldset class="holder full-width">
+                        <div class="form-title">
+                            <h3><span translate>DAILY_UPSELL</span> {{'LEVELS'|translate}} </h3>
+                        </div>
+                        <div id="upsell_level" class="float">
+                            <div class="entry has-sortable col3">
+                                <label translate> LEVEL_ONE </label>
+                                <ul id="level_1" data-placeholder="{{'DROP_HERE_FOR_LEVEL_ONE'|translate}}"
+                                    class="boxes sortable empty short-list" data-drop="true"
+                                    jqyoui-droppable="{multiple:true}" ng-model="levelOne"
+                                    data-jqyoui-options="{accept: '.acceptable_room_upsell_level2,.acceptable_room_upsell_level3'}">
+                                    <li ng-repeat="level1 in levelOne"
+                                        ng-model="levelOne" data-drag="true"
+                                        data-jqyoui-options="{revert: 'invalid',helper:'clone',appendTo: 'body'}"
+                                        jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem'}"
+                                        class='acceptable_room_upsell_level1 li-draggable'
+                                        ng-hide="!level1.room_type_name">
+                                        <span class="icons icon-handle"> </span>{{level1.room_type_name}}
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="entry has-sortable col3">
+                                <label translate> LEVEL_TWO </label>
+                                <ul id="level_2" data-placeholder="{{'DROP_HERE_FOR_LEVEL_TWO'|translate}}"
+                                    class="boxes sortable empty short-list" data-drop="true"
+                                    jqyoui-droppable="{multiple:true}" ng-model="levelTwo"
+                                    data-jqyoui-options="{accept: '.acceptable_room_upsell_level1,.acceptable_room_upsell_level3'}">
+                                    <li ng-repeat="level2 in levelTwo"
+                                        ng-model="levelTwo"
+                                        data-drag="true"
+                                        data-jqyoui-options="{revert: 'invalid',helper:'clone',appendTo: 'body'}"
+                                        jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem'}"
+                                        class='acceptable_room_upsell_level2 li-draggable'
+                                        ng-hide="!level2.room_type_name">
+                                        <span class="icons icon-handle"> </span>{{level2.room_type_name}}
+                                    </li>
+                                </ul>
+                            </div>
 
-					<input type="hidden" value="3" name="upsell_amounts_count" id="upsell_amounts_count">
-					<input type="hidden" value="3" name="total_level_count" id="total_level_count">
-					
-					<ad-dropdown label="Charge Code" label-in-drop-down="Charge Code" list="upsellData.charge_codes" selected-Id='upsellData.selected_charge_code' required='yes'></ad-dropdown>
+                            <div class="entry has-sortable col3">
+                                <label translate> Level 3 </label>
 
-				</fieldset>
-				<div class="entry"></div>
-				<fieldset class="holder full-width">
-					<div class="form-title">
-						<h3><span translate>DAILY_UPSELL</span> {{'LEVELS'|translate}} </h3>
-					</div>
-					<div id="upsell_level" class="float" >
-						<div class="entry has-sortable col3">
-							<label translate> LEVEL_ONE </label>
+                                <ul id="level_3" data-placeholder="{{'DROP_HERE_FOR_LEVEL_THREE'|translate}}"
+                                    class="boxes sortable empty short-list" data-drop="true"
+                                    jqyoui-droppable="{multiple:true}" ng-model="levelThree"
+                                    data-jqyoui-options="{accept: '.acceptable_room_upsell_level2,.acceptable_room_upsell_level1'}">
+                                    <li data-drag="true"
+                                        ng-repeat="level3 in levelThree"
+                                        ng-model="levelThree"
+                                        data-jqyoui-options="{revert: 'invalid',helper:'clone',appendTo: 'body'}"
+                                        jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem'}"
+                                        class='acceptable_room_upsell_level3 li-draggable'
+                                        ng-hide="!level3.room_type_name">
+                                        <span class="icons icon-handle"> </span>{{level3.room_type_name}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </fieldset>
 
-							<ul id="level_1" data-placeholder="{{'DROP_HERE_FOR_LEVEL_ONE'|translate}}" class="boxes sortable empty short-list" data-drop="true" jqyoui-droppable="{multiple:true}" ng-model="levelOne" data-jqyoui-options="{accept: '.acceptable_room_upsell_level2,.acceptable_room_upsell_level3'}">
-								<li ng-repeat="level1 in levelOne"
-								ng-model="levelOne" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone',appendTo: 'body'}" 
-								jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem'}" 
-								class='acceptable_room_upsell_level1 li-draggable'
-								ng-hide="!level1.room_type_name">
-								<span class="icons icon-handle"> </span>{{level1.room_type_name}}
-							</li>
-						</ul>
+                    <fieldset class='holder column full-width'>
+                        <ad-dropdown label="{{'LIMIT_UPSELL_OFFERS_FOR_FOLLOWING_ROOM_TYPES_BY_MAX_LOS' | translate}}"
+                                     label-in-drop-down="{{'SELECT_ROOM_TYPE' | translate}}"
+                                     list="upsellData.room_types_list" selected-Id='upsellData.selected_room_type'
+                                     selbox-class="placeholder"></ad-dropdown>
 
-
-					</div>
-					<div class="entry has-sortable col3">
-						<label translate> LEVEL_TWO </label>
-						<ul id="level_2" data-placeholder="{{'DROP_HERE_FOR_LEVEL_TWO'|translate}}" class="boxes sortable empty short-list" data-drop="true" jqyoui-droppable="{multiple:true}" ng-model="levelTwo" data-jqyoui-options="{accept: '.acceptable_room_upsell_level1,.acceptable_room_upsell_level3'}">
-							<li ng-repeat="level2 in levelTwo"
-							ng-model="levelTwo" 
-							data-drag="true"
-							data-jqyoui-options="{revert: 'invalid',helper:'clone',appendTo: 'body'}" 
-							jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem'}" 
-							class='acceptable_room_upsell_level2 li-draggable'
-							ng-hide="!level2.room_type_name">
-							<span class="icons icon-handle"> </span>{{level2.room_type_name}}
-							</li>
-						</ul>
-					</div>
-
-
-					
-				<div class="entry has-sortable col3">
-					<label translate> Level 3 </label>
-
-
-					<ul id="level_3" data-placeholder="{{'DROP_HERE_FOR_LEVEL_THREE'|translate}}" class="boxes sortable empty short-list" data-drop="true" jqyoui-droppable="{multiple:true}" ng-model="levelThree" data-jqyoui-options="{accept: '.acceptable_room_upsell_level2,.acceptable_room_upsell_level1'}">
-						<li data-drag="true" 
-						ng-repeat="level3 in levelThree"
-						ng-model="levelThree" data-jqyoui-options="{revert: 'invalid',helper:'clone',appendTo: 'body'}" jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem'}" 
-						class='acceptable_room_upsell_level3 li-draggable'
-						ng-hide="!level3.room_type_name">
-						<span class="icons icon-handle"> </span>{{level3.room_type_name}}
-
-						</li>
-					</ul>
-				</div>
-		</div>
-	</fieldset>
-	<div class="actions">
-		<button type="button" ng-click="goBackToPreviousState()" class="button blank"translate>
-			CANCEL
-		</button>
-		<button type="button" ng-click="saveClick()" class="button green" translate>
-			SAVE_CHANGES
-		</button>
-	</div>
-</form>
-</section>
-</section>
-</div>
+                        <div class='entry'>
+                            <div class='add-room-type'>
+                                <button class='button green' id='add-room-type' ng-click="clickAddRoomType()" translate>
+                                    ADD_ROOM_TYPE
+                                </button>
+                            </div>
+                        </div>
+                        <div class='entry full-width' id='room-type-header'>
+                            <div>
+                                <div class='entry has-sortable col3' ng-show="upsellData.isRoomTypesSelectedFlag">
+                                    <label><h4 translate>ROOM_TYPE</h4></label>
+                                </div>
+                                <div class='entry has-sortable col3' ng-show="upsellData.isRoomTypesSelectedFlag">
+                                    <label><h4 translate>ALLOW_ROVER_OVERWRITE</h4></label>
+                                </div>
+                                <div class='entry has-sortable col3' ng-show="upsellData.isRoomTypesSelectedFlag">
+                                    <label><h4 translate>MAX_LOS</h4></label>
+                                </div>
+                            </div>
+                            <div id='room-type-details' ng-repeat="roomType in upsellData.room_types">
+                                <div class="entry full-width room-type-details"
+                                     ng-show="roomType.max_los !==''">
+                                    <div class="entry has-sortable col3">
+                                        <span class="align-text-center"> {{roomType.name}} </span>
+                                    </div>
+                                    <div class="entry has-sortable col3">
+                                        <span class="entry">
+                                            <ad-checkbox is-checked="roomType.allow_rover_overwrite"></ad-checkbox>
+                                        </span>
+                                    </div>
+                                    <div class="entry has-sortable col3">
+                                        <span class="entry">
+                                            <ad-textbox value="roomType.max_los" inputtype="number"></ad-textbox>
+                                        </span>
+                                        <span class="entry">
+                                            <a class="icons icon-delete large-icon align-text-center"
+                                               ng-click="deleteRoomType(roomType.id,roomType.name)"></a>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="actions">
+                        <button type="button" ng-click="goBackToPreviousState()" class="button blank" translate>
+                            CANCEL
+                        </button>
+                        <button type="button" ng-click="saveClick()" class="button green" translate>
+                            SAVE_CHANGES
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </section>
+    </div>
 </section>

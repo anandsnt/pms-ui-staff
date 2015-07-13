@@ -7,7 +7,7 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 
 		$scope.hideMeBeforeFetching = false;
 		$scope.showRoomTypeWiseAvailableRooms = false;
-
+		$scope.showRoomTypeWiseBookedRooms = false;
 
 
 		$scope.data = rvAvailabilitySrv.getGridData();
@@ -38,6 +38,14 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 			$scope.$emit("hideLoader");
 		});
 
+		/*
+		* function to toggle the display of individual room type booked list on clicking
+		* the toogle button
+		*/
+		$scope.toggleShowRoomTypeWiseBookedRooms = function(){
+			$scope.showRoomTypeWiseBookedRooms  = !$scope.showRoomTypeWiseBookedRooms ;
+			$scope.refreshScroller('room_availability_scroller');
+		}
 		
 
 		/*
