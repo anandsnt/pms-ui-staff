@@ -1,6 +1,6 @@
 <!-- contentarea starts here-->
 <div class="jumbotron">
-	<div class="container backgroundbg" >
+	<div class="container" >
 		<div class="container-fluid">
 			<div class="row headerrow template-bg">
 				<logo-image></logo-image>
@@ -17,7 +17,7 @@
 			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="template-text">{{hotelPhone}}.</a></p>
 		</div>
 		<!-- contentarea starts here-->
-		<div class="container line-top  line-bottom" ng-hide="isFetching || netWorkError">
+		<div class="container" ng-hide="isFetching || netWorkError">
 			<!-- top section starts here-->
 			<div class="row checkin-wrapper">
 				<div class="col-md-6 pad-rt-60">
@@ -70,7 +70,7 @@
 							</div>
 						</slide>
 					</carousel>
-					<div class="proceed-to-checkin room-upgrade-reject" ng-click="noThanksClicked()">
+					<div class="proceed-to-checkin" ng-click="noThanksClicked()">
 						NO,&nbsp;&nbsp;THANK YOU. PROCEED TO <strong>CHECK-IN</strong>
 						<img src="/assets/img/white_arrow.png">
 					</div>
