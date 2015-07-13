@@ -1,18 +1,15 @@
 <!-- contentarea starts here-->
 
 <div class="jumbotron" id="check-in-out">
-
 	<div class="container backgroundbg" >
 		<div class="container-fluid">
 			<div class="row headerrow template-bg">
 				<logo-image></logo-image>
 			</div>
 		</div>
-
 		<!-- contentarea starts here-->
 		<div class="container" ng-hide="!pageValid">
 			<!-- top section starts here-->
-
 			<div class="row check-inout-wrapper">
 				<div class="col-md-6 headtext centeralign template-heading-text margin-10">
 					Ready to check-out?
@@ -21,11 +18,10 @@
 					</p>
 				</div>
 				<!-- top section ends here-->
-
 				<!-- checkoubtn section starts here-->
-				<div class="col-md-6 no-padding now-later-options no-screen-attach">
+				<div class="col-md-6 no-padding now-later-options">
 					<div class="row">
-						<div class="col-xs-12 checkoutnow single">
+						<div class="col-xs-12 checkoutnow template-button">
 							<div class="rel-wrapper">
 								<a ui-sref="checkoutBalance"></a>
 								<div class="row">
@@ -39,7 +35,6 @@
 						</div>
 					</div>
 				</div>
-
 				<div class="row clearboth">
 					<p class="foot-text centeralign">
 						<em class = "base-text" ng-show="!isLateCheckoutAvailable">Unfortunately we are unable to offer a late check out at this time.</em>

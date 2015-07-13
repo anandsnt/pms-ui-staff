@@ -34,16 +34,16 @@
 				<div class="col-md-6 headtext centeralign">
 					<span class="template-heading-text">Thank you</span>
 					<p class="leadtext">
-						<em class="lightcontent template-text chekout-late-final base-text">The following charge plus taxes will appear on your bill.</em>
+						<em class="lightcontent template-text chekout-late-final">The following charge plus taxes will appear on your bill.</em>
 					</p>
 					<p class="latecheckout-charged centeralign">
 						<span class="template-text">Late Check-out ({{ lateCheckOut.time }} {{ lateCheckOut.ap }} ) .... {{currencySymbol}}{{ lateCheckOut.amount }}</span></p>
+					</div>
+					<div class="col-md-6 no-padding now-later-options">
+						<a ui-sref="checkOutConfirmation" class="link-btn with-bg template-bg back-to-checkout">Done</a>
+					</div>
 				</div>
-				<div class="col-md-6 no-padding now-later-options margin-top-60">
-					<a ui-sref="checkOutConfirmation" class="link-btn with-bg template-bg back-to-checkout white-text">Done</a>
-				</div>
+				
 			</div>
-			
 		</div>
 	</div>
-</div>

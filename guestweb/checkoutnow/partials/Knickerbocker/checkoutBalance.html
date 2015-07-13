@@ -18,8 +18,8 @@
 				<p class="msg-body template-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="template-text">{{hotelPhone}}.</a></p>
 			</div>
 			<!-- top section starts here-->
-			<div class="row check-inout-wrapper toggle-pos-rel" ng-show="optionsAvailable && !isFetching && !netWorkError">
-				<div class="col-md-6 centeralign headtext nopadding-onblock toggle-pos-rel ">
+			<div class="row check-inout-wrapper" ng-show="optionsAvailable && !isFetching && !netWorkError">
+				<div class="col-md-6 centeralign headtext margin-10">
 					<span class="template-heading-text">Check-Out</span>
 					<p class="leadtext balance-container">
 						<span class="lightcontent chekout-time">
@@ -106,9 +106,9 @@
 						</div>
 					</div>			
 				</div>
-				<div class="col-md-6 no-padding now-later-options no-screen-attach">
+				<div class="col-md-6 no-padding now-later-options">
 					<div class="row">
-						<div class="col-xs-12 accept-charges-button single green-bg">
+						<div class="col-xs-12 accept-charges-button template-button">
 							<div class="rel-wrapper">
 								<a ng-click="gotToNextStep()"></a>
 								<div class="row checkout-later-text white-text">
