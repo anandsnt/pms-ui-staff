@@ -16,6 +16,30 @@
         <!-- Title when bill# is defined: <strong class="h2 message">Pay Bill #{bill num}</strong> -->
 
         <div class="payment-form">
+            <!-- Split payment -->
+                <div class="entry split">
+                    <label for="split-payment">Split Bill Payment</label>
+                    <label class="only-number checked"> <!-- 1 is selected by default and locked -->
+                        <input name="split-bill" value="1" type="checkbox" disabled checked />
+                        1
+                    </label>
+                    <label class="only-number"> <!-- Add class 'checked' when selected, 'paid' when payment is made or 'disabled' when option is not available anymore -->
+                        <input name="split-bill" value="2" type="checkbox" /> <!-- Add attr 'disabled' when paid or first payment made -->
+                        2
+                    </label>
+                    <label class="only-number"> 
+                        <input name="split-bill" value="3" type="checkbox" />
+                        3
+                    </label>
+                    <label class="only-number"> 
+                        <input name="split-bill" value="4" type="checkbox" />
+                        4
+                    </label>
+                    <label class="only-number"> 
+                        <input name="split-bill" value="5" type="checkbox" />
+                        5
+                    </label>            
+                </div>
             <!-- Payment type -->
                 <div id="payment-type" class="entry full-width" ng-hide="showCCPage">
                     <label for="payment-type" translate>PAYMENT_TYPE</label>
