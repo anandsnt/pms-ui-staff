@@ -1,6 +1,6 @@
-admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminderSetupSrv', '$state', '$filter', '$stateParams',
-    function ($scope, $controller, adSiteminderSetupSrv, $state, $filter, $stateParams) {
-
+admin.controller('adSynixSetupCtrl', ['$scope', '$controller', 'adSynixSetupSrv', '$state', '$filter', '$stateParams',
+    function ($scope, $controller, adSynixSetupSrv, $state, $filter, $stateParams) {
+	$scope.$emit("changedSelectedMenu", 8);
         $scope.errorMessage = '';
         $scope.successMessage = '';
         $scope.isLoading = true;
@@ -9,13 +9,32 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
         $scope.lastRefreshedTimeRef = '';
         $scope.initTimeout = false;
         BaseCtrl.call(this, $scope);
+        $scope.data = {};
+        $scope.booking = {};
+        $scope.payments = {};
+        $scope.booking.booking_origins = {};
+        $scope.payments.payments = {};
         
-        $scope.fetchSiteminderSetupSuccessCallback = function (data) {
+	var fetchOriginsSuccessCallback = function(data) {
+		$scope.$emit('hideLoader');
+		$scope.booking.booking_origins = data.booking_origins;
+	};
+        
+	var fetchPaymethodsSuccess = function(data) {
+		$scope.$emit('hideLoader');
+		$scope.payments.payments = data.payments;
+	};
+
+        //load up origins and payment methods
+	$scope.invokeApi(adSynixSetupSrv.fetchOrigins, {},fetchOriginsSuccessCallback);
+	$scope.invokeApi(adSynixSetupSrv.fetchPaymethods, {}, fetchPaymethodsSuccess);
+        
+        
+        $scope.fetchSynixSetupSuccessCallback = function (data) {
             $scope.isLoading = false;
             $scope.$emit('hideLoader');
             $scope.data = data;
             $scope.setRefreshTime();
-           
         };
         $scope.setRefreshTime = function(){
             if ($scope.data.data.product_cross_customer.full_refresh !== null){
@@ -26,8 +45,6 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
                var n = new Date();
                var nd = n.valueOf();
                var twentyFourHrs = 86400000;
-               //var unoMinute = 60000;//for debugging
-              // if ((nd-$scope.lastRefreshedTimeObj.valueOf()) > unoMinute){//for debugging
                if ((nd-$scope.lastRefreshedTimeObj.valueOf()) > twentyFourHrs){
                    $scope.refreshButtonEnabled = 'enabled';
                } else {
@@ -41,16 +58,16 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
            }
         };
 
-        $scope.fetchSiteminderSetup = function () {
-            $scope.invokeApi(adSiteminderSetupSrv.fetchSetup, {}, $scope.fetchSiteminderSetupSuccessCallback);
+        $scope.fetchSynixSetup = function () {
+            $scope.invokeApi(adSynixSetupSrv.fetchSetup, {}, $scope.fetchSynixSetupSuccessCallback);
         };
 
         $scope.toggleSMActiveSuccess = function () {
             $scope.data.data.product_cross_customer.active = !$scope.data.data.product_cross_customer.active;
-            $scope.invokeApi(adSiteminderSetupSrv.fetchSetup, {
+            $scope.invokeApi(adSynixSetupSrv.fetchSetup, {
                 'interface_id': $scope.data.data.product_cross_customer.interface_id,
                 'active': $scope.data.data.product_cross_customer.active
-            }, $scope.fetchSiteminderSetupSuccessCallback);
+            }, $scope.fetchSynixSetupSuccessCallback);
         };
 
         $scope.toggleInterface = function (active, id) {
@@ -60,7 +77,7 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
                 active = true;
             }
             $('[name=active-inactive-toggle]').attr('ng-class', active);
-            $scope.invokeApi(adSiteminderSetupSrv.toggleActive, {
+            $scope.invokeApi(adSynixSetupSrv.toggleActive, {
                 'interface_id': id,
                 'active': active
             }, $scope.toggleSMActiveSuccess);
@@ -76,56 +93,37 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
             }
         };
 
-        $scope.fetchSiteminderSetup();
+        $scope.fetchSynixSetup();
 
         // Set the selected payment method
         $scope.$watch("data.data.product_cross_customer.default_payment_id", function (value, n) {
-            //this data is pushed in upon saving the form, retrieved from other controllers
-            //so watch this to push the data back in through this controller to the other controllers
-            var emitObject = {
-                'default_payment_id': value
-            };
             if (typeof value !== typeof undefined) {
                 setTimeout(function () {
-                    var payment = $('[valfor=value-default-payment]');
+                    var payment = $('[valfor=default-payment]');
                     $(payment).val(value);
                 }, 2000);
-                $scope.$broadcast('sm-payment-updated', emitObject.default_payment_id);
             }
         });
 
-        // Set the selected booking origin
-        $scope.$watch("data.data.product_cross_customer.default_origin", function (value, n) {
-            //this data is pushed in upon saving the form, retrieved from other controllers
-            //so watch this to push the data back in through this controller to the other controllers
-            var emitObject = {
-                'default_origin': value
-            };
-            if (typeof value !== typeof undefined) {
-                setTimeout(function () {
-                    var origin = $('[valfor=value-default-origin]');
-                    $(origin).val(value);
-                }, 2000);
-                $scope.$broadcast('sm-booking-origin-updated', emitObject.default_origin);
-            }
-        });
 
         // Save changes button click action
-        $scope.saveSiteminderSetup = function () {
-            var saveSiteminderSetupSuccessCallback = function (data) {
-                $scope.successMessage = 'Siteminder Save Success';
+        $scope.saveSynixSetup = function () {
+            var saveSynixSetupSuccessCallback = function (data) {
+                $scope.successMessage = 'Synix Save Success';
                 $scope.isLoading = false;
                 $scope.$emit('hideLoader');
             };
 
-            var saveSiteminderSetupFailureCallback = function (data) {
+            var saveSynixSetupFailureCallback = function (data) {
                 $scope.isLoading = false;
                 // var msg = data;
-                $scope.errorMessage = 'Siteminder Save Failed ';
+                $scope.errorMessage = 'Synix Save Failed ';
                 $scope.$emit('hideLoader');
             };
             var unwantedKeys = ["available_trackers"];
             var saveData = dclone($scope.data, unwantedKeys);
+            
+            
             //for now fetch directly from the view
             //move this to a controller call later
             var origin = $('[valfor=value-default-origin]'),
@@ -142,7 +140,7 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
                 //this.data.product_cross_customer.default_payment_id = paymentVal;
                 saveData.data.product_cross_customer.default_payment_id = paymentVal;
             }
-            $scope.invokeApi(adSiteminderSetupSrv.saveSetup, saveData, saveSiteminderSetupSuccessCallback, saveSiteminderSetupFailureCallback);
+            $scope.invokeApi(adSynixSetupSrv.saveSetup, saveData, saveSynixSetupSuccessCallback, saveSynixSetupFailureCallback);
         };
         
         $scope.runFullRefresh = function(){
@@ -157,9 +155,9 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
                 }
             }
             var fullRefreshSuccess = function(){
-                $scope.successMessage = 'Siteminder Full Refresh Success!';
+                $scope.successMessage = 'Synix Full Refresh Success!';
                 $scope.$emit('hideLoader');
-                $scope.fetchSiteminderSetup();
+                $scope.fetchSynixSetup();
             };
             var fullRefreshFail = function(response){
                 var msg = '';
@@ -168,24 +166,21 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
                         msg = ': "'+response[0]+'"';
                     } 
                 }
-                $scope.errorMessage = 'Siteminder Full Refresh Failed' + msg;
+                $scope.errorMessage = 'Synix Full Refresh Failed' + msg;
                 $scope.$emit('hideLoader');
             };
             if ((lastRefreshed < refreshNow) || lastRefreshed === null){
                 //run refresh
-                $scope.invokeApi(adSiteminderSetupSrv.fullRefresh, data, fullRefreshSuccess, fullRefreshFail);
+                $scope.invokeApi(adSynixSetupSrv.fullRefresh, data, fullRefreshSuccess, fullRefreshFail);
         
             } else {
                 //update w/ error
             }
-            
-            
-            
         };
 
         // Test connection button click action
-        $scope.testSiteminderSetup = function () {
-            var testSiteminderSetupSuccessCallback = function (data) {
+        $scope.testSynixSetup = function () {
+            var testSynixSetupSuccessCallback = function (data) {
                 //double check to see if it Actually failed..
                 if (data.status == 'failure') {
                     var msg = '';
@@ -196,15 +191,15 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
                             msg = ': data';
                         }
                     }
-                    $scope.errorMessage = 'Siteminder Test Failed' + msg;
+                    $scope.errorMessage = 'Synix Test Failed' + msg;
                 } else {
                     $scope.isLoading = false;
-                    $scope.successMessage = 'Siteminder Test Success';
+                    $scope.successMessage = 'Synix Test Success';
                 }
                 $scope.$emit('hideLoader');
                 //  $scope.showTestResults('Success', data);
             };
-            var testSiteminderSetupFailureCallback = function (data) {
+            var testSynixSetupFailureCallback = function (data) {
                 $scope.isLoading = false;
                 var msg = '';
                 if (typeof data[0] === typeof 'str') {
@@ -214,22 +209,22 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
                         msg = ': data';
                     }
                 }
-                $scope.errorMessage = 'Siteminder Test Failed' + msg;
+                $scope.errorMessage = 'Synix Test Failed' + msg;
                 $scope.$emit('hideLoader');
             };
 
             var checkCallback = function (response) {
                 $scope.$emit('hideLoader');
                 if (response.status == 'failure') {
-                    testSiteminderSetupFailureCallback(response);
+                    testSynixSetupFailureCallback(response);
                 } else {
-                    testSiteminderSetupSuccessCallback(response);
+                    testSynixSetupSuccessCallback(response);
                 }
             };
 
             var unwantedKeys = ["available_trackers"];
             var testData = dclone($scope.data, unwantedKeys);
-            $scope.invokeApi(adSiteminderSetupSrv.testSetup, testData, checkCallback);
+            $scope.invokeApi(adSynixSetupSrv.testSetup, testData, checkCallback);
         };
         $scope.timeSince = function(date) {
             var seconds = Math.floor((new Date() - date) / 1000);//local to the user

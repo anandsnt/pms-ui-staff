@@ -28,21 +28,6 @@ admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv','$anchorScroll', '$ti
 		$scope.preveousItem = $scope.data.booking_origins[index].name;
 	};
         
-        $scope.setDefaultOriginSiteminder = function(){
-        };
-        
-        /*
-        $scope.$watch("data.data.product_cross_customer.default_origin", function (o, n) {
-            //this data is pushed in upon saving the form, retrieved from other controllers
-            //so watch this to push the data back in through this controller to the other controllers
-            //emit this value to be pulled into other controllers
-            console.log(arguments);
-            console.log('emitting orgin value of: '+thisdata.data.product_cross_customer.default_origin);
-            $scope.$emit('sm-origin-updated', {
-                'default_origin': this.data.data.product_cross_customer.default_origin
-            });
-        });
-        */
 	/*
     * To get the template of edit screen
     * @param {int} index of the selected item
