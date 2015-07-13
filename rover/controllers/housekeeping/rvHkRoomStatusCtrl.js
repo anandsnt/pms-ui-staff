@@ -128,9 +128,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		// multiple room status change DS
 		$scope.multiRoomAction = {
-			selectedRooms: [],
-			allRoomsSelected: false,
-			selectedHkStatus: ''
+			selectedRooms       : [],
+			selectedRoomIndexes : {},
+			allRoomsSelected    : false,
+			selectedHkStatus    : ''
 		};
 		$scope.anyRoomChosen = false;
 
@@ -523,10 +524,16 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.getSelectedRoomCount = function() {
 			$scope.multiRoomAction.selectedRooms = [];
+			$scope.multiRoomAction.selectedRoomIndexes = {};
 
 			for (i = 0, j = $scope.rooms.length; i < j; i++) {
 				if ( $scope.rooms[i].selected ) {
 					$scope.multiRoomAction.selectedRooms.push( $scope.rooms[i].id );
+
+					// create a 'keyMirror' to help identify
+					// the room classes to update after changing the room status
+					// Read more here: https://github.com/STRML/keyMirror (This is an implementation, not actual use)
+					$scope.multiRoomAction.selectedRoomIndexes[i] = i;
 				};
 			};
 
@@ -535,13 +542,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.submitHkStatusChange = function() {
 			var _payload,
+				_resetParams,
 				_callback,
 				_onError,
 				i, j;
-
-			// '$scope.getSelectedRoomCount' will be called everytime
-			// the submit modal is opened, so at time we will fill 
-			// the '$scope.multiRoomAction.selectedRooms'
 
 			// no need to send anything
 			if ( ! $scope.multiRoomAction.selectedRooms.length ) {
@@ -553,22 +557,46 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				'hk_status_id' : $scope.multiRoomAction.selectedHkStatus
 			};
 
-			_callback = function(data) {
-				$scope.$emit( 'hideLoader' );
-
+			_resetParams = function() {
 				// reset these.
 				$scope.multiRoomAction = {
 					selectedRooms: [],
+					selectedRoomIndexes: {},
 					allRoomsSelected: false,
 					selectedHkStatus: ''
 				};
 				$scope.anyRoomChosen = false;
+			};
 
-				// un-select all rooms
+			_callback = function(data) {
+				$scope.$emit( 'hideLoader' );
+
+				// get the selected hk status obj
+				var selectedHkStatusObj = _.find($scope.hkStatusList, function(item) {
+					return item.id == $scope.multiRoomAction.selectedHkStatus;
+				});
+
+				// firstly remove selection and
+				// update classes/status/description for the effected rooms ;)
 				for (i = 0, j = $scope.rooms.length; i < j; i++) {
 					$scope.rooms[i].selected = false;
+
+					if ( i == $scope.multiRoomAction.selectedRoomIndexes[i] ) {		// since we are using keyMirrors, this becomes fast
+						// 1. update room description
+						$scope.rooms[i]['description'] = selectedHkStatusObj['description'];
+
+						// 2. update 'hk_status' of this room
+						angular.extend($scope.rooms[i]['hk_status'], {
+							description: selectedHkStatusObj['description'],
+							value: selectedHkStatusObj['value']
+						});
+
+						// 3. now call the status class update
+						RVHkRoomStatusSrv.setRoomStatusClass( $scope.rooms[i] );
+					};
 				};
 
+				_resetParams();
 				$scope.closeDialog();
 			};
 

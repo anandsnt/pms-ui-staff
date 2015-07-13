@@ -25,7 +25,7 @@
         <span translate>FILTER_ROOMS</span>
     </button>
     
-    <div class="entry search">
+    <div class="entry search" ng-class="{ 'rooms-checked': anyRoomChosen }">
         <button type="button" class="clear-query" ng-show="query != ''" ng-click="clearSearch()" ng-class="{'visible': query != ''}">
             <span class="icons icon-clear-search ng-scope" translate>CLEAR_QUERY</span>
         </button>
@@ -33,7 +33,7 @@
         <input name="rooms-query" id="rooms-query" class="query" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}" type="search" autocomplete="off" ng-model="query" ng-change="filterByQuery()">
     </div>
     
-    <div class="entry options" ng-if="isStandAlone" ng-cloak>
+    <div class="entry options" ng-if="isStandAlone" ng-cloak ng-class="{ 'rooms-checked': anyRoomChosen }">
         <div class="select">
             <select id="work-type" name="work-type" ng-model="topFilter.byWorkType" ng-options="work.id as work.name for work in workTypes" ng-change="applyWorkTypefilter()">
                 <option value="">All Work Types</option>
@@ -47,14 +47,9 @@
         </div>
     </div>
 
-    <button ng-if="isStandAlone" type="button" id="refresh-data" class="button blue with-icon only-icon print" ng-click="printData()">
-        <span class="icons icon-print"></span>
-        <span translate>Print</span>
-    </button>
-
     <!-- Select All Rooms from list -->
-    <div class="entry check">
-        <button type="button" class="button purple with-icon only-icon open-modal hidden" ng-class="{ 'hidden': !anyRoomChosen }" ng-click="openChangeHkStatusModal()"> <!-- Hidden until at least 1 room is selected -->
+    <div ng-if="isStandAlone" class="entry check" ng-class="{ 'rooms-checked': anyRoomChosen }">
+        <button type="button" class="button purple with-icon only-icon open-modal" ng-class="{ 'hidden': !anyRoomChosen }" ng-click="openChangeHkStatusModal()"> <!-- Hidden until at least 1 room is selected -->
             <span class="icons icon-pencil"></span>
             Update
         </button>
@@ -63,6 +58,11 @@
             <input id="select-all-rooms" type="checkbox" ng-model="multiRoomAction.allRoomsSelected" ng-change="selectAllRooms(multiRoomAction.allRoomsSelected)" />
         </label>
     </div>
+
+    <button ng-if="isStandAlone" type="button" id="refresh-data" class="button blue with-icon only-icon print" ng-click="printData()" ng-class="{ 'rooms-checked': anyRoomChosen }">
+        <span class="icons icon-print"></span>
+        <span translate>Print</span>
+    </button>
 
     <div id="filter-actions" class="filter-actions">
       <button class="button blank" ng-show="isFilterChcked()" ng-click="clearFilters()" type="button" translate>CLEAR</button>
@@ -92,7 +92,7 @@
     </li>
 
     <li class="room" bindonce ng-repeat="room in rooms track by $index">
-        <div class="check">
+        <div ng-if="isStandAlone" class="check">
             <label class="checkbox inline" for="{{ room.id }}" ng-click="roomSelectChange(room)">
                 <span class="icon-form icon-checkbox" ng-class="{ 'checked' : room.selected }"></span>
                 <input id="{{ room.id }}" type="checkbox" ng-model="room.selected" />
@@ -103,8 +103,8 @@
 
           <div class="data" bo-class="{ 'on-hold': room.is_on_hold }">
             <h2 class="{{ room.roomStatusClass }}" bo-text="room.room_no"></h2> <!-- If room is ooo or oos, class should be 'out'. Otherwise, use {room-status} -->
-            <span bo-if="!room.hk_status.oo_status" class="room-status {{ room.roomStatusClass }}" bo-text="room.description"></span>
-            <span bo-if="!!room.hk_status.oo_status" class="room-status {{ room.roomStatusClassWithOO }}" bo-text="room.hk_status.oo_status"></span>
+            <span bo-if="!room.hk_status.oo_status" class="room-status {{ room.roomStatusClass }}">{{ room.description }}</span>
+            <span bo-if="!!room.hk_status.oo_status" class="room-status {{ room.roomStatusClassWithOO }}">{{ room.hk_status.oo_status }}</span>
           </div>
 
           <div class="reservation-status" bo-class="{ 'queued': room.is_queued, 'on-hold': room.is_on_hold }">

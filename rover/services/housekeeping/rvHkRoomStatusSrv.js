@@ -158,7 +158,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 						// single calculate the class required
 						// will require additional call from details page
-						that.setRoomStatusClass(room, roomList.checkin_inspected_only);
+						that.setRoomStatusClass(room);
 
 						// set the leaveStatusClass or enterStatusClass value
 						that.setReservationStatusClass(room);
@@ -410,7 +410,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 		// or many room at once
 		this.putHkStatusChange = function(params) {
 			var deferred = $q.defer(),
-				url = 'staff_house_keeping/mass_change_house_keeping_status';
+				url = 'house/mass_change_hk_status';
 
 			BaseWebSrvV2.putJSON(url, params)
 				.then(function(data) {
@@ -438,7 +438,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 		// Moved from ctrl to srv as this is calculated only once
 		// keept as msg so that it can be called from crtl if needed
-		this.setRoomStatusClass = function(room, checkinInspectedOnly) {
+		this.setRoomStatusClass = function(room) {
 
 			var isOOSorOOO;
 			if ( room.hasOwnProperty('service_status') ) {
@@ -449,7 +449,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 				isOOSorOOO = room.hk_status.value == 'OO' || room.hk_status.value == 'OS' || room.room_reservation_hk_status == 2 || room.room_reservation_hk_status == 3;
 			};
 
-			if (checkinInspectedOnly == "true") {
+			if (roomList.checkin_inspected_only == "true") {
 				if (room.hk_status.value == 'INSPECTED') {
 					room.roomStatusClass = 'clean';
 					return;
