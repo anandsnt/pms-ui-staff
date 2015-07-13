@@ -1,28 +1,37 @@
-sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootScope', 'ngDialog', 'dateFilter', 'RateMngrCalendarSrv', 'UpdatePriceAndRestrictionsSrv', 'rvPermissionSrv',
-    function ($q, $scope, $rootScope, ngDialog, dateFilter, RateMngrCalendarSrv, UpdatePriceAndRestrictionsSrv, rvPermissionSrv) {
-
+sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootScope', 'ngDialog', 'dateFilter', 'RateMngrCalendarSrv', 'UpdatePriceAndRestrictionsSrv', 'rvPermissionSrv', '$stateParams',
+    function ($q, $scope, $rootScope, ngDialog, dateFilter, RateMngrCalendarSrv, UpdatePriceAndRestrictionsSrv, rvPermissionSrv, $stateParams) {
+        $scope.data = {};
+        $scope.data.roomRateOverrides = [];
+        $scope.data.showEditView = false;
+        $scope.overrideByDate = [];
+        $scope.data.selected_room_type = '';
+        $scope.showRestrictionDayUpdate = false;
+        $scope.showExpandedView = false;
+        
         $scope.init = function () {
-            $scope.showRestrictionDayUpdate = false;
-            $scope.showExpandedView = false;
+            if ($stateParams.openUpdatePriceRestrictions){
+                $stateParams.openUpdatePriceRestrictions = false;
+                $scope.data.roomRateOverrides = [];
+                $scope.data.showEditView = false;
+                $scope.overrideByDate = [];
+                $scope.data.selected_room_type = '';
+                $scope.showRestrictionDayUpdate = false;
+                $scope.showExpandedView = false;
 
-            $scope.data = {};
-            $scope.data.selected_room_type = '';
-            $scope.data.roomRateOverrides = [];
-            $scope.data.showEditView = false;
-            $scope.overrideByDate = [];
 
-            if ($scope.popupData.fromRoomTypeView) {
-                computePopupdataForRoomTypeCal();
-            } else {
-                computePopUpdataForRateViewCal();
-                fetchPriceDetailsForRate();
+                if ($scope.popupData.fromRoomTypeView) {
+                    computePopupdataForRoomTypeCal();
+                } else {
+                    computePopUpdataForRateViewCal();
+                    fetchPriceDetailsForRate();
+                }
+
+                if ($scope.popupData.all_data_selected) {
+                    $scope.data.isHourly = $scope.calendarData.data[0][$scope.popupData.selectedDate].isHourly;
+                }
+
+                $scope.updatePopupWidth();
             }
-
-            if ($scope.popupData.all_data_selected) {
-                $scope.data.isHourly = $scope.calendarData.data[0][$scope.popupData.selectedDate].isHourly;
-            }
-
-            $scope.updatePopupWidth();
         };
 
         $scope.$parent.myScrollOptions = {
@@ -697,7 +706,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
             data.room_type_id = $scope.popupData.selectedRoomType;
             data.details = calculateDetailsToSave(datesSelected);
             var saveRestrictionSuccess = function () {
-                $scope.refreshCalendar();
+                //$scope.refreshCalendar();
                 ngDialog.close();
                 
                 $scope.$emit('showLoader');
@@ -804,7 +813,5 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
                 return false;
             }
         };
-
-        $scope.init();
 
     }]);
