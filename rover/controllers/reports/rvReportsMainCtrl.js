@@ -69,6 +69,10 @@ sntRover.controller('RVReportsMainCtrl', [
 			$scope.heading = listTitle;
 			$scope.showSidebar = false;
 			$scope.resetFilterItemsToggle();
+
+			// tell report list controller to refresh scroll
+			console.log('report.list.scroll.refresh');
+			$scope.$broadcast( 'report.list.scroll.refresh' );
 		};
 
 
@@ -127,6 +131,14 @@ sntRover.controller('RVReportsMainCtrl', [
 		// show only valid sort_by Options "Filter"
 		$scope.showValidSortBy = function(sortBy) {
 			return !!sortBy && !!sortBy.value;
+		};
+
+		// replace any char with single space " "
+		// e.g -> filter:showValidSortBy:_
+		$scope.replaceWithSpace = function(value, tobeReplaced) {
+			console.log(arguments);
+
+			return (!value) ? '' : value.replace(/_/g, ' ');
 		};
 
 
@@ -212,12 +224,6 @@ sntRover.controller('RVReportsMainCtrl', [
 			}
 		};
 
-		$scope.reportsState = {
-			markets: []
-		};
-
-
-
 		// logic to re-show the remove date button
 		$scope.showRemoveDateBtn = function() {
 			var reportItem = $scope.touchedReport,
@@ -252,7 +258,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 						forceScopeApply();
 					};
-				};				
+				};
 			};
 
 			function isDateValid (report, name) {

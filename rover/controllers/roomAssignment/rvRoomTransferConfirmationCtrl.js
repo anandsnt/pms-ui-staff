@@ -5,7 +5,7 @@ sntRover.controller('rvRoomTransferConfirmationCtrl',['$scope','$rootScope','$fi
 
 	var newRate =parseInt($scope.roomTransfer.newRoomRate);
 	var oldRate =parseInt($scope.roomTransfer.oldRoomRate);
-	
+
 	$scope.isSmallerRate = function(){
 		if(newRate<oldRate){
 			return true;
@@ -14,7 +14,7 @@ sntRover.controller('rvRoomTransferConfirmationCtrl',['$scope','$rootScope','$fi
 			return false;
 		}
 	}
-	
+
 	$scope.isLargerRate = function(){
 		if(newRate>oldRate){
 			return true;
@@ -26,19 +26,19 @@ sntRover.controller('rvRoomTransferConfirmationCtrl',['$scope','$rootScope','$fi
 
 	$scope.closeDialog = function() {
             //to add stjepan's popup showing animation
-            $rootScope.modalOpened = false; 
+            $rootScope.modalOpened = false;
             $timeout(function(){
                 ngDialog.close();
-            }, 300);  
+            }, 300);
 		};
 
-	$scope.moveWithoutRateChange = function() {	
+	$scope.moveWithoutRateChange = function() {
 		$scope.roomTransfer.withoutRateChange = true;
 		$scope.assignRoom();
 		$scope.closeDialog();
 	}
 
-	$scope.applyRateChange = function() {	
+	$scope.applyRateChange = function() {
     	$scope.roomTransfer.withoutRateChange = false;
 		$scope.roomTransfer.newRoomRateChange = $scope.roomTransfer.newRoomRate;
 		$scope.assignRoom();
@@ -50,5 +50,5 @@ sntRover.controller('rvRoomTransferConfirmationCtrl',['$scope','$rootScope','$fi
 		$scope.assignRoom();
 		$scope.closeDialog();
 	}
-	
+
 }]);

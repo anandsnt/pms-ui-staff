@@ -12,7 +12,6 @@ sntRover.controller('reservationPaymentController',['$scope','$rootScope', funct
 	
 	};
 	$scope.displayButton = function(status){
-		
 		var display = true;
 		if(status == 'NOSHOW' || status == 'CHECKEDOUT' || status == 'CANCELED'){
 			display = false;

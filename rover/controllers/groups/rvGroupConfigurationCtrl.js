@@ -185,7 +185,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
         };
 
-         $scope.reloadPage = function() {
+        $scope.reloadPage = function() {
             $state.go('rover.groups.config', {
                 id: $scope.groupConfigData.summary.group_id
             }, {
@@ -233,7 +233,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
          */
         $scope.saveNewGroup = function() {
             $scope.errorMessage = "";
-            if (rvPermissionSrv.getPermissionValue('CREATE_GROUP_SUMMARY')) {
+            if (rvPermissionSrv.getPermissionValue('CREATE_GROUP_SUMMARY') && !$scope.groupConfigData.summary.group_id) {
                 if (ifMandatoryValuesEntered()) {
                     var onGroupSaveSuccess = function(data) {
                             $scope.groupConfigData.summary.group_id = data.group_id;

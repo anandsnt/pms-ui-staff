@@ -51,10 +51,10 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 					'guestId': data.guest_id,
 					'vip': $scope.data.vip
 				};
-				
+
 				$scope.$emit('guestCardUpdateData', contactInfoData);
 				$scope.$emit('hideLoader');
-				
+
 			};
 			var fetchGuestcardDataFailureCallback = function(data) {
 				$scope.$emit('hideLoader');
@@ -90,7 +90,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 				//This status is used to show appr message if count of reservations in selected time line is zero
 				$scope.reservationDisplayStatus = ($scope.countHistory > 0) ? true : false;
 			}
-			
+
 			RVReservationCardSrv.setGuestData($scope.data.guest_details);
 
 		});
@@ -116,8 +116,8 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 				$scope.reservationList = $scope.data.reservation_list.history_reservations_arr;
 				count = $scope.countHistory;
 			}
-			
-			//prevTimeLineEmpty - flag indicates if the "FROM timeline" was empty 
+
+			//prevTimeLineEmpty - flag indicates if the "FROM timeline" was empty
 			//Bug fix CICO-10184
 			if(count > 0 && !$scope.prevTimeLineEmpty){
 				$scope.reservationDisplayStatus = true;
@@ -137,7 +137,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 			}
 
 			$scope.$broadcast('RESERVATIONLISTUPDATED');
-			
+
 		};
 		$scope.$on("REFRESH_LIST_SCROLL", function(){
 			$scope.$broadcast("RESERVATIONLISTUPDATED");
@@ -150,12 +150,13 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 			// CICO-9709 - Reintiate reservation main data
 			//$scope.initReservationData(); // commenting code as per CICO-10077
 			$scope.clearArrivalAndDepartureTime();
+                        //set flag to show reservation is being refreshed
+                        $scope.$parent.refreshingReservation = true;
 			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 					"id": currentId,
 					"confirmationId": currentConfirmationNumber,
 					"isrefresh": true
 			});
-                        $rootScope.$broadcast('reload-loyalty-section-data',{});
 		};
 		/*
 		 * To show the payment data list
@@ -174,11 +175,11 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 				$scope.$emit('GUESTPAYMENTDATA', paymentData);
 				$scope.$emit('SHOWGUESTLIKES');
 			};
-				
+
 			if($stateParams.isrefresh == "true"){
 				$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, userId, paymentSuccess, '', 'NONE');
 			}
-			
+
 		};
 
 

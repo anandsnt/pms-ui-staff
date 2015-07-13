@@ -1,5 +1,5 @@
 sntRover.service('RVReservationStateService', [
-	function($q, RVBaseWebSrvV2) {
+	function() {
 		var self = this;
 		self.metaData = {
 			rateAddons: [],
@@ -7,7 +7,12 @@ sntRover.service('RVReservationStateService', [
 		};
 
 		self.reservationFlags = {
-		  outsideStaydatesForGroup : false
+			outsideStaydatesForGroup: false,
+			RATE_CHANGED: false
+		}
+
+		self.bookMark = {
+			lastPostedRate: null
 		}
 
 
@@ -45,10 +50,10 @@ sntRover.service('RVReservationStateService', [
 
 		/**
 		 * This method is used to calculate the rate amount of the room
-		 * @param  {Object} rateTable   
-		 * @param  {Integer} numAdults   
-		 * @param  {Integer} numChildren 
-		 * @return {Float}             
+		 * @param  {Object} rateTable
+		 * @param  {Integer} numAdults
+		 * @param  {Integer} numChildren
+		 * @return {Float}
 		 */
 		self.calculateRate = function(rateTable, numAdults, numChildren) {
 			var baseRoomRate = numAdults >= 2 ? rateTable.double : rateTable.single;
@@ -58,13 +63,13 @@ sntRover.service('RVReservationStateService', [
 
 		/**
 		 * This method returns the break down of taxes after computation of the same.
-		 * @param  {Float} taxableAmount      
-		 * @param  {Object} taxes       
-		 * @param  {Integer} roomIndex   
-		 * @param  {Boolean} forAddons   
-		 * @param  {Integer} numAdults   
-		 * @param  {Integer} numChildren 
-		 * @return {Object}             
+		 * @param  {Float} taxableAmount
+		 * @param  {Object} taxes
+		 * @param  {Integer} roomIndex
+		 * @param  {Boolean} forAddons
+		 * @param  {Integer} numAdults
+		 * @param  {Integer} numChildren
+		 * @return {Object}
 		 */
 		self.calculateTax = function(taxableAmount, taxes, roomIndex, numAdults, numChildren, forAddons) {
 			var taxInclusiveTotal = 0.0, //Per Night Inclusive Charges
@@ -96,7 +101,7 @@ sntRover.service('RVReservationStateService', [
 
 					if (!!tax.calculation_rules.length) {
 						_.each(tax.calculation_rules, function(tax) {
-							taxableAmount = parseFloat(taxableAmount) + parseFloat(taxesLookUp[tax]);
+							taxableAmount += parseFloat(taxesLookUp[tax]);
 						});
 					}
 
@@ -106,16 +111,23 @@ sntRover.service('RVReservationStateService', [
 						if (isInclusive) taxCalculated = parseFloat(multiplicity * (parseFloat(taxValue / (100 + parseFloat(taxValue))) * taxableAmount));
 						else taxCalculated = parseFloat(multiplicity * (parseFloat(taxValue / 100) * taxableAmount));
 					} else {
-						taxCalculated = parseFloat(multiplicity * parseFloat(taxValue)); //In case the tax is not a percentage amount, its plain multiplication with the tax's amount_type 
+						taxCalculated = parseFloat(multiplicity * parseFloat(taxValue)); //In case the tax is not a percentage amount, its plain multiplication with the tax's amount_type
 					}
 
-					taxesLookUp[taxData.id] = parseFloat(taxCalculated); 	
-					if(isInclusive) taxableAmount -= parseFloat(taxCalculated);
+					taxesLookUp[taxData.id] = parseFloat(taxCalculated);
+
+					if (!!tax.calculation_rules.length) {
+						_.each(tax.calculation_rules, function(tax) {
+							taxableAmount -= parseFloat(taxesLookUp[tax]);
+						});
+					}
+					if (isInclusive) taxableAmount -= parseFloat(taxCalculated);
+
 
 					if (taxData.post_type == 'NIGHT') { // NIGHT tax computations
 						if (isInclusive) taxInclusiveTotal = parseFloat(taxInclusiveTotal) + parseFloat(taxCalculated);
 						else taxExclusiveTotal = parseFloat(taxExclusiveTotal) + parseFloat(taxCalculated);
-					} else { // STAY tax computations                 
+					} else { // STAY tax computations
 						if (isInclusive) taxInclusiveStayTotal = parseFloat(taxInclusiveStayTotal) + parseFloat(taxCalculated);
 						else taxExclusiveStayTotal = parseFloat(taxExclusiveStayTotal) + parseFloat(taxCalculated);
 					}
@@ -147,12 +159,12 @@ sntRover.service('RVReservationStateService', [
 			};
 		};
 
-		self.setReservationFlag = function(key, status){
-		   self.reservationFlags[key] = status;
+		self.setReservationFlag = function(key, status) {
+			self.reservationFlags[key] = status;
 		};
 
-		self.getReservationFlag = function(key){
-		   return self.reservationFlags[key];
+		self.getReservationFlag = function(key) {
+			return self.reservationFlags[key];
 		};
 
 		/**
@@ -163,7 +175,7 @@ sntRover.service('RVReservationStateService', [
 		 * @return {[type]}           [description]
 		 */
 		self.parseRoomRates = function(roomRates, arrival, departure, stayDates, activeRoom, numNights) {
-			var rooms = [],
+			var rooms = {},
 				roomDetails = [],
 				displayDates = [];
 
@@ -190,7 +202,7 @@ sntRover.service('RVReservationStateService', [
 					});
 				}
 
-				//step1: Initial population of the rooms array 
+				//step1: Initial population of the rooms array
 				_.each(roomRate.room_types, function(roomType, i) {
 					var roomTypeId = roomType.id;
 					if (typeof rooms[roomTypeId] == "undefined") {

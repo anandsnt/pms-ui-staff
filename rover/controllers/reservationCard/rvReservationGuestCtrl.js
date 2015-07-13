@@ -55,7 +55,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			}
 		}
 
-		// CICO-13491 
+		// CICO-13491
 		$scope.customRate = "";
 		$scope.rateForCurrentGuest = "";
 
@@ -129,7 +129,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
 			$scope.$emit('showLoader');
 			angular.forEach($scope.reservationData.reservation_card.stay_dates, function(item, index) {
-				// Note: when editing number of guests for an INHOUSE reservation, the new number of guests should only apply from this day onwards, any previous days need to retain the previous guest count.	
+				// Note: when editing number of guests for an INHOUSE reservation, the new number of guests should only apply from this day onwards, any previous days need to retain the previous guest count.
 				if (new tzIndependentDate(item.date) >= new tzIndependentDate($rootScope.businessDate)) {
 					var adults = parseInt($scope.guestData.adult_count || 0),
 						children = parseInt($scope.guestData.children_count || 0),
@@ -312,18 +312,19 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			};
 
 			$scope.invokeApi(RVReservationGuestSrv.fetchGuestTabDetails, data, successCallback, errorCallback);
-                        
+
                         var fetchGuestPrefSuccess = function(data){
                             if (data.data){
                                 for (var i in data.data){
                                     if (data.data[i].name === 'wakeup_call'){
                                         $scope.activeWakeUp = data.data[i].active;
+                                        $scope.$emit("wakeup_call_ON",{'active':data.data[i].active});
                                     }
                                 }
                             }
-                            
+
                         };
-                        
+
 			$scope.invokeApi(RVReservationGuestSrv.fetchGuestPrefList, data, fetchGuestPrefSuccess, errorCallback);
 		};
                 $scope.activeWakeUp     = false;

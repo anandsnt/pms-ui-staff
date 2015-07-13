@@ -1,5 +1,5 @@
-sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvActionTasksSrv','$state',
-    function($scope, $filter, $rootScope, ngDialog, rvActionTasksSrv, $state) {
+sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'RVReservationCardSrv','$state',
+    function($scope, $filter, $rootScope, ngDialog, rvActionTasksSrv, RVReservationCardSrv, $state) {
         $scope.reservationNotes = "";
         /*
          *To save the reservation note and update the ui accordingly
@@ -11,7 +11,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.actions.totalCount = 0;
         $scope.actions.arrivalDateString = '';
         $scope.actions.departureDateString = '';
-        
+
         $scope.selectedAction = {};
         $scope.selectedAction.created_by = 'StayNtouch';
         $scope.selectedAction.created_by_null = false;
@@ -25,92 +25,33 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.selectedAction.due_at_date;
         $scope.selectedAction.due_at_time;
         $scope.openingPopup = false;
-        
-        
+
+
         $scope.departmentSelect = {};
         $scope.departmentSelect.selected;
-        
-        
+
+
         $scope.selectedActionMessage = '';
         $scope.selectedDepartment = '';
-        
+
         var init = function() {
             $scope.populateTimeFieldValue();
             $scope.setScroller("rvActionListScroller");
 
-            $scope.fetchActionsCount();
+           //initially use the count from the staycard init request for reservation details
+           var setActionsCount = function(){
+               $scope.setInitialActionsCount(RVReservationCardSrv.lastFetchData.data);
+           };
+            $scope.$watch('RVReservationCardSrv.data',  setActionsCount);
             $scope.setUpData();
         };
 
-        var refreshScroller = function() {
-            $scope.refreshScroller('rvActionListScroller');
-        };
-        $scope.hasArrivalDate = false;
-        $scope.hasDepartureDate = false;
-        
-        $scope.getArDeDateStr = function(dateStr, timeStr){
-            if (!dateStr){
-                dateStr = ' ';
-            }
-            if (!timeStr){
-                timeStr = '';
-            }
-            var aDay = $scope.getDateFromDate(dateStr), aDayString = ' ';
-            if (aDay){
-                aDay = aDay.toLowerCase();
-                aDayString = aDay.substring(0,1).toUpperCase()+aDay.substring(1,3)+' ';
-            }
-            if (dateStr){
-                return aDayString+$scope.flipDateFormat(dateStr)+timeStr;
-            } else {
-                return timeStr;
-            }
-        };
-        
-        
-        $scope.setActionsHeaderInfo = function(){
-            var arDate = $scope.reservationData.reservation_card.arrival_date,
-                    arTime = $scope.reservationData.reservation_card.arrival_time;
-            
-            var arrivalDayString = $scope.getArDeDateStr(arDate, arTime);
-            if (!arrivalDayString){
-                $scope.hasArrivalDate = false;
-            } else {
-                $scope.hasArrivalDate = true;
-            }
-
-            var deDate = $scope.reservationData.reservation_card.departure_date,
-                    deTime = $scope.reservationData.reservation_card.departure_time;
-            
-            var departureDayString = $scope.getArDeDateStr(deDate, deTime);
-            if (!departureDayString){
-                $scope.hasDepartureDate = false;
-            } else {
-                $scope.hasDepartureDate = true;
-            }
-            $scope.actions.arrivalDateString = arrivalDayString;
-            $scope.actions.departureDateString = departureDayString;  
-        };
-        
-        $scope.flipDateFormat = function(str){
-            //take 2015-04-10  |   yr / mo / day and >>> month, day, yr (04-10-2015)
-          if (str){
-              var spl = str.split('-');
-              var year = spl[0], month = spl[1], day = spl[2];
-              return month+'-'+day+'-'+year;
-          }
-            
-            
-        };
-        
-        $scope.fetchActionsCount = function(){
-            var onSuccess = function(data){
-                $scope.$parent.$emit('hideLoader');
-                
-                $scope.actions.totalCount = data.data.action_count;
-                $scope.actions.pendingCount = data.data.pending_action_count;
+        $scope.setInitialActionsCount = function(data){
+            if (data){
+                $scope.actions.totalCount = data.action_count;
+                $scope.actions.pendingCount = data.pending_action_count;
                 var pending = $scope.actions.pendingCount, total = $scope.actions.totalCount;
-                
+
                 if (total === 0 && pending === 0){
                     $scope.actionsCount = 'none';//none, pending, all-completed
                 } else if (total > 0 && pending === 0){
@@ -120,12 +61,102 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 } else {
                     $scope.actionsCount = 'pending';
                 }
-                
+            }
+        };
+
+        var refreshScroller = function() {
+            $scope.refreshScroller('rvActionListScroller');
+        };
+        $scope.hasArrivalDate = false;
+        $scope.hasDepartureDate = false;
+
+        $scope.getArDeDateStr = function(dateStr, timeStr){
+            if (!dateStr){
+                dateStr = ' ';
+            }
+            if (!timeStr){
+                timeStr = ' ';
+            }
+            var aDay = $scope.getDateFromDate(dateStr), aDayString = ' ';
+            if (aDay){
+                aDay = aDay.toLowerCase();
+                aDayString = aDay.substring(0,1).toUpperCase()+aDay.substring(1,3)+' ';
+            }
+            //make sure timestring include '0' if < 10, ie. 09, 08, etc instead of 9, 8...
+            if (timeStr !== ' '){
+                var timeSpl = timeStr.split(':');
+                var hour = timeSpl[0];
+                var hourInt = parseInt(hour);
+                if (hour < 10){
+                    timeStr = '0'+hourInt+':'+timeSpl[1];
+                }
+            }
+            if (dateStr){
+                return aDayString+$scope.flipDateFormat(dateStr)+'  '+timeStr;
+            } else {
+                return timeStr;
+            }
+        };
+
+
+        $scope.setActionsHeaderInfo = function(){
+            var arDate = $scope.reservationData.reservation_card.arrival_date,
+                    arTime = $scope.reservationData.reservation_card.arrival_time;
+
+            var arrivalDayString = $scope.getArDeDateStr(arDate, arTime);
+            if (!arrivalDayString){
+                $scope.hasArrivalDate = false;
+            } else {
+                $scope.hasArrivalDate = true;
+            }
+
+            var deDate = $scope.reservationData.reservation_card.departure_date,
+                    deTime = $scope.reservationData.reservation_card.departure_time;
+
+            var departureDayString = $scope.getArDeDateStr(deDate, deTime);
+            if (!departureDayString){
+                $scope.hasDepartureDate = false;
+            } else {
+                $scope.hasDepartureDate = true;
+            }
+            $scope.actions.arrivalDateString = arrivalDayString;
+            $scope.actions.departureDateString = departureDayString;
+        };
+
+        $scope.flipDateFormat = function(str){
+            //take 2015-04-10  |   yr / mo / day and >>> month, day, yr (04-10-2015)
+          if (str){
+              var spl = str.split('-');
+              var year = spl[0], month = spl[1], day = spl[2];
+              return month+'-'+day+'-'+year;
+          }
+
+
+        };
+
+        $scope.fetchActionsCount = function(){
+            var onSuccess = function(data){
+                $scope.$parent.$emit('hideLoader');
+
+                $scope.actions.totalCount = data.data.action_count;
+                $scope.actions.pendingCount = data.data.pending_action_count;
+                var pending = $scope.actions.pendingCount, total = $scope.actions.totalCount;
+
+                if (total === 0 && pending === 0){
+                    $scope.actionsCount = 'none';//none, pending, all-completed
+                } else if (total > 0 && pending === 0){
+                    $scope.actionsCount = 'all-completed';
+                } else if (total > 0 && total === pending) {
+                    $scope.actionsCount = 'only-pending';
+                } else {
+                    $scope.actionsCount = 'pending';
+                }
+
             };
             var onFailure = function(data){
                 $scope.$parent.$emit('hideLoader');
             };
-            
+
             var data = {id:$scope.$parent.reservationData.reservation_card.reservation_id};
             $scope.invokeApi(rvActionTasksSrv.getTasksCount, data, onSuccess, onFailure);
         };
@@ -140,7 +171,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 $scope.departmentsCount = 0;
                 $scope.$parent.$emit('hideLoader');
             };
-            
+
             var data = {id:$scope.$parent.reservationData.reservation_card.reservation_id};
             $scope.invokeApi(rvActionTasksSrv.fetchDepartments, data, onSuccess, onFailure);
         };
@@ -153,7 +184,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.setRightPane = function(toView){
             //selected, new, assign, comment
             $scope.actionSelected = toView;
-            
+
         };
         $scope.clearNewAction = function(){
             $scope.closeSelectedCalendar();
@@ -166,7 +197,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.actionsSelectedDate = fmObj.year+'-'+fmObj.month+'-'+fmObj.day;
             $scope.newAction.hasDate = false;
             $scope.setFreshDate();
-            
+
         };
         $scope.clearErrorMessage = function () {
                 $scope.errorMessage = [];
@@ -195,7 +226,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     params['assigned_to'] = $scope.newAction.department.value;
                 }
             }
-            
+
             if ($scope.newAction.date_due){
                 var splitChar = $scope.newAction.date_due[2];
                 var dateObj = new Date($scope.getBasicDateInMilli($scope.newAction.date_due, splitChar));
@@ -203,7 +234,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                      coreTime = $scope.newAction.time_due.core_time;
                         hours = parseInt(coreTime[0]+''+coreTime[1]);
                         mins = parseInt(coreTime[2]+''+coreTime[3]);
-                
+
                 dateObj.setUTCHours(parseInt(hours));
                 //verify this is the correct hours to set using core_time
                 dateObj.setUTCMinutes(parseInt(mins));
@@ -211,21 +242,21 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 params['due_at'] = dateObj.valueOf();
                 params['time_due'] = dateObj.valueOf();
             }
-            
+
             $scope.invokeApi(rvActionTasksSrv.postNewAction, params, onSuccess, onFailure);
         };
-        
+
         $scope.reformatDateOption = function(d, spl, newSpl){
             //expecting ie. 01/09/2015 (month, day, yr)
             var spl = d.split(spl);
             var month = spl[0], day = spl[1], year = spl[2];
             return month+newSpl+day+newSpl+year;
         };
-        
-        
-        
 
-	$scope.setUpData = function() {	
+
+
+
+	$scope.setUpData = function() {
             var businessDate = tzIndependentDate($rootScope.businessDate);
                 var nd = new Date(businessDate);
                 var day = ("0" + nd.getDate()).slice(-2);
@@ -233,7 +264,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 var fromDateStr = nd.getFullYear()+'-'+month+'-'+day;
                 $scope.fromDate = fromDateStr;
         };
-        
+
         $scope.setFreshDate = function(){
             var nd = new Date();
             var fmObj = $scope.getDateObj(getFormattedDate(nd.valueOf())+'', '-');
@@ -243,7 +274,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 $scope.newAction.time_due = $scope.timeFieldValue[0];
             }
         };
-        
+
         $scope.actionsDateOptions = {
              firstDay: 1,
              changeYear: true,
@@ -254,13 +285,13 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                  if ($scope.dateSelection !== null){
                      if ($scope.dateSelection === 'select'){
                          $scope.selectedAction.due_at_date = $scope.reformatDateOption(date, '/', '-');
-                         
+
                          $scope.selectedAction.hasDate = true;
                          if ($scope.usingCalendar){
                              $scope.updateAction();
                          }
                          $scope.closeSelectedCalendar();
-                         
+
                      } else {
                          $scope.newAction.hasDate = true;
                          $scope.newAction.date_due = $scope.reformatDateOption(date, '/', '-');
@@ -287,9 +318,9 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     $scope.errorMessage = 'Internal Error Occured';
                 }
                 $scope.$parent.$emit('hideLoader');
-                
+
             };
-            
+
             //reservation_id=1616903&action_task[description]=test
             var params = {
                 'reservation_id':$scope.$parent.reservationData.reservation_card.reservation_id,
@@ -303,23 +334,23 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                      coreTime = $scope.selectedAction.due_at_time.core_time;
                         hours = parseInt(coreTime[0]+''+coreTime[1]);
                         mins = parseInt(coreTime[2]+''+coreTime[3]);
-                
+
                 //have to convert the date format string to read properly
                 var splitChar = $scope.selectedAction.due_at_date[2];
                 var dateObj = new Date($scope.getBasicDateInMilli($scope.selectedAction.due_at_date, splitChar));
-                
+
                 dateObj.setUTCHours(parseInt(hours));
                 //verify this is the correct hours to set using core_time
                 dateObj.setUTCMinutes(parseInt(mins));
                 dateObj.setUTCSeconds(0);
-                
+
                 var saveDate = dateObj;
                 params['time_due'] = saveDate.valueOf();
                 params['due_at'] = saveDate.valueOf();
-                
+
                 $scope.invokeApi(rvActionTasksSrv.updateNewAction, params, onSuccess, onFailure);
             }
-            
+
         };
         $scope.getBasicDateInMilli = function(d, charToSplit){
             //expecting date string ie: 02/15/2015
@@ -331,20 +362,20 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             nd.setFullYear(sp[2]);
             nd.setMonth(sp[0]-1);
             nd.setDate(sp[1]);
-            
+
             return nd.valueOf();
         };
         $scope.showCalendar = function() {
-            ngDialog.open({ 
+            ngDialog.open({
                 template: '/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html' });
         };
-        
+
         $scope.usingCalendar = false;
         $scope.getDateObj = function(dateStr, delim){
             var year, month, day;
             var spl = dateStr.split(delim);
             day = spl[1], month = spl[0], year = spl[2];
-            
+
             return {day:day,month:month,year:year};
         };
         $scope.showSelectCalendar = function(){
@@ -356,31 +387,31 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.dateSelection = 'select';
             $scope.selectCalendarShow = true;
         };
-        
+
         $scope.closeSelectedCalendar = function(){
         $scope.usingCalendar = false;
             $scope.dateSelection = null;
             $scope.selectCalendarShow = false;
         };
-        
+
         $scope.showNewCalendar = function(){
             $scope.dateSelection = 'new';
             $scope.newCalendarShow = true;
             $scope.usingCalendar = true;
         };
-        
+
         $scope.closeNewCalendar = function(){
             $scope.dateSelection = null;
             $scope.newCalendarShow = false;
             $scope.usingCalendar = false;
         };
-        
-        
+
+
         $scope.initNewAction = function(){
             $scope.clearNewAction();
             $scope.setRightPane('new');
             //$scope.selectedAction.id = -1;//de-select the selected action
-            
+
         };
         $scope.getDefaultDueDate = function(){
             return new Date();
@@ -397,8 +428,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.setRightPane('selected');
             $scope.clearAssignSection();
         };
-        
-        
+
+
         $scope.actionSelected = 'selected';
         var getTimeObj = function(timeVal){
             var forTime = getTimeFromDateMilli(timeVal);
@@ -415,7 +446,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 var list = data.data;
                 //if doing a refresh, dont replace the actions array, since it will cause the UI to flash
                 //and look like a bug, instead go through the objects and update them
-                
+
                 var matchObj;
                 for (var x in list){
                     if (list[x].assigned_to !== null){
@@ -435,30 +466,28 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     } else {
                         list[x].hasDate = false;
                     }
-                    
+
                     if (list[x].created_at){
                         list[x].created_at_time = getTimeFromDateStr(list[x].created_at);
                         list[x].created_at_date = getStrParsedFormattedDate(list[x].created_at);
                     }
-                    
+
                     if (list[x].action_status === "COMPLETED"){
                         list[x].isCompleted = true;
                         list[x].date_completed = getFormattedDate(list[x].completed_at);
                         list[x].time_completed = getCompletedTimeFromDateMilli(list[x].completed_at);
-                        list[x].completed_by = list[x].assigned_to;
-                       // list[x].date_completed = '10/27/2015';
                     }
                 }
-                
-                
+
+
                 //$scope.actions = list;
                 var inActions = false;
                 var listItem, actionItem;
-                
+
                 if (list.length >= $scope.actions.length){
                     for (var x in list){
                         listItem = list[x];
-                        
+
                         inActions = false;
                         for (var i in $scope.actions){
                             actionItem = $scope.actions[i];
@@ -466,13 +495,13 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                                 $scope.actions[i] = listItem;
                                 inActions = true;
                             }
-                        } 
+                        }
                         if (!inActions){
                             $scope.actions.push(listItem);
                         }
                     }
                 }
-                
+
                 $scope.fetchActionsCount();
                 $scope.setActionsHeaderInfo();
                 if ($scope.lastSelectedItemId){
@@ -489,13 +518,13 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             var onFailure = function(data){
                 $scope.$parent.$emit('hideLoader');
             };
-            
+
             var data = {id:$scope.$parent.reservationData.reservation_card.reservation_id};
             $scope.invokeApi(rvActionTasksSrv.getActionsTasksList, data, onSuccess, onFailure);
-        
+
         };
-        
-        
+
+
         $scope.fetchActionsList = function(){
             $scope.fetchDepartments();//store this to use in assignments of department
             var onSuccess = function(data){
@@ -520,23 +549,21 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     } else {
                         list[x].hasDate = false;
                     }
-                    
+
                     if (list[x].action_status === "COMPLETED"){
                         list[x].isCompleted = true;
                         list[x].date_completed = getFormattedDate(list[x].completed_at);
                         list[x].time_completed = getCompletedTimeFromDateMilli(list[x].completed_at);
-                        list[x].completed_by = list[x].assigned_to;
-                      //  list[x].date_completed = '10/27/2015';
                     }
-                    
-                    
+
+
                     if (list[x].created_at){
                         list[x].created_at_time = getTimeFromDateStr(list[x].created_at);
                         list[x].created_at_date = getStrParsedFormattedDate(list[x].created_at);
                     }
                 }
                 $scope.actions = list;
-                
+
                 $scope.fetchActionsCount();
                 $scope.setActionsHeaderInfo();
                 $scope.setDefaultActionSelected(0);
@@ -553,11 +580,11 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 $scope.$parent.$emit('hideLoader');
                 $scope.setActionsHeaderInfo();
             };
-            
+
             var data = {id:$scope.$parent.reservationData.reservation_card.reservation_id};
             $scope.invokeApi(rvActionTasksSrv.getActionsTasksList, data, onSuccess, onFailure);
         };
-        
+
         var getTimeFromDateStr = function(d){
             var date = new Date(d);
             return formatTime(date.valueOf());
@@ -591,20 +618,20 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             if (typeof d === typeof 'string'){
                 var dateInMilli = parseInt(d);
                 fullDate = new Date(dateInMilli);
-                
+
             } else if (typeof d === typeof 12345){
                 fullDate = new Date(d);
             }
             day = fullDate.getUTCDate();
             month = fullDate.getUTCMonth()+1;
             year = fullDate.getUTCFullYear();
-            
-            if (day < 10) 
+
+            if (day < 10)
              day = '0' + day;
 
-            if (month < 10) 
+            if (month < 10)
              month = '0' + month;
-            
+
             return month+'-'+day+'-'+year;
         };
         var getStrParsedFormattedDate = function(d){
@@ -615,10 +642,10 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 year = formatDate[0],
                         month = formatDate[1],
                         day = formatDate[2];
-                
+
                 return month+'-'+day+'-'+year;
             }
-            
+
         };
         $scope.getDateFromDate = function(d){
             var day = new Date(d);
@@ -627,33 +654,33 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 case 0:
                     return $filter('translate')('SUNDAY');
                     break;
-                        
+
                 case 1:
                     return $filter('translate')('MONDAY');
                     break;
-                        
+
                 case 2:
                     return $filter('translate')('TUESDAY');
                     break;
-                        
+
                 case 3:
                     return $filter('translate')('WEDNESDAY');
                     break;
-                        
+
                 case 4:
                     return $filter('translate')('THURSDAY');
                     break;
-                        
+
                 case 5:
                     return $filter('translate')('FRIDAY');
                     break;
-                        
+
                 case 6:
                     return $filter('translate')('SATURDAY');
                     break;
-                        
+
             }
-            
+
             return dayString;
         };
         function closeDialog() {
@@ -669,13 +696,13 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             var minutes = dt.getMinutes();
             var seconds = dt.getSeconds();
 
-            if (hours < 10) 
+            if (hours < 10)
              hours = '0' + hours;
 
-            if (minutes < 10) 
+            if (minutes < 10)
              minutes = '0' + minutes;
 
-            if (seconds < 10) 
+            if (seconds < 10)
              seconds = '0' + seconds;
             return getFormattedTime(hours+''+minutes);
       //      return hours + ":" + minutes + ":" + seconds;
@@ -687,13 +714,13 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             var minutes = dt.getUTCMinutes();
             var seconds = dt.getUTCSeconds();
 
-            if (hours < 10) 
+            if (hours < 10)
              hours = '0' + hours;
 
-            if (minutes < 10) 
+            if (minutes < 10)
              minutes = '0' + minutes;
 
-            if (seconds < 10) 
+            if (seconds < 10)
              seconds = '0' + seconds;
             return getFormattedTime(hours+''+minutes);
       //      return hours + ":" + minutes + ":" + seconds;
@@ -708,7 +735,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     hours = '0'+hours;
                 }
             }
-            
+
             return hours + ':' + minutes + amPm;
         };
         $scope.populateTimeFieldValue = function(){
@@ -777,14 +804,14 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.closeSelectedCalendar();
             $scope.closeNewCalendar();
         };
-        
+
         $scope.departmentSelect = {};
         $scope.assignDepartment = function(){
             var params = $scope.getBaseParams();
             if ($scope.departmentSelect.selected){
                 params['assigned_to'] = $scope.departmentSelect.selected.value;
                 params.action_task.id  = $scope.selectedAction.id;
-                
+
                 var onSuccess = function(){
                     //switch back to selected
                     $scope.actionSelected = 'selected';
@@ -799,11 +826,11 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     }
                     $scope.$parent.$emit('hideLoader');
                 };
-                
+
                 $scope.invokeApi(rvActionTasksSrv.updateNewAction, params, onSuccess, onFailure);
             }
         };
-        
+
         $scope.completeAction = function(){
             //mark the selected action as complete, notify the api
             var params = $scope.getBaseParams();
@@ -819,18 +846,18 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     }
                     $scope.$parent.$emit('hideLoader');
                 };
-                
+
                 $scope.invokeApi(rvActionTasksSrv.completeAction, params, onSuccess, onFailure);
         };
-        
+
         $scope.assignAction = function(){
             $scope.actionSelected = 'assign';
         };
-        
+
         $scope.reassignAction = function(){
             $scope.actionSelected = 'assign';
         };
-        
+
         $scope.getBaseParams = function(){
             var params = {
                 'reservation_id':$scope.$parent.reservationData.reservation_card.reservation_id,
@@ -838,9 +865,9 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             };
             return params;
         };
-        
+
         $scope.sortActionsList = function(list){
-            //take an actions list and sort it by due date, 
+            //take an actions list and sort it by due date,
             // - but also put "completed" items @ the bottom
             // step 1. make two lists, (completed, not completed)
             // step 2. sort both lists
@@ -853,14 +880,14 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     not_completed.push(list[x]);
                 }
             };
-            
-            
-            
-            
-            
+
+
+
+
+
         };
-        
-        
+
+
         init();
     }
 ]);

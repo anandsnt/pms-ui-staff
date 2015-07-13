@@ -1,12 +1,12 @@
 sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog','RVCompanyCardSearchSrv','RVSearchSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog, RVCompanyCardSearchSrv, RVSearchSrv){
 	BaseCtrl.call(this, $scope);
-	
+
 	$scope.textInQueryBox = "";
   	$scope.isReservationActive = true;
   	$scope.results.accounts = [];
 	$scope.results.posting_accounts  = [];
 	$scope.results.reservations = [];
-  	
+
   	var scrollerOptions = {click: true, preventDefault: false};
     $scope.setScroller('cards_search_scroller', scrollerOptions);
     $scope.setScroller('res_search_scroller', scrollerOptions);
@@ -14,17 +14,17 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.refreshScroller('res_search_scroller');
 
     var scrollerOptions = { preventDefault: false};
-    $scope.setScroller('entities', scrollerOptions);  
+    $scope.setScroller('entities', scrollerOptions);
 
     setTimeout(function(){
-        $scope.refreshScroller('entities'); 
-        }, 
+        $scope.refreshScroller('entities');
+        },
     500);
 
     /**
     * Single digit search done based on the settings in admin
     * The single digit search is done only for numeric characters.
-    * CICO-10323 
+    * CICO-10323
     */
     var isSearchOnSingleDigit = function(searchTerm) {
     	if($rootScope.isSingleDigitSearch){
@@ -45,7 +45,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 		}
 		else{
 	    	displayFilteredResultsCards();
-	    	displayFilteredResultsReservations(); 
+	    	displayFilteredResultsReservations();
 	   	}
 	   	var queryText = $scope.textInQueryBox;
 	   	$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
@@ -70,29 +70,29 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
   	* function to perform filering on results.
   	* if not fouund in the data, it will request for webservice
   	*/
-  	var displayFilteredResultsCards = function(){ 
-	    //show everything, means no filtering    
+  	var displayFilteredResultsCards = function(){
+	    //show everything, means no filtering
 	    if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
-	      //based on 'is_row_visible' parameter we are showing the data in the template      
+	      //based on 'is_row_visible' parameter we are showing the data in the template
 	      for(var i = 0; i < $scope.results.accounts.length; i++){
 	          $scope.results.accounts[i].is_row_visible = true;
 	      }
 	      for(var i = 0; i < $scope.results.posting_accounts.length; i++){
 	          $scope.results.posting_accounts[i].is_row_visible = true;
-	      }   
-	      
+	      }
+
 	      // we have changed data, so we are refreshing the scrollerbar
-	      $scope.refreshScroller('cards_search_scroller');      
+	      $scope.refreshScroller('cards_search_scroller');
 	    }
 	    else{
-	      var value = ""; 
+	      var value = "";
 	      var visibleElementsCount = 0;
 	      //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 	      //if it is zero, then we will request for webservice
 	      for(var i = 0; i < $scope.results.accounts.length; i++){
 	        value = $scope.results.accounts[i];
-	        if (($scope.escapeNull(value.account_first_name).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 || 
-	            ($scope.escapeNull(value.account_last_name).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ) 
+	        if (($scope.escapeNull(value.account_first_name).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
+	            ($scope.escapeNull(value.account_last_name).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 )
 	            {
 	               $scope.results.accounts[i].is_row_visible = true;
 	               visibleElementsCount++;
@@ -100,7 +100,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	        else {
 	          $scope.results.accounts[i].is_row_visible = false;
 	        }
-	              
+
 	      }
 
 	      for(var i = 0; i < $scope.results.posting_accounts.length; i++){
@@ -113,18 +113,18 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	        else {
 	          $scope.results.posting_accounts[i].is_row_visible = false;
 	        }
-	              
+
 	      }
-	      
-	      // last hope, we are looking in webservice.      
-	     if(visibleElementsCount == 0){    
+
+	      // last hope, we are looking in webservice.
+	     if(visibleElementsCount === 0){
 	        var dataDict = {'query': $scope.textInQueryBox.trim()};
 	        $scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, searchSuccessCards);
 	      }
 	      // we have changed data, so we are refreshing the scrollerbar
-	      $scope.refreshScroller('cards_search_scroller');                  
+	      $scope.refreshScroller('cards_search_scroller');
 	    }
-  	};	
+  	};
 
   	/**
 	* remove the parent reservation from the search results
@@ -132,14 +132,14 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	$scope.excludeActivereservationFromsSearch = function(){
 		var filteredResults = [];
 	  	for(var i = 0; i < $scope.results.reservations.length; i++){
-	  		if(($scope.results.reservations[i].id != $scope.reservationData.reservation_id) && ($scope.results.reservations[i].reservation_status == 'CHECKING_IN' || $scope.results.reservations[i].reservation_status == 'CHECKEDIN' || $scope.results.reservations[i].reservation_status == 'CHECKING_OUT')){
+	  		if(($scope.results.reservations[i].id != $scope.reservationData.reservation_id) && ($scope.results.reservations[i].reservation_status === 'CHECKING_IN' || $scope.results.reservations[i].reservation_status === 'CHECKEDIN' || $scope.results.reservations[i].reservation_status === 'CHECKING_OUT')){
 
 	  			filteredResults.push($scope.results.reservations[i]);
 	  		}
   		}
   		$scope.results.reservations = filteredResults;
 	};
-	
+
 	/**
 	* Success call back of data fetch from webservice
 	*/
@@ -152,7 +152,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	};
 
 	/**
-	* failure call back of search result fetch	
+	* failure call back of search result fetch
 	*/
 	var failureCallBackofDataFetch= function(errorMessage){
 		$scope.$emit('hideLoader');
@@ -162,34 +162,34 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
   	* function to perform filering on results for reservations.
   	* if not fouund in the data, it will request for webservice
   	*/
-	var displayFilteredResultsReservations = function(){ 
-	    //show everything, means no filtering    
+	var displayFilteredResultsReservations = function(){
+	    //show everything, means no filtering
 	    if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
-	      	//based on 'is_row_visible' parameter we are showing the data in the template      
+	      	//based on 'is_row_visible' parameter we are showing the data in the template
 	      	for(var i = 0; i < $scope.results.length; i++){
 	          $scope.results.reservations[i].is_row_visible = true;
-	      	}     
-	      	
+	      	}
+
 			$scope.refreshScroller('res_search_scroller');
 	    }
 	    else{
 
 	    	if($rootScope.isSingleDigitSearch && !isNaN($scope.textInQueryBox) && $scope.textInQueryBox.length === 3){
-				fetchSearchResults();		
+				fetchSearchResults();
 				return false;
 			}
 
-		    if($scope.textInQueryBox.indexOf($scope.textInQueryBox) == 0 && $scope.results.reservations.length > 0){
-		        var value = ""; 
+		    if($scope.textInQueryBox.indexOf($scope.textInQueryBox) === 0 && $scope.results.reservations.length > 0){
+		        var value = "";
 		        //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 		        //if it is zero, then we will request for webservice
-		        var totalCountOfFound = 0;		        
+		        var totalCountOfFound = 0;
 		        for(var i = 0; i < $scope.results.reservations.length; i++){
 		          value = $scope.results.reservations[i];
-		          if (($scope.escapeNull(value.firstname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 || 
-		              ($scope.escapeNull(value.lastname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 || 
+		          if (($scope.escapeNull(value.firstname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
+		              ($scope.escapeNull(value.lastname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
 		              ($scope.escapeNull(value.group).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
-		              ($scope.escapeNull(value.room).toString()).indexOf($scope.textInQueryBox) >= 0 || 
+		              ($scope.escapeNull(value.room).toString()).indexOf($scope.textInQueryBox) >= 0 ||
 		              ($scope.escapeNull(value.confirmation).toString()).indexOf($scope.textInQueryBox) >= 0 )
 		              	{
 		                 	$scope.results.reservations[i].is_row_visible = true;
@@ -197,9 +197,9 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 		              	}
 		          	else {
 		            	$scope.results.reservations[i].is_row_visible = false;
-		          	}  
+		          	}
 		        }
-		        if(totalCountOfFound == 0){
+		        if(totalCountOfFound === 0){
 		        	fetchSearchResults();
 		        }
 		    }
@@ -207,7 +207,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 		    	fetchSearchResults();
 		    }
 	      	// we have changed data, so we are refreshing the scrollerbar
-	      	$scope.refreshScroller('res_search_scroller');                
+	      	$scope.refreshScroller('res_search_scroller');
 	    }
 	}; //end of displayFilteredResults
 
@@ -216,12 +216,12 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 		if($rootScope.isSingleDigitSearch && !isNaN($scope.textInQueryBox) && $scope.textInQueryBox.length < 3){
 			dataDict.room_search = true;
 		}
-		$scope.invokeApi(RVSearchSrv.fetch, dataDict, searchSuccessReservations, failureCallBackofDataFetch);         
+		$scope.invokeApi(RVSearchSrv.fetch, dataDict, searchSuccessReservations, failureCallBackofDataFetch);
 	};
-	
+
 	//Toggle between Reservations , Cards
 	$scope.toggleClicked = function(flag){
 		$scope.isReservationActive = flag;
 	};
-	
+
 }]);

@@ -1101,7 +1101,7 @@
 
                         .data {
                             margin: 0 5px 0 65px;
-                            .calc-width(35, 25);
+                            .calc-width(33, 51);
 
                             h2 { 
                                 font-size: 20px;
@@ -1120,7 +1120,7 @@
 
                         .reservation-info {
                             margin-right: 5px;
-                            .calc-width(30, 25);
+                            .calc-width(34, 57);
 
                             time { line-height: 30px; }
 
@@ -1139,7 +1139,7 @@
                         .room-info {
                             text-transform: uppercase;
                             margin: 5px 5px 0 0;
-                            .calc-width(25, 15);
+                            .calc-width(20, 29);
                             .pull-left;
 
                             .room-type { 
@@ -1153,8 +1153,15 @@
                             }
                         }
 
+                        .rate {
+                            line-height: 40px;
+                            margin-right: 5px;
+                            .calc-width(13, 28);
+                            .pull-left;
+                        }
+
                         .reservation-status {
-                            .calc-width(10, 15);
+                            width: 80px;
                             .pull-left;
 
                             .guest-status {
@@ -1523,8 +1530,9 @@
 
                     .group-info,
                     .room {
-                        width: 120px;
                         margin-right: 20px;
+                        .size(45px, 120px);
+                        .show;
                         .pull-left;
 
                         strong,
@@ -1557,7 +1565,27 @@
                         }
 
                         &.guest {
+                            .calc-width(100, 260);
+
                             h2 { line-height: 45px; }
+                        }
+                    }
+
+                    .reservation {
+                        padding-top: 10px;
+                        width: 120px;
+                        .pull-left;
+
+                        .guest-status { 
+                            .square(30px); 
+                            .pull-right;
+                        }
+
+                        .date {
+                            margin-right: 10px;
+                            line-height: 30px;
+                            width: 80px;
+                            .pull-left;
                         }
                     }
 
@@ -3237,6 +3265,22 @@
                                             margin: 0 5px 0 0;
                                             .pull-left;
 
+                                            &.sort {
+                                                cursor: pointer;
+                                                padding: 0 20px 0 10px;
+                                                background-color: @grey2;
+                                                background-position: 95% 50%;
+                                                background-repeat: no-repeat;
+                                                .nowrap();
+                                                .box-shadow(1px 1px 0 rgba(0,0,0,.3));
+
+                                                &.sorting-asc,
+                                                &.sorting-desc { background-color: darken(@grey2, 10); }
+                                                
+                                                &.sorting-asc { background-image: @arrowSortAsc; }
+                                                &.sorting-desc { background-image: @arrowSortDesc; }
+                                            }
+
                                             &.check {
                                                 width: 60px;
                                                 text-align: center;
@@ -3258,29 +3302,16 @@
                                                 }
                                             }
 
-                                            &.sort {
-                                                cursor: pointer;
-                                                padding: 0 20px 0 10px;
-                                                background-color: @grey2;
-                                                background-position: 95% 50%;
-                                                background-repeat: no-repeat;
-                                                .nowrap();
-                                                .box-shadow(1px 1px 0 rgba(0,0,0,.3));
-
-                                                &.sorting-asc,
-                                                &.sorting-desc { background-color: darken(@grey2, 10); }
-                                                
-                                                &.sorting-asc { background-image: @arrowSortAsc; }
-                                                &.sorting-desc { background-image: @arrowSortDesc; }
+                                            &.status { 
+                                                width: 80px;
+                                                margin-right: 0;
                                             }
 
                                             &.room,
-                                            &.status { .calc-width(10, 15); }
-                                            &.date { .calc-width(15, 15); }
+                                            &.rate { .calc-width(13, 29); }
+                                            &.date { .calc-width(17, 30); }
                                             &.name,
-                                            &.type { .calc-width(25, 15); }
-
-                                            &:last-child { margin-right: 0; }
+                                            &.type { .calc-width(20, 29); }
                                         }
                                     }
 
@@ -5069,7 +5100,11 @@
                     }
                 }
 
-                .add-new-button { padding: 0 40px; }
+                .add-new-button { 
+                    padding: 0 40px; 
+                    height: 60px;
+                    .pull-left;
+                }
 
                 .button {
                     margin: 10px;
@@ -5106,6 +5141,12 @@
                         input {
                             min-height: 35px;
                             line-height: 35px;
+                        }
+                    }
+
+                    .active {
+                        .action {
+                            .icon-form { background-color: @grey1; }
                         }
                     }
 
@@ -5182,7 +5223,11 @@
                             td { 
                                 vertical-align: middle; 
 
-                                .button { .square(40px); }
+                                .button { 
+                                    .square(40px); 
+
+                                    &:not(.inline) { .show; }
+                                }
                             }
                         }
                     }
@@ -7426,21 +7471,26 @@
 
                             &.total,
                             &.grouped {
-                                td { 
-                                    font-weight: 600;
-                                    vertical-align: top;
-                                    padding-top: 0;
-                                }
+                                td { font-weight: 600; }
                             }
 
                             &.total {
-                                td { background-color: transparent; }
+                                td { 
+                                    background-color: transparent;
+                                    padding-top: 0;
+                                    vertical-align: top;
+                                }
                             }
 
                             &.grouped {
                                 td {
                                     text-transform: uppercase;
-                                    padding: 0;
+                                    
+                                    strong {
+                                        font-size: 15px;
+                                        font-weight: 600;
+                                        color: @textColor;
+                                    }
                                 }
                             }
 
@@ -7474,8 +7524,8 @@
                     }
 
                     .date { width: 100px; }
-
                     .code { width: 120px; }
+                    .long-code { width: 200px; }
 
                     &.medium-grid,
                     &.large-grid {
@@ -7486,6 +7536,8 @@
                         thead {
                             tr {
                                 th {
+                                    border-right: 1px solid rgba(0,0,0,.3);
+
                                     &.break { 
                                         padding-right: 0; 
                                         border-right: 2px solid rgba(0,0,0,.3); 
@@ -7531,12 +7583,7 @@
                                         color: @grey3;
                                         font-weight: 400;
                                         background-color: transparent;
-
-                                        strong {
-                                            font-size: 15px;
-                                            font-weight: 600;
-                                            color: @textColor;
-                                        }
+                                        padding: 0;
 
                                         &.break { border-right: 2px solid rgba(0,0,0,.3); }
                                     }
@@ -7642,7 +7689,9 @@
                 &.occupancy-footer { .hide; }
             }
 
-            &.with-pagination { .calc-height(100, 100); }
+            &.with-pagination {
+                .calc-height(100, 220);
+            }
 
             &.no-totals,
             &.no-content {
@@ -12017,10 +12066,39 @@
                                 vertical-align: top;
                                 word-wrap: break-word;
                             }
+
                             &:nth-child(odd) {
                                 td {
                                     padding: 10px;
                                     background-color: rgba(255,255,255,.7);
+                                }
+
+                                &.pagination {
+                                    td { 
+                                        padding: 0;
+                                        background-color: transparent;
+                                    }
+                                }
+                            }
+
+                            &.pagination {
+                                td {
+                                    padding: 0;
+                                    
+                                    .search-pagination {
+                                        position: static;
+                                        left: auto;
+                                        bottom: auto;
+                                        padding: 0;
+                                        height: 40px;
+                                        background-color: transparent;
+                                        .box-shadow(none);
+
+                                        .button { font-size: 14px; }
+
+                                        &:before,
+                                        &:after { .hide; }
+                                    }
                                 }
                             }
                         }

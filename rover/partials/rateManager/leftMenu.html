@@ -68,7 +68,7 @@
 						<div id="rmCurrentFilterData" class="select" >
 							<select iscroll-stop-propagation id = "rmRate" ng-model="currentFilterData.rate_selected" ng-change="refreshFilterScroll(); selFirst()">
 								<option value="">Select Rate</option>
-								<option ng-repeat="rate in currentFilterData.rates" class="placeholder" value="{{rate.id}}">{{rate.name}}</option> 
+								<option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates" class="placeholder" value="{{rate.id}}">{{rate.name}}</option> 
 							</select>
 						</div>
 					</div>

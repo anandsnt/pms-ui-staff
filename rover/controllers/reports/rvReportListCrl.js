@@ -17,7 +17,7 @@ sntRover.controller('RVReportListCrl', [
          * inorder to refresh after list rendering
          */
         $scope.$on("NG_REPEAT_COMPLETED_RENDERING", function(event) {
-            $timeout($scope.refreshScroller.bind($scope, 'report-list-scroll'), 2001);
+            $timeout($scope.refreshScroller.bind($scope, 'report-list-scroll'), 2010);
         });
 
         /**
@@ -78,7 +78,11 @@ sntRover.controller('RVReportListCrl', [
                 };
             };
 
+            // SUPER forcing scroll refresh!
+            // 2000 is the delay for slide anim, so firing again after 2010
             $timeout($scope.refreshScroller.bind($scope, 'report-list-scroll'), 100);
+            $timeout($scope.refreshScroller.bind($scope, 'report-list-scroll'), 2010);
+
         }($scope.$parent.reportList);
 
         // show hide filter toggle
@@ -91,6 +95,14 @@ sntRover.controller('RVReportListCrl', [
             RVreportsSrv.setChoosenReport(this.item);
             $scope.genReport();
         };
+
+
+        var serveRefresh = $scope.$on('report.list.scroll.refresh', function() {
+            $timeout($scope.refreshScroller.bind($scope, 'report-list-scroll'), 100);
+        });
+
+        // removing event listners when scope is destroyed
+        $scope.$on( 'destroy', serveRefresh );
 
     }
 ]);

@@ -1,10 +1,10 @@
-sntRover.controller('RVMoveChargeCtrl', 
+sntRover.controller('RVMoveChargeCtrl',
 	['$scope','$timeout','RVMoveChargeSrv',
 	function($scope,$timeout,RVMoveChargeSrv) {
 
 		BaseCtrl.call(this, $scope);
-		
-		var initiate = function(){			
+
+		var initiate = function(){
 			$scope.numberQuery    = "";
 			$scope.textQuery      = "";
 			$scope.searchResults  = [];
@@ -28,10 +28,37 @@ sntRover.controller('RVMoveChargeCtrl',
         };
 
 
-		var refreshSearchList = function() { 
+		$scope.getGuestStatusIcon = function(reservationStatus, isLateCheckoutOn, isPrecheckin) {
+			var viewStatus = "";
+			if (isLateCheckoutOn && "CHECKING_OUT" === reservationStatus) {
+				viewStatus = "late-check-out";
+				return viewStatus;
+			}
+			if ("RESERVED" === reservationStatus && !isPrecheckin) {
+				viewStatus = "arrival";
+			} else if ("CHECKING_IN" === reservationStatus && !isPrecheckin) {
+				viewStatus = "check-in";
+			} else if ("CHECKEDIN" === reservationStatus) {
+				viewStatus = "inhouse";
+			} else if ("CHECKEDOUT" === reservationStatus) {
+				viewStatus = "departed";
+			} else if ("CHECKING_OUT" === reservationStatus) {
+				viewStatus = "check-out";
+			} else if ("CANCELED" === reservationStatus) {
+				viewStatus = "cancel";
+			} else if (("NOSHOW" === reservationStatus) || ("NOSHOW_CURRENT" === reservationStatus)) {
+				viewStatus = "no-show";
+			} else if (isPrecheckin) {
+				viewStatus = "pre-check-in";
+			}
+			return viewStatus;
+		};
+
+
+		var refreshSearchList = function() {
 			$timeout(function() {
 				$scope.refreshScroller('search_results');
-			}, 500);			
+			}, 500);
 		};
 
 		$scope.$on("NG_REPEAT_COMPLETED_RENDERING", function(event){
@@ -56,7 +83,7 @@ sntRover.controller('RVMoveChargeCtrl',
 
 		/**
 		 * function to fetch reservation and account lists
-		 * 
+		 *
 		 */
 
 		var fetchFilterdData = function(){
@@ -68,30 +95,32 @@ sntRover.controller('RVMoveChargeCtrl',
     				result.entity_id = index;
     				(result.type === 'RESERVATION') ? result.displaytext = result.last_name+', '+result.first_name : '';
     			});
-    			refreshSearchList();    			
+    			refreshSearchList();
 			};
 
-			$scope.invokeApi(RVMoveChargeSrv.fetchSearchedItems, {"text_search":$scope.textQuery,"number_search":$scope.numberQuery}, fetchSucces);
+			$scope.invokeApi(RVMoveChargeSrv.fetchSearchedItems, {"text_search":$scope.textQuery,"number_search":$scope.numberQuery,"bill_id":$scope.moveChargeData.fromBillId}, fetchSucces);
 		};
 
 		/**
-		 * function to perform filtering/request data from 
+		 * function to perform filtering/request data from
 		 * service in change event of query box
 		 */
 		$scope.queryEntered = function() {
-
-			if (($scope.textQuery === "" || $scope.textQuery.length < 3) && ($scope.numberQuery === "" || $scope.numberQuery.length < 3 )) {
-				$scope.searchResults = [];
-				refreshSearchList();
-			} else {
-				fetchFilterdData();
-			};
-			runDigestCycle();
+			$timeout(function() {
+				if (($scope.textQuery === "" || $scope.textQuery.length < 3) && ($scope.numberQuery === "" || $scope.numberQuery.length < 2 )) {
+					$scope.searchResults = [];
+					refreshSearchList();
+				} else {
+					fetchFilterdData();
+				};
+				runDigestCycle();
+			}, 200);
 		};
+
 
 		/**
 		 * function to select one item from the filtered list
-		 * 
+		 *
 		 */
 
 		$scope.targetClicked =  function(selectedId){
@@ -109,7 +138,7 @@ sntRover.controller('RVMoveChargeCtrl',
 
 		/**
 		 * Discard current selection and go to search list
-		 * 
+		 *
 		 */
 		$scope.changeSelection =  function(){
 			$scope.selectedTarget = {};
@@ -120,12 +149,12 @@ sntRover.controller('RVMoveChargeCtrl',
 		/**
 		 * function to move transaction codes to another
 		 * reservation or account
-		 * 
+		 *
 		 */
 		$scope.moveCharges = function(){
 
 			var params = {
-				 "from_bill": $scope.moveChargeData.fromBillId, 
+				 "from_bill": $scope.moveChargeData.fromBillId,
    				 "to_bill": $scope.targetBillId,
     			 "financial_transaction_ids":$scope.moveChargeData.selectedTransactionIds
 			};

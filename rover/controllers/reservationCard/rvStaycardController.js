@@ -24,7 +24,7 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 		 * To get the payment tab payments list
 		 */
 		$scope.$on('GUESTPAYMENT', function(event, paymentData) {
-			
+
 			if(paymentData.user_id){
 				$scope.paymentData = paymentData;
 			}
@@ -35,32 +35,32 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 
 			$scope.guestCardData.contactInfo.avatar = data.avatar;
 			$scope.guestCardData.contactInfo.vip = data.vip;
-			
+
 			$scope.countriesListForGuest = data.countries;
-			
+
 			$scope.guestCardData.userId = data.userId;
 			$scope.guestCardData.guestId = data.guestId;
 		});
 
 		$scope.$on('staycardGuestData', function(event, data) {
-                    
+
 			$scope.guestCardData.contactInfo.first_name = data.guest_details.first_name;
 			$scope.guestCardData.contactInfo.last_name = data.guest_details.last_name;
 			$scope.guestCardData.contactInfo.confirmation_num = data.guest_details.confirmation_num;
-                        
+
 			$scope.guestCardData.contactInfo.avatar = data.guest_details.avatar;
                         $scope.sharedReservationData = {};
-                        
-                        $scope.sharedReservationData.room_number = '';//update from api
+                        //update from api
+                        $scope.sharedReservationData.room_number = '';
                         for (var x in data.sharers){
                             data.sharers[x].guest_details.first_last = data.sharers[x].guest_details.last_name+', '+data.sharers[x].guest_details.first_name;
                         }
                         $scope.sharedReservationData.sharers = data.sharers;
-                        
+
 		});
                 $scope.goToSharedReservation = function(sharer){
                     if (!sharer.active){
-                        
+
                         var fullname = $scope.guestCardData.contactInfo.first_name+' '+$scope.guestCardData.contactInfo.last_name,
                                 reservation_no = sharer.guest_details.reservation_id,
                                 confirmation_no = sharer.confirm_no;
@@ -77,15 +77,22 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
                                 $rootScope.viaSharerName = fullname;
                                 $rootScope.$broadcast('LOAD_SHARED_RESERVATION',data);
                         },200);
-                    
-                    
+
+
                     }
                 };
-                
+
                 $scope.getTimes=function(n){
                     return new Array(n);
                };
 
+
+
+		$scope.$on('MOUSEMOVEDOVERME', function() {
+			//(CICO-16893) inoreder to refresh scroller, we are broadcasting this
+			$scope.$broadcast('refreshScrollerReservationDetails');
+			
+		});
 
 		$scope.$on('reservationCardClicked', function() {
 			$scope.$broadcast('reservationCardisClicked');
@@ -102,7 +109,7 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 			}
 		});
 
-		//setting the heading of the screen to "Search"		
+		//setting the heading of the screen to "Search"
 		$scope.menuImage = "back-arrow";
 
 		$scope.$on('HeaderChanged', function(event, data) {
@@ -110,9 +117,9 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 			 * CICO-9081
 			 * $scope.heading = value was creating a heading var in local scope! Hence the title was not being set for the page.
 			 * Changing code to refer the parent's heading variable to override this behaviour.
-			 */			
+			 */
 			$scope.$parent.heading = data;
-			
+
 			if(data == "Guest Bill") $scope.$parent.addNoPrintClass = true;
 			else if(data == "Stay Card") $scope.$parent.isLogoPrint = true;
 			else $scope.$parent.addNoPrintClass = false;
@@ -132,7 +139,7 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 				scope: $scope
 			});
 		};
-                
+
                 $scope.showRoomSharerPopup = function() {
                     ngDialog.open({
                         template: '/assets/partials/reservationCard/sharedRoom.html',

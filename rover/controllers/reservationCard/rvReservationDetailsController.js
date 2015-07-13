@@ -1,7 +1,6 @@
 
 sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rvPermissionSrv' ,'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter', 'RVReservationStateService',
 	function($scope, $rootScope, rvPermissionSrv ,RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter, RVReservationStateService) {
-
 		// pre setups for back button
 		var backTitle,
 			backParam,
@@ -14,7 +13,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				'NORMAL_SEARCH': 'SEARCH_NORMAL'
 			};
 
-		// Putting this hash in parent as we have to maintain the back button in stay card even after navigating to states from stay card and coming back to the stay card.			
+		// Putting this hash in parent as we have to maintain the back button in stay card even after navigating to states from stay card and coming back to the stay card.
 		var setNavigationBookMark = function() {
 			$rootScope.stayCardStateBookMark = {
 				previousState: $scope.previousState.name,
@@ -59,7 +58,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		} else {
 			setNavigationBookMark();
 			// if we just created a reservation and came straight to staycard
-			// we should show the back button with the default text "Find Reservations"	
+			// we should show the back button with the default text "Find Reservations"
 			if ($stateParams.justCreatedRes || $scope.otherData.reservationCreated) {
 				backTitle = titleDict['NORMAL_SEARCH'];
 				backParam = {
@@ -118,7 +117,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				$('#ui-datepicker-overlay').off('click').remove();
 			}
 		};
-
+                //CICO-16013, moved from rvReservationGuestCtrl.js to de-duplicate api calls
+                $scope.activeWakeUp     = false;
 
 		//CICO-10568
 		$scope.reservationData.isSameCard = false;
@@ -312,7 +312,14 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			$scope.refreshReservationDetailsScroller(3000);
 		});
 
-
+		/**
+		 * (CICO-16893)
+		 * Whene there is any click happened reservation area, we have to refresh scroller
+		 * we will use this event to refresh scroller
+		 */
+		$scope.$on('refreshScrollerReservationDetails', function(){
+			$scope.refreshReservationDetailsScroller(500);
+		});
 
 		$scope.reservationDetailsFetchSuccessCallback = function(data) {
 
@@ -451,7 +458,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		*/
 		$scope.shouldShowChangeStayDatesButton = function() {
 			return ($scope.isNightsEnabled() &&
-					!$scope.reservationData.reservation_card.is_hourly_reservation && 
+					!$scope.reservationData.reservation_card.is_hourly_reservation &&
 					$scope.reservationData.reservation_card.group_id.trim() === '' )
 		}
 
@@ -474,9 +481,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		$scope.isStayDatesChangeAllowed = function(){
 			isStayDatesChangeAllowed = false;
 
-			if($rootScope.isStandAlone && 
-				!$scope.reservationData.reservation_card.is_hourly_reservation && 
-				($scope.reservationData.reservation_card.reservation_status == 'CHECKING_IN' || 
+			if($rootScope.isStandAlone &&
+				!$scope.reservationData.reservation_card.is_hourly_reservation &&
+				($scope.reservationData.reservation_card.reservation_status == 'CHECKING_IN' ||
 				 $scope.reservationData.reservation_card.reservation_status == 'RESERVED')){
 
 				isStayDatesChangeAllowed = true;
@@ -636,6 +643,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				"details": {
 					"firstName": $scope.data.guest_details.first_name,
 					"lastName": $scope.data.guest_details.last_name,
+					"hideDirectBill":true
 				}
 			};
 			var paymentData = $scope.reservationData;
@@ -723,6 +731,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 								is_group_reservation: response.data.is_group_reservation,
 								is_outside_group_stay_dates: response.data.outside_group_stay_dates,
 								group_name: response.data.group_name,
+								is_invalid_move: response.data.is_invalid_move
 							})
 						});
 					} else {
@@ -797,7 +806,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				if (!!existingStayDays[currentDate]) {
 					newStayDates[currentDate] = existingStayDays[currentDate];
 				} else {
-					//go to take information from the new_stay_dates coming from the API response				
+					//go to take information from the new_stay_dates coming from the API response
 
 					var newDateDetails = _.where(modifiedStayDays, {
 						reservation_date: currentDate
@@ -864,7 +873,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			openRoomOccupiedPopup();
 			$scope.initreverseCheckoutDetails();
 		};
-                
+
     $rootScope.$on('SETPREV_RESERVATION',function(evt, fullname){
         setNavigationBookMark();
         $rootScope.setPrevState = {
@@ -880,7 +889,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 
 	// Flag for CC auth permission
     var hasManualCCAuthPermission = function() {
-        return rvPermissionSrv.getPermissionValue('MANUAL_CC_AUTH');    
+        return rvPermissionSrv.getPermissionValue('MANUAL_CC_AUTH');
     };
 
     $scope.showAuthAmountPopUp = function(){
@@ -947,7 +956,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
     	authInProgress();
 
     	setTimeout(function(){
-	    	
+	
 	    	ngDialog.open({
 				template: '/assets/partials/reservation/rvManualAuthorizationProcess.html',
 				className: '',
@@ -965,6 +974,12 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		authInProgress();
 		manualAuthAPICall();
 	};
-	// CICO-17067 PMS: Rover - Stay Card: Add manual authorization ends here...
+    // CICO-17067 PMS: Rover - Stay Card: Add manual authorization ends here...
 
+    //>>wakeup call check after guest prefs are fetched
+        $scope.$on('wakeup_call_ON',function(evt, data){
+            if (data){
+                $scope.activeWakeUp = data.active;
+            }
+        });
 }]);
