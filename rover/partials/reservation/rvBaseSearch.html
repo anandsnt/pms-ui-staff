@@ -220,17 +220,17 @@
         </div>
 
         <!-- Codes -->
-        <div id="codes" class="row" ng-if="promoCodesToBeImplemented">
+        <div id="codes" class="row">
             <div class="entry">
                 <label for="codes-value">Promo Codes <span>(optional)</span></label>
                 <div class="entry-data">
-                    <input name="codes-value" id="codes-value" type="text" placeholder="Code #" value="" />
+                    <input name="codes-value" ng-model="reservationData.promotion.promotionCode" id="codes-value" type="text" placeholder="Code #" value="" />
                     <div class="select">
                         <label for="codes-type" class="label">Type</label>
-                        <select name="codes-type" id="codes-type">
+                        <select name="codes-type" id="codes-type" ng-model="reservationData.promotion.promotionType">
                             <option value="" selected>None</option>
-                            <option value="aaa">AAA</option>
-                            ... repeat for codes
+                            <option value="PROMO">Promotion Code</option>
+                            <option value="GROUP" ng-show="hide_till_groups_implemented">Group Code</option>                            
                         </select>
                     </div>
                 </div>
