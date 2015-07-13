@@ -391,6 +391,44 @@ sntRover.service('RVHkRoomStatusSrv', [
 			return deferred.promise;
 		};
 
+		this.fetchHkStatusList = function() {
+			var deferred = $q.defer(),
+				url = 'api/to_be_added';
+
+			// deferred.resolve([
+			//      {id: 1, value: "CLEAN", description: "Clean", ext_description: "Clean"},
+			//      {id: 3, value: "DIRTY", description: "Dirty", ext_description: "Dirty"},
+			//      {id: 2, value: "INSPECTED", description: "Inspected", ext_description: "Inspected"},
+			//      {id: 6, value: "PICKUP", description: "Pickup", ext_description: "Pickup"}
+			// ]);
+
+			BaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+		// put hk status change from room status page
+		// this api can update hk status for one 
+		// or many room at once
+		this.putHkStatusChange = function(params) {
+			var deferred = $q.defer(),
+				url = 'api/to_be_added';
+
+			BaseWebSrvV2.putJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
 
 		this.toggleFilter = function(item) {
 			this.currentFilters[item] = !this.currentFilters[item];
@@ -549,31 +587,6 @@ sntRover.service('RVHkRoomStatusSrv', [
 				room.leaveStatusClass = 'late-check-out';
 			};
 		};
-
-		// when user edit the room on details page
-		// update that on the room list
-		this.updateHKStatus = function(updatedRoom) {
-
-			// disabled for now
-			return;
-
-			var newValue = updatedRoom.current_hk_status;
-
-			var newDescription = newValue.toLowerCase();
-			var fChar = newDescription[0].toUpperCase();
-			var rChar = newDescription.slice(1);
-			newDescription = fChar + rChar;
-
-			var matchedRoom = _.find(roomList.rooms, function(room) {
-				return parseInt(room.id) === updatedRoom.id;
-			});
-
-			matchedRoom.hk_status.value = newValue;
-			matchedRoom.hk_status.description = newDescription;
-			matchedRoom.description = newDescription;
-			matchedRoom.roomStatusClass = this.setRoomStatusClass(matchedRoom);
-		};
-
 
 		/**
 		 * CICO-8470 QA comment : Rooms filter for OOO/OOS does not display the correct rooms

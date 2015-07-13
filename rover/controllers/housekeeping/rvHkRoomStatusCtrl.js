@@ -10,6 +10,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 	'employees',
 	'roomTypes',
 	'floors',
+	'hkStatusList',
 	'ngDialog',
 	'RVWorkManagementSrv',
 	function(
@@ -24,6 +25,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		employees,
 		roomTypes,
 		floors,
+		hkStatusList,
 		ngDialog,
 		RVWorkManagementSrv
 	) {
@@ -131,6 +133,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			selectedHkStatus: ''
 		};
 		$scope.anyRoomChosen = false;
+
+		$scope.hkStatusList = hkStatusList;
 
 
 		/* ***** ***** ***** ***** ***** */
@@ -513,8 +517,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			    template: '/assets/partials/housekeeping/rvChangeHkStatusModal.html',
 			    className: 'ngdialog-theme-default',
 			    closeByDocument: true,
-			    scope: $scope,
-			    data: []
+			    scope: $scope
 			});
 		};
 
@@ -533,6 +536,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.submitHkStatusChange = function() {
 			var _payload,
 				_callback,
+				_onError,
 				i, j;
 
 			// '$scope.getSelectedRoomCount' will be called everytime
@@ -551,9 +555,29 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			_callback = function(data) {
 				$scope.$emit( 'hideLoader' );
+
+				// reset these.
+				$scope.multiRoomAction = {
+					selectedRooms: [],
+					allRoomsSelected: false,
+					selectedHkStatus: ''
+				};
+				$scope.anyRoomChosen = false;
+
+				// un-select all rooms
+				for (i = 0, j = $scope.rooms.length; i < j; i++) {
+					$scope.rooms[i].selected = false;
+				};
+
+				$scope.closeDialog();
 			};
 
-			$scope.invokeApi(RVHkRoomStatusSrv.postHkStatus, _payload, _callback);
+			_onError = function(response) {
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = response;
+			};
+
+			$scope.invokeApi(RVHkRoomStatusSrv.putHkStatusChange, _payload, _callback, _onError);
 		};
 
 
