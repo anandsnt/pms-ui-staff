@@ -82,7 +82,10 @@ table {
             border-bottom: 1px solid @grey2; 
 
             &:first-child { padding-left: 4pt; }
-            &:last-child { padding-right: 0; }
+            &:last-child { 
+                padding-right: 0;
+                border-bottom: 0;
+            }
         }
     }
 
@@ -736,6 +739,16 @@ table {
     }
 
     .report-content {
+
+        h2 {
+            font-size: 10pt;
+            line-height: 1;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin: 18pt 0 4pt;
+
+            &:first-child { margin-top: 0; }
+        }
 
         table {
             thead {
