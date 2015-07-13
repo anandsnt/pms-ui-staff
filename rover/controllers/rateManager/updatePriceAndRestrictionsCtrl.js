@@ -137,7 +137,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
 
         /**
          * If the popup is opened from room type calendar view.
-         * Compute the data structure for the popup display using the 'calendarData' info 
+         * Compute the data structure for the popup display using the 'calendarData' info
          */
         var computePopupdataForRoomTypeCal = function () {
             $scope.data = {};
@@ -185,7 +185,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
                 d.via = via;
                 $scope.$emit('setReadyButton',d);
                 $scope.$emit('applyAllActivity',d);
-            });  
+            });
             $scope.$watch("data.double_extra_amnt", function(to, from, evt){
 
                 var via = 'double';
@@ -195,7 +195,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
                 d.via = via;
                 $scope.$emit('setReadyButton',d);
                 $scope.$emit('applyAllActivity',d);
-            });  
+            });
             $scope.$watch("data.extra_adult_extra_amnt", function(to, from, evt){
 
                 var via = 'extra_adult';
@@ -205,7 +205,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
                 d.via = via;
                 $scope.$emit('setReadyButton',d);
                 $scope.$emit('applyAllActivity',d);
-            });  
+            });
             $scope.$watch("data.child_extra_amnt", function(to, from, evt){
 
                 var via = 'child';
@@ -215,7 +215,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
                 d.via = via;
                 $scope.$emit('setReadyButton',d);
                 $scope.$emit('applyAllActivity',d);
-            });  
+            });
 
             $scope.$on('apply-all-price-adjust', function (evt, data) {
                 var d = data, setVia = data.setFromValue;
@@ -263,7 +263,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
                                 $scope.data.double = selectedDateInfo.double;
                                 $scope.data.extra_adult = selectedDateInfo.extra_adult;
                                 $scope.data.child = selectedDateInfo.child;
-                                //(CICO-9555                            
+                                //(CICO-9555
                                 $scope.data.nightly = selectedDateInfo.nightly;
                                 //CICO-9555)
 
@@ -330,7 +330,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
 
         /**
          * If the popup is opened from rate type calendar view.
-         * Compute the data structure for the popup display using the 'calendarData' info 
+         * Compute the data structure for the popup display using the 'calendarData' info
          */
         var computePopUpdataForRateViewCal = function () {
             $scope.data = {};
@@ -422,7 +422,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
         };
         /**
          * Click handler for restriction on/off buttons
-         * Enable disable restriction. 
+         * Enable disable restriction.
          */
         $scope.toggleRestrictions = function (id, days, selectedIndex, restrictionType) {
             if (restrictionType){
@@ -436,7 +436,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
         };
         /**
          * Click handler for restriction on/off buttons
-         * Enable disable restriction. 
+         * Enable disable restriction.
          */
         $scope.onOffRestrictions = function (id, action, days, selectedIndex) {
             $scope.data.showEditView = false;
@@ -522,7 +522,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
                 }
             });
 
-            //We dont have to add more dates to the dates list if no day is checked            
+            //We dont have to add more dates to the dates list if no day is checked
             if (selectedDays.length <= 0) {
                 return datesList;
             }

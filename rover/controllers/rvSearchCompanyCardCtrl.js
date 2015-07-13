@@ -22,7 +22,7 @@ sntRover.controller('searchCompanyCardController', ['$scope', 'RVCompanyCardSear
 	        tap: true,
 	        preventDefault: false,
 	        deceleration: 0.0001,
-	        shrinkScrollbars: 'clip' 
+	        shrinkScrollbars: 'clip'
 	    };
 	  	$scope.setScroller('company_card_scroll', scrollerOptions);
 
@@ -35,7 +35,7 @@ sntRover.controller('searchCompanyCardController', ['$scope', 'RVCompanyCardSear
 
 		//function that converts a null value to a desired string.
 		//if no replace value is passed, it returns an empty string
-		
+
 		$scope.escapeNull = function(value, replaceWith) {
 			var newValue = "";
 			if ((typeof replaceWith != "undefined") && (replaceWith != null)) {
@@ -68,9 +68,9 @@ sntRover.controller('searchCompanyCardController', ['$scope', 'RVCompanyCardSear
 		 * if not fouund in the data, it will request for webservice
 		 */
 		var displayFilteredResults = function() {
-			//if the entered text's length < 3, we will show everything, means no filtering    
+			//if the entered text's length < 3, we will show everything, means no filtering
 			if ($scope.textInQueryBox.length < 3) {
-				//based on 'is_row_visible' parameter we are showing the data in the template      
+				//based on 'is_row_visible' parameter we are showing the data in the template
 				for (var i = 0; i < $scope.results.length; i++) {
 					$scope.results[i].is_row_visible = true;
 				}
@@ -93,7 +93,7 @@ sntRover.controller('searchCompanyCardController', ['$scope', 'RVCompanyCardSear
 					}
 
 				}
-				// last hope, we are looking in webservice.      
+				// last hope, we are looking in webservice.
 				if (visibleElementsCount == 0) {
 					var dataDict = {
 						'query': $scope.textInQueryBox.trim()

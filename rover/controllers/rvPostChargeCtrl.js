@@ -6,8 +6,8 @@ sntRover.controller('RVPostChargeController',
 		'RVSearchSrv',
 		'$timeout',
 		'RVBillCardSrv','ngDialog', 'rvPermissionSrv','rvAccountTransactionsSrv',
-		function($rootScope, $scope, 
-			RVChargeItems, RVSearchSrv, 
+		function($rootScope, $scope,
+			RVChargeItems, RVSearchSrv,
 			$timeout,RVBillCardSrv,ngDialog, rvPermissionSrv,rvAccountTransactionsSrv) {
 
 			// hook up the basic things
@@ -20,7 +20,7 @@ sntRover.controller('RVPostChargeController',
 			$scope.selectedChargeItem = null;
 			$scope.isResultOnFetchedItems = true;
 			$scope.isOutsidePostCharge = false;
-			
+
 			var scrollerOptions = {preventDefault: false};
   			$scope.setScroller ('items_list', scrollerOptions);
   			$scope.setScroller ('items_summary', scrollerOptions);
@@ -50,7 +50,7 @@ sntRover.controller('RVPostChargeController',
 			// if(!$scope.isBillsFetched && $scope.reservation_id){
 			// 	$scope.invokeApi(RVChargeItems.getReservationBillDetails, $scope.reservation_id, $scope.successGetBillDetails);
 			// }
-			
+
 			// filter the items based on the chosen charge group
 			$scope.filterbyChargeGroup = function() {
 
@@ -72,8 +72,8 @@ sntRover.controller('RVPostChargeController',
 					} else {
 						item.show = false;
 					}
-				}	
-				$scope.refreshScroller('items_list');				
+				}
+				$scope.refreshScroller('items_list');
 			};
 
 			// filter the items based on the search query
@@ -110,7 +110,7 @@ sntRover.controller('RVPostChargeController',
 					}
 				};
 				/*
-				 *  When searched by charge code, if the charge code has no item configured, 
+				 *  When searched by charge code, if the charge code has no item configured,
 				 * 	show charge code and the description but no price
 				 * 	Searching on fetchedChargeCodes array with charge_code or description.
 				 */
@@ -129,17 +129,17 @@ sntRover.controller('RVPostChargeController',
 						else {
 							item.show = false;
 						}
-							
+
 					}
-				$scope.refreshScroller('items_list');					
+				$scope.refreshScroller('items_list');
 				//}
 			};
 
 			// clear the filter query
 			$scope.clearQuery = function() {
-				
+
 				$scope.query = '';
-				
+
 				// show all
 				for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
 					$scope.fetchedItems[i].show = true;
@@ -148,15 +148,15 @@ sntRover.controller('RVPostChargeController',
 				for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
 					$scope.fetchedChargeCodes[i].show = true;
 				};
-				$scope.refreshScroller('items_summary');	
-				$scope.refreshScroller('items_list');	
+				$scope.refreshScroller('items_summary');
+				$scope.refreshScroller('items_list');
 			};
 
 			// make favorite selected by default
 			// must have delay
 			// $timeout(function() {
 			// 	$scope.chargeGroup = 'FAV';
-			// 	$scope.filterbyChargeGroup();				
+			// 	$scope.filterbyChargeGroup();
 			// }, 500);
 
 			$scope.chargeGroup = 'FAV';
@@ -239,7 +239,7 @@ sntRover.controller('RVPostChargeController',
 				angular.forEach(angular.element("#numpad-options button"), function(value, key){
 				      new FastClick(value);
 				});
-				
+
 			};
 
 			/**
@@ -275,9 +275,9 @@ sntRover.controller('RVPostChargeController',
 				// yep we have a selected item, gonna un-select
 				if ( $scope.selectedChargeItem && $scope.selectedChargeItem.item_name === item.item_name ) {
 					$scope.selectedChargeItem = null;
-				} 
+				}
 
-				// nope we dont have a selected item 
+				// nope we dont have a selected item
 				else {
 					$scope.selectedChargeItem = item;
 				}
@@ -449,7 +449,7 @@ sntRover.controller('RVPostChargeController',
 
 						// update net total price
 						calNetTotalPrice();
-					} 
+					}
 
 					// user tryin to clear price he entered
 					else {
@@ -465,7 +465,7 @@ sntRover.controller('RVPostChargeController',
 						// if there is any char left
 						if ( $scope.selectedChargeItem.userEnteredPrice.length ) {
 							$scope.selectedChargeItem.modifiedPrice = parseFloat( $scope.selectedChargeItem.userEnteredPrice );
-						} 
+						}
 
 						// nope everything is cleared
 						else {
@@ -560,16 +560,16 @@ sntRover.controller('RVPostChargeController',
 					};
 					//accounts or reservation bill screen check
 					isFromAccounts ? (billData.account_id = $scope.account_id):(billData.reservation_id = $scope.reservation_id);
-					
+
 					if(isFromAccounts){
 						/*
 						 * Success Callback of create bill action
 						 */
 						var createBillSuccessCallback = function(){
-							$scope.$emit('hideLoader');			
+							$scope.$emit('hideLoader');
 							//Fetch data again to refresh the screen with new data
 							$scope.invokeApi(rvAccountTransactionsSrv.postCharges, updateParam, accountsPostcallback);
-	
+
 						};
 						$scope.invokeApi(rvAccountTransactionsSrv.createAnotherBill, billData, createBillSuccessCallback);
 					}
@@ -578,7 +578,7 @@ sntRover.controller('RVPostChargeController',
 						 * Success Callback of create bill action
 						 */
 						var createBillSuccessCallback = function(){
-							$scope.$emit('hideLoader');			
+							$scope.$emit('hideLoader');
 							//Fetch data again to refresh the screen with new data
 							$scope.invokeApi(RVChargeItems.postCharges, updateParam, callback);
 							// Update Review status array.
@@ -594,16 +594,16 @@ sntRover.controller('RVPostChargeController',
 						$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback);
 
 					}
-					
+
 				}
 				/****    CICO-6094    **/
 			};
-			
+
 			$scope.searchByRoomNumber = function(){
 				$scope.invokeApi(RVSearchSrv.fetch, {});
 			};
-			
-			//Will be invoked only if triggered from the menu. 
+
+			//Will be invoked only if triggered from the menu.
 			// So always the default bill no will be 1
 			$scope.$on("UPDATED_BILLNUMBERS", function(event, data){
 				$scope.fetchedData.bill_numbers = data.bills;
@@ -612,8 +612,8 @@ sntRover.controller('RVPostChargeController',
 				$scope.chargeGroup = 'FAV';
 				$scope.filterbyChargeGroup();
 			});
-			
-			$scope.convertToJSONString = function (string) {				
+
+			$scope.convertToJSONString = function (string) {
 				return JSON.stringify (string);
 			};
 
@@ -621,20 +621,20 @@ sntRover.controller('RVPostChargeController',
 			   $scope.postCharges();
 			   $scope.isOutsidePostCharge = true;
 			});
-			
+
 			$scope.$on('RESETPOSTCHARGE', function(event, data) {
 			    $scope.selectedChargeItem = null;
 				$scope.selectedChargeItem = null;
 				$scope.isResultOnFetchedItems = false;
 				$scope.fetchedData.bill_numbers = null;
-				
+
 				for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
 					if($scope.fetchedItems[i].isChosen) {
 						$scope.fetchedItems[i].isChosen = false;
 						$scope.fetchedItems[i].count = 0;
 					}
 				}
-				
+
 				for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
 					if ( $scope.fetchedChargeCodes[i].isChosen ){
 						 $scope.fetchedChargeCodes[i].isChosen = false;

@@ -9,13 +9,13 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
         $scope.lastRefreshedTimeRef = '';
         $scope.initTimeout = false;
         BaseCtrl.call(this, $scope);
-        
+
         $scope.fetchSiteminderSetupSuccessCallback = function (data) {
             $scope.isLoading = false;
             $scope.$emit('hideLoader');
             $scope.data = data;
             $scope.setRefreshTime();
-           
+
         };
         $scope.setRefreshTime = function(){
             if ($scope.data.data.product_cross_customer.full_refresh !== null){
@@ -200,7 +200,7 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
             }
             $scope.invokeApi(adSiteminderSetupSrv.saveSetup, saveData, saveSiteminderSetupSuccessCallback, saveSiteminderSetupFailureCallback);
         };
-        
+
         $scope.runFullRefresh = function(){
             var lastRefreshed = $scope.data.data.product_cross_customer.full_refresh, refreshNowDate = new Date();
             var refreshNow = refreshNowDate.valueOf(), data = {}; data.interface_id = $scope.data.data.product_cross_customer.interface_id;
@@ -209,7 +209,7 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
                     var lastRefreshedDate = new Date($scope.data.data.product_cross_customer.full_refresh);
                     lastRefreshed = lastRefreshedDate.valueOf();
                 } catch(err){
-                    
+
                 }
             }
             var fullRefreshSuccess = function(){
@@ -222,7 +222,7 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
                 if (response[0]){
                     if (response[0].length > 0){
                         msg = ': "'+response[0]+'"';
-                    } 
+                    }
                 }
                 $scope.errorMessage = 'Siteminder Full Refresh Failed' + msg;
                 $scope.$emit('hideLoader');
@@ -230,20 +230,20 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
             if ((lastRefreshed < refreshNow) || lastRefreshed === null){
                 //run refresh
                 $scope.invokeApi(adSiteminderSetupSrv.fullRefresh, data, fullRefreshSuccess, fullRefreshFail);
-        
+
             } else {
                 //update w/ error
             }
-            
-            
-            
+
+
+
         };
 
         // Test connection button click action
         $scope.testSiteminderSetup = function () {
             var testSiteminderSetupSuccessCallback = function (data) {
                 //double check to see if it Actually failed..
-                if (data.status == 'failure') {
+                if (data.status === 'failure') {
                     var msg = '';
                     if (typeof data[0] === typeof 'str') {
                         if (data[0].length > 1) {
@@ -276,7 +276,7 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
 
             var checkCallback = function (response) {
                 $scope.$emit('hideLoader');
-                if (response.status == 'failure') {
+                if (response.status === 'failure') {
                     testSiteminderSetupFailureCallback(response);
                 } else {
                     testSiteminderSetupSuccessCallback(response);
@@ -314,11 +314,11 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
         };
         $scope.formatDate = function(now) {
             var year = "" + now.getFullYear();
-            var month = "" + (now.getMonth() + 1); if (month.length == 1) { month = "0" + month; }
-            var day = "" + now.getDate(); if (day.length == 1) { day = "0" + day; }
-            var hour = "" + now.getHours(); if (hour.length == 1) { hour = "0" + hour; }
-            var minute = "" + now.getMinutes(); if (minute.length == 1) { minute = "0" + minute; }
-            var second = "" + now.getSeconds(); if (second.length == 1) { second = "0" + second; }
+            var month = "" + (now.getMonth() + 1); if (month.length === 1) { month = "0" + month; }
+            var day = "" + now.getDate(); if (day.length === 1) { day = "0" + day; }
+            var hour = "" + now.getHours(); if (hour.length === 1) { hour = "0" + hour; }
+            var minute = "" + now.getMinutes(); if (minute.length === 1) { minute = "0" + minute; }
+            var second = "" + now.getSeconds(); if (second.length === 1) { second = "0" + second; }
             return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
           };
           $scope.countdownTimer = function(){
@@ -332,5 +332,5 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
                   });
               }, 1000);
           };
-            
+
     }]);

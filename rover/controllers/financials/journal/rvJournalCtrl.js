@@ -1,6 +1,6 @@
 sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVJournalSrv', 'journalResponse','$timeout',function($scope, $filter,$stateParams, ngDialog, $rootScope, RVJournalSrv, journalResponse, $timeout) {
 		
-	BaseCtrl.call(this, $scope);	
+	BaseCtrl.call(this, $scope);
 	// Setting up the screen heading and browser title.
 	$scope.$emit('HeaderChanged', $filter('translate')('MENU_JOURNAL'));
 	$scope.setTitle($filter('translate')('MENU_JOURNAL'));
@@ -44,7 +44,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
             });
         };
     };
-    retrieveCashierName();    
+    retrieveCashierName();
 
     // Show calendar popup.
     var popupCalendar = function(clickedOn) {
@@ -144,7 +144,11 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
     	$scope.data.filterData.departments[index].checked = !$scope.data.filterData.departments[index].checked;
     	getSelectButtonStatus();
-
+            $scope.filterRevenueByDepartmentsOrEmployees();
+            $scope.refreshRevenueTab();
+            $scope.filterPaymentByDepartmentsOrEmployees();
+            $scope.refreshPaymentTab();
+        }
     	if(isAllDepartmentsUnchecked()) $scope.selectAllDepartment();
     	else $scope.data.filterData.checkedAllDepartments = false;
     };

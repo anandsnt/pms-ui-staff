@@ -1,5 +1,5 @@
 admin.service('ADChargeCodesSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv){
-	
+
 	/**
     *   A getter method to return the charge codes list
     */
@@ -12,7 +12,7 @@ admin.service('ADChargeCodesSrv',['$http', '$q', 'ADBaseWebSrv', function($http,
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/**
@@ -21,12 +21,12 @@ admin.service('ADChargeCodesSrv',['$http', '$q', 'ADBaseWebSrv', function($http,
 	this.deleteItem = function(data){
 		var deferred = $q.defer();
 		var url = '/admin/charge_codes/'+data.value+'/delete';
-		
+
 		ADBaseWebSrv.getJSON(url,data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/**
@@ -35,12 +35,12 @@ admin.service('ADChargeCodesSrv',['$http', '$q', 'ADBaseWebSrv', function($http,
 	this.fetchAddData = function(){
 		var deferred = $q.defer();
 		var url = '/admin/charge_codes/new';
-		
+
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/**
@@ -49,12 +49,12 @@ admin.service('ADChargeCodesSrv',['$http', '$q', 'ADBaseWebSrv', function($http,
 	this.fetchEditData = function(data){
 		var deferred = $q.defer();
 		var url = '/admin/charge_codes/'+data.editId+'/edit.json';
-		
+
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/**
@@ -63,12 +63,12 @@ admin.service('ADChargeCodesSrv',['$http', '$q', 'ADBaseWebSrv', function($http,
 	this.save = function(data){
 		var deferred = $q.defer();
 		var url = '/admin/charge_codes/save';
-		
+
 		ADBaseWebSrv.postJSON(url,data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/**
@@ -77,16 +77,16 @@ admin.service('ADChargeCodesSrv',['$http', '$q', 'ADBaseWebSrv', function($http,
 	this.importData = function(data){
 		var deferred = $q.defer();
 		var url = '/admin/charge_codes/import';
-		
+
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
-	
-	
-	
+
+
+
 
 }]);

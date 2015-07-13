@@ -15,7 +15,7 @@ sntRover.service('RVChargeItems',
 			this.setGroup = function(value) {
 				this.currentGroup = value;
 			};
-			
+
 			// fetch and return data from server
 			this.fetchAllItems = function() {
 				var deferred = $q.defer();
@@ -36,7 +36,7 @@ sntRover.service('RVChargeItems',
 						// and paying around numbers
 						for (var i = 0, j = data.items.length; i < j; i++) {
 							var item = data.items[i];
-							
+
 							// lets show this item
 							item.show = true;
 
@@ -63,28 +63,28 @@ sntRover.service('RVChargeItems',
 							// to keep track of price entered by user
 							item.userEnteredPrice = '';
 						};
-						
+
 						for (var i = 0, j = data.non_item_linked_charge_codes.length; i < j; i++) {
 							var item = data.non_item_linked_charge_codes[i];
-							
+
 							// lets show this item
 							item.show = true;
 
 							// lets show chosen count
 							item.count = 0;
-							
+
 							item.unit_price = parseFloat(0);
-							
+
 							// to show the item as chosen charge item
 							item.isChosen = false;
-							
+
 							// to show the modified price by user
 							item.modifiedPrice = item.unit_price;
-							
+
 							// to keep track of price entered by user
 							item.userEnteredPrice = '';
 						};
-						
+
 						for (var i = 0, j = data.charge_groups.length; i < j; i++) {
 							var item = data.charge_groups[i];
 
@@ -107,9 +107,9 @@ sntRover.service('RVChargeItems',
 
 				return deferred.promise;
 			}.bind(this);
-			
-			
-			
+
+
+
 			// fetch and return data from server
 			this.fetch = function(reservation_id) {
 				var deferred = $q.defer();
@@ -131,7 +131,7 @@ sntRover.service('RVChargeItems',
 						// and paying around numbers
 						for (var i = 0, j = data.items.length; i < j; i++) {
 							var item = data.items[i];
-							
+
 							// lets show this item
 							item.show = true;
 
@@ -158,28 +158,28 @@ sntRover.service('RVChargeItems',
 							// to keep track of price entered by user
 							item.userEnteredPrice = '';
 						};
-						
+
 						for (var i = 0, j = data.non_item_linked_charge_codes.length; i < j; i++) {
 							var item = data.non_item_linked_charge_codes[i];
-							
+
 							// lets show this item
 							item.show = true;
 
 							// lets show chosen count
 							item.count = 0;
-							
+
 							item.unit_price = parseFloat(0);
-							
+
 							// to show the item as chosen charge item
 							item.isChosen = false;
-							
+
 							// to show the modified price by user
 							item.modifiedPrice = item.unit_price;
-							
+
 							// to keep track of price entered by user
 							item.userEnteredPrice = '';
 						};
-						
+
 						for (var i = 0, j = data.charge_groups.length; i < j; i++) {
 							var item = data.charge_groups[i];
 

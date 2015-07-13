@@ -35,7 +35,7 @@ function($scope, $state, $rootScope, $stateParams, ADFrequentFlyerProgramSrv, ng
 	$scope.fetchFFP();
 
 
-	
+
 
 	/**
 	 *   A post method to update Frequent Flyer Program  for a hotel
@@ -58,7 +58,7 @@ function($scope, $state, $rootScope, $stateParams, ADFrequentFlyerProgramSrv, ng
 
 		$scope.invokeApi(ADFrequentFlyerProgramSrv.switchToggle, data, postSuccess);
 	};
-        
+
 	$scope.activateMainInactivate = function(currentStatus){
 		var nextStatus = !$scope.use_ffp;
 		var data = {
@@ -69,8 +69,8 @@ function($scope, $state, $rootScope, $stateParams, ADFrequentFlyerProgramSrv, ng
 			$scope.$emit('hideLoader');
 		};
 		$scope.invokeApi(ADFrequentFlyerProgramSrv.switchMainToggle, data , successCallbackActivateMainInactivate);
-                
-                
+
+
 	};
         $scope.getTitleAligned = function(title){
             return title;
