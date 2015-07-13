@@ -361,7 +361,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				$_activeWorksheetData = response.data;
 				$scope.activeWorksheetEmp = $_findEmpAry();
 				ngDialog.open({
-				    template: '/assets/partials/housekeeping/rvAssignRoomPopup.html',
+				    template: '/assets/partials/housekeeping/rvAssignRoomModal.html',
 				    className: 'ngdialog-theme-default',
 				    closeByDocument: true,
 				    scope: $scope,
@@ -508,11 +508,17 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			};
 		};
 
-		$scope.submitHkStatusChange = function() {
-			var _payload,
-				_callback,
-				i, j;
+		$scope.openChangeHkStatusModal = function() {
+			ngDialog.open({
+			    template: '/assets/partials/housekeeping/rvChangeHkStatusModal.html',
+			    className: 'ngdialog-theme-default',
+			    closeByDocument: true,
+			    scope: $scope,
+			    data: []
+			});
+		};
 
+		$scope.getSelectedRoomCount = function() {
 			$scope.multiRoomAction.selectedRooms = [];
 
 			for (i = 0, j = $scope.rooms.length; i < j; i++) {
@@ -520,6 +526,18 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					$scope.multiRoomAction.selectedRooms.push( $scope.rooms[i].id );
 				};
 			};
+
+			return $scope.multiRoomAction.selectedRooms.length;
+		};
+
+		$scope.submitHkStatusChange = function() {
+			var _payload,
+				_callback,
+				i, j;
+
+			// '$scope.getSelectedRoomCount' will be called everytime
+			// the submit modal is opened, so at time we will fill 
+			// the '$scope.multiRoomAction.selectedRooms'
 
 			// no need to send anything
 			if ( ! $scope.multiRoomAction.selectedRooms.length ) {

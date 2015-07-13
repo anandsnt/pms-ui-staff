@@ -1,0 +1,35 @@
+<div id="modal" class="modal-show" ng-cloak>
+	<div class="modal-content form update-room-status">
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+	    <button ng-click="closeDialog()" class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert"></span></button>
+	    
+	    <strong class="h2 message">Update Status</strong>
+	    <span class="text">{{ getSelectedRoomCount() }} rooms selected</span>
+
+	    <div class="entry full-width">
+	        <label class="radio" for="1">
+	            <span class="icon-form icon-radio" ng-class="{ 'checked' : multiRoomAction.selectedHkStatus == 1 }"></span>
+	            <input name="room-status" id="1" type="radio" value="1" ng-model="multiRoomAction.selectedHkStatus" />
+	            Clean
+	        </label>
+	        <label class="radio" for="3">
+	            <span class="icon-form icon-radio" ng-class="{ 'checked' : multiRoomAction.selectedHkStatus == 3 }"></span>
+	            <input name="room-status" id="3" type="radio" value="3" ng-model="multiRoomAction.selectedHkStatus" />
+	            Dirty
+	        </label><label class="radio" for="2">
+	            <span class="icon-form icon-radio" ng-class="{ 'checked' : multiRoomAction.selectedHkStatus == 2 }"></span>
+	            <input name="room-status" id="2" type="radio" value="2" ng-model="multiRoomAction.selectedHkStatus" />
+	            Inspected
+	        </label><label class="radio" for="6">
+	            <span class="icon-form icon-radio" ng-class="{ 'checked' : multiRoomAction.selectedHkStatus == 6 }"></span>
+	            <input name="room-status" id="6" type="radio" value="6" ng-model="multiRoomAction.selectedHkStatus" />
+	            Pickup
+	        </label>
+	    </div>
+	    <div class="actions">
+	        <button ng-click="submitHkStatusChange()" type="button" class="button green">Confirm</button>
+	        <button ng-click="closeDialog()" type="button" class="button blank">Cancel</button> 
+	    </div>
+	</div>
+</div>

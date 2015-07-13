@@ -14,7 +14,12 @@
 </div>
 
 <!-- Search form -->
-<form method="get" action="" name="rooms-search-form" id="rooms-search-form" class="search-form room-search" role="search" ng-class="{'has-options': isStandAlone, 'single-option': (isStandAlone && !topFilter.byWorkType), 'showing-filters': filterOpen }" ng-hide="anyRoomChosen">
+<form method="get" action="" name="rooms-search-form" id="rooms-search-form" class="search-form room-search" role="search" ng-class="{'has-options': isStandAlone, 'single-option': (isStandAlone && !topFilter.byWorkType), 'showing-filters': filterOpen }">
+    <button type="button" id="refresh-data" class="filter button white with-icon only-icon refresh" ng-click="refreshData()">
+        <span class="icons icon-reset"></span>
+        <span translate>Refresh</span>
+    </button>
+
     <button type="button" id="show-filters" class="filter button white with-icon only-icon" ng-click="showFilters()">
         <span class="icons icon-filter"></span>
         <span translate>FILTER_ROOMS</span>
@@ -41,38 +46,28 @@
             </select>
         </div>
     </div>
-    
-    <button type="button" id="refresh-data" class="filter button white with-icon only-icon refresh" ng-click="refreshData()">
-        <span class="icons icon-reset"></span>
-        <span translate>Refresh</span>
-    </button>
 
     <button ng-if="isStandAlone" type="button" id="refresh-data" class="button blue with-icon only-icon print" ng-click="printData()">
         <span class="icons icon-print"></span>
         <span translate>Print</span>
     </button>
 
+    <!-- Select All Rooms from list -->
+    <div class="entry check">
+        <button type="button" class="button purple with-icon only-icon open-modal hidden" ng-class="{ 'hidden': !anyRoomChosen }" ng-click="openChangeHkStatusModal()"> <!-- Hidden until at least 1 room is selected -->
+            <span class="icons icon-pencil"></span>
+            Update
+        </button>
+        <label class="checkbox inline" for="select-all-rooms">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : multiRoomAction.allRoomsSelected }"></span>
+            <input id="select-all-rooms" type="checkbox" ng-model="multiRoomAction.allRoomsSelected" ng-change="selectAllRooms(multiRoomAction.allRoomsSelected)" />
+        </label>
+    </div>
+
     <div id="filter-actions" class="filter-actions">
       <button class="button blank" ng-show="isFilterChcked()" ng-click="clearFilters()" type="button" translate>CLEAR</button>
       <button type="button" class="button green" ng-click="filterDoneButtonPressed()" translate>APPLY</button>
     </div>
-</form>
-
-<form action="" ng-show="anyRoomChosen">
-    <label class="checkbox">
-        <span class="icon-form icon-checkbox" ng-class="{'checked' : multiRoomAction.allRoomsSelected}"></span>
-        <input name="room-filters" type="checkbox" ng-model="multiRoomAction.allRoomsSelected" ng-change="selectAllRooms(multiRoomAction.allRoomsSelected)">
-        <label translate="" class="ng-scope">Select All</label>
-    </label>
-
-    <select name="" id="" ng-model="multiRoomAction.selectedHkStatus">
-        <option value="">Clean</option>
-        <option value="">Dirty</option>
-        <option value="">Inspected</option>
-        <option value="">Pickup</option>
-    </select>
-
-    <button type="button" class="button green" ng-click="submitHkStatusChange()" translate>APPLY</button>
 </form>
 
 <ul id="my-worksheet-options" class="worksheet-options" ng-show="!!hasActiveWorkSheet">
@@ -97,11 +92,12 @@
     </li>
 
     <li class="room" bindonce ng-repeat="room in rooms track by $index">
-        <label class="checkbox" ng-click="roomSelectChange(room)">
-            <span class="icon-form icon-checkbox" ng-class="{'checked' : room.selected}"></span>
-            <input name="room-filters" type="checkbox" ng-model="room.selected">
-            <label translate="" class="ng-scope">Select</label>
-        </label>
+        <div class="check">
+            <label class="checkbox inline" for="{{ room.id }}" ng-click="roomSelectChange(room)">
+                <span class="icon-form icon-checkbox" ng-class="{ 'checked' : room.selected }"></span>
+                <input id="{{ room.id }}" type="checkbox" ng-model="room.selected" />
+            </label>
+        </div>
 
         <a ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })" bo-class="{ 'with-image': room.is_occupied }"> <!-- Add  class="with-image" if room is occupied -->
 
