@@ -1492,6 +1492,50 @@ body { overflow: hidden; }
                 }
             }
 
+            &.split {
+            	float: none;
+            	padding-bottom: 11px;
+            	margin-bottom: 10px;
+            	border-bottom: 1px solid rgba(0,0,0,.1);
+            	width: 100%;
+            	.float;
+
+            	.only-number {
+					font-size: 30px;
+					font-weight: 600;
+					text-align: center;
+					.checkbox;
+					padding: 0;
+					margin: 0 10px 0 0;
+					line-height: 50px;
+					.calc-width(20, 8);
+					.pull-left;
+					.no-transition;
+
+					&:last-child { margin-right: 0; }
+
+					&.checked {
+						color: @white;
+						text-shadow: 1px 1px 0 rgba(0,0,0,.15);
+						.box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.3)");
+		 				.gradient (@logoGradientEnd, @logoGradientStart);
+					}
+
+					&.paid { .gradient(@greenStart, @greenEnd); }
+
+					&.disabled {
+						color: @grey3;
+						background-color: rgba(0,0,0,.1);
+						.box-shadow(none);
+					}
+
+					input {
+						&[disabled],
+						&[readonly] { cursor: default;}
+					}
+				}
+            }
+
             &.margin {
             	margin-right: 20px;
             	.calc-width(50, 20); 
