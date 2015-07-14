@@ -474,14 +474,14 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
                 
 		$stateProvider.state('admin.sitemindersSetup', {
 			templateUrl: '/assets/partials/SiteminderSetup/adSiteminderSetup.html',
-			controller: 'adSiteminderSetupCtrl',
+			controller: 'adExternalInterfaceCtrl',
 			url : '/siteminderSetup'
 		});
                 
-		$stateProvider.state('admin.synixSetup', {
+		$stateProvider.state('admin.synxisSetup', {
 			templateUrl: '/assets/partials/SynxisSetup/adSynxisSetup.html',
-			controller: 'adSynixSetupCtrl',
-			url : '/synixSetup'
+			controller: 'adExternalInterfaceCtrl',
+			url : '/synxisSetup'
 		});
 
 		$stateProvider.state('admin.emailBlacklist', {
