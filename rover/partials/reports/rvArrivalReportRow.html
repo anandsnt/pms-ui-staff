@@ -32,9 +32,9 @@
 		<!-- If payment CC:-->
         <span ng-if="each.payment.payment_type == 'Credit Card'" class="data payment">
             <figure class="card-logo">
-            	<img src="/assets/{{ each.payment.card_type }}.png" alt="" />
+            	<img ng-src="/assets/{{ each.payment.card_type | lowercase }}.png" alt="" />
             </figure>
-            <span>ending with</span> {{ each.payment.card_nubmer }}
+            <span>ending with</span> {{ each.payment.card_number }}
         </span>
         <!-- If payment not CC: -->
         <span ng-if="each.payment.payment_type != 'Credit Card'" class="data payment">{{ each.payment.payment_type }}</span>
