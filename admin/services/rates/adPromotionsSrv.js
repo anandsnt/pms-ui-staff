@@ -123,7 +123,7 @@ admin.service('ADPromotionsSrv', ['$q', 'ADBaseWebSrvV2',
 
 		self.updateRatePromos = function(params){
 			var deferred = $q.defer();
-			var url = '/api/rates/'+params.id+'/promotions';
+			var url = '/api/rates/'+params.id+'/set_promotions';
 			ADBaseWebSrvV2.putJSON(url, params.promos).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
