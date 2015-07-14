@@ -3825,6 +3825,69 @@
 				}
 			}
 
+			/* Group checkin ***/
+			&.group-checkin {
+				width: 320px;
+
+				.icon-popup-alert,
+				.icon-popup-success { margin: 10px auto; }
+
+				.message {
+					&.green { color: @green; }
+					&.red { color: @red; }
+				}
+
+				.feedback {
+					display: table;
+					margin-bottom: 10px;
+					.square(100%);
+
+					.succeeded {
+						display: table-cell;
+						vertical-align: middle;
+						text-align: center;
+						padding: 20px;
+						background-color: @green;
+						.box-shadow(inset -2px 0 3px rgba(0,0,0,.1));
+						.size(100%, 40%);
+
+						.message { color: @white; }
+					}
+
+					.failed {
+						display: table-cell;
+						padding: 20px;
+						.size(100%, 60%);
+
+						.scrollable {
+							position: relative;
+							padding: 0;
+							max-height: 140px;
+							margin-bottom: 10px;
+						}
+
+						.wrapper { padding: 10px; }
+
+						.iScrollIndicator { background: rgba(0,0,0,.1); }
+
+						li {
+							font-size: 14px;
+							text-align: left;
+							border-bottom: 1px solid rgba(0,0,0,.1);
+
+							span { .pull-right; }
+
+							&:last-child { border-bottom: 0; }
+						}
+					}
+				}	
+
+				&.has-failures { 
+					width: 540px; 
+					padding: 0;
+				}
+			}
+
 			/* StayCard Notes / Actions ***/
 			&.staycard-notes,
 			&.staycard-actions {
