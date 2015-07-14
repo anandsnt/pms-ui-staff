@@ -168,7 +168,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.is_commission_on = (data.is_commission_on) ? true : false;
             $scope.rateData.is_suppress_rate_on = (data.is_suppress_rate_on) ? true : false;
             $scope.rateData.is_discount_allowed_on = (data.is_discount_allowed_on) ? true : false;
-            $scope.rateData.is_member_rate = (data.is_member_rate) ? true : false;
+            $scope.rateData.is_member_rate = (data.is_member) ? true : false;
             $scope.rateData.source_id = data.source_id;
             $scope.rateData.market_segment_id = data.market_segment_id;
             $scope.rateData.end_date = data.end_date;

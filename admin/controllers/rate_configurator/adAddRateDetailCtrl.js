@@ -158,7 +158,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'deposit_policy_id': $scope.rateData.deposit_policy_id,
                 'end_date': $scope.rateData.end_date,
                 'is_hourly_rate': $scope.rateData.is_hourly_rate,
-                'is_member_rate': $scope.rateData.is_member_rate
+                'is_member': $scope.rateData.is_member_rate
             };
 
             // Save Rate Success Callback
