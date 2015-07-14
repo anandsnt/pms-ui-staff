@@ -91,8 +91,10 @@
 
 		<fieldset class="holder right">
 			<ad-textarea rows="2" div-class="full-width" text-area-class="full-width rate_description" value="rateData.description" label = "Description " placeholder = "Enter Rate Description" required="true"></ad-textarea>
+			<ad-toggle-button is-checked="!!rateData.is_member_rate" label="MEMBER RATE"></ad-toggle-button>
 		</fieldset>
-		<fieldset class="holder left" ng-show="isPromotional()">
+		<!-- CICO-18040 PROMOTION FREE FORM ENTRY TO BE HIDDEN -->
+		<fieldset class="holder left" ng-show="hidePromotionFreeFormEntry">
 			<ad-textbox inputtype="text" value="rateData.promotion_code" label = "Promotions Code" placeholder = "Enter Promotional Code" required="no"></ad-textbox>
 		</fieldset>
 

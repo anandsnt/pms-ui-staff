@@ -21,7 +21,7 @@
                 <td ng-include="'/assets/partials/rates/adRatesAddRoomTypes.html'"></td>
             </tr>
             <!-- to be done-->
-            <tr ng-show="rateData.id > 0">
+            <tr ng-show="rateData.id > 0 && isPromoRate()">
                 <td ng-include="'/assets/partials/rates/adRatesPromotions.html'"></td>
             </tr>
             <tr ng-repeat ="dateRange in rateData.date_ranges">
