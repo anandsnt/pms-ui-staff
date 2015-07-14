@@ -18,7 +18,7 @@
                     ...
                 </button>
                 <div class="date-delete-wrapper">
-                    <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="state.newPromo.from_date = null">&nbsp;</span>
+                    <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="state.newPromo.from_date = null; filterRates(newPromo);">&nbsp;</span>
                 </div>
             </div>
             <div class="entry has-datepicker margin">
@@ -29,7 +29,7 @@
                     ...
                 </button>
                 <div class="date-delete-wrapper">
-                    <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="state.newPromo.to_date = null">&nbsp;</span>
+                    <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="state.newPromo.to_date = null; filterRates(newPromo);">&nbsp;</span>
                 </div>
             </div>
             <div class="entry">

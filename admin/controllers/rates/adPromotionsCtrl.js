@@ -109,6 +109,11 @@ admin.controller('ADPromotionsCtrl', [
 			$scope.state.current = -1;
 		};
 
+		$scope.toggleActivation = function(promo){
+			promo.is_active = !promo.is_active;
+			$scope.updatePromo(promo);
+		};
+
 		$scope.save = function() {
 			$scope.invokeApi(ADPromotionsSrv.save, {
 				name: $scope.state.newPromo.name,
@@ -136,7 +141,8 @@ admin.controller('ADPromotionsCtrl', [
 				discount_type: promo.discount.type,
 				discount_value: promo.discount.value,
 				linked_rates: _.pluck(promo.assignedRates,'id'),
-				description: promo.description
+				description: promo.description,
+				is_active: promo.is_active
 			}, function() {
 				$scope.$emit('hideLoader');
 				$scope.state.current = -1;
