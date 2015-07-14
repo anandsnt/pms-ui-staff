@@ -14,10 +14,20 @@
         </strong>
         <span class="text">Or enter negative amount to make a refund</span>
         <!-- Title when bill# is defined: <strong class="h2 message">Pay Bill #{bill num}</strong> -->
+        <div ng-show="messageOfSuccessSplitPayment!=''" ng-class="{notice: messageOfSuccessSplitPayment!=''}" class='success success_message'>
+            <span ng-bind-html ="messageOfSuccessSplitPayment">
+            </span>   
+        </div>
+        <div ng-show="paymentErrorMessage!=''" ng-class="{notice: paymentErrorMessage!=''}" class='error error_message' ng-switch on="paymentErrorMessage.length" ng-click="clearPaymentErrorMessage()">    
+            <span class="close-btn" ng-click="clearPaymentErrorMessage()"></span>
+            <span>
+            {{paymentErrorMessage}}
+            </span>
+        </div>
 
         <div class="payment-form">
             <!-- Split payment -->
-                <div class="entry split">
+                <div class="entry split" ng-hide="saveData.paymentType ==='CC'">
                     <label for="split-payment">Split Bill Payment</label>
                     <label class="only-number" ng-class = "classForPaymentSplitButton(1)" ng-click ="spliteButtonClicked(1)"> <!-- 1 is selected by default and locked -->
                         <input name="split-bill" value="1" type="checkbox" disabled checked />
@@ -106,7 +116,7 @@
                 <input name="reference" id="reference" ng-model="renderData.referanceText" type="text" />
             </div> 
             <!-- Success feedback -->
-            <div class="feedback" ng-show="!showCCPage && depositPaidSuccesFully">
+            <!-- <div class="feedback" ng-show="!showCCPage && depositPaidSuccesFully">
                 <div class="notice success">Amount paid!</div>
                 <ul class="transaction">
                     <li ng-show="authorizedCode !==''">
@@ -121,7 +131,7 @@
                         </span>
                     </li>
                 </ul>
-            </div> 
+            </div>  -->
 
             <!-- Fail feedback -->
             <div class="feedback" ng-show="errorOccured">
