@@ -3,15 +3,15 @@
         <header class="content-title float">
             <h2 translate>Promotions</h2>
             <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
-            <a class="action add" ng-hide="!state.is_use_promos" ng-click="addPromo()" translate>ADD_NEW</a>
-            <ad-toggle-button is-checked="state.is_use_promos" button-class="activation" div-class="header-title" ng-click="toggleActivatepromos()" label="Activate promotions">
+            <a class="action add" ng-hide="!state.usePromos" ng-click="addPromo()" translate>ADD_NEW</a>
+            <ad-toggle-button is-checked="state.usePromos" button-class="activation" div-class="header-title" ng-click="toggleActivatePromotions()" label="Activate promotions">
             </ad-toggle-button>
         </header>
         <section class="content-scroll">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div id="add-new" ng-show="state.current == 'NEW'" ng-include="'/assets/partials/rates/adAddPromotions.html'"></div>
             <div id="new-form-holder"></div>
-            <table id="brands" class="grid datatable dataTable" ng-table="promotionsList" template-pagination="nil">
+            <table id="brands" class="grid datatable dataTable" ng-table="promotionsList" template-pagination="nil" ng-hide="state.promotions.length < 1">
                 <tbody>
                     <tr ng-repeat="promo in state.promotions track by $index">
                         <td data-item="1" data-title="'Name'" ng-click="onEditPromo(promo, $index)" header-class="width-26" ng-hide="state.current === $index">
@@ -35,7 +35,7 @@
                             </div>
                         </td>
                         <td data-item="6" header-class="width-10" data-title="'Delete'" class="delete" ng-hide="state.current === $index">
-                            <a class="icons icon-delete large-icon" ng-click="deletepromo(promo)">Delete this Segment</a>
+                            <a class="icons icon-delete large-icon" ng-click="deletePromo(promo)">Delete this Segment</a>
                         </td>
                         <td colspan="6" ng-show="state.current === $index">
                             <div style="display: block;" id="add-new" class="edit-data">
@@ -84,9 +84,9 @@
                                                     <div class="select">
                                                         <select name="amount-type-id" id="amount-type-id" ng-model="promo.discount.type">
                                                             <option value="" data-text="Not set" class="placeholder">Choose amount type</option>
-                                                            <option value="AMOUNT">{{'AMOUNT'|translate}}[{{ currencySymbol }}]</option>
-                                                            <option value="PERCENTAGE" translate>PERCENTAGE</option>
-                                                            < </select>
+                                                            <option value="amount">{{'AMOUNT'|translate}}[{{ currencySymbol }}]</option>
+                                                            <option value="percent" translate>PERCENTAGE</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -94,9 +94,9 @@
                                         <fieldset class="holder full-width">
                                             <div class="form-title">
                                                 <h3>
-								                    <span>Assign to&nbsp;</span>								                    
-								                    Rate
-								                </h3>                                               
+                                                    <span>Assign to&nbsp;</span>                                                    
+                                                    Rate
+                                                </h3>
                                             </div>
                                             <div class="entry has-sortable">
                                                 <label class="center_align">
@@ -112,10 +112,10 @@
                                             <div class="entry movers rates_mover">
                                                 <div class="top_mover">
                                                     <span class="icons icon-mover-right to-target" data-type="target" ng-click="linkSelectedRate(promo)" ng-class="{active: state.selectedAvailableRate > -1}" data-type="source">
-                                                    	unassign room(s)
+                                                        unassign room(s)
                                                     </span>
                                                     <span class="icons icon-mover-left to-source" data-type="source" ng-click="unlinkSelectedRate(promo)" ng-class="{active: state.selectedAssignedRate > -1}">
-                                                    	Assign room(s)
+                                                        Assign room(s)
                                                     </span>
                                                 </div>
                                                 <div>
@@ -142,7 +142,7 @@
                                             <button type="button" id="cancel" class="button blank edit-data-inline" ng-click="onCancelEdit($index)" translate>
                                                 CANCEL
                                             </button>
-                                            <button type="button" id="save" class="button green edit-data-inline" ng-click="updateSegment(segment)" translate>
+                                            <button type="button" id="save" class="button green edit-data-inline" ng-click="updatePromo(promo)" translate>
                                                 SAVE_CHANGES
                                             </button>
                                         </div>

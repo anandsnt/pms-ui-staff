@@ -6,8 +6,8 @@
             <em class="status">{{'MANDATORY_FIELDS_MESSAGE1' | translate}}<strong>*</strong> {{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
         </div>
         <fieldset class="holder left float">
-            <ad-textbox value="state.newstate.newPromo.name" label="{{'NAME' | translate}}" placeholder="{{'SEGMENTS_NAME_PLACEHOLDER' | translate}}" required="yes"></ad-textbox>
-            <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="state.newstate.newPromo.description" name="desc" id="desc" label="{{'DESCRIPTION' | translate}}" placeholder="Enter Promotion Description"></ad-textarea>
+            <ad-textbox value="state.newPromo.name" label="{{'NAME' | translate}}" placeholder="Name of Promotion" required="yes"></ad-textbox>
+            <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="state.newPromo.description" name="desc" id="desc" label="{{'DESCRIPTION' | translate}}" placeholder="Enter Promotion Description"></ad-textarea>
         </fieldset>
         <fieldset class="holder right float">
             <div class="entry has-datepicker margin">
@@ -43,8 +43,8 @@
                     <div class="select">
                         <select name="amount-type-id" id="amount-type-id" ng-model="state.newPromo.discount.type">
                             <option value="" data-text="Not set" class="placeholder">Choose amount type</option>
-                            <option value="AMOUNT">{{'AMOUNT'|translate}}[{{ currencySymbol }}]</option>
-                            <option value="PERCENTAGE" translate>PERCENTAGE</option>
+                            <option value="amount">{{'AMOUNT'|translate}}[{{ currencySymbol }}]</option>
+                            <option value="percent" translate>PERCENTAGE</option>
                             < </select>
                     </div>
                 </div>
@@ -97,7 +97,7 @@
             <button type="button" ng-click="cancelAddPromo()" class="button blank edit-data-inline" translate>
                 CANCEL
             </button>
-            <button type="button" ng-click="addNewPromo()" class="button green edit-data-inline" translate>
+            <button type="button" ng-click="save()" class="button green edit-data-inline" translate>
                 ADD
             </button>
         </div>
