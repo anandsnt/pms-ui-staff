@@ -64,7 +64,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             //but should be disabled
             var containNonEditableRoomType = (_.pluck($scope.roomTypesAndData, 'room_type_id')
                 .indexOf(parseInt(reservation.room_type_id))) <= -1;
-            return (reservation.reservation_status == "CANCELED" || containNonEditableRoomType);
+            return (reservation.reservation_status === "CANCELED" || containNonEditableRoomType);
         };
 
         /**
@@ -332,7 +332,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          */
         $scope.addReservations = function() {
             //if there is no room type attached, we have to show some message
-            if ($scope.roomTypesAndData.length == 0) {
+            if ($scope.roomTypesAndData.length === 0) {
                 return showNoRoomTypesAttachedPopUp();
             }
 
@@ -468,11 +468,11 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * return - None
          */
         $scope.loadPrevSet = function() {
-            var isAtEnd = ($scope.end == $scope.totalResultCount);
+            var isAtEnd = ($scope.end === $scope.totalResultCount);
             if (isAtEnd) {
                 //last diff will be diff from our normal diff
                 var lastDiff = ($scope.totalResultCount % $scope.perPage);
-                if (lastDiff == 0) {
+                if (lastDiff === 0) {
                     lastDiff = $scope.perPage;
                 }
 
@@ -594,7 +594,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          */
         $scope.sortBy = function(sorting_field) {
             //if we are trying from the same tab, we have to switch between Asc/Desc
-            if ($scope.sorting_field == sorting_field) {
+            if ($scope.sorting_field === sorting_field) {
                 $scope.sort_dir = ($scope.sort_dir === 'ASC') ? 'DESC' : 'ASC';
             } else {
                 $scope.sorting_field = sorting_field;
@@ -613,7 +613,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         $scope.getSortClass = function(sorting_field) {
             var classes = '';
             //if we are trying from the same tab, we have to switch between Asc/Desc
-            if ($scope.sorting_field == sorting_field) {
+            if ($scope.sorting_field === sorting_field) {
                 classes = ($scope.sort_dir === 'ASC') ? 'sorting-asc' : 'sorting-desc';
             }
             return classes;
@@ -664,7 +664,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             $scope.totalPickUpCount = data.total_pickup_count;
 
             //if pagination end is undefined
-            if ($scope.end == undefined) {
+            if ($scope.end === undefined) {
                 $scope.end = $scope.reservations.length;
             }
 
@@ -863,7 +863,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             $scope.$emit('hideLoader');
 
             //if there is no room type attached, we have to show some message
-            if ($scope.roomTypesAndData.length == 0) {
+            if ($scope.roomTypesAndData.length === 0) {
                 showNoRoomTypesAttachedPopUp();
             }
         };
@@ -961,7 +961,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {undefined}
          */
         $scope.updateReservation = function(reservation) {
-            if (reservation.reservation_status == "CANCELED") {
+            if (reservation.reservation_status === "CANCELED") {
                 return false;
             } else {
                 reservation.group_id = $scope.groupConfigData.summary.group_id;
@@ -988,11 +988,12 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         }
 
         var getReservationStatusFlags = function(reservation) {
+            var rStatus = reservation.reservation_status;
             return {
-                isUneditable: reservation.reservation_status == "CANCELED",
-                isExpected: reservation.reservation_status == "RESERVED" || reservation.reservation_status == "CHECKING_IN",
-                isStaying: reservation.reservation_status == "CHECKEDIN" || reservation.reservation_status == "CHECKING_OUT",
-                canChekin: !!reservation.room_no && new tzIndependentDate(reservation.arrival_date) == new tzIndependentDate($rootScope.businessDate),
+                isUneditable: rStatus === "CANCELED",
+                isExpected: rStatus === "RESERVED" || rStatus === "CHECKING_IN",
+                isStaying: rStatus === "CHECKEDIN" || rStatus === "CHECKING_OUT",
+                canChekin: !!reservation.room_no && new tzIndependentDate(reservation.arrival_date) === new tzIndependentDate($rootScope.businessDate),
                 isGuestAttached: !!reservation.lastname
             }
         }
@@ -1054,7 +1055,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          */
         $scope.$on('NG_REPEAT_COMPLETED_RENDERING', function(event) {
             $timeout(function() {
-                if ($scope.print_type == 'rooming_list') {
+                if ($scope.print_type === 'rooming_list') {
                     printRoomingList();
                 }
             }, 500);
