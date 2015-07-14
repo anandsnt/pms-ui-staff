@@ -15,9 +15,9 @@ admin.directive('adDropdownName', function($timeout) {
             list:'=list',
             name:'@name',
             prop:'@property',
+            ngModel: '=savemodel',
             selectedId:'=selectedId',
             labelClass:'@labelClass',
-            valfor: '@valfor',
             valueproperty:'@valueproperty',
             options: '='
 	    },

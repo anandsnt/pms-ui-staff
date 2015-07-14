@@ -11,7 +11,6 @@ admin.service('adSiteminderSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 		});	
 		return deferred.promise;
 	};
-  
    
 	this.testSetup = function(data){
 		var deferred = $q.defer();

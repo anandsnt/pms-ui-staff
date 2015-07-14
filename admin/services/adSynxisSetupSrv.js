@@ -1,4 +1,4 @@
-admin.service('adSynixSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2){
+admin.service('adSynxisSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2){
    
 	this.fetchSetup = function(data){
 		var deferred = $q.defer();
@@ -9,31 +9,6 @@ admin.service('adSynixSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
 		},function(data){
 		    deferred.reject(data);
 		});	
-		return deferred.promise;
-	};
-  
-	this.fetchOrigins = function(){
-		var deferred = $q.defer();
-		var url = '/api/booking_origins.json';
-		ADBaseWebSrvV2.getJSON(url).then(function(data) {
-		    deferred.resolve(data);
-		},function(data){
-		    deferred.reject(data);
-		});	
-		return deferred.promise;
-	};
-	/*
-	* To fetch hotel PaymentMethods
-	*/
-	this.fetchPaymethods = function() {
-		var deferred = $q.defer();
-		var url = '/admin/hotel_payment_types.json';
-
-		ADBaseWebSrv.getJSON(url).then(function(data) {
-			deferred.resolve(data);
-		}, function(errorMessage) {
-			deferred.reject(errorMessage);
-		});
 		return deferred.promise;
 	};
 	this.testSetup = function(data){
@@ -61,7 +36,7 @@ admin.service('adSynixSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
         
 	this.saveSetup = function(data){
 		var deferred = $q.defer();
-		var url = 'admin/save_ota_connection_config';	
+		var url = 'admin/save_ota_connection_config';//update for synxis-specific
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
