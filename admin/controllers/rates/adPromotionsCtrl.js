@@ -71,7 +71,7 @@ admin.controller('ADPromotionsCtrl', [
 
 		$scope.addPromo = function() {
 			$scope.state.newPromo = ADPromotionsSrv.getPromoDataModel();
-			$scope.state.newPromo.availableRates = $scope.state.rates;
+			$scope.state.newPromo.availableRates = angular.copy($scope.state.rates);
 			$scope.state.newPromo.assignedRates = [];
 			$scope.state.current = 'NEW';
 		};

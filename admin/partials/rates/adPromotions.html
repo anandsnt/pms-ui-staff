@@ -7,7 +7,7 @@
             <ad-toggle-button is-checked="state.usePromos" button-class="activation" div-class="header-title" ng-click="toggleActivatePromotions()" label="Activate promotions">
             </ad-toggle-button>
         </header>
-        <section class="content-scroll">
+        <section class="content-scroll" ng-class="{'overlay' : !state.usePromos}">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div id="add-new" ng-show="state.current == 'NEW'" ng-include="'/assets/partials/rates/adAddPromotions.html'"></div>
             <div id="new-form-holder"></div>

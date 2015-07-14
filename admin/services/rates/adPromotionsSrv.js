@@ -99,7 +99,7 @@ admin.service('ADPromotionsSrv', ['$q', 'ADBaseWebSrvV2',
 			return deferred.promise;
 		};
 
-		this.delete = function(promo) {
+		self.delete = function(promo) {
 			var deferred = $q.defer();
 			var url = '/api/promotions/' + promo.id;
 			ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
@@ -110,5 +110,15 @@ admin.service('ADPromotionsSrv', ['$q', 'ADBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		self.fetchRatePromos = function(id){
+			var deferred = $q.defer();
+			var url = '/api/rates/'+id+'/promotions';
+			ADBaseWebSrvV2.getJSON(url).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
 	}
 ]);
