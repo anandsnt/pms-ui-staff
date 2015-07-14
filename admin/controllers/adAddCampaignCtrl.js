@@ -17,7 +17,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 
 		$scope.mode = 'ADD';
 		fetchConfig();
-		if($stateParams.type == 'EDIT'){
+		if($stateParams.type === 'EDIT'){
 			$scope.mode = 'EDIT';
 			fetchCampaignDetails($stateParams.id);
 		}
@@ -52,7 +52,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		$scope.campaignData.header_image = data.header_image;
 		$scope.campaignData.body = data.body;
 		$scope.campaignData.call_to_action_label = data.call_to_action_label;
-		$scope.campaignData.call_to_action_target = data.call_to_action_target;  
+		$scope.campaignData.call_to_action_target = data.call_to_action_target;
 
 		$scope.campaignData.is_recurring = data.is_recurring? 'true': 'false';
 		$scope.campaignData.day_of_week = data.day_of_week;
@@ -61,15 +61,15 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		$scope.campaignData.completed_time = data.completed_time;
 		$scope.campaignData.status = data.status;
 		$scope.campaignData.end_date_for_display = data.recurrence_end_date;
-		
+
 		var deliveryTime = tConvert(data.time_to_send);
 		if(!isEmptyObject(deliveryTime)){
 			$scope.campaignData.delivery_hour = deliveryTime.hh;
 			$scope.campaignData.delivery_min = deliveryTime.mm;
 			$scope.campaignData.delivery_primetime = deliveryTime.ampm;
 		}
-		
-		$scope.campaignData.recurring_end_type = (data.recurrence_end_date == undefined || data.recurrence_end_date == '') ? 'NEVER' : 'END_OF_DAY';
+
+		$scope.campaignData.recurring_end_type = (data.recurrence_end_date === undefined || data.recurrence_end_date === '') ? 'NEVER' : 'END_OF_DAY';
 		$scope.campaignData.recurrence_end_date = data.recurrence_end_date;
 		$scope.campaignData.alert_ios8 = data.alert_ios8;
 		$scope.campaignData.alert_ios7 = data.alert_ios7;
@@ -96,10 +96,10 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		if($scope.campaignData.delivery_details){
 		campaign.delivery_details = $scope.campaignData.delivery_details;
 		}
-		if($scope.campaignData.screen_type_id && $scope.campaignData.target_type == 'SCREEN'){
+		if($scope.campaignData.screen_type_id && $scope.campaignData.target_type === 'SCREEN'){
 		campaign.screen_type_id = $scope.campaignData.screen_type_id;
 		}
-		if($scope.campaignData.audience_type=="SPECIFIC_USERS"){
+		if($scope.campaignData.audience_type==="SPECIFIC_USERS"){
 		campaign.specific_users = $scope.campaignData.specific_users;
 		}
 		campaign.subject = $scope.campaignData.subject;
@@ -108,8 +108,8 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		campaign.body = $scope.campaignData.body;
 		campaign.call_to_action_label = $scope.campaignData.call_to_action_label;
 		campaign.call_to_action_target = $scope.campaignData.call_to_action_target;
-		campaign.is_recurring = $scope.campaignData.is_recurring == "true"? true : false;
-		campaign.day_of_week = $scope.campaignData.day_of_week; 
+		campaign.is_recurring = $scope.campaignData.is_recurring === "true"? true : false;
+		campaign.day_of_week = $scope.campaignData.day_of_week;
 		//TODO: time_to_send
 		campaign.time_to_send = tConvertToAPIFormat($scope.campaignData.delivery_hour, $scope.campaignData.delivery_min, $scope.campaignData.delivery_primetime);
 		//TODO: recurrence_end_date
@@ -145,16 +145,16 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		var saveSucess = function(data){
 			$scope.campaignData.id = data.id;
 			$scope.$emit('hideLoader');
-			if(action == "START_CAMPAIGN"){
+			if(action === "START_CAMPAIGN"){
 				startCampaign(data.id);
-				
+
 			}else{
 				$scope.gobackToCampaignListing();
 			}
 		}
 		var data = computeCampaignSaveData();
-			
-		if($scope.mode == 'EDIT'){
+
+		if($scope.mode === 'EDIT'){
 			data.id = $scope.campaignData.id;
 			$scope.invokeApi(ADCampaignSrv.updateCampaign, data, saveSucess);
 
@@ -167,16 +167,16 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 	};
 
 	$scope.gobackToCampaignListing = function(){
-		$state.go('admin.campaigns');  
+		$state.go('admin.campaigns');
 
 	};
 
 	$scope.statusChanged = function(){
-		$scope.campaignData.status = $scope.campaignData.status == 'ACTIVE' ? 'INACTIVE': 'ACTIVE';
+		$scope.campaignData.status = $scope.campaignData.status === 'ACTIVE' ? 'INACTIVE': 'ACTIVE';
 	}
 
 	$scope.getTimeConverted = function(time) {
-		if (time == null || time == undefined || time.indexOf("undefined") > -1) {
+		if (time === null || time === undefined || time.indexOf("undefined") > -1) {
 			return "";
 		}
 		var timeDict = tConvert(time);
@@ -188,7 +188,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		var deleteSuccess = function(){
 			$scope.$emit('hideLoader');
 			$scope.gobackToCampaignListing();
-			
+
 		}
 		var params = {"id" : $scope.campaignData.id}
 		$scope.invokeApi(ADCampaignSrv.deleteCampaign, params, deleteSuccess);
@@ -207,7 +207,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 	$scope.$watch(function(){
 		return $scope.campaignData.header_image;
 	}, function(logo) {
-			if(logo == 'false')
+			if(logo === 'false')
 				$scope.fileName = "Choose File....";
 			$scope.campaignData.header_file = $scope.fileName;
 		}
@@ -218,9 +218,9 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 	$scope.isScreenSwitchDisabled = function(){
           var delivery_types = ['EXTERNAL_CHECKIN', 'EXTERNAL_CHECKOUT'];
 
-          if(delivery_types.indexOf($scope.campaignData.audience_type) > -1 
+          if(delivery_types.indexOf($scope.campaignData.audience_type) > -1
           	&& delivery_types.indexOf($scope.campaignData.delivery_details) > -1 &&
-          	 delivery_types.indexOf($scope.campaignData.audience_type) == delivery_types.indexOf($scope.campaignData.delivery_details)){
+          	 delivery_types.indexOf($scope.campaignData.audience_type) === delivery_types.indexOf($scope.campaignData.delivery_details)){
           	return false;
           }
           return true;
@@ -233,7 +233,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
                  $scope.campaignData.target_type = "";
 				 $scope.campaignData.screen_type_id = "";
 			}
-			
+
 		}
 	);
 
@@ -244,8 +244,8 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
                  $scope.campaignData.target_type = "";
 				 $scope.campaignData.screen_type_id = "";
 			}
-			
+
 		}
 	);
-	
+
 }]);

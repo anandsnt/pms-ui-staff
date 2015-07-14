@@ -5,10 +5,10 @@ admin.service('ADRulesRestrictionSrv', [
     
         /*
         * To fetch post types reference values
-        * 
+        *
         * @param {object} contains page and per_page params
         * @return {object} defer promise
-        */  
+        */
         this.fetchRefVales = function(params) {
             var deferred = $q.defer(),
                 url      = '/api/reference_values';
@@ -25,9 +25,9 @@ admin.service('ADRulesRestrictionSrv', [
 
         /*
         * To fetch hotel setting - currency
-        * 
+        *
         * @return {object} defer promise
-        */  
+        */
         this.fetchHotelCurrency = function(params) {
             var deferred = $q.defer(),
                 url      = '/api/hotel_settings';
@@ -44,10 +44,10 @@ admin.service('ADRulesRestrictionSrv', [
 
         /*
         * To fetch restrictions list
-        * 
+        *
         * @param {object} contains page and per_page params
         * @return {object} defer promise
-        */	
+        */
         this.fetchRestrictions = function(params) {
             var deferred = $q.defer(),
                 url      = '/api/restriction_types',
@@ -66,7 +66,7 @@ admin.service('ADRulesRestrictionSrv', [
 
         /*
         * To activate or deactivate a restriction
-        * 
+        *
         * @param {object} contains rule id and status
         * @return {object} defer promise
         */
@@ -89,10 +89,10 @@ admin.service('ADRulesRestrictionSrv', [
 
         /*
         * To fetch rules list for a particular restriction
-        * 
+        *
         * @param {object} contains page and per_page params
         * @return {object} defer promise
-        */  
+        */
         this.fetchCancellationRules = function(params) {
             var deferred = $q.defer(),
                 url      = '/api/cancellation_policies';
@@ -108,16 +108,16 @@ admin.service('ADRulesRestrictionSrv', [
         };
         /*
         * To fetch rules list for a particular restriction
-        * 
+        *
         * @param {object} contains page and per_page params
         * @return {object} defer promise
-        */  
+        */
         this.fetchDepositeRules = function() {
             var deferred = $q.defer(),
                 url      = '/api/deposit_policies';
 
             ADBaseWebSrvV2.getJSON(url)
-                .then(function(data) {                    
+                .then(function(data) {
                     deferred.resolve(data);
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
@@ -129,10 +129,10 @@ admin.service('ADRulesRestrictionSrv', [
 
         /*
         * Save a newly created rule under a particular restriction
-        * 
+        *
         * @param {object} contains page and per_page params
         * @return {object} defer promise
-        */  
+        */
         this.saveRule = function(params) {
             var deferred = $q.defer(),
                 url      = '/api/cancellation_policies';
@@ -148,10 +148,10 @@ admin.service('ADRulesRestrictionSrv', [
         };
         /*
         * Save a newly created rule under a particular restriction
-        * 
+        *
         * @param {object} contains page and per_page params
         * @return {object} defer promise
-        */  
+        */
         this.saveDepositeRule = function(params) {
             var deferred = $q.defer(),
                 url      = '/api/deposit_policies';
@@ -169,10 +169,10 @@ admin.service('ADRulesRestrictionSrv', [
 
         /*
         * update a existing rule under a particular restriction
-        * 
+        *
         * @param {object} contains page and per_page params
         * @return {object} defer promise
-        */  
+        */
         this.updateRule = function(dataWith) {
             var deferred = $q.defer(),
                 url      = '/api/cancellation_policies/' + dataWith.id,
@@ -207,10 +207,10 @@ admin.service('ADRulesRestrictionSrv', [
 
       /*
       * To delete a particular rule
-      * 
+      *
       * @param {object} contains page and per_page params
       * @return {object} defer promise
-      */  
+      */
       this.deleteRule = function(params) {
         var deferred = $q.defer(),
             url      = '/api/cancellation_policies/' + params.id;
@@ -242,10 +242,10 @@ admin.service('ADRulesRestrictionSrv', [
 
       /*
       * get details of a particular rule
-      * 
+      *
       * @param {object} contains page and per_page params
       * @return {object} defer promise
-      */  
+      */
       this.fetchCancellationSingleRule = function(params) {
         var deferred = $q.defer(),
             url      = '/api/cancellation_policies/' + params.id;
@@ -286,7 +286,7 @@ admin.service('ADRulesRestrictionSrv', [
             deferred.resolve(data);
         },function(data){
             deferred.reject(data);
-        }); 
+        });
         return deferred.promise;
     };
 

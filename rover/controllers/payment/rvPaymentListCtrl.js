@@ -26,7 +26,7 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 	} else {
 		reservationId =  $scope.dataToPaymentList.reservation_card.reservation_id;
 	}
-	$scope.invokeApi(RVPaymentSrv.getPaymentList, reservationId, $scope.paymentListSuccess);  
+	$scope.invokeApi(RVPaymentSrv.getPaymentList, reservationId, $scope.paymentListSuccess);
 	
 	$scope.clickPaymentItem = function(paymentId, cardCode, cardNumberEndingWith, expiryDate,isSwiped,colorCode){
 		var data = {
@@ -70,12 +70,12 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 				$scope.dataToPaymentList.reservation_card.payment_details.auth_color_code = colorCode;
 			}
 		};
-		$scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, paymentMapSuccess, paymentMapFailure);  
+		$scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, paymentMapSuccess, paymentMapFailure);
 	};
 	
 	
 	
-	$scope.$parent.myScrollOptions = {		
+	$scope.$parent.myScrollOptions = {
 	    'paymentList': {
 	    	scrollbars: true,
 	        snap: false,
@@ -89,7 +89,7 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 	$scope.$on('$viewContentLoaded', function() {
 		setTimeout(function(){
 			$scope.$parent.myScroll['paymentList'].refresh();
-			}, 
+			},
 		3000);
 		
      });

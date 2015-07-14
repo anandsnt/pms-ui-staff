@@ -55,7 +55,6 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 		}
 
 		$rootScope.$on('UPDATERESERVATIONTYPE', function(e, data) {
-            
             $scope.reservationParentData.demographics.reservationType = data;
 
             var selectedReservationGuaranteeType = _.where($scope.otherData.reservationTypes, {

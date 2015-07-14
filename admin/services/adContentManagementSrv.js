@@ -4,7 +4,7 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
     * @return {object} grid view list json
     */
 	this.fetchGridViewList = function(){
-		
+
 		var deferred = $q.defer();
 		var url = '/api/cms_components.json';
 
@@ -12,7 +12,7 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 
@@ -21,7 +21,7 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
     * @return {object} tree view list json
     */
 	this.fetchTreeViewList = function(){
-		
+
 		var deferred = $q.defer();
 		var url = '/api/cms_components/tree_view.json';
 
@@ -29,7 +29,7 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 
@@ -38,7 +38,7 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
     * @return {object} section/category/item details json
     */
 	this.fetchComponent = function(id){
-		
+
 		var deferred = $q.defer();
 		var url = '/api/cms_components/'+ id;
 
@@ -46,7 +46,7 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
    /*
@@ -57,12 +57,12 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
 	this.saveComponent = function(data){
 
 		var deferred = $q.defer();
-		var url = 'api/cms_components/save';	
+		var url = 'api/cms_components/save';
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 
@@ -75,12 +75,12 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
 	this.saveComponentOrder = function(data){
 
 		var deferred = $q.defer();
-		var url = 'api/cms_components/assign_sequence';	
+		var url = 'api/cms_components/assign_sequence';
 		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 
@@ -92,12 +92,12 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
 	this.deleteSection = function(data){
 
 		var deferred = $q.defer();
-		var url = 'api/cms_components/' + data.id;		
+		var url = 'api/cms_components/' + data.id;
 		ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 
@@ -109,12 +109,12 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
 	this.setAvailablity = function(data){
 
 		var deferred = $q.defer();
-		var url = '';	
+		var url = '';
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 
@@ -126,13 +126,13 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
 	this.fetchChildList = function(data){
 
 		var deferred = $q.defer();
-		var url = 'api/cms_components/'+ data.id+'/sub_categories.json';	
+		var url = 'api/cms_components/'+ data.id+'/sub_categories.json';
 
 		ADBaseWebSrvV2.getJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 

@@ -11,7 +11,7 @@ admin.service('ADBillingGroupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/**
@@ -26,7 +26,7 @@ admin.service('ADBillingGroupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
   /*
@@ -35,12 +35,12 @@ admin.service('ADBillingGroupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 	this.getBillingGroupDetails = function(id){
 
 		var deferred = $q.defer();
-		var url = 'api/billing_groups/'+ id;	
+		var url = 'api/billing_groups/'+ id;
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/*
@@ -49,12 +49,12 @@ admin.service('ADBillingGroupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 	this.createBillingGroup = function(data){
 
 		var deferred = $q.defer();
-		var url = 'api/billing_groups';	
+		var url = 'api/billing_groups';
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
    /*
@@ -63,12 +63,12 @@ admin.service('ADBillingGroupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 	this.updateBillingGroup = function(data){
 
 		var deferred = $q.defer();
-		var url = 'api/billing_groups/'+data.id;	
+		var url = 'api/billing_groups/'+data.id;
 		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/*
@@ -77,12 +77,12 @@ admin.service('ADBillingGroupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 	this.deleteBillingGroup = function(id){
 
 		var deferred = $q.defer();
-		var url = '/api/billing_groups/'+id;	
+		var url = '/api/billing_groups/'+id;
 		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 

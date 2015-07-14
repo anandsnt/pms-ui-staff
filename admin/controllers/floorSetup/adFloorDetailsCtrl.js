@@ -1,15 +1,15 @@
 admin.controller('ADFloorDetailsCtrl',
-    [   '$scope', 
-        '$state', 
-        'ADFloorSetupSrv', 
-        '$filter',  
+    [   '$scope',
+        '$state',
+        'ADFloorSetupSrv',
+        '$filter',
         'floorDetails',
         '$stateParams',
     function(
-        $scope, 
-        $state, 
-        ADFloorSetupSrv, 
-        $filter, 
+        $scope,
+        $state,
+        ADFloorSetupSrv,
+        $filter,
         floorDetails,
         $stateParams){
 	
@@ -24,17 +24,17 @@ admin.controller('ADFloorDetailsCtrl',
         $scope.floorData.searchKey = '';
 
         //duplicate of floor number
-        $scope.floorData.floor_number_old = floorDetails.floor_number; 
+        $scope.floorData.floor_number_old = floorDetails.floor_number;
         
         //list of unassigned rooms
         $scope.unassignedRooms = [];
         $scope.assignedRooms = [];
 
-        //list of assigned rooms        
+        //list of assigned rooms
         _.each(floorDetails.rooms, function(room){
             room.isFromAssigned = true;
             $scope.assignedRooms.push(room);
-        });          
+        });
 
     };
 
@@ -44,12 +44,12 @@ admin.controller('ADFloorDetailsCtrl',
     */
     var setUpForAddMode = function(){
         $scope.floorData = {};
-        $scope.floorData.searchKey = ''; 
+        $scope.floorData.searchKey = '';
         //list of unassigned rooms
         $scope.unassignedRooms = [];
 
         //list of assigned rooms
-        $scope.assignedRooms = [];            
+        $scope.assignedRooms = [];
     };
     
     /**
@@ -108,9 +108,9 @@ admin.controller('ADFloorDetailsCtrl',
         $scope.errorMessage = '';
 
         //if we have id in stateparams, we have to switch to edit mode
-        $scope.isAddMode = $stateParams.id ? false : true;  
+        $scope.isAddMode = $stateParams.id ? false : true;
 
-        $scope.isSearchResult = false ;      
+        $scope.isSearchResult = false ;
       
         //if it is in editMode
         if(!$scope.isAddMode) setUpForEditMode();
@@ -126,48 +126,48 @@ admin.controller('ADFloorDetailsCtrl',
 
         // used to hide 'find Rooms & ..' thing for a while
         $scope.IsTryingToDropOnUnAssigned = false;
-	};	
+	};
     
     /**
     * when an item selected, we will add/remove from array 'selectedUnassignedRooms'
     * @param {Object} - Room
-    * @return - None    
+    * @return - None
     */
     $scope.unAssignedRoomSelected = function(room){
         var roomIndex = _.indexOf(_.pluck($scope.selectedUnassignedRooms, 'id'), room.id);
 
         //is not in list, we have to add
         if (roomIndex === -1){
-            $scope.selectedUnassignedRooms.push(room);            
+            $scope.selectedUnassignedRooms.push(room);
         }
         //if found, we have to remove from list
         else {
-            $scope.selectedUnassignedRooms.splice(roomIndex, 1);     
+            $scope.selectedUnassignedRooms.splice(roomIndex, 1);
         }
     };
 
     /**
     * when an item selected, we will add/remove from array 'selectedUnassignedRooms'
     * @param {Object} - Room
-    * @return - None    
+    * @return - None
     */
     $scope.assignedRoomSelected = function(room){
         var roomIndex = _.indexOf(_.pluck($scope.selectedAssignedRooms, 'id'), room.id);
 
         //is not in list, we have to add
         if (roomIndex === -1){
-            $scope.selectedAssignedRooms.push(room);            
+            $scope.selectedAssignedRooms.push(room);
         }
         //if found, we have to remove from list
         else {
-            $scope.selectedAssignedRooms.splice(roomIndex, 1);     
+            $scope.selectedAssignedRooms.splice(roomIndex, 1);
         }
     };
 
     /**
     * Method for go back
     * will redirect to to floor list screen
-    * @return - None  
+    * @return - None
     */
     $scope.back = function(){
         $state.go ('admin.floorsetups');
@@ -176,7 +176,7 @@ admin.controller('ADFloorDetailsCtrl',
     /**
     * we have to add 'Selected' against those unSelected rooms
     * @param {Object} - Room
-    * @return {Boolean} 
+    * @return {Boolean}
     */
     $scope.amInSelectedUnAssignedRooms = function(room){
         var roomIndex = _.indexOf(_.pluck($scope.selectedUnassignedRooms, 'id'), room.id);
@@ -190,14 +190,14 @@ admin.controller('ADFloorDetailsCtrl',
     */
     $scope.clearQuery = function(){
         $scope.floorData.searchKey = '';
-        //Setting default message for assigned Rooms    	
+        //Setting default message for assigned Rooms
         $scope.isSearchResult = false;
     };
 
     /**
     * we have to add 'Selected' against those unSelected rooms
     * @param {Object} - Room
-    * @return {Boolean} 
+    * @return {Boolean}
     */
     $scope.amInSelectedAssignedRooms = function(room){
         var roomIndex = _.indexOf(_.pluck($scope.selectedAssignedRooms, 'id'), room.id);
@@ -211,7 +211,7 @@ admin.controller('ADFloorDetailsCtrl',
     * @return {Array} of unique room objects
     */
     $scope.changeToUniqueRoomList = function(roomList){
-        var uniqueList = _.uniq(roomList, function(item, key, a) { 
+        var uniqueList = _.uniq(roomList, function(item, key, a) {
             return item.id;
         });
         return uniqueList;
@@ -244,7 +244,7 @@ admin.controller('ADFloorDetailsCtrl',
     */
     $scope.droppedOnUnAssignedRoomList = function(){
         //creating unique room list after pushing new entries
-        $scope.unassignedRooms = $scope.changeToUniqueRoomList ($scope.unassignedRooms); 
+        $scope.unassignedRooms = $scope.changeToUniqueRoomList ($scope.unassignedRooms);
 
         //we have to remove from selected item from unassigned list after dropping
         var roomIndex;
@@ -266,7 +266,7 @@ admin.controller('ADFloorDetailsCtrl',
     * will move the selected UnAssignItems to Selected Item List
     * @return - None
     */
-    $scope.moveSelectedUnAssignToAssignList = function(){    	
+    $scope.moveSelectedUnAssignToAssignList = function(){
     	
         var roomIndex = -1;
         _.each($scope.selectedUnassignedRooms, function(room){
@@ -301,16 +301,16 @@ admin.controller('ADFloorDetailsCtrl',
             //removing from UnAssigning list
             roomIndex = _.indexOf(_.pluck($scope.assignedRooms, 'id'), room.id);
             if (roomIndex != -1) {
-                $scope.assignedRooms.splice (roomIndex, 1);            
+                $scope.assignedRooms.splice (roomIndex, 1);
             }
         });
 
         //resetting after moving all
-        $scope.selectedAssignedRooms = []; 
+        $scope.selectedAssignedRooms = [];
 
         //creating unique room list after pushing new entries
         $scope.assignedRooms = $scope.changeToUniqueRoomList ($scope.assignedRooms);
-        $scope.unassignedRooms = $scope.changeToUniqueRoomList ($scope.unassignedRooms);               
+        $scope.unassignedRooms = $scope.changeToUniqueRoomList ($scope.unassignedRooms);
     };
 
     /*
@@ -325,7 +325,7 @@ admin.controller('ADFloorDetailsCtrl',
 		 
     	var successCallbackSave = function(data){
     		$scope.$emit('hideLoader');
-    		$scope.back ();    		    	
+    		$scope.back ();
     	};
 
     	//appending the room ids in list
@@ -352,17 +352,17 @@ admin.controller('ADFloorDetailsCtrl',
     * will set unassignrooms with what we got from API
     * @return - None
     */
-    var successCallBackOfFetchAllUnAssignedRoom = function(data) {  
+    var successCallBackOfFetchAllUnAssignedRoom = function(data) {
     	
     	$scope.isSearchResult = true ;
-        // filtering asignedrooms.    
+        // filtering asignedrooms.
         $scope.unassignedRooms = _.filter($scope.unassignedRooms, function(room){
             return (room.isFromAssigned == true);
         });
-        //if there is already some unassigned there, we will just append 
+        //if there is already some unassigned there, we will just append
         _.each(data.rooms, function(room){
             $scope.unassignedRooms.push(room);
-        });        
+        });
         //creating unique room list after pushing new entries
         $scope.unassignedRooms = $scope.changeToUniqueRoomList ($scope.unassignedRooms);
 
@@ -374,64 +374,64 @@ admin.controller('ADFloorDetailsCtrl',
     * To fetch list of all unassigned room
     * @return - None
     */
-    $scope.showAllUnassignedRooms = function(){  
+    $scope.showAllUnassignedRooms = function(){
         $scope.unassignedRooms = [];
 		var params 	= {
 			query: 	''
-		};   		
+		};
     	var options = {
     		params: 			params,
-    		successCallBack: 	successCallBackOfFetchAllUnAssignedRoom      		
+    		successCallBack: 	successCallBackOfFetchAllUnAssignedRoom
         }
-        $scope.callAPI(ADFloorSetupSrv.getUnAssignedRooms, options);		
+        $scope.callAPI(ADFloorSetupSrv.getUnAssignedRooms, options);
     };
 
 
     /*
     * on canceling, we are going back  to floor list page
-    * @return - None 
-    */	
+    * @return - None
+    */
     $scope.clickCancel = function(){
     	$scope.back();
-    };	
+    };
 
     /**
     * To search for unassigned room
     * @return - None
     */
-    $scope.searchInUnassignedRooms = function() { 
+    $scope.searchInUnassignedRooms = function() {
 		var params 	= {
 			query: $scope.floorData.searchKey
-		};   		
+		};
     	var options = {
     		params: 			params,
-    		successCallBack: 	successCallBackOfFetchAllUnAssignedRoom      		
+    		successCallBack: 	successCallBackOfFetchAllUnAssignedRoom
         }
-        $scope.callAPI(ADFloorSetupSrv.getUnAssignedRooms, options);		
+        $scope.callAPI(ADFloorSetupSrv.getUnAssignedRooms, options);
     };
 
     /**
-    * To select all unassigned 
-    * mainly used for transferring all unassigned to assigned 
+    * To select all unassigned
+    * mainly used for transferring all unassigned to assigned
     * @return - None
     */
     $scope.selectAllUnassignedRooms = function(){
-        $scope.selectedUnassignedRooms = []; 
+        $scope.selectedUnassignedRooms = [];
         _.each($scope.unassignedRooms, function(room){
-            $scope.selectedUnassignedRooms.push (room);           
-        }); 
+            $scope.selectedUnassignedRooms.push (room);
+        });
     }
 
     /**
-    * To select all assigned 
-    * mainly used for transferring all assigned to unassigned 
+    * To select all assigned
+    * mainly used for transferring all assigned to unassigned
     * @return - None
     */
     $scope.selectAllAssignedRooms = function(){
         $scope.selectedAssignedRooms = [];
         _.each($scope.assignedRooms, function(room){
-            $scope.selectedAssignedRooms.push (room);           
-        });         
+            $scope.selectedAssignedRooms.push (room);
+        });
     }
 
     /**
@@ -459,20 +459,20 @@ admin.controller('ADFloorDetailsCtrl',
 
         var params  = {
             id: floorDetails.id
-        };          
+        };
         var options = {
             params:             params,
-            successCallBack:    successCallBackOfDeleteFloor             
+            successCallBack:    successCallBackOfDeleteFloor
         }
         $scope.callAPI(ADFloorSetupSrv.deleteFloor, options);
     };
 
     /**
     * To enable/disable save button
-    * @return {Boolean}    
+    * @return {Boolean}
     */
     $scope.shouldDisableSaveButton = function(){
-        if ($scope.floorData.floor_number && 
+        if ($scope.floorData.floor_number &&
             $scope.floorData.floor_number.trim() !== ''){
             return false;
         }
@@ -481,10 +481,10 @@ admin.controller('ADFloorDetailsCtrl',
 
     /**
     * To enable/disable save button
-    * @return {Boolean}    
+    * @return {Boolean}
     */
     $scope.isSomethingEnteredInSearchBox = function(){
-        if ($scope.floorData.searchKey && 
+        if ($scope.floorData.searchKey &&
             $scope.floorData.searchKey.trim() !== ''){
             return true;
         }
@@ -508,7 +508,7 @@ admin.controller('ADFloorDetailsCtrl',
     $scope.getFormNameForMe = function(){
         return ($scope.isAddMode ? "new-floor" : "edit-floor");
     };
-    initializeMe();	
+    initializeMe();
 
 }]);
 

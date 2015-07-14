@@ -22,7 +22,7 @@ sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSr
 	    		$scope.attachedEntities.travel_agent.name = $scope.contactInformation.account_details.account_name;
 	    		$scope.attachedEntities.travel_agent.logo = $scope.contactInformation.account_details.company_logo;
 	    		$scope.billingEntity = "TRAVEL_AGENT_DEFAULT_BILLING";
-	    		
+
 	    	} else if (accountType == 'COMPANY'){
 	    		$scope.attachedEntities = {};
 	    		$scope.attachedEntities.company_card = {};
@@ -30,8 +30,8 @@ sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSr
 	    		$scope.attachedEntities.company_card.name = $scope.contactInformation.account_details.account_name;
 	    		$scope.attachedEntities.company_card.logo = $scope.contactInformation.account_details.company_logo;
 	    		$scope.billingEntity = "COMPANY_CARD_DEFAULT_BILLING";
-	    		
-	    		
+
+
 	    	} else {
 	    		return false;
 	    	}
@@ -54,7 +54,7 @@ sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSr
 		var refreshScroller = function() {
 			$scope.refreshScroller('companyCardDetailsContactCtrl');
 		};
-		
+
 		$scope.$on("BILLINGINFODELETED", function() {
 			$scope.contactInformation.account_details.routes_count = 0;
 		});
@@ -63,9 +63,9 @@ sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSr
 			$scope.contactInformation.account_details.routes_count = 1;
 		});
 
-		
-		
-		
+
+
+
 
 	}
 ]);
