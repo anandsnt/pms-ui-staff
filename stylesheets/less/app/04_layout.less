@@ -1494,11 +1494,15 @@ body { overflow: hidden; }
 
             &.split {
             	float: none;
-            	padding-bottom: 11px;
-            	margin-bottom: 10px;
-            	border-bottom: 1px solid rgba(0,0,0,.1);
             	width: 100%;
+            	margin-bottom: 10px;
+            	.transition();
             	.float;
+
+            	.inline {
+            		font-size: 14px;
+            		text-transform: uppercase;
+            	}            	
 
             	.only-number {
 					font-size: 30px;
@@ -1508,6 +1512,7 @@ body { overflow: hidden; }
 					padding: 0;
 					margin: 0 10px 0 0;
 					line-height: 50px;
+					.hide;
 					.calc-width(20, 8);
 					.pull-left;
 					.no-transition;
@@ -1533,6 +1538,13 @@ body { overflow: hidden; }
 						&[disabled],
 						&[readonly] { cursor: default;}
 					}
+				}
+
+				&.active {
+					padding-bottom: 11px;	            	
+	            	border-bottom: 1px solid rgba(0,0,0,.1);
+
+	            	.only-number { .show; }
 				}
             }
 
