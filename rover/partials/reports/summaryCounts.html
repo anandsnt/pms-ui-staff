@@ -42,3 +42,7 @@
 <ul ng-if="isThisReport('ROOMS_QUEUED')" class="totals">
     <li>Rooms Queued<span>{{ summaryCounts.rooms_queued }}</span></li>
 </ul>
+<ul ng-if="isThisReport('EARLY_CHECKIN')" class="totals">
+    <li>Total Early Check-Ins<span>{{ summaryCounts.total_early_checkins }}</span></li><!-- placeholder -->
+    <li>Total Revenue<span class="green">{{ summaryCounts.total_revenue | currency:currencySymbol:2 }}</span></li><!-- placeholder -->
+</ul>

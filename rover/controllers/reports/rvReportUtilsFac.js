@@ -17,6 +17,7 @@ sntRover.factory('RVReportUtilsFac', [
             'WEB_CHECK_OUT_CONVERSION'     : 'Web Check Out Conversion',
             'WEB_CHECK_IN_CONVERSION'      : 'Web Check In Conversion',
             'LATE_CHECK_OUT'               : 'Late Check Out',
+            'EARLY_CHECKIN'                : 'Early Check In',
             'IN_HOUSE_GUEST'               : 'In-House Guests',
             'ARRIVAL'                      : 'Arrival',
             'DEPARTURE'                    : 'Departure',

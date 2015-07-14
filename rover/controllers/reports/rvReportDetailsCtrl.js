@@ -89,6 +89,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.isGuestReport = true;
 					$scope.showSortBy = false;
 					break;
+                                        
+				case reportUtils.getName('EARLY_CHECKIN'):
+					$scope.isGuestReport = true;
+					$scope.showSortBy = true;
+					break;
 
 				case reportUtils.getName('CANCELLATION_NO_SHOW'):
 					$scope.hasNoTotals = true;
@@ -233,7 +238,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// NOTE: this implementation also effects template, depending on design
 			// discard previous values
 			$scope.firstHalf = [];
-			$scope.firstHalf = [];
+			$scope.restHalf = [];
 
 			// making unique copies of array
 			// slicing same array not good.
