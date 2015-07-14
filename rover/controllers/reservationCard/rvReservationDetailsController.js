@@ -213,6 +213,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				$scope.wake_up_time = wakeuptime;
 			}
 		);
+
 		$scope.shouldShowGuestDetails = false;
 		$scope.toggleGuests = function() {
 			// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
@@ -458,8 +459,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		*/
 		$scope.shouldShowChangeStayDatesButton = function() {
 			return ($scope.isNightsEnabled() &&
-					!$scope.reservationData.reservation_card.is_hourly_reservation &&
-					$scope.reservationData.reservation_card.group_id.trim() === '' )
+					!$scope.reservationData.reservation_card.is_hourly_reservation)
 		}
 
 		$scope.isNightsEnabled = function() {
