@@ -21,25 +21,25 @@ admin.controller('ADEmvTerminalDetailsCtrl', ['$scope','$rootScope','ADEmvTermin
 
 	var fetchSuccessOfItemDetails = function(data){
 		$scope.$emit('hideLoader');
-		$scope.itemDetails = data;					
+		$scope.itemDetails = data;
 	};
 	
 	var fetchFailedOfItemDetails = function(errorMessage){
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = errorMessage ;
-	};	
+	};
 	if($scope.mod == 'edit'){
-		$scope.invokeApi(ADEmvTerminalsSrv.getItemDetails, {'item_id': itemId}, fetchSuccessOfItemDetails, fetchFailedOfItemDetails);	
+		$scope.invokeApi(ADEmvTerminalsSrv.getItemDetails, {'item_id': itemId}, fetchSuccessOfItemDetails, fetchFailedOfItemDetails);
 	}
 	
 	$scope.goBack = function(){
-		$state.go('admin.emvTerminals');  
+		$state.go('admin.emvTerminals');
 	}
 
 	$scope.saveItemDetails = function()	{
 		var postData = {};
 		if($scope.mod == 'edit'){
-			postData.id = $scope.itemDetails.id;			
+			postData.id = $scope.itemDetails.id;
 		}
 
 		postData.name = $scope.itemDetails.name;
@@ -49,13 +49,13 @@ admin.controller('ADEmvTerminalDetailsCtrl', ['$scope','$rootScope','ADEmvTermin
 			$timeout(function() {
 				$scope.goBack();
 			}, 3000);
-		};	
+		};
 		
 		if($scope.mod == 'edit'){
 			$scope.invokeApi(ADEmvTerminalsSrv.updateItemDetails, postData, fetchSuccessOfSaveItemDetails);
 		}
-		else{	
-			$scope.invokeApi(ADEmvTerminalsSrv.saveItemDetails, postData, fetchSuccessOfSaveItemDetails);	
+		else{
+			$scope.invokeApi(ADEmvTerminalsSrv.saveItemDetails, postData, fetchSuccessOfSaveItemDetails);
 		}
 	}
 

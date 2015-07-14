@@ -9,7 +9,7 @@ admin.controller('ADRatesAddonsCtrl', [
 	'$timeout',
 	function($scope, $rootScope, ADRatesAddonsSrv, ADHotelSettingsSrv, $filter, ngTableParams, ngDialog, $timeout) {
 
-		
+
 
 		// extend base controller
 		$scope.init = function() {
@@ -19,7 +19,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			$scope.data   = [];
 			$scope.singleAddon = {};
 
-			// for adding 
+			// for adding
 			$scope.isAddMode = false;
 
 			// api load count
@@ -51,9 +51,9 @@ admin.controller('ADRatesAddonsCtrl', [
 			$scope.currentClickedAddon = -1;
 
 			var fetchSuccessOfItemList = function(data) {
-				$scope.totalCount = data.total_count;	
+				$scope.totalCount = data.total_count;
 				$scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
-				
+
 				$scope.currentPage = params.page();
 	        	params.total(data.total_count);
 
@@ -67,14 +67,14 @@ admin.controller('ADRatesAddonsCtrl', [
 	            $scope.$emit('hideLoader');
 	            $scope.fetchOtherApis();
 			};
-			$scope.invokeApi(ADRatesAddonsSrv.fetch, getParams, fetchSuccessOfItemList);	
-		};	
+			$scope.invokeApi(ADRatesAddonsSrv.fetch, getParams, fetchSuccessOfItemList);
+		};
 
 		$scope.loadTable = function() {
 			$scope.currentClickedAddon = -1;
 			$scope.tableParams = new ngTableParams({
 			        page: 1,  // show first page
-			        count: $scope.displyCount, // count per page 
+			        count: $scope.displyCount, // count per page
 			        sorting: {
 			            name: 'asc' // initial sorting
 			        }
@@ -124,7 +124,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			};
 			$scope.invokeApi(ADRatesAddonsSrv.fetchChargeGroups, {}, cgCallback, '', 'NONE');
 
-		
+
 			// fetch charge codes
 			var ccCallback = function(data) {
 				$scope.chargeCodes = data.results;
@@ -157,7 +157,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			$scope.invokeApi(ADRatesAddonsSrv.fetchBusinessDate, {}, bdCallback, '', 'NONE');
 		};
 
-		
+
 
 		// To fetch the template for chains details add/edit screens
 		$scope.getTemplateUrl = function() {
@@ -173,12 +173,12 @@ admin.controller('ADRatesAddonsCtrl', [
 			$scope.isAddMode   = true;
 			$scope.isEditMode  = false;
 
-			// reset any currently being edited 
+			// reset any currently being edited
 			$scope.currentClickedAddon = -1;
 
 			// title for the sub template
 			$scope.addonTitle    = $filter('translate')('ADD_NEW_SMALL');
-			$scope.addonSubtitle = $filter('translate')('ADD_ON'); 
+			$scope.addonSubtitle = $filter('translate')('ADD_ON');
 
 			// params to be sent to server
 			$scope.singleAddon            = {};
@@ -196,12 +196,12 @@ admin.controller('ADRatesAddonsCtrl', [
 		// listen for datepicker update from ngDialog
 		var updateBind = $rootScope.$on('datepicker.update', function(event, chosenDate) {
 
-			// covert the date back to 'MM-dd-yyyy' format  
+			// covert the date back to 'MM-dd-yyyy' format
 			if ( $scope.dateNeeded === 'From' ) {
 	            $scope.singleAddon.begin_date = chosenDate;
 	            // convert system date to MM-dd-yyyy format
 				$scope.singleAddon.begin_date_for_display = $filter('date')(tzIndependentDate(chosenDate), $rootScope.dateFormat);
-				
+
 
 	            // if user moved begin_date in a way
 	            // that the end_date is before begin_date
@@ -252,7 +252,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
-				
+
 				$scope.singleAddon = data;
 				manipulateChargeCodeForChargeGroups();
 
@@ -281,8 +281,8 @@ admin.controller('ADRatesAddonsCtrl', [
 				};
 
 				// convert system date to MM-dd-yyyy format
-				
-				
+
+
 
 				$scope.singleAddon.begin_date = $scope.singleAddon.begin_date;
 				$scope.singleAddon.end_date   =$scope.singleAddon.end_date;
@@ -304,7 +304,7 @@ admin.controller('ADRatesAddonsCtrl', [
 		// on save add/edit addon
 		$scope.addUpdateAddon = function() {
 
-			
+
 
 			var singleAddonData = {};
 			singleAddonData.activated = $scope.singleAddon.activated;
@@ -335,7 +335,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
 					$scope.tableParams.reload();
 				};
-				
+
 
 				$scope.invokeApi(ADRatesAddonsSrv.addNewAddon, singleAddonData, callback);
 			};
@@ -358,7 +358,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			};
 		};
 
-		// on change activation 
+		// on change activation
 		$scope.switchActivation = function() {
 			var item = this.item;
 
@@ -422,11 +422,11 @@ admin.controller('ADRatesAddonsCtrl', [
 			$scope.singleAddon.is_reservation_only = $scope.singleAddon.rate_code_only ? false : $scope.singleAddon.is_reservation_only;
 		};
 		$scope.sortByName = function(){
-		if($scope.currentClickedAddon == -1)
+		if($scope.currentClickedAddon === -1)
 			$scope.tableParams.sorting({'name' : $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'});
 		};
 		$scope.sortByDescription = function(){
-		if($scope.currentClickedAddon == -1)
+		if($scope.currentClickedAddon === -1)
 			$scope.tableParams.sorting({'description' : $scope.tableParams.isSortBy('description', 'asc') ? 'desc' : 'asc'});
 		};
 
@@ -436,9 +436,9 @@ admin.controller('ADRatesAddonsCtrl', [
 		$scope.importFromPms = function(event){
 
 			event.stopPropagation();
-			
+
 			$scope.successMessage = "Collecting package details from PMS and adding to Rover...";
-			
+
 			var fetchSuccessOfPackageList = function(data){
 				$scope.$emit('hideLoader');
 				$scope.successMessage = "Completed!";

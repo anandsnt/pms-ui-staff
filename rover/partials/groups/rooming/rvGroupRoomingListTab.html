@@ -90,6 +90,11 @@
                 <span class="icons icon-print"></span>
                 {{'GROUP_PRINT'|translate}}
             </button>
+            <button type="button" class="batch button with-icon" ng-click="printRegistrationCards();" 
+                    ng-class="{'grey' : totalPickUpCount < 1,'brand-colors' : totalPickUpCount > 0}" 
+                    ng-disabled="totalPickUpCount < 1">
+                    <span class="icons icon-print"></span> {{'GROUP_BATCH'|translate}}
+                </button>
             <button type="button" class="button with-icon only-icon purple" ng-hide="true">
                 <span class="icons icon-save"></span>
                 {{'GROUP_DOWNLOAD'|translate}}
@@ -98,7 +103,7 @@
     </ul>
 </div>
 
-<div id="group-room-list-content" class="tab-details">
+<div id="group-room-list-content" class="tab-details" ng-class="{'no-print' : isPrintRegistrationCard}">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <!-- When no rooms in list -->
     <div class="no-content" ng-show="shouldShowNoReservations()">

@@ -2,12 +2,12 @@ admin.service('adRoomUpsellService',['$q', 'ADBaseWebSrv', function( $q, ADBaseW
    /*
     * To fetch late checkout upsell details
     * @return {object}late checkout upsell details
-    */	
+    */
 
 
    this.fetch = function(){
 		var deferred = $q.defer();
-		var url = '/admin/room_upsells/room_upsell_options.json';	
+		var url = '/admin/room_upsells/room_upsell_options.json';
 		
 		ADBaseWebSrv.getJSON(url).then(function(data) {
       data.room_types_list = [];
@@ -33,7 +33,7 @@ admin.service('adRoomUpsellService',['$q', 'ADBaseWebSrv', function( $q, ADBaseW
 	 this.update = function(data){
 	 	var updateData = data;
 		var deferred = $q.defer();
-	 	var url = '/admin/room_upsells/update_upsell_options';	
+	 	var url = '/admin/room_upsells/update_upsell_options';
 		
 	 	ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
 	 		deferred.resolve(data);

@@ -158,7 +158,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 						// single calculate the class required
 						// will require additional call from details page
-						that.setRoomStatusClass(room, roomList.checkin_inspected_only);
+						that.setRoomStatusClass(room);
 
 						// set the leaveStatusClass or enterStatusClass value
 						that.setReservationStatusClass(room);
@@ -391,6 +391,37 @@ sntRover.service('RVHkRoomStatusSrv', [
 			return deferred.promise;
 		};
 
+		this.fetchHkStatusList = function() {
+			var deferred = $q.defer(),
+				url = 'api/rooms/hk_status_list';
+
+			BaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+		// put hk status change from room status page
+		// this api can update hk status for one 
+		// or many room at once
+		this.putHkStatusChange = function(params) {
+			var deferred = $q.defer(),
+				url = 'house/mass_change_hk_status';
+
+			BaseWebSrvV2.putJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
 
 		this.toggleFilter = function(item) {
 			this.currentFilters[item] = !this.currentFilters[item];
@@ -407,7 +438,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 		// Moved from ctrl to srv as this is calculated only once
 		// keept as msg so that it can be called from crtl if needed
-		this.setRoomStatusClass = function(room, checkinInspectedOnly) {
+		this.setRoomStatusClass = function(room) {
 
 			var isOOSorOOO;
 			if ( room.hasOwnProperty('service_status') ) {
@@ -418,7 +449,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 				isOOSorOOO = room.hk_status.value == 'OO' || room.hk_status.value == 'OS' || room.room_reservation_hk_status == 2 || room.room_reservation_hk_status == 3;
 			};
 
-			if (checkinInspectedOnly == "true") {
+			if (roomList.checkin_inspected_only == "true") {
 				if (room.hk_status.value == 'INSPECTED') {
 					room.roomStatusClass = 'clean';
 					return;
@@ -549,31 +580,6 @@ sntRover.service('RVHkRoomStatusSrv', [
 				room.leaveStatusClass = 'late-check-out';
 			};
 		};
-
-		// when user edit the room on details page
-		// update that on the room list
-		this.updateHKStatus = function(updatedRoom) {
-
-			// disabled for now
-			return;
-
-			var newValue = updatedRoom.current_hk_status;
-
-			var newDescription = newValue.toLowerCase();
-			var fChar = newDescription[0].toUpperCase();
-			var rChar = newDescription.slice(1);
-			newDescription = fChar + rChar;
-
-			var matchedRoom = _.find(roomList.rooms, function(room) {
-				return parseInt(room.id) === updatedRoom.id;
-			});
-
-			matchedRoom.hk_status.value = newValue;
-			matchedRoom.hk_status.description = newDescription;
-			matchedRoom.description = newDescription;
-			matchedRoom.roomStatusClass = this.setRoomStatusClass(matchedRoom);
-		};
-
 
 		/**
 		 * CICO-8470 QA comment : Rooms filter for OOO/OOS does not display the correct rooms
