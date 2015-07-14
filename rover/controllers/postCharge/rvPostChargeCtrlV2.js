@@ -10,26 +10,44 @@ sntRover.controller('RVPostChargeControllerV2',
 			// hook up the basic things
 			BaseCtrl.call( this, $scope );
 
-			$scope.fetchedData = {};
+			//$scope.fetchedData = {};
 			$scope.fetchedData.charge_groups = [];
 
 			var fetchChargeGroups = function(){
         
-				var successCallBackFetchChargeGroups = function(data){
+				var successCallBackFetchChargeGroups = function( data ){
 					$scope.fetchedData.charge_groups = data.results;
 		            $scope.$emit('hideLoader');
 				};
 
-				$scope.invokeApi(RVPostChargeSrvV2.fetchChargeGroups, {}, successCallBackFetchChargeGroups);
+				$scope.invokeApi( RVPostChargeSrvV2.fetchChargeGroups, {}, successCallBackFetchChargeGroups );
 		    };
 
 		    fetchChargeGroups();
 
+		    var searchChargeCodeItems = function(){
 
+		    	var params = {
+					"query" 			: $scope.query ? $scope.query.toLowerCase() : '',
+					"page"				: 1,
+					"per_page" 			: 100,
+					"charge_group_id" 	: $scope.chargeGroup !== 'FAV' ? $scope.chargeGroup : '',
+					"is_favorite"		: $scope.chargeGroup === 'FAV' ? 1 : 0
+				};
 
+console.log(params);
 
+		    	var successCallBackFetchChargeCodes = function( data ){
+		    		console.log(data);
+		    		$scope.fetchedItems = [];
+		    		$scope.fetchedItems = data.results;
 
+		            $scope.$emit('hideLoader');
+		            $scope.refreshScroller('items_list');
+				};
 
+				$scope.invokeApi( RVPostChargeSrvV2.searchChargeItems, params, successCallBackFetchChargeCodes );
+		    };
 
 
 
@@ -37,10 +55,13 @@ sntRover.controller('RVPostChargeControllerV2',
 
 			// quick ref to fetched items
 			// and chosen one from the list
-			$scope.fetchedItems = $scope.fetchedData.items;
-			$scope.fetchedChargeCodes = $scope.fetchedData.non_item_linked_charge_codes;
-			$scope.selectedChargeItem = null;
-			$scope.isResultOnFetchedItems = true;
+			//$scope.fetchedItems = $scope.fetchedData.items;
+			//$scope.fetchedChargeCodes = $scope.fetchedData.non_item_linked_charge_codes;
+			//$scope.selectedChargeItem = null;
+			//$scope.isResultOnFetchedItems = true;
+
+			$scope.selectedChargeItemHash = {};
+
 			$scope.isOutsidePostCharge = false;
 			
 			var scrollerOptions = {preventDefault: false};
@@ -74,45 +95,37 @@ sntRover.controller('RVPostChargeControllerV2',
 			// }
 			
 			// filter the items based on the chosen charge group
-			/*$scope.filterbyChargeGroup = function() {
+			$scope.filterbyChargeGroup = function() {
 
 				// reset the search query
-				$scope.query === '';
+				//$scope.query === '';
 
 				// since the user input charge group will be string
 				// convert it to int, with causion
-				var chargeGroupInt = isNaN(parseInt($scope.chargeGroup)) ? $scope.chargeGroup : parseInt($scope.chargeGroup);
+				//var chargeGroupInt = isNaN(parseInt($scope.chargeGroup)) ? $scope.chargeGroup : parseInt($scope.chargeGroup);
 
-				for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
-					var item = $scope.fetchedItems[i];
 
-					if ( $scope.chargeGroup === '' ) {
-						item.show = true;
-						continue;
-					} else if ( chargeGroupInt === item.charge_group_value || ($scope.chargeGroup === 'FAV' && item.is_favorite) ) {
-						item.show = true;
-					} else {
-						item.show = false;
-					}
-				}	
-				$scope.refreshScroller('items_list');				
-			};*/
+				
+				searchChargeCodeItems();
+			};
 
 			// filter the items based on the search query
 			// will search on all items, discard chosen 'chargeGroup'
 			$scope.filterByQuery = function() {
 				var query = $scope.query ? $scope.query.toLowerCase() : '';
-				var isFoundInFetchedItems = false;
-				$scope.isResultOnFetchedChargecode = false;
-				if (query === '') {
+				//var isFoundInFetchedItems = false;
+				//$scope.isResultOnFetchedChargecode = false;
+				/*if (query === '') {
 					$scope.clearQuery();
 					return;
-				};
+				};*/
 
 				// reset the charge group
 				$scope.chargeGroup = '';
 
-				for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
+				searchChargeCodeItems();
+
+				/*for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
 					var item = $scope.fetchedItems[i];
 
 					// let show all items
@@ -130,14 +143,14 @@ sntRover.controller('RVPostChargeControllerV2',
 					else {
 						item.show = false;
 					}
-				};
+				};*/
 				/*
 				 *  When searched by charge code, if the charge code has no item configured, 
 				 * 	show charge code and the description but no price
 				 * 	Searching on fetchedChargeCodes array with charge_code or description.
 				 */
 				//if(!isFoundInFetchedItems){
-					for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
+					/*for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
 						var item = $scope.fetchedChargeCodes[i];
 						// find
 						if( item.charge_code.toLowerCase().indexOf(query) >= 0 ) {
@@ -153,12 +166,12 @@ sntRover.controller('RVPostChargeControllerV2',
 						}
 							
 					}
-				$scope.refreshScroller('items_list');					
+				$scope.refreshScroller('items_list');*/					
 				//}
 			};
 
 			// clear the filter query
-			$scope.clearQuery = function() {
+			/*$scope.clearQuery = function() {
 				
 				$scope.query = '';
 				
@@ -172,7 +185,7 @@ sntRover.controller('RVPostChargeControllerV2',
 				};
 				$scope.refreshScroller('items_summary');	
 				$scope.refreshScroller('items_list');	
-			};
+			};*/
 
 			// make favorite selected by default
 			// must have delay
@@ -206,7 +219,7 @@ sntRover.controller('RVPostChargeControllerV2',
 			var calNetTotalPrice = function() {
 				var totalPrice = 0;
 
-				for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
+				/*for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
 					if ( $scope.fetchedItems[i].isChosen ) {
 						totalPrice += $scope.fetchedItems[i].total_price;
 					};
@@ -215,7 +228,7 @@ sntRover.controller('RVPostChargeControllerV2',
 					if ( $scope.fetchedChargeCodes[i].isChosen ) {
 						totalPrice += $scope.fetchedChargeCodes[i].total_price;
 					};
-				}
+				}*/
 
 				// if we changed this scope prop inside the loop
 				// every addition will trigger a digest loop
@@ -232,8 +245,17 @@ sntRover.controller('RVPostChargeControllerV2',
 			*	3. update the net total price
 			*/
 			var newCount = 0;
-			$scope.addItem = function(item,type) {
-				$scope.calToggle = (type === "isItem") ? 'QTY' :'PR';
+			$scope.addItem = function( item ) {
+
+				$scope.calToggle = ( item.type === "ITEM" ) ? 'QTY' :'PR';
+
+				console.log(item);
+				
+				$scope.selectedChargeItemHash[ item.charge_code ] = item ;
+
+				console.log($scope.selectedChargeItemHash);
+
+
 				// it is already added
 				if ( item.isChosen ) {
 					item.count++;
@@ -509,7 +531,7 @@ sntRover.controller('RVPostChargeControllerV2',
 				var items = [],
 					each = {};
 
-				for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
+				/*for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
 					if ( $scope.fetchedItems[i].isChosen ) {
 						each = {};
 
@@ -520,8 +542,8 @@ sntRover.controller('RVPostChargeControllerV2',
 
 						items.push( each );
 					};
-				}
-				for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
+				}*/
+				/*for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
 					if ( $scope.fetchedChargeCodes[i].isChosen ) {
 						each = {};
 
@@ -532,7 +554,7 @@ sntRover.controller('RVPostChargeControllerV2',
 
 						items.push( each );
 					};
-				}
+				}*/
 				var data = {
 								fetch_total_balance: $scope.fetchTotalBal,
 								bill_no: $scope.passActiveBillNo || $scope.billNumber,
@@ -647,22 +669,22 @@ sntRover.controller('RVPostChargeControllerV2',
 			$scope.$on('RESETPOSTCHARGE', function(event, data) {
 			    $scope.selectedChargeItem = null;
 				$scope.selectedChargeItem = null;
-				$scope.isResultOnFetchedItems = false;
+				//$scope.isResultOnFetchedItems = false;
 				$scope.fetchedData.bill_numbers = null;
 				
-				for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
+				/*for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
 					if($scope.fetchedItems[i].isChosen) {
 						$scope.fetchedItems[i].isChosen = false;
 						$scope.fetchedItems[i].count = 0;
 					}
-				}
+				}*/
 				
-				for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
+				/*for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
 					if ( $scope.fetchedChargeCodes[i].isChosen ){
 						 $scope.fetchedChargeCodes[i].isChosen = false;
 						 $scope.fetchedChargeCodes[i].count = 0;
 					}
-				}
+				}*/
 			});
 		}
 	]

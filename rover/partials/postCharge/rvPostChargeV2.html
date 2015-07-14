@@ -32,23 +32,24 @@
 			</div>
 			<div id="items-listing" class="scrollable" ng-iscroll="items_list">
 				<ul id="search-item-results" class="wrapper">
-					<li id="items-list" ng-repeat="each in fetchedItems" ng-show="each.show" ng-click="addItem(each,'isItem')">
-						<a class="button white">
-							<span ng-bind-html="{{convertToJSONString(each.item_name)}} | highlight:query:false"></span>
+					<li id="items-list" ng-repeat="each in fetchedItems" ng-click="addItem(each)">
+						
+						<a class="button white" ng-if="each.type === 'ITEM'">
+							<span ng-bind-html="{{convertToJSONString(each.name)}} | highlight:query:false"></span>
 							<span class="price">
 								{{ currencySymbol }} <span class="value">{{ each.unit_price | number : 2 }}</span>
 							</span>
 							<span ng-if="each.count > 0" class="count">{{ each.count }}</span>
 						</a>
-					</li>
-					<li id="items-list" ng-repeat="each in fetchedChargeCodes" ng-show="each.show && isResultOnFetchedChargecode" ng-click="addItem(each,'isChargeCode')">
-						<a class="button white">
-							<span ng-bind-html="each.description | highlight:query:false"></span>
+
+						<a class="button white" ng-if="each.type === 'CHARGE_CODE'">
+							<span ng-bind-html="each.name | highlight:query:false"></span>
 							<span class="price">
 								<span class="value" ng-bind-html="'{{ each.charge_code }}' | highlight:query:false"></span>
 							</span>
 							<span ng-if="each.count > 0" class="count">{{ each.count }}</span>
 						</a>
+
 					</li>
 				</ul>
 			</div>
