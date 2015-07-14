@@ -22,7 +22,7 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','$rootScope','RVGue
 	};
         $scope.reloadOnSet = false;
         if ($scope.reloadOnSet){
-            $rootScope.$on('reload-loyalty-section-data',function(){
+            $rootScope.$on('reload-loyalty-section-data',function(evt,data){
                 $scope.init();//reload loyalty when switching through staycards
             });
             $scope.reloadOnSet = true;
@@ -38,6 +38,17 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','$rootScope','RVGue
 * To check for the loyalty levels in hotel loyalty section for the guest
 * and notify the guestcard header to display the same
 */
+$rootScope.$on('reload-loyalty-section-data',function(evt,data){
+    if (data){
+        if (data.reload){
+            if ($rootScope.goToReservationCalled){
+                $scope.init();//reload loyalty when switching through staycards
+                $rootScope.goToReservationCalled = false;
+            }
+        }
+    }
+});
+
 $scope.checkForHotelLoyaltyLevel = function(){
     if ($scope.$parent.$parent.guestCardData.use_hlp){
 	for(var i = 0; i < $scope.loyaltyData.userMemberships.hotelLoyaltyProgram.length; i++){
