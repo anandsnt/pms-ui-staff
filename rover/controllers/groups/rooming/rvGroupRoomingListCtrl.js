@@ -911,6 +911,21 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         };
 
         /**
+         * we will show mass checkin success pop up on completed success
+         * @return undefined
+         */
+        var openMassCheckinSuccessPopup = function() {
+            ngDialog.open(
+            {
+                template: '/assets/partials/groups/rooming/rvGroupMassCheckinSomeResReadyPopUp.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        };
+
+        /**
          * to perform mass checkin
          * @return undefined
          */
@@ -919,7 +934,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 qualifiedResCount   = qualifiedRes.length,
                 selectedResCount    = $scope.selected_reservations.length;            
             
-            if ((selectedResCount - qualifiedResCount) >= 0) {
+            if (qualifiedResCount > 0) {
                 $scope.qualifiedReservations = qualifiedRes;
                 $scope.messageForMassCheckin = (selectedResCount === qualifiedResCount) ? 
                     'GROUP_MASS_CHECKIN_CONFIRMATION_ALL_OKEY' : 'GROUP_MASS_CHECKIN_CONFIRMATION_PARTIALLY_OKEY';                
@@ -928,6 +943,42 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             else {
                 openNoReservationMeetCheckinCriteria ();
             }
+        };
+
+        /**
+         * [successCallBackOfCheckInQualifiedReservations description]
+         * @return {[type]} [description]
+         */
+        var successCallBackOfCheckInQualifiedReservations = function(data) {
+            var successReservations = data.success_reservation_ids,
+                failureReservations = data.failure_reservation_ids;
+
+            if (failureReservations.length === 0) {
+                openMassCheckinSuccessPopup ();
+            }
+        };
+
+        var failureCallBackOfCheckInQualifiedReservations = function() {
+
+        };
+        /**
+         * when selected reservations meet the criteria and user confirmed to go ahead
+         * @return undefined
+         */
+        $scope.checkInQualifiedReservations = function() {
+            $scope.closeDialog();
+            
+            var params = {
+                group_id:           $scope.groupConfigData.summary.group_id,
+                reservation_ids:    _.pluck($scope.qualifiedReservations, "id")
+            };
+
+            var options = {
+                params: params,
+                successCallBack: successCallBackOfCheckInQualifiedReservations,
+                failureCallBack: failureCallBackOfCheckInQualifiedReservations
+            };
+            $scope.callAPI(rvGroupRoomingListSrv.performMassCheckin, options);
         };
 
         /**
