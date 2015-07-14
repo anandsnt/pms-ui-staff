@@ -1,17 +1,17 @@
 sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault', function($q, RVBaseWebSrv, rvBaseWebSrvV2, $vault){
-	
+
 	var self = this;
 	self.searchPerPage = 50;
 	self.page = 1;
 	self.to_date = "";
-	
+
 	this.fetch = function(dataToSend, useCache){
 		var deferred = $q.defer();
-	
-		
+
+
 		dataToSend.fakeDataToAvoidCache = new Date();
 		self.toDate = self.toDate == undefined ? "" : self.toDate;
-		var url =  'search.json?per_page=' + self.searchPerPage 
+		var url =  'search.json?per_page=' + self.searchPerPage
 		+ '&page=' + self.page;
 
 		if ( useCache && !!self.data ) {
@@ -27,7 +27,7 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 				} else {
 					self.lastSearchedType = "others";
 				}
-				
+
 				self.data = data.results;
 				self.searchTypeStatus = dataToSend.status;
 				self.totalSearchResults = data.total_count;
@@ -35,9 +35,9 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 			},function(data){
 				deferred.reject(data);
 			});
-		}		
-		
-		return deferred.promise;		
+		}
+
+		return deferred.promise;
 	};
 
 	// update the reservation details of cached data
@@ -96,18 +96,18 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 		};
 	};
 	this.removeResultFromData = function(reservationId){
-		
+
         if(self.lastSearchedType === "queued"){
         	for (var i = 0, j = self.data.length; i < j; i++) {
-        		
+
 				if ( self.data[i]['id'] === reservationId ) {
 					self.data.splice(i, 1);
 					break;
-					
+
 				}
 			}
         }
-		
+
 	};
 
 
@@ -175,7 +175,7 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 		} else {
 			deferred.resolve(self.reservationsList);
 		}
-		
+
 		return deferred.promise;
 	};
 

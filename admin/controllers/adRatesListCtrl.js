@@ -65,9 +65,9 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 	$scope.importFromPms = function(event){
 
 		event.stopPropagation();
-		
+
 		$scope.successMessage = "Collecting rates data from PMS and adding to Rover...";
-		
+
 		var fetchSuccessOfItemList = function(data){
 			$scope.$emit('hideLoader');
 			$scope.successMessage = "Completed!";
@@ -86,14 +86,14 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 	*/
 	$scope.showRates = function(index, id, fetchKey, baseRate){
 		$scope.popoverRates = {};
-		if(baseRate == "" || typeof baseRate == "undefined") return false;
+		if(baseRate === "" || typeof baseRate === "undefined") return false;
 		var rateFetchSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.popoverRates = data;
 			$scope.mouseEnterPopover = true;
 		};
 
-		//Fetch the rates only when we enter the popover area - 
+		//Fetch the rates only when we enter the popover area -
 		//no need to repeat the fetch when we hover over the area.
 		if(!$scope.mouseEnterPopover){
 			$scope.popoverRates = {};
@@ -111,7 +111,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 	* @param {string} number of rates available for the rate type
 	*/
 	$scope.showDateRanges = function(index, id, fetchKey, dateCount){
-		if(dateCount == 0) return false;
+		if(dateCount === 0) return false;
 		var dateFetchSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.popoverRates = data;
@@ -145,12 +145,12 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		if (typeof index === "undefined" || typeof id === "undefined"){
 			return "";
 		}
-		if ($scope.currentHoverElement == index) {
-			if(type == 'basedOn')
+		if ($scope.currentHoverElement === index) {
+			if(type === 'basedOn')
 				return "/assets/partials/rates/adRatePopover.html";
-			if(type == 'rateType')
+			if(type === 'rateType')
 				return "/assets/partials/rates/adRateTypePopover.html";
-			if(type == 'dateRange')
+			if(type === 'dateRange')
 				return "/assets/partials/rates/adDateRangePopover.html";
 		}
 	};
@@ -166,7 +166,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		console.log(id);
                 */
 		if(typeof index === "undefined" || typeof id === "undefined") return "";
-		if($scope.currentClickedElement == index){ 
+		if($scope.currentClickedElement === index){
 			return "/assets/partials/rates/adRateInlineEdit.html";
 		}
 	};
@@ -186,7 +186,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
     };
    /*
     * To handle click event
-    */	
+    */
 	$scope.clickCancelForInlineEdit = function(){
 		$scope.currentClickedElement = -1;
 	};
@@ -248,12 +248,12 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 			$scope.rateDetailsForNonStandalone = {};
 			$scope.currentClickedElement = index;
 
-		 	var successCallbackRender = function(data){	
+		 	var successCallbackRender = function(data){
 		 		$scope.rateDetailsForNonStandalone = data;
 		 		$scope.$emit('hideLoader');
 		 	};
 		 	var data = {"id": rateId };
-	 		$scope.invokeApi(ADRatesSrv.getRateDetailsForNonstandalone, data , successCallbackRender);    
+	 		$scope.invokeApi(ADRatesSrv.getRateDetailsForNonstandalone, data , successCallbackRender);
 		//If standalone PMS, then the rate configurator wizard should be appeared.
 		}else{
 			$scope.showLoader();

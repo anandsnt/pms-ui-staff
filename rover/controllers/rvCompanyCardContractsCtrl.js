@@ -4,7 +4,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.highchartsNG = {};
 		$scope.contractList = {};
 		$scope.contractData = {};
-		$scope.rateValueTypes = [ { value:"%",name:"percent" },{ value: $rootScope.currencySymbol, name:"amount" } ];		
+		$scope.rateValueTypes = [ { value:"%",name:"percent" },{ value: $rootScope.currencySymbol, name:"amount" } ];
 		$scope.addData = {};
 
 		$scope.contractList.contractSelected = "";
@@ -114,7 +114,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		}
 
 		var fetchContractsDetailsSuccessCallback = function(data) {
-			
+
 			$scope.contractData = data;
 			$scope.contractData.rates = [];
 			$scope.contractData.rates = ratesList;
@@ -122,8 +122,8 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			contractInfo = {};
 			$scope.contractData.contract_name = "";
 			/*
-			 *Nights pop up should be triggered only after contract details are saved 
-			 *and refetched in the case of add mode	
+			 *Nights pop up should be triggered only after contract details are saved
+			 *and refetched in the case of add mode
 			*/
 			if($scope.contractList.isAddMode){
 				ngDialog.open({
@@ -134,7 +134,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 						});
 				$scope.contractList.isAddMode = false;
 			}
-			
+
 
 			if (typeof $stateParams.type !== 'undefined' && $stateParams.type !== "") {
 				$scope.contractData.account_type = $stateParams.type;
@@ -316,7 +316,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 
 			$scope.contractList.contractSelected = data.id;
 			$scope.addData.contract_name = "";
-			
+
 		};
 
 		// To handle click on nights button
@@ -365,7 +365,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			//Setup data for Add mode
 			$scope.hasOverlay = false;
 			$scope.contractList.isAddMode = true;
-			
+
 			$scope.addData.occupancy = [];
 			$scope.addData.begin_date = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
 			$scope.addData.contracted_rate_selected = "";
@@ -381,7 +381,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			if (typeof $stateParams.type !== 'undefined' && $stateParams.type !== "") {
 				$scope.addData.account_type = $stateParams.type;
 			}
-			
+
 		};
 		// Cancel Add New mode
 		$scope.CancelAddNewContract = function() {
@@ -415,7 +415,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			} else {
 				var account_id = $stateParams.id;
 			}
-			
+
 			if (account_id) {
 				$scope.invokeApi(RVCompanyCardSrv.addNewContract, {
 					"account_id": account_id,

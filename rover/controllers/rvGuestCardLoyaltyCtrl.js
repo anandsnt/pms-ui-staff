@@ -7,8 +7,8 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','$rootScope','RVGue
 			$scope.loyaltyData = data;
 			$scope.checkForHotelLoyaltyLevel();
 			setTimeout(function(){
-				$scope.refreshScroller('loyaltyList');				
-			}, 
+				$scope.refreshScroller('loyaltyList');
+			},
 			3000);
 		};
 
@@ -125,7 +125,7 @@ $scope.loyaltyProgramDeleted = function(id, index, loyaltyProgram){
 		$scope.loyaltyData.userMemberships.frequentFlyerProgram.splice(index, 1);
 	}else{
 		$scope.loyaltyData.userMemberships.hotelLoyaltyProgram.splice(index, 1);
-	}		
+	}
 };
 
 $scope.$on("loyaltyDeletionError",function(e,error){
@@ -141,8 +141,8 @@ $scope.$on("loyaltyDeletionError",function(e,error){
                $scope.loyaltyProgramsActive(false);
                $scope.$parent.guestCardData.use_hlp = false;
            }
-           
-           
+
+
            if (data.userMemberships.use_ffp){
                $scope.ffpProgramsActive(true);
                $scope.$parent.guestCardData.use_ffp = true;
@@ -150,10 +150,10 @@ $scope.$on("loyaltyDeletionError",function(e,error){
                $scope.ffpProgramsActive(false);
                $scope.$parent.guestCardData.use_ffp = false;
            }
-           
-           
+
+
         });
-        
+
         $scope.loyaltyProgramsActive = function(b){
           $scope.hotelLoyaltyProgramEnabled = b;
           $scope.$parent.guestCardData.use_ffp = b;
@@ -162,6 +162,6 @@ $scope.$on("loyaltyDeletionError",function(e,error){
           $scope.hotelFrequentFlyerProgramEnabled = b;
           $scope.$parent.guestCardData.use_ffp = b;
         };
-        
-        
+
+
 }]);

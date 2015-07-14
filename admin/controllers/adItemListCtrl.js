@@ -28,12 +28,11 @@ admin.controller('ADItemListCtrl', ['$scope','ADItemSrv', 'ngTableParams', '$fil
 		                                $scope.data.items;
 		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 		        }
-		    });		
-		
+		    });
 	};
-	
+
 	//To list items
-	$scope.invokeApi(ADItemSrv.fetchItemList, {}, fetchSuccessOfItemList);	
+	$scope.invokeApi(ADItemSrv.fetchItemList, {}, fetchSuccessOfItemList);
 
 	/*
 	* function for toggle the favourite status
@@ -49,19 +48,23 @@ admin.controller('ADItemListCtrl', ['$scope','ADItemSrv', 'ngTableParams', '$fil
     * @param {int} index of the item
     * @param {string} id of the selected item
     */
-	$scope.deleteItem = function(index, id){	
-		
+	$scope.deleteItem = function(index, id){
+
 		var successCallBack = function(){
 			$scope.$emit('hideLoader');
-			$scope.data.items.splice(index, 1);	
+			$scope.data.items.splice(index, 1);
 			$scope.itemList = new ngTableParams({
-		        page: 1,            // show first page
-		        count: $scope.data.items.length,    // count per page - Need to change when on pagination implemntation
+		        // show first page
+		        page: 1,
+		        // count per page - Need to change when on pagination implemntation
+		        count: $scope.data.items.length,
 		        sorting: {
-		            name: 'asc'     // initial sorting
+		        	// initial sorting
+		            name: 'asc'
 		        }
 		    }, {
-		        total: $scope.data.items.length, // length of data
+		    	// length of data
+		        total: $scope.data.items.length,
 		        getData: function($defer, params) {
 		            // use build-in angular filter
 		            var orderedData = params.sorting() ?
@@ -69,8 +72,8 @@ admin.controller('ADItemListCtrl', ['$scope','ADItemSrv', 'ngTableParams', '$fil
 		                                $scope.data.items;
 		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 		        }
-		    });						
+		    });
 		};
-		$scope.invokeApi(ADItemSrv.deleteItem, {'item_id': id}, successCallBack);		
+		$scope.invokeApi(ADItemSrv.deleteItem, {'item_id': id}, successCallBack);
 	};
 }]);

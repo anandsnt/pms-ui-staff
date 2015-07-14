@@ -53,13 +53,13 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	 	var successCallbackRender = function(data){
 	 		$scope.$emit('hideLoader');
 	 		$scope.roomTypeData = data;
-	 		if($scope.roomTypeData.is_pseudo_room_type == "true" || $scope.roomTypeData.is_pseudo_room_type == true){
+	 		if($scope.roomTypeData.is_pseudo_room_type === "true" || $scope.roomTypeData.is_pseudo_room_type === true){
 	 			$scope.roomTypeData.is_pseudo_room_type = true;
 	 		}
 	 		else{
 	 			$scope.roomTypeData.is_pseudo_room_type = false;
 	 		}
-	 		if($scope.roomTypeData.is_suite == "true" || $scope.roomTypeData.is_suite == true){
+	 		if($scope.roomTypeData.is_suite === "true" || $scope.roomTypeData.is_suite === true){
 	 			$scope.roomTypeData.is_suite = true;
 	 		}
 	 		else{
@@ -77,7 +77,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
     */
 	$scope.getTemplateUrl = function(index, id){
 		if(typeof index === "undefined" || typeof id === "undefined") return "";
-		if($scope.currentClickedElement == index){
+		if($scope.currentClickedElement === index){
 			 	return "/assets/partials/roomTypes/adRoomTypesDetails.html";
 		}
 	};
@@ -180,11 +180,11 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	};
 
 	$scope.sortByName = function(){
-		if($scope.currentClickedElement == -1)
+		if($scope.currentClickedElement === -1)
 		$scope.tableParams.sorting({'name' : $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'});
 	};
 	$scope.sortByCode = function(){
-		if($scope.currentClickedElement == -1)
+		if($scope.currentClickedElement === -1)
 		$scope.tableParams.sorting({'code' : $scope.tableParams.isSortBy('code', 'asc') ? 'desc' : 'asc'});
 	};
 	$scope.deleteRoomTypes = function(roomtype_id){
