@@ -74,7 +74,9 @@
     "GROUP_PRINT":"Print",
     "GROUP_DOWNLOAD":"Download",
     "ADD_BILLING_INFO":"Add billing information",
-    "GROUP_BATCH" : "Reg.card"
+    "GROUP_BATCH" : "Reg.card",
+    "GROUP_MASS_CHECKIN_CONFIRMATION_ALL_OKEY": "Confirm Check In",
+    "GROUP_MASS_CHECKIN_CONFIRMATION_PARTIALLY_OKEY": "Some reservations do not meet check in criteria"
 
 
 

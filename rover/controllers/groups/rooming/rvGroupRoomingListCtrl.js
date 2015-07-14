@@ -34,9 +34,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         var hasPermissionToCreateRoomingList = function() {
             return (rvPermissionSrv.getPermissionValue('CREATE_ROOMING_LIST'));
         };
-
-
-
         /**
          * Has Permission To Edit group room block
          * @return {Boolean}
@@ -65,6 +62,31 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             var containNonEditableRoomType = (_.pluck($scope.roomTypesAndData, 'room_type_id')
                 .indexOf(parseInt(reservation.room_type_id))) <= -1;
             return (reservation.reservation_status === "CANCELED" || containNonEditableRoomType);
+        };
+
+        /**
+         * do wanted to show checking/checkout button area
+         * @return {Boolean}
+         */
+        $scope.shouldShowCheckInCheckoutButton = function() {
+            return (!$scope.shouldShowNoReservations() && 
+                    !$scope.groupConfigData.summary.is_cancelled);
+        };
+
+        /**
+         * wanted to disable the checkin button
+         * @return {Boolean}
+         */
+        $scope.shouldDisableCheckinButton = function() {
+            return ($scope.selected_reservations.length === 0);
+        };
+
+        /**
+         * wanted to disable the checkout button
+         * @return {Boolean}
+         */
+        $scope.shouldDisableCheckoutButton = function() {
+            return ($scope.selected_reservations.length === 0);
         };
 
         /**
@@ -436,6 +458,10 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             //selected reservation list
             $scope.selected_reservations = [];
+
+            //mass checkin/checkout
+            $scope.qualifiedReservations = [];
+            $scope.messageForMassCheckin = '';
         };
 
         /**
@@ -852,6 +878,56 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          */
         var refreshScrollers = function() {
             $scope.refreshScroller('rooming_list');
+        };
+
+        /**
+         * we want to verify from the user before going into mass checking
+         * @return undefined
+         */
+        var openCheckinConfirmationPopup = function() {
+            ngDialog.open(
+            {
+                template: '/assets/partials/groups/rooming/rvGroupMassCheckinSomeResReadyPopUp.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        };
+
+        /**
+         * we want to verify from the user before going into mass checking
+         * @return undefined
+         */
+        var openNoReservationMeetCheckinCriteria = function() {
+            ngDialog.open(
+            {
+                template: '/assets/partials/groups/rooming/rvGroupMassCheckinNoResMeetCriteria.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        };
+
+        /**
+         * to perform mass checkin
+         * @return undefined
+         */
+        $scope.groupCheckin = function() {
+            var qualifiedRes        = _.where($scope.selected_reservations, {'can_checkin': true}),
+                qualifiedResCount   = qualifiedRes.length,
+                selectedResCount    = $scope.selected_reservations.length;            
+            
+            if ((selectedResCount - qualifiedResCount) >= 0) {
+                $scope.qualifiedReservations = qualifiedRes;
+                $scope.messageForMassCheckin = (selectedResCount === qualifiedResCount) ? 
+                    'GROUP_MASS_CHECKIN_CONFIRMATION_ALL_OKEY' : 'GROUP_MASS_CHECKIN_CONFIRMATION_PARTIALLY_OKEY';                
+                openCheckinConfirmationPopup ();
+            }
+            else {
+                openNoReservationMeetCheckinCriteria ();
+            }
         };
 
         /**
