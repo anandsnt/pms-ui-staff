@@ -54,9 +54,13 @@
 		<span ng-if="each.travel_agent_name" class="icons icon-guest-travelagent">{{ each.travel_agent_name }}</span>
 		<span ng-if="each.group_name" class="icons icon-group">{{ each.group_name }}</span>
 	</td>
-	<td ng-if="each.isGuestData" class="secondary addon" colspan="2">
-		<span ng-repeat="name in each.addOns">{{ name }}</span>
-    </td>
+	<td ng-if="each.isGuestData" class="secondary" colspan="2">
+		<span ng-repeat="item in each.addOnDetails">
+			{{ item.name }} &#8226; 
+			<i ng-if="item.amount == 'INCL'">{{ item.amount }}</i>
+			<i ng-if="!item.amount != 'INCL'">{{ item.amount | currency:currencySymbol:2 }}</i>
+		</span>
+	</td>
 
 	<!-- cancel reason -->
 	<td ng-if="each.isCancelData" class="secondary cancel" colspan="5">
