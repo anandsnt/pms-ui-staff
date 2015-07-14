@@ -14,7 +14,12 @@ sntRover.directive('focusMe', function($timeout, $parse) {
       // to address @blesh's comment, set attribute value to 'false'
       // on blur event:
       element.bind('blur', function() {
-         scope.$apply(model.assign(scope, false));
+      	if(!scope.$$phase) {
+         	scope.$apply(model.assign(scope, false));
+      	}else {
+			model.assign(scope, false);
+      	}
+
       });
     }
   };
