@@ -66,6 +66,7 @@ admin.controller('ADPromotionsCtrl', [
 				is_use_promotions: !!$scope.state.usePromos
 			}, function() {
 				$scope.$emit('hideLoader');
+				$rootScope.isPromoActive = !!$scope.state.usePromos;
 			});
 		};
 

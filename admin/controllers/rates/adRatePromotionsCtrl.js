@@ -74,7 +74,14 @@ admin.controller('ADRatePromotionsCtrl', [
 		};
 
 		$scope.saveRatePromotions = function() {
-			// TODO: Implement API call to save the promotions for the rate here!
+			$scope.invokeApi(ADPromotionsSrv.updateRatePromos, {
+				id: $scope.rateData.id,
+				promos: {
+					linked_promotion_ids: _.pluck($scope.state.assignedPromotions, "id")
+				}
+			},function(){
+				$scope.$emit('hideLoader');
+			});
 		};
 
 		$scope.initRatePromotions();

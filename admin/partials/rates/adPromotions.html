@@ -4,7 +4,7 @@
             <h2 translate>Promotions</h2>
             <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
             <a class="action add" ng-hide="!state.usePromos" ng-click="addPromo()" translate>ADD_NEW</a>
-            <ad-toggle-button is-checked="state.usePromos" button-class="activation" div-class="header-title" ng-click="toggleActivatePromotions()" label="Activate promotions">
+            <ad-toggle-button is-checked="state.usePromos" button-class="activation" div-class="header-title" ng-click="toggleActivatePromotions()" label="Use promotions">
             </ad-toggle-button>
         </header>
         <section class="content-scroll" ng-class="{'overlay' : !state.usePromos}">

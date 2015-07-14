@@ -119,6 +119,17 @@ admin.service('ADPromotionsSrv', ['$q', 'ADBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
+
+		self.updateRatePromos = function(params){
+			var deferred = $q.defer();
+			var url = '/api/rates/'+params.id+'/promotions';
+			ADBaseWebSrvV2.putJSON(url, params.promos).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
 	}
 ]);

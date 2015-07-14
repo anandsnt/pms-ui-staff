@@ -15,6 +15,10 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             $scope.detailsMenu = selectedMenu;
         };
 
+        $scope.shouldShowMemberRates = function(){
+            return !!$rootScope.isFFPActive || !!$rootScope.isHLPActive;
+        }
+
         $scope.isPromotional = function() {
             var ispromo = false;
             if ($scope.rateTypesDetails) {
