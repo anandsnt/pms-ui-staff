@@ -128,10 +128,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		// multiple room status change DS
 		$scope.multiRoomAction = {
-			selectedRooms       : [],
-			selectedRoomIndexes : {},
-			allRoomsSelected    : false,
-			selectedHkStatus    : ''
+			rooms       : [],
+			indexes     : {},
+			allSelected : false,
+			hkStatusId  : ''
 		};
 		$scope.anyRoomChosen = false;
 
@@ -493,23 +493,22 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				return _ret;
 			};
+
+			// check if all rooms have been selected to make the 'All Selected' enabled in filters
+			if ( $scope.rooms.length == $scope.getSelectedRoomCount() ) {
+				$scope.multiRoomAction.allSelected = true;
+			} else {
+				$scope.multiRoomAction.allSelected = false;
+			};
 		};
 
 		$scope.selectAllRooms = function(value) {
 			var i, j;
 
-			if ( !!value ) {
-				$scope.anyRoomChosen = true;
-			} else {
-				$scope.anyRoomChosen = false;
-			};
+			$scope.anyRoomChosen = !!value;
 
 			for (i = 0, j = $scope.rooms.length; i < j; i++) {
-				if ( !!value ) {
-					$scope.rooms[i].selected = true;
-				} else {
-					$scope.rooms[i].selected = false;
-				};
+				$scope.rooms[i].selected = !!value;
 			};
 		};
 
@@ -523,80 +522,103 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		};
 
 		$scope.getSelectedRoomCount = function() {
-			$scope.multiRoomAction.selectedRooms = [];
-			$scope.multiRoomAction.selectedRoomIndexes = {};
+			$scope.multiRoomAction.rooms = [];
+			$scope.multiRoomAction.indexes = {};
 
 			for (i = 0, j = $scope.rooms.length; i < j; i++) {
 				if ( $scope.rooms[i].selected ) {
-					$scope.multiRoomAction.selectedRooms.push( $scope.rooms[i].id );
+					$scope.multiRoomAction.rooms.push( $scope.rooms[i].id );
 
 					// create a 'keyMirror' to help identify
 					// the room classes to update after changing the room status
 					// Read more here: https://github.com/STRML/keyMirror (This is an implementation, not actual use)
-					$scope.multiRoomAction.selectedRoomIndexes[i] = i;
+					$scope.multiRoomAction.indexes[i] = i;
 				};
 			};
 
-			return $scope.multiRoomAction.selectedRooms.length;
+			return $scope.multiRoomAction.rooms.length;
+		};
+
+		$scope.resetMultiRoomAction = function() {
+
+			// we are looping the 'keyMirror' rather than the
+			// entire rooms array, nice!
+			var i, ithSelectedRoom;
+			for (i in $scope.multiRoomAction.indexes) {
+				if ( ! $scope.multiRoomAction.indexes.hasOwnProperty(i) ) {
+				    continue;
+				};
+
+				ithSelectedRoom = $scope.rooms[ $scope.multiRoomAction.indexes[i] ];
+
+				// remove selection
+				ithSelectedRoom['selected'] = false;
+			};
+
+			$scope.multiRoomAction = {
+				rooms       : [],
+				indexes     : {},
+				allSelected : false,
+				hkStatusId  : ''
+			};
+			$scope.anyRoomChosen = false;
+		};
+
+		$scope.closeHkStatusDialog = function() {
+			$scope.resetMultiRoomAction();
+			$scope.closeDialog();
 		};
 
 		$scope.submitHkStatusChange = function() {
 			var _payload,
 				_resetParams,
 				_callback,
-				_onError,
-				i, j;
+				_onError;
 
 			// no need to send anything
-			if ( ! $scope.multiRoomAction.selectedRooms.length ) {
+			if ( ! $scope.multiRoomAction.rooms.length ) {
 				return;
 			};
 
 			_payload = {
-				'room_ids'     : $scope.multiRoomAction.selectedRooms,
-				'hk_status_id' : $scope.multiRoomAction.selectedHkStatus
-			};
-
-			_resetParams = function() {
-				// reset these.
-				$scope.multiRoomAction = {
-					selectedRooms: [],
-					selectedRoomIndexes: {},
-					allRoomsSelected: false,
-					selectedHkStatus: ''
-				};
-				$scope.anyRoomChosen = false;
+				'room_ids'     : $scope.multiRoomAction.rooms,
+				'hk_status_id' : $scope.multiRoomAction.hkStatusId
 			};
 
 			_callback = function(data) {
 				$scope.$emit( 'hideLoader' );
 
 				// get the selected hk status obj
-				var selectedHkStatusObj = _.find($scope.hkStatusList, function(item) {
-					return item.id == $scope.multiRoomAction.selectedHkStatus;
+				var hkStatusObj = _.find($scope.hkStatusList, function(item) {
+					return item.id == $scope.multiRoomAction.hkStatusId;
 				});
 
-				// firstly remove selection and
-				// update classes/status/description for the effected rooms ;)
-				for (i = 0, j = $scope.rooms.length; i < j; i++) {
-					$scope.rooms[i].selected = false;
-
-					if ( i == $scope.multiRoomAction.selectedRoomIndexes[i] ) {		// since we are using keyMirrors, this becomes fast
-						// 1. update room description
-						$scope.rooms[i]['description'] = selectedHkStatusObj['description'];
-
-						// 2. update 'hk_status' of this room
-						angular.extend($scope.rooms[i]['hk_status'], {
-							description: selectedHkStatusObj['description'],
-							value: selectedHkStatusObj['value']
-						});
-
-						// 3. now call the status class update
-						RVHkRoomStatusSrv.setRoomStatusClass( $scope.rooms[i] );
+				// we are looping the 'keyMirror' rather than the
+				// entire rooms array, nice!
+				var i, ithSelectedRoom;
+				for (i in $scope.multiRoomAction.indexes) {
+					if ( ! $scope.multiRoomAction.indexes.hasOwnProperty(i) ) {
+					    continue;
 					};
+
+					ithSelectedRoom = $scope.rooms[ $scope.multiRoomAction.indexes[i] ];
+
+					// 1. update room description
+					ithSelectedRoom['description'] = hkStatusObj['description'];
+
+					// 2. update 'hk_status' of this room
+					angular.extend(ithSelectedRoom['hk_status'], {
+						description: hkStatusObj['description'],
+						value: hkStatusObj['value']
+					});
+
+					// 3. now call the status class update
+					RVHkRoomStatusSrv.setRoomStatusClass( ithSelectedRoom );
+
+					// 4. remove selection will be done with '$scope.resetMultiRoomAction()'
 				};
 
-				_resetParams();
+				$scope.resetMultiRoomAction();
 				$scope.closeDialog();
 			};
 
@@ -915,6 +937,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.hasActiveWorkSheet = false;
 			$scope.currentView        = 'rooms';
 			$scope.rooms              = [];
+
+			// reset any multi room action related data
+			$scope.resetMultiRoomAction();
 
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {}, $_fetchRoomListCallback);
 		};
