@@ -2341,6 +2341,41 @@
                                         .ui-datepicker-trigger { top: 24px; }
                                     }
 
+                                    &.commission {
+                                        .float;
+
+                                        .switch-button {
+                                            margin-right: 10px;
+                                            height: 40px;
+                                            .calc-width(50, 10);
+                                            .pull-left;
+
+                                            input[type="checkbox"] { 
+                                                line-height: 40px;
+                                                height: 40px;
+                                            }   
+
+                                            .data-off,
+                                            .data-on {
+                                                line-height: 30px;
+                                                height: 30px;
+                                            }   
+                                        }
+
+                                        input[type="text"] { 
+                                            margin-right: 10px;
+                                            .calc-width(40, 10);
+                                            .pull-left;
+                                        }
+
+                                        .label { 
+                                            color: @textColor;
+                                            line-height: 40px;
+                                            margin-right: 0;
+                                            width: 10%;
+                                        }
+                                    }
+
                                     &.hidden { #fade > .out(); }
                                 }
 
@@ -4122,6 +4157,7 @@
                 .float;
 
                 span { 
+                    color: @grey3;
                     margin: 0;
                     .pull-right; 
                 }
@@ -4420,11 +4456,29 @@
                     &.item-origin,
                     &.item-type,
                     &.item-source,
-                    &.item-segment { .calc-width(50, 10); }
+                    &.item-segment,
+                    &.item-commission { 
+                        .calc-width(50, 10); 
 
-                    &.item-market, 
-                    &.item-origin,
-                    &.item-segment {  margin-right: 0; }
+                        &:nth-child(even) { margin-right: 0; }
+                    }
+
+                    &.item-commission {
+                        .entry {
+                            .float;
+
+                            input {
+                                margin-right: 10px;
+                                .square(50px);
+                                .pull-left;
+                            }
+
+                            .label {
+                                line-height: 50px;
+                                margin: 0;
+                            }
+                        }
+                    }
                 }
             } 
 
