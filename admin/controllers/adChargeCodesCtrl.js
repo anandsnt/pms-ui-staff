@@ -431,8 +431,8 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				Thanks,
 				Dilip
 
-			 * 	Hi Dilip, 
-					Good point, yes, I would say that if taxes get deleted, the calculation rules should be reset for the user to adjust manually. 
+			 * 	Hi Dilip,
+					Good point, yes, I would say that if taxes get deleted, the calculation rules should be reset for the user to adjust manually.
 				Thanks,
 				Nicki
 			 */

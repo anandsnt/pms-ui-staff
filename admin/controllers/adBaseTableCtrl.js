@@ -1,4 +1,4 @@
-function ADBaseTableCtrl($scope, ngTableParams){	
+function ADBaseTableCtrl($scope, ngTableParams){
     BaseCtrl.call(this, $scope);
 
     $scope.displayCountList = [10, 25, 50, 100];
@@ -26,7 +26,7 @@ function ADBaseTableCtrl($scope, ngTableParams){
     $scope.$watch("filterType", function () {
         $scope.reloadTable();
         /*$scope.tableParams.page(1);
-    	$scope.tableParams.reload();*/       
+    	$scope.tableParams.reload();*/
     });
 
     $scope.searchEntered = function() {

@@ -5,7 +5,7 @@ admin.controller('ADPropertyInterfaceSetupCtrl', ['$scope', '$controller', 'ADHo
         $scope.successMessage = '';
         $scope.isLoading = true;
         $scope.interfaceList = [];
-    
+
         $scope.totalCount = 0;
 
         BaseCtrl.call(this, $scope);
@@ -13,10 +13,10 @@ admin.controller('ADPropertyInterfaceSetupCtrl', ['$scope', '$controller', 'ADHo
         $scope.fetchListSuccessCallback = function (data) {
             $scope.isLoading = false;
             $scope.$emit('hideLoader');
-            
+
             $scope.interfaceList = data.data;
             $scope.totalCount = $scope.interfaceList.length;
-            
+
         };
 
         $scope.fetchList = function () {

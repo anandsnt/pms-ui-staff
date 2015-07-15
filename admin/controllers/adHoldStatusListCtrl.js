@@ -1,5 +1,5 @@
 admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', '$location', '$anchorScroll', '$timeout',  function($scope, $state, ADHoldStatusSrv, $location, $anchorScroll, $timeout){
-	
+
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	$scope.isAddMode = false;
