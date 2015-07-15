@@ -10,7 +10,6 @@ sntRover.controller('RVPostChargeControllerV2',
 			// hook up the basic things
 			BaseCtrl.call( this, $scope );
 
-			//$scope.fetchedData = {};
 			$scope.fetchedData.charge_groups = [];
 
 			var fetchChargeGroups = function(){
@@ -19,7 +18,6 @@ sntRover.controller('RVPostChargeControllerV2',
 					$scope.fetchedData.charge_groups = data.results;
 		            $scope.$emit('hideLoader');
 				};
-
 				$scope.invokeApi( RVPostChargeSrvV2.fetchChargeGroups, {}, successCallBackFetchChargeGroups );
 		    };
 
@@ -35,33 +33,18 @@ sntRover.controller('RVPostChargeControllerV2',
 					"is_favorite"		: $scope.chargeGroup === 'FAV' ? 1 : 0
 				};
 
-console.log(params);
-
 		    	var successCallBackFetchChargeCodes = function( data ){
-		    		console.log(data);
 		    		$scope.fetchedItems = [];
 		    		$scope.fetchedItems = data.results;
 
 		            $scope.$emit('hideLoader');
 		            $scope.refreshScroller('items_list');
 				};
-
 				$scope.invokeApi( RVPostChargeSrvV2.searchChargeItems, params, successCallBackFetchChargeCodes );
 		    };
-
-
-
-
-
-			// quick ref to fetched items
-			// and chosen one from the list
-			//$scope.fetchedItems = $scope.fetchedData.items;
-			//$scope.fetchedChargeCodes = $scope.fetchedData.non_item_linked_charge_codes;
-			//$scope.selectedChargeItem = null;
-			//$scope.isResultOnFetchedItems = true;
-
+			
+			$scope.selectedChargeItem = null;
 			$scope.selectedChargeItemHash = {};
-
 			$scope.isOutsidePostCharge = false;
 			
 			var scrollerOptions = {preventDefault: false};
@@ -97,95 +80,24 @@ console.log(params);
 			// filter the items based on the chosen charge group
 			$scope.filterbyChargeGroup = function() {
 
-				// reset the search query
-				//$scope.query === '';
-
-				// since the user input charge group will be string
-				// convert it to int, with causion
-				//var chargeGroupInt = isNaN(parseInt($scope.chargeGroup)) ? $scope.chargeGroup : parseInt($scope.chargeGroup);
-
-
-				
 				searchChargeCodeItems();
 			};
 
 			// filter the items based on the search query
 			// will search on all items, discard chosen 'chargeGroup'
 			$scope.filterByQuery = function() {
-				var query = $scope.query ? $scope.query.toLowerCase() : '';
-				//var isFoundInFetchedItems = false;
-				//$scope.isResultOnFetchedChargecode = false;
-				/*if (query === '') {
-					$scope.clearQuery();
-					return;
-				};*/
-
-				// reset the charge group
 				$scope.chargeGroup = '';
-
 				searchChargeCodeItems();
-
-				/*for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
-					var item = $scope.fetchedItems[i];
-
-					// let show all items
-					item.show = true;
-
-					// find
-					if( item.item_name.toLowerCase().indexOf(query) >= 0 ) {
-						item.show = true;
-						isFoundInFetchedItems = true;
-					}
-					else if( item.charge_code_name.toLowerCase().indexOf(query) >= 0 ) {
-						item.show = true;
-						isFoundInFetchedItems = true;
-					}
-					else {
-						item.show = false;
-					}
-				};*/
-				/*
-				 *  When searched by charge code, if the charge code has no item configured, 
-				 * 	show charge code and the description but no price
-				 * 	Searching on fetchedChargeCodes array with charge_code or description.
-				 */
-				//if(!isFoundInFetchedItems){
-					/*for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
-						var item = $scope.fetchedChargeCodes[i];
-						// find
-						if( item.charge_code.toLowerCase().indexOf(query) >= 0 ) {
-							item.show = true;
-							$scope.isResultOnFetchedChargecode = true;
-						}
-						else if( item.description.toLowerCase().indexOf(query) >= 0 ) {
-							item.show = true;
-							$scope.isResultOnFetchedChargecode = true;
-						}
-						else {
-							item.show = false;
-						}
-							
-					}
-				$scope.refreshScroller('items_list');*/					
-				//}
 			};
 
 			// clear the filter query
-			/*$scope.clearQuery = function() {
+			$scope.clearQuery = function() {
 				
 				$scope.query = '';
 				
-				// show all
-				for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
-					$scope.fetchedItems[i].show = true;
-				};
-				// show all
-				for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
-					$scope.fetchedChargeCodes[i].show = true;
-				};
 				$scope.refreshScroller('items_summary');	
 				$scope.refreshScroller('items_list');	
-			};*/
+			};
 
 			// make favorite selected by default
 			// must have delay
@@ -194,8 +106,8 @@ console.log(params);
 			// 	$scope.filterbyChargeGroup();				
 			// }, 500);
 
-			//$scope.chargeGroup = 'FAV';
-			//$scope.filterbyChargeGroup();
+			$scope.chargeGroup = 'FAV';
+			searchChargeCodeItems();
 
 
 
@@ -219,20 +131,9 @@ console.log(params);
 			var calNetTotalPrice = function() {
 				var totalPrice = 0;
 
-				/*for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
-					if ( $scope.fetchedItems[i].isChosen ) {
-						totalPrice += $scope.fetchedItems[i].total_price;
-					};
+				for ( var i in $scope.selectedChargeItemHash ) {
+					totalPrice += $scope.selectedChargeItemHash[i].total_price;
 				}
-				for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
-					if ( $scope.fetchedChargeCodes[i].isChosen ) {
-						totalPrice += $scope.fetchedChargeCodes[i].total_price;
-					};
-				}*/
-
-				// if we changed this scope prop inside the loop
-				// every addition will trigger a digest loop
-				// this way just one digest loop ;)
 				$scope.net_total_price = totalPrice;
 			};
 
@@ -245,32 +146,26 @@ console.log(params);
 			*	3. update the net total price
 			*/
 			var newCount = 0;
-			$scope.addItem = function( item ) {
+			$scope.addItem = function( clickedItem ) {
 
-				$scope.calToggle = ( item.type === "ITEM" ) ? 'QTY' :'PR';
+				$scope.calToggle = ( clickedItem.type === "ITEM" ) ? 'QTY' :'PR';
 
-				console.log(item);
+				if(typeof $scope.selectedChargeItemHash[ clickedItem.id ] === 'undefined'){
+					$scope.selectedChargeItemHash[ clickedItem.id ] = clickedItem ;
+					$scope.selectedChargeItemHash[ clickedItem.id ].count = 1;
+					$scope.selectedChargeItemHash[ clickedItem.id ].unit_price = parseFloat($scope.selectedChargeItemHash[ clickedItem.id ].unit_price);
+					$scope.selectedChargeItemHash[ clickedItem.id ].modifiedPrice = $scope.selectedChargeItemHash[ clickedItem.id ].unit_price;
+					$scope.selectedChargeItemHash[ clickedItem.id ].userEnteredPrice = '';
+				}
+				else{
+					$scope.selectedChargeItemHash[ clickedItem.id ].count ++ ;
+				}
 				
-				$scope.selectedChargeItemHash[ item.charge_code ] = item ;
+				$scope.selectedChargeItemHash[ clickedItem.id ].total_price = $scope.selectedChargeItemHash[ clickedItem.id ].modifiedPrice * $scope.selectedChargeItemHash[ clickedItem.id ].count;
+				
+				newCount ++;
 
-				console.log($scope.selectedChargeItemHash);
-
-
-				// it is already added
-				if ( item.isChosen ) {
-					item.count++;
-					newCount++;
-				}
-				// adding to the list
-				else {
-					item.isChosen = true;
-					item.count = 1;
-					newCount++;
-				}
-
-				item.total_price = item.modifiedPrice * item.count;
-
-				$scope.selectedChargeItem = item;
+				$scope.selectedChargeItem = $scope.selectedChargeItemHash[ clickedItem.id ];
 
 				calNetTotalPrice();
 				$scope.refreshScroller('items_summary');
@@ -317,7 +212,7 @@ console.log(params);
 			$scope.selectUnselect = function(item) {
 
 				// yep we have a selected item, gonna un-select
-				if ( $scope.selectedChargeItem && $scope.selectedChargeItem.item_name === item.item_name ) {
+				if ( $scope.selectedChargeItem && $scope.selectedChargeItem.name === item.name ) {
 					$scope.selectedChargeItem = null;
 				} 
 
@@ -333,7 +228,7 @@ console.log(params);
 				lastInput = null;
 			};
 
-			$scope.isAnyChosen = function(from) {
+			/*$scope.isAnyChosen = function(from) {
 				var ret = false;
 
 				/*for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
@@ -347,10 +242,10 @@ console.log(params);
 						ret = true;
 						break;
 					};
-				};*/
+				};
 
 				return ret;
-			};
+			};*/
 
 
 			// actions to be taken for numberpad number press

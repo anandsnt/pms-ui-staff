@@ -77,17 +77,18 @@
 					</select>
 				</div> 
 			</span>
-			<div id="no-items-added" class="no-content" ng-hide="isAnyChosen()">
+			<div id="no-items-added" class="no-content" ng-show="selectedChargeItemHash == {} ">
 				<div class="info">
 					<strong class="h1" translate>0_ITEM_SELECTED</strong>
 				</div>
 			</div>
-			<div id="items-added" ng-show="isAnyChosen()" >
+			<div id="items-added" ng-hide="selectedChargeItemHash == {} " >
 				<div id="items-summary" class="scrollable" ng-iscroll="items_summary">
 					
 					<ul class="wrapper">
-						<li ng-repeat="each in fetchedItems" ng-show="each.isChosen" ng-class="{'selected': each.item_name === selectedChargeItem.item_name}" ng-click="selectUnselect(each)">
-							{{ each.item_name }}
+
+						<li ng-repeat="each in selectedChargeItemHash" ng-class="{'selected': each.name === selectedChargeItem.name}" ng-click="selectUnselect(each)">
+							{{ each.name }}
 							<span count ng-show="each.count > 1">({{ each.count }})</span>
 							<span class="base">{{'AT' | translate}} {{ currencySymbol }}{{ each.modifiedPrice | number : 2 }} /  {{'UNIT' | translate}}</span>
 							<span class="price">
@@ -95,15 +96,7 @@
 								<span class="value">{{ each.total_price | number : 2 }}</span>
 							</span>
 						</li>
-						<li ng-repeat="each in fetchedChargeCodes" ng-show="each.isChosen" ng-class="{'selected': each.charge_code === selectedChargeItem.charge_code}" ng-click="selectUnselect(each)">
-							{{ each.description }}
-							<span count ng-show="each.count > 1">({{ each.count }})</span>
-							<span class="base">at {{ currencySymbol }}{{ each.modifiedPrice | number : 2 }} /  {{'UNIT' | translate}}</span>
-							<span class="price">
-								{{ currencySymbol }}
-								<span class="value">{{ each.total_price | number : 2 }}</span>
-							</span>
-						</li>
+						
 					</ul>
 
 				</div>
