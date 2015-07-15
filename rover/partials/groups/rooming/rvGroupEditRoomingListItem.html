@@ -8,11 +8,11 @@
         <div class="holder">
             <div class="entry margin">
                 <label for="firstname">First Name</label>
-                <input id="firstname" placeholder="Pending" ng-model="ngDialogData.firstname" type="text" ng-disabled="ngDialogData.reservationStatusFlags.isUneditable"/>
+                <input id="firstname" placeholder="Pending" ng-model="ngDialogData.firstname" type="text" ng-disabled="ngDialogData.reservationStatusFlags.isUneditable" />
             </div>
             <div class="entry">
                 <label for="lastname">Last Name</label>
-                <input id="lastname" placeholder="Pending" ng-model="ngDialogData.lastname" type="text" ng-disabled="ngDialogData.reservationStatusFlags.isUneditable"/>
+                <input id="lastname" placeholder="Pending" ng-model="ngDialogData.lastname" type="text" ng-disabled="ngDialogData.reservationStatusFlags.isUneditable" />
             </div>
             <div class="entry margin type">
                 <label for="rooming-room-type">{{'GROUP_ROOM_TYPE'|translate}}</label>
@@ -43,35 +43,18 @@
                     </select>
                 </div>
             </div>
-                <div class="entry margin date">
+            <div class="entry margin date">
                 <label for="group-block-from">
                     {{'FROM' | translate}}
                 </label>
-                <input id="group-block-from" 
-                    ng-disabled="ngDialogData.reservationStatusFlags.isUneditable"
-                    class="datepicker" 
-                    type="text" 
-                    ui-date="reservationFromDateOptions"
-                    ui-date-format
-                    ng-model = "ngDialogData.arrival_date"                    
-                    listen-this="ngDialogData.arrival_date" 
-                    readonly ng-class="{'not-selected': !ngDialogData.arrival_date}" />
+                <input id="group-block-from" ng-disabled="ngDialogData.reservationStatusFlags.isUneditable" class="datepicker" type="text" ui-date="reservationFromDateOptions" ui-date-format ng-model="ngDialogData.arrival_date" listen-this="ngDialogData.arrival_date" readonly ng-class="{'not-selected': !ngDialogData.arrival_date}" />
             </div>
             <div class="entry margin date">
                 <label for="group-block-to">
                     {{'TO' | translate}}
                 </label>
-                <input id="group-block-to" 
-                    ng-disabled="ngDialogData.reservationStatusFlags.isUneditable"
-                    class="datepicker" 
-                    type="text" 
-                    ui-date-format
-                    ui-date="reservationToDateOptions"
-                    ng-model = "ngDialogData.departure_date"
-                    listen-this="ngDialogData.departure_date" 
-                    readonly ng-class="{'not-selected': !ngDialogData.departure_date}" />
+                <input id="group-block-to" ng-disabled="ngDialogData.reservationStatusFlags.isUneditable" class="datepicker" type="text" ui-date-format ui-date="reservationToDateOptions" ng-model="ngDialogData.departure_date" listen-this="ngDialogData.departure_date" readonly ng-class="{'not-selected': !ngDialogData.departure_date}" />
             </div>
-
             <div class="entry room" ng-disabled="true">
                 <label for="room">Room</label>
                 <input ng-model="ngDialogData.room_no" ng-disabled="true"></input>
@@ -87,34 +70,19 @@
         </div>
         <!-- Actions -->
         <div id="account-actions" class="actions">
-            <button type="button" 
-                class="button red" 
-                ng-class="{'grey' : ngDialogData.reservationStatusFlags.isUneditable || ngDialogData.reservationStatusFlags.isStaying}" 
-                ng-click="removeReservation(ngDialogData)">
+            <button type="button" class="button red" ng-class="{'grey' : ngDialogData.reservationStatusFlags.isUneditable || ngDialogData.reservationStatusFlags.isStaying}" ng-click="removeReservation(ngDialogData)">
                 Remove
             </button>
-            <button type="button" class="button"
-                ng-class="{'grey' : !ngDialogData.reservationStatusFlags.isGuestAttached, 'brand-colors' : ngDialogData.reservationStatusFlags.isGuestAttached}" 
-                ng-click="navigateStayCard(ngDialogData)">
+            <button type="button" class="button" ng-class="{'grey' : !ngDialogData.reservationStatusFlags.isGuestAttached, 'brand-colors' : ngDialogData.reservationStatusFlags.isGuestAttached}" ng-click="navigateStayCard(ngDialogData)">
                 Stay Card
             </button>
-            <button type="button" 
-                class="button green" 
-                ng-class="{'grey' : ngDialogData.reservationStatusFlags.isUneditable || !ngDialogData.reservationStatusFlags.canChekin}" 
-                ng-show="ngDialogData.reservationStatusFlags.isExpected">
+            <button type="button" class="button green" ng-class="{'grey' : ngDialogData.reservationStatusFlags.isUneditable || !ngDialogData.reservationStatusFlags.canChekin}" ng-show="ngDialogData.reservationStatusFlags.isExpected">
                 Check In
             </button>
-            <button type="button" 
-                class="button red" 
-                ng-class="{'grey' : ngDialogData.reservationStatusFlags.isUneditable}" 
-                ng-show="!ngDialogData.reservationStatusFlags.isExpected"
-                ng-click="checkoutReservation(reservation);">
+            <button type="button" class="button red" ng-class="{'grey' : ngDialogData.reservationStatusFlags.isUneditable}" ng-show="!ngDialogData.reservationStatusFlags.isExpected" ng-click="checkoutReservation(reservation);">
                 Check Out
             </button>
-            <button type="button" 
-                class="button purple" 
-                ng-class="{'grey' : ngDialogData.reservationStatusFlags.isUneditable}" 
-                ng-click="updateReservation(ngDialogData)">
+            <button type="button" class="button purple" ng-class="{'grey' : ngDialogData.reservationStatusFlags.isUneditable}" ng-click="updateReservation(ngDialogData)">
                 Update
             </button>
             <button type="button" class="button blank" ng-click="closeDialog();">Close</button>
