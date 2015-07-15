@@ -928,6 +928,26 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         };
 
         /**
+         * we will show mass checkin success pop up on completed success
+         * @return undefined
+         */
+        var openMassCheckinFailedPopup = function(errorMessage) {
+            var errorMessageForPopup = {
+                errorMessage: errorMessage
+            };
+            
+            ngDialog.open(
+            {
+                template: '/assets/partials/groups/rooming/rvGroupResMassCheckinFailedPopup.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false,
+                data: JSON.stringify(errorMessageForPopup)
+            });
+        };
+
+        /**
          * to perform mass checkin
          * @return undefined
          */
@@ -955,15 +975,15 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             $scope.closeDialog();
             //resetting the selected reservations
             $scope.selected_reservations = [];
-            
+
             $timeout(function() {
                 callInitialAPIs();
             }, 800);
         };
 
         /**
-         * [successCallBackOfCheckInQualifiedReservations description]
-         * @return {[type]} [description]
+         * when the mass checkin is success (api will return success even if it includes some of the reservation which are failed during the operation)
+         * @return undefined
          */
         var successCallBackOfCheckInQualifiedReservations = function(data) {
             var failureReservations = data.failure_reservation_ids;
@@ -977,8 +997,12 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             openMassCheckinSuccessPopup (data);            
         };
 
-        var failureCallBackOfCheckInQualifiedReservations = function() {
-
+        /**
+         * When there is some failure in API side on mass checkin
+         * @return undefined
+         */
+        var failureCallBackOfCheckInQualifiedReservations = function(errorMessage) {
+            openMassCheckinFailedPopup(errorMessage);
         };
 
         /**
