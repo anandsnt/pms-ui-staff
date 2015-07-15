@@ -922,7 +922,8 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 scope: $scope,
                 closeByDocument: false,
                 closeByEscape: false,
-                data: JSON.stringify(data)
+                data: JSON.stringify(data),
+                controller: 'rvGroupRoomingMassCheckinPopUpCtrl'
             });
         };
 
@@ -967,7 +968,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             if (failureReservations.length > 0) {
                 data.failedReservations = [];
                 _.each(data.failure_reservation_ids, function(reservation_id) {
-                    data.failedReservations.push (_.findWhere($scope.selected_reservations, {id: reservation_id}));                    
+                    data.failedReservations.push (_.findWhere($scope.selected_reservations, {id: reservation_id})); 
                 });
             }
             openMassCheckinSuccessPopup (data);            

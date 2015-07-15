@@ -15,11 +15,11 @@
                 <span class="h3 message">{{ngDialogData.failure_reservation_ids.length}} reservations were not checked in:</span>
                 <div class="notice error scrollable" ng-iscroll="failed_reservations_scroller" ng-iscroll-delay="100">
                     <ul class="wrapper">
-                        <li ng-repeat="reservation in ngDialogData.failedReservations" ng-if="isGuestBlank(reservation)" ngrepeatend>
+                        <li ng-repeat="reservation in ngDialogData.failedReservations track by $index" ng-if="isGuestBlank(reservation)" ngrepeatend>
                         	<em translate>GROUP_PENDING</em> 
                         	<span>#{{reservation.confirm_no}}</span>
                         </li>
-                        <li ng-repeat="reservation in ngDialogData.failedReservations" ng-if="!isGuestBlank(reservation)" ngrepeatend>
+                        <li ng-repeat="reservation in ngDialogData.failedReservations track by $index" ng-if="!isGuestBlank(reservation)" ngrepeatend>
                         	{{reservation.lastname}}, {{reservation.firstname}}
                         	<span>#{{reservation.confirm_no}}</span>
                         </li>                        
