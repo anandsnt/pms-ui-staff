@@ -58,12 +58,7 @@
 	      backdrop: true,
 	      backdropClick: true,
 	      templateUrl: '/assets/checkoutnow/partials/Fontainebleau/externalVerificationErrorModal.html',
-	      controller: verificationModalCtrl,
-	      resolve: {
-	        errorMessage:function(){
-	          return "We could not find your reservation.Please check for typos,or call "+$rootScope.hotelPhone;
-	        }
-	      }
+	      controller: verificationModalCtrl
         };
 
 		externalVerificationService.verifyUser(params).then(function(response) {
@@ -104,9 +99,8 @@ snt.controller('verificationErrorController', ['$scope', function($scope) {
 
 // controller for the modal
 
-  var verificationModalCtrl = function ($scope, $modalInstance,$state,errorMessage) {
+  var verificationModalCtrl = function ($scope, $modalInstance,$state) {
     
-    $scope.errorMessage = errorMessage;
     $scope.closeDialog = function () {
       $modalInstance.dismiss('cancel');
     };
