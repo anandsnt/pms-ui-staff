@@ -1,6 +1,6 @@
 sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv','RVGuestCardSrv','RVReservationCardSrv', 'ngDialog', '$rootScope','$timeout', function($scope, RVBillPaymentSrv, RVPaymentSrv, RVGuestCardSrv, RVReservationCardSrv, ngDialog, $rootScope,$timeout){
 	BaseCtrl.call(this, $scope);
-	
+
 	var setupbasicBillData = function(){
 		$scope.renderData = {};
 		$scope.saveData = {};
@@ -32,7 +32,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.saveData.paymentType = '';
 		$scope.defaultPaymentTypeOfBill = '';
 		$scope.shouldShowMakePaymentButton = true;
-		
+
 	};
 
 
@@ -65,14 +65,14 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			if($scope.renderData.defaultPaymentAmount >= 0){
 				isShowFees = (($rootScope.paymentGateway !== 'sixpayments' || $scope.isManual || $scope.saveData.paymentType !=='CC') && $scope.saveData.paymentType !=="") ? true :false;
 			}
-			
+
 		}
 		return isShowFees;
 	};
 
 	// CICO-9457 : To calculate fee - for standalone only
 	$scope.calculateFee = function(){
-		
+
 		if($scope.isStandAlone){
 			var feesInfo = $scope.feeData.feesInfo;
 			var amountSymbol = "";
@@ -90,7 +90,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 
 			$scope.feeData.minFees = minFees;
 			$scope.feeData.defaultAmount = totalAmount;
-			
+
 			if($scope.isShowFees()){
 				if(amountSymbol == "percent"){
 					var calculatedFee = parseFloat(totalAmount * (feePercent/100));
@@ -103,7 +103,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				}
 			}
 			if($scope.renderData.defaultPaymentAmount < 0){
-				
+
 				$scope.defaultRefundAmount = (-1)*parseFloat($scope.renderData.defaultPaymentAmount);
 				$scope.shouldShowMakePaymentButton = false;
 			} else {
@@ -116,22 +116,22 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	$scope.setupFeeData = function(){
 		// CICO-9457 : Setup fees details initilaly - for standalone only
 		if($scope.isStandAlone){
-			
+
 			var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
 			var defaultAmount = $scope.renderData ?
 			 	parseFloat($scope.renderData.defaultPaymentAmount) : zeroAmount;
-			
+
 			var minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
 			$scope.feeData.minFees = minFees;
 			$scope.feeData.defaultAmount = defaultAmount;
 
 			if($scope.isShowFees()){
 				if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
-					
+
 					var amountSymbol = feesInfo.amount_symbol;
 					var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
 					$scope.feeData.actualFees = feesAmount;
-					
+
 					if(amountSymbol == "percent") $scope.calculateFee();
 					else{
 						$scope.feeData.calculatedFee = parseFloat(feesAmount).toFixed(2);
@@ -144,13 +144,13 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 
 	// CICO-12408 : To calculate Total of fees and amount to pay.
 	$scope.calculateTotalAmount = function(amount) {
-		
+
 		var feesAmount  = (typeof $scope.feeData.calculatedFee == 'undefined' || $scope.feeData.calculatedFee == '' || $scope.feeData.calculatedFee == '-') ? zeroAmount : parseFloat($scope.feeData.calculatedFee);
 		var amountToPay = (typeof amount == 'undefined' || amount =='') ? zeroAmount : parseFloat(amount);
-		
+
 		$scope.feeData.totalOfValueAndFee = parseFloat(amountToPay + feesAmount).toFixed(2);
 	};
-	
+
 	$scope.handleCloseDialog = function(){
 		$scope.reservationBillData.isCheckout = false;
 		$scope.paymentModalOpened = false;
@@ -166,7 +166,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		refreshCardsList();
 	};
 
-	
+
 
 	$scope.changeOnsiteCallIn = function(){
 		 $scope.isManual ? $scope.showGuestCreditCardList() : "";
@@ -191,7 +191,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	};
 
 	$scope.showHideCreditCard = function(){
-		
+
 		if($scope.saveData.paymentType == "CC"){
 			if($scope.paymentGateway !== 'sixpayments'){
 				($scope.isExistPaymentType) ? $scope.showCreditCardInfo = true :$scope.showGuestCreditCardList();
@@ -207,7 +207,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* Success call back - for initial screen
 	*/
 	$scope.getPaymentListSuccess = function(data){
-		
+
 		$scope.$emit('hideLoader');
 		$scope.renderData.paymentTypes = data;
 
@@ -222,7 +222,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.showHideCreditCard();
 	};
 
-	
+
 	var checkReferencetextAvailableForCC = function(){
 		angular.forEach($scope.renderData.paymentTypes, function(paymentType, key) {
 			if(paymentType.name == 'CC'){
@@ -249,7 +249,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				};
 			});
 			angular.forEach($scope.cardsList, function(value, key) {
-			
+
 				value.mli_token = value.ending_with; //For common payment HTML to work - Payment modifications story
 				value.card_expiry = value.expiry_date;//Same comment above
 
@@ -280,7 +280,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* Default payment method attached to that bill can be viewed in initial screen
 	*/
 	$scope.init = function(){
-		
+
 		// CICO-12067 Handle the case when reservationId field is undefined.
 		if(typeof $scope.reservationData.reservationId == 'undefined'){
 			$scope.reservationData.reservationId = $scope.reservationData.reservation_id;
@@ -334,7 +334,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				}
 			}
 		}
-		
+
 		var currentBillTotalFees = $scope.billsArray[$scope.currentActiveBill].total_fees;
 		var defaultAmount = zeroAmount;
 		if(currentBillTotalFees.length <= 0 ){
@@ -349,20 +349,20 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 
 		$scope.renderData.defaultPaymentAmount = parseFloat(defaultAmount).toFixed(2);
 		$scope.defaultRefundAmount = (-1)*parseFloat($scope.renderData.defaultPaymentAmount);
-		
+
 
 		if($scope.renderData.defaultPaymentAmount < 0 ){
 			$scope.shouldShowMakePaymentButton = false;
 		}
-		
+
 		if($scope.isStandAlone){
 			$scope.feeData.feesInfo = $scope.billsArray[$scope.currentActiveBill].credit_card_details.fees_information;
 			$scope.setupFeeData();
 		}
 	};
-	
 
-	
+
+
 	/*
 	* Action - On bill selection
 	*/
@@ -414,7 +414,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				$scope.errorMessage = ["Please enter amount"];
 			}, 1000);
 		} else {
-			
+
 			$scope.errorMessage = "";
 			var dataToSrv = {
 				"postData": {
@@ -433,8 +433,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			else{
 				dataToSrv.postData.add_to_guest_card =  false;
 			};
-			
-			
+
+
 			if($scope.isShowFees()){
 				if($scope.feeData.calculatedFee)
 					dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
@@ -464,7 +464,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 					$scope.errorMessage = error;
 					$scope.shouldShowWaiting = false;
 				});
-				
+
 			} else {
 				$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, successPayment);
 			}
@@ -520,9 +520,9 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.billsArray[selectedBillIndex].credit_card_details.card_expiry = cardExpiry;
 		$scope.billsArray[selectedBillIndex].credit_card_details.card_code = cardType;
 		$scope.billsArray[selectedBillIndex].credit_card_details.card_number = cardNumberEndingWith;
-		
+
 		$scope.saveData.payment_type_id = data.id;
-		
+
 		angular.forEach($scope.cardsList, function(value, key) {
 			value.isSelected = false;
 		});
@@ -555,22 +555,22 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				"token": cardToken,
 				"card_code": cardCode
 		};
-		
+
 	    $scope.invokeApi(RVPaymentSrv.savePaymentDetails, dataToSave, successNewPayment);
 	};
-	
+
 	$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
-		
+
 		$scope.swipedCardDataToSave = swipedCardDataToSave;
 		var data 			= swipedCardDataToSave;
 		data.reservation_id =	$scope.reservationData.reservationId;
-		
+
 		data.payment_credit_type = swipedCardDataToSave.cardType;
 		data.credit_card = swipedCardDataToSave.cardType;
 		data.card_expiry = "20"+swipedCardDataToSave.cardExpiryYear+"-"+swipedCardDataToSave.cardExpiryMonth+"-01";
 		$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successNewPayment);
-	
-		
+
+
 	});
 
 
@@ -608,20 +608,20 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		setTimeout(function(){
 			savePayment(data);
 		}, 200);
-		
-		
+
+
 	});
 
 	$scope.$on("MLI_ERROR", function(e,data){
 		$scope.errorMessage = data;
 	});
-	
+
 	$scope.$on('cancelCardSelection',function(e,data){
 		$scope.showCCPage = false;
 		$scope.isManual = false;
 		$scope.saveData.paymentType = "";
 	});
-	
+
 	$scope.$on("SHOW_SWIPED_DATA_ON_PAY_SCREEN", function(e, swipedCardDataToRender){
 		$scope.showCCPage 						 = true;
 		$scope.addmode                 			 = true;
