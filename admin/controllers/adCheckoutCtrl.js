@@ -167,7 +167,8 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
 				'require_cc_for_checkout_email':$scope.checkoutData.require_cc_for_checkout_email,
                 'staff_emails_for_late_checkouts':$scope.checkoutData.staff_emails_for_late_checkouts,
                 'room_verification_instruction':$scope.checkoutData.room_verification_instruction,
-                'excluded_room_types':excluded_room_types
+                'excluded_room_types':excluded_room_types,
+                'checkout_static_uri':$scope.checkoutData.checkout_static_uri
 			};
 
         var saveCheckoutDetailsFailureCallback = function(data) {

@@ -244,7 +244,10 @@
 
 							<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkoutData.room_verification_instruction" label = "{{'ROOM_VERIFICATION_INSTRUCTIONS' | translate}}" placeholder = "" maxlength="200"></ad-textarea>
 
-						</fieldset>						
+						</fieldset>
+						<fieldset class="holder right">
+							<ad-textbox value="checkoutData.checkout_static_uri" label = "WEB CHECK OUT URL www.pms.stayntouch.com/checkout/XXXXX" placeholder = "Enter URL"  styleclass="full-width"></ad-textbox>		
+						</fieldset>				
 						<div class="actions float">
 							<button type="button" ng-click="goBackToPreviousState()" class="button blank add-data-inline" translate>CANCEL</button>
 							<button type="button" ng-click="saveCheckout()" class="button green" translate>SAVE_CHANGES</button>
