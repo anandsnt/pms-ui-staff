@@ -56,7 +56,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
     	$rootScope.user_id = $attrs.id;
     	$rootScope.user_name = $attrs.login;
     }
-    
+
 
  	if(typeof $attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
@@ -76,12 +76,12 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  		$location.path('/checkinConfirmation');
  	}
   	else if($rootScope.isCheckedout)	{
-		$location.path('/checkOutStatus');	
+		$location.path('/checkOutStatus');
 	}
-	else if($rootScope.hasOwnProperty('isPasswordResetView')){		
+	else if($rootScope.hasOwnProperty('isPasswordResetView')){
 		var path = $rootScope.isPasswordResetView === 'true'? '/resetPassword' : '/emailVerification';
-		$location.path(path);	
-		$location.replace();	
+		$location.path(path);
+		$location.replace();
 	}else{
          $location.path('/checkoutRoomVerification');
 	};
