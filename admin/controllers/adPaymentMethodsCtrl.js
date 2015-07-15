@@ -55,39 +55,6 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 		$scope.invokeApi(ADPaymentMethodsSrv.toggleSwitchCC, data, postSuccess);
 	};
         
-        $scope.meid = 'ad payment methods ctrl';
-        
-        
-        $scope.$on('sm-payment-updated', function(event, val) {
-            // profileObj contains; name, country and email from emitted event
-            
-            $scope.data.data.product_cross_customer.default_payment_id = val;
-             setTimeout(function () {
-                var payment = $('[valfor=value-default-payment]')[1];
-                $(payment).val(val);
-            }, 2000);
-          //  $scope.data.product_cross_customer.default_payment_id = val;
-        });
-        
-        
-        
-        
-        
-        
-        /*
-        $scope.$watch("data.data.product_cross_customer.default_payment_id", function (o, n) {
-            //this data is pushed in upon saving the form, retrieved from other controllers
-            //so watch this to push the data back in through this controller to the other controllers
-            //emit this value to be pulled into other controllers
-            
-            console.log(arguments);
-            console.log('emitting default_payment_id value of: '+this.data.data.product_cross_customer.default_payment_id);
-            $scope.$emit('sm-payment-updated', {
-                'default_payment_id': this.data.data.product_cross_customer.default_payment_id
-            });
-        });
-        
-        */
 	/*
 	 * Render add payment method screen
 	 */

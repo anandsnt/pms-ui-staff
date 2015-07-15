@@ -1,5 +1,4 @@
-admin.service('adSiteminderSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2){
-   
+admin.service('adSynxisSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2){
    
 	this.testSetup = function(data){
 		var deferred = $q.defer();
@@ -26,7 +25,7 @@ admin.service('adSiteminderSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
         
 	this.saveSetup = function(data){
 		var deferred = $q.defer();
-		var url = 'admin/save_ota_connection_config';	
+		var url = 'admin/save_ota_connection_config';//update for synxis-specific
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
