@@ -11,11 +11,11 @@
 				// RVDepositBalanceSrv,
 				// RVPaymentSrv,
 				// $stateParams){
-// 					
+//
 	// BaseCtrl.call(this, $scope);
-// 
+//
 	// $scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG");
-// 
+//
 	// angular.forEach($scope.depositBalanceData.data.existing_payments, function(value, key) {
 		// value.isSelected = false;
 	// });
@@ -34,30 +34,30 @@
 	// $scope.makePaymentData.amount = $scope.depositBalanceData.data.outstanding_stay_total;
 	// $scope.makePaymentButtonActive = false;
 	// $scope.setScroller('available_cards', { click:true});
-// 	
-// 	
+//
+//
 	// /*
 	 // * Function to handle click on make payment button
 	 // * If new card is added, then first we need to add the credit card and on success we make the payment
 	 // * We should handle manual entry of new card, swiped card and select already existing cards
 	 // */
 	// $scope.clickedMakePayment = function(){
-// 
-// 
+//
+//
 		// if($scope.isSwiped){
 			// //$scope.handleSwipedData();
-// 
+//
 			// $scope.savePayment("swiped");
-// 
+//
 		// } else if($scope.addCardActive){
-// 
+//
 			// $scope.handleMLISessionId();
 		// } else {
 //
-// 
+//
 			// $scope.savePayment("selectedCard");
 		// }
-// 
+//
 	// };
 	// /*
 	 // * Manual entry cards - MLI session integration
@@ -80,12 +80,12 @@
 		 // sessionDetails.cardSecurityCode = $scope.depositBalanceNewCardData.ccv;
 		 // sessionDetails.cardExpiryMonth = $scope.depositBalanceNewCardData.expiryMonth;
 		 // sessionDetails.cardExpiryYear = $scope.depositBalanceNewCardData.expiryYear;
-// 
+//
 		 // var callback = function(response){
 		 	// $scope.$emit("hideLoader");
-// 
+//
 		 	// if(response.status ==="ok"){
-// 
+//
 		 		// MLISessionId = response.session;
 		 		// $scope.savePayment('manual');// call save payment details WS
 		 	// }
@@ -94,7 +94,7 @@
 		 	// }
 		 	// $scope.$apply();
 		 // };
-// 
+//
 		// try {
 		    // HostedForm.updateSession(sessionDetails, callback);
 		    // $scope.$emit("showLoader");
@@ -108,7 +108,7 @@
 	 // * Function to save payment
 	 // */
 	// $scope.savePayment = function(type){
-// 
+//
 		// if(type === "manual"){
 			  // var cardExpiry = ($scope.depositBalanceNewCardData.expiryMonth!=='' && $scope.depositBalanceNewCardData.expiryYear!=='') ? "20"+$scope.depositBalanceNewCardData.expiryYear+"-"+$scope.depositBalanceNewCardData.expiryMonth+"-01" : "";
               // var dataToApiToAddNewCard = {
@@ -120,10 +120,10 @@
               // };
               // $scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, dataToApiToAddNewCard, $scope.successSavePayment);
 		// } else if(type == "swiped"){
-// 
-// 
+//
+//
 			// var cardExpiry = ($scope.depositBalanceNewCardData.expiryMonth!=='' && $scope.depositBalanceNewCardData.expiryYear!=='') ? "20"+$scope.depositBalanceNewCardData.expiryYear+"-"+$scope.depositBalanceNewCardData.expiryMonth+"-01" : "";
-// 
+//
 			// var dataToApiToAddNewCard = {
 				    // card_expiry: cardExpiry,
 				    // name_on_card: $scope.depositBalanceNewCardData.cardHolderName,
@@ -146,20 +146,20 @@
 				// "reservation_id": $scope.reservationData.reservation_card.reservation_id,
 				// "amount": $scope.makePaymentData.amount
 			// };
-// 
+//
 		// //	alert(JSON.stringify(dataToMakePaymentApi));
 			 // $scope.invokeApi(RVPaymentSrv.makePaymentOnDepositBalance, dataToMakePaymentApi, $scope.successMakePayment);
 		 // }
 		 // // dataToApiToAddNewCard
 		 // // add_to_guest_card
-// 
+//
 	// };
 	// /*
 	 // * Success callback of save payment.
 	 // * Do make payment on success
 	 // */
 	// $scope.successSavePayment = function(data){
-// 
+//
 		// var paymentId = '';
 		// if($scope.isSwiped){
 			// paymentId = data.id;
@@ -173,7 +173,7 @@
 			// "reservation_id": $scope.reservationData.reservation_card.reservation_id,
 			// "amount": $scope.makePaymentData.amount
 		// };
-// 
+//
 	// //	alert(JSON.stringify(dataToMakePaymentApi));
 		 // $scope.invokeApi(RVPaymentSrv.makePaymentOnDepositBalance, dataToMakePaymentApi, $scope.successMakePayment);
 	// };
@@ -191,14 +191,14 @@
 		// $scope.depositBalanceNewCardData.expiryMonth = data.card_expiry.slice(-2);;
 		// $scope.depositBalanceNewCardData.expiryYear  = data.card_expiry.substring(0, 2);;
 		// $scope.depositBalanceNewCardData.cardHolderName  = data.name_on_card;
-// 
+//
 		// $scope.$emit("hideLoader");
-// 
+//
 	// });
 	// /*app/assets/rover/controllers/depositBalance/rvDepositBalanceCtrl.js://
 	 // * Show Add Card Active and show screen
 	 // */
-	// $scope.clickedAddCard = function(){		
+	// $scope.clickedAddCard = function(){
 		// $scope.addCardActive = true;
 		// $scope.isSwiped = false;
 		// $scope.makePaymentButtonActive = false;
@@ -214,9 +214,9 @@
 	 // * Show existing payments Active and show screen
 	 // */
 	// $scope.clickedShowExistingCard = function(){
-// 
+//
 		// $scope.refreshScroller('available_cards');
-// 
+//
 		// $scope.addCardActive = false;
 		// $scope.isSwiped = false;
 		// $scope.makePaymentButtonActive = false;
@@ -224,7 +224,7 @@
 		// $scope.depositBalanceNewCardData.expiryMonth = "";
 		// $scope.depositBalanceNewCardData.expiryYear  = "";
 		// $scope.depositBalanceNewCardData.cardHolderName  = "";
-// 	
+//
 	// };
 	// $scope.selectPayment = function(paymentId){
 		// selectedPaymentIdFromList = paymentId;
@@ -236,7 +236,7 @@
 				// value.isSelected = true;
 			// }
 		// });
-// 
+//
 	// };
 	// $scope.showMakePaymentButtonStatus = function(){
 		// var buttonClass = "";
@@ -255,45 +255,45 @@
 			// $scope.makePaymentButtonActive = false;
 		// //}
 	// };
-// 
+//
 	// $scope.closeDepositModal = function(){
 		// $scope.isDepositBalanceScreenOpened = false;
 		// $scope.closeDialog();
 	// };
 	// $scope.successMakePayment = function(){
 		// $scope.$emit("hideLoader");
-// 		
+//
 		// if($scope.reservationData.reservation_card.is_rates_suppressed === "false" || $scope.reservationData.reservation_card.is_rates_suppressed === false){
 			// console.log(";;;;;;;;;;;;;");
 			// $scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.makePaymentData.amount);
 			// $scope.$apply();
 		// }
-// 		
+//
 		// $scope.closeDepositModal();
 	// };
-// 
-// 
+//
+//
 // }]);
 			// $scope.makePaymentButtonActive = false;
 		// //}
 	// };
-// 
+//
 	// $scope.closeDepositModal = function(){
 		// $scope.roverFlags.isDepositBalanceScreenOpened = false;
 		// $scope.closeDialog();app/assets/rover/controllers/depositBalance/rvDepositBalanceCtrl.js://
 	// };
 	// $scope.successMakePayment = function(){
 		// $scope.$emit("hideLoader");
-// 		
+//
 		// if($scope.reservationData.reservation_card.is_rates_suppressed === "false" || $scope.reservationData.reservation_card.is_rates_suppressed === false){
 			// console.log(";;;;;;;;;;;;;");
 			// $scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.makePaymentData.amount);
 			// $scope.$apply();
 		// }
-// 		
+//
 		// $scope.closeDepositModal();
 	// };
-// 
-// 
+//
+//
 // }]);
 
