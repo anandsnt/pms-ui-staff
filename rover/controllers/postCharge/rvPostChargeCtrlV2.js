@@ -23,6 +23,7 @@ sntRover.controller('RVPostChargeControllerV2',
 
 		    fetchChargeGroups();
 
+		    // To fetch charge code items - via search query or filter by charge group ..
 		    var searchChargeCodeItems = function(){
 
 		    	var params = {
@@ -67,16 +68,6 @@ sntRover.controller('RVPostChargeControllerV2',
   				return (!$scope.hasPostChargePermission());
   			};
 
-			// // set the default bill number
-			// $scope.successGetBillDetails = function(data){
-			// 	$scope.$emit( 'hideLoader' );
-			// 	data.isFromOut = false;
-			// 	$scope.$broadcast("UPDATED_BILLNUMBERS", data);
-			// };
-			// if(!$scope.isBillsFetched && $scope.reservation_id){
-			// 	$scope.invokeApi(RVChargeItems.getReservationBillDetails, $scope.reservation_id, $scope.successGetBillDetails);
-			// }
-			
 			// filter the items based on the chosen charge group
 			$scope.filterbyChargeGroup = function() {
 				searchChargeCodeItems();
@@ -85,15 +76,21 @@ sntRover.controller('RVPostChargeControllerV2',
 			// filter the items based on the search query
 			// will search on all items, discard chosen 'chargeGroup'
 			$scope.filterByQuery = function() {
-				$scope.chargeGroup = '';
-				searchChargeCodeItems();
+				if( $rootScope.isSingleDigitSearch ){
+					$scope.chargeGroup = '';
+					searchChargeCodeItems();
+				}
+				else if( $scope.query.length >= 3 ){
+					$scope.chargeGroup = '';
+					searchChargeCodeItems();
+				}
 			};
 
 			// clear the filter query
 			$scope.clearQuery = function() {
 				$scope.query = '';
 				searchChargeCodeItems();
-				
+
 				$scope.refreshScroller('items_summary');	
 				$scope.refreshScroller('items_list');	
 			};
@@ -101,10 +98,6 @@ sntRover.controller('RVPostChargeControllerV2',
 			// make favorite selected by default
 			$scope.chargeGroup = 'FAV';
 			searchChargeCodeItems();
-
-			// quick ref to charged items
-			$scope.chargedItems = [];
-			$scope.chosenChargedItem = null;
 
 			$scope.net_total_price = 0;
 			// set the default toggle to 'QTY'
@@ -165,7 +158,6 @@ sntRover.controller('RVPostChargeControllerV2',
 				angular.forEach(angular.element("#numpad-options button"), function(value, key){
 				      new FastClick(value);
 				});
-				console.log($scope.selectedChargeItemHash);
 			};
 
 			/**
@@ -182,6 +174,12 @@ sntRover.controller('RVPostChargeControllerV2',
 			$scope.removeItem = function() {
 
 				delete $scope.selectedChargeItemHash[ $scope.selectedChargeItem.id ];
+
+				// selected item is not deleting from DOM even after deleting from the hash.
+				// Work around - removing the item manually..
+				setTimeout(function() {
+					angular.element(document.querySelector('#items-summary li.selected')).remove();
+				}, 100);
 
 				$scope.selectedChargeItem.count = 0;
 				$scope.selectedChargeItem.modifiedPrice = $scope.selectedChargeItem.unit_price;
@@ -220,8 +218,6 @@ sntRover.controller('RVPostChargeControllerV2',
 
 			// actions to be taken for numberpad number press
 			$scope.calNumAction = function(input) {
-
-				//selectedChargeItem
 
 				// if user is trying to update the quantity
 				if ( $scope.calToggle === 'QTY' ) {
@@ -336,7 +332,6 @@ sntRover.controller('RVPostChargeControllerV2',
 
 					// update net total price
 					calNetTotalPrice();
-
 					return;
 				};
 
@@ -490,7 +485,6 @@ sntRover.controller('RVPostChargeControllerV2',
 							}
 						};
 						$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback);
-
 					}
 					
 				}
@@ -503,7 +497,7 @@ sntRover.controller('RVPostChargeControllerV2',
 			
 			//Will be invoked only if triggered from the menu. 
 			// So always the default bill no will be 1
-			$scope.$on("UPDATED_BILLNUMBERS", function(event, data){
+			$scope.$on("UPDATED_BILLNUMBERS", function( event, data ){
 				$scope.fetchedData.bill_numbers = data.bills;
 
 				$scope.billNumber = "1";
@@ -511,33 +505,20 @@ sntRover.controller('RVPostChargeControllerV2',
 				searchChargeCodeItems();
 			});
 			
-			$scope.convertToJSONString = function (string) {				
+			$scope.convertToJSONString = function ( string ) {				
 				return JSON.stringify (string);
 			};
 
-			$scope.$on('POSTCHARGE', function(event, data) {
+			$scope.$on('POSTCHARGE', function( event, data ) {
 			   $scope.postCharges();
 			   $scope.isOutsidePostCharge = true;
 			});
 			
-			$scope.$on('RESETPOSTCHARGE', function(event, data) {
+			$scope.$on('RESETPOSTCHARGE', function( event, data ) {
 			    $scope.selectedChargeItem = null;
 				$scope.selectedChargeItem = null;
 				$scope.fetchedData.bill_numbers = null;
-				
-				/*for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
-					if($scope.fetchedItems[i].isChosen) {
-						$scope.fetchedItems[i].isChosen = false;
-						$scope.fetchedItems[i].count = 0;
-					}
-				}*/
-				
-				/*for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
-					if ( $scope.fetchedChargeCodes[i].isChosen ){
-						 $scope.fetchedChargeCodes[i].isChosen = false;
-						 $scope.fetchedChargeCodes[i].count = 0;
-					}
-				}*/
+				$scope.selectedChargeItemHash = {};
 			});
 		}
 	]

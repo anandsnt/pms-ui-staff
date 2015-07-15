@@ -86,7 +86,7 @@
 				<div id="items-summary" class="scrollable" ng-iscroll="items_summary">
 					
 					<ul class="wrapper">
-
+						
 						<li ng-repeat="each in selectedChargeItemHash" ng-class="{'selected': each.name === selectedChargeItem.name}" ng-click="selectUnselect(each)">
 							{{ each.name }}
 							<span count ng-show="each.count > 1">({{ each.count }})</span>

@@ -51,7 +51,6 @@ sntRover.service('RVPostChargeSrvV2',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSr
         var url = "/api/charge_codes/items_and_charge_codes.json?query="+params.query+"&page="+params.page+"&per_page="+params.per_page+"&charge_group_id="+params.charge_group_id+"&is_favorite="+params.is_favorite;
 
         BaseWebSrvV2.getJSON(url).then(function( data ) {
-        	console.log(data);
             deferred.resolve(data);
         }, function (data) {
             deferred.reject(data);
