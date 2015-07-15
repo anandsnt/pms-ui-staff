@@ -484,7 +484,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				var _ret = false,
 					i, j;
 
-				for (i = 0, j = $scope.rooms.length; i < j; i++) {
+				for (i = 0, j = $scope.uiTotalCount; i < j; i++) {
 					if ( $scope.rooms[i].selected ) {
 						_ret = true;
 						break;
@@ -495,7 +495,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			};
 
 			// check if all rooms have been selected to make the 'All Selected' enabled in filters
-			if ( $scope.rooms.length == $scope.getSelectedRoomCount() ) {
+			if ( $scope.uiTotalCount == $scope.getSelectedRoomCount() ) {
 				$scope.multiRoomAction.allSelected = true;
 			} else {
 				$scope.multiRoomAction.allSelected = false;
@@ -507,7 +507,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			$scope.anyRoomChosen = !!value;
 
-			for (i = 0, j = $scope.rooms.length; i < j; i++) {
+			for (i = 0, j = $scope.uiTotalCount; i < j; i++) {
 				$scope.rooms[i].selected = !!value;
 			};
 		};
@@ -525,7 +525,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.multiRoomAction.rooms = [];
 			$scope.multiRoomAction.indexes = {};
 
-			for (i = 0, j = $scope.rooms.length; i < j; i++) {
+			for (i = 0, j = $scope.uiTotalCount; i < j; i++) {
 				if ( $scope.rooms[i].selected ) {
 					$scope.multiRoomAction.rooms.push( $scope.rooms[i].id );
 
