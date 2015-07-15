@@ -1,19 +1,19 @@
 var RoomPanel = React.createClass({
-	componentDidUpdate: function(){	
-		
-		this.props.iscroll.rooms.refresh();	
+	componentDidUpdate: function(){
+	
+		this.props.iscroll.rooms.refresh();
 	},
 	componentDidMount: function() {
 		var iscroll = this.props.iscroll;
 
-		iscroll.rooms = new IScroll('#diary-rooms', { 
-			probeType: 2, 
+		iscroll.rooms = new IScroll('#diary-rooms', {
+			probeType: 2,
 			scrollbars: 'custom',
 			interactiveScrollbars: true,
-			scrollX: false, 
+			scrollX: false,
 			scrollY: true,
 			momentum: false,
-			bounce: false, 
+			bounce: false,
 			mouseWheel: false,
 			useTransition: true
 		});

@@ -1,13 +1,13 @@
-var GridPanel = React.createClass({	
+var GridPanel = React.createClass({
 	componentDidMount: function() {
-		
+	
 	},
 	render: function() {
 		var props = this.props;
 
 		return React.DOM.div({
-			className: 'diary-grid' 
-		}, 
+			className: 'diary-grid'
+		},
 		Grid({
 			viewport: 			props.viewport,
 			display: 			props.display,
@@ -23,7 +23,7 @@ var GridPanel = React.createClass({
 			__onGridScroll: 	props.__onGridScroll,
 			__onGridScrollEnd: 	props.__onGridScrollEnd,
 			__onDragStart: 		props.__onDragStart,
-			__onDragStop: 		props.__onDragStop	
+			__onDragStop: 		props.__onDragStop
 		}));
 	}
 });
