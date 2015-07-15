@@ -82,8 +82,8 @@
                 {{'GROUP_CHECK_IN'|translate}}
             </button> 
 
-            <button type="button" class="button" ng-disabled="shouldDisableCheckoutButton()" 
-            ng-class="{'grey': shouldDisableCheckoutButton(), 'green': !shouldDisableCheckoutButton()}">
+            <button type="button" class="button" ng-hide="true" ng-disabled="shouldDisableCheckoutButton()" 
+            ng-class="{'grey': shouldDisableCheckoutButton(), 'red': !shouldDisableCheckoutButton()}">
                 {{'GROUP_CHECK_OUT'|translate}}
             </button>
 
