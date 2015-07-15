@@ -464,12 +464,16 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.sitemindersSetup', {
 			templateUrl: '/assets/partials/SiteminderSetup/adSiteminderSetup.html',
 			controller: 'adExternalInterfaceCtrl',
+                        interface_id: 2,
+                        simple_name: 'Siteminder',
 			url : '/siteminderSetup'
 		});
                 
 		$stateProvider.state('admin.synxisSetup', {
 			templateUrl: '/assets/partials/SynxisSetup/adSynxisSetup.html',
 			controller: 'adExternalInterfaceCtrl',
+                        interface_id: 3,
+                        simple_name: 'Synxis',
 			url : '/synxisSetup'
 		});
 

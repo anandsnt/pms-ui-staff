@@ -12,13 +12,15 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
         $scope.payments = {};
         BaseCtrl.call(this, $scope);
         $scope.currentState = $state.current.name;
+        $scope.interfaceId = $state.current.interface_id;
+        $scope.simpleName = $state.current.simple_name;
         
         //these setup a generic method to access each service api, using the router namespace
         $scope.serviceController;
         $scope.interfaceName;
         $scope.interfaceConfig = {//controller to find the proper service controller, name to update success/fail messages with proper view/title
-            'admin.sitemindersSetup':{'controller':adSiteminderSetupSrv, 'name':'Siteminder', 'service_name': 'adSiteminderSetupSrv'},
-            'admin.synxisSetup': {'controller':adSynxisSetupSrv, 'name':'Synxis', 'service_name': 'adSynxisSetupSrv'}
+            'admin.sitemindersSetup':{'controller':adSiteminderSetupSrv, 'name':$scope.simpleName, 'service_name': 'adSiteminderSetupSrv'},
+            'admin.synxisSetup': {'controller':adSynxisSetupSrv, 'name':$scope.simpleName, 'service_name': 'adSynxisSetupSrv'}
         };
         $scope.init = function(){
             //console.log('service controller for : '+$scope.currentState+', is : '+$scope.interfaceConfig[$scope.currentState].service_name);
@@ -38,7 +40,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             $scope.setRefreshTime();
         };
         $scope.fetchSetup = function () {
-            $scope.invokeApi($scope.serviceController.fetchSetup, {}, $scope.fetchSetupSuccessCallback);
+            $scope.invokeApi(adExternalInterfaceCommonSrv.fetchSetup, {'interface_id':$scope.interfaceId}, $scope.fetchSetupSuccessCallback);
         };
 	var fetchOriginsSuccessCallback = function(data) {
 		$scope.$emit('hideLoader');
@@ -85,7 +87,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
         
         $scope.toggleSMActiveSuccess = function () {
             $scope.data.data.product_cross_customer.active = !$scope.data.data.product_cross_customer.active;
-            $scope.invokeApi($scope.serviceController.fetchSetup, {
+            $scope.invokeApi(adExternalInterfaceCommonSrv.fetchSetup, {
                 'interface_id': $scope.data.data.product_cross_customer.interface_id,
                 'active': $scope.data.data.product_cross_customer.active
             }, $scope.fetchSetupSuccessCallback);
@@ -95,14 +97,14 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             if ($scope.data.data){
                 if ($scope.data.data.product_cross_customer){
                     var active = $scope.data.data.product_cross_customer.active,
-                        id = $scope.data.data.product_cross_customer.interface_id;
+                        id = $scope.interfaceId;
                     if (active) {
                         active = false;
                     } else {
                         active = true;
                     }
                     
-                    $scope.invokeApi($scope.serviceController.toggleActive, {
+                    $scope.invokeApi(adExternalInterfaceCommonSrv.toggleActive, {
                         'interface_id': id,
                         'active': active
                     }, $scope.toggleSMActiveSuccess);
