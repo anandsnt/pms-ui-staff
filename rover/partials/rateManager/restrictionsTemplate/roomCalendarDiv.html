@@ -1,0 +1,29 @@
+<span class="left rate-single" style='height:100%;width:100%;'>
+    <span ng-if ="!rate[date].isHourly && rate[date].single === null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'single') != 'false', 'gray' : calendarData.is_child == true}">{{rate[date].single}}<text ng-if="rateDateHasOverride(rate, date,'_any_') != 'false'" class='hasOverride-label'>*</text></span>
+    <span ng-if ="!rate[date].isHourly && rate[date].single !== null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'single') != 'false', 'gray' : calendarData.is_child == true}">{{rate[date].single| number : 2}}<text ng-if="rateDateHasOverride(rate, date,'_any_') != 'false'" class='hasOverride-label'>*</text></span>
+    <span ng-if ="!rate[date].isHourly && rate[date].nightly === null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'nightly') != 'false', 'gray' : calendarData.is_child == true}">{{rate[date].nightly}}<text ng-if="rateDateHasOverride(rate, date,'nightly') != 'false'" class='hasOverride-label'>*</text></span>
+    <span ng-if ="rate[date].isHourly && rate[date].nightly !== null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'nightly') != 'false', 'gray' : calendarData.is_child == true}">{{rate[date].nightly| number : 2}}<text ng-if="rateDateHasOverride(rate, date,'nightly') != 'false'" class='hasOverride-label'>*</text></span>
+</span>
+<div class="limit-width">
+
+    <span ng-show="isRestrictTo(currentFilterData.zoom_level_selected, rate[date].restrictions) == 3 && rate[date].restrictions.length <= 3" 
+          ng-repeat="restriction in rate[date].restrictions| limitTo: 3 track by $index" 
+          class="restriction-icon right 
+          {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} 
+          {{calendarData.restriction_types[restriction.restriction_type_id].icon}}">
+        {{restriction.days}}
+    </span>		
+    <span ng-show="isRestrictTo(currentFilterData.zoom_level_selected, rate[date].restrictions) == 3 && rate[date].restrictions.length > 3" 
+          ng-repeat="restriction in rate[date].restrictions| limitTo: 3 track by $index" 
+          class="restriction-icon left-icons 
+          {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} 
+          {{calendarData.restriction_types[restriction.restriction_type_id].icon}}">
+        {{restriction.days}}
+    </span>		
+    <span ng-show="rate[date].restrictions.length > 3 &&  currentFilterData.zoom_level_selected < 6" class="restriction-icon left-icons ellipsis">...</span>
+
+    <!-- if more than 1 restriction, depending on zoom, show Restrictions icon or first 3 restrictions -->
+    <span ng-show="isRestrictTo(currentFilterData.zoom_level_selected, rate[date].restrictions) == 2"
+          class="restriction-icon right bg-drk"> R 
+    </span>	
+</div>
