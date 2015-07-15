@@ -143,14 +143,14 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.clickedDepartment = function(index){
 
     	$scope.data.filterData.departments[index].checked = !$scope.data.filterData.departments[index].checked;
-    	getSelectButtonStatus();
-            $scope.filterRevenueByDepartmentsOrEmployees();
-            $scope.refreshRevenueTab();
-            $scope.filterPaymentByDepartmentsOrEmployees();
-            $scope.refreshPaymentTab();
-        }
-    	if(isAllDepartmentsUnchecked()) $scope.selectAllDepartment();
-    	else $scope.data.filterData.checkedAllDepartments = false;
+        getSelectButtonStatus();
+
+        if(isAllDepartmentsUnchecked()) {
+            $scope.selectAllDepartment();
+        }            
+        else {
+            $scope.data.filterData.checkedAllDepartments = false;
+        };
     };
 
     // Clicking on each Employees check boxes.
