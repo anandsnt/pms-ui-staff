@@ -352,8 +352,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		};
 
 		var checkAllRoomsAreReady = function() {
-			var promises = [];
-			var data = null;
+			var promises = [], id;
 			//we are following this structure bacuse of the hideloader pblm.
 			// we are going to call mutilple API's paralelly. So sometimes last API may complete first
 			// we need to keep loader until all api gets completed
@@ -361,7 +360,10 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			for (var i = 0; i < $scope.reservationData.rooms.length; i++) {
 				id = $scope.reservationData.rooms[i].room_id;
 				//directly calling without base ctrl
-				promises.push(RVHkRoomDetailsSrv.fetch(id).then(successOfRoomDetailsFetch));
+                                //room_id may still be undefined at this point, no need to send a bad request @ '/house/room/unidentified.json';
+                                if (id){
+                                    promises.push(RVHkRoomDetailsSrv.fetch(id).then(successOfRoomDetailsFetch));
+                                }
 			}
 			$q.all(promises).then(allRoomDetailsFetched, failedInRoomDetailsFetch);
 

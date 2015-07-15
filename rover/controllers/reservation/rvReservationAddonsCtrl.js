@@ -140,7 +140,9 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
 
         $scope.refreshAddonsScroller = function() {
             $timeout(function() {
-                $scope.$parent.myScroll['enhanceStays'].refresh();
+                if ($scope.$parent.myScroll['enhanceStays']){
+                    $scope.$parent.myScroll['enhanceStays'].refresh();
+                }
             }, 700);
         }
 
