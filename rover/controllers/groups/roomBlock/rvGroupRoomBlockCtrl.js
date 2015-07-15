@@ -214,14 +214,18 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldShowTripleEntryRow = function(roomType) {
-			var list_of_triples = _.pluck(roomType.dates, 'triple');
+			if ($scope.groupConfigData.summary.rate == -1) {
+				var list_of_triples = _.pluck(roomType.dates, 'triple');
 
-			//throwing undefined items
-			list_of_triples = _.filter(list_of_triples, function(element) {
-				return (typeof element !== "undefined")
-			});
+				//throwing undefined items
+				list_of_triples = _.filter(list_of_triples, function(element) {
+					return (typeof element !== "undefined")
+				});
 
-			return (list_of_triples.length > 0)
+				return (list_of_triples.length > 0)
+			} else {
+				return !!roomType.rate_config.extra_adult_rate && !!roomType.rate_config.double_rate;
+			}
 		};
 
 		/**
@@ -232,14 +236,18 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldShowQuadrupleEntryRow = function(roomType) {
-			var list_of_quadruples = _.pluck(roomType.dates, 'quadruple');
+			if ($scope.groupConfigData.summary.rate == -1) {
+				var list_of_quadruples = _.pluck(roomType.dates, 'quadruple');
 
-			//throwing undefined items
-			list_of_quadruples = _.filter(list_of_quadruples, function(element) {
-				return (typeof element !== "undefined")
-			});
+				//throwing undefined items
+				list_of_quadruples = _.filter(list_of_quadruples, function(element) {
+					return (typeof element !== "undefined")
+				});
 
-			return (list_of_quadruples.length > 0 && $scope.shouldShowTripleEntryRow(roomType))
+				return (list_of_quadruples.length > 0 && $scope.shouldShowTripleEntryRow(roomType))
+			} else {
+				return !!roomType.rate_config.extra_adult_rate && !!roomType.rate_config.double_rate;
+			}
 		};
 
 		/**
@@ -279,6 +287,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		/**
+<<<<<<< HEAD
+=======
 		 * should we wanted to disable single box entry
 		 * @param {Object} [dateData] [description]
 		 * @param {Object} - Room Type data row
@@ -339,6 +349,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};		
 
 		/**
+>>>>>>> 912b9e5ac6d8266027ca4703b1824cbeeea10a5d
 		 * to copy the single & single_pick up value entered in the column
 		 * to the row
 		 * @param {Object} - cell data
@@ -1034,6 +1045,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				$scope.createButtonClicked = true;
 				$scope.totalPickups = refData.summary.rooms_pickup;
 				$scope.totalRooms = refData.summary.rooms_total;
+
 				$scope.selectedHoldStatus = util.convertToInteger(refData.summary.hold_status);			
 			}
 
