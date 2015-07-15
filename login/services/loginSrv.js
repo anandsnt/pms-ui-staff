@@ -1,7 +1,7 @@
 login.service('loginSrv',['$http', '$q', function($http, $q){
 	this.login = function(data, successCallback, failureCallBack){
 		var deferred = $q.defer();
-		
+
 		//Sample params {params:{fname: "fname", lname: "lname"}}
 		$http.post("/login/submit", data).success(function(response, status) {
 			if(response.status == "success"){
@@ -28,13 +28,10 @@ login.service('loginSrv',['$http', '$q', function($http, $q){
 			}else{
 				deferred.reject(response.errors);
 			}
-		    
+
 		});
 		return deferred.promise;
-		
-		
-		
-		
+
 	};
-	
+
 }]);
