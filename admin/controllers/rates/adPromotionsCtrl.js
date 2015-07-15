@@ -124,7 +124,8 @@ admin.controller('ADPromotionsCtrl', [
 				discount_type: $scope.state.newPromo.discount.type,
 				discount_value: $scope.state.newPromo.discount.value,
 				linked_rates: _.pluck($scope.state.newPromo.assignedRates,'id'),
-				description: $scope.state.newPromo.description
+				description: $scope.state.newPromo.description,
+				is_active: true
 			}, function() {
 				$scope.$emit('hideLoader');
 				$scope.state.current = -1;
