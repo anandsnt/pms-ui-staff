@@ -953,6 +953,9 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          */
         $scope.closeMassCheckinSuccessPopup = function() {
             $scope.closeDialog();
+            //resetting the selected reservations
+            $scope.selected_reservations = [];
+            
             $timeout(function() {
                 callInitialAPIs();
             }, 800);

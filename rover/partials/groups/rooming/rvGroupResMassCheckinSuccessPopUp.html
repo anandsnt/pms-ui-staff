@@ -2,7 +2,8 @@
 	<div class="modal-content form group-checkin" ng-if="ngDialogData.failure_reservation_ids.length == 0">
 		<button id="modal-close" type="button" class="modal-close" ng-click="closeMassCheckinSuccessPopup()" ><span class="icons icon-close invert"></button>
 		<span class="icons icon-popup-success"></span>
-		<span class="h2 message">{{ngDialogData.success_reservation_ids.length}} Reservations checked in succesfully!</span>
+		<span class="h2 message" ng-show="ngDialogData.success_reservation_ids.length<=1">{{ngDialogData.success_reservation_ids.length}} Reservation checked in succesfully!</span>
+		<span class="h2 message" ng-show="ngDialogData.success_reservation_ids.length>1">{{ngDialogData.success_reservation_ids.length}} Reservations checked in succesfully!</span>
 		<div class="actions">
 	        <button type="button" class="button blank" ng-click="closeMassCheckinSuccessPopup()">Close</button>
 	    </div>
@@ -12,7 +13,8 @@
         <div class="feedback">
             <div class="failed">
                 <span class="icons icon-popup-alert"></span>
-                <span class="h3 message">{{ngDialogData.failure_reservation_ids.length}} reservations were not checked in:</span>
+                <span class="h3 message" ng-show="ngDialogData.failedReservations.length<=1">{{ngDialogData.failure_reservation_ids.length}} reservation were not checked in:</span>
+                <span class="h3 message" ng-show="ngDialogData.failedReservations.length>1">{{ngDialogData.failure_reservation_ids.length}} reservations were not checked in:</span>
                 <div class="notice error scrollable" ng-iscroll="failed_reservations_scroller" ng-iscroll-delay="100">
                     <ul class="wrapper">
                         <li ng-repeat="reservation in ngDialogData.failedReservations track by $index" ng-if="isGuestBlank(reservation)" ngrepeatend>
@@ -32,7 +34,8 @@
             <div class="succeeded">
                 <div class="succeded-content">
                     <span class="icons icon-popup-success white"></span>
-                    <span class="h3 message">{{ngDialogData.success_reservation_ids.length}} Reservations checked in succesfully!</span>
+                    <span class="h3 message" ng-show="ngDialogData.success_reservation_ids.length<=1">{{ngDialogData.success_reservation_ids.length}} Reservation checked in succesfully!</span>
+                    <span class="h3 message" ng-show="ngDialogData.success_reservation_ids.length>1">{{ngDialogData.success_reservation_ids.length}} Reservations checked in succesfully!</span>
                 </div>
             </div>
         </div>
