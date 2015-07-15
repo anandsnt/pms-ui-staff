@@ -4,7 +4,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
     'rvGroupRoomingListSrv',
     '$filter',
     '$timeout',
-    '$state',
     'rvUtilSrv',
     'rvPermissionSrv',
     '$q',
@@ -17,13 +16,13 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         rvGroupRoomingListSrv,
         $filter,
         $timeout,
-        $state,
         util,
         rvPermissionSrv,
         $q,
         ngDialog,
         rvGroupConfigurationSrv,
-        $state, $window) {
+        $state,
+        $window) {
 
         BaseCtrl.call(this, $scope);
 
@@ -754,10 +753,12 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         };
 
         var reservationFromDateChoosed = function(date, datePickerObj) {
+            $scope.roomingListState.editedReservationStart = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
             runDigestCycle();
         }
 
         var reservationToDateChoosed = function(date, datePickerObj) {
+            $scope.roomingListState.editedReservationEnd = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
             runDigestCycle();
         }
 
@@ -924,6 +925,8 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          */
         $scope.showEditReservationPopup = function(reservation) {
             var reservationData = angular.copy(reservation);
+            $scope.roomingListState.editedReservationStart = reservation.arrival_date;
+            $scope.roomingListState.editedReservationEnd = reservation.departure_date;
 
             //as per CICO-17082, we need to show the room type in select box of edit with others
             //but should be disabled
@@ -965,8 +968,8 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 return false;
             } else {
                 reservation.group_id = $scope.groupConfigData.summary.group_id;
-                reservation.arrival_date = $filter('date')(tzIndependentDate(reservation.arrival_date), 'yyyy-MM-dd');
-                reservation.departure_date = $filter('date')(tzIndependentDate(reservation.departure_date), 'yyyy-MM-dd');
+                reservation.arrival_date = $filter('date')(tzIndependentDate($scope.roomingListState.editedReservationStart), 'yyyy-MM-dd');
+                reservation.departure_date = $filter('date')(tzIndependentDate($scope.roomingListState.editedReservationEnd), 'yyyy-MM-dd');
                 reservation.room_type_id = parseInt(reservation.room_type_id);
 
                 var onUpdateReservationSuccess = function(data) {
@@ -1260,6 +1263,13 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         var initializeMe = function() {
             //updating the left side menu
             $scope.$emit("updateRoverLeftMenu", "menuCreateGroup");
+
+            //variables for state maintanace
+            $scope.roomingListState = {
+                editedReservationStart: "",
+                editedReservationEnd: ""
+            }
+
 
             //IF you are looking for where the hell the API is CALLING
             //scroll above, and look for the event 'GROUP_TAB_SWITCHED'

@@ -47,13 +47,13 @@
                 <label for="group-block-from">
                     {{'FROM' | translate}}
                 </label>
-                <input id="group-block-from" ng-disabled="ngDialogData.reservationStatusFlags.isUneditable" class="datepicker" type="text" ui-date="reservationFromDateOptions" ui-date-format ng-model="ngDialogData.arrival_date" listen-this="ngDialogData.arrival_date" readonly ng-class="{'not-selected': !ngDialogData.arrival_date}" />
+                <input type="text" value="{{ngDialogData.arrival_date|date:dateFormat}}" class="range-datepicker" listen-this="ngDialogData.arrival_date" ui-date="reservationFromDateOptions" readonly rv-clear-text-box />
             </div>
             <div class="entry margin date">
                 <label for="group-block-to">
                     {{'TO' | translate}}
                 </label>
-                <input id="group-block-to" ng-disabled="ngDialogData.reservationStatusFlags.isUneditable" class="datepicker" type="text" ui-date-format ui-date="reservationToDateOptions" ng-model="ngDialogData.departure_date" listen-this="ngDialogData.departure_date" readonly ng-class="{'not-selected': !ngDialogData.departure_date}" />
+                <input type="text" value="{{ngDialogData.departure_date|date:dateFormat}}" class="range-datepicker" listen-this="ngDialogData.departure_date" ui-date="reservationToDateOptions" readonly rv-clear-text-box/>
             </div>
             <div class="entry room" ng-disabled="true">
                 <label for="room">Room</label>
