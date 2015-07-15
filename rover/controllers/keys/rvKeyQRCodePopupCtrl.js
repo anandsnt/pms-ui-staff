@@ -26,21 +26,21 @@ sntRover.controller('RVKeyQRCodePopupController',[ '$rootScope','$scope', '$stat
 		}
 	};
 	setupData();
-	
+
 	// To handle close button click
 	$scope.goToStaycard = function(){
 		$scope.closeDialog();
 		$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {"id": $scope.reservationBillData.reservation_id, "confirmationId": $scope.reservationBillData.confirm_no, "isrefresh": true});
-		
+
 	};
 	$scope.goToSearch = function(){
 		$scope.closeDialog();
 		$state.go('rover.search');
-		
+
 	};
 	// Close popup
 	$scope.closeDialog = function(){
 		ngDialog.close();
 	};
-	
+
 }]);
