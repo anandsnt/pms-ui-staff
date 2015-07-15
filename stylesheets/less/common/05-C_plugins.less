@@ -334,11 +334,11 @@
 	#modal,
 	.inline-modal {
 		position: fixed;
-		top: 50%;
-		left: 50%;
+		top: 0;
+		left: 0;
+		height: 100%;
 		z-index: 9999;
 		visibility: hidden;
-		.translate3d(-50%, -50%, 0);
 
 		#modal-close {
 			position: absolute;
@@ -565,6 +565,16 @@
 		.transition;
 
 		&.modal-show { .opacity(100); }
+	}
+
+	@media only screen and (min-width: 600px) {
+		#modal,
+		.inline-modal {
+			top: 50%;
+			left: 50%;
+			height: auto;
+			.translate3d(-50%, -50%, 0);
+		}
 	}
 
 /* 6. IE

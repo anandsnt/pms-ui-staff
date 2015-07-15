@@ -10,6 +10,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 	'employees',
 	'roomTypes',
 	'floors',
+	'hkStatusList',
 	'ngDialog',
 	'RVWorkManagementSrv',
 	function(
@@ -24,6 +25,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		employees,
 		roomTypes,
 		floors,
+		hkStatusList,
 		ngDialog,
 		RVWorkManagementSrv
 	) {
@@ -39,10 +41,12 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// set title in header
 		$scope.setTitle($filter( 'translate')('ROOM_STATUS'));
 		$scope.heading = $filter( 'translate')('ROOM_STATUS');
-		$scope.$emit( 'updateRoverLeftMenu' , 'roomStatus' );	
+		$scope.$emit( 'updateRoverLeftMenu' , 'roomStatus' );
 		
-
+		// set the scroller
 		$scope.setScroller('room-status-filter');
+
+
 
 		/* ***** ***** ***** ***** ***** */
 
@@ -65,7 +69,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				localStorage.removeItem( 'roomListScrollTopPos' );
 			};
-		});	
+		});
 
 
 
@@ -112,12 +116,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.roomTypes          = roomTypes;
 		$scope.floors             = floors;
 
-		// $scope.singleRoomType     = { id: '', value: 'All Room Types' };
-		// var selRoom = _.find($scope.roomTypes, function(type) { return type.isSelected });
-		// if ( selRoom ) {
-		// 	$scope.singleRoomType.id = selRoom.id;
-		// };
-
 		$scope.workTypes          = [];
 		$scope.employees          = [];
 
@@ -128,6 +126,16 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.currentView = view;
 		};
 
+		// multiple room status change DS
+		$scope.multiRoomAction = {
+			selectedRooms       : [],
+			selectedRoomIndexes : {},
+			allRoomsSelected    : false,
+			selectedHkStatus    : ''
+		};
+		$scope.anyRoomChosen = false;
+
+		$scope.hkStatusList = hkStatusList;
 
 
 		/* ***** ***** ***** ***** ***** */
@@ -358,7 +366,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				$_activeWorksheetData = response.data;
 				$scope.activeWorksheetEmp = $_findEmpAry();
 				ngDialog.open({
-				    template: '/assets/partials/housekeeping/rvAssignRoomPopup.html',
+				    template: '/assets/partials/housekeeping/rvAssignRoomModal.html',
 				    className: 'ngdialog-theme-default',
 				    closeByDocument: true,
 				    scope: $scope,
@@ -458,6 +466,148 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {}, callback);
 		};
+
+
+		$scope.roomSelectChange = function(item) {
+			var _value = item.selected;
+			
+			// double to make sure its a truthy value
+			if ( !! _value ) {
+				$scope.anyRoomChosen = true;
+			} else if ( _anyOtherSelected() ) {
+				$scope.anyRoomChosen = true;
+			} else {
+				$scope.anyRoomChosen = false;
+			};
+
+			function _anyOtherSelected () {
+				var _ret = false,
+					i, j;
+
+				for (i = 0, j = $scope.rooms.length; i < j; i++) {
+					if ( $scope.rooms[i].selected ) {
+						_ret = true;
+						break;
+					};
+				};
+
+				return _ret;
+			};
+		};
+
+		$scope.selectAllRooms = function(value) {
+			var i, j;
+
+			if ( !!value ) {
+				$scope.anyRoomChosen = true;
+			} else {
+				$scope.anyRoomChosen = false;
+			};
+
+			for (i = 0, j = $scope.rooms.length; i < j; i++) {
+				if ( !!value ) {
+					$scope.rooms[i].selected = true;
+				} else {
+					$scope.rooms[i].selected = false;
+				};
+			};
+		};
+
+		$scope.openChangeHkStatusModal = function() {
+			ngDialog.open({
+			    template: '/assets/partials/housekeeping/rvChangeHkStatusModal.html',
+			    className: 'ngdialog-theme-default',
+			    closeByDocument: true,
+			    scope: $scope
+			});
+		};
+
+		$scope.getSelectedRoomCount = function() {
+			$scope.multiRoomAction.selectedRooms = [];
+			$scope.multiRoomAction.selectedRoomIndexes = {};
+
+			for (i = 0, j = $scope.rooms.length; i < j; i++) {
+				if ( $scope.rooms[i].selected ) {
+					$scope.multiRoomAction.selectedRooms.push( $scope.rooms[i].id );
+
+					// create a 'keyMirror' to help identify
+					// the room classes to update after changing the room status
+					// Read more here: https://github.com/STRML/keyMirror (This is an implementation, not actual use)
+					$scope.multiRoomAction.selectedRoomIndexes[i] = i;
+				};
+			};
+
+			return $scope.multiRoomAction.selectedRooms.length;
+		};
+
+		$scope.submitHkStatusChange = function() {
+			var _payload,
+				_resetParams,
+				_callback,
+				_onError,
+				i, j;
+
+			// no need to send anything
+			if ( ! $scope.multiRoomAction.selectedRooms.length ) {
+				return;
+			};
+
+			_payload = {
+				'room_ids'     : $scope.multiRoomAction.selectedRooms,
+				'hk_status_id' : $scope.multiRoomAction.selectedHkStatus
+			};
+
+			_resetParams = function() {
+				// reset these.
+				$scope.multiRoomAction = {
+					selectedRooms: [],
+					selectedRoomIndexes: {},
+					allRoomsSelected: false,
+					selectedHkStatus: ''
+				};
+				$scope.anyRoomChosen = false;
+			};
+
+			_callback = function(data) {
+				$scope.$emit( 'hideLoader' );
+
+				// get the selected hk status obj
+				var selectedHkStatusObj = _.find($scope.hkStatusList, function(item) {
+					return item.id == $scope.multiRoomAction.selectedHkStatus;
+				});
+
+				// firstly remove selection and
+				// update classes/status/description for the effected rooms ;)
+				for (i = 0, j = $scope.rooms.length; i < j; i++) {
+					$scope.rooms[i].selected = false;
+
+					if ( i == $scope.multiRoomAction.selectedRoomIndexes[i] ) {		// since we are using keyMirrors, this becomes fast
+						// 1. update room description
+						$scope.rooms[i]['description'] = selectedHkStatusObj['description'];
+
+						// 2. update 'hk_status' of this room
+						angular.extend($scope.rooms[i]['hk_status'], {
+							description: selectedHkStatusObj['description'],
+							value: selectedHkStatusObj['value']
+						});
+
+						// 3. now call the status class update
+						RVHkRoomStatusSrv.setRoomStatusClass( $scope.rooms[i] );
+					};
+				};
+
+				_resetParams();
+				$scope.closeDialog();
+			};
+
+			_onError = function(response) {
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = response;
+			};
+
+			$scope.invokeApi(RVHkRoomStatusSrv.putHkStatusChange, _payload, _callback, _onError);
+		};
+
 
 
 
@@ -787,7 +937,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		var $_pullUpDownModule = function() {
 
-			// caching DOM nodes invloved 
+			// caching DOM nodes invloved
 			var $rooms        = document.getElementById( 'rooms' ),
 				$roomsList    = $rooms.children[0];
 				$refresh      = document.getElementById( 'pull-refresh-page' ),
@@ -953,7 +1103,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			// the user stops touching the screen
 			// TODO: need to bind very similar for 'touchcancel' event
 			var touchEndHandler = function(e) {
-				var touch         = e.touches ? e.touches[0] : e, 
+				var touch         = e.touches ? e.touches[0] : e,
 					diff          = 0,
 					addTransition = '-webkit-transform 0.3s',
 					translateZero = genTranslate();
@@ -1094,7 +1244,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// stop browser bounce while swiping on filter-options element
 		angular.element( $_filterRoomsEl )
 			.on('touchmove', function(e) {
-				// e.stopPropagation(); - CICO-13434 Changed to iscroll from native scroll. 
+				// e.stopPropagation(); - CICO-13434 Changed to iscroll from native scroll.
 			});
 
 		// There are a lot of bindings that need to cleared

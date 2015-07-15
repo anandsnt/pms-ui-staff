@@ -24,7 +24,7 @@ admin.controller('ADPropertyInterfaceSetupCtrl', ['$scope', '$controller', 'ADHo
         };
 
         $scope.activateInactivate = function(name, currentStatus, index){
-		var nextStatus = (currentStatus == true ? false : true);
+		var nextStatus = (currentStatus === true ? false : true);
 		var data = {
 			"set_active": nextStatus,
 			"id": name

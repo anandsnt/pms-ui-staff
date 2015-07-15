@@ -244,7 +244,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 });
             }
 
-            //we have to populate possible number of rooms & occupancy against a 
+            //we have to populate possible number of rooms & occupancy against a
             $scope.changedSelectedRoomType();
         }
 
@@ -601,7 +601,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 $scope.sort_dir = 'ASC';
             }
 
-            //calling the reservation fetch API         
+            //calling the reservation fetch API
             $scope.fetchReservations();
         };
 
@@ -766,7 +766,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * return - None
          */
         var setDatePickerOptions = function() {
-            //referring data model -> from group summary 
+            //referring data model -> from group summary
             var refData = $scope.groupConfigData.summary;
 
             //date picker options - Common
@@ -824,10 +824,10 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 onSelect: reservationToDateChoosed
             }, commonDateOptionsForRelease);
 
-            //default from date, as per CICO-13900 it will be block_from date       
+            //default from date, as per CICO-13900 it will be block_from date
             $scope.fromDate = refData.block_from;
 
-            //default to date, as per CICO-13900 it will be block_to date    
+            //default to date, as per CICO-13900 it will be block_to date
             $scope.toDate = refData.block_to;
         };
 

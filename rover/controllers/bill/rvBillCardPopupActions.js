@@ -1,6 +1,6 @@
 sntRover.controller('rvBillCardPopupCtrl',
 	['$scope','$rootScope','$filter','RVBillCardSrv', 'ngDialog',function($scope, $rootScope,$filter, RVBillCardSrv, ngDialog){
-	
+
 	BaseCtrl.call(this, $scope);
 
 	var refreshListWithData = function(data){
@@ -26,8 +26,8 @@ sntRover.controller('rvBillCardPopupCtrl',
 	 */
 
 	$scope.removeCharge = function(reason){
-		
-		var deleteData = 
+
+		var deleteData =
 		{
 			data:{
 				"reason":reason,
@@ -35,10 +35,10 @@ sntRover.controller('rvBillCardPopupCtrl',
 			},
 			"id" :$scope.selectedTransaction.id
 		};
-		var transactionDeleteSuccessCallback = function(data){		
+		var transactionDeleteSuccessCallback = function(data){
 			hideLoaderAndClosePopup();
 			refreshListWithData(data);
-			
+
 		};
 		$scope.invokeApi(RVBillCardSrv.transactionDelete, deleteData, transactionDeleteSuccessCallback,failureCallBack);
 	};
@@ -56,9 +56,9 @@ sntRover.controller('rvBillCardPopupCtrl',
 				"split_type": split_type,
    				"split_value": qty
 			}
-			 
+
 		};
-		var transactionSplitSuccessCallback = function(data){		
+		var transactionSplitSuccessCallback = function(data){
 			hideLoaderAndClosePopup();
 			refreshListWithData(data);
 		};
@@ -69,8 +69,8 @@ sntRover.controller('rvBillCardPopupCtrl',
 	 * API call edit transaction
 	 */
 	$scope.editCharge = function(newAmount,chargeCode){
-		
-		var newData = 
+
+		var newData =
 		{
 			"updatedDate":
 						{
@@ -85,7 +85,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 			refreshListWithData(data);
 		};
 		$scope.invokeApi(RVBillCardSrv.transactionEdit, newData, transactionEditSuccessCallback,failureCallBack);
-	
+
 	};
 
 
@@ -108,40 +108,40 @@ sntRover.controller('rvBillCardPopupCtrl',
   	* function to perform filering on results.
   	* if not fouund in the data, it will request for webservice
   	*/
-  	var displayFilteredResultsChargeCodes = function(){ 
+  	var displayFilteredResultsChargeCodes = function(){
 
-	    //if the entered text's length < 3, we will show everything, means no filtering    
+	    //if the entered text's length < 3, we will show everything, means no filtering
 	    if($scope.chargecodeData.chargeCodeSearchText.length < 3){
-	      //based on 'is_row_visible' parameter we are showing the data in the template      
+	      //based on 'is_row_visible' parameter we are showing the data in the template
 	      for(var i = 0; i < $scope.availableChargeCodes.length; i++){
 	          $scope.availableChargeCodes[i].is_row_visible = true;
 	          $scope.availableChargeCodes[i].is_selected = true;
-	      }     
+	      }
 	      $scope.refreshScroller('chargeCodesList');
 	      // we have changed data, so we are refreshing the scrollerbar
-	      //$scope.refreshScroller('cards_search_scroller');      
+	      //$scope.refreshScroller('cards_search_scroller');
 	    }
 	    else{
-	      var value = ""; 
+	      var value = "";
 	      //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 	      //if it is zero, then we will request for webservice
 	      for(var i = 0; i < $scope.availableChargeCodes.length; i++){
 	        value = $scope.availableChargeCodes[i];
-	        if (($scope.escapeNull(value.name).toUpperCase()).indexOf($scope.chargecodeData.chargeCodeSearchText.toUpperCase()) >= 0 || 
-	            ($scope.escapeNull(value.description).toUpperCase()).indexOf($scope.chargecodeData.chargeCodeSearchText.toUpperCase()) >= 0 ) 
+	        if (($scope.escapeNull(value.name).toUpperCase()).indexOf($scope.chargecodeData.chargeCodeSearchText.toUpperCase()) >= 0 ||
+	            ($scope.escapeNull(value.description).toUpperCase()).indexOf($scope.chargecodeData.chargeCodeSearchText.toUpperCase()) >= 0 )
 	            {
 	               $scope.availableChargeCodes[i].is_row_visible = true;
 	            }
 	        else {
 	          $scope.availableChargeCodes[i].is_row_visible = false;
 	        }
-	              
+
 	      }
 	      // we have changed data, so we are refreshing the scrollerbar
-	      //$scope.refreshScroller('cards_search_scroller');    
-	      $scope.refreshScroller('chargeCodesList');              
+	      //$scope.refreshScroller('cards_search_scroller');
+	      $scope.refreshScroller('chargeCodesList');
 	    }
-  	};	
+  	};
 	/**
     * function to clear the charge code search text
     */
@@ -155,7 +155,7 @@ sntRover.controller('rvBillCardPopupCtrl',
         $scope.clearResults ();
         displayFilteredResultsChargeCodes();
         $scope.showChargeCodes = !$scope.showChargeCodes;
-    }; 
+    };
 
      /**
     * function to trigger the filtering when the search text is entered

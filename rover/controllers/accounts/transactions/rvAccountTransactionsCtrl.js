@@ -1,35 +1,35 @@
 sntRover.controller('rvAccountTransactionsCtrl', [
-	'$scope', 
-	'$rootScope', 
-	'$filter', 
-	'$stateParams', 
-	'ngDialog', 
-	'rvAccountsConfigurationSrv', 
-	'RVReservationSummarySrv', 
-	'rvAccountTransactionsSrv', 
-	'RVChargeItems', 
-	'RVPaymentSrv', 
-	'RVReservationCardSrv', 
-	'RVBillCardSrv', 
-	'rvPermissionSrv', 
-	'$timeout', 
+	'$scope',
+	'$rootScope',
+	'$filter',
+	'$stateParams',
+	'ngDialog',
+	'rvAccountsConfigurationSrv',
+	'RVReservationSummarySrv',
+	'rvAccountTransactionsSrv',
+	'RVChargeItems',
+	'RVPaymentSrv',
+	'RVReservationCardSrv',
+	'RVBillCardSrv',
+	'rvPermissionSrv',
+	'$timeout',
 	'$window',
 	'$q',
-	function($scope, 
-		$rootScope, 
-		$filter, 
-		$stateParams, 
-		ngDialog, 
-		rvAccountsConfigurationSrv, 
-		RVReservationSummarySrv, 
-		rvAccountTransactionsSrv, 
-		RVChargeItems, 
-		RVPaymentSrv, 
-		RVReservationCardSrv, 
-		RVBillCardSrv, 
-		rvPermissionSrv, 
-		$timeout, 
-		$window, 
+	function($scope,
+		$rootScope,
+		$filter,
+		$stateParams,
+		ngDialog,
+		rvAccountsConfigurationSrv,
+		RVReservationSummarySrv,
+		rvAccountTransactionsSrv,
+		RVChargeItems,
+		RVPaymentSrv,
+		RVReservationCardSrv,
+		RVBillCardSrv,
+		rvPermissionSrv,
+		$timeout,
+		$window,
 		$q) {
 
 
@@ -572,7 +572,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.callAPI(rvAccountTransactionsSrv.submitPaymentOnBill, {
 				successCallBack: successPayment,
 				params: $scope.diretBillpaymentData
-			});	
+			});
 		};
 
 		$rootScope.$on('arAccountCreated',function(){
@@ -676,7 +676,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @return {[type]}                   [description]
 		 */
 		$scope.$on ('ACCOUNT_TAB_SWITCHED', function(event, currentTab){
-			if (currentTab === "TRANSACTIONS") {				
+			if (currentTab === "TRANSACTIONS") {
 				callInitialAPIs();
 			}
 		});
@@ -688,10 +688,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @return {[type]}                   [description]
 		 */
 		$scope.$on ('GROUP_TAB_SWITCHED', function(event, currentTab){
-			if (currentTab === "TRANSACTIONS") {				
+			if (currentTab === "TRANSACTIONS") {
 				callInitialAPIs();
 			}
-		});		
+		});
 
 	}
 ]);

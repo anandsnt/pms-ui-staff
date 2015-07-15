@@ -8,17 +8,17 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
    /*
     * getter method to fetch rooms list
     * @return {object} room list
-    */	
+    */
 	this.fetchRoomList = function(params){
 
 		var deferred = $q.defer();
-		var url = '/admin/hotel_rooms.json';	
+		var url = '/admin/hotel_rooms.json';
 		ADBaseWebSrv.getJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		},function(errorMessage){
 			deferred.reject(errorMessage);
 		});
-		
+
 		return deferred.promise;
 	};
 
@@ -28,7 +28,7 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
     */
 	this.fecthAllRoomDetails = function(data){
 		var deferred = $q.defer();
-		var url = '/admin/hotel_rooms/new.json';	
+		var url = '/admin/hotel_rooms/new.json';
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			that.saveRoomTypesArray(data);
 			deferred.resolve(data);
@@ -40,14 +40,14 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 
 	 /*
     * setter method for room details
-    * @return {object} status 
+    * @return {object} status
     */
 	this.createRoom = function(data){
-	
+
 		var updateData = data.updateData;
 		var deferred = $q.defer();
 		var url = '/admin/hotel_rooms/';
-		
+
 		ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
 			var dataToAdd = {
 				"room_number": updateData.room_number,
@@ -75,8 +75,8 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 	this.roomDetails = function(data){
 		var roomId = data.roomId;
 		var deferred = $q.defer();
-		var url = '/admin/hotel_rooms/'+roomId+'/edit.json';	
-		
+		var url = '/admin/hotel_rooms/'+roomId+'/edit.json';
+
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			that.saveRoomTypesArray(data);
 			deferred.resolve(data);
@@ -88,18 +88,18 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 	this.saveRoomTypesArray = function(data){
 		that.roomTypesArray = data.room_types;
 	};
-   
+
    /*
     * setter method for room details
     * @param {object} chain id
-    * @return {object} status 
+    * @return {object} status
     */
 	this.update = function(data){
 		var id  = data.room_id;
 		var updateData = data.updateData;
 		var deferred = $q.defer();
-		var url = '/admin/hotel_rooms/'+id;	
-		
+		var url = '/admin/hotel_rooms/'+id;
+
 		ADBaseWebSrv.putJSON(url,updateData).then(function(data) {
 			that.updateRoomDataOnUpdate(id, "room_type", that.getRoomTypeName(updateData.room_type_id));
 			deferred.resolve(data);
@@ -109,7 +109,7 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		return deferred.promise;
 	};
 	/*
-	 * To get the rooom type name 
+	 * To get the rooom type name
 	 */
 	this.getRoomTypeName = function(roomTypeId){
 		var roomTypeName = "";
@@ -120,7 +120,7 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 	    });
 	    return roomTypeName;
 	};
-	
+
 	this.updateRoomDataOnUpdate = function(roomId, param, updatedValue){
 		if(typeof that.roomsArray != 'undefined'){
 			angular.forEach(that.roomsArray.rooms, function(value, key) {
@@ -131,21 +131,21 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		     		if(param == "room_type"){
 		     			value.room_type = updatedValue;
 		     		}
-		     		
+
 		     	}
 		    });
 		}
 	};
-	
+
    /*
-    * To add new chain 
+    * To add new chain
     * @param {object} new chain details
-    * @return {object} status 
+    * @return {object} status
     */
 	this.post = function(data){
 		var deferred = $q.defer();
-		var url = '/admin/hotel_rooms';	
-		
+		var url = '/admin/hotel_rooms';
+
 		ADBaseWebSrv.postJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		},function(errorMessage){

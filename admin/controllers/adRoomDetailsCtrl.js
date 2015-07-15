@@ -2,33 +2,33 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 	/*
 	* Controller class for Room Details
 	*/
-	$scope.errorMessage = '';	
+	$scope.errorMessage = '';
 	$scope.fileName = "Choose File....";
 
-	
+
 	//inheriting from base controller
 	BaseCtrl.call(this, $scope);
-	
+
 	var roomId = $stateParams.roomId;
 
 	if(roomId){
 		//if roomnumber is null returning to room list
-		if(typeof roomId === 'undefined' || roomId.trim() == ''){
+		if(typeof roomId === 'undefined' || roomId.trim() === ''){
 			$state.go('admin.rooms');
 		}
 		$scope.editMode = true;
 	}
-	
+
 	/*
 	* Success function of room details fetch
 	* Doing the operatios on data here
 	*/
 	var fetchSuccessOfRoomDetails = function(data){
 		$scope.$emit('hideLoader');
-		$scope.data = data;	
+		$scope.data = data;
 		$scope.floors = data.floors;
 		$scope.roomNumber = $scope.data.room_number;
-		/* 
+		/*
 		* adding the seletected attribute on room feature here
 		* which will be used in template for adding class if it the selected attribute is true
 		*/
@@ -39,7 +39,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 			}
 		}
 
-		/* 
+		/*
 		* adding the seletected attribute on room likes here
 		* which will be used in template for adding class if it the selected attribute is true
 		*/
@@ -48,18 +48,18 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 				$scope.data.room_likes[i].options[j].selected = false;
 				if($scope.data.active_room_likes.indexOf($scope.data.room_likes[i].options[j].value) != -1) {
 					$scope.data.room_likes[i].options[j].selected = true;
-				}			
+				}
 			}
 
 		}
 
 	};
-	
+
 	var fetchFailedOfRoomDetails = function(errorMessage){
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = errorMessage ;
 	};
-	
+
 	/*
 	* function to do operation on room likes after selecting one.
 	* param {string} group name
@@ -67,16 +67,16 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 	*/
 	$scope.changed = function(groupName, index){
 		for(var i = 0; i < $scope.data.room_likes.length; i++){
-			if($scope.data.room_likes[i].group_name == groupName){
+			if($scope.data.room_likes[i].group_name === groupName){
 				for(var j = 0; j < $scope.data.room_likes[i].options.length; j++){
 					if(j !== index){
 						$scope.data.room_likes[i].options[j].selected = false;
 					}
 				}
-				
+
 			}
 
-		}		
+		}
 	};
 
 
@@ -92,7 +92,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		    }
 	    }
 	    $scope.floors = data.floors;
-	
+
 		$scope.data.room_image = "";
 		$scope.data.room_number="";
 		$scope.data.room_type_id="";
@@ -105,19 +105,19 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 
     if($scope.editMode){
     //getting the room details
-	$scope.invokeApi(ADRoomSrv.roomDetails, {'roomId': roomId}, fetchSuccessOfRoomDetails, fetchFailedOfRoomDetails);	
+	$scope.invokeApi(ADRoomSrv.roomDetails, {'roomId': roomId}, fetchSuccessOfRoomDetails, fetchFailedOfRoomDetails);
     }
     else
     {
-     $scope.invokeApi(ADRoomSrv.fecthAllRoomDetails, {}, fecthAllRoomDetailsSuccessCallback, fecthAllRoomDetailsFailureCallback);		
+     $scope.invokeApi(ADRoomSrv.fecthAllRoomDetails, {}, fecthAllRoomDetailsSuccessCallback, fecthAllRoomDetailsFailureCallback);
     }
-	
+
 
 	/*
-	* method for go back to previous stage, it is always room listing	
+	* method for go back to previous stage, it is always room listing
 	*/
 	$scope.goBack = function(){
-        $state.go('admin.rooms');                  
+        $state.go('admin.rooms');
 	};
 
 	/*
@@ -135,28 +135,28 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		postData.max_occupancy = $scope.data.max_occupancy;
 		// to get seletected features
 		for(var i = 0; i < $scope.data.room_features.length; i++){
-			if($scope.data.room_features[i].selected == true ){
+			if($scope.data.room_features[i].selected === true ){
 				postData.active_room_features.push($scope.data.room_features[i].value);
-			}		
+			}
 		}
 		// to get seletect likes
 		for(var i = 0; i < $scope.data.room_likes.length; i++){
 			for(var j = 0; j < $scope.data.room_likes[i].options.length; j++){
-				if($scope.data.room_likes[i].options[j].selected == true){
+				if($scope.data.room_likes[i].options[j].selected === true){
 					postData.active_room_likes.push($scope.data.room_likes[i].options[j].value);
-				}			
+				}
 			}
-		}	
+		}
 
 		if($scope.data.room_image.indexOf("data:")!= -1){
 			postData.room_image = $scope.data.room_image;
 		}
 
 		if($scope.editMode)
-		    $scope.invokeApi(ADRoomSrv.update, {'room_id': $scope.data.room_id, 'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails);	
+		    $scope.invokeApi(ADRoomSrv.update, {'room_id': $scope.data.room_id, 'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails);
 		else
-			$scope.invokeApi(ADRoomSrv.createRoom, {'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails);	
-	
+			$scope.invokeApi(ADRoomSrv.createRoom, {'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails);
+
 	};
 
 	/**

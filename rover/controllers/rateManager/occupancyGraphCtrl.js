@@ -13,7 +13,6 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
         };
 
         BaseCtrl.call(this, $scope);
-
         $scope.targetData = []; 
         $scope.weekCommonTargets = [];
         $scope.highchartsNG = {

@@ -44,7 +44,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
                $scope.availablePaymentTypes = data;
                 $scope.ccPaymentDetails = {};
                 for(var i in data){
-                	if(data[i].name == "CC"){
+                	if(data[i].name === "CC"){
                 		$scope.ccPaymentDetails = data[i];
                 		$scope.creditCardTypes = data[i].values;
                 	}
@@ -115,15 +115,15 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 	    */
 		$scope.selectPaymentType = function(){
 			for(var i = 0; i < $scope.availablePaymentTypes.length; i++){
-				if($scope.availablePaymentTypes[i].name == $scope.saveData.payment_type){
+				if($scope.availablePaymentTypes[i].name === $scope.saveData.payment_type){
 					$scope.saveData.payment_type_description = $scope.availablePaymentTypes[i].description;
 				}
 			}
 			$scope.refreshScroller('newpaymentview');
 			if($scope.paymentGateway !== 'sixpayments'){
-				$scope.showCCPage = ($scope.saveData.payment_type == "CC") ? true: false;
-				$scope.saveData.newPaymentFormVisible = ($scope.saveData.payment_type == "CC") ? true: false;
-				$scope.addmode =($scope.saveData.payment_type == "CC" &&  $scope.cardsList.length === 0) ? true: false;
+				$scope.showCCPage = ($scope.saveData.payment_type === "CC") ? true: false;
+				$scope.saveData.newPaymentFormVisible = ($scope.saveData.payment_type === "CC") ? true: false;
+				$scope.addmode =($scope.saveData.payment_type === "CC" &&  $scope.cardsList.length === 0) ? true: false;
 			} else {
 				$scope.isManual = false;
 			}
@@ -131,9 +131,9 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 
 		$scope.changeOnsiteCallIn = function(){
 			$scope.$emit('CHANGE_IS_MANUAL', $scope.isManual);
-			$scope.showCCPage = ($scope.saveData.payment_type == "CC" &&  $scope.isManual) ? true: false;
-			$scope.addmode =($scope.saveData.payment_type == "CC" &&  $scope.cardsList.length === 0) ? true: false;
-			$scope.saveData.newPaymentFormVisible = ($scope.saveData.payment_type == "CC" &&  $scope.isManual) ? true: false;
+			$scope.showCCPage = ($scope.saveData.payment_type === "CC" &&  $scope.isManual) ? true: false;
+			$scope.addmode =($scope.saveData.payment_type === "CC" &&  $scope.cardsList.length === 0) ? true: false;
+			$scope.saveData.newPaymentFormVisible = ($scope.saveData.payment_type === "CC" &&  $scope.isManual) ? true: false;
 			$scope.$broadcast('REFRESH_IFRAME');
 		};
 		/*

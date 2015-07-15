@@ -105,8 +105,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             if ( intMins > 45 && intHrs + 1 < 12 ) {
                 intHrs += 1;
                 intMins = '00';
-            } else if ( intMins > 45 && intHrs + 1 == 12 ) {
-                if ( ampm == 'AM' ) {
+            } else if ( intMins > 45 && intHrs + 1 === 12 ) {
+                if ( ampm === 'AM' ) {
                     intHrs  = '00';
                     intMins = '00';
                     ampm    = 'PM';
@@ -115,12 +115,12 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     intMins = '00';
                     ampm    = 'AM';
                 }
-            } else if ( intMins == 15 || intMins == 30 || intMins == 45 ) {
+            } else if ( intMins === 15 || intMins === 30 || intMins === 45 ) {
                 intMins += 15;
             } else {
                 do {
                     intMins += 1;
-                    if ( intMins == 15 || intMins == 30 || intMins == 45 ) {
+                    if ( intMins === 15 || intMins === 30 || intMins === 45 ) {
                         break;
                     }
                 } while ( intMins != 15 || intMins != 30 || intMins != 45 );
@@ -180,9 +180,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.initReservationDetails();
             } else {
                 //$scope.reservationData.isSameCard = false;
-                //TODO: 1. User gets diverted to the Search screen (correct) 
-                //but Guest Name and Company / TA cards are not copied into the respective search fields. 
-                //They are added to the reservation by default later on, 
+                //TODO: 1. User gets diverted to the Search screen (correct)
+                //but Guest Name and Company / TA cards are not copied into the respective search fields.
+                //They are added to the reservation by default later on,
                 //but should be copied to the Search screen as well
                 $scope.viewState.reservationStatus.confirm = false;
                 // Reset addons as part CICO-10657
@@ -202,10 +202,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
             }
 
-            if ($scope.reservationData.arrivalDate == '') {
+            if ($scope.reservationData.arrivalDate === '') {
                 $scope.reservationData.arrivalDate = dateFilter($scope.otherData.businessDate, 'yyyy-MM-dd');
             }
-            if ($scope.reservationData.departureDate == '') {
+            if ($scope.reservationData.departureDate === '') {
                 $scope.setDepartureDate();
             }
             if ($rootScope.isHourlyRateOn) {
@@ -230,7 +230,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         $scope.setDepartureDate = function() {
 
             var dateOffset = $scope.reservationData.numNights;
-            if ($scope.reservationData.numNights == null || $scope.reservationData.numNights == '') {
+            if ($scope.reservationData.numNights === null || $scope.reservationData.numNights === '') {
                 dateOffset = 1;
             }
             var newDate = tzIndependentDate($scope.reservationData.arrivalDate);
@@ -273,17 +273,17 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             $scope.reservationData.departureDate = dateFilter($scope.reservationData.departureDate, 'yyyy-MM-dd');
             $scope.setNumberOfNights();
         };
-        /*  The following method helps to initiate the staydates object across the period of 
+        /*  The following method helps to initiate the staydates object across the period of
          *  stay. The occupany selected for each room is taken assumed to be for the entire period of the
          *  stay at this state.
          *  The rates for these days have to be popuplated in the subsequent states appropriately
          */
         var initStayDates = function(roomNumber) {
-            if (roomNumber == 0) {
+            if (roomNumber === 0) {
                 $scope.reservationData.stayDays = [];
             }
             for (var d = [], ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
-                if (roomNumber == 0) {
+                if (roomNumber === 0) {
                     $scope.reservationData.stayDays.push({
                         date: dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd'),
                         dayOfWeek: dateFilter(new tzIndependentDate(ms), 'EEE'),
@@ -331,7 +331,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             }
             //if selected thing is 'nights'
             else {
-                /*  For every room initate the stayDates object 
+                /*  For every room initate the stayDates object
                  *   The total room count is taken from the roomCount value in the reservationData object
                  */
                 for (var roomNumber = 0; roomNumber < $scope.reservationData.roomCount; roomNumber++) {
@@ -448,7 +448,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             select: autoCompleteSelectHandler
         };
 
-        // init call to set data for view 
+        // init call to set data for view
         init();
 
 
@@ -459,12 +459,12 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             yearRange: '-0:',
             minDate: tzIndependentDate($scope.otherData.businessDate),
             beforeShow: function(input, inst) {
-                $('#ui-datepicker-div').addClass('reservation arriving');                
+                $('#ui-datepicker-div').addClass('reservation arriving');
             },
             onClose: function(dateText, inst) {
                 //in order to remove the that flickering effect while closing
                 $timeout(function(){
-                    $('#ui-datepicker-div').removeClass('reservation arriving');                    
+                    $('#ui-datepicker-div').removeClass('reservation arriving');
                 }, 200);
 
             }
@@ -477,13 +477,13 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             yearRange: '-0:',
             minDate: tzIndependentDate($scope.otherData.businessDate),
             beforeShow: function(input, inst) {
-                $('#ui-datepicker-div').addClass('reservation departing');                
+                $('#ui-datepicker-div').addClass('reservation departing');
             },
             onClose: function(dateText, inst) {
                 //in order to remove the that flickering effect while closing
                 $timeout(function(){
-                    $('#ui-datepicker-div').removeClass('reservation arriving');                    
-                }, 200);               
+                    $('#ui-datepicker-div').removeClass('reservation arriving');
+                }, 200);
             }
         };
 

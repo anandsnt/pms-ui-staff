@@ -1,9 +1,9 @@
 admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location', 'ngDialog',
  function($scope, $state, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location,ngDialog){
-	
+
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
-	
+
    $scope.selectedView = "section";
    $scope.fromSection = "all";
    $scope.fromCategory = "all";
@@ -22,7 +22,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 			$scope.setUpLists();
 			$scope.setSections();
 			$scope.setCategories();
-			$scope.setItems();			
+			$scope.setItems();
 		};
 	   $scope.invokeApi(ADContentManagementSrv.fetchGridViewList, {} , successCallbackGridFetch);
    }
@@ -42,7 +42,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    		}
    }
 
-   
+
 
    /* Function to set the table params for sections
     */
@@ -51,18 +51,18 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 		    $scope.sectionParams = new ngTableParams({
 		       page: 1,            // show first page
 		       	count: $scope.sections.length,    // count per page - Need to change when on pagination implemntation
-		        sorting: { name: 'asc'     // initial sorting 
+		        sorting: { name: 'asc'     // initial sorting
 		        }
 		    }, {
-		     
+
 		        getData: function($defer, params) {
 		            // use build-in angular filter
 		            var orderedData = params.sorting() ?
 		                                $filter('orderBy')($scope.sections, params.orderBy()) :
-		                                $scope.sections;		            
-		                              
+		                                $scope.sections;
+
 		            $scope.orderedSections =  orderedData;
-		                                 
+
 		            $defer.resolve(orderedData);
 		        }
 		    });
@@ -74,18 +74,18 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 		    $scope.categoryParams = new ngTableParams({
 		       page: 1,            // show first page
 		       	count: $scope.categories.length,    // count per page - Need to change when on pagination implemntation
-		        sorting: { name: 'asc'     // initial sorting 
+		        sorting: { name: 'asc'     // initial sorting
 		        }
 		    }, {
-		     
+
 		        getData: function($defer, params) {
 		            // use build-in angular filter
 		            var orderedData = params.sorting() ?
 		                                $filter('orderBy')($scope.categories, params.orderBy()) :
 		                                $scope.categories;
-		                              
+
 		            $scope.orderedCategories =  orderedData;
-		                                 
+
 		            $defer.resolve(orderedData);
 		        }
 		    });
@@ -97,18 +97,18 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 		    $scope.itemParams = new ngTableParams({
 		       page: 1,            // show first page
 		       	count: $scope.items.length,    // count per page - Need to change when on pagination implemntation
-		        sorting: { name: 'asc'     // initial sorting 
+		        sorting: { name: 'asc'     // initial sorting
 		        }
 		    }, {
-		     
+
 		        getData: function($defer, params) {
 		            // use build-in angular filter
 		            var orderedData = params.sorting() ?
 		                                $filter('orderBy')($scope.items, params.orderBy()) :
 		                                $scope.items;
-		                              
+
 		            $scope.orderedItems =  orderedData;
-		                                 
+
 		            $defer.resolve(orderedData);
 		        }
 		    });
@@ -148,10 +148,10 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 		   			}
 	   			}
    		}
-   		
-   		
+
+
    		$scope.applyFiltersToSectionsAndItems();
-   		
+
    }
    /* Function to apply the filterd data to the current list of categories and items
     */
@@ -185,7 +185,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
     */
 	$scope.$on('componentDeleted', function(event, data) {
 	//delete item from correspondong list
-	
+
 
 		angular.forEach($scope.sections, function(section, index) {
 			if (section.id == data.id) {
@@ -193,8 +193,8 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 			}
 		});
 		$scope.sectionParams.reload();
-		
-	
+
+
 
 		angular.forEach($scope.categories, function(category, index) {
 			if (category.id == data.id) {
@@ -202,7 +202,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 			}
 		});
 		$scope.categoryParams.reload();
-	
+
 
 		angular.forEach($scope.items, function(item, index) {
 			if (item.id == data.id) {
@@ -229,31 +229,31 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
     */
 	$scope.$on('statusUpdated', function(event, data) {
 	//delete item from correspondong list
-	
+
 
 		angular.forEach($scope.sections, function(section, index) {
 			if (section.id == data.id) {
 				section.status = data.status;
 			}
 		});
-		
-		
-	
+
+
+
 
 		angular.forEach($scope.categories, function(category, index) {
 			if (category.id == data.id) {
 				category.status = data.status;
 			}
 		});
-		
-	
+
+
 
 		angular.forEach($scope.items, function(item, index) {
 			if (item.id == data.id) {
 				item.status = data.status;
 			}
 		});
-		
+
 
 		angular.forEach($scope.data, function(component, index) {
 			if (component.id == data.id) {
