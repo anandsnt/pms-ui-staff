@@ -140,8 +140,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	};
 
 	// CICO-12408 : To calculate Total of fees and amount to pay.
-	$scope.calculateTotalAmount = function(amount) {
-		
+	$scope.calculateTotalAmount = function(amount) {		
 		var feesAmount  = (typeof $scope.feeData.calculatedFee == 'undefined' || $scope.feeData.calculatedFee == '' || $scope.feeData.calculatedFee == '-') ? zeroAmount : parseFloat($scope.feeData.calculatedFee);
 		var amountToPay = (typeof amount == 'undefined' || amount =='') ? zeroAmount : parseFloat(amount);
 		
@@ -365,8 +364,6 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		}	
 	};
 	
-
-	
 	/*
 	* Action - On bill selection 
 	*/
@@ -384,12 +381,12 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			return;
 		};
 
-			//Setting no of splits
-			if($scope.splitePaymentDetail["totalNoOfsplits"]>=index){
-				$scope.splitePaymentDetail["totalNoOfsplits"] = index-1;
-			}else{
-				$scope.splitePaymentDetail["totalNoOfsplits"] = index;
-			};			
+		//Setting no of splits
+		if($scope.splitePaymentDetail["totalNoOfsplits"]>=index){
+			$scope.splitePaymentDetail["totalNoOfsplits"] = index-1;
+		}else{
+			$scope.splitePaymentDetail["totalNoOfsplits"] = index;
+		};			
 				
 	};
 	/*
@@ -428,12 +425,18 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			return "disabled";
 		};
 	};
+	/*
+	* Updates success payment detail.
+	*/
 	var updateSuccessMessage = function(){		
 		$scope.messageOfSuccessSplitPayment = $scope.messageOfSuccessSplitPayment +"SPLIT # "+$scope.splitePaymentDetail["completedSplitPayments"]+" OF "
 		+$scope.renderData.defaultPaymentAmount+" PAID SUCCESSFULY !"+"<br/>";
 		//Clears older failure messages.
 		$scope.clearPaymentErrorMessage(); 
 	}
+	/*
+	* updates DefaultPaymentAmount
+	*/
 	var updateDefaultPaymentAmount = function(){
 	$scope.renderData.defaultPaymentAmount = $scope.splitePaymentDetail["splitAmount"];
 	}
@@ -449,29 +452,28 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		data.billNumber = $scope.renderData.billNumberSelected;		
 		$scope.$emit('PAYMENT_SUCCESS',data);
 		if($scope.newPaymentInfo.addToGuestCard){
-				var cardCode = $scope.defaultPaymentTypeCard;
-				var cardNumber = $scope.defaultPaymentTypeCardNumberEndingWith;
-				var dataToGuestList = {
-					"card_code": cardCode,
-					"mli_token": cardNumber,
-					"card_expiry": $scope.defaultPaymentTypeCardExpiry,
-					"card_name": $scope.newPaymentInfo.cardDetails.userName,
-					"id": data.id,
-					"isSelected": true,
-					"is_primary":false,
-					"payment_type":"CC",
-					"payment_type_id": 1
-				};
-				$scope.cardsList.push(dataToGuestList);
-				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
+			var cardCode = $scope.defaultPaymentTypeCard;
+			var cardNumber = $scope.defaultPaymentTypeCardNumberEndingWith;
+			var dataToGuestList = {
+				"card_code": cardCode,
+				"mli_token": cardNumber,
+				"card_expiry": $scope.defaultPaymentTypeCardExpiry,
+				"card_name": $scope.newPaymentInfo.cardDetails.userName,
+				"id": data.id,
+				"isSelected": true,
+				"is_primary":false,
+				"payment_type":"CC",
+				"payment_type_id": 1
+			};
+			$scope.cardsList.push(dataToGuestList);
+			$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 		};
 	};
 	/*
 	* Failure call back of submitpayment
 	*/
 	var failedPayment = function(data){
-		$scope.paymentErrorMessage = "SPLIT # "+($scope.splitePaymentDetail["completedSplitPayments"]+1)+" PAYMENT OF "
-		+$scope.renderData.defaultPaymentAmount+" FAILED !"+"<br/>";
+		$scope.paymentErrorMessage = "SPLIT # "+($scope.splitePaymentDetail["completedSplitPayments"]+1)+" PAYMENT OF "+$scope.renderData.defaultPaymentAmount+" FAILED !"+"<br/>";
 	};
 	/*
 	* Clears paymentErrorMessage
