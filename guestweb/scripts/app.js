@@ -47,7 +47,9 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  	$rootScope.isPrecheckinOnly = ($attrs.isPrecheckinOnly ==='true' && $attrs.reservationStatus ==='RESERVED')?true:false;
  	$rootScope.isCcAttachedFromGuestWeb = false;
  	$rootScope.isAutoCheckinOn = (($attrs.isAutoCheckin === 'true') && ($attrs.isPrecheckinOnly === 'true')) ? true :false;;
- 	
+ 	$rootScope.isExternalVerification = ($attrs.isExternalVerification === "true") ? true :false;
+ 	$rootScope.hotelIdentifier = $attrs.hotelIdentifier;
+
 
     //Params for zest mobile and desktop screens
     if($attrs.hasOwnProperty('isPasswordReset')){
@@ -63,8 +65,10 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 		$rootScope.accessToken = $attrs.accessToken	;
 
 	//navigate to different pages
-
-	if($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED' && !($attrs.isAutoCheckin === 'true')){
+	if($attrs.isExternalVerification ==="true"){
+		$location.path('/externalVerification');
+	}
+	else if($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED' && !($attrs.isAutoCheckin === 'true')){
  		$location.path('/tripDetails');
  	}
  	else if	($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED' && ($attrs.isAutoCheckin === 'true')){
