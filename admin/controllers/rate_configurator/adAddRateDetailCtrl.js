@@ -15,6 +15,10 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             $scope.detailsMenu = selectedMenu;
         };
 
+        $scope.shouldShowMemberRates = function(){
+            return !!$rootScope.isFFPActive || !!$rootScope.isHLPActive;
+        }
+
         $scope.isPromotional = function() {
             var ispromo = false;
             if ($scope.rateTypesDetails) {
@@ -30,6 +34,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             }
             return ispromo;
         }
+
+
 
         $scope.hideBasedOn = function() {
             var hideBasedOn = false;
@@ -73,7 +79,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
              * CICO-9289 - This switch will only show if the Reservation Setting 'Hourly Rates' has been switched on (see CICO-9435) and then default to 'Hourly'
              * If parameter is switched off, do not show the switch (but default setup to Daily). 
              */
-            if(!$scope.rateData.id){
+            if (!$scope.rateData.id) {
                 $scope.rateData.is_hourly_rate = $rootScope.isHourlyRatesEnabled;
             }
 
@@ -151,7 +157,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'cancellation_policy_id': $scope.rateData.cancellation_policy_id,
                 'deposit_policy_id': $scope.rateData.deposit_policy_id,
                 'end_date': $scope.rateData.end_date,
-                'is_hourly_rate' : $scope.rateData.is_hourly_rate
+                'is_hourly_rate': $scope.rateData.is_hourly_rate,
+                'is_member': $scope.rateData.is_member_rate
             };
 
             // Save Rate Success Callback
