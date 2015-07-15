@@ -120,7 +120,7 @@ admin.controller('ADPromotionsCtrl', [
 				name: $scope.state.newPromo.name,
 				category: "rate", // Hard coded to differentiate from the beacon promos.
 				from_date: $filter('date')($scope.state.newPromo.from_date, "yyyy-MM-dd"),
-				to_date: $filter('date')($scope.state.newPromo.from_date, "yyyy-MM-dd"),
+				to_date: $filter('date')($scope.state.newPromo.to_date, "yyyy-MM-dd"),
 				discount_type: $scope.state.newPromo.discount.type,
 				discount_value: $scope.state.newPromo.discount.value,
 				linked_rates: _.pluck($scope.state.newPromo.assignedRates,'id'),
@@ -138,7 +138,7 @@ admin.controller('ADPromotionsCtrl', [
 				name: promo.name,
 				category: "rate", // Hard coded to differentiate from the beacon promos.
 				from_date: $filter('date')(promo.from_date, "yyyy-MM-dd"),
-				to_date: $filter('date')(promo.from_date, "yyyy-MM-dd"),
+				to_date: $filter('date')(promo.to_date, "yyyy-MM-dd"),
 				discount_type: promo.discount.type,
 				discount_value: promo.discount.value,
 				linked_rates: _.pluck(promo.assignedRates,'id'),
