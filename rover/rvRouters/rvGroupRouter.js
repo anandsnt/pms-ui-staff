@@ -1,7 +1,7 @@
 angular.module('groupModule', [])
 .config([
-    '$stateProvider', 
-    '$urlRouterProvider', 
+    '$stateProvider',
+    '$urlRouterProvider',
     '$translateProvider',
     function($stateProvider, $urlRouterProvider, $translateProvider){
     //define module-specific routes here
@@ -11,7 +11,7 @@ angular.module('groupModule', [])
             abstract: true,
             templateUrl: '/assets/partials/groups/rvGroupRoot.html',
             controller: 'rvGroupRootCtrl'
-        }); 
+        });
 
         //company card details
         $stateProvider.state('rover.groups.search', {
@@ -24,7 +24,7 @@ angular.module('groupModule', [])
                     return rvGroupSrv.fetchHotelBusinessDate();
                 }],
                 //to tackle from coming admin app to rover
-                initialGroupListing: ['rvGroupSrv', 'businessDate', 
+                initialGroupListing: ['rvGroupSrv', 'businessDate',
                     function(rvGroupSrv, businessDate) {
                         //as per CICO-13899, initially we are looking for groups which has from & to date equal
                         // to business date
@@ -56,7 +56,7 @@ angular.module('groupModule', [])
             }],
             resolve: {
                 //to tackle from coming admin app to rover
-                summaryData: ['rvGroupConfigurationSrv', '$stateParams', 
+                summaryData: ['rvGroupConfigurationSrv', '$stateParams',
                     function(rvGroupConfigurationSrv, $stateParams){
                         var isInAddMode = ($stateParams.id === "NEW_GROUP");
                         var params = {
@@ -65,12 +65,12 @@ angular.module('groupModule', [])
                         return rvGroupConfigurationSrv.getGroupSummary (params);
                     }
                 ],
-                holdStatusList: ['rvGroupConfigurationSrv', 
+                holdStatusList: ['rvGroupConfigurationSrv',
                     function (rvGroupConfigurationSrv) {
                         return rvGroupConfigurationSrv.getHoldStatusList ();
                     }
-                ]               
+                ]
             }
 
-        });         
+        });
 }]);
