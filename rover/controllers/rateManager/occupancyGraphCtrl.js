@@ -13,7 +13,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
         };
 
         BaseCtrl.call(this, $scope);
-        $scope.targetData = []; 
+        $scope.targetData = [];
         $scope.weekCommonTargets = [];
         $scope.highchartsNG = {
             title: {
@@ -36,9 +36,9 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
             var height = $(window).height() - 80,
                 width = $(window).width() - 265;
 
-            $scope.graphDimensions = { 
+            $scope.graphDimensions = {
                 containerWidth: width,
-                containerHeight: height, 
+                containerHeight: height,
                 width: $scope.uiOptions.tableWidth - 280,
                 height: $scope.uiOptions.tableHeight,
                 interval: {
@@ -80,20 +80,20 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                 var valueActual, valueTarget, actual;
 
                 itemDate = Date.parse(item.date); //parse string datetime value to locale ms
-                
+
                 if(index === 0) {
                     start = itemDate;
                 }
 
                 toolTipLookUp[itemDate] = Object.create(null); //lookup hash
-                
+
                 categories.push(dateFilter(itemDate, "EEEE") + "<br>" + dateFilter(itemDate, "MMMM dd"));
 
                 // NOTE :: Check if replaced harcoded 10 with item.actual
                 // var valueActual = Math.floor((Math.random() * 100) + 1);
 
                 if(item.actual === null){
-                   actual = 0; 
+                   actual = 0;
                 }
                 else{
                     actual = (item.actual % 1 === 0) ? item.actual : Math.round(item.actual);
@@ -103,7 +103,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 
                 // NOTE :: Check if replaced harcoded 10 with item.target
                 // var valueTarget = Math.floor((Math.random() * 100) + 1);
-                targetData.push(item.target || 0); 
+                targetData.push(item.target || 0);
                 toolTipLookUp[itemDate].target = valueTarget;
             });
 
@@ -118,7 +118,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                             symbol: 'circle',
                             radius: 5
                         }
-                    }, 
+                    },
                     {
                         name: 'Target',
                         data: targetData,
@@ -130,7 +130,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                             radius: 5
                         }
                 }]
-            };  
+            };
         }
 
         function manipulateTargetData(data) {
@@ -175,11 +175,11 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
         }
 
         function appendRemainingWeekDays(targetData) {
-            var itemDate, i, j, 
+            var itemDate, i, j,
                 remainingStartWeekDays = [],
                 remainingEndWeekDays = [];
 
-            from_date   = tzIndependentDate(targetData[0].date); 
+            from_date   = tzIndependentDate(targetData[0].date);
             to_date     = tzIndependentDate(targetData[targetData.length - 1].date);
 
             // append missing week days before from date
@@ -294,15 +294,15 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
         }
 
         $scope.fetchGraphData = function(params) {
-            return $scope.invokeApi(RateMgrOccupancyGraphSrv.fetch, 
+            return $scope.invokeApi(RateMgrOccupancyGraphSrv.fetch,
                                     {
                                         from_date: $scope.currentFilterData.begin_date,
                                         to_date: $scope.currentFilterData.end_date
-                                    }, 
-                                    function() { 
-                                        $scope.$emit('hideLoader'); 
+                                    },
+                                    function() {
+                                        $scope.$emit('hideLoader');
 
-                                        return Array.prototype.slice.call(arguments).shift(); 
+                                        return Array.prototype.slice.call(arguments).shift();
                                     })
             .then(function() {
                 var args = Array.prototype.slice.call(arguments),
@@ -324,14 +324,14 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                     if(max <= 0) {
                         max = 100;
                     }
-                    
+
                     if(container.length > 0) {
                         viewport = container[0].getBoundingClientRect();
                     }
 
-                    $scope.graphDimensions = { 
-                        containerWidth: viewport.width, 
-                        containerHeight: viewport.height + 50, 
+                    $scope.graphDimensions = {
+                        containerWidth: viewport.width,
+                        containerHeight: viewport.height + 50,
                         width: $scope.uiOptions.tableWidth - 280,
                         height: $scope.uiOptions.tableHeight,
                         interval: {
@@ -347,7 +347,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                     graphDim = $scope.graphDimensions;
                 })();
 
-                $scope.highchartsNG = { 
+                $scope.highchartsNG = {
                     options: {
                         chart: {
                             type: 'area',
@@ -367,7 +367,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                             opposite: true,
                             type: 'datetime',
                             dateTimeLabelFormats: {
-                                day: '%A <br/>%B %e'        
+                                day: '%A <br/>%B %e'
                             },
                             gridLineWidth: 5,
                             gridLineColor: '#FCFCFC',
@@ -378,7 +378,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                                 style: {
                                     class: 'uppercase-label',
                                     display: 'block',
-                                    textAlign: 'center',                            
+                                    textAlign: 'center',
                                     textTransform: 'uppercase',
                                     color: '#666', //#fcfcfc',
                                     height: '60px',
@@ -386,7 +386,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                                     fontSize: '12px',
                                     fontWeight: '600',
                                     boxSizing: 'border-box'
-                                },                              
+                                },
                                 useHTML: true
                             }
                         },
@@ -418,7 +418,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                         },
                         plotOptions: {
                             series: {
-                                fillOpacity: 0.5                            
+                                fillOpacity: 0.5
                             }
                         },
                         title: {
@@ -447,18 +447,18 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
             $scope.graphDimensions.containerHeight = $(window).height() - 80;
             $scope.graphDimensions.width = $scope.uiOptions.tableWidth - 280;
             $scope.graphDimensions.height = $scope.uiOptions.tableHeight;
-            $scope.graphDimensions.interval = $scope.uiOptions.columnWidth; 
+            $scope.graphDimensions.interval = $scope.uiOptions.columnWidth;
 
-            if($scope.highchartsNG && $scope.highchartsNG.options && $scope.highchartsNG.options.chart) {   
+            if($scope.highchartsNG && $scope.highchartsNG.options && $scope.highchartsNG.options.chart) {
                 $scope.highchartsNG.options.chart.width = $scope.graphDimensions.width;
-                $scope.highchartsNG.options.chart.height = $scope.graphDimensions.height;       
+                $scope.highchartsNG.options.chart.height = $scope.graphDimensions.height;
             }
 
             if(!$scope.myScroll || !$scope.myScroll.RateMgrOccupancyGraphCtrl) {
                 $scope.$parent.myScroll = {};
                 $scope.myScroll = {};
                 $scope.setScroller('RateMgrOccupancyGraphCtrl', { scrollX: true, scrollY: false, scrollbars: true, interactiveScrollbars: false, momentum: false });
-                
+
                 try {
                     $scope.myScroll.RateMgrOccupancyGraphCtrl = new IScroll('#occ-graph', $scope.$parent.myScrollOptions.RateMgrOccupancyGraphCtrl);
                 }catch(e) {

@@ -2,7 +2,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
 
         $stateProvider.state('rover.search', {
             url: '/search/:type/:from_page/:useCache',
-            templateUrl: '/assets/partials/search/rvSearchReservation.html', 
+            templateUrl: '/assets/partials/search/rvSearchReservation.html',
             controller: 'rvReservationSearchController',
             resolve: {
                 searchResultdata: function(RVSearchSrv, $stateParams) {
@@ -35,7 +35,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                         return results;
                     }
                 }
-            }                      
+            }
         });
         /**
         * IMPORTANT: 'rover.dashboardFromAdmin' state points to dashboard screen
@@ -43,37 +43,37 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
         * All future changes made in 'rover.dashboard' state are required for that state too
         **/
         $stateProvider.state('rover.dashboard', {
-            url: '/dashboard',   
-            templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',         
+            url: '/dashboard',
+            templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',
             controller: 'RVdashboardController',
             resolve: {
                 dashBoarddata: function(RVDashboardSrv) {
                     return RVDashboardSrv.fetchDashboardDetails();
                 }
-            }          
+            }
         });
         $stateProvider.state('rover.dashboard.manager', {
             url: '/manager',
             templateUrl: '/assets/partials/dashboard/rvManagerDashboard.html',
-            controller: 'RVmanagerDashboardController',                       
+            controller: 'RVmanagerDashboardController',
         });
         $stateProvider.state('rover.dashboard.frontoffice', {
             url: '/frontoffice',
             templateUrl: '/assets/partials/dashboard/rvFrontDeskDashboard.html',
-            controller: 'RVfrontDeskDashboardController',                       
-        }); 
+            controller: 'RVfrontDeskDashboardController',
+        });
         $stateProvider.state('rover.dashboard.housekeeping', {
             url: '/housekeeping',  //TODO: check can we reduced it to hk?
             templateUrl: '/assets/partials/dashboard/rvHouseKeepingDashboard.html',
-            controller: 'RVhouseKeepingDashboardController',                       
-        });  
+            controller: 'RVhouseKeepingDashboardController',
+        });
 
         /**
         * adding extra state to be initiated when user is in admin screens
         **/
         $stateProvider.state('rover.dashboardFromAdmin', {
-            url: '/dashboard/:type',    
-            templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',         
+            url: '/dashboard/:type',
+            templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',
             controller: 'RVdashboardController',
             resolve: {
                 dashBoarddata: function(RVDashboardSrv) {
@@ -93,8 +93,8 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                         template: '/assets/partials/postCharge/outsidePostCharge.html',
                         controller: 'RVOutsidePostChargeController',
                     });
-               }    
+               }
 
-            }                                   
-        });    
+            }
+        });
 });

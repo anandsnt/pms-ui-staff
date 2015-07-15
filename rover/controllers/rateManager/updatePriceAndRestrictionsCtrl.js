@@ -7,7 +7,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
         $scope.data.selected_room_type = '';
         $scope.showRestrictionDayUpdate = false;
         $scope.showExpandedView = false;
-        
+
         $scope.init = function () {
             if ($stateParams.openUpdatePriceRestrictions){
                 $stateParams.openUpdatePriceRestrictions = false;
@@ -99,12 +99,12 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
             $scope.hasRestrictionPermissions = (rvPermissionSrv.getPermissionValue('CHANGE_RESTRICTIONS'));
             return (rvPermissionSrv.getPermissionValue('CHANGE_RESTRICTIONS'));
         };
-        
+
         $scope.getRestriction = function(d, prop){
             if ($scope.popupData){
               var date = $scope.popupData.selectedDate,
                       rateId = $scope.popupData.selectedRate;
-              
+
               for (var i in $scope.calendarData.data){
                       if (rateId === $scope.calendarData.data[i].id){
                             //each restriction in the obj
@@ -184,7 +184,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
             //Flag to check if the rate set amounts are configured for the selected date
             $scope.data.hasAmountConfigured = true;
             selectedDateInfo = {};
-            
+
             //detect change on data values and update watch obj accordingly
             $scope.$watch("data.single_extra_amnt", function(to, from, evt){
                 var via = 'single';
@@ -690,7 +690,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
                 //manual update is disabled for rates which are based on other rates
                 $scope.daysOptions.applyToPrice = false;
             }
-            
+
             //The dates to which the restriction should be applied
             var datesSelected = getAllSelectedDates();
 
@@ -702,13 +702,13 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
                     delete data.rate_id;
                 }
             }
-            
+
             data.room_type_id = $scope.popupData.selectedRoomType;
             data.details = calculateDetailsToSave(datesSelected);
             var saveRestrictionSuccess = function () {
                 //$scope.refreshCalendar();
                 ngDialog.close();
-                
+
                 $scope.$emit('showLoader');
                 $rootScope.$broadcast('loadingRooms', true);
                 setTimeout(function(){
