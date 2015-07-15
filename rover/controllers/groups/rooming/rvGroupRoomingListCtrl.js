@@ -330,7 +330,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             $scope.newReservations = [];
             _.each(data.results, function(reservation) {
                 $scope.newReservations.push(reservation);
-                $scope.reservations.push(reservation);
+                $scope.reservations.unshift(reservation);
             });
 
             //total result count
