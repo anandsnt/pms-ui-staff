@@ -8303,11 +8303,12 @@
                 }
             }
 
-            &#company-agent {
+            &#company-promo {
+                .float;
 
                 .entry {
-                    width: 100%;
-                    margin-bottom: 20px;
+                    #pixel-to-percent > .width(585, 1230);
+                    .pull-left;
 
                     input {
                         font-size: 24px;
@@ -8316,45 +8317,19 @@
                         .placeholder-text(24px, 60px, 700, @grey3, normal);
                     }
 
+                    &:last-child { #pixel-to-percent > .left-margin(40, 1230); }
+
                 }
             }
 
-            &#codes {
+            &#select-rate {
+                .float;
 
-                .entry {
-                    .entry-data {
-                        .float;
+                .checkbox {
+                    #pixel-to-percent > .width(585, 1230);
+                    .pull-left;
 
-                        input {
-                            font-size: 24px;
-                            #pixel-to-percent > .width(550, 1230);
-                            .placeholder-text(24px, 60px, 700, @grey3, normal);
-                            .pull-left;
-                        }
-
-                        .select {
-                            position: relative;
-                            width: 70%;
-                            #pixel-to-percent > .width(600, 1230);
-                            .pull-right;
-
-                            .label {
-                                position: absolute;
-                                top: 20px;
-                                left: 15px;
-                                z-index: 0;
-                            }
-
-                            select {
-                                vertical-align: middle;
-                                position: relative;
-                                font-size: 18px;
-                                padding: 12px 10px 10px 65px;
-
-                                option { font-size: 16px; }
-                            }
-                        }
-                    }
+                    &:nth-child(even) { #pixel-to-percent > .left-margin(40, 1230); }
                 }
             }
 
