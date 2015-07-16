@@ -87,6 +87,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 			$scope.computeSegment();
 
+			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
+				fetchApplicableRates();
+			}
+
 			//we are in outside of angular world
 			runDigestCycle();
 		}
@@ -143,6 +147,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 			$scope.computeSegment();
 			//we are in outside of angular world
+
+			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
+				fetchApplicableRates();
+			}
 			runDigestCycle();
 		}
 
@@ -625,6 +633,33 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			summaryMemento = _.extend({}, $scope.groupConfigData.summary);
 		};
 
+		var fetchApplicableRates = function() {
+			var onFetchRatesSuccess = function(data) {
+					// split result to contracted vs others for enabling grouping on the dropdown
+					$scope.groupSummaryData.rates = _.where(data.results, {
+						is_contracted: false
+					});
+
+					$scope.groupSummaryData.contractedRates = _.where(data.results, {
+						is_contracted: true
+					});
+				},
+				onFetchRatesFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage;
+				};
+
+			$scope.callAPI(rvGroupConfigurationSrv.getRates, {
+				successCallBack: onFetchRatesSuccess,
+				failureCallBack: onFetchRatesFailure,
+				params: {
+					from_date: $filter('date')(tzIndependentDate($scope.groupConfigData.summary.block_from), 'yyyy-MM-dd'),
+					to_date: $filter('date')(tzIndependentDate($scope.groupConfigData.summary.block_to), 'yyyy-MM-dd'),
+					company_id: ($scope.groupConfigData.summary.company && $scope.groupConfigData.summary.company.id) || null,
+					travel_agent_id: ($scope.groupConfigData.summary.travel_agent && $scope.groupConfigData.summary.travel_agent.id) || null
+				}
+			});
+		};
+
 		/**
 		 * method to fetch summary data
 		 * @return undefined
@@ -672,7 +707,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 				//This is required to reset Cancel when selected in dropdown but not proceeded with in the popup
 				existingHoldStatus: parseInt($scope.groupConfigData.summary.hold_status),
-				computedSegment: false
+				computedSegment: false,
+				rates: [],
+				contractedRates: []
 			};
 
 			$scope.billingInfoModalOpened = false;
@@ -705,6 +742,20 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			//scroll above, and look for the event 'GROUP_TAB_SWITCHED'
 
 			//date related setups and things
+			//
+			// Fetch rates to show in dropdown
+			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
+				fetchApplicableRates();
+			}
+
+			// Redo rates list while modifying attached cards to the group
+			$scope.$on('CARDS_CHANGED', function() {
+				// Fetch rates to show in dropdown
+				if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
+					fetchApplicableRates();
+				}
+			});
+
 			setDatePickerOptions();
 
 			$scope.computeSegment();

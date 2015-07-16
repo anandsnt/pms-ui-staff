@@ -6953,7 +6953,7 @@
                 &.guest-reports,
                 &.log-reports,
                 &.transaction-reports,
-                &.group-deposit-reports {
+                &.deposit-reports {
                     tr {
                         th {
                             line-height: 35px;
@@ -6992,7 +6992,7 @@
 
                 &.guest-reports,
                 &.transaction-reports,
-                &.group-deposit-reports {
+                &.deposit-reports {
                     border-collapse: collapse;
                     border-spacing: 0;
                     text-transform: none;
@@ -7280,7 +7280,7 @@
                     }
                 }
 
-                &.group-deposit-reports {
+                &.deposit-reports {
                     .green { color: @green; }
                     .red { color: @red; }
 
@@ -7293,17 +7293,28 @@
 
                                 strong { font-weight: 600; }
 
-                                em { 
-                                    color: @grey3;
-                                    padding-left: 5px;
-                                }
-
                                 &.name {
-                                    width: 40%;
+                                    min-width: 40%;
                                     border-bottom: 0;
 
+                                    .info {
+                                        .float;
+
+                                        strong {
+                                            .calc-width(100, 80);
+                                            .pull-left;
+                                        }
+
+                                        em { 
+                                            color: @grey3;
+                                            width: 80px;
+                                            text-align: right;
+                                            .pull-right;
+                                        }
+                                    }
+
                                     .dates {
-                                        padding-top: 10px;
+                                        padding-top: 5px;
                                         line-height: 20px;
                                         .float;
 
@@ -7312,11 +7323,31 @@
                                             .pull-left;
                                         }
 
-                                        .guest-status { 
-                                            margin-right: 5px;
-                                            .square(20px); 
+                                        span { margin-right: 5px; }
+                                        
+                                        .guest-status { .square(20px); }
+                                    }
+
+                                    .guest-info {
+                                        padding-top: 5px;
+                                        color: @grey3;
+
+                                        .icons { 
+                                            font-size: 12px;
+                                            line-height: 20px;
+                                            padding-left: 20px; 
                                         }
                                     }
+
+                                    &.short { min-width: 25%; }
+                                }
+
+                                &.info {
+                                    font-size: 12px;
+                                    line-height: 1.5;
+                                    font-style: italic;
+                                    color: @grey3;
+                                    width: 20%;
                                 }
                             }
 
