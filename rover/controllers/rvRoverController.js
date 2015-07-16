@@ -4,7 +4,7 @@ sntRover.controller('roverController',
   '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv',
 
   'ngDialog', '$translate', 'hotelDetails',
-  'userInfoDetails', 'RVChargeItems', '$stateParams',
+  'userInfoDetails', '$stateParams',
 
   'rvMenuSrv', 'rvPermissionSrv', '$timeout',
 
@@ -12,7 +12,7 @@ sntRover.controller('roverController',
     $window, RVDashboardSrv, RVHotelDetailsSrv,
 
     ngDialog, $translate, hotelDetails,
-    userInfoDetails, RVChargeItems, $stateParams,
+    userInfoDetails, $stateParams,
 
     rvMenuSrv, rvPermissionSrv, $timeout) {
 
@@ -380,19 +380,6 @@ sntRover.controller('roverController',
       $scope.menuOpen = false;
     };
 
-
-    $scope.fetchAllItemsSuccessCallback = function(data) {
-      $scope.$emit('hideLoader');
-
-      $scope.fetchedData = data;
-
-      ngDialog.open({
-        template: '/assets/partials/postCharge/outsidePostCharge.html',
-        controller: 'RVOutsidePostChargeController',
-        scope: $scope
-      });
-    };
-
     //subemenu actions
 
     $scope.subMenuAction = function(subMenu) {
@@ -400,7 +387,14 @@ sntRover.controller('roverController',
       $scope.toggleDrawerMenu();
 
       if (subMenu === "postcharges") {
-        $scope.invokeApi(RVChargeItems.fetchAllItems, '', $scope.fetchAllItemsSuccessCallback);
+
+        $scope.isOutsidePostCharge = true;
+
+        ngDialog.open({
+          template: '/assets/partials/postCharge/rvPostChargeV2.html',
+          controller: 'RVOutsidePostChargeController',
+          scope: $scope
+        });
       }
       else if (subMenu === "endOfDay") {
         ngDialog.open({

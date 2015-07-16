@@ -46,7 +46,8 @@ sntRover.controller('RVPostChargeControllerV2',
 			
 			$scope.selectedChargeItem = null;
 			$scope.selectedChargeItemHash = {};
-			$scope.isOutsidePostCharge = false;
+			//$scope.isOutsidePostCharge = false;
+			console.log($scope.isOutsidePostCharge);
 			
 			var scrollerOptions = {preventDefault: false};
   			$scope.setScroller ('items_list', scrollerOptions);

@@ -7,7 +7,6 @@ sntRover.controller('RVbillCardController',
 	'RVBillCardSrv',
 	'reservationBillData',
 	'RVReservationCardSrv',
-	'RVChargeItems',
 	'ngDialog',
 	'$filter',
 	'$window',
@@ -22,7 +21,7 @@ sntRover.controller('RVbillCardController',
 			$state, $stateParams,
 			RVBillCardSrv, reservationBillData,
 
-			RVReservationCardSrv, RVChargeItems,
+			RVReservationCardSrv,
 			ngDialog, $filter,
 
 			$window, $timeout,
@@ -851,26 +850,21 @@ sntRover.controller('RVbillCardController',
 		// api post param 'fetch_total_balance' must be 'false' when posted from 'staycard'
 		// Also passing the available bills to the post charge modal
 		$scope.fetchTotalBal = false;
-		var callback = function(data) {
-		    $scope.$emit( 'hideLoader' );
 
-		    $scope.fetchedData = data;
+		var bills = [];
+	    for(var i = 0; i < $scope.reservationBillData.bills.length; i++ )
+	    	bills.push(i+1);
 
-		    var bills = [];
-		    for(var i = 0; i < $scope.reservationBillData.bills.length; i++ )
-		    	bills.push(i+1);
+	    $scope.fetchedData = {};
+		$scope.fetchedData.bill_numbers = bills;
+	    $scope.isOutsidePostCharge = false;
 
-		    $scope.fetchedData.bill_numbers = bills;
+		ngDialog.open({
+    		template: '/assets/partials/postCharge/rvPostChargeV2.html',
+    		className: '',
+    		scope: $scope
+    	});
 
-    		ngDialog.open({
-        		template: '/assets/partials/postCharge/rvPostChargeV2.html',
-        		controller: 'RVPostChargeControllerV2',
-        		className: '',
-        		scope: $scope
-        	});
-		};
-
-		$scope.invokeApi(RVChargeItems.fetch, $scope.reservation_id, callback);
 	};
 
 	$scope.$on('paymentTypeUpdated', function() {

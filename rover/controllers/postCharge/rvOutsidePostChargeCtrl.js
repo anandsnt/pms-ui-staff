@@ -2,21 +2,25 @@ sntRover.controller('RVOutsidePostChargeController',
 	[
 		'$rootScope',
 		'$scope',
-		'RVChargeItems',
+		'RVPostChargeSrvV2',
 		'RVSearchSrv',
-		'$timeout','ngDialog',
-		function($rootScope, $scope, RVChargeItems, RVSearchSrv, $timeout,ngDialog) {
+		'$timeout','ngDialog', '$stateParams',
+		function($rootScope, $scope, RVPostChargeSrvV2, RVSearchSrv, $timeout, ngDialog, $stateParams ) {
 
 			// hook up the basic things
 			BaseCtrl.call( this, $scope );
 			$scope.reservationsArray = [];
+			
+			$scope.fetchedData = {};
+			$scope.isOutsidePostCharge = true;
+
 			$scope.init = function(){
 				// quick ref to fetched items
 				// and chosen one from the list
-				$scope.fetchedItems = $scope.fetchedData.items;
-				$scope.fetchedChargeCodes = $scope.fetchedData.non_item_linked_charge_codes;
+				//$scope.fetchedItems = $scope.fetchedData.items;
+				//$scope.fetchedChargeCodes = $scope.fetchedData.non_item_linked_charge_codes;
 				$scope.selectedChargeItem = null;
-				$scope.isResultOnFetchedItems = true;
+				//$scope.isResultOnFetchedItems = true;
 				//Show/hide reservations or items
 				$scope.itemsVisible = true;
 				$scope.firstTime = true;
@@ -32,7 +36,7 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.chargePosted = false;
 				$scope.cardAttached = {};
 			};
-
+			$scope.init();
 			$scope.closeDialog = function(){
 				//to add stjepan's popup showing animation
       			$rootScope.modalOpened = false;
@@ -44,21 +48,7 @@ sntRover.controller('RVOutsidePostChargeController',
 
 			var oldSearchGuestText = '';
 			var oldSearchRoomValue = '';
-			var fetchAllItemsSuccessCallback = function(data){
-				$scope.$emit('hideLoader');
-				$scope.fetchedData = data;
-				$scope.init();
-			}
-			/**
-			* $scope.fetchedData will be undefined incase the controller is initiated
-			* from admin side.So call service and assign response data.
-			*/
-			if($scope.fetchedData){
-				$scope.init();
-			}
-			else{
-				 $scope.invokeApi(RVChargeItems.fetchAllItems, '', fetchAllItemsSuccessCallback);
-			}
+			
 			$scope.setScroller('result_showing_area_post_charg', {'click':true, 'tap':true});
 			$scope.roomSearchStatus = false;
 			$scope.guestCompanySearchStatus = false;
@@ -187,7 +177,7 @@ sntRover.controller('RVOutsidePostChargeController',
 			};
 			$scope.clickedReservationToPostCharge = function(reservationId){
 				$scope.showPostChargesScreen();
-				$scope.invokeApi(RVChargeItems.getReservationBillDetails, reservationId, $scope.successGetBillDetails);
+				$scope.invokeApi(RVPostChargeSrvV2.getReservationBillDetails, reservationId, $scope.successGetBillDetails);
 			};
 			$scope.showPostChargesScreen = function(){
 				$scope.showInitialSearchScreen = false;
