@@ -68,7 +68,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         });
         $scope.rateData.addOns = rateInitialData.addons;
 
-        
+
 
         //restriction type
         $scope.restrictionDetails = rateInitialData.restrictionDetails;
@@ -177,8 +177,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             else{
                 $scope.rateData.end_date_for_display ="";
             }
-           
-                      
+
+
 
             // addons -mark as activated for selected addons
             if ($scope.rateData.addOns.length > 0) {
@@ -218,7 +218,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             if (!$scope.is_edit) {
                 $scope.is_edit = true;
             }
-            
+
             $scope.rateData.name = data.name;
         $scope.rateData.description = data.description;
         $scope.rateData.promotion_code = data.promotion_code;
@@ -313,8 +313,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
         $scope.backToRates = function(event){
             event.preventDefault();
-            if(Object.prototype.hasOwnProperty.call($scope, 'otherData') && 
-               $scope.otherData.setChanged){     
+            if(Object.prototype.hasOwnProperty.call($scope, 'otherData') &&
+               $scope.otherData.setChanged){
                 $scope.$broadcast('backToRatesClicked', event);
             }
             else{

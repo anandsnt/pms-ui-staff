@@ -71,7 +71,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             $scope.rateTypesDetails = $scope.rateInitialData;
             /**
              * CICO-9289 - This switch will only show if the Reservation Setting 'Hourly Rates' has been switched on (see CICO-9435) and then default to 'Hourly'
-             * If parameter is switched off, do not show the switch (but default setup to Daily). 
+             * If parameter is switched off, do not show the switch (but default setup to Daily).
              */
             if(!$scope.rateData.id){
                 $scope.rateData.is_hourly_rate = $rootScope.isHourlyRatesEnabled;

@@ -452,7 +452,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
          * delete set
          */
         $scope.deleteSet = function() {
-            
+
             var deleteSetSuccessCallback = function(){
                 $scope.$emit('hideLoader');
                 $scope.data.sets.splice($scope.deleteSetIndex, 1);
@@ -597,7 +597,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
              if (!selectedSet.dawn.hh || !selectedSet.dusk.hh || (selectedSet.dusk.hh == selectedSet.dawn.hh && selectedSet.dusk.mm == selectedSet.dawn.mm && selectedSet.dawn.am == selectedSet.dusk.am)){
                 return false;
             } else if (!!selectedSet.dawn.hh && !!selectedSet.dawn.hh && !!selectedSet.dusk.hh && !!selectedSet.dusk.hh) {
-                
+
                 var dawn = selectedSet.dawn.am == 'AM' ? parseInt(selectedSet.dawn.hh) : (parseInt(selectedSet.dawn.hh) + 12) % 24;
                 var dusk = selectedSet.dusk.am == 'AM' ? parseInt(selectedSet.dusk.hh) : (parseInt(selectedSet.dusk.hh) + 12) % 24;
 
