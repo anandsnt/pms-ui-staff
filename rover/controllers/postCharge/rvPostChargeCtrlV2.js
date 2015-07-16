@@ -11,9 +11,29 @@ sntRover.controller('RVPostChargeControllerV2',
 			BaseCtrl.call( this, $scope );
 
 			$scope.fetchedData.charge_groups = [];
+			$scope.selectedChargeItem = null;
+			$scope.selectedChargeItemHash = {};
+			
+			var scrollerOptions = { preventDefault: false };
+  			$scope.setScroller ('items_list', scrollerOptions);
+  			$scope.setScroller ('items_summary', scrollerOptions);
+  			var isFromAccounts = ( typeof $scope.account_id !=="undefined" && $scope.account_id !=="" )? true : false;
+
+  			// make favorite selected by default
+			$scope.chargeGroup = 'FAV';
+			$scope.net_total_price = 0;
+			// set the default toggle to 'QTY'
+			$scope.calToggle = 'QTY';
+
+			// need to keep track of the last pressed
+			// button or number on the numberpad
+			var lastInput = null;
+
+			// need to keep track of the price
+			// entered by the user
+			var userEnteredPrice = '';
 
 			var fetchChargeGroups = function(){
-        
 				var successCallBackFetchChargeGroups = function( data ){
 					$scope.fetchedData.charge_groups = data.results;
 		            $scope.$emit('hideLoader');
@@ -38,21 +58,23 @@ sntRover.controller('RVPostChargeControllerV2',
 		    		$scope.fetchedItems = [];
 		    		$scope.fetchedItems = data.results;
 
+		    		for ( var i in $scope.selectedChargeItemHash ) {
+
+						var match = _.find( data.results, function( item ) {
+	    					return $scope.selectedChargeItemHash[i].id === item.id;
+	    				});
+
+						if(typeof match !== "undefined") match.count = $scope.selectedChargeItemHash[i].count;
+					}
+
 		            $scope.$emit('hideLoader');
 		            $scope.refreshScroller('items_list');
 				};
 				$scope.invokeApi( RVPostChargeSrvV2.searchChargeItems, params, successCallBackFetchChargeCodes );
 		    };
 			
-			$scope.selectedChargeItem = null;
-			$scope.selectedChargeItemHash = {};
-			//$scope.isOutsidePostCharge = false;
-			console.log($scope.isOutsidePostCharge);
-			
-			var scrollerOptions = {preventDefault: false};
-  			$scope.setScroller ('items_list', scrollerOptions);
-  			$scope.setScroller ('items_summary', scrollerOptions);
-  			var isFromAccounts = (typeof $scope.account_id !=="undefined" && $scope.account_id !=="")? true:false;
+			searchChargeCodeItems();
+
   			/**
   			* function to check whether the user has permission to Post charge
   			* @return {Boolean}
@@ -71,6 +93,12 @@ sntRover.controller('RVPostChargeControllerV2',
 
 			// filter the items based on the chosen charge group
 			$scope.filterbyChargeGroup = function() {
+				searchChargeCodeItems();
+			};
+
+			var resetPostCharge = function(){
+				$scope.query = '';
+				$scope.chargeGroup = 'FAV';
 				searchChargeCodeItems();
 			};
 
@@ -95,22 +123,6 @@ sntRover.controller('RVPostChargeControllerV2',
 				$scope.refreshScroller('items_summary');	
 				$scope.refreshScroller('items_list');	
 			};
-
-			// make favorite selected by default
-			$scope.chargeGroup = 'FAV';
-			searchChargeCodeItems();
-
-			$scope.net_total_price = 0;
-			// set the default toggle to 'QTY'
-			$scope.calToggle = 'QTY';
-
-			// need to keep track of the last pressed
-			// button or number on the numberpad
-			var lastInput = null;
-
-			// need to keep track of the price
-			// entered by the user
-			var userEnteredPrice = '';
 
 			var calNetTotalPrice = function() {
 				var totalPrice = 0;
@@ -174,6 +186,15 @@ sntRover.controller('RVPostChargeControllerV2',
 			
 			$scope.removeItem = function() {
 
+	    		for ( var i in $scope.selectedChargeItemHash ) {
+
+					var match = _.find( $scope.fetchedItems, function( item ) {
+    					return $scope.selectedChargeItem.id === item.id;
+    				});
+
+					if(typeof match !== "undefined") match.count = 0;
+				}
+
 				delete $scope.selectedChargeItemHash[ $scope.selectedChargeItem.id ];
 
 				// selected item is not deleting from DOM even after deleting from the hash.
@@ -182,10 +203,6 @@ sntRover.controller('RVPostChargeControllerV2',
 					angular.element(document.querySelector('#items-summary li.selected')).remove();
 				}, 100);
 
-				$scope.selectedChargeItem.count = 0;
-				$scope.selectedChargeItem.modifiedPrice = $scope.selectedChargeItem.unit_price;
-				//CICO-10013 fix
-				$scope.selectedChargeItem.userEnteredPrice = '';
 				$scope.selectedChargeItem = {};
 
 				// recalculate net price
@@ -428,7 +445,7 @@ sntRover.controller('RVPostChargeControllerV2',
 						ngDialog.close();
 					}
 					else{
-						$scope.$emit( 'CHARGEPOSTED' );
+						$rootScope.$emit( 'CHARGEPOSTED' );
 					}
 				};
 				var accountsPostcallback = function(){
@@ -492,7 +509,7 @@ sntRover.controller('RVPostChargeControllerV2',
 			
 			//Will be invoked only if triggered from the menu. 
 			// So always the default bill no will be 1
-			$scope.$on("UPDATED_BILLNUMBERS", function( event, data ){
+			$rootScope.$on("UPDATED_BILLNUMBERS", function( event, data ){
 				$scope.fetchedData.bill_numbers = data.bills;
 				$scope.billNumber = "1";
 				$scope.chargeGroup = 'FAV';
@@ -503,17 +520,37 @@ sntRover.controller('RVPostChargeControllerV2',
 				return JSON.stringify (string);
 			};
 
-			$scope.$on('POSTCHARGE', function( event, data ) {
-			   $scope.postCharges();
-			   $scope.isOutsidePostCharge = true;
+			$rootScope.$on('POSTCHARGE', function( event, data ) {
+				console.log("POSTCHARGE");
+			   	$scope.postCharges();
 			});
-			
-			$scope.$on('RESETPOSTCHARGE', function( event, data ) {
-			    $scope.selectedChargeItem = null;
+
+			$rootScope.$on('RESETPOSTCHARGE', function( event, data ) {
+				console.log("RESETPOSTCHARGE");
 				$scope.selectedChargeItem = null;
 				$scope.fetchedData.bill_numbers = null;
 				$scope.selectedChargeItemHash = {};
+
+				resetPostCharge();
 			});
+
+			$scope.closeDialog = function(){
+				//to add stjepan's popup showing animation
+      			$rootScope.modalOpened = false;
+      			$timeout(function(){
+      				ngDialog.close();
+      			}, 200);
+  			};
+
+  			$scope.showItemSummaryList = function(){
+  				var size = _.size($scope.selectedChargeItemHash);
+  				if(size > 0){
+  					return true;
+  				}
+  				else{
+  					return false;
+  				}
+  			};
 		}
 	]
 );

@@ -246,12 +246,12 @@
 						</select>
 					</div> 
 				</span>
-				<div id="no-items-added" class="no-content" ng-show="selectedChargeItemHash == {} ">
+				<div id="no-items-added" class="no-content" ng-hide="showItemSummaryList()">
 					<div class="info">
 						<strong class="h1" translate>0_ITEM_SELECTED</strong>
 					</div>
 				</div>
-				<div id="items-added" ng-hide="selectedChargeItemHash == {} " >
+				<div id="items-added" ng-show="showItemSummaryList()" >
 					<div id="items-summary" class="scrollable" ng-iscroll="items_summary">
 						
 						<ul class="wrapper">

@@ -15,12 +15,6 @@ sntRover.controller('RVOutsidePostChargeController',
 			$scope.isOutsidePostCharge = true;
 
 			$scope.init = function(){
-				// quick ref to fetched items
-				// and chosen one from the list
-				//$scope.fetchedItems = $scope.fetchedData.items;
-				//$scope.fetchedChargeCodes = $scope.fetchedData.non_item_linked_charge_codes;
-				$scope.selectedChargeItem = null;
-				//$scope.isResultOnFetchedItems = true;
 				//Show/hide reservations or items
 				$scope.itemsVisible = true;
 				$scope.firstTime = true;
@@ -36,14 +30,15 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.chargePosted = false;
 				$scope.cardAttached = {};
 			};
+
 			$scope.init();
+
 			$scope.closeDialog = function(){
 				//to add stjepan's popup showing animation
       			$rootScope.modalOpened = false;
       			$timeout(function(){
       				ngDialog.close();
       			}, 200);
-
   			};
 
 			var oldSearchGuestText = '';
@@ -140,8 +135,6 @@ sntRover.controller('RVOutsidePostChargeController',
 
 				$scope.invokeApi(RVSearchSrv.fetchReservationsToPostCharge, dataToSrv, $scope.searchForResultsSuccess);
 				$scope.itemsVisible = false;
-				//$scope.setScroller('search-guests-for-charge-content', {	'tap': true,'click': true,	'preventDefault': false});
-
 			};
 			$scope.clickedCancel = function(){
 				$scope.search.guest_company_agent = '';
@@ -157,23 +150,13 @@ sntRover.controller('RVOutsidePostChargeController',
 																&& $scope.reservationsArray.length == 0){
 					$scope.showInitialSearchScreen = true;
 				}
-				/*angular.forEach($scope.reservationsArray, function(value, key) {
-					value.shouldShowReservation = false;
-					//TODO: travel agent based search not hapening
-					if (($scope.escapeNull(value.firstname).toUpperCase()).indexOf($scope.search.guest_company_agent.toUpperCase()) >= 0 ||
-						($scope.search.guest_company_agent.length > 0 && ($scope.escapeNull(value.lastname).toUpperCase()).indexOf($scope.search.guest_company_agent.toUpperCase()) >= 0) ||
-						($scope.search.room.length > 0 && ($scope.escapeNull(value.room).toString()).indexOf($scope.search.room) >= 0)){
-						value.shouldShowReservation = true;
-					}
-				});*/
 				$scope.showSearchScreen = true;
 				$scope.itemsVisible = false;
-
 			};
 			$scope.successGetBillDetails = function(data){
 				$scope.$emit( 'hideLoader' );
 				data.isFromOut = true;
-				$scope.$broadcast("UPDATED_BILLNUMBERS", data);
+				$rootScope.$broadcast("UPDATED_BILLNUMBERS", data);
 			};
 			$scope.clickedReservationToPostCharge = function(reservationId){
 				$scope.showPostChargesScreen();
@@ -252,7 +235,6 @@ sntRover.controller('RVOutsidePostChargeController',
 		   		}
 		   	};
 
-
 			$scope.getQueueClass = function(isReservationQueued, isQueueRoomsOn){
 		  	    var queueClass = '';
 		  		if(isReservationQueued=="true" && isQueueRoomsOn == "true"){
@@ -261,10 +243,9 @@ sntRover.controller('RVOutsidePostChargeController',
 		 		return queueClass;
 		    };
 
-
 		    $scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus, roomReadyStatus, checkinInspectedOnly){
-		       var mappedStatus = "room-number";
-		       if(reservation_status == 'CHECKING_IN'){
+		       	var mappedStatus = "room-number";
+		       	if(reservation_status == 'CHECKING_IN'){
 
 			      	switch(roomReadyStatus) {
 
@@ -287,11 +268,10 @@ sntRover.controller('RVOutsidePostChargeController',
 						case "DIRTY":
 							mappedStatus += " room-red";
 							break;
-
 					}
-			       }
-			   	 return mappedStatus;
-		   };
+			    }
+			   	return mappedStatus;
+		   	};
 
 			/*
 			 * Method to handle selection of guest/compny/TA item
@@ -322,10 +302,8 @@ sntRover.controller('RVOutsidePostChargeController',
 				}
 				else {
 					$scope.reservation_id = $scope.cardAttached.id;
-					$scope.$broadcast('POSTCHARGE');
+					$rootScope.$broadcast('POSTCHARGE');
 				}
-
-
 			};
 			/*
 			 * Method to handle ADD GUEST OR ROOM button click
@@ -345,7 +323,7 @@ sntRover.controller('RVOutsidePostChargeController',
 			$scope.clickedPostCharge = function(){
 				$scope.guestHasNotCheckedin = false;
 				$scope.reservation_id = $scope.cardAttached.id;
-				$scope.$broadcast('POSTCHARGE');
+				$rootScope.$broadcast('POSTCHARGE');
 			};
 			$scope.clickedPostChargeCancel = function(){
 				$scope.guestHasNotCheckedin = false;
@@ -358,7 +336,7 @@ sntRover.controller('RVOutsidePostChargeController',
 			$scope.clickedPostAnotherCharge = function(){
 				$scope.init();
 				$scope.chargePosted = false;
-				$scope.$broadcast('RESETPOSTCHARGE');
+				$rootScope.$broadcast('RESETPOSTCHARGE');
 			};
 			$scope.clickedPostAnotherChargeCancel = function(){
 				$scope.chargePosted = false;
@@ -367,7 +345,7 @@ sntRover.controller('RVOutsidePostChargeController',
 			/*
 			 * On charge posted successfully.
 			 */
-			$scope.$on('CHARGEPOSTED', function(event, data) {
+			$rootScope.$on('CHARGEPOSTED', function(event, data) {
 			    $scope.guestHasNotCheckedin = false;
 				$scope.chargePosted = true;
 			});
@@ -383,7 +361,6 @@ sntRover.controller('RVOutsidePostChargeController',
 			$scope.keyBlurGuestCompany = function(){
 				$scope.guestCompanySearchStatus = false;
 			};
-
 		}
 	]
 );

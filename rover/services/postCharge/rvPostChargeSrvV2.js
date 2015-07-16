@@ -8,7 +8,6 @@ sntRover.service('RVPostChargeSrvV2',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSr
         var url = "/api/charge_groups.json";
 
         BaseWebSrvV2.getJSON(url).then(function( data ) {
-        	console.log(data);
             deferred.resolve(data);
         }, function (data) {
             deferred.reject(data);
@@ -21,13 +20,11 @@ sntRover.service('RVPostChargeSrvV2',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSr
 		var deferred = $q.defer();
 		var url = '/staff/items/post_items_to_bill';
 
-		RVBaseWebSrv.postJSON( url, params )
-			.then(function( data ) {
-				deferred.resolve(data);
-			}, function(data) {
-				deferred.reject(data);
-			});
-
+		RVBaseWebSrv.postJSON( url, params ).then(function( data ) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
 		return deferred.promise;
 	};
 
@@ -37,7 +34,7 @@ sntRover.service('RVPostChargeSrvV2',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSr
 		var deferred = $q.defer();
 		var url = '/api/reservations/'+reservationId+'/bills';
 
-		rvBaseWebSrvV2.getJSON(url).then(function(data) {
+		BaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);
