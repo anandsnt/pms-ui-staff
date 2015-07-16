@@ -19,10 +19,10 @@ function BaseCtrl($scope) {
 	//if no replace value is passed, it returns an empty string
 	$scope.escapeNull = function(value, replaceWith){
   		var newValue = "";
-  		if((typeof replaceWith != "undefined") && (replaceWith != null)){
+  		if((typeof replaceWith !== "undefined") && (replaceWith !== null)){
   			newValue = replaceWith;
   		}
-  		var valueToReturn = ((value == null || typeof value == 'undefined' ) ? newValue : value);
+  		var valueToReturn = ((value === null || typeof value === 'undefined' ) ? newValue : value);
   		return valueToReturn;
 	};
 
@@ -49,7 +49,7 @@ function BaseCtrl($scope) {
 
 		if(typeof loaderType === 'undefined')
 			loaderType = 'BLOCKER';
-		if(loaderType.toUpperCase() == 'BLOCKER')
+		if(loaderType.toUpperCase() === 'BLOCKER')
 			$scope.$emit('showLoader');
 
 		successCallback = (typeof successCallback ==='undefined') ? $scope.fetchedCompleted : successCallback;
@@ -130,10 +130,10 @@ function BaseCtrl($scope) {
             var currentDate = tzIndependentDate($scope.businessDate);
 			var timeDiff = (passedDate.getTime() - currentDate.getTime());
 			var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-			if(diffDays == 0){
+			if(diffDays === 0){
 				returnText = "Today";
 			}
-			else if(diffDays == 1){
+			else if(diffDays === 1){
 				returnText = "Tomorrow";
 			}
 			else {
