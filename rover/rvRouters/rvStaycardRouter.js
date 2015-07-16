@@ -43,6 +43,9 @@ angular.module('stayCardModule', [])
             resolve: {
                 baseData: function(RVReservationSummarySrv) {
                     return RVReservationSummarySrv.fetchInitialData();
+                },
+                activeCodes: function(RVReservationBaseSearchSrv) {
+                    return RVReservationBaseSearchSrv.getActivePromotions();                    
                 }
             }
         });
@@ -97,7 +100,7 @@ angular.module('stayCardModule', [])
                 rateAddons: function(RVReservationBaseSearchSrv) {
                     return RVReservationBaseSearchSrv.fetchAddonsForRates();
                 },
-                isAddonsConfigured: function(RVReservationBaseSearchSrv, $stateParams){      //CICO-16874              
+                isAddonsConfigured: function(RVReservationBaseSearchSrv, $stateParams) { //CICO-16874              
                     var params = {};
                     params.from_date = $stateParams.from_date;
                     params.to_date = $stateParams.to_date;

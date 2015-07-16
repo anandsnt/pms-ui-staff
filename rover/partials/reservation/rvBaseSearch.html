@@ -212,28 +212,26 @@
         </div>
 
         <!-- Company / Travel Agent -->
-        <div id="company-agent" class="row">
+        <div id="company-promo" class="row">
             <div id="autocomplete-search" class="entry">
                 <label for="company-or-agent">Company / Travel Agent <span>(optional)</span></label>
                 <input auto-complete auto-options="autocompleteOptions" name="company-or-agent" id="company-or-agent" data-card-type="" type="text" placeholder="Name, Corporate ID or IATA #" value="" autocomplete="off" ng-model="companySearchText" ul-class="find-cards"/>
             </div>
+            <div class="entry">
+                <label for="codes-value" ng-show="groupIsNotImplemented">Group / Promo Code <span>(optional)</span></label>
+                <label for="codes-value">Promo Code <span>(optional)</span></label>
+                <input auto-complete auto-options="codesACOptions"  name="codes-value" id="codes-value" data-card-type="" type="text" placeholder="Code" value="" autocomplete="off" ng-model="codeSearchText" ul-class="find-cards"/>
+            </div>
         </div>
 
-        <!-- Codes -->
-        <div id="codes" class="row">
+        <!-- Rate Selection -->
+        <div id="select-rate" class="row">
+            <label>Rate Selection <span>(Optional)</span></label>
             <div class="entry">
-                <label for="codes-value">Promo Codes <span>(optional)</span></label>
-                <div class="entry-data">
-                    <input name="codes-value" ng-model="reservationData.promotion.promotionCode" id="codes-value" type="text" placeholder="Code #" value="" />
-                    <div class="select">
-                        <label for="codes-type" class="label">Type</label>
-                        <select name="codes-type" id="codes-type" ng-model="reservationData.promotion.promotionType">
-                            <option value="" selected>None</option>
-                            <option value="PROMO">Promotion Code</option>
-                            <option value="GROUP" ng-show="hide_till_groups_implemented">Group Code</option>                            
-                        </select>
-                    </div>
-                </div>
+                <label class="checkbox">
+                    <input name="rate-selection" id="rate-member" value="member" type="checkbox" />
+                    Member
+                </label>
             </div>
         </div>
 

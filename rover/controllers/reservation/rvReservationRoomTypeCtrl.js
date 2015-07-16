@@ -1,5 +1,6 @@
-sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'sortOrder', 'rateAddons', 'isAddonsConfigured', 'RVReservationBaseSearchSrv', 'RVReservationAddonsSrv', '$timeout', '$state', 'ngDialog', '$sce', '$stateParams', 'dateFilter', '$filter', 'rvPermissionSrv', 'RVReservationStateService', 'RVReservationDataService',
-	function($rootScope, $scope, roomRates, sortOrder, rateAddons, isAddonsConfigured, RVReservationBaseSearchSrv, RVReservationAddonsSrv, $timeout, $state, ngDialog, $sce, $stateParams, dateFilter, $filter, rvPermissionSrv, RVReservationStateService, RVReservationDataService) {
+sntRover.controller('RVReservationRoomTypeCtrl', [
+	'$rootScope', '$scope', 'roomRates', 'sortOrder', 'rateAddons', 'isAddonsConfigured', 'RVReservationBaseSearchSrv', 'RVReservationAddonsSrv', '$timeout', '$state', 'ngDialog', '$sce', '$stateParams', 'dateFilter', '$filter', 'rvPermissionSrv', 'RVReservationStateService', 'RVReservationDataService',
+	function($rootScope, $scope, roomRates, sortOrder, rateAddons, isAddonsConfigured ,RVReservationBaseSearchSrv, RVReservationAddonsSrv, $timeout, $state, ngDialog, $sce, $stateParams, dateFilter, $filter, rvPermissionSrv, RVReservationStateService, RVReservationDataService) {
 		$scope.displayData = {};
 		$scope.selectedRoomType = -1;
 		$scope.expandedRoom = -1;
@@ -74,7 +75,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			return hasRate;
 		};
 
-		var init = function(isCallingFirstTime){
+		var init = function(isCallingFirstTime) {
 			$scope.$emit('showLoader');
 			var arrival = $scope.reservationData.arrivalDate;
 			$scope.displayData.dates = [];
@@ -148,30 +149,30 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.displayData.allRooms.sort(function(a, b) {
 				var room1AvgPerNight = parseInt($scope.roomAvailability[a.id].averagePerNight);
 				var room2AvgPerNight = parseInt($scope.roomAvailability[b.id].averagePerNight);
-				if (room1AvgPerNight < room2AvgPerNight){
+				if (room1AvgPerNight < room2AvgPerNight) {
 					return -1;
 				}
-				if (room1AvgPerNight > room2AvgPerNight){
+				if (room1AvgPerNight > room2AvgPerNight) {
 					return 1;
 				}
 				return 0;
 			});
 			//sort the rooms by levels
 			$scope.displayData.allRooms.sort(function(a, b) {
-				if (a.level < b.level){
+				if (a.level < b.level) {
 					return -1;
 				}
-				if (a.level > b.level){
+				if (a.level > b.level) {
 					return 1;
 				}
 				return 0;
 			});
 			//CICO-7792 : Bring contracted rates to the top
 			$scope.displayData.allRooms.sort(function(a, b) {
-				if (hasContractedRate($scope.roomAvailability[a.id].rates)){
+				if (hasContractedRate($scope.roomAvailability[a.id].rates)) {
 					return -1;
 				}
-				if (hasContractedRate($scope.roomAvailability[b.id].rates)){
+				if (hasContractedRate($scope.roomAvailability[b.id].rates)) {
 					return 1;
 				}
 				return 0;
@@ -185,7 +186,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		$scope.isCorRate = function(id) {
 			var rateFlag = false;
 			angular.forEach(function(d) {
-				if (d.id === id && !!d.account_id){
+				if (d.id === id && !!d.account_id) {
 					rateFlag = true;
 				}
 			});
@@ -197,7 +198,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				allthesame = function(arr) {
 					var L = arr.length - 1;
 					while (L) {
-						if (arr[L--] !== arr[L]){
+						if (arr[L--] !== arr[L]) {
 							return false;
 						}
 					}
@@ -286,10 +287,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					//Sort Rooms inside the rates so that they are in asc order of avg/day
 					if ($scope.stateCheck.preferredType === null || $scope.stateCheck.preferredType === '' || typeof $scope.stateCheck.preferredType === 'undefined') {
 						d.rooms.sort(function(a, b) {
-							if (a.total[d.rate.id].average < b.total[d.rate.id].average){
+							if (a.total[d.rate.id].average < b.total[d.rate.id].average) {
 								return -1;
 							}
-							if (a.total[d.rate.id].average > b.total[d.rate.id].average){
+							if (a.total[d.rate.id].average > b.total[d.rate.id].average) {
 								return 1;
 							}
 							return 0;
@@ -308,10 +309,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							}).length > 0) {
 							d.preferredType = parseInt($scope.stateCheck.preferredType);
 							d.rooms.sort(function(a, b) {
-								if (a.total[d.rate.id].average < b.total[d.rate.id].average){
+								if (a.total[d.rate.id].average < b.total[d.rate.id].average) {
 									return -1;
 								}
-								if (a.total[d.rate.id].average > b.total[d.rate.id].average){
+								if (a.total[d.rate.id].average > b.total[d.rate.id].average) {
 									return 1;
 								}
 								return 0;
@@ -322,10 +323,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				}
 			});
 			$scope.displayData.availableRates.sort(function(a, b) {
-				if (a.rate.name.toLowerCase() < b.rate.name.toLowerCase()){
+				if (a.rate.name.toLowerCase() < b.rate.name.toLowerCase()) {
 					return -1;
 				}
-				if (a.rate.name.toLowerCase() > b.rate.name.toLowerCase()){
+				if (a.rate.name.toLowerCase() > b.rate.name.toLowerCase()) {
 					return 1;
 				}
 				return 0;
@@ -453,7 +454,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					}
 				}
 			}
-			if ($rootScope.isAddonOn&&isAddonsConfigured) {
+			if ($rootScope.isAddonOn && isAddonsConfigured) {
 				//CICO-16874
 				$state.go('rover.reservation.staycard.mainCard.addons', {
 					"from_date": $scope.reservationData.arrivalDate,
@@ -1004,7 +1005,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					$scope.reservationData.departureDate,
 					$scope.reservationData.rooms[$scope.activeRoom].stayDates,
 					$scope.activeRoom,
-					$scope.reservationData.numNights),
+					$scope.reservationData.numNights, $scope.reservationData.code),
 				rooms = parsedRooms.rooms;
 			$scope.displayData.dates = parsedRooms.displayDates;
 

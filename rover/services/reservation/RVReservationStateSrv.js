@@ -9,11 +9,11 @@ sntRover.service('RVReservationStateService', [
 		self.reservationFlags = {
 			outsideStaydatesForGroup: false,
 			RATE_CHANGED: false
-		}
+		};
 
 		self.bookMark = {
 			lastPostedRate: null
-		}
+		};
 
 
 		/**
@@ -26,7 +26,7 @@ sntRover.service('RVReservationStateService', [
 				rate_id: rateId,
 			});
 			return rateAddons.associated_addons;
-		}
+		};
 
 
 		/**
@@ -59,7 +59,7 @@ sntRover.service('RVReservationStateService', [
 			var baseRoomRate = numAdults >= 2 ? rateTable.double : rateTable.single;
 			var extraAdults = numAdults >= 2 ? numAdults - 2 : 0;
 			return baseRoomRate + (extraAdults * rateTable.extra_adult) + (numChildren * rateTable.child);
-		}
+		};
 
 		/**
 		 * This method returns the break down of taxes after computation of the same.
@@ -167,6 +167,19 @@ sntRover.service('RVReservationStateService', [
 			return self.reservationFlags[key];
 		};
 
+		self.applyDiscount = function(amount, discount, numNights) {
+			if (numNights === 0) {
+				numNights = 1;
+			}
+			if (parseFloat(amount) <= 0.0) {
+				return 0;
+			}
+			if (discount.type === 'amount') {
+				return amount - discount.value / numNights; //perNight's discount to be deducted
+			} // discount.type === 'percent'
+			return amount * (discount.value / 100.0);
+		}
+
 		/**
 		 * method to initially parse availability response
 		 * @param  {[type]} roomRates [description]
@@ -174,13 +187,18 @@ sntRover.service('RVReservationStateService', [
 		 * @param  {[type]} departure [description]
 		 * @return {[type]}           [description]
 		 */
-		self.parseRoomRates = function(roomRates, arrival, departure, stayDates, activeRoom, numNights) {
+		self.parseRoomRates = function(roomRates, arrival, departure, stayDates, activeRoom, numNights, code) {
 			var rooms = {},
+				ratesMeta = {},
 				roomDetails = [],
 				displayDates = [];
 
 			$(roomRates.room_types).each(function(i, d) {
 				roomDetails[d.id] = d;
+			});
+
+			_.each(roomRates.rates, function(rate) {
+				ratesMeta[rate.id] = rate;
 			});
 
 			// Parse through all room-rate combinations.
@@ -289,9 +307,14 @@ sntRover.service('RVReservationStateService', [
 						if (typeof rooms[currentRoomId].ratedetails[for_date] == 'undefined') rooms[currentRoomId].ratedetails[for_date] = [];
 
 						var rateOnRoom = self.calculateRate(room_rate, adultsOnTheDay, childrenOnTheDay),
-							rateOnRoomAddonAdjusted = parseFloat(rateOnRoom) - parseFloat(inclusiveAddonsAmount);
+							rateOnRoomAddonAdjusted = parseFloat(rateOnRoom) - parseFloat(inclusiveAddonsAmount),
+							applyPromotion = false;
 
 						if (rateOnRoomAddonAdjusted < 0) rateOnRoomAddonAdjusted = 0.0;
+
+						var linkedPromotions = ratesMeta[rate_id].linked_promotion_ids;
+
+						if (_.indexOf(linkedPromotions, code.id) > -1) applyPromotion = true;
 
 						currentRoom.ratedetails[for_date][rate_id] = {
 							rate_id: rate_id,
@@ -305,7 +328,9 @@ sntRover.service('RVReservationStateService', [
 							day: new tzIndependentDate(for_date),
 							availabilityCount: rooms[currentRoomId].availabilityNumbers[for_date],
 							taxForAddons: taxForAddons,
-
+							linkedPromos: linkedPromotions,
+							applyPromotion: applyPromotion,
+							appliedPromotion: code
 						};
 
 						var currentRoomRateDetails = currentRoom.ratedetails[for_date][rate_id];
@@ -330,9 +355,17 @@ sntRover.service('RVReservationStateService', [
 							excl: parseFloat(currentRoomRateDetails.roomTax.excl) + parseFloat(currentRoomRateDetails.taxForAddons.excl)
 						}
 
+						var promoAdjustedRate = currentRoomRateDetails.applyPromotion ?
+							parseFloat(self.applyDiscount(currentRoomRateDetails.rate, currentRoomRateDetails.appliedPromotion.discount, numNights)) :
+							currentRoomRateDetails.rate,
+							promoAdjustedAddonAmount = currentRoomRateDetails.applyPromotion ?
+							parseFloat(self.applyDiscount(currentRoomRateDetails.addonAmount, currentRoomRateDetails.appliedPromotion.discount, numNights)) :
+							currentRoomRateDetails.addonAmount;
+
 						currentRoomRateDetails.total = parseFloat(currentRoomRateDetails.tax.excl) +
-							parseFloat(currentRoomRateDetails.rate) +
-							parseFloat(currentRoomRateDetails.addonAmount);
+							promoAdjustedRate +
+							promoAdjustedAddonAmount;
+
 
 						if (for_date == arrival || for_date != departure) {
 							//TODO : compute total
@@ -347,16 +380,11 @@ sntRover.service('RVReservationStateService', [
 
 							//total of all rates for ADR computation
 							currentRoom.total[rate_id].totalRate = parseFloat(currentRoom.total[rate_id].totalRate) +
-								parseFloat(currentRoomRateDetails.rate) +
-								parseFloat(currentRoomRateDetails.addonAmount);
+								promoAdjustedRate +
+								promoAdjustedAddonAmount;
 
 							//total of all rates including taxes.
 							currentRoom.total[rate_id].total += currentRoomRateDetails.total;
-							//compute the tax header for the table
-							// -- CICO-17282 Tax header wont come right as we are having taxes for addons too
-							// if (taxes && taxes.length > 0) {
-							// 	rooms[d.room_type_id].total[rate_id].percent = getTaxPercent(taxes);
-							// }
 							var stayLength = numNights;
 							// Handle single days for calculating rates
 							if (stayLength == 0) stayLength = 1;
@@ -388,7 +416,6 @@ sntRover.service('RVReservationStateService', [
 				rooms: rooms,
 				displayDates: displayDates
 			};
-		}
-
+		};
 	}
 ]);

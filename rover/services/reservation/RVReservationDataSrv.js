@@ -83,9 +83,10 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 					reservationType: '',
 					origin: ''
 				},
-				promotion: {
-					promotionCode: '',
-					promotionType: ''
+				code: {
+					id: '',
+					type: '',
+					discount: {}
 				},
 				status: '', //reservation status
 				reservationId: '',
