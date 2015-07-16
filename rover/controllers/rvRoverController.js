@@ -120,17 +120,17 @@ sntRover.controller('roverController',
     //handle six payment iFrame communication
     var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
     var eventer = window[eventMethod];
-    var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+    var messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
 
     eventer(messageEvent, function(e) {
       var responseData = e.data;
-      if (responseData.response_message == "token_created") {
+      if (responseData.response_message === "token_created") {
         $scope.$broadcast('six_token_recived', {
           'six_payment_data': responseData
         });
         $scope.$digest();
       }
-      // if (responseData.response_message == "error_on_token_creation") {
+      // if (responseData.response_message === "error_on_token_creation") {
         // $scope.$broadcast('six_token_recived',{'six_payment_data':responseData});
       // }
     }, false);
@@ -211,7 +211,7 @@ sntRover.controller('roverController',
       $scope.searchBackButtonCaption = caption; //if it is not blank, backbutton will show, otherwise dont
     });
 
-    if ($rootScope.adminRole == "Hotel Admin")
+    if ($rootScope.adminRole === "Hotel Admin")
       $scope.isHotelAdmin = true;
 
 
@@ -358,9 +358,9 @@ sntRover.controller('roverController',
         e.stopPropagation();
       };
 
-      $scope.menuOpen = !$scope.menuOpen; 
-	  
-	  //Bug fix for CICO-15718 
+      $scope.menuOpen = !$scope.menuOpen;
+
+	  //Bug fix for CICO-15718
 	  //Found that the issue appears when the keyboard comes over the screen
 	  //Added workaround to focus out from the search box
       $('#dashboard-query').focus();
@@ -512,7 +512,7 @@ sntRover.controller('roverController',
         return;
       }
 
-      if ((sntapp.browser == 'rv_native') && sntapp.cordovaLoaded) {
+      if ((sntapp.browser === 'rv_native') && sntapp.cordovaLoaded) {
         setTimeout(function() {
           sntapp.cardReader.startReader(options);
         }, 2000);
@@ -541,7 +541,7 @@ sntRover.controller('roverController',
     /*
      * Start Card reader now!.
      */
-    if ($rootScope.paymentGateway != "sixpayments") {
+    if ($rootScope.paymentGateway !== "sixpayments") {
   		/* Enabling desktop Swipe if we access the app from desktop ( not from devices) and
        * desktopSwipeEnabled flag is true
       */
@@ -734,7 +734,7 @@ sntRover.controller('roverController',
      * function to execute on clicking latecheckout button
      */
     $scope.clickedOnHeaderLateCheckoutIcon = function(event) {
-      if ($rootScope.default_dashboard != 'HOUSEKEEPING') {
+      if ($rootScope.default_dashboard !== 'HOUSEKEEPING') {
         var type = "LATE_CHECKOUT";
         $state.go('rover.search', {
           'type': type,
@@ -744,7 +744,7 @@ sntRover.controller('roverController',
     };
 
     $scope.clickedOnQueuedRoomsIcon = function(event) {
-      if ($rootScope.default_dashboard == 'HOUSEKEEPING') {
+      if ($rootScope.default_dashboard === 'HOUSEKEEPING') {
         $state.go('rover.housekeeping.roomStatus', {
           'roomStatus': 'QUEUED_ROOMS'
         });
@@ -757,7 +757,7 @@ sntRover.controller('roverController',
     };
 
     $scope.$on('UPDATE_QUEUE_ROOMS_COUNT', function(event, data) {
-      if (data == "remove") {
+      if (data === "remove") {
         $scope.userInfo.queue_rooms_count = parseInt($scope.userInfo.queue_rooms_count) - parseInt(1);
       } else {
         $scope.userInfo.queue_rooms_count = parseInt($scope.userInfo.queue_rooms_count) + parseInt(1);

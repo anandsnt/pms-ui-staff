@@ -17,7 +17,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		/***************************CICO-11444 *****************************************/
 		$scope.encoderSelected = "";
 console.log($scope.encoderTypes);
-		if($scope.fromView == "checkin"){
+		if($scope.fromView === "checkin"){
 			$scope.isRemoteEncodingEnabled = $scope.reservationBillData.is_remote_encoder_enabled;
 		}else{
 			$scope.isRemoteEncodingEnabled = $scope.reservationData.reservation_card.is_remote_encoder_enabled;
@@ -34,7 +34,7 @@ console.log($scope.encoderTypes);
 
 		$scope.data = {};
 		//If the keypopup inviked from check-in flow - registration card)
-		if($scope.fromView == "checkin"){
+		if($scope.fromView === "checkin"){
 			reservationStatus = $scope.reservationBillData.reservation_status;
 			// Setup data for late checkout
 			$scope.data.is_late_checkout = false;
@@ -55,17 +55,17 @@ console.log($scope.encoderTypes);
 		var statusMessage = $filter('translate')('KEY_CONNECTED_STATUS');
     	that.setStatusAndMessage(statusMessage, 'success');
     	// To check reservation status and select corresponding texts and classes.
-    	if(reservationStatus == 'CHECKING_IN' ){
+    	if(reservationStatus === 'CHECKING_IN' ){
 			$scope.data.reservationStatusText = $filter('translate')('KEY_CHECKIN_STATUS');
 			$scope.data.colorCodeClass = 'check-in';
 			$scope.data.colorCodeClassForClose = 'green';
 		}
-		else if(reservationStatus == 'CHECKEDIN' ){
+		else if(reservationStatus === 'CHECKEDIN' ){
 			$scope.data.reservationStatusText = $filter('translate')('KEY_INHOUSE_STATUS');
 			$scope.data.colorCodeClass = 'inhouse';
 			$scope.data.colorCodeClassForClose = 'blue';
 		}
-		else if(reservationStatus == 'CHECKING_OUT'){
+		else if(reservationStatus === 'CHECKING_OUT'){
 			$scope.data.reservationStatusText = $filter('translate')('KEY_CHECKOUT_STATUS');
 			$scope.data.colorCodeClass = 'check-out';
 			$scope.data.colorCodeClassForClose = 'red';
@@ -111,11 +111,11 @@ console.log($scope.encoderTypes);
 	};
 
 	$scope.isPrintKeyEnabled = function(){
-		if ($scope.numberOfKeysSelected == 0){
+		if ($scope.numberOfKeysSelected === 0){
 			return false;
 		}
 		if ($scope.numberOfKeysSelected > 0){
-			if($scope.isRemoteEncodingEnabled && $scope.encoderSelected == ""){
+			if($scope.isRemoteEncodingEnabled && $scope.encoderSelected === ""){
 				return false
 			}
 			return true
@@ -184,7 +184,7 @@ console.log($scope.encoderTypes);
 	};
 	$scope.keySelected = function(index){
 		that.numOfKeys = 0;
-		$scope.numberOfKeysSelected = ($scope.numberOfKeysSelected == index) ? --$scope.numberOfKeysSelected : index;
+		$scope.numberOfKeysSelected = ($scope.numberOfKeysSelected === index) ? --$scope.numberOfKeysSelected : index;
 		that.numOfKeys = $scope.numberOfKeysSelected;
 		$scope.printedKeysCount = 0;
 		if(that.numOfKeys > 0){
@@ -208,7 +208,7 @@ console.log($scope.encoderTypes);
 	};
 
 	$scope.clickedPrintKey = function(){
-		if($scope.numberOfKeysSelected == 0)
+		if($scope.numberOfKeysSelected === 0)
 			return;
 		//CICO-11444. If saflok_msr we we ll be connecting to remote encoders in the network
 		if($scope.isRemoteEncodingEnabled){
@@ -309,7 +309,7 @@ console.log($scope.encoderTypes);
 	that.printKeys = function(){
 		var index = -1;
 		for(var i = 0; i < that.printKeyStatus.length; i++){
-			if(that.printKeyStatus[i].printed == false){
+			if(that.printKeyStatus[i].printed === false){
 				index = i + 1;
 				break;
 			}
@@ -322,7 +322,7 @@ console.log($scope.encoderTypes);
 			$scope.printedKeysCount = index;
 			$scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
 			//$scope.$apply();
-			if(that.numOfKeys == 0){
+			if(that.numOfKeys === 0){
 				that.showKeyPrintSuccess();
 				return true;
 			}
@@ -347,7 +347,7 @@ console.log($scope.encoderTypes);
 				$scope.$emit('hideLoader');
 				that.setStatusAndMessage($filter('translate')('KEY_CREATED_STATUS'), 'success');
 				//if the setting of smart band create along with key creation enabled, we will create a smartband with open room charge
-    			if(that.isSmartbandCreateWithKeyWrite == "true" && that.lastSuccessfulCardIDReaded != ''){
+    			if(that.isSmartbandCreateWithKeyWrite === "true" && that.lastSuccessfulCardIDReaded !== ''){
     				var data = {};
     				//since there is not UI for adding first name & last name, we are setting as Blank, please see the comments of the story CICO-9315
     				data.first_name = '';
@@ -364,7 +364,7 @@ console.log($scope.encoderTypes);
 				$scope.printedKeysCount = index;
 				$scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
 				$scope.$apply();
-				if(that.numOfKeys == 0){
+				if(that.numOfKeys === 0){
 					that.showKeyPrintSuccess();
 					return true;
 				}
@@ -414,7 +414,7 @@ console.log($scope.encoderTypes);
 			'successCallBack': function(data){
 				$scope.$emit('hideLoader');
 				that.numOfKeys--;
-				if(that.numOfKeys == 0){
+				if(that.numOfKeys === 0){
 					$scope.$emit('hideLoader');
 					that.showKeyPrintSuccess();
 					return true;
@@ -555,7 +555,7 @@ console.log($scope.encoderTypes);
 	*/
 	this.showKeyPrintFailure = function(message){
 		$scope.$emit('hideLoader');
-		if(typeof message == 'undefined'){
+		if(typeof message === 'undefined'){
 			var message = $filter('translate')('KEY_CREATION_FAILED_STATUS');
 		}
 		$scope.pressedCancel(message);

@@ -342,7 +342,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			var successCallbackOfRemovingBookMark = function() {
 				$scope.$emit('hideLoader');
 
-				if (index != -1) {
+				if (index !== -1) {
 					$scope.bookmarkIdList.splice(index, 1);
 					index = -1;
 				}
@@ -374,7 +374,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			var index = -1;
 			var successCallbackOfBookMark = function() {
 				$scope.$emit('hideLoader');
-				if (index != -1) {
+				if (index !== -1) {
 					$scope.bookmarkIdList.push($scope.bookMarks[index].id);
 					index = -1;
 					updateBookmarkStatus();
@@ -422,7 +422,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		 */
 		$scope.clickedMenuItem = function($event, stateToGo) {
 			var currentTime = new Date();
-			if (lastDropedTime != '' && typeof lastDropedTime === 'object') {
+			if (lastDropedTime !== '' && typeof lastDropedTime === 'object') {
 				var diff = currentTime - lastDropedTime;
 				if (diff <= 400) {
 					$event.preventDefault();
@@ -479,6 +479,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$rootScope.isHourlyRatesEnabled = data.is_hourly_rate_on;
 			$rootScope.hotelTimeZoneFull = data.hotel_time_zone_full;
 			$rootScope.hotelTimeZoneAbbr = data.hotel_time_zone_abbr;
+
+			// CICO-18040
+			$rootScope.isFFPActive = data.is_ffp_active;
+			$rootScope.isHLPActive = data.is_hlp_active;
+			$rootScope.isPromoActive = data.is_promotion_active;
 
 			$rootScope.isRoomStatusImportPerRoomTypeOn = data.is_room_status_import_per_room_type_on ? data.is_room_status_import_per_room_type_on : false;
 

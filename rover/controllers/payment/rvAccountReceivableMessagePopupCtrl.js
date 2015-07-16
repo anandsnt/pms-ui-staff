@@ -4,7 +4,7 @@ sntRover.controller('RVAccountReceivableMessagePopupCtrl',['$rootScope', '$scope
 	$scope.createAccountAction = function(){
 
 		ngDialog.close();
-		if((typeof $scope.reservationBillData !=="undefined"  && $scope.reservationBillData.is_auto_assign_ar_numbers == "true")||(typeof $scope.is_auto_assign_ar_numbers !=="undefined" && $scope.is_auto_assign_ar_numbers)){
+		if((typeof $scope.reservationBillData !=="undefined"  && $scope.reservationBillData.is_auto_assign_ar_numbers === "true")||(typeof $scope.is_auto_assign_ar_numbers !=="undefined" && $scope.is_auto_assign_ar_numbers)){
 			$scope.createAccountReceivable();
 		}else{
 			ngDialog.open({

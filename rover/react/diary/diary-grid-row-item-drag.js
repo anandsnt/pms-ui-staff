@@ -90,7 +90,7 @@ var GridRowItemDrag = React.createClass({
 			return;
 		}
 
-		if(props.edit.active && (props.data.key != props.currentDragItem.key)){
+		if(props.edit.active && (props.data.key !== props.currentDragItem.key)){
 			return;
 		}
 
@@ -253,7 +253,7 @@ var GridRowItemDrag = React.createClass({
 			var state_to_set = {
                 top: top
             };
-            if(props.currentDragItem.reservation_status == 'inhouse'){
+            if(props.currentDragItem.reservation_status === 'inhouse'){
                 state_to_set.left = (((state.element_x)) / display.px_per_int).toFixed() * display.px_per_int;
             }
             else {
@@ -296,7 +296,7 @@ var GridRowItemDrag = React.createClass({
 			return;
 		}*/
 
-		if(state.dragging && props.edit.active && (props.data.key != props.currentDragItem.key)){
+		if(state.dragging && props.edit.active && (props.data.key !== props.currentDragItem.key)){
 			return;
 		}
 

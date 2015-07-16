@@ -15,7 +15,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	//Used to not to call list API again
 	$scope.firstTimeClick = true;
 	$scope.showBandEditScreen = false;
-	
+
 	var that = this;
 	//since smartband api is returning reversed id, we are using a vairble to keep that locally and use that for band type writing.
 	that.lastSuccessfulIDReaded = '';
@@ -32,7 +32,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 			}
 			$scope.smartBandData.fixedAmount = "";
 		}
-		
+
 	};
 	$scope.setPaymentType = function(){
 		$scope.isFixedAmount = !$scope.isFixedAmount;
@@ -41,7 +41,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		$scope.$emit( 'hideLoader' );
 		$scope.errorMessage = errorMessage;
 		$scope.showSmartBandListView = false;
-	}; 
+	};
 	$scope.createSmartBandSuccess = function(data){
 		$scope.$emit( 'hideLoader' );
 
@@ -58,9 +58,9 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
        	$scope.reservationData.reservation_card.balance_amount = data.balance_amount;
        	$scope.$apply();
        	$scope.writeBandType();
-       
+
 	};
-	
+
 	$scope.fetchSuccessKeyRead = function(accountNumber){
 		$scope.$emit( 'hideLoader' );
 		that.lastSuccessfulIDReaded = accountNumber;
@@ -69,7 +69,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 			'last_name': $scope.smartBandData.lastName,
 			'account_number': accountNumber,
 			'is_fixed': $scope.isFixedAmount
-		};		
+		};
 		if($scope.isFixedAmount){
 			postData.amount = $scope.smartBandData.fixedAmount;
 		};
@@ -91,24 +91,24 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
         }, 700);
 		var blankKeys = "";
 		that.lastSuccessfulIDReaded = '';
-		if($scope.isFixedAmount){	
-			if($scope.smartBandData.fixedAmount == '' || $scope.smartBandData.fixedAmount == null){			
-				blankKeys = blankKeys == '' ? "Amount" : (blankKeys + ", " + "Amount");
+		if($scope.isFixedAmount){
+			if($scope.smartBandData.fixedAmount === '' || $scope.smartBandData.fixedAmount === null){
+				blankKeys = blankKeys === '' ? "Amount" : (blankKeys + ", " + "Amount");
 			}
 			else{
 				var pattern = /^(0|[1-9][0-9]{0,2}(?:(,[0-9]{3})*|[0-9]*))(\.[0-9]+){0,1}$/;
 				if(!pattern.test($scope.smartBandData.fixedAmount)){
-					blankKeys = blankKeys == '' ? "Amount is not valid" : (blankKeys + ", " + "Amount is not valid");
+					blankKeys = blankKeys === '' ? "Amount is not valid" : (blankKeys + ", " + "Amount is not valid");
 				}
 			}
 
-		}	
-		if(blankKeys != "")	{
+		}
+		if(blankKeys !== "")	{
 			$scope.errorMessage = ['Please enter ' + blankKeys ];
 		} else {
 			var options = {
 				'successCallBack': $scope.fetchSuccessKeyRead,
-				'failureCallBack': $scope.fetchFailedKeyRead			
+				'failureCallBack': $scope.fetchFailedKeyRead
 			};
 			$scope.$emit( 'showLoader' );
 			$scope.showWriteToBand = true;
@@ -135,12 +135,12 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 			$scope.smartBands = data;
 		}
 		$scope.smartBandLength = $scope.smartBands.length;
-		
-		
+
+
 	};
 	$scope.seeAllBands = function(){
 		$scope.errorMessage = '';
-		
+
 		if($scope.firstTimeClick){
 			var dataToApi = {
 				'reservationId':$scope.reservation.reservation_card.reservation_id
@@ -149,7 +149,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		} else {
 			$scope.listSmartBandSuccess($scope.smartBands);
 		}
-		 
+
 	};
 	$scope.seeAllBands();
 	$scope.getSmartBandSuccess = function(data){
@@ -161,7 +161,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		$scope.showWriteToBand = false;
 		$scope.showSuccess = false;
 		$scope.showSmartBandListView = false;
-		
+
 	};
 	/*
 	 * Edit bands
@@ -172,7 +172,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 			$scope.bandEditId = id;
 			$scope.invokeApi(RVSmartBandSrv.getSmartBandDetails, id, $scope.getSmartBandSuccess);
 		}
-		
+
 	};
 	/*
 	 * Success call back on updating smart band
@@ -181,8 +181,8 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	$scope.updateSmartBandSuccess = function(data){
 		$scope.$emit( 'hideLoader' );
 		angular.forEach($scope.smartBands, function(value, key) {
-			if(value.id == $scope.bandEditId){
-				if($scope.bandData.additionalCredit != undefined){
+			if(value.id === $scope.bandEditId){
+				if($scope.bandData.additionalCredit !== undefined){
 					value.amount = parseInt(value.amount) + parseInt($scope.bandData.additionalCredit);
 				}
 				value.first_name = $scope.bandData.first_name;
@@ -216,18 +216,18 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		} else {
 			$scope.seeAllBands();
 		}
-		
+
 	};
 	/*
 	 * Set the selected band type - fixed room/open charge to the band
-	 * 
+	 *
 	 */
 	$scope.writeBandType = function(){
 		var args = [];
 		//Fixed amount - bandtype code : 00000001
 		//Open room charge - bandtype code : 00000002
 		var bandType = '00000002';
-		if(that.newBandInfo.is_fixed){ 
+		if(that.newBandInfo.is_fixed){
 			bandType = '00000001';
 		}
 		args.push(bandType);
@@ -242,8 +242,8 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 				$scope.$apply(); //since it is calling from outside of Angular scope, we need to call this one
 				that.lastSuccessfulIDReaded = '';
 			},
-			'failureCallBack': function(errorObject){				
-				var message = [errorObject.RVErrorDesc];			
+			'failureCallBack': function(errorObject){
+				var message = [errorObject.RVErrorDesc];
 				that.lastSuccessfulIDReaded = ''
 				$scope.createSmartBandFailure(message);
 				$scope.$apply(); //since it is calling from outside of Angular scope, we need to call this one

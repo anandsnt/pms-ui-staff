@@ -101,13 +101,13 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 			// find and update ooOsTitle
 			var item = _.find($scope.allServiceStatus, function(item) {
-				return item.id == $_originalStatusId;
+				return item.id === $_originalStatusId;
 			});
 
 			// $scope.ooOsTitle = item.description;
 
 			// check and update if room in service
-			$scope.inService = $scope.updateService.room_service_status_id != $_inServiceId ? false : true;
+			$scope.inService = $scope.updateService.room_service_status_id !== $_inServiceId ? false : true;
 
 			// if not in service, go fetch the oo/os saved details
 			if (!$scope.inService) {
@@ -135,18 +135,18 @@ sntRover.controller('RVHKRoomTabCtrl', [
 		// when user changes the room status from top dropdown
 		$scope.statusChange = function() {
 			var item = _.find($scope.allServiceStatus, function(item) {
-				return item.id == $scope.updateService.room_service_status_id;
+				return item.id === $scope.updateService.room_service_status_id;
 			});
 			$scope.ooOsTitle = item.description;
 
 			// check if user just set it to in service
-			$scope.inService = $scope.updateService.room_service_status_id != $_inServiceId ? false : true;
+			$scope.inService = $scope.updateService.room_service_status_id !== $_inServiceId ? false : true;
 
 			// show update form only when the user chooses a status that is not update yet
 			// eg: if original status was OO them show form only when user choose OS
 			if (!$scope.inService) {
 				if ($_originalStatusId !== $scope.updateService.room_service_status_id) {
-					if (tzIndependentDate($rootScope.businessDate).toDateString() == tzIndependentDate($scope.updateService.selected_date).toDateString())
+					if (tzIndependentDate($rootScope.businessDate).toDateString() === tzIndependentDate($scope.updateService.selected_date).toDateString())
 						$scope.roomDetails.room_reservation_hk_status = $scope.updateService.room_service_status_id;
 					// show the update form
 					$scope.showForm = true;
@@ -172,7 +172,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			} else {
 				$scope.showForm = false;
 				$scope.showSaved = false;
-				if (tzIndependentDate($rootScope.businessDate).toDateString() == tzIndependentDate($scope.updateService.selected_date).toDateString())
+				if (tzIndependentDate($rootScope.businessDate).toDateString() === tzIndependentDate($scope.updateService.selected_date).toDateString())
 					$scope.roomDetails.room_reservation_hk_status = $scope.updateService.room_service_status_id;
 
 				var _params = {
@@ -263,7 +263,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			onSelect: function(dateText, inst) {
 				$scope.onViewDateChanged();
 				if ($scope.serviceStatus[$filter('date')(new Date(dateText), "yyyy-MM-dd")])
-					$scope.updateService.room_service_status_id = $scope.serviceStatus[$filter('date')(new Date(dateText), "yyyy-MM-dd")].id;				
+					$scope.updateService.room_service_status_id = $scope.serviceStatus[$filter('date')(new Date(dateText), "yyyy-MM-dd")].id;
 				$(".room-actions").click();
 
 			},
@@ -406,7 +406,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			$scope.updateService.from_date = $scope.updateService.selected_date;
 			$scope.updateService.to_date = $scope.updateService.selected_date;
 			var item = _.find($scope.allServiceStatus, function(item) {
-				return item.id == $scope.updateService.room_service_status_id;
+				return item.id === $scope.updateService.room_service_status_id;
 			});
 			$scope.ooOsTitle = item.description;
 
@@ -424,9 +424,9 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				while ($scope.serviceStatus[$filter('date')(tzIndependentDate($scope.updateService.from_date).getTime() - oneDay, 'yyyy-MM-dd')]) {
 					var prevDate = $filter('date')(tzIndependentDate($scope.updateService.from_date).getTime() - oneDay, 'yyyy-MM-dd');
 					var prevDateStatus = $scope.serviceStatus[prevDate];
-					if (prevDateStatus.id == $scope.updateService.room_service_status_id &&
-						prevDateStatus.reason_id == $scope.updateService.reason_id &&
-						prevDateStatus.comments == $scope.updateService.comment) {
+					if (prevDateStatus.id === $scope.updateService.room_service_status_id &&
+						prevDateStatus.reason_id === $scope.updateService.reason_id &&
+						prevDateStatus.comments === $scope.updateService.comment) {
 						$scope.updateService.from_date = prevDate;
 					} else {
 						break;
@@ -436,9 +436,9 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				while ($scope.serviceStatus[$filter('date')(tzIndependentDate($scope.updateService.to_date).getTime() + oneDay, 'yyyy-MM-dd')]) {
 					var nextDate = $filter('date')(tzIndependentDate($scope.updateService.to_date).getTime() + oneDay, 'yyyy-MM-dd');
 					var nextDateStatus = $scope.serviceStatus[nextDate];
-					if (nextDateStatus.id == $scope.updateService.room_service_status_id &&
-						nextDateStatus.reason_id == $scope.updateService.reason_id &&
-						nextDateStatus.comments == $scope.updateService.comment) {
+					if (nextDateStatus.id === $scope.updateService.room_service_status_id &&
+						nextDateStatus.reason_id === $scope.updateService.reason_id &&
+						nextDateStatus.comments === $scope.updateService.comment) {
 						$scope.updateService.to_date = nextDate;
 					} else {
 						break;

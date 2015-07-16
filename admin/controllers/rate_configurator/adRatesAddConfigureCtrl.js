@@ -158,7 +158,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
                         var hourTwelved = function(hour) {
                             var hourCorrected = (hour < 12 ? hour : hour % 12);
-                            return hourCorrected == 0 ? 12 : hourCorrected;
+                            return hourCorrected === 0 ? 12 : hourCorrected;
                         }
 
                         if (!!value.day_checkout_cutoff_time) {
@@ -270,7 +270,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                         // CICO-9783
                         data.sets[j].isSaved = $scope.otherData.isEdit;
 
-                        if ($scope.rateData.room_types[i].id == roomRate.id) {
+                        if ($scope.rateData.room_types[i].id === roomRate.id) {
                             foundRoomType = true;
                             continue;
                         }
@@ -371,7 +371,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
             var selectedSet = $scope.data.sets[index];
 
-            if (!!saveGrid && saveGrid == 'saveGrid' && !selectedSet.showRoomRate) {
+            if (!!saveGrid && saveGrid === 'saveGrid' && !selectedSet.showRoomRate) {
                 selectedSet.showRoomRate = true;
             }
 
@@ -386,7 +386,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 $scope.closeDialog();
             }
 
-            if ((!!saveGrid && saveGrid == 'saveGrid') || $scope.rateData.is_hourly_rate) {
+            if ((!!saveGrid && saveGrid === 'saveGrid') || $scope.rateData.is_hourly_rate) {
                 selectedSet.showRoomRate = true;
                 angular.forEach(selectedSet.room_rates, function(room_rate, key) {
                     room_rate.hourly_room_rates = [];
@@ -434,14 +434,14 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
         $scope.moveAllSingleToDouble = function(index) {
             angular.forEach($scope.data.sets[index].room_rates, function(value, key) {
-                if (value.hasOwnProperty("single") && value.single != "") {
+                if (value.hasOwnProperty("single") && value.single !== "") {
                     value.double = value.single;
                 }
             });
         };
 
         $scope.moveSingleToDouble = function(parentIndex, index) {
-            if ($scope.data.sets[parentIndex].room_rates[index].single != "" && $scope.data.sets[parentIndex].room_rates[index].hasOwnProperty("single")) {
+            if ($scope.data.sets[parentIndex].room_rates[index].single !== "" && $scope.data.sets[parentIndex].room_rates[index].hasOwnProperty("single")) {
                 $scope.data.sets[parentIndex].room_rates[index].double = $scope.data.sets[parentIndex].room_rates[index].single;
             }
         };
@@ -452,7 +452,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
          * delete set
          */
         $scope.deleteSet = function() {
-            
+
             var deleteSetSuccessCallback = function(){
                 $scope.$emit('hideLoader');
                 $scope.data.sets.splice($scope.deleteSetIndex, 1);
@@ -490,18 +490,18 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
         $scope.checkFieldEntered = function(index) {
             /*var enableSetUpdateButton = false;
-            // if($scope.rateData.id == ""){
+            // if($scope.rateData.id === ""){
             angular.forEach($scope.data.sets[index].room_rates, function(value, key) {
-                if (value.hasOwnProperty("single")) {//} && value.single != "") {
+                if (value.hasOwnProperty("single")) {//} && value.single !== "") {
                     enableSetUpdateButton = true;
                 }
-                if (value.hasOwnProperty("double")) { //} && value.double != "") {
+                if (value.hasOwnProperty("double")) { //} && value.double !== "") {
                     enableSetUpdateButton = true;
                 }
-                if (value.hasOwnProperty("extra_adult")) { //} && value.extra_adult != "") {
+                if (value.hasOwnProperty("extra_adult")) { //} && value.extra_adult !== "") {
                     enableSetUpdateButton = true;
                 }
-                if (value.hasOwnProperty("child")) { //} && value.child != "") {
+                if (value.hasOwnProperty("child")) { //} && value.child !== "") {
                     enableSetUpdateButton = true;
                 }
             });*/
@@ -531,7 +531,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
           $scope.otherData.setChanged = true;
             angular.forEach($scope.data.sets, function(value, key) {
                 //Deselect the day in all sets other than current selected set.
-                if (key != index) {
+                if (key !== index) {
                     $scope.data.sets[key][mod] = false;
                 }
             });
@@ -540,7 +540,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         // check whether date range is past
         $scope.is_date_range_editable = function(date_range_end_date) {
             if ($scope.is_edit) {
-                if ($scope.rateData.based_on.id && $scope.rateData.rate_type.name != 'Specials & Promotions') {
+                if ($scope.rateData.based_on.id && $scope.rateData.rate_type.name !== 'Specials & Promotions') {
                     return false;
                 }
                 if (date_range_end_date && $scope.hotel_business_date) {
@@ -594,12 +594,12 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         });
 
         $scope.checkNightly = function(selectedSet, hour) {
-             if (!selectedSet.dawn.hh || !selectedSet.dusk.hh || (selectedSet.dusk.hh == selectedSet.dawn.hh && selectedSet.dusk.mm == selectedSet.dawn.mm && selectedSet.dawn.am == selectedSet.dusk.am)){
+             if (!selectedSet.dawn.hh || !selectedSet.dusk.hh || (selectedSet.dusk.hh === selectedSet.dawn.hh && selectedSet.dusk.mm === selectedSet.dawn.mm && selectedSet.dawn.am === selectedSet.dusk.am)){
                 return false;
             } else if (!!selectedSet.dawn.hh && !!selectedSet.dawn.hh && !!selectedSet.dusk.hh && !!selectedSet.dusk.hh) {
-                
-                var dawn = selectedSet.dawn.am == 'AM' ? parseInt(selectedSet.dawn.hh) : (parseInt(selectedSet.dawn.hh) + 12) % 24;
-                var dusk = selectedSet.dusk.am == 'AM' ? parseInt(selectedSet.dusk.hh) : (parseInt(selectedSet.dusk.hh) + 12) % 24;
+
+                var dawn = selectedSet.dawn.am === 'AM' ? parseInt(selectedSet.dawn.hh) : (parseInt(selectedSet.dawn.hh) + 12) % 24;
+                var dusk = selectedSet.dusk.am === 'AM' ? parseInt(selectedSet.dusk.hh) : (parseInt(selectedSet.dusk.hh) + 12) % 24;
 
                 /**
                  * CICO-10644
@@ -613,7 +613,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
                 // TODO : Calculate the dusk time!
                 if (!!selectedSet.checkout.hh & !!selectedSet.checkout.mm && !!selectedSet.day_min_hours) {
-                    var checkout = selectedSet.checkout.am == 'AM' ? parseInt(selectedSet.checkout.hh) : (parseInt(selectedSet.checkout.hh) + 12) % 24;
+                    var checkout = selectedSet.checkout.am === 'AM' ? parseInt(selectedSet.checkout.hh) : (parseInt(selectedSet.checkout.hh) + 12) % 24;
                     dusk = parseInt(checkout) - parseInt(selectedSet.day_min_hours);
                     // (inclusive)
                     dusk++;

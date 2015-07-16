@@ -81,7 +81,7 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 	 *   To handle show hide status for the logo delete button
 	 */
 	$scope.isLogoAvailable = function(logo) {
-		if (logo != '/assets/logo.png' && logo != 'false')
+		if (logo !== '/assets/logo.png' && logo !== 'false')
 			return true;
 		else return false;
 	};

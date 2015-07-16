@@ -121,7 +121,7 @@ $scope.$watch('upsellData.extended_checkout_charge_0', function(newValue, oldVal
       $scope.disableThirdOption = true;
       $scope.disableSecondOption = true;
   }
-  else if($scope.upsellData.extended_checkout_charge_0.charge.length > 0 && $scope.upsellData.extended_checkout_charge_0.time != "HH")
+  else if($scope.upsellData.extended_checkout_charge_0.charge.length > 0 && $scope.upsellData.extended_checkout_charge_0.time !== "HH")
     $scope.disableSecondOption = false;
 }, true);
 };
@@ -141,7 +141,7 @@ $scope.$watch('upsellData.extended_checkout_charge_1', function(newValue, oldVal
       }
       $scope.disableThirdOption = true;
   }
-  else if($scope.upsellData.extended_checkout_charge_1.charge.length > 0 && $scope.upsellData.extended_checkout_charge_1.time != "HH")
+  else if($scope.upsellData.extended_checkout_charge_1.charge.length > 0 && $scope.upsellData.extended_checkout_charge_1.time !== "HH")
     $scope.disableThirdOption = false;
 }, true);
 

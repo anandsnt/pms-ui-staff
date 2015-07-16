@@ -30,7 +30,7 @@ var ShowMakePaymentModal = function(backDom) {
 		that.myDom.find("#expiry-year").attr("readonly", true);
 	};
 	this.activateMakePaymentButton = function(){
-		if($("#card-number").val()!=''){
+		if($("#card-number").val()!==''){
 			$("#make-payment").attr("disabled", false);
 			$("#make-payment").removeClass("grey");
 			$("#make-payment").addClass("green");
@@ -70,7 +70,7 @@ var ShowMakePaymentModal = function(backDom) {
 
 	    var isSwiped = that.myDom.find("#isSwiped").attr("data-is-swiped").toString();
 
-		if(isSwiped == "true"){
+		if(isSwiped === "true"){
 
 			var user_id = $("#user_id").val();
 			var expiryMonth = that.myDom.find("#expiry-month").val(),
@@ -99,7 +99,7 @@ var ShowMakePaymentModal = function(backDom) {
 
 		} else {
 
-			if(that.myDom.find("#available-cards").attr("data-is-existing-card") == "yes"){
+			if(that.myDom.find("#available-cards").attr("data-is-existing-card") === "yes"){
 				var paymentId = that.myDom.find("#available-cards").attr("data-selected-payment");
 				var	amount = that.myDom.find("#amount").val();
 				var dataToMakePaymentApi = {

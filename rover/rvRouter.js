@@ -10,10 +10,10 @@ sntRover.config([
           suffix: '.json?time='+currentTime
         });
         $translateProvider.fallbackLanguage('EN');
-        
+
         // default state
         $urlRouterProvider.otherwise('/');
-		
+
 		/*
 		 * state added to show single url throughout the app
 		 */
@@ -21,7 +21,7 @@ sntRover.config([
             url: '/',
             controller: 'topController',
     	});
-    
+
         $stateProvider.state('rover', {
             abstract: true,
             url: '/staff',

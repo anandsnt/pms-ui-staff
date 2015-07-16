@@ -1,7 +1,7 @@
 
 (function() {
 	var checkInKeysController = function($scope,$rootScope,$http,$location,checkinDetailsService,checkinKeysService,$state) {
-	
+
 	$scope.pageValid = false;
 
 	if($rootScope.isCheckedin){
@@ -9,7 +9,7 @@
 	}
 	else{
 		$scope.pageValid = true;
-	};	
+	};
 
 	if($scope.pageValid){
 

@@ -67,7 +67,7 @@ sntRover.factory('RVReportUtilsFac', [
                 cgAssociated       = false,
                 paymentEntry       = {};
 
-            if ( setting == 'REMOVE_PAYMENTS' ) {
+            if ( setting === 'REMOVE_PAYMENTS' ) {
                 _.each(chargeGroupsAry, function (each) {
                     if ( each.name !== 'Payments' ) {
                         each.selected = true;
@@ -79,7 +79,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                 _.each(chargeCodesAry, function (each) {
                     cgAssociated = _.find(each['associcated_charge_groups'], function(idObj) {
-                        return idObj.id == paymentId;
+                        return idObj.id === paymentId;
                     });
 
                     if ( !cgAssociated ) {
@@ -89,9 +89,9 @@ sntRover.factory('RVReportUtilsFac', [
                 });
             }
 
-            if ( setting == 'ONLY_PAYMENTS' ) {
+            if ( setting === 'ONLY_PAYMENTS' ) {
                 paymentEntry = _.find(chargeGroupsAry, function(each) {
-                    return each.name == 'Payments';
+                    return each.name === 'Payments';
                 });
 
                 if ( !!paymentEntry ) {
@@ -101,7 +101,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                     _.each(chargeCodesAry, function (each) {
                         cgAssociated = _.find(each['associcated_charge_groups'], function(idObj) {
-                            return idObj.id == paymentId;
+                            return idObj.id === paymentId;
                         });
 
                         if ( !!cgAssociated ) {
@@ -136,7 +136,7 @@ sntRover.factory('RVReportUtilsFac', [
             };
 
             // merge value when its an object, else just assign
-            if ( typeof value == 'object' ) {
+            if ( typeof value === 'object' ) {
                 // DAMN! Our Angular version is very very old. Cant use this:
                 // angular.merge({}, objRef[key], value );
                 $.extend( true, objRef[key], value );
@@ -186,7 +186,7 @@ sntRover.factory('RVReportUtilsFac', [
             var mustSend = false;
 
             // if filter is this, make it selected by default
-            if ( objRef['title'] == __reportNames['CANCELLATION_NO_SHOW'] && { 'INCLUDE_CANCELLED':1, 'INCLUDE_CANCELED':1 }[filter.value] ) {
+            if ( objRef['title'] === __reportNames['CANCELLATION_NO_SHOW'] && { 'INCLUDE_CANCELLED':1, 'INCLUDE_CANCELED':1 }[filter.value] ) {
                 selected = true;
                 objRef['hasGeneralOptions']['title'] = filter.description;
             };
@@ -300,15 +300,19 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case __reportNames['FORECAST_BY_DATE']:
-                    reportItem['reportIconCls'] = 'icon-report';
+                    reportItem['reportIconCls'] = 'icon-report icon-forecast';
                     break;
 
                 case __reportNames['MARKET_SEGMENT_STATISTICS_REPORT']:
-                    reportItem['reportIconCls'] = 'icon-report';
+                    reportItem['reportIconCls'] = 'icon-report icon-market';
                     break;
 
                 case __reportNames['FORECAST_GUEST_GROUPS']:
-                    reportItem['reportIconCls'] = 'icon-report';
+                    reportItem['reportIconCls'] = 'icon-report icon-forecast';
+                    break;
+
+                case __reportNames['COMPARISION_BY_DATE']:
+                    reportItem['reportIconCls'] = 'icon-report icon-comparison';
                     break;
 
                 default:
@@ -408,7 +412,7 @@ sntRover.factory('RVReportUtilsFac', [
 
 
         /**
-         * Process the filters and create proper DS to show and play in UI 
+         * Process the filters and create proper DS to show and play in UI
          * @param  {Object} reportItem The ith report
          * @param  {Object} data       Additonal data sources like CG, CC, Markets, Source etc
          */
@@ -447,11 +451,11 @@ sntRover.factory('RVReportUtilsFac', [
             _.each(reportItem['filters'], function(filter) {
 
                 if ( (filter.value === 'INCLUDE_CHARGE_CODE' || filter.value === 'INCLUDE_CHARGE_GROUP') && _.isEmpty(processedCGCC) ) {
-                    if ( reportItem['title'] == __reportNames['DAILY_TRANSACTIONS'] ) {
+                    if ( reportItem['title'] === __reportNames['DAILY_TRANSACTIONS'] ) {
                         processedCGCC = __adjustChargeGroupsCodes( data.chargeGroups, data.chargeCodes, 'REMOVE_PAYMENTS' );
                     };
 
-                    if ( reportItem['title'] == __reportNames['DAILY_PAYMENTS'] ) {
+                    if ( reportItem['title'] === __reportNames['DAILY_PAYMENTS'] ) {
                         processedCGCC = __adjustChargeGroupsCodes( data.chargeGroups, data.chargeCodes, 'ONLY_PAYMENTS' );
                     };
                 };
@@ -465,12 +469,12 @@ sntRover.factory('RVReportUtilsFac', [
 
                     // for 'Cancellation & No Show' report the description should be 'Arrival Date Range'
                     // rather than the default 'Date Range'
-                    if ( reportItem['title'] == 'Cancellation & No Show' ) {
+                    if ( reportItem['title'] === 'Cancellation & No Show' ) {
                         reportItem['hasDateFilter']['description'] = 'Arrival Date Range';
                     };
 
                     // for 'Booking Source & Market Report' report the description should be 'Booked Date'
-                    if ( reportItem['title'] == 'Booking Source & Market Report' ) {
+                    if ( reportItem['title'] === 'Booking Source & Market Report' ) {
                         reportItem['hasDateFilter']['description'] = 'Booked Date';
                     };
 
@@ -619,14 +623,14 @@ sntRover.factory('RVReportUtilsFac', [
                     //
                     // QUICK PATCH
                     // TODO: replace with a better solution
-                    if ( reportItem.title == __reportNames['MARKET_SEGMENT_STATISTICS_REPORT'] ) {
-                        if ( filter.value == 'INCLUDE_MARKET' && data.codeSettings['is_market_on'] ) {
+                    if ( reportItem.title === __reportNames['MARKET_SEGMENT_STATISTICS_REPORT'] ) {
+                        if ( filter.value === 'INCLUDE_MARKET' && data.codeSettings['is_market_on'] ) {
                             __pushDisplayData( reportItem, filter );
-                        } else if ( filter.value == 'INCLUDE_ORIGIN' && data.codeSettings['is_origin_on'] ) {
+                        } else if ( filter.value === 'INCLUDE_ORIGIN' && data.codeSettings['is_origin_on'] ) {
                             __pushDisplayData( reportItem, filter );
-                        } else if ( filter.value == 'INCLUDE_SEGMENT' && data.codeSettings['is_segments_on'] ) {
+                        } else if ( filter.value === 'INCLUDE_SEGMENT' && data.codeSettings['is_segments_on'] ) {
                             __pushDisplayData( reportItem, filter );
-                        } else if ( filter.value == 'INCLUDE_SOURCE' && data.codeSettings['is_source_on'] ) {
+                        } else if ( filter.value === 'INCLUDE_SOURCE' && data.codeSettings['is_source_on'] ) {
                             __pushDisplayData( reportItem, filter );
                         };
                     } else {
@@ -746,8 +750,8 @@ sntRover.factory('RVReportUtilsFac', [
             // for (arrival, departure) report the sort by items must be
             // ordered in a specific way as per the design
             // [date - name - room] > TO > [room - name - date]
-            if ( reportItem['title'] == __reportNames['ARRIVAL'] ||
-                 reportItem['title'] == __reportNames['DEPARTURE'] ) {
+            if ( reportItem['title'] === __reportNames['ARRIVAL'] ||
+                 reportItem['title'] === __reportNames['DEPARTURE'] ) {
                 var dateSortBy = angular.copy( reportItem['sort_fields'][0] ),
                     roomSortBy = angular.copy( reportItem['sort_fields'][2] );
 
@@ -761,7 +765,7 @@ sntRover.factory('RVReportUtilsFac', [
             // for in-house report the sort by items must be
             // ordered in a specific way as per the design
             // [name - room] > TO > [room - name]
-            if ( reportItem['title'] == __reportNames['IN_HOUSE_GUEST'] ) {
+            if ( reportItem['title'] === __reportNames['IN_HOUSE_GUEST'] ) {
                 var nameSortBy = angular.copy( reportItem['sort_fields'][0] ),
                     roomSortBy = angular.copy( reportItem['sort_fields'][1] );
 
@@ -776,7 +780,7 @@ sntRover.factory('RVReportUtilsFac', [
             // the colspans should be adjusted
             // the sort descriptions should be update to design
             //    THIS MUST NOT BE CHANGED IN BACKEND
-            if ( reportItem['title'] == __reportNames['LOGIN_AND_OUT_ACTIVITY'] ) {
+            if ( reportItem['title'] === __reportNames['LOGIN_AND_OUT_ACTIVITY'] ) {
                 reportItem['sort_fields'][0]['description'] = 'Date & Time';
 
                 reportItem['sort_fields'][0]['colspan'] = 2;
@@ -786,7 +790,7 @@ sntRover.factory('RVReportUtilsFac', [
 
             // need to reorder the sort_by options
             // for deposit report in the following order
-            if ( reportItem['title'] == __reportNames['DEPOSIT_REPORT'] ) {
+            if ( reportItem['title'] === __reportNames['DEPOSIT_REPORT'] ) {
                 var reservationSortBy = angular.copy( reportItem['sort_fields'][4] ),
                     nameSortBy        = angular.copy( reportItem['sort_fields'][3] ),
                     dateSortBy        = angular.copy( reportItem['sort_fields'][0] ),
@@ -803,7 +807,7 @@ sntRover.factory('RVReportUtilsFac', [
 
             // need to reorder the sort_by options
             // for Reservation by User in the following order
-            if ( reportItem['title'] == __reportNames['RESERVATIONS_BY_USER'] ) {
+            if ( reportItem['title'] === __reportNames['RESERVATIONS_BY_USER'] ) {
                 var reservationType = angular.copy( reportItem['sort_fields'][6] ),
                     guestName       = angular.copy( reportItem['sort_fields'][3] ),
                     arrivalDate     = angular.copy( reportItem['sort_fields'][1] ),
@@ -824,8 +828,8 @@ sntRover.factory('RVReportUtilsFac', [
 
             // need to reorder the sort_by options
             // for daily transactions in the following order
-            if ( reportItem['title'] == __reportNames['DAILY_TRANSACTIONS'] ||
-                    reportItem['title'] == __reportNames['DAILY_PAYMENTS'] ) {
+            if ( reportItem['title'] === __reportNames['DAILY_TRANSACTIONS'] ||
+                    reportItem['title'] === __reportNames['DAILY_PAYMENTS'] ) {
                 var chargeGroup = angular.copy( reportItem['sort_fields'][1] ),
                     chargeCode  = angular.copy( reportItem['sort_fields'][0] ),
                     revenue     = angular.copy( reportItem['sort_fields'][3] ),
@@ -856,7 +860,7 @@ sntRover.factory('RVReportUtilsFac', [
             if ( reportItem['sort_fields'] && reportItem['sort_fields'].length ) {
                 _.each(reportItem['sort_fields'], function(item, index, list) {
 
-                    if ( item != null) {
+                    if ( item !== null) {
                         item['sortDir'] = undefined;
                     };
 
@@ -954,7 +958,7 @@ sntRover.factory('RVReportUtilsFac', [
                 'aMonthAfter'  : new Date(_year, _month, _date + 30),
             };
 
-            if ( parseInt(xDays) != NaN ) {
+            if ( parseInt(xDays) !== NaN ) {
                 returnObj.xDaysBefore = new Date(_year, _month, _date - xDays);
                 returnObj.xDaysAfter  = new Date(_year, _month, _date + xDays);
             };
@@ -977,7 +981,7 @@ sntRover.factory('RVReportUtilsFac', [
                 h = -1;
 
             for (i = 0; i < 96; i++) {
-                if (i % 4 == 0) {
+                if (i % 4 === 0) {
                     h++;
                     m = 0;
                 } else {

@@ -1,20 +1,20 @@
 admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stateParams', 'ngDialog', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location', 'ADRatesAddonsSrv',
  function($scope, $state, $stateParams, ngDialog, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location, ADRatesAddonsSrv){
-	
+
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
-	
+
 	 $scope.fileName = "Choose file...";
 	 $scope.initialIcon = '';
 	 $scope.addons = [];
      $scope.min_duration_values = [];
      $scope.max_order_values = [];
-     
+
 
 
      var init = function(){
      	var  duration;
-     	
+
         for(var i = 0; i < 30; i++){
            duration = {};
            duration.value = i + 1;
@@ -24,7 +24,7 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 
 
         var  order;
-     	
+
         for(var i = 0; i < 5; i++){
            order = {};
            order.value = i + 1;
@@ -74,7 +74,7 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 
     $scope.itemTypeSelected = function(){
 
-	if($scope.data.page_template == "ADDON" && $scope.addons.length == 0){
+	if($scope.data.page_template === "ADDON" && $scope.addons.length === 0){
 		$scope.fetchAddons();
 	}
 }
@@ -82,7 +82,7 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 $scope.getSelectedAddonDescription = function(){
 	var description = "";
      angular.forEach($scope.addons,function(item, index) {
-       if(item.value == $scope.data.addon_id)
+       if(item.value === $scope.data.addon_id)
        	description = item.description;
 
   });
@@ -92,7 +92,7 @@ $scope.getSelectedAddonDescription = function(){
 $scope.getSelectedAddonPrice = function(){
 	var price = "";
 	angular.forEach($scope.addons,function(item, index) {
-       if(item.value == $scope.data.addon_id)
+       if(item.value === $scope.data.addon_id)
        	price = item.amount;
 
   });
@@ -106,10 +106,10 @@ $scope.getSelectedAddonPrice = function(){
 		var fetchItemSuccessCallback = function(data){
 			$scope.data = data;
 			$scope.initialIcon =  $scope.data.image;
-			if(data.page_template == 'ADDON'){
+			if(data.page_template === 'ADDON'){
 				$scope.fetchAddons();
-				$scope.data.addon_max_order = $scope.data.addon_max_order == null? "" : $scope.data.addon_max_order;
-				$scope.data.addon_min_duration = $scope.data.addon_min_duration == null ? "" : $scope.data.addon_min_duration;
+				$scope.data.addon_max_order = $scope.data.addon_max_order === null? "" : $scope.data.addon_max_order;
+				$scope.data.addon_min_duration = $scope.data.addon_min_duration === null ? "" : $scope.data.addon_min_duration;
 			}else{
 				$scope.$emit('hideLoader');
 			}
@@ -119,7 +119,7 @@ $scope.getSelectedAddonPrice = function(){
 	/*Checkin if the screen is loaded for a new item or,
 	 * for existing item.
     */
-	if($stateParams.id != 'new'){
+	if($stateParams.id !== 'new'){
 		$scope.isAddMode = false;
 		$scope.fetchItem();
 	}
@@ -132,7 +132,7 @@ $scope.getSelectedAddonPrice = function(){
         $state.go('admin.cmscomponentSettings');
 	}
 	/*Function to popup the assign parent modal.
-	 *The param isSection == true, implies the modal is for assigning sections
+	 *The param isSection === true, implies the modal is for assigning sections
 	 *Otherwise the modal is for assigning categories
     */
 	$scope.openAddParentModal = function(isSection){
@@ -153,7 +153,7 @@ $scope.getSelectedAddonPrice = function(){
 			$scope.goBack();
 		}
 		var unwantedKeys = ["icon"];
-		if($scope.initialIcon == $scope.data.image)
+		if($scope.initialIcon === $scope.data.image)
 			unwantedKeys = ["icon", "image"];
 
 		var data = dclone($scope.data, unwantedKeys);

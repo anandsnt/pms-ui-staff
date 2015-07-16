@@ -15,13 +15,13 @@
 	}
 	else{
 		$scope.pageValid = true;
-	}		
+	}
 
 	if($scope.pageValid){
 		$scope.finalMessage = "Thank You for staying with us!";
 		$scope.errorMessage = "";
 
-	// data posted status	
+	// data posted status
 	$scope.posted = false;
 	$scope.isCheckoutCompleted= $rootScope.isCheckedout;
 	$scope.netWorkError = false;
@@ -34,17 +34,17 @@
 		var data = {'reservation_id':$rootScope.reservationID};
 
 		checkoutNowService.completeCheckout(url,data).then(function(response) {
-			$scope.posted = true;	
-			$scope.success = (response.status != "failure") ? true : false;    	
+			$scope.posted = true;
+			$scope.success = (response.status !== "failure") ? true : false;
 			if($scope.success)
-				$rootScope.isCheckedout = $scope.isCheckoutCompleted = true;  
+				$rootScope.isCheckedout = $scope.isCheckoutCompleted = true;
 			else
 				$scope.errorMessage = response.errors[0];
 		},function(){
 			$scope.netWorkError = true;
 			$scope.posted = true;
 		});
-	};		
+	};
  }
 };
 

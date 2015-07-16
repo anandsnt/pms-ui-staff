@@ -86,7 +86,7 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 		var deferred = $q.defer();
 
 		var url = 'api/bill_routings/' + data.id + '/bills.json';
-		if(data.entity_type != "")
+		if(data.entity_type !== "")
 			url = 'api/bill_routings/' + data.id + '/bills.json?entity_type='+data.entity_type;
 
 		BaseWebSrvV2.getJSON(url).then(function(data) {
@@ -140,7 +140,7 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 	this.fetchDefaultAccountRouting = function(params){
 
 		var deferred = $q.defer();
-			var url = (typeof params.entity_type !=="undefined" && params.entity_type != "") ?
+			var url = (typeof params.entity_type !=="undefined" && params.entity_type !== "") ?
 			 '/api/default_account_routings/' + params.id+'?entity_type='+params.entity_type:
 			 '/api/default_account_routings/' + params.id;
 			BaseWebSrvV2.getJSON(url).then(function(data) {

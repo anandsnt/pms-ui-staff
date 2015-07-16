@@ -119,7 +119,7 @@
 	              	// "add_to_guest_card": $scope.makePaymentData.addToGuestCard
               // };
               // $scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, dataToApiToAddNewCard, $scope.successSavePayment);
-		// } else if(type == "swiped"){
+		// } else if(type === "swiped"){
 //
 //
 			// var cardExpiry = ($scope.depositBalanceNewCardData.expiryMonth!=='' && $scope.depositBalanceNewCardData.expiryYear!=='') ? "20"+$scope.depositBalanceNewCardData.expiryYear+"-"+$scope.depositBalanceNewCardData.expiryMonth+"-01" : "";

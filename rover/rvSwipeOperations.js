@@ -7,7 +7,7 @@ var SwipeOperation = function(){
 	 */
 	this.createDataToTokenize = function(swipedCardData){
 			var ksn = swipedCardData.RVCardReadTrack2KSN;
-      		if(swipedCardData.RVCardReadETBKSN != "" && typeof swipedCardData.RVCardReadETBKSN != "undefined"){
+      		if(swipedCardData.RVCardReadETBKSN !== "" && typeof swipedCardData.RVCardReadETBKSN !== "undefined"){
 				ksn = swipedCardData.RVCardReadETBKSN;
 			}
 			var getTokenFrom = {
@@ -15,13 +15,13 @@ var SwipeOperation = function(){
 				'pan': swipedCardData.RVCardReadMaskedPAN
 			};
 
-			if(swipedCardData.RVCardReadTrack2!=''){
+			if(swipedCardData.RVCardReadTrack2!==''){
 				getTokenFrom.et2 = swipedCardData.RVCardReadTrack2;
-			} else if(swipedCardData.RVCardReadETB !=""){
+			} else if(swipedCardData.RVCardReadETB !==""){
 				getTokenFrom.etb = swipedCardData.RVCardReadETB;
 			}
 			getTokenFrom.is_encrypted = true;
-			if(swipedCardData.RVCardReadIsEncrypted == 0){
+			if(swipedCardData.RVCardReadIsEncrypted === 0){
 				getTokenFrom.is_encrypted = false;
 			}
 			return getTokenFrom;
@@ -44,7 +44,7 @@ var SwipeOperation = function(){
 			'swipeFrom': swipedCardData.swipeFrom,
 			'token': swipedCardData.token
 		};
-		
+
 		return swipedCardDataToRender;
 	};
 	/*
@@ -65,6 +65,6 @@ var SwipeOperation = function(){
 		return swipedCardDataToSave;
 	};
 
-    
+
 
 };

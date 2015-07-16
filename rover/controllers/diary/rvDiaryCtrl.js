@@ -152,7 +152,7 @@ sntRover
 			 */
 			function isFlowState() {
 				var found = _.find(flowStates, function (name) {
-					return name == prevName
+					return name === prevName
 				});
 
 				return !!found;
@@ -164,7 +164,7 @@ sntRover
 			 */
 			function isAllowedState() {
 				var found = !!_.find(allowedStates, function (name) {
-					return name == prevName
+					return name === prevName
 				});
 
 				return !!found;
@@ -194,7 +194,7 @@ sntRover
 		if (!(date2 instanceof Object)) {
 			date2 = new Date(date2);
 		}
-		
+
 		return (date1.getFullYear() !== date2.getFullYear() ||
 			date1.getMonth() !== date2.getMonth() ||
 			date1.getDate() !== date2.getDate());
@@ -717,7 +717,7 @@ sntRover
 
 
 	    	$scope.price = $scope.roomXfer.next.room.new_price ? ($scope.roomXfer.next.room.new_price - $scope.roomXfer.current.room.old_price) : 0;
-	    	if($scope.price != 0) {
+	    	if($scope.price !== 0) {
 				openEditConfirmationPopup();
 			}
 			else{
@@ -859,17 +859,17 @@ sntRover
 						util.reservationRoomTransfer(this.data, oRowItem, props.currentResizeItemRow, oItem);
 
 						var roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), props.currentResizeItemRow.id);
-						if(roomIndex != -1) {
+						if(roomIndex !== -1) {
 							var occupancyIndex 	= _.indexOf(_.pluck($scope.gridProps.data[roomIndex].occupancy, 'reservation_id'), oItem.reservation_id);
-							if(occupancyIndex != -1){
+							if(occupancyIndex !== -1){
 								$scope.gridProps.data[roomIndex].occupancy.splice(occupancyIndex);
 							}
 						}
 					}
 					var roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), oRowItem.id);
-					if(roomIndex != -1) {
+					if(roomIndex !== -1) {
 						var occupancyIndex 	= _.indexOf(_.pluck($scope.gridProps.data[roomIndex].occupancy, 'reservation_id'), oItem.reservation_id);
-						if(occupancyIndex != -1){
+						if(occupancyIndex !== -1){
 							$scope.gridProps.data[roomIndex].occupancy[occupancyIndex] = util.copyReservation( this.currentResizeItem);
 						}
 					}
@@ -883,18 +883,18 @@ sntRover
 						util.reservationRoomTransfer(this.data, this.availability.drag.lastRoom, props.currentResizeItemRow, props.currentResizeItem);
 
 						var roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), props.currentResizeItemRow.id);
-						if(roomIndex != -1) {
+						if(roomIndex !== -1) {
 							var occupancyIndex 	= _.indexOf(_.pluck($scope.gridProps.data[roomIndex].occupancy, 'reservation_id'), props.currentResizeItem.reservation_id);
-							if(occupancyIndex != -1){
+							if(occupancyIndex !== -1){
 								$scope.gridProps.data[roomIndex].occupancy.splice(occupancyIndex);
 							}
 						}
 
 					}
 					var roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), this.availability.drag.lastRoom.id);
-					if(roomIndex != -1) {
+					if(roomIndex !== -1) {
 						var occupancyIndex 	= _.indexOf(_.pluck($scope.gridProps.data[roomIndex].occupancy, 'reservation_id'), props.currentResizeItem.reservation_id);
-						if(occupancyIndex != -1){
+						if(occupancyIndex !== -1){
 							$scope.gridProps.data[roomIndex].occupancy[occupancyIndex] = this.currentResizeItem;
 						}
 					}
@@ -908,7 +908,7 @@ sntRover
 	    		return;
 
 	    	}
-	    	if(avData.new_rate_amount == null) {
+	    	if(avData.new_rate_amount === null) {
 	    		avData.new_rate_amount = avData.old_rate_amount;
 	    	}
 
@@ -923,9 +923,9 @@ sntRover
 	    	this.availability.resize.last_departure_time = this.currentResizeItem[meta.occupancy.end_date];
 	    	if(this.availability.drag.lastRoom && (this.availability.drag.lastRoom.id !== this.currentResizeItemRow.id)){
 		    	var roomIndex 		= _.indexOf(_.pluck($scope.gridProps.data, 'id'), this.availability.drag.lastRoom.id);
-				if(roomIndex != -1) {
+				if(roomIndex !== -1) {
 					var occupancyIndex 	= _.indexOf(_.pluck($scope.gridProps.data[roomIndex].occupancy, 'reservation_id'), this.currentResizeItem.reservation_id);
-					if(occupancyIndex != -1){
+					if(occupancyIndex !== -1){
 						$scope.gridProps.data[roomIndex].occupancy.splice(occupancyIndex);
 					}
 					$scope.gridProps.currentResizeItem.room_id = this.currentResizeItemRow.id;
@@ -1147,7 +1147,7 @@ sntRover
 				var reservation = rvDiarySrv.movingReservationData.originalReservation;
 				var goBackDate = new tzIndependentDate (reservation.arrival);
 				goBackDate.setHours (0, 0, 0);
-				
+
 				if(!isTwoDatesAreDifferent ($scope.gridProps.filter.arrival_date, goBackDate)) {
 					$timeout(function(){
 			            var arrival_ms = props.filter.arrival_date.getTime(),
@@ -1262,7 +1262,7 @@ sntRover
 		var params = getAvailabilityCallingParams(),
 			filter = $scope.gridProps.filter;
 
-		if(filter.rate_type == 'Corporate' && !filter.rate) {
+		if(filter.rate_type === 'Corporate' && !filter.rate) {
 			//if Rate type select box is not open, we have to
 			openRateTypeSelectBox();
 
@@ -1358,7 +1358,7 @@ sntRover
 						   0, 0),
 			rt_filter = (_.isEmpty(filter.room_type) || (filter.room_type && angular.lowercase(filter.room_type.id) === 'all')  ? undefined : filter.room_type.id),
 			rate_type = filter.rate_type,
-			account_id = (filter.rate_type == 'Corporate' && filter.rate && filter.rate != '' ) ? filter.rate.id : undefined,
+			account_id = (filter.rate_type === 'Corporate' && filter.rate && filter.rate !== '' ) ? filter.rate.id : undefined,
 			GUID = "avl-101";//No need to manipulate this thing from service part, we are deciding
 
 
@@ -1473,8 +1473,8 @@ sntRover
     * @return {String} Rate type
 	*/
 	var getRateType = function (reservation) {
-		return ( reservation.travel_agent_id == null || reservation.travel_agent_id == '') &&
-				( reservation.company_card_id == null || reservation.company_card_id == '') ?
+		return ( reservation.travel_agent_id === null || reservation.travel_agent_id === '') &&
+				( reservation.company_card_id === null || reservation.company_card_id === '') ?
 				'Standard': 'Corporate';
 	}
 
@@ -1484,7 +1484,7 @@ sntRover
     * @return {String} account id
 	*/
 	var getAccountID = function (reservation) {
-		return getRateType (reservation) == 'Corporate' ?
+		return getRateType (reservation) === 'Corporate' ?
 				(reservation.travel_agent_id ? reservation.travel_agent_id : reservation.company_card_id) : undefined;
 	}
 
@@ -1717,7 +1717,7 @@ sntRover
 			arrival_ms = filter.arrival_date.getTime(),
 			time_set;
 		$scope.$emit('hideLoader');
-		
+
 		if(isTwoDatesAreDifferent (newValue, oldValue)) {
             time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
             $scope.gridProps.display = util.deepCopy(time_set.display);
@@ -1877,7 +1877,7 @@ sntRover
 		$scope.gridProps.availability.resize.last_departure_time = null;
 		if(!$scope.gridProps.edit.active) {
 			$scope.Availability();
-		} else if ( $scope.gridProps.filter.arrival_time == '' ) {
+		} else if ( $scope.gridProps.filter.arrival_time === '' ) {
 			$scope.clearAvailability();
 			$scope.resetEdit();
 			$scope.renderGrid();
@@ -1887,7 +1887,7 @@ sntRover
 	$scope.clickedOnRoomType = function(){
 		if ( !$scope.gridProps.edit.active && !!$scope.gridProps.filter.room_type ) {
 			$scope.Availability();
-		} else if ( $scope.gridProps.filter.room_type == null ) {
+		} else if ( $scope.gridProps.filter.room_type === null ) {
 			$scope.clearAvailability();
 			$scope.resetEdit();
 			$scope.renderGrid();
@@ -1972,7 +1972,7 @@ sntRover
 				// but type checking in underscore creating problem
 				_.each(occpancies,  function(occupancy) {
 					if(_.has(occupancy, 'reservation_id')) {
-						if(occupancy['reservation_id'] == reservation_id){
+						if(occupancy['reservation_id'] === reservation_id){
 							row_item_data = occupancy;
 							row_data = room_detail;
 						}
@@ -2006,7 +2006,7 @@ sntRover
 			room_type_id = isNaN(parseInt(data.roomTypeID)) ? 'All' : data.roomTypeID;
 
 			match = _.find($scope.gridProps.filter.room_types, function(item) {
-				return room_type_id == item.id;
+				return room_type_id === item.id;
 			});
 
 			$scope.gridProps.filter.room_type = match;
@@ -2138,7 +2138,7 @@ sntRover
 
         // fetch data from server
         var fetchData = function() {
-            if (request.term != '' && lastSearchText != request.term) {
+            if (request.term !== '' && lastSearchText !== request.term) {
                 $scope.invokeApi(RMFilterOptionsSrv.fetchCompanyCard, {
                     'query': request.term
                 }, processDisplay);

@@ -40,7 +40,7 @@ admin.controller('ADMarketsCtrl',['$scope', 'ADMarketsSrv', '$anchorScroll', '$t
     * To handle cancel click
     */
 	$scope.clickedCancel = function(){
-		if($scope.currentClickedElement != 'new'){
+		if($scope.currentClickedElement !== 'new'){
 			$scope.data.markets[$scope.currentClickedElement].name = $scope.preveousItem;
 			$scope.preveousItem = "";
 		}

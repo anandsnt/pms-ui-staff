@@ -1,5 +1,5 @@
-admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', '$anchorScroll', '$timeout',  '$location',
-  function($scope, $state, ADHotelLoyaltySrv, $anchorScroll, $timeout, $location){
+admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', '$anchorScroll', '$timeout',  '$location', '$rootScope',
+  function($scope, $state, ADHotelLoyaltySrv, $anchorScroll, $timeout, $location, $rootScope){
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	$scope.hotelLoyaltyData = {};
@@ -150,6 +150,7 @@ admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', 
 		};
 		var successCallbackActivateMainInactivate = function(data){
 			$scope.data.use_hlp = !$scope.data.use_hlp;
+			$rootScope.isHLPActive = $scope.data.use_hlp;
 			$scope.$emit('hideLoader');
 		};
 		$scope.invokeApi(ADHotelLoyaltySrv.switchMainToggle, data , successCallbackActivateMainInactivate);
@@ -195,7 +196,7 @@ admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', 
 			if($scope.hotelLoyaltyData.levels[index].name === "")
 				$scope.hotelLoyaltyData.levels.splice(index, 1);
 			angular.forEach($scope.hotelLoyaltyData.levels,function(item, i) {
-				if (item.name === "" && i != $scope.hotelLoyaltyData.levels.length-1) {
+				if (item.name === "" && i !== $scope.hotelLoyaltyData.levels.length-1) {
 					$scope.hotelLoyaltyData.levels.splice(i, 1);
 				}
 			});

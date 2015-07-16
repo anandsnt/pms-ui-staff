@@ -23,10 +23,10 @@ angular.module('sharedHttpInterceptor', []).factory('sharedHttpInterceptor', [
         // so lets redirect to login page
         $window.location.href = '/logout' ;
       }
-      if(rejection.status == 430){
+      if(rejection.status === 430){
          $rootScope.showBussinessDateChangedPopup && $rootScope.showBussinessDateChangedPopup(rejection.data.errors[0]);
       }
-      if(rejection.status == 520 && rejection.config.url !== '/admin/test_pms_connection') {
+      if(rejection.status === 520 && rejection.config.url !== '/admin/test_pms_connection') {
         $rootScope.showOWSError && $rootScope.showOWSError();
       }
       /** as per CICO-9089 **/

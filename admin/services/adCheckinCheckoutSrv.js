@@ -12,7 +12,7 @@ this.fetchEmailList = function(data){
 	    url = '/admin/get_due_in_guests.json';
 	else if(data.id === 'checkout')
 		url = '/admin/get_due_out_guests.json';
-	
+
 	ADBaseWebSrv.getJSON(url,data).then(function(data) {
 		deferred.resolve(data);
 	},function(data){
@@ -34,7 +34,7 @@ this.sendMail = function(emailData){
 	   url = '/admin/checkin_setups/notify_all_checkin_guests';
 	else if(emailData.id === 'checkout')
 		url =  '/admin/send_checkout_alert';
-	
+
 	var data = emailData.data;
 
 	ADBaseWebSrv.postJSON(url,data).then(function(data) {

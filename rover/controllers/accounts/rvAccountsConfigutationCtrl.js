@@ -63,7 +63,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		 * function to set Back Navigation params
 		 */
 		var setBackNavigation = function() {
-			// TODO : Currently hardcoded to go to groups search.. 
+			// TODO : Currently hardcoded to go to groups search..
 			// Change the same according to the requirements
       // CICO-17777: added isFromCards to $stateParams from rvAccountRouter
 			if($stateParams.isFromCards) {
@@ -127,12 +127,12 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			$scope.errorMessage = '';
 
 			//allow to swith to "transactions" tab only if the user has its permission
-			if (tab == "TRANSACTIONS" && !$scope.hasPermissionToViewTransactionsTab()) {
+			if (tab === "TRANSACTIONS" && !$scope.hasPermissionToViewTransactionsTab()) {
 				$scope.errorMessage = ["Sorry, you don't have the permission to access the transactions"];
 				return;
 			}
 
-			var isInAccountsTab = $scope.accountConfigData.activeTab == "ACCOUNT";
+			var isInAccountsTab = $scope.accountConfigData.activeTab === "ACCOUNT";
 
 			// we will restrict tab swithing if we are in add mode
 			var tryingFromAccountsToOther = isInAccountsTab && tab !== 'ACCOUNT';
@@ -145,7 +145,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			if (isInAccountsTab && !$scope.isInAddMode()) {
 				// $scope.$broadcast("UPDATE_ACCOUNT_SUMMARY");
 			}
-			
+
 			//Reload the summary tab contents before switching to it
 			if(tab === "ACCOUNT"){
 				//refreshSummaryTab();
@@ -153,19 +153,19 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 				//preLoadTransactionsData();
 				//return false;
 			} else{
-				// Switching from SUMMARY tab - 
+				// Switching from SUMMARY tab -
 				// Check for any updation => lets save it.
 				$scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
 			}
 
 			$scope.accountConfigData.activeTab = tab;
-			
+
 			//propogating an event that next clients are
 			$timeout(function() {
 				$scope.$broadcast('ACCOUNT_TAB_SWITCHED', $scope.accountConfigData.activeTab);
-			}, 100);			
+			}, 100);
 		};
-		
+
 		/**
 		 * Save the new Group
 		 * @return undefined
@@ -324,7 +324,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 
 		/**
 		 * When we recieve the error message from its child controllers, we have to show them
-		 * @param  {Object} event 
+		 * @param  {Object} event
 		 * @param  {String} errorMessage)
 		 * @return undefined
 		 */

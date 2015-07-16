@@ -87,7 +87,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
    $scope.saveRoomTypes = function(){
 
 		var unwantedKeys = [];
-		if($scope.roomTypeData.image_of_room_type.indexOf("data:")!= -1){
+		if($scope.roomTypeData.image_of_room_type.indexOf("data:")!== -1){
 		} else {
 			unwantedKeys = ["image_of_room_type"];
 		}

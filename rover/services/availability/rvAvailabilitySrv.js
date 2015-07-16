@@ -1,6 +1,6 @@
 sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSrv',
 	function($q, rvBaseWebSrvV2, RVHotelDetailsSrv){
-	
+
 	var that = this;
 
 	var availabilityGridDataFromAPI = null;
@@ -28,11 +28,11 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		var availableRooms 		= [];
 		var outOfOrderRooms 	= [];
 		var reservedRooms 		= [];
-		var overBookableRooms 	= [];		
+		var overBookableRooms 	= [];
 		var availableRoomsWithBookableRooms = [];
 		var individualAvailableRooms = [];
 
-		//CICO-13590: 
+		//CICO-13590:
 		var bookedRooms 		= [];
 		var individualBookedRooms = [];
 		var groupTotalRooms 	= [];
@@ -48,14 +48,14 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		//creating list of room types
 		for(var i = 0; i < roomAvailabilityData.room_types.length; i++){
 			individualAvailableRooms.push({
-				'id' 	: roomAvailabilityData.room_types[i].id, 
+				'id' 	: roomAvailabilityData.room_types[i].id,
 				'name'	: roomAvailabilityData.room_types[i].name,
 				'availableRoomNumberList': []
 			})
 
 			//CICO-13590:
 			individualBookedRooms.push ({
-				'id' 	: roomAvailabilityData.room_types[i].id, 
+				'id' 	: roomAvailabilityData.room_types[i].id,
 				'name'	: roomAvailabilityData.room_types[i].name,
 				'bookedNumberList': []
 			});
@@ -65,7 +65,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			currentRow = roomAvailabilityData.results[i];
 
 			var dateToCheck = tzIndependentDate(currentRow.date);
-			var isWeekend = dateToCheck.getDay() == 0 || dateToCheck.getDay() == 6;
+			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
 			dates.push({'date': currentRow.date, 'isWeekend': isWeekend, 'dateObj': new Date(currentRow.date)});
 
 			occupancies.push((currentRow.house.sold / totalRooms) * 100);
@@ -79,16 +79,16 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 				bookedRooms.push (currentRow.house.sold);
 				groupTotalRooms.push (currentRow.house.group_total_rooms);
 				groupTotalPickedUp.push (currentRow.house.group_total_pickups);
-			
+
 				for(var j = 0; j < currentRow.room_types.length; j++){
 					var id = currentRow.room_types[j].id;
 					for(var k = 0; k < individualBookedRooms.length; k++){
-						if(individualBookedRooms[k].id == id){
+						if(individualBookedRooms[k].id === id){
 							individualBookedRooms[k].bookedNumberList.push(currentRow.room_types[j].sold);
 							break;
 						}
 					}
-				}				
+				}
 
 			}
 
@@ -96,7 +96,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			for(var j = 0; j < currentRow.room_types.length; j++){
 				var id = currentRow.room_types[j].id;
 				for(var k = 0; k < individualAvailableRooms.length; k++){
-					if(individualAvailableRooms[k].id == id){
+					if(individualAvailableRooms[k].id === id){
 						individualAvailableRooms[k].availableRoomNumberList.push(currentRow.room_types[j].availability);
 						break;
 					}
@@ -123,10 +123,10 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			'individualAvailableRooms': individualAvailableRooms,
 			'totalRooms'		: roomAvailabilityData.physical_count
 		}
-		
+
 		//CICO-13590
 		if (!isHourlyRateOn) {
-			_.extend (gridData, 
+			_.extend (gridData,
 			{
 				'bookedRooms' 		: bookedRooms,
 				'individualBookedRooms': individualBookedRooms,
@@ -134,7 +134,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 				'groupTotalPickedUp': groupTotalPickedUp
 			});
 		}
-		return gridData;		
+		return gridData;
 	}
 
 	var formGraphData = function(dataFromAvailability, occupancyData){
@@ -148,7 +148,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		var reservedRooms 		= [];
 		var availableRooms 		= [];
 		var occupanciesActual	= [];
-		var occupanciesTargeted = [];	
+		var occupanciesTargeted = [];
 
 		//used to show/hide the occupancy target checkbox
 		var IsOccupancyTargetSetBetween = false;
@@ -163,17 +163,17 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		var date 						= '';
 		var totalRoomCount = dataFromAvailability.physical_count;
 		var currentRow = null;
-		for(var i = 0; i < dataFromAvailability.results.length; i++){	
+		for(var i = 0; i < dataFromAvailability.results.length; i++){
 			currentRow = dataFromAvailability.results[i];
-			
+
 			// date for th day
 			date = {'dateObj': new Date(currentRow.date)};
-			
+
 			//forming bookable room data for a day
 			//total number of rooms - outoforder for that day
 			bookableRoomForADay = totalRoomCount - currentRow.house.out_of_order;
 			bookableRoomForADay = ( bookableRoomForADay / totalRoomCount ) * 100;
-			
+
 			// forming outoforder room data for a day
 			outOfOrderRoomForADay = ( currentRow.house.out_of_order / totalRoomCount ) * 100;
 
@@ -192,8 +192,8 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		}
 
 		//since occupancy data is from another API, results may have length  lesser/greater than availability
-		for(i = 0; i < occupancyData.results.length; i++){			
-			currentRow = occupancyData.results[i];	
+		for(i = 0; i < occupancyData.results.length; i++){
+			currentRow = occupancyData.results[i];
 			occupanciesActualForADay = escapeNull(currentRow.actual) === "" ? 0 : currentRow.actual;
 			occupanciesTargetedForADay = escapeNull(currentRow.target) === "" ? 0 : currentRow.target;
 			occupanciesActual.push(occupanciesActualForADay);
@@ -216,7 +216,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			'totalRooms'	: totalRoomCount,
 
 		}
-		return graphData;		
+		return graphData;
 
 	};
 
@@ -227,7 +227,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	this.fetchAvailabilityDetails = function(params){
 		var firstDate 	= tzIndependentDate(params.from_date);
 		var secondDate 	= tzIndependentDate(params.to_date);
-		
+
 		var dataForWebservice = {
 			from_date	: firstDate,
 			to_date		: secondDate
@@ -242,7 +242,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			return that.fetchOccupancyDetails(params, deferred);
 		},function(data){
 			deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 
@@ -252,22 +252,22 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	this.fetchOccupancyDetails = function(params, deferred){
 		var firstDate 	= tzIndependentDate(params.from_date);
 		var secondDate 	= tzIndependentDate(params.to_date);
-		
+
 		var dataForWebservice = {
 			from_date	: firstDate,
 			to_date		: secondDate
 		};
 
 		var url = 'api/daily_occupancies';
-		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(responseFromAPI) { 
+		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(responseFromAPI) {
 			that.data.gridData 	= formGridData(availabilityGridDataFromAPI);
 			that.data.graphData = formGraphData(availabilityGridDataFromAPI, responseFromAPI);
 			deferred.resolve(that.data);
 		},function(data){
 			deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
-	};	
+	};
 
 	this.fetchHouseStatusDetails = function(params){
 
@@ -283,13 +283,13 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			deferred.resolve(houseDetails);
 		},function(data){
 			deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 
 	};
 
 	/**
-	*Manipulates the house availability response to a format that would suit UI rendering 
+	*Manipulates the house availability response to a format that would suit UI rendering
 	* (Which supports rendering calendar row by row)
 	*/
 	this.restructureHouseDataForUI = function(data, houseTotal, businessDate){
@@ -315,12 +315,12 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 
 		angular.forEach(data, function(dayInfo, i) {
 			//Creates the hash of date details
-			//Consists of the day info - today, tomorrow or yesterday and the date			
+			//Consists of the day info - today, tomorrow or yesterday and the date
 			dateDetails = {};
 			dateDetails.date = dayInfo.date;
 			var date = tzIndependentDate(dayInfo.date);
 			//Set if the day is yesterday/today/tomorrow
-			if(date.getTime() ==  businessDate.getTime()) {
+			if(date.getTime() ===  businessDate.getTime()) {
 				dateDetails.day = "TODAY";
 			} else if(date.getTime() < businessDate.getTime()){
 				dateDetails.day = "YESTERDAY";
@@ -329,7 +329,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			}
 			houseDetails.dates.push(dateDetails);
 
-			//Total rooms occupied 
+			//Total rooms occupied
 			// value - Actual value - will be displayed in the colum near to graph
 			// percent - Used for graph plotting
 			houseDetails.total_rooms_occupied[dayInfo.date] = {};
@@ -338,7 +338,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			/*total guests inhouse - not used now. May be added in future
 			houseDetails.total_guests_inhouse[dayInfo.date] = {};
 			houseDetails.total_guests_inhouse[dayInfo.date].value = dayInfo.house.in_house;*/
-			
+
 			totalDepartures = dayInfo.house.departing + dayInfo.house.departed;
 			//Departures Expected
 			houseDetails.departues_expected[dayInfo.date] = {};
@@ -348,7 +348,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			houseDetails.departures_actual[dayInfo.date] = {};
 			houseDetails.departures_actual[dayInfo.date].value = dayInfo.house.departed;
 			houseDetails.departures_actual[dayInfo.date].percent = dayInfo.house.departed / totalDepartures * 100;
-			
+
 			totalArrivals = dayInfo.house.arriving + dayInfo.house.arrived;
 			//Arrivals Expected
 			houseDetails.arrivals_expected[dayInfo.date] = {};
@@ -372,7 +372,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			houseDetails.total_room_revenue[dayInfo.date] = dayInfo.house.total_room_revenue;
 			//Average daily rate
 			houseDetails.avg_daily_rate[dayInfo.date] = dayInfo.house.average_daily_rate;
-			
+
 
 		});
 

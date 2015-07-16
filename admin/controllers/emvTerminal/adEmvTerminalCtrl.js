@@ -30,21 +30,21 @@ admin.controller('ADEmvTerminalCtrl', ['$scope','$rootScope', 'ADEmvTerminalsSrv
 		                                $scope.data.results;
 		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 		        }
-		    });		
-		
-	};
-	
-	//To list items
-	$scope.invokeApi(ADEmvTerminalsSrv.fetchItemList, {}, fetchSuccessOfItemList);	
+		    });
 
-	
+	};
+
+	//To list items
+	$scope.invokeApi(ADEmvTerminalsSrv.fetchItemList, {}, fetchSuccessOfItemList);
+
+
    /*
     * Function to delete item
     * @param {int} index of the item
     * @param {string} id of the selected item
     */
-	$scope.deleteItem = function(index, id){	
-		
+	$scope.deleteItem = function(index, id){
+
 		var successCallBack = function(){
 
 			$scope.$emit('hideLoader');
@@ -53,7 +53,7 @@ admin.controller('ADEmvTerminalCtrl', ['$scope','$rootScope', 'ADEmvTerminalsSrv
 			});
 			$scope.itemListTerminals.reload();
 		};
-		$scope.invokeApi(ADEmvTerminalsSrv.deleteItem, {'item_id': id}, successCallBack);		
+		$scope.invokeApi(ADEmvTerminalsSrv.deleteItem, {'item_id': id}, successCallBack);
 	};
 
 }]);

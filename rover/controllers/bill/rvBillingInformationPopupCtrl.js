@@ -85,7 +85,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         	$scope.selectedEntity = $scope.routes[index];
             $scope.selectedEntity.is_new = (type === 'ATTACHED_ENTITY')? true: false;
 
-            if($scope.selectedEntity.entity_type !='RESERVATION')
+            if($scope.selectedEntity.entity_type !=='RESERVATION')
                    $scope.selectedEntity.guest_id = null;
             if($scope.selectedEntity.entity_type === "GROUP" || $scope.selectedEntity.entity_type === "HOUSE"){
                 //$scope.selectedEntity.entity_type = "POSTING_ACCOUNT";

@@ -44,7 +44,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		//var url = {"from_date":"2014-05-20","to_date":"2014-05-27","rate_type_ids":[],"rate_ids":[51,46],"name_card_ids":[]}
                 var url = "/api/daily_rates", fetchingRooms = false;
                 if (params){
-                    if (params.roomrate == 'ROOMS'){
+                    if (params.roomrate === 'ROOMS'){
                         url = url+'/room_restrictions';
                         fetchingRooms = true;
                     } else {
@@ -53,7 +53,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                 } else {
                     fetchingRooms = false;
                 }
-                
+
 		var deferred = $q.defer();
 		var rejectDeferred = function(data){
 			deferred.reject(data);
@@ -87,9 +87,9 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 
 				var calendarData = that.calculateRateViewCalData();
                                 calendarData.room_type_restrictions = data.room_type_restrictions;
-                                
+
                                 calendarData.total_room_types = data.room_type_restrictions[0].room_types.length;
-                                
+
                                 calendarData.room_types_all = [];
                                 calendarData.isChildRate = [];
                                 var rateObj;
@@ -102,18 +102,18 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                                     }
                                 }
                                 for (var i in data.room_type_restrictions[0].room_types){
-                                    
+
                                 calendarData.room_types_all.push({
                                     room_type_id:data.room_type_restrictions[0].room_types[i].room_type.id,
                                     name:data.room_type_restrictions[0].room_types[i].room_type.name
                                 });
-                                    
+
                                 }
-                                
+
 				//If only one rate exists in the search results,
 				//then room type calendar for that rate should be displayed.
 				//Fetch the room type details for that rate.
-				if(calendarData.data.length == 1){
+				if(calendarData.data.length === 1){
 					var roomDetailsParams = {};
 					roomDetailsParams.from_date = params.from_date;
 					roomDetailsParams.to_date = params.to_date;
@@ -126,27 +126,27 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 					calendarData.type = "RATES_LIST";
 					deferred.resolve(calendarData);
 				}
-				
+
 			},rejectDeferred);
 
 		};
 
 		that.fetchAllRestrictionTypes().then(getDailyRates, rejectDeferred);
-				
+
 		return deferred.promise;
 
 	};
 
 	this.fetchRoomTypeCalenarData = function(params, deferred){
 
-		if(typeof deferred == 'undefined'){
+		if(typeof deferred === 'undefined'){
 			deferred = $q.defer();
 		}
 		var rejectDeferred = function(data){
 			deferred.reject(data);
 		};
 		var getRoomTypeRates = function(d){
-			
+
 			/* It is the case of All-Rates from Rate Calendar.
 			 * TODO: Handle this case at the calling place itself.
 			 */
@@ -159,7 +159,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			//In situations where the rate is not manually selected by user,
 			//but single rate is returned in the webservice fetch for rates list.
 			//So we fetch the room details for that rate id and display the room type calendar
-			if(typeof params.id != "undefined" && typeof params.rate != "undefined"){
+			if(typeof params.id !== "undefined" && typeof params.rate !== "undefined"){
 				var selectedRate = {};
 				selectedRate.id = params.id;
 				selectedRate.name = params.rate;
@@ -183,7 +183,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		};
 
 		that.fetchAllRestrictionTypes().then(getRoomTypeRates, rejectDeferred);
-				
+
 		return deferred.promise;
 
 	};
@@ -207,7 +207,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                 }
 		var hasHourly = false;
 		angular.forEach(rateData, function(rate){
-			if(rate.is_hourly == true){
+			if(rate.is_hourly === true){
 				hasHourly = true;
 				return false;
 			}
@@ -240,7 +240,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                     'value': "HAS_RESTRICTIONS"};
                 formattedRestrictionTypes[totalRestrictions] = baseRestrictionItem;
 		calendarData.restriction_types = formattedRestrictionTypes;
-		
+
 		// In UI, tables are represented as rows of columns.
 		//Input data is in opposite structure, restructuring here
 		var datesList = [];
@@ -258,7 +258,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		   		//Check if this rate is already pushed.
 		   		var rateData = null;
 		   		for (var i in roomRateData){
-	   				if (roomRateData[i].id == rate.room_type.id)
+	   				if (roomRateData[i].id === rate.room_type.id)
 	   				{
 	   		  			rateData = roomRateData[i];
 	   		  			//break;
@@ -304,7 +304,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	this.calculateRateViewCalData = function(){
                 var fetchingRooms = that.fetchingRooms;
 		var calendarData = {};
-	
+
 		this.hasAnyHourlyRate = this.checkIfAnyHourlyRatePresent(that.dailyRates.results[0].rates);
 		// Format restriction Types as required by UI, and make it a dict for easy lookup
                 var fetchingRooms = false;
@@ -314,12 +314,12 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                     this.hasAnyHourlyRate = this.checkIfAnyHourlyRatePresent(that.dailyRates.results[0].rates);
                 }
                 // Format restriction Types as required by UI, and make it a dict for easy lookup
-                
+
 		var formattedRestrictionTypes = {};
 		angular.forEach(that.allRestrictionTypes, function(item){
 			formattedRestrictionTypes[item.id]= that.getRestrictionUIElements(item);
 		});
-                
+
                 var totalRestrictions = formattedRestrictionTypes.length;
                 //ADD ONE MORE ITEM, FOR ZOOM 7; CICO-10668
                 var baseRestrictionItem = {
@@ -334,9 +334,9 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                     'id': totalRestrictions,
                     'value': "HAS_RESTRICTIONS"};
                 formattedRestrictionTypes[totalRestrictions] = baseRestrictionItem;
-                
+
 		calendarData.restriction_types = formattedRestrictionTypes;
-		
+
 		// In UI, tables are represented as rows of columns.
 		//Input data is in opposite structure, restructuring here
 		var datesList = [];
@@ -355,7 +355,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		   		//Check if this rate is already pushed.
 		   		var rateData = null;
 		   		for (var i in dailyRatesData){
-	   				if (dailyRatesData[i].id == rate.id)
+	   				if (dailyRatesData[i].id === rate.id)
 	   				{
 	   		  			rateData = dailyRatesData[i];
 	   		  			//break;
@@ -383,7 +383,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		var enableDisableCloseAll = that.getCloseAllEnableDisableStatus(calendarData.data, "RATE_TYPE");
 		calendarData.disableCloseAllBtn = !enableDisableCloseAll.enableCloseAll;
 		calendarData.disableOpenAllBtn = !enableDisableCloseAll.enableOpenAll;
-		
+
 		return calendarData;
 	};
 
@@ -398,7 +398,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 
 		//Get the id for 'CLOSED' restriction
 		for(var i in that.allRestrictionTypes){
-			if (that.allRestrictionTypes[i].value == 'CLOSED'){
+			if (that.allRestrictionTypes[i].value === 'CLOSED'){
 				closedRestrictionId = that.allRestrictionTypes[i].id;
 				break;
 			}
@@ -409,9 +409,9 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			var rate = rateData[i];
 			var isDate = false;
 			for(var date in rate){
-				
+
 				// Ignore keys other date object
-				if (date == "id" || date == "name" || date == 'is_hourly' || date == 'isHourly') {
+				if (date === "id" || date === "name" || date === 'is_hourly' || date === 'isHourly') {
 					continue;
 				}
 
@@ -424,16 +424,16 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 				if( (new Date(date).getTime() < new Date(that.businessDate).getTime()) ){
 			   		continue;
 		   		}
-		   		
+
 		   		var item = rate[date];
-		   		if(type == "ROOM_TYPE") {
+		   		if(type === "ROOM_TYPE") {
 		   			var item = rate[date].restrictions;
 		   		}
 		   		//If the 'CLOSED' restriction is available in any of the cell, the openall button is enabled
 		   		// If 'CLOSED' restriction is absent in any cell, close all button is enabled
 		   		var isDateClosed = false;
 		   		for (var j in item){
-		   			if(item[j].restriction_type_id == closedRestrictionId){
+		   			if(item[j].restriction_type_id === closedRestrictionId){
 		   				dict.enableOpenAll = true;
 		   				isDateClosed = true;
 		   				break;
@@ -456,31 +456,31 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		//(CICO-9555
 		restriction_type_updated.hideOnHourly = false;
 		//CICO-9555)
-		if('CLOSED' == restriction_type.value) {
+		if('CLOSED' === restriction_type.value) {
 			restriction_type_updated.icon = "icon-cross";
 		}
-		if('CLOSED_ARRIVAL' == restriction_type.value) {
+		if('CLOSED_ARRIVAL' === restriction_type.value) {
 			restriction_type_updated.icon = "icon-block";
 		}
 		restriction_type_updated.background_class = "";
 		if(['CLOSED', 'CLOSED_ARRIVAL', 'CLOSED_DEPARTURE'].indexOf(restriction_type.value) >= 0){
 			restriction_type_updated.background_class = "bg-red";
 		}
-		if('MIN_STAY_LENGTH' == restriction_type.value) {
+		if('MIN_STAY_LENGTH' === restriction_type.value) {
 			restriction_type_updated.background_class = "bg-blue";
 			if(that.hasAnyHourlyRate){
 				restriction_type_updated.hideOnHourly = true; // CICO-9555
 			}
 		}
-		if('MAX_STAY_LENGTH' == restriction_type.value) {
+		if('MAX_STAY_LENGTH' === restriction_type.value) {
 			if(that.hasAnyHourlyRate){
 				restriction_type_updated.hideOnHourly = true; // CICO-9555
 			}
 		}
-		if('MIN_ADV_BOOKING' == restriction_type.value) {
+		if('MIN_ADV_BOOKING' === restriction_type.value) {
 			restriction_type_updated.background_class = "bg-green";
 		}
-		if('MIN_STAY_THROUGH' == restriction_type.value) {
+		if('MIN_STAY_THROUGH' === restriction_type.value) {
 			restriction_type_updated.background_class = "bg-violet";
 			if(that.hasAnyHourlyRate){
 				restriction_type_updated.hideOnHourly = true; // CICO-9555
@@ -488,7 +488,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		}
                //ignore here
                /*
-		if('HAS_RESTRICTIONS' == restriction_type.value) {
+		if('HAS_RESTRICTIONS' === restriction_type.value) {
 			restriction_type_updated.background_class = "bg-drk";
 		}
                 */
@@ -497,7 +497,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		restriction_type_updated.value = restriction_type.value;
 		restriction_type_updated.activated = restriction_type.activated;
 		restriction_type_updated.editable = restriction_type.editable;
-		
+
 
 
 		return restriction_type_updated;

@@ -140,7 +140,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 						item.ticked = false;
 
 						foundMatch = _.find(dailyWTemp, function(emp) {
-							return emp.id == item.id
+							return emp.id === item.id
 						});
 
 						if (foundMatch) {
@@ -198,7 +198,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 						if (room.hk_complete) {
 							assignmentDetails.summary.departures.completed++;
 						}
-					} else if ($scope.departureClass[room.reservation_status] == "inhouse") {
+					} else if ($scope.departureClass[room.reservation_status] === "inhouse") {
 						assignmentDetails.summary.stayovers.total++;
 						if (room.hk_complete) {
 							assignmentDetails.summary.stayovers.completed++;
@@ -219,7 +219,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		$scope.multiSheetState = {
 			dndEnabled: true,
 			selectedDate: $stateParams.date || $rootScope.businessDate,
-			maxColumns: 6, // Hardcoded to 6 for now ==> Max no of worksheets that are loaded at an instance
+			maxColumns: 6, // Hardcoded to 6 for now ===> Max no of worksheets that are loaded at an instance
 			selectedEmployees: [],
 			unassigned: [],
 			unassignedFiltered: [],
@@ -376,7 +376,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			var match = {};
 			if ($scope.filters.showAllRooms) {
 				thatWT = _.find($_allUnassigned, function(item) {
-					return item.id == room.work_type_id
+					return item.id === room.work_type_id
 				});
 
 				match = _.find(thatWT.unassigned, function(item) {
@@ -402,7 +402,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			var assignee = $(dropped.draggable).attr('id').split('-')[1];
 			var assignTo = parseInt($(event.target).attr('id'));
 			if (parseInt(assignee) !== assignTo) {
-				if (assignee == "UA") {
+				if (assignee === "UA") {
 					//remove from 'unassigned','unassignedFiltered' and push to 'assignTo'
 					var droppedRoom = $scope.multiSheetState.unassignedFiltered[indexOfDropped];
 					$scope.multiSheetState.assignments[assignTo].rooms.push(droppedRoom);
@@ -411,7 +411,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 					})), 1);
 					$scope.filterUnassigned();
 					updateSummary(assignTo);
-				} else { //==Shuffling Assigned
+				} else { //===Shuffling Assigned
 					//remove from 'assignee' and push to 'assignTo'
 					var roomList = $scope.multiSheetState.assignments[assignee].rooms;
 					var droppedRoom = roomList[indexOfDropped];
@@ -498,7 +498,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				},
 				onSaveSuccess = function(data) {
 					saveCount--;
-					if (saveCount == 0) {
+					if (saveCount === 0) {
 						$scope.$emit("hideLoader");
 						//Update worksheet Ids
 						if (data.touched_work_sheets && data.touched_work_sheets.length) {
@@ -516,7 +516,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 					$scope.errorMessage = errorMessage;
 
 					saveCount--;
-					if (saveCount == 0) {
+					if (saveCount === 0) {
 						$scope.$emit("hideLoader");
 						afterAPIcall();
 					};
@@ -605,7 +605,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 							// with matching employee id and push the current room's room_id
 							// no _.each() since we need to break out
 							for (i = 0, j = thoseAssignments.length; i < j; i++) {
-								if (emp_id == thoseAssignments[i]['assignee_id']) {
+								if (emp_id === thoseAssignments[i]['assignee_id']) {
 									thoseAssignments[i]['room_ids'].push(room_id);
 									found = true;
 									break;
@@ -653,7 +653,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				});
 
 				// if we do not have anything to save
-				if (saveCount == 0) {
+				if (saveCount === 0) {
 					afterAPIcall();
 				};
 			} else {
@@ -693,12 +693,12 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			addPrintOrientation();
 
 			/*
-			*	=====[ READY TO PRINT ]=====
+			*	======[ READY TO PRINT ]======
 			*/
 			// this will show the popup with full bill
 			$timeout(function() {
 				/*
-				*	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+				*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
 				*/
 
 				$window.print();
@@ -708,7 +708,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			}, 100);
 
 			/*
-			*	=====[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]=====
+			*	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
 			*/
 
 			// remove the orientation after similar delay

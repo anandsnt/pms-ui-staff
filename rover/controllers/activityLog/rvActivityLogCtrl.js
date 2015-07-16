@@ -7,7 +7,7 @@ sntRover.controller('RVActivityLogCtrl',[
     '$state',
     'RVActivityLogSrv',
 	function($scope, $rootScope, $filter, activityLogResponse, activeUserList, $state, RVActivityLogSrv){
-	
+
 	BaseCtrl.call(this, $scope);
 
     // we are hardcoding the min.width & max.width
@@ -89,9 +89,9 @@ sntRover.controller('RVActivityLogCtrl',[
             }
         }, datePickerCommon);
     };
-    
+
     $scope.isOldValue = function(value){
-        if(value =="" || typeof value == "undefined" || value == null){
+        if(value ==="" || typeof value === "undefined" || value === null){
             return false;
         }
         else{
@@ -199,7 +199,7 @@ sntRover.controller('RVActivityLogCtrl',[
     * Pagination
     */
     $scope.initPaginationParams = function() {
-        if($scope.activityLogData.total_count==0){
+        if($scope.activityLogData.total_count===0){
              $scope.start = 0;
              $scope.end =0;
         }else{
@@ -236,7 +236,7 @@ sntRover.controller('RVActivityLogCtrl',[
 
     $scope.isPrevButtonDisabled = function() {
         var isDisabled = false;
-        if ($scope.page == 1) {
+        if ($scope.page === 1) {
             isDisabled = true;
         }
         return isDisabled;
@@ -251,7 +251,7 @@ sntRover.controller('RVActivityLogCtrl',[
     function extractLast(term) {
         return split(term).pop();
     }
-    
+
     var initializeAutoCompletion = function(){
         //forming auto complte source object
         var activeUserAutoCompleteObj = [];
@@ -283,7 +283,7 @@ sntRover.controller('RVActivityLogCtrl',[
 
                 _.each($scope.activeUserAutoCompleteObj, function(user) {
                     var match = _.find(uiValues, function(email) {
-                        return email == user.label;
+                        return email === user.label;
                     });
 
                     if (!!match) {
@@ -313,7 +313,7 @@ sntRover.controller('RVActivityLogCtrl',[
 
     }
 
-    
+
     /*
     * function to refresh scroller
     * will refresh left filter scroller
@@ -328,10 +328,10 @@ sntRover.controller('RVActivityLogCtrl',[
     $scope.clearFromDate = function()
     {
        $scope.fromDate = "";
-      
+
     }
     $scope.userChanged = function(){
-        if($scope.userEmail==''){
+        if($scope.userEmail===''){
            $scope.user_id=0;
         }
     }
@@ -339,12 +339,12 @@ sntRover.controller('RVActivityLogCtrl',[
 	$scope.init = function(){
         //setting the header caption
 		$scope.$emit('HeaderChanged', $filter('translate')('ACTIVITY_LOG_TITLE'));
-        
+
         $scope.errorMessage = '';
         $scope.activityLogData = activityLogResponse.results;
         $scope.activityLogData.total_count = activityLogResponse.total_count;
         $scope.activeUserList = activeUserList;
-       
+
         //Filter
         $scope.isUpdateReportFilter = false;
         $scope.reportUpdateVisible = false;
@@ -369,7 +369,7 @@ sntRover.controller('RVActivityLogCtrl',[
             callback: 'backToStayCard',
             scope: $scope
         };
-        
+
         //setting title
         var title = $filter('translate')('ACTIVITY_LOG_TITLE');
         $scope.setTitle(title);
@@ -378,7 +378,7 @@ sntRover.controller('RVActivityLogCtrl',[
         $scope.setScroller('report-update');
 
         $scope.setScroller('report_content');
-        
+
         /**
         * scroller options
         */
@@ -412,7 +412,7 @@ sntRover.controller('RVActivityLogCtrl',[
         };
 
         initializeAutoCompletion();
-     
+
 	};
 	$scope.init();
 

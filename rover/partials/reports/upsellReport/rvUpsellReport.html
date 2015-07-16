@@ -8,14 +8,6 @@
     </div>
 </div>
 
-<!-- Total for upsells -->
-<div class="report-totals">
-    <ul class="col2 left-align">
-        <li>{{ totals[0].label }} <span>{{ totals[0].value }}</span></li>
-        <li>{{ totals[1].label }} <span>{{ totals[1].value | currency:currencySymbol:2 }}</span></li>
-    </ul>
-</div>
-
 <!-- Report content -->
 <div id="report-content" class="report-content scrollable" ng-hide="hasNoResults"  ng-class="{ 'no-totals': hasNoTotals, 'no-sorting': hasNoSorting, 'with-pagination': (!disablePrevBtn || !disableNextBtn) }" ng-iscroll="report-details-scroll">
     <div class="wrapper">

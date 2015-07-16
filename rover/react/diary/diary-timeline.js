@@ -6,7 +6,7 @@ var Timeline = React.createClass({
 			start_time				= (display.x_n  instanceof Date) ? display.x_n.getTime() : display.x_n,
 			end_time				= (display.x_p  instanceof Date) ? display.x_p.getTime() : display.x_p,
 			point_to_plot			= -1 ; //-1 do not wanted to show red line
-	
+
 		if(start_time <= prop_time <= end_time) {
 			//diff of prop time & start time
 			var diff_s_e 	= (end_time - start_time),
@@ -74,14 +74,14 @@ var Timeline = React.createClass({
 				className: ''
 			}, segment_hour_display[i]));
 
-			if ( i % 6 == 0 ) {
+			if ( i % 6 === 0 ) {
 				interval_spans.push(React.DOM.span({
 					className: 'date',
 				}, (i < 23 ? todayShortDate : tmrowShortDate) ));
 			};
 			for(var j = 0; j < display.intervals_per_hour; j++, interval_counter++) {
 				spanClass = 'interval-' + (j+1);
-				if(interval_counter == current_time_plot_point ){
+				if(interval_counter === current_time_plot_point ){
 					spanClass += ' active';
 				}
 				interval_spans.push(React.DOM.span({

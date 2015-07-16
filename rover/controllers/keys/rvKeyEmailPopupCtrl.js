@@ -5,7 +5,7 @@ sntRover.controller('RVKeyEmailPopupController',[ '$rootScope','$scope','ngDialo
 	var setupData = function(){
 		var reservationId = "";
 		var reservationStatus = "";
-		if($scope.fromView == "checkin"){
+		if($scope.fromView === "checkin"){
 			reservationId = $scope.reservationBillData.reservation_id;
 			reservationStatus = $scope.reservationBillData.reservation_status;
 		} else {
@@ -21,17 +21,17 @@ sntRover.controller('RVKeyEmailPopupController',[ '$rootScope','$scope','ngDialo
 	    	$scope.errorMessage = '';
 
 	    	// To check reservation status and select corresponding texts and classes.
-	    	if(reservationStatus == 'CHECKING_IN' ){
+	    	if(reservationStatus === 'CHECKING_IN' ){
 				$scope.data.reservationStatusText = $filter('translate')('KEY_CHECKIN_STATUS');
 				$scope.data.colorCodeClass = 'check-in';
 				$scope.data.colorCodeClassForClose = 'green';
 			}
-			else if(reservationStatus == 'CHECKEDIN' ){
+			else if(reservationStatus === 'CHECKEDIN' ){
 				$scope.data.reservationStatusText = $filter('translate')('KEY_INHOUSE_STATUS');
 				$scope.data.colorCodeClass = 'inhouse';
 				$scope.data.colorCodeClassForClose = 'blue';
 			}
-			else if(reservationStatus == 'CHECKING_OUT'){
+			else if(reservationStatus === 'CHECKING_OUT'){
 				$scope.data.reservationStatusText = $filter('translate')('KEY_CHECKOUT_STATUS');
 				$scope.data.colorCodeClass = 'check-out';
 				$scope.data.colorCodeClassForClose = 'red';

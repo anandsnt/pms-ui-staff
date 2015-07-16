@@ -13,10 +13,10 @@ admin.directive('scrollup', function ($document) {
                             scrollToTop(element, to, duration - 10);
                         }, 10);
                     }
-                    
+
                     var scroll_up_id = $(elm).attr('scrollup');
                     var elToScroll = $('#'+scroll_up_id);
-                
+
                     // then just add dependency and call it
                     if (elToScroll && elToScroll[0]){
                         scrollToTop(elToScroll[0], 0, 300);

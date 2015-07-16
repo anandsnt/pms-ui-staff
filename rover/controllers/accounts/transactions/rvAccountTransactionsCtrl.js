@@ -178,7 +178,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				width = width + 200;
 			if($scope.incomingRoutingArrayCount > 0)
 				width = width + 275;
-			if($scope.clickedButton == 'checkinButton')
+			if($scope.clickedButton === 'checkinButton')
 				width = width + 230;
 			if($scope.reservationBillData.bills.length < 10)
 				width = width + 50;
@@ -195,7 +195,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		$scope.showDayRates = function(dayIndex) {
 
-			if ($scope.dayRates != dayIndex) {
+			if ($scope.dayRates !== dayIndex) {
 				$scope.dayRates = dayIndex;
 			} else {
 				$scope.dayRates = -1;
@@ -207,7 +207,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$scope.showActiveBill = function(index) {
 
 			var activeBillClass = "";
-			if (index == $scope.currentActiveBill) {
+			if (index === $scope.currentActiveBill) {
 				activeBillClass = "ui-tabs-active ui-state-active";
 			}
 			return activeBillClass;
@@ -400,7 +400,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			$scope.errorMessage = "";
 			//hide edit and remove options in case type is  payment
-			// $scope.hideRemoveAndEdit  = (type == "PAYMENT") ? true : false;
+			// $scope.hideRemoveAndEdit  = (type === "PAYMENT") ? true : false;
 			$scope.selectedTransaction = {};
 			$scope.selectedTransaction.id = id;
 			$scope.selectedTransaction.desc = desc;
@@ -544,7 +544,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$timeout(function() {
 
 					/*
-					 *	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+					 *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
 					 */
 
 					$window.print();

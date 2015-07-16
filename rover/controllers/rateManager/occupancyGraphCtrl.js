@@ -200,7 +200,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
             }
 
             // append missing week days after to date
-            if (to_date.getDay() != 6) {
+            if (to_date.getDay() !== 6) {
                 limit = 6 - to_date.getDay();
 
                 for (j = 1; j <= limit; j++) {

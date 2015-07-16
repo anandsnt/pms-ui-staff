@@ -130,12 +130,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             $scope.errorMessage = '';
 
             //allow to swith to "transactions" tab only if the user has its permission
-            if (tab == "TRANSACTIONS" && !$scope.hasPermissionToViewTransactionsTab()) {
+            if (tab === "TRANSACTIONS" && !$scope.hasPermissionToViewTransactionsTab()) {
                 $scope.errorMessage = ["Sorry, you don't have the permission to access the transactions"];
                 return;
             }
 
-            var isInSummaryTab = $scope.groupConfigData.activeTab == "SUMMARY";
+            var isInSummaryTab = $scope.groupConfigData.activeTab === "SUMMARY";
 
             // we will restrict tab swithing if we are in add mode
             var tryingFromSummaryToOther = isInSummaryTab && tab !== 'SUMMARY';
@@ -436,9 +436,9 @@ sntRover.controller('rvGroupConfigurationCtrl', [
         }
 
         $scope.updateAndBack = function() {
-            if ($scope.groupConfigData.activeTab == "SUMMARY") {
+            if ($scope.groupConfigData.activeTab === "SUMMARY") {
                 $scope.updateGroupSummary();
-            } else if ($scope.groupConfigData.activeTab == "ACCOUNT") {
+            } else if ($scope.groupConfigData.activeTab === "ACCOUNT") {
                 $scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
             }
             $state.go('rover.groups.search');
@@ -448,9 +448,9 @@ sntRover.controller('rvGroupConfigurationCtrl', [
          * function to set Back Navigation params
          */
         var setBackNavigation = function() {
-            // TODO : Currently hardcoded to go to groups search.. 
+            // TODO : Currently hardcoded to go to groups search..
             // Change the same according to the requirements
-            if ($scope.previousState && $scope.previousState.name == "rover.reservation.staycard.reservationcard.reservationdetails") {
+            if ($scope.previousState && $scope.previousState.name === "rover.reservation.staycard.reservationcard.reservationdetails") {
                 $rootScope.setPrevState = {
                     title: 'STAYCARD',
                     name: 'rover.reservation.staycard.reservationcard.reservationdetails',
@@ -474,7 +474,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
         /**
          * When we recieve the error message from its child controllers, we have to show them
-         * @param  {Object} event 
+         * @param  {Object} event
          * @param  {String} errorMessage)
          * @return undefined
          */

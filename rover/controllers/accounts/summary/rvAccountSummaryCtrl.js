@@ -59,7 +59,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				}
 			}
 			return true;
-		};		
+		};
 
 		var initAccountSummaryView = function() {
 
@@ -83,8 +83,8 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			}
 
 			if (!$scope.isInAddMode()) {
-				$scope.$on("OUTSIDECLICKED", function(event, targetElement) {				
-					if (targetElement.id != 'AccountTab') {
+				$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
+					if (targetElement.id !== 'AccountTab') {
 						callUpdate();
 					}
 				});
@@ -273,7 +273,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			var params = {
 				"accountId": $scope.accountConfigData.summary.posting_account_id
 			};
-			var options = {				
+			var options = {
 				params: params,
 				successCallBack: onAccountSummaryDetailsFetchSuccess
 			};
@@ -285,7 +285,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 
 		/**
 		 * When there is a TAB switch, we will get this. We will initialize things from here
-		 * @param  {Object} event           
+		 * @param  {Object} event
 		 * @param  {String} currentTab - Active tab in the view
 		 * @return undefined
 		 */
@@ -294,11 +294,11 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				initAccountSummaryView();
 				refreshSummaryData();
 			}
-		});	
+		});
 
 		/**
 		 * When there is a TAB switch, we will get this. We will initialize things from here
-		 * @param  {Object} event           
+		 * @param  {Object} event
 		 * @param  {String} currentTab - Active tab in the view
 		 * @return undefined
 		 */
@@ -307,6 +307,6 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				initAccountSummaryView();
 				refreshSummaryData();
 			}
-		});			
+		});
 	}
 ]);

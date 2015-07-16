@@ -9,7 +9,7 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
         $scope.showSelectedLoyalty = function() {
             var display = true;
             var selectedLoyalty = $scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty;
-            if (selectedLoyalty == null || typeof selectedLoyalty == 'undefined' || selectedLoyalty == '' || selectedLoyalty == {}) {
+            if (selectedLoyalty === null || typeof selectedLoyalty === 'undefined' || selectedLoyalty === '' || selectedLoyalty === {}) {
                 display = false;
             }
             return display;
@@ -31,12 +31,12 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
 
         $scope.$on("loyaltyProgramAdded", function(e, data, source) {
 
-            if (data.membership_class == "HLP") {
+            if (data.membership_class === "HLP") {
                 $scope.$parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram.push(data);
             } else {
                 $scope.$parent.reservationData.reservation_card.loyalty_level.frequentFlyerProgram.push(data);
             }
-            if (source == "fromReservationCard") {
+            if (source === "fromReservationCard") {
                 $scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = data.id;
                 $scope.selectedLoyaltyID = data.id;
                 $scope.selectedLoyalty = data;
@@ -46,8 +46,8 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
         });
         $scope.$on("loyaltyProgramDeleted", function(e, id, index, loyaltyProgram) {
 
-            if ($scope.selectedLoyaltyID != id) {
-                if (loyaltyProgram == 'FFP') {
+            if ($scope.selectedLoyaltyID !== id) {
+                if (loyaltyProgram === 'FFP') {
                     $scope.$parent.reservationData.reservation_card.loyalty_level.frequentFlyerProgram.splice(index, 1);
                 } else {
                     $scope.$parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram.splice(index, 1);
@@ -64,9 +64,9 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
                     use_hlp = $scope.$parent.reservationData.use_hlp;
             var flag = false;
             // doing null check as when, no guest card attached the hotelLoyaltyProgram variable has null
-            if (hotelLoyaltyProgram != null && use_hlp === true) {
+            if (hotelLoyaltyProgram !== null && use_hlp === true) {
                 for (var i = 0; i < hotelLoyaltyProgram.length; i++) {
-                    if (id == hotelLoyaltyProgram[i].id) {
+                    if (id === hotelLoyaltyProgram[i].id) {
                         flag = true
                         $scope.selectedLoyalty = hotelLoyaltyProgram[i];
                         $scope.selectedLoyaltyID = hotelLoyaltyProgram[i].id;
@@ -79,9 +79,9 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
             if (flag) {
                 return true;
             }
-            if (freequentFlyerprogram != null && use_ffp === true) {
+            if (freequentFlyerprogram !== null && use_ffp === true) {
                 for (var i = 0; i < freequentFlyerprogram.length; i++) {
-                    if (id == freequentFlyerprogram[i].id) {
+                    if (id === freequentFlyerprogram[i].id) {
                         flag = true;
                         $scope.selectedLoyalty = freequentFlyerprogram[i];
                         $scope.selectedLoyaltyID = freequentFlyerprogram[i].id;

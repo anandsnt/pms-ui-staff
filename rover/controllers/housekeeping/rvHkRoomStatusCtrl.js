@@ -42,7 +42,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.setTitle($filter( 'translate')('ROOM_STATUS'));
 		$scope.heading = $filter( 'translate')('ROOM_STATUS');
 		$scope.$emit( 'updateRoverLeftMenu' , 'roomStatus' );
-		
+
 		// set the scroller
 		$scope.setScroller('room-status-filter');
 
@@ -63,7 +63,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 			if ((fromState.name === 'rover.housekeeping.roomDetails' && toState.name !== 'rover.housekeeping.roomStatus')
 				|| (fromState.name === 'rover.housekeeping.roomStatus' && toState.name !== 'rover.housekeeping.roomDetails')) {
-				
+
 				RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
 				RVHkRoomStatusSrv.resetRoomTypes();
 
@@ -128,10 +128,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		// multiple room status change DS
 		$scope.multiRoomAction = {
-			selectedRooms       : [],
-			selectedRoomIndexes : {},
-			allRoomsSelected    : false,
-			selectedHkStatus    : ''
+			rooms       : [],
+			indexes     : {},
+			allSelected : false,
+			hkStatusId  : ''
 		};
 		$scope.anyRoomChosen = false;
 
@@ -212,9 +212,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			// if other than page number any other filter has changed
 			for (key in $scope.currentFilters) {
 				if ( $scope.currentFilters.hasOwnProperty(key) ) {
-					if ( key == 'page' ) {
+					if ( key === 'page' ) {
 						continue;
-					} else if ( $scope.currentFilters[key] != $_oldFilterValues[key] ) {
+					} else if ( $scope.currentFilters[key] !== $_oldFilterValues[key] ) {
 						_hasFilterChanged = true;
 						break;
 					};
@@ -224,7 +224,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			// if any room types has changed
 			if ( $scope.roomTypes.length ) {
 				for (var i = 0, j = $scope.roomTypes.length; i < j; i++) {
-					if ( $scope.roomTypes[i]['isSelected'] != $_oldRoomTypes[i]['isSelected'] ) {
+					if ( $scope.roomTypes[i]['isSelected'] !== $_oldRoomTypes[i]['isSelected'] ) {
 						_hasRoomTypeChanged = true;
 						break;
 					};
@@ -270,13 +270,13 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				};
 
 			if ( $rootScope.isSingleDigitSearch ) {
-				if (forced || $scope.query != $_lastQuery) {
+				if (forced || $scope.query !== $_lastQuery) {
 					_makeCall();
 				};
 			} else {
 				if ( forced ||
 						($scope.query.length <= 2 && $scope.query.length < $_lastQuery.length) ||
-						($scope.query.length > 2 && $scope.query != $_lastQuery)
+						($scope.query.length > 2 && $scope.query !== $_lastQuery)
 				) {
 					_makeCall();
 				};
@@ -293,7 +293,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.isFilterChcked = function() {
 			var key, ret;
 			for (key in $scope.currentFilters) {
-				if ( key != 'showAllFloors' && !!$scope.currentFilters[key] ) {
+				if ( key !== 'showAllFloors' && !!$scope.currentFilters[key] ) {
 					ret = true;
 					break;
 				} else {
@@ -317,13 +317,13 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		};
 
 		$scope.validateFloorSelection = function(type) {
-			if (type == 'SINGLE_FLOOR') {
+			if (type === 'SINGLE_FLOOR') {
 				$scope.currentFilters.floorFilterStart = '';
 				$scope.currentFilters.floorFilterEnd = '';
 
 			}
 
-			if (type == 'FROM_FLOOR' || type == 'TO_FLOOR') {
+			if (type === 'FROM_FLOOR' || type === 'TO_FLOOR') {
 				$scope.currentFilters.floorFilterSingle = '';
 			}
 		};
@@ -372,7 +372,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				    scope: $scope,
 				    data: []
 				});
-				
+
 			};
 
 			var _onCheckRoomSucess = function(response) {
@@ -409,7 +409,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		    }
 		    var _onAssignSuccess = function(data) {
 		            $scope.$emit('hideLoader');
-		            
+
 		            var assignee = _.find($scope.activeWorksheetEmp, function(emp) {
 		            	return emp.id === $scope.assignRoom.user_id
 		            });
@@ -444,7 +444,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.singleRoomTypeFiltered = function() {
 			_.each($scope.roomTypes, function(item) {
-				if ( item.id == $scope.currentFilters.singleRoomType ) {
+				if ( item.id === $scope.currentFilters.singleRoomType ) {
 					item.isSelected = true;
 				} else {
 					item.isSelected = false;
@@ -470,7 +470,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.roomSelectChange = function(item) {
 			var _value = item.selected;
-			
+
 			// double to make sure its a truthy value
 			if ( !! _value ) {
 				$scope.anyRoomChosen = true;
@@ -484,7 +484,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				var _ret = false,
 					i, j;
 
-				for (i = 0, j = $scope.rooms.length; i < j; i++) {
+				for (i = 0, j = $scope.uiTotalCount; i < j; i++) {
 					if ( $scope.rooms[i].selected ) {
 						_ret = true;
 						break;
@@ -493,23 +493,22 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				return _ret;
 			};
+
+			// check if all rooms have been selected to make the 'All Selected' enabled in filters
+			if ( $scope.uiTotalCount === $scope.getSelectedRoomCount() ) {
+				$scope.multiRoomAction.allSelected = true;
+			} else {
+				$scope.multiRoomAction.allSelected = false;
+			};
 		};
 
 		$scope.selectAllRooms = function(value) {
 			var i, j;
 
-			if ( !!value ) {
-				$scope.anyRoomChosen = true;
-			} else {
-				$scope.anyRoomChosen = false;
-			};
+			$scope.anyRoomChosen = !!value;
 
-			for (i = 0, j = $scope.rooms.length; i < j; i++) {
-				if ( !!value ) {
-					$scope.rooms[i].selected = true;
-				} else {
-					$scope.rooms[i].selected = false;
-				};
+			for (i = 0, j = $scope.uiTotalCount; i < j; i++) {
+				$scope.rooms[i].selected = !!value;
 			};
 		};
 
@@ -523,80 +522,103 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		};
 
 		$scope.getSelectedRoomCount = function() {
-			$scope.multiRoomAction.selectedRooms = [];
-			$scope.multiRoomAction.selectedRoomIndexes = {};
+			$scope.multiRoomAction.rooms = [];
+			$scope.multiRoomAction.indexes = {};
 
-			for (i = 0, j = $scope.rooms.length; i < j; i++) {
+			for (i = 0, j = $scope.uiTotalCount; i < j; i++) {
 				if ( $scope.rooms[i].selected ) {
-					$scope.multiRoomAction.selectedRooms.push( $scope.rooms[i].id );
+					$scope.multiRoomAction.rooms.push( $scope.rooms[i].id );
 
 					// create a 'keyMirror' to help identify
 					// the room classes to update after changing the room status
 					// Read more here: https://github.com/STRML/keyMirror (This is an implementation, not actual use)
-					$scope.multiRoomAction.selectedRoomIndexes[i] = i;
+					$scope.multiRoomAction.indexes[i] = i;
 				};
 			};
 
-			return $scope.multiRoomAction.selectedRooms.length;
+			return $scope.multiRoomAction.rooms.length;
+		};
+
+		$scope.resetMultiRoomAction = function() {
+
+			// we are looping the 'keyMirror' rather than the
+			// entire rooms array, nice!
+			var i, ithSelectedRoom;
+			for (i in $scope.multiRoomAction.indexes) {
+				if ( ! $scope.multiRoomAction.indexes.hasOwnProperty(i) ) {
+				    continue;
+				};
+
+				ithSelectedRoom = $scope.rooms[ $scope.multiRoomAction.indexes[i] ];
+
+				// remove selection
+				ithSelectedRoom['selected'] = false;
+			};
+
+			$scope.multiRoomAction = {
+				rooms       : [],
+				indexes     : {},
+				allSelected : false,
+				hkStatusId  : ''
+			};
+			$scope.anyRoomChosen = false;
+		};
+
+		$scope.closeHkStatusDialog = function() {
+			$scope.resetMultiRoomAction();
+			$scope.closeDialog();
 		};
 
 		$scope.submitHkStatusChange = function() {
 			var _payload,
 				_resetParams,
 				_callback,
-				_onError,
-				i, j;
+				_onError;
 
 			// no need to send anything
-			if ( ! $scope.multiRoomAction.selectedRooms.length ) {
+			if ( ! $scope.multiRoomAction.rooms.length ) {
 				return;
 			};
 
 			_payload = {
-				'room_ids'     : $scope.multiRoomAction.selectedRooms,
-				'hk_status_id' : $scope.multiRoomAction.selectedHkStatus
-			};
-
-			_resetParams = function() {
-				// reset these.
-				$scope.multiRoomAction = {
-					selectedRooms: [],
-					selectedRoomIndexes: {},
-					allRoomsSelected: false,
-					selectedHkStatus: ''
-				};
-				$scope.anyRoomChosen = false;
+				'room_ids'     : $scope.multiRoomAction.rooms,
+				'hk_status_id' : $scope.multiRoomAction.hkStatusId
 			};
 
 			_callback = function(data) {
 				$scope.$emit( 'hideLoader' );
 
 				// get the selected hk status obj
-				var selectedHkStatusObj = _.find($scope.hkStatusList, function(item) {
-					return item.id == $scope.multiRoomAction.selectedHkStatus;
+				var hkStatusObj = _.find($scope.hkStatusList, function(item) {
+					return item.id === $scope.multiRoomAction.hkStatusId;
 				});
 
-				// firstly remove selection and
-				// update classes/status/description for the effected rooms ;)
-				for (i = 0, j = $scope.rooms.length; i < j; i++) {
-					$scope.rooms[i].selected = false;
-
-					if ( i == $scope.multiRoomAction.selectedRoomIndexes[i] ) {		// since we are using keyMirrors, this becomes fast
-						// 1. update room description
-						$scope.rooms[i]['description'] = selectedHkStatusObj['description'];
-
-						// 2. update 'hk_status' of this room
-						angular.extend($scope.rooms[i]['hk_status'], {
-							description: selectedHkStatusObj['description'],
-							value: selectedHkStatusObj['value']
-						});
-
-						// 3. now call the status class update
-						RVHkRoomStatusSrv.setRoomStatusClass( $scope.rooms[i] );
+				// we are looping the 'keyMirror' rather than the
+				// entire rooms array, nice!
+				var i, ithSelectedRoom;
+				for (i in $scope.multiRoomAction.indexes) {
+					if ( ! $scope.multiRoomAction.indexes.hasOwnProperty(i) ) {
+					    continue;
 					};
+
+					ithSelectedRoom = $scope.rooms[ $scope.multiRoomAction.indexes[i] ];
+
+					// 1. update room description
+					ithSelectedRoom['description'] = hkStatusObj['description'];
+
+					// 2. update 'hk_status' of this room
+					angular.extend(ithSelectedRoom['hk_status'], {
+						description: hkStatusObj['description'],
+						value: hkStatusObj['value']
+					});
+
+					// 3. now call the status class update
+					RVHkRoomStatusSrv.setRoomStatusClass( ithSelectedRoom );
+
+					// 4. remove selection will be done with '$scope.resetMultiRoomAction()'
 				};
 
-				_resetParams();
+				$scope.resetMultiRoomAction();
 				$scope.closeDialog();
 			};
 
@@ -624,14 +646,14 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.$emit('hideLoader');
 
 			/*
-			*	=====[ READY TO PRINT ]=====
+			*	======[ READY TO PRINT ]======
 			*/
-		
+
 			// this will show the popup with full report
 		    $timeout(function() {
 
 		    	/*
-		    	*	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+		    	*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
 		    	*/
 
 		        $window.print();
@@ -641,7 +663,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		    }, domRoomInsertDelay);
 
 		    /*
-		    *	=====[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]=====
+		    *	======[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]======
 		    */
 
 		    // in background we need to keep the report with its original state
@@ -916,6 +938,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.currentView        = 'rooms';
 			$scope.rooms              = [];
 
+			// reset any multi room action related data
+			$scope.resetMultiRoomAction();
+
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {}, $_fetchRoomListCallback);
 		};
 
@@ -1094,7 +1119,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				};
 
 				// sometimes the user may manually scrol to it original state
-				if ( nowY - startY == 0 ) {
+				if ( nowY - startY === 0 ) {
 					resetIndicators();
 				};
 			};
@@ -1227,7 +1252,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		if ( $window.innerWidth < 599 ) {
 			$_pullUpDownModule();
 		};
-		
+
 
 
 

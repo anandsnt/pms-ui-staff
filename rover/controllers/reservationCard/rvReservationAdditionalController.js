@@ -16,7 +16,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 							aptSegment = segment.value;
 					}
 				});
-				return !!aptSegment && aptSegment == currentSegment;
+				return !!aptSegment && aptSegment === currentSegment;
 			} else {
 				return false;
 			}
