@@ -521,16 +521,13 @@ sntRover.controller('RVPostChargeControllerV2',
 			};
 
 			$rootScope.$on('POSTCHARGE', function( event, data ) {
-				console.log("POSTCHARGE");
 			   	$scope.postCharges();
 			});
 
 			$rootScope.$on('RESETPOSTCHARGE', function( event, data ) {
-				console.log("RESETPOSTCHARGE");
 				$scope.selectedChargeItem = null;
 				$scope.fetchedData.bill_numbers = null;
 				$scope.selectedChargeItemHash = {};
-
 				resetPostCharge();
 			});
 
