@@ -76,7 +76,7 @@
     "ADD_BILLING_INFO":"Add billing information",
     "GROUP_BATCH" : "Reg.card",
     "GROUP_MASS_CHECKIN_CONFIRMATION": "Confirm Check In",
-    "GROUP_MASS_CHECKIN_CONFIRMATION_PARTIALLY_OKEY": "Some reservations do not meet check in criteria. (Guest Name missing or Room not assigned or Guest is not arriving today or Room not Ready)",
+    "GROUP_MASS_CHECKIN_CONFIRMATION_PARTIALLY_OKEY": "Some reservations don't meet check in criteria: Guest not arriving today or name is missing | Room not ready or not assigned",
     "GROUP_NO_RESERVATIONS_MEET_CHECKIN_CRITERIA": "No reservations meet check in criteria",
     "GROUP_MASS_CHECKIN_FAILED_IN_PROCESSING": "Sorry, Group checkin has failed for some reason. Please retry after closing this"
 
