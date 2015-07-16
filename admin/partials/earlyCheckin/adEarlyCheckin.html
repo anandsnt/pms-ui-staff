@@ -233,6 +233,45 @@
 							</div>
 						</div>
 					</fieldset>
+					<fieldset class="holder full-width">
+					<div class="entry">
+						<label translate>BLOCK_CODES_TO_EXCLUDE_FROM_EARLY_CHECK_IN</label>
+						<div     
+						multi-select
+						input-model="block_codes"
+						button-label="group_code"
+						item-label="group_code"
+						tick-property="ticked"
+						max-labels="0"
+						default-label="None selected"
+						max-height="300px"
+						>
+					</div>
+					</div>
+
+					<div class="entry entry-padding-left" ><label>&nbsp;&nbsp;</label>
+						<button translate="" ng-click="clickExcludeBlockCode()"  class="button green" translate="">EXCLUDE_BLOCK_CODES</button>
+					</div>
+
+					<div class="entry full-width" ng-show="excludedBlockCodes.length>0">
+						<div class='entry' >
+								<label> <h4 translate>EXCLUDED_BLOCK_CODES</h4> </label>
+						</div>
+						<div id='room-type-details' ng-repeat="blockCode in excludedBlockCodes">								
+							<div class="entry full-width room-type-details" >
+								<div class="entry">
+									<span class="align-text-center"> {{blockCode.group_code}} </span>
+								</div>
+								<div class="entry">
+									<span class="entry">
+										<a class="icons icon-delete large-icon align-text-center" ng-click="deleteBlockCode(blockCode.id)"></a>
+									</span>
+								</div>
+							</div>								
+						</div>
+					</div>		
+
+				</fieldset>	
 					
 					<div class="actions float">
 						<button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()" translate>
