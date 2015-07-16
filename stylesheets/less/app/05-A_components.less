@@ -2347,7 +2347,7 @@
                                         .switch-button {
                                             margin-right: 10px;
                                             height: 40px;
-                                            .calc-width(50, 10);
+                                            .calc-width(45, 10);
                                             .pull-left;
 
                                             input[type="checkbox"] { 
@@ -2364,15 +2364,13 @@
 
                                         input[type="text"] { 
                                             margin-right: 10px;
-                                            .calc-width(40, 10);
+                                            .calc-width(30, 10);
                                             .pull-left;
                                         }
 
-                                        .label { 
-                                            color: @textColor;
-                                            line-height: 40px;
-                                            margin-right: 0;
-                                            width: 10%;
+                                        .select { 
+                                            .size(40px, 25%);
+                                            .pull-left;
                                         }
                                     }
 
@@ -4473,9 +4471,9 @@
                                 .pull-left;
                             }
 
-                            .label {
-                                line-height: 50px;
-                                margin: 0;
+                            .select {
+                                .size(50px, 60px);
+                                .pull-left;
                             }
                         }
                     }
