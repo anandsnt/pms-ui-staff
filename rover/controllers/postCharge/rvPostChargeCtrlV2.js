@@ -486,20 +486,13 @@ sntRover.controller('RVPostChargeControllerV2',
 						};
 						$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback);
 					}
-					
 				}
-				/****    CICO-6094    **/
-			};
-			
-			$scope.searchByRoomNumber = function(){
-				$scope.invokeApi(RVSearchSrv.fetch, {});
 			};
 			
 			//Will be invoked only if triggered from the menu. 
 			// So always the default bill no will be 1
 			$scope.$on("UPDATED_BILLNUMBERS", function( event, data ){
 				$scope.fetchedData.bill_numbers = data.bills;
-
 				$scope.billNumber = "1";
 				$scope.chargeGroup = 'FAV';
 				searchChargeCodeItems();
