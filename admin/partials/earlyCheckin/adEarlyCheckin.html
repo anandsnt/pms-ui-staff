@@ -196,6 +196,43 @@
 							</div>
 						</div>
 					</fieldset>
+
+					<fieldset class='holder column full-width'>
+						
+						<ad-dropdown label="{{'LIMITED_EARLY_CHECK_IN_BY_ROOM_TYPE' | translate}}" label-in-drop-down="{{'SELECT_ROOM_TYPE' | translate}}" list="upsellData.room_type_list" selected-Id='upsellData.selected_room_type' selbox-class="placeholder"></ad-dropdown>
+		
+						<div class='entry'>
+							<div class='add-room-type'>
+								<button class='button green' id='add-room-type' ng-click="clickExcludeRoomType()" translate>
+									ADD_ROOM_TYPE
+								</button>
+							</div>
+						</div>
+						<div class='entry full-width' id='room-type-header'>
+							<div class='entry' ng-show="upsellData.isRoomTypesSelectedFlag">
+								<label> <h4 translate>ROOM_TYPE</h4> </label>
+							</div>
+							<div class='entry' ng-show="upsellData.isRoomTypesSelectedFlag">
+								<label> <h4 translate>MAX_PER_DAY </h4> </label>
+							</div>
+							<div id='room-type-details' ng-repeat="roomType in upsellData.room_types">
+								<div class="entry full-width room-type-details" ng-show="showRoomType(roomType.max_early_checkins)">
+									<div class="entry">
+										<span class="align-text-center"> {{roomType.name}} </span>
+									</div>
+									<div class="entry">
+										<span class="entry">
+											<ad-textbox value="roomType.max_early_checkins" inputtype="number"></ad-textbox>
+										</span>
+										<span class="entry">
+											<a class="icons icon-delete large-icon align-text-center" ng-click="deleteRoomType(roomType.id,roomType.name)"></a>
+										</span>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+					</fieldset>
 					
 					<div class="actions float">
 						<button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()" translate>

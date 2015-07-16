@@ -1,10 +1,79 @@
 admin.controller('ADEarlyCheckinCtrl',['$scope','$rootScope','$state','adUpsellEarlyCheckinService', 'ADChargeCodesSrv', 'ADRatesSrv', 'ADRatesAddonsSrv',  function($scope,$rootScope,$state,adUpsellEarlyCheckinService, ADChargeCodesSrv, ADRatesSrv, ADRatesAddonsSrv){
 
-    BaseCtrl.call(this, $scope);
+BaseCtrl.call(this, $scope);
+$scope.upsellData = {};
+$scope.upsell_rate = {};
+$scope.upsell_rate.selected_rate_id = "";
 
-    $scope.upsellData = {};
-    $scope.upsell_rate = {};
-    $scope.upsell_rate.selected_rate_id = "";
+
+$scope.showRoomType = function(max_early_checkins){
+   return((typeof max_early_checkins !=="undefined") && max_early_checkins !== null) ? true:false;
+};
+
+var setUpList = function(){
+
+   //remove the selected item from drop down
+  var selectedIds = [];
+  angular.forEach($scope.upsellData.room_types,function(item, index) {
+    if((typeof item.max_early_checkins !=="undefined") && item.max_early_checkins !== null){
+       selectedIds.push(item.id);
+    }
+  });
+  angular.forEach(selectedIds,function(id, index1) {
+  angular.forEach($scope.upsellData.room_type_list,function(room_type_list, index) {
+        if(room_type_list.value === id){
+           $scope.upsellData.room_type_list.splice(index,1);
+        }
+    });
+  });
+
+};
+
+/**
+ * Method to check if max_late_checkins of all elements are blank or not.
+ * Configured room type will have valid max_late_checkouts value.
+ */
+var isRoomTypesSelected = function(){
+  $scope.upsellData.isRoomTypesSelectedFlag = false;
+  angular.forEach($scope.upsellData.room_types,function(item, index) {
+    if((typeof item.max_early_checkins !=="undefined") && item.max_early_checkins !== null) $scope.upsellData.isRoomTypesSelectedFlag = true;
+  });
+};
+
+$scope.clickExcludeRoomType = function(){
+  //While addig a room type, making its max_late_checkins defaults to 0.
+  angular.forEach($scope.upsellData.room_types,function(item, index) {
+      if(parseInt(item.id) === parseInt($scope.upsellData.selected_room_type)){
+         item.max_early_checkins = 0;
+      }
+  });
+    //Removing the selected room type from dropdown of room type list.
+  angular.forEach($scope.upsellData.room_type_list,function(item, index) {
+    if(item.value === $scope.upsellData.selected_room_type){
+       $scope.upsellData.room_type_list.splice(index,1);
+    }
+  });
+  isRoomTypesSelected();
+  $scope.upsellData.selected_room_type = "";
+};
+
+/*
+ * Method to delete the room type.
+ */
+$scope.deleteRoomType = function(value,name){
+
+  var data = { "value": value , "name": name };
+  $scope.upsellData.room_type_list.push(data);
+
+  angular.forEach($scope.upsellData.room_types,function(item, index) {
+    if(parseInt(item.id) === parseInt(value)){
+      item.max_early_checkins = null;
+    }
+  });
+  $scope.upsellData.deleted_room_types.push(value);
+  isRoomTypesSelected();
+  $scope.upsellData.selected_room_type = "";
+};
 /**
 * To fetch upsell details
 *
@@ -12,6 +81,9 @@ admin.controller('ADEarlyCheckinCtrl',['$scope','$rootScope','$state','adUpsellE
 $scope.fetchUpsellDetails = function(){
     var fetchUpsellDetailsSuccessCallback = function(data) {
        $scope.upsellData = data;
+       setUpList();
+       $scope.upsellData.deleted_room_types = [];
+       isRoomTypesSelected();
        $scope.setRateFlag();
        $scope.fetchChargeCodes();
        $scope.setUpUpsellWindowData();
@@ -202,7 +274,9 @@ $scope.saveClick = function(){
       $scope.$emit('hideLoader');
       $scope.fetchedFailed(errorMessage);
    	};
-   	$scope.invokeApi(adUpsellEarlyCheckinService.update,$scope.upsellData,upsellEarlyCheckinSaveSuccessCallback, upsellEarlyCheckinSaveFailureCallback);
+
+    var dataToSave = dclone($scope.upsellData, ['room_type_list']);
+   	$scope.invokeApi(adUpsellEarlyCheckinService.update,dataToSave,upsellEarlyCheckinSaveSuccessCallback, upsellEarlyCheckinSaveFailureCallback);
 
 };
 
