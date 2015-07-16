@@ -1,5 +1,5 @@
 sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
-	'$scope', 
+	'$scope',
 	'$rootScope',
 	'$timeout',
 	'$state',
@@ -26,7 +26,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 		var scrollerOptions = { click: true, preventDefault: false };
 	  	$scope.setScroller('result_showing_area', scrollerOptions);
 
-	  	var refreshScroller = function(){  
+	  	var refreshScroller = function(){
 			$scope.refreshScroller('result_showing_area');
 		};
 
@@ -75,7 +75,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 			$scope.disableNextBtn = $scope.resultUpto === $scope.netTotalCount ? true : false;
 		}
 
-	  	
+
   		$timeout(function() {
   			$_postProcessRooms();
   		}, 10);
@@ -229,7 +229,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 			$scope.showSearchResultsArea = true;
 			refreshScroller();
 			$scope.$emit("showDashboardArea", false);
-			$scope.$emit("UpdateHeading", 'MENU_ROOM_STATUS');	
+			$scope.$emit("UpdateHeading", 'MENU_ROOM_STATUS');
 		}
 		/**
 		* when focusedout on query box, we need to hide the search results area
@@ -243,9 +243,9 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 					$scope.rooms = [];
 					$scope.showSearchResultsArea = false;
 					$scope.$emit("showDashboardArea", true);
-					$scope.$emit("UpdateHeading", 'DASHBOARD_HOUSEKEEPING_HEADING');	
+					$scope.$emit("UpdateHeading", 'DASHBOARD_HOUSEKEEPING_HEADING');
 				}
 			}, 100);
-			
+
 		};
 }]);

@@ -211,7 +211,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * reciever function to show/hide the search result area.
 		 */
 		$scope.$on("showSearchResultsArea", function(event, searchAreaVisibilityStatus) {
-			
+
 
 			// if it is hiding, we need to clear the search text
 			if (!searchAreaVisibilityStatus) {
@@ -580,7 +580,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			// reset the query saved into vault
 			$vault.set('searchQuery', '');
 		};
-                
+
                 $rootScope.$on('LOAD_SHARED_RESERVATION',function(evtObj, data){
                     var reservationID = data.reservation_no, confirmationID = data.confirmation_no;
                     $scope.goToSharerReservationDetails(evtObj, reservationID, confirmationID);
@@ -598,7 +598,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			RVSearchSrv.toDate = $scope.toDate;
 
 			//$scope.$emit("UpdateSearchBackbuttonCaption", "");
-                        
+
                         $rootScope.viaSharerPopup = true;
 			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 				id: reservationID,
@@ -610,7 +610,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * function to execute on clicking on each result
 		 */
 		$scope.goToReservationDetails = function($event,reservationID, confirmationID) {
-			
+
 			$event.preventDefault();
 			$event.stopImmediatePropagation();
   			$event.stopPropagation();
