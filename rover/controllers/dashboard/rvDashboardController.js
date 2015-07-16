@@ -110,7 +110,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
     /**
     * function to handle click on backbutton in the header section
     * will broadcast an event, the logic of backbutto should be handled there
-    */
+   */
    $scope.headerBackButtonClicked = function(){
         $scope.$broadcast("HeaderBackButtonClicked");
    };
@@ -122,4 +122,3 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
   }, 300);
 
 }]);
-
