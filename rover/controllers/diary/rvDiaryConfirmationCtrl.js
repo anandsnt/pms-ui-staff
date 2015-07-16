@@ -180,10 +180,10 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
 
         // may be moved to utils or to a deeper scope into react
         $scope.dateToMs = function(date) {
-            return Object.prototype.toString.apply(date) == '[object Date]' ? date.getTime() : false;
+            return Object.prototype.toString.apply(date) === '[object Date]' ? date.getTime() : false;
         };
         $scope.msToDate = function(ms) {
-            return Object.prototype.toString.apply(new Date(ms)) == '[object Date]' ? new Date(ms) : false;
+            return Object.prototype.toString.apply(new Date(ms)) === '[object Date]' ? new Date(ms) : false;
         };
 
         $scope.cancelSelection = function() {

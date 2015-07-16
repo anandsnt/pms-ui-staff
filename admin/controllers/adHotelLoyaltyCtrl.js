@@ -196,7 +196,7 @@ admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', 
 			if($scope.hotelLoyaltyData.levels[index].name === "")
 				$scope.hotelLoyaltyData.levels.splice(index, 1);
 			angular.forEach($scope.hotelLoyaltyData.levels,function(item, i) {
-				if (item.name === "" && i != $scope.hotelLoyaltyData.levels.length-1) {
+				if (item.name === "" && i !== $scope.hotelLoyaltyData.levels.length-1) {
 					$scope.hotelLoyaltyData.levels.splice(i, 1);
 				}
 			});

@@ -14,7 +14,7 @@ sntRover.controller('RVCardOptionsCtrl',
 			$scope.cardData.expiryMonth = swipedDataToRenderInScreen.cardExpiryMonth;
 			$scope.cardData.expiryYear = swipedDataToRenderInScreen.cardExpiryYear;
 			$scope.cardData.cardType = swipedDataToRenderInScreen.cardType;
-			if(swipedDataToRenderInScreen.swipeFrom == "guestCard"){
+			if(swipedDataToRenderInScreen.swipeFrom === "guestCard"){
 				$scope.showAddtoGuestCard = false;
 			} else {
 				$scope.showAddtoGuestCard = true;
@@ -65,7 +65,7 @@ sntRover.controller('RVCardOptionsCtrl',
 		};
 		
 		$scope.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" +firstName + "&card_holder_last_name=" + lastName + "&service_action=createtoken&time="+time;
-		if($rootScope.paymentGateway == "sixpayments"){
+		if($rootScope.paymentGateway === "sixpayments"){
 			$scope.shouldShowAddNewCard = false;
 			var iFrame = $document.find("sixIframe");
 			iFrame.attr("src", $scope.iFrameUrl);

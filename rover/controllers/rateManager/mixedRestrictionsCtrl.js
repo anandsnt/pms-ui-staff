@@ -18,7 +18,7 @@ sntRover.controller('MixedRestrictionsCtrl', ['$q', '$scope', 'ngDialog',
             currentSelected.isMixed = false;
 
             if($scope.options.daysEntered !== undefined && $scope.options.daysEntered !== null){
-                currentSelected.days = $scope.options.daysEntered == "" ? "" : parseInt($scope.options.daysEntered);
+                currentSelected.days = $scope.options.daysEntered === "" ? "" : parseInt($scope.options.daysEntered);
             }
             collapseCurrentSelectedView(currentSelected);
 

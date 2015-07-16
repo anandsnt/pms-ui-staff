@@ -92,18 +92,18 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		var blankKeys = "";
 		that.lastSuccessfulIDReaded = '';
 		if($scope.isFixedAmount){	
-			if($scope.smartBandData.fixedAmount == '' || $scope.smartBandData.fixedAmount == null){			
-				blankKeys = blankKeys == '' ? "Amount" : (blankKeys + ", " + "Amount");
+			if($scope.smartBandData.fixedAmount === '' || $scope.smartBandData.fixedAmount === null){			
+				blankKeys = blankKeys === '' ? "Amount" : (blankKeys + ", " + "Amount");
 			}
 			else{
 				var pattern = /^(0|[1-9][0-9]{0,2}(?:(,[0-9]{3})*|[0-9]*))(\.[0-9]+){0,1}$/;
 				if(!pattern.test($scope.smartBandData.fixedAmount)){
-					blankKeys = blankKeys == '' ? "Amount is not valid" : (blankKeys + ", " + "Amount is not valid");
+					blankKeys = blankKeys === '' ? "Amount is not valid" : (blankKeys + ", " + "Amount is not valid");
 				}
 			}
 
 		}	
-		if(blankKeys != "")	{
+		if(blankKeys !== "")	{
 			$scope.errorMessage = ['Please enter ' + blankKeys ];
 		} else {
 			var options = {
@@ -181,8 +181,8 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	$scope.updateSmartBandSuccess = function(data){
 		$scope.$emit( 'hideLoader' );
 		angular.forEach($scope.smartBands, function(value, key) {
-			if(value.id == $scope.bandEditId){
-				if($scope.bandData.additionalCredit != undefined){
+			if(value.id === $scope.bandEditId){
+				if($scope.bandData.additionalCredit !== undefined){
 					value.amount = parseInt(value.amount) + parseInt($scope.bandData.additionalCredit);
 				}
 				value.first_name = $scope.bandData.first_name;

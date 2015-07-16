@@ -50,7 +50,7 @@ function ADBaseTableCtrl($scope, ngTableParams){
     	var getParams = {};
 		getParams.per_page = $scope.displyCount;
 		getParams.page = tableParams.page();
-		if($scope.filterType != null && typeof $scope.filterType != "undefined")
+		if($scope.filterType !== null && typeof $scope.filterType !== "undefined")
 			getParams.rate_type_id = $scope.filterType.id;
 		getParams.query = $scope.searchTerm;
 		var sortData = tableParams.sorting();

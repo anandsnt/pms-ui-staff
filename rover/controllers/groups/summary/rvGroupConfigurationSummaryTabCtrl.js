@@ -36,8 +36,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return undefined
 		 */
 		$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
-			if ($scope.isInAddMode() || targetElement.id == 'summary' ||
-				targetElement.id == "cancel-action" || //TODO: Need to check with Dilip/Shiju PC for more about this
+			if ($scope.isInAddMode() || targetElement.id === 'summary' ||
+				targetElement.id === "cancel-action" || //TODO: Need to check with Dilip/Shiju PC for more about this
 				whetherSummaryDataChanged() ||
 				$scope.groupSummaryData.isDemographicsPopupOpen || $scope.isUpdateInProgress) {
 
@@ -74,7 +74,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 			//referring data source
 			var refData = $scope.groupConfigData.summary;
-			if (refData.release_date.toString().trim() == '') {
+			if (refData.release_date.toString().trim() === '') {
 				$scope.groupConfigData.summary.release_date = refData.block_from;
 			}
 
@@ -383,7 +383,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				var selectedStatus = _.findWhere($scope.groupConfigData.holdStatusList, {
 					id: parseInt($scope.groupConfigData.summary.hold_status)
 				})
-				if (selectedStatus && selectedStatus.name == 'Cancel' && !!selectedStatus.is_system) {
+				if (selectedStatus && selectedStatus.name === 'Cancel' && !!selectedStatus.is_system) {
 					ngDialog.open({
 						template: '/assets/partials/groups/summary/warnCancelGroupPopup.html',
 						className: '',
@@ -406,7 +406,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 */
 		$scope.isCancellable = function() {
 
-			return (rvPermissionSrv.getPermissionValue('CANCEL_GROUP') && !!$scope.groupConfigData.summary.is_cancelled || ($scope.groupConfigData.summary.total_checked_in_reservations == 0 && parseFloat($scope.groupConfigData.summary.balance) == 0.0));
+			return (rvPermissionSrv.getPermissionValue('CANCEL_GROUP') && !!$scope.groupConfigData.summary.is_cancelled || ($scope.groupConfigData.summary.total_checked_in_reservations === 0 && parseFloat($scope.groupConfigData.summary.balance) === 0.0));
 		}
 
 		/**

@@ -50,27 +50,27 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 
 		$scope.getHeaderColor = function() {
 			// if room is out
-			if ($scope.roomDetails.room_reservation_hk_status != 1) {
+			if ($scope.roomDetails.room_reservation_hk_status !== 1) {
 				return 'out';
 			};
 
 			// if the room is clean
-			if ($scope.roomDetails.current_hk_status == 'CLEAN') {
+			if ($scope.roomDetails.current_hk_status === 'CLEAN') {
 				return 'clean';
 			};
 
 			// if the room is dirty
-			if ($scope.roomDetails.current_hk_status == 'DIRTY') {
+			if ($scope.roomDetails.current_hk_status === 'DIRTY') {
 				return 'dirty';
 			};
 
 			// if the room is pickup
-			if ($scope.roomDetails.current_hk_status == 'PICKUP') {
+			if ($scope.roomDetails.current_hk_status === 'PICKUP') {
 				return 'pickup';
 			};
 
 			// if the room is inspected
-			if ($scope.roomDetails.current_hk_status == 'INSPECTED') {
+			if ($scope.roomDetails.current_hk_status === 'INSPECTED') {
 				return 'inspected';
 			};
 		};
@@ -94,24 +94,24 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 		var getGuestStatusMapped = function(reservationStatus, isLateCheckout) {
 			var viewStatus = "";
 			//If the guest is opted for late checkout
-			if (isLateCheckout == "true") {
+			if (isLateCheckout === "true") {
 				return "late-check-out";
 			}
 
 			//Determine the guest status class based on the reservation status
-			if ("RESERVED" == reservationStatus) {
+			if ("RESERVED" === reservationStatus) {
 				viewStatus = "arrival";
-			} else if ("CHECKING_IN" == reservationStatus) {
+			} else if ("CHECKING_IN" === reservationStatus) {
 				viewStatus = "check-in";
-			} else if ("CHECKEDIN" == reservationStatus) {
+			} else if ("CHECKEDIN" === reservationStatus) {
 				viewStatus = "inhouse";
-			} else if ("CHECKEDOUT" == reservationStatus) {
+			} else if ("CHECKEDOUT" === reservationStatus) {
 				viewStatus = "departed";
-			} else if ("CHECKING_OUT" == reservationStatus) {
+			} else if ("CHECKING_OUT" === reservationStatus) {
 				viewStatus = "check-out";
-			} else if ("CANCELED" == reservationStatus) {
+			} else if ("CANCELED" === reservationStatus) {
 				viewStatus = "cancel";
-			} else if (("NOSHOW" == reservationStatus) || ("NOSHOW_CURRENT" == reservationStatus)) {
+			} else if (("NOSHOW" === reservationStatus) || ("NOSHOW_CURRENT" === reservationStatus)) {
 				viewStatus = "no-show";
 			}
 

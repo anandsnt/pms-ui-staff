@@ -56,7 +56,7 @@ admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv','$anchorScroll', '$ti
     * To handle cancel click
     */
 	$scope.clickedCancel = function(){
-		if($scope.currentClickedElement != 'new'){
+		if($scope.currentClickedElement !== 'new'){
 			$scope.data.booking_origins[$scope.currentClickedElement].name = $scope.preveousItem;
 			$scope.preveousItem = "";
 		}

@@ -19,10 +19,10 @@ sntRover.controller('roomAvailabilityMainController', [
 	};
 
 	$scope.loadSelectedView = function(){
-		if($scope.selectedView == 'grid'){
+		if($scope.selectedView === 'grid'){
 			return '/assets/partials/availability/roomAvailabilityGridStatus.html';
 		}
-		else if($scope.selectedView == 'graph'){
+		else if($scope.selectedView === 'graph'){
 			return '/assets/partials/availability/roomAvailabilityGraphStatus.html';
 		}
 	}

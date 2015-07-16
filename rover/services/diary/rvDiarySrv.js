@@ -369,7 +369,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             date_to_pass = new tzIndependentDate(key);
                             date_to_pass.setHours(0, 0, 0);
                             time = util.gridTimeComponents(date_to_pass, 24);
-                            if(eachRoom.room_id == room.id) {
+                            if(eachRoom.room_id === room.id) {
                                 startTime = time.toShijuBugStartDate(0);
                                 endTime   = time.toShijuBugEndDate(0);
                                 room.room_inactive_slots.push({
@@ -827,7 +827,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
 
                                     for(var i = 0; i < len; i++) {
                                        for(var k = 0; k < id_difference.length; k++) {
-                                            if(Availability.store.data[i] && _.has(Availability.store.data[i], "id") &&  Availability.store.data[i].id == id_difference [k]){
+                                            if(Availability.store.data[i] && _.has(Availability.store.data[i], "id") &&  Availability.store.data[i].id === id_difference [k]){
                                                 Availability.store.data.splice(i);
                                                 delete Availability.store.group.values.id[id_difference[k]];
                                                 len--;
@@ -868,7 +868,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         rate_type:          data.rate_type,
 
                     }
-                    if(data.rate_type == 'Corporate') {
+                    if(data.rate_type === 'Corporate') {
                         if(data.account_id){
                             _.extend(params, { account_id: data.account_id });
                         }
@@ -915,8 +915,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         if ( mm > 45 && hh + 1 < 12 ) {
                             hh += 1;
                             mm = 0;
-                        } else if ( mm > 45 && hh + 1 == 12 ) {
-                            if ( ampm == 'AM' ) {
+                        } else if ( mm > 45 && hh + 1 === 12 ) {
+                            if ( ampm === 'AM' ) {
                                 hh  = 12;
                                 mm = 0;
                                 ampm    = 'PM';
@@ -925,11 +925,11 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                 mm = 0;
                                 ampm    = 'AM';
                             }
-                        } else if ( mm == 15 || mm == 30 || mm == 45 ) {
+                        } else if ( mm === 15 || mm === 30 || mm === 45 ) {
                             mm += 15;
-                        } else if ( Math.max(mm, 15) == 15 ) {
+                        } else if ( Math.max(mm, 15) === 15 ) {
                             mm = 15;
-                        } else if ( Math.max(mm, 30) == 30 ) {
+                        } else if ( Math.max(mm, 30) === 30 ) {
                             mm = 30;
                         } else {
                             mm = 45;
@@ -957,7 +957,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         rate_type:          data.rate_type,
                     }
 
-                    if(data.rate_type == 'Corporate') {
+                    if(data.rate_type === 'Corporate') {
                         if(data.account_id){
                             _.extend(params, { account_id: data.account_id });
                         }

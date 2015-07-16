@@ -91,7 +91,7 @@ sntRover.controller('RVActivityLogCtrl',[
     };
     
     $scope.isOldValue = function(value){
-        if(value =="" || typeof value == "undefined" || value == null){
+        if(value ==="" || typeof value === "undefined" || value === null){
             return false;
         }
         else{
@@ -199,7 +199,7 @@ sntRover.controller('RVActivityLogCtrl',[
     * Pagination
     */
     $scope.initPaginationParams = function() {
-        if($scope.activityLogData.total_count==0){
+        if($scope.activityLogData.total_count===0){
              $scope.start = 0;
              $scope.end =0;
         }else{
@@ -236,7 +236,7 @@ sntRover.controller('RVActivityLogCtrl',[
 
     $scope.isPrevButtonDisabled = function() {
         var isDisabled = false;
-        if ($scope.page == 1) {
+        if ($scope.page === 1) {
             isDisabled = true;
         }
         return isDisabled;
@@ -283,7 +283,7 @@ sntRover.controller('RVActivityLogCtrl',[
 
                 _.each($scope.activeUserAutoCompleteObj, function(user) {
                     var match = _.find(uiValues, function(email) {
-                        return email == user.label;
+                        return email === user.label;
                     });
 
                     if (!!match) {
@@ -331,7 +331,7 @@ sntRover.controller('RVActivityLogCtrl',[
       
     }
     $scope.userChanged = function(){
-        if($scope.userEmail==''){
+        if($scope.userEmail===''){
            $scope.user_id=0;
         }
     }

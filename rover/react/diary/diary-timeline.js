@@ -74,14 +74,14 @@ var Timeline = React.createClass({
 				className: ''
 			}, segment_hour_display[i]));
 
-			if ( i % 6 == 0 ) {
+			if ( i % 6 === 0 ) {
 				interval_spans.push(React.DOM.span({
 					className: 'date',
 				}, (i < 23 ? todayShortDate : tmrowShortDate) ));
 			};
 			for(var j = 0; j < display.intervals_per_hour; j++, interval_counter++) {
 				spanClass = 'interval-' + (j+1);
-				if(interval_counter == current_time_plot_point ){
+				if(interval_counter === current_time_plot_point ){
 					spanClass += ' active';
 				}
 				interval_spans.push(React.DOM.span({

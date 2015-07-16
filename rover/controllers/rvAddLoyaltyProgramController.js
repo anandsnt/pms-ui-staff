@@ -148,7 +148,7 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
                     loyaltytypes = $scope.availableFFPS;
                 }
 		for(var i=0; i < loyaltytypes.length; i++){
-			if($scope.selectedLoyaltyType == loyaltytypes[i].code){
+			if($scope.selectedLoyaltyType === loyaltytypes[i].code){
 				levels = loyaltytypes[i].levels;
 				break;
 			}

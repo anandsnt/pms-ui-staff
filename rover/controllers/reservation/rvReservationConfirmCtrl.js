@@ -86,9 +86,9 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		 */
 		$scope.isCheckinTimeSet = function() {
 			var ret = false;
-			if ($scope.reservationData.checkinTime.hh != '' &&
-				$scope.reservationData.checkinTime.mm != '' &&
-				$scope.reservationData.checkinTime.ampm != '') {
+			if ($scope.reservationData.checkinTime.hh !== '' &&
+				$scope.reservationData.checkinTime.mm !== '' &&
+				$scope.reservationData.checkinTime.ampm !== '') {
 
 				ret = true;
 			}
@@ -101,9 +101,9 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		 */
 		$scope.isCheckoutTimeSet = function() {
 			var ret = false;
-			if ($scope.reservationData.checkoutTime.hh != '' &&
-				$scope.reservationData.checkoutTime.mm != '' &&
-				$scope.reservationData.checkoutTime.ampm != '') {
+			if ($scope.reservationData.checkoutTime.hh !== '' &&
+				$scope.reservationData.checkoutTime.mm !== '' &&
+				$scope.reservationData.checkoutTime.ampm !== '') {
 
 				ret = true;
 			}
@@ -233,7 +233,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		 */
 		$scope.primaryEmailEntered = function() {
 
-			if ($scope.reservationData.guest.email != '' && $scope.reservationData.guest.email != null) {
+			if ($scope.reservationData.guest.email !== '' && $scope.reservationData.guest.email !== null) {
 				return false;
 			}
 
@@ -416,7 +416,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			var updateFailure = function(data) {
 				$scope.$emit('hideLoader');
 			}
-			if ($scope.reservationData.checkinTime.hh != '' && $scope.reservationData.checkoutTime.hh != '') {
+			if ($scope.reservationData.checkinTime.hh !== '' && $scope.reservationData.checkoutTime.hh !== '') {
 				var postData = $scope.computeReservationDataforUpdate();
 				postData.addons = $scope.existingAddons;
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
@@ -445,7 +445,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				$scope.reservationData.reservation_status = $scope.reservationData.status;
 			}
 
-			if ($scope.reservationData.guest.id != null) {
+			if ($scope.reservationData.guest.id !== null) {
 				$scope.reservationData.user_id = $scope.reservationData.guest.id;
 			} else {
 				$scope.reservationData.user_id = $scope.reservationData.company.id;

@@ -47,7 +47,7 @@
 							// To handle fees details on reservation cancel,
 							// While we change payment methods
 							// Handling Credit Cards seperately.
-							if (value.name != "CC") {
+							if (value.name !== "CC") {
 								$scope.feeData.feesInfo = value.charge_code.fees_information;
 							}
 							$scope.setupFeeData();
@@ -102,7 +102,7 @@
 					var feePercent = zeroAmount;
 					var minFees = zeroAmount;
 
-					if (typeof feesInfo != 'undefined' && feesInfo != null) {
+					if (typeof feesInfo !== 'undefined' && feesInfo !== null) {
 						amountSymbol = feesInfo.amount_symbol;
 						feePercent = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
 						minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
@@ -138,7 +138,7 @@
 				$scope.feeData.defaultAmount = defaultAmount;
 
 				if ($scope.isShowFees()) {
-					if (typeof feesInfo.amount != 'undefined' && feesInfo != null) {
+					if (typeof feesInfo.amount !== 'undefined' && feesInfo !== null) {
 
 						var amountSymbol = feesInfo.amount_symbol;
 						var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;

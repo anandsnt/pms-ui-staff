@@ -11,7 +11,7 @@ sntRover.controller('rvRoomAvailabilityDatePickerController',['$scope', '$rootSc
 	     dateFormat: 'mm-dd-yy',
 	     onSelect: function(dateText, inst) {	
 
-	     	if($scope.data.selectedDate != selectedDateOnLoading){
+	     	if($scope.data.selectedDate !== selectedDateOnLoading){
 	     		$scope.data.formattedSelectedDate = $filter('date')($scope.data.selectedDate, $rootScope.fullMonthFullDayFullYear );
 	     		$scope.changedAvailabilityDataParams();
 	     	}

@@ -66,12 +66,12 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 		 */
 		$scope.showMaximumOccupancyDialog = function(index) {
 			var showOccupancyMessage = false;
-			if ($scope.upgradesList[index].room_max_occupancy != "" && $scope.reservation_occupancy != null) {
+			if ($scope.upgradesList[index].room_max_occupancy !== "" && $scope.reservation_occupancy !== null) {
 				if (parseInt($scope.upgradesList[index].room_max_occupancy) < $scope.reservation_occupancy) {
 					showOccupancyMessage = true;
 					$scope.max_occupancy = parseInt($scope.upgradesList[index].room_max_occupancy);
 				}
-			} else if ($scope.upgradesList[index].room_type_max_occupancy != "" && $scope.reservation_occupancy != null) {
+			} else if ($scope.upgradesList[index].room_type_max_occupancy !== "" && $scope.reservation_occupancy !== null) {
 				if (parseInt($scope.upgradesList[index].room_type_max_occupancy) < $scope.reservation_occupancy) {
 					showOccupancyMessage = true;
 					$scope.max_occupancy = parseInt($scope.upgradesList[index].room_type_max_occupancy);
@@ -135,7 +135,7 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 			RVReservationCardSrv
 				.updateResrvationForConfirmationNumber(resrvCardData.confirmation_num, $scope.reservationData);
 			
-			if ($scope.clickedButton == "checkinButton") {
+			if ($scope.clickedButton === "checkinButton") {
 				$state.go('rover.reservation.staycard.billcard', {
 					"reservationId": resrvCardData.reservation_id,
 					"clickedButton": "checkinButton"
@@ -254,7 +254,7 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 		 * function to change text according to the number of nights
 		 */
 		$scope.setNightsText = function() {
-			return ($scope.reservationData.reservation_card.total_nights == 1) ? $filter('translate')('NIGHT_LABEL') : $filter('translate')('NIGHTS_LABEL');
+			return ($scope.reservationData.reservation_card.total_nights === 1) ? $filter('translate')('NIGHT_LABEL') : $filter('translate')('NIGHTS_LABEL');
 		};
 		/**
 		 * function to calculate the width of the horizontal scroll view based on the no of upgrades
@@ -274,7 +274,7 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 		*/ 
 		$scope.getRoomStatusClass = function(room){
 			var statusClass = "ready";
-			if(room.is_oos == "true"){
+			if(room.is_oos === "true"){
 				return "room-grey";
 			}
 			return statusClass;

@@ -35,7 +35,7 @@ sntRover.service('RVccTransactionsSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWeb
      */
     that.fetchPayments = function (params) {
     	var deferred = $q.defer();
-    	if(typeof params.date == 'undefined' || params.date === ""){
+    	if(typeof params.date === 'undefined' || params.date === ""){
     		params.date = $rootScope.businessDate;
     	}
     	var url = "/api/cc?date="+params.date;

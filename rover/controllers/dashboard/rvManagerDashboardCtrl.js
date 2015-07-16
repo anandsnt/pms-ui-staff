@@ -83,10 +83,10 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
    */
   $scope.escapeNull = function(value, replaceWith) {
     var newValue = "";
-    if ((typeof replaceWith != "undefined") && (replaceWith != null)) {
+    if ((typeof replaceWith !== "undefined") && (replaceWith !== null)) {
       newValue = replaceWith;
     }
-    var valueToReturn = ((value == null || typeof value == 'undefined') ? newValue : value);
+    var valueToReturn = ((value === null || typeof value === 'undefined') ? newValue : value);
     return valueToReturn;
   };
 

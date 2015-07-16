@@ -29,7 +29,7 @@ sntRover.controller('RVccAuthorizationController', ['$scope','$filter','$statePa
     };
 
     $scope.$on('mainTabSwiched', function(){
-		if($scope.data.activeTab == 1){
+		if($scope.data.activeTab === 1){
 			refreshAuthorizationScroll();
 		}
     });

@@ -31,7 +31,7 @@ sntRover.controller('RVHKGuestTabCtrl', [
 			case 'ARRIVED / DAY USE / DUE OUT':
 			case 'ARRIVED / DAY USE / DUE OUT / DEPARTED':
 				$scope.roomDetails.hasDept = !!$scope.roomDetails.late_checkout_time || $scope.roomDetails.departure_time ? true : false;
-				$scope.roomDetails.departure = { 'time': $scope.roomDetails.is_late_checkout == 'true' ? $scope.roomDetails.late_checkout_time : $scope.roomDetails.departure_time };
+				$scope.roomDetails.departure = { 'time': $scope.roomDetails.is_late_checkout === 'true' ? $scope.roomDetails.late_checkout_time : $scope.roomDetails.departure_time };
 				break;
 
 			default:

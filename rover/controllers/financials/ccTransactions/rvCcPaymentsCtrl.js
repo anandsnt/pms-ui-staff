@@ -64,7 +64,7 @@ sntRover.controller('RVccPaymentsController', ['$scope','$filter','$stateParams'
 	};
 
 	$scope.$on('mainTabSwiched', function(){
-		if($scope.data.activeTab == 0){
+		if($scope.data.activeTab === 0){
 			refreshPaymentScroll();
 		}
     });

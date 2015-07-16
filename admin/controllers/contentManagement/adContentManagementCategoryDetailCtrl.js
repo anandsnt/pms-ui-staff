@@ -30,7 +30,7 @@ admin.controller('ADContentManagementCategoryDetailCtrl',['$scope', '$state', 'n
 	/*Checkin if the screen is loaded for a new category or,
 	 * for existing category.
     */
-	if($stateParams.id != 'new'){
+	if($stateParams.id !== 'new'){
 		$scope.isAddMode = false;
 		$scope.fetchCategory();
 	}
@@ -43,7 +43,7 @@ admin.controller('ADContentManagementCategoryDetailCtrl',['$scope', '$state', 'n
         $state.go('admin.cmscomponentSettings');
 	}
 	/*Function to popup the assign parent modal.
-	 *The param isSection == true, implies the modal is for assigning sections
+	 *The param isSection === true, implies the modal is for assigning sections
 	 *Otherwise the modal is for assigning categories
     */
 	$scope.openAddParentModal = function(isSection){
@@ -64,7 +64,7 @@ admin.controller('ADContentManagementCategoryDetailCtrl',['$scope', '$state', 'n
 			$scope.goBack();
 		}
 		var unwantedKeys = ["image"];
-		if($scope.initialIcon == $scope.data.icon)
+		if($scope.initialIcon === $scope.data.icon)
 			unwantedKeys = ["icon", "image"];
 
 		var data = dclone($scope.data, unwantedKeys);

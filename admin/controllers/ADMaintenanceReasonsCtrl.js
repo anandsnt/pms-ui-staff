@@ -37,7 +37,7 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
     * To handle cancel click
     */	
 	$scope.clickedCancel = function(){
-		if($scope.currentClickedElement != 'new'){
+		if($scope.currentClickedElement !== 'new'){
 			$scope.data.maintenance_reasons[$scope.currentClickedElement].name = $scope.preveousName;
 			$scope.preveousName = "";
 		}

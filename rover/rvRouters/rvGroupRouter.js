@@ -47,10 +47,10 @@ angular.module('groupModule', [])
             templateUrl: '/assets/partials/groups/rvGroupConfiguration.html',
             controller: 'rvGroupConfigurationCtrl',
             onEnter: ['$stateParams', function($stateParams) {
-                if (typeof $stateParams.id == "undefined" || $stateParams.id == null) {
+                if (typeof $stateParams.id === "undefined" || $stateParams.id === null) {
                     $stateParams.id = "NEW_GROUP";
                 }
-                if (typeof $stateParams.activeTab == "undefined" || $stateParams.activeTab == null) {
+                if (typeof $stateParams.activeTab === "undefined" || $stateParams.activeTab === null) {
                     $stateParams.activeTab = "SUMMARY";
                 }
             }],

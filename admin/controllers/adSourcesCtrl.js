@@ -40,7 +40,7 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', '$anchorScroll', '$t
     * To handle cancel click
     */
 	$scope.clickedCancel = function(){
-		if($scope.currentClickedElement != 'new'){
+		if($scope.currentClickedElement !== 'new'){
 			$scope.data.sources[$scope.currentClickedElement].name = $scope.preveousName;
 			$scope.preveousName = "";
 		}

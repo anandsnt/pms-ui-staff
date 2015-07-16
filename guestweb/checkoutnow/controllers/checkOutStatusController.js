@@ -35,7 +35,7 @@
 
 		checkoutNowService.completeCheckout(url,data).then(function(response) {
 			$scope.posted = true;	
-			$scope.success = (response.status != "failure") ? true : false;    	
+			$scope.success = (response.status !== "failure") ? true : false;    	
 			if($scope.success)
 				$rootScope.isCheckedout = $scope.isCheckoutCompleted = true;  
 			else

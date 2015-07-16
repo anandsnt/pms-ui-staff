@@ -69,7 +69,7 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
                 //loop1 - we have to search among all room rates
                 //not considering the room type and find the lowest rate
                 angular.forEach(rate.room_rates, function(roomRate, roomRateIndex) {
-                    if(rateForSingleRoom == null){
+                    if(rateForSingleRoom === null){
                         rateForSingleRoom = roomRate.single;
                     }
                     if(parseFloat(roomRate.single) <= parseFloat(rateForSingleRoom)){
@@ -87,7 +87,7 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
             dict.room_type_availability = {};
             //Get the room type availability details looping through all room types. 
             angular.forEach(allRoomTypes, function(roomType, roomTypeIndex) {
-                if(roomType.id == lowestRate.room_type_id){
+                if(roomType.id === lowestRate.room_type_id){
                     dict.room_type_availability = roomType;
                     return false;//exit from the loop
                 }
@@ -108,8 +108,8 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
             angular.forEach(ratesForDay, function(rate, rateIndex) {
                 //loop1 - we need to display only the lowest rate in the UI. For a room type
                 angular.forEach(rate.room_rates, function(roomRate, roomRateIndex) {
-                    if(roomRate.room_type_id == roomType.id){
-                        if(rateForSingleRoom == null){
+                    if(roomRate.room_type_id === roomType.id){
+                        if(rateForSingleRoom === null){
                             rateForSingleRoom = roomRate.single;
                         }
                         if(parseFloat(roomRate.single) <= parseFloat(rateForSingleRoom)){

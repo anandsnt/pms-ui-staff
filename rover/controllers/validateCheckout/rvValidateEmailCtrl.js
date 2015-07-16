@@ -13,7 +13,7 @@ sntRover.controller('RVValidateEmailCtrl',['$scope', '$state', 'ngDialog', 'RVCo
 	}
 	// To handle submit & goto checkout click
 	$scope.submitAndGoToCheckout = function(){
-		if($scope.saveData.email == ""){
+		if($scope.saveData.email === ""){
 			alert("Please enter email");
 			return false;
 		}

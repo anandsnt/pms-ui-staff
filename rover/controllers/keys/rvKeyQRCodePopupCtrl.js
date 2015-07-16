@@ -3,23 +3,23 @@ sntRover.controller('RVKeyQRCodePopupController',[ '$rootScope','$scope', '$stat
 	// Set up data for view
 	var setupData = function(){
 		var reservationStatus = "";
-		if($scope.fromView == "checkin"){
+		if($scope.fromView === "checkin"){
 			reservationStatus = $scope.reservationBillData.reservation_status;
 		} else {
 			reservationStatus = $scope.reservationData.reservation_card.reservation_status;
 		}
     	// To check reservation status and select corresponding texts and classes.
-    	if(reservationStatus == 'CHECKING_IN' ){
+    	if(reservationStatus === 'CHECKING_IN' ){
 			$scope.data.reservationStatusText = $filter('translate')('KEY_CHECKIN_STATUS');
 			$scope.data.colorCodeClass = 'check-in';
 			$scope.data.colorCodeClassForClose = 'green';
 		}
-		else if(reservationStatus == 'CHECKEDIN' ){
+		else if(reservationStatus === 'CHECKEDIN' ){
 			$scope.data.reservationStatusText = $filter('translate')('KEY_INHOUSE_STATUS');
 			$scope.data.colorCodeClass = 'inhouse';
 			$scope.data.colorCodeClassForClose = 'blue';
 		}
-		else if(reservationStatus == 'CHECKING_OUT'){
+		else if(reservationStatus === 'CHECKING_OUT'){
 			$scope.data.reservationStatusText = $filter('translate')('KEY_CHECKOUT_STATUS');
 			$scope.data.colorCodeClass = 'check-out';
 			$scope.data.colorCodeClassForClose = 'red';

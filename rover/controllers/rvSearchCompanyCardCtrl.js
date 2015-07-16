@@ -38,10 +38,10 @@ sntRover.controller('searchCompanyCardController', ['$scope', 'RVCompanyCardSear
 
 		$scope.escapeNull = function(value, replaceWith) {
 			var newValue = "";
-			if ((typeof replaceWith != "undefined") && (replaceWith != null)) {
+			if ((typeof replaceWith !== "undefined") && (replaceWith !== null)) {
 				newValue = replaceWith;
 			}
-			var valueToReturn = ((value == null || typeof value == 'undefined') ? newValue : value);
+			var valueToReturn = ((value === null || typeof value === 'undefined') ? newValue : value);
 			return valueToReturn;
 		};
 
@@ -94,7 +94,7 @@ sntRover.controller('searchCompanyCardController', ['$scope', 'RVCompanyCardSear
 
 				}
 				// last hope, we are looking in webservice.
-				if (visibleElementsCount == 0) {
+				if (visibleElementsCount === 0) {
 					var dataDict = {
 						'query': $scope.textInQueryBox.trim()
 					};

@@ -65,7 +65,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			currentRow = roomAvailabilityData.results[i];
 
 			var dateToCheck = tzIndependentDate(currentRow.date);
-			var isWeekend = dateToCheck.getDay() == 0 || dateToCheck.getDay() == 6;
+			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
 			dates.push({'date': currentRow.date, 'isWeekend': isWeekend, 'dateObj': new Date(currentRow.date)});
 
 			occupancies.push((currentRow.house.sold / totalRooms) * 100);
@@ -83,7 +83,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 				for(var j = 0; j < currentRow.room_types.length; j++){
 					var id = currentRow.room_types[j].id;
 					for(var k = 0; k < individualBookedRooms.length; k++){
-						if(individualBookedRooms[k].id == id){
+						if(individualBookedRooms[k].id === id){
 							individualBookedRooms[k].bookedNumberList.push(currentRow.room_types[j].sold);
 							break;
 						}
@@ -96,7 +96,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			for(var j = 0; j < currentRow.room_types.length; j++){
 				var id = currentRow.room_types[j].id;
 				for(var k = 0; k < individualAvailableRooms.length; k++){
-					if(individualAvailableRooms[k].id == id){
+					if(individualAvailableRooms[k].id === id){
 						individualAvailableRooms[k].availableRoomNumberList.push(currentRow.room_types[j].availability);
 						break;
 					}
@@ -320,7 +320,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			dateDetails.date = dayInfo.date;
 			var date = tzIndependentDate(dayInfo.date);
 			//Set if the day is yesterday/today/tomorrow
-			if(date.getTime() ==  businessDate.getTime()) {
+			if(date.getTime() ===  businessDate.getTime()) {
 				dateDetails.day = "TODAY";
 			} else if(date.getTime() < businessDate.getTime()){
 				dateDetails.day = "YESTERDAY";

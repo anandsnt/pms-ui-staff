@@ -9,15 +9,15 @@ admin.controller('ADContentManagementCtrl',['$scope', '$state', '$rootScope', 'n
 	 * Can be used from either grid view or tree view
     */
 	 $scope.componentSelected = function(component_type, id){
-   		if(component_type == 'section' || component_type == 'SECTION'){
+   		if(component_type === 'section' || component_type === 'SECTION'){
    			$state.go("admin.contentManagementSectionDetails", {
 				id: id
 			});
-   		}else if(component_type == 'category' || component_type == 'CATEGORY'){
+   		}else if(component_type === 'category' || component_type === 'CATEGORY'){
    			$state.go("admin.contentManagementCategoryDetails", {
 				id: id
 			});
-   		}else if(component_type == 'item' || component_type == 'PAGE'){
+   		}else if(component_type === 'item' || component_type === 'PAGE'){
    			$state.go("admin.contentManagementItemDetails", {
 				id: id
 			});

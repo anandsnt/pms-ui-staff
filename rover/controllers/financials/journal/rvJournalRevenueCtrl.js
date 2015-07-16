@@ -217,7 +217,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
         var item = $scope.data.revenueData.charge_groups[index1].charge_codes[index2],
             isDisabled = false;
 
-        if(item.page_no == 1){
+        if(item.page_no === 1){
             isDisabled = true;
         }
         return isDisabled;

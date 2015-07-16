@@ -58,9 +58,9 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
 
             if ($scope.rateData.room_type_ids.indexOf(room_type.id) >=0){
                 $scope.assignedRoomTypes.push(room_type);
-            } else if($scope.rateData.based_on.id == ""){
+            } else if($scope.rateData.based_on.id === ""){
                 $scope.nonAssignedroomTypes.push(room_type);
-            } else if($scope.basedonRateData.name != undefined){
+            } else if($scope.basedonRateData.name !== undefined){
                 if($scope.basedonRateData.room_type_ids.indexOf(room_type.id) >= 0){
                     $scope.nonAssignedroomTypes.push(room_type);
                 }
@@ -137,13 +137,13 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
 
     $scope.assignedRoomSelected = function($event, index){
 
-        if(lastDropedTime == ''){
+        if(lastDropedTime === ''){
             if(index === $scope.selectedAssignedRoomIndex)
                 $scope.selectedAssignedRoomIndex = -1;
             else
                 $scope.selectedAssignedRoomIndex =index;        
         }
-        else if(typeof lastDropedTime == 'object') { //means date
+        else if(typeof lastDropedTime === 'object') { //means date
             var currentTime = new Date();
             var diff = currentTime - lastDropedTime;
             if(diff <= 100){
@@ -166,14 +166,14 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
     	if($scope.hasBaseRate){
     		return false;
     	}
-        if(lastDropedTime == ''){
+        if(lastDropedTime === ''){
             if(index === $scope.selectedUnAssignedRoomIndex)
                 $scope.selectedUnAssignedRoomIndex =-1;
             else{
                 $scope.selectedUnAssignedRoomIndex =index;
             }   
         }
-        else if(typeof lastDropedTime == 'object') { //means date
+        else if(typeof lastDropedTime === 'object') { //means date
             var currentTime = new Date();
             var diff = currentTime - lastDropedTime;
             if(diff <= 100){
@@ -193,7 +193,7 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
 
     $scope.topMoverightClicked = function(){
 
-        if($scope.selectedUnAssignedRoomIndex != -1){
+        if($scope.selectedUnAssignedRoomIndex !== -1){
             var temp = $scope.nonAssignedroomTypes[$scope.selectedUnAssignedRoomIndex];
             $scope.assignedRoomTypes.push(temp)
             $scope.nonAssignedroomTypes.splice($scope.selectedUnAssignedRoomIndex,1);
@@ -205,7 +205,7 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
      *
      */
     $scope.topMoveleftClicked = function(){
-        if($scope.selectedAssignedRoomIndex != -1){
+        if($scope.selectedAssignedRoomIndex !== -1){
             var temp = $scope.assignedRoomTypes[$scope.selectedAssignedRoomIndex];
             $scope.nonAssignedroomTypes.push(temp)
             $scope.assignedRoomTypes.splice($scope.selectedAssignedRoomIndex,1);

@@ -1424,7 +1424,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                     addPrintOrientation();
 
                     /*
-                     *   =====[ READY TO PRINT ]=====
+                     *   ======[ READY TO PRINT ]======
                      */
                     // this will show the popup with full bill
                     $scope.isPrintRegistrationCard = true;
@@ -1432,7 +1432,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
                     $timeout(function() {
                         /*
-                         *   =====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+                         *   ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
                          */
 
                         $window.print();
@@ -1442,7 +1442,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                     }, 100);
 
                     /*
-                     *   =====[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]=====
+                     *   ======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
                      */
                     $timeout(function() {
                         $scope.isPrintRegistrationCard = false;

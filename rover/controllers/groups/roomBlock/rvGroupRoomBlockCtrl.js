@@ -214,7 +214,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldShowTripleEntryRow = function(roomType) {
-			if ($scope.groupConfigData.summary.rate == -1) {
+			if ($scope.groupConfigData.summary.rate === -1) {
 				var list_of_triples = _.pluck(roomType.dates, 'triple');
 
 				//throwing undefined items
@@ -236,7 +236,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldShowQuadrupleEntryRow = function(roomType) {
-			if ($scope.groupConfigData.summary.rate == -1) {
+			if ($scope.groupConfigData.summary.rate === -1) {
 				var list_of_quadruples = _.pluck(roomType.dates, 'quadruple');
 
 				//throwing undefined items

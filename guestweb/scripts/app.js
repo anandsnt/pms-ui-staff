@@ -51,14 +51,14 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
     //Params for zest mobile and desktop screens
     if($attrs.hasOwnProperty('isPasswordReset')){
     	$rootScope.isPasswordResetView = $attrs.isPasswordReset;
-    	$rootScope.isTokenExpired = $attrs.isTokenExpired == "true"? true: false;
+    	$rootScope.isTokenExpired = $attrs.isTokenExpired === "true"? true: false;
     	$rootScope.accessToken = $attrs.token;
     	$rootScope.user_id = $attrs.id;
     	$rootScope.user_name = $attrs.login;
     }
     
 
- 	if(typeof $attrs.accessToken != "undefined")
+ 	if(typeof $attrs.accessToken !== "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
 
 	//navigate to different pages

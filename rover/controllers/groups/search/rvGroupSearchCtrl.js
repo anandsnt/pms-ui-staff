@@ -427,11 +427,11 @@ sntRover.controller('rvGroupSearchCtrl', [
          * return - None
          */
         $scope.loadPrevSet = function() {
-            var isAtEnd = ($scope.end == $scope.totalResultCount);
+            var isAtEnd = ($scope.end === $scope.totalResultCount);
             if (isAtEnd) {
                 //last diff will be diff from our normal diff
                 var lastDiff = ($scope.totalResultCount % $scope.perPage);
-                if (lastDiff == 0) {
+                if (lastDiff === 0) {
                     lastDiff = $scope.perPage;
                 }
 

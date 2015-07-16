@@ -14,14 +14,14 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 		});
 
 		$scope.paymentListLength = $scope.paymentListData.existing_payments.length;
-		if($scope.paymentListLength == 0){
+		if($scope.paymentListLength === 0){
 			$scope.showNoValues = true;
 		}
 	};
 
 	// return false;
 	var reservationId = "";
-	if($scope.dataToPaymentList.currentView == "billCard"){
+	if($scope.dataToPaymentList.currentView === "billCard"){
 		reservationId = $scope.dataToPaymentList.reservation_id;
 	} else {
 		reservationId =  $scope.dataToPaymentList.reservation_card.reservation_id;
@@ -33,7 +33,7 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 			"reservation_id":	reservationId,
 			"user_payment_type_id":	paymentId
 		};
-		if($scope.dataToPaymentList.currentView == "billCard"){
+		if($scope.dataToPaymentList.currentView === "billCard"){
 			data.bill_number = $scope.dataToPaymentList.bills[$scope.dataToPaymentList.currentActiveBill].bill_number;
 		}
 
@@ -47,7 +47,7 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 			$scope.$emit('hideLoader');
 			ngDialog.close();
 			
-			if($scope.dataToPaymentList.currentView == "billCard"){
+			if($scope.dataToPaymentList.currentView === "billCard"){
 				var billIndex = $scope.dataToPaymentList.currentActiveBill;
 				$scope.dataToPaymentList.bills[billIndex].credit_card_details.card_code = cardCode.toLowerCase();
 				$scope.dataToPaymentList.bills[billIndex].credit_card_details.card_number = cardNumberEndingWith;

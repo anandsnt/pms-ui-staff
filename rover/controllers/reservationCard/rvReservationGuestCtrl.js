@@ -38,9 +38,9 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				var flag = true;
 				angular.forEach($scope.reservationData.reservation_card.stay_dates, function(item, index) {
 					if (flag) {
-						if ($scope.guestData.adult_count && parseInt($scope.guestData.adult_count) == 1) {
+						if ($scope.guestData.adult_count && parseInt($scope.guestData.adult_count) === 1) {
 							flag = !!(item.rate_config.single);
-						} else if ($scope.guestData.adult_count && parseInt($scope.guestData.adult_count) == 2) {
+						} else if ($scope.guestData.adult_count && parseInt($scope.guestData.adult_count) === 2) {
 							flag = !!(item.rate_config.double);
 						} else if ($scope.guestData.adult_count && parseInt($scope.guestData.adult_count) > 2) {
 							flag = !!(item.rate_config.double && item.rate_config.extra_adult);

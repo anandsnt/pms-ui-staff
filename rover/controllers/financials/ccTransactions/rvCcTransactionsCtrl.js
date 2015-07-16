@@ -6,7 +6,7 @@ sntRover.controller('RVccTransactionsController', ['$scope','$filter','$statePar
 	$scope.setTitle($filter('translate')('MENU_CC_TRANSACTIONS'));
 
 	$scope.data = {};
-    $scope.data.activeTab = $stateParams.id == '' ? 0 : $stateParams.id;
+    $scope.data.activeTab = $stateParams.id === '' ? 0 : $stateParams.id;
     $scope.data.transactionDate = $rootScope.businessDate;
     $scope.data.paymentData = {};
     $scope.data.authData = {};

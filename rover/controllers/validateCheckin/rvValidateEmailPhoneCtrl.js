@@ -1,8 +1,8 @@
 sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state', 'ngDialog', 'RVValidateCheckinSrv',  function($rootScope, $scope, $state, ngDialog, RVValidateCheckinSrv){
 	BaseCtrl.call(this, $scope);
 	
-	$scope.showEmail = ($scope.guestCardData.contactInfo.email == '' || $scope.guestCardData.contactInfo.email == null) ? true : false;
-	$scope.showPhone = ($scope.guestCardData.contactInfo.phone == '' || $scope.guestCardData.contactInfo.phone == null) ? true : false;
+	$scope.showEmail = ($scope.guestCardData.contactInfo.email === '' || $scope.guestCardData.contactInfo.email === null) ? true : false;
+	$scope.showPhone = ($scope.guestCardData.contactInfo.phone === '' || $scope.guestCardData.contactInfo.phone === null) ? true : false;
 	$scope.saveData = {};
 	$scope.saveData.email = "";
 	$scope.saveData.phone = "";
@@ -14,7 +14,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 	$scope.hasAnySharerCheckedin = function(){
 		var isSharerCheckedin = false;
 		angular.forEach($scope.reservationData.reservation_card.sharer_information, function(sharer, key){
-			if(sharer.reservation_status == 'CHECKEDIN' || sharer.reservation_status == 'CHECKING_OUT'){
+			if(sharer.reservation_status === 'CHECKEDIN' || sharer.reservation_status === 'CHECKING_OUT'){
 				isSharerCheckedin = true;
 				return false;
 			}
@@ -44,11 +44,11 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 		if($scope.hasAnySharerCheckedin()){
 			$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
 		}
-		else if($scope.reservationData.reservation_card.room_number == '' || $scope.reservationData.reservation_card.room_ready_status === 'DIRTY' || $scope.reservationData.reservation_card.room_status != 'READY' || $scope.reservationData.reservation_card.fo_status != 'VACANT')
+		else if($scope.reservationData.reservation_card.room_number === '' || $scope.reservationData.reservation_card.room_ready_status === 'DIRTY' || $scope.reservationData.reservation_card.room_status !== 'READY' || $scope.reservationData.reservation_card.fo_status !== 'VACANT')
 		{
 			//TO DO:Go to rrom assignemt viw
 			$state.go("rover.reservation.staycard.roomassignment", {"reservation_id" : $scope.reservationData.reservation_card.reservation_id, "room_type": $scope.reservationData.reservation_card.room_type_code, "clickedButton": "checkinButton"});
-		} else if ($scope.reservationData.reservation_card.is_force_upsell=="true" && $scope.reservationData.reservation_card.is_upsell_available =="true"){
+		} else if ($scope.reservationData.reservation_card.is_force_upsell==="true" && $scope.reservationData.reservation_card.is_upsell_available ==="true"){
 			//TO DO : gO TO ROOM UPGRAFED VIEW
 			  $state.go('rover.reservation.staycard.upgrades', {"reservation_id" : $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
 		}
@@ -62,15 +62,15 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 	        var isValidDataExist = false;
 			if($scope.showEmail && $scope.showPhone){
 				$scope.saveData = $scope.saveData;
-				if($scope.saveData.email != '' || $scope.saveData.phone != '') isValidDataExist = true;
+				if($scope.saveData.email !== '' || $scope.saveData.phone !== '') isValidDataExist = true;
 			} else if($scope.showPhone){
 				var unwantedKeys = ["email"]; // remove unwanted keys for API
 				$scope.saveData = dclone($scope.saveData, unwantedKeys); 
-				if($scope.saveData.phone != '') isValidDataExist = true;
+				if($scope.saveData.phone !== '') isValidDataExist = true;
 			} else {
 				var unwantedKeys = ["phone"]; // remove unwanted keys for API
 				$scope.saveData = dclone($scope.saveData, unwantedKeys);
-				if($scope.saveData.email != '') isValidDataExist = true;
+				if($scope.saveData.email !== '') isValidDataExist = true;
 			}
 			if(isValidDataExist){  // CICO-15079 : Validation for phone/email data being blank.
 				$scope.invokeApi(RVValidateCheckinSrv.saveGuestEmailPhone, $scope.saveData, $scope.validateEmailPhoneSuccessCallback);

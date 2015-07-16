@@ -21,7 +21,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 		// Initializing filter data
 		$scope.filterData = {
-			'id': $scope.contactInformation == undefined? "" :$scope.contactInformation.id,
+			'id': $scope.contactInformation === undefined? "" :$scope.contactInformation.id,
 			'filterActive': false,
 			'showFilterFlag': 'OPEN',
 			'fromDate': '',
@@ -43,9 +43,9 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			'ar_transactions':[]
 		};
 
-		if(typeof $stateParams.type != 'undefined'){
+		if(typeof $stateParams.type !== 'undefined'){
 			$scope.filterData.viewFromOutside = true;
-			$scope.filterData.id = ($stateParams.id == 'add')? '': $stateParams.id;
+			$scope.filterData.id = ($stateParams.id === 'add')? '': $stateParams.id;
 		}
 		
 		// Get parameters for fetch data
@@ -77,14 +77,14 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 				$scope.arDetailsFetched = true;
 			    $scope.$emit('hideLoader');
 			    
-			    if(typeof clearErrorMsg == 'undefined' || clearErrorMsg)
+			    if(typeof clearErrorMsg === 'undefined' || clearErrorMsg)
 			    	$scope.errorMessage = '';
 
 			    $scope.arTransactionDetails = {};
 			    $scope.arTransactionDetails = data;
 			    
 			    var credits = parseFloat(data.available_credit).toFixed(2);
-			    if(credits == '-0.00') credits = parseFloat('0.00').toFixed(2);
+			    if(credits === '-0.00') credits = parseFloat('0.00').toFixed(2);
 
 			    $scope.arTransactionDetails.available_credit = credits;
 			    $scope.arTransactionDetails.amount_owing = parseFloat(data.amount_owing).toFixed(2);
@@ -111,7 +111,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 			var params = getParamsToSend();
 
-			if(typeof params.id != 'undefined' && params.id != ''){
+			if(typeof params.id !== 'undefined' && params.id !== ''){
 				$scope.invokeApi(RVCompanyCardSrv.fetchArAccountsList, params, arAccountsFetchSuccess, failure);
 			}
 		};
@@ -131,7 +131,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 		// To handle show filter changes
 		$scope.chagedShowFilter = function(){
-			if($scope.filterData.showFilterFlag == 'ALL')
+			if($scope.filterData.showFilterFlag === 'ALL')
 				$scope.filterData.isShowPaid = '';
 			else
 				$scope.filterData.isShowPaid = false;
@@ -242,7 +242,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		$scope.isNextButtonDisabled = function(){
 			var isDisabled = false;
 			//if($scope.end >= RVSearchSrv.totalSearchResults || $scope.disableNextButton){
-			if(typeof $scope.arTransactionDetails == "undefined")
+			if(typeof $scope.arTransactionDetails === "undefined")
 				return true;
 			if($scope.filterData.end >= $scope.arTransactionDetails.total_count){
 				isDisabled = true;
@@ -252,7 +252,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 		$scope.isPrevButtonDisabled = function(){
 			var isDisabled = false;
-			if($scope.filterData.pageNo == 1){
+			if($scope.filterData.pageNo === 1){
 				isDisabled = true;
 			}
 			return isDisabled;
@@ -270,15 +270,15 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	            $scope.errorMessage = '';
 
 	            var credits = parseFloat(data.available_credits).toFixed(2);
-			    if(credits == '-0.00') credits = parseFloat('0.00').toFixed(2);
+			    if(credits === '-0.00') credits = parseFloat('0.00').toFixed(2);
 
 	            $scope.arTransactionDetails.available_credit = credits;
 	            $scope.arTransactionDetails.open_guest_bills = data.open_guest_bills;
 
-	            if($scope.filterData.showFilterFlag == 'OPEN' && $scope.arTransactionDetails.ar_transactions[index].paid){
+	            if($scope.filterData.showFilterFlag === 'OPEN' && $scope.arTransactionDetails.ar_transactions[index].paid){
 	            	$scope.arTransactionDetails.total_count--;
 	            }
-	            if($scope.filterData.showFilterFlag == 'OPEN' && !$scope.arTransactionDetails.ar_transactions[index].paid){
+	            if($scope.filterData.showFilterFlag === 'OPEN' && !$scope.arTransactionDetails.ar_transactions[index].paid){
 	            	$scope.arTransactionDetails.total_count++;
 	            }
 	        };
@@ -311,7 +311,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 			var element = $event.target;
 
-			if(element.className =='switch-button' || element.className =='switch-button on' || element.parentNode.className =='switch-button' || element.parentNode.className =='switch-button on'){
+			if(element.className ==='switch-button' || element.className ==='switch-button on' || element.parentNode.className ==='switch-button' || element.parentNode.className ==='switch-button on'){
 				$scope.toggleTransaction(index);
 			}
 			else if($scope.filterData.viewFromOutside){
@@ -322,14 +322,14 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 				var associatedType = $scope.arTransactionDetails.ar_transactions[index].associated_type,
 					associatedId = $scope.arTransactionDetails.ar_transactions[index].associated_id;
 
-				if(associatedType == 'Reservation') {
+				if(associatedType === 'Reservation') {
 					$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 						id: associatedId,
 						confirmationId: $scope.arTransactionDetails.ar_transactions[index].reservation_confirm_no,
 						isrefresh: true,
 						isFromCards: true
 					});
-				} else if (associatedType == 'PostingAccount') {
+				} else if (associatedType === 'PostingAccount') {
 					$state.go('rover.accounts.config',{
 						id: associatedId,
 						activeTab: 'ACCOUNT',
@@ -379,7 +379,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		};
 
 		$scope.getTimeConverted = function(time){
-			if(time == null || time == undefined){
+			if(time === null || time === undefined){
 				return "";
 			}
 			var timeDict = tConvert(time);
@@ -396,12 +396,12 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			$("body").prepend("<style id='paper-orientation'>@page { size: landscape; }</style>");
 			
 			/*
-			 *	=====[ READY TO PRINT ]=====
+			 *	======[ READY TO PRINT ]======
 			 */
 			// this will show the popup
 		    $timeout(function() {
 		    	/*
-		    	 *	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+		    	 *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
 		    	 */
 
 		        $window.print();
@@ -416,7 +416,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		    }, 100);
 
 		    /*
-		     *	=====[ PRINTING COMPLETE. JS EXECUTION WILL COMMENCE ]=====
+		     *	======[ PRINTING COMPLETE. JS EXECUTION WILL COMMENCE ]======
 		     */
 
 	    };

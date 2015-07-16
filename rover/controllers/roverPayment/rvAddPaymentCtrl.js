@@ -99,7 +99,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$scope.dataToSave.paymentType = "CC";
 			$scope.showCCPage 			  = true;
 			$scope.addmode                = true;
-			$scope.showAddtoGuestCard = ($scope.passData.details.swipedDataToRenderInScreen.swipeFrom == "guestCard") ? false : true;
+			$scope.showAddtoGuestCard = ($scope.passData.details.swipedDataToRenderInScreen.swipeFrom === "guestCard") ? false : true;
 		}
 		refreshCardsList();
 	};
@@ -118,12 +118,12 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.changePaymentType = function(){
 
 		if($scope.paymentGateway !== 'sixpayments'){
-			$scope.showCCPage = ($scope.dataToSave.paymentType == "CC") ? true: false;
-			$scope.addmode =($scope.dataToSave.paymentType == "CC" &&  $scope.cardsList.length === 0) ? true: false;
-			$scope.showInitialScreen = ($scope.dataToSave.paymentType == "CC") ? false: true;
+			$scope.showCCPage = ($scope.dataToSave.paymentType === "CC") ? true: false;
+			$scope.addmode =($scope.dataToSave.paymentType === "CC" &&  $scope.cardsList.length === 0) ? true: false;
+			$scope.showInitialScreen = ($scope.dataToSave.paymentType === "CC") ? false: true;
 			refreshCardsList();
 		}else{
-			$scope.isNewCardAdded = ($scope.dataToSave.paymentType == "CC" && !$scope.isManual) ? true : false;
+			$scope.isNewCardAdded = ($scope.dataToSave.paymentType === "CC" && !$scope.isManual) ? true : false;
 			return;
 		};
 
@@ -135,7 +135,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.addmode =  ($scope.isManual && $scope.cardsList.length === 0) ? true:false;
 		$scope.showInitialScreen = ($scope.isManual) ?false :true;
 		//to enable add to guest card
-		$scope.isNewCardAdded = ($scope.dataToSave.paymentType == "CC" && !$scope.isManual) ? true : false;
+		$scope.isNewCardAdded = ($scope.dataToSave.paymentType === "CC" && !$scope.isManual) ? true : false;
 		refreshCardsList();
 	};
 
@@ -228,7 +228,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			"confirm_no" : $scope.paymentData.confirm_no
 		};
 		// CICO-9739 : To update on reservation card payment section while updating from bill#1 credit card type.
-		if(billNumber == 0){
+		if(billNumber === 0){
 			$rootScope.$emit('UPDATEDPAYMENTLIST', $scope.paymentData.bills[billNumber].credit_card_details );
 		};
 		$rootScope.$broadcast('BALANCECHANGED', dataToUpdate);
@@ -350,10 +350,10 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			if($scope.dataToSave.addToGuestCard){
 				addToGuestCard(data);
 			};
-			(typeof $scope.passData.fromBill == "undefined")?saveNewCardSuccess(data):billScreenCCSaveActions(data);
+			(typeof $scope.passData.fromBill === "undefined")?saveNewCardSuccess(data):billScreenCCSaveActions(data);
 		}
 		else{
-			(typeof $scope.passData.fromBill == "undefined")?existingCardSuccess(data):billScreenExistingCCSucess(data);
+			(typeof $scope.passData.fromBill === "undefined")?existingCardSuccess(data):billScreenExistingCCSucess(data);
 		};
 		
 		$scope.closeDialog();
@@ -465,7 +465,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 
 	
 	$scope.addNewPayment = function(){
-		if(!$scope.isManual && $rootScope.paymentGateway == "sixpayments" && $scope.dataToSave.paymentType ==='CC'){
+		if(!$scope.isManual && $rootScope.paymentGateway === "sixpayments" && $scope.dataToSave.paymentType ==='CC'){
 			sixPaymentSwipe();
 		} else if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
 			saveDataFromSwipe();
@@ -502,7 +502,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		var cardType = getSixCreditCardType(response.card_type).toLowerCase();
 		var endingWith = response.ending_with;
 		var expiryDate = response.expiry_date.slice(-2)+"/"+response.expiry_date.substring(0, 2);
-		if($scope.passData.fromBill == undefined){
+		if($scope.passData.fromBill === undefined){
 			if(!$scope.isFromGuestCard){
 				$scope.paymentData.reservation_card.payment_method_used = "CC";
 				$scope.paymentData.reservation_card.payment_details.card_type_image = cardType+".png";
@@ -542,11 +542,11 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		data.credit_card = $scope.swipedCardDataToSave.cardType;
 		data.card_expiry = "20"+$scope.swipedCardDataToSave.cardExpiryYear+"-"+$scope.swipedCardDataToSave.cardExpiryMonth+"-01";
 		//alert(JSON.stringify(data));
-		if($scope.passData.details.isClickedCheckin != undefined && $scope.passData.details.isClickedCheckin){
+		if($scope.passData.details.isClickedCheckin !== undefined && $scope.passData.details.isClickedCheckin){
 			$scope.$emit("UPDATE_ADD_TO_GUEST_ON_CHECKIN_FLAG", $scope.dataToSave.addToGuestCard);
 			successSwipePayment();
 			
-		} else if($scope.passData.details.swipedDataToRenderInScreen.swipeFrom == "guestCard")
+		} else if($scope.passData.details.swipedDataToRenderInScreen.swipeFrom === "guestCard")
 		{
 			data.user_id = $scope.passData.userId;
 			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, addToGuestCardOnSwipe);
@@ -557,7 +557,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	};
 	var successSwipePayment = function(data){
 		$scope.$emit("hideLoader");
-		if($scope.passData.fromBill == undefined){
+		if($scope.passData.fromBill === undefined){
 			$scope.paymentData.reservation_card.payment_method_used = "CC";
 			$scope.paymentData.reservation_card.payment_details.card_type_image = $scope.swipedCardDataToSave.cardType.toLowerCase()+".png";
 			$scope.paymentData.reservation_card.payment_details.card_number = $scope.swipedCardDataToSave.cardNumber.slice(-4);
@@ -633,7 +633,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.renderData.creditCardType = swipedCardDataToSave.cardType.toLowerCase();
 		$scope.renderData.cardExpiry = swipedCardDataToSave.cardExpiryMonth+"/"+swipedCardDataToSave.cardExpiryYear;
 		$scope.renderData.endingWith = swipedCardDataToSave.cardNumber.slice(-4);
-		if($scope.passData.details.swipedDataToRenderInScreen.swipeFrom != "guestCard"){
+		if($scope.passData.details.swipedDataToRenderInScreen.swipeFrom !== "guestCard"){
 			$scope.isNewCardAdded = true;
 		}
 		

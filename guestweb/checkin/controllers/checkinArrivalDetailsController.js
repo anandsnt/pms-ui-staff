@@ -34,10 +34,10 @@
 		else{
 		//change format to 24 hours
 		 var hour = parseInt($scope.stayDetails.hour);
-		 if ($scope.stayDetails.primeTime == 'PM' && hour < 12) {
+		 if ($scope.stayDetails.primeTime === 'PM' && hour < 12) {
 		 	hour = hour+ 12;		      
 		 }
-		 else if ($scope.stayDetails.primeTime == 'AM' && hour == 12) {
+		 else if ($scope.stayDetails.primeTime === 'AM' && hour === 12) {
 		    hour = hour-12;
 		 }
 		 hour = (hour <10)?("0"+hour): hour

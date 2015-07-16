@@ -76,7 +76,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
             $scope.refreshScroller();
         };
         $scope.isExpandedRow = function (idx) {
-            if (idx == $scope.currentExpandedRow) {
+            if (idx === $scope.currentExpandedRow) {
                 return true;
             } else {
                 return false;
@@ -84,7 +84,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
         };
         $scope.getLimitRow = function (rowIndex) {
             if (rowIndex) {
-                if (rowIndex == $scope.currentExpandedRow) {
+                if (rowIndex === $scope.currentExpandedRow) {
                     return 8;
                 } else {
                     return 3;
@@ -226,7 +226,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
         $scope.everyRestriction = [];
         $scope.getRestrictionsForDateRoomType = function(date, room_type_name){
           for (var x in $scope.everyRestriction){
-            if ($scope.everyRestriction[x].date == date){
+            if ($scope.everyRestriction[x].date === date){
                 for (var i in $scope.everyRestriction[x].room_types){
                     if (room_type_name === $scope.everyRestriction[x].room_types[i].room_type.name){
                         return $scope.everyRestriction[x].room_types[i].restriction_overrides;
@@ -261,7 +261,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
 
 
 
-                    if ($scope.ratesRoomsToggle == 'ROOMS'){
+                    if ($scope.ratesRoomsToggle === 'ROOMS'){
                                     $scope.everyRestriction = $scope.calendarData.room_type_restrictions;
                             var d, rm_type, r_date, rm_type_name;
                             $scope.calendarData.data_new = [];
@@ -336,7 +336,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                 //Set the current business date value to the service. Done for calculating the history dates
                 RateMngrCalendarSrv.businessDate = $rootScope.businessDate;
 
-                if ($scope.calendarMode == "RATE_VIEW") {
+                if ($scope.calendarMode === "RATE_VIEW") {
                     $scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, calculateRateViewCalGetParams(), calenderDataFetchSuccess)
                             .then(finalizeCapture);
 
@@ -492,7 +492,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
             var restrictionTypes = $scope.calendarData.restriction_types;
             var restrictionTypeId = "";
             for (var i = 0, keys = Object.keys(restrictionTypes), j = keys.length; i < j; i++) {
-                if (restrictionTypes[keys[i]].value == "CLOSED") {
+                if (restrictionTypes[keys[i]].value === "CLOSED") {
                     restrictionTypeId = restrictionTypes[keys[i]].id;
                     break;
                 }
@@ -559,7 +559,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
             $scope.popupData.selectedRoomType = roomType;
             $scope.popupData.fromRoomTypeView = false;
 
-            if (type == 'ROOM_TYPE') {
+            if (type === 'ROOM_TYPE') {
                 $scope.popupData.fromRoomTypeView = true;
             }
 

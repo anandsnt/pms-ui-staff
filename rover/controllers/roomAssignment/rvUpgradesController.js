@@ -41,12 +41,12 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 	*/
 	$scope.showMaximumOccupancyDialog = function(index){
 		var showOccupancyMessage = false;
-		if($scope.upgradesList[index].room_max_occupancy != "" && $scope.reservation_occupancy != null){
+		if($scope.upgradesList[index].room_max_occupancy !== "" && $scope.reservation_occupancy !== null){
 				if(parseInt($scope.upgradesList[index].room_max_occupancy) < $scope.reservation_occupancy){
 					showOccupancyMessage = true;
 					$scope.max_occupancy = parseInt($scope.upgradesList[index].room_max_occupancy);
 			}
-		}else if($scope.upgradesList[index].room_type_max_occupancy != "" && $scope.reservation_occupancy != null){
+		}else if($scope.upgradesList[index].room_type_max_occupancy !== "" && $scope.reservation_occupancy !== null){
 				if(parseInt($scope.upgradesList[index].room_type_max_occupancy) < $scope.reservation_occupancy){
 					showOccupancyMessage = true;
 					$scope.max_occupancy = parseInt($scope.upgradesList[index].room_type_max_occupancy);
@@ -208,7 +208,7 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 	*/
 	$scope.getRoomStatusClass = function(room){
 		var statusClass = "ready";
-		if(room.is_oos == "true"){
+		if(room.is_oos === "true"){
 			return "room-grey";
 		}
 		return statusClass;

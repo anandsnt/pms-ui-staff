@@ -10,25 +10,25 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                     var dataDict = {};
                     oldType = $stateParams.type;
 
-                    if( oldType != null && oldType!= '' && oldType !="RESET") {
-                        if(oldType == "LATE_CHECKOUT"){
+                    if( oldType !== null && oldType!== '' && oldType !=="RESET") {
+                        if(oldType === "LATE_CHECKOUT"){
                             dataDict.is_late_checkout_only = true;
-                        } else if(oldType == "QUEUED_ROOMS"){
+                        } else if(oldType === "QUEUED_ROOMS"){
                         	dataDict.is_queued_rooms_only = true;
                         }
-                        else if(oldType == "VIP"){
+                        else if(oldType === "VIP"){
                             dataDict.vip = true;
                         }
                         else{
                             dataDict.status = oldType;
                         }
                         //The pagination should be set to page=1. for navigations from dashboard buttons.
-                        if($stateParams.from_page == "DASHBOARD"){
+                        if($stateParams.from_page === "DASHBOARD"){
                             RVSearchSrv.page = 1;
                         }
                         //calling the webservice
                         return RVSearchSrv.fetch(dataDict, $stateParams.useCache);
-                    } else if ( !!$stateParams.useCache && oldType !="RESET") {
+                    } else if ( !!$stateParams.useCache && oldType !=="RESET") {
                         return RVSearchSrv.fetch({}, $stateParams.useCache);
                     } else {
                         var results = [];

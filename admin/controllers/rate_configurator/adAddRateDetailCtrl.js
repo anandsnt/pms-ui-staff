@@ -91,7 +91,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
              */
             angular.forEach($scope.rateTypesDetails.depositPolicies, function(depositPolicy) {
                 var symbol = (depositPolicy.amount_type === "amount") ? '$' : '%';
-                if (symbol == '%') {
+                if (symbol === '%') {
                     depositPolicy.displayData = depositPolicy.name + "   " + "(" + depositPolicy.amount + symbol + ")";
                 } else {
                     depositPolicy.displayData = depositPolicy.name + "   " + "(" + symbol + depositPolicy.amount + ")";
@@ -99,7 +99,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             });
             angular.forEach($scope.rateTypesDetails.cancelationPenalties, function(cancelationPenalty) {
                 var symbol = (cancelationPenalty.amount_type === "amount") ? '$' : '%';
-                if (symbol == '%') {
+                if (symbol === '%') {
                     cancelationPenalty.displayData = cancelationPenalty.name + "   " + "(" + cancelationPenalty.amount + symbol + ")";
                 } else {
                     cancelationPenalty.displayData = cancelationPenalty.name + "   " + "(" + symbol + cancelationPenalty.amount + ")";

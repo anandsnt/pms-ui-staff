@@ -73,10 +73,10 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             //restriction type
             $scope.restrictionDetails = rateInitialData.restrictionDetails;
             angular.forEach($scope.restrictionDetails, function(restrictionType) {
-                if (restrictionType.value == 'CANCEL_PENALTIES') {
+                if (restrictionType.value === 'CANCEL_PENALTIES') {
                     $scope.cancelPenaltiesActivated = (restrictionType.activated) ? true : false;
                 }
-                if (restrictionType.value == 'DEPOSIT_REQUESTED') {
+                if (restrictionType.value === 'DEPOSIT_REQUESTED') {
                     $scope.depositRequiredActivated = (restrictionType.activated) ? true : false;
                 }
             });
@@ -84,16 +84,16 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             //selected restrictions
             angular.forEach(rateInitialData.selectedRestrictions, function(selectedRestriction) {
                 if (selectedRestriction.activated) {
-                    if (selectedRestriction.value == 'MAX_ADV_BOOKING') {
+                    if (selectedRestriction.value === 'MAX_ADV_BOOKING') {
                         $scope.maxAdvancedBookingActivated = true;
                     }
-                    if (selectedRestriction.value == 'MAX_STAY_LENGTH') {
+                    if (selectedRestriction.value === 'MAX_STAY_LENGTH') {
                         $scope.maxStayLengthActivated = true;
                     }
-                    if (selectedRestriction.value == 'MIN_ADV_BOOKING') {
+                    if (selectedRestriction.value === 'MIN_ADV_BOOKING') {
                         $scope.minAdvancedBookingActivated = true;
                     }
-                    if (selectedRestriction.value == 'MIN_STAY_LENGTH') {
+                    if (selectedRestriction.value === 'MIN_STAY_LENGTH') {
                         $scope.minStayLengthActivated = true;
                     }
                 }
@@ -141,8 +141,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 angular.forEach(data.room_types, function(room_type) {
                     $scope.basedonRateData.room_type_ids.push(room_type.id);
                 });
-                $scope.basedonRateData.rate_type = (data.rate_type != null) ? data.rate_type.id : ''
-                $scope.basedonRateData.based_on = (data.based_on != null) ? data.based_on.id : '';
+                $scope.basedonRateData.rate_type = (data.rate_type !== null) ? data.rate_type.id : ''
+                $scope.basedonRateData.based_on = (data.based_on !== null) ? data.based_on.id : '';
                 //Broadcast an event to child classed to notify that the based on rates are changed.
                 $scope.$broadcast('basedonRatesChanged');
                 $scope.$emit('hideLoader');
@@ -233,8 +233,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 $scope.rateData.room_type_ids.push(room_type.id);
             });
             $scope.rateData.date_ranges = data.date_ranges;
-            $scope.rateData.rate_type.id = (data.rate_type != null) ? data.rate_type.id : '';
-            $scope.rateData.rate_type.name = (data.rate_type != null) ? data.rate_type.name : '';
+            $scope.rateData.rate_type.id = (data.rate_type !== null) ? data.rate_type.id : '';
+            $scope.rateData.rate_type.name = (data.rate_type !== null) ? data.rate_type.name : '';
             $scope.rateData.addOns = data.addons;
             $scope.rateData.charge_code_id = data.charge_code_id;
             $scope.rateData.currency_code_id = data.currency_code_id;
@@ -304,7 +304,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
         $scope.$on('deletedAllDateRangeSets', function(e, dateRangeId) {
             angular.forEach($scope.rateData.date_ranges, function(dateRange, index) {
-                if (dateRange.id == dateRangeId) {
+                if (dateRange.id === dateRangeId) {
                     $scope.rateData.date_ranges.splice(index, 1);
                 }
             });

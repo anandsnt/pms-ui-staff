@@ -31,7 +31,7 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
 
     //Special case: Search by swipe in back navigation. We have to display the card number as well.
     //So we store the title as sucn in $vault
-    if($stateParams.type == "BY_SWIPE"){
+    if($stateParams.type === "BY_SWIPE"){
       heading = $vault.get('title');
     } else {
       if ($stateParams.type in headingDict) {
@@ -43,7 +43,7 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
     }
 
     // set up a back button
-    if ($stateParams.type != '' && $stateParams.type != null) {
+    if ($stateParams.type !== '' && $stateParams.type !== null) {
       $rootScope.setPrevState = {
         title: $filter('translate')('DASHBOARD'),
         // name: 'rover.dashboard',
@@ -111,7 +111,7 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
     */      
     $scope.$on("$viewContentLoaded", function(event) {
       totalNgIncludeRequested--;
-      if(totalNgIncludeRequested == 0){
+      if(totalNgIncludeRequested === 0){
         $scope.$emit('hideLoader');
       }
       setTimeout(function() {

@@ -64,7 +64,7 @@ sntRover.controller('rvActivityCtrl', [
 		 *@return - Boolean		
 		 */
 		$scope.isOldValue = function(value){
-	        if(value =="" || typeof value == "undefined" || value == null){
+	        if(value ==="" || typeof value === "undefined" || value === null){
 	            return false;
 	        	}else{
 	            return true;
@@ -77,7 +77,7 @@ sntRover.controller('rvActivityCtrl', [
 		 */
 		$scope.isPrevButtonDisabled = function(){
 			var isDisabled = false;
-	        if ($scope.page == 1) {
+	        if ($scope.page === 1) {
 	            isDisabled = true;
 	        }	        
 	        return isDisabled;			

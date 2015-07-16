@@ -251,7 +251,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			var postData = dclone($scope.prefetchData, unwantedKeys);
 
 			//Include Charge code Link with List when selected_charge_code_type is not "TAX".
-			if ($scope.prefetchData.selected_charge_code_type != "1") {
+			if ($scope.prefetchData.selected_charge_code_type !== "1") {
 				postData.selected_link_with = selected_link_with;
 			}
 			// Removing unwanted params from linked_charge_codes list.
@@ -404,7 +404,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 * To set the selected payment type based on the id and cc_type from the dropdown.
 		 */
 		$scope.changeSelectedPaymentType = function() {
-			if($scope.selected_payment_type.id != ""){
+			if($scope.selected_payment_type.id !== ""){
 				$scope.prefetchData.selected_payment_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].value;
 				$scope.prefetchData.is_cc_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].is_cc_type;
 			}

@@ -110,7 +110,7 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
             }
         });
         $scope.hasFailedMsg = function(response){
-            if (response.status == 'failure'){
+            if (response.status === 'failure'){
                return true;
             } else {
                 return false;
@@ -120,7 +120,7 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
             var errorMsg = [];
             var formatStr = function(s){
                 var tempStr = '';
-                if (s.indexOf('_') != -1){
+                if (s.indexOf('_') !== -1){
                     //we pull out the ' _ ', and replace with a space, and make string uppercase
                     tempStr = s.split('_');
                     var fullStr = '';

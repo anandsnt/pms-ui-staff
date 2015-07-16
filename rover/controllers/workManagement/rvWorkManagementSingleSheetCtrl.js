@@ -31,7 +31,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			title: ('Work Management'),
 			name: 'rover.workManagement.start'
 		}
-		if ($stateParams.from == 'multiple') {
+		if ($stateParams.from === 'multiple') {
 			prevState = {
 				title: ('Manage Worksheets'),
 				name: 'rover.workManagement.multiSheet'
@@ -191,9 +191,9 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				completed: 0
 			}
 			_.each($scope.singleState.assigned, function(room) {
-				if ($scope.departureClass[room.reservation_status] == "check-out") {
+				if ($scope.departureClass[room.reservation_status] === "check-out") {
 					$scope.singleState.summary.departures++;
-				} else if ($scope.departureClass[room.reservation_status] == "inhouse") {
+				} else if ($scope.departureClass[room.reservation_status] === "inhouse") {
 					$scope.singleState.summary.stayovers++;
 				}
 				if (room.hk_complete) {
@@ -260,12 +260,12 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			addPrintOrientation();
 
 			/*
-			*	=====[ READY TO PRINT ]=====
+			*	======[ READY TO PRINT ]======
 			*/
 			// this will show the popup with full bill
 			$timeout(function() {
 				/*
-				*	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+				*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
 				*/
 
 				$window.print();
@@ -275,7 +275,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			}, 100);
 
 			/*
-			*	=====[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]=====
+			*	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
 			*/
 
 			// remove the orientation after similar delay
@@ -341,7 +341,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				},
 				onSaveSuccess = function(data) {
 					saveCount--;
-					if ( saveCount == 0 ) {
+					if ( saveCount === 0 ) {
 						$scope.$emit("hideLoader");
 						$scope.clearErrorMessage();
 
@@ -352,7 +352,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 					$scope.errorMessage = errorMessage;
 
 					saveCount--;
-					if ( saveCount == 0 ) {
+					if ( saveCount === 0 ) {
 						$scope.$emit("hideLoader");
 						afterAPIcall();
 					};
@@ -526,7 +526,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 
 		$scope.idToVal = function(id, key, source) {
 			var match = _.find(source, function(item) {
-				return item.id == id;
+				return item.id === id;
 			});
 
 			return !!match && match.hasOwnProperty(key) ? match[key] : '';

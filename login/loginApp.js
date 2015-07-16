@@ -50,7 +50,7 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	 	}
 
 	 	localStorage.email = $scope.data.email;
-	 	if(data.token!=''){
+	 	if(data.token!==''){
 	 		$state.go('resetpassword', {token: data.token, notifications: data.notifications});
 	 	} else {
 	 		 $scope.$emit("signingIn");
@@ -87,7 +87,7 @@ login.controller('resetCtrl',['$scope', 'resetSrv', '$window', '$state', '$state
 	 $scope.data = {};
 	 $scope.data.token = $stateParams.token;
 	
-	 if($stateParams.notifications.count != ""){
+	 if($stateParams.notifications.count !== ""){
 	 	$scope.errorMessage = [$stateParams.notifications];
 	 } else {
 	 	$scope.errorMessage = "";

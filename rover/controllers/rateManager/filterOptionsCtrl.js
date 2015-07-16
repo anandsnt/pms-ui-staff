@@ -213,7 +213,7 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
         //if no replace value is passed, it returns an empty string
 
         var escapeNull = function(value) {
-            var valueToReturn = ((value == null || typeof value == 'undefined') ? '' : value);
+            var valueToReturn = ((value === null || typeof value === 'undefined') ? '' : value);
             return valueToReturn;
         };
 
@@ -242,7 +242,7 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
          * if not fouund in the data, it will request for webservice
          */
         var displayFilteredResults = function() {
-            if ($scope.companySearchText !== '' && $scope.companyLastSearchText != $scope.companySearchText) {
+            if ($scope.companySearchText !== '' && $scope.companyLastSearchText !== $scope.companySearchText) {
 
                 var successCallBackOfCompanySearch = function(data) {
                     $scope.$emit("hideLoader");
@@ -276,7 +276,7 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
 
         $scope.deleteCards = function(id) {
             angular.forEach($scope.currentFilterData.name_cards, function(item, index) {
-                if (item.id == id) {
+                if (item.id === id) {
                     $scope.currentFilterData.name_cards.splice(index, 1);
                 }
             });
@@ -289,7 +289,7 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
                 filterData.rates_selected_list = [];
             } else {
                 angular.forEach(filterData.rates_selected_list, function(item, index) {
-                    if (item.id == id) {
+                    if (item.id === id) {
                         filterData.rates_selected_list.splice(index, 1);
                     }
                 });

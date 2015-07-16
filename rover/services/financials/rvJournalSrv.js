@@ -138,7 +138,7 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 			
 			angular.forEach(data.payment_types,function(payment_types, index1) {
 
-				if(payment_types.payment_type == "Credit Card"){
+				if(payment_types.payment_type === "Credit Card"){
 		            angular.forEach(payment_types.credit_cards,function(credit_cards, index2) {
 		            	credit_cards.active = false ;
 		            	credit_cards.page_no = 1;

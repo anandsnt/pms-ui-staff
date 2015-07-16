@@ -23,7 +23,7 @@ var CardOperation = function(){
           					'RVCardReadIsEncrypted': 0
 						  };
 
-			if (typeof data != 'undefined'){ carddata = data;}
+			if (typeof data !== 'undefined'){ carddata = data;}
 			successCallBack(carddata, successCallBackParameters);
 		};
 
@@ -62,22 +62,22 @@ var CardOperation = function(){
 		var action = options["action"] ? options["action"] : null;
 		var arguments = options["arguments"] ? options["arguments"] : [];
 		
-		if(successCallBack == null){
+		if(successCallBack === null){
 			return false;
 		}
-		else if(failureCallBack == null){
+		else if(failureCallBack === null){
 			return false;
 		}
-		else if(service == null){
+		else if(service === null){
 			return false;
 		}
-		else if(action == null){
+		else if(action === null){
 			return false;
 		}
 		else{
 			//alert(cordova);
 			//alert(JSON.stringify(cordova));
-			//alert("----service------"+service+"===action======"+action+"=====arguments========"+arguments);
+			//alert("----service------"+service+"===action======"+action+"======arguments========="+arguments);
 			
 			
 			//calling cordova service

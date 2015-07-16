@@ -65,7 +65,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 
      $scope.savePaymentDetails = function(){
 
-     		if($scope.saveData.payment_type != "CC"){
+     		if($scope.saveData.payment_type !== "CC"){
      			$scope.savePayment();
      			return;
      		}

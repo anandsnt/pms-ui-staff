@@ -185,13 +185,13 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 				};
 
 			if ( $rootScope.isSingleDigitSearch ) {
-				if (forced || $scope.query != $_lastQuery) {
+				if (forced || $scope.query !== $_lastQuery) {
 					_makeCall();
 				};
 			} else {
 				if ( forced ||
 						($scope.query.length <= 2 && $scope.query.length < $_lastQuery.length) ||
-						($scope.query.length > 2 && $scope.query != $_lastQuery)
+						($scope.query.length > 2 && $scope.query !== $_lastQuery)
 				) {
 					_makeCall();
 				};

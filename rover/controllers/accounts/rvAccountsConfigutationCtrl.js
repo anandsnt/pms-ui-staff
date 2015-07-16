@@ -127,12 +127,12 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			$scope.errorMessage = '';
 
 			//allow to swith to "transactions" tab only if the user has its permission
-			if (tab == "TRANSACTIONS" && !$scope.hasPermissionToViewTransactionsTab()) {
+			if (tab === "TRANSACTIONS" && !$scope.hasPermissionToViewTransactionsTab()) {
 				$scope.errorMessage = ["Sorry, you don't have the permission to access the transactions"];
 				return;
 			}
 
-			var isInAccountsTab = $scope.accountConfigData.activeTab == "ACCOUNT";
+			var isInAccountsTab = $scope.accountConfigData.activeTab === "ACCOUNT";
 
 			// we will restrict tab swithing if we are in add mode
 			var tryingFromAccountsToOther = isInAccountsTab && tab !== 'ACCOUNT';

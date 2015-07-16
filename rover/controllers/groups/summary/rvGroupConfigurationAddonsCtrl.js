@@ -30,7 +30,7 @@ sntRover.controller('rvGroupConfigurationAddonsCtrl', [
 
 		$scope.selectAddonCategory = function(category, event) {
 			event.stopPropagation();
-			if (category != '') {
+			if (category !== '') {
 				$scope.activeAddonCategoryId = category.id;
 				$scope.fetchAddons(category.id);
 			} else {
@@ -58,7 +58,7 @@ sntRover.controller('rvGroupConfigurationAddonsCtrl', [
 				$scope.addons = [];
 				$scope.$emit("hideLoader");
 				angular.forEach(data.results, function(item) {
-					if (item != null) {
+					if (item !== null) {
 						var addonItem = {};
 						addonItem.id = item.id;
 						addonItem.isBestSeller = item.bestseller;
@@ -68,11 +68,11 @@ sntRover.controller('rvGroupConfigurationAddonsCtrl', [
 						addonItem.price = item.amount;
 						addonItem.taxes = item.taxes;
 						addonItem.stay = "";
-						if (item.amount_type != "") {
+						if (item.amount_type !== "") {
 							addonItem.stay = item.amount_type.description;
 						}
-						if (item.post_type != "") {
-							if (addonItem.stay != "") {
+						if (item.post_type !== "") {
+							if (addonItem.stay !== "") {
 								addonItem.stay += " / " + item.post_type.description
 							} else {
 								addonItem.stay = item.post_type.description
@@ -90,8 +90,8 @@ sntRover.controller('rvGroupConfigurationAddonsCtrl', [
 			}
 
 
-			var chargeGroupId = paramChargeGrpId == undefined ? '' : paramChargeGrpId;
-			var is_bestseller = paramChargeGrpId == undefined ? true : false;
+			var chargeGroupId = paramChargeGrpId === undefined ? '' : paramChargeGrpId;
+			var is_bestseller = paramChargeGrpId === undefined ? true : false;
 
 			$scope.callAPI(RVReservationAddonsSrv.fetchAddons, {
 				successCallBack: successCallBackFetchAddons,

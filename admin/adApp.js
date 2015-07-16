@@ -102,7 +102,7 @@ function($rootScope, $scope, $attrs, $location) {
 	//store basic details as rootscope variables
 	$rootScope.adminRole = $attrs.adminRole;
 	$rootScope.hotelId = $attrs.hotelId;
-	$rootScope.isPmsConfigured = ($attrs.isPmsConfigured == 'true') ? true : false;
+	$rootScope.isPmsConfigured = ($attrs.isPmsConfigured === 'true') ? true : false;
 
 }]);
 

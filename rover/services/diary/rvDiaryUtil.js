@@ -295,8 +295,8 @@ sntRover
             if ( mm > 45 && hh + 1 < 12 ) {
                 hh += 1;
                 mm = 0;
-            } else if ( mm > 45 && hh + 1 == 12 ) {
-                if ( ampm == 'AM' ) {
+            } else if ( mm > 45 && hh + 1 === 12 ) {
+                if ( ampm === 'AM' ) {
                     hh  = 12;
                     mm = 0;
                     ampm    = 'PM';
@@ -305,11 +305,11 @@ sntRover
                     mm = 0;
                     ampm    = 'AM';
                 }
-            } else if ( mm == 15 || mm == 30 || mm == 45 ) {
+            } else if ( mm === 15 || mm === 30 || mm === 45 ) {
                 mm += 15;
-            } else if ( Math.max(mm, 15) == 15 ) {
+            } else if ( Math.max(mm, 15) === 15 ) {
                 mm = 15;
-            } else if ( Math.max(mm, 30) == 30 ) {
+            } else if ( Math.max(mm, 30) === 30 ) {
                 mm = 30;
             } else {
                 mm = 45;
@@ -326,7 +326,7 @@ sntRover
             return {
         		'start_date'   : start_date,
         		'__start_date' : __start_date,
-        		'arrival_time' : (hh < 10 ? '0' + hh : hh) + ':' + (mm == 0 ? '00' : mm)
+        		'arrival_time' : (hh < 10 ? '0' + hh : hh) + ':' + (mm === 0 ? '00' : mm)
         	}
         };
 

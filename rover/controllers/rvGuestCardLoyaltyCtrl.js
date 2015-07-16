@@ -29,7 +29,7 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','$rootScope','RVGue
         }
         
 	$scope.$watch(
-		function() { return ($scope.$parent.$parent.guestCardData.userId != '')?true:false; },
+		function() { return ($scope.$parent.$parent.guestCardData.userId !== '')?true:false; },
 		function(gustDataReady) { if(gustDataReady)$scope.init(); }
 		);
 
@@ -52,7 +52,7 @@ $rootScope.$on('reload-loyalty-section-data',function(evt,data){
 $scope.checkForHotelLoyaltyLevel = function(){
     if ($scope.$parent.$parent.guestCardData.use_hlp){
 	for(var i = 0; i < $scope.loyaltyData.userMemberships.hotelLoyaltyProgram.length; i++){
-		if($scope.loyaltyData.userMemberships.hotelLoyaltyProgram.membership_level != ""){
+		if($scope.loyaltyData.userMemberships.hotelLoyaltyProgram.membership_level !== ""){
 			$scope.$emit('loyaltyLevelAvailable', $scope.loyaltyData.userMemberships.hotelLoyaltyProgram[i].membership_level);
 			break;
 		}
@@ -105,10 +105,10 @@ $scope.showDeleteModal =  function(id, index, loyaltyProgram){
 
 $scope.$on("loyaltyProgramAdded",function(e, data, source){
 
-	if(typeof $scope.loyaltyData == 'undefined')
+	if(typeof $scope.loyaltyData === 'undefined')
 		return;
 	else{
-		if(data.membership_class == "HLP"){
+		if(data.membership_class === "HLP"){
 			$scope.loyaltyData.userMemberships.hotelLoyaltyProgram.push(data);
 		}else{
 			$scope.loyaltyData.userMemberships.frequentFlyerProgram.push(data);
@@ -118,10 +118,10 @@ $scope.$on("loyaltyProgramAdded",function(e, data, source){
 });
 
 $scope.loyaltyProgramDeleted = function(id, index, loyaltyProgram){
-	if(typeof $scope.loyaltyData == 'undefined')
+	if(typeof $scope.loyaltyData === 'undefined')
 		return;
 
-	if(loyaltyProgram == 'FFP'){
+	if(loyaltyProgram === 'FFP'){
 		$scope.loyaltyData.userMemberships.frequentFlyerProgram.splice(index, 1);
 	}else{
 		$scope.loyaltyData.userMemberships.hotelLoyaltyProgram.splice(index, 1);

@@ -38,7 +38,7 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope','$rootScope','$
 					return;
 				}
 			}
-			if($scope.data.printBoxHeight == resizableMinHeight || $scope.data.printBoxHeight == resizableMaxHeight) {
+			if($scope.data.printBoxHeight === resizableMinHeight || $scope.data.printBoxHeight === resizableMaxHeight) {
 				if ($scope.data.isDrawerOpened)	$scope.closeDrawer();
 				else $scope.openDrawer();
 			}
@@ -96,12 +96,12 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope','$rootScope','$
         addPrintOrientation();
         
         /*
-         *  =====[ READY TO PRINT ]=====
+         *  ======[ READY TO PRINT ]======
          */
         // this will show the popup with full bill
         $timeout(function() {
             /*
-             *  =====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+             *  ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
              */
 
             $window.print();
@@ -112,7 +112,7 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope','$rootScope','$
         }, 100);
 
         /*
-         *  =====[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]=====
+         *  ======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
          */
 
         // remove the orientation after similar delay

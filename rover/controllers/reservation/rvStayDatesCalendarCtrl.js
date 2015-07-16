@@ -71,10 +71,10 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			params.per_page = 81;
 			params.to_date = $filter('date')(toDate, $rootScope.dateFormatForAPI);
 			params.status = "";
-			if($scope.reservationData.travelAgent.id != ""){
+			if($scope.reservationData.travelAgent.id !== ""){
 				params.travel_agent_id = $scope.reservationData.travelAgent.id;
 			}
-			if($scope.reservationData.company.id != ""){
+			if($scope.reservationData.company.id !== ""){
 				params.company_id = $scope.reservationData.company.id;
 			}
 			//Initialise data
@@ -334,7 +334,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			rate.value = '';
 			if ($scope.roomTypeForCalendar === "" && $scope.calendarType === "ROOM_TYPE") {
 				return rate;
-			} else if(typeof availabilityDetails.room_rates.single != 'undefined') {
+			} else if(typeof availabilityDetails.room_rates.single !== 'undefined') {
 				rate.value = $rootScope.currencySymbol +
 					availabilityDetails.room_rates.single;
 				//Get the rate value iterating throught the rates array
@@ -401,7 +401,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 					calEvt.id = "check-in";
 					calEvt.className = "check-in";
 					//For inhouse reservations, we can not move the arrival date
-					if ($scope.reservationData.status != "CHECKEDIN" && $scope.reservationData.status != "CHECKING_OUT") {
+					if ($scope.reservationData.status !== "CHECKEDIN" && $scope.reservationData.status !== "CHECKING_OUT") {
 						calEvt.startEditable = "true";
 					}
 					calEvt.durationEditable = "false";
@@ -432,7 +432,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 					calEvt.startEditable = "true";
 					calEvt.durationEditable = "false";
 				/**Following are for dates prior to check-in and dates after checkout*/
-				} else if (($scope.calendarType === "BEST_AVAILABLE" && dateDetails[availabilityKey].room_type_availability.availability > 0) || ($scope.calendarType === "ROOM_TYPE" && $scope.roomTypeForCalendar != "" && dateDetails[availabilityKey].room_type_availability.availability > 0)) {
+				} else if (($scope.calendarType === "BEST_AVAILABLE" && dateDetails[availabilityKey].room_type_availability.availability > 0) || ($scope.calendarType === "ROOM_TYPE" && $scope.roomTypeForCalendar !== "" && dateDetails[availabilityKey].room_type_availability.availability > 0)) {
 					calEvt.className = "type-available";
 					calEvt.durationEditable = "false";
 					//TODO: verify class name
@@ -625,10 +625,10 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			params.per_page = 44;
 			params.to_date = $filter('date')(nextMonthLastVisibleDate, $rootScope.dateFormatForAPI);;
 			params.status = 'FETCH_ADDITIONAL';
-			if($scope.reservationData.travelAgent.id != ""){
+			if($scope.reservationData.travelAgent.id !== ""){
 				params.travel_agent_id = $scope.reservationData.travelAgent.id;
 			}
-			if($scope.reservationData.company.id != ""){
+			if($scope.reservationData.company.id !== ""){
 				params.company_id = $scope.reservationData.company.id;
 			}
 			$scope.invokeApi(RVStayDatesCalendarSrv.fetchAvailability, params, nextMonthDetailsFetchSuccess);
@@ -676,10 +676,10 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			var toDate = fetchedStartDate.setDate(fetchedStartDate.getDate() - 1);
 			params.to_date = $filter('date')(toDate, $rootScope.dateFormatForAPI);
 			params.status = 'FETCH_ADDITIONAL';
-			if($scope.reservationData.travelAgent.id != ""){
+			if($scope.reservationData.travelAgent.id !== ""){
 				params.travel_agent_id = $scope.reservationData.travelAgent.id;
 			}
-			if($scope.reservationData.company.id != ""){
+			if($scope.reservationData.company.id !== ""){
 				params.company_id = $scope.reservationData.company.id;
 			}
 			$scope.invokeApi(RVStayDatesCalendarSrv.fetchAvailability, params, prevMonthDetailsFetchSuccess);

@@ -38,7 +38,7 @@ var GlobalApp = function(){
     		var xhr=new XMLHttpRequest(); //TODO: IE support?
     		
     		xhr.onreadystatechange=function() {
-  				if (xhr.readyState==4 && xhr.status==200){
+  				if (xhr.readyState===4 && xhr.status===200){
   					that.fetchCompletedOfCordovaPlugins(xhr.responseText);
   				} else {
   					that.fetchFailedOfCordovaPlugins();

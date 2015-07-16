@@ -100,7 +100,7 @@ sntRover.service('rvMenuSrv',
 				});
 
 				// if it has submenu & none of them are visible we will not show that menu
-				if(hasSubMenu && subMenuVisibleCount != 0){
+				if(hasSubMenu && subMenuVisibleCount !== 0){
 					menuToReturn.push (menuItem);
 				}
 

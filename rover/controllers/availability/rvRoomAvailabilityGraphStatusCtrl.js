@@ -50,7 +50,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
         	navListNode.css({"left" :plottedChart.plotLeft, "width": plottedChart.plotSizeX});
         	var labelWidthToSet = 0;
         	$scope.graphWidth = getMaxSeriesLengthData() * 75;
-        	if(getMaxSeriesLengthData() != 0){
+        	if(getMaxSeriesLengthData() !== 0){
         		labelWidthToSet = (100/getMaxSeriesLengthData());
         	}
         	else{
@@ -123,7 +123,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 
  		$scope.clickedOnLegend = function(legendName, model){
  			for(var i = 0; i < plottedChart.series.length; i++){
- 				if(plottedChart.series[i].name == legendName){
+ 				if(plottedChart.series[i].name === legendName){
  					if (model){
  						plottedChart.series[i].hide();
  					}

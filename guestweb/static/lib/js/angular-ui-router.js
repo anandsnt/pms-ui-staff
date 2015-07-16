@@ -133,7 +133,7 @@ function normalize(keys, values) {
 
   forEach(keys, function (name) {
     var value = values[name];
-    normalized[name] = (value != null) ? String(value) : null;
+    normalized[name] = (value !== null) ? String(value) : null;
   });
   return normalized;
 }
@@ -155,7 +155,7 @@ function equalForKeys(a, b, keys) {
 
   for (var i=0; i<keys.length; i++) {
     var k = keys[i];
-    if (a[k] != b[k]) return false; // Not '===', values aren't necessarily normalized
+    if (a[k] !== b[k]) return false; // Not '===', values aren't necessarily normalized
   }
   return true;
 }
@@ -555,7 +555,7 @@ function $TemplateFactory(  $http,   $templateCache,   $injector) {
    */
   this.fromUrl = function (url, params) {
     if (isFunction(url)) url = url(params);
-    if (url == null) return null;
+    if (url === null) return null;
     else return $http
         .get(url, { cache: $templateCache })
         .then(function(response) { return response.data; });
@@ -664,7 +664,7 @@ function UrlMatcher(pattern) {
   var id, regexp, segment;
   while ((m = placeholder.exec(pattern))) {
     id = m[2] || m[3]; // IE[78] returns '' for unmatched groups instead of null
-    regexp = m[4] || (m[1] == '*' ? '.*' : '[^/]*');
+    regexp = m[4] || (m[1] === '*' ? '.*' : '[^/]*');
     segment = pattern.substring(last, m.index);
     if (segment.indexOf('?') >= 0) break; // we're into the search part
     compiled += quoteRegExp(segment) + '(' + regexp + ')';
@@ -787,12 +787,12 @@ UrlMatcher.prototype.format = function (values) {
   for (i=0; i<nPath; i++) {
     value = values[params[i]];
     // TODO: Maybe we should throw on null here? It's not really good style to use '' and null interchangeabley
-    if (value != null) result += encodeURIComponent(value);
+    if (value !== null) result += encodeURIComponent(value);
     result += segments[i+1];
   }
   for (/**/; i<nTotal; i++) {
     value = values[params[i]];
-    if (value != null) {
+    if (value !== null) {
       result += (search ? '&' : '?') + params[i] + '=' + encodeURIComponent(value);
       search = true;
     }
@@ -863,7 +863,7 @@ function $UrlRouterProvider(  $urlMatcherFactory) {
   // Returns a string that is a prefix of all strings matching the RegExp
   function regExpPrefix(re) {
     var prefix = /^\^((?:\\[^a-zA-Z0-9]|[^\\\[\]\^$*+?.()|{}]+)*)/.exec(re.source);
-    return (prefix != null) ? prefix[1].replace(/\\(.)/g, "$1") : '';
+    return (prefix !== null) ? prefix[1].replace(/\\(.)/g, "$1") : '';
   }
 
   // Interpolates matched values into a String.replace()-style pattern
@@ -1168,13 +1168,13 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
       var url = state.url;
 
       if (isString(url)) {
-        if (url.charAt(0) == '^') {
+        if (url.charAt(0) === '^') {
           return $urlMatcherFactory.compile(url.substring(1));
         }
         return (state.parent.navigable || root).url.concat(url);
       }
 
-      if ($urlMatcherFactory.isMatcher(url) || url == null) {
+      if ($urlMatcherFactory.isMatcher(url) || url === null) {
         return url;
       }
       throw new Error("Invalid url '" + url + "' in state '" + state + "'");
@@ -1318,7 +1318,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
     // Register the state in the global state list and with $urlRouter if necessary.
     if (!state[abstractKey] && state.url) {
       $urlRouterProvider.when(state.url, ['$match', '$stateParams', function ($match, $stateParams) {
-        if ($state.$current.navigable != state || !equalForKeys($match, $stateParams)) {
+        if ($state.$current.navigable !== state || !equalForKeys($match, $stateParams)) {
           $state.transitionTo(state, $match, { location: false });
         }
       }]);
@@ -1949,7 +1949,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
       if (options.absolute && url) {
         url = $location.protocol() + '://' + 
               $location.host() + 
-              ($location.port() == 80 || $location.port() == 443 ? '' : ':' + $location.port()) + 
+              ($location.port() === 80 || $location.port() === 443 ? '' : ':' + $location.port()) + 
               (!$locationProvider.html5Mode() && url ? '/' : '') + 
               url;
       }
@@ -2394,7 +2394,7 @@ function $StateRefDirective($state, $timeout) {
 
       element.bind("click", function(e) {
         var button = e.which || e.button;
-        if ((button === 0 || button == 1) && !e.ctrlKey && !e.metaKey && !e.shiftKey && !element.attr('target')) {
+        if ((button === 0 || button === 1) && !e.ctrlKey && !e.metaKey && !e.shiftKey && !element.attr('target')) {
           // HACK: This is to allow ng-clicks to be processed before the transition is initiated:
           $timeout(function() {
             $state.go(ref.state, params, { relative: base });
@@ -2573,7 +2573,7 @@ function $RouteProvider(  $stateProvider,    $urlRouterProvider) {
    */
   function when(url, route) {
     /*jshint validthis: true */
-    if (route.redirectTo != null) {
+    if (route.redirectTo !== null) {
       // Redirect, configure directly on $urlRouterProvider
       var redirect = route.redirectTo, handler;
       if (isString(redirect)) {
