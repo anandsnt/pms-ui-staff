@@ -480,7 +480,21 @@
 				</label>
 				<input type="text" ng-model="data.six_server_port" value="{{data.six_server_port}}">
 			</div>
-			
+			<div class="entry" ng-show="data.payment_gateway == 'sixpayments'">
+				<label for="six-server-port">
+					Six Payments Communication Protocol
+				</label>
+				<label class="radio" ng-class="{checked:data.payment_gateway == 'MLI'}">
+					<span class="icon-form icon-radio " ng-class="{checked:data.six_connection_mode == 'PORT'}"></span>
+					<input type="radio" ng-model="data.six_connection_mode" value="PORT" class="change-data">
+					TCP/IP Socket
+				</label>
+				<label class="radio" ng-class="{checked:data.payment_gateway == 'sixpayments'}">
+					<span class="icon-form icon-radio " ng-class="{checked:data.six_connection_mode == 'HTTPS'}"></span>
+					<input type="radio" ng-model="data.six_connection_mode" value="HTTPS" class="change-data">
+					HTTPS
+				</label>
+			</div>
 		</fieldset>
 		<fieldset class="holder right" ng-show="isAdminSnt && data.payment_gateway == 'MLI'" >
 			<div class="form-title">

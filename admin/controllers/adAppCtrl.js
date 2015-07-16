@@ -480,6 +480,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$rootScope.hotelTimeZoneFull = data.hotel_time_zone_full;
 			$rootScope.hotelTimeZoneAbbr = data.hotel_time_zone_abbr;
 
+			// CICO-18040
+			$rootScope.isFFPActive = data.is_ffp_active;
+			$rootScope.isHLPActive = data.is_hlp_active;
+			$rootScope.isPromoActive = data.is_promotion_active;
+
 			$rootScope.isRoomStatusImportPerRoomTypeOn = data.is_room_status_import_per_room_type_on ? data.is_room_status_import_per_room_type_on : false;
 
 			setupLeftMenu();
