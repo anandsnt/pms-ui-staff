@@ -8287,7 +8287,7 @@
                 .float;
 
                 .entry {
-                    #pixel-to-percent > .width(585, 1230);
+                    #pixel-to-percent > .width(595, 1230);
                     .pull-left;
 
                     input {
@@ -8307,7 +8307,7 @@
                 .float;
 
                 .entry {
-                    #pixel-to-percent > .width(585, 1230);
+                    #pixel-to-percent > .width(595, 1230);
                     .pull-left;
 
                     input {
@@ -8318,18 +8318,51 @@
                     }
 
                     &:last-child { #pixel-to-percent > .left-margin(40, 1230); }
-
                 }
             }
 
             &#select-rate {
-                .float;
+                .entry {
+                    margin-bottom: 10px;
+                    .float;
 
-                .checkbox {
-                    #pixel-to-percent > .width(585, 1230);
-                    .pull-left;
+                    .checkbox {
+                        line-height: 50px;
+                        margin-bottom: 0;
+                        
+                        #pixel-to-percent > .width(595, 1230);
+                        .pull-left;
 
-                    &:nth-child(even) { #pixel-to-percent > .left-margin(40, 1230); }
+                        .icon-form { top: 15px; }
+                    }
+
+                    .select {
+                        position: relative;
+                        margin: 0;
+                        #pixel-to-percent > .left-margin(40, 1230);
+                        #pixel-to-percent > .width(595, 1230);
+                        .pull-right;
+
+                        .label {
+                            position: absolute;
+                            top: 0;
+                            left: 20px;
+                            line-height: 50px;
+                        }
+
+                        select { 
+                            vertical-align: middle;
+                            font-size: 16px;
+                            line-height: 50px;
+                            padding-left: 65px;
+                            height: 50px;
+                            min-height: 50px;
+
+                            option { font-size: 16px; }
+                        }
+                    }
+
+                    &:last-child { margin-bottom: 0; }
                 }
             }
 
