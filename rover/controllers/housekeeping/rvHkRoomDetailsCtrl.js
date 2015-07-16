@@ -90,7 +90,7 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 		} else {
 			$scope.openTab = 'Guest';
 		}
-		
+
 		var getGuestStatusMapped = function(reservationStatus, isLateCheckout) {
 			var viewStatus = "";
 			//If the guest is opted for late checkout

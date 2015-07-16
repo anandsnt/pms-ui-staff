@@ -501,7 +501,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			if( $scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id ){
 				return false;
 			};
-		
+
 			// TODO : This following LOC has to change if the room number changes to an array
 			// to handle multiple rooms in future
 			if ($rootScope.isStandAlone) {
@@ -834,7 +834,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			$scope.reservationParentData.arrivalDate = newArrivalDate;
 			$scope.reservationParentData.departureDate = newDepartureDate;
 			$scope.reservationParentData.rooms[0].stayDates = newStayDates;
-			
+
 			//If it is a group reservation, which has extended the stay beyond the group staydates, then we will be taking the user to the room and rates screen after confirming the staydates
 			if($scope.stayDatesExtendedForOutsideGroup){
 				console.log("inside");
@@ -956,7 +956,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
     	authInProgress();
 
     	setTimeout(function(){
-	
+
 	    	ngDialog.open({
 				template: '/assets/partials/reservation/rvManualAuthorizationProcess.html',
 				className: '',

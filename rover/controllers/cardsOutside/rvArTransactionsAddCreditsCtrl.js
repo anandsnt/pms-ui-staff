@@ -2,11 +2,11 @@ sntRover.controller('RVArTransactionsAddCreditsController',['$scope','$rootScope
 
     //inheriting some useful things
     BaseCtrl.call(this, $scope);
-    
+
     $scope.existingCreditAmount = $scope.arTransactionDetails.available_credit;
     $scope.addedCreditAmount = '';
     $scope.selectedSymbol = '+';
-    
+
     // save button click to update credit amount
     $scope.savebuttonClick = function(){
 
@@ -35,16 +35,16 @@ sntRover.controller('RVArTransactionsAddCreditsController',['$scope','$rootScope
 
         $scope.invokeApi(RVCompanyCardSrv.addCreditAmount, params, addCreditAmountSuccess, failure);
     };
-    
+
     // upon entering credit amount
     $scope.addCreditAmount = function(){
-        
+
         var totalCreditAmount = parseFloat(parseFloat($scope.existingCreditAmount) + parseFloat($scope.selectedSymbol + $scope.addedCreditAmount)).toFixed(2);
         if(totalCreditAmount === '-0.00') totalCreditAmount = parseFloat('0.00').toFixed(2);
 
         $scope.totalCreditAmount = totalCreditAmount;
     };
 
-   
+
 
 }]);

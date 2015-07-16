@@ -49,9 +49,9 @@ console.log($scope.encoderTypes);
 			$scope.data.roomNumber = $scope.reservationData.reservation_card.room_number;
 
 		}
-		
+
     	if($scope.data.is_late_checkout) $scope.data.late_checkout_time = $scope.reservationData.reservation_card.late_checkout_time;
-    	
+
 		var statusMessage = $filter('translate')('KEY_CONNECTED_STATUS');
     	that.setStatusAndMessage(statusMessage, 'success');
     	// To check reservation status and select corresponding texts and classes.
@@ -71,7 +71,7 @@ console.log($scope.encoderTypes);
 			$scope.data.colorCodeClassForClose = 'red';
 		}
 		//TODO: include late checkout scenario
-		
+
 		//Based on different status, we switch between the views
 		$scope.deviceConnecting = false;
 		$scope.showPrintKeyOptions = false;
@@ -88,12 +88,12 @@ console.log($scope.encoderTypes);
 		that.numOfKeys = 0;
 		that.printKeyStatus = [];
 		that.isAdditional = false;
-		
+
 		//whether we need to create smartband along with key creation
 		that.isSmartbandCreateWithKeyWrite = $scope.isSmartbandCreateWithKeyWrite; //coming from popup initialization
 		//variable to maintain last successful ID from card reader, will use for smartband creation
 		that.lastSuccessfulCardIDReaded = '';
-                
+
                 if ($scope.keyType === 'New'){
                     $scope.buttonText = $filter('translate')('KEY_PRINT_BUTTON_TEXT');
                 } else {
@@ -106,7 +106,7 @@ console.log($scope.encoderTypes);
 			//Initally we check if the device is connected
 			$scope.showDeviceConnectingMessge();
 		}
-		
+
 
 	};
 
@@ -193,7 +193,7 @@ console.log($scope.encoderTypes);
                     } else {
                         $scope.buttonText = $filter('translate')('KEY_DUPLICATE_BUTTON_TEXT_KEY1');
                     }
-                        
+
 		}
 		// 'printKeyStatus' is the dictionary used to monitor the printing & writing key status
 		var elementToPut = {};
@@ -237,7 +237,7 @@ console.log($scope.encoderTypes);
 		}
 
 	};
-	
+
 	that.showCardInfoFetchFailedMsg = function(errorObject){
 		$scope.$emit('hideLoader');
 		//Asynchrounous action. so we need to notify angular that a change has occured.
@@ -253,7 +253,7 @@ console.log($scope.encoderTypes);
 		$scope.$emit('hideLoader');
 		that.setStatusAndMessage($filter('translate')('KEY_GETTING_KEY_IMAGE_STATUS'), 'pending');
 		var reservationId = '';
-		
+
 		if($scope.viewFromBillScreen){
 			reservationId = $scope.reservationBillData.reservation_id;
 		} else {
@@ -272,7 +272,7 @@ console.log($scope.encoderTypes);
 	    	postParams.card_info = "";
 
 	    }
-            
+
         if ($scope.keyType === 'Duplicate'){
             postParams.is_additional = true;
         }
@@ -370,7 +370,7 @@ console.log($scope.encoderTypes);
 				}
 
 
-				
+
 			},
 			'failureCallBack': function(errorObject){
 				$scope.$emit('hideLoader');
@@ -542,7 +542,7 @@ console.log($scope.encoderTypes);
 		//TODO:verfiy if required
 		//$scope.$apply();
 	};
-	
+
 	/*
 	* Show the key print success message
 	*/
@@ -576,11 +576,11 @@ console.log($scope.encoderTypes);
 		$state.go('rover.reservation.staycard.reservationcard.reservationdetails',
 				{"id": $scope.reservationBillData.reservation_id,
 				"confirmationId": $scope.reservationBillData.confirm_no, "isrefresh": true});
-		
+
 	};
 	$scope.goToSearch = function(){
 		$scope.closeDialog();
 		$state.go('rover.search');
-		
+
 	};
 }]);

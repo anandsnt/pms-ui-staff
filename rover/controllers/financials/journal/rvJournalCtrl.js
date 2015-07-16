@@ -1,5 +1,5 @@
 sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVJournalSrv', 'journalResponse','$timeout',function($scope, $filter,$stateParams, ngDialog, $rootScope, RVJournalSrv, journalResponse, $timeout) {
-		
+
 	BaseCtrl.call(this, $scope);
 	// Setting up the screen heading and browser title.
 	$scope.$emit('HeaderChanged', $filter('translate')('MENU_JOURNAL'));
@@ -18,7 +18,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.data.selectedChargeCode  = '';
     $scope.data.selectedPaymentType = '';
     $scope.data.filterTitle = "All Departments";
-  
+
     $scope.data.isActiveRevenueFilter = false;
     $scope.data.activeChargeGroups = [];
     $scope.data.activeChargeCodes = [];
@@ -31,7 +31,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.data.isRevenueToggleSummaryActive = true;
     $scope.data.isPaymentToggleSummaryActive = true;
     $scope.data.selectedCashier = "";
-	
+
     $scope.setScroller('employee-content');
     $scope.setScroller('department-content');
 
@@ -147,7 +147,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
         if(isAllDepartmentsUnchecked()) {
             $scope.selectAllDepartment();
-        }            
+        }
         else {
             $scope.data.filterData.checkedAllDepartments = false;
         };
@@ -193,7 +193,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
     // On selecting select button.
     $scope.clickedSelectButton = function(){
-        
+
         if($scope.data.filterData.isSelectButtonActive){
             setupDeptAndEmpList();
             $scope.data.isActiveRevenueFilter = false; // Close the entire filter box
@@ -264,7 +264,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         if((data === "") || (typeof data === 'undefined') || (data === null)){
             returnData = '-';
         }
-        
+
         return returnData;
     };
 

@@ -1,10 +1,10 @@
 var CardOperation = function(){
 	// class for handling operations with payment device
-	
+
 	var that = this;
 	// function for start reading from device
 	// Note down: Currently it is recursive
-	
+
 	this.startReaderDebug = function(options){
 	//Simulating the card reader function for easy testing. May be removed in production.
 
@@ -45,23 +45,23 @@ var CardOperation = function(){
 		options['shouldCallRecursively'] = true;
 		that.listenForSingleSwipe(options);
 	};
-	
+
 	// function used to call cordova services
 	this.callCordovaService = function(options){
 		// cordova.exec function require success and error call back
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
-		
+
 		// if success call back require additional parameters
 		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
-		
+
 		// if error call back require additional parameters
 		var failureCallBackParameters =  options["failureCallBackParameters"] ? options["failureCallBackParameters"] : null;
-		
+
 		var service = options["service"] ? options["service"] : null;
 		var action = options["action"] ? options["action"] : null;
 		var arguments = options["arguments"] ? options["arguments"] : [];
-		
+
 		if(successCallBack === null){
 			return false;
 		}
@@ -78,8 +78,8 @@ var CardOperation = function(){
 			//alert(cordova);
 			//alert(JSON.stringify(cordova));
 			//alert("----service------"+service+"===action======"+action+"======arguments========="+arguments);
-			
-			
+
+
 			//calling cordova service
 			cordova.exec(
 						// if success call back require any parameters
@@ -97,7 +97,7 @@ var CardOperation = function(){
 								successCallBack(data);
 								that.callRecursively(options);
 							}
-							
+
 						},
 						// if failure/error call back require any parameters
 						function(error){
@@ -111,7 +111,7 @@ var CardOperation = function(){
 
 							that.callRecursively(options);
 						},
-						
+
 						// service name
 						service,
 						// function name
@@ -120,10 +120,10 @@ var CardOperation = function(){
 						arguments
 					);
 
-			
+
 		}
 	};
-	
+
 	this.callRecursively = function(options){
 		// TODO: Have to find better way of implementing this if not.
 		var shouldCallRecursively = options["shouldCallRecursively"] ? options["shouldCallRecursively"] : false;
@@ -131,27 +131,27 @@ var CardOperation = function(){
 			that.callCordovaService(options);
 		}
 	};
-	
+
 	//function for get single swipe
 	this.listenForSingleSwipe = function(options){
 		options['service'] = "RVCardPlugin";
 		options['action'] = "observeForSwipe";
 		that.callCordovaService(options);
 	};
-	
+
 	// function for writing the key data
 	this.writeKeyData = function(options){
 		options['service'] = "RVCardPlugin";
 		options['action'] = "processKeyWriteOperation";
 		that.callCordovaService(options);
 	};
-	
+
 	// function for stop reading from device
 	this.stopReader = function(options){
 		options['service'] = "RVCardPlugin";
 		options['action'] = "cancelSwipeObservation";
 		that.callCordovaService(options);
-		
+
 	};
 
 	/**

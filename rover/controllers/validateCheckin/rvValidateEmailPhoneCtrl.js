@@ -1,6 +1,6 @@
 sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state', 'ngDialog', 'RVValidateCheckinSrv',  function($rootScope, $scope, $state, ngDialog, RVValidateCheckinSrv){
 	BaseCtrl.call(this, $scope);
-	
+
 	$scope.showEmail = ($scope.guestCardData.contactInfo.email === '' || $scope.guestCardData.contactInfo.email === null) ? true : false;
 	$scope.showPhone = ($scope.guestCardData.contactInfo.phone === '' || $scope.guestCardData.contactInfo.phone === null) ? true : false;
 	$scope.saveData = {};
@@ -26,7 +26,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 		ngDialog.close();
 	};
 	$scope.validateEmailPhoneSuccessCallback = function(){
-		
+
 		if($scope.showEmail && $scope.showPhone){
 			$scope.guestCardData.contactInfo.phone = $scope.saveData.phone;
 			$scope.guestCardData.contactInfo.email = $scope.saveData.email;
@@ -35,7 +35,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 		} else if($scope.showEmail){
 			$scope.guestCardData.contactInfo.email = $scope.saveData.email;
 		}
-			
+
 		$scope.$emit('hideLoader');
 		ngDialog.close();
 		$scope.goToNextView();
@@ -65,7 +65,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 				if($scope.saveData.email !== '' || $scope.saveData.phone !== '') isValidDataExist = true;
 			} else if($scope.showPhone){
 				var unwantedKeys = ["email"]; // remove unwanted keys for API
-				$scope.saveData = dclone($scope.saveData, unwantedKeys); 
+				$scope.saveData = dclone($scope.saveData, unwantedKeys);
 				if($scope.saveData.phone !== '') isValidDataExist = true;
 			} else {
 				var unwantedKeys = ["phone"]; // remove unwanted keys for API
@@ -85,7 +85,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 			$scope.saveData.guest_id = $scope.guestCardData.guestId;
 	        $scope.saveData.user_id = $scope.guestCardData.userId;
 			var unwantedKeys = ["phone"]; // remove unwanted keys for API
-			$scope.saveData = dclone($scope.saveData, unwantedKeys); 
+			$scope.saveData = dclone($scope.saveData, unwantedKeys);
 			$scope.invokeApi(RVValidateCheckinSrv.saveGuestEmailPhone, $scope.saveData, $scope.submitAndCheckinSuccessCallback);
 	};
 	$scope.ignoreAndGoToCheckin = function(){

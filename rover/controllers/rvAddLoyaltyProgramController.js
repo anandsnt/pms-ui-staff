@@ -56,7 +56,7 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
             $scope.getFFPS();
             $scope.getHLPS();
         };
-        
+
 	$scope.getFFPS = function(){
             var successCallbackGetFFPS = function(data){
                     $scope.setAvailableFFPS(data);

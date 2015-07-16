@@ -47,7 +47,7 @@
         $rootScope.upgradesAvailable = false;
         $rootScope.ShowupgradedLabel = true;
         $rootScope.roomUpgradeheading = "Your new trip details";
-        checkinDetailsService.setResponseData(response.data);         
+        checkinDetailsService.setResponseData(response.data);
         $state.go('checkinReservationDetails');
       }
 

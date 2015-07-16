@@ -5,8 +5,8 @@ var login = angular.module('login',['ui.router', 'ng-iscroll', 'documentTouchMov
  */
 login.run(function($rootScope){
 
-	$rootScope.$on('$stateChangeStart', 
-		function(event, toState, toParams, fromState, fromParams){ 
+	$rootScope.$on('$stateChangeStart',
+		function(event, toState, toParams, fromState, fromParams){
 		$rootScope.title =toState.title;
 	});
 });
@@ -26,11 +26,11 @@ login.controller('loginRootCtrl', ['$scope', function($scope){
  */
 login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetSrv', function($scope, loginSrv, $window, $state, resetSrv){
 	 $scope.data = {};
-	 
+
 	 if(localStorage.email){
 	 	$scope.data.email = localStorage.email;
                 document.getElementById("password").focus();
-                
+
 	 } else if (!localStorage.email){
 	 	document.getElementById("email").focus();
 	 }
@@ -54,13 +54,13 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	 		$state.go('resetpassword', {token: data.token, notifications: data.notifications});
 	 	} else {
 	 		 $scope.$emit("signingIn");
-	 		 
+
 	 		 $scope.hasLoader = true;
 	 		 //we need to show the animation before redirecting to the url, so introducing a timeout there
-	 		 setTimeout(function(){  
+	 		 setTimeout(function(){
 	 		 	$window.location.href = data.redirect_url;
 	 		 }, 300);
-	 		 
+
 	 	}
 	 };
 	 /*
@@ -77,7 +77,7 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	 	$scope.hasLoader = true;
  		loginSrv.login($scope.data, $scope.successCallback, $scope.failureCallBack);
 	};
-	
+
 
 }]);
 /*
@@ -86,13 +86,13 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 login.controller('resetCtrl',['$scope', 'resetSrv', '$window', '$state', '$stateParams', function($scope, resetSrv, $window, $state, $stateParams){
 	 $scope.data = {};
 	 $scope.data.token = $stateParams.token;
-	
+
 	 if($stateParams.notifications.count !== ""){
 	 	$scope.errorMessage = [$stateParams.notifications];
 	 } else {
 	 	$scope.errorMessage = "";
 	 }
-	 
+
 	 /*
 	  * Redirect to specific url on success
 	  * @param {object} status and redirect url
@@ -123,7 +123,7 @@ login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$st
 	 $scope.data.user  = $stateParams.user;
    $scope.data.username  = $stateParams.username;
 	 $scope.errorMessage = "";
-	 
+
 	 /*
 	  * Redirect to specific url on success
 	  * @param {object} status and redirect url
@@ -148,7 +148,7 @@ login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$st
 	 	$scope.errorMessage = errorMessage;
 	 };
 	 resetSrv.checkTokenStatus($scope.data, "", $scope.failureCallBackToken);
-	 
+
         $scope.validPassword = false;
         //data.password
         $scope.validatePassword = function(data){
@@ -170,11 +170,11 @@ login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$st
         };
         var alphanumeric = function(str) {
             var letterNumber = /^.*(?=.{8,})(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%]+$/;//at least 1 letter, least 1 number, some special characters [ !@#$% ] allowed
-            if(str.match(letterNumber)){  
-              return true;  
+            if(str.match(letterNumber)){
+              return true;
             } else {
-              return false;   
-            }  
+              return false;
+            }
         };
         /*
 	  * Submit action activate user

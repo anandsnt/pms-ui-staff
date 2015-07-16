@@ -1,11 +1,11 @@
 sntRover.controller('RVReservationPackageController',
-				 ['$scope', 
+				 ['$scope',
 				  '$rootScope',
 				  'RVReservationPackageSrv',
 				  '$state',
 				  '$timeout',
 				  'ngDialog',
-				function($scope, 
+				function($scope,
 					$rootScope,
 					RVReservationPackageSrv,
 					$state, $timeout, ngDialog) {
@@ -25,17 +25,17 @@ sntRover.controller('RVReservationPackageController',
 		});
 	setTimeout(function() {
 					$scope.refreshScroller('resultDetails');
-					
+
 				},
 				2000);
 	$scope.closeAddOnPopup = function(){
 		//to add stjepan's popup showing animation
-		$rootScope.modalOpened = false; 
+		$rootScope.modalOpened = false;
 		$timeout(function(){
 			ngDialog.close();
-		}, 300); 
+		}, 300);
 	};
-	
+
 	$scope.goToAddons = function(){
 		$scope.closeAddOnPopup();
 		$state.go('rover.reservation.staycard.mainCard.addons',
@@ -68,7 +68,7 @@ sntRover.controller('RVReservationPackageController',
 			"postData": {
 				"addons":addonArray
 			},
-			
+
 			"reservationId": reservationId
 		}
 		$scope.invokeApi(RVReservationPackageSrv.deleteAddonsFromReservation, dataToApi, successDelete);

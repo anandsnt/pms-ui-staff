@@ -3,7 +3,7 @@
 
 	$scope.isLoading = true;
 	preCheckinSrv.completePrecheckin().then(function(response) {
-			$scope.isLoading = false; 	
+			$scope.isLoading = false;
 			if(response.status === 'failure'){
 				$scope.netWorkError = true;
 			}

@@ -157,7 +157,7 @@ admin.controller('adSiteminderSetupCtrl', ['$scope', '$controller', 'adSiteminde
         $scope.saveSiteminderSetup = function () {
              var saveSiteminderSetupSuccessCallback = function (response) {
                 var failed = $scope.hasFailedMsg(response);
-                
+
                 if (!failed){
                     $scope.successMessage = 'Siteminder Save Success';
                 } else {

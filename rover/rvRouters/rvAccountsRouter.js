@@ -1,7 +1,7 @@
 angular.module('accountsModule', [])
 .config([
-    '$stateProvider', 
-    '$urlRouterProvider', 
+    '$stateProvider',
+    '$urlRouterProvider',
     '$translateProvider',
     function($stateProvider, $urlRouterProvider, $translateProvider){
     //define module-specific routes here
@@ -11,7 +11,7 @@ angular.module('accountsModule', [])
             abstract: true,
             templateUrl: '/assets/partials/accounts/rvAccountsRoot.html',
             controller: 'rvAccountsRootCtrl'
-        }); 
+        });
 
         //company card details
         $stateProvider.state('rover.accounts.search', {
@@ -20,7 +20,7 @@ angular.module('accountsModule', [])
             controller: 'rvAccountsSearchCtrl',
             resolve: {
                 //to tackle from coming admin app to rover
-                initialAccountsListing: ['rvAccountsSrv', 
+                initialAccountsListing: ['rvAccountsSrv',
                     function(rvAccountsSrv) {
                         //as per CICO-13899, initially we are looking for groups which has from & to date equal
                         // to business date
@@ -50,16 +50,16 @@ angular.module('accountsModule', [])
                 }
             }],
             resolve: {
-                accountData: ['rvAccountsConfigurationSrv', '$stateParams', 
+                accountData: ['rvAccountsConfigurationSrv', '$stateParams',
                     function(rvAccountsConfigurationSrv, $stateParams){
                         var params = {
                             accountId: $stateParams.id
                         };
                         return rvAccountsConfigurationSrv.getAccountSummary (params);
                     }
-                ]        
+                ]
             }
 
         });
-    
+
 }]);

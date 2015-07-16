@@ -6,7 +6,7 @@ sntRover.directive('setHeight', function($timeout) {
             heightToSet: '=heightToSet',
 	    },
     	link: function(scope, element, attrs){
-           scope.$watch('heightToSet', function(newVal, OldVal){            
+           scope.$watch('heightToSet', function(newVal, OldVal){
               element.css('height', scope.heightToSet);
            }, true);
         }

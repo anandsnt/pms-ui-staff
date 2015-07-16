@@ -612,7 +612,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		var successFetchOfAllReqdForTransactionDetails = function(data){
 			$scope.$emit('hideLoader');
 		};
-		
+
 		/**
 		 * when we failed in fetching any of the data required for transaction details,
 		 * failure call back of any of the initially required API
@@ -680,7 +680,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				callInitialAPIs();
 			}
 		});
-		
+
 		/**
 		 * When there is a TAB switch, we will get this. We will initialize things from here
 		 * @param  {[type]} event             [description]

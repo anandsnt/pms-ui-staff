@@ -6,9 +6,9 @@ login.service('resetSrv',['$http', '$q', function($http, $q){
     * @param failureCallback action
     */
 	this.resetPassword = function(data, successCallback, failureCallBack){
-		
+
 		var deferred = $q.defer();
-		
+
 		$http.put("/api/password_resets/"+data.token+"/update.json", data).success(function(response, status) {
 			if(response.status === "success"){
 		    	//deferred.resolve(response.data);
@@ -34,13 +34,13 @@ login.service('resetSrv',['$http', '$q', function($http, $q){
 			}else{
 				deferred.reject(response.errors);
 			}
-		    
+
 		});
 		return deferred.promise;
-		
-		
-		
-		
+
+
+
+
 	};
    /*
     * Activate user by changing Password
@@ -49,12 +49,12 @@ login.service('resetSrv',['$http', '$q', function($http, $q){
     * @param failureCallback action
     */
 	this.activateUser = function(data, successCallback, failureCallBack){
-		
+
 		var deferred = $q.defer();
-		
+
 		var url = "/api/password_resets/"+data.token+"/update.json";
-		
-		
+
+
 		$http.put(url, data).success(function(response, status) {
 			if(response.status === "success"){
 		    	//deferred.resolve(response.data);
@@ -80,7 +80,7 @@ login.service('resetSrv',['$http', '$q', function($http, $q){
 			}else{
 				deferred.reject(response.errors);
 			}
-		    
+
 		});
 		return deferred.promise;
 	};
@@ -91,9 +91,9 @@ login.service('resetSrv',['$http', '$q', function($http, $q){
     * @param string failure callback
     */
 	this.checkTokenStatus = function(data, successCallback, failureCallBack){
-		
+
 		var deferred = $q.defer();
-		
+
 		var url = "";
 
 		var url = "/api/password_resets/validate_token.json";
@@ -117,7 +117,7 @@ login.service('resetSrv',['$http', '$q', function($http, $q){
 			}else{
 				deferred.reject(response.errors);
 			}
-		    
+
 		});
 		return deferred.promise;
 	};
@@ -134,5 +134,5 @@ login.service('resetSrv',['$http', '$q', function($http, $q){
 	this.getErrorMessage = function(errorMessage) {
 		return this.errorMessage;
 	};
-	
+
 }]);

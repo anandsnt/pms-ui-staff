@@ -263,7 +263,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			onSelect: function(dateText, inst) {
 				$scope.onViewDateChanged();
 				if ($scope.serviceStatus[$filter('date')(new Date(dateText), "yyyy-MM-dd")])
-					$scope.updateService.room_service_status_id = $scope.serviceStatus[$filter('date')(new Date(dateText), "yyyy-MM-dd")].id;				
+					$scope.updateService.room_service_status_id = $scope.serviceStatus[$filter('date')(new Date(dateText), "yyyy-MM-dd")].id;
 				$(".room-actions").click();
 
 			},

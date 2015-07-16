@@ -412,7 +412,7 @@ sntRover.factory('RVReportUtilsFac', [
 
 
         /**
-         * Process the filters and create proper DS to show and play in UI 
+         * Process the filters and create proper DS to show and play in UI
          * @param  {Object} reportItem The ith report
          * @param  {Object} data       Additonal data sources like CG, CC, Markets, Source etc
          */

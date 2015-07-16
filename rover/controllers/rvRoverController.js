@@ -358,9 +358,9 @@ sntRover.controller('roverController',
         e.stopPropagation();
       };
 
-      $scope.menuOpen = !$scope.menuOpen; 
-	  
-	  //Bug fix for CICO-15718 
+      $scope.menuOpen = !$scope.menuOpen;
+
+	  //Bug fix for CICO-15718
 	  //Found that the issue appears when the keyboard comes over the screen
 	  //Added workaround to focus out from the search box
       $('#dashboard-query').focus();

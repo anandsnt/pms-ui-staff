@@ -44,7 +44,7 @@ var SwipeOperation = function(){
 			'swipeFrom': swipedCardData.swipeFrom,
 			'token': swipedCardData.token
 		};
-		
+
 		return swipedCardDataToRender;
 	};
 	/*
@@ -65,6 +65,6 @@ var SwipeOperation = function(){
 		return swipedCardDataToSave;
 	};
 
-    
+
 
 };

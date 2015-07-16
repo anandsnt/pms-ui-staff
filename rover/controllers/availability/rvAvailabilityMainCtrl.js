@@ -12,8 +12,8 @@ sntRover.controller('rvAvailabilityMainController', [
 		* function to execute when switching between availability and house keeping
 		*/
 		$scope.setAvailability = function(){
-			$scope.$emit("showLoader");			
-		};	
+			$scope.$emit("showLoader");
+		};
 
 		/**
 		* function to load different template based the availability chosen

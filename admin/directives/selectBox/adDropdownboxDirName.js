@@ -7,7 +7,7 @@ admin.directive('adDropdownName', function($timeout) {
             divStyle: '@divStyle',
 	        selboxStyle : '@selboxStyle',
             divClass: '@divClass',
-            selboxClass : '@selboxClass',            
+            selboxClass : '@selboxClass',
             required: '@required',
             id: '@id',
             label:'@label',
@@ -32,7 +32,7 @@ admin.directive('adDropdownName', function($timeout) {
                 };
             }
         },
-    	templateUrl: '../../assets/directives/selectBox/adDropdownboxName.html' 
+    	templateUrl: '../../assets/directives/selectBox/adDropdownboxName.html'
     };
 
 });

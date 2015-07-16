@@ -448,7 +448,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
          * function to set Back Navigation params
          */
         var setBackNavigation = function() {
-            // TODO : Currently hardcoded to go to groups search.. 
+            // TODO : Currently hardcoded to go to groups search..
             // Change the same according to the requirements
             if ($scope.previousState && $scope.previousState.name === "rover.reservation.staycard.reservationcard.reservationdetails") {
                 $rootScope.setPrevState = {
@@ -474,7 +474,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
         /**
          * When we recieve the error message from its child controllers, we have to show them
-         * @param  {Object} event 
+         * @param  {Object} event
          * @param  {String} errorMessage)
          * @return undefined
          */

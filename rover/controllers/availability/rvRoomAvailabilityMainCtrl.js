@@ -6,10 +6,10 @@ sntRover.controller('roomAvailabilityMainController', [
 	'$filter' ,
 	'$timeout',
 	function($scope, rvAvailabilitySrv, $rootScope, ngDialog, $filter, $timeout){
-	
+
 
 	BaseCtrl.call(this, $scope);
-	
+
 	$scope.selectedView = 'grid';
 	$scope.page.title = "Availability";
 
@@ -89,7 +89,7 @@ sntRover.controller('roomAvailabilityMainController', [
 			}
 			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityDetails, dataForWebservice, successCallbackOfAvailabilityFetch, failureCallbackOfAvailabilityFetch);
 		}, 0)
-	
+
 	};
 
 

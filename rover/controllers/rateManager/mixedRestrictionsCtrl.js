@@ -8,8 +8,8 @@ sntRover.controller('MixedRestrictionsCtrl', ['$q', '$scope', 'ngDialog',
 
         /**
         * Click handle for 'Set restriction' button
-        * Updates the data modal in parent with the enable status 
-        * Update the data modal with the days entered in the box 
+        * Updates the data modal in parent with the enable status
+        * Update the data modal with the days entered in the box
         */
         $scope.updateRestrictionBtnClicked = function(id){
             var currentSelected = $scope.data.restrictionTypes[id];
@@ -26,7 +26,7 @@ sntRover.controller('MixedRestrictionsCtrl', ['$q', '$scope', 'ngDialog',
 
         /**
         * Click handle for 'Remove restriction' button
-        * Updates the data modal in parent with the disable status 
+        * Updates the data modal in parent with the disable status
         * Updates the data modal in parent with days as empty
         */
         $scope.removeRestrictionBtnClicked = function(id){
@@ -57,7 +57,7 @@ sntRover.controller('MixedRestrictionsCtrl', ['$q', '$scope', 'ngDialog',
 
 
         };
-              
+
         $scope.init();
     }
 ]);

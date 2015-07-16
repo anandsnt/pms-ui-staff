@@ -1,20 +1,20 @@
 admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stateParams', 'ngDialog', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location', 'ADRatesAddonsSrv',
  function($scope, $state, $stateParams, ngDialog, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location, ADRatesAddonsSrv){
-	
+
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
-	
+
 	 $scope.fileName = "Choose file...";
 	 $scope.initialIcon = '';
 	 $scope.addons = [];
      $scope.min_duration_values = [];
      $scope.max_order_values = [];
-     
+
 
 
      var init = function(){
      	var  duration;
-     	
+
         for(var i = 0; i < 30; i++){
            duration = {};
            duration.value = i + 1;
@@ -24,7 +24,7 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 
 
         var  order;
-     	
+
         for(var i = 0; i < 5; i++){
            order = {};
            order.value = i + 1;

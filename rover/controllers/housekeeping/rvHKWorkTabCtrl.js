@@ -93,7 +93,7 @@ sntRover.controller('RVHKWorkTabCtrl', [
 			});
 
 			var data = {
-				'room_no': $scope.roomDetails.current_room_no, 
+				'room_no': $scope.roomDetails.current_room_no,
 				'hkstatus_id': hkStatusItem.id
 			}
 
@@ -101,7 +101,7 @@ sntRover.controller('RVHKWorkTabCtrl', [
 		};
 
 
-		// start working 
+		// start working
 		$scope.startWorking = function() {
 			var callback = function() {
 				$scope.$emit('hideLoader');
@@ -127,7 +127,7 @@ sntRover.controller('RVHKWorkTabCtrl', [
 				// update local data
 				$scope.roomDetails.work_status = $_workStatusList['completed'];
 				$_updateWorkStatusFlags();
-				
+
 				// since this value could be empty
 				if ( !!$scope.roomDetails.task_completion_status ) {
 					// update 'current_hk_status' to 'task_completion_status', this should call '$scope.manualRoomStatusChanged'

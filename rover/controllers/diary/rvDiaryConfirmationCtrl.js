@@ -29,7 +29,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                             departure_date = tzIndependentDate(departure.date.toDateString().replace(/-/g, '/')),
                             departure_date =  $filter('date')(departure_date, $rootScope.fullDateFullMonthYear);
 
-                            
+
                         return {
                             arrival_time: arrival.time.toString(true),
                             //arrival_date: arrival.date.day + ' ' + arrival.date.monthName + ' ' + arrival.date.year,
@@ -73,17 +73,17 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                                 rateId: obj.occupancy.rate_id,
                                 numAdults: ($scope.reservationsSettings ? $scope.reservationsSettings.adults : 1),
                                 numChildren: ($scope.reservationsSettings ? $scope.reservationsSettings.children : 0),
-                                numInfants: ($scope.reservationsSettings ? $scope.reservationsSettings.infants : 0),                                
+                                numInfants: ($scope.reservationsSettings ? $scope.reservationsSettings.infants : 0),
                             },
                             local_version = util.shallowCopy({}, item);
 
                         if( $scope.gridProps.filter.rate_type === 'Corporate') {
                             selected_type = $scope.gridProps.filter.rate.type;
                             if(selected_type === "COMPANY") {
-                                item.company_card_id = $scope.gridProps.filter.rate.id;                                
+                                item.company_card_id = $scope.gridProps.filter.rate.id;
                             }
                             if(selected_type === "TRAVELAGENT") {
-                                item.travel_agent_id = $scope.gridProps.filter.rate.id;                            
+                                item.travel_agent_id = $scope.gridProps.filter.rate.id;
                             }
                         }
                         $scope.vaultSelections.rooms.push(item);
@@ -100,10 +100,10 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
 
         $scope.closeWithAnimation = function (){
             //to add stjepan's popup showing animation
-            $rootScope.modalOpened = false; 
+            $rootScope.modalOpened = false;
             $timeout(function(){
                 ngDialog.close();
-            }, 300); 
+            }, 300);
         };
 
         $scope.selectAdditional = function() {
@@ -127,10 +127,10 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
         $scope.routeToSummary = function() {
             /*$scope.reset_guest_details();
             $scope.reset_company_details();
-            $scope.reset_travel_details();*/            
-            var fetchSuccess = function(isAddonsConfigured){      
+            $scope.reset_travel_details();*/
+            var fetchSuccess = function(isAddonsConfigured){
                 $scope.saveToVault('temporaryReservationDataFromDiaryScreen', $scope.vaultSelections);
-                //CICO-9429                  
+                //CICO-9429
                 if ($rootScope.isAddonOn&&isAddonsConfigured) {
                     var arrival_date = $scope.vaultSelections.arrival_date;
                     var departure_date = $scope.vaultSelections.departure_date;
@@ -156,7 +156,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                 params.is_active = true;
             //Fetches whether any configured addons are available.
             //CICO-16874
-            $scope.invokeApi(RVReservationBaseSearchSrv.hasAnyConfiguredAddons,params,fetchSuccess,fetchFailed); //CICO-16874           
+            $scope.invokeApi(RVReservationBaseSearchSrv.hasAnyConfiguredAddons,params,fetchSuccess,fetchFailed); //CICO-16874
         };
 
         // save data to $vault
@@ -193,19 +193,19 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
             removed.occupancy.selected = false;
 
 
-            $scope.closeWithAnimation ();          
+            $scope.closeWithAnimation ();
 
             $scope.renderGrid();
         };
 
-        $scope.closeDialog = function() {    
+        $scope.closeDialog = function() {
             //to add stjepan's popup showing animation
-            $rootScope.modalOpened = false; 
+            $rootScope.modalOpened = false;
             $timeout(function(){
                 ngDialog.close();
                 $scope.cancelSelection();
                 $scope.renderGrid();
-            }, 300);            
+            }, 300);
         };
     }
 ]);

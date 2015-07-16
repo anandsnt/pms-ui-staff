@@ -128,19 +128,19 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 				fo_status: 				"VACANT",
 				room_ready_status: 		"INSPECTED",
 
-				// CICO-7904 and CICO-9628 : update the upsell availability to staycard	
+				// CICO-7904 and CICO-9628 : update the upsell availability to staycard
 				is_upsell_available: 	(data.is_upsell_available ? "true" : "false")
 			});
 
 			RVReservationCardSrv
 				.updateResrvationForConfirmationNumber(resrvCardData.confirmation_num, $scope.reservationData);
-			
+
 			if ($scope.clickedButton === "checkinButton") {
 				$state.go('rover.reservation.staycard.billcard', {
 					"reservationId": resrvCardData.reservation_id,
 					"clickedButton": "checkinButton"
 				});
-			} 
+			}
 
 			else {
 				$scope.backToStayCard();
@@ -161,7 +161,7 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 						break;
 				}
 			}
-			else {		
+			else {
 				$scope.errorMessage = error;
 			}
 		};
@@ -178,7 +178,7 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 		};
 
 
-		/*** THIS IS JUST REPEATATION OF rvUpgradesController.js's upgrade. I dont 
+		/*** THIS IS JUST REPEATATION OF rvUpgradesController.js's upgrade. I dont
 		*** know why upgrade is in two file and two controller, WTH.
 		***/
 		/**
@@ -190,14 +190,14 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 				selectedListItem 	= $scope.upgradesList[index];
 
 			var params = {};
-			
+
 			//CICO-17082
 			params.forcefully_assign_room = wanted_to_forcefully_assign;
 			wanted_to_forcefully_assign = false;
 
 			params.reservation_id 	= parseInt($stateParams.reservation_id, 10);
 			params.upsell_amount_id = parseInt(selectedListItem.upsell_amount_id, 10);
-			params.room_no 			= selectedListItem.upgrade_room_number; 
+			params.room_no 			= selectedListItem.upgrade_room_number;
 
 			//yes. ALL set. Go!
 			var options = {
@@ -245,7 +245,7 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 		 */
 		$scope.getTopbarRoomStatusClass = function() {
 			var reservationStatus = $scope.reservationData.reservation_card.reservation_status
-			var roomReadyStatus = $scope.reservationData.reservation_card.room_ready_status; 
+			var roomReadyStatus = $scope.reservationData.reservation_card.room_ready_status;
 			var foStatus = $scope.reservationData.reservation_card.fo_status;
 			var checkinInspectedOnly = $scope.reservationData.reservation_card.checkin_inspected_only;
 			return getMappedRoomStatusColor(reservationStatus, roomReadyStatus, foStatus, checkinInspectedOnly);
@@ -270,8 +270,8 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 		};
 
 		/**
-		* In upgrades we would display rooms Inspected & vacant(color - green) or outof service (grey). 
-		*/ 
+		* In upgrades we would display rooms Inspected & vacant(color - green) or outof service (grey).
+		*/
 		$scope.getRoomStatusClass = function(room){
 			var statusClass = "ready";
 			if(room.is_oos === "true"){

@@ -1,6 +1,6 @@
 sntRover.controller('RVAccountReceivableMessagePopupCtrl',['$rootScope', '$scope', '$state','ngDialog', 'RVCompanyCardSrv', function($rootScope, $scope, $state, ngDialog, RVCompanyCardSrv){
 	BaseCtrl.call(this, $scope);
-		
+
 	$scope.createAccountAction = function(){
 
 		ngDialog.close();
@@ -13,7 +13,7 @@ sntRover.controller('RVAccountReceivableMessagePopupCtrl',['$rootScope', '$scope
 				className: 'ngdialog-theme-default',
 				scope: $scope
 			});
-		}		
+		}
 	};
 
 	$scope.successCreate = function(data){
@@ -31,7 +31,7 @@ sntRover.controller('RVAccountReceivableMessagePopupCtrl',['$rootScope', '$scope
 	};
 
 	$scope.createAccountReceivable = function(){
-		
+
 		var data = {
 			"id": $scope.account_id,
 			"ar_number": ""
@@ -42,5 +42,5 @@ sntRover.controller('RVAccountReceivableMessagePopupCtrl',['$rootScope', '$scope
 	$scope.closeDialog = function(){
 		ngDialog.close();
 	}
-	
+
 }]);

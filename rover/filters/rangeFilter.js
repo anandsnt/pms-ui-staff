@@ -39,7 +39,7 @@ sntRover.filter('makeRange', function() {
 });
 
 function getLengthChangedNumber(lengthWanted, number){
-    
+
     if(typeof number === 'number')
         number = number.toString();
 

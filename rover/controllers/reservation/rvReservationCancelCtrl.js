@@ -389,7 +389,7 @@
 				$scope.cancellationData.card_type = $scope.cardsList[index].card_code;
 				checkReferencetextAvailableForCC();
 				$scope.showCC = false;
-				// CICO-9457 : Data for fees details - standalone only.	
+				// CICO-9457 : Data for fees details - standalone only.
 				if ($scope.isStandAlone) {
 					$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
 					$scope.setupFeeData();

@@ -85,7 +85,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {Boolean}
          */
         $scope.shouldShowCheckInCheckoutButton = function() {
-            return (!$scope.shouldShowNoReservations() && 
+            return (!$scope.shouldShowNoReservations() &&
                     !$scope.groupConfigData.summary.is_cancelled);
         };
 
@@ -974,7 +974,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             var errorMessageForPopup = {
                 errorMessage: errorMessage
             };
-            
+
             ngDialog.open(
             {
                 template: '/assets/partials/groups/rooming/rvGroupResMassCheckinFailedPopup.html',
@@ -993,12 +993,12 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         $scope.groupCheckin = function() {
             var qualifiedRes        = _.where($scope.selected_reservations, {'can_checkin': true}),
                 qualifiedResCount   = qualifiedRes.length,
-                selectedResCount    = $scope.selected_reservations.length;            
-            
+                selectedResCount    = $scope.selected_reservations.length;
+
             if (qualifiedResCount > 0) {
                 $scope.qualifiedReservations = qualifiedRes;
-                $scope.messageForMassCheckin = (selectedResCount === qualifiedResCount) ? 
-                    '' : 'GROUP_MASS_CHECKIN_CONFIRMATION_PARTIALLY_OKEY';                
+                $scope.messageForMassCheckin = (selectedResCount === qualifiedResCount) ?
+                    '' : 'GROUP_MASS_CHECKIN_CONFIRMATION_PARTIALLY_OKEY';
                 openCheckinConfirmationPopup ();
             }
             else {
@@ -1030,10 +1030,10 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             if (failureReservations.length > 0) {
                 data.failedReservations = [];
                 _.each(data.failure_reservation_ids, function(reservation_id) {
-                    data.failedReservations.push (_.findWhere($scope.selected_reservations, {id: reservation_id})); 
+                    data.failedReservations.push (_.findWhere($scope.selected_reservations, {id: reservation_id}));
                 });
             }
-            openMassCheckinSuccessPopup (data);            
+            openMassCheckinSuccessPopup (data);
         };
 
         /**

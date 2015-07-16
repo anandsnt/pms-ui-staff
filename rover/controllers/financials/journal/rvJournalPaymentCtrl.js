@@ -1,7 +1,7 @@
 sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJournalSrv','$timeout',function($scope, $rootScope, RVJournalSrv, $timeout) {
 	BaseCtrl.call(this, $scope);
     $scope.errorMessage = "";
-    
+
 	$scope.setScroller('payment_content', {});
     var refreshPaymentScroll = function(){
         setTimeout(function(){$scope.refreshScroller('payment_content');}, 500);
@@ -46,7 +46,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     var loadTransactionDeatils = function(chargeCodeItem, isFromPagination){
 
         var successCallBackFetchPaymentDataTransactions = function(data){
-            
+
             chargeCodeItem.transactions = [];
             chargeCodeItem.transactions = data.transactions;
             chargeCodeItem.total_count = data.total_count;
@@ -93,7 +93,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     $scope.clickedFirstLevel = function(index1){
 
         var toggleItem = $scope.data.paymentData.payment_types[index1];
-        
+
         if(toggleItem.payment_type !== "Credit Card"){
             loadTransactionDeatils(toggleItem , false);
         }
@@ -107,7 +107,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     $scope.clickedSecondLevel = function(index1, index2){
 
         var toggleItem = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
-        
+
         loadTransactionDeatils(toggleItem , false);
     };
 

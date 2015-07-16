@@ -27,7 +27,7 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','$rootScope','RVGue
             });
             $scope.reloadOnSet = true;
         }
-        
+
 	$scope.$watch(
 		function() { return ($scope.$parent.$parent.guestCardData.userId !== '')?true:false; },
 		function(gustDataReady) { if(gustDataReady)$scope.init(); }

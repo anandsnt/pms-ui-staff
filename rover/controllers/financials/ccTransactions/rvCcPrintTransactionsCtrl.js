@@ -27,7 +27,7 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope','$rootScope','$
 			$scope.eventTimestamp = event.timeStamp;
 		}
 	};
-	
+
 	// To handle click on drawer handle - open/close.
 	$scope.clickedDrawer = function($event){
 		$event.stopPropagation();
@@ -94,7 +94,7 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope','$rootScope','$
 
         // add the orientation
         addPrintOrientation();
-        
+
         /*
          *  ======[ READY TO PRINT ]======
          */

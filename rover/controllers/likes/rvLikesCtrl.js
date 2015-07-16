@@ -71,7 +71,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 
 
 
-			setTimeout(function(){			
+			setTimeout(function(){
 				$scope.refreshScroller('likes_info');
 			}, 1000);
 
@@ -81,7 +81,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 		$scope.$on('SHOWGUESTLIKESINFO', function() {
 			$scope.init();
 		});
-		
+
 		$scope.$on('REFRESHLIKESSCROLL', function() {
 			$scope.refreshScroller('likes_info');
 		});
@@ -99,7 +99,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 				$scope.errorMessage = data;
 				$scope.$emit('likesInfoError', true);
 			};
-			 presentLikeInfo = JSON.parse(JSON.stringify(updateData));			
+			 presentLikeInfo = JSON.parse(JSON.stringify(updateData));
 
 			updateData.guest_id = $scope.guestCardData.contactInfo.guest_id;
 			updateData.preference = [];
@@ -145,12 +145,12 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 
 			var dataToUpdate = JSON.parse(JSON.stringify(updateData));
 		    var dataUpdated = (angular.equals(dataToUpdate, presentLikeInfo))?true:false;
-		  
+
 			var saveData = {
 				userId: $scope.guestCardData.contactInfo.user_id,
 				data: updateData
 			};
-			
+
 			if (typeof $scope.guestCardData.contactInfo.user_id !== "undefined" && $scope.guestCardData.contactInfo.user_id !== null && $scope.guestCardData.contactInfo.user_id !== "" && !dataUpdated) {
 				$scope.invokeApi(RVLikesSrv.saveLikes, saveData, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
 			}

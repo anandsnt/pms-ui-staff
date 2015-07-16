@@ -655,7 +655,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         /**
          * Fetches all the payment methods
          */
-        var paymentMethodsCopy = {}; 
+        var paymentMethodsCopy = {};
         // CICO-14193
         var fetchPaymentMethods = function() {
             var paymentFetchSuccess = function(data) {
@@ -845,7 +845,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                     $scope.reservationData.rooms[0].confirm_no = data.confirm_no;
                     $scope.reservationData.status = data.status;
                     $scope.viewState.reservationStatus.number = data.id;
-                }               
+                }
 
                 $scope.viewState.reservationStatus.confirm = true;
                 $scope.reservationData.is_routing_available = false;
@@ -997,7 +997,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 $scope.isNewCardAdded = ($rootScope.paymentGateway === 'sixpayments') ? true : false;
                 $scope.isManual = ($rootScope.paymentGateway === 'sixpayments') ? false : "";
                 refreshScrolls();
-                /*                 
+                /*
                  * Comment out .if existing cards needed remove comments
                  */
 

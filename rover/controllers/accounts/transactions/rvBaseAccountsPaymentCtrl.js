@@ -14,7 +14,7 @@ var BasePaymentCtrl = function($scope){
 		$scope.cardsList       = [];//guess no need to show existing cards
 		$scope.errorMessage    = "";
 
-	};	
+	};
 	init();
 
 	/**
@@ -30,7 +30,7 @@ var BasePaymentCtrl = function($scope){
 			return;
 		};
 	};
-	$scope.changeOnsiteCallIn = function(){		
+	$scope.changeOnsiteCallIn = function(){
 		$scope.showCCPage = ($scope.isManual) ? true:false;
 		$scope.addmode = true;
 	};

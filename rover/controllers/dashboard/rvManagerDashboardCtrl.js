@@ -25,7 +25,7 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
       //we are showing the add new guest button in searhc only if it is standalone & search result is empty
       if($rootScope.isStandAlone){
           $scope.$broadcast("showAddNewGuestButton", true);
-      }        
+      }
   });
 
 

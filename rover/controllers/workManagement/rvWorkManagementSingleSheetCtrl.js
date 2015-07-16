@@ -140,7 +140,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				$scope.setHeading("Work Sheet No." + data.work_sheets[0].work_sheet_id + ", " + $filter('date')($stateParams.date, $rootScope.dateFormat));
 
 				$scope.singleState.unassigned = data.unassigned;
-				
+
 				// var assignedRooms = [],
 				// 	worksheets = _.where(data.work_sheets, {
 				// 		work_sheet_id: parseInt($stateParams.id)
@@ -209,9 +209,9 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 					":" +
 					((sumMinutes % 60).toString().length < 2 ? "0" + (sumMinutes % 60).toString() : (sumMinutes % 60).toString());
 			});
-		};		
+		};
 
-		
+
 
 		$scope.setScroller("workSheetUnassigned");
 		$scope.setScroller("workSheetAssigned");
@@ -253,7 +253,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 		$scope.printAfterSave = function() {
 			if ($scope.$parent.myScroll['workSheetAssigned'] && $scope.$parent.myScroll['workSheetAssigned'].scrollTo)
 				$scope.$parent.myScroll['workSheetAssigned'].scrollTo(0, 0);
-			
+
 
 
 			// add the orientation
@@ -291,7 +291,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 					// make it false so that the ctrl wont save it back again
 					// when going back to the makangement dsahboard
 					$_shouldSaveFirst = false;
-					
+
 					$timeout( function() {
 						$state.go('rover.workManagement.start');
 					}, 20 );
@@ -367,7 +367,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				return false;
 			}
 
-			// lets create a set of worktypes that will hold 
+			// lets create a set of worktypes that will hold
 			// rooms under each worktype id name - e.g:
 			// {
 			//		'4'  : [ array of rooms ],
@@ -426,17 +426,17 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				_.each(worktypesSet, function(set, key) {
 				$scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, {
 							"date"        : $stateParams.date,
-							"task_id"     : parseInt(key),							
-							"assignments" : [{								
+							"task_id"     : parseInt(key),
+							"assignments" : [{
 								"assignee_id"   : userId,
-								"room_ids"      : [],								
+								"room_ids"      : [],
 							}]
 						}, onSaveSuccess, onSaveFailure);
 				});
 				afterAPIcall();
 			};
 		};
-			
+
 
 
 

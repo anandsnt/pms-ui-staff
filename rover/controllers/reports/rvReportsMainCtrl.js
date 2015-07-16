@@ -237,7 +237,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			} else {
 				dateObj = reportItem[dateName];
 			}
-							
+
 			// 1 - if date is valid for this 'dateItem' in this 'reportItem'
 			// 2.1 - if this is the only date in this 'reportItem', enable 'showRemove'
 			// 2.2 - else find out other dates available on this 'reportItem'

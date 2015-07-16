@@ -1,6 +1,6 @@
 sntRover.controller('RVccTransactionsController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVccTransactionsSrv','$timeout','$window', 'rvPermissionSrv', function($scope, $filter,$stateParams, ngDialog, $rootScope, RVccTransactionsSrv, $timeout, $window, rvPermissionSrv) {
-		
-	BaseCtrl.call(this, $scope);	
+
+	BaseCtrl.call(this, $scope);
 	// Setting up the screen heading and browser title.
 	$scope.$emit('HeaderChanged', $filter('translate')('MENU_CC_TRANSACTIONS'));
 	$scope.setTitle($filter('translate')('MENU_CC_TRANSACTIONS'));
@@ -10,7 +10,7 @@ sntRover.controller('RVccTransactionsController', ['$scope','$filter','$statePar
     $scope.data.transactionDate = $rootScope.businessDate;
     $scope.data.paymentData = {};
     $scope.data.authData = {};
-	
+
 	// Handling TransactionDate date picker click
 	$scope.clickedTransactionDate = function(){
 		$scope.popupCalendar('TRANSACTIONS');
@@ -63,5 +63,5 @@ sntRover.controller('RVccTransactionsController', ['$scope','$filter','$statePar
 	$scope.hasPermissionToSubmitCCBatch = function() {
 		return rvPermissionSrv.getPermissionValue('SUBMIT_CC_BATCH');
 	};
-    
+
 }]);

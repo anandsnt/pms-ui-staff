@@ -294,7 +294,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @param {Object} - Room Type data row
 		 * @return {Boolean}
 		 */
-		$scope.shouldDisableSingleEntryBox = function(dateData, roomType) {			
+		$scope.shouldDisableSingleEntryBox = function(dateData, roomType) {
 			return (!roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled);
 		};
 
@@ -304,7 +304,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @param {Object} - Room Type data row
 		 * @return {Boolean}
 		 */
-		$scope.shouldDisableDoubleEntryBox = function(dateData, roomType) {			
+		$scope.shouldDisableDoubleEntryBox = function(dateData, roomType) {
 			return (!roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled);
 		};
 
@@ -314,7 +314,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @param {Object} - Room Type data row
 		 * @return {Boolean}
 		 */
-		$scope.shouldDisableTripleEntryBox = function(dateData, roomType) {			
+		$scope.shouldDisableTripleEntryBox = function(dateData, roomType) {
 			return (!roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled);
 		};
 
@@ -324,7 +324,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @param {Object} - Room Type data row
 		 * @return {Boolean}
 		 */
-		$scope.shouldDisableQuadrupleEntryBox = function(dateData, roomType) {			
+		$scope.shouldDisableQuadrupleEntryBox = function(dateData, roomType) {
 			return (!roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled);
 		};
 
@@ -334,7 +334,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @param {Object} - Room Type data row
 		 * @return {Boolean}
 		 */
-		$scope.shouldDisableAddTripleButton = function(roomType) {			
+		$scope.shouldDisableAddTripleButton = function(roomType) {
 			return (!roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled);
 		};
 
@@ -344,9 +344,9 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @param {Object} - Room Type data row
 		 * @return {Boolean}
 		 */
-		$scope.shouldDisableAddQuadrupleButton = function(roomType) {			
+		$scope.shouldDisableAddQuadrupleButton = function(roomType) {
 			return (!roomType.can_edit || !!$scope.groupConfigData.summary.is_cancelled);
-		};		
+		};
 
 		/**
 >>>>>>> 912b9e5ac6d8266027ca4703b1824cbeeea10a5d
@@ -418,7 +418,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return undefined
 		 */
 		$scope.bookingDataChanging = function() {
-			//we are changing the model to 
+			//we are changing the model to
 			$scope.hasBookingDataChanged = true;
 
 			// if (isOverBooked()) {
@@ -454,7 +454,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//setting the min date for end Date
 			$scope.endDateOptions.minDate = $scope.startDate;
 
-			//we have to show create button 
+			//we have to show create button
 			//$scope.createButtonClicked = false;
 
 			runDigestCycle();
@@ -468,7 +468,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		var onEndDatePicked = function(date, datePickerObj) {
 			$scope.endDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
-			//we have to show create button 
+			//we have to show create button
 			//$scope.createButtonClicked = false;
 
 			runDigestCycle();
@@ -487,7 +487,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//default to date
 			$scope.endDate = '';
 
-			//referring data model -> from group summary 
+			//referring data model -> from group summary
 			var refData = $scope.groupConfigData.summary;
 
 			//if from date is not null from summary screen, we are setting it as busines date
@@ -573,7 +573,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			$scope.groupConfigData.summary.rooms_total = $scope.getMaxOfBookedRooms();
 
 			//as per CICO-16087, we have to refetch the occupancy and availability after saving
-			//so, callinng the API again 
+			//so, callinng the API again
 			$scope.fetchRoomBlockGridDetails();
 		};
 
@@ -768,7 +768,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//we are going to group by them on the basis of quality :D (date)
 			dateWiseGroupedData = _.groupBy(arrayOfDateData, 'date');
 
-			//forming sum of individual 
+			//forming sum of individual
 			_.each(dateWiseGroupedData, function(el) {
 				sum = 0;
 				_.each(el, function(eachDateData) {
@@ -862,7 +862,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				}
 			);
 
-			//callinng the update API calling 
+			//callinng the update API calling
 			$scope.updateGroupSummary();
 			//has data updated from this view, block from date or to date
 			$scope.hasBlockDataUpdated = true;
@@ -1013,7 +1013,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return None
 		 */
 		var initializeAddOrEditModeVariables = function() {
-			//variable used to track Create Button, as per sice we are only handling edit mode we are 
+			//variable used to track Create Button, as per sice we are only handling edit mode we are
 			//proceeding with true TODO: Add reference here
 			$scope.createButtonClicked = true;
 
@@ -1046,7 +1046,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				$scope.totalPickups = refData.summary.rooms_pickup;
 				$scope.totalRooms = refData.summary.rooms_total;
 
-				$scope.selectedHoldStatus = util.convertToInteger(refData.summary.hold_status);			
+				$scope.selectedHoldStatus = util.convertToInteger(refData.summary.hold_status);
 			}
 
 			//list of holding status list
@@ -1133,7 +1133,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//setting scrollers
 			setScroller();
 
-			// accoridion 
+			// accoridion
 			setUpAccordion();
 
 			//we have a list of scope varibales which we wanted to assign when it is in add/edit mode

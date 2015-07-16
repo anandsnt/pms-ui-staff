@@ -1,9 +1,9 @@
-sntRover.service('rvMenuSrv',	
+sntRover.service('rvMenuSrv',
 	['rvPermissionSrv', 'RVDashboardSrv', 'RVHotelDetailsSrv',
 	function(rvPermissionSrv, RVDashboardSrv, RVHotelDetailsSrv) {
-	
 
-	//we have to keep reference 
+
+	//we have to keep reference
 	var self = this;
 
 	/**
@@ -58,9 +58,9 @@ sntRover.service('rvMenuSrv',
     };
 
 	/**
-	* utility the user role is 'Floor & Maintanance staff'	
+	* utility the user role is 'Floor & Maintanance staff'
     * @param {string}, user role
-	* @return {boolean}	
+	* @return {boolean}
 	*/
     var isFloorMaintananceStaff= function() {
     	var userDetails = RVDashboardSrv.getUserDetails();
@@ -77,9 +77,9 @@ sntRover.service('rvMenuSrv',
     	//deep copying the obeject before proceeding
     	menuList = JSON.parse(JSON.stringify(menuList));
 
-    	var menuToReturn = [],  
+    	var menuToReturn = [],
     		subMenuCount,
-    		subMenuVisibleCount, 
+    		subMenuVisibleCount,
     		hasSubMenu = false;
 
     	//we are processing on the menu list we have
@@ -93,10 +93,10 @@ sntRover.service('rvMenuSrv',
 
 				//looping through submenus
 				menuItem.submenu = _.filter (menuItem.submenu, function (subMenuItem){
-					isMenuItemVisible = self.shouldShowMenuItem(subMenuItem.menuIndex);	
-					
+					isMenuItemVisible = self.shouldShowMenuItem(subMenuItem.menuIndex);
+
 					if (isMenuItemVisible) subMenuVisibleCount++;
-					return isMenuItemVisible;									
+					return isMenuItemVisible;
 				});
 
 				// if it has submenu & none of them are visible we will not show that menu
@@ -135,7 +135,7 @@ sntRover.service('rvMenuSrv',
 		    }, {
 		        title: "MENU_FRONT_DESK",
 		        //hidden: true,
-		        action: "",		        
+		        action: "",
 		        iconClass: "icon-frontdesk",
 		        menuIndex: "front_desk",
 		        submenu: [{
@@ -314,7 +314,7 @@ sntRover.service('rvMenuSrv',
 	*/
 	this.getMobileMenuForStandAloneRover = function() {
 		var defaultDashboardState 	= getDefaultDashboardState ();
-	    
+
 	    // menu for mobile views
 	    var menu = [{
 			        title: "MENU_DASHBOARD",
@@ -325,7 +325,7 @@ sntRover.service('rvMenuSrv',
 			        title: "MENU_ROOM_STATUS",
 			        action: "rover.housekeeping.roomStatus",
 			        menuIndex: "roomStatus",
-			        iconClass: "icon-housekeeping",			        
+			        iconClass: "icon-housekeeping",
 			    }
 		];
 
@@ -338,7 +338,7 @@ sntRover.service('rvMenuSrv',
 	*/
 	this.getMobileMenuForConnectedRover = function() {
 		var defaultDashboardState 	= getDefaultDashboardState ();
-	    
+
 	    // menu for mobile views
 	    var menu = [{
 			        title: "MENU_DASHBOARD",
@@ -390,28 +390,28 @@ sntRover.service('rvMenuSrv',
 	* @return {boolean}
 	*/
 	this.hasMenuPermission = function(menuIndex) {
-		
+
 		// NOTE:- {key: menuIndex, value: [PERMISSIONS]}
 		var menuPermissions = {
 			'search': 				['SEARCH_RESERVATIONS'],
 			'createReservation': 	['CREATE_EDIT_RESERVATIONS'],
 			'postcharges': 			['ACCESS_POST_CHARGES'],
-			
+
 			'cashier': 				['ACCESS_CASHIERING'],
 			'endOfDay': 			['ACCESS_RUN_END_OF_DAY'],
 			'rateManager': 			['ACCESS_RATE_MANAGER'],
-			
+
 			'cards': 				['ACCESS_COMPANY_TA_CARDS'],
 			'distribution_manager': ['ACCESS_DISTRIBUTION_MENU'],
 			'roomStatus': 			['HOUSEKEEPING_ROOM_STATUS_ACCESS'],
-			
+
 			'workManagement': 		['ACCESS_TASK_MANAGEMENT'],
 			'maintanance': 			['ACCESS_TASK_MAINTENANCE'],
 			'journals': 			['ACCESS_JOURNAL'],
 			'ccTransactions':   	['VIEW_CC_TRANSACTIONS'],
 
-			'accounting': 			['ACCESS_ACCOUNTING_INTERFACE'],		
-			'commisions': 			['ACCESS_COMMISSIONS'],	
+			'accounting': 			['ACCESS_ACCOUNTING_INTERFACE'],
+			'commisions': 			['ACCESS_COMMISSIONS'],
 			'diaryReservation': 	['CREATE_EDIT_RESERVATIONS'],
 
 
@@ -422,7 +422,7 @@ sntRover.service('rvMenuSrv',
 			'accounts':        		['ACCESS_ACCOUNTS'],
 
 			'changePassword':       ['SETTINGS_CHANGE_PASSWORD_MENU'],
-			'adminSettings':        ['SETTINGS_ACCESS_TO_HOTEL_ADMIN'] 
+			'adminSettings':        ['SETTINGS_ACCESS_TO_HOTEL_ADMIN']
 
 
 		};
@@ -467,12 +467,12 @@ sntRover.service('rvMenuSrv',
 	this.hasSettingsPermission = function(menuIndex) {
 		var returnValue = true;
 		switch (menuIndex){
-			case 'diaryReservation': 
+			case 'diaryReservation':
 				returnValue = isHourlyRateOn();
 				break;
 
 			//dont wanted to show on hourly enabled hotels
-			case 'menuGroups': 
+			case 'menuGroups':
 				returnValue = !isHourlyRateOn();
 				break;
 
@@ -480,21 +480,21 @@ sntRover.service('rvMenuSrv',
 			case 'accounts':
 				returnValue = !isHourlyRateOn();
 				break;
-							
+
 			//if auto change business is not enabled, we have to show EOD menu
 			// hote admin -> Hotel & Staff -> Settings & Parameter -> AUTO CHANGE BUSINESS DATE
 			case 'endOfDay':
-				returnValue = !isAutoBussinessDateChangeEnabled(); 
+				returnValue = !isAutoBussinessDateChangeEnabled();
 				break;
 
 			//we are hiding conversations for now
 			case 'conversations':
 				returnValue = false;
-				break;		
+				break;
 
-			case 'reports':		
-				// we are hiding the reports menu if it is a floor & maintanance staff	in connected/standalon	
-				//returnValue = isConnected() ? (isFloorMaintananceStaff() ? false : true) : (isFloorMaintananceStaff() ? false : true);				
+			case 'reports':
+				// we are hiding the reports menu if it is a floor & maintanance staff	in connected/standalon
+				//returnValue = isConnected() ? (isFloorMaintananceStaff() ? false : true) : (isFloorMaintananceStaff() ? false : true);
 				break;
 			case 'workManagement':
 				returnValue = !isHourlyRateOn();
@@ -513,10 +513,10 @@ sntRover.service('rvMenuSrv',
 	* @return {boolean}
 	*/
 	this.shouldShowMenuItem = function(menuIndex) {
-		if (!self.hasMenuPermission (menuIndex)) return false;		
-		if (!self.hasRolePermission (menuIndex)) return false;	
+		if (!self.hasMenuPermission (menuIndex)) return false;
+		if (!self.hasRolePermission (menuIndex)) return false;
 		if (!self.hasSettingsPermission (menuIndex)) return false;
 		return true;
-	};	
+	};
 
 }] );

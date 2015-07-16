@@ -65,7 +65,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 		/**
 		 * when from date choosed, this function will fire
-		 * @param  {Object} date          
+		 * @param  {Object} date
 		 * @param  {Object} datePickerObj
 		 * @return undefined
 		 */
@@ -110,7 +110,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					console.log(errorMessage);
 				},
 				updateSegment = function() {
-					var aptSegment = ""; //Variable to store the suitable segment ID 
+					var aptSegment = ""; //Variable to store the suitable segment ID
 					if (!!$scope.groupConfigData.summary.block_to && !!$scope.groupConfigData.summary.block_from) {
 						var dayDiff = Math.floor((new tzIndependentDate($scope.groupConfigData.summary.block_to) - new tzIndependentDate($scope.groupConfigData.summary.block_from)) / 86400000);
 						angular.forEach($scope.groupSummaryData.demographics.segments, function(segment) {
@@ -138,9 +138,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 		/**
 		 * when to date choosed, this function will fire
-		 * @param  {Object} date          
-		 * @param  {Object} datePickerObj 
-		 * @return undefined            
+		 * @param  {Object} date
+		 * @param  {Object} datePickerObj
+		 * @return undefined
 		 */
 		var toDateChoosed = function(date, datePickerObj) {
 			$scope.groupConfigData.summary.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
@@ -156,9 +156,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 		/**
 		 * when release date choosed, this function will fire
-		 * @param  {Object} date          
-		 * @param  {Object} datePickerObj 
-		 * @return undefined            
+		 * @param  {Object} date
+		 * @param  {Object} datePickerObj
+		 * @return undefined
 		 */
 		var releaseDateChoosed = function(date, datePickerObj) {
 			$scope.groupConfigData.summary.release_date = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));

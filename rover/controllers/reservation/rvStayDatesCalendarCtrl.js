@@ -42,7 +42,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 				$scope.availabilityDetails = data;
 				$scope.fetchedStartDate = tzIndependentDate(fromDate);
 				$scope.fetchedEndDate = tzIndependentDate(toDate);
-				
+
 				//Refresh the calendar with the arrival, departure dates
 				$scope.refreshCalendarEvents();
 				//Display Calendar
@@ -274,8 +274,8 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			setTimeout(function(){
 				$scope.refreshScroller('stay-dates-calendar');
 			}, 1500);
-				
-				
+
+
 		};
 
 		//Drag and drop handler for drag and drop to an external calendar
@@ -658,7 +658,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			prevMonthLastVisibleDate = new Date($scope.leftCalendarOptions.year, $scope.leftCalendarOptions.month);
 			prevMonthLastVisibleDate.setMonth(prevMonthLastVisibleDate.getMonth() - 2);
 			prevMonthLastVisibleDate.setDate(22);
-			
+
 			//Limit the start date to the current business date
 			if(prevMonthLastVisibleDate <= tzIndependentDate($rootScope.businessDate)){
 				prevMonthLastVisibleDate = tzIndependentDate($rootScope.businessDate);

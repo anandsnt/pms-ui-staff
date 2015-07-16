@@ -22,7 +22,7 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 			$scope.currentCard = $scope.contactInformation.id;
 		}
 
-		/* Items related to ScrollBars 
+		/* Items related to ScrollBars
 		 * 1. When the tab is activated, refresh scroll.
 		 * 2. Scroll is actually on a sub-scope created by ng-include.
 		 *    So ng-iscroll will create the ,myScroll Array there, if not defined here.
@@ -146,7 +146,7 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = data;
 		};
-		// To check contract list is empty   
+		// To check contract list is empty
 		var checkContractListEmpty = function() {
 
 			if ($scope.contractList.current_contracts.length === 0 && $scope.contractList.future_contracts.length === 0 && $scope.contractList.history_contracts.length === 0) {

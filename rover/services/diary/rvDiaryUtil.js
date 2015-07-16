@@ -29,10 +29,10 @@ sntRover
                 ms_per_day          = 43200000,
                 ms_per_hr           = 3600000,
                 perspective_offset  = (arrival_ms instanceof Date ? new Date(arrival_ms).toComponents().time.hours : 0),
-                x_origin            = (arrival_ms instanceof Date ? arrival_ms.setHours(new Date(arrival_ms).toComponents().time.hours, new Date(arrival_ms).toComponents().time.minutes, 0) : arrival_ms), 
-                x_max               = (display_total_hours - perspective_offset) * ms_per_hr, 
+                x_origin            = (arrival_ms instanceof Date ? arrival_ms.setHours(new Date(arrival_ms).toComponents().time.hours, new Date(arrival_ms).toComponents().time.minutes, 0) : arrival_ms),
+                x_max               = (display_total_hours - perspective_offset) * ms_per_hr,
                 x_min               = (display_total_hours * ms_per_hr - x_max),
-                x_right             = x_origin + x_max, 
+                x_right             = x_origin + x_max,
                 x_left              = x_origin - x_min,
                 x_offset            = x_origin - (ms_per_hr * 2);
 
@@ -56,7 +56,7 @@ sntRover
                 }
             };
 
-            ret.x_origin_start_time = ret.x_origin.toComponents().time.convertToReferenceInterval(15); 
+            ret.x_origin_start_time = ret.x_origin.toComponents().time.convertToReferenceInterval(15);
             ret.x_n_time = ret.x_n.toComponents().time.convertToReferenceInterval(15);
             ret.x_p_time = ret.x_p.toComponents().time.convertToReferenceInterval(15);
 
@@ -95,12 +95,12 @@ sntRover
 					}
 				}
 			}
-				
+
 			return base;
-		};	
+		};
 
 		copyArray = function(src, dest){
-    		var val; 
+    		var val;
 
     		dest = [];
 
@@ -112,7 +112,7 @@ sntRover
     			} else {
     				val = src[i];
     			}
-    			
+
     			dest.push(val);
     		}
 
@@ -123,7 +123,7 @@ sntRover
     		var k;
 
     		for(k in src) {
-    			if(hops.call(src, k) && 
+    			if(hops.call(src, k) &&
     			   typeof src[k] !== 'function') {
     				dest[k] = src[k];
     			}
@@ -161,20 +161,20 @@ sntRover
 					return idx;
 				}
 			}
-		
+
 			return idx;
 		};
 
 		reservationIndex = function(room, reservation) {
 			var idx = -1, occupancy = room.occupancy;
-			
+
 			for(var i = 0, len = occupancy.length; i < len; i++) {
 				if(occupancy[i].reservation_id === reservation.reservation_id) {
 					idx = i;
 					return idx;
 				}
-			}			
-			return idx;		
+			}
+			return idx;
 		};
 
 		copyReservation = function(reservation) {
@@ -191,19 +191,19 @@ sntRover
 
 		updateReservation = function(room, reservation) {
 			var idx = reservationIndex(room, reservation);
-		
+
 			if(idx > -1) {
 				room.occupancy[idx] = reservation;
-			}		
+			}
 		};
 
 		removeReservation = function(room, reservation) {
-			var idx = reservationIndex(room, reservation);			
+			var idx = reservationIndex(room, reservation);
 			if(idx > -1) {
 				return room.occupancy.splice(idx, 1);
 			}
 
-			return;	
+			return;
 		};
 
 		clearRoomQuery = function(rooms) {
@@ -215,16 +215,16 @@ sntRover
 
 			for(var i = 0, len = rooms.length; i < len; i++) {
 				room = rooms[i];
-				room.occupancy = _.reject(room.occupancy, reject);	
-				room = deepCopy(room);							 
+				room.occupancy = _.reject(room.occupancy, reject);
+				room = deepCopy(room);
 			}
 		};
 
 	 	reservationRoomTransfer = function(rooms, nextRoom, room, reservation) { //, commit) {
 			var data = rooms,
-				oldRoom, 
-				newRoom, 
-				idxOldRoom, 
+				oldRoom,
+				newRoom,
+				idxOldRoom,
 				idxNewRoom;
 
 			oldRoom = copyRoom(room);
@@ -247,7 +247,7 @@ sntRover
                 if(idxNewRoom > -1 && idxNewRoom < data.length) {
                     data[idxNewRoom] = newRoom;
                 }
-			} else {				
+			} else {
 				updateReservation(oldRoom, reservation);
 			}
 		};
@@ -269,7 +269,7 @@ sntRover
 	    			if(hops.call(obj, k)) {
 	    				switch(typeof obj[k]) {
 	    					case 'function':
-	    						
+
 	    					break;
 	    				}
 	    			}
@@ -347,6 +347,6 @@ sntRover
 			deepCopy: deepCopy,
 			mixin: mixin,
 			correctTime: correctTime
-		}; 	
+		};
 	}
 ]);

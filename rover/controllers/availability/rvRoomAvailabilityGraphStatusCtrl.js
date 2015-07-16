@@ -134,7 +134,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
  				}
  			}
  			resizedWindow();
- 			
+
  		};
 
 
@@ -142,7 +142,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 			$scope.data = rvAvailabilitySrv.getGraphData();
 
 			formGraphData();
-			
+
 			Highcharts.theme = {
 				colors: colors,
 				chart: {
@@ -203,21 +203,21 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 						color: '#F0F0F0'
 					}
 				},
-				
+
 				plotOptions: {
 					series: {
 						fillOpacity: .25
 					}
-					
+
 
 				},
-				
+
 
 			   // scroll charts
-			   
+
 			};
 
-			
+
 			// Apply the theme
 			var highchartsOptions = Highcharts.setOptions(Highcharts.theme);
 			$scope.availabilityGraphCongif = {
@@ -235,7 +235,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 			            }
 				    },
 				},
-		
+
 				title: {
 					text: ''
 				},
@@ -281,24 +281,24 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 					},
 					tickPosition: 'outside',
 					tickWidth: 0,
-							
+
 				}
 				],
-				 						
+
 				series: $scope.graphData,
 			    func: function (chart) { // on complete
 			        	plottedChart = chart;
 			        	setTimeout(function(){
 			        		$scope.$apply(function(){
-			        			
+
 					        	for(var i = 0; i < $scope.graphData.length; i++){
 					        		$scope.clickedOnLegend($scope.graphData[i].name, !$scope.graphData[i].checked)
 					        	}
 					        	$scope.graphWidth = getMaxSeriesLengthData() * 75;
 					        	resizedWindow();
-					        						        	
+
 			        		});
-	        				
+
 			        	}, 150)
 
 			        	$(window).resize(function(){
@@ -307,12 +307,12 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 			        			$scope.refreshScroller('graph-scroller');
 			        		}, 500);
 			        	});
-			        	
+
 			        }
 
 
 			    }
-			
+
 			$scope.$emit("hideLoader");
 		}
 
@@ -321,17 +321,17 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 		if(!isEmptyObject($scope.data)){
 			formGraphData();
 			doInitialOperation();
-		
+
 			$scope.$emit("hideLoader");
 
 	       setTimeout(function(){
-	        	
+
         		$scope.$apply(function(){
         			resizedWindow();
         			$scope.hideMeBeforeFetching = true;
         		});
         		$(window).resize();
-        		
+
         	}, 500);
 
 		}
@@ -353,10 +353,10 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 		        		$scope.hideMeBeforeFetching = true;
 		        	});
 		        	$(window).resize();
-	        		
+
 	        	}, 1000);
         	}
-				
+
 		});
 
 		/**
@@ -369,7 +369,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 				$timeout.cancel(timeoutFunction)
 			}
 		});
-  	
+
 
 	}
 ]);

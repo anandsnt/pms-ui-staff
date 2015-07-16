@@ -1,10 +1,10 @@
-admin.controller('ADContentManagementCtrl',['$scope', '$state', '$rootScope', 'ngDialog', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location', 
+admin.controller('ADContentManagementCtrl',['$scope', '$state', '$rootScope', 'ngDialog', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location',
  function($scope, $state, $rootScope, ngDialog, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
-	
+
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	$scope.isGridView = true;
-	 
+
 	/* Function to load the detail page for sections/categories/items
 	 * Can be used from either grid view or tree view
     */
@@ -49,12 +49,12 @@ admin.controller('ADContentManagementCtrl',['$scope', '$state', '$rootScope', 'n
    $scope.saveAvailabilityStatus = function(id, status){
       var successCallbackAvailabilityStatus = function(data){
         $rootScope.$broadcast('statusUpdated',{'id':id, 'status':status});
-        $scope.$emit('hideLoader');                 
+        $scope.$emit('hideLoader');
       };
       var data = {};
       data.status = status;
       data.id = id;
-      
+
       $scope.invokeApi(ADContentManagementSrv.saveComponent, data , successCallbackAvailabilityStatus);
    }
 

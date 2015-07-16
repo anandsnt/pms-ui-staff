@@ -4,7 +4,7 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 	$scope.paymentListSuccess = function(data){
 		$scope.$emit('hideLoader');
 		$scope.paymentListData = data;
-		
+
 		//To remove non cc payments
 		angular.forEach($scope.paymentListData.existing_payments, function(obj, index){
 			if (!obj.is_credit_card) {
@@ -27,7 +27,7 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 		reservationId =  $scope.dataToPaymentList.reservation_card.reservation_id;
 	}
 	$scope.invokeApi(RVPaymentSrv.getPaymentList, reservationId, $scope.paymentListSuccess);
-	
+
 	$scope.clickPaymentItem = function(paymentId, cardCode, cardNumberEndingWith, expiryDate,isSwiped,colorCode){
 		var data = {
 			"reservation_id":	reservationId,
@@ -37,8 +37,8 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 			data.bill_number = $scope.dataToPaymentList.bills[$scope.dataToPaymentList.currentActiveBill].bill_number;
 		}
 
-		
-		
+
+
 		var paymentMapFailure = function(errorMessage){
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = errorMessage;
@@ -46,7 +46,7 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 		var paymentMapSuccess = function(){
 			$scope.$emit('hideLoader');
 			ngDialog.close();
-			
+
 			if($scope.dataToPaymentList.currentView === "billCard"){
 				var billIndex = $scope.dataToPaymentList.currentActiveBill;
 				$scope.dataToPaymentList.bills[billIndex].credit_card_details.card_code = cardCode.toLowerCase();
@@ -72,9 +72,9 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 		};
 		$scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, paymentMapSuccess, paymentMapFailure);
 	};
-	
-	
-	
+
+
+
 	$scope.$parent.myScrollOptions = {
 	    'paymentList': {
 	    	scrollbars: true,
@@ -84,14 +84,14 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 	    }
 	};
 
-	
-	
+
+
 	$scope.$on('$viewContentLoaded', function() {
 		setTimeout(function(){
 			$scope.$parent.myScroll['paymentList'].refresh();
 			},
 		3000);
-		
+
      });
-	
+
 }]);

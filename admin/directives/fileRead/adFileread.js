@@ -20,7 +20,7 @@ admin.directive('appFilereader', function($q){
                 });
 
                 function readFile(file) {
-                	                	
+
                     var deferred = $q.defer();
 
                     var reader = new FileReader();
@@ -32,7 +32,7 @@ admin.directive('appFilereader', function($q){
                     };
                     reader.readAsDataURL(file);
                     scope.fileName = file.name;
-								
+
                     return deferred.promise;
                 }
 

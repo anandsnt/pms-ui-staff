@@ -12,9 +12,9 @@ sntRover.directive('scrollPosition', function ($window) {
                             console.log(scope.myScroll.getScrollY());
                         }
                     });*/
-                    
+
                 } catch(err){
-                    
+
                 }
             } else {
           var w = angular.element($window);

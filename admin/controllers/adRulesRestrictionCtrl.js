@@ -82,7 +82,7 @@ admin.controller('ADRulesRestrictionCtrl', [
 
         // get templates for editable restrictions
         $scope.getTemplateUrl = function() {
-            
+
             if ( !this.item ) {
                 return;
             };
@@ -362,7 +362,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             }
         }
 
-              
+
         $scope.deleteDepositeRule = function(rule) {
             // keep them in local context of deleteRule function as
             // we dont know when callback will be called, so..

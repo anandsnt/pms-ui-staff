@@ -42,7 +42,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.setTitle($filter( 'translate')('ROOM_STATUS'));
 		$scope.heading = $filter( 'translate')('ROOM_STATUS');
 		$scope.$emit( 'updateRoverLeftMenu' , 'roomStatus' );
-		
+
 		// set the scroller
 		$scope.setScroller('room-status-filter');
 
@@ -63,7 +63,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 			if ((fromState.name === 'rover.housekeeping.roomDetails' && toState.name !== 'rover.housekeeping.roomStatus')
 				|| (fromState.name === 'rover.housekeeping.roomStatus' && toState.name !== 'rover.housekeeping.roomDetails')) {
-				
+
 				RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
 				RVHkRoomStatusSrv.resetRoomTypes();
 
@@ -372,7 +372,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				    scope: $scope,
 				    data: []
 				});
-				
+
 			};
 
 			var _onCheckRoomSucess = function(response) {
@@ -409,7 +409,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		    }
 		    var _onAssignSuccess = function(data) {
 		            $scope.$emit('hideLoader');
-		            
+
 		            var assignee = _.find($scope.activeWorksheetEmp, function(emp) {
 		            	return emp.id === $scope.assignRoom.user_id
 		            });
@@ -470,7 +470,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.roomSelectChange = function(item) {
 			var _value = item.selected;
-			
+
 			// double to make sure its a truthy value
 			if ( !! _value ) {
 				$scope.anyRoomChosen = true;
@@ -648,7 +648,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			/*
 			*	======[ READY TO PRINT ]======
 			*/
-		
+
 			// this will show the popup with full report
 		    $timeout(function() {
 
@@ -1252,7 +1252,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		if ( $window.innerWidth < 599 ) {
 			$_pullUpDownModule();
 		};
-		
+
 
 
 

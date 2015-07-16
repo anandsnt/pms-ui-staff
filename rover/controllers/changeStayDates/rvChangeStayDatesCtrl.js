@@ -2,7 +2,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 	function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter, ngDialog, rvPermissionSrv) {
 		//inheriting some useful things
 		BaseCtrl.call(this, $scope);
-		
+
 		// set a back button on header
 		$rootScope.setPrevState = {
 			title: $filter('translate')('STAY_CARD'),
@@ -298,7 +298,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				if (this.date === ($scope.stayDetails.details.arrival_date)) {
 					checkinRate = $scope.escapeNull(this.rate) === "" ? 0 : parseInt(this.rate);
 				}
-				
+
 			});
 
 			if(!$scope.isStayRatesSuppressed){
@@ -315,7 +315,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.refreshMyScroller();
 		};
 
-		
+
 		//click function to execute when user selected a room from list (on ROOM_TYPE_AVAILABLE status)
 		$scope.roomSelectedFromList = function(roomNumber) {
 			$scope.roomSelected = roomNumber;
@@ -335,7 +335,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.goBack();
 			$scope.closeDialog();
 		};
-	
+
 		this.successCallbackConfirmUpdates = function(data) {
 			$scope.$emit("hideLoader");
 			$scope.goBack();
@@ -402,7 +402,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		    	$scope.cc_auth_amount = data.cc_auth_amount;
 		    }
 		};
-	
+
 		// Handle confirmUpdates process with Autherization..
 		var performCCAuthAndconfirmUpdatesProcess = function(postParams){
 
@@ -466,7 +466,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		    };
 
 		    setFlagForPreAuthPopup();
-		    
+
 		    // CICO-17266 Considering Billing info details before Auth..
 		    ngDialog.open({
 				template: '/assets/partials/bill/ccAuthAndBillingInfoConfirm.html',

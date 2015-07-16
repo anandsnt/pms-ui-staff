@@ -26,7 +26,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 			$scope.eventTimestamp = event.timeStamp;
 		}
 	};
-	
+
 	// To handle click on drawer handle - open/close.
 	$scope.clickedDrawer = function($event){
 		$event.stopPropagation();
@@ -70,7 +70,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 
 	// On changing charge group on PRINT filter
 	$scope.chargeGroupChanged = function(){
-		
+
 		$scope.data.activeChargeCodes = [];
 
 		var successCallBackFetchRevenueData = function(data){
@@ -80,7 +80,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 			var chargeCodeList = data.charge_groups[0].charge_codes;
 			$scope.data.activeChargeCodes = ( chargeCodeList.length >0 ) ? chargeCodeList : [];
 			$scope.data.revenueData.charge_groups[0].active = true;
-            
+
             $scope.errorMessage = "";
             $rootScope.$broadcast('REFRESHREVENUECONTENT');
             $scope.$emit('hideLoader');
@@ -106,7 +106,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	$scope.chargeCodeChanged = function(){
 
 		var successCallBackFetchRevenueDataChargeCodes = function(data){
-			
+
 			$scope.data.revenueData.charge_groups[0].charge_codes = [];
 			$scope.data.revenueData.charge_groups[0].charge_codes = data.charge_codes;
 			$scope.data.revenueData.charge_groups[0].active = true;
@@ -136,7 +136,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 
 	// To handle Summary/Details toggle button click - REVENUE
 	$scope.toggleSummaryOrDeatilsRevenue = function(){
-		
+
 		$scope.data.isRevenueToggleSummaryActive = !$scope.data.isRevenueToggleSummaryActive;
 	};
 
@@ -154,7 +154,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		var successCallBackFetchPaymentData = function(data){
 			$scope.data.paymentData = {};
 			$scope.data.paymentData = data;
-			
+
 			if(data.payment_type === 'Credit Card'){
 				$scope.data.paymentData.payment_types[0].active = true;
 			}
@@ -233,10 +233,10 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		$scope.printFilterValues.selectedChargeGroup = $( '#revenue-charge-group option:selected' ).text();
 		$scope.printFilterValues.selectedChargeCode = $( '#revenue-charge-code:selected' ).text();
 		$scope.printFilterValues.selectedPaymentType = $( '#payments-payment-type option:selected' ).text();
-		
+
 		// add the orientation
 		addPrintOrientation();
-		
+
 		/*
 		 *	======[ READY TO PRINT ]======
 		 */

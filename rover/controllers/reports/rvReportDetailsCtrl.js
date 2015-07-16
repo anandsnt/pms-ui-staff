@@ -663,7 +663,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		};
 
 		// determine if we need to show pre print popup
-		// currently only for 'OCCUPANCY_REVENUE_SUMMARY' report 
+		// currently only for 'OCCUPANCY_REVENUE_SUMMARY' report
 		function $_preFetchFullReport () {
 			var allowedDateRange = 0,
 				chosenDateRange,
@@ -680,7 +680,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				// find out the user selection choices
 				chosenVariance = $scope.chosenReport.chosenOptions['include_variance'] ? true : false;
 				chosenLastYear = $scope.chosenReport.chosenOptions['include_last_year'] ? true : false;
-				
+
 				// fromdate <- 5 days -> untildate
 				// diff should be 4 (5 - 1), including fromdate
 				if ( chosenVariance && chosenLastYear ) {
@@ -693,7 +693,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					allowedDateRange = 9;
 				}
 
-				// fromdate <- 15 days -> untildate, 
+				// fromdate <- 15 days -> untildate,
 				// diff should be 14 (15 - 1), including fromdate
 				else {
 					allowedDateRange = 14;
@@ -878,7 +878,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		var reportAPIfailure = $scope.$on('report.API.failure', function() {
 			$scope.errorMessage = $scope.$parent.errorMessage;
-			
+
 			afterFetch();
 			calPagination();
 			refreshScroll();

@@ -1,4 +1,4 @@
-admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$rootScope',  
+admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$rootScope',
     function($scope,ADRatesAddRoomTypeSrv, $rootScope){
 
 
@@ -15,7 +15,7 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
     }
 
     /**
-    * Method to fetch the list of room types available. 
+    * Method to fetch the list of room types available.
     * Assigned rooms and non assigned rooms are calculated using the roomlist ids in parent scope
     */
     $scope.fetchAllRoomTypes = function(){
@@ -25,7 +25,7 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
             $scope.$emit('hideLoader');
         };
 
-        $scope.invokeApi(ADRatesAddRoomTypeSrv.fetchRoomTypes, {},fetchRoomTypesSuccessCallback); 
+        $scope.invokeApi(ADRatesAddRoomTypeSrv.fetchRoomTypes, {},fetchRoomTypesSuccessCallback);
 
     };
 
@@ -66,7 +66,7 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
                 }
             }
        });
-       
+
     }
 
 
@@ -101,7 +101,7 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
             $scope.$emit("changeMenu", menuName);
         };
 
-        $scope.invokeApi(ADRatesAddRoomTypeSrv.saveRoomTypes, data, saveRoomTypesSuccessCallback);       
+        $scope.invokeApi(ADRatesAddRoomTypeSrv.saveRoomTypes, data, saveRoomTypesSuccessCallback);
     };
 
     /**
@@ -115,7 +115,7 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
      * To handle on drop event
      *
      */
-    $scope.onDrop = function($event, $data, array) {    
+    $scope.onDrop = function($event, $data, array) {
         array.push($data);
     };
 
@@ -131,7 +131,7 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
             return false;
     }
     /*
-     * To register selected assigned room 
+     * To register selected assigned room
      *
      */
 
@@ -141,23 +141,23 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
             if(index === $scope.selectedAssignedRoomIndex)
                 $scope.selectedAssignedRoomIndex = -1;
             else
-                $scope.selectedAssignedRoomIndex =index;        
+                $scope.selectedAssignedRoomIndex =index;
         }
         else if(typeof lastDropedTime === 'object') { //means date
             var currentTime = new Date();
             var diff = currentTime - lastDropedTime;
             if(diff <= 100){
-                $event.preventDefault();                
+                $event.preventDefault();
             }
             else{
                 lastDropedTime = '';
             }
         }
 
-        
+
     }
     /*
-     * To register selected unassigned room 
+     * To register selected unassigned room
      *
      */
 
@@ -171,23 +171,23 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
                 $scope.selectedUnAssignedRoomIndex =-1;
             else{
                 $scope.selectedUnAssignedRoomIndex =index;
-            }   
+            }
         }
         else if(typeof lastDropedTime === 'object') { //means date
             var currentTime = new Date();
             var diff = currentTime - lastDropedTime;
             if(diff <= 100){
-                $event.preventDefault();                
+                $event.preventDefault();
             }
             else{
                 lastDropedTime = '';
             }
-        }   
+        }
 
 
     }
     /*
-     * To handle click action for selected room type 
+     * To handle click action for selected room type
      *
      */
 
@@ -201,7 +201,7 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
         }
     };
     /*
-     * To handle click action for selected room type 
+     * To handle click action for selected room type
      *
      */
     $scope.topMoveleftClicked = function(){
@@ -213,7 +213,7 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
          }
     };
     /*
-     * To handle click action to move all assigned room types 
+     * To handle click action to move all assigned room types
      *
      */
 
@@ -227,7 +227,7 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
         $scope.selectedUnAssignedRoomIndex =-1;
     };
     /*
-     * To handle click action to move all unassigned room types 
+     * To handle click action to move all unassigned room types
      *
      */
     $scope.bottomMoveleftClicked = function(){
@@ -241,13 +241,13 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
 
         };
     $scope.reachedAssignedRoomTypes = function(){
-        $scope.selectedAssignedRoomIndex = -1;  
+        $scope.selectedAssignedRoomIndex = -1;
         lastDropedTime = new Date();
     }
     $scope.reachedUnAssignedRoomTypes = function(){
-        $scope.selectedUnAssignedRoomIndex = -1;    
+        $scope.selectedUnAssignedRoomIndex = -1;
         lastDropedTime = new Date();
-    } 
+    }
 
 
     $scope.init();

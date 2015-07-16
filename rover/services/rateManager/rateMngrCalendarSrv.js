@@ -53,7 +53,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                 } else {
                     fetchingRooms = false;
                 }
-                
+
 		var deferred = $q.defer();
 		var rejectDeferred = function(data){
 			deferred.reject(data);
@@ -87,9 +87,9 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 
 				var calendarData = that.calculateRateViewCalData();
                                 calendarData.room_type_restrictions = data.room_type_restrictions;
-                                
+
                                 calendarData.total_room_types = data.room_type_restrictions[0].room_types.length;
-                                
+
                                 calendarData.room_types_all = [];
                                 calendarData.isChildRate = [];
                                 var rateObj;
@@ -102,14 +102,14 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                                     }
                                 }
                                 for (var i in data.room_type_restrictions[0].room_types){
-                                    
+
                                 calendarData.room_types_all.push({
                                     room_type_id:data.room_type_restrictions[0].room_types[i].room_type.id,
                                     name:data.room_type_restrictions[0].room_types[i].room_type.name
                                 });
-                                    
+
                                 }
-                                
+
 				//If only one rate exists in the search results,
 				//then room type calendar for that rate should be displayed.
 				//Fetch the room type details for that rate.
@@ -126,13 +126,13 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 					calendarData.type = "RATES_LIST";
 					deferred.resolve(calendarData);
 				}
-				
+
 			},rejectDeferred);
 
 		};
 
 		that.fetchAllRestrictionTypes().then(getDailyRates, rejectDeferred);
-				
+
 		return deferred.promise;
 
 	};
@@ -146,7 +146,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			deferred.reject(data);
 		};
 		var getRoomTypeRates = function(d){
-			
+
 			/* It is the case of All-Rates from Rate Calendar.
 			 * TODO: Handle this case at the calling place itself.
 			 */
@@ -183,7 +183,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		};
 
 		that.fetchAllRestrictionTypes().then(getRoomTypeRates, rejectDeferred);
-				
+
 		return deferred.promise;
 
 	};
@@ -240,7 +240,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                     'value': "HAS_RESTRICTIONS"};
                 formattedRestrictionTypes[totalRestrictions] = baseRestrictionItem;
 		calendarData.restriction_types = formattedRestrictionTypes;
-		
+
 		// In UI, tables are represented as rows of columns.
 		//Input data is in opposite structure, restructuring here
 		var datesList = [];
@@ -304,7 +304,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	this.calculateRateViewCalData = function(){
                 var fetchingRooms = that.fetchingRooms;
 		var calendarData = {};
-	
+
 		this.hasAnyHourlyRate = this.checkIfAnyHourlyRatePresent(that.dailyRates.results[0].rates);
 		// Format restriction Types as required by UI, and make it a dict for easy lookup
                 var fetchingRooms = false;
@@ -314,12 +314,12 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                     this.hasAnyHourlyRate = this.checkIfAnyHourlyRatePresent(that.dailyRates.results[0].rates);
                 }
                 // Format restriction Types as required by UI, and make it a dict for easy lookup
-                
+
 		var formattedRestrictionTypes = {};
 		angular.forEach(that.allRestrictionTypes, function(item){
 			formattedRestrictionTypes[item.id]= that.getRestrictionUIElements(item);
 		});
-                
+
                 var totalRestrictions = formattedRestrictionTypes.length;
                 //ADD ONE MORE ITEM, FOR ZOOM 7; CICO-10668
                 var baseRestrictionItem = {
@@ -334,9 +334,9 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                     'id': totalRestrictions,
                     'value': "HAS_RESTRICTIONS"};
                 formattedRestrictionTypes[totalRestrictions] = baseRestrictionItem;
-                
+
 		calendarData.restriction_types = formattedRestrictionTypes;
-		
+
 		// In UI, tables are represented as rows of columns.
 		//Input data is in opposite structure, restructuring here
 		var datesList = [];
@@ -383,7 +383,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		var enableDisableCloseAll = that.getCloseAllEnableDisableStatus(calendarData.data, "RATE_TYPE");
 		calendarData.disableCloseAllBtn = !enableDisableCloseAll.enableCloseAll;
 		calendarData.disableOpenAllBtn = !enableDisableCloseAll.enableOpenAll;
-		
+
 		return calendarData;
 	};
 
@@ -409,7 +409,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			var rate = rateData[i];
 			var isDate = false;
 			for(var date in rate){
-				
+
 				// Ignore keys other date object
 				if (date === "id" || date === "name" || date === 'is_hourly' || date === 'isHourly') {
 					continue;
@@ -424,7 +424,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 				if( (new Date(date).getTime() < new Date(that.businessDate).getTime()) ){
 			   		continue;
 		   		}
-		   		
+
 		   		var item = rate[date];
 		   		if(type === "ROOM_TYPE") {
 		   			var item = rate[date].restrictions;
@@ -497,7 +497,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		restriction_type_updated.value = restriction_type.value;
 		restriction_type_updated.activated = restriction_type.activated;
 		restriction_type_updated.editable = restriction_type.editable;
-		
+
 
 
 		return restriction_type_updated;

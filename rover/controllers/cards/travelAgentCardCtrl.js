@@ -132,9 +132,9 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 			$scope.$broadcast("contactTabActive");
 			$timeout(function() {
 				$scope.$emit('hideLoader');
-			}, 1000);			
+			}, 1000);
 			if(!isNew){
-				callCompanyCardServices();	
+				callCompanyCardServices();
 			}
 		});
 
@@ -267,7 +267,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 				var dataToSend = JSON.parse(JSON.stringify(data));
 				for (key in dataToSend) {
 					if (typeof dataToSend[key] !== "undefined" && data[key] !== null && data[key] !== "") {
-						//in add case's first api call, presentContactInfo will be empty object					
+						//in add case's first api call, presentContactInfo will be empty object
 						if (JSON.stringify(presentContactInfo) !== '{}') {
 							for (subDictKey in dataToSend[key]) {
 								if (typeof dataToSend[key][subDictKey] === 'undefined' || dataToSend[key][subDictKey] === presentContactInfo[key][subDictKey]) {

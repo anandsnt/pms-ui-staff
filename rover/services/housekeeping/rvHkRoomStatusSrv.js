@@ -406,7 +406,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 		};
 
 		// put hk status change from room status page
-		// this api can update hk status for one 
+		// this api can update hk status for one
 		// or many room at once
 		this.putHkStatusChange = function(params) {
 			var deferred = $q.defer(),

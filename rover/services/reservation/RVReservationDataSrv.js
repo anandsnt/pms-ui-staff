@@ -195,7 +195,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 			if (numNights < 2) {
 				return false;
 			}
-			// If number of nights is more than one, then need to check across the occupancies 
+			// If number of nights is more than one, then need to check across the occupancies
 			var numInitialAdults = stayDates[arrivalDate].guests.adults,
 				numInitialChildren = stayDates[arrivalDate].guests.children,
 				numInitialInfants = stayDates[arrivalDate].guests.infants,
@@ -213,7 +213,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 			if (numNights < 2) {
 				return false;
 			}
-			// If number of nights is more than one, then need to check across the occupancies 
+			// If number of nights is more than one, then need to check across the occupancies
 			var arrivalRate = stayDates[arrivalDate].rate.id,
 				similarRates = _.filter(stayDates, function(stayDateInfo, date) {
 					return date !== departureDate && stayDateInfo.rate.id === arrivalRate;
@@ -247,7 +247,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 			}
 			if (stayCard.is_opted_late_checkout && stayCard.late_checkout_time) { // Handling late checkout
 				reservationData.checkoutTime = self.parseTime(stayCard.late_checkout_time);
-			} else if (stayCard.departure_time) { //  reservationDetails.reservation_card.departureDate ! = null   
+			} else if (stayCard.departure_time) { //  reservationDetails.reservation_card.departureDate ! = null
 				reservationData.checkoutTime = self.parseTime(stayCard.departure_time);
 			}
 			// Cards

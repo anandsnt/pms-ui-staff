@@ -298,7 +298,7 @@ sntRover.controller('rvGroupSearchCtrl', [
                 onSelect: toDateChoosed
             }, commonDateOptions);
 
-            //default from date, as per CICO-13899 it will be business date	        
+            //default from date, as per CICO-13899 it will be business date
             $scope.fromDate = $filter('date')(tzIndependentDate(businessDate.business_date),
                 $rootScope.dateFormat);
             $scope.fromDateForAPI = tzIndependentDate(businessDate.business_date);
