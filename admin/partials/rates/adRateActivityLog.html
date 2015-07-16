@@ -1,9 +1,11 @@
-<section ng-show="showActivityLog" id="report-details" class="reservations-inner">
+<div ng-show="showActivityLog">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     
-    <div id="report-content" class="report-content scrollable" ng-class="{'with-pagination' : !isPrevButtonDisabled()||!isNextButtonDisabled()}" ng-iscroll="report_content" ng-iscroll-delay="1000">
-     <div class="wrapper report-content">
-        <table class="log-reports ">
+    <table class="activity-log">
+        <col>
+        <col>
+        <col>
+        <col class="details">
         <thead>
             <tr>
                 <th><span ng-class="{'sort': true,'sorting-asc':sortOrderOfUserASC,'sorting-desc':sortOrderOfUserDSC}" ng-click="sortByUserName()">User Name</span></th>
@@ -12,23 +14,22 @@
                 <th><span>Details</span></th>
             </tr>
         </thead>
-            <tbody>
-                <tr ng-repeat="log in logData" ngrepeatend>
-                    <td  width="10%">{{log.user_name}}</td>
-                    <td  width="20%"> {{log.date }}, {{log.time}}</td>
-                    <td  width="20%">{{log.action}}</td>
-                    <td  width="50%" class="details">
-                        <span ng-repeat="details in log.details">
-                            <span class="old" ng-show="isOldValue(details.old_value)">{{ details.key }}
-                                <strong>{{ details.old_value }}</strong>
-                            </span>
-                            {{details.key}}
-                            <strong>{{details.new_value}}</strong>
+        <tbody>
+            <tr ng-repeat="log in logData" ngrepeatend>
+                <td>{{log.user_name}}</td>
+                <td> {{log.date }}, {{log.time}}</td>
+                <td>{{log.action}}</td>
+                <td class="details">
+                    <span ng-repeat="details in log.details">
+                        <span class="old" ng-show="isOldValue(details.old_value)">{{ details.key }}
+                            <strong>{{ details.old_value }}</strong>
                         </span>
-                    </td>
-                </tr>
-            </tbody>
+                        {{details.key}}
+                        <strong>{{details.new_value}}</strong>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
     </table>
-    </div>
-    </div>
-</section>
+
+</div>
