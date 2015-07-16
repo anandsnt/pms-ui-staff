@@ -245,11 +245,12 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {[type]}      [description]
          */
         var successCallBackOfFetchRoomingDetails = function(data) {
+            var toI = util.convertToInteger;
             //if we dont have any data in our hand
             if ($scope.roomTypesAndData.length === 0) {
                 //adding available room count over the data we got
                 $scope.roomTypesAndData = _.map(data.result, function(data) {
-                    data.availableRoomCount = util.convertToInteger(data.total_rooms) - util.convertToInteger(data.total_pickedup_rooms);
+                    data.availableRoomCount = toI(data.total_rooms) - toI(data.total_pickedup_rooms);
                     return data;
                 });
                 //initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
@@ -262,8 +263,28 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                     var correspondingActualData = _.findWhere(data.result, {
                         room_type_id: roomTypeData.room_type_id
                     });
-                    roomTypeData.availableRoomCount = util.convertToInteger(correspondingActualData.total_rooms) - util.convertToInteger(correspondingActualData.total_pickedup_rooms);
+                    roomTypeData.availableRoomCount = toI(correspondingActualData.total_rooms) - toI(correspondingActualData.total_pickedup_rooms);
                 });
+
+                //if we've added a new room type from room block & we are switching the tab
+                if (data.result.length !== $scope.roomTypesAndData.length) {
+                    //we've to find the newly added id of room types
+                    var new_room_type_ids       = _.pluck(data.result, "room_type_id"),
+                        existing_room_type_ids  = _.pluck($scope.roomTypesAndData, "room_type_id"),
+                        room_type_ids_to_add    = _.difference (new_room_type_ids, existing_room_type_ids);
+
+                    //adding the newly added room type to the existing array
+                    for(var i = 0; i < room_type_ids_to_add.length; i++) {
+                        var room_type_to_add =  _.findWhere(data.result, {
+                            room_type_id: room_type_ids_to_add[i]
+                        });
+
+                        if (room_type_to_add) {
+                            room_type_to_add.availableRoomCount = toI(room_type_to_add.total_rooms) - toI(room_type_to_add.total_pickedup_rooms);
+                        }
+                        $scope.roomTypesAndData.push (room_type_to_add);
+                    }
+                }
             }
 
             //we have to populate possible number of rooms & occupancy against a
