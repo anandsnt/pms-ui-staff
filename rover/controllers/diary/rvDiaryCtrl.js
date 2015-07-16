@@ -194,7 +194,7 @@ sntRover
 		if (!(date2 instanceof Object)) {
 			date2 = new Date(date2);
 		}
-		
+
 		return (date1.getFullYear() !== date2.getFullYear() ||
 			date1.getMonth() !== date2.getMonth() ||
 			date1.getDate() !== date2.getDate());
@@ -1147,7 +1147,7 @@ sntRover
 				var reservation = rvDiarySrv.movingReservationData.originalReservation;
 				var goBackDate = new tzIndependentDate (reservation.arrival);
 				goBackDate.setHours (0, 0, 0);
-				
+
 				if(!isTwoDatesAreDifferent ($scope.gridProps.filter.arrival_date, goBackDate)) {
 					$timeout(function(){
 			            var arrival_ms = props.filter.arrival_date.getTime(),
@@ -1717,7 +1717,7 @@ sntRover
 			arrival_ms = filter.arrival_date.getTime(),
 			time_set;
 		$scope.$emit('hideLoader');
-		
+
 		if(isTwoDatesAreDifferent (newValue, oldValue)) {
             time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
             $scope.gridProps.display = util.deepCopy(time_set.display);
