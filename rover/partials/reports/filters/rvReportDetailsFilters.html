@@ -177,6 +177,35 @@
 
 
 
+        <!-- item_22: adjustment date range -->
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasAdjustmentDateRange" ng-class="{'active': filterItemsToggle.item_22}" ng-click="toggleFilterItems('item_22')">
+            <span class="title">{{ chosenReport.hasAdjustmentDateRange.description }}</span>
+        </a>
+        <div class="settings-content" ng-if="chosenReport.hasAdjustmentDateRange" ng-class="{'hidden': !filterItemsToggle.item_22}">
+            <div class="entry date-range">
+                <label for="arrival-range-from">From</label>
+                <div class="has-datepicker">
+                    <input ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromAdjustmentDate" ng-change="dateChanged(chosenReport, 'hasAdjustmentDateRange')" readonly>
+                    <input ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="chosenReport.fromAdjustmentDate" ng-change="dateChanged(chosenReport, 'hasAdjustmentDateRange')" readonly>
+                    <button ng-if="chosenReport.canRemoveArrivalDate" ng-class="{'visible': chosenReport.hasAdjustmentDateRange.showRemove}" class="clear-query">
+                        <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'hasAdjustmentDateRange')">Clear query</span>
+                    </button>
+                </div>
+                <label for="arrival-range-to">To</label>
+                <div class="has-datepicker">
+                    <input ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilAdjustmentDate" ng-change="dateChanged(chosenReport, 'hasAdjustmentDateRange')" readonly>
+                    <input ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.untilAdjustmentDate" ng-change="dateChanged(chosenReport, 'hasAdjustmentDateRange')" readonly>
+                    <button ng-if="chosenReport.canRemoveArrivalDate" ng-class="{'visible': chosenReport.hasAdjustmentDateRange.showRemove}" class="clear-query">
+                        <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'hasAdjustmentDateRange')">Clear query</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
         <!-- item_18: single value date -->
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasSingleDateFilter" ng-class="{'active': filterItemsToggle.item_18}" ng-click="toggleFilterItems('item_18')">
             <span class="title">Date</span>

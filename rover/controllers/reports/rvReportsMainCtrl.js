@@ -112,7 +112,8 @@ sntRover.controller('RVReportsMainCtrl', [
 			item_18: false,
 			item_19: false,
 			item_20: false,
-			item_21: false
+			item_21: false,
+			item_22: false,
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
