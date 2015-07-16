@@ -58,10 +58,10 @@
             <ad-toggle-button is-checked="rateData.is_commission_on" label="COMMISSION"></ad-toggle-button>
             <div class="entry" ng-hide="!rateData.is_commission_on">                    
                         <div class=" select-col col1-3 actions_margin_top">
-                            <ad-textbox inputtype="text" value="rateData.commission_value" styleclass="col1-3" label="" placeholder="" style=" width: 66px;"></ad-textbox>
-                        </div>
+                            <ad-textbox inputtype="text" value="rateData.commission_value" styleclass="col1-3" label="" placeholder="" style=" width: 66px;" ng-model="rateData.commission_value"></ad-textbox>
+                        </div>                        
                         <div class="select select-col col1-3">                        
-                            <select class="styled" ng-model="reservationSettingsData.commission_type">
+                            <select class="styled" value="rateData.commission_type" ng-model="rateData.commission_type">
                             <option value="amount">{{currencySymbol}}</option>
                             <option value="percent">%</option>  
                             </select>

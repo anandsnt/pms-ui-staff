@@ -177,6 +177,10 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             } else {
                 $scope.rateData.end_date_for_display = "";
             }
+            $scope.rateData.commission_value = data.commission_value;
+            $scope.rateData.commission_type = data.commission_type;
+
+
 
 
 
@@ -216,7 +220,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             }).id) === parseInt($scope.rateData.rate_type.id);
         }
         $scope.manipulateData = function(data) {
-
             if (data.id) {
                 $scope.rateData.id = data.id;
             }
