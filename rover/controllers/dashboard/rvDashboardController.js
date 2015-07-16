@@ -122,5 +122,3 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
   }, 300);
 
 }]);
-
-    

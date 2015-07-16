@@ -65,8 +65,8 @@ angular
           }
           oldVal = _.clone(newVal);
         }
-      
-      
+
+
 	    function arrayDifference(tokens1, tokens2) {
 	      var values = [];
 
