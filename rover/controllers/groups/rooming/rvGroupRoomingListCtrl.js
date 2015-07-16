@@ -33,12 +33,29 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         var hasPermissionToCreateRoomingList = function() {
             return (rvPermissionSrv.getPermissionValue('CREATE_ROOMING_LIST'));
         };
+
         /**
          * Has Permission To Edit group room block
          * @return {Boolean}
          */
         var hasPermissionToEditRoomingList = function() {
             return (rvPermissionSrv.getPermissionValue('EDIT_ROOMING_LIST'));
+        };
+
+        /**
+         * Has Permission To check in reservation
+         * @return {Boolean}
+         */
+        var hasPermissionToCheckinReservation = function() {
+            return (rvPermissionSrv.getPermissionValue('CHECK_IN_RESERVATION'));
+        };
+
+        /**
+         * Has Permission To check out reservation
+         * @return {Boolean}
+         */
+        var hasPermissionToCheckoutReservation = function() {
+            return (rvPermissionSrv.getPermissionValue('CHECK_OUT_RESERVATION'));
         };
 
         /**
@@ -77,7 +94,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {Boolean}
          */
         $scope.shouldDisableCheckinButton = function() {
-            return ($scope.selected_reservations.length === 0);
+            return ($scope.selected_reservations.length === 0 || !hasPermissionToCheckinReservation());
         };
 
         /**
@@ -85,7 +102,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {Boolean}
          */
         $scope.shouldDisableCheckoutButton = function() {
-            return ($scope.selected_reservations.length === 0);
+            return ($scope.selected_reservations.length === 0 || !hasPermissionToCheckoutReservation());
         };
 
         /**
