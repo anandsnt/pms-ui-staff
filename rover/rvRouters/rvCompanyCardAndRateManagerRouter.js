@@ -17,6 +17,14 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
         $stateProvider.state('rover.ratemanager', {
             url: '/rateManager',
             templateUrl: '/assets/partials/rateManager/dashboard.html',
-            controller  : 'RMDashboradCtrl'
+            controller  : 'RMDashboradCtrl',
+            resolve: {
+                sortOrder: function(RateMngrCalendarSrv) {
+                    return RateMngrCalendarSrv.fetchSortPreferences();
+                },
+                sortOptions: function(RateMngrCalendarSrv) {
+                    return RateMngrCalendarSrv.fetchSortOptions();
+                }
+            }
         });
 });
