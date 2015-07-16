@@ -1,7 +1,7 @@
 
-sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata','$rootScope', '$filter', '$state',  
+sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata','$rootScope', '$filter', '$state',
                   function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,$rootScope, $filter, $state){
-  
+
     //setting the heading of the screen
     $scope.heading = 'DASHBOARD_HEADING';
 
@@ -15,8 +15,8 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
     BaseCtrl.call(this, $scope);
 
     var init =  function(){
-  
-    
+
+
           //setting the heading of the screen
         $scope.heading = "DASHBOARD_HEADING";
         $scope.userDetails   = RVDashboardSrv.getUserDetails();
@@ -44,11 +44,11 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         }
         //ADDED Time out since translation not working without time out
         setTimeout(function(){
-          var title = "Showing Dashboard";  
+          var title = "Showing Dashboard";
            $scope.refreshScroller('dashboard_scroller');
            $scope.setTitle(title);
         }, 2000);
-    
+
         //TODO: Add conditionally redirecting from API results
 
         reddirectToDefaultDashboard();
@@ -84,7 +84,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
    };
 
    init();
-   
+
 
 
 
@@ -106,11 +106,11 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
       $scope.heading = data;
    });
 
-      
+
     /**
     * function to handle click on backbutton in the header section
     * will broadcast an event, the logic of backbutto should be handled there
-    */              
+    */
    $scope.headerBackButtonClicked = function(){
         $scope.$broadcast("HeaderBackButtonClicked");
    };
@@ -123,4 +123,3 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
 
 }]);
 
-    

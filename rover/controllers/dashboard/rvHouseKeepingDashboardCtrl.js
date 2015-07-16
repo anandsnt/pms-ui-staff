@@ -5,19 +5,19 @@ sntRover.controller('RVhouseKeepingDashboardController',['$scope', '$rootScope',
 	//scroller related settings
 	var scrollerOptions = {click: true, preventDefault: false};
   	$scope.setScroller('dashboard_scroller', scrollerOptions);
-    
+
 
   	$scope.showDashboard = true; //variable used to hide/show dabshboard
 
     $scope.disableReservations = true;
 
     // we are hiding the search results area
-    $scope.$broadcast("showSearchResultsArea", false);     
+    $scope.$broadcast("showSearchResultsArea", false);
 
     $scope.tomorrow = tzIndependentDate ($rootScope.businessDate);
-    $scope.tomorrow.setDate ($scope.tomorrow.getDate() + 1); 
+    $scope.tomorrow.setDate ($scope.tomorrow.getDate() + 1);
     $scope.dayAfterTomorrow = tzIndependentDate ($scope.tomorrow);
-    $scope.dayAfterTomorrow.setDate ($scope.tomorrow.getDate() + 1); 
+    $scope.dayAfterTomorrow.setDate ($scope.tomorrow.getDate() + 1);
 
 
     //we are setting the header accrdoing to house keeping dashboard
@@ -41,8 +41,8 @@ sntRover.controller('RVhouseKeepingDashboardController',['$scope', '$rootScope',
     *   @param {array of Objects} data search results
     */
     $scope.$on("updateDashboardSearchDataFromExternal", function(event, data){
-        $scope.$broadcast("updateDataFromOutside", data);  
-        $scope.$broadcast("showSearchResultsArea", true);        
+        $scope.$broadcast("updateDataFromOutside", data);
+        $scope.$broadcast("showSearchResultsArea", true);
     });
 
     /**
@@ -52,11 +52,11 @@ sntRover.controller('RVhouseKeepingDashboardController',['$scope', '$rootScope',
     *   @param {array of Objects} data search results
     */
     $scope.$on("updateDashboardSearchTypeFromExternal", function(event, type){
-        $scope.$broadcast("updateReservationTypeFromOutside", type);      
-    }); 
+        $scope.$broadcast("updateReservationTypeFromOutside", type);
+    });
 
     //dont show Latecheckout icon
-    $scope.shouldShowLateCheckout = false; 
+    $scope.shouldShowLateCheckout = false;
     $scope.shouldShowQueuedRooms  = false;
 
     /**
@@ -66,7 +66,7 @@ sntRover.controller('RVhouseKeepingDashboardController',['$scope', '$rootScope',
     */
 
     $scope.$on("showErrorMessage", function(event, errorMessage){
-        $scope.errorMessage = errorMessage;        
+        $scope.errorMessage = errorMessage;
     });
 
     /**
@@ -79,7 +79,7 @@ sntRover.controller('RVhouseKeepingDashboardController',['$scope', '$rootScope',
         }
         var valueToReturn = ((value == null || typeof value == 'undefined' ) ? newValue : value);
         return valueToReturn;
-   };  
+   };
 
    $scope.clickedOnRoomButton = function(event, filterType){
         $state.go('rover.housekeeping.roomStatus', {'roomStatus': filterType});
