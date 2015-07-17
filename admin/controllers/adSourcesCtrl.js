@@ -77,9 +77,12 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', '$anchorScroll', '$t
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 		};
-		if(index === undefined) var data = $scope.data.sources[$scope.currentClickedElement];
-		else var data = $scope.data.sources[index];
-
+		if(index === undefined) {
+			var data = $scope.data.sources[$scope.currentClickedElement];
+		}
+		else {
+			var data = $scope.data.sources[index];
+		}
   		$scope.invokeApi(ADSourcesSrv.update, data, postSuccess);
    	};
    	/*

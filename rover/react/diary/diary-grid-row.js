@@ -54,7 +54,7 @@ var GridRow = React.createClass({
 			room_inactives.push(GridRowInactive({
 				data: 			inactive_slot,
 				display: 		display,
-				viewport:    	props.viewport,
+				viewport:    	props.viewport
 			}));
 		});
 

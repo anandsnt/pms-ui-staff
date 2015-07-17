@@ -76,7 +76,7 @@ var Timeline = React.createClass({
 
 			if ( i % 6 === 0 ) {
 				interval_spans.push(React.DOM.span({
-					className: 'date',
+					className: 'date'
 				}, (i < 23 ? todayShortDate : tmrowShortDate) ));
 			};
 			for(var j = 0; j < display.intervals_per_hour; j++, interval_counter++) {
@@ -104,7 +104,7 @@ var Timeline = React.createClass({
 			className: 'wrapper',
 			style: {
 				width: display.width + 'px'
-			},
+			}
 		}, React.DOM.div({
 			className: 'hours'
 		}, hourly_spans),

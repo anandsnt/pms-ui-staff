@@ -543,7 +543,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				"CHECKING_OUT": 'guest-check-out',
 				"CANCELED": 'guest-cancel',
 				"NOSHOW": 'guest-no-show',
-				"NOSHOW_CURRENT": 'guest-no-show',
+				"NOSHOW_CURRENT": 'guest-no-show'
 			};
 			if (reservationStatus.toUpperCase() in classes) {
 				return classes[reservationStatus.toUpperCase()];
@@ -704,11 +704,13 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				//if(!showNoMatchesMessage && !$scope.firstSearch){
 				var totalCountOfFound = 0;
 				for (var i = 0; i < results.length; i++) {
-					if (results[i].is_row_visible)
+					if (results[i].is_row_visible) {
 						totalCountOfFound++;
+					}
 				}
-				if (totalCountOfFound === 0)
+				if (totalCountOfFound === 0) {
 					showNoMatchesMessage = true;
+				}
 			}
 			return showNoMatchesMessage;
 		};

@@ -44,8 +44,9 @@
 		$scope.charges = charges;
 		$scope.netWorkError = false;
 		$scope.isFetching = false;
-		if($scope.charges.length > 0)
+		if($scope.charges.length > 0) {
 			$scope.optionsAvailable = true;
+		}
 	},function(){
 		$scope.netWorkError = true;
 		$scope.isFetching = false;

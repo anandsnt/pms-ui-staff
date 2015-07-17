@@ -95,7 +95,9 @@ sntRover.service('rvMenuSrv',
 				menuItem.submenu = _.filter (menuItem.submenu, function (subMenuItem){
 					isMenuItemVisible = self.shouldShowMenuItem(subMenuItem.menuIndex);
 
-					if (isMenuItemVisible) subMenuVisibleCount++;
+					if (isMenuItemVisible) {
+						subMenuVisibleCount++;
+					}
 					return isMenuItemVisible;
 				});
 
@@ -179,11 +181,11 @@ sntRover.service('rvMenuSrv',
 		        submenu: [{
 		            title: "MENU_CREATE_GROUP",
 		            action: "rover.groups.config({id:'NEW_GROUP'})",
-		            menuIndex: "menuCreateGroup",
+		            menuIndex: "menuCreateGroup"
 		        }, {
 		            title: "MENU_MANAGE_GROUP",
 		            action: "rover.groups.search",
-		            menuIndex: "menuManageGroup",
+		            menuIndex: "menuManageGroup"
 		        }]
 		    }, {
 		        title: "MENU_CONVERSATIONS",
@@ -232,12 +234,12 @@ sntRover.service('rvMenuSrv',
 		        }, {
 		            title: "MENU_TASK_MANAGEMENT",
 		            action: "rover.workManagement.start",
-		            menuIndex: "workManagement",
+		            menuIndex: "workManagement"
 
 		        }, {
 		            title: "MENU_MAINTAENANCE",
 		            action: "",
-		            menuIndex: "maintanance",
+		            menuIndex: "maintanance"
 		        }]
 		    }, {
 		        title: "MENU_FINANCIALS",
@@ -302,7 +304,7 @@ sntRover.service('rvMenuSrv',
 				action: "rover.reports",
 				menuIndex: "reports",
 				iconClass: "icon-reports",
-				submenu: [],
+				submenu: []
 		}];
 
 		return processMenuList (menu);
@@ -325,7 +327,7 @@ sntRover.service('rvMenuSrv',
 			        title: "MENU_ROOM_STATUS",
 			        action: "rover.housekeeping.roomStatus",
 			        menuIndex: "roomStatus",
-			        iconClass: "icon-housekeeping",
+			        iconClass: "icon-housekeeping"
 			    }
 		];
 
@@ -349,7 +351,7 @@ sntRover.service('rvMenuSrv',
 			        title: "MENU_ROOM_STATUS",
 			        action: "rover.housekeeping.roomStatus",
 			        menuIndex: "roomStatus",
-			        iconClass: "icon-housekeeping",
+			        iconClass: "icon-housekeeping"
 			    }
 		];
 
@@ -513,9 +515,15 @@ sntRover.service('rvMenuSrv',
 	* @return {boolean}
 	*/
 	this.shouldShowMenuItem = function(menuIndex) {
-		if (!self.hasMenuPermission (menuIndex)) return false;
-		if (!self.hasRolePermission (menuIndex)) return false;
-		if (!self.hasSettingsPermission (menuIndex)) return false;
+		if (!self.hasMenuPermission (menuIndex)) {
+			return false;
+		}
+		if (!self.hasRolePermission (menuIndex)) {
+			return false;
+		}
+		if (!self.hasSettingsPermission (menuIndex)) {
+			return false;
+		}
 		return true;
 	};
 

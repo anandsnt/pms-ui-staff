@@ -160,7 +160,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 					gridLineColor: '#FFF',
 					gridLineWidth: 2,
 					labels: {
-						useHTML: true,
+						useHTML: true
 					},
 					lineColor: '#FFF',
 					tickColor: '#FFF',
@@ -210,7 +210,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 					}
 
 
-				},
+				}
 
 
 			   // scroll charts
@@ -223,7 +223,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 			$scope.availabilityGraphCongif = {
 				options : {
 					chart: {
-						type: 'area',
+						type: 'area'
 					},
 					legend : {
 						enabled : false
@@ -233,7 +233,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 			                return '<b>' + dateFilter(this.x.dateObj, $rootScope.dayInWeek) + " " + dateFilter(this.x.dateObj, $rootScope.shortMonthAndDate) +'</b><br/>' +
 			                       this.series.name +  ': ' + Math.round((this.y/100) * $scope.data.totalRooms) + " Rooms (" + this.y.toFixed(2) + "%)";
 			            }
-				    },
+				    }
 				},
 
 				title: {
@@ -273,14 +273,14 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
                 			x: 0,
                				y: -2,
                				style: {
-				            	color: '#f6981a',
+				            	color: '#f6981a'
 				         	},
 				         	formatter: function(){
 				         		return this.value + "%";
 				         	}
 					},
 					tickPosition: 'outside',
-					tickWidth: 0,
+					tickWidth: 0
 
 				}
 				],

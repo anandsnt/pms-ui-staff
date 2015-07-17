@@ -248,8 +248,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 				//set bill array
 				var bills = [];
-				for (var i = 0; i < $scope.transactionsDetails.bills.length; i++)
+				for (var i = 0; i < $scope.transactionsDetails.bills.length; i++) {
 					bills.push(i + 1);
+				}
 				$scope.fetchedData.bill_numbers = bills;
 
 				ngDialog.open({
@@ -501,7 +502,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			var params = {
 				"bill_number": billNumber,
 				"to_address": mailTo,
-				"is_group": !!$scope.groupConfigData,
+				"is_group": !!$scope.groupConfigData
 			}
 
 			if (!!$scope.groupConfigData) {

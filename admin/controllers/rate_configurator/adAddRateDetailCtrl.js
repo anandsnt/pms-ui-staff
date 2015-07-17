@@ -206,11 +206,12 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             var validateEndDateSuccessCallback = function(data) {
 
                 $scope.$emit('hideLoader');
-                if (data.status)
+                if (data.status) {
                     $scope.startSave();
-                else
+                }
+                else {
                     $scope.endDateValidationPopup();
-
+                }
             };
 
             var validateEndDateFailureCallback = function(data) {

@@ -19,7 +19,7 @@ sntRover.config([
 		 */
 		$stateProvider.state('top', {
             url: '/',
-            controller: 'topController',
+            controller: 'topController'
     	});
 
         $stateProvider.state('rover', {
@@ -36,7 +36,7 @@ sntRover.config([
                 },
                 permissions: function (rvPermissionSrv) {
                     return rvPermissionSrv.fetchRoverPermissions();
-                },
+                }
             }
 
         });

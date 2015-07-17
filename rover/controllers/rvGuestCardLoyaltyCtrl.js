@@ -30,7 +30,11 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','$rootScope','RVGue
 
 	$scope.$watch(
 		function() { return ($scope.$parent.$parent.guestCardData.userId !== '')?true:false; },
-		function(gustDataReady) { if(gustDataReady)$scope.init(); }
+		function(gustDataReady) {
+			if(gustDataReady) {
+				$scope.init();
+			}
+		}
 		);
 
 
@@ -105,8 +109,9 @@ $scope.showDeleteModal =  function(id, index, loyaltyProgram){
 
 $scope.$on("loyaltyProgramAdded",function(e, data, source){
 
-	if(typeof $scope.loyaltyData === 'undefined')
+	if(typeof $scope.loyaltyData === 'undefined') {
 		return;
+	}
 	else{
 		if(data.membership_class === "HLP"){
 			$scope.loyaltyData.userMemberships.hotelLoyaltyProgram.push(data);
@@ -118,9 +123,9 @@ $scope.$on("loyaltyProgramAdded",function(e, data, source){
 });
 
 $scope.loyaltyProgramDeleted = function(id, index, loyaltyProgram){
-	if(typeof $scope.loyaltyData === 'undefined')
+	if(typeof $scope.loyaltyData === 'undefined') {
 		return;
-
+	}
 	if(loyaltyProgram === 'FFP'){
 		$scope.loyaltyData.userMemberships.frequentFlyerProgram.splice(index, 1);
 	}else{

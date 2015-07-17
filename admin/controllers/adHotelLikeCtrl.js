@@ -68,14 +68,18 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
     $scope.getTemplateUrl = function(rowName){
 
 
-      if(rowName === "ROOM TYPE")
+      if(rowName === "ROOM TYPE") {
           return "/assets/partials/Likes/adRoomTypeEdit.html";
-      if(rowName === "ROOM FEATURE")
+      }
+      if(rowName === "ROOM FEATURE") {
         return "/assets/partials/Likes/adRoomFeatureEdit.html";
-      else if(rowName === "NEWSPAPER")
+      }
+      else if(rowName === "NEWSPAPER") {
         return "/assets/partials/Likes/adNewsPaperEdit.html";
-      else
+      }
+      else {
        return "/assets/partials/Likes/adNewLike.html";
+      }
    };
 
 
@@ -129,13 +133,15 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
     $scope.isEditmode = true;
     $scope.editId = id;
 
-    if(rowName === "ROOM TYPE")
+    if(rowName === "ROOM TYPE") {
       editID = 6;
-    if(rowName === "ROOM FEATURE")
+    }
+    if(rowName === "ROOM FEATURE") {
       editID = 1;
-    if(rowName === "NEWSPAPER")
+    }
+    if(rowName === "NEWSPAPER") {
       editID = 5;
-
+    }
     var editID = { 'editID' : id };
     var editLikeSuccessCallback = function(data) {
       $scope.$emit('hideLoader');
@@ -214,10 +220,12 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
      $scope.showDropDown = false;
      $scope.showCheckbox = false;
 
-     if($scope.likeData.options.length === 0)
+    if($scope.likeData.options.length === 0) {
       $scope.likeData.options =[{'name':''},{'name':''}];
-    else if($scope.likeData.options.length === 1)
+    }
+    else if($scope.likeData.options.length === 1) {
       $scope.likeData.options.push({'name':''});
+    }
 
    }
    else if ($scope.likeData.type === "dropdown"){
@@ -254,8 +262,9 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
                 }
               });
             }
-            if($scope.newOptionAvailable)
+            if($scope.newOptionAvailable) {
               $scope.likeData.options.push({'name':''});
+            }
           }
         };
    /*
@@ -264,8 +273,9 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
     $scope.textChanged = function(index){
 
       if($scope.likeData.options.length>1){
-        if($scope.likeData.options[index].name === "")
+        if($scope.likeData.options[index].name === "") {
           $scope.likeData.options.splice(index, 1);
+        }
       }
     };
    /*
@@ -273,8 +283,9 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
     */
     $scope.onBlur = function(index){
       if($scope.likeData.options.length>1){
-        if($scope.likeData.options[index].name === "")
+        if($scope.likeData.options[index].name === "") {
           $scope.likeData.options.splice(index, 1);
+        }
         angular.forEach($scope.likeData.options,function(item, i) {
           if (item.name === "" && i !== $scope.likeData.options.length-1) {
            $scope.likeData.options.splice(i, 1);

@@ -48,9 +48,9 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ng
 			$scope.goBack();
 		}
 		var unwantedKeys = ["image"];
-		if($scope.initialIcon === $scope.data.icon)
+		if($scope.initialIcon === $scope.data.icon) {
 			unwantedKeys = ["icon", "image"];
-
+		}
 		var data = dclone($scope.data, unwantedKeys);
 		$scope.invokeApi(ADContentManagementSrv.saveComponent, data , saveSectionSuccessCallback);
 	}

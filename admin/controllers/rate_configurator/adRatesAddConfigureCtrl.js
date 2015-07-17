@@ -623,12 +623,14 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 for (var i = 0; i < 24; i++) {
                     if (dawn < dusk) {
                         // the range crosses midnight, do the comparisons independently
-                        if ((dusk <= i) || (i < dawn))
+                        if ((dusk <= i) || (i < dawn)) {
                             nightHours.push(i);
+                        }
                     } else {
                         // the range is on the same day, both comparisons must be true
-                        if (dusk <= i && i < dawn)
+                        if (dusk <= i && i < dawn) {
                             nightHours.push(i);
+                        }
                     }
                 }
                 angular.forEach(nightHours, function(hour) {

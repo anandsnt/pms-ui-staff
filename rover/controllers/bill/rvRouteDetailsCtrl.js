@@ -163,8 +163,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         if($scope.isBillingGroup){
             $scope.refreshScroller('billingGroups');
         }
-        else
+        else {
             $scope.refreshScroller('chargeCodes');
+        }
         $scope.showChargeCodes = false;
 	};
     /**
@@ -172,8 +173,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     */
 	$scope.isBillingGroupSelected = function(billingGroup){
         for(var i=0; i < $scope.selectedEntity.attached_billing_groups.length; i++){
-            if($scope.selectedEntity.attached_billing_groups[i].id === billingGroup.id )
+            if($scope.selectedEntity.attached_billing_groups[i].id === billingGroup.id ) {
                 return true;
+            }
         }
         return false;
     }   ;
@@ -269,8 +271,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 
             var successCallback = function(data) {
                 $scope.availableBillingGroups = data;
-                if(data.length === 0)
+                if(data.length === 0) {
                     $scope.isBillingGroup = false;
+                }
                 if($scope.selectedEntity.entity_type === 'GROUP' || $scope.selectedEntity.entity_type === 'HOUSE'){
                     $scope.showPayment = false;
                     $scope.$parent.$emit('hideLoader');
@@ -381,9 +384,12 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                     if($scope.selectedEntity.entity_type === 'GROUP' || $scope.selectedEntity.entity_type === 'HOUSE'){
                         $scope.selectedEntity.to_bill = firstBillId;
                     }
-                    else if(billNo === "") $scope.selectedEntity.to_bill =  _.last($scope.bills).id;
-                    else $scope.selectedEntity.to_bill = $scope.selectedEntity.to_bill;
-
+                    else if(billNo === "") {
+                        $scope.selectedEntity.to_bill =  _.last($scope.bills).id;
+                    }
+                    else {
+                        $scope.selectedEntity.to_bill = $scope.selectedEntity.to_bill;
+                    }
                     $scope.fetchAvailableChargeCodes();
             };
 
@@ -547,8 +553,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     */
   	$scope.isChargeCodeSelected = function(chargeCode){
   		for(var i=0; i < $scope.selectedEntity.attached_charge_codes.length; i++){
-            if($scope.selectedEntity.attached_charge_codes[i].id === chargeCode.id )
+            if($scope.selectedEntity.attached_charge_codes[i].id === chargeCode.id ) {
                 return true;
+            }
         }
         return false;
   	};

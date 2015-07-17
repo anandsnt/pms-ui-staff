@@ -171,8 +171,12 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 
     	var dataToSend = {};
 
-    	if($scope.currentClickedElement === "new") dataToSend = $scope.addData;
-		else dataToSend = $scope.editData;
+    	if($scope.currentClickedElement === "new") {
+    		dataToSend = $scope.addData;
+    	}
+		else {
+			dataToSend = $scope.editData;
+		}
 		// If we edit system defined credit card type - call api to update credit card.
 		if( $scope.currentClickedElementCC !== -1 && dataToSend.is_system_defined ){
 			$scope.invokeApi(ADPaymentMethodsSrv.saveCreditCardMethod, dataToSend , successCallbackSaveCC);
@@ -205,16 +209,18 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	 * @param {int} index of the selected payment method
 	 */
 	$scope.getTemplateUrl = function(index) {
-		if ( typeof index === "undefined")
+		if ( typeof index === "undefined") {
 			return "";
+		}
 		if ($scope.currentClickedElement === index) {
 			return "/assets/partials/paymentMethods/adEditPaymentMethod.html";
 		}
 	};
 
 	$scope.getTemplateUrlCC = function(index) {
-		if ( typeof index === "undefined")
+		if ( typeof index === "undefined") {
 			return "";
+		}
 		if ($scope.currentClickedElementCC === index) {
 			return "/assets/partials/paymentMethods/adEditPaymentMethod.html";
 		}

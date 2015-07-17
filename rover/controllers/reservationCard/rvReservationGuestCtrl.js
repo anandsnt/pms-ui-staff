@@ -96,7 +96,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				className: '',
 				scope: $scope,
 				closeByDocument: false,
-				closeByEscape: false,
+				closeByEscape: false
 			});
 		}
 

@@ -469,8 +469,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			sixPaymentSwipe();
 		} else if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
 			saveDataFromSwipe();
-		} else if(typeof $scope.dataToSave !== "undefined")
+		} else if(typeof $scope.dataToSave !== "undefined") {
 		   ($scope.dataToSave.paymentType ==='CC') ? saveNewCard():saveNewPayment();
+		  }
 	};
 	var sixPaymentSwipe = function(){
 

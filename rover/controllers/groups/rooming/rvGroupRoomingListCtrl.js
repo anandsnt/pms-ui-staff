@@ -116,8 +116,9 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 room_type_id: parseInt($scope.selectedRoomType)
             });
             //we are hiding the occupancy if selected room type is undefined
-            if (typeof selectedRoomType === "undefined") return false;
-
+            if (typeof selectedRoomType === "undefined") {
+                return false;
+            }
             return selectedRoomType[keyToCheck];
         };
 
@@ -353,7 +354,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             var options = {
                 params: params,
-                successCallBack: successCallBackOfcheckDefaultChargeRoutings,
+                successCallBack: successCallBackOfcheckDefaultChargeRoutings
             };
             $scope.callAPI(rvGroupRoomingListSrv.checkDefaultChargeRoutings, options);
         };
@@ -411,7 +412,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             //
             var options = {
                 params: params,
-                successCallBack: successCallBackOfAddReservations,
+                successCallBack: successCallBackOfAddReservations
             };
             $scope.callAPI(rvGroupRoomingListSrv.addReservations, options);
 
@@ -436,7 +437,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             var options = {
                 params: params,
-                successCallBack: successCallBackOfFetchRoomingDetails,
+                successCallBack: successCallBackOfFetchRoomingDetails
             };
             $scope.callAPI(rvGroupRoomingListSrv.getRoomTypesConfiguredAgainstGroup, options);
         };
@@ -446,8 +447,9 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * API, we will get this event, we are using this to fetch new room block deails
          */
         $scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab) {
-            if (activeTab !== 'ROOMING') return;
-
+            if (activeTab !== 'ROOMING') {
+                return;
+            }
             //calling initially required APIs
             callInitialAPIs();
         });
@@ -472,7 +474,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 '1': 'Single',
                 '2': 'Double',
                 '3': 'Triple',
-                '4': 'Quadruple',
+                '4': 'Quadruple'
             };
 
             //total result count
@@ -1499,8 +1501,9 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             //calling initially required APIs
             // CICO-17898 The initial APIs need to be called in the scenario while we come back to the Rooming List Tab from the stay card
-            if ("rover.reservation.staycard.reservationcard.reservationdetails" === $rootScope.getPrevStateName())
+            if ("rover.reservation.staycard.reservationcard.reservationdetails" === $rootScope.getPrevStateName()) {
                 callInitialAPIs();
+            }
         }();
     }
 ]);

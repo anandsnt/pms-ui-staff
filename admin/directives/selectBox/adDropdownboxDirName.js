@@ -15,17 +15,18 @@ admin.directive('adDropdownName', function($timeout) {
             list:'=list',
             name:'@name',
             prop:'@property',
+            ngModel: '=savemodel',
             selectedId:'=selectedId',
             labelClass:'@labelClass',
-            valfor: '@valfor',
             valueproperty:'@valueproperty',
             options: '='
 	    },
         link: function ($scope, $element, $attr)
         {
             if(typeof $scope.options !== 'undefined'){
-                if($scope.options.hasOwnProperty('showOptionsIf'))
+                if($scope.options.hasOwnProperty('showOptionsIf')) {
                     $scope.showOptionsIf = $scope.options.showOptionsIf;
+                }
             } else{
                 $scope.showOptionsIf = function(index){
                      return true;

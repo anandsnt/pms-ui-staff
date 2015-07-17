@@ -75,7 +75,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		};
 		var dataToApi = {
 			'postData': postData,
-			'reservationId':$scope.reservation.reservation_card.reservation_id,
+			'reservationId':$scope.reservation.reservation_card.reservation_id
 		};
 		 $scope.invokeApi(RVSmartBandSrv.createSmartBand, dataToApi, $scope.createSmartBandSuccess, $scope.createSmartBandFailure);
 	};

@@ -6,7 +6,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		$scope.dimensionsLookup = {
 			resizableMaxHeight: resizableMaxHeight,
-			cardTabContentOffset: 170, // Height of the tab menu and the header above.
+			cardTabContentOffset: 170 // Height of the tab menu and the header above.
 		};
 
 		$scope.cardVisible = false;

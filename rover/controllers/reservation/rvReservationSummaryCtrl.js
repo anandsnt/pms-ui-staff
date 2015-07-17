@@ -157,7 +157,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                     var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
                     $scope.feeData.actualFees = feesAmount;
 
-                    if (amountSymbol === "percent") $scope.calculateFee();
+                    if (amountSymbol === "percent") {
+                        $scope.calculateFee();
+                    }
                     else {
                         $scope.feeData.calculatedFee = parseFloat(feesAmount).toFixed(2);
                         $scope.feeData.totalOfValueAndFee = parseFloat(feesAmount + defaultAmount).toFixed(2);
@@ -392,10 +394,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             };
 
             if ($scope.isShowFees()) {
-                if ($scope.feeData.calculatedFee)
+                if ($scope.feeData.calculatedFee) {
                     dataToMakePaymentApi.postData.fees_amount = $scope.feeData.calculatedFee;
-                if ($scope.feeData.feesInfo)
+                }
+                if ($scope.feeData.feesInfo) {
                     dataToMakePaymentApi.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
+                }
             }
 
             if ($scope.checkReferencetextAvailable()) {
@@ -507,8 +511,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 var aptSegment = ""; //Variable to store the suitable segment ID
                 angular.forEach($scope.otherData.segments, function(segment) {
                     if ($scope.reservationData.stayDays.length - 1 < segment.los) {
-                        if (!aptSegment)
+                        if (!aptSegment) {
                             aptSegment = segment.value;
+                        }
                     }
                 })
 
@@ -1085,10 +1090,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
          * on the basis of routes available or not
          */
         $scope.getBillingInfoTitle = function() {
-            if ($scope.reservationData.is_routing_available)
+            if ($scope.reservationData.is_routing_available) {
                 return $filter('translate')('BILLING_INFO_TITLE');
-            else
+            }
+            else {
                 return $filter('translate')('ADD_BILLING_INFO_TITLE');
+            }
         };
 
 
@@ -1355,7 +1362,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             if (validGuests.length > 0) {
                 $scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, {
                     accompanying_guests_details: validGuests,
-                    reservation_id: $scope.reservationData.reservationIds[roomIndex],
+                    reservation_id: $scope.reservationData.reservationIds[roomIndex]
                 }, onupdateSuccess, onUpdateFailure);
             }
         }

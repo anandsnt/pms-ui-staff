@@ -58,9 +58,9 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
     }
 
 
- 	if(typeof $attrs.accessToken !== "undefined")
+ 	if(typeof $attrs.accessToken !== "undefined") {
 		$rootScope.accessToken = $attrs.accessToken	;
-
+	}
 	//navigate to different pages
 
 	if($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED' && !($attrs.isAutoCheckin === 'true')){
@@ -106,8 +106,12 @@ var loadAssets = function(filename, rel, type, media){
 		var fileref = document.createElement("link");
 		fileref.setAttribute("rel", rel);
 		fileref.setAttribute("href", filename);
-		if(type !== '') fileref.setAttribute("type", type);
-		if(media !== '') fileref.setAttribute("media", media);
+		if(type !== '') {
+			fileref.setAttribute("type", type);
+		}
+		if(media !== '') {
+			fileref.setAttribute("media", media);
+		}
 		document.getElementsByTagName('head')[0].appendChild(fileref);
 };
 

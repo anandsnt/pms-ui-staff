@@ -125,10 +125,12 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
      */
     $scope.anyRoomSelected = function(){
 
-        if($scope.assignedRoomTypes.length >0)
+        if($scope.assignedRoomTypes.length >0) {
             return true;
-        else
+        }
+        else {
             return false;
+        }
     }
     /*
      * To register selected assigned room
@@ -138,10 +140,12 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
     $scope.assignedRoomSelected = function($event, index){
 
         if(lastDropedTime === ''){
-            if(index === $scope.selectedAssignedRoomIndex)
+            if(index === $scope.selectedAssignedRoomIndex) {
                 $scope.selectedAssignedRoomIndex = -1;
-            else
+            }
+            else {
                 $scope.selectedAssignedRoomIndex =index;
+            }
         }
         else if(typeof lastDropedTime === 'object') { //means date
             var currentTime = new Date();
@@ -167,8 +171,9 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
     		return false;
     	}
         if(lastDropedTime === ''){
-            if(index === $scope.selectedUnAssignedRoomIndex)
+            if(index === $scope.selectedUnAssignedRoomIndex) {
                 $scope.selectedUnAssignedRoomIndex =-1;
+            }
             else{
                 $scope.selectedUnAssignedRoomIndex =index;
             }

@@ -21,7 +21,7 @@ sntRover.service('rvGroupSrv',
 				'from_date'	: params.from_date,
 				'to_date'	: params.to_date,
 				'per_page' 	: params.per_page,
-				'page'  	: params.page,
+				'page'  	: params.page
 			};
 
 			rvBaseWebSrvV2.getJSON(url, data).then(

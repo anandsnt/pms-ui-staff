@@ -56,7 +56,7 @@ var GridRowItemDrag = React.createClass({
 			offset_y: el.offset().top + props.iscroll.grid.y,
 			element_x: page_offset.left-props.display.x_0 - props.iscroll.grid.x,
 			element_y: page_offset.top,
-			starting_ColNumber: starting_ColNumber,
+			starting_ColNumber: starting_ColNumber
 		},
 		function() {
 			props.iscroll.grid.disable();
@@ -107,7 +107,7 @@ var GridRowItemDrag = React.createClass({
 
 			this.setState({
 				dragging: true,
-				currentDragItem: model,
+				currentDragItem: model
 			}, function() {
 				props.__onDragStart(props.row_data, model);
 			});
@@ -408,7 +408,7 @@ var GridRowItemDrag = React.createClass({
 		return this.transferPropsTo(React.DOM.div({
 			style:       style,
 			className:   props.className + className,
-			children:    props.children,
+			children:    props.children
 
 		}
 		));

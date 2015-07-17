@@ -97,8 +97,9 @@ $scope.isAddonAvailable = function(index){
 
 $scope.isRateAvailable = function(index){
        for(var i = 0; i < $scope.upsellData.early_checkin_rates.length; i++){
-         if($scope.upsellData.early_checkin_rates[i].id === $scope.rates[index].id)
+         if($scope.upsellData.early_checkin_rates[i].id === $scope.rates[index].id) {
            return false;
+         }
         }
        return true;
 }
@@ -168,8 +169,9 @@ $scope.validateUpsellWindowTime = function(){
           $scope.fetchedFailed(["The time for upsell window-2 should be less than time for upsell window-3"]);
           return false;
   }
-  else
+  else {
     return true;
+  }
 }
 
 $scope.fetchUpsellDetails();
@@ -208,8 +210,9 @@ $scope.saveClick = function(){
 
 $scope.clickAddRoomType = function(){
 	//While addig a room type, making its max_late_checkouts defaults to 0.
-  if($scope.getSelectedRateIndexForID($scope.upsell_rate.selected_rate_id) !== -1)
+  if($scope.getSelectedRateIndexForID($scope.upsell_rate.selected_rate_id) !== -1) {
     return;
+  }
   var rate_item;
 	angular.forEach($scope.rates,function(item, index) {
 		if(item.id === $scope.upsell_rate.selected_rate_id){
@@ -246,8 +249,9 @@ $scope.getSelectedRateIndexForID = function(rateID){
  */
 $scope.deleteRate = function(value,name){
 	var indexForRate = $scope.getSelectedRateIndexForID(value);
-  if(indexForRate !== -1)
+  if(indexForRate !== -1) {
      $scope.upsellData.early_checkin_rates.splice(indexForRate, 1);
+  }
    $scope.setRateFlag();
 };
 

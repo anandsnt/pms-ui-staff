@@ -55,7 +55,9 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
     * @param {string} id of the hold status
     */
 	$scope.getTemplateUrl = function(index, id){
-		if(typeof index === "undefined" || typeof id === "undefined") return "";
+		if(typeof index === "undefined" || typeof id === "undefined") {
+			return "";
+		}
 		if($scope.currentClickedElement === index){
 			 	return "/assets/partials/holdStatus/adHoldStatusEdit.html";
 		}

@@ -20,7 +20,7 @@ sntRover.service('rvAccountsSrv',
 				'q'			: params.query,
 				'status'	: params.status,
 				'per_page' 	: params.per_page,
-				'page'  	: params.page,
+				'page'  	: params.page
 			};
 
 			rvBaseWebSrvV2.getJSON(url, data).then(

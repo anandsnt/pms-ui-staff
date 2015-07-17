@@ -26,7 +26,7 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 	$scope.loadTable = function(){
 		$scope.tableParams = new ngTableParams({
 		        page: 1,  // show first page
-		        count: $scope.displyCount, // count per page
+		        count: $scope.displyCount // count per page
 		        /*sorting: {
 		            rate: 'asc' // initial sorting
 		        }*/
@@ -106,8 +106,9 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 
 
 	$scope.getTemplateUrl = function(index, id) {
-		if ( typeof index === "undefined" || typeof id === "undefined")
+		if ( typeof index === "undefined" || typeof id === "undefined") {
 			return "";
+		}
 		if ($scope.currentClickedElement === index) {
 			return "/assets/partials/keyEncoders/adEncoderEdit.html";
 		}

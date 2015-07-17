@@ -37,9 +37,9 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			var classes = '';
 
 			//Add class "red" if status OPEN
-			if(util.convertToDouble (account.balance) > 0)
+			if(util.convertToDouble (account.balance) > 0) {
 				classes = 'red';
-
+			}
 			return classes;
 		};
 
@@ -165,7 +165,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			var options = {
 				params: 			params,
 				successCallBack: 	successCallBackOfSearch,
-				failureCallBack: 	failureCallBackOfSearch,
+				failureCallBack: 	failureCallBackOfSearch
 			};
 			$scope.callAPI(rvAccountsSrv.getAccountsList, options);
 		};

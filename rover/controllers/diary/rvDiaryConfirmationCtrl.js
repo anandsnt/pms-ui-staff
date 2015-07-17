@@ -35,7 +35,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                             //arrival_date: arrival.date.day + ' ' + arrival.date.monthName + ' ' + arrival.date.year,
                             arrival_date: arrival_date,
                             departure_time: departure.time.toString(true),
-                            departure_date: departure_date,
+                            departure_date: departure_date
                             //departure_date: departure.date.day + ' ' + departure.date.monthName + ' ' + departure.date.year
                         };
                     },
@@ -73,7 +73,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                                 rateId: obj.occupancy.rate_id,
                                 numAdults: ($scope.reservationsSettings ? $scope.reservationsSettings.adults : 1),
                                 numChildren: ($scope.reservationsSettings ? $scope.reservationsSettings.children : 0),
-                                numInfants: ($scope.reservationsSettings ? $scope.reservationsSettings.infants : 0),
+                                numInfants: ($scope.reservationsSettings ? $scope.reservationsSettings.infants : 0)
                             },
                             local_version = util.shallowCopy({}, item);
 

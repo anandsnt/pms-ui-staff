@@ -213,7 +213,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			'occupanciesActual'	: occupanciesActual,
 			'occupanciesActual'	: occupanciesActual,
 			'occupanciesTargeted': occupanciesTargeted,
-			'totalRooms'	: totalRoomCount,
+			'totalRooms'	: totalRoomCount
 
 		}
 		return graphData;

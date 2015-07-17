@@ -33,7 +33,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 
 	 	var options = {
 			params: 			params,
-			successCallBack: 	hideLoaderAndClosePopup,
+			successCallBack: 	hideLoaderAndClosePopup
 		};
 		$scope.callAPI (rvAccountTransactionsSrv.transactionDelete, options);
 
@@ -56,7 +56,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 		};
 		var options = {
 			params: 			splitData,
-			successCallBack: 	hideLoaderAndClosePopup,
+			successCallBack: 	hideLoaderAndClosePopup
 		};
 		$scope.callAPI (rvAccountTransactionsSrv.transactionSplit, options);
 
@@ -79,7 +79,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 
 		var options = {
 			params: 			editData,
-			successCallBack: 	hideLoaderAndClosePopup,
+			successCallBack: 	hideLoaderAndClosePopup
 		};
 		$scope.callAPI (rvAccountTransactionsSrv.transactionEdit, options);
 

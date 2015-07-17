@@ -151,7 +151,7 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 			room_no 		: selectedListItem.upgrade_room_number,
 			room_type_name 	: selectedListItem.upgrade_room_type_name,
 			room_type_code 	: selectedListItem.upgrade_room_type,
-			room_type_level	: parseInt(selectedListItem.room_type_level),
+			room_type_level	: parseInt(selectedListItem.room_type_level)
 		});
 
 		//yes. ALL set. Go!

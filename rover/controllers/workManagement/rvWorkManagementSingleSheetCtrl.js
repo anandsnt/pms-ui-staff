@@ -77,7 +77,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				workSheet: {
 					user_id: wmWorkSheet.maid_id === null ? "" : wmWorkSheet.maid_id,
 					work_type_id: wmWorkSheet.work_type_id === null ? "" : wmWorkSheet.work_type_id,
-					shift_id: !wmWorkSheet.shift_id ? "" : wmWorkSheet.shift_id,
+					shift_id: !wmWorkSheet.shift_id ? "" : wmWorkSheet.shift_id
 				},
 				unassigned: [],
 				unassignedFiltered: [],
@@ -251,9 +251,9 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 		};
 
 		$scope.printAfterSave = function() {
-			if ($scope.$parent.myScroll['workSheetAssigned'] && $scope.$parent.myScroll['workSheetAssigned'].scrollTo)
+			if ($scope.$parent.myScroll['workSheetAssigned'] && $scope.$parent.myScroll['workSheetAssigned'].scrollTo) {
 				$scope.$parent.myScroll['workSheetAssigned'].scrollTo(0, 0);
-
+			}
 
 
 			// add the orientation
@@ -429,7 +429,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 							"task_id"     : parseInt(key),
 							"assignments" : [{
 								"assignee_id"   : userId,
-								"room_ids"      : [],
+								"room_ids"      : []
 							}]
 						}, onSaveSuccess, onSaveFailure);
 				});

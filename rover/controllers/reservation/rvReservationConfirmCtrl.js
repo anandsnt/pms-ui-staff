@@ -31,7 +31,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			title: $filter('translate')('RESERVATION_SUMMARY'),
 			name: 'rover.reservation.staycard.mainCard.summaryAndConfirm',
 			param: {
-				reservation: $scope.reservationData.isHourly ? 'HOURLY' : 'DAILY',
+				reservation: $scope.reservationData.isHourly ? 'HOURLY' : 'DAILY'
 			}
 		};
 
@@ -74,10 +74,12 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		 * on the basis of routes available or not
 		 */
 		$scope.getBillingInfoTitle = function() {
-			if ($scope.reservationData.is_routing_available)
+			if ($scope.reservationData.is_routing_available) {
 				return $filter('translate')('BILLING_INFO_TITLE');
-			else
+			}
+			else {
 				return $filter('translate')('ADD_BILLING_INFO_TITLE');
+			}
 		}
 
 		/**
@@ -117,7 +119,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				title: $filter('translate')('RESERVATION_SUMMARY'),
 				name: 'rover.reservation.staycard.mainCard.summaryAndConfirm',
 				param: {
-					reservation: $scope.reservationData.isHourly ? 'HOURLY' : 'DAILY',
+					reservation: $scope.reservationData.isHourly ? 'HOURLY' : 'DAILY'
 				}
 			};
 		}
@@ -151,7 +153,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 							title: $filter('translate')('CONFIRM_RESERVATION'),
 							name: 'rover.reservation.staycard.mainCard.reservationConfirm',
 							param: {
-								confirmationId: $scope.reservationData.confirmNum,
+								confirmationId: $scope.reservationData.confirmNum
 							},
 							callback: 'unflagConfirmation',
 							scope: $scope
@@ -166,7 +168,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 					if (paramsArray[index].length > 0) {
 						$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, {
 							accompanying_guests_details: paramsArray[index],
-							reservation_id: $scope.reservationData.reservationIds[index],
+							reservation_id: $scope.reservationData.reservationIds[index]
 						}, onupdateSuccess, onUpdateFailure);
 					}
 				})
@@ -198,12 +200,13 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 
 				postData.emails = [];
-				if (!!$scope.reservationData.guest.email && $scope.otherData.isGuestPrimaryEmailChecked)
+				if (!!$scope.reservationData.guest.email && $scope.otherData.isGuestPrimaryEmailChecked) {
 					postData.emails.push($scope.reservationData.guest.email);
+				}
 
-				if (!!$scope.otherData.additionalEmail && $scope.otherData.isGuestAdditionalEmailChecked)
+				if (!!$scope.otherData.additionalEmail && $scope.otherData.isGuestAdditionalEmailChecked) {
 					postData.emails.push($scope.otherData.additionalEmail);
-
+				}
 				if ($scope.reservationData.isHourly) {
 					postData.reservation_ids = [];
 					_.each($scope.reservationData.reservations, function(reservation) {
