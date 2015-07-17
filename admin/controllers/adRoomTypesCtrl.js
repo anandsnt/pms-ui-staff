@@ -192,7 +192,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	$scope.sortByCode = function(){
 		if($scope.currentClickedElement === -1) {
 		$scope.tableParams.sorting({'code' : $scope.tableParams.isSortBy('code', 'asc') ? 'desc' : 'asc'});
-	}	}
+	}
 	};
 	$scope.deleteRoomTypes = function(roomtype_id){
 		var successCallBack = function(){
