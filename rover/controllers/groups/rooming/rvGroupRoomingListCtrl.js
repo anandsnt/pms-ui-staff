@@ -226,37 +226,37 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @param {Object} - reservation
          * @return {String} - css class
          */
-        $scope.getRoomStatusClass = function(reservation) {
+        $scope.getRoomStatusClass = function(res) {
             var mappedStatus = "";
 
             //Please note: St - Status
 
-            if (reservation.room_service_status) {
-                if (reservation.room_service_status === 'OUT_OF_SERVICE' || 
-                    reservation.room_service_status === 'OUT_OF_ORDER') {
+            if (res.room_service_status) {
+                if (res.room_service_status === 'OUT_OF_SERVICE' || 
+                    res.room_service_status === 'OUT_OF_ORDER') {
                     return "room-grey";
                 }
             }
 
-            if (reservation.reservation_status !== 'CHECKING_IN') {
+            if (res.reservation_status !== 'CHECKING_IN') {
                 return mappedStatus;
             }
             
-            if (reservation.room_ready_status === '') {
+            if (res.room_ready_status === '') {
                 return mappedStatus;
             }
             
-            if (reservation.fostatus !== 'VACANT') {
+            if (res.fostatus !== 'VACANT') {
                 mappedStatus += " room-red";
                 return mappedStatus;
             }
             
-            switch (reservation.room_ready_status) {
+            switch (res.room_ready_status) {
                 case "INSPECTED":
                     mappedStatus += ' room-green';
                     break;
                 case "CLEAN":
-                    mappedStatus += (reservation.checkin_inspected_only === "true") ? ' room-orange' : ' room-green';
+                    mappedStatus += (res.checkin_inspected_only === "true") ? ' room-orange' : ' room-green';
                     break;
                 case "PICKUP":
                     mappedStatus += " room-orange";
