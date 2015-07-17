@@ -39,8 +39,12 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope','$rootScope','$
 				}
 			}
 			if($scope.data.printBoxHeight === resizableMinHeight || $scope.data.printBoxHeight === resizableMaxHeight) {
-				if ($scope.data.isDrawerOpened)	$scope.closeDrawer();
-				else $scope.openDrawer();
+				if ($scope.data.isDrawerOpened)	{
+					$scope.closeDrawer();
+				}
+				else {
+					$scope.openDrawer();
+				}
 			}
 			else{
 				// mid way click : close guest card

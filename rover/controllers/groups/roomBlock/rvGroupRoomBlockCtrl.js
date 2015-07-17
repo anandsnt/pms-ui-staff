@@ -681,7 +681,9 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			var roomType = _.findWhere($scope.roomTypes, {
 				id: id
 			});
-			if (roomType) return roomType.name;
+			if (roomType) {
+				return roomType.name;
+			}
 			return "";
 		};
 
@@ -873,7 +875,9 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * API, we will get this event, we are using this to fetch new room block deails
 		 */
 		$scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab) {
-			if (activeTab !== 'ROOM_BLOCK') return;
+			if (activeTab !== 'ROOM_BLOCK') {
+				return;
+			}
 			$scope.fetchRoomBlockGridDetails();
 
 			//on tab switching, we have change min date

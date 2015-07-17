@@ -113,12 +113,13 @@ admin.controller('ADFloorDetailsCtrl',
         $scope.isSearchResult = false ;
 
         //if it is in editMode
-        if(!$scope.isAddMode) setUpForEditMode();
-
+        if(!$scope.isAddMode) {
+            setUpForEditMode();
+        }
         //if it is in addMode
-        if($scope.isAddMode) setUpForAddMode();
-
-
+        if($scope.isAddMode) {
+            setUpForAddMode();
+        }
         //list of selected rooms from unassigned rooms list
         $scope.selectedUnassignedRooms = [];
 

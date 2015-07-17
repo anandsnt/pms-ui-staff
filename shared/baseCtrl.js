@@ -47,11 +47,12 @@ function BaseCtrl($scope) {
 	$scope.invokeApi = function(serviceApi, params, successCallback, failureCallback, loaderType){
 		//loaderType options are "BLOCKER", "NONE"
 
-		if(typeof loaderType === 'undefined')
+		if(typeof loaderType === 'undefined') {
 			loaderType = 'BLOCKER';
-		if(loaderType.toUpperCase() === 'BLOCKER')
+		}
+		if(loaderType.toUpperCase() === 'BLOCKER') {
 			$scope.$emit('showLoader');
-
+		}
 		successCallback = (typeof successCallback ==='undefined') ? $scope.fetchedCompleted : successCallback;
 		failureCallback = (typeof failureCallback ==='undefined') ? $scope.fetchedFailed : failureCallback;
 
