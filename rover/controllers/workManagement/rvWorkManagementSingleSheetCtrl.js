@@ -251,9 +251,9 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 		};
 
 		$scope.printAfterSave = function() {
-			if ($scope.$parent.myScroll['workSheetAssigned'] && $scope.$parent.myScroll['workSheetAssigned'].scrollTo)
+			if ($scope.$parent.myScroll['workSheetAssigned'] && $scope.$parent.myScroll['workSheetAssigned'].scrollTo) {
 				$scope.$parent.myScroll['workSheetAssigned'].scrollTo(0, 0);
-
+			}
 
 
 			// add the orientation

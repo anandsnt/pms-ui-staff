@@ -456,14 +456,18 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		$scope.onEmployeeListClosed = function() {
 			var x = [];
 			_.each($scope.employeeList, function(employee) {
-				if (employee.ticked) x.push(employee.id);
+				if (employee.ticked) {
+					x.push(employee.id);
+				}
 			})
 			if ($(x).not(selectionHistory).length !== 0 || $(selectionHistory).not(x).length !== 0) {
 				updateView();
 			}
 			selectionHistory = [];
 			_.each($scope.employeeList, function(employee) {
-				if (employee.ticked) selectionHistory.push(employee.id);
+				if (employee.ticked) {
+					selectionHistory.push(employee.id);
+				}
 			});
 			$scope.multiSheetState.dndEnabled = true;
 		};
@@ -674,21 +678,24 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		};
 
 		$scope.printWorkSheet = function() {
-			if ($scope.$parent.myScroll['assignedRoomList-0'] && $scope.$parent.myScroll['assignedRoomList-0'].scrollTo)
+			if ($scope.$parent.myScroll['assignedRoomList-0'] && $scope.$parent.myScroll['assignedRoomList-0'].scrollTo) {
 				$scope.$parent.myScroll['assignedRoomList-0'].scrollTo(0, 0);
-			if ($scope.$parent.myScroll['assignedRoomList-1'] && $scope.$parent.myScroll['assignedRoomList-1'].scrollTo)
+			}
+			if ($scope.$parent.myScroll['assignedRoomList-1'] && $scope.$parent.myScroll['assignedRoomList-1'].scrollTo) {
 				$scope.$parent.myScroll['assignedRoomList-1'].scrollTo(0, 0);
-			if ($scope.$parent.myScroll['assignedRoomList-2'] && $scope.$parent.myScroll['assignedRoomList-2'].scrollTo)
+			}
+			if ($scope.$parent.myScroll['assignedRoomList-2'] && $scope.$parent.myScroll['assignedRoomList-2'].scrollTo) {
 				$scope.$parent.myScroll['assignedRoomList-2'].scrollTo(0, 0);
-			if ($scope.$parent.myScroll['assignedRoomList-3'] && $scope.$parent.myScroll['assignedRoomList-3'].scrollTo)
+			}
+			if ($scope.$parent.myScroll['assignedRoomList-3'] && $scope.$parent.myScroll['assignedRoomList-3'].scrollTo) {
 				$scope.$parent.myScroll['assignedRoomList-3'].scrollTo(0, 0);
-			if ($scope.$parent.myScroll['assignedRoomList-4'] && $scope.$parent.myScroll['assignedRoomList-4'].scrollTo)
+			}
+			if ($scope.$parent.myScroll['assignedRoomList-4'] && $scope.$parent.myScroll['assignedRoomList-4'].scrollTo) {
 				$scope.$parent.myScroll['assignedRoomList-4'].scrollTo(0, 0);
-			if ($scope.$parent.myScroll['assignedRoomList-5'] && $scope.$parent.myScroll['assignedRoomList-5'].scrollTo)
+			}
+			if ($scope.$parent.myScroll['assignedRoomList-5'] && $scope.$parent.myScroll['assignedRoomList-5'].scrollTo) {
 				$scope.$parent.myScroll['assignedRoomList-5'].scrollTo(0, 0);
-
-
-
+			}
 			// add the orientation
 			addPrintOrientation();
 
