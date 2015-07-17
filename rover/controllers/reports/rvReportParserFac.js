@@ -21,6 +21,13 @@ sntRover.factory('RVReportParserFac', [
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseNumeralData( reportName, apiResponse, options );
             }
 
+            // a very special parser for daily transaction report
+            // in future we may make this check generic, if more
+            // reports API structure follows the same pattern
+            if ( reportName == reportUtils.getName('RATE_ADJUSTMENTS_REPORT') ) {
+                return _.isEmpty(apiResponse) ? apiResponse : $_parseRateAdjustments( reportName, apiResponse, options );
+            }
+
             // otherwise a super parser for reports that can be grouped by
             else if ( !!options['groupedByKey'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseDataToSubArrays( reportName, apiResponse, options );
@@ -354,6 +361,91 @@ sntRover.factory('RVReportParserFac', [
         };
 
 
+
+
+        function $_preParseGroupedRateAdjustments ( reportName, apiResponse, options ) {
+
+        };
+
+        function $_parseRateAdjustments ( reportName, apiResponse, options ) {
+            var returnAry = [],
+                customData = [],
+                makeCopy,
+                adjustment,
+                totalOriginalRate;
+
+            var i, j, k, l;
+
+            // loop through the api response
+            for (i = 0, j = apiResponse.length; i < j; i++) {
+
+                // we'll work with a copy of the ith item
+                makeCopy = angular.copy( apiResponse[i] );
+
+                // reset these counters
+                totalOriginalRate = 0;
+                totalAdjustedRate = 0;
+                totalVariance = 0;
+
+                // if we have 'adjustments' for this reservation
+                if ( makeCopy.hasOwnProperty('adjustments') && makeCopy['adjustments'].length ) {
+
+                    // loop through the adjustments
+                    for (k = 0, l = makeCopy['adjustments'].length; k < l; k++) {
+                        adjustment = makeCopy['adjustments'][k];
+
+                        // include the first adjustment details in the
+                        // same row as that of the main reservation details  
+                        if ( k == 0 ) {
+                            angular.extend(makeCopy, {
+                                isReport      : true,
+                                stay_date     : adjustment.stay_date,
+                                original_rate : adjustment.original_rate,
+                                adjusted_rate : adjustment.adjusted_rate,
+                                variance      : adjustment.variance,
+                                reason        : adjustment.reason,
+                                adjusted_by   : adjustment.adjusted_by
+                            });
+                            returnAry.push( makeCopy );
+                        }
+
+                        // create additional sub rows to represent the
+                        // rest of the adjustments 
+                        else {
+                            customData = {};
+                            angular.extend(customData, {
+                                isSubReport   : true,
+                                stay_date     : adjustment.stay_date,
+                                original_rate : adjustment.original_rate,
+                                adjusted_rate : adjustment.adjusted_rate,
+                                variance      : adjustment.variance,
+                                reason        : adjustment.reason,
+                                adjusted_by   : adjustment.adjusted_by
+                            });
+                            returnAry.push( customData );
+                        };
+
+                        // keep updating the total values for these
+                        totalOriginalRate += adjustment.original_rate;
+                        totalAdjustedRate += adjustment.adjusted_rate;
+                        totalVariance += adjustment.variance;
+                    };
+
+                    // after looping through all the adjustments
+                    // add a final sub row to show the adjustment totals
+                    customData = {};
+                    angular.extend(customData, {
+                        isSubTotal          : true,
+                        total_original_rate : totalOriginalRate,
+                        total_adjusted_rate : totalAdjustedRate,
+                        total_variance      : totalVariance
+                    });
+                    returnAry.push( customData );
+                };
+            };
+
+            return returnAry;
+        };
 
 
 

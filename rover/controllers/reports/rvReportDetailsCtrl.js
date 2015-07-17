@@ -465,7 +465,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					template = '/assets/partials/reports/rvMarketSegmentStatReportRow.html';
 					break;
 
-				case reportUtils.getName('RESERVATIONS_BY_USER'):
+				case reportUtils.getName('RATE_ADJUSTMENTS_REPORT'):
 					template = '/assets/partials/reports/rvRateAdjustmentReportRow.html';
 					break;
 
