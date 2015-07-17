@@ -94,4 +94,17 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 });
 
 
+	 $stateProvider.state('externalVerification', {
+	 	url: '/externalVerification',
+	 	templateUrl: '/assets/checkoutnow/partials/Fontainebleau/externalVerification.html',
+	 	controller : 'externalVerificationViewController',
+	 	title: 'External verification'
+	 }).state('externalVerificationError', {
+	 	url: '/verificationError',
+	 	templateUrl: '/assets/checkoutnow/partials/Fontainebleau/externalVerificationError.html',
+	 	controller:'verificationErrorController',
+	 	title: 'External verification Error'
+	 });
+
+
 }]);
