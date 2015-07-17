@@ -84,8 +84,9 @@ sntRover.controller('RVroomAssignmentController',[
 
 	$scope.getCurrentRoomType = function(){
 		for (var i = 0; i < $scope.roomTypes.length; i++) {
-			if($scope.roomTypes[i].type === $scope.roomType)
+			if($scope.roomTypes[i].type === $scope.roomType) {
 				return $scope.roomTypes[i];
+			}
 		};
 	};
 
@@ -579,12 +580,14 @@ sntRover.controller('RVroomAssignmentController',[
 
 				for(var j = 0; j < $scope.selectedFiltersList.length; j++){
 					if($scope.selectedFiltersList[j] !== -100 && $scope.selectedFiltersList[j] !== -101 && $scope.selectedFiltersList[j] !== -102 && $scope.selectedFiltersList[j] !== -103){
-						if(roomsWithInitialFilters[i].room_features.indexOf($scope.selectedFiltersList[j]) === -1)
+						if(roomsWithInitialFilters[i].room_features.indexOf($scope.selectedFiltersList[j]) === -1) {
 						flag = false;
+						}
 					}
 				}
-			if(flag)
+			if(flag) {
 				$scope.addToFilteredRooms(roomsWithInitialFilters[i]);
+			}
 		}
 		var includeNotReady = false;
 		var includeDueOut = false;
@@ -611,17 +614,21 @@ sntRover.controller('RVroomAssignmentController',[
 			$scope.selectedFiltersList.splice($scope.selectedFiltersList.indexOf(-103), 1);
 		}
 
-		if($scope.filteredRooms.length === 0 && $scope.selectedFiltersList.length === 0)
+		if($scope.filteredRooms.length === 0 && $scope.selectedFiltersList.length === 0) {
 			$scope.filteredRooms = roomsWithInitialFilters;
-
-		if(includeNotReady)
+		}
+		if(includeNotReady) {
 			$scope.includeNotReadyRooms();
-		if(includeDueOut)
+		}
+		if(includeDueOut) {
 			$scope.includeDueoutRooms();
-		if(includePreAssigned)
+		}
+		if(includePreAssigned) {
 			$scope.includePreAssignedRooms();
-		if(includeClean)
+		}
+		if(includeClean) {
 			$scope.includeClean();
+		}
 		if($scope.floorFilterData&&!$scope.floorFilterData.isNoFloorSelected){
 			$scope.includeFloorFilter();
 		}
@@ -655,27 +662,31 @@ sntRover.controller('RVroomAssignmentController',[
 
 	$scope.includeNotReadyRooms = function(){
 		for(var i = 0; i < $scope.rooms.length; i++){
-			if($scope.rooms[i].room_features.indexOf(-100) !== -1)
+			if($scope.rooms[i].room_features.indexOf(-100) !== -1) {
 				$scope.addToFilteredRooms($scope.rooms[i]);
+			}
 		}
 	};
 	$scope.includeDueoutRooms = function(){
 		for(var i = 0; i < $scope.rooms.length; i++){
-			if($scope.rooms[i].room_features.indexOf(-101) !== -1)
+			if($scope.rooms[i].room_features.indexOf(-101) !== -1) {
 				$scope.addToFilteredRooms($scope.rooms[i]);
+			}
 		}
 	};
 	$scope.includePreAssignedRooms = function(){
 		for(var i = 0; i < $scope.rooms.length; i++){
-			if($scope.rooms[i].room_features.indexOf(-102) !== -1)
+			if($scope.rooms[i].room_features.indexOf(-102) !== -1) {
 				$scope.addToFilteredRooms($scope.rooms[i]);
+			}
 		}
 	};
 
 	$scope.includeClean = function(){
 		for(var i = 0; i < $scope.rooms.length; i++){
-			if($scope.rooms[i].room_features.indexOf(-103) !== -1)
+			if($scope.rooms[i].room_features.indexOf(-103) !== -1) {
 				$scope.addToFilteredRooms($scope.rooms[i]);
+			}
 		}
 	};
 	$scope.includeFloorFilter = function(){
@@ -710,8 +721,9 @@ sntRover.controller('RVroomAssignmentController',[
 				if($scope.filteredRooms[j].room_number < room.room_number){
 						pos = j;
 				}
-				if(room.room_number === $scope.filteredRooms[j].room_number)
+				if(room.room_number === $scope.filteredRooms[j].room_number) {
 					flag = true;
+				}
 			}
 			if(!flag){
 				$scope.filteredRooms.splice(pos + 1, 0, room);
@@ -742,15 +754,18 @@ sntRover.controller('RVroomAssignmentController',[
 	*/
 	$scope.setRoomsListWithPredefinedFilters = function(){
 		for(var i = 0; i < $scope.rooms.length; i++){
-			if($scope.rooms[i].room_status === "NOTREADY" && $scope.rooms[i].fo_status === "VACANT" && $scope.rooms[i].room_ready_status !== "CLEAN" && $scope.rooms[i].room_ready_status !== "INSPECTED")
+			if($scope.rooms[i].room_status === "NOTREADY" && $scope.rooms[i].fo_status === "VACANT" && $scope.rooms[i].room_ready_status !== "CLEAN" && $scope.rooms[i].room_ready_status !== "INSPECTED") {
 				$scope.rooms[i].room_features.push(-100);
-			if($scope.rooms[i].fo_status === "DUEOUT")
+			}
+			if($scope.rooms[i].fo_status === "DUEOUT") {
 				$scope.rooms[i].room_features.push(-101);
-			if($scope.rooms[i].is_preassigned)
+			}
+			if($scope.rooms[i].is_preassigned) {
 				$scope.rooms[i].room_features.push(-102);
-			if($scope.rooms[i].fo_status === "VACANT" && $scope.rooms[i].room_ready_status === "CLEAN" && $scope.rooms[i].checkin_inspected_only === "true")
+			}
+			if($scope.rooms[i].fo_status === "VACANT" && $scope.rooms[i].room_ready_status === "CLEAN" && $scope.rooms[i].checkin_inspected_only === "true") {
 				$scope.rooms[i].room_features.push(-103);
-
+			}
 		}
 	};
 	$scope.init = function(){

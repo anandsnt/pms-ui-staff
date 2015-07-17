@@ -92,13 +92,18 @@ sntRover.service('RVReservationStateService', [
 						amountType = taxData.amount_type,
 						multiplicity = 1; // for amount_type = flat
 
-					if (taxData.amount_sign !== "+")
+					if (taxData.amount_sign !== "+") {
 						taxData.amount = parseFloat(taxData.amount * -1.0);
-
-					if (amountType === "ADULT") multiplicity = numAdults;
-					else if (amountType === "CHILD") multiplicity = numChildren;
-					else if (amountType === "PERSON") multiplicity = parseInt(numChildren) + parseInt(numAdults);
-
+					}
+					if (amountType === "ADULT") {
+						multiplicity = numAdults;
+					}
+					else if (amountType === "CHILD") {
+						multiplicity = numChildren;
+					}
+					else if (amountType === "PERSON") {
+						multiplicity = parseInt(numChildren) + parseInt(numAdults);
+					}
 					if (!!tax.calculation_rules.length) {
 						_.each(tax.calculation_rules, function(tax) {
 							taxableAmount += parseFloat(taxesLookUp[tax]);
@@ -108,8 +113,12 @@ sntRover.service('RVReservationStateService', [
 					// THE TAX CALCULATION HAPPENS HERE
 					var taxCalculated = 0;
 					if (taxData.amount_symbol === '%' && parseFloat(taxValue) !== 0.0) { // The formula for inclusive tax computation is different from that for exclusive. Kindly NOTE.
-						if (isInclusive) taxCalculated = parseFloat(multiplicity * (parseFloat(taxValue / (100 + parseFloat(taxValue))) * taxableAmount));
-						else taxCalculated = parseFloat(multiplicity * (parseFloat(taxValue / 100) * taxableAmount));
+						if (isInclusive) {
+							taxCalculated = parseFloat(multiplicity * (parseFloat(taxValue / (100 + parseFloat(taxValue))) * taxableAmount));
+						}
+						else {
+							taxCalculated = parseFloat(multiplicity * (parseFloat(taxValue / 100) * taxableAmount));
+						}
 					} else {
 						taxCalculated = parseFloat(multiplicity * parseFloat(taxValue)); //In case the tax is not a percentage amount, its plain multiplication with the tax's amount_type
 					}
@@ -121,15 +130,20 @@ sntRover.service('RVReservationStateService', [
 							taxableAmount -= parseFloat(taxesLookUp[tax]);
 						});
 					}
-					if (isInclusive) taxableAmount -= parseFloat(taxCalculated);
-
+					if (isInclusive) {
+						taxableAmount -= parseFloat(taxCalculated);
+					}
 
 					if (taxData.post_type === 'NIGHT') { // NIGHT tax computations
 						if (isInclusive) taxInclusiveTotal = parseFloat(taxInclusiveTotal) + parseFloat(taxCalculated);
 						else taxExclusiveTotal = parseFloat(taxExclusiveTotal) + parseFloat(taxCalculated);
 					} else { // STAY tax computations
-						if (isInclusive) taxInclusiveStayTotal = parseFloat(taxInclusiveStayTotal) + parseFloat(taxCalculated);
-						else taxExclusiveStayTotal = parseFloat(taxExclusiveStayTotal) + parseFloat(taxCalculated);
+						if (isInclusive) {
+							taxInclusiveStayTotal = parseFloat(taxInclusiveStayTotal) + parseFloat(taxCalculated);
+						}
+						else {
+							taxExclusiveStayTotal = parseFloat(taxExclusiveStayTotal) + parseFloat(taxCalculated);
+						}
 					}
 
 					taxDescription.push({
@@ -279,20 +293,26 @@ sntRover.service('RVReservationStateService', [
 									amountType: addon.amount_type.value,
 									taxBreakUp: taxOnCurrentAddon
 								});
-								if (!addon.is_inclusive && (addon.post_type.value === "STAY" || for_date === arrival))
+								if (!addon.is_inclusive && (addon.post_type.value === "STAY" || for_date === arrival)) {
 									addonRate = parseFloat(addonRate) + parseFloat(currentAddonAmount);
-								if (!!addon.is_inclusive && (addon.post_type.value === "STAY" || for_date === arrival))
+								}
+								if (!!addon.is_inclusive && (addon.post_type.value === "STAY" || for_date === arrival)) {
 									inclusiveAddonsAmount = parseFloat(inclusiveAddonsAmount) + parseFloat(currentAddonAmount);
+								}
 							});
 						}
-						if ($(rooms[currentRoomId].rates).index(rate_id) < 0) rooms[currentRoomId].rates.push(rate_id);
-						if (typeof rooms[currentRoomId].ratedetails[for_date] === 'undefined') rooms[currentRoomId].ratedetails[for_date] = [];
-
+						if ($(rooms[currentRoomId].rates).index(rate_id) < 0) {
+							rooms[currentRoomId].rates.push(rate_id);
+						}
+						if (typeof rooms[currentRoomId].ratedetails[for_date] === 'undefined') {
+							rooms[currentRoomId].ratedetails[for_date] = [];
+						}
 						var rateOnRoom = self.calculateRate(room_rate, adultsOnTheDay, childrenOnTheDay),
 							rateOnRoomAddonAdjusted = parseFloat(rateOnRoom) - parseFloat(inclusiveAddonsAmount);
 
-						if (rateOnRoomAddonAdjusted < 0) rateOnRoomAddonAdjusted = 0.0;
-
+						if (rateOnRoomAddonAdjusted < 0) {
+							rateOnRoomAddonAdjusted = 0.0;
+						}
 						currentRoom.ratedetails[for_date][rate_id] = {
 							rate_id: rate_id,
 							rate: rateOnRoom,
@@ -359,7 +379,9 @@ sntRover.service('RVReservationStateService', [
 							// }
 							var stayLength = numNights;
 							// Handle single days for calculating rates
-							if (stayLength === 0) stayLength = 1;
+							if (stayLength === 0) {
+								stayLength = 1;
+							}
 							rooms[currentRoomId].total[rate_id].average = parseFloat(currentRoom.total[rate_id].totalRate / stayLength);
 						}
 
