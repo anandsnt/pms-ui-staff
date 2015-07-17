@@ -267,14 +267,9 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			refreshCardsList();
 		}
 	};
-	/*
-	* Initial function - To render screen with data
-	* Initial screen - filled with deafult amount on bill
-	* If any payment type attached to that bill then that credit card can be viewed in initial screen
-	* Default payment method attached to that bill can be viewed in initial screen
-	*/
-	$scope.init = function(){
-		$scope.splitePaymentDetail = {			
+	$scope.resetSplitPaymentDetail = function(){		
+		$scope.splitBillEnabled = (typeof($scope.splitBillEnabled) === "undefined") ? false : !$scope.splitBillEnabled;
+		$scope.splitePaymentDetail = {
 			totalNoOfsplits:1,
 			completedSplitPayments:0,
 			totalAmount:0,
@@ -282,7 +277,17 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			carryAmount:0
 		};
 		$scope.messageOfSuccessSplitPayment ='';
-		$scope.paymentErrorMessage ='';	
+		$scope.paymentErrorMessage ='';
+
+	};
+	/*
+	* Initial function - To render screen with data
+	* Initial screen - filled with deafult amount on bill
+	* If any payment type attached to that bill then that credit card can be viewed in initial screen
+	* Default payment method attached to that bill can be viewed in initial screen
+	*/
+	$scope.init = function(){
+		$scope.resetSplitPaymentDetail();
 		// CICO-12067 Handle the case when reservationId field is undefined.
 		if(typeof $scope.reservationData.reservationId == 'undefined'){
 			$scope.reservationData.reservationId = $scope.reservationData.reservation_id;

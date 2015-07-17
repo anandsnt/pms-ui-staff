@@ -20,15 +20,20 @@
         </div>
         <div ng-show="paymentErrorMessage!=''" ng-class="{notice: paymentErrorMessage!=''}" class='error error_message' ng-switch on="paymentErrorMessage.length" ng-click="clearPaymentErrorMessage()">    
             <span class="close-btn" ng-click="clearPaymentErrorMessage()"></span>
-            <span>
-            {{paymentErrorMessage}}
+            <span ng-bind-html ="paymentErrorMessage">
             </span>
         </div>
 
         <div class="payment-form">
             <!-- Split payment -->
-                <div class="entry split" ng-hide="saveData.paymentType ==='CC'">
-                    <label for="split-payment">Split Bill Payment</label>
+                <div class="entry split" ng-hide="saveData.paymentType ==='CC'" ng-class="{active: splitBillEnabled }">
+
+                    <label class="checkbox inline" ng-class="{checked: splitBillEnabled }">
+                    <span class="icon-form icon-checkbox" ng-class="{checked: splitBillEnabled }">                     
+                    </span>
+                    <input id="enable-split" value="1" type="checkbox" ng-click="resetSplitPaymentDetail()" />
+                        Split Bill Payment
+                    </label>
                     <label class="only-number" ng-class = "classForPaymentSplitButton(1)" ng-click ="spliteButtonClicked(1)"> <!-- 1 is selected by default and locked -->
                         <input name="split-bill" value="1" type="checkbox" disabled checked />
                         1
