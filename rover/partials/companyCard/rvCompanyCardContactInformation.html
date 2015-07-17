@@ -51,8 +51,8 @@
             <rv-textbox ng-if="account_type == 'TRAVELAGENT'" value="contactInformation.account_details.account_number" label="IATA Number" placeholder = "Enter IATA Number" styleclass="margin"></rv-textbox>
             <div class="entry commission">
                 <label for="travel-agent-commission">Commission</label>
-                <div class="switch-button on">
-                    <input id="travel-agent-commission" value="commission" type="checkbox" checked />
+                <div class="switch-button off" ng-class="{'on': contactInformation.is_commission_on}">
+                    <input id="travel-agent-commission" ng-click="contactInformation.is_commission_on = !contactInformation.is_commission_on" value="commission" type="checkbox" checked />
                     <label class="data-off">
                         <span class="value">Off</span>
                         <span class="switch-icon">On</span>
@@ -63,8 +63,8 @@
                     </label>
                 </div>
         
-            <input id="travel-agent-commission-value" value="{Percentage}" type="text" />
-            <span class="label">%</span>
+            <input id="travel-agent-commission-value" value="{{contactInformation.commission_value}}" ng-model="contactInformation.commission_value" type="text" ng-if="contactInformation.is_commission_on"/>
+            <span class="label" ng-model="contactInformation.commission_type" ng-if="contactInformation.is_commission_on">{{contactInformation.commission_type}}</span>
         </div>
             
             <div class="entry full-width">
