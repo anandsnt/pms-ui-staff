@@ -330,6 +330,10 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['reportIconCls'] = 'icon-report icon-comparison';
                     break;
 
+                case __reportNames['RATE_ADJUSTMENTS_REPORT']:
+                    reportItem['reportIconCls'] = 'icon-report icon-rate';
+                    break;
+
                 default:
                     reportItem['reportIconCls'] = 'icon-report';
                     break;

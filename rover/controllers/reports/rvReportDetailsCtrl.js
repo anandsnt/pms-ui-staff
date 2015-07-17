@@ -371,7 +371,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					if ( !!$scope.$parent.reportGroupedBy ) {
 						$scope.hasReportTotals    = true;
 						$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
-						$scope.detailsTemplateUrl = '/assets/partials/reports/rvReservationByUserReport.html';
+						$scope.detailsTemplateUrl = '/assets/partials/reports/reservationByUserReport/rvReservationByUserReport.html';
 					} else {
 						$scope.hasReportTotals    = true;
 						$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
@@ -441,7 +441,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportUtils.getName('RESERVATIONS_BY_USER'):
-					template = '/assets/partials/reports/rvReservationByUserReportRow.html';
+					template = '/assets/partials/reports/rateAdjustmentReport/rvReservationByUserReportRow.html';
 					break;
 
 				case reportUtils.getName('DAILY_TRANSACTIONS'):
@@ -463,6 +463,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportUtils.getName('MARKET_SEGMENT_STAT_REPORT'):
 					template = '/assets/partials/reports/rvMarketSegmentStatReportRow.html';
+					break;
+
+				case reportUtils.getName('RESERVATIONS_BY_USER'):
+					template = '/assets/partials/reports/rvRateAdjustmentReportRow.html';
 					break;
 
 				default:
