@@ -262,7 +262,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				}
 			}
 		};
-
+                $scope.allowOverbook = function(){//check user permission for overbook_house
+                    return rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+                };    
+                 
 		$scope.setRates = function() {
 			//CICO-5253 > Rate Types Reservartion
 			//Get the rates for which rooms are available $scope.displayData.allRooms
