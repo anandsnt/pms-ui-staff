@@ -28,7 +28,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.cardData = {};
 		$scope.newCardAdded = false;
 		$scope.shouldShowWaiting = false;
-		$scope.depositPaidSuccesFully = false;		
+		$scope.depositPaidSuccesFully = false;
 		$scope.saveData.paymentType = '';
 		$scope.defaultPaymentTypeOfBill = '';
 		$scope.shouldShowMakePaymentButton = true;
@@ -45,7 +45,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		};
 	};
 
-	var refreshCardsList = function() { 			
+	var refreshCardsList = function() {
 		$timeout(function() {
 			$scope.refreshScroller('cardsList');
 		}, 2000);
@@ -102,7 +102,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 					$scope.feeData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
 				}
 			}
-			if($scope.renderData.defaultPaymentAmount < 0){				
+			if($scope.renderData.defaultPaymentAmount < 0){
 				$scope.defaultRefundAmount = (-1)*parseFloat($scope.renderData.defaultPaymentAmount);
 				$scope.shouldShowMakePaymentButton = false;
 			} else {
@@ -113,7 +113,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 
 	$scope.setupFeeData = function(){
 		// CICO-9457 : Setup fees details initilaly - for standalone only
-		if($scope.isStandAlone){			
+		if($scope.isStandAlone){
 			var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
 			var defaultAmount = $scope.renderData ?
 			 	parseFloat($scope.renderData.defaultPaymentAmount) : zeroAmount;
@@ -140,7 +140,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	};
 
 	// CICO-12408 : To calculate Total of fees and amount to pay.
-	$scope.calculateTotalAmount = function(amount) {		
+	$scope.calculateTotalAmount = function(amount) {
 		var feesAmount  = (typeof $scope.feeData.calculatedFee == 'undefined' || $scope.feeData.calculatedFee == '' || $scope.feeData.calculatedFee == '-') ? zeroAmount : parseFloat($scope.feeData.calculatedFee);
 		var amountToPay = (typeof amount == 'undefined' || amount =='') ? zeroAmount : parseFloat(amount);
 		
@@ -158,7 +158,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* Show guest credit card list
 	*/
 	$scope.showGuestCreditCardList = function(){
-		$scope.showCCPage = true;	
+		$scope.showCCPage = true;
 		refreshCardsList();
 	};
 
@@ -191,7 +191,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			if($scope.paymentGateway !== 'sixpayments'){
 				($scope.isExistPaymentType) ? $scope.showCreditCardInfo = true :$scope.showGuestCreditCardList();
 				 refreshCardsList();
-			}			
+			}
 		} else {
 			$scope.showCreditCardInfo = false;
 		};
@@ -211,9 +211,9 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		angular.forEach($scope.renderData.paymentTypes, function(item, key) {
 			if(item.name === 'CC'){
 				$scope.creditCardTypes = item.values;
-			};					
+			};
 		});
-		$scope.showHideCreditCard();		
+		$scope.showHideCreditCard();
 	};
 
 	
@@ -223,8 +223,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				angular.forEach(paymentType.values, function(value, key) {
 					if($scope.defaultPaymentTypeCard.toUpperCase() === value.cardcode){
 						$scope.referenceTextAvailable = (value.is_display_reference)? true:false;
-					};					
-				});				
+					};
+				});
 			}
 		});
 	};
@@ -267,7 +267,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			refreshCardsList();
 		}
 	};
-	$scope.resetSplitPaymentDetail = function(){		
+	$scope.resetSplitPaymentDetail = function(){
 		$scope.splitBillEnabled = (typeof($scope.splitBillEnabled) === "undefined") ? false : !$scope.splitBillEnabled;
 		$scope.splitePaymentDetail = {
 			totalNoOfsplits:1,
@@ -276,7 +276,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			splitAmount:0,
 			carryAmount:0
 		};
-		$scope.messageOfSuccessSplitPayment ='';
+		$scope.messageOfSuccessSplitPayment
+		='';
 		$scope.paymentErrorMessage ='';
 
 	};
@@ -380,7 +381,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* Params - Index of clicked button starting from 1.
 	* Return - null - Updates totalNoOfsplits.
 	*/
-	$scope.spliteButtonClicked = function(index){		
+	$scope.spliteButtonClicked = function(index){
 		// When first payment is made, lock all buttons into 3 possible states
 		if($scope.splitePaymentDetail["completedSplitPayments"]!==0){
 			return;
@@ -391,8 +392,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			$scope.splitePaymentDetail["totalNoOfsplits"] = index-1;
 		}else{
 			$scope.splitePaymentDetail["totalNoOfsplits"] = index;
-		};			
-				
+		};
 	};
 	/*
 	* Calculates split amount. 
@@ -400,17 +400,17 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	var calulateSplitAmount = function(){
 		//Amount spliting logic goes here, say total amount is 100 and no of split is 3,
 		//So split = 33.33 ie totalAmount = 33.33*3 = 99.99 so carry = 100-99.99 = 0.01 
-		//this carry is added with first split amount 		
+		//this carry is added with first split amount 
 		$scope.splitePaymentDetail["splitAmount"] = parseFloat($filter("number")(($scope.renderData.defaultPaymentAmount/$scope.splitePaymentDetail["totalNoOfsplits"]),2));
 		$scope.splitePaymentDetail["carryAmount"] = parseFloat($filter("number")(($scope.renderData.defaultPaymentAmount - ($scope.splitePaymentDetail["splitAmount"] *$scope.splitePaymentDetail["totalNoOfsplits"])),2));
-		//For first payment , carry amount is added with split amount.			
+		//For first payment , carry amount is added with split amount.
 		$scope.renderData.defaultPaymentAmount = parseFloat($filter("number")(($scope.splitePaymentDetail["splitAmount"] + $scope.splitePaymentDetail["carryAmount"]),2));
 	}
 	/*
 	* Updates SplitPaymentDetail. 
 	*/
-	var updateSplitPaymentDetail = function(){		
-		$scope.splitePaymentDetail["completedSplitPayments"] += 1;		
+	var updateSplitPaymentDetail = function(){
+		$scope.splitePaymentDetail["completedSplitPayments"] += 1;
 		if($scope.splitePaymentDetail["completedSplitPayments"] === $scope.splitePaymentDetail["totalNoOfsplits"]){
 			$scope.depositPaidSuccesFully = true;
 		};
@@ -433,7 +433,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	/*
 	* Updates success payment detail.
 	*/
-	var updateSuccessMessage = function(){		
+	var updateSuccessMessage = function(){
 		$scope.messageOfSuccessSplitPayment = $scope.messageOfSuccessSplitPayment +"SPLIT # "+$scope.splitePaymentDetail["completedSplitPayments"]+" OF "
 		+$scope.renderData.defaultPaymentAmount+" PAID SUCCESSFULY !"+"<br/>";
 		//Clears older failure messages.
@@ -449,12 +449,12 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* Success call back of success payment
 	*/
 	var successPayment = function(data){
-		$scope.$emit("hideLoader");			
+		$scope.$emit("hideLoader");
 		$scope.authorizedCode = data.authorization_code;
 		updateSplitPaymentDetail();
 		updateSuccessMessage();
-		updateDefaultPaymentAmount();				
-		data.billNumber = $scope.renderData.billNumberSelected;		
+		updateDefaultPaymentAmount();
+		data.billNumber = $scope.renderData.billNumberSelected;
 		$scope.$emit('PAYMENT_SUCCESS',data);
 		if($scope.newPaymentInfo.addToGuestCard){
 			var cardCode = $scope.defaultPaymentTypeCard;
@@ -483,14 +483,14 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	/*
 	* Clears paymentErrorMessage
 	*/
-	$scope.clearPaymentErrorMessage = function(){		
+	$scope.clearPaymentErrorMessage = function(){
 		$scope.paymentErrorMessage = '';
 	};
 
 	/*
 	* Action - On click submit payment button
 	*/
-	$scope.submitPayment = function(){		
+	$scope.submitPayment = function(){
 		if($scope.splitePaymentDetail["completedSplitPayments"]===0){
 			calulateSplitAmount();
 		}
@@ -592,11 +592,11 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.$emit("hideLoader");
 		var selectedBillIndex = parseInt($scope.renderData.billNumberSelected) - parseInt(1);
 		if(!isEmptyObject($scope.swipedCardDataToSave)){
-			var cardType =  $scope.swipedCardDataToSave.cardType.toLowerCase();		
+			var cardType =  $scope.swipedCardDataToSave.cardType.toLowerCase();
 			var cardNumberEndingWith = $scope.swipedCardDataToSave.cardNumber.slice(-4);
 			var cardExpiry = $scope.swipedCardDataToSave.cardExpiryMonth+"/"+$scope.swipedCardDataToSave.cardExpiryYear;
 		} else {
-			var cardType = retrieveCardtype();		
+			var cardType = retrieveCardtype();
 			var cardNumberEndingWith = retrieveCardNumber();
 			var cardExpiry = retrieveExpiryDate();
 		}
@@ -630,7 +630,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* To save new card
 	*/
 	var savePayment = function(data){
-		var cardToken   = !data.tokenDetails.isSixPayment ? data.tokenDetails.session:data.tokenDetails.token_no;	
+		var cardToken   = !data.tokenDetails.isSixPayment ? data.tokenDetails.session:data.tokenDetails.token_no;
 		var expiryMonth = data.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(2, 4) :$scope.newPaymentInfo.cardDetails.expiryMonth;
 		var expiryYear  = data.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(0, 2) :$scope.newPaymentInfo.cardDetails.expiryYear;
 		var expiryDate  = (expiryMonth && expiryYear )? ("20"+expiryYear+"-"+expiryMonth+"-01"):"";
@@ -657,7 +657,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		
 		data.payment_credit_type = swipedCardDataToSave.cardType;
 		data.credit_card = swipedCardDataToSave.cardType;
-		data.card_expiry = "20"+swipedCardDataToSave.cardExpiryYear+"-"+swipedCardDataToSave.cardExpiryMonth+"-01";		
+		data.card_expiry = "20"+swipedCardDataToSave.cardExpiryYear+"-"+swipedCardDataToSave.cardExpiryMonth+"-01";
 		$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successNewPayment);
 	
 		
