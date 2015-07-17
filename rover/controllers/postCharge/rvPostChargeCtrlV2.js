@@ -33,6 +33,15 @@ sntRover.controller('RVPostChargeControllerV2',
 			// entered by the user
 			var userEnteredPrice = '';
 
+			var initPagination = function(){
+				$scope.fetchedData.pageNo	= 1;
+	            $scope.fetchedData.perPage  = 50;
+	            $scope.fetchedData.start 	= 1;
+				$scope.fetchedData.end 		= 50;
+			};
+
+			initPagination();
+
 			var fetchChargeGroups = function(){
 				var successCallBackFetchChargeGroups = function( data ){
 					$scope.fetchedData.charge_groups = data.results;
@@ -48,15 +57,26 @@ sntRover.controller('RVPostChargeControllerV2',
 
 		    	var params = {
 					"query" 			: $scope.query ? $scope.query.toLowerCase() : '',
-					"page"				: 1,
-					"per_page" 			: 100,
+					"page"				: $scope.fetchedData.pageNo,
+					"per_page" 			: $scope.fetchedData.perPage,
 					"charge_group_id" 	: $scope.chargeGroup !== 'FAV' ? $scope.chargeGroup : '',
 					"is_favorite"		: $scope.chargeGroup === 'FAV' ? 1 : 0
 				};
 
 		    	var successCallBackFetchChargeCodes = function( data ){
+		    		
 		    		$scope.fetchedItems = [];
 		    		$scope.fetchedItems = data.results;
+		    		$scope.fetchedData.total_count = data.total_result;
+
+		    		// Compute the start, end and total count parameters
+	                if($scope.fetchedData.nextAction){
+	                    $scope.fetchedData.start = $scope.fetchedData.start + $scope.fetchedData.perPage;
+	                }
+	                if($scope.fetchedData.prevAction){
+	                    $scope.fetchedData.start = $scope.fetchedData.start - $scope.fetchedData.perPage;
+	                }
+	                $scope.fetchedData.end = $scope.fetchedData.start + $scope.fetchedItems.length - 1;
 
 		    		for ( var i in $scope.selectedChargeItemHash ) {
 
@@ -64,7 +84,7 @@ sntRover.controller('RVPostChargeControllerV2',
 	    					return $scope.selectedChargeItemHash[i].id === item.id;
 	    				});
 
-						if(typeof match !== "undefined") match.count = $scope.selectedChargeItemHash[i].count;
+						if( typeof match !== "undefined" ) match.count = $scope.selectedChargeItemHash[i].count;
 					}
 
 		            $scope.$emit('hideLoader');
@@ -93,6 +113,7 @@ sntRover.controller('RVPostChargeControllerV2',
 
 			// filter the items based on the chosen charge group
 			$scope.filterbyChargeGroup = function() {
+				initPagination();
 				searchChargeCodeItems();
 			};
 
@@ -103,6 +124,8 @@ sntRover.controller('RVPostChargeControllerV2',
 				setTimeout(function() {
 					$('#items-summary li.ng-leave.ng-leave-active').remove();
 				}, 100);
+
+				initPagination();
 
 				$scope.query = '';
 				$scope.chargeGroup = 'FAV';
@@ -117,10 +140,12 @@ sntRover.controller('RVPostChargeControllerV2',
 			$scope.filterByQuery = function() {
 				if( $rootScope.isSingleDigitSearch ){
 					$scope.chargeGroup = '';
+					initPagination();
 					searchChargeCodeItems();
 				}
 				else if( $scope.query.length >= 3 ){
 					$scope.chargeGroup = '';
+					initPagination();
 					searchChargeCodeItems();
 				}
 			};
@@ -128,6 +153,7 @@ sntRover.controller('RVPostChargeControllerV2',
 			// clear the filter query
 			$scope.clearQuery = function() {
 				$scope.query = '';
+				initPagination();
 				searchChargeCodeItems();
 
 				$scope.refreshScroller('items_summary');	
@@ -551,13 +577,52 @@ sntRover.controller('RVPostChargeControllerV2',
 
   			$scope.showItemSummaryList = function(){
   				var size = _.size($scope.selectedChargeItemHash);
-  				if(size > 0){
+  				if( size > 0 ){
   					return true;
   				}
   				else{
   					return false;
   				}
   			};
+
+  			// Logic for pagination starts here ..
+		    $scope.loadNextSet = function( $event ){
+		        $scope.fetchedData.pageNo ++;
+		        $scope.fetchedData.nextAction = true;
+		        $scope.fetchedData.prevAction = false;
+		        searchChargeCodeItems();
+				$event.stopImmediatePropagation();
+		    };
+
+		    $scope.loadPrevSet = function( $event ){
+		        $scope.fetchedData.pageNo --;
+		        $scope.fetchedData.nextAction = false;
+		        $scope.fetchedData.prevAction = true;
+		        searchChargeCodeItems();
+		        $event.stopImmediatePropagation();
+		    };
+
+		    $scope.isNextButtonDisabled = function(){
+
+		    	var isDisabled = false;
+
+		        if($scope.fetchedData.end >= $scope.fetchedData.total_count){
+		            isDisabled = true;
+		        }
+		        return isDisabled;
+		    };
+
+		    $scope.isPrevButtonDisabled = function(){
+
+		        var isDisabled = false;
+
+		        if($scope.fetchedData.pageNo == 1){
+		            isDisabled = true;
+		        }
+		        return isDisabled;
+		    };
+		    // Pagination logic ends ...
+
 		}
 	]
 );
