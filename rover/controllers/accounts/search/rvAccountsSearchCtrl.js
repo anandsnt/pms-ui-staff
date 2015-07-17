@@ -165,7 +165,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			var options = {
 				params: 			params,
 				successCallBack: 	successCallBackOfSearch,
-				failureCallBack: 	failureCallBackOfSearch,
+				failureCallBack: 	failureCallBackOfSearch
 			};
 			$scope.callAPI(rvAccountsSrv.getAccountsList, options);
 		};

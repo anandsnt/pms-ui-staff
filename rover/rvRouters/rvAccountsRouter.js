@@ -28,7 +28,7 @@ angular.module('accountsModule', [])
                             'query'     : '',
                             'status'    : '',
                             'per_page'  : rvAccountsSrv.DEFAULT_PER_PAGE,
-                            'page'      : rvAccountsSrv.DEFAULT_PAGE,
+                            'page'      : rvAccountsSrv.DEFAULT_PAGE
                         }
                         return rvAccountsSrv.getAccountsList(params);
                     }

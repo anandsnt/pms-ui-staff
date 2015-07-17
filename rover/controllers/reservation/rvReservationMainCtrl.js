@@ -142,7 +142,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationData.company = {
                 id: null, // if new company, then it is null, other wise his id
                 name: '',
-                corporateid: '', // Add different fields for company as in story
+                corporateid: '' // Add different fields for company as in story
             };
 
             $scope.reservationDetails.companyCard = {
@@ -156,7 +156,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationData.travelAgent = {
                 id: null, // if new , then it is null, other wise his id
                 name: '',
-                iataNumber: '', // Add different fields for travelAgent as in story
+                iataNumber: '' // Add different fields for travelAgent as in story
             };
             $scope.reservationDetails.travelAgent = {
                 id: "",

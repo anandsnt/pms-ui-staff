@@ -53,7 +53,7 @@ sntRover.service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 				'sort_field': params.sorting_field,
 				'sort_dir': params.sort_dir,
 				'per_page': params.per_page,
-				'page': params.page,
+				'page': params.page
 			};
 
 			rvBaseWebSrvV2.getJSON(url, data).then(

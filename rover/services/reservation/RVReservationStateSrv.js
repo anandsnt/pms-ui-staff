@@ -23,7 +23,7 @@ sntRover.service('RVReservationStateService', [
 		 */
 		self.fetchAssociatedAddons = function(rateId) {
 			var rateAddons = _.findWhere(self.metaData.rateAddons, {
-				rate_id: rateId,
+				rate_id: rateId
 			});
 			return rateAddons.associated_addons;
 		}
@@ -304,7 +304,7 @@ sntRover.service('RVReservationStateService', [
 							rateBreakUp: room_rate,
 							day: new tzIndependentDate(for_date),
 							availabilityCount: rooms[currentRoomId].availabilityNumbers[for_date],
-							taxForAddons: taxForAddons,
+							taxForAddons: taxForAddons
 
 						};
 

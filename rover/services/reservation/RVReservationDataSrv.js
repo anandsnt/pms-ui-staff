@@ -61,12 +61,12 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 				company: {
 					id: null, // if new company, then it is null, other wise his id
 					name: '',
-					corporateid: '', // Add different fields for company as in story
+					corporateid: '' // Add different fields for company as in story
 				},
 				travelAgent: {
 					id: null, // if new , then it is null, other wise his id
 					name: '',
-					iataNumber: '', // Add different fields for travelAgent as in story
+					iataNumber: '' // Add different fields for travelAgent as in story
 				},
 				paymentType: {
 					type: {},

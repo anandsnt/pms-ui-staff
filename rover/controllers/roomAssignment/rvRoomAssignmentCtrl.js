@@ -192,7 +192,7 @@ sntRover.controller('RVroomAssignmentController',[
 
 		// room related details
 		var data = {
-			'room': '',
+			'room': ''
 		};
 
 		RVSearchSrv.updateRoomDetails($scope.reservationData.reservation_card.confirmation_num, data);
@@ -262,7 +262,7 @@ sntRover.controller('RVroomAssignmentController',[
 			room_status 		: assignedRoom.room_status,
 			fo_status 			: assignedRoom.fo_status,
 			room_ready_status	: assignedRoom.room_ready_status,
-			is_upsell_available	: (data.is_upsell_available) ? "true" : "false",  // CICO-7904 and CICO-9628 : update the upsell availability to staycard
+			is_upsell_available	: (data.is_upsell_available) ? "true" : "false"  // CICO-7904 and CICO-9628 : update the upsell availability to staycard
 		});
 
 		if (typeof $scope.selectedRoomType !== 'undefined') {

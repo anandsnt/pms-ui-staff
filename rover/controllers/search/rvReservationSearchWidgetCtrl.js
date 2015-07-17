@@ -543,7 +543,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				"CHECKING_OUT": 'guest-check-out',
 				"CANCELED": 'guest-cancel',
 				"NOSHOW": 'guest-no-show',
-				"NOSHOW_CURRENT": 'guest-no-show',
+				"NOSHOW_CURRENT": 'guest-no-show'
 			};
 			if (reservationStatus.toUpperCase() in classes) {
 				return classes[reservationStatus.toUpperCase()];

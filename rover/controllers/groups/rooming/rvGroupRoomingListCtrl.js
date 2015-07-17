@@ -353,7 +353,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             var options = {
                 params: params,
-                successCallBack: successCallBackOfcheckDefaultChargeRoutings,
+                successCallBack: successCallBackOfcheckDefaultChargeRoutings
             };
             $scope.callAPI(rvGroupRoomingListSrv.checkDefaultChargeRoutings, options);
         };
@@ -411,7 +411,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             //
             var options = {
                 params: params,
-                successCallBack: successCallBackOfAddReservations,
+                successCallBack: successCallBackOfAddReservations
             };
             $scope.callAPI(rvGroupRoomingListSrv.addReservations, options);
 
@@ -436,7 +436,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             var options = {
                 params: params,
-                successCallBack: successCallBackOfFetchRoomingDetails,
+                successCallBack: successCallBackOfFetchRoomingDetails
             };
             $scope.callAPI(rvGroupRoomingListSrv.getRoomTypesConfiguredAgainstGroup, options);
         };
@@ -472,7 +472,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 '1': 'Single',
                 '2': 'Double',
                 '3': 'Triple',
-                '4': 'Quadruple',
+                '4': 'Quadruple'
             };
 
             //total result count

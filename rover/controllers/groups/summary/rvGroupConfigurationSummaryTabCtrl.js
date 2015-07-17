@@ -567,10 +567,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				successCallBack: onRemoveGroupNoteSuccess,
 				failureCallBack: onRemoveGroupNoteFailure,
 				params: {
-					"note_id": noteId,
+					"note_id": noteId
 				},
 				successCallBackParameters: {
-					"noteId": noteId,
+					"noteId": noteId
 				}
 			});
 		}

@@ -247,7 +247,7 @@ sntRover.controller('rvGroupSearchCtrl', [
             var options = {
                 params: params,
                 successCallBack: successCallBackOfSearch,
-                failureCallBack: failureCallBackOfSearch,
+                failureCallBack: failureCallBackOfSearch
             };
             $scope.callAPI(rvGroupSrv.getGroupList, options);
         };
@@ -285,7 +285,7 @@ sntRover.controller('rvGroupSearchCtrl', [
             var commonDateOptions = {
                 showOn: 'button',
                 dateFormat: $rootScope.jqDateFormat,
-                numberOfMonths: 1,
+                numberOfMonths: 1
             };
 
             //date picker options - From

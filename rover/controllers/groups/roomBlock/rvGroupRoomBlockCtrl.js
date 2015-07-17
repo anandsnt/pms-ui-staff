@@ -504,7 +504,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//date picker options - Common
 			var commonDateOptions = {
 				dateFormat: $rootScope.jqDateFormat,
-				numberOfMonths: 1,
+				numberOfMonths: 1
 			};
 
 			//date picker options - Start Date
@@ -599,7 +599,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 				var options = {
 					params: params,
-					successCallBack: successCallBackOfSaveRoomBlock,
+					successCallBack: successCallBackOfSaveRoomBlock
 				};
 				$scope.callAPI(rvGroupConfigurationSrv.saveRoomBlockBookings, options);
 			}, 0);
@@ -944,7 +944,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 			var options = {
 				params: params,
-				successCallBack: successCallBackOfFetchRoomBlockGridDetails,
+				successCallBack: successCallBackOfFetchRoomBlockGridDetails
 			};
 			$scope.callAPI(rvGroupConfigurationSrv.getRoomBlockGridDetails, options);
 		}
@@ -1038,7 +1038,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			_.extend($scope.groupConfigData.summary, {
 				selected_room_types_and_bookings: [],
 				selected_room_types_and_occupanies: [],
-				selected_room_types_and_rates: [],
+				selected_room_types_and_rates: []
 			});
 
 			if (isInEditMode) {

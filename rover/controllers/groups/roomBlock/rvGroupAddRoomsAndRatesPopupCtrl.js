@@ -188,7 +188,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 		$scope.saveNewRoomTypesAndRates = function() {
 			var options = {
 				params: formSaveNewRoomTypesAndRatesParams(),
-				successCallBack: successCallBackOfSaveNewRoomTypesAndRates,
+				successCallBack: successCallBackOfSaveNewRoomTypesAndRates
 			};
 
 			$scope.callAPI(rvGroupConfigurationSrv.updateSelectedRoomTypesAndRates, options);

@@ -26,7 +26,7 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 	$scope.loadTable = function(){
 		$scope.tableParams = new ngTableParams({
 		        page: 1,  // show first page
-		        count: $scope.displyCount, // count per page
+		        count: $scope.displyCount // count per page
 		        /*sorting: {
 		            rate: 'asc' // initial sorting
 		        }*/

@@ -93,7 +93,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
             "department": that.getDepartmentName(data.user_department),
             "last_login": "",
             "is_active": "false",
-            "can_delete": "true",
+            "can_delete": "true"
 		};
 		var deferred = $q.defer();
 		var url = '/admin/users';

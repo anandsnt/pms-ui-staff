@@ -120,11 +120,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			        submenu: [{
 			            title: "MENU_CREATE_GROUP",
 			            action: "staff#/staff/groups/config/NEW_GROUP/SUMMARY",
-			            menuIndex: "menuCreateGroup",
+			            menuIndex: "menuCreateGroup"
 			        }, {
 			            title: "MENU_MANAGE_GROUP",
 			            action: "staff#/staff/groups/search",
-			            menuIndex: "menuManageGroup",
+			            menuIndex: "menuManageGroup"
 			        }]
 		    	},{
 					title: "MENU_CONVERSATIONS",

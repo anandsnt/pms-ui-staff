@@ -585,7 +585,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                 filter: {
                                     arrival_time:     (new Date(create_reservation_data.start_date)).toComponents().time.toString(),
                                     min_hours:        (create_reservation_data.end_date - create_reservation_data.start_date) / 3600000,
-                                    room_type_id:     create_reservation_data.room_type_id,
+                                    room_type_id:     create_reservation_data.room_type_id
                                 },
                                 common_reservation_data: {
                                     company_id:         create_reservation_data.company_id,
@@ -668,7 +668,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                 this.movingReservationData = {
                     reservation: undefined,
                     originalRoom: undefined,
-                    originalReservation: undefined,
+                    originalReservation: undefined
                 };
 
                 this.callOccupancyAndAvailabilityCount = function(start_date, end_date) {
@@ -865,7 +865,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         begin_time:         data.begin_time,
                         end_date:           data.end_date,
                         end_time:           data.end_time,
-                        rate_type:          data.rate_type,
+                        rate_type:          data.rate_type
 
                     }
                     if(data.rate_type === 'Corporate') {
@@ -954,7 +954,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         begin_time:         data.begin_time,
                         end_date:           data.end_date,
                         end_time:           data.end_time,
-                        rate_type:          data.rate_type,
+                        rate_type:          data.rate_type
                     }
 
                     if(data.rate_type === 'Corporate') {

@@ -1355,7 +1355,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             if (validGuests.length > 0) {
                 $scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, {
                     accompanying_guests_details: validGuests,
-                    reservation_id: $scope.reservationData.reservationIds[roomIndex],
+                    reservation_id: $scope.reservationData.reservationIds[roomIndex]
                 }, onupdateSuccess, onUpdateFailure);
             }
         }

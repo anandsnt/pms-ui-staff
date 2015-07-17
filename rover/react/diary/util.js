@@ -160,7 +160,7 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 
 		ret = {
 			hh: this.padZeroes(this.hours % format),
-			mm: this.padZeroes(this.minutes),
+			mm: this.padZeroes(this.minutes)
 		};
 		return ret.hh + seperator + ret.mm;
 	};

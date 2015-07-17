@@ -430,7 +430,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                             useHTML: true,
                             percentageDecimals: 2,
                             backgroundColor: "rgba(255,255,255,1)"
-                        },
+                        }
                     }
                 };
 

@@ -35,7 +35,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				param: {
 					id: $rootScope.stayCardStateBookMark.previousStateParams.id,
 					activeTab: "ROOMING"
-				},
+				}
 			};
 		} else if ($stateParams.isFromCards) {
 			setNavigationBookMark();
@@ -47,7 +47,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 					type: $vault.get('type'),
 					query: $vault.get('query'),
 					isBackFromStaycard: true
-				},
+				}
 			};
 
 		} else if ($stateParams.isFromDiary && !$rootScope.isReturning()) {
@@ -166,14 +166,14 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
 			onSelect: function(dateText, inst) {
 				// Handle onSelect
-			},
+			}
 		}, datePickerCommon);
 
 		$scope.departureDateOptions = angular.extend({
 			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
 			onSelect: function(dateText, inst) {
 				//
-			},
+			}
 		}, datePickerCommon);
 
 		$scope.reservationData.paymentTypes = paymentTypes;
@@ -192,7 +192,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				'is_reservation_queued': $scope.reservationData.reservation_card.is_reservation_queued,
 				'is_queue_rooms_on': $scope.reservationData.reservation_card.is_queue_rooms_on,
 				'late_checkout_time': $scope.reservationData.reservation_card.late_checkout_time,
-				'is_opted_late_checkout': $scope.reservationData.reservation_card.is_opted_late_checkout,
+				'is_opted_late_checkout': $scope.reservationData.reservation_card.is_opted_late_checkout
 			};
 
 			RVSearchSrv.updateRoomDetails($scope.reservationData.reservation_card.confirmation_num, data);
@@ -673,7 +673,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			RVReservationCardSrv.checkinDateForDiary = $scope.reservationData.reservation_card.arrival_date.replace(/-/g, '/');
 			$state.go('rover.diary', {
 				reservation_id: $scope.reservationData.reservation_card.reservation_id,
-				checkin_date: $scope.reservationData.reservation_card.arrival_date,
+				checkin_date: $scope.reservationData.reservation_card.arrival_date
 			});
 		};
 

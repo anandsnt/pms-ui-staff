@@ -38,7 +38,7 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			$http({
 				url: url,
 				method: "POST",
-				data: data,
+				data: data
 			}).success(function(response, status) {
 				if (response.status === "success") {
 					deferred.resolve(response.data);

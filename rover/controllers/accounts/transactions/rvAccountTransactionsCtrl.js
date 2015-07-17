@@ -501,7 +501,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			var params = {
 				"bill_number": billNumber,
 				"to_address": mailTo,
-				"is_group": !!$scope.groupConfigData,
+				"is_group": !!$scope.groupConfigData
 			}
 
 			if (!!$scope.groupConfigData) {

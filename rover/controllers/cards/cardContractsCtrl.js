@@ -87,7 +87,7 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 								'fontWeight': 'bold'
 							},
 							useHTML: true
-						},
+						}
 					},
 					yAxis: {
 						style: {

@@ -370,7 +370,7 @@ sntRover
 				px_per_hr: 					undefined,
 				currency_symbol:            $rootScope.currencySymbol,
 				min_hours: 					isVaultDataSet ? vaultData.minHours : payload.display.min_hours,
-				property_date_time:  		$scope.adj_property_date_time,
+				property_date_time:  		$scope.adj_property_date_time
 			},
 
 			availability: {
@@ -378,10 +378,10 @@ sntRover
 					current_arrival_time : null,
 					current_departure_time: null,
 					last_arrival_time : null,
-					last_departure_time: null,
+					last_departure_time: null
 				},
 				drag: {
-					lastRoom: null,
+					lastRoom: null
 				}
 			},
 
@@ -704,7 +704,7 @@ sntRover
 		    	},
 		    	next: {
 		    		room:  row_data,
-		    		occupancy: row_item_data,
+		    		occupancy: row_item_data
 	    		}
 	    	};
 
@@ -1321,7 +1321,7 @@ sntRover
             begin_time:         arrivalTime,
             end_date:           end,
             end_time:           depTime,
-            rate_type:          rate_type,
+            rate_type:          rate_type
         };
         if(account_id) {
 			params.account_id = account_id;
@@ -1532,7 +1532,7 @@ sntRover
             begin_time:         start_time,
             end_date:           end_date,
             end_time:           end_time,
-            rate_type:          rate_type,
+            rate_type:          rate_type
         };
         if(account_id) {
 			params.account_id = account_id;
@@ -1700,7 +1700,7 @@ sntRover
 	    		failureCallBack: 	failureCallBackOfSelectDateInEditMode,
 	    		successCallBackParameters:{
 					chosenDate : newValue,
-					oldGridProps: util.deepCopy ($scope.gridProps),
+					oldGridProps: util.deepCopy ($scope.gridProps)
 		    	}
 		    }
 		    $scope.callAPI(rvDiarySrv.checkAvailabilityForReservationToA_Date, options);
@@ -1824,7 +1824,7 @@ sntRover
     		'stay_dates': stay,
 
     		//CICO-14143: Diary - Move without rate change actually changes rate
-    		'is_move_without_rate_change' : isMoveWithoutRateChange ?  isMoveWithoutRateChange : false,
+    		'is_move_without_rate_change' : isMoveWithoutRateChange ?  isMoveWithoutRateChange : false
     	}
     }
 
@@ -1837,7 +1837,7 @@ sntRover
 		var options = {
     		params: 			params,
     		successCallBack: 	successCallBackOfSaveReservation,
-    		failureCallBack: 	failureCallBackOfSaveReservation,
+    		failureCallBack: 	failureCallBackOfSaveReservation
 	    }
 	    $scope.callAPI(RVReservationSummarySrv.updateReservation, options);
 	};

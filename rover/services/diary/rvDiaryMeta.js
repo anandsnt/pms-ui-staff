@@ -11,7 +11,7 @@ sntRover
 			hk_status: 'room_status',
 			hk_status_map: {
 				'CLEAN': '',
-				'DIRTY': 'dirty',
+				'DIRTY': 'dirty'
 			}
 		},
 		room_type: {
@@ -50,6 +50,6 @@ sntRover
 			id: 'room_id',
 			status: 'service_status',
 			number: 'room_no'
-		},
+		}
 	}));
 });

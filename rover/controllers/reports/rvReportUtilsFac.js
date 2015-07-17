@@ -219,7 +219,7 @@ sntRover.factory('RVReportUtilsFac', [
             objRef['hasDisplay']['data'].push({
                 paramKey    : filter.value.toLowerCase(),
                 description : filter.description,
-                selected    : false,
+                selected    : false
             });
         };
 
@@ -955,7 +955,7 @@ sntRover.factory('RVReportUtilsFac', [
                 'yesterday'    : new Date(_year, _month, _date - 1),
                 'aWeekAgo'     : new Date(_year, _month, _date - 7),
                 'aWeekAfter'   : new Date(_year, _month, _date + 7),
-                'aMonthAfter'  : new Date(_year, _month, _date + 30),
+                'aMonthAfter'  : new Date(_year, _month, _date + 30)
             };
 
             if ( parseInt(xDays) !== NaN ) {

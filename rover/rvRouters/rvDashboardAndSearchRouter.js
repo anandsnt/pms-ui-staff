@@ -55,17 +55,17 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
         $stateProvider.state('rover.dashboard.manager', {
             url: '/manager',
             templateUrl: '/assets/partials/dashboard/rvManagerDashboard.html',
-            controller: 'RVmanagerDashboardController',
+            controller: 'RVmanagerDashboardController'
         });
         $stateProvider.state('rover.dashboard.frontoffice', {
             url: '/frontoffice',
             templateUrl: '/assets/partials/dashboard/rvFrontDeskDashboard.html',
-            controller: 'RVfrontDeskDashboardController',
+            controller: 'RVfrontDeskDashboardController'
         });
         $stateProvider.state('rover.dashboard.housekeeping', {
             url: '/housekeeping',  //TODO: check can we reduced it to hk?
             templateUrl: '/assets/partials/dashboard/rvHouseKeepingDashboard.html',
-            controller: 'RVhouseKeepingDashboardController',
+            controller: 'RVhouseKeepingDashboardController'
         });
 
         /**
@@ -91,7 +91,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                else if($stateParams.type === 'postCharge'){
                      ngDialog.open({
                         template: '/assets/partials/postCharge/outsidePostCharge.html',
-                        controller: 'RVOutsidePostChargeController',
+                        controller: 'RVOutsidePostChargeController'
                     });
                }
 

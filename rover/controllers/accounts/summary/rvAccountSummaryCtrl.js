@@ -223,10 +223,10 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				successCallBack: onRemoveAccountNoteSuccess,
 				failureCallBack: onRemoveAccountNoteFailure,
 				params: {
-					"note_id": noteId,
+					"note_id": noteId
 				},
 				successCallBackParameters: {
-					"noteId": noteId,
+					"noteId": noteId
 				}
 			});
 		}
