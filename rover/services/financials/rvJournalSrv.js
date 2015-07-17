@@ -74,8 +74,9 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 	this.fetchRevenueDataByChargeGroups = function(params){
 		var deferred = $q.defer();
 
-		if(typeof params.charge_group_id === "undefined") params.charge_group_id = "";
-
+		if(typeof params.charge_group_id === "undefined") {
+			params.charge_group_id = "";
+		}
 		var url = '/api/financial_transactions/revenue_by_charge_groups';
 
 		BaseWebSrvV2.postJSON(url,params).then(function(data) {
@@ -93,8 +94,9 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 	this.fetchRevenueDataByChargeCodes = function(params){
 		var deferred = $q.defer();
 
-		if(typeof params.charge_code_id === "undefined") params.charge_code_id = "";
-
+		if(typeof params.charge_code_id === "undefined") {
+			params.charge_code_id = "";
+		}
 		var url = '/api/financial_transactions/revenue_by_charge_codes';
 
 		BaseWebSrvV2.postJSON(url,params).then(function(data) {
@@ -130,8 +132,9 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 	this.fetchPaymentDataByPaymentTypes = function(params){
 		var deferred = $q.defer();
 
-		if(typeof params.charge_code_id === "undefined") params.charge_code_id = "";
-
+		if(typeof params.charge_code_id === "undefined") {
+			params.charge_code_id = "";
+		}
 		var url = '/api/financial_transactions/payments_by_payment_types';
 
 		BaseWebSrvV2.postJSON(url,params).then(function(data) {

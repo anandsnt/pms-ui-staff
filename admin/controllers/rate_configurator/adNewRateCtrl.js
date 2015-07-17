@@ -189,8 +189,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                         if (addOns.id === addOnsSelected.id) {
                             addOns.isSelected = true;
                             addOns.is_inclusive_in_rate = addOnsSelected.is_inclusive_in_rate ? 'true' : 'false';
-                            if ($scope.rateData.addOns.indexOf(addOns) === -1)
+                            if ($scope.rateData.addOns.indexOf(addOns) === -1) {
                                 $scope.rateData.addOns.push(addOns);
+                            }
                         }
 
                     });

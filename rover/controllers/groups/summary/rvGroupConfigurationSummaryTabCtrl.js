@@ -115,8 +115,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 						var dayDiff = Math.floor((new tzIndependentDate($scope.groupConfigData.summary.block_to) - new tzIndependentDate($scope.groupConfigData.summary.block_from)) / 86400000);
 						angular.forEach($scope.groupSummaryData.demographics.segments, function(segment) {
 							if (dayDiff < segment.los) {
-								if (!aptSegment)
+								if (!aptSegment) {
 									aptSegment = segment.value;
+								}
 							}
 						});
 						$scope.groupSummaryData.computedSegment = !!aptSegment;
@@ -681,7 +682,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * we will use this to fetch summary data
 		 */
 		$scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab) {
-			if (activeTab !== 'SUMMARY') return;
+			if (activeTab !== 'SUMMARY') {
+				return;
+			}
 			fetchSummaryData();
 
 			//we are resetting the API call in progress check variable

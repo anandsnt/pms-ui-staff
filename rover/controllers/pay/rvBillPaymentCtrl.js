@@ -132,7 +132,9 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 					var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
 					$scope.feeData.actualFees = feesAmount;
 
-					if(amountSymbol === "percent") $scope.calculateFee();
+					if(amountSymbol === "percent") {
+						$scope.calculateFee();
+					}
 					else{
 						$scope.feeData.calculatedFee = parseFloat(feesAmount).toFixed(2);
 						$scope.feeData.totalOfValueAndFee = parseFloat(feesAmount + defaultAmount).toFixed(2);
@@ -436,10 +438,12 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 
 
 			if($scope.isShowFees()){
-				if($scope.feeData.calculatedFee)
+				if($scope.feeData.calculatedFee) {
 					dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
-				if($scope.feeData.feesInfo)
+				}
+				if($scope.feeData.feesInfo) {
 					dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
+				}
 			}
 
 			if($scope.referenceTextAvailable){

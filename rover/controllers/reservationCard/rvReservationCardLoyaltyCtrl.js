@@ -16,8 +16,9 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
         };
         $scope.showLoyaltyProgramDialog = function() {
             //Disable the feature when the reservation is checked out
-            if(!$scope.$parent.isNewsPaperPreferenceAvailable())
+            if(!$scope.$parent.isNewsPaperPreferenceAvailable()) {
                 return;
+            }
             ngDialog.open({
                 template: '/assets/partials/reservationCard/rvAddLoyaltyProgramDialog.html',
                 controller: 'rvAddLoyaltyProgramController',

@@ -245,7 +245,9 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 					this.value = ui.item.label;
 					$scope.accountConfigData.summary.company.name = ui.item.label;
 					$scope.accountConfigData.summary.company.id = ui.item.value;
-					if (!$scope.isInAddMode()) $scope.updateAccountSummary();
+					if (!$scope.isInAddMode()) {
+						$scope.updateAccountSummary();
+					}
 					runDigestCycle();
 					return false;
 				},

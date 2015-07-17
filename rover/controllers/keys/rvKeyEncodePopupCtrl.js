@@ -50,8 +50,9 @@ console.log($scope.encoderTypes);
 
 		}
 
-    	if($scope.data.is_late_checkout) $scope.data.late_checkout_time = $scope.reservationData.reservation_card.late_checkout_time;
-
+    	if($scope.data.is_late_checkout) {
+    		$scope.data.late_checkout_time = $scope.reservationData.reservation_card.late_checkout_time;
+    	}
 		var statusMessage = $filter('translate')('KEY_CONNECTED_STATUS');
     	that.setStatusAndMessage(statusMessage, 'success');
     	// To check reservation status and select corresponding texts and classes.
@@ -208,8 +209,9 @@ console.log($scope.encoderTypes);
 	};
 
 	$scope.clickedPrintKey = function(){
-		if($scope.numberOfKeysSelected === 0)
+		if($scope.numberOfKeysSelected === 0) {
 			return;
+		}
 		//CICO-11444. If saflok_msr we we ll be connecting to remote encoders in the network
 		if($scope.isRemoteEncodingEnabled){
 			that.callKeyFetchAPI();

@@ -92,7 +92,9 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     var isAllDepartmentsUnchecked = function(){
         var flag = true;
         angular.forEach($scope.data.filterData.departments,function(item, index) {
-            if(item.checked) flag = false;
+            if(item.checked) {
+                flag = false;
+            }
         });
         return flag;
     };
@@ -124,7 +126,9 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     var isAllEmployeesUnchecked = function(){
         var flag = true;
         angular.forEach($scope.data.filterData.employees,function(item, index) {
-            if(item.checked) flag = false;
+            if(item.checked) {
+                flag = false;
+            }
         });
         return flag;
     };
@@ -249,9 +253,15 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
     $scope.activatedTab = function(index){
     	$scope.data.activeTab = index;
-    	if(index === 0) $rootScope.$broadcast('REFRESHREVENUECONTENT');
-    	else if(index === 2) $scope.$broadcast('cashierTabActive');
-    	else $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
+    	if(index === 0) {
+            $rootScope.$broadcast('REFRESHREVENUECONTENT');
+        }
+    	else if(index === 2) {
+            $scope.$broadcast('cashierTabActive');
+        }
+    	else {
+            $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
+        }
     	$scope.$broadcast("CLOSEPRINTBOX");
         $scope.data.isActiveRevenueFilter = false;
     };

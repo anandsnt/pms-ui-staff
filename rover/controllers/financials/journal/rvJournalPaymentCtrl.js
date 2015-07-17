@@ -117,7 +117,9 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         item = $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions;
         if((typeof item !== 'undefined') && (item.length >0)){
             angular.forEach( item ,function(transactions, index) {
-                if(transactions.show) isShowTableHeading = true;
+                if(transactions.show) {
+                    isShowTableHeading = true;
+                }
             });
         }
         return isShowTableHeading;
@@ -129,7 +131,9 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         item = $scope.data.paymentData.payment_types[index1].transactions;
         if((typeof item !== 'undefined') && (item.length >0)){
             angular.forEach( item ,function(transactions, index) {
-                if(transactions.show) isShowTableHeading = true;
+                if(transactions.show) {
+                    isShowTableHeading = true;
+                }
             });
         }
         return isShowTableHeading;
@@ -152,7 +156,9 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     $scope.checkHasArrowSecondLevel = function(index1, index2){
         var hasArrow = false,
         item = $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions;
-        if((typeof item !== 'undefined') && (item.length >0)) hasArrow = true;
+        if((typeof item !== 'undefined') && (item.length >0)) {
+            hasArrow = true;
+        }
         return hasArrow;
     };
 

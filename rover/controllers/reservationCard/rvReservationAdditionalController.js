@@ -12,8 +12,9 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			if (!!currentSegment) {
 				angular.forEach($scope.otherData.segments, function(segment) {
 					if ($scope.reservationData.reservation_card.total_nights < segment.los) {
-						if (!aptSegment)
+						if (!aptSegment) {
 							aptSegment = segment.value;
+						}
 					}
 				});
 				return !!aptSegment && aptSegment === currentSegment;

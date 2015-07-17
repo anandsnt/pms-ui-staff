@@ -146,8 +146,9 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			// eg: if original status was OO them show form only when user choose OS
 			if (!$scope.inService) {
 				if ($_originalStatusId !== $scope.updateService.room_service_status_id) {
-					if (tzIndependentDate($rootScope.businessDate).toDateString() === tzIndependentDate($scope.updateService.selected_date).toDateString())
+					if (tzIndependentDate($rootScope.businessDate).toDateString() === tzIndependentDate($scope.updateService.selected_date).toDateString()) {
 						$scope.roomDetails.room_reservation_hk_status = $scope.updateService.room_service_status_id;
+					}
 					// show the update form
 					$scope.showForm = true;
 					$scope.showSaved = false;
@@ -172,9 +173,9 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			} else {
 				$scope.showForm = false;
 				$scope.showSaved = false;
-				if (tzIndependentDate($rootScope.businessDate).toDateString() === tzIndependentDate($scope.updateService.selected_date).toDateString())
+				if (tzIndependentDate($rootScope.businessDate).toDateString() === tzIndependentDate($scope.updateService.selected_date).toDateString()) {
 					$scope.roomDetails.room_reservation_hk_status = $scope.updateService.room_service_status_id;
-
+				}
 				var _params = {
 					room_id: $scope.roomDetails.id,
 					inServiceID: 1,
@@ -262,10 +263,10 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
 			onSelect: function(dateText, inst) {
 				$scope.onViewDateChanged();
-				if ($scope.serviceStatus[$filter('date')(new Date(dateText), "yyyy-MM-dd")])
+				if ($scope.serviceStatus[$filter('date')(new Date(dateText), "yyyy-MM-dd")]) {
 					$scope.updateService.room_service_status_id = $scope.serviceStatus[$filter('date')(new Date(dateText), "yyyy-MM-dd")].id;
+				}
 				$(".room-actions").click();
-
 			},
 			beforeShowDay: $scope.setClass,
 			onChangeMonthYear: function(year, month, instance) {
@@ -283,8 +284,9 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			var _error = function(errorMessage) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorMessage;
-				if ($scope.$parent.myScroll['room-tab-scroll'] && $scope.$parent.myScroll['room-tab-scroll'].scrollTo)
+				if ($scope.$parent.myScroll['room-tab-scroll'] && $scope.$parent.myScroll['room-tab-scroll'].scrollTo) {
 					$scope.$parent.myScroll['room-tab-scroll'].scrollTo(0, 0);
+				}
 				$scope.refreshScroller('room-tab-scroll');
 			};
 

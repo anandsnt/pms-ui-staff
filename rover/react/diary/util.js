@@ -155,9 +155,12 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 
 	Time.prototype.toHourAndMinute = function(seperator, format) {
 		var ret;
-		if (typeof format === 'undefined') format = 12;
-		if (typeof seperator === 'undefined') seperator = ":";
-
+		if (typeof format === 'undefined') {
+			format = 12;
+		}
+		if (typeof seperator === 'undefined') {
+			seperator = ":";
+		}
 		ret = {
 			hh: this.padZeroes(this.hours % format),
 			mm: this.padZeroes(this.minutes)

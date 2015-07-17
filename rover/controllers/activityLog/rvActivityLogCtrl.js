@@ -130,8 +130,9 @@ sntRover.controller('RVActivityLogCtrl',[
         if($scope.isUpdateReportFilter){
             params['from_date'] = $filter('date')($scope.fromDate, 'yyyy-MM-dd');
             params['to_date'] =$filter('date')($scope.toDate, 'yyyy-MM-dd');
-            if($scope.user_id)
+            if($scope.user_id) {
                 params['user_id'] = $scope.user_id;
+            }
         }
         params['sort_order'] = $scope.sort_order;
         params['sort_field'] = $scope.sort_field;

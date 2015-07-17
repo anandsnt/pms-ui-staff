@@ -32,8 +32,9 @@
 			$scope.billData = billData.data.bill_details;
 			$scope.roomNo = billData.data.room_number;
 			$scope.isFetching = false;
-			if($scope.billData)
+			if($scope.billData) {
 				$scope.optionsAvailable = true;
+			}
 		},function(){
 			$scope.netWorkError = true;
 			$scope.isFetching = false;

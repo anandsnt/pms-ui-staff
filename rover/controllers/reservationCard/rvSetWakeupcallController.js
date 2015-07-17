@@ -71,10 +71,12 @@ sntRover.controller('rvSetWakeupcallController',['$scope','$filter','RVSaveWakeu
 	};
 
 	$scope.validate = function(){
-		if($scope.hrs === "" || $scope.min === "" || $scope.am_pm === "")
+		if($scope.hrs === "" || $scope.min === "" || $scope.am_pm === "") {
 			return false;
-		else
+		}
+		else {
 			return true;
+		}
 	};
 	$scope.isDeletable = function(){
 		return typeof $scope.wakeupData.wake_up_time === 'undefined';

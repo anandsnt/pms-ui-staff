@@ -28,8 +28,9 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 			var isReservationIdAlreadyCalled = false;
 			angular.forEach(that.reservationIdsArray, function(value, key) {
 				if (!isRefresh || isRefresh === null || isRefresh === '') {
-					if (value === reservationId)
+					if (value === reservationId) {
 						isReservationIdAlreadyCalled = true;
+					}
 				}
 			});
 			if (!isReservationIdAlreadyCalled) {
@@ -78,8 +79,9 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 			var isConfirmationNumberAlreadyCalled = false;
 			angular.forEach(that.confirmationNumbersArray, function(value, key) {
 				if (!isRefresh || isRefresh === null) {
-					if (value === confirmationNumber)
+					if (value === confirmationNumber) {
 						isConfirmationNumberAlreadyCalled = true;
+					}
 				}
 			});
 

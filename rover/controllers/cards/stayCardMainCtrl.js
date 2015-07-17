@@ -205,7 +205,9 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			var checkNumber = function() {
 					var x = 0;
 					_.each($scope.reservationDetails, function(d, i) {
-						if (typeof d.id !== 'undefined' && d.id !== '' && d.id !== null) x++;
+						if (typeof d.id !== 'undefined' && d.id !== '' && d.id !== null) {
+							x++;
+						}
 					})
 					return x;
 				},

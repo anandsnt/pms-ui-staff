@@ -82,9 +82,9 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 $scope.getSelectedAddonDescription = function(){
 	var description = "";
      angular.forEach($scope.addons,function(item, index) {
-       if(item.value === $scope.data.addon_id)
+       if(item.value === $scope.data.addon_id) {
        	description = item.description;
-
+       }
   });
      return description;
 }
@@ -92,9 +92,9 @@ $scope.getSelectedAddonDescription = function(){
 $scope.getSelectedAddonPrice = function(){
 	var price = "";
 	angular.forEach($scope.addons,function(item, index) {
-       if(item.value === $scope.data.addon_id)
+       if(item.value === $scope.data.addon_id) {
        	price = item.amount;
-
+       }
   });
      return price;
 }
@@ -153,9 +153,9 @@ $scope.getSelectedAddonPrice = function(){
 			$scope.goBack();
 		}
 		var unwantedKeys = ["icon"];
-		if($scope.initialIcon === $scope.data.image)
+		if($scope.initialIcon === $scope.data.image) {
 			unwantedKeys = ["icon", "image"];
-
+		}
 		var data = dclone($scope.data, unwantedKeys);
 		$scope.invokeApi(ADContentManagementSrv.saveComponent, data , saveItemSuccessCallback);
 	}

@@ -54,12 +54,13 @@ sntRover.controller('rvGroupSearchCtrl', [
             var classes = '';
 
             //Add class "green" if No. > 0
-            if (group.total_picked_count > 0)
+            if (group.total_picked_count > 0) {
                 classes = 'green';
+            }
             //Add class "red" if cancelled
-            if (isCancelledGroup(group))
+            if (isCancelledGroup(group)) {
                 classes += ' red';
-
+            }
             return classes;
         };
 
