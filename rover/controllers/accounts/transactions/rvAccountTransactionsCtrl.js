@@ -229,8 +229,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			}, 500);
 		};
 
-
-
 		$scope.openPostCharge = function( activeBillNo ) {
 
 			// pass on the reservation id

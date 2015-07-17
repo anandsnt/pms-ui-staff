@@ -97,9 +97,19 @@ sntRover.controller('RVPostChargeControllerV2',
 			};
 
 			var resetPostCharge = function(){
+
+				// selected item is not deleting from DOM even after deleting from the hash.
+				// Work around - removing the item manually..
+				setTimeout(function() {
+					$('#items-summary li.ng-leave.ng-leave-active').remove();
+				}, 100);
+
 				$scope.query = '';
 				$scope.chargeGroup = 'FAV';
 				searchChargeCodeItems();
+
+				$scope.refreshScroller('items_summary');	
+				$scope.refreshScroller('items_list');	
 			};
 
 			// filter the items based on the search query
@@ -442,7 +452,7 @@ sntRover.controller('RVPostChargeControllerV2',
 					// update the price in staycard
 					if(!$scope.isOutsidePostCharge){
 						$scope.$emit('postcharge.added', data.total_balance_amount);
-						ngDialog.close();
+						$scope.closeDialog();
 					}
 					else{
 						$rootScope.$emit( 'CHARGEPOSTED' );
@@ -450,7 +460,7 @@ sntRover.controller('RVPostChargeControllerV2',
 				};
 				var accountsPostcallback = function(){
 					$scope.$emit( 'hideLoader' );
-					ngDialog.close();
+					$scope.closeDialog();
 					$scope.$emit('UPDATE_TRANSACTION_DATA',data);
 				};
 
