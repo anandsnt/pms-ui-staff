@@ -395,10 +395,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[$scope.reservationData.rooms[$scope.activeRoom].roomTypeId].ratedetails;
 					$scope.computeTotalStayCost();
 
-					if ($stateParams.fromState === "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState === "STAY_CARD")
+					if ($stateParams.fromState === "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState === "STAY_CARD") {
 						populateStayDates(rateId, roomId);
+					}
 					transferState();
-
 				}
 			}
 			// CICO-12757 : To save and go back to stay card
@@ -432,7 +432,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				_.each(entireSet, function(addon) {
 					if (!_.find(associatedAddons, {
 							id: addon.id
-						})) extraAddons.push(addon.id);
+						})) {
+						extraAddons.push(addon.id);
+					}
 				})
 				return extraAddons.length > 0;
 			}
@@ -651,10 +653,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						//Sort the candidate rooms to get the one with the least average rate
 
 						candidateRooms.sort(function(a, b) {
-							if (parseInt(a.averagePerNight) < parseInt(b.averagePerNight))
+							if (parseInt(a.averagePerNight) < parseInt(b.averagePerNight)) {
 								return -1;
-							if (parseInt(a.averagePerNight) > parseInt(b.averagePerNight))
+							}
+							if (parseInt(a.averagePerNight) > parseInt(b.averagePerNight)) {
 								return 1;
+							}
 							return 0;
 						});
 
@@ -701,10 +705,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						//Sort the candidate rooms to get the one with the least average rate
 
 						candidateRooms.sort(function(a, b) {
-							if (a.averagePerNight < b.averagePerNight)
+							if (a.averagePerNight < b.averagePerNight) {
 								return -1;
-							if (a.averagePerNight > b.averagePerNight)
+							}
+							if (a.averagePerNight > b.averagePerNight) {
 								return 1;
+							}
 							return 0;
 						});
 
@@ -1016,20 +1022,24 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					value.rates.sort(function(a, b) {
 						var averageA = parseFloat(value.total[a].average);
 						var averageB = parseFloat(value.total[b].average);
-						if (averageA > averageB)
+						if (averageA > averageB) {
 							return -1;
-						if (averageA < averageB)
+						}
+						if (averageA < averageB) {
 							return 1;
+						}
 						return 0;
 					});
 				} else {
 					value.rates.sort(function(a, b) {
 						var averageA = parseFloat(value.total[a].average);
 						var averageB = parseFloat(value.total[b].average);
-						if (averageA < averageB)
+						if (averageA < averageB) {
 							return -1;
-						if (averageA > averageB)
+						}
+						if (averageA > averageB) {
 							return 1;
+						}
 						return 0;
 					});
 				}
@@ -1050,10 +1060,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 								return 1;
 							}
 						}
-						if ($scope.displayData.allRates[a].account_id !== null)
+						if ($scope.displayData.allRates[a].account_id !== null) {
 							return -1;
-						if ($scope.displayData.allRates[b].account_id !== null)
+						}
+						if ($scope.displayData.allRates[b].account_id !== null) {
 							return 1;
+						}
 						return 0;
 					});
 				}

@@ -74,10 +74,12 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		 * on the basis of routes available or not
 		 */
 		$scope.getBillingInfoTitle = function() {
-			if ($scope.reservationData.is_routing_available)
+			if ($scope.reservationData.is_routing_available) {
 				return $filter('translate')('BILLING_INFO_TITLE');
-			else
+			}
+			else {
 				return $filter('translate')('ADD_BILLING_INFO_TITLE');
+			}
 		}
 
 		/**
@@ -198,12 +200,13 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 
 				postData.emails = [];
-				if (!!$scope.reservationData.guest.email && $scope.otherData.isGuestPrimaryEmailChecked)
+				if (!!$scope.reservationData.guest.email && $scope.otherData.isGuestPrimaryEmailChecked) {
 					postData.emails.push($scope.reservationData.guest.email);
+				}
 
-				if (!!$scope.otherData.additionalEmail && $scope.otherData.isGuestAdditionalEmailChecked)
+				if (!!$scope.otherData.additionalEmail && $scope.otherData.isGuestAdditionalEmailChecked) {
 					postData.emails.push($scope.otherData.additionalEmail);
-
+				}
 				if ($scope.reservationData.isHourly) {
 					postData.reservation_ids = [];
 					_.each($scope.reservationData.reservations, function(reservation) {

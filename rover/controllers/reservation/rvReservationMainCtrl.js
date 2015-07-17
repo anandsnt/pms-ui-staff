@@ -304,8 +304,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 var taxType = description.isInclusive ? "incl" : "excl";
                 description.rate = $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id;
                 if (description.postType === "NIGHT") {
-                    if (typeof currentTaxes[taxType][taxId] === "undefined") currentTaxes[taxType][taxId] = description;
-                    else currentTaxes[taxType][taxId].amount = parseFloat(currentTaxes[taxType][taxId].amount) + parseFloat(description.amount); // add the amount here
+                    if (typeof currentTaxes[taxType][taxId] === "undefined") {
+                        currentTaxes[taxType][taxId] = description;
+                    }
+                    else {
+                    currentTaxes[taxType][taxId].amount = parseFloat(currentTaxes[taxType][taxId].amount) + parseFloat(description.amount); // add the amount here
+                }   }
                 } else { //[[[[[[ PER_STAY NEEDS TO BE DONE ONLY ONCE FOR A RATE ID & TAX ID COMBO]]]]]]
                     if (typeof currentTaxes[taxType][taxId] === "undefined") {
                         // As stated earler per_stay taxes can be taken in only for the first rateId
@@ -314,7 +318,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         } else {
                             //get the rateId of the first value in the $scope.reservationData.taxDetail
                             var rateIdExisting = currentTaxes[taxType][Object.keys(currentTaxes[taxType])[0]].rate;
-                            if (rateIdExisting === description.rate) currentTaxes[taxType][taxId] = description;
+                            if (rateIdExisting === description.rate) {
+                                currentTaxes[taxType][taxId] = description;
+                            }
                         }
                     } else { //STAY
                         /*
@@ -372,7 +378,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                             // console.warn("No rate id available for room: " + roomIndex + ",for date: " + date);
                         } else {
                             var todaysMetaData = $scope.reservationData.rateDetails[roomIndex] && $scope.reservationData.rateDetails[roomIndex][date] && $scope.reservationData.rateDetails[roomIndex][date][todaysRate];
-                            if (!todaysMetaData) return;
+                            if (!todaysMetaData) {
+                                return;
+                            }
                             // --------------------------------------------------------------------------------//
                             // -- Calculate the rate amount for the Room for that rate for that day --
                             // --------------------------------------------------------------------------------//
@@ -383,8 +391,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                                     stay.rateDetails.modified_amount = stay.rateDetails.actual_amount;
                                 }
                                 if (stay && stay.rateDetails) { //CICO-6079 -- In case of modified rates, set the roomAmount to that rate
-                                    if (stay.rateDetails.actual_amount !== stay.rateDetails.modified_amount)
+                                    if (stay.rateDetails.actual_amount !== stay.rateDetails.modified_amount) {
                                         roomAmount = parseFloat(stay.rateDetails.modified_amount);
+                                    }
                                 }
                                 var taxableRateAmount = roomAmount; // default taxableRoomAmount to the calculated room amount. This inclusive addons are to be adjusted wrt this value!
                                 currentRoom.rateTotal = currentRoom.rateTotal + roomAmount; // cumulative total of all days goes to roomTotal
@@ -395,18 +404,29 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                             { // STEP TWO -- addon computation block
                                 //for every addon
                                 angular.forEach(currentRoom.addons, function(addon) {
-                                    if (date === roomMetaData.arrival) addon.effectivePrice = 0.0; // RESET addon rate
+                                    if (date === roomMetaData.arrival) {
+                                        addon.effectivePrice = 0.0; // RESET addon rate
+                                    }
                                     var baseRate = parseFloat(addon.quantity) * parseFloat(addon.price), //calculate the base
                                         finalRate = 0.0, //default calculated amount to the base rate
                                         postType = addon.post_type || addon.postType,
                                         amountType = addon.amount_type || addon.amountType;
-                                    if (postType.value === "STAY" || (date === roomMetaData.arrival))
+                                    if (postType.value === "STAY" || (date === roomMetaData.arrival)) {
                                         finalRate = parseFloat(RVReservationStateService.getAddonAmount(amountType.value, baseRate, adultsOnTheDay, childrenOnTheDay));
+                                    }
                                     // cummulative sum (Not just multiplication of rate per day with the num of nights) >> Has to done at "day level" to handle the reservations with varying occupancy!
-                                    if (postType.value === "STAY") addon.effectivePrice = parseFloat(addon.effectivePrice) + parseFloat(finalRate);
-                                    else if (date === roomMetaData.arrival) addon.effectivePrice = finalRate; //Posted only on the first Night
-                                    if (!addon.is_inclusive) roomMetaData.addOnCumulative += parseFloat(finalRate);
-                                    else taxableRateAmount -= parseFloat(finalRate); //reduce the addon amount from this day's calculated rate
+                                    if (postType.value === "STAY") {
+                                        addon.effectivePrice = parseFloat(addon.effectivePrice) + parseFloat(finalRate);
+                                    }
+                                    else if (date === roomMetaData.arrival) {
+                                     addon.effectivePrice = finalRate; //Posted only on the first Night
+                                    }
+                                    if (!addon.is_inclusive) {
+                                        roomMetaData.addOnCumulative += parseFloat(finalRate);
+                                    }
+                                    else {
+                                        taxableRateAmount -= parseFloat(finalRate); //reduce the addon amount from this day's calculated rate
+                                    }
                                     // --------------------------------------------------------------------------------//
                                     // -- Calculate the tax for add-ons --
                                     // --------------------------------------------------------------------------------//
@@ -421,7 +441,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                             // --------------------------------------------------------------------------------//
                             { // STEP FOUR -- compute tax for rate
                                 if (!!todaysMetaData && !!todaysMetaData.taxes && !!todaysMetaData.taxes.length) {
-                                    if (parseFloat(taxableRateAmount) < 0.0) taxableRateAmount = 0.0;
+                                    if (parseFloat(taxableRateAmount) < 0.0) {
+                                        taxableRateAmount = 0.0;
+                                    }
                                     processTaxInfo(RVReservationStateService.calculateTax(taxableRateAmount, todaysMetaData.taxes, roomIndex, adultsOnTheDay, childrenOnTheDay), roomIndex, date);
                                 }
                             }
@@ -1392,11 +1414,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     if (addon.postType.value === "STAY" && parseInt($scope.reservationData.numNights) > 1) {
                         var cumulativeRate = 0
                         _.each(currentRoom.stayDates, function(stayDate, date) {
-                            if (date !== $scope.reservationData.departureDate) cumulativeRate = parseFloat(cumulativeRate) + parseFloat(RVReservationStateService.getAddonAmount(
+                            if (date !== $scope.reservationData.departureDate) {
+                                cumulativeRate = parseFloat(cumulativeRate) + parseFloat(RVReservationStateService.getAddonAmount(
                                 addon.amountType.value,
                                 baseRate,
                                 stayDate.guests.adults, // Using EACH night's occupancy information to calculate the addon's applicable amount!
                                 stayDate.guests.children)); // cummulative sum (Not just multiplication of rate per day with the num of nights) >> Has to done at "day level" to handle the reservations with varying occupancy!
+                            }
                         });
                         finalRate = cumulativeRate;
                     } else {
