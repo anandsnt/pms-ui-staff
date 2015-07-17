@@ -339,14 +339,18 @@ sntRover.controller('RVbillCardController',
 	//Calculate the scroll width for bill tabs in all the cases
 	$scope.getWidthForBillTabsScroll = function(){
 		var width = 0;
-		if($scope.routingArrayCount > 0)
+		if($scope.routingArrayCount > 0) {
 			width = width + 200;
-		if($scope.incomingRoutingArrayCount > 0)
+		}
+		if($scope.incomingRoutingArrayCount > 0) {
 			width = width + 275;
-		if($scope.clickedButton === 'checkinButton')
+		}
+		if($scope.clickedButton === 'checkinButton') {
 			width = width + 230;
-		if($scope.reservationBillData.bills.length < 10)
+		}
+		if($scope.reservationBillData.bills.length < 10) {
 			width = width + 50;
+		}
 		width =  133 * $scope.reservationBillData.bills.length + 10 + width;
 		return width;
 		// return 2200;
@@ -462,8 +466,9 @@ sntRover.controller('RVbillCardController',
 			return false;
 		}
 
-		if(buttonClicked)
+		if(buttonClicked) {
 			return;
+		}
 		buttonClicked = true;
 		setTimeout(function(){
 	     		buttonClicked = false;
@@ -798,9 +803,12 @@ sntRover.controller('RVbillCardController',
 	 	$scope.paymentModalOpened = true;
 	 	$scope.removeDirectPayment = true;
 
-	 	if(isViaReviewProcess) $scope.isViaReviewProcess = true;
-	 	else $scope.isViaReviewProcess = false;
-
+	 	if(isViaReviewProcess) {
+	 		$scope.isViaReviewProcess = true;
+	 	}
+	 	else {
+	 		$scope.isViaReviewProcess = false;
+	 	}
 	 	ngDialog.open({
               template: '/assets/partials/pay/rvPaymentModal.html',
               className: '',
@@ -857,9 +865,9 @@ sntRover.controller('RVbillCardController',
 		    $scope.fetchedData = data;
 
 		    var bills = [];
-		    for(var i = 0; i < $scope.reservationBillData.bills.length; i++ )
+		    for(var i = 0; i < $scope.reservationBillData.bills.length; i++ ) {
 		    	bills.push(i+1);
-
+		    }
 		    $scope.fetchedData.bill_numbers = bills;
 
     		ngDialog.open({
@@ -1509,11 +1517,15 @@ sntRover.controller('RVbillCardController',
 			if($rootScope.isStandAlone && typeof $scope.reservationBillData.bills[i].total_fees[0] !== 'undefined'){
 				var billBalance = $scope.reservationBillData.bills[i].total_fees[0].balance_amount;
 				var paymentType = $scope.reservationBillData.bills[i].credit_card_details.payment_type;
-				if(billBalance !== "0.00" && paymentType !== "DB") $scope.reviewStatusArray[i].reviewStatus = false;
+				if(billBalance !== "0.00" && paymentType !== "DB") {
+					$scope.reviewStatusArray[i].reviewStatus = false;
+				}
 			}
 			if(!$scope.reviewStatusArray[i].reviewStatus){
 				// when all bills reviewed and reached final bill
-				if($scope.reviewStatusArray.length === (i+1)) $scope.isAllBillsReviewed = true;
+				if($scope.reviewStatusArray.length === (i+1)) {
+					$scope.isAllBillsReviewed = true;
+				}
 				billIndex = $scope.reviewStatusArray[i].billIndex;
 				break;
 			}
