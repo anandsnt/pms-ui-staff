@@ -68,6 +68,31 @@ sntRover.service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 			return deferred.promise;
 		};
 
+		/**
+		 * function to perform mass checkin 
+		 * @return {Promise}
+		 */
+		this.performMassCheckin = function(params) {
+			var deferred = $q.defer(),
+			    group_id = params.id,
+			    url = '/api/group_checkins/',
+			    params = {
+			        "group_id": params.group_id,
+			        "reservation_ids": params.reservation_ids
+			    };
+
+
+			rvBaseWebSrvV2.postJSON(url, params).then(
+			    function(data) {
+			        deferred.resolve(data);
+			    },
+			    function(errorMessage) {
+			        deferred.reject(errorMessage);
+			    }
+			);
+
+			return deferred.promise;			
+		};
 
 		/**
 		 * Function to get Room type configured against group

@@ -2,13 +2,13 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
    /*
     * To fetch hotel likes
     * @return {object}late checkout upsell details
-    */	
+    */
 
 
     this.fetch = function(){
     	var deferred = $q.defer();
-    	var url = '/admin/hotel_likes/get_hotel_likes.json';	
-    	
+    	var url = '/admin/hotel_likes/get_hotel_likes.json';
+
     	ADBaseWebSrv.getJSON(url).then(function(data) {
     		deferred.resolve(data);
     	},function(errorMessage){
@@ -25,8 +25,8 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
      this.addNewFeature = function(data){
      	var updateData = data;
      	var deferred = $q.defer();
-     	var url = '/admin/hotel_likes/add_feature_type';	
-     	
+     	var url = '/admin/hotel_likes/add_feature_type';
+
      	ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
      		deferred.resolve(data);
      	},function(data){
@@ -42,8 +42,8 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
      this.toggleSwitch = function(data){
      	var updateData = data;
      	var deferred = $q.defer();
-     	var url = '/admin/hotel_likes/activate_feature';	
-     	
+     	var url = '/admin/hotel_likes/activate_feature';
+
      	ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
      		deferred.resolve(data);
      	},function(data){
@@ -60,8 +60,8 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
     this.edit = function(data){
     	var editID = data.editID;
     	var deferred = $q.defer();
-    	var url = '/admin/hotel_likes/'+editID+'/edit_hotel_likes.json';	
-    	
+    	var url = '/admin/hotel_likes/'+editID+'/edit_hotel_likes.json';
+
     	ADBaseWebSrv.getJSON(url).then(function(data) {
     		deferred.resolve(data);
     	},function(data){
@@ -79,8 +79,8 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
     this.editRoom = function(data){
     	var editID = data.editID;
     	var deferred = $q.defer();
-    	var url = '/admin/hotel_likes/'+editID+'/edit_hotel_likes.json';	
-    	
+    	var url = '/admin/hotel_likes/'+editID+'/edit_hotel_likes.json';
+
 
     	ADBaseWebSrv.getJSON(url).then(function(data) {
     		deferred.resolve(data);
@@ -95,13 +95,13 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
 	 /*
     * To update the like details
     * @param {object} like id
-    * @return {object} status 
+    * @return {object} status
     */
     this.update = function(data){
     	var updateData = data;
     	var deferred = $q.defer();
-    	var url = '/admin/hotel_likes/add_feature_type';	
-    	
+    	var url = '/admin/hotel_likes/add_feature_type';
+
     	ADBaseWebSrv.putJSON(url,updateData).then(function(data) {
     		deferred.resolve(data);
     	},function(data){
@@ -114,13 +114,13 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
 	 /*
     * To update the like details
     * @param {object} like id
-    * @return {object} status 
+    * @return {object} status
     */
     this.customLikeSave = function(data){
     	var updateData = data;
     	var deferred = $q.defer();
-    	var url = '/admin/hotel_likes/save_custom_likes';	
-    	
+    	var url = '/admin/hotel_likes/save_custom_likes';
+
     	ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
     		deferred.resolve(data);
     	},function(data){
@@ -133,13 +133,13 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
      /*
     * To delete the like options
     * @param {object} like id
-    * @return {object} status 
+    * @return {object} status
     */
     this.deleteChecbox = function(id){
         var updateData = {'id':id};
         var deferred = $q.defer();
-        var url = '/admin/hotel_likes/delete_feature';   
-        
+        var url = '/admin/hotel_likes/delete_feature';
+
         ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
             deferred.resolve(data);
         },function(data){
@@ -148,7 +148,7 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
         return deferred.promise;
     };
 
-    
+
 
 
 }]);

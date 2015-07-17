@@ -160,7 +160,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					};
 					obj.is_checked = 'false';
 					angular.forEach($scope.prefetchData.linked_charge_codes, function(item2, index2) {
-						if (item2.charge_code_id == item1.value) {
+						if (item2.charge_code_id === item1.value) {
 							obj.is_checked = 'true';
 						}
 					});
@@ -192,7 +192,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			var deleteSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
 				angular.forEach($scope.data.charge_codes, function(item, index) {
-					if (item.value == value) {
+					if (item.value === value) {
 						$scope.data.charge_codes.splice(index, 1);
 					}
 				});
@@ -230,7 +230,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			// To create Charge code Link with list frm scope.
 			var selected_link_with = [];
 			angular.forEach($scope.prefetchData.link_with, function(item, index) {
-				if (item.is_checked == 'true') {
+				if (item.is_checked === 'true') {
 					selected_link_with.push(item.value);
 				}
 			});
@@ -412,7 +412,6 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 
 		$scope.deleteTaxFromCaluculationPolicy = function(index) {
 			/**
-			 * ==TODO==
 			 * 1. Make a DELETE request
 			 * 		Remove the tax from the list in the repeater
 			 * 2. Redo the calucation policy filter on all of them

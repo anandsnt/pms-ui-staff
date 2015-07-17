@@ -5,14 +5,11 @@ snt.factory('authInterceptor', function ($rootScope, $q,$location) {
 		request: function (config) {
 			config.headers = config.headers || {};
 
-			if ($rootScope.accessToken) {
+			if (typeof $rootScope.accessToken !=="undefined") {
 
 				config.headers.Authorization = $rootScope.accessToken;
 			}
-			else{
-
-				$location.path('/authFailed');
-			}
+			
 			return config;
 		},
 		response: function (response) {

@@ -300,15 +300,19 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case __reportNames['FORECAST_BY_DATE']:
-                    reportItem['reportIconCls'] = 'icon-report';
+                    reportItem['reportIconCls'] = 'icon-report icon-forecast';
                     break;
 
                 case __reportNames['MARKET_SEGMENT_STATISTICS_REPORT']:
-                    reportItem['reportIconCls'] = 'icon-report';
+                    reportItem['reportIconCls'] = 'icon-report icon-market';
                     break;
 
                 case __reportNames['FORECAST_GUEST_GROUPS']:
-                    reportItem['reportIconCls'] = 'icon-report';
+                    reportItem['reportIconCls'] = 'icon-report icon-forecast';
+                    break;
+
+                case __reportNames['COMPARISION_BY_DATE']:
+                    reportItem['reportIconCls'] = 'icon-report icon-comparison';
                     break;
 
                 default:

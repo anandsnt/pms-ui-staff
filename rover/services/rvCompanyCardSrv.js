@@ -27,7 +27,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 		this.fetchCountryList = function() {
 			var deferred = $q.defer();
 			var url = '/ui/country_list';
-			
+
 			if ( _countryList.length ) {
 				deferred.resolve(_countryList);
 			} else {
@@ -38,7 +38,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 					deferred.reject(data);
 				});
 			};
-			
+
 			return deferred.promise;
 		};
 
@@ -60,7 +60,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 
 		this.fetchContractsList = function(data) {
 			var deferred = $q.defer();
-			//var url =  '/sample_json/contracts/rvCompanyCardContractsList.json';	
+			//var url =  '/sample_json/contracts/rvCompanyCardContractsList.json';
 			var url = '/api/accounts/' + data.account_id + '/contracts';
 			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
@@ -72,7 +72,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 
 		this.fetchContractsDetails = function(data) {
 			var deferred = $q.defer();
-			//var url =  '/sample_json/contracts/rvCompanyCardContractsDetails.json';	
+			//var url =  '/sample_json/contracts/rvCompanyCardContractsDetails.json';
 			var url = '/api/accounts/' + data.account_id + '/contracts/' + data.contract_id;
 			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 
@@ -334,7 +334,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			});
 			return deferred.promise;
 		}
-                
+
 		this.fetchHotelLoyaltiesHlps = function(param){
                     var deferred = $q.defer();
                     var url =  '/staff/user_memberships/get_available_hlps.json';
@@ -343,7 +343,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
                     },function(data){
                             deferred.reject(data);
                     });
-                    return deferred.promise;	
+                    return deferred.promise;
                 };
 		this.fetchHotelLoyaltiesFfp = function(param){
                     var deferred = $q.defer();
@@ -353,7 +353,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
                     },function(data){
                             deferred.reject(data);
                     });
-                    return deferred.promise;	
+                    return deferred.promise;
                 };
 
 	}

@@ -6,7 +6,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		$scope.dimensionsLookup = {
 			resizableMaxHeight: resizableMaxHeight,
-			cardTabContentOffset: 170, // Height of the tab menu and the header above.			
+			cardTabContentOffset: 170, // Height of the tab menu and the header above.
 		};
 
 		$scope.cardVisible = false;
@@ -138,7 +138,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			maxHeight: resizableMaxHeight,
 			handles: 's',
 			resize: function(event, ui) {
-				if ($(this).height() > 120 && !$scope.guestCardVisible) { //against angular js principle, sorry :(				
+				if ($(this).height() > 120 && !$scope.guestCardVisible) { //against angular js principle, sorry :(
 					$scope.guestCardVisible = true;
 					$scope.cardVisible = true;
 					$scope.$emit('GUESTCARDVISIBLE', true);
@@ -371,7 +371,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		};
 
 		$scope.cardCls = function() {
-			// evaluate 
+			// evaluate
 			var cls = $scope.UICards[0]; //  current active card
 			if ($scope.cardVisible) {
 				cls += " open";
@@ -410,7 +410,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		 */
 		$scope.closeGuestCard = function() {
 			$scope.guestCardHeight = resizableMinHeight;
-			//Check if pending removals - If yes remove 
+			//Check if pending removals - If yes remove
 			$scope.handleDrawClosing();
 			$scope.cardVisible = false;
 			$scope.guestCardVisible = false;
@@ -762,11 +762,11 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			}
 		};
 		$scope.checkFuture = function(cardType, card) {
-			// Changing this reservation only will unlink the stay card from the previous company / travel agent card and assign it to the newly selected card. 
-			// Changing all reservations will move all stay cards to the new card. 
-			// This will only apply when a new company / TA card had been selected. 
+			// Changing this reservation only will unlink the stay card from the previous company / travel agent card and assign it to the newly selected card.
+			// Changing all reservations will move all stay cards to the new card.
+			// This will only apply when a new company / TA card had been selected.
 			// If no new card has been selected, the change will only ever just apply to the current reservation and the above message should not display.
-			// If multiple future reservations exist for the same Travel Agent / Company Card details, display message upon navigating away from the Stay Card 'Future reservations exist for the same Travel Agent / Company card.' 
+			// If multiple future reservations exist for the same Travel Agent / Company Card details, display message upon navigating away from the Stay Card 'Future reservations exist for the same Travel Agent / Company card.'
 			// With choice of 'Change this reservation only' and 'Change all Reservations'.
 
 			if (!$scope.isHourly) {

@@ -1,35 +1,33 @@
 sntRover.controller('rvAccountTransactionsCtrl', [
-	'$scope', 
-	'$rootScope', 
-	'$filter', 
-	'$stateParams', 
-	'ngDialog', 
-	'rvAccountsConfigurationSrv', 
-	'RVReservationSummarySrv', 
-	'rvAccountTransactionsSrv', 
-	'RVChargeItems', 
-	'RVPaymentSrv', 
-	'RVReservationCardSrv', 
-	'RVBillCardSrv', 
-	'rvPermissionSrv', 
-	'$timeout', 
+	'$scope',
+	'$rootScope',
+	'$filter',
+	'$stateParams',
+	'ngDialog',
+	'rvAccountsConfigurationSrv',
+	'RVReservationSummarySrv',
+	'rvAccountTransactionsSrv',
+	'RVPaymentSrv',
+	'RVReservationCardSrv',
+	'RVBillCardSrv',
+	'rvPermissionSrv',
+	'$timeout',
 	'$window',
 	'$q',
-	function($scope, 
-		$rootScope, 
-		$filter, 
-		$stateParams, 
-		ngDialog, 
-		rvAccountsConfigurationSrv, 
-		RVReservationSummarySrv, 
-		rvAccountTransactionsSrv, 
-		RVChargeItems, 
-		RVPaymentSrv, 
-		RVReservationCardSrv, 
-		RVBillCardSrv, 
-		rvPermissionSrv, 
-		$timeout, 
-		$window, 
+	function($scope,
+		$rootScope,
+		$filter,
+		$stateParams,
+		ngDialog,
+		rvAccountsConfigurationSrv,
+		RVReservationSummarySrv,
+		rvAccountTransactionsSrv,
+		RVPaymentSrv,
+		RVReservationCardSrv,
+		RVBillCardSrv,
+		rvPermissionSrv,
+		$timeout,
+		$window,
 		$q) {
 
 
@@ -231,36 +229,25 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			}, 500);
 		};
 
-
-
-		$scope.openPostCharge = function(activeBillNo) {
+		$scope.openPostCharge = function( activeBillNo ) {
 
 			// pass on the reservation id
 			$scope.account_id = $scope.accountConfigData.summary.posting_account_id;
 			$scope.billNumber = activeBillNo;
 
+			var bills = [];
+		    for(var i = 0; i < $scope.transactionsDetails.bills.length; i++ )
+		    	bills.push(i+1);
 
-			var callback = function(data) {
-				//hide loader
-				$scope.$emit('hideLoader');
+		    $scope.fetchedData = {};
+			$scope.fetchedData.bill_numbers = bills;
+		    $scope.isOutsidePostCharge = false;
 
-				$scope.fetchedData = data;
-
-				//set bill array
-				var bills = [];
-				for (var i = 0; i < $scope.transactionsDetails.bills.length; i++)
-					bills.push(i + 1);
-				$scope.fetchedData.bill_numbers = bills;
-
-				ngDialog.open({
-					template: '/assets/partials/postCharge/postCharge.html',
-					controller: 'RVPostChargeController',
-					className: '',
-					scope: $scope
-				});
-			};
-
-			$scope.invokeApi(RVChargeItems.fetch, $scope.reservation_id, callback);
+			ngDialog.open({
+	    		template: '/assets/partials/postCharge/rvPostChargeV2.html',
+	    		className: '',
+	    		scope: $scope
+	    	});
 		};
 
 		var fetchPaymentMethods = function(directBillNeeded) {
@@ -572,7 +559,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.callAPI(rvAccountTransactionsSrv.submitPaymentOnBill, {
 				successCallBack: successPayment,
 				params: $scope.diretBillpaymentData
-			});	
+			});
 		};
 
 		$rootScope.$on('arAccountCreated',function(){
@@ -676,7 +663,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @return {[type]}                   [description]
 		 */
 		$scope.$on ('ACCOUNT_TAB_SWITCHED', function(event, currentTab){
-			if (currentTab === "TRANSACTIONS") {				
+			if (currentTab === "TRANSACTIONS") {
 				callInitialAPIs();
 			}
 		});
@@ -688,10 +675,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @return {[type]}                   [description]
 		 */
 		$scope.$on ('GROUP_TAB_SWITCHED', function(event, currentTab){
-			if (currentTab === "TRANSACTIONS") {				
+			if (currentTab === "TRANSACTIONS") {
 				callInitialAPIs();
 			}
-		});		
+		});
 
 	}
 ]);

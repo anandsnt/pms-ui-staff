@@ -80,7 +80,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 					function(ADFloorSetupSrv, $stateParams) {
 						var params = {
 							floorID: $stateParams.id
-						}
+						};
 						return ADFloorSetupSrv.getFloorDetails(params);
 				}]
 			}			
@@ -320,6 +320,17 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/rates_sequence'
 		});
 
+		$stateProvider.state('admin.promotions', {
+			templateUrl: '/assets/partials/rates/adPromotions.html',
+			controller: 'ADPromotionsCtrl',
+			url : '/promotions',
+			resolve:{
+				activeRates: function(ADPromotionsSrv) {
+					return ADPromotionsSrv.getActiveRates();
+				}
+			}			
+		});
+
 		$stateProvider.state('admin.userRoles', {
 			templateUrl: '/assets/partials/UserRoles/adUserRoles.html',
 			controller: 'ADUserRolesCtrl',
@@ -463,8 +474,18 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
                 
 		$stateProvider.state('admin.sitemindersSetup', {
 			templateUrl: '/assets/partials/SiteminderSetup/adSiteminderSetup.html',
-			controller: 'adSiteminderSetupCtrl',
+			controller: 'adExternalInterfaceCtrl',
+                        interface_id: 2,
+                        simple_name: 'Siteminder',
 			url : '/siteminderSetup'
+		});
+                
+		$stateProvider.state('admin.synxisSetup', {
+			templateUrl: '/assets/partials/SynxisSetup/adSynxisSetup.html',
+			controller: 'adExternalInterfaceCtrl',
+                        interface_id: 3,
+                        simple_name: 'Synxis',
+			url : '/synxisSetup'
 		});
 
 		$stateProvider.state('admin.emailBlacklist', {

@@ -1,7 +1,7 @@
 sntRover.controller('rvDeleteLoyaltyModalController',['$scope','$rootScope','$filter','RVGuestCardLoyaltySrv', 'ngDialog', function($scope, $rootScope,$filter, RVGuestCardLoyaltySrv, ngDialog){
 	BaseCtrl.call(this, $scope);
-	
-	
+
+
 	$scope.closeDialog = function(){
 		ngDialog.close();
 	};
@@ -25,7 +25,7 @@ sntRover.controller('rvDeleteLoyaltyModalController',['$scope','$rootScope','$fi
 	};
 
 	$scope.validate = function(){
-		
+
 	};
-	
+
 }]);

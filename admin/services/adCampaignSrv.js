@@ -1,6 +1,6 @@
 admin.service('ADCampaignSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
     function ($http, $q, ADBaseWebSrvV2, ADBaseWebSrv) {
-       
+
         this.fetchCampaigns = function (data) {
             var deferred = $q.defer();
 
@@ -51,7 +51,7 @@ admin.service('ADCampaignSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
                 deferred.reject(data);
             });
             return deferred.promise;
-        }; 
+        };
 
         this.startCampaign = function(data){
 			var deferred = $q.defer();
@@ -92,6 +92,6 @@ admin.service('ADCampaignSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         	return deferred.promise;
         }
 
-       
+
     }
 ]);

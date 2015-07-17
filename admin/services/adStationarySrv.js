@@ -12,7 +12,7 @@ admin.service('ADStationarySrv',['$http', '$q', 'ADBaseWebSrvV2', function($http
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
    	/*
@@ -21,13 +21,13 @@ admin.service('ADStationarySrv',['$http', '$q', 'ADBaseWebSrvV2', function($http
     */
 	this.saveStationary = function(data){
 		var deferred = $q.defer();
-		var url = '/api/stationary/save';	
+		var url = '/api/stationary/save';
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 
