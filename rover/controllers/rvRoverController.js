@@ -211,10 +211,9 @@ sntRover.controller('roverController',
       $scope.searchBackButtonCaption = caption; //if it is not blank, backbutton will show, otherwise dont
     });
 
-    if ($rootScope.adminRole === "Hotel Admin")
+    if ($rootScope.adminRole === "Hotel Admin") {
       $scope.isHotelAdmin = true;
-
-
+    }
     /**
     * menu - forming & associate logic
     * NOTE: Menu forming and logic and things are in service rvMenuSrv

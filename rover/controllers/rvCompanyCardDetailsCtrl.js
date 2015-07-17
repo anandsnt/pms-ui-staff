@@ -10,13 +10,21 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 		$scope.isLogoPrint = true;
 		//setting the heading of the screen
 		if ($stateParams.type === "COMPANY") {
-			if ($scope.isAddNewCard) $scope.heading = $filter('translate')('NEW_COMPANY_CARD');
-			else $scope.heading = $filter('translate')('COMPANY_CARD');
+			if ($scope.isAddNewCard) {
+				$scope.heading = $filter('translate')('NEW_COMPANY_CARD');
+			}
+			else {
+				$scope.heading = $filter('translate')('COMPANY_CARD');
+			}
 			$scope.cardTypeText = $filter('translate')('COMPANY');
 			$scope.dataIdHeader = "company-card-header";
 		} else if ($stateParams.type === "TRAVELAGENT") {
-			if ($scope.isAddNewCard) $scope.heading = $filter('translate')('NEW_TA_CARD');
-			else $scope.heading = $filter('translate')('TA_CARD');
+			if ($scope.isAddNewCard) {
+				$scope.heading = $filter('translate')('NEW_TA_CARD');
+			}
+			else {
+				$scope.heading = $filter('translate')('TA_CARD');
+			}
 			$scope.cardTypeText = $filter('translate')('TRAVELAGENT');
 			$scope.dataIdHeader = "travel-agent-card-header";
 		}
@@ -433,7 +441,9 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			if ($scope.isAddNewCard && !$scope.isContactInformationSaved) {
 				// On addMode and contact info not yet saved
 				// If the prompt is not already opened - show the popup for save/disacrd
-				if (!$scope.isPromptOpened) $scope.saveNewCardPrompt();
+				if (!$scope.isPromptOpened) {
+					$scope.saveNewCardPrompt();
+				}
 			}
 			else if ($scope.isDiscard) {
 				// On discarded - prevent save call

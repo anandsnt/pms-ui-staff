@@ -32,12 +32,15 @@ $scope.cancelClicked = function(){
  * function to check if the passwords matches
  */
 $scope.passwordsMatch =function(){
-	if($scope.newPassword !== $scope.confirmPassword)
+	if($scope.newPassword !== $scope.confirmPassword) {
 		return false;
-	else if($scope.newPassword.length === 0)
+	}
+	else if($scope.newPassword.length === 0) {
 		return false;
-	else
+	}
+	else {
 		return true;
+	}
 };
 /*
  * update settings
