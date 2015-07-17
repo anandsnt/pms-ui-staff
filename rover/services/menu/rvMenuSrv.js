@@ -95,7 +95,9 @@ sntRover.service('rvMenuSrv',
 				menuItem.submenu = _.filter (menuItem.submenu, function (subMenuItem){
 					isMenuItemVisible = self.shouldShowMenuItem(subMenuItem.menuIndex);
 
-					if (isMenuItemVisible) subMenuVisibleCount++;
+					if (isMenuItemVisible) {
+						subMenuVisibleCount++;
+					}
 					return isMenuItemVisible;
 				});
 
@@ -513,9 +515,15 @@ sntRover.service('rvMenuSrv',
 	* @return {boolean}
 	*/
 	this.shouldShowMenuItem = function(menuIndex) {
-		if (!self.hasMenuPermission (menuIndex)) return false;
-		if (!self.hasRolePermission (menuIndex)) return false;
-		if (!self.hasSettingsPermission (menuIndex)) return false;
+		if (!self.hasMenuPermission (menuIndex)) {
+			return false;
+		}
+		if (!self.hasRolePermission (menuIndex)) {
+			return false;
+		}
+		if (!self.hasSettingsPermission (menuIndex)) {
+			return false;
+		}
 		return true;
 	};
 

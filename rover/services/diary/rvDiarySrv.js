@@ -439,10 +439,15 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
 
                     occupancy.arrival_date = occupancy.arrival_date.replace(/-/g, '/');
                     occupancy.departure_date = occupancy.departure_date.replace(/-/g, '/');
-                    if(!occupancy[m.start_date]) occupancy[m.start_date]    = this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
-                    if(!occupancy[m.end_date]) occupancy[m.end_date]        = this.normalizeTime(occupancy.departure_date, occupancy.departure_time);
-                    if(!occupancy[m.maintenance]) occupancy[m.maintenance]  = room_type[meta.maintenance.time_span]; //= this.normalizeMaintenanceInterval(room_type[meta.maintenance.time_span], 15);
-
+                    if(!occupancy[m.start_date]) {
+                        occupancy[m.start_date]    = this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
+                    }
+                    if(!occupancy[m.end_date]) {
+                        occupancy[m.end_date]        = this.normalizeTime(occupancy.departure_date, occupancy.departure_time);
+                    }
+                    if(!occupancy[m.maintenance]) {
+                    occupancy[m.maintenance]  = room_type[meta.maintenance.time_span]; //= this.normalizeMaintenanceInterval(room_type[meta.maintenance.time_span], 15);
+                    }
                     occupancy[m.room_type]      = angular.lowercase(room_type.name);
                     occupancy[m.status]         = angular.lowercase(occupancy[m.status]);
                     if(occupancy[m.status]          === 'reserved') {

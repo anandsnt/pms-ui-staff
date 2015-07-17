@@ -62,15 +62,21 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 	        var isValidDataExist = false;
 			if($scope.showEmail && $scope.showPhone){
 				$scope.saveData = $scope.saveData;
-				if($scope.saveData.email !== '' || $scope.saveData.phone !== '') isValidDataExist = true;
+				if($scope.saveData.email !== '' || $scope.saveData.phone !== '') {
+					isValidDataExist = true;
+				}
 			} else if($scope.showPhone){
 				var unwantedKeys = ["email"]; // remove unwanted keys for API
 				$scope.saveData = dclone($scope.saveData, unwantedKeys);
-				if($scope.saveData.phone !== '') isValidDataExist = true;
+				if($scope.saveData.phone !== '') {
+					isValidDataExist = true;
+				}
 			} else {
 				var unwantedKeys = ["phone"]; // remove unwanted keys for API
 				$scope.saveData = dclone($scope.saveData, unwantedKeys);
-				if($scope.saveData.email !== '') isValidDataExist = true;
+				if($scope.saveData.email !== '') {
+					isValidDataExist = true;
+				}
 			}
 			if(isValidDataExist){  // CICO-15079 : Validation for phone/email data being blank.
 				$scope.invokeApi(RVValidateCheckinSrv.saveGuestEmailPhone, $scope.saveData, $scope.validateEmailPhoneSuccessCallback);

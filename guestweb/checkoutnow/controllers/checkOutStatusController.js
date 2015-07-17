@@ -36,10 +36,12 @@
 		checkoutNowService.completeCheckout(url,data).then(function(response) {
 			$scope.posted = true;
 			$scope.success = (response.status !== "failure") ? true : false;
-			if($scope.success)
+			if($scope.success) {
 				$rootScope.isCheckedout = $scope.isCheckoutCompleted = true;
-			else
+			}
+			else {
 				$scope.errorMessage = response.errors[0];
+			}
 		},function(){
 			$scope.netWorkError = true;
 			$scope.posted = true;
