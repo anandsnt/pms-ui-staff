@@ -6,11 +6,10 @@
 	$scope.roomNumber = "";
 
 
-	// if($rootScope.isPreCheckedIn){
-	// 	$state.go('preCheckinComleted');
-	// }
-	// else 
-	if($rootScope.isPrecheckinOnly){
+	if($rootScope.isExternalVerification){
+		$state.go('externalVerification');
+	}
+    else if($rootScope.isPrecheckinOnly){
  		$state.go('preCheckinTripDetails');
  	}
 	else if($rootScope.isCheckedin){
