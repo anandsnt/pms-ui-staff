@@ -120,9 +120,15 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 			 */
 			$scope.$parent.heading = data;
 
-			if(data === "Guest Bill") $scope.$parent.addNoPrintClass = true;
-			else if(data === "Stay Card") $scope.$parent.isLogoPrint = true;
-			else $scope.$parent.addNoPrintClass = false;
+			if(data === "Guest Bill") {
+				$scope.$parent.addNoPrintClass = true;
+			}
+			else if(data === "Stay Card") {
+				$scope.$parent.isLogoPrint = true;
+			}
+			else {
+				$scope.$parent.addNoPrintClass = false;
+			}
 		});
 
 		$scope.$on('SHOWPAYMENTLIST', function(event, data) {
