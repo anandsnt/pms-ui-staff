@@ -38,8 +38,9 @@ admin.controller('ADUserDetailsCtrl',
 		for (var i = 0; i < rolesData.length; i++){
 			var rolePresent = false;
 			for(var j = 0; j < $scope.dashboardOptions.length; j++){
-				if(rolesData[i].dashboard_id === $scope.dashboardOptions[j].dashboard_id)
+				if(rolesData[i].dashboard_id === $scope.dashboardOptions[j].dashboard_id) {
 					rolePresent = true;
+				}
 			}
 			if(!rolePresent){
 				var dashboard = {};
@@ -251,10 +252,12 @@ admin.controller('ADUserDetailsCtrl',
 	};
 
 	$scope.disableReInviteButton = function (data) {
-		if (!$scope.isInUnlockingMode())
+		if (!$scope.isInUnlockingMode()) {
 			return (data.is_activated === 'true');
-		else
+		}
+		else {
 			return false;
+		}
 	};
 
 	/**

@@ -77,9 +77,12 @@ admin.controller('ADMarketsCtrl',['$scope', 'ADMarketsSrv', '$anchorScroll', '$t
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 		};
-		if(index === undefined) var data = $scope.data.markets[$scope.currentClickedElement];
-		else var data = $scope.data.markets[index];
-
+		if(index === undefined) {
+			var data = $scope.data.markets[$scope.currentClickedElement];
+		}
+		else {
+			var data = $scope.data.markets[index];
+		}
   		$scope.invokeApi(ADMarketsSrv.update, data, postSuccess);
    	};
    	/*

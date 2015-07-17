@@ -207,8 +207,9 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 	$scope.$watch(function(){
 		return $scope.campaignData.header_image;
 	}, function(logo) {
-			if(logo === 'false')
+			if(logo === 'false') {
 				$scope.fileName = "Choose File....";
+			}
 			$scope.campaignData.header_file = $scope.fileName;
 		}
 	);

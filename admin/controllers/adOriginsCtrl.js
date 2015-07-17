@@ -93,8 +93,12 @@ admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv','$anchorScroll', '$ti
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 		};
-		if(index === undefined) var data = $scope.data.booking_origins[$scope.currentClickedElement];
-		else var data = $scope.data.booking_origins[index];
+		if(index === undefined) {
+			var data = $scope.data.booking_origins[$scope.currentClickedElement];
+		}
+		else {
+			var data = $scope.data.booking_origins[index];
+		}
 
   		$scope.invokeApi(ADOriginsSrv.update, data, postSuccess);
    	};

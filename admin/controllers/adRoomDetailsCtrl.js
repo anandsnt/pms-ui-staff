@@ -152,11 +152,12 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 			postData.room_image = $scope.data.room_image;
 		}
 
-		if($scope.editMode)
+		if($scope.editMode) {
 		    $scope.invokeApi(ADRoomSrv.update, {'room_id': $scope.data.room_id, 'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails);
-		else
+		}
+		else {
 			$scope.invokeApi(ADRoomSrv.createRoom, {'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails);
-
+		}
 	};
 
 	/**

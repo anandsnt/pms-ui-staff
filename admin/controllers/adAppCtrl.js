@@ -471,8 +471,9 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$rootScope.is_auto_change_bussiness_date = data.business_date.is_auto_change_bussiness_date;
 
 			//set flag if standalone PMS
-			if (data.pms_type === null)
+			if (data.pms_type === null) {
 				$scope.isStandAlone = true;
+			}
 			$rootScope.currencySymbol = getCurrencySign(data.currency.value);
 			$rootScope.dateFormat = getDateFormat(data.date_format.value);
 			$scope.$emit('hideLoader');

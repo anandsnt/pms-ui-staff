@@ -110,7 +110,9 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
     var isRoomTypesSelected = function () {
       $scope.upsellData.isRoomTypesSelectedFlag = false;
       angular.forEach($scope.upsellData.room_types, function (item, index) {
-        if (item.max_los !== '') $scope.upsellData.isRoomTypesSelectedFlag = true;
+        if (item.max_los !== '') {
+          $scope.upsellData.isRoomTypesSelectedFlag = true;
+        }
       });
     };
 

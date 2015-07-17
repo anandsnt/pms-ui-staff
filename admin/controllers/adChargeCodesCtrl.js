@@ -222,10 +222,12 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				}
 
 				$scope.currentClickedElement = -1;
-				if ($scope.isAdd)
+				if ($scope.isAdd) {
 					$scope.isAdd = false;
-				if ($scope.isEdit)
+				}
+				if ($scope.isEdit) {
 					$scope.isEdit = false;
+				}
 			};
 			// To create Charge code Link with list frm scope.
 			var selected_link_with = [];
@@ -258,7 +260,9 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			angular.forEach(postData.linked_charge_codes, function(item, index) {
 				delete item["calculation_rule_list"];
 				delete item["selected_calculation_rule"];
-				if (item["id"]) delete item["id"];
+				if (item["id"]) {
+					delete item["id"];
+				}
 			});
 			$scope.invokeApi(ADChargeCodesSrv.save, postData, saveSuccessCallback);
 		};
@@ -266,10 +270,12 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 * To handle cancel button click.
 		 */
 		$scope.clickedCancel = function() {
-			if ($scope.isAdd)
+			if ($scope.isAdd) {
 				$scope.isAdd = false;
-			if ($scope.isEdit)
+			}
+			if ($scope.isEdit) {
 				$scope.isEdit = false;
+			}
 		};
 		/*
 		 * To handle import from PMS button click.
