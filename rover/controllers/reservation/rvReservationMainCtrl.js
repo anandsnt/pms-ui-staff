@@ -309,7 +309,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     }
                     else {
                     currentTaxes[taxType][taxId].amount = parseFloat(currentTaxes[taxType][taxId].amount) + parseFloat(description.amount); // add the amount here
-                }   }
+                   }
                 } else { //[[[[[[ PER_STAY NEEDS TO BE DONE ONLY ONCE FOR A RATE ID & TAX ID COMBO]]]]]]
                     if (typeof currentTaxes[taxType][taxId] === "undefined") {
                         // As stated earler per_stay taxes can be taken in only for the first rateId
