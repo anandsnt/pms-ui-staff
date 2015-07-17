@@ -90,7 +90,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                }
                else if($stateParams.type === 'postCharge'){
                      ngDialog.open({
-                        template: '/assets/partials/postCharge/outsidePostCharge.html',
+                        template: '/assets/partials/postCharge/rvPostChargeV2.html',
                         controller: 'RVOutsidePostChargeController',
                     });
                }    

@@ -5,7 +5,10 @@
 	$rootScope.isRoomVerified =  false;
 	$scope.roomNumber = "";
 
-	if($rootScope.isCheckedin){
+	if($rootScope.isExternalVerification){
+		$state.go('externalVerification');
+	}
+	else if($rootScope.isCheckedin){
 		$state.go('checkinSuccess');
 	}
 	else if($rootScope.isCheckin){

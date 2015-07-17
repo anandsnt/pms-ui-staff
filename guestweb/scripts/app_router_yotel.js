@@ -119,4 +119,10 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	title: 'Email Verification'
 	});
 
+	$stateProvider.state('externalVerification', {
+    	url: '/externalVerification',
+	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	title: 'External verification'
+	});
+
 }]);

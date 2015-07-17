@@ -7,7 +7,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 	'rvAccountsConfigurationSrv',
 	'RVReservationSummarySrv',
 	'rvAccountTransactionsSrv',
-	'RVChargeItems',
 	'RVPaymentSrv',
 	'RVReservationCardSrv',
 	'RVBillCardSrv',
@@ -23,7 +22,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		rvAccountsConfigurationSrv,
 		RVReservationSummarySrv,
 		rvAccountTransactionsSrv,
-		RVChargeItems,
 		RVPaymentSrv,
 		RVReservationCardSrv,
 		RVBillCardSrv,
@@ -231,36 +229,25 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			}, 500);
 		};
 
-
-
-		$scope.openPostCharge = function(activeBillNo) {
+		$scope.openPostCharge = function( activeBillNo ) {
 
 			// pass on the reservation id
 			$scope.account_id = $scope.accountConfigData.summary.posting_account_id;
 			$scope.billNumber = activeBillNo;
 
+			var bills = [];
+		    for(var i = 0; i < $scope.transactionsDetails.bills.length; i++ )
+		    	bills.push(i+1);
 
-			var callback = function(data) {
-				//hide loader
-				$scope.$emit('hideLoader');
+		    $scope.fetchedData = {};
+			$scope.fetchedData.bill_numbers = bills;
+		    $scope.isOutsidePostCharge = false;
 
-				$scope.fetchedData = data;
-
-				//set bill array
-				var bills = [];
-				for (var i = 0; i < $scope.transactionsDetails.bills.length; i++)
-					bills.push(i + 1);
-				$scope.fetchedData.bill_numbers = bills;
-
-				ngDialog.open({
-					template: '/assets/partials/postCharge/postCharge.html',
-					controller: 'RVPostChargeController',
-					className: '',
-					scope: $scope
-				});
-			};
-
-			$scope.invokeApi(RVChargeItems.fetch, $scope.reservation_id, callback);
+			ngDialog.open({
+	    		template: '/assets/partials/postCharge/rvPostChargeV2.html',
+	    		className: '',
+	    		scope: $scope
+	    	});
 		};
 
 		var fetchPaymentMethods = function(directBillNeeded) {

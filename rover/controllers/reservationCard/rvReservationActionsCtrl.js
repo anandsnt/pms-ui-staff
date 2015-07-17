@@ -2,7 +2,6 @@ sntRover.controller('reservationActionsController', [
 	'$rootScope',
 	'$scope',
 	'ngDialog',
-	'RVChargeItems',
 	'$state',
 	'RVReservationCardSrv',
 	'RVReservationSummarySrv',
@@ -10,11 +9,10 @@ sntRover.controller('reservationActionsController', [
 	'RVSearchSrv',
 	'RVDepositBalanceSrv',
 	'$filter',
-	'RVChargeItems','RVPaymentSrv','rvPermissionSrv',
+	'RVPaymentSrv','rvPermissionSrv',
 	function($rootScope,
 		$scope,
 		ngDialog,
-		RVChargeItems,
 		$state,
 		RVReservationCardSrv,
 		RVReservationSummarySrv,
@@ -22,7 +20,7 @@ sntRover.controller('reservationActionsController', [
 		RVSearchSrv,
 		RVDepositBalanceSrv,
 		$filter,
-		RVChargeItems,RVPaymentSrv,rvPermissionSrv) {
+		RVPaymentSrv,rvPermissionSrv) {
 
 
 		BaseCtrl.call(this, $scope);
@@ -126,34 +124,6 @@ sntRover.controller('reservationActionsController', [
 				timeColor = "time";
 			}
 			return timeColor;
-		};
-
-		$scope.openPostCharge = function() {
-			// pass on the reservation id
-			$scope.reservation_id = $scope.reservationData.reservation_card.reservation_id;
-
-			// translating this logic as such from old Rover
-			// api post param 'fetch_total_balance' must be 'true' when posted from 'staycard'
-			$scope.fetchTotalBal = true;
-
-			$scope.successGetBillDetails = function(data){
-				$scope.$emit('hideLoader');
-				$scope.fetchedData.bill_numbers = data.bills;
-				$scope.billNumber = "1";
-				ngDialog.open({
-					template: '/assets/partials/postCharge/postCharge.html',
-					controller: 'RVPostChargeController',
-					scope: $scope
-				});
-
-			};
-			var callback = function(data) {
-
-				$scope.fetchedData = data;
-				$scope.invokeApi(RVChargeItems.getReservationBillDetails, $scope.reservation_id, $scope.successGetBillDetails);
-
-			};
-			$scope.invokeApi(RVChargeItems.fetch, $scope.reservation_id, callback);
 		};
 
 		// update the price on staycard.
