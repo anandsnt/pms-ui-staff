@@ -223,7 +223,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
         /**
          * to get the room status css class
-         * @param {Reservation} - reservation
+         * @param {Object} - reservation
          * @return {String} - css class
          */
         $scope.getRoomStatusClass = function(reservation) {
