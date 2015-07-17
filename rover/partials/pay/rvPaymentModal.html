@@ -26,7 +26,7 @@
 
         <div class="payment-form">
             <!-- Split payment -->
-                <div class="entry split" ng-hide="saveData.paymentType ==='CC'" ng-class="{active: splitBillEnabled }">
+                <div class="entry split" ng-hide="saveData.paymentType ==='CC' || depositPaidSuccesFully" ng-class="{active: splitBillEnabled }">
 
                     <label class="checkbox inline" ng-class="{checked: splitBillEnabled }">
                     <span class="icon-form icon-checkbox" ng-class="{checked: splitBillEnabled }">
