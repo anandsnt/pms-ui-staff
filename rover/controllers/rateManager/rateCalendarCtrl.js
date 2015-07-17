@@ -89,8 +89,9 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                 } else {
                     return 3;
                 }
-            } else
+            } else {
                 return 8;
+              }
         };
 
         $scope.refreshScroller = function () {
@@ -215,11 +216,15 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                 	}
                         if ($scope.lastClickedApply !== s){
                             return true;
-                        } else return false;
+                        } else {
+                            return false;
+                        }
                 }
             } else if ($scope.viaSection !== ''){
                 	return true;
-                } else return false;
+                } else {
+                    return false;
+                }
         };
 
 
@@ -782,7 +787,9 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                     };
                 }
                 return false;
-            } else return false;
+            } else {
+                return false;
+             }
         };
 
     }]);

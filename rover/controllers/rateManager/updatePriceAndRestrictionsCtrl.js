@@ -51,12 +51,15 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
 
         $scope.refreshPopUpScrolls = function () {
             setTimeout(function () {
-                if (typeof $scope.myScroll['restictionsList'] !== 'undefined')
+                if (typeof $scope.myScroll['restictionsList'] !== 'undefined') {
                     $scope.myScroll['restictionsList'].refresh();
-                if (typeof $scope.myScroll['priceList'] !== 'undefined')
+                }
+                if (typeof $scope.myScroll['priceList'] !== 'undefined') {
                     $scope.myScroll['priceList'].refresh();
-                if (typeof $scope.myScroll['restictionWeekDaysScroll'] !== 'undefined')
+                }
+                if (typeof $scope.myScroll['restictionWeekDaysScroll'] !== 'undefined') {
                     $scope.myScroll['restictionWeekDaysScroll'].refresh();
+                }
             }, 1000);
         };
 
