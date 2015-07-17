@@ -21,9 +21,9 @@ sntRover.controller('rvDashboardGuestWidgetController',['$scope', 'RVSearchSrv',
             var stateParams = {'type': type, 'from_page': 'DASHBOARD'};
             $state.go('rover.search', stateParams);
         }
-        else
+        else {
             return;
-
+        }
     };
 
 

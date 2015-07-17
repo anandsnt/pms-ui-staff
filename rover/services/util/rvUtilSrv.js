@@ -32,7 +32,9 @@ sntRover.service('rvUtilSrv', [function(){
 		* @return {boolean}
 		*/
 		this.isEmpty = function(string){
-			if (typeof string === "number") string = string.toString();
+			if (typeof string === "number") {
+				string = string.toString();
+			}
 			return (this.escapeNull(string).trim() === '');
 		};
 

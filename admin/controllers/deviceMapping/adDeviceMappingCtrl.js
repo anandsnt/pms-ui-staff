@@ -95,7 +95,9 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
     * @param {string} id of the department
     */
 	$scope.getTemplateUrl = function(index, id){
-		if(typeof index === "undefined" || typeof id === "undefined") return "";
+		if(typeof index === "undefined" || typeof id === "undefined") {
+			return "";
+		}
 		if($scope.currentClickedElement === index){
 			 	return "/assets/partials/deviceMapping/adDeviceMappingDetails.html";
 		}
