@@ -5,7 +5,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			segmentAvailable: !!$scope.reservationParentData.demographics.segment,
 			hideDetails: true // TODO : make this flag true before sending to CR
 		}
-
+		$scope.reservationData = $scope.$parent.reservationData;
 		$scope.isSegmentAutoComputed = function() {
 			var currentSegment = $scope.reservationParentData.demographics.segment,
 				aptSegment = "";
