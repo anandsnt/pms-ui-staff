@@ -123,7 +123,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     if ( intMins === 15 || intMins === 30 || intMins === 45 ) {
                         break;
                     }
-                } while ( intMins != 15 || intMins != 30 || intMins != 45 );
+                } while ( intMins !== 15 || intMins !== 30 || intMins !== 45 );
             };
 
             // finally append zero and convert to string -- only for $scope.reservationData.checkinTime
@@ -187,14 +187,14 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.viewState.reservationStatus.confirm = false;
                 // Reset addons as part CICO-10657
                 $scope.resetAddons();
-                if ($scope.reservationDetails.guestCard.id != '') {
+                if ($scope.reservationDetails.guestCard.id !== '') {
                     $scope.searchData.guestCard.guestFirstName = $scope.reservationData.guest.firstName;
                     $scope.searchData.guestCard.guestLastName = $scope.reservationData.guest.lastName;
                 }
                 $scope.companySearchText = (function() {
-                    if ($scope.reservationData.company.id != null && $scope.reservationData.company.id != "") {
+                    if ($scope.reservationData.company.id !== null && $scope.reservationData.company.id !== "") {
                         return $scope.reservationData.company.name;
-                    } else if ($scope.reservationData.travelAgent.id != null && $scope.reservationData.travelAgent.id != "") {
+                    } else if ($scope.reservationData.travelAgent.id !== null && $scope.reservationData.travelAgent.id !== "") {
                         return $scope.reservationData.travelAgent.name;
                     }
                     return "";
@@ -406,7 +406,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
             // fetch data from server
             var fetchData = function() {
-                if (request.term != '' && lastSearchText != request.term) {
+                if (request.term !== '' && lastSearchText !== request.term) {
                     $scope.invokeApi(RVReservationBaseSearchSrv.fetchCompanyCard, {
                         'query': request.term
                     }, processDisplay);

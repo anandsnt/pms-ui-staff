@@ -34,7 +34,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		*/
 		for(var i = 0; i < $scope.data.room_features.length; i++){
 			$scope.data.room_features[i].selected = false;
-			if($scope.data.active_room_features.indexOf($scope.data.room_features[i].value) != -1) {
+			if($scope.data.active_room_features.indexOf($scope.data.room_features[i].value) !== -1) {
 				$scope.data.room_features[i].selected = true;
 			}
 		}
@@ -46,7 +46,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		for(var i = 0; i < $scope.data.room_likes.length; i++){
 			for(var j = 0; j < $scope.data.room_likes[i].options.length; j++){
 				$scope.data.room_likes[i].options[j].selected = false;
-				if($scope.data.active_room_likes.indexOf($scope.data.room_likes[i].options[j].value) != -1) {
+				if($scope.data.active_room_likes.indexOf($scope.data.room_likes[i].options[j].value) !== -1) {
 					$scope.data.room_likes[i].options[j].selected = true;
 				}
 			}
@@ -148,15 +148,16 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 			}
 		}
 
-		if($scope.data.room_image.indexOf("data:")!= -1){
+		if($scope.data.room_image.indexOf("data:")!== -1){
 			postData.room_image = $scope.data.room_image;
 		}
 
-		if($scope.editMode)
+		if($scope.editMode) {
 		    $scope.invokeApi(ADRoomSrv.update, {'room_id': $scope.data.room_id, 'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails);
-		else
+		}
+		else {
 			$scope.invokeApi(ADRoomSrv.createRoom, {'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails);
-
+		}
 	};
 
 	/**

@@ -4,13 +4,13 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 	$scope.encoderTypes = [];
 	$scope.getRoomClass = function(reservationStatus){
 		var reservationRoomClass = '';
-		if(reservationStatus == 'CANCELED'){
+		if(reservationStatus === 'CANCELED'){
 			reservationRoomClass ='overlay';
 		}
-		else if( !$rootScope.isStandAlone && reservationStatus != 'NOSHOW' && reservationStatus != 'CHECKEDOUT' && reservationStatus != 'CANCELED' && reservationStatus != 'CHECKEDIN' && reservationStatus != 'CHECKING_OUT'){
+		else if( !$rootScope.isStandAlone && reservationStatus !== 'NOSHOW' && reservationStatus !== 'CHECKEDOUT' && reservationStatus !== 'CANCELED' && reservationStatus !== 'CHECKEDIN' && reservationStatus !== 'CHECKING_OUT'){
 			reservationRoomClass = 'has-arrow hover-hand';
 		}
-		else if($rootScope.isStandAlone && reservationStatus != 'NOSHOW' && reservationStatus != 'CHECKEDOUT' && reservationStatus != 'CANCELED'){
+		else if($rootScope.isStandAlone && reservationStatus !== 'NOSHOW' && reservationStatus !== 'CHECKEDOUT' && reservationStatus !== 'CANCELED'){
 			reservationRoomClass = 'has-arrow hover-hand';
 		}
 		return reservationRoomClass;
@@ -19,17 +19,17 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 	$scope.getRoomStatusClass = function(reservationStatus, roomStatus, foStatus, roomReadyStatus, checkinInspectedOnly){
 
 		var reservationRoomStatusClass = "";
-		if(reservationStatus == 'CHECKING_IN'){
+		if(reservationStatus === 'CHECKING_IN'){
 
-			if(roomReadyStatus!=''){
-				if(foStatus == 'VACANT'){
+			if(roomReadyStatus!==''){
+				if(foStatus === 'VACANT'){
 					switch(roomReadyStatus) {
 
 						case "INSPECTED":
 							reservationRoomStatusClass = ' room-green';
 							break;
 						case "CLEAN":
-							if (checkinInspectedOnly == "true") {
+							if (checkinInspectedOnly === "true") {
 								reservationRoomStatusClass = ' room-orange';
 								break;
 							} else {
@@ -61,17 +61,17 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		if($scope.hasAnySharerCheckedin()){
 			return false;
 		}
-		if((isUpsellAvailable == 'true') && $scope.isFutureReservation(reservationStatus)){
+		if((isUpsellAvailable === 'true') && $scope.isFutureReservation(reservationStatus)){
 			showUpgrade = true;
 		}
 		return showUpgrade;
 	};
 	$scope.isFutureReservation = function(reservationStatus){
-		return (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN');
+		return (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN');
 	};
 	$scope.showKeysButton = function(reservationStatus){
 		var showKey = false;
-		if((reservationStatus == 'CHECKING_IN' && $scope.reservationData.reservation_card.room_number != '')|| reservationStatus == 'CHECKING_OUT' || reservationStatus == 'CHECKEDIN'){
+		if((reservationStatus === 'CHECKING_IN' && $scope.reservationData.reservation_card.room_number !== '')|| reservationStatus === 'CHECKING_OUT' || reservationStatus === 'CHECKEDIN'){
 			showKey = true;
 		}
                 //then check if the current user has permission
@@ -225,7 +225,7 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 			gotToDiaryInEditMode ();
 		} else if($scope.isFutureReservation($scope.reservationData.reservation_card.reservation_status)){
 			$state.go("rover.reservation.staycard.roomassignment", {reservation_id:$scope.reservationData.reservation_card.reservation_id, room_type:$scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton"});
-		}else if($scope.reservationData.reservation_card.reservation_status=="CHECKEDIN"){
+		}else if($scope.reservationData.reservation_card.reservation_status==="CHECKEDIN"){
 			$state.go("rover.reservation.staycard.roomassignment", {reservation_id:$scope.reservationData.reservation_card.reservation_id, room_type:$scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton"});
 		}
 

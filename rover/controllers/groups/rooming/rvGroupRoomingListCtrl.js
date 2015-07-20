@@ -85,7 +85,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {Boolean}
          */
         $scope.shouldShowCheckInCheckoutButton = function() {
-            return (!$scope.shouldShowNoReservations() && 
+            return (!$scope.shouldShowNoReservations() &&
                     !$scope.groupConfigData.summary.is_cancelled);
         };
 
@@ -116,8 +116,9 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 room_type_id: parseInt($scope.selectedRoomType)
             });
             //we are hiding the occupancy if selected room type is undefined
-            if (typeof selectedRoomType === "undefined") return false;
-
+            if (typeof selectedRoomType === "undefined") {
+                return false;
+            }
             return selectedRoomType[keyToCheck];
         };
 
@@ -400,7 +401,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             var options = {
                 params: params,
-                successCallBack: successCallBackOfcheckDefaultChargeRoutings,
+                successCallBack: successCallBackOfcheckDefaultChargeRoutings
             };
             $scope.callAPI(rvGroupRoomingListSrv.checkDefaultChargeRoutings, options);
         };
@@ -458,7 +459,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             //
             var options = {
                 params: params,
-                successCallBack: successCallBackOfAddReservations,
+                successCallBack: successCallBackOfAddReservations
             };
             $scope.callAPI(rvGroupRoomingListSrv.addReservations, options);
 
@@ -483,7 +484,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             var options = {
                 params: params,
-                successCallBack: successCallBackOfFetchRoomingDetails,
+                successCallBack: successCallBackOfFetchRoomingDetails
             };
             $scope.callAPI(rvGroupRoomingListSrv.getRoomTypesConfiguredAgainstGroup, options);
         };
@@ -493,8 +494,9 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * API, we will get this event, we are using this to fetch new room block deails
          */
         $scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab) {
-            if (activeTab !== 'ROOMING') return;
-
+            if (activeTab !== 'ROOMING') {
+                return;
+            }
             //calling initially required APIs
             callInitialAPIs();
         });
@@ -519,7 +521,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 '1': 'Single',
                 '2': 'Double',
                 '3': 'Triple',
-                '4': 'Quadruple',
+                '4': 'Quadruple'
             };
 
             //total result count
@@ -1021,7 +1023,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             var errorMessageForPopup = {
                 errorMessage: errorMessage
             };
-            
+
             ngDialog.open(
             {
                 template: '/assets/partials/groups/rooming/rvGroupResMassCheckinFailedPopup.html',
@@ -1040,12 +1042,12 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         $scope.groupCheckin = function() {
             var qualifiedRes        = _.where($scope.selected_reservations, {'can_checkin': true}),
                 qualifiedResCount   = qualifiedRes.length,
-                selectedResCount    = $scope.selected_reservations.length;            
-            
+                selectedResCount    = $scope.selected_reservations.length;
+
             if (qualifiedResCount > 0) {
                 $scope.qualifiedReservations = qualifiedRes;
-                $scope.messageForMassCheckin = (selectedResCount === qualifiedResCount) ? 
-                    '' : 'GROUP_MASS_CHECKIN_CONFIRMATION_PARTIALLY_OKEY';                
+                $scope.messageForMassCheckin = (selectedResCount === qualifiedResCount) ?
+                    '' : 'GROUP_MASS_CHECKIN_CONFIRMATION_PARTIALLY_OKEY';
                 openCheckinConfirmationPopup ();
             }
             else {
@@ -1077,10 +1079,10 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             if (failureReservations.length > 0) {
                 data.failedReservations = [];
                 _.each(data.failure_reservation_ids, function(reservation_id) {
-                    data.failedReservations.push (_.findWhere($scope.selected_reservations, {id: reservation_id})); 
+                    data.failedReservations.push (_.findWhere($scope.selected_reservations, {id: reservation_id}));
                 });
             }
-            openMassCheckinSuccessPopup (data);            
+            openMassCheckinSuccessPopup (data);
         };
 
         /**
@@ -1471,7 +1473,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                     addPrintOrientation();
 
                     /*
-                     *   =====[ READY TO PRINT ]=====
+                     *   ======[ READY TO PRINT ]======
                      */
                     // this will show the popup with full bill
                     $scope.isPrintRegistrationCard = true;
@@ -1479,7 +1481,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
                     $timeout(function() {
                         /*
-                         *   =====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+                         *   ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
                          */
 
                         $window.print();
@@ -1489,7 +1491,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                     }, 100);
 
                     /*
-                     *   =====[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]=====
+                     *   ======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
                      */
                     $timeout(function() {
                         $scope.isPrintRegistrationCard = false;
@@ -1546,8 +1548,9 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             //calling initially required APIs
             // CICO-17898 The initial APIs need to be called in the scenario while we come back to the Rooming List Tab from the stay card
-            if ("rover.reservation.staycard.reservationcard.reservationdetails" === $rootScope.getPrevStateName())
+            if ("rover.reservation.staycard.reservationcard.reservationdetails" === $rootScope.getPrevStateName()) {
                 callInitialAPIs();
+            }
         }();
     }
 ]);

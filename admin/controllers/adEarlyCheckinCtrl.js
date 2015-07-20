@@ -97,8 +97,9 @@ $scope.isAddonAvailable = function(index){
 
 $scope.isRateAvailable = function(index){
        for(var i = 0; i < $scope.upsellData.early_checkin_rates.length; i++){
-         if($scope.upsellData.early_checkin_rates[i].id === $scope.rates[index].id)
+         if($scope.upsellData.early_checkin_rates[i].id === $scope.rates[index].id) {
            return false;
+         }
         }
        return true;
 }
@@ -134,7 +135,7 @@ $scope.setUpUpsellWindowDataToSave = function () {
         $scope.upsellData.early_checkin_levels = [];
         var upsellWindow;
          angular.forEach($scope.upsellWindows,function(item, index) {
-             if(item.hours != "" && item.hours != null){
+             if(item.hours !== "" && item.hours !== null){
                  upsellWindow = {};
                  upsellWindow.start_time = item.hours + ":" + item.minutes + " " + item.meridiem;
                  upsellWindow.charge = item.charge;
@@ -148,9 +149,9 @@ $scope.validateUpsellWindowTime = function(){
   var time_window1 = new Date;
   var time_window2 = new Date;
   var time_window3 = new Date;
-  var hrs1 = ($scope.upsellWindows[0].meridiem.localeCompare('PM') != -1)? 12 + (parseInt($scope.upsellWindows[0].hours) % 12) : (parseInt($scope.upsellWindows[0].hours) === 12)? 0 : parseInt($scope.upsellWindows[0].hours);
-  var hrs2 = ($scope.upsellWindows[1].meridiem.localeCompare('PM') != -1)? 12 + (parseInt($scope.upsellWindows[1].hours) % 12) : (parseInt($scope.upsellWindows[1].hours) === 12)? 0 : parseInt($scope.upsellWindows[1].hours);
-  var hrs3 = ($scope.upsellWindows[2].meridiem.localeCompare('PM') != -1)? 12 + (parseInt($scope.upsellWindows[2].hours) % 12) : (parseInt($scope.upsellWindows[2].hours) === 12)? 0 : parseInt($scope.upsellWindows[2].hours);
+  var hrs1 = ($scope.upsellWindows[0].meridiem.localeCompare('PM') !== -1)? 12 + (parseInt($scope.upsellWindows[0].hours) % 12) : (parseInt($scope.upsellWindows[0].hours) === 12)? 0 : parseInt($scope.upsellWindows[0].hours);
+  var hrs2 = ($scope.upsellWindows[1].meridiem.localeCompare('PM') !== -1)? 12 + (parseInt($scope.upsellWindows[1].hours) % 12) : (parseInt($scope.upsellWindows[1].hours) === 12)? 0 : parseInt($scope.upsellWindows[1].hours);
+  var hrs3 = ($scope.upsellWindows[2].meridiem.localeCompare('PM') !== -1)? 12 + (parseInt($scope.upsellWindows[2].hours) % 12) : (parseInt($scope.upsellWindows[2].hours) === 12)? 0 : parseInt($scope.upsellWindows[2].hours);
   time_window1.setHours(hrs1);
   time_window2.setHours(hrs2);
   time_window3.setHours(hrs3);
@@ -168,8 +169,9 @@ $scope.validateUpsellWindowTime = function(){
           $scope.fetchedFailed(["The time for upsell window-2 should be less than time for upsell window-3"]);
           return false;
   }
-  else
+  else {
     return true;
+  }
 }
 
 $scope.fetchUpsellDetails();
@@ -193,7 +195,7 @@ $scope.saveClick = function(){
     }
     // $scope.validateUpsellWindowTime();
     $scope.setUpUpsellWindowDataToSave();
-    $scope.upsellData.early_checkin_time = ($scope.upsell_rate.hours != null && $scope.upsell_rate.hours != "")?$scope.upsell_rate.hours + ":" + $scope.upsell_rate.minutes + " " + $scope.upsell_rate.meridiem : "";
+    $scope.upsellData.early_checkin_time = ($scope.upsell_rate.hours !== null && $scope.upsell_rate.hours !== "")?$scope.upsell_rate.hours + ":" + $scope.upsell_rate.minutes + " " + $scope.upsell_rate.meridiem : "";
    	var upsellEarlyCheckinSaveSuccessCallback = function(data) {
       $scope.$emit('hideLoader');
    	};
@@ -208,8 +210,9 @@ $scope.saveClick = function(){
 
 $scope.clickAddRoomType = function(){
 	//While addig a room type, making its max_late_checkouts defaults to 0.
-  if($scope.getSelectedRateIndexForID($scope.upsell_rate.selected_rate_id) != -1)
+  if($scope.getSelectedRateIndexForID($scope.upsell_rate.selected_rate_id) !== -1) {
     return;
+  }
   var rate_item;
 	angular.forEach($scope.rates,function(item, index) {
 		if(item.id === $scope.upsell_rate.selected_rate_id){
@@ -246,18 +249,19 @@ $scope.getSelectedRateIndexForID = function(rateID){
  */
 $scope.deleteRate = function(value,name){
 	var indexForRate = $scope.getSelectedRateIndexForID(value);
-  if(indexForRate != -1)
+  if(indexForRate !== -1) {
      $scope.upsellData.early_checkin_rates.splice(indexForRate, 1);
+  }
    $scope.setRateFlag();
 };
 
 $scope.isChargeRequiredForWindow = function(windowIndex){
    if(windowIndex === 0){
-      return $scope.upsellWindows[0].hours != ""? 'yes' : 'no';
+      return $scope.upsellWindows[0].hours !== ""? 'yes' : 'no';
    }else if(windowIndex === 1){
-      return $scope.upsellWindows[1].hours != ""? 'yes' : 'no';
+      return $scope.upsellWindows[1].hours !== ""? 'yes' : 'no';
    }else if(windowIndex === 2){
-      return $scope.upsellWindows[2].hours != ""? 'yes' : 'no';
+      return $scope.upsellWindows[2].hours !== ""? 'yes' : 'no';
    }
 }
 

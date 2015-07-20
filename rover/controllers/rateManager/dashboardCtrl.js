@@ -78,7 +78,7 @@ sntRover
         tableHeight: rateGridDefaults.DEFAULT_TABLE_WIDTH,
         columnWidth: rateGridDefaults.DEFAULT_COLUMN_WIDTH,
         tableWidth: rateGridDefaults.DEFAULT_TABLE_WIDTH,
-        isIpad: navigator.userAgent.match(/iPad/i) != null
+        isIpad: navigator.userAgent.match(/iPad/i) !== null
     };
 
     var title = $filter('translate')('RATE_MANAGER_TITLE');
@@ -132,12 +132,13 @@ sntRover
 
         var columsTotalWidth = numColumns * mywidth;
 
-        if ( columsTotalWidth < totalwidth) columsTotalWidth = totalwidth; //@minimum, table should cover full view.
-
+        if ( columsTotalWidth < totalwidth) {
+        columsTotalWidth = totalwidth; //@minimum, table should cover full view.
+        }
         $scope.uiOptions.tableWidth = parseInt(FIRST_COLUMN_WIDTH + columsTotalWidth);
         $scope.uiOptions.tableHeight = $window.innerHeight - TOP_BOTTOM_HEIGHT;
         $scope.uiOptions.columnWidth = parseInt(mywidth);
-        $scope.uiOptions.isIpad = navigator.userAgent.match(/iPad/i) != null;
+        $scope.uiOptions.isIpad = navigator.userAgent.match(/iPad/i) !== null;
     },
     computeColWidthOnResize = _.throttle(computeColWidth, rateGridDefaults.RESIZE_DEBOUNCE_INTERVAL, { leading: true, trailing: false });
 
@@ -179,7 +180,7 @@ sntRover
     * function to handle left side menu toggling
     */
     $scope.toggleLeftMenu = function()   {
-      if ($scope.currentLeftMenuClass == 'slide_right'){
+      if ($scope.currentLeftMenuClass === 'slide_right'){
         $scope.currentLeftMenuClass = 'slide_left';
       }
       else{

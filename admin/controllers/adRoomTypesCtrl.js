@@ -76,7 +76,9 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
     * @param {string} id of the room type
     */
 	$scope.getTemplateUrl = function(index, id){
-		if(typeof index === "undefined" || typeof id === "undefined") return "";
+		if(typeof index === "undefined" || typeof id === "undefined") {
+			return "";
+		}
 		if($scope.currentClickedElement === index){
 			 	return "/assets/partials/roomTypes/adRoomTypesDetails.html";
 		}
@@ -87,7 +89,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
    $scope.saveRoomTypes = function(){
 
 		var unwantedKeys = [];
-		if($scope.roomTypeData.image_of_room_type.indexOf("data:")!= -1){
+		if($scope.roomTypeData.image_of_room_type.indexOf("data:")!== -1){
 		} else {
 			unwantedKeys = ["image_of_room_type"];
 		}
@@ -108,10 +110,12 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
     	};
 
 
-    	if($scope.isAddMode)
+    	if($scope.isAddMode) {
     		$scope.invokeApi(ADRoomTypesSrv.createRoomType, data , addSuccessCallbackSave);
-      	else
+    	}
+      	else {
     	    $scope.invokeApi(ADRoomTypesSrv.updateRoomTypes, data , editSuccessCallbackSave);
+    	}
     };
    /*
     * To handle click event
@@ -121,8 +125,9 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 			$scope.isAddMode =false;
 			$scope.fileName = "";
         }
-		else
+		else {
 		    $scope.currentClickedElement = -1;
+		}
 	};
    /*
     * To import form pms
@@ -180,12 +185,14 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	};
 
 	$scope.sortByName = function(){
-		if($scope.currentClickedElement === -1)
+		if($scope.currentClickedElement === -1) {
 		$scope.tableParams.sorting({'name' : $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'});
+		}
 	};
 	$scope.sortByCode = function(){
-		if($scope.currentClickedElement === -1)
+		if($scope.currentClickedElement === -1) {
 		$scope.tableParams.sorting({'code' : $scope.tableParams.isSortBy('code', 'asc') ? 'desc' : 'asc'});
+	}
 	};
 	$scope.deleteRoomTypes = function(roomtype_id){
 		var successCallBack = function(){

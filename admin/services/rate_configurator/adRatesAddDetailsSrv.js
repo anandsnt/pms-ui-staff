@@ -60,7 +60,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
                     deferred.reject(data);
                 });
             };
-                
+
 
             /*
              * Service function to fetch cancelation penalties
@@ -137,7 +137,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
                 });
             };
 
-         
+
             /*
              * Service function to fetch HotelSettings
              * @return {object} HotelSettings

@@ -54,7 +54,7 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
     * To fetch array after slicing from the index of the given value
     */
     $scope.getArrayAfterValue = function(value){
-        if(typeof value != 'undefined'){
+        if(typeof value !== 'undefined'){
             var index = $scope.hours.indexOf(value);
             var arrayAfterValue = ["HH"];
             for(var i = index; i < $scope.hours.length; i++){

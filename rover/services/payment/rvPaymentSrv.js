@@ -1,7 +1,7 @@
 sntRover.service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv','rvBaseWebSrvV2', function($http, $q, RVBaseWebSrv,RVBaseWebSrvV2){
-   
 
-	var that =this;	
+
+	var that =this;
 	this.renderPaymentScreen = function(data){
 		var deferred = $q.defer();
 		var url = '/staff/payments/addNewPayment.json';
@@ -9,7 +9,7 @@ sntRover.service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv','rvBaseWebSrvV2',
 			    deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 		return deferred.promise;
 	};
 	this.savePaymentDetails = function(data){
@@ -19,7 +19,7 @@ sntRover.service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv','rvBaseWebSrvV2',
 			    deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 		return deferred.promise;
 	};
 	this.saveGuestPaymentDetails = function(data){
@@ -29,18 +29,18 @@ sntRover.service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv','rvBaseWebSrvV2',
 			    deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 		return deferred.promise;
 	};
 	this.setAsPrimary = function(data){
 		var deferred = $q.defer();
-		
+
 		var url = '/staff/payments/setCreditAsPrimary';
 		RVBaseWebSrv.postJSON(url, data).then(function(data) {
 			    deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 		return deferred.promise;
 	};
 	this.deletePayment = function(data){
@@ -50,7 +50,7 @@ sntRover.service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv','rvBaseWebSrvV2',
 			    deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 		return deferred.promise;
 	};
 	this.getPaymentList = function(reservationId){
@@ -60,18 +60,18 @@ sntRover.service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv','rvBaseWebSrvV2',
 			    deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 		return deferred.promise;
 	};
 	this.mapPaymentToReservation = function(data){
 		var deferred = $q.defer();
-		
+
 		var url = '/staff/reservation/link_payment';
 		RVBaseWebSrv.postJSON(url, data).then(function(data) {
 			    deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 		return deferred.promise;
 	};
 	this.submitPaymentOnBill = function(dataToSrv){
@@ -81,7 +81,7 @@ sntRover.service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv','rvBaseWebSrvV2',
 			    deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 		return deferred.promise;
 	};
 	/*
@@ -94,7 +94,7 @@ sntRover.service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv','rvBaseWebSrvV2',
 			    deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 		return deferred.promise;
 	};
 	this.chipAndPinGetToken = function(postData){
@@ -104,10 +104,10 @@ sntRover.service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv','rvBaseWebSrvV2',
 			    deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 		return deferred.promise;
 	};
-	
-	
-	
+
+
+
 }]);

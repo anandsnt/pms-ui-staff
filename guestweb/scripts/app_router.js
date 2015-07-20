@@ -1,10 +1,10 @@
 
 snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
-	
+
     $urlRouterProvider.otherwise("/checkoutRoomVerification");
 
     // checkout now states
-    
+
 	$stateProvider.state('checkoutBalance', {
         url: '/checkoutBalance',
         controller: 'checkOutBalanceController',

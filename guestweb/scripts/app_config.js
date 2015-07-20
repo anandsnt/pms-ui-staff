@@ -42,8 +42,8 @@ snt.config(function ($httpProvider) {
 
 snt.run(function($rootScope, $location, $http){
 
-	$rootScope.$on('$stateChangeStart', 
-		function(event, toState, toParams, fromState, fromParams){ 
+	$rootScope.$on('$stateChangeStart',
+		function(event, toState, toParams, fromState, fromParams){
 		$rootScope.title =toState.title;
 	});
 });

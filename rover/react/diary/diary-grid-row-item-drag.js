@@ -56,7 +56,7 @@ var GridRowItemDrag = React.createClass({
 			offset_y: el.offset().top + props.iscroll.grid.y,
 			element_x: page_offset.left-props.display.x_0 - props.iscroll.grid.x,
 			element_y: page_offset.top,
-			starting_ColNumber: starting_ColNumber,
+			starting_ColNumber: starting_ColNumber
 		},
 		function() {
 			props.iscroll.grid.disable();
@@ -90,7 +90,7 @@ var GridRowItemDrag = React.createClass({
 			return;
 		}
 
-		if(props.edit.active && (props.data.key != props.currentDragItem.key)){
+		if(props.edit.active && (props.data.key !== props.currentDragItem.key)){
 			return;
 		}
 
@@ -107,7 +107,7 @@ var GridRowItemDrag = React.createClass({
 
 			this.setState({
 				dragging: true,
-				currentDragItem: model,
+				currentDragItem: model
 			}, function() {
 				props.__onDragStart(props.row_data, model);
 			});
@@ -253,7 +253,7 @@ var GridRowItemDrag = React.createClass({
 			var state_to_set = {
                 top: top
             };
-            if(props.currentDragItem.reservation_status == 'inhouse'){
+            if(props.currentDragItem.reservation_status === 'inhouse'){
                 state_to_set.left = (((state.element_x)) / display.px_per_int).toFixed() * display.px_per_int;
             }
             else {
@@ -296,7 +296,7 @@ var GridRowItemDrag = React.createClass({
 			return;
 		}*/
 
-		if(state.dragging && props.edit.active && (props.data.key != props.currentDragItem.key)){
+		if(state.dragging && props.edit.active && (props.data.key !== props.currentDragItem.key)){
 			return;
 		}
 
@@ -408,7 +408,7 @@ var GridRowItemDrag = React.createClass({
 		return this.transferPropsTo(React.DOM.div({
 			style:       style,
 			className:   props.className + className,
-			children:    props.children,
+			children:    props.children
 
 		}
 		));
