@@ -11,12 +11,12 @@ sntRover.directive('rvCheckboxtextLeft', function($timeout) {
             divClass: '@divClass',
             change: '=change',
             datagroup: '@datagroup',
-            index: '@index',            
+            index: '@index',
             isDisabled: '@isDisabled',
             width: '@'
 	    },
-        
-    	templateUrl: '../../assets/directives/checkBox/rvCheckboxLeftText.html' 
+
+    	templateUrl: '../../assets/directives/checkBox/rvCheckboxLeftText.html'
     };
 
 });

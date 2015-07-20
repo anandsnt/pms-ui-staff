@@ -1,17 +1,17 @@
 admin.service('ADChargeGroupsSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv){
-	
+
 	/**
     *   A getter method to return the charge group list
     */
 	this.fetch = function(){
 		var deferred = $q.defer();
 		var url = '/admin/charge_groups.json';
-		
+
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/*
@@ -22,7 +22,7 @@ admin.service('ADChargeGroupsSrv',['$http', '$q', 'ADBaseWebSrv', function($http
 
 		var deferred = $q.defer();
 		var url = '/admin/charge_groups';
-		
+
 		ADBaseWebSrv.postJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
@@ -38,7 +38,7 @@ admin.service('ADChargeGroupsSrv',['$http', '$q', 'ADBaseWebSrv', function($http
 
 		var deferred = $q.defer();
 		var url = '/admin/charge_groups/'+data.value;
-		
+
 		ADBaseWebSrv.putJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
@@ -54,7 +54,7 @@ admin.service('ADChargeGroupsSrv',['$http', '$q', 'ADBaseWebSrv', function($http
 
 		var deferred = $q.defer();
 		var url = '/admin/charge_groups/'+data.value;
-		
+
 		ADBaseWebSrv.deleteJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
@@ -62,5 +62,5 @@ admin.service('ADChargeGroupsSrv',['$http', '$q', 'ADBaseWebSrv', function($http
 		});
 		return deferred.promise;
 	};
-	
+
 }]);

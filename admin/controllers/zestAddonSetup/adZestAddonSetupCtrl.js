@@ -20,9 +20,9 @@ admin.controller('adZestAddonSetupCtrl',['$scope','adZestAddonSetupSrv','$state'
    });
   }
 
-  
+
   $scope.fetchAddonSetup = function(){
-  	
+
     var fetchAddonSetupSuccessCallback = function(data) {
         $scope.isLoading = false;
         $scope.$emit('hideLoader');
@@ -33,16 +33,16 @@ admin.controller('adZestAddonSetupCtrl',['$scope','adZestAddonSetupSrv','$state'
 
   };
   $scope.fetchAddonSetup();
-  
+
   $scope.saveAddonSetup = function(){
-    
+
     var saveAddonSetupSuccessCallback = function(data) {
         $scope.isLoading = false;
         $scope.$emit('hideLoader');
-        
-        
+
+
   };
-    
+
   $scope.invokeApi(adZestAddonSetupSrv.saveSetup, $scope.addonSetup,saveAddonSetupSuccessCallback);
 
   };

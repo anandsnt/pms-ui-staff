@@ -17,7 +17,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		/***************************CICO-11444 *****************************************/
 		$scope.encoderSelected = "";
 console.log($scope.encoderTypes);
-		if($scope.fromView == "checkin"){
+		if($scope.fromView === "checkin"){
 			$scope.isRemoteEncodingEnabled = $scope.reservationBillData.is_remote_encoder_enabled;
 		}else{
 			$scope.isRemoteEncodingEnabled = $scope.reservationData.reservation_card.is_remote_encoder_enabled;
@@ -34,7 +34,7 @@ console.log($scope.encoderTypes);
 
 		$scope.data = {};
 		//If the keypopup inviked from check-in flow - registration card)
-		if($scope.fromView == "checkin"){
+		if($scope.fromView === "checkin"){
 			reservationStatus = $scope.reservationBillData.reservation_status;
 			// Setup data for late checkout
 			$scope.data.is_late_checkout = false;
@@ -49,29 +49,30 @@ console.log($scope.encoderTypes);
 			$scope.data.roomNumber = $scope.reservationData.reservation_card.room_number;
 
 		}
-		
-    	if($scope.data.is_late_checkout) $scope.data.late_checkout_time = $scope.reservationData.reservation_card.late_checkout_time;
-    	
+
+    	if($scope.data.is_late_checkout) {
+    		$scope.data.late_checkout_time = $scope.reservationData.reservation_card.late_checkout_time;
+    	}
 		var statusMessage = $filter('translate')('KEY_CONNECTED_STATUS');
-    	that.setStatusAndMessage(statusMessage, 'success');	
+    	that.setStatusAndMessage(statusMessage, 'success');
     	// To check reservation status and select corresponding texts and classes.
-    	if(reservationStatus == 'CHECKING_IN' ){
+    	if(reservationStatus === 'CHECKING_IN' ){
 			$scope.data.reservationStatusText = $filter('translate')('KEY_CHECKIN_STATUS');
 			$scope.data.colorCodeClass = 'check-in';
 			$scope.data.colorCodeClassForClose = 'green';
 		}
-		else if(reservationStatus == 'CHECKEDIN' ){
+		else if(reservationStatus === 'CHECKEDIN' ){
 			$scope.data.reservationStatusText = $filter('translate')('KEY_INHOUSE_STATUS');
 			$scope.data.colorCodeClass = 'inhouse';
 			$scope.data.colorCodeClassForClose = 'blue';
 		}
-		else if(reservationStatus == 'CHECKING_OUT'){
+		else if(reservationStatus === 'CHECKING_OUT'){
 			$scope.data.reservationStatusText = $filter('translate')('KEY_CHECKOUT_STATUS');
 			$scope.data.colorCodeClass = 'check-out';
 			$scope.data.colorCodeClassForClose = 'red';
 		}
 		//TODO: include late checkout scenario
-		
+
 		//Based on different status, we switch between the views
 		$scope.deviceConnecting = false;
 		$scope.showPrintKeyOptions = false;
@@ -88,12 +89,12 @@ console.log($scope.encoderTypes);
 		that.numOfKeys = 0;
 		that.printKeyStatus = [];
 		that.isAdditional = false;
-		
+
 		//whether we need to create smartband along with key creation
 		that.isSmartbandCreateWithKeyWrite = $scope.isSmartbandCreateWithKeyWrite; //coming from popup initialization
 		//variable to maintain last successful ID from card reader, will use for smartband creation
 		that.lastSuccessfulCardIDReaded = '';
-                
+
                 if ($scope.keyType === 'New'){
                     $scope.buttonText = $filter('translate')('KEY_PRINT_BUTTON_TEXT');
                 } else {
@@ -106,16 +107,16 @@ console.log($scope.encoderTypes);
 			//Initally we check if the device is connected
 			$scope.showDeviceConnectingMessge();
 		}
-		
+
 
 	};
 
 	$scope.isPrintKeyEnabled = function(){
-		if ($scope.numberOfKeysSelected == 0){
+		if ($scope.numberOfKeysSelected === 0){
 			return false;
 		}
 		if ($scope.numberOfKeysSelected > 0){
-			if($scope.isRemoteEncodingEnabled && $scope.encoderSelected == ""){
+			if($scope.isRemoteEncodingEnabled && $scope.encoderSelected === ""){
 				return false
 			}
 			return true
@@ -127,17 +128,17 @@ console.log($scope.encoderTypes);
 	}
 	/*
 	* If the device is not connected, try the connection again after 1 sec.
-	* repeat the connection check for 10 seconds. 
+	* repeat the connection check for 10 seconds.
 	* If the connection still fails, show a device not connected status in the popup.
 	*/
 	var showDeviceNotConnected = function(){
-		//For 10 seconds, we will check the connectivity 
-		//and if still no connection found, 
+		//For 10 seconds, we will check the connectivity
+		//and if still no connection found,
 		//will display the device not connected screen
 		$scope.$emit('hideLoader');
 		var secondsAfterCalled = 0;
 		that.noOfErrorMethodCalled++;
-		secondsAfterCalled = that.noOfErrorMethodCalled * 1000;		
+		secondsAfterCalled = that.noOfErrorMethodCalled * 1000;
 		setTimeout(function(){
 			if(secondsAfterCalled <= that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK){ //10seconds
 				$scope.showDeviceConnectingMessge();
@@ -169,7 +170,7 @@ console.log($scope.encoderTypes);
 		$scope.showPrintKeyOptions = false;
 		var callBack = {
 			'successCallBack': showPrintKeyOptions,
-			'failureCallBack': showDeviceNotConnected			
+			'failureCallBack': showDeviceNotConnected
 		};
 		if(sntapp.cardSwipeDebug){
 			sntapp.cardReader.checkDeviceConnectedDebug(callBack);
@@ -184,7 +185,7 @@ console.log($scope.encoderTypes);
 	};
 	$scope.keySelected = function(index){
 		that.numOfKeys = 0;
-		$scope.numberOfKeysSelected = ($scope.numberOfKeysSelected == index) ? --$scope.numberOfKeysSelected : index;
+		$scope.numberOfKeysSelected = ($scope.numberOfKeysSelected === index) ? --$scope.numberOfKeysSelected : index;
 		that.numOfKeys = $scope.numberOfKeysSelected;
 		$scope.printedKeysCount = 0;
 		if(that.numOfKeys > 0){
@@ -193,7 +194,7 @@ console.log($scope.encoderTypes);
                     } else {
                         $scope.buttonText = $filter('translate')('KEY_DUPLICATE_BUTTON_TEXT_KEY1');
                     }
-                        
+
 		}
 		// 'printKeyStatus' is the dictionary used to monitor the printing & writing key status
 		var elementToPut = {};
@@ -207,9 +208,10 @@ console.log($scope.encoderTypes);
 		}
 	};
 
-	$scope.clickedPrintKey = function(){		
-		if($scope.numberOfKeysSelected == 0)
+	$scope.clickedPrintKey = function(){
+		if($scope.numberOfKeysSelected === 0) {
 			return;
+		}
 		//CICO-11444. If saflok_msr we we ll be connecting to remote encoders in the network
 		if($scope.isRemoteEncodingEnabled){
 			that.callKeyFetchAPI();
@@ -222,11 +224,11 @@ console.log($scope.encoderTypes);
 	};
 
 	that.getCardInfo = function(){
-		that.setStatusAndMessage($filter('translate')('KEY_READING_STATUS'), 'pending');	
+		that.setStatusAndMessage($filter('translate')('KEY_READING_STATUS'), 'pending');
 		$scope.$emit('showLoader');
 		var options = {
 			'successCallBack': that.callKeyFetchAPI,
-			'failureCallBack': that.showCardInfoFetchFailedMsg			
+			'failureCallBack': that.showCardInfoFetchFailedMsg
 		};
 
 		if(sntapp.cardSwipeDebug){
@@ -237,23 +239,23 @@ console.log($scope.encoderTypes);
 		}
 
 	};
-	
+
 	that.showCardInfoFetchFailedMsg = function(errorObject){
 		$scope.$emit('hideLoader');
-		//Asynchrounous action. so we need to notify angular that a change has occured. 
+		//Asynchrounous action. so we need to notify angular that a change has occured.
 		//It lets you to start the digestion cycle explicitly
 		$scope.$apply();
 		var message = $filter('translate')('KEY_UNABLE_TO_READ_STATUS') + errorObject['RVErrorDesc'];
 		that.showKeyPrintFailure(message);
 	};
-	/* 
+	/*
 	* Server call to fetch the key data.
 	*/
 	this.callKeyFetchAPI = function(cardInfo){
-		$scope.$emit('hideLoader'); 
+		$scope.$emit('hideLoader');
 		that.setStatusAndMessage($filter('translate')('KEY_GETTING_KEY_IMAGE_STATUS'), 'pending');
 		var reservationId = '';
-		
+
 		if($scope.viewFromBillScreen){
 			reservationId = $scope.reservationBillData.reservation_id;
 		} else {
@@ -272,7 +274,7 @@ console.log($scope.encoderTypes);
 	    	postParams.card_info = "";
 
 	    }
-            
+
         if ($scope.keyType === 'Duplicate'){
             postParams.is_additional = true;
         }
@@ -281,14 +283,14 @@ console.log($scope.encoderTypes);
 	    }
 	    $scope.invokeApi(RVKeyPopupSrv.fetchKeyFromServer, postParams, that.keyFetchSuccess, that.keyFetchFailed);
 
-	};	
+	};
 
 	/*
 	* Success callback for key fetching
 	*/
 	this.keyFetchSuccess = function(response){
 		$scope.$emit('hideLoader');
-		that.keyData = response;	
+		that.keyData = response;
 		that.printKeys();
 	};
 
@@ -305,11 +307,11 @@ console.log($scope.encoderTypes);
 
 	/*
 	* Calculate the keyWrite data from the API response and call the write key method for key writing.
-	*/	
+	*/
 	that.printKeys = function(){
 		var index = -1;
 		for(var i = 0; i < that.printKeyStatus.length; i++){
-			if(that.printKeyStatus[i].printed == false){
+			if(that.printKeyStatus[i].printed === false){
 				index = i + 1;
 				break;
 			}
@@ -322,7 +324,7 @@ console.log($scope.encoderTypes);
 			$scope.printedKeysCount = index;
 			$scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
 			//$scope.$apply();
-			if(that.numOfKeys == 0){
+			if(that.numOfKeys === 0){
 				that.showKeyPrintSuccess();
 				return true;
 			}
@@ -345,9 +347,9 @@ console.log($scope.encoderTypes);
 			//If keys left to print, call the cordova write key function to write the pending key
 			'successCallBack': function(data){
 				$scope.$emit('hideLoader');
-				that.setStatusAndMessage($filter('translate')('KEY_CREATED_STATUS'), 'success');							
+				that.setStatusAndMessage($filter('translate')('KEY_CREATED_STATUS'), 'success');
 				//if the setting of smart band create along with key creation enabled, we will create a smartband with open room charge
-    			if(that.isSmartbandCreateWithKeyWrite == "true" && that.lastSuccessfulCardIDReaded != ''){
+    			if(that.isSmartbandCreateWithKeyWrite === "true" && that.lastSuccessfulCardIDReaded !== ''){
     				var data = {};
     				//since there is not UI for adding first name & last name, we are setting as Blank, please see the comments of the story CICO-9315
     				data.first_name = '';
@@ -364,24 +366,24 @@ console.log($scope.encoderTypes);
 				$scope.printedKeysCount = index;
 				$scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
 				$scope.$apply();
-				if(that.numOfKeys == 0){
+				if(that.numOfKeys === 0){
 					that.showKeyPrintSuccess();
 					return true;
 				}
 
 
-				
+
 			},
 			'failureCallBack': function(errorObject){
 				$scope.$emit('hideLoader');
 				if(that.numOfKeys > 0){
-					that.setStatusAndMessage($filter('translate')('KEY_CREATION_FAILED_STATUS_LONG') + ': '  + errorObject['RVErrorDesc'], 'error');					
+					that.setStatusAndMessage($filter('translate')('KEY_CREATION_FAILED_STATUS_LONG') + ': '  + errorObject['RVErrorDesc'], 'error');
 				}
 				else {
 					var message = $filter('translate')('KEY_CREATION_FAILED_STATUS') + ': '  + errorObject['RVErrorDesc'];
 					that.showKeyPrintFailure(message);
 				}
-				$scope.$apply(); 
+				$scope.$apply();
 
 			},
 			arguments: keyData
@@ -393,12 +395,12 @@ console.log($scope.encoderTypes);
 			sntapp.cardReader.writeKeyData(options);
 		}
 
-	};	
+	};
 	/**
 	* Set the selected band type - fixed room/open charge to the band
 	*/
 	this.writeBandType = function(dataParams){
-		that.setStatusAndMessage($filter('translate')('WRITING_BAND_TYPE'), 'pending');	
+		that.setStatusAndMessage($filter('translate')('WRITING_BAND_TYPE'), 'pending');
 		var data = dataParams;
 		var index = dataParams.index;
 		var args = [];
@@ -412,25 +414,25 @@ console.log($scope.encoderTypes);
 		var options = {
 			//Cordova write success callback
 			'successCallBack': function(data){
-				$scope.$emit('hideLoader');	
+				$scope.$emit('hideLoader');
 				that.numOfKeys--;
-				if(that.numOfKeys == 0){
+				if(that.numOfKeys === 0){
 					$scope.$emit('hideLoader');
 					that.showKeyPrintSuccess();
 					return true;
 				}
-				that.setStatusAndMessage($filter('translate')('KEY_BAND_CREATED_SUCCESSFULLY'), 'success');					
+				that.setStatusAndMessage($filter('translate')('KEY_BAND_CREATED_SUCCESSFULLY'), 'success');
 				that.printKeyStatus[index-1].printed = true;
 				$scope.printedKeysCount = index;
 				$scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
-				$scope.$apply();								
-				return;				
+				$scope.$apply();
+				return;
 			},
 			'failureCallBack': function(errorObject){
 				$scope.$emit('hideLoader');
 				that.numOfKeys--;
-				if(that.numOfKeys > 0){		
-					that.setStatusAndMessage($filter('translate')('KEY_BAND_CREATED_FAILED_WRITING_BANDTYPE') + ': ' + errorObject['RVErrorDesc'], 'error');					
+				if(that.numOfKeys > 0){
+					that.setStatusAndMessage($filter('translate')('KEY_BAND_CREATED_FAILED_WRITING_BANDTYPE') + ': ' + errorObject['RVErrorDesc'], 'error');
 					that.printKeyStatus[index-1].printed = true;
 					$scope.printedKeysCount = index;
                                         $scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
@@ -438,9 +440,9 @@ console.log($scope.encoderTypes);
 				}
 				else {
 					var message = $filter('translate')('KEY_BAND_CREATED_FAILED_WRITING_BANDTYPE') + ': '  + errorObject['RVErrorDesc'];
-					that.showKeyPrintFailure(message);					
-				}				
-				return;				
+					that.showKeyPrintFailure(message);
+				}
+				return;
 			},
 			arguments: args
 		};
@@ -451,7 +453,7 @@ console.log($scope.encoderTypes);
 			sntapp.cardReader.setBandType(options);
 		}
 
-	};		
+	};
 	/**
 	* function used to add smartband, mainly for smartband creation while key writing
 	*/
@@ -471,29 +473,29 @@ console.log($scope.encoderTypes);
 
 		//failure call back of smartband's api call for creation
 		var failureCallbackOfAddNewSmartband = function(errorMessage){
-			that.setStatusAndMessage($filter('translate')('KEY_CREATED_BAND_ADDING_FAILED') + ': ' + errorMessage, 'error');			
+			that.setStatusAndMessage($filter('translate')('KEY_CREATED_BAND_ADDING_FAILED') + ': ' + errorMessage, 'error');
 			$scope.$emit('hideLoader');
 			that.numOfKeys--;
 			if(that.numOfKeys > 0){
 				that.printKeyStatus[index-1].printed = true;
 				$scope.printedKeysCount = index;
 				$scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
-				$scope.$apply();			
+				$scope.$apply();
 			}
 			else {
 				var message = $filter('translate')('KEY_CREATED_BAND_ADDING_FAILED') + ': ' + errorMessage;
-				that.showKeyPrintFailure(message);				
+				that.showKeyPrintFailure(message);
 			}
-		};			
+		};
 		var reservationId = '';
 		if($scope.viewFromBillScreen){
 			reservationId = $scope.reservationBillData.reservation_id;
 		} else {
 			reservationId = $scope.reservationData.reservation_card.reservation_id;
-		}		
+		}
 		data.index = index;
-		data.reservationId = reservationId;		
-		$scope.invokeApi(RVKeyPopupSrv.addNewSmartBand, (data), successCallbackOfAddNewSmartband_, failureCallbackOfAddNewSmartband);	
+		data.reservationId = reservationId;
+		$scope.invokeApi(RVKeyPopupSrv.addNewSmartBand, (data), successCallbackOfAddNewSmartband_, failureCallbackOfAddNewSmartband);
 	};
 
 	var showPrintKeyOptions = function (status){
@@ -542,7 +544,7 @@ console.log($scope.encoderTypes);
 		//TODO:verfiy if required
 		//$scope.$apply();
 	};
-	
+
 	/*
 	* Show the key print success message
 	*/
@@ -555,7 +557,7 @@ console.log($scope.encoderTypes);
 	*/
 	this.showKeyPrintFailure = function(message){
 		$scope.$emit('hideLoader');
-		if(typeof message == 'undefined'){
+		if(typeof message === 'undefined'){
 			var message = $filter('translate')('KEY_CREATION_FAILED_STATUS');
 		}
 		$scope.pressedCancel(message);
@@ -573,14 +575,14 @@ console.log($scope.encoderTypes);
 	// To handle close button click
 	$scope.goToStaycard = function(){
 		$scope.closeDialog();
-		$state.go('rover.reservation.staycard.reservationcard.reservationdetails', 
-				{"id": $scope.reservationBillData.reservation_id, 
+		$state.go('rover.reservation.staycard.reservationcard.reservationdetails',
+				{"id": $scope.reservationBillData.reservation_id,
 				"confirmationId": $scope.reservationBillData.confirm_no, "isrefresh": true});
-		
+
 	};
 	$scope.goToSearch = function(){
 		$scope.closeDialog();
 		$state.go('rover.search');
-		
+
 	};
 }]);

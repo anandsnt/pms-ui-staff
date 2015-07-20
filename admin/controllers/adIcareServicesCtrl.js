@@ -7,7 +7,7 @@ function($scope, $rootScope, $state,  $stateParams, ADICareServicesSrv) {
 	/*
     * Success callback of render
     * @param {object} icare service details
-    */    
+    */
     $scope.successCallbackRender = function(data){
     	$scope.$emit('hideLoader');
     	$scope.icare = data;
@@ -23,7 +23,7 @@ function($scope, $rootScope, $state,  $stateParams, ADICareServicesSrv) {
 	/**
     * To handle save button action
     *
-    */ 
+    */
     var successCallbackSave = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = "";
@@ -40,6 +40,6 @@ function($scope, $rootScope, $state,  $stateParams, ADICareServicesSrv) {
     	$scope.invokeApi(ADICareServicesSrv.saveIcareServices, data , successCallbackSave, failureCallbackSave);
 
     };
-	
+
 }]);
 

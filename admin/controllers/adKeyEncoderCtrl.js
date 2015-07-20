@@ -26,7 +26,7 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 	$scope.loadTable = function(){
 		$scope.tableParams = new ngTableParams({
 		        page: 1,  // show first page
-		        count: $scope.displyCount, // count per page
+		        count: $scope.displyCount // count per page
 		        /*sorting: {
 		            rate: 'asc' // initial sorting
 		        }*/
@@ -54,7 +54,7 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 
 	$scope.editEncoder = function(id, index) {
 		console.log(id);
-	
+
 		$scope.encoderData = {};
 		$scope.currentClickedElement = index;
 		$scope.isAddMode = false;
@@ -63,7 +63,7 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 			console.log($scope.encoderData);
 			$scope.$emit('hideLoader');
 		};
-		
+
 		var data = {
 			"id" : id
 		};
@@ -83,13 +83,13 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 				$scope.data[(l - 1)].encoder_id = $scope.encoderData.encoder_id;
 				$scope.data[(l - 1)].enabled = $scope.encoderData.enabled;
 				$scope.reloadTable();
-			} else {				
+			} else {
 				//To update data with new value
 				$scope.data[parseInt($scope.currentClickedElement)].description = $scope.encoderData.description;
 				$scope.data[parseInt($scope.currentClickedElement)].location = $scope.encoderData.location;
 				$scope.data[parseInt($scope.currentClickedElement)].encoder_id = $scope.encoderData.encoder_id;
 				$scope.data[parseInt($scope.currentClickedElement)].enabled = $scope.encoderData.enabled;
-				
+
 			}
 			$scope.currentClickedElement = -1;
 		};
@@ -106,9 +106,10 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 
 
 	$scope.getTemplateUrl = function(index, id) {
-		if ( typeof index === "undefined" || typeof id === "undefined")
+		if ( typeof index === "undefined" || typeof id === "undefined") {
 			return "";
-		if ($scope.currentClickedElement == index) {
+		}
+		if ($scope.currentClickedElement === index) {
 			return "/assets/partials/keyEncoders/adEncoderEdit.html";
 		}
 	};

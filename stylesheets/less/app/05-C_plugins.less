@@ -464,7 +464,7 @@
 						left: 20px;
 						top: 80px; 
 						.calc-width(100, 20);
-						.calc-height(100, 100);
+						.calc-height(100, 150);
 
 						li {
 							margin: 0 20px 10px 0;
@@ -510,6 +510,16 @@
 							top: 0;
 							right: 7px;
 							bottom: 0;
+						}
+					}
+
+					.search-pagination {
+						p { .pull-left; }
+						
+						.button { 
+							font-size: 16px;
+							line-height: 40px;
+							.size(40px, 120px); 
 						}
 					}
 				}
@@ -3825,6 +3835,77 @@
 				}
 			}
 
+			/* Group checkin ***/
+			&.group-checkin {
+				width: 320px;
+
+				.icon-popup-alert,
+				.icon-popup-success { margin: 10px auto; }
+
+				.message {
+					&.green { color: @green; }
+					&.red { color: @red; }
+				}
+
+				.text {
+					strong {
+						font-weight: 600;
+						color: @textColor;
+					}
+				}
+
+				.notice { margin-bottom: 10px; }
+
+				.feedback {
+					display: table;
+					margin-bottom: 10px;
+					.square(100%);
+
+					.succeeded {
+						display: table-cell;
+						vertical-align: middle;
+						text-align: center;
+						padding: 20px;
+						background-color: @green;
+						.box-shadow(inset -2px 0 3px rgba(0,0,0,.1));
+						.size(100%, 40%);
+
+						.message { color: @white; }
+					}
+
+					.failed {
+						display: table-cell;
+						padding: 20px;
+						.size(100%, 60%);
+
+						.scrollable {
+							position: relative;
+							padding: 0;
+							max-height: 140px;
+						}
+
+						.wrapper { padding: 10px; }
+
+						.iScrollIndicator { background: rgba(0,0,0,.1); }
+
+						li {
+							font-size: 14px;
+							text-align: left;
+							border-bottom: 1px solid rgba(0,0,0,.1);
+
+							span { .pull-right; }
+
+							&:last-child { border-bottom: 0; }
+						}
+					}
+				}	
+
+				&.has-failures { 
+					width: 540px; 
+					padding: 0;
+				}
+			}
+
 			/* StayCard Notes / Actions ***/
 			&.staycard-notes,
 			&.staycard-actions {
@@ -4152,6 +4233,59 @@
 						margin: 0 auto;
 						width: auto;
 						.show;
+					}
+				}
+			}
+
+			/* Room status update ***/
+			&.update-room-status {
+				position: relative;
+				.square(100%);
+
+				#modal-close {
+					top: 0;
+					left: 0;
+				}
+
+				.h2 { margin-bottom: 10px; }
+
+				.entry { 
+					margin-bottom: 0;
+					.float;
+
+					.radio {
+						margin-bottom: 10px;
+						.calc-width(50, 5);
+						.pull-left;
+
+						&.checked { font-weight: 600; }
+
+						&:nth-child(odd) { margin-right: 10px; }
+					} 
+				}
+
+				.actions {
+					position: absolute;
+					bottom: 0;
+					left: 0;
+					width: 100%;
+					padding: 20px;
+					border-top: 1px solid rgba(0,0,0,.1);
+				}
+
+				@media only screen and (min-width: 600px) {
+					position: static;
+					width: 320px;
+					height: auto;
+
+					#modal-close {
+						top: -20px;
+						left: -20px;
+					}
+
+					.actions {
+						position: static;
+						padding: 10px 0 0 0;
 					}
 				}
 			}

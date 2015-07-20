@@ -1,4 +1,4 @@
-function ADBaseTableCtrl($scope, ngTableParams){	
+function ADBaseTableCtrl($scope, ngTableParams){
     BaseCtrl.call(this, $scope);
 
     $scope.displayCountList = [10, 25, 50, 100];
@@ -26,7 +26,7 @@ function ADBaseTableCtrl($scope, ngTableParams){
     $scope.$watch("filterType", function () {
         $scope.reloadTable();
         /*$scope.tableParams.page(1);
-    	$scope.tableParams.reload();*/       
+    	$scope.tableParams.reload();*/
     });
 
     $scope.searchEntered = function() {
@@ -50,14 +50,15 @@ function ADBaseTableCtrl($scope, ngTableParams){
     	var getParams = {};
 		getParams.per_page = $scope.displyCount;
 		getParams.page = tableParams.page();
-		if($scope.filterType != null && typeof $scope.filterType != "undefined")
+		if($scope.filterType !== null && typeof $scope.filterType !== "undefined") {
 			getParams.rate_type_id = $scope.filterType.id;
+        }
 		getParams.query = $scope.searchTerm;
 		var sortData = tableParams.sorting();
 
 		var sortField = Object.keys(sortData)[0]
 		getParams.sort_field = sortField;
-		getParams.sort_dir = sortData[sortField] == "desc"? false :true;
+		getParams.sort_dir = sortData[sortField] === "desc"? false :true;
 
 		return getParams;
 

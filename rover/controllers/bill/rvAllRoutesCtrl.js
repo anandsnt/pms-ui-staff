@@ -2,14 +2,14 @@ sntRover.controller('rvAllRoutesCtrl',['$scope','$rootScope','$filter','RVBillin
 	BaseCtrl.call(this, $scope);
 	$scope.isInitialPage = true;
 
-	
+
 
     var scrollerOptions = { preventDefault: false};
-    $scope.setScroller('routes', scrollerOptions);  
+    $scope.setScroller('routes', scrollerOptions);
 
     setTimeout(function(){
-                $scope.refreshScroller('routes'); 
-                }, 
+                $scope.refreshScroller('routes');
+                },
             500);
 
     /**
@@ -23,7 +23,7 @@ sntRover.controller('rvAllRoutesCtrl',['$scope','$rootScope','$filter','RVBillin
     	}else if(route.attached_billing_groups.length > 0){
             return route.attached_billing_groups[0].name ;
         }
-     
+
     }
     /**
     * function to get the charge type
@@ -33,8 +33,8 @@ sntRover.controller('rvAllRoutesCtrl',['$scope','$rootScope','$filter','RVBillin
             return 'CHARGE CODE(S)';
         }else {
             return 'BILLING GROUP(S)';
-        }      
-        
+        }
+
     }
     /**
     * function to delete route
@@ -55,6 +55,6 @@ sntRover.controller('rvAllRoutesCtrl',['$scope','$rootScope','$filter','RVBillin
             data.to_bill = $scope.routes[index].to_bill;
             $scope.invokeApi(RVBillinginfoSrv.deleteRoute, data, successCallback, errorCallback);
     }
-		
-	
+
+
 }]);

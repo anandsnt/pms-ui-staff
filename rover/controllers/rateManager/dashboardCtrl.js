@@ -23,7 +23,7 @@ sntRover
         value: 220
     },
     COLUMN_BORDER_WIDTH: {
-        enumerable: true, 
+        enumerable: true,
         value: 8 //20
     },
     TOP_BOTTOM_HEIGHT: {
@@ -46,7 +46,7 @@ sntRover
     // MUST else there will be problems with back button working
     $vault.set('searchType', '');
 
-    /* UI options like column width are computed here 
+    /* UI options like column width are computed here
        A property, and a function to compute the same are given below
     */
     /*var DEFAULT_COLUMN_WIDTH = 200,
@@ -78,14 +78,14 @@ sntRover
         tableHeight: rateGridDefaults.DEFAULT_TABLE_WIDTH,
         columnWidth: rateGridDefaults.DEFAULT_COLUMN_WIDTH,
         tableWidth: rateGridDefaults.DEFAULT_TABLE_WIDTH,
-        isIpad: navigator.userAgent.match(/iPad/i) != null
+        isIpad: navigator.userAgent.match(/iPad/i) !== null
     };
 
     var title = $filter('translate')('RATE_MANAGER_TITLE');
 
 	$scope.setTitle(title);
     $scope.heading = title;
-	
+
     $scope.$emit("updateRoverLeftMenu","rateManager");
 
     $scope.displayMode = "CALENDAR";
@@ -93,10 +93,10 @@ sntRover
     var defaultDateRange = 7;
 
     $scope.backbuttonEnabled = false;
-    
+
     //left side menu class, based on which it will appear or not
     $scope.currentLeftMenuClass = 'slide_right';
-    
+
     $scope.currentFilterData = new Model({
         filterConfigured: false,
         begin_date: '',
@@ -109,9 +109,9 @@ sntRover
         rates: [],
         rates_selected_list: [],
         name_cards: [],
-        selected_date_range: '', 
+        selected_date_range: '',
         allRates: []
-    });  
+    });
 
     var computeColWidth = function(){
         var FILTER_OPTIONS_WIDTH = rateGridDefaults.FILTER_OPTIONS_WIDTH,
@@ -120,27 +120,28 @@ sntRover
             TOP_BOTTOM_HEIGHT = rateGridDefaults.TOP_BOTTOM_HEIGHT;
 
         var totalwidth = $window.innerWidth - FILTER_OPTIONS_WIDTH - FIRST_COLUMN_WIDTH; //Adjusting for left side .
-  
+
         var mywidth = totalwidth/parseInt($scope.currentFilterData.zoom_level_selected);
         var numColumns = new Date($scope.currentFilterData.end_date) - new Date($scope.currentFilterData.begin_date);
-        
+
         numColumns = numColumns/(24*60*60*1000) + 1;
-        
+
         if (numColumns < parseInt($scope.currentFilterData.zoom_level_selected)){
           numColumns = parseInt($scope.currentFilterData.zoom_level_selected);
         }
 
         var columsTotalWidth = numColumns * mywidth;
 
-        if ( columsTotalWidth < totalwidth) columsTotalWidth = totalwidth; //@minimum, table should cover full view.
-        
+        if ( columsTotalWidth < totalwidth) {
+        columsTotalWidth = totalwidth; //@minimum, table should cover full view.
+        }
         $scope.uiOptions.tableWidth = parseInt(FIRST_COLUMN_WIDTH + columsTotalWidth);
         $scope.uiOptions.tableHeight = $window.innerHeight - TOP_BOTTOM_HEIGHT;
         $scope.uiOptions.columnWidth = parseInt(mywidth);
-        $scope.uiOptions.isIpad = navigator.userAgent.match(/iPad/i) != null;
+        $scope.uiOptions.isIpad = navigator.userAgent.match(/iPad/i) !== null;
     },
     computeColWidthOnResize = _.throttle(computeColWidth, rateGridDefaults.RESIZE_DEBOUNCE_INTERVAL, { leading: true, trailing: false });
-        
+
     $scope.$on("computeColumWidth", computeColWidthOnResize);
 
     $scope.ratesDisplayed = [];
@@ -158,7 +159,7 @@ sntRover
         $scope.$broadcast("showRatesBtnClicked");
         $scope.$broadcast("updateRateCalendar");
         $scope.$broadcast("updateOccupancyGraph");
-        
+
     };
     /**
     * Click handler for back button from room type calendar view
@@ -179,7 +180,7 @@ sntRover
     * function to handle left side menu toggling
     */
     $scope.toggleLeftMenu = function()   {
-      if ($scope.currentLeftMenuClass == 'slide_right'){
+      if ($scope.currentLeftMenuClass === 'slide_right'){
         $scope.currentLeftMenuClass = 'slide_left';
       }
       else{
