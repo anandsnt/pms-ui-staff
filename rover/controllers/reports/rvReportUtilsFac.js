@@ -165,6 +165,7 @@ sntRover.factory('RVReportUtilsFac', [
             'DUE_OUT_DEPARTURES' : true,
             'INCLUDE_NEW'        : true,
             'INCLUDE_BOTH'       : true,
+            'EXCLUDE_NON_GTD'    : true,
             'SHOW_RATE_ADJUSTMENTS_ONLY' : true,
             'INCLUDE_TAX'        : true
         };
@@ -200,6 +201,11 @@ sntRover.factory('RVReportUtilsFac', [
             // if filter value is either of these, must include when report submit
             if ( { 'DEPOSIT_PAID':1, 'DEPOSIT_DUE':1, 'DEPOSIT_PAST':1 }[filter.value] ) {
                 mustSend = true;
+            };
+
+            // if filter value is either of these, must include when report submit
+            if ( objRef['title'] == __reportNames['FORECAST_GUEST_GROUPS'] ) {
+                objRef['hasGeneralOptions']['title'] = filter.description;
             };
 
             objRef['hasGeneralOptions']['data'].push({
