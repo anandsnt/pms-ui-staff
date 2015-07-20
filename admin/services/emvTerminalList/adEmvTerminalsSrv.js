@@ -1,5 +1,5 @@
 admin.service('ADEmvTerminalsSrv',['$q', 'ADBaseWebSrv','ADBaseWebSrvV2', function($q, ADBaseWebSrv, ADBaseWebSrvV2){
-   
+
    /*
 	* service class for emv terminal related operations
 	*/
@@ -7,11 +7,11 @@ admin.service('ADEmvTerminalsSrv',['$q', 'ADBaseWebSrv','ADBaseWebSrvV2', functi
    /*
     * getter method to fetch emv terminal list
     * @return {object} room list
-    */	
+    */
 	this.fetchItemList = function(){
 		var deferred = $q.defer();
-		var url = '/api/emv_terminals';	
-		
+		var url = '/api/emv_terminals';
+
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		},function(errorMessage){
@@ -24,12 +24,12 @@ admin.service('ADEmvTerminalsSrv',['$q', 'ADBaseWebSrv','ADBaseWebSrvV2', functi
    /*
     * method to delete emv terminal
     * @param {integer} clicked emv terminal's id
-    */	
+    */
 	this.deleteItem = function(data){
 		var id = data.item_id;
 		var deferred = $q.defer();
 		var url =  "/api/emv_terminals/" + id ;
-		
+
 		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 			deferred.resolve(data);
 		},function(errorMessage){
@@ -81,5 +81,5 @@ admin.service('ADEmvTerminalsSrv',['$q', 'ADBaseWebSrv','ADBaseWebSrvV2', functi
 		});
 		return deferred.promise;
 	}
-  
+
 }]);

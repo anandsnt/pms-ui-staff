@@ -11,8 +11,8 @@ sntRover.controller('RVHkAppCtrl', [
 		// default no top filters
 		// Moved this from the inner controller (RVHkRoomStatusCtrl) to persist user selection between states
 		// Requirement :  CICO-8620 QA Comments
-		// When switching from Employee view to All, 
-		// updating a room status and going back to the rooms list, the rooms list has gone back to Employee view. 
+		// When switching from Employee view to All,
+		// updating a room status and going back to the rooms list, the rooms list has gone back to Employee view.
 		// It should stay in ALL view unless the user navigates to a different menu item or manually changes the selection criteria.
 		$scope.topFilter = {
 			byEmployee: -1

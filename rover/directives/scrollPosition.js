@@ -2,7 +2,7 @@ sntRover.directive('scrollPosition', function ($window) {
     return {
         restrict: 'A',
         link: function (scope, element, attrs, opt) {
-            var isIpad = navigator.userAgent.match(/iPad/i) != null;
+            var isIpad = navigator.userAgent.match(/iPad/i) !== null;
             if (isIpad){
                 try {
                    /* $(element)[0].addEventListener('touchmove', function(){
@@ -12,13 +12,13 @@ sntRover.directive('scrollPosition', function ($window) {
                             console.log(scope.myScroll.getScrollY());
                         }
                     });*/
-                    
+
                 } catch(err){
-                    
+
                 }
             } else {
           var w = angular.element($window);
-            if (typeof scope.initScrollBind == 'function'){
+            if (typeof scope.initScrollBind === 'function'){
                 w.bind('scroll ng-iscroll', function (event) {
                         scope.initScrollBind();
                 });

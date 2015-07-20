@@ -1,7 +1,7 @@
 	(function() {
 		var checkinDetailsService = function() {
 
-			this.responseData = {};		
+			this.responseData = {};
 			this.setResponseData = function (responseData){
 				this.responseData = responseData;
 			}

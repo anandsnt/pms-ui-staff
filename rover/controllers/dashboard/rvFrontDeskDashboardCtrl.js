@@ -11,12 +11,12 @@ sntRover.controller('RVfrontDeskDashboardController',['$scope', '$rootScope', fu
     $scope.$emit("UpdateHeading", 'DASHBOARD_FRONTDESK_HEADING');
 
     // we are hiding the search results area
-    $scope.$broadcast("showSearchResultsArea", false);     
+    $scope.$broadcast("showSearchResultsArea", false);
 
     $scope.tomorrow = tzIndependentDate ($rootScope.businessDate);
-    $scope.tomorrow.setDate ($scope.tomorrow.getDate() + 1); 
+    $scope.tomorrow.setDate ($scope.tomorrow.getDate() + 1);
     $scope.dayAfterTomorrow = tzIndependentDate ($scope.tomorrow);
-    $scope.dayAfterTomorrow.setDate ($scope.tomorrow.getDate() + 1); 
+    $scope.dayAfterTomorrow.setDate ($scope.tomorrow.getDate() + 1);
 
   	/*
   	*    a recievable function hide/show search area.
@@ -36,8 +36,8 @@ sntRover.controller('RVfrontDeskDashboardController',['$scope', '$rootScope', fu
     *   @param {array of Objects} data search results
     */
     $scope.$on("updateDashboardSearchDataFromExternal", function(event, data){
-        $scope.$broadcast("updateDataFromOutside", data);  
-        $scope.$broadcast("showSearchResultsArea", true);        
+        $scope.$broadcast("updateDataFromOutside", data);
+        $scope.$broadcast("showSearchResultsArea", true);
     });
 
     /**
@@ -47,11 +47,11 @@ sntRover.controller('RVfrontDeskDashboardController',['$scope', '$rootScope', fu
     *   @param {array of Objects} data search results
     */
     $scope.$on("updateDashboardSearchTypeFromExternal", function(event, type){
-        $scope.$broadcast("updateReservationTypeFromOutside", type);      
-    }); 
+        $scope.$broadcast("updateReservationTypeFromOutside", type);
+    });
 
     //show Latecheckout icon
-    $scope.shouldShowLateCheckout = true; 
+    $scope.shouldShowLateCheckout = true;
     $scope.shouldShowQueuedRooms  = true;
     //scroller is not appearing after coming back from other screens
     setTimeout(function(){

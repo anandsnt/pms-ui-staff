@@ -14,7 +14,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
       });
       angular.forEach(selectedIds, function (id, index1) {
         angular.forEach($scope.upsellData.room_types_list, function (room_types_list, index) {
-          if (room_types_list.value == id) {
+          if (room_types_list.value === id) {
             $scope.upsellData.room_types_list.splice(index, 1);
           }
         });
@@ -89,13 +89,13 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
     $scope.clickAddRoomType = function () {
       //While addig a room type, making its max_los defaults to 0.
       angular.forEach($scope.upsellData.room_types, function (item, index) {
-        if (item.id == $scope.upsellData.selected_room_type) {
+        if (item.id === $scope.upsellData.selected_room_type) {
           item.max_los = 0;
         }
       });
       //Removing the selected room type from dropdown of room type list.
       angular.forEach($scope.upsellData.room_types_list, function (item, index) {
-        if (item.value == $scope.upsellData.selected_room_type) {
+        if (item.value === $scope.upsellData.selected_room_type) {
           $scope.upsellData.room_types_list.splice(index, 1);
         }
       });
@@ -110,7 +110,9 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
     var isRoomTypesSelected = function () {
       $scope.upsellData.isRoomTypesSelectedFlag = false;
       angular.forEach($scope.upsellData.room_types, function (item, index) {
-        if (item.max_los !== '') $scope.upsellData.isRoomTypesSelectedFlag = true;
+        if (item.max_los !== '') {
+          $scope.upsellData.isRoomTypesSelectedFlag = true;
+        }
       });
     };
 
@@ -121,7 +123,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
       var data = {"value": value, "name": name};
       $scope.upsellData.room_types_list.push(data);
       angular.forEach($scope.upsellData.room_types, function (item, index) {
-        if (item.id == value) {
+        if (item.id === value) {
           item.max_los = '';
         }
       });

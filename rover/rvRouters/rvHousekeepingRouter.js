@@ -13,7 +13,7 @@ angular.module('housekeepingModule', [])
             templateUrl: '/assets/partials/housekeeping/rvHkRoomStatus.html',
             controller: 'RVHkRoomStatusCtrl',
             resolve: {
-                fetchPayload: function(RVHkRoomStatusSrv, $stateParams, $rootScope) { 
+                fetchPayload: function(RVHkRoomStatusSrv, $stateParams, $rootScope) {
                     if (!!$stateParams && !!$stateParams.roomStatus) {
                         var filterStatus = {
                             'INHOUSE_DIRTY'         : ['dirty', 'stayover'],
@@ -48,6 +48,9 @@ angular.module('housekeepingModule', [])
                 },
                 floors: function(RVHkRoomStatusSrv) {
                     return RVHkRoomStatusSrv.fetchFloors();
+                },
+                hkStatusList: function(RVHkRoomStatusSrv) {
+                    return RVHkRoomStatusSrv.fetchHkStatusList();
                 }
             }
         });
@@ -103,7 +106,7 @@ angular.module('housekeepingModule', [])
                 allUnassigned: function(RVWorkManagementSrv, $stateParams) {
                     return RVWorkManagementSrv.fetchAllUnassigned({
                         date: $stateParams.date
-                    }); 
+                    });
                 },
                 activeWorksheetEmp: function(RVHkRoomStatusSrv) {
                     return RVHkRoomStatusSrv.fetchActiveWorksheetEmp();

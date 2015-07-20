@@ -1,35 +1,35 @@
 sntRover.controller('rvAccountTransactionsCtrl', [
-	'$scope', 
-	'$rootScope', 
-	'$filter', 
-	'$stateParams', 
-	'ngDialog', 
-	'rvAccountsConfigurationSrv', 
-	'RVReservationSummarySrv', 
-	'rvAccountTransactionsSrv', 
-	'RVChargeItems', 
-	'RVPaymentSrv', 
-	'RVReservationCardSrv', 
-	'RVBillCardSrv', 
-	'rvPermissionSrv', 
-	'$timeout', 
+	'$scope',
+	'$rootScope',
+	'$filter',
+	'$stateParams',
+	'ngDialog',
+	'rvAccountsConfigurationSrv',
+	'RVReservationSummarySrv',
+	'rvAccountTransactionsSrv',
+	'RVChargeItems',
+	'RVPaymentSrv',
+	'RVReservationCardSrv',
+	'RVBillCardSrv',
+	'rvPermissionSrv',
+	'$timeout',
 	'$window',
 	'$q',
-	function($scope, 
-		$rootScope, 
-		$filter, 
-		$stateParams, 
-		ngDialog, 
-		rvAccountsConfigurationSrv, 
-		RVReservationSummarySrv, 
-		rvAccountTransactionsSrv, 
-		RVChargeItems, 
-		RVPaymentSrv, 
-		RVReservationCardSrv, 
-		RVBillCardSrv, 
-		rvPermissionSrv, 
-		$timeout, 
-		$window, 
+	function($scope,
+		$rootScope,
+		$filter,
+		$stateParams,
+		ngDialog,
+		rvAccountsConfigurationSrv,
+		RVReservationSummarySrv,
+		rvAccountTransactionsSrv,
+		RVChargeItems,
+		RVPaymentSrv,
+		RVReservationCardSrv,
+		RVBillCardSrv,
+		rvPermissionSrv,
+		$timeout,
+		$window,
 		$q) {
 
 
@@ -178,7 +178,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				width = width + 200;
 			if($scope.incomingRoutingArrayCount > 0)
 				width = width + 275;
-			if($scope.clickedButton == 'checkinButton')
+			if($scope.clickedButton === 'checkinButton')
 				width = width + 230;
 			if($scope.reservationBillData.bills.length < 10)
 				width = width + 50;
@@ -195,7 +195,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		$scope.showDayRates = function(dayIndex) {
 
-			if ($scope.dayRates != dayIndex) {
+			if ($scope.dayRates !== dayIndex) {
 				$scope.dayRates = dayIndex;
 			} else {
 				$scope.dayRates = -1;
@@ -207,7 +207,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$scope.showActiveBill = function(index) {
 
 			var activeBillClass = "";
-			if (index == $scope.currentActiveBill) {
+			if (index === $scope.currentActiveBill) {
 				activeBillClass = "ui-tabs-active ui-state-active";
 			}
 			return activeBillClass;
@@ -248,8 +248,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 				//set bill array
 				var bills = [];
-				for (var i = 0; i < $scope.transactionsDetails.bills.length; i++)
+				for (var i = 0; i < $scope.transactionsDetails.bills.length; i++) {
 					bills.push(i + 1);
+				}
 				$scope.fetchedData.bill_numbers = bills;
 
 				ngDialog.open({
@@ -400,7 +401,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			$scope.errorMessage = "";
 			//hide edit and remove options in case type is  payment
-			// $scope.hideRemoveAndEdit  = (type == "PAYMENT") ? true : false;
+			// $scope.hideRemoveAndEdit  = (type === "PAYMENT") ? true : false;
 			$scope.selectedTransaction = {};
 			$scope.selectedTransaction.id = id;
 			$scope.selectedTransaction.desc = desc;
@@ -501,7 +502,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			var params = {
 				"bill_number": billNumber,
 				"to_address": mailTo,
-				"is_group": !!$scope.groupConfigData,
+				"is_group": !!$scope.groupConfigData
 			}
 
 			if (!!$scope.groupConfigData) {
@@ -544,7 +545,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$timeout(function() {
 
 					/*
-					 *	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+					 *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
 					 */
 
 					$window.print();
@@ -572,7 +573,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.callAPI(rvAccountTransactionsSrv.submitPaymentOnBill, {
 				successCallBack: successPayment,
 				params: $scope.diretBillpaymentData
-			});	
+			});
 		};
 
 		$rootScope.$on('arAccountCreated',function(){
@@ -612,7 +613,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		var successFetchOfAllReqdForTransactionDetails = function(data){
 			$scope.$emit('hideLoader');
 		};
-		
+
 		/**
 		 * when we failed in fetching any of the data required for transaction details,
 		 * failure call back of any of the initially required API
@@ -676,11 +677,11 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @return {[type]}                   [description]
 		 */
 		$scope.$on ('ACCOUNT_TAB_SWITCHED', function(event, currentTab){
-			if (currentTab === "TRANSACTIONS") {				
+			if (currentTab === "TRANSACTIONS") {
 				callInitialAPIs();
 			}
 		});
-		
+
 		/**
 		 * When there is a TAB switch, we will get this. We will initialize things from here
 		 * @param  {[type]} event             [description]
@@ -688,10 +689,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @return {[type]}                   [description]
 		 */
 		$scope.$on ('GROUP_TAB_SWITCHED', function(event, currentTab){
-			if (currentTab === "TRANSACTIONS") {				
+			if (currentTab === "TRANSACTIONS") {
 				callInitialAPIs();
 			}
-		});		
+		});
 
 	}
 ]);

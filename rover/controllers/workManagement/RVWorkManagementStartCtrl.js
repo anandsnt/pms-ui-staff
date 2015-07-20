@@ -47,7 +47,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             newSheet: {
                 user_id: "",
                 work_type_id: $scope.workTypes[0].id, // Default to daily cleaning [Assuming it comes in as first entry]
-                date: $rootScope.businessDate,
+                date: $rootScope.businessDate
             },
             assignRoom: {
                 user_id: "",
@@ -160,7 +160,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
         $scope.workManagementSearch = function(refresh) {
             /**
             * Single digit search for room number will be initiated based on the settings in admin
-            * Ref Story: CICO-10323 
+            * Ref Story: CICO-10323
             */
             if(isSearchOnSingleDigit($scope.stateVariables.searchQuery) && $scope.stateVariables.searchQuery.length < 3){
                 return false;

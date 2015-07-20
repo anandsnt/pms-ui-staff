@@ -1,21 +1,21 @@
 
-var admin = angular.module('admin', 
+var admin = angular.module('admin',
 	['ui.sortable',
-	'ui.router', 
-	'ng-iscroll', 
-	'ngDragDrop', 
+	'ui.router',
+	'ng-iscroll',
+	'ngDragDrop',
 	'ngTable',
-	'ngDialog', 
-	'ngSanitize', 
-	'pascalprecht.translate', 
-	'adminModuleOne', 
+	'ngDialog',
+	'ngSanitize',
+	'pascalprecht.translate',
+	'adminModuleOne',
 	'adminModuleTwo',
-	'ui.date', 
-	'qtip2', 
-	'sharedHttpInterceptor', 
-	'orientationInputBlurModule', 
-	'multi-select', 
-	'fauxMultiSelectModule', 
+	'ui.date',
+	'qtip2',
+	'sharedHttpInterceptor',
+	'orientationInputBlurModule',
+	'multi-select',
+	'fauxMultiSelectModule',
 	'eventReachedRootModule',
 	'ngClassWithoutAnimation']);
 
@@ -24,7 +24,7 @@ admin.config(function ($httpProvider) {
   $httpProvider.interceptors.push('sharedHttpInterceptor');
 });
 
-admin.run(['$rootScope', '$state', '$stateParams','$location', function ($rootScope, $state, $stateParams, $location) {	
+admin.run(['$rootScope', '$state', '$stateParams','$location', function ($rootScope, $state, $stateParams, $location) {
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
 
@@ -40,9 +40,9 @@ admin.run(['$rootScope', '$state', '$stateParams','$location', function ($rootSc
 // function to add zeros(0) infront of a number, like 09 for 9 or 007 for 7
 function getLengthChangedNumber(lengthWanted, number) {
 
-	if ( typeof number === 'number')
+	if ( typeof number === 'number') {
 		number = number.toString();
-
+	}
 	var numberOfZerosToAppend = lengthWanted - number.length;
 	//if numberOfZerosToAppend is zero or less, nothing to do
 	if (numberOfZerosToAppend <= 0) {
@@ -102,7 +102,7 @@ function($rootScope, $scope, $attrs, $location) {
 	//store basic details as rootscope variables
 	$rootScope.adminRole = $attrs.adminRole;
 	$rootScope.hotelId = $attrs.hotelId;
-	$rootScope.isPmsConfigured = ($attrs.isPmsConfigured == 'true') ? true : false;
+	$rootScope.isPmsConfigured = ($attrs.isPmsConfigured === 'true') ? true : false;
 
 }]);
 

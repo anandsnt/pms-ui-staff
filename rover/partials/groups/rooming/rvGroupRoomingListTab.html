@@ -74,9 +74,19 @@
                 </div>
             </li>
         </li>
-        <li>
-            <button type="button" class="button grey" ng-hide="true">{{'GROUP_CHECK_IN'|translate}}</button> <!-- Replace class "grey" with "green" when rooms selected in the rooming list -->
-            <button type="button" class="button grey" ng-hide="true">{{'GROUP_CHECK_OUT'|translate}}</button> <!-- Replace class "grey" with "red" when rooms selected in the rooming list -->
+        <li ng-show="shouldShowCheckInCheckoutButton()">
+
+            <button type="button" class="button" ng-disabled="shouldDisableCheckinButton()" 
+            ng-click="groupCheckin()"
+            ng-class="{'grey': shouldDisableCheckinButton(), 'green': !shouldDisableCheckinButton()}">
+                {{'GROUP_CHECK_IN'|translate}}
+            </button> 
+
+            <button type="button" class="button" ng-hide="true" ng-disabled="shouldDisableCheckoutButton()" 
+            ng-class="{'grey': shouldDisableCheckoutButton(), 'red': !shouldDisableCheckoutButton()}">
+                {{'GROUP_CHECK_OUT'|translate}}
+            </button>
+
         </li>
         <li> <!-- Don't show until there are new rooms added in the rooming list -->
             <button type="button" class="button grey" ng-hide="true">{{'GROUP_AUTO_ASSIGN_ROOMS'|translate}}</button> <!-- Replace class "grey" with "brand-colors" when rooms selected in the rooming list -->
@@ -90,6 +100,11 @@
                 <span class="icons icon-print"></span>
                 {{'GROUP_PRINT'|translate}}
             </button>
+            <button type="button" class="batch button with-icon" ng-click="printRegistrationCards();" 
+                    ng-class="{'grey' : totalPickUpCount < 1,'brand-colors' : totalPickUpCount > 0}" 
+                    ng-disabled="totalPickUpCount < 1">
+                    <span class="icons icon-print"></span> {{'GROUP_BATCH'|translate}}
+                </button>
             <button type="button" class="button with-icon only-icon purple" ng-hide="true">
                 <span class="icons icon-save"></span>
                 {{'GROUP_DOWNLOAD'|translate}}
@@ -98,7 +113,7 @@
     </ul>
 </div>
 
-<div id="group-room-list-content" class="tab-details">
+<div id="group-room-list-content" class="tab-details" ng-class="{'no-print' : isPrintRegistrationCard}">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <!-- When no rooms in list -->
     <div class="no-content" ng-show="shouldShowNoReservations()">

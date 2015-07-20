@@ -17,8 +17,8 @@ admin.directive('adTextarea', function($timeout) {
             maxlength: '@maxlength',
             disabled: '=disabled'
 	    },
-    	templateUrl: '../../assets/directives/textArea/adTextArea.html'  
-	        
+    	templateUrl: '../../assets/directives/textArea/adTextArea.html'
+
 	   };
 
 });

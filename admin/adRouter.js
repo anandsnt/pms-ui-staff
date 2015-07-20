@@ -1,4 +1,4 @@
-admin.config([	
+admin.config([
 	'$stateProvider',
 	'$urlRouterProvider',
 	'$translateProvider',

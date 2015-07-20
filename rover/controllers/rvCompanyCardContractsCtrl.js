@@ -4,7 +4,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.highchartsNG = {};
 		$scope.contractList = {};
 		$scope.contractData = {};
-		$scope.rateValueTypes = [ { value:"%",name:"percent" },{ value: $rootScope.currencySymbol, name:"amount" } ];		
+		$scope.rateValueTypes = [ { value:"%",name:"percent" },{ value: $rootScope.currencySymbol, name:"amount" } ];
 		$scope.addData = {};
 
 		$scope.contractList.contractSelected = "";
@@ -56,7 +56,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 					tooltip: {
 						shared: true,
 						formatter: function() {
-							return 'ACTUAL <b>' + ((typeof this.points[0].y == 'undefined') ? '0' : this.points[0].y) + '</b>' + '<br/>CONTRACTED <b>' + ((typeof this.points[1] == 'undefined') ? '0' : this.points[1].y) + '</b>';
+							return 'ACTUAL <b>' + ((typeof this.points[0].y === 'undefined') ? '0' : this.points[0].y) + '</b>' + '<br/>CONTRACTED <b>' + ((typeof this.points[1] === 'undefined') ? '0' : this.points[1].y) + '</b>';
 						}
 					},
 					legend: {
@@ -85,7 +85,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 								'fontWeight': 'bold'
 							},
 							useHTML: true
-						},
+						}
 					},
 					yAxis: {
 						style: {
@@ -114,7 +114,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		}
 
 		var fetchContractsDetailsSuccessCallback = function(data) {
-			
+
 			$scope.contractData = data;
 			$scope.contractData.rates = [];
 			$scope.contractData.rates = ratesList;
@@ -122,8 +122,8 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			contractInfo = {};
 			$scope.contractData.contract_name = "";
 			/*
-			 *Nights pop up should be triggered only after contract details are saved 
-			 *and refetched in the case of add mode	
+			 *Nights pop up should be triggered only after contract details are saved
+			 *and refetched in the case of add mode
 			*/
 			if($scope.contractList.isAddMode){
 				ngDialog.open({
@@ -134,7 +134,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 						});
 				$scope.contractList.isAddMode = false;
 			}
-			
+
 
 			if (typeof $stateParams.type !== 'undefined' && $stateParams.type !== "") {
 				$scope.contractData.account_type = $stateParams.type;
@@ -146,7 +146,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			// Disable contracts on selecting history
 			$scope.hasOverlay = false;
 			angular.forEach($scope.contractList.history_contracts, function(item, index) {
-				if (item.id == $scope.contractList.contractSelected) {
+				if (item.id === $scope.contractList.contractSelected) {
 					$scope.hasOverlay = true;
 				}
 			});
@@ -162,7 +162,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		// To check contract list is empty
 		var checkContractListEmpty = function() {
 
-			if ($scope.contractList.current_contracts.length == 0 && $scope.contractList.future_contracts.length == 0 && $scope.contractList.history_contracts.length == 0) {
+			if ($scope.contractList.current_contracts.length === 0 && $scope.contractList.future_contracts.length === 0 && $scope.contractList.history_contracts.length === 0) {
 				$scope.hasOverlay = true;
 				$scope.contractData = {};
 			} else {
@@ -209,7 +209,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 					var lastYear = monthComponents[1];
 					var lastMonthIdx = $.inArray(lastMonth, months);
 					var thisMonth = months[(lastMonthIdx + 1) % 12];
-					var thisYear = lastMonthIdx == 11 ? parseInt(lastYear) + 1 : lastYear;
+					var thisYear = lastMonthIdx === 11 ? parseInt(lastYear) + 1 : lastYear;
 					$scope.categories.push(thisMonth + " " + thisYear);
 				}
 			}
@@ -246,7 +246,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		};
 		$scope.invokeApi(RVCompanyCardSrv.fetchRates, {}, fetchRatesSuccessCallback, fetchFailureCallback);
 
-		if ($stateParams.id != "add") {
+		if ($stateParams.id !== "add") {
 			$scope.invokeApi(RVCompanyCardSrv.fetchContractsList, {
 				"account_id": $stateParams.id
 			}, fetchContractsListSuccessCallback, fetchFailureCallback);
@@ -258,7 +258,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		 * Function to handle data change in 'Contract List'.
 		 */
 		$scope.$watch('contractList.contractSelected', function() {
-			if ($stateParams.id == "add") {
+			if ($stateParams.id === "add") {
 				var account_id = $scope.contactInformation.id;
 			} else {
 				var account_id = $stateParams.id;
@@ -269,7 +269,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 					"contract_id": $scope.contractList.contractSelected
 				}, fetchContractsDetailsSuccessCallback, fetchContractsDetailsFailureCallback);
 				angular.forEach($scope.contractList.history_contracts, function(item, index) {
-					if (item.id == $scope.contractList.contractSelected) {
+					if (item.id === $scope.contractList.contractSelected) {
 						$scope.hasOverlay = true;
 					}
 				});
@@ -316,7 +316,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 
 			$scope.contractList.contractSelected = data.id;
 			$scope.addData.contract_name = "";
-			
+
 		};
 
 		// To handle click on nights button
@@ -337,7 +337,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 					$scope.errorMessage = data;
 				};
 
-				if ($stateParams.id == "add") {
+				if ($stateParams.id === "add") {
 					var account_id = $scope.contactInformation.id;
 				} else {
 					var account_id = $stateParams.id;
@@ -365,7 +365,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			//Setup data for Add mode
 			$scope.hasOverlay = false;
 			$scope.contractList.isAddMode = true;
-			
+
 			$scope.addData.occupancy = [];
 			$scope.addData.begin_date = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
 			$scope.addData.contracted_rate_selected = "";
@@ -381,7 +381,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			if (typeof $stateParams.type !== 'undefined' && $stateParams.type !== "") {
 				$scope.addData.account_type = $stateParams.type;
 			}
-			
+
 		};
 		// Cancel Add New mode
 		$scope.CancelAddNewContract = function() {
@@ -410,12 +410,12 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 				$scope.errorMessage = data;
 			};
 
-			if ($stateParams.id == "add") {
+			if ($stateParams.id === "add") {
 				var account_id = $scope.contactInformation.id;
 			} else {
 				var account_id = $stateParams.id;
 			}
-			
+
 			if (account_id) {
 				$scope.invokeApi(RVCompanyCardSrv.addNewContract, {
 					"account_id": account_id,
@@ -451,7 +451,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			}
 			if (!dataUpdated) {
 				var data = dclone($scope.contractData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights']);
-				if ($stateParams.id == "add") {
+				if ($stateParams.id === "add") {
 					var account_id = $scope.contactInformation.id;
 				} else {
 					var account_id = $stateParams.id;
@@ -492,7 +492,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		 * on selecting "%" , rate value must be integer
 		 */
 		$scope.$watch('contractData.selected_type', function() {
-			if ($scope.contractData.selected_type == "percent") {
+			if ($scope.contractData.selected_type === "percent") {
 				$scope.contractData.rate_value = parseInt($scope.contractData.rate_value);
 			} else {
 				$scope.contractData.rate_value = parseFloat($scope.contractData.rate_value).toFixed(2);
@@ -504,7 +504,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		 * on selecting "%" , rate value must be integer
 		 */
 		$scope.$watch('addData.selected_type', function() {
-			if ($scope.addData.selected_type == "percent") {
+			if ($scope.addData.selected_type === "percent") {
 				$scope.addData.rate_value = parseInt($scope.addData.rate_value);
 			} else {
 				$scope.addData.rate_value = $scope.addData.rate_value ? parseFloat($scope.addData.rate_value).toFixed(2) : '';
