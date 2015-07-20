@@ -222,6 +222,53 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         };
 
         /**
+         * to get the room status css class
+         * @param {Object} - reservation
+         * @return {String} - css class
+         */
+        $scope.getRoomStatusClass = function(res) {
+            var mappedStatus = "";
+
+            //Please note: St - Status
+
+            if (res.room_service_status) {
+                if (res.room_service_status === 'OUT_OF_SERVICE' || 
+                    res.room_service_status === 'OUT_OF_ORDER') {
+                    return "room-grey";
+                }
+            }
+
+            if (res.reservation_status !== 'CHECKING_IN') {
+                return mappedStatus;
+            }
+            
+            if (res.room_ready_status === '') {
+                return mappedStatus;
+            }
+            
+            if (res.fostatus !== 'VACANT') {
+                mappedStatus += " room-red";
+                return mappedStatus;
+            }
+            
+            switch (res.room_ready_status) {
+                case "INSPECTED":
+                    mappedStatus += ' room-green';
+                    break;
+                case "CLEAN":
+                    mappedStatus += (res.checkin_inspected_only === "true") ? ' room-orange' : ' room-green';
+                    break;
+                case "PICKUP":
+                    mappedStatus += " room-orange";
+                    break;
+                case "DIRTY":
+                    mappedStatus += " room-red";
+                    break;
+            }
+            return mappedStatus;
+        };
+
+        /**
          * to run angular digest loop,
          * will check if it is not running
          * return - None
