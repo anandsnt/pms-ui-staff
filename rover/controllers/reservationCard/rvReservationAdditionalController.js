@@ -1,11 +1,14 @@
-sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope', 'RVReservationSummarySrv',
-	function($rootScope, $scope, RVReservationSummarySrv) {
+sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope', 'RVReservationSummarySrv', 'rvPermissionSrv',
+	function($rootScope, $scope, RVReservationSummarySrv, rvPermissionSrv) {
 		BaseCtrl.call(this, $scope);
 		$scope.additionalDetails = {
 			segmentAvailable: !!$scope.reservationParentData.demographics.segment,
-			hideDetails: true // TODO : make this flag true before sending to CR
-		}
-		$scope.reservationData = $scope.$parent.reservationData;
+			hideDetails: true
+		};
+		$scope.hasPermissionForCommissionUpdate = function(){
+			return rvPermissionSrv.getPermissionValue('UPDATE_COMMISSION');
+		}	
+		
 		$scope.isSegmentAutoComputed = function() {
 			var currentSegment = $scope.reservationParentData.demographics.segment,
 				aptSegment = "";
@@ -23,7 +26,6 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 		}
 
 		$scope.updateAdditionalDetails = function() {
-			console.log('updateAdditionalDetails', $scope.reservationParentData.demographics);
 			var updateSuccess = function(data) {
 				// Set the Reservation Type in the sntCode/app/assets/rover/partials/reservationCard/rvReservationCardPayment.html partial
 
@@ -50,7 +52,8 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 				'source_id': parseInt($scope.reservationParentData.demographics.source),
 				'market_segment_id': parseInt($scope.reservationParentData.demographics.market),
 				'booking_origin_id': parseInt($scope.reservationParentData.demographics.origin),
-				'segment_id': parseInt($scope.reservationParentData.demographics.segment)
+				'segment_id': parseInt($scope.reservationParentData.demographics.segment),
+				'commission_data':$scope.reservationData.reservation_card.commission_details
 			}, updateSuccess, updateFailure);
 		}
 
