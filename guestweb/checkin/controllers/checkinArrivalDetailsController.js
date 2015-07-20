@@ -1,5 +1,5 @@
 (function() {
-	var checkinArrivalDetailsController = function($scope, preCheckinSrv,$rootScope,$state,$modal) {
+	var checkinArrivalDetailsController = function($scope, preCheckinSrv,$rootScope,$state,$modal,$stateParams) {
 	
 	var init = function(){
 		  
@@ -22,6 +22,8 @@
 	        }
 	      }
 	    };
+	    $scope.checkinTime = (typeof $stateParams.time !=="undefined") ? $stateParams.time :"";
+	    
 	};
 	init();	
 
@@ -48,7 +50,13 @@
 
 		preCheckinSrv.postStayDetails(dataTosend).then(function(response) {
 					//$scope.isLoading = false;	
-					$state.go('preCheckinStatus');
+					// response.earlyCheckin = true
+					// if(response.earlyCheckin){
+					// 	$state.go('earlyCheckinOptions',{'time':'3 PM','charge':'60'});
+					// }
+					// else{
+						$state.go('preCheckinStatus');
+					// }
 				},function(){
 					$scope.netWorkError = true;
 					$scope.isLoading = false;
@@ -59,7 +67,7 @@
 
 var dependencies = [
 '$scope',
-'preCheckinSrv','$rootScope','$state','$modal',
+'preCheckinSrv','$rootScope','$state','$modal','$stateParams',
 checkinArrivalDetailsController
 ];
 

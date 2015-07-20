@@ -37,7 +37,7 @@
 			<div class="col-md-6 headtext centeralign pad-rt-60">
 				Early Check-in
 				<p class="subTitletext">
-					You have selected an <b>Early Check-in</b> Time (standard check-in time is 3 PM).You may check in early for a charge of $200.00,which will be added to your bill.
+					You have selected an <b>Early Check-in</b> Time (standard check-in time is {{checkinTime}}).You may check in early for a charge of {{currencySymbol}}{{earlyCheckinCharge}},which will be added to your bill.
 				</p>
 			</div>
 
@@ -49,7 +49,7 @@
 			<div class="col-md-6 pad-lf-60">
 				<form >
 				<input type="submit" class="col-xs-12 textBox  link-btn with-bg nextbtn early-checkin-button" ng-click="nextButtonClicked()" value="Purcahse Early Check-in"/>
-				<input type="submit" class="col-xs-12 textBox  link-btn with-bg nextbtn early-checkin-button gray-bg" ng-click="nextButtonClicked()" value="Change Arrival Time"/>
+				<input type="submit" class="col-xs-12 textBox  link-btn with-bg nextbtn early-checkin-button gray-bg" ng-click="changeArrivalTime()" value="Change Arrival Time"/>
 				
 				
 				</form>
