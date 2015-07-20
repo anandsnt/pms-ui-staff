@@ -19,16 +19,16 @@ sntRover.controller('RVHKGuestTabCtrl', [
 		Stayover - Show both departure date & departure time (if any)
 		Day use or Due out - Show departure time(or late check out time) alone. No need of showing date.
 		*/
-		$scope.checkOutReservation = function(){
-			console.log($scope.roomDetails);
-			$scope.roomDetails.current_hk_status = 'DIRTY';
+		$scope.checkOutReservation = function(){		
 			var Params = {
-				id:$scope.roomDetails.id
+				id:$scope.roomDetails.reservation_id
 			};
 			$scope.invokeApi(RVHkRoomDetailsSrv.postCheckOutReservation, Params, successCheckout, failureCheckout);
 		};
 		var successCheckout = function(){
+			$scope.roomDetails.current_hk_status = 'DIRTY';			
 			console.log("Success checkout");
+			$scope.$emit('hideloader');
 		};
 		var failureCheckout = function(){
 			console.log("failure checkout");
