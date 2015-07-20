@@ -6,7 +6,7 @@ admin.controller('adRoomListCtrl', ['$scope','ADRoomSrv', 'ngTableParams', '$fil
 	$scope.errorMessage = '';
 	//inheriting from base table controller
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
-	
+
 
 	$scope.fetchTableData = function($defer, params){
 		var getParams = $scope.calculateGetParams(params);
@@ -49,7 +49,7 @@ admin.controller('adRoomListCtrl', ['$scope','ADRoomSrv', 'ngTableParams', '$fil
 			$scope.data.splice(index, 1);
 			$scope.tableParams.page(1);
         	$scope.tableParams.reload();
-		}	
+		}
 	$scope.invokeApi(ADRoomSrv.deleteRoom, {'room_id': room_id}, successCallBack);
 	}
 	$scope.loadTable();

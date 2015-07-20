@@ -47,7 +47,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             newSheet: {
                 user_id: "",
                 work_type_id: $scope.workTypes[0].id, // Default to daily cleaning [Assuming it comes in as first entry]
-                date: $rootScope.businessDate,
+                date: $rootScope.businessDate
             },
             assignRoom: {
                 user_id: "",

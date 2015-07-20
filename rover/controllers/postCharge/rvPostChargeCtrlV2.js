@@ -297,8 +297,8 @@ sntRover.controller('RVPostChargeControllerV2',
 							break;
 
 						default:
-							if ( $scope.selectedChargeItem.count === 1 && lastInput != 1 ) {
-								if (input != '0') {
+							if ( $scope.selectedChargeItem.count === 1 && lastInput !== 1 ) {
+								if (input !== '0') {
 									$scope.selectedChargeItem.count = parseInt( input );
 								}
 							} else {

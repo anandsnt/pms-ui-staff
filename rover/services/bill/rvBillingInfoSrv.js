@@ -1,27 +1,27 @@
 sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', function($http, $q, BaseWebSrvV2, RVBaseWebSrv){
-   
+
 	this.fetchRoutes = function(reservationId){
 		var deferred = $q.defer();
 		var url = 'api/bill_routings/' + reservationId + '/attached_entities' ;
 			BaseWebSrvV2.getJSON(url).then(function(data) {
-				
+
 			   	 deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 
 		return deferred.promise;
-	};	
+	};
 
 	this.fetchAttachedCards = function(reservationId){
 		var deferred = $q.defer();
 		var url = 'api/bill_routings/' + reservationId + '/attached_cards' ;
 			BaseWebSrvV2.getJSON(url).then(function(data) {
-				
+
 			   	 deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 
 		return deferred.promise;
 	};
@@ -31,11 +31,11 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 		//var url = 'api/bill_routings/billing_groups?id=12847';
 		var url = 'api/bill_routings/billing_groups?id='+ data.id+'&to_bill='+data.to_bill + '&is_new=' + data.is_new;
 			BaseWebSrvV2.getJSON(url).then(function(data) {
-				
+
 			   	 deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 
 		return deferred.promise;
 	};
@@ -45,11 +45,11 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 		//var url = 'api/bill_routings/charge_codes?id=12847';
 		var url = 'api/bill_routings/charge_codes?id='+ data.id+'&to_bill='+data.to_bill + '&is_new=' + data.is_new;
 			BaseWebSrvV2.getJSON(url).then(function(data) {
-				
+
 			   	 deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 
 		return deferred.promise;
 	};
@@ -58,25 +58,25 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 		var deferred = $q.defer();
 		var url = '/api/bill_routings/billing_groups?is_default_routing=true'
 			BaseWebSrvV2.getJSON(url).then(function(data) {
-				
+
 			   	 deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 
 		return deferred.promise;
 
-	};  
+	};
 
 	this.fetchAllChargeCodes = function(){
 		var deferred = $q.defer();
 		var url = '/api/bill_routings/charge_codes?is_default_routing=true'
 			BaseWebSrvV2.getJSON(url).then(function(data) {
-				
+
 			   	 deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 
 		return deferred.promise;
 
@@ -86,15 +86,15 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 		var deferred = $q.defer();
 
 		var url = 'api/bill_routings/' + data.id + '/bills.json';
-		if(data.entity_type != "")
+		if(data.entity_type !== "") {
 			url = 'api/bill_routings/' + data.id + '/bills.json?entity_type='+data.entity_type;
-		
+		}
 		BaseWebSrvV2.getJSON(url).then(function(data) {
-			
+
 		   	 deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 
 		return deferred.promise;
 	};
@@ -103,11 +103,11 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 		var deferred = $q.defer();
 		var url = 'api/bill_routings/save_routing';
 			BaseWebSrvV2.postJSON(url, data).then(function(data) {
-				
+
 			   	 deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 
 		return deferred.promise;
 	};
@@ -119,7 +119,7 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 		   	 	deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 
 		return deferred.promise;
 	};
@@ -128,11 +128,11 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 		var deferred = $q.defer();
 		var url = 'api//bill_routings/delete_routing';
 			BaseWebSrvV2.postJSON(url, data).then(function(data) {
-				
+
 			   	 deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 
 		return deferred.promise;
 	};
@@ -140,15 +140,15 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 	this.fetchDefaultAccountRouting = function(params){
 
 		var deferred = $q.defer();
-			var url = (typeof params.entity_type !=="undefined" && params.entity_type != "") ?  
+			var url = (typeof params.entity_type !=="undefined" && params.entity_type !== "") ?
 			 '/api/default_account_routings/' + params.id+'?entity_type='+params.entity_type:
 			 '/api/default_account_routings/' + params.id;
 			BaseWebSrvV2.getJSON(url).then(function(data) {
-				
+
 			   	 deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 
 		return deferred.promise;
 	};
@@ -160,9 +160,9 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 			   	 deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 
 		return deferred.promise;
 	};
-   
+
 }]);

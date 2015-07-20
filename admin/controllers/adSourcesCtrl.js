@@ -40,7 +40,7 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', '$anchorScroll', '$t
     * To handle cancel click
     */
 	$scope.clickedCancel = function(){
-		if($scope.currentClickedElement != 'new'){
+		if($scope.currentClickedElement !== 'new'){
 			$scope.data.sources[$scope.currentClickedElement].name = $scope.preveousName;
 			$scope.preveousName = "";
 		}
@@ -77,9 +77,12 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', '$anchorScroll', '$t
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 		};
-		if(index === undefined) var data = $scope.data.sources[$scope.currentClickedElement];
-		else var data = $scope.data.sources[index];
-
+		if(index === undefined) {
+			var data = $scope.data.sources[$scope.currentClickedElement];
+		}
+		else {
+			var data = $scope.data.sources[index];
+		}
   		$scope.invokeApi(ADSourcesSrv.update, data, postSuccess);
    	};
    	/*

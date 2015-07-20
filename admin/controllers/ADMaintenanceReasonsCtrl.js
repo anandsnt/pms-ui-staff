@@ -13,7 +13,7 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
 		$scope.data = data;
 	};
 	$scope.invokeApi(ADMaintenanceReasonsSrv.fetch, {},fetchSuccessCallback);
-	
+
     /*
     * To render edit screen
     * @param {int} index index of selected Maintenance Reasons
@@ -29,15 +29,15 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
     * @param {string} id of the item
     */
 	$scope.getTemplateUrl = function(index){
-		if($scope.currentClickedElement === index){ 
+		if($scope.currentClickedElement === index){
 			 return "/assets/partials/maintenanceReasons/adMaintenanceReasonsEdit.html";
 		}
 	};
 	/*
     * To handle cancel click
-    */	
+    */
 	$scope.clickedCancel = function(){
-		if($scope.currentClickedElement != 'new'){
+		if($scope.currentClickedElement !== 'new'){
 			$scope.data.maintenance_reasons[$scope.currentClickedElement].name = $scope.preveousName;
 			$scope.preveousName = "";
 		}
@@ -93,6 +93,6 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
 		};
 		$scope.invokeApi(ADMaintenanceReasonsSrv.deleteItem, {'value':id }, successDeletionCallback);
 	};
-	
+
 }]);
 

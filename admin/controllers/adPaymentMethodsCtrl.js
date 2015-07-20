@@ -140,11 +140,11 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 					$scope.data.payments.push(data);
 				}
 			}
-			else if(!data.is_cc && $scope.currentClickedElement != -1){
+			else if(!data.is_cc && $scope.currentClickedElement !== -1){
 				// Edited from 'payments list' with 'is_cc = false'.
 				$scope.data.payments[parseInt($scope.currentClickedElement)] = data;
 	    	}
-	    	else if(data.is_cc && $scope.currentClickedElement != -1){
+	    	else if(data.is_cc && $scope.currentClickedElement !== -1){
 	    		// Edited from 'payments list' - made as 'is_cc = true' : moving data to 'credit card type list'.
 	    		// Remove data from $scope.data.payments[] list.
 	    		// push this data to $scope.data.credit_card_types[] list.
@@ -153,11 +153,11 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	    		// Active the toggle button for payment method -Credit card.
 	    		$scope.activeCCTab();
 	    	}
-	    	else if(data.is_cc && $scope.currentClickedElementCC != -1){
+	    	else if(data.is_cc && $scope.currentClickedElementCC !== -1){
 	    		// Edited from 'credit card type list' with 'is_cc = true'.
 	    		$scope.data.credit_card_types[parseInt($scope.currentClickedElementCC)] = data;
 	    	}
-	    	else if(!data.is_cc && $scope.currentClickedElementCC != -1){
+	    	else if(!data.is_cc && $scope.currentClickedElementCC !== -1){
 	    		// Edited from 'credit card type list'  - made as 'is_cc = false' : moving data to 'payments list'.
 	    		// Remove data from $scope.data.credit_card_types[] list.
 	    		// push this data to $scope.data.payments[] list.
@@ -171,10 +171,14 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 
     	var dataToSend = {};
 
-    	if($scope.currentClickedElement === "new") dataToSend = $scope.addData;
-		else dataToSend = $scope.editData;
+    	if($scope.currentClickedElement === "new") {
+    		dataToSend = $scope.addData;
+    	}
+		else {
+			dataToSend = $scope.editData;
+		}
 		// If we edit system defined credit card type - call api to update credit card.
-		if( $scope.currentClickedElementCC != -1 && dataToSend.is_system_defined ){
+		if( $scope.currentClickedElementCC !== -1 && dataToSend.is_system_defined ){
 			$scope.invokeApi(ADPaymentMethodsSrv.saveCreditCardMethod, dataToSend , successCallbackSaveCC);
 		}
 		// Else we call api to update payment types.
@@ -205,16 +209,18 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	 * @param {int} index of the selected payment method
 	 */
 	$scope.getTemplateUrl = function(index) {
-		if ( typeof index === "undefined")
+		if ( typeof index === "undefined") {
 			return "";
+		}
 		if ($scope.currentClickedElement === index) {
 			return "/assets/partials/paymentMethods/adEditPaymentMethod.html";
 		}
 	};
 
 	$scope.getTemplateUrlCC = function(index) {
-		if ( typeof index === "undefined")
+		if ( typeof index === "undefined") {
 			return "";
+		}
 		if ($scope.currentClickedElementCC === index) {
 			return "/assets/partials/paymentMethods/adEditPaymentMethod.html";
 		}

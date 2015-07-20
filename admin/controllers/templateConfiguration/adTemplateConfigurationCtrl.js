@@ -1,12 +1,12 @@
 admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelListSrv', 'ADHotelConfigurationSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout', '$location',
   function($scope, $state, ADHotelListSrv, ADHotelConfigurationSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
-	
+
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
-	
+
     /*
-    * Variables set to show/hide forms 
-    */ 	
+    * Variables set to show/hide forms
+    */
 	$scope.isAddmode = false;
 	$scope.isEditmode = false;
    /*
@@ -29,7 +29,7 @@ admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelList
 	$scope.editHotelConfiguration = function(index, hotelId){
 		// $scope.currentClickedElement = index;
 		// $scope.isEditmode = true;
-		
+
 		$scope.isAddmode = false;
 		$scope.errorMessage ="";
 		$scope.currentClickedElement = index;
@@ -42,18 +42,18 @@ admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelList
 			$scope.formTitle = data.hotel_name;//To show hotel name in title
 			$scope.isEditmode = true;
 			$scope.hotelConfig.theme = $scope.hotelConfig.existing_email_template_theme;
-			
+
 			for(var i = 0; i < $scope.hotelConfig.email_templates.length; i++){
 				$scope.hotelConfig.email_templates[i].selected = false;
-				if($scope.hotelConfig.existing_email_templates.indexOf($scope.hotelConfig.email_templates[i].id) != -1) {
+				if($scope.hotelConfig.existing_email_templates.indexOf($scope.hotelConfig.email_templates[i].id) !== -1) {
 					$scope.hotelConfig.email_templates[i].selected = true;
 				}
 			}
-			
-		};		
+
+		};
 		$scope.invokeApi(ADHotelConfigurationSrv.editHotelConfiguration,postData,editHotelConfigurationSuccessCallback);
 	};
-	
+
 	$scope.updateTemplateConfiguration = function(){
 		var updateHotelConfigurationSuccessCallback = function(){
 			$scope.$emit('hideLoader');
@@ -68,14 +68,14 @@ admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelList
 			}
 		});
 		var assignedTheme = $scope.hotelConfig.theme;
-		
+
 		var postData = {
 			"hotel_id": $scope.clickedHotel,
 			"hotel_theme" : assignedTheme,
 			"templates": assignedEmailTemplates
 		};
-		
-		
+
+
 		$scope.invokeApi(ADHotelConfigurationSrv.updateHotelConfiguration,postData,updateHotelConfigurationSuccessCallback);
 	};
 
@@ -86,10 +86,10 @@ admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelList
 	}
 	/*
 	 * to get the templates associated with the selected theme
-	 * 
+	 *
 	 */
 	$scope.displayThemeTemplates = function(){
-		
+
 		var data = {
 			"email_template_theme_id": $scope.hotelConfig.theme
 		};
@@ -99,6 +99,6 @@ admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelList
 		};
 		$scope.invokeApi(ADHotelConfigurationSrv.getTemplateThemes ,data, displayThemeCallback);
 	};
-   
+
 }]);
 

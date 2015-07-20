@@ -7,7 +7,7 @@ sntRover.directive('rvDropdown', function($timeout) {
             divStyle: '@divStyle',
 	        selboxStyle : '@selboxStyle',
             divClass: '@divClass',
-            selboxClass : '@selboxClass',            
+            selboxClass : '@selboxClass',
             required: '@required',
             id: '@id',
             label:'@label',
@@ -16,7 +16,7 @@ sntRover.directive('rvDropdown', function($timeout) {
             name:'@name',
             selectedId:'=selectedId'
 	    },
-    	templateUrl: '../../assets/directives/selectBox/rvDropdownbox.html' 
+    	templateUrl: '../../assets/directives/selectBox/rvDropdownbox.html'
     };
 
 });

@@ -78,7 +78,7 @@ var isAnyMatch = function(val, arr){
         }
     }
     return ret;
-};  
+};
 
 var getCurrencySign = function(currencyCode) {
     return CurrencyInfoMappings[currencyCode][1];
@@ -94,16 +94,16 @@ function isEmpty(obj) {
 
 
 var DateFormatInfoMappings = {
-    
+
     'MM-DD-YYYY': ['MM-dd-yyyy','mm-dd-yy'],
     'MM/DD/YYYY': ['MM/dd/yyyy','mm/dd/yy'],
     'DD-MM-YYYY': ['dd-MM-yyyy','dd-mm-yy'],
     'DD/MM/YYYY': ['dd/MM/yyyy','dd/mm/yy']
-    
+
 };
 
 var getDateFormat = function(dateFormat) {
-    
+
     if(typeof dateFormat === 'undefined'){
         return DateFormatInfoMappings['MM-DD-YYYY'][0];
     }

@@ -20,7 +20,7 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 		Object.defineProperties(this, {
 			isUpdating: defDec(false),
 			isResolved: defDec(false),
-			isDirty: defDec(false)		
+			isDirty: defDec(false)
 		});
 
 		for(var k in params) {
@@ -59,7 +59,7 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 			return val;
 		})(obj);
 
-		(function(time_params) { 			 
+		(function(time_params) {
 			var defaultDesc = function(val) {
 				return {
 					enumerable: true,
@@ -73,7 +73,7 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 				seconds: defaultDesc(time_params.seconds || 0),
 				minutes: defaultDesc(time_params.minutes || 0),
 				hours: defaultDesc(time_params.hours || 0)
-			});			
+			});
 		}).call(this, obj);
 	}
 	Time.prototype.convertToReferenceInterval = function(interval) {
@@ -121,7 +121,7 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 		return time < 10 ? '0' + time :time;
 	};
 	Time.prototype.toString = function(asAMPM) {
-		var hours = this.padZeroes(this.hours), 
+		var hours = this.padZeroes(this.hours),
 			min = this.padZeroes(this.minutes),
 			ampm = '';
 
@@ -134,7 +134,7 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 
 			ampm = this.AMPM();
 		}
-		
+
 		return hours + ':' + min + ampm;
 	};
 	Time.prototype.toReservationFormat = function(asObject) {
@@ -152,15 +152,18 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 			return ret.hh + ':' + ret.mm + ' ' + ret.amPM;
 		}
 	};
-	
+
 	Time.prototype.toHourAndMinute = function(seperator, format) {
 		var ret;
-		if (typeof format === 'undefined') format = 12;
-		if (typeof seperator === 'undefined') seperator = ":";
-
+		if (typeof format === 'undefined') {
+			format = 12;
+		}
+		if (typeof seperator === 'undefined') {
+			seperator = ":";
+		}
 		ret = {
 			hh: this.padZeroes(this.hours % format),
-			mm: this.padZeroes(this.minutes),
+			mm: this.padZeroes(this.minutes)
 		};
 		return ret.hh + seperator + ret.mm;
 	};
@@ -216,11 +219,11 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 
 	Date.prototype.toComponents = function() {
 		var __DAYS = ['Sunday',
-					  'Monday', 
-					  'Tuesday', 
-					  'Wednesday', 
-					  'Thursday', 
-					  'Friday', 
+					  'Monday',
+					  'Tuesday',
+					  'Wednesday',
+					  'Thursday',
+					  'Friday',
 					  'Saturday' ],
 			__MONTHS = ['January',
 						'February',
