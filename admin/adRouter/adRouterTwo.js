@@ -364,7 +364,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.earlyCheckin', {
 			templateUrl: '/assets/partials/earlyCheckin/adEarlyCheckin.html',
 			controller: 'ADEarlyCheckinCtrl',
-			url : '/earlyCheckin'
+			url : '/earlyCheckin',
+			resolve: {
+				blockCodeData : function(adCheckinSrv){
+					return adCheckinSrv.getBlockCodes();
+				}
+			}
 		});
 
 		$stateProvider.state('admin.iBeaconDetails', {

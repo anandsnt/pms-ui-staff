@@ -1,10 +1,117 @@
-admin.controller('ADEarlyCheckinCtrl',['$scope','$rootScope','$state','adUpsellEarlyCheckinService', 'ADChargeCodesSrv', 'ADRatesSrv', 'ADRatesAddonsSrv',  function($scope,$rootScope,$state,adUpsellEarlyCheckinService, ADChargeCodesSrv, ADRatesSrv, ADRatesAddonsSrv){
+admin.controller('ADEarlyCheckinCtrl',['$scope','$rootScope','$state','adUpsellEarlyCheckinService', 'ADChargeCodesSrv', 'ADRatesSrv', 'ADRatesAddonsSrv','blockCodeData',  function($scope,$rootScope,$state,adUpsellEarlyCheckinService, ADChargeCodesSrv, ADRatesSrv, ADRatesAddonsSrv,blockCodeData){
 
-    BaseCtrl.call(this, $scope);
+BaseCtrl.call(this, $scope);
+$scope.upsellData = {};
+$scope.upsell_rate = {};
+$scope.upsell_rate.selected_rate_id = "";
+$scope.excludedBlockCodes=[];
+$scope.block_codes = blockCodeData.block_codes;
 
-    $scope.upsellData = {};
-    $scope.upsell_rate = {};
-    $scope.upsell_rate.selected_rate_id = "";
+
+$scope.showRoomType = function(max_early_checkins){
+   return((typeof max_early_checkins !=="undefined") && max_early_checkins !== null) ? true:false;
+};
+
+var setUpList = function(){
+
+   //remove the selected item from drop down
+  var selectedIds = [];
+  angular.forEach($scope.upsellData.room_types,function(item, index) {
+    if((typeof item.max_early_checkins !=="undefined") && item.max_early_checkins !== null){
+       selectedIds.push(item.id);
+    }
+  });
+  angular.forEach(selectedIds,function(id, index1) {
+  angular.forEach($scope.upsellData.room_type_list,function(room_type_list, index) {
+        if(room_type_list.value === id){
+           $scope.upsellData.room_type_list.splice(index,1);
+        }
+    });
+  });
+
+  angular.forEach($scope.block_codes,function(block, index) {
+    angular.forEach($scope.upsellData.excluded_block_codes,function(excludedblock, index) {
+      if(block.id === excludedblock){
+        $scope.excludedBlockCodes.push(block);
+        block.ticked = true;// for the multi-select implementation
+      }
+    });
+   });
+
+};
+
+/**
+ * Method to check if max_late_checkins of all elements are blank or not.
+ * Configured room type will have valid max_late_checkouts value.
+ */
+var isRoomTypesSelected = function(){
+  $scope.upsellData.isRoomTypesSelectedFlag = false;
+  angular.forEach($scope.upsellData.room_types,function(item, index) {
+    if((typeof item.max_early_checkins !=="undefined") && item.max_early_checkins !== null) $scope.upsellData.isRoomTypesSelectedFlag = true;
+  });
+};
+
+$scope.clickExcludeRoomType = function(){
+  //While addig a room type, making its max_late_checkins defaults to 0.
+  angular.forEach($scope.upsellData.room_types,function(item, index) {
+      if(parseInt(item.id) === parseInt($scope.upsellData.selected_room_type)){
+         item.max_early_checkins = 0;
+      }
+  });
+    //Removing the selected room type from dropdown of room type list.
+  angular.forEach($scope.upsellData.room_type_list,function(item, index) {
+    if(item.value === $scope.upsellData.selected_room_type){
+       $scope.upsellData.room_type_list.splice(index,1);
+    }
+  });
+  isRoomTypesSelected();
+  $scope.upsellData.selected_room_type = "";
+};
+
+/*
+ * Method to delete the room type.
+ */
+$scope.deleteRoomType = function(value,name){
+
+  var data = { "value": value , "name": name };
+  $scope.upsellData.room_type_list.push(data);
+
+  angular.forEach($scope.upsellData.room_types,function(item, index) {
+    if(parseInt(item.id) === parseInt(value)){
+      item.max_early_checkins = null;
+    }
+  });
+  $scope.upsellData.deleted_room_types.push(value);
+  isRoomTypesSelected();
+  $scope.upsellData.selected_room_type = "";
+};
+// to add to excluded block codes
+$scope.clickExcludeBlockCode = function(){
+
+  $scope.excludedBlockCodes = [];
+  angular.forEach($scope.block_codes, function( value, key ) {
+    if ( (value.ticked === true) && ( $scope.excludedBlockCodes.indexOf(value) === -1)) {
+        $scope.excludedBlockCodes.push(value);
+    }
+  });
+};
+
+//remove exclude block code
+$scope.deleteBlockCode = function(id){
+  //remove from final array
+  angular.forEach($scope.excludedBlockCodes,function(item, index) {
+    if(item.id === id){
+      $scope.excludedBlockCodes.splice(index,1);
+    }
+  });
+  //untick from list
+   angular.forEach($scope.block_codes,function(item, index) {
+    if(item.id === id){
+      item.ticked = false;
+    }
+  });
+
+};
 /**
 * To fetch upsell details
 *
@@ -12,6 +119,9 @@ admin.controller('ADEarlyCheckinCtrl',['$scope','$rootScope','$state','adUpsellE
 $scope.fetchUpsellDetails = function(){
     var fetchUpsellDetailsSuccessCallback = function(data) {
        $scope.upsellData = data;
+       setUpList();
+       $scope.upsellData.deleted_room_types = [];
+       isRoomTypesSelected();
        $scope.setRateFlag();
        $scope.fetchChargeCodes();
        $scope.setUpUpsellWindowData();
@@ -204,7 +314,13 @@ $scope.saveClick = function(){
       $scope.$emit('hideLoader');
       $scope.fetchedFailed(errorMessage);
    	};
-   	$scope.invokeApi(adUpsellEarlyCheckinService.update,$scope.upsellData,upsellEarlyCheckinSaveSuccessCallback, upsellEarlyCheckinSaveFailureCallback);
+
+    var dataToSave = dclone($scope.upsellData, ['room_type_list']);
+    dataToSave.excluded_block_codes = [];
+    angular.forEach($scope.excludedBlockCodes,function(excludedBlockCode, index) {
+      dataToSave.excluded_block_codes.push(excludedBlockCode.id);
+    });
+   	$scope.invokeApi(adUpsellEarlyCheckinService.update,dataToSave,upsellEarlyCheckinSaveSuccessCallback, upsellEarlyCheckinSaveFailureCallback);
 
 };
 
@@ -215,7 +331,8 @@ $scope.clickAddRoomType = function(){
   }
   var rate_item;
 	angular.forEach($scope.rates,function(item, index) {
-		if(item.id === $scope.upsell_rate.selected_rate_id){
+    console.log(parseInt(item.id) === parseInt($scope.upsell_rate.selected_rate_id))
+		if(parseInt(item.id) === parseInt($scope.upsell_rate.selected_rate_id)){
       rate_item = {};
       rate_item.id = item.id;
       rate_item.name = item.name;
