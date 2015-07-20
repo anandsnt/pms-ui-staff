@@ -6,7 +6,8 @@ sntRover.controller('RVHKGuestTabCtrl', [
 	'RVHkRoomDetailsSrv',
 	'$filter',
 	'rvPermissionSrv',
-	function($scope, $rootScope, $state, $stateParams, RVHkRoomDetailsSrv, $filter, rvPermissionSrv) {
+	'ngDialog',
+	function($scope, $rootScope, $state, $stateParams, RVHkRoomDetailsSrv, $filter, rvPermissionSrv, ngDialog) {
 
 		BaseCtrl.call(this, $scope);		
 		// keep ref to room details in local scope
@@ -25,15 +26,28 @@ sntRover.controller('RVHKGuestTabCtrl', [
 			};
 			$scope.invokeApi(RVHkRoomDetailsSrv.postCheckOutReservation, Params, successCheckout, failureCheckout);
 		};
-		var successCheckout = function(){
-			$scope.roomDetails.current_hk_status = 'DIRTY';			
-			console.log("Success checkout");
-			$scope.$emit('hideloader');
+		var successCheckout = function(data){
+			$scope.$emit('hideLoader');
+			$scope.message = data.message;
+			$scope.roomDetails.reservation_is_due_out = false;
+			$scope.isSuccess = true;
+			$scope.roomDetails.current_hk_status = 'DIRTY';
+			ngDialog.open({
+                template: '/assets/partials/housekeeping/rvCheckoutDialogPopup.html',
+                scope: $scope,
+                closeByDocument: true
+            });			
 		};
-		var failureCheckout = function(){
-			console.log("failure checkout");
-			$scope.$emit('hideloader');			
-		};
+		var failureCheckout = function(errorMessage){
+			$scope.message = errorMessage;			
+			$scope.$emit('hideLoader');
+			$scope.isSuccess = false;
+			ngDialog.open({
+				template: '/assets/partials/housekeeping/rvCheckoutDialogPopup.html',
+				scope: $scope,
+				closeByDocument: true
+            });	
+		};		
 		var init = function(){
 			var currentStatus = $scope.roomDetails.current_room_reservation_status;
 			switch(currentStatus) {
