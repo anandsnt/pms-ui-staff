@@ -798,4 +798,4 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
         };
 
     }
-]);
+}]);
