@@ -28,7 +28,8 @@ sntRover.controller('RVHKGuestTabCtrl', [
 		};
 		var successCheckout = function(data){
 			$scope.$emit('hideLoader');
-			$scope.message = data.message;
+			console.log(data);
+			$scope.message = data.errors;
 			$scope.roomDetails.reservation_is_due_out = false;
 			$scope.isSuccess = true;
 			$scope.roomDetails.current_hk_status = 'DIRTY';
@@ -39,7 +40,7 @@ sntRover.controller('RVHKGuestTabCtrl', [
             });			
 		};
 		var failureCheckout = function(errorMessage){
-			$scope.message = errorMessage;			
+			$scope.message = errorMessage[0];			
 			$scope.$emit('hideLoader');
 			$scope.isSuccess = false;
 			ngDialog.open({
