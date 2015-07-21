@@ -22,7 +22,7 @@
                 <div class="select">
                     <select name="travel-agent-commission-type" ng-model ="reservationData.reservation_card.commission_details.commission_type" ng-change="updateAdditionalDetails()">
                         <option value="percent">%</option>
-                        <option value="amount">$</option>
+                        <option value="amount">{{currencySymbol}}</option>
                     </select>
                 </div>
             </div>

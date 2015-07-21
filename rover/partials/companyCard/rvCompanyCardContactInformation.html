@@ -66,8 +66,8 @@
             <input id="travel-agent-commission-value" value="{{contactInformation.commission_value}}" ng-model="contactInformation.commission_value" type="text" ng-if="contactInformation.is_commission_on"/>            
             <div class="select" ng-if="contactInformation.is_commission_on">
             <select name="travel-agent-commission-type" value="contactInformation.commission_type" ng-model="contactInformation.commission_type">
-                <option value="percentage">%</option>
-                <option value="value">$</option>
+                <option value="percent">%</option>
+                <option value="amount">{{currencySymbol}}</option>
             </select>
             </div>
         </div>
