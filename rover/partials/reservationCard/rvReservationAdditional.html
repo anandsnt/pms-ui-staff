@@ -15,7 +15,7 @@
         </div>
 
         <!-- If TA is attached and commission is turned on: -->
-        <div class="block-item item-commission" ng-if="hasPermissionForCommissionUpdate()">
+        <div class="block-item item-commission" ng-if="hasPermissionForCommissionUpdate() &&  reservationData.reservation_card.commission_details ==''">
             <h3 class="block-title">{{reservationData.reservation_card.commission_details.commission_recipient}} Commission</h3>
             <div class="entry">
                 <input id="ta-commission" value="{{reservationData.reservation_card.commission_details.commission_value}}" type="text" ng-model ="reservationData.reservation_card.commission_details.commission_value" ng-blur="updateAdditionalDetails()"/>
