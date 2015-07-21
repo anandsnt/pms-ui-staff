@@ -26,8 +26,9 @@ sntRover.controller('RVHKGuestTabCtrl', [
 			};
 			$scope.invokeApi(RVHkRoomDetailsSrv.postCheckOutReservation, Params, successCheckout, failureCheckout);
 		};
+
 		var successCheckout = function(Message){			
-			$scope.message = Message;
+			$scope.message = Message.data ;
 			$scope.roomDetails.reservation_is_due_out = false;
 			$scope.isSuccess = true;
 			$scope.roomDetails.current_hk_status = 'DIRTY';
@@ -38,6 +39,7 @@ sntRover.controller('RVHKGuestTabCtrl', [
                 closeByDocument: true
             });			
 		};
+
 		var failureCheckout = function(Errors){
 			$scope.message = Errors.errors[0];			
 			$scope.isSuccess = false;
@@ -47,7 +49,8 @@ sntRover.controller('RVHKGuestTabCtrl', [
 				scope: $scope,
 				closeByDocument: true
             });	
-		};		
+		};
+
 		var init = function(){
 			var currentStatus = $scope.roomDetails.current_room_reservation_status;
 			switch(currentStatus) {
