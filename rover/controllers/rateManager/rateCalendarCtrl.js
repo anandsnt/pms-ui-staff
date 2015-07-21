@@ -231,11 +231,12 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
 
         $scope.everyRestriction = [];
         $scope.getRestrictionsForDateRoomType = function(date, room_type_name){
-          for (var x in $scope.everyRestriction){
-            if ($scope.everyRestriction[x].date === date){
-                for (var i in $scope.everyRestriction[x].room_types){
-                    if (room_type_name === $scope.everyRestriction[x].room_types[i].room_type.name){
-                        return $scope.everyRestriction[x].room_types[i].restriction_overrides;
+            for (var x in $scope.everyRestriction){
+                if ($scope.everyRestriction[x].date === date){
+                    for (var i in $scope.everyRestriction[x].room_types){
+                        if (room_type_name === $scope.everyRestriction[x].room_types[i].room_type.name){
+                            return $scope.everyRestriction[x].room_types[i].restriction_overrides;
+                        }    
                     }
                 }
             }
@@ -797,5 +798,5 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
              }
         };
 
-    }
+    
 }]);
