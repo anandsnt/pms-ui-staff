@@ -380,7 +380,7 @@ sntRover.service('RVReservationStateService', [
 							parseFloat(self.applyDiscount(currentRoomRateDetails.rate, currentRoomRateDetails.appliedPromotion.discount, numNights)) :
 							currentRoomRateDetails.rate,
 							promoAdjustedAddonAmount = currentRoomRateDetails.applyPromotion ?
-							parseFloat(self.applyDiscount(currentRoomRateDetails.addonAmount, currentRoomRateDetails.appliedPromotion.discount, numNights)) :
+							parseFloat(self.applyDiscount(currentRoomRateDetails.addonAmount, currentRoomRateDetails.appliedPromotion.discount, $scope.reservationData.numNights)) :
 							currentRoomRateDetails.addonAmount;
 
 						currentRoomRateDetails.total = parseFloat(currentRoomRateDetails.tax.excl) +
