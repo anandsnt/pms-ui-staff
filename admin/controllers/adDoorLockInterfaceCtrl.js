@@ -39,7 +39,7 @@ admin.controller('ADDoorLockInterfaceCtrl',['$scope', '$rootScope','ADDoorlockIn
 
 		var saveSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
-			$scope.goBackToPreviousState();	
+			$scope.goBackToPreviousState();
 		};
 		$scope.invokeApi(ADDoorlockInterfaceSrv.save, saveData, saveSuccessCallback);
 
@@ -55,7 +55,7 @@ admin.controller('ADDoorLockInterfaceCtrl',['$scope', '$rootScope','ADDoorlockIn
 				needToShowAuthKeys = true;
 				return false;
 			}
-        }); 
+        });
         return needToShowAuthKeys;
 	};
 

@@ -3,10 +3,10 @@ angular.module('twoMonthscalendar', []).directive('twoMonthCalendar', function()
     return {
         restrict: 'AE',
         scope: {
-            eventSources:'=eventSources', 
+            eventSources:'=eventSources',
             leftCalendarOptions: '=leftCalendarOptions',
             rightCalendarOptions: '=rightCalendarOptions',
-            nextButtonClickHandler: '&', 
+            nextButtonClickHandler: '&',
             prevButtonClickHandler: '&',
             disablePrevButton: '=disablePrevButton'
         },
@@ -21,7 +21,7 @@ angular.module('twoMonthscalendar', []).directive('twoMonthCalendar', function()
             };
         },
         link: function(scope, elm, attrs, controller) {
-           
+
         },
         templateUrl: '../../assets/directives/fullCalendar/twoMonthCalendar.html'
     };

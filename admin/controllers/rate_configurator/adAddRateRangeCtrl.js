@@ -142,8 +142,9 @@ admin
                      */
                     angular.forEach($scope.Sets, function(set, key) {
                         angular.forEach(set.days, function(day, key) {
-                            if (day.checked)
+                            if (day.checked) {
                                 checkedDays.push(day.name);
+                            }
                         });
 
                     });
@@ -176,8 +177,9 @@ admin
                 var temp = $scope.Sets[SetIndex].days[dayIndex].checked;
                 angular.forEach($scope.Sets, function(set, key) {
                     angular.forEach(set.days, function(day, key) {
-                        if ($scope.Sets[SetIndex].days[dayIndex].name === day.name)
+                        if ($scope.Sets[SetIndex].days[dayIndex].name === day.name) {
                             day.checked = false;
+                        }
                     });
                 });
                 $scope.Sets[SetIndex].days[dayIndex].checked = temp;
@@ -199,8 +201,9 @@ admin
 
                 if ($scope.begin_date && $scope.end_date && anyOneDayisChecked) {
                     return true;
-                } else
+                } else {
                     return false;
+                }
             };
 
             /**

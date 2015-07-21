@@ -4,7 +4,7 @@ admin.service('ADDepartmentSrv',['$http', '$q', 'ADBaseWebSrv', function($http, 
     * @return {object} users list json
     */
 	this.fetch = function(){
-		
+
 		var deferred = $q.defer();
 		var url = '/admin/departments.json';
 

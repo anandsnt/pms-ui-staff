@@ -38,8 +38,9 @@ admin.controller('ADUserDetailsCtrl',
 		for (var i = 0; i < rolesData.length; i++){
 			var rolePresent = false;
 			for(var j = 0; j < $scope.dashboardOptions.length; j++){
-				if(rolesData[i].dashboard_id === $scope.dashboardOptions[j].dashboard_id)
+				if(rolesData[i].dashboard_id === $scope.dashboardOptions[j].dashboard_id) {
 					rolePresent = true;
+				}
 			}
 			if(!rolePresent){
 				var dashboard = {};
@@ -170,14 +171,14 @@ admin.controller('ADUserDetailsCtrl',
 	$scope.saveUserDetails = function(){
 		var params = $scope.data;
 		var unwantedKeys = [];
-		if($scope.image.indexOf("data:")!= -1){
+		if($scope.image.indexOf("data:")!== -1){
 			unwantedKeys = ["departments", "roles"];
 		} else {
 			unwantedKeys = ["departments", "roles", "user_photo"];
 		}
 		var userRoles = [];
 		for(var j = 0; j < $scope.assignedRoles.length; j++){
-	 		if($scope.assignedRoles[j].value != ""){
+	 		if($scope.assignedRoles[j].value !== ""){
 	 			userRoles.push($scope.assignedRoles[j].value);
 	 		}
 	 	}
@@ -186,7 +187,7 @@ admin.controller('ADUserDetailsCtrl',
 		$scope.data.user_roles = userRoles;
 		var data = dclone($scope.data, unwantedKeys);
 		// Remove user_photo field if image is not uploaded. Checking base64 encoded data exist or not
-		if($scope.image.indexOf("data:")!= -1){
+		if($scope.image.indexOf("data:")!== -1){
 			data.user_photo = $scope.image;
 		}
 
@@ -221,7 +222,7 @@ admin.controller('ADUserDetailsCtrl',
 			$scope.data.confirm_email = $scope.data.email;
 
 			for(var i = 0; i < $scope.rolesWithDashboards.length; i++) {
-				if ( $scope.data.user_roles.indexOf($scope.rolesWithDashboards[i].value.toString() ) != -1 ){
+				if ( $scope.data.user_roles.indexOf($scope.rolesWithDashboards[i].value.toString() ) !== -1 ){
 	   			 	$scope.assignedRoles.push($scope.rolesWithDashboards[i]);
 	   			 	for(var j = 0; j < $scope.unAssignedRoles.length; j++){
 	   			 		if($scope.unAssignedRoles[j].value === $scope.rolesWithDashboards[i].value){
@@ -251,10 +252,12 @@ admin.controller('ADUserDetailsCtrl',
 	};
 
 	$scope.disableReInviteButton = function (data) {
-		if (!$scope.isInUnlockingMode())
+		if (!$scope.isInUnlockingMode()) {
 			return (data.is_activated === 'true');
-		else
+		}
+		else {
 			return false;
+		}
 	};
 
 	/**

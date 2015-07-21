@@ -41,7 +41,7 @@ var DesktopCardOperations = function(){
         };
 	}
 
-	
+
 
 
 

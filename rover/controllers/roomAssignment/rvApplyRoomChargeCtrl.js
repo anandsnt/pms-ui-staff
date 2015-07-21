@@ -129,7 +129,7 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 			room_status 		: "READY",
 			fo_status 			: "VACANT",
 			room_ready_status	: "INSPECTED",
-			is_upsell_available	: (data.is_upsell_available) ? "true" : "false",  // CICO-7904 and CICO-9628 : update the upsell availability to staycard
+			is_upsell_available	: (data.is_upsell_available) ? "true" : "false"  // CICO-7904 and CICO-9628 : update the upsell availability to staycard
 		});
 
 		if (typeof $scope.selectedRoomType !== 'undefined') {

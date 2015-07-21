@@ -10,7 +10,7 @@ sntRover.directive('clickTouch', function($timeout, $parse) {
 
             scope.$apply(attrs['clickTouch']);
       });
-      
+
     }
   };
 });

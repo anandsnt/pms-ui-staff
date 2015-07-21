@@ -8,11 +8,11 @@ sntRover
 			type_id: 'room_type_id',
 			row_children: 'occupancy',
 			inactive_slots: 'room_inactive_slots',
-			hk_status: 'room_status',			
+			hk_status: 'room_status',
 			hk_status_map: {
 				'CLEAN': '',
-				'DIRTY': 'dirty',
-			}			
+				'DIRTY': 'dirty'
+			}
 		},
 		room_type: {
 			id: 'id'
@@ -30,7 +30,7 @@ sntRover
 			guest: 'reservation_primary_guest_full_name',
 			accompanying_guests: 'accompanying_guests',
 			start_date: 'arrival',
-			end_date: 'departure',	
+			end_date: 'departure',
 			maintenance: 'maintenance',
 			rate: 'amount',
 			room_status: 'room_service_status',
@@ -50,6 +50,6 @@ sntRover
 			id: 'room_id',
 			status: 'service_status',
 			number: 'room_no'
-		},
+		}
 	}));
 });
