@@ -27,8 +27,8 @@
 		Registration Card
 	</button>
 
-	<label class="checkbox inline" for="no-rate-print" ng-class="{ 'checked':isHideRate }">
-        <span class="icon-form icon-checkbox" ng-class="{ 'checked':isHideRate }"></span>
+	<label class="checkbox inline" for="no-rate-print" ng-class="{ 'checked':reservationBillData.hide_rates }">
+        <span class="icon-form icon-checkbox" ng-class="{ 'checked':reservationBillData.hide_rates }"></span>
         <input ng-click="clickedShowRate()" id="no-rate-print" value="" type="checkbox">
         Don't Print Rate
     </label>

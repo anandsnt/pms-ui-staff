@@ -89,7 +89,6 @@ sntRover.controller('RVbillCardController',
 	$scope.showBillingInfo = false;
 	$scope.showIncomingBillingInfo = false
 	$scope.reservationBillData = reservationBillData;
-	$scope.isHideRate = false;
 
 	//set up flags for checkbox actions
 
@@ -2107,7 +2106,21 @@ sntRover.controller('RVbillCardController',
 	});
 
 	$scope.clickedShowRate = function(){
-		$scope.isHideRate = !$scope.isHideRate;
+
+		var sucessCallback = function(data){
+			$scope.reservationBillData.hide_rates = !$scope.reservationBillData.hide_rates;
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = "";
+		};
+		var failureCallback = function(errorData){
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = errorData;
+		};
+		var data = {
+			'reservation_id': $scope.reservationBillData.reservation_id,
+			'hide_rates'	: !$scope.reservationBillData.hide_rates
+		}
+		$scope.invokeApi(RVBillCardSrv.toggleHideRate, data, sucessCallback, failureCallback);
 	};
 
 }]);
