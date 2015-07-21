@@ -478,6 +478,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* Failure call back of submitpayment
 	*/
 	var failedPayment = function(data){
+		$scope.$emit("hideLoader");
 		$scope.paymentErrorMessage = "SPLIT # "+($scope.splitePaymentDetail["completedSplitPayments"]+1)+" PAYMENT OF "+$scope.renderData.defaultPaymentAmount+" FAILED !"+"<br/>";
 	};
 	/*
