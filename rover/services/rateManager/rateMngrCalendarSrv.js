@@ -24,6 +24,28 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		return deferred.promise;
 	};
 
+	this.fetchSortPreferences = function() {
+        var deferred = $q.defer(),
+            url = '/api/sort_preferences/list_selections';
+        BaseWebSrvV2.getJSON(url).then(function(data) {
+            deferred.resolve(data.rate_manager);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+    this.fetchSortOptions = function() {
+        var deferred = $q.defer(),
+            url = '/api/sort_preferences/';
+        BaseWebSrvV2.getJSON(url).then(function(data) {
+            deferred.resolve(data.rate_manager);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
 	this.updateRoomTypeOverride = function(data){
             data.date = data.selectedDate; data.rate_id = data.selectedRate;
             //rate_id, date, room_type_id need to be included to clear rates
@@ -61,7 +83,8 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		var getDailyRates = function(d){
 			var dateString = url + '?from_date=' + params.from_date
 								+ '&to_date=' + params.to_date
-								+ '&per_page=' + params.per_page;
+								+ '&per_page=' + params.per_page +
+								'&order_id='+ params.order_id;
 			var rateString = "";
 			for(var i in params.rate_ids){
 				rateString = rateString + "&rate_ids[]=" + params.rate_ids[i];
@@ -502,7 +525,4 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 
 		return restriction_type_updated;
 	};
-
-
-
 }]);
