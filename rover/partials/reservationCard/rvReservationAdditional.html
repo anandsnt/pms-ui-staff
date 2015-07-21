@@ -21,7 +21,7 @@
                 <input id="ta-commission" value="{{reservationData.reservation_card.commission_details.commission_value}}" type="text" ng-model ="reservationData.reservation_card.commission_details.commission_value" ng-blur="updateAdditionalDetails()"/>
                 <div class="select">
                     <select name="travel-agent-commission-type" ng-model ="reservationData.reservation_card.commission_details.commission_type" ng-change="updateAdditionalDetails()">
-                        <option value="percentage">%</option>
+                        <option value="percent">%</option>
                         <option value="amount">$</option>
                     </select>
                 </div>
