@@ -2,7 +2,7 @@ admin.controller('ADSocialLobbySettingsCtrl', ['$scope','$rootScope', '$state', 
 
    	/*
 	* controller class for social lobby settings
-	*/	
+	*/
 	BaseCtrl.call(this, $scope);
 	$scope.errorMessage = '';
 
@@ -23,13 +23,13 @@ admin.controller('ADSocialLobbySettingsCtrl', ['$scope','$rootScope', '$state', 
 	//fetching the settings details
 	$scope.invokeApi(ADSocialLobbySrv.fetchSettingsDetails, {}, fetchCompletedOfSettingsDetails);
 
-	
+
 
 	/*
 	* success call back of details web service call
 	*/
 	var successCallbackOfSaveDetails = function(data){
-		$scope.$emit('hideLoader');		
+		$scope.$emit('hideLoader');
 	};
 
 	$scope.save = function(){

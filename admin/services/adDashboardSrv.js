@@ -1,22 +1,22 @@
 admin.service('ADDashboardSrv',['$http', '$q', function($http, $q){
-	
+
 	var _this = this;
 
 	this.fetch = function(){
 		this.data = {"menus":[
 							{
-								"menu_id":1, 
-								"menu_name":"Hotel & Staff", 
-								"header_name":"Hotel & Staff setup", 
+								"menu_id":1,
+								"menu_name":"Hotel & Staff",
+								"header_name":"Hotel & Staff setup",
 								"components":[
 									{
-										"id":1, 
-										"name":"Hotel Details", 
-										"state": "admin.hoteldetails", 
-										"action_path":"/admin/hotels/1/", 
-										"is_group":false, 
-										"icon_class":"icon-hotel", 
-										"sub_components":[], 
+										"id":1,
+										"name":"Hotel Details",
+										"state": "admin.hoteldetails",
+										"action_path":"/admin/hotels/1/",
+										"is_group":false,
+										"icon_class":"icon-hotel",
+										"sub_components":[],
 										"is_bookmarked":false
 									},
 					                {
@@ -41,7 +41,7 @@ admin.service('ADDashboardSrv',['$http', '$q', function($http, $q){
 					                }
 								]
 							},
-							
+
 					        {
 					            "menu_id": 2,
 					            "menu_name": "Zest",
@@ -336,7 +336,7 @@ admin.service('ADDashboardSrv',['$http', '$q', function($http, $q){
                     "state":"admin.hoteldetails"
                 }
             ]
-        }										
+        }
 						]
 					};
 		return this.data;
@@ -345,18 +345,18 @@ admin.service('ADDashboardSrv',['$http', '$q', function($http, $q){
 	this.fetchSNT = function(){
 		this.data = {"menus":[
 							{
-								"menu_id":1, 
-								"menu_name":"Hotels", 
-								"header_name":"Hotels", 
+								"menu_id":1,
+								"menu_name":"Hotels",
+								"header_name":"Hotels",
 								"components":[
 									{
-										"id":1, 
-										"name":"Hotels", 
-										"state": "admin.hoteldetails", 
-										"action_path":"/admin/hotels/1/", 
-										"is_group":false, 
-										"icon_class":"icon-hotel", 
-										"sub_components":[], 
+										"id":1,
+										"name":"Hotels",
+										"state": "admin.hoteldetails",
+										"action_path":"/admin/hotels/1/",
+										"is_group":false,
+										"icon_class":"icon-hotel",
+										"sub_components":[],
 										"is_bookmarked":false
 									},
 					                {
@@ -382,15 +382,15 @@ admin.service('ADDashboardSrv',['$http', '$q', function($http, $q){
 								]
 							},
 							{
-								"menu_id":2, 
-								"menu_name":"Dashboard", 
-								"header_name":"Dashboard", 
+								"menu_id":2,
+								"menu_name":"Dashboard",
+								"header_name":"Dashboard",
 								"components":[]
 							},
 							{
-								"menu_id":4, 
-								"menu_name":"Configuration", 
-								"header_name":"Configuration", 
+								"menu_id":4,
+								"menu_name":"Configuration",
+								"header_name":"Configuration",
 								"components":[]
 							}
 						]

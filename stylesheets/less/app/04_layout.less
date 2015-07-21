@@ -195,13 +195,11 @@ body { overflow: hidden; }
 				}
 
 				&.has-summary {
-					top: 120px;
-					.calc-height(100, 230);
+					top: 200px;
+					.calc-height(100, 260);
 				}
-			}
 
-			&.no-pagination#rooms {
-				.calc-height(100, 130);
+				&.no-pagination { .calc-height(100, 120); }
 			}
 
 			&#filter-rooms {
@@ -254,11 +252,11 @@ body { overflow: hidden; }
 				}
 
 				&.has-summary {
-					top: 220px;
-					.calc-height(100, 280);
+					top: 200px;
+					.calc-height(100, 260);
 				}
 
-				&.no-pagination { .calc-height(100, 130); }
+				&.no-pagination { .calc-height(100, 120); }
 			}
 
 			&#filter-rooms {
@@ -719,21 +717,69 @@ body { overflow: hidden; }
 			/* Room search ***/
 			&.room-search {
 				position: relative;
+				padding: 10px 0;
 				height: 120px;
 				.show;
 
-				.entry {
-					margin: 0 10px 10px 10px;
+				.filter,
+				.entry { margin-left: 10px; }
 
-					&.search { .calc-width(100, 100); }
+				.entry {
+
+					&.search { 
+						margin-right: 10px;
+						.calc-width(100, 120); 
+
+						&.rooms-checked { .calc-width(100, 160);  }
+					}
 
 					&.options {
-						float: none;
-						padding-top: 10px;
-						margin: 0;
-						clear: both;
+						padding: 10px 10px 0 0;
+						.calc-width(100, 60);
 						.box-shadow(inset 0 1px 0 rgba(0,0,0,.1));
-						.size(40px, 100%);
+
+						&.rooms-checked { .calc-width(100, 100); }
+					}
+
+					&.check {
+						padding-top: 10px;
+						margin-left: 0;
+						.square(40px);
+						.box-shadow(inset 0 1px 0 rgba(0,0,0,.1));
+
+						.checkbox {
+		                    margin: 0;
+		                    padding: 0;
+		                    .show;
+		                    .pull-left;
+		                    .square(40px);
+
+		                    .icon-form { 
+		                        top: 10px; 
+		                        left: 10px;
+		                        background-color: @white;
+		                    }
+
+		                    input {
+		                        min-height: 35px;
+		                        line-height: 35px;
+		                    }
+
+		                    &.disabled { .opacity(0); }
+		                }
+
+		                .button {
+		                	position: relative;
+
+		                	select {
+		                		position: absolute;
+		                		top: 0;
+		                		left: 0;
+		                		opacity: 0;
+		                	}
+		                }
+
+		                &.rooms-checked { width: 80px; }
 					}
 				}
 
@@ -743,6 +789,15 @@ body { overflow: hidden; }
 					position: absolute;
 					top: 10px;
 					right: 10px;
+				}
+				
+				.print,
+				#hk-multi-select,
+				#hk-multi-select .button {
+					.no-transition;
+					-webkit-animation: none;
+					-moz-animation: none;
+					animation: none;
 				}
 
 				/* Filters ***/
@@ -795,8 +850,13 @@ body { overflow: hidden; }
 				&.dashboard { .hide; }
 
 				&:not(.has-options) {
+					height: 60px; 
+
 					.entry {
-						&.search { .calc-width(100, 60); }
+						&.check {
+							padding-top: 0;
+							.box-shadow(none);
+						}
 					}
 				}
 			}
@@ -902,6 +962,7 @@ body { overflow: hidden; }
 			}
 
 			.icon-search { left: 20px; }
+			
 			.query { 
 				font-size: 24px;
 				padding-left: 40px; 
@@ -912,30 +973,38 @@ body { overflow: hidden; }
 				height: 60px;
 
 				.entry {
-					padding-left: 10px;
-					margin: 0 0 0 10px; 
+					&.search { 
+						.calc-width(40, 80); 
 
-					&.search { .calc-width(40, 55); }
+						&.rooms-checked { .calc-width(40, 105); }
+					}
 
 					&.options {
-						padding: 0 10px 0 10px;
-						margin: 0 10px;
+						padding: 0 10px;
+						margin: 0 60px 0 0;
 						clear: none;
 						.box-shadow(~'inset 1px 0 0 rgba(0,0,0,.1), 1px 0 0 rgba(0,0,0,.1)');
 						.pull-left;
-						.calc-width(60, 55);
+						.calc-width(60, 140);
+
+						&.rooms-checked { .calc-width(60, 165); }
 					}
 
-					&:first-child {
+					&.check {
 						padding: 0;
-						margin-left: 0;
+						.box-shadow(inset 1px 0 0 rgba(0,0,0,.1));
+
+						&.rooms-checked {
+							padding-left: 10px;
+							width: 90px;
+						}
 					}
 				}
 
-				.print {
-					position: relative;
-					top: 0;
-					right: 0;
+				.print { 
+					right: 50px; 
+
+					&.rooms-checked { right: 100px; }
 				}
 
 				.filter-actions {
@@ -952,32 +1021,23 @@ body { overflow: hidden; }
 					}
 				}
 
-				&:not(.dashboard) {
+				&:not(.has-options) {
 					.entry {
-						&.search { .calc-width(50, 80); }
-						&.options { 
-							padding-right: 10px;
-							margin-right: 10px;
-							border-right: 1px solid rgba(0,0,0,.1);
-							.calc-width(50, 80); 
+						&.search { 
+							.box-shadow(inset 1px 0 0 rgba(0,0,0,.1));
+							.calc-width(100, 160); 
+
+							&.rooms-checked { .calc-width(100, 210); }
+						}
+
+						&.check {
+							.box-shadow(inset 1px 0 0 rgba(0,0,0,.1));
 						}
 					}
+				}
 
-					.refresh { 
-						margin-right: 10px;
-						.show; 
-					}
-
-					&:not(.has-options) {
-						.entry {
-							&.search {
-								padding-right: 10px;
-								margin-right: 10px;
-								border-right: 1px solid rgba(0,0,0,.1);
-								.calc-width(100, 110);
-							}
-						}
-					}
+				&:not(.dashboard) {
+					.refresh { .show; }
 				}
 			}
 		}
@@ -1083,11 +1143,25 @@ body { overflow: hidden; }
 			/* Room search ***/
 			&.room-search {
 				.entry {
-					&.search { .calc-width(50, 10); }
+					&.search,
 					&.options { 
-						padding-right: 0;
-						margin-right: 0;
-						.calc-width(50, 10); 
+						.calc-width(50, 110); 
+
+						&.rooms-checked { .calc-width(50, 135); }
+					}
+				}
+
+				&.dashboard {
+					.entry {
+						&.search,
+						&.options { 
+							.calc-width(50, 30); 
+
+							&.rooms-checked { .calc-width(50, 50); }
+						}
+
+						&.search { padding-left: 10px; }
+						&.options { margin-right: 0; }
 					}
 				}
 			}	
@@ -1095,60 +1169,67 @@ body { overflow: hidden; }
 	}
 
 /* Search pagination		==============================*/
-	.search-pagination {
-		position: absolute;
-		left: 0;
-		bottom: 0;
-		text-align: right;
-		padding: 10px 20px;
-		overflow: hidden;
-		z-index: 1030;
-		background: @grey2 @darkTexture repeat;
-		.size(60px, 100%);
-		.float;
+	@media not print {
+		.search-pagination {
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			text-align: right;
+			padding: 10px 20px;
+			overflow: hidden;
+			z-index: 1030;
+			background: @grey2 @darkTexture repeat;
+			.hide;
+			.size(60px, 100%);
+			.float;
 
-		p { 
-			line-height: 40px;
-			margin: 0 20px 0 0; 
-			.pull-right;
-		}
-
-		.button {
-			position: relative;
-			.size(40px, 120px);
-			.pull-right;
-
-			&:before {
-				content: "";
-				position: absolute;
-				top: 15px;
-				border-top: 5px solid transparent;
-				border-bottom: 5px solid transparent;
-				.square(0px);
+			p { 
+				line-height: 40px;
+				margin: 0 20px 0 0; 
+				.pull-right;
 			}
 
-			&.prev {
-				margin-right: 10px;
+			.button {
+				position: relative;
+				.size(40px, 120px);
+				.pull-right;
 
 				&:before {
-					left: 10px;
-					border-right: 5px solid @white;
+					content: "";
+					position: absolute;
+					top: 15px;
+					border-top: 5px solid transparent;
+					border-bottom: 5px solid transparent;
+					.square(0px);
 				}
-			}
 
-			&.next {
-				&:before {
-					right: 10px;
-					border-left: 5px solid @white;
+				&.prev {
+					margin-right: 10px;
+
+					&:before {
+						left: 10px;
+						border-right: 5px solid @white;
+					}
 				}
-			}
 
-			&:disabled,
-			&.disabled {
-				opacity: 0.3;
-				cursor: default;
+				&.next {
+					&:before {
+						right: 10px;
+						border-left: 5px solid @white;
+					}
+				}
+
+				&:disabled,
+				&.disabled {
+					opacity: 0.3;
+					cursor: default;
+				}
 			}
 		}
+	}
+
+	@media only screen and (min-width: 600px) {
+		.search-pagination { .show; }
 	}
 	
 /* Grey label				==============================*/

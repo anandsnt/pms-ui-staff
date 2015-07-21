@@ -21,15 +21,16 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 			// }, function(data) {
 			// deferred.reject(data);
 			// });
-			// 
+			//
 			// };
 			var reservationId = data.reservationId;
 			var isRefresh = data.isRefresh;
 			var isReservationIdAlreadyCalled = false;
 			angular.forEach(that.reservationIdsArray, function(value, key) {
-				if (!isRefresh || isRefresh == null || isRefresh == '') {
-					if (value === reservationId)
+				if (!isRefresh || isRefresh === null || isRefresh === '') {
+					if (value === reservationId) {
 						isReservationIdAlreadyCalled = true;
+					}
 				}
 			});
 			if (!isReservationIdAlreadyCalled) {
@@ -77,9 +78,10 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 			var isRefresh = data.isRefresh;
 			var isConfirmationNumberAlreadyCalled = false;
 			angular.forEach(that.confirmationNumbersArray, function(value, key) {
-				if (!isRefresh || isRefresh == null) {
-					if (value === confirmationNumber)
+				if (!isRefresh || isRefresh === null) {
+					if (value === confirmationNumber) {
 						isConfirmationNumberAlreadyCalled = true;
+					}
 				}
 			});
 
@@ -164,7 +166,7 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 
 		/**
 		 * to get the last rate adjustment reason against a reservation
-		 * @return {Promise} - After resolving we will get reason 
+		 * @return {Promise} - After resolving we will get reason
 		 */
 		this.getLastRateAdjustmentReason = function(params){
 			var deferred = $q.defer();
@@ -173,7 +175,7 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 			rvBaseWebSrvV2.getJSON(url).then(
 					function(data) {
 						deferred.resolve(data);
-					}, 
+					},
 					function(data) {
 						deferred.reject(data);
 					}
@@ -237,7 +239,7 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
             });
             return deferred.promise;
         };
-        
+
         this.sendConfirmationEmail = function(data){
         	var deferred = $q.defer();
             var url = '/api/reservations/'+data.reservationId+'/email_confirmation';

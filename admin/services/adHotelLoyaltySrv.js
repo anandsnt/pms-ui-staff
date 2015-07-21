@@ -4,7 +4,7 @@ admin.service('ADHotelLoyaltySrv',['$http', '$q', 'ADBaseWebSrv', function($http
     * @return {object} hotel loyalty list json
     */
 	this.fetch = function(){
-		
+
 		var deferred = $q.defer();
 		var url = '/admin/hotel/list_hlps.json';
 
@@ -12,7 +12,7 @@ admin.service('ADHotelLoyaltySrv',['$http', '$q', 'ADBaseWebSrv', function($http
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
    /*
@@ -22,13 +22,13 @@ admin.service('ADHotelLoyaltySrv',['$http', '$q', 'ADBaseWebSrv', function($http
     */
 	this.saveHotelLoyalty = function(data){
 		var deferred = $q.defer();
-		var url = '/admin/hotel/save_hlp';	
+		var url = '/admin/hotel/save_hlp';
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
    /*
@@ -39,13 +39,13 @@ admin.service('ADHotelLoyaltySrv',['$http', '$q', 'ADBaseWebSrv', function($http
 	this.getHotelLoyaltyDetails = function(data){
 		var deferred = $q.defer();
 		var id = data.id;
-		var url = '/admin/hotel/edit_hlp/'+id+'.json';	
+		var url = '/admin/hotel/edit_hlp/'+id+'.json';
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
    /*
@@ -56,13 +56,13 @@ admin.service('ADHotelLoyaltySrv',['$http', '$q', 'ADBaseWebSrv', function($http
 	this.updateHotelLoyalty = function(data){
 
 		var deferred = $q.defer();
-		var url = '/admin/hotel/update_hlp/';	
+		var url = '/admin/hotel/update_hlp/';
 
 		ADBaseWebSrv.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
    /*
@@ -72,13 +72,13 @@ admin.service('ADHotelLoyaltySrv',['$http', '$q', 'ADBaseWebSrv', function($http
     */
 	this.activateInactivate = function(data){
 		var deferred = $q.defer();
-		var url = '/admin/hotel/toggle_hlp_activation/';	
+		var url = '/admin/hotel/toggle_hlp_activation/';
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/**

@@ -48,9 +48,9 @@ admin.controller('ADCampaignsListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADCam
 
 		var deleteSuccess = function(){
 			$scope.$emit('hideLoader');
-			
+
 			for(var i in $scope.data){
-				if($scope.data[i].id == id){
+				if($scope.data[i].id === id){
 					$scope.data.splice(i, 1);
 					break;
 				}
@@ -63,7 +63,7 @@ admin.controller('ADCampaignsListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADCam
 	};
 
 	$scope.getTimeConverted = function(time) {
-		if (time == null || time == undefined) {
+		if (time === null || time === undefined) {
 			return "";
 		}
 		var timeDict = tConvert(time);

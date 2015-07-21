@@ -7,7 +7,7 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 	$scope.rateTypeData = {};
 	$scope.isAddMode = false;
 	$scope.popoverRates = "";
-	$scope.mouseEnterPopover = false; 
+	$scope.mouseEnterPopover = false;
 
 
 	var fetchSuccess = function(data) {
@@ -38,7 +38,7 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 	* @param {id} id of the rate type
 	*/
 	$scope.editRateTypes = function(index, id) {
-	
+
 		$scope.rateTypeData = {};
 		$scope.currentClickedElement = index;
 		$scope.isAddMode = false;
@@ -46,7 +46,7 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 			$scope.rateTypeData = data;
 			$scope.$emit('hideLoader');
 		};
-		
+
 		var data = {
 			"id" : id
 		};
@@ -59,18 +59,19 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 	* @param {string} id of the rate type
 	*/
 	$scope.getTemplateUrl = function(index, id) {
-		if ( typeof index === "undefined" || typeof id === "undefined")
+		if ( typeof index === "undefined" || typeof id === "undefined") {
 			return "";
-		if ($scope.currentClickedElement == index) {
+		}
+		if ($scope.currentClickedElement === index) {
 			return "/assets/partials/rateTypes/adRateTypeEdit.html";
 		}
 	};
 
 	$scope.getPopoverTemplate = function(index, id) {
-		if ( typeof index === "undefined" || typeof id === "undefined")
+		if ( typeof index === "undefined" || typeof id === "undefined") {
 			return "";
-
-		if ($scope.currentHoverElement == index) {
+		}
+		if ($scope.currentHoverElement === index) {
 			return "/assets/partials/rateTypes/adRateTypePopover.html";
 		}
 	};
@@ -105,7 +106,7 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 				var l = $scope.data.length;
 				$scope.data[(l - 1)].name = $scope.rateTypeData.name;
 				$scope.data[(l - 1)].rate_count = 0;
-			} else {				
+			} else {
 				//To update data with new value
 				$scope.data[parseInt($scope.currentClickedElement)].name = $scope.rateTypeData.name;
 			}
@@ -145,11 +146,13 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 	* @param {string} number of rates available for the rate type
 	*/
 	$scope.showRates = function(index, rateTypeId, rateCount){
-		if(rateCount <= 0) return false;
+		if(rateCount <= 0) {
+			return false;
+		}
 		var rateFetchSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.popoverRates = data;
-			$scope.mouseEnterPopover = true; 
+			$scope.mouseEnterPopover = true;
 		};
 
 		//Fetch the rates only when we enter the popover area.
@@ -165,7 +168,7 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 	*/
 	$scope.mouseLeavePopover = function(){
 		$scope.popoverRates = "";
-		$scope.mouseEnterPopover = false; 
+		$scope.mouseEnterPopover = false;
 	};
 
 	$scope.showLoader = function() {

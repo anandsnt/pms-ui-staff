@@ -3,7 +3,7 @@ admin.service('ADAccountReceivablesSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseW
     * To fetch the saved account receivable status
     */
 	this.fetch = function(){
-		
+
 		var deferred = $q.defer();
 		var url = 'api/billing_groups.json';
 
@@ -11,14 +11,14 @@ admin.service('ADAccountReceivablesSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseW
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/**
     * To update the account receivable status
     */
 	this.save = function(){
-		
+
 		var deferred = $q.defer();
 		var url = ' /api/billing_groups/charge_codes.json';
 
@@ -26,7 +26,7 @@ admin.service('ADAccountReceivablesSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseW
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 

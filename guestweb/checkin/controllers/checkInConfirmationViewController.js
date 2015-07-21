@@ -10,7 +10,7 @@
 	}
 	else{
 		$scope.pageValid = true;
-	}	
+	}
 	//uncheck checkbox in reservation details page
 
 	$rootScope.checkedApplyCharges = false;
@@ -64,7 +64,7 @@
 	$scope.isCalender = false;
 	$scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
 	$scope.selectedDate = ($filter('date')($scope.date, $rootScope.dateFormat));
-	
+
 	$scope.showCalender = function(){
 		$scope.isCalender = true;
 	};
@@ -76,7 +76,7 @@
 		$rootScope.departureDate = $scope.selectedDate;
 
 		dateToSend = dclone($scope.date,[]);
-		dateToSend = ($filter('date')(dateToSend,'MM-dd-yyyy'));		
+		dateToSend = ($filter('date')(dateToSend,'MM-dd-yyyy'));
 		$scope.closeCalender();
 	};
 }
