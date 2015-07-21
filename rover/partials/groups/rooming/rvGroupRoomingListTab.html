@@ -91,7 +91,14 @@
         <li> <!-- Don't show until there are new rooms added in the rooming list -->
             <button type="button" class="button grey" ng-hide="true">{{'GROUP_AUTO_ASSIGN_ROOMS'|translate}}</button> <!-- Replace class "grey" with "brand-colors" when rooms selected in the rooming list -->
         </li>
-        <li> <!-- Don't show if there are no rooms in the rooming list -->
+        <li> 
+            <!-- Don't show if there are no rooms in the rooming list -->
+            <label class="checkbox inline" for="no-rate-print" ng-class="{ 'checked': groupConfigData.summary.hide_rates }">
+                <span class="icon-form icon-checkbox" ng-class="{ 'checked':groupConfigData.summary.hide_rates }"></span>
+                <input ng-click="clickedShowRate()" id="no-rate-print" value="" type="checkbox">
+                Don't Print Rate
+            </label>
+
             <button type="button" class="button with-icon only-icon blue" ng-hide="reservations.length ==0" ng-click="sendRoomingList()">
                 <span class="icons icon-email"></span>
                 {{'GROUP_EMAIL'|translate}}
@@ -138,7 +145,7 @@
         <li class="date sort" ng-class="getSortClass('arrival_date')" ng-click="sortBy('arrival_date')">{{'GROUP_ARRIVAL'|translate}}</li>
         <li class="date sort" ng-class="getSortClass('departure_date')" ng-click="sortBy('departure_date')">{{'GROUP_DEPARTURE'|translate}}</li>
         <li class="type sort" ng-class="getSortClass('room_type_id')" ng-click="sortBy('room_type_id')">{{'GROUP_ROOM_TYPE'|translate}}</li>
-        <li class="rate sort" ng-class="getSortClass('room_rate_amount')" ng-click="sortBy('room_rate_amount')">{{'GROUP_ROOM RATE'|translate}}</li>
+        <li ng-hide="groupConfigData.summary.hide_rates" class="rate sort" ng-class="getSortClass('room_rate_amount')" ng-click="sortBy('room_rate_amount')">{{'GROUP_ROOM RATE'|translate}}</li>
         <li class="status sort" ng-class="getSortClass('reservation_status')" ng-click="sortBy('reservation_status')">{{'GROUP_STATUS'|translate}}</li>
     </ul>
 
