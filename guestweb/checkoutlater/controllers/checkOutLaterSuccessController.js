@@ -75,7 +75,8 @@
 	LateCheckOutChargesService.postNewCheckoutOption(url,checkoutLaterData).then(function(response) {
 		$scope.success = response.status ? true : false;
 	 	if($scope.success === true){
-			$scope.posted = true;	
+			$scope.posted = true;
+			$scope.oldCheckoutTime = angular.copy($rootScope.checkoutTime);	
 			$rootScope.checkoutTime = $scope.lateCheckOut.time +':00 '+$scope.lateCheckOut.ap
 		 	$rootScope.checkoutTimessage = "Your new check-out time is ";
 		 	$rootScope.isLateCheckoutAvailable = false;
