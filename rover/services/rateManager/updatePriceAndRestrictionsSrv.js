@@ -1,5 +1,5 @@
 sntRover.service('UpdatePriceAndRestrictionsSrv',['$q', 'BaseWebSrvV2', function( $q, BaseWebSrvV2){
-	
+
 
 
 
@@ -16,7 +16,7 @@ sntRover.service('UpdatePriceAndRestrictionsSrv',['$q', 'BaseWebSrvV2', function
 	};
 
 
-	
+
 
 
 }]);

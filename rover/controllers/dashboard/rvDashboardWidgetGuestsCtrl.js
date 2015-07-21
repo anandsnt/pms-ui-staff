@@ -16,14 +16,14 @@ sntRover.controller('rvDashboardGuestWidgetController',['$scope', 'RVSearchSrv',
         event.preventDefault();
         event.stopImmediatePropagation();
         event.stopPropagation();
-        //disable reservation search for house keeping 
-        if(!$scope.disableReservations){ 
+        //disable reservation search for house keeping
+        if(!$scope.disableReservations){
             var stateParams = {'type': type, 'from_page': 'DASHBOARD'};
             $state.go('rover.search', stateParams);
         }
-        else
+        else {
             return;
-        
+        }
     };
 
 

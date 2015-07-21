@@ -21,6 +21,6 @@ sntRover.service('RVReservationAllCardsSrv', ['$q', 'rvBaseWebSrvV2',
                 deferred.reject(data);
             });
             return deferred.promise;
-        };        
+        };
     }
 ]);

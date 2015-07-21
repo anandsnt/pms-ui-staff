@@ -9,8 +9,8 @@ sntRover.directive('rvToggleButton', function($timeout) {
             divClass: '@divClass',
             label: '@label'
 	    },
-        
-    	templateUrl: '../../assets/directives/toggle/rvToggleButton.html' 
+
+    	templateUrl: '../../assets/directives/toggle/rvToggleButton.html'
     };
 
 });

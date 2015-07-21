@@ -177,8 +177,12 @@
                             <!-- If new room, show this instead: -->
                             <span class="highlight">{{'GROUP_PENDING'|translate}}</span>
                         </h2>
-                            <span class="room" ng-show="!isRoomUnAssigned(reservation)"> <!-- Add class "unassigned" if new room -->
-                            {{'GROUP_ROOM'|translate}} {{reservation.room_no}}
+                        <span class="room" ng-show="!isRoomUnAssigned(reservation)">
+                            <!-- Add class "unassigned" if new room -->
+                            {{'GROUP_ROOM'|translate}} 
+                            <span ng-class="getRoomStatusClass(reservation)">
+                                {{reservation.room_no}}
+                            </span>
                             <!-- If new room, show this instead: Unassigned -->
                         </span>
                             <span class="room unassigned" ng-show="isRoomUnAssigned(reservation)"> <!-- Add class "unassigned" if new room -->

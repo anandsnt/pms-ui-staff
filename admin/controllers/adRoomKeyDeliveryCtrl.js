@@ -1,13 +1,13 @@
 admin.controller('ADRoomKeyDeliveryCtrl',['$state', '$scope','$rootScope','ADRoomKeyDeliverySrv', function($state, $scope,$rootScope, ADRoomKeyDeliverySrv){
-	
+
 	BaseCtrl.call(this, $scope);
 	//$scope.isRoverCheckinRFID = false;
-	
+
 	var fetchSuccess = function(data){
 		$scope.data = data;
 		$scope.$emit('hideLoader');
 	};
-	
+
 	$scope.invokeApi(ADRoomKeyDeliverySrv.fetch, {}, fetchSuccess);
 	/*
     * To handle save button click.
@@ -28,5 +28,5 @@ admin.controller('ADRoomKeyDeliveryCtrl',['$state', '$scope','$rootScope','ADRoo
        		$scope.isRoverCheckinRFID = false;
        }
    	});*/
-   	
+
 }]);

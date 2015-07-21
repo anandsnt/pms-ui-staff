@@ -9,7 +9,7 @@ var ccVerificationService = function($q,$http) {
 			$http.post(url, data).success(function(response){
 				deferred.resolve(response);
 			}).error(function(){
-				deferred.reject();			
+				deferred.reject();
 			});
 			return deferred.promise;
 		};

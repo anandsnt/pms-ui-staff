@@ -338,14 +338,18 @@ sntRover.controller('RVbillCardController',
 	//Calculate the scroll width for bill tabs in all the cases
 	$scope.getWidthForBillTabsScroll = function(){
 		var width = 0;
-		if($scope.routingArrayCount > 0)
+		if($scope.routingArrayCount > 0) {
 			width = width + 200;
-		if($scope.incomingRoutingArrayCount > 0)
+		}
+		if($scope.incomingRoutingArrayCount > 0) {
 			width = width + 275;
-		if($scope.clickedButton === 'checkinButton')
+		}
+		if($scope.clickedButton === 'checkinButton') {
 			width = width + 230;
-		if($scope.reservationBillData.bills.length < 10)
+		}
+		if($scope.reservationBillData.bills.length < 10) {
 			width = width + 50;
+		}
 		width =  133 * $scope.reservationBillData.bills.length + 10 + width;
 		return width;
 		// return 2200;
@@ -461,8 +465,9 @@ sntRover.controller('RVbillCardController',
 			return false;
 		}
 
-		if(buttonClicked)
+		if(buttonClicked) {
 			return;
+		}
 		buttonClicked = true;
 		setTimeout(function(){
 	     		buttonClicked = false;
@@ -522,7 +527,7 @@ sntRover.controller('RVbillCardController',
 				$scope.dayRates = $scope.dayRates;
 			}
 
-		} else if($scope.dayRates != dayIndex) {
+		} else if($scope.dayRates !== dayIndex) {
 			$scope.dayRates = dayIndex;
 
 		}else{
@@ -549,7 +554,7 @@ sntRover.controller('RVbillCardController',
 	 * @param {int} addon index
 	 */
 	$scope.showAddons = function(addonIndex){
-		$scope.showAddonIndex = ($scope.showAddonIndex != addonIndex)?addonIndex:-1;
+		$scope.showAddonIndex = ($scope.showAddonIndex !== addonIndex)?addonIndex:-1;
 		$scope.dayRates = -1;
 		$scope.showGroupItemIndex = -1;
 		$scope.calculateHeightAndRefreshScroll();
@@ -560,7 +565,7 @@ sntRover.controller('RVbillCardController',
 	 */
 	$scope.showGroupItems = function(groupIndex){
 		$scope.dayRates = -1;
-		$scope.showGroupItemIndex = ($scope.showGroupItemIndex != groupIndex)?groupIndex:-1;
+		$scope.showGroupItemIndex = ($scope.showGroupItemIndex !== groupIndex)?groupIndex:-1;
 		$scope.showAddonIndex = -1;
 		$scope.calculateHeightAndRefreshScroll();
 	};
@@ -797,9 +802,12 @@ sntRover.controller('RVbillCardController',
 	 	$scope.paymentModalOpened = true;
 	 	$scope.removeDirectPayment = true;
 
-	 	if(isViaReviewProcess) $scope.isViaReviewProcess = true;
-	 	else $scope.isViaReviewProcess = false;
-
+	 	if(isViaReviewProcess) {
+	 		$scope.isViaReviewProcess = true;
+	 	}
+	 	else {
+	 		$scope.isViaReviewProcess = false;
+	 	}
 	 	ngDialog.open({
               template: '/assets/partials/pay/rvPaymentModal.html',
               className: '',
@@ -922,7 +930,7 @@ sntRover.controller('RVbillCardController',
 		var reservationRoomStatusClass = "";
 		if(reservationStatus === 'CHECKING_IN'){
 
-			if(roomReadyStatus!=''){
+			if(roomReadyStatus!==''){
 				if(foStatus === 'VACANT'){
 					switch(roomReadyStatus) {
 
@@ -960,13 +968,13 @@ sntRover.controller('RVbillCardController',
 	$scope.showDays = function(date, checkoutDate, numberOfNights, place){
 		var showDay = false;
 		if(place === 'checkout'){
-			if(date === checkoutDate && numberOfNights != 0){
+			if(date === checkoutDate && numberOfNights !== 0){
 				showDay = true;
 			}
 		} else {
 			if(date === checkoutDate && numberOfNights === 0){
 				showDay = true;
-			} else if(date != checkoutDate){
+			} else if(date !== checkoutDate){
 				showDay = true;
 			}
 		}
@@ -975,20 +983,20 @@ sntRover.controller('RVbillCardController',
 	};
 	$scope.getDaysClass = function(index, dayDate, checkinDate, checkoutDate, businessDate){
 		var dayClass = "";
-		if(index!=0){
+		if(index!==0){
 			dayClass = "hidden";
 		}
 		if(dayDate === checkinDate){
 			dayClass = "check-in active";
 		}
-		if(dayDate != checkoutDate){
+		if(dayDate !== checkoutDate){
 			if(dayDate <= businessDate){
 				dayClass = "active";
 			}
 		}
-		if(dayDate === checkoutDate && dayDate != checkinDate){
+		if(dayDate === checkoutDate && dayDate !== checkinDate){
 			if(reservationBillData.bills[$scope.currentActiveBill]){
-				if(reservationBillData.bills[$scope.currentActiveBill].addons != undefined && reservationBillData.bills[$scope.currentActiveBill].addons.length >0){
+				if(reservationBillData.bills[$scope.currentActiveBill].addons !== undefined && reservationBillData.bills[$scope.currentActiveBill].addons.length >0){
 					dayClass = "check-out last";
 				} else {
 					dayClass = "check-out";
@@ -1316,7 +1324,7 @@ sntRover.controller('RVbillCardController',
 					}
 					//CICO-12554 Adding the KSN conditionally
 					data.ksn = swipedTrackDataForCheckin.RVCardReadTrack2KSN;
-		      		if(swipedTrackDataForCheckin.RVCardReadETBKSN != "" && typeof swipedTrackDataForCheckin.RVCardReadETBKSN != "undefined"){
+		      		if(swipedTrackDataForCheckin.RVCardReadETBKSN !== "" && typeof swipedTrackDataForCheckin.RVCardReadETBKSN !== "undefined"){
 						data.ksn = swipedTrackDataForCheckin.RVCardReadETBKSN;
 					}
 	 		    } else {
@@ -1331,7 +1339,7 @@ sntRover.controller('RVbillCardController',
 
 	 		    setFlagForPreAuthPopup();
 
-	 		    if(typeof isCheckinWithoutPreAuthPopup != 'undefined' && isCheckinWithoutPreAuthPopup){
+	 		    if(typeof isCheckinWithoutPreAuthPopup !== 'undefined' && isCheckinWithoutPreAuthPopup){
 	 		    	// Directly performing checkin process without pre-auth popup.
 	 		    	performCCAuthAndCheckinProcess(data,true);
 	 		    }
@@ -1422,7 +1430,7 @@ sntRover.controller('RVbillCardController',
 			finalBillBalance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount;
 		}
 		var paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type;
-		if($rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType!="DB"){
+		if($rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType!=="DB"){
 			$scope.reservationBillData.isCheckout = true;
 			$scope.clickedPayButton(true);
 		}
@@ -1483,7 +1491,7 @@ sntRover.controller('RVbillCardController',
 			$scope.reviewStatusArray[index].reviewStatus = true;
 			$scope.findNextBillToReview();
 		}
-		else if($rootScope.isStandAlone && ActiveBillBalance !== "0.00" && paymentType!="DB"){
+		else if($rootScope.isStandAlone && ActiveBillBalance !== "0.00" && paymentType!=="DB"){
 			// Show payment popup for stand-alone only.
 			$scope.reservationBillData.isCheckout = true;
 			$scope.clickedPayButton(true);
@@ -1503,11 +1511,15 @@ sntRover.controller('RVbillCardController',
 			if($rootScope.isStandAlone && typeof $scope.reservationBillData.bills[i].total_fees[0] !== 'undefined'){
 				var billBalance = $scope.reservationBillData.bills[i].total_fees[0].balance_amount;
 				var paymentType = $scope.reservationBillData.bills[i].credit_card_details.payment_type;
-				if(billBalance !== "0.00" && paymentType != "DB") $scope.reviewStatusArray[i].reviewStatus = false;
+				if(billBalance !== "0.00" && paymentType !== "DB") {
+					$scope.reviewStatusArray[i].reviewStatus = false;
+				}
 			}
 			if(!$scope.reviewStatusArray[i].reviewStatus){
 				// when all bills reviewed and reached final bill
-				if($scope.reviewStatusArray.length === (i+1)) $scope.isAllBillsReviewed = true;
+				if($scope.reviewStatusArray.length === (i+1)) {
+					$scope.isAllBillsReviewed = true;
+				}
 				billIndex = $scope.reviewStatusArray[i].billIndex;
 				break;
 			}
