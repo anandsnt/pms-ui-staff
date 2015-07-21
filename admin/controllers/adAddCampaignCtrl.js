@@ -44,8 +44,8 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		$scope.campaignData.name = data.name;
 		$scope.campaignData.audience_type = data.audience_type;
 		$scope.campaignData.delivery_details = data.delivery_details;
-		$scope.campaignData.target_type = (data.screen_type_id !=  "" && data.screen_type_id !=  null)? "SCREEN" : "URL";
-		$scope.campaignData.screen_type_id = (data.screen_type_id !=  "" && data.screen_type_id !=  null)? data.screen_type_id : "";
+		$scope.campaignData.target_type = (data.screen_type_id !==  "" && data.screen_type_id !==  null)? "SCREEN" : "URL";
+		$scope.campaignData.screen_type_id = (data.screen_type_id !==  "" && data.screen_type_id !==  null)? data.screen_type_id : "";
 		$scope.campaignData.specific_users = data.specific_users;
 
 		$scope.campaignData.subject = data.subject;
@@ -207,8 +207,9 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 	$scope.$watch(function(){
 		return $scope.campaignData.header_image;
 	}, function(logo) {
-			if(logo === 'false')
+			if(logo === 'false') {
 				$scope.fileName = "Choose File....";
+			}
 			$scope.campaignData.header_file = $scope.fileName;
 		}
 	);

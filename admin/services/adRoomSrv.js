@@ -114,7 +114,7 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 	this.getRoomTypeName = function(roomTypeId){
 		var roomTypeName = "";
 		angular.forEach(that.roomTypesArray, function(value, key) {
-	     	if(value.value == roomTypeId){
+	     	if(value.value === roomTypeId){
 	     		roomTypeName = value.name;
 	     	}
 	    });
@@ -122,13 +122,13 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 	};
 
 	this.updateRoomDataOnUpdate = function(roomId, param, updatedValue){
-		if(typeof that.roomsArray != 'undefined'){
+		if(typeof that.roomsArray !== 'undefined'){
 			angular.forEach(that.roomsArray.rooms, function(value, key) {
-		     	if(value.room_id == roomId){
-		     		if(param == "room_number"){
+		     	if(value.room_id === roomId){
+		     		if(param === "room_number"){
 		     			value.room_number = updatedValue;
 		     		}
-		     		if(param == "room_type"){
+		     		if(param === "room_type"){
 		     			value.room_type = updatedValue;
 		     		}
 

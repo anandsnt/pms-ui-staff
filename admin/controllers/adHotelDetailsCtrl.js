@@ -102,16 +102,18 @@ admin.controller('ADHotelDetailsCtrl', [
 		function(){
 		return $scope.data.hotel_template_logo;
 	}, function(logo) {
-				if(logo === 'false')
+				if(logo === 'false') {
 					$scope.fileName = "Choose File....";
+				}
 				$scope.hotel_template_logo_file = $scope.fileName;
 			}
 		);
 	$scope.$watch(function(){
 		return $scope.data.hotel_logo;
 	}, function(logo) {
-				if(logo === 'false')
+				if(logo === 'false') {
 					$scope.fileName = "Choose File....";
+				}
 				$scope.hotel_logo_file = $scope.fileName;
 			}
 		);
@@ -162,8 +164,12 @@ admin.controller('ADHotelDetailsCtrl', [
 				$state.go("admin.hotels");
 			};
 
-			if($scope.isEdit) $scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data, postSuccess);
-			else $scope.invokeApi(ADHotelDetailsSrv.addNewHotelDeatils, data, postSuccess);
+			if($scope.isEdit) {
+				$scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data, postSuccess);
+			}
+			else {
+				$scope.invokeApi(ADHotelDetailsSrv.addNewHotelDeatils, data, postSuccess);
+			}
 		}
 		// Hotel Admin -To save Edit data
 		else{
@@ -263,8 +269,9 @@ admin.controller('ADHotelDetailsCtrl', [
 
 		if($scope.isAdminSnt) {
 
-    		if($scope.previousStateIsDashBoard)
+    		if($scope.previousStateIsDashBoard) {
     			$state.go("admin.dashboard",{"menu":0});
+    		}
     		else{
     			$state.go("admin.hotels");
     		}
@@ -298,9 +305,12 @@ admin.controller('ADHotelDetailsCtrl', [
     *   To handle show hide status for the logo delete button
     */
     $scope.isLogoAvailable = function(logo){
-    	if(logo != '/assets/logo.png' && logo != 'false')
+    	if(logo !== '/assets/logo.png' && logo !== 'false') {
     		return true;
-    	else return false;
+    	}
+    	else {
+    		return false;
+    	}
     };
 
 }]);

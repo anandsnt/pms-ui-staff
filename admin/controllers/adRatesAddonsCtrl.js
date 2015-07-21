@@ -34,8 +34,9 @@ admin.controller('ADRatesAddonsCtrl', [
 		$scope.isConnectedToPMS = false;
 		$scope.checkPMSConnection = function(){
 			var fetchSuccessOfHotelSettings = function(data){
-				if(data.pms_type !== null)
+				if(data.pms_type !== null) {
 					$scope.isConnectedToPMS = true;
+				}
 			}
 			$scope.invokeApi(ADHotelSettingsSrv.fetch, {}, fetchSuccessOfHotelSettings);
 		};
@@ -422,12 +423,14 @@ admin.controller('ADRatesAddonsCtrl', [
 			$scope.singleAddon.is_reservation_only = $scope.singleAddon.rate_code_only ? false : $scope.singleAddon.is_reservation_only;
 		};
 		$scope.sortByName = function(){
-		if($scope.currentClickedAddon === -1)
+		if($scope.currentClickedAddon === -1) {
 			$scope.tableParams.sorting({'name' : $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'});
+		}
 		};
 		$scope.sortByDescription = function(){
-		if($scope.currentClickedAddon === -1)
+		if($scope.currentClickedAddon === -1) {
 			$scope.tableParams.sorting({'description' : $scope.tableParams.isSortBy('description', 'asc') ? 'desc' : 'asc'});
+		}
 		};
 
 		/**

@@ -1,5 +1,5 @@
 admin.service('adAnalyticSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2){
-   
+
 	this.fetchSetup = function(){
 		var deferred = $q.defer();
 		var url = 'api/analytics_setups.json';

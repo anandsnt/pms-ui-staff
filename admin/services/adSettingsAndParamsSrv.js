@@ -37,7 +37,7 @@ admin.service('settingsAndParamsSrv',['$http', '$q', 'ADBaseWebSrvV2','ADBaseWeb
     this.fetchChargeCodes = function(){
         var deferred = $q.defer();
         var url = '/admin/charge_codes/minimal_list.json';
-        
+
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
         },function(data){

@@ -17,8 +17,8 @@ admin.directive('adTextbox', function($timeout) {
             disabled: '=disabled'
 
 	    },
-    	templateUrl: '../../assets/directives/textBox/adTextbox.html'  
-	        
+    	templateUrl: '../../assets/directives/textBox/adTextbox.html'
+
 	   };
 
 });

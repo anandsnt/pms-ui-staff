@@ -14,13 +14,13 @@ admin.controller('ADHotelAnnouncementSettingsCtrl', ['$scope','$rootScope', '$st
 	//fetching the settings details
 	$scope.invokeApi(ADHotelAnnouncementSrv.fetchSettingsDetails, {}, fetchCompletedOfSettingsDetails);
 
-	
+
 
 	/*
 	* success call back of details web service call
 	*/
 	var successCallbackOfSaveDetails = function(data){
-		$scope.$emit('hideLoader');		
+		$scope.$emit('hideLoader');
 	};
 
 	$scope.save = function(){

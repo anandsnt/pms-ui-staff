@@ -896,9 +896,13 @@
                             padding: 10px 0;
                             .size(50px, 40%);
                             .pull-left;
-                        }        
+                        }
+                    }
 
+                    .room-info {
                         .room-number {
+                            font-size: 30px;
+                            line-height: 20px;
                             .show;
 
                             &.ready { color: @green; }
@@ -906,8 +910,14 @@
                             &.room-red { 
                                 color: @red; 
                                 margin-top: -10px;
-                                line-height: 1em;
                             }
+                        }
+
+                        .room-type {
+                            font-size: 14px;
+                            text-transform: uppercase;
+                            .nowrap();
+                            .show;
                         }
                     }
 
