@@ -17,7 +17,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			$state,
 			util,
 			rvPermissionSrv) {
-			
+
 		BaseCtrl.call(this, $scope);
 
 		/**
@@ -35,11 +35,11 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		*/
 		$scope.getClassAgainstBalance = function(account){
 			var classes = '';
-			
-			//Add class "red" if status OPEN
-			if(util.convertToDouble (account.balance) > 0)
-				classes = 'red';
 
+			//Add class "red" if status OPEN
+			if(util.convertToDouble (account.balance) > 0) {
+				classes = 'red';
+			}
 			return classes;
 		};
 
@@ -65,7 +65,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		$scope.clearSearchQuery = function(){
 			$scope.query = '';
 			runDigestCycle();
-			
+
 			//we have to search on changing the from date
 			$scope.search();
 		};
@@ -108,7 +108,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			}, 300);
 			$scope.$emit('hideLoader');
 		});
-		
+
 		/**
 		* when there is any change in search query
 		* this function will execute
@@ -160,12 +160,12 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 
 			//resetting error message
 			$scope.errorMessage = '';
-			
+
 			var params = formAccountSearchParams();
 			var options = {
 				params: 			params,
 				successCallBack: 	successCallBackOfSearch,
-				failureCallBack: 	failureCallBackOfSearch,
+				failureCallBack: 	failureCallBackOfSearch
 			};
 			$scope.callAPI(rvAccountsSrv.getAccountsList, options);
 		};
@@ -178,7 +178,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		var successCallBackOfSearch = function(data){
 			//accountList
 			$scope.accountList = data.posting_accounts;
-			
+
 			//total result count
 			$scope.totalResultCount = data.total_count;
 
@@ -209,7 +209,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			};
 			$scope.setScroller('result_showing_area', scrollerOptions);
 		};
-		
+
 		/**
 		* utiltiy function for setting scroller and things
 		* return - None
@@ -293,11 +293,11 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* return - None
 		*/
 		$scope.loadPrevSet = function() {
-			var isAtEnd = ($scope.end == $scope.totalResultCount);
+			var isAtEnd = ($scope.end === $scope.totalResultCount);
 			if (isAtEnd){
 				//last diff will be diff from our normal diff
 				var lastDiff = ($scope.totalResultCount % $scope.perPage);
-				if (lastDiff == 0){
+				if (lastDiff === 0){
 					lastDiff = $scope.perPage;
 				}
 
@@ -311,7 +311,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 
 			//Decreasing the page param used for API calling
 			$scope.page--;
-			
+
 			//yes we are calling the API
 			$scope.search();
 		};
@@ -324,7 +324,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		$scope.loadNextSet = function() {
 			$scope.start = $scope.start + $scope.perPage;
 			var willNextBeEnd = (($scope.end + $scope.perPage) > $scope.totalResultCount);
-			
+
 			if (willNextBeEnd){
 				$scope.end = $scope.totalResultCount;
 			}
@@ -350,7 +350,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
         isFromCards: true
 			})
 		};
-		
+
 		/**
 		 * Navigate to the account configuration state for adding the account
 		 * @return undefined
@@ -373,7 +373,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 
 			//accountList
 			$scope.accountList = initialAccountsListing.posting_accounts;
-			
+
 			//total result count
 			$scope.totalResultCount = initialAccountsListing.total_count;
 

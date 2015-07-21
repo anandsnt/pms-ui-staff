@@ -59,17 +59,18 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 	* @param {string} id of the rate type
 	*/
 	$scope.getTemplateUrl = function(index, id) {
-		if ( typeof index === "undefined" || typeof id === "undefined")
+		if ( typeof index === "undefined" || typeof id === "undefined") {
 			return "";
+		}
 		if ($scope.currentClickedElement === index) {
 			return "/assets/partials/rateTypes/adRateTypeEdit.html";
 		}
 	};
 
 	$scope.getPopoverTemplate = function(index, id) {
-		if ( typeof index === "undefined" || typeof id === "undefined")
+		if ( typeof index === "undefined" || typeof id === "undefined") {
 			return "";
-
+		}
 		if ($scope.currentHoverElement === index) {
 			return "/assets/partials/rateTypes/adRateTypePopover.html";
 		}
@@ -145,7 +146,9 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 	* @param {string} number of rates available for the rate type
 	*/
 	$scope.showRates = function(index, rateTypeId, rateCount){
-		if(rateCount <= 0) return false;
+		if(rateCount <= 0) {
+			return false;
+		}
 		var rateFetchSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.popoverRates = data;

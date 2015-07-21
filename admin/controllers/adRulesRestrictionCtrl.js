@@ -82,7 +82,7 @@ admin.controller('ADRulesRestrictionCtrl', [
 
         // get templates for editable restrictions
         $scope.getTemplateUrl = function() {
-            
+
             if ( !this.item ) {
                 return;
             };
@@ -343,7 +343,7 @@ admin.controller('ADRulesRestrictionCtrl', [
 
          $scope.deleteSchedule = function(index){
             $scope.singleRule.schedules.splice(index , 1);
-            if($scope.singleRule.schedules.length!=0){
+            if($scope.singleRule.schedules.length!==0){
                 if($scope.selectedScheduleIndex === $scope.singleRule.schedules.length){
                     $scope.selectedSchedule = $scope.singleRule.schedules[$scope.singleRule.schedules.length-1];
                     $scope.selectedScheduleIndex = $scope.singleRule.schedules.length-1;
@@ -362,7 +362,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             }
         }
 
-              
+
         $scope.deleteDepositeRule = function(rule) {
             // keep them in local context of deleteRule function as
             // we dont know when callback will be called, so..

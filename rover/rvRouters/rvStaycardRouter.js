@@ -45,7 +45,7 @@ angular.module('stayCardModule', [])
                     return RVReservationSummarySrv.fetchInitialData();
                 },
                 activeCodes: function(RVReservationBaseSearchSrv) {
-                    return RVReservationBaseSearchSrv.getActivePromotions();                    
+                    return RVReservationBaseSearchSrv.getActivePromotions();
                 }
             }
         });
@@ -75,13 +75,13 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/reservation/rvRoomTypesList.html',
             controller: 'RVReservationRoomTypeCtrl',
             onEnter: function($stateParams) {
-                if (typeof $stateParams.view == "undefined" || $stateParams.view == null) {
+                if (typeof $stateParams.view === "undefined" || $stateParams.view === null) {
                     $stateParams.view = "DEFAULT";
                 }
-                if (typeof $stateParams.company_id == "undefined" || $stateParams.company_id == null) {
+                if (typeof $stateParams.company_id === "undefined" || $stateParams.company_id === null) {
                     $stateParams.company_id = null;
                 }
-                if (typeof $stateParams.travel_agent_id == "undefined" || $stateParams.travel_agent_id == null) {
+                if (typeof $stateParams.travel_agent_id === "undefined" || $stateParams.travel_agent_id === null) {
                     $stateParams.travel_agent_id = null;
                 }
             },
@@ -100,7 +100,9 @@ angular.module('stayCardModule', [])
                 rateAddons: function(RVReservationBaseSearchSrv) {
                     return RVReservationBaseSearchSrv.fetchAddonsForRates();
                 },
-                isAddonsConfigured: function(RVReservationBaseSearchSrv, $stateParams) { //CICO-16874              
+
+                isAddonsConfigured: function(RVReservationBaseSearchSrv, $stateParams) { //CICO-16874
+
                     var params = {};
                     params.from_date = $stateParams.from_date;
                     params.to_date = $stateParams.to_date;
@@ -115,7 +117,7 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/reservation/rvAddonsList.html',
             controller: 'RVReservationAddonsCtrl',
             onEnter: function($stateParams) {
-                if (typeof $stateParams.reservation == "undefined" || $stateParams.reservation == null) {
+                if (typeof $stateParams.reservation === "undefined" || $stateParams.reservation === null) {
                     $stateParams.reservation = "DAILY";
                 }
             },
@@ -136,10 +138,10 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/reservation/rvSummaryAndConfirm.html',
             controller: 'RVReservationSummaryCtrl',
             onEnter: function($stateParams) {
-                if (typeof $stateParams.reservation == "undefined" || $stateParams.reservation == null) {
+                if (typeof $stateParams.reservation === "undefined" || $stateParams.reservation === null) {
                     $stateParams.reservation = "DAILY";
                 }
-                if (typeof $stateParams.mode == "undefined" || $stateParams.mode == null) {
+                if (typeof $stateParams.mode === "undefined" || $stateParams.mode === null) {
                     $stateParams.mode = "OTHER";
                 }
             }

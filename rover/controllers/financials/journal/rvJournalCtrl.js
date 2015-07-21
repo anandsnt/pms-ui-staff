@@ -1,12 +1,12 @@
 sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVJournalSrv', 'journalResponse','$timeout',function($scope, $filter,$stateParams, ngDialog, $rootScope, RVJournalSrv, journalResponse, $timeout) {
-		
+
 	BaseCtrl.call(this, $scope);
 	// Setting up the screen heading and browser title.
 	$scope.$emit('HeaderChanged', $filter('translate')('MENU_JOURNAL'));
 	$scope.setTitle($filter('translate')('MENU_JOURNAL'));
 
 	$scope.data = {};
-	$scope.data.activeTab = $stateParams.id=='' ? 0 : $stateParams.id;
+	$scope.data.activeTab = $stateParams.id==='' ? 0 : $stateParams.id;
 	$scope.data.filterData = {};
 	$scope.data.revenueData = {};
     $scope.data.paymentData = {};
@@ -18,7 +18,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.data.selectedChargeCode  = '';
     $scope.data.selectedPaymentType = '';
     $scope.data.filterTitle = "All Departments";
-  
+
     $scope.data.isActiveRevenueFilter = false;
     $scope.data.activeChargeGroups = [];
     $scope.data.activeChargeCodes = [];
@@ -31,14 +31,14 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.data.isRevenueToggleSummaryActive = true;
     $scope.data.isPaymentToggleSummaryActive = true;
     $scope.data.selectedCashier = "";
-	
+
     $scope.setScroller('employee-content');
     $scope.setScroller('department-content');
 
     var retrieveCashierName = function(){
         if($scope.data.filterData.selectedCashier !== ""){
             angular.forEach($scope.data.filterData.cashiers,function(item, index) {
-                if(item.id == $scope.data.filterData.selectedCashier){
+                if(item.id === $scope.data.filterData.selectedCashier){
                    $scope.data.selectedCashier = item.name;
                 }
             });
@@ -71,7 +71,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     // Filter by Logged in user id.
     var filterByLoggedInUser = function(){
         angular.forEach($scope.data.filterData.employees,function(item, index) {
-            if(item.id == $scope.data.filterData.loggedInUserId ){
+            if(item.id === $scope.data.filterData.loggedInUserId ){
                 item.checked = true;
                 $scope.data.filterData.isSelectButtonActive = true;
                 $scope.clickedSelectButton();
@@ -92,7 +92,9 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     var isAllDepartmentsUnchecked = function(){
         var flag = true;
         angular.forEach($scope.data.filterData.departments,function(item, index) {
-            if(item.checked) flag = false;
+            if(item.checked) {
+                flag = false;
+            }
         });
         return flag;
     };
@@ -124,7 +126,9 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     var isAllEmployeesUnchecked = function(){
         var flag = true;
         angular.forEach($scope.data.filterData.employees,function(item, index) {
-            if(item.checked) flag = false;
+            if(item.checked) {
+                flag = false;
+            }
         });
         return flag;
     };
@@ -147,7 +151,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
         if(isAllDepartmentsUnchecked()) {
             $scope.selectAllDepartment();
-        }            
+        }
         else {
             $scope.data.filterData.checkedAllDepartments = false;
         };
@@ -183,7 +187,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         if(($scope.data.selectedDepartmentList.length + $scope.data.selectedEmployeeList.length) > 1 ){
             $scope.data.filterTitle = "Multiple";
         }
-        else if( ($scope.data.selectedDepartmentList.length == 0) && ($scope.data.selectedEmployeeList.length == 0) ){
+        else if( ($scope.data.selectedDepartmentList.length === 0) && ($scope.data.selectedEmployeeList.length === 0) ){
             $scope.data.filterTitle = "All Departments";
         }
         else{
@@ -193,14 +197,14 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
     // On selecting select button.
     $scope.clickedSelectButton = function(){
-        
+
         if($scope.data.filterData.isSelectButtonActive){
             setupDeptAndEmpList();
             $scope.data.isActiveRevenueFilter = false; // Close the entire filter box
         }
     };
 
-    if($stateParams.id == 0){
+    if($stateParams.id === 0){
         // 2. Go to Financials -> Journal.
         // a) Upon logging in, default Tab should be Revenue
         $scope.data.activeTab = 0;
@@ -213,7 +217,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         $scope.data.toDate   = $filter('date')(yesterday, 'yyyy-MM-dd');
         $scope.data.cashierDate = $filter('date')(yesterday, 'yyyy-MM-dd');
     }
-    else if($stateParams.id == 2){
+    else if($stateParams.id === 2){
         // 1. Go to Front Office -> Cashier
         // a) Upon logging in, default Tab should be Cashier
         $scope.data.activeTab = 2;
@@ -249,9 +253,15 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
     $scope.activatedTab = function(index){
     	$scope.data.activeTab = index;
-    	if(index == 0) $rootScope.$broadcast('REFRESHREVENUECONTENT');
-    	else if(index == 2) $scope.$broadcast('cashierTabActive');
-    	else $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
+    	if(index === 0) {
+            $rootScope.$broadcast('REFRESHREVENUECONTENT');
+        }
+    	else if(index === 2) {
+            $scope.$broadcast('cashierTabActive');
+        }
+    	else {
+            $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
+        }
     	$scope.$broadcast("CLOSEPRINTBOX");
         $scope.data.isActiveRevenueFilter = false;
     };
@@ -261,10 +271,10 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
         var returnData = data;
 
-        if((data == "") || (typeof data == 'undefined') || (data == null)){
+        if((data === "") || (typeof data === 'undefined') || (data === null)){
             returnData = '-';
         }
-        
+
         return returnData;
     };
 

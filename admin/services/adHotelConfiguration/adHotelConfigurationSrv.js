@@ -4,7 +4,7 @@ admin.service('ADHotelConfigurationSrv',['$http', '$q', 'ADBaseWebSrvV2', functi
     * @return {object} mapping list json
     */
 	this.editHotelConfiguration = function(params){
-		
+
 		var deferred = $q.defer();
 		var url = '/api/email_templates/list.json';
 
@@ -12,7 +12,7 @@ admin.service('ADHotelConfigurationSrv',['$http', '$q', 'ADBaseWebSrvV2', functi
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
    /*
@@ -28,7 +28,7 @@ admin.service('ADHotelConfigurationSrv',['$http', '$q', 'ADBaseWebSrvV2', functi
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
    };
 	this.getTemplateThemes = function(data){
@@ -39,7 +39,7 @@ admin.service('ADHotelConfigurationSrv',['$http', '$q', 'ADBaseWebSrvV2', functi
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 }]);

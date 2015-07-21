@@ -65,10 +65,12 @@ admin.controller('ADBrandCtrl',['$scope', '$rootScope','adBrandsSrv', function($
     * To handle cancel button click
     */
 	$scope.cancelClicked = function (){
-		if($scope.isAddmode)
+		if($scope.isAddmode) {
 			$scope.isAddmode = false;
-		else if($scope.isEditmode)
+		}
+		else if($scope.isEditmode) {
 			$scope.isEditmode = false;
+		}
 	};
    /*
     * To handle save button click

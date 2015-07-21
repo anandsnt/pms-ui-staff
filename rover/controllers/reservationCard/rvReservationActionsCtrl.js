@@ -2,7 +2,6 @@ sntRover.controller('reservationActionsController', [
 	'$rootScope',
 	'$scope',
 	'ngDialog',
-	'RVChargeItems',
 	'$state',
 	'RVReservationCardSrv',
 	'RVReservationSummarySrv',
@@ -10,11 +9,10 @@ sntRover.controller('reservationActionsController', [
 	'RVSearchSrv',
 	'RVDepositBalanceSrv',
 	'$filter',
-	'RVChargeItems','RVPaymentSrv','rvPermissionSrv',
+	'RVPaymentSrv','rvPermissionSrv',
 	function($rootScope,
 		$scope,
 		ngDialog,
-		RVChargeItems,
 		$state,
 		RVReservationCardSrv,
 		RVReservationSummarySrv,
@@ -22,7 +20,7 @@ sntRover.controller('reservationActionsController', [
 		RVSearchSrv,
 		RVDepositBalanceSrv,
 		$filter,
-		RVChargeItems,RVPaymentSrv,rvPermissionSrv) {
+		RVPaymentSrv,rvPermissionSrv) {
 
 
 		BaseCtrl.call(this, $scope);
@@ -56,12 +54,12 @@ sntRover.controller('reservationActionsController', [
 		}
 
 		$scope.actionsCheck = {
-			firstDate: $scope.reservationParentData.arrivalDate == $rootScope.businessDate
+			firstDate: $scope.reservationParentData.arrivalDate === $rootScope.businessDate
 		};
 
 		$scope.displayTime = function(status) {
 			var display = false;
-			if (status == 'CHECKEDIN' || status == 'CHECKING_OUT') {
+			if (status === 'CHECKEDIN' || status === 'CHECKING_OUT') {
 				display = true;
 			}
 			return display;
@@ -69,8 +67,8 @@ sntRover.controller('reservationActionsController', [
 
 		$scope.displayBalance = function(status, balance) {
 			var display = false;
-			if (status == 'CHECKING_IN' || status == 'RESERVED' || status == 'CHECKEDIN' || status == 'CHECKING_OUT' ) {
-				if(status == 'CHECKING_IN' || status == 'RESERVED'){
+			if (status === 'CHECKING_IN' || status === 'RESERVED' || status === 'CHECKEDIN' || status === 'CHECKING_OUT' ) {
+				if(status === 'CHECKING_IN' || status === 'RESERVED'){
 					/*	As per CICO-9795 :
 						Balance field should NOT show when the guest is NOT checked in.
 					*/
@@ -87,7 +85,7 @@ sntRover.controller('reservationActionsController', [
 
 		$scope.getBalanceAmountColor = function(balance) {
 			var balanceClass = "";
-			if (balance == 0 || balance == 0.00 || balance == 0.0 || balance > 0) {
+			if (balance === 0 || balance === 0.00 || balance === 0.0 || balance > 0) {
 				balanceClass = "red";
 			} else {
 				balanceClass = "green";
@@ -97,7 +95,7 @@ sntRover.controller('reservationActionsController', [
 
 		$scope.displayAddon = function(status) {
 			var display = false;
-			if (status == 'RESERVED' || status == 'CHECKING_IN' || status == 'CHECKEDIN' || status == 'CHECKING_OUT') {
+			if (status === 'RESERVED' || status === 'CHECKING_IN' || status === 'CHECKEDIN' || status === 'CHECKING_OUT') {
 				display = true;
 			}
 			return display;
@@ -106,7 +104,7 @@ sntRover.controller('reservationActionsController', [
 		$scope.displayAddCharge = function(status) {
 			var display = false;
 
-			if (status == 'RESERVED' || status == 'CHECKING_IN' || status == 'CHECKEDIN' || status == 'CHECKING_OUT' || status == 'NOSHOW_CURRENT') {
+			if (status === 'RESERVED' || status === 'CHECKING_IN' || status === 'CHECKEDIN' || status === 'CHECKING_OUT' || status === 'NOSHOW_CURRENT') {
 				display = true;
 			}
 			return display;
@@ -114,7 +112,7 @@ sntRover.controller('reservationActionsController', [
 
 		$scope.displayArrivalTime = function(status) {
 			var display = false;
-			if (status == 'CHECKING_IN' || status == 'NOSHOW_CURRENT' ) {
+			if (status === 'CHECKING_IN' || status === 'NOSHOW_CURRENT' ) {
 				display = true;
 			}
 			return display;
@@ -122,38 +120,10 @@ sntRover.controller('reservationActionsController', [
 
 		$scope.getTimeColor = function(time) {
 			var timeColor = "";
-			if (time != null) {
+			if (time !== null) {
 				timeColor = "time";
 			}
 			return timeColor;
-		};
-
-		$scope.openPostCharge = function() {
-			// pass on the reservation id
-			$scope.reservation_id = $scope.reservationData.reservation_card.reservation_id;
-
-			// translating this logic as such from old Rover
-			// api post param 'fetch_total_balance' must be 'true' when posted from 'staycard'
-			$scope.fetchTotalBal = true;
-
-			$scope.successGetBillDetails = function(data){
-				$scope.$emit('hideLoader');
-				$scope.fetchedData.bill_numbers = data.bills;
-				$scope.billNumber = "1";
-				ngDialog.open({
-					template: '/assets/partials/postCharge/postCharge.html',
-					controller: 'RVPostChargeController',
-					scope: $scope
-				});
-
-			};
-			var callback = function(data) {
-
-				$scope.fetchedData = data;
-				$scope.invokeApi(RVChargeItems.getReservationBillDetails, $scope.reservation_id, $scope.successGetBillDetails);
-
-			};
-			$scope.invokeApi(RVChargeItems.fetch, $scope.reservation_id, callback);
 		};
 
 		// update the price on staycard.
@@ -246,7 +216,7 @@ sntRover.controller('reservationActionsController', [
 			RVReservationCardSrv.checkinDateForDiary = $scope.reservationData.reservation_card.arrival_date.replace(/-/g, '/');
 			$state.go('rover.diary', {
 				reservation_id: $scope.reservationData.reservation_card.reservation_id,
-				checkin_date: $scope.reservationData.reservation_card.arrival_date,
+				checkin_date: $scope.reservationData.reservation_card.arrival_date
 			});
 		};
 
@@ -255,8 +225,8 @@ sntRover.controller('reservationActionsController', [
 
 
 				var afterRoomUpdate = function() {
-					if (typeof $scope.guestCardData.userId != "undefined" && $scope.guestCardData.userId != "" && $scope.guestCardData.userId != null) {
-							if (($scope.reservationData.reservation_card.is_disabled_email_phone_dialog == "false" || $scope.reservationData.reservation_card.is_disabled_email_phone_dialog == "" || $scope.reservationData.reservation_card.is_disabled_email_phone_dialog == null) && ($scope.guestCardData.contactInfo.email == '' || $scope.guestCardData.contactInfo.phone == '' || $scope.guestCardData.contactInfo.email == null || $scope.guestCardData.contactInfo.phone == null)) {
+					if (typeof $scope.guestCardData.userId !== "undefined" && $scope.guestCardData.userId !== "" && $scope.guestCardData.userId !== null) {
+							if (($scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "false" || $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "" || $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === null) && ($scope.guestCardData.contactInfo.email === '' || $scope.guestCardData.contactInfo.phone === '' || $scope.guestCardData.contactInfo.email === null || $scope.guestCardData.contactInfo.phone === null)) {
 									$scope.$emit('showLoader');
 									ngDialog.open({
 										template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
@@ -275,14 +245,14 @@ sntRover.controller('reservationActionsController', [
 								return false;
 							}
 
-							if ($scope.reservationData.reservation_card.room_number == '' || $scope.reservationData.reservation_card.room_status === 'NOTREADY' || $scope.reservationData.reservation_card.fo_status === 'OCCUPIED') {
+							if ($scope.reservationData.reservation_card.room_number === '' || $scope.reservationData.reservation_card.room_status === 'NOTREADY' || $scope.reservationData.reservation_card.fo_status === 'OCCUPIED') {
 									//TO DO:Go to room assignemt view
 									$state.go("rover.reservation.staycard.roomassignment", {
 										"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 										"room_type": $scope.reservationData.reservation_card.room_type_code,
 										"clickedButton": "checkinButton"
 									});
-							} else if ($scope.reservationData.reservation_card.is_force_upsell == "true" && $scope.reservationData.reservation_card.is_upsell_available == "true") {
+							} else if ($scope.reservationData.reservation_card.is_force_upsell === "true" && $scope.reservationData.reservation_card.is_upsell_available === "true") {
 									//TO DO : gO TO ROOM UPGRAFED VIEW
 									$state.go('rover.reservation.staycard.upgrades', {
 										"reservation_id": $scope.reservationData.reservation_card.reservation_id,
@@ -375,8 +345,8 @@ sntRover.controller('reservationActionsController', [
 			if($rootScope.isStandAlone){
 				return displayPutInQueue;
 			}
-			if (reservationStatus == 'CHECKING_IN' || reservationStatus == 'NOSHOW_CURRENT') {
-				if (isQueueRoomsOn == "true" && isReservationQueued == "false") {
+			if (reservationStatus === 'CHECKING_IN' || reservationStatus === 'NOSHOW_CURRENT') {
+				if (isQueueRoomsOn === "true" && isReservationQueued === "false") {
 					displayPutInQueue = true;
 				}
 			}
@@ -386,8 +356,8 @@ sntRover.controller('reservationActionsController', [
 		$scope.showRemoveFromQueue = function(isQueueRoomsOn, isReservationQueued, reservationStatus) {
 
 			var displayPutInQueue = false;
-			if (reservationStatus == 'CHECKING_IN' || reservationStatus == 'NOSHOW_CURRENT') {
-				if (isQueueRoomsOn == "true" && isReservationQueued == "true") {
+			if (reservationStatus === 'CHECKING_IN' || reservationStatus === 'NOSHOW_CURRENT') {
+				if (isQueueRoomsOn === "true" && isReservationQueued === "true") {
 					displayPutInQueue = true;
 				}
 			}
@@ -510,9 +480,9 @@ sntRover.controller('reservationActionsController', [
 					// penalty_value: 20
 
 					depositAmount = data.results.deposit_amount;
-					var isOutOfCancellationPeriod = (typeof data.results.cancellation_policy_id != 'undefined');
+					var isOutOfCancellationPeriod = (typeof data.results.cancellation_policy_id !== 'undefined');
 					if (isOutOfCancellationPeriod) {
-						if (data.results.penalty_type == 'day') {
+						if (data.results.penalty_type === 'day') {
 							// To get the duration of stay
 							var stayDuration = $scope.reservationParentData.numNights > 0 ? $scope.reservationParentData.numNights : 1;
 							// Make sure that the cancellation value is -lte thatn the total duration
@@ -527,7 +497,7 @@ sntRover.controller('reservationActionsController', [
 							showCancelReservationWithDepositPopup(depositAmount,isOutOfCancellationPeriod,cancellationCharge);
 						}
 						else{
-							promptCancel(cancellationCharge, nights, (data.results.penalty_type == 'percent'));
+							promptCancel(cancellationCharge, nights, (data.results.penalty_type === 'percent'));
 						};
 					}
 					else{
@@ -535,7 +505,7 @@ sntRover.controller('reservationActionsController', [
 							showCancelReservationWithDepositPopup(depositAmount,isOutOfCancellationPeriod,'');
 						}
 						else{
-							promptCancel('', nights, (data.results.penalty_type == 'percent'));
+							promptCancel('', nights, (data.results.penalty_type === 'percent'));
 						};
 					}
 					//promptCancel(cancellationCharge, nights);
@@ -576,9 +546,9 @@ sntRover.controller('reservationActionsController', [
 		$scope.showSmartBandsButton = function(reservationStatus, icareEnabled, hasSmartbandsAttached) {
 			var showSmartBand = false;
 			if (icareEnabled === "true") {
-				if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'
-					|| reservationStatus == 'CHECKEDIN' || reservationStatus == 'CHECKING_OUT'
-					|| reservationStatus == 'NOSHOW_CURRENT' || (reservationStatus == 'CHECKEDOUT' && hasSmartbandsAttached)) {
+				if (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN'
+					|| reservationStatus === 'CHECKEDIN' || reservationStatus === 'CHECKING_OUT'
+					|| reservationStatus === 'NOSHOW_CURRENT' || (reservationStatus === 'CHECKEDOUT' && hasSmartbandsAttached)) {
 					showSmartBand = true;
 				}
 			}
@@ -588,7 +558,7 @@ sntRover.controller('reservationActionsController', [
 		//({reservationId:, clickedButton: 'checkoutButton'})
 		//	goToCheckoutButton(reservationData.reservation_card.reservation_id, 'checkoutButton');
 		$scope.goToCheckoutButton = function(reservationId, clickedButton, smartbandHasBalance) {
-			if (smartbandHasBalance == "true") {
+			if (smartbandHasBalance === "true") {
 				$scope.clickedButton = clickedButton;
 				ngDialog.open({
 					template: '/assets/partials/smartbands/rvSmartbandListCheckoutscreen.html',
@@ -647,13 +617,13 @@ sntRover.controller('reservationActionsController', [
 			//As per CICO-15833
 			//we wanted to show the Balance & Deposit popup for DUEIN & CHECKING IN reservation only
 			reservationStatus = reservationStatus.toUpperCase();
-			return (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN')
+			return (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN')
 		};
 
 		$scope.showDepositBalanceWithSr = function(reservationStatus, isRatesSuppressed){
 			var showDepositBalanceButtonWithSR = false;
-			if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){
-				if(isRatesSuppressed == "true"){
+			if (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN'){
+				if(isRatesSuppressed === "true"){
 					showDepositBalanceButtonWithSR = true;
 				}
 
@@ -665,8 +635,8 @@ sntRover.controller('reservationActionsController', [
 		$scope.showResendConfirmation = function(reservationStatus){
 			var showResendConfirmationFlag = false;
 			if($rootScope.isStandAlone){
-				if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){
-					if($scope.guestCardData.contactInfo.email !=null && $scope.guestCardData.contactInfo.email !=""){
+				if (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN'){
+					if($scope.guestCardData.contactInfo.email !==null && $scope.guestCardData.contactInfo.email !==""){
 					showResendConfirmationFlag = true;
 					}
 				}

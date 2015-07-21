@@ -36,7 +36,7 @@ module.exports = function(grunt) {
             cwd: 'build',
             build: {
                 src: ['rover_templates.js']
-            },
+            }
         },
         ngtemplates: {
             sntRover: {
@@ -44,7 +44,7 @@ module.exports = function(grunt) {
                 src: 'partials/**/*.html',
                 dest: 'build/rover_templates.js',
                 options: {
-                    prefix: '/assets/',
+                    prefix: '/assets/'
                 }
             },
 
@@ -53,7 +53,7 @@ module.exports = function(grunt) {
                 src: 'partials/**/*.html',
                 dest: 'build/admin_templates.js',
                 options: {
-                    prefix: '/assets/',
+                    prefix: '/assets/'
                 }
             }
         },

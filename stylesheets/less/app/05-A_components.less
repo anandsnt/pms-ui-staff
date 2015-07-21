@@ -896,9 +896,13 @@
                             padding: 10px 0;
                             .size(50px, 40%);
                             .pull-left;
-                        }        
+                        }
+                    }
 
+                    .room-info {
                         .room-number {
+                            font-size: 30px;
+                            line-height: 20px;
                             .show;
 
                             &.ready { color: @green; }
@@ -906,8 +910,14 @@
                             &.room-red { 
                                 color: @red; 
                                 margin-top: -10px;
-                                line-height: 1em;
                             }
+                        }
+
+                        .room-type {
+                            font-size: 14px;
+                            text-transform: uppercase;
+                            .nowrap();
+                            .show;
                         }
                     }
 
@@ -3033,6 +3043,7 @@
                                                 border-right: 1px solid rgba(0,0,0,.1);
                                                 border-left: 0;
                                                 visibility: visible;
+                                                .box-shadow(none);
 
                                                 &:last-of-type {
                                                     padding-right: 0;
@@ -3051,7 +3062,7 @@
                                         li {
                                             line-height: 1em;
                                             margin-bottom: 0;
-                                            padding: 0 20px;
+                                            padding: 0 10px;
                                             border-right: 1px solid rgba(0,0,0,.1);
                                             .pull-left;
 
@@ -3233,18 +3244,24 @@
 
                                     .totals {
                                         li {
-
                                             .data {
                                                 .value { text-align: center; }
                                             }
 
+                                            .checkbox {
+                                                font-size: 14px;
+                                                text-transform: uppercase;
+                                                margin-right: 10px;
+                                                .pull-left;
+                                            }
+
                                             .button {
+                                                font-size: 14px;
                                                 padding: 0 10px;
                                                 margin-right: 10px;
                                                 .pull-left;
 
                                                 &.batch {
-                                                    font-size: 14px;
                                                     padding: 0 0 0 40px;
                                                     text-align: left;
                                                     width: 120px;

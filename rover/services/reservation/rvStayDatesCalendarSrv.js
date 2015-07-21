@@ -7,7 +7,7 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
         this.lastFetchedDate = "";
 
         this.fetchAvailability = function(params) {
-            //If its a request to fetch the additional, then fetch the next set of availability data 
+            //If its a request to fetch the additional, then fetch the next set of availability data
             //based on the last_fetched date
             var deferred = $q.defer();
             var url = '/api/availability';
@@ -53,11 +53,11 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
                 that.availabilityData.results[dayDetails.date] = dayInfo;
 
             });
-            
+
         };
 
         /**
-        * @return {hash} The rate_id and the lowest roomrate for the rate 
+        * @return {hash} The rate_id and the lowest roomrate for the rate
         * irrespective of the room type
         */
         this.getBestAvailableRateForTheDay = function(ratesForTheDay, allRoomTypes){
@@ -69,7 +69,7 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
                 //loop1 - we have to search among all room rates
                 //not considering the room type and find the lowest rate
                 angular.forEach(rate.room_rates, function(roomRate, roomRateIndex) {
-                    if(rateForSingleRoom == null){
+                    if(rateForSingleRoom === null){
                         rateForSingleRoom = roomRate.single;
                     }
                     if(parseFloat(roomRate.single) <= parseFloat(rateForSingleRoom)){
@@ -77,7 +77,7 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
                         lowestRate = roomRate;
                         rateId = rate.id;
                     }
-                        
+
                 });
 
             });
@@ -85,9 +85,9 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
             var dict = {};
             dict.rate_id = rateId;
             dict.room_type_availability = {};
-            //Get the room type availability details looping through all room types. 
+            //Get the room type availability details looping through all room types.
             angular.forEach(allRoomTypes, function(roomType, roomTypeIndex) {
-                if(roomType.id == lowestRate.room_type_id){
+                if(roomType.id === lowestRate.room_type_id){
                     dict.room_type_availability = roomType;
                     return false;//exit from the loop
                 }
@@ -98,7 +98,7 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
         };
 
         /**
-        * @return {hash} The rate_id and the lowest roomrate for the rate 
+        * @return {hash} The rate_id and the lowest roomrate for the rate
         * for the given room type
         */
         this.getLowestRateForRoomType = function(roomType, ratesForDay){
@@ -108,8 +108,8 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
             angular.forEach(ratesForDay, function(rate, rateIndex) {
                 //loop1 - we need to display only the lowest rate in the UI. For a room type
                 angular.forEach(rate.room_rates, function(roomRate, roomRateIndex) {
-                    if(roomRate.room_type_id == roomType.id){
-                        if(rateForSingleRoom == null){
+                    if(roomRate.room_type_id === roomType.id){
+                        if(rateForSingleRoom === null){
                             rateForSingleRoom = roomRate.single;
                         }
                         if(parseFloat(roomRate.single) <= parseFloat(rateForSingleRoom)){
@@ -117,8 +117,8 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
                             lowestRate = roomRate;
                             rateId = rate.id;
                         }
-                        return false;//exit form loop1 - //we are searching for rates with a room type id. 
-                            //other room rates in this loop will be having different room types. 
+                        return false;//exit form loop1 - //we are searching for rates with a room type id.
+                            //other room rates in this loop will be having different room types.
                             //so go to the next rate.
                     }
                 });

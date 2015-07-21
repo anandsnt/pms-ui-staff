@@ -10,7 +10,7 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 
 
 		dataToSend.fakeDataToAvoidCache = new Date();
-		self.toDate = self.toDate == undefined ? "" : self.toDate;
+		self.toDate = self.toDate === undefined ? "" : self.toDate;
 		var url =  'search.json?per_page=' + self.searchPerPage
 		+ '&page=' + self.page;
 
@@ -22,7 +22,7 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 					data.results[i].is_row_visible = true;
 				}
 
-				if(dataToSend.is_queued_rooms_only == true){
+				if(dataToSend.is_queued_rooms_only === true){
 					self.lastSearchedType = "queued";
 				} else {
 					self.lastSearchedType = "others";

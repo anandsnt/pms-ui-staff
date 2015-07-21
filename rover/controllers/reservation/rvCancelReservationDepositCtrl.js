@@ -2,8 +2,8 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 	function($rootScope, $scope,ngDialog,$stateParams,$state,RVReservationCardSrv,RVPaymentSrv,$timeout,$filter) {
 
 		BaseCtrl.call(this, $scope);
-		$scope.errorMessage = "";	
-	
+		$scope.errorMessage = "";
+
 		$scope.cancellationData = {
 			reason: ""
 		};
@@ -25,9 +25,9 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 			};
 			cancellationParameters.with_deposit_refund = with_deposit_refund;
 			$scope.invokeApi(RVReservationCardSrv.cancelReservation, cancellationParameters, onCancelSuccess);
-		};	
+		};
 
-		$scope.proceedWithDepositRefund = function(){		
+		$scope.proceedWithDepositRefund = function(){
 			var	with_deposit_refund = true;
 			cancelReservation(with_deposit_refund);
 		};

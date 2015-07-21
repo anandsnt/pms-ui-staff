@@ -123,8 +123,9 @@ $scope.loadTable = function(){
   $scope.sendMailClicked = function(){
   	reservations = [];
   	angular.forEach($scope.emailDatas,function(item, index) {
-       if(item.is_selected)
+       if(item.is_selected) {
          reservations.push(item.reservation_id)
+       }
   });
   	var emailSendingData = {'reservations' : reservations}
     var sendMailClikedSuccessCallback = function(data) {

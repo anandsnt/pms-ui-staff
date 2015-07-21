@@ -1,6 +1,6 @@
 sntRover.controller('RVccAuthorizationController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVccTransactionsSrv','$timeout',function($scope, $filter,$stateParams, ngDialog, $rootScope, RVccTransactionsSrv, $timeout) {
-		
-	BaseCtrl.call(this, $scope);	
+
+	BaseCtrl.call(this, $scope);
 
 	var init = function(){
 		fetchAuthData();
@@ -9,14 +9,14 @@ sntRover.controller('RVccAuthorizationController', ['$scope','$filter','$statePa
 	};
 
 	var fetchAuthData = function(){
-		
+
 		var fetchAuthDataSuccess = function(data){
 			$scope.data.authData = data;
 			refreshAuthorizationScroll();
 			console.log($scope.data.authData);
 		}
     	var options = {
-    		successCallBack: fetchAuthDataSuccess      		
+    		successCallBack: fetchAuthDataSuccess
         }
         $scope.callAPI(RVccTransactionsSrv.fetchAuthData, options);
 
@@ -29,7 +29,7 @@ sntRover.controller('RVccAuthorizationController', ['$scope','$filter','$statePa
     };
 
     $scope.$on('mainTabSwiched', function(){
-		if($scope.data.activeTab == 1){
+		if($scope.data.activeTab === 1){
 			refreshAuthorizationScroll();
 		}
     });
@@ -84,5 +84,5 @@ sntRover.controller('RVccAuthorizationController', ['$scope','$filter','$statePa
 
 
 	init();
-    
+
 }]);
