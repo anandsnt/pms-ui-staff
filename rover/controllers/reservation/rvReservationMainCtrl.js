@@ -306,10 +306,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 if (description.postType === "NIGHT") {
                     if (typeof currentTaxes[taxType][taxId] === "undefined") {
                         currentTaxes[taxType][taxId] = description;
+                    } else {
+                        currentTaxes[taxType][taxId].amount = parseFloat(currentTaxes[taxType][taxId].amount) + parseFloat(description.amount); // add the amount here
                     }
-                    else {
-                    currentTaxes[taxType][taxId].amount = parseFloat(currentTaxes[taxType][taxId].amount) + parseFloat(description.amount); // add the amount here
-                   }
                 } else { //[[[[[[ PER_STAY NEEDS TO BE DONE ONLY ONCE FOR A RATE ID & TAX ID COMBO]]]]]]
                     if (typeof currentTaxes[taxType][taxId] === "undefined") {
                         // As stated earler per_stay taxes can be taken in only for the first rateId
@@ -386,7 +385,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                             // --------------------------------------------------------------------------------//
                             { // STEP ONE -- rate computation block
                                 var roomAmount = RVReservationStateService.calculateRate(todaysMetaData.rateBreakUp, adultsOnTheDay, childrenOnTheDay);
-                                if(todaysMetaData.applyPromotion){
+                                if (todaysMetaData.applyPromotion) {
                                     roomAmount = RVReservationStateService.applyDiscount(roomAmount, todaysMetaData.appliedPromotion.discount, $scope.reservationData.numNights);
                                 }
                                 if (reset) { // -- in case of rate changes reset the modified rate amount as well
@@ -420,14 +419,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                                     // cummulative sum (Not just multiplication of rate per day with the num of nights) >> Has to done at "day level" to handle the reservations with varying occupancy!
                                     if (postType.value === "STAY") {
                                         addon.effectivePrice = parseFloat(addon.effectivePrice) + parseFloat(finalRate);
-                                    }
-                                    else if (date === roomMetaData.arrival) {
-                                     addon.effectivePrice = finalRate; //Posted only on the first Night
+                                    } else if (date === roomMetaData.arrival) {
+                                        addon.effectivePrice = finalRate; //Posted only on the first Night
                                     }
                                     if (!addon.is_inclusive) {
                                         roomMetaData.addOnCumulative += parseFloat(finalRate);
-                                    }
-                                    else {
+                                    } else {
                                         taxableRateAmount -= parseFloat(finalRate); //reduce the addon amount from this day's calculated rate
                                     }
                                     // --------------------------------------------------------------------------------//
@@ -694,6 +691,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
         $scope.computeReservationDataforUpdate = function(skipPaymentData, skipConfirmationEmails, roomIndex) {
             var data = {};
+
             data.is_hourly = $scope.reservationData.isHourly;
             data.arrival_date = $scope.reservationData.arrivalDate;
             data.arrival_time = '';
@@ -774,6 +772,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             var stay = [];
             data.room_id = [];
             _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
+                if (room.stayDates[$scope.reservationData.arrivalDate].applyPromotion) {
+                    data.promotion_id = room.stayDates[$scope.reservationData.arrivalDate].appliedPromotion.discount.id;
+                } else {
+                    data.promotion_id = null;
+                }
                 RVReservationStateService.bookMark.lastPostedRate = room.stayDates[$scope.reservationData.arrivalDate].rate.id;
                 var reservationStayDetails = [];
                 if (typeof roomIndex === 'undefined' || currentRoomIndex === roomIndex) {
@@ -1419,10 +1422,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         _.each(currentRoom.stayDates, function(stayDate, date) {
                             if (date !== $scope.reservationData.departureDate) {
                                 cumulativeRate = parseFloat(cumulativeRate) + parseFloat(RVReservationStateService.getAddonAmount(
-                                addon.amountType.value,
-                                baseRate,
-                                stayDate.guests.adults, // Using EACH night's occupancy information to calculate the addon's applicable amount!
-                                stayDate.guests.children)); // cummulative sum (Not just multiplication of rate per day with the num of nights) >> Has to done at "day level" to handle the reservations with varying occupancy!
+                                    addon.amountType.value,
+                                    baseRate,
+                                    stayDate.guests.adults, // Using EACH night's occupancy information to calculate the addon's applicable amount!
+                                    stayDate.guests.children)); // cummulative sum (Not just multiplication of rate per day with the num of nights) >> Has to done at "day level" to handle the reservations with varying occupancy!
                             }
                         });
                         finalRate = cumulativeRate;

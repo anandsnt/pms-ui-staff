@@ -97,11 +97,9 @@ sntRover.service('RVReservationStateService', [
 					}
 					if (amountType === "ADULT") {
 						multiplicity = numAdults;
-					}
-					else if (amountType === "CHILD") {
+					} else if (amountType === "CHILD") {
 						multiplicity = numChildren;
-					}
-					else if (amountType === "PERSON") {
+					} else if (amountType === "PERSON") {
 						multiplicity = parseInt(numChildren) + parseInt(numAdults);
 					}
 					if (!!tax.calculation_rules.length) {
@@ -115,8 +113,7 @@ sntRover.service('RVReservationStateService', [
 					if (taxData.amount_symbol === '%' && parseFloat(taxValue) !== 0.0) { // The formula for inclusive tax computation is different from that for exclusive. Kindly NOTE.
 						if (isInclusive) {
 							taxCalculated = parseFloat(multiplicity * (parseFloat(taxValue / (100 + parseFloat(taxValue))) * taxableAmount));
-						}
-						else {
+						} else {
 							taxCalculated = parseFloat(multiplicity * (parseFloat(taxValue / 100) * taxableAmount));
 						}
 					} else {
@@ -140,8 +137,7 @@ sntRover.service('RVReservationStateService', [
 					} else { // STAY tax computations
 						if (isInclusive) {
 							taxInclusiveStayTotal = parseFloat(taxInclusiveStayTotal) + parseFloat(taxCalculated);
-						}
-						else {
+						} else {
 							taxExclusiveStayTotal = parseFloat(taxExclusiveStayTotal) + parseFloat(taxCalculated);
 						}
 					}
@@ -380,7 +376,7 @@ sntRover.service('RVReservationStateService', [
 							parseFloat(self.applyDiscount(currentRoomRateDetails.rate, currentRoomRateDetails.appliedPromotion.discount, numNights)) :
 							currentRoomRateDetails.rate,
 							promoAdjustedAddonAmount = currentRoomRateDetails.applyPromotion ?
-							parseFloat(self.applyDiscount(currentRoomRateDetails.addonAmount, currentRoomRateDetails.appliedPromotion.discount, $scope.reservationData.numNights)) :
+							parseFloat(self.applyDiscount(currentRoomRateDetails.addonAmount, currentRoomRateDetails.appliedPromotion.discount, numNights)) :
 							currentRoomRateDetails.addonAmount;
 
 						currentRoomRateDetails.total = parseFloat(currentRoomRateDetails.tax.excl) +
