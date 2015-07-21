@@ -31,7 +31,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			title: $filter('translate')('RESERVATION_SUMMARY'),
 			name: 'rover.reservation.staycard.mainCard.summaryAndConfirm',
 			param: {
-				reservation: $scope.reservationData.isHourly ? 'HOURLY' : 'DAILY',
+				reservation: $scope.reservationData.isHourly ? 'HOURLY' : 'DAILY'
 			}
 		};
 
@@ -74,10 +74,12 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		 * on the basis of routes available or not
 		 */
 		$scope.getBillingInfoTitle = function() {
-			if ($scope.reservationData.is_routing_available)
+			if ($scope.reservationData.is_routing_available) {
 				return $filter('translate')('BILLING_INFO_TITLE');
-			else
+			}
+			else {
 				return $filter('translate')('ADD_BILLING_INFO_TITLE');
+			}
 		}
 
 		/**
@@ -86,9 +88,9 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		 */
 		$scope.isCheckinTimeSet = function() {
 			var ret = false;
-			if ($scope.reservationData.checkinTime.hh != '' &&
-				$scope.reservationData.checkinTime.mm != '' &&
-				$scope.reservationData.checkinTime.ampm != '') {
+			if ($scope.reservationData.checkinTime.hh !== '' &&
+				$scope.reservationData.checkinTime.mm !== '' &&
+				$scope.reservationData.checkinTime.ampm !== '') {
 
 				ret = true;
 			}
@@ -101,9 +103,9 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		 */
 		$scope.isCheckoutTimeSet = function() {
 			var ret = false;
-			if ($scope.reservationData.checkoutTime.hh != '' &&
-				$scope.reservationData.checkoutTime.mm != '' &&
-				$scope.reservationData.checkoutTime.ampm != '') {
+			if ($scope.reservationData.checkoutTime.hh !== '' &&
+				$scope.reservationData.checkoutTime.mm !== '' &&
+				$scope.reservationData.checkoutTime.ampm !== '') {
 
 				ret = true;
 			}
@@ -117,7 +119,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				title: $filter('translate')('RESERVATION_SUMMARY'),
 				name: 'rover.reservation.staycard.mainCard.summaryAndConfirm',
 				param: {
-					reservation: $scope.reservationData.isHourly ? 'HOURLY' : 'DAILY',
+					reservation: $scope.reservationData.isHourly ? 'HOURLY' : 'DAILY'
 				}
 			};
 		}
@@ -151,7 +153,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 							title: $filter('translate')('CONFIRM_RESERVATION'),
 							name: 'rover.reservation.staycard.mainCard.reservationConfirm',
 							param: {
-								confirmationId: $scope.reservationData.confirmNum,
+								confirmationId: $scope.reservationData.confirmNum
 							},
 							callback: 'unflagConfirmation',
 							scope: $scope
@@ -166,7 +168,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 					if (paramsArray[index].length > 0) {
 						$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, {
 							accompanying_guests_details: paramsArray[index],
-							reservation_id: $scope.reservationData.reservationIds[index],
+							reservation_id: $scope.reservationData.reservationIds[index]
 						}, onupdateSuccess, onUpdateFailure);
 					}
 				})
@@ -198,12 +200,13 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 
 				postData.emails = [];
-				if (!!$scope.reservationData.guest.email && $scope.otherData.isGuestPrimaryEmailChecked)
+				if (!!$scope.reservationData.guest.email && $scope.otherData.isGuestPrimaryEmailChecked) {
 					postData.emails.push($scope.reservationData.guest.email);
+				}
 
-				if (!!$scope.otherData.additionalEmail && $scope.otherData.isGuestAdditionalEmailChecked)
+				if (!!$scope.otherData.additionalEmail && $scope.otherData.isGuestAdditionalEmailChecked) {
 					postData.emails.push($scope.otherData.additionalEmail);
-
+				}
 				if ($scope.reservationData.isHourly) {
 					postData.reservation_ids = [];
 					_.each($scope.reservationData.reservations, function(reservation) {
@@ -229,11 +232,11 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		/*
 			If email address does not exists on Guest Card,
 		    and user decides to update via the Email field on the summary screen,
-		    this email should be linked to the guest card. 
+		    this email should be linked to the guest card.
 		 */
 		$scope.primaryEmailEntered = function() {
 
-			if ($scope.reservationData.guest.email != '' && $scope.reservationData.guest.email != null) {
+			if ($scope.reservationData.guest.email !== '' && $scope.reservationData.guest.email !== null) {
 				return false;
 			}
 
@@ -342,21 +345,21 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			$scope.$emit("hideLoader");
 		}
 		var successOfRoomDetailsFetch = function(data) {
-			if (data.current_hk_status == 'READY') {
+			if (data.current_hk_status === 'READY') {
 				totalRoomsAvailable++;
 			}
 		};
 		$scope.enableCheckInButton = function() {
 			return _.has($scope.reservationData, "rooms") &&
-				($scope.reservationData.rooms.length == totalRoomsAvailable);
+				($scope.reservationData.rooms.length === totalRoomsAvailable);
 		};
 
 		var checkAllRoomsAreReady = function() {
 			var promises = [];
 			var data = null;
-			//we are following this structure bacuse of the hideloader pblm. 
+			//we are following this structure bacuse of the hideloader pblm.
 			// we are going to call mutilple API's paralelly. So sometimes last API may complete first
-			// we need to keep loader until all api gets completed 
+			// we need to keep loader until all api gets completed
 			$scope.$emit("showLoader");
 			for (var i = 0; i < $scope.reservationData.rooms.length; i++) {
 				id = $scope.reservationData.rooms[i].room_id;
@@ -381,7 +384,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			/*
 				Please one min..
 				We create a list of promises against each API call
-				if it all resolved successfully then only we will proceed 
+				if it all resolved successfully then only we will proceed
 			*/
 			var confirmationIDs = [];
 			var promises = [];
@@ -416,7 +419,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			var updateFailure = function(data) {
 				$scope.$emit('hideLoader');
 			}
-			if ($scope.reservationData.checkinTime.hh != '' && $scope.reservationData.checkoutTime.hh != '') {
+			if ($scope.reservationData.checkinTime.hh !== '' && $scope.reservationData.checkoutTime.hh !== '') {
 				var postData = $scope.computeReservationDataforUpdate();
 				postData.addons = $scope.existingAddons;
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
@@ -424,12 +427,12 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		}
 
 		/**
-		 * trigger the billing information popup. $scope.reservationData is the same variable used in billing info popups also. 
+		 * trigger the billing information popup. $scope.reservationData is the same variable used in billing info popups also.
 		 So we are adding the required params to the existing $scope.reservationData, so that no other functionalities in reservation confirmation breaks.
 		 */
 
 		$scope.openBillingInformation = function(confirm_no) {
-			//incase of multiple reservations we need to check the confirm_no to access billing 
+			//incase of multiple reservations we need to check the confirm_no to access billing
 			//information
 			if (confirm_no) {
 				angular.forEach($scope.reservationData.reservations, function(reservation, key) {
@@ -445,7 +448,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				$scope.reservationData.reservation_status = $scope.reservationData.status;
 			}
 
-			if ($scope.reservationData.guest.id != null) {
+			if ($scope.reservationData.guest.id !== null) {
 				$scope.reservationData.user_id = $scope.reservationData.guest.id;
 			} else {
 				$scope.reservationData.user_id = $scope.reservationData.company.id;

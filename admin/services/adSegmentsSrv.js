@@ -1,5 +1,5 @@
 admin.service('ADSegmentsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2){
-	
+
 	/**
     *   A getter method to return the origins list
     */
@@ -10,7 +10,7 @@ admin.service('ADSegmentsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, 
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 
@@ -24,7 +24,7 @@ admin.service('ADSegmentsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, 
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/*
@@ -35,7 +35,7 @@ admin.service('ADSegmentsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, 
 
 		var deferred = $q.defer();
 		var url = '/api/segments';
-		
+
 		ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
@@ -51,7 +51,7 @@ admin.service('ADSegmentsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, 
 
 		var deferred = $q.defer();
 		var url = '/api/segments/'+data.value;
-		
+
 		ADBaseWebSrvV2.putJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
@@ -66,7 +66,7 @@ admin.service('ADSegmentsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, 
 	this.delete = function(data){
 		var deferred = $q.defer();
 		var url = '/api/segments/'+data.value;
-		
+
 		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
@@ -83,8 +83,8 @@ admin.service('ADSegmentsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, 
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
-	
+
 }]);

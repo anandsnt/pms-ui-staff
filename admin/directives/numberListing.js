@@ -1,9 +1,9 @@
 // function to add zeros(0) infront of a number, like 09 for 9 or 007 for 7
 function getLengthChangedNumber(lengthWanted, number){
-    
-    if(typeof number === 'number')
-        number = number.toString();
 
+    if(typeof number === 'number') {
+        number = number.toString();
+    }
     var numberOfZerosToAppend = lengthWanted - number.length;
     //if numberOfZerosToAppend is zero or less, nothing to do
     if(numberOfZerosToAppend <= 0) {
@@ -35,10 +35,10 @@ admin.directive('numberlisting', function() {
             for (var i = parseInt(scope.start); i <= parseInt(scope.stop); i+=parseInt(scope.step)){
                 number = getLengthChangedNumber(parseInt(scope.minLength), i);
                 scope.numbers.push(number);
-            } 
+            }
         },
         template: "<select><option ng-repeat='item in numbers'>{{item}}</option></select>"
-        
+
 
     };
 

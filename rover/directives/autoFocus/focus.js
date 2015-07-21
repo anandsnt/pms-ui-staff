@@ -15,4 +15,4 @@ sntRover.directive('focus',
       }
     };
   }
-); 
+);

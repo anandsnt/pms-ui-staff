@@ -11,27 +11,27 @@ sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSr
 		//trigger the billing information popup
 	    $scope.openBillingInformation = function(accountType){
 
-	    	if($scope.contactInformation.id == null || $scope.contactInformation.id == undefined){
+	    	if($scope.contactInformation.id === null || $scope.contactInformation.id === undefined){
 	    		$scope.$emit("OUTSIDECLICKED");
 	    		return false;
 	    	}
-	    	if(accountType == 'TRAVELAGENT'){
+	    	if(accountType === 'TRAVELAGENT'){
 	    		$scope.attachedEntities = {};
 	    		$scope.attachedEntities.travel_agent = {};
 	    		$scope.attachedEntities.travel_agent.id = $scope.contactInformation.id;
 	    		$scope.attachedEntities.travel_agent.name = $scope.contactInformation.account_details.account_name;
 	    		$scope.attachedEntities.travel_agent.logo = $scope.contactInformation.account_details.company_logo;
 	    		$scope.billingEntity = "TRAVEL_AGENT_DEFAULT_BILLING";
-	    		
-	    	} else if (accountType == 'COMPANY'){
+
+	    	} else if (accountType === 'COMPANY'){
 	    		$scope.attachedEntities = {};
 	    		$scope.attachedEntities.company_card = {};
 	    		$scope.attachedEntities.company_card.id = $scope.contactInformation.id;
 	    		$scope.attachedEntities.company_card.name = $scope.contactInformation.account_details.account_name;
 	    		$scope.attachedEntities.company_card.logo = $scope.contactInformation.account_details.company_logo;
 	    		$scope.billingEntity = "COMPANY_CARD_DEFAULT_BILLING";
-	    		
-	    		
+
+
 	    	} else {
 	    		return false;
 	    	}
@@ -54,7 +54,7 @@ sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSr
 		var refreshScroller = function() {
 			$scope.refreshScroller('companyCardDetailsContactCtrl');
 		};
-		
+
 		$scope.$on("BILLINGINFODELETED", function() {
 			$scope.contactInformation.account_details.routes_count = 0;
 		});
@@ -63,9 +63,9 @@ sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSr
 			$scope.contactInformation.account_details.routes_count = 1;
 		});
 
-		
-		
-		
+
+
+
 
 	}
 ]);

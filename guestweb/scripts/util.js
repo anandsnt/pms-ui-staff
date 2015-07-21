@@ -13,22 +13,21 @@ var dclone = function(object, unwanted_keys){
 		  		delete newObject[unwanted_keys[i]];
 		  	}
   	}
-  
+
   	return newObject;
 };
 
 
 var DateFormatInfoMappings = {
-    
+
     'MM-DD-YYYY': ['MM-dd-yyyy','mm-dd-yy'],
     'MM/DD/YYYY': ['MM/dd/yyyy','mm/dd/yy'],
     'DD-MM-YYYY': ['dd-MM-yyyy','dd-mm-yy'],
     'DD/MM/YYYY': ['dd/MM/yyyy','dd/mm/yy']
-    
+
 };
 
 var getDateFormat = function(dateFormat) {
-    
     if(typeof dateFormat === 'undefined'){
         return DateFormatInfoMappings['MM-DD-YYYY'][0];
     }

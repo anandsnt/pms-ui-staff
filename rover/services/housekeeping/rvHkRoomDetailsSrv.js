@@ -13,7 +13,7 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			var url = '/house/room/' + id + '.json';
 
 			$http.get(url).success(function(response, status) {
-				if (response.status == "success") {
+				if (response.status === "success") {
 					this.roomDetails = response.data.room_details;
 					deferred.resolve(this.roomDetails);
 				} else {
@@ -21,7 +21,7 @@ sntRover.service('RVHkRoomDetailsSrv', [
 				}
 
 			}.bind(this)).error(function(response, status) {
-				if (status == 401) { // 401- Unauthorized
+				if (status === 401) { // 401- Unauthorized
 					// so lets redirect to login page
 					$window.location.href = '/house/logout';
 				} else {
@@ -38,15 +38,15 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			$http({
 				url: url,
 				method: "POST",
-				data: data,
+				data: data
 			}).success(function(response, status) {
-				if (response.status == "success") {
+				if (response.status === "success") {
 					deferred.resolve(response.data);
 				} else {
 					deferred.reject(response);
 				}
 			}).error(function(response, status) {
-				if (status == 401) { // 401- Unauthorized
+				if (status === 401) { // 401- Unauthorized
 					// so lets redirect to login page
 					$window.location.href = '/house/logout';
 				} else {

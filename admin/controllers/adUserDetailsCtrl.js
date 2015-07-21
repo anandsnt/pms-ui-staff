@@ -1,17 +1,17 @@
 admin.controller('ADUserDetailsCtrl',
-	[ '$scope', 
+	[ '$scope',
 	'$state',
-	'$stateParams', 
-	'ADUserSrv', 
-	'$rootScope', 
+	'$stateParams',
+	'ADUserSrv',
+	'$rootScope',
 	'ADUserRolesSrv',
 	'$timeout' ,
 	'$window',
 	function($scope, $state, $stateParams, ADUserSrv, $rootScope, ADUserRolesSrv, $timeout, $window){
-	
+
 	BaseCtrl.call(this, $scope);
 	//navigate back to user list if no id
-	if(!$stateParams.id && !$stateParams.page =='add'){
+	if(!$stateParams.id && !$stateParams.page ==='add'){
 			$state.go('admin.users');
 	}
 	$scope.mod = "";
@@ -31,15 +31,16 @@ admin.controller('ADUserDetailsCtrl',
 	$scope.errorMessage = "";
 	$scope.focusOnPassword = false;
 
-	$scope.getMyDashboards = function() { 
+	$scope.getMyDashboards = function() {
 
 		var rolesData = $scope.assignedRoles;
 		$scope.dashboardOptions = [];
 		for (var i = 0; i < rolesData.length; i++){
 			var rolePresent = false;
 			for(var j = 0; j < $scope.dashboardOptions.length; j++){
-				if(rolesData[i].dashboard_id == $scope.dashboardOptions[j].dashboard_id)
+				if(rolesData[i].dashboard_id === $scope.dashboardOptions[j].dashboard_id) {
 					rolePresent = true;
+				}
 			}
 			if(!rolePresent){
 				var dashboard = {};
@@ -59,14 +60,14 @@ admin.controller('ADUserDetailsCtrl',
 		    * To set mod of operation - add/edit
 		    */
 			var id = $stateParams.id;
-			if(id == ""){
+			if(id === ""){
 				$scope.mod = "add";
 				$scope.userDetailsAdd();
 			} else {
 				$scope.mod = "edit";
 				$scope.userDetailsEdit(id);
 			}
-			// $scope.setMyDashboards();			
+			// $scope.setMyDashboards();
 		};
 
 		$scope.invokeApi(ADUserRolesSrv.fetchUserRoles, {}, successCallbackRoles);
@@ -76,9 +77,9 @@ admin.controller('ADUserDetailsCtrl',
 
    /**
     * To check whether logged in user is sntadmin or hoteladmin
-    */	
+    */
    // $scope.BackAction = $scope.hotelId;
-	if($rootScope.adminRole == "snt-admin"){
+	if($rootScope.adminRole === "snt-admin"){
 		$scope.isAdminSnt = true;
 		 $scope.BackAction = "admin.users({id:"+$scope.hotelId+"})";
 	} else {
@@ -90,20 +91,20 @@ admin.controller('ADUserDetailsCtrl',
     * @param {int} index of the clicked role
     */
 	$scope.selectAssignedRole = function($event, index){
-		
+
 
 		var lastSelectedItem =$scope.selectedAssignedRole;
-		if(lastSelectedItem == index){
+		if(lastSelectedItem === index){
 			$scope.selectedAssignedRole =-1;
 		}
-		else if(lastDropedTime == ''){
-			$scope.selectedAssignedRole = index;			
+		else if(lastDropedTime === ''){
+			$scope.selectedAssignedRole = index;
 		}
-		else if(typeof lastDropedTime == 'object') { //means date
+		else if(typeof lastDropedTime === 'object') { //means date
 			var currentTime = new Date();
 			var diff = currentTime - lastDropedTime;
 			if(diff <= 100){
-				$event.preventDefault();				
+				$event.preventDefault();
 			}
 			else{
 				lastDropedTime = '';
@@ -118,35 +119,35 @@ admin.controller('ADUserDetailsCtrl',
 	$scope.selectUnAssignedRole = function($event, index){
 
 		var lastSelectedItem =$scope.selectedUnassignedRole;
-		if(lastSelectedItem == index){
+		if(lastSelectedItem === index){
 			$scope.selectedUnassignedRole =-1;
 		}
-		else if(lastDropedTime == ''){
-			$scope.selectedUnassignedRole = index;			
+		else if(lastDropedTime === ''){
+			$scope.selectedUnassignedRole = index;
 		}
-		else if(typeof lastDropedTime == 'object') { //means date
+		else if(typeof lastDropedTime === 'object') { //means date
 			var currentTime = new Date();
 			var diff = currentTime - lastDropedTime;
 			if(diff <= 100){
-				$event.preventDefault();				
+				$event.preventDefault();
 			}
 			else{
 				lastDropedTime = '';
 			}
 
-		}				
-	};	
+		}
+	};
    /*
     * Handle action when clicked on right arrow button
     */
 	$scope.leftToRight = function(){
 		var index = $scope.selectedAssignedRole;
-		if(index == -1){
+		if(index === -1){
 			return;
 		}
 		var newElement = $scope.assignedRoles[index];
 		$scope.unAssignedRoles.push(newElement);
-		var newElement = $scope.unAssignedRoles[index];	
+		var newElement = $scope.unAssignedRoles[index];
 		$scope.assignedRoles.splice(index, 1);
 		$scope.selectedAssignedRole = -1;
 	};
@@ -155,10 +156,10 @@ admin.controller('ADUserDetailsCtrl',
     */
 	$scope.rightToleft = function(){
 		var index = $scope.selectedUnassignedRole;
-		if(index == -1){
+		if(index === -1){
 			return;
-		}	
-		var newElement = $scope.unAssignedRoles[index];	
+		}
+		var newElement = $scope.unAssignedRoles[index];
 		$scope.assignedRoles.push(newElement);
 		$scope.unAssignedRoles.splice(index, 1);
 		$scope.selectedUnassignedRole = -1;
@@ -170,23 +171,23 @@ admin.controller('ADUserDetailsCtrl',
 	$scope.saveUserDetails = function(){
 		var params = $scope.data;
 		var unwantedKeys = [];
-		if($scope.image.indexOf("data:")!= -1){
+		if($scope.image.indexOf("data:")!== -1){
 			unwantedKeys = ["departments", "roles"];
 		} else {
 			unwantedKeys = ["departments", "roles", "user_photo"];
 		}
 		var userRoles = [];
 		for(var j = 0; j < $scope.assignedRoles.length; j++){
-	 		if($scope.assignedRoles[j].value != ""){
-	 			userRoles.push($scope.assignedRoles[j].value);	
+	 		if($scope.assignedRoles[j].value !== ""){
+	 			userRoles.push($scope.assignedRoles[j].value);
 	 		}
 	 	}
-		
-		
+
+
 		$scope.data.user_roles = userRoles;
 		var data = dclone($scope.data, unwantedKeys);
 		// Remove user_photo field if image is not uploaded. Checking base64 encoded data exist or not
-		if($scope.image.indexOf("data:")!= -1){
+		if($scope.image.indexOf("data:")!== -1){
 			data.user_photo = $scope.image;
 		}
 
@@ -195,7 +196,7 @@ admin.controller('ADUserDetailsCtrl',
 			$state.go('admin.users', { id: $stateParams.hotelId });
 		};
 
-		if($scope.mod == "add"){
+		if($scope.mod === "add"){
 			$scope.invokeApi(ADUserSrv.saveUserDetails, data , successCallback);
 		} else {
 			data.user_id = params.user_id;
@@ -203,9 +204,9 @@ admin.controller('ADUserDetailsCtrl',
 		}
 	};
 	/**
-    * To render edit screen - 
+    * To render edit screen -
     * @param {string} the id of the clicked user
-    * 
+    *
     */
 	$scope.userDetailsEdit = function(id){
 		var successCallbackRender = function(data){
@@ -213,24 +214,24 @@ admin.controller('ADUserDetailsCtrl',
 			$scope.$emit('hideLoader');
 			$scope.data = data;
 			$scope.unAssignedRoles = $scope.rolesWithDashboards.slice(0);
-			if(data.user_photo == ""){
+			if(data.user_photo === ""){
 				$scope.image = "/assets/preview_image.png";
 			} else {
 				$scope.image = data.user_photo;
 			}
 			$scope.data.confirm_email = $scope.data.email;
 
-			for(var i = 0; i < $scope.rolesWithDashboards.length; i++) {				
-				if ( $scope.data.user_roles.indexOf($scope.rolesWithDashboards[i].value.toString() ) != -1 ){
+			for(var i = 0; i < $scope.rolesWithDashboards.length; i++) {
+				if ( $scope.data.user_roles.indexOf($scope.rolesWithDashboards[i].value.toString() ) !== -1 ){
 	   			 	$scope.assignedRoles.push($scope.rolesWithDashboards[i]);
 	   			 	for(var j = 0; j < $scope.unAssignedRoles.length; j++){
-	   			 		if($scope.unAssignedRoles[j].value == $scope.rolesWithDashboards[i].value){
+	   			 		if($scope.unAssignedRoles[j].value === $scope.rolesWithDashboards[i].value){
 	   			 			$scope.unAssignedRoles.splice(j, 1);
-	   			 			break;		
+	   			 			break;
 	   			 		}
 	   			 	}
-	   			 	
-	   			
+
+
 	    		}
 			}
 
@@ -251,10 +252,12 @@ admin.controller('ADUserDetailsCtrl',
 	};
 
 	$scope.disableReInviteButton = function (data) {
-		if (!$scope.isInUnlockingMode())
-			return (data.is_activated == 'true');
-		else
+		if (!$scope.isInUnlockingMode()) {
+			return (data.is_activated === 'true');
+		}
+		else {
 			return false;
+		}
 	};
 
 	/**
@@ -267,10 +270,10 @@ admin.controller('ADUserDetailsCtrl',
 			$scope.unAssignedRoles = $scope.rolesWithDashboards.slice(0);
 			$scope.assignedRoles = [];
 			$scope.image = "/assets/preview_image.png";
-		};	
-	 	$scope.invokeApi(ADUserSrv.getAddNewDetails, '' , successCallbackRender);	
+		};
+	 	$scope.invokeApi(ADUserSrv.getAddNewDetails, '' , successCallbackRender);
 	};
-   
+
 	/**
 	* success callback of send inivtaiton mail (API)
 	* will go back to the list of users
@@ -289,15 +292,15 @@ admin.controller('ADUserDetailsCtrl',
 	$scope.sendInvitation = function(userId){
 		//reseting the error message
 		$scope.errorMessage = '';
-		if(userId == "" || userId == undefined){
+		if(userId === "" || userId === undefined){
 			return false;
-		}		
+		}
 		var data = {"id": userId};
 
 		//if it is in unlocking mode
 		if ($scope.isInUnlockingMode()) {
 			//if the erntered password is not matching
-			if ($scope.data.password !== $scope.data.confirm_password) {				
+			if ($scope.data.password !== $scope.data.confirm_password) {
 
 				$timeout(function(){
 					$scope.errorMessage = ["Password's deos not match"];
@@ -309,7 +312,7 @@ admin.controller('ADUserDetailsCtrl',
 			data.password = $scope.data.password;
 			data.is_trying_to_unlock = true;
 		}
-	 	$scope.invokeApi(ADUserSrv.sendInvitation,  data, successCallbackOfSendInvitation);	
+	 	$scope.invokeApi(ADUserSrv.sendInvitation,  data, successCallbackOfSendInvitation);
 	};
 
 	$scope.reachedUnAssignedRoles = function(event, ui){
@@ -318,7 +321,7 @@ admin.controller('ADUserDetailsCtrl',
 	}
 
 	$scope.reachedAssignedRoles = function(event, ui){
-		$scope.selectedUnassignedRole = -1;	
+		$scope.selectedUnassignedRole = -1;
 		lastDropedTime = new Date();
 	}
 

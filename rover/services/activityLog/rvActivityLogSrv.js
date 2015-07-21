@@ -17,7 +17,7 @@ sntRover.service('RVActivityLogSrv', [
 			}.bind(this), function(data) {
 				deferred.reject(data);
 			});
-			
+
 			return deferred.promise;
 		};
 
@@ -33,7 +33,7 @@ sntRover.service('RVActivityLogSrv', [
 			}.bind(this), function(data) {
 				deferred.reject(data);
 			});
-			
+
 			return deferred.promise;
 		};
 
@@ -50,7 +50,7 @@ sntRover.service('RVActivityLogSrv', [
 
 			return deferred.promise;
 		};
-		
+
 
 	}
 ]);

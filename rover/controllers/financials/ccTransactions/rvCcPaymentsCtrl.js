@@ -1,7 +1,7 @@
 sntRover.controller('RVccPaymentsController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVccTransactionsSrv','$timeout',function($scope, $filter,$stateParams, ngDialog, $rootScope, RVccTransactionsSrv, $timeout) {
-		
-	BaseCtrl.call(this, $scope);	
-	
+
+	BaseCtrl.call(this, $scope);
+
 	$scope.setScroller('payment_content', {});
     var refreshPaymentScroll = function(){
         setTimeout(function(){$scope.refreshScroller('payment_content');}, 500);
@@ -18,7 +18,7 @@ sntRover.controller('RVccPaymentsController', ['$scope','$filter','$stateParams'
 		};
 		$scope.invokeApi(RVccTransactionsSrv.fetchPayments, { "date": $scope.data.transactionDate }, successCallBackFetchPaymentData);
 	};
-	
+
 	initPaymentData();
 
 	// Handle change transaction date
@@ -64,9 +64,9 @@ sntRover.controller('RVccPaymentsController', ['$scope','$filter','$stateParams'
 	};
 
 	$scope.$on('mainTabSwiched', function(){
-		if($scope.data.activeTab == 0){
+		if($scope.data.activeTab === 0){
 			refreshPaymentScroll();
 		}
     });
-    
+
 }]);

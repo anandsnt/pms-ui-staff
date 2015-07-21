@@ -16,7 +16,7 @@ sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', 
     };
   	$scope.setScroller('result_showing_area', scrollerOptions);
     $scope.$broadcast("showSearchResultsArea", false);
-    
+
     //To clear date boxes when we come to dashboard through main menu
     //timeout given because rvReservationSearchWidgetCtrl init happens after some time
     setTimeout(function(){
@@ -27,7 +27,7 @@ sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', 
         //we are showing the add new guest button in searhc only if it is standalone & search result is empty
         if($rootScope.isStandAlone){
             $scope.$broadcast("showAddNewGuestButton", true);
-        }        
+        }
     });
 
 
@@ -39,7 +39,7 @@ sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', 
         if(getParentWithSelector($event, document.getElementsByClassName("no-content")[0])
             || getParentWithSelector($event, document.getElementsByClassName("no-content")[1])
             || getParentWithSelector($event, document.getElementsByClassName("no-content")[2])) {
-            
+
             backToDashboard();
         }
   	};
@@ -58,9 +58,9 @@ sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', 
         //we need to show the dashboard & hide search area
         $scope.$emit("showDashboardArea", true);
         $scope.$broadcast("showSearchResultsArea", false);
-        //also need to clear results present in that & type 
+        //also need to clear results present in that & type
         $scope.$broadcast("updateReservationTypeFromOutside", 'default');
-        $scope.$broadcast("updateDataFromOutside", []);  
+        $scope.$broadcast("updateDataFromOutside", []);
 
 
         //changing the header's heading
@@ -72,7 +72,7 @@ sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', 
     * will backto dashboard
     */
     $scope.$on("HeaderBackButtonClicked", function(event){
-        backToDashboard();        
+        backToDashboard();
     });
 
 
@@ -81,8 +81,8 @@ sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', 
     */
     $scope.$on('$stateChangeSuccess', function(event){
         //setting the backbutton & showing the caption
-        $scope.$emit("UpdateSearchBackbuttonCaption", "");        
-    });   
+        $scope.$emit("UpdateSearchBackbuttonCaption", "");
+    });
 
     /**
     * on what action taken, on search results clearing

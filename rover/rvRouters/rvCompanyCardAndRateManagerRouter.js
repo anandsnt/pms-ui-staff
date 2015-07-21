@@ -5,14 +5,14 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
             url: '/cardsearch/:textInQueryBox',
             templateUrl: '/assets/partials/search/rvSearchCompanyCard.html',
             controller: 'searchCompanyCardController'
-        }); 
+        });
 
         //company card details
         $stateProvider.state('rover.companycarddetails', {
             url: '/companycard/:type/:id/:query/:isBackFromStaycard',
             templateUrl: '/assets/partials/companyCard/rvCompanyCardDetails.html',
             controller: 'companyCardDetailsController'
-        }); 
+        });
         //Rate Manager
         $stateProvider.state('rover.ratemanager', {
             url: '/rateManager',
