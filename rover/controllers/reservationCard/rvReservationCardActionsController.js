@@ -468,7 +468,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     }
 
                     if (list[x].created_at){
-                        list[x].created_at_time = getTimeFromDateStr(list[x].created_at);
+                        list[x].created_at_time = getTimeFromDateStr(list[x].created_at, 'created_at_time');
                         list[x].created_at_date = getStrParsedFormattedDate(list[x].created_at);
                     }
 
@@ -544,7 +544,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         list[x].due_at_time = $scope.timeFieldValue[0];
                     }
                     if (typeof list[x].due_at === typeof 'string'){
-                        list[x].due_at_date = getFormattedDate(list[x].due_at);
+                        list[x].due_at_date = getFormattedDate(list[x].due_at, 'due_at_date');
                         list[x].hasDate = true;
                     } else {
                         list[x].hasDate = false;
@@ -552,13 +552,13 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
 
                     if (list[x].action_status === "COMPLETED"){
                         list[x].isCompleted = true;
-                        list[x].date_completed = getFormattedDate(list[x].completed_at);
-                        list[x].time_completed = getCompletedTimeFromDateMilli(list[x].completed_at);
+                        list[x].date_completed = getFormattedDate(list[x].completed_at, 'date_completed');
+                        list[x].time_completed = getCompletedTimeFromDateMilli(list[x].completed_at, 'time_completed');
                     }
 
 
                     if (list[x].created_at){
-                        list[x].created_at_time = getTimeFromDateStr(list[x].created_at);
+                        list[x].created_at_time = getTimeFromDateStr(list[x].created_at, 'created_at_time');
                         list[x].created_at_date = getStrParsedFormattedDate(list[x].created_at);
                     }
                 }
@@ -585,15 +585,15 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.invokeApi(rvActionTasksSrv.getActionsTasksList, data, onSuccess, onFailure);
         };
 
-        var getTimeFromDateStr = function(d){
+        var getTimeFromDateStr = function(d, via){
             var date = new Date(d);
-            return formatTime(date.valueOf());
+            return formatTime(date.valueOf(), via);
         };
-        var getCompletedTimeFromDateMilli = function(d){
+        var getCompletedTimeFromDateMilli = function(d, via){
             if (typeof d === typeof 'string'){
-                return formatUserTime(parseInt(d));
+                return formatUserTime(parseInt(d), via);
             } else if (typeof d === typeof 12345){
-                return formatUserTime(d);
+                return formatUserTime(d, via);
             }
         };
         var getTimeFromDateMilli = function(d){
@@ -613,7 +613,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                  }
             },100);
         };
-        var getFormattedDate = function(d){
+        var getFormattedDate = function(d, via){
             var fullDate, day, month, year;
             if (typeof d === typeof 'string'){
                 var dateInMilli = parseInt(d);
@@ -689,9 +689,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             ngDialog.close();
         }
 
-        var formatUserTime = function(timeInMs) {
+        var formatUserTime = function(timeInMs, via) {
             var dt = new Date(timeInMs);
-
             var hours = dt.getHours();
             var minutes = dt.getMinutes();
             var seconds = dt.getSeconds();
@@ -706,14 +705,19 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
              seconds = '0' + seconds;
             }
             return getFormattedTime(hours+''+minutes);
-      //      return hours + ":" + minutes + ":" + seconds;
         };
-        var formatTime = function(timeInMs) {
-            var dt = new Date(timeInMs);
-
-            var hours = dt.getUTCHours();
-            var minutes = dt.getUTCMinutes();
-            var seconds = dt.getUTCSeconds();
+        var formatTime = function(timeInMs, via) {
+            var dt = new Date(timeInMs);          
+            var hours, minutes,seconds;
+            if (via === 'created_at_time'){
+                     hours = dt.getHours();
+                     minutes = dt.getMinutes();
+                     seconds = dt.getSeconds();
+             } else {
+                     hours = dt.getUTCHours();
+                     minutes = dt.getUTCMinutes();
+                     seconds = dt.getUTCSeconds();
+             }
 
             if (hours < 10) {
              hours = '0' + hours;
