@@ -32,6 +32,7 @@ sntRover.controller('RVHKGuestTabCtrl', [
 			$scope.roomDetails.reservation_is_due_out = false;
 			$scope.isSuccess = true;
 			$scope.roomDetails.current_hk_status = 'DIRTY';
+			$scope.roomDetails.is_occupied = 'false';
 			$scope.$emit('hideLoader');
 			ngDialog.open({
                 template: '/assets/partials/housekeeping/rvCheckoutDialogPopup.html',
