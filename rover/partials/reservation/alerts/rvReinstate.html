@@ -1,7 +1,7 @@
 <div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
     <div class="modal-content confirmation" ng-if="ngDialogData.isAvailable">
         <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog();"><span class="icons icon-close invert"></span></button>
-        <span class="h2 message">Reinstate reservation for {Firstname Lastname}?</span>
+        <span class="h2 message">Reinstate reservation for {{$parent.$parent.$parent.data.guest_details.first_name}} {{$parent.$parent.$parent.data.guest_details.last_name}}?</span>
         <div class="actions">
             <button type="button" class="button green">Reinstate</button>
             <button type="button" class="button blank" ng-click="closeDialog();">Cancel</button>
@@ -11,7 +11,7 @@
         <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog();"><span class="icons icon-close invert"></span></button>
         <span class="icons icon-popup-alert"></span>
         <span class="h2 message">No Availability to Reinstate Reservation</span>
-        <button type="button" class="button green" ng-click="reinstateNavigateRoomAndRates();">Find Rooms &amp; Rates</button>
-        <button type="button" class="button blue">Confirm Overbooking</button>
+        <button type="button" class="button green" ng-click="reinstateNavigateRoomAndRates(); closeDialog();">Find Rooms &amp; Rates</button>
+        <button type="button" ng-hide="!allowOverbook" class="button blue" ng-click="reinstateWithOverbooking(); closeDialog();">Confirm Overbooking</button>
     </div>
 </div>
