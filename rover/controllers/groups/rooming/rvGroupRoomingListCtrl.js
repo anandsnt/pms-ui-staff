@@ -998,7 +998,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          */
         var openCheckinConfirmationPopup = function() {
             ngDialog.open({
-                template: '/assets/partials/groups/rooming/rvGroupMassCheckinSomeResReadyPopUp.html',
+                template: '/assets/partials/groups/rooming/popups/massCheckin/rvGroupMassCheckinSomeResReadyPopUp.html',
                 className: '',
                 scope: $scope,
                 closeByDocument: false,
@@ -1012,7 +1012,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          */
         var openNoReservationMeetCheckinCriteria = function() {
             ngDialog.open({
-                template: '/assets/partials/groups/rooming/rvGroupMassCheckinNoResMeetCriteria.html',
+                template: '/assets/partials/groups/rooming/popups/massCheckin/rvGroupMassCheckinNoResMeetCriteria.html',
                 className: '',
                 scope: $scope,
                 closeByDocument: false,
@@ -1182,7 +1182,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          */
         var openMassCheckinSuccessPopup = function(data) {
             ngDialog.open({
-                template: '/assets/partials/groups/rooming/rvGroupResMassCheckinSuccessPopUp.html',
+                template: '/assets/partials/groups/rooming/popups/massCheckin/rvGroupResMassCheckinSuccessPopUp.html',
                 className: '',
                 scope: $scope,
                 closeByDocument: false,
@@ -1202,7 +1202,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             };
 
             ngDialog.open({
-                template: '/assets/partials/groups/rooming/rvGroupResMassCheckinFailedPopup.html',
+                template: '/assets/partials/groups/rooming/popups/massCheckin/rvGroupResMassCheckinFailedPopup.html',
                 className: '',
                 scope: $scope,
                 closeByDocument: false,
