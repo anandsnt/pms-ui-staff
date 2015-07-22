@@ -85,7 +85,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
             $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
 
         };
-        if (!RVReservationStateService.getReservationFlag('RATE_CHANGED') && typeof $scope.reservationData.reservationId != "undefined" && $scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null) {
+        if (!RVReservationStateService.getReservationFlag('RATE_CHANGED') && typeof $scope.reservationData.reservationId !== "undefined" && $scope.reservationData.reservationId !== "" && $scope.reservationData.reservationId !== null) {
             $scope.invokeApi(RVReservationPackageSrv.getReservationPackages, $scope.reservationData.reservationId, successCallBack);
         }
 
@@ -200,7 +200,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
 
         $scope.selectAddonCategory = function(category, event) {
             event.stopPropagation();
-            if (category != '') {
+            if (category !== '') {
                 $scope.activeAddonCategoryId = category.id;
                 $scope.fetchAddons(category.id);
             } else {
@@ -294,7 +294,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                 $scope.addons = [];
                 $scope.$emit("hideLoader");
                 angular.forEach(data.results, function(item) {
-                    if (item != null) {
+                    if (item !== null) {
                         var addonItem = {};
                         addonItem.id = item.id;
                         addonItem.isBestSeller = item.bestseller;
@@ -304,11 +304,11 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                         addonItem.price = item.amount;
                         addonItem.taxes = item.taxes;
                         addonItem.stay = "";
-                        if (item.amount_type != "") {
+                        if (item.amount_type !== "") {
                             addonItem.stay = item.amount_type.description;
                         }
-                        if (item.post_type != "") {
-                            if (addonItem.stay != "") {
+                        if (item.post_type !== "") {
+                            if (addonItem.stay !== "") {
                                 addonItem.stay += " / " + item.post_type.description
                             } else {
                                 addonItem.stay = item.post_type.description
@@ -330,14 +330,14 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
 
                 if (!!isInitialLoad &&
                     (RVReservationStateService.getReservationFlag('RATE_CHANGED') ||
-                        (typeof $scope.reservationData.reservationId == "undefined" || $scope.reservationData.reservationId == "" || $scope.reservationData.reservationId == null))) {
+                        (typeof $scope.reservationData.reservationId === "undefined" || $scope.reservationData.reservationId === "" || $scope.reservationData.reservationId === null))) {
                     RVReservationStateService.setReservationFlag('RATE_CHANGED', false);
                     if (!$scope.is_rate_addons_fetch) {
                         $scope.addonsData.existingAddons = [];
                         $scope.reservationData.rooms[$scope.activeRoom].addons = [];
                         angular.forEach(data.rate_addons, function(addon, index) {
                             //Set this flag when there is Children in reservation & addon on for child.
-                            var flag = addon.amount_type.value == "CHILD" && $scope.reservationData.rooms[$scope.activeRoom].numChildren == 0;
+                            var flag = addon.amount_type.value === "CHILD" && $scope.reservationData.rooms[$scope.activeRoom].numChildren === 0;
                             if (!flag) {
 
                                 var newAddonToReservation = {};
@@ -361,11 +361,11 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                                 addonItem.price = addon.amount;
                                 addonItem.taxes = addon.taxes;
                                 addonItem.stay = "";
-                                if (addon.amount_type != "") {
+                                if (addon.amount_type !== "") {
                                     addonItem.stay = addon.amount_type.description;
                                 }
-                                if (addon.post_type != "") {
-                                    if (addonItem.stay != "") {
+                                if (addon.post_type !== "") {
+                                    if (addonItem.stay !== "") {
                                         addonItem.stay += " / " + addon.post_type.description
                                     } else {
                                         addonItem.stay = addon.post_type.description

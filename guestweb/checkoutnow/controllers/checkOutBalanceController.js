@@ -18,13 +18,13 @@
 	else{
 		$scope.pageValid = true;
 	}
-	
-	
+
+
 	if($scope.pageValid){
 		// showBill flag and its reference in $rootScope
 		$scope.showBill = false;
 		$rootScope.showBill = $scope.showBill;
-		$scope.netWorkError = false;	
+		$scope.netWorkError = false;
 		$scope.isFetching = true;
 
 		//fetch data to display
@@ -32,8 +32,9 @@
 			$scope.billData = billData.data.bill_details;
 			$scope.roomNo = billData.data.room_number;
 			$scope.isFetching = false;
-			if($scope.billData)
+			if($scope.billData) {
 				$scope.optionsAvailable = true;
+			}
 		},function(){
 			$scope.netWorkError = true;
 			$scope.isFetching = false;
@@ -42,11 +43,11 @@
 		$scope.gotToNextStep = function(){
 			if($rootScope.isCCOnFile || parseInt($scope.billData.balance) === 0.00 || $rootScope.isSixpayments){
 				$state.go('checkOutStatus');
-			}				
+			}
 			else{
 				$state.go('ccVerification',{'fee':$scope.billData.balance,'message':"Check-out fee",'isFromCheckoutNow':true});
 			}
-				
+
 		}
 
 	}

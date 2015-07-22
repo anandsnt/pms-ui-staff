@@ -93,7 +93,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
             "department": that.getDepartmentName(data.user_department),
             "last_login": "",
             "is_active": "false",
-            "can_delete": "true",
+            "can_delete": "true"
 		};
 		var deferred = $q.defer();
 		var url = '/admin/users';
@@ -127,7 +127,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 	this.getDepartmentName = function(departmentId){
 		var deptName = "";
 		angular.forEach(that.departmentsArray, function(value, key) {
-	     	if(value.value == departmentId){
+	     	if(value.value === departmentId){
 	     		deptName = value.name;
 	     	}
 	    });
@@ -135,17 +135,17 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 	};
 	this.updateUserDataOnUpdate = function(userId, param, updatedValue){
 		angular.forEach(that.usersArray.users, function(value, key) {
-	     	if(value.id == userId){
-	     		if(param == "full_name"){
+	     	if(value.id === userId){
+	     		if(param === "full_name"){
 	     			value.full_name = updatedValue;
 	     		}
-	     		if(param == "email"){
+	     		if(param === "email"){
 	     			value.email = updatedValue;
 	     		}
-	     		if(param == "department"){
+	     		if(param === "department"){
 	     			value.department = updatedValue;
 	     		}
-	     		if(param == "is_active"){
+	     		if(param === "is_active"){
 	     			value.is_active = updatedValue;
 	     		}
 	     	}

@@ -43,7 +43,9 @@ admin.controller('ADRatePromotionsCtrl', [
 					}
 				});
 			};
-			$scope.invokeApi(ADPromotionsSrv.fetchRatePromos, $scope.rateData.id, onFetchSuccess);
+			if (!!$scope.rateData && !!$scope.rateData.id){
+				$scope.invokeApi(ADPromotionsSrv.fetchRatePromos, $scope.rateData.id, onFetchSuccess);
+			}
 		};
 
 		$scope.linkSelectedPromotion = function() {

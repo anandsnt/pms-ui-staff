@@ -282,7 +282,7 @@ var DiaryContent = React.createClass({
 							iscroll: {
 				  				timeline: undefined,
 				  				rooms: undefined,
-				  				grid: undefined,
+				  				grid: undefined
 				  			},
 				  			stats: props.stats,
 				  			data : props.data

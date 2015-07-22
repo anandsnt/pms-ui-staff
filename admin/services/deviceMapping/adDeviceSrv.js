@@ -4,7 +4,7 @@ admin.service('ADDeviceSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q
     * @return {object} mapping list json
     */
 	this.fetch = function(params){
-		
+
 		var deferred = $q.defer();
 		var url = '/api/workstations.json';
 
@@ -12,7 +12,7 @@ admin.service('ADDeviceSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
    /*
@@ -22,13 +22,13 @@ admin.service('ADDeviceSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q
     */
 	this.createMapping = function(data){
 		var deferred = $q.defer();
-		var url = '/api/workstations';	
+		var url = '/api/workstations';
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
    /*
@@ -39,13 +39,13 @@ admin.service('ADDeviceSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q
 	this.getDeviceMappingDetails = function(data){
 		var deferred = $q.defer();
 		var id = data.id;
-		var url = '/api/workstations/'+id;	
+		var url = '/api/workstations/'+id;
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
    /*
@@ -62,7 +62,7 @@ admin.service('ADDeviceSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
    /*
@@ -78,7 +78,7 @@ admin.service('ADDeviceSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 }]);

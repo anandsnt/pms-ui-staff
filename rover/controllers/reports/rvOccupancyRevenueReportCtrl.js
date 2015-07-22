@@ -86,9 +86,9 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
 		$scope.getHeader = function(indexValue) {
 			if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
-				return (indexValue % 3 == 0) ? "This Year" : (indexValue % 3 == 2) ? "Variance" : "Last Year"
+				return (indexValue % 3 === 0) ? "This Year" : (indexValue % 3 === 2) ? "Variance" : "Last Year"
 			} else if (!!$scope.chosenLastYear || !!$scope.chosenVariance) {
-				return (indexValue % 2 == 0) ? "This Year" : !!$scope.chosenVariance ? "Variance" : "Last Year"
+				return (indexValue % 2 === 0) ? "This Year" : !!$scope.chosenVariance ? "Variance" : "Last Year"
 			} else {
 				return "This Year"
 			}
@@ -98,9 +98,9 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			var candidate = $scope.results[key][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]];
 			if (candidate) {
 				if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
-					return (columnIndex % 3 == 0) ? candidate.this_year : (columnIndex % 3 == 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+					return (columnIndex % 3 === 0) ? candidate.this_year : (columnIndex % 3 === 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
 				} else if (!!$scope.chosenLastYear || !!$scope.chosenVariance) {
-					return (columnIndex % 2 == 0) ? candidate.this_year : !!$scope.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+					return (columnIndex % 2 === 0) ? candidate.this_year : !!$scope.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
 				} else {
 					return candidate.this_year;
 				}
@@ -114,9 +114,9 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			var candidate = $scope.results.nightly[key][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]];
 			if (candidate) {
 				if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
-					return (columnIndex % 3 == 0) ? candidate.this_year : (columnIndex % 3 == 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+					return (columnIndex % 3 === 0) ? candidate.this_year : (columnIndex % 3 === 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
 				} else if (!!$scope.chosenLastYear || !!$scope.chosenVariance) {
-					return (columnIndex % 2 == 0) ? candidate.this_year : !!$scope.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+					return (columnIndex % 2 === 0) ? candidate.this_year : !!$scope.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
 				} else {
 					return candidate.this_year;
 				}
@@ -127,9 +127,9 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
 		$scope.getClass = function(columnIndex) {
 			if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
-				return (columnIndex % 3 == 0) ? "" : (columnIndex % 3 == 2) ? "day-end" : "last-year";
+				return (columnIndex % 3 === 0) ? "" : (columnIndex % 3 === 2) ? "day-end" : "last-year";
 			} else if (!!$scope.chosenLastYear || !!$scope.chosenVariance) {
-				return (columnIndex % 2 == 0) ? "" : !!$scope.chosenVariance ? "day-end" : "last-year day-end";
+				return (columnIndex % 2 === 0) ? "" : !!$scope.chosenVariance ? "day-end" : "last-year day-end";
 			} else {
 				return "day-end";
 			}
@@ -139,9 +139,9 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			var candidate = $scope.results.charge_groups[chargeGroupIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]];
 			if (candidate) {
 				if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
-					return (columnIndex % 3 == 0) ? candidate.this_year : (columnIndex % 3 == 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+					return (columnIndex % 3 === 0) ? candidate.this_year : (columnIndex % 3 === 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
 				} else if (!!$scope.chosenLastYear || !!$scope.chosenVariance) {
-					return (columnIndex % 2 == 0) ? candidate.this_year : !!$scope.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+					return (columnIndex % 2 === 0) ? candidate.this_year : !!$scope.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
 				} else {
 					return candidate.this_year;
 				}
@@ -154,9 +154,9 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			var candidate = $scope.results.market_room_number[marketIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]];
 			if (candidate) {
 				if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
-					return (columnIndex % 3 == 0) ? candidate.this_year : (columnIndex % 3 == 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+					return (columnIndex % 3 === 0) ? candidate.this_year : (columnIndex % 3 === 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
 				} else if (!!$scope.chosenLastYear || !!$scope.chosenVariance) {
-					return (columnIndex % 2 == 0) ? candidate.this_year : !!$scope.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+					return (columnIndex % 2 === 0) ? candidate.this_year : !!$scope.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
 				} else {
 					return candidate.this_year;
 				}
@@ -169,9 +169,9 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			var candidate = $scope.results.market_revenue[marketIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]];
 			if (candidate) {
 				if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
-					return (columnIndex % 3 == 0) ? candidate.this_year : (columnIndex % 3 == 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+					return (columnIndex % 3 === 0) ? candidate.this_year : (columnIndex % 3 === 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
 				} else if (!!$scope.chosenLastYear || !!$scope.chosenVariance) {
-					return (columnIndex % 2 == 0) ? candidate.this_year : !!$scope.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+					return (columnIndex % 2 === 0) ? candidate.this_year : !!$scope.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
 				} else {
 					return candidate.this_year;
 				}

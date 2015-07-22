@@ -464,7 +464,7 @@
 						left: 20px;
 						top: 80px; 
 						.calc-width(100, 20);
-						.calc-height(100, 100);
+						.calc-height(100, 150);
 
 						li {
 							margin: 0 20px 10px 0;
@@ -510,6 +510,16 @@
 							top: 0;
 							right: 7px;
 							bottom: 0;
+						}
+					}
+
+					.search-pagination {
+						p { .pull-left; }
+						
+						.button { 
+							font-size: 16px;
+							line-height: 40px;
+							.size(40px, 120px); 
 						}
 					}
 				}
@@ -4261,6 +4271,11 @@
 					width: 100%;
 					padding: 20px;
 					border-top: 1px solid rgba(0,0,0,.1);
+
+					.button {
+						font-size: 18px;
+						line-height: 50px;
+					}
 				}
 
 				@media only screen and (min-width: 600px) {
