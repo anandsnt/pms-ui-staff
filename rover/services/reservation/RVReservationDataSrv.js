@@ -97,7 +97,11 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 				reservation_card: {},
 				number_of_infants: 0,
 				number_of_adults: 0,
-				number_of_children: 0
+				number_of_children: 0,
+				member: {
+					isSelected: false,
+					value: ""
+				}
 			};
 		}
 

@@ -46,6 +46,12 @@ angular.module('stayCardModule', [])
                 },
                 activeCodes: function(RVReservationBaseSearchSrv) {
                     return RVReservationBaseSearchSrv.getActivePromotions();
+                },
+                flyerPrograms: function(RVCompanyCardSrv) {
+                    return RVCompanyCardSrv.fetchHotelLoyaltiesFfp();
+                },
+                loyaltyPrograms: function(RVCompanyCardSrv) {
+                    return RVCompanyCardSrv.fetchHotelLoyaltiesHlps();
                 }
             }
         });

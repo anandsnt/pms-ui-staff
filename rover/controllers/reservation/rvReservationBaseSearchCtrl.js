@@ -10,8 +10,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
     '$vault',
     'baseData',
     'activeCodes',
+    'flyerPrograms',
+    'loyaltyPrograms',
     '$filter',
-    function($rootScope, $scope, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams, $vault, baseData, activeCodes, $filter) {
+    function($rootScope, $scope, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams, $vault, baseData, activeCodes, flyerPrograms, loyaltyPrograms, $filter) {
         BaseCtrl.call(this, $scope);
         $scope.$parent.hideSidebar = false;
 
@@ -23,6 +25,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         var defaultMaxvalue = 5;
 
         $scope.activeCodes = activeCodes.promotions;
+        $scope.loyaltyPrograms = loyaltyPrograms.data;
+        $scope.flyerPrograms = flyerPrograms.data;
 
 
         /*
