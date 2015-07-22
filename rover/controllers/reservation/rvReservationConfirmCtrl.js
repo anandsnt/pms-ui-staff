@@ -130,27 +130,27 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		$scope.printConfirmationReservation =function() {					
 			printPage();			
 		};
-
+		// add the print orientation after printing
 		var addPrintOrientation = function() {
 			var orientation = 'portrait';
 			$( 'head' ).append( "<style id='print-orientation'>@page { size: " + orientation + "; }</style>" );
 		};
-		// add the print orientation after printing
+		// remove the print orientation after printing
 		var removePrintOrientation = function() {
 			$( '#print-orientation' ).remove();	
 		};
 
 		var printPage= function() {		
-		// add the orientation
-		addPrintOrientation();
-	    $timeout(function() {	    	
-	        $window.print();
-	        if ( sntapp.cordovaLoaded ) {
-	            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-	        };	        
-	    }, 100);
-		// remove the orientation after similar delay
-		$timeout(removePrintOrientation, 100);
+			// add the orientation
+			addPrintOrientation();
+	    	$timeout(function() {	    	
+	        	$window.print();
+	        	if ( sntapp.cordovaLoaded ) {
+	            	cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+	        	};	        
+	    	}, 100);
+			// remove the orientation after similar delay
+			$timeout(removePrintOrientation, 100);
 		};		
 
 		/**
