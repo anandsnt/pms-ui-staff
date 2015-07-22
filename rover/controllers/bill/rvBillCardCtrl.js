@@ -1924,7 +1924,7 @@ sntRover.controller('RVbillCardController',
 	 	$scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
 	 	var billCount = $scope.reservationBillData.bills.length;
 		$scope.isRefreshOnBackToStaycard = true;
-		$scope.closeDialog();
+		//$scope.closeDialog();
 		var fetchBillDataSuccessCallback = function(billData){
 		 	$scope.$emit('hideLoader');
 		 	reservationBillData = billData;
