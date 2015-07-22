@@ -74,21 +74,21 @@ sntRover.service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 		 */
 		this.performMassCheckin = function(params) {
 			var deferred = $q.defer(),
-			    group_id = params.id,
-			    url = '/api/group_checkins/',
-			    params = {
-			        "group_id": params.group_id,
-			        "reservation_ids": params.reservation_ids
-			    };
+				group_id = params.id,
+				url = '/api/group_checkins/',
+				params = {
+					"group_id": params.group_id,
+					"reservation_ids": params.reservation_ids
+				};
 
 
 			rvBaseWebSrvV2.postJSON(url, params).then(
-			    function(data) {
-			        deferred.resolve(data);
-			    },
-			    function(errorMessage) {
-			        deferred.reject(errorMessage);
-			    }
+				function(data) {
+					deferred.resolve(data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
 			);
 
 			return deferred.promise;
@@ -100,22 +100,22 @@ sntRover.service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 		 */
 		this.performAutoRoomAssignment = function(params) {
 			var deferred = $q.defer(),
-			    group_id = params.id,
-			    //url = '/api/auto_room_assign/',
-			    url = '/ui/show?format=json&json_input=groups/group_auto_room_assignment.json',
-			    params = {
-			        "group_id": params.group_id,
-			        "reservation_ids": params.reservation_ids
-			    };
+				group_id = params.id,
+				url = '/api/groups/auto_room_assignment',
+				//url = '/ui/show?format=json&json_input=groups/group_auto_room_assignment.json',
+				params = {
+					"group_id": params.group_id,
+					"reservation_ids": params.reservation_ids
+				};
 
 
 			rvBaseWebSrvV2.postJSON(url, params).then(
-			    function(data) {
-			        deferred.resolve(data);
-			    },
-			    function(errorMessage) {
-			        deferred.reject(errorMessage);
-			    }
+				function(data) {
+					deferred.resolve(data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
 			);
 
 			return deferred.promise;
