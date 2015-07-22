@@ -1,6 +1,6 @@
 sntRover.controller('rvAvailabilityButtonController', [
-	'$scope', 
-	'$timeout', 
+	'$scope',
+	'$timeout',
 	'$filter',
 	'rvAvailabilitySrv',
 	function($scope, $timeout, $filter, rvAvailabilitySrv){
@@ -11,12 +11,12 @@ sntRover.controller('rvAvailabilityButtonController', [
 		*/
 
 		BaseCtrl.call(this, $scope);
-			
+
 		//variable used to determine whether we need to show availability section or not (we will add/remove section based on this)
 		$scope.showAvailability = false;
 
 		//When closing we need to add a class to container div
-		$scope.isClosing = false;		
+		$scope.isClosing = false;
 
 		/**
 		* function to handle click on availability in the header section.
@@ -24,7 +24,7 @@ sntRover.controller('rvAvailabilityButtonController', [
 		* and will show the availability section if successful
 		*/
 		$scope.clickedOnAvailabilityButton = function($event){
-			
+
 			/*
 				in order to compromise with stjepan's animation class we need write like this
 				because we are removing the availability details section when not wanted,
@@ -33,26 +33,26 @@ sntRover.controller('rvAvailabilityButtonController', [
 
 			if($scope.showAvailability){
 				//adding the class for closing animation
-				$scope.isClosing = true;	
-				//after some time we are removing the section and resetiing values to older 
+				$scope.isClosing = true;
+				//after some time we are removing the section and resetiing values to older
 				 $timeout(function(){
 				 	$scope.isClosing = false;
 					//hiding/removing the availability section
 					$scope.showAvailability = false;
-				 }, 1000);	
+				 }, 1000);
 
 				// setting data loaded as null, will be using to hide the data showing area on loading in availiable room grid display
 				var emptyDict = {};
-				rvAvailabilitySrv.updateData (emptyDict);		
+				rvAvailabilitySrv.updateData (emptyDict);
 			}
 			else{
-				$scope.showAvailability = true;	
+				$scope.showAvailability = true;
 			}
-				
+
 		};
 
 		/**
-		* function to get the template url for availability, it will supply only if 
+		* function to get the template url for availability, it will supply only if
 		* 'showAvailability' is true
 		*/
 		$scope.getAvailabilityTemplateUrl = function(){
@@ -60,7 +60,7 @@ sntRover.controller('rvAvailabilityButtonController', [
 				return '/assets/partials/availability/availability.html';
 			}
 			return "";
-		};		
+		};
 
 
 

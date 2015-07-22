@@ -11,11 +11,11 @@ sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSr
 		//trigger the billing information popup
 	    $scope.openBillingInformation = function(accountType){
 
-	    	if($scope.contactInformation.id == null || $scope.contactInformation.id == undefined){
+	    	if($scope.contactInformation.id === null || $scope.contactInformation.id === undefined){
 	    		$scope.$emit("OUTSIDECLICKED");
 	    		return false;
 	    	}
-	    	if(accountType == 'TRAVELAGENT'){
+	    	if(accountType === 'TRAVELAGENT'){
 	    		$scope.attachedEntities = {};
 	    		$scope.attachedEntities.travel_agent = {};
 	    		$scope.attachedEntities.travel_agent.id = $scope.contactInformation.id;
@@ -23,7 +23,7 @@ sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSr
 	    		$scope.attachedEntities.travel_agent.logo = $scope.contactInformation.account_details.company_logo;
 	    		$scope.billingEntity = "TRAVEL_AGENT_DEFAULT_BILLING";
 
-	    	} else if (accountType == 'COMPANY'){
+	    	} else if (accountType === 'COMPANY'){
 	    		$scope.attachedEntities = {};
 	    		$scope.attachedEntities.company_card = {};
 	    		$scope.attachedEntities.company_card.id = $scope.contactInformation.id;

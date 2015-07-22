@@ -26,7 +26,7 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
         var companyCardFetchInterval = '';
 
         var headerHeight = 60;//Top header showing Rate manager title
-        var heightOfFixedComponents = 150;// Includes 'Filter options title;, 'show rates buttons' 
+        var heightOfFixedComponents = 150;// Includes 'Filter options title;, 'show rates buttons'
         //and little blank space between show rate button and the scolling content
         var maxSize = $(window).height() - headerHeight;
 
@@ -92,7 +92,7 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
 
                 filterData.rate_types = data;
 
-                /*if(filterData.allRates.length > 0 && 
+                /*if(filterData.allRates.length > 0 &&
                    filterData.rates.length > 0) {
                     filterData.isResolved = true;
                 }*/
@@ -105,7 +105,7 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
             }).then(function(data) {
                 filterData.isPending = false;
                 filterData.isResolved = true;
-            });         
+            });
         };
 
         $scope.fetchFilterOptions();
@@ -189,8 +189,8 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
 
             if(!_.findWhere(sel_list, selected_id) &&
                (item = _.findWhere(orig_list, selected_id))) {
-                    sel_list.push(item);              
-            }   
+                    sel_list.push(item);
+            }
         };
 
         /**
@@ -213,7 +213,7 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
         //if no replace value is passed, it returns an empty string
 
         var escapeNull = function(value) {
-            var valueToReturn = ((value == null || typeof value == 'undefined') ? '' : value);
+            var valueToReturn = ((value === null || typeof value === 'undefined') ? '' : value);
             return valueToReturn;
         };
 
@@ -242,7 +242,7 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
          * if not fouund in the data, it will request for webservice
          */
         var displayFilteredResults = function() {
-            if ($scope.companySearchText !== '' && $scope.companyLastSearchText != $scope.companySearchText) {
+            if ($scope.companySearchText !== '' && $scope.companyLastSearchText !== $scope.companySearchText) {
 
                 var successCallBackOfCompanySearch = function(data) {
                     $scope.$emit("hideLoader");
@@ -276,11 +276,11 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
 
         $scope.deleteCards = function(id) {
             angular.forEach($scope.currentFilterData.name_cards, function(item, index) {
-                if (item.id == id) {
+                if (item.id === id) {
                     $scope.currentFilterData.name_cards.splice(index, 1);
                 }
             });
-            $scope.companySearchText = "";                       
+            $scope.companySearchText = "";
             $scope.refreshFilterScroll();
         };
 
@@ -289,7 +289,7 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
                 filterData.rates_selected_list = [];
             } else {
                 angular.forEach(filterData.rates_selected_list, function(item, index) {
-                    if (item.id == id) {
+                    if (item.id === id) {
                         filterData.rates_selected_list.splice(index, 1);
                     }
                 });

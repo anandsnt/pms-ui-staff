@@ -1,9 +1,9 @@
-sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [ 
-												'$scope', 
-												'$rootScope', 
-												'$state', 
-												'rvDiarySrv', 
-												'ngDialog', 
+sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
+												'$scope',
+												'$rootScope',
+												'$state',
+												'rvDiarySrv',
+												'ngDialog',
 												'rvDiaryMetadata',
 												'$vault',
 												'rvDiaryUtil',
@@ -27,7 +27,7 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 			var arrivalDate, departureDate;
 
 			obj.arrivalTime 			= new Date(obj[r.row_children][m.start_date]).toLocaleTimeString();
-			obj.departureTime 			= new Date(obj[r.row_children][m.end_date]).toLocaleTimeString();		
+			obj.departureTime 			= new Date(obj[r.row_children][m.end_date]).toLocaleTimeString();
 
 			arrivalDate 				= tzIndependentDate(new Date(obj[r.row_children][m.start_date]).toComponents().date.toDateString().replace(/-/g, '/'));
 			obj.arrivalDateToShow 		= $filter('date')(arrivalDate, $rootScope.dateFormat);
@@ -38,7 +38,7 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 			obj.departureDate 			= $filter('date')(departureDate, $rootScope.mmddyyyyBackSlashFormat);
 		};
 
-		
+
 		//forming date & time for current to display and to pass
 		formDateAndTimeForMe(current);
 
@@ -49,7 +49,7 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 
 		$scope.price = parseFloat(roomXfer.next.room.new_price - roomXfer.current.room.old_price);
 
-		$scope.moveWithoutRateChange = function() {			
+		$scope.moveWithoutRateChange = function() {
 			var isMoveWithoutRateChange = true;
 			$scope.saveReservation ($scope.roomXfer.next.occupancy, $scope.roomXfer.next.room, isMoveWithoutRateChange);
 			//$scope.confirm();
@@ -68,12 +68,12 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 
 		$scope.closeDialog = function() {
             //to add stjepan's popup showing animation
-            $rootScope.modalOpened = false; 
+            $rootScope.modalOpened = false;
             $timeout(function(){
                 ngDialog.close();
-            }, 300);  
+            }, 300);
 		};
 
-		
+
 	}
 ]);

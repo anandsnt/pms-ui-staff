@@ -6,10 +6,10 @@ sntRover.controller('roomAvailabilityMainController', [
 	'$filter' ,
 	'$timeout',
 	function($scope, rvAvailabilitySrv, $rootScope, ngDialog, $filter, $timeout){
-	
+
 
 	BaseCtrl.call(this, $scope);
-	
+
 	$scope.selectedView = 'grid';
 	$scope.page.title = "Availability";
 
@@ -19,10 +19,10 @@ sntRover.controller('roomAvailabilityMainController', [
 	};
 
 	$scope.loadSelectedView = function(){
-		if($scope.selectedView == 'grid'){
+		if($scope.selectedView === 'grid'){
 			return '/assets/partials/availability/roomAvailabilityGridStatus.html';
 		}
-		else if($scope.selectedView == 'graph'){
+		else if($scope.selectedView === 'graph'){
 			return '/assets/partials/availability/roomAvailabilityGraphStatus.html';
 		}
 	}
@@ -89,7 +89,7 @@ sntRover.controller('roomAvailabilityMainController', [
 			}
 			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityDetails, dataForWebservice, successCallbackOfAvailabilityFetch, failureCallbackOfAvailabilityFetch);
 		}, 0)
-	
+
 	};
 
 
