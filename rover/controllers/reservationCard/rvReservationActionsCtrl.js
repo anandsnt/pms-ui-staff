@@ -4,26 +4,25 @@ sntRover.controller('reservationActionsController', [
 	'ngDialog',
 	'$state',
 	'RVReservationCardSrv',
-	'RVReservationSummarySrv',
 	'RVHkRoomDetailsSrv',
 	'RVSearchSrv',
 	'RVDepositBalanceSrv',
 	'$filter',
-	'RVPaymentSrv', 'rvPermissionSrv',
+	'rvPermissionSrv',
 	function($rootScope,
 		$scope,
 		ngDialog,
 		$state,
 		RVReservationCardSrv,
-		RVReservationSummarySrv,
 		RVHkRoomDetailsSrv,
 		RVSearchSrv,
 		RVDepositBalanceSrv,
 		$filter,
-		RVPaymentSrv, rvPermissionSrv) {
-
+		rvPermissionSrv) {
 
 		BaseCtrl.call(this, $scope);
+		var TZIDate = tzIndependentDate,
+			reservationMainData = $scope.reservationParentData;
 
 		/*
 		 * The reverse checkout button is to be shown if all the following conditions are satisfied
@@ -48,7 +47,7 @@ sntRover.controller('reservationActionsController', [
 		//TODO: Ask Rashila to to it from the API itself
 		if (typeof $scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates !== "boolean") {
 			$scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates =
-				($scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates === "true")
+				($scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates === "true");
 		}
 
 		$scope.actionsCheck = {
@@ -63,7 +62,7 @@ sntRover.controller('reservationActionsController', [
 			return display;
 		};
 
-		$scope.displayBalance = function(status, balance) {
+		$scope.displayBalance = function(status) {
 			var display = false;
 			if (status === 'CHECKING_IN' || status === 'RESERVED' || status === 'CHECKEDIN' || status === 'CHECKING_OUT') {
 				if (status === 'CHECKING_IN' || status === 'RESERVED') {
@@ -137,7 +136,7 @@ sntRover.controller('reservationActionsController', [
 
 		var openDepositPopup = function() {
 			if (($scope.reservationData.reservation_card.reservation_status === "RESERVED" || $scope.reservationData.reservation_card.reservation_status === "CHECKING_IN")) {
-				var feeDetails = (typeof $scope.depositDetails.attached_card === "undefined") ? {} : $scope.depositDetails.attached_card.fees_information;
+				var feeDetails = ($scope.depositDetails.attached_card === undefined) ? {} : $scope.depositDetails.attached_card.fees_information;
 				var passData = {
 					"reservationId": $scope.reservationData.reservation_card.reservation_id,
 					"fees_information": feeDetails,
@@ -161,39 +160,39 @@ sntRover.controller('reservationActionsController', [
 				});
 			} else {
 				return;
-			};
+			}
 
 		};
 
 		$scope.ifReferanceForCC = false;
 		$scope.depositDetails = {};
 
-		/**************************************************************************/
-		/* Entering staycard we check if any deposit is left else noraml checkin
-		/*
-		/**************************************************************************/
+		/**************************************************************************
+		 * Entering staycard we check if any deposit is left else noraml checkin
+		 *
+		 **************************************************************************/
 
 
 		$scope.depositDetails.isFromCheckin = false;
 		var paymentTypes = angular.copy($scope.reservationData.paymentTypes);
 		$scope.paymentTypes = paymentTypes;
 		$scope.creditCardTypes = [];
-		paymentTypes.forEach(function(paymentType, index) {
+		paymentTypes.forEach(function(paymentType) {
 			if (paymentType.name === 'CC') {
 				$scope.creditCardTypes = paymentType.values;
-			};
+			}
 		});
 
-		$scope.depositDetails = angular.copy($scope.reservationData.reseravationDepositData)
-		if ((typeof $scope.depositDetails.deposit_policy !== "undefined") && parseInt($scope.depositDetails.deposit_amount) > 0 && $rootScope.isStandAlone) {
+		$scope.depositDetails = angular.copy($scope.reservationData.reseravationDepositData);
+		if ((typeof $scope.depositDetails.deposit_policy !== "undefined") && parseInt($scope.depositDetails.deposit_amount, 10) > 0 && $rootScope.isStandAlone) {
 			if (!$scope.depositPopupData.isShown) {
 				$scope.depositDetails.isFromCheckin = false;
 				if (!$scope.reservationData.justCreatedRes) {
 					openDepositPopup();
-				};
+				}
 				$scope.depositPopupData.isShown = true;
-			};
-		};
+			}
+		}
 
 		/**
 		 * //CICO-14777 Yotel - Hourly Setup: Checkin with not ready room assigned should redirect to diary
@@ -216,9 +215,6 @@ sntRover.controller('reservationActionsController', [
 		};
 
 		var startCheckin = function() {
-
-
-
 			var afterRoomUpdate = function() {
 				if (typeof $scope.guestCardData.userId !== "undefined" && $scope.guestCardData.userId !== "" && $scope.guestCardData.userId !== null) {
 					if (($scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "false" || $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "" || $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === null) && ($scope.guestCardData.contactInfo.email === '' || $scope.guestCardData.contactInfo.phone === '' || $scope.guestCardData.contactInfo.email === null || $scope.guestCardData.contactInfo.phone === null)) {
@@ -272,7 +268,7 @@ sntRover.controller('reservationActionsController', [
 						closeByDocument: false,
 						closeByEscape: false
 					});
-				};
+				}
 			};
 
 			// NOTE: room_id is provided as string and number >.<, that why checking length/existance
@@ -311,21 +307,10 @@ sntRover.controller('reservationActionsController', [
 			startCheckin();
 		});
 
-		/**************************************************************************/
-		/* Before checking in we check if any deposit is left else noraml checkin
-		/*
-		/**************************************************************************/
-		var checkinDepositDetailsSuccess = function(data) {
-			$scope.$emit('hideLoader');
-			$scope.depositDetails = data;
-			$scope.depositDetails.isFromCheckin = true;
-			if (!$scope.reservationData.justCreatedRes) {
-				((typeof $scope.depositDetails.deposit_policy !== "undefined") && parseInt($scope.depositDetails.deposit_amount) > 0 && $rootScope.isStandAlone) ? openDepositPopup(): startCheckin();
-			} else {
-				startCheckin();
-			};
-
-		};
+		/**************************************************************************
+		 * Before checking in we check if any deposit is left else noraml checkin
+		 *
+		 **************************************************************************/
 
 		$scope.goToCheckin = function() {
 			startCheckin();
@@ -416,12 +401,12 @@ sntRover.controller('reservationActionsController', [
 					penaltyText: (function() {
 						if (nights) {
 							return penalty + (penalty > 1 ? " nights" : " night");
-						} else if (isPercent) {
-							return $rootScope.currencySymbol + penalty; //as calculated amount based on percentage is provided from API
-						} else {
-							return $rootScope.currencySymbol + $filter('number')(penalty, 2);
 						}
-					})()
+						if (isPercent) {
+							return $rootScope.currencySymbol + penalty; //as calculated amount based on percentage is provided from API
+						}
+						return $rootScope.currencySymbol + $filter('number')(penalty, 2);
+					}())
 				})
 			});
 		};
@@ -440,10 +425,9 @@ sntRover.controller('reservationActionsController', [
 					depositText: (function() {
 						if (!isOutOfCancellationPeriod) {
 							return "Within Cancellation Period. Deposit of " + $rootScope.currencySymbol + $filter('number')(deposit, 2) + " is refundable.";
-						} else {
-							return "Reservation outside of cancellation period. A cancellation fee of " + $rootScope.currencySymbol + $filter('number')(penalty, 2) + " will be charged, deposit not refundable";
 						}
-					})()
+						return "Reservation outside of cancellation period. A cancellation fee of " + $rootScope.currencySymbol + $filter('number')(penalty, 2) + " will be charged, deposit not refundable";
+					}())
 				})
 			});
 		};
@@ -471,7 +455,7 @@ sntRover.controller('reservationActionsController', [
 					// penalty_value: 20
 
 					depositAmount = data.results.deposit_amount;
-					var isOutOfCancellationPeriod = (typeof data.results.cancellation_policy_id !== 'undefined');
+					var isOutOfCancellationPeriod = (data.results.cancellation_policy_id === undefined);
 					if (isOutOfCancellationPeriod) {
 						if (data.results.penalty_type === 'day') {
 							// To get the duration of stay
@@ -483,21 +467,22 @@ sntRover.controller('reservationActionsController', [
 							cancellationCharge = parseFloat(data.results.calculated_penalty_amount);
 						}
 
-						if (parseInt(depositAmount) > 0) {
+						if (parseInt(depositAmount, 10) > 0) {
 							showCancelReservationWithDepositPopup(depositAmount, isOutOfCancellationPeriod, cancellationCharge);
 						} else {
 							promptCancel(cancellationCharge, nights, (data.results.penalty_type === 'percent'));
-						};
+						}
 					} else {
-						if (parseInt(depositAmount) > 0) {
+						if (parseInt(depositAmount, 10) > 0) {
 							showCancelReservationWithDepositPopup(depositAmount, isOutOfCancellationPeriod, '');
 						} else {
 							promptCancel('', nights, (data.results.penalty_type === 'percent'));
-						};
+						}
 					}
 					//promptCancel(cancellationCharge, nights);
 
 				};
+
 				var onCancellationDetailsFetchFailure = function(error) {
 					$scope.$emit('hideLoader');
 					$scope.errorMessage = error;
@@ -602,7 +587,7 @@ sntRover.controller('reservationActionsController', [
 			//As per CICO-15833
 			//we wanted to show the Balance & Deposit popup for DUEIN & CHECKING IN reservation only
 			reservationStatus = reservationStatus.toUpperCase();
-			return (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN')
+			return (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN');
 		};
 
 		$scope.showDepositBalanceWithSr = function(reservationStatus, isRatesSuppressed) {
@@ -642,15 +627,47 @@ sntRover.controller('reservationActionsController', [
 			$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data);
 		};
 
+		var promptReinstate = function() {
+			ngDialog.open({
+				template: '/assets/partials/reservation/alerts/rvReinstate.html',
+				closeByDocument: false,
+				scope: $scope,
+				data: JSON.stringify({
+					isAvailable: false
+				})
+			});
+		};
 
-		$scope.reinstateReservation = function() {
-			console.log('Reinstation solicited');
-		}
+		$scope.reinstateNavigateRoomAndRates = function() {
+			$state.go('rover.reservation.staycard.mainCard.roomType', {
+				from_date: reservationMainData.arrivalDate,
+				to_date: reservationMainData.departureDate,				
+				fromState: $state.current.name,
+				company_id: reservationMainData.company.id,
+				travel_agent_id: reservationMainData.travelAgent.id
+			});
+		};
+
+		$scope.checkReinstationAvailbility = function() {
+			$scope.invokeApi(RVReservationCardSrv.checkReinstationAvailbility,
+				// Params for API Call
+				$scope.reservationData.reservation_card.reservation_id,
+				//Handle Success
+				function(response) {
+					$scope.$emit('hideLoader');
+					promptReinstate(response);
+				},
+				//Handle Failure
+				function(errorMessage) {
+					$scope.$emit('hideLoader');
+					$scope.errorMessage = errorMessage;
+				});
+		};
 
 		$scope.isReinstateVisible = function() {
 			var resData = $scope.reservationData.reservation_card;
 			return resData.reservation_status === 'CANCELED' &&
-				new tzIndependentDate(resData.departure_date) > new tzIndependentDate($rootScope.businessDate);
-		}
+				new TZIDate(resData.departure_date) > new TZIDate($rootScope.businessDate);
+		};
 	}
 ]);

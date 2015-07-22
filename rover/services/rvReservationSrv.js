@@ -296,5 +296,17 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
             return deferred.promise;
         }
 
+        this.checkReinstationAvailbility = function(reservationId){
+        	var deferred = $q.defer(),
+        		url = '/api/reservation/'+reservationId+'/check_reinstate_availability';
+        	var url = "/api/rates";
+        	rvBaseWebSrvV2.getJSON(url).then(function(response) {
+                deferred.resolve(response);
+            }, function(response) {
+                deferred.reject(response);
+            });
+            return deferred.promise;	
+        }
+
 	}
 ]);
