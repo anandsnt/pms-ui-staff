@@ -113,7 +113,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	controller : 'earlyCheckinFinalController',
 	 	title: 'Early Check-in'
 	 }).state('laterArrival', {
-	 	url: '/laterArrival/:time',
+	 	url: '/laterArrival/:time/:isearlycheckin',
 	 	templateUrl: '/assets/checkin/partials/MGM/lateArrivalDetails.html',
 	 	controller : 'checkinArrivalDetailsController',
 	    title: 'Early Check-in'

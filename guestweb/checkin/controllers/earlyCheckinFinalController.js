@@ -16,22 +16,18 @@
 	}		
 
 	if($scope.pageValid){
-		console.log($stateParams);
 		$scope.checkinTime = $stateParams.time;
 		$scope.earlyCheckinCharge = $stateParams.charge;
-		console.log($stateParams);
-		$scope.nextButtonClicked = function(){
-		//	$scope.isPosting = true;
-		// var data = {'reservation_id':$rootScope.reservationID,'early_checkin_offer_id':};
-		// 	earlyCheckinService.applyEarlyCheckin(dataTosend).then(function(response) {				
-		// 		$state.go('preCheckinStatus');
-		// 	},function(){
-		// 		$scope.netWorkError = true;
-		// 		$scope.isPosting = false;
-		// 	});
-		// };
-		}
-	}
+		var offerId= $stateParams.id;
+		$scope.isPosting = true;
+		var dataTosend = {'reservation_id':$rootScope.reservationID,'early_checkin_offer_id':offerId};
+		earlyCheckinService.applyEarlyCheckin(dataTosend).then(function(response) {				
+			$state.go('preCheckinStatus');
+		},function(){
+			$scope.netWorkError = true;
+			$scope.isPosting = false;
+		});
+	};
 }
 
 var dependencies = [

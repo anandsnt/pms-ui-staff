@@ -8,10 +8,8 @@
 	var applyEarlyCheckin = function(data) {
 
 		var deferred = $q.defer();
-		var url = 'api/reservations/apply_early_checkin';
-		$http.get(url,{
-			params: data
-		}).success(function(response) {
+		var url = '/api/reservations/apply_early_checkin_offer';
+		$http.post(url, data).success(function(response) {
 			this.responseData = response;
 			deferred.resolve(this.responseData);
 		}.bind(this))

@@ -24,7 +24,7 @@
 		};
 		
 		$scope.changeArrivalTime = function(){
-			$state.go('laterArrival',{'time':'4 PM'});
+			$state.go('laterArrival',{'time':$scope.checkinTime,'isearlycheckin':true});
 		};
 	}
 };
