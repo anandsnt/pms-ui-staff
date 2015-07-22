@@ -119,4 +119,10 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	title: 'Email Verification'
 	});
 
+	$stateProvider.state('earlyCheckinOptions', {
+    	url: '/noOptions',
+	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	title: 'Feature not available'
+	});
+
 }]);

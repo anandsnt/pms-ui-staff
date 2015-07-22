@@ -79,5 +79,11 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	title: 'Trip Details'
 	 });
 
+    $stateProvider.state('earlyCheckinOptions', {
+    	url: '/noOptions',
+	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	title: 'Feature not available'
+	});
+
 
 }]);

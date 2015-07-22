@@ -103,4 +103,10 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 		title: 'Status - Pre Check-In'
 	 });
 
+	$stateProvider.state('earlyCheckinOptions', {
+    	url: '/noOptions',
+	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	title: 'Feature not available'
+	});
+
 }]);
