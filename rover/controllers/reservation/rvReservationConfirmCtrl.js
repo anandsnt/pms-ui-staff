@@ -12,12 +12,14 @@ sntRover.controller('RVReservationConfirmCtrl', [
 	'$rootScope',
 	'RVReservationGuestSrv',
 	'rvPermissionSrv',
+	'$timeout',
+	'$window',
 	function($scope, $state,
 		RVReservationSummarySrv, ngDialog,
 		RVContactInfoSrv, $filter,
 		RVBillCardSrv, $q,
 		RVHkRoomDetailsSrv, $vault,
-		$rootScope, RVReservationGuestSrv, rvPermissionSrv) {
+		$rootScope, RVReservationGuestSrv, rvPermissionSrv, $timeout, $window) {
 
 		$scope.errorMessage = '';
 		BaseCtrl.call(this, $scope);
@@ -125,6 +127,33 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		}
 
 		$scope.confirmationMailsSent = false;
+
+		$scope.printConfirmationReservation =function() {		
+			printJournal();
+		};
+
+		var addPrintOrientation = function() {
+			var orientation = 'portrait';
+			$( 'head' ).append( "<style id='print-orientation'>@page { size: " + orientation + "; }</style>" );
+		};
+		// add the print orientation after printing
+		var removePrintOrientation = function() {
+			$( '#print-orientation' ).remove();	
+		};
+
+		var printJournal = function() {
+		// add the orientation
+		removeUnwantedDomElements();
+		addPrintOrientation();
+	    $timeout(function() {	    	
+	        $window.print();
+	        if ( sntapp.cordovaLoaded ) {
+	            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+	        };
+	    }, 100);
+		// remove the orientation after similar delay
+		$timeout(removePrintOrientation, 100);
+		};		
 
 		/**
 		 * Call API to send the confirmation email

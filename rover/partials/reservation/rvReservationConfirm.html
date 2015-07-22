@@ -133,7 +133,11 @@
                         <input class="summary_email" ng-model="otherData.additionalEmail">    
                     </div>
                     <div class="actions"  ng-show="!reservationStatus.confirmed">
-                            <button type="button" class="button blue" ng-click="sendConfirmationClicked(payment_info.email.$valid)">Confirm Reservation</button>
+                        <button type="button" class="button blue" ng-click="sendConfirmationClicked(payment_info.email.$valid)">Confirm Reservation</button>
+                        <button type="button" class="button blue with-icon" ng-click="printConfirmationReservation()">
+                        <span class="icons icon-print"></span>
+                            Print Confirmation Letter
+                        </button>
                     </div>
                     <!-- <section ng-show="!reservationStatus.confirmed">
                     <p>Send confirmation to the following email address(es)</p>
