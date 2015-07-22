@@ -403,6 +403,18 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.detailsTemplateUrl = '/assets/partials/reports/comparisonStatReport/rvComparisonStatReport.html';
 					break;
 
+				case reportUtils.getName('RATE_ADJUSTMENTS_REPORT'):
+					if ( !!$scope.$parent.reportGroupedBy ) {
+						$scope.hasReportTotals    = true;
+						$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
+						$scope.detailsTemplateUrl = '/assets/partials/reports/rateAdjustmentReport/rvRateAdjustmentReport.html';
+					} else {
+						$scope.hasReportTotals    = true;
+						$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
+						$scope.detailsTemplateUrl = '/assets/partials/reports/rvCommonReportDetails.html';
+					};
+					break;
+
 				default:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
@@ -466,7 +478,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportUtils.getName('RATE_ADJUSTMENTS_REPORT'):
-					template = '/assets/partials/reports/rvRateAdjustmentReportRow.html';
+					template = '/assets/partials/reports/rateAdjustmentReport/rvRateAdjustmentReportRow.html';
 					break;
 
 				default:

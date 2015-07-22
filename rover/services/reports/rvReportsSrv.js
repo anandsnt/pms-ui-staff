@@ -34,35 +34,6 @@ sntRover.service('RVreportsSrv', [
 							});
 						};
 
-						// TESTING!!
-						this.cacheReportList.results.push({
-							description: "Rate Adjustment by user / date range",
-							filters: [{
-								value: "ARRIVAL_DATE_RANGE", description: "Arrival Date Range"
-							}, {
-								value: "ADJUSTMENT_DATE_RANGE", description: "Adjustment Date Range"
-							}],
-							group_fields: [{
-								value: "BLANK", description: "Blank"
-							}, {
-								value: "USER", description: "User"
-							}, {
-								value: "DATE", description: "Date"
-							}],
-							id: 888,
-							sort_fields: [{
-								value: "ARRIVAL_DATE_RANGE", description: "Arrival Date Range"
-							}, {
-								value: "ADJUSTMENT_DATE_RANGE", description: "Adjustment Date Range"
-							}, {
-								value: "RESERVATION", description: "Reservation Number"
-							}, {
-								value: "USER", description: "User"
-							}],
-							sub_title: "By Date Range",
-							title: "Rate Adjustment Report"
-						});
-
 						deferred.resolve(this.cacheReportList);
 					}.bind(this), function(data) {
 						deferred.reject(data);
