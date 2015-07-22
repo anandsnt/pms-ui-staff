@@ -1517,6 +1517,32 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         };
 
         /**
+         * Function to handle success, failure callbacks for toggleHideRate
+         */
+        var sucessCallbackToggleHideRate = function(data){
+            $scope.groupConfigData.summary.hide_rates = !$scope.groupConfigData.summary.hide_rates;
+            $scope.errorMessage = "";
+        },
+        failureCallbackToggleHideRate = function(errorData){
+            $scope.errorMessage = errorData;
+        };
+        /**
+         * Function to toggle show rate checkbox value
+         */
+        $scope.clickedShowRate = function(){
+            
+            var params = {
+                'group_id'      : $scope.groupConfigData.summary.group_id,
+                'hide_rates'    : !$scope.groupConfigData.summary.hide_rates
+            };
+            $scope.callAPI(rvGroupConfigurationSrv.toggleHideRate, {
+                successCallBack: sucessCallbackToggleHideRate,
+                failureCallBack: failureCallbackToggleHideRate,
+                params: params
+            });
+        };
+
+        /**
          * Function to initialise room block details
          * @return - None
          */
@@ -1552,23 +1578,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 callInitialAPIs();
             }
         }();
-
-        $scope.clickedShowRate = function(){
-
-            var sucessCallback = function(data){
-                $scope.groupConfigData.summary.hide_rates = !$scope.groupConfigData.summary.hide_rates;
-                $scope.$emit('hideLoader');
-                $scope.errorMessage = "";
-            };
-            var failureCallback = function(errorData){
-                $scope.$emit('hideLoader');
-                $scope.errorMessage = errorData;
-            };
-            var data = {
-                'group_id'      : $scope.groupConfigData.summary.group_id,
-                'hide_rates'    : !$scope.groupConfigData.summary.hide_rates
-            }
-            $scope.invokeApi(rvGroupConfigurationSrv.toggleHideRate, data, sucessCallback, failureCallback);
-        };
+        
     }
 ]);
