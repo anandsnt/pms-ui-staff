@@ -49,14 +49,13 @@
 		 }		
 
 		preCheckinSrv.postStayDetails(dataTosend).then(function(response) {
-					//$scope.isLoading = false;	
-					// response.earlyCheckin = true
-					// if(response.earlyCheckin){
-					// 	$state.go('earlyCheckinOptions',{'time':'3 PM','charge':'60'});
-					// }
-					// else{
+					$scope.isLoading = false;	
+					if(!response.early_checkin_available){
+						$state.go('earlyCheckinOptions',{'time':response.checkin_time,'charge':response.early_checkin_charge,'id':response.early_checkin_offer_id});
+					}
+					else{
 						$state.go('preCheckinStatus');
-					// }
+					}
 				},function(){
 					$scope.netWorkError = true;
 					$scope.isLoading = false;

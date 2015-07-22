@@ -1,8 +1,6 @@
-
 (function() {
 	var earlyCheckinOptionsController = function($scope,$rootScope,$state,$stateParams) {
 
-	
 	$scope.pageValid = false;
 
 	if($rootScope.isCheckedin){
@@ -19,9 +17,12 @@
 		
 		$scope.checkinTime = $stateParams.time;
 		$scope.earlyCheckinCharge = $stateParams.charge;
+		var offerId = $stateParams.id;
+
 		$scope.nextButtonClicked = function(){
-			$state.go('earlyCheckinFinal',{'time':'4 PM','charge':'40'});
+			$state.go('earlyCheckinFinal',{'time':$scope.checkinTime,'charge': $stateParams.charge,'id':offerId});
 		};
+		
 		$scope.changeArrivalTime = function(){
 			$state.go('laterArrival',{'time':'4 PM'});
 		};
