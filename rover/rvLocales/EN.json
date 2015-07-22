@@ -1069,6 +1069,7 @@
     "NET_AMOUNT":"Net Amount",
     "TOTAL_INCL_TAX":"Total Incl Tax",
     "UPDATE":"Update",
-    "NOT_DEFINED": "Not Defined"
+    "NOT_DEFINED": "Not Defined",
+    "DONT_PRINT_RATE" : "Don't Print Rate"
 
 }

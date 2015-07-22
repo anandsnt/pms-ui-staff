@@ -86,7 +86,7 @@
                     </table>
                     <table class="rate-initial">
                         <tr>
-                            <td>
+                            <td ng-hide="printRegCardData.hide_rates">
                                 <span>AVERAGE DAILY RATE:</span>
                                 <strong>{{ groupReservation.adr | currency:currencySymbol:2 }}</strong>
                             </td>
@@ -103,23 +103,23 @@
         <thead>
             <tr>
                 <th>DATE</th>
-                <th>RATE</th>
-                <th>TAXES</th>
+                <th ng-hide="printRegCardData.hide_rates">RATE</th>
+                <th ng-hide="printRegCardData.hide_rates">TAXES</th>
                 <th>ADD-ON</th>
-                <th class="addon-price">ADD-ON PRICE</th>
+                <th ng-hide="printRegCardData.hide_rates" class="addon-price">ADD-ON PRICE</th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="each in groupReservation.daily_instances_info">
                 <td>{{ each.date | date : dateFormat }}</td>
-                <td>{{ each.rate | currency:currencySymbol:2 }}</td>
-                <td>{{ each.tax | currency:currencySymbol:2 }}</td>
+                <td ng-hide="printRegCardData.hide_rates">{{ each.rate | currency:currencySymbol:2 }}</td>
+                <td ng-hide="printRegCardData.hide_rates">{{ each.tax | currency:currencySymbol:2 }}</td>
                 <td class="addons" colspan="2">
                     <table>
                         <tr ng-repeat="item in each.addons">
                             <td>{{ item.name }}</td>
-                            <td ng-if="item.price == 'INCLUDED'">{{ item.price }}</td>
-                            <td ng-if="item.price != 'INCLUDED'">{{ item.price | currency:currencySymbol:2 }}</td>
+                            <td ng-hide="printRegCardData.hide_rates" ng-if="item.price == 'INCLUDED'">{{ item.price }}</td>
+                            <td ng-hide="printRegCardData.hide_rates" ng-if="item.price != 'INCLUDED'">{{ item.price | currency:currencySymbol:2 }}</td>
                         </tr>
                     </table>
                 </td>
