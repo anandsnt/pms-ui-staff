@@ -103,6 +103,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/reservationtypes'
 		});
 
+		$stateProvider.state('admin.reservationTools', {
+			templateUrl: '/assets/partials/reservationTools/adReservationToolsList.html',
+			controller: 'ADReservationTypeListController',
+			url : '/reservationtypes'
+		});
+
 		$stateProvider.state('admin.housekeeping', {
 			templateUrl: '/assets/partials/housekeeping/adHousekeeping.html',
 			controller: 'adHousekeepingCtrl',
