@@ -101,6 +101,10 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 				member: {
 					isSelected: false,
 					value: ""
+				},
+				guestMemberships: {
+					hlp: [],
+					ffp: []
 				}
 			};
 		}

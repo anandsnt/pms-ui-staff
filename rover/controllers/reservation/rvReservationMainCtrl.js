@@ -415,6 +415,15 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                                         amountType = addon.amount_type || addon.amountType;
                                     if (postType.value === "STAY" || (date === roomMetaData.arrival)) {
                                         finalRate = parseFloat(RVReservationStateService.getAddonAmount(amountType.value, baseRate, adultsOnTheDay, childrenOnTheDay));
+                                        if (todaysMetaData.applyPromotion) {
+                                            //check if the addon is associated
+                                            if (!!_.findWhere(todaysMetaData.associatedAddons, {
+                                                    id: addon.id
+                                                })) {
+                                                finalRate = RVReservationStateService.applyDiscount(finalRate, todaysMetaData.appliedPromotion.discount, $scope.reservationData.numNights);
+                                            }
+                                        }
+
                                     }
                                     // cummulative sum (Not just multiplication of rate per day with the num of nights) >> Has to done at "day level" to handle the reservations with varying occupancy!
                                     if (postType.value === "STAY") {

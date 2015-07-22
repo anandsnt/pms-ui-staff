@@ -134,5 +134,16 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
             });
             return deferred.promise;
         };
+
+        this.fetchUserMemberships = function(guestId) {
+            var deferred = $q.defer();
+            var url = '/staff/user_memberships.json?user_id=' + guestId;
+            RVBaseWebSrvV2.getJSON(url).then(function(response) {
+                deferred.resolve(response.data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
     }
 ]);

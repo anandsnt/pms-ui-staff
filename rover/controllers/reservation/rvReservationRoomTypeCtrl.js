@@ -1,6 +1,6 @@
 sntRover.controller('RVReservationRoomTypeCtrl', [
 	'$rootScope', '$scope', 'roomRates', 'sortOrder', 'rateAddons', 'isAddonsConfigured', 'RVReservationBaseSearchSrv', 'RVReservationAddonsSrv', '$timeout', '$state', 'ngDialog', '$sce', '$stateParams', 'dateFilter', '$filter', 'rvPermissionSrv', 'RVReservationStateService', 'RVReservationDataService',
-	function($rootScope, $scope, roomRates, sortOrder, rateAddons, isAddonsConfigured ,RVReservationBaseSearchSrv, RVReservationAddonsSrv, $timeout, $state, ngDialog, $sce, $stateParams, dateFilter, $filter, rvPermissionSrv, RVReservationStateService, RVReservationDataService) {
+	function($rootScope, $scope, roomRates, sortOrder, rateAddons, isAddonsConfigured, RVReservationBaseSearchSrv, RVReservationAddonsSrv, $timeout, $state, ngDialog, $sce, $stateParams, dateFilter, $filter, rvPermissionSrv, RVReservationStateService, RVReservationDataService) {
 		$scope.displayData = {};
 		$scope.selectedRoomType = -1;
 		$scope.expandedRoom = -1;
@@ -101,7 +101,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 						});
 						if (typeof roomStatus !== "undefined" && roomStatus.availability < 1) {
 							isRoomAvailable = false;
-						};
+						}
 					}
 				});
 				if (!isRoomAvailable && !isHouseAvailable && isCallingFirstTime) {
@@ -263,10 +263,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				}
 			}
 		};
-                $scope.allowOverbook = function(){//check user permission for overbook_house
-                    return rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
-                };    
-                 
+		$scope.allowOverbook = function() { //check user permission for overbook_house
+			return rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+		};
+
 		$scope.setRates = function() {
 			//CICO-5253 > Rate Types Reservartion
 			//Get the rates for which rooms are available $scope.displayData.allRooms
@@ -360,7 +360,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					}
 				}
 			}
-		}
+		};
 
 		var isRateSelected = function() {
 			// Have to check if all the days have rates and enable the DONE button
@@ -377,7 +377,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				}
 			});
 			return allSelected;
-		}
+		};
 
 		/*
 		 *	The below method is to advance to the enhancements page from
@@ -1008,18 +1008,35 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			return taxDetails ? taxDetails : "0%";
 		}
 
+		var isMembershipValid = function() {
+			var membership = $scope.reservationData.guestMemberships,
+				selectedMembership = $scope.reservationData.member.value,
+				validFFP = _.findWhere(membership.ffp, {
+					membership_type: selectedMembership
+				}),
+				validHLP = _.findWhere(membership.hlp, {
+					membership_type: selectedMembership
+				});
+
+			return ($rootScope.isFFPActive && !!validFFP) || ($rootScope.isHLPActive && !!validHLP);
+		}
+
 		$scope.getAvailability = function(roomRates) {
 			var parsedRooms = RVReservationStateService.parseRoomRates(roomRates,
 					$scope.reservationData.arrivalDate,
 					$scope.reservationData.departureDate,
 					$scope.reservationData.rooms[$scope.activeRoom].stayDates,
 					$scope.activeRoom,
-					$scope.reservationData.numNights, $scope.reservationData.code),
+					$scope.reservationData.numNights,
+					$scope.reservationData.code,
+					$scope.reservationData.member.isSelected && isMembershipValid()),
 				rooms = parsedRooms.rooms;
 			$scope.displayData.dates = parsedRooms.displayDates;
 
+			// STEP TWO
 			rooms = restrictionCheck(rooms);
 
+			// STEP THREE -- SORT BASED ON THE ADMIN SETTINGS [[RATE SEQ]]
 			_.each(rooms, function(value) {
 				// Sort according to preference
 				if ($scope.stateCheck.sortOrder === "HIGH_TO_LOW") {
@@ -1048,6 +1065,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					});
 				}
 
+				// STEP FOUR - BRING CORPORATE RATES TO THE TOP
 				//[CICO-7792] Bring the corporate rates to the top
 				/*  https://stayntouch.atlassian.net/browse/CICO-7792
 				 *	If both a Travel Agent and a Company are linked to the reservation,
@@ -1074,7 +1092,48 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					});
 				}
 
-				//TODO: Caluculate the default ID
+				//STEP FIVE - BRING PROMOTION RATES TO THE TOP
+				//CICO-18204
+				if (!!$scope.reservationData.code) {
+					var isPromotionApplied = function(rateId) {
+						var promotionApplied = false;
+						_.each(value.ratedetails, function(dayDetails) {
+							promotionApplied = promotionApplied || dayDetails[rateId].applyPromotion;
+						});
+						return promotionApplied;
+					}
+					value.rates.sort(function(a, b) {
+						if (isPromotionApplied(a)) {
+							return -1
+						}
+						if (isPromotionApplied(b)) {
+							return 1
+						}
+						return 0;
+					});
+				}
+
+				//STEP SIX - BRING MEMBER RATES TO THE TOP
+				if (!!$scope.reservationData.code) {
+					var isValidMemberRate = function(rateId) {
+						var memberRate = false;
+						_.each(value.ratedetails, function(dayDetails) {
+							memberRate = memberRate || dayDetails[rateId].isMember;
+						});
+						return memberRate;
+					}
+					value.rates.sort(function(a, b) {
+						if (isValidMemberRate(a)) {
+							return -1
+						}
+						if (isValidMemberRate(b)) {
+							return 1
+						}
+						return 0;
+					});
+				}
+
+				//Caluculate the default ID
 				if (value.rates.length > 0) {
 					value.defaultRate = value.rates[0];
 				} else {
@@ -1265,6 +1324,27 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		var initEventListeners = function() {
 			$scope.$on('SIDE_BAR_OCCUPANCY_UPDATE', function() {
 				init();
+			});
+
+			$scope.$on('resetGuestTab', function() {
+				$scope.invokeApi(RVReservationBaseSearchSrv.fetchUserMemberships, $scope.reservationDetails.guestCard.id, function(data) {
+					$scope.$emit('hideLoader');
+					$scope.reservationData.guestMemberships = {
+						ffp: data.frequentFlyerProgram,
+						hlp: data.hotelLoyaltyProgram
+					}
+					if ($scope.reservationData.member.isSelected && isMembershipValid()) {
+						init();
+					} else if($scope.reservationData.member.isSelected){
+						ngDialog.open({
+							template: '/assets/partials/reservation/alerts/rvNotMemberPopup.html',
+							className: '',
+							scope: $scope,
+							closeByDocument: false,
+							closeByEscape: false
+						});
+					}
+				});
 			});
 
 			// 	CICO-7792 BEGIN
