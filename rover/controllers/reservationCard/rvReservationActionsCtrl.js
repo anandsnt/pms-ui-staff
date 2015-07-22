@@ -642,5 +642,15 @@ sntRover.controller('reservationActionsController', [
 			$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data);
 		};
 
+
+		$scope.reinstateReservation = function() {
+			console.log('Reinstation solicited');
+		}
+
+		$scope.isReinstateVisible = function() {
+			var resData = $scope.reservationData.reservation_card;
+			return resData.reservation_status === 'CANCELED' &&
+				new tzIndependentDate(resData.departure_date) > new tzIndependentDate($rootScope.businessDate);
+		}
 	}
 ]);

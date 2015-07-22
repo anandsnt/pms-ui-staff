@@ -47,6 +47,9 @@
 		</a>
         <a class="button staycard-button icon-confirmation" ng-show="showResendConfirmation(reservationData.reservation_card.reservation_status)" ng-click="sendConfirmationEmail()"> 		{{'CONFIRMATION' | translate}} 
         </a>
+        <a ng-if="isReinstateVisible()" ng-click="reinstateReservation()" class="button white green-text bottom-button">
+			{{'REINSTATE' | translate}}
+		</a>
         <!-- Archive Reservation for future usage
 			<a href="{archive-reservation}" class="button red bottom-button">Archive reservation</a>
 			-->
