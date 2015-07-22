@@ -96,7 +96,7 @@
             <label class="checkbox inline" for="no-rate-print" ng-class="{ 'checked': groupConfigData.summary.hide_rates }">
                 <span class="icon-form icon-checkbox" ng-class="{ 'checked':groupConfigData.summary.hide_rates }"></span>
                 <input ng-click="clickedShowRate()" id="no-rate-print" value="" type="checkbox">
-                Don't Print Rate
+                {{ 'DONT_PRINT_RATE' | translate }}
             </label>
 
             <button type="button" class="button with-icon only-icon blue" ng-hide="reservations.length ==0" ng-click="sendRoomingList()">
