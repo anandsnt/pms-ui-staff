@@ -1731,5 +1731,23 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 callInitialAPIs();
             }
         }();
+
+        $scope.clickedShowRate = function(){
+
+            var sucessCallback = function(data){
+                $scope.groupConfigData.summary.hide_rates = !$scope.groupConfigData.summary.hide_rates;
+                $scope.$emit('hideLoader');
+                $scope.errorMessage = "";
+            };
+            var failureCallback = function(errorData){
+                $scope.$emit('hideLoader');
+                $scope.errorMessage = errorData;
+            };
+            var data = {
+                'group_id'      : $scope.groupConfigData.summary.group_id,
+                'hide_rates'    : !$scope.groupConfigData.summary.hide_rates
+            }
+            $scope.invokeApi(rvGroupConfigurationSrv.toggleHideRate, data, sucessCallback, failureCallback);
+        };
     }
 ]);

@@ -229,4 +229,16 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 		return deferred.promise;
 	};
 
+	this.toggleHideRate = function( params ){
+		var deferred = $q.defer();
+		var url = 'api/reservations/'+params.reservation_id+'/hide_rates';
+			BaseWebSrvV2.postJSON(url, params).then(function(data) {
+			   	 deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});
+
+		return deferred.promise;
+	};
+
 }]);
