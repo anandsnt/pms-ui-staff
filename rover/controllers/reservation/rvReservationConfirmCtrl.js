@@ -57,7 +57,6 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		$scope.init = function() {
 			$scope.heading = 'Reservations';
 			$scope.setHeadingTitle($scope.heading);
-
 			$scope.$parent.hideSidebar = true;
 			$scope.time = {
 				arrival: $scope.reservationData.checkinTime.hh + ':' + $scope.reservationData.checkinTime.mm + ' ' + $scope.reservationData.checkinTime.ampm,
@@ -128,8 +127,8 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 		$scope.confirmationMailsSent = false;
 
-		$scope.printConfirmationReservation =function() {		
-			printJournal();
+		$scope.printConfirmationReservation =function() {					
+			printPage();			
 		};
 
 		var addPrintOrientation = function() {
@@ -141,15 +140,14 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			$( '#print-orientation' ).remove();	
 		};
 
-		var printJournal = function() {
+		var printPage= function() {		
 		// add the orientation
-		removeUnwantedDomElements();
 		addPrintOrientation();
 	    $timeout(function() {	    	
 	        $window.print();
 	        if ( sntapp.cordovaLoaded ) {
 	            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-	        };
+	        };	        
 	    }, 100);
 		// remove the orientation after similar delay
 		$timeout(removePrintOrientation, 100);
