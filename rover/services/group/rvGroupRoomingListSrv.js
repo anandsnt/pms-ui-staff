@@ -95,6 +95,33 @@ sntRover.service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 		};
 
 		/**
+		 * function to perform auto room assignment
+		 * @return {Promise}
+		 */
+		this.performAutoRoomAssignment = function(params) {
+			var deferred = $q.defer(),
+			    group_id = params.id,
+			    //url = '/api/auto_room_assign/',
+			    url = '/ui/show?format=json&json_input=groups/group_auto_room_assignment.json',
+			    params = {
+			        "group_id": params.group_id,
+			        "reservation_ids": params.reservation_ids
+			    };
+
+
+			rvBaseWebSrvV2.postJSON(url, params).then(
+			    function(data) {
+			        deferred.resolve(data);
+			    },
+			    function(errorMessage) {
+			        deferred.reject(errorMessage);
+			    }
+			);
+
+			return deferred.promise;
+		};
+
+		/**
 		 * Function to get Room type configured against group
 		 * @return {Promise} [will get the details]
 		 */

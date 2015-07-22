@@ -43,6 +43,14 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         };
 
         /**
+         * Has Permission To Edit reservation
+         * @return {Boolean}
+         */
+        var hasPermissionToEditReservation = function() {
+            return (rvPermissionSrv.getPermissionValue('EDIT_RESERVATION'));
+        };
+
+        /**
          * Has Permission To check in reservation
          * @return {Boolean}
          */
@@ -103,6 +111,14 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          */
         $scope.shouldDisableCheckoutButton = function() {
             return ($scope.selected_reservations.length === 0 || !hasPermissionToCheckoutReservation());
+        };
+
+        /**
+         * wanted to disable the auto room assignment button
+         * @return {Boolean}
+         */
+        $scope.shouldDisableAutoRoomAssignButton = function() {
+            return ($scope.selected_reservations.length === 0 || !hasPermissionToEditReservation());
         };
 
         /**
@@ -984,7 +1000,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         };
 
         /**
-         * we want to verify from the user before going into mass checking
+         * when no reservations meet checkin criteria
          * @return undefined
          */
         var openNoReservationMeetCheckinCriteria = function() {
@@ -996,6 +1012,165 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 closeByDocument: false,
                 closeByEscape: false
             });
+        };
+
+        /**
+         * we want to verify from the user before going into auto room assign
+         * @return undefined
+         */
+        var openAutoRoomAssignConfirmationPopup = function() {
+            ngDialog.open(
+            {
+                template: '/assets/partials/groups/rooming/rvGroupAutoRoomAssignSomeResReadyPopUp.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        };
+
+        /**
+         * when no reservations meet checkin criteria
+         * @return undefined
+         */
+        var openNoReservationMeetAutoAssignCriteria = function() {
+            ngDialog.open(
+            {
+                template: '/assets/partials/groups/rooming/rvGroupAutoRoomAssignNoResMeetCriteria.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        };
+
+        /**
+         * to perform auto assign rooms
+         * @return undefined
+         */
+        $scope.autoAssignRooms = function() {
+            var rStatus,
+                roomNo,
+                filteredList,
+                qualifiedRes,
+                qualifiedResCount,
+                selectedResCount = $scope.selected_reservations.length;
+
+            filteredList = _.filter($scope.selected_reservations, function(reservation) {
+                    rStatus = reservation.reservation_status.toUpperCase();
+                    return (rStatus === "RESERVED" || rStatus === "CHECKING_IN");
+            });
+            qualifiedRes = _.filter(filteredList, function(reservation) {
+                    roomNo = reservation.room_no;
+                    return (roomNo === null || roomNo === '');
+            });
+            qualifiedResCount = qualifiedRes.length;
+
+            if (qualifiedResCount > 0) {
+                $scope.qualifiedReservations = qualifiedRes;
+                $scope.messageForAutoRoomAssignment = (selectedResCount === qualifiedResCount) ?
+                    '' : 'GROUP_AUTO_ROOM_ASSIGN_CONFIRMATION_PARTIALLY_OKEY';
+                openAutoRoomAssignConfirmationPopup ();
+            }
+            else {
+                openNoReservationMeetAutoAssignCriteria ();
+            }
+        };
+
+        /**
+         * we will show mass checkin success pop up on completed success
+         * @return undefined
+         */
+        var openAutoRoomAssignSuccessPopup = function(data) {
+            ngDialog.open(
+            {
+                template: '/assets/partials/groups/rooming/rvGroupResAutoRoomAssignmentSuccessPopUp.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false,
+                data: JSON.stringify(data),
+                controller: 'rvGroupRoomingAutoRoomAssignPopUpCtrl'
+            });
+        };
+
+        /**
+         * we will show mass checkin success pop up on completed success
+         * @return undefined
+         */
+        var openAutoRoomAssignFailedPopup = function(errorMessage) {
+            var errorMessageForPopup = {
+                errorMessage: errorMessage
+            };
+
+            ngDialog.open(
+            {
+                template: '/assets/partials/groups/rooming/rvGroupResAutoAssignRoomsFailedPopup.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false,
+                data: JSON.stringify(errorMessageForPopup)
+            });
+        };
+
+        /**
+         * we want to refresh the listing reservation when mass checkin completed
+         * @return undefined
+         */
+        $scope.closeAutoRoomAssignSuccessPopup = function() {
+            $scope.closeDialog();
+            //resetting the selected reservations
+            $scope.selected_reservations = [];
+
+            $timeout(function() {
+                callInitialAPIs();
+            }, 800);
+        };
+
+        /**
+         * when the mass checkin is success (api will return success even if it includes some of the reservation which are failed during the operation)
+         * @return undefined
+         */
+        var successCallBackOfAutoRoomAssignQualifiedReservations = function(data) {
+            var failureReservations = data.failure_reservation_ids;
+
+            if (failureReservations.length > 0) {
+                data.failedReservations = [];
+                _.each(data.failure_reservation_ids, function(reservation_id) {
+                    data.failedReservations.push (_.findWhere($scope.selected_reservations, {id: reservation_id}));
+                });
+            }
+            openAutoRoomAssignSuccessPopup (data);
+        };
+
+        /**
+         * When there is some failure in API side on auto room assign
+         * @return undefined
+         */
+        var failureCallBackOfAutoRoomAssignQualifiedReservations = function(errorMessage) {
+            openAutoRoomAssignFailedPopup(errorMessage);
+        };
+
+        /**
+         * when selected reservations meet the criteria and user confirmed to go ahead
+         * @return undefined
+         */
+        $scope.autoRoomAssignQualifiedReservations = function() {
+            $scope.closeDialog();
+            $timeout(function() {
+                var params = {
+                    group_id:           $scope.groupConfigData.summary.group_id,
+                    reservation_ids:    _.pluck($scope.qualifiedReservations, "id")
+                };
+
+                var options = {
+                    params: params,
+                    successCallBack: successCallBackOfAutoRoomAssignQualifiedReservations,
+                    failureCallBack: failureCallBackOfAutoRoomAssignQualifiedReservations
+                };
+                $scope.callAPI(rvGroupRoomingListSrv.performAutoRoomAssignment, options);
+            }, 800);
         };
 
         /**

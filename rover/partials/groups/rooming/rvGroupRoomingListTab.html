@@ -89,7 +89,9 @@
 
         </li>
         <li> <!-- Don't show until there are new rooms added in the rooming list -->
-            <button type="button" class="button grey" ng-hide="true">{{'GROUP_AUTO_ASSIGN_ROOMS'|translate}}</button> <!-- Replace class "grey" with "brand-colors" when rooms selected in the rooming list -->
+            <button type="button" class="button" ng-click="autoAssignRooms()" ng-class="{'grey': shouldDisableAutoRoomAssignButton(), 'brand-colors': !shouldDisableAutoRoomAssignButton()}" ng-disabled="shouldDisableAutoRoomAssignButton()">
+                {{'GROUP_AUTO_ASSIGN_ROOMS'|translate}}
+            </button> <!-- Replace class "grey" with "brand-colors" when rooms selected in the rooming list -->
         </li>
         <li> <!-- Don't show if there are no rooms in the rooming list -->
             <button type="button" class="button with-icon only-icon blue" ng-hide="reservations.length ==0" ng-click="sendRoomingList()">
