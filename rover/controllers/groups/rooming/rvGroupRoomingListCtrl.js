@@ -1026,7 +1026,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          */
         var openAutoRoomAssignConfirmationPopup = function() {
             ngDialog.open({
-                template: '/assets/partials/groups/rooming/rvGroupAutoRoomAssignSomeResReadyPopUp.html',
+                template: '/assets/partials/groups/rooming/popups/autoAssignRooms/rvGroupAutoRoomAssignSomeResReadyPopUp.html',
                 className: '',
                 scope: $scope,
                 closeByDocument: false,
@@ -1040,7 +1040,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          */
         var openNoReservationMeetAutoAssignCriteria = function() {
             ngDialog.open({
-                template: '/assets/partials/groups/rooming/rvGroupAutoRoomAssignNoResMeetCriteria.html',
+                template: '/assets/partials/groups/rooming/popups/autoAssignRooms/rvGroupAutoRoomAssignNoResMeetCriteria.html',
                 className: '',
                 scope: $scope,
                 closeByDocument: false,
@@ -1086,7 +1086,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          */
         var openAutoRoomAssignSuccessPopup = function(data) {
             ngDialog.open({
-                template: '/assets/partials/groups/rooming/rvGroupResAutoRoomAssignmentSuccessPopUp.html',
+                template: '/assets/partials/groups/rooming/popups/autoAssignRooms/rvGroupResAutoRoomAssignmentSuccessPopUp.html',
                 className: '',
                 scope: $scope,
                 closeByDocument: false,
@@ -1106,7 +1106,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             };
 
             ngDialog.open({
-                template: '/assets/partials/groups/rooming/rvGroupResAutoAssignRoomsFailedPopup.html',
+                template: '/assets/partials/groups/rooming/popups/autoAssignRooms/rvGroupResAutoAssignRoomsFailedPopup.html',
                 className: '',
                 scope: $scope,
                 closeByDocument: false,
