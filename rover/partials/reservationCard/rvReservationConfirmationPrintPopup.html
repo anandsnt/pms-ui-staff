@@ -1,0 +1,28 @@
+<div id="modal" class="modal-show">
+    <form method="post" action="confirm-reservation" id="confirm-reservation" class="modal-content form confirm-reservation">
+        <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+        
+        <span class="h2 message">Reservation Confirmation</span>
+
+        <!-- Show when email button clicked -->
+        <!-- <div id="status" class="notice {success or error}" ng-class="{'success':successMessage!=='', 'error':failureMessage !=='' }">{{successMessage}}{{failureMessage}}</div>
+ -->
+        <!-- Show only if no email in guest card -->
+        <div class="entry full-width" ng-if="!isEmailAttached()" >
+            <label for="guest-email">E-mail</label>
+            <input name="guest-email" id="guest-email" value="" type="text" autocomplete="off" ng-modal="sendConfirmatonMailTo" />
+        </div>
+
+        <div class="actions">
+            <button type="button" class="button with-icon " ng-class="{'Grey': !isEmailAttached() , 'blue':isEmailAttached()}" ng-click="sendConfirmationEmail()"> <!-- Grey when no email, otherwise blue -->
+                <span class="icons icon-email"></span>
+                 Confirm Reservation
+            </button>
+            <button type="button" class="button with-icon blue">
+                <span class="icons icon-print"></span>
+                Print Confirmation Letter
+            </button>
+            <button type="button" class="button blank" ng-click="closeDialog()">Close</button> 
+        </div>
+    </form>
+</div>

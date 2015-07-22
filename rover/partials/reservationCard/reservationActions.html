@@ -68,7 +68,7 @@
 			<a ng-if="(isStandAlone &&(reservationData.reservation_card.reservation_status != 'CANCELED' && (reservationData.reservation_card.reservation_status == 'RESERVED' || reservationData.reservation_card.reservation_status == 'CHECKING_IN' || (reservationData.reservation_card.reservation_status == 'CHECKEDIN' && (reservationData.reservation_card.balance_amount | number:2) == 0.00 && actionsCheck.firstDate))))" class="button white red-text bottom-button" ng-click="toggleCancellation()" translate>
 			{{'CANCEL_RESERVATION' | translate}}
 			</a>
-			<a class="button staycard-button icon-confirmation" ng-show="showResendConfirmation(reservationData.reservation_card.reservation_status)" ng-click="sendConfirmationEmail()"> {{'CONFIRMATION' | translate}} </a>
+			<a class="button staycard-button icon-confirmation" ng-click="popupForConfirmation()" ng-show="showConfirmation(reservationData.reservation_card.reservation_status)"> {{'CONFIRMATION' | translate}} </a>
 
 			<!-- Archive Reservation for future usage
 			<a href="{archive-reservation}" class="button red bottom-button">Archive reservation</a>
