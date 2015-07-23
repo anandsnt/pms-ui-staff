@@ -608,6 +608,10 @@ sntRover.controller('reservationActionsController', [
 			$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data);
 		};
 
+		$scope.allowOverbook = function() { //check user permission for overbook_house
+			return rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+		};
+                
 		var promptReinstate = function() {
 			ngDialog.open({
 				template: '/assets/partials/reservation/alerts/rvReinstate.html',
