@@ -20,7 +20,7 @@ var GridRow = React.createClass({
 						return render;
 					}
 				}
-			}		
+			}
 		}*/
 
 		return render;
@@ -41,20 +41,20 @@ var GridRow = React.createClass({
 
 		/*Create hourly spans across each grid row*/
 		for(var i = 0, len = display.hours; i < len; i++) {
-			hourly_divs.push(React.DOM.span({ 
+			hourly_divs.push(React.DOM.span({
 				className: 	'hour',
 				style: {
 					width: px_per_hr
 				}
 			}));
 		}
-		
+
 		/** Creating in active slots */
-		_.each(props.data[room_meta_inactive], function(inactive_slot) {			
+		_.each(props.data[room_meta_inactive], function(inactive_slot) {
 			room_inactives.push(GridRowInactive({
 				data: 			inactive_slot,
 				display: 		display,
-				viewport:    	props.viewport, 
+				viewport:    	props.viewport
 			}));
 		});
 
@@ -70,14 +70,14 @@ var GridRow = React.createClass({
 			return GridRowItem({
 				key: 			occupancy.key,
 				display: 		display,
-				viewport:    	props.viewport, 
+				viewport:    	props.viewport,
 				filter: 		props.filter,
 				edit:           props.edit,
 				iscroll:        props.iscroll,
 				angular_evt: 	props.angular_evt,
-				meta:           props.meta,				
+				meta:           props.meta,
 				data: 			occupancy,
-				row_data:       props.data, 
+				row_data:       props.data,
 				row_offset: 	props.row_number * (display.row_height + display.row_height_margin),
 				__onDragStart:  props.__onDragStart,
 				__onDragStop: 	props.__onDragStop,
@@ -86,5 +86,5 @@ var GridRow = React.createClass({
 				currentResizeItemRow: props.currentResizeItemRow
 			});
 		})); //GridRowBackground({ display: this.props.display })); //hourly_divs);
-	}	
+	}
 });

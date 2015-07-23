@@ -17,8 +17,8 @@ sntRover.directive('rvTextbox', function($timeout) {
             disabled: '=disabled'
 
 	    },
-    	templateUrl: '../../assets/directives/textBox/textboxDirective.html'  
-	        
+    	templateUrl: '../../assets/directives/textBox/textboxDirective.html'
+
 	   };
 
 });

@@ -38,10 +38,11 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 				var rowCount = 0;
 				angular.forEach(value.values, function(prefValue, prefKey) {
 					rowCount++;
-					if (rowCount % 2 != 0)
+					if (rowCount % 2 !== 0) {
 						$scope.calculatedHeight += 50;
+					}
 					var userPreference = $scope.guestLikesData.user_preference;
-					if (userPreference.indexOf(prefValue.id) != -1) {
+					if (userPreference.indexOf(prefValue.id) !== -1) {
 						prefValue.isChecked = true;
 					} else {
 						prefValue.isChecked = false;
@@ -58,7 +59,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 						$scope.calculatedHeight += 50;
 					}
 					var userRoomFeature = value.user_selection;
-					if (userRoomFeature.indexOf(roomFeatureValue.id) != -1) {
+					if (userRoomFeature.indexOf(roomFeatureValue.id) !== -1) {
 						roomFeatureValue.isSelected = true;
 					} else {
 						roomFeatureValue.isSelected = false;
@@ -71,7 +72,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 
 
 
-			setTimeout(function(){			
+			setTimeout(function(){
 				$scope.refreshScroller('likes_info');
 			}, 1000);
 
@@ -81,7 +82,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 		$scope.$on('SHOWGUESTLIKESINFO', function() {
 			$scope.init();
 		});
-		
+
 		$scope.$on('REFRESHLIKESSCROLL', function() {
 			$scope.refreshScroller('likes_info');
 		});
@@ -99,13 +100,13 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 				$scope.errorMessage = data;
 				$scope.$emit('likesInfoError', true);
 			};
-			 presentLikeInfo = JSON.parse(JSON.stringify(updateData));			
+			 presentLikeInfo = JSON.parse(JSON.stringify(updateData));
 
 			updateData.guest_id = $scope.guestCardData.contactInfo.guest_id;
 			updateData.preference = [];
 			angular.forEach($scope.guestLikesData.newspapers, function(value, key) {
 				var newsPaperUpdateData = {};
-				if (value.id == $scope.guestLikesData.user_newspaper) {
+				if (value.id === $scope.guestLikesData.user_newspaper) {
 					newsPaperUpdateData.type = "NEWSPAPER";
 					newsPaperUpdateData.value = value.name;
 					updateData.preference.push(newsPaperUpdateData);
@@ -113,7 +114,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 			});
 			angular.forEach($scope.guestLikesData.roomtype, function(value, key) {
 				var roomTypeUpdateData = {};
-				if (value.id == $scope.guestLikesData.user_roomtype) {
+				if (value.id === $scope.guestLikesData.user_roomtype) {
 					roomTypeUpdateData.type = "ROOM TYPE";
 					roomTypeUpdateData.value = value.name;
 					updateData.preference.push(roomTypeUpdateData);
@@ -145,13 +146,13 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 
 			var dataToUpdate = JSON.parse(JSON.stringify(updateData));
 		    var dataUpdated = (angular.equals(dataToUpdate, presentLikeInfo))?true:false;
-		  
+
 			var saveData = {
 				userId: $scope.guestCardData.contactInfo.user_id,
 				data: updateData
 			};
-			
-			if (typeof $scope.guestCardData.contactInfo.user_id != "undefined" && $scope.guestCardData.contactInfo.user_id != null && $scope.guestCardData.contactInfo.user_id != "" && !dataUpdated) {
+
+			if (typeof $scope.guestCardData.contactInfo.user_id !== "undefined" && $scope.guestCardData.contactInfo.user_id !== null && $scope.guestCardData.contactInfo.user_id !== "" && !dataUpdated) {
 				$scope.invokeApi(RVLikesSrv.saveLikes, saveData, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
 			}
 		};
@@ -182,8 +183,9 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 		 */
 		$scope.showLabel = function(featureName) {
 			var showDiv = true;
-			if (featureName == '' || featureName == undefined)
+			if (featureName === '' || featureName === undefined) {
 				showDiv = false;
+			}
 			return showDiv;
 
 		};

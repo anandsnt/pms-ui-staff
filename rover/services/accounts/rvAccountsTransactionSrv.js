@@ -54,7 +54,7 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 		 */
 
 		this.transactionEdit = function(data){
-		
+
 			var deferred = $q.defer();
 			var trasactionId = data.id;
 			var updatedDate  = data.updatedDate;
@@ -63,7 +63,7 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 			   	 deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 
 			return deferred.promise;
 		};
@@ -85,7 +85,7 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 			   	 deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 
 			return deferred.promise;
 		};
@@ -104,12 +104,12 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 			   	 deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 			return deferred.promise;
 		};
 
 	  /*
-		* Service function to add new card 
+		* Service function to add new card
 		* @method POST
 		* @param {object} data
 		* @return {object} defer promise
@@ -122,7 +122,7 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 				    deferred.resolve(data);
 				},function(data){
 				    deferred.reject(data);
-				});	
+				});
 			return deferred.promise;
 		};
 
@@ -140,7 +140,7 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 				    deferred.resolve(data);
 				},function(data){
 				    deferred.reject(data);
-				});	
+				});
 			return deferred.promise;
 		};
 

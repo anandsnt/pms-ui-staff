@@ -87,7 +87,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 
         $scope.clickedMenuItem = function ($event, stateToGo) {
             var currentTime = new Date();
-            if (lastDropedTime != '' && typeof lastDropedTime === 'object') {
+            if (lastDropedTime !== '' && typeof lastDropedTime === 'object') {
                 var diff = currentTime - lastDropedTime;
                 if (diff <= 400) {
                     $event.preventDefault();

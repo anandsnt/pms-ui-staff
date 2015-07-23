@@ -47,7 +47,7 @@
 							// To handle fees details on reservation cancel,
 							// While we change payment methods
 							// Handling Credit Cards seperately.
-							if (value.name != "CC") {
+							if (value.name !== "CC") {
 								$scope.feeData.feesInfo = value.charge_code.fees_information;
 							}
 							$scope.setupFeeData();
@@ -102,7 +102,7 @@
 					var feePercent = zeroAmount;
 					var minFees = zeroAmount;
 
-					if (typeof feesInfo != 'undefined' && feesInfo != null) {
+					if (typeof feesInfo !== 'undefined' && feesInfo !== null) {
 						amountSymbol = feesInfo.amount_symbol;
 						feePercent = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
 						minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
@@ -138,13 +138,15 @@
 				$scope.feeData.defaultAmount = defaultAmount;
 
 				if ($scope.isShowFees()) {
-					if (typeof feesInfo.amount != 'undefined' && feesInfo != null) {
+					if (typeof feesInfo.amount !== 'undefined' && feesInfo !== null) {
 
 						var amountSymbol = feesInfo.amount_symbol;
 						var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
 						$scope.feeData.actualFees = feesAmount;
 
-						if (amountSymbol === "percent") $scope.calculateFee();
+						if (amountSymbol === "percent") {
+							$scope.calculateFee();
+						}
 						else {
 							$scope.feeData.calculatedFee = parseFloat(feesAmount).toFixed(2);
 							$scope.feeData.totalOfValueAndFee = parseFloat(feesAmount + defaultAmount).toFixed(2);
@@ -277,8 +279,9 @@
 							payment_method_id: parseInt($scope.cancellationData.selectedCard) === -1 ? null : parseInt($scope.cancellationData.selectedCard),
 							id: reservationId
 						};
-						if ($scope.ngDialogData.isDisplayReference)
+						if ($scope.ngDialogData.isDisplayReference) {
 							cancellationParameters.reference_text = $scope.referanceText;
+						}
 						promises.push(RVReservationCardSrv.cancelReservation(cancellationParameters).then(onEachCancelSuccess));
 					});
 					$q.all(promises).then(onCancelSuccess, onCancelFailure);
@@ -340,10 +343,12 @@
 					"reservation_id": $scope.passData.reservationId
 				};
 				if ($scope.isShowFees()) {
-					if ($scope.feeData.calculatedFee)
+					if ($scope.feeData.calculatedFee) {
 						dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
-					if ($scope.feeData.feesInfo)
+					}
+					if ($scope.feeData.feesInfo) {
 						dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
+					}
 				}
 				// add to guest card only if new card is added and checkbox is selected
 				if ($scope.newCardAdded) {
@@ -389,7 +394,7 @@
 				$scope.cancellationData.card_type = $scope.cardsList[index].card_code;
 				checkReferencetextAvailableForCC();
 				$scope.showCC = false;
-				// CICO-9457 : Data for fees details - standalone only.	
+				// CICO-9457 : Data for fees details - standalone only.
 				if ($scope.isStandAlone) {
 					$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
 					$scope.setupFeeData();

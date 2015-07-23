@@ -626,12 +626,12 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             month = fullDate.getUTCMonth()+1;
             year = fullDate.getUTCFullYear();
 
-            if (day < 10)
+            if (day < 10) {
              day = '0' + day;
-
-            if (month < 10)
+            }
+            if (month < 10) {
              month = '0' + month;
-
+            }
             return month+'-'+day+'-'+year;
         };
         var getStrParsedFormattedDate = function(d){
@@ -696,14 +696,15 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             var minutes = dt.getMinutes();
             var seconds = dt.getSeconds();
 
-            if (hours < 10)
+            if (hours < 10) {
              hours = '0' + hours;
-
-            if (minutes < 10)
+            }
+            if (minutes < 10) {
              minutes = '0' + minutes;
-
-            if (seconds < 10)
+            }
+            if (seconds < 10) {
              seconds = '0' + seconds;
+            }
             return getFormattedTime(hours+''+minutes);
       //      return hours + ":" + minutes + ":" + seconds;
         };
@@ -714,14 +715,15 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             var minutes = dt.getUTCMinutes();
             var seconds = dt.getUTCSeconds();
 
-            if (hours < 10)
+            if (hours < 10) {
              hours = '0' + hours;
-
-            if (minutes < 10)
+            }
+            if (minutes < 10) {
              minutes = '0' + minutes;
-
-            if (seconds < 10)
+            }
+            if (seconds < 10) {
              seconds = '0' + seconds;
+            }
             return getFormattedTime(hours+''+minutes);
       //      return hours + ":" + minutes + ":" + seconds;
         };

@@ -129,7 +129,7 @@ admin.service('ADRatesAddonsSrv', [
 
 			return deferred.promise;
 		};
-		
+
 		/*
 		* Get a particular list from refrence values api
 		*

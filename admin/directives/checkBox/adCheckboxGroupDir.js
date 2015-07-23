@@ -9,7 +9,7 @@ admin.directive('adCheckboxgrp', function($timeout) {
             toggle:'&toggle',
             optionId:'=optionId'
          },
-        templateUrl: '../../assets/directives/checkBox/adCheckboxGroup.html' 
+        templateUrl: '../../assets/directives/checkBox/adCheckboxGroup.html'
     };
 
 });

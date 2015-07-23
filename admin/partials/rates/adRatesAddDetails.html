@@ -1,115 +1,107 @@
 <!-- Header Collapse View -->
 <div ng-hide="rateMenu ==='Details'" ng-click="$emit('changeMenu','Details')" class="cursor_pointer">
-	<em class="rate_step_title">Rate</em>&nbsp;<span class="italic_text">Details</span>
-	<div class="rate_additional_details_pointers"><img src="/assets/arrow-down.png">
-	</div>
+    <em class="rate_step_title">Rate</em>&nbsp;<span class="italic_text">Details</span>
+    <div class="rate_additional_details_pointers"><img src="/assets/arrow-down.png">
+    </div>
 </div>
-
 <!-- Expanded View -->
-<form ng-show="rateMenu ==='Details'" class="form float form_add_new_rate" ng-controller="ADaddRatesDetailCtrl" >
-	<fieldset class="holder full-width">
-		<div class="form-title">
-			<h3><span>Rate</span> Details </h3>
-			<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
-		</div>
-		<fieldset class="holder left">
-			<div></div>
-			<ad-textbox styleclass="full-width" inputtype="text" value="rateData.name" label = "Name" placeholder = "Enter Rate Name" required="yes"></ad-textbox>
-			<div class="entry margin">
-				<label>Type <strong>*</strong> </label>
-				<div class="select">
-					<select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types">
-						<option value="" disabled>Select Rate Type</option>
-					</select>
-				</div>
-			</div>
-			<div class="entry" ng-if="isHourlyRatesEnabled">
-				<label>Periodicity </label>
-				<div class="switch" ng-class="{'disabled' : rateData.date_ranges.length > 1}">
-					<span ng-click="toggleHourlyRate(true)" ng-class="{'active' : rateData.is_hourly_rate}">Hourly</span>
-					<span ng-click="toggleHourlyRate(false)" ng-class="{'active' : !rateData.is_hourly_rate}">Daily</span>
-				</div>
-			</div>
-			<div class="entry margin">
-				<label>Charge code <strong>*</strong> </label>
-				<div class="select">
-
-					<select class="placeholder" ng-model="rateData.charge_code_id" ng-options="charge_code.id as charge_code.description for charge_code in rateTypesDetails.charge_codes">
-						<option value="">Select Charge Code</option>
-					</select>
-				</div>
-			</div>
-
-			<div class="entry ">
-
-				<div class=" select-col col1-2 disabled-bg" >
-
-					<ad-textbox label = "Tax" inputtype="text" value="rateData.tax_inclusive_or_exclusive" readonly='yes' styleclass = "col1-2"
-					label = "" placeholder = "" style=" width: 100px;"></ad-textbox>
-				</div>
-				<label style=" padding-left: 113px;">currency <strong>*</strong> </label>
-
-				<div class="select select-col col1-2 " style="float: right;">
-					<select class="placeholder" disabled="disabled" class="styled">
-						<option selected>{{currencySymbol}}</option>
-					</select>
-				</div>
-			</div>
-			<!-- CICO-9289 Hourly Rates Hiding the Based On thing until implementation is completed -->
-			<!-- TODO : Once thebased on rates is handled for hourly, do away with the ng-show conditon -->
-			<div class="entry margin" ng-show="!rateData.is_hourly_rate">
-				<label ng-hide="isPromotional() || hideBasedOn()">Based On</label>
-				<label ng-show="isPromotional()">Copy From</label>
-				<div class="select" ng-hide= "!isPromotional() && hideBasedOn()">
-					<select class="placeholder" ng-model="rateData.based_on.id" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
-						<option value="">Select Rate</option>
-					</select>
-				</div>
-			</div>
-			<!-- CICO-9289 Hourly Rates Hiding the Based On thing until implementation is completed -->
-			<!-- TODO : Once thebased on rates is handled for hourly, do away with the rateData.is_hourly_rate in ng-hide conditon -->
-			<div class="entry" ng-hide="hideBasedOn() || rateData.is_hourly_rate">
-				<div class="select select-col col1-3 actions_margin_top">
-					<select  class="styled" ng-model="rateData.based_on.value_sign">
-						<option value="+">+</option>
-						<option value="-">-</option>
-					</select>
-				</div>
-				<div class=" select-col col1-3 actions_margin_top" >
-					<ad-textbox inputtype="text" value="rateData.based_on.value_abs" styleclass = "col1-3"
-					label = "" placeholder = "" style=" width: 66px;"
-					></ad-textbox>
-				</div>
-				<div class="select select-col col1-3">
-					<select class="styled" ng-model="rateData.based_on.type">
-						<option value="amount" >{{currencySymbol}}</option>
-						<option value="percent">%</option>
-					</select>
-				</div>
-			</div>
-		</fieldset>
-
-		<fieldset class="holder right">
-			<ad-textarea rows="2" div-class="full-width" text-area-class="full-width rate_description" value="rateData.description" label = "Description " placeholder = "Enter Rate Description" required="true"></ad-textarea>
-		</fieldset>
-		<fieldset class="holder left" ng-show="isPromotional()">
-			<ad-textbox inputtype="text" value="rateData.promotion_code" label = "Promotions Code" placeholder = "Enter Promotional Code" required="no"></ad-textbox>
-		</fieldset>
-
-		<div ng-include="'/assets/partials/rates/adRateAdditionalDetails.html'"></div>
-		<div ng-include="'/assets/partials/rates/adRateRulesAndRestrictions.html'"></div>
-		<div ng-include="'/assets/partials/rates/adRateDetailsAddons.html'"></div>
-
-	</fieldset>
-	<div class="actions float actions_margin_top">
-		<button type="button" ng-click="cancelMenu()" class="button blank add-data-inline">
-			Cancel
-		</button>
-		<button type="button" ng-hide="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'brand-colors' : isFormValid() }" >
-			Step 2 - Select Room Types
-		</button>
-		<button type="button" ng-show="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'green' : (rateData.id > 0 && isFormValid()) }">
-			Save
-		</button>
-	</div>
+<form ng-show="rateMenu ==='Details'" class="form float form_add_new_rate" ng-controller="ADaddRatesDetailCtrl">
+    <fieldset class="holder full-width">
+        <div class="form-title">
+            <h3><span>Rate</span> Details </h3>
+            <em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+        </div>
+        <fieldset class="holder left">
+            <div></div>
+            <ad-textbox styleclass="full-width" inputtype="text" value="rateData.name" label="Name" placeholder="Enter Rate Name" required="yes"></ad-textbox>
+            <div class="entry margin">
+                <label>Type <strong>*</strong> </label>
+                <div class="select">
+                    <select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types">
+                        <option value="" disabled>Select Rate Type</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry" ng-if="isHourlyRatesEnabled">
+                <label>Periodicity </label>
+                <div class="switch" ng-class="{'disabled' : rateData.date_ranges.length > 1}">
+                    <span ng-click="toggleHourlyRate(true)" ng-class="{'active' : rateData.is_hourly_rate}">Hourly</span>
+                    <span ng-click="toggleHourlyRate(false)" ng-class="{'active' : !rateData.is_hourly_rate}">Daily</span>
+                </div>
+            </div>
+            <div class="entry margin">
+                <label>Charge code <strong>*</strong> </label>
+                <div class="select">
+                    <select class="placeholder" ng-model="rateData.charge_code_id" ng-options="charge_code.id as charge_code.description for charge_code in rateTypesDetails.charge_codes">
+                        <option value="">Select Charge Code</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry ">
+                <div class=" select-col col1-2 disabled-bg">
+                    <ad-textbox label="Tax" inputtype="text" value="rateData.tax_inclusive_or_exclusive" readonly='yes' styleclass="col1-2" label="" placeholder="" style=" width: 100px;"></ad-textbox>
+                </div>
+                <label style=" padding-left: 113px;">currency <strong>*</strong> </label>
+                <div class="select select-col col1-2 " style="float: right;">
+                    <select class="placeholder" disabled="disabled" class="styled">
+                        <option selected>{{currencySymbol}}</option>
+                    </select>
+                </div>
+            </div>
+            <!-- CICO-9289 Hourly Rates Hiding the Based On thing until implementation is completed -->
+            <!-- TODO : Once thebased on rates is handled for hourly, do away with the ng-show conditon -->
+            <div class="entry margin" ng-show="!rateData.is_hourly_rate">
+                <label ng-hide="isPromotional() || hideBasedOn()">Based On</label>
+                <label ng-show="isPromotional()">Copy From</label>
+                <div class="select" ng-hide="!isPromotional() && hideBasedOn()">
+                    <select class="placeholder" ng-model="rateData.based_on.id" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
+                        <option value="">Select Rate</option>
+                    </select>
+                </div>
+            </div>
+            <!-- CICO-9289 Hourly Rates Hiding the Based On thing until implementation is completed -->
+            <!-- TODO : Once thebased on rates is handled for hourly, do away with the rateData.is_hourly_rate in ng-hide conditon -->
+            <div class="entry" ng-hide="hideBasedOn() || rateData.is_hourly_rate">
+                <div class="select select-col col1-3 actions_margin_top">
+                    <select class="styled" ng-model="rateData.based_on.value_sign">
+                        <option value="+">+</option>
+                        <option value="-">-</option>
+                    </select>
+                </div>
+                <div class=" select-col col1-3 actions_margin_top">
+                    <ad-textbox inputtype="text" value="rateData.based_on.value_abs" styleclass="col1-3" label="" placeholder="" style=" width: 66px;"></ad-textbox>
+                </div>
+                <div class="select select-col col1-3">
+                    <select class="styled" ng-model="rateData.based_on.type">
+                        <option value="amount">{{currencySymbol}}</option>
+                        <option value="percent">%</option>
+                    </select>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="holder right">
+            <ad-textarea rows="2" div-class="full-width" text-area-class="full-width rate_description" value="rateData.description" label="Description " placeholder="Enter Rate Description" required="true"></ad-textarea>            
+            <section ng-show="shouldShowMemberRates()">
+                <ad-toggle-button is-checked="rateData.is_member_rate" label="MEMBER RATE"></ad-toggle-button>
+            </section>
+        </fieldset>
+        <!-- CICO-18040 PROMOTION FREE FORM ENTRY TO BE HIDDEN -->
+        <fieldset class="holder left" ng-show="hidePromotionFreeFormEntry">
+            <ad-textbox inputtype="text" value="rateData.promotion_code" label="Promotions Code" placeholder="Enter Promotional Code" required="no"></ad-textbox>
+        </fieldset>
+        <div ng-include="'/assets/partials/rates/adRateAdditionalDetails.html'"></div>
+        <div ng-include="'/assets/partials/rates/adRateRulesAndRestrictions.html'"></div>
+        <div ng-include="'/assets/partials/rates/adRateDetailsAddons.html'"></div>
+    </fieldset>
+    <div class="actions float actions_margin_top">
+        <button type="button" ng-click="cancelMenu()" class="button blank add-data-inline">
+            Cancel
+        </button>
+        <button type="button" ng-hide="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'brand-colors' : isFormValid() }">
+            Step 2 - Select Room Types
+        </button>
+        <button type="button" ng-show="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'green' : (rateData.id > 0 && isFormValid()) }">
+            Save
+        </button>
+    </div>
 </form>

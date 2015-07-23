@@ -119,7 +119,7 @@ var TimelineResizeGrip = React.createClass({
 			direction = 			props.itemProp.toUpperCase(),
 			fifteenMin =			900000,
 			reservation_status = 	original_item.reservation_status.toUpperCase(),
-			difference	= (opposite == 'departure' ? (original_item[opposite] - value) :(value - original_item[opposite]) );
+			difference	= (opposite === 'departure' ? (original_item[opposite] - value) :(value - original_item[opposite]) );
 
 		if((difference) < (fifteenMin)) {
 			return false;
@@ -128,10 +128,10 @@ var TimelineResizeGrip = React.createClass({
 			reservation_status === "AVAILABLE" )) {
 			return true;
 		}
-		else if ( (reservation_status === "INHOUSE" || reservation_status === "DEPARTED") && direction == "DEPARTURE"){
+		else if ( (reservation_status === "INHOUSE" || reservation_status === "DEPARTED") && direction === "DEPARTURE"){
 			return true;
 		}
-		else if((reservation_status === "INHOUSE" || reservation_status === "DEPARTED") && direction == "ARRIVAL"){
+		else if((reservation_status === "INHOUSE" || reservation_status === "DEPARTED") && direction === "ARRIVAL"){
 			return false;
 		}
 		return false;
@@ -237,14 +237,14 @@ var TimelineResizeGrip = React.createClass({
 				time_txt = dateDirection.toComponents().time.toString(true);
 				var display_start_time = (props.display.x_n instanceof Date ? props.display.x_n : new Date (props.display.x_n) );
 
-				if(display_start_time.isOnDST()==false && dateDirection.isOnDST() ==true ) {
+				if(display_start_time.isOnDST()===false && dateDirection.isOnDST() ===true ) {
 					var dateForCalculatingLeft = new Date(currentResizeItem[direction]);
 					dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
 					left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms;
 
 				}
 
-				else if(display_start_time.isOnDST()==true && dateDirection.isOnDST() ==false ) {
+				else if(display_start_time.isOnDST()===true && dateDirection.isOnDST() ===false ) {
 					var dateForCalculatingLeft = new Date(currentResizeItem[direction]);
 					dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
 					left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms;

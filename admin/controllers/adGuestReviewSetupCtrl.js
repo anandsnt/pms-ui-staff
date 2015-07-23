@@ -2,14 +2,14 @@ admin.controller('ADGuestReviewSetupCtrl', ['$scope', '$state', 'ADGuestReviewSe
 
 	/*
 	* controller class for guest review setup
-	*/	
+	*/
 
 	BaseCtrl.call(this, $scope);
 	$scope.errorMessage = '';
 
 	//scope varibales
 	$scope.rating_list = [{'name':'1', 'value': '1'}, {'name':'2', 'value': '2'}, {'name':'3', 'value': '3'}, {'name':'4', 'value': '4'}, {'name':'5', 'value': '5'}];
-	
+
 
 
 	/*
@@ -28,7 +28,7 @@ admin.controller('ADGuestReviewSetupCtrl', ['$scope', '$state', 'ADGuestReviewSe
 	* success call back of details web service call
 	*/
 	var successCallbackOfSaveDetails = function(data){
-		$scope.$emit('hideLoader');		
+		$scope.$emit('hideLoader');
 	};
 
 	$scope.save = function(){

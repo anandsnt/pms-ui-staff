@@ -1,11 +1,11 @@
 
 
 snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
-	
+
     $urlRouterProvider.otherwise("/checkoutRoomVerification");
 
     // checkout now states
-    
+
 	$stateProvider.state('checkoutBalance', {
         url: '/checkoutBalance',
         controller: 'checkOutBalanceController',
@@ -70,7 +70,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	templateUrl: '/assets/checkin/partials/Huntley/checkinSuccess.html',
 	 	title: 'Status - Check-in'
 	 }).state('checkinArrival', {
-	 	url: '/checkinArrival',	 	
+	 	url: '/checkinArrival',
 	 	controller:'checkinArrivalDetailsController',
 	 	templateUrl: '/assets/checkin/partials/Huntley/arrivalDetails.html',
 	 	title: 'Arrival Details - Check-in'
@@ -103,4 +103,10 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 		controller : 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 });
+
+	$stateProvider.state('externalVerification', {
+    	url: '/externalVerification',
+	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	title: 'External verification'
+	});
 }]);

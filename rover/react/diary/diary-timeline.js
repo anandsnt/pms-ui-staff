@@ -6,14 +6,14 @@ var Timeline = React.createClass({
 			start_time				= (display.x_n  instanceof Date) ? display.x_n.getTime() : display.x_n,
 			end_time				= (display.x_p  instanceof Date) ? display.x_p.getTime() : display.x_p,
 			point_to_plot			= -1 ; //-1 do not wanted to show red line
-		
+
 		if(start_time <= prop_time <= end_time) {
 			//diff of prop time & start time
 			var diff_s_e 	= (end_time - start_time),
 				diff_p_s 	= (prop_time - start_time),
 				ms_int		= diff_s_e / (display.hours * display.intervals_per_hour);
 			point_to_plot 	= diff_p_s / ms_int;
-			point_to_plot++; //since zeroth point is considered as 
+			point_to_plot++; //since zeroth point is considered as
 		}
 		return point_to_plot;
 	},
@@ -37,7 +37,7 @@ var Timeline = React.createClass({
 			interval_spans,
 			px_per_int 				= display.px_per_int + 'px',
 			px_per_hr 				= display.px_per_hr + 'px',
-			start_time 				= display.x_n_time, 
+			start_time 				= display.x_n_time,
 			self 					= this,
 			current_time_plot_point = this.__get_property_time_line_showing_point();
 
@@ -74,14 +74,14 @@ var Timeline = React.createClass({
 				className: ''
 			}, segment_hour_display[i]));
 
-			if ( i % 6 == 0 ) {
+			if ( i % 6 === 0 ) {
 				interval_spans.push(React.DOM.span({
-					className: 'date',
+					className: 'date'
 				}, (i < 23 ? todayShortDate : tmrowShortDate) ));
 			};
 			for(var j = 0; j < display.intervals_per_hour; j++, interval_counter++) {
 				spanClass = 'interval-' + (j+1);
-				if(interval_counter == current_time_plot_point ){
+				if(interval_counter === current_time_plot_point ){
 					spanClass += ' active';
 				}
 				interval_spans.push(React.DOM.span({
@@ -104,10 +104,10 @@ var Timeline = React.createClass({
 			className: 'wrapper',
 			style: {
 				width: display.width + 'px'
-			},
+			}
 		}, React.DOM.div({
 			className: 'hours'
-		}, hourly_spans), 
+		}, hourly_spans),
 		Resizable({
 			display:               display,
 			edit:                  props.edit,
