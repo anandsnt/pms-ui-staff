@@ -110,6 +110,12 @@ sntRover.controller('roverController',
     $rootScope.desktopSwipeEnabled = hotelDetails.allow_desktop_swipe;
 	$rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
 
+      // CICO-18040
+      $rootScope.isFFPActive = hotelDetails.is_ffp_active;
+      $rootScope.isHLPActive = hotelDetails.is_hlp_active;
+      $rootScope.isPromoActive = hotelDetails.is_promotion_active;
+
+
     //set MLI Merchant Id
     try {
       sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
