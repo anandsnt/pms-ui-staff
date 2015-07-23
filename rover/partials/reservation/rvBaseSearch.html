@@ -1,25 +1,20 @@
 <!-- Navbar -->
 <div ng-include="'/assets/partials/common/header.html'"></div>
-
 <!-- Reservations search form -->
 <section id="reservations" class="content create-reservation scrollable" role="main" ng-iscroll="search_reservation" ng-iscroll-delay="1000">
-    
     <form method="get" action="{action}" name="create-reservation" id="create-reservation" class="wrapper" role="search">
-        
         <!-- Date / Time -->
         <div id="dates" class="row">
-            
             <!-- Arrival date -->
             <div id="arriving" class="entry">
                 <label id="check-in-day-label" for="check-in-date">Arriving <span>{{getSimplifiedDayName(reservationData.arrivalDate)}}</span></label>
                 <div class="entry-data">
-                    <input ui-date="arrivalDateOptions" name="check-in-date" id="check-in-date" type="text" class="datepicker" ui-date-format ng-model="reservationData.arrivalDate" ng-change="arrivalDateChanged()"readonly/>
+                    <input ui-date="arrivalDateOptions" name="check-in-date" id="check-in-date" type="text" class="datepicker" ui-date-format ng-model="reservationData.arrivalDate" ng-change="arrivalDateChanged()" readonly/>
                     <strong id="check-in-day" class="day">{{reservationData.arrivalDate | date:'dd'}}</strong>
                     <span id="check-in-month" class="month">{{reservationData.arrivalDate | date:'MMMM'}}</span>
                     <span id="check-in-year" class="year">{{reservationData.arrivalDate | date:'yyyy'}}</span>
                 </div>
             </div>
-
             <!-- Stay type (nights/hours) -->
             <div id="type" class="entry">
                 <label for="nights-number">Staying <span>for</span></label>
@@ -38,23 +33,21 @@
                     <!-- Option for having 2 separate input fields for nights/hours entry. If nights is default, nights should be hidden until switch button is tapped.
                     Feel free to use just one input field id you want to -->
                     <input ng-show="shouldShowNights" name="nights-number" id="nights-number" type="tel" maxlength="2" ng-model="reservationData.numNights" ng-change="setDepartureDate()" />
-                    <input ng-show="shouldShowHours" name="hours-number" id="hours-number" type="tel" maxlength="2" ng-model="reservationData.resHours" ng-blur="setDepartureHours()"/>
+                    <input ng-show="shouldShowHours" name="hours-number" id="hours-number" type="tel" maxlength="2" ng-model="reservationData.resHours" ng-blur="setDepartureHours()" />
                 </div>
             </div>
-
             <!-- Departure date -->
             <!-- WHY THE INLINE STYLE *&$%@#%(!#$%? -->
             <!-- TELL ME HOW THE #%^@ AM I SUPPOSE TO TO MAKE THIS FIT PROPERLY WHEN YOU GAVE IT A STYLE: width: 32.52032520325203%; -->
             <div id="departing" class="entry" ng-class="{ 'hidden': !isNightsActive }" style="float: right">
                 <label id="check-out-day-label" for="check-out-date">Departing <span>{{getSimplifiedDayName(reservationData.departureDate)}}</span></label>
                 <div class="entry-data">
-                    <input ui-date="departureDateOptions" name="check-out-date" id="check-out-date" type="text" class="datepicker" ui-date-format ng-model="reservationData.departureDate" ui-date readonly ng-change="departureDateChanged()"/>
+                    <input ui-date="departureDateOptions" name="check-out-date" id="check-out-date" type="text" class="datepicker" ui-date-format ng-model="reservationData.departureDate" ui-date readonly ng-change="departureDateChanged()" />
                     <strong id="check-out-day" class="day">{{reservationData.departureDate | date:'dd'}}</strong>
                     <span id="check-out-month" class="month">{{reservationData.departureDate | date:'MMMM'}}</span>
                     <span id="check-out-year" class="year">{{reservationData.departureDate | date:'yyyy'}}</span>
                 </div>
             </div>
-
             <!-- Arrival time -->
             <!-- WHY THE INLINE STYLE *&$%@#%(!#$%? -->
             <!-- TELL ME HOW THE #%^@ AM I SUPPOSE TO TO MAKE THIS FIT PROPERLY WHEN YOU GAVE IT A STYLE: width: 32.52032520325203%; -->
@@ -66,7 +59,6 @@
                         <option value="00:15 AM">12:15 AM</option>
                         <option value="00:30 AM">12:30 AM</option>
                         <option value="00:45 AM">12:45 AM</option>
-
                         <option value="1:00 AM">1:00 AM</option>
                         <option value="1:15 AM">1:15 AM</option>
                         <option value="1:30 AM">1:30 AM</option>
@@ -111,12 +103,10 @@
                         <option value="11:15 AM">11:15 AM</option>
                         <option value="11:30 AM">11:30 AM</option>
                         <option value="11:45 AM">11:45 AM</option>
-
                         <option value="00:00 PM">12:00 PM</option>
                         <option value="00:15 PM">12:15 PM</option>
                         <option value="00:30 PM">12:30 PM</option>
                         <option value="00:45 PM">12:45 PM</option>
-
                         <option value="1:00 PM">1:00 PM</option>
                         <option value="1:15 PM">1:15 PM</option>
                         <option value="1:30 PM">1:30 PM</option>
@@ -165,7 +155,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Room(s) details -->
         <div id="rooms" class="row">
             <div id="room-1" class="entry" ng-repeat="room in reservationData.rooms">
@@ -186,18 +175,17 @@
                     <div class="select infants">
                         <label for="room-1-infants" class="label">Infants</label>
                         <select iscroll-stop-propagation name="room-1-infants" id="room-1-infants" ng-model="room.numInfants">
-                            <option ng-repeat="i in [0, otherData.maxInfants] | makeRange" value="{{i}}"ng-selected="i==room.numInfants">{{i}}</option>
+                            <option ng-repeat="i in [0, otherData.maxInfants] | makeRange" value="{{i}}" ng-selected="i==room.numInfants">{{i}}</option>
                         </select>
                     </div>
                     <div class="select room-type">
                         <select iscroll-stop-propagation ng-model="room.roomTypeId" ng-options="roomType.id as roomType.name for roomType in otherData.roomTypes">
-                          <option value="">All Room Types</option>
+                            <option value="">All Room Types</option>
                         </select>
                     </div>
                 </div>
             </div>
         </div>
-
         <!-- Guest info -->
         <div id="guest" class="row">
             <div id="first-name" class="entry">
@@ -210,33 +198,43 @@
                 <input name="guest-last-name" id="guest-last-name" type="text" placeholder="Last Name" ng-model="searchData.guestCard.guestLastName" ng-change="reservationGuestSearchChanged()" />
             </div>
         </div>
-
         <!-- Company / Travel Agent -->
-        <div id="company-agent" class="row">
+        <div id="company-promo" class="row" ng-if="isPromoActive">
             <div id="autocomplete-search" class="entry">
                 <label for="company-or-agent">Company / Travel Agent <span>(optional)</span></label>
-                <input auto-complete auto-options="autocompleteOptions" name="company-or-agent" id="company-or-agent" data-card-type="" type="text" placeholder="Name, Corporate ID or IATA #" value="" autocomplete="off" ng-model="companySearchText" ul-class="find-cards"/>
+                <input auto-complete auto-options="autocompleteOptions" name="company-or-agent" id="company-or-agent" data-card-type="" type="text" placeholder="Name, Corporate ID or IATA #" value="" autocomplete="off" ng-model="companySearchText" ul-class="find-cards" />
+            </div>
+            <div class="entry">
+                <label for="codes-value" ng-show="groupIsNotImplemented">Group / Promo Code <span>(optional)</span></label>
+                <label for="codes-value">Promo Code <span>(optional)</span></label>
+                <input auto-complete auto-options="codesACOptions" name="codes-value" id="codes-value" data-card-type="" type="text" placeholder="Code" value="" autocomplete="off" ng-model="codeSearchText" ul-class="find-cards" />
             </div>
         </div>
-
-        <!-- Codes -->
-        <div id="codes" class="row" ng-if="promoCodesToBeImplemented">
+        <!-- Rate Selection -->
+        <div id="select-rate" class="row" ng-if="isFFPActive || isHLPActive">
             <div class="entry">
-                <label for="codes-value">Promo Codes <span>(optional)</span></label>
-                <div class="entry-data">
-                    <input name="codes-value" id="codes-value" type="text" placeholder="Code #" value="" />
-                    <div class="select">
-                        <label for="codes-type" class="label">Type</label>
-                        <select name="codes-type" id="codes-type">
-                            <option value="" selected>None</option>
-                            <option value="aaa">AAA</option>
-                            ... repeat for codes
+                <label>Rate Selection <span>(Optional)</span></label>
+                <div class="entry full-width">
+                    <label class="checkbox">
+                        <span class="icon-form icon-checkbox " ng-class="{'checked': reservationData.member.isSelected}"></span>
+                        <input id="rate-member" value="member" type="checkbox" ng-model="reservationData.member.isSelected" /> Member
+                    </label>
+                    <div class="select" ng-show="reservationData.member.isSelected">
+                        <label for="loyalty" class="label">Type</label>
+                        <select id="loyalty" ng-model="reservationData.member.value">
+                            <optgroup label="Frequent Flyer Program" ng-if="isFFPActive && flyerPrograms.length > 0">
+                                <option ng-repeat="flyerProgram in flyerPrograms" value="{{flyerProgram.ff_value}}" ng-selected="reservationData.member.value === flyerProgram.ff_value || ($first && !reservationData.member.value)">{{flyerProgram.ff_description}}</option>
+                                <!-- ... repeat for FFP, first is selected by default -->
+                            </optgroup>
+                            <optgroup label="Hotel Loyalty Program" ng-if="isHLPActive">
+                                <option ng-repeat="loyaltyProgram in loyaltyPrograms" value="{{loyaltyProgram.hl_value}}" ng-selected="reservationData.member.value === loyaltyProgram.hl_value">{{loyaltyProgram.hl_description}}</option>
+                                <!-- repeat for all HLP -->
+                            </optgroup>
                         </select>
                     </div>
                 </div>
             </div>
         </div>
-
         <div id="actions" class="row">
             <button id="find-rooms-and-rates" type="button" class="button green" ng-click="navigate()">Find Rooms &amp; Rates</button>
         </div>
