@@ -158,11 +158,13 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'deposit_policy_id': $scope.rateData.deposit_policy_id,
                 'end_date': $scope.rateData.end_date,
                 'is_hourly_rate': $scope.rateData.is_hourly_rate,
-                'is_member': $scope.rateData.is_member_rate
+                'is_member': $scope.rateData.is_member_rate,
+                'commission_value':$scope.rateData.commission_value,
+                'commission_type':$scope.rateData.commission_type
             };
 
             // Save Rate Success Callback
-            var saveSuccessCallback = function(data) {
+            var saveSuccessCallback = function(data) {                
                 $scope.manipulateData(data);
                 $scope.detailsMenu = "";
                 $scope.$emit('hideLoader');

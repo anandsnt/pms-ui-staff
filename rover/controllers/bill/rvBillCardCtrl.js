@@ -2105,6 +2105,9 @@ sntRover.controller('RVbillCardController',
 		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
 	});
 
+	/**
+     * Function to toggle show rate checkbox value
+     */
 	$scope.clickedShowRate = function(){
 
 		var sucessCallback = function(data){
