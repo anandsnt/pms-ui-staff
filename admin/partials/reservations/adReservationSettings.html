@@ -115,7 +115,7 @@
 				</fieldset>
 				<fieldset class="holder right">
 					<ad-toggle-button label="Commissions" is-checked="reservationSettingsData.has_enabled_commissions" ></ad-toggle-button>
-					<ad-checkbox is-checked="reservationSettingsData.commission_by_agent" label="{{ 'Commission by Agent' | translate}}" div-class="full-width" hide='!reservationSettingsData.has_enabled_commissions'></ad-checkbox>
+					<ad-checkbox is-checked="reservationSettingsData.commission_by_agent" label="{{ 'Commission by Agent' | translate}}" div-class="full-width" hide='{{!reservationSettingsData.has_enabled_commissions}}'></ad-checkbox>
 					<div class="entry" ng-hide="!reservationSettingsData.commission_by_agent || !reservationSettingsData.has_enabled_commissions">                		
                 		<div class=" select-col col1-3 actions_margin_top">
                     		<ad-textbox inputtype="text" value="reservationSettingsData.agent_commission_value" styleclass="col1-3" label="" placeholder="" style=" width: 66px;"></ad-textbox>
@@ -128,7 +128,7 @@
                 		</div>
             		</div>
 
-					<ad-checkbox is-checked="reservationSettingsData.commission_by_rate" label="{{ 'Commission by Rate' | translate}}" div-class="full-width" hide='!reservationSettingsData.has_enabled_commissions'></ad-checkbox>
+					<ad-checkbox is-checked="reservationSettingsData.commission_by_rate" label="{{ 'Commission by Rate' | translate}}" div-class="full-width" hide='{{!reservationSettingsData.has_enabled_commissions}}'></ad-checkbox>
 					<div class="entry" ng-hide="!reservationSettingsData.commission_by_rate || !reservationSettingsData.has_enabled_commissions">                		
                 		<div class=" select-col col1-3 actions_margin_top">
                     		<ad-textbox inputtype="text" value="reservationSettingsData.rate_commission_value" styleclass="col1-3" label="" placeholder="" style=" width: 66px;"></ad-textbox>
