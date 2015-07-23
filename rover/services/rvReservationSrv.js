@@ -301,7 +301,7 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 
 		this.reinstateReservation = function(param) {
 			var deferred = $q.defer(),
-				url = '/api/reservation/' + param.reservationId + '/reinstate';
+				url = '/api/reservations/' + param.reservationId + '/reinstate';
 			rvBaseWebSrvV2.postJSON(url, param).then(function(response) {
 				deferred.resolve(response);
 			}, function(response) {
