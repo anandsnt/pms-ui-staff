@@ -26,6 +26,7 @@ admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv','$anchorScroll', '$ti
 	$scope.editItem = function(index)	{
 		$scope.currentClickedElement = index;
 		$scope.preveousItem = $scope.data.booking_origins[index].name;
+		$scope.editText = angular.copy($scope.preveousItem);
 	};
 
         $scope.setDefaultOriginSiteminder = function(){
