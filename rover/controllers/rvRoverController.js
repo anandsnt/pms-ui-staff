@@ -109,7 +109,6 @@ sntRover.controller('roverController',
     $rootScope.isAddonOn = hotelDetails.is_addon_on;
     $rootScope.desktopSwipeEnabled = hotelDetails.allow_desktop_swipe;
 	  $rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
-    $rootScope.currentHotelId = hotelDetails.userHotelsData.current_hotel_id;
 
     //set MLI Merchant Id
     try {

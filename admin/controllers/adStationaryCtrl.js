@@ -70,6 +70,10 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 		$scope.invokeApi(ADStationarySrv.saveStationary, postingData, successCallbackOfSaveDetails);
 	};
 
+	$scope.$watch('data.send_cancellation_letter', function(newValue, oldValue) {
+	   if(!newValue) $scope.data.print_cancellation_letter = false;
+	});
+
 	$scope.$watch(function() {
 		return $scope.data.location_image;
 	}, function(logo) {

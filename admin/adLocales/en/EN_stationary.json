@@ -46,7 +46,8 @@
 	"SOCIAL_NETWORK_URL": "Social Network URL",
 	"SOCIAL_NETWORK" : "Social Network",
 	"CONFIRMATION_LETTER_TEXT" : "CONFIRMATION LETTER TEXT",
-	"SEND_CANCELLATION_LETTER":"Send Cancellation Letter"
+	"SEND_CANCELLATION_LETTER":"Send Cancellation Letter",
+	"PRINT_CANCELLATION_LETTER":"Print Cancellation Letter"
 
 
 
