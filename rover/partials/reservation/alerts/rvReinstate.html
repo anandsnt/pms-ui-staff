@@ -3,7 +3,7 @@
         <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog();"><span class="icons icon-close invert"></span></button>
         <span class="h2 message">Reinstate reservation for {Firstname Lastname}?</span>
         <div class="actions">
-            <button type="button" class="button green">Reinstate</button>
+            <button type="button" class="button green" ng-click="reinstateReservation(false)">Reinstate</button>
             <button type="button" class="button blank" ng-click="closeDialog();">Cancel</button>
         </div>
     </div>
@@ -12,6 +12,6 @@
         <span class="icons icon-popup-alert"></span>
         <span class="h2 message">No Availability to Reinstate Reservation</span>
         <button type="button" class="button green" ng-click="reinstateNavigateRoomAndRates();">Find Rooms &amp; Rates</button>
-        <button type="button" class="button blue">Confirm Overbooking</button>
+        <button type="button" class="button blue" ng-click="reinstateReservation(true)">Confirm Overbooking</button>
     </div>
 </div>

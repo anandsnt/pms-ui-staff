@@ -80,38 +80,19 @@ sntRover.controller('reservationActionsController', [
 
 
 		$scope.getBalanceAmountColor = function(balance) {
-			var balanceClass = "";
-			if (balance === 0 || balance === 0.00 || balance === 0.0 || balance > 0) {
-				balanceClass = "red";
-			} else {
-				balanceClass = "green";
-			}
-			return balanceClass;
+			return balance > 0 ? "red" : "green";
 		};
 
 		$scope.displayAddon = function(status) {
-			var display = false;
-			if (status === 'RESERVED' || status === 'CHECKING_IN' || status === 'CHECKEDIN' || status === 'CHECKING_OUT') {
-				display = true;
-			}
-			return display;
+			return status === 'RESERVED' || status === 'CHECKING_IN' || status === 'CHECKEDIN' || status === 'CHECKING_OUT';
 		};
 
 		$scope.displayAddCharge = function(status) {
-			var display = false;
-
-			if (status === 'RESERVED' || status === 'CHECKING_IN' || status === 'CHECKEDIN' || status === 'CHECKING_OUT' || status === 'NOSHOW_CURRENT') {
-				display = true;
-			}
-			return display;
+			return status === 'RESERVED' || status === 'CHECKING_IN' || status === 'CHECKEDIN' || status === 'CHECKING_OUT' || status === 'NOSHOW_CURRENT';
 		};
 
 		$scope.displayArrivalTime = function(status) {
-			var display = false;
-			if (status === 'CHECKING_IN' || status === 'NOSHOW_CURRENT') {
-				display = true;
-			}
-			return display;
+			return status === 'CHECKING_IN' || status === 'NOSHOW_CURRENT';
 		};
 
 		$scope.getTimeColor = function(time) {
@@ -123,11 +104,11 @@ sntRover.controller('reservationActionsController', [
 		};
 
 		// update the price on staycard.
+		/*jslint unparam: true*/
 		var postchargeAdded = $scope.$on('postcharge.added', function(event, netPrice) {
-			var balance = parseFloat($scope.reservationData.reservation_card.balance_amount);
-			balance += netPrice;
 			$scope.reservationData.reservation_card.balance_amount = parseFloat(netPrice);
 		});
+		/*jslint unparam: false*/
 
 		// the listner must be destroyed when no needed anymore
 		$scope.$on('$destroy', postchargeAdded);
@@ -184,7 +165,7 @@ sntRover.controller('reservationActionsController', [
 		});
 
 		$scope.depositDetails = angular.copy($scope.reservationData.reseravationDepositData);
-		if ((typeof $scope.depositDetails.deposit_policy !== "undefined") && parseInt($scope.depositDetails.deposit_amount, 10) > 0 && $rootScope.isStandAlone) {
+		if ((!!$scope.depositDetails.deposit_policy) && parseInt($scope.depositDetails.deposit_amount, 10) > 0 && $rootScope.isStandAlone) {
 			if (!$scope.depositPopupData.isShown) {
 				$scope.depositDetails.isFromCheckin = false;
 				if (!$scope.reservationData.justCreatedRes) {
@@ -216,7 +197,7 @@ sntRover.controller('reservationActionsController', [
 
 		var startCheckin = function() {
 			var afterRoomUpdate = function() {
-				if (typeof $scope.guestCardData.userId !== "undefined" && $scope.guestCardData.userId !== "" && $scope.guestCardData.userId !== null) {
+				if (!!$scope.guestCardData.userId) {
 					if (($scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "false" || $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "" || $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === null) && ($scope.guestCardData.contactInfo.email === '' || $scope.guestCardData.contactInfo.phone === '' || $scope.guestCardData.contactInfo.email === null || $scope.guestCardData.contactInfo.phone === null)) {
 						$scope.$emit('showLoader');
 						ngDialog.open({
@@ -639,15 +620,43 @@ sntRover.controller('reservationActionsController', [
 		};
 
 		$scope.reinstateNavigateRoomAndRates = function() {
+			$scope.viewState.identifier = "REINSTATE";
+			if (new TZIDate(reservationMainData.arrivalDate) < new TZIDate($rootScope.businessDate)) {
+				reservationMainData.arrivalDate = $rootScope.businessDate; // Note: that if arrival date is in the past, only select from business date onwards for booking and availability request.
+			}
+			reservationMainData.arrivalDate = "2015-07-15";
 			$state.go('rover.reservation.staycard.mainCard.roomType', {
 				from_date: reservationMainData.arrivalDate,
-				to_date: reservationMainData.departureDate,				
+				to_date: reservationMainData.departureDate,
 				fromState: $state.current.name,
 				company_id: reservationMainData.company.id,
 				travel_agent_id: reservationMainData.travelAgent.id
 			});
+			$scope.closeDialog();
 		};
 
+		$scope.reinstateReservation = function(isOverBooking) {
+			$scope.invokeApi(RVReservationCardSrv.reinstateReservation,
+				//Params
+				{
+					reservationId: $scope.reservationData.reservation_card.reservation_id,
+					is_overbook: isOverBooking
+				},
+				//Handle Success
+				function() {
+					$scope.$emit('hideLoader');
+					$scope.closeDialog();
+				},
+				//Handle Failure
+				function(errorMessage) {
+					$scope.$emit('hideLoader');
+					$scope.errorMessage = errorMessage;
+				});
+		};
+
+		/**
+		 * API call to check for availability for reinstation
+		 */
 		$scope.checkReinstationAvailbility = function() {
 			$scope.invokeApi(RVReservationCardSrv.checkReinstationAvailbility,
 				// Params for API Call
@@ -664,10 +673,14 @@ sntRover.controller('reservationActionsController', [
 				});
 		};
 
+		/**
+		 * Method to check if the reinstate button should be showm
+		 * @return {Boolean} 
+		 */
 		$scope.isReinstateVisible = function() {
 			var resData = $scope.reservationData.reservation_card;
-			return resData.reservation_status === 'CANCELED' &&
-				new TZIDate(resData.departure_date) > new TZIDate($rootScope.businessDate);
+			return resData.reservation_status === 'CANCELED' && // ONLY cancelled reservations can be reinstated
+				new TZIDate(resData.departure_date) > new TZIDate($rootScope.businessDate); // can't reinstate if the reservation's dates have passed
 		};
 	}
 ]);
