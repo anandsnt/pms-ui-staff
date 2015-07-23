@@ -24,7 +24,7 @@
                 <span class="icons icon-email"></span>
                  Confirm Reservation
             </button>         
-            <button type="button" class="button with-icon blue">
+            <button type="button" class="button with-icon blue" ng-click="printReservation()">
                 <span class="icons icon-print"></span>
                 Print Confirmation Letter
             </button>
@@ -32,3 +32,5 @@
         </div>
     </form>
 </div>
+<!-- For confirmation print -->
+<div ng-include="'/assets/partials/reservation/includes/rvConfirmationPrintTemplate.html'"></div>
