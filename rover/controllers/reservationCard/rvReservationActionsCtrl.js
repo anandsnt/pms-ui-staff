@@ -631,14 +631,25 @@ sntRover.controller('reservationActionsController', [
 			return showDepositBalanceButtonWithSR;
 		};
 
+		$scope.isEmailAttached = function(){
+			var isEmailAttachedFlag = false;			
+				if($scope.guestCardData.contactInfo.email !==null && $scope.guestCardData.contactInfo.email !==""){
+					isEmailAttachedFlag = true;
+				};				
+			return isEmailAttachedFlag;
+		};
+
+		
 		$scope.popupForConfirmation =function(){
+			$scope.ngData = {};
+			$scope.ngData.sendConfirmatonMailTo ='';
 			ngDialog.open({
 				template: '/assets/partials/reservationCard/rvReservationConfirmationPrintPopup.html',
 				controller: 'reservationActionsController',								
 				scope:$scope,
 				closeByDocument:true
 			});
-		}
+		};
 
 		$scope.showConfirmation = function(reservationStatus){
 			var showResendConfirmationFlag = false;
@@ -650,18 +661,22 @@ sntRover.controller('reservationActionsController', [
 			return showResendConfirmationFlag;
 		};
 
-		$scope.isEmailAttached = function(){
-			var isEmailAttachedFlag = false;			
-				if($scope.guestCardData.contactInfo.email !==null && $scope.guestCardData.contactInfo.email !==""){
-					isEmailAttachedFlag = true;
-				}				
-			return isEmailAttachedFlag;
+		var succesfullEmailCallback = function(data){
+			$scope.$emit('hideLoader');
+			$scope.ngData.successMessage = data.message;
+			$scope.ngData.failureMessage = '';
 		};
 
-		$scope.sendConfirmationEmail = function(){
+		var failureEmailCallback = function(error){
+			$scope.$emit('hideLoader');
+			$scope.ngData.failureMessage = error[0];
+			$scope.ngData.successMessage = '';
+		};
+
+		$scope.sendConfirmationEmail = function(){			
 			var postData = {
 				"type":"confirmation",
-				"emails": [$scope.guestCardData.contactInfo.email]
+				"emails": $scope.isEmailAttached()?[$scope.guestCardData.contactInfo.email]:[$scope.ngData.sendConfirmatonMailTo]
 			};
 			var reservationId = $scope.reservationData.reservation_card.reservation_id;
 
@@ -669,7 +684,7 @@ sntRover.controller('reservationActionsController', [
 				"postData": postData,
 				"reservationId": reservationId
 			};
-			$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data);
+			$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data, succesfullEmailCallback, failureEmailCallback);
 		};
 
 	}
