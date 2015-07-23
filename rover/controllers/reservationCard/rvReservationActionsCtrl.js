@@ -612,13 +612,13 @@ sntRover.controller('reservationActionsController', [
 			return rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
 		};
                 
-		var promptReinstate = function() {
+		var promptReinstate = function(isAvailable) {
 			ngDialog.open({
 				template: '/assets/partials/reservation/alerts/rvReinstate.html',
 				closeByDocument: false,
 				scope: $scope,
 				data: JSON.stringify({
-					isAvailable: false
+					isAvailable: isAvailable
 				})
 			});
 		};
@@ -668,7 +668,7 @@ sntRover.controller('reservationActionsController', [
 				//Handle Success
 				function(response) {
 					$scope.$emit('hideLoader');
-					promptReinstate(response);
+					promptReinstate(response.is_available);
 				},
 				//Handle Failure
 				function(errorMessage) {
