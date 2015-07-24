@@ -422,5 +422,17 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 				});
 			return deferred.promise;
 		}
+
+		this.toggleHideRate = function( params ){
+			var deferred = $q.defer(),
+				url = 'api/groups/'+params.group_id+'/hide_rates';
+				rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+				   	 deferred.resolve(data);
+				},function(data){
+				    deferred.reject(data);
+				});
+			return deferred.promise;
+		};
+
 	}
 ]);

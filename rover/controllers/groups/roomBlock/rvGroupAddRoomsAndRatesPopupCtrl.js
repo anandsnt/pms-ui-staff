@@ -170,7 +170,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 				return (typeof obj.room_type_id !== "undefined" && obj.room_type_id !== '');
 			});
 			//since selectedRoomTypeAndRates containst some unwanted keys
-			var wanted_keys = ["room_type_id", "single_rate", "double_rate", "extra_adult_rate", "rate_id"];
+			var wanted_keys = ["room_type_id", "single_rate", "double_rate", "extra_adult_rate", "rate_id", "best_available_rate_id"];
 			selectedRoomTypeAndRates = util.getListOfKeyValuesFromAnArray(selectedRoomTypeAndRates, wanted_keys);
 
 			var params = {

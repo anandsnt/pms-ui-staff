@@ -487,6 +487,15 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             runDigestCycle();
         });
 
+
+        $scope.parseCurrency = function(value) {
+            if (!!value) {
+                return $rootScope.currencySymbol + $filter('number')(value, 2);
+            } else {
+                return ""
+            }
+        };
+
         /**
          * function to initialize things for group config.
          * @return - None

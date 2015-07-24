@@ -427,6 +427,7 @@
     "GROUP_ARRIVAL":"Arrival",
     "GROUP_DEPARTURE":"Departure",
     "GROUP_ROOM_TYPE":"Room Type",
+    "GROUP_ROOM RATE": "Rate",
     "GROUP_STATUS":"Status",
     "GROUP_PICKED_UP":"Picked Up",
     "GROUP_CHECK_IN":"Check In",
@@ -436,7 +437,11 @@
     "GROUP_PRINT":"Print",
     "GROUP_DOWNLOAD":"Download",
     "ADD_BILLING_INFO":"Add billing information",
-    "GROUP_BATCH" : "Reg.card"
+    "GROUP_BATCH" : "Reg.card",
+    "GROUP_MASS_CHECKIN_CONFIRMATION": "Confirm Check In",
+    "GROUP_MASS_CHECKIN_CONFIRMATION_PARTIALLY_OKEY": "Some reservations don't meet check in criteria: Guest not arriving today or name is missing | Room not ready or not assigned",
+    "GROUP_NO_RESERVATIONS_MEET_CHECKIN_CRITERIA": "No reservations meet check in criteria",
+    "GROUP_MASS_CHECKIN_FAILED_IN_PROCESSING": "Sorry, Group checkin has failed for some reason. Please retry after closing this"
 
 
 
@@ -547,6 +552,8 @@
 	"TIME":"Time",
 	"DEBIT":"Debit",
 	"CREDIT":"Credit",
+	"ACCOUNT_NAME" : "Account Name",
+	"ACCOUNT_NO" : "Account No",
 	"CHARGE_GROUPS":"Charge Group",
 	"CHARGE_CODE_NAME":"Charge Code / Name",
 	"ALL_CHARGE_CODE":"All Charge Codes",
@@ -790,7 +797,8 @@
     "CHANGE_TO_NEW_RATE": "Change to new rate",
     "ADD_ONS" : "Add on",
     "TAXES_INCL" : "TAXES(INCL)",
-    "TAXES_EXCL" : "TAXES(EXCL)"
+    "TAXES_EXCL" : "TAXES(EXCL)",
+    "REINSTATE" : "Reinstate Reservation"
 
 ,    
     
@@ -1063,6 +1071,7 @@
     "NET_AMOUNT":"Net Amount",
     "TOTAL_INCL_TAX":"Total Incl Tax",
     "UPDATE":"Update",
-    "NOT_DEFINED": "Not Defined"
+    "NOT_DEFINED": "Not Defined",
+    "DONT_PRINT_RATE" : "Don't Print Rate"
 
 }
