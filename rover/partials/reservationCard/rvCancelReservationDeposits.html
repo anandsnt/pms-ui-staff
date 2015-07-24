@@ -1,9 +1,9 @@
 <div id="modal" class="modal-show" role="dialog">
 <form  id="cancel-reservation" name="cancel-reservation" class="modal-content form cancel-reservation" ng-click="clearErrorMessage()"ng-class="{'pay-bill':ngDialogData.state == 'REFUND', 'select-card': (ngDialogData.state == 'REFUND' && cancellationData.viewCardsList), 'new-card' :  (ngDialogData.state == 'REFUND' && !cancellationData.viewCardsList)}" class="modal-content form cancel-reservation" ng-cloak>
-    <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+    <button class="modal-close" id="modal-close" type="button" ng-click="completeCancellationProcess()"><span class="icons icon-close invert"></span></button>
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     
-      <fieldset id="cancel-options" ng-if="ngDialogData.state == 'CONFIRM'">
+      <fieldset id="cancel-options" ng-if="ngDialogData.state == 'CONFIRM' && !DailogeState.isCancelled">
        <div class="entry full-width">
             <label for="cancel-reason">{{'CANCELLATION_REASON'| translate}}&nbsp;(<span translate>OPTIONAL</span>)</label>
             <textarea id="cancel-reason" name="cancel-reason" placeholder="{{'CANCELLATION_REASON_PLACEHOLDER' | translate}}" rows="2" ng-model="cancellationData.reason"/>
@@ -14,6 +14,29 @@
             <button type="button" class="button green" ng-click="proceedWithDepositRefund()" >
             {{'PROCEED_WITH_DEPOSIT_REFUND' | translate}} ({{currencySymbol}}{{ngDialogData.deposit | number:2}})</button>
             <button type="button" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL</button> 
+        </div>
+    </fieldset>
+    <fieldset id="reservation-canceled" ng-show ="DailogeState.isCancelled">
+        <span class="h2 message">Reservation cancelled</span>
+        <div id="status" class="notice {success or error}"></div>
+        <div class="entry full-width" ng-hide="isEmailAttached()">
+            <label for="guest-email">E-mail</label>
+            <input name="guest-email" id="guest-email" value="" type="text" autocomplete="off" ng-model="DailogeState.sendConfirmatonMailTo"/>
+        </div>
+        <div class="actions">
+            <button type="button" class="button with-icon Grey" ng-show ="!DailogeState.sendConfirmatonMailTo&&!isEmailAttached()">
+                <span class="icons icon-email"></span> 
+                E-mail Cancellation Letter
+            </button>
+            <button type="button" class="button with-icon blue" ng-show ="DailogeState.sendConfirmatonMailTo||isEmailAttached()"  ng-click="sendReservationCancellation()">
+                <span class="icons icon-email"></span>
+                E-mail Cancellation Letter
+            </button>
+            <button type="button" class="button with-icon blue" ng-click="printReservationCancellation()">
+                <span class="icons icon-print"></span> 
+                Print Cancellation Letter
+            </button>
+            <button type="button" class="button blank" ng-click="completeCancellationProcess()">Close</button> 
         </div>
     </fieldset>
 </form>

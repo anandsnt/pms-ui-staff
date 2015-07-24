@@ -414,7 +414,7 @@ sntRover.controller('reservationActionsController', [
 			 };
 
 			$scope.passData = passData;
-
+			$scope.DailogeState = {};
 			ngDialog.open({
 				template: '/assets/partials/reservationCard/rvCancelReservation.html',
 				controller: 'RVCancelReservation',
@@ -440,6 +440,7 @@ sntRover.controller('reservationActionsController', [
 
 
 		var showCancelReservationWithDepositPopup = function(deposit,isOutOfCancellationPeriod,penalty) {
+			$scope.DailogeState = {};
 			ngDialog.open({
 				template: '/assets/partials/reservationCard/rvCancelReservationDeposits.html',
 				controller: 'RVCancelReservationDepositController',
@@ -633,13 +634,22 @@ sntRover.controller('reservationActionsController', [
 			}
 			return showDepositBalanceButtonWithSR;
 		};
-
+		//Checking whether email is attached with guest card or not
 		$scope.isEmailAttached = function(){
 			var isEmailAttachedFlag = false;			
 				if($scope.guestCardData.contactInfo.email !==null && $scope.guestCardData.contactInfo.email !==""){
 					isEmailAttachedFlag = true;
 				};				
 			return isEmailAttachedFlag;
+		};
+		//Action against email button in staycard.
+		$scope.sendReservationCancellation = function(){
+			console.log("Implement email send Here");
+		};
+		//Action against print button in staycard.
+		$scope.printReservationCancellation = function(){
+			console.log("Implement print here");
+			printPage();
 		};
 
 		
@@ -689,7 +699,7 @@ sntRover.controller('reservationActionsController', [
 			};
 			$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data, succesfullEmailCallback, failureEmailCallback);
 		};
-
+		//Print reservation confirmation.
 		$scope.printReservation =function() {					
 			printPage();			
 		};
