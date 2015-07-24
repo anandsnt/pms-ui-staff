@@ -264,7 +264,7 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
             });
             return deferred.promise;
         };
-        
+
         // To fetch the Cancellation email data for PRINT functionality on Rover.
         this.fetchResservationCancellationPrintData = function( params ){
             var deferred = $q.defer(),

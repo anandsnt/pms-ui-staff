@@ -151,18 +151,21 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		};	
 
 		$scope.printData = {};
-		var sucessCallbackPrint = function( data ){
-			$scope.printData = data;
+		var sucessCallbackPrint = function( response ){
+			$scope.printData = response.data;
 			printPage();
 		},
 		failureCallbackPrint = function( errorData ){
 			$scope.errorMessage = errorData;
 		};
+
 		// To handle printConfirmationReservation button click
-		$scope.printConfirmationReservation = function() {		
-			$scope.callAPI(RVReservationSummarySrv.fetchResservationConfirmationPrintData, {
-                'reservation_id': $scope.reservationData.reservationId
-            }, sucessCallbackPrint, failureCallbackPrint);
+		$scope.printConfirmationReservation = function() {	
+			$scope.callAPI(RVReservationSummarySrv.fetchResservationConfirmationPrintData,{
+                successCallBack: sucessCallbackPrint,
+                failureCallBack: failureCallbackPrint,
+                params: { 'reservation_id': $scope.reservationData.reservationId }
+            });
 		};
 
 		/**
