@@ -158,6 +158,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             var saveSuccessCallback = function(data) {
                 $scope.manipulateData(data);
                 $scope.detailsMenu = "";
+                $('#activityLogArea').scope().detailsMenu = '';
                 $scope.$emit('hideLoader');
                 $scope.$emit("changeMenu", 'Room types');
                 $scope.$emit("rateChangedFromDetails");

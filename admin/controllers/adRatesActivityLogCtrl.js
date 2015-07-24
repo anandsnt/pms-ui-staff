@@ -1,8 +1,14 @@
-admin.controller('ADRatesActivityLogCtrl',['$scope', '$state','$stateParams', 'ADRateActivityLogSrv', 'ngTableParams', '$filter',  
-    function($scope, $state, $stateParams, ADRateActivityLogSrv, ngTableParams, $filter){
+admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$stateParams', 'ADRateActivityLogSrv', 'ngTableParams', '$filter',  
+    function($scope, $rootScope, $state, $stateParams, ADRateActivityLogSrv, ngTableParams, $filter){
 	BaseCtrl.call(this, $scope);
+        
+        
+        $scope.init = function(){
         $scope.showActivityLog = false;
         $scope.activityLogData = {};
+        $scope.fromDate ='';
+        $scope.toDate ='';
+        $scope.user_id = 0;  
         $scope.getRateLog = function(){
             $scope.showActivityLog = true;
             $scope.$emit('showLoader');
@@ -13,17 +19,24 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$state','$stateParams', 'A
             };
             $scope.invokeApi(ADRateActivityLogSrv.fetchRateLog, {'id':rateId},callback);
         };
-        
+        $scope.toggleActivityLogFilterON = false;
+        $scope.toggleActivityLogFilter = function(){
+            $scope.toggleActivityLogFilterON = !$scope.toggleActivityLogFilterON;
+            if ($scope.toggleActivityLogFilterON){
+                initializeAutoCompletion();
+            }
+        };
         $scope.toggleActivityLog = function(){
             if ($scope.detailsMenu !== 'adRateActivityLog'){
                 $scope.detailsMenu = 'adRateActivityLog';
                 $scope.getRateLog();
             } else {
                 $scope.detailsMenu = '';
+                $scope.toggleActivityLogFilterON = false;
             }
         };
         $scope.isOldValue = function(value){
-            if(value =="" || typeof value == "undefined" || value == null){
+            if(value == "" || typeof value == "undefined" || value == null){
                 return false;
             }
             else{
@@ -31,6 +44,62 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$state','$stateParams', 'A
             }
         };
         
+        
+    var setDatePickerOptions = function(){
+        //I just changed this to a function, dont knw who written this
+        var datePickerCommon = {
+            dateFormat: $rootScope.jqDateFormat,
+            numberOfMonths: 1,
+            changeYear: true,
+            changeMonth: true,
+            //maxDate: tzIndependentDate($rootScope.businessDate),
+            yearRange: "-50:+50",
+            beforeShow: function(input, inst) {
+                $('#ui-datepicker-div');
+                $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+            },
+            onClose: function(value) {
+                $('#ui-datepicker-div');
+                $('#ui-datepicker-overlay').remove();
+            }
+        };
+
+        $scope.fromDateOptions = angular.extend({
+           // maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+            onSelect: function(value) {
+                $scope.untilDateOptions.minDate = value;
+            }
+        }, datePickerCommon);
+        $scope.untilDateOptions = angular.extend({
+           // maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+            onSelect: function(value) {
+                $scope.fromDateOptions.maxDate = value;
+            }
+        }, datePickerCommon);
+    };
+    
+    //setting date picker options
+    setDatePickerOptions();
+        
+    $scope.updateReportFilter = function(){
+        $scope.isUpdateReportFilter = true;
+        $scope.initPaginationParams();
+        $scope.initSort();
+        $scope.updateReport();
+    };
+    $scope.initPaginationParams = function() {
+        if($scope.activityLogData.total_count==0){           
+             $scope.start = 0;
+             $scope.end =0;
+        }else{
+        $scope.start = 1;
+        $scope.end = $scope.start + $scope.activityLogData.length - 1;
+        }
+        $scope.page = 1;
+        $scope.perPage = 50;        
+        $scope.nextAction = false;
+        $scope.prevAction = false;
+    };
     $scope.updateReport = function(){
         var callback = function(data) {
                 $scope.totalResults = data.total_count;
@@ -50,19 +119,36 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$state','$stateParams', 'A
         };
         var params = {
                 id: $stateParams.rateId,
-                page: 1,
-                per_page: 25
+                page: $scope.start,
+                per_page: $scope.end
         };
         if($scope.isUpdateReportFilter){
-            params['from_date'] = $filter('date')($scope.fromDate, 'yyyy-MM-dd');
-            params['to_date'] =$filter('date')($scope.toDate, 'yyyy-MM-dd');
-            if($scope.user_id)
-                params['user_id'] = $scope.user_id;
+            $scope.fromDate = $('#activity-range-from').val();
+            $scope.toDate = $('#activity-range-to').val();
+            console.log($scope.toDate);
+            if ($scope.fromDate != ''){
+                params['from_date'] = $filter('date')(new Date($scope.fromDate), 'yyyy-MM-dd');
+            }
+            if ($scope.toDate != ''){
+                params['to_date'] =$filter('date')(new Date($scope.toDate), 'yyyy-MM-dd');
+            }
+
+            //if($scope.user_id)
+              //  params['user_id'] = $scope.user_id;
+            
         }
         params['sort_order'] = $scope.sort_order;
         params['sort_field'] = $scope.sort_field;       
+        
         $scope.invokeApi(ADRateActivityLogSrv.filterActivityLog, params, callback);
     };
+    
+    $scope.userChanged = function(){        
+        if($scope.userEmail==''){
+           $scope.user_id=0;
+        }
+    }
+    $scope.userEmail='';
     /*
     * Sorting
     */    
@@ -120,7 +206,80 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$state','$stateParams', 'A
         $scope.updateReport();
     };
         
-        
+    function split(val) {
+        return val.split(/,\s*/);
+    }
+
+    function extractLast(term) {
+        return split(term).pop();
+    }
+    
+    var initializeAutoCompletion = function(){
+        console.log('init auto complete')
+        //forming auto complte source object
+        var activeUserAutoCompleteObj = [];
+        _.each($scope.activeUserList, function(user) {
+            activeUserAutoCompleteObj.push({
+                label: user.email,
+                value: user.id
+            });
+        });  
+
+        var userAutoCompleteCommon = {
+            source: function(request, response) {
+                console.log('response from autocomplete');
+                console.log(arguments);
+                // delegate back to autocomplete, but extract the last term
+                response($.ui.autocomplete.filter(activeUserAutoCompleteObj, extractLast(request.term)));
+            },
+            select: function(event, ui) {
+                $scope.user_id = ui.item.value;
+                var uiValue = split(this.value);                
+                uiValue.pop();
+                uiValue.push(ui.item.label);
+                uiValue.push("");
+                //this.value = uiValue.join(", ");
+                this.value = ui.item.label;
+                return false;
+            },
+            close: function(event, ui) {
+                var uiValues = split(this.value);
+                var modelVal = [];
+
+                _.each($scope.activeUserAutoCompleteObj, function(user) {
+                    var match = _.find(uiValues, function(email) {
+                        return email == user.label;
+                    });
+
+                    if (!!match) {
+                        modelVal.push(user.value);
+                    };
+                });
+
+            },
+            focus: function(event, ui) {
+                return false;
+            }
+        }
+        $scope.listUserAutoCompleteOptions = angular.extend({
+            position: {
+                my: 'left bottom',
+                at: 'left top',
+                collision: 'flip'
+            }
+        }, userAutoCompleteCommon);
+        $scope.detailsUserAutoCompleteOptions = angular.extend({
+            position: {
+                my: 'left bottom',
+                at: 'right+20 bottom',
+                collision: 'flip'
+            }
+        }, userAutoCompleteCommon);
+
+    }   
+            initializeAutoCompletion();
+        }
+        $scope.init();
         
 
 }]);
