@@ -51,7 +51,7 @@
                         <button class="button blank edit-data-inline" id="cancel" ng-click="hideUpdatePriceAndRestrictionsDialog()" type="button">
                             Cancel
                         </button>
-                        <button ng-if="hasAnyOverride() !== 'false' && calendarData.is_child == false" class="button blank edit-data-inline purple" id="clearOverrides" ng-click="clearOverrides(popupData)" type="button" style="color:white;">
+                        <button ng-if="hasAnyOverride() !== 'false' && calendarData.is_child == false && inRoomView == true" class="button blank edit-data-inline purple" id="clearOverrides" ng-click="clearOverrides(popupData)" type="button" style="color:white;">
                             Clear Rate Overrides
                         </button>
                         <button ng-if="hasPermissionToUpdateRestrictions() || hasPermissionToUpdateRates()" class="button green edit-data-inline" id="save" type="button" ng-click="saveRestriction()" ng-class="{'grey' : data.showEditView}" ng-disabled="data.showEditView">

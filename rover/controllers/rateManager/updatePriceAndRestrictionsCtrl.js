@@ -7,8 +7,14 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
         $scope.data.selected_room_type = '';
         $scope.showRestrictionDayUpdate = false;
         $scope.showExpandedView = false;
+        $scope.inRoomView = false;
 
         $scope.init = function () {
+            if ($stateParams.calendarMode !== "ROOM_TYPE_VIEW"){
+                $scope.inRoomView = false;
+            } else {
+                $scope.inRoomView = true;
+            }
             if ($stateParams.openUpdatePriceRestrictions){
                 $stateParams.openUpdatePriceRestrictions = false;
                 $scope.data.roomRateOverrides = [];
