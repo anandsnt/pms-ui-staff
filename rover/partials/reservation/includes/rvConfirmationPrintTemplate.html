@@ -7,6 +7,7 @@
               <tbody>
                 <tr>
                   <td align='center' class="first-inner-table-data">
+
                     <img src='{{ printData.location_image_for_pdf }}' class="first-inner-table-image"/>
                   </td>
                 </tr>
@@ -37,32 +38,35 @@
               <tbody>
                 <tr cellpadding='10'>
                   <td class="third-inner-table-data">
-                        <!--Copied from HAML -->
-                  %b
-                    %span
-                      =@data[:guest_details][:guest_name_upcase]
-                      %br/                
-                    -if(!@data[:guest_details][:street1].blank? || !@data[:guest_details][:city].blank?)
-                      %b
-                        -if(!@data[:guest_details][:street1].blank?)
-                          %span 
-                            =@data[:guest_details][:street1]
-                            ,
-                        -if(!@data[:guest_details][:city].blank?)
-                          %span 
-                            =@data[:guest_details][:city]
-                            ,
-                        %br/
-                    -if(!@data[:guest_details][:state].blank? || !@data[:guest_details][:postal_code].blank?)
-                      %b
-                        -if(!@data[:guest_details][:state].blank?)
-                          %span 
-                            =@data[:guest_details][:state]
-                            ,
-                        -if(!@data[:guest_details][:postal_code].blank?)
-                          %span 
-                            =@data[:guest_details][:postal_code]
-                        <!--Copied from HAML  -->
+
+                    <b>
+                      <span>
+                        {{ printData.guest_details.guest_name_upcase }}
+                      </span>
+                      <br/>
+                    </b>
+
+                    <b ng-if="printData.guest_details.street1 !== '' || printData.guest_details.city !== ''">
+                      <span ng-if="printData.guest_details.street1 !== ''">
+                        {{ printData.guest_details.street1 }}
+                      </span>
+                      <span ng-if="printData.guest_details.city !== ''">
+                        {{ printData.guest_details.city }}
+                      </span>
+                      <br/>
+                    </b>
+
+                    <b ng-if="printData.guest_details.state !== '' || printData.guest_details.postal_code !== ''">
+                      <span ng-if="printData.guest_details.state !== ''">
+                        {{ printData.guest_details.state }}
+                      </span>
+
+                      <span ng-if="printData.guest_details.postal_code !== ''">
+                        {{ printData.guest_details.postal_code }}
+                      </span>
+                      <br/>
+                    </b>
+                    
                   </td>
                   <td align='right' class"third-inner-table-data-second">
                     <table class="fourth-inner-table">
