@@ -1,0 +1,109 @@
+
+    <table align='center' cellpadding='10' cellspacing='0' class="container-table" id="cancellation-print-template">
+          <tbody>
+            <tr>
+              <td class="container-table-data">
+                <table cellpadding='0' cellspacing='0' class="first-inner-table">
+                  <tbody>
+                    <tr>
+                      <td align='center' class="first-inner-table-data">
+                        <img src='data[location_image_for_pdf]' class="first-inner-table-image"/>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <table cellpadding='0' cellspacing='0' class="table-common">
+                  <tbody>
+                    <tr>
+                      <td class="second-inner-table-title">
+                        CANCELLATION #: =@data[:confirmation_no]
+                      </td>
+                      <td class="second-inner-table-data">
+                        =@data[:date]
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <table cellpadding='0' cellspacing='0' class="table-common">
+                  <tbody>
+                    <tr>
+                      <td class="third-table-data">
+                        <table class="fourth-table">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <p>
+                      <!-- Copied from HAML file -->
+                      =@data[:guest_details][:guest_name_upcase]
+                                  -if(!@data[:guest_details][:street1].blank? || !@data[:guest_details][:city].blank?)
+                                    %br
+                                      -if(!@data[:guest_details][:street1].blank?)
+                                        =@data[:guest_details][:street1]
+                                        ,
+                                    %span
+                                      -if(!@data[:guest_details][:city].blank?)
+                                        =@data[:guest_details][:city]
+                                  -if(!@data[:guest_details][:state].blank? || !@data[:guest_details][:postal_code].blank?)
+                                    %br
+                                      -if(!@data[:guest_details][:state].blank?)
+                                        =@data[:guest_details][:state]
+                                        ,
+                                      -if(!@data[:guest_details][:postal_code].blank?)
+                                        %span                                    
+                                        =@data[:guest_details][:postal_code]
+                      <!-- Copied from HAML file -->
+                                </p>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+
+                      <td class="third-table-data-second">
+                        <span>Dear</span>
+                        <span>
+                        </span>
+                        <span>
+                          ,
+                        </span>
+                        <br>
+                          <p>
+                            Thank you for selecting the Fulton Steamboat Inn for your overnight reservations.
+                          </p>
+                          <p>
+                            This letter is to verify your recent cancellation of your stay.
+                          </p>
+                          <p>
+                            Your reservation is now canceled. Please keep this notice for your records.
+                          </p>
+                          <p>
+                            We hope that in the future, if your travels bring your back to Lancaster County that you consider staying at the Fulton Steamboat Inn. Please retain your cancellation letter for your records to avoid any discrepancy.
+                            <p>
+                              <p>
+                                Please do not hesitate to contact us at (717) 299-9999.
+                              </p>
+                              <p>
+                                Kind Regards,
+                              </p>
+                              <p>
+                                <span class="company-name">Fulton Steamboat Inn</span>
+                              </p>
+                            </p>
+                          </p>
+                        </br>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>

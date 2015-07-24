@@ -673,11 +673,20 @@ sntRover.controller('reservationActionsController', [
 
 		//Action against print button in staycard.
 		$scope.printReservationCancellation = function(){
-			console.log("Implement print here");
-			printPage();
+			var succesfullCallback = function(data){
+				console.log(data);
+				printPage();
+			};
+			var failureCallbackPrint = function(error){
+				$scope.ngData.failureMessage = error[0];
+			};
+            $scope.callAPI(RVReservationSummarySrv.fetchResservationCancellationPrintData, {
+                successCallBack: succesfullCallback,
+                failureCallBack: failureCallbackPrint,
+                params: { 'reservation_id': $scope.reservationData.reservation_card.reservation_id }
+            });
 		};
-
-		
+		//Pop up for confirmation print as well as email send		
 		$scope.popupForConfirmation =function(){
 			$scope.ngData = {};
 			$scope.ngData.sendConfirmatonMailTo ='';
