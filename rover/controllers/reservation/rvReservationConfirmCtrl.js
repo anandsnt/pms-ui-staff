@@ -126,10 +126,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		}
 
 		$scope.confirmationMailsSent = false;
-
-		$scope.printConfirmationReservation =function() {					
-			printPage();			
-		};
+		
 		// add the print orientation after printing
 		var addPrintOrientation = function() {
 			var orientation = 'portrait';
@@ -151,7 +148,22 @@ sntRover.controller('RVReservationConfirmCtrl', [
 	    	}, 100);
 			// remove the orientation after similar delay
 			$timeout(removePrintOrientation, 100);
-		};		
+		};	
+
+		$scope.printData = {};
+		var sucessCallbackPrint = function( data ){
+			$scope.printData = data;
+			printPage();
+		},
+		failureCallbackPrint = function( errorData ){
+			$scope.errorMessage = errorData;
+		};
+		// To handle printConfirmationReservation button click
+		$scope.printConfirmationReservation = function() {		
+			$scope.callAPI(RVReservationSummarySrv.fetchResservationConfirmationPrintData, {
+                'reservation_id': $scope.reservationData.reservationId
+            }, sucessCallbackPrint, failureCallbackPrint);
+		};
 
 		/**
 		 * Call API to send the confirmation email
