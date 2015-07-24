@@ -122,6 +122,31 @@ sntRover.service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 		};
 
 		/**
+		 * to get free rooms which are able to assign to a reservation
+		 * @param  {Object} params
+		 * @return {promise}
+		 */
+		this.getFreeAvailableRooms = function(params) {
+			var url = '/api/reservations/' + params.reserevation_id + '/ready_to_assign_rooms/',
+				deferred = $q.defer(),
+				data_for_web_service = {
+					'group_id': params.group_id,
+					'count': params.num_of_rooms_to_fetch
+				};
+
+			rvBaseWebSrvV2.getJSON(url, data_for_web_service).then(
+				function(data) {
+					deferred.resolve(data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;
+		};
+
+		/**
 		 * Function to get Room type configured against group
 		 * @return {Promise} [will get the details]
 		 */

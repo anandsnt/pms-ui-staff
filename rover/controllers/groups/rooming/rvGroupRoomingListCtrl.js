@@ -1356,45 +1356,130 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             //Lets start the processing
             $q.all(promises)
                 .then(successFetchOfAllReqdForRoomingList, failedToFetchOfAllReqdForRoomingList);
-        }
+        };
 
-        /**
-         * Function to edit a reservation from the rooming list
-         */
-        $scope.showEditReservationPopup = function(reservation) {
-            var reservationData = angular.copy(reservation);
-            $scope.roomingListState.editedReservationStart = reservation.arrival_date;
-            $scope.roomingListState.editedReservationEnd = reservation.departure_date;
+        //local scope for reservation edit popup showing
+        (function() {
+            var selectedReservation;
+    
+            /**
+             * when we completed the fetching of free rooms available
+             * @param  {Object} - free rooms available
+             * @return {undefined}
+             */
+            var successCallBackOfListOfFreeRoomsAvailable = function(data) {
+                var roomId = selectedReservation.room_id,
+                    assignedRoom = [];
 
-            //as per CICO-17082, we need to show the room type in select box of edit with others
-            //but should be disabled
-            var containNonEditableRoomType = (_.pluck($scope.roomTypesAndData, 'room_type_id')
-                .indexOf(parseInt(reservation.room_type_id))) <= -1;
+                selectedReservation.roomsAvailableToAssign = [];
+                
+                if (roomId !== null && roomId !== '') {
+                    assignedRoom = [{
+                        id: roomId,
+                        room_number: selectedReservation.room_no
+                    }];
+                }
 
-            if (containNonEditableRoomType) {
-                var roomTypesForEditPopup = [{
-                    room_type_id: reservation.room_type_id,
-                    room_type_name: reservation.room_type_name
-                }];
-                reservationData.allowedRoomTypes = _.union(roomTypesForEditPopup,
-                    util.deepCopy($scope.roomTypesAndData));
-            } else {
-                reservationData.allowedRoomTypes = (util.deepCopy($scope.roomTypesAndData));
-            }
+                //Since we have to include already assigned rooms in the select box, merging with rooms coming from the api
+                selectedReservation.roomsAvailableToAssign = assignedRoom.concat(data.rooms);
+            };
 
-            reservationData.reservationStatusFlags = getReservationStatusFlags(reservation);
-            reservationData.arrival_date = new tzIndependentDate(reservationData.arrival_date);
-            reservationData.departure_date = new tzIndependentDate(reservationData.departure_date);
+            /**
+             * when all required to show reservation edit popup is in place
+             * @return {undefined}
+             */
+            var successFetchOfAllReqdForReservationEdit = function() {
+                var reservationData = angular.copy(selectedReservation);
+                $scope.roomingListState.editedReservationStart = selectedReservation.arrival_date;
+                $scope.roomingListState.editedReservationEnd = selectedReservation.departure_date;
 
-            ngDialog.open({
-                template: '/assets/partials/groups/rooming/rvGroupEditRoomingListItem.html',
-                className: '',
-                scope: $scope,
-                closeByDocument: false,
-                closeByEscape: false,
-                data: JSON.stringify(reservationData)
-            });
-        }
+                //as per CICO-17082, we need to show the room type in select box of edit with others
+                //but should be disabled
+                var containNonEditableRoomType = (_.pluck($scope.roomTypesAndData, 'room_type_id')
+                    .indexOf(parseInt(selectedReservation.room_type_id))) <= -1;
+
+                if (containNonEditableRoomType) {
+                    var roomTypesForEditPopup = [{
+                        room_type_id: selectedReservation.room_type_id,
+                        room_type_name: selectedReservation.room_type_name
+                    }];
+                    reservationData.allowedRoomTypes = _.union(roomTypesForEditPopup,
+                        util.deepCopy($scope.roomTypesAndData));
+                } else {
+                    reservationData.allowedRoomTypes = (util.deepCopy($scope.roomTypesAndData));
+                }
+
+                reservationData.reservationStatusFlags = getReservationStatusFlags(selectedReservation);
+                reservationData.arrival_date = new tzIndependentDate(reservationData.arrival_date);
+                reservationData.departure_date = new tzIndependentDate(reservationData.departure_date);
+                //Pls note, roomsFreeToAssign include already assigned room of that particular reservation
+                reservationData.roomsFreeToAssign = selectedReservation.roomsAvailableToAssign;
+
+                $scope.$emit('hideLoader');
+
+                //we've everything to show popup
+                showEditReservationPopup(reservationData);
+            };
+
+            /**
+             * when we failed to fetch some of the api need to show the reservation details popup
+             */
+            var failedToFetchOfAllReqdForReservationEdit = function(errorMessage) {
+                $scope.$emit('hideLoader');                
+                $scope.errorMessage = errorMessage;
+            };
+
+            /**
+             * we need to fetch some data before reservation edit pop up showing 
+             * @param  {Object} reservation
+             * @return {undefined}
+             */
+            var callNeccessaryApiForReservationDetailsShowing = function(reservation) {
+                var promises = [];
+                //we are not using our normal API calling since we have multiple API calls needed
+                $scope.$emit('showLoader');
+
+                //rooming details fetch
+                var paramsForListOfFreeRooms = {
+                    group_id: $scope.groupConfigData.summary.group_id,
+                    reserevation_id: reservation.id,
+                    num_of_rooms_to_fetch: 5
+                };
+                promises.push(rvGroupRoomingListSrv
+                    .getFreeAvailableRooms(paramsForListOfFreeRooms)
+                    .then(successCallBackOfListOfFreeRoomsAvailable)
+                );
+
+                //Lets start the processing
+                $q.all(promises)
+                    .then(successFetchOfAllReqdForReservationEdit, failedToFetchOfAllReqdForReservationEdit);
+            };
+
+            /**
+             * Function to edit a reservation from the rooming list
+             */
+            var showEditReservationPopup = function(reservationData) {
+                ngDialog.open({
+                    template: '/assets/partials/groups/rooming/editReservation/rvGroupEditRoomingListItem.html',
+                    className: '',
+                    scope: $scope,
+                    closeByDocument: false,
+                    closeByEscape: false,
+                    data: JSON.stringify(reservationData)
+                });
+            };
+
+            /**
+             * when clicked on a particular reservation, this will trigger
+             * @param  {Object} reservation
+             * @return {undefined}
+             */
+            $scope.clickedOnReservation = function (reservation) {
+                selectedReservation = reservation;
+                callNeccessaryApiForReservationDetailsShowing (reservation);
+            };
+
+        }());        
 
         /**
          * Method to update the reservation
