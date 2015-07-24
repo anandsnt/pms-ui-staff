@@ -9,6 +9,7 @@
         </div>
   </div>
 </div>
+
 <!-- Expanded View -->
 <div ng-show="detailsMenu ==='additionalDetails'" class="form_add_new_rate" >
     <div class="form-title cursor_pointer " ng-click="changeDetailsMenu('')">
@@ -17,7 +18,7 @@
             <div class="cursor_pointer rate_additional_details_pointers">
                 <img src="/assets/arrow-up.png">
             </div>
-        </div>       
+        </div>
   </div>
 	 <!-- <fieldset class="holder full-width"> -->
 	 	<fieldset class="holder left">
@@ -70,4 +71,18 @@
 	 	</fieldset>
 	 <!-- </fieldset> -->
 
+</div>
+<div ng-controller="ADRatesActivityLogCtrl" id="activityLogArea">
+    <div class="form-title cursor_pointer" ng-click="toggleActivityLog()">
+        <div class="rate_additional_details_heading">
+                ACTIVITY LOG
+            <div class="cursor_pointer rate_additional_details_pointers">
+                <img ng-hide="detailsMenu ==='adRateActivityLog'" src="/assets/arrow-down.png">
+                <img ng-show="detailsMenu ==='adRateActivityLog'" src="/assets/arrow-up.png">
+            </div>
+        </div>
+    </div>
+    <div ng-show="detailsMenu ==='adRateActivityLog'" class="form_add_new_rate" >
+        <div ng-include="'/assets/partials/rates/adRateActivityLog.html'"></div>
+    </div>
 </div>
