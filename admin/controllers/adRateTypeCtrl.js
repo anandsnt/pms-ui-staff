@@ -1,5 +1,5 @@
-admin.controller('ADRateTypeCtrl', ['$scope', '$rootScope', 'ADRateTypeSrv', 'ADRatesSrv', '$anchorScroll', '$timeout', '$location',
-function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout, $location) {
+admin.controller('ADRateTypeCtrl', ['$scope', '$rootScope', 'ADRateTypeSrv', 'ADRatesSrv', '$anchorScroll', '$timeout', '$location', 'rateClassifications',
+function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout, $location, rateClassifications) {
 	$scope.halfwayPoint = 0;
 
 	$scope.errorMessage = '';
@@ -8,6 +8,8 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 	$scope.isAddMode = false;
 	$scope.popoverRates = "";
 	$scope.mouseEnterPopover = false;
+
+	$scope.rateClassifications = rateClassifications;
 
 
 	var fetchSuccess = function(data) {

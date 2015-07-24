@@ -14,12 +14,9 @@
                         RATE CLASSIFICATION
                     </label>
                     <div class="select">
-                        <select id="rate-classification" ng-model="rateTypeData.classification.value">
+                        <select id="rate-classification" ng-model="rateTypeData.classification.id">
                             <option value="" data-text="Not set" class="placeholder">Choose classification type</option>
-                            <option value="PUBLIC">PUBLIC</option>
-                            <option value="CORPORATE">CORPORATE</option>
-                            <option value="GROUP">GROUP</option>
-                            <option value="SPECIALS">SPECIALS</option>
+                            <option ng-repeat="classification in rateClassifications" value="{{classification.id}}">{{classification.description}}</option>
                         </select>
                     </div>
                 </div>

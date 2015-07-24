@@ -18,7 +18,7 @@
 								<em ng-show="ratetype.system_defined ===true"> {{'SYSTEM_DEFINED' | translate}}</em>
 							</a>
                         </td>
-                        <td ng-hide="currentClickedElement == $index" width="20%"><strong>{{rateTypeData.classification.description}}</strong></td>
+                        <td ng-hide="currentClickedElement == $index" width="20%"><strong>{{rateTypeData.classification.value}}</strong></td>
                         <td width="20%" ng-hide="currentClickedElement == $index" style="overflow: visible;">
                             <span class="tooltip-wrapper" ng-mouseenter="showRates($index, ratetype.id, ratetype.rate_count)" ng-mouseleave="mouseLeavePopover()">
 								<em>{{ratetype.rate_count}} rates</em>
