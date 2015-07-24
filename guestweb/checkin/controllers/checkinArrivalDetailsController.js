@@ -1,15 +1,24 @@
 (function() {
-	var checkinArrivalDetailsController = function($scope, preCheckinSrv,$rootScope,$state,$modal) {
 
+	var checkinArrivalDetailsController = function($scope, preCheckinSrv,$rootScope,$state,$modal,$stateParams) {
+	
 	var init = function(){
 
        $scope.hours = ["01","02","03","04","05","06","07","08","09","10","11","12"];
-       $scope.minutes = ["00","15","30","45"];
-       $scope.stayDetails = {
-       	"hour":"",
-       	"minute":"",
-       	"primeTime" : ""
-       };
+       if ($stateParams.isearlycheckin !=="undefined" && $stateParams.isearlycheckin) {
+       		$scope.stayDetails = {
+							       	"hour":$rootScope.earlyCheckinHour,
+							       	"minute":$rootScope.earlyCheckinMinute,
+							       	"primeTime" : $rootScope.earlyCheckinPM 
+							      };
+       }
+       else{
+	       	$scope.stayDetails = {
+							       	"hour":"",
+							       	"minute":"",
+							       	"primeTime" : ""
+							     };
+       }
 
 	   $scope.errorOpts = {
 	      backdrop: true,
@@ -22,6 +31,8 @@
 	        }
 	      }
 	    };
+	    $scope.checkinTime = (typeof $stateParams.time !=="undefined") ? $stateParams.time :"";
+	    
 	};
 	init();
 
@@ -46,12 +57,20 @@
 		 	"comments":$scope.stayDetails.comment
 		 }
 
-		preCheckinSrv.postStayDetails(dataTosend).then(function(response) {
-					//$scope.isLoading = false;
+
+		preCheckinSrv.postStayDetails(dataTosend).then(function(response) {					
+				if(response.early_checkin_available){
+					$rootScope.earlyCheckinHour   =  response.last_early_checkin_hour;
+					$rootScope.earlyCheckinMinute =  response.last_early_checkin_minute;
+					$rootScope.earlyCheckinPM     =  response.last_early_checkin_primetime;
+					$state.go('earlyCheckinOptions',{'time':response.checkin_time,'charge':response.early_checkin_charge,'id':response.early_checkin_offer_id});
+				}
+				else{
 					$state.go('preCheckinStatus');
-				},function(){
-					$scope.netWorkError = true;
-					$scope.isLoading = false;
+				}
+			},function(){
+				$scope.netWorkError = true;
+				$scope.isLoading = false;
 			});
 		}
 	}
@@ -59,7 +78,7 @@
 
 var dependencies = [
 '$scope',
-'preCheckinSrv','$rootScope','$state','$modal',
+'preCheckinSrv','$rootScope','$state','$modal','$stateParams',
 checkinArrivalDetailsController
 ];
 
