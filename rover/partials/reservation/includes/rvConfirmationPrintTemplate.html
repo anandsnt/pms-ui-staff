@@ -1,112 +1,220 @@
 <div id="confirmation-print-template">
-    <table width="650px" border="0" align="center" cellpadding="10" cellspacing="0" id="table_5e3f_0">
-        <tbody>
-              <tr>
-                    <td id="td_5e3f_0">                
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                            <tbody>
-                              <tr>
-                                <td width="30%">
-                                    <img src="/home/rahul/Desktop/headerlogo.jpg">
-                                </td>
-                                <td>
-                                    <img src="/home/rahul/Desktop/headerimage.jpg">
-                                </td>
-                              </tr>
-                            </tbody>
-                        </table>
-                    </td>
-              </tr>
-              <tr>
-                    <td >
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                            <tbody>
-                              <tr>
-                                <td width="50%" id="td_5e3f_1">CONFORMATION # @No</td>
-                                <td id="td_5e3f_2">@Date</td>
-                              </tr>
-                            </tbody>
-                        </table>
-                    </td>
-              </tr>
-              <tr>
-                    <td>
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0" id="table_5e3f_1">
-                            <tbody>
-                            <tr cellpadding="10" >
-                                <td width="45%" id="td_5e3f_3" >
-                                    <b><span>@Name</span><br></b>
-                                    <b><span>@Place</span><br></b>
-                                    <b><span>@Address</span><br></b>
-                                </td>                       
-                                <td width="25%" id="td_5e3f_4" align="right">
-                                    <span>Arrival Date :</span><br>
-                                    <span>Departure Date :</span><br>
-                                    <span>Room Type :</span><br>
-                                    <span>First Night Rate :</span><br>
-                                </td>
-                                <td  width="45%" id="td_5e3f_5">
-                                    <span>@Arrival Date</span><br>
-                                    <span>@Departure Date</span><br>
-                                    <span>@Room Type</span><br>
-                                    <span>@FirstNight Rate</span><br>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </td>
-              </tr>
-              <tr>
-                    <td>
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                            <tbody>
-                            <tr>
-                                <td width="30%" id="td_5e3f_6">
-                                    <p>Fullton Steam Boat Inn
-                                    <br>1 Hartman Bridge Road
-                                    <br>Lancaster, PA 17602
-                                    </p>
-                                    <p>
-                                        Ph:717 299 9999
-                                    </p>    
-                                    <p>
-                                        We are located at2150 Lincoln Highway,East Rocks, PA 17572, at The intersection  of Route 30 and Route 896
-                                    </p>                        
-                                    <p>
-                                        Location and Directions
-                                        <br>
-                                        fulltonsteamboatinn.com/directions/
-                                    </p>
-                                </td>
-                                <td id="td_5e3f_7">
-                                    <span>Dear </span> <span><b>&Jo, </b></span> <br>
-                                    <p>Thank you for choosing the Fulton Steamboat Inn for your accommodations in Lancaster County, PA!
-                                    We look forward providing you with the same service, style, and comfort that has made legendary riverboats famous.</p>
-                                    <p>
-                                    The following amenities are available on-board the Fulton Steamboat Inn for all passengers: The Emporium Gift Shoppe, Duck and Koi Feeding Pond, Outdoor ?Ship-Shape? Playground, heated indoor pool and whirlpool with adult swim 10p-12a daily, complimentary wi-fi internet access, adult fitness room, game room, and coin-operated laundry. Our entire facility fully ADA accessible.
-                                    </p>
-                                    <p>Check in time is 3pm, and departure is prior to 11am.
-                                    We are designated a fully non smoking facility. Any evidence of smoking in guest rooms, or any common areas, will result in a fee of up to $150.
-                                    </p>
-                                    <p>
-                                    If you find it necessary to cancel your reservation, please inform us 48 hours prior to your scheduled arrival. You must obtain a cancellation number(s), or a cancellation letter(s), when you terminate or alter your arrangements for each individual reservation in order to avoid a charge to your credit card as proof of your cancellation which you should retain. This number will clarify any disputes. One night's lodging, plus applicable tax (11%), will be charged to your credit card for any unclaimed reservations
-                                    <p>
-
-                                    <p>
-                                    Visit our website at FultonSteamBoatInn.com. We look forward to welcoming you aboard!
-                                    </p>
-                                    <p>
-                                        sincerly,
-                                    </p>
-                                    <p>
-                                        <span id="span_5e3f_0">Reservations</span>
-                                    </p>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </td>
-              </tr>
-        </tbody>
+    <table align='center' border='0' cellpadding='10' cellspacing='0' class"container-table">
+      <tbody>
+        <tr>
+          <td class="container-table-data">
+            <table cellpadding='0' cellspacing='0' class="table-common">
+              <tbody>
+                <tr>
+                  <td align='center' class="first-inner-table-data">
+                    <img src='data[location_image_for_pdf]' class="first-inner-table-image"/>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <table cellpadding='0' cellspacing='0' class="table-common">
+              <tbody>
+                <tr>
+                  <td class="second-inner-table-title">
+                    CONFIRMATION #:
+                    =@data[:confirmation_no]
+                  </td>
+                  <td class="second-inner-table-date">
+                    =@data[:date]
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <table  cellpadding='0' cellspacing='0' class="table-common third-inner-table">
+              <tbody>
+                <tr cellpadding='10'>
+                  <td class="third-inner-table-data">
+                        <!--Copied from HAML -->
+                   %b
+                    %span
+                      =@data[:guest_details][:guest_name_upcase]
+                      %br/                
+                    -if(!@data[:guest_details][:street1].blank? || !@data[:guest_details][:city].blank?)
+                      %b
+                        -if(!@data[:guest_details][:street1].blank?)
+                          %span 
+                            =@data[:guest_details][:street1]
+                            ,
+                        -if(!@data[:guest_details][:city].blank?)
+                          %span 
+                            =@data[:guest_details][:city]
+                            ,
+                        %br/
+                    -if(!@data[:guest_details][:state].blank? || !@data[:guest_details][:postal_code].blank?)
+                      %b
+                        -if(!@data[:guest_details][:state].blank?)
+                          %span 
+                            =@data[:guest_details][:state]
+                            ,
+                        -if(!@data[:guest_details][:postal_code].blank?)
+                          %span 
+                            =@data[:guest_details][:postal_code]
+                        <!--Copied from HAML  -->
+                  </td>
+                  <td align='right' class"third-inner-table-data-second">
+                    <table class="fourth-inner-table">
+                      <tr>
+                        <td align='right' class="data-label">
+                          <span>
+                            Arrival Date :
+                          </span>
+                        </td>
+                        <td class="data">
+                          =@data[:arrival_date]
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align='right' class="data-label">
+                          <span>
+                            Departure Date :
+                          </span>
+                        </td>
+                        <td class="data">
+                          =@data[:departure_date]
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align='right' class="data-label">
+                          <span>
+                            Room Type :
+                          </span>
+                        </td>
+                        <td class="data">
+                          =@data[:room_type]
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align='right' class="data-label">
+                          <span></span>
+                          Add-ons :
+                        </td>
+                        <td class="data">
+                          - list_items = ""
+                          -@addons.each do |addon|
+                            - list_items += addon.name
+                            -break if @addons.last == addon
+                            - list_items += ","
+                          =list_items
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align='right' class="data-label">
+                          <span>
+                            Average Daily Rate :
+                          </span>
+                        </td>
+                        <td class="data">
+                          <span>
+                            =@data[:adr]
+                          </span>
+                          <span>
+                            =@data[:currency_value]
+                          </span>
+                          <span>
+                            plus taxes
+                          </span>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <table cellpadding='0' cellspacing='0' class="table-common">
+              <tbody>
+                <tr>
+                  <td class="fifth-inner-table-data">
+                    <p>
+                      =@data[:hotel_details][:hotel_name]
+                      <br>
+                        =@data[:hotel_details][:street]
+                      <br>
+                      =@data[:hotel_details][:city] + ','                   
+                        =@data[:hotel_details][:state] + ' '                        
+                        =@data[:hotel_details][:zipcode]
+                    </p>
+                    <p>
+                      Ph:
+                      <span>
+                        =@data[:hotel_details][:phone]
+                      </span>
+                    </p>
+                    =@data[:confirmation_template_text]
+                    <p>
+                    </p>
+                    <p>
+                      Location and Directions:
+                      <br>
+                        <a href='http://www.fultonsteamboatinn.com/directions' class="location-direction">
+                          fultonsteamboatinn.com/directions/
+                        </a>
+                      </br>
+                    </p>
+                  </td>
+                  <td class="message-body">
+                    <span>Dear</span>
+                    <span>
+                      =@data[:guest_details][:guest_name] + ','
+                    </span>
+                    <br>
+                      <p>
+                        Thank you for choosing the Fulton Steamboat Inn for your accommodations in Lancaster County, PA!
+                        We look forward to providing you with the same service, style, and comfort that has made legendary riverboats famous.
+                      </p>
+                      <p>
+                        The following amenities are available on-board the Fulton Steamboat Inn for all passengers: The Emporium Gift Shoppe, Duck and Koi Feeding Pond, Outdoor “Ship-Shape” Playground, heated indoor pool and whirlpool with adult swim 10p-12a daily, complimentary wi-fi internet access, adult fitness room, game room, and coin-operated laundry.
+                        Our entire facility is fully
+                        <span class="uppercase">
+                          ada&nbsp;
+                        </span>
+                        accessible.
+                      </p>
+                      <p>
+                        Check in time is 3pm, and departure is prior to 11am.
+                        We are designated a fully non smoking facility.
+                        Any evidence of smoking in guest rooms, or any common areas, will result in a fee of up to $150.
+                      </p>
+                      <p>
+                        If you find it necessary to cancel your reservation, please inform us 48 hours prior to your scheduled arrival.
+                        You must obtain a cancellation number(s), or a cancellation letter(s), when you terminate or alter your arrangements for each individual reservation in order to avoid a charge to your credit card as proof of your cancellation which you should retain.
+                        This number will clarify any disputes.
+                        One night's lodging, plus applicable tax (11%), will be charged to your credit card for any unclaimed reservations
+                        <p>
+                          <p>
+                            Visit our website at FultonSteamBoatInn.com. We look forward to welcoming you aboard!
+                          </p>
+                          <p>
+                            Sincerly,
+                          </p>
+                          <p>
+                            <span class="signature">Reservations</span>
+                          </p>
+                        </p>
+                      </p>
+                    </br>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
     </table>
 </div>
