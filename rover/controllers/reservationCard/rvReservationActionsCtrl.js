@@ -12,6 +12,7 @@ sntRover.controller('reservationActionsController', [
 	'RVPaymentSrv','rvPermissionSrv',
 	'$timeout',
 	'$window',
+	'RVReservationSummarySrv',
 	function($rootScope,
 		$scope,
 		ngDialog,
@@ -23,7 +24,8 @@ sntRover.controller('reservationActionsController', [
 		RVDepositBalanceSrv,
 		$filter,
 		RVPaymentSrv,rvPermissionSrv, $timeout,
-		$window) {
+		$window,
+		RVReservationSummarySrv) {
 
 
 		BaseCtrl.call(this, $scope);
@@ -634,6 +636,7 @@ sntRover.controller('reservationActionsController', [
 			}
 			return showDepositBalanceButtonWithSR;
 		};
+
 		//Checking whether email is attached with guest card or not
 		$scope.isEmailAttached = function(){
 			var isEmailAttachedFlag = false;			
@@ -642,10 +645,32 @@ sntRover.controller('reservationActionsController', [
 				};				
 			return isEmailAttachedFlag;
 		};
+
+		var succesfullCallbackForEmailCancellation = function(data){
+			$scope.$emit('hideLoader');
+			$scope.DailogeState.successMessage = data.message;
+			$scope.DailogeState.failureMessage = '';
+
+		};
+		var failureCallbackForEmailCancellation = function(error){
+			$scope.$emit('hideLoader');
+			$scope.DailogeState.failureMessage = error[0];
+			$scope.DailogeState.successMessage = '';
+		};
+		
 		//Action against email button in staycard.
 		$scope.sendReservationCancellation = function(){
-			console.log("Implement email send Here");
+			var postData = {
+				"type":"cancellation",
+				"emails": $scope.isEmailAttached()?[$scope.guestCardData.contactInfo.email]:[$scope.DailogeState.sendConfirmatonMailTo]
+			};
+			var data = {
+				"postData": postData,
+				"reservationId": $scope.reservationData.reservation_card.reservation_id
+			};
+			$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data, succesfullCallbackForEmailCancellation, failureEmailCallback);
 		};
+
 		//Action against print button in staycard.
 		$scope.printReservationCancellation = function(){
 			console.log("Implement print here");
@@ -699,9 +724,22 @@ sntRover.controller('reservationActionsController', [
 			};
 			$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data, succesfullEmailCallback, failureEmailCallback);
 		};
+
 		//Print reservation confirmation.
-		$scope.printReservation =function() {					
-			printPage();			
+		$scope.printReservation =function() {
+			var succesfullCallback = function(data){
+				$scope.printData = data.data;
+				printPage();
+			};
+			var failureCallbackPrint = function(error){
+				$scope.ngData.failureMessage = error[0];
+			};
+            $scope.callAPI(RVReservationSummarySrv.fetchResservationConfirmationPrintData, {
+                successCallBack: succesfullCallback,
+                failureCallBack: failureCallbackPrint,
+                params: { 'reservation_id': $scope.reservationData.reservation_card.reservation_id }
+
+            });
 		};
 
 		// add the print orientation after printing
@@ -725,8 +763,6 @@ sntRover.controller('reservationActionsController', [
 	    	}, 100);
 			// remove the orientation after similar delay
 			$timeout(removePrintOrientation, 100);
-		};		
-
-
+		};
 	}
 ]);

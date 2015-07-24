@@ -19,6 +19,8 @@
     <fieldset id="reservation-canceled" ng-show ="DailogeState.isCancelled">
         <span class="h2 message">Reservation cancelled</span>
         <div id="status" class="notice {success or error}"></div>
+        <!-- Show when email button clicked -->
+        <div id="status" class="notice" ng-class="{'success':DailogeState.successMessage, 'error':DailogeState.failureMessage }" ng-show="DailogeState.successMessage || DailogeState.failureMessage">{{DailogeState.successMessage}}{{DailogeState.failureMessage}}</div>
         <div class="entry full-width" ng-hide="isEmailAttached()">
             <label for="guest-email">E-mail</label>
             <input name="guest-email" id="guest-email" value="" type="text" autocomplete="off" ng-model="DailogeState.sendConfirmatonMailTo"/>
@@ -32,7 +34,7 @@
                 <span class="icons icon-email"></span>
                 E-mail Cancellation Letter
             </button>
-            <button type="button" class="button with-icon blue" ng-click="printReservationCancellation()">
+            <button type="button" class="button with-icon blue" ng-click="printReservationCancellation()" ng-disabled="!printCancellationAndConfirmationLetters" ng-class="{ 'grey': !printCancellationAndConfirmationLetters }">
                 <span class="icons icon-print"></span> 
                 Print Cancellation Letter
             </button>
