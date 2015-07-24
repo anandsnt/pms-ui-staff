@@ -150,7 +150,6 @@ sntRover.controller('RateCalendarCtrl', [
             }
         };
 
-
         $scope.ready = {};
         $scope.ready.single = true;
         $scope.ready.double = true;
@@ -193,7 +192,6 @@ sntRover.controller('RateCalendarCtrl', [
                     break;
             }
         });
-
 
         /**
          * @returns totalnumber of dates {Number} to be displayed
@@ -242,7 +240,7 @@ sntRover.controller('RateCalendarCtrl', [
                 }
             }
         };
-        $scope.reloadingRooms = 0;
+        $scope.reloadingRooms = false;
         var loadTable = function() {
             $scope.currentExpandedRow = -1; //reset the expanded row
             $scope.loading = true;
@@ -369,10 +367,10 @@ sntRover.controller('RateCalendarCtrl', [
         });
 
         $scope.toggleAllRates = function() {
-            $scope.calendarData.data = [];
-
-            $scope.calendarData.restriction_types = [];
+            //if active toggle IS rates, ignore
             if ($scope.ratesRoomsToggle !== 'RATES') {
+                $scope.calendarData.data = [];
+                $scope.calendarData.restriction_types = [];
                 $scope.ratesRoomsToggle = 'RATES';
                 $scope.activeToggleButton = 'Rates';
                 loadTable();
@@ -596,7 +594,7 @@ sntRover.controller('RateCalendarCtrl', [
             } else {
                 $scope.popupData.rate_name = 'this';
             }
-
+            $stateParams.calendarMode = $scope.calendarMode;
             ngDialog.open({
                 template: '/assets/partials/rateManager/updatePriceAndRestrictions.html',
                 className: popupClassName,
