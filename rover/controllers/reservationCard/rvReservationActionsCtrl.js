@@ -9,6 +9,7 @@ sntRover.controller('reservationActionsController', [
 	'RVDepositBalanceSrv',
 	'$filter',
 	'rvPermissionSrv',
+	'$stateParams',
 	function($rootScope,
 		$scope,
 		ngDialog,
@@ -18,7 +19,8 @@ sntRover.controller('reservationActionsController', [
 		RVSearchSrv,
 		RVDepositBalanceSrv,
 		$filter,
-		rvPermissionSrv) {
+		rvPermissionSrv,
+		$stateParams) {
 
 		BaseCtrl.call(this, $scope);
 		var TZIDate = tzIndependentDate,
@@ -611,7 +613,7 @@ sntRover.controller('reservationActionsController', [
 		$scope.allowOverbook = function() { //check user permission for overbook_house
 			return rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
 		};
-                
+
 		var promptReinstate = function(isAvailable) {
 			ngDialog.open({
 				template: '/assets/partials/reservation/alerts/rvReinstate.html',
@@ -647,8 +649,12 @@ sntRover.controller('reservationActionsController', [
 					is_overbook: isOverBooking
 				},
 				//Handle Success
-				function() {
-					$scope.$emit('hideLoader');
+				function() {					
+					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+						"id": $stateParams.id || $scope.reservationData.reservationId,
+						"confirmationId": $stateParams.confirmationId || $scope.reservationData.confirmNum,
+						"isrefresh": false
+					});
 					$scope.closeDialog();
 				},
 				//Handle Failure
