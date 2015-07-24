@@ -4,7 +4,7 @@ admin.service('ADFloorSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
     * @return {object} room types list json
     */
 	this.fetch = function(){
-		
+
 		var deferred = $q.defer();
 		var url = '/api/floors.json';
 
@@ -12,10 +12,10 @@ admin.service('ADFloorSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
-  
+
    /*
     * To update room types data
     * @param {array} data of the modified room type
@@ -24,24 +24,24 @@ admin.service('ADFloorSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
 	this.updateFloor = function(data){
 
 		var deferred = $q.defer();
-		var url = '/api/floors/save';	
+		var url = '/api/floors/save';
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 
 	this.deleteFloor = function(data){
 
 		var deferred = $q.defer();
-		var url = '/api/floors/'+data.id;	
+		var url = '/api/floors/'+data.id;
 		ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 
@@ -55,14 +55,14 @@ admin.service('ADFloorSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
 			query: params.query,
 			floor_unassigned:true
 		};
-		var url = '/api/floors/rooms';	
+		var url = '/api/floors/rooms';
 		ADBaseWebSrvV2.getJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
-	};	
+	};
 
 
    	/*
@@ -72,13 +72,13 @@ admin.service('ADFloorSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
 	this.getFloorDetails = function(params){
 		var deferred = $q.defer();
 		var floorID = params.floorID;
-		var url = '/api/floors/' + floorID + ".json";	
+		var url = '/api/floors/' + floorID + ".json";
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
-	};	
+	};
 
 }]);

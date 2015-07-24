@@ -30,15 +30,15 @@ $scope.login = function(){
 		$scope.isLoggedIn = true;
 		// verify if hotel time is past midnight or not
 		$scope.isTimePastMidnight = (data.is_show_warning ==="true") ? false: true;
-	}	
+	}
 	var loginFailure = function(data){
 		$rootScope.$broadcast('hideLoader');
-		$scope.errorMessage = data;	
+		$scope.errorMessage = data;
 	}
 	var data = {"password":$scope.password};
 
-	$scope.invokeApi(RVEndOfDayModalSrv.login,data,loginSuccess,loginFailure);  
-	
+	$scope.invokeApi(RVEndOfDayModalSrv.login,data,loginSuccess,loginFailure);
+
 };
 $scope.startEndOfDayProcess = function(){
 	$scope.startProcess = true;
@@ -50,7 +50,7 @@ $scope.yesClick = function(){
 }
 
 $scope.continueClicked = function(){
-	
+
 	$scope.startProcessEnabled = false;
 	$rootScope.$broadcast('showLoader');
 // explicitly handled error callback to set $scope.startProcessEnabled
@@ -65,7 +65,7 @@ $scope.continueClicked = function(){
 		$rootScope.isBussinessDateChanging = true;
 		ngDialog.close();
 	}
-	$scope.invokeApi(RVEndOfDayModalSrv.startProcess,{},startProcessSuccess,startProcessFailure); 
+	$scope.invokeApi(RVEndOfDayModalSrv.startProcess,{},startProcessSuccess,startProcessFailure);
 };
 
 }]);

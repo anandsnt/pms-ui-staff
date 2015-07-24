@@ -9,11 +9,11 @@ angular.module('fauxMultiSelectModule', [])
         },
         link: function(scope, element, attrs) {
             var updateTitle = function() {
-                if ( scope.model.length == scope.source.length ) {
+                if ( scope.model.length === scope.source.length ) {
                     scope.fauxTitle = 'All Selected';
                 } else if ( scope.model.length > 1 ) {
                     scope.fauxTitle = scope.model.length + ' Selected';
-                } else if ( scope.model.length == 0 ) {
+                } else if ( scope.model.length === 0 ) {
                     scope.fauxTitle = 'Select';
                 };
             };
@@ -21,7 +21,7 @@ angular.module('fauxMultiSelectModule', [])
             var setupSelections = function() {
                 _.each(scope.source, function(item) {
                     var match = _.find(scope.model, function(id) {
-                        return id == item.id;
+                        return id === item.id;
                     });
 
                     item.selected = !!match ? true : false;

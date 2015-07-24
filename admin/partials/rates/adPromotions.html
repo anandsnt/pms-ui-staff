@@ -1,0 +1,158 @@
+<section id="promotions" class="content current" ng-hide="isLoading" ng-cloak ng-click="clearErrorMessage()">
+    <div>
+        <header class="content-title float">
+            <h2 translate>Promotions</h2>
+            <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
+            <a class="action add" ng-hide="!state.usePromos" ng-click="addPromo()" translate>ADD_NEW</a>
+            <ad-toggle-button is-checked="state.usePromos" button-class="activation" div-class="header-title" ng-click="toggleActivatePromotions()" label="Use promotions">
+            </ad-toggle-button>
+        </header>
+        <section class="content-scroll" ng-class="{'overlay' : !state.usePromos}">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div id="add-new" ng-show="state.current == 'NEW'" ng-include="'/assets/partials/rates/adAddPromotions.html'"></div>
+            <div id="new-form-holder"></div>
+            <table id="brands" class="grid datatable dataTable" ng-table="promotionsList" template-pagination="nil" ng-hide="state.promotions.length < 1">
+                <tbody>
+                    <tr ng-repeat="promo in state.promotions track by $index">
+                        <td data-item="1" data-title="'Name'" ng-click="onEditPromo(promo, $index)" header-class="width-26" ng-hide="state.current === $index">
+                            <a class="edit-data-inline">{{promo.name}}</a>
+                        </td>
+                        <td data-item="2" data-title="'From Date'" ng-click="onEditPromo(promo, $index)" header-class="width-18" ng-hide="state.current === $index">
+                            <a class="edit-data-inline">{{promo.from_date | date:dateFormat}}</a>
+                        </td>
+                        <td data-item="3" data-title="'To Date'" ng-click="onEditPromo(promo, $index)" header-class="width-18" ng-hide="state.current === $index">
+                            <a class="edit-data-inline">{{promo.to_date | date:dateFormat}}</a>
+                        </td>
+                        <td data-item="4" data-title="'Discount'" ng-click="onEditPromo(promo, $index)" header-class="width-18" ng-hide="state.current === $index">
+                            <a class="edit-data-inline">{{getDiscountText(promo.discount)}}</a>
+                        </td>
+                        <td data-item="5" data-title="'Status'" class="" header-class="width-10" ng-hide="state.current === $index">
+                            <div class="entry">
+                                <div class="switch-button single" ng-class="{ on: promo.is_active }">
+                                    <input type="checkbox" id="rates-addons" name="rates-addons" ng-click="toggleActivation(promo)">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-item="6" header-class="width-10" data-title="'Delete'" class="delete" ng-hide="state.current === $index">
+                            <a class="icons icon-delete large-icon" ng-click="deletePromo(promo)">Delete this Segment</a>
+                        </td>
+                        <td colspan="6" ng-show="state.current === $index">
+                            <div style="display: block;" id="add-new" class="edit-data">
+                                <div class="data-holder">
+                                    <!-- Edit promo -->
+                                    <form class="form inline-form float">
+                                        <div class="form-title">
+                                            <h3 translate><span>Edit&nbsp;</span>Promotion</h3>
+                                            <em class="status">{{'MANDATORY_FIELDS_MESSAGE1' | translate}}<strong>*</strong> {{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
+                                        </div>
+                                        <fieldset class="holder left float">
+                                            <ad-textbox value="promo.name" styleclass="full-width" label="{{'NAME' | translate}}" placeholder="{{'SEGMENTS_NAME_PLACEHOLDER' | translate}}" required="yes"></ad-textbox>
+                                            <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="promo.description" name="desc" id="desc" label="{{'DESCRIPTION' | translate}}" placeholder="Enter Promotion Description"></ad-textarea>
+                                        </fieldset>
+                                        <fieldset class="holder right float">
+                                            <div class="entry has-datepicker margin">
+                                                <label>{{'FROM_DATE' | translate}}
+                                                </label>
+                                                <input type="text" ng-model="state.from_date_display" readonly="" placeholder="Select Start Date" class="date-picker-input-small">
+                                                <button ng-click="popupCalendar('FROM')" class="ui-datepicker-trigger date-picker-small ui-datepicker-trigger-btn" type="button">
+                                                    ...
+                                                </button>
+                                                <div class="date-delete-wrapper">
+                                                    <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="promo.from_date = null; state.from_date_display = null; filterRates(promo);">&nbsp;</span>
+                                                </div>
+                                            </div>
+                                            <div class="entry has-datepicker margin">
+                                                <label>{{'TO_DATE' | translate}}
+                                                </label>
+                                                <input type="text" ng-model="state.to_date_display" readonly="" placeholder="Select End Date" class="date-picker-input-small">
+                                                <button ng-click="popupCalendar('TO')" class="ui-datepicker-trigger date-picker-small ui-datepicker-trigger-btn" type="button">
+                                                    ...
+                                                </button>
+                                                <div class="date-delete-wrapper">
+                                                    <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="promo.to_date = null;state.to_date_display = null;filterRates(promo);">&nbsp;</span>
+                                                </div>
+                                            </div>
+                                            <div class="entry">
+                                                <ad-textbox styleclass="full-width" value="promo.discount.value" name="amount" id="amount" label="Discount Amount[{{ currencySymbol }}]" placeholder="Enter the Discount"></ad-textbox>
+                                            </div>
+                                            <div class="entry">
+                                                <div class="entry full-width">
+                                                    <label for="amount-type-id">
+                                                        DISCOUNT TYPE
+                                                    </label>
+                                                    <div class="select">
+                                                        <select name="amount-type-id" id="amount-type-id" ng-model="promo.discount.type">
+                                                            <option value="" data-text="Not set" class="placeholder">Choose amount type</option>
+                                                            <!-- <option value="amount">{{'AMOUNT'|translate}}[{{ currencySymbol }}]</option> -->
+                                                            <option value="percent" translate>PERCENTAGE</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset class="holder full-width">
+                                            <div class="form-title">
+                                                <h3>
+                                                    <span>Assign to&nbsp;</span>                                                    
+                                                    Rate
+                                                </h3>
+                                            </div>
+                                            <div class="entry has-sortable">
+                                                <label class="center_align">
+                                                    <em class="rate_roomtype_text">Available Rates</em>
+                                                </label>
+                                                <ul class="boxes sortable ui-sortable short-list" data-type="source" ng-model="promo.availableRates" data-drop="true" style="overflow-y: scroll !important;" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:'.assigned-room-types'}">
+                                                    <li ng-repeat="rate in promo.availableRates" data-drag="true" ng-model="promo.availableRates" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" class="non-assigned-room-types li-draggable" ng-click="toggleAvailableRate($index)" ng-class='{selected: state.selectedAvailableRate === $index}'>
+                                                        <span class="icons icon-handle"></span>
+                                                        <span class="icons icon-handle"></span> {{rate.name}}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="entry movers rates_mover">
+                                                <div class="top_mover">
+                                                    <span class="icons icon-mover-right to-target" data-type="target" ng-click="linkSelectedRate(promo)" ng-class="{active: state.selectedAvailableRate > -1}" data-type="source">
+                                                        unassign room(s)
+                                                    </span>
+                                                    <span class="icons icon-mover-left to-source" data-type="source" ng-click="unlinkSelectedRate(promo)" ng-class="{active: state.selectedAssignedRate > -1}">
+                                                        Assign room(s)
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <div class="green_gradient icons">
+                                                        <span class="to-source green_mover icons_rates" data-type="source" ng-click="linkAllRates(promo)">Assign room(s)</span>
+                                                    </div>
+                                                    <div class="red_gradient icons">
+                                                        <span class="to-target  red_mover icons_rates" data-type="target" ng-click="unlinkAllRates(promo)">unassign room(s)</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="entry has-sortable">
+                                                <label class="center_align">
+                                                    <span class="assigned_room_text">Assigned to Rates</span></label>
+                                                <ul class="boxes sortable ui-sortable short-list" data-type="target" data-drop="true" ng-model="promo.assignedRates" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:'.non-assigned-room-types'}">
+                                                    <li ng-repeat="rate in promo.assignedRates" ng-model="promo.assignedRates" ng-click="toggleAssignedRate($index)" ng-class='{selected: state.selectedAssignedRate === $index}' class="assigned-room-types li-draggable" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" data-drag="true" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }">
+                                                        <span class="icons icon-handle"></span>
+                                                        <span class="icons icon-handle"></span> {{rate.name}}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </fieldset>
+                                        <div class="actions float">
+                                            <button type="button" id="cancel" class="button blank edit-data-inline" ng-click="onCancelEdit($index)" translate>
+                                                CANCEL
+                                            </button>
+                                            <button type="button" id="save" class="button green edit-data-inline" ng-click="updatePromo(promo)" translate>
+                                                SAVE_CHANGES
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</section>

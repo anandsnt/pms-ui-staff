@@ -1,5 +1,5 @@
 sntRover.controller('RVAddNewHotelLoyaltyController',['$scope', '$rootScope','RVGuestCardLoyaltySrv','ngDialog', function($scope, $rootScope,RVGuestCardLoyaltySrv,ngDialog){
-	
+
 	BaseCtrl.call(this, $scope);
 	$scope.userMembershipTypes = $scope.loyaltyData.hotelLoyaltyData;
 	$scope.userMembershipNumber = "";
@@ -14,7 +14,7 @@ sntRover.controller('RVAddNewHotelLoyaltyController',['$scope', '$rootScope','RV
 
 	 	angular.forEach($scope.userMembershipTypes,function(userMembershipType, index) {
 
-    		if($scope.userMembershipType == userMembershipType.hl_value){
+    		if($scope.userMembershipType === userMembershipType.hl_value){
      			$scope.userMembershipLevels = userMembershipType.levels;
      			if($scope.userMembershipLevels.length >0){
      				$scope.isLevelsAvailable = true;
@@ -31,8 +31,8 @@ sntRover.controller('RVAddNewHotelLoyaltyController',['$scope', '$rootScope','RV
 
 	$scope.save = function(){
 
-		var loyaltyPostsuccessCallback = function(data){	
-			$scope.newLoyalty.id = data.id;				
+		var loyaltyPostsuccessCallback = function(data){
+			$scope.newLoyalty.id = data.id;
 			$scope.$emit('hideLoader');
 			$scope.cancel();
 			$rootScope.$broadcast('loyaltyProgramAdded', $scope.newLoyalty);

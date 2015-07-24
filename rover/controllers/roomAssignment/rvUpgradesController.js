@@ -1,6 +1,6 @@
 
 sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgradesSrv', '$sce','$filter', 'ngDialog', '$timeout', function($scope, $state, $stateParams, RVUpgradesSrv, $sce, $filter, ngDialog, $timeout){
-	
+
 	BaseCtrl.call(this, $scope);
 	var title = $filter('translate')('ROOM_UPGRADES_TITLE');
 	$scope.setTitle(title);
@@ -26,11 +26,11 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 			$scope.headerData = data.header_details;
 			$scope.reservation_occupancy = $scope.headerData.reservation_occupancy;
 			$scope.setUpgradesDescriptionInitialStatuses();
-			setTimeout(function(){				
+			setTimeout(function(){
 				$scope.refreshScroller('upgradesView');
-				}, 
+				},
 			1000);
-			
+
 	});
 	$scope.imageLoaded = function(){
 		$scope.refreshScroller('upgradesView');
@@ -41,18 +41,18 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 	*/
 	$scope.showMaximumOccupancyDialog = function(index){
 		var showOccupancyMessage = false;
-		if($scope.upgradesList[index].room_max_occupancy != "" && $scope.reservation_occupancy != null){
+		if($scope.upgradesList[index].room_max_occupancy !== "" && $scope.reservation_occupancy !== null){
 				if(parseInt($scope.upgradesList[index].room_max_occupancy) < $scope.reservation_occupancy){
 					showOccupancyMessage = true;
 					$scope.max_occupancy = parseInt($scope.upgradesList[index].room_max_occupancy);
 			}
-		}else if($scope.upgradesList[index].room_type_max_occupancy != "" && $scope.reservation_occupancy != null){
+		}else if($scope.upgradesList[index].room_type_max_occupancy !== "" && $scope.reservation_occupancy !== null){
 				if(parseInt($scope.upgradesList[index].room_type_max_occupancy) < $scope.reservation_occupancy){
 					showOccupancyMessage = true;
 					$scope.max_occupancy = parseInt($scope.upgradesList[index].room_type_max_occupancy);
-				} 
+				}
 		}
-		
+
 		$scope.selectedUpgradeIndex = index;
 		if(showOccupancyMessage){
 			ngDialog.open({
@@ -64,11 +64,11 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 		}else{
 			$scope.selectUpgrade();
 		}
-		
+
 
 	};
 	$scope.occupancyDialogSuccess = function(){
-		$scope.selectUpgrade();			
+		$scope.selectUpgrade();
 	};
 
 
@@ -110,7 +110,7 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 		else {
 			$scope.$parent.errorMessage = error;
 		}
-	};	
+	};
 
 	/**
 	 * [borrowFromOtherRoomType description]
@@ -122,7 +122,7 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 			$scope.selectUpgrade ();
 		}, 300);
 	};
-	/*** THIS IS JUST REPEATATION OF rvUpgradesCtrl.js's upgrade. I dont 
+	/*** THIS IS JUST REPEATATION OF rvUpgradesCtrl.js's upgrade. I dont
 	*** know why upgrade is in two file and two controller, WTH.
 	***/
 
@@ -135,7 +135,7 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 			selectedListItem 	= $scope.upgradesList[index];
 
 		var params = {};
-		
+
 
 		//CICO-17082
 		params.forcefully_assign_room 	= wanted_to_forcefully_assign;
@@ -143,7 +143,7 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 
 		params.reservation_id 	= parseInt($stateParams.reservation_id, 10);
 		params.upsell_amount_id = parseInt(selectedListItem.upsell_amount_id, 10);
-		params.room_no 			= selectedListItem.upgrade_room_number; 
+		params.room_no 			= selectedListItem.upgrade_room_number;
 
 		_.extend($scope.selectedUpgrade,
 		{
@@ -151,9 +151,9 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 			room_no 		: selectedListItem.upgrade_room_number,
 			room_type_name 	: selectedListItem.upgrade_room_type_name,
 			room_type_code 	: selectedListItem.upgrade_room_type,
-			room_type_level	: parseInt(selectedListItem.room_type_level),
+			room_type_level	: parseInt(selectedListItem.room_type_level)
 		});
-		
+
 		//yes. ALL set. Go!
 		var options = {
             params 			: params,
@@ -162,7 +162,7 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
             successCallBackParameters: 	{ selectedListItem: selectedListItem}
         };
         $scope.callAPI(RVUpgradesSrv.selectUpgrade, options);
-	};				
+	};
 
 	/**
 	* function to show and hide the upgrades detail view
@@ -183,13 +183,12 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 		}
 		$scope.eventTimestamp = $event.timeStamp;
 		$scope.refreshScroller('upgradesView');
-		
+
 	};
 	$scope.isDescriptionVisible = function(index){
 		return $scope.upgradesDescriptionStatusArray[index];
 	};
 
-	
 
 	/**
 	* function to set the initial display status for the upgrade details for all the upgrades
@@ -197,19 +196,19 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 	*/
 	$scope.setUpgradesDescriptionInitialStatuses = function(){
 		$scope.upgradesDescriptionStatusArray = new Array($scope.upgradesList.length);
-		for (var i = 0; i < $scope.upgradesDescriptionStatusArray.length; i++) 
-			{ 
+		for (var i = 0; i < $scope.upgradesDescriptionStatusArray.length; i++)
+			{
 				$scope.upgradesDescriptionStatusArray[i] = false;
 				$scope.upgradesList[i].upgrade_room_description = $sce.trustAsHtml($scope.upgradesList[i].upgrade_room_description);
 			}
 	};
 
 	/**
-	* In upgrades we would display rooms Inspected & vacant(color - green) or outof service (grey). 
-	*/ 
+	* In upgrades we would display rooms Inspected & vacant(color - green) or outof service (grey).
+	*/
 	$scope.getRoomStatusClass = function(room){
 		var statusClass = "ready";
-		if(room.is_oos == "true"){
+		if(room.is_oos === "true"){
 			return "room-grey";
 		}
 		return statusClass;

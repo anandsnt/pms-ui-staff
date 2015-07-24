@@ -1,5 +1,5 @@
-admin.controller('ADFrequentFlyerProgramCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADFrequentFlyerProgramSrv','ngTableParams','$filter',
-function($scope, $state, $rootScope, $stateParams, ADFrequentFlyerProgramSrv, ngTableParams, $filter) {
+admin.controller('ADFrequentFlyerProgramCtrl', ['$scope', '$state', '$stateParams', 'ADFrequentFlyerProgramSrv','ngTableParams','$filter', '$rootScope',
+function($scope, $state, $stateParams, ADFrequentFlyerProgramSrv, ngTableParams, $filter,$rootScope) {
 	BaseCtrl.call(this, $scope);
 
 	$scope.fetchFFP = function() {
@@ -35,7 +35,7 @@ function($scope, $state, $rootScope, $stateParams, ADFrequentFlyerProgramSrv, ng
 	$scope.fetchFFP();
 
 
-	
+
 
 	/**
 	 *   A post method to update Frequent Flyer Program  for a hotel
@@ -58,7 +58,7 @@ function($scope, $state, $rootScope, $stateParams, ADFrequentFlyerProgramSrv, ng
 
 		$scope.invokeApi(ADFrequentFlyerProgramSrv.switchToggle, data, postSuccess);
 	};
-        
+
 	$scope.activateMainInactivate = function(currentStatus){
 		var nextStatus = !$scope.use_ffp;
 		var data = {
@@ -66,11 +66,12 @@ function($scope, $state, $rootScope, $stateParams, ADFrequentFlyerProgramSrv, ng
 		};
 		var successCallbackActivateMainInactivate = function(data){
 			$scope.use_ffp = !$scope.use_ffp;
+			$rootScope.isFFPActive = $scope.use_ffp;
 			$scope.$emit('hideLoader');
 		};
 		$scope.invokeApi(ADFrequentFlyerProgramSrv.switchMainToggle, data , successCallbackActivateMainInactivate);
-                
-                
+
+
 	};
         $scope.getTitleAligned = function(title){
             return title;

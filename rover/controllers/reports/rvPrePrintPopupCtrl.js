@@ -68,10 +68,10 @@ sntRover.controller('RVPrePrintPopupCtrl', [
 				year,
 				date;
 
-			if ( format == 'MM-DD-YYYY' || format == 'MM/DD/YYYY' ) {
+			if ( format === 'MM-DD-YYYY' || format === 'MM/DD/YYYY' ) {
 				day   = parseInt( value.substring(3, 5) );
 				month = parseInt( value.substring(0, 2) );
-			} else if ( format == 'DD-MM-YYYY' || format == 'DD/MM/YYYY' ) {
+			} else if ( format === 'DD-MM-YYYY' || format === 'DD/MM/YYYY' ) {
 				day   = parseInt( value.substring(0, 2) );
 				month = parseInt( value.substring(3, 5) );
 			};

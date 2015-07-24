@@ -50,7 +50,8 @@
 "SUPPORTED_KEY_CARD_TYPES": "Supported key card types",
 "MIFARE_AUTHENTICATION": "MiFare Authentication",
 "OTHER_SETTINGS" : "Other settings",
-"AUTHENTICATION_KEY_TYPE" : "Authentication key types"
+"AUTHENTICATION_KEY_TYPE" : "Authentication key types",
+"ROOM ASSIGNMENT HIGHEST TO LOWEST":"Room assignment highest to lowest"
 
 
 

@@ -4,7 +4,7 @@ admin.service('ADExternalPmsConnectivitySrv',['$http', '$q', 'ADBaseWebSrv', fun
     * @return {object} external connectivity details
     */
 	this.getExternalPmsConnectivityDetails = function(){
-		
+
 		var deferred = $q.defer();
 		var url = '/admin/get_pms_connection_config.json';
 
@@ -12,10 +12,10 @@ admin.service('ADExternalPmsConnectivitySrv',['$http', '$q', 'ADBaseWebSrv', fun
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
-	
+
    /*
     * To test connectivity
     * @param {array} data of the connectivity
@@ -23,14 +23,16 @@ admin.service('ADExternalPmsConnectivitySrv',['$http', '$q', 'ADBaseWebSrv', fun
     */
 	this.testConnectivity = function(data){
 		var deferred = $q.defer();
-		var url = '/admin/test_pms_connection';	
+		var url = '/admin/test_pms_connection';
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
-			if(typeof data === 'string') data = [data];
+			if(typeof data === 'string') {
+				data = [data];
+			}
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
    /*
@@ -40,14 +42,14 @@ admin.service('ADExternalPmsConnectivitySrv',['$http', '$q', 'ADBaseWebSrv', fun
     */
 	this.saveConnectivity = function(data){
 		var deferred = $q.defer();
-		var url = '/admin/save_pms_connection_config';	
+		var url = '/admin/save_pms_connection_config';
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
-   
+
 }]);

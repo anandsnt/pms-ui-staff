@@ -8,7 +8,7 @@ var Room = React.createClass({
 		var props = this.props,
 			room_meta = props.meta.room;
 		return React.DOM.li({
-			className: 'room-title' + (!(props.data[room_meta.hk_status] == "") ? ' ' + this.props.data[room_meta.hk_status] : '')
+			className: 'room-title' + (!(props.data[room_meta.hk_status] === "") ? ' ' + this.props.data[room_meta.hk_status] : '')
 		},
 		React.DOM.span({
 			className: 'number'
