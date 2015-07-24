@@ -5,27 +5,16 @@ admin.service('ADReservationToolsSrv', [
     function ( $q, ADBaseWebSrv, ADBaseWebSrvV2) {
 
         /**
-         * All API urls
-         * @type {Object}
-         */
-        this.apis = {
-            'ALL_JOBS'     : 'api/schedule_jobs',
-            'JOB_DETAILS'  : 'api/schedule_job/',
-            'SCHEDULE_JOB' : 'api/schedule_job',
-            'JOB_STATUS'   : 'api/schedule_job/status/'
-        };
-
-        /**
          * Fetch all available jobs
          * @return {Array} An array of objects with 'id', 'job_name' and 'description'
          */
         this.fetchAllJobs = function() {
             var deferred = $q.defer(),
-                url      = this.apis['ALL_JOBS'];
+                url      = 'api/schedule_jobs';
 
             ADBaseWebSrvV2.getJSON(url)
                 .then(function(data) {
-                    deferred.resolve(data);
+                    deferred.resolve(data.results);
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
                 });
@@ -40,7 +29,7 @@ admin.service('ADReservationToolsSrv', [
          */
         this.fetchJobDetails = function(params) {
             var deferred = $q.defer(),
-                url      = this.apis['JOB_DETAILS'] + params.id;
+                url      = 'api/schedule_jobs/' + params.id;
 
             ADBaseWebSrvV2.getJSON(url)
                 .then(function(data) {
@@ -54,14 +43,14 @@ admin.service('ADReservationToolsSrv', [
 
         /**
          * Post a schedule job
-         * @param  {Object} params Contains the begin date 
-         * @return {Object}        An object with the job status
+         * @param  {Object} params Contains the begin/end date and job id 
+         * @return {Object}        An object with the job's current status
          */
         this.postScheduleJob = function(params) {
             var deferred = $q.defer(),
-                url      = this.apis['SCHEDULE_JOB'] + params.id;
+                url      = 'api/schedule_jobs';
 
-            ADBaseWebSrvV2.postJSON(url)
+            ADBaseWebSrvV2.postJSON(url, params)
                 .then(function(data) {
                     deferred.resolve(data);
                 }, function(errorMessage) {
@@ -75,13 +64,13 @@ admin.service('ADReservationToolsSrv', [
          * Check the current status of job
          * @return {Object} Only the current status of the job
          */
-        this.postCheckJobStatus = function() {
+        this.checkJobStatus = function(params) {
             var deferred = $q.defer(),
-                url      = this.apis['JOB_STATUS'] + params.id;
+                url      = 'api/schedule_jobs/' + params.id + '/status';
 
-            ADBaseWebSrvV2.postJSON(url)
+            ADBaseWebSrvV2.getJSON(url)
                 .then(function(data) {
-                    deferred.resolve(data);
+                    deferred.resolve(data.job_status);
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
                 });
