@@ -7,7 +7,7 @@
               <tbody>
                 <tr>
                   <td align='center' class="first-inner-table-data">
-                    <img src='data[location_image_for_pdf]' class="first-inner-table-image"/>
+                    <img src='{{ printData.location_image_for_pdf }}' class="first-inner-table-image"/>
                   </td>
                 </tr>
               </tbody>
@@ -21,10 +21,10 @@
                 <tr>
                   <td class="second-inner-table-title">
                     CONFIRMATION #:
-                    =@data[:confirmation_no]
+                    {{ printData.confirmation_no }}
                   </td>
                   <td class="second-inner-table-date">
-                    =@data[:date]
+                    {{ printData.date }}
                   </td>
                 </tr>
               </tbody>
@@ -38,7 +38,7 @@
                 <tr cellpadding='10'>
                   <td class="third-inner-table-data">
                         <!--Copied from HAML -->
-                   %b
+                  %b
                     %span
                       =@data[:guest_details][:guest_name_upcase]
                       %br/                
@@ -73,7 +73,7 @@
                           </span>
                         </td>
                         <td class="data">
-                          =@data[:arrival_date]
+                          {{ printData.arrival_date }}
                         </td>
                       </tr>
                       <tr>
@@ -83,7 +83,7 @@
                           </span>
                         </td>
                         <td class="data">
-                          =@data[:departure_date]
+                          {{ printData.departure_date }}
                         </td>
                       </tr>
                       <tr>
@@ -93,7 +93,7 @@
                           </span>
                         </td>
                         <td class="data">
-                          =@data[:room_type]
+                          {{ printData.room_type }}
                         </td>
                       </tr>
                       <tr>
@@ -118,10 +118,10 @@
                         </td>
                         <td class="data">
                           <span>
-                            =@data[:adr]
+                            {{ printData.adr }}
                           </span>
                           <span>
-                            =@data[:currency_value]
+                            {{ printData.currency_value }}
                           </span>
                           <span>
                             plus taxes
@@ -142,21 +142,19 @@
                 <tr>
                   <td class="fifth-inner-table-data">
                     <p>
-                      =@data[:hotel_details][:hotel_name]
+                        {{ printData.hotel_details.hotel_name }}
                       <br>
-                        =@data[:hotel_details][:street]
+                        {{ printData.hotel_details.street }}
                       <br>
-                      =@data[:hotel_details][:city] + ','                   
-                        =@data[:hotel_details][:state] + ' '                        
-                        =@data[:hotel_details][:zipcode]
+                      {{ printData.hotel_details.city }} , {{ printData.hotel_details.state }} , {{ printData.hotel_details.zipcode }}
                     </p>
                     <p>
                       Ph:
                       <span>
-                        =@data[:hotel_details][:phone]
+                        {{ printData.hotel_details.phone }}
                       </span>
                     </p>
-                    =@data[:confirmation_template_text]
+                        {{ printData.confirmation_template_text }}
                     <p>
                     </p>
                     <p>
@@ -171,7 +169,7 @@
                   <td class="message-body">
                     <span>Dear</span>
                     <span>
-                      =@data[:guest_details][:guest_name] + ','
+                        {{ printData.guest_details.guest_name }} ,
                     </span>
                     <br>
                       <p>
