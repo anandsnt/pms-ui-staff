@@ -32,9 +32,9 @@ sntRover.controller('RVHKWorkTabCtrl', [
 		$scope.isOpen      = null;
 
 		var $_updateWorkStatusFlags = function() {
-			$scope.isStarted   = $scope.roomDetails.work_status == $_workStatusList['inProgress'] ? true : false;
-			$scope.isCompleted = $scope.roomDetails.work_status == $_workStatusList['completed']  ? true : false;
-			$scope.isOpen      = $scope.roomDetails.work_status == $_workStatusList['open']       ? true : false;
+			$scope.isStarted   = $scope.roomDetails.work_status === $_workStatusList['inProgress'] ? true : false;
+			$scope.isCompleted = $scope.roomDetails.work_status === $_workStatusList['completed']  ? true : false;
+			$scope.isOpen      = $scope.roomDetails.work_status === $_workStatusList['open']       ? true : false;
 		};
 
 		// only for standalone will these get typecasted to booleans
@@ -45,9 +45,9 @@ sntRover.controller('RVHKWorkTabCtrl', [
 		// default room HK status
 		// will be changed only for connected
 		if ( !$scope.isStandAlone ) {
-			if ( $scope.roomDetails.hk_status_list[0].value == 'OS' ) {
+			if ( $scope.roomDetails.hk_status_list[0].value === 'OS' ) {
 				$scope.ooOsTitle = 'Out Of Service';
-			} else if ( $scope.roomDetails.hk_status_list[0].value == 'OO' ) {
+			} else if ( $scope.roomDetails.hk_status_list[0].value === 'OO' ) {
  				$scope.ooOsTitle = 'Out Of Order';
 			} else {
 				$scope.ooOsTitle = false;
@@ -67,15 +67,15 @@ sntRover.controller('RVHKWorkTabCtrl', [
 		}
 
 		$scope.checkShow = function(from) {
-			if ( from == 'clean' && ($scope.roomDetails.current_hk_status == 'CLEAN' || $scope.roomDetails.current_hk_status == 'INSPECTED') ) {
+			if ( from === 'clean' && ($scope.roomDetails.current_hk_status === 'CLEAN' || $scope.roomDetails.current_hk_status === 'INSPECTED') ) {
 				return true;
 			};
 
-			if ( from == 'dirty' && $scope.roomDetails.current_hk_status == 'DIRTY' ) {
+			if ( from === 'dirty' && $scope.roomDetails.current_hk_status === 'DIRTY' ) {
 				return true;
 			};
 
-			if ( from == 'pickup' && $scope.roomDetails.current_hk_status == 'PICKUP' ) {
+			if ( from === 'pickup' && $scope.roomDetails.current_hk_status === 'PICKUP' ) {
 				return true;
 			};
 
@@ -89,11 +89,11 @@ sntRover.controller('RVHKWorkTabCtrl', [
 			}
 
 			var hkStatusItem = _.find($scope.roomDetails.hk_status_list, function(item) {
-				return item.value == $scope.roomDetails.current_hk_status;
+				return item.value === $scope.roomDetails.current_hk_status;
 			});
 
 			var data = {
-				'room_no': $scope.roomDetails.current_room_no, 
+				'room_no': $scope.roomDetails.current_room_no,
 				'hkstatus_id': hkStatusItem.id
 			}
 
@@ -101,7 +101,7 @@ sntRover.controller('RVHKWorkTabCtrl', [
 		};
 
 
-		// start working 
+		// start working
 		$scope.startWorking = function() {
 			var callback = function() {
 				$scope.$emit('hideLoader');
@@ -127,7 +127,7 @@ sntRover.controller('RVHKWorkTabCtrl', [
 				// update local data
 				$scope.roomDetails.work_status = $_workStatusList['completed'];
 				$_updateWorkStatusFlags();
-				
+
 				// since this value could be empty
 				if ( !!$scope.roomDetails.task_completion_status ) {
 					// update 'current_hk_status' to 'task_completion_status', this should call '$scope.manualRoomStatusChanged'

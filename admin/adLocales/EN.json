@@ -329,12 +329,14 @@
 "EARLY_CHECKIN_START_TIME" : "Start Time",
 "EARLY_CHECKIN_CHARGE" : "Charge",
 "EARLY_CHECKIN_ADDON" : "Add On",
-"EARLY_CHECKIN_BY_RATE" : "Allow Early Checkin By Rate",
+"EARLY_CHECKIN_BY_RATE" : "RATE CODES BYPASS EARLY CHECK IN OFFER",
 "SELECT_RATE" : "Select Rate",
 "ADD_RATE": "Add Rate",
 "RATES": "Rates",
 "NUMBER_OF_EARLY_CHECKINS_PER_DAY" : "Number Of Early Checkin Upsells Per Day",
 "NUMBER_OF_EARLY_CHECKIN_UPSELLS_PER_DAY": "Number Of Early Checkin Upsells Per Day",
+"LIMITED_EARLY_CHECK_IN_BY_ROOM_TYPE":"LIMITED EARLY CHECK IN UP SELL BY ROOM TYPE",
+"BLOCK_CODES_TO_EXCLUDE_FROM_EARLY_CHECK_IN":"BLOCK CODES TO EXCLUDE FROM EARLY CHECK IN",
 
 
 "EMAIL_BLACKLIST_HEADER": "Email Blacklist",
@@ -453,6 +455,7 @@
 "FREQUENT_FLYER_PROGRAMS":"Frequent Flyer Programs",
 "USE_FREQUENT_FLYERS":"Use Frequent Flyers",
 "HOTEL_LOYALTY_PROGRAMS":"Hotel Loyalty Programs",
+"HOTEL_LOYALTY_PROGRAM":"Hotel Loyalty Program",
 "USE_LOYALTY":"Use Loyalty",
 "PROGRAM_NAME_PLACEHOLDER":"Enter program name",
 "CODE_NAME_PLACEHOLDER":"Enter program code",
@@ -541,6 +544,8 @@
 	"ROVER_ONLY":"Rover Payments Only",
 	"WEB_ONLY":"Web Payments Only",
 	"DISPLAY_REFERENCE":"Display Reference",
+	"CREDIT_CARD_PROCESSOR": "Custom Credit Card Processor"
+,
 "PERMISSIONS" : "Permissions",
 "ASSIGNED_PERMISSIONS" : "Assigned Permissions",
 "PERMISSIONS_PLACEHOLDER1" : "Drop a permission here to assign it to the user",
@@ -713,7 +718,8 @@
 "SUPPORTED_KEY_CARD_TYPES": "Supported key card types",
 "MIFARE_AUTHENTICATION": "MiFare Authentication",
 "OTHER_SETTINGS" : "Other settings",
-"AUTHENTICATION_KEY_TYPE" : "Authentication key types"
+"AUTHENTICATION_KEY_TYPE" : "Authentication key types",
+"ROOM ASSIGNMENT HIGHEST TO LOWEST":"Room assignment highest to lowest"
 
 
 
@@ -849,11 +855,24 @@
 	"ENTER_SOCIAL_NETWORK_URL": "Enter Social Network URL",
 	"SOCIAL_NETWORK_URL": "Social Network URL",
 	"SOCIAL_NETWORK" : "Social Network",
-	"CONFIRMATION_LETTER_TEXT" : "CONFIRMATION LETTER TEXT"
+	"CONFIRMATION_LETTER_TEXT" : "CONFIRMATION LETTER TEXT",
+	"SEND_CANCELLATION_LETTER":"Send Cancellation Letter"
 
 
 
 
+,"SYNXIS_SETUP_HEADER": "Synxis Setup",
+"SYNXIS_SUB_TITLE": "Synxis API Access Configuration",
+"MAPPINGS_ACTIVATE_INACTIVATE": "Mappings - Activate/Inactivate",
+"SYNXIS_FULL_REFRESH": "Full Refresh",
+"SYNXIS_LAST_REFRESH": "Last Refresh",
+"RUN_REFRESH_BUTTON": "Run",
+"SYNXIS_USERNAME_LABEL": "User Name",
+"SYNXIS_DEFAULT_BOOKING_ORIGIN": "Default Origin of Booking",
+"SYNXIS_DEFAULT_PAYMENT_METHOD": "Default Payment Method",
+"SYNXIS_PASSWORD_LABEL": "Password",
+"SYNXIS_ACCESS_URL_LABEL": "Access URL",
+"SYNXIS_REQUESTOR_ID_LABEL": "Requester ID"
 ,
 
 

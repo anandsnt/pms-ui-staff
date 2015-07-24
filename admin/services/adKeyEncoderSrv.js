@@ -1,6 +1,6 @@
 admin.service('ADKeyEncoderSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
     function ($http, $q, ADBaseWebSrvV2, ADBaseWebSrv) {
-       
+
         this.fetchEncoders = function (data) {
             var deferred = $q.defer();
 

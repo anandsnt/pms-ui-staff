@@ -61,12 +61,12 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 				company: {
 					id: null, // if new company, then it is null, other wise his id
 					name: '',
-					corporateid: '', // Add different fields for company as in story
+					corporateid: '' // Add different fields for company as in story
 				},
 				travelAgent: {
 					id: null, // if new , then it is null, other wise his id
 					name: '',
-					iataNumber: '', // Add different fields for travelAgent as in story
+					iataNumber: '' // Add different fields for travelAgent as in story
 				},
 				paymentType: {
 					type: {},
@@ -83,9 +83,10 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 					reservationType: '',
 					origin: ''
 				},
-				promotion: {
-					promotionCode: '',
-					promotionType: ''
+				code: {
+					id: '',
+					type: '',
+					discount: {}
 				},
 				status: '', //reservation status
 				reservationId: '',
@@ -96,7 +97,15 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 				reservation_card: {},
 				number_of_infants: 0,
 				number_of_adults: 0,
-				number_of_children: 0
+				number_of_children: 0,
+				member: {
+					isSelected: false,
+					value: ""
+				},
+				guestMemberships: {
+					hlp: [],
+					ffp: []
+				}
 			};
 		}
 
@@ -184,8 +193,8 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 			var hourMinutes = timeParts[0].split(":");
 			hourMinutes[1] = (15 * Math.round(hourMinutes[1] / 15) % 60).toString();
 			return {
-				hh: hourMinutes[0].length == 1 ? "0" + hourMinutes[0] : hourMinutes[0],
-				mm: hourMinutes[1].length == 1 ? "0" + hourMinutes[1] : hourMinutes[1],
+				hh: hourMinutes[0].length === 1 ? "0" + hourMinutes[0] : hourMinutes[0],
+				mm: hourMinutes[1].length === 1 ? "0" + hourMinutes[1] : hourMinutes[1],
 				ampm: timeParts[1]
 			}
 		}
@@ -195,15 +204,15 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 			if (numNights < 2) {
 				return false;
 			}
-			// If number of nights is more than one, then need to check across the occupancies 
+			// If number of nights is more than one, then need to check across the occupancies
 			var numInitialAdults = stayDates[arrivalDate].guests.adults,
 				numInitialChildren = stayDates[arrivalDate].guests.children,
 				numInitialInfants = stayDates[arrivalDate].guests.infants,
 				occupancySimilarity = _.filter(stayDates, function(stayDateInfo, date) {
-					return date != departureDate &&
-						stayDateInfo.guests.adults == numInitialAdults &&
-						stayDateInfo.guests.children == numInitialChildren &&
-						stayDateInfo.guests.infants == numInitialInfants;
+					return date !== departureDate &&
+						stayDateInfo.guests.adults === numInitialAdults &&
+						stayDateInfo.guests.children === numInitialChildren &&
+						stayDateInfo.guests.infants === numInitialInfants;
 				});
 
 			return occupancySimilarity.length < numNights;
@@ -213,10 +222,10 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 			if (numNights < 2) {
 				return false;
 			}
-			// If number of nights is more than one, then need to check across the occupancies 
+			// If number of nights is more than one, then need to check across the occupancies
 			var arrivalRate = stayDates[arrivalDate].rate.id,
 				similarRates = _.filter(stayDates, function(stayDateInfo, date) {
-					return date != departureDate && stayDateInfo.rate.id == arrivalRate;
+					return date !== departureDate && stayDateInfo.rate.id === arrivalRate;
 				});
 			return (similarRates.length < numNights);
 		}
@@ -229,7 +238,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 				showSelectedCreditCard = false;
 			//---------------------- ReservationData -------------------------------------------------------------------------//
 			reservationData.status = stayCard.reservation_status; //status
-			reservationData.inHouse = stayCard.reservation_status == "CHECKEDIN";
+			reservationData.inHouse = stayCard.reservation_status === "CHECKEDIN";
 			reservationData.group = { //group
 				id: stayCard.group_id,
 				name: stayCard.group_name
@@ -241,13 +250,16 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 			reservationData.departureDate = stayCard.departure_date;
 			reservationData.numNights = stayCard.total_nights;
 			reservationData.isHourly = stayCard.is_hourly_reservation;
+			reservationData.number_of_adults =stayCard.number_of_adults;
+			reservationData.number_of_children =stayCard.number_of_children;
+			reservationData.number_of_infants =stayCard.number_of_infants;
 			//CICO-6135
 			if (stayCard.arrival_time) { //  reservationDetails.reservation_card.departureDate ! = null
 				reservationData.checkinTime = self.parseTime(stayCard.arrival_time);
 			}
 			if (stayCard.is_opted_late_checkout && stayCard.late_checkout_time) { // Handling late checkout
 				reservationData.checkoutTime = self.parseTime(stayCard.late_checkout_time);
-			} else if (stayCard.departure_time) { //  reservationDetails.reservation_card.departureDate ! = null   
+			} else if (stayCard.departure_time) { //  reservationDetails.reservation_card.departureDate ! = null
 				reservationData.checkoutTime = self.parseTime(stayCard.departure_time);
 			}
 			// Cards
@@ -283,7 +295,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 
 			reservationData.is_modified = false;
 			angular.forEach(stayCard.stay_dates, function(item, index) {
-				reservationData.is_modified = item.rate.actual_amount != item.rate.modified_amount;
+				reservationData.is_modified = item.rate.actual_amount !== item.rate.modified_amount;
 				reservationData.stayDays.push({
 					date: dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd'),
 					dayOfWeek: dateFilter(new tzIndependentDate(item.date), 'EEE'),
@@ -302,7 +314,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 					}
 					// TODO : Extend for each stay dates
 				roomDetails.rateId.push(item.rate_id);
-				if (index == 0) {
+				if (index === 0) {
 					roomDetails.roomTypeId = item.room_type_id;
 					roomDetails.roomTypeName = stayCard.room_type_description
 					RVReservationStateService.bookMark.lastPostedRate = item.rate_id;
@@ -323,7 +335,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 			if (stayCard.payment_method_used !== "" && stayCard.payment_method_used !== null) {
 				reservationData.paymentType.type.description = stayCard.payment_method_description;
 				reservationData.paymentType.type.value = stayCard.payment_method_used;
-				if (reservationData.paymentType.type.value == "CC") { // I dont have any idea on what the following section of code does... Originally commit d1021861 --> https://github.com/StayNTouch/pms/commit/d1021861
+				if (reservationData.paymentType.type.value === "CC") { // I dont have any idea on what the following section of code does... Originally commit d1021861 --> https://github.com/StayNTouch/pms/commit/d1021861
 					var paymentDetails = stayCard.payment_details;
 					renderData.creditCardType = paymentDetails.card_type_image.replace(".png", "").toLowerCase();
 					renderData.endingWith = paymentDetails.card_number;
@@ -332,7 +344,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 					reservationData.selectedPaymentId = paymentDetails.id;
 					//CICO-11579 - To show credit card if C&P swiped or manual.
 					//In other cases condition in HTML will work
-					if ($rootScope.paymentGateway == "sixpayments") {
+					if ($rootScope.paymentGateway === "sixpayments") {
 						if (paymentDetails.is_swiped) {
 							//can't set manual true..that is why added this flag.. Added in HTML too
 							reservationEditMode = true;

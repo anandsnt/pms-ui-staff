@@ -27,16 +27,21 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             var interface = $scope.interfaceConfig[$scope.currentState];
             $scope.serviceController = interface.controller;
             $scope.interfaceName = interface.name;
+            //fetch payment methods, source origins, then values
+            
+            $scope.fetchSetup();
         };
         ///////////////////////////
         ///FETCH
         //
         // initial fetch when view initializes
         $scope.fetchSetupSuccessCallback = function (data) {
-            $scope.isLoading = false;
-            $scope.$emit('hideLoader');
             $scope.data = data;
             
+            //load up origins and payment methods
+            $scope.invokeApi(adExternalInterfaceCommonSrv.fetchOrigins, {},fetchOriginsSuccessCallback);
+            $scope.invokeApi(adExternalInterfaceCommonSrv.fetchPaymethods, {}, fetchPaymethodsSuccess);
+
             $scope.setRefreshTime();
         };
         $scope.fetchSetup = function () {
@@ -44,17 +49,38 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
         };
 	var fetchOriginsSuccessCallback = function(data) {
 		$scope.$emit('hideLoader');
+                $scope.isLoading = false;
 		$scope.booking.booking_origins = data.booking_origins;
+                setOrigin();
 	};
         
 	var fetchPaymethodsSuccess = function(data) {
 		$scope.$emit('hideLoader');
+                $scope.isLoading = false;
 		$scope.payments.payments = data.payments;
+                setPayment();
 	};
+        
+        // Set the selected payment and origin 
+        var setPayment = function(){
+            var value = parseInt($scope.data.data.product_cross_customer.default_payment_id);
+            if (typeof value !== typeof undefined) {
+                setTimeout(function(){
+                    var payment = $('[name=default-payment]');
+                    $(payment).val(value);
+                },50);//takes a moment for angularjs to catch up with the list population, possibly longer if list grows too big
+            };
+        };
+        var setOrigin = function(){
+            var value = parseInt($scope.data.data.product_cross_customer.default_origin);
+            if (typeof value !== typeof undefined) {
+                setTimeout(function(){
+                    var payment = $('[name=default-origin]');
+                    $(payment).val(value);
+                },50);
+            };
+        };
 
-        //load up origins and payment methods
-	$scope.invokeApi(adExternalInterfaceCommonSrv.fetchOrigins, {},fetchOriginsSuccessCallback);
-	$scope.invokeApi(adExternalInterfaceCommonSrv.fetchPaymethods, {}, fetchPaymethodsSuccess);
         $scope.init();
         //////////////////////
         ////SAVE
@@ -269,5 +295,4 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
               }, 1000);
           }; 
             
-        $scope.fetchSetup();
     }]);

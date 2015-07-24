@@ -14,8 +14,8 @@ sntRover.directive('rvCheckbox', function($timeout) {
             isDisabled: '=isDisabled',
             index: '@index'
 	    },
-        
-    	templateUrl: '../../assets/directives/checkBox/rvCheckbox.html' 
+
+    	templateUrl: '../../assets/directives/checkBox/rvCheckbox.html'
     };
 
 });

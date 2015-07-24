@@ -27,21 +27,36 @@ admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv','$anchorScroll', '$ti
 		$scope.currentClickedElement = index;
 		$scope.preveousItem = $scope.data.booking_origins[index].name;
 	};
-        
+
+        $scope.setDefaultOriginSiteminder = function(){
+        };
+
+        /*
+        $scope.$watch("data.data.product_cross_customer.default_origin", function (o, n) {
+            //this data is pushed in upon saving the form, retrieved from other controllers
+            //so watch this to push the data back in through this controller to the other controllers
+            //emit this value to be pulled into other controllers
+            console.log(arguments);
+            console.log('emitting orgin value of: '+thisdata.data.product_cross_customer.default_origin);
+            $scope.$emit('sm-origin-updated', {
+                'default_origin': this.data.data.product_cross_customer.default_origin
+            });
+        });
+        */
 	/*
     * To get the template of edit screen
     * @param {int} index of the selected item
     */
 	$scope.getTemplateUrl = function(index){
-		if($scope.currentClickedElement == index){ 
+		if($scope.currentClickedElement === index){
 			 return "/assets/partials/origins/adOriginsEdit.html";
 		}
 	};
 	/*
     * To handle cancel click
-    */	
+    */
 	$scope.clickedCancel = function(){
-		if($scope.currentClickedElement != 'new'){
+		if($scope.currentClickedElement !== 'new'){
 			$scope.data.booking_origins[$scope.currentClickedElement].name = $scope.preveousItem;
 			$scope.preveousItem = "";
 		}
@@ -78,9 +93,13 @@ admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv','$anchorScroll', '$ti
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 		};
-		if(index == undefined) var data = $scope.data.booking_origins[$scope.currentClickedElement];
-		else var data = $scope.data.booking_origins[index];
-		
+		if(index === undefined) {
+			var data = $scope.data.booking_origins[$scope.currentClickedElement];
+		}
+		else {
+			var data = $scope.data.booking_origins[index];
+		}
+
   		$scope.invokeApi(ADOriginsSrv.update, data, postSuccess);
    	};
    	/*
@@ -92,13 +111,13 @@ admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv','$anchorScroll', '$ti
 			$scope.currentClickedElement = -1;
 			// delete data from scope
 			angular.forEach($scope.data.booking_origins,function(item, index) {
-	 			if (item.value == id) {
+	 			if (item.value === id) {
 	 				$scope.data.booking_origins.splice(index, 1);
 	 			}
  			});
 		};
 		$scope.invokeApi(ADOriginsSrv.deleteItem, {'value':id }, successDeletionCallback);
 	};
-	
+
 }]);
 
