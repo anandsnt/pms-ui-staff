@@ -629,8 +629,7 @@ sntRover.controller('reservationActionsController', [
 			$scope.viewState.identifier = "REINSTATE";
 			if (new TZIDate(reservationMainData.arrivalDate) < new TZIDate($rootScope.businessDate)) {
 				reservationMainData.arrivalDate = $rootScope.businessDate; // Note: that if arrival date is in the past, only select from business date onwards for booking and availability request.
-			}
-			reservationMainData.arrivalDate = "2015-07-15";
+			}			
 			$state.go('rover.reservation.staycard.mainCard.roomType', {
 				from_date: reservationMainData.arrivalDate,
 				to_date: reservationMainData.departureDate,
