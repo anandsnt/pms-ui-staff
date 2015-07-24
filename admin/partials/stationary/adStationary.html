@@ -148,6 +148,7 @@
                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.cancellation_communication_text" label="{{'CANCELLATION_TEXT'| translate}} " placeholder="{{'CANCELLATION_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
                 </div>
                 <ad-toggle-button label="{{'SEND_CANCELLATION_LETTER' | translate}}" is-checked="data.send_cancellation_letter"></ad-toggle-button>
+                <ad-toggle-button is-disabled="!data.send_cancellation_letter" label="{{ 'PRINT_CANCELLATION_AND_CONFIRMATION_LETTERS' | translate }}" is-checked="data.print_cancellation_and_confirmation_letters"></ad-toggle-button>
             </fieldset>
             <fieldset class="holder right">
                 <div class="form-title">

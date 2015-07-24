@@ -70,6 +70,8 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 		$scope.invokeApi(ADStationarySrv.saveStationary, postingData, successCallbackOfSaveDetails);
 	};
 
+	
+
 	$scope.$watch(function() {
 		return $scope.data.location_image;
 	}, function(logo) {
