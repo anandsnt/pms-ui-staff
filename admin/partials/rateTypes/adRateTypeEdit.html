@@ -1,19 +1,40 @@
-<div class="data-holder" >
-
-	<form class="form single-field-form float">
-		<ad-textbox value="rateTypeData.name" label = "" placeholder = "Enter rate type" required = "yes"></ad-textbox>
-		
-		<div class="actions float">
-			<button type="button" id="cancel" class="button blank edit-data-inline" ng-click="clickCancel()" translate>
-				CANCEL
-			</button>
-			<button type="button" id="update" class="button green edit-data-inline" ng-click="saveRateType()" translate>
-				SAVE_CHANGES
-			</button>
-			<button type="button" id="delete" class="button red edit-data-inline" ng-click="deleteRateType(currentClickedElement, rateTypeData.id)" translate>
-				DELETE
-			</button>
-		</div>
-
-	</form>
+<div class="data-holder">
+    <form class="form inline-form float">
+        <div class="form-title">
+            <h3 translate><span>Edit&nbsp;</span>Rate Type</h3>
+            <em class="status">{{'MANDATORY_FIELDS_MESSAGE1' | translate}}<strong>*</strong> {{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
+        </div>
+        <fieldset class="holder left float">
+            <ad-textbox value="rateTypeData.name" label="RATE TYPE" placeholder="Enter rate type" required="yes"></ad-textbox>
+        </fieldset>
+        <fieldset class="holder right float">
+            <div class="entry">
+                <div class="entry full-width">
+                    <label for="rate-classification">
+                        RATE CLASSIFICATION
+                    </label>
+                    <div class="select">
+                        <select id="rate-classification" ng-model="rateTypeData.classification.value">
+                            <option value="" data-text="Not set" class="placeholder">Choose classification type</option>
+                            <option value="PUBLIC">PUBLIC</option>
+                            <option value="CORPORATE">CORPORATE</option>
+                            <option value="GROUP">GROUP</option>
+                            <option value="SPECIALS">SPECIALS</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <div class="actions float">
+            <button type="button" id="cancel" class="button blank edit-data-inline" ng-click="clickCancel()" translate>
+                CANCEL
+            </button>
+            <button type="button" id="update" class="button green edit-data-inline" ng-click="saveRateType()" translate>
+                SAVE_CHANGES
+            </button>
+            <button type="button" id="delete" class="button red edit-data-inline" ng-click="deleteRateType(currentClickedElement, rateTypeData.id)" translate>
+                DELETE
+            </button>
+        </div>
+    </form>
 </div>
