@@ -118,6 +118,7 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 	 		$scope.$emit('hideLoader');
 	 		$scope.data.splice(index, 1);
 	 		$scope.currentClickedElement = -1;
+	 		$scope.totalCount--;
 	 	};
 		$scope.invokeApi(ADDeviceSrv.deleteDeviceMapping, id , successCallbackDelete);
 	};
@@ -135,6 +136,7 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 					"name": $scope.mapping.name
 				};
     			 $scope.data.push(pushData);
+    			 $scope.totalCount++;
 	    	 } else {
 	    		// To update data with new value
 	    		 $scope.data[parseInt($scope.currentClickedElement)].name = $scope.mapping.name;
