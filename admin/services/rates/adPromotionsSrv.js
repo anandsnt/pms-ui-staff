@@ -1,7 +1,8 @@
 admin.service('ADPromotionsSrv', ['$q', 'ADBaseWebSrvV2',
 	function($q, ADBaseWebSrvV2) {
 		var self = this,
-			TZIDate = tzIndependentDate;
+			TZIDate = tzIndependentDate,
+			ratePromos = {};
 
 		/**
 		 *   A getter method to return the promotions list
@@ -111,22 +112,35 @@ admin.service('ADPromotionsSrv', ['$q', 'ADBaseWebSrvV2',
 			return deferred.promise;
 		};
 
-		self.fetchRatePromos = function(id){
+		self.fetchRatePromos = function(id) {
 			var deferred = $q.defer();
-			var url = '/api/rates/'+id+'/promotions';
+			var url = '/api/rates/' + id + '/promotions';
 			ADBaseWebSrvV2.getJSON(url).then(function(data) {
-				deferred.resolve(data);
+				ratePromos = {};
+				ratePromos.promotion_rates = data.promotion_rates;
+				self.appendPromotions(deferred);
 			}, function(data) {
 				deferred.reject(data);
 			});
 			return deferred.promise;
 		};
 
-		self.updateRatePromos = function(params){
+		self.appendPromotions = function(deferred) {
+			var url = '/api/promotions';
+			ADBaseWebSrvV2.getJSON(url).then(function(data) {
+				ratePromos.promotions = data.promotions;
+				deferred.resolve(ratePromos);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
+
+		self.updateRatePromos = function(params) {
 			var deferred = $q.defer();
-			var url = '/api/rates/'+params.id+'/set_promotions';
+			var url = '/api/rates/' + params.id + '/set_promotions';
 			ADBaseWebSrvV2.putJSON(url, params.promos).then(function(data) {
-				deferred.resolve(data);
+				deferred.resolve(data);				
 			}, function(data) {
 				deferred.reject(data);
 			});
