@@ -1439,7 +1439,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                     arrival_date: new tzIndependentDate(reservationData.arrival_date),
                     departure_date: new tzIndependentDate(reservationData.departure_date),
                     //Pls note, roomsFreeToAssign include already assigned room of that particular reservation
-                    roomsFreeToAssign: selectedReservation.roomsAvailableToAssign
+                    roomsFreeToAssign: selectedReservation.roomsAvailableToAssign,
                     allowedRoomTypes: allowedRoomTypes
                 });
 
