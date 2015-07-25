@@ -74,6 +74,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.isGuestReport = false;
 			$scope.isLargeReport = false;
 			$scope.isLogReport   = false;
+			$scope.isDepositReport = false;
 			$scope.hasNoSorting  = false;
 			$scope.hasNoTotals   = false;
 			$scope.showSortBy    = true;
@@ -84,7 +85,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('IN_HOUSE_GUEST'):
 				case reportUtils.getName('DEPARTURE'):
 				case reportUtils.getName('ARRIVAL'):
-				case reportUtils.getName('DEPOSIT_REPORT'):
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					$scope.showSortBy = false;
@@ -133,6 +133,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('DAILY_PAYMENTS'):
 					$scope.hasNoTotals = true;
 					$scope.isTransactionReport = true;
+					break;
+
+				case reportUtils.getName('DEPOSIT_REPORT'):
+					$scope.hasNoTotals = true;
+					$scope.isGuestReport = true;
+					$scope.isDepositReport = true;
 					break;
 
 				default:

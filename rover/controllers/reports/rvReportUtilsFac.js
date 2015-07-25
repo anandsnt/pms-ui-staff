@@ -847,6 +847,21 @@ sntRover.factory('RVReportUtilsFac', [
                 reportItem['sort_fields'][8] = null;
                 reportItem['sort_fields'][9] = ytd;
             };
+
+            // need to reorder the sort_by options
+            // for daily transactions in the following order
+            if ( reportItem['title'] === __reportNames['DEPOSIT_REPORT'] ) {
+                var guestDetails = angular.copy( reportItem['sort_fields'][4] ),
+                    dueDate      = angular.copy( reportItem['sort_fields'][1] ),
+                    paidDate     = angular.copy( reportItem['sort_fields'][2] );
+
+                reportItem['sort_fields'][0] = guestDetails;
+                reportItem['sort_fields'][1] = null;
+                reportItem['sort_fields'][2] = dueDate;
+                reportItem['sort_fields'][3] = null;
+                reportItem['sort_fields'][4] = paidDate;
+                reportItem['sort_fields'][5] = null;
+            };
         };
 
 
