@@ -21,6 +21,10 @@ sntRover.factory('RVReportParserFac', [
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseNumeralData( reportName, apiResponse, options );
             }
 
+            else if ( reportName === reportUtils.getName('DEPOSIT_REPORT') ) {
+                return _.isEmpty(apiResponse) ? apiResponse : $_parseDepositReport( reportName, apiResponse, options );
+            }
+
             // otherwise a super parser for reports that can be grouped by
             else if ( !!options['groupedByKey'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseDataToSubArrays( reportName, apiResponse, options );
@@ -354,6 +358,81 @@ sntRover.factory('RVReportParserFac', [
         };
 
 
+
+
+        function $_parseNumeralData ( reportName, apiResponse, options ) {
+            vavar returnAry = [],
+                customData = [],
+                makeCopy,
+                depositData,
+                totalOriginalRate;
+
+            var i, j, k, l;
+
+            // loop through the api response
+            for (i = 0, j = apiResponse.length; i < j; i++) {
+
+                // we'll work with a copy of the ith item
+                makeCopy = angular.copy( apiResponse[i] );
+
+                // reset these counters
+                totalOriginalRate = 0;
+                totalAdjustedRate = 0;
+                totalVariance = 0;
+
+                // if we have 'deposit_data' for this reservation
+                if ( makeCopy.hasOwnProperty('deposit_data') && makeCopy['deposit_data'].length ) {
+
+                    // loop through the adjustments
+                    for (k = 0, l = makeCopy['deposit_data'].length; k < l; k++) {
+                        depositData = makeCopy['deposit_data'][k];
+
+                        // include the first depositData details in the
+                        // same row as that of the main reservation details  
+                        if ( k == 0 ) {
+                            angular.extend(makeCopy, {
+                                isReport               : true,
+                                deposit_payment_status : depositData.deposit_payment_status,
+                                due_date               : depositData.due_date,
+                                deposit_due_amount     : depositData.deposit_due_amount,
+                                paid_date              : depositData.paid_date,
+                                paid_amount            : depositData.paid_amount
+                            });
+                            returnAry.push( makeCopy );
+                        }
+
+                        // create additional sub rows to represent the
+                        // rest of the adjustments 
+                        else {
+                            customData = {};
+                            angular.extend(customData, {
+                                isSubReport   : true,
+                                deposit_payment_status : depositData.deposit_payment_status,
+                                due_date               : depositData.due_date,
+                                deposit_due_amount     : depositData.deposit_due_amount,
+                                paid_date              : depositData.paid_date,
+                                paid_amount            : depositData.paid_amount
+                            });
+                            returnAry.push( customData );
+                        };
+                    };
+
+                    // after looping through all the adjustments
+                    // add a final sub row to show the adjustment totals
+                    customData = {};
+                    angular.extend(customData, {
+                        isSubTotal          : true,
+                        total_original_rate : totalOriginalRate,
+                        total_adjusted_rate : totalAdjustedRate,
+                        total_variance      : totalVariance
+                    });
+                    returnAry.push( customData );
+                };
+
+            };
+
+            return returnAry;
+        };
 
 
 
