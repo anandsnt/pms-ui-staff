@@ -8,7 +8,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 		$scope.switchTabTo = function($event, tabToSwitch) {
 			$event.stopPropagation();
 			$event.stopImmediatePropagation();
-			if ($scope.currentSelectedTab == 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
+			if ($scope.currentSelectedTab === 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
 				if ($scope.viewState.isAddNewCard) {
 					$scope.$broadcast("setCardContactErrorMessage", [$filter('translate')('TA_SAVE_PROMPT')]);
 				} else {
@@ -16,21 +16,21 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 					$scope.$broadcast("contractTabActive");
 				}
 			}
-			if ($scope.currentSelectedTab == 'cc-contracts' && tabToSwitch !== 'cc-contracts') {
+			if ($scope.currentSelectedTab === 'cc-contracts' && tabToSwitch !== 'cc-contracts') {
 				$scope.$broadcast("contactTabActive");
 				$scope.$broadcast("saveContract");
-			} else if ($scope.currentSelectedTab == 'cc-ar-accounts' && tabToSwitch !== 'cc-ar-accounts') {
+			} else if ($scope.currentSelectedTab === 'cc-ar-accounts' && tabToSwitch !== 'cc-ar-accounts') {
 				$scope.$broadcast("saveArAccount");
 			}
 
-			if (tabToSwitch == 'cc-ar-accounts') {
+			if (tabToSwitch === 'cc-ar-accounts') {
 				$scope.$broadcast("arAccountTabActive");
-			} else if (tabToSwitch == 'cc-contracts') {
+			} else if (tabToSwitch === 'cc-contracts') {
 				$scope.$broadcast("contractTabActive");
-			} else if (tabToSwitch == 'cc-contact-info') {
+			} else if (tabToSwitch === 'cc-contact-info') {
 				$scope.$broadcast("contactTabActive");
 			}
-			else if (tabToSwitch == 'cc-ar-transactions') {
+			else if (tabToSwitch === 'cc-ar-transactions') {
 				$scope.$broadcast("arTransactionTabActive");
 				$scope.isWithFilters = false;
 			}
@@ -132,9 +132,9 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 			$scope.$broadcast("contactTabActive");
 			$timeout(function() {
 				$scope.$emit('hideLoader');
-			}, 1000);			
+			}, 1000);
 			if(!isNew){
-				callCompanyCardServices();	
+				callCompanyCardServices();
 			}
 		});
 
@@ -162,13 +162,13 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 		 */
 		$scope.travelAgentCardClicked = function($event) {
 			$event.stopPropagation();
-			if (document.getElementById("cc-contact-info") != null && getParentWithSelector($event, document.getElementById("cc-contact-info")) && $scope.currentSelectedTab == 'cc-contact-info') {
+			if (document.getElementById("cc-contact-info") !== null && getParentWithSelector($event, document.getElementById("cc-contact-info")) && $scope.currentSelectedTab === 'cc-contact-info') {
 				return;
-			} else if (document.getElementById("cc-contracts") != null && getParentWithSelector($event, document.getElementById("cc-contracts")) && $scope.currentSelectedTab == 'cc-contracts') {
+			} else if (document.getElementById("cc-contracts") !== null && getParentWithSelector($event, document.getElementById("cc-contracts")) && $scope.currentSelectedTab === 'cc-contracts') {
 				return;
-			} else if (document.getElementById("cc-ar-accounts") != null && getParentWithSelector($event, document.getElementById("cc-ar-accounts")) && $scope.currentSelectedTab == 'cc-ar-accounts') {
+			} else if (document.getElementById("cc-ar-accounts") !== null && getParentWithSelector($event, document.getElementById("cc-ar-accounts")) && $scope.currentSelectedTab === 'cc-ar-accounts') {
 				return;
-			} else if (!$scope.viewState.isAddNewCard && document.getElementById("travel-agent-card-header") != null && getParentWithSelector($event, document.getElementById("travel-agent-card-header"))) {
+			} else if (!$scope.viewState.isAddNewCard && document.getElementById("travel-agent-card-header") !== null && getParentWithSelector($event, document.getElementById("travel-agent-card-header"))) {
 				$scope.$emit("saveContactInformation");
 				$rootScope.$broadcast("saveArAccount");
 			}
@@ -209,8 +209,8 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 			$rootScope.$broadcast("IDGENERATED",{ 'id': data.id });
 			callCompanyCardServices();
 			//New Card Handler
-			if ($scope.viewState.isAddNewCard && typeof data.id != "undefined") {
-				if ($scope.viewState.identifier == "STAY_CARD" || ($scope.viewState.identifier == "CREATION" && $scope.viewState.reservationStatus.confirm)) {
+			if ($scope.viewState.isAddNewCard && typeof data.id !== "undefined") {
+				if ($scope.viewState.identifier === "STAY_CARD" || ($scope.viewState.identifier === "CREATION" && $scope.viewState.reservationStatus.confirm)) {
 					$scope.viewState.pendingRemoval.status = false;
 					//if a new card has been added, reset the future count to zero
 					if ($scope.reservationDetails.travelAgent.futureReservations <= 0) {
@@ -263,11 +263,11 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 			if (!angular.equals(data, presentContactInfo)) {
 				dataUpdated = true;
 			}
-			if (typeof data != 'undefined' && (dataUpdated || $scope.isAddNewCard)) {
+			if (typeof data !== 'undefined' && (dataUpdated || $scope.isAddNewCard)) {
 				var dataToSend = JSON.parse(JSON.stringify(data));
 				for (key in dataToSend) {
-					if (typeof dataToSend[key] !== "undefined" && data[key] != null && data[key] != "") {
-						//in add case's first api call, presentContactInfo will be empty object					
+					if (typeof dataToSend[key] !== "undefined" && data[key] !== null && data[key] !== "") {
+						//in add case's first api call, presentContactInfo will be empty object
 						if (JSON.stringify(presentContactInfo) !== '{}') {
 							for (subDictKey in dataToSend[key]) {
 								if (typeof dataToSend[key][subDictKey] === 'undefined' || dataToSend[key][subDictKey] === presentContactInfo[key][subDictKey]) {

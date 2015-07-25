@@ -6,10 +6,10 @@ sntRover.controller('RVComparisonReportCtrl', [
 	function($rootScope, $scope, $filter, reportUtils) {
 
 		var currencySymbol = $rootScope.currencySymbol;
-		
+
 		// initial data process
 		init();
-		
+
 		// re-render must be initiated before for taks like printing.
 		// thats why timeout time is set to min value 50ms
 		$scope.$on('report.submit', function() {
@@ -24,17 +24,17 @@ sntRover.controller('RVComparisonReportCtrl', [
 		$scope.$on('report.page.changed', function() {
 			init();
 		});
-		
+
 		function init () {
 			var results = $scope.$parent.results,
 				processed,
 				i,
 				j;
-	
+
 			$scope.staticEntries = [];
 			$scope.totalEntry = [];
 			$scope.cgEntries = [];
-	
+
 			for (i = 0, j = results.length; i < j; i++) {
 				if ( !!results[i]['is_total_revenue'] ) {
 					$scope.totalEntry.push( results[i] );
@@ -44,7 +44,7 @@ sntRover.controller('RVComparisonReportCtrl', [
 					processed = postProcess(results[i]);
 					$scope.staticEntries.push( processed );
 				};
-			};	
+			};
 		};
 
 		function postProcess (entry) {

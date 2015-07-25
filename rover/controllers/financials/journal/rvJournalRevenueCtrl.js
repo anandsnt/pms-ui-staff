@@ -1,7 +1,7 @@
 sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJournalSrv','$timeout',function($scope, $rootScope, RVJournalSrv, $timeout) {
 	BaseCtrl.call(this, $scope);
     $scope.errorMessage = "";
-   
+
 	$scope.setScroller('revenue_content',{});
     var refreshRevenueScroller = function(){
         $timeout(function(){$scope.refreshScroller('revenue_content');}, 500);
@@ -16,7 +16,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
     };
 
 	var initRevenueData = function(){
-        
+
 		var successCallBackFetchRevenueData = function(data){
 			$scope.data.revenueData = {};
             $scope.data.activeChargeGroups = [];
@@ -39,7 +39,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
     };
 
 	initRevenueData();
-    
+
     fetchDepartments();
 
     $rootScope.$on('REFRESHREVENUECONTENT',function(){
@@ -58,7 +58,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
     $scope.clickedFirstLevel = function(index1){
 
         var toggleItem = $scope.data.revenueData.charge_groups[index1];
-            
+
         var successCallBackFetchRevenueDataChargeCodes = function(data){
             if(data.charge_codes.length > 0){
                 toggleItem.charge_codes = data.charge_codes;
@@ -69,7 +69,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
             $scope.errorMessage = "";
             $scope.$emit('hideLoader');
         };
-        
+
         // Call api only while expanding the tab ..
         if(!toggleItem.active){
 
@@ -91,7 +91,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
     var loadTransactionDeatils = function(chargeCodeItem, isFromPagination){
 
         var successCallBackFetchRevenueDataTransactions = function(data){
-            
+
             chargeCodeItem.transactions = [];
             chargeCodeItem.transactions = data.transactions;
             chargeCodeItem.total_count = data.total_count;
@@ -142,18 +142,6 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
         loadTransactionDeatils(toggleItem, false);
     };
 
-    // To show/hide table heading for Level3.
-    $scope.isShowTableHeading = function(index1, index2){
-        var isShowTableHeading = false;
-        var item = $scope.data.revenueData.charge_groups[index1].charge_codes[index2].transactions;
-        if((typeof item !== 'undefined') && (item.length >0)){
-            angular.forEach( item ,function(transactions, index) {
-                if(transactions.show) isShowTableHeading = true;
-            });
-        }
-        return isShowTableHeading;
-    };
-
     // To show/hide expandable arrow to level1
     $scope.checkHasArrowFirstLevel = function(index){
         var hasArrow = false;
@@ -193,7 +181,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
     };
 
     $scope.loadPrevSet = function(index1, index2){
-        
+
         var item = $scope.data.revenueData.charge_groups[index1].charge_codes[index2];
         item.page_no --;
         item.nextAction = false;
@@ -217,7 +205,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
         var item = $scope.data.revenueData.charge_groups[index1].charge_codes[index2],
             isDisabled = false;
 
-        if(item.page_no == 1){
+        if(item.page_no === 1){
             isDisabled = true;
         }
         return isDisabled;

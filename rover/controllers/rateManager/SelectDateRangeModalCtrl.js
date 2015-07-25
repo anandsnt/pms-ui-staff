@@ -1,4 +1,4 @@
-sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngDialog','$filter','dateFilter','$rootScope', '$timeout', 
+sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngDialog','$filter','dateFilter','$rootScope', '$timeout',
 	function(filterDefaults, $scope,  ngDialog, $filter, dateFilter, $rootScope, $timeout) {
 	'use strict';
 
@@ -8,7 +8,7 @@ sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngD
 		fromDate = _.isEmpty(filterData.begin_date) ? '' : filterData.begin_date,
 		toDate = _.isEmpty(filterData.end_date) ? '' : filterData.end_date;
 
-	$scope.setUpData = function() {	
+	$scope.setUpData = function() {
                 if (!fromDate){
                     var nd = new Date(businessDate);
                     var day = ("0" + nd.getDate()).slice(-2);
@@ -24,7 +24,7 @@ sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngD
 			firstDay: 1,
 			changeYear: true,
 			changeMonth: true,
-			yearRange: "-5:+5", //Show 5 years in past & 5 years in future			
+			yearRange: "-5:+5", //Show 5 years in past & 5 years in future
 			onSelect: function(dateText, datePicker) {
 				if(tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
 					$scope.toDate = $scope.fromDate;
@@ -35,7 +35,7 @@ sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngD
 		$scope.toDateOptions = {
 			firstDay: 1,
 			changeYear: true,
-			changeMonth: true,			
+			changeMonth: true,
 			yearRange: "-5:+5",
 			onSelect: function(dateText, datePicker) {
 				if(tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
@@ -48,21 +48,21 @@ sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngD
 	};
 
 	$scope.setUpData();
-	$timeout(function() {						
+	$timeout(function() {
 		/** CICO-11228 and 11309
 		* Shoddy fix for showing the next month in the 'to date' calendar!
 		* -- Emulate a click to navigate to the next month
 		*/
 		if (!toDate) {
 			$("#toDatePicker .ui-datepicker-next").click();
-		}			
+		}
 	}, 300);
 
 	$scope.updateClicked = function() {
 		filterData.begin_date = $scope.fromDate;
 		filterData.end_date = $scope.toDate;
 		filterData.selected_date_range = dateFilter($scope.fromDate, $rootScope.dateFormat) +
-										 ' to ' + 
+										 ' to ' +
 										 dateFilter($scope.toDate, $rootScope.dateFormat);
 
 		ngDialog.close();

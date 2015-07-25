@@ -34,5 +34,5 @@ sntRover.controller('RVDeleteSetAsPrimaryCtrl',['$rootScope', '$scope', '$state'
 		};
 		$scope.invokeApi(RVPaymentSrv.deletePayment, data, $scope.successDelete, $scope.failureCallBack);
 	};
-	
+
 }]);

@@ -48,7 +48,7 @@ admin.controller('ADCampaignsListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADCam
 
 		var deleteSuccess = function(){
 			$scope.$emit('hideLoader');
-			
+
 			for(var i in $scope.data){
 				if($scope.data[i].id === id){
 					$scope.data.splice(i, 1);

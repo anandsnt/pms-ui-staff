@@ -26,6 +26,13 @@
 		<span class="icons icon-print"></span> 
 		Registration Card
 	</button>
+
+	<label ng-show="isStandAlone" class="checkbox inline" for="no-rate-print" ng-class="{ 'checked':reservationBillData.hide_rates }">
+        <span class="icon-form icon-checkbox" ng-class="{ 'checked':reservationBillData.hide_rates }"></span>
+        <input ng-click="clickedShowRate()" id="no-rate-print" value="" type="checkbox">
+        {{ 'DONT_PRINT_RATE' | translate }}
+    </label>
+
 </div>
 <div class="overview" ng-click="toggleFeesDetails($parent.$index)" ng-show="billData.hasFeesArray" ng-class="showFeesDetailsOpenClose(billData.isOpenFeesDetails)">
 	<p class="toggle with-rate">

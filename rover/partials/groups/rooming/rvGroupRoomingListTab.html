@@ -91,7 +91,14 @@
         <li> <!-- Don't show until there are new rooms added in the rooming list -->
             <button type="button" class="button grey" ng-hide="true">{{'GROUP_AUTO_ASSIGN_ROOMS'|translate}}</button> <!-- Replace class "grey" with "brand-colors" when rooms selected in the rooming list -->
         </li>
-        <li> <!-- Don't show if there are no rooms in the rooming list -->
+        <li> 
+            <!-- Don't show if there are no rooms in the rooming list -->
+            <label class="checkbox inline" for="no-rate-print" ng-class="{ 'checked': groupConfigData.summary.hide_rates }">
+                <span class="icon-form icon-checkbox" ng-class="{ 'checked':groupConfigData.summary.hide_rates }"></span>
+                <input ng-click="clickedShowRate()" id="no-rate-print" value="" type="checkbox">
+                {{ 'DONT_PRINT_RATE' | translate }}
+            </label>
+
             <button type="button" class="button with-icon only-icon blue" ng-hide="reservations.length ==0" ng-click="sendRoomingList()">
                 <span class="icons icon-email"></span>
                 {{'GROUP_EMAIL'|translate}}
@@ -177,8 +184,12 @@
                             <!-- If new room, show this instead: -->
                             <span class="highlight">{{'GROUP_PENDING'|translate}}</span>
                         </h2>
-                            <span class="room" ng-show="!isRoomUnAssigned(reservation)"> <!-- Add class "unassigned" if new room -->
-                            {{'GROUP_ROOM'|translate}} {{reservation.room_no}}
+                        <span class="room" ng-show="!isRoomUnAssigned(reservation)">
+                            <!-- Add class "unassigned" if new room -->
+                            {{'GROUP_ROOM'|translate}} 
+                            <span ng-class="getRoomStatusClass(reservation)">
+                                {{reservation.room_no}}
+                            </span>
                             <!-- If new room, show this instead: Unassigned -->
                         </span>
                             <span class="room unassigned" ng-show="isRoomUnAssigned(reservation)"> <!-- Add class "unassigned" if new room -->

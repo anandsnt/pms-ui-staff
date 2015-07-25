@@ -1,3 +1,6 @@
+@blue:#2EAEEF;
+
+
 body {
 	background: none !important;
 }
@@ -26,21 +29,23 @@ body {
 	float:none !important;
 }
 
-.blue-text{
+.blue-text,.template-header-text{
 	color:#2EAEEF !important;	
 }
 .light-blue-bg{
 	background:#97defa !important;	
 }
+.template-button{
+	background:@blue !important;
+}
 
-
-.white-text{
+.white-text,.template-button{
 	color:#FFFFFF !important;	
 }
 .black-text,.guest-room-description,.balance{
 	color:#000 !important;	
 }
-.checkout-status,.grey-text,.lightcontent,.headtext,.base-text,.white-alert-link-tag,a, a:hover{
+.checkout-status,.grey-text,.lightcontent,.headtext,.base-text,.white-alert-link-tag,a, a:hover,.template-text{
 	color:#787878 !important;
 }
 
@@ -164,10 +169,25 @@ body {
 	padding:15px !important;	
 }
 
+.external-verification-field{
+	width:60% !important;
+	margin-top: 15px !important;
+	.verification-button span{
+		font-size:26px !important;
+	}
+	.textBox,.date-picker{
+		height:50px !important;
+	}		
+}
+
 @media screen and (max-width: 900px) {
  	.pre-checkin-container-padding{
  		padding:0% 5% !important;
  	}
+
+ 	.external-verification-field{
+		width:90% !important;
+	}
 }
 
 
@@ -274,3 +294,76 @@ body {
 }
 
 	
+/*------------------------------- date picker starts here---------------------*/
+
+.date-picker-header-bg{
+  padding:10px 15px;
+}
+.date-picker-ok, .date-picker-back,.arrival-date{
+	color:white !important;
+}
+.date-picker-header,.date-picker-header-bg{
+  background-color: @blue;
+}
+.pickadate-cell li {
+ border: 1px solid #fff;
+}
+
+
+.date-picker-wrap{
+  background-color: white !important;
+  background-image: linear-gradient(to bottom,white, white);
+}
+.pickadate-cell .pickadate-disabled,
+.pickadate-cell .pickadate-disabled a {
+  color: #959595 !important;
+}
+
+.date-picker-ok{
+  padding-top: 0px;
+  background:  none !important;
+  color:#fff;
+}
+
+.departure-date{
+   p:first-child{
+       color:#fff;
+   }
+  
+}
+.pickadate-centered-heading, .pickadate-cell .pickadate-head{
+	color:#18171c;
+}
+
+.pickadate-cell .pickadate-disabled, .pickadate-cell .pickadate-enabled, .pickadate-cell .pickadate-outofrange-disabled{
+    background-color:#DEDCD0 !important;
+}
+.pickadate-cell .pickadate-active{
+    background-color:@blue !important;
+    color:#000 !important;
+}
+.pickadate-cell .pickadate-enabled, .pickadate-prev,.pickadate-next {
+    color:#18171c !important;
+}
+.pickadate-controls{
+    a, a:hover
+    {
+        color:#18171c !important;
+    }
+}
+.date-picker-header-bg .arrival-date p{
+	font-size:15px !important;
+}
+.verification-button{
+	margin-top:30px !important;
+	padding:10px 5px;
+}
+.alert-link{
+	a,a:hover{
+		color:blue !important;
+		text-decoration:underline !important;
+	}
+}
+
+
+/*-------------------------------------------------------------------------*/

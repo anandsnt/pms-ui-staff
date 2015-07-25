@@ -534,6 +534,7 @@
 			</button>
 
 		</fieldset>
+		
 		<fieldset class="holder right" ng-show="isAdminSnt">
 			<div class="form-title">
 				<h3><span>Hotel</span> CC Desktop Swipe </h3>
@@ -552,6 +553,35 @@
 				<input type="text" ng-model="data.cc_swipe_listening_port" value="{{data.cc_swipe_listening_port}}" placeholder="Enter CC swipe listening port" name="cc-swipe-listening-port">
 			</div>
 
+		</fieldset>
+		
+		<fieldset class="holder left" ng-show="isAdminSnt">
+			<div class="form-title">
+				<h3>
+					<span>Hotel</span>
+					 Custom Credit Card Processors
+				</h3>
+			</div>
+			<div class="entry ">
+				<label class="radio" ng-class="{checked:data.custom_cc_processor == 'SAFERPAY'}">
+					<span class="icon-form icon-radio " ng-class="{checked:data.custom_cc_processor == 'SAFERPAY'}"></span>
+					<input type="radio" ng-model="data.custom_cc_processor" value="SAFERPAY" class="change-data">
+					Saferpay
+				</label>
+			</div>
+			<div class="entry "></div>
+			<div class="entry " ng-show="data.custom_cc_processor == 'SAFERPAY'" >
+				<label>
+					Saferpay ACCOUNT ID
+				</label>
+				<input type="text" ng-model="data.saferpay_account_id" value="{{data.saferpay_account_id}}">
+			</div>
+			<div class="entry " ng-show="data.custom_cc_processor == 'SAFERPAY'" >
+				<label>
+					Saferpay HTTPS Password
+				</label>
+				<input type="text" ng-model="data.saferpay_https_password" value="{{data.saferpay_https_password}}">
+			</div>
 		</fieldset>
 
 		<div class="actions float">
