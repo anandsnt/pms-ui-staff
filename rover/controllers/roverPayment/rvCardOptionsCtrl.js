@@ -1,11 +1,11 @@
 sntRover.controller('RVCardOptionsCtrl',
-	['$rootScope', 
-	 '$scope', 
-	 '$state', 
+	['$rootScope',
+	 '$scope',
+	 '$state',
 	 'ngDialog',
 	 '$location',
 	 '$document',
-	 'RVPaymentSrv', 
+	 'RVPaymentSrv',
 	function($rootScope, $scope, $state, ngDialog, $location, $document, RVPaymentSrv){
 		BaseCtrl.call(this, $scope);
 		 $scope.renderDataFromSwipe = function(swipedDataToRenderInScreen){
@@ -14,18 +14,18 @@ sntRover.controller('RVCardOptionsCtrl',
 			$scope.cardData.expiryMonth = swipedDataToRenderInScreen.cardExpiryMonth;
 			$scope.cardData.expiryYear = swipedDataToRenderInScreen.cardExpiryYear;
 			$scope.cardData.cardType = swipedDataToRenderInScreen.cardType;
-			if(swipedDataToRenderInScreen.swipeFrom == "guestCard"){
+			if(swipedDataToRenderInScreen.swipeFrom === "guestCard"){
 				$scope.showAddtoGuestCard = false;
 			} else {
 				$scope.showAddtoGuestCard = true;
 			}
 	    };
-	   
+
 		$scope.refreshIframe = function(){
 			//in case of hotel with MLI iframe will not be present
 			if(!!$("#sixIframe").length){
 				$("#sixIframe").src = $("#sixIframe").src;
-			}			
+			}
 		};
 
 		$scope.$on('REFRESH_IFRAME', function(e){
@@ -56,16 +56,16 @@ sntRover.controller('RVCardOptionsCtrl',
 		$scope.cardData.expiryMonth ="";
 		$scope.cardData.expiryYear = "";
 		$scope.cardData.userName   = "";
-		
+
 		var time = new Date().getTime();
 		$scope.shouldShowAddNewCard = true;
 		if(typeof $scope.passData !==" undefined"){
 			var firstName = (typeof $scope.passData.details.firstName ==="undefined")?"":$scope.passData.details.firstName;
 			var lastName = (typeof $scope.passData.details.lastName ==="undefined")?"":$scope.passData.details.lastName;
 		};
-		
+
 		$scope.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" +firstName + "&card_holder_last_name=" + lastName + "&service_action=createtoken&time="+time;
-		if($rootScope.paymentGateway == "sixpayments"){
+		if($rootScope.paymentGateway === "sixpayments"){
 			$scope.shouldShowAddNewCard = false;
 			var iFrame = $document.find("sixIframe");
 			iFrame.attr("src", $scope.iFrameUrl);
@@ -78,7 +78,7 @@ sntRover.controller('RVCardOptionsCtrl',
 		if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
 			$scope.renderDataFromSwipe($scope.passData.details.swipedDataToRenderInScreen);
 		}
-		$scope.shouldShowIframe = false;	
+		$scope.shouldShowIframe = false;
 
 
 		$scope.changeOnsiteCallIn = function(){
@@ -91,7 +91,7 @@ sntRover.controller('RVCardOptionsCtrl',
 					$scope.showAddtoGuestCard = false;
 				}
 			}
-			
+
 		};
 		var emptySessionDetails = function(){
 				$scope.cardData.cardNumber = "";
@@ -113,14 +113,14 @@ sntRover.controller('RVCardOptionsCtrl',
 			$scope.$digest();
 			$scope.refreshIframe();
 		};
-	
+
 
 		var notifyParentError = function(errorMessage){
 			$scope.$emit("MLI_ERROR", errorMessage);
 		};
 
 		var setUpSessionDetails = function(){
-			
+
 			 var sessionDetails = {};
 			 sessionDetails.cardNumber = $scope.cardData.cardNumber;
 			 sessionDetails.cardSecurityCode = $scope.cardData.CCV;
@@ -132,7 +132,7 @@ sntRover.controller('RVCardOptionsCtrl',
 		 * Function to get MLI token on click 'Add' button in form
 		 */
 		$scope.getToken = function($event){
-			$event.preventDefault();		
+			$event.preventDefault();
 			if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
 				var swipeOperationObj = new SwipeOperation();
 				var swipedCardDataToSave = swipeOperationObj.createSWipedDataToSave($scope.passData.details.swipedDataToRenderInScreen);
@@ -140,7 +140,7 @@ sntRover.controller('RVCardOptionsCtrl',
 				$scope.$emit('SWIPED_DATA_TO_SAVE', swipedCardDataToSave);
 			} else {
 				var sessionDetails = setUpSessionDetails();
-				var successCallBack = function(response){		
+				var successCallBack = function(response){
 					response.isSixPayment = false;
 					notifyParent(response);
 				};
@@ -149,7 +149,7 @@ sntRover.controller('RVCardOptionsCtrl',
 				};
 				$scope.fetchMLI (sessionDetails,successCallBack,failureCallback);
 			}
-			//Base Ctrl function		
+			//Base Ctrl function
 		};
 
 		/*
@@ -161,7 +161,7 @@ sntRover.controller('RVCardOptionsCtrl',
 			$scope.shouldShowAddNewCard = false;
 			notifyParent(data.six_payment_data);
 		});
-		
+
 
 
 		$scope.setCreditCardFromList = function(index){
@@ -179,13 +179,13 @@ sntRover.controller('RVCardOptionsCtrl',
 	    		$scope.refreshIframe();
 	    	};
 	    };
-	    
+
 	    $scope.$on("RENDER_SWIPED_DATA", function(e, swipedCardDataToRender){
-	
+
 			$scope.renderDataFromSwipe(swipedCardDataToRender);
 			$scope.passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
 		});
 
-	   
-		
+
+
 }]);

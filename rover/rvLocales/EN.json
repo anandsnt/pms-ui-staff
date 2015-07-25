@@ -552,6 +552,8 @@
 	"TIME":"Time",
 	"DEBIT":"Debit",
 	"CREDIT":"Credit",
+	"ACCOUNT_NAME" : "Account Name",
+	"ACCOUNT_NO" : "Account No",
 	"CHARGE_GROUPS":"Charge Group",
 	"CHARGE_CODE_NAME":"Charge Code / Name",
 	"ALL_CHARGE_CODE":"All Charge Codes",
@@ -795,7 +797,8 @@
     "CHANGE_TO_NEW_RATE": "Change to new rate",
     "ADD_ONS" : "Add on",
     "TAXES_INCL" : "TAXES(INCL)",
-    "TAXES_EXCL" : "TAXES(EXCL)"
+    "TAXES_EXCL" : "TAXES(EXCL)",
+    "REINSTATE" : "Reinstate Reservation"
 
 ,    
     
@@ -1068,6 +1071,7 @@
     "NET_AMOUNT":"Net Amount",
     "TOTAL_INCL_TAX":"Total Incl Tax",
     "UPDATE":"Update",
-    "NOT_DEFINED": "Not Defined"
+    "NOT_DEFINED": "Not Defined",
+    "DONT_PRINT_RATE" : "Don't Print Rate"
 
 }

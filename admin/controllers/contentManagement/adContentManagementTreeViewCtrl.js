@@ -18,8 +18,9 @@ admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADConte
    /* Function to set the expansion status as false for all the components
     */
    $scope.setExpandStatus = function(data){
-   		if(data.length == 0)
+   		if(data.length === 0) {
    			return;
+      }
    		for(var i = 0; i < data.length; i++ ){
    			data[i].isExpanded = false;
    			$scope.setExpandStatus(data[i].children);
@@ -44,12 +45,14 @@ admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADConte
    /* Function to delete a component from all the nodes in the tree, reccursively
     */
    $scope.deleteComponentFromTree = function(data, id){
-         if(data.length == 0)
+         if(data.length === 0) {
             return;
+         }
          for(var i = 0; i < data.length; i++ ){
-            if(data[i].children.length > 0)
+            if(data[i].children.length > 0) {
                $scope.deleteComponentFromTree(data[i].children, id);
-            if(data[i].id == id){
+            }
+            if(data[i].id === id){
                data.splice(i, 1);
                break;
             }
@@ -66,12 +69,14 @@ admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADConte
    /* Function to update status of a component for all the appearances in the tree, reccursively
     */
    $scope.updateComponentStatusForTree = function(data, params){
-         if(data.length == 0)
+         if(data.length === 0) {
             return;
+         }
          for(var i = 0; i < data.length; i++ ){
-            if(data[i].children.length > 0)
+            if(data[i].children.length > 0) {
                $scope.updateComponentStatusForTree(data[i].children, params);
-            if(data[i].id == params.id){
+            }
+            if(data[i].id === params.id){
                data[i].status = params.status;
                break;
             }

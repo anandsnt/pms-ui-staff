@@ -222,10 +222,12 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				}
 
 				$scope.currentClickedElement = -1;
-				if ($scope.isAdd)
+				if ($scope.isAdd) {
 					$scope.isAdd = false;
-				if ($scope.isEdit)
+				}
+				if ($scope.isEdit) {
 					$scope.isEdit = false;
+				}
 			};
 			// To create Charge code Link with list frm scope.
 			var selected_link_with = [];
@@ -251,14 +253,16 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			var postData = dclone($scope.prefetchData, unwantedKeys);
 
 			//Include Charge code Link with List when selected_charge_code_type is not "TAX".
-			if ($scope.prefetchData.selected_charge_code_type != "1") {
+			if ($scope.prefetchData.selected_charge_code_type !== "1") {
 				postData.selected_link_with = selected_link_with;
 			}
 			// Removing unwanted params from linked_charge_codes list.
 			angular.forEach(postData.linked_charge_codes, function(item, index) {
 				delete item["calculation_rule_list"];
 				delete item["selected_calculation_rule"];
-				if (item["id"]) delete item["id"];
+				if (item["id"]) {
+					delete item["id"];
+				}
 			});
 			$scope.invokeApi(ADChargeCodesSrv.save, postData, saveSuccessCallback);
 		};
@@ -266,10 +270,12 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 * To handle cancel button click.
 		 */
 		$scope.clickedCancel = function() {
-			if ($scope.isAdd)
+			if ($scope.isAdd) {
 				$scope.isAdd = false;
-			if ($scope.isEdit)
+			}
+			if ($scope.isEdit) {
 				$scope.isEdit = false;
+			}
 		};
 		/*
 		 * To handle import from PMS button click.
@@ -404,7 +410,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 * To set the selected payment type based on the id and cc_type from the dropdown.
 		 */
 		$scope.changeSelectedPaymentType = function() {
-			if($scope.selected_payment_type.id != ""){
+			if($scope.selected_payment_type.id !== ""){
 				$scope.prefetchData.selected_payment_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].value;
 				$scope.prefetchData.is_cc_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].is_cc_type;
 			}
@@ -431,8 +437,8 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				Thanks,
 				Dilip
 
-			 * 	Hi Dilip, 
-					Good point, yes, I would say that if taxes get deleted, the calculation rules should be reset for the user to adjust manually. 
+			 * 	Hi Dilip,
+					Good point, yes, I would say that if taxes get deleted, the calculation rules should be reset for the user to adjust manually.
 				Thanks,
 				Nicki
 			 */

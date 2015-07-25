@@ -896,9 +896,13 @@
                             padding: 10px 0;
                             .size(50px, 40%);
                             .pull-left;
-                        }        
+                        }
+                    }
 
+                    .room-info {
                         .room-number {
+                            font-size: 30px;
+                            line-height: 20px;
                             .show;
 
                             &.ready { color: @green; }
@@ -906,8 +910,14 @@
                             &.room-red { 
                                 color: @red; 
                                 margin-top: -10px;
-                                line-height: 1em;
                             }
+                        }
+
+                        .room-type {
+                            font-size: 14px;
+                            text-transform: uppercase;
+                            .nowrap();
+                            .show;
                         }
                     }
 
@@ -2339,6 +2349,39 @@
 
                                     &.has-datepicker {
                                         .ui-datepicker-trigger { top: 24px; }
+                                    }
+
+                                    &.commission {
+                                        .float;
+
+                                        .switch-button {
+                                            margin-right: 10px;
+                                            height: 40px;
+                                            .calc-width(45, 10);
+                                            .pull-left;
+
+                                            input[type="checkbox"] { 
+                                                line-height: 40px;
+                                                height: 40px;
+                                            }   
+
+                                            .data-off,
+                                            .data-on {
+                                                line-height: 30px;
+                                                height: 30px;
+                                            }   
+                                        }
+
+                                        input[type="text"] { 
+                                            margin-right: 10px;
+                                            .calc-width(30, 10);
+                                            .pull-left;
+                                        }
+
+                                        .select { 
+                                            .size(40px, 25%);
+                                            .pull-left;
+                                        }
                                     }
 
                                     &.hidden { #fade > .out(); }
@@ -4129,6 +4172,7 @@
                 .float;
 
                 span { 
+                    color: @grey3;
                     margin: 0;
                     .pull-right; 
                 }
@@ -4427,11 +4471,29 @@
                     &.item-origin,
                     &.item-type,
                     &.item-source,
-                    &.item-segment { .calc-width(50, 10); }
+                    &.item-segment,
+                    &.item-commission { 
+                        .calc-width(50, 10); 
 
-                    &.item-market, 
-                    &.item-origin,
-                    &.item-segment {  margin-right: 0; }
+                        &:nth-child(even) { margin-right: 0; }
+                    }
+
+                    &.item-commission {
+                        .entry {
+                            .float;
+
+                            input {
+                                margin-right: 10px;
+                                .square(50px);
+                                .pull-left;
+                            }
+
+                            .select {
+                                .size(50px, 60px);
+                                .pull-left;
+                            }
+                        }
+                    }
                 }
             } 
 
@@ -4973,6 +5035,23 @@
                         .icons { top: 8px; }
                     }
                 }
+
+                .checkbox {
+                    font-size: 14px;
+                    line-height: 1;
+                    text-align: center;
+                    text-transform: uppercase;
+                    padding: 30px 0 0 0;
+                    white-space: normal;
+                    overflow: visible;
+                    width: 80px; 
+
+                    .icon-form {
+                        top: 5px;
+                        left: 50%;
+                        margin-left: -10px;
+                    }
+                }
             } 
 
             .group-overview {
@@ -5018,6 +5097,8 @@
             }
 
             .signature {
+                position: relative;
+                margin-left: 10px;
                 .pull-left;
 
                 .toggle {
@@ -5051,6 +5132,16 @@
                         #border-radius > .bottom(0);
                         .box-shadow(1px 0 0 rgba(0,0,0,.15));
                     }
+                }
+
+                &:after {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: -10px;
+                    background-color: rgba(0,0,0,.1);
+                    .show;
+                    .size(100%, 1px);
                 }
             }
 
@@ -5145,19 +5236,21 @@
                     border-spacing: 0 10px;
                     margin: 0;
 
-                    .checkbox {
-                        margin: 0;
-                        padding: 0;
-                        .size(35px, 60px);
+                    .action {
+                        .checkbox {
+                            margin: 0;
+                            padding: 0;
+                            .size(35px, 60px);
 
-                        .icon-form { 
-                            top: 7px; 
-                            left: 20px;
-                        }
+                            .icon-form { 
+                                top: 7px; 
+                                left: 20px;
+                            }
 
-                        input {
-                            min-height: 35px;
-                            line-height: 35px;
+                            input {
+                                min-height: 35px;
+                                line-height: 35px;
+                            }
                         }
                     }
 
@@ -8294,7 +8387,7 @@
                 .float;
 
                 .entry {
-                    #pixel-to-percent > .width(585, 1230);
+                    #pixel-to-percent > .width(595, 1230);
                     .pull-left;
 
                     input {
@@ -8310,11 +8403,12 @@
                 }
             }
 
-            &#company-agent {
+            &#company-promo {
+                .float;
 
                 .entry {
-                    width: 100%;
-                    margin-bottom: 20px;
+                    #pixel-to-percent > .width(595, 1230);
+                    .pull-left;
 
                     input {
                         font-size: 24px;
@@ -8323,45 +8417,52 @@
                         .placeholder-text(24px, 60px, 700, @grey3, normal);
                     }
 
+                    &:last-child { #pixel-to-percent > .left-margin(40, 1230); }
                 }
             }
 
-            &#codes {
-
+            &#select-rate {
                 .entry {
-                    .entry-data {
-                        .float;
+                    margin-bottom: 10px;
+                    .float;
 
-                        input {
-                            font-size: 24px;
-                            #pixel-to-percent > .width(550, 1230);
-                            .placeholder-text(24px, 60px, 700, @grey3, normal);
-                            .pull-left;
+                    .checkbox {
+                        line-height: 50px;
+                        margin-bottom: 0;
+                        
+                        #pixel-to-percent > .width(595, 1230);
+                        .pull-left;
+
+                        .icon-form { top: 15px; }
+                    }
+
+                    .select {
+                        position: relative;
+                        margin: 0;
+                        #pixel-to-percent > .left-margin(40, 1230);
+                        #pixel-to-percent > .width(595, 1230);
+                        .pull-right;
+
+                        .label {
+                            position: absolute;
+                            top: 0;
+                            left: 20px;
+                            line-height: 50px;
                         }
 
-                        .select {
-                            position: relative;
-                            width: 70%;
-                            #pixel-to-percent > .width(600, 1230);
-                            .pull-right;
+                        select { 
+                            vertical-align: middle;
+                            font-size: 16px;
+                            line-height: 50px;
+                            padding-left: 65px;
+                            height: 50px;
+                            min-height: 50px;
 
-                            .label {
-                                position: absolute;
-                                top: 20px;
-                                left: 15px;
-                                z-index: 0;
-                            }
-
-                            select {
-                                vertical-align: middle;
-                                position: relative;
-                                font-size: 18px;
-                                padding: 12px 10px 10px 65px;
-
-                                option { font-size: 16px; }
-                            }
+                            option { font-size: 16px; }
                         }
                     }
+
+                    &:last-child { margin-bottom: 0; }
                 }
             }
 
@@ -9963,9 +10064,19 @@
                         color: @grey3;
                     }
 
-                    label { margin-bottom: 0; }
+                    label { 
+                        margin-bottom: 0;
+
+                        &.checkbox {
+                            font-size: 14px; 
+                            text-transform: uppercase; 
+                        }
+                    }
 
                     .actions {
+                        padding-top: 20px;
+                        border-top: 1px solid rgba(0,0,0,.1);
+
                         .button {
                             font-size: 18px;
                             line-height: 24px;

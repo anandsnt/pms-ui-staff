@@ -41,12 +41,12 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 	*/
 	$scope.showMaximumOccupancyDialog = function(index){
 		var showOccupancyMessage = false;
-		if($scope.upgradesList[index].room_max_occupancy != "" && $scope.reservation_occupancy != null){
+		if($scope.upgradesList[index].room_max_occupancy !== "" && $scope.reservation_occupancy !== null){
 				if(parseInt($scope.upgradesList[index].room_max_occupancy) < $scope.reservation_occupancy){
 					showOccupancyMessage = true;
 					$scope.max_occupancy = parseInt($scope.upgradesList[index].room_max_occupancy);
 			}
-		}else if($scope.upgradesList[index].room_type_max_occupancy != "" && $scope.reservation_occupancy != null){
+		}else if($scope.upgradesList[index].room_type_max_occupancy !== "" && $scope.reservation_occupancy !== null){
 				if(parseInt($scope.upgradesList[index].room_type_max_occupancy) < $scope.reservation_occupancy){
 					showOccupancyMessage = true;
 					$scope.max_occupancy = parseInt($scope.upgradesList[index].room_type_max_occupancy);
@@ -151,7 +151,7 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 			room_no 		: selectedListItem.upgrade_room_number,
 			room_type_name 	: selectedListItem.upgrade_room_type_name,
 			room_type_code 	: selectedListItem.upgrade_room_type,
-			room_type_level	: parseInt(selectedListItem.room_type_level),
+			room_type_level	: parseInt(selectedListItem.room_type_level)
 		});
 
 		//yes. ALL set. Go!
@@ -208,7 +208,7 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 	*/
 	$scope.getRoomStatusClass = function(room){
 		var statusClass = "ready";
-		if(room.is_oos == "true"){
+		if(room.is_oos === "true"){
 			return "room-grey";
 		}
 		return statusClass;

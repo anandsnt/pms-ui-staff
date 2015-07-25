@@ -11,8 +11,8 @@ admin.directive('adToggleButton', function($timeout) {
             label: '@label',
             isDisabled: '=isDisabled'
 	    },
-        
-    	templateUrl: '../../assets/directives/toggle/adToggleButton.html' 
+
+    	templateUrl: '../../assets/directives/toggle/adToggleButton.html'
     };
 
 });

@@ -1,5 +1,5 @@
-admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams','$filter','$timeout',
-	function($scope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter, $timeout){
+admin.controller('ADRatesListCtrl',['$scope', '$rootScope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams','$filter','$timeout', '$stateParams',
+	function($scope, $rootScope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter, $timeout, $stateParams){
 
 	$scope.errorMessage = '';
 	$scope.successMessage = "";
@@ -19,8 +19,9 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 
 	$scope.checkPMSConnection = function(){
 		var fetchSuccessOfHotelSettings = function(data){
-			if(data.pms_type !== null)
+			if(data.pms_type !== null) {
 				$scope.isConnectedToPMS = true;
+			}
 		};
 		$scope.invokeApi(ADHotelSettingsSrv.fetch, {}, fetchSuccessOfHotelSettings);
 	};
@@ -86,7 +87,9 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 	*/
 	$scope.showRates = function(index, id, fetchKey, baseRate){
 		$scope.popoverRates = {};
-		if(baseRate === "" || typeof baseRate === "undefined") return false;
+		if(baseRate === "" || typeof baseRate === "undefined") {
+			return false;
+		}
 		var rateFetchSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.popoverRates = data;
@@ -111,7 +114,9 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 	* @param {string} number of rates available for the rate type
 	*/
 	$scope.showDateRanges = function(index, id, fetchKey, dateCount){
-		if(dateCount === 0) return false;
+		if(dateCount === 0) {
+			return false;
+		}
 		var dateFetchSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.popoverRates = data;
@@ -146,12 +151,15 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 			return "";
 		}
 		if ($scope.currentHoverElement === index) {
-			if(type === 'basedOn')
+			if(type === 'basedOn') {
 				return "/assets/partials/rates/adRatePopover.html";
-			if(type === 'rateType')
+			}
+			if(type === 'rateType') {
 				return "/assets/partials/rates/adRateTypePopover.html";
-			if(type === 'dateRange')
+			}
+			if(type === 'dateRange') {
 				return "/assets/partials/rates/adDateRangePopover.html";
+			}
 		}
 	};
 
@@ -165,7 +173,9 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		console.log(index);
 		console.log(id);
                 */
-		if(typeof index === "undefined" || typeof id === "undefined") return "";
+		if(typeof index === "undefined" || typeof id === "undefined") {
+			return "";
+		}
 		if($scope.currentClickedElement === index){
 			return "/assets/partials/rates/adRateInlineEdit.html";
 		}
@@ -244,6 +254,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 	$scope.editRatesClicked = function(rateId, index) {
 		//If PMS connected, we show an inline edit screen for rates.
 		//Only rate name and description should be editable.
+                $stateParams.rateId = rateId;
 		if($scope.isConnectedToPMS){
 			$scope.rateDetailsForNonStandalone = {};
 			$scope.currentClickedElement = index;
