@@ -130,6 +130,25 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         };
 
         /**
+         * should we allow to change the room of a particular reservation
+         * @param {Object} reservation
+         * @return {Boolean}
+         */
+        $scope.shouldDisableChangeRoom = function(reservation) {
+            var rStatus = reservation.reservation_status;
+            return (rStatus === "CHECKEDOUT" || rStatus === "NOSHOW_CURRENT" ||
+                rStatus === "CANCELED" || rStatus === "NOSHOW");
+        };
+
+        /**
+         * is Room Number is empty
+         * @return {Boolean} [description]
+         */
+        $scope.isEmptyRoomNumber = function(roomNo) {
+            return (roomNo === null || roomNo === '');
+        };
+
+        /**
          * Function to decide whether to show a particular occupancy
          * based on the key that we getting from the function we are deciding
          * @return {Boolean}
@@ -319,7 +338,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          */
         var showNoRoomTypesAttachedPopUp = function(argument) {
             ngDialog.open({
-                template: '/assets/partials/groups/rooming/rvGroupRoomingNoRoomTypeAttachedPopUp.html',
+                template: '/assets/partials/groups/rooming/popups/general/rvGroupRoomingNoRoomTypeAttachedPopUp.html',
                 className: '',
                 scope: $scope,
                 closeByDocument: false,
@@ -1389,31 +1408,44 @@ sntRover.controller('rvGroupRoomingListCtrl', [
              * @return {undefined}
              */
             var successFetchOfAllReqdForReservationEdit = function() {
-                var reservationData = angular.copy(selectedReservation);
-                $scope.roomingListState.editedReservationStart = selectedReservation.arrival_date;
-                $scope.roomingListState.editedReservationEnd = selectedReservation.departure_date;
+                var reservationData = angular.copy(selectedReservation),
+                    containNonEditableRoomType = null,
+                    roomTypesForEditPopup = null,
+                    allowedRoomTypes = null;
+
+                _.extend($scope.roomingListState, {
+                    editedReservationStart: selectedReservation.arrival_date,
+                    editedReservationEnd: selectedReservation.departure_date
+                });
 
                 //as per CICO-17082, we need to show the room type in select box of edit with others
                 //but should be disabled
-                var containNonEditableRoomType = (_.pluck($scope.roomTypesAndData, 'room_type_id')
+                containNonEditableRoomType = (_.pluck($scope.roomTypesAndData, 'room_type_id')
                     .indexOf(parseInt(selectedReservation.room_type_id))) <= -1;
 
                 if (containNonEditableRoomType) {
-                    var roomTypesForEditPopup = [{
+                    roomTypesForEditPopup = [{
                         room_type_id: selectedReservation.room_type_id,
                         room_type_name: selectedReservation.room_type_name
                     }];
-                    reservationData.allowedRoomTypes = _.union(roomTypesForEditPopup,
+                    allowedRoomTypes = _.union(roomTypesForEditPopup,
                         util.deepCopy($scope.roomTypesAndData));
                 } else {
-                    reservationData.allowedRoomTypes = (util.deepCopy($scope.roomTypesAndData));
+                    allowedRoomTypes = (util.deepCopy($scope.roomTypesAndData));
                 }
 
-                reservationData.reservationStatusFlags = getReservationStatusFlags(selectedReservation);
-                reservationData.arrival_date = new tzIndependentDate(reservationData.arrival_date);
-                reservationData.departure_date = new tzIndependentDate(reservationData.departure_date);
-                //Pls note, roomsFreeToAssign include already assigned room of that particular reservation
-                reservationData.roomsFreeToAssign = selectedReservation.roomsAvailableToAssign;
+                _.extend(reservationData, {
+                    reservationStatusFlags: getReservationStatusFlags(selectedReservation),
+                    arrival_date: new tzIndependentDate(reservationData.arrival_date),
+                    departure_date: new tzIndependentDate(reservationData.departure_date),
+                    //Pls note, roomsFreeToAssign include already assigned room of that particular reservation
+                    roomsFreeToAssign: selectedReservation.roomsAvailableToAssign
+                });
+
+                //inorder to tackle the empty entry showing in case of no rooms available to assign/or prev. set as N/A
+                if (reservationData.room_id === null) {
+                    reservationData.room_id = '';
+                }
 
                 $scope.$emit('hideLoader');
 
@@ -1441,7 +1473,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
                 //rooming details fetch
                 var paramsForListOfFreeRooms = {
-                    group_id: $scope.groupConfigData.summary.group_id,
                     reserevation_id: reservation.id,
                     num_of_rooms_to_fetch: 5
                 };
@@ -1460,7 +1491,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
              */
             var showEditReservationPopup = function(reservationData) {
                 ngDialog.open({
-                    template: '/assets/partials/groups/rooming/editReservation/rvGroupEditRoomingListItem.html',
+                    template: '/assets/partials/groups/rooming/popups/editReservation/rvGroupEditRoomingListItem.html',
                     className: '',
                     scope: $scope,
                     closeByDocument: false,
@@ -1480,36 +1511,49 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             };
 
         }());        
+    
+        /**
+         * utility method to get the formmated date for API
+         * @param  {String} dateString
+         * @return {String} [formatted date]
+         */
+        var getFormattedDateForAPI = function (dateString) {
+            return $filter('date')(tzIndependentDate(dateString), $rootScope.dateFormatForAPI)
+        };
+
+        /**
+         * we need to update the reservation listing after updation
+         */
+        var onUpdateReservationSuccess = function(data) {
+            $scope.closeDialog();
+            //calling initially required APIs
+            callInitialAPIs();
+        };
 
         /**
          * Method to update the reservation
          * @param  {object} reservation
          * @return {undefined}
          */
-        $scope.updateReservation = function(reservation) {
+        $scope.updateReservation = function(reservation) {       
             if (reservation.reservation_status === "CANCELED") {
                 return false;
-            } else {
-                reservation.group_id = $scope.groupConfigData.summary.group_id;
-                reservation.arrival_date = $filter('date')(tzIndependentDate($scope.roomingListState.editedReservationStart), 'yyyy-MM-dd');
-                reservation.departure_date = $filter('date')(tzIndependentDate($scope.roomingListState.editedReservationEnd), 'yyyy-MM-dd');
-                reservation.room_type_id = parseInt(reservation.room_type_id);
-
-                var onUpdateReservationSuccess = function(data) {
-                        //calling initially required APIs
-                        callInitialAPIs();
-                        $scope.errorMessage = [];
-                        $scope.closeDialog();
-                    },
-                    onUpdateReservationFailure = function(errorMessage) {
-                        $scope.errorMessage = errorMessage;
-                    }
-
-                $scope.callAPI(rvGroupConfigurationSrv.updateRoomingListItem, {
-                    successCallBack: onUpdateReservationSuccess,
-                    failureCallBack: onUpdateReservationFailure,
-                    params: reservation
+            } 
+            else {
+                $scope.errorMessage = [];
+                _.extend(reservation, {
+                    group_id: $scope.groupConfigData.summary.group_id,
+                    arrival_date: getFormattedDateForAPI($scope.roomingListState.editedReservationStart),
+                    departure_date: getFormattedDateForAPI($scope.roomingListState.editedReservationEnd),
+                    room_type_id: parseInt(reservation.room_type_id),
+                    room_id: parseInt(reservation.room_id)
                 });
+                
+                var options = {
+                    successCallBack: onUpdateReservationSuccess,
+                    params: reservation
+                };
+                $scope.callAPI(rvGroupConfigurationSrv.updateRoomingListItem, options);
             }
         }
 
@@ -1685,7 +1729,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                     $scope.sendEmail($scope.groupConfigData.summary.contact_email);
                 } else {
                     ngDialog.open({
-                        template: '/assets/partials/groups/rooming/rvRoomingListEmailPrompt.html',
+                        template: '/assets/partials/groups/rooming/popups/general/rvRoomingListEmailPrompt.html',
                         className: '',
                         scope: $scope,
                         closeByDocument: false,
