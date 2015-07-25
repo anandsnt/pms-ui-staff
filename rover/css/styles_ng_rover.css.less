@@ -1325,10 +1325,12 @@ span.keys-msg-bold{
   #confirmation-print-template{
     .show
   }
+  header.rover-header{
+    .hide;
+  } 
   #modal{
-  .hide
+    .hide
   }   
-    
   #details-and-payment { 
     .hide; 
   }
@@ -1338,6 +1340,10 @@ span.keys-msg-bold{
   
   /**** Styles for confirmation Email PRINT Starts Here ***/
  #confirmation-print-template{ 
+
+  table tr td{
+    border-bottom: 0;
+  }
   .table-common {
     border: 0;
     width: 100%;
