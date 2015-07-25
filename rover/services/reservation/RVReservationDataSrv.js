@@ -250,6 +250,9 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 			reservationData.departureDate = stayCard.departure_date;
 			reservationData.numNights = stayCard.total_nights;
 			reservationData.isHourly = stayCard.is_hourly_reservation;
+			reservationData.number_of_adults =stayCard.number_of_adults;
+			reservationData.number_of_children =stayCard.number_of_children;
+			reservationData.number_of_infants =stayCard.number_of_infants;
 			//CICO-6135
 			if (stayCard.arrival_time) { //  reservationDetails.reservation_card.departureDate ! = null
 				reservationData.checkinTime = self.parseTime(stayCard.arrival_time);
