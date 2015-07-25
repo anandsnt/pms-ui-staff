@@ -258,6 +258,8 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
             var deferred = $q.defer(),
                 url = '/api/reservations/'+params.reservation_id+'/confirmation_email_data';
             rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                // Converting array into String here, for display purpose.
+                data.data.addons_list = (data.data.addons) ? data.data.addons.toString() : "";
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
