@@ -245,6 +245,10 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                         onGroupSaveFailure = function(errorMessage) {
                             $scope.errorMessage = errorMessage;
                         };
+                        
+                    if(!$scope.groupConfigData.summary.rate){
+                       $scope.groupConfigData.summary.rate = -1; 
+                    }    
 
                     $scope.callAPI(rvGroupConfigurationSrv.saveGroupSummary, {
                         successCallBack: onGroupSaveSuccess,
