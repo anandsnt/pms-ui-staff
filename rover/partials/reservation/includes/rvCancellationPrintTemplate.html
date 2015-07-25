@@ -7,7 +7,7 @@
                   <tbody>
                     <tr>
                       <td align='center' class="first-inner-table-data">
-                        <img src='data[location_image_for_pdf]' class="first-inner-table-image"/>
+                        <img ng-src='{{ printData.location_image_for_pdf }}' class="first-inner-table-image"/>
                       </td>
                     </tr>
                   </tbody>
@@ -20,10 +20,10 @@
                   <tbody>
                     <tr>
                       <td class="second-inner-table-title">
-                        CANCELLATION #: =@data[:confirmation_no]
+                        CANCELLATION #: {{printData.confirmation_no}}
                       </td>
                       <td class="second-inner-table-data">
-                        =@data[:date]
+                        {{printData.date}}
                       </td>
                     </tr>
                   </tbody>
@@ -41,34 +41,24 @@
                             <tr>
                               <td>
                                 <p>
-                      <!-- Copied from HAML file -->
-                      =@data[:guest_details][:guest_name_upcase]
-                                  -if(!@data[:guest_details][:street1].blank? || !@data[:guest_details][:city].blank?)
-                                    %br
-                                      -if(!@data[:guest_details][:street1].blank?)
-                                        =@data[:guest_details][:street1]
-                                        ,
-                                    %span
-                                      -if(!@data[:guest_details][:city].blank?)
-                                        =@data[:guest_details][:city]
-                                  -if(!@data[:guest_details][:state].blank? || !@data[:guest_details][:postal_code].blank?)
-                                    %br
-                                      -if(!@data[:guest_details][:state].blank?)
-                                        =@data[:guest_details][:state]
-                                        ,
-                                      -if(!@data[:guest_details][:postal_code].blank?)
-                                        %span                                    
-                                        =@data[:guest_details][:postal_code]
-                      <!-- Copied from HAML file -->
+                                {{printData.guest_details.guest_name_upcase}}
+                                <br/>
+                                {{printData.guest_details.street1}}
+                                <span ng-if="printData.guest_details.street1"> , </span>
+                                {{printData.guest_details.city}}
+                                <br/>
+                                {{printData.guest_details.state}}
+                                <span ng-if="printData.guest_details.street1"> , </span>
+                                {{printData.guest_details.postal_code}}
+                                <br/>
                                 </p>
                               </td>
                             </tr>
                           </tbody>
                         </table>
                       </td>
-
                       <td class="third-table-data-second">
-                        <span>Dear</span>
+                        <span>Dear {{printData.guest_details.guest_name}},</span>
                         <span>
                         </span>
                         <span>

@@ -674,7 +674,7 @@ sntRover.controller('reservationActionsController', [
 		//Action against print button in staycard.
 		$scope.printReservationCancellation = function(){
 			var succesfullCallback = function(data){
-				console.log(data);
+				$scope.printData = data.data;
 				printPage();
 			};
 			var failureCallbackPrint = function(error){
