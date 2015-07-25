@@ -855,7 +855,9 @@
 	"SOCIAL_NETWORK" : "Social Network",
 	"CONFIRMATION_LETTER_TEXT" : "CONFIRMATION LETTER TEXT",
 	"SEND_CANCELLATION_LETTER":"Send Cancellation Letter",
-	"PRINT_CANCELLATION_AND_CONFIRMATION_LETTERS":"Print Cancellation And Confirmation Letters"
+	"PRINT_CANCELLATION_AND_CONFIRMATION_LETTERS":"Print Cancellation And Confirmation Letters",
+	"PRINT_CANCELLATION_LETTER":"Print Cancellation Letter",
+	"PRINT_CONFIRMATION_LETTER":"Print Confirmation Letter"
 
 
 
