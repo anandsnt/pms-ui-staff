@@ -45,7 +45,7 @@ sntRover.controller('RVRoomFiltersController',['$scope','$state', '$stateParams'
 	$scope.setSelectionForFeature = function(group, feature){
 			if(!$scope.roomFeatures[group].multiple_allowed){
 				for(var i = 0; i < $scope.roomFeatures[group].items.length; i++){
-					if(feature != i){
+					if(feature !== i){
 						$scope.roomFeatures[group].items[i].selected = false;
 					}
 				}

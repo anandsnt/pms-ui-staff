@@ -1,5 +1,5 @@
 sntRover.service('rvUtilSrv', [function(){
-		
+
 		var self = this;
 		/**
 		 * utility function to take deep copy of an object
@@ -19,10 +19,10 @@ sntRover.service('rvUtilSrv', [function(){
 		 */
 		this.escapeNull = function(value, replaceWith){
 	  		var newValue = "";
-	  		if((typeof replaceWith != "undefined") && (replaceWith != null)){
+	  		if((typeof replaceWith !== "undefined") && (replaceWith !== null)){
 	  			newValue = replaceWith;
 	  		}
-	  		var valueToReturn = ((value == null || typeof value == 'undefined' ) ? newValue : value);
+	  		var valueToReturn = ((value === null || typeof value === 'undefined' ) ? newValue : value);
 	  		return valueToReturn;
 		};
 
@@ -32,13 +32,15 @@ sntRover.service('rvUtilSrv', [function(){
 		* @return {boolean}
 		*/
 		this.isEmpty = function(string){
-			if (typeof string === "number") string = string.toString();
+			if (typeof string === "number") {
+				string = string.toString();
+			}
 			return (this.escapeNull(string).trim() === '');
 		};
 
 		/**
 		* function to stringify a string
-		* sample use case:- directive higlight filter 
+		* sample use case:- directive higlight filter
 		* sometimes through error parsing speial charactes
 		* @param {String}
 		* @return {String}
@@ -92,7 +94,7 @@ sntRover.service('rvUtilSrv', [function(){
 		this.addOneDay = function(date_){
 			return (this.toMilliSecond (date_) + (24 * 3600 * 1000))
 		};
-		
+
 		/**
 		 * utility function to get key value from an array having number of other. key values
 		 * @param  {array} array      	[source array to process]
@@ -104,7 +106,7 @@ sntRover.service('rvUtilSrv', [function(){
 
 			_.each(array, function(arrayIndexElement){
 				eachItemToAdd = {};
-				
+
 				_.each(wantedKeys, function(key){
 					eachItemToAdd[key] = arrayIndexElement[key];
 				});
@@ -119,7 +121,7 @@ sntRover.service('rvUtilSrv', [function(){
 		 * @param {Integer/String}
 		 * @return {Boolean}
 		 */
-    	this.isNumeric = function(string){    		
+    	this.isNumeric = function(string){
     		return !jQuery.isArray( string ) && (string - parseFloat( string ) + 1) >= 0;
     	};
 
@@ -154,10 +156,10 @@ sntRover.service('rvUtilSrv', [function(){
     	 * @return {String}             date string
     	 */
     	this.get_date_from_date_picker = function (date_picker, seperator){
-    		if (typeof seperator === "undefined") { 
+    		if (typeof seperator === "undefined") {
     			seperator = "/";
     		}
-    		return (date_picker.selectedYear + seperator + (date_picker.selectedMonth + 1) + seperator 
+    		return (date_picker.selectedYear + seperator + (date_picker.selectedMonth + 1) + seperator
     				+ date_picker.selectedDay);
     	};
 }]);

@@ -131,7 +131,7 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 					for (k = 0, l = _unassigned.length; k < l; k++) {
 
 						_foundMatch = _.find(_assignedRoomIds, function(id) {
-							return id == _unassigned[k].id;
+							return id === _unassigned[k].id;
 						});
 
 						// only push this room in
@@ -176,7 +176,7 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 										var firstSplit = time.toString().split(':');
 										var secondSplit = firstSplit[1].split(' ');
 										var returnString = firstSplit[0];
-										if (secondSplit[1].toString() && secondSplit[1].toString().toUpperCase() == "PM") {
+										if (secondSplit[1].toString() && secondSplit[1].toString().toUpperCase() === "PM") {
 											returnString = parseInt(returnString) + 12;
 										} else {
 											returnString = (parseInt(returnString) + 12) % 12;

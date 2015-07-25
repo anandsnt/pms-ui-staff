@@ -32,20 +32,21 @@
 	$scope.gotToNextStep = function(fee,chargeId){
 		if(!$rootScope.isCCOnFile && !$rootScope.isSixpayments){
 			$state.go('ccVerification',{'fee':fee,'message':"Late check-out fee",'isFromCheckoutNow':false});
-		}				
+		}
 		else{
 			$state.go('checkOutLaterSuccess',{id:chargeId});
 		}
-				
+
 	}
 
 	// fetch details
 	LateCheckOutChargesService.fetchLateCheckoutOptions().then(function(charges) {
 		$scope.charges = charges;
 		$scope.netWorkError = false;
-		$scope.isFetching = false;    	
-		if($scope.charges.length > 0)
+		$scope.isFetching = false;
+		if($scope.charges.length > 0) {
 			$scope.optionsAvailable = true;
+		}
 	},function(){
 		$scope.netWorkError = true;
 		$scope.isFetching = false;

@@ -27,7 +27,7 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope','$rootScope','$
 			$scope.eventTimestamp = event.timeStamp;
 		}
 	};
-	
+
 	// To handle click on drawer handle - open/close.
 	$scope.clickedDrawer = function($event){
 		$event.stopPropagation();
@@ -38,9 +38,13 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope','$rootScope','$
 					return;
 				}
 			}
-			if($scope.data.printBoxHeight == resizableMinHeight || $scope.data.printBoxHeight == resizableMaxHeight) {
-				if ($scope.data.isDrawerOpened)	$scope.closeDrawer();
-				else $scope.openDrawer();
+			if($scope.data.printBoxHeight === resizableMinHeight || $scope.data.printBoxHeight === resizableMaxHeight) {
+				if ($scope.data.isDrawerOpened)	{
+					$scope.closeDrawer();
+				}
+				else {
+					$scope.openDrawer();
+				}
 			}
 			else{
 				// mid way click : close guest card
@@ -94,14 +98,14 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope','$rootScope','$
 
         // add the orientation
         addPrintOrientation();
-        
+
         /*
-         *  =====[ READY TO PRINT ]=====
+         *  ======[ READY TO PRINT ]======
          */
         // this will show the popup with full bill
         $timeout(function() {
             /*
-             *  =====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+             *  ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
              */
 
             $window.print();
@@ -112,7 +116,7 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope','$rootScope','$
         }, 100);
 
         /*
-         *  =====[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]=====
+         *  ======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
          */
 
         // remove the orientation after similar delay

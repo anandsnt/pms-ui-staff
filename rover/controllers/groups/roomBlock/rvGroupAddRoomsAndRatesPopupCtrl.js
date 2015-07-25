@@ -39,7 +39,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 			//selected room types & its rates
 			$scope.selectedRoomTypeAndRates = util.deepCopy($scope.groupConfigData.summary.selected_room_types_and_rates);
 
-			var wanted_keys = ["room_type_id", "room_type_name", "best_available_rate_amount", "rate_id"];
+			var wanted_keys = ["room_type_id", "room_type_name", "best_available_rate_amount", "rate_id", "best_available_rate_id"];
 			$scope.roomTypes = util.getListOfKeyValuesFromAnArray($scope.selectedRoomTypeAndRates, wanted_keys);
 
 			//adding currency symbol to best available rate
@@ -56,7 +56,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 				is_configured_in_group: true
 			});
 			//if nothing is configured, we have to add a new row
-			if ($scope.selectedRoomTypeAndRates.length == 0) {
+			if ($scope.selectedRoomTypeAndRates.length === 0) {
 				$scope.selectedRoomTypeAndRates = [];
 				$scope.selectedRoomTypeAndRates.push(util.deepCopy($scope.groupConfigData.summary.selected_room_types_and_rates[0]));
 			};
@@ -80,8 +80,9 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 			});
 			if (roomType) {
 				row.best_available_rate_amount = roomType.best_available_rate_amount;
+				row.best_available_rate_id = roomType.best_available_rate_id;
 				row.rate_id = roomType.rate_id;
-				if ($scope.groupConfigData.summary.rate != -1) {
+				if ($scope.groupConfigData.summary.rate !== -1) {
 					var selectedRateDetails = _.findWhere($scope.groupConfigData.summary.selected_room_types_and_rates, {
 						room_type_id: roomType.room_type_id
 					})
@@ -167,10 +168,10 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 		var formSaveNewRoomTypesAndRatesParams = function() {
 			//we only want rows who have room type choosed
 			var selectedRoomTypeAndRates = _.filter($scope.selectedRoomTypeAndRates, function(obj) {
-				return (typeof obj.room_type_id !== "undefined" && obj.room_type_id != '');
+				return (typeof obj.room_type_id !== "undefined" && obj.room_type_id !== '');
 			});
 			//since selectedRoomTypeAndRates containst some unwanted keys
-			var wanted_keys = ["room_type_id", "single_rate", "double_rate", "extra_adult_rate", "rate_id"];
+			var wanted_keys = ["room_type_id", "single_rate", "double_rate", "extra_adult_rate", "rate_id", "best_available_rate_id"];
 			selectedRoomTypeAndRates = util.getListOfKeyValuesFromAnArray(selectedRoomTypeAndRates, wanted_keys);
 
 			var params = {
@@ -188,7 +189,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 		$scope.saveNewRoomTypesAndRates = function() {
 			var options = {
 				params: formSaveNewRoomTypesAndRatesParams(),
-				successCallBack: successCallBackOfSaveNewRoomTypesAndRates,
+				successCallBack: successCallBackOfSaveNewRoomTypesAndRates
 			};
 
 			$scope.callAPI(rvGroupConfigurationSrv.updateSelectedRoomTypesAndRates, options);
@@ -202,7 +203,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 		 */
 		$scope.hideRoomType = function(mySelectedID, roomType) {
 			//if it is mine room type, we will show that
-			if (parseInt(mySelectedID) == parseInt(roomType.room_type_id)) return false;
+			if (parseInt(mySelectedID) === parseInt(roomType.room_type_id)) return false;
 
 			//we are removing other selected
 			//list of selecetd room types' ids

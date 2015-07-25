@@ -16,8 +16,8 @@ sntRover.factory('RVReportParserFac', [
             // a very special parser for daily transaction report
             // in future we may make this check generic, if more
             // reports API structure follows the same pattern
-            if ( reportName == reportUtils.getName('DAILY_TRANSACTIONS') ||
-                    reportName == reportUtils.getName('DAILY_PAYMENTS')) {
+            if ( reportName === reportUtils.getName('DAILY_TRANSACTIONS') ||
+                    reportName === reportUtils.getName('DAILY_PAYMENTS')) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseNumeralData( reportName, apiResponse, options );
             }
 
@@ -39,12 +39,12 @@ sntRover.factory('RVReportParserFac', [
 
 
         function $_isForGenericReports( name ) {
-            return (name == reportUtils.getName('ARRIVAL') ||
-                    name == reportUtils.getName('IN_HOUSE_GUEST') ||
-                    name == reportUtils.getName('CANCELLATION_NO_SHOW') ||
-                    name == reportUtils.getName('DEPARTURE') ||
-                    name == reportUtils.getName('LOGIN_AND_OUT_ACTIVITY') ||
-                    name == reportUtils.getName('RESERVATIONS_BY_USER')) ? true : false;
+            return (name === reportUtils.getName('ARRIVAL') ||
+                    name === reportUtils.getName('IN_HOUSE_GUEST') ||
+                    name === reportUtils.getName('CANCELLATION_NO_SHOW') ||
+                    name === reportUtils.getName('DEPARTURE') ||
+                    name === reportUtils.getName('LOGIN_AND_OUT_ACTIVITY') ||
+                    name === reportUtils.getName('RESERVATIONS_BY_USER')) ? true : false;
         };
 
 
@@ -66,7 +66,7 @@ sntRover.factory('RVReportParserFac', [
 
             var excludeReports = function(names) {
                 return !!_.find(names, function(n) {
-                    return n == reportName;
+                    return n === reportName;
                 });
             };
 
@@ -178,8 +178,8 @@ sntRover.factory('RVReportParserFac', [
 
                     // do this only after the above code that adds
                     // 'row-break' class to the row
-                    if ( reportName == reportUtils.getName('LOGIN_AND_OUT_ACTIVITY') ) {
-                        if ( makeCopy.hasOwnProperty('action_type') && makeCopy['action_type'] == 'INVALID_LOGIN' ) {
+                    if ( reportName === reportUtils.getName('LOGIN_AND_OUT_ACTIVITY') ) {
+                        if ( makeCopy.hasOwnProperty('action_type') && makeCopy['action_type'] === 'INVALID_LOGIN' ) {
                             makeCopy['action_type'] = 'INVALID LOGIN';
                             makeCopy.trCls = 'row-break invalid';
                         };
@@ -248,12 +248,12 @@ sntRover.factory('RVReportParserFac', [
                 makeCopy = angular.copy( apiResponse[i] );
 
                 // catching cases where the value is "" due to old data
-                if ( makeCopy[groupByKey] == '' ) {
+                if ( makeCopy[groupByKey] === '' ) {
                     makeCopy[groupByKey] = 'UNDEFINED';
                 };
 
                 // if the group by key value has changed
-                if ( makeCopy[groupByKey] != currentGroupByVal ) {
+                if ( makeCopy[groupByKey] !== currentGroupByVal ) {
 
                     // insert the intermediate array to the returnObj
                     if ( interMedArray.length ) {
@@ -277,7 +277,7 @@ sntRover.factory('RVReportParserFac', [
             // if all the 'groupByKey' values are the same
             // no entries had been inserted into 'returnObj'
             // if so, let push them here
-            if ( _.size(returnObj) == 0 ) {
+            if ( _.size(returnObj) === 0 ) {
                 currentGroupByVal = makeCopy[groupByKey];
                 returnObj[currentGroupByVal] = angular.copy(interMedArray);
             };
@@ -310,7 +310,7 @@ sntRover.factory('RVReportParserFac', [
                 objKeyName = key;
 
                 for (key in makeCopy) {
-                    if ( !makeCopy.hasOwnProperty(key) || key == '0' || key == 0 ) {
+                    if ( !makeCopy.hasOwnProperty(key) || key === '0' || key === 0 ) {
                         continue;
                     };
                     objKeyName = key;
@@ -322,7 +322,7 @@ sntRover.factory('RVReportParserFac', [
                     for (k = 0, l = chargeGrpObj['details'].length; k < l; k++) {
                         itemCopy = angular.copy( chargeGrpObj['details'][k] );
 
-                        if ( k == 0) {
+                        if ( k === 0) {
                             itemCopy.chargeGroupName = objKeyName;
                             itemCopy.rowspan = l + 1;  // which is chargeGrpObj['details'].length
                         };

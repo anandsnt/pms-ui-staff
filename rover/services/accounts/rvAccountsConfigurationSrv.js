@@ -12,11 +12,11 @@ sntRover.service('rvAccountsConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 			"demographics": {
 				market_segment_id: "",
 				source_id: "",
-				booking_origin_id: "",
+				booking_origin_id: ""
 			},
 			notes: [],
 			"travel_agent": null,
-			"company": null,
+			"company": null
 		};
 
 		// AccountSummary

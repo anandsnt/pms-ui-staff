@@ -1,5 +1,5 @@
 sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$rootScope', function($http, $q, BaseWebSrvV2, RVBaseWebSrv,$rootScope){
-   	
+
    	this.filterData = {};
 	this.revenueData = {};
 	this.paymentData = {};
@@ -74,29 +74,31 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 	this.fetchRevenueDataByChargeGroups = function(params){
 		var deferred = $q.defer();
 
-		if(typeof params.charge_group_id === "undefined") params.charge_group_id = "";
-
+		if(typeof params.charge_group_id === "undefined") {
+			params.charge_group_id = "";
+		}
 		var url = '/api/financial_transactions/revenue_by_charge_groups';
-		
+
 		BaseWebSrvV2.postJSON(url,params).then(function(data) {
-			
+
 			angular.forEach(data.charge_groups,function(charge_groups, index1) {
 				charge_groups.active = false;
 	        });
 		   	deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 
 	this.fetchRevenueDataByChargeCodes = function(params){
 		var deferred = $q.defer();
 
-		if(typeof params.charge_code_id === "undefined") params.charge_code_id = "";
-
+		if(typeof params.charge_code_id === "undefined") {
+			params.charge_code_id = "";
+		}
 		var url = '/api/financial_transactions/revenue_by_charge_codes';
-		
+
 		BaseWebSrvV2.postJSON(url,params).then(function(data) {
 
             angular.forEach(data.charge_codes,function(charge_codes, index2) {
@@ -116,29 +118,30 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 
 	this.fetchRevenueDataByTransactions = function(params){
 		var deferred = $q.defer();
-		
+
 		var url = '/api/financial_transactions/revenue_by_transactions';
-		
+
 		BaseWebSrvV2.postJSON(url,params).then(function(data) {
 		   	deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 
 	this.fetchPaymentDataByPaymentTypes = function(params){
 		var deferred = $q.defer();
 
-		if(typeof params.charge_code_id === "undefined") params.charge_code_id = "";
-
+		if(typeof params.charge_code_id === "undefined") {
+			params.charge_code_id = "";
+		}
 		var url = '/api/financial_transactions/payments_by_payment_types';
 
 		BaseWebSrvV2.postJSON(url,params).then(function(data) {
-			
+
 			angular.forEach(data.payment_types,function(payment_types, index1) {
 
-				if(payment_types.payment_type == "Credit Card"){
+				if(payment_types.payment_type === "Credit Card"){
 		            angular.forEach(payment_types.credit_cards,function(credit_cards, index2) {
 		            	credit_cards.active = false ;
 		            	credit_cards.page_no = 1;
@@ -160,53 +163,53 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 		   	deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 
 	this.fetchPaymentDataByTransactions = function(params){
 		var deferred = $q.defer();
 		var url = '/api/financial_transactions/payments_by_transactions';
-		
+
 		BaseWebSrvV2.postJSON(url,params).then(function(data) {
 		   	deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 
 	this.fetchCashierDetails = function(data){
-		var deferred = $q.defer();	
+		var deferred = $q.defer();
 		var url ='/api/cashier_periods/history';
 		BaseWebSrvV2.postJSON(url,data).then(function(data) {
 			   	deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 		return deferred.promise;
 	};
 
 	this.reOpenCashier = function(updateData){
-		var deferred = $q.defer();	
+		var deferred = $q.defer();
 		var url ='/api/cashier_periods/'+updateData.id+'/reopen';
 		BaseWebSrvV2.postJSON(url).then(function(data) {
 			   	deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 		return deferred.promise;
 	};
 
 	this.closeCashier = function(updateData){
-		var deferred = $q.defer();	
+		var deferred = $q.defer();
 		var url ='/api/cashier_periods/'+updateData.id+'/close';
 		BaseWebSrvV2.postJSON(url,updateData.data).then(function(data) {
 			   	deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 		return deferred.promise;
 	};
-   
+
 }]);

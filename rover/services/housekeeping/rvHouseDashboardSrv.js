@@ -12,7 +12,7 @@ sntRover.service('RVHkDashboardSrv', [
 			},
 			function(errorMessage){
 				deferred.reject(errorMessage);
-			});				
+			});
 			return deferred.promise;
 		}
 	}
