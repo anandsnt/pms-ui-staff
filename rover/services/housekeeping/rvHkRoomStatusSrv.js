@@ -422,6 +422,23 @@ sntRover.service('RVHkRoomStatusSrv', [
 			return deferred.promise;
 		};
 
+		this.fetchAllRoomIDs = function() {
+			var deferred = $q.defer(),
+				url = '/house/room_ids_list';
+
+			BaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data.room_ids);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+
+		
+
 
 		this.toggleFilter = function(item) {
 			this.currentFilters[item] = !this.currentFilters[item];

@@ -90,7 +90,6 @@ sntRover.controller('RVbillCardController',
 	$scope.showIncomingBillingInfo = false
 	$scope.reservationBillData = reservationBillData;
 
-
 	//set up flags for checkbox actions
 
 	$scope.hasMoveToOtherBillPermission = function() {
@@ -1924,7 +1923,7 @@ sntRover.controller('RVbillCardController',
 	 	$scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
 	 	var billCount = $scope.reservationBillData.bills.length;
 		$scope.isRefreshOnBackToStaycard = true;
-		$scope.closeDialog();
+		//$scope.closeDialog();
 		var fetchBillDataSuccessCallback = function(billData){
 		 	$scope.$emit('hideLoader');
 		 	reservationBillData = billData;
@@ -2105,5 +2104,26 @@ sntRover.controller('RVbillCardController',
 	$scope.$on('moveChargeSuccsess', function() {
 		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
 	});
+
+	/**
+     * Function to toggle show rate checkbox value
+     */
+	$scope.clickedShowRate = function(){
+
+		var sucessCallback = function(data){
+			$scope.reservationBillData.hide_rates = !$scope.reservationBillData.hide_rates;
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = "";
+		};
+		var failureCallback = function(errorData){
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = errorData;
+		};
+		var data = {
+			'reservation_id': $scope.reservationBillData.reservation_id,
+			'hide_rates'	: !$scope.reservationBillData.hide_rates
+		}
+		$scope.invokeApi(RVBillCardSrv.toggleHideRate, data, sucessCallback, failureCallback);
+	};
 
 }]);

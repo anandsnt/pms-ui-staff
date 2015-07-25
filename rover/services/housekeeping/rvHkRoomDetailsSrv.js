@@ -132,6 +132,21 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			return deferred.promise;
 		};
 
+
+		// POST: save from IN_SERVICE to OO/OS
+		this.postCheckOutReservation = function(params) {
+			var deferred = $q.defer(),
+				url = 'api/reservations/'+params.id+'/checkout_from_house_keeping';
+
+			rvBaseWebSrvV2.postJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
 		// PUT: update OO/OS to OO/OS
 		this.putRoomServiceStatus = function(params) {
 			var deferred = $q.defer(),
