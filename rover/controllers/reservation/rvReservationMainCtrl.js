@@ -412,8 +412,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                                     var baseRate = parseFloat(addon.quantity) * parseFloat(addon.price), //calculate the base
                                         finalRate = 0.0, //default calculated amount to the base rate
                                         postType = addon.post_type || addon.postType,
-                                        amountType = addon.amount_type || addon.amountType;
-                                    if (postType.value === "STAY" || (date === roomMetaData.arrival)) {
+                                        amountType = addon.amount_type || addon.amountType,
+                                        shouldPostAddon = RVReservationStateService.shouldPostAddon(postType.frequency, date, roomMetaData.arrival);
+                                    if (shouldPostAddon) {
                                         finalRate = parseFloat(RVReservationStateService.getAddonAmount(amountType.value, baseRate, adultsOnTheDay, childrenOnTheDay));
                                         if (todaysMetaData.applyPromotion) {
                                             //check if the addon is associated
@@ -426,9 +427,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                                     }
                                     // cummulative sum (Not just multiplication of rate per day with the num of nights) >> Has to done at "day level" to handle the reservations with varying occupancy!
-                                    if (postType.value === "STAY") {
+                                    if (postType.frequency > 0 && shouldPostAddon) {
                                         addon.effectivePrice = parseFloat(addon.effectivePrice) + parseFloat(finalRate);
-                                    } else if (date === roomMetaData.arrival) {
+
+                                    } else if (postType.frequency == 0 && shouldPostAddon) {
                                         addon.effectivePrice = finalRate; //Posted only on the first Night
                                     }
                                     if (!addon.is_inclusive) {

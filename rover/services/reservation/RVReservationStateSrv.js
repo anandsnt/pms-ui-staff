@@ -177,6 +177,15 @@ sntRover.service('RVReservationStateService', [
 			return self.reservationFlags[key];
 		};
 
+
+		self.shouldPostAddon = function(frequency, present, arrival) {
+			if (frequency === 0 && present === arrival) {
+				return true;
+			}
+			var dayIndex = parseInt((new tzIndependentDate(present) - new tzIndependentDate(arrival)) / (24 * 3600 * 1000), 10);
+			return dayIndex % frequency === 0;
+		};
+
 		self.applyDiscount = function(amount, discount, numNights) {
 			if (numNights === 0) {
 				numNights = 1;
@@ -189,6 +198,7 @@ sntRover.service('RVReservationStateService', [
 			} // discount.type === 'percent'
 			return amount * (discount.value / 100.0);
 		}
+
 
 		/**
 		 * method to initially parse availability response
@@ -297,11 +307,12 @@ sntRover.service('RVReservationStateService', [
 						if (associatedAddons.length > 0) {
 							_.each(associatedAddons, function(addon) {
 								var currentAddonAmount = parseFloat(self.getAddonAmount(addon.amount_type.value, parseFloat(addon.amount), adultsOnTheDay, childrenOnTheDay)),
-									taxOnCurrentAddon = 0.0;
+									taxOnCurrentAddon = 0.0,
+									shouldPostAddon = self.shouldPostAddon(addon.post_type.frequency, for_date, arrival);
 								if (applyPromotion) {
 									currentAddonAmount = parseFloat(self.applyDiscount(currentAddonAmount, code.discount, numNights));
 								}
-								if (addon.post_type.value === "STAY" || for_date === arrival) {
+								if (shouldPostAddon) {
 									taxOnCurrentAddon = self.calculateTax(currentAddonAmount, addon.taxes, activeRoom, adultsOnTheDay, childrenOnTheDay, true);
 									taxForAddons.incl = parseFloat(taxForAddons.incl) + parseFloat(taxOnCurrentAddon.INCL.NIGHT);
 									taxForAddons.excl = parseFloat(taxForAddons.excl) + parseFloat(taxOnCurrentAddon.EXCL.NIGHT);
@@ -315,10 +326,10 @@ sntRover.service('RVReservationStateService', [
 									taxBreakUp: taxOnCurrentAddon,
 									id: addon.id
 								});
-								if (!addon.is_inclusive && (addon.post_type.value === "STAY" || for_date === arrival)) {
+								if (!addon.is_inclusive && shouldPostAddon) {
 									addonRate = parseFloat(addonRate) + parseFloat(currentAddonAmount);
 								}
-								if (!!addon.is_inclusive && (addon.post_type.value === "STAY" || for_date === arrival)) {
+								if (!!addon.is_inclusive && shouldPostAddon) {
 									inclusiveAddonsAmount = parseFloat(inclusiveAddonsAmount) + parseFloat(currentAddonAmount);
 								}
 							});

@@ -446,6 +446,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 		$scope.$on("changedSelectedMenu", function(event, menu) {
 			$scope.selectedIndex = menu;
+			$scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
 		});
 		/*
 		 * Success callback of get language
