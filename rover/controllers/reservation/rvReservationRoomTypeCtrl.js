@@ -1335,7 +1335,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					}
 					if ($scope.reservationData.member.isSelected && isMembershipValid()) {
 						init();
-					} else if($scope.reservationData.member.isSelected){
+					} else if ($scope.reservationData.member.isSelected) {
 						ngDialog.open({
 							template: '/assets/partials/reservation/alerts/rvNotMemberPopup.html',
 							className: '',
@@ -1412,7 +1412,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		}
 
 		$scope.navigateOut = function() {
-			if ($stateParams.fromState === "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState === "STAY_CARD") {
+			if ($scope.viewState.identifier !== "REINSTATE" &&
+				($stateParams.fromState === "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState === "STAY_CARD")) {
 				$scope.saveAndGotoStayCard();
 			} else {
 				$scope.enhanceStay();
