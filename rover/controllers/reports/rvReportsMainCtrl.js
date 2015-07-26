@@ -213,12 +213,12 @@ sntRover.controller('RVReportsMainCtrl', [
 			$scope.touchedReport = item;
 			$scope.touchedDate = dateName;
 
-			if ( item.title == reportUtils.getName('ARRIVAL') ) {
+			if ( item.title === reportUtils.getName('ARRIVAL') ) {
 				if ( !angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj) ) {
 					item.chosenDueInArrivals = false;
 				}
 			};
-			if ( item.title == reportUtils.getName('DEPARTURE') ) {
+			if ( item.title === reportUtils.getName('DEPARTURE') ) {
 				if ( !angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj) ) {
 					item.chosenDueOutDepartures = false;
 				}
@@ -233,18 +233,18 @@ sntRover.controller('RVReportsMainCtrl', [
 				otherDatesNames,
 				otherFilledDates;
 
-			if ( 'object' != typeof reportItem || !reportItem.hasOwnProperty(dateName) ) {
+			if ( 'object' !== typeof reportItem || !reportItem.hasOwnProperty(dateName) ) {
 				return;
 			} else {
 				dateObj = reportItem[dateName];
 			}
-							
+
 			// 1 - if date is valid for this 'dateItem' in this 'reportItem'
 			// 2.1 - if this is the only date in this 'reportItem', enable 'showRemove'
 			// 2.2 - else find out other dates available on this 'reportItem'
 			//     - if any of the other dates have valid date value, enable 'showRemove'
 			if ( isDateValid(reportItem, dateName) ) {
-				if ( reportItem['allDates'].length == 1 ) {
+				if ( reportItem['allDates'].length === 1 ) {
 					dateObj['showRemove'] = true;
 				} else {
 					otherDatesNames = _.without( reportItem['allDates'], dateName );
@@ -268,11 +268,11 @@ sntRover.controller('RVReportsMainCtrl', [
 
 				var _dateObj = report[name];
 
-				if ( _dateObj.hasOwnProperty('fromModel') && report[_dateObj['fromModel']] == undefined ) {
+				if ( _dateObj.hasOwnProperty('fromModel') && report[_dateObj['fromModel']] === undefined ) {
 					from = false;
 				};
 
-				if ( _dateObj.hasOwnProperty('untilModel') && report[_dateObj['untilModel']] == undefined ) {
+				if ( _dateObj.hasOwnProperty('untilModel') && report[_dateObj['untilModel']] === undefined ) {
 					until = false;
 				};
 
@@ -281,7 +281,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			function forceScopeApply () {
 				var retry = function() {
-					if ( $scope && 'function' == typeof $scope.apply ) {
+					if ( $scope && 'function' === typeof $scope.apply ) {
 						$scope.apply();
 					} else {
 						$timeout(retry, 100);
@@ -311,7 +311,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			reportItem[dateName]['showRemove'] = false;
 
 			// hide remove button for the last date
-			if ( otherDates.length == 1 ) {
+			if ( otherDates.length === 1 ) {
 				lastDate = otherDates[0];
 				reportItem[lastDate]['showRemove'] = false;
 			} else {
@@ -322,7 +322,7 @@ sntRover.controller('RVReportsMainCtrl', [
 					};
 				});
 
-				if ( otherFilledDates == 1 ) {
+				if ( otherFilledDates === 1 ) {
 					reportItem[lastDate]['showRemove'] = false;
 				};
 			};
@@ -365,9 +365,9 @@ sntRover.controller('RVReportsMainCtrl', [
             // un-select sort dir of others
             // and get a ref to the chosen item
             _.each(item.sortByOptions, function(each) {
-                if (each && each.value != item.chosenSortBy) {
+                if (each && each.value !== item.chosenSortBy) {
                     each.sortDir = undefined;
-                } else if (each && each.value == item.chosenSortBy) {
+                } else if (each && each.value === item.chosenSortBy) {
                     _sortBy = each;
                 }
             });
@@ -389,7 +389,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			_.each($scope.reportList, function(element, index) {
 				_.each(element, function(value, key) {
-					if ( key != currentFaux && (!!value && value.type == 'FAUX_SELECT') ) {
+					if ( key !== currentFaux && (!!value && value.type === 'FAUX_SELECT') ) {
 						value.show = false;
 					};
 				});
@@ -423,11 +423,11 @@ sntRover.controller('RVReportsMainCtrl', [
 			} else {
 				selectedItems = _.where(fauxDS.data, { selected: true });
 
-				if ( selectedItems.length == 0 ) {
+				if ( selectedItems.length === 0 ) {
 					fauxDS.title = fauxDS.defaultTitle;
-				} else if ( selectedItems.length == 1 ) {
+				} else if ( selectedItems.length === 1 ) {
 					fauxDS.title = selectedItems[0].description || selectedItems[0].name;
-				} else if ( selectedItems.length == fauxDS.data.length ) {
+				} else if ( selectedItems.length === fauxDS.data.length ) {
 					fauxDS.selectAll = true;
 					fauxDS.title = 'All Selected';
 				} else {
@@ -583,7 +583,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				$scope.appliedFilter['users'] = [];
 				_.each(chosenReport.chosenUsers, function (id) {
 					var user = _.find($scope.activeUserList, function (each) {
-						return each.id == id;
+						return each.id === id;
 					});
 					if ( !!user ) {
 						$scope.appliedFilter['users'].push( user.full_name );
@@ -597,29 +597,29 @@ sntRover.controller('RVReportsMainCtrl', [
 					params['sort_field'] = chosenReport.chosenSortBy;
 				};
 				var _chosenSortBy = _.find(chosenReport.sortByOptions, function(item) {
-					return item && item.value == chosenReport.chosenSortBy;
+					return item && item.value === chosenReport.chosenSortBy;
 				});
-				if (!!_chosenSortBy && typeof _chosenSortBy.sortDir == 'boolean') {
+				if (!!_chosenSortBy && typeof _chosenSortBy.sortDir === 'boolean') {
 					params['sort_dir'] = _chosenSortBy.sortDir;
 				};
 				/**/
 				if ( !!_chosenSortBy ) {
 					$scope.appliedFilter['sortBy'] = _chosenSortBy.description;
 				};
-				if ( !!_chosenSortBy && typeof _chosenSortBy.sortDir == 'boolean' ) {
+				if ( !!_chosenSortBy && typeof _chosenSortBy.sortDir === 'boolean' ) {
 					$scope.appliedFilter['sortDir'] = _chosenSortBy.sortDir ? 'Ascending' : 'Descending';
 				};
 			};
 
 			// include group bys
 			if (chosenReport.groupByOptions) {
-				if ( chosenReport.chosenGroupBy == 'DATE' ) {
+				if ( chosenReport.chosenGroupBy === 'DATE' ) {
 					params['group_by_date'] = true;
 					/**/
 					$scope.appliedFilter['groupBy'] = 'Date';
 				};
 
-				if ( chosenReport.chosenGroupBy == 'USER' ) {
+				if ( chosenReport.chosenGroupBy === 'USER' ) {
 					params['group_by_user'] = true;
 					/**/
 					$scope.appliedFilter['groupBy'] = 'User';
@@ -687,7 +687,7 @@ sntRover.controller('RVReportsMainCtrl', [
 					});
 
 					// in case if all markets are selected
-					if ( chosenReport['hasMarketsList']['data'].length == selected.length ) {
+					if ( chosenReport['hasMarketsList']['data'].length === selected.length ) {
 						$scope.appliedFilter.markets = ['All Markets'];
 					};
 				};
@@ -707,7 +707,7 @@ sntRover.controller('RVReportsMainCtrl', [
 					});
 
 					// in case if all sources are selected
-					if ( chosenReport['hasSourcesList']['data'].length == selected.length ) {
+					if ( chosenReport['hasSourcesList']['data'].length === selected.length ) {
 						$scope.appliedFilter.sources = ['All Sources'];
 					};
 				};
@@ -727,7 +727,7 @@ sntRover.controller('RVReportsMainCtrl', [
 					});
 
 					// in case if all origins are selected
-					if ( chosenReport['hasOriginsList']['data'].length == selected.length ) {
+					if ( chosenReport['hasOriginsList']['data'].length === selected.length ) {
 						$scope.appliedFilter.origins = ['All Origins'];
 					};
 				};
@@ -747,7 +747,7 @@ sntRover.controller('RVReportsMainCtrl', [
 					});
 
 					// in case if all guarantee type is selected
-					if ( chosenReport['hasGuaranteeType']['data'].length == selected.length ) {
+					if ( chosenReport['hasGuaranteeType']['data'].length === selected.length ) {
 						$scope.appliedFilter.guarantees = ['All Guarantees'];
 					};
 				};
@@ -767,7 +767,7 @@ sntRover.controller('RVReportsMainCtrl', [
 					});
 
 					// in case if all charge groups is selected
-					if ( chosenReport['hasByChargeGroup']['data'].length == selected.length ) {
+					if ( chosenReport['hasByChargeGroup']['data'].length === selected.length ) {
 						$scope.appliedFilter.chargeGroups = ['All Groups'];
 					};
 				};
@@ -787,7 +787,7 @@ sntRover.controller('RVReportsMainCtrl', [
 					});
 
 					// in case if all charge code is selected
-					if ( chosenReport['hasByChargeCode']['data'].length == selected.length ) {
+					if ( chosenReport['hasByChargeCode']['data'].length === selected.length ) {
 						$scope.appliedFilter.chargeCode = ['All Codes'];
 					};
 				};
@@ -804,9 +804,9 @@ sntRover.controller('RVReportsMainCtrl', [
 					    continue;
 					};
 
-					if ( key == 'group_by_date' || key == 'group_by_user' || key == 'page' || key == 'per_page' ) {
+					if ( key === 'group_by_date' || key === 'group_by_user' || key === 'page' || key === 'per_page' ) {
 						continue;
-					} else if ( params[key] != $scope.oldParams[key] ) {
+					} else if ( params[key] !== $scope.oldParams[key] ) {
 						chosenReport.chosenGroupBy = 'BLANK';
 						/**/
 						if ( params.hasOwnProperty('group_by_date') ) {
@@ -942,7 +942,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 				_.each(activeUserAutoCompleteObj, function(user) {
 					var match = _.find(uiValues, function(email) {
-						return email == user.label;
+						return email === user.label;
 					});
 
 					if (!!match) {
@@ -962,7 +962,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 				_.each(activeUserAutoCompleteObj, function(user) {
 					var match = _.find(uiValues, function(email) {
-						return email == user.label;
+						return email === user.label;
 					});
 
 					if (!!match) {

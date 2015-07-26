@@ -25,7 +25,7 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
       //we are showing the add new guest button in searhc only if it is standalone & search result is empty
       if($rootScope.isStandAlone){
           $scope.$broadcast("showAddNewGuestButton", true);
-      }        
+      }
   });
 
 
@@ -83,10 +83,10 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
    */
   $scope.escapeNull = function(value, replaceWith) {
     var newValue = "";
-    if ((typeof replaceWith != "undefined") && (replaceWith != null)) {
+    if ((typeof replaceWith !== "undefined") && (replaceWith !== null)) {
       newValue = replaceWith;
     }
-    var valueToReturn = ((value == null || typeof value == 'undefined') ? newValue : value);
+    var valueToReturn = ((value === null || typeof value === 'undefined') ? newValue : value);
     return valueToReturn;
   };
 

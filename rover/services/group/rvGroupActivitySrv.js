@@ -17,7 +17,7 @@ sntRover.service('rvGroupActivitySrv', [
 			}.bind(this), function(data) {
 				deferred.reject(data);
 			});
-			
+
 			return deferred.promise;
 		};
 		this.fetchActivityLog1 = function(params) {
@@ -32,7 +32,7 @@ sntRover.service('rvGroupActivitySrv', [
 			}.bind(this), function(data) {
 				deferred.reject(data);
 			});
-			
+
 			return deferred.promise;
 		};
 	}

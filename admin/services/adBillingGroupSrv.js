@@ -3,7 +3,7 @@ admin.service('ADBillingGroupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
     * To fetch the list of billing groups
     */
 	this.fetch = function(){
-		
+
 		var deferred = $q.defer();
 		var url = 'api/billing_groups.json';
 
@@ -18,7 +18,7 @@ admin.service('ADBillingGroupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
     * To fetch the charge codes billing groups
     */
 	this.getChargeCodes = function(){
-		
+
 		var deferred = $q.defer();
 		var url = ' /api/billing_groups/charge_codes.json';
 

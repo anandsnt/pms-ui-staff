@@ -36,9 +36,9 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 		*/
 		$scope.saveCommentAgainstRateChange = function() {
 			// proceed only if something entered
-			if($scope.adjustment_reason.trim() === "")
+			if($scope.adjustment_reason.trim() === "") {
 				return;
-
+			}
 			//forming the API params
 			var params 				= {};
             params.reservation_id 	= getReservationID();

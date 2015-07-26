@@ -36,7 +36,7 @@ admin.controller('ADContentManagementChildViewCtrl',['$scope', '$state', 'ADCont
    $scope.sortableOptions = {
 
      stop: function(e, ui){
-      if(ui.item.sortable.dropindex != ui.item.sortable.index && ui.item.sortable.dropindex  !=  null){
+      if(ui.item.sortable.dropindex !== ui.item.sortable.index && ui.item.sortable.dropindex  !==  null){
         $scope.saveNewPosition(ui.item.sortable.model.id, ui.item.sortable.dropindex, ui.item.sortable.index);
       }
    }

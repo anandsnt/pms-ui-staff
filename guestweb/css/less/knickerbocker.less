@@ -1,0 +1,245 @@
+@charset: "utf-8";
+/*Accent colors*/
+@white:#fff;
+@dark-brown:#30180c;
+@brown:#30180c;
+@brown-text:#443427;
+@black:#000;
+@light-brown:#653f2a;
+
+
+.template-bg,.template-button{
+   background:@brown;
+}
+.template-heading-text{
+   color:@brown-text !important
+}
+.template-text{
+	color:@black !important;
+}
+.light-template-bg{
+   background:@light-brown;
+}
+.white-text{
+	color:@white !important;
+}
+.grey-text{
+	color:@black !important;
+}
+
+
+body {
+  	background: url(/assets/img/Knickerbocker/desktop_background_image.png) repeat center top !important;
+}
+
+
+
+.jumbotron .check-inout-wrapper{
+	border:none !important;
+}
+
+
+.checkout-status{
+	border-top:none !important;
+	border-bottom:none !important;
+}
+
+
+.verti-ruler {
+    background: none repeat scroll 0 0 #D3D3D3;
+}
+.msg-head,.msg-body{
+	color:@black !important;
+}
+.balancevalue{
+	color:@black !important;
+}
+.key-delivery-message {
+	text-align:center;
+}
+.bottom-logo{
+	margin-top:60px !important;
+}
+
+
+/* ----------------late checkout options page----------------- */
+
+.checkouttime1 {
+    background: none repeat scroll 0 0 #89604a;
+}
+.checkouttime2 {
+    background: none repeat scroll 0 0 #653f2a;
+}
+.checkouttime3 {
+    background: none repeat scroll 0 0 #2e180d;
+}
+.checkout-later-back-button,.no-thanks a{
+	color: @black !important;
+}
+
+
+.no-thanks,.questions
+{
+	a,a:hover{
+		text-decoration:underline  !important;
+		color: @black !important;
+	}
+}
+/* ------------------------------------------------------------------- */
+
+/* --------------------checkout confirmation page---------------------- */
+
+.jumbotron .headtext{
+	color:@brown;
+}
+
+.col-xs-12.checkoutnow.single,.link-btn.with-bg{
+	background:@dark-brown;
+}
+/* -------------------------------------------------------------------- */
+
+/* -------------------------checkout balance page----------------------- */
+.accept-charges-button.single{
+	background:@dark-brown;
+	color:@white;
+}
+
+.viewbill-toggle{
+	a,a:hover{
+		color:@dark-brown !important;
+	}
+}
+
+.now-later-options{
+	a,a:hover{
+		color:@white !important;
+	}
+}
+a, a:hover {
+    color: @black !important;
+}
+
+.msg-head.brown-text.thanks-msg{
+	.template-heading-text;
+}
+/* --------------------------------------------------------------------------- */
+
+/* ----------------------------checkout later page--------------------------- */
+.back-to-checkout{
+	padding:5% !important;
+}
+
+.backbtn {
+    left: 10%;    
+}
+.checkout-later-back-button{
+	color:#fff !important;
+}
+
+/* --------------------------------------------------------------------------- */
+
+
+/* responsive starts here */
+
+@media (max-width: 480px) {
+	body {
+  		background: url(/assets/img/Knickerbocker/mobile_background_image.png) repeat center top !important;
+	}
+}
+
+@media (min-width: 990px) {
+	.bottom-logo{
+		margin-top:70px !important;
+	}
+}
+
+
+/* --------------------------------------------------------------------------- */
+
+/*------------------------------- date picker starts here---------------------*/
+.date-picker-header{
+  background-color: @brown;
+}
+.pickadate-cell li {
+ border: 1px solid #fff;
+}
+
+.date-picker-back,.date-picker-ok{
+	color:@white !important;
+}
+.date-picker-wrap{
+  background-color: @white !important;
+  background: url(/assets/img/Knickerbocker/mobile_background_image.png) repeat center top !important;
+}
+.pickadate-cell .pickadate-disabled,
+.pickadate-cell .pickadate-disabled a {
+  color: #959595 !important;
+}
+
+.date-picker-ok{
+  padding-top: 0px;
+  background:  none !important;
+  color:#fff;
+}
+
+.departure-date{
+   p:first-child{
+       color:@white;
+   }
+  
+}
+.pickadate-centered-heading, .pickadate-cell .pickadate-head{
+	color:#18171c;
+}
+
+.pickadate-cell .pickadate-disabled, .pickadate-cell .pickadate-enabled, .pickadate-cell .pickadate-outofrange-disabled{
+    background-color:#DEDCD0 !important;
+}
+.pickadate-cell .pickadate-active{
+    background-color:@brown !important;
+    color:@white !important;
+}
+.pickadate-cell .pickadate-enabled, .pickadate-prev,.pickadate-next {
+    color:#18171c !important;
+}
+.pickadate-controls{
+    a, a:hover
+    {
+        color:#18171c !important;
+    }
+}
+
+.pickadate-cell{
+	.pickadate-active{
+		color:#fff !important;
+	}
+}
+.pickadate-cell li{
+	border-right: 1px solid #fff !important;
+	border-left: 1px solid #fff !important;
+}
+
+
+/*-------------------------------------------------------------------------*/
+
+.row .reservation-dates,.room_details{
+	color:@black;
+}
+.checkin-button{
+	color:@white;
+}
+
+.row .date-container{
+	border-bottom:none;
+}
+
+.upgrade-details .upgrades-btn{
+	background:#815842
+}
+
+.now-later-options{
+	margin: 0 10px;
+}
+.upgrades-container{
+	padding-bottom:30px !important;
+}

@@ -1,12 +1,12 @@
 sntRover.controller('RVShowRoomNotAvailableCtrl',['$rootScope', '$scope', 'ngDialog', '$state', '$vault',
   function($rootScope, $scope, ngDialog, $state, $vault){
 	BaseCtrl.call(this, $scope);
-	
+
 	$scope.okButtonClicked = function(){
 		if($rootScope.isHourlyRateOn){
 			 var reservationDataToKeepinVault = {};
             var roomData = $scope.reservationData.rooms[0];
-            
+
             reservationDataToKeepinVault.fromDate       = new tzIndependentDate($scope.reservationData.arrivalDate).getTime();
             reservationDataToKeepinVault.toDate         = new tzIndependentDate($scope.reservationData.departureDate).getTime();
             reservationDataToKeepinVault.arrivalTime    = $scope.reservationData.checkinTime;
@@ -18,7 +18,7 @@ sntRover.controller('RVShowRoomNotAvailableCtrl',['$rootScope', '$scope', 'ngDia
             reservationDataToKeepinVault.guestFirstName = $scope.reservationData.guest.firstName;
             reservationDataToKeepinVault.guestLastName  = $scope.reservationData.guest.lastName;
             reservationDataToKeepinVault.companyID      = $scope.reservationData.company.id;
-            reservationDataToKeepinVault.travelAgentID  = $scope.reservationData.travelAgent.id;                
+            reservationDataToKeepinVault.travelAgentID  = $scope.reservationData.travelAgent.id;
             //$vault.set('searchReservationData', JSON.stringify(reservationDataToKeepinVault));
             $state.go('rover.diary', {
                 isfromcreatereservation: true
@@ -28,6 +28,6 @@ sntRover.controller('RVShowRoomNotAvailableCtrl',['$rootScope', '$scope', 'ngDia
 			ngDialog.close();
 		}
 	};
-	
-	
+
+
 }]);

@@ -6,7 +6,7 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
      * will be updating the heading
      */
 
-    var that = this;    
+    var that = this;
     BaseCtrl.call(this, $scope);
     $scope.shouldShowLateCheckout = true;
     $scope.shouldShowQueuedRooms = true;
@@ -31,7 +31,7 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
 
     //Special case: Search by swipe in back navigation. We have to display the card number as well.
     //So we store the title as sucn in $vault
-    if($stateParams.type == "BY_SWIPE"){
+    if($stateParams.type === "BY_SWIPE"){
       heading = $vault.get('title');
     } else {
       if ($stateParams.type in headingDict) {
@@ -43,7 +43,7 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
     }
 
     // set up a back button
-    if ($stateParams.type != '' && $stateParams.type != null) {
+    if ($stateParams.type !== '' && $stateParams.type !== null) {
       $rootScope.setPrevState = {
         title: $filter('translate')('DASHBOARD'),
         // name: 'rover.dashboard',
@@ -55,11 +55,11 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
     $scope.backtoDash = function() {
       $vault.set('searchType', '');
       $scope.$broadcast("showSearchResultsArea", false);
-    
+
       setTimeout(function(){
          $state.go('rover.dashboard', {
           useCache: true
-        });       
+        });
 
       }, 150);
 
@@ -94,7 +94,7 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
     $scope.setScroller('result_showing_area', scrollerOptions);
     var totalNgIncludeRequested = 0;
     //click function on search area, mainly for closing the drawer
-    $scope.clickedOnSearchArea = function($event) {      
+    $scope.clickedOnSearchArea = function($event) {
       $scope.$emit("closeDrawer");
     };
 
@@ -104,14 +104,14 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
     $scope.$on("$includeContentRequested", function(event){
       totalNgIncludeRequested++; //variable used to track total number of nginlude requested
       $scope.$emit('showLoader');
-    });  
+    });
 
     /**
     * When the ng-include content loaded, we will hide activity indicator
-    */      
+    */
     $scope.$on("$viewContentLoaded", function(event) {
       totalNgIncludeRequested--;
-      if(totalNgIncludeRequested == 0){
+      if(totalNgIncludeRequested === 0){
         $scope.$emit('hideLoader');
       }
       setTimeout(function() {

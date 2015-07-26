@@ -7,7 +7,7 @@ sntRover.controller('rvGroupActivityCtrl', [
 	function($scope, $rootScope, $filter, $stateParams, rvGroupAccountActivitySrv) {
 		BaseCtrl.call(this, $scope);
 
-		/**		
+		/**
 		 * initialisation and basic configuration
 		 * @return {none}
 		 */
@@ -37,7 +37,7 @@ sntRover.controller('rvGroupActivityCtrl', [
 
 		/**
 		 * When there is a TAB switch, we will get this. We will initialize things from here
-		 * @param  {Object} event           
+		 * @param  {Object} event
 		 * @param  {String} currentTab - Active tab in the view
 		 * @return undefined
 		 */
@@ -49,7 +49,7 @@ sntRover.controller('rvGroupActivityCtrl', [
 
 		/**
 		 * When there is a TAB switch, we will get this. We will initialize things from here
-		 * @param  {Object} event           
+		 * @param  {Object} event
 		 * @param  {String} currentTab - Active tab in the view
 		 * @return undefined
 		 */
@@ -58,6 +58,6 @@ sntRover.controller('rvGroupActivityCtrl', [
 				$scope.init();
 			}
 		});
-		
+
 	}
 ]);
