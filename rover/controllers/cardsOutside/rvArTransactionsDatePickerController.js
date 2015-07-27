@@ -2,7 +2,7 @@ sntRover.controller('RVArTransactionsDatePickerController',['$scope','$rootScope
 
     if($scope.clickedOn === 'FROM'){
         $scope.date = $scope.filterData.fromDate;
-    } 
+    }
     else if($scope.clickedOn === 'TO'){
         $scope.date = $scope.filterData.toDate;
     }
@@ -16,11 +16,11 @@ sntRover.controller('RVArTransactionsDatePickerController',['$scope','$rootScope
                 if($scope.clickedOn === 'FROM'){
                     $scope.filterData.fromDate = $scope.date;
                     $scope.$emit('fromDateChanged');
-                } 
+                }
                 else if($scope.clickedOn === 'TO'){
                     $scope.filterData.toDate = $scope.date;
                     $scope.$emit('toDateChanged');
-                } 
+                }
                 ngDialog.close();
             }
         }

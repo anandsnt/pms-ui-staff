@@ -1,0 +1,28 @@
+<section id="dashboard-hotel" class="content"  data-drop="true"  jqyoui-droppable="{multiple:false, onDrop: 'onDropingMenuItemListing'}"  ng-model='dropedElementsModel'  style="overflow: visible !important;" data-jqyoui-options="{accept: '.in-quick-menu'}"> <!-- inline overflow style is for drag & drop hiding pblm -->
+
+   <div ng-include="'/assets/partials/common/notification_message.html'" class="error-notification-dashboard"></div>
+   <header class="content-title float header-pos">
+      <h2>{{selectedMenu.menu_name}} setup</h2>
+   </header>
+   <section class="content-scroll">
+      <ul class="dashboard-items float">
+         <li ng-repeat="submenu in selectedMenu.components" >
+            <a data-type="load-listing"  
+               class="{{submenu.icon_class}}" 
+
+               data-drag="{{bookMarks.length<=7&&!submenu.is_bookmarked}}"
+               data-jqyoui-options="{revert: 'invalid', helper: 'clone',appendTo: 'body'}" 
+
+               jqyoui-draggable="{index: {{$index}}, placeholder:'keep', animate:'true', onStart: 'onDragStart', onStop: 'onDragStop'}" 
+
+               ng-model="selectedMenu.components" 
+               ng-click="clickedMenuItem($event, submenu.state)" 
+               ng-class="{'moved': submenu.is_bookmarked}">
+               {{submenu.name}}
+            </a>
+
+            <a class="text" data-type="load-listing"  ng-click="clickedMenuItem($event, submenu.state); setActiveItem(submenu)">{{submenu.name}}</a>
+         </li>
+      </ul>  
+   </section>    
+</section>

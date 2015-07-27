@@ -186,7 +186,7 @@ sntRover.controller('RVReservationDepositController',
 				var feePercent  = zeroAmount;
 				var minFees = zeroAmount;
 
-				if (typeof feesInfo != 'undefined' && feesInfo != null){
+				if (typeof feesInfo !== 'undefined' && feesInfo !== null){
 					amountSymbol = feesInfo.amount_symbol;
 					feePercent  = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
 					minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
@@ -226,13 +226,15 @@ sntRover.controller('RVReservationDepositController',
 
 			if($scope.isShowFees()){
 
-				if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
+				if(typeof feesInfo.amount !== 'undefined' && feesInfo!== null){
 
 					var amountSymbol = feesInfo.amount_symbol;
 					var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
 					$scope.feeData.actualFees = feesAmount;
 
-					if(amountSymbol === "percent") $scope.calculateFee();
+					if(amountSymbol === "percent") {
+						$scope.calculateFee();
+					}
 					else{
 						$scope.feeData.calculatedFee = parseFloat(feesAmount).toFixed(2);
 						$scope.feeData.totalOfValueAndFee = parseFloat(feesAmount + defaultAmount).toFixed(2);
@@ -264,13 +266,13 @@ sntRover.controller('RVReservationDepositController',
 
 			angular.forEach($scope.passData.details.paymentTypes, function(value, key) {
 				if(value.name === $scope.depositData.paymentType){
-					if($scope.depositData.paymentType != "CC"){
+					if($scope.depositData.paymentType !== "CC"){
 						$scope.isDisplayReference = (value.is_display_reference)? true:false;
 
 						// To handle fees details on reservation deposits,
 						// While we change payment methods
 						// Handling Credit Cards seperately.
-						if(value.name != "CC"){
+						if(value.name !== "CC"){
 							$scope.feeData.feesInfo = value.charge_code.fees_information;
 						}
 						$scope.setupFeeData();
@@ -454,10 +456,12 @@ sntRover.controller('RVReservationDepositController',
 			};
 
 			if($scope.isShowFees()){
-				if($scope.feeData.calculatedFee)
+				if($scope.feeData.calculatedFee) {
 					dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
-				if($scope.feeData.feesInfo)
+				}
+				if($scope.feeData.feesInfo) {
 					dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
+				}
 			}
 			if($scope.isDisplayReference){
 				dataToSrv.postData.reference_text = $scope.reservationData.referanceText;

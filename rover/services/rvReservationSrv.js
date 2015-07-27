@@ -2,7 +2,10 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 	function($http, $q, RVBaseWebSrv, rvBaseWebSrvV2, $rootScope) {
 
 		this.reservationData = {};
-                this.lastFetchData = {'cached':false, data: {}};
+		this.lastFetchData = {
+			'cached': false,
+			data: {}
+		};
 		var that = this;
 
 		/**
@@ -27,9 +30,10 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 			var isRefresh = data.isRefresh;
 			var isReservationIdAlreadyCalled = false;
 			angular.forEach(that.reservationIdsArray, function(value, key) {
-				if (!isRefresh || isRefresh == null || isRefresh == '') {
-					if (value === reservationId)
+				if (!isRefresh || isRefresh === null || isRefresh === '') {
+					if (value === reservationId) {
 						isReservationIdAlreadyCalled = true;
+					}
 				}
 			});
 			if (!isReservationIdAlreadyCalled) {
@@ -37,8 +41,8 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 				var url = 'api/reservations/' + reservationId + '.json';
 
 				RVBaseWebSrv.getJSON(url).then(function(data) {
-                                        that.lastFetchData.cached = true;
-                                        that.lastFetchData.data = data;
+					that.lastFetchData.cached = true;
+					that.lastFetchData.data = data;
 					that.reservationData[reservationId] = data;
 					deferred.resolve(data);
 				}, function(data) {
@@ -77,9 +81,10 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 			var isRefresh = data.isRefresh;
 			var isConfirmationNumberAlreadyCalled = false;
 			angular.forEach(that.confirmationNumbersArray, function(value, key) {
-				if (!isRefresh || isRefresh == null) {
-					if (value === confirmationNumber)
+				if (!isRefresh || isRefresh === null) {
+					if (value === confirmationNumber) {
 						isConfirmationNumberAlreadyCalled = true;
+					}
 				}
 			});
 
@@ -166,17 +171,17 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 		 * to get the last rate adjustment reason against a reservation
 		 * @return {Promise} - After resolving we will get reason
 		 */
-		this.getLastRateAdjustmentReason = function(params){
+		this.getLastRateAdjustmentReason = function(params) {
 			var deferred = $q.defer();
 			var url = 'api/reservations/' + params.reservation_id + '/reason_for_last_adjusted_rate';
 
 			rvBaseWebSrvV2.getJSON(url).then(
-					function(data) {
-						deferred.resolve(data);
-					},
-					function(data) {
-						deferred.reject(data);
-					}
+				function(data) {
+					deferred.resolve(data);
+				},
+				function(data) {
+					deferred.reject(data);
+				}
 			);
 			return deferred.promise;
 		};
@@ -226,73 +231,95 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 			});
 			return deferred.promise;
 		};
-		 this.fetchDepositDetails = function(id) {
-            var deferred = $q.defer();
-            var url = 'api/reservations/'+id+'/deposit_policy';
-           //var url = '/sample_json/reservations/res_deposit.json';
-            rvBaseWebSrvV2.getJSON(url).then(function(data) {
-                deferred.resolve(data);
-            }, function(data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
-        };
-
-        this.sendConfirmationEmail = function(data){
-        	var deferred = $q.defer();
-            var url = '/api/reservations/'+data.reservationId+'/email_confirmation';
-           //var url = '/sample_json/reservations/res_deposit.json';
-            rvBaseWebSrvV2.postJSON(url, data.postData).then(function(data) {
-                deferred.resolve(data);
-            }, function(data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
-        };
-
-        this.sendConfirmationEmail = function(data){
+		this.fetchDepositDetails = function(id) {
 			var deferred = $q.defer();
-			var url = '/api/reservations/'+data.reservationId+'/email_confirmation';
+			var url = 'api/reservations/' + id + '/deposit_policy';
+			//var url = '/sample_json/reservations/res_deposit.json';
+			rvBaseWebSrvV2.getJSON(url).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
+
+		this.sendConfirmationEmail = function(data) {
+			var deferred = $q.defer();
+			var url = '/api/reservations/' + data.reservationId + '/email_confirmation';
 			//var url = '/sample_json/reservations/res_deposit.json';
 			rvBaseWebSrvV2.postJSON(url, data.postData).then(function(data) {
-			deferred.resolve(data);
+				deferred.resolve(data);
 			}, function(data) {
-			deferred.reject(data);
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
+
+		this.sendConfirmationEmail = function(data) {
+			var deferred = $q.defer();
+			var url = '/api/reservations/' + data.reservationId + '/email_confirmation';
+			//var url = '/sample_json/reservations/res_deposit.json';
+			rvBaseWebSrvV2.postJSON(url, data.postData).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
 			});
 			return deferred.promise;
 		};
 
 		this.validateStayDateChange = function(param) {
-            var deferred = $q.defer();
-            var url = '/staff/change_stay_dates/validate_stay_dates_change';
-            rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
-                deferred.resolve(data);
-            }, function(data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
-        };
-        this.detachGroupReservation = function(param) {
-            var deferred = $q.defer();
-            var url = '/api/group_reservations/'+ param.id +'/detach_group_reservation';
-            rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
-                deferred.resolve(data);
-            }, function(data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
-        };
+			var deferred = $q.defer();
+			var url = '/staff/change_stay_dates/validate_stay_dates_change';
+			rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
+		this.detachGroupReservation = function(param) {
+			var deferred = $q.defer();
+			var url = '/api/group_reservations/' + param.id + '/detach_group_reservation';
+			rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
 
-        this.manualAuthorization = function(param) {
-            var deferred = $q.defer();
-            var url = '/api/cc/authorize';
-            rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
-                deferred.resolve(data);
-            }, function(data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
-        }
+		this.manualAuthorization = function(param) {
+			var deferred = $q.defer();
+			var url = '/api/cc/authorize';
+			rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
+		this.reinstateReservation = function(param) {
+			var deferred = $q.defer(),
+				url = '/api/reservations/' + param.reservationId + '/reinstate';
+			rvBaseWebSrvV2.postJSON(url, param).then(function(response) {
+				deferred.resolve(response);
+			}, function(response) {
+				deferred.reject(response);
+			});
+			return deferred.promise;
+		}
+
+		this.checkReinstationAvailbility = function(reservationId) {
+			var deferred = $q.defer(),
+				url = '/api/reservations/' + reservationId + '/check_reinstate_availability';			
+			rvBaseWebSrvV2.getJSON(url).then(function(response) {
+				deferred.resolve(response);
+			}, function(response) {
+				deferred.reject(response);
+			});
+			return deferred.promise;
+		}
 
 	}
 ]);

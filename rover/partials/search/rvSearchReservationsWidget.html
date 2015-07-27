@@ -50,7 +50,8 @@
                                 <span class="no-margin-right" ng-bind-html="escapeNull(row.lastname)|highlight:textInQueryBox:false"></span>,
 								<span ng-bind-html="escapeNull(row.firstname)|highlight:textInQueryBox:false"></span>
 							</h2>
-							<span class="confirmation" ng-bind-html="'{{row.confirmation}}'|highlight:textInQueryBox:false">{{row.confirmation}}</span>
+							<span class="confirmation" ng-if="shouldShowConfirmationNumber(row)"  ng-bind-html="'{{row.confirmation}}'|highlight:textInQueryBox:false">{{row.confirmation}}</span>
+							<span class="confirmation" ng-if="!shouldShowConfirmationNumber(row)" ng-bind-html="'{{row.cancellation_no}}'|highlight:textInQueryBox:false">{{row.cancellation_no}}</span>
 							<span class="icons icon-location" ng-hide="escapeNullStr(row.location)==''" >{{escapeNullStr(row.location)}}
 							</span>
 						</div>	
@@ -96,7 +97,10 @@
 	                        	</span>
 
 	                        	<span class="room-status" ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</span>
+
+	                        	<span class="room-type">{{row.room_type}}</span>
 	                        </div>
+
                     	</div>
 
                     	<!-- Display arrival and departure dates . Do not display the room number -->

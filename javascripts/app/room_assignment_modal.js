@@ -4,7 +4,7 @@ var RoomassignmentErrorModal = function(callBack) {
 	this.url = "ui/roomAssignmentFailureModal";
 
 	this.delegateEvents = function() {
-		
+
 		that.myDom.find('#close').on('click',that.closeButtonClicked);
 	};
 	this.closeButtonClicked = function(){
@@ -13,6 +13,6 @@ var RoomassignmentErrorModal = function(callBack) {
 		reloadRoomAssignmentFilter(that.params.initialRoomType, true);
 		that.hide();
 	};
-	
-	
+
+
 };

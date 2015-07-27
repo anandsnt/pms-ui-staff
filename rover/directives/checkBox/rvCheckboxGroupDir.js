@@ -9,7 +9,7 @@ sntRover.directive('rvCheckboxgrp', function($timeout) {
             toggle:'&toggle',
             optionId:'=optionId'
          },
-        templateUrl: '../../assets/directives/checkBox/rvCheckboxGroup.html' 
+        templateUrl: '../../assets/directives/checkBox/rvCheckboxGroup.html'
     };
 
 });
