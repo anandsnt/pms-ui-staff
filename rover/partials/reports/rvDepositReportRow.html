@@ -17,14 +17,14 @@
 			<span ng-if="each.group_name" class="icons icon-group">{{ each.group_name }}</span>
 		</div>
 	</td>
-	<td ng-if="each.isReport" ng-class="{ 'red': each.deposit_payment_status = 'PAST DUE', 'green': each.deposit_payment_status = 'PAID' }">{{ each.deposit_payment_status }}</td>
+	<td ng-if="each.isReport" ng-class="{ 'red': each.deposit_payment_status == 'PAST DUE', 'green': each.deposit_payment_status == 'PAID' }">{{ each.deposit_payment_status }}</td>
     <td ng-if="each.isReport">{{ each.due_date | date : dateFormat }}</td>
     <td ng-if="each.isReport">{{ each.deposit_due_amount | currency:currencySymbol:2 }}</td>
     <td ng-if="each.isReport">{{ each.paid_date | date : dateFormat }}</td>
     <td ng-if="each.isReport">{{ each.paid_amount | currency:currencySymbol:2 }}</td>
 
 
-	<td ng-if="each.isSubReport" ng-class="{ 'red': each.deposit_payment_status = 'PAST DUE', 'green': each.deposit_payment_status = 'PAID' }">{{ each.deposit_payment_status }}</td>
+	<td ng-if="each.isSubReport" ng-class="{ 'red': each.deposit_payment_status == 'PAST DUE', 'green': each.deposit_payment_status == 'PAID' }">{{ each.deposit_payment_status }}</td>
     <td ng-if="each.isSubReport">{{ each.due_date | date : dateFormat }}</td>
     <td ng-if="each.isSubReport">{{ each.deposit_due_amount | currency:currencySymbol:2 }}</td>
     <td ng-if="each.isSubReport">{{ each.paid_date | date : dateFormat }}</td>
