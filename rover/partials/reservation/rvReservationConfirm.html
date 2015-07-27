@@ -130,7 +130,16 @@
                             <input name="send-confirmation" value="send-confirmation" type="checkbox" ng-model="otherData.isGuestAdditionalEmailChecked"/>
                             <span>&nbsp;</span>
                         </label>
-                        <input class="summary_email" ng-model="otherData.additionalEmail">    
+                        <input class="summary_email" ng-model="otherData.additionalEmail">  
+
+                        <div class="entry radio-check">
+                            <label class="checkbox inline" for="no-rate-print" ng-class="{ 'checked':reservationData.hide_rates }">
+                                <span class="icon-form icon-checkbox" ng-class="{ 'checked':reservationData.hide_rates }"></span>
+                                <input ng-click="clickedShowRate()" id="no-rate-print" value="" type="checkbox">
+                                {{ 'DONT_PRINT_RATE' | translate }}
+                            </label>
+                        </div>
+
                     </div>
                     <div class="actions"  ng-show="!reservationStatus.confirmed">
                         <button type="button" class="button blue" ng-click="sendConfirmationClicked(payment_info.email.$valid)">Confirm Reservation</button>

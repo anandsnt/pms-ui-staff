@@ -1,4 +1,5 @@
-sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalendarSrv', 'dateFilter', 'ngDialog', '$stateParams',
+sntRover.controller('RateCalendarCtrl', [
+    '$scope', '$rootScope', 'RateMngrCalendarSrv', 'dateFilter', 'ngDialog', '$stateParams',
     function($scope, $rootScope, RateMngrCalendarSrv, dateFilter, ngDialog, $stateParams) {
         $scope.$parent.myScrollOptions = {
             RateCalendarCtrl: {
@@ -76,7 +77,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
             $scope.refreshScroller();
         };
 
-        $scope.isExpandedRow = function (idx) {
+        $scope.isExpandedRow = function(idx) {
             if (idx === $scope.currentExpandedRow) {
                 return true;
             } else {
@@ -92,7 +93,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                 }
             } else {
                 return 8;
-              }
+            }
         };
 
         $scope.refreshScroller = function() {
@@ -149,7 +150,6 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
             }
         };
 
-
         $scope.ready = {};
         $scope.ready.single = true;
         $scope.ready.double = true;
@@ -193,7 +193,6 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
             }
         });
 
-
         /**
          * @returns totalnumber of dates {Number} to be displayed
          */
@@ -212,35 +211,36 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                 } else if (a !== '' && s !== '') {
                     return false;
                 } else {
-                	if ($scope.ready[$scope.viaSection]){
-                		return false;
-                	}
-                        if ($scope.lastClickedApply !== s){
-                            return true;
-                        } else {
-                            return false;
-                        }
+                    if ($scope.ready[$scope.viaSection]) {
+                        return false;
+                    }
+                    if ($scope.lastClickedApply !== s) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
-            } else if ($scope.viaSection !== ''){
-                	return true;
-                } else {
-                    return false;
-                }
+            } else if ($scope.viaSection !== '') {
+                return true;
+            } else {
+                return false;
+            }
         };
 
 
         $scope.everyRestriction = [];
-        $scope.getRestrictionsForDateRoomType = function(date, room_type_name){
-          for (var x in $scope.everyRestriction){
-            if ($scope.everyRestriction[x].date === date){
-                for (var i in $scope.everyRestriction[x].room_types){
-                    if (room_type_name === $scope.everyRestriction[x].room_types[i].room_type.name){
-                        return $scope.everyRestriction[x].room_types[i].restriction_overrides;
+        $scope.getRestrictionsForDateRoomType = function(date, room_type_name) {
+            for (var x in $scope.everyRestriction) {
+                if ($scope.everyRestriction[x].date === date) {
+                    for (var i in $scope.everyRestriction[x].room_types) {
+                        if (room_type_name === $scope.everyRestriction[x].room_types[i].room_type.name) {
+                            return $scope.everyRestriction[x].room_types[i].restriction_overrides;
+                        }
                     }
                 }
             }
         };
-        $scope.reloadingRooms = 0;
+        $scope.reloadingRooms = false;
         var loadTable = function() {
             $scope.currentExpandedRow = -1; //reset the expanded row
             $scope.loading = true;
@@ -265,15 +265,15 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                     }
 
 
-                    if ($scope.ratesRoomsToggle === 'ROOMS'){
-                                    $scope.everyRestriction = $scope.calendarData.room_type_restrictions;
-                            var d, rm_type, r_date, rm_type_name;
-                            $scope.calendarData.data_new = [];
-                            for (var x in $scope.calendarData.data){
-                                if (x < $scope.calendarData.room_types_all.length){
-                                    d = $scope.calendarData.data[x];
-                                    $scope.calendarData.data[x].name = $scope.calendarData.room_types_all[x].name;
-                                    $scope.calendarData.data[x].room_type_id = $scope.calendarData.room_types_all[x].room_type_id;
+                    if ($scope.ratesRoomsToggle === 'ROOMS') {
+                        $scope.everyRestriction = $scope.calendarData.room_type_restrictions;
+                        var d, rm_type, r_date, rm_type_name;
+                        $scope.calendarData.data_new = [];
+                        for (var x in $scope.calendarData.data) {
+                            if (x < $scope.calendarData.room_types_all.length) {
+                                d = $scope.calendarData.data[x];
+                                $scope.calendarData.data[x].name = $scope.calendarData.room_types_all[x].name;
+                                $scope.calendarData.data[x].room_type_id = $scope.calendarData.room_types_all[x].room_type_id;
 
                                 $scope.calendarData.data_new.push($scope.calendarData.data[x]);
 
@@ -367,10 +367,10 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
         });
 
         $scope.toggleAllRates = function() {
-            $scope.calendarData.data = [];
-
-            $scope.calendarData.restriction_types = [];
+            //if active toggle IS rates, ignore
             if ($scope.ratesRoomsToggle !== 'RATES') {
+                $scope.calendarData.data = [];
+                $scope.calendarData.restriction_types = [];
                 $scope.ratesRoomsToggle = 'RATES';
                 $scope.activeToggleButton = 'Rates';
                 loadTable();
@@ -432,7 +432,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
             for (var i in $scope.currentFilterData.rates_selected_list) {
                 data.rate_ids.push($scope.currentFilterData.rates_selected_list[i].id);
             }
-            
+
             return data;
         };
 
@@ -594,7 +594,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
             } else {
                 $scope.popupData.rate_name = 'this';
             }
-
+            $stateParams.calendarMode = $scope.calendarMode;
             ngDialog.open({
                 template: '/assets/partials/rateManager/updatePriceAndRestrictions.html',
                 className: popupClassName,
@@ -794,8 +794,9 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope', 'RateMngrCalend
                 return false;
             } else {
                 return false;
-             }
+            }
         };
 
+
     }
-}]);
+]);
