@@ -27,7 +27,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.ratetypes', {
 			templateUrl: '/assets/partials/rateTypes/adRateTypeList.html',
 			controller: 'ADRateTypeCtrl',
-			url : '/ratetypes'
+			url : '/ratetypes',
+			resolve: {
+				rateClassifications: function (ADRateTypeSrv) {
+					return ADRateTypeSrv.fetchClassification();
+				}
+			}
 		});
 
 		$stateProvider.state('admin.upselllatecheckout', {
