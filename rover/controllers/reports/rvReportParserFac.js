@@ -25,8 +25,10 @@ sntRover.factory('RVReportParserFac', [
             // in future we may make this check generic, if more
             // reports API structure follows the same pattern
             else if ( reportName == reportUtils.getName('RATE_ADJUSTMENTS_REPORT') ) {
+                // $_preParseGroupedRateAdjustments => when grouped
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseRateAdjustments( reportName, apiResponse, options );
             }
+            
             // a very special parser for deposit report
             else if ( reportName === reportUtils.getName('DEPOSIT_REPORT') ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseDepositReport( reportName, apiResponse, options );
@@ -368,6 +370,86 @@ sntRover.factory('RVReportParserFac', [
 
         function $_preParseGroupedRateAdjustments ( reportName, apiResponse, options ) {
 
+            /**
+             * We have to convert an array of objects 'apiResponse'
+             * into a grouped by 'adjust_by' key-value pairs.
+             *
+             * Each key will be the 'adjust_by' username and its value
+             * will be an array of objects. Each object will represent
+             * an reservation (unique key 'reservation_id')
+             */
+            
+            /**
+             * @param {Array} apiResponse [{}, {}, {}, {}, {}]
+             * @return {Object} =>        { us1: [{}, {}, {}], us2: [{}, {}], us3: [{}] }
+             */
+
+            var ith,
+                adj,
+                kth,
+                adjBy;
+
+            var originalEntry,
+                customEntry;
+
+            var i, j, k, l, returnObj = {};
+
+            for( i = 0, j < apiResponse.length; i < j; i++ ) {
+                ith = apiResponse[i];
+                adj = ith['adjustments'];
+
+                originalEntry = {};
+                angular.extend(originalEntry, {
+                    'guest_name'     : ith.guest_name,
+                    'reservation_id' : ith.reservation_id,
+                    'check_in'       : ith.check_in,
+                    'check_out'      : ith.check_out,
+                    'adjusted_by'    : '',
+                    'adjustments'    : []
+                });
+
+                for( k = 0, l = adj.length; k < l; k++ ) {;
+                    kth   = adj[k];
+                    adjBy = kth['adjusted_user_id'];
+
+                    customEntry = {
+                        'adjusted_by' : kth['adjusted_by'],
+                        'adjustments' : [kth]
+                    };
+
+                    if ( undefined == returnObj[adjBy] ) {
+                        returnObj[adjBy] = [];
+                        angular.extend(customEntry, originalEntry);
+                        returnObj[adjBy].push( customEntry );
+                    } else {
+
+                        // since this user name already exist in the 'returnObj'
+                        // we have to first try to match the 'reservation_id' and inset the 
+                        // 'adjust_by' entry accordingly
+
+                        // if we fail to find a matching 'reservation_id'
+                        // we'll have to push it as a new reservation
+
+                        matchedRes = _.find(returnObj[adjBy], { 'reservation_id': originalEntry['reservation_id'] });
+                        if ( !!matchedRes ) {
+                            matchedRes['adjustments'].push( kth );
+                        } else {
+                            angular.extend(customEntry, originalEntry);
+                            returnObj[adjBy].push( customEntry );
+                        };
+                    };
+                };
+            };
+
+            for (key in returnObj) {
+                if ( ! returnObj.hasOwnProperty(key) ) {
+                    continue;
+                };
+
+                returnObj[key] = $_parseRateAdjustments( reportName, returnObj[key], options );
+            };
+
+            return returnObj;
         };
 
         function $_parseRateAdjustments ( reportName, apiResponse, options ) {
