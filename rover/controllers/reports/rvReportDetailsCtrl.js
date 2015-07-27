@@ -136,6 +136,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportUtils.getName('DEPOSIT_REPORT'):
+				case reportUtils.getName('RATE_ADJUSTMENTS_REPORT'):
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					$scope.isDepositReport = true;
@@ -220,6 +221,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportUtils.getName('COMPARISION_BY_DATE'):
 					$scope.leftColSpan = 4;
+					$scope.rightColSpan = 4;
+					break;
+
+				case reportUtils.getName('RATE_ADJUSTMENTS_REPORT'):
+					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 4;
 					break;
 
@@ -351,7 +357,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// if there are any results
 			$scope.hasNoResults = _.isEmpty($scope.$parent.results);
 
-
 			// a very different parent template / row template / content template for certain reports
 			// otherwise they all will share the same template
 			switch ( $scope.parsedApiFor ) {
@@ -459,7 +464,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportUtils.getName('RESERVATIONS_BY_USER'):
-					template = '/assets/partials/reports/rateAdjustmentReport/rvReservationByUserReportRow.html';
+					template = '/assets/partials/reports/reservationByUserReport/rvReservationByUserReportRow.html';
 					break;
 
 				case reportUtils.getName('DAILY_TRANSACTIONS'):

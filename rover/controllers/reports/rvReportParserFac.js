@@ -25,8 +25,11 @@ sntRover.factory('RVReportParserFac', [
             // in future we may make this check generic, if more
             // reports API structure follows the same pattern
             else if ( reportName == reportUtils.getName('RATE_ADJUSTMENTS_REPORT') ) {
-                // $_preParseGroupedRateAdjustments => when grouped
-                return _.isEmpty(apiResponse) ? apiResponse : $_parseRateAdjustments( reportName, apiResponse, options );
+                if ( options['groupedByKey'] == 'adjusted_user_id' ) {
+                    return _.isEmpty(apiResponse) ? apiResponse : $_preParseGroupedRateAdjustments( reportName, apiResponse, options );
+                } else {
+                    return _.isEmpty(apiResponse) ? apiResponse : $_parseRateAdjustments( reportName, apiResponse, options );
+                }
             }
             
             // a very special parser for deposit report
@@ -456,7 +459,7 @@ sntRover.factory('RVReportParserFac', [
             var returnAry = [],
                 customData = [],
                 makeCopy,
-                adjustment,
+                stayDates,
                 totalOriginalRate;
 
             var i, j, k, l;
@@ -472,62 +475,68 @@ sntRover.factory('RVReportParserFac', [
                 totalAdjustedRate = 0;
                 totalVariance = 0;
 
-                // if we have 'adjustments' for this reservation
-                if ( makeCopy.hasOwnProperty('adjustments') && makeCopy['adjustments'].length ) {
+                // if we have 'stay_dates' for this reservation
+                if ( makeCopy.hasOwnProperty('stay_dates') && makeCopy['stay_dates'].length ) {
 
-                    // loop through the adjustments
-                    for (k = 0, l = makeCopy['adjustments'].length; k < l; k++) {
-                        adjustment = makeCopy['adjustments'][k];
+                    // loop through the stay_dates
+                    for (k = 0, l = makeCopy['stay_dates'].length; k < l; k++) {
+                        stayDates = makeCopy['stay_dates'][k];
 
-                        // include the first adjustment details in the
+                        // include the first stayDates details in the
                         // same row as that of the main reservation details  
                         if ( k == 0 ) {
                             angular.extend(makeCopy, {
-                                isReport      : true,
-                                stay_date     : adjustment.stay_date,
-                                original_rate : adjustment.original_rate,
-                                adjusted_rate : adjustment.adjusted_rate,
-                                variance      : adjustment.variance,
-                                reason        : adjustment.reason,
-                                adjusted_by   : adjustment.adjusted_by
+                                'isReport'        : true,
+                                'rowspan'         : l + 1,
+                                'stay_date'       : stayDates.stay_date,
+                                'original_amount' : stayDates.original_amount,
+                                'adjusted_amount' : stayDates.adjusted_amount,
+                                'variance'        : stayDates.variance,
+                                'reason'          : stayDates.reason,
+                                'adjusted_by'     : stayDates.adjusted_by
                             });
                             returnAry.push( makeCopy );
                         }
 
                         // create additional sub rows to represent the
-                        // rest of the adjustments 
+                        // rest of the stay_dates 
                         else {
                             customData = {};
                             angular.extend(customData, {
-                                isSubReport   : true,
-                                stay_date     : adjustment.stay_date,
-                                original_rate : adjustment.original_rate,
-                                adjusted_rate : adjustment.adjusted_rate,
-                                variance      : adjustment.variance,
-                                reason        : adjustment.reason,
-                                adjusted_by   : adjustment.adjusted_by
+                                'isSubReport'     : true,
+                                'stay_date'       : stayDates.stay_date,
+                                'original_amount' : stayDates.original_amount,
+                                'adjusted_amount' : stayDates.adjusted_amount,
+                                'variance'        : stayDates.variance,
+                                'reason'          : stayDates.reason,
+                                'adjusted_by'     : stayDates.adjusted_by
                             });
                             returnAry.push( customData );
                         };
 
                         // keep updating the total values for these
-                        totalOriginalRate += adjustment.original_rate;
-                        totalAdjustedRate += adjustment.adjusted_rate;
-                        totalVariance += adjustment.variance;
+                        totalOriginalRate += stayDates.original_amount;
+                        totalAdjustedRate += stayDates.adjusted_amount;
+                        totalVariance += stayDates.variance;
                     };
 
-                    // after looping through all the adjustments
-                    // add a final sub row to show the adjustment totals
+                    // after looping through all the stay_dates
+                    // add a final sub row to show the stayDates totals
                     customData = {};
                     angular.extend(customData, {
-                        isSubTotal          : true,
-                        total_original_rate : totalOriginalRate,
-                        total_adjusted_rate : totalAdjustedRate,
-                        total_variance      : totalVariance
+                        'isSubTotal'            : true,
+                        'className'             : 'row-break',
+                        'total_original_amout'  : totalOriginalRate,
+                        'total_adjusted_amount' : totalAdjustedRate,
+                        'total_variance'        : totalVariance
                     });
                     returnAry.push( customData );
+                } else {
+                    returnAry.push( makeCopy );
                 };
             };
+
+            console.log( returnAry );
 
             return returnAry;
         };
@@ -560,13 +569,13 @@ sntRover.factory('RVReportParserFac', [
                         // same row as that of the main reservation details  
                         if ( k == 0 ) {
                             angular.extend(makeCopy, {
-                                isReport               : true,
-                                rowspan                : l + 1,
-                                deposit_payment_status : depositData.deposit_payment_status,
-                                due_date               : depositData.due_date,
-                                deposit_due_amount     : depositData.deposit_due_amount,
-                                paid_date              : depositData.paid_date,
-                                paid_amount            : depositData.paid_amount
+                                'isReport'               : true,
+                                'rowspan'                : l + 1,
+                                'deposit_payment_status' : depositData.deposit_payment_status,
+                                'due_date'               : depositData.due_date,
+                                'deposit_due_amount'     : depositData.deposit_due_amount,
+                                'paid_date'              : depositData.paid_date,
+                                'paid_amount'            : depositData.paid_amount
                             });
                             returnAry.push( makeCopy );
                         }
@@ -576,12 +585,12 @@ sntRover.factory('RVReportParserFac', [
                         else {
                             customData = {};
                             angular.extend(customData, {
-                                isSubReport            : true,
-                                deposit_payment_status : depositData.deposit_payment_status,
-                                due_date               : depositData.due_date,
-                                deposit_due_amount     : depositData.deposit_due_amount,
-                                paid_date              : depositData.paid_date,
-                                paid_amount            : depositData.paid_amount
+                                'isSubReport'            : true,
+                                'deposit_payment_status' : depositData.deposit_payment_status,
+                                'due_date'               : depositData.due_date,
+                                'deposit_due_amount'     : depositData.deposit_due_amount,
+                                'paid_date'              : depositData.paid_date,
+                                'paid_amount'            : depositData.paid_amount
                             });
                             returnAry.push( customData );
                         };
@@ -593,10 +602,10 @@ sntRover.factory('RVReportParserFac', [
 
                         customData = {};
                         angular.extend(customData, {
-                            isSubTotal         : true,
-                            className          : 'row-break',
-                            deposit_due_amount : depositTotals.deposit_due_amount,
-                            paid_amount        : depositTotals.paid_amount
+                            'isSubTotal'         : true,
+                            'className'          : 'row-break',
+                            'deposit_due_amount' : depositTotals.deposit_due_amount,
+                            'paid_amount'        : depositTotals.paid_amount
                         });
                         returnAry.push( customData );
                     }

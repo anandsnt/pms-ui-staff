@@ -612,7 +612,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			};
 
 			// include group bys
-			if (chosenReport.groupByOptions) {
+			if ( chosenReport.groupByOptions ) {
 				if ( chosenReport.chosenGroupBy === 'DATE' ) {
 					params['group_by_date'] = true;
 					/**/
