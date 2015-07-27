@@ -261,7 +261,7 @@
 					<span class="switch-icon"></span>
 				</div>
 			</div>
-			<div class="entry is-pms-tokenized" ng-show="isAdminSnt">
+			<div class="entry is-pms-tokenized" ng-show="isAdminSnt && data.hotel_pms_type ==='OWS'">
 				<label for="do_not_update_video_checkout">Do not update video checkout</label>
 				<div class="switch-button single" ng-class="{ on : data.do_not_update_video_checkout == 'true' }" ng-click="doNotUpdateVideoToggleClicked()">
 					<input type="checkbox" value="{{data.do_not_update_video_checkout}}" name="do-not-update-video-checkout" id="do-not-update-video-checkout">
