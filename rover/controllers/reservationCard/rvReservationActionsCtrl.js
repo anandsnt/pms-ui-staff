@@ -362,6 +362,7 @@ sntRover.controller('reservationActionsController', [
 			$scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successRemoveFromQueueCallBack);
 		};
 
+		$scope.DailogeState = {};
 		var promptCancel = function(penalty, nights, isPercent) {
 
 			var passData = {
@@ -375,7 +376,7 @@ sntRover.controller('reservationActionsController', [
 			};
 
 			$scope.passData = passData;
-			$scope.DailogeState = {};
+			
 			ngDialog.open({
 				template: '/assets/partials/reservationCard/rvCancelReservation.html',
 				controller: 'RVCancelReservation',
@@ -597,11 +598,12 @@ sntRover.controller('reservationActionsController', [
 			return isEmailAttachedFlag;
 		};
 
+		$scope.DailogeState.successMessage = "";
+		$scope.DailogeState.failureMessage = "";
 		var succesfullCallbackForEmailCancellation = function(data){
 			$scope.$emit('hideLoader');
 			$scope.DailogeState.successMessage = data.message;
 			$scope.DailogeState.failureMessage = '';
-
 		};
 		var failureCallbackForEmailCancellation = function(error){
 			$scope.$emit('hideLoader');
@@ -622,6 +624,9 @@ sntRover.controller('reservationActionsController', [
 			$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data, succesfullCallbackForEmailCancellation, failureEmailCallback);
 		};
 
+		$scope.ngData = {};
+		$scope.ngData.failureMessage = "";
+		$scope.ngData.successMessage = "";
 		//Action against print button in staycard.
 		$scope.printReservationCancellation = function(){
 			var succesfullCallback = function(data){
@@ -639,11 +644,12 @@ sntRover.controller('reservationActionsController', [
 		};
 		//Pop up for confirmation print as well as email send		
 		$scope.popupForConfirmation =function(){
-			$scope.ngData = {};
+			
 			$scope.ngData.sendConfirmatonMailTo ='';
 			ngDialog.open({
 				template: '/assets/partials/reservationCard/rvReservationConfirmationPrintPopup.html',
-				controller: 'reservationActionsController',								
+				controller: 'reservationActionsController',
+				className : '',							
 				scope:$scope,
 				closeByDocument:true
 			});
