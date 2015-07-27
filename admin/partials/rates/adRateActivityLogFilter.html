@@ -1,0 +1,63 @@
+<!-- Report update -->
+<div class="cursor_pointer" ng-click="toggleActivityLogFilter()" style="text-align: right;">
+     <div> ACTIVITY LOG FILTER
+         <div class="cursor_pointer rate_additional_details_pointers" style="margin-left: 5px;">
+             <img ng-hide="toggleActivityLogFilterON" src="/assets/arrow-down.png">
+             <img ng-show="toggleActivityLogFilterON" src="/assets/arrow-up.png">
+         </div>
+     </div>
+ </div>
+<section ng-show="toggleActivityLogFilterON" ng-hide="!toggleActivityLogFilterON" role="main" style="
+    margin-bottom: 20px;
+">
+    <div ng-click="clickedOnReportUpdate($event)" style="width: {{reportUpdateWidth}}px;" ng-hide="hideSidebar">
+        <div class="scrollable">
+            <div class="wrapper">
+                <table style="width: 100%">
+                    <tr style="background-color: #bfbfbf;">
+                        <th>
+                            <span class="title">Date</span>
+                        </th>
+                        <th>
+                            <span class="title">Filter</span>
+                        </th>
+                        </tr>
+                    <tr>
+                        <td style="background-color: #DEDEDE;"> 
+                            <div id="sidebar-dates" class="settings-content" style="padding: 10px;">
+                                <div class="entry date-range" style="
+                                    margin-bottom: 10px;">
+                                    <label for="activity-range-from">From</label>
+                                    <div class="has-datepicker">
+                                        <input name="activity-range-from" id="activity-range-from" class="range-datepicker" ui-date="fromDateOptions" ng-model="fromDate" placeholder ="{{'FROM_DATE' | translate }}" ui-date-format="yy-mm-dd"  readonly/>                               
+                                    </div>
+                                    <label for="activity-range-to" style="margin-top:10px;">To</label>
+                                    <div class="has-datepicker">
+                                        <input name="activity-range-to" id="activity-range-to" class="range-datepicker" ui-date="untilDateOptions" ng-model="toDate" ui-date-format="yy-mm-dd" placeholder="{{'TO_DATE' | translate }}" readonly />
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="background-color: #DEDEDE;
+                                vertical-align: top;
+                                text-align: left;
+                                padding: 15 5 5 30">
+                            <label for="activity-filter">User</label><br>
+                            <input auto-complete auto-options="detailsUserAutoCompleteOptions" type="text" placeholder="Search by Email Id" value="" autocomplete="off" ng-model="userEmail" ng-change="userChanged()" style="
+                                padding-left: 32px;
+                                text-indent: 0;
+                                background-position: 10px 12px;
+                                background-color: whitesmoke; width: 46%; margin-top:10px;">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="actions">
+                <button type="button" class="button green" style="
+                    margin-bottom: -15px;
+                    margin-top: -15px;" 
+                    ng-click="updateReportFilter()">Update Report</button>
+            </div>
+        </div>
+    </div>
+    </section>

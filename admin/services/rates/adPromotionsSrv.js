@@ -38,7 +38,7 @@ admin.service('ADPromotionsSrv', ['$q', 'ADBaseWebSrvV2',
 				is_active: true,
 				discount: {
 					value: 0,
-					type: 'amount'
+					type: 'percent'
 				},
 				linked_rates: []
 			};

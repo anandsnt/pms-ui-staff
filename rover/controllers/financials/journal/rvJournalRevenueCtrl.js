@@ -142,20 +142,6 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
         loadTransactionDeatils(toggleItem, false);
     };
 
-    // To show/hide table heading for Level3.
-    $scope.isShowTableHeading = function(index1, index2){
-        var isShowTableHeading = false;
-        var item = $scope.data.revenueData.charge_groups[index1].charge_codes[index2].transactions;
-        if((typeof item !== 'undefined') && (item.length >0)){
-            angular.forEach( item ,function(transactions, index) {
-                if(transactions.show) {
-                    isShowTableHeading = true;
-                }
-            });
-        }
-        return isShowTableHeading;
-    };
-
     // To show/hide expandable arrow to level1
     $scope.checkHasArrowFirstLevel = function(index){
         var hasArrow = false;
