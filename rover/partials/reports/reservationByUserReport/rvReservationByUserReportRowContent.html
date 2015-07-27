@@ -43,7 +43,7 @@
 
 <!-- addons -->
 <td ng-if="each.isGuestData" class="secondary">
-    <span ng-repeat="name in each.addOns">{{ name }}</span>
+    <span ng-repeat="name in each.addOns track by $index">{{ name }}</span>
 </td>
 
 <!-- Left blank intentionally -->

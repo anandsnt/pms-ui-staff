@@ -39,6 +39,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 			}
 			$scope.isEditmode = true;
 			$scope.fileName = ($scope.editData.ca_certificate_exists)  ? 'Certificate Attached' :'Choose file ...';
+			$scope.apns_file = (typeof $scope.editData.apns_certificate != 'undefined')  ? 'Certificate Attached' :'Choose file ...';
 		};
 		$scope.invokeApi(adChainsSrv.edit,editID,editChainSuccessCallback);
 	};
@@ -53,6 +54,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 		$scope.isAddmode = true;
 		$scope.isEditmode = false;
 		$scope.fileName = 'Choose file ...';
+		$scope.apns_file = 'Choose file ...';
 	};
    /*
     * To fetch the template for chains details add/edit screens
