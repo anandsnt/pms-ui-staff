@@ -445,12 +445,8 @@
     "GROUP_SELECTED_RESERVATIONS_ARE_ALREADY_ROOM_ASSIGNED": "Sorry, selected reservations are already room assigned",
     "GROUP_AUTO_ROOM_ASSIGN_CONFIRMATION": "Confirm Room Assign",
     "GROUP_AUTO_ROOM_ASSIGN_CONFIRMATION_PARTIALLY_OKEY": "Some reservations don't meet auto assign room criteria",
-    "GROUP_AUTO_ROOM_ASSIGN_FAILED_IN_PROCESSING": "Sorry, Group auto room assignment has failed for some reason. Please retry after closing this"
+    "GROUP_AUTO_ROOM_ASSIGN_FAILED_IN_PROCESSING": "Sorry, Group auto room assignment has failed for some reason. Please retry after closing this",
 
-
-
-
-,	
 	"HK_GUESTS": "Guests",
 	"HK_OCCUPIED": "Occupied",
 	"HK_VACANT_DIRTY": "Vacant (Dirty)",

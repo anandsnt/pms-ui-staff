@@ -571,7 +571,7 @@ sntRover.factory('RVReportParserFac', [
                 // if we have 'deposit_data' for this reservation
                 if ( makeCopy.hasOwnProperty('deposit_data') && makeCopy['deposit_data'].length ) {
 
-                    // loop through the adjustments
+                    // loop through the 'deposit_data'
                     for (k = 0, l = makeCopy['deposit_data'].length; k < l; k++) {
                         depositData = makeCopy['deposit_data'][k];
 
@@ -591,7 +591,7 @@ sntRover.factory('RVReportParserFac', [
                         }
 
                         // create additional sub rows to represent the
-                        // rest of the adjustments 
+                        // rest of the 'deposit_data' 
                         else {
                             customData = {};
                             angular.extend(customData, {

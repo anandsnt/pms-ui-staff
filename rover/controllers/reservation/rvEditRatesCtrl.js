@@ -19,7 +19,17 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 		* @return {String} - reservationID
 		*/
 		var getReservationID = function() {
-			return ($scope.reservationData.reservationId || $scope.reservationParentData.reservationId);
+
+			if($scope.ngDialogData.index === 0){
+				//when there is only reservation in reservation summary screen and 
+				//on accessing from staycard
+				return ($scope.reservationData.reservationId || $scope.reservationParentData.reservationId);
+			}
+			else{
+				//when accesing from multiple reservations in summary screen
+				return $scope.reservationData.reservationIds[$scope.ngDialogData.index];
+			};
+			
 		};
 
 		/**
