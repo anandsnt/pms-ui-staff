@@ -139,10 +139,10 @@
                     </p>
                     <!-- Toggle class "hidden" when .line-toggle is clicked/tapped -->
                     <ul ng-class="{'hidden' : !roomtype_rate.isCollapsed}">
-                        <li class="line" translate ng-hide="groupConfigData.summary.rate != null && roomtype_rate.rate_config.single_rate == null">SINGLE</li>
-                        <li class="line" translate ng-hide="groupConfigData.summary.rate != null && roomtype_rate.rate_config.double_rate == null">DOUBLE</li>
+                        <li class="line" translate ng-hide="groupConfigData.summary.rate != -1 && roomtype_rate.rate_config.single_rate == null">SINGLE</li>
+                        <li class="line" translate ng-hide="groupConfigData.summary.rate != -1 && roomtype_rate.rate_config.double_rate == null">DOUBLE</li>
                         <li class="line small add" 
-                            ng-if="!shouldShowTripleEntryRow(roomtype_rate) && groupConfigData.summary.rate == null"
+                            ng-if="!shouldShowTripleEntryRow(roomtype_rate) && groupConfigData.summary.rate == -1"
                             ng-click="addTripleEntryRow(roomtype_rate)" 
                             ng-class="{'add': !shouldDisableAddTripleButton(roomtype_rate)}"
                             translate>
@@ -159,7 +159,7 @@
                             QUADRUPLE
                         </li>
                         <li class="line small" 
-                            ng-if="!shouldShowQuadrupleEntryRow(roomtype_rate) && shouldShowTripleEntryRow(roomtype_rate) && groupConfigData.summary.rate == null" 
+                            ng-if="!shouldShowQuadrupleEntryRow(roomtype_rate) && shouldShowTripleEntryRow(roomtype_rate) && groupConfigData.summary.rate == -1" 
 
                             ng-click="addQuadrupleEntryRow(roomtype_rate)"
                             ng-class="{'add': !shouldDisableAddQuadrupleButton(roomtype_rate)}"
