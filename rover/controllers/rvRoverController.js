@@ -467,7 +467,7 @@ sntRover.controller('roverController',
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       // Hide loading message
       $scope.$emit('hideLoader');
-      console.log(error);
+      console.error(error);
       //TODO: Log the error in proper way
     });
 

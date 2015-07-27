@@ -884,6 +884,22 @@ sntRover.factory('RVReportUtilsFac', [
                 reportItem['sort_fields'][4] = paidDate;
                 reportItem['sort_fields'][5] = null;
             };
+
+            // need to reorder the sort_by options
+            // for rate adjustment report in the following order
+            if ( reportItem['title'] === __reportNames['RATE_ADJUSTMENTS_REPORT'] ) {
+                var date      = angular.copy( reportItem['sort_fields'][1] ),
+                    guestUser = angular.copy( reportItem['sort_fields'][0] ),
+                    user      = angular.copy( reportItem['sort_fields'][2] );
+
+                reportItem['sort_fields'][0] = guestUser;
+                reportItem['sort_fields'][1] = date;
+                reportItem['sort_fields'][2] = null;
+                reportItem['sort_fields'][3] = null;
+                reportItem['sort_fields'][4] = null;
+                reportItem['sort_fields'][5] = null;
+                reportItem['sort_fields'][6] = user;
+            };
         };
 
 
@@ -897,7 +913,7 @@ sntRover.factory('RVReportUtilsFac', [
             if ( reportItem['sort_fields'] && reportItem['sort_fields'].length ) {
                 _.each(reportItem['sort_fields'], function(item, index, list) {
 
-                    if ( item !== null) {
+                    if ( item !== null ) {
                         item['sortDir'] = undefined;
                     };
 

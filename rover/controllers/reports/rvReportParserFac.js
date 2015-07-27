@@ -25,11 +25,13 @@ sntRover.factory('RVReportParserFac', [
             // in future we may make this check generic, if more
             // reports API structure follows the same pattern
             else if ( reportName == reportUtils.getName('RATE_ADJUSTMENTS_REPORT') ) {
-                if ( options['groupedByKey'] == 'adjusted_user_id' ) {
-                    return _.isEmpty(apiResponse) ? apiResponse : $_preParseGroupedRateAdjustments( reportName, apiResponse, options );
-                } else {
-                    return _.isEmpty(apiResponse) ? apiResponse : $_parseRateAdjustments( reportName, apiResponse, options );
-                }
+                _.isEmpty(apiResponse) ? apiResponse : $_preParseGroupedRateAdjustments( reportName, apiResponse, options );
+
+                // if ( options['groupedByKey'] == 'adjusted_user_id' ) {
+                //     return _.isEmpty(apiResponse) ? apiResponse : $_preParseGroupedRateAdjustments( reportName, apiResponse, options );
+                // } else {
+                //     return _.isEmpty(apiResponse) ? apiResponse : $_parseRateAdjustments( reportName, apiResponse, options );
+                // }
             }
             
             // a very special parser for deposit report
@@ -388,7 +390,7 @@ sntRover.factory('RVReportParserFac', [
              */
 
             var ith,
-                adj,
+                stay,
                 kth,
                 adjBy;
 
@@ -397,60 +399,70 @@ sntRover.factory('RVReportParserFac', [
 
             var i, j, k, l, returnObj = {};
 
-            for( i = 0, j < apiResponse.length; i < j; i++ ) {
+            for( i = 0, j = apiResponse.length; i < j; i++ ) {
                 ith = apiResponse[i];
-                adj = ith['adjustments'];
+                stay = ith['stay_dates'];
 
                 originalEntry = {};
                 angular.extend(originalEntry, {
-                    'guest_name'     : ith.guest_name,
-                    'reservation_id' : ith.reservation_id,
-                    'check_in'       : ith.check_in,
-                    'check_out'      : ith.check_out,
-                    'adjusted_by'    : '',
-                    'adjustments'    : []
+                    'guest_name'      : ith.guest_name,
+                    'confirmation_no' : ith.confirmation_no,
+                    'arrival_date'    : ith.arrival_date,
+                    'departure_date'  : ith.departure_date,
+                    'adjusted_by'     : '',
+                    'stay_dates'      : []
                 });
 
-                for( k = 0, l = adj.length; k < l; k++ ) {;
-                    kth   = adj[k];
-                    adjBy = kth['adjusted_user_id'];
+                for( k = 0, l = stay.length; k < l; k++ ) {;
+                    kth   = stay[k];
+                    adjBy = kth['adjusted_user_id'] != null ? kth['adjusted_user_id'] : 'Unknown';
 
                     customEntry = {
-                        'adjusted_by' : kth['adjusted_by'],
-                        'adjustments' : [kth]
+                        'adjusted_by' : kth['adjusted_by'] != null ? kth['adjusted_by'] : 'Unknown',
+                        'stay_dates'  : []
                     };
 
                     if ( undefined == returnObj[adjBy] ) {
                         returnObj[adjBy] = [];
                         angular.extend(customEntry, originalEntry);
+
+                        customEntry['stay_dates'].push( kth );
                         returnObj[adjBy].push( customEntry );
-                    } else {
 
-                        // since this user name already exist in the 'returnObj'
-                        // we have to first try to match the 'reservation_id' and inset the 
-                        // 'adjust_by' entry accordingly
+                        console.log( kth );
+                        console.log( angular.extend({}, returnObj) );
+                    // } else {
 
-                        // if we fail to find a matching 'reservation_id'
-                        // we'll have to push it as a new reservation
+                    //     // since this user name already exist in the 'returnObj'
+                    //     // we have to first try to match the 'confirmation_no' and inset the 
+                    //     // 'adjust_by' entry accordingly
 
-                        matchedRes = _.find(returnObj[adjBy], { 'reservation_id': originalEntry['reservation_id'] });
-                        if ( !!matchedRes ) {
-                            matchedRes['adjustments'].push( kth );
-                        } else {
-                            angular.extend(customEntry, originalEntry);
-                            returnObj[adjBy].push( customEntry );
-                        };
+                    //     // if we fail to find a matching 'confirmation_no'
+                    //     // we'll have to push it as a new reservation
+
+                    //     matchedRes = _.find(returnObj[adjBy], { 'confirmation_no': originalEntry['confirmation_no'] });
+                    //     if ( !!matchedRes ) {
+                    //         matchedRes['stay_dates'].push( kth );
+                    //     } else {
+                    //         angular.extend(customEntry, originalEntry);
+                    //         customEntry['stay_dates'].push( kth );
+                    //         returnObj[adjBy].push( customEntry );
+                    //     };
                     };
                 };
             };
 
-            for (key in returnObj) {
-                if ( ! returnObj.hasOwnProperty(key) ) {
-                    continue;
-                };
+            // console.log(returnObj);
 
-                returnObj[key] = $_parseRateAdjustments( reportName, returnObj[key], options );
-            };
+            // for (key in returnObj) {
+            //     if ( ! returnObj.hasOwnProperty(key) ) {
+            //         continue;
+            //     };
+
+            //     returnObj[key] = $_parseRateAdjustments( reportName, returnObj[key], options );
+            // };
+
+            // console.log(returnObj);
 
             return returnObj;
         };
@@ -535,8 +547,6 @@ sntRover.factory('RVReportParserFac', [
                     returnAry.push( makeCopy );
                 };
             };
-
-            console.log( returnAry );
 
             return returnAry;
         };
