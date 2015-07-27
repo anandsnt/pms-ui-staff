@@ -93,7 +93,11 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             //but should be disabled
             var containNonEditableRoomType = (_.pluck($scope.roomTypesAndData, 'room_type_id')
                 .indexOf(parseInt(reservation.room_type_id))) <= -1;
-            return (reservation.reservation_status === "CANCELED" || containNonEditableRoomType);
+            var rstatus = reservation.reservation_status;
+
+            //CICO-18717: disable room type switch once a user checks in
+            return (!(rstatus === "RESERVED" || rstatus === "CHECKING_IN")
+                || containNonEditableRoomType);
         };
 
         /**
