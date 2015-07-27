@@ -74,6 +74,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.isGuestReport = false;
 			$scope.isLargeReport = false;
 			$scope.isLogReport   = false;
+			$scope.isDepositReport = false;
 			$scope.hasNoSorting  = false;
 			$scope.hasNoTotals   = false;
 			$scope.showSortBy    = true;
@@ -84,7 +85,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('IN_HOUSE_GUEST'):
 				case reportUtils.getName('DEPARTURE'):
 				case reportUtils.getName('ARRIVAL'):
-				case reportUtils.getName('DEPOSIT_REPORT'):
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					$scope.showSortBy = false;
@@ -114,7 +114,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportUtils.getName('CHECK_IN_CHECK_OUT'):
-					if ( $scope.chosenReport.chosenCico == 'IN' || $scope.chosenReport.chosenCico == 'OUT' ) {
+					if ( $scope.chosenReport.chosenCico === 'IN' || $scope.chosenReport.chosenCico === 'OUT' ) {
 						$scope.hasNoTotals = true;
 					};
 					break;
@@ -135,6 +135,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.isTransactionReport = true;
 					break;
 
+				case reportUtils.getName('DEPOSIT_REPORT'):
+					$scope.hasNoTotals = true;
+					$scope.isGuestReport = true;
+					$scope.isDepositReport = true;
+					break;
+
 				default:
 					break;
 			};
@@ -143,7 +149,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// hack to set the colspan for reports details tfoot
 			switch ( $scope.chosenReport.title ) {
 				case reportUtils.getName('CHECK_IN_CHECK_OUT'):
-					if ( $scope.chosenReport.chosenCico == 'BOTH' ) {
+					if ( $scope.chosenReport.chosenCico === 'BOTH' ) {
 						$scope.leftColSpan = 6;
 						$scope.rightColSpan = 5;
 					} else {
@@ -403,6 +409,18 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.detailsTemplateUrl = '/assets/partials/reports/comparisonStatReport/rvComparisonStatReport.html';
 					break;
 
+				case reportUtils.getName('RATE_ADJUSTMENTS_REPORT'):
+					if ( !!$scope.$parent.reportGroupedBy ) {
+						$scope.hasReportTotals    = true;
+						$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
+						$scope.detailsTemplateUrl = '/assets/partials/reports/rateAdjustmentReport/rvRateAdjustmentReport.html';
+					} else {
+						$scope.hasReportTotals    = true;
+						$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
+						$scope.detailsTemplateUrl = '/assets/partials/reports/rvCommonReportDetails.html';
+					};
+					break;
+
 				default:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
@@ -466,7 +484,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportUtils.getName('RATE_ADJUSTMENTS_REPORT'):
-					template = '/assets/partials/reports/rvRateAdjustmentReportRow.html';
+					template = '/assets/partials/reports/rateAdjustmentReport/rvRateAdjustmentReportRow.html';
 					break;
 
 				default:
@@ -481,7 +499,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// simple method to allow checking for report title
 		// from the template, even without making the entire reportUtils part of $scope
 		$scope.isThisReport = function (name) {
-			return reportUtils.getName(name) == $scope.parsedApiFor ? true : false;
+			return reportUtils.getName(name) === $scope.parsedApiFor ? true : false;
 		};
 
 
@@ -497,18 +515,18 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// clear old results and update total counts
 			$scope.netTotalCount = $scope.$parent.totalCount;
 
-			if ( typeof $scope.$parent.results == 'array' ) {
+			if ( typeof $scope.$parent.results === 'array' ) {
 				$scope.uiTotalCount = $scope.$parent.results.length;
-			} else if ( typeof $scope.$parent.results == 'object' ) {
+			} else if ( typeof $scope.$parent.results === 'object' ) {
 				$scope.uiTotalCount = 0;
 				_.each($scope.$parent.results, function(item) {
-					if ( typeof item == 'array' ) {
+					if ( typeof item === 'array' ) {
 						$scope.uiTotalCount += item.length;
 					};
 				});
 			};
 
-			if ( $scope.netTotalCount == 0 && $scope.uiTotalCount == 0 ) {
+			if ( $scope.netTotalCount === 0 && $scope.uiTotalCount === 0 ) {
 				$scope.disablePrevBtn = true;
 				$scope.disableNextBtn = true;
 			} else if ( $_pageNo === 1 ) {
@@ -544,7 +562,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		    	_.each($scope.activeUserList, function(user) {
 					var match = _.find($scope.chosenReport.chosenUsers, function(id) {
-						return id == user.id;
+						return id === user.id;
 					});
 
 					if ( !!match ) {
@@ -596,13 +614,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			// un-select sort dir of others
 			_.each($scope.chosenReport.sortByOptions, function(item) {
-				if ( item && item.value != sortBy.value ) {
+				if ( item && item.value !== sortBy.value ) {
 					item.sortDir = undefined;
 				};
 			});
 
 			// select sort_dir for clicked item
-			sortBy.sortDir = (sortBy.sortDir == undefined || sortBy.sortDir == false) ? true : false;
+			sortBy.sortDir = (sortBy.sortDir === undefined || sortBy.sortDir === false) ? true : false;
 
 			$scope.chosenReport.chosenSortBy = sortBy.value;
 
@@ -667,14 +685,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 		};
 
 		// determine if we need to show pre print popup
-		// currently only for 'OCCUPANCY_REVENUE_SUMMARY' report 
+		// currently only for 'OCCUPANCY_REVENUE_SUMMARY' report
 		function $_preFetchFullReport () {
 			var allowedDateRange = 0,
 				chosenDateRange,
 				chosenVariance,
 				chosenLastYear;
 
-			if ( $scope.chosenReport.title == reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY') ) {
+			if ( $scope.chosenReport.title === reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY') ) {
 
 				// get date range
 				// READ MORE: http://stackoverflow.com/questions/3224834/get-difference-between-2-dates-in-javascript#comment-3328094
@@ -684,7 +702,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				// find out the user selection choices
 				chosenVariance = $scope.chosenReport.chosenOptions['include_variance'] ? true : false;
 				chosenLastYear = $scope.chosenReport.chosenOptions['include_last_year'] ? true : false;
-				
+
 				// fromdate <- 5 days -> untildate
 				// diff should be 4 (5 - 1), including fromdate
 				if ( chosenVariance && chosenLastYear ) {
@@ -697,7 +715,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					allowedDateRange = 9;
 				}
 
-				// fromdate <- 15 days -> untildate, 
+				// fromdate <- 15 days -> untildate,
 				// diff should be 14 (15 - 1), including fromdate
 				else {
 					allowedDateRange = 14;
@@ -773,14 +791,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 			addPrintOrientation();
 
 			/*
-			*	=====[ READY TO PRINT ]=====
+			*	======[ READY TO PRINT ]======
 			*/
 
 			// this will show the popup with full report
 		    $timeout(function() {
 
 		    	/*
-		    	*	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+		    	*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
 		    	*/
 
 		        $window.print();
@@ -790,7 +808,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		    }, 100);
 
 		    /*
-		    *	=====[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]=====
+		    *	======[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]======
 		    */
 
 			// restore the old dates if dates were indeed saved
@@ -882,7 +900,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		var reportAPIfailure = $scope.$on('report.API.failure', function() {
 			$scope.errorMessage = $scope.$parent.errorMessage;
-			
+
 			afterFetch();
 			calPagination();
 			refreshScroll();

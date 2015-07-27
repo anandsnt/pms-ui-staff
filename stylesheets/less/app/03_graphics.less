@@ -124,10 +124,16 @@
 				&.invert { background-position: 0 -3100px; }
 			}
 
-			&.icon-popup-alert {
-				background-position: 2px -6395px;
+			&.icon-popup-alert,
+			&.icon-popup-success {
 				.square(50px);
 				.show;
+			}
+			&.icon-popup-alert { background-position: 2px -6395px; }
+			&.icon-popup-success { 
+				background-position: 2px -7540px; 
+
+				&.white { background-position: 2px -7600px; }
 			}
 
 		/* Search ***/

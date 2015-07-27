@@ -7,7 +7,7 @@ sntRover.service('RVMoveChargeSrv',['$http', '$q', 'BaseWebSrvV2',function($http
 		   	 deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 
 		return deferred.promise;
 	};
@@ -19,7 +19,7 @@ sntRover.service('RVMoveChargeSrv',['$http', '$q', 'BaseWebSrvV2',function($http
 		   	 deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 
 		return deferred.promise;
 	};

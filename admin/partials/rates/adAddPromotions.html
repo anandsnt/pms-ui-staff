@@ -13,39 +13,39 @@
             <div class="entry has-datepicker margin">
                 <label>{{'FROM_DATE' | translate}}
                 </label>
-                <input type="text" ng-model="state.newPromo.from_date" readonly="" placeholder="Select Start Date" class="date-picker-input-small">
+                <input type="text" ng-model="state.from_date_display" readonly="" placeholder="Select Start Date" class="date-picker-input-small">
                 <button ng-click="popupCalendar('FROM')" class="ui-datepicker-trigger date-picker-small ui-datepicker-trigger-btn" type="button">
                     ...
                 </button>
                 <div class="date-delete-wrapper">
-                    <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="state.newPromo.from_date = null; filterRates(newPromo);">&nbsp;</span>
+                    <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="state.newPromo.from_date = null; state.from_date_display = null; filterRates(newPromo);">&nbsp;</span>
                 </div>
             </div>
             <div class="entry has-datepicker margin">
                 <label>{{'TO_DATE' | translate}}
                 </label>
-                <input type="text" ng-model="state.newPromo.to_date" readonly="" placeholder="Select End Date" class="date-picker-input-small">
+                <input type="text" ng-model="state.to_date_display" readonly="" placeholder="Select End Date" class="date-picker-input-small">
                 <button ng-click="popupCalendar('TO')" class="ui-datepicker-trigger date-picker-small ui-datepicker-trigger-btn" type="button">
                     ...
                 </button>
                 <div class="date-delete-wrapper">
-                    <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="state.newPromo.to_date = null; filterRates(newPromo);">&nbsp;</span>
+                    <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="state.newPromo.to_date = null; state.from_date_display = null; filterRates(newPromo);">&nbsp;</span>
                 </div>
             </div>
             <div class="entry">
-                <ad-textbox styleclass="full-width" value="state.newPromo.discount.value" name="amount" id="amount" label="Amount[{{ currencySymbol }}]" placeholder="{{'ENTER_THE_AMT'|translate}}"></ad-textbox>
+                <ad-textbox styleclass="full-width" value="state.newPromo.discount.value" name="amount" id="amount" label="Discount Amount[{{ currencySymbol }}]" placeholder="Enter the Discount"></ad-textbox>
             </div>
             <div class="entry">
                 <div class="entry full-width">
                     <label for="amount-type-id">
-                        {{'AMOUNT_TYPE'|translate}}
+                        DISCOUNT TYPE
                     </label>
                     <div class="select">
                         <select name="amount-type-id" id="amount-type-id" ng-model="state.newPromo.discount.type">
                             <option value="" data-text="Not set" class="placeholder">Choose amount type</option>
-                            <option value="amount">{{'AMOUNT'|translate}}[{{ currencySymbol }}]</option>
+                            <!-- <option value="amount">{{'AMOUNT'|translate}}[{{ currencySymbol }}]</option> -->
                             <option value="percent" translate>PERCENTAGE</option>
-                            < </select>
+                        </select>
                     </div>
                 </div>
             </div>

@@ -32,8 +32,9 @@ admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', 
 		$scope.addEditTitle = "Edit";
 	 	var successCallbackRender = function(data){
 	 		$scope.hotelLoyaltyData = data;
-	 		 		if($scope.hotelLoyaltyData.levels.length === 0)
+	 		 		if($scope.hotelLoyaltyData.levels.length === 0) {
 						$scope.hotelLoyaltyData.levels.push({'value':'','name':''});
+					}
 	 		$scope.setLoyaltyLevelEditStatus();
 	 		$scope.$emit('hideLoader');
 	 	};
@@ -70,7 +71,9 @@ admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', 
     * @param {string} id of the hotel loyalty
     */
 	$scope.getTemplateUrl = function(index, id){
-		 if(typeof index === "undefined" || typeof id === "undefined") return "";
+		 if(typeof index === "undefined" || typeof id === "undefined") {
+		 	return "";
+		 }
 		 if($scope.currentClickedElement === index){
 			 	return "/assets/partials/hotelLoyalty/adHotelLoyaltyAdd.html";
 		 }
@@ -110,8 +113,9 @@ admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', 
     		$scope.$emit('hideLoader');
     		//scroll to top of the page where error message is shown
 			angular.element( document.querySelector('.content')).scrollTop(0);
-			if($scope.hotelLoyaltyData.levels.length === 0)
+			if($scope.hotelLoyaltyData.levels.length === 0) {
 				$scope.hotelLoyaltyData.levels.push({'value':'','name':'', 'editProgress':false});
+			}
     	};
     	if($scope.isAddMode){
     		$scope.invokeApi(ADHotelLoyaltySrv.saveHotelLoyalty, $scope.hotelLoyaltyData , successCallbackSave, errorCallbackSave);
@@ -174,8 +178,9 @@ admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', 
 					}
 				});
 			}
-			if($scope.newOptionAvailable)
+			if($scope.newOptionAvailable) {
 				$scope.hotelLoyaltyData.levels.push({'value':'','name':'', 'editProgress':false});
+			}
 		}
 	};
    /*
@@ -184,8 +189,9 @@ admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', 
 	$scope.textChanged = function(index){
 
 		if($scope.hotelLoyaltyData.levels.length>1){
-			if($scope.hotelLoyaltyData.levels[index].name === "")
+			if($scope.hotelLoyaltyData.levels[index].name === "") {
 				$scope.hotelLoyaltyData.levels.splice(index, 1);
+			}
 		}
 	};
    /*
@@ -193,10 +199,11 @@ admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', 
     */
 	$scope.onBlur = function(index){
 		if($scope.hotelLoyaltyData.levels.length>1){
-			if($scope.hotelLoyaltyData.levels[index].name === "")
+			if($scope.hotelLoyaltyData.levels[index].name === "") {
 				$scope.hotelLoyaltyData.levels.splice(index, 1);
+			}
 			angular.forEach($scope.hotelLoyaltyData.levels,function(item, i) {
-				if (item.name === "" && i != $scope.hotelLoyaltyData.levels.length-1) {
+				if (item.name === "" && i !== $scope.hotelLoyaltyData.levels.length-1) {
 					$scope.hotelLoyaltyData.levels.splice(i, 1);
 				}
 			});

@@ -32,15 +32,15 @@ admin.controller('ADMarketsCtrl',['$scope', 'ADMarketsSrv', '$anchorScroll', '$t
     * @param {int} index of the selected item
     */
 	$scope.getTemplateUrl = function(index){
-		if($scope.currentClickedElement === index){ 
+		if($scope.currentClickedElement === index){
 			 return "/assets/partials/markets/adMarketsEdit.html";
 		}
 	};
 	/*
     * To handle cancel click
-    */	
+    */
 	$scope.clickedCancel = function(){
-		if($scope.currentClickedElement != 'new'){
+		if($scope.currentClickedElement !== 'new'){
 			$scope.data.markets[$scope.currentClickedElement].name = $scope.preveousItem;
 			$scope.preveousItem = "";
 		}
@@ -77,9 +77,12 @@ admin.controller('ADMarketsCtrl',['$scope', 'ADMarketsSrv', '$anchorScroll', '$t
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 		};
-		if(index === undefined) var data = $scope.data.markets[$scope.currentClickedElement];
-		else var data = $scope.data.markets[index];
-		
+		if(index === undefined) {
+			var data = $scope.data.markets[$scope.currentClickedElement];
+		}
+		else {
+			var data = $scope.data.markets[index];
+		}
   		$scope.invokeApi(ADMarketsSrv.update, data, postSuccess);
    	};
    	/*
@@ -98,6 +101,6 @@ admin.controller('ADMarketsCtrl',['$scope', 'ADMarketsSrv', '$anchorScroll', '$t
 		};
 		$scope.invokeApi(ADMarketsSrv.deleteItem, {'value':id }, successDeletionCallback);
 	};
-	
+
 }]);
 

@@ -40,9 +40,9 @@ admin.run(['$rootScope', '$state', '$stateParams','$location', function ($rootSc
 // function to add zeros(0) infront of a number, like 09 for 9 or 007 for 7
 function getLengthChangedNumber(lengthWanted, number) {
 
-	if ( typeof number === 'number')
+	if ( typeof number === 'number') {
 		number = number.toString();
-
+	}
 	var numberOfZerosToAppend = lengthWanted - number.length;
 	//if numberOfZerosToAppend is zero or less, nothing to do
 	if (numberOfZerosToAppend <= 0) {
@@ -102,7 +102,7 @@ function($rootScope, $scope, $attrs, $location) {
 	//store basic details as rootscope variables
 	$rootScope.adminRole = $attrs.adminRole;
 	$rootScope.hotelId = $attrs.hotelId;
-	$rootScope.isPmsConfigured = ($attrs.isPmsConfigured == 'true') ? true : false;
+	$rootScope.isPmsConfigured = ($attrs.isPmsConfigured === 'true') ? true : false;
 
 }]);
 

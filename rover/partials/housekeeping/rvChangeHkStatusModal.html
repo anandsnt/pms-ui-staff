@@ -5,7 +5,7 @@
 	    <button ng-click="closeHkStatusDialog()" class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert"></span></button>
 	    
 	    <strong class="h2 message">Update Status</strong>
-	    <span class="text">{{ getSelectedRoomCount() }} rooms selected</span>
+	    <span class="text">{{ multiRoomAction.rooms.length }} rooms selected</span>
 
 	    <div class="entry full-width">
 	       	<label ng-repeat="status in hkStatusList" class="radio" for="status.id">

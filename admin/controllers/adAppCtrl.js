@@ -120,11 +120,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			        submenu: [{
 			            title: "MENU_CREATE_GROUP",
 			            action: "staff#/staff/groups/config/NEW_GROUP/SUMMARY",
-			            menuIndex: "menuCreateGroup",
+			            menuIndex: "menuCreateGroup"
 			        }, {
 			            title: "MENU_MANAGE_GROUP",
 			            action: "staff#/staff/groups/search",
-			            menuIndex: "menuManageGroup",
+			            menuIndex: "menuManageGroup"
 			        }]
 		    	},{
 					title: "MENU_CONVERSATIONS",
@@ -342,7 +342,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			var successCallbackOfRemovingBookMark = function() {
 				$scope.$emit('hideLoader');
 
-				if (index != -1) {
+				if (index !== -1) {
 					$scope.bookmarkIdList.splice(index, 1);
 					index = -1;
 				}
@@ -374,7 +374,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			var index = -1;
 			var successCallbackOfBookMark = function() {
 				$scope.$emit('hideLoader');
-				if (index != -1) {
+				if (index !== -1) {
 					$scope.bookmarkIdList.push($scope.bookMarks[index].id);
 					index = -1;
 					updateBookmarkStatus();
@@ -422,7 +422,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		 */
 		$scope.clickedMenuItem = function($event, stateToGo) {
 			var currentTime = new Date();
-			if (lastDropedTime != '' && typeof lastDropedTime === 'object') {
+			if (lastDropedTime !== '' && typeof lastDropedTime === 'object') {
 				var diff = currentTime - lastDropedTime;
 				if (diff <= 400) {
 					$event.preventDefault();
@@ -446,6 +446,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 		$scope.$on("changedSelectedMenu", function(event, menu) {
 			$scope.selectedIndex = menu;
+			$scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
 		});
 		/*
 		 * Success callback of get language
@@ -471,8 +472,9 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$rootScope.is_auto_change_bussiness_date = data.business_date.is_auto_change_bussiness_date;
 
 			//set flag if standalone PMS
-			if (data.pms_type === null)
+			if (data.pms_type === null) {
 				$scope.isStandAlone = true;
+			}
 			$rootScope.currencySymbol = getCurrencySign(data.currency.value);
 			$rootScope.dateFormat = getDateFormat(data.date_format.value);
 			$scope.$emit('hideLoader');

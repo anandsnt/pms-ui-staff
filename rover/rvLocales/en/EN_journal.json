@@ -14,6 +14,8 @@
 	"TIME":"Time",
 	"DEBIT":"Debit",
 	"CREDIT":"Credit",
+	"ACCOUNT_NAME" : "Account Name",
+	"ACCOUNT_NO" : "Account No",
 	"CHARGE_GROUPS":"Charge Group",
 	"CHARGE_CODE_NAME":"Charge Code / Name",
 	"ALL_CHARGE_CODE":"All Charge Codes",

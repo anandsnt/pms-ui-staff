@@ -1,7 +1,7 @@
 (function() {
 	var ccVerificationViewController = function($scope,$rootScope,$state,$stateParams,$modal,ccVerificationService) {
 
-	
+
   $scope.pageValid = false;
   $scope.cardNumber = "";
   $scope.ccv = "";
@@ -19,14 +19,14 @@
   }
   else{
     $scope.pageValid = true;
-  } 		
+  }
 
 	if($scope.pageValid){
 
     $scope.checkoutmessage = $stateParams.message;
     $scope.fee = $stateParams.fee;
     var MLISessionId = "";
-    
+
         $scope.months = [{
             'name': 'January',
             'value': '01'
@@ -106,7 +106,7 @@
       }
     };
 
-    
+
 
     $scope.ccvOpts = {
       backdrop: true,
@@ -120,18 +120,18 @@
       }
     };
 
-		
+
 
     $scope.showCcvPopup = function(){
       $modal.open($scope.ccvOpts); // error modal popup
     }
 
     $scope.goToNextStep = function(){
-        
+
         //$scope.isFetching = true;
         var cardExpiryDate = $scope.yearSelected+"-"+$scope.monthSelected+"-"+"01"
         var data = {'reservation_id':$rootScope.reservationID,'token':MLISessionId,'card_expiry':cardExpiryDate,'payment_type':"CC"};
-        ccVerificationService.verifyCC(data).then(function(response) {    
+        ccVerificationService.verifyCC(data).then(function(response) {
           $scope.isFetching = false;
           if(response.status ==="success"){
               $rootScope.isCCOnFile = true;
@@ -146,25 +146,25 @@
         }
         else{
          $scope.netWorkError = true;
-        };        
-    
+        };
+
       },function(){
         $scope.netWorkError = true;
         $scope.isFetching = false;
       });
-    
-    }     
+
+    }
 
     $scope.savePaymentDetails = function(){
-      
+
       $scope.fetchMLISessionId = function(){
 
        var sessionDetails = {};
-            
+
        $scope.callback = function(response){
          // $scope.isFetching = false;
           $scope.$apply();
-          if(response.status ==="ok"){     
+          if(response.status ==="ok"){
               MLISessionId = response.session;
               $scope.goToNextStep();
           }
@@ -172,11 +172,11 @@
             $modal.open($scope.cardErrorOpts);
             $scope.isFetching = false;
           }
-        
+
        }
-      
-      if( ($scope.cardNumber.length === 0) || 
-          ($scope.ccv.length === 0) || 
+
+      if( ($scope.cardNumber.length === 0) ||
+          ($scope.ccv.length === 0) ||
           (!$scope.monthSelected) ||
           (!$scope.yearSelected)){
               $modal.open($scope.errorOpts); // details modal popup
@@ -189,16 +189,16 @@
              sessionDetails.cardExpiryMonth = $scope.monthSelected;
              sessionDetails.cardExpiryYear = $scope.yearSelected.toString();
              try {
-                HostedForm.updateSession(sessionDetails, $scope.callback); 
+                HostedForm.updateSession(sessionDetails, $scope.callback);
              }
              catch(err) {
                 $scope.netWorkError = true;
              };
-             
-         }
-      
 
-      
+         }
+
+
+
     }
     $scope.fetchMLISessionId();
 
@@ -222,7 +222,7 @@ snt.controller('ccVerificationViewController', dependencies);
 // controller for the modal
 
   var ccVerificationModalCtrl = function ($scope, $modalInstance,$state,errorMessage) {
-    
+
     $scope.errorMessage = errorMessage;
     $scope.closeDialog = function () {
       $modalInstance.dismiss('cancel');

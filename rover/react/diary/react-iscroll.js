@@ -3,12 +3,12 @@ var ReactIscroll = React.createClass({
 	componentDidMount: function() {
 		var iscroll = this.props.iscroll;
 
-		iscroll.grid = new IScroll($('.diary-grid .wrapper')[0], { 
-			probeType: 2, 
+		iscroll.grid = new IScroll($('.diary-grid .wrapper')[0], {
+			probeType: 2,
 			scrollbars: true,
 			interactiveScrollbars: true,
-			scrollX: true, 
-			scrollY: true, 
+			scrollX: true,
+			scrollY: true,
 			bounce: true,
 			momentum: false,
 			preventDefaultException: { className: /(^|\s)(occupied|available|reserved)(\s|$)/ },
@@ -28,5 +28,5 @@ var ReactIscroll = React.createClass({
 	componentWillUnmount: function() {
 		this.props.iscroll.grid.destroy();
 		this.props.iscroll.grid = null;
-	}	
+	}
 });

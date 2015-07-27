@@ -13,7 +13,7 @@ sntRover.service('RVChangeStayDatesSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSrv'
             }, function(errorMessage){
                 deferred.reject(errorMessage);
             });
-        }; 
+        };
 
     	//function to fetch calender details against a reservation id
     	this.fetchCalenderDetails = function (reservationId, deferred){
@@ -26,7 +26,7 @@ sntRover.service('RVChangeStayDatesSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSrv'
             }, function(errorMessage){
                 deferred.reject(errorMessage);
             });
-        }; 
+        };
 
 
         this.fetchInitialData = function (reservationId){
@@ -40,9 +40,9 @@ sntRover.service('RVChangeStayDatesSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSrv'
         this.checkUpdateAvaibale = function (data){
             var url = '/staff/change_stay_dates/' + data.reservation_id + '/update.json';
             //var url = '/ui/show?format=json&json_input=change_staydates/reservation_updates.json';
-            var data = {'arrival_date': data.arrival_date, 'dep_date': data.dep_date};            
+            var data = {'arrival_date': data.arrival_date, 'dep_date': data.dep_date};
             var deferred = $q.defer ();
-            RVBaseWebSrv.getJSON(url, data).then(function(data) {  
+            RVBaseWebSrv.getJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(errorMessage){
                 deferred.reject(errorMessage);
@@ -52,11 +52,11 @@ sntRover.service('RVChangeStayDatesSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSrv'
 
 
         this.confirmUpdates = function(data){
-            var url = '/staff/change_stay_dates/' + data.reservation_id + '/confirm';  
+            var url = '/staff/change_stay_dates/' + data.reservation_id + '/confirm';
 
-            var postData = {"arrival_date": data.arrival_date, "dep_date": data.dep_date, "room_number": data.room_selected, "authorize_credit_card": data.authorize_credit_card };      
+            var postData = {"arrival_date": data.arrival_date, "dep_date": data.dep_date, "room_number": data.room_selected, "authorize_credit_card": data.authorize_credit_card };
             var deferred = $q.defer ();
-            RVBaseWebSrv.postJSON(url, postData).then(function(data) {  
+            RVBaseWebSrv.postJSON(url, postData).then(function(data) {
                 deferred.resolve(data);
             }, function(errorMessage){
                 deferred.reject(errorMessage);

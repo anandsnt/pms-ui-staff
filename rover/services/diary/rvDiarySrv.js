@@ -114,7 +114,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     difference: function(existing, incoming, itr) {
                         var diff    = _.difference(_.pluck(incoming, itr), _.pluck(existing, itr)),
                             result = [];
-                        
+
                         if(diff.length > 0) {
                             result = _.filter(incoming, function(id) { return diff.indexOf(id); });
                         }
@@ -124,7 +124,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     /* Merge two sorted lists */
                     merge: function(list_a, list_b, output, itr) {
                         var i = 0;
-                            
+
                         while (list_a.length > 0 && list_b.length > 0) {
                             output.push(list_b[0][itr] < list_a[0][itr] ? list_b.shift() : list_a.shift());
                         }
@@ -132,7 +132,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         return output.concat(list_a.length > 0 ? list_a : list_b);
                     }
                 };
-      
+
                 this.data_Store = new STORE();
 
                 function Config(config, param_cfg, index_cfg, group_cfg, dataStore, normalizationFn, mergeFn) {
@@ -342,7 +342,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                 ['room_type_id'],
                 this.data_Store,
                 function(room) {
-                    
+
                     var room_type_id = room.room_type_id,
                         room_type = this.dataStore.get('_room_type.values.id')[room_type_id],
                         maintenance = this.dataStore.get('_maintenance.values.room_type_id')[room_type_id];
@@ -369,7 +369,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             date_to_pass = new tzIndependentDate(key);
                             date_to_pass.setHours(0, 0, 0);
                             time = util.gridTimeComponents(date_to_pass, 24);
-                            if(eachRoom.room_id == room.id) {
+                            if(eachRoom.room_id === room.id) {
                                 startTime = time.toShijuBugStartDate(0);
                                 endTime   = time.toShijuBugEndDate(0);
                                 room.room_inactive_slots.push({
@@ -380,7 +380,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             }
                         });
                     });
-                    
+
                     room[meta.room.hk_status] = meta.room.hk_status_map[room.hk_status];
                     return room;
                 }),
@@ -415,10 +415,10 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     var m = meta.maintenance;
 
                     maintenance[m.time_span] = this.normalizeMaintenanceInterval(maintenance[m.time_span]);
-                
+
                     return maintenance;
                 }),
-                
+
                 /* OCCUPANCY Configuration Adapter */
                 Occupancy =  Config({
                     id:             meta.occupancy.id,
@@ -439,10 +439,15 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
 
                     occupancy.arrival_date = occupancy.arrival_date.replace(/-/g, '/');
                     occupancy.departure_date = occupancy.departure_date.replace(/-/g, '/');
-                    if(!occupancy[m.start_date]) occupancy[m.start_date]    = this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
-                    if(!occupancy[m.end_date]) occupancy[m.end_date]        = this.normalizeTime(occupancy.departure_date, occupancy.departure_time);
-                    if(!occupancy[m.maintenance]) occupancy[m.maintenance]  = room_type[meta.maintenance.time_span]; //= this.normalizeMaintenanceInterval(room_type[meta.maintenance.time_span], 15);
-
+                    if(!occupancy[m.start_date]) {
+                        occupancy[m.start_date]    = this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
+                    }
+                    if(!occupancy[m.end_date]) {
+                        occupancy[m.end_date]        = this.normalizeTime(occupancy.departure_date, occupancy.departure_time);
+                    }
+                    if(!occupancy[m.maintenance]) {
+                    occupancy[m.maintenance]  = room_type[meta.maintenance.time_span]; //= this.normalizeMaintenanceInterval(room_type[meta.maintenance.time_span], 15);
+                    }
                     occupancy[m.room_type]      = angular.lowercase(room_type.name);
                     occupancy[m.status]         = angular.lowercase(occupancy[m.status]);
                     if(occupancy[m.status]          === 'reserved') {
@@ -477,7 +482,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
 
                     this.dataStore.mergeOccupancies(this.store.group.values.room_id);
                 }),
-               
+
                 /*AVAILABILITY Configuration Adapter */
                 Availability = Config({
                     id:         meta.availability.id,
@@ -527,7 +532,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                 function(incoming) {
                     this.dataStore.mergeOccupancies(this.store.group.values.id, true);
                 }),
-                
+
                 /*AVAILABILITY COUNT Configuration Adapter */
                 AvailabilityCount = Config({
                     name:       'availability_count',
@@ -585,7 +590,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                 filter: {
                                     arrival_time:     (new Date(create_reservation_data.start_date)).toComponents().time.toString(),
                                     min_hours:        (create_reservation_data.end_date - create_reservation_data.start_date) / 3600000,
-                                    room_type_id:     create_reservation_data.room_type_id,
+                                    room_type_id:     create_reservation_data.room_type_id
                                 },
                                 common_reservation_data: {
                                     company_id:         create_reservation_data.company_id,
@@ -613,9 +618,9 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                           RoomType,
                                           InActiveRoomSlots,
                                           Room,
-                                          
+
                                           Occupancy,
-                                                                                    
+
                                           AvailabilityCount],
                                 function(memo, obj, idx) {
                                     obj.resolve(data_array[idx]);
@@ -647,7 +652,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                     min_hours:              _data_Store.get('min_hours')
                                 }
                             });
-                            
+
                             q.resolve(_data_Store.get(
                                 'display',
                                 'filter',
@@ -662,13 +667,13 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
 
                     return q.promise;
                 };
-                
+
                 //variables using for reservation transfer from one date to another
                 this.isReservationMovingFromOneDateToAnother = false;
                 this.movingReservationData = {
                     reservation: undefined,
                     originalRoom: undefined,
-                    originalReservation: undefined,
+                    originalReservation: undefined
                 };
 
                 this.callOccupancyAndAvailabilityCount = function(start_date, end_date) {
@@ -690,23 +695,23 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                         res_depature = new Date (reservation.departure),
                                         diff = res_depature.getTime() - res_arrival.getTime(),
                                         departure_date;
-                                    
+
                                     arrival_date = new Date (time.x_n);
                                     arrival_date.setHours (res_arrival.getHours(), res_arrival.getMinutes(), 0)
-                                    
+
                                     departure_date = new Date (arrival_date.getTime() + diff);
 
                                     reservation.arrival_date  = arrival_date.toComponents().date.toDateString();
                                     reservation.arrival_time  = arrival_date.toComponents().time.toHourAndMinute(":", 24);
                                     reservation.arrival        = arrival_date.getTime();
-                                    
+
                                     reservation.departure_date = departure_date.toComponents().date.toDateString();
                                     reservation.departure_time  = departure_date.toComponents().time.toHourAndMinute(":", 24);
                                     reservation.departure        = departure_date.getTime();
                                     //2 is the index of array who is having reservations
                                     var indexOfSameReservationAlreadyInList = _.findIndex (data_array[2].reservations,
                                                                     {reservation_id: reservation.reservation_id});
-                                    
+
                                     data_array[2].reservations.push(reservation);
 
                                     if(indexOfSameReservationAlreadyInList >= 0) {
@@ -728,8 +733,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                 'availability_count'
                             ));
                     })
-                    
-                    
+
+
                     return q.promise;
                 };
 
@@ -802,8 +807,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             _.extend(params, { account_id: account_id });
                         }
                     }
-           
-                    
+
+
                     Availability.read(params)
                     .then(function(data) {
                         if(data && data.results) {
@@ -823,11 +828,11 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                     id_difference = _.difference(existing_ids, new_coming_ids);
 
                                     var len = Availability.store.data.length;
-                                   
+
 
                                     for(var i = 0; i < len; i++) {
                                        for(var k = 0; k < id_difference.length; k++) {
-                                            if(Availability.store.data[i] && _.has(Availability.store.data[i], "id") &&  Availability.store.data[i].id == id_difference [k]){
+                                            if(Availability.store.data[i] && _.has(Availability.store.data[i], "id") &&  Availability.store.data[i].id === id_difference [k]){
                                                 Availability.store.data.splice(i);
                                                 delete Availability.store.group.values.id[id_difference[k]];
                                                 len--;
@@ -835,7 +840,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                         }
                                     }
                                 }
-                            
+
 
                             Availability.resolve(data.results.shift(), [
                                 start_date,
@@ -865,10 +870,10 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         begin_time:         data.begin_time,
                         end_date:           data.end_date,
                         end_time:           data.end_time,
-                        rate_type:          data.rate_type,
+                        rate_type:          data.rate_type
 
                     }
-                    if(data.rate_type == 'Corporate') {
+                    if(data.rate_type === 'Corporate') {
                         if(data.account_id){
                             _.extend(params, { account_id: data.account_id });
                         }
@@ -887,7 +892,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                 this.properDateTimeCreation = function(start_date) {
                     var data       = $vault.get('searchReservationData'),
                         start_date = start_date ? new tzIndependentDate(start_date) : new tzIndependentDate($rootScope.businessDate);
-                    
+
                     if(data) {
                         data = JSON.parse(data);
                         start_date.setHours( parseInt(data.arrivalTime.hh), parseInt(data.arrivalTime.mm) );
@@ -915,8 +920,8 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         if ( mm > 45 && hh + 1 < 12 ) {
                             hh += 1;
                             mm = 0;
-                        } else if ( mm > 45 && hh + 1 == 12 ) {
-                            if ( ampm == 'AM' ) {
+                        } else if ( mm > 45 && hh + 1 === 12 ) {
+                            if ( ampm === 'AM' ) {
                                 hh  = 12;
                                 mm = 0;
                                 ampm    = 'PM';
@@ -925,11 +930,11 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                 mm = 0;
                                 ampm    = 'AM';
                             }
-                        } else if ( mm == 15 || mm == 30 || mm == 45 ) {
+                        } else if ( mm === 15 || mm === 30 || mm === 45 ) {
                             mm += 15;
-                        } else if ( Math.max(mm, 15) == 15 ) {
+                        } else if ( Math.max(mm, 15) === 15 ) {
                             mm = 15;
-                        } else if ( Math.max(mm, 30) == 30 ) {
+                        } else if ( Math.max(mm, 30) === 30 ) {
                             mm = 30;
                         } else {
                             mm = 45;
@@ -938,7 +943,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         start_date.setHours(hh, mm);
                     };
                 };
-                
+
                 /**
                 *   check reservation availability for another date,
                 *   used to check the availability while transfering from
@@ -954,15 +959,15 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         begin_time:         data.begin_time,
                         end_date:           data.end_date,
                         end_time:           data.end_time,
-                        rate_type:          data.rate_type,
+                        rate_type:          data.rate_type
                     }
 
-                    if(data.rate_type == 'Corporate') {
+                    if(data.rate_type === 'Corporate') {
                         if(data.account_id){
                             _.extend(params, { account_id: data.account_id });
                         }
                     }
-                    
+
                     //Webservice calling section
                     var deferred = $q.defer();
                     var url = '/api/hourly_availability/room_move';
