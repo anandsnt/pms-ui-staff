@@ -226,6 +226,9 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 				url = 'api/groups/' + params.groupId;
 				rvBaseWebSrvV2.getJSON(url).then(
 					function(data) {
+						if (data.rate === null){
+							data.rate = -1;
+						}
 						summaryHolder.groupSummary = data;
 						getAccountSummary(deferred, {
 							accountId: data.posting_account_id
