@@ -20,12 +20,18 @@
         <span class="h1" ng-if="reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates"> 
 					SR
 				</span>
-        </span>
-    </div>
-    <button type="button" ng-click="putInQueue(reservationData.reservation_card.reservation_id)" class="button staycard-button icon-queue" ng-show="showPutInQueue(reservationData.reservation_card.is_queue_rooms_on, reservationData.reservation_card.is_reservation_queued, reservationData.reservation_card.reservation_status)">Put in Queue</button>
-    <button type="button" ng-click="removeFromQueue(reservationData.reservation_card.reservation_id)" class="button staycard-button icon-queue in" ng-show="showRemoveFromQueue(reservationData.reservation_card.is_queue_rooms_on, reservationData.reservation_card.is_reservation_queued, reservationData.reservation_card.reservation_status)">Remove from Queue</button>
-    <!-- Reservation is checking out -->
-    <a id="deposit_balance" ng-show="showDepositBalance(reservationData.reservation_card.reservation_status)" class="button staycard-button icon-deposit" ng-click="showDepositBalanceModal()">
+			</span>
+		</div>
+		
+		<button type="button" ng-click="putInQueue(reservationData.reservation_card.reservation_id)" class="button staycard-button icon-queue" ng-show="showPutInQueue(reservationData.reservation_card.is_queue_rooms_on, reservationData.reservation_card.is_reservation_queued, reservationData.reservation_card.reservation_status)">Put in Queue</button>
+		
+		<button type="button" ng-click="removeFromQueue(reservationData.reservation_card.reservation_id)" class="button staycard-button icon-queue in" ng-show="showRemoveFromQueue(reservationData.reservation_card.is_queue_rooms_on, reservationData.reservation_card.is_reservation_queued, reservationData.reservation_card.reservation_status)">Remove from Queue</button>
+	
+		
+    	<!-- Reservation is checking out -->
+		
+		
+		<a id="deposit_balance" ng-show="showDepositBalance(reservationData.reservation_card.reservation_status)" class="button staycard-button icon-deposit" ng-click="showDepositBalanceModal()">
 			Deposit/Balance
 		</a>
     <!-- Show add-ons button set hidden for now as part of story 4130 - in future we need this -->
@@ -44,14 +50,8 @@
         <!-- The 'Cancel Reservation' button should be located at the bottom right of the Stay Card. -->
         <a ng-if="(isStandAlone &&(reservationData.reservation_card.reservation_status != 'CANCELED' && (reservationData.reservation_card.reservation_status == 'RESERVED' || reservationData.reservation_card.reservation_status == 'CHECKING_IN' || (reservationData.reservation_card.reservation_status == 'CHECKEDIN' && (reservationData.reservation_card.balance_amount | number:2) == 0.00 && actionsCheck.firstDate))))" class="button white red-text bottom-button" ng-click="toggleCancellation()" translate>
 			{{'CANCEL_RESERVATION' | translate}}
-		</a>
-        <a class="button staycard-button icon-confirmation" ng-show="showResendConfirmation(reservationData.reservation_card.reservation_status)" ng-click="sendConfirmationEmail()"> 		{{'CONFIRMATION' | translate}} 
-        </a>
-        <a ng-if="isReinstateVisible()" ng-click="checkReinstationAvailbility()" class="button white green-text bottom-button">
-			{{'REINSTATE' | translate}}
-		</a>
-        <!-- Archive Reservation for future usage
-			<a href="{archive-reservation}" class="button red bottom-button">Archive reservation</a>
-			-->
+			</a>
+			<a class="button staycard-button icon-confirmation" ng-click="popupForConfirmation()" ng-show="showConfirmation(reservationData.reservation_card.reservation_status)"> {{'CONFIRMATION' | translate}} </a>
+			
     </div>
 </div>

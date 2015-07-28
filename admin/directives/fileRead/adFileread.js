@@ -5,6 +5,9 @@ admin.directive('appFilereader', function($q){
     return {
         restrict: 'A'
         , require: '?ngModel'
+        ,scope: {            
+            fileNameKey:'@fileNameKey'            
+        }
         , link: function(scope, element, attrs, ngModel){
             if(!ngModel) {
                 return;
@@ -37,8 +40,13 @@ admin.directive('appFilereader', function($q){
                         deferred.reject(e);
                     };
                     reader.readAsDataURL(file);
-                    scope.fileName = file.name;
 
+                    if(typeof scope.fileNameKey != 'undefined'){
+                        scope.$parent[scope.fileNameKey] = file.name;
+                    }else{
+                        scope.$parent.fileName = file.name;
+                    }
+                    scope.$apply();
                     return deferred.promise;
                 }
 

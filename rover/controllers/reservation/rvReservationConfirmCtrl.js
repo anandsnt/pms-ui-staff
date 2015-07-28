@@ -12,12 +12,14 @@ sntRover.controller('RVReservationConfirmCtrl', [
 	'$rootScope',
 	'RVReservationGuestSrv',
 	'rvPermissionSrv',
+	'$timeout',
+	'$window',
 	function($scope, $state,
 		RVReservationSummarySrv, ngDialog,
 		RVContactInfoSrv, $filter,
 		RVBillCardSrv, $q,
 		RVHkRoomDetailsSrv, $vault,
-		$rootScope, RVReservationGuestSrv, rvPermissionSrv) {
+		$rootScope, RVReservationGuestSrv, rvPermissionSrv, $timeout, $window) {
 
 		$scope.errorMessage = '';
 		BaseCtrl.call(this, $scope);
@@ -55,7 +57,6 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		$scope.init = function() {
 			$scope.heading = 'Reservations';
 			$scope.setHeadingTitle($scope.heading);
-
 			$scope.$parent.hideSidebar = true;
 			$scope.time = {
 				arrival: $scope.reservationData.checkinTime.hh + ':' + $scope.reservationData.checkinTime.mm + ' ' + $scope.reservationData.checkinTime.ampm,
@@ -125,6 +126,47 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		}
 
 		$scope.confirmationMailsSent = false;
+		
+		// add the print orientation after printing
+		var addPrintOrientation = function() {
+			var orientation = 'portrait';
+			$( 'head' ).append( "<style id='print-orientation'>@page { size: " + orientation + "; }</style>" );
+		};
+		// remove the print orientation after printing
+		var removePrintOrientation = function() {
+			$( '#print-orientation' ).remove();	
+		};
+
+		var printPage= function() {		
+			// add the orientation
+			addPrintOrientation();
+	    	$timeout(function() {	    	
+	        	$window.print();
+	        	if ( sntapp.cordovaLoaded ) {
+	            	cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+	        	};	        
+	    	}, 100);
+			// remove the orientation after similar delay
+			$timeout(removePrintOrientation, 100);
+		};	
+
+		$scope.printData = {};
+		var sucessCallbackPrint = function( response ){
+			$scope.printData = response.data;
+			printPage();
+		},
+		failureCallbackPrint = function( errorData ){
+			$scope.errorMessage = errorData;
+		};
+
+		// To handle printConfirmationReservation button click
+		$scope.printConfirmationReservation = function() {	
+			$scope.callAPI(RVReservationSummarySrv.fetchResservationConfirmationPrintData,{
+                successCallBack: sucessCallbackPrint,
+                failureCallBack: failureCallbackPrint,
+                params: { 'reservation_id': $scope.reservationData.reservationId }
+            });
+		};
 
 		/**
 		 * Call API to send the confirmation email
@@ -355,8 +397,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		};
 
 		var checkAllRoomsAreReady = function() {
-			var promises = [];
-			var data = null;
+			var promises = [], id;
 			//we are following this structure bacuse of the hideloader pblm.
 			// we are going to call mutilple API's paralelly. So sometimes last API may complete first
 			// we need to keep loader until all api gets completed
@@ -364,7 +405,10 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			for (var i = 0; i < $scope.reservationData.rooms.length; i++) {
 				id = $scope.reservationData.rooms[i].room_id;
 				//directly calling without base ctrl
-				promises.push(RVHkRoomDetailsSrv.fetch(id).then(successOfRoomDetailsFetch));
+                                //room_id may still be undefined at this point, no need to send a bad request @ '/house/room/unidentified.json';
+                                if (id){
+                                    promises.push(RVHkRoomDetailsSrv.fetch(id).then(successOfRoomDetailsFetch));
+                                }
 			}
 			$q.all(promises).then(allRoomDetailsFetched, failedInRoomDetailsFetch);
 

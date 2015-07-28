@@ -1,29 +1,26 @@
 <section id="replacing-div-first" class="content current" ng-click='clearErrorMessage()'>
-	<div data-view="RateTypeListView">
-		<header class="content-title float">
-			<h2 translate> RATE_TYPES </h2>
-			<span class="count"> ({{data.length}})</span>
-			<a id="add-new-button" class="action add" ng-click="addNew()" translate>ADD_NEW</a>
-		</header>
-		<section class="content-scroll">
-			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-			<div id="new-form-holder" ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/rateTypes/adRateTypeAdd.html'"></div>
-
-			<div id="new-form-holder"></div>
-
-			<table id="rate-types" class="grid">
-
-				<tbody>
-
-					<tr ng-repeat = "ratetype in data" data-rate-type-id="{{ratetype.id}}">
-
-						<td width = "50%" ng-show="ratetype.system_defined ===true"><strong>{{ratetype.name}}</strong><em> {{'SYSTEM_DEFINED' | translate}}</em></td>
-
-						<td ng-hide="ratetype.system_defined ===true || currentClickedElement == $index" ng-click = "editRateTypes($index,ratetype.id)"><a class="edit-data-inline">{{ratetype.name}} </a>
-						</td>
-
-						<td ng-hide="currentClickedElement == $index" style="overflow: visible;">
-							<span class= "tooltip-wrapper" ng-mouseenter="showRates($index, ratetype.id, ratetype.rate_count)" ng-mouseleave="mouseLeavePopover()">
+    <div data-view="RateTypeListView">
+        <header class="content-title float">
+            <h2 translate> RATE_TYPES </h2>
+            <span class="count"> ({{data.length}})</span>
+            <a id="add-new-button" class="action add" ng-click="addNew()" translate>ADD_NEW</a>
+        </header>
+        <section class="content-scroll">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div id="new-form-holder" ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/rateTypes/adRateTypeAdd.html'"></div>
+            <div id="new-form-holder"></div>
+            <table id="rate-types" class="grid">
+                <tbody>
+                    <tr ng-repeat="ratetype in data" data-rate-type-id="{{ratetype.id}}">
+                        <td width="30%" ng-hide="currentClickedElement == $index" ng-click="editRateTypes($index,ratetype.id)">
+                            <a class="edit-data-inline">
+								{{ratetype.name}} 
+								<em ng-show="ratetype.system_defined ===true"> {{'SYSTEM_DEFINED' | translate}}</em>
+							</a>
+                        </td>
+                        <td ng-hide="currentClickedElement == $index" width="20%"><strong>{{ratetype.classification.value}}</strong></td>
+                        <td width="20%" ng-hide="currentClickedElement == $index" style="overflow: visible;">
+                            <span class="tooltip-wrapper" ng-mouseenter="showRates($index, ratetype.id, ratetype.rate_count)" ng-mouseleave="mouseLeavePopover()">
 								<em>{{ratetype.rate_count}} rates</em>
 								<span ng-class="{ 'tooltip-indicator': ratetype.rate_count > 0 }">
 									<div ng-show = "popoverRates.total_count > 0" 
@@ -31,26 +28,24 @@
 										 ng-class="{'polarize': $index >= halfwayPoint}" 
 										 ng-include="getPopoverTemplate($index,ratetype.id)"></div>
 								</span>
-							</span>
-						</td>
-						<td class="delete"  ng-hide="currentClickedElement ==$index"><a ng-hide="ratetype.system_defined ===true" id="3" ng-click="deleteRateType($index,ratetype.id)" class="icons icon-delete large-icon delete_item"  ></a></td>
-
-						<td class="activate" ng-hide="currentClickedElement == $index" >
-							<div class="entry" >
-							<label ></label>
-							<div class="switch-button single"  ng-class="{ on : ratetype.activated}" ng-click="toggleClicked($index)">
-								<input type="checkbox" is_system_defined="ratetype.system_defined"  value="" name="" id="">
-								<span class="switch-icon"></span>
-
-							</div>
-						</div></td>
-
-						<td colspan="4" ng-include="getTemplateUrl($index,ratetype.id)"></td>
-
-					</tr>
-
-				</tbody>
-			</table>
-		</section>
-	</div>
+                            </span>
+                        </td>
+                        <td width="10%" ng-hide="currentClickedElement == $index" class="delete">
+                            <a ng-hide="currentClickedElement ==$index || ratetype.system_defined ===true"  id="3" ng-click="deleteRateType($index,ratetype.id)" class="icons icon-delete large-icon delete_item"></a>
+                        </td>
+                        <td width="20%" class="activate" ng-hide="currentClickedElement == $index">
+                            <div class="entry">
+                                <label></label>
+                                <div class="switch-button single" ng-class="{ on : ratetype.activated}" ng-click="toggleClicked($index)">
+                                    <input type="checkbox" is_system_defined="ratetype.system_defined" value="" name="" id="">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td colspan="5" ng-include="getTemplateUrl($index,ratetype.id)"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
 </section>

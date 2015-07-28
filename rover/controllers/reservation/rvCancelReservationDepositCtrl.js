@@ -8,21 +8,36 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 			reason: ""
 		};
 
-		var cancelReservation = function(with_deposit_refund) {
-			var onCancelSuccess = function(data) {
+		$scope.DailogeState.isCancelled = false ;
+
+		$scope.completeCancellationProcess = function(){
+
+			if($scope.DailogeState.isCancelled){
 				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
 					"id": $stateParams.id || $scope.reservationData.reservationId,
 					"confirmationId": $stateParams.confirmationId || $scope.reservationData.confirmNum,
 					"isrefresh": false
 				});
-				$scope.closeDialog();
+			};
+			$scope.closeDialog();
+		};
+
+		var cancelReservation = function(with_deposit_refund) {
+
+			var onCancelSuccess = function(data) {
+				//OnCancelsuccess NgDialog shows sendcancelation as well as printcancelation pop up
+				//Since RVCancelReservation and RVCancelReservationDepositController do the same above,
+				//its functions are written in parent controller.Ie reservationActionsController
+				$scope.DailogeState.isCancelled = true ;
 				$scope.$emit('hideLoader');
 			};
 
 			var cancellationParameters = {
 				reason: $scope.cancellationData.reason,
-				id: $scope.reservationData.reservation_card.reservation_id || $scope.reservationData.reservationId
+				id: $scope.reservationData.reservation_card.reservation_id || $scope.reservationData.reservationId,
+				application : "ROVER"
 			};
+
 			cancellationParameters.with_deposit_refund = with_deposit_refund;
 			$scope.invokeApi(RVReservationCardSrv.cancelReservation, cancellationParameters, onCancelSuccess);
 		};

@@ -21,6 +21,22 @@ sntRover.factory('RVReportParserFac', [
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseNumeralData( reportName, apiResponse, options );
             }
 
+            // a very special parser for daily transaction report
+            // in future we may make this check generic, if more
+            // reports API structure follows the same pattern
+            else if ( reportName == reportUtils.getName('RATE_ADJUSTMENTS_REPORT') ) {
+                if ( options['groupedByKey'] == 'adjusted_user_id' ) {
+                    return _.isEmpty(apiResponse) ? apiResponse : $_preParseGroupedRateAdjustments( reportName, apiResponse, options );
+                } else {
+                    return _.isEmpty(apiResponse) ? apiResponse : $_parseRateAdjustments( reportName, apiResponse, options );
+                }
+            }
+            
+            // a very special parser for deposit report
+            else if ( reportName === reportUtils.getName('DEPOSIT_REPORT') ) {
+                return _.isEmpty(apiResponse) ? apiResponse : $_parseDepositReport( reportName, apiResponse, options );
+            }
+
             // otherwise a super parser for reports that can be grouped by
             else if ( !!options['groupedByKey'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseDataToSubArrays( reportName, apiResponse, options );
@@ -355,6 +371,258 @@ sntRover.factory('RVReportParserFac', [
 
 
 
+        /**
+         * We have to convert an array of objects 'apiResponse'
+         * into a grouped by 'adjust_by' key-value pairs.
+         *
+         * Each key will be the 'adjust_by' username and its value
+         * will be an array of objects. Each object will represent
+         * an reservation (unique key 'reservation_id')
+         */
+        
+        /**
+         * @param {Array} apiResponse [{}, {}, {}, {}, {}]
+         * @return {Object} =>        { us1: [{}, {}, {}], us2: [{}, {}], us3: [{}] }
+         */
+        function $_preParseGroupedRateAdjustments ( reportName, apiResponse, options ) {
+            var makeCopy,
+                withOutStay,
+                usersInThisRes;
+
+            var kth,
+                userId,
+                userNa,
+                uid,
+                keyId;
+
+            var tempObj   = {},
+                returnObj = {};
+
+            var i, j, k, l;
+
+
+            for( i = 0, j = apiResponse.length; i < j; i++ ) {
+
+                // create a copy of ith apiResponse
+                makeCopy = angular.copy( apiResponse[i] );
+
+                withOutStay = angular.copy({
+                    'guest_name'      : makeCopy.guest_name,
+                    'confirmation_no' : makeCopy.confirmation_no,
+                    'arrival_date'    : makeCopy.arrival_date,
+                    'departure_date'  : makeCopy.departure_date,
+                    'stay_dates'      : []
+                });
+
+                usersInThisRes = {};
+                for( k = 0, l = makeCopy['stay_dates'].length; k < l; k++ ) {
+                    kth = makeCopy['stay_dates'][k];
+                    userId = kth['adjusted_user_id'] || 'Unknown';
+                    userNa = kth['adjusted_by'] || 'Unknown';
+
+                    uid = userId + '__' + userNa;
+
+                    if ( usersInThisRes[uid] == undefined ) {
+                        usersInThisRes[uid] = angular.copy( withOutStay );
+                    };
+
+                    usersInThisRes[uid]['stay_dates'].push( kth );
+                };
+
+                for( keyId in usersInThisRes ) {
+                    if ( ! usersInThisRes.hasOwnProperty(keyId) ) {
+                        continue;
+                    };
+
+                    if ( tempObj[keyId] == undefined ) {
+                        tempObj[keyId] = [];
+                    };
+
+                    tempObj[keyId].push( usersInThisRes[keyId] );
+                };
+            };
+
+            // now that all the data has been grouped
+            // we need to remove the 'adjusted_user_id'
+            // part from 'uid', and have the 'returnObj' in that format
+            returnObj = {};
+            for( keyId in tempObj ) {
+                if ( ! tempObj.hasOwnProperty(keyId) ) {
+                    continue;
+                };
+
+                // only take the user name part
+                onlyUserNa = keyId.split('__')[1];
+
+                // oh also we will each entry to nG repeat format
+                returnObj[onlyUserNa] = $_parseRateAdjustments( reportName, tempObj[keyId], options );
+            };
+
+            return returnObj;
+        };
+
+
+
+
+
+        function $_parseRateAdjustments ( reportName, apiResponse, options ) {
+            var returnAry = [],
+                customData = [],
+                makeCopy,
+                stayDates,
+                totalOriginalRate;
+
+            var i, j, k, l;
+
+            // loop through the api response
+            for (i = 0, j = apiResponse.length; i < j; i++) {
+
+                // we'll work with a copy of the ith item
+                makeCopy = angular.copy( apiResponse[i] );
+
+                // reset these counters
+                totalOriginalRate = 0;
+                totalAdjustedRate = 0;
+                totalVariance = 0;
+
+                // if we have 'stay_dates' for this reservation
+                if ( makeCopy.hasOwnProperty('stay_dates') && makeCopy['stay_dates'].length ) {
+
+                    // loop through the stay_dates
+                    for (k = 0, l = makeCopy['stay_dates'].length; k < l; k++) {
+                        stayDates = makeCopy['stay_dates'][k];
+
+                        // include the first stayDates details in the
+                        // same row as that of the main reservation details  
+                        if ( k == 0 ) {
+                            angular.extend(makeCopy, {
+                                'isReport'        : true,
+                                'rowspan'         : l + 1,
+                                'stay_date'       : stayDates.stay_date,
+                                'original_amount' : stayDates.original_amount,
+                                'adjusted_amount' : stayDates.adjusted_amount,
+                                'variance'        : stayDates.variance,
+                                'reason'          : stayDates.reason,
+                                'adjusted_by'     : stayDates.adjusted_by
+                            });
+                            returnAry.push( makeCopy );
+                        }
+
+                        // create additional sub rows to represent the
+                        // rest of the stay_dates 
+                        else {
+                            customData = {};
+                            angular.extend(customData, {
+                                'isSubReport'     : true,
+                                'stay_date'       : stayDates.stay_date,
+                                'original_amount' : stayDates.original_amount,
+                                'adjusted_amount' : stayDates.adjusted_amount,
+                                'variance'        : stayDates.variance,
+                                'reason'          : stayDates.reason,
+                                'adjusted_by'     : stayDates.adjusted_by
+                            });
+                            returnAry.push( customData );
+                        };
+
+                        // keep updating the total values for these
+                        totalOriginalRate += stayDates.original_amount;
+                        totalAdjustedRate += stayDates.adjusted_amount;
+                        totalVariance += stayDates.variance;
+                    };
+
+                    // after looping through all the stay_dates
+                    // add a final sub row to show the stayDates totals
+                    customData = {};
+                    angular.extend(customData, {
+                        'isSubTotal'            : true,
+                        'className'             : 'row-break',
+                        'total_original_amout'  : totalOriginalRate,
+                        'total_adjusted_amount' : totalAdjustedRate,
+                        'total_variance'        : totalVariance
+                    });
+                    returnAry.push( customData );
+                } else {
+                    returnAry.push( makeCopy );
+                };
+            };
+
+            return returnAry;
+        };
+
+
+
+        function $_parseDepositReport ( reportName, apiResponse, options ) {
+            var returnAry  = [],
+                customData = [],
+                makeCopy,
+                depositData,
+                depositTotals;
+
+            var i, j, k, l;
+
+            // loop through the api response
+            for (i = 0, j = apiResponse.length; i < j; i++) {
+
+                // we'll work with a copy of the ith item
+                makeCopy = angular.copy( apiResponse[i] );
+
+                // if we have 'deposit_data' for this reservation
+                if ( makeCopy.hasOwnProperty('deposit_data') && makeCopy['deposit_data'].length ) {
+
+                    // loop through the 'deposit_data'
+                    for (k = 0, l = makeCopy['deposit_data'].length; k < l; k++) {
+                        depositData = makeCopy['deposit_data'][k];
+
+                        // include the first depositData details in the
+                        // same row as that of the main reservation details  
+                        if ( k == 0 ) {
+                            angular.extend(makeCopy, {
+                                'isReport'               : true,
+                                'rowspan'                : l + 1,
+                                'deposit_payment_status' : depositData.deposit_payment_status,
+                                'due_date'               : depositData.due_date,
+                                'deposit_due_amount'     : depositData.deposit_due_amount,
+                                'paid_date'              : depositData.paid_date,
+                                'paid_amount'            : depositData.paid_amount
+                            });
+                            returnAry.push( makeCopy );
+                        }
+
+                        // create additional sub rows to represent the
+                        // rest of the 'deposit_data' 
+                        else {
+                            customData = {};
+                            angular.extend(customData, {
+                                'isSubReport'            : true,
+                                'deposit_payment_status' : depositData.deposit_payment_status,
+                                'due_date'               : depositData.due_date,
+                                'deposit_due_amount'     : depositData.deposit_due_amount,
+                                'paid_date'              : depositData.paid_date,
+                                'paid_amount'            : depositData.paid_amount
+                            });
+                            returnAry.push( customData );
+                        };
+                    };
+
+                    // if this is the last loop
+                    if ( makeCopy.hasOwnProperty('deposit_totals') && ! _.isEmpty(makeCopy['deposit_totals']) ) {
+                        depositTotals = makeCopy['deposit_totals'];
+
+                        customData = {};
+                        angular.extend(customData, {
+                            'isSubTotal'         : true,
+                            'className'          : 'row-break',
+                            'deposit_due_amount' : depositTotals.deposit_due_amount,
+                            'paid_amount'        : depositTotals.paid_amount
+                        });
+                        returnAry.push( customData );
+                    }
+                };
+
+            };
+
+            return returnAry;
+        };
 
 
 

@@ -16,7 +16,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
         };
 
         $scope.shouldShowMemberRates = function(){
-            return !!$rootScope.isFFPActive || !!$rootScope.isHLPActive;
+            return !$rootScope.isHourlyRatesEnabled && (!!$rootScope.isFFPActive || !!$rootScope.isHLPActive);
         }
 
         $scope.isPromotional = function() {

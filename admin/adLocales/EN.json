@@ -621,7 +621,11 @@
 "SEGMENTS_NAME_PLACEHOLDER":"Name of Segment",
 "SEGMENTS_LOS_PLACEHOLDER":"Length of Stay",
 "LOS":"Length of Stay",
-"FORCE_SEGMENT": "FORCE SEGMENT"
+"FORCE_SEGMENT": "FORCE SEGMENT",
+
+"BALANCE_INVENTORY": "Balance Inventory",
+"START_JOB": "Start Job",
+"REFRESH_STATUS": "Refresh Status"
 ,
 
     "ROOMS":"Rooms",
@@ -807,6 +811,7 @@
 "SITEMINDER_DEFAULT_PAYMENT_METHOD": "Default Payment Method",
 "SITEMINDER_PASSWORD_LABEL": "Password",
 "SITEMINDER_ACCESS_URL_LABEL": "Access URL",
+"SITEMINDER_HOTEL_CODE_LABEL": "Hotel Code",
 "SITEMINDER_REQUESTOR_ID_LABEL": "Requester ID"
 ,
 
@@ -856,7 +861,10 @@
 	"SOCIAL_NETWORK_URL": "Social Network URL",
 	"SOCIAL_NETWORK" : "Social Network",
 	"CONFIRMATION_LETTER_TEXT" : "CONFIRMATION LETTER TEXT",
-	"SEND_CANCELLATION_LETTER":"Send Cancellation Letter"
+	"SEND_CANCELLATION_LETTER":"Send Cancellation Letter",
+	"PRINT_CANCELLATION_AND_CONFIRMATION_LETTERS":"Print Cancellation And Confirmation Letters",
+	"PRINT_CANCELLATION_LETTER":"Print Cancellation Letter",
+	"PRINT_CONFIRMATION_LETTER":"Print Confirmation Letter"
 
 
 
