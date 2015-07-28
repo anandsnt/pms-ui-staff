@@ -8,8 +8,10 @@ sntRover.controller('reservationActionsController', [
 	'RVSearchSrv',
 	'RVDepositBalanceSrv',
 	'$filter',
-	'rvPermissionSrv',
-	'$stateParams',
+	'RVPaymentSrv','rvPermissionSrv',
+	'$timeout',
+	'$window',
+	'RVReservationSummarySrv',
 	function($rootScope,
 		$scope,
 		ngDialog,
@@ -19,8 +21,9 @@ sntRover.controller('reservationActionsController', [
 		RVSearchSrv,
 		RVDepositBalanceSrv,
 		$filter,
-		rvPermissionSrv,
-		$stateParams) {
+		RVPaymentSrv,rvPermissionSrv, $timeout,
+		$window,
+		RVReservationSummarySrv) {
 
 		BaseCtrl.call(this, $scope);
 		var TZIDate = tzIndependentDate,
@@ -359,6 +362,7 @@ sntRover.controller('reservationActionsController', [
 			$scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successRemoveFromQueueCallBack);
 		};
 
+		$scope.DailogeState = {};
 		var promptCancel = function(penalty, nights, isPercent) {
 
 			var passData = {
@@ -372,7 +376,7 @@ sntRover.controller('reservationActionsController', [
 			};
 
 			$scope.passData = passData;
-
+			
 			ngDialog.open({
 				template: '/assets/partials/reservationCard/rvCancelReservation.html',
 				controller: 'RVCancelReservation',
@@ -395,7 +399,8 @@ sntRover.controller('reservationActionsController', [
 		};
 
 
-		var showCancelReservationWithDepositPopup = function(deposit, isOutOfCancellationPeriod, penalty) {
+		var showCancelReservationWithDepositPopup = function(deposit,isOutOfCancellationPeriod,penalty) {
+			$scope.DailogeState = {};
 			ngDialog.open({
 				template: '/assets/partials/reservationCard/rvCancelReservationDeposits.html',
 				controller: 'RVCancelReservationDepositController',
@@ -584,22 +589,98 @@ sntRover.controller('reservationActionsController', [
 			return showDepositBalanceButtonWithSR;
 		};
 
+		//Checking whether email is attached with guest card or not
+		$scope.isEmailAttached = function(){
+			var isEmailAttachedFlag = false;			
+				if($scope.guestCardData.contactInfo.email !==null && $scope.guestCardData.contactInfo.email !==""){
+					isEmailAttachedFlag = true;
+				};				
+			return isEmailAttachedFlag;
+		};
 
-		$scope.showResendConfirmation = function(reservationStatus) {
+		$scope.DailogeState.successMessage = "";
+		$scope.DailogeState.failureMessage = "";
+		var succesfullCallbackForEmailCancellation = function(data){
+			$scope.$emit('hideLoader');
+			$scope.DailogeState.successMessage = data.message;
+			$scope.DailogeState.failureMessage = '';
+		};
+		var failureCallbackForEmailCancellation = function(error){
+			$scope.$emit('hideLoader');
+			$scope.DailogeState.failureMessage = error[0];
+			$scope.DailogeState.successMessage = '';
+		};
+		
+		//Action against email button in staycard.
+		$scope.sendReservationCancellation = function(){
+			var postData = {
+				"type":"cancellation",
+				"emails": $scope.isEmailAttached()?[$scope.guestCardData.contactInfo.email]:[$scope.DailogeState.sendConfirmatonMailTo]
+			};
+			var data = {
+				"postData": postData,
+				"reservationId": $scope.reservationData.reservation_card.reservation_id
+			};
+			$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data, succesfullCallbackForEmailCancellation, failureEmailCallback);
+		};
+
+		$scope.ngData = {};
+		$scope.ngData.failureMessage = "";
+		$scope.ngData.successMessage = "";
+		//Action against print button in staycard.
+		$scope.printReservationCancellation = function(){
+			var succesfullCallback = function(data){
+				$scope.printData = data.data;
+				printPage();
+			};
+			var failureCallbackPrint = function(error){
+				$scope.ngData.failureMessage = error[0];
+			};
+            $scope.callAPI(RVReservationSummarySrv.fetchResservationCancellationPrintData, {
+                successCallBack: succesfullCallback,
+                failureCallBack: failureCallbackPrint,
+                params: { 'reservation_id': $scope.reservationData.reservation_card.reservation_id }
+            });
+		};
+		//Pop up for confirmation print as well as email send		
+		$scope.popupForConfirmation =function(){
+			
+			$scope.ngData.sendConfirmatonMailTo ='';
+			ngDialog.open({
+				template: '/assets/partials/reservationCard/rvReservationConfirmationPrintPopup.html',
+				controller: 'reservationActionsController',
+				className : '',							
+				scope:$scope,
+				closeByDocument:true
+			});
+		};
+
+		$scope.showConfirmation = function(reservationStatus){
 			var showResendConfirmationFlag = false;
-			if ($rootScope.isStandAlone) {
-				if (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN') {
-					if ($scope.guestCardData.contactInfo.email !== null && $scope.guestCardData.contactInfo.email !== "") {
-						showResendConfirmationFlag = true;
-					}
+			if($rootScope.isStandAlone){
+				if (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN'){
+					showResendConfirmationFlag = true;
 				}
 			}
 			return showResendConfirmationFlag;
 		};
-		$scope.sendConfirmationEmail = function() {
+
+		var succesfullEmailCallback = function(data){
+			$scope.$emit('hideLoader');
+			$scope.ngData.successMessage = data.message;
+			$scope.ngData.failureMessage = '';
+		};
+
+		var failureEmailCallback = function(error){
+			$scope.$emit('hideLoader');
+			$scope.ngData.failureMessage = error[0];
+			$scope.ngData.successMessage = '';
+		};
+
+		$scope.sendConfirmationEmail = function(){			
 			var postData = {
-				"type": "confirmation",
-				"emails": [$scope.guestCardData.contactInfo.email]
+				"type":"confirmation",
+				"emails": $scope.isEmailAttached()?[$scope.guestCardData.contactInfo.email]:[$scope.ngData.sendConfirmatonMailTo]
 			};
 			var reservationId = $scope.reservationData.reservation_card.reservation_id;
 
@@ -607,90 +688,47 @@ sntRover.controller('reservationActionsController', [
 				"postData": postData,
 				"reservationId": reservationId
 			};
-			$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data);
+			$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data, succesfullEmailCallback, failureEmailCallback);
 		};
 
-		$scope.allowOverbook = function() { //check user permission for overbook_house
-			return rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+		//Print reservation confirmation.
+		$scope.printReservation =function() {
+			var succesfullCallback = function(data){
+				$scope.printData = data.data;
+				printPage();
+			};
+			var failureCallbackPrint = function(error){
+				$scope.ngData.failureMessage = error[0];
+			};
+            $scope.callAPI(RVReservationSummarySrv.fetchResservationConfirmationPrintData, {
+                successCallBack: succesfullCallback,
+                failureCallBack: failureCallbackPrint,
+                params: { 'reservation_id': $scope.reservationData.reservation_card.reservation_id }
+
+            });
 		};
 
-		var promptReinstate = function(isAvailable) {
-			ngDialog.open({
-				template: '/assets/partials/reservation/alerts/rvReinstate.html',
-				closeByDocument: false,
-				scope: $scope,
-				data: JSON.stringify({
-					isAvailable: isAvailable
-				})
-			});
+		// add the print orientation after printing
+		var addPrintOrientation = function() {
+			var orientation = 'portrait';
+			$( 'head' ).append( "<style id='print-orientation'>@page { size: " + orientation + "; }</style>" );
+		};
+		// remove the print orientation after printing
+		var removePrintOrientation = function() {
+			$( '#print-orientation' ).remove();	
 		};
 
-		$scope.reinstateNavigateRoomAndRates = function() {
-			$scope.viewState.identifier = "REINSTATE";
-			if (new TZIDate(reservationMainData.arrivalDate) < new TZIDate($rootScope.businessDate)) {
-				reservationMainData.arrivalDate = $rootScope.businessDate; // Note: that if arrival date is in the past, only select from business date onwards for booking and availability request.
-			}			
-			$state.go('rover.reservation.staycard.mainCard.roomType', {
-				from_date: reservationMainData.arrivalDate,
-				to_date: reservationMainData.departureDate,
-				fromState: $state.current.name,
-				company_id: reservationMainData.company.id,
-				travel_agent_id: reservationMainData.travelAgent.id
-			});
-			$scope.closeDialog();
-		};
-
-		$scope.reinstateReservation = function(isOverBooking) {
-			$scope.invokeApi(RVReservationCardSrv.reinstateReservation,
-				//Params
-				{
-					reservationId: $scope.reservationData.reservation_card.reservation_id,
-					is_overbook: isOverBooking
-				},
-				//Handle Success
-				function() {					
-					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-						"id": $stateParams.id || $scope.reservationData.reservationId,
-						"confirmationId": $stateParams.confirmationId || $scope.reservationData.confirmNum,
-						"isrefresh": false
-					});
-					$scope.closeDialog();
-				},
-				//Handle Failure
-				function(errorMessage) {
-					$scope.$emit('hideLoader');
-					$scope.errorMessage = errorMessage;
-				});
-		};
-
-		/**
-		 * API call to check for availability for reinstation
-		 */
-		$scope.checkReinstationAvailbility = function() {
-			$scope.invokeApi(RVReservationCardSrv.checkReinstationAvailbility,
-				// Params for API Call
-				$scope.reservationData.reservation_card.reservation_id,
-				//Handle Success
-				function(response) {
-					$scope.$emit('hideLoader');
-					promptReinstate(response.is_available);
-				},
-				//Handle Failure
-				function(errorMessage) {
-					$scope.$emit('hideLoader');
-					$scope.errorMessage = errorMessage;
-				});
-		};
-
-		/**
-		 * Method to check if the reinstate button should be showm
-		 * @return {Boolean} 
-		 */
-		$scope.isReinstateVisible = function() {
-			var resData = $scope.reservationData.reservation_card;
-			return resData.reservation_status === 'CANCELED' && // ONLY cancelled reservations can be reinstated
-				new TZIDate(resData.departure_date) > new TZIDate($rootScope.businessDate) && // can't reinstate if the reservation's dates have passed
-					rvPermissionSrv.getPermissionValue('REINSTATE_RESERVATION'); //also check for permissions
+		var printPage= function() {		
+			// add the orientation
+			addPrintOrientation();
+	    	$timeout(function() {	    	
+	        	$window.print();
+	        	if ( sntapp.cordovaLoaded ) {
+	            	cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+	        	};	        
+	    	}, 100);
+			// remove the orientation after similar delay
+			$timeout(removePrintOrientation, 100);
 		};
 	}
 ]);

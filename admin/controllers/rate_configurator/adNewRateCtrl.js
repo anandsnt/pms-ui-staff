@@ -216,6 +216,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         };
 
         $scope.isPromoRate = function() {
+            if($scope.rateData.is_hourly_rate === true){
+                return false;
+            }
             return parseInt(_.findWhere($scope.rateInitialData.rate_types, {
                 name: "Specials & Promotions"
             }).id) === parseInt($scope.rateData.rate_type.id);

@@ -24,6 +24,7 @@
 			};
 
 			$scope.cancellationData.paymentType = "";
+			$scope.DailogeState.isCancelled = false;
 
 
 			$scope.ngDialogData.penalty = $filter("number")($scope.ngDialogData.penalty, 2);
@@ -248,20 +249,29 @@
 				$scope.addmode = $scope.cardsList.length > 0 ? false : true;
 				refreshCardsList();
 				$scope.ngDialogData.state = 'PENALTY';
-			};
+			};		
 
+			$scope.completeCancellationProcess = function(){
+				if($scope.DailogeState.isCancelled){
+					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+						"id": $scope.reservationData.reservationId || $scope.reservationParentData.reservationId,
+						"confirmationId": $scope.reservationData.confirmNum || $scope.reservationParentData.confirmNum,
+						"isrefresh": false
+					});
+				};
+				$scope.closeReservationCancelModal();
+			};
 
 			var cancelReservation = function() {
 				var onEachCancelSuccess = function(data) {
 						// Handle individual cancellations here if reqd.
 					},
 					onCancelSuccess = function(data) {
-						$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-							"id": $scope.reservationData.reservationId || $scope.reservationParentData.reservationId,
-							"confirmationId": $scope.reservationData.confirmNum || $scope.reservationParentData.confirmNum,
-							"isrefresh": false
-						});
-						$scope.closeReservationCancelModal();
+						//OnCancelsuccess NgDialog shows sendcancelation as well as printcancelation pop up
+						//Since RVCancelReservation and RVCancelReservationDepositController do the same above,
+						//its functions are written in parent controller.Ie reservationActionsController
+						$scope.$emit('hideLoader');
+						$scope.DailogeState.isCancelled = true ;
 					},
 					onCancelFailure = function(data) {
 						$scope.$emit('hideLoader');
@@ -277,7 +287,8 @@
 						var cancellationParameters = {
 							reason: $scope.cancellationData.reason,
 							payment_method_id: parseInt($scope.cancellationData.selectedCard) === -1 ? null : parseInt($scope.cancellationData.selectedCard),
-							id: reservationId
+							id: reservationId,
+							application : "ROVER"
 						};
 						if ($scope.ngDialogData.isDisplayReference) {
 							cancellationParameters.reference_text = $scope.referanceText;
@@ -289,7 +300,8 @@
 					var cancellationParameters = {
 						reason: $scope.cancellationData.reason,
 						payment_method_id: parseInt($scope.cancellationData.selectedCard) === -1 ? null : parseInt($scope.cancellationData.selectedCard),
-						id: $scope.reservationData.reservationId || $scope.reservationParentData.reservationId || $scope.passData.reservationId
+						id: $scope.reservationData.reservationId || $scope.reservationParentData.reservationId || $scope.passData.reservationId,
+						application : "ROVER"
 					};
 					if ($scope.ngDialogData.isDisplayReference) {
 						cancellationParameters.reference_text = $scope.referanceText;
@@ -329,8 +341,6 @@
 			 * Action - On click submit payment button
 			 */
 			$scope.submitPayment = function() {
-
-
 				$scope.errorMessage = "";
 				$scope.depositInProcess = true;
 				var dataToSrv = {
@@ -457,7 +467,7 @@
 			});
 			$scope.closeReservationCancelModal = function() {
 				$scope.$emit("UPDATE_CANCEL_RESERVATION_PENALTY_FLAG", false);
-				$scope.closeDialog();
+				$scope.closeDialog();				
 			};
 
 		}
