@@ -1,24 +1,41 @@
 sntRover.controller('reservationPaymentController',['$scope','$rootScope', function($scope,$rootScope){
-	$scope.getHasButtonClass = function(status,isCC){
+	
+	// To add class based on number of buttons present. 
+	$scope.getHasButtonClass = function(){
 
-		var hasButtonClass = "has-button";
+		var status = $scope.reservationData.reservation_card.reservation_status,
+		    isCC = reservationData.reservation_card.payment_method_used === 'CC',
+		    hasButtonClass = "has-button";
 		if(status === 'NOSHOW' || status === 'CHECKEDOUT' || status === 'CANCELED'){
 			hasButtonClass = "";
 		}
-		else if(isCC){
+		else if(isCC && $scope.showCCAuthButton()){
 			hasButtonClass = "has-buttons";
 		}
 		return hasButtonClass;
-
 	};
-	$scope.displayButton = function(status){
-		var display = true;
+
+	// To show button based on resrvation status
+	$scope.displayButton = function(){
+		var status = $scope.reservationData.reservation_card.reservation_status,
+			display = true;
 		if(status === 'NOSHOW' || status === 'CHECKEDOUT' || status === 'CANCELED'){
 			display = false;
 		}
 		return display;
 
 	};
+
+	// To hide/show CCAuthButton
+	$scope.showCCAuthButton = function(){
+		if($scope.reservationData.reservation_card.payment_method_used === 'CC' && $scope.isStandAlone && !$scope.reservationData.reservation_card.is_hourly_reservation){
+			return true;
+		}
+		else{
+			return false;
+		}
+	};
+
 	// Update while changing credit card from bill screen.
 	$rootScope.$on('UPDATEDPAYMENTLIST', function(event, data) {
 			$scope.reservationData.reservation_card.payment_details.card_type_image = data.card_code+".png";
