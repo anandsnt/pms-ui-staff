@@ -4,7 +4,7 @@ sntRover.controller('reservationPaymentController',['$scope','$rootScope', funct
 	$scope.getHasButtonClass = function(){
 
 		var status = $scope.reservationData.reservation_card.reservation_status,
-		    isCC = reservationData.reservation_card.payment_method_used === 'CC',
+		    isCC = $scope.reservationData.reservation_card.payment_method_used === 'CC',
 		    hasButtonClass = "has-button";
 		if(status === 'NOSHOW' || status === 'CHECKEDOUT' || status === 'CANCELED'){
 			hasButtonClass = "";
