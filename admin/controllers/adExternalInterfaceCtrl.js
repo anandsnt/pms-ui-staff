@@ -23,7 +23,6 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             'admin.synxisSetup': {'controller':adSynxisSetupSrv, 'name':$scope.simpleName, 'service_name': 'adSynxisSetupSrv'}
         };
         $scope.init = function(){
-            //console.log('service controller for : '+$scope.currentState+', is : '+$scope.interfaceConfig[$scope.currentState].service_name);
             var interface = $scope.interfaceConfig[$scope.currentState];
             $scope.serviceController = interface.controller;
             $scope.interfaceName = interface.name;
@@ -44,8 +43,13 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
 
             $scope.setRefreshTime();
         };
+        $scope.fetchFailSuccessCallback = function (data) {
+            //load up origins and payment methods
+            $scope.invokeApi(adExternalInterfaceCommonSrv.fetchOrigins, {},fetchOriginsSuccessCallback);
+            $scope.invokeApi(adExternalInterfaceCommonSrv.fetchPaymethods, {}, fetchPaymethodsSuccess);
+        };
         $scope.fetchSetup = function () {
-            $scope.invokeApi(adExternalInterfaceCommonSrv.fetchSetup, {'interface_id':$scope.interfaceId}, $scope.fetchSetupSuccessCallback);
+            $scope.invokeApi(adExternalInterfaceCommonSrv.fetchSetup, {'interface_id':$scope.interfaceId}, $scope.fetchSetupSuccessCallback, $scope.fetchSetupFailCallback);
         };
 	var fetchOriginsSuccessCallback = function(data) {
 		$scope.$emit('hideLoader');
@@ -97,7 +101,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
                 $scope.errorMessage = $scope.interfaceName+' Save Failed ';
                 $scope.$emit('hideLoader');
             };
-            var unwantedKeys = ["available_trackers"];
+            var unwantedKeys = ["available_trackers","bookmark_count","bookmarks","current_hotel","hotel_list","menus","interface_types"];
             var saveData = dclone($scope.data, unwantedKeys);
             //these values currently coming back as strings, parse to int before sending back
             if (saveData.data.product_cross_customer.default_origin) {
