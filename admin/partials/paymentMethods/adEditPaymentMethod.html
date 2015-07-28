@@ -11,7 +11,7 @@
 			</div>
 			<ad-dropdown ng-if="!editData.isEditCC" list="data.reservation_types" selected-id='editData.linked_reservation_type_id' selbox-class="placeholder" div-class="full-width" label="{{'LINKED_RESERVATION_TYPE' | translate}}"></ad-dropdown>
 			
-			<ad-dropdown ng-if="editData.is_cc" list="data.custom_cc_processors" selected-id='editData.custom_cc_processor_id' selbox-class="placeholder" div-class="full-width" label="{{'CREDIT_CARD_PROCESSOR' | translate}}"></ad-dropdown>
+			<ad-dropdown ng-if="editData.is_cc && editData.allow_cc_processors_per_payment_methods" list="data.custom_cc_processors" selected-id='editData.custom_cc_processor_id' selbox-class="placeholder" div-class="full-width" label="{{'CREDIT_CARD_PROCESSOR' | translate}}"></ad-dropdown>
 		</fieldset>
 
 		<fieldset class='holder right'>
