@@ -19,7 +19,7 @@
 <td ng-if="each.isReport">{{ each.adjusted_amount | currency:currencySymbol:2 }}</td>
 <td ng-if="each.isReport" ng-class="{ red: each.variance < 0, green: each.variance > 0 }">{{ each.variance | currency:currencySymbol:2 }}</td>
 <td ng-if="each.isReport" class="info">{{ each.reason }}</td>
-<td ng-if="each.isReport">{{ each.adjusted_by }}</td>
+<td ng-if="each.isReport">{{ each.adjusted_by || 'Unknown' }}</td>
 
 
 <td ng-if="each.isSubReport">{{ each.stay_date }}</td>
@@ -27,7 +27,7 @@
 <td ng-if="each.isSubReport">{{ each.adjusted_amount | currency:currencySymbol:2 }}</td>
 <td ng-if="each.isSubReport" ng-class="{ red: each.variance < 0, green: each.variance > 0 }">{{ each.variance | currency:currencySymbol:2 }}</td>
 <td ng-if="each.isSubReport" class="info">{{ each.reason }}</td>
-<td ng-if="each.isSubReport">{{ each.adjusted_by }}</td>
+<td ng-if="each.isSubReport">{{ each.adjusted_by || 'Unknown' }}</td>
 
 
 <td ng-if="each.isSubTotal"><strong>Total</strong></td>

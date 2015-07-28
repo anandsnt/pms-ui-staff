@@ -25,13 +25,11 @@ sntRover.factory('RVReportParserFac', [
             // in future we may make this check generic, if more
             // reports API structure follows the same pattern
             else if ( reportName == reportUtils.getName('RATE_ADJUSTMENTS_REPORT') ) {
-                _.isEmpty(apiResponse) ? apiResponse : $_preParseGroupedRateAdjustments( reportName, apiResponse, options );
-
-                // if ( options['groupedByKey'] == 'adjusted_user_id' ) {
-                //     return _.isEmpty(apiResponse) ? apiResponse : $_preParseGroupedRateAdjustments( reportName, apiResponse, options );
-                // } else {
-                //     return _.isEmpty(apiResponse) ? apiResponse : $_parseRateAdjustments( reportName, apiResponse, options );
-                // }
+                if ( options['groupedByKey'] == 'adjusted_user_id' ) {
+                    return _.isEmpty(apiResponse) ? apiResponse : $_preParseGroupedRateAdjustments( reportName, apiResponse, options );
+                } else {
+                    return _.isEmpty(apiResponse) ? apiResponse : $_parseRateAdjustments( reportName, apiResponse, options );
+                }
             }
             
             // a very special parser for deposit report
@@ -373,99 +371,99 @@ sntRover.factory('RVReportParserFac', [
 
 
 
+        /**
+         * We have to convert an array of objects 'apiResponse'
+         * into a grouped by 'adjust_by' key-value pairs.
+         *
+         * Each key will be the 'adjust_by' username and its value
+         * will be an array of objects. Each object will represent
+         * an reservation (unique key 'reservation_id')
+         */
+        
+        /**
+         * @param {Array} apiResponse [{}, {}, {}, {}, {}]
+         * @return {Object} =>        { us1: [{}, {}, {}], us2: [{}, {}], us3: [{}] }
+         */
         function $_preParseGroupedRateAdjustments ( reportName, apiResponse, options ) {
+            var makeCopy,
+                withOutStay,
+                usersInThisRes;
 
-            /**
-             * We have to convert an array of objects 'apiResponse'
-             * into a grouped by 'adjust_by' key-value pairs.
-             *
-             * Each key will be the 'adjust_by' username and its value
-             * will be an array of objects. Each object will represent
-             * an reservation (unique key 'reservation_id')
-             */
-            
-            /**
-             * @param {Array} apiResponse [{}, {}, {}, {}, {}]
-             * @return {Object} =>        { us1: [{}, {}, {}], us2: [{}, {}], us3: [{}] }
-             */
+            var kth,
+                userId,
+                userNa,
+                uid,
+                keyId;
 
-            var ith,
-                stay,
-                kth,
-                adjBy;
+            var tempObj   = {},
+                returnObj = {};
 
-            var originalEntry,
-                customEntry;
+            var i, j, k, l;
 
-            var i, j, k, l, returnObj = {};
 
             for( i = 0, j = apiResponse.length; i < j; i++ ) {
-                ith = apiResponse[i];
-                stay = ith['stay_dates'];
 
-                originalEntry = {};
-                angular.extend(originalEntry, {
-                    'guest_name'      : ith.guest_name,
-                    'confirmation_no' : ith.confirmation_no,
-                    'arrival_date'    : ith.arrival_date,
-                    'departure_date'  : ith.departure_date,
-                    'adjusted_by'     : '',
+                // create a copy of ith apiResponse
+                makeCopy = angular.copy( apiResponse[i] );
+
+                withOutStay = angular.copy({
+                    'guest_name'      : makeCopy.guest_name,
+                    'confirmation_no' : makeCopy.confirmation_no,
+                    'arrival_date'    : makeCopy.arrival_date,
+                    'departure_date'  : makeCopy.departure_date,
                     'stay_dates'      : []
                 });
 
-                for( k = 0, l = stay.length; k < l; k++ ) {;
-                    kth   = stay[k];
-                    adjBy = kth['adjusted_user_id'] != null ? kth['adjusted_user_id'] : 'Unknown';
+                usersInThisRes = {};
+                for( k = 0, l = makeCopy['stay_dates'].length; k < l; k++ ) {
+                    kth = makeCopy['stay_dates'][k];
+                    userId = kth['adjusted_user_id'] || 'Unknown';
+                    userNa = kth['adjusted_by'] || 'Unknown';
 
-                    customEntry = {
-                        'adjusted_by' : kth['adjusted_by'] != null ? kth['adjusted_by'] : 'Unknown',
-                        'stay_dates'  : []
+                    uid = userId + '__' + userNa;
+
+                    if ( usersInThisRes[uid] == undefined ) {
+                        usersInThisRes[uid] = angular.copy( withOutStay );
                     };
 
-                    if ( undefined == returnObj[adjBy] ) {
-                        returnObj[adjBy] = [];
-                        angular.extend(customEntry, originalEntry);
+                    usersInThisRes[uid]['stay_dates'].push( kth );
+                };
 
-                        customEntry['stay_dates'].push( kth );
-                        returnObj[adjBy].push( customEntry );
-
-                        console.log( kth );
-                        console.log( angular.extend({}, returnObj) );
-                    // } else {
-
-                    //     // since this user name already exist in the 'returnObj'
-                    //     // we have to first try to match the 'confirmation_no' and inset the 
-                    //     // 'adjust_by' entry accordingly
-
-                    //     // if we fail to find a matching 'confirmation_no'
-                    //     // we'll have to push it as a new reservation
-
-                    //     matchedRes = _.find(returnObj[adjBy], { 'confirmation_no': originalEntry['confirmation_no'] });
-                    //     if ( !!matchedRes ) {
-                    //         matchedRes['stay_dates'].push( kth );
-                    //     } else {
-                    //         angular.extend(customEntry, originalEntry);
-                    //         customEntry['stay_dates'].push( kth );
-                    //         returnObj[adjBy].push( customEntry );
-                    //     };
+                for( keyId in usersInThisRes ) {
+                    if ( ! usersInThisRes.hasOwnProperty(keyId) ) {
+                        continue;
                     };
+
+                    if ( tempObj[keyId] == undefined ) {
+                        tempObj[keyId] = [];
+                    };
+
+                    tempObj[keyId].push( usersInThisRes[keyId] );
                 };
             };
 
-            // console.log(returnObj);
+            // now that all the data has been grouped
+            // we need to remove the 'adjusted_user_id'
+            // part from 'uid', and have the 'returnObj' in that format
+            returnObj = {};
+            for( keyId in tempObj ) {
+                if ( ! tempObj.hasOwnProperty(keyId) ) {
+                    continue;
+                };
 
-            // for (key in returnObj) {
-            //     if ( ! returnObj.hasOwnProperty(key) ) {
-            //         continue;
-            //     };
+                // only take the user name part
+                onlyUserNa = keyId.split('__')[1];
 
-            //     returnObj[key] = $_parseRateAdjustments( reportName, returnObj[key], options );
-            // };
-
-            // console.log(returnObj);
+                // oh also we will each entry to nG repeat format
+                returnObj[onlyUserNa] = $_parseRateAdjustments( reportName, tempObj[keyId], options );
+            };
 
             return returnObj;
         };
+
+
+
+
 
         function $_parseRateAdjustments ( reportName, apiResponse, options ) {
             var returnAry = [],
