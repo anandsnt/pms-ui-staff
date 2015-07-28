@@ -901,7 +901,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * when failed to update data
 		 */
 		$scope.$on("FAILED_TO_UPDATE_GROUP_INFO", function(event, errorMessage) {
-			$scope.errorMessage = errorMessage;
+			$scope.$parent.errorMessage = errorMessage;
 		});
 
 		/**
