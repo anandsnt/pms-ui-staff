@@ -115,6 +115,13 @@
                     <label translate ng-show="!reservationStatus.confirmed">SEND_CONFIRMATION_TO_FOLLOWING_EMAIL_ADDRESSES</label>
                     <div class="entry full-width" ng-show="!reservationStatus.confirmed">
                         
+                        <div class="entry radio-check">
+                            <label class="checkbox inline" for="no-rate-print" ng-class="{ 'checked':reservationData.hide_rates }">
+                                <span class="icon-form icon-checkbox" ng-class="{ 'checked':reservationData.hide_rates }"></span>
+                                <input ng-click="clickedShowRate()" id="no-rate-print" value="" type="checkbox">
+                                {{ 'DONT_PRINT_RATE' | translate }}
+                            </label>
+                        </div>
                         
                         <label for="email" translate>GUEST_EMAIL_ADDRESS</label>
                         <label class="checkbox inline">
@@ -131,14 +138,6 @@
                             <span>&nbsp;</span>
                         </label>
                         <input class="summary_email" ng-model="otherData.additionalEmail">  
-
-                        <div class="entry radio-check">
-                            <label class="checkbox inline" for="no-rate-print" ng-class="{ 'checked':reservationData.hide_rates }">
-                                <span class="icon-form icon-checkbox" ng-class="{ 'checked':reservationData.hide_rates }"></span>
-                                <input ng-click="clickedShowRate()" id="no-rate-print" value="" type="checkbox">
-                                {{ 'DONT_PRINT_RATE' | translate }}
-                            </label>
-                        </div>
 
                     </div>
                     <div class="actions"  ng-show="!reservationStatus.confirmed">
