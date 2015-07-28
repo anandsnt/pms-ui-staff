@@ -312,13 +312,20 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				rate_id: $scope.groupConfigData.summary.rate
 			}, function(response) {
 				$scope.$emit('hideLoader');
-				if (!response.is_changed && !response.is_room_rate_available){
-					console.log('impossible');
+				if (!response.is_changed && !response.is_room_rate_available) {					
+					ngDialog.open({
+						template: '/assets/partials/groups/summary/warnChangeRateNotPossible.html',
+						className: '',
+						scope: $scope,
+						closeByDocument: false,
+						closeByEscape: false
+					});
 					$scope.groupConfigData.summary.rate = summaryMemento.rate;
 				}
 			}, function(errorMessage) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorMessage;
+				$scope.groupConfigData.summary.rate = summaryMemento.rate;
 			})
 		}
 
