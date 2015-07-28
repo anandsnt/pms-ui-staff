@@ -89,7 +89,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @param {Object} - reservation
          * @return {Boolean}
          */
-        $scope.shouldDisableRoomTypeChange = function(reservation) {
+        $scope.shouldDisableReservationRoomTypeChange = function(reservation) {
             //as per CICO-17082, we need to show the room type in select box of edit with others
             //but should be disabled
             var room_type_id_list = _.pluck($scope.roomTypesAndData, 'room_type_id'),
@@ -1383,7 +1383,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         //local scope for reservation edit popup showing
         (function() {
             var selectedReservation;
-    
+
             /**
              * when we completed the fetching of free rooms available
              * @param  {Object} - free rooms available
@@ -1479,7 +1479,8 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 //rooming details fetch
                 var paramsForListOfFreeRooms = {
                     reserevation_id: reservation.id,
-                    num_of_rooms_to_fetch: 5
+                    num_of_rooms_to_fetch: 5,
+                    room_type_id: reservation.room_type_id
                 };
                 promises.push(rvGroupRoomingListSrv
                     .getFreeAvailableRooms(paramsForListOfFreeRooms)
@@ -1501,6 +1502,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                     scope: $scope,
                     closeByDocument: false,
                     closeByEscape: false,
+                    controller: 'rvGroupReservationEditCtrl',
                     data: JSON.stringify(reservationData)
                 });
             };
