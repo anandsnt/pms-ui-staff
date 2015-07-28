@@ -32,9 +32,9 @@
                         <span class="file-preview"> <img ng-src="{{data.hotel_picture}}" alt="" height="112" width="auto"> </span>
                     </div>
                     <div class="entry full-width">
-                        <label for="hotel-logo" translate> HOTEL_LOGO </label>
+                        <label for="email-hotel-logo" translate> HOTEL_LOGO </label>
                         <div class="select">
-                            <select ng-model="data.email_logo_type" name="hotel-logo" class="placeholder">
+                            <select ng-model="data.email_logo_type" name="email-hotel-logo" class="placeholder">
                                 <option value="" translate> SELECT_LOGO_TYPE </option>
                                 <option ng-repeat="item in data.hotel_logo" value="{{item.value}}" ng-selected="item.value == data.email_logo_type">{{item.name}}</option>
                             </select>
