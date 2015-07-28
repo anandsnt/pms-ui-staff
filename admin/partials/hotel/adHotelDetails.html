@@ -388,7 +388,14 @@
 					 Payment Gateway Settings
 				</h3>
 			</div>
-			<div class="entry ">
+			<div class="entry full-width">
+				<label>Allow CC processors per payment methods</label>
+				<div class="switch-button single" ng-class="{ on : data.allow_cc_processors_per_payment_methods == true }" ng-click="data.allow_cc_processors_per_payment_methods = !data.allow_cc_processors_per_payment_methods">
+					<input type="checkbox" value="{{data.allow_cc_processors_per_payment_methods}}">
+					<span class="switch-icon"></span>
+				</div>
+			</div>
+			<div class="entry full-width">
 				<label class="radio" ng-class="{checked:data.payment_gateway == 'MLI'}">
 					<span class="icon-form icon-radio " ng-class="{checked:data.payment_gateway == 'MLI'}"></span>
 					<input type="radio" ng-model="data.payment_gateway" value="MLI" class="change-data">
@@ -399,10 +406,40 @@
 					<input type="radio" ng-model="data.payment_gateway" value="sixpayments" class="change-data">
 					Six Payment
 				</label>
+				<label class="radio" ng-class="{checked:data.payment_gateway == 'SAFERPAY'}">
+						<span class="icon-form icon-radio " ng-class="{checked:data.payment_gateway == 'SAFERPAY'}"></span>
+						<input type="radio" ng-model="data.payment_gateway" value="SAFERPAY" class="change-data">
+						Saferpay
+				</label>
 
 				
 			</div>
 			<div class="entry"></div>
+			<div class="entry " ng-show="data.payment_gateway == 'SAFERPAY'" >
+				<label>
+					Saferpay ACCOUNT ID
+				</label>
+				<input type="text" ng-model="data.saferpay_account_id">
+			</div>
+			<div class="entry " ng-show="data.payment_gateway == 'SAFERPAY'" >
+				<label>
+					Saferpay HTTPS Password
+				</label>
+				<input type="text" ng-model="data.saferpay_https_password">
+			</div>
+			<div class="entry " ng-show="data.payment_gateway == 'SAFERPAY'" >
+				<label>
+					Saferpay auth URL
+				</label>
+				<input type="text" ng-model="data.saferpay_auth_url" readonly="readonly">
+			</div>
+			<div class="entry " ng-show="data.payment_gateway == 'SAFERPAY'" >
+				<label>
+					Saferpay settlement URL
+				</label>
+				<input type="text" ng-model="data.saferpay_settlement_url" readonly="readonly">
+			</div>
+	
 			<div class="entry" ng-show="data.payment_gateway == 'MLI'">
 				<label for="mli-payment-gateway-url">
 					MerchantLink payment gateway url
@@ -553,35 +590,6 @@
 				<input type="text" ng-model="data.cc_swipe_listening_port" value="{{data.cc_swipe_listening_port}}" placeholder="Enter CC swipe listening port" name="cc-swipe-listening-port">
 			</div>
 
-		</fieldset>
-		
-		<fieldset class="holder left" ng-show="isAdminSnt">
-			<div class="form-title">
-				<h3>
-					<span>Hotel</span>
-					 Custom Credit Card Processors
-				</h3>
-			</div>
-			<div class="entry ">
-				<label class="radio" ng-class="{checked:data.custom_cc_processor == 'SAFERPAY'}">
-					<span class="icon-form icon-radio " ng-class="{checked:data.custom_cc_processor == 'SAFERPAY'}"></span>
-					<input type="radio" ng-model="data.custom_cc_processor" value="SAFERPAY" class="change-data">
-					Saferpay
-				</label>
-			</div>
-			<div class="entry "></div>
-			<div class="entry " ng-show="data.custom_cc_processor == 'SAFERPAY'" >
-				<label>
-					Saferpay ACCOUNT ID
-				</label>
-				<input type="text" ng-model="data.saferpay_account_id" value="{{data.saferpay_account_id}}">
-			</div>
-			<div class="entry " ng-show="data.custom_cc_processor == 'SAFERPAY'" >
-				<label>
-					Saferpay HTTPS Password
-				</label>
-				<input type="text" ng-model="data.saferpay_https_password" value="{{data.saferpay_https_password}}">
-			</div>
 		</fieldset>
 
 		<div class="actions float">

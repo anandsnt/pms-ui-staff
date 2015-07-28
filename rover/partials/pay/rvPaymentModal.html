@@ -26,7 +26,7 @@
 
         <div class="payment-form">
             <!-- Split payment -->
-                <div class="entry split" ng-hide="saveData.paymentType ==='CC' || depositPaidSuccesFully" ng-class="{active: splitBillEnabled }">
+                <div class="entry split" ng-class="{active: splitBillEnabled }"  ng-hide="depositPaidSuccesFully">
 
                     <label class="checkbox inline" ng-class="{checked: splitBillEnabled }">
                     <span class="icon-form icon-checkbox" ng-class="{checked: splitBillEnabled }">
@@ -155,7 +155,7 @@
             <div class="actions" ng-hide="showCCPage || depositPaidSuccesFully">
                  <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="handleCloseDialog()" translate>CANCEL</button>
                  <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'green':!disableMakePayment()}" class="button" ng-click="submitPayment()" ng-show="shouldShowMakePaymentButton" translate>MAKE PAYMENT({{splitePaymentDetail["completedSplitPayments"]+1}}/{{splitePaymentDetail["totalNoOfsplits"]}})</button> 
-                 <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'blue':!disableMakePayment()}" class="button" ng-click="submitPayment()" ng-show="!shouldShowMakePaymentButton" translate>REFUND {{currencySymbol}}{{defaultRefundAmount}}</button> 
+                 <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'blue':!disableMakePayment()}" class="button" ng-click="submitPayment()" ng-show="!shouldShowMakePaymentButton" translate>REFUND {{currencySymbol}}{{defaultRefundAmount|number:2}}</button> 
             </div>
              <div class="actions" ng-hide="!depositPaidSuccesFully">
                 <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="handleCloseDialog()" translate>CLOSE</button>
