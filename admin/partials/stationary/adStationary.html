@@ -31,10 +31,17 @@
                         </div>
                         <span class="file-preview"> <img ng-src="{{data.hotel_picture}}" alt="" height="112" width="auto"> </span>
                     </div>
+                    <div class="entry full-width">
+                        <label for="hotel-logo" translate> HOTEL_LOGO </label>
+                        <div class="select">
+                            <select ng-model="data.email_logo_type" name="hotel-logo" class="placeholder">
+                                <option value="" translate> SELECT_LOGO_TYPE </option>
+                                <option ng-repeat="item in data.hotel_logo" value="{{item.value}}" ng-selected="item.value == data.email_logo_type">{{item.name}}</option>
+                            </select>
+                        </div>
+                    </div>
                 </section>
                 <section class="holder right">
-                    <!-- 1.Check box to 'Show Hotel Logo' (default checked) -->
-                    <ad-checkbox is-checked="data.show_hotel_logo" label="{{ 'SHOW_HOTEL_LOGO' | translate}}" div-class="full-width"></ad-checkbox>
                     <!-- 4.Check box to 'Display Add-Ons'-->
                     <ad-checkbox is-checked="data.display_addons" label="{{ 'DISPLAY_ADD_ONS' | translate}}" div-class="full-width"></ad-checkbox>
                     <!-- 5.Check box to 'Display Total Stay Cost'-->
@@ -48,7 +55,7 @@
                 <div class="entry full-width">
                     <label translate>GETTING_TO_THE_HOTEL</label>
                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.location_text"></ad-textarea>
-                </div>                
+                </div>
                 <section class="holder left">
                     <!-- 9. Location Photo -->
                     <div class="entry full-width">
@@ -153,7 +160,7 @@
                 <div class="form-title">
                     <h3>
                     <span>{{'CUSTOMIZE' | translate}}</span>
-                    {{'REGISTRATION_COMMUNICATION' | translate}}                    
+                    {{'REGISTRATION_COMMUNICATION' | translate}}
                 </h3>
                 </div>
                 <div class="entry full-width">
