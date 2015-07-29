@@ -388,112 +388,146 @@
 					 Payment Gateway Settings
 				</h3>
 			</div>
-			<div class="entry ">
+			<div class="entry full-width">
 				<label class="radio" ng-class="{checked:data.payment_gateway == 'MLI'}">
 					<span class="icon-form icon-radio " ng-class="{checked:data.payment_gateway == 'MLI'}"></span>
 					<input type="radio" ng-model="data.payment_gateway" value="MLI" class="change-data">
-					MerchantLink Payment
+					Merchant Link 
 				</label>
 				<label class="radio" ng-class="{checked:data.payment_gateway == 'sixpayments'}">
 					<span class="icon-form icon-radio " ng-class="{checked:data.payment_gateway == 'sixpayments'}"></span>
 					<input type="radio" ng-model="data.payment_gateway" value="sixpayments" class="change-data">
-					Six Payment
+					3CIntegra
 				</label>
-
-				
+				<label class="radio" ng-class="{checked:data.payment_gateway == 'SAFERPAY'}">
+						<span class="icon-form icon-radio " ng-class="{checked:data.payment_gateway == 'SAFERPAY'}"></span>
+						<input type="radio" ng-model="data.payment_gateway" value="SAFERPAY" class="change-data">
+						Saferpay
+				</label>				
 			</div>
-			<div class="entry"></div>
-			<div class="entry" ng-show="data.payment_gateway == 'MLI'">
+			<div class="entry full-width"></div>
+			<div class="entry" ng-show="data.payment_gateway === 'SAFERPAY'" >
+				<label>
+					Saferpay ACCOUNT ID
+				</label>
+				<input type="text" ng-model="data.saferpay_account_id">
+			</div>
+			<div class="entry" ng-show="data.payment_gateway === 'SAFERPAY'" >
+				<label>
+					Saferpay HTTPS Password
+				</label>
+				<input type="text" ng-model="data.saferpay_https_password">
+			</div>
+			<div class="entry" ng-show="data.payment_gateway === 'SAFERPAY'" >
+				<label>
+					Saferpay auth URL
+				</label>
+				<input type="text" ng-model="data.saferpay_auth_url" readonly="readonly">
+			</div>
+			<div class="entry" ng-show="data.payment_gateway === 'SAFERPAY'" >
+				<label>
+					Saferpay settlement URL
+				</label>
+				<input type="text" ng-model="data.saferpay_settlement_url" readonly="readonly">
+			</div>	
+			<div class="entry" ng-show="data.payment_gateway === 'MLI'">
 				<label for="mli-payment-gateway-url">
 					MerchantLink payment gateway url
 				</label>
 				<input type="text" ng-model="data.mli_payment_gateway_url" value="{{data.mli_payment_gateway_url}}" placeholder="Enter MLI payment gateway url">
 			</div>
 
-			<div class="entry" ng-show="data.payment_gateway == 'MLI'">
+			<div class="entry" ng-show="data.payment_gateway === 'MLI'">
 				<label for="mli-merchant-id">
 					MerchantLink Merchant ID
 				</label>
 				<input type="text" ng-model="data.mli_merchant_id" value="{{data.mli_merchant_id}}" placeholder="Enter MLI Merchant ID">
 			</div>
 
-			<div class="entry" ng-show="data.payment_gateway == 'MLI'">
+			<div class="entry" ng-show="data.payment_gateway === 'MLI'">
 				<label for=" mli-api-version">
 					MerchantLink api version
 				</label>
 				<input type="text" ng-model="data.mli_api_version" value="{{data.mli_api_version}}" placeholder="Enter MLI api version">
 			</div>
 
-			<div class="entry" ng-show="data.payment_gateway == 'MLI'">
+			<div class="entry" ng-show="data.payment_gateway === 'MLI'">
 				<label for="mli-api-key">
 					MerchantLink api key
 				</label>
 				<input type="password" ng-model="data.mli_api_key" value="{{data.mli_api_key}}" placeholder="Enter MLI api key">
 			</div>
 
-			<div class="entry" ng-show="data.payment_gateway == 'MLI'">
+			<div class="entry" ng-show="data.payment_gateway === 'MLI'">
 				<label for="mli-site-code">
 					MerchantLink site code
 				</label>
 				<input type="text" ng-model="data.mli_site_code" value="{{data.mli_site_code}}" placeholder="Enter MLI api key">
 			</div>
 
-			<div class="entry full-width" ng-show="data.payment_gateway == 'MLI'">
+			<div class="entry full-width" ng-show="data.payment_gateway === 'MLI'">
 				<button type="button" id="test-mli-payment-gateway" class="button blue" ng-click="testMLIPaymentGateway()">
 					TEST MERCHANTLINK PAYMENT GATEWAY
 				</button>
 			</div>
-			<div class="entry" ng-show="data.payment_gateway == 'sixpayments'">
+			<div class="entry" ng-show="data.payment_gateway === 'sixpayments'">
 				<label for="mli-payment-gateway-url">
 					Six Payments merchant ID
 				</label>
 				<input type="text" ng-model="data.six_merchant_id" value="{{data.six_merchant_id}}" placeholder="Enter six payment merchant id">
 			</div>
 
-			<div class="entry" ng-show="data.payment_gateway == 'sixpayments'">
+			<div class="entry" ng-show="data.payment_gateway === 'sixpayments'">
 				<label for="mli-merchant-id">
 					Six Payments validation code
 				</label>
 				<input type="text" ng-model="data.six_validation_code" value="{{data.six_validation_code}}" placeholder="Enter six payment validation code">
 			</div>
-			<div class="entry" ng-show="data.payment_gateway == 'sixpayments'">
+			<div class="entry" ng-show="data.payment_gateway === 'sixpayments'">
 				<label for="six-ipage-url">
 					Six Payments URL
 				</label>
 				<input type="text" ng-model="data.six_ipage_url" value="{{data.six_ipage_url}}" readonly="readonly">
 			</div>
-			<div class="entry" ng-show="data.payment_gateway == 'sixpayments'">
+			<div class="entry" ng-show="data.payment_gateway === 'sixpayments'">
 				<label for="six-server-location-id">
 					Six Payments Location Id
 				</label>
 				<input type="text" ng-model="data.six_server_location_id" value="{{data.six_server_location_id}}">
 			</div>
-			<div class="entry" ng-show="data.payment_gateway == 'sixpayments'">
+			<div class="entry" ng-show="data.payment_gateway === 'sixpayments'">
 				<label for="six-server-ipaddress">
 					Six Payments Server IP
 				</label>
 				<input type="text" ng-model="data.six_server_ipaddress" value="{{data.six_server_ipaddress}}">
 			</div>
-			<div class="entry" ng-show="data.payment_gateway == 'sixpayments'">
+			<div class="entry" ng-show="data.payment_gateway === 'sixpayments'">
 				<label for="six-server-port">
 					Six Payments Server Port
 				</label>
 				<input type="text" ng-model="data.six_server_port" value="{{data.six_server_port}}">
 			</div>
-			<div class="entry" ng-show="data.payment_gateway == 'sixpayments'">
+			<div class="entry" ng-show="data.payment_gateway === 'sixpayments'">
 				<label for="six-server-port">
 					Six Payments Communication Protocol
 				</label>
-				<label class="radio" ng-class="{checked:data.payment_gateway == 'MLI'}">
-					<span class="icon-form icon-radio " ng-class="{checked:data.six_connection_mode == 'PORT'}"></span>
+				<label class="radio" ng-class="{checked:data.payment_gateway === 'MLI'}">
+					<span class="icon-form icon-radio " ng-class="{checked:data.six_connection_mode === 'PORT'}"></span>
 					<input type="radio" ng-model="data.six_connection_mode" value="PORT" class="change-data">
 					TCP/IP Socket
 				</label>
-				<label class="radio" ng-class="{checked:data.payment_gateway == 'sixpayments'}">
+				<label class="radio" ng-class="{checked:data.payment_gateway ==='sixpayments'}">
 					<span class="icon-form icon-radio " ng-class="{checked:data.six_connection_mode == 'HTTPS'}"></span>
 					<input type="radio" ng-model="data.six_connection_mode" value="HTTPS" class="change-data">
 					HTTPS
 				</label>
+			</div>
+			<div class="entry full-width">
+				<label>Allow CC processors per payment methods</label>
+				<div class="switch-button single" ng-class="{ on : data.allow_cc_processors_per_payment_methods == true }" ng-click="data.allow_cc_processors_per_payment_methods = !data.allow_cc_processors_per_payment_methods">
+					<input type="checkbox" value="{{data.allow_cc_processors_per_payment_methods}}">
+					<span class="switch-icon"></span>
+				</div>
 			</div>
 		</fieldset>
 		<fieldset class="holder right" ng-show="isAdminSnt && data.payment_gateway == 'MLI'" >
@@ -553,35 +587,6 @@
 				<input type="text" ng-model="data.cc_swipe_listening_port" value="{{data.cc_swipe_listening_port}}" placeholder="Enter CC swipe listening port" name="cc-swipe-listening-port">
 			</div>
 
-		</fieldset>
-		
-		<fieldset class="holder left" ng-show="isAdminSnt">
-			<div class="form-title">
-				<h3>
-					<span>Hotel</span>
-					 Custom Credit Card Processors
-				</h3>
-			</div>
-			<div class="entry ">
-				<label class="radio" ng-class="{checked:data.custom_cc_processor == 'SAFERPAY'}">
-					<span class="icon-form icon-radio " ng-class="{checked:data.custom_cc_processor == 'SAFERPAY'}"></span>
-					<input type="radio" ng-model="data.custom_cc_processor" value="SAFERPAY" class="change-data">
-					Saferpay
-				</label>
-			</div>
-			<div class="entry "></div>
-			<div class="entry " ng-show="data.custom_cc_processor == 'SAFERPAY'" >
-				<label>
-					Saferpay ACCOUNT ID
-				</label>
-				<input type="text" ng-model="data.saferpay_account_id" value="{{data.saferpay_account_id}}">
-			</div>
-			<div class="entry " ng-show="data.custom_cc_processor == 'SAFERPAY'" >
-				<label>
-					Saferpay HTTPS Password
-				</label>
-				<input type="text" ng-model="data.saferpay_https_password" value="{{data.saferpay_https_password}}">
-			</div>
 		</fieldset>
 
 		<div class="actions float">
