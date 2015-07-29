@@ -104,7 +104,7 @@
                 <label for="amount">{{'AMOUNT_TO_PAY' | translate}} (<span>{{currencySymbol}}</span>)</label>
                 
                 <!-- CICO-12408 : Use only when fee exsists -->
-                <input ng-keyup="calculateFee()" value="{{renderData.defaultPaymentAmount}}" type="text" ng-model="renderData.defaultPaymentAmount" class="amount" />
+                <input ng-keyup="calculateFee()" value="{{renderData.defaultPaymentAmount}}" type="text" ng-model="renderData.defaultPaymentAmount" class="amount" ng-disabled="splitSelected"/>
                 <span ng-show="isShowFees()" class="delimiter">+</span> 
                 <input ng-show="isShowFees()" name="fee" id="fee" ng-keyup="calculateTotalAmount(renderData.defaultPaymentAmount)" ng-model="feeData.calculatedFee" value="{{feeData.calculatedFee}}" type="text" class="fee" />
                 <span ng-show="isShowFees()" class="delimiter">fee</span>
