@@ -18,7 +18,6 @@
     </fieldset>
     <fieldset id="reservation-canceled" ng-show ="DailogeState.isCancelled">
         <span class="h2 message">Reservation cancelled</span>
-        <div id="status" class="notice {success or error}"></div>
         <!-- Show when email button clicked -->
         <div id="status" class="notice" ng-class="{'success':DailogeState.successMessage, 'error':DailogeState.failureMessage }" ng-show="DailogeState.successMessage || DailogeState.failureMessage">{{DailogeState.successMessage}}{{DailogeState.failureMessage}}</div>
         <div class="entry full-width" ng-hide="isEmailAttached()">

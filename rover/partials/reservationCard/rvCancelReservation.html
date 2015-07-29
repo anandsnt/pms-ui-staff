@@ -129,8 +129,8 @@
     </fieldset>
     <fieldset id="reservation-canceled" ng-show ="DailogeState.isCancelled">
         <span class="h2 message">Reservation cancelled</span>
-        <div id="status" ng-if="DailogeState.successMessage != ''" class="notice success" >{{DailogeState.successMessage}}</div>
-        <div id="status" ng-if="DailogeState.failureMessage != ''" class="notice error">{{DailogeState.failureMessage}}</div>
+        <div id="status" ng-show="DailogeState.successMessage != ''" class="notice success" >{{DailogeState.successMessage}}</div>
+        <div id="status" ng-show="DailogeState.failureMessage != ''" class="notice error">{{DailogeState.failureMessage}}</div>
         <div class="entry full-width" ng-hide="isEmailAttached()">
             <label for="guest-email">E-mail</label>
             <input name="guest-email" id="guest-email" value="" type="text" autocomplete="off" ng-model="DailogeState.sendConfirmatonMailTo"/>
