@@ -302,7 +302,11 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$scope.closeDialog();
 		}
 
-
+		$scope.onRateChange  = function (argument) {
+			if(!!$scope.groupConfigData.summary.group_id){
+				$scope.updateGroupSummary();	
+			}			
+		}
 
 		$scope.cancelDemographicChanges = function() {
 			$scope.groupConfigData.summary.demographics = demographicsMemento;

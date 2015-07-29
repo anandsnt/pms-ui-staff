@@ -294,7 +294,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 summaryData.block_from = $filter('date')(summaryData.block_from, $rootScope.dateFormatForAPI);
                 summaryData.block_to = $filter('date')(summaryData.block_to, $rootScope.dateFormatForAPI);
                 summaryData.release_date = $filter('date')(summaryData.release_date, $rootScope.dateFormatForAPI);
-                if(summaryData.rate){
+                if(!summaryData.rate){
                     summaryData.rate = -1; 
                 }    
                 $scope.callAPI(rvGroupConfigurationSrv.updateGroupSummary, {
