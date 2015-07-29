@@ -24,6 +24,7 @@
 			};
 
 			$scope.cancellationData.paymentType = "";
+			$scope.DailogeState = {};
 			$scope.DailogeState.isCancelled = false;
 
 
