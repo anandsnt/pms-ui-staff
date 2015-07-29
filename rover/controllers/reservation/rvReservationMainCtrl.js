@@ -706,6 +706,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             data.is_hourly = $scope.reservationData.isHourly;
             data.arrival_date = $scope.reservationData.arrivalDate;
             data.arrival_time = '';
+            data.is_reinstate = $scope.viewState.identifier === "REINSTATE";
             //Check if the check-in time is set by the user. If yes, format it to the 24hr format and build the API data.
             if ($scope.reservationData.checkinTime.hh !== '' && $scope.reservationData.checkinTime.mm !== '' && $scope.reservationData.checkinTime.ampm !== '') {
                 data.arrival_time = getTimeFormated($scope.reservationData.checkinTime.hh,
