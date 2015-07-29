@@ -37,7 +37,14 @@
 						<em class="lightcontent light-black-text chekout-late-final base-text">The following will appear on your bill.</em>
 					</p>
 					<p class="latecheckout-charged centeralign">
-						<span class="light-black-text">Late Check-out ({{ lateCheckOut.time }} {{ lateCheckOut.ap }} ) .... {{currencySymbol}}{{ lateCheckOut.amount }}</span></p>
+						<span class="light-black-text">Late Check-out ({{ lateCheckOut.time }} {{ lateCheckOut.ap }} ) .... {{currencySymbol}}{{ lateCheckOut.amount }}
+						</span>
+					</p>
+					<p class="leadtext">
+						<em class="lightcontent light-black-text chekout-late-final base-text">
+							Your room keys are set to expire for the checkout time of {{oldCheckoutTime}}. Please see a guest service agent at the front desk to re-activate your keys for the late checkout time selected.
+						</em>
+					</p>
 				</div>
 				<div class="col-md-6 no-padding now-later-options margin-top-60">
 					<a ui-sref="checkOutConfirmation" class="link-btn with-bg green-bg back-to-checkout white-text">Back to check-out screen</a>

@@ -1,26 +1,23 @@
 <div class="reservation-actions" ng-controller="reservationActionsController">
-	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-		<button type="button" class="button purple" ng-if="showReverseCheckout" ng-click="reverseCheckout(reservationData.reservation_card.reservation_id, 'reverseCheckoutButton')">Reverse Check Out</button>
-		
-		<!-- Resevation is checking-in -->
-		<a class="button green" ng-click="goToCheckin()" ng-show="reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'NOSHOW_CURRENT'">
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <button type="button" class="button purple" ng-if="showReverseCheckout" ng-click="reverseCheckout(reservationData.reservation_card.reservation_id, 'reverseCheckoutButton')">Reverse Check Out</button>
+    <!-- Resevation is checking-in -->
+    <a class="button green" ng-click="goToCheckin()" ng-show="reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'NOSHOW_CURRENT'">
 			Check in
 		</a>
-
-		<a class="button red" ng-click="goToCheckoutButton(reservationData.reservation_card.reservation_id, 'checkoutButton', reservationData.reservation_card.smartband_has_balance)" ng-show="reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT'">
+    <a class="button red" ng-click="goToCheckoutButton(reservationData.reservation_card.reservation_id, 'checkoutButton', reservationData.reservation_card.smartband_has_balance)" ng-show="reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT'">
 			Check out
 		</a>
-
-		<!-- Show balance -->
-		<div class="balance break">
-			<span class="label">Balance</span>
-			<!-- According to CICO-15833, we need SR in both connected & stanalone -->
-			<span>
+    <!-- Show balance -->
+    <div class="balance break">
+        <span class="label">Balance</span>
+        <!-- According to CICO-15833, we need SR in both connected & stanalone -->
+        <span>
 				<span class="h1" ng-class="getBalanceAmountColor(reservationData.reservation_card.balance_amount)" ng-if ="!reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates"> 
 					{{currencySymbol}} 
 					{{ reservationData.reservation_card.balance_amount | number:2 }}
 				</span>
-				<span class="h1" ng-if ="reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates"> 
+        <span class="h1" ng-if="reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates"> 
 					SR
 				</span>
 			</span>
@@ -37,41 +34,24 @@
 		<a id="deposit_balance" ng-show="showDepositBalance(reservationData.reservation_card.reservation_status)" class="button staycard-button icon-deposit" ng-click="showDepositBalanceModal()">
 			Deposit/Balance
 		</a>
-		
-		
-		<!-- Show add-ons button set hidden for now as part of story 4130 - in future we need this -->
-		<a class="button hidden brand-colors" ng-show="displayAddon(reservationData.reservation_card.reservation_status)">
+    <!-- Show add-ons button set hidden for now as part of story 4130 - in future we need this -->
+    <a class="button hidden brand-colors" ng-show="displayAddon(reservationData.reservation_card.reservation_status)">
 			Add-ons
 		</a>
-		
-		<a ui-sref="rover.reservation.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: 'viewBillButton', userId:guestCardData.userId})" class="button staycard-button icon-bill routing" ng-show="reservationData.reservation_card.is_routing_available == 'true'">
+    <a ui-sref="rover.reservation.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: 'viewBillButton', userId:guestCardData.userId})" class="button staycard-button icon-bill routing" ng-show="reservationData.reservation_card.is_routing_available == 'true'">
 			Bill &amp; Charges <span>Routing</span>
 		</a>
-		
-		<a ui-sref="rover.reservation.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: 'viewBillButton', userId:guestCardData.userId})" class="button staycard-button icon-bill" ng-hide="reservationData.reservation_card.is_routing_available == 'true'">Bill &amp; Charges</a>
-		
-		
-		<!-- show smartbands -->
-		<a class="button staycard-button icon-smartband" ng-click="openSmartBands()" ng-show="showSmartBandsButton(reservationData.reservation_card.reservation_status, reservationData.reservation_card.icare_enabled, reservationData.reservation_card.has_smartbands)">SmartBands</a>
-
-		<!-- show cancel / reinstate reservation -->
-
-		<!-- Feature Only available for STANDALONE pms -->
-		<!-- TODO: Cancellation can be actioned on 'Reserved', 'DueIn' and 'CheckedIn' (reverse check in) status, if no other balance exists and if arrival date = cancellation date. For any other case the cancellation button will not display. -->
-		<!-- The 'Cancel Reservation' button should be located at the bottom right of the Stay Card. -->
-		<div class="bottom-buttons">
-			<!-- Feature Only available for STANDALONE pms -->
-			<!-- TODO: Cancellation can be actioned on 'Reserved', 'DueIn' and 'CheckedIn' (reverse check in) status, if no other balance exists and if arrival date = cancellation date. For any other case the cancellation button will not display. -->
-			<!-- The 'Cancel Reservation' button should be located at the bottom right of the Stay Card. -->
-			<a ng-if="(isStandAlone &&(reservationData.reservation_card.reservation_status != 'CANCELED' && (reservationData.reservation_card.reservation_status == 'RESERVED' || reservationData.reservation_card.reservation_status == 'CHECKING_IN' || (reservationData.reservation_card.reservation_status == 'CHECKEDIN' && (reservationData.reservation_card.balance_amount | number:2) == 0.00 && actionsCheck.firstDate))))" class="button white red-text bottom-button" ng-click="toggleCancellation()" translate>
+    <a ui-sref="rover.reservation.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: 'viewBillButton', userId:guestCardData.userId})" class="button staycard-button icon-bill" ng-hide="reservationData.reservation_card.is_routing_available == 'true'">Bill &amp; Charges</a>
+    <!-- show smartbands -->
+    <a class="button staycard-button icon-smartband" ng-click="openSmartBands()" ng-show="showSmartBandsButton(reservationData.reservation_card.reservation_status, reservationData.reservation_card.icare_enabled, reservationData.reservation_card.has_smartbands)">SmartBands</a>   
+    <div class="bottom-buttons">
+        <!-- Feature Only available for STANDALONE pms -->
+        <!-- TODO: Cancellation can be actioned on 'Reserved', 'DueIn' and 'CheckedIn' (reverse check in) status, if no other balance exists and if arrival date = cancellation date. For any other case the cancellation button will not display. -->
+        <!-- The 'Cancel Reservation' button should be located at the bottom right of the Stay Card. -->
+        <a ng-if="(isStandAlone &&(reservationData.reservation_card.reservation_status != 'CANCELED' && (reservationData.reservation_card.reservation_status == 'RESERVED' || reservationData.reservation_card.reservation_status == 'CHECKING_IN' || (reservationData.reservation_card.reservation_status == 'CHECKEDIN' && (reservationData.reservation_card.balance_amount | number:2) == 0.00 && actionsCheck.firstDate))))" class="button white red-text bottom-button" ng-click="toggleCancellation()" translate>
 			{{'CANCEL_RESERVATION' | translate}}
 			</a>
 			<a class="button staycard-button icon-confirmation" ng-click="popupForConfirmation()" ng-show="showConfirmation(reservationData.reservation_card.reservation_status)"> {{'CONFIRMATION' | translate}} </a>
-
-			<!-- Archive Reservation for future usage
-			<a href="{archive-reservation}" class="button red bottom-button">Archive reservation</a>
-			-->
-
-		</div>
-	
-	</div>
+			
+    </div>
+</div>

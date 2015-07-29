@@ -112,6 +112,12 @@ sntRover.controller('roverController',
     $rootScope.printCancellationLetter = hotelDetails.print_cancellation_letter || true;
     $rootScope.printConfirmationLetter = hotelDetails.print_confirmation_letter || true;
 
+      // CICO-18040
+      $rootScope.isFFPActive = hotelDetails.is_ffp_active;
+      $rootScope.isHLPActive = hotelDetails.is_hlp_active;
+      $rootScope.isPromoActive = hotelDetails.is_promotion_active;
+
+
     //set MLI Merchant Id
     try {
       sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
