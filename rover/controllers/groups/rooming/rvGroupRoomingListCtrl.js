@@ -1,28 +1,29 @@
 sntRover.controller('rvGroupRoomingListCtrl', [
-    '$scope',
-    '$rootScope',
-    'rvGroupRoomingListSrv',
-    '$filter',
-    '$timeout',
-    'rvUtilSrv',
-    'rvPermissionSrv',
-    '$q',
-    'ngDialog',
-    'rvGroupConfigurationSrv',
-    '$state',
-    '$window',
-    function($scope,
-        $rootScope,
-        rvGroupRoomingListSrv,
-        $filter,
-        $timeout,
-        util,
-        rvPermissionSrv,
-        $q,
-        ngDialog,
-        rvGroupConfigurationSrv,
-        $state,
-        $window) {
+  '$scope',
+  '$rootScope',
+  'rvGroupRoomingListSrv',
+  '$filter',
+  '$timeout',
+  'rvUtilSrv',
+  'rvPermissionSrv',
+  '$q',
+  'ngDialog',
+  'rvGroupConfigurationSrv',
+  '$state',
+  '$window',
+  function (
+    $scope,
+    $rootScope,
+    rvGroupRoomingListSrv,
+    $filter,
+    $timeout,
+    util,
+    rvPermissionSrv,
+    $q,
+    ngDialog,
+    rvGroupConfigurationSrv,
+    $state,
+    $window) {
 
         BaseCtrl.call(this, $scope);
 
@@ -91,9 +92,12 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         $scope.shouldDisableRoomTypeChange = function(reservation) {
             //as per CICO-17082, we need to show the room type in select box of edit with others
             //but should be disabled
-            var containNonEditableRoomType = (_.pluck($scope.roomTypesAndData, 'room_type_id')
-                .indexOf(parseInt(reservation.room_type_id))) <= -1;
-            return (reservation.reservation_status === "CANCELED" || containNonEditableRoomType);
+            var room_type_id_list = _.pluck($scope.roomTypesAndData, 'room_type_id'),
+            	containNonEditableRoomType = !_.contains(room_type_id_list, parseInt(reservation.room_type_id)),
+            	rStatus = reservation.reservation_status;
+            
+            //CICO-18717: disable room type switch once a user checks in
+            return (!(rStatus === "RESERVED" || rStatus === "CHECKING_IN") || containNonEditableRoomType);
         };
 
         /**
@@ -136,8 +140,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          */
         $scope.shouldDisableChangeRoom = function(reservation) {
             var rStatus = reservation.reservation_status;
-            return (rStatus === "CHECKEDOUT" || rStatus === "NOSHOW_CURRENT" ||
-                rStatus === "CANCELED" || rStatus === "NOSHOW");
+            return (rStatus !== "RESERVED" && rStatus !== "CHECKING_IN");
         };
 
         /**
@@ -1409,6 +1412,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
              */
             var successFetchOfAllReqdForReservationEdit = function() {
                 var reservationData = angular.copy(selectedReservation),
+                    room_type_id_list = null,
                     containNonEditableRoomType = null,
                     roomTypesForEditPopup = null,
                     allowedRoomTypes = null;
@@ -1420,8 +1424,8 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
                 //as per CICO-17082, we need to show the room type in select box of edit with others
                 //but should be disabled
-                containNonEditableRoomType = (_.pluck($scope.roomTypesAndData, 'room_type_id')
-                    .indexOf(parseInt(selectedReservation.room_type_id))) <= -1;
+                room_type_id_list = _.pluck($scope.roomTypesAndData, 'room_type_id');
+                containNonEditableRoomType = !_.contains(room_type_id_list, parseInt(selectedReservation.room_type_id));
 
                 if (containNonEditableRoomType) {
                     roomTypesForEditPopup = [{

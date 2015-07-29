@@ -622,7 +622,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				// get the selected hk status obj
 				var hkStatusObj = _.find($scope.hkStatusList, function(item) {
-					return item.id === $scope.multiRoomAction.hkStatusId;
+					return item.id === parseInt($scope.multiRoomAction.hkStatusId);
 				});
 
 				// we are looping the 'keyMirror' rather than the
@@ -639,16 +639,17 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					ithSelectedRoom['description'] = hkStatusObj['description'];
 
 					// 2. update 'hk_status' of this room
-					angular.extend(ithSelectedRoom['hk_status'], {
-						description: hkStatusObj['description'],
-						value: hkStatusObj['value']
-					});
+					ithSelectedRoom['hk_status']['description'] = hkStatusObj['description'];
+					ithSelectedRoom['hk_status']['value']       = hkStatusObj['value'];
 
 					// 3. now call the status class update
 					RVHkRoomStatusSrv.setRoomStatusClass( ithSelectedRoom );
 				};
 
-				$scope.closeHkStatusDialog();
+				// need the delay, since close will also clear the values
+				// in '$scope.multiRoomAction', but we need the value atleast
+				// untill we update the UI with the changed values
+				$timeout( $scope.closeHkStatusDialog, 100 );
 			};
 
 			_onError = function(response) {
