@@ -25,7 +25,7 @@
 					</div>
 
 					<div class="entry">
-						<label for="rmZoom" >SORT ORDER</label>
+						<label for="rmSort" >ORDER BY</label>
 						<div class="select">
 							<select iscroll-stop-propagation id="rmSort" name="sort-order" ng-model="currentFilterData.sort_order">
 								<option ng-selected="sortOption.id == currentFilterData.sort_order" ng-repeat="sortOption in currentFilterData.sortOptions" class="placeholder" value="{{sortOption.id}}">{{getSortOption(sortOption.value)}}</option> 
