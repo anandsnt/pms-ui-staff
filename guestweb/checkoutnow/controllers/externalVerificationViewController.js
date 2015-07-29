@@ -51,6 +51,7 @@
 			$rootScope.isLateCheckoutAvailable  = response.is_late_checkout_available;
 			$rootScope.emailAddress 			= response.email_address;
 			$rootScope.isCCOnFile				= response.is_cc_attached;
+			$rootScope.accessToken 				= response.guest_web_token;
 
 		};
 

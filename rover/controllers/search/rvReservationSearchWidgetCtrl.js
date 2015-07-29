@@ -304,33 +304,55 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			return false;
 		}
 
+		/**
+		 * wanted to show confirmation number
+		 * @param  {Object} reservation
+		 * @return {Boolean}
+		 */
+		$scope.shouldShowConfirmationNumber = function(reservation) {
+			return (reservation.reservation_status.toUpperCase() !== "CANCELED");
+		};
+
+		/**
+		 * whether a string contains our search query
+		 * @param  {String} text to search
+		 * @param  {Boolean} check_against_cap_query - default true [wanted to check with capitalized query]
+		 * @return {Booean}
+		 */
+		var textContainQuery = function(text, check_against_cap_query) {
+			var escN = $scope.escapeNull,
+				check_against_cap_query = typeof check_against_cap_query === "undefined" ? true : check_against_cap_query,
+				query = check_against_cap_query ? $scope.textInQueryBox.toUpperCase() : $scope.textInQueryBox;
+
+			return ((escN(text).toUpperCase()).indexOf(query) >= 0);
+		};
+
+		/**
+		 * we have set of condtions that determines the visibility of reservation
+		 * @param  {Object} reservation
+		 * @return {Boolean}
+		 */
+		var reservationMeetConditionsToShow = function (res, query) {
+			var escN = $scope.escapeNull,
+				txtInQry = textContainQuery;
+			return (txtInQry(res.firstname) ||
+					txtInQry(res.lastname) ||
+					txtInQry(res.group) ||
+					txtInQry(res.travel_agent) ||
+					txtInQry(res.company) ||
+					txtInQry(escN(res.room).toString(), false) ||
+					txtInQry(escN(res.confirmation).toString(), false) ||					
+					(escN(res.reservation_status).toUpperCase() === "CANCELED" && txtInQry(escN(res.cancellation_no).toString(), false) >= 0))
+		};
+
 		var applyFilters = function(isLocalFiltering) {
-			var value = "";
+			var researvation = "";
 			//searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 			//if it is zero, then we will request for webservice
-			var totalCountOfFound = 0;
 			for (var i = 0; i < $scope.results.length; i++) {
-				value = $scope.results[i];
-				if (($scope.escapeNull(value.firstname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
-					($scope.escapeNull(value.lastname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
-					($scope.escapeNull(value.group).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
-					($scope.escapeNull(value.room).toString()).indexOf($scope.textInQueryBox) >= 0 ||
-					($scope.escapeNull(value.confirmation).toString()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
-					($scope.escapeNull(value.travel_agent).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
-					($scope.escapeNull(value.company).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0) {
-					$scope.results[i].is_row_visible = true;
-					totalCountOfFound++;
-				} else {
-					$scope.results[i].is_row_visible = false;
-				}
+				reservation = $scope.results[i];
+				$scope.results[i].is_row_visible = reservationMeetConditionsToShow(reservation);
 			}
-			/*if(isLocalFiltering){
-				$scope.start = 1;
-				$scope.end = totalCountOfFound;
-				$scope.totalSearchResults = totalCountOfFound;
-				$scope.disableNextButton = true;//TODO: workaround
-			}*/
-
 			$scope.isTyping = false;
 		};
 		/**

@@ -31,8 +31,9 @@ sntRover.factory('RVReportUtilsFac', [
             'FORECAST_BY_DATE'             : 'Forecast',
             'ROOMS_QUEUED'                 : 'Rooms Queued',
             'FORECAST_GUEST_GROUPS'        : 'Forecast Guests & Groups',
-            'MARKET_SEGMENT_STATISTICS_REPORT' : 'Market Segment Statistics Report',
-            'COMPARISION_BY_DATE'          : 'Comparison'
+            'MARKET_SEGMENT_STAT_REPORT'   : 'Market Segment Statistics Report',
+            'COMPARISION_BY_DATE'          : 'Comparison',
+            'RATE_ADJUSTMENTS_REPORT'      : 'Rate Adjustment Report'
         };
 
 
@@ -185,20 +186,34 @@ sntRover.factory('RVReportUtilsFac', [
             var selected = false;
             var mustSend = false;
 
+            var includeCancelled = {
+                        'INCLUDE_CANCELLED' : true,
+                        'INCLUDE_CANCELED'  : true
+                    },
+                dueInDueOut = {
+                        'DUE_IN_ARRIVALS'    : true,
+                        'DUE_OUT_DEPARTURES' : true
+                    },
+                depositStatus = {
+                        'DEPOSIT_PAID' : true,
+                        'DEPOSIT_DUE'  : true,
+                        'DEPOSIT_PAST' : true
+                    };
+
             // if filter is this, make it selected by default
-            if ( objRef['title'] === __reportNames['CANCELLATION_NO_SHOW'] && { 'INCLUDE_CANCELLED':1, 'INCLUDE_CANCELED':1 }[filter.value] ) {
+            if ( objRef['title'] == __reportNames['CANCELLATION_NO_SHOW'] && includeCancelled[filter.value] ) {
                 selected = true;
                 objRef['hasGeneralOptions']['title'] = filter.description;
             };
 
             // if filter value is either of these, make it selected by default
-            if ( { 'DUE_IN_ARRIVALS':1, 'DUE_OUT_DEPARTURES':1 }[filter.value] ) {
+            if ( dueInDueOut[filter.value] ) {
                 selected = true;
                 objRef['hasGeneralOptions']['title'] = filter.description;
             };
 
             // if filter value is either of these, must include when report submit
-            if ( { 'DEPOSIT_PAID':1, 'DEPOSIT_DUE':1, 'DEPOSIT_PAST':1 }[filter.value] ) {
+            if ( depositStatus[filter.value] ) {
                 mustSend = true;
             };
 
@@ -303,7 +318,7 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['reportIconCls'] = 'icon-report icon-forecast';
                     break;
 
-                case __reportNames['MARKET_SEGMENT_STATISTICS_REPORT']:
+                case __reportNames['MARKET_SEGMENT_STAT_REPORT']:
                     reportItem['reportIconCls'] = 'icon-report icon-market';
                     break;
 
@@ -313,6 +328,10 @@ sntRover.factory('RVReportUtilsFac', [
 
                 case __reportNames['COMPARISION_BY_DATE']:
                     reportItem['reportIconCls'] = 'icon-report icon-comparison';
+                    break;
+
+                case __reportNames['RATE_ADJUSTMENTS_REPORT']:
+                    reportItem['reportIconCls'] = 'icon-report icon-rate';
                     break;
 
                 default:
@@ -333,7 +352,6 @@ sntRover.factory('RVReportUtilsFac', [
          * Current implementation has many dependendcy across many files. Not Good.
          */
         factory.applyFlags = function ( reportItem ) {
-
             switch ( reportItem['title'] ) {
                 case __reportNames['ARRIVAL']:
                     reportItem['hasDateLimit'] = false;
@@ -344,32 +362,24 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case __reportNames['CANCELLATION_NO_SHOW']:
-                    reportItem['hasDateLimit'] = false;
+                    reportItem['hasDateLimit']  = false;
                     reportItem['canRemoveDate'] = true;
-                    reportItem['showRemove'] = true;
                     break;
 
                 case __reportNames['BOOKING_SOURCE_MARKET_REPORT']:
-                    reportItem['canRemoveDate'] = true;
-                    reportItem['showRemove'] = true;
-                    reportItem['hasSourceMarketFilter'] = true;
-                    reportItem['hasDateLimit'] = false;
-                    reportItem['canRemoveArrivalDate'] = true;
-                    reportItem['showRemoveArrivalDate'] = true;
+                    reportItem['canRemoveDate']       = true;
+                    reportItem['hasDateLimit']        = false;
                     reportItem['hasArrivalDateLimit'] = false;
                     break;
 
                 case __reportNames['LOGIN_AND_OUT_ACTIVITY']:
-                    reportItem['hasDateLimit'] = false;
+                    reportItem['hasDateLimit']  = false;
                     reportItem['hasUserFilter'] = true;
                     break;
 
                 case __reportNames['DEPOSIT_REPORT']:
-                    reportItem['hasDateLimit'] = false;
+                    reportItem['hasDateLimit']  = false;
                     reportItem['canRemoveDate'] = true;
-                    reportItem['showRemove'] = true;
-                    reportItem['canRemoveArrivalDate'] = true;
-                    reportItem['showRemoveArrivalDate'] = true;
                     break;
 
                 case __reportNames['OCCUPANCY_REVENUE_SUMMARY']:
@@ -378,11 +388,8 @@ sntRover.factory('RVReportUtilsFac', [
 
                 case __reportNames['RESERVATIONS_BY_USER']:
                     reportItem['hasUserFilter'] = true;
-                    reportItem['hasDateLimit'] = false;
+                    reportItem['hasDateLimit']  = false;
                     reportItem['canRemoveDate'] = true;
-                    reportItem['showRemove'] = true;
-                    reportItem['canRemoveArrivalDate'] = true;
-                    reportItem['showRemoveArrivalDate'] = true;
                     break;
 
                 case __reportNames['FORECAST_BY_DATE']:
@@ -391,7 +398,7 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['hasDateLimit'] = false;
                     break;
 
-                case __reportNames['MARKET_SEGMENT_STATISTICS_REPORT']:
+                case __reportNames['MARKET_SEGMENT_STAT_REPORT']:
                     reportItem['hasDateLimit'] = true;
                     break;
 
@@ -399,8 +406,12 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['hasSysDateLimit'] = true;
                     break;
 
+                case __reportNames['RATE_ADJUSTMENTS_REPORT']:
+                    reportItem['hasDateLimit']  = true;
+                    reportItem['hasUserFilter'] = true;
+                    break;
+
                 default:
-                    reportItem['show_filter'] = false;
                     reportItem['hasDateLimit'] = false;     // CICO-16820: Changed to false
                     break;
             };
@@ -459,9 +470,6 @@ sntRover.factory('RVReportUtilsFac', [
                         processedCGCC = __adjustChargeGroupsCodes( data.chargeGroups, data.chargeCodes, 'ONLY_PAYMENTS' );
                     };
                 };
-
-
-
 
                 // check for date filter and keep a ref to that item
                 if ( filter.value === 'DATE_RANGE' ) {
@@ -571,6 +579,20 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem.allDates.push( 'hasSingleDateFilter' );
                 };
 
+                // check for rate adjustment date range filter and keep a ref to that item
+                if ( filter.value === 'ADJUSTMENT_DATE_RANGE' ) {
+                    reportItem['hasAdjustmentDateRange'] = filter;
+
+                    // track - showRemove flag, model names.
+                    // push date name to 'allDates'
+                    angular.extend(reportItem['hasAdjustmentDateRange'], {
+                        showRemove : true,
+                        fromModel  : 'fromAdjustmentDate',
+                        untilModel : 'untilAdjustmentDate'
+                    });
+                    reportItem.allDates.push( 'hasAdjustmentDateRange' );
+                };
+
 
 
 
@@ -623,8 +645,8 @@ sntRover.factory('RVReportUtilsFac', [
                     //
                     // QUICK PATCH
                     // TODO: replace with a better solution
-                    if ( reportItem.title === __reportNames['MARKET_SEGMENT_STATISTICS_REPORT'] ) {
-                        if ( filter.value === 'INCLUDE_MARKET' && data.codeSettings['is_market_on'] ) {
+                    if ( reportItem.title == __reportNames['MARKET_SEGMENT_STAT_REPORT'] ) {
+                        if ( filter.value == 'INCLUDE_MARKET' && data.codeSettings['is_market_on'] ) {
                             __pushDisplayData( reportItem, filter );
                         } else if ( filter.value === 'INCLUDE_ORIGIN' && data.codeSettings['is_origin_on'] ) {
                             __pushDisplayData( reportItem, filter );
@@ -847,6 +869,37 @@ sntRover.factory('RVReportUtilsFac', [
                 reportItem['sort_fields'][8] = null;
                 reportItem['sort_fields'][9] = ytd;
             };
+
+            // need to reorder the sort_by options
+            // for daily transactions in the following order
+            if ( reportItem['title'] === __reportNames['DEPOSIT_REPORT'] ) {
+                var guestDetails = angular.copy( reportItem['sort_fields'][4] ),
+                    dueDate      = angular.copy( reportItem['sort_fields'][1] ),
+                    paidDate     = angular.copy( reportItem['sort_fields'][2] );
+
+                reportItem['sort_fields'][0] = guestDetails;
+                reportItem['sort_fields'][1] = null;
+                reportItem['sort_fields'][2] = dueDate;
+                reportItem['sort_fields'][3] = null;
+                reportItem['sort_fields'][4] = paidDate;
+                reportItem['sort_fields'][5] = null;
+            };
+
+            // need to reorder the sort_by options
+            // for rate adjustment report in the following order
+            if ( reportItem['title'] === __reportNames['RATE_ADJUSTMENTS_REPORT'] ) {
+                var date      = angular.copy( reportItem['sort_fields'][1] ),
+                    guestUser = angular.copy( reportItem['sort_fields'][0] ),
+                    user      = angular.copy( reportItem['sort_fields'][2] );
+
+                reportItem['sort_fields'][0] = guestUser;
+                reportItem['sort_fields'][1] = date;
+                reportItem['sort_fields'][2] = null;
+                reportItem['sort_fields'][3] = null;
+                reportItem['sort_fields'][4] = null;
+                reportItem['sort_fields'][5] = null;
+                reportItem['sort_fields'][6] = user;
+            };
         };
 
 
@@ -860,7 +913,7 @@ sntRover.factory('RVReportUtilsFac', [
             if ( reportItem['sort_fields'] && reportItem['sort_fields'].length ) {
                 _.each(reportItem['sort_fields'], function(item, index, list) {
 
-                    if ( item !== null) {
+                    if ( item !== null ) {
                         item['sortDir'] = undefined;
                     };
 
@@ -910,7 +963,7 @@ sntRover.factory('RVReportUtilsFac', [
                 // date range must be yesterday - relative to current business date
                 case __reportNames['DAILY_TRANSACTIONS']:
                 case __reportNames['DAILY_PAYMENTS']:
-                case __reportNames['MARKET_SEGMENT_STATISTICS_REPORT']:
+                case __reportNames['MARKET_SEGMENT_STAT_REPORT']:
                 case __reportNames['COMPARISION_BY_DATE']:
                     reportItem['singleValueDate']  = _getDates.yesterday;
                     break;
@@ -924,15 +977,17 @@ sntRover.factory('RVReportUtilsFac', [
 
                 // by default date range must be from a week ago to current business date
                 default:
-                    reportItem['fromDate']        = _getDates.aWeekAgo;
-                    reportItem['fromCancelDate']  = _getDates.aWeekAgo;
-                    reportItem['fromArrivalDate'] = _getDates.aWeekAgo;
-                    reportItem['fromCreateDate']  = _getDates.aWeekAgo;
+                    reportItem['fromDate']            = _getDates.aWeekAgo;
+                    reportItem['fromCancelDate']      = _getDates.aWeekAgo;
+                    reportItem['fromArrivalDate']     = _getDates.aWeekAgo;
+                    reportItem['fromCreateDate']      = _getDates.aWeekAgo;
+                    reportItem['fromAdjustmentDate']  = _getDates.aWeekAgo;
                     /**/
-                    reportItem['untilDate']        = _getDates.businessDate;
-                    reportItem['untilCancelDate']  = _getDates.businessDate;
-                    reportItem['untilArrivalDate'] = _getDates.businessDate;
-                    reportItem['untilCreateDate']  = _getDates.businessDate;
+                    reportItem['untilDate']            = _getDates.businessDate;
+                    reportItem['untilCancelDate']      = _getDates.businessDate;
+                    reportItem['untilArrivalDate']     = _getDates.businessDate;
+                    reportItem['untilCreateDate']      = _getDates.businessDate;
+                    reportItem['untilAdjustmentDate']  = _getDates.businessDate;
                     break;
             };
         };
@@ -945,8 +1000,9 @@ sntRover.factory('RVReportUtilsFac', [
         factory.processDate = function ( customDate, xDays ) {
             var _dateVal      = customDate ? tzIndependentDate(customDate) : $rootScope.businessDate,
                 _businessDate = $filter('date')(_dateVal, 'yyyy-MM-dd'),
-                _dateParts    = _businessDate.match(/(\d+)/g),
-                _year  = parseInt( _dateParts[0] ),
+                _dateParts    = _businessDate.match(/(\d+)/g);
+            
+            var _year  = parseInt( _dateParts[0] ),
                 _month = parseInt( _dateParts[1] ) - 1,
                 _date  = parseInt( _dateParts[2] );
 
@@ -972,28 +1028,34 @@ sntRover.factory('RVReportUtilsFac', [
 
         // HELPER: create time slots
         factory.createTimeSlots = function () {
-            var _ret = [],
-                _hh = '',
-                _mm = '',
+            var _ret  = [],
+                _hh   = '',
+                _mm   = '',
                 _step = 15;
 
             var i = m = 0,
                 h = -1;
 
+            // 4 parts in each of 24 hours (00 -> 23)
+            // 4 * 24 = 96
             for (i = 0; i < 96; i++) {
-                if (i % 4 === 0) {
+
+                // each hour is split into 4 parts
+                // x:00, x:15, x:30, x:45
+                if (i % 4 == 0) {
                     h++;
                     m = 0;
                 } else {
                     m += _step;
                 }
 
+                // converting h -> HH and m -> MM
                 _hh = h < 10 ? '0' + h : h;
                 _mm = m < 10 ? '0' + m : m;
 
                 _ret.push({
-                    'value': _hh + ':' + _mm,
-                    'name': _hh + ':' + _mm
+                    'value' : _hh + ':' + _mm,
+                    'name'  : _hh + ':' + _mm
                 });
             };
 

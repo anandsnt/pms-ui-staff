@@ -35,7 +35,10 @@ sntRover.directive('autoComplete', ['highlightFilter',
                                 defIcon = 'icon-group-large';
                                 defIconText = 'G';
                                 break;
-
+                            case 'PROMO':
+                                defIcon = 'icon-group-large';
+                                defIconText = 'P';
+                                break;
                             default:
                                 break;
                         };

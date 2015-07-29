@@ -112,7 +112,8 @@ sntRover.controller('RVReportsMainCtrl', [
 			item_18: false,
 			item_19: false,
 			item_20: false,
-			item_21: false
+			item_21: false,
+			item_22: false,
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -531,6 +532,15 @@ sntRover.controller('RVReportsMainCtrl', [
 				/**/
 				$scope.appliedFilter['singleValueDate'] = angular.copy( chosenReport.singleValueDate );
 			};
+			
+			// include rate adjustment dates
+			if (!!chosenReport.hasAdjustmentDateRange) {
+				params['from_date'] = $filter('date')(chosenReport.fromAdjustmentDate, 'yyyy/MM/dd');
+				params['to_date']   = $filter('date')(chosenReport.untilAdjustmentDate, 'yyyy/MM/dd');
+				/**/
+				$scope.appliedFilter['adjustmentFromDate'] = angular.copy( chosenReport.fromAdjustmentDate );
+				$scope.appliedFilter['adjustmentToDate']   = angular.copy( chosenReport.untilAdjustmentDate );
+			};
 
 			// include times
 			if (chosenReport.hasTimeFilter) {
@@ -602,7 +612,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			};
 
 			// include group bys
-			if (chosenReport.groupByOptions) {
+			if ( chosenReport.groupByOptions ) {
 				if ( chosenReport.chosenGroupBy === 'DATE' ) {
 					params['group_by_date'] = true;
 					/**/

@@ -30,20 +30,18 @@ admin.controller('ADRatePromotionsCtrl', [
 			var onFetchSuccess = function(data) {
 				$scope.state.availablePromotions = [];
 				$scope.state.assignedPromotions = [];
-				_.each(data.promotion_rates, function(promo) {
-					var promoDetails = _.findWhere(data.promotions, {
-						id: promo.promotion_id
+				_.each(data.promotions, function(promo) {
+					var promoDetails = _.findWhere(data.promotion_rates, {
+						promotion_id: promo.id
 					});
 					if (promoDetails) {
-						if (promo.is_linked) {
-							$scope.state.assignedPromotions.push(promoDetails);
-						} else {
-							$scope.state.availablePromotions.push(promoDetails);
-						}
+						$scope.state.assignedPromotions.push(promo);
+					} else {
+						$scope.state.availablePromotions.push(promo);
 					}
 				});
 			};
-			if (!!$scope.rateData && !!$scope.rateData.id){
+			if (!!$scope.rateData && !!$scope.rateData.id) {
 				$scope.invokeApi(ADPromotionsSrv.fetchRatePromos, $scope.rateData.id, onFetchSuccess);
 			}
 		};

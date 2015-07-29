@@ -108,7 +108,15 @@ sntRover.controller('roverController',
     $rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
     $rootScope.isAddonOn = hotelDetails.is_addon_on;
     $rootScope.desktopSwipeEnabled = hotelDetails.allow_desktop_swipe;
-	$rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
+	  $rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
+    $rootScope.printCancellationLetter = hotelDetails.print_cancellation_letter;
+    $rootScope.printConfirmationLetter = hotelDetails.print_confirmation_letter;
+
+      // CICO-18040
+      $rootScope.isFFPActive = hotelDetails.is_ffp_active;
+      $rootScope.isHLPActive = hotelDetails.is_hlp_active;
+      $rootScope.isPromoActive = hotelDetails.is_promotion_active;
+
 
     //set MLI Merchant Id
     try {
@@ -461,7 +469,7 @@ sntRover.controller('roverController',
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       // Hide loading message
       $scope.$emit('hideLoader');
-      console.log(error);
+      console.error(error);
       //TODO: Log the error in proper way
     });
 

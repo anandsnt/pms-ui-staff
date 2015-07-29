@@ -6,7 +6,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 	$scope.setTitle($filter('translate')('MENU_JOURNAL'));
 
 	$scope.data = {};
-	$scope.data.activeTab = $stateParams.id==='' ? 0 : $stateParams.id;
+	$scope.data.activeTab = $stateParams.id === '' ? 0 : $stateParams.id;
 	$scope.data.filterData = {};
 	$scope.data.revenueData = {};
     $scope.data.paymentData = {};
@@ -204,7 +204,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         }
     };
 
-    if($stateParams.id === 0){
+    if( $stateParams.id === '0' || $stateParams.id === 0 ){
         // 2. Go to Financials -> Journal.
         // a) Upon logging in, default Tab should be Revenue
         $scope.data.activeTab = 0;
@@ -217,7 +217,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         $scope.data.toDate   = $filter('date')(yesterday, 'yyyy-MM-dd');
         $scope.data.cashierDate = $filter('date')(yesterday, 'yyyy-MM-dd');
     }
-    else if($stateParams.id === 2){
+    else if( $stateParams.id === '2' || $stateParams.id === 0 ){
         // 1. Go to Front Office -> Cashier
         // a) Upon logging in, default Tab should be Cashier
         $scope.data.activeTab = 2;

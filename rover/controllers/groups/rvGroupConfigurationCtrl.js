@@ -245,6 +245,10 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                         onGroupSaveFailure = function(errorMessage) {
                             $scope.errorMessage = errorMessage;
                         };
+                        
+                    if(!$scope.groupConfigData.summary.rate){
+                       $scope.groupConfigData.summary.rate = -1; 
+                    }    
 
                     $scope.callAPI(rvGroupConfigurationSrv.saveGroupSummary, {
                         successCallBack: onGroupSaveSuccess,
@@ -486,6 +490,15 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             $scope.errorMessage = errorMessage;
             runDigestCycle();
         });
+
+
+        $scope.parseCurrency = function(value) {
+            if (!!value) {
+                return $rootScope.currencySymbol + $filter('number')(value, 2);
+            } else {
+                return ""
+            }
+        };
 
         /**
          * function to initialize things for group config.

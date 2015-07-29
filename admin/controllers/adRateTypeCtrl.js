@@ -1,5 +1,5 @@
-admin.controller('ADRateTypeCtrl', ['$scope', '$rootScope', 'ADRateTypeSrv', 'ADRatesSrv', '$anchorScroll', '$timeout', '$location',
-function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout, $location) {
+admin.controller('ADRateTypeCtrl', ['$scope', '$rootScope', 'ADRateTypeSrv', 'ADRatesSrv', '$anchorScroll', '$timeout', '$location', 'rateClassifications',
+function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout, $location, rateClassifications) {
 	$scope.halfwayPoint = 0;
 
 	$scope.errorMessage = '';
@@ -8,6 +8,8 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 	$scope.isAddMode = false;
 	$scope.popoverRates = "";
 	$scope.mouseEnterPopover = false;
+
+	$scope.rateClassifications = rateClassifications;
 
 
 	var fetchSuccess = function(data) {
@@ -105,10 +107,12 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 				$scope.data.push(data);
 				var l = $scope.data.length;
 				$scope.data[(l - 1)].name = $scope.rateTypeData.name;
+				$scope.data[(l - 1)].classification = _.findWhere($scope.rateClassifications,{id: parseInt($scope.rateTypeData.classification.id,10)});
 				$scope.data[(l - 1)].rate_count = 0;
 			} else {
 				//To update data with new value
 				$scope.data[parseInt($scope.currentClickedElement)].name = $scope.rateTypeData.name;
+				$scope.data[parseInt($scope.currentClickedElement)].classification = _.findWhere($scope.rateClassifications,{id: parseInt($scope.rateTypeData.classification.id,10)});
 			}
 			$scope.currentClickedElement = -1;
 		};
