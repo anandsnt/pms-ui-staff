@@ -90,7 +90,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	 * Render add payment method screen
 	 */
 	$scope.addNew = function() {
-		$scope.addData = {};
+		$scope.addData = {"is_cc":false};
 		$scope.currentClickedElement = "new";
 		$timeout(function() {
             $location.hash('new-form-holder');
