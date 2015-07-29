@@ -407,7 +407,6 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case __reportNames['RATE_ADJUSTMENTS_REPORT']:
-                    reportItem['hasDateLimit']  = true;
                     reportItem['hasUserFilter'] = true;
                     break;
 
