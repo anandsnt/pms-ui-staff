@@ -25,7 +25,7 @@
                  Confirm Reservation
             </button>  
                  
-            <button ng-disabled="!printConfirmationLetter" ng-class="{ 'grey': !printConfirmationLetter }" type="button" class="button with-icon blue" ng-click="printReservation()">
+            <button ng-show="printConfirmationLetter" type="button" class="button with-icon blue" ng-click="printReservation()">
                 <span class="icons icon-print"></span>
                 Print Confirmation Letter
             </button>

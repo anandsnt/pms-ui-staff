@@ -33,7 +33,7 @@
                 <span class="icons icon-email"></span>
                 E-mail Cancellation Letter
             </button>
-            <button type="button" class="button with-icon blue" ng-click="printReservationCancellation()" ng-disabled="!printCancellationLetter" ng-class="{ 'grey': !printCancellationLetter }">
+            <button type="button" class="button with-icon blue" ng-click="printReservationCancellation()" ng-show="printCancellationLetter" >
                 <span class="icons icon-print"></span> 
                 Print Cancellation Letter
             </button>
