@@ -377,7 +377,7 @@ sntRover.factory('RVReportParserFac', [
          *
          * Each key will be the 'adjust_by' username and its value
          * will be an array of objects. Each object will represent
-         * an reservation (unique key 'reservation_id')
+         * an reservation (unique key 'confirmation_no')
          */
         
         /**
@@ -400,12 +400,12 @@ sntRover.factory('RVReportParserFac', [
 
             var i, j, k, l;
 
-
             for( i = 0, j = apiResponse.length; i < j; i++ ) {
 
                 // create a copy of ith apiResponse
                 makeCopy = angular.copy( apiResponse[i] );
 
+                // copy the reservation details and an empty 'stay_dates' array
                 withOutStay = angular.copy({
                     'guest_name'      : makeCopy.guest_name,
                     'confirmation_no' : makeCopy.confirmation_no,
@@ -414,21 +414,30 @@ sntRover.factory('RVReportParserFac', [
                     'stay_dates'      : []
                 });
 
+                // loop and generate an object
+                // representing (same) reservation with
+                // only that user, so a set of that will be
+                // an object of objects
                 usersInThisRes = {};
                 for( k = 0, l = makeCopy['stay_dates'].length; k < l; k++ ) {
                     kth = makeCopy['stay_dates'][k];
                     userId = kth['adjusted_user_id'] || 'Unknown';
                     userNa = kth['adjusted_by'] || 'Unknown';
 
+                    // create a very unique 'uid', we'll remove 'userId' from it later
                     uid = userId + '__' + userNa;
 
                     if ( usersInThisRes[uid] == undefined ) {
                         usersInThisRes[uid] = angular.copy( withOutStay );
                     };
 
+                    // for each user just push only its associate 'stay_dates' changes
                     usersInThisRes[uid]['stay_dates'].push( kth );
                 };
 
+                // inset the just found reservation
+                // each with only details of 'stay_dates'
+                // changes of just one user, into a 'tempObj'
                 for( keyId in usersInThisRes ) {
                     if ( ! usersInThisRes.hasOwnProperty(keyId) ) {
                         continue;
@@ -454,7 +463,7 @@ sntRover.factory('RVReportParserFac', [
                 // only take the user name part
                 onlyUserNa = keyId.split('__')[1];
 
-                // oh also we will each entry to nG repeat format
+                // oh, also we will parse each entry to nG repeat format
                 returnObj[onlyUserNa] = $_parseRateAdjustments( reportName, tempObj[keyId], options );
             };
 
