@@ -1029,7 +1029,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					$scope.activeRoom,
 					$scope.reservationData.numNights,
 					$scope.reservationData.code,
-					$scope.reservationData.member.isSelected && isMembershipValid()),
+					$scope.reservationData.member.isSelected),
 				rooms = parsedRooms.rooms;
 			$scope.displayData.dates = parsedRooms.displayDates;
 
