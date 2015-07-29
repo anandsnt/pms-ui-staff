@@ -4467,15 +4467,9 @@
                     }
 
                     /* Additional details **/
-                    &.item-market, 
-                    &.item-origin,
-                    &.item-type,
-                    &.item-source,
-                    &.item-segment,
-                    &.item-commission { 
+                    &.additional-detail{ 
                         .calc-width(50, 10); 
-
-                        &:nth-child(even) { margin-right: 0; }
+                        &:nth-child(odd) { margin-right: 0; }
                     }
 
                     &.item-commission {
