@@ -70,20 +70,29 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 		$scope.invokeApi(ADStationarySrv.saveStationary, postingData, successCallbackOfSaveDetails);
 	};
 
+	// CICO-17706 : While Cancellation Email is Turned OFF , Print Cancellation Email also forced to OFF.
+	$scope.$watch('data.send_cancellation_letter', function(newValue, oldValue) {
+	   if(!newValue) $scope.data.print_cancellation_letter = false;
+	});
+
 	$scope.$watch(function() {
 		return $scope.data.location_image;
 	}, function(logo) {
-		if (logo === 'false')
+		if (logo === 'false') {
 			$scope.fileName = "Choose File....";
+		}
 		$scope.location_image_file = $scope.fileName;
 	});
 	/**
 	 *   To handle show hide status for the logo delete button
 	 */
 	$scope.isLogoAvailable = function(logo) {
-		if (logo != '/assets/logo.png' && logo != 'false')
+		if (logo !== '/assets/logo.png' && logo !== 'false') {
 			return true;
-		else return false;
+		}
+		else {
+			return false;
+		}
 	};
 
 	$scope.onEditSocialLink = function(link, index) {

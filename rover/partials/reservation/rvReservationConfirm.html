@@ -115,6 +115,13 @@
                     <label translate ng-show="!reservationStatus.confirmed">SEND_CONFIRMATION_TO_FOLLOWING_EMAIL_ADDRESSES</label>
                     <div class="entry full-width" ng-show="!reservationStatus.confirmed">
                         
+                        <div class="entry radio-check">
+                            <label class="checkbox inline" for="no-rate-print" ng-class="{ 'checked':reservationData.hide_rates }">
+                                <span class="icon-form icon-checkbox" ng-class="{ 'checked':reservationData.hide_rates }"></span>
+                                <input ng-click="clickedShowRate()" id="no-rate-print" value="" type="checkbox">
+                                {{ 'DONT_PRINT_RATE' | translate }}
+                            </label>
+                        </div>
                         
                         <label for="email" translate>GUEST_EMAIL_ADDRESS</label>
                         <label class="checkbox inline">
@@ -130,10 +137,15 @@
                             <input name="send-confirmation" value="send-confirmation" type="checkbox" ng-model="otherData.isGuestAdditionalEmailChecked"/>
                             <span>&nbsp;</span>
                         </label>
-                        <input class="summary_email" ng-model="otherData.additionalEmail">    
+                        <input class="summary_email" ng-model="otherData.additionalEmail">  
+
                     </div>
                     <div class="actions"  ng-show="!reservationStatus.confirmed">
-                            <button type="button" class="button blue" ng-click="sendConfirmationClicked(payment_info.email.$valid)">Confirm Reservation</button>
+                        <button type="button" class="button blue" ng-click="sendConfirmationClicked(payment_info.email.$valid)">Confirm Reservation</button>
+                        <button ng-disabled="!printConfirmationLetter" ng-class="{ 'grey': !printConfirmationLetter }" type="button" class="button blue with-icon" ng-click="printConfirmationReservation()">
+                            <span class="icons icon-print"></span>
+                            Print Confirmation Letter
+                        </button>
                     </div>
                     <!-- <section ng-show="!reservationStatus.confirmed">
                     <p>Send confirmation to the following email address(es)</p>
@@ -204,3 +216,4 @@
         </form>
     </div>
 </section>
+<div ng-include="'/assets/partials/reservation/includes/rvConfirmationPrintTemplate.html'"></div> 

@@ -7,7 +7,9 @@ admin.controller('ADPromotionsCtrl', [
 			promotions: [],
 			current: -1,
 			rates: rates.results,
-			usePromos: false
+			usePromos: false,
+			from_date_display: "",
+			to_date_display: ""
 		};
 
 		$scope.filterRates = function(promo) {
@@ -86,6 +88,8 @@ admin.controller('ADPromotionsCtrl', [
 
 		$scope.onEditPromo = function(promotion, index) {
 			$scope.state.storedPromo = angular.copy(promotion);
+			$scope.state.from_date_display = $filter('date')(promotion.from_date, $rootScope.dateFormat);
+			$scope.state.to_date_display = $filter('date')(promotion.to_date, $rootScope.dateFormat);
 			$scope.state.current = index;
 		};
 
@@ -110,7 +114,7 @@ admin.controller('ADPromotionsCtrl', [
 			$scope.state.current = -1;
 		};
 
-		$scope.toggleActivation = function(promo){
+		$scope.toggleActivation = function(promo) {
 			promo.is_active = !promo.is_active;
 			$scope.updatePromo(promo);
 		};
@@ -123,7 +127,7 @@ admin.controller('ADPromotionsCtrl', [
 				to_date: $filter('date')($scope.state.newPromo.to_date, "yyyy-MM-dd"),
 				discount_type: $scope.state.newPromo.discount.type,
 				discount_value: $scope.state.newPromo.discount.value,
-				linked_rates: _.pluck($scope.state.newPromo.assignedRates,'id'),
+				linked_rates: _.pluck($scope.state.newPromo.assignedRates, 'id'),
 				description: $scope.state.newPromo.description,
 				is_active: true
 			}, function() {
@@ -133,7 +137,7 @@ admin.controller('ADPromotionsCtrl', [
 			});
 		};
 
-		$scope.updatePromo = function(promo){
+		$scope.updatePromo = function(promo) {
 			$scope.invokeApi(ADPromotionsSrv.update, {
 				id: promo.id,
 				name: promo.name,
@@ -142,7 +146,7 @@ admin.controller('ADPromotionsCtrl', [
 				to_date: $filter('date')(promo.to_date, "yyyy-MM-dd"),
 				discount_type: promo.discount.type,
 				discount_value: promo.discount.value,
-				linked_rates: _.pluck(promo.assignedRates,'id'),
+				linked_rates: _.pluck(promo.assignedRates, 'id'),
 				description: promo.description,
 				is_active: promo.is_active
 			}, function() {
@@ -152,7 +156,7 @@ admin.controller('ADPromotionsCtrl', [
 			});
 		};
 
-		$scope.deletePromo = function(promo){
+		$scope.deletePromo = function(promo) {
 			$scope.invokeApi(ADPromotionsSrv.delete, {
 				id: promo.id
 			}, function() {

@@ -17,7 +17,7 @@
             <div class="entry margin type">
                 <label for="rooming-room-type">{{'GROUP_ROOM_TYPE'|translate}}</label>
                 <div class="select">
-                    <select id="rooming-room-type" ng-model="ngDialogData.room_type_id" ng-change="changedSelectedRoomType()" ng-disabled="shouldDisableRoomTypeChange(ngDialogData)">
+                    <select id="rooming-room-type" ng-model="ngDialogData.room_type_id" ng-change="changedReservationRoomType(ngDialogData)" ng-disabled="shouldDisableReservationRoomTypeChange(ngDialogData)">
                         <option value="{{roomTypeData.room_type_id}}" ng-repeat="roomTypeData in ngDialogData.allowedRoomTypes" ng-selected="roomTypeData.room_type_id == ngDialogData.room_type_id">
                             {{roomTypeData.room_type_name}}
                         </option>
@@ -57,13 +57,11 @@
             </div>
             <div class="entry room" ng-disabled="true">
                 <label for="room">Room</label>
-                <input ng-model="ngDialogData.room_no" ng-disabled="true"></input>
-                <div class="select" ng-hide="true">
-                    <select id="room" ng-disabled="true">
+                <div class="select">
+                    <select id="room" ng-disabled="shouldDisableChangeRoom(ngDialogData)" ng-model="ngDialogData.room_id" ng-class="{'placeholder': isEmptyRoomNumber(ngDialogData.room_no)}">
                         <!-- Add class "placeholder" if "N/A" set as option -->
-                        <option value="">N/A</option>
-                        <option value="{Room No.}">{Room No.}</option>
-                        ... repeat
+                        <option value="" ng-selected="isEmptyRoomNumber(ngDialogData.room_no)">N/A</option>
+                        <option value="{{roomData.id}}" ng-selected="ngDialogData.room_id===roomData.id" ng-repeat="roomData in ngDialogData.roomsFreeToAssign">{{roomData.room_number}}</option>
                     </select>
                 </div>
             </div>

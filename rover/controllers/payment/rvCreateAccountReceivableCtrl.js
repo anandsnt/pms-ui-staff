@@ -1,9 +1,9 @@
 sntRover.controller('RVCreateAccountReceivableCtrl',['$rootScope', '$scope', '$state', 'RVCompanyCardSrv','ngDialog', function($rootScope, $scope, $state, RVCompanyCardSrv, ngDialog){
 	BaseCtrl.call(this, $scope);
 	$scope.ar_number = "";
-	
+
 	$scope.createAccountReceivable = function(){
-		
+
 		var data = {
 			"id": $scope.account_id,
 			"ar_number": $scope.ar_number
@@ -14,5 +14,5 @@ sntRover.controller('RVCreateAccountReceivableCtrl',['$rootScope', '$scope', '$s
 	$scope.closeDialog = function(){
 		ngDialog.close();
 	}
-	
+
 }]);

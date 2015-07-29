@@ -1,7 +1,7 @@
 sntRover.controller('RVHouseAvailabilityStatusCtrl', [
-	'$scope', 
-	'$timeout', 
-	'ngDialog', 
+	'$scope',
+	'$timeout',
+	'ngDialog',
 	'$rootScope',
 	'$filter',
 	'rvAvailabilitySrv',
@@ -27,10 +27,10 @@ sntRover.controller('RVHouseAvailabilityStatusCtrl', [
 				$timeout(function(){
 					$scope.refreshScroller('house-status-grid');
 					//CICO-10617 The refresh scroller is not working in this case... On first check found that the scope is different.
-					// Applying a quick resolution now... Will have to debug and apply fix later	
+					// Applying a quick resolution now... Will have to debug and apply fix later
 					$scope.$parent.myScroll['house-status-grid'].refresh();
 				},300);
-				
+
 			};
 			var businessDate = tzIndependentDate($rootScope.businessDate);
 			//We need to display only 3 days information
@@ -46,7 +46,7 @@ sntRover.controller('RVHouseAvailabilityStatusCtrl', [
 				'business_date' : $rootScope.businessDate
 			}
 
-			$scope.invokeApi(rvAvailabilitySrv.fetchHouseStatusDetails, dataForWebservice, houseStatusFetchSuccess);						
+			$scope.invokeApi(rvAvailabilitySrv.fetchHouseStatusDetails, dataForWebservice, houseStatusFetchSuccess);
 		};
 
 		init();

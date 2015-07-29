@@ -25,7 +25,7 @@
         <span translate>FILTER_ROOMS</span>
     </button>
     
-    <div class="entry search" ng-class="{ 'rooms-checked': anyRoomChosen }">
+    <div class="entry search" ng-class="{ 'rooms-checked': multiRoomAction.anyChosen }">
         <button type="button" class="clear-query" ng-show="query != ''" ng-click="clearSearch()" ng-class="{'visible': query != ''}">
             <span class="icons icon-clear-search ng-scope" translate>CLEAR_QUERY</span>
         </button>
@@ -33,7 +33,7 @@
         <input name="rooms-query" id="rooms-query" class="query" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}" type="search" autocomplete="off" ng-model="query" ng-change="filterByQuery()">
     </div>
     
-    <div class="entry options" ng-if="isStandAlone" ng-cloak ng-class="{ 'rooms-checked': anyRoomChosen }">
+    <div class="entry options" ng-if="isStandAlone" ng-cloak ng-class="{ 'rooms-checked': multiRoomAction.anyChosen }">
         <div class="select">
             <select id="work-type" name="work-type" ng-model="topFilter.byWorkType" ng-options="work.id as work.name for work in workTypes" ng-change="applyWorkTypefilter()">
                 <option value="">All Work Types</option>
@@ -48,18 +48,18 @@
     </div>
 
     <!-- Select All Rooms from list -->
-    <div ng-if="isStandAlone" class="entry check" ng-class="{ 'rooms-checked': anyRoomChosen }">
-        <button type="button" class="button purple with-icon only-icon open-modal" ng-class="{ 'hidden': !anyRoomChosen }" ng-click="openChangeHkStatusModal()"> <!-- Hidden until at least 1 room is selected -->
+    <div ng-if="isStandAlone" id="hk-multi-select" class="entry check" ng-class="{ 'rooms-checked': multiRoomAction.anyChosen }">
+        <button type="button" class="button purple with-icon only-icon open-modal" ng-class="{ 'hidden': !multiRoomAction.anyChosen }" ng-click="openChangeHkStatusModal()"> <!-- Hidden until at least 1 room is selected -->
             <span class="icons icon-pencil"></span>
             Update
         </button>
-        <label class="checkbox inline" for="select-all-rooms">
-            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : multiRoomAction.allSelected }"></span>
-            <input id="select-all-rooms" type="checkbox" ng-model="multiRoomAction.allSelected" ng-change="selectAllRooms(multiRoomAction.allSelected)" />
+        <label class="checkbox inline" for="select-all-rooms" ng-click="toggleRoomSelection($event)">
+            <span class="icon-form icon-checkbox" ng-class="{ 'semi-checked': (multiRoomAction.anyChosen && !multiRoomAction.allChosen), 'checked': multiRoomAction.allChosen }"></span>
+            <input id="select-all-rooms" type="checkbox" ng-model="multiRoomAction.allChosen" />
         </label>
     </div>
 
-    <button ng-if="isStandAlone" type="button" id="refresh-data" class="button blue with-icon only-icon print" ng-click="printData()" ng-class="{ 'rooms-checked': anyRoomChosen }">
+    <button ng-if="isStandAlone" type="button" id="refresh-data" class="button blue with-icon only-icon print" ng-click="printData()" ng-class="{ 'rooms-checked': multiRoomAction.anyChosen }">
         <span class="icons icon-print"></span>
         <span translate>Print</span>
     </button>
@@ -90,10 +90,10 @@
         <p class="pull-msg" ng-show="!disablePrevBtn">Pull down to load previous page</p>
         <p class="pull-msg" ng-show="disablePrevBtn">Pull down to refresh page</p>
     </li>
-
+    
     <li class="room" bindonce ng-repeat="room in rooms track by $index">
         <div ng-if="isStandAlone" class="check">
-            <label class="checkbox inline" for="{{ room.id }}" ng-click="roomSelectChange(room)">
+            <label class="checkbox inline" for="{{ room.id }}" ng-click="roomSelectChange(room, $index)">
                 <span class="icon-form icon-checkbox" ng-class="{ 'checked' : room.selected }"></span>
                 <input id="{{ room.id }}" type="checkbox" ng-model="room.selected" />
             </label>

@@ -8,7 +8,7 @@ sntRover.directive("autoGrowField", function($window) {
       // a method to update the width of an input
       // based on it's value.
       var updateWidth = function() {
-        // create a dummy span, we'll use this to measure text.          
+        // create a dummy span, we'll use this to measure text.
         var tester = angular.element('<div>'),
 
           // get the computed style of the input
@@ -59,7 +59,7 @@ sntRover.directive("autoGrowField", function($window) {
       });
 
       // Need to fire event once again as the fields in the card headers
-      // in the create reservation screens 
+      // in the create reservation screens
       // arent of right width
       $window.setTimeout(updateWidth, 3000); //changed from 0 to 2000 becauze the lazy loading
 

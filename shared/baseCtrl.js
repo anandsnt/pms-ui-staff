@@ -12,17 +12,17 @@ function BaseCtrl($scope) {
 	};
 	$scope.clearErrorMessage();
 	$scope.showErrorMessage = function(errorMessage){
-		
+
 	};
-	
+
 	//function that converts a null value to a desired string.
 	//if no replace value is passed, it returns an empty string
 	$scope.escapeNull = function(value, replaceWith){
   		var newValue = "";
-  		if((typeof replaceWith != "undefined") && (replaceWith != null)){
+  		if((typeof replaceWith !== "undefined") && (replaceWith !== null)){
   			newValue = replaceWith;
   		}
-  		var valueToReturn = ((value == null || typeof value == 'undefined' ) ? newValue : value);
+  		var valueToReturn = ((value === null || typeof value === 'undefined' ) ? newValue : value);
   		return valueToReturn;
 	};
 
@@ -31,12 +31,12 @@ function BaseCtrl($scope) {
 		//scroll to top of the page where error message is shown
 		if(angular.element( document.querySelector('.content')).find(".error_message").length) {
   			angular.element( document.querySelector('.content')).scrollTop(0);
-		}; 
-		if($scope.hasOwnProperty("errorMessage")){ 	
+		};
+		if($scope.hasOwnProperty("errorMessage")){
 			$scope.errorMessage = errorMessage;
 			$scope.successMessage = '';
 		}
-		else {			
+		else {
 			$scope.$emit("showErrorMessage", errorMessage);
 		}
 		// if needed ,to be handled as per requirements in controllers (scroll to top,empty fields)
@@ -46,20 +46,21 @@ function BaseCtrl($scope) {
 
 	$scope.invokeApi = function(serviceApi, params, successCallback, failureCallback, loaderType){
 		//loaderType options are "BLOCKER", "NONE"
-		
-		if(typeof loaderType === 'undefined')
-			loaderType = 'BLOCKER';
-		if(loaderType.toUpperCase() == 'BLOCKER')
-			$scope.$emit('showLoader');
 
+		if(typeof loaderType === 'undefined') {
+			loaderType = 'BLOCKER';
+		}
+		if(loaderType.toUpperCase() === 'BLOCKER') {
+			$scope.$emit('showLoader');
+		}
 		successCallback = (typeof successCallback ==='undefined') ? $scope.fetchedCompleted : successCallback;
 		failureCallback = (typeof failureCallback ==='undefined') ? $scope.fetchedFailed : failureCallback;
-		
+
 		return serviceApi(params).then(successCallback, failureCallback);
-		
+
 	};
 
-	$scope.callAPI = function(serviceApi, options){		
+	$scope.callAPI = function(serviceApi, options){
 		var options = options ? options : {},
 			params = options["params"] ? options["params"] : null,
 			loader = options["loader"] ? options["loader"] : 'BLOCKER',
@@ -67,10 +68,10 @@ function BaseCtrl($scope) {
 			successCallBack = options["successCallBack"] ? options["successCallBack"] : $scope.fetchedCompleted,
 			failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : $scope.fetchedFailed,
 			successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null,
-			failureCallBackParameters = options["failureCallBackParameters"] ? options["failureCallBackParameters"] : null;		
+			failureCallBackParameters = options["failureCallBackParameters"] ? options["failureCallBackParameters"] : null;
 
 		if(showLoader){
-			$scope.$emit('showLoader')		
+			$scope.$emit('showLoader')
 		}
 
 
@@ -86,15 +87,15 @@ function BaseCtrl($scope) {
 					}
 					else{
 						successCallBack(data);
-					}						
-				}				
+					}
+				}
 			},
 			//failure callback
 			function(error){
 				if(showLoader){
 					$scope.$emit('hideLoader');
 				}
-				if(failureCallBack) {	
+				if(failureCallBack) {
 					if(failureCallBackParameters){
 						failureCallBack(error, failureCallBackParameters);
 					}
@@ -107,22 +108,22 @@ function BaseCtrl($scope) {
 	}
 
 	//handle drag and drop events
-	$scope.hideCurrentDragItem = function(ev, ui){ 
+	$scope.hideCurrentDragItem = function(ev, ui){
 		$(ev.target).hide();
 	 };
 
- 	$scope.showCurrentDragItem = function(ev, ui){ 
+ 	$scope.showCurrentDragItem = function(ev, ui){
 		$(ev.target).show();
  	};
 
     /**
     * function to get day against a date
     * if you give today's date it will return 'Today', Tomorrow will return against tomorrow's date
-    * for others, it will return week day (Sunday, Monday..) 
+    * for others, it will return week day (Sunday, Monday..)
     */
 
     $scope.getSimplifiedDayName = function(date){
-    	var returnText = "";  
+    	var returnText = "";
         try{
             // var passedDate = new Date(date);
             // var currentDate = new Date($scope.businessDate);
@@ -130,10 +131,10 @@ function BaseCtrl($scope) {
             var currentDate = tzIndependentDate($scope.businessDate);
 			var timeDiff = (passedDate.getTime() - currentDate.getTime());
 			var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-			if(diffDays == 0){
+			if(diffDays === 0){
 				returnText = "Today";
 			}
-			else if(diffDays == 1){
+			else if(diffDays === 1){
 				returnText = "Tomorrow";
 			}
 			else {
@@ -144,7 +145,7 @@ function BaseCtrl($scope) {
 			    weekday[3] = "Wednesday";
 			    weekday[4] = "Thursday";
 			    weekday[5] = "Friday";
-			    weekday[6] = "Saturday";  
+			    weekday[6] = "Saturday";
 			    returnText = weekday[passedDate.getDay()];
 			}
 			return returnText;
@@ -162,18 +163,18 @@ function BaseCtrl($scope) {
     };
 
     $scope.goBack = function($rootScope, $state){
-		
+
 		if($rootScope.previousStateParam){
 			$state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
 		}
 		else if($rootScope.previousState){
 			$state.go($rootScope.previousState);
 		}
-		else 
+		else
 		{
 			$state.go('admin.dashboard', {menu : 0});
 		}
-	
+
 	};
 
 	/*
@@ -186,15 +187,15 @@ function BaseCtrl($scope) {
 		scrollbars: 'custom',
 		hideScrollbar: false,
 		click: false,
-		scrollX: false, 
-		scrollY: true, 
+		scrollX: false,
+		scrollY: true,
 		preventDefault: true,
 		preventDefaultException:{ tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/ }
     };
 
     /*
     	function to handle scroll related things
-    	@param1: string as key 
+    	@param1: string as key
     	@param2: object as scroller options
     */
     $scope.setScroller = function (key, scrollerOptions){
@@ -206,19 +207,19 @@ function BaseCtrl($scope) {
     	angular.extend (tempScrollerOptions, scrollerOptions); //here is using a angular function to extend,
     	scrollerOptions = tempScrollerOptions;
     	//checking whether scroll options object is already initilised in parent controller
-    	//if so we need add a key, otherwise initialise and add    
+    	//if so we need add a key, otherwise initialise and add
     	var isEmptyParentScrollerOptions = isEmptyObject ($scope.$parent.myScrollOptions);
-    	
-    	if (isEmptyParentScrollerOptions) { 
-    		$scope.$parent.myScrollOptions = {}; 		
+
+    	if (isEmptyParentScrollerOptions) {
+    		$scope.$parent.myScrollOptions = {};
     	}
-    	
-    	$scope.$parent.myScrollOptions[key] = scrollerOptions; 
+
+    	$scope.$parent.myScrollOptions[key] = scrollerOptions;
     };
 
     /*
-    	function to refresh the scroller 
-    	@param1: string as key 
+    	function to refresh the scroller
+    	@param1: string as key
     */
     $scope.refreshScroller = function (key){
     	setTimeout(function() {
@@ -227,7 +228,7 @@ function BaseCtrl($scope) {
     				$scope.$parent.myScroll[key].refresh();
     			}
     		};
-    	}, $scope.timeOutForScrollerRefresh);   	
+    	}, $scope.timeOutForScrollerRefresh);
     };
 
     /*
@@ -239,12 +240,12 @@ function BaseCtrl($scope) {
 		var success = function(response){
 			$scope.$emit("hideLoader");
 			successCallback(response);
-			$scope.$apply(); 
+			$scope.$apply();
 		};
 		var failure = function(data){
 			$scope.$emit("hideLoader");
 			var errorMessage = ["There is a problem with your credit card"];
-			failureCallback(errorMessage); 
+			failureCallback(errorMessage);
 			$scope.$apply();
 		};
 
@@ -263,7 +264,7 @@ function BaseCtrl($scope) {
 				var errorMessage = ["There is a problem with your credit card"];
 				failureCallback(errorMessage);
 		};
-		
+
 	};
 
 }

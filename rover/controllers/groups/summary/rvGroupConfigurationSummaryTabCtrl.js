@@ -36,8 +36,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return undefined
 		 */
 		$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
-			if ($scope.isInAddMode() || targetElement.id == 'summary' ||
-				targetElement.id == "cancel-action" || //TODO: Need to check with Dilip/Shiju PC for more about this
+			if ($scope.isInAddMode() || targetElement.id === 'summary' ||
+				targetElement.id === "cancel-action" || //TODO: Need to check with Dilip/Shiju PC for more about this
 				whetherSummaryDataChanged() ||
 				$scope.groupSummaryData.isDemographicsPopupOpen || $scope.isUpdateInProgress) {
 
@@ -65,7 +65,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 		/**
 		 * when from date choosed, this function will fire
-		 * @param  {Object} date          
+		 * @param  {Object} date
 		 * @param  {Object} datePickerObj
 		 * @return undefined
 		 */
@@ -74,7 +74,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 			//referring data source
 			var refData = $scope.groupConfigData.summary;
-			if (refData.release_date.toString().trim() == '') {
+			if (refData.release_date.toString().trim() === '') {
 				$scope.groupConfigData.summary.release_date = refData.block_from;
 			}
 
@@ -110,13 +110,14 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					console.log(errorMessage);
 				},
 				updateSegment = function() {
-					var aptSegment = ""; //Variable to store the suitable segment ID 
+					var aptSegment = ""; //Variable to store the suitable segment ID
 					if (!!$scope.groupConfigData.summary.block_to && !!$scope.groupConfigData.summary.block_from) {
 						var dayDiff = Math.floor((new tzIndependentDate($scope.groupConfigData.summary.block_to) - new tzIndependentDate($scope.groupConfigData.summary.block_from)) / 86400000);
 						angular.forEach($scope.groupSummaryData.demographics.segments, function(segment) {
 							if (dayDiff < segment.los) {
-								if (!aptSegment)
+								if (!aptSegment) {
 									aptSegment = segment.value;
+								}
 							}
 						});
 						$scope.groupSummaryData.computedSegment = !!aptSegment;
@@ -138,9 +139,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 		/**
 		 * when to date choosed, this function will fire
-		 * @param  {Object} date          
-		 * @param  {Object} datePickerObj 
-		 * @return undefined            
+		 * @param  {Object} date
+		 * @param  {Object} datePickerObj
+		 * @return undefined
 		 */
 		var toDateChoosed = function(date, datePickerObj) {
 			$scope.groupConfigData.summary.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
@@ -156,9 +157,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 		/**
 		 * when release date choosed, this function will fire
-		 * @param  {Object} date          
-		 * @param  {Object} datePickerObj 
-		 * @return undefined            
+		 * @param  {Object} date
+		 * @param  {Object} datePickerObj
+		 * @return undefined
 		 */
 		var releaseDateChoosed = function(date, datePickerObj) {
 			$scope.groupConfigData.summary.release_date = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
@@ -301,6 +302,32 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$scope.closeDialog();
 		}
 
+		$scope.onRateChange = function() {
+			if (!$scope.groupConfigData.summary.group_id) {
+				return false;
+			}
+
+			$scope.invokeApi(rvGroupConfigurationSrv.updateRate, {
+				group_id: $scope.groupConfigData.summary.group_id,
+				rate_id: $scope.groupConfigData.summary.rate
+			}, function(response) {
+				$scope.$emit('hideLoader');
+				if (!response.is_changed && !response.is_room_rate_available) {					
+					ngDialog.open({
+						template: '/assets/partials/groups/summary/warnChangeRateNotPossible.html',
+						className: '',
+						scope: $scope,
+						closeByDocument: false,
+						closeByEscape: false
+					});
+					$scope.groupConfigData.summary.rate = summaryMemento.rate;
+				}
+			}, function(errorMessage) {
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorMessage;
+				$scope.groupConfigData.summary.rate = summaryMemento.rate;
+			})
+		}
 
 
 		$scope.cancelDemographicChanges = function() {
@@ -383,7 +410,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				var selectedStatus = _.findWhere($scope.groupConfigData.holdStatusList, {
 					id: parseInt($scope.groupConfigData.summary.hold_status)
 				})
-				if (selectedStatus && selectedStatus.name == 'Cancel' && !!selectedStatus.is_system) {
+				if (selectedStatus && selectedStatus.name === 'Cancel' && !!selectedStatus.is_system) {
 					ngDialog.open({
 						template: '/assets/partials/groups/summary/warnCancelGroupPopup.html',
 						className: '',
@@ -406,7 +433,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 */
 		$scope.isCancellable = function() {
 
-			return (rvPermissionSrv.getPermissionValue('CANCEL_GROUP') && !!$scope.groupConfigData.summary.is_cancelled || ($scope.groupConfigData.summary.total_checked_in_reservations == 0 && parseFloat($scope.groupConfigData.summary.balance) == 0.0));
+			return (rvPermissionSrv.getPermissionValue('CANCEL_GROUP') && !!$scope.groupConfigData.summary.is_cancelled || ($scope.groupConfigData.summary.total_checked_in_reservations === 0 && parseFloat($scope.groupConfigData.summary.balance) === 0.0));
 		}
 
 		/**
@@ -567,10 +594,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				successCallBack: onRemoveGroupNoteSuccess,
 				failureCallBack: onRemoveGroupNoteFailure,
 				params: {
-					"note_id": noteId,
+					"note_id": noteId
 				},
 				successCallBackParameters: {
-					"noteId": noteId,
+					"noteId": noteId
 				}
 			});
 		}
@@ -681,7 +708,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * we will use this to fetch summary data
 		 */
 		$scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab) {
-			if (activeTab !== 'SUMMARY') return;
+			if (activeTab !== 'SUMMARY') {
+				return;
+			}
 			fetchSummaryData();
 
 			//we are resetting the API call in progress check variable

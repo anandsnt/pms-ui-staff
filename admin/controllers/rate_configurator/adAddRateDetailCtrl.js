@@ -16,7 +16,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
         };
 
         $scope.shouldShowMemberRates = function(){
-            return !!$rootScope.isFFPActive || !!$rootScope.isHLPActive;
+            return !$rootScope.isHourlyRatesEnabled && (!!$rootScope.isFFPActive || !!$rootScope.isHLPActive);
         }
 
         $scope.isPromotional = function() {
@@ -77,7 +77,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             $scope.rateTypesDetails = $scope.rateInitialData;
             /**
              * CICO-9289 - This switch will only show if the Reservation Setting 'Hourly Rates' has been switched on (see CICO-9435) and then default to 'Hourly'
-             * If parameter is switched off, do not show the switch (but default setup to Daily). 
+             * If parameter is switched off, do not show the switch (but default setup to Daily).
              */
             if (!$scope.rateData.id) {
                 $scope.rateData.is_hourly_rate = $rootScope.isHourlyRatesEnabled;
@@ -91,7 +91,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
              */
             angular.forEach($scope.rateTypesDetails.depositPolicies, function(depositPolicy) {
                 var symbol = (depositPolicy.amount_type === "amount") ? '$' : '%';
-                if (symbol == '%') {
+                if (symbol === '%') {
                     depositPolicy.displayData = depositPolicy.name + "   " + "(" + depositPolicy.amount + symbol + ")";
                 } else {
                     depositPolicy.displayData = depositPolicy.name + "   " + "(" + symbol + depositPolicy.amount + ")";
@@ -99,7 +99,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             });
             angular.forEach($scope.rateTypesDetails.cancelationPenalties, function(cancelationPenalty) {
                 var symbol = (cancelationPenalty.amount_type === "amount") ? '$' : '%';
-                if (symbol == '%') {
+                if (symbol === '%') {
                     cancelationPenalty.displayData = cancelationPenalty.name + "   " + "(" + cancelationPenalty.amount + symbol + ")";
                 } else {
                     cancelationPenalty.displayData = cancelationPenalty.name + "   " + "(" + symbol + cancelationPenalty.amount + ")";
@@ -158,13 +158,16 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'deposit_policy_id': $scope.rateData.deposit_policy_id,
                 'end_date': $scope.rateData.end_date,
                 'is_hourly_rate': $scope.rateData.is_hourly_rate,
-                'is_member': $scope.rateData.is_member_rate
+                'is_member': $scope.rateData.is_member_rate,
+                'commission_value':$scope.rateData.commission_value,
+                'commission_type':$scope.rateData.commission_type
             };
 
             // Save Rate Success Callback
-            var saveSuccessCallback = function(data) {
+            var saveSuccessCallback = function(data) {                
                 $scope.manipulateData(data);
                 $scope.detailsMenu = "";
+                $('#activityLogArea').scope().detailsMenu = '';
                 $scope.$emit('hideLoader');
                 $scope.$emit("changeMenu", 'Room types');
                 $scope.$emit("rateChangedFromDetails");
@@ -206,11 +209,12 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             var validateEndDateSuccessCallback = function(data) {
 
                 $scope.$emit('hideLoader');
-                if (data.status)
+                if (data.status) {
                     $scope.startSave();
-                else
+                }
+                else {
                     $scope.endDateValidationPopup();
-
+                }
             };
 
             var validateEndDateFailureCallback = function(data) {

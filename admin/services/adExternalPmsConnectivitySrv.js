@@ -28,7 +28,9 @@ admin.service('ADExternalPmsConnectivitySrv',['$http', '$q', 'ADBaseWebSrv', fun
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
-			if(typeof data === 'string') data = [data];
+			if(typeof data === 'string') {
+				data = [data];
+			}
 		    deferred.reject(data);
 		});
 		return deferred.promise;

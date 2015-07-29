@@ -1,6 +1,6 @@
 sntRover.controller('RVValidateEmailCtrl',['$scope', '$state', 'ngDialog', 'RVContactInfoSrv',  function( $scope, $state, ngDialog, RVContactInfoSrv){
 	BaseCtrl.call(this, $scope);
-	
+
 	$scope.saveData = {};
 	$scope.saveData.email = "";
 	// To handle ignore & goto checkout click
@@ -13,14 +13,14 @@ sntRover.controller('RVValidateEmailCtrl',['$scope', '$state', 'ngDialog', 'RVCo
 	}
 	// To handle submit & goto checkout click
 	$scope.submitAndGoToCheckout = function(){
-		if($scope.saveData.email == ""){
+		if($scope.saveData.email === ""){
 			alert("Please enter email");
 			return false;
 		}
-		
+
 		$scope.saveData.guest_id = $scope.guestCardData.guestId;
         $scope.saveData.user_id = $scope.guestCardData.userId;
-        
+
         var data = { 'data': $scope.saveData, 'userId':$scope.guestCardData.userId };
 		$scope.invokeApi(RVContactInfoSrv.saveContactInfo, data, $scope.submitAndGoToCheckoutSuccessCallback);
 	};
@@ -40,5 +40,5 @@ sntRover.controller('RVValidateEmailCtrl',['$scope', '$state', 'ngDialog', 'RVCo
         $scope.$emit('hideLoader');
         $scope.errorMessage = data;
     };
-	
+
 }]);
