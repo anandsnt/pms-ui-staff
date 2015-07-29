@@ -130,8 +130,9 @@ sntRover.service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 			var url = '/api/reservations/' + params.reserevation_id + '/ready_to_assign_rooms/',
 				deferred = $q.defer(),
 				data_for_web_service = {
-					'count': params.num_of_rooms_to_fetch
-				};
+					'count': params.num_of_rooms_to_fetch,
+					'room_type_id': params.room_type_id
+				};				
 
 			rvBaseWebSrvV2.getJSON(url, data_for_web_service).then(
 				function(data) {
