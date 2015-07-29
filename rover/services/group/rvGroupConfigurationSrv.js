@@ -434,5 +434,16 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 			return deferred.promise;
 		};
 
+		this.updateRate = function(params) {
+			var deferred = $q.defer(),
+				url = 'api/groups/'+params.group_id+'/change_rate';
+				rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+				   	 deferred.resolve(data);
+				},function(data){
+				    deferred.reject(data);
+				});
+			return deferred.promise;	
+		}
+
 	}
 ]);
