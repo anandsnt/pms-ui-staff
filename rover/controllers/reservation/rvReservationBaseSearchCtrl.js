@@ -209,6 +209,12 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     }
                     return "";
                 })();
+                $scope.codeSearchText = (function(){
+                    if(!!$scope.reservationData.code){
+                        return $scope.reservationData.code.value;;
+                    }
+                    return "";
+                })();
             }
 
             if ($scope.reservationData.arrivalDate === '') {
@@ -567,6 +573,16 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             },
             source: codeACSourceHandler,
             select: codeACSelectHandler
+        };
+
+        $scope.onMemberRateToggle = function() {
+            if($rootScope.isHLPActive && $scope.loyaltyPrograms.length > 0){
+                $scope.reservationData.member.value = $scope.loyaltyPrograms[0].hl_value;
+                return;
+            }
+            if($rootScope.isFFPActive && $scope.flyerPrograms.length > 0){
+                $scope.reservationData.member.value = $scope.flyerPrograms[0].ff_value;                
+            }            
         };
 
     }
