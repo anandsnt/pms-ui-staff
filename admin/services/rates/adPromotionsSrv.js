@@ -19,9 +19,8 @@ admin.service('ADPromotionsSrv', ['$q', 'ADBaseWebSrvV2',
 		};
 
 		self.getActiveRates = function() {
-			var deferred = $q.defer();
-			// params: is_promotional == true will only return rates of 'Specials & Promotions' rate type.
-			var url = '/api/rates?is_active=true&is_promotional=true';
+			var deferred = $q.defer();			
+			var url = '/api/rates?is_active=true';
 			ADBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
