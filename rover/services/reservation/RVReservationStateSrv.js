@@ -196,7 +196,7 @@ sntRover.service('RVReservationStateService', [
 			if (discount.type === 'amount') {
 				return amount - discount.value / numNights; //perNight's discount to be deducted
 			} // discount.type === 'percent'
-			return amount * (discount.value / 100.0);
+			return amount - (amount * (discount.value / 100.0));
 		}
 
 
