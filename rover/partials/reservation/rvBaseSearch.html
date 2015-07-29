@@ -199,19 +199,19 @@
             </div>
         </div>
         <!-- Company / Travel Agent -->
-        <div id="company-promo" class="row" ng-if="isPromoActive">
+        <div id="company-promo" class="row">
             <div id="autocomplete-search" class="entry">
                 <label for="company-or-agent">Company / Travel Agent <span>(optional)</span></label>
                 <input auto-complete auto-options="autocompleteOptions" name="company-or-agent" id="company-or-agent" data-card-type="" type="text" placeholder="Name, Corporate ID or IATA #" value="" autocomplete="off" ng-model="companySearchText" ul-class="find-cards" />
             </div>
-            <div class="entry">
+            <div class="entry" ng-show="isPromoActive && !isHourlyRateOn">
                 <label for="codes-value" ng-show="groupIsNotImplemented">Group / Promo Code <span>(optional)</span></label>
                 <label for="codes-value">Promo Code <span>(optional)</span></label>
                 <input auto-complete auto-options="codesACOptions" name="codes-value" id="codes-value" data-card-type="" type="text" placeholder="Code" value="" autocomplete="off" ng-model="codeSearchText" ul-class="find-cards" />
             </div>
         </div>
         <!-- Rate Selection -->
-        <div id="select-rate" class="row" ng-if="isFFPActive || isHLPActive">
+        <div id="select-rate" class="row" ng-if="!isHourlyRateOn && (isFFPActive || isHLPActive)">
             <div class="entry">
                 <label>Rate Selection <span>(Optional)</span></label>
                 <div class="entry full-width">
