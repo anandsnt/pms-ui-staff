@@ -321,6 +321,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 						closeByEscape: false
 					});
 					$scope.groupConfigData.summary.rate = summaryMemento.rate;
+				}else{
+				  summaryMemento.rate = $scope.groupConfigData.summary.rate;
 				}
 			}, function(errorMessage) {
 				$scope.$emit('hideLoader');

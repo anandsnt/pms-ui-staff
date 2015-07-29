@@ -325,6 +325,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					}
 				}
 			});
+
 			$scope.displayData.availableRates.sort(function(a, b) {
 				if (a.rate.name.toLowerCase() < b.rate.name.toLowerCase()) {
 					return -1;
@@ -334,6 +335,40 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				}
 				return 0;
 			});
+
+			//Bring member rates to top
+			if (!!$scope.reservationData.member.isSelected) {
+				$scope.displayData.availableRates.sort(function(a, b) {
+					if ($scope.reservationData.member.isSelected && a.rate.is_member) {
+						return -1;
+					}
+					if ($scope.reservationData.member.isSelected && b.rate.is_member) {
+						return 1;
+					}
+					return 0;
+				});
+			}
+
+			if (!!$scope.reservationData.code) {
+				var isPromotionApplied = function(rate) {
+					var promotionApplied = false;
+					_.each(rate.rooms[$scope.activeRoom].ratedetails, function(dayDetails) {
+						promotionApplied = promotionApplied || dayDetails[rate.rate.id].applyPromotion;
+					});
+					return promotionApplied;
+				}
+				$scope.displayData.availableRates.sort(function(a, b) {
+					if (isPromotionApplied(a)) {
+						return -1
+					}
+					if (isPromotionApplied(b)) {
+						return 1
+					}
+					return 0;
+				});
+			}
+
+			//Bring Promo rates to top
 
 			/**
 			 * A simple utility function to move an element from one position to next in an array
@@ -1029,7 +1064,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					$scope.activeRoom,
 					$scope.reservationData.numNights,
 					$scope.reservationData.code,
-					$scope.reservationData.member.isSelected && isMembershipValid()),
+					$scope.reservationData.member.isSelected),
 				rooms = parsedRooms.rooms;
 			$scope.displayData.dates = parsedRooms.displayDates;
 
@@ -1092,6 +1127,27 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					});
 				}
 
+				//STEP SIX - BRING MEMBER RATES TO THE TOP
+				if (!!$scope.reservationData.member.isSelected) {
+					var isValidMemberRate = function(rateId) {
+						var memberRate = false;
+						_.each(value.ratedetails, function(dayDetails) {
+							memberRate = memberRate || dayDetails[rateId].isMember;
+						});
+						return memberRate;
+					}
+					value.rates.sort(function(a, b) {
+						if (isValidMemberRate(a)) {
+							return -1
+						}
+						if (isValidMemberRate(b)) {
+							return 1
+						}
+						return 0;
+					});
+				}
+
+
 				//STEP FIVE - BRING PROMOTION RATES TO THE TOP
 				//CICO-18204
 				if (!!$scope.reservationData.code) {
@@ -1107,26 +1163,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 							return -1
 						}
 						if (isPromotionApplied(b)) {
-							return 1
-						}
-						return 0;
-					});
-				}
-
-				//STEP SIX - BRING MEMBER RATES TO THE TOP
-				if (!!$scope.reservationData.code) {
-					var isValidMemberRate = function(rateId) {
-						var memberRate = false;
-						_.each(value.ratedetails, function(dayDetails) {
-							memberRate = memberRate || dayDetails[rateId].isMember;
-						});
-						return memberRate;
-					}
-					value.rates.sort(function(a, b) {
-						if (isValidMemberRate(a)) {
-							return -1
-						}
-						if (isValidMemberRate(b)) {
 							return 1
 						}
 						return 0;
