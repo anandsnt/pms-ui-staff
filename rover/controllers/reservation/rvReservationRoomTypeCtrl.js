@@ -670,7 +670,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		}
 
 		$scope.filterRooms = function() {
-			if ($scope.stateCheck.preferredType === null || $scope.stateCheck.preferredType === '' || typeof $scope.stateCheck.preferredType === 'undefined') {
+			if (!$scope.stateCheck.preferredType) {
 				if ($scope.showLessRooms && $scope.displayData.allRooms.length > 1) {
 					$scope.displayData.roomTypes = $scope.displayData.allRooms.first();
 					var level = $scope.displayData.allRooms.first()[0].level;
@@ -679,14 +679,20 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 						//Append rooms from the next level
 						//Get the candidate rooms of the room to be appended
 						var targetlevel = level + 1;
-						var candidateRooms = $($scope.roomAvailability).filter(function() {
-							return this.level === targetlevel && this.availability === true && this.rates.length > 0;
+						var candidateRooms = _.filter($scope.roomAvailability, function(room) {
+							return room.level === targetlevel &&
+								room.availability === true &&
+								room.rates.length > 0;
 						});
 						//Check if candidate rooms are available IFF not in stayDatesMode
 						if (candidateRooms.length === 0) {
 							//try for candidate rooms in the same level
-							candidateRooms = $($scope.roomAvailability).filter(function() {
-								return this.level === level && this.id !== firstId && this.availability === true && this.rates.length > 0 && parseInt(this.averagePerNight) >= parseInt($scope.roomAvailability[firstId].averagePerNight);
+							candidateRooms = _.filter($scope.roomAvailability, function(room) {
+								return room.level === level &&
+									room.id !== firstId &&
+									room.availability === true &&
+									room.rates.length > 0 &&
+									parseInt(room.averagePerNight) >= parseInt($scope.roomAvailability[firstId].averagePerNight);
 							});
 						}
 						//Sort the candidate rooms to get the one with the least average rate
@@ -721,24 +727,37 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				// If a room type of category Level1 is selected, show this room type plus the lowest priced room type of the level 2 category.
 				// If a room type of category Level2 is selected, show this room type plus the lowest priced room type of the level 3 category.
 				// If a room type of category Level3 is selected, only show the selected room type.
-				$scope.displayData.roomTypes = $($scope.displayData.allRooms).filter(function() {
-					return this.id === $scope.stateCheck.preferredType || hasContractedRate($scope.roomAvailability[this.id].rates);
+				$scope.displayData.roomTypes = _.filter($scope.displayData.allRooms, function(room) {
+					return room.id === $scope.stateCheck.preferredType ||
+						hasContractedRate($scope.roomAvailability[room.id].rates);
 				});
-				if ($scope.displayData.roomTypes.length > 0 && !$scope.stateCheck.rateSelected.oneDay && $scope.reservationData.status !== "CHECKEDIN" && $scope.reservationData.status !== "CHECKING_OUT") {
+
+				if ($scope.displayData.roomTypes.length > 0 &&
+					!$scope.stateCheck.rateSelected.oneDay &&
+					$scope.reservationData.status !== "CHECKEDIN" &&
+					$scope.reservationData.status !== "CHECKING_OUT") {
 					var level = $scope.roomAvailability[$scope.displayData.roomTypes[0].id].level;
 					if (level === 1 || level === 2) {
 						//Append rooms from the next level
 						//Get the candidate rooms of the room to be appended
 						var targetlevel = level + 1;
-						var candidateRooms = $($scope.roomAvailability).filter(function() {
-							return this.level === targetlevel && this.availability === true && this.rates.length > 0 && !hasContractedRate($scope.roomAvailability[this.id].rates);
+						var candidateRooms = _.filter($scope.roomAvailability, function(room) {
+							return room.level === targetlevel &&
+								room.availability === true &&
+								room.rates.length > 0 &&
+								!hasContractedRate($scope.roomAvailability[room.id].rates);
 						});
 
 						//Check if candidate rooms are available
 						if (candidateRooms.length === 0) {
 							//try for candidate rooms in the same level
-							candidateRooms = $($scope.roomAvailability).filter(function() {
-								return this.level === level && this.id !== $scope.stateCheck.preferredType && this.availability === true && this.rates.length > 0 && parseInt(this.averagePerNight) >= parseInt($scope.roomAvailability[$scope.stateCheck.preferredType].averagePerNight) && !hasContractedRate($scope.roomAvailability[this.id].rates);
+							candidateRooms = _.filter($scope.roomAvailability, function(room) {
+								return room.level === level &&
+									room.id !== $scope.stateCheck.preferredType &&
+									room.availability === true &&
+									room.rates.length > 0 &&
+									parseInt(room.averagePerNight) >= parseInt($scope.roomAvailability[$scope.stateCheck.preferredType].averagePerNight) &&
+									!hasContractedRate($scope.roomAvailability[room.id].rates);
 							});
 						}
 						//Sort the candidate rooms to get the one with the least average rate
