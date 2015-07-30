@@ -913,7 +913,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 											});
 										}
 									}
-									//[TODO]Step 3 : Check if the rates are configured for the selected restrictions
+
+									//Step 3 : Check if the rates are configured for the selected restrictions
 									if (rateConfiguration.restrictions.length > 0) {
 										_.each(rateConfiguration.restrictions, function(restriction) {
 											switch ($scope.restrictionsMapping[restriction.restriction_type_id]) {
@@ -998,6 +999,21 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 											}
 										})
 
+									}
+
+									//Step 4: Check for validity of promotions
+									if (today[rateId].applyPromotion) {
+										//check if currDate falls between from and to dates of the promotion
+										var promoFrom = today[rateId].appliedPromotion.from,
+											promoTo = today[rateId].appliedPromotion.to;
+										if (!!promoFrom && !!promoTo) { //in case promo has a date range
+											validRate = new tzIndependentDate(promoFrom) <= new tzIndependentDate(currDate) &&
+												new tzIndependentDate(promoTo) >= new tzIndependentDate(currDate);
+										} else if (!!promoFrom) { // case where promo has only from_date
+											validRate = new tzIndependentDate(promoFrom) <= new tzIndependentDate(currDate);
+										} else if (!!promoTo) { //case where promo has only to_date
+											validRate = new tzIndependentDate(promoTo) >= new tzIndependentDate(currDate);
+										}
 									}
 								}
 							}
