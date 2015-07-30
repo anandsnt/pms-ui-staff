@@ -18,8 +18,8 @@
     </fieldset>
     <fieldset id="reservation-canceled" ng-show ="DailogeState.isCancelled">
         <span class="h2 message">Reservation cancelled</span>
-        <div id="status" ng-if="DailogeState.successMessage != ''" class="notice success" >{{DailogeState.successMessage}}</div>
-        <div id="status" ng-if="DailogeState.failureMessage != ''" class="notice error">{{DailogeState.failureMessage}}</div>
+        <div id="status" ng-show="DailogeState.successMessage != ''" class="notice success" >{{DailogeState.successMessage}}</div>
+        <div id="status" ng-show="DailogeState.failureMessage != ''" class="notice error">{{DailogeState.failureMessage}}</div>
         <div class="entry full-width" ng-hide="isEmailAttached()">
             <label for="guest-email">E-mail</label>
             <input name="guest-email" id="guest-email" value="" type="text" autocomplete="off" ng-model="DailogeState.sendConfirmatonMailTo"/>
@@ -27,15 +27,15 @@
         <div class="actions">
             <button type="button" class="button with-icon Grey" ng-show ="!DailogeState.sendConfirmatonMailTo&&!isEmailAttached()">
                 <span class="icons icon-email"></span> 
-                E-mail Cancellation Letter
+                EMAIL CANCELLATION
             </button>
             <button type="button" class="button with-icon blue" ng-show ="DailogeState.sendConfirmatonMailTo||isEmailAttached()"  ng-click="sendReservationCancellation()">
                 <span class="icons icon-email"></span>
-                E-mail Cancellation Letter
+                EMAIL CANCELLATION
             </button>
-            <button type="button" class="button with-icon blue" ng-click="printReservationCancellation()" ng-disabled="!printCancellationLetter" ng-class="{ 'grey': !printCancellationLetter }">
+            <button type="button" class="button with-icon blue" ng-click="printReservationCancellation()" ng-show="printCancellationLetter" >
                 <span class="icons icon-print"></span> 
-                Print Cancellation Letter
+                PRINT CANCELLATION
             </button>
             <button type="button" class="button blank" ng-click="completeCancellationProcess()">Close</button> 
         </div>
