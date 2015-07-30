@@ -12,7 +12,7 @@
 	<td>{{ each.total_revenue | currency:currencySymbol:2 }}</td>
 	<td class="break">{{ each.adr | currency:currencySymbol:2 }}</td>
 	<td>{{ each.last_year_adr | currency:currencySymbol:2 }}</td>
-    <td>{{ each.last_year_occupied_rooms }}</td>
+    <td>{{ each.last_year_occupancy }}</td>
     <td ng-class="{ 'red': (each.variance * 1) < 0 }">{{ each.variance }}</td>
 </tr>
 <tr class="total" ng-if="resultsTotalRow">
