@@ -80,7 +80,6 @@
                     </div>
                 </div>
 
-                
                 <div class="notice" ng-show="selectedAction.date_completed" ng-hide="!selectedAction.date_completed">
                     <span>Completed By</span>
                     {{selectedAction.completed_by.name}} {{selectedAction.date_completed}} &#8226; {{selectedAction.time_completed}}
@@ -99,30 +98,29 @@
         
         <div class="content-right" ng-show="actionSelected === 'assign'"> 
             <div class="summary">
-             <span class="h2 message" ng-show="!selectedAction.assigned" ng-hide="selectedAction.assigned">Assign</span>
-             <span class="h2 message" ng-show="selectedAction.assigned" ng-hide="!selectedAction.assigned">Re-Assign</span>
-             <div class="entry full-width">
-                 <label for="department">Department</label>
-                 <div class="select">
-                     <div class="select">
-                     <select id="department-assign-action" ng-class="{'placeholder': departmentsCount > 0}" ng-model="departmentSelect.selected" ng-options="department.name for department in departments"> 
-                         <option value="">Select department</option>
-                     </select>
-                 </div>
-
-                 </div>
-             </div>
-             <div class="assign-reassign">
-                 <button type="button" class="button brand-colors" ng-class="{'overlay': !departmentSelect.selected.value}" ng-click="assignDepartment()" ng-show="!selectedAction.assigned" ng-hide="selectedAction.assigned">Assign</button> 
-                 <button type="button" class="button brand-colors" ng-class="{'overlay': !departmentSelect.selected.value}" ng-click="assignDepartment()" ng-show="selectedAction.assigned" ng-hide="!selectedAction.assigned">Re-Assign</button> 
-                 <button type="button" class="button blank" ng-click="cancelAssign()">Cancel</button> 
-             </div> 
-            </div>      
+                <div class="add-content">
+                    <span class="h2 message" ng-show="!selectedAction.assigned" ng-hide="selectedAction.assigned">Assign</span>
+                    <span class="h2 message" ng-show="selectedAction.assigned" ng-hide="!selectedAction.assigned">Re-Assign</span>
+                    <div class="entry full-width">
+                        <label for="department">Department</label>
+                        <div class="select">
+                            <select id="department-assign-action" ng-class="{'placeholder': departmentsCount > 0}" ng-model="departmentSelect.selected" ng-options="department.name for department in departments"> 
+                                <option value="">Select department</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="actions">
+                         <button type="button" class="button brand-colors" ng-class="{'overlay': !departmentSelect.selected.value}" ng-click="assignDepartment()" ng-show="!selectedAction.assigned" ng-hide="selectedAction.assigned">Assign</button> 
+                         <button type="button" class="button brand-colors" ng-class="{'overlay': !departmentSelect.selected.value}" ng-click="assignDepartment()" ng-show="selectedAction.assigned" ng-hide="!selectedAction.assigned">Re-Assign</button> 
+                         <button type="button" class="button blank" ng-click="cancelAssign()">Cancel</button> 
+                    </div> 
+                </div>
+            </div>
         </div>
         
-        
-        <div class="content-right" ng-show="actionSelected === 'new'" ng-class="{'action-full-view': actions.totalCount === 0}"> 
+        <div class="content-right" ng-show="actionSelected === 'new'" ng-class="{'full-width': actions.totalCount === 0}"> 
             <div class="summary">
+                <div class="add-content">
                     <span class="h2 message">New Action</span>
                     <div class="entry full-width">
                         <label for="department">Assign to Department</label>
@@ -136,11 +134,8 @@
                         <label for="due-date">Date Due</label>
                         <input id="due-date" type="text" class="datepicker" value="{{newAction.date_due}}" readonly />
                     </div>
-                    <div ng-show="newCalendarShow" class="ngmodal-uidate-wrap" id="newCalendar" ng-include="'/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html'">
-                    </div>
-                    <div class='entry actions-mid'></div>
-                      
-                    <div class="entry actions-end" ng-class="{'overlay': !newAction.hasDate}">
+                    <div ng-show="newCalendarShow" class="ngmodal-uidate-wrap" id="newCalendar" ng-include="'/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html'"></div>
+                    <div class="entry" ng-class="{'overlay': !newAction.hasDate}">
                         <label for="due-time">Time Due</label>
                         <div class="select">
                             <select id="due-time" ng-model="newAction.time_due" ng-options="time.value for time in timeFieldValue" ng-init="newAction.time_due = timeFieldValue[0]">
@@ -148,8 +143,14 @@
                         </div>
                     </div>
                     <div class="entry full-width">
-                        <label for="notes">Notes</label>
-                        <textarea id="notes" ng-model='newAction.notes' name="notes" placeholder="Enter message..." rows="4" maxlength="255"></textarea><span><font ng-if='newAction.notes.length < 255' color=green>  {{255-newAction.notes.length}}</font> <font ng-if='newAction.notes.length >= 255' color=red>  {{255-newAction.notes.length}}</font></span>
+                        <label for="notes">
+                            Notes
+                            <span>
+                                <font ng-if='newAction.notes.length < 255' color=green>  {{255-newAction.notes.length}}</font> 
+                                <font ng-if='newAction.notes.length >= 255' color=red>  {{255-newAction.notes.length}}</font>
+                            </span>
+                        </label>
+                        <textarea id="notes" ng-model='newAction.notes' name="notes" placeholder="Enter message..." rows="4" maxlength="255"></textarea>
                     </div> 
                     <div>
                         <button type="button" class="button green action-post-btn" ng-click='postAction()' ng-class="{'overlay': !newAction.hasDate || !newAction.notes}">Post Action</button> 
