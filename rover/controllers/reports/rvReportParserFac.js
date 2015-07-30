@@ -489,10 +489,10 @@ sntRover.factory('RVReportParserFac', [
                 // we'll work with a copy of the ith item
                 makeCopy = angular.copy( apiResponse[i] );
 
-                // reset these counters
-                totalOriginalRate = 0;
-                totalAdjustedRate = 0;
-                totalVariance = 0;
+                // reset these counters, should be decimal values
+                totalOriginalRate = 0.0;
+                totalAdjustedRate = 0.0;
+                totalVariance = 0.0;
 
                 // if we have 'stay_dates' for this reservation
                 if ( makeCopy.hasOwnProperty('stay_dates') && makeCopy['stay_dates'].length ) {
@@ -534,9 +534,10 @@ sntRover.factory('RVReportParserFac', [
                         };
 
                         // keep updating the total values for these
-                        totalOriginalRate += stayDates.original_amount;
-                        totalAdjustedRate += stayDates.adjusted_amount;
-                        totalVariance += stayDates.variance;
+                        // +(0.1 + 0.2).toFixed(2) => http://stackoverflow.com/questions/10473994/javascript-adding-decimal-numbers-issue#answer-10474055
+                        totalOriginalRate = +(totalOriginalRate + stayDates.original_amount).toFixed(2);
+                        totalAdjustedRate = +(totalAdjustedRate + stayDates.adjusted_amount).toFixed(2);
+                        totalVariance     = +(totalVariance + stayDates.variance).toFixed(2);
                     };
 
                     // after looping through all the stay_dates

@@ -89,7 +89,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @param {Object} - reservation
          * @return {Boolean}
          */
-        $scope.shouldDisableRoomTypeChange = function(reservation) {
+        $scope.shouldDisableReservationRoomTypeChange = function(reservation) {
             //as per CICO-17082, we need to show the room type in select box of edit with others
             //but should be disabled
             var room_type_id_list = _.pluck($scope.roomTypesAndData, 'room_type_id'),
@@ -131,24 +131,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          */
         $scope.shouldDisableAutoRoomAssignButton = function() {
             return ($scope.selected_reservations.length === 0 || !hasPermissionToEditReservation());
-        };
-
-        /**
-         * should we allow to change the room of a particular reservation
-         * @param {Object} reservation
-         * @return {Boolean}
-         */
-        $scope.shouldDisableChangeRoom = function(reservation) {
-            var rStatus = reservation.reservation_status;
-            return (rStatus !== "RESERVED" && rStatus !== "CHECKING_IN");
-        };
-
-        /**
-         * is Room Number is empty
-         * @return {Boolean} [description]
-         */
-        $scope.isEmptyRoomNumber = function(roomNo) {
-            return (roomNo === null || roomNo === '');
         };
 
         /**
@@ -911,16 +893,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             runDigestCycle();
         };
 
-        var reservationFromDateChoosed = function(date, datePickerObj) {
-            $scope.roomingListState.editedReservationStart = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
-            runDigestCycle();
-        }
-
-        var reservationToDateChoosed = function(date, datePickerObj) {
-            $scope.roomingListState.editedReservationEnd = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
-            runDigestCycle();
-        }
-
         /**
          * utility function to set datepicker options
          * return - None
@@ -943,26 +915,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 });
             }
 
-            var commonDateOptionsForRelease = _.extend({
-                beforeShow: function(input, inst) {
-                    $('#ui-datepicker-div').addClass('reservation hide-arrow');
-                    $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
-
-                    setTimeout(function() {
-                        $('body').find('#ui-datepicker-overlay')
-                            .on('click', function() {
-                                console.log('hey clicked');
-                                $('#room-out-from').blur();
-                                $('#room-out-to').blur();
-                            });
-                    }, 100);
-                },
-                onClose: function(value) {
-                    $('#ui-datepicker-div').removeClass('reservation hide-arrow');
-                    $('#ui-datepicker-overlay').off('click').remove();
-                }
-            }, commonDateOptions);
-
             //date picker options - From
             $scope.fromDateOptions = _.extend({
                 onSelect: fromDateChoosed
@@ -972,17 +924,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             $scope.toDateOptions = _.extend({
                 onSelect: toDateChoosed
             }, commonDateOptions);
-
-
-            //date picker options - From
-            $scope.reservationFromDateOptions = _.extend({
-                onSelect: reservationFromDateChoosed
-            }, commonDateOptionsForRelease);
-
-            //date picker options - Departute
-            $scope.reservationToDateOptions = _.extend({
-                onSelect: reservationToDateChoosed
-            }, commonDateOptionsForRelease);
 
             //default from date, as per CICO-13900 it will be block_from date
             $scope.fromDate = refData.block_from;
@@ -1383,7 +1324,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         //local scope for reservation edit popup showing
         (function() {
             var selectedReservation;
-    
+
             /**
              * when we completed the fetching of free rooms available
              * @param  {Object} - free rooms available
@@ -1479,7 +1420,8 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 //rooming details fetch
                 var paramsForListOfFreeRooms = {
                     reserevation_id: reservation.id,
-                    num_of_rooms_to_fetch: 5
+                    num_of_rooms_to_fetch: 5,
+                    room_type_id: reservation.room_type_id
                 };
                 promises.push(rvGroupRoomingListSrv
                     .getFreeAvailableRooms(paramsForListOfFreeRooms)
@@ -1501,6 +1443,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                     scope: $scope,
                     closeByDocument: false,
                     closeByEscape: false,
+                    controller: 'rvGroupReservationEditCtrl',
                     data: JSON.stringify(reservationData)
                 });
             };
@@ -1516,51 +1459,14 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             };
 
         }());        
-    
-        /**
-         * utility method to get the formmated date for API
-         * @param  {String} dateString
-         * @return {String} [formatted date]
-         */
-        var getFormattedDateForAPI = function (dateString) {
-            return $filter('date')(tzIndependentDate(dateString), $rootScope.dateFormatForAPI)
-        };
-
-        /**
-         * we need to update the reservation listing after updation
-         */
-        var onUpdateReservationSuccess = function(data) {
-            $scope.closeDialog();
-            //calling initially required APIs
+    	
+    	/**
+    	 * event exposed for other (mainly for children) controllers to update the data
+    	 */
+    	$scope.$on("REFRESH_GROUP_ROOMING_LIST_DATA", function (event) {
+    		//calling initially required APIs
             callInitialAPIs();
-        };
-
-        /**
-         * Method to update the reservation
-         * @param  {object} reservation
-         * @return {undefined}
-         */
-        $scope.updateReservation = function(reservation) {       
-            if (reservation.reservation_status === "CANCELED") {
-                return false;
-            } 
-            else {
-                $scope.errorMessage = [];
-                _.extend(reservation, {
-                    group_id: $scope.groupConfigData.summary.group_id,
-                    arrival_date: getFormattedDateForAPI($scope.roomingListState.editedReservationStart),
-                    departure_date: getFormattedDateForAPI($scope.roomingListState.editedReservationEnd),
-                    room_type_id: parseInt(reservation.room_type_id),
-                    room_id: parseInt(reservation.room_id)
-                });
-                
-                var options = {
-                    successCallBack: onUpdateReservationSuccess,
-                    params: reservation
-                };
-                $scope.callAPI(rvGroupConfigurationSrv.updateRoomingListItem, options);
-            }
-        }
+    	});
 
         var getReservationStatusFlags = function(reservation) {
             var rStatus = reservation.reservation_status;
@@ -1573,55 +1479,8 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             }
         }
 
-        /**
-         * Method to remove the reservation
-         * @param  {object} reservation
-         * @return {undefined}
-         */
-        $scope.removeReservation = function(reservation) {
-            if (reservation.reservationStatusFlags.isUneditable || reservation.reservationStatusFlags.isStaying) {
-                return false;
-            } else {
-                var onRemoveReservationSuccess = function(data) {
-                        //calling initially required APIs
-                        callInitialAPIs();
-                        $timeout(function() {
-                            $scope.closeDialog();
-                        }, 700);
-
-                    },
-                    onRemoveReservationFailure = function(errorMessage) {
-                        $scope.errorMessage = errorMessage;
-                    }
-
-                $scope.callAPI(rvGroupConfigurationSrv.removeRoomingListItem, {
-                    successCallBack: onRemoveReservationSuccess,
-                    failureCallBack: onRemoveReservationFailure,
-                    params: {
-                        id: reservation.id,
-                        group_id: $scope.groupConfigData.summary.group_id
-                    }
-                });
-            }
-        }
-
         $scope.checkoutReservation = function(reservation) {
             //  It navigates to the Guest Bill for the selected record.
-        }
-
-        $scope.navigateStayCard = function(reservation) {
-            // Navigate to StayCard
-            if (reservation.reservationStatusFlags.isGuestAttached) {
-                $scope.$emit('showLoader');
-                $scope.closeDialog();
-                $timeout(function() {
-                    $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-                        "id": reservation.id,
-                        "confirmationId": reservation.confirm_no,
-                        "isrefresh": false
-                    });
-                }, 150)
-            }
         }
 
         /**
@@ -1887,7 +1746,10 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             //calling initially required APIs
             // CICO-17898 The initial APIs need to be called in the scenario while we come back to the Rooming List Tab from the stay card
-            if ("rover.reservation.staycard.reservationcard.reservationdetails" === $rootScope.getPrevStateName()) {
+            var isInRoomingList = ($scope.groupConfigData.activeTab === "SUMMARY"),
+            	comingFromStaycard = ("rover.reservation.staycard.reservationcard.reservationdetails" === $rootScope.getPrevStateName());
+            	
+            if (isInRoomingList && comingFromStaycard) {
                 callInitialAPIs();
             }
         }();

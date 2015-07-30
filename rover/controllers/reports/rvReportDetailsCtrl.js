@@ -138,7 +138,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('DEPOSIT_REPORT'):
 				case reportUtils.getName('RATE_ADJUSTMENTS_REPORT'):
 					$scope.hasNoTotals = true;
-					$scope.isGuestReport = true;
 					$scope.isDepositReport = true;
 					break;
 
