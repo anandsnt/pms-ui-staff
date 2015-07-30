@@ -141,10 +141,10 @@
 
                     </div>
                     <div class="actions"  ng-show="!reservationStatus.confirmed">
-                        <button type="button" class="button blue" ng-click="sendConfirmationClicked(payment_info.email.$valid)">Confirm Reservation</button>
+                        <button type="button" class="button blue" ng-click="sendConfirmationClicked(payment_info.email.$valid)" translate>CONFIRM_RESERVATION</button>
                         <button ng-show="printConfirmationLetter" type="button" class="button blue with-icon" ng-click="printConfirmationReservation()">
                             <span class="icons icon-print"></span>
-                            Print Confirmation Letter
+                            {{'PRINT_CONFIRMATION' | translate}}
                         </button>
                     </div>
                     <!-- <section ng-show="!reservationStatus.confirmed">
