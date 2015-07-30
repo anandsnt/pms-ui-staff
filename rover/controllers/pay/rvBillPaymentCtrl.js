@@ -505,10 +505,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* Action - On click submit payment button
 	*/
 	$scope.submitPayment = function(){
-		if($scope.splitePaymentDetail["completedSplitPayments"]===0){
-			calulateSplitAmount();
-			$scope.calculateFee();
-		}
+	
 		if($scope.saveData.paymentType === '' || $scope.saveData.paymentType === null){
 			$timeout(function() {
 				$scope.errorMessage = ["Please select payment type"];
