@@ -32,5 +32,5 @@
 
 <td ng-if="each.isSubTotal"><strong>Total</strong></td>
 <td ng-if="each.isSubTotal"><strong>{{ each.total_original_amout | currency:currencySymbol:2 }}</strong></td>
-<td ng-if="each.isSubTotal" ><strong>{{ each.total_adjusted_amount | currency:currencySymbol:2 }}</strong></td>
+<td ng-if="each.isSubTotal"><strong>{{ each.total_adjusted_amount | currency:currencySymbol:2 }}</strong></td>
 <td ng-if="each.isSubTotal" ng-class="{ red: each.variance < 0, green: each.variance > 0 }" colspan="3"><strong>{{ each.total_variance | currency:currencySymbol:2 }}</strong></td>
