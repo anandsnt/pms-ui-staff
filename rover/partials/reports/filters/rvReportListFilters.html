@@ -273,6 +273,7 @@
     <label>Group By</label>
     <div class="select">
         <select ng-model="item.chosenGroupBy" ng-options="groupBy.value as groupBy.description for groupBy in item.groupByOptions" ng-change="groupByChanged(item)" iscroll-stop-propagation>
+            <option value="">BLANK</option>
         </select>
     </div>
 </div>
