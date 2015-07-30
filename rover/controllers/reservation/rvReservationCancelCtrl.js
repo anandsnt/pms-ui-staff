@@ -24,7 +24,8 @@
 			};
 
 			$scope.cancellationData.paymentType = "";
-			$scope.DailogeState = {};
+			$scope.DailogeState = $scope.$parent.DailogeState;
+			$scope.DailogeState.sendConfirmatonMailTo = $scope.$parent.DailogeState.sendConfirmatonMailTo;
 			$scope.DailogeState.isCancelled = false;
 
 
@@ -65,11 +66,9 @@
 			};
 
 
-
 			$scope.changeOnsiteCallIn = function() {
 				$scope.isManual ? $scope.showCC = true : "";
 			};
-
 
 			$scope.showHideCreditCard = function() {
 				if ($scope.cancellationData.paymentType === "CC") {

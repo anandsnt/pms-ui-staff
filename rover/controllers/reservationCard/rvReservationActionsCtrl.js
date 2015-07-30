@@ -365,9 +365,11 @@ sntRover.controller('reservationActionsController', [
 			$scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successRemoveFromQueueCallBack);
 		};
 
-		$scope.DailogeState = {};
+		
 		var promptCancel = function(penalty, nights, isPercent) {
-
+			$scope.DailogeState = {};
+			$scope.DailogeState.successMessage = '';
+			$scope.DailogeState.failureMessage = '';
 			var passData = {
 				"reservationId": $scope.reservationData.reservation_card.reservation_id,
 				"details": {
@@ -379,7 +381,6 @@ sntRover.controller('reservationActionsController', [
 			};
 
 			$scope.passData = passData;
-
 			ngDialog.open({
 				template: '/assets/partials/reservationCard/rvCancelReservation.html',
 				controller: 'RVCancelReservation',
@@ -404,6 +405,8 @@ sntRover.controller('reservationActionsController', [
 
 		var showCancelReservationWithDepositPopup = function(deposit, isOutOfCancellationPeriod, penalty) {
 			$scope.DailogeState = {};
+			$scope.DailogeState.successMessage = '';
+			$scope.DailogeState.failureMessage = '';
 			ngDialog.open({
 				template: '/assets/partials/reservationCard/rvCancelReservationDeposits.html',
 				controller: 'RVCancelReservationDepositController',
@@ -600,9 +603,6 @@ sntRover.controller('reservationActionsController', [
 			}
 			return isEmailAttachedFlag;
 		};
-
-		$scope.DailogeState.successMessage = "";
-		$scope.DailogeState.failureMessage = "";
 		var succesfullCallbackForEmailCancellation = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.DailogeState.successMessage = data.message;
@@ -624,7 +624,7 @@ sntRover.controller('reservationActionsController', [
 				"postData": postData,
 				"reservationId": $scope.reservationData.reservation_card.reservation_id
 			};
-			$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data, succesfullCallbackForEmailCancellation, failureEmailCallback);
+			$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data, succesfullCallbackForEmailCancellation, failureCallbackForEmailCancellation);
 		};
 
 		$scope.ngData = {};
