@@ -414,6 +414,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                 case __reportNames['RATE_ADJUSTMENTS_REPORT']:
                     reportItem['hasUserFilter'] = true;
+                    reportItem['canRemoveDate'] = true;
                     break;
 
                 default:
@@ -819,17 +820,15 @@ sntRover.factory('RVReportUtilsFac', [
             // for deposit report in the following order
             if ( reportItem['title'] === __reportNames['DEPOSIT_REPORT'] ) {
                 var reservationSortBy = angular.copy( reportItem['sort_fields'][4] ),
-                    nameSortBy        = angular.copy( reportItem['sort_fields'][3] ),
-                    dateSortBy        = angular.copy( reportItem['sort_fields'][0] ),
                     dueDateSortBy     = angular.copy( reportItem['sort_fields'][1] ),
                     paidDateSortBy    = angular.copy( reportItem['sort_fields'][2] );
 
                 reportItem['sort_fields'][0] = reservationSortBy;
-                reportItem['sort_fields'][1] = nameSortBy;
-                reportItem['sort_fields'][2] = dateSortBy;
+                reportItem['sort_fields'][1] = null;
+                reportItem['sort_fields'][2] = dueDateSortBy;
                 reportItem['sort_fields'][3] = null;
-                reportItem['sort_fields'][4] = dueDateSortBy;
-                reportItem['sort_fields'][5] = paidDateSortBy;
+                reportItem['sort_fields'][4] = paidDateSortBy;
+                reportItem['sort_fields'][5] = null;
             };
 
             // need to reorder the sort_by options
@@ -873,21 +872,6 @@ sntRover.factory('RVReportUtilsFac', [
                 reportItem['sort_fields'][7] = null;
                 reportItem['sort_fields'][8] = null;
                 reportItem['sort_fields'][9] = ytd;
-            };
-
-            // need to reorder the sort_by options
-            // for daily transactions in the following order
-            if ( reportItem['title'] === __reportNames['DEPOSIT_REPORT'] ) {
-                var guestDetails = angular.copy( reportItem['sort_fields'][4] ),
-                    dueDate      = angular.copy( reportItem['sort_fields'][1] ),
-                    paidDate     = angular.copy( reportItem['sort_fields'][2] );
-
-                reportItem['sort_fields'][0] = guestDetails;
-                reportItem['sort_fields'][1] = null;
-                reportItem['sort_fields'][2] = dueDate;
-                reportItem['sort_fields'][3] = null;
-                reportItem['sort_fields'][4] = paidDate;
-                reportItem['sort_fields'][5] = null;
             };
 
             // need to reorder the sort_by options

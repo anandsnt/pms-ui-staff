@@ -832,8 +832,6 @@ sntRover.controller('RVbillCardController',
 	 };
 
 	 var openPaymentList = function(data) {
-			//	$scope.paymentData.payment_id = id;
-			//  $scope.paymentData.index = index;
 			$scope.dataToPaymentList = data;
 			$scope.dataToPaymentList.isFromBillCard = true;
 			ngDialog.open({
@@ -849,7 +847,6 @@ sntRover.controller('RVbillCardController',
 	 $scope.showPaymentList = function(){
 	 	$scope.reservationBillData.currentView = "billCard";
 	 	$scope.reservationBillData.currentActiveBill = $scope.currentActiveBill;
-	 	//$scope.$emit('SHOWPAYMENTLIST', $scope.reservationBillData);
 	 	openPaymentList($scope.reservationBillData);
 	 };
 
