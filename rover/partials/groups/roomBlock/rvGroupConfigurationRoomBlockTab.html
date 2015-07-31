@@ -138,12 +138,12 @@
                         {{roomtype_rate.room_type_name}}
                     </p>
                     <!-- Toggle class "hidden" when .line-toggle is clicked/tapped -->
-                    <ul ng-class="{'hidden' : !roomtype_rate.isCollapsed}" >
-                        <li class="line" translate>SINGLE</li>
-                        <li class="line" translate>DOUBLE</li>
-                        <li class="line small" 
-                            ng-if="!shouldShowTripleEntryRow(roomtype_rate)"
-                            ng-click="addTripleEntryRow(roomtype_rate)"                             
+                    <ul ng-class="{'hidden' : !roomtype_rate.isCollapsed}">
+                        <li class="line" translate ng-hide="groupConfigData.summary.rate != -1 && roomtype_rate.rate_config.single_rate == null">SINGLE</li>
+                        <li class="line" translate ng-hide="groupConfigData.summary.rate != -1 && roomtype_rate.rate_config.double_rate == null">DOUBLE</li>
+                        <li class="line small add" 
+                            ng-if="!shouldShowTripleEntryRow(roomtype_rate) && groupConfigData.summary.rate == -1"
+                            ng-click="addTripleEntryRow(roomtype_rate)" 
                             ng-class="{'add': !shouldDisableAddTripleButton(roomtype_rate)}"
                             translate>
                             ADD_TRIPLE
@@ -159,7 +159,8 @@
                             QUADRUPLE
                         </li>
                         <li class="line small" 
-                            ng-if="!shouldShowQuadrupleEntryRow(roomtype_rate) && shouldShowTripleEntryRow(roomtype_rate)" 
+                            ng-if="!shouldShowQuadrupleEntryRow(roomtype_rate) && shouldShowTripleEntryRow(roomtype_rate) && groupConfigData.summary.rate == -1" 
+
                             ng-click="addQuadrupleEntryRow(roomtype_rate)"
                             ng-class="{'add': !shouldDisableAddQuadrupleButton(roomtype_rate)}"
                             translate>
@@ -210,7 +211,7 @@
                         </div>
                         <!-- Single -->
                         <!-- <div class="line hidden"> -->
-                        <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}">
+                        <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}" ng-hide="groupConfigData.summary.rate != -1 && roomType.rate_config.single_rate == null">
                             <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                             <!-- we are not going behind ng-change, it will trigger everytime there is acharctr chnge, so we ae using our delay text box -->
                             <input type="text" 
@@ -235,7 +236,7 @@
                         </div>
                         <!-- Double -->
                         <!-- <div class="line hidden"> -->
-                        <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}">
+                        <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}" ng-hide="groupConfigData.summary.rate != -1 && roomType.rate_config.double_rate == null">
                             <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                             <input type="text" 
                                 rv-delay-textbox 

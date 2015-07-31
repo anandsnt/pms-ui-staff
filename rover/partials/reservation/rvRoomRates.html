@@ -89,7 +89,7 @@
                             <button class="button white blue-text" ng-show="stateCheck.selectedStayDate.rate.id == roomAvailability[room.id].defaultRate && stateCheck.preferredType == room.id" ng-click="handleNoEdit($event, room.id, roomAvailability[room.id].defaultRate)">
                                 CURRENT RATE
                             </button>
-                            <button class="button" ng-hide="stateCheck.selectedStayDate.rate.id == roomAvailability[room.id].defaultRate && stateCheck.preferredType == room.id" ng-class="{'red': stateCheck.restrictedContractedRates[room.id].indexOf(roomAvailability[room.id].defaultRate) > -1,
+                            <button class="button" ng-hide="(stateCheck.selectedStayDate.rate.id == roomAvailability[room.id].defaultRate && stateCheck.preferredType == room.id) || (getLeastAvailability(room.id, roomAvailability[room.id].defaultRate) < 1 && allowOverbook() == false)" ng-class="{'red': stateCheck.restrictedContractedRates[room.id].indexOf(roomAvailability[room.id].defaultRate) > -1,
                                     'grey': !stateCheck.stayDatesMode && getAllRestrictions(room.id,roomAvailability[room.id].defaultRate).length > 0, 
                                     'white grey-text': stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].restrictions.length > 0, 
                                     'white green-text': stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].restrictions.length == 0, 
@@ -108,6 +108,8 @@
                                     <!-- Add class "restricted" if restriction applies -->
                                     <!-- If corporate rate, show: -->
                                       <span class="corporate" ng-if="displayData.allRates[rate].account_id">COR</span>
+                                      <span class="corporate" ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].applyPromotion">PROMOTION</span>
+                                      <span class="corporate" ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].isMember">MEMBER</span>
                                     
                                     <!-- If restriction applies, show: -->
                                     <span class="restricted" 
@@ -146,7 +148,7 @@
 
                                 <button ng-show="stateCheck.selectedStayDate.rate.id == rate && stateCheck.preferredType == room.id" class="button white blue-text" ng-click="handleNoEdit($event, room.id, rate)">CURRENT RATE</button>
                                 <button class="button"
-                                    ng-hide="stateCheck.selectedStayDate.rate.id == rate && stateCheck.preferredType == room.id"  
+                                    ng-hide="(stateCheck.selectedStayDate.rate.id == rate && stateCheck.preferredType == room.id) || (getLeastAvailability(room.id, roomAvailability[room.id].defaultRate) < 1 && allowOverbook() == false)"  
                                     ng-class="{'red': stateCheck.restrictedContractedRates[room.id].indexOf(rate) > -1, 
                                       'grey': !stateCheck.stayDatesMode && getAllRestrictions(room.id,rate).length > 0, 
                                       'white grey-text' : stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions.length > 0, 
@@ -236,6 +238,8 @@
                             <h2>{{rate.rate.name}}</h2>
                             <!-- If corporate rate, show: -->
                             <span class="corporate" ng-if="rate.rate.account_id">COR</span>
+                            <span class="corporate" ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].applyPromotion">PROMOTION</span>
+                            <span class="corporate" ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].isMember">MEMBER</span>
                             <!-- If restriction applies, show: selectedRoom, rate.rate.id -->
                             <span class="restricted" ng-if="!stateCheck.stayDatesMode && getAllRestrictions(selectedRoom,rate.rate.id).length > 1">MULTIPLE RESTRICTIONS APPLY</span>
                             <span class="restricted {{restrictionColorClass[getAllRestrictions(selectedRoom,rate.rate.id)[0].key]}}" ng-if="!stateCheck.stayDatesMode && getAllRestrictions(selectedRoom,rate.rate.id).length == 1">
@@ -283,7 +287,7 @@
                                 If day view, use "white grey-text" instead of "grey", and "white green-text" instead of "green".
                                 If it's booked room, use class "white blue-text", and have text "Booked".
                             -->
-                            <button ng-hide="stateCheck.selectedStayDate.rate.id == rate.rate.id && stateCheck.preferredType == selectedRoom" ng-class="{'red': stateCheck.restrictedContractedRates[selectedRoom].indexOf(rate.rate.id) > -1,
+                            <button ng-hide="(stateCheck.selectedStayDate.rate.id == rate.rate.id && stateCheck.preferredType == selectedRoom) || (getLeastAvailability(selectedRoom, rate.rate.id) < 1 && allowOverbook() == false)" ng-class="{'red': stateCheck.restrictedContractedRates[selectedRoom].indexOf(rate.rate.id) > -1,
                                     'grey': !stateCheck.stayDatesMode && getAllRestrictions(selectedRoom,rate.rate.id).length > 0, 
                                     'white grey-text' : stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].restrictions.length > 0, 
                                     'white green-text' : stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].restrictions.length == 0, 

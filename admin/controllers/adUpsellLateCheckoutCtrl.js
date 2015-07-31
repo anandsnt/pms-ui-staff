@@ -78,8 +78,9 @@ $scope.setUpLateCheckoutArray = function(){
    else if($scope.upsellData.extended_checkout_charge_0){
        $scope.chekoutchargesArray = [$scope.upsellData.extended_checkout_charge_0];
    }
-   else
+   else {
        $scope.chekoutchargesArray = [];
+   }
 };
 
 /**
@@ -88,13 +89,15 @@ $scope.setUpLateCheckoutArray = function(){
 */
 $scope.startWatching = function(){
     $scope.$watch('upsellData', function(newValue, oldValue){
-        if(!$scope.upsellData.extended_checkout_charge_0)
+        if(!$scope.upsellData.extended_checkout_charge_0) {
             $scope.upsellData.extended_checkout_charge_0 = { 'time':'HH','charge':''};
-        if(!$scope.upsellData.extended_checkout_charge_1)
+        }
+        if(!$scope.upsellData.extended_checkout_charge_1) {
             $scope.upsellData.extended_checkout_charge_1 = { 'time':'HH','charge':''};
-        if(!$scope.upsellData.extended_checkout_charge_2)
+        }
+        if(!$scope.upsellData.extended_checkout_charge_2) {
            $scope.upsellData.extended_checkout_charge_2 = { 'time':'HH','charge':''};
-
+        }
        $scope.startWatchingCheckoutcharge0();
        $scope.startWatchingCheckoutcharge1();
    });
@@ -121,8 +124,9 @@ $scope.$watch('upsellData.extended_checkout_charge_0', function(newValue, oldVal
       $scope.disableThirdOption = true;
       $scope.disableSecondOption = true;
   }
-  else if($scope.upsellData.extended_checkout_charge_0.charge.length > 0 && $scope.upsellData.extended_checkout_charge_0.time != "HH")
+  else if($scope.upsellData.extended_checkout_charge_0.charge.length > 0 && $scope.upsellData.extended_checkout_charge_0.time !== "HH") {
     $scope.disableSecondOption = false;
+  }
 }, true);
 };
 $scope.startWatchingCheckoutcharge1 = function(){
@@ -141,8 +145,9 @@ $scope.$watch('upsellData.extended_checkout_charge_1', function(newValue, oldVal
       }
       $scope.disableThirdOption = true;
   }
-  else if($scope.upsellData.extended_checkout_charge_1.charge.length > 0 && $scope.upsellData.extended_checkout_charge_1.time != "HH")
+  else if($scope.upsellData.extended_checkout_charge_1.charge.length > 0 && $scope.upsellData.extended_checkout_charge_1.time !== "HH") {
     $scope.disableThirdOption = false;
+  }
 }, true);
 
 };
@@ -230,7 +235,9 @@ $scope.clickAddRoomType = function(){
 var isRoomTypesSelected = function(){
 	$scope.upsellData.isRoomTypesSelectedFlag = false;
 	angular.forEach($scope.upsellData.room_types,function(item, index) {
-		if(item.max_late_checkouts !== '') $scope.upsellData.isRoomTypesSelectedFlag = true;
+		if(item.max_late_checkouts !== '') {
+      $scope.upsellData.isRoomTypesSelectedFlag = true;
+    }
     });
 };
 /*

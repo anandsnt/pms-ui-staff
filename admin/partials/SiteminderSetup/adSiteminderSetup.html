@@ -8,20 +8,10 @@
         <div ng-include="'/assets/partials/common/notification_err_message_basic.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
         <form class="form float" >
-            <!--TODO: Mike needs to take a look this part. This seems making duplicate api call and not display on the screen.-->
-            <!--<fieldset class="holder left" ng-show="!isHotelAdmin">-->
-                <!--<ad-textbox value="data.data.product_cross_customer.tracker_user_name"  name="user-name" id="user-name" label="{{'SITEMINDER_USERNAME_LABEL'| translate}}" styleclass="full-width" ></ad-textbox>-->
-                <!--<ad-textbox value="data.data.product_cross_customer.tracker_pass_word" inputtype="password" name="pass-word" id="pass-word" label="{{'SITEMINDER_PASSWORD_LABEL'| translate}}" styleclass="full-width"></ad-textbox>-->
-                <!--<ad-dropdown-name value="data.data.product_cross_customer.default_origin" name="default-origin" id="default-origin" valueproperty="value" valfor="default-origin" ng-controller="ADOriginsCtrl" property="name" list="data.booking_origins" label="{{'SITEMINDER_DEFAULT_BOOKING_ORIGIN'| translate}}" styleclass="full-width"></ad-dropdown-name>-->
-                <!--<ad-dropdown-name value="data.data.product_cross_customer.default_payment_id" name="default-payment" id="default-payment" valueproperty="id" valfor="default-payment" ng-controller="ADPaymentMethodsCtrl" property="description" list="data.payments" label="{{'SITEMINDER_DEFAULT_PAYMENT_METHOD'| translate}}" styleclass="full-width"  style="padding-left: 15px;"></ad-dropdown-name>-->
-            <!--</fieldset>-->
-            <!--<fieldset class="holder left" ng-show="isHotelAdmin">-->
             <fieldset class="holder left">
                 <div class="form-title full-width">
                     <h3><span translate>SITEMINDER_SUB_TITLE</span> </h3>
                 </div>
-
-                
                 <table>
                     <tbody>
                         <tr>
@@ -43,7 +33,7 @@
                             </td>
                             <td style="width:30%"></td>
                             <td>
-                                <button type="button" like-type="common" id="test-connection" class="button ng-binding blue sm-refresh-btn" ng-class="{'overlay': refreshButtonEnabled === 'disabled'}"" ng-click="runFullRefresh()" translate>
+                                <button type="button" like-type="common" id="test-connection" class="button ng-binding blue sm-refresh-btn" ng-class="{'overlay': refreshButtonEnabled === 'disabled'}" ng-click="runFullRefresh()" translate>
                                 RUN_REFRESH_BUTTON
                                 </button>
                                 <br>
@@ -58,18 +48,20 @@
                 <ad-textbox value="data.data.product_cross_customer.tracker_user_name" name="user-name" id="user-name" label="{{'SITEMINDER_USERNAME_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
                 <ad-textbox value="data.data.product_cross_customer.tracker_pass_word" inputtype="password" name="pass-word" id="pass-word" label="{{'SITEMINDER_PASSWORD_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
                 <ad-textbox value="data.data.product_cross_customer.tracker_access_url" inputtype="access-url" name="access-url" id="access-url" label="{{'SITEMINDER_ACCESS_URL_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
-                <ad-dropdown-name name="default-origin" id="default-origin" valueproperty="value" valfor="default-origin" ng-controller="ADOriginsCtrl" property="name" list="data.booking_origins" label="{{'SITEMINDER_DEFAULT_BOOKING_ORIGIN'| translate}}" styleclass="full-width"></ad-dropdown-name>
-                <ad-dropdown-name name="default-payment" id="default-payment" valueproperty="id" valfor="default-payment" ng-controller="ADPaymentMethodsCtrl" property="description" list="data.payments" label="{{'SITEMINDER_DEFAULT_PAYMENT_METHOD'| translate}}" styleclass="full-width"  style="padding-left: 15px;"></ad-dropdown-name>
-            </fieldset>
+                <ad-textbox value="data.data.product_cross_customer.hotel_code" inputtype="hotel-code" name="hotel-code" id="hotel-code" label="{{'SITEMINDER_HOTEL_CODE_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
+                <ad-dropdown-name name="default-origin" savemodel="data.data.product_cross_customer.default_origin" id="default-origin" valueproperty="value" property="name" list="booking.booking_origins" label="{{'SITEMINDER_DEFAULT_BOOKING_ORIGIN'| translate}}" styleclass="full-width"></ad-dropdown-name>
+                <ad-dropdown-name name="default-payment" savemodel="data.data.product_cross_customer.default_payment_id" id="default-payment" valueproperty="id" property="description" list="payments.payments" label="{{'SITEMINDER_DEFAULT_PAYMENT_METHOD'| translate}}" styleclass="full-width"  style="padding-left: 15px;"></ad-dropdown-name>
+                
+           </fieldset>
 
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
                     CANCEL
                 </button>
-                <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSiteminderSetup()" translate>
+                <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSetup()" translate>
                     SAVE_CHANGES
                 </button>
-                <button type="button" like-type="common" id="test-connection" class="button ng-binding blue" ng-click="testSiteminderSetup()" translate>
+                <button type="button" like-type="common" id="test-connection" class="button ng-binding blue" ng-click="testSetup()" translate>
                     TEST_CONNECTION
                 </button>
             </div>

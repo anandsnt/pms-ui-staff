@@ -4,7 +4,7 @@ sntRover.controller('roverController',
   '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv',
 
   'ngDialog', '$translate', 'hotelDetails',
-  'userInfoDetails', 'RVChargeItems', '$stateParams',
+  'userInfoDetails', '$stateParams',
 
   'rvMenuSrv', 'rvPermissionSrv', '$timeout',
 
@@ -12,7 +12,7 @@ sntRover.controller('roverController',
     $window, RVDashboardSrv, RVHotelDetailsSrv,
 
     ngDialog, $translate, hotelDetails,
-    userInfoDetails, RVChargeItems, $stateParams,
+    userInfoDetails, $stateParams,
 
     rvMenuSrv, rvPermissionSrv, $timeout) {
 
@@ -108,7 +108,15 @@ sntRover.controller('roverController',
     $rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
     $rootScope.isAddonOn = hotelDetails.is_addon_on;
     $rootScope.desktopSwipeEnabled = hotelDetails.allow_desktop_swipe;
-	$rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
+	  $rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
+    $rootScope.printCancellationLetter = hotelDetails.print_cancellation_letter;
+    $rootScope.printConfirmationLetter = hotelDetails.print_confirmation_letter;
+
+      // CICO-18040
+      $rootScope.isFFPActive = hotelDetails.is_ffp_active;
+      $rootScope.isHLPActive = hotelDetails.is_hlp_active;
+      $rootScope.isPromoActive = hotelDetails.is_promotion_active;
+
 
     //set MLI Merchant Id
     try {
@@ -120,17 +128,17 @@ sntRover.controller('roverController',
     //handle six payment iFrame communication
     var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
     var eventer = window[eventMethod];
-    var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+    var messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
 
     eventer(messageEvent, function(e) {
       var responseData = e.data;
-      if (responseData.response_message == "token_created") {
+      if (responseData.response_message === "token_created") {
         $scope.$broadcast('six_token_recived', {
           'six_payment_data': responseData
         });
         $scope.$digest();
       }
-      // if (responseData.response_message == "error_on_token_creation") {
+      // if (responseData.response_message === "error_on_token_creation") {
         // $scope.$broadcast('six_token_recived',{'six_payment_data':responseData});
       // }
     }, false);
@@ -211,10 +219,9 @@ sntRover.controller('roverController',
       $scope.searchBackButtonCaption = caption; //if it is not blank, backbutton will show, otherwise dont
     });
 
-    if ($rootScope.adminRole == "Hotel Admin")
+    if ($rootScope.adminRole === "Hotel Admin") {
       $scope.isHotelAdmin = true;
-
-
+    }
     /**
     * menu - forming & associate logic
     * NOTE: Menu forming and logic and things are in service rvMenuSrv
@@ -358,9 +365,9 @@ sntRover.controller('roverController',
         e.stopPropagation();
       };
 
-      $scope.menuOpen = !$scope.menuOpen; 
-	  
-	  //Bug fix for CICO-15718 
+      $scope.menuOpen = !$scope.menuOpen;
+
+	  //Bug fix for CICO-15718
 	  //Found that the issue appears when the keyboard comes over the screen
 	  //Added workaround to focus out from the search box
       $('#dashboard-query').focus();
@@ -380,19 +387,6 @@ sntRover.controller('roverController',
       $scope.menuOpen = false;
     };
 
-
-    $scope.fetchAllItemsSuccessCallback = function(data) {
-      $scope.$emit('hideLoader');
-
-      $scope.fetchedData = data;
-
-      ngDialog.open({
-        template: '/assets/partials/postCharge/outsidePostCharge.html',
-        controller: 'RVOutsidePostChargeController',
-        scope: $scope
-      });
-    };
-
     //subemenu actions
 
     $scope.subMenuAction = function(subMenu) {
@@ -400,7 +394,14 @@ sntRover.controller('roverController',
       $scope.toggleDrawerMenu();
 
       if (subMenu === "postcharges") {
-        $scope.invokeApi(RVChargeItems.fetchAllItems, '', $scope.fetchAllItemsSuccessCallback);
+
+        $scope.isOutsidePostCharge = true;
+
+        ngDialog.open({
+          template: '/assets/partials/postCharge/rvPostChargeV2.html',
+          controller: 'RVOutsidePostChargeController',
+          scope: $scope
+        });
       }
       else if (subMenu === "endOfDay") {
         ngDialog.open({
@@ -468,7 +469,7 @@ sntRover.controller('roverController',
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       // Hide loading message
       $scope.$emit('hideLoader');
-      console.log(error);
+      console.error(error);
       //TODO: Log the error in proper way
     });
 
@@ -512,7 +513,7 @@ sntRover.controller('roverController',
         return;
       }
 
-      if ((sntapp.browser == 'rv_native') && sntapp.cordovaLoaded) {
+      if ((sntapp.browser === 'rv_native') && sntapp.cordovaLoaded) {
         setTimeout(function() {
           sntapp.cardReader.startReader(options);
         }, 2000);
@@ -541,7 +542,7 @@ sntRover.controller('roverController',
     /*
      * Start Card reader now!.
      */
-    if ($rootScope.paymentGateway != "sixpayments") {
+    if ($rootScope.paymentGateway !== "sixpayments") {
   		/* Enabling desktop Swipe if we access the app from desktop ( not from devices) and
        * desktopSwipeEnabled flag is true
       */
@@ -734,7 +735,7 @@ sntRover.controller('roverController',
      * function to execute on clicking latecheckout button
      */
     $scope.clickedOnHeaderLateCheckoutIcon = function(event) {
-      if ($rootScope.default_dashboard != 'HOUSEKEEPING') {
+      if ($rootScope.default_dashboard !== 'HOUSEKEEPING') {
         var type = "LATE_CHECKOUT";
         $state.go('rover.search', {
           'type': type,
@@ -744,7 +745,7 @@ sntRover.controller('roverController',
     };
 
     $scope.clickedOnQueuedRoomsIcon = function(event) {
-      if ($rootScope.default_dashboard == 'HOUSEKEEPING') {
+      if ($rootScope.default_dashboard === 'HOUSEKEEPING') {
         $state.go('rover.housekeeping.roomStatus', {
           'roomStatus': 'QUEUED_ROOMS'
         });
@@ -757,7 +758,7 @@ sntRover.controller('roverController',
     };
 
     $scope.$on('UPDATE_QUEUE_ROOMS_COUNT', function(event, data) {
-      if (data == "remove") {
+      if (data === "remove") {
         $scope.userInfo.queue_rooms_count = parseInt($scope.userInfo.queue_rooms_count) - parseInt(1);
       } else {
         $scope.userInfo.queue_rooms_count = parseInt($scope.userInfo.queue_rooms_count) + parseInt(1);

@@ -16,9 +16,25 @@ sntRover.factory('RVReportParserFac', [
             // a very special parser for daily transaction report
             // in future we may make this check generic, if more
             // reports API structure follows the same pattern
-            if ( reportName == reportUtils.getName('DAILY_TRANSACTIONS') ||
-                    reportName == reportUtils.getName('DAILY_PAYMENTS')) {
+            if ( reportName === reportUtils.getName('DAILY_TRANSACTIONS') ||
+                    reportName === reportUtils.getName('DAILY_PAYMENTS')) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseNumeralData( reportName, apiResponse, options );
+            }
+
+            // a very special parser for daily transaction report
+            // in future we may make this check generic, if more
+            // reports API structure follows the same pattern
+            else if ( reportName == reportUtils.getName('RATE_ADJUSTMENTS_REPORT') ) {
+                if ( options['groupedByKey'] == 'adjusted_user_id' ) {
+                    return _.isEmpty(apiResponse) ? apiResponse : $_preParseGroupedRateAdjustments( reportName, apiResponse, options );
+                } else {
+                    return _.isEmpty(apiResponse) ? apiResponse : $_parseRateAdjustments( reportName, apiResponse, options );
+                }
+            }
+            
+            // a very special parser for deposit report
+            else if ( reportName === reportUtils.getName('DEPOSIT_REPORT') ) {
+                return _.isEmpty(apiResponse) ? apiResponse : $_parseDepositReport( reportName, apiResponse, options );
             }
 
             // otherwise a super parser for reports that can be grouped by
@@ -39,12 +55,12 @@ sntRover.factory('RVReportParserFac', [
 
 
         function $_isForGenericReports( name ) {
-            return (name == reportUtils.getName('ARRIVAL') ||
-                    name == reportUtils.getName('IN_HOUSE_GUEST') ||
-                    name == reportUtils.getName('CANCELLATION_NO_SHOW') ||
-                    name == reportUtils.getName('DEPARTURE') ||
-                    name == reportUtils.getName('LOGIN_AND_OUT_ACTIVITY') ||
-                    name == reportUtils.getName('RESERVATIONS_BY_USER')) ? true : false;
+            return (name === reportUtils.getName('ARRIVAL') ||
+                    name === reportUtils.getName('IN_HOUSE_GUEST') ||
+                    name === reportUtils.getName('CANCELLATION_NO_SHOW') ||
+                    name === reportUtils.getName('DEPARTURE') ||
+                    name === reportUtils.getName('LOGIN_AND_OUT_ACTIVITY') ||
+                    name === reportUtils.getName('RESERVATIONS_BY_USER')) ? true : false;
         };
 
 
@@ -66,7 +82,7 @@ sntRover.factory('RVReportParserFac', [
 
             var excludeReports = function(names) {
                 return !!_.find(names, function(n) {
-                    return n == reportName;
+                    return n === reportName;
                 });
             };
 
@@ -178,8 +194,8 @@ sntRover.factory('RVReportParserFac', [
 
                     // do this only after the above code that adds
                     // 'row-break' class to the row
-                    if ( reportName == reportUtils.getName('LOGIN_AND_OUT_ACTIVITY') ) {
-                        if ( makeCopy.hasOwnProperty('action_type') && makeCopy['action_type'] == 'INVALID_LOGIN' ) {
+                    if ( reportName === reportUtils.getName('LOGIN_AND_OUT_ACTIVITY') ) {
+                        if ( makeCopy.hasOwnProperty('action_type') && makeCopy['action_type'] === 'INVALID_LOGIN' ) {
                             makeCopy['action_type'] = 'INVALID LOGIN';
                             makeCopy.trCls = 'row-break invalid';
                         };
@@ -248,12 +264,12 @@ sntRover.factory('RVReportParserFac', [
                 makeCopy = angular.copy( apiResponse[i] );
 
                 // catching cases where the value is "" due to old data
-                if ( makeCopy[groupByKey] == '' ) {
+                if ( makeCopy[groupByKey] === '' ) {
                     makeCopy[groupByKey] = 'UNDEFINED';
                 };
 
                 // if the group by key value has changed
-                if ( makeCopy[groupByKey] != currentGroupByVal ) {
+                if ( makeCopy[groupByKey] !== currentGroupByVal ) {
 
                     // insert the intermediate array to the returnObj
                     if ( interMedArray.length ) {
@@ -277,7 +293,7 @@ sntRover.factory('RVReportParserFac', [
             // if all the 'groupByKey' values are the same
             // no entries had been inserted into 'returnObj'
             // if so, let push them here
-            if ( _.size(returnObj) == 0 ) {
+            if ( _.size(returnObj) === 0 ) {
                 currentGroupByVal = makeCopy[groupByKey];
                 returnObj[currentGroupByVal] = angular.copy(interMedArray);
             };
@@ -310,7 +326,7 @@ sntRover.factory('RVReportParserFac', [
                 objKeyName = key;
 
                 for (key in makeCopy) {
-                    if ( !makeCopy.hasOwnProperty(key) || key == '0' || key == 0 ) {
+                    if ( !makeCopy.hasOwnProperty(key) || key === '0' || key === 0 ) {
                         continue;
                     };
                     objKeyName = key;
@@ -322,7 +338,7 @@ sntRover.factory('RVReportParserFac', [
                     for (k = 0, l = chargeGrpObj['details'].length; k < l; k++) {
                         itemCopy = angular.copy( chargeGrpObj['details'][k] );
 
-                        if ( k == 0) {
+                        if ( k === 0) {
                             itemCopy.chargeGroupName = objKeyName;
                             itemCopy.rowspan = l + 1;  // which is chargeGrpObj['details'].length
                         };
@@ -355,6 +371,260 @@ sntRover.factory('RVReportParserFac', [
 
 
 
+        /**
+         * We have to convert an array of objects 'apiResponse'
+         * into a grouped by 'adjust_by' key-value pairs.
+         *
+         * Each key will be the 'adjust_by' username and its value
+         * will be an array of objects. Each object will represent
+         * an reservation (unique key 'confirmation_no')
+         */
+        
+        /**
+         * @param {Array} apiResponse [{}, {}, {}, {}, {}]
+         * @return {Object} =>        { us1: [{}, {}, {}], us2: [{}, {}], us3: [{}] }
+         */
+        function $_preParseGroupedRateAdjustments ( reportName, apiResponse, options ) {
+            var makeCopy,
+                withOutStay,
+                usersInThisRes;
+
+            var kth,
+                userId,
+                userNa,
+                uid,
+                keyId;
+
+            var tempObj   = {},
+                returnObj = {};
+
+            var i, j, k, l;
+
+            for( i = 0, j = apiResponse.length; i < j; i++ ) {
+
+                // create a copy of ith apiResponse
+                makeCopy = angular.copy( apiResponse[i] );
+
+                // copy the reservation details and an empty 'stay_dates' array
+                withOutStay = angular.copy({
+                    'guest_name'      : makeCopy.guest_name,
+                    'confirmation_no' : makeCopy.confirmation_no,
+                    'arrival_date'    : makeCopy.arrival_date,
+                    'departure_date'  : makeCopy.departure_date,
+                    'stay_dates'      : []
+                });
+
+                // loop and generate an object
+                // representing (same) reservation with
+                // only that user, so a set of that will be
+                // an object of objects
+                usersInThisRes = {};
+                for( k = 0, l = makeCopy['stay_dates'].length; k < l; k++ ) {
+                    kth = makeCopy['stay_dates'][k];
+                    userId = kth['adjusted_user_id'] || 'Unknown';
+                    userNa = kth['adjusted_by'] || 'Unknown';
+
+                    // create a very unique 'uid', we'll remove 'userId' from it later
+                    uid = userId + '__' + userNa;
+
+                    if ( usersInThisRes[uid] == undefined ) {
+                        usersInThisRes[uid] = angular.copy( withOutStay );
+                    };
+
+                    // for each user just push only its associate 'stay_dates' changes
+                    usersInThisRes[uid]['stay_dates'].push( kth );
+                };
+
+                // inset the just found reservation
+                // each with only details of 'stay_dates'
+                // changes of just one user, into a 'tempObj'
+                for( keyId in usersInThisRes ) {
+                    if ( ! usersInThisRes.hasOwnProperty(keyId) ) {
+                        continue;
+                    };
+
+                    if ( tempObj[keyId] == undefined ) {
+                        tempObj[keyId] = [];
+                    };
+
+                    tempObj[keyId].push( usersInThisRes[keyId] );
+                };
+            };
+
+            // now that all the data has been grouped
+            // we need to remove the 'adjusted_user_id'
+            // part from 'uid', and have the 'returnObj' in that format
+            returnObj = {};
+            for( keyId in tempObj ) {
+                if ( ! tempObj.hasOwnProperty(keyId) ) {
+                    continue;
+                };
+
+                // only take the user name part
+                onlyUserNa = keyId.split('__')[1];
+
+                // oh, also we will parse each entry to nG repeat format
+                returnObj[onlyUserNa] = $_parseRateAdjustments( reportName, tempObj[keyId], options );
+            };
+
+            return returnObj;
+        };
+
+
+
+
+
+        function $_parseRateAdjustments ( reportName, apiResponse, options ) {
+            var returnAry = [],
+                customData = [],
+                makeCopy,
+                stayDates,
+                stayDatesTotal;
+
+            var i, j, k, l;
+
+            // loop through the api response
+            for (i = 0, j = apiResponse.length; i < j; i++) {
+
+                // we'll work with a copy of the ith item
+                makeCopy = angular.copy( apiResponse[i] );
+
+                // if we have 'stay_dates' for this reservation
+                if ( makeCopy.hasOwnProperty('stay_dates') && makeCopy['stay_dates'].length ) {
+                    for (k = 0, l = makeCopy['stay_dates'].length; k < l; k++) {
+                        stayDates = makeCopy['stay_dates'][k];
+
+                        // include the first stayDates details in the
+                        // same row as that of the main reservation details  
+                        if ( k == 0 ) {
+                            angular.extend(makeCopy, {
+                                'isReport'        : true,
+                                'rowspan'         : l + 1,
+                                'stay_date'       : stayDates.stay_date,
+                                'original_amount' : stayDates.original_amount,
+                                'adjusted_amount' : stayDates.adjusted_amount,
+                                'variance'        : stayDates.variance,
+                                'reason'          : stayDates.reason,
+                                'adjusted_by'     : stayDates.adjusted_by
+                            });
+                            returnAry.push( makeCopy );
+                        }
+
+                        // create additional sub rows to represent the
+                        // rest of the stay_dates 
+                        else {
+                            customData = {};
+                            angular.extend(customData, {
+                                'isSubReport'     : true,
+                                'stay_date'       : stayDates.stay_date,
+                                'original_amount' : stayDates.original_amount,
+                                'adjusted_amount' : stayDates.adjusted_amount,
+                                'variance'        : stayDates.variance,
+                                'reason'          : stayDates.reason,
+                                'adjusted_by'     : stayDates.adjusted_by
+                            });
+                            returnAry.push( customData );
+                        };
+                    };
+                } else {
+                    returnAry.push( makeCopy );
+                };
+
+                // if we have 'stay_dates_total' for this reservation
+                if ( makeCopy.hasOwnProperty('stay_dates_total') && makeCopy['stay_dates_total'].hasOwnProperty('original_amount') ) {
+                    stayDatesTotal = makeCopy['stay_dates_total'];
+                    customData = {};
+
+                    angular.extend(customData, {
+                        'isSubTotal'      : true,
+                        'className'       : 'row-break',
+                        'original_amount' : stayDatesTotal.original_amount,
+                        'adjusted_amount' : stayDatesTotal.adjusted_amount,
+                        'variance'        : stayDatesTotal.variance
+                    });
+                    returnAry.push( customData );
+                } else {
+                    returnAry.push( makeCopy );
+                };
+            };
+
+            return returnAry;
+        };
+
+
+
+        function $_parseDepositReport ( reportName, apiResponse, options ) {
+            var returnAry  = [],
+                customData = [],
+                makeCopy,
+                depositData,
+                depositTotals;
+
+            var i, j, k, l;
+
+            // loop through the api response
+            for (i = 0, j = apiResponse.length; i < j; i++) {
+
+                // we'll work with a copy of the ith item
+                makeCopy = angular.copy( apiResponse[i] );
+
+                // if we have 'deposit_data' for this reservation
+                if ( makeCopy.hasOwnProperty('deposit_data') && makeCopy['deposit_data'].length ) {
+
+                    // loop through the 'deposit_data'
+                    for (k = 0, l = makeCopy['deposit_data'].length; k < l; k++) {
+                        depositData = makeCopy['deposit_data'][k];
+
+                        // include the first depositData details in the
+                        // same row as that of the main reservation details  
+                        if ( k == 0 ) {
+                            angular.extend(makeCopy, {
+                                'isReport'               : true,
+                                'rowspan'                : l + 1,
+                                'deposit_payment_status' : depositData.deposit_payment_status,
+                                'due_date'               : depositData.due_date,
+                                'deposit_due_amount'     : depositData.deposit_due_amount,
+                                'paid_date'              : depositData.paid_date,
+                                'paid_amount'            : depositData.paid_amount
+                            });
+                            returnAry.push( makeCopy );
+                        }
+
+                        // create additional sub rows to represent the
+                        // rest of the 'deposit_data' 
+                        else {
+                            customData = {};
+                            angular.extend(customData, {
+                                'isSubReport'            : true,
+                                'deposit_payment_status' : depositData.deposit_payment_status,
+                                'due_date'               : depositData.due_date,
+                                'deposit_due_amount'     : depositData.deposit_due_amount,
+                                'paid_date'              : depositData.paid_date,
+                                'paid_amount'            : depositData.paid_amount
+                            });
+                            returnAry.push( customData );
+                        };
+                    };
+
+                    // if this is the last loop
+                    if ( makeCopy.hasOwnProperty('deposit_totals') && ! _.isEmpty(makeCopy['deposit_totals']) ) {
+                        depositTotals = makeCopy['deposit_totals'];
+
+                        customData = {};
+                        angular.extend(customData, {
+                            'isSubTotal'         : true,
+                            'className'          : 'row-break',
+                            'deposit_due_amount' : depositTotals.deposit_due_amount,
+                            'paid_amount'        : depositTotals.paid_amount
+                        });
+                        returnAry.push( customData );
+                    }
+                };
+
+            };
+
+            return returnAry;
+        };
 
 
 

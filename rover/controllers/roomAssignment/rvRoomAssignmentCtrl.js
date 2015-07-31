@@ -573,163 +573,91 @@ sntRover.controller('RVroomAssignmentController',[
 	*/
 	$scope.applyFilterToRooms = function(){
 		$scope.filteredRooms = [];
-		var roomsWithInitialFilters = $scope.getRoomsWithInitialFilters();
-		for(var i = 0; i < roomsWithInitialFilters.length; i++){
-			var flag = true;
+		var roomsWithInitialFilters = [],
+		roomIdsInSelectedFloor,
+		rooms =$scope.rooms,
+		selectedPredefinedFiltersList = $scope.selectedPredefinedFiltersList,
+		selectedFiltersList = $scope.selectedFiltersList;
 
-				for(var j = 0; j < $scope.selectedFiltersList.length; j++){
-					if($scope.selectedFiltersList[j] != -100 && $scope.selectedFiltersList[j] != -101 && $scope.selectedFiltersList[j] != -102 && $scope.selectedFiltersList[j] != -103){
-						if(roomsWithInitialFilters[i].room_features.indexOf($scope.selectedFiltersList[j]) == -1)
-						flag = false;
-					}
-				}
-			if(flag)
-				$scope.addToFilteredRooms(roomsWithInitialFilters[i]);
-		}
-		var includeNotReady = false;
-		var includeDueOut = false;
-		var includePreAssigned = false;
-		var includeClean = false;
-		if($scope.selectedFiltersList.indexOf(-100) != -1){
-			includeNotReady = true;
-			$scope.selectedFiltersList.splice($scope.selectedFiltersList.indexOf(-100), 1);
-		}
-
-
-		if($scope.selectedFiltersList.indexOf(-101) != -1){
-			includeDueOut = true;
-			$scope.selectedFiltersList.splice($scope.selectedFiltersList.indexOf(-101), 1);
-		}
-
-		if($scope.selectedFiltersList.indexOf(-102) != -1){
-			includePreAssigned = true;
-			$scope.selectedFiltersList.splice($scope.selectedFiltersList.indexOf(-102), 1);
-		}
-
-		if($scope.selectedFiltersList.indexOf(-103) != -1){
-			includeClean = true;
-			$scope.selectedFiltersList.splice($scope.selectedFiltersList.indexOf(-103), 1);
-		}
-
-		if($scope.filteredRooms.length == 0 && $scope.selectedFiltersList.length == 0)
-			$scope.filteredRooms = roomsWithInitialFilters;
-
-		if(includeNotReady)
-			$scope.includeNotReadyRooms();
-		if(includeDueOut)
-			$scope.includeDueoutRooms();
-		if(includePreAssigned)
-			$scope.includePreAssignedRooms();
-		if(includeClean)
-			$scope.includeClean();
-		if($scope.floorFilterData&&!$scope.floorFilterData.isNoFloorSelected){
-			$scope.includeFloorFilter();
-		}
-
-	};
-
-	$scope.getRoomsWithInitialFilters = function(){
-		var roomsWithInitialFilters = [];
-
-		//CICO-9063 we will display all vacant rooms for a future reservation
-		if($scope.reservationData.reservation_card.reservation_status === 'RESERVED'){
-			for (var i = 0; i < $scope.rooms.length; i++) {
-				if($scope.rooms[i].fo_status == "VACANT" && !$scope.rooms[i].is_preassigned){
-					roomsWithInitialFilters.push($scope.rooms[i]);
-				}
+		//calculating room ids of selected floors in case any floor is selected.
+		if($scope.floorFilterData && !$scope.floorFilterData.isNoFloorSelected){
+				roomIdsInSelectedFloor= $scope.getRoomIdsInSelectedFloor();		
 			};
-			return roomsWithInitialFilters;
-		}
-		for (var i = 0; i < $scope.rooms.length; i++) {
-			if($scope.rooms[i].room_status == "READY" && $scope.rooms[i].fo_status == "VACANT" && !$scope.rooms[i].is_preassigned){
-				if($scope.rooms[i].checkin_inspected_only == "true" && $scope.rooms[i].room_ready_status == "INSPECTED"){
-					roomsWithInitialFilters.push($scope.rooms[i]);
-				}else if($scope.rooms[i].checkin_inspected_only == "false"){
-					roomsWithInitialFilters.push($scope.rooms[i]);
-				}
 
-			}
-		};
-		return roomsWithInitialFilters;
-	};
+		//Iterating each room for filter.			
+		rooms.forEach(function(room){
+			var isRoomIncluded = false;	
+			//Checking whether the room is to be displyed.
+			if(room.room_status == "READY" && room.fo_status == "VACANT" && !room.is_preassigned){
+				if(room.checkin_inspected_only == "true" && room.room_ready_status == "INSPECTED"){					
+					isRoomIncluded = true;
+				}else if(room.checkin_inspected_only == "false"){				
+					isRoomIncluded = true;
+				};				
+			};
+			// Checking whether any of  predefined Filter condition satisfies
+			selectedPredefinedFiltersList.forEach(function(filter){
+				if(room.room_features.indexOf(filter)!= -1){				
+					isRoomIncluded = true;
+				};
+			});
+			// Checking whether any of Filter condition satisfies
+			selectedFiltersList.forEach(function(filter){
+				if(room.room_features.indexOf(filter)!= -1){				
+					isRoomIncluded =isRoomIncluded&&true;
+				}else{
+					isRoomIncluded =isRoomIncluded&&false;
+				};
+			});	
+			//Checking Whether the Room to be displyed.
+			if(isRoomIncluded){
+				//If floor filter applied, checking whether the room belongs to selected Floor.
+				if($scope.floorFilterData &&!$scope.floorFilterData.isNoFloorSelected){						
+					if(roomIdsInSelectedFloor.indexOf(room.room_id) != -1){
+						$scope.filteredRooms.push(room);
+						};
+				}else{
+				// If No floor filter applied,Directly pushed.
+					$scope.filteredRooms.push(room);
+				};
+			};
 
-	$scope.includeNotReadyRooms = function(){
-		for(var i = 0; i < $scope.rooms.length; i++){
-			if($scope.rooms[i].room_features.indexOf(-100) != -1)
-				$scope.addToFilteredRooms($scope.rooms[i]);
-		}
+		});	
 	};
-	$scope.includeDueoutRooms = function(){
-		for(var i = 0; i < $scope.rooms.length; i++){
-			if($scope.rooms[i].room_features.indexOf(-101) != -1)
-				$scope.addToFilteredRooms($scope.rooms[i]);
-		}
-	};
-	$scope.includePreAssignedRooms = function(){
-		for(var i = 0; i < $scope.rooms.length; i++){
-			if($scope.rooms[i].room_features.indexOf(-102) != -1)
-				$scope.addToFilteredRooms($scope.rooms[i]);
-		}
-	};
-
-	$scope.includeClean = function(){
-		for(var i = 0; i < $scope.rooms.length; i++){
-			if($scope.rooms[i].room_features.indexOf(-103) != -1)
-				$scope.addToFilteredRooms($scope.rooms[i]);
-		}
-	};
-	$scope.includeFloorFilter = function(){
-		var roomsInSelectedFloor;
-			var tempfilteredRooms=[];
-					$scope.floors.forEach(function(element){
-					if(element.id==$scope.floorFilterData.selectedFloorId){
+	/**
+	* function to prepare the array of room ids of selected floors.
+	*/
+	$scope.getRoomIdsInSelectedFloor = function(){
+		var roomsInSelectedFloor = [];
+		$scope.floors.forEach(function(element){
+					if(element.id==$scope.floorFilterData.selectedFloorId){								
 							roomsInSelectedFloor=element.room_ids;
 						}
-					});
-					if(typeof roomsInSelectedFloor != 'undefined'){
-					$scope.filteredRooms.forEach(function(element){
-						roomsInSelectedFloor.map(function(x){
-								if(element.room_id==x){
-									tempfilteredRooms.push(element);
-								}
-						});
-
-					});
-				}
-					$scope.filteredRooms=tempfilteredRooms;
-
-	}
-
-	/**
-	* function to add the rooms to filtered list with sorting, handling the duplication
-	*/
-	$scope.addToFilteredRooms = function(room){
-		var flag = false;
-		var pos = -1;
-			for(var j = 0; j < $scope.filteredRooms.length; j++){
-				if($scope.filteredRooms[j].room_number < room.room_number){
-						pos = j;
-				}
-				if(room.room_number == $scope.filteredRooms[j].room_number)
-					flag = true;
-			}
-			if(!flag){
-				$scope.filteredRooms.splice(pos + 1, 0, room);
-			}
-
-	};
+					});	
+		return roomsInSelectedFloor;		
+	}	
 	/**
 	* function to prepare the array of selected filters' ids
 	*/
 	$scope.setSelectedFiltersList = function(){
 		$scope.selectedFiltersList = [];
-		for(var i = 0; i < $scope.roomFeatures.length; i++){
-			for(var j = 0; j < $scope.roomFeatures[i].items.length; j++){
-				if($scope.roomFeatures[i].items[j].selected){
-					$scope.selectedFiltersList.push($scope.roomFeatures[i].items[j].id);
-				}
-			}
-		}
+		$scope.selectedPredefinedFiltersList = [];
+		var length = $scope.roomFeatures[0].items.length,
+		roomFeatures = $scope.roomFeatures;
+
+		for(var j = 0; j < length; j++){
+			if($scope.roomFeatures[0].items[j].selected){
+				$scope.selectedPredefinedFiltersList.push(roomFeatures[0].items[j].id);
+			};
+		};
+
+		for(var i = 1; i < roomFeatures.length; i++){
+			for(var j = 0; j < roomFeatures[i].items.length; j++){
+				if(roomFeatures[i].items[j].selected){
+					$scope.selectedFiltersList.push(roomFeatures[i].items[j].id);
+				};
+			};
+		};
 	};
 	/**
 	* function to return the rooms list status

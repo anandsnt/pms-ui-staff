@@ -32,7 +32,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADHotelDetailsCtrl',
 			url : '/hoteldetails/:action/:id'
 		});
-		
+
 		$stateProvider.state('admin.users', {
 			templateUrl: '/assets/partials/users/adUserList.html',
 			controller: 'ADUserListCtrl',
@@ -44,20 +44,20 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADChainListCtrl',
 			url : '/chains'
 		});
-			
-		
+
+
 		$stateProvider.state('admin.userdetails', {
 			templateUrl: '/assets/partials/users/adUserDetails.html',
 			controller: 'ADUserDetailsCtrl',
 			url : '/user/:page/:id/:hotelId/:isUnlocking'
 		});
-		
+
 		$stateProvider.state('admin.linkexisting', {
 			templateUrl: '/assets/partials/users/adLinkExistingUser.html',
 			controller: 'ADLinkExistingUserCtrl',
 			url : '/linkexisting/:id'
 		});
-		
+
 		$stateProvider.state('admin.hotels', {
 			templateUrl: '/assets/partials/hotel/adHotelList.html',
 			controller: 'ADHotelListCtrl',
@@ -69,7 +69,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADBrandCtrl',
 			url : '/brands'
 		});
-		
+
 		/*$stateProvider.state('admin.mapping', {
 			templateUrl: '/assets/partials/mapping/adExternalMapping.html',
 			controller: 'ADMappingCtrl',
@@ -85,7 +85,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADFrequentFlyerProgramCtrl',
 			url : '/ffp'
 		});
-		
+
 		$stateProvider.state('admin.icare', {
 			templateUrl: '/assets/partials/icare/adIcareServices.html',
 			controller: 'ADIcareServicesCtrl',
@@ -109,7 +109,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADEmvTerminalDetailsCtrl',
 			url : '/terminaldetails/:itemid'
 		});
-		
+
 		$stateProvider.state('admin.templateconfiguration', {
 			templateUrl: '/assets/partials/templateConfiguration/adListHotel.html',
 			controller: 'ADTemplateConfigurationCtrl',
@@ -132,6 +132,6 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADDoorLockInterfaceCtrl',
 			url : '/doorlockinterface'
 		});
-		
-        
+
+
 });

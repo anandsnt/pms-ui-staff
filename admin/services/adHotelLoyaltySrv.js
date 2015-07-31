@@ -4,7 +4,7 @@ admin.service('ADHotelLoyaltySrv',['$http', '$q', 'ADBaseWebSrv', function($http
     * @return {object} hotel loyalty list json
     */
 	this.fetch = function(){
-		
+
 		var deferred = $q.defer();
 		var url = '/admin/hotel/list_hlps.json';
 

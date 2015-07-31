@@ -1,6 +1,6 @@
 <!-- Arrival -->
 <ul ng-if="isThisReport('ARRIVAL')" class="totals">
-    <li>Total Arrival Rooms<span>{{ summaryCounts.arrivals }}</span></li>
+    <li>Total Arrival Rooms<span>{{ summaryCounts.total_rooms_count }}</span></li>
     <li>ADR<span>{{ summaryCounts.adr | currency:currencySymbol:2 }}</span></li>
 </ul>
 
@@ -42,7 +42,26 @@
 <ul ng-if="isThisReport('ROOMS_QUEUED')" class="totals">
     <li>Rooms Queued<span>{{ summaryCounts.rooms_queued }}</span></li>
 </ul>
+
 <ul ng-if="isThisReport('EARLY_CHECKIN')" class="totals">
     <li>Total Early Check-Ins<span>{{ summaryCounts.total_early_checkins }}</span></li><!-- placeholder -->
     <li>Total Revenue<span class="green">{{ summaryCounts.total_revenue | currency:currencySymbol:2 }}</span></li><!-- placeholder -->
+</ul>
+
+<!-- Upsell -->
+<ul ng-if="isThisReport('UPSELL')" class="totals">
+    <li>{{ totals[0].label }} <span>{{ totals[0].value }}</span></li>
+    <li>{{ totals[1].label }} <span>{{ totals[1].value | currency:currencySymbol:2 }}</span></li>
+</ul>
+
+<!-- Check In Check Out by Mobile device / Web Check In / Check Out -->
+<ul ng-if="isThisReport('CHECK_IN_CHECK_OUT') || isThisReport('WEB_CHECK_IN_CONVERSION') || isThisReport('WEB_CHECK_OUT_CONVERSION')" class="totals">
+     <li ng-repeat="item in firstHalf">
+        {{ item.label }}
+        <span ng-class="item.class">{{ item.value }}</span>
+    </li>
+    <li ng-repeat="item in restHalf">
+        {{ item.label }}
+        <span ng-class="item.class">{{ item.value }}</span>
+    </li>
 </ul>

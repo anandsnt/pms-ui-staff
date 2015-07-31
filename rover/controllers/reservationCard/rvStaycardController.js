@@ -91,7 +91,7 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 		$scope.$on('MOUSEMOVEDOVERME', function() {
 			//(CICO-16893) inoreder to refresh scroller, we are broadcasting this
 			$scope.$broadcast('refreshScrollerReservationDetails');
-			
+
 		});
 
 		$scope.$on('reservationCardClicked', function() {
@@ -103,7 +103,7 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 			var imageName = $scope.guestCardData.contactInfo.avatar.split('/')[$scope.guestCardData.contactInfo.avatar.split('/').length - 1];
 
 			for (var key in avatharImgs) {
-				if ((avatharImgs[key]) == imageName) {
+				if ((avatharImgs[key]) === imageName) {
 					$scope.guestCardData.contactInfo.avatar = data;
 				}
 			}
@@ -120,9 +120,15 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 			 */
 			$scope.$parent.heading = data;
 
-			if(data == "Guest Bill") $scope.$parent.addNoPrintClass = true;
-			else if(data == "Stay Card") $scope.$parent.isLogoPrint = true;
-			else $scope.$parent.addNoPrintClass = false;
+			if(data === "Guest Bill") {
+				$scope.$parent.addNoPrintClass = true;
+			}
+			else if(data === "Stay Card") {
+				$scope.$parent.isLogoPrint = true;
+			}
+			else {
+				$scope.$parent.addNoPrintClass = false;
+			}
 		});
 
 		$scope.$on('SHOWPAYMENTLIST', function(event, data) {

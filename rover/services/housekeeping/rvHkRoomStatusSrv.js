@@ -153,12 +153,12 @@ sntRover.service('RVHkRoomStatusSrv', [
 						// reduce scope search
 						room.description = room.hk_status.description;
 
-						room.is_occupied = room.is_occupied == 'true' ? true : false;
-						room.is_vip = room.is_vip == 'true' ? true : false;
+						room.is_occupied = room.is_occupied === 'true' ? true : false;
+						room.is_vip = room.is_vip === 'true' ? true : false;
 
 						// single calculate the class required
 						// will require additional call from details page
-						that.setRoomStatusClass(room, roomList.checkin_inspected_only);
+						that.setRoomStatusClass(room);
 
 						// set the leaveStatusClass or enterStatusClass value
 						that.setReservationStatusClass(room);
@@ -391,6 +391,54 @@ sntRover.service('RVHkRoomStatusSrv', [
 			return deferred.promise;
 		};
 
+		this.fetchHkStatusList = function() {
+			var deferred = $q.defer(),
+				url = 'api/rooms/hk_status_list';
+
+			BaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+		// put hk status change from room status page
+		// this api can update hk status for one
+		// or many room at once
+		this.putHkStatusChange = function(params) {
+			var deferred = $q.defer(),
+				url = 'house/mass_change_hk_status';
+
+			BaseWebSrvV2.putJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+		this.fetchAllRoomIDs = function() {
+			var deferred = $q.defer(),
+				url = '/house/room_ids_list';
+
+			BaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data.room_ids);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+
+		
+
 
 		this.toggleFilter = function(item) {
 			this.currentFilters[item] = !this.currentFilters[item];
@@ -407,38 +455,38 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 		// Moved from ctrl to srv as this is calculated only once
 		// keept as msg so that it can be called from crtl if needed
-		this.setRoomStatusClass = function(room, checkinInspectedOnly) {
+		this.setRoomStatusClass = function(room) {
 
 			var isOOSorOOO;
 			if ( room.hasOwnProperty('service_status') ) {
 				// new code, note: new code is not dependent on 'isStandAlone'
-				isOOSorOOO = (room.service_status.value == 'OUT_OF_SERVICE' || room.service_status.value == 'OUT_OF_ORDER') ? true : false;
+				isOOSorOOO = (room.service_status.value === 'OUT_OF_SERVICE' || room.service_status.value === 'OUT_OF_ORDER') ? true : false;
 			} else {
 				// old code, kept for just in case fallbacks
-				isOOSorOOO = room.hk_status.value == 'OO' || room.hk_status.value == 'OS' || room.room_reservation_hk_status == 2 || room.room_reservation_hk_status == 3;
+				isOOSorOOO = room.hk_status.value === 'OO' || room.hk_status.value === 'OS' || room.room_reservation_hk_status === 2 || room.room_reservation_hk_status === 3;
 			};
 
-			if (checkinInspectedOnly == "true") {
-				if (room.hk_status.value == 'INSPECTED') {
+			if (roomList.checkin_inspected_only === "true") {
+				if (room.hk_status.value === 'INSPECTED') {
 					room.roomStatusClass = 'clean';
 					return;
 				}
-				if ((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'PICKUP')) {
+				if ((room.hk_status.value === 'CLEAN' || room.hk_status.value === 'PICKUP')) {
 					room.roomStatusClass = 'pickup';
 					return;
 				}
 			} else if (!isOOSorOOO) {
-				if ((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'INSPECTED')) {
+				if ((room.hk_status.value === 'CLEAN' || room.hk_status.value === 'INSPECTED')) {
 					room.roomStatusClass = 'clean';
 					return;
 				}
-				if ((room.hk_status.value == 'PICKUP')) {
+				if ((room.hk_status.value === 'PICKUP')) {
 					room.roomStatusClass = 'pickup';
 					return;
 				}
 			}
 
-			if ((room.hk_status.value == 'DIRTY') && !isOOSorOOO) {
+			if ((room.hk_status.value === 'DIRTY') && !isOOSorOOO) {
 				room.roomStatusClass = 'dirty';
 				return;
 			}
@@ -447,26 +495,26 @@ sntRover.service('RVHkRoomStatusSrv', [
 				room.roomStatusClass = 'out';
 
 				if (!!room.hk_status.oo_status) {
-					if (roomList.checkin_inspected_only == "true") {
-						if (room.hk_status.oo_status == 'INSPECTED') {
+					if (roomList.checkin_inspected_only === "true") {
+						if (room.hk_status.oo_status === 'INSPECTED') {
 							room.roomStatusClassWithOO = 'clean';
 							return;
 						}
-						if ((room.hk_status.oo_status == 'CLEAN' || room.hk_status.oo_status == 'PICKUP')) {
+						if ((room.hk_status.oo_status === 'CLEAN' || room.hk_status.oo_status === 'PICKUP')) {
 							room.roomStatusClassWithOO = 'pickup';
 							return;
 						}
 					} else {
-						if ((room.hk_status.oo_status == 'CLEAN' || room.hk_status.oo_status == 'INSPECTED')) {
+						if ((room.hk_status.oo_status === 'CLEAN' || room.hk_status.oo_status === 'INSPECTED')) {
 							room.roomStatusClassWithOO = 'clean';
 							return;
 						}
-						if ((room.hk_status.oo_status == 'PICKUP')) {
+						if ((room.hk_status.oo_status === 'PICKUP')) {
 							room.roomStatusClassWithOO = 'pickup';
 							return;
 						}
 					}
-					if ((room.hk_status.oo_status == 'DIRTY')) {
+					if ((room.hk_status.oo_status === 'DIRTY')) {
 						room.roomStatusClassWithOO = 'dirty';
 						return;
 					}
@@ -545,35 +593,10 @@ sntRover.service('RVHkRoomStatusSrv', [
 					break;
 			}
 
-			if ( room.is_late_checkout == 'true' ) {
+			if ( room.is_late_checkout === 'true' ) {
 				room.leaveStatusClass = 'late-check-out';
 			};
 		};
-
-		// when user edit the room on details page
-		// update that on the room list
-		this.updateHKStatus = function(updatedRoom) {
-
-			// disabled for now
-			return;
-
-			var newValue = updatedRoom.current_hk_status;
-
-			var newDescription = newValue.toLowerCase();
-			var fChar = newDescription[0].toUpperCase();
-			var rChar = newDescription.slice(1);
-			newDescription = fChar + rChar;
-
-			var matchedRoom = _.find(roomList.rooms, function(room) {
-				return parseInt(room.id) === updatedRoom.id;
-			});
-
-			matchedRoom.hk_status.value = newValue;
-			matchedRoom.hk_status.description = newDescription;
-			matchedRoom.description = newDescription;
-			matchedRoom.roomStatusClass = this.setRoomStatusClass(matchedRoom);
-		};
-
 
 		/**
 		 * CICO-8470 QA comment : Rooms filter for OOO/OOS does not display the correct rooms
@@ -615,7 +638,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 			if (room.room_reservation_status.indexOf('Departed') >= 0) {
 				return 'OUT'
 			} else if (room.room_reservation_status.indexOf('Due out') >= 0) {
-				return room.is_late_checkout == 'true' ? room.late_checkout_time : room.departure_time;
+				return room.is_late_checkout === 'true' ? room.late_checkout_time : room.departure_time;
 			}
 
 			return '';
@@ -649,9 +672,9 @@ sntRover.service('RVHkRoomStatusSrv', [
 		var calculateOoOsTitle = function(room) {
 			if ( room.hasOwnProperty('service_status') ) {
 				// new code, note: new code is not dependent on 'isStandAlone'
-				if ( room.service_status.value == 'OUT_OF_SERVICE' ) {
+				if ( room.service_status.value === 'OUT_OF_SERVICE' ) {
 					return 'Out of Service';
-				} else if ( room.service_status.value == 'OUT_OF_ORDER') {
+				} else if ( room.service_status.value === 'OUT_OF_ORDER') {
 					return 'Out of Order';
 				} else {
 					return '';
@@ -659,13 +682,13 @@ sntRover.service('RVHkRoomStatusSrv', [
 			} else {
 				// old code, kept for just in case fallbacks
 				if ($rootScope.isStandAlone) {
-					return room.room_reservation_hk_status == 2 ? 'Out of Service' :
-						room.room_reservation_hk_status == 3 ? 'Out of Order' :
+					return room.room_reservation_hk_status === 2 ? 'Out of Service' :
+						room.room_reservation_hk_status === 3 ? 'Out of Order' :
 						false;
 				} else {
 					if (true) {};
-					return room.hk_status.value == 'OS' ? 'Out of Service' :
-						room.hk_status.value == 'OO' ? 'Out of Order' :
+					return room.hk_status.value === 'OS' ? 'Out of Service' :
+						room.hk_status.value === 'OO' ? 'Out of Order' :
 						false;
 				}
 			};

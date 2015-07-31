@@ -26,5 +26,5 @@ admin.service('ADDoorlockInterfaceSrv',['$http', '$q', 'ADBaseWebSrvV2', functio
 		});
 		return deferred.promise;
 	};
-   
+
 }]);

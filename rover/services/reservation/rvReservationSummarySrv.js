@@ -252,5 +252,31 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
 
             return deferred.promise;
         };
+
+        // To fetch the confirmation email data for PRINT functionality on Rover.
+        this.fetchResservationConfirmationPrintData = function( params ){
+            var deferred = $q.defer(),
+                url = '/api/reservations/'+params.reservation_id+'/confirmation_email_data';
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                // Converting array into String here, for display purpose.
+                data.data.addons_list = (data.data.addons) ? data.data.addons.toString() : "";
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        // To fetch the Cancellation email data for PRINT functionality on Rover.
+        this.fetchResservationCancellationPrintData = function( params ){
+            var deferred = $q.defer(),
+                url = '/api/reservations/'+params.reservation_id+'/cancellation_email_data';
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
     }
 ]);

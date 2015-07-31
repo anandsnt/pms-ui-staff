@@ -6,11 +6,11 @@ login.service('resetSrv',['$http', '$q', function($http, $q){
     * @param failureCallback action
     */
 	this.resetPassword = function(data, successCallback, failureCallBack){
-		
+
 		var deferred = $q.defer();
-		
+
 		$http.put("/api/password_resets/"+data.token+"/update.json", data).success(function(response, status) {
-			if(response.status == "success"){
+			if(response.status === "success"){
 		    	//deferred.resolve(response.data);
 		    	successCallback(response.data);
 			}else{
@@ -21,26 +21,26 @@ login.service('resetSrv',['$http', '$q', function($http, $q){
 		}).error(function(response, status) {
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it
-			if(status == 406){ // 406- Network error
+			if(status === 406){ // 406- Network error
 				deferred.reject(response.errors);
 			}
-			else if(status == 500){ // 500- Internal Server Error
+			else if(status === 500){ // 500- Internal Server Error
 
 				failureCallBack(['Internal server error occured']);
 			}
-			else if(status == 401){ // 401- Unauthorized
+			else if(status === 401){ // 401- Unauthorized
 				// so lets redirect to login page
 				$window.location.href = '/logout' ;
 			}else{
 				deferred.reject(response.errors);
 			}
-		    
+
 		});
 		return deferred.promise;
-		
-		
-		
-		
+
+
+
+
 	};
    /*
     * Activate user by changing Password
@@ -49,14 +49,14 @@ login.service('resetSrv',['$http', '$q', function($http, $q){
     * @param failureCallback action
     */
 	this.activateUser = function(data, successCallback, failureCallBack){
-		
+
 		var deferred = $q.defer();
-		
+
 		var url = "/api/password_resets/"+data.token+"/update.json";
-		
-		
+
+
 		$http.put(url, data).success(function(response, status) {
-			if(response.status == "success"){
+			if(response.status === "success"){
 		    	//deferred.resolve(response.data);
 		    	successCallback(response.data);
 			}else{
@@ -67,20 +67,20 @@ login.service('resetSrv',['$http', '$q', function($http, $q){
 		}).error(function(response, status) {
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it
-			if(status == 406){ // 406- Network error
+			if(status === 406){ // 406- Network error
 				deferred.reject(response.errors);
 			}
-			else if(status == 500){ // 500- Internal Server Error
+			else if(status === 500){ // 500- Internal Server Error
 
 				failureCallBack(['Internal server error occured']);
 			}
-			else if(status == 401){ // 401- Unauthorized
+			else if(status === 401){ // 401- Unauthorized
 				// so lets redirect to login page
 				$window.location.href = '/logout' ;
 			}else{
 				deferred.reject(response.errors);
 			}
-		    
+
 		});
 		return deferred.promise;
 	};
@@ -91,33 +91,33 @@ login.service('resetSrv',['$http', '$q', function($http, $q){
     * @param string failure callback
     */
 	this.checkTokenStatus = function(data, successCallback, failureCallBack){
-		
+
 		var deferred = $q.defer();
-		
+
 		var url = "";
 
 		var url = "/api/password_resets/validate_token.json";
 		$http.post(url, data).success(function(response, status) {
-			if(response.status != "success"){
+			if(response.status !== "success"){
 		    	failureCallBack(response.errors);
 			}
 		}).error(function(response, status) {
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it
-			if(status == 406){ // 406- Network error
+			if(status === 406){ // 406- Network error
 				deferred.reject(response.errors);
 			}
-			else if(status == 500){ // 500- Internal Server Error
+			else if(status === 500){ // 500- Internal Server Error
 
 				failureCallBack(['Internal server error occured']);
 			}
-			else if(status == 401){ // 401- Unauthorized
+			else if(status === 401){ // 401- Unauthorized
 				// so lets redirect to login page
 				$window.location.href = '/logout' ;
 			}else{
 				deferred.reject(response.errors);
 			}
-		    
+
 		});
 		return deferred.promise;
 	};
@@ -134,5 +134,5 @@ login.service('resetSrv',['$http', '$q', function($http, $q){
 	this.getErrorMessage = function(errorMessage) {
 		return this.errorMessage;
 	};
-	
+
 }]);

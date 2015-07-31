@@ -3,9 +3,9 @@
 */
 
 sntRover.service('rvPermissionSrv',
-	['$http', '$q', 'rvBaseWebSrvV2', 
+	['$http', '$q', 'rvBaseWebSrvV2',
 		function($http, $q, rvBaseWebSrvV2) {
-	
+
 	//variable for storing the permissions, will be a dictionary (object)
 	var roverPermissions = null;
 
@@ -17,13 +17,13 @@ sntRover.service('rvPermissionSrv',
 		var deferred = $q.defer(),
 			//url = '/ui/show?format=json&json_input=permissions/permission.json';
 			url = '/api/permissions';
-		
+
 		rvBaseWebSrvV2.getJSON(url).then(function(data) {
-			roverPermissions = data.permissions;		
+			roverPermissions = data.permissions;
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 

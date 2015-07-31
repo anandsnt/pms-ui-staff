@@ -74,8 +74,15 @@
     "GROUP_PRINT":"Print",
     "GROUP_DOWNLOAD":"Download",
     "ADD_BILLING_INFO":"Add billing information",
-    "GROUP_BATCH" : "Reg.card"
-
+    "GROUP_BATCH" : "Reg.card",
+    "GROUP_MASS_CHECKIN_CONFIRMATION": "Confirm Check In",
+    "GROUP_MASS_CHECKIN_CONFIRMATION_PARTIALLY_OKEY": "Some reservations don't meet check in criteria: Guest not arriving today or name is missing | Room not ready or not assigned",
+    "GROUP_NO_RESERVATIONS_MEET_CHECKIN_CRITERIA": "No reservations meet check in criteria",
+    "GROUP_MASS_CHECKIN_FAILED_IN_PROCESSING": "Sorry, Group checkin has failed for some reason. Please retry after closing this",
+    "GROUP_SELECTED_RESERVATIONS_ARE_ALREADY_ROOM_ASSIGNED": "Sorry, selected reservations are already room assigned",
+    "GROUP_AUTO_ROOM_ASSIGN_CONFIRMATION": "Confirm Room Assign",
+    "GROUP_AUTO_ROOM_ASSIGN_CONFIRMATION_PARTIALLY_OKEY": "Some reservations don't meet auto assign room criteria",
+    "GROUP_AUTO_ROOM_ASSIGN_FAILED_IN_PROCESSING": "Sorry, Group auto room assignment has failed for some reason. Please retry after closing this"
 
 
 

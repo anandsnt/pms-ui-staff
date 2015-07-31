@@ -29,7 +29,7 @@ sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RV
 	// Taking deep copy of current occupancy data
 	angular.forEach($scope.contractData.occupancy,function(item, index) {
 			angular.forEach(new_occupancy,function(item2, index2) {
-				if((item2.year == item.year) && (item2.month == item.month)){
+				if((item2.year === item.year) && (item2.month === item.month)){
 					item2.contracted_occupancy = item.contracted_occupancy;
 					item2.actual_occupancy = item.actual_occupancy;
 				}
@@ -58,7 +58,7 @@ sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RV
 
 	    var data = {"occupancy": $scope.nightsData.occupancy};
 
-	    if($stateParams.id == "add"){
+	    if($stateParams.id === "add"){
     		var account_id = $scope.contactInformation.id;
 	    }
 	    else{

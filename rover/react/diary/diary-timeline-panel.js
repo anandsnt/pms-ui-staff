@@ -2,12 +2,12 @@ var TimelinePanel = React.createClass({
 	componentDidMount: function() {
 		var iscroll = this.props.iscroll;
 
-		iscroll.timeline = new IScroll('#diary-timeline', { 
-			probeType: 2, 
+		iscroll.timeline = new IScroll('#diary-timeline', {
+			probeType: 2,
 			scrollbars: false,
 			interactiveScrollbars: false,
-			scrollX: true, 
-			scrollY: false, 
+			scrollX: true,
+			scrollY: false,
 			momentum: false,
 			bounce: false,
 			mouseWheel: false,
@@ -21,7 +21,7 @@ var TimelinePanel = React.createClass({
 
 		setTimeout(function () {
 	        iscroll.timeline.refresh();
-	        
+
 	        if(_.isNumber(this.props.display.scrollTo)) {
 	        	//scroll.timeline.scrollTo(this.props.display.scrollTo, 0);
 	        }
@@ -37,10 +37,10 @@ var TimelinePanel = React.createClass({
 		if(hops.call(this.props, 'filter') && this.props.filter !== nextProps.filter ) {
   			this.setState({
   				filter: nextProps.filter
-  			});	
+  			});
   		}
 	},
-	shouldComponentUpdate: function(nextProps, nextState) {		
+	shouldComponentUpdate: function(nextProps, nextState) {
 		if(this.props.viewport !== nextProps.viewport ||
 		   this.props.display !== nextProps.display ||
 		   !this.props.currentResizeItem && nextProps.currentResizeItem ||
@@ -80,7 +80,7 @@ var TimelinePanel = React.createClass({
 		}),
 		TimelineOccupancy({
 			display:     props.display,
-			data:        props.stats	
-		})));			
+			data:        props.stats
+		})));
 	}
 });
