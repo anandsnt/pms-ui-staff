@@ -414,6 +414,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                 case __reportNames['RATE_ADJUSTMENTS_REPORT']:
                     reportItem['hasUserFilter'] = true;
+                    reportItem['canRemoveDate'] = true;
                     break;
 
                 default:

@@ -479,7 +479,7 @@ sntRover.factory('RVReportParserFac', [
                 customData = [],
                 makeCopy,
                 stayDates,
-                totalOriginalRate;
+                stayDatesTotal;
 
             var i, j, k, l;
 
@@ -489,15 +489,8 @@ sntRover.factory('RVReportParserFac', [
                 // we'll work with a copy of the ith item
                 makeCopy = angular.copy( apiResponse[i] );
 
-                // reset these counters, should be decimal values
-                totalOriginalRate = 0.0;
-                totalAdjustedRate = 0.0;
-                totalVariance = 0.0;
-
                 // if we have 'stay_dates' for this reservation
                 if ( makeCopy.hasOwnProperty('stay_dates') && makeCopy['stay_dates'].length ) {
-
-                    // loop through the stay_dates
                     for (k = 0, l = makeCopy['stay_dates'].length; k < l; k++) {
                         stayDates = makeCopy['stay_dates'][k];
 
@@ -532,23 +525,22 @@ sntRover.factory('RVReportParserFac', [
                             });
                             returnAry.push( customData );
                         };
-
-                        // keep updating the total values for these
-                        // +(0.1 + 0.2).toFixed(2) => http://stackoverflow.com/questions/10473994/javascript-adding-decimal-numbers-issue#answer-10474055
-                        totalOriginalRate = +(totalOriginalRate + stayDates.original_amount).toFixed(2);
-                        totalAdjustedRate = +(totalAdjustedRate + stayDates.adjusted_amount).toFixed(2);
-                        totalVariance     = +(totalVariance + stayDates.variance).toFixed(2);
                     };
+                } else {
+                    returnAry.push( makeCopy );
+                };
 
-                    // after looping through all the stay_dates
-                    // add a final sub row to show the stayDates totals
+                // if we have 'stay_dates_total' for this reservation
+                if ( makeCopy.hasOwnProperty('stay_dates_total') && makeCopy['stay_dates_total'].hasOwnProperty('original_amount') ) {
+                    stayDatesTotal = makeCopy['stay_dates_total'];
                     customData = {};
+
                     angular.extend(customData, {
-                        'isSubTotal'            : true,
-                        'className'             : 'row-break',
-                        'total_original_amout'  : totalOriginalRate,
-                        'total_adjusted_amount' : totalAdjustedRate,
-                        'total_variance'        : totalVariance
+                        'isSubTotal'      : true,
+                        'className'       : 'row-break',
+                        'original_amount' : stayDatesTotal.original_amount,
+                        'adjusted_amount' : stayDatesTotal.adjusted_amount,
+                        'variance'        : stayDatesTotal.variance
                     });
                     returnAry.push( customData );
                 } else {
