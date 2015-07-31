@@ -820,6 +820,9 @@ sntRover.controller('RVbillCardController',
 	 	$scope.isRefreshOnBackToStaycard = true; //CICO-17739 Refresh view when returning from staycard after altering the payment method.
 	 	$scope.addNewPaymentModal();
 	 };
+	 $rootScope.$on('OPENPAYMENTMODEL',function(){
+	 	$scope.clickedAddUpdateCCButton();
+	 });
 	 /*
 	  * Toggle signature display
 	  */
@@ -827,13 +830,27 @@ sntRover.controller('RVbillCardController',
 	 	$scope.showSignedSignature = !$scope.showSignedSignature;
 	 	$scope.calculateHeightAndRefreshScroll();
 	 };
+
+	 var openPaymentList = function(data) {
+			//	$scope.paymentData.payment_id = id;
+			//  $scope.paymentData.index = index;
+			$scope.dataToPaymentList = data;
+			$scope.dataToPaymentList.isFromBillCard = true;
+			ngDialog.open({
+				template: '/assets/partials/payment/rvShowPaymentList.html',
+				controller: 'RVShowPaymentListCtrl',
+				className: '',
+				scope: $scope
+			});
+	};
 	 /*
 	  * Show the payment list of guest card for selection
 	  */
 	 $scope.showPaymentList = function(){
 	 	$scope.reservationBillData.currentView = "billCard";
 	 	$scope.reservationBillData.currentActiveBill = $scope.currentActiveBill;
-	 	$scope.$emit('SHOWPAYMENTLIST', $scope.reservationBillData);
+	 	//$scope.$emit('SHOWPAYMENTLIST', $scope.reservationBillData);
+	 	openPaymentList($scope.reservationBillData);
 	 };
 
 	 $scope.$on('paymentChangedToCC', function(){
