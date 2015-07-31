@@ -149,7 +149,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'min_stay': $scope.rateData.min_stay,
                 'max_stay': $scope.rateData.max_stay,
                 'use_rate_levels': $scope.rateData.use_rate_levels,
-                'is_commission_on': $scope.rateData.is_commission_on,
                 'is_suppress_rate_on': $scope.rateData.is_suppress_rate_on,
                 'is_discount_allowed_on': $scope.rateData.is_discount_allowed_on,
                 'source_id': $scope.rateData.source_id,
@@ -159,8 +158,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'end_date': $scope.rateData.end_date,
                 'is_hourly_rate': $scope.rateData.is_hourly_rate,
                 'is_member': $scope.rateData.is_member_rate,
-                'commission_value':$scope.rateData.commission_value,
-                'commission_type':$scope.rateData.commission_type
+                'commission_details':$scope.rateData.commission_details
             };
 
             // Save Rate Success Callback
