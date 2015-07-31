@@ -1005,15 +1005,23 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 									if (today[rateId].applyPromotion) {
 										//check if currDate falls between from and to dates of the promotion
 										var promoFrom = today[rateId].appliedPromotion.from,
-											promoTo = today[rateId].appliedPromotion.to;
+											promoTo = today[rateId].appliedPromotion.to,
+											validPromotion = true;
 										if (!!promoFrom && !!promoTo) { //in case promo has a date range
-											validRate = new tzIndependentDate(promoFrom) <= new tzIndependentDate(currDate) &&
+											validPromotion = new tzIndependentDate(promoFrom) <= new tzIndependentDate(currDate) &&
 												new tzIndependentDate(promoTo) >= new tzIndependentDate(currDate);
 										} else if (!!promoFrom) { // case where promo has only from_date
-											validRate = new tzIndependentDate(promoFrom) <= new tzIndependentDate(currDate);
+											validPromotion = new tzIndependentDate(promoFrom) <= new tzIndependentDate(currDate);
 										} else if (!!promoTo) { //case where promo has only to_date
-											validRate = new tzIndependentDate(promoTo) >= new tzIndependentDate(currDate);
+											validPromotion = new tzIndependentDate(promoTo) >= new tzIndependentDate(currDate);
 										}
+										if (!validPromotion) {
+											today[rateId].restrictions.push({
+												key: 'INVALID_PROMO',
+												value: 'PROMOTION INVALID'
+											});
+										}
+										validRate = validRate && validPromotion;
 									}
 								}
 							}
