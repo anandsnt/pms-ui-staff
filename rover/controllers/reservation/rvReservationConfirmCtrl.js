@@ -210,7 +210,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 					if (paramsArray[index].length > 0) {
 						$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, {
 							accompanying_guests_details: paramsArray[index],
-							reservation_id: $scope.reservationData.reservationIds[index]
+							reservation_id: ($scope.reservationData.reservationIds && $scope.reservationData.reservationIds[index]) || $scope.reservationData.reservationId
 						}, onupdateSuccess, onUpdateFailure);
 					}
 				})
