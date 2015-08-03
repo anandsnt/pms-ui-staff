@@ -155,7 +155,8 @@ sntRover.controller('reservationActionsController', [
 
 		$scope.ifReferanceForCC = false;
 		$scope.depositDetails = {};
-
+		$scope.DailogeState = {};
+		
 		/**************************************************************************
 		 * Entering staycard we check if any deposit is left else noraml checkin
 		 *
