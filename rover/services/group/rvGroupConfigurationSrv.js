@@ -82,7 +82,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 		this.getRoomBlockGridDetails = function(param) {
 			var deferred = $q.defer(),
 				url = '/api/groups/' + param.group_id + '/inventories';
-			//url = '/ui/show?format=json&json_input=groups/griddata.json';				
+			//url = '/ui/show?format=json&json_input=groups/griddata.json';
 			rvBaseWebSrvV2.getJSON(url).then(
 				function(data) {
 					deferred.resolve(data);
@@ -226,6 +226,9 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 				url = 'api/groups/' + params.groupId;
 				rvBaseWebSrvV2.getJSON(url).then(
 					function(data) {
+						if (data.rate === null){
+							data.rate = -1;
+						}
 						summaryHolder.groupSummary = data;
 						getAccountSummary(deferred, {
 							accountId: data.posting_account_id
@@ -405,5 +408,45 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 				});
 			return deferred.promise;
 		}
+
+		/**
+		 * Method used to fetch appropriate Rates for the group
+		 * @param  {Object} data contains from_date, to_date (block period), travel_agent_id and company_id
+		 * @return {promise}
+		 */
+		this.getRates = function(data) {
+			var deferred = $q.defer(),
+				url = 'api/groups/rates';
+			rvBaseWebSrvV2.getJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;
+		}
+
+		this.toggleHideRate = function( params ){
+			var deferred = $q.defer(),
+				url = 'api/groups/'+params.group_id+'/hide_rates';
+				rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+				   	 deferred.resolve(data);
+				},function(data){
+				    deferred.reject(data);
+				});
+			return deferred.promise;
+		};
+
+		this.updateRate = function(params) {
+			var deferred = $q.defer(),
+				url = 'api/groups/'+params.group_id+'/change_rate';
+				rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+				   	 deferred.resolve(data);
+				},function(data){
+				    deferred.reject(data);
+				});
+			return deferred.promise;	
+		}
+
 	}
 ]);

@@ -7,7 +7,7 @@ admin.directive('adDropdown', function($timeout) {
             divStyle: '@divStyle',
 	        selboxStyle : '@selboxStyle',
             divClass: '@divClass',
-            selboxClass : '@selboxClass',            
+            selboxClass : '@selboxClass',
             required: '@required',
             id: '@id',
             label:'@label',
@@ -20,16 +20,17 @@ admin.directive('adDropdown', function($timeout) {
 	    },
         link: function ($scope, $element, $attr)
         {
-            if(typeof $scope.options != 'undefined'){
-                if($scope.options.hasOwnProperty('showOptionsIf'))
+            if(typeof $scope.options !== 'undefined'){
+                if($scope.options.hasOwnProperty('showOptionsIf')) {
                     $scope.showOptionsIf = $scope.options.showOptionsIf;
+                }
             }else{
                 $scope.showOptionsIf = function(index){
                      return true;
                 };
             }
         },
-    	templateUrl: '../../assets/directives/selectBox/adDropdownbox.html' 
+    	templateUrl: '../../assets/directives/selectBox/adDropdownbox.html'
     };
 
 });

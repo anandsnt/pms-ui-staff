@@ -128,8 +128,9 @@ var NgReact = (function() {
         // Recurse through the children.
         var childrenNodes = _.compact(_.map(domEl.children, function(child) {
           // Everything needs to be in an element or it will be ignored!
-          if (!child.localName) return;
-
+          if (!child.localName) {
+            return;
+          }
           return NgReactClasses.reactUnit({
             data  : data,
             scope : scope,
@@ -178,8 +179,9 @@ var NgReact = (function() {
 
         var rowTranscluded = _.compact(_.map(this.props.transcludedDom, function(domEl) {
           // Everything needs to be in an element or it will be ignored!
-          if (!domEl.localName) return;
-
+          if (!domEl.localName) {
+            return;
+          }
           var unitFn = NgReactClasses.reactUnit({
             data  : data,
             scope : scope,

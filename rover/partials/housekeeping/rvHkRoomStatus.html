@@ -15,12 +15,17 @@
 
 <!-- Search form -->
 <form method="get" action="" name="rooms-search-form" id="rooms-search-form" class="search-form room-search" role="search" ng-class="{'has-options': isStandAlone, 'single-option': (isStandAlone && !topFilter.byWorkType), 'showing-filters': filterOpen }">
+    <button type="button" id="refresh-data" class="filter button white with-icon only-icon refresh" ng-click="refreshData()">
+        <span class="icons icon-reset"></span>
+        <span translate>Refresh</span>
+    </button>
+
     <button type="button" id="show-filters" class="filter button white with-icon only-icon" ng-click="showFilters()">
         <span class="icons icon-filter"></span>
         <span translate>FILTER_ROOMS</span>
     </button>
     
-    <div class="entry search">
+    <div class="entry search" ng-class="{ 'rooms-checked': multiRoomAction.anyChosen }">
         <button type="button" class="clear-query" ng-show="query != ''" ng-click="clearSearch()" ng-class="{'visible': query != ''}">
             <span class="icons icon-clear-search ng-scope" translate>CLEAR_QUERY</span>
         </button>
@@ -28,7 +33,7 @@
         <input name="rooms-query" id="rooms-query" class="query" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}" type="search" autocomplete="off" ng-model="query" ng-change="filterByQuery()">
     </div>
     
-    <div class="entry options" ng-if="isStandAlone" ng-cloak>
+    <div class="entry options" ng-if="isStandAlone" ng-cloak ng-class="{ 'rooms-checked': multiRoomAction.anyChosen }">
         <div class="select">
             <select id="work-type" name="work-type" ng-model="topFilter.byWorkType" ng-options="work.id as work.name for work in workTypes" ng-change="applyWorkTypefilter()">
                 <option value="">All Work Types</option>
@@ -41,13 +46,20 @@
             </select>
         </div>
     </div>
-    
-    <button type="button" id="refresh-data" class="filter button white with-icon only-icon refresh" ng-click="refreshData()">
-        <span class="icons icon-reset"></span>
-        <span translate>Refresh</span>
-    </button>
 
-    <button ng-if="isStandAlone" type="button" id="refresh-data" class="button blue with-icon only-icon print" ng-click="printData()">
+    <!-- Select All Rooms from list -->
+    <div ng-if="isStandAlone" id="hk-multi-select" class="entry check" ng-class="{ 'rooms-checked': multiRoomAction.anyChosen }">
+        <button type="button" class="button purple with-icon only-icon open-modal" ng-class="{ 'hidden': !multiRoomAction.anyChosen }" ng-click="openChangeHkStatusModal()"> <!-- Hidden until at least 1 room is selected -->
+            <span class="icons icon-pencil"></span>
+            Update
+        </button>
+        <label class="checkbox inline" for="select-all-rooms" ng-click="toggleRoomSelection($event)">
+            <span class="icon-form icon-checkbox" ng-class="{ 'semi-checked': (multiRoomAction.anyChosen && !multiRoomAction.allChosen), 'checked': multiRoomAction.allChosen }"></span>
+            <input id="select-all-rooms" type="checkbox" ng-model="multiRoomAction.allChosen" />
+        </label>
+    </div>
+
+    <button ng-if="isStandAlone" type="button" id="refresh-data" class="button blue with-icon only-icon print" ng-click="printData()" ng-class="{ 'rooms-checked': multiRoomAction.anyChosen }">
         <span class="icons icon-print"></span>
         <span translate>Print</span>
     </button>
@@ -56,7 +68,6 @@
       <button class="button blank" ng-show="isFilterChcked()" ng-click="clearFilters()" type="button" translate>CLEAR</button>
       <button type="button" class="button green" ng-click="filterDoneButtonPressed()" translate>APPLY</button>
     </div>
-
 </form>
 
 <ul id="my-worksheet-options" class="worksheet-options" ng-show="!!hasActiveWorkSheet">
@@ -79,14 +90,21 @@
         <p class="pull-msg" ng-show="!disablePrevBtn">Pull down to load previous page</p>
         <p class="pull-msg" ng-show="disablePrevBtn">Pull down to refresh page</p>
     </li>
-
+    
     <li class="room" bindonce ng-repeat="room in rooms track by $index">
+        <div ng-if="isStandAlone" class="check">
+            <label class="checkbox inline" for="{{ room.id }}" ng-click="roomSelectChange(room, $index)">
+                <span class="icon-form icon-checkbox" ng-class="{ 'checked' : room.selected }"></span>
+                <input id="{{ room.id }}" type="checkbox" ng-model="room.selected" />
+            </label>
+        </div>
+
         <a ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })" bo-class="{ 'with-image': room.is_occupied }"> <!-- Add  class="with-image" if room is occupied -->
 
           <div class="data" bo-class="{ 'on-hold': room.is_on_hold }">
             <h2 class="{{ room.roomStatusClass }}" bo-text="room.room_no"></h2> <!-- If room is ooo or oos, class should be 'out'. Otherwise, use {room-status} -->
-            <span bo-if="!room.hk_status.oo_status" class="room-status {{ room.roomStatusClass }}" bo-text="room.description"></span>
-            <span bo-if="!!room.hk_status.oo_status" class="room-status {{ room.roomStatusClassWithOO }}" bo-text="room.hk_status.oo_status"></span>
+            <span bo-if="!room.hk_status.oo_status" class="room-status {{ room.roomStatusClass }}">{{ room.description }}</span>
+            <span bo-if="!!room.hk_status.oo_status" class="room-status {{ room.roomStatusClassWithOO }}">{{ room.hk_status.oo_status }}</span>
           </div>
 
           <div class="reservation-status" bo-class="{ 'queued': room.is_queued, 'on-hold': room.is_on_hold }">

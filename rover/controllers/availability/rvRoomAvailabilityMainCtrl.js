@@ -1,30 +1,30 @@
-sntRover.controller('roomAvailabilityMainController', [		
-	'$scope', 
+sntRover.controller('roomAvailabilityMainController', [
+	'$scope',
 	'rvAvailabilitySrv',
 	'$rootScope',
 	'ngDialog',
 	'$filter' ,
 	'$timeout',
 	function($scope, rvAvailabilitySrv, $rootScope, ngDialog, $filter, $timeout){
-	
+
 
 	BaseCtrl.call(this, $scope);
-	
+
 	$scope.selectedView = 'grid';
 	$scope.page.title = "Availability";
 
 	$scope.setSelectedView = function(selectedView){
 		$scope.$emit("showLoader");
-		$scope.selectedView = selectedView;				
+		$scope.selectedView = selectedView;
 	};
 
 	$scope.loadSelectedView = function(){
-		if($scope.selectedView == 'grid'){			
+		if($scope.selectedView === 'grid'){
 			return '/assets/partials/availability/roomAvailabilityGridStatus.html';
 		}
-		else if($scope.selectedView == 'graph'){
+		else if($scope.selectedView === 'graph'){
 			return '/assets/partials/availability/roomAvailabilityGraphStatus.html';
-		}		
+		}
 	}
 
 
@@ -52,7 +52,7 @@ sntRover.controller('roomAvailabilityMainController', [
 			scope: $scope,
 			closeByDocument: true
 		});
-	};	
+	};
 
 	/**
 	* success call of availability data fetch
@@ -76,9 +76,9 @@ sntRover.controller('roomAvailabilityMainController', [
 
 	/**
 	* When there is any change of for availability data params we need to call the api
-	*/	
+	*/
 	$scope.changedAvailabilityDataParams = function(){
-		$timeout(function(){			
+		$timeout(function(){
 		//calculating date after number of dates selected in the select box
 			var dateAfter = tzIndependentDate ($scope.data.selectedDate);
 
@@ -87,10 +87,10 @@ sntRover.controller('roomAvailabilityMainController', [
 				'from_date': $filter('date')(tzIndependentDate ($scope.data.selectedDate), $rootScope.dateFormatForAPI),
 				'to_date'  : $filter('date')(tzIndependentDate (dateAfter), $rootScope.dateFormatForAPI)
 			}
-			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityDetails, dataForWebservice, successCallbackOfAvailabilityFetch, failureCallbackOfAvailabilityFetch);									
+			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityDetails, dataForWebservice, successCallbackOfAvailabilityFetch, failureCallbackOfAvailabilityFetch);
 		}, 0)
-	
-	};	
+
+	};
 
 
 	$scope.changedAvailabilityDataParams();

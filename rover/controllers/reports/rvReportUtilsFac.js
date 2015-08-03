@@ -31,8 +31,9 @@ sntRover.factory('RVReportUtilsFac', [
             'FORECAST_BY_DATE'             : 'Forecast',
             'ROOMS_QUEUED'                 : 'Rooms Queued',
             'FORECAST_GUEST_GROUPS'        : 'Forecast Guests & Groups',
-            'MARKET_SEGMENT_STATISTICS_REPORT' : 'Market Segment Statistics Report',
-            'COMPARISION_BY_DATE'          : 'Comparison'
+            'MARKET_SEGMENT_STAT_REPORT'   : 'Market Segment Statistics Report',
+            'COMPARISION_BY_DATE'          : 'Comparison',
+            'RATE_ADJUSTMENTS_REPORT'      : 'Rate Adjustment Report'
         };
 
 
@@ -67,7 +68,7 @@ sntRover.factory('RVReportUtilsFac', [
                 cgAssociated       = false,
                 paymentEntry       = {};
 
-            if ( setting == 'REMOVE_PAYMENTS' ) {
+            if ( setting === 'REMOVE_PAYMENTS' ) {
                 _.each(chargeGroupsAry, function (each) {
                     if ( each.name !== 'Payments' ) {
                         each.selected = true;
@@ -79,7 +80,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                 _.each(chargeCodesAry, function (each) {
                     cgAssociated = _.find(each['associcated_charge_groups'], function(idObj) {
-                        return idObj.id == paymentId;
+                        return idObj.id === paymentId;
                     });
 
                     if ( !cgAssociated ) {
@@ -89,9 +90,9 @@ sntRover.factory('RVReportUtilsFac', [
                 });
             }
 
-            if ( setting == 'ONLY_PAYMENTS' ) {
+            if ( setting === 'ONLY_PAYMENTS' ) {
                 paymentEntry = _.find(chargeGroupsAry, function(each) {
-                    return each.name == 'Payments';
+                    return each.name === 'Payments';
                 });
 
                 if ( !!paymentEntry ) {
@@ -101,7 +102,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                     _.each(chargeCodesAry, function (each) {
                         cgAssociated = _.find(each['associcated_charge_groups'], function(idObj) {
-                            return idObj.id == paymentId;
+                            return idObj.id === paymentId;
                         });
 
                         if ( !!cgAssociated ) {
@@ -136,7 +137,7 @@ sntRover.factory('RVReportUtilsFac', [
             };
 
             // merge value when its an object, else just assign
-            if ( typeof value == 'object' ) {
+            if ( typeof value === 'object' ) {
                 // DAMN! Our Angular version is very very old. Cant use this:
                 // angular.merge({}, objRef[key], value );
                 $.extend( true, objRef[key], value );
@@ -165,6 +166,7 @@ sntRover.factory('RVReportUtilsFac', [
             'DUE_OUT_DEPARTURES' : true,
             'INCLUDE_NEW'        : true,
             'INCLUDE_BOTH'       : true,
+            'EXCLUDE_NON_GTD'    : true,
             'SHOW_RATE_ADJUSTMENTS_ONLY' : true,
             'INCLUDE_TAX'        : true
         };
@@ -185,21 +187,40 @@ sntRover.factory('RVReportUtilsFac', [
             var selected = false;
             var mustSend = false;
 
+            var includeCancelled = {
+                        'INCLUDE_CANCELLED' : true,
+                        'INCLUDE_CANCELED'  : true
+                    },
+                dueInDueOut = {
+                        'DUE_IN_ARRIVALS'    : true,
+                        'DUE_OUT_DEPARTURES' : true
+                    },
+                depositStatus = {
+                        'DEPOSIT_PAID' : true,
+                        'DEPOSIT_DUE'  : true,
+                        'DEPOSIT_PAST' : true
+                    };
+
             // if filter is this, make it selected by default
-            if ( objRef['title'] == __reportNames['CANCELLATION_NO_SHOW'] && { 'INCLUDE_CANCELLED':1, 'INCLUDE_CANCELED':1 }[filter.value] ) {
+            if ( objRef['title'] == __reportNames['CANCELLATION_NO_SHOW'] && includeCancelled[filter.value] ) {
                 selected = true;
                 objRef['hasGeneralOptions']['title'] = filter.description;
             };
 
             // if filter value is either of these, make it selected by default
-            if ( { 'DUE_IN_ARRIVALS':1, 'DUE_OUT_DEPARTURES':1 }[filter.value] ) {
+            if ( dueInDueOut[filter.value] ) {
                 selected = true;
                 objRef['hasGeneralOptions']['title'] = filter.description;
             };
 
             // if filter value is either of these, must include when report submit
-            if ( { 'DEPOSIT_PAID':1, 'DEPOSIT_DUE':1, 'DEPOSIT_PAST':1 }[filter.value] ) {
+            if ( depositStatus[filter.value] ) {
                 mustSend = true;
+            };
+
+            // if filter value is either of these, must include when report submit
+            if ( objRef['title'] == __reportNames['FORECAST_GUEST_GROUPS'] ) {
+                objRef['hasGeneralOptions']['title'] = filter.description;
             };
 
             objRef['hasGeneralOptions']['data'].push({
@@ -219,7 +240,7 @@ sntRover.factory('RVReportUtilsFac', [
             objRef['hasDisplay']['data'].push({
                 paramKey    : filter.value.toLowerCase(),
                 description : filter.description,
-                selected    : false,
+                selected    : false
             });
         };
 
@@ -300,15 +321,23 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case __reportNames['FORECAST_BY_DATE']:
-                    reportItem['reportIconCls'] = 'icon-report';
+                    reportItem['reportIconCls'] = 'icon-report icon-forecast';
                     break;
 
-                case __reportNames['MARKET_SEGMENT_STATISTICS_REPORT']:
-                    reportItem['reportIconCls'] = 'icon-report';
+                case __reportNames['MARKET_SEGMENT_STAT_REPORT']:
+                    reportItem['reportIconCls'] = 'icon-report icon-market';
                     break;
 
                 case __reportNames['FORECAST_GUEST_GROUPS']:
-                    reportItem['reportIconCls'] = 'icon-report';
+                    reportItem['reportIconCls'] = 'icon-report icon-forecast';
+                    break;
+
+                case __reportNames['COMPARISION_BY_DATE']:
+                    reportItem['reportIconCls'] = 'icon-report icon-comparison';
+                    break;
+
+                case __reportNames['RATE_ADJUSTMENTS_REPORT']:
+                    reportItem['reportIconCls'] = 'icon-report icon-rate';
                     break;
 
                 default:
@@ -329,7 +358,6 @@ sntRover.factory('RVReportUtilsFac', [
          * Current implementation has many dependendcy across many files. Not Good.
          */
         factory.applyFlags = function ( reportItem ) {
-
             switch ( reportItem['title'] ) {
                 case __reportNames['ARRIVAL']:
                     reportItem['hasDateLimit'] = false;
@@ -340,32 +368,24 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case __reportNames['CANCELLATION_NO_SHOW']:
-                    reportItem['hasDateLimit'] = false;
+                    reportItem['hasDateLimit']  = false;
                     reportItem['canRemoveDate'] = true;
-                    reportItem['showRemove'] = true;
                     break;
 
                 case __reportNames['BOOKING_SOURCE_MARKET_REPORT']:
-                    reportItem['canRemoveDate'] = true;
-                    reportItem['showRemove'] = true;
-                    reportItem['hasSourceMarketFilter'] = true;
-                    reportItem['hasDateLimit'] = false;
-                    reportItem['canRemoveArrivalDate'] = true;
-                    reportItem['showRemoveArrivalDate'] = true;
+                    reportItem['canRemoveDate']       = true;
+                    reportItem['hasDateLimit']        = false;
                     reportItem['hasArrivalDateLimit'] = false;
                     break;
 
                 case __reportNames['LOGIN_AND_OUT_ACTIVITY']:
-                    reportItem['hasDateLimit'] = false;
+                    reportItem['hasDateLimit']  = false;
                     reportItem['hasUserFilter'] = true;
                     break;
 
                 case __reportNames['DEPOSIT_REPORT']:
-                    reportItem['hasDateLimit'] = false;
+                    reportItem['hasDateLimit']  = false;
                     reportItem['canRemoveDate'] = true;
-                    reportItem['showRemove'] = true;
-                    reportItem['canRemoveArrivalDate'] = true;
-                    reportItem['showRemoveArrivalDate'] = true;
                     break;
 
                 case __reportNames['OCCUPANCY_REVENUE_SUMMARY']:
@@ -374,11 +394,8 @@ sntRover.factory('RVReportUtilsFac', [
 
                 case __reportNames['RESERVATIONS_BY_USER']:
                     reportItem['hasUserFilter'] = true;
-                    reportItem['hasDateLimit'] = false;
+                    reportItem['hasDateLimit']  = false;
                     reportItem['canRemoveDate'] = true;
-                    reportItem['showRemove'] = true;
-                    reportItem['canRemoveArrivalDate'] = true;
-                    reportItem['showRemoveArrivalDate'] = true;
                     break;
 
                 case __reportNames['FORECAST_BY_DATE']:
@@ -387,7 +404,7 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['hasDateLimit'] = false;
                     break;
 
-                case __reportNames['MARKET_SEGMENT_STATISTICS_REPORT']:
+                case __reportNames['MARKET_SEGMENT_STAT_REPORT']:
                     reportItem['hasDateLimit'] = true;
                     break;
 
@@ -395,8 +412,12 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem['hasSysDateLimit'] = true;
                     break;
 
+                case __reportNames['RATE_ADJUSTMENTS_REPORT']:
+                    reportItem['hasUserFilter'] = true;
+                    reportItem['canRemoveDate'] = true;
+                    break;
+
                 default:
-                    reportItem['show_filter'] = false;
                     reportItem['hasDateLimit'] = false;     // CICO-16820: Changed to false
                     break;
             };
@@ -408,7 +429,7 @@ sntRover.factory('RVReportUtilsFac', [
 
 
         /**
-         * Process the filters and create proper DS to show and play in UI 
+         * Process the filters and create proper DS to show and play in UI
          * @param  {Object} reportItem The ith report
          * @param  {Object} data       Additonal data sources like CG, CC, Markets, Source etc
          */
@@ -447,17 +468,14 @@ sntRover.factory('RVReportUtilsFac', [
             _.each(reportItem['filters'], function(filter) {
 
                 if ( (filter.value === 'INCLUDE_CHARGE_CODE' || filter.value === 'INCLUDE_CHARGE_GROUP') && _.isEmpty(processedCGCC) ) {
-                    if ( reportItem['title'] == __reportNames['DAILY_TRANSACTIONS'] ) {
+                    if ( reportItem['title'] === __reportNames['DAILY_TRANSACTIONS'] ) {
                         processedCGCC = __adjustChargeGroupsCodes( data.chargeGroups, data.chargeCodes, 'REMOVE_PAYMENTS' );
                     };
 
-                    if ( reportItem['title'] == __reportNames['DAILY_PAYMENTS'] ) {
+                    if ( reportItem['title'] === __reportNames['DAILY_PAYMENTS'] ) {
                         processedCGCC = __adjustChargeGroupsCodes( data.chargeGroups, data.chargeCodes, 'ONLY_PAYMENTS' );
                     };
                 };
-
-
-
 
                 // check for date filter and keep a ref to that item
                 if ( filter.value === 'DATE_RANGE' ) {
@@ -465,12 +483,12 @@ sntRover.factory('RVReportUtilsFac', [
 
                     // for 'Cancellation & No Show' report the description should be 'Arrival Date Range'
                     // rather than the default 'Date Range'
-                    if ( reportItem['title'] == 'Cancellation & No Show' ) {
+                    if ( reportItem['title'] === 'Cancellation & No Show' ) {
                         reportItem['hasDateFilter']['description'] = 'Arrival Date Range';
                     };
 
                     // for 'Booking Source & Market Report' report the description should be 'Booked Date'
-                    if ( reportItem['title'] == 'Booking Source & Market Report' ) {
+                    if ( reportItem['title'] === 'Booking Source & Market Report' ) {
                         reportItem['hasDateFilter']['description'] = 'Booked Date';
                     };
 
@@ -567,6 +585,20 @@ sntRover.factory('RVReportUtilsFac', [
                     reportItem.allDates.push( 'hasSingleDateFilter' );
                 };
 
+                // check for rate adjustment date range filter and keep a ref to that item
+                if ( filter.value === 'ADJUSTMENT_DATE_RANGE' ) {
+                    reportItem['hasAdjustmentDateRange'] = filter;
+
+                    // track - showRemove flag, model names.
+                    // push date name to 'allDates'
+                    angular.extend(reportItem['hasAdjustmentDateRange'], {
+                        showRemove : true,
+                        fromModel  : 'fromAdjustmentDate',
+                        untilModel : 'untilAdjustmentDate'
+                    });
+                    reportItem.allDates.push( 'hasAdjustmentDateRange' );
+                };
+
 
 
 
@@ -619,14 +651,14 @@ sntRover.factory('RVReportUtilsFac', [
                     //
                     // QUICK PATCH
                     // TODO: replace with a better solution
-                    if ( reportItem.title == __reportNames['MARKET_SEGMENT_STATISTICS_REPORT'] ) {
+                    if ( reportItem.title == __reportNames['MARKET_SEGMENT_STAT_REPORT'] ) {
                         if ( filter.value == 'INCLUDE_MARKET' && data.codeSettings['is_market_on'] ) {
                             __pushDisplayData( reportItem, filter );
-                        } else if ( filter.value == 'INCLUDE_ORIGIN' && data.codeSettings['is_origin_on'] ) {
+                        } else if ( filter.value === 'INCLUDE_ORIGIN' && data.codeSettings['is_origin_on'] ) {
                             __pushDisplayData( reportItem, filter );
-                        } else if ( filter.value == 'INCLUDE_SEGMENT' && data.codeSettings['is_segments_on'] ) {
+                        } else if ( filter.value === 'INCLUDE_SEGMENT' && data.codeSettings['is_segments_on'] ) {
                             __pushDisplayData( reportItem, filter );
-                        } else if ( filter.value == 'INCLUDE_SOURCE' && data.codeSettings['is_source_on'] ) {
+                        } else if ( filter.value === 'INCLUDE_SOURCE' && data.codeSettings['is_source_on'] ) {
                             __pushDisplayData( reportItem, filter );
                         };
                     } else {
@@ -729,9 +761,9 @@ sntRover.factory('RVReportUtilsFac', [
 
         // to process the report group by
         factory.processGroupBy = function ( reportItem ) {
+            // remove the value for 'BLANK'
             if ( reportItem['group_fields'] && reportItem['group_fields'].length ) {
-                // adding custom name ref
-                reportItem['groupByOptions'] = reportItem['group_fields'];
+                reportItem['groupByOptions'] = _.reject(reportItem['group_fields'], { value: 'BLANK' });
             };
         };
 
@@ -746,8 +778,8 @@ sntRover.factory('RVReportUtilsFac', [
             // for (arrival, departure) report the sort by items must be
             // ordered in a specific way as per the design
             // [date - name - room] > TO > [room - name - date]
-            if ( reportItem['title'] == __reportNames['ARRIVAL'] ||
-                 reportItem['title'] == __reportNames['DEPARTURE'] ) {
+            if ( reportItem['title'] === __reportNames['ARRIVAL'] ||
+                 reportItem['title'] === __reportNames['DEPARTURE'] ) {
                 var dateSortBy = angular.copy( reportItem['sort_fields'][0] ),
                     roomSortBy = angular.copy( reportItem['sort_fields'][2] );
 
@@ -761,7 +793,7 @@ sntRover.factory('RVReportUtilsFac', [
             // for in-house report the sort by items must be
             // ordered in a specific way as per the design
             // [name - room] > TO > [room - name]
-            if ( reportItem['title'] == __reportNames['IN_HOUSE_GUEST'] ) {
+            if ( reportItem['title'] === __reportNames['IN_HOUSE_GUEST'] ) {
                 var nameSortBy = angular.copy( reportItem['sort_fields'][0] ),
                     roomSortBy = angular.copy( reportItem['sort_fields'][1] );
 
@@ -776,7 +808,7 @@ sntRover.factory('RVReportUtilsFac', [
             // the colspans should be adjusted
             // the sort descriptions should be update to design
             //    THIS MUST NOT BE CHANGED IN BACKEND
-            if ( reportItem['title'] == __reportNames['LOGIN_AND_OUT_ACTIVITY'] ) {
+            if ( reportItem['title'] === __reportNames['LOGIN_AND_OUT_ACTIVITY'] ) {
                 reportItem['sort_fields'][0]['description'] = 'Date & Time';
 
                 reportItem['sort_fields'][0]['colspan'] = 2;
@@ -786,24 +818,22 @@ sntRover.factory('RVReportUtilsFac', [
 
             // need to reorder the sort_by options
             // for deposit report in the following order
-            if ( reportItem['title'] == __reportNames['DEPOSIT_REPORT'] ) {
+            if ( reportItem['title'] === __reportNames['DEPOSIT_REPORT'] ) {
                 var reservationSortBy = angular.copy( reportItem['sort_fields'][4] ),
-                    nameSortBy        = angular.copy( reportItem['sort_fields'][3] ),
-                    dateSortBy        = angular.copy( reportItem['sort_fields'][0] ),
                     dueDateSortBy     = angular.copy( reportItem['sort_fields'][1] ),
                     paidDateSortBy    = angular.copy( reportItem['sort_fields'][2] );
 
                 reportItem['sort_fields'][0] = reservationSortBy;
-                reportItem['sort_fields'][1] = nameSortBy;
-                reportItem['sort_fields'][2] = dateSortBy;
+                reportItem['sort_fields'][1] = null;
+                reportItem['sort_fields'][2] = dueDateSortBy;
                 reportItem['sort_fields'][3] = null;
-                reportItem['sort_fields'][4] = dueDateSortBy;
-                reportItem['sort_fields'][5] = paidDateSortBy;
+                reportItem['sort_fields'][4] = paidDateSortBy;
+                reportItem['sort_fields'][5] = null;
             };
 
             // need to reorder the sort_by options
             // for Reservation by User in the following order
-            if ( reportItem['title'] == __reportNames['RESERVATIONS_BY_USER'] ) {
+            if ( reportItem['title'] === __reportNames['RESERVATIONS_BY_USER'] ) {
                 var reservationType = angular.copy( reportItem['sort_fields'][6] ),
                     guestName       = angular.copy( reportItem['sort_fields'][3] ),
                     arrivalDate     = angular.copy( reportItem['sort_fields'][1] ),
@@ -824,8 +854,8 @@ sntRover.factory('RVReportUtilsFac', [
 
             // need to reorder the sort_by options
             // for daily transactions in the following order
-            if ( reportItem['title'] == __reportNames['DAILY_TRANSACTIONS'] ||
-                    reportItem['title'] == __reportNames['DAILY_PAYMENTS'] ) {
+            if ( reportItem['title'] === __reportNames['DAILY_TRANSACTIONS'] ||
+                    reportItem['title'] === __reportNames['DAILY_PAYMENTS'] ) {
                 var chargeGroup = angular.copy( reportItem['sort_fields'][1] ),
                     chargeCode  = angular.copy( reportItem['sort_fields'][0] ),
                     revenue     = angular.copy( reportItem['sort_fields'][3] ),
@@ -843,6 +873,22 @@ sntRover.factory('RVReportUtilsFac', [
                 reportItem['sort_fields'][8] = null;
                 reportItem['sort_fields'][9] = ytd;
             };
+
+            // need to reorder the sort_by options
+            // for rate adjustment report in the following order
+            if ( reportItem['title'] === __reportNames['RATE_ADJUSTMENTS_REPORT'] ) {
+                var date      = angular.copy( reportItem['sort_fields'][1] ),
+                    guestUser = angular.copy( reportItem['sort_fields'][0] ),
+                    user      = angular.copy( reportItem['sort_fields'][2] );
+
+                reportItem['sort_fields'][0] = guestUser;
+                reportItem['sort_fields'][1] = date;
+                reportItem['sort_fields'][2] = null;
+                reportItem['sort_fields'][3] = null;
+                reportItem['sort_fields'][4] = null;
+                reportItem['sort_fields'][5] = null;
+                reportItem['sort_fields'][6] = user;
+            };
         };
 
 
@@ -856,7 +902,7 @@ sntRover.factory('RVReportUtilsFac', [
             if ( reportItem['sort_fields'] && reportItem['sort_fields'].length ) {
                 _.each(reportItem['sort_fields'], function(item, index, list) {
 
-                    if ( item != null) {
+                    if ( item !== null ) {
                         item['sortDir'] = undefined;
                     };
 
@@ -906,7 +952,7 @@ sntRover.factory('RVReportUtilsFac', [
                 // date range must be yesterday - relative to current business date
                 case __reportNames['DAILY_TRANSACTIONS']:
                 case __reportNames['DAILY_PAYMENTS']:
-                case __reportNames['MARKET_SEGMENT_STATISTICS_REPORT']:
+                case __reportNames['MARKET_SEGMENT_STAT_REPORT']:
                 case __reportNames['COMPARISION_BY_DATE']:
                     reportItem['singleValueDate']  = _getDates.yesterday;
                     break;
@@ -920,15 +966,17 @@ sntRover.factory('RVReportUtilsFac', [
 
                 // by default date range must be from a week ago to current business date
                 default:
-                    reportItem['fromDate']        = _getDates.aWeekAgo;
-                    reportItem['fromCancelDate']  = _getDates.aWeekAgo;
-                    reportItem['fromArrivalDate'] = _getDates.aWeekAgo;
-                    reportItem['fromCreateDate']  = _getDates.aWeekAgo;
+                    reportItem['fromDate']            = _getDates.aWeekAgo;
+                    reportItem['fromCancelDate']      = _getDates.aWeekAgo;
+                    reportItem['fromArrivalDate']     = _getDates.aWeekAgo;
+                    reportItem['fromCreateDate']      = _getDates.aWeekAgo;
+                    reportItem['fromAdjustmentDate']  = _getDates.aWeekAgo;
                     /**/
-                    reportItem['untilDate']        = _getDates.businessDate;
-                    reportItem['untilCancelDate']  = _getDates.businessDate;
-                    reportItem['untilArrivalDate'] = _getDates.businessDate;
-                    reportItem['untilCreateDate']  = _getDates.businessDate;
+                    reportItem['untilDate']            = _getDates.businessDate;
+                    reportItem['untilCancelDate']      = _getDates.businessDate;
+                    reportItem['untilArrivalDate']     = _getDates.businessDate;
+                    reportItem['untilCreateDate']      = _getDates.businessDate;
+                    reportItem['untilAdjustmentDate']  = _getDates.businessDate;
                     break;
             };
         };
@@ -941,8 +989,9 @@ sntRover.factory('RVReportUtilsFac', [
         factory.processDate = function ( customDate, xDays ) {
             var _dateVal      = customDate ? tzIndependentDate(customDate) : $rootScope.businessDate,
                 _businessDate = $filter('date')(_dateVal, 'yyyy-MM-dd'),
-                _dateParts    = _businessDate.match(/(\d+)/g),
-                _year  = parseInt( _dateParts[0] ),
+                _dateParts    = _businessDate.match(/(\d+)/g);
+            
+            var _year  = parseInt( _dateParts[0] ),
                 _month = parseInt( _dateParts[1] ) - 1,
                 _date  = parseInt( _dateParts[2] );
 
@@ -951,10 +1000,10 @@ sntRover.factory('RVReportUtilsFac', [
                 'yesterday'    : new Date(_year, _month, _date - 1),
                 'aWeekAgo'     : new Date(_year, _month, _date - 7),
                 'aWeekAfter'   : new Date(_year, _month, _date + 7),
-                'aMonthAfter'  : new Date(_year, _month, _date + 30),
+                'aMonthAfter'  : new Date(_year, _month, _date + 30)
             };
 
-            if ( parseInt(xDays) != NaN ) {
+            if ( parseInt(xDays) !== NaN ) {
                 returnObj.xDaysBefore = new Date(_year, _month, _date - xDays);
                 returnObj.xDaysAfter  = new Date(_year, _month, _date + xDays);
             };
@@ -968,15 +1017,20 @@ sntRover.factory('RVReportUtilsFac', [
 
         // HELPER: create time slots
         factory.createTimeSlots = function () {
-            var _ret = [],
-                _hh = '',
-                _mm = '',
+            var _ret  = [],
+                _hh   = '',
+                _mm   = '',
                 _step = 15;
 
             var i = m = 0,
                 h = -1;
 
+            // 4 parts in each of 24 hours (00 -> 23)
+            // 4 * 24 = 96
             for (i = 0; i < 96; i++) {
+
+                // each hour is split into 4 parts
+                // x:00, x:15, x:30, x:45
                 if (i % 4 == 0) {
                     h++;
                     m = 0;
@@ -984,12 +1038,13 @@ sntRover.factory('RVReportUtilsFac', [
                     m += _step;
                 }
 
+                // converting h -> HH and m -> MM
                 _hh = h < 10 ? '0' + h : h;
                 _mm = m < 10 ? '0' + m : m;
 
                 _ret.push({
-                    'value': _hh + ':' + _mm,
-                    'name': _hh + ':' + _mm
+                    'value' : _hh + ':' + _mm,
+                    'name'  : _hh + ':' + _mm
                 });
             };
 

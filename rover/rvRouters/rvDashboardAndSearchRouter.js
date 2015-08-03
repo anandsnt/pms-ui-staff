@@ -2,7 +2,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
 
         $stateProvider.state('rover.search', {
             url: '/search/:type/:from_page/:useCache',
-            templateUrl: '/assets/partials/search/rvSearchReservation.html', 
+            templateUrl: '/assets/partials/search/rvSearchReservation.html',
             controller: 'rvReservationSearchController',
             resolve: {
                 searchResultdata: function(RVSearchSrv, $stateParams) {
@@ -10,32 +10,32 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                     var dataDict = {};
                     oldType = $stateParams.type;
 
-                    if( oldType != null && oldType!= '' && oldType !="RESET") {
-                        if(oldType == "LATE_CHECKOUT"){
+                    if( oldType !== null && oldType!== '' && oldType !=="RESET") {
+                        if(oldType === "LATE_CHECKOUT"){
                             dataDict.is_late_checkout_only = true;
-                        } else if(oldType == "QUEUED_ROOMS"){
+                        } else if(oldType === "QUEUED_ROOMS"){
                         	dataDict.is_queued_rooms_only = true;
                         }
-                        else if(oldType == "VIP"){
+                        else if(oldType === "VIP"){
                             dataDict.vip = true;
                         }
                         else{
                             dataDict.status = oldType;
                         }
                         //The pagination should be set to page=1. for navigations from dashboard buttons.
-                        if($stateParams.from_page == "DASHBOARD"){
+                        if($stateParams.from_page === "DASHBOARD"){
                             RVSearchSrv.page = 1;
                         }
                         //calling the webservice
                         return RVSearchSrv.fetch(dataDict, $stateParams.useCache);
-                    } else if ( !!$stateParams.useCache && oldType !="RESET") {
+                    } else if ( !!$stateParams.useCache && oldType !=="RESET") {
                         return RVSearchSrv.fetch({}, $stateParams.useCache);
                     } else {
                         var results = [];
                         return results;
                     }
                 }
-            }                      
+            }
         });
         /**
         * IMPORTANT: 'rover.dashboardFromAdmin' state points to dashboard screen
@@ -43,37 +43,37 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
         * All future changes made in 'rover.dashboard' state are required for that state too
         **/
         $stateProvider.state('rover.dashboard', {
-            url: '/dashboard',   
-            templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',         
+            url: '/dashboard',
+            templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',
             controller: 'RVdashboardController',
             resolve: {
                 dashBoarddata: function(RVDashboardSrv) {
                     return RVDashboardSrv.fetchDashboardDetails();
                 }
-            }          
+            }
         });
         $stateProvider.state('rover.dashboard.manager', {
             url: '/manager',
             templateUrl: '/assets/partials/dashboard/rvManagerDashboard.html',
-            controller: 'RVmanagerDashboardController',                       
+            controller: 'RVmanagerDashboardController'
         });
         $stateProvider.state('rover.dashboard.frontoffice', {
             url: '/frontoffice',
             templateUrl: '/assets/partials/dashboard/rvFrontDeskDashboard.html',
-            controller: 'RVfrontDeskDashboardController',                       
-        }); 
+            controller: 'RVfrontDeskDashboardController'
+        });
         $stateProvider.state('rover.dashboard.housekeeping', {
             url: '/housekeeping',  //TODO: check can we reduced it to hk?
             templateUrl: '/assets/partials/dashboard/rvHouseKeepingDashboard.html',
-            controller: 'RVhouseKeepingDashboardController',                       
-        });  
+            controller: 'RVhouseKeepingDashboardController'
+        });
 
         /**
         * adding extra state to be initiated when user is in admin screens
         **/
         $stateProvider.state('rover.dashboardFromAdmin', {
-            url: '/dashboard/:type',    
-            templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',         
+            url: '/dashboard/:type',
+            templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',
             controller: 'RVdashboardController',
             resolve: {
                 dashBoarddata: function(RVDashboardSrv) {
@@ -90,11 +90,11 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                }
                else if($stateParams.type === 'postCharge'){
                      ngDialog.open({
-                        template: '/assets/partials/postCharge/outsidePostCharge.html',
+                        template: '/assets/partials/postCharge/rvPostChargeV2.html',
                         controller: 'RVOutsidePostChargeController',
                     });
-               }    
+               }
 
-            }                                   
-        });    
+            }
+        });
 });

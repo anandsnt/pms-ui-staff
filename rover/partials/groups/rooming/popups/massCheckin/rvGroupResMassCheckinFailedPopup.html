@@ -1,0 +1,10 @@
+<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
+<div class="modal-content form alert">
+    <span class="icons icon-popup-alert"></span>
+    <span class="message h3 red" translate>GROUP_MASS_CHECKIN_FAILED_IN_PROCESSING</span>
+    <span class="message h4 red" ng-repeat="message in ngDialogData.errorMessage">{{message}}</span>
+    <div class="actions">
+        <button type="button" class="button blank modal-close" ng-click="closeMassCheckinSuccessPopup()">Close</button>
+    </div>
+</div>
+</div>

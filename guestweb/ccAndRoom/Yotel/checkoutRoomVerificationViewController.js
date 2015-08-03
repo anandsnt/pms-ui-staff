@@ -5,7 +5,10 @@
 	$rootScope.isRoomVerified =  false;
 	$scope.roomNumber = "";
 
-	if($rootScope.isCheckedin){
+	if($rootScope.isExternalVerification){
+		$state.go('externalVerification');
+	}
+	else if($rootScope.isCheckedin){
 		$state.go('checkinSuccess');
 	}
 	else if($rootScope.isCheckin){
@@ -13,7 +16,7 @@
 	}
 	else{
 		$scope.pageValid = true;
-	}	
+	}
 
 	if($scope.pageValid){
 		//setup options for error popup
@@ -30,31 +33,31 @@
 		var data = {'reservation_id':$rootScope.reservationID,"room_number":$scope.roomNumber};
 		$scope.isFetching = true;
 		checkoutRoomVerificationService.verifyRoom(url,data).then(function(response) {
-			
+
 			   $timeout(function() {
-			      
+
 					if(response.status ==="success"){
 						$rootScope.isRoomVerified =  true;
 						if($rootScope.isLateCheckoutAvailable ){
 								$state.go('checkOutOptions');
 					    }else {
-					    	$state.go('checkOutConfirmation');	
+					    	$state.go('checkOutConfirmation');
 						}
 					}
 					else{
 						$scope.isFetching = false;
 						$modal.open($scope.opts); // error modal popup
 					}
-			    }, 2000);		
-			
+			    }, 2000);
+
 		},function(){
 			 $scope.isFetching = false;
 			 $scope.netWorkError = true;
-			
-		});	
+
+		});
 	};
 
-	
+
 }
 }
 

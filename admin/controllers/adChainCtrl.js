@@ -34,11 +34,13 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 			$scope.$emit('hideLoader');
 			$scope.editData   = data;
 			$scope.formTitle = 'Edit'+' '+$scope.editData.name;
-			if($scope.editData.lov.length === 0)
+			if($scope.editData.lov.length === 0) {
 				$scope.editData.lov.push({'value':'','name':''});
+			}
 			$scope.isEditmode = true;
 			$scope.fileName = ($scope.editData.ca_certificate_exists)  ? 'Certificate Attached' :'Choose file ...';
-		};		
+			$scope.apns_file = (typeof $scope.editData.apns_certificate != 'undefined')  ? 'Certificate Attached' :'Choose file ...';
+		};
 		$scope.invokeApi(adChainsSrv.edit,editID,editChainSuccessCallback);
 	};
   /*
@@ -48,10 +50,11 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 		$scope.editData   = {};
 		$scope.errorMessage ="";
 		$scope.editData.lov  = [{'value':'','name':''}];
-		$scope.formTitle = 'Add';	
+		$scope.formTitle = 'Add';
 		$scope.isAddmode = true;
 		$scope.isEditmode = false;
 		$scope.fileName = 'Choose file ...';
+		$scope.apns_file = 'Choose file ...';
 	};
    /*
     * To fetch the template for chains details add/edit screens
@@ -66,7 +69,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
  		var lovNames = [];
  		angular.forEach($scope.editData.lov, function(item, index) {
- 			if (item.name == "") {
+ 			if (item.name === "") {
  				$scope.editData.lov.splice(index, 1);
  			}
  			else{
@@ -79,7 +82,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  			$scope.$emit('hideLoader');
  			$scope.fetchHotelChains();
  			$scope.isAddmode = false;
- 			
+
  		};
  		var addChainFailureCallback = function(errorMessage){
  			$scope.$emit('hideLoader');
@@ -102,10 +105,10 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
     */
  	$scope.updateChain = function(id){
  		angular.forEach($scope.editData.lov,function(item, index) {
- 			if (item.name == "") {
+ 			if (item.name === "") {
  				$scope.editData.lov.splice(index, 1);
  			}
- 			if (item.value == "") {
+ 			if (item.value === "") {
  				 delete item.value;
  			}
  		});
@@ -121,11 +124,12 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  			//scroll to top of the page where error message is shown
 			if(angular.element( document.querySelector('.content')).find(".error_message").length) {
 	  			angular.element( document.querySelector('.content')).scrollTop(0);
-			}; 
+			};
 
-			if($scope.editData.lov.length === 0)
+			if($scope.editData.lov.length === 0) {
 				$scope.editData.lov = [{'value':'','name':''}];
- 	
+			}
+
  		}
 
  		var updateChainSuccessCallback = function(data) {
@@ -139,10 +143,12 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
     * To handle cancel click event
     */
 	$scope.cancelClicked = function (){
-		if($scope.isAddmode)
+		if($scope.isAddmode) {
 			$scope.isAddmode = false;
-		else if($scope.isEditmode)
+		}
+		else if($scope.isEditmode) {
 			$scope.isEditmode = false;
+		}
 	};
    /*
     * To handle save button click - Add/Update action
@@ -150,7 +156,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 	$scope.saveClicked = function(){
 		if($scope.isAddmode){
 			$scope.addNewChain();
-		}			
+		}
 		else{
 			$scope.updateChain($scope.editId);
 		}
@@ -159,18 +165,19 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
     * To handle focus event on lov levels
     */
 	$scope.onFocus = function(index){
-		if((index === $scope.editData.lov.length-1) || ($scope.editData.lov.length==1)){
+		if((index === $scope.editData.lov.length-1) || ($scope.editData.lov.length===1)){
 			$scope.newOptionAvailable = true;
 			// exclude first two fields
 			if($scope.editData.lov.length > 2){
 				angular.forEach($scope.editData.lov,function(item, index) {
-					if (item.name == "" && index < $scope.editData.lov.length-1 ) {
+					if (item.name === "" && index < $scope.editData.lov.length-1 ) {
 						$scope.newOptionAvailable = false;
 					}
 				});
 			}
-			if($scope.newOptionAvailable)
+			if($scope.newOptionAvailable) {
 				$scope.editData.lov.push({'value':'','name':''});
+			}
 		}
 	};
    /*
@@ -179,8 +186,9 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 	$scope.textChanged = function(index){
 
 		if($scope.editData.lov.length>1){
-			if($scope.editData.lov[index].name == "")
+			if($scope.editData.lov[index].name === "") {
 				$scope.editData.lov.splice(index, 1);
+			}
 		}
 	};
    /*
@@ -188,10 +196,11 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
     */
 	$scope.onBlur = function(index){
 		if($scope.editData.lov.length>1){
-			if($scope.editData.lov[index].name == "")
+			if($scope.editData.lov[index].name === "") {
 				$scope.editData.lov.splice(index, 1);
+			}
 			angular.forEach($scope.editData.lov,function(item, i) {
-				if (item.name == "" && i != $scope.editData.lov.length-1) {
+				if (item.name === "" && i !== $scope.editData.lov.length-1) {
 					$scope.editData.lov.splice(i, 1);
 				}
 			});
