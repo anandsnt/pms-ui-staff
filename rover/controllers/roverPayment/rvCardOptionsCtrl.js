@@ -24,8 +24,9 @@ sntRover.controller('RVCardOptionsCtrl',
 		$scope.refreshIframe = function(){
 			//in case of hotel with MLI iframe will not be present
 			if(!!$("#sixIframe").length){
-				$("#sixIframe").src = $("#sixIframe").src;
-			}
+				var iFrame = document.getElementById('sixIframe');
+				iFrame.src = iFrame.src;
+			};			
 		};
 
 		$scope.$on('REFRESH_IFRAME', function(e){
