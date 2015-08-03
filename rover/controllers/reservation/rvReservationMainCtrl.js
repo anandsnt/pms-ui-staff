@@ -784,8 +784,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             var stay = [];
             data.room_id = [];
             _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
-                if (room.stayDates[$scope.reservationData.arrivalDate].applyPromotion) {
-                    data.promotion_id = room.stayDates[$scope.reservationData.arrivalDate].appliedPromotion.discount.id;
+                var applicableRate = room.stayDates[$scope.reservationData.arrivalDate].rate.id;
+                if ($scope.reservationData.rateDetails &&
+                    $scope.reservationData.rateDetails[currentRoomIndex] &&
+                    $scope.reservationData.rateDetails[currentRoomIndex][$scope.reservationData.arrivalDate][applicableRate].applyPromotion) {
+                    data.promotion_id = $scope.reservationData.rateDetails[currentRoomIndex][$scope.reservationData.arrivalDate][applicableRate].appliedPromotion.id;
                 } else {
                     data.promotion_id = null;
                 }

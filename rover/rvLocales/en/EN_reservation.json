@@ -126,5 +126,14 @@
     "ADD_ONS" : "Add on",
     "TAXES_INCL" : "TAXES(INCL)",
     "TAXES_EXCL" : "TAXES(EXCL)",
-    "REINSTATE" : "Reinstate Reservation"
+    "REINSTATE" : "Reinstate Reservation",
+
+    "EMAIL_CANCELLATION" : "EMAIL CANCELLATION",
+    "PRINT_CANCELLATION" : "PRINT CANCELLATION",
+    "EMAIL_CONFIRMATION" : "EMAIL CONFIRMATION",
+    "PRINT_CONFIRMATION" : "PRINT CONFIRMATION",
+
+    "CONFIRM_RESERVATION"   : "Confirm Reservation",
+    "RESERVATION_CONFIRMATION" : "Reservation Confirmation",
+    "RESERVATION_CANCELLED" : "Reservation cancelled"
 

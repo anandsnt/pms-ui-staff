@@ -42,3 +42,11 @@
 <ul ng-if="isThisReport('ROOMS_QUEUED')" class="totals">
     <li>Rooms Queued<span>{{ summaryCounts.rooms_queued }}</span></li>
 </ul>
+
+<!-- Rate adjustment -->
+<ul ng-if="isThisReport('RATE_ADJUSTMENTS_REPORT')" class="totals">
+    <li>Total Adjusted Reservations<span>{{ summaryCounts.total_num_adjusted_reservations }}</span></li>
+    <li>Total Original Revenue<span>{{ summaryCounts.total_amt_original_revenue | currency:currencySymbol:2 }}</span></li>
+    <li>Total Adjusted Revenue<span>{{ summaryCounts.total_amt_adjusted_revenue | currency:currencySymbol:2 }}</span></li>
+    <li>Variance<span ng-class="{ red: each.variance < 0 }">{{ summaryCounts.rate_adjustment_variance | currency:currencySymbol:2 }}</span></li>
+</ul>

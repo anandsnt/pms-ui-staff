@@ -2,14 +2,14 @@
     <form method="post" action="confirm-reservation" id="confirm-reservation" class="modal-content form confirm-reservation">
         <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
         
-        <span class="h2 message">Reservation Confirmation</span>
+        <span class="h2 message" translate>RESERVATION_CONFIRMATION</span>
 
         <!-- Show when email button clicked -->
         <div id="status" class="notice" ng-class="{'success':ngData.successMessage, 'error':ngData.failureMessage }" ng-show="ngData.successMessage || ngData.failureMessage">{{ngData.successMessage}}{{ngData.failureMessage}}</div>
 
         <!-- Show only if no email in guest card -->
         <div class="entry full-width" ng-if="!isEmailAttached()" >
-            <label for="guest-email">E-mail</label>
+            <label for="guest-email" translate>EMAIL</label>
             <input name="guest-email" id="guest-email" type="text" autocomplete="off" ng-model="ngData.sendConfirmatonMailTo"/>
         </div>
 
@@ -17,19 +17,19 @@
             <button type="button" class="button with-icon Grey" ng-show ="!ngData.sendConfirmatonMailTo&&!isEmailAttached()">
              <!-- Grey when no email, otherwise blue -->
                 <span class="icons icon-email"></span>
-                 Confirm Reservation
+                {{'EMAIL_CONFIRMATION' | translate}}
             </button>
             <button type="button" class="button with-icon blue" ng-show ="ngData.sendConfirmatonMailTo || isEmailAttached()" ng-click="sendConfirmationEmail()">
              <!-- Grey when no email, otherwise blue -->
                 <span class="icons icon-email"></span>
-                 Confirm Reservation
+                {{'EMAIL_CONFIRMATION' | translate}}
             </button>  
                  
-            <button ng-disabled="!printConfirmationLetter" ng-class="{ 'grey': !printConfirmationLetter }" type="button" class="button with-icon blue" ng-click="printReservation()">
+            <button ng-show="printConfirmationLetter" type="button" class="button with-icon blue" ng-click="printReservation()">
                 <span class="icons icon-print"></span>
-                Print Confirmation Letter
+                {{'PRINT_CONFIRMATION' | translate}}
             </button>
-            <button type="button" class="button blank" ng-click="closeDialog()">Close</button> 
+            <button type="button" class="button blank" ng-click="closeDialog()" translate>CLOSE</button> 
         </div>
     </form>
 </div>

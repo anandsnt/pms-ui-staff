@@ -22,13 +22,36 @@ sntRover.controller('rvGroupReservationEditCtrl', [
     var initialPopupData = {};
 
     /**
-    * should we allow to change the room of a particular reservation
-    * @param {Object} reservation
-    * @return {Boolean}
-    */
+     * should we allow to change the room of a particular reservation
+     * @param {Object} reservation
+     * @return {Boolean}
+     */
     $scope.shouldDisableChangeRoom = function(reservation) {
-        var rStatus = reservation.reservation_status;
-        return (rStatus !== "RESERVED" && rStatus !== "CHECKING_IN");
+        var rStatus = reservation.reservation_status,
+            validResStatuses = ["RESERVED", "CHECKING_IN"];
+        return !_.contains(validResStatuses, rStatus);
+    };
+
+    /**
+     * should we allow to change from date of a particular reservation
+     * @param {Object} reservation
+     * @return {Boolean}
+     */
+    $scope.shouldDisableFromDateChange = function(reservation) {
+        var rStatus = reservation.reservation_status,
+            validResStatuses = ["RESERVED", "CHECKING_IN"];
+        return !_.contains(validResStatuses, rStatus);
+    };
+
+    /**
+     * should we allow to change to date of a particular reservation
+     * @param {Object} reservation
+     * @return {Boolean}
+     */
+    $scope.shouldDisableToDateChange = function(reservation) {
+        var rStatus = reservation.reservation_status,
+            validResStatuses = ["RESERVED", "CHECKING_IN", "CHECKEDIN", "CHECKING_OUT"];
+        return !_.contains(validResStatuses, rStatus);
     };
 
     /**

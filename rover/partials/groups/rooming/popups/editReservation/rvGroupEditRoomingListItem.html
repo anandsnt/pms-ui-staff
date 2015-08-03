@@ -47,15 +47,15 @@
                 <label for="group-block-from">
                     {{'FROM' | translate}}
                 </label>
-                <input type="text" value="{{ngDialogData.arrival_date|date:dateFormat}}" class="range-datepicker" listen-this="ngDialogData.arrival_date" ui-date="reservationFromDateOptions" readonly rv-clear-text-box />
+                <input type="text" value="{{ngDialogData.arrival_date|date:dateFormat}}" class="range-datepicker" listen-this="ngDialogData.arrival_date" ng-disabled="shouldDisableFromDateChange(ngDialogData)" ui-date="reservationFromDateOptions" readonly rv-clear-text-box />
             </div>
             <div class="entry margin date">
                 <label for="group-block-to">
                     {{'TO' | translate}}
                 </label>
-                <input type="text" value="{{ngDialogData.departure_date|date:dateFormat}}" class="range-datepicker" listen-this="ngDialogData.departure_date" ui-date="reservationToDateOptions" readonly rv-clear-text-box/>
+                <input type="text" value="{{ngDialogData.departure_date|date:dateFormat}}" class="range-datepicker" listen-this="ngDialogData.departure_date" ng-disabled="shouldDisableToDateChange(ngDialogData)" ui-date="reservationToDateOptions" readonly rv-clear-text-box/>
             </div>
-            <div class="entry room" ng-disabled="true">
+            <div class="entry room">
                 <label for="room">Room</label>
                 <div class="select">
                     <select id="room" ng-disabled="shouldDisableChangeRoom(ngDialogData)" ng-model="ngDialogData.room_id" ng-class="{'placeholder': isEmptyRoomNumber(ngDialogData.room_no)}">
