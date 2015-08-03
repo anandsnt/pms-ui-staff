@@ -3,11 +3,11 @@
         <header class="content-title float">
             <h2 translate>Promotions</h2>
             <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
-            <a class="action add" ng-hide="!state.usePromos" ng-click="addPromo()" translate>ADD_NEW</a>
-            <ad-toggle-button is-checked="state.usePromos" button-class="activation" div-class="header-title" ng-click="toggleActivatePromotions()" label="Use promotions">
+            <a class="action add" ng-hide="!state.usePromos || isHourlyRatesEnabled" ng-click="addPromo()" translate>ADD_NEW</a>
+            <ad-toggle-button is-checked="state.usePromos" button-class="activation" div-class="header-title" ng-click="toggleActivatePromotions()" is-disabled="isHourlyRatesEnabled" label="Use promotions">
             </ad-toggle-button>
         </header>
-        <section class="content-scroll" ng-class="{'overlay' : !state.usePromos}">
+        <section class="content-scroll" ng-class="{'overlay' : !state.usePromos || isHourlyRatesEnabled}">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div id="add-new" ng-show="state.current == 'NEW'" ng-include="'/assets/partials/rates/adAddPromotions.html'"></div>
             <div id="new-form-holder"></div>
@@ -54,32 +54,32 @@
                                             <div class="entry has-datepicker margin">
                                                 <label>{{'FROM_DATE' | translate}}
                                                 </label>
-                                                <input type="text" ng-model="promo.from_date" readonly="" placeholder="Select Start Date" class="date-picker-input-small">
+                                                <input type="text" ng-model="state.from_date_display" readonly="" placeholder="Select Start Date" class="date-picker-input-small">
                                                 <button ng-click="popupCalendar('FROM')" class="ui-datepicker-trigger date-picker-small ui-datepicker-trigger-btn" type="button">
                                                     ...
                                                 </button>
                                                 <div class="date-delete-wrapper">
-                                                    <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="promo.from_date = null;filterRates(promo);">&nbsp;</span>
+                                                    <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="promo.from_date = null; state.from_date_display = null; filterRates(promo);">&nbsp;</span>
                                                 </div>
                                             </div>
                                             <div class="entry has-datepicker margin">
                                                 <label>{{'TO_DATE' | translate}}
                                                 </label>
-                                                <input type="text" ng-model="promo.to_date" readonly="" placeholder="Select End Date" class="date-picker-input-small">
+                                                <input type="text" ng-model="state.to_date_display" readonly="" placeholder="Select End Date" class="date-picker-input-small">
                                                 <button ng-click="popupCalendar('TO')" class="ui-datepicker-trigger date-picker-small ui-datepicker-trigger-btn" type="button">
                                                     ...
                                                 </button>
                                                 <div class="date-delete-wrapper">
-                                                    <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="promo.to_date = null;filterRates(promo);">&nbsp;</span>
+                                                    <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="promo.to_date = null;state.to_date_display = null;filterRates(promo);">&nbsp;</span>
                                                 </div>
                                             </div>
                                             <div class="entry">
-                                                <ad-textbox styleclass="full-width" value="promo.discount.value" name="amount" id="amount" label="Amount[{{ currencySymbol }}]" placeholder="{{'ENTER_THE_AMT'|translate}}"></ad-textbox>
+                                                <ad-textbox styleclass="full-width" value="promo.discount.value" name="amount" id="amount" label="Discount Amount[{{ currencySymbol }}]" placeholder="Enter the Discount"></ad-textbox>
                                             </div>
                                             <div class="entry">
                                                 <div class="entry full-width">
                                                     <label for="amount-type-id">
-                                                        {{'AMOUNT_TYPE'|translate}}
+                                                        DISCOUNT TYPE
                                                     </label>
                                                     <div class="select">
                                                         <select name="amount-type-id" id="amount-type-id" ng-model="promo.discount.type">

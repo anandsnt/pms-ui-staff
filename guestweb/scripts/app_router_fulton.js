@@ -109,5 +109,10 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
 	 	title: 'External verification'
 	});
+	$stateProvider.state('earlyCheckinOptions', {
+    	url: '/noOptions',
+	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	title: 'Feature not available'
+	});
 
 }]);

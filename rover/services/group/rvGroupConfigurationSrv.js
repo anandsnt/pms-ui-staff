@@ -226,6 +226,9 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 				url = 'api/groups/' + params.groupId;
 				rvBaseWebSrvV2.getJSON(url).then(
 					function(data) {
+						if (data.rate === null){
+							data.rate = -1;
+						}
 						summaryHolder.groupSummary = data;
 						getAccountSummary(deferred, {
 							accountId: data.posting_account_id
@@ -433,6 +436,17 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 				});
 			return deferred.promise;
 		};
+
+		this.updateRate = function(params) {
+			var deferred = $q.defer(),
+				url = 'api/groups/'+params.group_id+'/change_rate';
+				rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+				   	 deferred.resolve(data);
+				},function(data){
+				    deferred.reject(data);
+				});
+			return deferred.promise;	
+		}
 
 	}
 ]);

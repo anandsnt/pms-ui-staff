@@ -2,7 +2,7 @@
 <div ng-include="'/assets/partials/common/header.html'"></div>
 <!-- Reservations search form -->
 <section id="reservations" class="content create-reservation scrollable" role="main" ng-iscroll="search_reservation" ng-iscroll-delay="1000">
-    <form method="get" action="{action}" name="create-reservation" id="create-reservation" class="wrapper" role="search">
+    <form method="get" name="create-reservation" id="create-reservation" class="wrapper" role="search">
         <!-- Date / Time -->
         <div id="dates" class="row">
             <!-- Arrival date -->
@@ -199,36 +199,36 @@
             </div>
         </div>
         <!-- Company / Travel Agent -->
-        <div id="company-promo" class="row" ng-if="isPromoActive">
+        <div id="company-promo" class="row">
             <div id="autocomplete-search" class="entry">
                 <label for="company-or-agent">Company / Travel Agent <span>(optional)</span></label>
                 <input auto-complete auto-options="autocompleteOptions" name="company-or-agent" id="company-or-agent" data-card-type="" type="text" placeholder="Name, Corporate ID or IATA #" value="" autocomplete="off" ng-model="companySearchText" ul-class="find-cards" />
             </div>
-            <div class="entry">
+            <div class="entry" ng-show="isPromoActive && !isHourlyRateOn">
                 <label for="codes-value" ng-show="groupIsNotImplemented">Group / Promo Code <span>(optional)</span></label>
                 <label for="codes-value">Promo Code <span>(optional)</span></label>
                 <input auto-complete auto-options="codesACOptions" name="codes-value" id="codes-value" data-card-type="" type="text" placeholder="Code" value="" autocomplete="off" ng-model="codeSearchText" ul-class="find-cards" />
             </div>
         </div>
         <!-- Rate Selection -->
-        <div id="select-rate" class="row" ng-if="isFFPActive || isHLPActive">
+        <div id="select-rate" class="row" ng-if="!isHourlyRateOn && (isFFPActive || isHLPActive)">
             <div class="entry">
                 <label>Rate Selection <span>(Optional)</span></label>
                 <div class="entry full-width">
-                    <label class="checkbox">
+                    <label class="checkbox" ng-click="onMemberRateToggle();">
                         <span class="icon-form icon-checkbox " ng-class="{'checked': reservationData.member.isSelected}"></span>
                         <input id="rate-member" value="member" type="checkbox" ng-model="reservationData.member.isSelected" /> Member
                     </label>
                     <div class="select" ng-show="reservationData.member.isSelected">
                         <label for="loyalty" class="label">Type</label>
-                        <select id="loyalty" ng-model="reservationData.member.value">
+                        <select id="loyalty" ng-model="reservationData.member.value">                            
+                            <optgroup label="Hotel Loyalty Program" ng-if="isHLPActive && loyaltyPrograms.length > 0">
+                                <option ng-repeat="loyaltyProgram in loyaltyPrograms" value="{{loyaltyProgram.hl_value}}" ng-selected="reservationData.member.value === loyaltyProgram.hl_value">{{loyaltyProgram.hl_description}}</option>
+                                <!-- repeat for all HLP -->
+                            </optgroup>
                             <optgroup label="Frequent Flyer Program" ng-if="isFFPActive && flyerPrograms.length > 0">
                                 <option ng-repeat="flyerProgram in flyerPrograms" value="{{flyerProgram.ff_value}}" ng-selected="reservationData.member.value === flyerProgram.ff_value || ($first && !reservationData.member.value)">{{flyerProgram.ff_description}}</option>
                                 <!-- ... repeat for FFP, first is selected by default -->
-                            </optgroup>
-                            <optgroup label="Hotel Loyalty Program" ng-if="isHLPActive">
-                                <option ng-repeat="loyaltyProgram in loyaltyPrograms" value="{{loyaltyProgram.hl_value}}" ng-selected="reservationData.member.value === loyaltyProgram.hl_value">{{loyaltyProgram.hl_description}}</option>
-                                <!-- repeat for all HLP -->
                             </optgroup>
                         </select>
                     </div>

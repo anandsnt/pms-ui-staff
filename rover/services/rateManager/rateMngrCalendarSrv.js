@@ -325,17 +325,11 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 
 
 	this.calculateRateViewCalData = function(){
-                var fetchingRooms = that.fetchingRooms;
 		var calendarData = {};
 
 		this.hasAnyHourlyRate = this.checkIfAnyHourlyRatePresent(that.dailyRates.results[0].rates);
 		// Format restriction Types as required by UI, and make it a dict for easy lookup
-                var fetchingRooms = false;
-                if (fetchingRooms){
-                    this.hasAnyHourlyRate = this.checkIfAnyHourlyRatePresent(that.dailyRates.result.room_types[0].room_types);
-                } else {
                     this.hasAnyHourlyRate = this.checkIfAnyHourlyRatePresent(that.dailyRates.results[0].rates);
-                }
                 // Format restriction Types as required by UI, and make it a dict for easy lookup
 
 		var formattedRestrictionTypes = {};
@@ -509,19 +503,11 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 				restriction_type_updated.hideOnHourly = true; // CICO-9555
 			}
 		}
-               //ignore here
-               /*
-		if('HAS_RESTRICTIONS' === restriction_type.value) {
-			restriction_type_updated.background_class = "bg-drk";
-		}
-                */
 		restriction_type_updated.id = restriction_type.id;
 		restriction_type_updated.description = restriction_type.description;
 		restriction_type_updated.value = restriction_type.value;
 		restriction_type_updated.activated = restriction_type.activated;
 		restriction_type_updated.editable = restriction_type.editable;
-
-
 
 		return restriction_type_updated;
 	};

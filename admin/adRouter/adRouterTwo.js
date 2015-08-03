@@ -27,7 +27,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.ratetypes', {
 			templateUrl: '/assets/partials/rateTypes/adRateTypeList.html',
 			controller: 'ADRateTypeCtrl',
-			url : '/ratetypes'
+			url : '/ratetypes',
+			resolve: {
+				rateClassifications: function (ADRateTypeSrv) {
+					return ADRateTypeSrv.fetchClassification();
+				}
+			}
 		});
 
 		$stateProvider.state('admin.upselllatecheckout', {
@@ -102,6 +107,24 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADReservationTypeListController',
 			url : '/reservationtypes'
 		});
+
+
+		$stateProvider.state('admin.reservationTools', {
+			templateUrl: '/assets/partials/reservationTools/adReservationToolsList.html',
+			controller: 'ADReservationTypeToolsMainCtrl',
+			url : '/reservationTools',
+		});
+			$stateProvider.state('admin.balanceInventory', {
+				templateUrl: '/assets/partials/reservationTools/adBalanceInventory.html',
+				controller: 'ADBalanceInventoryCtrl',
+				url : '/balanceInventory',
+				resolve: {
+	                allJobs: function(ADReservationToolsSrv) {
+	                    return ADReservationToolsSrv.fetchAllJobs();
+	                }
+	            }
+			});
+
 
 		$stateProvider.state('admin.housekeeping', {
 			templateUrl: '/assets/partials/housekeeping/adHousekeeping.html',

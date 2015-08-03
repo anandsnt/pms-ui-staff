@@ -17,7 +17,10 @@
                 </div>
                 <section class="holder left">
                     <!-- 2.Check box to 'Show Hotel Picture' -->
-                    <ad-checkbox is-checked="data.show_hotel_picture" label="{{ 'SHOW_HOTEL_PICTURE' | translate}}" div-class="full-width"></ad-checkbox>
+                    <ad-checkbox is-checked="data.show_hotel_picture" label="{{ 'SHOW_HOTEL_PICTURE' | translate}}"></ad-checkbox>
+
+                    <ad-toggle-button label="{{ 'PRINT_CONFIRMATION_LETTER' | translate }}" is-checked="data.print_confirmation_letter"></ad-toggle-button>
+
                     <!-- 3. File upload for Hotel Picture -->
                     <div class="entry full-width">
                         <label translate>HOTEL_PICTURE</label>
@@ -31,10 +34,17 @@
                         </div>
                         <span class="file-preview"> <img ng-src="{{data.hotel_picture}}" alt="" height="112" width="auto"> </span>
                     </div>
+                    <div class="entry full-width">
+                        <label for="email-hotel-logo" translate> HOTEL_LOGO </label>
+                        <div class="select">
+                            <select ng-model="data.email_logo_type" name="email-hotel-logo" class="placeholder">
+                                <option value="" translate> SELECT_LOGO_TYPE </option>
+                                <option ng-repeat="item in data.hotel_logo" value="{{item.value}}" ng-selected="item.value == data.email_logo_type">{{item.name}}</option>
+                            </select>
+                        </div>
+                    </div>
                 </section>
                 <section class="holder right">
-                    <!-- 1.Check box to 'Show Hotel Logo' (default checked) -->
-                    <ad-checkbox is-checked="data.show_hotel_logo" label="{{ 'SHOW_HOTEL_LOGO' | translate}}" div-class="full-width"></ad-checkbox>
                     <!-- 4.Check box to 'Display Add-Ons'-->
                     <ad-checkbox is-checked="data.display_addons" label="{{ 'DISPLAY_ADD_ONS' | translate}}" div-class="full-width"></ad-checkbox>
                     <!-- 5.Check box to 'Display Total Stay Cost'-->
@@ -48,7 +58,7 @@
                 <div class="entry full-width">
                     <label translate>GETTING_TO_THE_HOTEL</label>
                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.location_text"></ad-textarea>
-                </div>                
+                </div>
                 <section class="holder left">
                     <!-- 9. Location Photo -->
                     <div class="entry full-width">
@@ -148,12 +158,13 @@
                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.cancellation_communication_text" label="{{'CANCELLATION_TEXT'| translate}} " placeholder="{{'CANCELLATION_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
                 </div>
                 <ad-toggle-button label="{{'SEND_CANCELLATION_LETTER' | translate}}" is-checked="data.send_cancellation_letter"></ad-toggle-button>
+                <ad-toggle-button is-disabled="!data.send_cancellation_letter" label="{{ 'PRINT_CANCELLATION_LETTER' | translate }}" is-checked="data.print_cancellation_letter"></ad-toggle-button>
             </fieldset>
             <fieldset class="holder right">
                 <div class="form-title">
                     <h3>
                     <span>{{'CUSTOMIZE' | translate}}</span>
-                    {{'REGISTRATION_COMMUNICATION' | translate}}                    
+                    {{'REGISTRATION_COMMUNICATION' | translate}}
                 </h3>
                 </div>
                 <div class="entry full-width">

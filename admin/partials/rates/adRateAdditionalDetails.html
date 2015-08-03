@@ -9,6 +9,7 @@
         </div>
   </div>
 </div>
+
 <!-- Expanded View -->
 <div ng-show="detailsMenu ==='additionalDetails'" class="form_add_new_rate" >
     <div class="form-title cursor_pointer " ng-click="changeDetailsMenu('')">
@@ -17,7 +18,7 @@
             <div class="cursor_pointer rate_additional_details_pointers">
                 <img src="/assets/arrow-up.png">
             </div>
-        </div>       
+        </div>
   </div>
 	 <!-- <fieldset class="holder full-width"> -->
 	 	<fieldset class="holder left">
@@ -52,11 +53,36 @@
             </div>
            
 	 	</fieldset>
-	 	<fieldset class="holder right">
-	 		<ad-toggle-button is-checked="rateData.is_commission_on" label="COMMISSION"></ad-toggle-button>
+	 	<fieldset class="holder right">	 		
 	 		<ad-toggle-button is-checked="rateData.is_discount_allowed_on" label="DISCOUNT ALLOWED"></ad-toggle-button>
 	 		<ad-toggle-button is-checked="rateData.is_suppress_rate_on" label="SUPPRESS RATE"></ad-toggle-button>
+            <ad-toggle-button is-checked="rateData.is_commission_on" label="COMMISSION"></ad-toggle-button>
+            <div class="entry" ng-hide="!rateData.is_commission_on">                    
+                        <div class=" select-col col1-3 actions_margin_top">
+                            <ad-textbox inputtype="text" value="rateData.commission_value" styleclass="col1-3" label="" placeholder="" style=" width: 66px;" ng-model="rateData.commission_value"></ad-textbox>
+                        </div>                        
+                        <div class="select select-col col1-3">                        
+                            <select class="styled" value="rateData.commission_type" ng-model="rateData.commission_type">
+                            <option value="amount">{{currencySymbol}}</option>
+                            <option value="percent">%</option>  
+                            </select>
+                        </div>
+                    </div>
 	 	</fieldset>
 	 <!-- </fieldset> -->
 
+</div>
+<div ng-controller="ADRatesActivityLogCtrl" id="activityLogArea">
+    <div class="form-title cursor_pointer" ng-click="toggleActivityLog()">
+        <div class="rate_additional_details_heading">
+                ACTIVITY LOG
+            <div class="cursor_pointer rate_additional_details_pointers">
+                <img ng-hide="detailsMenu ==='adRateActivityLog'" src="/assets/arrow-down.png">
+                <img ng-show="detailsMenu ==='adRateActivityLog'" src="/assets/arrow-up.png">
+            </div>
+        </div>
+    </div>
+    <div ng-show="detailsMenu ==='adRateActivityLog'" class="form_add_new_rate" >
+        <div ng-include="'/assets/partials/rates/adRateActivityLog.html'"></div>
+    </div>
 </div>

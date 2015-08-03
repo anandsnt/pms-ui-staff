@@ -108,4 +108,22 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	});
 
 
+	$stateProvider.state('earlyCheckinOptions', {
+	 	url: '/earlyCheckinOptions/:time/:charge/:id',
+	 	templateUrl: '/assets/checkin/partials/MGM/earlyCheckinOptions.html',
+	 	controller : 'earlyCheckinOptionsController',
+	 	title: 'Early Check-in'
+	 }).state('earlyCheckinFinal', {
+	 	url: '/earlyCheckinFinal/:time/:charge/:id',
+	 	templateUrl: '/assets/checkin/partials/MGM/earlyCheckinFinal.html',
+	 	controller : 'earlyCheckinFinalController',
+	 	title: 'Early Check-in'
+	 }).state('laterArrival', {
+	 	url: '/laterArrival/:time/:isearlycheckin',
+	 	templateUrl: '/assets/checkin/partials/MGM/lateArrivalDetails.html',
+	 	controller : 'checkinArrivalDetailsController',
+	    title: 'Early Check-in'
+	 })
+
+
 }]);

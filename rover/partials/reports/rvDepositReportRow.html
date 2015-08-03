@@ -1,35 +1,39 @@
-<tr ng-repeat="each in results track by $index" class="row-break" ngrepeatend>
-	<td>{{ each.reservation_no }}</td>
-
-	<td class="name">
-		<strong class="title">{{ each.name }}</strong>
-		<span class="data">{{ each.payment_method }}</span>
-		<span ng-if="each.deposit_payment_status == 'DUE'">&#8226; <span class="data upper">Due</span></span>
-		<span ng-if="each.deposit_payment_status == 'PAID'">&#8226; <span class="data upper green">Paid</span></span>
-		<span ng-if="each.deposit_payment_status == 'PASSED'">&#8226; <span class="data upper red">Past Due</span></span>
+<tr ng-repeat="each in results track by $index" class="{{ each.className }}" ngrepeatend>
+	<td ng-if="each.isReport" class="name" rowspan="{{ each.rowspan }}"> <!-- Set rowspan as {no. of records + 1} E.g. if there are 5 records for reservation, rowspan should be set to 6. That means we'll show 5 records + 1 totals row -->
+		<div class="info">
+			<strong>{{ each.name }}</strong>
+			<em>{{ each.reservation_no }}</em>
+		</div>
+		<div class="dates">
+			<div class="date">
+				<span class="guest-status small-icon check-in">check-in</span>
+				<span>{{ each.arrival_date | date : dateFormat }}</span>
+				<span>{{ each.arrival_time }}</span>
+			</div>
+		</div>
+		<div class="guest-info">
+			<span ng-if="each.company_name" class="icons icon-guest-company">{{ each.company_name }}</span>
+			<span ng-if="each.travel_agent_name" class="icons icon-guest-travelagent">{{ each.travel_agent_name }}</span>
+			<span ng-if="each.group_name" class="icons icon-group">{{ each.group_name }}</span>
+		</div>
 	</td>
+	<td ng-if="each.isReport" ng-class="{ 'red': each.deposit_payment_status == 'PAST DUE', 'green': each.deposit_payment_status == 'PAID' }">{{ each.deposit_payment_status }}</td>
+    <td ng-if="each.isReport">{{ each.due_date | date : dateFormat }}</td>
+    <td ng-if="each.isReport">{{ each.deposit_due_amount | currency:currencySymbol:2 }}</td>
+    <td ng-if="each.isReport">{{ each.paid_date | date : dateFormat }}</td>
+    <td ng-if="each.isReport">{{ each.paid_amount | currency:currencySymbol:2 }}</td>
 
-	<td class="date">
-		<span class="guest-status check-in">check-in</span>
-		<time>
-			<span>{{ each.arrival_date | date : dateFormat }}</span>
-			<span>{{ each.arrival_time }}</span>
-		</time>
-	</td>
 
-	<td class="guest-info">
-		<span ng-if="each.company_name" class="icons icon-guest-company">{{ each.company_name }}</span>
-		<span ng-if="each.travel_agent_name" class="icons icon-guest-travelagent">{{ each.travel_agent_name }}</span>
-		<span ng-if="each.group_name" class="icons icon-group">{{ each.group_name }}</span>
-	</td>
+	<td ng-if="each.isSubReport" ng-class="{ 'red': each.deposit_payment_status == 'PAST DUE', 'green': each.deposit_payment_status == 'PAID' }">{{ each.deposit_payment_status }}</td>
+    <td ng-if="each.isSubReport">{{ each.due_date | date : dateFormat }}</td>
+    <td ng-if="each.isSubReport">{{ each.deposit_due_amount | currency:currencySymbol:2 }}</td>
+    <td ng-if="each.isSubReport">{{ each.paid_date | date : dateFormat }}</td>
+    <td ng-if="each.isSubReport">{{ each.paid_amount | currency:currencySymbol:2 }}</td>
 
-	<td>
-		<strong>{{ each.due_date | date : dateFormat }}</strong>
-		<span class="data">{{ each.deposit_due_amount | currency:currencySymbol:2 }}</span>
-	</td>
 
-	<td>
-		<strong ng-if="each.paid_date">{{ each.paid_date | date : dateFormat }}</strong>
-		<span ng-if="each.paid_amount" class="data">{{ each.paid_amount | currency:currencySymbol:2 }}</span>
-	</td>
+    <td ng-if="each.isSubTotal"></td>
+    <td ng-if="each.isSubTotal"><strong>Balance</strong></td>
+	<td ng-if="each.isSubTotal"class="red"><strong>{{ each.deposit_due_amount | currency:currencySymbol:2 }}</strong></td>
+	<td ng-if="each.isSubTotal"><strong>Total Paid</strong></td>
+	<td ng-if="each.isSubTotal" class="green"><strong>{{ each.paid_amount | currency:currencySymbol:2 }}</strong></td>
 </tr>

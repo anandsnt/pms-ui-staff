@@ -81,6 +81,35 @@
 					
 				</div>
 			</fieldset>
+
+            <div class="form-title">
+				<h3>
+					<span></span>
+					Zest App APNS Settings
+				</h3>
+			</div>
+			<fieldset class="holder left float">
+	
+				 <div class="entry full-width">
+					<label for="certificate">APNS Pem Certificate </label>
+					<div class="file-upload">
+						<span class="input">{{apns_file}}</span>
+						<input type="file" ng-model="editData.apns_certificate" file-name-key="apns_file" accept="*" app-filereader />
+						<button type="button" class="button brand-colors">
+							 Attach Certificate
+						</button> 
+					</div>
+					
+				</div>
+			</fieldset>
+
+			<fieldset class="holder right float">
+
+				<!-- sftp location -->
+
+				<ad-textbox value="editData.apns_passphrase"   label = "APNS Passphrase" placeholder = "Enter APNS Passphrase"  styleclass="full-width"></ad-textbox>
+			</fieldset>
+
 			<div class="form-title">
 				<h3>
 					<span></span>

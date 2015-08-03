@@ -13,9 +13,9 @@
 <div id="report-content" class="report-content scrollable" ng-hide="hasNoResults" ng-class="{ 'no-totals': hasNoTotals, 'no-sorting': hasNoSorting, 'with-pagination': (!disablePrevBtn || !disableNextBtn) }" ng-iscroll="report-details-scroll">
 	<div class="wrapper">
 
-		<div ng-repeat="(key, resultItem) in results">
-			<h2>{{ key | date : dateFormat }}</h2>
-			<table ng-class="{ 'guest-reports': isGuestReport, 'large-grid': isLargeReport, 'log-reports': isLogReport }">
+		<div ng-repeat="(key, resultItem) in results track by $index">
+			<h2>{{ key }}</h2>
+			<table ng-class="{ 'guest-reports': isGuestReport, 'large-grid': isLargeReport, 'log-reports': isLogReport, 'deposit-reports': isDepositReport }">
 
 				<!-- GUEST REPORTS: Reports sort by header -->
 				<thead>
@@ -37,7 +37,7 @@
 
 				<!-- Reports table content -->
 				<tbody>
-					<tr ng-repeat="each in resultItem track by $index" class="{{ each.trCls }}" ng-include="'/assets/partials/reports/rvReservationByUserReportRowContent.html'" ngrepeatend></tr>
+					<tr ng-repeat="each in resultItem track by $index" class="{{ each.className }}" ng-include="'/assets/partials/reports/rateAdjustmentReport/rvRateAdjustmentReportRowContent.html'" ngrepeatend></tr>
 				</tbody>
 			</table>
 		</div>

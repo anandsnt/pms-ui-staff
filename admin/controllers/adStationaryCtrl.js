@@ -12,6 +12,8 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 	$scope.init = function() {
 
 		var successCallbackOfFetch = function(data) {
+			$scope.$emit('hideLoader');
+			data.email_logo_type = data.email_logo_type || '';
 			$scope.data = {};
 
 			$scope.memento.hotel_picture = data.hotel_picture;
@@ -33,7 +35,6 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 					name: 'asc' // initial sorting
 				}
 			});
-			$scope.$emit('hideLoader');
 			$scope.hotelTemplateLogoPrefetched = data.location_image;
 		};
 		$scope.invokeApi(ADStationarySrv.fetch, {}, successCallbackOfFetch);
@@ -69,6 +70,11 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 		}
 		$scope.invokeApi(ADStationarySrv.saveStationary, postingData, successCallbackOfSaveDetails);
 	};
+
+	// CICO-17706 : While Cancellation Email is Turned OFF , Print Cancellation Email also forced to OFF.
+	$scope.$watch('data.send_cancellation_letter', function(newValue, oldValue) {
+	   if(!newValue) $scope.data.print_cancellation_letter = false;
+	});
 
 	$scope.$watch(function() {
 		return $scope.data.location_image;
