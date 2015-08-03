@@ -21,7 +21,7 @@ function ADBaseTableCtrl($scope, ngTableParams){
     $scope.$watch("data", function () {
         $scope.startCount = (($scope.currentPage - 1) * $scope.displyCount )+ 1;
         $scope.endCount = $scope.startCount + $scope.data.length - 1;
-    });
+    },true);
 
     $scope.$watch("filterType", function () {
         $scope.reloadTable();
