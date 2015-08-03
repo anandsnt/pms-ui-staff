@@ -67,10 +67,16 @@
                         </li>
                         <li ng-repeat='addon in room.addons'>
                             <em>{{addon.title}}</em>
-                            <span class="price">
+                            <span class="price" ng-hide="addon.is_inclusive">
                                 {{currencySymbol}}{{ addon.price | number : 2}}
                                 <span translate>EACH</span>
-                                <span class="total">{{currencySymbol}}{{ addon.effectivePrice | number : 2}}</span>
+                            <span class="total">{{currencySymbol}}{{ addon.effectivePrice | number : 2}}</span>
+                            </span>
+                            <!-- CICO-18833 Hide all rate refreneces for inclusive addons (Kees Lek) -->
+                            <span class="price" ng-show="addon.is_inclusive">
+                                INCL
+                                <span translate>EACH</span>
+                                <span class="total">INCL</span>
                             </span>
                         </li>
                     </ul>

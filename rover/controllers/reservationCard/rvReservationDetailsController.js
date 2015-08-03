@@ -780,8 +780,11 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				};
 			};
 
-			$scope.reservationParentData.arrivalDate = $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd');
-			$scope.reservationParentData.departureDate = $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd');
+			var arrivalDate = tzIndependentDate($scope.editStore.arrival),
+				departureDate = tzIndependentDate($scope.editStore.departure);
+			$scope.reservationParentData.arrivalDate = $filter('date')(arrivalDate, 'yyyy-MM-dd');
+			$scope.reservationParentData.departureDate = $filter('date')(departureDate, 'yyyy-MM-dd');
+			$scope.reservationParentData.numNights = Math.floor((Date.parse(departureDate) - Date.parse(arrivalDate)) / 86400000);
 			initStayDates(0);
 
 			$state.go('rover.reservation.staycard.mainCard.roomType', {

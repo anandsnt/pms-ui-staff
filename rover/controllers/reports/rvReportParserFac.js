@@ -25,6 +25,14 @@ sntRover.factory('RVReportParserFac', [
             // in future we may make this check generic, if more
             // reports API structure follows the same pattern
             else if ( reportName == reportUtils.getName('RATE_ADJUSTMENTS_REPORT') ) {
+                return _.isEmpty(apiResponse) ? apiResponse : $_parseRateAdjustments( reportName, apiResponse, options );
+
+                /**
+                 * DEPRICATED!!!
+                 * Since the Product team asked to remove grouping.
+                 * Keeping it here for any future needs. Wont execute below this
+                 * since we already returned! :)
+                 */
                 if ( options['groupedByKey'] == 'adjusted_user_id' ) {
                     return _.isEmpty(apiResponse) ? apiResponse : $_preParseGroupedRateAdjustments( reportName, apiResponse, options );
                 } else {
@@ -371,115 +379,13 @@ sntRover.factory('RVReportParserFac', [
 
 
 
-        /**
-         * We have to convert an array of objects 'apiResponse'
-         * into a grouped by 'adjust_by' key-value pairs.
-         *
-         * Each key will be the 'adjust_by' username and its value
-         * will be an array of objects. Each object will represent
-         * an reservation (unique key 'confirmation_no')
-         */
         
-        /**
-         * @param {Array} apiResponse [{}, {}, {}, {}, {}]
-         * @return {Object} =>        { us1: [{}, {}, {}], us2: [{}, {}], us3: [{}] }
-         */
-        function $_preParseGroupedRateAdjustments ( reportName, apiResponse, options ) {
-            var makeCopy,
-                withOutStay,
-                usersInThisRes;
-
-            var kth,
-                userId,
-                userNa,
-                uid,
-                keyId;
-
-            var tempObj   = {},
-                returnObj = {};
-
-            var i, j, k, l;
-
-            for( i = 0, j = apiResponse.length; i < j; i++ ) {
-
-                // create a copy of ith apiResponse
-                makeCopy = angular.copy( apiResponse[i] );
-
-                // copy the reservation details and an empty 'stay_dates' array
-                withOutStay = angular.copy({
-                    'guest_name'      : makeCopy.guest_name,
-                    'confirmation_no' : makeCopy.confirmation_no,
-                    'arrival_date'    : makeCopy.arrival_date,
-                    'departure_date'  : makeCopy.departure_date,
-                    'stay_dates'      : []
-                });
-
-                // loop and generate an object
-                // representing (same) reservation with
-                // only that user, so a set of that will be
-                // an object of objects
-                usersInThisRes = {};
-                for( k = 0, l = makeCopy['stay_dates'].length; k < l; k++ ) {
-                    kth = makeCopy['stay_dates'][k];
-                    userId = kth['adjusted_user_id'] || 'Unknown';
-                    userNa = kth['adjusted_by'] || 'Unknown';
-
-                    // create a very unique 'uid', we'll remove 'userId' from it later
-                    uid = userId + '__' + userNa;
-
-                    if ( usersInThisRes[uid] == undefined ) {
-                        usersInThisRes[uid] = angular.copy( withOutStay );
-                    };
-
-                    // for each user just push only its associate 'stay_dates' changes
-                    usersInThisRes[uid]['stay_dates'].push( kth );
-                };
-
-                // inset the just found reservation
-                // each with only details of 'stay_dates'
-                // changes of just one user, into a 'tempObj'
-                for( keyId in usersInThisRes ) {
-                    if ( ! usersInThisRes.hasOwnProperty(keyId) ) {
-                        continue;
-                    };
-
-                    if ( tempObj[keyId] == undefined ) {
-                        tempObj[keyId] = [];
-                    };
-
-                    tempObj[keyId].push( usersInThisRes[keyId] );
-                };
-            };
-
-            // now that all the data has been grouped
-            // we need to remove the 'adjusted_user_id'
-            // part from 'uid', and have the 'returnObj' in that format
-            returnObj = {};
-            for( keyId in tempObj ) {
-                if ( ! tempObj.hasOwnProperty(keyId) ) {
-                    continue;
-                };
-
-                // only take the user name part
-                onlyUserNa = keyId.split('__')[1];
-
-                // oh, also we will parse each entry to nG repeat format
-                returnObj[onlyUserNa] = $_parseRateAdjustments( reportName, tempObj[keyId], options );
-            };
-
-            return returnObj;
-        };
-
-
-
-
-
         function $_parseRateAdjustments ( reportName, apiResponse, options ) {
             var returnAry = [],
                 customData = [],
                 makeCopy,
                 stayDates,
-                totalOriginalRate;
+                stayDatesTotal;
 
             var i, j, k, l;
 
@@ -489,15 +395,8 @@ sntRover.factory('RVReportParserFac', [
                 // we'll work with a copy of the ith item
                 makeCopy = angular.copy( apiResponse[i] );
 
-                // reset these counters, should be decimal values
-                totalOriginalRate = 0.0;
-                totalAdjustedRate = 0.0;
-                totalVariance = 0.0;
-
                 // if we have 'stay_dates' for this reservation
                 if ( makeCopy.hasOwnProperty('stay_dates') && makeCopy['stay_dates'].length ) {
-
-                    // loop through the stay_dates
                     for (k = 0, l = makeCopy['stay_dates'].length; k < l; k++) {
                         stayDates = makeCopy['stay_dates'][k];
 
@@ -532,23 +431,22 @@ sntRover.factory('RVReportParserFac', [
                             });
                             returnAry.push( customData );
                         };
-
-                        // keep updating the total values for these
-                        // +(0.1 + 0.2).toFixed(2) => http://stackoverflow.com/questions/10473994/javascript-adding-decimal-numbers-issue#answer-10474055
-                        totalOriginalRate = +(totalOriginalRate + stayDates.original_amount).toFixed(2);
-                        totalAdjustedRate = +(totalAdjustedRate + stayDates.adjusted_amount).toFixed(2);
-                        totalVariance     = +(totalVariance + stayDates.variance).toFixed(2);
                     };
+                } else {
+                    returnAry.push( makeCopy );
+                };
 
-                    // after looping through all the stay_dates
-                    // add a final sub row to show the stayDates totals
+                // if we have 'stay_dates_total' for this reservation
+                if ( makeCopy.hasOwnProperty('stay_dates_total') && makeCopy['stay_dates_total'].hasOwnProperty('original_amount') ) {
+                    stayDatesTotal = makeCopy['stay_dates_total'];
                     customData = {};
+
                     angular.extend(customData, {
-                        'isSubTotal'            : true,
-                        'className'             : 'row-break',
-                        'total_original_amout'  : totalOriginalRate,
-                        'total_adjusted_amount' : totalAdjustedRate,
-                        'total_variance'        : totalVariance
+                        'isSubTotal'      : true,
+                        'className'       : 'row-break',
+                        'original_amount' : stayDatesTotal.original_amount,
+                        'adjusted_amount' : stayDatesTotal.adjusted_amount,
+                        'variance'        : stayDatesTotal.variance
                     });
                     returnAry.push( customData );
                 } else {
@@ -632,6 +530,115 @@ sntRover.factory('RVReportParserFac', [
             };
 
             return returnAry;
+        };
+
+
+
+        /**
+         * THIS IS DEPRICATED!!!
+         * KEEPING HERE FOR ANY FUTURE NEEDS
+         */
+        /**
+         * We have to convert an array of objects 'apiResponse'
+         * into a grouped by 'adjust_by' key-value pairs.
+         *
+         * Each key will be the 'adjust_by' username and its value
+         * will be an array of objects. Each object will represent
+         * an reservation (unique key 'confirmation_no')
+         * 
+         * @param {Array} apiResponse [{}, {}, {}, {}, {}]
+         * @return {Object} =>        { us1: [{}, {}, {}], us2: [{}, {}], us3: [{}] }
+         */
+        function $_preParseGroupedRateAdjustments ( reportName, apiResponse, options ) {
+
+            /**
+             * THIS IS DEPRICATED!!!
+             * KEEPING HERE FOR ANY FUTURE NEEDS
+             */
+            
+            var makeCopy,
+                withOutStay,
+                usersInThisRes;
+
+            var kth,
+                userId,
+                userNa,
+                uid,
+                keyId;
+
+            var tempObj   = {},
+                returnObj = {};
+
+            var i, j, k, l;
+
+            for( i = 0, j = apiResponse.length; i < j; i++ ) {
+
+                // create a copy of ith apiResponse
+                makeCopy = angular.copy( apiResponse[i] );
+
+                // copy the reservation details and an empty 'stay_dates' array
+                withOutStay = angular.copy({
+                    'guest_name'      : makeCopy.guest_name,
+                    'confirmation_no' : makeCopy.confirmation_no,
+                    'arrival_date'    : makeCopy.arrival_date,
+                    'departure_date'  : makeCopy.departure_date,
+                    'stay_dates'      : []
+                });
+
+                // loop and generate an object
+                // representing (same) reservation with
+                // only that user, so a set of that will be
+                // an object of objects
+                usersInThisRes = {};
+                for( k = 0, l = makeCopy['stay_dates'].length; k < l; k++ ) {
+                    kth = makeCopy['stay_dates'][k];
+                    userId = kth['adjusted_user_id'] || 'Unknown';
+                    userNa = kth['adjusted_by'] || 'Unknown';
+
+                    // create a very unique 'uid', we'll remove 'userId' from it later
+                    uid = userId + '__' + userNa;
+
+                    if ( usersInThisRes[uid] == undefined ) {
+                        usersInThisRes[uid] = angular.copy( withOutStay );
+                    };
+
+                    // for each user just push only its associate 'stay_dates' changes
+                    usersInThisRes[uid]['stay_dates'].push( kth );
+                };
+
+                // inset the just found reservation
+                // each with only details of 'stay_dates'
+                // changes of just one user, into a 'tempObj'
+                for( keyId in usersInThisRes ) {
+                    if ( ! usersInThisRes.hasOwnProperty(keyId) ) {
+                        continue;
+                    };
+
+                    if ( tempObj[keyId] == undefined ) {
+                        tempObj[keyId] = [];
+                    };
+
+                    tempObj[keyId].push( usersInThisRes[keyId] );
+                };
+            };
+
+            // now that all the data has been grouped
+            // we need to remove the 'adjusted_user_id'
+            // part from 'uid', and have the 'returnObj' in that format
+            returnObj = {};
+            for( keyId in tempObj ) {
+                if ( ! tempObj.hasOwnProperty(keyId) ) {
+                    continue;
+                };
+
+                // only take the user name part
+                onlyUserNa = keyId.split('__')[1];
+
+                // oh, also we will parse each entry to nG repeat format
+                returnObj[onlyUserNa] = $_parseRateAdjustments( reportName, tempObj[keyId], options );
+            };
+
+            return returnObj;
         };
 
 
