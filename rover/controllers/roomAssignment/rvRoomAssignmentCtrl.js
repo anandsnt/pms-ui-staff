@@ -571,16 +571,21 @@ sntRover.controller('RVroomAssignmentController',[
 	/**
 	* function to prepare the filtered room list
 	*/
-	$scope.applyFilterToRooms = function(){		
+	$scope.applyFilterToRooms = function(){
 		$scope.filteredRooms = [];
-		var roomsWithInitialFilters = [];
-		var roomIdsInSelectedFloor;
+		var roomsWithInitialFilters = [],
+		roomIdsInSelectedFloor,
+		rooms =$scope.rooms,
+		selectedPredefinedFiltersList = $scope.selectedPredefinedFiltersList,
+		selectedFiltersList = $scope.selectedFiltersList;
+
 		//calculating room ids of selected floors in case any floor is selected.
 		if($scope.floorFilterData && !$scope.floorFilterData.isNoFloorSelected){
 				roomIdsInSelectedFloor= $scope.getRoomIdsInSelectedFloor();		
-			} 
+			};
+
 		//Iterating each room for filter.			
-		$scope.rooms.forEach(function(room){
+		rooms.forEach(function(room){
 			var isRoomIncluded = false;	
 			//Checking whether the room is to be displyed.
 			if(room.room_status == "READY" && room.fo_status == "VACANT" && !room.is_preassigned){
@@ -588,13 +593,21 @@ sntRover.controller('RVroomAssignmentController',[
 					isRoomIncluded = true;
 				}else if(room.checkin_inspected_only == "false"){				
 					isRoomIncluded = true;
-				}				
-			}
-			// Checking whether any of Filter condition satisfies
-			$scope.selectedFiltersList.forEach(function(filter){
+				};				
+			};
+			// Checking whether any of  predefined Filter condition satisfies
+			selectedPredefinedFiltersList.forEach(function(filter){
 				if(room.room_features.indexOf(filter)!= -1){				
-					isRoomIncluded =true
-				}
+					isRoomIncluded = true;
+				};
+			});
+			// Checking whether any of Filter condition satisfies
+			selectedFiltersList.forEach(function(filter){
+				if(room.room_features.indexOf(filter)!= -1){				
+					isRoomIncluded =isRoomIncluded&&true;
+				}else{
+					isRoomIncluded =isRoomIncluded&&false;
+				};
 			});	
 			//Checking Whether the Room to be displyed.
 			if(isRoomIncluded){
@@ -602,12 +615,13 @@ sntRover.controller('RVroomAssignmentController',[
 				if($scope.floorFilterData &&!$scope.floorFilterData.isNoFloorSelected){						
 					if(roomIdsInSelectedFloor.indexOf(room.room_id) != -1){
 						$scope.filteredRooms.push(room);
-						}
+						};
 				}else{
 				// If No floor filter applied,Directly pushed.
 					$scope.filteredRooms.push(room);
-				}
-			}
+				};
+			};
+
 		});	
 	};
 	/**
@@ -627,13 +641,23 @@ sntRover.controller('RVroomAssignmentController',[
 	*/
 	$scope.setSelectedFiltersList = function(){
 		$scope.selectedFiltersList = [];
-		for(var i = 0; i < $scope.roomFeatures.length; i++){
-			for(var j = 0; j < $scope.roomFeatures[i].items.length; j++){
-				if($scope.roomFeatures[i].items[j].selected){
-					$scope.selectedFiltersList.push($scope.roomFeatures[i].items[j].id);
-				}
-			}
-		}
+		$scope.selectedPredefinedFiltersList = [];
+		var length = $scope.roomFeatures[0].items.length,
+		roomFeatures = $scope.roomFeatures;
+
+		for(var j = 0; j < length; j++){
+			if($scope.roomFeatures[0].items[j].selected){
+				$scope.selectedPredefinedFiltersList.push(roomFeatures[0].items[j].id);
+			};
+		};
+
+		for(var i = 1; i < roomFeatures.length; i++){
+			for(var j = 0; j < roomFeatures[i].items.length; j++){
+				if(roomFeatures[i].items[j].selected){
+					$scope.selectedFiltersList.push(roomFeatures[i].items[j].id);
+				};
+			};
+		};
 	};
 	/**
 	* function to return the rooms list status
