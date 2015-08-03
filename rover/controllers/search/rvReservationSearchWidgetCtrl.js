@@ -668,10 +668,21 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				$scope.$emit("updateDataFromOutside", data);
 				$scope.swipeNoResults = true;
 				$scope.focusOnSearchText();
-			} else if (data.length === 1) {
-				var reservationID = data[0].id;
-				var confirmationID = data[0].confirmation;
-				$scope.goToReservationDetails(reservationID, confirmationID);
+			} else if (data.length === 1) {		
+	
+				$scope.currentReservationID = data[0].id;
+				$scope.currentConfirmationID = data[0].confirmation;
+				RVSearchSrv.data = $scope.results;
+				RVSearchSrv.fromDate = $scope.fromDate;
+				RVSearchSrv.toDate = $scope.toDate;
+	            $rootScope.goToReservationCalled = true;
+				//$scope.$emit("UpdateSearchBackbuttonCaption", "");
+				$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+					id: $scope.currentReservationID,
+					confirmationId: $scope.currentConfirmationID,
+					isrefresh: true
+				});
+
 			} else {
 				$scope.$emit("updateDataFromOutside", data);
 				$scope.focusOnSearchText();
