@@ -48,11 +48,11 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		};
 
 		/**
-		 * when clicked on move button. this will triggr
+		 * when clicked on Save move button. this will triggr
 		 * @return {undefined}
 		 */
-		$scope.clickedOnMoveButton = function() {
-			var sumryData = groupConfigData.summary,
+		$scope.clickedOnSaveMoveButton = function() {
+			var sumryData = $scope.groupConfigData.summary,
 				oldSumryData = summaryMemento,
 				options = {
 					fromDate: sumryData.block_from,
@@ -62,8 +62,29 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					successCallBack: successCallBackOfMoveButton,
 					failureCallBack: failureCallBackOfMoveButton
 				};
+			$scope.changeDatesActions.clickedOnMoveSaveButton (options);
+		};		
 
-			$scope.changeDatesActions.clickedOnMoveButton (options);
+		/**
+		 * when clicked on move button. this will triggr
+		 * @return {undefined}
+		 */
+		$scope.clickedOnMoveButton = function() {		
+			_.extend($scope.toDateOptions, {
+				disabled: true
+			});
+			$scope.changeDatesActions.clickedOnMoveButton ();
+		};
+
+		/**
+		 * when clicked on cancel move button. this will triggr
+		 * @return {undefined}
+		 */
+		$scope.clickedOnCancelMoveButton = function() {		
+			_.extend($scope.toDateOptions, {
+				disabled: false
+			});
+			$scope.changeDatesActions.cancelMoveAction ();
 		};
 
 		/**
@@ -115,18 +136,25 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				$scope.groupConfigData.summary.release_date = refData.block_from;
 			}
 
-			// we will clear end date if chosen start date is greater than end date
+			//if it is is Move Date mode
+			if (!$scope.changeDatesActions.isInCompleteMoveMode()) {
+				var originalStayLength = util.getDatesBetweenTwoDates (summaryMemento.block_from, summaryMemento.block_to).length;
+				$scope.groupConfigData.summary.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+				$scope.groupConfigData.summary.block_to.setDate(refData.block_to.getDate() + originalStayLength);
+			}
+			
+			// we will clear end date if chosen start datute is greater than end date
 			if (refData.block_from > refData.block_to) {
 				$scope.groupConfigData.summary.block_to = '';
 			}
 			//setting the min date for end Date
 			$scope.toDateOptions.minDate = refData.block_from;
 
-			$scope.computeSegment();
+			/*$scope.computeSegment();
 
 			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
 				fetchApplicableRates();
-			}
+			}*/
 
 			//we are in outside of angular world
 			runDigestCycle();
@@ -206,17 +234,40 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		}
 
 		/**
+		 * every logic to disable the from date picker should be here
+		 * @return {Boolean} [description]
+		 */
+		var shouldDisableFromDatePicker = function(){
+			return $scope.groupConfigData.summary.is_cancelled;
+		};
+
+		/**
+		 * every logic to disable the end date picker should be here
+		 * @return {Boolean} [description]
+		 */
+		var shouldDisableEndDatePicker = function(){
+			var sumryData = $scope.groupConfigData.summary;
+			return (sumryData.is_cancelled);
+		};
+
+		/**
+		 * every logic to disable the release date picker should be here
+		 * @return {Boolean} [description]
+		 */
+		var shouldDisableReleaseDatePicker = function(){
+			return $scope.groupConfigData.summary.is_cancelled;
+		};
+
+		/**
 		 * to set date picker option for summary view
 		 * @return {undefined} [description]
 		 */
 		var setDatePickerOptions = function() {
 			//date picker options - Common
 			var commonDateOptions = {
-				showOn: 'button',
 				dateFormat: $rootScope.jqDateFormat,
 				numberOfMonths: 1,
 				yearRange: '-1:',
-				disabled: $scope.groupConfigData.summary.is_cancelled,
 				minDate: tzIndependentDate($rootScope.businessDate),
 				beforeShow: function(input, inst) {
 					$('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
@@ -226,19 +277,25 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				}
 			};
 
+			var sumryData = $scope.groupConfigData.summary,
+				changeDatesActions = $scope.changeDatesActions;
+
 			//from Date options
 			$scope.fromDateOptions = _.extend({
-				onSelect: fromDateChoosed
+				onSelect: fromDateChoosed,
+				disabled: shouldDisableFromDatePicker()
 			}, commonDateOptions);
 
 			//to date options
 			$scope.toDateOptions = _.extend({
-				onSelect: toDateChoosed
+				onSelect: toDateChoosed,
+				disabled: shouldDisableEndDatePicker()
 			}, commonDateOptions);
 
 			//release date options
 			$scope.releaseDateOptions = _.extend({
-				onSelect: releaseDateChoosed
+				onSelect: releaseDateChoosed,
+				disabled: shouldDisableReleaseDatePicker()
 			}, commonDateOptions);
 		};
 
@@ -825,12 +882,12 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				}
 			});
 
+			//start date change, end date change, move date actions
+			initializeChangeDateActions();
+
 			setDatePickerOptions();
 
 			$scope.computeSegment();
-
-			//start date change, end date change, move date actions
-			initializeChangeDateActions();
 		}();
 	}
 ]);

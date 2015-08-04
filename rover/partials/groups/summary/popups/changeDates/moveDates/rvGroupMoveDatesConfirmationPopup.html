@@ -1,24 +1,23 @@
 <div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
     <div class="modal-content group-date move-group">
-        <button id="modal-close" type="button" class="modal-close"><span class="icons icon-close invert"></span></button>
+        <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
 
         <span class="h2 message">Move group and associated reservations?</span>
         
         <div class="moved before">
             <span class="label">Old Dates</span>
-            <p><span class="guest-status small-icon check-in"></span>{Old Arrival}</p>
-            <p><span class="guest-status small-icon check-out"></span>{Old Departure}</p>
+            <p><span class="guest-status small-icon check-in"></span>{{formatDateForUI(ngDialogData.dataset.oldFromDate)}}</p>
+            <p><span class="guest-status small-icon check-out"></span>{{formatDateForUI(ngDialogData.dataset.oldToDate)}}</p>
         </div>
 
         <div class="moved">
             <span class="label">New Dates</span>
-            <p><span class="guest-status small-icon check-in"></span>{New Arrival}</p>
-            <p><span class="guest-status small-icon check-out"></span>{New Departure}</p>
+            <p><span class="guest-status small-icon check-in"></span>{{formatDateForUI(ngDialogData.dataset.fromDate)}}</p>
+            <p><span class="guest-status small-icon check-out"></span>{{formatDateForUI(ngDialogData.dataset.toDate)}}</p>
         </div>
-
         <div class="actions">
-            <button type="button" class="button blank">Cancel</button>
-            <button type="button" class="button green">Confirm Move</button>
+            <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
+            <button type="button" class="button green" ng-click="callMoveDatesAPI(ngDialogData)">Confirm Move</button>
         </div>
     </div>
 </div>

@@ -459,8 +459,8 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 				data = {
 					from_date: params.from_date,
 					to_date: params.to_date,
-					old_from_date: old_from_date,
-					old_to_date: old_to_date
+					old_from_date: params.old_from_date,
+					old_to_date: params.old_to_date
 				};
 				
 			rvBaseWebSrvV2.postJSON(url, data)

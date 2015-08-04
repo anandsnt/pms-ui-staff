@@ -11,7 +11,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
     'rvPermissionSrv',
     '$timeout',
     'rvAccountTransactionsSrv',
-    function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout, rvAccountTransactionsSrv) {
+    'ngDialog',
+    function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout, rvAccountTransactionsSrv, ngDialog) {
 
         BaseCtrl.call(this, $scope);
 
@@ -79,10 +80,76 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             return (!$scope.isInAddMode());
         };
 
+        /**
+         * API requires a specific formatted date
+         * @param {String/DateObject}
+         * @return {String}
+         */
+        var formatDateForAPI = function(date_) {
+            var type_ = typeof date_,
+                returnString = '';
+            switch (type_) {
+                //if date string passed
+                case 'string':
+                    returnString = $filter('date')(new tzIndependentDate(date_), $rootScope.dateFormatForAPI);
+                    break;
+
+                    //if date object passed
+                case 'object':
+                    returnString = $filter('date')(date_, $rootScope.dateFormatForAPI);
+                    break;
+            }
+            return (returnString);
+        };
+
+        /**
+         * we want to display date in what format set from hotel admin
+         * @param {String/DateObject}
+         * @return {String}
+         */
+        $scope.formatDateForUI = function(date_) {
+            var type_ = typeof date_,
+                returnString = '';
+            switch (type_) {
+                //if date string passed
+                case 'string':
+                    returnString = $filter('date')(new tzIndependentDate(date_), $rootScope.dateFormat);
+                    break;
+
+                    //if date object passed
+                case 'object':
+                    returnString = $filter('date')(date_, $rootScope.dateFormat);
+                    break;
+            }
+            return (returnString);
+        };
+        
         //Move date, from date, end date change
         (function(){
 
-            var modesAvailable = ["START_DATE_LEFT_MOVE", "START_DATE_LEFT_MOVE"];
+            /* modesAvailable = ["START_DATE_LEFT_MOVE", "START_DATE_RIGHT_MOVE", 
+                                "END_DATE_LEFT_MOVE", "END_DATE_RIGHT_MOVE", 
+                                "COMPLETE_MOVE"] */
+            var activeMode = null,
+                lastSuccessCallback = null,
+                lastFailureCallback = null;
+            
+            /**
+             * to set current move
+             * @param {String} mode [description]
+             * @return {undefined}
+             */
+            var setMode = function(mode) {
+                var modesAvailable = ["START_DATE_LEFT_MOVE", "START_DATE_RIGHT_MOVE", 
+                                "END_DATE_LEFT_MOVE", "END_DATE_RIGHT_MOVE", 
+                                "COMPLETE_MOVE"];
+                
+                if (mode && mode !== null) {
+                    mode = mode.toString().toUpperCase();
+                    activeMode = ( modesAvailable.indexOf(mode) >=0 ) ? mode : null;
+                }
+            };
+
             /**
              * wanted to show the Move button in screen
              * @return {Boolean}
@@ -99,7 +166,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                         noInHouseReservationExist && 
                         fromDateLeftRightMoveAllowed && 
                         toDateLeftRightMoveAllowed && 
-                        notAPastGroup);
+                        notAPastGroup &&
+                        !isInCompleteMoveMode());
             };
 
             /**
@@ -113,8 +181,29 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     className: '',
                     closeByDocument: false,
                     closeByEscape: false,
-                    data: (data),
+                    scope: $scope,
+                    data: JSON.stringify(data)
                 });
+            };
+
+            /**
+             * [clickedOnMoveSaveButton description]
+             * @return {[type]} [description]
+             */
+            var clickedOnMoveSaveButton = function(options) {
+                lastSuccessCallback = options["successCallBack"] ? options["successCallBack"] : null;
+                lastFailureCallback = options["failureCallBack"] ? options["failureCallBack"] : null;
+
+                var dataForPopup = {
+                    dataset: {
+                        fromDate: options["fromDate"] ? options["fromDate"] : null,
+                        toDate: options["toDate"] ? options["toDate"] : null,
+                        oldFromDate: options["oldFromDate"] ? options["oldFromDate"] : null,
+                        oldToDate: options["oldToDate"] ? options["oldToDate"] : null,
+                    }
+                };
+
+                showMoveConfirmationPopup(dataForPopup);
             };
 
             /**
@@ -122,26 +211,17 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @param  {[type]} options [description]
              * @return {[type]}         [description]
              */
-            var callMoveDatesAPI = function (options) {
-                var fromDate = options["fromDate"] ? options["fromDate"] : null,
-                    toDate = options["toDate"] ? options["toDate"] : null,
-                    oldFromDate = options["oldFromDate"] ? options["oldFromDate"] : null,
-                    oldToDate = options["oldToDate"] ? options["oldToDate"] : null,
-                    successCallBack = options["successCallBack"] ? options["successCallBack"] : null,
-                    failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null,
+            $scope.callMoveDatesAPI = function (options) {
+                var newFromDate = options["fromDate"] ? formatDateForAPI(options["fromDate"]) : null,
+                    newToDate = options["toDate"] ? formatDateForAPI(options["toDate"]) : null,
+                    successCallBack = lastSuccessCallback,
+                    failureCallBack = lastFailureCallback,
                     sumryData = $scope.groupConfigData.summary;
-
-                if(fromDate === null || toDate === null) {
-                    console.warn ('From Date or to date is missing');
-                    return false;
-                }
 
                 var params = {
                     group_id: sumryData.group_id,
-                    from_date: fromDate,
-                    to_date: toDate,
-                    old_from_date: oldFromDate,
-                    old_to_date: oldToDate
+                    from_date: newFromDate,
+                    to_date: newToDate
                 };
 
                 var options = {
@@ -156,12 +236,24 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * When clicked on move button
              * @return {undefined}
              */
-            var clickedOnMoveButton = function (options) {
-                _.extend(options, {
-                    confirmActionAction: callMoveDatesAPI
-                });
+            var clickedOnMoveButton = function () {
+                setMode ("COMPLETE_MOVE");
+            };
 
-                showMoveConfirmationPopup (options)
+            /**
+             * [isInCompleteMoveMode description]
+             * @return {Boolean} [description]
+             */
+            var isInCompleteMoveMode = function() {            
+                return (activeMode !== null && activeMode === "COMPLETE_MOVE");
+            };
+
+            /**
+             * [cancelMoveAction description]
+             * @return {[type]} [description]
+             */
+            var cancelMoveAction = function() {
+                activeMode = null;
             };
 
             /**
@@ -171,7 +263,10 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             $scope.getMoveDatesActions = function () {
                 return {
                     shouldShowMoveButton: shouldShowMoveButton,
-                    clickedOnMoveButton: clickedOnMoveButton
+                    clickedOnMoveButton: clickedOnMoveButton,
+                    isInCompleteMoveMode: isInCompleteMoveMode,
+                    clickedOnMoveSaveButton: clickedOnMoveSaveButton,
+                    cancelMoveAction: cancelMoveAction
                 };
             };
         }());
