@@ -22,13 +22,10 @@
 				card_type: "",
 				addToGuestCard: false
 			};
-
 			$scope.cancellationData.paymentType = "";
-			$scope.DailogeState = $scope.$parent.DailogeState;
-			$scope.DailogeState.sendConfirmatonMailTo = $scope.$parent.DailogeState.sendConfirmatonMailTo;
+			$scope.DailogeState = typeof $scope.$parent.DailogeState !== 'undefined' ? $scope.$parent.DailogeState : {};
+			$scope.DailogeState.sendConfirmatonMailTo = typeof $scope.$parent.DailogeState!== 'undefined' ? $scope.$parent.DailogeState.sendConfirmatonMailTo : "";			
 			$scope.DailogeState.isCancelled = false;
-
-
 			$scope.ngDialogData.penalty = $filter("number")($scope.ngDialogData.penalty, 2);
 			if ($scope.ngDialogData.penalty > 0) {
 				$scope.$emit("UPDATE_CANCEL_RESERVATION_PENALTY_FLAG", true);

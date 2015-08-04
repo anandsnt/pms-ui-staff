@@ -165,7 +165,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.cancellation_policy_id = data.cancellation_policy_id;
 
             //Additional details
-            $scope.rateData.is_commission_on = (data.is_commission_on) ? true : false;
             $scope.rateData.is_suppress_rate_on = (data.is_suppress_rate_on) ? true : false;
             $scope.rateData.is_discount_allowed_on = (data.is_discount_allowed_on) ? true : false;
             $scope.rateData.is_member_rate = (data.is_member) ? true : false;
@@ -177,8 +176,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             } else {
                 $scope.rateData.end_date_for_display = "";
             }
-            $scope.rateData.commission_value = data.commission_value;
-            $scope.rateData.commission_type = data.commission_type;
+            $scope.rateData.commission_details = data.commission_details;
 
 
 

@@ -230,7 +230,6 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 				var postData = {};
 				postData.reservationId = $scope.reservationData.reservationId;
-				postData.hide_rates = $scope.reservationData.hide_rates;
 				/**
 				 * CICO-7077 Confirmation Mail to have tax details
 				 */
@@ -537,7 +536,21 @@ sntRover.controller('RVReservationConfirmCtrl', [
          * Function to toggle show rate checkbox value
          */
 		$scope.clickedShowRate = function(){
-			$scope.reservationData.hide_rates = !$scope.reservationData.hide_rates;
+
+			var sucessCallback = function(data){
+				$scope.reservationData.hide_rates = !$scope.reservationData.hide_rates;
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = "";
+			};
+			var failureCallback = function(errorData){
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorData;
+			};
+			var data = {
+				'reservation_id': $scope.reservationData.reservationId,
+				'hide_rates'	: !$scope.reservationData.hide_rates
+			}
+			$scope.invokeApi(RVBillCardSrv.toggleHideRate, data, sucessCallback, failureCallback);
 		};
 
 		$scope.init();
