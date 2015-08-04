@@ -9749,7 +9749,7 @@
                 }
 
                 .data {
-                    margin-bottom: 20px;
+                    margin-bottom: 10px;
                     border-bottom: 1px solid rgba(0,0,0,.1);
                     .float;
 
@@ -9759,14 +9759,14 @@
                         .calc-width(50, 10);
                         .pull-left;
 
-                        .guest-status { margin: 10px 10px 0 0; }
+                        .guest-status { margin-right: 10px; }
 
                         &:first-child { margin-right: 20px; }
                     }
                 }
 
                 .stay-dates {
-                    margin-bottom: 20px;
+                    margin-bottom: 10px;
                     border-bottom: 1px solid rgba(0,0,0,.1);
                     .float;
 
@@ -9783,7 +9783,7 @@
 
                     .check-data {
                         cursor: pointer;
-                        margin: 10px 0 20px 0;
+                        margin: 10px 0;
                         padding-left: 40px;
                         .size(40px, 100%);
                         .faux-clickable;
@@ -9813,21 +9813,57 @@
 
                     .check-data-set,
                     .check-data-not-set {
-                        margin: 10px 0 0 -10px;
+                        margin-left: -10px;
                         padding-left: 40px;
                         line-height: 40px;
                         .size(40px, 100%);
                         .show;
 
-                        &.check-data-not-set {
-                            color: @grey3;
+                        &.check-data-not-set { color: @grey3; }
+                    }
+                }
+
+                .group {
+                    padding-bottom: 10px;
+                    margin-bottom: 10px;
+                    border-bottom: 1px solid rgba(0,0,0,.1);
+
+                    .icon-group {
+                        line-height: 20px;
+                        padding-left: 20px;
+                    }
+
+                    .button {
+                        position: relative;
+                        width: 100%;
+                        font-weight: 400;
+                        text-transform: none;
+                        text-align: left;
+                        padding: 0 30px;
+                        .nowrap();
+
+                        .icons {
+                            position: absolute;
+                            .show;
+
+                            &.icon-group { 
+                                top: 11px;
+                                left: 12px;
+                                padding: 0;
+                                .square(16px);
+                            }
+
+                            &.icon-remove-10 { 
+                                top: 13px;
+                                right: 12px; 
+                            }
                         }
                     }
                 }
 
                 .rooms {
                     text-align: center;
-                    margin-bottom: 20px;
+                    margin-bottom: 10px;
                     .faux-clickable;
 
                     .title {
@@ -10041,7 +10077,7 @@
                 }
 
                 .total-stay-cost {
-                    margin-top: -20px;
+                    margin-top: -10px;
                     #pixel-to-percent > .left-padding(240, 780);
 
                     li {
