@@ -1,4 +1,4 @@
-<tr ng-repeat="each in results track by $index" class="{{ each.trCls }}" ngrepeatend>
+<tr ng-repeat="each in results track by $index" class="{{ each.className }}" ngrepeatend>
 	<td ng-if="each.isReport" rowspan="{{ each.rowspan }}">
 		<strong ng-if="each.room_no" class="title">{{ each.room_no }}</strong>
 		<span class="data status">{{ each.status }}</span>

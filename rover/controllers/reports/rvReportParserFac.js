@@ -195,9 +195,9 @@ sntRover.factory('RVReportParserFac', [
                     // ELSE: since this tr won't have any childs, mark the class that must be added to the last tr
                     if ( !!customData.length ) {
                         makeCopy.rowspan = customData.length + 1;
-                        customData[customData.length - 1]['trCls'] = 'row-break';
+                        customData[customData.length - 1]['className'] = 'row-break';
                     } else {
-                        makeCopy.trCls = 'row-break';
+                        makeCopy.className = 'row-break';
                     };
 
                     // do this only after the above code that adds
@@ -205,7 +205,7 @@ sntRover.factory('RVReportParserFac', [
                     if ( reportName === reportUtils.getName('LOGIN_AND_OUT_ACTIVITY') ) {
                         if ( makeCopy.hasOwnProperty('action_type') && makeCopy['action_type'] === 'INVALID_LOGIN' ) {
                             makeCopy['action_type'] = 'INVALID LOGIN';
-                            makeCopy.trCls = 'row-break invalid';
+                            makeCopy.className = 'row-break invalid';
                         };
 
                         if ( makeCopy.hasOwnProperty('date') ) {
@@ -370,7 +370,7 @@ sntRover.factory('RVReportParserFac', [
                 // next insert "sub_total" from api response to retrunAry
                 chargeGrpObj['sub_total']['isReportSubTotal'] = true;
                 chargeGrpObj['sub_total']['chargeGroupName']  = objKeyName;
-                chargeGrpObj['sub_total']['trCls']            = 'row-break';
+                chargeGrpObj['sub_total']['className']        = 'row-break';
                 returnAry.push( chargeGrpObj['sub_total'] );
             };
 

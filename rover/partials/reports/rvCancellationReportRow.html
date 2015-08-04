@@ -1,4 +1,4 @@
-<tr ng-repeat="each in results track by $index" class="{{ each.trCls }}">
+<tr ng-repeat="each in results track by $index" class="{{ each.className }}">
 	<td ng-if="each.isReport" rowspan="{{ each.rowspan }}"><!-- Add 'rowspan="2"' if note exists -->
 		<span class="data red">{{ each.cancel_date | date:dateFormat }}</span>
         <span class="data penalty">{{ each.cancel_penalty | currency:currencySymbol:2 }}</span>
