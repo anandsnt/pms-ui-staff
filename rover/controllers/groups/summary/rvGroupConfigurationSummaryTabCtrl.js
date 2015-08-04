@@ -29,6 +29,43 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				$scope.$digest();
 			}
 		};
+
+		/**
+		 * Our Move date, start date, end date change are defined in parent controller
+		 * We need to share those actions with room block 
+		 * @return undefined
+		 */
+		var initializeChangeDateActions = function () {
+			$scope.changeDatesActions = $scope.getMoveDatesActions();
+		};
+
+		var successCallBackOfMoveButton = function() {
+
+		};
+
+		var failureCallBackOfMoveButton = function() {
+
+		};
+
+		/**
+		 * when clicked on move button. this will triggr
+		 * @return {undefined}
+		 */
+		$scope.clickedOnMoveButton = function() {
+			var sumryData = groupConfigData.summary,
+				oldSumryData = summaryMemento,
+				options = {
+					fromDate: sumryData.block_from,
+					toDate: sumryData.block_to,
+					oldFromDate: oldSumryData.block_from,
+					oldToDate: oldSumryData.block_to,
+					successCallBack: successCallBackOfMoveButton,
+					failureCallBack: failureCallBackOfMoveButton
+				};
+
+			$scope.changeDatesActions.clickedOnMoveButton (options);
+		};
+
 		/**
 		 * we have to save when the user clicked outside of summary tab
 		 * @param  {Object} event - Angular Event
@@ -743,6 +780,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				contractedRates: []
 			};
 
+			$scope.changeDatesActions = {};
 			$scope.billingInfoModalOpened = false;
 
 			//we use this to ensure that we will call the API only if there is any change in the data
@@ -790,6 +828,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			setDatePickerOptions();
 
 			$scope.computeSegment();
+
+			//start date change, end date change, move date actions
+			initializeChangeDateActions();
 		}();
 	}
 ]);

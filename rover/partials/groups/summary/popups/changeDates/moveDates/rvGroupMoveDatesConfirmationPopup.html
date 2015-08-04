@@ -1,0 +1,24 @@
+<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
+    <div class="modal-content group-date move-group">
+        <button id="modal-close" type="button" class="modal-close"><span class="icons icon-close invert"></span></button>
+
+        <span class="h2 message">Move group and associated reservations?</span>
+        
+        <div class="moved before">
+            <span class="label">Old Dates</span>
+            <p><span class="guest-status small-icon check-in"></span>{Old Arrival}</p>
+            <p><span class="guest-status small-icon check-out"></span>{Old Departure}</p>
+        </div>
+
+        <div class="moved">
+            <span class="label">New Dates</span>
+            <p><span class="guest-status small-icon check-in"></span>{New Arrival}</p>
+            <p><span class="guest-status small-icon check-out"></span>{New Departure}</p>
+        </div>
+
+        <div class="actions">
+            <button type="button" class="button blank">Cancel</button>
+            <button type="button" class="button green">Confirm Move</button>
+        </div>
+    </div>
+</div>

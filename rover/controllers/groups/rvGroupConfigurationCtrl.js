@@ -79,6 +79,103 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             return (!$scope.isInAddMode());
         };
 
+        //Move date, from date, end date change
+        (function(){
+
+            var modesAvailable = ["START_DATE_LEFT_MOVE", "START_DATE_LEFT_MOVE"];
+            /**
+             * wanted to show the Move button in screen
+             * @return {Boolean}
+             */
+            var shouldShowMoveButton = function () {
+                var sumryData = $scope.groupConfigData.summary,
+                    roomBlockExist = (parseInt(sumryData.rooms_total) > 0),
+                    noInHouseReservationExist = (parseInt(sumryData.total_checked_in_reservations) === 0),
+                    fromDateLeftRightMoveAllowed = (sumryData.is_from_date_left_move_allowed && sumryData.is_from_date_right_move_allowed),
+                    toDateLeftRightMoveAllowed = (sumryData.is_to_date_left_move_allowed && sumryData.is_to_date_right_move_allowed),
+                    notAPastGroup = !sumryData.is_a_past_group;
+
+                return (roomBlockExist && 
+                        noInHouseReservationExist && 
+                        fromDateLeftRightMoveAllowed && 
+                        toDateLeftRightMoveAllowed && 
+                        notAPastGroup);
+            };
+
+            /**
+             * in order to show the move confirmation popup
+             * @param {Object}
+             * @return {undefined}
+             */
+            var showMoveConfirmationPopup = function (data) {
+                ngDialog.open({
+                    template: '/assets/partials/groups/summary/popups/changeDates/moveDates/rvGroupMoveDatesConfirmationPopup.html',
+                    className: '',
+                    closeByDocument: false,
+                    closeByEscape: false,
+                    data: (data),
+                });
+            };
+
+            /**
+             * function explicitly for calling the move API
+             * @param  {[type]} options [description]
+             * @return {[type]}         [description]
+             */
+            var callMoveDatesAPI = function (options) {
+                var fromDate = options["fromDate"] ? options["fromDate"] : null,
+                    toDate = options["toDate"] ? options["toDate"] : null,
+                    oldFromDate = options["oldFromDate"] ? options["oldFromDate"] : null,
+                    oldToDate = options["oldToDate"] ? options["oldToDate"] : null,
+                    successCallBack = options["successCallBack"] ? options["successCallBack"] : null,
+                    failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null,
+                    sumryData = $scope.groupConfigData.summary;
+
+                if(fromDate === null || toDate === null) {
+                    console.warn ('From Date or to date is missing');
+                    return false;
+                }
+
+                var params = {
+                    group_id: sumryData.group_id,
+                    from_date: fromDate,
+                    to_date: toDate,
+                    old_from_date: oldFromDate,
+                    old_to_date: oldToDate
+                };
+
+                var options = {
+                    params: params,
+                    successCallBack: successCallBack, //null case will be handled from baseCtrl
+                    failureCallBack: failureCallBack //null case will be handled from baseCtrl
+                };
+                $scope.callAPI(rvGroupConfigurationSrv.completeMoveGroup, options);  
+            };
+
+            /**
+             * When clicked on move button
+             * @return {undefined}
+             */
+            var clickedOnMoveButton = function (options) {
+                _.extend(options, {
+                    confirmActionAction: callMoveDatesAPI
+                });
+
+                showMoveConfirmationPopup (options)
+            };
+
+            /**
+             * to get various move dates from child controllers
+             * @return {Object} options [description]
+             */
+            $scope.getMoveDatesActions = function () {
+                return {
+                    shouldShowMoveButton: shouldShowMoveButton,
+                    clickedOnMoveButton: clickedOnMoveButton
+                };
+            };
+        }());
+
         /**
          * function to form data model for add/edit mode
          * @return - None

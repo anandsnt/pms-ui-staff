@@ -38,25 +38,31 @@
         </div>
         <div class="holder right">
             <strong class="h3" translate>ROOM_BLOCK_SUMMARY</strong>
-            <div class="entry margin has-datepicker">
-                <label for="group-block-from">
-                    {{'FROM' | translate}}
-                    <strong>*</strong>
-                </label>
-                <!-- value="{Start Date - not earlier than business or arrival date, not after departure date}" -->
-                <!--<input id="group-block-from" ng-if="!isInAddMode()" type="text" value="{{groupConfigData.summary.block_from | date:dateFormat}}" readonly />-->
-                <!-- If new group, add class "datepicker" -->
-                <input id="group-block-from" class="datepicker" type="text" ui-date="fromDateOptions" value="{{groupConfigData.summary.block_from|date:dateFormat}}" rv-clear-text-box listen-this="groupConfigData.summary.block_from" readonly ng-class="{'not-selected': !groupConfigData.summary.block_from}" />
-            </div>
-            <div class="entry has-datepicker">
-                <label for="group-block-to">
-                    {{'TO' | translate}}
-                    <strong>*</strong>
-                </label>
-                <!-- value="{End Date - not earlier than Start Date, not after departure date}" -->
-                <!--!<input ng-if="!isInAddMode()" id="group-block-to" type="text" value="{{groupConfigData.summary.block_to | date:dateFormat}}" readonly />-->
-                <!-- If new group, add class "datepicker" -->
-                <input id="group-block-to" class="datepicker" type="text" ui-date="toDateOptions" value="{{groupConfigData.summary.block_to|date:dateFormat}}" rv-clear-text-box listen-this="groupConfigData.summary.block_to" readonly ng-class="{'not-selected': !groupConfigData.summary.block_to}" />
+            <div class="entry full-width stay-dates">
+                <div class="entry-data">
+                    <label for="group-block-from">
+                        {{'FROM' | translate}}
+                        <strong>*</strong>
+                    </label>
+                    <!-- value="{Start Date - not earlier than business or arrival date, not after departure date}" -->
+                    <!--<input id="group-block-from" ng-if="!isInAddMode()" type="text" value="{{groupConfigData.summary.block_from | date:dateFormat}}" readonly />-->
+                    <!-- If new group, add class "datepicker" -->
+                    <input id="group-block-from" class="datepicker" type="text" ui-date="fromDateOptions" value="{{groupConfigData.summary.block_from|date:dateFormat}}" rv-clear-text-box listen-this="groupConfigData.summary.block_from" readonly ng-class="{'not-selected': !groupConfigData.summary.block_from}" />
+                </div>
+                <div class="entry-data">
+                    <label for="group-block-to">
+                        {{'TO' | translate}}
+                        <strong>*</strong>
+                    </label>
+                    <!-- value="{End Date - not earlier than Start Date, not after departure date}" -->
+                    <!--!<input ng-if="!isInAddMode()" id="group-block-to" type="text" value="{{groupConfigData.summary.block_to | date:dateFormat}}" readonly />-->
+                    <!-- If new group, add class "datepicker" -->
+                    <input id="group-block-to" class="datepicker" type="text" ui-date="toDateOptions" value="{{groupConfigData.summary.block_to|date:dateFormat}}" rv-clear-text-box listen-this="groupConfigData.summary.block_to" readonly ng-class="{'not-selected': !groupConfigData.summary.block_to}" />
+                </div>
+                <button type="button" class="button blue" ng-show="changeDatesActions.shouldShowMoveButton()" ng-click="clickedOnMoveButton()">Move Group</button>
+                <!-- When button pressed, disable due date input and replace "Move Group" button with:
+                <button type="button" class="button blank">Cancel</button>
+                <button type="button" class="button green">Save</button> -->             
             </div>
             <div class="entry full-width with-button has-datepicker">
                 <label for="group-release-date">
