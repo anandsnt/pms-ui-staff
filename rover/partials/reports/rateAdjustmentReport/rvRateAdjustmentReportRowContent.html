@@ -34,6 +34,6 @@ This is why: http://stackoverflow.com/questions/17441254/why-angularjs-currency-
 
 
 <td ng-if="each.isSubTotal"><strong>Total</strong></td>
-<td ng-if="each.isSubTotal" ng-class="{ red: each.original_amount < 0, green: each.original_amount > 0 }"><strong>{{ each.original_amount | currency:currencySymbol:2 }}</strong></td>
-<td ng-if="each.isSubTotal" ng-class="{ red: each.adjusted_amount < 0, green: each.adjusted_amount > 0 }"><strong>{{ each.adjusted_amount | currency:currencySymbol:2 }}</strong></td>
+<td ng-if="each.isSubTotal"><strong>{{ each.original_amount | currency:currencySymbol:2 }}</strong></td>
+<td ng-if="each.isSubTotal"><strong>{{ each.adjusted_amount | currency:currencySymbol:2 }}</strong></td>
 <td ng-if="each.isSubTotal" ng-class="{ red: each.variance < 0, green: each.variance > 0 }" colspan="3"><strong>{{ each.variance | currency:currencySymbol:2 }}</strong></td>

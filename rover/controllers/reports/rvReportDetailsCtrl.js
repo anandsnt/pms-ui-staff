@@ -89,6 +89,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.isGuestReport = true;
 					$scope.showSortBy = false;
 					break;
+                                        
+				case reportUtils.getName('EARLY_CHECKIN'):
+					$scope.isGuestReport = true;
+					$scope.showSortBy = true;
+					break;
 
 				case reportUtils.getName('CANCELLATION_NO_SHOW'):
 					$scope.hasNoTotals = true;
@@ -244,7 +249,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// NOTE: this implementation also effects template, depending on design
 			// discard previous values
 			$scope.firstHalf = [];
-			$scope.firstHalf = [];
+			$scope.restHalf = [];
 
 			// making unique copies of array
 			// slicing same array not good.
@@ -385,26 +390,26 @@ sntRover.controller('RVReportDetailsCtrl', [
 					} else {
 						$scope.hasReportTotals    = true;
 						$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
-						$scope.detailsTemplateUrl = '/assets/partials/reports/rvCommonReportDetails.html';
+						$scope.detailsTemplateUrl = '/assets/partials/reports/shared/rvCommonReportDetails.html';
 					};
 					break;
 
 				case reportUtils.getName('FORECAST_BY_DATE'):
 					$scope.hasReportTotals    = false;
 					$scope.showReportHeader   = true;
-					$scope.detailsTemplateUrl = '/assets/partials/reports/rvForecastReport.html';
+					$scope.detailsTemplateUrl = '/assets/partials/reports/forecastByDateReport/rvForecastByDateReport.html';
 					break;
 
 				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
 					$scope.hasReportTotals    = false;
 					$scope.showReportHeader   = true;
-					$scope.detailsTemplateUrl = '/assets/partials/reports/rvForecastGuestGroupReport.html';
+					$scope.detailsTemplateUrl = '/assets/partials/reports/forecastGuestGroupReport/rvForecastGuestGroupReport.html';
 					break;
 
 				case reportUtils.getName('MARKET_SEGMENT_STAT_REPORT'):
 					$scope.hasReportTotals    = false;
 					$scope.showReportHeader   = true;
-					$scope.detailsTemplateUrl = '/assets/partials/reports/rvMarketSegmentStatReport.html';
+					$scope.detailsTemplateUrl = '/assets/partials/reports/marketSegmentStatReport/rvMarketSegmentStatReport.html';
 					break;
 
 				case reportUtils.getName('COMPARISION_BY_DATE'):
@@ -421,14 +426,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 					} else {
 						$scope.hasReportTotals    = true;
 						$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
-						$scope.detailsTemplateUrl = '/assets/partials/reports/rvCommonReportDetails.html';
+						$scope.detailsTemplateUrl = '/assets/partials/reports/shared/rvCommonReportDetails.html';
 					};
 					break;
 
 				default:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
-					$scope.detailsTemplateUrl = '/assets/partials/reports/rvCommonReportDetails.html';
+					$scope.detailsTemplateUrl = '/assets/partials/reports/shared/rvCommonReportDetails.html';
 					break;
 			};
 		};
@@ -472,19 +477,19 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportUtils.getName('FORECAST_BY_DATE'):
-					template = '/assets/partials/reports/rvForecastByDateReportRow.html';
+					template = '/assets/partials/reports/forecastByDateReport/rvForecastByDateReportRow.html';
+					break;
+
+				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
+					template = '/assets/partials/reports/forecastGuestGroupReport/rvForecastGuestGroupReportRow.html';
 					break;
 
 				case reportUtils.getName('ROOMS_QUEUED'):
 					template = '/assets/partials/reports/rvRoomQueuedReportRow.html';
 					break;
 
-				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
-					template = '/assets/partials/reports/rvForecastGuestGroupReportRow.html';
-					break;
-
 				case reportUtils.getName('MARKET_SEGMENT_STAT_REPORT'):
-					template = '/assets/partials/reports/rvMarketSegmentStatReportRow.html';
+					template = '/assets/partials/reports/marketSegmentStatReport/rvMarketSegmentStatReportRow.html';
 					break;
 
 				case reportUtils.getName('RATE_ADJUSTMENTS_REPORT'):
@@ -492,7 +497,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				default:
-					template = '/assets/partials/reports/rvCommonReportRow.html';
+					template = '/assets/partials/reports/shared/rvCommonReportRow.html';
 					break;
 			};
 
@@ -664,7 +669,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				// show popup
 				ngDialog.open({
 					controller: 'RVPrePrintPopupCtrl',
-				    template: '/assets/partials/reports/rvPrePrintPopup.html',
+				    template: '/assets/partials/reports/shared/rvPrePrintPopup.html',
 				    className: 'ngdialog-theme-default',
 				    closeByDocument: true,
 				    scope: $scope,

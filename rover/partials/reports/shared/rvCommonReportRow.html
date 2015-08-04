@@ -1,7 +1,7 @@
 <tr ng-repeat="each in results track by $index">
 	<!-- dont get afraid.. the conditions are to apply bold for cols for different reports -->
 	<!-- yeah thats hard :( -->
-	<td ng-repeat="item in each track by $index" ng-class="{'bold': (($index === 1 || $index === 5) && chosenReport.title === 'Check In / Check Out') || ($index === 7 && chosenReport.title === 'Upsell') || ($index === 3 && chosenReport.title === 'Late Check Out')}">
+	<td ng-repeat="item in each track by $index" ng-class="{'bold': (($index === 1 || $index === 5) && chosenReport.title === 'Check In / Check Out') || ($index === 7 && chosenReport.title === 'Upsell') || ($index === 3 && chosenReport.title === 'Late Check Out'), 'early':chosenReport.title === 'Early Check In'}">
 		{{ item }}
 	</td>
 </tr>
