@@ -537,7 +537,21 @@ sntRover.controller('RVReservationConfirmCtrl', [
          * Function to toggle show rate checkbox value
          */
 		$scope.clickedShowRate = function(){
-			$scope.reservationData.hide_rates = !$scope.reservationData.hide_rates;
+
+			var sucessCallback = function(data){
+				$scope.reservationData.hide_rates = !$scope.reservationData.hide_rates;
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = "";
+			};
+			var failureCallback = function(errorData){
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorData;
+			};
+			var data = {
+				'reservation_id': $scope.reservationData.reservation_id,
+				'hide_rates'	: !$scope.reservationData.hide_rates
+			}
+			$scope.invokeApi(RVBillCardSrv.toggleHideRate, data, sucessCallback, failureCallback);
 		};
 
 		$scope.init();
