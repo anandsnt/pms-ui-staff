@@ -467,8 +467,7 @@
 				$scope.closeDialog();				
 			};
 
-
-			/*******************************************************************/
+			// -- CICO-17706 --//
 			$scope.DailogeState = {};
 			$scope.DailogeState.successMessage = '';
 			$scope.DailogeState.failureMessage = '';
@@ -504,10 +503,6 @@
 				};
 				$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data, succesfullCallbackForEmailCancellation, failureCallbackForEmailCancellation);
 			};
-
-			/*$scope.ngData = {};
-			$scope.ngData.failureMessage = "";
-			$scope.ngData.successMessage = "";*/
 
 			// add the print orientation after printing
 			var addPrintOrientation = function() {
@@ -550,8 +545,7 @@
 				});
 			};
 
-			/***************************************************************************/
-
+			// -- CICO-17706 --//
 		}
 	]);
 
