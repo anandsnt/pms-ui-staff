@@ -342,6 +342,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// new more detailed reports
 			$scope.parsedApiFor = $scope.chosenReport.title;
 
+			// send the recived data to the API parser module
+			// with additional user selected options
+			// the API parser will look throught the report name
+			// to make sure API that doesnt requires any parsing will be returned with any parse
 			var parseAPIoptions = {
 				'groupedByKey'    : $scope.$parent.reportGroupedBy,
 				'checkNote'       : $scope.chosenReport.chosenOptions['include_notes'],
@@ -349,9 +353,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 				'checkCancel'     : $scope.chosenReport.chosenOptions['include_cancelled'] || $scope.chosenReport.chosenOptions['include_cancelled'],
 				'checkRateAdjust' : $scope.chosenReport.chosenOptions['show_rate_adjustments_only']
 			};
-
-			// $scope.$parent.results = angular.copy( $_parseApiToTemplate(results) );
 			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, parseAPIoptions) );
+
 
 			// if there are any results
 			$scope.hasNoResults = _.isEmpty($scope.$parent.results);
@@ -411,18 +414,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.hasReportTotals    = false;
 					$scope.showReportHeader   = true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/comparisonStatReport/rvComparisonStatReport.html';
-					break;
-
-				case reportUtils.getName('RATE_ADJUSTMENTS_REPORT'):
-					if ( !!$scope.$parent.reportGroupedBy ) {
-						$scope.hasReportTotals    = true;
-						$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
-						$scope.detailsTemplateUrl = '/assets/partials/reports/rateAdjustmentReport/rvRateAdjustmentReport.html';
-					} else {
-						$scope.hasReportTotals    = true;
-						$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
-						$scope.detailsTemplateUrl = '/assets/partials/reports/shared/rvCommonReportDetails.html';
-					};
 					break;
 
 				default:
@@ -488,7 +479,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportUtils.getName('RATE_ADJUSTMENTS_REPORT'):
-					template = '/assets/partials/reports/rateAdjustmentReport/rvRateAdjustmentReportRow.html';
+					template = '/assets/partials/reports/rvRateAdjustmentReportRow.html';
 					break;
 
 				default:
