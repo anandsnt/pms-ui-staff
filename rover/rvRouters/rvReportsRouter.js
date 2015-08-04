@@ -6,32 +6,8 @@ angular.module('reportsModule', [])
         templateUrl: '/assets/partials/reports/rvReports.html',
         controller: 'RVReportsMainCtrl',
         resolve: {
-            reportsResponse: function(RVreportsSrv) {
-                return RVreportsSrv.fetchReportList();
-            },
-            activeUserList: function(RVreportsSrv) {
-                return RVreportsSrv.fetchActiveUsers();
-            },
-            guaranteeTypes: function(RVreportsSrv) {
-                return RVreportsSrv.fetchGuaranteeTypes();
-            },
-			chargeGroups: function(RVreportsSrv) {
-                return RVreportsSrv.fetchChargeGroups();
-            },
-			chargeCodes: function(RVreportsSrv) {
-                return RVreportsSrv.fetchChargeCodes();
-            },
-            markets: function(RVreportsSrv) {
-                return RVreportsSrv.fetchDemographicMarketSegments();
-            },
-            sources: function(RVreportsSrv) {
-                return RVreportsSrv.fetchSources();
-            },
-            origins: function(RVreportsSrv) {
-                return RVreportsSrv.fetchBookingOrigins();
-            },
-            codeSettings: function(RVreportsSrv) {
-                return RVreportsSrv.fetchCodeSettings();
+            payload: function(RVreportsSrv) {
+                return RVreportsSrv.reportApiPayload();
             }
         }
     });
