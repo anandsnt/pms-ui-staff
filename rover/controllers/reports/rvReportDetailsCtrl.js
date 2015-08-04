@@ -339,6 +339,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				refreshSidebarScroll();
 			}, 200);
 
+
 			// new more detailed reports
 			$scope.parsedApiFor = $scope.chosenReport.title;
 
@@ -371,13 +372,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('BOOKING_SOURCE_MARKET_REPORT'):
 					$scope.hasReportTotals    = false;
 					$scope.showReportHeader   = !_.isEmpty($scope.$parent.results.market) || !_.isEmpty($scope.$parent.results.source) ? true : false;
-					$scope.detailsTemplateUrl = '/assets/partials/reports/rvMarketSourceReport.html';
+					$scope.detailsTemplateUrl = '/assets/partials/reports/bookingSourceMarketReport/rvBookingSourceMarketReport.html';
 					break;
 
 				case reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY'):
 					$scope.hasReportTotals    = false;
 					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
-					$scope.detailsTemplateUrl = '/assets/partials/reports/rvOccupancyRevenueReport.html';
+					$scope.detailsTemplateUrl = '/assets/partials/reports/occupancyRevenueReport/rvOccupancyRevenueReport.html';
 					break;
 
 				case reportUtils.getName('RESERVATIONS_BY_USER'):
@@ -428,7 +429,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.parsedApiTemplate = function() {
 			var template = '';
 
-			switch ($scope.parsedApiFor) {
+			switch ( $scope.parsedApiFor ) {
 
 				// general reports rows
 				case reportUtils.getName('ARRIVAL'):
@@ -457,7 +458,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					template = '/assets/partials/reports/generalReportRows/rvRoomQueuedReportRow.html';
 					break;
 				case reportUtils.getName('LOGIN_AND_OUT_ACTIVITY'):
-					template = '/assets/partials/reports/generalReportRows/rvUserActivityReportRow.html';
+					template = '/assets/partials/reports/generalReportRows/rvLoginActivityReportRow.html';
 					break;
 
 
@@ -496,7 +497,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// simple method to allow checking for report title
 		// from the template, even without making the entire reportUtils part of $scope
 		$scope.isThisReport = function (name) {
-			return reportUtils.getName(name) === $scope.parsedApiFor ? true : false;
+			if ( 'array' == typeof name ) {
+				return !! _.find(name, function(each) {
+					return $scope.parsedApiFor == reportUtils.getName(each);
+				});
+			} else {
+				return $scope.parsedApiFor == reportUtils.getName(name);
+			};
 		};
 
 
