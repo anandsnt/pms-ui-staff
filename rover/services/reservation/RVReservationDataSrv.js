@@ -34,6 +34,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 					rateName: '',
 					rateAvg: 0,
 					rateTotal: 0,
+					associatedAddonTotal: 0,
 					addons: [],
 					varyingOccupancy: false,
 					stayDates: {},
