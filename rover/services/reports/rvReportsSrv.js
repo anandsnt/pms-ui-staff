@@ -41,78 +41,64 @@ sntRover.service('RVreportsSrv', [
 					};
 				};
 
+				var success = function(key, data) {
+					payload[key] = angular.copy( data );
+					shallWeResolve();
+				};
+
+				var failed = function(key, emptyType, data) {
+					payload[key] = 'typeArray' == emptyType ? [] : {};
+					shallWeResolve();
+				};
+
 				// add report list data to payload
 				payload.reportsResponse = angular.copy( data );
+
+				// fetch code settings & add to payload
+				this.fetchCodeSettings()
+					.then( success.bind(this, 'codeSettings'), failed.bind(this, 'codeSettings', 'typeObject') );
 
 				// fetch active users & add to payload
 				if ( hasFilter['ACTIVE_USERS'] ) {
 					this.fetchActiveUsers()
-						.then(function(data) {
-							payload.activeUserList = angular.copy( data );
-							shallWeResolve();
-						});
+						.then( success.bind(this, 'activeUserList'), failed.bind(this, 'activeUserList', 'typeArray') );
 				};
 
 				// fetch gurantee types & add to payload
 				if ( hasFilter['INCLUDE_GUARANTEE_TYPE'] ) {
 					this.fetchGuaranteeTypes()
-						.then(function(data) {
-							payload.guaranteeTypes = angular.copy( data );
-							shallWeResolve();
-						});
+						.then( success.bind(this, 'guaranteeTypes'), failed.bind(this, 'guaranteeTypes', 'typeArray') );
 				};
 
 				// fetch charge groups & add to payload
 				if ( hasFilter['INCLUDE_CHARGE_GROUP'] ) {
 					this.fetchChargeGroups()
-						.then(function(data) {
-							payload.chargeGroups = angular.copy( data );
-							shallWeResolve();
-						});
+						.then( success.bind(this, 'chargeGroups'), failed.bind(this, 'chargeGroups', 'typeArray') );
 				};
 
 				// fetch charge groups & add to payload
 				if ( hasFilter['INCLUDE_CHARGE_CODE'] ) {
 					this.fetchChargeCodes()
-						.then(function(data) {
-							payload.chargeCodes = angular.copy( data );
-							shallWeResolve();
-						});
+						.then( success.bind(this, 'chargeCodes'), failed.bind(this, 'chargeCodes', 'typeArray') );
 				};
 
 				// fetch booking origins & add to payload
 				if ( hasFilter['CHOOSE_BOOKING_ORIGIN'] ) {
 					this.fetchDemographicMarketSegments()
-						.then(function(data) {
-							payload.origins = angular.copy( data );
-							shallWeResolve();
-						});
+						.then( success.bind(this, 'origins'), failed.bind(this, 'origins', 'typeArray') );
 				};
 
 				// fetch markers & add to payload
 				if ( hasFilter['CHOOSE_MARKET'] ) {
 					this.fetchSources()
-						.then(function(data) {
-							payload.markets = angular.copy( data );
-							shallWeResolve();
-						});
+						.then( success.bind(this, 'markets'), failed.bind(this, 'markets', 'typeArray') );
 				};
 
 				// fetch sources & add to payload
 				if ( hasFilter['CHOOSE_SOURCE'] ) {
 					this.fetchBookingOrigins()
-						.then(function(data) {
-							payload.sources = angular.copy( data );
-							shallWeResolve();
-						});
+						.then( success.bind(this, 'sources'), failed.bind(this, 'sources', 'typeArray') );
 				};
-
-				// fetch code settings & add to payload
-				this.fetchCodeSettings()
-					.then(function(data) {
-						payload.codeSettings = angular.copy( data );
-						shallWeResolve();
-					});
 			};
 
 			function checkFilters (data) {
