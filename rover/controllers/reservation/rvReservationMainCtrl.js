@@ -794,6 +794,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     $scope.reservationData.rateDetails[currentRoomIndex] &&
                     $scope.reservationData.rateDetails[currentRoomIndex][$scope.reservationData.arrivalDate][applicableRate].applyPromotion) {
                     data.promotion_id = $scope.reservationData.rateDetails[currentRoomIndex][$scope.reservationData.arrivalDate][applicableRate].appliedPromotion.id;
+                    data.promotion_status = !!_.findWhere($scope.reservationData.rateDetails[currentRoomIndex][$scope.reservationData.arrivalDate][applicableRate].restrictions, {
+                        key: 'INVALID_PROMO'
+                    }) ? 'OVERRIDE' : 'VALID';
                 } else {
                     data.promotion_id = null;
                 }
