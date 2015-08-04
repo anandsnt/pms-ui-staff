@@ -355,9 +355,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 			};
 			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, parseAPIoptions) );
 
-
 			// if there are any results
 			$scope.hasNoResults = _.isEmpty($scope.$parent.results);
+
 
 			// a very different parent template / row template / content template for certain reports
 			// otherwise they all will share the same template
@@ -429,59 +429,60 @@ sntRover.controller('RVReportDetailsCtrl', [
 			var template = '';
 
 			switch ($scope.parsedApiFor) {
-				case reportUtils.getName('IN_HOUSE_GUEST'):
-					template = '/assets/partials/reports/rvInHouseReportRow.html';
-					break;
 
-				case reportUtils.getName('DEPARTURE'):
-					template = '/assets/partials/reports/rvDepartureReportRow.html';
-					break;
-
+				// general reports rows
 				case reportUtils.getName('ARRIVAL'):
-					template = '/assets/partials/reports/rvArrivalReportRow.html';
+					template = '/assets/partials/reports/generalReportRows/rvArrivalReportRow.html';
 					break;
-
 				case reportUtils.getName('CANCELLATION_NO_SHOW'):
-					template = '/assets/partials/reports/rvCancellationReportRow.html';
+					template = '/assets/partials/reports/generalReportRows/rvCancellationReportRow.html';
 					break;
-
-				case reportUtils.getName('LOGIN_AND_OUT_ACTIVITY'):
-					template = '/assets/partials/reports/rvUserActivityReportRow.html';
+				case reportUtils.getName('DAILY_TRANSACTIONS'):
+				case reportUtils.getName('DAILY_PAYMENTS'):
+					template = '/assets/partials/reports/generalReportRows/rvDailyTransPaymentsReportRow.html';
 					break;
-
+				case reportUtils.getName('DEPARTURE'):
+					template = '/assets/partials/reports/generalReportRows/rvDepartureReportRow.html';
+					break;
 				case reportUtils.getName('DEPOSIT_REPORT'):
-					template = '/assets/partials/reports/rvDepositReportRow.html';
+					template = '/assets/partials/reports/generalReportRows/rvDepositReportRow.html';
+					break;
+				case reportUtils.getName('IN_HOUSE_GUEST'):
+					template = '/assets/partials/reports/generalReportRows/rvInHouseReportRow.html';
+					break;
+				case reportUtils.getName('RATE_ADJUSTMENTS_REPORT'):
+					template = '/assets/partials/reports/generalReportRows/rvRateAdjustmentReportRow.html';
+					break;
+				case reportUtils.getName('ROOMS_QUEUED'):
+					template = '/assets/partials/reports/generalReportRows/rvRoomQueuedReportRow.html';
+					break;
+				case reportUtils.getName('LOGIN_AND_OUT_ACTIVITY'):
+					template = '/assets/partials/reports/generalReportRows/rvUserActivityReportRow.html';
 					break;
 
+
+				// RESERVATIONS_BY_USER report row
 				case reportUtils.getName('RESERVATIONS_BY_USER'):
 					template = '/assets/partials/reports/reservationByUserReport/rvReservationByUserReportRow.html';
 					break;
 
-				case reportUtils.getName('DAILY_TRANSACTIONS'):
-				case reportUtils.getName('DAILY_PAYMENTS'):
-					template = '/assets/partials/reports/rvDailyTransactionsReportRow.html';
-					break;
-
+				// FORECAST_BY_DATE report row
 				case reportUtils.getName('FORECAST_BY_DATE'):
 					template = '/assets/partials/reports/forecastByDateReport/rvForecastByDateReportRow.html';
 					break;
 
+				// FORECAST_GUEST_GROUPS report row
 				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
 					template = '/assets/partials/reports/forecastGuestGroupReport/rvForecastGuestGroupReportRow.html';
 					break;
-
-				case reportUtils.getName('ROOMS_QUEUED'):
-					template = '/assets/partials/reports/rvRoomQueuedReportRow.html';
-					break;
-
+				
+				// MARKET_SEGMENT_STAT_REPORT report row
 				case reportUtils.getName('MARKET_SEGMENT_STAT_REPORT'):
 					template = '/assets/partials/reports/marketSegmentStatReport/rvMarketSegmentStatReportRow.html';
 					break;
 
-				case reportUtils.getName('RATE_ADJUSTMENTS_REPORT'):
-					template = '/assets/partials/reports/rvRateAdjustmentReportRow.html';
-					break;
 
+				// Default report row
 				default:
 					template = '/assets/partials/reports/shared/rvCommonReportRow.html';
 					break;
@@ -489,6 +490,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			return template;
 		};
+
 
 
 		// simple method to allow checking for report title
