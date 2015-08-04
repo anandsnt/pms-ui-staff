@@ -12,33 +12,178 @@ sntRover.service('RVreportsSrv', [
 			return choosenReport;
 		};
 
-		this.cacheReportList = {};
 
-		this.fetchReportList = function(backToList) {
+
+		this.reportApiPayload = function() {
+			var deferred = $q.defer(),
+				payload  = {};
+
+			this.fetchReportList()
+				.then( fetchAdditionalAPIs.bind(this) );
+
+			// dont worry, the code below this line
+			// will be hoisted to 'reportPayload' top
+			// Have you heard for JavaScript Hoisting?
+			return deferred.promise;
+
+			function fetchAdditionalAPIs (data) {
+				var promises  = [],
+					hasFilter = checkFilters( data );
+
+				var shallWeResolve = function() {
+					var filters  = _.keys( hasFilter ).length,
+						payloads = _.keys( payload ).length;
+
+					// since payload will have two additional keys
+					// 'reportsResponse' and 'codeSettings'
+					if ( payloads - filters == 2 ) {
+						deferred.resolve( payload );
+					};
+				};
+
+				// add report list data to payload
+				payload.reportsResponse = angular.copy( data );
+
+				// fetch active users & add to payload
+				if ( hasFilter['ACTIVE_USERS'] ) {
+					this.fetchActiveUsers()
+						.then(function(data) {
+							payload.activeUserList = angular.copy( data );
+							shallWeResolve();
+						});
+				};
+
+				// fetch gurantee types & add to payload
+				if ( hasFilter['INCLUDE_GUARANTEE_TYPE'] ) {
+					this.fetchGuaranteeTypes()
+						.then(function(data) {
+							payload.guaranteeTypes = angular.copy( data );
+							shallWeResolve();
+						});
+				};
+
+				// fetch charge groups & add to payload
+				if ( hasFilter['INCLUDE_CHARGE_GROUP'] ) {
+					this.fetchChargeGroups()
+						.then(function(data) {
+							payload.chargeGroups = angular.copy( data );
+							shallWeResolve();
+						});
+				};
+
+				// fetch charge groups & add to payload
+				if ( hasFilter['INCLUDE_CHARGE_CODE'] ) {
+					this.fetchChargeCodes()
+						.then(function(data) {
+							payload.chargeCodes = angular.copy( data );
+							shallWeResolve();
+						});
+				};
+
+				// fetch booking origins & add to payload
+				if ( hasFilter['CHOOSE_BOOKING_ORIGIN'] ) {
+					this.fetchDemographicMarketSegments()
+						.then(function(data) {
+							payload.origins = angular.copy( data );
+							shallWeResolve();
+						});
+				};
+
+				// fetch markers & add to payload
+				if ( hasFilter['CHOOSE_MARKET'] ) {
+					this.fetchSources()
+						.then(function(data) {
+							payload.markets = angular.copy( data );
+							shallWeResolve();
+						});
+				};
+
+				// fetch sources & add to payload
+				if ( hasFilter['CHOOSE_SOURCE'] ) {
+					this.fetchBookingOrigins()
+						.then(function(data) {
+							payload.sources = angular.copy( data );
+							shallWeResolve();
+						});
+				};
+
+				// fetch code settings & add to payload
+				this.fetchCodeSettings()
+					.then(function(data) {
+						payload.codeSettings = angular.copy( data );
+						shallWeResolve();
+					});
+			};
+
+			function checkFilters (data) {
+				var loadUsersFor = {
+                    'Arrival'                : true,
+                    'Login and out Activity' : true
+                };
+
+                var hasFilter = {};
+
+				_.each(data.results, function(eachResult) {
+					if ( ! hasFilter.hasOwnProperty('ACTIVE_USERS') && loadUsersFor[eachResult.title] ) {
+						hasFilter['ACTIVE_USERS'] = true;
+					};
+
+					_.each(eachResult.filters, function(eachFilter) {
+
+						if ( ! hasFilter.hasOwnProperty('INCLUDE_GUARANTEE_TYPE') && 'INCLUDE_GUARANTEE_TYPE' == eachFilter.value ) {
+							hasFilter['INCLUDE_GUARANTEE_TYPE'] = true;
+						};
+
+						if ( ! hasFilter.hasOwnProperty('INCLUDE_CHARGE_GROUP') && 'INCLUDE_CHARGE_GROUP' == eachFilter.value ) {
+							hasFilter['INCLUDE_CHARGE_GROUP'] = true;
+						};
+
+						if ( ! hasFilter.hasOwnProperty('INCLUDE_CHARGE_CODE') && 'INCLUDE_CHARGE_CODE' == eachFilter.value ) {
+							hasFilter['INCLUDE_CHARGE_CODE'] = true;
+						};
+
+						if ( ! hasFilter.hasOwnProperty('CHOOSE_BOOKING_ORIGIN') && 'CHOOSE_BOOKING_ORIGIN' == eachFilter.value ) {
+							hasFilter['CHOOSE_BOOKING_ORIGIN'] = true;
+						};
+
+						if ( ! hasFilter.hasOwnProperty('CHOOSE_MARKET') && 'CHOOSE_MARKET' == eachFilter.value ) {
+							hasFilter['CHOOSE_MARKET'] = true;
+						};
+
+						if ( ! hasFilter.hasOwnProperty('CHOOSE_SOURCE') && 'CHOOSE_SOURCE' == eachFilter.value ) {
+							hasFilter['CHOOSE_SOURCE'] = true;
+						};
+					});
+				});
+
+				return hasFilter;
+			};
+		};
+
+
+
+
+
+		this.fetchReportList = function() {
 			var deferred = $q.defer(),
 				url = '/api/reports';
 
-			if (backToList) {
-				deferred.resolve(this.cacheReportList);
-			} else {
-				rvBaseWebSrvV2.getJSON(url)
-					.then(function(data) {
-						this.cacheReportList = data;
+			rvBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
 
-						// Support for Occupany from UI for now..
-						// This filter will be provided by the API in future
-						var occupanyReport = _.where(this.cacheReportList.results, { title: 'Occupancy & Revenue Summary' });
-						if ( !!occupanyReport && !!occupanyReport.length ) {
-							occupanyReport[0].filters.push({
-								value: "CHOOSE_MARKET", description: "Choose Market"
-							});
-						};
+					// Support for Occupany from UI for now..
+					// This filter will be provided by the API in future
+					var occupanyReport = _.where(data.results, { title: 'Occupancy & Revenue Summary' });
+					if ( !!occupanyReport && !!occupanyReport.length ) {
+						occupanyReport[0].filters.push({
+							value: "CHOOSE_MARKET", description: "Choose Market"
+						});
+					};
 
-						deferred.resolve(this.cacheReportList);
-					}.bind(this), function(data) {
-						deferred.reject(data);
-					});
-			}
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
 
 			return deferred.promise;
 		};
@@ -75,8 +220,7 @@ sntRover.service('RVreportsSrv', [
 		this.fetchDemographicMarketSegments = function(params) {
 			var deferred = $q.defer(),
 				url = '/api/market_segments?is_active=true';
-			// CICO-10202 Assuming that it is enough to show only the active market segments. if this is wrong and we need to show all the market segments.. uncomment the following line.
-			// url = '/api/market_segments';
+
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data.markets);
