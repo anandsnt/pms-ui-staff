@@ -24,7 +24,7 @@
 			};
 
 			$scope.cancellationData.paymentType = "";
-			$scope.DailogeState = $scope.$parent.DailogeState;
+			$scope.DailogeState = typeof $scope.$parent.DailogeState !== 'undefined' ? $scope.$parent.DailogeState : {};
 			$scope.DailogeState.sendConfirmatonMailTo = $scope.$parent.DailogeState.sendConfirmatonMailTo;
 			$scope.DailogeState.isCancelled = false;
 
