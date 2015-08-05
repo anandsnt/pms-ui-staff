@@ -10561,13 +10561,14 @@
                         margin: 0 auto;
                         .show;
 
-                        &.show-sheet {
+                        &:not(.action) {
                             line-height: 50px;
                             margin-top: 20px;
+                            width: 100%;
 
-                            span {
+                            span { 
                                 font-weight: 400;
-                                color: @grey3;
+                                color: @grey3; 
                             }
                         }
 
