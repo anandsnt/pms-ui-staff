@@ -22,7 +22,7 @@ sntRover.controller('reservationActionsController', [
 		RVSearchSrv,
 		RVDepositBalanceSrv,
 		$filter,
-		rvPermissionSrv, 
+		rvPermissionSrv,
 		$timeout,
 		$window,
 		RVReservationSummarySrv,
@@ -155,8 +155,7 @@ sntRover.controller('reservationActionsController', [
 
 		$scope.ifReferanceForCC = false;
 		$scope.depositDetails = {};
-		$scope.DailogeState = {};
-		
+
 		/**************************************************************************
 		 * Entering staycard we check if any deposit is left else noraml checkin
 		 *
@@ -366,7 +365,6 @@ sntRover.controller('reservationActionsController', [
 			$scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successRemoveFromQueueCallBack);
 		};
 
-		
 		var promptCancel = function(penalty, nights, isPercent) {
 			$scope.DailogeState = {};
 			$scope.DailogeState.successMessage = '';
@@ -604,51 +602,12 @@ sntRover.controller('reservationActionsController', [
 			}
 			return isEmailAttachedFlag;
 		};
-		var succesfullCallbackForEmailCancellation = function(data) {
-			$scope.$emit('hideLoader');
-			$scope.DailogeState.successMessage = data.message;
-			$scope.DailogeState.failureMessage = '';
-		};
-		var failureCallbackForEmailCancellation = function(error) {
-			$scope.$emit('hideLoader');
-			$scope.DailogeState.failureMessage = error[0];
-			$scope.DailogeState.successMessage = '';
-		};
-
-		//Action against email button in staycard.
-		$scope.sendReservationCancellation = function() {
-			var postData = {
-				"type": "cancellation",
-				"emails": $scope.isEmailAttached() ? [$scope.guestCardData.contactInfo.email] : [$scope.DailogeState.sendConfirmatonMailTo]
-			};
-			var data = {
-				"postData": postData,
-				"reservationId": $scope.reservationData.reservation_card.reservation_id
-			};
-			$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data, succesfullCallbackForEmailCancellation, failureCallbackForEmailCancellation);
-		};
-
+		
 		$scope.ngData = {};
 		$scope.ngData.failureMessage = "";
 		$scope.ngData.successMessage = "";
-		//Action against print button in staycard.
-		$scope.printReservationCancellation = function() {
-			var succesfullCallback = function(data) {
-				$scope.printData = data.data;
-				printPage();
-			};
-			var failureCallbackPrint = function(error) {
-				$scope.ngData.failureMessage = error[0];
-			};
-			$scope.callAPI(RVReservationSummarySrv.fetchResservationCancellationPrintData, {
-				successCallBack: succesfullCallback,
-				failureCallBack: failureCallbackPrint,
-				params: {
-					'reservation_id': $scope.reservationData.reservation_card.reservation_id
-				}
-			});
-		};
-		//Pop up for confirmation print as well as email send		
+
+		//Pop up for confirmation print as well as email send
 		$scope.popupForConfirmation = function() {
 
 			$scope.ngData.sendConfirmatonMailTo = '';
@@ -813,13 +772,55 @@ sntRover.controller('reservationActionsController', [
 
 		/**
 		 * Method to check if the reinstate button should be showm
-		 * @return {Boolean} 
+		 * @return {Boolean}
 		 */
 		$scope.isReinstateVisible = function() {
 			var resData = $scope.reservationData.reservation_card;
 			return resData.reservation_status === 'CANCELED' && // ONLY cancelled reservations can be reinstated
 				new TZIDate(resData.departure_date) > new TZIDate($rootScope.businessDate) && // can't reinstate if the reservation's dates have passed
 				rvPermissionSrv.getPermissionValue('REINSTATE_RESERVATION'); //also check for permissions
+		};
+
+		var succesfullCallbackForEmailCancellation = function(data) {
+			$scope.$emit('hideLoader');
+			$scope.DailogeState.successMessage = data.message;
+			$scope.DailogeState.failureMessage = '';
+		};
+		var failureCallbackForEmailCancellation = function(error) {
+			$scope.$emit('hideLoader');
+			$scope.DailogeState.failureMessage = error[0];
+			$scope.DailogeState.successMessage = '';
+		};
+
+		//Action against email button in staycard.
+		$scope.sendReservationCancellation = function() {
+			var postData = {
+				"type": "cancellation",
+				"emails": $scope.isEmailAttached() ? [$scope.guestCardData.contactInfo.email] : [$scope.DailogeState.sendConfirmatonMailTo]
+			};
+			var data = {
+				"postData": postData,
+				"reservationId": $scope.reservationData.reservation_card.reservation_id
+			};
+			$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data, succesfullCallbackForEmailCancellation, failureCallbackForEmailCancellation);
+		};
+
+		//Action against print button in staycard.
+		$scope.printReservationCancellation = function() {
+			var succesfullCallback = function(data) {
+				$scope.printData = data.data;
+				printPage();
+			};
+			var failureCallbackPrint = function(error) {
+				$scope.ngData.failureMessage = error[0];
+			};
+			$scope.callAPI(RVReservationSummarySrv.fetchResservationCancellationPrintData, {
+				successCallBack: succesfullCallback,
+				failureCallBack: failureCallbackPrint,
+				params: {
+					'reservation_id': $scope.reservationData.reservation_card.reservation_id
+				}
+			});
 		};
 	}
 ]);

@@ -1,0 +1,20 @@
+<div id="modal" class="modal-show" ng-cloak>
+	<form method="post" action="" id="report-date-range" name="report-date-range" class="modal-content form report-dates">
+	    <button id="modal-close" type="button" class="modal-close"><span class="icons icon-close invert" ng-click="closeDialog()" ></button>
+
+	    <strong class="h2 message">Adjust Date Range</strong>
+	    <span class="notice">Max. Date Range is {{ occupancyMaxDate + 1 }} days</span>
+
+	    <div class="entry full-width date-range">
+	        <label for="trim-range-from">From</label>
+			<input name="trim-range-from" id="trim-range-from" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromDate" ng-change="adjustUntilDate()" readonly>
+	        <label for="trim-range-to">To</label>
+			<input name="trim-range-to" id="trim-range-to" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilDate" readonly>
+	    </div>
+
+	    <div class="actions">
+	        <button type="button" class="button blue" ng-click="continueWithPrint()">Print report</button>
+	        <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
+	    </div>
+	</form>
+</div>
