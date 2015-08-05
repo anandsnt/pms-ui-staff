@@ -3,10 +3,11 @@ sntRover.controller('RVReportsMainCtrl', [
 	'$scope',
 	'payload',
 	'RVreportsSrv',
+	'RVreportsSubSrv',
 	'RVReportUtilsFac',
 	'$filter',
 	'$timeout',
-	function($rootScope, $scope, payload, RVreportsSrv, reportUtils, $filter, $timeout) {
+	function($rootScope, $scope, payload, RVreportsSrv, RVreportsSubSrv, reportUtils, $filter, $timeout) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -873,7 +874,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			};
 
 			$scope.clearErrorMessage();
-			$scope.invokeApi(RVreportsSrv.fetchReportDetails, params, sucssCallback, errorCallback);
+			$scope.invokeApi(RVreportsSubSrv.fetchReportDetails, params, sucssCallback, errorCallback);
 		};
 
 		$scope.clearErrorMessage = function () {
@@ -993,7 +994,7 @@ sntRover.controller('RVReportsMainCtrl', [
 		};
 		var ctgAutoCompleteCommon = {
 			source: function(request, response) {
-				RVreportsSrv.fetchComTaGrp(request.term)
+				RVreportsSubSrv.fetchComTaGrp(request.term)
 					.then(function(data) {
 						var list = [];
 						var entry = {}
