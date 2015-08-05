@@ -386,11 +386,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* Params - Index of clicked button starting from 1.
 	* Return - null - Updates totalNoOfsplits.
 	*/
-	$scope.spliteButtonClicked = function(index){
-
-	
-		$scope.splitePaymentDetail["totalNoOfsplits"] = index;	
-
+	$scope.spliteButtonClicked = function(index){	
+		$scope.splitePaymentDetail["totalNoOfsplits"] = index;
 		if(!$scope.splitSelected){
 			$scope.splitSelected = true;
 			startingAmount = angular.copy($scope.renderData.defaultPaymentAmount);
