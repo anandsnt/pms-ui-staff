@@ -22,10 +22,12 @@
   checkinRoomUpgradeOptionsService.fetch(data).then(function(response) {
 
     $scope.isFetching     = false;
-    if(response.status === 'failure')
+    if(response.status === 'failure') {
       $rootScope.netWorkError = true;
-    else
+    }
+    else {
       $scope.slides = response.data;
+    }
   },function(){
     $rootScope.netWorkError = true;
     $scope.isFetching = false;
@@ -40,14 +42,15 @@
     checkinRoomUpgradeService.post(data).then(function(response) {
 
       $scope.isFetching     = false;
-      if(response.status === "failure")
+      if(response.status === "failure") {
         $rootScope.netWorkError  = true;
+      }
       else
       {
         $rootScope.upgradesAvailable = false;
         $rootScope.ShowupgradedLabel = true;
         $rootScope.roomUpgradeheading = "Your new trip details";
-        checkinDetailsService.setResponseData(response.data);         
+        checkinDetailsService.setResponseData(response.data);
         $state.go('checkinReservationDetails');
       }
 

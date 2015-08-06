@@ -5,8 +5,13 @@ admin.directive('appFilereader', function($q){
     return {
         restrict: 'A'
         , require: '?ngModel'
+        ,scope: {            
+            fileNameKey:'@fileNameKey'            
+        }
         , link: function(scope, element, attrs, ngModel){
-            if(!ngModel) return;
+            if(!ngModel) {
+                return;
+            }
 
             ngModel.$render = function(){};
 
@@ -15,12 +20,16 @@ admin.directive('appFilereader', function($q){
 
                 $q.all(slice.call(element.files, 0).map(readFile))
                 .then(function(values){
-                    if(element.multiple) ngModel.$setViewValue(values);
-                    else ngModel.$setViewValue(values.length ? values[0] : null);
+                    if(element.multiple) {
+                        ngModel.$setViewValue(values);
+                    }
+                    else {
+                        ngModel.$setViewValue(values.length ? values[0] : null);
+                    }
                 });
 
                 function readFile(file) {
-                	                	
+
                     var deferred = $q.defer();
 
                     var reader = new FileReader();
@@ -31,8 +40,13 @@ admin.directive('appFilereader', function($q){
                         deferred.reject(e);
                     };
                     reader.readAsDataURL(file);
-                    scope.fileName = file.name;
-								
+
+                    if(typeof scope.fileNameKey != 'undefined'){
+                        scope.$parent[scope.fileNameKey] = file.name;
+                    }else{
+                        scope.$parent.fileName = file.name;
+                    }
+                    scope.$apply();
                     return deferred.promise;
                 }
 

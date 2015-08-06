@@ -1,5 +1,5 @@
 <span id="reservation-card-payment" ng-controller="reservationPaymentController">
-	<form method="post" class="block-item item-payment float" ng-class="getHasButtonClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.payment_method_used === 'CC')" >
+	<form method="post" class="block-item item-payment float" ng-class="getHasButtonClass()" >
 		<h3 class="block-title">
 			{{ 'PAYMENT_METHOD' | translate }}
 			<span ng-if="reservationData.reservation_card.guarentee_type && reservationData.reservation_card.guarentee_type!=''">
@@ -23,13 +23,13 @@
 					CC display option 2 - Swiped, and authenticated:   		class="icons icon-swiped icon-authenticated"
 					CC display option 3 - Swiped, authentication failed: 	class="icons icon-swiped icon-authentication-failed"
 			-->
-		    <span ng-show="reservationData.reservation_card.payment_details.is_swiped && isStandAlone" class="icons icon-swiped" ng-class="{'icon-authenticated':reservationData.reservation_card.payment_details.auth_color_code === 'green', 'icon-authentication-failed' : reservationData.reservation_card.payment_details.auth_color_code === 'red' }"></span> 
+		    <span ng-show="reservationData.reservation_card.payment_details.is_swiped" class="icons icon-swiped" ng-class="{'icon-authenticated':reservationData.reservation_card.payment_details.auth_color_code === 'green', 'icon-authentication-failed' : reservationData.reservation_card.payment_details.auth_color_code === 'red' }"></span> 
 		    
 		    <!--  CC display option 4 - Not swiped, authenticated:  -->
-		    <span ng-show="!reservationData.reservation_card.payment_details.is_swiped && reservationData.reservation_card.payment_details.auth_color_code =='green' && isStandAlone" class="icons icon-authenticated"></span>
+		    <span ng-show="!reservationData.reservation_card.payment_details.is_swiped && reservationData.reservation_card.payment_details.auth_color_code =='green'" class="icons icon-authenticated"></span>
 
 		    <!--  CC display option 5 - Not swiped, authentication failed: -->
-            <span ng-show="!reservationData.reservation_card.payment_details.is_swiped && reservationData.reservation_card.payment_details.auth_color_code =='red' && isStandAlone" class="icons icon-authentication-failed">Credit card authentication failed</span>
+            <span ng-show="!reservationData.reservation_card.payment_details.is_swiped && reservationData.reservation_card.payment_details.auth_color_code =='red'" class="icons icon-authentication-failed">Credit card authentication failed</span>
 		</a>
 
 		<a ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" class="next-view" ng-show="reservationData.reservation_card.payment_method_used !== 'CC' && reservationData.reservation_card.payment_method_used !== '' && reservationData.reservation_card.payment_method_used !== null">
@@ -40,13 +40,13 @@
 		<!-- CICO-17067 : If there are buttons to show, otput this as well: -->
 	    <div class="actions">
 
-	        <button ng-click="showAuthAmountPopUp()" ng-show="displayButton(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.payment_method_used === 'CC' && isStandAlone && !reservationData.reservation_card.is_hourly_reservation" type="button" class="button green with-icon">
+	        <button ng-click="showAuthAmountPopUp()" ng-show="displayButton() && showCCAuthButton()" type="button" class="button green with-icon">
 	            <span class="icons icon-cc"></span>
 	            {{ 'CC_AUTH' | translate }}
 	        </button>
 
-			<button  ng-click="showAddNewPaymentModel()" class="payment_actions" ng-show="displayButton(reservationData.reservation_card.reservation_status)">
-				<a class="add-new-button" > + {{ 'ADD' | translate }}</a>
+			<button  ng-click="showAddNewPaymentModel()" class="add-new-button" ng-show="displayButton()">
+				+ {{ 'ADD' | translate }}
 			</button>
 
 	    </div>

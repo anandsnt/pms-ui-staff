@@ -22,5 +22,5 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		var reservationId = $scope.reservation.reservation_card.reservation_id;
 		$scope.invokeApi(RVSmartBandSrv.cashOutSmartBalance, reservationId, $scope.cashOutSmartBandSuccess);
 	};
-	
+
 }]);

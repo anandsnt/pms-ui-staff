@@ -10,18 +10,18 @@ sntRover.config([
           suffix: '.json?time='+currentTime
         });
         $translateProvider.fallbackLanguage('EN');
-        
+
         // default state
         $urlRouterProvider.otherwise('/');
-		
+
 		/*
 		 * state added to show single url throughout the app
 		 */
 		$stateProvider.state('top', {
             url: '/',
-            controller: 'topController',
+            controller: 'topController'
     	});
-    
+
         $stateProvider.state('rover', {
             abstract: true,
             url: '/staff',
@@ -36,7 +36,7 @@ sntRover.config([
                 },
                 permissions: function (rvPermissionSrv) {
                     return rvPermissionSrv.fetchRoverPermissions();
-                },
+                }
             }
 
         });

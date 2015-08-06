@@ -15,6 +15,14 @@
 			<label>Cancellation Dates - </label>
 			From: <span>{{ appliedFilter.cancelFromDate | date:dateFormat }}</span> To: <span>{{ appliedFilter.cancelToDate | date:dateFormat }}</span>
 		</div>
+		
+		
+		
+		<!-- rate adjustment date range -->
+		<div ng-if="appliedFilter.adjustmentFromDate || appliedFilter.adjustmentToDate">
+			<label>Rate Adjustment Dates - </label>
+			From: <span>{{ appliedFilter.adjustmentFromDate | date:dateFormat }}</span> To: <span>{{ appliedFilter.adjustmentToDate | date:dateFormat }}</span>
+		</div>
 
 
 

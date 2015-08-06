@@ -1,5 +1,5 @@
 admin.controller('adHousekeepingCtrl',['$state', '$scope', '$rootScope', 'ADHotelSettingsSrv', '$state', function($state, $scope, $rootScope, ADHotelSettingsSrv, $state){
-	
+
 	BaseCtrl.call(this, $scope);
 	$scope.isRoverCheckinRFID = false;
 	var fetchSuccess = function(data){
@@ -8,7 +8,7 @@ admin.controller('adHousekeepingCtrl',['$state', '$scope', '$rootScope', 'ADHote
 		$scope.watchInspectedStatus();
 	};
 	$scope.invokeApi(ADHotelSettingsSrv.fetch, {}, fetchSuccess);
-	
+
 
 	/*
     * To handle save button click.
@@ -31,17 +31,17 @@ admin.controller('adHousekeepingCtrl',['$state', '$scope', '$rootScope', 'ADHote
 	       if(!$scope.data.use_inspected){
 	       		$scope.data.checkin_inspected_only = false;
 	       }
-	       
+
 	   	});
 	};
 	/**
     *   Method to go back to previous state.
     */
 	$scope.backClicked = function(){
-		
+
 		$scope.goBack($rootScope, $state);
-	
+
 	};
-	
-   	
+
+
 }]);

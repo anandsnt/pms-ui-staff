@@ -1,22 +1,23 @@
-<tr ng-repeat="item in results | filter:{ is_charge_group: undefined }">
-	<td class="code long-code break">{{ item.section }} </td>
-	<td class="break">{{ item.today }}</td>
-	<td>{{ item.mtd | currency:currencySymbol:2 }}</td>
-	<td>{{ item.last_year_mtd | currency:currencySymbol:2 }}</td>
-	<td class="break" ng-class="{ 'red': item.mtd_variance < 0 }">{{ item.mtd_variance }}%</td>
-	<td>{{ item.ytd | currency:currencySymbol:2 }}</td>
-	<td>{{ item.last_year_ytd | currency:currencySymbol:2 }}</td>
-	<td ng-class="{ 'red': item.ytd_variance < 0 }">{{ item.ytd_variance }}%</td>
-</tr>
-<tr class="total" ng-repeat="item in results | filter:{ is_total_revenue: true }">
+<tr ng-repeat="item in staticEntries">
 	<td class="code long-code break">{{ item.section }}</td>
 	<td class="break">{{ item.today }}</td>
+	<td>{{ item.mtd }}</td>
+	<td>{{ item.last_year_mtd }}</td>
+	<td class="break" ng-class="{ 'red': item.mtd_variance < 0 }">{{ item.mtd_variance }}</td>
+	<td>{{ item.ytd }}</td>
+	<td>{{ item.last_year_ytd }}</td>
+	<td ng-class="{ 'red': item.ytd_variance < 0 }">{{ item.ytd_variance }}</td>
+</tr>
+
+<tr class="total" ng-repeat="item in totalEntry">
+	<td class="code long-code break">{{ item.section }}</td>
+	<td class="break">{{ item.today | currency:currencySymbol:2 }}</td>
 	<td>{{ item.mtd | currency:currencySymbol:2 }}</td>
 	<td>{{ item.last_year_mtd | currency:currencySymbol:2 }}</td>
-	<td class="break" ng-class="{ 'red': item.mtd_variance < 0 }">{{ item.mtd_variance }}%</td>
+	<td class="break" ng-class="{ 'red': item.mtd_variance < 0 }">{{ item.mtd_variance | currency:currencySymbol:2 }}</td>
 	<td>{{ item.ytd | currency:currencySymbol:2 }}</td>
 	<td>{{ item.last_year_ytd | currency:currencySymbol:2 }}</td>
-	<td ng-class="{ 'red': item.ytd_variance < 0 }">{{ item.ytd_variance }}%</td>
+	<td ng-class="{ 'red': item.ytd_variance < 0 }">{{ item.ytd_variance | currency:currencySymbol:2 }}</td>
 </tr>
 
 
@@ -26,18 +27,18 @@
     <td class="break">Today</td>
     <td>MTD</td>
     <td>Last Year MTD</td>
-    <td class="break">% Variance</td>
+    <td class="break">Variance</td>
     <td>YTD</td>
     <td>Last Year YTD</td>
-    <td>% Variance</td>
+    <td>Variance</td>
 </tr>
-<tr ng-repeat="item in results | filter:{ is_charge_group: true }">
+<tr ng-repeat="item in cgEntries">
 	<td class="code long-code break"><em>{{ item.section }}</em></td>
-	<td class="break">{{ item.today }}</td>
+	<td class="break">{{ item.today | currency:currencySymbol:2 }}</td>
 	<td>{{ item.mtd | currency:currencySymbol:2 }}</td>
 	<td>{{ item.last_year_mtd | currency:currencySymbol:2 }}</td>
-	<td class="break" ng-class="{ 'red': item.mtd_variance < 0 }">{{ item.mtd_variance }}%</td>
+	<td class="break" ng-class="{ 'red': item.mtd_variance < 0 }">{{ item.mtd_variance | currency:currencySymbol:2 }}</td>
 	<td>{{ item.ytd | currency:currencySymbol:2 }}</td>
 	<td>{{ item.last_year_ytd | currency:currencySymbol:2 }}</td>
-	<td ng-class="{ 'red': item.ytd_variance < 0 }">{{ item.ytd_variance }}%</td>
+	<td ng-class="{ 'red': item.ytd_variance < 0 }">{{ item.ytd_variance | currency:currencySymbol:2 }}</td>
 </tr>

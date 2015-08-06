@@ -201,7 +201,8 @@
                     .highlight { color: @logoPrimary; }
 
                     img,
-					.icons {
+					.icons,
+					.group-info {
 						position: absolute;
 						top: 10px;
 						left: 10px;
@@ -219,6 +220,17 @@
 							background-position: 4px -3576px;
 							background-color: @tacard; 
 						}
+					}
+
+					.group-info {
+						font-size: 18px;
+						line-height: 30px;
+						text-transform: uppercase;
+						font-weight: 600;
+						text-align: center;
+						color: @grey3;
+						width: 30px;
+						background-color: @grey1;
 					}
                 }
             }
@@ -277,6 +289,7 @@
 				width: 320px;
 
 				.icon-popup-alert,
+				.icon-popup-success,
 				.icon-cc-authorization { margin: 10px auto; }
 
 				.message { 
@@ -464,7 +477,7 @@
 						left: 20px;
 						top: 80px; 
 						.calc-width(100, 20);
-						.calc-height(100, 100);
+						.calc-height(100, 150);
 
 						li {
 							margin: 0 20px 10px 0;
@@ -512,6 +525,16 @@
 							bottom: 0;
 						}
 					}
+
+					.search-pagination {
+						p { .pull-left; }
+						
+						.button { 
+							font-size: 16px;
+							line-height: 40px;
+							.size(40px, 120px); 
+						}
+					}
 				}
 
 				.content-right {
@@ -533,8 +556,8 @@
 						position: absolute;
 						left: 15px;
 						top: 80px; 
+						height: 180px;
 						.calc-width(100, 20);
-						.calc-height(100, 398);
 
 						> .wrapper { padding-bottom: 2px; }
 
@@ -585,7 +608,7 @@
 					#total-charge {
 						position: absolute;
 						left: 15px;
-						top: 275px;
+						bottom: 250px;
 						border-top: 2px solid rgba(0,0,0,.1);
 						padding-top: 10px;
 						font-weight: 600;
@@ -603,7 +626,7 @@
 					#numpad {
 						position: absolute;
 						left: 20px;
-						top: 334px;
+						bottom: 20px;
 						.square(230px);
 						.float;
 
@@ -656,7 +679,6 @@
 				&.extended {
 					position: relative;
 					padding-top: 90px;
-					height: 670px;
 
 					.inner-overlay {
 						position: absolute;
@@ -684,6 +706,10 @@
 							visibility: visible;
 							#fade > .in();
 						}
+					}
+
+					.content-right {
+						.scrollable { height: 90px; }
 					}
 
 					.cards {
@@ -805,7 +831,7 @@
 				        }
 
 				        &.open { 
-				        	height: 670px; 
+				        	height: 580px; 
 
 				        	.cards-wrapper {
 
@@ -817,6 +843,18 @@
 					            }
 					        }
 				        }
+					}
+
+					@media only screen and (min-height: 768px) {
+						height: 670px;
+
+						.content-right {
+							.scrollable { height: 180px; }
+						}
+
+						.cards {
+							&.open { height: 670px; }
+						}
 					}
 				}
 			}
@@ -1184,6 +1222,15 @@
 			&.pay-bill {
 				width: 440px;
 
+				.notice {
+					margin-bottom: 10px;
+
+					li {
+						font-size: 14px;
+						margin-bottom: 0;
+					}
+				}
+
 				.actions {
 					.button {
 						display: inline-block;
@@ -1203,7 +1250,7 @@
 			/* Deposits / Balance ***/
             &.deposit-balance {
                 padding: 0;
-                .size(640px, 920px);
+                .size(580px, 920px);
                 .float;
 
                 .content-left,
@@ -1222,7 +1269,7 @@
                     .expenses { 
                         position: relative;
                         padding-top: 20px;
-                        .calc-height(100, 80);
+                        .calc-height(100, 60);
 
                         li {
                             color: @grey3;
@@ -1287,8 +1334,8 @@
 					.box-shadow(0 -2px 2px rgba(0,0,0,.3));
 
 					.dates {
-						padding: 20px 0;
-						margin-bottom: 20px;
+						padding: 10px 0;
+						margin-bottom: 10px;
 						overflow: hidden;
 
 						strong { 
@@ -1301,9 +1348,9 @@
 
 						.scrollable {
 							position: relative;
-							max-height: 80px;
+							max-height: 65px;
 
-							.wrapper { padding: 0 20px; }
+							.wrapper { padding: 0 10px; }
 
 							.iScrollVerticalScrollbar {
 								top: 0;
@@ -1316,18 +1363,15 @@
 							li {
 								text-align: left;
 								color: rgba(0,0,0,.4);
+								font-size: 14px;
 		                        line-height: 1;
 		                        vertical-align: middle;
 		                        padding-bottom: 5px;
-		                        margin-bottom: 5px;
+		                        margin: 0 10px 5px;
 		                        text-transform: uppercase;
-		                        width: 100%;
 		                        border-bottom: 1px solid rgba(0,0,0,.1);
 
 		                        span {
-		                            font-size: 18px;
-		                            font-weight: 300;
-		                            line-height: 1;
 		                            .show;
 		                            .pull-right;
 		                        }
@@ -1368,17 +1412,43 @@
 						}
 					}
 				}
+
+				@media only screen and (min-height: 768px) { 
+					height: 640px; 
+
+					.dates {
+						padding: 20px 0;
+						margin-bottom: 20px;
+
+						.scrollable {
+							max-height: 80px;
+
+							.wrapper { padding: 0 20px; }
+						}
+					}
+				}
             }
 
 			/* Cancel reservation ***/
 			&.cancel-reservation {
 				width: 360px;
 
-				.actions { 
-					margin-top: 20px;
+				.notice { margin-bottom: 10px; }
 
+				.actions { 
 					.button { 
 						margin-bottom: 10px;
+
+						&.with-icon {
+							padding: 0;
+							height: 50px;
+
+							.icons {
+								margin: 0;
+								top: 15px;
+								left: 10px;
+							}
+						}
 
 						&:last-child { margin-bottom: 0; }
 					}
@@ -1402,6 +1472,30 @@
 
 				&.has-card { width: 460px; }
 				&.select-card { width: 520px; }
+			}
+
+			/* Confirm reservation ***/
+			&.confirm-reservation {
+				width: 360px;
+
+				.notice { 
+					font-size: 14px;
+					margin-bottom: 10px; 
+				}
+
+				
+				.actions {
+					.with-icon {
+						margin-bottom: 10px;
+						padding: 0 20px 0 40px;
+
+						.icons {
+							margin: 0;
+							top: 20px;
+							left: 20px;
+						}
+					}
+				}
 			}
 
 			/* Shared room ***/
@@ -2082,7 +2176,7 @@
 				}
 
 				.holder {
-					padding: 0 20px 20px 20px;
+					padding: 0 20px;
 					.float;
 
 					.entry {
@@ -2174,7 +2268,7 @@
 					position: relative;
 					background-color: rgba(0,0,0,.05);
 					#border-radius > .bottom();
-					.calc-height(100, 282);
+					.calc-height(100, 242);
 					.box-shadow(0 -2px 2px rgba(0,0,0,.15));
 
 					.wrapper { padding: 20px; }
@@ -2210,13 +2304,21 @@
 					}
 				}
 
-				&.searching { height: 600px; }
+				&.searching { height: 540px; }
+
+				@media only screen and (min-height: 768px) { 
+					.holder { padding: 0 20px 20px 20px; }
+
+					.scrollable { .calc-height(100, 282); }
+					
+					&.searching { height: 600px; }
+				}
 			}
 
 			/* Billing information ***/
 			&.billing-information {
 				padding: 0;
-				.size(700px, 800px);
+				.size(540px, 800px);
 				.float;
 
 				.modal-header {
@@ -2824,7 +2926,11 @@
 						.content-left { width: 100%; }
 						.content-right { #fade > .out(); }
 					}
-				}    	
+				} 
+
+				@media only screen and (min-height: 768px) { 
+					height: 700px;
+				}   	
 			}
 
 			/* New card ***/
@@ -2896,7 +3002,7 @@
 			&.modify-rate {
 				padding: 0;
 				width: 540px;
-				max-height: 620px;
+				max-height: 540px;
 
 				.modal-header {
 					padding: 20px;
@@ -2916,7 +3022,7 @@
 
 				.scrollable {
 					position: relative;
-					max-height: 420px;
+					max-height: 340px;
 				}
 
 				.rate-grid {
@@ -2977,6 +3083,12 @@
 						width: auto;
 					}
 				} 
+
+				@media only screen and (min-height: 768px) { 
+					max-height: 620px;
+
+					.scrollable { max-height: 420px; }
+				}
 			}
 
 			/* Deposit required ***/
@@ -3169,7 +3281,7 @@
 				.rooms-grid {
 					position: relative;
 					margin-top: 40px;
-					max-height: 480px;
+					max-height: 380px;
 
 					.wrapper { padding: 0 20px 20px 20px; }
 
@@ -3303,6 +3415,12 @@
 						display: inline-block;
 						width: auto;
 						padding: 0 20px;
+					}
+				}
+
+				@media only screen and (min-height: 768px) { 
+					.rooms-grid {
+						max-height: 480px;
 					}
 				}
 			}
@@ -3771,11 +3889,82 @@
 				}
 			}
 
+			/* Group checkin ***/
+			&.group-checkin {
+				width: 320px;
+
+				.icon-popup-alert,
+				.icon-popup-success { margin: 10px auto; }
+
+				.message {
+					&.green { color: @green; }
+					&.red { color: @red; }
+				}
+
+				.text {
+					strong {
+						font-weight: 600;
+						color: @textColor;
+					}
+				}
+
+				.notice { margin-bottom: 10px; }
+
+				.feedback {
+					display: table;
+					margin-bottom: 10px;
+					.square(100%);
+
+					.succeeded {
+						display: table-cell;
+						vertical-align: middle;
+						text-align: center;
+						padding: 20px;
+						background-color: @green;
+						.box-shadow(inset -2px 0 3px rgba(0,0,0,.1));
+						.size(100%, 40%);
+
+						.message { color: @white; }
+					}
+
+					.failed {
+						display: table-cell;
+						padding: 20px;
+						.size(100%, 60%);
+
+						.scrollable {
+							position: relative;
+							padding: 0;
+							max-height: 140px;
+						}
+
+						.wrapper { padding: 10px; }
+
+						.iScrollIndicator { background: rgba(0,0,0,.1); }
+
+						li {
+							font-size: 14px;
+							text-align: left;
+							border-bottom: 1px solid rgba(0,0,0,.1);
+
+							span { .pull-right; }
+
+							&:last-child { border-bottom: 0; }
+						}
+					}
+				}	
+
+				&.has-failures { 
+					width: 540px; 
+					padding: 0;
+				}
+			}
+
 			/* StayCard Notes / Actions ***/
 			&.staycard-notes,
 			&.staycard-actions {
 				padding: 0;
-				max-height: 620px;
+				max-height: 540px;
 
 				.modal-header {
 					padding: 20px;
@@ -3810,6 +3999,10 @@
 					background-color: rgba(0,0,0,.05);
 					.box-shadow(-2px 0 2px rgba(0,0,0,.3));
 				}
+
+				@media only screen and (min-height: 768px) { 
+					max-height: 620px;
+				}
 			}
 
 			&.staycard-notes {
@@ -3817,7 +4010,7 @@
 
 				.scrollable {
 					position: relative;
-					max-height: 370px;
+					max-height: 290px;
 
 					.notes { padding: 20px; }
 				}
@@ -3840,6 +4033,10 @@
 						margin-left: 20px;
 						width: 140px;
 					}
+				}
+
+				@media only screen and (min-height: 768px) { 
+					.scrollable { max-height: 370px; }
 				}
 			}
 
@@ -3866,7 +4063,7 @@
 
 				.actions-content {
 					position: relative;
-					.size(540px, 920px);
+					.size(460px, 920px);
 
 					.content-left {
 						.scrollable { height: 100%;}
@@ -3888,7 +4085,8 @@
 
 				    	.add-content {
 
-				    		label { margin-bottom: 0; }
+				    		label,
+				    		.entry { margin-bottom: 0; }
 
 							.entry:not(.full-width) {
 								.calc-width(50, 10);
@@ -3938,11 +4136,12 @@
 							}
 
 				    		.actions {
+				    			text-align: center;
 				    			background: transparent;
 				    			height: auto;
 				    			.box-shadow(none);
 
-				    			.button { padding: 0 60px; }
+				    			.button { display: inline-block; }
 				    		}
 				    	}
 				    }
@@ -3962,7 +4161,25 @@
 						clear: both;
 						width: auto;
 						.show;
-						
+					}
+				}
+
+				@media only screen and (min-height: 768px) { 
+					.actions-content { 
+						height: 540px; 
+
+						.content-right {
+							.add-content {
+								.entry { margin-bottom: 10px; }
+
+								.actions {
+									.button {
+										padding: 0 60px;
+										.show;
+									}
+								}
+							}
+						}
 					}
 				}
 			}
@@ -4070,6 +4287,64 @@
 						margin: 0 auto;
 						width: auto;
 						.show;
+					}
+				}
+			}
+
+			/* Room status update ***/
+			&.update-room-status {
+				position: relative;
+				.square(100%);
+
+				#modal-close {
+					top: 0;
+					left: 0;
+				}
+
+				.h2 { margin-bottom: 10px; }
+
+				.entry { 
+					margin-bottom: 0;
+					.float;
+
+					.radio {
+						margin-bottom: 10px;
+						.calc-width(50, 5);
+						.pull-left;
+
+						&.checked { font-weight: 600; }
+
+						&:nth-child(odd) { margin-right: 10px; }
+					} 
+				}
+
+				.actions {
+					position: absolute;
+					bottom: 0;
+					left: 0;
+					width: 100%;
+					padding: 20px;
+					border-top: 1px solid rgba(0,0,0,.1);
+
+					.button {
+						font-size: 18px;
+						line-height: 50px;
+					}
+				}
+
+				@media only screen and (min-width: 600px) {
+					position: static;
+					width: 320px;
+					height: auto;
+
+					#modal-close {
+						top: -20px;
+						left: -20px;
+					}
+
+					.actions {
+						position: static;
+						padding: 10px 0 0 0;
 					}
 				}
 			}

@@ -35,7 +35,10 @@ sntRover.directive('autoComplete', ['highlightFilter',
                                 defIcon = 'icon-group-large';
                                 defIconText = 'G';
                                 break;
-
+                            case 'PROMO':
+                                defIcon = 'icon-group-large';
+                                defIconText = 'P';
+                                break;
                             default:
                                 break;
                         };
@@ -46,9 +49,9 @@ sntRover.directive('autoComplete', ['highlightFilter',
                             $image = '<span class="icons ' + defIcon + '">' + defIconText + '</span>';
                         }
 
-                        if (item.type)
+                        if (item.type) {
                             $($image).prependTo($result);
-
+                        }
                         return $('<li></li>').append($result).appendTo(ul);
                     };
             }

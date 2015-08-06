@@ -13,9 +13,9 @@ sntRover.service('RVHotelDetailsSrv',['$q', 'rvBaseWebSrvV2', function( $q, RVBa
 				deferred.reject(errorMessage);
 			});
 			return deferred.promise;
-		};	
+		};
 
-		
+
 		that.fetchHotelBusinessDate = function(){
 			var url = '/api/business_dates/active';
 			RVBaseWebSrvV2.getJSON(url).then(function(data) {
@@ -25,9 +25,9 @@ sntRover.service('RVHotelDetailsSrv',['$q', 'rvBaseWebSrvV2', function( $q, RVBa
 				deferred.reject(errorMessage);
 			});
 			return deferred.promise;
-		};		
-		
-		
+		};
+
+
 		var url = '/api/hotel_settings.json';
 		RVBaseWebSrvV2.getJSON(url).then(function(data) {
 			that.hotelDetails = data;
@@ -42,14 +42,14 @@ sntRover.service('RVHotelDetailsSrv',['$q', 'rvBaseWebSrvV2', function( $q, RVBa
 
 	this.redirectToHotel = function(hotel_id){
 		var deferred = $q.defer();
-		var url = '/admin/hotel_admin/update_current_hotel';	
+		var url = '/admin/hotel_admin/update_current_hotel';
 		var data = {"hotel_id": hotel_id};
 		RVBaseWebSrvV2.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
 		},function(errorMessage){
 			deferred.reject(errorMessage);
 		});
-		return deferred.promise;		
+		return deferred.promise;
 	};
 
 }]);

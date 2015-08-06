@@ -38,13 +38,13 @@ var setUpData = function(){
     $scope.checkinData.is_notify_on_room_not_assigned_flag = ($scope.checkinData.is_notify_on_room_not_assigned === 'true') ? true:false;
     $scope.checkinData.is_notify_on_room_ready_flag = ($scope.checkinData.is_notify_on_room_ready === 'true') ? true:false;
     $scope.checkinData.require_cc_for_checkin_email_flag = ($scope.checkinData.require_cc_for_checkin_email=== 'true') ? true:false;
-    
+
     $scope.checkinData.is_sent_to_queue = ($scope.checkinData.is_sent_to_queue === 'true')? "yes":"no";
     $scope.checkinData.is_precheckin_only = ($scope.checkinData.is_precheckin_only === 'true')? true:false;
 
     angular.forEach($scope.rate_codes,function(rate, index) {
       angular.forEach($scope.checkinData.excluded_rate_codes,function(excludedrate, index) {
-        if(rate.id == excludedrate){
+        if(rate.id === excludedrate){
           $scope.excludedRateCodes.push(rate);
           rate.ticked = true;// for the multi-select implementation
         }
@@ -53,7 +53,7 @@ var setUpData = function(){
 
     angular.forEach($scope.block_codes,function(block, index) {
       angular.forEach($scope.checkinData.excluded_block_codes,function(excludedblock, index) {
-        if(block.id == excludedblock){
+        if(block.id === excludedblock){
           $scope.excludedBlockCodes.push(block);
           block.ticked = true;// for the multi-select implementation
         }
@@ -61,7 +61,7 @@ var setUpData = function(){
      });
     angular.forEach($scope.roomTypes,function(roomType, index) {
             angular.forEach($scope.checkinData.excluded_room_types,function(excludedRoomType, index) {
-                if(roomType.id == excludedRoomType){
+                if(roomType.id === excludedRoomType){
                     $scope.excludedRoomTypes.push(roomType);
                     roomType.ticked = true;// for the multi-select implementation
                 }
@@ -79,7 +79,7 @@ var setUpData = function(){
     $scope.$watch('checkinData.is_sent_to_queue',function(){
       $scope.hidePriorMinutes = ($scope.checkinData.is_sent_to_queue === 'yes') ? false : true;
     });
-    //to be confirmed 
+    //to be confirmed
     $scope.checkinData.checkin_alert_primetime = (!$scope.checkinData.checkin_alert_primetime)? "AM":$scope.checkinData.checkin_alert_primetime;
 };
 
@@ -102,7 +102,7 @@ $scope.fetchCheckinDetails = function(){
     $scope.checkinData.auto_checkin_to_hour = $scope.checkinData.start_auto_checkin_to.split(":")[0];
     $scope.checkinData.auto_checkin_to_minute = $scope.checkinData.start_auto_checkin_to.split(":")[1];
     setUpData();
-   
+
 };
 $scope.invokeApi(adCheckinSrv.fetch, {},fetchCheckinDetailsSuccessCallback,fetchCheckinDetailsFailureCallback);
 };
@@ -111,7 +111,7 @@ $scope.fetchCheckinDetails();
 
 /*
 * To save checkin details
-* @param {data} 
+* @param {data}
 *
 */
 $scope.saveCheckin = function(){
@@ -166,14 +166,14 @@ $scope.saveCheckin = function(){
     'pre_checkin_email_bottom_body': $scope.checkinData.pre_checkin_email_bottom_body,
     'prior_to_arrival':$scope.checkinData.prior_to_arrival,
     'max_webcheckin':$scope.checkinData.max_webcheckin,
-    
+
     'is_sent_none_cc_reservations_to_front_desk_only': $scope.checkinData.is_sent_none_cc_reservations_to_front_desk_only? 'true':'false',
     'checkin_complete_confirmation_screen_text': $scope.checkinData.checkin_complete_confirmation_screen_text,
     'start_auto_checkin_from' : startAutoCheckinFrom,
     'start_auto_checkin_from_prime_time': $scope.checkinData.start_auto_checkin_from_prime_time,
     'start_auto_checkin_to' : startAutoCheckinTo,
     'start_auto_checkin_to_prime_time': $scope.checkinData.start_auto_checkin_to_prime_time,
-    'excluded_room_types':excluded_room_types    
+    'excluded_room_types':excluded_room_types
 
   };
 
@@ -192,7 +192,7 @@ $scope.saveCheckin = function(){
 $scope.clickExcludeRateCode = function(){
   $scope.excludedRateCodes = [];
   angular.forEach($scope.rate_codes, function( value, key ) {
-    if ( (value.ticked === true) && ( $scope.excludedRateCodes.indexOf(value) == -1)) {
+    if ( (value.ticked === true) && ( $scope.excludedRateCodes.indexOf(value) === -1)) {
         $scope.excludedRateCodes.push(value);
     }
   });
@@ -203,7 +203,7 @@ $scope.clickExcludeBlockCode = function(){
 
   $scope.excludedBlockCodes = [];
   angular.forEach($scope.block_codes, function( value, key ) {
-    if ( (value.ticked === true) && ( $scope.excludedBlockCodes.indexOf(value) == -1)) {
+    if ( (value.ticked === true) && ( $scope.excludedBlockCodes.indexOf(value) === -1)) {
         $scope.excludedBlockCodes.push(value);
     }
   });
@@ -213,13 +213,13 @@ $scope.clickExcludeBlockCode = function(){
 $scope.deleteBlockCode = function(id){
   //remove from final array
   angular.forEach($scope.excludedBlockCodes,function(item, index) {
-    if(item.id == id){
+    if(item.id === id){
       $scope.excludedBlockCodes.splice(index,1);
     }
   });
   //untick from list
    angular.forEach($scope.block_codes,function(item, index) {
-    if(item.id == id){
+    if(item.id === id){
       item.ticked = false;
     }
   });
@@ -229,13 +229,13 @@ $scope.deleteBlockCode = function(id){
 $scope.deleteRateCode = function(id){
   //remove from final array
   angular.forEach($scope.excludedRateCodes,function(item, index) {
-    if(item.id == id){
-      $scope.excludedRateCodes.splice(index,1);      
+    if(item.id === id){
+      $scope.excludedRateCodes.splice(index,1);
     }
   });
   //untick from list
   angular.forEach($scope.rate_codes,function(item, index) {
-    if(item.id == id){
+    if(item.id === id){
       item.ticked = false;
     }
   });
@@ -245,7 +245,7 @@ $scope.deleteRateCode = function(id){
     $scope.clickExcludeRoomType = function(){
       $scope.excludedRoomTypes = [];
       angular.forEach($scope.roomTypes, function( value, key ) {
-        if ( (value.ticked === true) && ( $scope.excludedRoomTypes.indexOf(value) == -1)) {
+        if ( (value.ticked === true) && ( $scope.excludedRoomTypes.indexOf(value) === -1)) {
             $scope.excludedRoomTypes.push(value);
         }
       });
@@ -255,13 +255,13 @@ $scope.deleteRateCode = function(id){
     $scope.deleteRoomType = function(id){
       //remove from final array
       angular.forEach($scope.excludedRoomTypes,function(item, index) {
-        if(item.id == id){
+        if(item.id === id){
           $scope.excludedRoomTypes.splice(index,1);
         }
       });
       //untick from list
        angular.forEach($scope.roomTypes,function(item, index) {
-        if(item.id == id){
+        if(item.id === id){
           item.ticked = false;
         }
       });

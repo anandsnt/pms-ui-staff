@@ -31,7 +31,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			title: ('Work Management'),
 			name: 'rover.workManagement.start'
 		}
-		if ($stateParams.from == 'multiple') {
+		if ($stateParams.from === 'multiple') {
 			prevState = {
 				title: ('Manage Worksheets'),
 				name: 'rover.workManagement.multiSheet'
@@ -77,7 +77,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				workSheet: {
 					user_id: wmWorkSheet.maid_id === null ? "" : wmWorkSheet.maid_id,
 					work_type_id: wmWorkSheet.work_type_id === null ? "" : wmWorkSheet.work_type_id,
-					shift_id: !wmWorkSheet.shift_id ? "" : wmWorkSheet.shift_id,
+					shift_id: !wmWorkSheet.shift_id ? "" : wmWorkSheet.shift_id
 				},
 				unassigned: [],
 				unassignedFiltered: [],
@@ -140,7 +140,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				$scope.setHeading("Work Sheet No." + data.work_sheets[0].work_sheet_id + ", " + $filter('date')($stateParams.date, $rootScope.dateFormat));
 
 				$scope.singleState.unassigned = data.unassigned;
-				
+
 				// var assignedRooms = [],
 				// 	worksheets = _.where(data.work_sheets, {
 				// 		work_sheet_id: parseInt($stateParams.id)
@@ -191,9 +191,9 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				completed: 0
 			}
 			_.each($scope.singleState.assigned, function(room) {
-				if ($scope.departureClass[room.reservation_status] == "check-out") {
+				if ($scope.departureClass[room.reservation_status] === "check-out") {
 					$scope.singleState.summary.departures++;
-				} else if ($scope.departureClass[room.reservation_status] == "inhouse") {
+				} else if ($scope.departureClass[room.reservation_status] === "inhouse") {
 					$scope.singleState.summary.stayovers++;
 				}
 				if (room.hk_complete) {
@@ -209,9 +209,9 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 					":" +
 					((sumMinutes % 60).toString().length < 2 ? "0" + (sumMinutes % 60).toString() : (sumMinutes % 60).toString());
 			});
-		};		
+		};
 
-		
+
 
 		$scope.setScroller("workSheetUnassigned");
 		$scope.setScroller("workSheetAssigned");
@@ -251,21 +251,21 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 		};
 
 		$scope.printAfterSave = function() {
-			if ($scope.$parent.myScroll['workSheetAssigned'] && $scope.$parent.myScroll['workSheetAssigned'].scrollTo)
+			if ($scope.$parent.myScroll['workSheetAssigned'] && $scope.$parent.myScroll['workSheetAssigned'].scrollTo) {
 				$scope.$parent.myScroll['workSheetAssigned'].scrollTo(0, 0);
-			
+			}
 
 
 			// add the orientation
 			addPrintOrientation();
 
 			/*
-			*	=====[ READY TO PRINT ]=====
+			*	======[ READY TO PRINT ]======
 			*/
 			// this will show the popup with full bill
 			$timeout(function() {
 				/*
-				*	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+				*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
 				*/
 
 				$window.print();
@@ -275,7 +275,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			}, 100);
 
 			/*
-			*	=====[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]=====
+			*	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
 			*/
 
 			// remove the orientation after similar delay
@@ -291,7 +291,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 					// make it false so that the ctrl wont save it back again
 					// when going back to the makangement dsahboard
 					$_shouldSaveFirst = false;
-					
+
 					$timeout( function() {
 						$state.go('rover.workManagement.start');
 					}, 20 );
@@ -341,7 +341,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				},
 				onSaveSuccess = function(data) {
 					saveCount--;
-					if ( saveCount == 0 ) {
+					if ( saveCount === 0 ) {
 						$scope.$emit("hideLoader");
 						$scope.clearErrorMessage();
 
@@ -352,7 +352,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 					$scope.errorMessage = errorMessage;
 
 					saveCount--;
-					if ( saveCount == 0 ) {
+					if ( saveCount === 0 ) {
 						$scope.$emit("hideLoader");
 						afterAPIcall();
 					};
@@ -367,7 +367,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				return false;
 			}
 
-			// lets create a set of worktypes that will hold 
+			// lets create a set of worktypes that will hold
 			// rooms under each worktype id name - e.g:
 			// {
 			//		'4'  : [ array of rooms ],
@@ -426,17 +426,17 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				_.each(worktypesSet, function(set, key) {
 				$scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, {
 							"date"        : $stateParams.date,
-							"task_id"     : parseInt(key),							
-							"assignments" : [{								
+							"task_id"     : parseInt(key),
+							"assignments" : [{
 								"assignee_id"   : userId,
-								"room_ids"      : [],								
+								"room_ids"      : []
 							}]
 						}, onSaveSuccess, onSaveFailure);
 				});
 				afterAPIcall();
 			};
 		};
-			
+
 
 
 
@@ -526,7 +526,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 
 		$scope.idToVal = function(id, key, source) {
 			var match = _.find(source, function(item) {
-				return item.id == id;
+				return item.id === id;
 			});
 
 			return !!match && match.hasOwnProperty(key) ? match[key] : '';

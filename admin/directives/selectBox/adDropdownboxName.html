@@ -6,7 +6,7 @@
   
   <div class='select'>
 
-    <select id="{{id}}" name="{{name}}" class="{{selboxClass}}" ng-style="{{sel-style}}" valfor="value-{{valfor}}">
+    <select id="{{id}}" name="{{name}}" class="{{selboxClass}}" ng-style="{{sel-style}}" ng-model="ngModel">
       
         <option value="" ng-hide="labelInDropDown.length===0 || !labelInDropDown">
         {{labelInDropDown}}

@@ -43,11 +43,11 @@
                 <span class="icons time late-check-out"></span>{{reservationData.reservation_card.late_checkout_time}}
             </a>
 
-            <a class="button has-arrow toggle" ng-class="{'active': shouldShowGuestDetails}" ng-click="toggleGuests()">
+            <a class="button toggle" ng-class="{'active': shouldShowGuestDetails, 'has-arrow' : !(reservationData.group_id || reservationData.reservation_card.group_id)}" ng-click="toggleGuests()">
                 <span class="label">Guests</span> {{ reservationParentData.rooms[0].numInfants + reservationParentData.rooms[0].numChildren + reservationParentData.rooms[0].numAdults }}
             </a>
             <!-- nights button is clickable only for the below status -->
-            <a class="button has-arrow next-view" ng-show="shouldShowChangeStayDatesButton()" ng-click="extendNights()">
+            <a class="button next-view" ng-show="shouldShowChangeStayDatesButton()" ng-click="extendNights()" ng-class="{'has-arrow' : !(reservationData.group_id || reservationData.reservation_card.group_id)}">
                 <span class="label">
                     Nights
                 </span> {{reservationData.reservation_card.total_nights}}

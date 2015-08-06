@@ -1,24 +1,24 @@
 admin.controller('ADFloorsListCtrl',
-    [   '$scope', 
-        '$state', 
-        'ADFloorSetupSrv', 
+    [   '$scope',
+        '$state',
+        'ADFloorSetupSrv',
         'ngTableParams',
-        '$filter', 
-        '$anchorScroll', 
-        '$timeout',  
-        '$location', 
+        '$filter',
+        '$anchorScroll',
+        '$timeout',
+        '$location',
         '$state',
     function(
-        $scope, 
-        $state, 
-        ADFloorSetupSrv, 
-        ngTableParams, 
-        $filter, 
-        $anchorScroll, 
-        $timeout, 
+        $scope,
+        $state,
+        ADFloorSetupSrv,
+        ngTableParams,
+        $filter,
+        $anchorScroll,
+        $timeout,
         $location,
         $state){
-	
+
 	BaseCtrl.call(this, $scope);
 
 	/**
@@ -27,11 +27,11 @@ admin.controller('ADFloorsListCtrl',
 	var initializeMe = function() {
         $scope.errorMessage = '';
 		//To list room types
-		$scope.listFloorTypes(); 
+		$scope.listFloorTypes();
 
         //show Table
         $scope.showTableDetails = false;
-	};	
+	};
 
     /**
     * go to add screen
@@ -45,7 +45,7 @@ admin.controller('ADFloorsListCtrl',
     */
     $scope.gotoEditFloor = function(id) {
         $state.go ('admin.editFloor', {id: id});
-    };    
+    };
 
     /**
     * initialize table in view
@@ -54,7 +54,7 @@ admin.controller('ADFloorsListCtrl',
         $scope.tableParams = new ngTableParams({
            page: 1,            // show first page
             count:  $scope.data.floors.length,    // count per page - Need to change when on pagination implemntation
-            sorting: { floor_number: 'asc'     // initial sorting 
+            sorting: { floor_number: 'asc'     // initial sorting
             }
         }, {
             total: $scope.data.floors.length,
@@ -64,9 +64,9 @@ admin.controller('ADFloorsListCtrl',
                 var orderedData = params.sorting() ?
                                     $filter('orderBy')($scope.data.floors, params.orderBy()) :
                                     $scope.data.floors;
-                                  
+
                 $scope.orderedData =  $scope.data.floors;
-                                     
+
                 $defer.resolve(orderedData);
                 $scope.showTableDetails = true;
             }
@@ -78,21 +78,21 @@ admin.controller('ADFloorsListCtrl',
     */
 	$scope.listFloorTypes = function(){
 		var successCallbackFetch = function(data){
-			$scope.data = data;		
+			$scope.data = data;
             $scope.setUptable ();
 		};
 
         var options = {
-            successCallBack:    successCallbackFetch,             
+            successCallBack:    successCallbackFetch
         }
-        $scope.callAPI(ADFloorSetupSrv.fetch, options);  
+        $scope.callAPI(ADFloorSetupSrv.fetch, options);
 	};
 
     /*
     * To delete a floor
     */
     $scope.deleteFloor = function(index){
-        
+
         var unwantedKeys = [];
         var data = {};
         data.id = $scope.orderedData[index].id;
@@ -104,8 +104,8 @@ admin.controller('ADFloorsListCtrl',
         };
         $scope.invokeApi(ADFloorSetupSrv.deleteFloor, data , successCallbackSave);
     };
-   
-	initializeMe();	
+
+	initializeMe();
 
 }]);
 
