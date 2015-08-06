@@ -439,6 +439,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		+$scope.renderData.defaultPaymentAmount+" PAID SUCCESSFULLY !"+"<br/>";
 		//Clears older failure messages.
 		$scope.clearPaymentErrorMessage(); 
+		$scope.showSuccesMessage = (!$scope.splitBillEnabled)? true: false;
+
 	}
 	/*
 	* updates DefaultPaymentAmount
@@ -480,7 +482,13 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	*/
 	var failedPayment = function(data){
 		$scope.$emit("hideLoader");
-		$scope.paymentErrorMessage = "SPLIT # "+($scope.splitePaymentDetail["completedSplitPayments"]+1)+" PAYMENT OF "+$scope.renderData.defaultPaymentAmount+" FAILED !"+"<br/>";
+		if($scope.splitBillEnabled){
+			$scope.paymentErrorMessage = "SPLIT # "+($scope.splitePaymentDetail["completedSplitPayments"]+1)+" PAYMENT OF "+$scope.renderData.defaultPaymentAmount+" FAILED !"+"<br/>";
+		}
+		else{
+			$scope.errorMessage = data;
+		};
+		
 	};
 	/*
 	* Clears paymentErrorMessage
