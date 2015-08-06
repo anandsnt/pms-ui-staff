@@ -73,7 +73,7 @@ sntRover.service('RVreportsSrv', [
 
 				// since payload will have two additional keys
 				// 'reportsResponse' and 'codeSettings'
-				if ( payloads - filters == 2 ) {
+				if ( payloads - filters === 2 ) {
 
 					// save it to $vault
 					service.payloadCache = angular.copy( payload );
@@ -89,7 +89,7 @@ sntRover.service('RVreportsSrv', [
 			};
 
 			var failed = function(key, emptyType, data) {
-				payload[key] = ('typeArray' == emptyType) ? [] : {};
+				payload[key] = ('typeArray' === emptyType) ? [] : {};
 				shallWeResolve();
 			};
 
@@ -180,27 +180,27 @@ sntRover.service('RVreportsSrv', [
 
 				_.each(eachResult.filters, function(eachFilter) {
 
-					if ( ! hasFilter.hasOwnProperty('INCLUDE_GUARANTEE_TYPE') && 'INCLUDE_GUARANTEE_TYPE' == eachFilter.value ) {
+					if ( ! hasFilter.hasOwnProperty('INCLUDE_GUARANTEE_TYPE') && 'INCLUDE_GUARANTEE_TYPE' === eachFilter.value ) {
 						hasFilter['INCLUDE_GUARANTEE_TYPE'] = true;
 					};
 
-					if ( ! hasFilter.hasOwnProperty('INCLUDE_CHARGE_GROUP') && 'INCLUDE_CHARGE_GROUP' == eachFilter.value ) {
+					if ( ! hasFilter.hasOwnProperty('INCLUDE_CHARGE_GROUP') && 'INCLUDE_CHARGE_GROUP' === eachFilter.value ) {
 						hasFilter['INCLUDE_CHARGE_GROUP'] = true;
 					};
 
-					if ( ! hasFilter.hasOwnProperty('INCLUDE_CHARGE_CODE') && 'INCLUDE_CHARGE_CODE' == eachFilter.value ) {
+					if ( ! hasFilter.hasOwnProperty('INCLUDE_CHARGE_CODE') && 'INCLUDE_CHARGE_CODE' === eachFilter.value ) {
 						hasFilter['INCLUDE_CHARGE_CODE'] = true;
 					};
 
-					if ( ! hasFilter.hasOwnProperty('CHOOSE_MARKET') && 'CHOOSE_MARKET' == eachFilter.value ) {
+					if ( ! hasFilter.hasOwnProperty('CHOOSE_MARKET') && 'CHOOSE_MARKET' === eachFilter.value ) {
 						hasFilter['CHOOSE_MARKET'] = true;
 					};
 
-					if ( ! hasFilter.hasOwnProperty('CHOOSE_SOURCE') && 'CHOOSE_SOURCE' == eachFilter.value ) {
+					if ( ! hasFilter.hasOwnProperty('CHOOSE_SOURCE') && 'CHOOSE_SOURCE' === eachFilter.value ) {
 						hasFilter['CHOOSE_SOURCE'] = true;
 					};
 
-					if ( ! hasFilter.hasOwnProperty('CHOOSE_BOOKING_ORIGIN') && 'CHOOSE_BOOKING_ORIGIN' == eachFilter.value ) {
+					if ( ! hasFilter.hasOwnProperty('CHOOSE_BOOKING_ORIGIN') && 'CHOOSE_BOOKING_ORIGIN' === eachFilter.value ) {
 						hasFilter['CHOOSE_BOOKING_ORIGIN'] = true;
 					};
 				});
