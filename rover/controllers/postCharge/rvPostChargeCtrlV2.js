@@ -616,7 +616,7 @@ sntRover.controller('RVPostChargeControllerV2',
 
 		        var isDisabled = false;
 
-		        if($scope.fetchedData.pageNo == 1){
+		        if($scope.fetchedData.pageNo === 1){
 		            isDisabled = true;
 		        }
 		        return isDisabled;
