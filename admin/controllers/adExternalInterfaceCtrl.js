@@ -205,7 +205,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
         $scope.testSetup = function () {
             var testSetupSuccessCallback = function (data) {
                 //double check to see if it Actually failed..
-                if (data.status == 'failure') {
+                if (data.status === 'failure') {
                     var msg = '';
                     if (typeof data[0] === typeof 'str') {
                         if (data[0].length > 1) {
@@ -237,7 +237,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
 
             var checkCallback = function (response) {
                 $scope.$emit('hideLoader');
-                if (response.status == 'failure') {
+                if (response.status === 'failure') {
                     testSetupFailureCallback(response);
                 } else {
                     testSetupSuccessCallback(response);
@@ -278,11 +278,11 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
         };
         $scope.formatDate = function(now) {
             var year = "" + now.getFullYear();
-            var month = "" + (now.getMonth() + 1); if (month.length == 1) { month = "0" + month; }
-            var day = "" + now.getDate(); if (day.length == 1) { day = "0" + day; }
-            var hour = "" + now.getHours(); if (hour.length == 1) { hour = "0" + hour; }
-            var minute = "" + now.getMinutes(); if (minute.length == 1) { minute = "0" + minute; }
-            var second = "" + now.getSeconds(); if (second.length == 1) { second = "0" + second; }
+            var month = "" + (now.getMonth() + 1); if (month.length === 1) { month = "0" + month; }
+            var day = "" + now.getDate(); if (day.length === 1) { day = "0" + day; }
+            var hour = "" + now.getHours(); if (hour.length === 1) { hour = "0" + hour; }
+            var minute = "" + now.getMinutes(); if (minute.length === 1) { minute = "0" + minute; }
+            var second = "" + now.getSeconds(); if (second.length === 1) { second = "0" + second; }
             return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
           };
           //////////////////////
