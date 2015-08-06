@@ -24,7 +24,7 @@ sntRover.factory('RVReportParserFac', [
             // a very special parser for daily transaction report
             // in future we may make this check generic, if more
             // reports API structure follows the same pattern
-            else if ( reportName == reportUtils.getName('RATE_ADJUSTMENTS_REPORT') ) {
+            else if ( reportName === reportUtils.getName('RATE_ADJUSTMENTS_REPORT') ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseRateAdjustments( reportName, apiResponse, options );
 
                 /**
@@ -33,7 +33,7 @@ sntRover.factory('RVReportParserFac', [
                  * Keeping it here for any future needs. Wont execute below this
                  * since we already returned! :)
                  */
-                if ( options['groupedByKey'] == 'adjusted_user_id' ) {
+                if ( options['groupedByKey'] === 'adjusted_user_id' ) {
                     return _.isEmpty(apiResponse) ? apiResponse : $_preParseGroupedRateAdjustments( reportName, apiResponse, options );
                 } else {
                     return _.isEmpty(apiResponse) ? apiResponse : $_parseRateAdjustments( reportName, apiResponse, options );
@@ -402,7 +402,7 @@ sntRover.factory('RVReportParserFac', [
 
                         // include the first stayDates details in the
                         // same row as that of the main reservation details  
-                        if ( k == 0 ) {
+                        if ( k === 0 ) {
                             angular.extend(makeCopy, {
                                 'isReport'        : true,
                                 'rowspan'         : l + 1,
@@ -483,7 +483,7 @@ sntRover.factory('RVReportParserFac', [
 
                         // include the first depositData details in the
                         // same row as that of the main reservation details  
-                        if ( k == 0 ) {
+                        if ( k === 0 ) {
                             angular.extend(makeCopy, {
                                 'isReport'               : true,
                                 'rowspan'                : l + 1,
@@ -598,7 +598,7 @@ sntRover.factory('RVReportParserFac', [
                     // create a very unique 'uid', we'll remove 'userId' from it later
                     uid = userId + '__' + userNa;
 
-                    if ( usersInThisRes[uid] == undefined ) {
+                    if ( usersInThisRes[uid] === undefined ) {
                         usersInThisRes[uid] = angular.copy( withOutStay );
                     };
 
@@ -614,7 +614,7 @@ sntRover.factory('RVReportParserFac', [
                         continue;
                     };
 
-                    if ( tempObj[keyId] == undefined ) {
+                    if ( tempObj[keyId] === undefined ) {
                         tempObj[keyId] = [];
                     };
 
