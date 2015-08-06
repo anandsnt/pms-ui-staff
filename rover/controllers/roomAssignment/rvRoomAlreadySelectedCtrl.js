@@ -14,5 +14,8 @@ sntRover.controller('rvRoomAlreadySelectedCtrl',['$scope','$state',
 		$scope.closeDialog();
 	};
 
+	if ('errorMessage' in $scope.ngDialogData) {
+		$scope.errorMessagesToShow = $scope.ngDialogData.errorMessage;
+	}
 
 }]);

@@ -81,9 +81,9 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 	var openPopupForErrorMessageShowing = function(errorMessage) {
 		ngDialog.open(
 		{
-			template 	: '/assets/partials/roomAssignment/rvRoomAssignmentShowErrorMessage.html',
-			controller 	: 'rvRoomAlreadySelectedCtrl',
+			template 	: '/assets/partials/roomAssignment/rvRoomAssignmentShowErrorMessage.html',			
 			className 	: 'ngdialog-theme-default',
+			controller 	: 'rvRoomAlreadySelectedCtrl',
 			scope 		: $scope,
 			data  		: JSON.stringify(errorMessage)
         });
@@ -121,14 +121,15 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 			}
 		}
 		else {
-			setTimeout(function(){
 				if (!$rootScope.isStandAlone) {
 					openRoomAlreadyChoosedPopup ();
 				}
 				else {
-					openPopupForErrorMessageShowing(error);
+					var errorMessagePopup = {
+						errorMessage: error.toString()
+					};
+					openPopupForErrorMessageShowing(errorMessagePopup);
 				}
-			}, 700);
 		}
 		$scope.$emit('hideLoader');
 
