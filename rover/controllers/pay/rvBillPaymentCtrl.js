@@ -480,7 +480,13 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	*/
 	var failedPayment = function(data){
 		$scope.$emit("hideLoader");
-		$scope.paymentErrorMessage = "SPLIT # "+($scope.splitePaymentDetail["completedSplitPayments"]+1)+" PAYMENT OF "+$scope.renderData.defaultPaymentAmount+" FAILED !"+"<br/>";
+		if($scope.splitBillEnabled){
+			$scope.paymentErrorMessage = "SPLIT # "+($scope.splitePaymentDetail["completedSplitPayments"]+1)+" PAYMENT OF "+$scope.renderData.defaultPaymentAmount+" FAILED !"+"<br/>";
+		}
+		else{
+			$scope.errorMessage = data;
+		};
+		
 	};
 	/*
 	* Clears paymentErrorMessage

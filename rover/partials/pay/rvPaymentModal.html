@@ -14,11 +14,11 @@
         </strong>
         <span class="text">Or enter negative amount to make a refund</span>
         <!-- Title when bill# is defined: <strong class="h2 message">Pay Bill #{bill num}</strong> -->
-        <div ng-show="messageOfSuccessSplitPayment!=''" ng-class="{notice: messageOfSuccessSplitPayment!=''}" class='success success_message'>
+        <div ng-show="messageOfSuccessSplitPayment!='' && splitBillEnabled" ng-class="{notice: messageOfSuccessSplitPayment!=''}" class='success success_message'>
             <span ng-bind-html ="messageOfSuccessSplitPayment">
             </span>   
         </div>
-        <div ng-show="paymentErrorMessage!=''" ng-class="{notice: paymentErrorMessage!=''}" class='error error_message' ng-switch on="paymentErrorMessage.length" ng-click="clearPaymentErrorMessage()">
+        <div ng-show="paymentErrorMessage!='' && splitBillEnabled" ng-class="{notice: paymentErrorMessage!=''}" class='error error_message' ng-switch on="paymentErrorMessage.length" ng-click="clearPaymentErrorMessage()">
             <span class="close-btn" ng-click="clearPaymentErrorMessage()"></span>
             <span ng-bind-html ="paymentErrorMessage">
             </span>
