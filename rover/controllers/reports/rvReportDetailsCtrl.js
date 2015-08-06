@@ -502,12 +502,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// simple method to allow checking for report title
 		// from the template, even without making the entire reportUtils part of $scope
 		$scope.isThisReport = function (name) {
-			if ( 'array' == typeof name ) {
+			if ( 'array' === typeof name ) {
 				return !! _.find(name, function(each) {
-					return $scope.parsedApiFor == reportUtils.getName(each);
+					return $scope.parsedApiFor === reportUtils.getName(each);
 				});
 			} else {
-				return $scope.parsedApiFor == reportUtils.getName(name);
+				return $scope.parsedApiFor === reportUtils.getName(name);
 			};
 		};
 
