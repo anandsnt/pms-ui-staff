@@ -121,7 +121,7 @@
                 <input name="reference" id="reference" ng-model="renderData.referanceText" type="text" />
             </div> 
             <!-- Success feedback -->
-            <!-- <div class="feedback" ng-show="!showCCPage && depositPaidSuccesFully">
+            <div class="feedback" ng-show="!splitBillEnabled && showSuccesMessage">
                 <div class="notice success">Amount paid!</div>
                 <ul class="transaction">
                     <li ng-show="authorizedCode !==''">
@@ -136,7 +136,7 @@
                         </span>
                     </li>
                 </ul>
-            </div>  -->
+            </div>
 
             <!-- Fail feedback -->
             <div class="feedback" ng-show="errorOccured">
