@@ -41,7 +41,7 @@ admin.directive('appFilereader', function($q){
                     };
                     reader.readAsDataURL(file);
 
-                    if(typeof scope.fileNameKey != 'undefined'){
+                    if(typeof scope.fileNameKey !== 'undefined'){
                         scope.$parent[scope.fileNameKey] = file.name;
                     }else{
                         scope.$parent.fileName = file.name;
