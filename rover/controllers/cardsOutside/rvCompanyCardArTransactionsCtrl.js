@@ -77,14 +77,17 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 				$scope.arDetailsFetched = true;
 			    $scope.$emit('hideLoader');
 
-			    if(typeof clearErrorMsg === 'undefined' || clearErrorMsg)
+			    if(typeof clearErrorMsg === 'undefined' || clearErrorMsg) {
 			    	$scope.errorMessage = '';
+			    }
 
 			    $scope.arTransactionDetails = {};
 			    $scope.arTransactionDetails = data;
 
 			    var credits = parseFloat(data.available_credit).toFixed(2);
-			    if(credits === '-0.00') credits = parseFloat('0.00').toFixed(2);
+			    if(credits === '-0.00') {
+			    	credits = parseFloat('0.00').toFixed(2);
+			    }
 
 			    $scope.arTransactionDetails.available_credit = credits;
 			    $scope.arTransactionDetails.amount_owing = parseFloat(data.amount_owing).toFixed(2);
@@ -131,10 +134,12 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 		// To handle show filter changes
 		$scope.chagedShowFilter = function(){
-			if($scope.filterData.showFilterFlag === 'ALL')
+			if($scope.filterData.showFilterFlag === 'ALL') {
 				$scope.filterData.isShowPaid = '';
-			else
+			}
+			else {
 				$scope.filterData.isShowPaid = false;
+			}
 			initPaginationParams();
 			fetchData();
 		};
@@ -242,8 +247,9 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		$scope.isNextButtonDisabled = function(){
 			var isDisabled = false;
 			//if($scope.end >= RVSearchSrv.totalSearchResults || $scope.disableNextButton){
-			if(typeof $scope.arTransactionDetails === "undefined")
+			if(typeof $scope.arTransactionDetails === "undefined") {
 				return true;
+			}
 			if($scope.filterData.end >= $scope.arTransactionDetails.total_count){
 				isDisabled = true;
 			}
@@ -270,7 +276,9 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	            $scope.errorMessage = '';
 
 	            var credits = parseFloat(data.available_credits).toFixed(2);
-			    if(credits === '-0.00') credits = parseFloat('0.00').toFixed(2);
+			    if(credits === '-0.00') {
+			    	credits = parseFloat('0.00').toFixed(2);
+			    }
 
 	            $scope.arTransactionDetails.available_credit = credits;
 	            $scope.arTransactionDetails.open_guest_bills = data.open_guest_bills;

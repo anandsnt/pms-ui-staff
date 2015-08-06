@@ -108,8 +108,9 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 
 	$scope.activeCCTab = function(){
 		angular.forEach($scope.data.payments,function(item, index) {
-			if(item.value === "CC" && item.is_active === "false")
+			if(item.value === "CC" && item.is_active === "false") {
 				$scope.toggleClickedPayment(index,false);
+			}
 		});
 	};
 	/*

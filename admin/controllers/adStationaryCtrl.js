@@ -73,7 +73,9 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 
 	// CICO-17706 : While Cancellation Email is Turned OFF , Print Cancellation Email also forced to OFF.
 	$scope.$watch('data.send_cancellation_letter', function(newValue, oldValue) {
-	   if(!newValue) $scope.data.print_cancellation_letter = false;
+		if(!newValue) {
+	   		$scope.data.print_cancellation_letter = false;
+		}
 	});
 
 	$scope.$watch(function() {

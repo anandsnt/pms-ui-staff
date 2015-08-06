@@ -236,8 +236,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.billNumber = activeBillNo;
 
 			var bills = [];
-		    for(var i = 0; i < $scope.transactionsDetails.bills.length; i++ )
+		    for(var i = 0; i < $scope.transactionsDetails.bills.length; i++ ) {
 		    	bills.push(i+1);
+		    }
 
 		    $scope.fetchedData = {};
 			$scope.fetchedData.bill_numbers = bills;

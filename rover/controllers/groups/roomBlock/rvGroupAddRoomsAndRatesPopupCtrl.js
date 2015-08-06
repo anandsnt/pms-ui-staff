@@ -203,7 +203,9 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 		 */
 		$scope.hideRoomType = function(mySelectedID, roomType) {
 			//if it is mine room type, we will show that
-			if (parseInt(mySelectedID) === parseInt(roomType.room_type_id)) return false;
+			if (parseInt(mySelectedID) === parseInt(roomType.room_type_id)) {
+				return false;
+			}
 
 			//we are removing other selected
 			//list of selecetd room types' ids

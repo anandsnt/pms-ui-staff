@@ -873,8 +873,9 @@ sntRover.controller('RVbillCardController',
 		$scope.fetchTotalBal = false;
 
 		var bills = [];
-	    for(var i = 0; i < $scope.reservationBillData.bills.length; i++ )
+	    for(var i = 0; i < $scope.reservationBillData.bills.length; i++ ) {
 	    	bills.push(i+1);
+	    }
 
 	    $scope.fetchedData = {};
 		$scope.fetchedData.bill_numbers = bills;

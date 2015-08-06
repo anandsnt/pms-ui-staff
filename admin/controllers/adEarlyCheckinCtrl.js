@@ -47,7 +47,9 @@ var setUpList = function(){
 var isRoomTypesSelected = function(){
   $scope.upsellData.isRoomTypesSelectedFlag = false;
   angular.forEach($scope.upsellData.room_types,function(item, index) {
-    if((typeof item.max_early_checkins !=="undefined") && item.max_early_checkins !== null) $scope.upsellData.isRoomTypesSelectedFlag = true;
+    if((typeof item.max_early_checkins !=="undefined") && item.max_early_checkins !== null) {
+      $scope.upsellData.isRoomTypesSelectedFlag = true;
+    }
   });
 };
 
