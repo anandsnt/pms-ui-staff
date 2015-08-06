@@ -74,6 +74,11 @@ sntRover.service('RVreportsSrv', [
 				// since payload will have two additional keys
 				// 'reportsResponse' and 'codeSettings'
 				if ( payloads - filters == 2 ) {
+
+					// save it to $vault
+					service.payloadCache = angular.copy( payload );
+					$vault.set( cacheKey, JSON.stringify(service.payloadCache) );
+
 					deferred.resolve( payload );
 				};
 			};
@@ -81,8 +86,6 @@ sntRover.service('RVreportsSrv', [
 			var success = function(key, data) {
 				payload[key] = angular.copy( data );
 				shallWeResolve();
-
-				// @TODO: cache data when required. Too complicated at the moment. ¯\(°_°)/¯
 			};
 
 			var failed = function(key, emptyType, data) {
@@ -99,8 +102,12 @@ sntRover.service('RVreportsSrv', [
 
 			// fetch active users & add to payload
 			if ( hasFilter['ACTIVE_USERS'] ) {
-				subSrv.fetchActiveUsers()
-					.then( success.bind(null, 'activeUserList'), failed.bind(null, 'activeUserList', 'typeArray') );
+				if ( service.payloadCache.hasOwnProperty('activeUserList') ) {
+					success( 'activeUserList', service.payloadCache.activeUserList );
+				} else {
+					subSrv.fetchActiveUsers()
+						.then( success.bind(null, 'activeUserList'), failed.bind(null, 'activeUserList', 'typeArray') );
+				};
 			};
 
 			// fetch gurantee types & add to payload
@@ -121,16 +128,14 @@ sntRover.service('RVreportsSrv', [
 					.then( success.bind(null, 'chargeCodes'), failed.bind(null, 'chargeCodes', 'typeArray') );
 			};
 
-			// fetch booking origins & add to payload
-			if ( hasFilter['CHOOSE_BOOKING_ORIGIN'] ) {
-				subSrv.fetchDemographicMarketSegments()
-					.then( success.bind(null, 'origins'), failed.bind(null, 'origins', 'typeArray') );
-			};
-
 			// fetch markers & add to payload
 			if ( hasFilter['CHOOSE_MARKET'] ) {
-				subSrv.fetchSources()
-					.then( success.bind(null, 'markets'), failed.bind(null, 'markets', 'typeArray') );
+				if ( service.payloadCache.hasOwnProperty('markets') ) {
+					success( 'markets', service.payloadCache.origins );
+				} else {
+					subSrv.fetchMarkets()
+						.then( success.bind(null, 'markets'), failed.bind(null, 'markets', 'typeArray') );
+				};
 			};
 
 			// fetch sources & add to payload
@@ -138,10 +143,20 @@ sntRover.service('RVreportsSrv', [
 				if ( service.payloadCache.hasOwnProperty('sources') ) {
 					success( 'sources', service.payloadCache.sources );
 				} else {
-					subSrv.fetchBookingOrigins()
+					subSrv.fetchSources()
 						.then( success.bind(null, 'sources'), failed.bind(null, 'sources', 'typeArray') );
 				};
 			};
+
+			// fetch booking origins & add to payload
+			if ( hasFilter['CHOOSE_BOOKING_ORIGIN'] ) {
+				if ( service.payloadCache.hasOwnProperty('origins') ) {
+					success( 'origins', service.payloadCache.origins );
+				} else {
+					subSrv.fetchBookingOrigins()
+						.then( success.bind(null, 'origins'), failed.bind(null, 'origins', 'typeArray') );
+				};
+			};			
 		};
 
 		/**
@@ -177,16 +192,16 @@ sntRover.service('RVreportsSrv', [
 						hasFilter['INCLUDE_CHARGE_CODE'] = true;
 					};
 
-					if ( ! hasFilter.hasOwnProperty('CHOOSE_BOOKING_ORIGIN') && 'CHOOSE_BOOKING_ORIGIN' == eachFilter.value ) {
-						hasFilter['CHOOSE_BOOKING_ORIGIN'] = true;
-					};
-
 					if ( ! hasFilter.hasOwnProperty('CHOOSE_MARKET') && 'CHOOSE_MARKET' == eachFilter.value ) {
 						hasFilter['CHOOSE_MARKET'] = true;
 					};
 
 					if ( ! hasFilter.hasOwnProperty('CHOOSE_SOURCE') && 'CHOOSE_SOURCE' == eachFilter.value ) {
 						hasFilter['CHOOSE_SOURCE'] = true;
+					};
+
+					if ( ! hasFilter.hasOwnProperty('CHOOSE_BOOKING_ORIGIN') && 'CHOOSE_BOOKING_ORIGIN' == eachFilter.value ) {
+						hasFilter['CHOOSE_BOOKING_ORIGIN'] = true;
 					};
 				});
 			});

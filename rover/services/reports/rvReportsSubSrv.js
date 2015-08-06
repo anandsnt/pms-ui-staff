@@ -60,27 +60,11 @@ sntRover.service('RVreportsSubSrv', [
 			});
 		};
 
-		service.fetchDemographicMarketSegments = function(params) {
-			return callApi({
-				method : 'getJSON',
-				url    : '/api/market_segments?is_active=true',
-				resKey : 'markets'
-			});
-		};
-
 		service.fetchGuaranteeTypes = function() {
 			return callApi({
 				method : 'getJSON',
 				url    : '/api/reservation_types.json?is_active=true',
 				resKey : 'reservation_types'
-			});
-		};
-
-		service.fetchComTaGrp = function(query) {
-			return callApi({
-				method : 'getJSON',
-				url    : 'api/reports/search_by_company_agent_group?query=' + query,
-				resKey : 'results'
 			});
 		};
 
@@ -97,6 +81,14 @@ sntRover.service('RVreportsSubSrv', [
 				method : 'getJSON',
 				url    : 'api/charge_codes?is_get_all_charge_codes=true',
 				resKey : 'results'
+			});
+		};
+
+		service.fetchMarkets = function(params) {
+			return callApi({
+				method : 'getJSON',
+				url    : '/api/market_segments?is_active=true',
+				resKey : 'markets'
 			});
 		};
 
@@ -120,6 +112,14 @@ sntRover.service('RVreportsSubSrv', [
 			return callApi({
 				method : 'getJSON',
 				url    : '/api/reports/code_settings'
+			});
+		};
+
+		service.fetchComTaGrp = function(query) {
+			return callApi({
+				method : 'getJSON',
+				url    : 'api/reports/search_by_company_agent_group?query=' + query,
+				resKey : 'results'
 			});
 		};
 
