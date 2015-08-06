@@ -436,7 +436,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                                     if (postType.frequency > 0 && shouldPostAddon) {
                                         addon.effectivePrice = parseFloat(addon.effectivePrice) + parseFloat(finalRate);
 
-                                    } else if (postType.frequency == 0 && shouldPostAddon) {
+                                    } else if (postType.frequency === 0 && shouldPostAddon) {
                                         addon.effectivePrice = finalRate; //Posted only on the first Night
                                     }
                                     if (!addon.is_inclusive) {
