@@ -1,5 +1,5 @@
-	sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout', 'RVReservationCardSrv', '$state', '$filter', '$q',
-		function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout, RVReservationCardSrv, $state, $filter, $q) {
+	sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout', 'RVReservationCardSrv', '$state', '$filter', '$q','RVReservationSummarySrv','$window',
+		function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout, RVReservationCardSrv, $state, $filter, $q,RVReservationSummarySrv,$window) {
 
 			BaseCtrl.call(this, $scope);
 			$scope.errorMessage = '';
@@ -467,5 +467,85 @@
 				$scope.closeDialog();				
 			};
 
+			// -- CICO-17706 --//
+			$scope.DailogeState = {};
+			$scope.DailogeState.successMessage = '';
+			$scope.DailogeState.failureMessage = '';
+
+			//Checking whether email is attached with guest card or not
+			$scope.isEmailAttached = function() {
+				var isEmailAttachedFlag = false;
+				if ($scope.guestCardData.contactInfo.email !== null && $scope.guestCardData.contactInfo.email !== "") {
+					isEmailAttachedFlag = true;
+				}
+				return isEmailAttachedFlag;
+			};
+			var succesfullCallbackForEmailCancellation = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.DailogeState.successMessage = data.message;
+				$scope.DailogeState.failureMessage = '';
+			};
+			var failureCallbackForEmailCancellation = function(error) {
+				$scope.$emit('hideLoader');
+				$scope.DailogeState.failureMessage = error[0];
+				$scope.DailogeState.successMessage = '';
+			};
+
+			//Action against email button in staycard.
+			$scope.sendReservationCancellation = function() {
+				var postData = {
+					"type": "cancellation",
+					"emails": $scope.isEmailAttached() ? [$scope.guestCardData.contactInfo.email] : [$scope.DailogeState.sendConfirmatonMailTo]
+				};
+				var data = {
+					"postData": postData,
+					"reservationId": $scope.passData.reservationId,
+				};
+				$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data, succesfullCallbackForEmailCancellation, failureCallbackForEmailCancellation);
+			};
+
+			// add the print orientation after printing
+			var addPrintOrientation = function() {
+				var orientation = 'portrait';
+				$('head').append("<style id='print-orientation'>@page { size: " + orientation + "; }</style>");
+			};
+			// remove the print orientation after printing
+			var removePrintOrientation = function() {
+				$('#print-orientation').remove();
+			};
+
+			var printPage = function() {
+				// add the orientation
+				addPrintOrientation();
+				$timeout(function() {
+					$window.print();
+					if (sntapp.cordovaLoaded) {
+						cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+					}
+				}, 100);
+				// remove the orientation after similar delay
+				$timeout(removePrintOrientation, 100);
+			};
+
+			//Action against print button in staycard.
+			$scope.printReservationCancellation = function() {
+				var succesfullCallback = function(data) {
+					$scope.printData = data.data;
+					printPage();
+				};
+				var failureCallbackPrint = function(error) {
+					$scope.DailogeState.failureMessage = error[0];
+				};
+				$scope.callAPI(RVReservationSummarySrv.fetchResservationCancellationPrintData, {
+					successCallBack: succesfullCallback,
+					failureCallBack: failureCallbackPrint,
+					params: {
+						'reservation_id': $scope.passData.reservationId
+					}
+				});
+			};
+
+			// -- CICO-17706 --//
 		}
 	]);
+
