@@ -210,7 +210,7 @@ sntRover
              * function to handle left side menu toggling
              */
             $scope.toggleLeftMenu = function() {
-                if ($scope.currentLeftMenuClass == 'slide_right') {
+                if ($scope.currentLeftMenuClass === 'slide_right') {
                     $scope.currentLeftMenuClass = 'slide_left';
                 } else {
                     $scope.currentLeftMenuClass = 'slide_right';
