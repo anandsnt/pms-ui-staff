@@ -400,6 +400,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                                 }
                                 var taxableRateAmount = roomAmount; // default taxableRoomAmount to the calculated room amount. This inclusive addons are to be adjusted wrt this value!
                                 currentRoom.rateTotal = currentRoom.rateTotal + roomAmount; // cumulative total of all days goes to roomTotal
+                                currentRoom.rateAvg = currentRoom.rateTotal /  $scope.reservationData.numNights;
                             }
                             // --------------------------------------------------------------------------------//
                             // -- Calculate the rate amount for the Room for that rate for that day --
@@ -794,6 +795,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     $scope.reservationData.rateDetails[currentRoomIndex] &&
                     $scope.reservationData.rateDetails[currentRoomIndex][$scope.reservationData.arrivalDate][applicableRate].applyPromotion) {
                     data.promotion_id = $scope.reservationData.rateDetails[currentRoomIndex][$scope.reservationData.arrivalDate][applicableRate].appliedPromotion.id;
+                    data.promotion_status = !!_.findWhere($scope.reservationData.rateDetails[currentRoomIndex][$scope.reservationData.arrivalDate][applicableRate].restrictions, {
+                        key: 'INVALID_PROMO'
+                    }) ? 'OVERRIDE' : 'VALID';
                 } else {
                     data.promotion_id = null;
                 }

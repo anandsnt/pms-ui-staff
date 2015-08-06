@@ -23,7 +23,7 @@
     </fieldset>
 
     <!-- 2. Apply penalty screen-->
-    <fieldset id="apply-penalty" class="credit-card" ng-show="ngDialogData.state == 'PENALTY'" ng-show = "!DailogeState.isCancelled ">
+    <fieldset id="apply-penalty" class="credit-card" ng-show="ngDialogData.state == 'PENALTY'&&!DailogeState.isCancelled" ng-show = "!DailogeState.isCancelled ">
         <strong class="h2 message">Select or Add Credit Card</strong>
         <span class="text">Card will be charged with a {{currencySymbol}}{{ ngDialogData.penalty }} penalty.</span>
 

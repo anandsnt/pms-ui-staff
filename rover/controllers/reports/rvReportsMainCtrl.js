@@ -1,20 +1,12 @@
 sntRover.controller('RVReportsMainCtrl', [
 	'$rootScope',
 	'$scope',
-	'reportsResponse',
+	'payload',
 	'RVreportsSrv',
-	'$filter',
-	'activeUserList',
-	'guaranteeTypes',
-	'chargeGroups',
-	'chargeCodes',
-	'markets',
-	'sources',
-	'origins',
-	'codeSettings',
-	'$timeout',
 	'RVReportUtilsFac',
-	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter, activeUserList, guaranteeTypes, chargeGroups, chargeCodes, markets, sources, origins, codeSettings, $timeout, reportUtils) {
+	'$filter',
+	'$timeout',
+	function($rootScope, $scope, payload, RVreportsSrv, reportUtils, $filter, $timeout) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -35,24 +27,20 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.heading = listTitle;
 		$scope.$emit("updateRoverLeftMenu", "reports");
 
-		//refer angular.isArray in scope
-		$scope.isArray = angular.isArray;
 
+		$scope.reportList  = payload.reportsResponse.results;
+		$scope.reportCount = payload.reportsResponse.total_count;
 
-		$scope.reportList = reportsResponse.results;
-		$scope.reportCount = reportsResponse.total_count;
+		$scope.activeUserList = payload.activeUserList;
+		$scope.guaranteeTypes = payload.guaranteeTypes;
+		$scope.chargeGroups   = payload.chargeGroups;
+		$scope.chargeCodes    = payload.chargeCodes;
 
+		$scope.markets = payload.markets;
+		$scope.sources = payload.sources;
+		$scope.origins = payload.origins;
 
-		$scope.activeUserList = activeUserList;
-		$scope.guaranteeTypes = guaranteeTypes;
-		$scope.chargeGroups = chargeGroups;
-		$scope.chargeCodes = chargeCodes;
-
-		$scope.markets = markets;
-		$scope.sources = sources;
-		$scope.origins = origins;
-
-		$scope.codeSettings = codeSettings;
+		$scope.codeSettings = payload.codeSettings;
 
 
 

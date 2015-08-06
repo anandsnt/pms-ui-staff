@@ -1746,7 +1746,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             //calling initially required APIs
             // CICO-17898 The initial APIs need to be called in the scenario while we come back to the Rooming List Tab from the stay card
-            var isInRoomingList = ($scope.groupConfigData.activeTab === "SUMMARY"),
+            var isInRoomingList = ($scope.groupConfigData.activeTab === "ROOMING"),
             	comingFromStaycard = ("rover.reservation.staycard.reservationcard.reservationdetails" === $rootScope.getPrevStateName());
             	
             if (isInRoomingList && comingFromStaycard) {
