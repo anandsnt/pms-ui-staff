@@ -203,7 +203,7 @@ sntRover.factory('RVReportUtilsFac', [
                     };
 
             // if filter is this, make it selected by default
-            if ( objRef['title'] == __reportNames['CANCELLATION_NO_SHOW'] && includeCancelled[filter.value] ) {
+            if ( objRef['title'] === __reportNames['CANCELLATION_NO_SHOW'] && includeCancelled[filter.value] ) {
                 selected = true;
                 objRef['hasGeneralOptions']['title'] = filter.description;
             };
@@ -220,7 +220,7 @@ sntRover.factory('RVReportUtilsFac', [
             };
 
             // if filter value is either of these, must include when report submit
-            if ( objRef['title'] == __reportNames['FORECAST_GUEST_GROUPS'] ) {
+            if ( objRef['title'] === __reportNames['FORECAST_GUEST_GROUPS'] ) {
                 objRef['hasGeneralOptions']['title'] = filter.description;
             };
 
@@ -652,8 +652,8 @@ sntRover.factory('RVReportUtilsFac', [
                     //
                     // QUICK PATCH
                     // TODO: replace with a better solution
-                    if ( reportItem.title == __reportNames['MARKET_SEGMENT_STAT_REPORT'] ) {
-                        if ( filter.value == 'INCLUDE_MARKET' && data.codeSettings['is_market_on'] ) {
+                    if ( reportItem.title === __reportNames['MARKET_SEGMENT_STAT_REPORT'] ) {
+                        if ( filter.value === 'INCLUDE_MARKET' && data.codeSettings['is_market_on'] ) {
                             __pushDisplayData( reportItem, filter );
                         } else if ( filter.value === 'INCLUDE_ORIGIN' && data.codeSettings['is_origin_on'] ) {
                             __pushDisplayData( reportItem, filter );
@@ -1032,7 +1032,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                 // each hour is split into 4 parts
                 // x:00, x:15, x:30, x:45
-                if (i % 4 == 0) {
+                if (i % 4 === 0) {
                     h++;
                     m = 0;
                 } else {
