@@ -447,8 +447,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 
             var successCallback = function(data) {
                 $scope.availableBillingGroups = data;
-                if(data.length === 0)
+                if(data.length === 0) {
                     $scope.isBillingGroup = false;
+                }
                 $scope.$parent.$emit('hideLoader');
                 $scope.fetchDefaultAccountRouting();
 
@@ -875,8 +876,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         */
         $scope.getSelectedBillNumber = function(){
             for(var i = 0; i < $scope.bills.length; i++){
-                if($scope.bills[i].id === $scope.selectedEntity.to_bill)
+                if($scope.bills[i].id === $scope.selectedEntity.to_bill) {
                     return $scope.bills[i].bill_number;
+                }
             }
         };
         $scope.sixIsManual = false;

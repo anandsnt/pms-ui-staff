@@ -84,7 +84,9 @@ sntRover.controller('RVPostChargeControllerV2',
 	    					return $scope.selectedChargeItemHash[i].id === item.id;
 	    				});
 
-						if( typeof match !== "undefined" ) match.count = $scope.selectedChargeItemHash[i].count;
+						if( typeof match !== "undefined" ) {
+							match.count = $scope.selectedChargeItemHash[i].count;
+						}
 					}
 
 		            $scope.$emit('hideLoader');
@@ -228,7 +230,9 @@ sntRover.controller('RVPostChargeControllerV2',
     					return $scope.selectedChargeItem.id === item.id;
     				});
 
-					if(typeof match !== "undefined") match.count = 0;
+					if(typeof match !== "undefined") {
+						match.count = 0;
+					}
 				}
 
 				delete $scope.selectedChargeItemHash[ $scope.selectedChargeItem.id ];

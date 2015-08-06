@@ -84,8 +84,9 @@ sntRover.controller('RVroomAssignmentController',[
 
 	$scope.getCurrentRoomType = function(){
 		for (var i = 0; i < $scope.roomTypes.length; i++) {
-			if($scope.roomTypes[i].type == $scope.roomType)
+			if($scope.roomTypes[i].type == $scope.roomType) {
 				return $scope.roomTypes[i];
+			}
 		};
 	};
 
@@ -670,14 +671,18 @@ sntRover.controller('RVroomAssignmentController',[
 	*/
 	$scope.setRoomsListWithPredefinedFilters = function(){
 		for(var i = 0; i < $scope.rooms.length; i++){
-			if($scope.rooms[i].room_status == "NOTREADY" && $scope.rooms[i].fo_status == "VACANT" && $scope.rooms[i].room_ready_status != "CLEAN" && $scope.rooms[i].room_ready_status != "INSPECTED")
+			if($scope.rooms[i].room_status == "NOTREADY" && $scope.rooms[i].fo_status == "VACANT" && $scope.rooms[i].room_ready_status != "CLEAN" && $scope.rooms[i].room_ready_status != "INSPECTED") {
 				$scope.rooms[i].room_features.push(-100);
-			if($scope.rooms[i].fo_status == "DUEOUT")
+			}
+			if($scope.rooms[i].fo_status == "DUEOUT") {
 				$scope.rooms[i].room_features.push(-101);
-			if($scope.rooms[i].is_preassigned)
+			}
+			if($scope.rooms[i].is_preassigned) {
 				$scope.rooms[i].room_features.push(-102);
-			if($scope.rooms[i].fo_status == "VACANT" && $scope.rooms[i].room_ready_status == "CLEAN" && $scope.rooms[i].checkin_inspected_only == "true")
+			}
+			if($scope.rooms[i].fo_status == "VACANT" && $scope.rooms[i].room_ready_status == "CLEAN" && $scope.rooms[i].checkin_inspected_only == "true") {
 				$scope.rooms[i].room_features.push(-103);
+			}
 
 		}
 	};

@@ -52,8 +52,9 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			var classes = '';
 
 			//Add class "green" if status OPEN
-			if(account.status.toLowerCase() === "open")
+			if(account.status.toLowerCase() === "open") {
 				classes = 'green';
+			}
 
 			return classes;
 		};

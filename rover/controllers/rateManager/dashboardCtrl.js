@@ -150,7 +150,9 @@ sntRover
 
                     var columsTotalWidth = numColumns * mywidth;
 
-                    if (columsTotalWidth < totalwidth) columsTotalWidth = totalwidth; //@minimum, table should cover full view.
+                    if (columsTotalWidth < totalwidth) {
+                        columsTotalWidth = totalwidth; //@minimum, table should cover full view.
+                    }
 
                     $scope.uiOptions.tableWidth = parseInt(FIRST_COLUMN_WIDTH + columsTotalWidth);
                     $scope.uiOptions.tableHeight = $window.innerHeight - TOP_BOTTOM_HEIGHT;
