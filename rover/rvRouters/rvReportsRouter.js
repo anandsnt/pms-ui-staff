@@ -9,6 +9,8 @@ angular.module('reportsModule', [])
             payload: function(RVreportsSrv) {
                 return RVreportsSrv.reportApiPayload();
             }
+
+            // removed other resolves from here
         }
     });
 });

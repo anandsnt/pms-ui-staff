@@ -1117,6 +1117,14 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			}, 350);
 		};
 
+		/**
+		 * to set the active left side menu
+		 * @return {undefined}
+		 */
+		var setActiveLeftSideMenu = function () {
+			var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup": "menuManageGroup";			
+			$scope.$emit("updateRoverLeftMenu", activeMenu);
+		};
 
 		/**
 		 * Function to initialise room block details
@@ -1126,7 +1134,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			BaseCtrl.call(this, $scope);
 
 			//updating the left side menu
-			$scope.$emit("updateRoverLeftMenu", "menuCreateGroup");
+			setActiveLeftSideMenu();
 
 			//IF you are looking for where the hell the API is CALLING
 			//scroll above, and look for the event 'GROUP_TAB_SWITCHED'
