@@ -36,7 +36,7 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
             }
         };
         $scope.isOldValue = function(value){
-            if(value == "" || typeof value == "undefined" || value == null){
+            if(value === "" || typeof value === "undefined" || value === null){
                 return false;
             }
             else{
@@ -88,7 +88,7 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
         $scope.updateReport();
     };
     $scope.initPaginationParams = function() {
-        if($scope.activityLogData.total_count==0){           
+        if($scope.activityLogData.total_count === 0){           
              $scope.start = 0;
              $scope.end =0;
         }else{
@@ -126,10 +126,10 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
             $scope.fromDate = $('#activity-range-from').val();
             $scope.toDate = $('#activity-range-to').val();
             console.log($scope.toDate);
-            if ($scope.fromDate != ''){
+            if ($scope.fromDate !== ''){
                 params['from_date'] = $filter('date')(new Date($scope.fromDate), 'yyyy-MM-dd');
             }
-            if ($scope.toDate != ''){
+            if ($scope.toDate !== ''){
                 params['to_date'] =$filter('date')(new Date($scope.toDate), 'yyyy-MM-dd');
             }
 
@@ -144,7 +144,7 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
     };
     
     $scope.userChanged = function(){        
-        if($scope.userEmail==''){
+        if($scope.userEmail === ''){
            $scope.user_id=0;
         }
     }
@@ -248,7 +248,7 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
 
                 _.each($scope.activeUserAutoCompleteObj, function(user) {
                     var match = _.find(uiValues, function(email) {
-                        return email == user.label;
+                        return email === user.label;
                     });
 
                     if (!!match) {
