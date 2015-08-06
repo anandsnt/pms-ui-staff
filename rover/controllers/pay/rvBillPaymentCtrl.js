@@ -440,8 +440,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		//Clears older failure messages.
 		$scope.clearPaymentErrorMessage(); 
 		$scope.showSuccesMessage = (!$scope.splitBillEnabled)? true: false;
-
-	}
+		$scope.reservationBillData.isCheckout ? $scope.closeDialog():'';
+	};
 	/*
 	* updates DefaultPaymentAmount
 	*/
