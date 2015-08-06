@@ -536,7 +536,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 codeResults = [];
                 lastSearchText = "";
             } else if (request.term.length > 0) {
-                if (request.term != '' && lastSearchText != request.term) {
+                if (request.term !== '' && lastSearchText !== request.term) {
                     lastSearchText = request.term;
                     var filteredCodes = $filter('filter')($scope.activeCodes, {
                         name: request.term
