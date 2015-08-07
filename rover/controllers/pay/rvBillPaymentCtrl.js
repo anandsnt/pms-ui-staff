@@ -439,9 +439,10 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		+$scope.renderData.defaultPaymentAmount+" PAID SUCCESSFULLY !"+"<br/>";
 		//Clears older failure messages.
 		$scope.clearPaymentErrorMessage(); 
-		$scope.showSuccesMessage = (!$scope.splitBillEnabled)? true: false;
-		$scope.fullAmount =  angular.copy($scope.renderData.defaultPaymentAmount);
-		$scope.reservationBillData.isCheckout ? $scope.closeDialog():'';
+		//TO CONFIRM AND REMOVE COMMENT OR TO DELETE
+		// $scope.showSuccesMessage = (!$scope.splitBillEnabled)? true: false;
+		// $scope.fullAmount =  angular.copy($scope.renderData.defaultPaymentAmount);
+		($scope.reservationBillData.isCheckout || !$scope.splitBillEnabled) ? $scope.closeDialog():'';
 	};
 	/*
 	* updates DefaultPaymentAmount
