@@ -121,22 +121,22 @@
                 <input name="reference" id="reference" ng-model="renderData.referanceText" type="text" />
             </div> 
             <!-- Success feedback -->
-            <div class="feedback" ng-show="!splitBillEnabled && showSuccesMessage">
+          <!--   <div class="feedback" ng-show="!splitBillEnabled && showSuccesMessage">
                 <div class="notice success">Amount paid!</div>
-                <ul class="transaction">
+                <ul class="transaction transaction-details">
                     <li ng-show="authorizedCode !==''">
                         Your Authorize code is: <span class="auth">{{authorizedCode}}</span>
                     </li>
                     <li ng-if="isShowFees()">
-                        Amount paid: <span class="value">{{currencySymbol}}{{renderData.defaultPaymentAmount |number:2}} + {{currencySymbol}}{{feeData.calculatedFee |number:2}} fee
+                        Amount paid: <span class="value">{{currencySymbol}}{{fullAmount |number:2}} + {{currencySymbol}}{{feeData.calculatedFee |number:2}} fee
                         </span>
                     </li>
                     <li ng-if="!isShowFees()">
-                        Amount paid: <span class="value">{{currencySymbol}}{{renderData.defaultPaymentAmount}}
+                        Amount paid: <span class="value">{{currencySymbol}}{{fullAmount|number:2}}
                         </span>
                     </li>
                 </ul>
-            </div>
+            </div> -->
 
             <!-- Fail feedback -->
             <div class="feedback" ng-show="errorOccured">

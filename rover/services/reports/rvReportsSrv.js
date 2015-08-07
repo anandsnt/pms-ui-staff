@@ -45,11 +45,15 @@ sntRover.service('RVreportsSrv', [
 		service.reportApiPayload = function() {
 			var deferred = $q.defer();
 
+			var failed = function(data) {
+				deferred.reject(data);
+			};
+
 			// we are passing down the deferred to the
 			// success callback, so that he can call deferred.resolve
-			// @TODO: debug if closure created due to passed deferred, cause memory leaks
+			// @todo: debug if closure created due to passed deferred, cause memory leaks
 			subSrv.fetchReportList()
-				.then( fetchAdditionalAPIs.bind(null, deferred) );
+				.then( fetchAdditionalAPIs.bind(null, deferred), failed );
 
 			return deferred.promise;
 		};
@@ -88,8 +92,8 @@ sntRover.service('RVreportsSrv', [
 				shallWeResolve();
 			};
 
-			var failed = function(key, emptyType, data) {
-				payload[key] = ('typeArray' === emptyType) ? [] : {};
+			var failed = function(key, emptyData, data) {
+				payload[key] = emptyData;
 				shallWeResolve();
 			};
 
@@ -98,7 +102,7 @@ sntRover.service('RVreportsSrv', [
 
 			// fetch code settings & add to payload
 			subSrv.fetchCodeSettings()
-				.then( success.bind(null, 'codeSettings'), failed.bind(null, 'codeSettings', 'typeObject') );
+				.then( success.bind(null, 'codeSettings'), failed.bind(null, 'codeSettings', {}) );
 
 			// fetch active users & add to payload
 			if ( hasFilter['ACTIVE_USERS'] ) {
@@ -106,26 +110,26 @@ sntRover.service('RVreportsSrv', [
 					success( 'activeUserList', service.payloadCache.activeUserList );
 				} else {
 					subSrv.fetchActiveUsers()
-						.then( success.bind(null, 'activeUserList'), failed.bind(null, 'activeUserList', 'typeArray') );
+						.then( success.bind(null, 'activeUserList'), failed.bind(null, 'activeUserList', []) );
 				};
 			};
 
 			// fetch gurantee types & add to payload
 			if ( hasFilter['INCLUDE_GUARANTEE_TYPE'] ) {
 				subSrv.fetchGuaranteeTypes()
-					.then( success.bind(null, 'guaranteeTypes'), failed.bind(null, 'guaranteeTypes', 'typeArray') );
+					.then( success.bind(null, 'guaranteeTypes'), failed.bind(null, 'guaranteeTypes', []) );
 			};
 
 			// fetch charge groups & add to payload
 			if ( hasFilter['INCLUDE_CHARGE_GROUP'] ) {
 				subSrv.fetchChargeGroups()
-					.then( success.bind(null, 'chargeGroups'), failed.bind(null, 'chargeGroups', 'typeArray') );
+					.then( success.bind(null, 'chargeGroups'), failed.bind(null, 'chargeGroups', []) );
 			};
 
 			// fetch charge groups & add to payload
 			if ( hasFilter['INCLUDE_CHARGE_CODE'] ) {
 				subSrv.fetchChargeCodes()
-					.then( success.bind(null, 'chargeCodes'), failed.bind(null, 'chargeCodes', 'typeArray') );
+					.then( success.bind(null, 'chargeCodes'), failed.bind(null, 'chargeCodes', []) );
 			};
 
 			// fetch markers & add to payload
@@ -134,7 +138,7 @@ sntRover.service('RVreportsSrv', [
 					success( 'markets', service.payloadCache.origins );
 				} else {
 					subSrv.fetchMarkets()
-						.then( success.bind(null, 'markets'), failed.bind(null, 'markets', 'typeArray') );
+						.then( success.bind(null, 'markets'), failed.bind(null, 'markets', []) );
 				};
 			};
 
@@ -144,7 +148,7 @@ sntRover.service('RVreportsSrv', [
 					success( 'sources', service.payloadCache.sources );
 				} else {
 					subSrv.fetchSources()
-						.then( success.bind(null, 'sources'), failed.bind(null, 'sources', 'typeArray') );
+						.then( success.bind(null, 'sources'), failed.bind(null, 'sources', []) );
 				};
 			};
 
@@ -154,7 +158,7 @@ sntRover.service('RVreportsSrv', [
 					success( 'origins', service.payloadCache.origins );
 				} else {
 					subSrv.fetchBookingOrigins()
-						.then( success.bind(null, 'origins'), failed.bind(null, 'origins', 'typeArray') );
+						.then( success.bind(null, 'origins'), failed.bind(null, 'origins', []) );
 				};
 			};
 		};

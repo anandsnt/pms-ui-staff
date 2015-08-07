@@ -75,6 +75,21 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 	};
 
 	/**
+	 * to open the room aleady chhosed popup
+	 * @return undefined
+	 */
+	var openPopupForErrorMessageShowing = function(errorMessage) {
+		ngDialog.open(
+		{
+			template 	: '/assets/partials/roomAssignment/rvRoomAssignmentShowErrorMessage.html',			
+			className 	: 'ngdialog-theme-default',
+			controller 	: 'rvRoomAlreadySelectedCtrl',
+			scope 		: $scope,
+			data  		: JSON.stringify(errorMessage)
+        });
+	};
+
+	/**
 	 * [selectUpgrade description]
 	 * @return {[type]} [description]
 	 */
@@ -106,9 +121,15 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 			}
 		}
 		else {
-			setTimeout(function(){
-				openRoomAlreadyChoosedPopup ();
-			}, 700);
+				if (!$rootScope.isStandAlone) {
+					openRoomAlreadyChoosedPopup ();
+				}
+				else {
+					var errorMessagePopup = {
+						errorMessage: error.toString()
+					};
+					openPopupForErrorMessageShowing(errorMessagePopup);
+				}
 		}
 		$scope.$emit('hideLoader');
 

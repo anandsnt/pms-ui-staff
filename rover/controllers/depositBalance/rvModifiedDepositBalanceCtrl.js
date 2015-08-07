@@ -51,7 +51,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.showAddtoGuestCard      = true;
 	$scope.shouldCardAvailable     = false;
 	$scope.depositBalanceMakePaymentData = {};
-	$scope.depositBalanceMakePaymentData.amount = parseFloat($scope.depositBalanceData.data.outstanding_stay_total).toFixed(2);
+	$scope.depositBalanceMakePaymentData.amount = parseFloat($scope.depositBalanceData.data.balance_deposit_amount).toFixed(2);
 	$scope.refundAmount = 0;
 	if($scope.depositBalanceMakePaymentData.amount < 0){
 		$scope.refundAmount = (-1)*parseFloat($scope.depositBalanceMakePaymentData.amount);
