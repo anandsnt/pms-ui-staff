@@ -38,7 +38,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 
 	$scope.disableMakePayment = function(){
 		 if($scope.saveData.paymentType.length > 0){
-			return false
+			return false;
 		}
 		else{
 			return true;
@@ -300,7 +300,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.referenceTextAvailable = false;
 		$scope.showInitalPaymentScreen = true;
 		// changes for CICO-13763
-		var reservationData = { "reservation_id":$scope.reservationData.reservationId ,"is_checkout":$scope.reservationBillData.isCheckout}
+		var reservationData = { "reservation_id":$scope.reservationData.reservationId ,"is_checkout":$scope.reservationBillData.isCheckout};
 		var paymentParams = $scope.reservationBillData.isCheckout ? reservationData : '';
 		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, $scope.getPaymentListSuccess);
 		//$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.guestInfoToPaymentModal.user_id, $scope.cardsListSuccess, '', 'NONE');
@@ -353,7 +353,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			defaultAmount = currentBillTotalFees[0].masked_balance_amount;
 		}
 		else{
-			defaultAmount =  currentBillTotalFees[0].balance_amount
+			defaultAmount =  currentBillTotalFees[0].balance_amount;
 		};
 
 		$scope.renderData.defaultPaymentAmount = parseFloat(defaultAmount).toFixed(2);
@@ -406,7 +406,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.splitePaymentDetail["carryAmount"] = parseFloat($filter("number")((startingAmount - ($scope.splitePaymentDetail["splitAmount"] *$scope.splitePaymentDetail["totalNoOfsplits"])),2));
 		//For first payment , carry amount is added with split amount.
 		$scope.renderData.defaultPaymentAmount = parseFloat($filter("number")(($scope.splitePaymentDetail["splitAmount"] + $scope.splitePaymentDetail["carryAmount"]),2));
-	}
+	};
 	/*
 	* Updates SplitPaymentDetail.
 	*/
@@ -441,13 +441,13 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.clearPaymentErrorMessage();
 		$scope.showSuccesMessage = (!$scope.splitBillEnabled)? true: false;
 
-	}
+	};
 	/*
 	* updates DefaultPaymentAmount
 	*/
 	var updateDefaultPaymentAmount = function(){
 	$scope.renderData.defaultPaymentAmount = $scope.splitePaymentDetail["splitAmount"];
-	}
+	};
 	/*
 	* Success call back of success payment
 	*/

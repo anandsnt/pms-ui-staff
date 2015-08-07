@@ -58,7 +58,7 @@
 		else{
 			$modal.open($scope.opts); // error modal popup
 		};
-	}
+	};
 
 }
 

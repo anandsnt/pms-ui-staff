@@ -5,7 +5,7 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 
 		this.fetchTransactionDetails = function(params) {
 			var deferred = $q.defer(),
-			url = '/api/posting_accounts/' + params.account_id + '/bill_card'
+			url = '/api/posting_accounts/' + params.account_id + '/bill_card';
 			//url = '/api/posting_accounts/transactions';
 
 			rvBaseWebSrvV2.getJSON(url)
@@ -16,7 +16,7 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 				});
 
 			return deferred.promise;
-		}
+		};
 
 		this.createAnotherBill = function(params) {
 			var deferred = $q.defer(),
@@ -30,7 +30,7 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 				});
 
 			return deferred.promise;
-		}
+		};
 
 		this.moveToAnotherBill = function(params) {
 			var deferred = $q.defer(),
@@ -44,7 +44,7 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 				});
 
 			return deferred.promise;
-		}
+		};
 
 	   /*
 		 * Service function to edit transaction

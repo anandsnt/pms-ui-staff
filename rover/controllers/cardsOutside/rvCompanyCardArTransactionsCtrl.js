@@ -212,7 +212,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			$scope.filterData.end = $scope.filterData.start + $scope.arTransactionDetails.ar_transactions.length - 1;
 			$scope.nextAction = false;
 			$scope.prevAction = false;
-		}
+		};
 
 		$scope.loadNextSet = function(){
 			$scope.filterData.pageNo++;

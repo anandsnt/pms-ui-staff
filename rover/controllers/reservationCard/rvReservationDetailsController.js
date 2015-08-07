@@ -18,8 +18,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			$rootScope.stayCardStateBookMark = {
 				previousState: $scope.previousState.name,
 				previousStateParams: $scope.previousStateParams
-			}
-		}
+			};
+		};
 
 		if (!$rootScope.stayCardStateBookMark) {
 			setNavigationBookMark();
@@ -160,7 +160,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		$scope.editStore = {
 			arrival: $scope.reservationData.reservation_card.arrival_date,
 			departure: $scope.reservationData.reservation_card.departure_date
-		}
+		};
 
 		$scope.arrivalDateOptions = angular.extend({
 			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
@@ -460,8 +460,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		*/
 		$scope.shouldShowChangeStayDatesButton = function() {
 			return ($scope.isNightsEnabled() &&
-					!$scope.reservationData.reservation_card.is_hourly_reservation)
-		}
+					!$scope.reservationData.reservation_card.is_hourly_reservation);
+		};
 
 		$scope.isNightsEnabled = function() {
 			var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
@@ -495,7 +495,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			}
 			return isStayDatesChangeAllowed;
 
-		}
+		};
 
 		$scope.extendNights = function() {
 			// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
@@ -548,14 +548,14 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 					userId: $scope.guestCardData.userId
 				});
 			}
-		}
+		};
 
 		$scope.applyCustomRate = function() {
 			$scope.closeDialog(editPromptDialogId);
 			$timeout(function() {
 				$scope.editReservationRates($scope.reservationParentData.rooms[0], 0);
 			}, 1000);
-		}
+		};
 
 
 		$scope.goToRoomAndRates = function(state) {
@@ -705,9 +705,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 					return false;
 				}
 
-			})
+			});
 			return isSharerCheckedin;
-		}
+		};
 
 		$scope.responseValidation = {};
 
@@ -744,13 +744,13 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				onValidationFaliure = function(error) {
 					// console.log("onValidationFaliure", error);
 					$scope.$emit('hideLoader');
-				}
+				};
 			$scope.invokeApi(RVReservationCardSrv.validateStayDateChange, {
 				arrival_date: $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
 				dep_date: $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd'),
 				reservation_id: $scope.reservationData.reservation_card.reservation_id
 			}, onValidationSuccess, onValidationFaliure);
-		}
+		};
 
 		$scope.moveToRoomRates = function() {
 
@@ -796,7 +796,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			});
 
 			$scope.closeDialog();
-		}
+		};
 
 		$scope.changeStayDates = function() {
 			var newArrivalDate = $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd');
@@ -829,7 +829,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 							actual_amount: newDateDetails.rate_amount,
 							modified_amount: newDateDetails.rate_amount
 						}
-					}
+					};
 
 				}
 			}
@@ -872,7 +872,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 							data: JSON.stringify($scope.reverseCheckoutDetails.data)
 						});
 		};
-		console.log($scope.reverseCheckoutDetails.data)
+		console.log($scope.reverseCheckoutDetails.data);
 		if($scope.reverseCheckoutDetails.data.is_reverse_checkout_failed){
 			openRoomOccupiedPopup();
 			$scope.initreverseCheckoutDetails();

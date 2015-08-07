@@ -63,7 +63,7 @@
 
 
 }
-}
+};
 
 var dependencies = [
 '$scope','$rootScope','$state','$modal','checkoutRoomVerificationService','$timeout',

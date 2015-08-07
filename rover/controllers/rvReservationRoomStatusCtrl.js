@@ -199,7 +199,7 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 
 	$scope.goToRoomUpgrades = function(){
 		$state.go("rover.reservation.staycard.upgrades", {reservation_id:$scope.reservationData.reservation_card.reservation_id, "clickedButton": "upgradeButton"});
-	}
+	};
 
 	/**
 	 * utility method used to redirect to diary in edit mode
@@ -211,7 +211,7 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 			reservation_id: $scope.reservationData.reservation_card.reservation_id,
 			checkin_date: $scope.reservationData.reservation_card.arrival_date
 		});
-	}
+	};
 	/**
 	* function to trigger room assignment.
 	*/

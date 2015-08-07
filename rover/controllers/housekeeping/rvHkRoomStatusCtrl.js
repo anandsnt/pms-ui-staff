@@ -38,7 +38,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$rootScope.setPrevState = {
 			title: $filter( 'translate' )( 'DASHBOARD' ),
 			name: 'rover.dashboard'
-		}
+		};
 
 		// set title in header
 		$scope.setTitle($filter( 'translate')('ROOM_STATUS'));
@@ -112,7 +112,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.isStandAlone         = $rootScope.isStandAlone;
 		$scope.isMaintenanceStaff   = $rootScope.isMaintenanceStaff;
-		$scope.isMaintenanceManager = $rootScope.isMaintenanceManager
+		$scope.isMaintenanceManager = $rootScope.isMaintenanceManager;
 		$scope.hasActiveWorkSheet   = false;
 
 		$scope.roomTypes          = roomTypes;
@@ -340,7 +340,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.closeDialog = function() {
 		    $scope.errorMessage = "";
 		    ngDialog.close();
-		}
+		};
 
 		var $_findEmpAry = function() {
 			var workid = $scope.assignRoom.work_type_id || $scope.topFilter.byWorkType,
@@ -413,7 +413,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		            $scope.$emit('hideLoader');
 
 		            var assignee = _.find($scope.activeWorksheetEmp, function(emp) {
-		            	return emp.id === $scope.assignRoom.user_id
+		            	return emp.id === $scope.assignRoom.user_id;
 		            });
 		            $_tobeAssignedRoom.canAssign = false;
 		            $_tobeAssignedRoom.assigned_staff = {

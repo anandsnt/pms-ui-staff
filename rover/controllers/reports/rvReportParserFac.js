@@ -115,7 +115,7 @@ sntRover.factory('RVReportParserFac', [
             };
 
             var checkCancel = function(item) {
-                var check = !!options['checkCancel'] && excludeReports([reportUtils.getName('ARRIVAL'), reportUtils.getName('IN_HOUSE_GUEST')])
+                var check = !!options['checkCancel'] && excludeReports([reportUtils.getName('ARRIVAL'), reportUtils.getName('IN_HOUSE_GUEST')]);
                 return check ? !!item['cancel_reason'] : false;
             };
 

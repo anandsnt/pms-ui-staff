@@ -100,7 +100,7 @@ admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSr
 
 	$scope.addNewClicked = function(){
 		$scope.isAddMode = true;
-	}
+	};
   /*
    * To save/update room type details
    */

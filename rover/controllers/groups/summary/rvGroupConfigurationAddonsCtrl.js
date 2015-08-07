@@ -20,7 +20,7 @@ sntRover.controller('rvGroupConfigurationAddonsCtrl', [
 
 		var refreshAddonsScroller = function() {
 			$scope.refreshScroller("enhanceGroupStays");
-		}
+		};
 
 		// by default load Best Sellers addon
 		// Best Sellers in not a real charge code [just hard coding -1 as charge group id to fetch best sell addons]
@@ -37,7 +37,7 @@ sntRover.controller('rvGroupConfigurationAddonsCtrl', [
 				$scope.activeAddonCategoryId = -1;
 				$scope.fetchAddons();
 			}
-		}
+		};
 
 		/**
 		 * function to go back to reservation details
@@ -73,9 +73,9 @@ sntRover.controller('rvGroupConfigurationAddonsCtrl', [
 						}
 						if (item.post_type !== "") {
 							if (addonItem.stay !== "") {
-								addonItem.stay += " / " + item.post_type.description
+								addonItem.stay += " / " + item.post_type.description;
 							} else {
-								addonItem.stay = item.post_type.description
+								addonItem.stay = item.post_type.description;
 							}
 						}
 						addonItem.amountType = item.amount_type;
@@ -87,7 +87,7 @@ sntRover.controller('rvGroupConfigurationAddonsCtrl', [
 				});
 
 				refreshAddonsScroller();
-			}
+			};
 
 
 			var chargeGroupId = paramChargeGrpId === undefined ? '' : paramChargeGrpId;
@@ -105,7 +105,7 @@ sntRover.controller('rvGroupConfigurationAddonsCtrl', [
 						// 'rate_id': $scope.reservationData.rooms[0].rateId
 				}
 			});
-		}
+		};
 
 		if ($scope.isInAddonSelectionMode()) {
 			$scope.fetchAddons();
@@ -123,7 +123,7 @@ sntRover.controller('rvGroupConfigurationAddonsCtrl', [
 				closeByDocument: false,
 				closeByEscape: false
 			});
-		}
+		};
 
 		$scope.selectAddon = function(addon, addonCount) {
 			var onEnhanceSuccess = function(data) {
@@ -144,7 +144,7 @@ sntRover.controller('rvGroupConfigurationAddonsCtrl', [
 					"id": $scope.groupConfigData.summary.group_id
 				}
 			});
-		}
+		};
 
 		$scope.removeAddon = function(addon) {
 			var onRemoveAddonSuccess = function(data) {
@@ -163,6 +163,6 @@ sntRover.controller('rvGroupConfigurationAddonsCtrl', [
 					"id": $scope.groupConfigData.summary.group_id
 				}
 			});
-		}
+		};
 	}
 ]);

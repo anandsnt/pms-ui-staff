@@ -327,7 +327,7 @@ sntRover
         		'start_date'   : start_date,
         		'__start_date' : __start_date,
         		'arrival_time' : (hh < 10 ? '0' + hh : hh) + ':' + (mm === 0 ? '00' : mm)
-        	}
+        	};
         };
 
 		return {

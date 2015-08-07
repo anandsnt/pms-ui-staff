@@ -101,7 +101,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 			};
 			var fetchARNotes = function() {
 				$scope.invokeApi(RVCompanyCardSrv.fetchArAccountNotes, param, successCallbackFetchArNotes);
-			}
+			};
 
 			var successCallbackFetchArDetails = function(data) {
 				$scope.$emit("hideLoader");
@@ -155,18 +155,18 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 			console.log("company search inititaled");
 			console.log($scope.companies);
 			$scope.$broadcast("refreshCompaniesScroll");
-		})
+		});
 
 		$scope.$on("companySearchStopped", function() {
 			$scope.companySearchIntiated = false;
 			$scope.companies = [];
 			$scope.$broadcast("refreshCompaniesScroll");
-		})
+		});
 
 		$scope.$on("newCardSelected", function(id, values) {
 			$scope.searchMode = false;
 			$scope.$emit('hideLoader');
-		})
+		});
 
 		/**
 		 * function to handle click operation on company card, mainly used for saving
@@ -254,7 +254,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 
 		$scope.clickedSaveCard = function(cardType) {
 			saveContactInformation($scope.contactInformation);
-		}
+		};
 
 		/**
 		 * failure callback of save contact data
@@ -317,6 +317,6 @@ sntRover.controller('companyResults', ['$scope', '$timeout',
 			$timeout(function() {
 				$scope.refreshScroller('companyResultScroll');
 			}, 500);
-		})
+		});
 	}
 ]);

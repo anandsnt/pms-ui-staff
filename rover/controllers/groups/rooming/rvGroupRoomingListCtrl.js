@@ -215,32 +215,32 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             var class_ = '';
             switch (reservationStatus.toUpperCase()) {
                 case "RESERVED":
-                    class_ = 'arrival'
+                    class_ = 'arrival';
                     break;
 
                 case "CHECKING_IN":
-                    class_ = 'check-in'
+                    class_ = 'check-in';
                     break;
 
                 case "CHECKEDIN":
-                    class_ = 'inhouse'
+                    class_ = 'inhouse';
                     break;
 
                 case "CHECKING_OUT":
-                    class_ = 'check-out'
+                    class_ = 'check-out';
                     break;
 
                 case "CHECKEDOUT":
-                    class_ = 'departed'
+                    class_ = 'departed';
                     break;
 
                 case "CANCELED":
-                    class_ = 'cancel'
+                    class_ = 'cancel';
                     break;
 
                 case "NOSHOW":
                 case "NOSHOW_CURRENT":
-                    class_ = 'no-show'
+                    class_ = 'no-show';
                     break;
 
                 default:
@@ -381,7 +381,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             //we have to populate possible number of rooms & occupancy against a
             $scope.changedSelectedRoomType();
-        }
+        };
 
 
         /**
@@ -391,7 +391,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         var attachBillingInfoToReservations = function() {
 
             // we need to attach billing info of group to all the  corresponding reservations
-            var reservationIds = _.pluck($scope.newReservations, "id")
+            var reservationIds = _.pluck($scope.newReservations, "id");
             var params = {
                 group_id: $scope.groupConfigData.summary.group_id,
                 reservation_ids: reservationIds
@@ -1476,12 +1476,12 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 isStaying: rStatus === "CHECKEDIN" || rStatus === "CHECKING_OUT",
                 canChekin: !!reservation.room_no && new tzIndependentDate(reservation.arrival_date) === new tzIndependentDate($rootScope.businessDate),
                 isGuestAttached: !!reservation.lastname
-            }
-        }
+            };
+        };
 
         $scope.checkoutReservation = function(reservation) {
             //  It navigates to the Guest Bill for the selected record.
-        }
+        };
 
         /**
          * event triggered by ngrepeatend directive
@@ -1539,7 +1539,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                     }, 1200);
                 });
 
-        }
+        };
 
         /**
          * add the print orientation before printing
@@ -1567,7 +1567,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             $scope.resevationsBeforePrint = util.deepCopy($scope.reservations);
             $scope.reservations = data.results;
             $scope.print_type = 'rooming_list';
-        }
+        };
 
         /**
          * Function to fetch Rooming list for print.
@@ -1600,7 +1600,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                         closeByEscape: false
                     });
                 }
-            }
+            };
             /**
              * Function to send e-mail of Rooming list.API call goes here.
              * @return - None
@@ -1612,17 +1612,17 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 mailFailed = function(errorMessage) {
                     $scope.errorMessage = errorMessage;
                     $scope.closeDialog();
-                }
+                };
             var params = {
                 "to_address": mailTo,
                 "group_id": $scope.groupConfigData.summary.group_id
-            }
+            };
             $scope.callAPI(rvGroupRoomingListSrv.emailInvoice, {
                 successCallBack: mailSent,
                 failureCallBack: mailFailed,
                 params: params
             });
-        }
+        };
 
         $scope.printRegistrationCards = function() {
             // add the print orientation after printing
@@ -1735,7 +1735,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             $scope.roomingListState = {
                 editedReservationStart: "",
                 editedReservationEnd: ""
-            }
+            };
 
 
             //IF you are looking for where the hell the API is CALLING

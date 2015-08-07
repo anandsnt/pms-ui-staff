@@ -98,7 +98,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 							// push each room into each employee
 							_.each(worksheet.work_assignments, function(assignments) {
 								if (!!assignments.room) {
-									$scope.multiSheetState.assignments[worksheet.employee_id]['rooms'].push(assignments.room)
+									$scope.multiSheetState.assignments[worksheet.employee_id]['rooms'].push(assignments.room);
 								};
 							});
 						});
@@ -140,7 +140,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 						item.ticked = false;
 
 						foundMatch = _.find(dailyWTemp, function(emp) {
-							return emp.id === item.id
+							return emp.id === item.id;
 						});
 
 						if (foundMatch) {
@@ -227,7 +227,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				work_type_id: $scope.workTypes[0].id
 			},
 			assignments: {}
-		}
+		};
 
 		$scope.filters = {
 			selectedFloor: "",
@@ -259,12 +259,12 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 					am: "AM"
 				}
 			}
-		}
+		};
 
 		$scope.closeDialog = function() {
 			$scope.errorMessage = "";
 			ngDialog.close();
-		}
+		};
 
 		/**
 		 * Handles RESTRICTING selected employees not to exceed $scope.multiSheetState.maxColumns
@@ -284,14 +284,14 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				});
 				_.each(notTicked, function(d) {
 					d.checkboxDisabled = true;
-				})
+				});
 			} else {
 				var disabledEntries = _.where($scope.employeeList, {
 					checkboxDisabled: true
 				});
 				_.each(disabledEntries, function(d) {
 					d.checkboxDisabled = false;
-				})
+				});
 			}
 		};
 
@@ -304,7 +304,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				$scope.closeDialog();
 				$scope.$emit('hideLoader');
 			}, 10);
-		}
+		};
 
 		$scope.fetchAllUnassigned = function(options) {
 			var callback = function(data) {
@@ -341,7 +341,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				closeByDocument: true,
 				scope: $scope
 			});
-		}
+		};
 
 		$scope.showFilter = function() {
 			ngDialog.open({
@@ -350,13 +350,13 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				closeByDocument: true,
 				scope: $scope
 			});
-		}
+		};
 
 		// turn off 'save first' and state change
 		$scope.onCancel = function() {
 			$_shouldSaveFirst = false;
 			$state.go('rover.workManagement.start');
-		}
+		};
 
 		$scope.navigateToIndvl = function(id) {
 			if (id) {
@@ -366,7 +366,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 					from: 'multiple'
 				});
 			}
-		}
+		};
 
 
 		// Super awesome method to remove/add rooms from unassigned pool
@@ -376,7 +376,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			var match = {};
 			if ($scope.filters.showAllRooms) {
 				thatWT = _.find($_allUnassigned, function(item) {
-					return item.id === room.work_type_id
+					return item.id === room.work_type_id;
 				});
 
 				match = _.find(thatWT.unassigned, function(item) {
@@ -423,7 +423,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 					updateSummary(assignee);
 				}
 			}
-		}
+		};
 
 		/**
 		 * Unassign room to the respective maid on drop
@@ -440,15 +440,15 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			roomList.splice(indexOfDropped, 1);
 			$scope.filterUnassigned();
 			updateSummary(assignee);
-		}
+		};
 
 		$scope.onDateChanged = function() {
 			updateView(true);
-		}
+		};
 
 		$scope.onWorkTypeChanged = function() {
 			updateView(true);
-		}
+		};
 
 		/**
 		 * UPDATE the view IFF the list has been changed
@@ -459,7 +459,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				if (employee.ticked) {
 					x.push(employee.id);
 				}
-			})
+			});
 			if ($(x).not(selectionHistory).length !== 0 || $(selectionHistory).not(x).length !== 0) {
 				updateView();
 			}

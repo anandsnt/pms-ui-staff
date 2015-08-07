@@ -172,7 +172,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 			);
 
 			return deferred.promise;
-		}
+		};
 
 		/**
 		 * Function to get Room type availablity as well as best availbale rate
@@ -256,7 +256,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 				});
 
 			return deferred.promise;
-		}
+		};
 
 		this.searchTravelAgentCards = function(query) {
 			var deferred = $q.defer(),
@@ -270,7 +270,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 				});
 
 			return deferred.promise;
-		}
+		};
 
 		this.updateGroupSummary = function(data) {
 			var deferred = $q.defer(),
@@ -284,7 +284,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 				});
 
 			return deferred.promise;
-		}
+		};
 
 		this.saveGroupSummary = function(data) {
 			var deferred = $q.defer(),
@@ -298,7 +298,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 				});
 
 			return deferred.promise;
-		}
+		};
 
 		this.addGroupEnhancement = function(data) {
 			var deferred = $q.defer(),
@@ -313,7 +313,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 
 			return deferred.promise;
 
-		}
+		};
 
 		this.removeGroupEnhancement = function(data) {
 			var deferred = $q.defer(),
@@ -328,7 +328,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 
 			return deferred.promise;
 
-		}
+		};
 
 
 		this.getGroupEnhancements = function(data) {
@@ -343,7 +343,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 				});
 
 			return deferred.promise;
-		}
+		};
 
 		this.saveGroupNote = function(data) {
 			var deferred = $q.defer(),
@@ -356,7 +356,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 					deferred.reject(data);
 				});
 			return deferred.promise;
-		}
+		};
 
 
 
@@ -371,7 +371,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 					deferred.reject(data);
 				});
 			return deferred.promise;
-		}
+		};
 
 		this.updateRoomingListItem = function(data) {
 			var deferred = $q.defer(),
@@ -383,7 +383,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 					deferred.reject(data);
 				});
 			return deferred.promise;
-		}
+		};
 
 		this.removeRoomingListItem = function(data) {
 			var deferred = $q.defer(),
@@ -395,7 +395,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 					deferred.reject(data);
 				});
 			return deferred.promise;
-		}
+		};
 
 		this.releaseRooms = function(data) {
 			var deferred = $q.defer(),
@@ -407,7 +407,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 					deferred.reject(data);
 				});
 			return deferred.promise;
-		}
+		};
 
 		/**
 		 * Method used to fetch appropriate Rates for the group
@@ -424,7 +424,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 					deferred.reject(data);
 				});
 			return deferred.promise;
-		}
+		};
 
 		this.toggleHideRate = function( params ){
 			var deferred = $q.defer(),
@@ -446,7 +446,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 				    deferred.reject(data);
 				});
 			return deferred.promise;
-		}
+		};
 
 	}
 ]);

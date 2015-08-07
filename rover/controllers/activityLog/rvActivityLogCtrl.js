@@ -97,13 +97,13 @@ sntRover.controller('RVActivityLogCtrl',[
         else{
             return true;
         }
-    }
+    };
     $scope.updateReportFilter = function(){
         $scope.isUpdateReportFilter = true;
         $scope.initPaginationParams();
         $scope.initSort();
         $scope.updateReport();
-    }
+    };
 
     $scope.updateReport = function(){
         var callback = function(data) {
@@ -121,7 +121,7 @@ sntRover.controller('RVActivityLogCtrl',[
                 }
                 $scope.end = $scope.start + $scope.activityLogData.length - 1;
                 $scope.$emit('hideLoader');
-        }
+        };
         var params = {
                 id: $scope.$parent.reservation.reservation_card.reservation_id,
                 page: $scope.page,
@@ -137,7 +137,7 @@ sntRover.controller('RVActivityLogCtrl',[
         params['sort_order'] = $scope.sort_order;
         params['sort_field'] = $scope.sort_field;
         $scope.invokeApi(RVActivityLogSrv.filterActivityLog, params, callback);
-    }
+    };
 
     /*
     * Sorting
@@ -149,7 +149,7 @@ sntRover.controller('RVActivityLogCtrl',[
         $scope.sortOrderOfUserDSC = false;
         $scope.sortOrderOfDateDSC = false;
         $scope.sortOrderOfActionDSC = false;
-    }
+    };
 
     $scope.sortByUserName = function(){
         $scope.sort_field ="USERNAME";
@@ -164,7 +164,7 @@ sntRover.controller('RVActivityLogCtrl',[
             $scope.sort_order="asc";
         }
         $scope.updateReport();
-    }
+    };
 
     $scope.sortByDate = function(){
         $scope.sort_field ="DATE";
@@ -179,7 +179,7 @@ sntRover.controller('RVActivityLogCtrl',[
             $scope.sort_order="asc";
         }
         $scope.updateReport();
-    }
+    };
 
     $scope.sortByAction = function(){
         $scope.sort_field ="ACTION";
@@ -194,7 +194,7 @@ sntRover.controller('RVActivityLogCtrl',[
             $scope.sort_order="asc";
         }
         $scope.updateReport();
-    }
+    };
 
     /*
     * Pagination
@@ -211,7 +211,7 @@ sntRover.controller('RVActivityLogCtrl',[
         $scope.perPage = 50;
         $scope.nextAction = false;
         $scope.prevAction = false;
-    }
+    };
 
     $scope.loadNextSet = function() {
         $scope.page++;
@@ -296,7 +296,7 @@ sntRover.controller('RVActivityLogCtrl',[
             focus: function(event, ui) {
                 return false;
             }
-        }
+        };
         $scope.listUserAutoCompleteOptions = angular.extend({
             position: {
                 my: 'left bottom',
@@ -312,7 +312,7 @@ sntRover.controller('RVActivityLogCtrl',[
             }
         }, userAutoCompleteCommon);
 
-    }
+    };
 
 
     /*
@@ -325,17 +325,17 @@ sntRover.controller('RVActivityLogCtrl',[
     $scope.clearToDate = function()
     {
         $scope.toDate ="";
-     }
+     };
     $scope.clearFromDate = function()
     {
        $scope.fromDate = "";
 
-    }
+    };
     $scope.userChanged = function(){
         if($scope.userEmail===''){
            $scope.user_id=0;
         }
-    }
+    };
     $scope.userEmail='';
 	$scope.init = function(){
         //setting the header caption
@@ -394,7 +394,7 @@ sntRover.controller('RVActivityLogCtrl',[
                 preventClicking = true;
                 $scope.eventTimestamp = event.timeStamp;
             }
-        }
+        };
 
         //accordion options, will add/remove class on toggling
         $scope.accordionInitiallyNotCollapsedOptions = {

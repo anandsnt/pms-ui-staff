@@ -548,7 +548,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 
   	$scope.escapeNull = function(value, replaceWith){
 		return escapeNull(value, replaceWith);
-    }
+    };
   	/**
     * function to know if the charge code is selected, to adjust in UI
     */
@@ -639,7 +639,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 var params =  angular.copy($scope.selectedEntity);
 	            $scope.invokeApi(RVBillinginfoSrv.saveRoute, params, $scope.saveSuccessCallback);
 	        }
-	    }
+	    };
 
         /**
         * function to create new bill

@@ -93,7 +93,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				});
 			});
 
-		}
+		};
 
 		/**
 		 * API calling method to get the transaction details
@@ -484,13 +484,13 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				mailFailed = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
 					$scope.closeDialog();
-				}
+				};
 
 			var params = {
 				"bill_number": billNumber,
 				"to_address": mailTo,
 				"is_group": !!$scope.groupConfigData
-			}
+			};
 
 			if (!!$scope.groupConfigData) {
 				params.group_id = $scope.groupConfigData.summary.group_id;
@@ -504,7 +504,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				params: params
 			});
 
-		}
+		};
 
 		$scope.mailInvoice = function(billNumber) {
 			if ($scope.groupConfigData && $scope.groupConfigData.summary && !!$scope.groupConfigData.summary.contact_email) {
@@ -521,7 +521,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					})
 				});
 			}
-		}
+		};
 
 		$scope.printInvoice = function() {
 				$('.nav-bar').addClass('no-print');
@@ -545,7 +545,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					$('.card-tabs-nav').removeClass('no-print');
 
 				}, 100);
-			}
+			};
 			//CICO-13903 End
 
 		//Direct Bill payment starts here
@@ -556,7 +556,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				//Fetch data again to refresh the screen with new data
 				getTransactionDetails();
 				$scope.diretBillpaymentData = {};
-			}
+			};
 			$scope.callAPI(rvAccountTransactionsSrv.submitPaymentOnBill, {
 				successCallBack: successPayment,
 				params: $scope.diretBillpaymentData
@@ -654,7 +654,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
             //Lets start the processing
             $q.all(promises)
                 .then(successFetchOfAllReqdForTransactionDetails, failedToFetchOfAllReqdForTransactionDetails);
-        }
+        };
 
 
 		/**

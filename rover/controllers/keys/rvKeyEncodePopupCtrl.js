@@ -117,15 +117,15 @@ console.log($scope.encoderTypes);
 		}
 		if ($scope.numberOfKeysSelected > 0){
 			if($scope.isRemoteEncodingEnabled && $scope.encoderSelected === ""){
-				return false
+				return false;
 			}
-			return true
+			return true;
 		}
 	};
 
 	$scope.selectedEncoder = function(){
 		sessionStorage.encoderSelected = $scope.encoderSelected;
-	}
+	};
 	/*
 	* If the device is not connected, try the connection again after 1 sec.
 	* repeat the connection check for 10 seconds.

@@ -219,7 +219,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
             };
             $scope.callAPI(rvGroupConfigurationSrv.removeRoomingListItem, options);
         }
-    }
+    };
 
     /**
      * when the reservation from choosed
@@ -228,7 +228,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
     var reservationFromDateChoosed = function(date, datePickerObj) {
         $scope.roomingListState.editedReservationStart = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
         runDigestCycle();
-    }
+    };
 
     /**
      * when the reservation to choosed
@@ -237,7 +237,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
     var reservationToDateChoosed = function(date, datePickerObj) {
         $scope.roomingListState.editedReservationEnd = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
         runDigestCycle();
-    }
+    };
 
     /**
      * utility function to set datepicker options

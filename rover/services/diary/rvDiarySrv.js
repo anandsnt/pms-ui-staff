@@ -697,7 +697,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                         departure_date;
 
                                     arrival_date = new Date (time.x_n);
-                                    arrival_date.setHours (res_arrival.getHours(), res_arrival.getMinutes(), 0)
+                                    arrival_date.setHours (res_arrival.getHours(), res_arrival.getMinutes(), 0);
 
                                     departure_date = new Date (arrival_date.getTime() + diff);
 
@@ -732,7 +732,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                                 'room',
                                 'availability_count'
                             ));
-                    })
+                    });
 
 
                     return q.promise;
@@ -872,7 +872,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         end_time:           data.end_time,
                         rate_type:          data.rate_type
 
-                    }
+                    };
                     if(data.rate_type === 'Corporate') {
                         if(data.account_id){
                             _.extend(params, { account_id: data.account_id });
@@ -960,7 +960,7 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         end_date:           data.end_date,
                         end_time:           data.end_time,
                         rate_type:          data.rate_type
-                    }
+                    };
 
                     if(data.rate_type === 'Corporate') {
                         if(data.account_id){

@@ -49,5 +49,5 @@ sntRover.controller('RVReservationNotesPopupCtrl',['$scope', function($scope){
 
 	var refreshScroller = function() {
         $scope.refreshScroller('reservationNotes');
-    }
+    };
 }]);

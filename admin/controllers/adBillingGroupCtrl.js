@@ -139,7 +139,7 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
 			}
 		});
 		$scope.billingGroupData.isAllChargeCodeSelected = !$scope.billingGroupData.isAllChargeCodeSelected;
-	}
+	};
 	/*
     * To remove the selected charge code with id
     *

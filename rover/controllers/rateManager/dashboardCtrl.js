@@ -168,13 +168,13 @@ sntRover
 
             $scope.getSortOption = function(option){
                 if(option === "HIGH_TO_LOW"){
-                    return "Highest Rate"
+                    return "Highest Rate";
                 }
                 if(option === "LOW_TO_HIGH"){
-                    return "Lowest Rate"
+                    return "Lowest Rate";
                 }
-                return "Alphabetical"
-            }
+                return "Alphabetical";
+            };
 
             $scope.ratesDisplayed = [];
 

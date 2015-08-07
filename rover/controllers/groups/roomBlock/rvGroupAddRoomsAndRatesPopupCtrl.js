@@ -85,7 +85,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 				if ($scope.groupConfigData.summary.rate !== -1) {
 					var selectedRateDetails = _.findWhere($scope.groupConfigData.summary.selected_room_types_and_rates, {
 						room_type_id: roomType.room_type_id
-					})
+					});
 					row.single_rate = selectedRateDetails.single_rate;
 					row.double_rate = selectedRateDetails.double_rate;
 					row.extra_adult_rate = selectedRateDetails.extra_adult_rate;
@@ -216,7 +216,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 			});
 
 			//yes final Boolean is on the way
-			return (_.indexOf(selectedIdList, roomType.room_type_id) >= 0)
-		}
+			return (_.indexOf(selectedIdList, roomType.room_type_id) >= 0);
+		};
 	}
 ]);

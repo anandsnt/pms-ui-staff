@@ -6,7 +6,7 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
     this.dashBoardDetails = {};
     this.getUserDetails = function(){
         return userDetails;
-    }
+    };
  	/*
   	* To fetch user details
   	* @return {object} user details

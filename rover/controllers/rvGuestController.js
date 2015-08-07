@@ -540,7 +540,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.showContractedRates({
 					companyCard: '',
 					travelAgent: $scope.reservationDetails.travelAgent.id
-				})
+				});
 			} else if (cardType === 'guest') {
 				$scope.$broadcast('guestCardDetached');
 				$scope.viewState.pendingRemoval.status = true;
@@ -548,7 +548,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.showContractedRates({
 					companyCard: $scope.reservationDetails.companyCard.id,
 					travelAgent: ''
-				})
+				});
 			}
 		};
 
@@ -610,7 +610,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			'city': '',
 			'loyaltyNumber': '',
 			'email': ''
-		}
+		};
 
 		var shouldSearch = function() {
 			if (previousSearchData.lastName === $scope.searchData.guestCard.guestLastName && previousSearchData.firstName === $scope.searchData.guestCard.guestFirstName && previousSearchData.city === $scope.searchData.guestCard.guestCity && previousSearchData.loyaltyNumber === $scope.searchData.guestCard.guestLoyaltyNumber && previousSearchData.email === $scope.searchData.guestCard.email) {
@@ -623,7 +623,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			previousSearchData.email = $scope.searchData.guestCard.email;
 
 			return ($scope.searchData.guestCard.guestLastName.length >= 2 || $scope.searchData.guestCard.guestFirstName.length >= 1 || $scope.searchData.guestCard.guestCity !== '' || $scope.searchData.guestCard.guestLoyaltyNumber !== '' || $scope.searchData.guestCard.email !== '');
-		}
+		};
 
 		$scope.searchCompany = function() {
 			var successCallBackFetchCompanies = function(data) {

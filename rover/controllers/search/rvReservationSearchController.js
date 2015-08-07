@@ -63,7 +63,7 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
 
       }, 150);
 
-    }
+    };
     // saving/reseting search params to $vault
     $vault.set('searchType', !!$stateParams.type ? $stateParams.type : '');
 

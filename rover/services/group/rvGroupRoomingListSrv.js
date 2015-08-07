@@ -219,7 +219,7 @@ sntRover.service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 					deferred.reject(data);
 				});
 			return deferred.promise;
-		}
+		};
 
 		this.fetchRegistrationCardPrintData = function(params) {
 			var deferred = $q.defer();

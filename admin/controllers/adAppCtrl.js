@@ -221,7 +221,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					  };
 			          angular.forEach($scope.menu, function(menu, index) {
 			              if(menu.title === 'MENU_FRONT_DESK'){
-			                menu.submenu.push(eodSubMenu)
+			                menu.submenu.push(eodSubMenu);
 			              }
 			          });
        			};
@@ -463,7 +463,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		       * TODO: Fix this bug in ng-translate and implement in this here.
 		       */
 		      setTimeout(function() {
-		        $translate('NA')
+		        $translate('NA');
 		      }, 1000); //Word around.
 		    } else {
 		      $translate.use('EN');

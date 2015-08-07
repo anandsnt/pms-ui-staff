@@ -9,7 +9,7 @@ var DesktopCardOperations = function(){
 		that.portNumber = portNumber;
 		that.swipeCallbacks = swipeCallbacks;
 		createConnection();
-	}
+	};
 
 	var createConnection = function(){
 		//ws = new WebSocket("wss://localhost:" + that.portNumber);
@@ -39,11 +39,11 @@ var DesktopCardOperations = function(){
             //console.log("Websocket server is not running.");
             that.swipeCallbacks.failureCallBack();
         };
-	}
+	};
 
 
 
 
 
 
-}
+};

@@ -57,8 +57,8 @@ admin.controller('ADCampaignsListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADCam
 			}
 
 			$scope.reloadTable();
-		}
-		var params = {"id" : id}
+		};
+		var params = {"id" : id};
 		$scope.invokeApi(ADCampaignSrv.deleteCampaign, params, deleteSuccess);
 	};
 

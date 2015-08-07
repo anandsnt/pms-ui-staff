@@ -71,7 +71,7 @@ function BaseCtrl($scope) {
 			failureCallBackParameters = options["failureCallBackParameters"] ? options["failureCallBackParameters"] : null;
 
 		if(showLoader){
-			$scope.$emit('showLoader')
+			$scope.$emit('showLoader');
 		}
 
 
@@ -105,7 +105,7 @@ function BaseCtrl($scope) {
 				}
 			}
 		);
-	}
+	};
 
 	//handle drag and drop events
 	$scope.hideCurrentDragItem = function(ev, ui){

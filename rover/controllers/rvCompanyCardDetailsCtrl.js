@@ -250,7 +250,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			};
 			var fetchARNotes = function() {
 				$scope.invokeApi(RVCompanyCardSrv.fetchArAccountNotes, param, successCallbackFetchArNotes);
-			}
+			};
 
 			var successCallbackFetchArDetails = function(data) {
 				$scope.$emit("hideLoader");
@@ -509,7 +509,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			 * Since we are explicitily triggering click event, this should be outside of angular digest loop.
 			 */
 			$timeout(function() {
-				angular.element('#uplaodCompanyLogo').trigger('click')
+				angular.element('#uplaodCompanyLogo').trigger('click');
 			}, 0, false);
 		};
 

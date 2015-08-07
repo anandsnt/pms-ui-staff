@@ -134,7 +134,7 @@ var GridRowItemDrag = React.createClass({
 
 			//towards right
 			if(e.pageX > state.origin_x) {
-				draggingTopOrBottom = false
+				draggingTopOrBottom = false;
 				if((e.pageX + width_of_res) > window.innerWidth) {
 					if((xScPos - width_of_res) < scroller.maxScrollX) {
 						xScPos = scroller.maxScrollX;

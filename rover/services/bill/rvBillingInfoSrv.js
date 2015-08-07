@@ -56,7 +56,7 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 
 	this.fetchAllBillingGroups = function(){
 		var deferred = $q.defer();
-		var url = '/api/bill_routings/billing_groups?is_default_routing=true'
+		var url = '/api/bill_routings/billing_groups?is_default_routing=true';
 			BaseWebSrvV2.getJSON(url).then(function(data) {
 
 			   	 deferred.resolve(data);
@@ -70,7 +70,7 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 
 	this.fetchAllChargeCodes = function(){
 		var deferred = $q.defer();
-		var url = '/api/bill_routings/charge_codes?is_default_routing=true'
+		var url = '/api/bill_routings/charge_codes?is_default_routing=true';
 			BaseWebSrvV2.getJSON(url).then(function(data) {
 
 			   	 deferred.resolve(data);

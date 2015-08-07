@@ -28,7 +28,7 @@
 			$scope.isPosting = false;
 		});
 	};
-}
+};
 
 var dependencies = [
 '$scope','$rootScope','$state','$stateParams','earlyCheckinService',

@@ -118,7 +118,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	var $_backTitleDict = {
 		'SHOWING DASHBOARD' : 'DASHBOARD',
 		'RESERVATIONS'      : 'CREATE RESERVATION'
-	}
+	};
 
 	var $_savePrevStateTitle = function(title) {
 		var upperCase = title.toUpperCase();

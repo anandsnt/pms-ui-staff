@@ -37,7 +37,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 				"page"                 : 1,
 				"perPage"              : $window.innerWidth < 599 ? 25 : 50
 			};
-		}
+		};
 
 		this.currentFilters = this.initFilters();
 
@@ -176,7 +176,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 				});
 
 			return deferred.promise;
-		}
+		};
 
 		// batch loading a lot of things
 		this.fetchPayload = function(passedParams) {

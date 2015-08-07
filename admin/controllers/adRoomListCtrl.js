@@ -27,7 +27,7 @@ admin.controller('adRoomListCtrl', ['$scope','ADRoomSrv', 'ngTableParams', '$fil
 
 		};
 		$scope.invokeApi(ADRoomSrv.fetchRoomList, getParams, fetchSuccessOfItemList);
-	}
+	};
 
 
 	$scope.loadTable = function(){
@@ -42,15 +42,15 @@ admin.controller('adRoomListCtrl', ['$scope','ADRoomSrv', 'ngTableParams', '$fil
 		        getData: $scope.fetchTableData
 		    }
 		);
-	}
+	};
 	$scope.deleteRoom = function(index, room_id){
 			var successCallBack = function(){
 			$scope.$emit('hideLoader');
 			$scope.data.splice(index, 1);
 			$scope.tableParams.page(1);
         	$scope.tableParams.reload();
-		}
+		};
 	$scope.invokeApi(ADRoomSrv.deleteRoom, {'room_id': room_id}, successCallBack);
-	}
+	};
 	$scope.loadTable();
 }]);

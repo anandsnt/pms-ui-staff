@@ -190,7 +190,7 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
       $timeout(function() {
         $scope.refreshScroller('contact_info');
       }, 700);
-    }
+    };
     $scope.$on('CONTACTINFOLOADED', refreshContactsScroll);
     $scope.$on('REFRESHLIKESSCROLL', refreshContactsScroll);
   }

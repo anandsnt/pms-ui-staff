@@ -10,7 +10,7 @@ sntRover.controller('RVValidateEmailCtrl',['$scope', '$state', 'ngDialog', 'RVCo
 			$scope.callBackMethodCheckout();
 		}
 		ngDialog.close();
-	}
+	};
 	// To handle submit & goto checkout click
 	$scope.submitAndGoToCheckout = function(){
 		if($scope.saveData.email === ""){

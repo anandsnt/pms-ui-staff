@@ -59,7 +59,7 @@ $scope.loadTable = function(){
             getData: $scope.fetchTableData
         }
     );
-  }
+  };
 
   $scope.loadTable();
 
@@ -124,10 +124,10 @@ $scope.loadTable = function(){
   	reservations = [];
   	angular.forEach($scope.emailDatas,function(item, index) {
        if(item.is_selected) {
-         reservations.push(item.reservation_id)
+         reservations.push(item.reservation_id);
        }
   });
-  	var emailSendingData = {'reservations' : reservations}
+  	var emailSendingData = {'reservations' : reservations};
     var sendMailClikedSuccessCallback = function(data) {
         $scope.$emit('hideLoader');
         $scope.successMessage = data.message;
