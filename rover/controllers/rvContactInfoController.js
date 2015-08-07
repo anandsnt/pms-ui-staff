@@ -54,10 +54,10 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
         var dataSource = $scope.guestCardData.contactInfo;
         var data = {
           'firstname': dataSource.first_name,
-          'lastname': dataSource.last_name,          
+          'lastname': dataSource.last_name,
           'vip': dataSource.vip,
           'avatar': avatarImage
-        };        
+        };
         if (dataSource.address) {
           if ($scope.escapeNull(dataSource.address.city).toString().trim() !== '' || $scope.escapeNull(dataSource.address.state).toString().trim() !== '') {
             data.location = (dataSource.address.city + ', ' + dataSource.address.state);
@@ -77,18 +77,18 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
 
       var createUserInfoSuccessCallback = function(data) {
         $scope.$emit('hideLoader');
-        if (typeof $scope.guestCardData.contactInfo.user_id == "undefined" || $scope.guestCardData.userId == "" || $scope.guestCardData.userId == null || typeof $scope.guestCardData.userId == 'undefined') {
-          if ($scope.viewState.identifier == "STAY_CARD" || ($scope.viewState.identifier == "CREATION" && $scope.viewState.reservationStatus.confirm)) {
+        if (typeof $scope.guestCardData.contactInfo.user_id === "undefined" || $scope.guestCardData.userId === "" || $scope.guestCardData.userId === null || typeof $scope.guestCardData.userId === 'undefined') {
+          if ($scope.viewState.identifier === "STAY_CARD" || ($scope.viewState.identifier === "CREATION" && $scope.viewState.reservationStatus.confirm)) {
             $scope.viewState.pendingRemoval.status = false;
             $scope.viewState.pendingRemoval.cardType = "";
             if ($scope.reservationDetails.guestCard.futureReservations <= 0) {
               $scope.replaceCardCaller('guest', {
                 id: data.id
               }, false);
-            } else {             
+            } else {
                 $scope.checkFuture('guest', {
                   id: data.id
-                });              
+                });
             }
             // $scope.replaceCard('guest', {
             //   id: data.id
@@ -120,7 +120,7 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
        * change date format for API call
        */
       presentContactInfo = RVContactInfoSrv.completeContactInfoClone;
-	
+
       var dataToUpdate = JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
       var dataUpdated = false;
       if (angular.equals(dataToUpdate, presentContactInfo)) {
@@ -134,7 +134,7 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
         dataToUpdate = dclone(dataToUpdate, unwantedKeys);
       };
 
-      if (typeof dataToUpdate.address == "undefined") {
+      if (typeof dataToUpdate.address === "undefined") {
         dataToUpdate.address = {};
       }
 
@@ -145,7 +145,7 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
       if (!dataUpdated && !newGuest) {
         $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
       } else if (newGuest) {
-        if (typeof data.data.is_opted_promotion_email == 'undefined') {
+        if (typeof data.data.is_opted_promotion_email === 'undefined') {
           data.data.is_opted_promotion_email = false;
         }
         $scope.invokeApi(RVContactInfoSrv.createGuest, data, createUserInfoSuccessCallback, createUserInfoFailureCallback);
@@ -163,7 +163,7 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
      */
     $scope.$on('saveContactInfo', function() {
       $scope.errorMessage = "";
-      if (typeof $scope.guestCardData.contactInfo.user_id == "undefined" || $scope.guestCardData.userId == "" || $scope.guestCardData.userId == null || typeof $scope.guestCardData.userId == 'undefined') {
+      if (typeof $scope.guestCardData.contactInfo.user_id === "undefined" || $scope.guestCardData.userId === "" || $scope.guestCardData.userId === null || typeof $scope.guestCardData.userId === 'undefined') {
         $scope.saveContactInfo(true);
       } else {
         $scope.saveContactInfo();

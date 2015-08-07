@@ -1,26 +1,37 @@
 <div style="display: block;" id="add-new" class="edit-data">
-	<div class="data-holder">
-		<!-- Edit Brands -->
-		<form class="form inline-form float">
-			<div class="form-title">
-				<h3><span translate>ADD_NEW</span> {{'RATE_TYPE' | translate}}</h3>
-				<em class="status"> {{ 'MANDATORY_FIELDS_MESSAGE1' | translate }} <strong>*</strong> {{ 'MANDATORY_FIELDS_MESSAGE2' | translate }} </em>
-			</div>
-			<fieldset class="holder left float">
-				<ad-textbox inputtype="text" value="rateTypeData.name"
-				label = " {{'RATE_TYPE' | translate}}" required = "yes" placeholder = "{{'RATE_TYPE_PLACEHOLDER' | translate}}"
-				styleclass = "full-width"></ad-textbox>
-			</fieldset>
-
-			<div class="actions float">
-				<button type="button" id="cancel" class="button blank edit-data-inline"  ng-click="clickCancel()" translate>
-					CANCEL
-				</button>
-				<button type="button" id="save" class="button green edit-data-inline" ng-click="saveRateType()" translate>
-					SAVE_CHANGES
-				</button>
-			</div>
-
-		</form>
-	</div>
+    <div class="data-holder">
+        <!-- Edit Brands -->
+        <form class="form inline-form float">
+            <div class="form-title">
+                <h3><span translate>ADD_NEW</span> {{'RATE_TYPE' | translate}}</h3>
+                <em class="status"> {{ 'MANDATORY_FIELDS_MESSAGE1' | translate }} <strong>*</strong> {{ 'MANDATORY_FIELDS_MESSAGE2' | translate }} </em>
+            </div>
+            <fieldset class="holder left float">
+                <ad-textbox inputtype="text" value="rateTypeData.name" label=" {{'RATE_TYPE' | translate}}" required="yes" placeholder="{{'RATE_TYPE_PLACEHOLDER' | translate}}" styleclass="full-width"></ad-textbox>
+            </fieldset>
+            <fieldset class="holder right float">
+                <div class="entry">
+                    <div class="entry full-width">
+                        <label for="rate-classification">
+                            RATE CLASSIFICATION
+                        </label>
+                        <div class="select">
+                            <select id="rate-classification" ng-model="rateTypeData.classification.id">
+                                <option value="" data-text="Not set" class="placeholder">Choose classification type</option>
+                               	<option ng-repeat="classification in rateClassifications" value="{{classification.id}}">{{classification.description}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="actions float">
+                <button type="button" id="cancel" class="button blank edit-data-inline" ng-click="clickCancel()" translate>
+                    CANCEL
+                </button>
+                <button type="button" id="save" class="button green edit-data-inline" ng-click="saveRateType()" translate>
+                    SAVE_CHANGES
+                </button>
+            </div>
+        </form>
+    </div>
 </div>

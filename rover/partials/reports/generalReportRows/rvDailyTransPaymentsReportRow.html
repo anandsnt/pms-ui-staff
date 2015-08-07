@@ -1,0 +1,46 @@
+<tr ng-repeat="each in results track by $index" class="{{ each.className }}" ngrepeatend>
+
+	<!-- Output Charge group name only for 1st charge code, e.g. first <tr> of the charge group-->
+    <td ng-if="each.isReport && each.chargeGroupName" class="group" rowspan="{{ each.rowspan }}">{{ each.chargeGroupName }}</td>
+	<td ng-if="each.isReport" class="code">
+		<span class="number">{{ each.charge_code }}</span>
+		{{ each.charge_code_description }}
+	</td>
+	<td ng-if="each.isReport">
+        <span ng-show="each.transaction_count">{{ each.transaction_count }}</span>
+    </td>
+	<td ng-if="each.isReport">
+        <span ng-show="each.revenue">{{ each.revenue | currency:currencySymbol:2 }}</span>
+    </td>
+	<td ng-if="each.isReport">
+        <span ng-show="each.mtd">{{ each.mtd | currency:currencySymbol:2 }}</span>
+    </td>
+	<td ng-if="each.isReport">
+        <span ng-show="each.mtd_last_year">{{ each.mtd_last_year | currency:currencySymbol:2 }}</span>
+    </td>
+	<td ng-if="each.isReport">
+        <span ng-show="each.mtd_variance_percent">{{ each.mtd_variance_percent }}%</span>
+    </td>
+	<td ng-if="each.isReport">
+        <span ng-show="each.ytd">{{ each.ytd | currency:currencySymbol:2 }}</span>
+    </td>
+	<td ng-if="each.isReport">
+        <span ng-show="each.ytd_last_year">{{ each.ytd_last_year | currency:currencySymbol:2 }}</span>
+    </td>
+	<td ng-if="each.isReport">
+        <span ng-show="each.ytd_variance_percent">{{ each.ytd_variance_percent }}%</span>
+    </td>
+
+	<!-- showing sub totals here -->
+	<td ng-if="each.isReportSubTotal" class="code">{{ each.chargeGroupName }} Totals</td>
+	<td ng-if="each.isReportSubTotal">{{ each.total_transaction_count }}</td>
+	<td ng-if="each.isReportSubTotal">{{ each.total_revenue | currency:currencySymbol:2 }}</td>
+    <td ng-if="each.isReportSubTotal">{{ each.total_mtd | currency:currencySymbol:2 }}</td>
+    <td ng-if="each.isReportSubTotal">{{ each.total_mtd_last_year | currency:currencySymbol:2 }}</td>
+	<!-- KEEP EMPTY: MTD Variance percentage -->
+    <td ng-if="each.isReportSubTotal">&nbsp;</td>
+    <td ng-if="each.isReportSubTotal">{{ each.total_ytd | currency:currencySymbol:2 }}</td>
+    <td ng-if="each.isReportSubTotal">{{ each.total_ytd_last_year | currency:currencySymbol:2 }}</td>
+	<!-- KEEP EMPTY: YTD Variance percentage  -->
+    <td ng-if="each.isReportSubTotal">&nbsp;</td>
+</tr>

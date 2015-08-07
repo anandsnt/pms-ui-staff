@@ -1,0 +1,36 @@
+<div ng-show="showActivityLog">
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <div ng-include="'/assets/partials/rates/adRateActivityLogFilter.html'"></div>
+    
+    <table class="activity-log">
+        <col>
+        <col>
+        <col>
+        <col class="details">
+        <thead>
+            <tr>
+                <th><span ng-class="{'sort': true,'sorting-asc':sortOrderOfUserASC,'sorting-desc':sortOrderOfUserDSC}" ng-click="sortByUserName()">User Name</span></th>
+                <th><span ng-class="{'sort': true,'sorting-asc':sortOrderOfDateASC,'sorting-desc':sortOrderOfDateDSC}" ng-click="sortByDate()">Date &amp; Time</span></th>
+                <th><span ng-class="{'sort': true,'sorting-asc':sortOrderOfActionASC,'sorting-desc':sortOrderOfActionDSC}" ng-click="sortByAction()">Action</span></th>
+                <th><span>Details</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="log in activityLogData" ngrepeatend>
+                <td>{{log.user_name}}</td>
+                <td> {{log.date }}, {{log.time}}</td>
+                <td>{{log.action}}</td>
+                <td class="details">
+                    <span ng-repeat="details in log.details">
+                        <span class="old" ng-show="isOldValue(details.old_value)">{{ details.key }}
+                            <strong>{{ details.old_value }}</strong>
+                        </span>
+                        {{details.key}}
+                        <strong>{{details.new_value}}</strong>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

@@ -14,8 +14,47 @@
         </strong>
         <span class="text">Or enter negative amount to make a refund</span>
         <!-- Title when bill# is defined: <strong class="h2 message">Pay Bill #{bill num}</strong> -->
+        <div ng-show="messageOfSuccessSplitPayment!='' && splitBillEnabled" ng-class="{notice: messageOfSuccessSplitPayment!=''}" class='success success_message'>
+            <span ng-bind-html ="messageOfSuccessSplitPayment">
+            </span>   
+        </div>
+        <div ng-show="paymentErrorMessage!='' && splitBillEnabled" ng-class="{notice: paymentErrorMessage!=''}" class='error error_message' ng-switch on="paymentErrorMessage.length" ng-click="clearPaymentErrorMessage()">
+            <span class="close-btn" ng-click="clearPaymentErrorMessage()"></span>
+            <span ng-bind-html ="paymentErrorMessage">
+            </span>
+        </div>
 
         <div class="payment-form">
+            <!-- Split payment -->
+                <div class="entry split" ng-class="{active: splitBillEnabled }"  ng-hide="depositPaidSuccesFully">
+
+                    <label class="checkbox inline" ng-class="{checked: splitBillEnabled }">
+                    <span class="icon-form icon-checkbox" ng-class="{checked: splitBillEnabled }">
+                    </span>
+                    <input id="enable-split" value="1" type="checkbox" ng-click="resetSplitPaymentDetail()" />
+                        Split Bill Payment
+                    </label>
+                    <label class="only-number" ng-class = "classForPaymentSplitButton(1)" ng-click ="spliteButtonClicked(1)"> <!-- 1 is selected by default and locked -->
+                        <input name="split-bill" value="1" type="checkbox"  checked />
+                        1
+                    </label>
+                    <label class="only-number" ng-click ="spliteButtonClicked(2)" ng-class = "classForPaymentSplitButton(2)"> <!-- Add class 'checked' when selected, 'paid' when payment is made or 'disabled' when option is not available anymore -->
+                        <input name="split-bill" value="2" type="checkbox" /> <!-- Add attr 'disabled' when paid or first payment made -->
+                        2
+                    </label>
+                    <label class="only-number" ng-click ="spliteButtonClicked(3)" ng-class = "classForPaymentSplitButton(3)"> 
+                        <input name="split-bill" value="3" type="checkbox" />
+                        3
+                    </label>
+                    <label class="only-number" ng-click ="spliteButtonClicked(4)" ng-class = "classForPaymentSplitButton(4)"> 
+                        <input name="split-bill" value="4" type="checkbox" />
+                        4
+                    </label>
+                    <label class="only-number" ng-click ="spliteButtonClicked(5)" ng-class = "classForPaymentSplitButton(5)"> 
+                        <input name="split-bill" value="5" type="checkbox" />
+                        5
+                    </label>
+                </div>
             <!-- Payment type -->
                 <div id="payment-type" class="entry full-width" ng-hide="showCCPage">
                     <label for="payment-type" translate>PAYMENT_TYPE</label>
@@ -65,7 +104,7 @@
                 <label for="amount">{{'AMOUNT_TO_PAY' | translate}} (<span>{{currencySymbol}}</span>)</label>
                 
                 <!-- CICO-12408 : Use only when fee exsists -->
-                <input ng-keyup="calculateFee()" value="{{renderData.defaultPaymentAmount}}" type="text" ng-model="renderData.defaultPaymentAmount" class="amount" />
+                <input ng-keyup="calculateFee()" value="{{renderData.defaultPaymentAmount}}" type="text" ng-model="renderData.defaultPaymentAmount" class="amount" ng-disabled="splitSelected"/>
                 <span ng-show="isShowFees()" class="delimiter">+</span> 
                 <input ng-show="isShowFees()" name="fee" id="fee" ng-keyup="calculateTotalAmount(renderData.defaultPaymentAmount)" ng-model="feeData.calculatedFee" value="{{feeData.calculatedFee}}" type="text" class="fee" />
                 <span ng-show="isShowFees()" class="delimiter">fee</span>
@@ -82,22 +121,22 @@
                 <input name="reference" id="reference" ng-model="renderData.referanceText" type="text" />
             </div> 
             <!-- Success feedback -->
-            <div class="feedback" ng-show="!showCCPage && depositPaidSuccesFully">
+          <!--   <div class="feedback" ng-show="!splitBillEnabled && showSuccesMessage">
                 <div class="notice success">Amount paid!</div>
-                <ul class="transaction">
+                <ul class="transaction transaction-details">
                     <li ng-show="authorizedCode !==''">
                         Your Authorize code is: <span class="auth">{{authorizedCode}}</span>
                     </li>
                     <li ng-if="isShowFees()">
-                        Amount paid: <span class="value">{{currencySymbol}}{{renderData.defaultPaymentAmount |number:2}} + {{currencySymbol}}{{feeData.calculatedFee |number:2}} fee
+                        Amount paid: <span class="value">{{currencySymbol}}{{fullAmount |number:2}} + {{currencySymbol}}{{feeData.calculatedFee |number:2}} fee
                         </span>
                     </li>
                     <li ng-if="!isShowFees()">
-                        Amount paid: <span class="value">{{currencySymbol}}{{renderData.defaultPaymentAmount}}
+                        Amount paid: <span class="value">{{currencySymbol}}{{fullAmount|number:2}}
                         </span>
                     </li>
                 </ul>
-            </div> 
+            </div> -->
 
             <!-- Fail feedback -->
             <div class="feedback" ng-show="errorOccured">
@@ -115,8 +154,10 @@
             <!-- Buttons -->
             <div class="actions" ng-hide="showCCPage || depositPaidSuccesFully">
                  <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="handleCloseDialog()" translate>CANCEL</button>
-                 <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'green':!disableMakePayment()}" class="button" ng-click="submitPayment()" ng-show="shouldShowMakePaymentButton" translate>MAKE PAYMENT</button> 
-                 <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'blue':!disableMakePayment()}" class="button" ng-click="submitPayment()" ng-show="!shouldShowMakePaymentButton" translate>REFUND {{currencySymbol}}{{defaultRefundAmount}}</button> 
+                 <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'green':!disableMakePayment()}" class="button" ng-click="submitPayment()" ng-show="shouldShowMakePaymentButton&&!splitBillEnabled"translate>MAKE PAYMENT</button>
+                 <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'green':!disableMakePayment()}" class="button" ng-click="submitPayment()" ng-show="shouldShowMakePaymentButton&&splitBillEnabled"  translate>MAKE PAYMENT ({{splitePaymentDetail["completedSplitPayments"]+1}}/{{splitePaymentDetail["totalNoOfsplits"]}})</button>                 
+                 <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'blue':!disableMakePayment()}" class="button" ng-click="submitPayment()" ng-show="!shouldShowMakePaymentButton&&!splitBillEnabled" translate>REFUND {{currencySymbol}}{{defaultRefundAmount|number:2}}</button>
+                 <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'blue':!disableMakePayment()}" class="button" ng-click="submitPayment()" ng-show="!shouldShowMakePaymentButton&&splitBillEnabled" translate>REFUND {{currencySymbol}}{{defaultRefundAmount|number:2}} ({{splitePaymentDetail["completedSplitPayments"]+1}}/{{splitePaymentDetail["totalNoOfsplits"]}})</button> 
             </div>
              <div class="actions" ng-hide="!depositPaidSuccesFully">
                 <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="handleCloseDialog()" translate>CLOSE</button>

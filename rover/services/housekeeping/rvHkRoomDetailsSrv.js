@@ -13,7 +13,7 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			var url = '/house/room/' + id + '.json';
 
 			$http.get(url).success(function(response, status) {
-				if (response.status == "success") {
+				if (response.status === "success") {
 					this.roomDetails = response.data.room_details;
 					deferred.resolve(this.roomDetails);
 				} else {
@@ -21,7 +21,7 @@ sntRover.service('RVHkRoomDetailsSrv', [
 				}
 
 			}.bind(this)).error(function(response, status) {
-				if (status == 401) { // 401- Unauthorized
+				if (status === 401) { // 401- Unauthorized
 					// so lets redirect to login page
 					$window.location.href = '/house/logout';
 				} else {
@@ -38,15 +38,15 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			$http({
 				url: url,
 				method: "POST",
-				data: data,
+				data: data
 			}).success(function(response, status) {
-				if (response.status == "success") {
+				if (response.status === "success") {
 					deferred.resolve(response.data);
 				} else {
 					deferred.reject(response);
 				}
 			}).error(function(response, status) {
-				if (status == 401) { // 401- Unauthorized
+				if (status === 401) { // 401- Unauthorized
 					// so lets redirect to login page
 					$window.location.href = '/house/logout';
 				} else {
@@ -132,6 +132,21 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			return deferred.promise;
 		};
 
+
+		// POST: save from IN_SERVICE to OO/OS
+		this.postCheckOutReservation = function(params) {
+			var deferred = $q.defer(),
+				url = 'api/reservations/'+params.id+'/checkout_from_house_keeping';
+
+			rvBaseWebSrvV2.postJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
 		// PUT: update OO/OS to OO/OS
 		this.putRoomServiceStatus = function(params) {
 			var deferred = $q.defer(),

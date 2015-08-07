@@ -12,7 +12,7 @@ admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state',
   ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
   $scope.init = function(){
-      $scope.emailDatas = {};      
+      $scope.emailDatas = {};
   };
 
   $scope.init();
@@ -25,7 +25,7 @@ admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state',
     $scope.selectAllOption = false;
   	$scope.emailTitle = 'Guests Checking In';
     $scope.saveButtonTitle = 'SEND WEB CHECKIN INVITES';
-    var getParams = $scope.calculateGetParams(params);  
+    var getParams = $scope.calculateGetParams(params);
     getParams.id = 'checkin';
     var fetchEmailListSuccessCallback = function(data) {
         $scope.isLoading = false;
@@ -33,17 +33,17 @@ admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state',
         $scope.currentClickedElement = -1;
 
         $scope.totalCount = parseInt(data.total_count);
-        $scope.totalPage = Math.ceil($scope.totalCount/$scope.displyCount);   
-        
+        $scope.totalPage = Math.ceil($scope.totalCount/$scope.displyCount);
 
-        $scope.currentPage = params.page();     
+
+        $scope.currentPage = params.page();
         $scope.emailDatas  = data.due_out_guests;
 
         params.total($scope.totalCount);
         $scope.data=$scope.emailDatas;
-        $defer.resolve($scope.data);  
+        $defer.resolve($scope.data);
         $scope.isAllOptionsSelected();
-  };  
+  };
   $scope.invokeApi(adCheckinCheckoutSrv.fetchEmailList, getParams, fetchEmailListSuccessCallback);
   };
 
@@ -72,7 +72,7 @@ $scope.loadTable = function(){
   $scope.isAllOptionsSelected = function(){
     var selectedCount = false;
     $scope.disableSave = true;
-    if($scope.emailDatas.length ==0){
+    if($scope.emailDatas.length ===0){
       return false;
     }
      angular.forEach($scope.emailDatas,function(item, index) {
@@ -82,14 +82,14 @@ $scope.loadTable = function(){
            }
            else
            {
-            
+
            }
        });
 
-     return $scope.emailDatas.length == selectedCount;
+     return $scope.emailDatas.length === selectedCount;
   };
 /*
-  * To watch if all options are selcted 
+  * To watch if all options are selcted
   *
   */
   $scope.$watch("selectAllOption", function(o,n){
@@ -97,7 +97,7 @@ $scope.loadTable = function(){
            item.is_selected = $scope.selectAllOption;
   });
   });
-    
+
   $scope.backActionFromEmail = function(){
   	$state.go('admin.checkin');
   };
@@ -111,9 +111,9 @@ $scope.loadTable = function(){
 
       angular.forEach($scope.emailDatas,function(item, index) {
         item.is_selected =selectedStatus;
-      }); 
+      });
 
-    };      
+    };
 
 /*
   * To send mail
@@ -123,8 +123,9 @@ $scope.loadTable = function(){
   $scope.sendMailClicked = function(){
   	reservations = [];
   	angular.forEach($scope.emailDatas,function(item, index) {
-       if(item.is_selected)
+       if(item.is_selected) {
          reservations.push(item.reservation_id)
+       }
   });
   	var emailSendingData = {'reservations' : reservations}
     var sendMailClikedSuccessCallback = function(data) {

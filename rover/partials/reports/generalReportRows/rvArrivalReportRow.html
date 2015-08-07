@@ -1,0 +1,79 @@
+<tr ng-repeat="each in results track by $index" class="{{ each.className }}" ngrepeatend>
+	<td ng-if="each.isReport" rowspan="{{ each.rowspan }}"><!-- Add 'rowspan="2"' if note exists -->
+		<strong ng-if="each.room_no" class="title">{{ each.room_no }}</strong>
+		<strong ng-if="!each.room_no" class="title unassigned">N/A</strong>
+	</td>
+	<td ng-if="each.isReport" class="name">
+		<strong class="title">{{ each.name }}</strong>
+		<span class="data">{{ each.confirm_no }}</span>
+		<span ng-if="each.is_vip">&#8226; <span class="data vip">VIP</span></span>
+		<span ng-if="each.addtional_guest_counts">&#8226; <span class="data">{{ each.addtional_adults_counts }} Adult(s)</span></span>
+		<span ng-if="each.addtional_guest_counts">&#8226; <span class="data">{{ each.addtional_children_counts }} Children</span></span>
+	</td>
+	<td ng-if="each.isReport" class="date">
+		<span class="guest-status" ng-class="{'check-in': (each.status != 'CANCELED' || each.status != 'NO SHOW'), 'cancel': (each.status =='CANCELED'), 'no-show': (each.status =='NO SHOW')}">check-in</span>
+		<time>
+			<span>{{ each.arrival_date | date : dateFormat }}</span>
+			<span>{{ each.arrival_time }}</span>
+		</time>
+	</td>
+	<td ng-if="each.isReport" class="date" ng-class="{'hour': !!each.total_time, 'guarantee': !!each.guarantee_type}">
+		<span class="guest-status" ng-class="{'check-out': (each.status != 'CANCELED' || each.status != 'NO SHOW'), 'cancel': (each.status =='CANCELED'), 'no-show': (each.status == 'NO SHOW')}">check-out</span>
+		<time>
+			<span>{{ each.departure_date | date : dateFormat }}</span>
+			<span>{{ each.departure_time }}</span>
+		</time>
+		<div ng-if="each.total_time" class="hours">{{ each.total_time }}</div>
+		<div ng-if="each.guarantee_type" class="data guarantee">{{ each.guarantee_type }}</div>
+	</td>
+	<td ng-if="each.isReport">
+		<span class="data room">{{ each.room_type }}</span>
+		<span class="data rate">{{ each.rate }} / <strong>{{ each.adr | currency:currencySymbol:2 }} ADR</strong></span>
+		<!-- If payment CC:-->
+        <span ng-if="each.payment.payment_type == 'Credit Card'" class="data payment">
+            <figure class="card-logo">
+            	<img ng-src="/assets/{{ each.payment.card_type | lowercase }}.png" alt="" />
+            </figure>
+            <span>ending with</span> {{ each.payment.card_number }}
+        </span>
+        <!-- If payment not CC: -->
+        <span ng-if="each.payment.payment_type != 'Credit Card'" class="data payment">{{ each.payment.payment_type }}</span>
+	</td>
+	<td ng-if="each.isReport" class="balance red"> <!-- Add class "red" or "green" as required -->
+		{{ each.balance_amount | currency:currencySymbol:2 }}
+	</td>
+
+
+
+	<!-- guest data - name, company, travel agent & group name -->
+	<td ng-if="each.isGuestData" class="secondary guest-names">
+		<span ng-repeat="name in each.guestNames">{{ name }}</span>
+	</td>
+	<td ng-if="each.isGuestData" class="secondary guest-info" colspan="2">
+		<span ng-if="each.company_name" class="icons icon-guest-company">{{ each.company_name }}</span>
+		<span ng-if="each.travel_agent_name" class="icons icon-guest-travelagent">{{ each.travel_agent_name }}</span>
+		<span ng-if="each.group_name" class="icons icon-group">{{ each.group_name }}</span>
+	</td>
+	<td ng-if="each.isGuestData" class="secondary" colspan="2">
+		<span ng-repeat="item in each.addOnDetails">
+			{{ item.name }} &#8226; 
+			<i ng-if="item.amount == 'INCL'">{{ item.amount }}</i>
+			<i ng-if="!item.amount != 'INCL'">{{ item.amount | currency:currencySymbol:2 }}</i>
+		</span>
+	</td>
+
+	<!-- cancel reason -->
+	<td ng-if="each.isCancelData" class="secondary cancel" colspan="5">
+		<strong>Cancellation Reason</strong>
+		<p>{{ each.reason }}</p>
+	</td>
+
+	<!-- notes -->
+	<td ng-if="each.isNoteData" class="secondary notes" colspan="5">
+		<strong>Notes</strong>
+		<p ng-repeat="note in each.notes">
+			{{ note.date | date : dateFormat }} &#8226; {{ note.name }}
+			<span>{{ note.note }}</span>
+		</p>
+	</td>
+</tr>

@@ -32,7 +32,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		};
 
 		var init = function(){
-			$scope.saveData = {};	
+			$scope.saveData = {};
 			$scope.renderData = {};
 			$scope.errorMessage = '';
 			$scope.saveData.payment_type_id = '';
@@ -47,15 +47,15 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			$scope.billsArray = $scope.transactionsDetails.bills;
 			//common payment model items
 			$scope.passData = {};
-			$scope.passData.details = {};							  
+			$scope.passData.details = {};
 			$scope.renderData.referanceText = "";
 			$scope.swipedCardDataToSave  = {};
 			$scope.cardData = {};
 			$scope.newCardAdded = false;
 			$scope.shouldShowWaiting = false;
-			$scope.depositPaidSuccesFully = false;		
+			$scope.depositPaidSuccesFully = false;
 			$scope.saveData.paymentType = '';
-			$scope.defaultPaymentTypeOfBill = '';	
+			$scope.defaultPaymentTypeOfBill = '';
 			$scope.shouldShowMakePaymentButton = true;
 			$scope.hasPermissionToMakePayment = hasPermissionToMakePayment();
 			$scope.hasPermissionToRefundPayment = hasPermissionToRefundPayment();
@@ -88,21 +88,21 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		*
 		*/
 
-		
+
 		$scope.isShowFees = function(){
 
-			// the fees is not shown if feeData is undefined or 
+			// the fees is not shown if feeData is undefined or
 			// default amount < min fees or no fee amount
 
 			var isShowFees = false;
 			var feesData = $scope.feeData;
-			if(typeof feesData == 'undefined' || typeof feesData.feesInfo == 'undefined' || feesData.feesInfo == null){
+			if(typeof feesData === 'undefined' || typeof feesData.feesInfo === 'undefined' || feesData.feesInfo === null){
 				isShowFees = false;
 			}
 			else if((feesData.defaultAmount  >= feesData.minFees) && feesData.feesInfo.amount){
 				if($scope.renderData.defaultPaymentAmount >= 0){
 					isShowFees = (($rootScope.paymentGateway !== 'sixpayments' || $scope.isManual || $scope.saveData.paymentType !=='CC') && $scope.saveData.paymentType !=="") ? true :false;
-				}				
+				}
 			}
 			return isShowFees;
 		};
@@ -111,7 +111,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		* Fee calculation (based on payment type selection)
 		*
 		*/
-		
+
 		$scope.calculateFee = function(){
 
 				var feesInfo = $scope.feeData.feesInfo;
@@ -119,20 +119,20 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 				var feePercent  = zeroAmount;
 				var minFees = zeroAmount;
 
-				if (typeof feesInfo != 'undefined' && feesInfo != null){
+				if (typeof feesInfo !== 'undefined' && feesInfo !== null){
 					amountSymbol = feesInfo.amount_symbol;
 					feePercent  = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
 					minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
 				}
 
-				var totalAmount = ($scope.renderData.defaultPaymentAmount == "") ? zeroAmount :
+				var totalAmount = ($scope.renderData.defaultPaymentAmount === "") ? zeroAmount :
 								parseFloat($scope.renderData.defaultPaymentAmount);
 
 				$scope.feeData.minFees = minFees;
 				$scope.feeData.defaultAmount = totalAmount;
-				
+
 				if($scope.isShowFees()){
-					if(amountSymbol == "percent"){
+					if(amountSymbol === "percent"){
 						//calculation in case fee is percentage
 						var calculatedFee = parseFloat(totalAmount * (feePercent/100));
 						$scope.feeData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
@@ -145,7 +145,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 					}
 				}
 				//set button as refund in case of -ve amount
-				if($scope.renderData.defaultPaymentAmount < 0){					
+				if($scope.renderData.defaultPaymentAmount < 0){
 					$scope.defaultRefundAmount = (-1)*parseFloat($scope.renderData.defaultPaymentAmount);
 					$scope.shouldShowMakePaymentButton = false;
 				} else {
@@ -159,19 +159,21 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 				var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
 				var defaultAmount = $scope.renderData ?
 				 	parseFloat($scope.renderData.defaultPaymentAmount) : zeroAmount;
-				
+
 				var minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
 				$scope.feeData.minFees = minFees;
 				$scope.feeData.defaultAmount = defaultAmount;
 
 				if($scope.isShowFees()){
-					if(typeof feesInfo.amount != 'undefined' && feesInfo!= null){
-						
+					if(typeof feesInfo.amount !== 'undefined' && feesInfo!== null){
+
 						var amountSymbol = feesInfo.amount_symbol;
 						var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
 						$scope.feeData.actualFees = feesAmount;
-						
-						if(amountSymbol == "percent") $scope.calculateFee();
+
+						if(amountSymbol === "percent") {
+							$scope.calculateFee();
+						}
 						else{
 							$scope.feeData.calculatedFee = parseFloat(feesAmount).toFixed(2);
 							$scope.feeData.totalOfValueAndFee = parseFloat(feesAmount + defaultAmount).toFixed(2);
@@ -181,19 +183,19 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		};
 
 		$scope.calculateTotalAmount = function(amount) {
-			
-			var feesAmount  = (typeof $scope.feeData.calculatedFee == 'undefined' || $scope.feeData.calculatedFee == '' || $scope.feeData.calculatedFee == '-') ? zeroAmount : parseFloat($scope.feeData.calculatedFee);
-			var amountToPay = (typeof amount == 'undefined' || amount =='') ? zeroAmount : parseFloat(amount);
-			
+
+			var feesAmount  = (typeof $scope.feeData.calculatedFee === 'undefined' || $scope.feeData.calculatedFee === '' || $scope.feeData.calculatedFee === '-') ? zeroAmount : parseFloat($scope.feeData.calculatedFee);
+			var amountToPay = (typeof amount === 'undefined' || amount ==='') ? zeroAmount : parseFloat(amount);
+
 			$scope.feeData.totalOfValueAndFee = parseFloat(amountToPay + feesAmount).toFixed(2);
 		};
 
 		var checkforFee = function(){
 			_.each($scope.renderData.paymentTypes, function(value) {
-				  if(value.name != "CC" 	&& value.name == $scope.saveData.paymentType){
+				  if(value.name !== "CC" 	&& value.name === $scope.saveData.paymentType){
 						$scope.feeData.feesInfo = value.charge_code.fees_information;
 						setupFeeData();
-				  };					
+				  };
 			});
 		};
 
@@ -201,12 +203,12 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		* to check if reference is present for payment type
 		*/
 		var checkReferencetextAvailable = function(){
-			//call utils fn	
+			//call utils fn
 			$scope.referenceTextAvailable = checkIfReferencetextAvailable($scope.renderData.paymentTypes,$scope.saveData.paymentType);
 
 		};
 		var checkReferencetextAvailableForCC = function(){
-			//call utils fn	
+			//call utils fn
 			$scope.referenceTextAvailable = checkIfReferencetextAvailableForCC($scope.renderData.paymentTypes,$scope.defaultPaymentTypeCard);
 		}
 
@@ -215,16 +217,16 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		 * Show guest credit card list
 		 */
 		$scope.showCardAddmode = function(){
-			$scope.showCCPage = true;	
+			$scope.showCCPage = true;
 		};
-		
+
 
 		/**
 		 * change payment type action - override parent's method so as to deal with referance and fees
 		 */
 		$scope.changePaymentType = function(){
-			if($scope.saveData.paymentType == "CC"&& $scope.paymentGateway !== 'sixpayments'){
-				($scope.isExistPaymentType) ? $scope.showCreditCardInfo = true :$scope.showCardAddmode();		
+			if($scope.saveData.paymentType === "CC"&& $scope.paymentGateway !== 'sixpayments'){
+				($scope.isExistPaymentType) ? $scope.showCreditCardInfo = true :$scope.showCardAddmode();
 			} else {
 				$scope.showCreditCardInfo = false;
 			};
@@ -248,12 +250,12 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		* Default payment method attached to that bill can be viewed in initial screen
 		*/
 		var renderDefaultValues = function(){
-			   
+
 		    var defaultAmount = $scope.billsArray[$scope.currentActiveBill].total_fees.balance_amount ?
 								$scope.billsArray[$scope.currentActiveBill].total_fees.balance_amount : zeroAmount;
 			$scope.renderData.defaultPaymentAmount = parseFloat(defaultAmount).toFixed(2);
 			$scope.defaultRefundAmount = (-1)*parseFloat($scope.renderData.defaultPaymentAmount);
-			if($scope.renderData.defaultPaymentAmount < 0){					
+			if($scope.renderData.defaultPaymentAmount < 0){
 					$scope.defaultRefundAmount = (-1)*parseFloat($scope.renderData.defaultPaymentAmount);
 					$scope.shouldShowMakePaymentButton = false;
 			} else {
@@ -262,7 +264,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			};
 		};
 		/*
-		* Action - On bill selection 
+		* Action - On bill selection
 		*/
 		$scope.billNumberChanged = function(){
 			$scope.currentActiveBill = parseInt($scope.renderData.billNumberSelected) - parseInt(1);
@@ -276,15 +278,15 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		*/
 
 		var fetchPaymentMethods = function(){
-			
+
 			var onPaymnentFetchSuccess = function(data) {
-				$scope.renderData.paymentTypes =  data; 
+				$scope.renderData.paymentTypes =  data;
 				$scope.creditCardTypes = [];
 				angular.forEach($scope.renderData.paymentTypes, function(item, key) {
 					if(item.name === 'CC'){
 						$scope.creditCardTypes = item.values;
-					};					
-				});	
+					};
+				});
 				renderDefaultValues();
 			},
 			onPaymnentFetchFailure = function(errorMessage) {
@@ -311,18 +313,18 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			var cardExpiry = "";
 			var swipedData = angular.copy($scope.swipedCardDataToSave);
 			if(!isEmptyObject(swipedData)){
-				cardType =  swipedData.cardType.toLowerCase();		
+				cardType =  swipedData.cardType.toLowerCase();
 				cardNumberEndingWith = swipedData.cardNumber.slice(-4);
 				cardExpiry = swipedData.cardExpiryMonth+"/"+swipedData.cardExpiryYear;
 				$scope.saveData.paymentType = "CC";
 			}
 			else{
-				cardType = retrieveCardtype(isSixPayment,tokenDetails,cardDetails);		
-				cardNumberEndingWith = retrieveCardNumber(isSixPayment,tokenDetails,cardDetails);	
-		 		cardExpiry = retrieveCardExpiryDate(isSixPayment,tokenDetails,cardDetails);	
+				cardType = retrieveCardtype(isSixPayment,tokenDetails,cardDetails);
+				cardNumberEndingWith = retrieveCardNumber(isSixPayment,tokenDetails,cardDetails);
+		 		cardExpiry = retrieveCardExpiryDate(isSixPayment,tokenDetails,cardDetails);
 
 			}
-		 
+
 		 	$scope.defaultPaymentTypeCard = cardType;
 		 	$scope.defaultPaymentTypeCardNumberEndingWith = cardNumberEndingWith;
 		 	$scope.defaultPaymentTypeCardExpiry = cardExpiry;
@@ -339,9 +341,9 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 							$scope.feeData.feesInfo = paymentType.charge_code.fees_information;
 							setupFeeData();
 						}
-						
+
 					});
-				  };					
+				  };
 			});
 
 
@@ -365,7 +367,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			tokenDetails  = angular.copy($scope.newPaymentInfo.tokenDetails);
 			cardDetails   = angular.copy($scope.newPaymentInfo.cardDetails);
 
-			var cardToken   = !isSixPayment ? tokenDetails.session:data.tokenDetails.token_no;	
+			var cardToken   = !isSixPayment ? tokenDetails.session:data.tokenDetails.token_no;
 			var expiryMonth = isSixPayment ? tokenDetails.expiry.substring(2, 4) :cardDetails.expiryMonth;
 			var expiryYear  = isSixPayment ? tokenDetails.expiry.substring(0, 2) :cardDetails.expiryYear;
 			var expiryDate  = (expiryMonth && expiryYear )? ("20"+expiryYear+"-"+expiryMonth+"-01"):"";
@@ -429,12 +431,12 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 
 
 		$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
-		
+
 			$scope.swipedCardDataToSave = swipedCardDataToSave;
-			var data 			= swipedCardDataToSave;		
+			var data 			= swipedCardDataToSave;
 			data.payment_credit_type = swipedCardDataToSave.cardType;
 			data.credit_card = swipedCardDataToSave.cardType;
-			data.card_expiry = "20"+swipedCardDataToSave.cardExpiryYear+"-"+swipedCardDataToSave.cardExpiryMonth+"-01";		
+			data.card_expiry = "20"+swipedCardDataToSave.cardExpiryYear+"-"+swipedCardDataToSave.cardExpiryMonth+"-01";
 		    $scope.callAPI(rvAccountTransactionsSrv.savePaymentDetails, {
 				successCallBack: successNewPayment,
 				params: {
@@ -442,7 +444,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 					"data_to_pass":data
 				}
 			});
-	
+
 		});
 
 
@@ -452,18 +454,18 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		var successPayment = function(data){
 			$scope.$emit("hideLoader");
 			$scope.depositPaidSuccesFully = true;
-			$scope.authorizedCode = data.authorization_code;		
+			$scope.authorizedCode = data.authorization_code;
 			$scope.$emit('UPDATE_TRANSACTION_DATA',data);
-			$scope.showArSelection = false;			
+			$scope.showArSelection = false;
 		};
 		var failurePayment = function(error){
 			$scope.$emit("hideLoader");
 			$scope.errorMessage = error;
-			$scope.showArSelection = false;	 
+			$scope.showArSelection = false;
 		};
 
 		/*
-		* Payment actions 
+		* Payment actions
 		*/
 
 		var setUpPaymentParams = function(arType){
@@ -472,7 +474,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 					"bill_number": $scope.renderData.billNumberSelected,
 					"payment_type": $scope.saveData.paymentType,
 					"amount": $scope.renderData.defaultPaymentAmount,
-					"payment_method_id": ($scope.saveData.paymentType == 'CC') ? $scope.saveData.payment_type_id : null
+					"payment_method_id": ($scope.saveData.paymentType === 'CC') ? $scope.saveData.payment_type_id : null
 					},
 				"bill_id": $scope.billsArray[$scope.renderData.billNumberSelected-1].bill_id
 			};
@@ -482,10 +484,12 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			};
 
 			if($scope.isShowFees()){
-				if($scope.feeData.calculatedFee)
+				if($scope.feeData.calculatedFee) {
 					params.data_to_pass.fees_amount = $scope.feeData.calculatedFee;
-				if($scope.feeData.feesInfo)
+				}
+				if($scope.feeData.feesInfo) {
 					params.data_to_pass.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
+				}
 			};
 			return params;
 		}
@@ -493,8 +497,8 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		var proceedPayment = function(arType){
 
 			$scope.errorMessage = "";
-			var params = setUpPaymentParams(arType);	
-			if($rootScope.paymentGateway == "sixpayments" && !$scope.isManual && $scope.saveData.paymentType == "CC"){
+			var params = setUpPaymentParams(arType);
+			if($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.saveData.paymentType === "CC"){
 				params.data_to_pass.is_emv_request = true;
 				$scope.shouldShowWaiting = true;
 				//Six payment SWIPE actions
@@ -505,7 +509,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 					$scope.errorMessage = error;
 					$scope.shouldShowWaiting = false;
 				});
-				
+
 			} else {
 
 				$scope.callAPI(rvAccountTransactionsSrv.submitPaymentOnBill, {
@@ -513,16 +517,16 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 					failureCallBack: failurePayment,
 					params: params
 				});
-			};		
+			};
 		};
 
 		var showCreateArAccountPopup  = function(account_id,arType){
 			ngDialog.close();
-			var paymentDetails = setUpPaymentParams(arType); 
+			var paymentDetails = setUpPaymentParams(arType);
 			var data = {"account_id":account_id,"is_auto_assign_ar_numbers": $scope.ArDetails.is_auto_assign_ar_numbers,"paymentDetails":paymentDetails}
 			$scope.$emit('arAccountWillBeCreated',data);
 		};
-				
+
 
 		// select to which AR account payment has to be done
 		$scope.selectArAccount = function(type){
@@ -532,7 +536,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 				}
 				else{
 					showCreateArAccountPopup($scope.ArDetails.company_id,"company")
-				}				
+				}
 			}
 			else{
 				if($scope.ArDetails.travel_agent_ar_attached){
@@ -540,7 +544,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 				}
 				else{
 					showCreateArAccountPopup($scope.ArDetails.travel_agent_id,"travel_agent")
-				} 
+				}
 			};
 		};
 
@@ -556,7 +560,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		};
 
 		var checkIfARAccountisPresent = function(){
-			
+
 			var successArCheck = function(data){
 				$scope.ArDetails = data;
 				//if both company and travel agent AR accounts are present
@@ -564,11 +568,11 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 					$scope.showArSelection = true;
 				}else if(data.company_present){
 					if(data.company_ar_attached){
-						proceedPayment("company"); 
+						proceedPayment("company");
 					}
 					else{
 						showCreateArAccountPopup($scope.ArDetails.company_id)
-					}					
+					}
 				}
 				else if(data.travel_agent_present){
 					if(data.travel_agent_ar_attached){
@@ -577,7 +581,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 					else{
 						showCreateArAccountPopup($scope.ArDetails.travel_agent_id)
 					}
-					
+
 				}
 				else{
 					//close payment popup
@@ -588,7 +592,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			};
             var params = {
                             account_id: $scope.accountConfigData.summary.posting_account_id
-                         };  
+                         };
             $scope.callAPI(rvAccountTransactionsSrv.checkForArAccount, {
 						successCallBack: successArCheck,
 						params: params
@@ -599,10 +603,10 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		/*
 		* Action - On click submit payment button
 		*/
-		$scope.submitPayment = function(){	
+		$scope.submitPayment = function(){
 		    // if payment is from groups and payment type is direct bill
 		    // we check if AR account is present or not
-		    // if not present we inform the user with a popup	
+		    // if not present we inform the user with a popup
 			($scope.saveData.paymentType ==="DB") ? checkIfARAccountisPresent():proceedPayment();
 		};
 

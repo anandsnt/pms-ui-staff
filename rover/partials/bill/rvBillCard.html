@@ -229,7 +229,7 @@
 											<td ng-show="(expense.amount_type=='Flat'||expense.amount_type=='Person')&&expense.post_type=='First Night'">FIRST NIGHT</td>
 											<td ng-show="(expense.amount_type=='Flat'||expense.amount_type=='Person')&&expense.post_type=='Entire Stay'">PER NIGHT</td>
 											<td class="price" ng-show="expense.is_inclusive" translate> INCL </td>
-											<td ng-show="!expense.is_inclusive"> {{expense.effective_quantity*expense.price  | number: precisonTwo}} </td>
+											<td class="price" ng-show="!expense.is_inclusive"> {{currencySymbol}}{{expense.effective_quantity*expense.price  | number: precisonTwo}} </td>
 										</tr>
 									</tbody>
 								</table>

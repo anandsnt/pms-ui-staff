@@ -1,0 +1,12 @@
+"SYNXIS_SETUP_HEADER": "Synxis Setup",
+"SYNXIS_SUB_TITLE": "Synxis API Access Configuration",
+"MAPPINGS_ACTIVATE_INACTIVATE": "Mappings - Activate/Inactivate",
+"SYNXIS_FULL_REFRESH": "Full Refresh",
+"SYNXIS_LAST_REFRESH": "Last Refresh",
+"RUN_REFRESH_BUTTON": "Run",
+"SYNXIS_USERNAME_LABEL": "User Name",
+"SYNXIS_DEFAULT_BOOKING_ORIGIN": "Default Origin of Booking",
+"SYNXIS_DEFAULT_PAYMENT_METHOD": "Default Payment Method",
+"SYNXIS_PASSWORD_LABEL": "Password",
+"SYNXIS_ACCESS_URL_LABEL": "Access URL",
+"SYNXIS_REQUESTOR_ID_LABEL": "Requester ID"

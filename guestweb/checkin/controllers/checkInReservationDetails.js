@@ -3,7 +3,7 @@
 	var checkInReservationDetails = function($scope,$rootScope,$location,checkinDetailsService,$state,$modal) {
 
 	$scope.pageValid = false;
-	
+
 	if($rootScope.isCheckedin){
 		$state.go('checkinSuccess');
 	}
@@ -15,7 +15,7 @@
 	//check if checkbox was already checked (before going to upgrades)
 	$scope.checked =  ($rootScope.ShowupgradedLabel) ? true:false;
 	$scope.reservationData = checkinDetailsService.getResponseData();
-	$rootScope.confirmationNumber = $scope.reservationData.confirm_no;	
+	$rootScope.confirmationNumber = $scope.reservationData.confirm_no;
 	$scope.showTermsPopup = false;
 
 	//setup options for modal
@@ -25,7 +25,7 @@
 		templateUrl: '/assets/checkin/partials/acceptChargesError.html',
 		controller: ModalInstanceCtrl
 	};
-	
+
 	$scope.termsClicked = function(){
     	$scope.showTermsPopup = true;
      };
@@ -58,7 +58,7 @@
 		else{
 			$modal.open($scope.opts); // error modal popup
 		};
-	}		
+	}
 
 }
 

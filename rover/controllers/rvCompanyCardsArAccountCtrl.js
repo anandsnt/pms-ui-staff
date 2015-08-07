@@ -43,7 +43,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 			presentArDetails.id = $scope.contactInformation.id;
 			var presentArDetailsAfterEdit = JSON.parse(JSON.stringify($scope.arAccountDetails));
 			var dataNotUpdated = false;
-			
+
 			//check if data was edited
 			if (!angular.equals(presentArDetailsAfterEdit, presentArDetails)) {
 				dataNotUpdated = true;
@@ -59,7 +59,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 			setTimeout(function() {
 				refreshScroller();
 			}, 500);
-			// if automatic mode is on,call save action to generate a random number				
+			// if automatic mode is on,call save action to generate a random number
 			if ($scope.arAccountDetails.is_auto_assign_ar_numbers && !$scope.arAccountDetails.ar_number) {
 				updateArAccount();
 			};
