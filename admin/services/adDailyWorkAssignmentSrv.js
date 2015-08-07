@@ -214,7 +214,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
             } else {
                 ADBaseWebSrvV2.getJSON(url)
                     .then(function(data) {
-                        roomTypesList = data.results
+                        roomTypesList = data.results;
                         deferred.resolve(roomTypesList);
                     }, function(errorMessage) {
                         deferred.reject(errorMessage);
@@ -226,7 +226,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
         this.resetRoomTypesList = function() {
             roomTypesList = [];
-        }
+        };
 
         var resHkStatusList = [];
         this.fetchResHkStatues = function() {
@@ -258,7 +258,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
             } else {
                 ADBaseWebSrvV2.getJSON(url)
                     .then(function(data) {
-                        foStatusList = data.front_office_statuses
+                        foStatusList = data.front_office_statuses;
                         deferred.resolve(foStatusList);
                     }, function(errorMessage) {
                         deferred.reject(errorMessage);
@@ -278,7 +278,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
             } else {
                 ADBaseWebSrvV2.getJSON(url)
                     .then(function(data) {
-                        HkStatusList = data.hk_applicable_statuses
+                        HkStatusList = data.hk_applicable_statuses;
                         deferred.resolve(HkStatusList);
                     }, function(errorMessage) {
                         deferred.reject(errorMessage);

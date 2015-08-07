@@ -13,6 +13,6 @@ sntRover.controller('RVCreateAccountReceivableCtrl',['$rootScope', '$scope', '$s
 
 	$scope.closeDialog = function(){
 		ngDialog.close();
-	}
+	};
 
 }]);

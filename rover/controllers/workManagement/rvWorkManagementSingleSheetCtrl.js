@@ -30,12 +30,12 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 		var prevState = {
 			title: ('Work Management'),
 			name: 'rover.workManagement.start'
-		}
+		};
 		if ($stateParams.from === 'multiple') {
 			prevState = {
 				title: ('Manage Worksheets'),
 				name: 'rover.workManagement.multiSheet'
-			}
+			};
 		} else if (!!parseInt($stateParams.from)) {
 			prevState = {
 				title: ('Room Details'),
@@ -43,7 +43,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				param: {
 					id: parseInt($stateParams.from)
 				}
-			}
+			};
 		}
 		$rootScope.setPrevState = prevState;
 
@@ -55,12 +55,12 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 		$scope.dropToUnassign = function(event, dropped) {
 			var indexOfDropped = parseInt($(dropped.draggable).attr('id').split('-')[1]);
 			$scope.unAssignRoom($scope.singleState.assigned[indexOfDropped]);
-		}
+		};
 
 		$scope.dropToAssign = function(event, dropped) {
 			var indexOfDropped = parseInt($(dropped.draggable).attr('id').split('-')[1]);
 			$scope.assignRoom($scope.singleState.unassigned[indexOfDropped]);
-		}
+		};
 
 		// keep a local ref, since we will update it
 		var wmWorkSheet = wmWorkSheet;
@@ -160,7 +160,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			var onFetchFailure = function(errorMessage) {
 				$scope.errorMessage = errorMessage;
 				$scope.$emit('hideLoader');
-			}
+			};
 
 			$scope.invokeApi(RVWorkManagementSrv.fetchWorkSheetDetails, {
 				"date": $stateParams.date || $rootScope.businessDate,
@@ -178,7 +178,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				departures: 0,
 				stayovers: 0,
 				completed: 0
-			}
+			};
 			_.each($scope.singleState.assigned, function(room) {
 				if ($scope.departureClass[room.reservation_status] === "check-out") {
 					$scope.singleState.summary.departures++;
@@ -212,7 +212,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			$scope.singleState.assigned.push(room);
 			summarizeAssignment();
 			refreshView();
-		}
+		};
 
 		$scope.unAssignRoom = function(room) {
 			$scope.singleState.assigned.splice(_.indexOf($scope.singleState.assigned, _.find($scope.singleState.assigned, function(item) {
@@ -221,7 +221,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			$scope.singleState.unassigned.push(room);
 			summarizeAssignment();
 			refreshView();
-		}
+		};
 
 		$scope.printWorkSheet = function() {
 			$scope.saveWorkSheet({
@@ -291,7 +291,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			$scope.invokeApi(RVWorkManagementSrv.deleteWorkSheet, {
 				"id": $stateParams.id
 			}, onDeleteSuccess, onDeleteFailure);
-		}
+		};
 
 
 
@@ -431,7 +431,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 
 		$scope.startLoader = function() {
 			$scope.$emit('showLoader');
-		}
+		};
 
 		$scope.filterUnassigned = function() {
 			$scope.$emit('showLoader');
@@ -442,7 +442,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				$scope.closeDialog();
 				$scope.$emit('hideLoader');
 			}, 10);
-		}
+		};
 
 
 
@@ -489,19 +489,19 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 
 		$scope.onAssignmentDragStart = function() {
 			$scope.$parent.myScroll["workSheetUnassigned"].disable();
-		}
+		};
 
 		$scope.onAssignmentDragStop = function() {
 			$scope.$parent.myScroll["workSheetUnassigned"].enable();
-		}
+		};
 
 		$scope.onUnassignmentDragStart = function() {
 			$scope.$parent.myScroll["workSheetAssigned"].disable();
-		}
+		};
 
 		$scope.onUnassignmentDragStop = function() {
 			$scope.$parent.myScroll["workSheetAssigned"].enable();
-		}
+		};
 
 		$scope.showFilter = function() {
 			ngDialog.open({
@@ -510,7 +510,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				closeByDocument: true,
 				scope: $scope
 			});
-		}
+		};
 
 		$scope.idToVal = function(id, key, source) {
 			var match = _.find(source, function(item) {

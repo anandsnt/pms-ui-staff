@@ -108,7 +108,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 					ffp: []
 				}
 			};
-		}
+		};
 
 		self.getSearchDataModel = function() {
 			return {
@@ -130,7 +130,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 					travelAgentIATA: ""
 				}
 			};
-		}
+		};
 
 		self.getReservationDetailsModel = function() {
 			return {
@@ -147,7 +147,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 					futureReservations: 0
 				}
 			};
-		}
+		};
 
 		self.getEmptyAccountData = function() {
 			return {
@@ -186,7 +186,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 				mm: '00',
 				ampm: 'AM'
 			};
-		}
+		};
 
 		self.parseTime = function(timeString) {
 			var timeParts = timeString.trim().split(" ");
@@ -197,8 +197,8 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 				hh: hourMinutes[0].length === 1 ? "0" + hourMinutes[0] : hourMinutes[0],
 				mm: hourMinutes[1].length === 1 ? "0" + hourMinutes[1] : hourMinutes[1],
 				ampm: timeParts[1]
-			}
-		}
+			};
+		};
 
 		self.isVaryingOccupancy = function(stayDates, arrivalDate, departureDate, numNights) {
 			// If staying for just one night then there is no chance for varying occupancy
@@ -217,7 +217,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 				});
 
 			return occupancySimilarity.length < numNights;
-		}
+		};
 
 		self.isVaryingRates = function(stayDates, arrivalDate, departureDate, numNights) {
 			if (numNights < 2) {
@@ -229,7 +229,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 					return date !== departureDate && stayDateInfo.rate.id === arrivalRate;
 				});
 			return (similarRates.length < numNights);
-		}
+		};
 
 		self.parseReservationData = function(stayCard, cards) {
 			var reservationData = self.getReservationDataModel(),
@@ -274,7 +274,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 					source: stayCard.source_id || "",
 					origin: stayCard.booking_origin_id || "",
 					segment: stayCard.segment_id || ""
-				}
+				};
 				//Cost
 			reservationData.totalStayCost = stayCard.total_rate;
 			// ---------------------------Room Details------------------------------------------------//
@@ -312,12 +312,12 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 							id: item.rate_id
 						},
 						rateDetails: item.rate
-					}
+					};
 					// TODO : Extend for each stay dates
 				roomDetails.rateId.push(item.rate_id);
 				if (index === 0) {
 					roomDetails.roomTypeId = item.room_type_id;
-					roomDetails.roomTypeName = stayCard.room_type_description
+					roomDetails.roomTypeName = stayCard.room_type_description;
 					RVReservationStateService.bookMark.lastPostedRate = item.rate_id;
 				}
 			});
@@ -402,7 +402,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 				isManual: isManual,
 				showSelectedCreditCard: showSelectedCreditCard,
 				renderData: renderData
-			}
-		}
+			};
+		};
 	}
 ]);

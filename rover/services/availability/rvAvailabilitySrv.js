@@ -51,7 +51,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 				'id' 	: roomAvailabilityData.room_types[i].id,
 				'name'	: roomAvailabilityData.room_types[i].name,
 				'availableRoomNumberList': []
-			})
+			});
 
 			//CICO-13590:
 			individualBookedRooms.push ({
@@ -122,7 +122,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			'availableRoomsWithBookableRooms': availableRoomsWithBookableRooms,
 			'individualAvailableRooms': individualAvailableRooms,
 			'totalRooms'		: roomAvailabilityData.physical_count
-		}
+		};
 
 		//CICO-13590
 		if (!isHourlyRateOn) {
@@ -135,7 +135,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			});
 		}
 		return gridData;
-	}
+	};
 
 	var formGraphData = function(dataFromAvailability, occupancyData){
 		// returning object
@@ -215,7 +215,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			'occupanciesTargeted': occupanciesTargeted,
 			'totalRooms'	: totalRoomCount
 
-		}
+		};
 		return graphData;
 
 	};

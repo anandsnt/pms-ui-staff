@@ -100,5 +100,5 @@ angular
 	      return classVal;
 	    }
     }
-	}
+	};
 });

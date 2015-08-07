@@ -57,7 +57,7 @@ admin.controller('ADFloorDetailsCtrl',
     * @return - {Boolean}
     */
     $scope.shouldDisableSelectAllForUnAssigned = function(){
-        return ($scope.unassignedRooms.length === 0)
+        return ($scope.unassignedRooms.length === 0);
     };
 
     /**
@@ -65,7 +65,7 @@ admin.controller('ADFloorDetailsCtrl',
     * @return - {Boolean}
     */
     $scope.shouldDisableSelectAllForAssigned = function(){
-        return ($scope.assignedRooms.length === 0)
+        return ($scope.assignedRooms.length === 0);
     };
 
     /**
@@ -73,7 +73,7 @@ admin.controller('ADFloorDetailsCtrl',
     * @return - {Boolean}
     */
     $scope.shouldShowAssignSelectedForUnAssigned = function(){
-        return ($scope.selectedUnassignedRooms.length > 0)
+        return ($scope.selectedUnassignedRooms.length > 0);
     };
 
     /**
@@ -81,7 +81,7 @@ admin.controller('ADFloorDetailsCtrl',
     * @return - {Boolean}
     */
     $scope.shouldShowAssignSelectedForAssigned = function(){
-        return ($scope.selectedAssignedRooms.length > 0)
+        return ($scope.selectedAssignedRooms.length > 0);
     };
 
     /**
@@ -89,16 +89,16 @@ admin.controller('ADFloorDetailsCtrl',
     * @return - {Boolean}
     */
     $scope.shouldShowFindRooms = function(){
-        return ($scope.unassignedRooms.length === 0 && !$scope.IsTryingToDropOnUnAssigned)
+        return ($scope.unassignedRooms.length === 0 && !$scope.IsTryingToDropOnUnAssigned);
     };
 
     $scope.shouldShowNoRooms=function(){
-        return ($scope.assignedRooms.length === 0 && $scope.unassignedRooms.length===0)
-    }
+        return ($scope.assignedRooms.length === 0 && $scope.unassignedRooms.length===0);
+    };
 
     $scope.shouldShowDropHere=function(){
-        return ($scope.assignedRooms.length === 0 && $scope.unassignedRooms.length!==0)
-    }
+        return ($scope.assignedRooms.length === 0 && $scope.unassignedRooms.length!==0);
+    };
 
 	/**
 	* set of initial settings
@@ -383,7 +383,7 @@ admin.controller('ADFloorDetailsCtrl',
     	var options = {
     		params: 			params,
     		successCallBack: 	successCallBackOfFetchAllUnAssignedRoom
-        }
+        };
         $scope.callAPI(ADFloorSetupSrv.getUnAssignedRooms, options);
     };
 
@@ -407,7 +407,7 @@ admin.controller('ADFloorDetailsCtrl',
     	var options = {
     		params: 			params,
     		successCallBack: 	successCallBackOfFetchAllUnAssignedRoom
-        }
+        };
         $scope.callAPI(ADFloorSetupSrv.getUnAssignedRooms, options);
     };
 
@@ -421,7 +421,7 @@ admin.controller('ADFloorDetailsCtrl',
         _.each($scope.unassignedRooms, function(room){
             $scope.selectedUnassignedRooms.push (room);
         });
-    }
+    };
 
     /**
     * To select all assigned
@@ -433,7 +433,7 @@ admin.controller('ADFloorDetailsCtrl',
         _.each($scope.assignedRooms, function(room){
             $scope.selectedAssignedRooms.push (room);
         });
-    }
+    };
 
     /**
     * success call back of delete API
@@ -464,7 +464,7 @@ admin.controller('ADFloorDetailsCtrl',
         var options = {
             params:             params,
             successCallBack:    successCallBackOfDeleteFloor
-        }
+        };
         $scope.callAPI(ADFloorSetupSrv.deleteFloor, options);
     };
 

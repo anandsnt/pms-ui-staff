@@ -87,7 +87,7 @@ sntRover.controller('RVbillCardController',
 	//Variable used to show signed signature
 	$scope.showSignedSignature = false;
 	$scope.showBillingInfo = false;
-	$scope.showIncomingBillingInfo = false
+	$scope.showIncomingBillingInfo = false;
 	$scope.reservationBillData = reservationBillData;
 
 	//set up flags for checkbox actions
@@ -154,7 +154,7 @@ sntRover.controller('RVbillCardController',
 			isAnyOneChargeCodeIsIncluded = false;
 		}
 		else{
-			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details
+			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details;
 			if(chargeCodes.length>0){
 				_.each(chargeCodes, function(chargeCode,index) {
 				  if(!chargeCode.isSelected){
@@ -362,17 +362,17 @@ sntRover.controller('RVbillCardController',
 		{
 			inclLength++;
 		}
-	})
+	});
 	if(inclLength===expense_details.length)
 	{
-		return 'INCL'
+		return 'INCL';
 	}else if(inclLength>0&&inclLength<expense_details.length)
 	{
 		return 'MULTI';
 	}else{
 		return returnAmount	;
 	}
-	}
+	};
 
 
 	$scope.init = function(reservationBillData){
@@ -1005,17 +1005,17 @@ sntRover.controller('RVbillCardController',
 		{
 			inclLength++;
 		}
-	})
+	});
 	if(inclLength===expense_details.length)
 	{
-		return 'INCL'
+		return 'INCL';
 	}else if(inclLength>0&&inclLength<expense_details.length)
 	{
 		return 'MULTI';
 	}else{
 		return returnAmount	;
 	}
-	}
+	};
 	$scope.showBillingInfoHandle = function(){
 		$scope.showBillingInfo = !$scope.showBillingInfo;
 		$scope.calculateHeightAndRefreshScroll();
@@ -1060,7 +1060,7 @@ sntRover.controller('RVbillCardController',
 	$scope.completeCheckinSuccessCallback = function(data){
 		// CICO-6109 : Without Authorization flow ..
 		$scope.$emit('hideLoader');
-	 	$scope.triggerKeyCreationProcess()
+	 	$scope.triggerKeyCreationProcess();
 	};
 
 	// Success after autherization
@@ -1141,7 +1141,7 @@ sntRover.controller('RVbillCardController',
 		    closeByDocument: false,
 		    scope: $scope
 		});
-	}
+	};
 
 		//Fetch encoder types for SAFLOK_MSR
 	var fetchEncoderTypes = function(){
@@ -2114,7 +2114,7 @@ sntRover.controller('RVbillCardController',
 		var data = {
 			'reservation_id': $scope.reservationBillData.reservation_id,
 			'hide_rates'	: !$scope.reservationBillData.hide_rates
-		}
+		};
 		$scope.invokeApi(RVBillCardSrv.toggleHideRate, data, sucessCallback, failureCallback);
 	};
 

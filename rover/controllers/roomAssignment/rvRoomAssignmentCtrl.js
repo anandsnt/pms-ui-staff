@@ -638,7 +638,7 @@ sntRover.controller('RVroomAssignmentController',[
 						}
 					});
 		return roomsInSelectedFloor;
-	}
+	};
 	/**
 	* function to prepare the array of selected filters' ids
 	*/
@@ -718,7 +718,7 @@ sntRover.controller('RVroomAssignmentController',[
 		$scope.floorFilterData =floorFilterData;
 		$scope.setSelectedFiltersList();
 		$scope.applyFilterToRooms();
-	}
+	};
 	/**
 	* function to determine whether to show unassignroom
 	*/

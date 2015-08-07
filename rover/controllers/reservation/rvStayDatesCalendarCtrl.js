@@ -92,11 +92,11 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			var dateArray = new Array();
 			var currentDate = startDate;
 			while (currentDate <= stopDate) {
-				dateArray.push($filter('date')(currentDate, $rootScope.dateFormatForAPI))
+				dateArray.push($filter('date')(currentDate, $rootScope.dateFormatForAPI));
 				currentDate = currentDate.addDays(1);
 			}
 			return dateArray;
-		}
+		};
 
 		//We have to update the staydetails in 'reservationData' hash data modal
 		//for each day of reservation
@@ -229,7 +229,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 
 			}
 			return isOverBooking;
-		}
+		};
 
 		/**
 		 * Set the calendar options to display the calendar
@@ -320,7 +320,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			$scope.nights = getNumOfStayNights();
 
 			//Reload the calendar with new arrival, departure dates
-			$scope.refreshCalendarEvents()
+			$scope.refreshCalendarEvents();
 		};
 
 		/**
@@ -418,7 +418,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 						calEvt.id = "check-out";
 						calEvt.className = "check-out split-view";
 						calEvt.startEditable = "true";
-						calEvt.durationEditable = "false"
+						calEvt.durationEditable = "false";
 					}
 
 				//mid-stay range
@@ -502,7 +502,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			$scope.nights = getNumOfStayNights();
 
 			//Reload the calendar with new arrival, departure dates
-			$scope.refreshCalendarEvents()
+			$scope.refreshCalendarEvents();
 		};
 
 		$scope.refreshCalendarEvents = function() {
@@ -516,7 +516,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			//setting nights based on calender checking/checkout days
 			var timeDiff = $scope.checkoutDateInCalender.getTime() - $scope.checkinDateInCalender.getTime();
 			return Math.ceil(timeDiff / (1000 * 3600 * 24));
-		}
+		};
 
 		$scope.resetCalendarDates = function() {
 			$scope.checkinDateInCalender = $scope.confirmedCheckinDate;
@@ -571,7 +571,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			if (parseInt(tzIndependentDate($rootScope.businessDate).getMonth()) === parseInt($scope.leftCalendarOptions.month)) {
 				disabled = true;
 			}
-			return disabled
+			return disabled;
 
 		};
 
@@ -615,7 +615,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			nextMonthLastVisibleDate.setDate(13);
 			if((fetchedStartDate <= nextMonthLastVisibleDate) && (nextMonthLastVisibleDate <= fetchedEndDate)){
 				changeMonth('FORWARD');
-				return false
+				return false;
 			}
 
 			var params = {};
@@ -666,7 +666,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			//If the data is already fetched for the visble dates, then just swith the months
 			if((fetchedStartDate <= prevMonthLastVisibleDate) && (prevMonthLastVisibleDate <= fetchedEndDate)){
 				changeMonth('BACKWARD');
-				return false
+				return false;
 			}
 			//Fetch the availability details if not already fetched
 			var params = {};

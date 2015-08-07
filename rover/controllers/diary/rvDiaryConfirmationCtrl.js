@@ -91,7 +91,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                         local_version.amount = $scope.currencySymbol + ' ' + local_version.amount;
 
                         $scope.selection.rooms.push(local_version);
-                    })
+                    });
                 }
             })();
         };
@@ -145,11 +145,11 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                     });
                 }
                 $scope.closeWithAnimation ();
-            }
+            };
             var fetchFailed = function(errorMessage){
                 $scope.errorMessage = errorMessage;
                 $scope.closeWithAnimation();
-            }
+            };
             var params = {};
                 params.from_date = $scope.vaultSelections.arrival_date;
                 params.to_date = $scope.vaultSelections.departure_date;

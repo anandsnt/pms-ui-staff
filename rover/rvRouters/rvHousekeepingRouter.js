@@ -25,7 +25,7 @@ angular.module('housekeepingModule', [])
                             'VACANT_NOT_READY'      : ['vacant', 'dirty'],
                             'OUTOFORDER_OR_SERVICE' : ['out_of_order', 'out_of_service'],
                             'QUEUED_ROOMS'          : ['queued']
-                        }
+                        };
                         var filtersToApply = filterStatus[$stateParams.roomStatus];
                         for (var i = 0; i < filtersToApply.length; i++) {
                             RVHkRoomStatusSrv.currentFilters[filtersToApply[i]] = true;

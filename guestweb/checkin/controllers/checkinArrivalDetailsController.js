@@ -52,11 +52,11 @@
 		 else if ($scope.stayDetails.primeTime === 'AM' && hour === 12) {
 		    hour = hour-12;
 		 }
-		 hour = (hour <10)?("0"+hour): hour
+		 hour = (hour <10)?("0"+hour): hour;
 		 var dataTosend = {
 		 	"arrival_time":  hour+":"+$scope.stayDetails.minute,
 		 	"comments":$scope.stayDetails.comment
-		 }
+		 };
 
 
 		preCheckinSrv.postStayDetails(dataTosend).then(function(response) {
@@ -74,7 +74,7 @@
 				$scope.isLoading = false;
 			});
 		}
-	}
+	};
 };
 
 var dependencies = [

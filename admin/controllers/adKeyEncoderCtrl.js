@@ -20,7 +20,7 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
             $defer.resolve($scope.data);
 		};
 		$scope.invokeApi(ADKeyEncoderSrv.fetchEncoders, getParams, fetchSuccessOfItemList);
-	}
+	};
 
 
 	$scope.loadTable = function(){
@@ -35,7 +35,7 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 		        getData: $scope.fetchTableData
 		    }
 		);
-	}
+	};
 
 	$scope.loadTable();
 
@@ -115,7 +115,7 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 	};
 
 	$scope.statusToggle = function(index) {
-		$scope.data[index].activated
+		$scope.data[index].activated;
 		var data = {
 			'id' : $scope.data[index].id,
 			'status' : !$scope.data[index].enabled

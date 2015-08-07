@@ -121,7 +121,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			$scope.editId = value;
 			var data = {
 				'editId': value
-			}
+			};
 
 			var editSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
@@ -449,7 +449,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			//3.
 			//NA as there is a save changes button
 
-		}
+		};
 
 	}
 ]);

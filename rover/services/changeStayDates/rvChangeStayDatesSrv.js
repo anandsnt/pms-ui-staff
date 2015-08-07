@@ -63,5 +63,5 @@ sntRover.service('RVChangeStayDatesSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSrv'
             });
             return deferred.promise;
 
-        }
+        };
 }]);

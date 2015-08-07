@@ -14,7 +14,7 @@ $scope.setUpData = function(){
             $scope.rateData.end_date_for_display = $filter('date')(tzIndependentDate($scope.rateData.end_date), $rootScope.dateFormat);
             ngDialog.close();
         }
-    }
+    };
 };
 $scope.setUpData();
 

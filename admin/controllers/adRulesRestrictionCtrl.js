@@ -14,7 +14,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             $scope.selectedSchedule =null;
             $scope.ruleList = {};
             fetchRestrictions();
-        }
+        };
 
         /**
         * To fetch restrictions list
@@ -75,10 +75,10 @@ admin.controller('ADRulesRestrictionCtrl', [
             var data = {
                 'id': item.id,
                 'status': item.activated ? false : true
-            }
+            };
 
             $scope.invokeApi(ADRulesRestrictionSrv.toggleSwitch, data, toggleSwitchLikesSuccessCallback);
-        }
+        };
 
         // get templates for editable restrictions
         $scope.getTemplateUrl = function() {
@@ -190,7 +190,7 @@ admin.controller('ADRulesRestrictionCtrl', [
         $scope.selectSchedule = function(index){
             $scope.selectedSchedule = $scope.singleRule.schedules[index];
             $scope.selectedScheduleIndex = index;
-        }
+        };
 
         // open the form to edit a rule
         $scope.editSingleDepositeRule = function(rule) {
@@ -258,7 +258,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             $scope.singleRule.schedules.push(newSchedule);
              $scope.selectedSchedule = $scope.singleRule.schedules[$scope.singleRule.schedules.length-1];
              $scope.selectedScheduleIndex = $scope.singleRule.schedules.length-1;
-        }
+        };
 
         // save a new rule or update an edited rule
         $scope.saveUpdateDepositeRule = function(from) {
@@ -360,7 +360,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             $scope.selectedSchedule = $scope.singleRule.schedules[0];
             $scope.selectedScheduleIndex = 0;
             }
-        }
+        };
 
 
         $scope.deleteDepositeRule = function(rule) {

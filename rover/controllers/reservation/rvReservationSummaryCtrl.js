@@ -41,7 +41,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         $scope.summaryState = {
             forceDemographicsData: false,
             computedSegment: false
-        }
+        };
 
 
         /**
@@ -505,10 +505,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                             aptSegment = segment.value;
                         }
                     }
-                })
+                });
 
                 if (!!aptSegment) {
-                    $scope.summaryState.computedSegment = true
+                    $scope.summaryState.computedSegment = true;
                 }
 
                 $scope.reservationData.demographics.segment = aptSegment;
@@ -516,7 +516,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                     if (!!room.demographics) {
                         room.demographics.segment = $scope.reservationData.demographics.segment;
                     }
-                })
+                });
 
 
             }
@@ -1233,7 +1233,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 });
             }
             return isValid;
-        }
+        };
 
         $scope.$on("SWIPE_ACTION", function(e, swipedCardData) {
             var swipeOperationObj = new SwipeOperation();
@@ -1318,10 +1318,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                         first_name: '',
                         last_name: ''
                     }]
-                })
+                });
             }
             refreshScrolls();
-        }
+        };
 
         $scope.saveAccompanyingGuests = function(room, roomIndex) {
             $scope.errorMessage = "";
@@ -1341,7 +1341,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 onUpdateFailure = function(errorMessage) {
                     $scope.errorMessage = errorMessage;
                     $scope.$emit('hideLoader');
-                }
+                };
 
 
             if (validGuests.length > 0) {
@@ -1350,7 +1350,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                     reservation_id: $scope.reservationData.reservationIds[roomIndex]
                 }, onupdateSuccess, onUpdateFailure);
             }
-        }
+        };
 
         $scope.init();
     }

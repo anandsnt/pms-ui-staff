@@ -43,7 +43,7 @@
 
 			$rootScope.reservationID 			= response.reservation_id;
 			$rootScope.userName    				= response.user_name;
-			$rootScope.checkoutDate  			= response.checkout_date
+			$rootScope.checkoutDate  			= response.checkout_date;
 			$rootScope.checkoutTime 			= response.checkout_time;
 			$rootScope.userCity   				= response.user_city;
 			$rootScope.userState    			= response.user_state;
@@ -94,7 +94,7 @@ snt.controller('verificationErrorController', ['$scope', function($scope) {
 
 	$scope.doneClicked = function(){
 
-	}
+	};
 
 }]);
 

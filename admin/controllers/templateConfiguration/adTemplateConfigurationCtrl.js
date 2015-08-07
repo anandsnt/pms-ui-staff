@@ -83,7 +83,7 @@ admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelList
 		$scope.currentClickedElement = -1;
 		$scope.isAddmode = false;
 		$scope.isEditmode = false;
-	}
+	};
 	/*
 	 * to get the templates associated with the selected theme
 	 *

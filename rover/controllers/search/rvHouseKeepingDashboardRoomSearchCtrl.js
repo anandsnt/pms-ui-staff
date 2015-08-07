@@ -230,7 +230,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 			refreshScroller();
 			$scope.$emit("showDashboardArea", false);
 			$scope.$emit("UpdateHeading", 'MENU_ROOM_STATUS');
-		}
+		};
 		/**
 		* when focusedout on query box, we need to hide the search results area
 		* and need to show the dashboard area only if there is no data displaying

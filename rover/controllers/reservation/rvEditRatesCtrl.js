@@ -11,7 +11,7 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
             $timeout(function() {
     			$scope.refreshScroller('rateDetails');
      		}, 2000);
-        }
+        };
         $scope.refreshRateDetails();
 
 		/**

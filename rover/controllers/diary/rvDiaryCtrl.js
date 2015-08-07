@@ -61,7 +61,7 @@ sntRover
 				'isFromDiary' : true,
 				'useCache'    : true
 			}
-		}
+		};
 
 
 
@@ -124,14 +124,14 @@ sntRover
 					title : goToThisPrev.title,
 					name  : goToThisPrev.name,
 					param : goToThisPrev.param
-				}
+				};
 			} else if ( isFlowState() ) {
 
 				// if the back state is part of the flow, just specify the title
 				// back state 'name' and 'param' will be added by internal values in rvApp.js
 				$r.setPrevState = {
 					title : prevTitle
-				}
+				};
 			} else if ( isAllowedState()  ) {
 
 				// if back state is a state that can be loaded without any params
@@ -141,7 +141,7 @@ sntRover
 					title : prevTitle,
 					name  : prevName,
 					param : {}
-				}
+				};
 			} else {
 				$r.setPrevState = angular.copy( DEFAULT_STATE );
 			};
@@ -152,7 +152,7 @@ sntRover
 			 */
 			function isFlowState() {
 				var found = _.find(flowStates, function (name) {
-					return name === prevName
+					return name === prevName;
 				});
 
 				return !!found;
@@ -164,7 +164,7 @@ sntRover
 			 */
 			function isAllowedState() {
 				var found = !!_.find(allowedStates, function (name) {
-					return name === prevName
+					return name === prevName;
 				});
 
 				return !!found;
@@ -952,7 +952,7 @@ sntRover
 					row_data: row_data,
 					row_item_data: row_item_data
 	    		}
-	    	}
+	    	};
 	    	$scope.callAPI(rvDiarySrv.roomAvailabilityCheckAgainstReservation, options);
 	    };
 
@@ -963,7 +963,7 @@ sntRover
 			else{
 				resizeEndForNewReservation (row_data, row_item_data);
 			}
-	    }
+	    };
 
 	    $scope.onScrollEnd = function(current_scroll_pos) {
 	    	$scope.toggleRows($scope.gridProps.filter.show_all_rooms, current_scroll_pos);
@@ -1252,11 +1252,11 @@ sntRover
 
 	var failureCallBackOfAvailabilityFetching = function(errorMessage){
 		$scope.errorMessage = errorMessage;
-	}
+	};
 
 	var openRateTypeSelectBox = function() {
 		$scope.openRateTypeChoosingBox = true;
-	}
+	};
 
 	var callAvailabilityAPI = function(){
 		var params = getAvailabilityCallingParams(),
@@ -1279,9 +1279,9 @@ sntRover
     		successCallBack: 	successCallBackOfAvailabilityFetching,
     		failureCallBack: 	failureCallBackOfAvailabilityFetching,
     		successCallBackParameters:  params
-    	}
+    	};
     	$scope.callAPI(rvDiarySrv.Availability, options);
-	}
+	};
 
     $scope.Availability = function() {
     	$scope.errorMessage = '';
@@ -1327,7 +1327,7 @@ sntRover
 			params.account_id = account_id;
 		}
 
-		return params
+		return params;
 	}.bind($scope.gridProps);
 
 	var getAvailabilityCallingParams = function() {
@@ -1349,7 +1349,7 @@ sntRover
 			var selected_hour_min = $scope.gridProps.filter.arrival_time.split(":"),
 					hour = selected_hour_min[0],
 					min  = selected_hour_min[1];
-			start.setHours(hour, min)
+			start.setHours(hour, min);
 		var end = new Date(start.getFullYear(),
 						   start.getMonth(),
 						   start.getDate(),
@@ -1390,7 +1390,7 @@ sntRover
 		if(account_id) {
 			paramsToReturn.account_id = account_id;
 		}
-		return paramsToReturn
+		return paramsToReturn;
 	}.bind($scope.gridProps);
 
 	/*
@@ -1476,7 +1476,7 @@ sntRover
 		return ( reservation.travel_agent_id === null || reservation.travel_agent_id === '') &&
 				( reservation.company_card_id === null || reservation.company_card_id === '') ?
 				'Standard': 'Corporate';
-	}
+	};
 
 	/**
 	* function to return the accound id against a reservation
@@ -1486,7 +1486,7 @@ sntRover
 	var getAccountID = function (reservation) {
 		return getRateType (reservation) === 'Corporate' ?
 				(reservation.travel_agent_id ? reservation.travel_agent_id : reservation.company_card_id) : undefined;
-	}
+	};
 
 	/**
 	* function to build the params required for the API to check whether
@@ -1538,7 +1538,7 @@ sntRover
 			params.account_id = account_id;
 		}
 
-		return params
+		return params;
 	};
 
 	/**
@@ -1693,7 +1693,7 @@ sntRover
 		if(newValue.getFullYear() !== current_date.getFullYear() ||
 			newValue.getMonth() !== current_date.getMonth() ||
 			newValue.getDate() !== current_date.getDate()) {
-			var params = getReservationTransferParams (reservation, newValue)
+			var params = getReservationTransferParams (reservation, newValue);
 			var options = {
 	    		params: 			params,
 	    		successCallBack: 	successCallBackOfDateSelectedInEditMode,
@@ -1702,7 +1702,7 @@ sntRover
 					chosenDate : newValue,
 					oldGridProps: util.deepCopy ($scope.gridProps)
 		    	}
-		    }
+		    };
 		    $scope.callAPI(rvDiarySrv.checkAvailabilityForReservationToA_Date, options);
 		}
 	}.bind($scope.gridProps);
@@ -1825,8 +1825,8 @@ sntRover
 
     		//CICO-14143: Diary - Move without rate change actually changes rate
     		'is_move_without_rate_change' : isMoveWithoutRateChange ?  isMoveWithoutRateChange : false
-    	}
-    }
+    	};
+    };
 
     /**
     * function used to save reservation from Diary itself
@@ -1838,7 +1838,7 @@ sntRover
     		params: 			params,
     		successCallBack: 	successCallBackOfSaveReservation,
     		failureCallBack: 	failureCallBackOfSaveReservation
-	    }
+	    };
 	    $scope.callAPI(RVReservationSummarySrv.updateReservation, options);
 	};
 
@@ -1977,7 +1977,7 @@ sntRover
 							row_data = room_detail;
 						}
 					}
-				})
+				});
 
 			});
 			if(row_data){

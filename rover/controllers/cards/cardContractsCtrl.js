@@ -112,8 +112,8 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 					}
 				},
 				series: $scope.graphData
-			}
-		}
+			};
+		};
 
 		var fetchContractsDetailsSuccessCallback = function(data) {
 			$scope.contractList.isAddMode = false;
@@ -216,9 +216,9 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 					symbol: 'triangle',
 					radius: 0
 				}
-			}]
-			return graphData
-		}
+			}];
+			return graphData;
+		};
 
 		// Fetch data for rates
 		var fetchRatesSuccessCallback = function(data) {

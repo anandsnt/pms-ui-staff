@@ -39,7 +39,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 			else{
 				return "";
 			}
-		}
+		};
 
 		var resizedWindow = function(){
 			/*
@@ -59,7 +59,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
         	LabelElements.css("width", labelWidthToSet + "%");
         	$scope.refreshScroller('graph-scroller');
 
-		}
+		};
 		var getMaxSeriesLengthData = function(){
 			var max = 0;
 			for(var i = 0; i < plottedChart.series.length; i++){
@@ -68,7 +68,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 				}
 			}
 			return max;
-		}
+		};
 
 		// var colors = ['#c1c1c1', '#dc829c', '#83c3df', '#82de89', '#f6981a', '#f2d6af'];
 
@@ -292,14 +292,14 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 			        		$scope.$apply(function(){
 
 					        	for(var i = 0; i < $scope.graphData.length; i++){
-					        		$scope.clickedOnLegend($scope.graphData[i].name, !$scope.graphData[i].checked)
+					        		$scope.clickedOnLegend($scope.graphData[i].name, !$scope.graphData[i].checked);
 					        	}
 					        	$scope.graphWidth = getMaxSeriesLengthData() * 75;
 					        	resizedWindow();
 
 			        		});
 
-			        	}, 150)
+			        	}, 150);
 
 			        	$(window).resize(function(){
 			        		timeoutFunction = $timeout(function(){
@@ -311,10 +311,10 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 			        }
 
 
-			    }
+			    };
 
 			$scope.$emit("hideLoader");
-		}
+		};
 
 		$scope.data = rvAvailabilitySrv.getGraphData();
   		//if already fetched we will show without calling the API
@@ -346,7 +346,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 	        	setTimeout(function(){
 
 		        	for(var i = 0; i < $scope.graphData.length; i++){
-		        		$scope.clickedOnLegend($scope.graphData[i].name, !$scope.graphData[i].checked)
+		        		$scope.clickedOnLegend($scope.graphData[i].name, !$scope.graphData[i].checked);
 		        	}
 		        	$scope.$apply(function(){
 		        		resizedWindow();
@@ -366,7 +366,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 			isAlreadyRemoved = true;
 			$(window).unbind('resize');
 			if(timeoutFunction){
-				$timeout.cancel(timeoutFunction)
+				$timeout.cancel(timeoutFunction);
 			}
 		});
 

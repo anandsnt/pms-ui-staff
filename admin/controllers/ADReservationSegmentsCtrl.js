@@ -13,7 +13,7 @@ admin.controller('ADReservationSegmentsCtrl', ['$scope', '$state', 'ADSegmentsSr
 			baseData: {
 				segments: []
 			}
-		}
+		};
 
 		var fetchSegments = function() {
 			// Step1 : fetch existing segments
@@ -22,7 +22,7 @@ admin.controller('ADReservationSegmentsCtrl', ['$scope', '$state', 'ADSegmentsSr
 				$scope.segmentData.baseData = data;
 			};
 			$scope.invokeApi(ADSegmentsSrv.fetch, {}, onFetchSuccess);
-		}
+		};
 
 		var initSegments = function() {
 			$scope.itemList = new ngTableParams({
@@ -35,19 +35,19 @@ admin.controller('ADReservationSegmentsCtrl', ['$scope', '$state', 'ADSegmentsSr
 				total: 0, // length of data
 				getData: fetchSegments
 			});
-		}
+		};
 
 		$scope.addNewSegment = function() {
 			$scope.segmentData.newSegmentData = {
 				name: '',
 				los: ''
-			}
+			};
 			$scope.segmentData.currentSegment = 'NEW';
-		}
+		};
 
 		$scope.cancelAddSegment = function() {
 			$scope.segmentData.currentSegment = false;
-		}
+		};
 
 		// SAVE SEGMENT
 		$scope.saveNewSegment = function() {
@@ -60,7 +60,7 @@ admin.controller('ADReservationSegmentsCtrl', ['$scope', '$state', 'ADSegmentsSr
 				fetchSegments();
 			};
 			$scope.invokeApi(ADSegmentsSrv.save, $scope.segmentData.newSegmentData, onSaveSuccess);
-		}
+		};
 
 		// UPDATE SEGMENT
 		$scope.updateSegment = function(segment) {
@@ -69,7 +69,7 @@ admin.controller('ADReservationSegmentsCtrl', ['$scope', '$state', 'ADSegmentsSr
 				$scope.segmentData.currentSegment = false;
 			};
 			$scope.invokeApi(ADSegmentsSrv.update, segment, onUpdateSuccess);
-		}
+		};
 
 		// DELETE SEGMENT
 		$scope.deleteSegment = function(segment) {
@@ -79,7 +79,7 @@ admin.controller('ADReservationSegmentsCtrl', ['$scope', '$state', 'ADSegmentsSr
 				fetchSegments();
 			};
 			$scope.invokeApi(ADSegmentsSrv.delete, segment, onDeleteSuccess);
-		}
+		};
 
 
 		// on change activation
@@ -92,12 +92,12 @@ admin.controller('ADReservationSegmentsCtrl', ['$scope', '$state', 'ADSegmentsSr
 		$scope.onEditSegment = function(segment, index) {
 			$scope.segmentData.editStore = angular.copy(segment);
 			$scope.segmentData.currentSegment = index;
-		}
+		};
 
 		$scope.onCancelEdit = function(index) {
 			$scope.segmentData.baseData.segments[index] = angular.copy($scope.segmentData.editStore);
 			$scope.segmentData.currentSegment = false;
-		}
+		};
 
 		$scope.toggleSegmentsUse = function() {
 			var onToggleSuccess = function(data) {
@@ -108,7 +108,7 @@ admin.controller('ADReservationSegmentsCtrl', ['$scope', '$state', 'ADSegmentsSr
 				is_use_segments: $scope.segmentData.baseData.is_use_segments
 			}, onToggleSuccess);
 
-		}
+		};
 
 		initSegments();
 	}

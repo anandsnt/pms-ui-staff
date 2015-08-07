@@ -135,7 +135,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				$scope.start = $scope.start - $scope.searchPerPage;
 
 			}
-			$scope.totalSearchResults = RVSearchSrv.totalSearchResults
+			$scope.totalSearchResults = RVSearchSrv.totalSearchResults;
 			$scope.end = $scope.start + $scope.results.length - 1;
 			setTimeout(function() {
 				$scope.$apply();
@@ -209,7 +209,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 						$scope.searchAreaIsHiding = false;
 						$scope.searchAreaIsOpening = false;
 						$scope.showSearchResultsArea = searchAreaVisibilityStatus;
-					}, 400)
+					}, 400);
 				}
 				else {
 					$scope.searchAreaIsHiding = false;
@@ -285,7 +285,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.searchAreaClicked = function($event) {
 			$event.stopPropagation();
 			return false;
-		}
+		};
 
 		/**
 		 * wanted to show confirmation number
@@ -325,7 +325,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 					txtInQry(res.company) ||
 					txtInQry(escN(res.room).toString(), false) ||
 					txtInQry(escN(res.confirmation).toString(), false) ||
-					(escN(res.reservation_status).toUpperCase() === "CANCELED" && txtInQry(escN(res.cancellation_no).toString(), false) >= 0))
+					(escN(res.reservation_status).toUpperCase() === "CANCELED" && txtInQry(escN(res.cancellation_no).toString(), false) >= 0));
 		};
 
 		var applyFilters = function(isLocalFiltering) {
@@ -433,7 +433,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
             $scope.focusSearchField = false;
 			$scope.$emit("showSearchResultsArea", true);
 			$scope.$emit("UpdateHeading", 'SEARCH_NORMAL');
-			$vault.set('searchType', 'SEARCH_NORMAL')
+			$vault.set('searchType', 'SEARCH_NORMAL');
 			refreshScroller();
 		};
 
@@ -469,7 +469,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				}
 
 				return viewStatus;
-			}
+			};
 			/*
 			 * function used in template to map the reservation status to the view expected format
 			 */
@@ -778,7 +778,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 			if ($scope.textInQueryBox.length === 0) {
 				$scope.$apply(function() {
-					$scope.$emit("HeaderBackButtonClicked")
+					$scope.$emit("HeaderBackButtonClicked");
 				});
 
 			}
@@ -834,7 +834,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.end = $scope.start + $scope.results.length - 1;
 			$scope.nextAction = false;
 			$scope.prevAction = false;
-		}
+		};
 
 		$scope.onFromDateChanged = function(date) {
 			$scope.fromDate = date;

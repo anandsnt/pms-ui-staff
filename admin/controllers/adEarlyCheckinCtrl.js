@@ -193,7 +193,7 @@ $scope.setUpUpsellWindowData = function () {
          upsellWindow.charge = item.charge;
          $scope.upsellWindows.push(upsellWindow);
   });
-}
+};
 
 $scope.isAddonAvailable = function(index){
        if($scope.addons[index].id === $scope.upsellWindows[0].addon_id){
@@ -205,7 +205,7 @@ $scope.isAddonAvailable = function(index){
        }else{
         return true;
        }
-}
+};
 
 $scope.isRateAvailable = function(index){
        for(var i = 0; i < $scope.upsellData.early_checkin_rates.length; i++){
@@ -214,7 +214,7 @@ $scope.isRateAvailable = function(index){
          }
         }
        return true;
-}
+};
 
 $scope.setUpDefaultUpsellLevels = function () {
          var upsellCountArray ;
@@ -235,13 +235,13 @@ $scope.setUpDefaultUpsellLevels = function () {
           defaultWindow.charge = "";
           $scope.upsellData.early_checkin_levels.push(defaultWindow);
         });
-}
+};
 
 $scope.setEarlyCheckinTimeForRates = function(){
        $scope.upsell_rate.hours = ($scope.upsellData.early_checkin_time === "" || $scope.upsellData.early_checkin_time === null)? "" : $scope.upsellData.early_checkin_time.substring(0, 2);
        $scope.upsell_rate.minutes = ($scope.upsellData.early_checkin_time === "" || $scope.upsellData.early_checkin_time === null)? "" : $scope.upsellData.early_checkin_time.substring(3, 5);
        $scope.upsell_rate.meridiem = ($scope.upsellData.early_checkin_time === "" || $scope.upsellData.early_checkin_time === null)? "AM" : $scope.upsellData.early_checkin_time.substring(6);
-}
+};
 
 $scope.setUpUpsellWindowDataToSave = function () {
         $scope.upsellData.early_checkin_levels = [];
@@ -255,7 +255,7 @@ $scope.setUpUpsellWindowDataToSave = function () {
                  $scope.upsellData.early_checkin_levels.push(upsellWindow);
              }
         });
-}
+};
 
 $scope.validateUpsellWindowTime = function(){
   var time_window1 = new Date;
@@ -284,7 +284,7 @@ $scope.validateUpsellWindowTime = function(){
   else {
     return true;
   }
-}
+};
 
 $scope.fetchUpsellDetails();
 $scope.hours = ["01","02","03","04","05","06","07","08","09","10","11","12"];
@@ -333,7 +333,7 @@ $scope.clickAddRoomType = function(){
   }
   var rate_item;
 	angular.forEach($scope.rates,function(item, index) {
-    console.log(parseInt(item.id) === parseInt($scope.upsell_rate.selected_rate_id))
+    console.log(parseInt(item.id) === parseInt($scope.upsell_rate.selected_rate_id));
 		if(parseInt(item.id) === parseInt($scope.upsell_rate.selected_rate_id)){
       rate_item = {};
       rate_item.id = item.id;
@@ -382,7 +382,7 @@ $scope.isChargeRequiredForWindow = function(windowIndex){
    }else if(windowIndex === 2){
       return $scope.upsellWindows[2].hours !== ""? 'yes' : 'no';
    }
-}
+};
 
 /**
 * To watch Upsell data

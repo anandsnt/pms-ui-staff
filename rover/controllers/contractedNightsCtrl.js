@@ -1,6 +1,6 @@
 
 sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RVCompanyCardSrv','$stateParams',function($scope,dateFilter,ngDialog,RVCompanyCardSrv,$stateParams){
-	$scope.nightsData={}
+	$scope.nightsData={};
 	$scope.nightsData.occupancy =[];
 	$scope.nightsData.allNights = "";
 	var first_date = new Date($scope.contractData.begin_date);

@@ -377,7 +377,7 @@ sntRover.controller('roverController',
 
     $scope.toggleHotelList = function(e) {
       $scope.showHotelSwitchList = !$scope.showHotelSwitchList;
-    }
+    };
 
     $scope.closeDrawerMenu = function() {
       $scope.menuOpen = false;
@@ -495,7 +495,7 @@ sntRover.controller('roverController',
     var initiateDesktopCardReader = function(){
 
     	sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options);
-    }
+    };
 
     $scope.initiateCardReader = function() {
       if (sntapp.cardSwipeDebug === true) {

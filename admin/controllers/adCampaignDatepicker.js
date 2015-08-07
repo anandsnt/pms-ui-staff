@@ -15,7 +15,7 @@ $scope.setUpData = function(){
             console.log($scope.campaignData.end_date_for_display);
             ngDialog.close();
         }
-    }
+    };
 };
 $scope.setUpData();
 

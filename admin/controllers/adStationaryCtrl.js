@@ -7,7 +7,7 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 	$scope.memento = {
 		hotel_picture: "",
 		location_image: ""
-	}
+	};
 
 	$scope.init = function() {
 
@@ -24,7 +24,7 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 				$scope.socialNetworks.push({
 					value: social,
 					name: social
-				})
+				});
 			});
 
 			$scope.data = data;
@@ -58,10 +58,10 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 
 		var filterKeys = ["guest_bill_template", "hotel_logo"];
 		if ($scope.data.hotel_picture === $scope.memento.hotel_picture) {
-			filterKeys.push('hotel_picture')
+			filterKeys.push('hotel_picture');
 		}
 		if ($scope.data.location_image === $scope.memento.location_image) {
-			filterKeys.push('location_image')
+			filterKeys.push('location_image');
 		}
 		var postingData = dclone($scope.data, filterKeys);
 		//calling the save api
@@ -101,35 +101,35 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 	$scope.onEditSocialLink = function(link, index) {
 		$scope.editStoreLink = angular.copy(link);
 		$scope.currentSocialLink = index;
-	}
+	};
 	$scope.onCancelEditLink = function(index) {
 		$scope.data.social_network_links[index] = $scope.editStoreLink;
 		$scope.currentSocialLink = false;
-	}
+	};
 
 	$scope.onCancelAddLink = function() {
 		$scope.currentSocialLink = false;
-	}
+	};
 
 	$scope.onAddNewSocialLink = function() {
 		$scope.newSocialLinkData = {
 			type: '',
 			link: ''
-		}
+		};
 		$scope.currentSocialLink = 'NEW';
-	}
+	};
 
 	$scope.onPushNewLink = function() {
 		$scope.data.social_network_links.push($scope.newSocialLinkData);
 		$scope.currentSocialLink = false;
-	}
+	};
 
 	$scope.onRemoveLink = function(link) {
 		$scope.data.social_network_links = _.without($scope.data.social_network_links, link);
-	}
+	};
 
 	$scope.onUpdateSocialLink = function() {
 		$scope.currentSocialLink = false;
-	}
+	};
 
 }]);

@@ -253,7 +253,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		 * @return {Boolean} [description]
 		 */
 		$scope.isFirstTimeWithNoResult = function(){
-			return ($scope.amFirstTimeHere && !hasSomeSearchResults())
+			return ($scope.amFirstTimeHere && !hasSomeSearchResults());
 		};
 
 		/**
@@ -261,7 +261,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		 * @return {[type]} [description]
 		 */
 		$scope.shouldShowNoResult = function(){
-			return (!$scope.amFirstTimeHere && !hasSomeSearchResults())
+			return (!$scope.amFirstTimeHere && !hasSomeSearchResults());
 		};
 
 		/**
@@ -349,7 +349,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 				id: accountID,
 				activeTab: 'ACCOUNT',
         isFromCards: true
-			})
+			});
 		};
 
 		/**

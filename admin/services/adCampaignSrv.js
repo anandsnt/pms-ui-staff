@@ -90,7 +90,7 @@ admin.service('ADCampaignSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         	    deferred.reject(data);
         	});
         	return deferred.promise;
-        }
+        };
 
 
     }

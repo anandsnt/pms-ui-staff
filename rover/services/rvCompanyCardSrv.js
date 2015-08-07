@@ -54,7 +54,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		/** end of contact information area */
 
@@ -111,7 +111,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		/**
 		 * service function used to add new contracts
@@ -133,7 +133,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		this.updateNight = function(data) {
 			var deferred = $q.defer();
@@ -144,7 +144,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		/**
 		 * service function used for retreive rates
@@ -170,7 +170,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 					id: data.id
 				},
 				"change_all_reservations": data.future
-			}
+			};
 			var deferred = $q.defer();
 			var url = '/api/reservations/' + data.reservation + '/cards/replace';
 			rvBaseWebSrvV2.putJSON(url, request).then(function(data) {
@@ -179,12 +179,12 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		this.removeCard = function(data) {
 			var request = {
 				type: data.cardType
-			}
+			};
 			var deferred = $q.defer();
 			var url = '/api/reservations/' + data.reservation + '/cards/remove';
 			rvBaseWebSrvV2.deleteJSON(url, request).then(function(data) {
@@ -193,7 +193,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		this.saveAccountContact = function(data) {
 			var id = data.id;
@@ -205,7 +205,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 
 		this.fetchArAccountDetails = function(data) {
@@ -218,7 +218,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		this.fetchArAccountNotes = function(data) {
 			var id = data.id;
@@ -230,7 +230,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		this.saveARNote = function(data) {
 			var deferred = $q.defer();
@@ -241,7 +241,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		this.saveARDetails = function(data) {
 			var deferred = $q.defer();
@@ -252,7 +252,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 
 
@@ -265,7 +265,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		this.deleteArAccount = function(data) {
 			var id = data.id;
@@ -277,7 +277,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		this.fetchArAccountsList = function(params){
 			var deferred = $q.defer();
@@ -289,7 +289,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		this.addCreditAmount = function(params){
 			var deferred = $q.defer();
@@ -300,7 +300,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		this.payForReservation = function(params){
 			var deferred = $q.defer();
@@ -311,7 +311,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		this.openForReservation = function(params){
 			var deferred = $q.defer();
@@ -322,7 +322,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		this.payAll = function(params){
 			var deferred = $q.defer();
@@ -333,7 +333,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		this.fetchHotelLoyaltiesHlps = function(param){
                     var deferred = $q.defer();

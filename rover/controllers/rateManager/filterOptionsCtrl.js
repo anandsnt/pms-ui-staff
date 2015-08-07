@@ -328,6 +328,6 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
                 !$scope.currentFilterData.end_date || // Need to filter only when date range is provided
                 !rate.end_date || // Need to filter only rates which have an expiry date (end date)
                 (new tzIndependentDate($scope.currentFilterData.begin_date) < new tzIndependentDate(rate.end_date)); //Blocking only expired rates... rates expiring in the date range would still show up.
-        }
+        };
     }
 ]);

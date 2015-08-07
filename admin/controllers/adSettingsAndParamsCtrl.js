@@ -59,11 +59,11 @@ admin.controller('settingsAndParamsCtrl',['$scope','settingsAndParamsSrv','setti
             else{
                 angular.forEach(frontDeskSubmenu, function(submenu, index) {
                     if(submenu.title === 'MENU_END_OF_DAY'){
-                       frontDeskSubmenu.splice(index,1)
+                       frontDeskSubmenu.splice(index,1);
                     }
                 });
             };
-        }
+        };
         var selectedChargeCode = ( typeof $scope.selected_charge_code === 'undefined' ) ? "" : $scope.selected_charge_code;
         var groupChargeCode = ( typeof $scope.selected_group_charge_code === 'undefined' ) ? "" : $scope.selected_group_charge_code;
         var dataToSend = {	"no_show_charge_code_id" : selectedChargeCode ,

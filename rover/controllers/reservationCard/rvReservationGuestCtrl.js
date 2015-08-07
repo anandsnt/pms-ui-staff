@@ -98,7 +98,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				closeByDocument: false,
 				closeByEscape: false
 			});
-		}
+		};
 
 		$scope.keepCurrentRate = function() {
 			//Save data variables keeping the Current Rate .
@@ -138,7 +138,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 						adults: adults,
 						children: children,
 						infants: parseInt($scope.guestData.infants_count || 0)
-					}
+					};
 					if (!$scope.reservationData.reservation_card.is_hourly_reservation) {
 						if (override) {
 							var actual_amount = $scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.actual_amount;
@@ -166,7 +166,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 						}
 					}
 				}
-			})
+			});
 
 			presentGuestInfo = JSON.parse(JSON.stringify($scope.guestData));
 			initialGuestInfo = JSON.parse(JSON.stringify($scope.guestData));
@@ -226,14 +226,14 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		$scope.applyCurrentRate = function() {
 			saveChanges(true); //override
 			closeDialog();
-		}
+		};
 
 		$scope.cancelOccupancyChange = function() {
 			// RESET
 			$scope.guestData = JSON.parse(JSON.stringify(initialGuestInfo));
 			presentGuestInfo = JSON.parse(JSON.stringify(initialGuestInfo));
 			closeDialog();
-		}
+		};
 
 		/* To save guest details */
 		$scope.saveGuestDetails = function() {
@@ -289,7 +289,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			presentGuestInfo.adult_count = $scope.guestData.adult_count;
 			presentGuestInfo.children_count = $scope.guestData.children_count;
 			presentGuestInfo.infants_count = $scope.guestData.infants_count;
-		}
+		};
 
 		$scope.init = function() {
 

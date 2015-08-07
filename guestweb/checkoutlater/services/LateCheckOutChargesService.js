@@ -35,7 +35,7 @@ return {
 	charges: charges,
 	fetchLateCheckoutOptions: fetchLateCheckoutOptions,
 	postNewCheckoutOption:postNewCheckoutOption
-}
+};
 };
 
 var dependencies = [

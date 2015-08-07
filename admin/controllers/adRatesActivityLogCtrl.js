@@ -147,7 +147,7 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
         if($scope.userEmail === ''){
            $scope.user_id=0;
         }
-    }
+    };
     $scope.userEmail='';
     /*
     * Sorting
@@ -215,7 +215,7 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
     }
 
     var initializeAutoCompletion = function(){
-        console.log('init auto complete')
+        console.log('init auto complete');
         //forming auto complte source object
         var activeUserAutoCompleteObj = [];
         _.each($scope.activeUserList, function(user) {
@@ -260,7 +260,7 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
             focus: function(event, ui) {
                 return false;
             }
-        }
+        };
         $scope.listUserAutoCompleteOptions = angular.extend({
             position: {
                 my: 'left bottom',
@@ -276,9 +276,9 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
             }
         }, userAutoCompleteCommon);
 
-    }
+    };
             initializeAutoCompletion();
-        }
+        };
         $scope.init();
 
 

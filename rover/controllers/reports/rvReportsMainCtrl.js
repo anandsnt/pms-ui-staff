@@ -332,7 +332,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			// if user has not chosen anything
 			// both 'checked_in' & 'checked_out' must be true
 			if (!chosenReport.chosenCico) {
-				chosenReport.chosenCico = 'BOTH'
+				chosenReport.chosenCico = 'BOTH';
 				return true;
 			};
 

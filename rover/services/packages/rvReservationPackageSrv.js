@@ -26,7 +26,7 @@ sntRover.service('RVReservationPackageSrv',['$http', '$q', 'rvBaseWebSrvV2', fun
 			});
 		return deferred.promise;
 
-	}
+	};
 
 
 

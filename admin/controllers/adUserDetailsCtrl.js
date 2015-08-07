@@ -318,11 +318,11 @@ admin.controller('ADUserDetailsCtrl',
 	$scope.reachedUnAssignedRoles = function(event, ui){
 		$scope.selectedAssignedRole = -1;
 		lastDropedTime = new Date();
-	}
+	};
 
 	$scope.reachedAssignedRoles = function(event, ui){
 		$scope.selectedUnassignedRole = -1;
 		lastDropedTime = new Date();
-	}
+	};
 
 }]);

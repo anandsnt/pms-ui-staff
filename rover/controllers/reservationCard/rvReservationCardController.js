@@ -128,7 +128,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 			if (count>0){
 				$scope.prevTimeLineEmpty = false;
 				$scope.currentReservationId = $scope.reservationList[0].confirmation_num;
-				$scope.getReservationDetails($scope.reservationList[0].confirmation_num, $scope.reservationList[0].id)
+				$scope.getReservationDetails($scope.reservationList[0].confirmation_num, $scope.reservationList[0].id);
 			}
 			else {
 				$scope.prevTimeLineEmpty = true;

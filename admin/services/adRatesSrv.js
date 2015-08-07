@@ -147,7 +147,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
                     deferred.reject(data);
                 });
 
-            }
+            };
 
             var url = "/api/rates/" + params.rateId;
             ADBaseWebSrvV2.getJSON(url).then(function (data) {
@@ -157,7 +157,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
                 deferred.reject(data);
             });
             return deferred.promise;
-        }
+        };
 
     }
 ]);

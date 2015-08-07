@@ -24,7 +24,7 @@ var Timeline = React.createClass({
 	 * @return {String}
 	 */
 	__get_date_for_timeline_displaying: function(dateObj){
-		return (dateObj.toComponents().date.weekday + " - " + dateObj.toComponents().date.toShortDateString())
+		return (dateObj.toComponents().date.weekday + " - " + dateObj.toComponents().date.toShortDateString());
 	},
 
 	render: function() {

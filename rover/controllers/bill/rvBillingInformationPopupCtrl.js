@@ -35,14 +35,14 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     */
 	$scope.getHeaderButtonLabel = function(){
 		return $scope.isInitialPage? $filter('translate')('ADD_ROUTES_LABEL') : $filter('translate')('ALL_ROUTES_LABEL');
-	}
+	};
     /**
     * function to set the reload option
     param option is boolean
     */
     $scope.setReloadOption = function(option){
         $scope.isReloadNeeded = option;
-    }
+    };
     /*
      *   Method to check whether the routing for a group/house already exist
      */
@@ -67,13 +67,13 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             $scope.isReloadNeeded = false;
             $scope.fetchRoutes();
         }
-	}
+	};
     /**
     * function to handle the pencil button click in route detail screen
     */
     $scope.deSelectEntity = function(){
         $scope.isEntitySelected = false;
-    }
+    };
     /**
     * function to handle entity selection from the 'All Routes' screen and the 'select entity' screen
     */

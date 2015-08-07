@@ -130,7 +130,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 				$scope.editData.lov = [{'value':'','name':''}];
 			}
 
- 		}
+ 		};
 
  		var updateChainSuccessCallback = function(data) {
  			$scope.$emit('hideLoader');
