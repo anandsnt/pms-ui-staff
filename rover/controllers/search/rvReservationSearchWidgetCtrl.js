@@ -20,8 +20,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.isLateCheckoutList = false;
 		$scope.isQueueReservationList = false;
 		$scope.swipeNoResults = false;
-		//$scope.disableNextButton = false;
-
 		//showSearchResultsAre
 		$scope.showSearchResultsArea = false;
 		$scope.searchResultsFetchDone = false;
@@ -37,8 +35,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.toDate = RVSearchSrv.toDate === undefined ? "" : RVSearchSrv.toDate;
 		RVSearchSrv.fromDate = $rootScope.businessDate;
 		RVSearchSrv.toDate = '';
-
-		//RVSearchSrv.fromDate = $rootScope.businessDate;
 
 		$scope.start = 1;
 		$scope.end = RVSearchSrv.searchPerPage;
@@ -94,16 +90,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		// setting up back to dashboard
 		// this must be set only for switching b/w
 		// dashboard and search results by clicking the search in dashboard
-		// if ( !$stateParams.hasOwnProperty('type') ) {
-		// 	$rootScope.setPrevState = {
-		// 		title: $filter('translate')('DASHBOARD'),
-		// 		callback: 'clearResults',
-		// 		scope: $scope,
-		// 		noStateChange: true,
-		// 		hide: true
-		// 	};
-		// }
-
+		
 		/**
 		 * Event propogated by ngrepeatstart directive
 		 * we used to show activity indicator
@@ -132,7 +119,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.$emit('hideLoader');
 			$scope.results = data;
 			//TODO: commenting out for now. See if this has to be restored
-			//$scope.firstSearch = false;
 			$scope.searchType = "default";
 			$scope.isTyping = false;
 			$scope.searchResultsFetchDone = true;
@@ -202,7 +188,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				$scope.fromDate = $rootScope.businessDate;
 				$scope.toDate = '';
 			});
-			//RVSearchSrv.fromDate = $rootScope.businessDate;
 			RVSearchSrv.toDate = '';
 
 		});
@@ -218,7 +203,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				$scope.textInQueryBox = '';
 				$vault.set('searchQuery', '');
 				// hide the dashboard back button (dont remove yet)
-				// $rootScope.setPrevState.hide = true;
 				if (!$scope.reservationSearch) {
 					$scope.searchAreaIsHiding = true;
 					$timeout(function() {
@@ -239,7 +223,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 					$scope.searchAreaIsOpening = true;
 				}
 				// show the dashboard back button (dont remove yet)
-				// $rootScope.setPrevState.hide = false;
 			}
 
 		});
@@ -394,10 +377,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				//see if the new query is the substring of fetch term & the fetched results count < per_page param(which is set to be 100 now)
 				//If so we will do local filtering
 				if ($scope.searchType === "default" && $scope.textInQueryBox.indexOf($scope.fetchTerm) === 0 && !$scope.firstSearch && $scope.results.length > 0 && RVSearchSrv.totalSearchResults <= $scope.searchPerPage) {
-
-					//RVSearchSrv.page = 1;
-					//var isLocalFiltering = true;
-					//applyFilters(isLocalFilte	`ring);
 					applyFilters();
 
 				} else {
@@ -585,9 +564,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			//Clear search fields
 			$scope.fromDate = $rootScope.businessDate;
 			$scope.toDate = "";
-			//$scope.start = 1;
-			//$scope.end = 100;
-
+			
 			$scope.$emit("SearchResultsCleared");
 			setTimeout(function() {
 				refreshScroller();
@@ -595,10 +572,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 			// dont remove yet
 			// Gotacha!! Only when we are dealing with 'noStateChange'
-			// if ( !!$rootScope.setPrevState.noStateChange ) {
-			//     $rootScope.setPrevState.hide = true;
-			// };
-
+			
 			// reset the query saved into vault
 			$vault.set('searchQuery', '');
 		};
@@ -619,9 +593,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			RVSearchSrv.fromDate = $scope.fromDate;
 			RVSearchSrv.toDate = $scope.toDate;
 
-			//$scope.$emit("UpdateSearchBackbuttonCaption", "");
-
-                        $rootScope.viaSharerPopup = true;
+			$rootScope.viaSharerPopup = true;
 			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 				id: reservationID,
 				confirmationId: confirmationID,
@@ -643,8 +615,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			RVSearchSrv.fromDate = $scope.fromDate;
 			RVSearchSrv.toDate = $scope.toDate;
 
-                        $rootScope.goToReservationCalled = true;
-			//$scope.$emit("UpdateSearchBackbuttonCaption", "");
+            $rootScope.goToReservationCalled = true;
 			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 				id: reservationID,
 				confirmationId: confirmationID,
@@ -660,7 +631,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.searchSwipeSuccessCallback = function(searchByCCResults) {
 
 			// show back to dashboard button (dont remove yet)
-			// $rootScope.setPrevState.hide = false;
 			$scope.$emit('hideLoader');
 			$scope.isSwiped = true;
 			data = searchByCCResults;
@@ -676,7 +646,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				RVSearchSrv.fromDate = $scope.fromDate;
 				RVSearchSrv.toDate = $scope.toDate;
 	            $rootScope.goToReservationCalled = true;
-				//$scope.$emit("UpdateSearchBackbuttonCaption", "");
 				$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 					id: $scope.currentReservationID,
 					confirmationId: $scope.currentConfirmationID,
@@ -734,7 +703,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			}
 			if (!showNoMatchesMessage && resultLength > 0) {
 				//TODO: verify which condition check to chose
-				//if(!showNoMatchesMessage && !$scope.firstSearch){
 				var totalCountOfFound = 0;
 				for (var i = 0; i < results.length; i++) {
 					if (results[i].is_row_visible) {
@@ -802,7 +770,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		$scope.$on("OUTSIDECLICKED", function(event) {
 			$scope.focusOutOnSearchText();
-			//ngDialog.close();
 		});
 
 		//please don't remove this code.... CICO-10091
@@ -834,8 +801,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		$scope.isNextButtonDisabled = function() {
 			var isDisabled = false;
-			//if($scope.end >= RVSearchSrv.totalSearchResults || $scope.disableNextButton){
-
 			if ($scope.end >= RVSearchSrv.totalSearchResults) {
 				isDisabled = true;
 			}

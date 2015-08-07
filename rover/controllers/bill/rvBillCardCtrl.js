@@ -219,7 +219,7 @@ sntRover.controller('RVbillCardController',
 	// flag to keep track of - if printing registration card and not bill card
 	$scope.isPrintRegistrationCard = false;
 
-	//To send track details on checkin button;
+	//To send track details on checkin button
 	var swipedTrackDataForCheckin = {};
 
 	$scope.reservationBillData.roomChargeEnabled = "";
@@ -351,7 +351,6 @@ sntRover.controller('RVbillCardController',
 		}
 		width =  133 * $scope.reservationBillData.bills.length + 10 + width;
 		return width;
-		// return 2200;
 	};
 
 	// Initializing reviewStatusArray
@@ -439,19 +438,6 @@ sntRover.controller('RVbillCardController',
 		}else if($scope.reservationBillData.no_post === "false"){
 			$scope.reservationBillData.roomChargeEnabled = true;
 		}
-
-		/*
-
-		if($scope.reservationData.paymentType.type.value === 'CC'){
-			$scope.reservationBillData.roomChargeEnabled = true;
-		} else if($scope.reservationBillData.no_post === "true"){
-			$scope.reservationBillData.roomChargeEnabled = false;
-		} else if($scope.reservationBillData.no_post === "false"){
-			$scope.reservationBillData.roomChargeEnabled = true;
-		}else {
-			$scope.reservationBillData.roomChargeEnabled = "";
-		}*/
-
 	};
 
 	$scope.getNoPostButtonTiltle = function(){
@@ -491,13 +477,7 @@ sntRover.controller('RVbillCardController',
 	 * Get the title for the billing info button,
 	 * on the basis of routes available or not
 	 */
-	// $scope.getBillingInfoTitle = function(){
-	// 	if($scope.reservationBillData.routing_array.length > 0)
-	// 		return $filter('translate')('BILLING_INFO_TITLE');
-	// 	else
-	// 		return $filter('translate')('ADD_BILLING_INFO_TITLE');
-	// };
-
+	
 	/*
 	 * Adding class for active bill
 	 */
@@ -862,8 +842,6 @@ sntRover.controller('RVbillCardController',
 		$scope.reservation_id = $scope.reservationBillData.reservation_id;
 
 		// pass down active bill no
-
-		//$scope.passActiveBillNo = activeBillNo;
 
 		$scope.billNumber = activeBillNo;
 
@@ -1938,7 +1916,6 @@ sntRover.controller('RVbillCardController',
 	 	$scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
 	 	var billCount = $scope.reservationBillData.bills.length;
 		$scope.isRefreshOnBackToStaycard = true;
-		//$scope.closeDialog();
 		var fetchBillDataSuccessCallback = function(billData){
 		 	$scope.$emit('hideLoader');
 		 	reservationBillData = billData;

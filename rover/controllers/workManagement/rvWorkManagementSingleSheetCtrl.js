@@ -141,17 +141,6 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 
 				$scope.singleState.unassigned = data.unassigned;
 
-				// var assignedRooms = [],
-				// 	worksheets = _.where(data.work_sheets, {
-				// 		work_sheet_id: parseInt($stateParams.id)
-				// 	});
-
-				// if (worksheets.length > 0) {
-				// 	_.each(worksheets[0].work_assignments, function(room) {
-				// 		assignedRooms.push(room.room);
-				// 	});
-				// }
-
 				// we are gonna just gonna assign
 				// the assigned rooms avail here
 				// "data.work_sheets[0].work_assignments"
@@ -285,7 +274,6 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 
 		$scope.deletWorkSheet = function() {
 			var onDeleteSuccess = function(data) {
-					//$state.go('rover.workManagement.start');
 					$scope.$emit("hideLoader");
 
 					// make it false so that the ctrl wont save it back again

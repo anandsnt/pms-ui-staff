@@ -8,7 +8,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
         var title = $filter('translate')('RESERVATION_TITLE');
         $scope.setTitle(title);
-        //$scope.viewState.existingAddons = [];
         var that = this;
 
         //setting the main header of the screen
@@ -30,13 +29,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             }
         };
 
-        // var successCallbackOfCountryListFetch = function(data) {
-        //     $scope.countries = data;
-        // };
-
         //fetching country list
         //Commenting - Another call is happening to fetch countries
-        //$scope.invokeApi(RVCompanyCardSrv.fetchCountryList, {}, successCallbackOfCountryListFetch);
 
         // adding extra function to reset time
         $scope.clearArrivalAndDepartureTime = function() {
@@ -375,7 +369,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                         if (!todaysRate || todaysRate === null || !$scope.reservationData.rateDetails.length) {
                             // ERROR! - NO RATE SELECTED FOR THIS RESERVATION - THIS DAY
-                            // console.warn("No rate id available for room: " + roomIndex + ",for date: " + date);
                         } else {
                             var todaysMetaData = $scope.reservationData.rateDetails[roomIndex] && $scope.reservationData.rateDetails[roomIndex][date] && $scope.reservationData.rateDetails[roomIndex][date][todaysRate];
                             if (!todaysMetaData) {
@@ -568,22 +561,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 company_id: $scope.reservationData.company.id,
                 travel_agent_id: $scope.reservationData.travelAgent.id
             });
-
-            // if (fromState === 'rover.reservation.staycard.mainCard.roomType') {
-            //     $scope.$broadcast('switchToStayDatesCalendar');
-            //     //Switch state to display the reservation calendar
-            // } else {
-            //     $state.go('rover.reservation.staycard.mainCard.roomType', {
-            //         from_date: $scope.reservationData.arrivalDate,
-            //         to_date: $scope.reservationData.departureDate,
-            //         view: "CALENDAR",
-            //         fromState: fromState,
-            //         company_id: $scope.reservationData.company.id,
-            //         travel_agent_id: $scope.reservationData.travelAgent.id
-            //     });
-            // }
-
-            // $scope.$broadcast('closeSidebar');
         };
 
         $scope.$on("guestEmailChanged", function(e) {
@@ -732,7 +709,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             data.children_count = parseInt($scope.reservationData.rooms[0].numChildren);
             data.infants_count = parseInt($scope.reservationData.rooms[0].numInfants);
             // CICO - 8320 Rate to be handled in room level
-            // data.rate_id = parseInt($scope.reservationData.rooms[0].rateId);
             data.room_type_id = parseInt($scope.reservationData.rooms[0].roomTypeId);
             //Guest details
             data.guest_detail = {};
@@ -960,8 +936,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                             promptCancel('', nights);
                         };
                     }
-                    //promptCancel(cancellationCharge, nights);
-
                 };
                 var onCancellationDetailsFetchFailure = function(error) {
                     $scope.$emit('hideLoader');
@@ -1056,15 +1030,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id);
                     return false;
                 }
-                /*else {
-                                   //Proceed with reservation creation flow
-                                   $scope.goToConfirmationScreen();
-                               }*/
+                /*
+                *Proceed with reservation creation flow
+                */
             };
 
             var params = {};
             params.account_id = $scope.contractRoutingType === 'TRAVEL_AGENT' ? $scope.reservationData.travelAgent.id : $scope.reservationData.company.id;
-            //params.reservation_id = $scope.reservationData.reservationId;
             params.reservation_ids = [];
             for (var i in $scope.reservationData.reservations) {
                 params.reservation_ids.push($scope.reservationData.reservations[i].id);
@@ -1084,15 +1056,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
 
             }
-            /*else {
-                           //Proceed with reservation creation flow
-                           $scope.goToConfirmationScreen();
-                       }*/
-            //$scope.goToConfirmationScreen();
+            /*
+            *Proceed with reservation creation flow
+            */
         };
 
         $scope.okClickedForConflictingRoutes = function() {
-            //$scope.goToConfirmationScreen();
             ngDialog.close();
         };
 
@@ -1126,11 +1095,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     return false;
 
                 }
-                /*else {
-                                   //ngDialog.close();
-                                   $scope.goToConfirmationScreen();
-                               }*/
-
             };
 
             if (that.hasTravelAgent() || that.hasCompanyCard()) {
@@ -1138,19 +1102,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 params.reservation_id = $scope.reservationData.reservationId;
                 params.travel_agent_id = $scope.reservationData.travelAgent.id;
                 params.company_id = $scope.reservationData.company.id;
-                /*//TODO: Actual API call
-                //fetchSuccessofDefaultRouting();
-                params.reservation_id = [];
-                for(var i in $scope.reservationData.reservations){
-                    params.reservation_id.push($scope.reservationData.reservations[i].id)
-                }*/
-
                 $scope.invokeApi(RVReservationSummarySrv.fetchDefaultRoutingInfo, params, fetchSuccessofDefaultRouting);
             }
-            /*else {
-                            $scope.goToConfirmationScreen();
-
-                        }*/
         };
 
         $scope.saveReservation = function(navigateTo, stateParameters, index) {
@@ -1302,9 +1255,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     $scope.reservationData.depositAmountWithoutFilter = totalDepositOnRateUpdate;
                     totalDepositOnRateUpdate = $filter('number')(totalDepositOnRateUpdate, 2);
                     $scope.reservationData.depositAmount = totalDepositOnRateUpdate;
-
-                    // $scope.reservationData.depositAmount = data.deposit_amount;
-                    //$scope.reservationData.depositAmount = $filter('number')(totalDepositOnRateUpdate, 2);;
                     $scope.reservationData.depositEditable = (data.allow_deposit_edit !== null && data.allow_deposit_edit) ? true : false;
                     $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) > 0;
                     $scope.reservationData.fees_details = data.fees_details;
@@ -1329,7 +1279,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     if (typeof index !== 'undefined') {
 
                         //CICO-15795 : Fix by Shiju, UI team to review.
-                        //postData.reservationId = $scope.reservationData.reservationId;
                         if ($scope.reservationsListArray) {
                             postData.reservationId = $scope.reservationsListArray.reservations[index].id;
                         } else {
@@ -1344,8 +1293,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     } else {
                         postData.reservationId = $scope.reservationData.reservationId;
                     }
-
-                    // postData.addons = $scope.viewState.existingAddons;
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
 
                 } else {

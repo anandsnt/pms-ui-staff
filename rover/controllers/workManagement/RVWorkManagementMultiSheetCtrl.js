@@ -473,8 +473,6 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		};
 
 		$scope.refreshSheet = function() {
-			// updateView();
-
 			$scope.saveMultiSheet({
 				callNextMethod: 'updateView'
 			});
@@ -525,37 +523,6 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 						afterAPIcall();
 					};
 				};
-
-
-			// lets create a set of worktypes that will have the following data structure
-			// {
-			//		'4'  : {
-			//				'date'        : 'value from header',
-			//				'task_id'     : 'same as key -> 4',
-			//				'assignments' : [{
-			//									'assignee_id' : 'employee id',
-			//									'room_ids'    : [ array of assigned room's id ]
-			//									---------- cant include 'worksheet_id' ----------
-			//								}, {
-			//									'assignee_id' : 'employee id',
-			//									'room_ids'    : [ array of assigned room's id ]
-			//									---------- cant include 'worksheet_id' ----------
-			//								}]
-			//			   },
-			//		'20' : {
-			//				'date'        : 'value from header',
-			//				'task_id'     : 'same as key -> 20',
-			//				'assignments' : [{
-			//									'assignee_id' : 'employee id',
-			//									'room_ids'    : [ array of assigned room's id ]
-			//									---------- cant include 'worksheet_id' ----------
-			//								}, {
-			//									'assignee_id' : 'employee id',
-			//									'room_ids'    : [ array of assigned room's id ]
-			//									---------- cant include 'worksheet_id' ----------
-			//								}]
-			//			  }
-			// }
 			worktypesSet = {};
 
 
