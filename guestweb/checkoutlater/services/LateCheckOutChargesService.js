@@ -1,7 +1,7 @@
 (function() {
 	var LateCheckOutChargesService = function($http, $q, $rootScope) {
 	var charges = {};
-	
+
     var fetchLateCheckoutOptions = function() {
 	// return deferred.promise;
 		var deferred = $q.defer();
@@ -24,8 +24,8 @@
 		var deferred = $q.defer();
 		$http.post(url, data).success(function(response){
 			deferred.resolve(response);
-		}).error(function(){				
-			deferred.reject();			
+		}).error(function(){
+			deferred.reject();
 		});
 		return deferred.promise;
 	};

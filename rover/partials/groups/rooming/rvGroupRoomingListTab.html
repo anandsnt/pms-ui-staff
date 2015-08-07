@@ -74,14 +74,33 @@
                 </div>
             </li>
         </li>
-        <li>
-            <button type="button" class="button grey" ng-hide="true">{{'GROUP_CHECK_IN'|translate}}</button> <!-- Replace class "grey" with "green" when rooms selected in the rooming list -->
-            <button type="button" class="button grey" ng-hide="true">{{'GROUP_CHECK_OUT'|translate}}</button> <!-- Replace class "grey" with "red" when rooms selected in the rooming list -->
+        <li ng-show="shouldShowCheckInCheckoutButton()">
+
+            <button type="button" class="button" ng-disabled="shouldDisableCheckinButton()" 
+            ng-click="groupCheckin()"
+            ng-class="{'grey': shouldDisableCheckinButton(), 'green': !shouldDisableCheckinButton()}">
+                {{'GROUP_CHECK_IN'|translate}}
+            </button> 
+
+            <button type="button" class="button" ng-hide="true" ng-disabled="shouldDisableCheckoutButton()" 
+            ng-class="{'grey': shouldDisableCheckoutButton(), 'red': !shouldDisableCheckoutButton()}">
+                {{'GROUP_CHECK_OUT'|translate}}
+            </button>
+
         </li>
         <li> <!-- Don't show until there are new rooms added in the rooming list -->
-            <button type="button" class="button grey" ng-hide="true">{{'GROUP_AUTO_ASSIGN_ROOMS'|translate}}</button> <!-- Replace class "grey" with "brand-colors" when rooms selected in the rooming list -->
+            <button type="button" class="button" ng-show="shouldShowAutoRoomAssignmentButton()" ng-click="autoAssignRooms()" ng-class="{'grey': shouldDisableAutoRoomAssignButton(), 'brand-colors': !shouldDisableAutoRoomAssignButton()}" ng-disabled="shouldDisableAutoRoomAssignButton()">
+                {{'GROUP_AUTO_ASSIGN_ROOMS'|translate}}
+            </button> <!-- Replace class "grey" with "brand-colors" when rooms selected in the rooming list -->
         </li>
-        <li> <!-- Don't show if there are no rooms in the rooming list -->
+        <li> 
+            <!-- Don't show if there are no rooms in the rooming list -->
+            <label class="checkbox inline" for="no-rate-print" ng-class="{ 'checked': groupConfigData.summary.hide_rates }">
+                <span class="icon-form icon-checkbox" ng-class="{ 'checked':groupConfigData.summary.hide_rates }"></span>
+                <input ng-click="clickedShowRate()" id="no-rate-print" value="" type="checkbox">
+                {{ 'DONT_PRINT_RATE' | translate }}
+            </label>
+
             <button type="button" class="button with-icon only-icon blue" ng-hide="reservations.length ==0" ng-click="sendRoomingList()">
                 <span class="icons icon-email"></span>
                 {{'GROUP_EMAIL'|translate}}
@@ -128,6 +147,7 @@
         <li class="date sort" ng-class="getSortClass('arrival_date')" ng-click="sortBy('arrival_date')">{{'GROUP_ARRIVAL'|translate}}</li>
         <li class="date sort" ng-class="getSortClass('departure_date')" ng-click="sortBy('departure_date')">{{'GROUP_DEPARTURE'|translate}}</li>
         <li class="type sort" ng-class="getSortClass('room_type_id')" ng-click="sortBy('room_type_id')">{{'GROUP_ROOM_TYPE'|translate}}</li>
+        <li class="rate sort" ng-class="getSortClass('room_rate_amount')" ng-click="sortBy('room_rate_amount')">{{'GROUP_ROOM RATE'|translate}}</li>
         <li class="status sort" ng-class="getSortClass('reservation_status')" ng-click="sortBy('reservation_status')">{{'GROUP_STATUS'|translate}}</li>
     </ul>
 
@@ -157,7 +177,7 @@
                         <input id="guest-id" value="{Guest}" type="checkbox" ng-click="addOrRemoveFromSelectedReservation(reservation)" ng-disabled="!!groupConfigData.summary.is_cancelled">
                     </label>
                 </div>
-                <a ng-click="showEditReservationPopup(reservation)">
+                <a ng-click="clickedOnReservation(reservation)">
                     <div class="data">
                         <h2 ng-show="!isGuestBlank(reservation)">
                             {{reservation.lastname}}, {{reservation.firstname}}
@@ -166,8 +186,12 @@
                             <!-- If new room, show this instead: -->
                             <span class="highlight">{{'GROUP_PENDING'|translate}}</span>
                         </h2>
-                            <span class="room" ng-show="!isRoomUnAssigned(reservation)"> <!-- Add class "unassigned" if new room -->
-                            {{'GROUP_ROOM'|translate}} {{reservation.room_no}}
+                        <span class="room" ng-show="!isRoomUnAssigned(reservation)">
+                            <!-- Add class "unassigned" if new room -->
+                            {{'GROUP_ROOM'|translate}} 
+                            <span ng-class="getRoomStatusClass(reservation)">
+                                {{reservation.room_no}}
+                            </span>
                             <!-- If new room, show this instead: Unassigned -->
                         </span>
                             <span class="room unassigned" ng-show="isRoomUnAssigned(reservation)"> <!-- Add class "unassigned" if new room -->
@@ -189,6 +213,9 @@
                             <strong class="room-type">{{reservation.room_type_name}}</strong>
                             <em class="room-occupancy">{{occupancyTextMap[reservation.occupancy]}}</em>
                         </div>
+                        <div class="rate">
+                            {{reservation.room_rate_amount}}
+                        </div>                        
                         <div class="reservation-status">
                             <!-- No status if it's a new room -->
                             <span class="guest-status" ng-class="getReservationClass(reservation.reservation_status)">{{reservation.reservation_status}}</span>

@@ -5,7 +5,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 	$scope.addmode = $scope.cardsList.length>0 ? false: true;
 	$scope.hideCancelCard = true;
 	$scope.isManual = false;
-	
+
 	/**
     * MLI session set up
     */
@@ -23,28 +23,28 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 		$scope.addmode = false;
 		$scope.saveData.newPaymentFormVisible = false;
 	};
-		
+
 		/**
 	* setting the scroll options for the add payment view
 	*/
 	var scrollerOptions = { preventDefault: false};
-  	$scope.setScroller('newpaymentview', scrollerOptions);	
+  	$scope.setScroller('newpaymentview', scrollerOptions);
 
   	$scope.$on('showaddpayment', function(event){
-  		$scope.refreshScroller('newpaymentview');						
+  		$scope.refreshScroller('newpaymentview');
 	});
 
   	/**
     * function to show available payment types from server
     */
   	$scope.fetchAvailablePaymentTypes = function(){
-        
+
             var successCallback = function(data) {
                 $scope.creditCardTypes = [];
                $scope.availablePaymentTypes = data;
                 $scope.ccPaymentDetails = {};
                 for(var i in data){
-                	if(data[i].name == "CC"){
+                	if(data[i].name === "CC"){
                 		$scope.ccPaymentDetails = data[i];
                 		$scope.creditCardTypes = data[i].values;
                 	}
@@ -65,7 +65,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 
      $scope.savePaymentDetails = function(){
 
-     		if($scope.saveData.payment_type != "CC"){
+     		if($scope.saveData.payment_type !== "CC"){
      			$scope.savePayment();
      			return;
      		}
@@ -74,40 +74,40 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 			 sessionDetails.cardSecurityCode = $scope.saveData.cvv;
 			 sessionDetails.cardExpiryMonth = $scope.saveData.card_expiry_month;
 			 sessionDetails.cardExpiryYear = $scope.saveData.card_expiry_year;
-			
+
 			 var callback = function(response){
 			 	$scope.$emit("hideLoader");
-			 	
+
 			 	if(response.status ==="ok"){
 
 			 		MLISessionId = response.session;
-			 		$scope.savePayment();// call save payment details WS		 		
+			 		$scope.savePayment();// call save payment details WS
 			 	}
 			 	else{
-			 		$scope.$emit('displayErrorMessage',["There is a problem with your credit card"]); 
-			 	}			
-			 	$scope.$apply(); 	
+			 		$scope.$emit('displayErrorMessage',["There is a problem with your credit card"]);
+			 	}
+			 	$scope.$apply();
 			 };
 
 			try {
-			    HostedForm.updateSession(sessionDetails, callback);	
+			    HostedForm.updateSession(sessionDetails, callback);
 			    $scope.$emit("showLoader");
 			}
 			catch(err) {
 			   $scope.$emit('displayErrorMessage',["There was a problem connecting to the payment gateway."]);
 			};
-			 		
+
 		};
 		/**
-	    * function to save a new payment type 
+	    * function to save a new payment type
 	    */
 		$scope.savePayment = function(){
-			
+
 			$scope.saveData.reservation_id = $scope.reservationData.reservation_id;
 			$scope.saveData.session_id = MLISessionId;
-			$scope.saveData.mli_token = $scope.saveData.card_number.substr($scope.saveData.card_number.length - 4);			
+			$scope.saveData.mli_token = $scope.saveData.card_number.substr($scope.saveData.card_number.length - 4);
 			$scope.saveData.card_expiry = $scope.saveData.card_expiry_month+"/"+$scope.saveData.card_expiry_year;
-			
+
 			$scope.paymentAdded($scope.saveData);
 		};
 		/**
@@ -115,15 +115,15 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 	    */
 		$scope.selectPaymentType = function(){
 			for(var i = 0; i < $scope.availablePaymentTypes.length; i++){
-				if($scope.availablePaymentTypes[i].name == $scope.saveData.payment_type){
+				if($scope.availablePaymentTypes[i].name === $scope.saveData.payment_type){
 					$scope.saveData.payment_type_description = $scope.availablePaymentTypes[i].description;
 				}
 			}
 			$scope.refreshScroller('newpaymentview');
 			if($scope.paymentGateway !== 'sixpayments'){
-				$scope.showCCPage = ($scope.saveData.payment_type == "CC") ? true: false;
-				$scope.saveData.newPaymentFormVisible = ($scope.saveData.payment_type == "CC") ? true: false;
-				$scope.addmode =($scope.saveData.payment_type == "CC" &&  $scope.cardsList.length === 0) ? true: false;
+				$scope.showCCPage = ($scope.saveData.payment_type === "CC") ? true: false;
+				$scope.saveData.newPaymentFormVisible = ($scope.saveData.payment_type === "CC") ? true: false;
+				$scope.addmode =($scope.saveData.payment_type === "CC" &&  $scope.cardsList.length === 0) ? true: false;
 			} else {
 				$scope.isManual = false;
 			}
@@ -131,9 +131,9 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 
 		$scope.changeOnsiteCallIn = function(){
 			$scope.$emit('CHANGE_IS_MANUAL', $scope.isManual);
-			$scope.showCCPage = ($scope.saveData.payment_type == "CC" &&  $scope.isManual) ? true: false;
-			$scope.addmode =($scope.saveData.payment_type == "CC" &&  $scope.cardsList.length === 0) ? true: false;
-			$scope.saveData.newPaymentFormVisible = ($scope.saveData.payment_type == "CC" &&  $scope.isManual) ? true: false;
+			$scope.showCCPage = ($scope.saveData.payment_type === "CC" &&  $scope.isManual) ? true: false;
+			$scope.addmode =($scope.saveData.payment_type === "CC" &&  $scope.cardsList.length === 0) ? true: false;
+			$scope.saveData.newPaymentFormVisible = ($scope.saveData.payment_type === "CC" &&  $scope.isManual) ? true: false;
 			$scope.$broadcast('REFRESH_IFRAME');
 		};
 		/*
@@ -151,9 +151,9 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 			$scope.saveData.newPaymentFormVisible    = true;
 			$scope.$apply();
 			$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
-			
+
 		});
-		
+
 		$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
 			$scope.showCCPage = false;
 			$scope.addmode = false;

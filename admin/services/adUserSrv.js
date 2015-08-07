@@ -1,6 +1,6 @@
 admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBaseWebSrv', function( $http, $q, ADBaseWebSrv,ADBaseWebSrvV2, ADBaseWebSrv){
-	
-	
+
+
 	var that = this;
 	this.usersArray = {};
     this.departmentsArray = [];
@@ -8,9 +8,9 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
     * To fetch the list of users
     * @return {object} users list json
     */
-    
+
 	this.fetch = function(params){
-		
+
 		var deferred = $q.defer();
 		var url = '/admin/users.json';
 		ADBaseWebSrvV2.getJSON(url ,params).then(function(data) {
@@ -22,7 +22,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 			    deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
-			});	
+			});
 		return deferred.promise;
 	};
 	/**
@@ -30,7 +30,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
     * @param {object} id of the clicked user
     * @return {object} users details json
     */
-	this.getUserDetails = function(data){		
+	this.getUserDetails = function(data){
 		var id = data.id;
 		var deferred = $q.defer();
 		var url = '/admin/users/'+id+'/edit.json';
@@ -39,7 +39,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
    /**
@@ -56,16 +56,16 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/**
-    * To update user details 
+    * To update user details
     * @param {object} data - data to be updated
-    * @return {object} 
+    * @return {object}
     */
 	this.updateUserDetails = function(data){
-		
+
 		var deferred = $q.defer();
 		var url = '/admin/users/'+data.user_id;
 		var updateData = data;
@@ -77,14 +77,14 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
-		
+
 	};
 	/**
-    * To add new user details 
+    * To add new user details
     * @param {object} data - data to be added
-    * @return {object} 
+    * @return {object}
     */
 	this.saveUserDetails = function(data){
 		var newDataToArray = {
@@ -93,20 +93,20 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
             "department": that.getDepartmentName(data.user_department),
             "last_login": "",
             "is_active": "false",
-            "can_delete": "true",
+            "can_delete": "true"
 		};
 		var deferred = $q.defer();
 		var url = '/admin/users';
-		
+
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 			newDataToArray.id = data.user_id;
 			that.addToUsersArray(newDataToArray);
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
-		
+
 	};
 	/*
 	 * Saving data to service
@@ -122,12 +122,12 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 		that.usersArray.users.push(newData);
 	};
 	/*
-	 * To get the department name 
+	 * To get the department name
 	 */
 	this.getDepartmentName = function(departmentId){
 		var deptName = "";
 		angular.forEach(that.departmentsArray, function(value, key) {
-	     	if(value.value == departmentId){
+	     	if(value.value === departmentId){
 	     		deptName = value.name;
 	     	}
 	    });
@@ -135,17 +135,17 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 	};
 	this.updateUserDataOnUpdate = function(userId, param, updatedValue){
 		angular.forEach(that.usersArray.users, function(value, key) {
-	     	if(value.id == userId){
-	     		if(param == "full_name"){
+	     	if(value.id === userId){
+	     		if(param === "full_name"){
 	     			value.full_name = updatedValue;
 	     		}
-	     		if(param == "email"){
+	     		if(param === "email"){
 	     			value.email = updatedValue;
 	     		}
-	     		if(param == "department"){
+	     		if(param === "department"){
 	     			value.department = updatedValue;
 	     		}
-	     		if(param == "is_active"){
+	     		if(param === "is_active"){
 	     			value.is_active = updatedValue;
 	     		}
 	     	}
@@ -154,28 +154,28 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 	/**
     * To activate/inactivate user
     * @param {object} data - data to activate/inactivate
-    * @return {object} 
+    * @return {object}
     */
 	this.activateInactivate = function(data){
-		
+
 		var deferred = $q.defer();
 		var url = '/admin/users/toggle_activation';
-		
+
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
-		
+
 	};
 	/**
     * To delete user
     * @param {object} data - data to delete
-    * @return {object} 
+    * @return {object}
     */
 	this.deleteUser = function(data){
-		
+
 		var deferred = $q.defer();
 		var url = '/admin/users/'+data.id;
 		var itemToRemove = data.index;
@@ -186,17 +186,17 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
-		
+
 	};
 	/**
     * To link existing user
     * @param {object} data - data to link existing user
-    * @return {object} 
+    * @return {object}
     */
 	this.linkExistingUser = function(data){
-		
+
 		var deferred = $q.defer();
 		var url = '/admin/users/link_existing';
 
@@ -204,9 +204,9 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
-		
+
 	};
    /**
     * To send invitation mail
@@ -221,7 +221,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 }]);

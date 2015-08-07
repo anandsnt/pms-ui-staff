@@ -1,192 +1,218 @@
 sntRover.service('RVreportsSrv', [
 	'$q',
 	'rvBaseWebSrvV2',
-	function($q, rvBaseWebSrvV2) {
-		var choosenReport = {};
+	'RVreportsSubSrv',
+	'$vault',
+	function($q, rvBaseWebSrvV2, subSrv, $vault) {
+		var service       = {},
+			choosenReport = {};
 
-		this.setChoosenReport = function(item) {
+		var cacheKey = 'REPORT_PAYLOAD_CACHE';
+
+		/** @type {Sting} since $value only allow to keep type Numbers and Strings */
+		service.payloadCache = $vault.get( cacheKey );
+
+		// making sure the data type of
+		// 'payloadCache' sets to an object
+		if ( !! service.payloadCache ) {
+			service.payloadCache = JSON.parse( service.payloadCache );
+		} else {
+			service.payloadCache = {};
+		};
+
+		/**
+		 * save the chosen report object in here
+		 * @param {Object} item 
+		 */
+		service.setChoosenReport = function(item) {
 			choosenReport = item;
 		};
 
-		this.getChoosenReport = function() {
+		/**
+		 * return the chosen report object
+		 * @return {Object}
+		 */
+		service.getChoosenReport = function() {
 			return choosenReport;
 		};
 
-		this.cacheReportList = {};
+		/**
+		 * this method first load the report list
+		 * then parse to determine the additional apis to load
+		 * the deferred is only resolved when all the additional apis are loaded
+		 * @return {Object} the promise object
+		 */
+		service.reportApiPayload = function() {
+			var deferred = $q.defer();
 
-		this.fetchReportList = function(backToList) {
-			var deferred = $q.defer(),
-				url = '/api/reports';
+			var failed = function(data) {
+				deferred.reject(data);
+			};
 
-			if (backToList) {
-				deferred.resolve(this.cacheReportList);
-			} else {
-				rvBaseWebSrvV2.getJSON(url)
-					.then(function(data) {
-						this.cacheReportList = data;
-
-						// Support for Occupany from UI for now..
-						// This filter will be provided by the API in future
-						var occupanyReport = _.where(this.cacheReportList.results, { title: 'Occupancy & Revenue Summary' });
-						if ( !!occupanyReport && !!occupanyReport.length ) {
-							occupanyReport[0].filters.push({
-								value: "CHOOSE_MARKET", description: "Choose Market"
-							});
-						};
-
-						deferred.resolve(this.cacheReportList);
-					}.bind(this), function(data) {
-						deferred.reject(data);
-					});
-			}
+			// we are passing down the deferred to the
+			// success callback, so that he can call deferred.resolve
+			// @todo: debug if closure created due to passed deferred, cause memory leaks
+			subSrv.fetchReportList()
+				.then( fetchAdditionalAPIs.bind(null, deferred), failed );
 
 			return deferred.promise;
 		};
 
-		this.fetchReportDetails = function(params) {
-			var deferred = $q.defer(),
-				url = '/api/reports/' + params.id + '/submit',
-				params = _.omit(params, 'id');
+		/**
+		 * load any additional apis to load and 
+		 * resolve deferred when all apis have been loaded.
+		 * deferred when resolved on the router will be provided with the
+		 * payload of all the api data as an object
+		 * @param  {Object} deferred passed down deferred object
+		 * @param  {Object} data     response of the report list api
+		 * @private
+		 */
+		function fetchAdditionalAPIs (deferred, data) {
+			var payload   = {},
+				hasFilter = checkFilters( data );
 
-			rvBaseWebSrvV2.getJSON(url, params)
-				.then(function(data) {
-					deferred.resolve(data);
-				}.bind(this), function(data) {
-					deferred.reject(data);
+			var shallWeResolve = function() {
+				var filters  = _.keys( hasFilter ).length,
+					payloads = _.keys( payload ).length;
+
+				// since payload will have two additional keys
+				// 'reportsResponse' and 'codeSettings'
+				if ( payloads - filters == 2 ) {
+
+					// save it to $vault
+					service.payloadCache = angular.copy( payload );
+					$vault.set( cacheKey, JSON.stringify(service.payloadCache) );
+
+					deferred.resolve( payload );
+				};
+			};
+
+			var success = function(key, data) {
+				payload[key] = angular.copy( data );
+				shallWeResolve();
+			};
+
+			var failed = function(key, emptyData, data) {
+				payload[key] = emptyData;
+				shallWeResolve();
+			};
+
+			// add report list data to payload
+			payload.reportsResponse = angular.copy( data );
+
+			// fetch code settings & add to payload
+			subSrv.fetchCodeSettings()
+				.then( success.bind(null, 'codeSettings'), failed.bind(null, 'codeSettings', {}) );
+
+			// fetch active users & add to payload
+			if ( hasFilter['ACTIVE_USERS'] ) {
+				if ( service.payloadCache.hasOwnProperty('activeUserList') ) {
+					success( 'activeUserList', service.payloadCache.activeUserList );
+				} else {
+					subSrv.fetchActiveUsers()
+						.then( success.bind(null, 'activeUserList'), failed.bind(null, 'activeUserList', []) );
+				};
+			};
+
+			// fetch gurantee types & add to payload
+			if ( hasFilter['INCLUDE_GUARANTEE_TYPE'] ) {
+				subSrv.fetchGuaranteeTypes()
+					.then( success.bind(null, 'guaranteeTypes'), failed.bind(null, 'guaranteeTypes', []) );
+			};
+
+			// fetch charge groups & add to payload
+			if ( hasFilter['INCLUDE_CHARGE_GROUP'] ) {
+				subSrv.fetchChargeGroups()
+					.then( success.bind(null, 'chargeGroups'), failed.bind(null, 'chargeGroups', []) );
+			};
+
+			// fetch charge groups & add to payload
+			if ( hasFilter['INCLUDE_CHARGE_CODE'] ) {
+				subSrv.fetchChargeCodes()
+					.then( success.bind(null, 'chargeCodes'), failed.bind(null, 'chargeCodes', []) );
+			};
+
+			// fetch markers & add to payload
+			if ( hasFilter['CHOOSE_MARKET'] ) {
+				if ( service.payloadCache.hasOwnProperty('markets') ) {
+					success( 'markets', service.payloadCache.origins );
+				} else {
+					subSrv.fetchMarkets()
+						.then( success.bind(null, 'markets'), failed.bind(null, 'markets', []) );
+				};
+			};
+
+			// fetch sources & add to payload
+			if ( hasFilter['CHOOSE_SOURCE'] ) {
+				if ( service.payloadCache.hasOwnProperty('sources') ) {
+					success( 'sources', service.payloadCache.sources );
+				} else {
+					subSrv.fetchSources()
+						.then( success.bind(null, 'sources'), failed.bind(null, 'sources', []) );
+				};
+			};
+
+			// fetch booking origins & add to payload
+			if ( hasFilter['CHOOSE_BOOKING_ORIGIN'] ) {
+				if ( service.payloadCache.hasOwnProperty('origins') ) {
+					success( 'origins', service.payloadCache.origins );
+				} else {
+					subSrv.fetchBookingOrigins()
+						.then( success.bind(null, 'origins'), failed.bind(null, 'origins', []) );
+				};
+			};			
+		};
+
+		/**
+		 * parse report list data to determine the additional apis to load
+		 * @param  {Object} data report list data
+		 * @return {Object}      key value pairs with 'true' value
+		 * @private
+		 */
+		function checkFilters (data) {
+			var loadUsersFor = {
+                'Arrival'                : true,
+                'Login and out Activity' : true
+            };
+
+            var hasFilter = {};
+
+			_.each(data.results, function(eachResult) {
+				if ( ! hasFilter.hasOwnProperty('ACTIVE_USERS') && loadUsersFor[eachResult.title] ) {
+					hasFilter['ACTIVE_USERS'] = true;
+				};
+
+				_.each(eachResult.filters, function(eachFilter) {
+
+					if ( ! hasFilter.hasOwnProperty('INCLUDE_GUARANTEE_TYPE') && 'INCLUDE_GUARANTEE_TYPE' == eachFilter.value ) {
+						hasFilter['INCLUDE_GUARANTEE_TYPE'] = true;
+					};
+
+					if ( ! hasFilter.hasOwnProperty('INCLUDE_CHARGE_GROUP') && 'INCLUDE_CHARGE_GROUP' == eachFilter.value ) {
+						hasFilter['INCLUDE_CHARGE_GROUP'] = true;
+					};
+
+					if ( ! hasFilter.hasOwnProperty('INCLUDE_CHARGE_CODE') && 'INCLUDE_CHARGE_CODE' == eachFilter.value ) {
+						hasFilter['INCLUDE_CHARGE_CODE'] = true;
+					};
+
+					if ( ! hasFilter.hasOwnProperty('CHOOSE_MARKET') && 'CHOOSE_MARKET' == eachFilter.value ) {
+						hasFilter['CHOOSE_MARKET'] = true;
+					};
+
+					if ( ! hasFilter.hasOwnProperty('CHOOSE_SOURCE') && 'CHOOSE_SOURCE' == eachFilter.value ) {
+						hasFilter['CHOOSE_SOURCE'] = true;
+					};
+
+					if ( ! hasFilter.hasOwnProperty('CHOOSE_BOOKING_ORIGIN') && 'CHOOSE_BOOKING_ORIGIN' == eachFilter.value ) {
+						hasFilter['CHOOSE_BOOKING_ORIGIN'] = true;
+					};
 				});
+			});
 
-			return deferred.promise;
+			return hasFilter;
 		};
 
-		this.fetchActiveUsers = function() {
-			var deferred = $q.defer(),
-				url = '/api/users/active';
-
-			rvBaseWebSrvV2.getJSON(url)
-				.then(function(data) {
-					deferred.resolve(data);
-				}.bind(this), function(data) {
-					deferred.reject(data);
-				});
-
-			return deferred.promise;
-		};
-
-		this.fetchDemographicMarketSegments = function(params) {
-			var deferred = $q.defer(),
-				url = '/api/market_segments?is_active=true';
-			// CICO-10202 Assuming that it is enough to show only the active market segments. if this is wrong and we need to show all the market segments.. uncomment the following line.
-			// url = '/api/market_segments';
-			rvBaseWebSrvV2.getJSON(url)
-				.then(function(data) {
-					deferred.resolve(data.markets);
-				}.bind(this), function(data) {
-					deferred.reject(data);
-				});
-
-			return deferred.promise;
-		};
-
-		this.fetchGuaranteeTypes = function() {
-			var deferred = $q.defer(),
-				url = '/api/reservation_types.json?is_active=true';
-
-			rvBaseWebSrvV2.getJSON(url)
-				.then(function(data) {
-					deferred.resolve(data.reservation_types);
-				}.bind(this), function(data) {
-					deferred.reject(data);
-				});
-
-			return deferred.promise;
-		};
-
-		this.fetchComTaGrp = function(query) {
-			var deferred = $q.defer(),
-				url = 'api/reports/search_by_company_agent_group?query=' + query;
-
-			rvBaseWebSrvV2.getJSON(url)
-				.then(function(data) {
-					deferred.resolve(data.results);
-				}.bind(this), function(data) {
-					deferred.reject(data);
-				});
-
-			return deferred.promise;
-		};
-
-		// id & description
-		this.fetchChargeGroups = function() {
-			var deferred = $q.defer(),
-				url = 'api/charge_groups';
-
-			rvBaseWebSrvV2.getJSON(url)
-				.then(function(data) {
-					deferred.resolve(data.results);
-				}.bind(this), function(data) {
-					deferred.reject(data);
-				});
-
-			return deferred.promise;
-		};
-
-		// id & description
-		this.fetchChargeCodes = function() {
-			var deferred = $q.defer(),
-				url = 'api/charge_codes?is_get_all_charge_codes=true';
-
-			rvBaseWebSrvV2.getJSON(url)
-				.then(function(data) {
-					deferred.resolve(data.results);
-				}.bind(this), function(data) {
-					deferred.reject(data);
-				});
-
-			return deferred.promise;
-		};
-
-		// value, name, description & is_active
-		this.fetchSources = function() {
-			var deferred = $q.defer(),
-				url = 'api/sources?is_active=true';
-
-			rvBaseWebSrvV2.getJSON(url)
-				.then(function(data) {
-					deferred.resolve(data.sources);
-				}.bind(this), function(data) {
-					deferred.reject(data);
-				});
-
-			return deferred.promise;
-		};
-
-		// value, name, description & is_active
-		this.fetchBookingOrigins = function() {
-			var deferred = $q.defer(),
-				url = 'api/booking_origins?is_active=true';
-
-			rvBaseWebSrvV2.getJSON(url)
-				.then(function(data) {
-					deferred.resolve(data.booking_origins);
-				}.bind(this), function(data) {
-					deferred.reject(data);
-				});
-
-			return deferred.promise;
-		};
-
-		this.fetchCodeSettings = function() {
-			var deferred = $q.defer(),
-				url = '/api/reports/code_settings';
-
-			rvBaseWebSrvV2.getJSON(url)
-				.then(function(data) {
-					deferred.resolve(data);
-				}.bind(this), function(data) {
-					deferred.reject(data);
-				});
-
-			return deferred.promise;
-		};
+		return service;
 	}
 ]);

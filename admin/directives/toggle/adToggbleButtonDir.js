@@ -7,11 +7,12 @@ admin.directive('adToggleButton', function($timeout) {
       		label: '@label',
             isChecked: '=isChecked',
             divClass: '@divClass',
+            buttonClass: '@buttonClass',
             label: '@label',
             isDisabled: '=isDisabled'
 	    },
-        
-    	templateUrl: '../../assets/directives/toggle/adToggleButton.html' 
+
+    	templateUrl: '../../assets/directives/toggle/adToggleButton.html'
     };
 
 });

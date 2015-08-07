@@ -1,5 +1,5 @@
 sntRover.service('RVGuestCardLoyaltySrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv){
-	
+
 	this.loyalties = {};
 	var that =this;
 
@@ -26,34 +26,34 @@ sntRover.service('RVGuestCardLoyaltySrv',['$q', 'RVBaseWebSrv', function($q, RVB
 			},function(data){
 				deferred.reject(data);
 			});
-			return deferred.promise;	
+			return deferred.promise;
 	    };
 
-		var url =  '/staff/user_memberships/get_available_ffps.json';	
+		var url =  '/staff/user_memberships/get_available_ffps.json';
 		RVBaseWebSrv.getJSON(url).then(function(data) {
 			that.loyalties.freaquentLoyaltyData =  data;
 			this.fetchHotelLoyalties();
 		},function(data){
 			deferred.reject(data);
 		});
-		return deferred.promise;		
-		
+		return deferred.promise;
+
 	};
 
 	this.createLoyalties = function(params){
-		var deferred = $q.defer();		
-		var url =  '/staff/user_memberships';			
+		var deferred = $q.defer();
+		var url =  '/staff/user_memberships';
 		RVBaseWebSrv.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);
 		});
-		return deferred.promise;		
-		
+		return deferred.promise;
+
 	};
 	this.deleteLoyalty = function(id){
-		var deferred = $q.defer();		
-		var url =  '/staff/user_memberships/'+ id + '.json';			
+		var deferred = $q.defer();
+		var url =  '/staff/user_memberships/'+ id + '.json';
 		RVBaseWebSrv.deleteJSON(url, "").then(function(data) {
 			deferred.resolve(data);
 		},function(data){

@@ -1,0 +1,7 @@
+<tr ng-repeat="each in results track by $index" class="{{ each.className }}">
+	<td class="date">{{ each.uiDate | date : dateFormat }}, {{ each.uiTime }}</td>
+	<td class="activity">{{ each.action_type }}</td>
+	<td class="name">{{ each.user_name }}</td>
+	<td>{{ each.application }}</td>
+	<td>{{ each.ip_address }}</td>
+</tr>

@@ -15,11 +15,11 @@ sntRover.controller('rvManagerDashboardSearchController',['$scope', '$rootScope'
         preventDefault: true,
         momentum: false,
         mouseWheel: false,
-        shrinkScrollbars: 'clip' 
+        shrinkScrollbars: 'clip'
     };
   	$scope.setScroller('result_showing_area', scrollerOptions);
     $scope.$broadcast("showSearchResultsArea", false);
-    //Clear the from date and to date options from search box. 
+    //Clear the from date and to date options from search box.
 
     //To clear date boxes when we come to dashboard through main menu
     //timeout given because rvReservationSearchWidgetCtrl init happens after some time
@@ -44,10 +44,10 @@ sntRover.controller('rvManagerDashboardSearchController',['$scope', '$rootScope'
         //we need to show the dashboard & hide search area
         $scope.$emit("showDashboardArea", true);
         $scope.$broadcast("showSearchResultsArea", false);
-        //also need to clear results present in that & type 
+        //also need to clear results present in that & type
         $scope.$broadcast("updateReservationTypeFromOutside", 'default');
-        $scope.$broadcast("updateDataFromOutside", []); 
-        $scope.$emit("UpdateHeading", 'DASHBOARD_MANAGER_HEADING'); 
+        $scope.$broadcast("updateDataFromOutside", []);
+        $scope.$emit("UpdateHeading", 'DASHBOARD_MANAGER_HEADING');
     };
 
     /**
@@ -55,7 +55,7 @@ sntRover.controller('rvManagerDashboardSearchController',['$scope', '$rootScope'
     * will backto dashboard
     */
     $scope.$on("HeaderBackButtonClicked", function(event){
-        backToDashboard();        
+        backToDashboard();
     });
 
 
@@ -64,8 +64,8 @@ sntRover.controller('rvManagerDashboardSearchController',['$scope', '$rootScope'
     */
     $scope.$on('$stateChangeSuccess', function(event){
         //setting the backbutton & showing the caption
-        $scope.$emit("UpdateSearchBackbuttonCaption", "");        
-    });   
+        $scope.$emit("UpdateSearchBackbuttonCaption", "");
+    });
 
     /**
     * on what action taken, on search results clearing

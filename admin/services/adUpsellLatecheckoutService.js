@@ -2,13 +2,13 @@ admin.service('adUpsellLatecheckoutService',['$http', '$q', 'ADBaseWebSrv', func
    /*
     * To fetch late checkout upsell details
     * @return {object}late checkout upsell details
-    */	
+    */
 
 
    this.fetch = function(){
 		var deferred = $q.defer();
-		var url = '/admin/hotel/get_late_checkout_setup.json';	
-		
+		var url = '/admin/hotel/get_late_checkout_setup.json';
+
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			data.room_types_list = [];
 			var list = dclone(data.room_types,[]);
@@ -33,8 +33,8 @@ admin.service('adUpsellLatecheckoutService',['$http', '$q', 'ADBaseWebSrv', func
 	this.update = function(data){
 		var updateData = data;
 		var deferred = $q.defer();
-		var url = '/admin/hotel/update_late_checkout_setup';	
-		
+		var url = '/admin/hotel/update_late_checkout_setup';
+
 		ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
 			deferred.resolve(data);
 		},function(data){

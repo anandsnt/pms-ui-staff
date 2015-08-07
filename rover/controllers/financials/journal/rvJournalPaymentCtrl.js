@@ -1,7 +1,7 @@
 sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJournalSrv','$timeout',function($scope, $rootScope, RVJournalSrv, $timeout) {
 	BaseCtrl.call(this, $scope);
     $scope.errorMessage = "";
-    
+
 	$scope.setScroller('payment_content', {});
     var refreshPaymentScroll = function(){
         setTimeout(function(){$scope.refreshScroller('payment_content');}, 500);
@@ -46,7 +46,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     var loadTransactionDeatils = function(chargeCodeItem, isFromPagination){
 
         var successCallBackFetchPaymentDataTransactions = function(data){
-            
+
             chargeCodeItem.transactions = [];
             chargeCodeItem.transactions = data.transactions;
             chargeCodeItem.total_count = data.total_count;
@@ -93,7 +93,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     $scope.clickedFirstLevel = function(index1){
 
         var toggleItem = $scope.data.paymentData.payment_types[index1];
-        
+
         if(toggleItem.payment_type !== "Credit Card"){
             loadTransactionDeatils(toggleItem , false);
         }
@@ -107,32 +107,8 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     $scope.clickedSecondLevel = function(index1, index2){
 
         var toggleItem = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
-        
+
         loadTransactionDeatils(toggleItem , false);
-    };
-
-    /* To show / hide table heading section for Level2 (Credit card items) */
-    $scope.isShowTableHeadingSecondLevel = function(index1, index2){
-        var isShowTableHeading = false,
-        item = $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions;
-        if((typeof item !== 'undefined') && (item.length >0)){
-            angular.forEach( item ,function(transactions, index) {
-                if(transactions.show) isShowTableHeading = true;
-            });
-        }
-        return isShowTableHeading;
-    };
-
-    /* To show / hide table heading section for Level1 (Not Credit card items) */
-    $scope.isShowTableHeadingFirstLevel = function(index1){
-        var isShowTableHeading = false,
-        item = $scope.data.paymentData.payment_types[index1].transactions;
-        if((typeof item !== 'undefined') && (item.length >0)){
-            angular.forEach( item ,function(transactions, index) {
-                if(transactions.show) isShowTableHeading = true;
-            });
-        }
-        return isShowTableHeading;
     };
 
     /* To hide/show arrow button for Level1 */
@@ -152,7 +128,9 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     $scope.checkHasArrowSecondLevel = function(index1, index2){
         var hasArrow = false,
         item = $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions;
-        if((typeof item !== 'undefined') && (item.length >0)) hasArrow = true;
+        if((typeof item !== 'undefined') && (item.length >0)) {
+            hasArrow = true;
+        }
         return hasArrow;
     };
 
@@ -181,7 +159,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     };
 
     $scope.loadPrevSet = function(index1, index2){
-        if(typeof index2 == 'undefined' || index2 === 'false'){
+        if(typeof index2 === 'undefined' || index2 === 'false'){
             var item = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
         }
         else{
@@ -195,7 +173,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 
     $scope.isNextButtonDisabled = function(index1, index2){
 
-        if(typeof index2 == 'undefined' || index2 === 'false'){
+        if(typeof index2 === 'undefined' || index2 === 'false'){
             var item = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
         }
         else{
@@ -211,7 +189,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 
     $scope.isPrevButtonDisabled = function(index1, index2){
 
-        if(typeof index2 == 'undefined' || index2 === 'false'){
+        if(typeof index2 === 'undefined' || index2 === 'false'){
             var item = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
         }
         else{
@@ -219,7 +197,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         }
         var isDisabled = false;
 
-        if(item.page_no == 1){
+        if(item.page_no === 1){
             isDisabled = true;
         }
         return isDisabled;

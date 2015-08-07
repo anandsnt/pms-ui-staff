@@ -1,0 +1,52 @@
+<!-- NOTE: Here "results" is an Object and NOT an Array -->
+
+<!-- Report content - results.length -->
+<div ng-show="hasNoResults" class="report-content no-content">
+	<div class="info">
+		<span class="icon-no-content icon-reports"></span>
+		<strong class="h1">No reports found</strong>
+		<span class="h2">Try changing search criteria or modify dates</span>
+	</div>
+</div>
+
+
+<div id="report-content" class="report-content scrollable" ng-hide="hasNoResults" ng-class="{ 'no-totals': hasNoTotals, 'no-sorting': hasNoSorting, 'with-pagination': (!disablePrevBtn || !disableNextBtn) }" ng-iscroll="report-details-scroll">
+	<div class="wrapper">
+
+		<div ng-repeat="(key, resultItem) in results">
+			<h2>{{ key | date : dateFormat }}</h2>
+			<table ng-class="{ 'guest-reports': isGuestReport, 'large-grid': isLargeReport, 'log-reports': isLogReport }">
+
+				<!-- GUEST REPORTS: Reports sort by header -->
+				<thead>
+					<!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
+						"sorting-asc" when ASC sorting
+						"sorting-desc" when DESC sorting -->
+					<tr>
+						<th ng-repeat="item in subHeaders track by $index">
+								<span ng-class="{'sort' : !!chosenReport.sortByOptions[$index],
+													'sorting-asc'  : !!chosenReport.sortByOptions[$index] && chosenReport.sortByOptions[$index]['sortDir'] === true,
+													'sorting-desc' : !!chosenReport.sortByOptions[$index] && chosenReport.sortByOptions[$index]['sortDir'] === false
+												}" ng-click="sortResultBy(chosenReport.sortByOptions[$index])">{{ item }}</span>
+						</th>
+					</tr>
+				</thead>
+
+				<!-- Reports table footer -->
+				<tfoot ng-if="$last" ng-include="'/assets/partials/reports/shared/rvReportDetailsFooter.html'"></tfoot>
+
+				<!-- Reports table content -->
+				<tbody>
+					<tr ng-repeat="each in resultItem track by $index" class="{{ each.className }}" ng-include="'/assets/partials/reports/reservationByUserReport/rvReservationByUserReportRowContent.html'" ngrepeatend></tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div class="search-pagination hk-pagination" ng-show="!disablePrevBtn || !disableNextBtn">
+	<!-- removed buttons since they include +300ms delay on touch pads -->
+	<label class="button dark-grey next" ng-click="fetchNextPage()" ng-class="{'disabled': disableNextBtn}">Next</label>
+	<label class="button dark-grey prev" ng-click="fetchPrevPage()" ng-class="{'disabled': disablePrevBtn}">Previous</label>
+	<p>Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong id="total-count">{{ netTotalCount }}</strong> items</p>
+</div>

@@ -1,10 +1,10 @@
-sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter', 'RVContactInfoSrv', '$q',
-	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter, RVContactInfoSrv, $q) {
+sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter', 'RVContactInfoSrv', '$q', 'RVReservationStateService',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter, RVContactInfoSrv, $q, RVReservationStateService) {
 		BaseCtrl.call(this, $scope);
 		//Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
 		var that = this;
-		if ($scope.guestCardData.cardHeaderImage == undefined || $scope.guestCardData.cardHeaderImage == "") {
+		if ($scope.guestCardData.cardHeaderImage === undefined || $scope.guestCardData.cardHeaderImage === "") {
 			$scope.guestCardData.cardHeaderImage = '/assets/avatar-trans.png';
 		}
 		$scope.pendingRemoval = {
@@ -31,7 +31,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 		$scope.initGuestCard = function(guestData) {
 			// passReservationParams
-			//TODO : Once this works pull it to a separate method 
+			//TODO : Once this works pull it to a separate method
 			var fetchGuestcardDataSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
 				// No more future reservations returned with this API call
@@ -110,7 +110,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			};
 
 
-			if ($scope.reservationDetails.guestCard.id != '' && $scope.reservationDetails.guestCard.id != null) {
+			if ($scope.reservationDetails.guestCard.id !== '' && $scope.reservationDetails.guestCard.id !== null) {
 				var param = {
 					'id': $scope.reservationDetails.guestCard.id
 				};
@@ -119,7 +119,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		};
 
 
-		// fetch reservation company card details 
+		// fetch reservation company card details
 		$scope.initCompanyCard = function() {
 			var companyCardFound = function(data) {
 				$scope.$emit("hideLoader");
@@ -130,9 +130,9 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.$broadcast('companyCardAvailable');
 
 			};
-			//	companycard defaults to search mode 
+			//	companycard defaults to search mode
 			// 	Hence, do API call only if a company card ID is returned
-			if ($scope.reservationDetails.companyCard.id != '' && $scope.reservationDetails.companyCard.id != null) {
+			if ($scope.reservationDetails.companyCard.id !== '' && $scope.reservationDetails.companyCard.id !== null) {
 				var param = {
 					'id': $scope.reservationDetails.companyCard.id
 				};
@@ -152,9 +152,9 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.$broadcast('travelAgentFetchComplete');
 
 			};
-			//	TAcard defaults to search mode 
+			//	TAcard defaults to search mode
 			// 	Hence, do API call only if a company card ID is returned
-			if ($scope.reservationDetails.travelAgent.id != '' && $scope.reservationDetails.travelAgent.id != null) {
+			if ($scope.reservationDetails.travelAgent.id !== '' && $scope.reservationDetails.travelAgent.id !== null) {
 				var param = {
 					'id': $scope.reservationDetails.travelAgent.id
 				};
@@ -185,14 +185,14 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			// The future counts of the cards attached with the reservation
 			// will be received here!
 			// This code should be HIT everytime there is a removal or a replacement of
-			// any of the cards attached! 
+			// any of the cards attached!
 			//if cards are not attached future reservation values are coming in as null
 			var futureCounts = $scope.reservationListData.future_reservation_counts;
 
 
-			$scope.reservationDetails.guestCard.futureReservations = futureCounts.guest == null ? 0 : futureCounts.guest;
-			$scope.reservationDetails.companyCard.futureReservations = futureCounts.company == null ? 0 : futureCounts.company;
-			$scope.reservationDetails.travelAgent.futureReservations = futureCounts.travel_agent == null ? 0 : futureCounts.travel_agent;
+			$scope.reservationDetails.guestCard.futureReservations = futureCounts.guest === null ? 0 : futureCounts.guest;
+			$scope.reservationDetails.companyCard.futureReservations = futureCounts.company === null ? 0 : futureCounts.company;
+			$scope.reservationDetails.travelAgent.futureReservations = futureCounts.travel_agent === null ? 0 : futureCounts.travel_agent;
 
 			// TODO: Remove the following commented out code!
 			// Leaving it now for further debugging if required
@@ -205,7 +205,9 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			var checkNumber = function() {
 					var x = 0;
 					_.each($scope.reservationDetails, function(d, i) {
-						if (typeof d.id != 'undefined' && d.id != '' && d.id != null) x++;
+						if (typeof d.id !== 'undefined' && d.id !== '' && d.id !== null) {
+							x++;
+						}
 					})
 					return x;
 				},
@@ -218,9 +220,9 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					 * 	The confirmationId will not be in the reservation edit/create stateParams except for the confirmation screen...
 					 * 	However, in the confirmation screen the identifier would be "CONFIRM"
 					 */
-					if ($scope.viewState.identifier == "STAY_CARD" && typeof $stateParams.confirmationId != "undefined") {
+					if ($scope.viewState.identifier === "STAY_CARD" && typeof $stateParams.confirmationId !== "undefined") {
 						$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-							"id": typeof $stateParams.id == "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
+							"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
 							"confirmationId": $stateParams.confirmationId,
 							"isrefresh": false
 						});
@@ -234,7 +236,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				}
 
 			//Cannot Remove the last card... Tell user not to select another card
-			if (checkNumber() > 1 && card != "") {
+			if (checkNumber() > 1 && card !== "") {
 				if ($scope.reservationData && $scope.reservationData.reservationIds && $scope.reservationData.reservationIds.length > 1) {
 					var promises = []; // Use this array to push the promises returned for every call
 					$scope.$emit('showLoader');
@@ -248,7 +250,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					$q.all(promises).then(onRemoveSuccess, onRemoveFailure);
 				} else {
 					$scope.invokeApi(RVCompanyCardSrv.removeCard, {
-						'reservation': typeof $stateParams.id == "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
+						'reservation': typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
 						'cardType': card
 					}, onRemoveSuccess, onRemoveFailure);
 				}
@@ -259,7 +261,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					$scope.viewState.pendingRemoval.status = false;
 					$scope.viewState.pendingRemoval.cardType = "";
 					// If user has not replaced a new card, keep this one. Else remove this card
-					// The below flag tracks the card and has to be reset once a new card has been linked, 
+					// The below flag tracks the card and has to be reset once a new card has been linked,
 					// along with a call to remove the flagged card
 					$scope.viewState.lastCardSlot = card;
 					var templateUrl = '/assets/partials/cards/alerts/cardRemoval.html';
@@ -327,23 +329,23 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.routingInfo = data;
 				if (data.has_conflicting_routes) {
 					$scope.conflict_cards = [];
-					if (card == 'travel_agent' && data.travel_agent.routings_count > 0) {
+					if (card === 'travel_agent' && data.travel_agent.routings_count > 0) {
 						$scope.conflict_cards.push($scope.reservationData.travelAgent.name)
 					}
-					if (card == 'company' && data.company.routings_count > 0) {
+					if (card === 'company' && data.company.routings_count > 0) {
 						$scope.conflict_cards.push($scope.reservationData.company.name)
 					}
 					that.showConflictingRoutingPopup();
 					return false;
 				}
 
-				if (card == 'travel_agent' && data.travel_agent.routings_count > 0) {
+				if (card === 'travel_agent' && data.travel_agent.routings_count > 0) {
 					$scope.contractRoutingType = "TRAVEL_AGENT";
 					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.travelAgent.id)
 					return false;
 
 				}
-				if (card == 'company' && data.company.routings_count > 0) {
+				if (card === 'company' && data.company.routings_count > 0) {
 					$scope.contractRoutingType = "COMPANY";
 					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id)
 					return false;
@@ -356,9 +358,9 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			var params = {};
 			params.reservation_id = $scope.reservationData.reservationId;
 
-			if (card == 'travel_agent') {
+			if (card === 'travel_agent') {
 				params.travel_agent_id = $scope.reservationData.travelAgent.id;
-			} else if (card == 'company') {
+			} else if (card === 'company') {
 				params.company_id = $scope.reservationData.company.id;
 			}
 
@@ -366,10 +368,10 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		};
 
 		$scope.replaceCard = function(card, cardData, future) {
-			if (card == 'company') {
+			if (card === 'company') {
 				$scope.reservationData.company.id = cardData.id;
 				$scope.reservationData.company.name = cardData.account_name;
-			} else if (card == 'travel_agent') {
+			} else if (card === 'travel_agent') {
 				$scope.reservationData.travelAgent.id = cardData.id;
 				$scope.reservationData.travelAgent.name = cardData.account_name;
 			}
@@ -377,7 +379,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			var onReplaceSuccess = function() {
 					$scope.cardRemoved(card);
 					$scope.cardReplaced(card, cardData);
-					if ($scope.viewState.lastCardSlot != "") {
+					if ($scope.viewState.lastCardSlot !== "") {
 						$scope.removeCard($scope.viewState.lastCardSlot);
 						$scope.viewState.lastCardSlot = "";
 					}
@@ -389,7 +391,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					$scope.$emit('hideLoader');
 				},
 				onEachReplaceSuccess = function() {
-					//TODO: Handle each success call here	
+					//TODO: Handle each success call here
 				};
 
 			if ($scope.reservationData && $scope.reservationData.reservationIds && $scope.reservationData.reservationIds.length > 1) {
@@ -401,17 +403,17 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 						'reservation': reservationId,
 						'cardType': card,
 						'id': cardData.id,
-						'future': typeof future == 'undefined' ? false : future
+						'future': typeof future === 'undefined' ? false : future
 					}).then(onEachReplaceSuccess));
 				});
 				$q.all(promises).then(onReplaceSuccess, onReplaceFailure);
 			} else {
 				//Replace card with the selected one
 				$scope.invokeApi(RVCompanyCardSrv.replaceCard, {
-					'reservation': typeof $stateParams.id == "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
+					'reservation': typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
 					'cardType': card,
 					'id': cardData.id,
-					'future': typeof future == 'undefined' ? false : future
+					'future': typeof future === 'undefined' ? false : future
 				}, onReplaceSuccess, onReplaceFailure);
 			}
 		};
@@ -423,9 +425,9 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		 * 	However, in the confirmation screen the identifier would be "CONFIRM"
 		 */
 		this.reloadStaycard = function() {
-			if ($scope.viewState.identifier == "STAY_CARD" && typeof $stateParams.confirmationId != "undefined") {
+			if ($scope.viewState.identifier === "STAY_CARD" && typeof $stateParams.confirmationId !== "undefined") {
 				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-					"id": typeof $stateParams.id == "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
+					"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
 					"confirmationId": $stateParams.confirmationId,
 					"isrefresh": false
 				});
@@ -437,7 +439,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			$scope.viewState.pendingRemoval.status = false;
 			$scope.viewState.pendingRemoval.cardType = "";
 			// reset the id and the future reservation counts that were cached
-			if (card == 'guest') {
+			if (card === 'guest') {
 				$scope.reservationDetails.guestCard.id = "";
 				$scope.reservationDetails.guestCard.futureReservations = 0;
 				var contactInfoData = {
@@ -457,10 +459,10 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.guestCardData.guestId = contactInfoData.guestId;
 				$scope.guestCardData.contactInfo.birthday = null;
 			}
-			if (card == 'company') {
+			if (card === 'company') {
 				$scope.reservationDetails.companyCard.id = "";
 				$scope.reservationDetails.companyCard.futureReservations = 0;
-			} else if (card == 'travel_agent') {
+			} else if (card === 'travel_agent') {
 				$scope.reservationDetails.travelAgent.id = "";
 				$scope.reservationDetails.travelAgent.futureReservations = 0;
 			}
@@ -469,7 +471,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		};
 
 		$scope.cardReplaced = function(card, cardData) {
-			if (card == 'company') {
+			if (card === 'company') {
 				$scope.reservationDetails.companyCard.id = cardData.id;
 				$scope.initCompanyCard();
 				//clean search data
@@ -481,7 +483,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					travelAgent: $scope.reservationDetails.travelAgent.id
 				});
 				$scope.$broadcast('companySearchStopped');
-			} else if (card == 'travel_agent') {
+			} else if (card === 'travel_agent') {
 				$scope.reservationDetails.travelAgent.id = cardData.id;
 				$scope.initTravelAgentCard();
 				// clean search data
@@ -493,7 +495,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					travelAgent: cardData.id
 				});
 				$scope.$broadcast('travelAgentSearchStopped');
-			} else if (card == 'guest') {
+			} else if (card === 'guest') {
 				$scope.reservationDetails.guestCard.id = cardData.id;
 				$scope.initGuestCard(cardData);
 				$scope.searchData.guestCard.guestFirstName = "";
@@ -547,6 +549,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 			$scope.otherData.taxesMeta = data.tax_codes;
 			$scope.otherData.hourlyTaxInfo = data.tax_information;
+			RVReservationStateService.metaData.taxDetails = angular.copy(data.tax_codes);
 			$scope.reservationData.totalTax = 0;
 			$scope.computeHourlyTotalandTaxes();
 			if (saveReservation) {
@@ -580,7 +583,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 			$scope.reservationData.checkinTime.hh = arrivalTimeSplit[0];
 			$scope.reservationData.checkinTime.mm = arrivalTimeSplit[1].split(" ")[0];
-			if ($scope.reservationData.checkinTime.mm.length == 1) {
+			if ($scope.reservationData.checkinTime.mm.length === 1) {
 				$scope.reservationData.checkinTime.mm = "0" + $scope.reservationData.checkinTime.mm;
 			}
 			$scope.reservationData.checkinTime.ampm = arrivalTimeSplit[1].split(" ")[1];
@@ -592,10 +595,10 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					$scope.reservationData.checkinTime.ampm = "AM";
 				}
 			}
-			if (Math.abs(parseInt($scope.reservationData.checkinTime.hh) - 12) == 0 || $scope.reservationData.checkinTime.hh === "00" || $scope.reservationData.checkinTime.hh === "0") {
+			if (Math.abs(parseInt($scope.reservationData.checkinTime.hh) - 12) === 0 || $scope.reservationData.checkinTime.hh === "00" || $scope.reservationData.checkinTime.hh === "0") {
 				$scope.reservationData.checkinTime.hh = "12";
 			}
-			if ($scope.reservationData.checkinTime.hh.length == 1) {
+			if ($scope.reservationData.checkinTime.hh.length === 1) {
 				$scope.reservationData.checkinTime.hh = "0" + $scope.reservationData.checkinTime.hh;
 			}
 
@@ -603,7 +606,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			$scope.reservationData.checkoutTime.hh = departureTimeSplit[0];
 			$scope.reservationData.checkoutTime.mm = departureTimeSplit[1].split(" ")[0];
 
-			if ($scope.reservationData.checkoutTime.mm.length == 1) {
+			if ($scope.reservationData.checkoutTime.mm.length === 1) {
 				$scope.reservationData.checkoutTime.mm = "0" + $scope.reservationData.checkoutTime.mm;
 			}
 			$scope.reservationData.checkoutTime.ampm = departureTimeSplit[1].split(" ")[1];
@@ -616,10 +619,10 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					$scope.reservationData.checkoutTime.ampm = "AM";
 				}
 			}
-			if (Math.abs(parseInt($scope.reservationData.checkoutTime.hh) - 12) == "0" || $scope.reservationData.checkoutTime.hh === "00" || $scope.reservationData.checkoutTime.hh === "0") {
+			if (Math.abs(parseInt($scope.reservationData.checkoutTime.hh) - 12) === "0" || $scope.reservationData.checkoutTime.hh === "00" || $scope.reservationData.checkoutTime.hh === "0") {
 				$scope.reservationData.checkoutTime.hh = "12";
 			}
-			if ($scope.reservationData.checkoutTime.hh.length == 1) {
+			if ($scope.reservationData.checkoutTime.hh.length === 1) {
 				$scope.reservationData.checkoutTime.hh = "0" + $scope.reservationData.checkoutTime.hh;
 			}
 			var hResData = tData.rooms[0];
@@ -686,7 +689,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				// CICO-16850
 				//  In case of updating a reservation from Diary
 				// the reservation's already attached demographics
-				// information must be preserved. 
+				// information must be preserved.
 
 				//CICO-16927 - added undefined check for demographics
 				room.demographics = {
@@ -698,7 +701,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				}
 
 				// put the same stuff in the reservationData obj as well
-				// 
+				//
 				self.demographics = angular.copy(room.demographics);
 
 				// self.demographics.market = (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.market) ? '' : tData.rooms[index].demographics.market;

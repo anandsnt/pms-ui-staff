@@ -1,6 +1,6 @@
 admin.controller('ADExternalPmsConnectivityCtrl',['$scope','$rootScope','$state','ADExternalPmsConnectivitySrv',  function($scope,$rootScope,$state,ADExternalPmsConnectivitySrv){
-	
-	
+
+
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 8);
 	$scope.successMessage = "";
@@ -9,7 +9,7 @@ admin.controller('ADExternalPmsConnectivityCtrl',['$scope','$rootScope','$state'
    /*
     * Success callback of render
     * @param {object} pms connectivity details
-    */    
+    */
     $scope.successCallbackRender = function(data){
     	$scope.$emit('hideLoader');
     	$scope.externalPmsConnectivityData = data;

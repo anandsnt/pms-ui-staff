@@ -1045,6 +1045,110 @@
         }
     }
 
+/* Log                      ==============================*/
+    .grid {
+        .activity-log {
+            table-layout: fixed;
+            width: 100%;
+            text-transform: uppercase;
+            
+            col {
+                width: auto;
+
+                &.details { width: 320px; }
+            }
+
+            tr {
+                th {
+                    padding: 0;
+                    font-size: 14px;
+                    line-height: 35px;
+                    font-weight: 600;
+                    white-space: normal;
+                    vertical-align: top;
+                    background-color: transparent;
+
+                    span {
+                        color: @white;
+                        padding: 0 10px;
+                        margin-right: 5px;
+                        background-color: @grey2;
+                        height: 35px;
+                        .calc-width(100, 5);
+                        .show;
+                        .nowrap();
+                        .box-shadow(1px 1px 0 rgba(0,0,0,.3));
+
+                        &.sort {
+                            cursor: pointer;
+                            background: darken(@grey2, 10) @arrowSort no-repeat 95% 50%;
+                            padding-right: 40px;
+
+                            &.sorting-asc { background-image: @arrowSortAsc; }
+                            &.sorting-desc { background-image: @arrowSortDesc; }
+                        }
+                    }
+
+                    &:last-child {
+                        span { width: 100%; }
+                    }
+                }
+
+                td {
+                    font-size: 14px;
+                    line-height: 1.2;
+                    height: auto;
+                    padding: 4px 8px 4px;
+                    white-space: normal;
+                    vertical-align: top;
+                    background: transparent;
+                    border-bottom: 1px solid @grey2;
+                    #border-radius > .rounded(0px);
+                    .box-shadow(none);
+
+                    &.details { 
+                        color: @grey3;
+
+                        strong {
+                            position: relative;
+                            font-size: 14px;
+                            font-weight: 400;
+                            color: @textColor;
+                            margin-right: 10px;
+
+                            &:after {
+                                content: "|";
+                                position: absolute;
+                                top: -2px;
+                                right: -6px;
+                                color: @grey3;
+                            }
+
+                            &:last-child {
+                                &:after { .hide; }
+                            }
+                        }
+
+                        .green { color: @green; }
+                        .red { color: @red; }
+                        .old { 
+                            text-decoration: line-through;
+
+                            strong {
+                                color: @grey3;
+                                &:after { .show; }
+                            }
+                        }     
+                    }
+                }
+
+                &:last-child { 
+                    td { border-bottom: 0; }
+                }
+            }
+        }
+    }
+
 // To align text to center with margin
 .align-text-center{
   margin-top: 10px;

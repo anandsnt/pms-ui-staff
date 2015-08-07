@@ -1,5 +1,5 @@
 <span id="reservation-card-payment" ng-controller="reservationPaymentController">
-	<form method="post" class="block-item item-payment float" ng-class="getHasButtonClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.payment_method_used === 'CC')" >
+	<form method="post" class="block-item item-payment float" ng-class="getHasButtonClass()" >
 		<h3 class="block-title">
 			{{ 'PAYMENT_METHOD' | translate }}
 			<span ng-if="reservationData.reservation_card.guarentee_type && reservationData.reservation_card.guarentee_type!=''">
@@ -40,13 +40,13 @@
 		<!-- CICO-17067 : If there are buttons to show, otput this as well: -->
 	    <div class="actions">
 
-	        <button ng-click="showAuthAmountPopUp()" ng-show="displayButton(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.payment_method_used === 'CC' && isStandAlone && !reservationData.reservation_card.is_hourly_reservation" type="button" class="button green with-icon">
+	        <button ng-click="showAuthAmountPopUp()" ng-show="displayButton() && showCCAuthButton()" type="button" class="button green with-icon">
 	            <span class="icons icon-cc"></span>
 	            {{ 'CC_AUTH' | translate }}
 	        </button>
 
-			<button  ng-click="showAddNewPaymentModel()" class="payment_actions" ng-show="displayButton(reservationData.reservation_card.reservation_status)">
-				<a class="add-new-button" > + {{ 'ADD' | translate }}</a>
+			<button  ng-click="showAddNewPaymentModel()" class="add-new-button" ng-show="displayButton()">
+				+ {{ 'ADD' | translate }}
 			</button>
 
 	    </div>

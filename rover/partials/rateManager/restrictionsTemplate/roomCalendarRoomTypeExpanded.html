@@ -1,0 +1,36 @@
+<div>
+    <div>
+        <span ng-show="isRestrictTo(currentFilterData.zoom_level_selected, rate[date].restrictions) == 3 && rate[date].restrictions.length <= 3 && toggleRestrictionIconView() == true" 
+              ng-repeat="restriction in rate[date].restrictions| limitTo: 3 track by $index" 
+              class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}">
+            {{restriction.days}}
+        </span>
+        <span ng-show="isRestrictTo(currentFilterData.zoom_level_selected, rate[date].restrictions) == 3 && rate[date].restrictions.length > 3 && toggleRestrictionIconView() == true" 
+              ng-repeat="restriction in rate[date].restrictions| limitTo: 3 track by $index" 
+              class="restriction-icon left-icons {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}">
+            {{restriction.days}}
+        </span>
+        <span ng-show="rate[date].restrictions.length > 3 && currentFilterData.zoom_level_selected < 6 && toggleRestrictionIconView() == true" class="restriction-icon left-icons ellipsis">...</span>
+
+        <!-- if more than 1 restriction, depending on zoom, show Restrictions icon or first 3 restrictions -->
+        <span ng-show="isRestrictTo(currentFilterData.zoom_level_selected, rate[date].restrictions) == 2 && toggleRestrictionIconView() == true"
+              class="restriction-icon right bg-drk"> R 
+        </span>	
+    </div>
+    <div>Single 
+        <span ng-if ="rate[date].single === null">{{rate[date].single}}</span>
+        <span ng-if ="rate[date].single !== null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'single') != 'false', 'gray' : calendarData.is_child == true}">{{rate[date].single| number : 2}}<text ng-if="rateDateHasOverride(rate, date,'single') != 'false'" class='hasOverride-label'>*</text></span>
+    </div>
+    <div>Double 
+        <span ng-if ="rate[date].double === null">{{rate[date].double}}</span>
+        <span ng-if ="rate[date].double !== null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'double') != 'false', 'gray' : calendarData.is_child == true}">{{rate[date].double| number : 2}}<text ng-if="rateDateHasOverride(rate, date,'double') != 'false'" class='hasOverride-label'>*</text></span>
+    </div>
+    <div>Extra Adult 
+        <span ng-if ="rate[date].extra_adult === null">{{rate[date].extra_adult}}</span>
+        <span ng-if ="rate[date].extra_adult !== null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'extra adult') != 'false', 'gray' : calendarData.is_child == true}">{{rate[date].extra_adult| number : 2}}<text ng-if="rateDateHasOverride(rate, date,'extra adult') != 'false'" class='hasOverride-label'>*</text></span>
+    </div>
+    <div>Child 
+        <span ng-if ="rate[date].child === null">{{rate[date].child}}</span>
+        <span ng-if ="rate[date].child !== null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'child') != 'false', 'gray' : calendarData.is_child == true}">{{rate[date].child| number : 2}}<text ng-if="rateDateHasOverride(rate, date,'child') != 'false'" class='hasOverride-label'>*</text></span>
+    </div>
+</div>

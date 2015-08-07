@@ -14,7 +14,7 @@ var Resizable = React.createClass({
 			key: 				  'resize-left-00',
 			display: 			  props.display,
 			iscroll: 			  props.iscroll,
-			itemProp: 			 'arrival', 
+			itemProp: 			 'arrival',
 			filter:               props.filter,
 			edit:                 props.edit,
 			meta:                 props.meta,
@@ -29,14 +29,14 @@ var Resizable = React.createClass({
 			display: 			  props.display,
 			iscroll: 			  props.iscroll,
 			filter:               props.filter,
-			itemProp: 			  'departure', 
+			itemProp: 			  'departure',
 			edit:                 props.edit,
 			meta:                 props.meta,
 			__onResizeCommand:    props.__onResizeCommand,
 			__onResizeStart:      props.__onResizeStart,
 			__onResizeEnd:        props.__onResizeEnd,
 			currentResizeItem:    props.currentResizeItem,
-			currentResizeItemRow: props.currentResizeItemRow			
+			currentResizeItemRow: props.currentResizeItemRow
 		}));
 	}
 });

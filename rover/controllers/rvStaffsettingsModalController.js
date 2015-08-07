@@ -8,7 +8,7 @@ $scope.errorMessage='';
 /*
  * fetch data for settings
  */
-$scope.fetchData = function(){   
+$scope.fetchData = function(){
     var fetchUserInfoSuccessCallback = function(data){
         $scope.userInfo = data;
         $scope.$emit('hideLoader');
@@ -16,8 +16,9 @@ $scope.fetchData = function(){
     var fetchUserInfoFailureCallback = function(data){
         $scope.$emit('hideLoader');
     };
-    $scope.invokeApi(RVSettingsSrv.fetchUserInfo,{},fetchUserInfoSuccessCallback,fetchUserInfoFailureCallback);  
-};   
+    $scope.invokeApi(RVSettingsSrv.fetchUserInfo,{},fetchUserInfoSuccessCallback,fetchUserInfoFailureCallback);
+
+};
 
 $scope.fetchData();
 /*
@@ -31,12 +32,15 @@ $scope.cancelClicked = function(){
  * function to check if the passwords matches
  */
 $scope.passwordsMatch =function(){
-	if($scope.newPassword !== $scope.confirmPassword)
+	if($scope.newPassword !== $scope.confirmPassword) {
 		return false;
-	else if($scope.newPassword.length === 0)
+	}
+	else if($scope.newPassword.length === 0) {
 		return false;
-	else
+	}
+	else {
 		return true;
+	}
 };
 /*
  * update settings
@@ -50,7 +54,7 @@ $scope.updateSettings = function(){
 		 $scope.errorMessage=data;
 	    $scope.$emit('hideLoader');
 	};
-	$scope.invokeApi(RVSettingsSrv.updateUserInfo,{'new_password' :$scope.newPassword},updateUserInfoSuccessCallback,updateUserInfoFailureCallback);  
+	$scope.invokeApi(RVSettingsSrv.updateUserInfo,{'new_password' :$scope.newPassword},updateUserInfoSuccessCallback,updateUserInfoFailureCallback);
 	};
 
 }]);

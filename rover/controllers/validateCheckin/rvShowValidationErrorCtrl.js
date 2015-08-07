@@ -1,6 +1,6 @@
 sntRover.controller('RVShowValidationErrorCtrl',['$rootScope', '$scope', 'ngDialog','RVBillCardSrv',  function($rootScope, $scope, ngDialog, RVBillCardSrv){
 	BaseCtrl.call(this, $scope);
-	
+
 	var init = function(){
 		$scope.flag = {};
 		$scope.flag.roomStatusReady = false;
@@ -33,12 +33,12 @@ sntRover.controller('RVShowValidationErrorCtrl',['$rootScope', '$scope', 'ngDial
 				$scope.$emit('hideLoader');
 				cancelPopup();
 			};
-			$scope.invokeApi(RVBillCardSrv.changeHousekeepingStatus, data, houseKeepingStatusUpdateSuccess);  
+			$scope.invokeApi(RVBillCardSrv.changeHousekeepingStatus, data, houseKeepingStatusUpdateSuccess);
 		//Room is set to be not ready by default in checkout process. So we don't need to change the HK status
 		} else {
 			cancelPopup();
 		}
 	};
 	init();
-	
+
 }]);
