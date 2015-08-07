@@ -174,7 +174,6 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
 
                 var save = function() {
                     if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id) {
-                        // $scope.saveReservation('rover.reservation.staycard.mainCard.summaryAndConfirm');
                         /**
                          * 1. Move check for guest / company / ta card attached to the screen before the reservation summary screen.
                          * This may either be the rooms and rates screen or the Add on screen when turned on.
@@ -261,7 +260,6 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                 $scope.reservationData.rooms[$scope.activeRoom].addons[elemIndex].quantity += parseInt(addonQty);
             }
             // add selected addon amount to total stay cost
-            // $scope.reservationData.totalStayCost += parseInt(addonQty) * parseInt(addon.price);
             $scope.showEnhancementsPopup();
             if ($scope.reservationData.isHourly) {
                 $scope.computeHourlyTotalandTaxes();
@@ -272,7 +270,6 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
 
         $scope.removeSelectedAddons = function(index) {
             // subtract selected addon amount from total stay cost
-            // $scope.reservationData.totalStayCost -= parseInt($scope.reservationData.rooms[$scope.activeRoom].addons[index].quantity) * parseInt($scope.reservationData.rooms[$scope.activeRoom].addons[index].price);
             $scope.addonsData.existingAddons.splice(index, 1);
             $scope.reservationData.rooms[$scope.activeRoom].addons.splice(index, 1);
             $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
