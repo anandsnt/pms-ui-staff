@@ -1098,3 +1098,43 @@ th > div:is('Active'){
 .margin-bottom-20-important{
   margin-bottom:20px !important;
 }
+
+
+/* Possible fix for CICO-10995
+---------------------------------*/
+.admin-scrollfix.content {
+  overflow: hidden !important;
+  .content-title {
+    position: absolute;
+    top: 0px;
+    margin-top: 0;
+    left: 0;
+  }
+  .content-scroll {
+    height: 100%;
+
+    /* emulating native scroll */
+    overflow: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    /**/
+    &::-webkit-scrollbar {
+      -webkit-appearance: scrollbarthumb-vertical;
+      width: 5px;
+    }
+    /**/
+    &::-webkit-scrollbar-track {
+      background: transparent none;
+    }
+    /**/
+    &::-webkit-scrollbar-thumb {
+      border-radius: 5px;
+      background-color: #ffb319;
+    }
+    /**/
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: #ffb319;
+    }
+  }
+}
+/*---------------------------------*/
