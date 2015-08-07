@@ -1,0 +1,17 @@
+<div>
+    <div>
+        <span ng-show="isRestrictTo(currentFilterData.zoom_level_selected, rate[date]) == 3 && rate[date].length <= 3 && toggleRestrictionIconView() == true"
+              ng-repeat="restriction in rate[date]| limitTo: 3 track by $index" 
+              class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}"> {{restriction.days}} 
+        </span>
+        <span ng-show="isRestrictTo(currentFilterData.zoom_level_selected, rate[date]) == 3 && rate[date].length > 3 && toggleRestrictionIconView() == true"
+              ng-repeat="restriction in rate[date]| limitTo: 3 track by $index" 
+              class="restriction-icon left-icons {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}"> {{restriction.days}} 
+        </span>
+        <span ng-show="rate[date].length > 3 && currentFilterData.zoom_level_selected < 6 && toggleRestrictionIconView() == true" class="restriction-icon left-icons ellipsis">...</span>
+
+        <span ng-show="isRestrictTo(currentFilterData.zoom_level_selected, rate[date]) == 2 && toggleRestrictionIconView() == true"
+              class="restriction-icon right bg-drk"> R 
+        </span>	
+    </div>
+</div>

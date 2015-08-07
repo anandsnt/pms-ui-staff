@@ -64,11 +64,12 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
         this.fetchAvailability = function(param) {
             var deferred = $q.defer();
             var url = '/api/availability?from_date=' + param.from_date + '&to_date=' + param.to_date + '&override_restrictions=true';
-            if (typeof param.company_id != 'undefined' && param.company_id != '' && param.company_id != null) {
+
+            if (param.company_id === undefined && param.company_id !== '' && param.company_id !== null) {
                 url += '&company_id=' + param.company_id;
             }
 
-            if (typeof param.travel_agent_id != 'undefined' && param.travel_agent_id != '' && param.travel_agent_id != null) {
+            if (param.travel_agent_id === undefined && param.travel_agent_id !== '' && param.travel_agent_id !== null) {
                 url += '&travel_agent_id=' + param.travel_agent_id;
             }
 
@@ -99,7 +100,7 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
                 deferred.reject(data);
             });
             return deferred.promise;
-        }
+        };
 
         this.fetchAddonsForRates = function() {
             var deferred = $q.defer(),
@@ -110,14 +111,37 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
                 deferred.reject(data);
             });
             return deferred.promise;
-        }
+        };
+
         this.hasAnyConfiguredAddons = function(params) {
             var deferred = $q.defer();
             var url = '/api/addons/configured';
-            RVBaseWebSrvV2.getJSON(url, params).then(function(data) {                
+            RVBaseWebSrvV2.getJSON(url, params).then(function(data) {
                 deferred.resolve(data.addons_configured);
             }, function(errorMessage) {
                 deferred.reject(errorMessage);
+            });
+            return deferred.promise;
+        };
+
+        this.getActivePromotions = function() {
+            var deferred = $q.defer();
+            var url = '/api/promotions?is_active=true';
+            RVBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchUserMemberships = function(guestId) {
+            var deferred = $q.defer();
+            var url = '/staff/user_memberships.json?user_id=' + guestId;
+            RVBaseWebSrvV2.getJSON(url).then(function(response) {
+                deferred.resolve(response.data);
+            }, function(data) {
+                deferred.reject(data);
             });
             return deferred.promise;
         };

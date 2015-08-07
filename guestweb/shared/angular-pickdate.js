@@ -1,7 +1,9 @@
 ;(function(angular){
   var indexOf = [].indexOf || function(item) {
     for (var i = 0, l = this.length; i < l; i++) {
-      if (i in this && this[i] === item) return i;
+      if (i in this && this[i] === item) {
+        return i;
+      }
     }
     return -1;
   };
@@ -14,7 +16,9 @@
         },
 
         stringToDate: function(dateString) {
-          if (this.isDate(dateString)) return new Date(dateString);
+          if (this.isDate(dateString)) {
+            return new Date(dateString);
+          }
           var dateParts = dateString.split('-'),
             year  = dateParts[0],
             month = dateParts[1],
@@ -27,8 +31,9 @@
         dateRange: function(first, last, initial, format) {
           var date, i, _i, dates = [];
 
-          if (!format) format = 'yyyy-MM-dd';
-
+          if (!format) {
+            format = 'yyyy-MM-dd';
+          }
           for (i = _i = first; first <= last ? _i < last : _i > last; i = first <= last ? ++_i : --_i) {
             date = this.stringToDate(initial);
             date.setDate(date.getDate() + i);
@@ -69,7 +74,7 @@
                   '</li>' +
                 '</ul>' +
                 '<ul class="pickadate-cell">' +
-                  '<li ng-repeat="d in dates" ng-click="setDate(d)" class="{{d.className}}" ng-class="{\'pickadate-active\': date == d.date}">' +
+                  '<li ng-repeat="d in dates" ng-click="setDate(d)" class="{{d.className}}" ng-class="{\'pickadate-active\': date === d.date}">' +
                     '{{d.date | date:"d"}}' +
                   '</li>' +
                 '</ul>' +
@@ -129,7 +134,9 @@
           };
 
           scope.setDate = function(dateObj) {
-            if (isDateDisabled(dateObj)) return;
+            if (isDateDisabled(dateObj)) {
+              return;
+            }
             ngModel.$setViewValue(dateObj.date);
           };
 

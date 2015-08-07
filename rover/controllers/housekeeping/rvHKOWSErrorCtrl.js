@@ -4,7 +4,7 @@ sntRover.controller('RVHKOWSErrorCtrl', ['$scope', 'RVHKOWSTestSrv', '$rootScope
 	* Call API to test the OWS connection
 	*/
 	$scope.tryAgainButtonClicked = function() {
-	
+
 		$scope.$parent.$emit('showLoader');
 
 		RVHKOWSTestSrv.checkOWSConnection().then(function(data) {

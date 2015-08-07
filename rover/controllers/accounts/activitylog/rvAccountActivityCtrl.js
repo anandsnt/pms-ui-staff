@@ -1,17 +1,17 @@
 sntRover.controller('rvAccountActivityCtrl', [
-	'$scope', 
-	'$rootScope', 
-	'$filter', 
+	'$scope',
+	'$rootScope',
+	'$filter',
 	'$stateParams',
 	'rvGroupAccountActivitySrv',
 	function($scope, $rootScope, $filter, $stateParams,rvGroupAccountActivitySrv) {
-		BaseCtrl.call(this, $scope);		
+		BaseCtrl.call(this, $scope);
 
-		/**		
+		/**
 		 * initialisation and basic configuration
 		 * @return {none}
 		 */
-		$scope.init = function(){		
+		$scope.init = function(){
 			$scope.selectedGroupOrAccountId =$scope.$parent.accountConfigData.summary.posting_account_id;
 			 var params = {
 			 	"id":$scope.selectedGroupOrAccountId,
@@ -19,24 +19,24 @@ sntRover.controller('rvAccountActivityCtrl', [
 			 	"type":"account",
 			 	"per_page":50
 			 }
-			var fetchCompleted = function(data){			
+			var fetchCompleted = function(data){
 				$scope.$broadcast('PopulateLogData',data)
 			}
 			$scope.invokeApi(rvGroupAccountActivitySrv.fetchActivityLog, params, fetchCompleted);
 		}
-		$scope.$on('updateLogdata',function(e,params){			
+		$scope.$on('updateLogdata',function(e,params){
 			params["id"]= $scope.selectedGroupOrAccountId;
 			params["type"] = "account";
 			var fetchCompleted = function(data){
 				$scope.$broadcast('PopulateLogData',data)
 			}
 			$scope.invokeApi(rvGroupAccountActivitySrv.fetchActivityLog, params, fetchCompleted);
-				
-		})		
+
+		})
 
 		/**
 		 * When there is a TAB switch, we will get this. We will initialize things from here
-		 * @param  {Object} event           
+		 * @param  {Object} event
 		 * @param  {String} currentTab - Active tab in the view
 		 * @return undefined
 		 */
@@ -45,6 +45,6 @@ sntRover.controller('rvAccountActivityCtrl', [
 				$scope.init();
 			}
 		});
-		
+
 	}
 ]);

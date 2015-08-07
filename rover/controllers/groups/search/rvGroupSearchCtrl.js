@@ -54,12 +54,13 @@ sntRover.controller('rvGroupSearchCtrl', [
             var classes = '';
 
             //Add class "green" if No. > 0
-            if (group.total_picked_count > 0)
+            if (group.total_picked_count > 0) {
                 classes = 'green';
+            }
             //Add class "red" if cancelled
-            if (isCancelledGroup(group))
+            if (isCancelledGroup(group)) {
                 classes += ' red';
-
+            }
             return classes;
         };
 
@@ -247,7 +248,7 @@ sntRover.controller('rvGroupSearchCtrl', [
             var options = {
                 params: params,
                 successCallBack: successCallBackOfSearch,
-                failureCallBack: failureCallBackOfSearch,
+                failureCallBack: failureCallBackOfSearch
             };
             $scope.callAPI(rvGroupSrv.getGroupList, options);
         };
@@ -285,7 +286,7 @@ sntRover.controller('rvGroupSearchCtrl', [
             var commonDateOptions = {
                 showOn: 'button',
                 dateFormat: $rootScope.jqDateFormat,
-                numberOfMonths: 1,
+                numberOfMonths: 1
             };
 
             //date picker options - From
@@ -298,7 +299,7 @@ sntRover.controller('rvGroupSearchCtrl', [
                 onSelect: toDateChoosed
             }, commonDateOptions);
 
-            //default from date, as per CICO-13899 it will be business date	        
+            //default from date, as per CICO-13899 it will be business date
             $scope.fromDate = $filter('date')(tzIndependentDate(businessDate.business_date),
                 $rootScope.dateFormat);
             $scope.fromDateForAPI = tzIndependentDate(businessDate.business_date);
@@ -427,11 +428,11 @@ sntRover.controller('rvGroupSearchCtrl', [
          * return - None
          */
         $scope.loadPrevSet = function() {
-            var isAtEnd = ($scope.end == $scope.totalResultCount);
+            var isAtEnd = ($scope.end === $scope.totalResultCount);
             if (isAtEnd) {
                 //last diff will be diff from our normal diff
                 var lastDiff = ($scope.totalResultCount % $scope.perPage);
-                if (lastDiff == 0) {
+                if (lastDiff === 0) {
                     lastDiff = $scope.perPage;
                 }
 

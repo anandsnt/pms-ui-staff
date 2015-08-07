@@ -55,7 +55,7 @@ function($q, ADBaseWebSrv) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/*
@@ -71,7 +71,7 @@ function($q, ADBaseWebSrv) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
 	/*
@@ -87,7 +87,7 @@ function($q, ADBaseWebSrv) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});	
+		});
 		return deferred.promise;
 	};
-}]); 
+}]);

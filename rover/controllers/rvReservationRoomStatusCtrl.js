@@ -4,32 +4,32 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 	$scope.encoderTypes = [];
 	$scope.getRoomClass = function(reservationStatus){
 		var reservationRoomClass = '';
-		if(reservationStatus == 'CANCELED'){
+		if(reservationStatus === 'CANCELED'){
 			reservationRoomClass ='overlay';
 		}
-		else if( !$rootScope.isStandAlone && reservationStatus != 'NOSHOW' && reservationStatus != 'CHECKEDOUT' && reservationStatus != 'CANCELED' && reservationStatus != 'CHECKEDIN' && reservationStatus != 'CHECKING_OUT'){
+		else if( !$rootScope.isStandAlone && reservationStatus !== 'NOSHOW' && reservationStatus !== 'CHECKEDOUT' && reservationStatus !== 'CANCELED' && reservationStatus !== 'CHECKEDIN' && reservationStatus !== 'CHECKING_OUT'){
 			reservationRoomClass = 'has-arrow hover-hand';
 		}
-		else if($rootScope.isStandAlone && reservationStatus != 'NOSHOW' && reservationStatus != 'CHECKEDOUT' && reservationStatus != 'CANCELED'){
+		else if($rootScope.isStandAlone && reservationStatus !== 'NOSHOW' && reservationStatus !== 'CHECKEDOUT' && reservationStatus !== 'CANCELED'){
 			reservationRoomClass = 'has-arrow hover-hand';
 		}
 		return reservationRoomClass;
 	};
-	
+
 	$scope.getRoomStatusClass = function(reservationStatus, roomStatus, foStatus, roomReadyStatus, checkinInspectedOnly){
-		
+
 		var reservationRoomStatusClass = "";
-		if(reservationStatus == 'CHECKING_IN'){
-			
-			if(roomReadyStatus!=''){
-				if(foStatus == 'VACANT'){
+		if(reservationStatus === 'CHECKING_IN'){
+
+			if(roomReadyStatus!==''){
+				if(foStatus === 'VACANT'){
 					switch(roomReadyStatus) {
 
 						case "INSPECTED":
 							reservationRoomStatusClass = ' room-green';
 							break;
 						case "CLEAN":
-							if (checkinInspectedOnly == "true") {
+							if (checkinInspectedOnly === "true") {
 								reservationRoomStatusClass = ' room-orange';
 								break;
 							} else {
@@ -40,38 +40,38 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 						case "PICKUP":
 							reservationRoomStatusClass = " room-orange";
 							break;
-			
+
 						case "DIRTY":
 							reservationRoomStatusClass = " room-red";
 							break;
 
 		        }
-				
+
 				} else {
 					reservationRoomStatusClass = "room-red";
 				}
-				
+
 			}
-		} 
+		}
 		return reservationRoomStatusClass;
 	};
-	
+
 	$scope.showUpgradeButton = function(reservationStatus,  isUpsellAvailable){
 		var showUpgrade = false;
 		if($scope.hasAnySharerCheckedin()){
 			return false;
 		}
-		if((isUpsellAvailable == 'true') && $scope.isFutureReservation(reservationStatus)){
+		if((isUpsellAvailable === 'true') && $scope.isFutureReservation(reservationStatus)){
 			showUpgrade = true;
 		}
 		return showUpgrade;
 	};
 	$scope.isFutureReservation = function(reservationStatus){
-		return (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN');
+		return (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN');
 	};
 	$scope.showKeysButton = function(reservationStatus){
 		var showKey = false;
-		if((reservationStatus == 'CHECKING_IN' && $scope.reservationData.reservation_card.room_number != '')|| reservationStatus == 'CHECKING_OUT' || reservationStatus == 'CHECKEDIN'){
+		if((reservationStatus === 'CHECKING_IN' && $scope.reservationData.reservation_card.room_number !== '')|| reservationStatus === 'CHECKING_OUT' || reservationStatus === 'CHECKEDIN'){
 			showKey = true;
 		}
                 //then check if the current user has permission
@@ -106,20 +106,20 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
                         className: '',
                         scope: $scope
                     });
-		} else if ($scope.reservationData.reservation_card.reservation_status !== 'CHECKING_IN'){ 
+		} else if ($scope.reservationData.reservation_card.reservation_status !== 'CHECKING_IN'){
                     ngDialog.open({
                         template: '/assets/partials/keys/rvKeyPopupNewDuplicate.html',
                         controller: 'RVKeyQRCodePopupController',
                         className: '',
                         scope: $scope
-                    });	
+                    });
                 } else if ($scope.reservationData.reservation_card.reservation_status === 'CHECKING_IN'){
                     $scope.newKeyInit();
                 }
 	};
-        
+
         $scope.keyInitPopup = function(){
-            
+
 		var keySettings = $scope.reservationData.reservation_card.key_settings;
 		 if(keySettings === "qr_code_tablet"){
 
@@ -136,12 +136,12 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
                                      controller: 'RVKeyQRCodePopupController',
                                      className: '',
                                      scope: $scope
-                            });	
+                            });
                     };
 
-                    $scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData,{ "reservationId": reservationId }, successCallback);  
+                    $scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData,{ "reservationId": reservationId }, successCallback);
 		}
-		
+
 		//Display the key encoder popup
 		else if(keySettings === "encode"){
 			console.log("keySettings ----" + keySettings);
@@ -154,13 +154,13 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
                     }
 		}
         };
-        
+
         $scope.duplicateKeyInit = function(){
             $scope.keyType = 'Duplicate';
             $scope.keyInitPopup();
             $rootScope.$broadcast('MAKE_KEY_TYPE',{type:'Duplicate'});
         };
-        
+
         $scope.newKeyInit = function(){
             $scope.keyType = 'New';
             $scope.keyInitPopup();
@@ -189,7 +189,7 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 
 	    $scope.invokeApi(RVKeyPopupSrv.fetchActiveEncoders, {}, encoderFetchSuccess);
 	};
-	
+
 	/**
 	* function for close activity indicator.
 	*/
@@ -197,7 +197,7 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		$scope.$emit('hideLoader');
 	};
 
-	$scope.goToRoomUpgrades = function(){	
+	$scope.goToRoomUpgrades = function(){
 		$state.go("rover.reservation.staycard.upgrades", {reservation_id:$scope.reservationData.reservation_card.reservation_id, "clickedButton": "upgradeButton"});
 	}
 
@@ -225,23 +225,23 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 			gotToDiaryInEditMode ();
 		} else if($scope.isFutureReservation($scope.reservationData.reservation_card.reservation_status)){
 			$state.go("rover.reservation.staycard.roomassignment", {reservation_id:$scope.reservationData.reservation_card.reservation_id, room_type:$scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton"});
-		}else if($scope.reservationData.reservation_card.reservation_status=="CHECKEDIN"){
+		}else if($scope.reservationData.reservation_card.reservation_status==="CHECKEDIN"){
 			$state.go("rover.reservation.staycard.roomassignment", {reservation_id:$scope.reservationData.reservation_card.reservation_id, room_type:$scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton"});
 		}
-		
+
 	};
-        
+
         $scope.$watch('reservationData.reservation_card.room_number',function(){
            if ($rootScope.viaSharerPopup){
                 $rootScope.$broadcast('SETPREV_RESERVATION',$rootScope.viaSharerName);
                 $rootScope.viaSharerPopup = false;
            }
         });
-        
+
         $rootScope.$on('VIA_SHARER_ON',function(fullname){
             $scope.reservationData.viaSharerName = fullname;
             $rootScope.viaSharerPopup = true;
         });
 
-	
+
 }]);

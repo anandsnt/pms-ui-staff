@@ -1,7 +1,8 @@
 admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate','$timeout',
 	function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate,$timeout) {
 
-		console.log(ADAppSrv);
+		//hide the loading text that is been shown when entering Admin
+		$( ".loading-container" ).hide();
 
 		//when there is an occured while trying to access any menu details, we need to show that errors
 		$scope.errorMessage = '';
@@ -119,11 +120,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			        submenu: [{
 			            title: "MENU_CREATE_GROUP",
 			            action: "staff#/staff/groups/config/NEW_GROUP/SUMMARY",
-			            menuIndex: "menuCreateGroup",
+			            menuIndex: "menuCreateGroup"
 			        }, {
 			            title: "MENU_MANAGE_GROUP",
 			            action: "staff#/staff/groups/search",
-			            menuIndex: "menuManageGroup",
+			            menuIndex: "menuManageGroup"
 			        }]
 		    	},{
 					title: "MENU_CONVERSATIONS",
@@ -292,7 +293,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 		});
 
-		if ($rootScope.adminRole == "hotel-admin") {
+		if ($rootScope.adminRole === "hotel-admin") {
 			$scope.isHotelAdmin = true;
 		} else {
 			$scope.isHotelAdmin = false;
@@ -324,7 +325,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		var updateBookmarkStatus = function() {
 			for (var i = 0; i < $scope.data.menus.length; i++) {
 				for (var j = 0; j < $scope.data.menus[i].components.length; j++) {
-					if ($scope.bookmarkIdList.indexOf($scope.data.menus[i].components[j].id) == -1) {
+					if ($scope.bookmarkIdList.indexOf($scope.data.menus[i].components[j].id) === -1) {
 						$scope.data.menus[i].components[j].is_bookmarked = false;
 					} else {
 						$scope.data.menus[i].components[j].is_bookmarked = true;
@@ -341,7 +342,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			var successCallbackOfRemovingBookMark = function() {
 				$scope.$emit('hideLoader');
 
-				if (index != -1) {
+				if (index !== -1) {
 					$scope.bookmarkIdList.splice(index, 1);
 					index = -1;
 				}
@@ -356,7 +357,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			if ($scope.bookMarks.length <= $scope.bookmarkIdList.length) {
 				for (var i = 0; i < $scope.bookmarkIdList.length; i++) {
 					//checking bookmarked id's in copiedBookark id's, if it is no, call web service
-					if (copiedBookMarkIds.indexOf($scope.bookmarkIdList[i]) == -1) {
+					if (copiedBookMarkIds.indexOf($scope.bookmarkIdList[i]) === -1) {
 						index = i;
 						var data = {
 							id: $scope.bookmarkIdList[i]
@@ -373,7 +374,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			var index = -1;
 			var successCallbackOfBookMark = function() {
 				$scope.$emit('hideLoader');
-				if (index != -1) {
+				if (index !== -1) {
 					$scope.bookmarkIdList.push($scope.bookMarks[index].id);
 					index = -1;
 					updateBookmarkStatus();
@@ -387,7 +388,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				for (var i = 0; i < $scope.bookMarks.length; i++) {
 
 					// if the newly added bookmark is not in the old copy then we have to web service and add it to the old array
-					if ($scope.bookmarkIdList.indexOf($scope.bookMarks[i].id) == -1) {
+					if ($scope.bookmarkIdList.indexOf($scope.bookMarks[i].id) === -1) {
 						index = i;
 						var data = {
 							id: $scope.bookMarks[i].id
@@ -421,7 +422,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		 */
 		$scope.clickedMenuItem = function($event, stateToGo) {
 			var currentTime = new Date();
-			if (lastDropedTime != '' && typeof lastDropedTime == 'object') {
+			if (lastDropedTime !== '' && typeof lastDropedTime === 'object') {
 				var diff = currentTime - lastDropedTime;
 				if (diff <= 400) {
 					$event.preventDefault();
@@ -445,6 +446,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 		$scope.$on("changedSelectedMenu", function(event, menu) {
 			$scope.selectedIndex = menu;
+			$scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
 		});
 		/*
 		 * Success callback of get language
@@ -470,14 +472,20 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$rootScope.is_auto_change_bussiness_date = data.business_date.is_auto_change_bussiness_date;
 
 			//set flag if standalone PMS
-			if (data.pms_type === null)
+			if (data.pms_type === null) {
 				$scope.isStandAlone = true;
+			}
 			$rootScope.currencySymbol = getCurrencySign(data.currency.value);
 			$rootScope.dateFormat = getDateFormat(data.date_format.value);
 			$scope.$emit('hideLoader');
 			$rootScope.isHourlyRatesEnabled = data.is_hourly_rate_on;
 			$rootScope.hotelTimeZoneFull = data.hotel_time_zone_full;
 			$rootScope.hotelTimeZoneAbbr = data.hotel_time_zone_abbr;
+
+			// CICO-18040
+			$rootScope.isFFPActive = data.is_ffp_active;
+			$rootScope.isHLPActive = data.is_hlp_active;
+			$rootScope.isPromoActive = data.is_promotion_active;
 
 			$rootScope.isRoomStatusImportPerRoomTypeOn = data.is_room_status_import_per_room_type_on ? data.is_room_status_import_per_room_type_on : false;
 
@@ -550,7 +558,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		});
 
 		/*$scope.isHotelListOpen = function() {
-			$scope.hotelListOpen = ($scope.hotelListOpen == "open") ? "" : "open";
+			$scope.hotelListOpen = ($scope.hotelListOpen === "open") ? "" : "open";
 		};
 		$scope.redirectToHotel = function(hotel_id) {
 			ADAppSrv.redirectToHotel(hotel_id).then(function(data) {
@@ -585,11 +593,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 	  	$rootScope.$on('ngDialog.opened', function(e, $dialog) {
 	        LastngDialogId = $dialog.attr('id');
-	        //to add stjepan's popup showing animation 
-	        $rootScope.modalOpened = false; 
-	        $timeout(function() { 
-	            $rootScope.modalOpened = true; 
-	        }, 300); 
+	        //to add stjepan's popup showing animation
+	        $rootScope.modalOpened = false;
+	        $timeout(function() {
+	            $rootScope.modalOpened = true;
+	        }, 300);
 	    });
 
 }]);

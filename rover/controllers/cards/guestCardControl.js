@@ -4,7 +4,7 @@ sntRover.controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout'
 		$scope.guestCardData.selectedLoyaltyLevel = "";
                 $scope.loyaltyTabEnabled = false;
 
-		if ($scope.reservationDetails.guestCard.id != null && $scope.reservationDetails.guestCard.id != "") {
+		if ($scope.reservationDetails.guestCard.id !== null && $scope.reservationDetails.guestCard.id !== "") {
 			$scope.searchMode = false;
 		}
 
@@ -30,6 +30,13 @@ sntRover.controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout'
 				$scope.$emit('hideLoader');
 			}, 1000);
 		});
+                $scope.$on('detect-hlps-ffp-active-status',function(evt,data){
+                    if (data.userMemberships.use_hlp || data.userMemberships.use_ffp){
+                    $scope.loyaltyTabEnabled = true;
+                   } else {
+                    $scope.loyaltyTabEnabled = false;
+                   }
+                });
 
 		$scope.$on("loyaltyLevelAvailable", function($event, level) {
 			$scope.guestCardData.selectedLoyaltyLevel = level;
@@ -48,7 +55,7 @@ sntRover.controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout'
                         $scope.guestCardData.loyaltyInGuestCardEnabled = false;
                     }
                  };
-                 
+
                  $scope.fetchLoyaltyStatus = function(){
                     var loyaltyFetchsuccessCallbackhlps = function(data){
                         $scope.$setLoyaltyStatus(data, 'hlps');
@@ -62,7 +69,7 @@ sntRover.controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout'
                     $scope.invokeApi(RVCompanyCardSrv.fetchHotelLoyaltiesHlps,{} , loyaltyFetchsuccessCallbackhlps);
                     $scope.invokeApi(RVCompanyCardSrv.fetchHotelLoyaltiesFfp,{} , loyaltyFetchsuccessCallbackffp);
                  };
-                 
+
 	}
 ]);
 
@@ -75,7 +82,7 @@ sntRover.controller('guestResults', ['$scope', '$timeout',
 
 		$scope.$on("refreshGuestScroll", function() {
 			$timeout(function() {
-				$scope.refreshScroller('guestResultScroll');	
+				$scope.refreshScroller('guestResultScroll');
 			}, 500);
 		});
 	}

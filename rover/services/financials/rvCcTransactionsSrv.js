@@ -1,5 +1,5 @@
 sntRover.service('RVccTransactionsSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$rootScope', function($http, $q, BaseWebSrvV2, RVBaseWebSrv,$rootScope){
-   	
+
 	var that = this;
 
  	// get authorization data
@@ -35,12 +35,12 @@ sntRover.service('RVccTransactionsSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWeb
      */
     that.fetchPayments = function (params) {
     	var deferred = $q.defer();
-    	if(typeof params.date == 'undefined' || params.date === ""){
+    	if(typeof params.date === 'undefined' || params.date === ""){
     		params.date = $rootScope.businessDate;
     	}
     	var url = "/api/cc?date="+params.date;
         BaseWebSrvV2.getJSON(url).then(function (data) {
-            
+
             data.approved.active = false;
 			data.declined.active = false;
 
@@ -50,7 +50,7 @@ sntRover.service('RVccTransactionsSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWeb
 			angular.forEach(data.declined,function(item, index) {
 	       		item.active = false;
 	       	});
-			
+
 			deferred.resolve(data);
 
         }, function (data) {
@@ -74,5 +74,5 @@ sntRover.service('RVccTransactionsSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWeb
         });
         return deferred.promise;
     };
-   
+
 }]);

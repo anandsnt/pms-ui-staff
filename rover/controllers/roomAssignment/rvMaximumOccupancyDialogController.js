@@ -1,7 +1,7 @@
 sntRover.controller('rvMaximumOccupancyDialogController',['$scope','$rootScope','$filter', 'ngDialog', function($scope, $rootScope,$filter, ngDialog){
 	BaseCtrl.call(this, $scope);
-	
-	
+
+
 	$scope.closeDialog = function(){
 		ngDialog.close();
 	};
@@ -17,7 +17,7 @@ sntRover.controller('rvMaximumOccupancyDialogController',['$scope','$rootScope',
 	};
 
 	$scope.validate = function(){
-		
+
 	};
-	
+
 }]);

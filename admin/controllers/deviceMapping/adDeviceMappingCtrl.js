@@ -1,6 +1,6 @@
-admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'ADDeviceSrv', '$timeout', '$location', '$anchorScroll', 
+admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'ADDeviceSrv', '$timeout', '$location', '$anchorScroll',
 					function(ngTableParams, $scope, $state, ADDeviceSrv, $timeout, $location, $anchorScroll){
-	
+
 	$scope.errorMessage = '';
 	// BaseCtrl.call(this, $scope);
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
@@ -18,7 +18,7 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 			// $scope.currentClickedElement = -1;
 			// $scope.isAddMode = false;
 		// };
-		// $scope.invokeApi(ADDeviceSrv.fetch, {} , successCallbackFetch);	
+		// $scope.invokeApi(ADDeviceSrv.fetch, {} , successCallbackFetch);
 	// };
 	$scope.listDevices = function($defer, params){
 		var getParams = $scope.calculateGetParams(params);
@@ -55,25 +55,25 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 
 	$scope.loadTable();
 	//To list device mappings
-	//$scope.listDevices(); 
+	//$scope.listDevices();
    /*
     * To render edit device mapping screen
     * @param {index} index of selected device mapping
     * @param {id} id of the device mapping
-    */	
+    */
 	$scope.editDeviceMapping = function(index, id)	{
 		$scope.mapping = {};
 		$scope.currentClickedElement = index;
 		$scope.isAddMode = false;
 		$scope.isEditMode = true;
 		$scope.addEditTitle = "EDIT";
-	 	var successCallbackRender = function(data){	
+	 	var successCallbackRender = function(data){
 	 		$scope.mapping = data;
 	 		$scope.$emit('hideLoader');
 	 	};
 	 	$scope.mapping.id = id;
 	 	var data = {"id":id };
-	 	$scope.invokeApi(ADDeviceSrv.getDeviceMappingDetails, data , successCallbackRender);    
+	 	$scope.invokeApi(ADDeviceSrv.getDeviceMappingDetails, data , successCallbackRender);
 	};
    /*
     * Render add device mapping screen
@@ -95,29 +95,32 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
     * @param {string} id of the department
     */
 	$scope.getTemplateUrl = function(index, id){
-		if(typeof index === "undefined" || typeof id === "undefined") return "";
-		if($scope.currentClickedElement == index){ 
+		if(typeof index === "undefined" || typeof id === "undefined") {
+			return "";
+		}
+		if($scope.currentClickedElement === index){
 			 	return "/assets/partials/deviceMapping/adDeviceMappingDetails.html";
 		}
 	};
- 
+
    /*
     * To handle click event
-    */	
+    */
 	$scope.clickCancel = function(){
 		$scope.isEditMode = false;
 		$scope.currentClickedElement = -1;
-	};	
+	};
    /*
     * To delete department
     * @param {int} index of the selected department
     * @param {string} id of the selected department
-    */		
+    */
 	$scope.deleteDeviceMapping = function(index, id){
-		var successCallbackDelete = function(data){	
+		var successCallbackDelete = function(data){
 	 		$scope.$emit('hideLoader');
 	 		$scope.data.splice(index, 1);
 	 		$scope.currentClickedElement = -1;
+	 		$scope.totalCount--;
 	 	};
 		$scope.invokeApi(ADDeviceSrv.deleteDeviceMapping, id , successCallbackDelete);
 	};
@@ -135,6 +138,7 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 					"name": $scope.mapping.name
 				};
     			 $scope.data.push(pushData);
+    			 $scope.totalCount++;
 	    	 } else {
 	    		// To update data with new value
 	    		 $scope.data[parseInt($scope.currentClickedElement)].name = $scope.mapping.name;

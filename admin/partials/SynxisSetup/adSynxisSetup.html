@@ -1,0 +1,71 @@
+<div id="wrapper" class="content current" ng-click="clearErrorMessage()">
+    <header class="content-title float">
+        <h2 translate>SYNXIS_SETUP_HEADER</h2>
+        <a ng-click ="goBackToPreviousState()" class="action back" translate>BACK</a>
+
+    </header>
+    <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_err_message_basic.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
+        <form class="form float" >
+            <fieldset class="holder left">
+                <div class="form-title full-width">
+                    <h3><span translate>SYNXIS_SUB_TITLE</span> </h3>
+                </div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>
+                                <label><span translate>MAPPINGS_ACTIVATE_INACTIVATE</span></label>
+                            </th>
+                            <th>
+                            </th>
+                            <!--th>
+                                <label><span translate>SYNXIS_FULL_REFRESH</span></label> 
+                            </th -->
+                        </tr>
+                        <tr>
+                            <td>
+                                <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: data.data.product_cross_customer.active }" ng-click="toggleSMClicked()">
+                                    <input type="checkbox" name="synxis-setup-active" id="synxis-setup-active">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </td>
+                            <td style="width:30%"></td>
+                            <!--td>
+                                <button type="button" like-type="common" id="test-connection" class="button ng-binding blue sm-refresh-btn" ng-class="{'overlay': refreshButtonEnabled === 'disabled'}" ng-click="runFullRefresh()" translate>
+                                RUN_REFRESH_BUTTON
+                                </button>
+                                <br>
+                                <label style="font-size:smaller"><span translate>SYNXIS_LAST_REFRESH</span>: {{lastRefreshedTimeMark}}<br> at {{lastRefreshedTimeRef}}</label> 
+                            </td-->
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <br>
+
+                <ad-textbox value="data.data.product_cross_customer.tracker_user_name" name="user-name" id="user-name" label="{{'SYNXIS_USERNAME_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
+                <ad-textbox value="data.data.product_cross_customer.tracker_pass_word" inputtype="password" name="pass-word" id="pass-word" label="{{'SYNXIS_PASSWORD_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
+                <ad-textbox value="data.data.product_cross_customer.tracker_access_url" inputtype="access-url" name="access-url" id="access-url" label="{{'SYNXIS_ACCESS_URL_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
+                <ad-textbox value="data.data.product_cross_customer.hotel_code" inputtype="hotel-code" name="hotel-code" id="hotel-code" label="{{'SITEMINDER_HOTEL_CODE_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
+                 <ad-dropdown-name name="default-origin" savemodel="data.data.product_cross_customer.default_origin" id="default-origin" valueproperty="value" property="name" list="booking.booking_origins" label="{{'SYNXIS_DEFAULT_BOOKING_ORIGIN'| translate}}" styleclass="full-width"></ad-dropdown-name>
+                <ad-dropdown-name name="default-payment" savemodel="data.data.product_cross_customer.default_payment_id" id="default-payment" valueproperty="id" property="description" list="payments.payments" label="{{'SYNXIS_DEFAULT_PAYMENT_METHOD'| translate}}" styleclass="full-width"  style="padding-left: 15px;"></ad-dropdown-name>
+           
+            </fieldset>
+
+            <div class="actions float">
+                <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
+                    CANCEL
+                </button>
+                <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSetup()" translate>
+                    SAVE_CHANGES
+                </button>
+                <!--button type="button" like-type="common" id="test-connection" class="button ng-binding blue" ng-click="testSetup()" translate>
+                    TEST_CONNECTION
+                </button-->
+            </div>
+
+        </form>
+    </section>
+</div>

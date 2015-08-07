@@ -26,6 +26,13 @@
 		<span class="icons icon-print"></span> 
 		Registration Card
 	</button>
+
+	<label ng-show="isStandAlone" class="checkbox inline" for="no-rate-print" ng-class="{ 'checked':reservationBillData.hide_rates }">
+        <span class="icon-form icon-checkbox" ng-class="{ 'checked':reservationBillData.hide_rates }"></span>
+        <input ng-click="clickedShowRate()" id="no-rate-print" value="" type="checkbox">
+        {{ 'DONT_PRINT_RATE' | translate }}
+    </label>
+
 </div>
 <div class="overview" ng-click="toggleFeesDetails($parent.$index)" ng-show="billData.hasFeesArray" ng-class="showFeesDetailsOpenClose(billData.isOpenFeesDetails)">
 	<p class="toggle with-rate">
@@ -73,13 +80,13 @@
 				CC display option 2 - Swiped, and authenticated:   		class="icons icon-swiped icon-authenticated"
 				CC display option 3 - Swiped, authentication failed: 	class="icons icon-swiped icon-authentication-failed"
 		-->
-	    <span ng-show="billData.credit_card_details.is_swiped && isStandAlone" class="icons icon-swiped" ng-class="{'icon-authenticated':billData.credit_card_details.auth_color_code === 'green', 'icon-authentication-failed': billData.credit_card_details.auth_color_code === 'red' }">Credit card swiped</span>
+	    <span ng-show="billData.credit_card_details.is_swiped" class="icons icon-swiped" ng-class="{'icon-authenticated':billData.credit_card_details.auth_color_code === 'green', 'icon-authentication-failed': billData.credit_card_details.auth_color_code === 'red' }">Credit card swiped</span>
 
 	    <!--  CC display option 4 - Not swiped, authenticated:  -->
-	    <span ng-show="!billData.credit_card_details.is_swiped && billData.credit_card_details.auth_color_code =='green' && isStandAlone" class="icons icon-authenticated">Credit card authenticated</span>
+	    <span ng-show="!billData.credit_card_details.is_swiped && billData.credit_card_details.auth_color_code =='green'" class="icons icon-authenticated">Credit card authenticated</span>
 
 	    <!--  CC display option 5 - Not swiped, authentication failed:  -->
-	    <span ng-show="!billData.credit_card_details.is_swiped && billData.credit_card_details.auth_color_code =='red' && isStandAlone" class="icons icon-authentication-failed">Credit card authentication failed</span>
+	    <span ng-show="!billData.credit_card_details.is_swiped && billData.credit_card_details.auth_color_code =='red'" class="icons icon-authentication-failed">Credit card authentication failed</span>
 
 
 	</button>

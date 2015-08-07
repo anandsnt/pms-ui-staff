@@ -12,6 +12,8 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 	$scope.init = function() {
 
 		var successCallbackOfFetch = function(data) {
+			$scope.$emit('hideLoader');
+			data.email_logo_type = data.email_logo_type || '';
 			$scope.data = {};
 
 			$scope.memento.hotel_picture = data.hotel_picture;
@@ -33,7 +35,6 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 					name: 'asc' // initial sorting
 				}
 			});
-			$scope.$emit('hideLoader');
 			$scope.hotelTemplateLogoPrefetched = data.location_image;
 		};
 		$scope.invokeApi(ADStationarySrv.fetch, {}, successCallbackOfFetch);
@@ -56,34 +57,43 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 	$scope.clickedSave = function() {
 
 		var filterKeys = ["guest_bill_template", "hotel_logo"];
-		if ($scope.data.hotel_picture == $scope.memento.hotel_picture) {
+		if ($scope.data.hotel_picture === $scope.memento.hotel_picture) {
 			filterKeys.push('hotel_picture')
 		}
-		if ($scope.data.location_image == $scope.memento.location_image) {
+		if ($scope.data.location_image === $scope.memento.location_image) {
 			filterKeys.push('location_image')
 		}
 		var postingData = dclone($scope.data, filterKeys);
 		//calling the save api
-		if ($scope.hotelTemplateLogoPrefetched == postingData.location_image) {
+		if ($scope.hotelTemplateLogoPrefetched === postingData.location_image) {
 			postingData.location_image = "";
 		}
 		$scope.invokeApi(ADStationarySrv.saveStationary, postingData, successCallbackOfSaveDetails);
 	};
 
+	// CICO-17706 : While Cancellation Email is Turned OFF , Print Cancellation Email also forced to OFF.
+	$scope.$watch('data.send_cancellation_letter', function(newValue, oldValue) {
+	   if(!newValue) $scope.data.print_cancellation_letter = false;
+	});
+
 	$scope.$watch(function() {
 		return $scope.data.location_image;
 	}, function(logo) {
-		if (logo == 'false')
+		if (logo === 'false') {
 			$scope.fileName = "Choose File....";
+		}
 		$scope.location_image_file = $scope.fileName;
 	});
 	/**
 	 *   To handle show hide status for the logo delete button
 	 */
 	$scope.isLogoAvailable = function(logo) {
-		if (logo != '/assets/logo.png' && logo != 'false')
+		if (logo !== '/assets/logo.png' && logo !== 'false') {
 			return true;
-		else return false;
+		}
+		else {
+			return false;
+		}
 	};
 
 	$scope.onEditSocialLink = function(link, index) {
