@@ -123,7 +123,7 @@
             <!-- Success feedback -->
             <div class="feedback" ng-show="!splitBillEnabled && showSuccesMessage">
                 <div class="notice success">Amount paid!</div>
-                <ul class="transaction">
+                <ul class="transaction transaction-details">
                     <li ng-show="authorizedCode !==''">
                         Your Authorize code is: <span class="auth">{{authorizedCode}}</span>
                     </li>
@@ -132,7 +132,7 @@
                         </span>
                     </li>
                     <li ng-if="!isShowFees()">
-                        Amount paid: <span class="value">{{currencySymbol}}{{renderData.defaultPaymentAmount}}
+                        Amount paid: <span class="value">{{currencySymbol}}{{renderData.defaultPaymentAmount|number:2}}
                         </span>
                     </li>
                 </ul>
