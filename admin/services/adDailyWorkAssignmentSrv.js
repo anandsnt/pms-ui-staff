@@ -7,7 +7,8 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
         /*
          * To fetch task types
-         *
+         * @param {object}
+         * @return {object} defer promise
          */
         this.fetchWorkType = function() {
             var deferred = $q.defer(),
@@ -29,7 +30,8 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
         /*
          * To add new task type
-         *
+         * @param {object}
+         * @return {object} defer promise
         */
         this.addTaskType = function(item) {
             var deferred = $q.defer(),
@@ -52,7 +54,8 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
         /*
          * To delete a work type
-         *
+         * @param {object}
+         * @return {object} defer promise
         */
         this.deleteWorkType = function(params) {
             var deferred = $q.defer(),
@@ -70,7 +73,8 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
         /*
          * To update a work type
-         *
+         * @param {object}
+         * @return {object} defer promise
          */
         this.putWorkType = function(params) {
             var deferred = $q.defer(),
@@ -89,7 +93,8 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
         /*
          * To add a new work type
-         *
+         * @param {object}
+         * @return {object} defer promise
          */
         this.postWorkType = function(params) {
             var deferred = $q.defer(),
@@ -110,7 +115,8 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
         /*
          * To fetch work shifts
-         *
+         * @param {object}
+         * @return {object} defer promise
          */
         this.fetchWorkShift = function() {
             var deferred = $q.defer(),
@@ -132,7 +138,8 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
         /*
          * To delete a work shift
-         *
+         * @param {object}
+         * @return {object} defer promise
          */
         this.deleteWorkShift = function(params) {
             var deferred = $q.defer(),
@@ -150,7 +157,8 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
         /*
          * To add a new work shift
-         *
+         * @param {object}
+         * @return {object} defer promise
          */
         this.postWorkShift = function(params) {
             var deferred = $q.defer(),
@@ -169,7 +177,8 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
         /*
          * To update a work shift
-         *
+         * @param {object}
+         * @return {object} defer promise
          */
         this.putWorkShift = function(params) {
             var deferred = $q.defer(),
@@ -190,7 +199,8 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
         /*
          * fetch additional APIs and preserve
-         *
+         * @param {object}
+         * @return {object} defer promise
          */
 
 
@@ -280,7 +290,8 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
         /*
          * To fetch task lists
-         *
+         * @param {object}
+         * @return {object} defer promise
          */
         this.fetchTaskList = function() {
             var deferred = $q.defer(),
@@ -298,7 +309,8 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
         /*
          * To delete a Task list item
-         *
+         * @param {object}
+         * @return {object} defer promise
          */
         this.deleteTaskListItem = function(params) {
             var deferred = $q.defer(),
@@ -316,7 +328,8 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
         /*
          * To add a Task list item
-         *
+         * @param {object}
+         * @return {object} defer promise
          */
         this.postTaskListItem = function(params) {
             var deferred = $q.defer(),
@@ -334,7 +347,8 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
         /*
          * To update a Task list item
-         *
+         * @param {object}
+         * @return {object} defer promise
          */
         this.putTaskListItem = function(params) {
             var deferred = $q.defer(),
