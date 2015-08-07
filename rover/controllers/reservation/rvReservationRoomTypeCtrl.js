@@ -800,10 +800,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				var roomId = room.id;
 				if (room.rates.length > 0) {
 					_.each(room.rates, function(rateId) {
-						/*("now processing", {
-							roomId: roomId,
-							rateId: rateId
-						})*/
 						var validRate = true;
 						var configuredRate = true;
 
@@ -833,15 +829,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 								var currDate = key;
 								//Step 1 : Check if the rates are configured for all the days of stay
 								if (typeof today[rateId] === 'undefined') {
-									// ("The rate " + rateId + " is not available for " + roomId + " on " + key);
 									// TODO: Uncomment the following code block and comment the line after the block to show rates configured for just that day in the room and rates section under the staydates mode
-									/*if ($scope.stateCheck.stayDatesMode) {
-										if (currDate === $scope.stateCheck.dateModeActiveDate) {
-											validRate = false;
-										}
-									} else {
-										validRate = false;
-									}*/
 									validRate = false;
 									configuredRate = false;
 								} else {
@@ -869,7 +857,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 									//Step 2 : Check if the rates are configured for the selected occupancy
 									if (rateConfiguration.single === null && rateConfiguration.double === null && rateConfiguration.extra_adult === null && rateConfiguration.child === null) {
-										// ("This rate has to be removed as no rates are confugured for " + key);
 										validRate = false;
 										configuredRate = false;
 										today[rateId].restrictions.push({
@@ -880,7 +867,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 										// Step 2: Check for the other constraints here
 										// Step 2 A : Children
 										if (numChildren > 0 && rateConfiguration.child === null) {
-											// ("This rate has to be removed as no children are configured for " + key);
 											validRate = false;
 											configuredRate = false;
 											today[rateId].restrictions.push({
@@ -888,7 +874,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 												value: ''
 											});
 										} else if (numAdults === 1 && rateConfiguration.single === null) { // Step 2 B: one adult - single needs to be configured
-											// ("This rate has to be removed as no single are configured for " + key);
 											validRate = false;
 											configuredRate = false;
 											today[rateId].restrictions.push({
@@ -896,7 +881,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 												value: ''
 											});
 										} else if (numAdults >= 2 && rateConfiguration.double === null) { // Step 2 C: more than one adult - double needs to be configured
-											// ("This rate has to be removed as no double are configured for " + key);
 											validRate = false;
 											configuredRate = false;
 											today[rateId].restrictions.push({
@@ -904,7 +888,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 												value: ''
 											});
 										} else if (numAdults > 2 && rateConfiguration.extra_adult === null) { // Step 2 D: more than two adults - need extra_adult to be configured
-											// ("This rate has to be removed as no adults are configured for " + key);
 											validRate = false;
 											configuredRate = false;
 											today[rateId].restrictions.push({
@@ -1286,13 +1269,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 
 		$scope.toggleCalendar = function() {
-			//CICO-15042, CICO-15042 Disable navigation to the calendar screen temporarily
-			//$scope.stateCheck.activeMode = $scope.stateCheck.activeMode === "ROOM_RATE" ? "CALENDAR" : "ROOM_RATE";
-			//$scope.heading = $scope.stateCheck.activeMode === "ROOM_RATE" ? "Rooms & Rates" : " Change Stay Dates";
+			//CICO-15042, CICO-15042 Disable navigation to the calendar screen temporarilyes" : " Change Stay Dates";
 			$scope.stateCheck.activeMode = 'ROOM_RATE';
 			$scope.heading = "Rooms & Rates";
 			$scope.setHeadingTitle($scope.heading);
-			//$("#rooms-and-rates-header .data-off span").toggleClass("value switch-icon");
 		}
 
 		$scope.showStayDateDetails = function(selectedDate) {
@@ -1509,7 +1489,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			// TODO: Check if there has been a rateChange
 			if (!!RVReservationStateService.bookMark.lastPostedRate) {
 				// Identify if there are extra addons added other than those of the associated rate's
-				var associatedRateAddons = RVReservationStateService.fetchAssociatedAddons(RVReservationStateService.bookMark.lastPostedRate), // associated addons in the previous rate;
+				var associatedRateAddons = RVReservationStateService.fetchAssociatedAddons(RVReservationStateService.bookMark.lastPostedRate), // associated addons in the previous rate
 					entireAddons = $scope.reservationData.rooms[0].addons; // Entire set of addons for the reservation (incl rate associated addons)
 
 				RVReservationStateService.setReservationFlag('RATE_CHANGED', true);
