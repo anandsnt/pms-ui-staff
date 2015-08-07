@@ -526,7 +526,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         /**
          * Source handler for the codes autocomplete
          * jquery autocomplete Souce handler
-         * get two arguments - request object and response callback function 
+         * get two arguments - request object and response callback function
          */
 
         var codeACSourceHandler = function(request, response) {
@@ -581,8 +581,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 return;
             }
             if($rootScope.isFFPActive && $scope.flyerPrograms.length > 0){
-                $scope.reservationData.member.value = $scope.flyerPrograms[0].ff_value;                
-            }            
+                $scope.reservationData.member.value = $scope.flyerPrograms[0].ff_value;
+            }
         };
 
     }

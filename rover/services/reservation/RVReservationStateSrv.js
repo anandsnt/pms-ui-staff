@@ -140,7 +140,7 @@ sntRover.service('RVReservationStateService', [
 						});
 					}
 
-					// THE TAX CALCULATION HAPPENS HERE					
+					// THE TAX CALCULATION HAPPENS HERE
 					if (taxData.amount_symbol === '%') { // The formula for inclusive tax computation is different from that for exclusive. Kindly NOTE.
 						taxCalculated = parseFloat(multiplier * (parseFloat(taxValue / 100) * taxOn));
 					} else {

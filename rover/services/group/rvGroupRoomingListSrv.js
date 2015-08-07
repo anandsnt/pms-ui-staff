@@ -132,7 +132,7 @@ sntRover.service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 				data_for_web_service = {
 					'count': params.num_of_rooms_to_fetch,
 					'room_type_id': params.room_type_id
-				};				
+				};
 
 			rvBaseWebSrvV2.getJSON(url, data_for_web_service).then(
 				function(data) {

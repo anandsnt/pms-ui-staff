@@ -1,7 +1,7 @@
 (function() {
 
 	var checkinArrivalDetailsController = function($scope, preCheckinSrv,$rootScope,$state,$modal,$stateParams) {
-	
+
 	var init = function(){
 
        $scope.hours = ["01","02","03","04","05","06","07","08","09","10","11","12"];
@@ -10,7 +10,7 @@
        		$scope.stayDetails = {
 							       	"hour":$rootScope.earlyCheckinHour,
 							       	"minute":$rootScope.earlyCheckinMinute,
-							       	"primeTime" : $rootScope.earlyCheckinPM 
+							       	"primeTime" : $rootScope.earlyCheckinPM
 							      };
        }
        else{
@@ -33,7 +33,7 @@
 	      }
 	    };
 	    $scope.checkinTime = (typeof $stateParams.time !=="undefined") ? $stateParams.time :"";
-	    
+
 	};
 	init();
 
@@ -59,7 +59,7 @@
 		 }
 
 
-		preCheckinSrv.postStayDetails(dataTosend).then(function(response) {			
+		preCheckinSrv.postStayDetails(dataTosend).then(function(response) {
 			if(response.early_checkin_available && typeof response.early_checkin_offer_id !== "undefined"){
 					$rootScope.earlyCheckinHour   =  response.last_early_checkin_hour;
 					$rootScope.earlyCheckinMinute =  response.last_early_checkin_minute;

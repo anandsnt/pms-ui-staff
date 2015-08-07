@@ -1,13 +1,13 @@
 (function() {
 	var externalVerificationViewController = function($scope, externalVerificationService,$rootScope,$state,dateFilter,$filter,$modal) {
-	
+
 	$scope.stayDetails = {
 							"room_number":"",
 							"last_name":"",
 							"arrival_date":"",
 							"email":""
 						 };
-						 
+
 	$scope.calendarView = false;
 	var dateToSend = "";
 	$scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
@@ -23,12 +23,12 @@
 	$scope.dateChoosen = function(){
 		$scope.stayDetails.arrival_date = ($filter('date')($scope.date, $rootScope.dateFormat));
 		dateToSend = dclone($scope.date,[]);
-		dateToSend = ($filter('date')(dateToSend,'yyyy-MM-dd'));		
+		dateToSend = ($filter('date')(dateToSend,'yyyy-MM-dd'));
 		$scope.closeCalender();
 	};
 
 	$scope.submit = function(){
-		
+
 		var params  = {
 						"room_number":$scope.stayDetails.room_number,
 						"hotel_identifier":$rootScope.hotelIdentifier,
@@ -71,7 +71,7 @@
 			if($rootScope.isLateCheckoutAvailable ){
 				$state.go('checkOutOptions');
 			}else {
-				$state.go('checkOutConfirmation');	
+				$state.go('checkOutConfirmation');
 			}
 
 		},function(){
@@ -93,7 +93,7 @@ snt.controller('externalVerificationViewController', dependencies);
 snt.controller('verificationErrorController', ['$scope', function($scope) {
 
 	$scope.doneClicked = function(){
-		
+
 	}
 
 }]);
@@ -101,9 +101,9 @@ snt.controller('verificationErrorController', ['$scope', function($scope) {
 // controller for the modal
 
   var verificationModalCtrl = function ($scope, $modalInstance,$state) {
-    
+
     $scope.closeDialog = function () {
       $modalInstance.dismiss('cancel');
     };
- 
+
   };

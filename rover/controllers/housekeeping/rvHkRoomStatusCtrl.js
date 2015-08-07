@@ -474,7 +474,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.roomSelectChange = function(item, i) {
 			var _value = item.selected,
 				_key   = i + '';
-			
+
 			// double to make sure its a truthy value
 			if ( !! _value ) {
 				$scope.multiRoomAction.anyChosen = true;

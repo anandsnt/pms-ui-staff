@@ -437,7 +437,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 		};
 
 
-		
+
 
 
 		this.toggleFilter = function(item) {

@@ -521,7 +521,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				/**/
 				$scope.appliedFilter['singleValueDate'] = angular.copy( chosenReport.singleValueDate );
 			};
-			
+
 			// include rate adjustment dates
 			if (!!chosenReport.hasAdjustmentDateRange) {
 				params['from_date'] = $filter('date')(chosenReport.fromAdjustmentDate, 'yyyy/MM/dd');

@@ -445,7 +445,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 				},function(data){
 				    deferred.reject(data);
 				});
-			return deferred.promise;	
+			return deferred.promise;
 		}
 
 	}

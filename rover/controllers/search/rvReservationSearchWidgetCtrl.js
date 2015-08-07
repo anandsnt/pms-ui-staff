@@ -341,7 +341,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 					txtInQry(res.travel_agent) ||
 					txtInQry(res.company) ||
 					txtInQry(escN(res.room).toString(), false) ||
-					txtInQry(escN(res.confirmation).toString(), false) ||					
+					txtInQry(escN(res.confirmation).toString(), false) ||
 					(escN(res.reservation_status).toUpperCase() === "CANCELED" && txtInQry(escN(res.cancellation_no).toString(), false) >= 0))
 		};
 
@@ -668,8 +668,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				$scope.$emit("updateDataFromOutside", data);
 				$scope.swipeNoResults = true;
 				$scope.focusOnSearchText();
-			} else if (data.length === 1) {		
-	
+			} else if (data.length === 1) {
+
 				$scope.currentReservationID = data[0].id;
 				$scope.currentConfirmationID = data[0].confirmation;
 				RVSearchSrv.data = $scope.results;

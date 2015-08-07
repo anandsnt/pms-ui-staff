@@ -126,7 +126,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		}
 
 		$scope.confirmationMailsSent = false;
-		
+
 		// add the print orientation after printing
 		var addPrintOrientation = function() {
 			var orientation = 'portrait';
@@ -134,21 +134,21 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		};
 		// remove the print orientation after printing
 		var removePrintOrientation = function() {
-			$( '#print-orientation' ).remove();	
+			$( '#print-orientation' ).remove();
 		};
 
-		var printPage= function() {		
+		var printPage= function() {
 			// add the orientation
 			addPrintOrientation();
-	    	$timeout(function() {	    	
+	    	$timeout(function() {
 	        	$window.print();
 	        	if ( sntapp.cordovaLoaded ) {
 	            	cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-	        	};	        
+	        	};
 	    	}, 100);
 			// remove the orientation after similar delay
 			$timeout(removePrintOrientation, 100);
-		};	
+		};
 
 		$scope.printData = {};
 		var sucessCallbackPrint = function( response ){
@@ -160,7 +160,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		};
 
 		// To handle printConfirmationReservation button click
-		$scope.printConfirmationReservation = function() {	
+		$scope.printConfirmationReservation = function() {
 			$scope.callAPI(RVReservationSummarySrv.fetchResservationConfirmationPrintData,{
                 successCallBack: sucessCallbackPrint,
                 failureCallBack: failureCallbackPrint,
@@ -531,7 +531,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			postData.addons = $scope.existingAddons;
 			$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
 		}
-		
+
 		/**
          * Function to toggle show rate checkbox value
          */

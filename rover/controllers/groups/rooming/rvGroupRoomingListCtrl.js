@@ -95,7 +95,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             var room_type_id_list = _.pluck($scope.roomTypesAndData, 'room_type_id'),
             	containNonEditableRoomType = !_.contains(room_type_id_list, parseInt(reservation.room_type_id)),
             	rStatus = reservation.reservation_status;
-            
+
             //CICO-18717: disable room type switch once a user checks in
             return (!(rStatus === "RESERVED" || rStatus === "CHECKING_IN") || containNonEditableRoomType);
         };
@@ -1335,7 +1335,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                     assignedRoom = [];
 
                 selectedReservation.roomsAvailableToAssign = [];
-                
+
                 if (roomId !== null && roomId !== '') {
                     assignedRoom = [{
                         id: roomId,
@@ -1403,12 +1403,12 @@ sntRover.controller('rvGroupRoomingListCtrl', [
              * when we failed to fetch some of the api need to show the reservation details popup
              */
             var failedToFetchOfAllReqdForReservationEdit = function(errorMessage) {
-                $scope.$emit('hideLoader');                
+                $scope.$emit('hideLoader');
                 $scope.errorMessage = errorMessage;
             };
 
             /**
-             * we need to fetch some data before reservation edit pop up showing 
+             * we need to fetch some data before reservation edit pop up showing
              * @param  {Object} reservation
              * @return {undefined}
              */
@@ -1458,8 +1458,8 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 callNeccessaryApiForReservationDetailsShowing (reservation);
             };
 
-        }());        
-    	
+        }());
+
     	/**
     	 * event exposed for other (mainly for children) controllers to update the data
     	 */
@@ -1702,7 +1702,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * Function to toggle show rate checkbox value
          */
         $scope.clickedShowRate = function(){
-            
+
             var params = {
                 'group_id'      : $scope.groupConfigData.summary.group_id,
                 'hide_rates'    : !$scope.groupConfigData.summary.hide_rates
@@ -1719,7 +1719,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {undefined}
          */
         var setActiveLeftSideMenu = function () {
-            var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup": "menuManageGroup";         
+            var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup": "menuManageGroup";
             $scope.$emit("updateRoverLeftMenu", activeMenu);
         };
 
@@ -1757,11 +1757,11 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             // CICO-17898 The initial APIs need to be called in the scenario while we come back to the Rooming List Tab from the stay card
             var isInRoomingList = ($scope.groupConfigData.activeTab === "ROOMING"),
             	comingFromStaycard = ("rover.reservation.staycard.reservationcard.reservationdetails" === $rootScope.getPrevStateName());
-            	
+
             if (isInRoomingList && comingFromStaycard) {
                 callInitialAPIs();
             }
         }();
-        
+
     }
 ]);

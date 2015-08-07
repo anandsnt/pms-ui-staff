@@ -282,7 +282,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 					this.value = ui.item.label;
 					$scope.accountConfigData.summary.travel_agent.name = ui.item.label;
 					$scope.accountConfigData.summary.travel_agent.id = ui.item.value;
-					if (!$scope.isInAddMode()) { 
+					if (!$scope.isInAddMode()) {
 						$scope.updateAccountSummary();
 					}
 					runDigestCycle();

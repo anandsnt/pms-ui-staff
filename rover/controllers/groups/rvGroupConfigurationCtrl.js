@@ -245,10 +245,10 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                         onGroupSaveFailure = function(errorMessage) {
                             $scope.errorMessage = errorMessage;
                         };
-                        
+
                     if(!$scope.groupConfigData.summary.rate){
-                       $scope.groupConfigData.summary.rate = -1; 
-                    }    
+                       $scope.groupConfigData.summary.rate = -1;
+                    }
 
                     $scope.callAPI(rvGroupConfigurationSrv.saveGroupSummary, {
                         successCallBack: onGroupSaveSuccess,
@@ -295,8 +295,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 summaryData.block_to = $filter('date')(summaryData.block_to, $rootScope.dateFormatForAPI);
                 summaryData.release_date = $filter('date')(summaryData.release_date, $rootScope.dateFormatForAPI);
                 if(!summaryData.rate){
-                    summaryData.rate = -1; 
-                }    
+                    summaryData.rate = -1;
+                }
                 $scope.callAPI(rvGroupConfigurationSrv.updateGroupSummary, {
                     successCallBack: onGroupUpdateSuccess,
                     failureCallBack: onGroupUpdateFailure,

@@ -2,7 +2,7 @@
 (function() {
 	var earlyCheckinFinalController = function($scope,$rootScope,$state,$stateParams,earlyCheckinService) {
 
-	
+
 	$scope.pageValid = false;
 
 	if($rootScope.isCheckedin){
@@ -13,7 +13,7 @@
 	}
 	else{
 		$scope.pageValid = true;
-	}		
+	}
 
 	if($scope.pageValid){
 		$scope.checkinTime = $stateParams.time;
@@ -21,7 +21,7 @@
 		var offerId= $stateParams.id;
 		$scope.isPosting = true;
 		var dataTosend = {'reservation_id':$rootScope.reservationID,'early_checkin_offer_id':offerId};
-		earlyCheckinService.applyEarlyCheckin(dataTosend).then(function(response) {				
+		earlyCheckinService.applyEarlyCheckin(dataTosend).then(function(response) {
 			$state.go('preCheckinStatus');
 		},function(){
 			$scope.netWorkError = true;

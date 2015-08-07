@@ -9,10 +9,10 @@ sntRover.controller('RVHKGuestTabCtrl', [
 	'ngDialog',
 	function($scope, $rootScope, $state, $stateParams, RVHkRoomDetailsSrv, $filter, rvPermissionSrv, ngDialog) {
 
-		BaseCtrl.call(this, $scope);		
+		BaseCtrl.call(this, $scope);
 		// keep ref to room details in local scope
 		$scope.roomDetails = $scope.$parent.roomDetails;
-		$scope.hasCheckOutReservationPermission = function() {				
+		$scope.hasCheckOutReservationPermission = function() {
         	return rvPermissionSrv.getPermissionValue('CHECK_OUT_RESERVATION');
     	};
 		/*
@@ -20,14 +20,14 @@ sntRover.controller('RVHKGuestTabCtrl', [
 		Stayover - Show both departure date & departure time (if any)
 		Day use or Due out - Show departure time(or late check out time) alone. No need of showing date.
 		*/
-		$scope.checkOutReservation = function(){		
+		$scope.checkOutReservation = function(){
 			var Params = {
 				id:$scope.roomDetails.reservation_id
 			};
 			$scope.invokeApi(RVHkRoomDetailsSrv.postCheckOutReservation, Params, successCheckout, failureCheckout);
 		};
 
-		var successCheckout = function(Message){			
+		var successCheckout = function(Message){
 			$scope.message = Message.data ;
 			$scope.roomDetails.reservation_is_due_out = false;
 			$scope.isSuccess = true;
@@ -38,18 +38,18 @@ sntRover.controller('RVHKGuestTabCtrl', [
                 template: '/assets/partials/housekeeping/rvCheckoutDialogPopup.html',
                 scope: $scope,
                 closeByDocument: true
-            });			
+            });
 		};
 
 		var failureCheckout = function(Errors){
-			$scope.message = Errors.errors[0];			
+			$scope.message = Errors.errors[0];
 			$scope.isSuccess = false;
 			$scope.$emit('hideLoader');
 			ngDialog.open({
 				template: '/assets/partials/housekeeping/rvCheckoutDialogPopup.html',
 				scope: $scope,
 				closeByDocument: true
-            });	
+            });
 		};
 
 		var init = function(){
@@ -74,6 +74,6 @@ sntRover.controller('RVHKGuestTabCtrl', [
 			}
 		};
 		init();
-		
+
 	}
 ]);

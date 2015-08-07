@@ -312,7 +312,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				rate_id: $scope.groupConfigData.summary.rate
 			}, function(response) {
 				$scope.$emit('hideLoader');
-				if (!response.is_changed && !response.is_room_rate_available) {					
+				if (!response.is_changed && !response.is_room_rate_available) {
 					ngDialog.open({
 						template: '/assets/partials/groups/summary/warnChangeRateNotPossible.html',
 						className: '',
@@ -758,7 +758,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {undefined}
 		 */
 		var setActiveLeftSideMenu = function () {
-			var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup": "menuManageGroup";			
+			var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup": "menuManageGroup";
 			$scope.$emit("updateRoverLeftMenu", activeMenu);
 		};
 

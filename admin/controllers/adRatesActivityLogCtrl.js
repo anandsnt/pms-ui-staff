@@ -1,14 +1,14 @@
-admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$stateParams', 'ADRateActivityLogSrv', 'ngTableParams', '$filter',  
+admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$stateParams', 'ADRateActivityLogSrv', 'ngTableParams', '$filter',
     function($scope, $rootScope, $state, $stateParams, ADRateActivityLogSrv, ngTableParams, $filter){
 	BaseCtrl.call(this, $scope);
-        
-        
+
+
         $scope.init = function(){
         $scope.showActivityLog = false;
         $scope.activityLogData = {};
         $scope.fromDate ='';
         $scope.toDate ='';
-        $scope.user_id = 0;  
+        $scope.user_id = 0;
         $scope.getRateLog = function(){
             $scope.showActivityLog = true;
             $scope.$emit('showLoader');
@@ -43,8 +43,8 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
                 return true;
             }
         };
-        
-        
+
+
     var setDatePickerOptions = function(){
         //I just changed this to a function, dont knw who written this
         var datePickerCommon = {
@@ -77,10 +77,10 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
             }
         }, datePickerCommon);
     };
-    
+
     //setting date picker options
     setDatePickerOptions();
-        
+
     $scope.updateReportFilter = function(){
         $scope.isUpdateReportFilter = true;
         $scope.initPaginationParams();
@@ -88,7 +88,7 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
         $scope.updateReport();
     };
     $scope.initPaginationParams = function() {
-        if($scope.activityLogData.total_count === 0){           
+        if($scope.activityLogData.total_count === 0){
              $scope.start = 0;
              $scope.end =0;
         }else{
@@ -96,7 +96,7 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
         $scope.end = $scope.start + $scope.activityLogData.length - 1;
         }
         $scope.page = 1;
-        $scope.perPage = 50;        
+        $scope.perPage = 50;
         $scope.nextAction = false;
         $scope.prevAction = false;
     };
@@ -135,15 +135,15 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
 
             //if($scope.user_id)
               //  params['user_id'] = $scope.user_id;
-            
+
         }
         params['sort_order'] = $scope.sort_order;
-        params['sort_field'] = $scope.sort_field;       
-        
+        params['sort_field'] = $scope.sort_field;
+
         $scope.invokeApi(ADRateActivityLogSrv.filterActivityLog, params, callback);
     };
-    
-    $scope.userChanged = function(){        
+
+    $scope.userChanged = function(){
         if($scope.userEmail === ''){
            $scope.user_id=0;
         }
@@ -151,7 +151,7 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
     $scope.userEmail='';
     /*
     * Sorting
-    */    
+    */
     $scope.initSort =function(){
         $scope.sortOrderOfUserASC = false;
         $scope.sortOrderOfDateASC = false;
@@ -205,7 +205,7 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
         }
         $scope.updateReport();
     };
-        
+
     function split(val) {
         return val.split(/,\s*/);
     }
@@ -213,7 +213,7 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
     function extractLast(term) {
         return split(term).pop();
     }
-    
+
     var initializeAutoCompletion = function(){
         console.log('init auto complete')
         //forming auto complte source object
@@ -223,7 +223,7 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
                 label: user.email,
                 value: user.id
             });
-        });  
+        });
 
         var userAutoCompleteCommon = {
             source: function(request, response) {
@@ -234,7 +234,7 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
             },
             select: function(event, ui) {
                 $scope.user_id = ui.item.value;
-                var uiValue = split(this.value);                
+                var uiValue = split(this.value);
                 uiValue.pop();
                 uiValue.push(ui.item.label);
                 uiValue.push("");
@@ -276,10 +276,10 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
             }
         }, userAutoCompleteCommon);
 
-    }   
+    }
             initializeAutoCompletion();
         }
         $scope.init();
-        
+
 
 }]);

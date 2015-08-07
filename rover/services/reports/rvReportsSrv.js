@@ -22,7 +22,7 @@ sntRover.service('RVreportsSrv', [
 
 		/**
 		 * save the chosen report object in here
-		 * @param {Object} item 
+		 * @param {Object} item
 		 */
 		service.setChoosenReport = function(item) {
 			choosenReport = item;
@@ -55,7 +55,7 @@ sntRover.service('RVreportsSrv', [
 		};
 
 		/**
-		 * load any additional apis to load and 
+		 * load any additional apis to load and
 		 * resolve deferred when all apis have been loaded.
 		 * deferred when resolved on the router will be provided with the
 		 * payload of all the api data as an object
@@ -156,7 +156,7 @@ sntRover.service('RVreportsSrv', [
 					subSrv.fetchBookingOrigins()
 						.then( success.bind(null, 'origins'), failed.bind(null, 'origins', 'typeArray') );
 				};
-			};			
+			};
 		};
 
 		/**

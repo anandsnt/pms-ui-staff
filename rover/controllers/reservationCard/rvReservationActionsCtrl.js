@@ -602,7 +602,7 @@ sntRover.controller('reservationActionsController', [
 			}
 			return isEmailAttachedFlag;
 		};
-		
+
 		$scope.ngData = {};
 		$scope.ngData.failureMessage = "";
 		$scope.ngData.successMessage = "";

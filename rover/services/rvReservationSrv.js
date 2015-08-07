@@ -241,7 +241,7 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		};		
+		};
 
 		this.sendConfirmationEmail = function(data) {
 			var deferred = $q.defer();
@@ -300,7 +300,7 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 
 		this.checkReinstationAvailbility = function(reservationId) {
 			var deferred = $q.defer(),
-				url = '/api/reservations/' + reservationId + '/check_reinstate_availability';			
+				url = '/api/reservations/' + reservationId + '/check_reinstate_availability';
 			rvBaseWebSrvV2.getJSON(url).then(function(response) {
 				deferred.resolve(response);
 			}, function(response) {

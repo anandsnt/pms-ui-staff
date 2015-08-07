@@ -2,9 +2,9 @@ admin.controller('ADOriginsCtrl', ['$scope', 'ADOriginsSrv', '$anchorScroll', '$
 	function($scope, ADOriginsSrv, $anchorScroll, $timeout, $location) {
 		BaseCtrl.call(this, $scope);
 		$scope.$emit("changedSelectedMenu", 7);
-		$scope.currentClickedElement = -1;		
+		$scope.currentClickedElement = -1;
 		$scope.state = {
-			editStore: {},			
+			editStore: {},
 		};
 
 		/*
@@ -16,7 +16,7 @@ admin.controller('ADOriginsCtrl', ['$scope', 'ADOriginsSrv', '$anchorScroll', '$
 		};
 
 		$scope.invokeApi(ADOriginsSrv.fetch, {}, fetchSuccessCallback);
-		
+
 		/*
 		 * To handle enable/disable of use origins
 		 */
@@ -49,7 +49,7 @@ admin.controller('ADOriginsCtrl', ['$scope', 'ADOriginsSrv', '$anchorScroll', '$
 		    });
 		});
 		*/
-		
+
 		/*
 		 * To get the template of edit screen
 		 * @param {int} index of the selected item

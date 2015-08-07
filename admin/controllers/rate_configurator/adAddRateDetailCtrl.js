@@ -162,7 +162,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             };
 
             // Save Rate Success Callback
-            var saveSuccessCallback = function(data) {                
+            var saveSuccessCallback = function(data) {
                 $scope.manipulateData(data);
                 $scope.detailsMenu = "";
                 $('#activityLogArea').scope().detailsMenu = '';

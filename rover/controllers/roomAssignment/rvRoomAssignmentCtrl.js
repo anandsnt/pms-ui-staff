@@ -584,38 +584,38 @@ sntRover.controller('RVroomAssignmentController',[
 
 		//calculating room ids of selected floors in case any floor is selected.
 		if($scope.floorFilterData && !$scope.floorFilterData.isNoFloorSelected){
-				roomIdsInSelectedFloor= $scope.getRoomIdsInSelectedFloor();		
+				roomIdsInSelectedFloor= $scope.getRoomIdsInSelectedFloor();
 			};
 
-		//Iterating each room for filter.			
+		//Iterating each room for filter.
 		rooms.forEach(function(room){
-			var isRoomIncluded = false;	
+			var isRoomIncluded = false;
 			//Checking whether the room is to be displyed.
 			if(room.room_status === "READY" && room.fo_status === "VACANT" && !room.is_preassigned){
-				if(room.checkin_inspected_only === "true" && room.room_ready_status === "INSPECTED"){					
+				if(room.checkin_inspected_only === "true" && room.room_ready_status === "INSPECTED"){
 					isRoomIncluded = true;
-				}else if(room.checkin_inspected_only === "false"){				
+				}else if(room.checkin_inspected_only === "false"){
 					isRoomIncluded = true;
-				};				
+				};
 			};
 			// Checking whether any of  predefined Filter condition satisfies
 			selectedPredefinedFiltersList.forEach(function(filter){
-				if(room.room_features.indexOf(filter)!== -1){				
+				if(room.room_features.indexOf(filter)!== -1){
 					isRoomIncluded = true;
 				};
 			});
 			// Checking whether any of Filter condition satisfies
 			selectedFiltersList.forEach(function(filter){
-				if(room.room_features.indexOf(filter)!== -1){				
+				if(room.room_features.indexOf(filter)!== -1){
 					isRoomIncluded =isRoomIncluded&&true;
 				}else{
 					isRoomIncluded =isRoomIncluded&&false;
 				};
-			});	
+			});
 			//Checking Whether the Room to be displyed.
 			if(isRoomIncluded){
 				//If floor filter applied, checking whether the room belongs to selected Floor.
-				if($scope.floorFilterData &&!$scope.floorFilterData.isNoFloorSelected){						
+				if($scope.floorFilterData &&!$scope.floorFilterData.isNoFloorSelected){
 					if(roomIdsInSelectedFloor.indexOf(room.room_id) !== -1){
 						$scope.filteredRooms.push(room);
 						};
@@ -625,7 +625,7 @@ sntRover.controller('RVroomAssignmentController',[
 				};
 			};
 
-		});	
+		});
 	};
 	/**
 	* function to prepare the array of room ids of selected floors.
@@ -633,12 +633,12 @@ sntRover.controller('RVroomAssignmentController',[
 	$scope.getRoomIdsInSelectedFloor = function(){
 		var roomsInSelectedFloor = [];
 		$scope.floors.forEach(function(element){
-					if(element.id === $scope.floorFilterData.selectedFloorId){								
+					if(element.id === $scope.floorFilterData.selectedFloorId){
 							roomsInSelectedFloor = element.room_ids;
 						}
-					});	
-		return roomsInSelectedFloor;		
-	}	
+					});
+		return roomsInSelectedFloor;
+	}
 	/**
 	* function to prepare the array of selected filters' ids
 	*/

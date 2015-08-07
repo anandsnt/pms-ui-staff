@@ -991,7 +991,7 @@ sntRover.factory('RVReportUtilsFac', [
             var _dateVal      = customDate ? tzIndependentDate(customDate) : $rootScope.businessDate,
                 _businessDate = $filter('date')(_dateVal, 'yyyy-MM-dd'),
                 _dateParts    = _businessDate.match(/(\d+)/g);
-            
+
             var _year  = parseInt( _dateParts[0] ),
                 _month = parseInt( _dateParts[1] ) - 1,
                 _date  = parseInt( _dateParts[2] );

@@ -707,7 +707,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             return getFormattedTime(hours+''+minutes);
         };
         var formatTime = function(timeInMs, via) {
-            var dt = new Date(timeInMs);          
+            var dt = new Date(timeInMs);
             var hours, minutes,seconds;
             if (via === 'created_at_time'){
                      hours = dt.getHours();
