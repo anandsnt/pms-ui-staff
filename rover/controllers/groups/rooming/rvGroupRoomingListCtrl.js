@@ -1715,12 +1715,21 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         };
 
         /**
+         * to set the active left side menu
+         * @return {undefined}
+         */
+        var setActiveLeftSideMenu = function () {
+            var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup": "menuManageGroup";         
+            $scope.$emit("updateRoverLeftMenu", activeMenu);
+        };
+
+        /**
          * Function to initialise room block details
          * @return - None
          */
         var initializeMe = function() {
             //updating the left side menu
-            $scope.$emit("updateRoverLeftMenu", "menuCreateGroup");
+            setActiveLeftSideMenu();
 
             //variables for state maintanace
             $scope.roomingListState = {

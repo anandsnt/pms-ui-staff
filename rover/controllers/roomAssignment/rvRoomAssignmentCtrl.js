@@ -246,6 +246,21 @@ sntRover.controller('RVroomAssignmentController',[
 	};
 
 	/**
+	 * to open the room aleady chhosed popup
+	 * @return undefined
+	 */
+	var openPopupForErrorMessageShowing = function(errorMessage) {
+		ngDialog.open(
+		{
+			template 	: '/assets/partials/roomAssignment/rvRoomAssignmentShowErrorMessage.html',
+			controller 	: 'rvRoomAlreadySelectedCtrl',
+			className 	: 'ngdialog-theme-default',
+			scope 		: $scope,
+			data  		: JSON.stringify(errorMessage)
+        });
+	};
+
+	/**
 	 * [successCallbackAssignRoom description]
 	 * @param  {[type]} data [description]
 	 * @return {[type]}      [description]
@@ -334,9 +349,15 @@ sntRover.controller('RVroomAssignmentController',[
 			}
 		}
 		else if(!$scope.isStandAlone) {
-			setTimeout(function(){
-				openRoomAlreadyChoosedPopup ();
-			}, 700);
+				if (!$rootScope.isStandAlone) {
+					openRoomAlreadyChoosedPopup ();
+				}
+				else {
+					var errorMessagePopup = {
+						errorMessage: error.toString()
+					};
+					openPopupForErrorMessageShowing(errorMessagePopup);
+				}				
 		}
 
 	};
