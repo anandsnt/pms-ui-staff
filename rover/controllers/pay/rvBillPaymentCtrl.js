@@ -405,7 +405,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.splitePaymentDetail["splitAmount"] = parseFloat($filter("number")((startingAmount/$scope.splitePaymentDetail["totalNoOfsplits"]),2));
 		$scope.splitePaymentDetail["carryAmount"] = parseFloat($filter("number")((startingAmount - ($scope.splitePaymentDetail["splitAmount"] *$scope.splitePaymentDetail["totalNoOfsplits"])),2));
 		//For first payment , carry amount is added with split amount.
-		$scope.renderData.defaultPaymentAmount = parseFloat($filter("number")(($scope.splitePaymentDetail["splitAmount"] + $scope.splitePaymentDetail["carryAmount"]),2));
+		$scope.renderData.defaultPaymentAmount = $filter("number")(($scope.splitePaymentDetail["splitAmount"] + $scope.splitePaymentDetail["carryAmount"]),2);
 	}
 	/*
 	* Updates SplitPaymentDetail. 
@@ -439,8 +439,10 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		+$scope.renderData.defaultPaymentAmount+" PAID SUCCESSFULLY !"+"<br/>";
 		//Clears older failure messages.
 		$scope.clearPaymentErrorMessage(); 
-		$scope.showSuccesMessage = (!$scope.splitBillEnabled)? true: false;
-		$scope.reservationBillData.isCheckout ? $scope.closeDialog():'';
+		//TO CONFIRM AND REMOVE COMMENT OR TO DELETE
+		// $scope.showSuccesMessage = (!$scope.splitBillEnabled)? true: false;
+		// $scope.fullAmount =  angular.copy($scope.renderData.defaultPaymentAmount);
+		($scope.reservationBillData.isCheckout || !$scope.splitBillEnabled) ? $scope.closeDialog():'';
 	};
 	/*
 	* updates DefaultPaymentAmount
