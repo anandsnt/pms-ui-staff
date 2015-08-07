@@ -235,10 +235,10 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         hours = parseInt(coreTime[0]+''+coreTime[1]);
                         mins = parseInt(coreTime[2]+''+coreTime[3]);
 
-                dateObj.setUTCHours(parseInt(hours));
+                dateObj.setHours(parseInt(hours));
                 //verify this is the correct hours to set using core_time
-                dateObj.setUTCMinutes(parseInt(mins));
-                dateObj.setUTCSeconds(0);
+                dateObj.setMinutes(parseInt(mins));
+                dateObj.setSeconds(0);
                 params['due_at'] = dateObj.valueOf();
                 params['time_due'] = dateObj.valueOf();
             }
@@ -339,10 +339,10 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 var splitChar = $scope.selectedAction.due_at_date[2];
                 var dateObj = new Date($scope.getBasicDateInMilli($scope.selectedAction.due_at_date, splitChar));
 
-                dateObj.setUTCHours(parseInt(hours));
+                dateObj.setHours(parseInt(hours));
                 //verify this is the correct hours to set using core_time
-                dateObj.setUTCMinutes(parseInt(mins));
-                dateObj.setUTCSeconds(0);
+                dateObj.setMinutes(parseInt(mins));
+                dateObj.setSeconds(0);
 
                 var saveDate = dateObj;
                 params['time_due'] = saveDate.valueOf();
@@ -622,9 +622,9 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             } else if (typeof d === typeof 12345){
                 fullDate = new Date(d);
             }
-            day = fullDate.getUTCDate();
-            month = fullDate.getUTCMonth()+1;
-            year = fullDate.getUTCFullYear();
+            day = fullDate.getDate();
+            month = fullDate.getMonth()+1;
+            year = fullDate.getFullYear();
 
             if (day < 10) {
              day = '0' + day;
@@ -714,9 +714,9 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                      minutes = dt.getMinutes();
                      seconds = dt.getSeconds();
              } else {
-                     hours = dt.getUTCHours();
-                     minutes = dt.getUTCMinutes();
-                     seconds = dt.getUTCSeconds();
+                     hours = dt.getHours();
+                     minutes = dt.getMinutes();
+                     seconds = dt.getSeconds();
              }
 
             if (hours < 10) {
