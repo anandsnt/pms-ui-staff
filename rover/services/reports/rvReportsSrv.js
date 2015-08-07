@@ -51,7 +51,7 @@ sntRover.service('RVreportsSrv', [
 
 			// we are passing down the deferred to the
 			// success callback, so that he can call deferred.resolve
-			// @TODO: debug if closure created due to passed deferred, cause memory leaks
+			// @todo: debug if closure created due to passed deferred, cause memory leaks
 			subSrv.fetchReportList()
 				.then( fetchAdditionalAPIs.bind(null, deferred), failed );
 
