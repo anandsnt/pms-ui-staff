@@ -985,6 +985,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         }
 
         var showDepositPopup = function(deposit, isOutOfCancellationPeriod, penalty) {
+            $scope.DailogeState = {};
+            $scope.DailogeState.successMessage = '';
+            $scope.DailogeState.failureMessage = '';
             ngDialog.open({
                 template: '/assets/partials/reservationCard/rvCancelReservationDeposits.html',
                 controller: 'RVCancelReservationDepositController',
