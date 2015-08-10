@@ -41,8 +41,8 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 	  		$_lastQuery = '';
 
 	  	// inital page related properties
-	  	$scope.resultFrom     = $_page,
-	  	$scope.resultUpto     = $_perPage,
+	  	$scope.resultFrom     = $_page;
+	  	$scope.resultUpto     = $_perPage;
 	  	$scope.netTotalCount  = 0;
 	  	$scope.uiTotalCount   = 0;
 	  	$scope.disablePrevBtn = true;

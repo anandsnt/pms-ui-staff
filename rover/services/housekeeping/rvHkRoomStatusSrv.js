@@ -180,7 +180,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 		// batch loading a lot of things
 		this.fetchPayload = function(passedParams) {
-			var deferred           = $q.defer();
+			var deferred           = $q.defer(),
 				passedParams       = passedParams,
 				paramWorkTypeId    = false,
 				paramEmployeeId    = false,
