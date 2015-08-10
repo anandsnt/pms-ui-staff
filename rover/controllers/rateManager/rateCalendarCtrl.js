@@ -480,7 +480,7 @@ sntRover.controller('RateCalendarCtrl', [
         $scope.openCloseAllRestrictions = function(action) {
 
             var restrictionUpdateSuccess = function() {
-                //$scope.$emit('hideLoader');
+                
                 loadTable();
             };
 

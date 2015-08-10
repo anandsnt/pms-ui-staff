@@ -224,7 +224,6 @@ var ShowMakePaymentModal = function(backDom) {
 				expiryYear = that.myDom.find("#expiry-year").val(),
 				cardExpiry = expiryMonth+"/"+expiryYear,
 		    	cardHolderName = that.myDom.find("#name-on-card").val(),
-		    	//cardType = that.myDom.find("#card-type").val();
 		    	cardType = data.data.card_type;
 			var endingWith = $('#card-number').val().slice(-4);
 

@@ -189,7 +189,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.initReservationData();
                 $scope.initReservationDetails();
             } else {
-                //$scope.reservationData.isSameCard = false;
+                
                 //TODO: 1. User gets diverted to the Search screen (correct)
                 //but Guest Name and Company / TA cards are not copied into the respective search fields.
                 //They are added to the reservation by default later on,

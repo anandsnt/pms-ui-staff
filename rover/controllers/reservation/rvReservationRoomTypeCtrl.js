@@ -425,7 +425,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					return false;
 				} else {
 					// TODO : Handle multiple rates selected
-					// RVReservationDataService.isVaryingRates = function(stayDates, arrivalDate, departureDate, numNights)
+					
 					if (RVReservationDataService.isVaryingRates($scope.reservationData.rooms[$scope.activeRoom].stayDates, $scope.reservationData.arrivalDate, $scope.reservationData.departureDate, $scope.reservationData.numNights)) {
 						$scope.reservationData.rooms[$scope.activeRoom].rateName = "Multiple Rates Selected";
 					} else {

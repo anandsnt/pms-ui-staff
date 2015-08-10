@@ -42,7 +42,7 @@ var Timeline = React.createClass({
 			current_time_plot_point = this.__get_property_time_line_showing_point();
 
 		(function() {
-			var time = 0; //start_time.hours;
+			var time = 0;
 
 			for(var i = 0, len = display.hours; i < len; i++) {
 				segment_hour_display.push(time++ + ':00');

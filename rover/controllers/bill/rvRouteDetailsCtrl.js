@@ -352,7 +352,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.bills = [];
                 $scope.$parent.bills = [];
                 //TODO: commented to fix the issue
-               	//if(data.length > 0){
+               	
                     $scope.first_bill_id = typeof data[0] !== "undefined"? data[0].id: "";
                     var firstBillId = typeof data[0] !== "undefined"? data[0].id: "";
                     $scope.newBillNumber = data.length + 1;
@@ -523,7 +523,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	      }
 	      $scope.refreshScroller('chargeCodesList');
 	      // we have changed data, so we are refreshing the scrollerbar
-	      //$scope.refreshScroller('cards_search_scroller');
+	      
 	    }
 	    else{
 	      var value = "";
@@ -803,7 +803,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 					},function(error){
 						$scope.errorMessage = error;
 						$scope.$emit('UPDATE_SHOULD_SHOW_WAITING', false);
-						// $scope.shouldShowWaiting = false;
+						
 					});
 
 				}

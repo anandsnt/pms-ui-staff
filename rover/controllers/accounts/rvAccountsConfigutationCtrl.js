@@ -143,15 +143,15 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 
 			//Save summary data on tab switch (UI)
 			if (isInAccountsTab && !$scope.isInAddMode()) {
-				// $scope.$broadcast("UPDATE_ACCOUNT_SUMMARY");
+				
 			}
 
 			//Reload the summary tab contents before switching to it
 			if(tab === "ACCOUNT"){
-				//refreshSummaryTab();
+				
 			} else if(tab === "TRANSACTIONS"){ //Preload the transaction data when we switch to transactions tab
-				//preLoadTransactionsData();
-				//return false;
+				
+				
 			} else{
 				// Switching from SUMMARY tab -
 				// Check for any updation => lets save it.

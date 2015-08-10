@@ -1,7 +1,6 @@
 (function() {
 	var ccVerificationViewController = function($scope,$rootScope,$state,$stateParams,$modal,ccVerificationService) {
 
-
   $scope.pageValid = false;
   $scope.cardNumber = "";
   $scope.ccv = "";
@@ -128,7 +127,6 @@
 
     $scope.goToNextStep = function(){
 
-        //$scope.isFetching = true;
         var cardExpiryDate = $scope.yearSelected+"-"+$scope.monthSelected+"-"+"01";
         var data = {'reservation_id':$rootScope.reservationID,'token':MLISessionId,'card_expiry':cardExpiryDate,'payment_type':"CC"};
         ccVerificationService.verifyCC(data).then(function(response) {
@@ -162,7 +160,6 @@
        var sessionDetails = {};
 
        $scope.callback = function(response){
-         // $scope.isFetching = false;
           $scope.$apply();
           if(response.status ==="ok"){
               MLISessionId = response.session;

@@ -64,7 +64,7 @@ sntRover.controller('RVActivityLogCtrl',[
             numberOfMonths: 1,
             changeYear: true,
             changeMonth: true,
-            //maxDate: tzIndependentDate($rootScope.businessDate),
+            
             yearRange: "-50:+50",
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div');
@@ -77,13 +77,13 @@ sntRover.controller('RVActivityLogCtrl',[
         };
 
         $scope.fromDateOptions = angular.extend({
-           // maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+           
             onSelect: function(value) {
                 $scope.untilDateOptions.minDate = value;
             }
         }, datePickerCommon);
         $scope.untilDateOptions = angular.extend({
-           // maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+           
             onSelect: function(value) {
                 $scope.fromDateOptions.maxDate = value;
             }
@@ -274,7 +274,7 @@ sntRover.controller('RVActivityLogCtrl',[
                 uiValue.pop();
                 uiValue.push(ui.item.label);
                 uiValue.push("");
-                //this.value = uiValue.join(", ");
+                
                 this.value = ui.item.label;
                 return false;
             },

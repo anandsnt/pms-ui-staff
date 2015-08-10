@@ -12,7 +12,6 @@ var DesktopCardOperations = function(){
 	};
 
 	var createConnection = function(){
-		//ws = new WebSocket("wss://localhost:" + that.portNumber);
 		try{
 			ws = new WebSocket("wss://localhost:" + that.portNumber +"/CCSwipeService");
 		}

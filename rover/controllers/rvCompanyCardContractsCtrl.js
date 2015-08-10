@@ -470,7 +470,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		 */
 		$scope.$on('saveContract', function(event) {
 			event.preventDefault();
-			//event.stopPropagation();
+			
 			$scope.updateContract();
 		});
 		/**

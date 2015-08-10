@@ -19,7 +19,7 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 		}
 	};
 
-	// return false;
+	
 	var reservationId = "";
 	if($scope.dataToPaymentList.currentView === "billCard"){
 		reservationId = $scope.dataToPaymentList.reservation_id;

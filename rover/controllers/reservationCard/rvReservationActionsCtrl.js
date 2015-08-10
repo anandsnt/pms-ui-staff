@@ -443,9 +443,9 @@ sntRover.controller('reservationActionsController', [
 
 					// Sample Response from api/reservations/:id/policies inside the results hash
 					// calculated_penalty_amount: 40
-					// cancellation_policy_id: 36
-					// penalty_type: "percent"
-					// penalty_value: 20
+					
+					
+					
 
 					depositAmount = data.results.deposit_amount;
 					var isOutOfCancellationPeriod = (data.results.cancellation_policy_id === undefined);

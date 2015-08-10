@@ -273,7 +273,7 @@ sntRover
 		minDate.setDate(minDate.getDate() - 1);
 		$scope.dateOptions = {
 	    	showOn: 'button',
-	    	//dateFormat: $rootScope.dateFormat,
+	    	
 	    	numberOfMonths: 1,
 	    	onSelect: onDateSelectionFromDatepicker
 	    };
@@ -356,7 +356,7 @@ sntRover
 				x_n:                       isVaultDataSet ? (vaultData.__start_date) : (correctTimeDate.__start_date),
 				x_n_time:                  isVaultDataSet ? (vaultData.__start_date.toComponents().time.convertToReferenceInterval(15)) : (correctTimeDate.__start_date.toComponents().time.convertToReferenceInterval(15)),
 				x_p: 	                   payload.display.x_p.getTime(),
-				x_p_time:                  (!payload.display.x_p_time ? payload.display.x_p.toComponents().time.convertToReferenceInterval(15) : payload.display.x_p_time), //toComponents().time.convertToReferenceInterval(15),
+				x_p_time:                  (!payload.display.x_p_time ? payload.display.x_p.toComponents().time.convertToReferenceInterval(15) : payload.display.x_p_time), 
 				width: 						undefined,
 				height: 					undefined,
 				hours: 						48,
@@ -683,8 +683,8 @@ sntRover
 
 	    $scope.editSave = function() {
 	    	var props 			= $scope.gridProps,
-	    		row_data 		= props.currentResizeItemRow, //util.copyRoom(props.currentResizeItemRow),
-	    		row_item_data 	= props.currentResizeItem, //util.copyReservation(props.currentResizeItem),
+	    		row_data 		= props.currentResizeItemRow, 
+	    		row_item_data 	= props.currentResizeItem, 
 	    		px_per_ms 		= props.display.px_per_ms,
 	    		x_origin 		= props.display.x_n,
 	    		originalRow     = props.edit.originalRowItem,
@@ -1201,9 +1201,9 @@ sntRover
 			$scope.initPassiveEditMode({
                 start_date:     new Date(row_item_data[meta.occupancy.start_date]),
                 end_date:       new Date(row_item_data[meta.occupancy.end_date]),
-                //stay_dates:     start_date.toComponents().date.toDateString(),
+                
                 row_item_data:  row_item_data,
-                row_data:       _.findWhere(rvDiarySrv.data_Store.get('room'), { id: row_item_data.room_id }) //rvDiarySrv.data_Store.get('/room.values.id')[row_item_data.room_id],
+                row_data:       _.findWhere(rvDiarySrv.data_Store.get('room'), { id: row_item_data.room_id }) 
             });
 		}
 		else {

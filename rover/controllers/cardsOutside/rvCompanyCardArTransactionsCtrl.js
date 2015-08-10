@@ -246,7 +246,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		};
 		$scope.isNextButtonDisabled = function(){
 			var isDisabled = false;
-			//if($scope.end >= RVSearchSrv.totalSearchResults || $scope.disableNextButton){
+			
 			if(typeof $scope.arTransactionDetails === "undefined") {
 				return true;
 			}

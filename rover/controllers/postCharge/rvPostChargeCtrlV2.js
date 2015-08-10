@@ -331,10 +331,10 @@ sntRover.controller('RVPostChargeControllerV2',
 							// as soon as it choosen
 							if( $scope.selectedChargeItem.modifiedPrice === $scope.selectedChargeItem.unit_price ) {
 								//CICO-17276 - add provision to add amount < $1
-								// if ( input !== 0 ) {
+								
 									$scope.selectedChargeItem.userEnteredPrice += input;
 									$scope.selectedChargeItem.modifiedPrice = parseFloat( $scope.selectedChargeItem.userEnteredPrice );
-								// };
+								
 							} else {
 								$scope.selectedChargeItem.userEnteredPrice += input;
 

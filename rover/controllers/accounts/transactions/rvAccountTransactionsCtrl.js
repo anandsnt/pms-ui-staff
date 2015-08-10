@@ -171,17 +171,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		//Calculate the scroll width for bill tabs in all the cases
 		$scope.getWidthForBillTabsScroll = function() {
-			/*var width = 0;
-			if($scope.routingArrayCount > 0)
-				width = width + 200;
-			if($scope.incomingRoutingArrayCount > 0)
-				width = width + 275;
-			if($scope.clickedButton === 'checkinButton')
-				width = width + 230;
-			if($scope.reservationBillData.bills.length < 10)
-				width = width + 50;
-			width =  133 * $scope.reservationBillData.bills.length + 10 + width;
-			return width;*/
+			
 			var width = 0;
 			if($scope.transactionsDetails !== undefined){
 				var width = $('#registration-summary ul li').width() * ($scope.transactionsDetails.bills.length + 1);
@@ -388,7 +378,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			$scope.errorMessage = "";
 			//hide edit and remove options in case type is  payment
-			// $scope.hideRemoveAndEdit  = (type === "PAYMENT") ? true : false;
+			
 			$scope.selectedTransaction = {};
 			$scope.selectedTransaction.id = id;
 			$scope.selectedTransaction.desc = desc;

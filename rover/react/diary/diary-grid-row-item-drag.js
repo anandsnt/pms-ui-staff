@@ -212,9 +212,8 @@ var GridRowItemDrag = React.createClass({
 				scroller.maxScrollY <= yScPos && yScPos <= 0) {
 
 				scroller.scrollTo(xScPos, yScPos, 0);
-				//setTimeout(function(){
-					scroller._scrollFn();
-				//}, 50)
+				scroller._scrollFn();
+				
 			}
 	 		if(colNumber < 0) {
 	 			colNumber = 0;
@@ -292,10 +291,6 @@ var GridRowItemDrag = React.createClass({
 		document.removeEventListener (this.mouseMovingEvent, this.__dbMouseMove);
 		var page_offset = this.getDOMNode().getBoundingClientRect();
 
-		/*if(!props.edit.active && !props.edit.passive){
-			return;
-		}*/
-
 		if(state.dragging && props.edit.active && (props.data.key !== props.currentDragItem.key)){
 			return;
 		}
@@ -343,7 +338,6 @@ var GridRowItemDrag = React.createClass({
 				mouse_down: false,
 				selected: !state.selected
 			}, function() {
-				//var data = (props.edit.passive && props.data[props.meta.id] === props.data[props.meta.id]? props.currentDragItem : props.data);
 				var data = (_.has(state, 'selected') ? props.data : props.currentDragItem);
 				props.iscroll.grid.enable();
 				props.iscroll.timeline.enable();

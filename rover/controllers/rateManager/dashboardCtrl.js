@@ -50,10 +50,7 @@ sntRover
             /* UI options like column width are computed here
                A property, and a function to compute the same are given below
             */
-            /*var DEFAULT_COLUMN_WIDTH = 200,
-                DEFAULT_TABLE_WIDTH = 4000,
-                DEFAULT_TABLE_WIDTH = 400;
-            */
+            
 
             /*Considering base model class for later refactoring to avoid
               firing observer code before model has resolved...
@@ -90,7 +87,7 @@ sntRover
             $scope.$emit("updateRoverLeftMenu", "rateManager");
 
             $scope.displayMode = "CALENDAR";
-            //$scope.filterConfigured = false;
+            
             var defaultDateRange = 7;
 
             $scope.backbuttonEnabled = false;
