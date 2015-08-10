@@ -472,7 +472,7 @@ sntRover.controller('reservationActionsController', [
 							promptCancel('', nights, (data.results.penalty_type === 'percent'));
 						}
 					}
-					//promptCancel(cancellationCharge, nights);
+					
 
 				};
 
@@ -518,8 +518,7 @@ sntRover.controller('reservationActionsController', [
 			return showSmartBand;
 		};
 
-		//({reservationId:, clickedButton: 'checkoutButton'})
-		//	goToCheckoutButton(reservationData.reservation_card.reservation_id, 'checkoutButton');
+		
 		$scope.goToCheckoutButton = function(reservationId, clickedButton, smartbandHasBalance) {
 			if (smartbandHasBalance === "true") {
 				$scope.clickedButton = clickedButton;

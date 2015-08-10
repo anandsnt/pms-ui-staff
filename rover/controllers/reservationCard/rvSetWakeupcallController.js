@@ -34,7 +34,7 @@ sntRover.controller('rvSetWakeupcallController',['$scope','$filter','RVSaveWakeu
 		params.reservation_id = $scope.reservationData.reservation_card.reservation_id;
 
 		var successCallbackSetWakeupcall = function(){
-			// $scope.$parent.wake_up_time = $scope.getTimeString();
+			
 			$scope.wakeupData.wake_up_time = $scope.getTimeString();
 			$scope.wakeupData.day = ($scope.todaySelected)? "TODAY":"TOMORROW";
 			$scope.$emit("updateWakeUpTime",$scope.wakeupData);
