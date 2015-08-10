@@ -308,7 +308,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             var available_snt_values,
                     available_mapping_types;
 
-            available_mapping_types = $scope.editData.mapping_types,
+            available_mapping_types = $scope.editData.mapping_types;
             available_snt_values = $scope.mappingInterface.mappingTypeRefs[mapping_type];
             var valid_mapping_type = false, valid_snt_value = false, valid_external_value = false;
             if (external_value !== '' && external_value !== " " && typeof external_value === typeof 'string'){

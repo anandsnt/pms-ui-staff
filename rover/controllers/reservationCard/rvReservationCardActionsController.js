@@ -374,7 +374,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.getDateObj = function(dateStr, delim){
             var year, month, day;
             var spl = dateStr.split(delim);
-            day = spl[1], month = spl[0], year = spl[2];
+            day = spl[1]; month = spl[0]; year = spl[2];
 
             return {day:day,month:month,year:year};
         };
@@ -639,9 +639,9 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 var dateStr = d.split('T');
                 var month, day, year;
                 var formatDate = dateStr[0].split('-');
-                year = formatDate[0],
-                        month = formatDate[1],
-                        day = formatDate[2];
+                year = formatDate[0];
+                month = formatDate[1];
+                day = formatDate[2];
 
                 return month+'-'+day+'-'+year;
             }

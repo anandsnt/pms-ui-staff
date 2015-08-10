@@ -1279,7 +1279,7 @@ sntRover
 		reservation_id = this.currentResizeItem.reservation_id,
 
 		arrivalTime = new Date(this.currentResizeItem.arrival).toComponents().time;
-		arrivalTime = arrivalTime.hours + ":" + arrivalTime.minutes + ":" + arrivalTime.seconds,
+		arrivalTime = arrivalTime.hours + ":" + arrivalTime.minutes + ":" + arrivalTime.seconds;
 
 		depTime 	= new Date(this.currentResizeItem.departure).toComponents().time;
 		depTime 	= depTime.hours + ":" + depTime.minutes + ":" + depTime.seconds;
@@ -1748,7 +1748,7 @@ sntRover
     		depTime 	= roomDetails.departureTime.split(":");
 
 
-    		arrTime 	= getTimeFormated(arrTime[0], arrTime[1]),
+    		arrTime 	= getTimeFormated(arrTime[0], arrTime[1]);
     		depTime 	= getTimeFormated(depTime[0], depTime[1]);
 
         //  CICO-13760
