@@ -436,7 +436,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	*/
 	var updateSuccessMessage = function(){
 		$scope.messageOfSuccessSplitPayment = $scope.messageOfSuccessSplitPayment +"SPLIT # "+$scope.splitePaymentDetail["completedSplitPayments"]+" OF "
-		+$scope.renderData.defaultPaymentAmount+" PAID SUCCESSFULLY !"+"<br/>";
+		+ $filter("number")($scope.renderData.defaultPaymentAmount,2)+" PAID SUCCESSFULLY !"+"<br/>";
 		//Clears older failure messages.
 		$scope.clearPaymentErrorMessage(); 
 		//TO CONFIRM AND REMOVE COMMENT OR TO DELETE
@@ -448,8 +448,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* updates DefaultPaymentAmount
 	*/
 	var updateDefaultPaymentAmount = function(){
-	$scope.renderData.defaultPaymentAmount = $scope.splitePaymentDetail["splitAmount"];
-	};
+	$scope.renderData.defaultPaymentAmount = $filter("number")($scope.splitePaymentDetail["splitAmount"],2);
+	}
 	/*
 	* Success call back of success payment
 	*/

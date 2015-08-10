@@ -215,7 +215,6 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
     }
 
     var initializeAutoCompletion = function(){
-        console.log('init auto complete');
         //forming auto complte source object
         var activeUserAutoCompleteObj = [];
         _.each($scope.activeUserList, function(user) {
@@ -227,8 +226,6 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
 
         var userAutoCompleteCommon = {
             source: function(request, response) {
-                console.log('response from autocomplete');
-                console.log(arguments);
                 // delegate back to autocomplete, but extract the last term
                 response($.ui.autocomplete.filter(activeUserAutoCompleteObj, extractLast(request.term)));
             },
