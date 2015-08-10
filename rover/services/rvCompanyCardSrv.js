@@ -60,7 +60,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 
 		this.fetchContractsList = function(data) {
 			var deferred = $q.defer();
-			//var url =  '/sample_json/contracts/rvCompanyCardContractsList.json';
+			
 			var url = '/api/accounts/' + data.account_id + '/contracts';
 			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
@@ -72,19 +72,11 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 
 		this.fetchContractsDetails = function(data) {
 			var deferred = $q.defer();
-			//var url =  '/sample_json/contracts/rvCompanyCardContractsDetails.json';
+			
 			var url = '/api/accounts/' + data.account_id + '/contracts/' + data.contract_id;
 			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 
-				/*if (data.selected_type === 'percent') {
-					data.selected_type = '%';
-					data.rate_value = data.rate_value !== '' ? parseFloat(data.rate_value).toFixed(2) : '';
-				} else if (data.selected_type === 'amount') {
-					data.selected_type = '$';
-					data.rate_value = data.rate_value !== '' ? parseInt(data.rate_value) : '';
-				} else {
-					data.selected_type = '';
-				}*/
+				
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
@@ -96,13 +88,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 		 * service function used to update the contracts
 		 */
 		this.updateContract = function(data) {
-			/*if (data.postData.selected_type === '$') {
-				data.postData.selected_type = 'amount';
-			} else if (data.postData.selected_type === '%') {
-				data.postData.selected_type = 'percent';
-			} else {
-				data.postData.selected_type = '';
-			}*/
+			
 			var deferred = $q.defer();
 			var url = '/api/accounts/' + data.account_id + '/contracts/' + data.contract_id;
 			rvBaseWebSrvV2.putJSON(url, data.postData).then(function(data) {
@@ -118,13 +104,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 		 */
 		this.addNewContract = function(data) {
 
-			/*if (data.postData.selected_type === '$') {
-				data.postData.selected_type = 'amount';
-			} else if (data.postData.selected_type === '%') {
-				data.postData.selected_type = 'percent';
-			} else {
-				data.postData.selected_type = '';
-			}*/
+			
 			var deferred = $q.defer();
 			var url = '/api/accounts/' + data.account_id + '/contracts';
 			rvBaseWebSrvV2.postJSON(url, data.postData).then(function(data) {
@@ -281,7 +261,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 
 		this.fetchArAccountsList = function(params){
 			var deferred = $q.defer();
-			//var url = '/sample_json/cards/arAccountList.json';
+			
 			var url = "/api/accounts/"+params.id+"/ar_transactions?paid="+params.paid+"&from_date="+params.from_date+"&to_date="+params.to_date+"&query="+params.query+"&page="+params.page_no+"&per_page="+params.per_page;
 			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);

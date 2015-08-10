@@ -37,7 +37,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 		 */
 		this.getHoldStatusList = function() {
 			var deferred = $q.defer(),
-				//url = '/ui/show?format=json&json_input=groups/hold_status_list.json';
+				
 				url = '/api/group_hold_statuses';
 
 			rvBaseWebSrvV2.getJSON(url).then(
@@ -60,7 +60,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 		this.saveRoomBlockBookings = function(params) {
 			var deferred = $q.defer(),
 				url = '/api/groups/save_inventories';
-			//url = '/ui/show?format=json&json_input=groups/group_room_types_and_rates.json';
+			
 
 			rvBaseWebSrvV2.postJSON(url, params).then(
 				function(data) {
@@ -82,7 +82,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 		this.getRoomBlockGridDetails = function(param) {
 			var deferred = $q.defer(),
 				url = '/api/groups/' + param.group_id + '/inventories';
-			//url = '/ui/show?format=json&json_input=groups/griddata.json';
+			
 			rvBaseWebSrvV2.getJSON(url).then(
 				function(data) {
 					deferred.resolve(data);
@@ -123,7 +123,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 			var deferred = $q.defer(),
 				group_id = params.id,
 				url = '/api/groups/' + group_id + "/room_type_and_rates";
-			//url = '/ui/show?format=json&json_input=groups/group_room_types_and_rates.json';
+			
 
 			rvBaseWebSrvV2.getJSON(url, params).then(
 				function(data) {
@@ -144,7 +144,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 		this.updateSelectedRoomTypesAndRates = function(params) {
 			var deferred = $q.defer(),
 				url = '/api/groups/update_room_type_and_rates';
-			//url = '/ui/show?format=json&json_input=groups/group_room_types_and_rates.json';
+			
 
 			rvBaseWebSrvV2.postJSON(url, params).then(
 				function(data) {
