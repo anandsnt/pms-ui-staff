@@ -157,7 +157,7 @@ $scope.saveCheckin = function(){
     'zest_app_checkin_alert_time':zestCheckinAlertTime,
     'require_cc_for_checkin_email' : $scope.checkinData.require_cc_for_checkin_email,
     'is_precheckin_only':$scope.checkinData.is_precheckin_only? 'true':'false',
-    //'is_sent_to_queue':$scope.checkinData.is_sent_to_queue ==='yes'? 'true':'false',
+    
     'checkin_action':$scope.checkinData.checkin_action,
     'excluded_rate_codes':excluded_rate_codes,
     'excluded_block_codes':excluded_block_codes,

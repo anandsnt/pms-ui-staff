@@ -143,7 +143,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 
         $scope.$watch('editData.mapping_type_value',function(to, fm, evt){
             if (to){
-               // $scope.editData.snt_value = '';//reset the value until a new one is selected
+               
                 $scope.editData.sntValues = $scope.mappingInterface.mappingTypeRefs[to];
             }
                $scope.hasValidSelection();

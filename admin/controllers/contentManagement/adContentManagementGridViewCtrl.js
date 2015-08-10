@@ -165,8 +165,8 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    				$scope.items.push($scope.filteredData[i]);
    			}
    		}
-   		// $scope.setCategories();
-   		// $scope.setItems();
+   		
+   		
    		$scope.itemParams.reload();
    		$scope.categoryParams.reload();
    };

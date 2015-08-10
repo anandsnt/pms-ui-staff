@@ -489,31 +489,16 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         };
 
         $scope.checkFieldEntered = function(index) {
-            /*var enableSetUpdateButton = false;
-            // if($scope.rateData.id === ""){
-            angular.forEach($scope.data.sets[index].room_rates, function(value, key) {
-                if (value.hasOwnProperty("single")) {//} && value.single !== "") {
-                    enableSetUpdateButton = true;
-                }
-                if (value.hasOwnProperty("double")) { //} && value.double !== "") {
-                    enableSetUpdateButton = true;
-                }
-                if (value.hasOwnProperty("extra_adult")) { //} && value.extra_adult !== "") {
-                    enableSetUpdateButton = true;
-                }
-                if (value.hasOwnProperty("child")) { //} && value.child !== "") {
-                    enableSetUpdateButton = true;
-                }
-            });*/
-            // }
+            
+            
 
-            if ($scope.otherData.setChanged) { //enableSetUpdateButton && $scope.otherData.setChanged) {
+            if ($scope.otherData.setChanged) { 
                 $scope.data.sets[index].isEnabled = true;
             } else {
                 $scope.data.sets[index].isEnabled = false;
             }
 
-            return $scope.data.sets[index].isEnabled; //enableSetUpdateButton;
+            return $scope.data.sets[index].isEnabled; 
         };
 
         $scope.popupCalendar = function() {
