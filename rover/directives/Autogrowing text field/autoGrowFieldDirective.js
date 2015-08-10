@@ -79,5 +79,5 @@ sntRover.directive("autoGrowField", function($window) {
         element.removeClass('active');
       });
     }
-  }
+  };
 });

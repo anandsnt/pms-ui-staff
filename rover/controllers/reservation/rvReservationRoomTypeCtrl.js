@@ -1335,28 +1335,28 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				_.each($scope.reservationData.rooms[$scope.activeRoom].stayDates, function(stayDate) {
 					stayDate.rate = {
 						id: ""
-					}
+					};
 				});
 			}
 			init();
-		}
+		};
 
 		$scope.toggleClosedRates = function() {
 			$scope.$emit('showLoader');
 			$scope.stateCheck.showClosedRates = !$scope.stateCheck.showClosedRates;
 			init();
-		}
+		};
 
 
 		$scope.getLeastAvailability = function(roomId, rateId) {
-			var leastAvailability = $scope.roomAvailability[roomId].ratedetails[$scope.reservationData.arrivalDate][rateId].availabilityCount
+			var leastAvailability = $scope.roomAvailability[roomId].ratedetails[$scope.reservationData.arrivalDate][rateId].availabilityCount;
 			angular.forEach($scope.roomAvailability[roomId].ratedetails, function(rateDetail, date) {
 				if ((date === $scope.reservationData.arrivalDate || date !== $scope.reservationData.departureDate) && rateDetail[rateId].availabilityCount < leastAvailability) {
 					leastAvailability = rateDetail[rateId].availabilityCount;
 				}
 			});
 			return leastAvailability;
-		}
+		};
 
 		$scope.getAllRestrictions = function(roomId, rateId) {
 			var restrictions = [];
@@ -1371,7 +1371,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			});
 			return restrictions;
 
-		}
+		};
 
 		// since we are going back to create reservation screen
 		// mark 'isSameCard' as true on '$scope.reservationData'
@@ -1391,7 +1391,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					$scope.reservationData.guestMemberships = {
 						ffp: data.frequentFlyerProgram,
 						hlp: data.hotelLoyaltyProgram
-					}
+					};
 					if ($scope.reservationData.member.isSelected && isMembershipValid()) {
 						init();
 					} else if ($scope.reservationData.member.isSelected) {
@@ -1419,7 +1419,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				$scope.stateCheck.activeMode = $scope.stateCheck.activeMode === "ROOM_RATE" ? "CALENDAR" : "ROOM_RATE";
 				$("#rooms-and-rates-header .data-off span").toggleClass("value switch-icon");
 			});
-		}
+		};
 
 		var setBackButton = function() {
 			// smart switch btw edit reservation flow and create reservation flow
@@ -1427,7 +1427,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				$rootScope.setPrevState = {
 					title: 'Stay Dates',
 					name: 'rover.reservation.staycard.changestaydates'
-				}
+				};
 			} else if ($scope.reservationData && $scope.reservationData.confirmNum && $scope.reservationData.reservationId) {
 				$rootScope.setPrevState = {
 					title: $filter('translate')('STAY_CARD'),
@@ -1437,15 +1437,15 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 						id: $scope.reservationData.reservationId,
 						isrefresh: true
 					}
-				}
+				};
 			} else {
 				$rootScope.setPrevState = {
 					title: $filter('translate')('CREATE_RESERVATION'),
 					callback: 'setSameCardNgo',
 					scope: $scope
-				}
+				};
 			}
-		}
+		};
 
 		var initScrollers = function() {
 			$scope.setScroller('room_types', {
@@ -1455,7 +1455,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				scrollX: true,
 				scrollY: false
 			});
-		}
+		};
 
 		var initializeRoomAndRates = function() {
 			BaseCtrl.call(this, $scope);
@@ -1468,7 +1468,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			init(true);
 			initEventListeners();
 			initScrollers();
-		}
+		};
 
 		$scope.navigateOut = function() {
 			if ($scope.viewState.identifier !== "REINSTATE" &&
@@ -1477,13 +1477,13 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			} else {
 				$scope.enhanceStay();
 			}
-		}
+		};
 
 		$scope.onResetAddonsAcknowledged = function() {
 			$scope.reservationData.rooms[0].addons = RVReservationStateService.fetchAssociatedAddons($scope.reservationData.rooms[0].rateId);
 			$scope.navigateOut();
 			$scope.closeDialog();
-		}
+		};
 
 		var transferState = function() {
 			// TODO: Check if there has been a rateChange
@@ -1508,7 +1508,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				$scope.reservationData.rooms[0].addons = RVReservationStateService.fetchAssociatedAddons($scope.reservationData.rooms[0].rateId);
 			}
 			$scope.navigateOut();
-		}
+		};
 
 		initializeRoomAndRates();
 	}

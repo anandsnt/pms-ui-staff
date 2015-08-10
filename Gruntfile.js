@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 module.exports = function(grunt) {
     var paths = {
@@ -184,5 +184,5 @@ module.exports = function(grunt) {
 
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
-    grunt.registerTask('server', ['clean', 'ngtemplates', 'shell', 'watch'])
+    grunt.registerTask('server', ['clean', 'ngtemplates', 'shell', 'watch']);
 };

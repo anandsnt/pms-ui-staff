@@ -14,5 +14,5 @@ admin.directive('outsideClickHandler', function($window) {
 
       });
     }
-  }
+  };
 });
