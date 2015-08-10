@@ -694,8 +694,9 @@ sntRover.controller('RVroomAssignmentController',[
 	*/
 	$scope.setRoomsListWithPredefinedFilters = function(){
 		for(var i = 0; i < $scope.rooms.length; i++){
-			if($scope.rooms[i].room_status === "NOTREADY" && $scope.rooms[i].fo_status === "VACANT" && $scope.rooms[i].room_ready_status !== "CLEAN" && $scope.rooms[i].room_ready_status !== "INSPECTED")
+			if($scope.rooms[i].room_status === "NOTREADY" && $scope.rooms[i].fo_status === "VACANT" && $scope.rooms[i].room_ready_status !== "CLEAN" && $scope.rooms[i].room_ready_status !== "INSPECTED") {
 				$scope.rooms[i].room_features.push(-100);
+			}
 			if($scope.rooms[i].fo_status === "DUEOUT")
 			{
 				$scope.rooms[i].room_features.push(-101);
