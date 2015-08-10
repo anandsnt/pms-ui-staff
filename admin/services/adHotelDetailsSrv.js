@@ -9,7 +9,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', 'ADBaseWebSrvV
 		var url = '/admin/hotels/new.json';
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
-		    // deferred.resolve(data);
+		    
 		    hotelDetailsData.data = data;
 		    that.fetchLanguages(deferred);
 		},function(data){
@@ -42,7 +42,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', 'ADBaseWebSrvV
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			hotelDetailsData.data = data;
 			that.fetchLanguages(deferred);
-		    // deferred.resolve(data);
+		    
 		},function(data){
 		    deferred.reject(data);
 		});
