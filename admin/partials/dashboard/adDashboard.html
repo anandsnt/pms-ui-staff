@@ -1,6 +1,6 @@
  <!-- Listing & details holders -->
 
-   <section id="dashboard-hotel" class="content"  data-drop="true"  jqyoui-droppable="{multiple:false, onDrop: 'onDropingMenuItemListing'}"  ng-model='dropedElementsModel'  style="overflow: visible !important;" data-jqyoui-options="{accept: '.in-quick-menu'}"> <!-- inline overflow style is for drag & drop hiding pblm -->
+   <section id="dashboard-hotel" class="content admin-scrollfix"  data-drop="true"  jqyoui-droppable="{multiple:false, onDrop: 'onDropingMenuItemListing'}"  ng-model='dropedElementsModel' data-jqyoui-options="{accept: '.in-quick-menu'}" div-touch-move-stop-propogate>
 
       <div ng-include="'/assets/partials/common/notification_message.html'" class="error-notification-dashboard"></div>
       <header class="content-title float header-pos">
