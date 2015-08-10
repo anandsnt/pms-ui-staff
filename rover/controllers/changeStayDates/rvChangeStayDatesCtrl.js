@@ -143,7 +143,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 					thisTime = tzIndependentDate(calendarDetails.available_dates[i].date) //.setHours(00, 00, 00);;
 					if (thisTime < checkinTime || thisTime > checkoutTime) {
 						$scope.stayDetails.calendarDetails.available_dates.splice(i, 1);
-					}
+					};
 				}
 				return true;
 			}

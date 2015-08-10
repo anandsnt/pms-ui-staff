@@ -360,7 +360,7 @@ sntRover.controller('RVroomAssignmentController',[
 						errorMessage: error.toString()
 					};
 					openPopupForErrorMessageShowing(errorMessagePopup);
-				}				
+				}
 		}
 
 	};

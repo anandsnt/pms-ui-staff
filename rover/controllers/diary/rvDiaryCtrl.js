@@ -1941,7 +1941,7 @@ sntRover
 			}
 
 		}
-	}
+	};
 
 	var correctRoomType = function() {
 		if ( !$scope.gridProps.filter.room_type ) {
@@ -2138,7 +2138,7 @@ sntRover
 			$scope.gridProps.display = util.deepCopy($scope.gridProps.display);
 			$scope.renderGrid();
 			currentTimeLineChanger();
-    	}, ($scope.gridProps.display.ms_hr / ($scope.gridProps.display.intervals_per_hour)))
+    	}, ($scope.gridProps.display.ms_hr / ($scope.gridProps.display.intervals_per_hour)));
 
 
 	};

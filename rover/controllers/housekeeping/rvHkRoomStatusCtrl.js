@@ -859,7 +859,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				stayover: 0,
 				completed: 0,
 				total: 0
-			}
+			};
 
 			var totalHH = totalMM = hh = mm = i = 0;
 			for ($scope.counts.total = assignments.length; i < $scope.counts.total; i++) {

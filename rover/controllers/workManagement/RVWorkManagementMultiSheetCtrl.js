@@ -687,7 +687,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 
 			// remove the orientation after similar delay
 			$timeout(removePrintOrientation, 100);
-		}
+		};
 
 		init();
 	}

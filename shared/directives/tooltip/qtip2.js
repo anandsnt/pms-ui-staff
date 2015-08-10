@@ -8,7 +8,7 @@ angular.module('qtip2', [])
           qtipClass = attrs.class || 'qtip-tipsy',
           content,
           htmlString,
-          category // variable to handle dynamic content tooltip( for eg: dateRange, rateType) - this should be passed as element attr;
+          category; // variable to handle dynamic content tooltip( for eg: dateRange, rateType) - this should be passed as element attr;
 
         // tooltipText = $compile($('#invoiceTooltipTemplate').html())(scope);
         if (attrs.title) {

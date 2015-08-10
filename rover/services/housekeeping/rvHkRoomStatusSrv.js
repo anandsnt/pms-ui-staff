@@ -248,7 +248,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 			};
 
 			return deferred.promise;
-		}
+		};
 
 		// Get all floors for the current hotel.
 		var hotelFloors = [];
@@ -269,7 +269,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 			};
 
 			return deferred.promise;
-		}
+		};
 
 		// fetch all room types
 		this.roomTypes = [];
@@ -610,7 +610,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 			matchedRoom[property] = value;
 			matchedRoom.ooOsTitle = calculateOoOsTitle(matchedRoom);
 			this.setRoomStatusClass(matchedRoom);
-		}
+		};
 
 		this.setWorkStatus = function(id, status) {
 			var matchedRoom = _.find(roomList.rooms, function(room) {
@@ -620,12 +620,12 @@ sntRover.service('RVHkRoomStatusSrv', [
 			matchedRoom.description = matchedRoom.hk_status.description;
 			matchedRoom.hk_status.value = status.value;
 			this.setRoomStatusClass(matchedRoom);
-		}
+		};
 
 		// set the arrival time or 'IN' text for arrivied
 		var calculateTimeOrIn = function(room) {
 			if (room.room_reservation_status.indexOf('Arrived') >= 0 && !(room.room_reservation_status.indexOf('Day use') >= 0)) {
-				return 'IN'
+				return 'IN';
 			}
 			if (room.room_reservation_status.indexOf('Arrival') >= 0) {
 				return room.arrival_time;
@@ -636,7 +636,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 		// set the departure/latecheckout time or 'OUT' for departed
 		var calculateTimeOrOut = function(room) {
 			if (room.room_reservation_status.indexOf('Departed') >= 0) {
-				return 'OUT'
+				return 'OUT';
 			} else if (room.room_reservation_status.indexOf('Due out') >= 0) {
 				return room.is_late_checkout === 'true' ? room.late_checkout_time : room.departure_time;
 			}
@@ -655,13 +655,13 @@ sntRover.service('RVHkRoomStatusSrv', [
 				return {
 					'name': angular.copy(room.assignee_maid.name),
 					'class': 'assigned'
-				}
+				};
 			} else {
 				room.canAssign = true;
 				return {
 					'name': 'Unassigned',
 					'class': 'unassigned'
-				}
+				};
 			}
 		};
 		// exposing the method to service
