@@ -125,8 +125,6 @@ function BaseCtrl($scope) {
     $scope.getSimplifiedDayName = function(date){
     	var returnText = "";
         try{
-            // var passedDate = new Date(date);
-            // var currentDate = new Date($scope.businessDate);
             var passedDate = tzIndependentDate(date);
             var currentDate = tzIndependentDate($scope.businessDate);
 			var timeDiff = (passedDate.getTime() - currentDate.getTime());

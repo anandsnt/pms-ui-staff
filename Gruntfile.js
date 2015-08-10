@@ -15,10 +15,6 @@ module.exports = function(grunt) {
                 adminEnglish: 'admin/adLocales/en/',
                 roverEnglish: 'rover/rvLocales/en'
             }
-            /*,
-        style: {
-
-        }*/
         },
         connect = {
             options: {
