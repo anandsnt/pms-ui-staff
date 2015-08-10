@@ -388,7 +388,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
 				$scope.$emit('hideLoader');
 
-				// $scope.tableParams.reload();
+				
 			};
 
 			var data = {

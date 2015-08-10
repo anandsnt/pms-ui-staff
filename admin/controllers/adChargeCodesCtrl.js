@@ -55,31 +55,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		/*
 		 * To fetch charge code list
 		 */
-		/*$scope.fetchChargeCodes = function() {
-			var fetchSuccessCallback = function(data) {
-				$scope.$emit('hideLoader');
-				$scope.data = data;
-
-				// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
-				$scope.tableParams = new ngTableParams({
-					page: 1, // show first page
-					count: 10000, // count per page - Need to change when on pagination implemntation
-					sorting: {
-						charge_code: 'asc' // initial sorting
-					}
-				}, {
-					total: $scope.data.charge_codes.length, // length of data
-					getData: function($defer, params) {
-						// use build-in angular filter
-						var orderedData = params.sorting() ? $filter('orderBy')($scope.data.charge_codes, params.orderBy()) : $scope.data.charge_codes;
-						$scope.orderedData = orderedData;
-						$defer.resolve(orderedData);
-					}
-				});
-			};
-			$scope.invokeApi(ADChargeCodesSrv.fetch, {}, fetchSuccessCallback);
-		};
-		$scope.fetchChargeCodes();*/
+		
 		/*
 		 * To fetch the charge code details for add screen.
 		 */
@@ -215,7 +191,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					$scope.orderedData[parseInt($scope.currentClickedElement)].charge_group = data.charge_group;
 					$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code_type = data.charge_code_type;
 					$scope.orderedData[parseInt($scope.currentClickedElement)].link_with = data.link_with;
-					// $scope.tableParams.reload();
+					
 				} else {
 					$scope.data.charge_codes.push(data);
 					$scope.tableParams.reload();
@@ -248,7 +224,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			if($scope.prefetchData.selected_fees_code ===""){
 				$scope.prefetchData.selected_fees_code = null;
 			};
-			//var unwantedKeys = ["charge_code_types", "charge_groups", "link_with"];
+			
 			var unwantedKeys = ["charge_code_types", "payment_types", "charge_groups", "link_with", "amount_types", "tax_codes", "post_types", "symbolList"];
 			var postData = dclone($scope.prefetchData, unwantedKeys);
 

@@ -45,7 +45,7 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
     * @param {string} id of the room type
     */
 	$scope.getTemplateUrl = function(index, id){
-		// if(typeof index === "undefined" || typeof id === "undefined") return "";
+		
 		if(typeof index === "undefined" ) {
 			return "";
 		}
