@@ -112,8 +112,8 @@ var GridRowItemDrag = React.createClass({
 				props.__onDragStart(props.row_data, model);
 			});
 		} else if(state.dragging) {
-			model = (props.currentDragItem),
-					scroller = props.iscroll.grid;
+			model = (props.currentDragItem);
+			scroller = props.iscroll.grid;
 			if(colNumber < 0 || colNumber/4 > display.hours || rowNumber < 0 || rowNumber > (display.total_rows-1)){
 				return;
 			}

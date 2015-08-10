@@ -99,8 +99,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		var $_oldFilterValues = angular.copy( RVHkRoomStatusSrv.currentFilters );
 			$_oldRoomTypes    = angular.copy( roomTypes );
 
-		$scope.resultFrom         = $_page,
-		$scope.resultUpto         = $_perPage,
+		$scope.resultFrom         = $_page;
+		$scope.resultUpto         = $_perPage;
 		$scope.netTotalCount      = 0;
 		$scope.uiTotalCount       = 0;
 		$scope.disablePrevBtn     = true;
@@ -859,13 +859,13 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				stayover: 0,
 				completed: 0,
 				total: 0
-			}
+			};
 
 			var totalHH = totalMM = hh = mm = i = 0;
 			for ($scope.counts.total = assignments.length; i < $scope.counts.total; i++) {
 				var room = assignments[i].room;
 
-				totalHH += parseInt(room.time_allocated.split(':')[0]),
+				totalHH += parseInt(room.time_allocated.split(':')[0]);
 				totalMM += parseInt(room.time_allocated.split(':')[1]);
 
 				if (room.reservation_status.indexOf("Arrived") >= 0) {
@@ -994,7 +994,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			// caching DOM nodes invloved
 			var $rooms        = document.getElementById( 'rooms' ),
-				$roomsList    = $rooms.children[0];
+				$roomsList    = $rooms.children[0],
 				$refresh      = document.getElementById( 'pull-refresh-page' ),
 				$refreshArrow = document.getElementById( 'refresh-icon' ),
 				$refreshTxt   = document.getElementById( 'refresh-text' ),

@@ -477,7 +477,7 @@ sntRover.controller('RVbillCardController',
 	 * Get the title for the billing info button,
 	 * on the basis of routes available or not
 	 */
-	
+
 	/*
 	 * Adding class for active bill
 	 */

@@ -145,7 +145,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	 		$timeout(function() {
 		        $scope.successMessage = "";
 		    }, 1000);
-	 		// $scope.data.departments.splice(index, 1);
+	 		
 	 	};
 	 	var errorCallbackImport = function(data){
 	 		$scope.$emit('hideLoader');
@@ -198,7 +198,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 		var successCallBack = function(){
 			$scope.$emit('hideLoader');
 			//actualIndex holds the index of clicked element in $scope.data.room_types
-			var actualIndex = $scope.data.room_types.map(function(x){return x.id }).indexOf(roomtype_id);;
+			var actualIndex = $scope.data.room_types.map(function(x){return x.id; }).indexOf(roomtype_id);
       		$scope.data.room_types.splice(actualIndex, 1);
 			$scope.tableParams.page(1);
         	$scope.tableParams.reload();

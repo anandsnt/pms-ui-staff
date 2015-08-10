@@ -968,7 +968,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			focus: function(event, ui) {
 				return false;
 			}
-		}
+		};
 		$scope.listUserAutoCompleteOptions = angular.extend({
 			position: {
 				my: 'left bottom',
@@ -997,7 +997,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				RVreportsSubSrv.fetchComTaGrp(request.term)
 					.then(function(data) {
 						var list = [];
-						var entry = {}
+						var entry = {};
 						$.map(data, function(each) {
 							entry = {
 								label: each.name,
@@ -1023,7 +1023,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			focus: function(event, ui) {
 				return false;
 			}
-		}
+		};
 		$scope.listCtgAutoCompleteOptions = angular.extend({
 			position: {
 				my: 'left top',

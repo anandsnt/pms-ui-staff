@@ -4,7 +4,7 @@ admin.service('ADCampaignSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         this.fetchCampaigns = function (data) {
             var deferred = $q.defer();
 
-            //var url = "/sample_json/campaign/campaigns.json";
+            
             var url = "/api/campaigns";
             ADBaseWebSrvV2.getJSON(url, data).then(function (data) {
                 deferred.resolve(data);
@@ -19,7 +19,7 @@ admin.service('ADCampaignSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         	console.log("fetchCampaignData");
             var deferred = $q.defer();
 
-            //var url = "/sample_json/campaign/campaigns.json";
+            
             var url = "/api/campaigns/" + data.id;
             ADBaseWebSrvV2.getJSON(url).then(function (data) {
             	console.log(data);
@@ -81,7 +81,7 @@ admin.service('ADCampaignSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         	console.log("in servie");
 
         	var deferred = $q.defer();
-        	//var url = "/sample_json/campaign/alertLength.json";
+        	
             var url = "api/campaigns/configurations";
 
         	ADBaseWebSrvV2.getJSON(url).then(function (data) {

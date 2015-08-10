@@ -52,7 +52,7 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
             numberOfMonths: 1,
             changeYear: true,
             changeMonth: true,
-            //maxDate: tzIndependentDate($rootScope.businessDate),
+            
             yearRange: "-50:+50",
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div');
@@ -65,13 +65,13 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
         };
 
         $scope.fromDateOptions = angular.extend({
-           // maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+           
             onSelect: function(value) {
                 $scope.untilDateOptions.minDate = value;
             }
         }, datePickerCommon);
         $scope.untilDateOptions = angular.extend({
-           // maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+           
             onSelect: function(value) {
                 $scope.fromDateOptions.maxDate = value;
             }
@@ -133,8 +133,8 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
                 params['to_date'] =$filter('date')(new Date($scope.toDate), 'yyyy-MM-dd');
             }
 
-            //if($scope.user_id)
-              //  params['user_id'] = $scope.user_id;
+            
+              
 
         }
         params['sort_order'] = $scope.sort_order;
@@ -235,7 +235,7 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
                 uiValue.pop();
                 uiValue.push(ui.item.label);
                 uiValue.push("");
-                //this.value = uiValue.join(", ");
+                
                 this.value = ui.item.label;
                 return false;
             },

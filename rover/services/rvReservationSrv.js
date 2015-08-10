@@ -15,17 +15,6 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 		this.fetch = function(data) {
 
 			var deferred = $q.defer();
-			//Commented. Since we are using another API to get country list
-			// var fetchCountryList = function(data) {
-			// var url = 'api/countries.json';
-			// RVBaseWebSrv.getJSON(url).then(function(data) {
-			// that.reservationData.countries = data;
-			// deferred.resolve(that.reservationData);
-			// }, function(data) {
-			// deferred.reject(data);
-			// });
-			//
-			// };
 			var reservationId = data.reservationId;
 			var isRefresh = data.isRefresh;
 			var isReservationIdAlreadyCalled = false;
@@ -234,7 +223,6 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 		this.fetchDepositDetails = function(id) {
 			var deferred = $q.defer();
 			var url = 'api/reservations/' + id + '/deposit_policy';
-			//var url = '/sample_json/reservations/res_deposit.json';
 			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -246,7 +234,6 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 		this.sendConfirmationEmail = function(data) {
 			var deferred = $q.defer();
 			var url = '/api/reservations/' + data.reservationId + '/email_confirmation';
-			//var url = '/sample_json/reservations/res_deposit.json';
 			rvBaseWebSrvV2.postJSON(url, data.postData).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {

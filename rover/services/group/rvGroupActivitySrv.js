@@ -8,7 +8,7 @@ sntRover.service('rvGroupActivitySrv', [
 		this.fetchActivityLog = function(params) {
 			var deferred = $q.defer();
 			var url = '/ui/show?format=json&json_input=activityLog/activity_log.json';
-			//var url = '/sample_json/campaign/campaigns.json';
+			
 
 			rvBaseWebSrvV2.getJSON(url,params)
 			.then(function(data) {
@@ -23,7 +23,7 @@ sntRover.service('rvGroupActivitySrv', [
 		this.fetchActivityLog1 = function(params) {
 			var deferred = $q.defer();
 			var url = '/ui/show?format=json&json_input=activityLog/activity_log1.json';
-			//var url = '/sample_json/campaign/campaigns.json';
+			
 
 			rvBaseWebSrvV2.getJSON(url,params)
 			.then(function(data) {

@@ -255,12 +255,12 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 			reservationData.number_of_children =stayCard.number_of_children;
 			reservationData.number_of_infants =stayCard.number_of_infants;
 			//CICO-6135
-			if (stayCard.arrival_time) { //  reservationDetails.reservation_card.departureDate ! = null
+			if (stayCard.arrival_time) {
 				reservationData.checkinTime = self.parseTime(stayCard.arrival_time);
 			}
 			if (stayCard.is_opted_late_checkout && stayCard.late_checkout_time) { // Handling late checkout
 				reservationData.checkoutTime = self.parseTime(stayCard.late_checkout_time);
-			} else if (stayCard.departure_time) { //  reservationDetails.reservation_card.departureDate ! = null
+			} else if (stayCard.departure_time) {
 				reservationData.checkoutTime = self.parseTime(stayCard.departure_time);
 			}
 			// Cards

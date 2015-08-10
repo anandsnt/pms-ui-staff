@@ -133,7 +133,7 @@ sntRover.service('rvUtilSrv', [function(){
     	*/
     	this.convertToInteger = function(string, withWhatToBeReplacedifNotANumber){
     		withWhatToBeReplacedifNotANumber = withWhatToBeReplacedifNotANumber ? withWhatToBeReplacedifNotANumber : 0;
-    		if (self.isNumeric (string)) { return parseInt (string)};;
+    		if (self.isNumeric (string)) { return parseInt (string);}
     		return withWhatToBeReplacedifNotANumber;
     	};
 
@@ -145,7 +145,7 @@ sntRover.service('rvUtilSrv', [function(){
     	*/
     	this.convertToDouble = function(string, withWhatToBeReplacedifNotANumber){
     		withWhatToBeReplacedifNotANumber = withWhatToBeReplacedifNotANumber ? withWhatToBeReplacedifNotANumber : 0;
-    		if (self.isNumeric (string)) { return parseFloat (string)};;
+    		if (self.isNumeric (string)) { return parseFloat (string);}
     		return withWhatToBeReplacedifNotANumber;
     	};
 

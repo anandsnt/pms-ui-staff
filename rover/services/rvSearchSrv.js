@@ -147,7 +147,7 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 			};
 		};
 	};
-	//self.searchByCCData = {};
+	
 	this.searchByCC = function(swipeData){
 		var deferred = $q.defer();
 		var url = '/staff/payments/search_by_cc';
