@@ -90,7 +90,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		// setting up back to dashboard
 		// this must be set only for switching b/w
 		// dashboard and search results by clicking the search in dashboard
-		
+
 		/**
 		 * Event propogated by ngrepeatstart directive
 		 * we used to show activity indicator
@@ -564,7 +564,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			//Clear search fields
 			$scope.fromDate = $rootScope.businessDate;
 			$scope.toDate = "";
-			
+
 			$scope.$emit("SearchResultsCleared");
 			setTimeout(function() {
 				refreshScroller();
@@ -572,7 +572,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 			// dont remove yet
 			// Gotacha!! Only when we are dealing with 'noStateChange'
-			
+
 			// reset the query saved into vault
 			$vault.set('searchQuery', '');
 		};

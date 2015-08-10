@@ -436,7 +436,7 @@ sntRover.controller('roverController',
     // '$emit' and '$on' somehow get more priority, by the time they are execured, $scopes have shifted
     // thus cancelling out animation, feels like animations are never considered
     //
-    
+
     //when state change start happens, we need to show the activity activator to prevent further clicking
     //this will happen when prefetch the data
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
@@ -552,7 +552,7 @@ sntRover.controller('roverController',
      * @param {{passData}} information to pass to popup - from view, reservationid. guest id userid etc
      * @param {{object}} - payment data - used for swipe
      */
-   
+
     /*
      * Call payment after CONTACT INFO
      */

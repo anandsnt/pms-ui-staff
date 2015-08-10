@@ -182,7 +182,7 @@ var DiaryContent = React.createClass({
 
   		var hops = Object.prototype.hasOwnProperty,
   			self = this;
-  		
+
 		if(hops.call(this.props, 'stats') && this.props.stats !== nextProps.stats) {
   			this.setState({
   				stats: nextProps.stats
