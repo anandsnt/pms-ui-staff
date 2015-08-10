@@ -96,8 +96,6 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 	// To handle click of key icon.
 	$scope.clickedIconKey = function(){
 		var keySettings = $scope.reservationData.reservation_card.key_settings;
-                console.log('clicked key icon: ');
-                console.log($scope.reservationData.reservation_card.reservation_status);
 		$scope.viewFromBillScreen = false;
 		if(keySettings === "email"){
                     ngDialog.open({
@@ -144,14 +142,11 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 
 		//Display the key encoder popup
 		else if(keySettings === "encode"){
-			console.log("keySettings ----" + keySettings);
-			console.log($scope.reservationData.reservation_card.is_remote_encoder_enabled);
-			console.log($scope.encoderTypes);
-                    if($scope.reservationData.reservation_card.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0){
-                        fetchEncoderTypes();
-                    } else {
-                        openKeyEncodePopup();
-                    }
+            if($scope.reservationData.reservation_card.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0){
+                fetchEncoderTypes();
+            } else {
+                openKeyEncodePopup();
+            }
 		}
         };
 
@@ -178,12 +173,10 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 
 	//Fetch encoder types for if remote encoding enabled
 	var fetchEncoderTypes = function(){
-		console.log("fetchEncoderTypes");
 
 		var encoderFetchSuccess = function(data){
 			$scope.$emit('hideLoader');
 			$scope.encoderTypes = data;
-			console.log($scope.encoderTypes);
 			openKeyEncodePopup();
 		};
 

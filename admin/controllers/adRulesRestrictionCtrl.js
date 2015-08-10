@@ -37,7 +37,6 @@ admin.controller('ADRulesRestrictionCtrl', [
                 var depositPolicy = _.find($scope.ruleList, function(item) {
                     return item.description === 'Deposit Requests';
                 });
-                console.log(depositPolicy);
                 fetchRuleDepositPoliciesList(depositPolicy);
             };
 

@@ -163,7 +163,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		}
 	};
 	$scope.onFromDateChanged = function(datePicked){
-		console.log(datePicked);
+
 	};
 
 	$scope.gobackToCampaignListing = function(){

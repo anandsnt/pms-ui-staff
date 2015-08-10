@@ -7,7 +7,6 @@ admin.controller('ADCampaignsListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADCam
 
 
 	$scope.fetchTableData = function($defer, params){
-		console.log('fetchTableData');
 		var getParams = $scope.calculateGetParams(params);
 		var fetchSuccessOfItemList = function(data){
 			$scope.$emit('hideLoader');

@@ -26,7 +26,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 
 	$scope.shouldShowWaiting = false;
 	$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG", true);
-	//console.log($scope.depositBalanceData.data.existing_payments)
 	angular.forEach($scope.depositBalanceData.data.existing_payments, function(value, key) {
 		value.isSelected = false;
 		value.mli_token = value.ending_with; //For common payment HTML to work - Payment modifications story
@@ -67,7 +66,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.isSwipedCardSave = false;
 	$scope.isManual = false;
 	$scope.setScroller('cardsList',{'click':true, 'tap':true});
-	console.log("Test");
 	$scope.setScroller('deopositdue');
 	var refreshScroll = function() {
 		$timeout(function() {

@@ -51,14 +51,11 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 	};
 
 	$scope.editEncoder = function(id, index) {
-		console.log(id);
-
 		$scope.encoderData = {};
 		$scope.currentClickedElement = index;
 		$scope.isAddMode = false;
 		var successCallbackEdit = function(data) {
 			$scope.encoderData = data;
-			console.log($scope.encoderData);
 			$scope.$emit('hideLoader');
 		};
 

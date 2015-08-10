@@ -115,8 +115,6 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		var isRateChangeOcuured = function() {
 			var isRateChangeOcuured = false;
 			angular.forEach($scope.reservationParentData.rooms[0].stayDates, function(item, index) {
-				console.log(item);
-				console.log(item.rateDetails);
 				if (item.rateDetails.actual_amount !== item.rateDetails.modified_amount) {
 					isRateChangeOcuured = true;
 					$scope.customRate = item.rateDetails.modified_amount;

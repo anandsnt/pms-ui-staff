@@ -16,7 +16,6 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		//If SAFLOK_MSR is the chosen encoder type, we would show a dropdown with active encoders listed.
 		/***************************CICO-11444 *****************************************/
 		$scope.encoderSelected = "";
-console.log($scope.encoderTypes);
 		if($scope.fromView === "checkin"){
 			$scope.isRemoteEncodingEnabled = $scope.reservationBillData.is_remote_encoder_enabled;
 		}else{

@@ -142,7 +142,6 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 					showDemographicsPopup();
 				},
 				onFetchDemographicsFailure = function(errorMessage) {
-					console.log(errorMessage);
 				};
 
 			if ($scope.accountSummaryData.demographics === null) {
@@ -204,7 +203,6 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 					}
 				});
 			} else {
-				console.warn("Trying to save empty Note!");
 			}
 		};
 

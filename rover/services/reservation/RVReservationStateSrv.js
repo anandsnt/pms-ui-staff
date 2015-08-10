@@ -172,7 +172,6 @@ sntRover.service('RVReservationStateService', [
 						roomIndex: roomIndex
 					});
 				} else {
-					console.warn('Error condition! Tax code in results but not in meta data');
 				}
 			});
 			return {

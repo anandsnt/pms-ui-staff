@@ -60,7 +60,6 @@ sntRover.controller('RVReportsMainCtrl', [
 			$scope.resetFilterItemsToggle();
 
 			// tell report list controller to refresh scroll
-			console.log('report.list.scroll.refresh');
 			$scope.$broadcast( 'report.list.scroll.refresh' );
 		};
 
@@ -126,8 +125,6 @@ sntRover.controller('RVReportsMainCtrl', [
 		// replace any char with single space " "
 		// e.g -> filter:showValidSortBy:_
 		$scope.replaceWithSpace = function(value, tobeReplaced) {
-			console.log(arguments);
-
 			return (!value) ? '' : value.replace(/_/g, ' ');
 		};
 
@@ -844,16 +841,12 @@ sntRover.controller('RVReportsMainCtrl', [
 				$scope.$emit('hideLoader');
 
 				if (!changeView && !loadPage) {
-					console.log('report.updated');
 					$scope.$broadcast('report.updated');
 				} else if (!!loadPage && !resultPerPageOverride) {
-					console.log('report.page.changed');
 					$scope.$broadcast('report.page.changed');
 				} else if (!!resultPerPageOverride) {
-					console.log('report.printing');
 					$scope.$broadcast('report.printing');
 				} else {
-					console.log('report.submit');
 					$scope.$broadcast('report.submit');
 				};
 			};
@@ -868,8 +861,6 @@ sntRover.controller('RVReportsMainCtrl', [
 
 				$scope.errorMessage = response;
 				$scope.$emit('hideLoader');
-
-				console.log('report.API.failure');
 				$rootScope.$broadcast('report.API.failure');
 			};
 

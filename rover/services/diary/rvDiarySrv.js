@@ -257,7 +257,6 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                     },
                     normalizeTime: function(date, time) {
                         if(!date || !time) {
-                            console.log('normalizeTime::ERROR', 'Parameters:  ', date, time);
                         }
                         var std = (time.indexOf('am') > -1 || time.indexOf('pm') > -1),
                             t_a = time.slice(0, -3),
@@ -639,7 +638,6 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                             ));
 
                         }, function(err) {
-                            console.log(err);
                         });
 
                     return q.promise;

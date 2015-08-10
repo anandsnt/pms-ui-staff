@@ -451,10 +451,8 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			else if ($stateParams.isBackFromStaycard){
 				// Back navigation from stay card.Do nothing here.
 				//CICO-11664 to handle the back navigation from staycard.
-				console.log("Back navigation from stay card.");
 			}
 			else if ($scope.isContactInformationSaved){
-				console.log("Card already saved");
 			}
 			else{
 

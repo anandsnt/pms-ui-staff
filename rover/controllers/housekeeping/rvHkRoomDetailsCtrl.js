@@ -134,7 +134,6 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 				$scope.roomDetails[prop] = value;
 				$scope.getHeaderColor();
 			} else {
-				console.info('RVHkRoomDetailsCtrl: No prop "' + prop + '" found on $scope.roomDetails');
 			}
 			if (prop === "room_reservation_hk_status") {
 				RVHkRoomStatusSrv.setRoomStatus($scope.roomDetails.id, prop, value);

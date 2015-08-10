@@ -108,7 +108,6 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
 
   //Function to be deleted - CICO-9433 - Sample button in dashboard screen
   $scope.setReservationDataFromDiaryScreen = function() {
-    console.log('hello');
     //$rootScope.temporaryReservationDataFromDiaryScreen = {
     var temporaryReservationDataFromDiaryScreen = {
 

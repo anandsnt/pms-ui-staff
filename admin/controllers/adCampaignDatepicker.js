@@ -9,7 +9,6 @@ $scope.setUpData = function(){
         minDate: tzIndependentDate($rootScope.businessDate),
         onSelect: function(dateText, inst) {
             $scope.campaignData.end_date_for_display = $filter('date')(tzIndependentDate($scope.campaignData.end_date), 'yyyy-MM-dd');
-            console.log($scope.campaignData.end_date_for_display);
             ngDialog.close();
         }
     };

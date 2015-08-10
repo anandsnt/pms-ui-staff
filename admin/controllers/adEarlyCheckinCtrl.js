@@ -333,7 +333,6 @@ $scope.clickAddRoomType = function(){
   }
   var rate_item;
 	angular.forEach($scope.rates,function(item, index) {
-    console.log(parseInt(item.id) === parseInt($scope.upsell_rate.selected_rate_id));
 		if(parseInt(item.id) === parseInt($scope.upsell_rate.selected_rate_id)){
       rate_item = {};
       rate_item.id = item.id;

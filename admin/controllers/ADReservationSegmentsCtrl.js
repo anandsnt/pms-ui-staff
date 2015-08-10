@@ -52,7 +52,6 @@ admin.controller('ADReservationSegmentsCtrl', ['$scope', '$state', 'ADSegmentsSr
 		// SAVE SEGMENT
 		$scope.saveNewSegment = function() {
 			// Make API call for saving new Segment
-			console.log($scope.segmentData.newSegmentData);
 
 			var onSaveSuccess = function(data) {
 				$scope.$emit('hideLoader');

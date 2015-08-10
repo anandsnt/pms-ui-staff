@@ -78,7 +78,6 @@ sntRover.service('RVKeyPopupSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', functi
 		var deferred = $q.defer();
 		var url =  "/api/key_encoders/active";
 		rvBaseWebSrvV2.getJSON(url).then(function(data) {
-			console.log(data);
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);

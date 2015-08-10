@@ -514,7 +514,6 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		};
 
 		$scope.updateAdditionalDetails = function() {
-			console.log('updateAdditionalDetails', $scope.reservationData.demographics);
 			var updateSuccess = function(data) {
 				$scope.$emit('hideLoader');
 			};

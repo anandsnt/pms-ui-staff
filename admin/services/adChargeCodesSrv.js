@@ -6,8 +6,6 @@ admin.service('ADChargeCodesSrv',['$http', '$q', 'ADBaseWebSrv', function($http,
 	this.fetch = function(params){
 		var deferred = $q.defer();
 		var url = '/admin/charge_codes/list.json';
-		console.log("here");
-		console.log(params);
 		ADBaseWebSrv.getJSON(url, params).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){

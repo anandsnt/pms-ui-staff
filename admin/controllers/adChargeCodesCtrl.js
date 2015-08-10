@@ -19,7 +19,6 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 
 		$scope.fetchTableData = function($defer, params){
 			var getParams = $scope.calculateGetParams(params);
-			console.log(getParams);
 			var fetchSuccessOfItemList = function(data){
 				$scope.$emit('hideLoader');
 				//No expanded rate view

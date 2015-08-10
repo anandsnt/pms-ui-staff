@@ -347,7 +347,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
         $scope.payDeposit = function() {
             var onPaymentSuccess = function(data) {
-                    console.log(data);
                     //On continue on create reservation - add to guest card - to fix undefined issue on tokendetails
                     if ($scope.reservationData.paymentType.type.value !== "CC") {
                         $scope.isNewCardAdded = false;
@@ -811,7 +810,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         };
 
         $scope.proceedCreatingReservation = function() {
-            console.log("proceedCreatingReservation");
             var postData = $scope.computeReservationDataforUpdate(false, true);
             var saveSuccess = function(data) {
                 $scope.$emit('hideLoader');
@@ -976,7 +974,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         // CICO-9512
 
         $scope.changeOnsiteCallIn = function() {
-            console.log("changeOnsiteCallIn");
             $scope.isManual ? $scope.showCC = true : "";
             refreshScrolls();
         };

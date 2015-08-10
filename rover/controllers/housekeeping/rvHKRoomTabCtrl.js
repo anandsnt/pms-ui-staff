@@ -222,7 +222,6 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				setTimeout(function() {
 					$('body').find('#ui-datepicker-overlay')
 						.on('click', function() {
-							console.log('hey clicked');
 							$('#room-out-from').blur();
 							$('#room-out-to').blur();
 						});

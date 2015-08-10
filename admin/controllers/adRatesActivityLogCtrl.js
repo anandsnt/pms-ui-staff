@@ -125,7 +125,6 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
         if($scope.isUpdateReportFilter){
             $scope.fromDate = $('#activity-range-from').val();
             $scope.toDate = $('#activity-range-to').val();
-            console.log($scope.toDate);
             if ($scope.fromDate !== ''){
                 params['from_date'] = $filter('date')(new Date($scope.fromDate), 'yyyy-MM-dd');
             }

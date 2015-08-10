@@ -852,7 +852,6 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 									getSixCreditCardType($scope.cardData.tokenDetails.card_type).toLowerCase();
 					$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, errorCallback);
 				}
-				 console.log(JSON.stringify(data));
 			}
             else {
 				var data = {

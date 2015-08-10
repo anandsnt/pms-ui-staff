@@ -107,7 +107,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					updateSegment();
 				},
 				onFetchDemographicsFailure = function(errorMessage) {
-					console.log(errorMessage);
 				},
 				updateSegment = function() {
 					var aptSegment = ""; //Variable to store the suitable segment ID
@@ -247,7 +246,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					showDemographicsPopup();
 				},
 				onFetchDemographicsFailure = function(errorMessage) {
-					console.log(errorMessage);
 				};
 
 			if ($scope.groupSummaryData.demographics === null) {
@@ -267,7 +265,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				$scope.errorMessage = ["Please save the group first"];
 				return;
 			}
-			console.log($scope.accountConfigData.summary.posting_account_name);
 			$scope.attachedEntities = {};
 			$scope.attachedEntities.posting_account = {};
 			$scope.attachedEntities.posting_account.id = $scope.groupConfigData.summary.group_id;
@@ -297,7 +294,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				$scope.errorMessage = ["Please save the group to save Demographics"];
 				return;
 			}
-			console.log('save demographcis');
 			$scope.updateGroupSummary();
 			$scope.closeDialog();
 		};
@@ -421,7 +417,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 						closeByEscape: false
 					});
 				} else {
-					console.log('on hold status');
 					$scope.updateGroupSummary();
 					$scope.groupSummaryData.existingHoldStatus = parseInt($scope.groupConfigData.summary.hold_status);
 
@@ -507,7 +502,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					$scope.openGroupAddonsScreen();
 				},
 				onFetchAddonsFailure = function(errorMessage) {
-					console.log(errorMessage);
 				};
 
 			$scope.callAPI(RVReservationAddonsSrv.fetchAddonData, {
@@ -577,7 +571,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					}
 				});
 			} else {
-				console.warn("Trying to save empty Note!");
 			}
 		};
 

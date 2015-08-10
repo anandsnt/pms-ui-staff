@@ -13,7 +13,6 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 	$scope.listDevices = function($defer, params){
 		var getParams = $scope.calculateGetParams(params);
 		var fetchSuccessOfItemList = function(data){
-			console.log(JSON.stringify(data));
 			$scope.$emit('hideLoader');
 			//No expanded rate view
 			$scope.currentClickedElement = -1;

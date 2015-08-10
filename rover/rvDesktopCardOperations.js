@@ -23,7 +23,6 @@ var DesktopCardOperations = function(){
 		//Triggers when websocket connection is established.
 	    ws.onopen = function () {
 	    	that.isActive = true;
-			console.log("Web Socket connected");
 			ws.send("observeForSwipe");
 
 	    };
@@ -36,7 +35,6 @@ var DesktopCardOperations = function(){
 
 		ws.onclose = function () {
             // websocket is closed.
-            //console.log("Websocket server is not running.");
             that.swipeCallbacks.failureCallBack();
         };
 	};

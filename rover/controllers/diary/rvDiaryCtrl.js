@@ -499,7 +499,6 @@ sntRover
 		/* BEGIN UTILITY METHOD SECTION */
 		/*--------------------------------------------------*/
 		function responseError(err) {
-			console.log(err);
 		}
 		/*--------------------------------------------------*/
 		/* END UTILITY METHOD SECTION */
@@ -807,7 +806,6 @@ sntRover
 		    	prevRoom = room;
 		    	prevTime = reservation[meta.occupancy.start_date];
 		    	if($scope.gridProps.edit.active) {
-		    		console.log('Reservation room transfer from:  ', room.room_no, reservation.reservation_primary_guest_full_name);
 		    	}
 			}.bind($scope.gridProps);
 
@@ -1332,7 +1330,6 @@ sntRover
 
 
 			if(start.isOnDST()){
-				console.log('ys hhh ' + start.getDSTDifference());
 			}
 			if(end.isOnDST()){
 			}
@@ -1506,7 +1503,6 @@ sntRover
 	* otherwise we will keep the arrival date as old
 	*/
 	var failureCallBackOfSelectDateInEditMode = function (response) {
-		console.log('yes I failed');
 	};
 
 	/**

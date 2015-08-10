@@ -106,7 +106,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				setTimeout(function() {
 					$('body').find('#ui-datepicker-overlay')
 						.on('click', function() {
-							console.log('hey clicked');
 							$('#room-out-from').blur();
 							$('#room-out-to').blur();
 						});
@@ -839,7 +838,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 
 			//If it is a group reservation, which has extended the stay beyond the group staydates, then we will be taking the user to the room and rates screen after confirming the staydates
 			if($scope.stayDatesExtendedForOutsideGroup){
-				console.log("inside");
 				var stateParams = {
 						from_date: $scope.reservationParentData.arrivalDate,
 						to_date: $scope.reservationParentData.departureDate,
@@ -870,7 +868,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 							data: JSON.stringify($scope.reverseCheckoutDetails.data)
 						});
 		};
-		console.log($scope.reverseCheckoutDetails.data);
 		if($scope.reverseCheckoutDetails.data.is_reverse_checkout_failed){
 			openRoomOccupiedPopup();
 			$scope.initreverseCheckoutDetails();

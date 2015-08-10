@@ -8,8 +8,6 @@ sntRover.directive('scrollPosition', function ($window) {
                    /* $(element)[0].addEventListener('touchmove', function(){
                         if ($(element)[0].id === 'rateViewCalendar'){
                             $(element).prev().scrollTop($(element).scrollTop());
-                            console.log(scope.myScroll);
-                            console.log(scope.myScroll.getScrollY());
                         }
                     });*/
 

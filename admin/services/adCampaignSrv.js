@@ -16,13 +16,9 @@ admin.service('ADCampaignSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
 
 
         this.fetchCampaignData = function (data) {
-        	console.log("fetchCampaignData");
             var deferred = $q.defer();
-
-            
             var url = "/api/campaigns/" + data.id;
             ADBaseWebSrvV2.getJSON(url).then(function (data) {
-            	console.log(data);
                 deferred.resolve(data);
             }, function (data) {
                 deferred.reject(data);
@@ -78,7 +74,6 @@ admin.service('ADCampaignSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         };
 
         this.fetchCampaignConfig = function(){
-        	console.log("in servie");
 
         	var deferred = $q.defer();
         	

@@ -71,7 +71,6 @@ sntRover.controller('RVroomAssignmentController',[
 			$scope.errorMessage = error;
 		};
 		if(isOldRoomType !== undefined){
-			console.log('entering');
 			if(isOldRoomType){
 				$scope.roomType = oldRoomType;
 			}

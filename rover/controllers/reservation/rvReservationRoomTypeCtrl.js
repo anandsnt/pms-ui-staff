@@ -539,11 +539,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 				if (restrictions.length > 0 && !BOOK_RESTRICTED_ROOM_RATE) {
 					authorization = false;
-					console.warn('-- no premission to BOOK_RESTRICTED_ROOM_RATE --');
 				}
 				if (roomCount < 1 && !BOOK_ROOM_WITHOUT_INVENTORY) {
 					authorization = false;
-					console.warn('-- no premission to BOOK_ROOM_WITHOUT_INVENTORY --');
 				}
 				return authorization;
 			}
@@ -552,7 +550,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		$scope.handleBooking = function(roomId, rateId, event) {
 			event.stopPropagation();
 			if (!permissionCheck(roomId, rateId)) {
-				console.warn('--permissionCheck failed');
 				return false;
 			}
 
@@ -1038,7 +1035,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				});
 				if (taxDetails.length === 0) {
 					//Error condition! Tax code in results but not in meta data
-					console.log("Error on tax meta data");
 				} else {
 					var taxData = taxDetails[0];
 					// Need not consider perstay here
