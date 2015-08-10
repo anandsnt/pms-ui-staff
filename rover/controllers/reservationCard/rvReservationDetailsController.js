@@ -245,7 +245,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		};
 
 
-		// $scope.wake_up_time = ;
+		
 		angular.forEach($scope.reservationData.reservation_card.loyalty_level.frequentFlyerProgram, function(item, index) {
 			if ($scope.reservationData.reservation_card.loyalty_level.selected_loyalty === item.id) {
 				$scope.selectedLoyalty = item;
@@ -351,7 +351,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 
 		});
 		//To pass confirmation number and resrvation id to reservation Card controller.
-		// var passData = {confirmationNumber: $stateParams.confirmationId, reservationId: $stateParams.id};
+		
 		var passData = reservationListData;
 		passData.avatar = reservationListData.guest_details.avatar;
 		passData.vip = reservationListData.guest_details.vip;
@@ -514,9 +514,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 						confirmNumber: reservationMainData.confirmNum
 					});
 				}
-				/*else {
-						$scope.goToRoomAndRates("CALENDAR");
-					}*/
+				
 			} else {
 				//If ext PMS connected, go to change staydates screen
 				$state.go('rover.reservation.staycard.changestaydates', {
@@ -585,7 +583,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			}
 
 
-			//rover.reservation.staycard.billcard({reservationId:$scope.reservationData.reservation_card.reservation_id, clickedButton: viewBillButton, userId:$scope.guestCardData.userId})
+			
 		};
 
 		$scope.modifyCheckinCheckoutTime = function() {
@@ -742,7 +740,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 					$scope.$emit('hideLoader');
 				},
 				onValidationFaliure = function(error) {
-					// console.log("onValidationFaliure", error);
+					
 					$scope.$emit('hideLoader');
 				};
 			$scope.invokeApi(RVReservationCardSrv.validateStayDateChange, {

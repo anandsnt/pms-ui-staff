@@ -187,20 +187,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			dataToSend.accompanying_guests_details = [];
 			dataToSend.reservation_id = $scope.reservationData.reservation_card.reservation_id;
 
-			/*
-				var validGuests = [];
-					_.each(room.accompanying_guest_details, function(guest) {
-						if (!!guest.first_name && !guest.last_name) {
-							$scope.errorMessage = ["Validation failed: Accompanying guest's last name can't be blank"];
-							return;
-						} else if (!guest.first_name && !guest.last_name) {
-							guest.first_name = null;
-							guest.last_name = null;
-						} else {
-							validGuests.push(guest);
-						}
-					});
-			 */
+			
 			angular.forEach($scope.guestData.accompanying_guests_details, function(guest, index) {
 				delete guest.image;
 

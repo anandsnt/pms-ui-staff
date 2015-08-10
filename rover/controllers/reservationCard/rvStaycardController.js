@@ -14,11 +14,9 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 		$scope.depositPopupData.hasShown = false;
 
 
-		// $scope.guestCardData = {};
-		// $scope.guestCardData.contactInfo = {};
 		$scope.countriesListForGuest = [];
-		// $scope.guestCardData.userId = '';
-		// $scope.guestCardData.contactInfo.birthday = '';
+		
+		
 		$scope.paymentData = {};
 		/*
 		 * To get the payment tab payments list
@@ -135,8 +133,8 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 			$scope.openPaymentList(data);
 		});
 		$scope.openPaymentList = function(data) {
-			//	$scope.paymentData.payment_id = id;
-			//  $scope.paymentData.index = index;
+			
+			
 			$scope.dataToPaymentList = data;
 			ngDialog.open({
 				template: '/assets/partials/payment/rvShowPaymentList.html',
@@ -149,7 +147,7 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
                 $scope.showRoomSharerPopup = function() {
                     ngDialog.open({
                         template: '/assets/partials/reservationCard/sharedRoom.html',
-                        //controller: '',//using this controller
+                        
                         scope: $scope
                     });
                 };
