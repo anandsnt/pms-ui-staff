@@ -12,7 +12,6 @@ var DesktopCardOperations = function(){
 	};
 
 	var createConnection = function(){
-		//ws = new WebSocket("wss://localhost:" + that.portNumber);
 		try{
 			ws = new WebSocket("wss://localhost:" + that.portNumber +"/CCSwipeService");
 		}
@@ -36,7 +35,6 @@ var DesktopCardOperations = function(){
 
 		ws.onclose = function () {
             // websocket is closed.
-            //console.log("Websocket server is not running.");
             that.swipeCallbacks.failureCallBack();
         };
 	};
