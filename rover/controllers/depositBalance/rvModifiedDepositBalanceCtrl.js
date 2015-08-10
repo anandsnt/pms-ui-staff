@@ -26,7 +26,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 
 	$scope.shouldShowWaiting = false;
 	$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG", true);
-	//console.log($scope.depositBalanceData.data.existing_payments)
+	
 	angular.forEach($scope.depositBalanceData.data.existing_payments, function(value, key) {
 		value.isSelected = false;
 		value.mli_token = value.ending_with; //For common payment HTML to work - Payment modifications story
@@ -418,7 +418,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 						$scope.authorizedCode = response.authorization_code;
 						$scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.depositBalanceMakePaymentData.amount);
 						$scope.$apply();
-						//$scope.closeDialog();
+						
 					},function(error){
 						$scope.depositPaidSuccesFully = false;
 						$scope.errorMessage = error;
@@ -428,7 +428,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				} else {
 					$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successMakePayment);
 				}
-			// };
+			
 
 	};
 	/*
@@ -464,10 +464,10 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.successMakePayment = function(data){
 		$scope.$emit("hideLoader");
 
-		//$scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.depositBalanceMakePaymentData.amount);
+		
 		if($scope.reservationData.reservation_card.is_rates_suppressed === "false" || $scope.reservationData.reservation_card.is_rates_suppressed === false){
 			$scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.depositBalanceMakePaymentData.amount);
-			//$scope.$apply();
+			
 		}
 
 
@@ -501,9 +501,9 @@ sntRover.controller('RVDepositBalanceCtrl',[
 
 			$scope.authorizedCode = data.authorization_code;
 		}
-		// else {
-			// $scope.closeDepositModal();
-		// }
+		
+			
+		
 		$scope.depositPaidSuccesFully = true;
 
 		ngDialog.close();
@@ -557,7 +557,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	};
 	$scope.$on('cancelCardSelection',function(e,data){
 		$scope.shouldShowMakePaymentScreen       = true;
-		//$scope.shouldShowExistingCards  		 = false;
+		
 		$scope.addmode                 			 = false;
 		$scope.depositBalanceMakePaymentData.payment_type = "";
 	});

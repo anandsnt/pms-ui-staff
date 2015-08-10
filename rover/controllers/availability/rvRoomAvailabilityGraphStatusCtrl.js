@@ -18,8 +18,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 		var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: false};
   		$scope.setScroller ('graph-scroller', scrollerOptionsForGraph);
 
-  		/*var scrollerOptionsForAvailability = {click: true, preventDefault: false};
-  		$scope.setScroller ('availability-graph-scroller', scrollerOptionsForAvailability);*/
+  		
 
 
  		var colors = ['#c1c1c1', '#dc829c', '#83c3df', '#82de89', '#f6981a', '#f2d6af'];
@@ -70,7 +69,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 			return max;
 		};
 
-		// var colors = ['#c1c1c1', '#dc829c', '#83c3df', '#82de89', '#f6981a', '#f2d6af'];
+		
 
 		var formGraphData = function(){
 			$scope.graphData = [{

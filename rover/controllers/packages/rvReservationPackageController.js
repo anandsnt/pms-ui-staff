@@ -18,7 +18,7 @@ sntRover.controller('RVReservationPackageController',
            item.totalAmount = (item.count)*(item.price_per_piece);
   		});
 	};
-	//console.log($scope);
+	
 	$scope.invokeApi(RVReservationPackageSrv.getReservationPackages, reservationId, successCallBack);
 	$scope.setScroller('resultDetails', {
 			'click': true

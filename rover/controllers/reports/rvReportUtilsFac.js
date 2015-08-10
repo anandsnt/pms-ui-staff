@@ -140,7 +140,7 @@ sntRover.factory('RVReportUtilsFac', [
             // merge value when its an object, else just assign
             if ( typeof value === 'object' ) {
                 // DAMN! Our Angular version is very very old. Cant use this:
-                // angular.merge({}, objRef[key], value );
+                
                 $.extend( true, objRef[key], value );
             } else {
                 objRef[key] = value;
@@ -648,7 +648,7 @@ sntRover.factory('RVReportUtilsFac', [
                 // fill up DS for display combo box
                 if ( __displayFilterNames[filter.value] ) {
 
-                    //__pushDisplayData( reportItem, filter );
+                    
                     //
                     // QUICK PATCH
                     // TODO: replace with a better solution

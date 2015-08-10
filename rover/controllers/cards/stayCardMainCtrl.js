@@ -35,7 +35,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			var fetchGuestcardDataSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
 				// No more future reservations returned with this API call
-				// $scope.reservationDetails.guestCard.futureReservations = data.future_reservation_count;
+				
 
 				/**
 				 *	CICO-9169
@@ -102,7 +102,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				var currentGuestCardHeaderData = declonedData;
 				$scope.$broadcast("resetGuestTab");
 				// CICO-16013 - fixing multiple API calls on staycard loading
-				//$scope.$broadcast("SHOWGUESTLIKESINFO");
+				
 			};
 
 			var fetchGuestcardDataFailureCallback = function(data) {
@@ -126,7 +126,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				data.id = $scope.reservationDetails.companyCard.id;
 				$scope.companyContactInformation = data;
 				// No more future reservations returned with this API call
-				// $scope.reservationDetails.companyCard.futureReservations = data.future_reservation_count;
+				
 				$scope.$broadcast('companyCardAvailable');
 
 			};
@@ -148,7 +148,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.travelAgentInformation = data;
 
 				// No more future reservations returned with this API call
-				// $scope.reservationDetails.travelAgent.futureReservations = data.future_reservation_count;
+				
 				$scope.$broadcast('travelAgentFetchComplete');
 
 			};
@@ -450,7 +450,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					'guestId': "",
 					'vip': "" //TODO: check with API or the product team
 				};
-				// // $scope.$emit('guestCardUpdateData', contactInfoData);
+				
 				$scope.guestCardData.contactInfo = contactInfoData.contactInfo;
 				$scope.guestCardData.contactInfo.avatar = contactInfoData.avatar;
 				$scope.guestCardData.contactInfo.vip = contactInfoData.vip;
@@ -664,17 +664,6 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			angular.forEach($scope.reservationData.rooms, function(room, index) {
 				room.stayDates = {};
 				rateIdSet.push(tData.rooms[index].rateId);
-				// amount: 32
-				// numAdults: 1
-				// numChildren: 0
-				// numInfants: 0
-				// rateId: 787
-				// roomNumber: "07"
-				// roomTypeId: "62"
-				// roomTypeName: "Standard Cabin"
-				// room_id: 588
-				// room_no: "07"
-				// room_type: "Standard Cabin"
 				room.numAdults = tData.rooms[index].numAdults;
 				room.numChildren = tData.rooms[index].numChildren;
 				room.numInfants = tData.rooms[index].numInfants;
@@ -703,11 +692,6 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				// put the same stuff in the reservationData obj as well
 				//
 				self.demographics = angular.copy(room.demographics);
-
-				// self.demographics.market = (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.market) ? '' : tData.rooms[index].demographics.market;
-				// self.demographics.source = (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.source) ? '' : tData.rooms[index].demographics.source;
-				// self.demographics.reservationType = (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.reservationType) ? '' : tData.rooms[index].demographics.reservationType;
-				// self.demographics.origin = (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.origin) ? '' : tData.rooms[index].demographics.origin;
 
 				self.totalStayCost = parseFloat(self.totalStayCost) + parseFloat(tData.rooms[index].amount);
 				var success = function(data) {

@@ -380,7 +380,7 @@
 				} else {
 					$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, successPayment);
 				}
-				//$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv,successPayment);
+				
 			};
 
 			$scope.applyPenalty = function() {

@@ -117,7 +117,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	      }
 	      $scope.refreshScroller('chargeCodesList');
 	      // we have changed data, so we are refreshing the scrollerbar
-	      //$scope.refreshScroller('cards_search_scroller');
+	      
 	    }
 	    else{
 	      var value = "";
@@ -136,7 +136,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 
 	      }
 	      // we have changed data, so we are refreshing the scrollerbar
-	      //$scope.refreshScroller('cards_search_scroller');
+	      
 	      $scope.refreshScroller('chargeCodesList');
 	    }
   	};

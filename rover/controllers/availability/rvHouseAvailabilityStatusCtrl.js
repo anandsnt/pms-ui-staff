@@ -36,10 +36,10 @@ sntRover.controller('RVHouseAvailabilityStatusCtrl', [
 			//We need to display only 3 days information
 			var fromDate = businessDate.clone();
 			fromDate.setDate(fromDate.getDate() - 1);
-			//fromDate = $filter('date')(fromDate, $rootScope.dateFormatForAPI);
+			
 			var toDate = businessDate.clone();
 			toDate.setDate(toDate.getDate() + 1);
-			//toDate = $filter('date')(toDate, $rootScope.dateFormatForAPI);
+			
 			var dataForWebservice = {
 				'from_date': $filter('date')(fromDate, $rootScope.dateFormatForAPI),
 				'to_date'  : $filter('date')(toDate, $rootScope.dateFormatForAPI),

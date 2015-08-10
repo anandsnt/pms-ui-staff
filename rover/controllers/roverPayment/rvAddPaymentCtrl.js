@@ -372,10 +372,10 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			var data = {
 				"reservation_id":	$scope.passData.reservationId
 			};
-			// var data =  {
-							// "add_to_guest_card": $scope.savePayment.addToGuest,
-							// "reservation_id": $scope.passData.reservationId
-					    // };
+			
+							
+							
+					    
 
 			if($scope.isNewCardAdded){
 				creditCardType =
@@ -496,7 +496,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 //
 
 
-		//$scope.invokeApi(RVPaymentSrv.chipAndPinGetToken, data, successSixSwipe);
+		
 	};
 	var successSixSwipe = function(response){
 		$scope.$emit("hideLoader");
@@ -542,7 +542,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		data.payment_credit_type = $scope.swipedCardDataToSave.cardType;
 		data.credit_card = $scope.swipedCardDataToSave.cardType;
 		data.card_expiry = "20"+$scope.swipedCardDataToSave.cardExpiryYear+"-"+$scope.swipedCardDataToSave.cardExpiryMonth+"-01";
-		//alert(JSON.stringify(data));
+		
 		if($scope.passData.details.isClickedCheckin !== undefined && $scope.passData.details.isClickedCheckin){
 			$scope.$emit("UPDATE_ADD_TO_GUEST_ON_CHECKIN_FLAG", $scope.dataToSave.addToGuestCard);
 			successSwipePayment();

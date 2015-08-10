@@ -303,7 +303,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		var reservationData = { "reservation_id":$scope.reservationData.reservationId ,"is_checkout":$scope.reservationBillData.isCheckout};
 		var paymentParams = $scope.reservationBillData.isCheckout ? reservationData : '';
 		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, $scope.getPaymentListSuccess);
-		//$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.guestInfoToPaymentModal.user_id, $scope.cardsListSuccess, '', 'NONE');
+		
 		$scope.invokeApi(RVPaymentSrv.getPaymentList, $scope.reservationData.reservationId , $scope.cardsListSuccess);
 	};
 
@@ -440,8 +440,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		//Clears older failure messages.
 		$scope.clearPaymentErrorMessage();
 		//TO CONFIRM AND REMOVE COMMENT OR TO DELETE
-		// $scope.showSuccesMessage = (!$scope.splitBillEnabled)? true: false;
-		// $scope.fullAmount =  angular.copy($scope.renderData.defaultPaymentAmount);
+		
+		
 		($scope.reservationBillData.isCheckout || !$scope.splitBillEnabled) ? $scope.closeDialog():'';
 	};
 	/*
@@ -570,7 +570,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			} else {
 				$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, successPayment, failedPayment);
 			}
-			//$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv,successPayment);
+			
 		}
 
 	};

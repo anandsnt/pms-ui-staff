@@ -418,9 +418,9 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//we are changing the model to
 			$scope.hasBookingDataChanged = true;
 
-			// if (isOverBooked()) {
-			// 	showOverBookingPopup()
-			// }
+			
+			
+			
 			runDigestCycle();
 		};
 
@@ -452,7 +452,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			$scope.endDateOptions.minDate = $scope.startDate;
 
 			//we have to show create button
-			//$scope.createButtonClicked = false;
+			
 
 			runDigestCycle();
 		};
@@ -466,7 +466,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			$scope.endDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
 			//we have to show create button
-			//$scope.createButtonClicked = false;
+			
 
 			runDigestCycle();
 		};
@@ -778,7 +778,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 			//returning max among them, simple
 			var max = _.max(totalBookedOfEachDate);
-			//$scope.$emit('hideLoader');
+			
 			return max;
 		};
 

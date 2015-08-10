@@ -226,13 +226,13 @@ sntRover.factory('RVReportParserFac', [
                 };
 
                 // dont remove yet
-                // console.log( 'API reponse changed as follows: ');
-                // console.log( returnAry );
+                
+                
             } else {
                 returnAry = apiResponse;
 
                 // dont remove yet
-                // console.log( 'No API changes applied' );
+                
             };
 
 

@@ -89,7 +89,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                    $scope.selectedEntity.guest_id = null;
             }
             if($scope.selectedEntity.entity_type === "GROUP" || $scope.selectedEntity.entity_type === "HOUSE"){
-                //$scope.selectedEntity.entity_type = "POSTING_ACCOUNT";
+                
             }
             else{
                 $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;
@@ -169,8 +169,8 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             $scope.isInitialPage = false;
             //TODO: Remove commented out code
             $scope.selectedEntity = {
-               // "reservation_status" : $scope.reservationData.reservation_status,
-                //"is_opted_late_checkout" : $scope.reservationData.is_opted_late_checkout,
+               
+                
                 "bill_no": "",
                 "has_accompanying_guests" : false,
                 "attached_charge_codes": [],

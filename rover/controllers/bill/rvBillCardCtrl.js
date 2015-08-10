@@ -216,7 +216,7 @@ sntRover.controller('RVbillCardController',
 	};
 
 
-	// flag to keep track of - if printing registration card and not bill card
+	
 	$scope.isPrintRegistrationCard = false;
 
 	//To send track details on checkin button

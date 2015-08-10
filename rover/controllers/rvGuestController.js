@@ -402,7 +402,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			// //refresh scroll in the contact tab of the card-content view. Handled in rover/controllers/rvCompanyCardsContactCtrl.js
 			$scope.$broadcast("contactTabActive");
 			// //refreshing the scroller in guestcard's tab
-			// $scope.$broadcast('REFRESHLIKESSCROLL');
+			
 		};
 
 		/**
@@ -636,7 +636,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 							var companyData = {};
 							companyData.id = item.id;
 							companyData.account_name = item.account_name;
-							// companyData.lastName = item.account_last_name;
+							
 							companyData.logo = item.company_logo;
 							if (item.address !== null) {
 								companyData.address = {};
@@ -705,7 +705,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 							var travelAgentData = {};
 							travelAgentData.id = item.id;
 							travelAgentData.account_name = item.account_name;
-							// travelAgentData.lastName = item.account_last_name;
+							
 							travelAgentData.logo = item.company_logo;
 							if (item.address !== null) {
 								travelAgentData.address = {};
@@ -895,7 +895,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				'guestId': "",
 				'vip': false
 			};
-			// // $scope.$emit('guestCardUpdateData', contactInfoData);
+			
 			$scope.guestCardData.contactInfo = contactInfoData.contactInfo;
 			$scope.guestCardData.contactInfo.avatar = contactInfoData.avatar;
 			$scope.guestCardData.contactInfo.vip = contactInfoData.vip;

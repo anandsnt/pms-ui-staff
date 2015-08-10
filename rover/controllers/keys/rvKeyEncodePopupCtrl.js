@@ -323,7 +323,7 @@ console.log($scope.encoderTypes);
 			that.printKeyStatus[index-1].printed = true;
 			$scope.printedKeysCount = index;
 			$scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
-			//$scope.$apply();
+			
 			if(that.numOfKeys === 0){
 				that.showKeyPrintSuccess();
 				return true;
@@ -542,7 +542,7 @@ console.log($scope.encoderTypes);
 
 		$('#encoder-type').blur();
 		//TODO:verfiy if required
-		//$scope.$apply();
+		
 	};
 
 	/*
