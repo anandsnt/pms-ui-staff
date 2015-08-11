@@ -344,7 +344,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			houseDetails.departues_expected[dayInfo.date] = {};
 			houseDetails.departues_expected[dayInfo.date].value = dayInfo.house.departing;
 			houseDetails.departues_expected[dayInfo.date].percent = dayInfo.house.departing / totalDepartures * 100;
-			//Departures Actual;
+			//Departures Actual
 			houseDetails.departures_actual[dayInfo.date] = {};
 			houseDetails.departures_actual[dayInfo.date].value = dayInfo.house.departed;
 			houseDetails.departures_actual[dayInfo.date].percent = dayInfo.house.departed / totalDepartures * 100;

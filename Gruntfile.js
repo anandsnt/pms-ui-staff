@@ -162,14 +162,6 @@ module.exports = function(grunt) {
                     livereload: true
                 }
             }
-            /*,
-            style: {
-                files: [],
-                tasks: [],
-                options: {
-                    livereload: true
-                }
-            }*/
         },
         livereload: {
             options: {

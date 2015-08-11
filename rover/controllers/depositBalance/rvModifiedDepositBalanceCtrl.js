@@ -406,26 +406,25 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				}
 			}
 
-			// if(!$scope.disableMakePayment()){
-				if($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.depositBalanceMakePaymentData.payment_type === "CC"){
-					dataToSrv.postData.is_emv_request = true;
-					$scope.shouldShowWaiting = true;
-					RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
-						$scope.depositPaidSuccesFully = true;
-						$scope.shouldShowWaiting = false;
-						$scope.authorizedCode = response.authorization_code;
-						$scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.depositBalanceMakePaymentData.amount);
-						$scope.$apply();
-						
-					},function(error){
-						$scope.depositPaidSuccesFully = false;
-						$scope.errorMessage = error;
-						$scope.shouldShowWaiting = false;
-					});
+			if($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.depositBalanceMakePaymentData.payment_type === "CC"){
+				dataToSrv.postData.is_emv_request = true;
+				$scope.shouldShowWaiting = true;
+				RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
+					$scope.depositPaidSuccesFully = true;
+					$scope.shouldShowWaiting = false;
+					$scope.authorizedCode = response.authorization_code;
+					$scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.depositBalanceMakePaymentData.amount);
+					$scope.$apply();
+					
+				},function(error){
+					$scope.depositPaidSuccesFully = false;
+					$scope.errorMessage = error;
+					$scope.shouldShowWaiting = false;
+				});
 
-				} else {
-					$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successMakePayment);
-				}
+			} else {
+				$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successMakePayment);
+			}
 			
 
 	};

@@ -1265,7 +1265,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 
 		$scope.toggleCalendar = function() {
-			//CICO-15042, CICO-15042 Disable navigation to the calendar screen temporarilyes" : " Change Stay Dates";
+			//CICO-15042, CICO-15042 Disable navigation to the calendar screen temporarilyes" : " Change Stay Dates"
 			$scope.stateCheck.activeMode = 'ROOM_RATE';
 			$scope.heading = "Rooms & Rates";
 			$scope.setHeadingTitle($scope.heading);
