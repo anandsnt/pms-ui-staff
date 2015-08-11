@@ -377,57 +377,54 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	 */
 	$scope.clickedMakePayment = function(){
 
-			var dataToSrv = {
-				"postData": {
-					"payment_type": $scope.depositBalanceMakePaymentData.payment_type,
-					"amount": $scope.depositBalanceMakePaymentData.amount,
-					"payment_type_id": $scope.paymentId
-				},
-				"reservation_id": $scope.reservationData.reservation_card.reservation_id
-			};
-			if($scope.depositBalanceMakePaymentData.payment_type === "CC"){
-				if (typeof($scope.depositBalanceMakePaymentData.card_code) !== "undefined") {
-					dataToSrv.postData.credit_card_type = $scope.depositBalanceMakePaymentData.card_code.toUpperCase();
-				}
+		var dataToSrv = {
+			"postData": {
+				"payment_type": $scope.depositBalanceMakePaymentData.payment_type,
+				"amount": $scope.depositBalanceMakePaymentData.amount,
+				"payment_type_id": $scope.paymentId
+			},
+			"reservation_id": $scope.reservationData.reservation_card.reservation_id
+		};
+		if($scope.depositBalanceMakePaymentData.payment_type === "CC"){
+			if (typeof($scope.depositBalanceMakePaymentData.card_code) !== "undefined") {
+				dataToSrv.postData.credit_card_type = $scope.depositBalanceMakePaymentData.card_code.toUpperCase();
 			}
+		}
 
-			if($scope.isAddToGuestCardVisible){
-			  dataToSrv.postData.add_to_guest_card	= $scope.depositBalanceMakePaymentData.add_to_guest_card;
+		if($scope.isAddToGuestCardVisible){
+		  dataToSrv.postData.add_to_guest_card	= $scope.depositBalanceMakePaymentData.add_to_guest_card;
+		}
+		if($scope.isDisplayReference){
+			dataToSrv.postData.reference_text = $scope.referanceText;
+		};
+		if($scope.isShowFees()){
+			if($scope.feeData.calculatedFee) {
+				dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
 			}
-			if($scope.isDisplayReference){
-				dataToSrv.postData.reference_text = $scope.referanceText;
-			};
-			if($scope.isShowFees()){
-				if($scope.feeData.calculatedFee) {
-					dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
-				}
-				if($scope.feeData.feesInfo) {
-					dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
-				}
+			if($scope.feeData.feesInfo) {
+				dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
 			}
+		}
 
-			// if(!$scope.disableMakePayment()){
-				if($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.depositBalanceMakePaymentData.payment_type === "CC"){
-					dataToSrv.postData.is_emv_request = true;
-					$scope.shouldShowWaiting = true;
-					RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
-						$scope.depositPaidSuccesFully = true;
-						$scope.shouldShowWaiting = false;
-						$scope.authorizedCode = response.authorization_code;
-						$scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.depositBalanceMakePaymentData.amount);
-						$scope.$apply();
+		if($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.depositBalanceMakePaymentData.payment_type === "CC"){
+			dataToSrv.postData.is_emv_request = true;
+			$scope.shouldShowWaiting = true;
+			RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
+				$scope.depositPaidSuccesFully = true;
+				$scope.shouldShowWaiting = false;
+				$scope.authorizedCode = response.authorization_code;
+				$scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.depositBalanceMakePaymentData.amount);
+				$scope.$apply();
+				
+			},function(error){
+				$scope.depositPaidSuccesFully = false;
+				$scope.errorMessage = error;
+				$scope.shouldShowWaiting = false;
+			});
 
-					},function(error){
-						$scope.depositPaidSuccesFully = false;
-						$scope.errorMessage = error;
-						$scope.shouldShowWaiting = false;
-					});
-
-				} else {
-					$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successMakePayment);
-				}
-
-
+		} else {
+			$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successMakePayment);
+		}
 	};
 	/*
 	 * On saving new card success

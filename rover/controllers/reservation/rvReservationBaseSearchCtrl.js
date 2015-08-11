@@ -449,7 +449,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.reservationData.travelAgent.iataNumber = ui.item.iataNumber;
             };
 
-            // DO NOT return false;
+            // DO NOT return false
         };
 
         $scope.autocompleteOptions = {
