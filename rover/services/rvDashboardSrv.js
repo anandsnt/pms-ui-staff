@@ -25,7 +25,7 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
 
  	this.fetchDashboardStatisticData = function(){
 	    var deferred = $q.defer();
-		
+
 		var url = '/api/dashboards';
 		rvBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);

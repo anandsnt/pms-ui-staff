@@ -65,7 +65,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
                 var payment = $('[valfor=value-default-payment]')[1];
                 $(payment).val(val);
             }, 2000);
-          
+
         });
 
 
@@ -73,7 +73,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 
 
 
-        
+
 	/*
 	 * Render add payment method screen
 	 */
@@ -180,11 +180,11 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	 * @param {index} index of selected payment method
 	 */
 	$scope.editPaymentMethod = function(index) {
-		
+
 			$scope.currentClickedElement = index;
 			$scope.editData = dclone($scope.data.payments[index],["is_active"]);
 			$scope.editData.isEditCC = false;
-		
+
 	};
 
 	$scope.editPaymentMethodCC = function(index) {

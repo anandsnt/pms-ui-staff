@@ -83,14 +83,14 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
                 filterData.allRates = data.results;
                 filterData.rates = data.results;
 
-                
+
             },
             fetchRateTypesSuccessCallback = function(data) {
                 $scope.$emit('hideLoader');
 
                 filterData.rate_types = data;
 
-                
+
             };
 
             $scope.invokeApi(RMFilterOptionsSrv.fetchRates, {}, fetchRatesSuccessCallback).then(function(data) {

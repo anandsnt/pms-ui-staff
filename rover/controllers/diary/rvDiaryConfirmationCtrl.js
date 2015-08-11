@@ -32,11 +32,11 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
 
                         return {
                             arrival_time: arrival.time.toString(true),
-                            
+
                             arrival_date: arrival_date,
                             departure_time: departure.time.toString(true),
                             departure_date: departure_date
-                            
+
                         };
                     },
 
@@ -125,7 +125,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
         };
 
         $scope.routeToSummary = function() {
-            
+
             var fetchSuccess = function(isAddonsConfigured){
                 $scope.saveToVault('temporaryReservationDataFromDiaryScreen', $scope.vaultSelections);
                 //CICO-9429

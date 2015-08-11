@@ -213,7 +213,7 @@ var GridRowItemDrag = React.createClass({
 
 				scroller.scrollTo(xScPos, yScPos, 0);
 				scroller._scrollFn();
-				
+
 			}
 	 		if(colNumber < 0) {
 	 			colNumber = 0;

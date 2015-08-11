@@ -77,7 +77,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 				$scope.isArTabAvailable = false;
 				$scope.$broadcast('ArAccountDeleted');
 				$scope.contactInformation.account_details.accounts_receivable_number = "";
-				
+
 				$scope.$broadcast('setgenerateNewAutoAr', false);
 				ngDialog.close();
 			};

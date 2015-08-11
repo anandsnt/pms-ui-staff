@@ -835,8 +835,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				};
 
 			// reset before fetch/process
-			
-			
+
+
 
 			// if the assignements has been loaded
 			// as part of the inital load, just process it

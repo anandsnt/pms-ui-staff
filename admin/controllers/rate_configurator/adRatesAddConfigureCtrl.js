@@ -489,16 +489,16 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         };
 
         $scope.checkFieldEntered = function(index) {
-            
-            
 
-            if ($scope.otherData.setChanged) { 
+
+
+            if ($scope.otherData.setChanged) {
                 $scope.data.sets[index].isEnabled = true;
             } else {
                 $scope.data.sets[index].isEnabled = false;
             }
 
-            return $scope.data.sets[index].isEnabled; 
+            return $scope.data.sets[index].isEnabled;
         };
 
         $scope.popupCalendar = function() {

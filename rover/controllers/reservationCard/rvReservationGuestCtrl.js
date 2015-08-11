@@ -185,7 +185,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			dataToSend.accompanying_guests_details = [];
 			dataToSend.reservation_id = $scope.reservationData.reservation_card.reservation_id;
 
-			
+
 			angular.forEach($scope.guestData.accompanying_guests_details, function(guest, index) {
 				delete guest.image;
 

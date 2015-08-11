@@ -7,7 +7,7 @@ function($http, $q, ADBaseWebSrvV2) {
     */
 	this.fetch = function(){
 		var deferred = $q.defer();
-		
+
 		var url = '/api/hotel_settings';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {

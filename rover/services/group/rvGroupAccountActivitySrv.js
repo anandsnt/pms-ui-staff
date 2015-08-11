@@ -7,7 +7,7 @@ sntRover.service('rvGroupAccountActivitySrv', [
 
 		this.fetchActivityLog = function(params) {
 			var deferred = $q.defer();
-			
+
 			var url ='/api/group_actions/'	+ params.id;
 			params = _.omit(params, 'id');
 			rvBaseWebSrvV2.getJSON(url,params)

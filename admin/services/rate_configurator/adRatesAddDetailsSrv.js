@@ -71,7 +71,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.addRatesDetailsData.cancelationPenalties = data.results;
                     that.fetchAddons();
-                    
+
                 }, function (data) {
                     deferred.reject(data);
                 });

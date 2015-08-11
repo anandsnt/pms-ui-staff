@@ -13,7 +13,7 @@ sntRover.service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 			var deferred = $q.defer(),
 				group_id = params.id,
 				url = '/api/group_reservations/',
-				
+
 				params = {
 					"group_id": params.group_id,
 					"reservations_data": {
@@ -47,7 +47,7 @@ sntRover.service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 
 				group_id = params.group_id,
 				url = '/api/group_reservations/' + group_id + "/list";
-			
+
 
 			var data = {
 				'sort_field': params.sorting_field,
@@ -102,7 +102,7 @@ sntRover.service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 			var deferred = $q.defer(),
 				group_id = params.id,
 				url = '/api/groups/auto_room_assignment',
-				
+
 				params = {
 					"group_id": params.group_id,
 					"reservation_ids": params.reservation_ids
@@ -154,7 +154,7 @@ sntRover.service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 			var deferred = $q.defer(),
 				group_id = params.id,
 				url = 'api/group_rooms/' + group_id;
-			
+
 
 			rvBaseWebSrvV2.getJSON(url).then(
 				function(data) {

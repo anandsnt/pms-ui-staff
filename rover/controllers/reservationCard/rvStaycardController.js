@@ -15,8 +15,8 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 
 
 		$scope.countriesListForGuest = [];
-		
-		
+
+
 		$scope.paymentData = {};
 		/*
 		 * To get the payment tab payments list
@@ -133,8 +133,8 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 			$scope.openPaymentList(data);
 		});
 		$scope.openPaymentList = function(data) {
-			
-			
+
+
 			$scope.dataToPaymentList = data;
 			ngDialog.open({
 				template: '/assets/partials/payment/rvShowPaymentList.html',
@@ -147,7 +147,7 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
                 $scope.showRoomSharerPopup = function() {
                     ngDialog.open({
                         template: '/assets/partials/reservationCard/sharedRoom.html',
-                        
+
                         scope: $scope
                     });
                 };

@@ -49,7 +49,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         this.fetchRateTypes = function () {
             var deferred = $q.defer();
 
-            
+
             var url = "/api/rate_types.json";
             ADBaseWebSrvV2.getJSON(url).then(function (data) {
                 var results = [];

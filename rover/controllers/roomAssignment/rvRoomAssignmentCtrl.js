@@ -61,10 +61,10 @@ sntRover.controller('RVroomAssignmentController',[
 			$scope.applyFilterToRooms();
 			$scope.$emit('hideLoader');
 			$scope.refreshScroller('roomlist');
-			
-			
-			
-			
+
+
+
+
 		};
 		var errorCallbackGetRooms = function(error){
 			$scope.$emit('hideLoader');
@@ -147,7 +147,7 @@ sntRover.controller('RVroomAssignmentController',[
 		$scope.assignedRoom = $scope.filteredRooms[index];
 		$scope.roomTransfer.newRoomNumber = $scope.filteredRooms[index].room_number;
 		if(showOccupancyMessage){
-	    
+
 	    	$scope.oldRoomType = oldRoomType;
 			ngDialog.open({
                   template: '/assets/partials/roomAssignment/rvMaximumOccupancyDialog.html',
@@ -160,7 +160,7 @@ sntRover.controller('RVroomAssignmentController',[
 				$scope.moveInHouseRooms();
 			}else{
 				if(oldRoomType !== $scope.roomType){
-				
+
 					$scope.oldRoomType = oldRoomType;
 					$scope.openApplyChargeDialog();
 				} else {
@@ -180,7 +180,7 @@ sntRover.controller('RVroomAssignmentController',[
 	};
 
 	$scope.occupancyDialogSuccess = function(){
-		
+
 		var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
         if(reservationStatus === "CHECKEDIN"){
             	$scope.moveInHouseRooms();

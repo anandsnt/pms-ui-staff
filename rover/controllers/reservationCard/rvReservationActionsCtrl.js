@@ -443,9 +443,9 @@ sntRover.controller('reservationActionsController', [
 
 					// Sample Response from api/reservations/:id/policies inside the results hash
 					// calculated_penalty_amount: 40
-					
-					
-					
+
+
+
 
 					depositAmount = data.results.deposit_amount;
 					var isOutOfCancellationPeriod = (data.results.cancellation_policy_id === undefined);
@@ -472,7 +472,7 @@ sntRover.controller('reservationActionsController', [
 							promptCancel('', nights, (data.results.penalty_type === 'percent'));
 						}
 					}
-					
+
 
 				};
 
@@ -518,7 +518,7 @@ sntRover.controller('reservationActionsController', [
 			return showSmartBand;
 		};
 
-		
+
 		$scope.goToCheckoutButton = function(reservationId, clickedButton, smartbandHasBalance) {
 			if (smartbandHasBalance === "true") {
 				$scope.clickedButton = clickedButton;

@@ -18,7 +18,7 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 		if (typeof $scope.reservationDetails === 'undefined') {
 			$scope.currentCard = $stateParams.id;
 		} else {
-			
+
 			$scope.currentCard = $scope.contactInformation.id;
 		}
 
@@ -467,7 +467,7 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 		 */
 		$scope.$on('saveContract', function(event) {
 			event.preventDefault();
-			
+
 			$scope.updateContract();
 		});
 		/**

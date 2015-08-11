@@ -2,7 +2,7 @@ admin.service('ADDoorlockInterfaceSrv',['$http', '$q', 'ADBaseWebSrvV2', functio
 
 	this.fetch = function(){
 		var deferred = $q.defer();
-		
+
 		var url = '/api/door_lock_interfaces.json';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
@@ -16,7 +16,7 @@ admin.service('ADDoorlockInterfaceSrv',['$http', '$q', 'ADBaseWebSrvV2', functio
 
 	this.save = function(params){
 		var deferred = $q.defer();
-		
+
 		var url = '/api/door_lock_interfaces';
 
 		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {

@@ -203,7 +203,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			$scope.currentSelectedTab = 'cc-ar-transactions';
 			$scope.$broadcast('setgenerateNewAutoAr', true);
 			$scope.switchTabTo('', 'cc-ar-transactions');
-			
+
 		};
 
 		$scope.$on('ARNumberChanged', function(e, data) {

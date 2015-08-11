@@ -13,7 +13,7 @@ sntRover.service('rvAccountsSrv',
 		*/
 		this.getAccountsList = function(params){
 			var deferred = $q.defer(),
-				
+
 				url = '/api/posting_accounts/search';
 
 			var data = {

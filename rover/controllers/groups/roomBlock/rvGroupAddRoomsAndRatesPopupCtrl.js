@@ -155,7 +155,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 		};
 
 		var successCallBackOfSaveNewRoomTypesAndRates = function(data) {
-			
+
 			$scope.fetchRoomBlockGridDetails();
 			$scope.closeDialog();
 		};

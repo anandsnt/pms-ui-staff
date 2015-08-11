@@ -227,7 +227,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 			var showDemographicsPopup = function() {
 					$scope.groupSummaryData.isDemographicsPopupOpen = true;
-					
+
 
 					demographicsMemento = angular.copy($scope.groupConfigData.summary.demographics);
 					ngDialog.open({
@@ -273,7 +273,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$scope.billingEntity = "GROUP_DEFAULT_BILLING";
 
 			$scope.billingInfoModalOpened = true;
-			
+
 			ngDialog.open({
 				template: '/assets/partials/bill/rvBillingInformationPopup.html',
 				controller: 'rvBillingInformationPopupCtrl',
@@ -356,7 +356,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		$scope.releaseRooms = function() {
 			var onReleaseRoomsSuccess = function(data) {
 					//: Handle successful release
-					
+
 					$scope.closeDialog();
 					fetchSummaryData();
 				},

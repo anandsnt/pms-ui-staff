@@ -321,7 +321,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
 
             };
 
-            
+
             var params = {
                 'reservation_id':$scope.$parent.reservationData.reservation_card.reservation_id,
                 'action_task':{
@@ -410,7 +410,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.initNewAction = function(){
             $scope.clearNewAction();
             $scope.setRightPane('new');
-            
+
 
         };
         $scope.getDefaultDueDate = function(){
@@ -480,7 +480,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 }
 
 
-                
+
                 var inActions = false;
                 var listItem, actionItem;
 
@@ -539,7 +539,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     if (typeof list[x].time_due === typeof 'string'){
                         matchObj = getTimeObj(list[x].time_due);
                         list[x].due_at_time = matchObj;
-                        
+
                     } else {
                         list[x].due_at_time = $scope.timeFieldValue[0];
                     }
@@ -567,7 +567,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 $scope.fetchActionsCount();
                 $scope.setActionsHeaderInfo();
                 $scope.setDefaultActionSelected(0);
-                
+
                 if ($scope.openingPopup){
                     setTimeout(function(){
                         $scope.initPopup();
@@ -729,7 +729,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
              seconds = '0' + seconds;
             }
             return getFormattedTime(hours+''+minutes);
-      
+
         };
         var getFormattedTime = function (fourDigitTime){
             var hours24 = parseInt(fourDigitTime.substring(0,2));

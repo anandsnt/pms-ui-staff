@@ -171,7 +171,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		//Calculate the scroll width for bill tabs in all the cases
 		$scope.getWidthForBillTabsScroll = function() {
-			
+
 			var width = 0;
 			if($scope.transactionsDetails !== undefined){
 				var width = $('#registration-summary ul li').width() * ($scope.transactionsDetails.bills.length + 1);
@@ -378,7 +378,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			$scope.errorMessage = "";
 			//hide edit and remove options in case type is  payment
-			
+
 			$scope.selectedTransaction = {};
 			$scope.selectedTransaction.id = id;
 			$scope.selectedTransaction.desc = desc;

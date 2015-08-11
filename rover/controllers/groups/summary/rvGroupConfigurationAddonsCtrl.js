@@ -102,7 +102,7 @@ sntRover.controller('rvGroupConfigurationAddonsCtrl', [
 					'to_date': $scope.groupConfigData.summary.block_to,
 					'is_active': true,
 					'is_not_rate_only': true
-						
+
 				}
 			});
 		};

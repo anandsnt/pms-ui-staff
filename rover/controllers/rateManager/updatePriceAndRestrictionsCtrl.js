@@ -715,7 +715,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
             data.room_type_id = $scope.popupData.selectedRoomType;
             data.details = calculateDetailsToSave(datesSelected);
             var saveRestrictionSuccess = function () {
-                
+
                 ngDialog.close();
 
                 $scope.$emit('showLoader');

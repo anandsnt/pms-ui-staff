@@ -14,7 +14,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 		var deferred = $q.defer();
 		var url = '/admin/users.json';
 		ADBaseWebSrvV2.getJSON(url ,params).then(function(data) {
-				
+
 
 				that.saveUserArray(data);
 			    deferred.resolve(data);

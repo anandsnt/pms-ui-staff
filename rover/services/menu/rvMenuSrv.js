@@ -496,7 +496,7 @@ sntRover.service('rvMenuSrv',
 
 			case 'reports':
 				// we are hiding the reports menu if it is a floor & maintanance staff	in connected/standalon
-				
+
 				break;
 			case 'workManagement':
 				returnValue = !isHourlyRateOn();

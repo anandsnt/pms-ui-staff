@@ -26,8 +26,8 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 		 */
 		$scope.$on('passReservationParams', function(event, data) {
 
-			
-			
+
+
 			$scope.$emit('staycardGuestData', data);
 			$scope.data = data;
 
@@ -72,7 +72,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 				};
 				$scope.$emit('SETGUESTDATA', guestInfo);
 				$scope.showGuestPaymentList(guestInfo);
-				
+
 			}
 
 			if ($scope.timeline === "current") {

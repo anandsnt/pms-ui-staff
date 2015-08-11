@@ -67,21 +67,21 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					submenu: [],
 					iconClass: "icon-dashboard"
 				},
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
+
+
+
+
+
+
+
+
+
+
+
+
 				{
 					title: "MENU_FRONT_DESK",
-					
+
 					action: "",
 					iconClass: "icon-frontdesk",
 					submenu: [
@@ -112,7 +112,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		       	 	}]
 				}, {
 			        title: "MENU_GROUPS",
-			        
+
 			        action: "",
 			        iconClass: "icon-groups",
 			        menuIndex: "menuGroups",
@@ -159,7 +159,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					}]
 				}, {
 					title: "MENU_HOUSEKEEPING",
-					
+
 					action: "",
 					iconClass: "icon-housekeeping",
 					submenu: [{
@@ -235,7 +235,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-dashboard"
 				}, {
 					title: "MENU_HOUSEKEEPING",
-					
+
 					action: "",
 					iconClass: "icon-housekeeping",
 					submenu: [{
@@ -557,7 +557,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$scope.hasLoader = false;
 		});
 
-		
+
 
 		/**
 		    *   Method to go back to previous state.

@@ -90,7 +90,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                 categories.push(dateFilter(itemDate, "EEEE") + "<br>" + dateFilter(itemDate, "MMMM dd"));
 
                 // NOTE :: Check if replaced harcoded 10 with item.actual
-                
+
 
                 if(item.actual === null){
                    actual = 0;
@@ -102,7 +102,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                 toolTipLookUp[itemDate].actual = valueActual;
 
                 // NOTE :: Check if replaced harcoded 10 with item.target
-                
+
                 targetData.push(item.target || 0);
                 toolTipLookUp[itemDate].target = valueTarget;
             });

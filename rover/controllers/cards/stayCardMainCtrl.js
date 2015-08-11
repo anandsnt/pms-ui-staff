@@ -35,7 +35,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			var fetchGuestcardDataSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
 				// No more future reservations returned with this API call
-				
+
 
 				/**
 				 *	CICO-9169
@@ -102,7 +102,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				var currentGuestCardHeaderData = declonedData;
 				$scope.$broadcast("resetGuestTab");
 				// CICO-16013 - fixing multiple API calls on staycard loading
-				
+
 			};
 
 			var fetchGuestcardDataFailureCallback = function(data) {
@@ -126,7 +126,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				data.id = $scope.reservationDetails.companyCard.id;
 				$scope.companyContactInformation = data;
 				// No more future reservations returned with this API call
-				
+
 				$scope.$broadcast('companyCardAvailable');
 
 			};
@@ -148,7 +148,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.travelAgentInformation = data;
 
 				// No more future reservations returned with this API call
-				
+
 				$scope.$broadcast('travelAgentFetchComplete');
 
 			};
@@ -450,7 +450,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					'guestId': "",
 					'vip': "" //TODO: check with API or the product team
 				};
-				
+
 				$scope.guestCardData.contactInfo = contactInfoData.contactInfo;
 				$scope.guestCardData.contactInfo.avatar = contactInfoData.avatar;
 				$scope.guestCardData.contactInfo.vip = contactInfoData.vip;

@@ -27,14 +27,14 @@ admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelList
 		return "/assets/partials/templateConfiguration/adHotelConfigurationEdit.html";
 	};
 	$scope.editHotelConfiguration = function(index, hotelId){
-		
-		
+
+
 
 		$scope.isAddmode = false;
 		$scope.errorMessage ="";
 		$scope.currentClickedElement = index;
 		$scope.clickedHotel = hotelId;
-		
+
 		var postData = { 'hotel_id' : hotelId };
 		var editHotelConfigurationSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');

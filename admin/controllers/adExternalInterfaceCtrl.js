@@ -151,8 +151,8 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
                var n = new Date();
                var nd = n.valueOf();
                var twentyFourHrs = 86400000;
-               
-              
+
+
                if ((nd-$scope.lastRefreshedTimeObj.valueOf()) > twentyFourHrs){
                    $scope.refreshButtonEnabled = 'enabled';
                } else {

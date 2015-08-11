@@ -169,7 +169,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$rootScope', '$state', 'ADRatesSr
     * @param {string} id of the rate
     */
 	$scope.getTemplateUrl = function(index, id){
-		
+
 		if(typeof index === "undefined" || typeof id === "undefined") {
 			return "";
 		}

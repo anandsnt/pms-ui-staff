@@ -104,7 +104,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				return item.id === $_originalStatusId;
 			});
 
-			
+
 
 			// check and update if room in service
 			$scope.inService = $scope.updateService.room_service_status_id !== $_inServiceId ? false : true;

@@ -37,7 +37,7 @@ admin.controller('ADOriginsCtrl', ['$scope', 'ADOriginsSrv', '$anchorScroll', '$
 
 		$scope.setDefaultOriginSiteminder = function() {};
 
-		
+
 
 		/*
 		 * To get the template of edit screen

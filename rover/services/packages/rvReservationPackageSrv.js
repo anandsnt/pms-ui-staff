@@ -4,7 +4,7 @@ sntRover.service('RVReservationPackageSrv',['$http', '$q', 'rvBaseWebSrvV2', fun
 	var that = this;
 	this.getReservationPackages = function(reservationId){
 		var deferred = $q.defer();
-		
+
 		var url = '/staff/staycards/reservation_addons?reservation_id='+reservationId;
 		RVBaseWebSrvV2.getJSON(url).then(function(data) {
 			    deferred.resolve(data);
@@ -16,7 +16,7 @@ sntRover.service('RVReservationPackageSrv',['$http', '$q', 'rvBaseWebSrvV2', fun
 
 	this.deleteAddonsFromReservation = function(dataToApi){
 		var deferred = $q.defer();
-		
+
 		var url = 'api/reservations/'+dataToApi.reservationId+'/delete_addons';
 
 		RVBaseWebSrvV2.postJSON(url, dataToApi.postData).then(function(data) {

@@ -63,7 +63,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
     * To fetch All Calendar data
     */
 	this.fetchCalendarData = function(params){
-		
+
                 var url = "/api/daily_rates", fetchingRooms = false;
                 if (params){
                     if (params.roomrate === 'ROOMS'){
@@ -100,7 +100,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			}
 
 			var urlString = dateString + rateString + rateTypeString + nameCardString;
-			
+
 			BaseWebSrvV2.getJSON(urlString).then(function(data) {
 				that.dailyRates = data;
                                 if (fetchingRooms){
@@ -190,7 +190,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			delete params['id'];
 			delete params['rate'];
 
-			
+
 			BaseWebSrvV2.getJSON(url, params).then(function(data) {
 				that.roomTypeRates = data;
 				var calendarData = that.calculateRoomTypeViewCalData();
@@ -375,7 +375,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	   				if (dailyRatesData[i].id === rate.id)
 	   				{
 	   		  			rateData = dailyRatesData[i];
-	   		  			
+
 	   				}
 		   		}
 
@@ -433,10 +433,10 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 				}
 
 				// Ignore keys other date object
-				
-				
-				
-				
+
+
+
+
 				//We don't want to check the history dates
 				if( (new Date(date).getTime() < new Date(that.businessDate).getTime()) ){
 			   		continue;

@@ -216,7 +216,7 @@ sntRover.controller('RVbillCardController',
 	};
 
 
-	
+
 	$scope.isPrintRegistrationCard = false;
 
 	//To send track details on checkin button

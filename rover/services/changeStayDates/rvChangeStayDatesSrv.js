@@ -18,7 +18,7 @@ sntRover.service('RVChangeStayDatesSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSrv'
     	//function to fetch calender details against a reservation id
     	this.fetchCalenderDetails = function (reservationId, deferred){
             var url = '/staff/change_stay_dates/' + reservationId + '/calendar.json';
-            
+
 
             RVBaseWebSrv.getJSON(url).then(function(data) {
                 that.changeStayDetails.calendarDetails = data;
@@ -39,7 +39,7 @@ sntRover.service('RVChangeStayDatesSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSrv'
 
         this.checkUpdateAvaibale = function (data){
             var url = '/staff/change_stay_dates/' + data.reservation_id + '/update.json';
-            
+
             var data = {'arrival_date': data.arrival_date, 'dep_date': data.dep_date};
             var deferred = $q.defer ();
             RVBaseWebSrv.getJSON(url, data).then(function(data) {

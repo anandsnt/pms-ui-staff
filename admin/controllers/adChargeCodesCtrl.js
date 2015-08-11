@@ -54,7 +54,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		/*
 		 * To fetch charge code list
 		 */
-		
+
 		/*
 		 * To fetch the charge code details for add screen.
 		 */
@@ -190,7 +190,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					$scope.orderedData[parseInt($scope.currentClickedElement)].charge_group = data.charge_group;
 					$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code_type = data.charge_code_type;
 					$scope.orderedData[parseInt($scope.currentClickedElement)].link_with = data.link_with;
-					
+
 				} else {
 					$scope.data.charge_codes.push(data);
 					$scope.tableParams.reload();
@@ -223,7 +223,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			if($scope.prefetchData.selected_fees_code ===""){
 				$scope.prefetchData.selected_fees_code = null;
 			};
-			
+
 			var unwantedKeys = ["charge_code_types", "payment_types", "charge_groups", "link_with", "amount_types", "tax_codes", "post_types", "symbolList"];
 			var postData = dclone($scope.prefetchData, unwantedKeys);
 

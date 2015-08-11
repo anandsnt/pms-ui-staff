@@ -114,7 +114,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 			$scope.data.revenueData.charge_groups[0].charge_codes = [];
 			$scope.data.revenueData.charge_groups[0].charge_codes = data.charge_codes;
 			$scope.data.revenueData.charge_groups[0].active = true;
-			
+
 
 			$rootScope.$broadcast('REFRESHREVENUECONTENT');
             $scope.errorMessage = "";

@@ -27,7 +27,7 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 		$scope.tableParams = new ngTableParams({
 		        page: 1,  // show first page
 		        count: $scope.displyCount // count per page
-		        
+
 		    }, {
 		        total: 0, // length of data
 		        getData: $scope.fetchTableData

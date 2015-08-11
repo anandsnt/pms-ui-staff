@@ -16,7 +16,7 @@ sntRover.controller('RVReservationNotesPopupCtrl',['$scope', function($scope){
 	    var successCallBackReservationNote = function(data) {
 	        if (!data.is_already_existing) {
 	            $scope.reservationnote = "";
-	            data.topic = "GENERAL"; 
+	            data.topic = "GENERAL";
 	            $scope.$parent.reservationData.reservation_card.notes.reservation_notes.splice(0, 0, data);
 	            $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
 	            refreshScroller();

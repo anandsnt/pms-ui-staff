@@ -16,7 +16,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 	};
 
 	var failureCallBack = function(data){
-		
+
 		$scope.$emit("hideLoader");
 		$scope.errorMessage = data;
 	};
@@ -119,7 +119,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 	      }
 	      $scope.refreshScroller('chargeCodesList');
 	      // we have changed data, so we are refreshing the scrollerbar
-	      
+
 	    }
 	    else{
 	      var value = "";
@@ -138,7 +138,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 
 	      }
 	      // we have changed data, so we are refreshing the scrollerbar
-	      
+
 	      $scope.refreshScroller('chargeCodesList');
 	    }
   	};

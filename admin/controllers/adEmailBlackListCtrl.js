@@ -63,24 +63,24 @@ admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSr
 			$scope.emailList = data;
 			$scope.loadTable();
 
-      
+
 		    //    page: 1,            // show first page
 		    //    	count: 100,    // count per page - Need to change when on pagination implemntation
-		    
-		    
-		    
 
-		    
-		    
-		    
-		    
-		    
 
-		    
 
-		    
-		    
-		    
+
+
+
+
+
+
+
+
+
+
+
+
 
 		};
 	   $scope.invokeApi(ADEmailBlackListSrv.fetch, {} , successCallbackFetch);

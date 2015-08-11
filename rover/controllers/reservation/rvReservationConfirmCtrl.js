@@ -448,7 +448,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		 */
 		$scope.goToSearchClicked = function() {
 			$scope.initReservationData();
-			
+
 			$state.go('rover.search', '');
 		};
 

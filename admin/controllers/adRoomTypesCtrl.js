@@ -145,7 +145,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	 		$timeout(function() {
 		        $scope.successMessage = "";
 		    }, 1000);
-	 		
+
 	 	};
 	 	var errorCallbackImport = function(data){
 	 		$scope.$emit('hideLoader');

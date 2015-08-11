@@ -4,7 +4,7 @@ admin.service('ADCampaignSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         this.fetchCampaigns = function (data) {
             var deferred = $q.defer();
 
-            
+
             var url = "/api/campaigns";
             ADBaseWebSrvV2.getJSON(url, data).then(function (data) {
                 deferred.resolve(data);
@@ -76,7 +76,7 @@ admin.service('ADCampaignSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         this.fetchCampaignConfig = function(){
 
         	var deferred = $q.defer();
-        	
+
             var url = "api/campaigns/configurations";
 
         	ADBaseWebSrvV2.getJSON(url).then(function (data) {

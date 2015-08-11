@@ -7,7 +7,7 @@ sntRover.controller('RVComparisonReportCtrl', [
 
 		var currencySymbol = $rootScope.currencySymbol;
 
-		
+
 		init();
 
 		// re-render must be initiated before for taks like printing.

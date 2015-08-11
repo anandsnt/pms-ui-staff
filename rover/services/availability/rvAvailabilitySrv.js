@@ -275,7 +275,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		var deferred = $q.defer();
 		var url = '/api/availability/house';
 		var businessDate = tzIndependentDate(params['business_date']).clone();
-		
+
 		delete params['business_date'];
 
 		rvBaseWebSrvV2.getJSON(url, params).then(function(data) {

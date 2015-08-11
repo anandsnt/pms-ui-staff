@@ -13,7 +13,7 @@ sntRover.service('rvGroupSrv',
 		*/
 		this.getGroupList = function(params){
 			var deferred = $q.defer(),
-				
+
 				url = '/api/groups/search';
 
 			var data = {

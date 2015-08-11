@@ -143,7 +143,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 
 				// we are gonna just gonna assign
 				// the assigned rooms avail here
-				
+
 				// no more checking for worksheet id
 				var assignedRooms = [];
 				_.each(data.work_sheets[0].work_assignments, function(room) {
@@ -357,10 +357,10 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 
 			// lets create a set of worktypes that will hold
 			// rooms under each worktype id name - e.g:
-			
-			
-			
-			
+
+
+
+
 			worktypesSet = {};
 
 			// use the worktype list to initiate

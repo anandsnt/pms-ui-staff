@@ -908,9 +908,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                     // Sample Response from api/reservations/:id/policies inside the results hash
                     // calculated_penalty_amount: 40
-                    
-                    
-                    
+
+
+
 
                     depositAmount = data.results.deposit_amount;
                     var isOutOfCancellationPeriod = (typeof data.results.cancellation_policy_id !== 'undefined');

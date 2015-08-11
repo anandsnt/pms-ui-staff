@@ -46,7 +46,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 				//Refresh the calendar with the arrival, departure dates
 				$scope.refreshCalendarEvents();
 				//Display Calendar
-				
+
 			};
 
 			//From date is the 22nd of the previous month of arrival date
@@ -122,7 +122,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 
 			//Update the rate details - we need to update for each stay day
 			var stayDates = {};
-			
+
 			var date;
 			for (var i in $scope.dates) {
 				date = $scope.dates[i];
@@ -270,7 +270,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 
 			// checkin date/ checkout date can not be moved prior to current business date
 			if (event.getTime() < tzIndependentDate($rootScope.businessDate).getTime()) {
-				
+
 				return false;
 			}
 
@@ -385,7 +385,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 				if (thisDate.getDate() === checkinDate.getDate()&&thisDate.getMonth() === checkinDate.getMonth()&&thisDate.getYear() === checkinDate.getYear()) {
 					calEvt.id = "check-in";
 					calEvt.className = "check-in";
-					
+
 					if ($scope.reservationData.status !== "CHECKEDIN" && $scope.reservationData.status !== "CHECKING_OUT") {
 						calEvt.startEditable = "true";
 					}
