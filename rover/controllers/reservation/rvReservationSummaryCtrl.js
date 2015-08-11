@@ -1175,6 +1175,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             }
         };
 
+    
+
+        $rootScope.$on('UPDATERESERVATIONTYPE', function(e, data) {
+            $scope.reservationData.reservation_type = data;
+        });
+
         $scope.setDemographics = function(showRequiredFieldsOnly, index) {
             $scope.shouldShowReservationType = true;
             $scope.shouldShowMarket = true;
@@ -1183,6 +1189,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             $scope.shouldShowSegments = true;
 
             $scope.demographics = ($scope.reservationData.rooms[index] && $scope.reservationData.rooms[index].demographics) || angular.copy($scope.reservationData.demographics);
+            // CICO-18594 - Urgent fix
+            if(typeof $scope.reservationData.reservation_type !== "undefined"){
+                $scope.demographics.reservationType = $scope.reservationData.reservation_type;
+            };
 
             if (showRequiredFieldsOnly) {
                 $scope.shouldShowReservationType = ($scope.otherData.reservationTypeIsForced) ? true : false;
