@@ -152,20 +152,32 @@
                 </h3>
                 </div>
                 <div class="entry full-width">
-                    <ad-textbox value="data.cancellation_communication_title" label="{{'TITLE'| translate}}" placeholder="{{'ENTER_TITLE'| translate}}"></ad-textbox>
+                    <ad-textbox value="data.cancellation_communication_title" label="{{'CANCELLATION EMAIL SUBJECT'| translate}}" placeholder="{{'ENTER_TITLE'| translate}}"></ad-textbox>
                 </div>
                 <div class="entry full-width">
-                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.cancellation_communication_text" label="{{'CANCELLATION_TEXT'| translate}} " placeholder="{{'CANCELLATION_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
+                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.cancellation_communication_text" label="{{'CANCELLATION EMAIL BODY'| translate}} " placeholder="{{'CANCELLATION_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
                 </div>
                 <ad-toggle-button label="{{'SEND_CANCELLATION_LETTER' | translate}}" is-checked="data.send_cancellation_letter"></ad-toggle-button>
                 <ad-toggle-button is-disabled="!data.send_cancellation_letter" label="{{ 'PRINT_CANCELLATION_LETTER' | translate }}" is-checked="data.print_cancellation_letter"></ad-toggle-button>
+                <div class="entry full-width" ng-show="data.send_cancellation_letter">
+                    <label for="hotel-logo" translate> HOTEL_LOGO </label>
+                    <div class="select">
+                        <select ng-model="data.logo_type_for_cancellation" name="hotel-logo" class="placeholder">
+                            <option value="" translate> SELECT_LOGO_TYPE </option>
+                            <option ng-repeat="item in data.hotel_logo" value="{{item.value}}" ng-selected="item.value == data.logo_type_for_cancellation">{{item.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="entry full-width" ng-show="data.send_cancellation_letter">
+                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.cancellation_letter_body" label="{{'CANCELLATION LETTER BODY'| translate}} " placeholder="{{'CANCELLATION_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
+                </div>
             </fieldset>
             <fieldset class="holder right">
                 <div class="form-title">
                     <h3>
-                    <span>{{'CUSTOMIZE' | translate}}</span>
-                    {{'REGISTRATION_COMMUNICATION' | translate}}
-                </h3>
+                        <span>{{'CUSTOMIZE' | translate}}</span>
+                        {{'REGISTRATION_COMMUNICATION' | translate}}
+                    </h3>
                 </div>
                 <div class="entry full-width">
                     <label translate>REGISTRATION_TEMPLATE</label>
