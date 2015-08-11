@@ -359,7 +359,6 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.closeDialog();
 	};
 	var ccSaveFailure = function(errorMessage){
-		console.log(errorMessage);
 		$scope.$emit("hideLoader");
 		$scope.errorMessage = errorMessage;
 	};
@@ -418,7 +417,6 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 				data.card_code   = (!$scope.cardData.tokenDetails.isSixPayment)?
 									$scope.cardData.cardDetails.cardType:
 									getSixCreditCardType($scope.cardData.tokenDetails.card_type).toLowerCase();
-				console.log("saveNewCard");
 				$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, ccSaveSuccess, ccSaveFailure);
 			}
 			else {
