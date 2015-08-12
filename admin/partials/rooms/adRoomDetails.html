@@ -75,12 +75,39 @@
 					</em>
 				</div>
 				<div class="entry full-width">
-					<div id="room-likes" class="boxes col2">
-						<div ng-repeat="room_likes in data.room_likes">
-							<ad-checkbox ng-repeat="option in room_likes.options" is-checked="option.selected" label="{{option.name}}" datagroup='{{room_likes.group_name}}' index="{{$index}}" change='changed' parent-label-class='room-likes' span-class="checkbox-background" ></ad-checkbox>
-						</div>						
-					</div>							
+					<div class="boxes">
+						<div ng-repeat="like in data.room_likes" class="entry full-width">
+							<div class="form-title">
+								<h3><span>{{ like.group_name }}</span></h3>
+								<em ng-if="like.type == 'textbox'" class="status"><span>Enter a value</span></em>
+								<em ng-if="like.type == 'radio' || like.type == 'dropdown'" class="status"><span>Choose a value</span></em>
+								<em ng-if="like.type != 'textbox' && like.type != 'radio' && like.type != 'dropdown'" class="status"><span>Choose any value</span></em>
+							</div>
+
+							<div ng-if="like.type == 'textbox'" class="entry full-width">
+								<ad-textbox value="like.options[0]['value']" label="" placeholder="Enter {{ like.options[0]['name'] }}"></ad-textbox>
+							</div>
+
+							<div ng-if="like.type == 'radio'" class="entry full-width">
+								<label class="radio" ng-repeat="option in like.options" ng-class="{ checked: option.selected }">
+									<span class="icon-form icon-radio" ng-class="{ checked: option.selected }"></span>
+									<input ng-model="option.value" type="radio" value="email" name="guest-zest" id="type1" class="change-data">
+									{{ option.name }}
+								</label>
+							</div>
+
+							<div ng-if="like.type == 'dropdown'" class="entry full-width">
+								<ad-dropdown div-class='full-width' label-in-drop-down='Select like' label="" sel-class='placeholder' list='like.options' selected-Id='data.something'></ad-dropdown>
+							</div>
+
+							<div ng-if="like.type != 'textbox' && like.type != 'radio' && like.type != 'dropdown'" class="entry full-width" style="overflow: hidden">
+								<ad-checkbox ng-repeat="option in like.options" is-checked="option.selected" label="{{ option.name }}" datagroup='{{ room_likes.group_name }}' index="{{ $index }}" change='changed' parent-label-class='room-likes' span-class="checkbox-background"></ad-checkbox>
+							</div>
+						</div>
+					</div>
 				</div>
+				
+
 			</fieldset>
 			<div class="actions float">
 				<button type="button" id="cancel" ng-click="goBack()" class="button blank add-data-inline">{{ 'CANCEL' | translate }}</button>
