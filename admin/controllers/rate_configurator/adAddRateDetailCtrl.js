@@ -17,7 +17,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
 
         $scope.shouldShowMemberRates = function(){
             return !$rootScope.isHourlyRatesEnabled && (!!$rootScope.isFFPActive || !!$rootScope.isHLPActive);
-        }
+        };
 
         $scope.isPromotional = function() {
             var ispromo = false;
@@ -33,7 +33,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 });
             }
             return ispromo;
-        }
+        };
 
 
 
@@ -51,7 +51,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 });
             }
             return hideBasedOn;
-        }
+        };
 
         /*
          * Validate Rate Details Form
@@ -112,7 +112,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             $scope.rateTypesDetails.depositPolicies = $scope.depositRequiredActivated ? $scope.rateTypesDetails.depositPolicies : [];
             $scope.rateTypesDetails.cancelationPenalties = $scope.cancelPenaltiesActivated ? $scope.rateTypesDetails.cancelationPenalties : [];
             $scope.rateData.currency_code_id = $scope.rateTypesDetails.hotel_settings.currency.id;
-        }
+        };
 
         /*
          * Set add on data
@@ -185,7 +185,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 };
                 $scope.invokeApi(ADRatesAddDetailsSrv.updateNewRate, updatedData, saveSuccessCallback, saveFailureCallback);
             }
-        }
+        };
 
 
         $scope.endDateValidationPopup = function() {
@@ -234,12 +234,12 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             }
         };
 
-        $scope.init();
+        
 
         $scope.deleteEndDate = function() {
             $scope.rateData.end_date = "";
             $scope.rateData.end_date_for_display = "";
-        }
+        };
 
 
         $scope.popupCalendar = function() {
@@ -256,8 +256,21 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             if ($scope.rateData.date_ranges.length < 1) {
                 $scope.rateData.is_hourly_rate = value;
             }
-        }
+        };
 
+        $scope.togglePMSOnly = function(){
+            if(!!$scope.rateData.is_channel_only && !!$scope.rateData.is_pms_only){
+                $scope.rateData.is_channel_only = false;
+            }
+            
+        };
 
+        $scope.toggleChannelOnly = function(){
+            if(!!$scope.rateData.is_channel_only && !!$scope.rateData.is_pms_only){
+                $scope.rateData.is_pms_only = false;
+            }
+        };
+
+        $scope.init();
     }
 ]);
