@@ -64,7 +64,8 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 		$scope.save = function(room, index) {
 			// CICO-17731
 			$scope.errorMessage = '';
-			if ($scope.otherData.forceAdjustmentReason && !!$scope.adjustment_reason && !!$scope.adjustment_reason.trim()) {
+			if (!$scope.otherData.forceAdjustmentReason ||
+				($scope.otherData.forceAdjustmentReason && !!$scope.adjustment_reason && !!$scope.adjustment_reason.trim())) {
 				_.each(room.stayDates, function(stayDate) {
 					stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.modified_amount).toFixed(2);
 					if (isNaN(stayDate.rateDetails.modified_amount)) {
