@@ -6,20 +6,31 @@
 
        $scope.hours = ["01","02","03","04","05","06","07","08","09","10","11","12"];
        $scope.minutes = ["00","15","30","45"];
-       if ($stateParams.isearlycheckin !=="undefined" && $stateParams.isearlycheckin) {
+       $scope.primeTimes = ["AM","PM"]; 
+
+       if(typeof $rootScope.earlyCheckinRestrictHour !=="undefined"){
+	       	$scope.earlyCheckinRestrictLimit = $rootScope.earlyCheckinRestrictHourForDisplay+":"+$rootScope.earlyCheckinRestrictMinute+" "+$rootScope.earlyCheckinRestrictPrimetime;	    
+		    //restrict time before earlyCheckinRestrictTime
+		    if($rootScope.earlyCheckinRestrictPrimetime === "PM"){
+		    	$scope.primeTimes = $scope.primeTimes.slice(1);
+		    	angular.forEach( $scope.hours, function(hour,index) {
+				    if(hour === $rootScope.earlyCheckinRestrictHour){
+				         $scope.hours =  $scope.hours.slice(index)
+				    };	      
+		  	    });
+		    };
+			$scope.stayDetails = {
+							       	"hour":$rootScope.earlyCheckinRestrictHour,
+							       	"minute":$rootScope.earlyCheckinRestrictMinute,
+							       	"primeTime" : $rootScope.earlyCheckinRestrictPrimetime 
+							      };      
+       }else{
        		$scope.stayDetails = {
-							       	"hour":$rootScope.earlyCheckinHour,
-							       	"minute":$rootScope.earlyCheckinMinute,
-							       	"primeTime" : $rootScope.earlyCheckinPM 
-							      };
-       }
-       else{
-	       	$scope.stayDetails = {
 							       	"hour":"",
 							       	"minute":"",
 							       	"primeTime" : ""
 							     };
-       }
+       };
 
 	   $scope.errorOpts = {
 	      backdrop: true,
@@ -63,6 +74,11 @@
 			$rootScope.earlyCheckinHour   =  response.last_early_checkin_hour;
 			$rootScope.earlyCheckinMinute =  response.last_early_checkin_minute;
 			$rootScope.earlyCheckinPM     =  response.last_early_checkin_primetime;
+			$rootScope.earlyCheckinRestrictHour = response.early_checkin_restrict_hour;
+			$rootScope.earlyCheckinRestrictHourForDisplay = response.early_checkin_restrict_hour_for_display;
+			$rootScope.earlyCheckinRestrictMinute = response.early_checkin_restrict_minute;
+			$rootScope.earlyCheckinRestrictPrimetime = response.early_checkin_restrict_primetime;
+
 			if(response.early_checkin_available && typeof response.early_checkin_offer_id !== "undefined"){
 					$state.go('earlyCheckinOptions',{'time':response.checkin_time,'charge':response.early_checkin_charge,'id':response.early_checkin_offer_id});
 				}
