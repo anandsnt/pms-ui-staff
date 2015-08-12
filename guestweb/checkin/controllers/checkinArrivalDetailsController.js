@@ -79,10 +79,10 @@
 			$rootScope.earlyCheckinRestrictMinute = response.early_checkin_restrict_minute;
 			$rootScope.earlyCheckinRestrictPrimetime = response.early_checkin_restrict_primetime;
 
-			if(response.early_checkin_available && typeof response.early_checkin_offer_id !== "undefined"){
+			if(response.early_checkin_available && typeof response.early_checkin_offer_id !== "undefined" && !response.bypass_early_checkin){
 					$state.go('earlyCheckinOptions',{'time':response.checkin_time,'charge':response.early_checkin_charge,'id':response.early_checkin_offer_id});
 				}
-				else if(response.early_checkin_on && !response.early_checkin_available){
+				else if(response.early_checkin_on && !response.early_checkin_available && !response.bypass_early_checkin){
 					$state.go('laterArrival',{'time':response.checkin_time,'isearlycheckin':true});
 				}
 				else{
