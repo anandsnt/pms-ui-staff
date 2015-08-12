@@ -416,6 +416,8 @@ sntRover.controller('RVReservationDepositController',
 		};
 
 		$rootScope.$broadcast("UPDATE_DEPOSIT_BALANCE", data);
+		// Update reservation type
+		$rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id);
 	};
 
 	var paymentFailed = function(data){
