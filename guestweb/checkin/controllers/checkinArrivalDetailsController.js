@@ -60,11 +60,14 @@
 
 
 		preCheckinSrv.postStayDetails(dataTosend).then(function(response) {			
+			$rootScope.earlyCheckinHour   =  response.last_early_checkin_hour;
+			$rootScope.earlyCheckinMinute =  response.last_early_checkin_minute;
+			$rootScope.earlyCheckinPM     =  response.last_early_checkin_primetime;
 			if(response.early_checkin_available && typeof response.early_checkin_offer_id !== "undefined"){
-					$rootScope.earlyCheckinHour   =  response.last_early_checkin_hour;
-					$rootScope.earlyCheckinMinute =  response.last_early_checkin_minute;
-					$rootScope.earlyCheckinPM     =  response.last_early_checkin_primetime;
 					$state.go('earlyCheckinOptions',{'time':response.checkin_time,'charge':response.early_checkin_charge,'id':response.early_checkin_offer_id});
+				}
+				else if(response.early_checkin_on && !response.early_checkin_available){
+					$state.go('laterArrival',{'time':response.checkin_time,'isearlycheckin':true});
 				}
 				else{
 					$state.go('preCheckinStatus');
