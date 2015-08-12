@@ -69,9 +69,4 @@
 //=require_tree ../rover/services
 //=require_tree ../rover/directives
 //=require_tree ../rover/filters
-
-
-
-
-
-
+//=require_tree ../rover/factories

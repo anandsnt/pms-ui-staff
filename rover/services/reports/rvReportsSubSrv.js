@@ -16,6 +16,38 @@ sntRover.service('RVreportsSubSrv', [
 			var deferred = $q.defer();
 
 			var success = function(data) {
+
+				/** TEST CODE REMOVED WHEN THE API IS READY */
+				if ( '/api/reports' == options.url ) {
+					data.results.push({
+						id: 2344,
+						description: "Rooms Picked up by Group",
+						sub_title: "By group",
+						title: "Group Pick Up Report",
+						filters: [{
+							description: "Date Range", 
+							value: "DATE_RANGE"
+						}, {
+							description: "Hold Status", 
+							value: "HOLD_STATUS"
+						}],
+						sort_fields: [{
+							value: "DATE", description: "Date"
+						}, {
+							value: "GROUP_NAME", description: "Group Name"
+						}, {
+							value: "HOLD_STATUS", description: "Hold Status"
+						}, {
+							value: "PICKUP_PERCENTAGE", description: "Pickup Percentage"
+						}],
+						group_fields: [{
+							value: "GROUP_NAME", description: "Group Name"
+						}]
+					});
+				};
+				/** TEST CODE REMOVED WHEN THE API IS READY */
+				
+
 				if ( !! options.resKey ) {
 					deferred.resolve( data[options.resKey] );
 				} else {
