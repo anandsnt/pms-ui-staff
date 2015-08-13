@@ -19,6 +19,10 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             return !$rootScope.isHourlyRatesEnabled && (!!$rootScope.isFFPActive || !!$rootScope.isHLPActive);
         };
 
+        $scope.isHourlyRatesEnabled = function () {
+            return !!$rootScope.isHourlyRatesEnabled;
+        };
+
         $scope.isPromotional = function() {
             var ispromo = false;
             if ($scope.rateTypesDetails) {
@@ -158,7 +162,9 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'end_date': $scope.rateData.end_date,
                 'is_hourly_rate': $scope.rateData.is_hourly_rate,
                 'is_member': $scope.rateData.is_member_rate,
-                'commission_details':$scope.rateData.commission_details
+                'commission_details':$scope.rateData.commission_details,
+                'is_pms_only' : $scope.rateData.is_pms_only,
+                'is_channel_only' : $scope.rateData.is_channel_only
             };
 
             // Save Rate Success Callback
