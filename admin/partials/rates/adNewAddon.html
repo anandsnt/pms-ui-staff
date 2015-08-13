@@ -56,6 +56,16 @@
 					</label>
 				</div>
 
+				<div ng-hide="isConnectedToPMS" class="entry full-width radio-check">
+				<ad-textbox styleclass="full-width"
+						value="singleAddon.inventory_count"
+						name="inventory"
+						id="inventory"
+						label="{{'Inventory' | translate}}"
+						placeholder="Enter the count"
+						required="yes"></ad-textbox>
+				</div>
+
 			</fieldset>
 
 
