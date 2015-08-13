@@ -45,7 +45,8 @@ sntRover.controller('RVReportListCrl', [
                     'markets'        : $scope.$parent.markets,
                     'sources'        : $scope.$parent.sources,
                     'origins'        : $scope.$parent.origins,
-                    'codeSettings'   : $scope.$parent.codeSettings
+                    'codeSettings'   : $scope.$parent.codeSettings,
+                    'holdStatus'     : $scope.$parent.holdStatus
                 });
 
 

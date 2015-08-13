@@ -47,7 +47,6 @@ sntRover.service('RVreportsSubSrv', [
 				};
 				/** TEST CODE REMOVED WHEN THE API IS READY */
 				
-
 				if ( !! options.resKey ) {
 					deferred.resolve( data[options.resKey] );
 				} else {
@@ -59,7 +58,24 @@ sntRover.service('RVreportsSubSrv', [
 				deferred.reject( data || {} );
 			};
 
-			if ( ! options.url || ! options.method || ! rvBaseWebSrvV2.hasOwnProperty(options.method) ) {
+
+			/** TEST CODE REMOVED WHEN THE API IS READY */
+			if ( 'api/hold_status?is_active=true' == options.url ) {
+				success([{
+					id: 1,
+					description: 'Hold This'
+				}, {
+					id: 2,
+					description: 'Hold That'
+				}, {
+					id: 3,
+					description: 'Hold Something Else'
+				}]);
+			} else if ( ! options.url || ! options.method || ! rvBaseWebSrvV2.hasOwnProperty(options.method) ) {
+			/** TEST CODE REMOVED WHEN THE API IS READY */
+
+			/** ORIGNIAL CODE, UNCOMMENT BEFORE QA */
+			// if ( ! options.url || ! options.method || ! rvBaseWebSrvV2.hasOwnProperty(options.method) ) {
 				failed();
 			} else if ( !! options.params ) {
 				rvBaseWebSrvV2[options.method]( options.url, options.params ).then( success, failed );
@@ -152,6 +168,13 @@ sntRover.service('RVreportsSubSrv', [
 				method : 'getJSON',
 				url    : 'api/reports/search_by_company_agent_group?query=' + query,
 				resKey : 'results'
+			});
+		};
+
+		service.fetchHoldStatus = function() {
+			return callApi({
+				method : 'getJSON',
+				url    : 'api/hold_status?is_active=true'
 			});
 		};
 

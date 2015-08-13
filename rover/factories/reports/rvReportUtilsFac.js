@@ -753,6 +753,20 @@ sntRover.factory('RVReportUtilsFac', [
                         data         : angular.copy( data.origins )
                     });
                 };
+
+                // check for "hold status" and keep a ref to that item
+                // create the filter option only when there is any data
+                if ( filter.value === 'HOLD_STATUS' && data.holdStatus.length ) {
+                    __setData(reportItem, 'hasHoldStatus', {
+                        type         : 'FAUX_SELECT',
+                        filter       : filter,
+                        show         : false,
+                        selectAll    : false,
+                        defaultTitle : 'Select Hold Status',
+                        title        : 'Select Hold Status',
+                        data         : angular.copy( data.holdStatus )
+                    });
+                };
             });
         };
 

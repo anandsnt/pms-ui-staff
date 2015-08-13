@@ -42,6 +42,9 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.origins = payload.origins;
 
 		$scope.codeSettings = payload.codeSettings;
+		$scope.holdStatus   = payload.holdStatus;
+
+		console.log( payload );
 
 
 
@@ -460,6 +463,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			$scope.appliedFilter.guarantees = [];
 			$scope.appliedFilter.chargeGroups = [];
 			$scope.appliedFilter.chargeCode = [];
+			$scope.appliedFilter.holdStatus = [];
 
 			// include dates
 			if (!!chosenReport.hasDateFilter) {
@@ -612,6 +616,12 @@ sntRover.controller('RVReportsMainCtrl', [
 					params['group_by_user'] = true;
 					/**/
 					$scope.appliedFilter['groupBy'] = 'User';
+				};
+
+				if ( chosenReport.chosenGroupBy === 'GROUP_NAME' ) {
+					params['group_by_group_name'] = true;
+					/**/
+					$scope.appliedFilter['groupBy'] = 'group_name';
 				};
 			};
 
@@ -782,6 +792,26 @@ sntRover.controller('RVReportsMainCtrl', [
 				};
 			};
 
+			// include hold status
+			if ( chosenReport.hasOwnProperty('hasHoldStatus') ) {
+				selected = _.where(chosenReport['hasHoldStatus']['data'], { selected: true });
+
+				if ( selected.length > 0 ) {
+					key = 'hold_status_ids[]';
+					params[key] = [];
+					_.each(selected, function(status) {
+						params[key].push( status.id );
+						/**/
+						$scope.appliedFilter.holdStatus.push( status.description );
+					});
+
+					// in case if all charge code is selected
+					if ( chosenReport['hasHoldStatus']['data'].length === selected.length ) {
+						$scope.appliedFilter.chargeCode = ['All Hold Status'];
+					};
+				};
+			};
+
 
 
 
@@ -793,7 +823,7 @@ sntRover.controller('RVReportsMainCtrl', [
 					    continue;
 					};
 
-					if ( key === 'group_by_date' || key === 'group_by_user' || key === 'page' || key === 'per_page' ) {
+					if ( key === 'group_by_date' || key === 'group_by_user' || key === 'group_by_group_name' || key === 'page' || key === 'per_page' ) {
 						continue;
 					} else if ( params[key] !== $scope.oldParams[key] ) {
 						chosenReport.chosenGroupBy = 'BLANK';
@@ -803,6 +833,10 @@ sntRover.controller('RVReportsMainCtrl', [
 						};
 						if ( params.hasOwnProperty('group_by_user') ) {
 							params['group_by_user'] = undefined;
+						};
+						/**/
+						if ( params.hasOwnProperty('group_by_group_name') ) {
+							params['group_by_group_name'] = undefined;
 						};
 						/**/
 						$scope.appliedFilter['groupBy'] = undefined;
