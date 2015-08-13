@@ -11,13 +11,15 @@
        if(typeof $rootScope.earlyCheckinRestrictHour !=="undefined"){
 	       	$scope.earlyCheckinRestrictLimit = $rootScope.earlyCheckinRestrictHourForDisplay+":"+$rootScope.earlyCheckinRestrictMinute+" "+$rootScope.earlyCheckinRestrictPrimetime;	    
 		    //restrict time before earlyCheckinRestrictTime
-		    if($rootScope.earlyCheckinRestrictPrimetime === "PM" && $rootScope.earlyCheckinRestrictHour !=="12"){
+		    if($rootScope.earlyCheckinRestrictPrimetime === "PM"){
 		    	$scope.primeTimes = $scope.primeTimes.slice(1);
-		    	angular.forEach( $scope.hours, function(hour,index) {
-				    if(hour === $rootScope.earlyCheckinRestrictHour){
-				         $scope.hours =  $scope.hours.slice(index)
-				    };	      
-		  	    });
+		    	if( $rootScope.earlyCheckinRestrictHour !=="12"){
+		    		angular.forEach( $scope.hours, function(hour,index) {
+					    if(hour === $rootScope.earlyCheckinRestrictHour){
+					         $scope.hours =  $scope.hours.slice(index)
+					    };	      
+		  	  		});
+		    	}
 		    };
 			$scope.stayDetails = {
 							       	"hour":$rootScope.earlyCheckinRestrictHour,
