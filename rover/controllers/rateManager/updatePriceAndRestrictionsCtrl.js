@@ -10,6 +10,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
         $scope.inRoomView = false;
 
         $scope.init = function () {
+            $scope.$emit('hideLoader');
             if ($stateParams.calendarMode !== "ROOM_TYPE_VIEW"){
                 $scope.inRoomView = false;
             } else {
@@ -23,13 +24,13 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
                 $scope.data.selected_room_type = '';
                 $scope.showRestrictionDayUpdate = false;
                 $scope.showExpandedView = false;
-
-
                 if ($scope.popupData.fromRoomTypeView) {
                     computePopupdataForRoomTypeCal();
                 } else {
                     computePopUpdataForRateViewCal();
-                    fetchPriceDetailsForRate();
+                    if ($scope.popupData.ratesRoomsToggle !== 'ROOMS'){
+                        fetchPriceDetailsForRate();
+                    }
                 }
 
                 if ($scope.popupData.all_data_selected) {
@@ -37,6 +38,10 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
                 }
 
                 $scope.updatePopupWidth();
+                
+            setTimeout(function(){
+                        $scope.$emit('hideLoader');
+            },200);
             }
         };
 
@@ -148,7 +153,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
                 $scope.data.roomPriceData = roomPriceData;
                 $scope.$emit('hideLoader');
             };
-            $scope.invokeApi(RateMngrCalendarSrv.fetchRoomTypeCalenarData, data, priceDetailsFetchSuccess);
+            $scope.invokeApi(RateMngrCalendarSrv.fetchRoomTypeCalendarData, data, priceDetailsFetchSuccess);
 
 
         };
