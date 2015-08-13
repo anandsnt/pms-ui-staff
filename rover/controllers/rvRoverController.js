@@ -780,7 +780,7 @@ sntRover.controller('roverController',
     $scope.redirectToHotel = function(hotel_id) {
           RVHotelDetailsSrv.redirectToHotel(hotel_id).then(function(data) {
             $('body').addClass('no-animation');
-            $window.location.href = "/staff";
+             $window.location.reload();
           }, function() {
           });
     };

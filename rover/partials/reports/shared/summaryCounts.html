@@ -1,25 +1,25 @@
 <!-- Arrival -->
-<ul ng-if="isThisReport('ARRIVAL')" class="totals">
-    <li>Total Arrival Rooms<span>{{ summaryCounts.arrivals }}</span></li>
+<ul ng-if="isThisReport( 'ARRIVAL' )" class="totals">
+    <li>Total Arrival Rooms<span>{{ summaryCounts.total_rooms_count }}</span></li>
     <li>ADR<span>{{ summaryCounts.adr | currency:currencySymbol:2 }}</span></li>
 </ul>
 
 <!-- In-House Guests -->
-<ul ng-if="isThisReport('IN_HOUSE_GUEST')" class="totals">
+<ul ng-if="isThisReport( 'IN_HOUSE_GUEST' )" class="totals">
     <li>Total Rooms<span>{{ summaryCounts.total_rooms_count }}</span></li>
     <li>Total Adults / Children<span>{{ summaryCounts.total_adults }} / {{ summaryCounts.total_children }}</span></li>
     <li>Total Balance<span class="green">{{ summaryCounts.total_balance | currency:currencySymbol:2 }}</span></li>
 </ul>
 
 <!-- Deposit Report -->
-<ul ng-if="isThisReport('DEPOSIT_REPORT')" class="totals">
+<ul ng-if="isThisReport( 'DEPOSIT_REPORT' )" class="totals">
     <li>Due<span>{{ summaryCounts.total_deposit_due | currency:currencySymbol:2 }}</span></li>
     <li>Paid<span>{{ summaryCounts.total_deposit_paid | currency:currencySymbol:2 }}</span></li>
     <li>Past Due<span class="green">{{ summaryCounts.total_deposit_passed | currency:currencySymbol:2 }}</span></li>
 </ul>
 
 <!-- Reservations By User -->
-<ul ng-if="isThisReport('RESERVATIONS_BY_USER')" class="totals">
+<ul ng-if="isThisReport( 'RESERVATIONS_BY_USER' )" class="totals">
     <li>User<span>{{ summaryCounts.total_users }}</span></li>
     <li>New<span>{{ summaryCounts.total_new }}</span></li>
     <li>Cancel<span>{{ summaryCounts.total_cancel }}</span></li>
@@ -29,7 +29,7 @@
 </ul>
 
 <!-- Daily Transactions -->
-<ul ng-if="isThisReport('DAILY_TRANSACTIONS') || isThisReport('DAILY_PAYMENTS')" class="totals">
+<ul ng-if="isThisReport( ['DAILY_TRANSACTIONS', 'DAILY_PAYMENTS'] )" class="totals">
     <li>Date<span>{{ summaryCounts.date | date : dateFormat }}</span></li>
     <li>Transactions<span>{{ summaryCounts.grand_total_transactions }}</span></li>
     <li ng-if="isThisReport('DAILY_TRANSACTIONS')">Revenue<span class="green">{{ summaryCounts.grand_total_revenue | currency:currencySymbol:2 }}</span></li>
@@ -39,14 +39,14 @@
 </ul>
 
 <!-- Reservations By User -->
-<ul ng-if="isThisReport('ROOMS_QUEUED')" class="totals">
+<ul ng-if="isThisReport( 'ROOMS_QUEUED' )" class="totals">
     <li>Rooms Queued<span>{{ summaryCounts.rooms_queued }}</span></li>
 </ul>
 
 <!-- Rate adjustment -->
-<ul ng-if="isThisReport('RATE_ADJUSTMENTS_REPORT')" class="totals">
+<ul ng-if="isThisReport( 'RATE_ADJUSTMENTS_REPORT' )" class="totals">
     <li>Total Adjusted Reservations<span>{{ summaryCounts.total_num_adjusted_reservations }}</span></li>
     <li>Total Original Revenue<span>{{ summaryCounts.total_amt_original_revenue | currency:currencySymbol:2 }}</span></li>
     <li>Total Adjusted Revenue<span>{{ summaryCounts.total_amt_adjusted_revenue | currency:currencySymbol:2 }}</span></li>
-    <li>Variance<span ng-class="{ red: each.variance < 0 }">{{ summaryCounts.rate_adjustment_variance | currency:currencySymbol:2 }}</span></li>
+    <li>Variance<span ng-class="{ red: summaryCounts.rate_adjustment_variance < 0 }">{{ summaryCounts.rate_adjustment_variance | currency:currencySymbol:2 }}</span></li>
 </ul>

@@ -437,10 +437,10 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                         onGroupSaveFailure = function(errorMessage) {
                             $scope.errorMessage = errorMessage;
                         };
-                        
-                    if(!$scope.groupConfigData.summary.rate){
-                       $scope.groupConfigData.summary.rate = -1; 
-                    }    
+
+                    if (!$scope.groupConfigData.summary.rate) {
+                        $scope.groupConfigData.summary.rate = -1;
+                    }
 
                     $scope.callAPI(rvGroupConfigurationSrv.saveGroupSummary, {
                         successCallBack: onGroupSaveSuccess,
@@ -486,9 +486,9 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 summaryData.block_from = $filter('date')(summaryData.block_from, $rootScope.dateFormatForAPI);
                 summaryData.block_to = $filter('date')(summaryData.block_to, $rootScope.dateFormatForAPI);
                 summaryData.release_date = $filter('date')(summaryData.release_date, $rootScope.dateFormatForAPI);
-                if(!summaryData.rate){
-                    summaryData.rate = -1; 
-                }    
+                if (!summaryData.rate) {
+                    summaryData.rate = -1;
+                }
                 $scope.callAPI(rvGroupConfigurationSrv.updateGroupSummary, {
                     successCallBack: onGroupUpdateSuccess,
                     failureCallBack: onGroupUpdateFailure,
@@ -651,26 +651,11 @@ sntRover.controller('rvGroupConfigurationCtrl', [
          * function to set Back Navigation params
          */
         var setBackNavigation = function() {
-            // TODO : Currently hardcoded to go to groups search..
-            // Change the same according to the requirements
-            if ($scope.previousState && $scope.previousState.name === "rover.reservation.staycard.reservationcard.reservationdetails") {
-                $rootScope.setPrevState = {
-                    title: 'STAYCARD',
-                    name: 'rover.reservation.staycard.reservationcard.reservationdetails',
-                    param: {
-                        "id": $scope.previousStateParams.id,
-                        "confirmationId": $scope.previousStateParams.confirmationId,
-                        "isrefresh": true
-                    }
-                };
-            } else {
-                $rootScope.setPrevState = {
-                    title: $filter('translate')('GROUPS'),
-                    callback: 'updateAndBack',
-                    scope: $scope
-                };
-            }
-
+            $rootScope.setPrevState = {
+                title: $filter('translate')('GROUPS'),
+                callback: 'updateAndBack',
+                scope: $scope
+            };
             //setting title and things
             setTitle();
         }

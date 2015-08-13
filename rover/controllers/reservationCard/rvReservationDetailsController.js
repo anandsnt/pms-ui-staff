@@ -476,7 +476,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		};
 
 		var hasPermissionToChangeStayDates = function() {
-			return rvPermissionSrv.getPermissionValue('CHANGE_DATES_ON_GROUP_RESERVATION');
+			return rvPermissionSrv.getPermissionValue('EDIT_RESERVATION');
 		};
 
 		$scope.isStayDatesChangeAllowed = function(){

@@ -22,10 +22,10 @@
 			<div class="row checkin-wrapper-top arrival-details">
 				<div class="pad-rt-60 pre-checkin-container-padding">
 					<div class="chekin-heading centeralign blue-text">
-						Early check-in Alert
+						Early Check-in Alert
 					</div>
 					<p class="subTitletext">
-						You have selected an <b>Early Check-in Time</b> (standard check-in time is {{checkinTime}}). Early Check-In is not available.Please select later Arrival Time.
+						You have selected an <b>Early Check-in Time</b> (standard check-in time is {{checkinTime}}). Please request a Check-in time after {{earlyCheckinRestrictLimit}} to proceed with your check in without a fee.
 					</p>
 					<div class="date-container ">
 						<div class="row cabin_number_field ">
@@ -48,10 +48,9 @@
 					</div>
 					<div class="expiry-year-container eta-container">
 						<div class="select-style arrival-time">
-							<select ng-model="stayDetails.primeTime">
-								<option value="AM" selected="" >AM</option>
-								<option value="PM" >PM</option>
-								<option value="">AM/PM</option>
+							<select ng-model="stayDetails.primeTime"
+								ng-options="primeTime as primeTime  for primeTime in primeTimes">
+							<option value="">AM/PM</option>
 							</select>
 						</div>
 					</div>

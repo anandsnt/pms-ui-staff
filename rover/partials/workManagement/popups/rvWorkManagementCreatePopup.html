@@ -1,30 +1,29 @@
-<div id="modal" class="modal-show" ng-cloak style="max-width: 360px;">
-	<div class="modal-content">
+<div id="modal" class="modal-show" ng-cloak>
+	<div class="modal-content form new-worksheet">
+		<button class="modal-close" id="modal-close" ng-click="closeDialog()" type="button"><span class="icons icon-close invert"></span></button>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-		<form method="post" action="" id="create-worksheet" name="create-worksheet" class="modal-content form new-worksheet">
-			<span class="h2 message">New Work Sheet</span>
-			<div class="entry full-width">
-				<div class="select">
-					<select ng-model="stateVariables.newSheet.work_type_id" ng-options="workType.id as workType.name for workType in workTypes" ng-selected="$index == 1">
-            		</select>
-				</div>
+		<span class="h2 message">New Work Sheet</span>
+		<div class="entry full-width">
+			<div class="select">
+				<select ng-model="stateVariables.newSheet.work_type_id" ng-options="workType.id as workType.name for workType in workTypes" ng-selected="$index == 1">
+        		</select>
 			</div>
-			<div class="entry full-width">
-				<div class="select">
-					<select ng-model="stateVariables.newSheet.user_id" ng-options="employee.id as employee.maid_name for employee in employeeList">
-						<option value="" translate selected>Select Employee</option>
-					</select>					
-				</div>
+		</div>
+		<div class="entry full-width">
+			<div class="select">
+				<select ng-model="stateVariables.newSheet.user_id" ng-options="employee.id as employee.maid_name for employee in employeeList">
+					<option value="" translate selected>Select Employee</option>
+				</select>					
 			</div>
-			<div class="entry has-datepicker entry full-width">
-	            <input id="rmDateRange" placeholder="{{stateVariables.newSheet.date | date : dateFormat}}" readonly="" maxlength="8" value="{{currentFilterData.selected_date_range}}" class="hasDatepicker"  name="">
-	            <button ng-click="showCreateCalendar()" type="button" class="ui-datepicker-trigger" style="top: 0px">...</button>
-	        </div>
+		</div>
+		<div class="entry has-datepicker entry full-width">
+            <input id="rmDateRange" placeholder="{{stateVariables.newSheet.date | date : dateFormat}}" readonly="" maxlength="8" value="{{currentFilterData.selected_date_range}}" class="hasDatepicker"  name="">
+            <button ng-click="showCreateCalendar()" type="button" class="ui-datepicker-trigger" style="top: 0px">...</button>
+        </div>
 
-			<div class="actions">
-				<button ng-click="continueCreateWorkSheet()"  type="button" class="button green">Continue</button>
-				<button ng-click="closeDialog()" type="button" class="button blank modal-close">Cancel</button> 
-			</div>
-		</form>
+		<div class="actions">
+			<button ng-click="continueCreateWorkSheet()"  type="button" class="button green">Continue</button>
+			<button ng-click="closeDialog()" type="button" class="button blank">Cancel</button> 
+		</div>
 	</div>
 </div>

@@ -728,8 +728,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
                 postData.payment_type.payment_method_id = $scope.reservationData.selectedPaymentId;
             }
-
-            var saveSuccess = function() {
+             var saveSuccess = function(data) {
+                //CICO-18699 credit card not saving to guest card when selecting Deposit later option.
+                if ($scope.addToGuestCard) {
+                    addToGuestCard(data);
+                }
                 $state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
                     "id": $scope.reservationData.reservationId,
                     "confirmationId": $scope.reservationData.confirmNum
@@ -745,6 +748,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                     postData.reservationId = $scope.reservationData.reservationId;
                     postData.reservation_ids = $scope.reservationData.reservationIds;
                     postData.addons = $scope.existingAddons;
+                    postData.add_to_guest_card = $scope.addToGuestCard;
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, saveSuccess);
                 } else {
                     //updating reservation
@@ -1171,6 +1175,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             }
         };
 
+    
+
+        $rootScope.$on('UPDATERESERVATIONTYPE', function(e, data) {
+            $scope.reservationData.reservation_type = data;
+        });
+
         $scope.setDemographics = function(showRequiredFieldsOnly, index) {
             $scope.shouldShowReservationType = true;
             $scope.shouldShowMarket = true;
@@ -1179,6 +1189,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             $scope.shouldShowSegments = true;
 
             $scope.demographics = ($scope.reservationData.rooms[index] && $scope.reservationData.rooms[index].demographics) || angular.copy($scope.reservationData.demographics);
+            // CICO-18594 - Urgent fix
+            if(typeof $scope.reservationData.reservation_type !== "undefined"){
+                $scope.demographics.reservationType = $scope.reservationData.reservation_type;
+            };
 
             if (showRequiredFieldsOnly) {
                 $scope.shouldShowReservationType = ($scope.otherData.reservationTypeIsForced) ? true : false;
