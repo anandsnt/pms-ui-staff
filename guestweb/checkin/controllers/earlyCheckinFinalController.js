@@ -22,11 +22,15 @@
 		$scope.isPosting = true;
 		var dataTosend = {'reservation_id':$rootScope.reservationID,'early_checkin_offer_id':offerId};
 		earlyCheckinService.applyEarlyCheckin(dataTosend).then(function(response) {				
-			$state.go('preCheckinStatus');
+			$scope.isPosting = false;
 		},function(){
 			$scope.netWorkError = true;
 			$scope.isPosting = false;
 		});
+
+		$scope.nextButtonClicked =  function(){
+			$state.go('preCheckinStatus');
+		};
 	};
 }
 
