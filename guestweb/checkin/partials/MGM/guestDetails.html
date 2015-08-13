@@ -80,7 +80,7 @@
                      <div class="expiry-year-container eta-container">
                         <div class="select-style">
                            <select ng-model="guestDetails.month"
-                              ng-options="month.id as month.name  for month in months">
+                              ng-options="month as month for month in months">
                               <option value="">MM</option>
                            </select>
                         </div>
@@ -88,7 +88,7 @@
                      <div class="expiry-year-container eta-container">
                         <div class="select-style">
                            <select ng-model="guestDetails.day"
-                              ng-options="day.id as day.name  for day in days">
+                              ng-options="day as day for day in days">
                               <option value="">DD</option>
                            </select>
                         </div>
@@ -96,7 +96,7 @@
                      <div class="expiry-year-container eta-container">
                         <div class="select-style arrival-time">
                            <select ng-model="guestDetails.year"
-                              ng-options="year.id as year.name  for year in years">
+                              ng-options="year as year for year in years">
                               <option value="">YY</option>
                            </select>
                         </div>
@@ -106,7 +106,7 @@
             </div>
             <div class="row cabin_number_field padding-5">			
                <button class="checkin-button continue-button"
-                  ng-click="postStayDetails()">
+                  ng-click="postGuestDetails()">
                <span class="white-text">Continue</span>
                </button>
             </div>
