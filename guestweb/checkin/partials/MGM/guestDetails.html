@@ -1,0 +1,122 @@
+<!-- contentarea starts here-->
+
+<div class="jumbotron">
+	<div class="container backgroundbg" >
+		<div class="container-fluid">
+			<div class="row headerrow">
+				<logo-image></logo-image>
+			</div>
+		</div>
+		<div ng-show="isLoading && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+			<p class="msg-head">Your request is being processed.</p>
+			<p class="msg-body">This may take a few seconds..... please wait!</p>
+		</div>
+
+		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+			<p class="msg-head">Our apologies, something went wrong, please complete your pre check in at our front desk.</p></p>
+			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag">{{hotelPhone}}.</a></p>
+		</div>
+		<!-- contentarea starts here-->
+		<div class="container" ng-hide="isLoading || netWorkError">
+			<!-- top section starts here-->
+			<div class="row checkin-wrapper-top arrival-details">
+				<div class="pad-rt-60 pre-checkin-container-padding">
+					<div class="chekin-heading centeralign blue-text">
+						Your Address
+					</div>
+					<p class="subTitletext">
+						To further expediate your check in, please enter the details below.
+					</p>
+					<div class="date-container ">
+						<div class="row cabin_number_field ">
+							<em class="labelText">COUNTRY</em>
+							<div class="expiry-year-container full-width-select" style="margin-left:0px;">
+								<div class="select-style select-style-fullwidth">
+									<select ng-model="stayDetails.hour"
+									ng-options="hour as hour  for hour in hours">
+									<option value="">HH</option>
+								</select>
+							</div>
+						</div>				
+					</div>
+
+					<div class="row" ng-show="!isAutoCheckinOn || isCCOnFile">
+						<em class="labelText">STREET ADDRESS</em>
+						<input type="password" ng-model="cardDigits" class = "col-xs-12 textBox" maxlength="4"/> 
+						<input type="password" ng-model="cardDigits" class = "col-xs-12 textBox" maxlength="4"/>
+					</div>	
+					<div class="row" ng-show="!isAutoCheckinOn || isCCOnFile">
+						<em class="labelText">CITY</em>
+						<input type="password" ng-model="cardDigits" class = "col-xs-12 textBox" maxlength="4"/> 
+					</div>	
+					<div class="row">
+					<div class="date-container half-width-select">
+						<div class="row cabin_number_field ">
+							<p class="lightcontent grey-text"><em class="labelText">STATE</em></p>
+							<div class="expiry-year-container full-width-select">
+								<div class="select-style">
+									<select ng-model="stayDetails.hour"
+									ng-options="hour as hour  for hour in hours">
+									<option value="">HH</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="date-container half-width-select zip-code">
+					<div class="row cabin_number_field ">
+						<em class="labelText">ZIP CODE</em>
+						<input type="password" ng-model="cardDigits" class = "col-xs-12 textBox"/>
+					</div>
+				</div>
+			</div>
+
+
+				<div class="row cabin_number_field ">
+					<p class="lightcontent grey-text"><em class="labelText">BIRTHDAY(OPTIONAL)</em></p>
+					<div class="expiry-year-container eta-container">
+						<div class="select-style">
+							<select ng-model="stayDetails.hour"
+							ng-options="hour as hour  for hour in hours">
+							<option value="">HH</option>
+						</select>
+					</div>
+				</div>
+				<div class="expiry-year-container eta-container">
+					<div class="select-style">
+						<select ng-model="stayDetails.minute"
+						ng-options="minute as minute  for minute in minutes">
+						<option value="">MM</option>
+					</select>
+				</div>
+			</div>
+			<div class="expiry-year-container eta-container">
+				<div class="select-style arrival-time">
+					<select ng-model="stayDetails.primeTime"
+					ng-options="primeTime as primeTime  for primeTime in primeTimes">
+					<option value="">AM/PM</option>
+				</select>
+			</div>
+		</div>
+	</div>
+</div>		
+
+</div>			
+<div class="row cabin_number_field">			
+	<button class="checkin-button pre-checkin-btn mgm-bg pre-checkin-button continue-button padding-10"
+	ng-click="postStayDetails()">
+	<span class="white-text">Continue</span>
+</button>
+</div>
+</div>
+</div>	
+<div class="row  no-top-margin">
+	<div class="col-md-6 error-callus">
+		&nbsp;
+	</div>
+</div>						
+</div>
+<!-- pre-checkinbtn section ends here-->
+</div>
+
