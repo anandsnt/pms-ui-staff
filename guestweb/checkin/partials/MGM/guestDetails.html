@@ -19,8 +19,8 @@
       <div class="container" ng-hide="isLoading || netWorkError">
          <!-- top section starts here-->
          <div class="row checkin-wrapper-top arrival-details">
-            <div class="pad-rt-60 pre-checkin-container-padding">
-               <div class="chekin-heading centeralign blue-text">
+            <div class="pre-checkin-container-padding">
+               <div class="chekin-heading centeralign">
                   Your Address
                </div>
                <p class="subTitletext">
@@ -31,8 +31,8 @@
                      <em class="labelText">COUNTRY</em>
                      <div class="expiry-year-container full-width-select" style="margin-left:0px;">
                         <div class="select-style select-style-fullwidth">
-                           <select ng-model="stayDetails.hour"
-                              ng-options="hour as hour  for hour in hours">
+                           <select ng-model="guestDetails.address.country_id"
+                              ng-options="country.id as country.name  for country in countries">
                               <option value="">SELECT</option>
                            </select>
                         </div>
@@ -40,15 +40,15 @@
                   </div>
                   <div class="row">
                      <em class="labelText">STREET ADDRESS</em>
-                     <input type="password" ng-model="cardDigits" class = "col-xs-12 textBox bottom-margin-10" /> 
-                     <input type="password" ng-model="cardDigits" class = "col-xs-12 textBox bottom-margin-10" />
+                     <input type="text" ng-model="guestDetails.address.street1" class = "col-xs-12 textBox bottom-margin-10" /> 
+                     <input type="text" ng-model="guestDetails.address.street2" class = "col-xs-12 textBox bottom-margin-10" />
                   </div>
                   <div class="row">
                      <em class="labelText">CITY</em>
-                     <input type="password" ng-model="cardDigits" class = "col-xs-12 textBox"/> 
+                     <input type="text" ng-model="guestDetails.address.city" class = "col-xs-12 textBox"/> 
                   </div>
                   <div class="row">
-                     <div class="date-container half-width-select">
+                    <!--  <div class="date-container half-width-select">
                         <div class="row cabin_number_field ">
                            <em class="labelText">STATE</em>
                            <div class="expiry-year-container full-width-select">
@@ -60,11 +60,18 @@
                               </div>
                            </div>
                         </div>
+                     </div> -->
+                     <div class="date-container half-width-select zip-code">
+                        <div class="row cabin_number_field ">
+                           <em class="labelText">STATE</em>
+                           <input type="text" ng-model="guestDetails.address.state" class = "col-xs-12 textBox"/>
+                        </div>
                      </div>
+
                      <div class="date-container half-width-select zip-code">
                         <div class="row cabin_number_field ">
                            <em class="labelText">ZIP CODE</em>
-                           <input type="password" ng-model="cardDigits" class = "col-xs-12 textBox"/>
+                           <input type="text" ng-model="guestDetails.address.postal_code" class = "col-xs-12 textBox"/>
                         </div>
                      </div>
                   </div>
@@ -98,7 +105,7 @@
                </div>
             </div>
             <div class="row cabin_number_field padding-5">			
-               <button class="checkin-button pre-checkin-btn mgm-bg pre-checkin-button continue-button"
+               <button class="checkin-button continue-button"
                   ng-click="postStayDetails()">
                <span class="white-text">Continue</span>
                </button>
