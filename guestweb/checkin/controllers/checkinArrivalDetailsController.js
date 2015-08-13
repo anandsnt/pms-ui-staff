@@ -16,7 +16,8 @@
 		    	if( $rootScope.earlyCheckinRestrictHour !=="12"){
 		    		angular.forEach( $scope.hours, function(hour,index) {
 					    if(hour === $rootScope.earlyCheckinRestrictHour){
-					         $scope.hours =  $scope.hours.slice(index)
+					         $scope.hours =  $scope.hours.slice(index);
+					         $scope.hours.splice($scope.hours.length-1,1);
 					    };	      
 		  	  		});
 		    	}
