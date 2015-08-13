@@ -79,24 +79,24 @@
                      <p><em class="labelText">BIRTHDAY(OPTIONAL)</em></p>
                      <div class="expiry-year-container eta-container">
                         <div class="select-style">
-                           <select ng-model="stayDetails.hour"
-                              ng-options="hour as hour  for hour in hours">
+                           <select ng-model="guestDetails.month"
+                              ng-options="month.id as month.name  for month in months">
                               <option value="">MM</option>
                            </select>
                         </div>
                      </div>
                      <div class="expiry-year-container eta-container">
                         <div class="select-style">
-                           <select ng-model="stayDetails.minute"
-                              ng-options="minute as minute  for minute in minutes">
+                           <select ng-model="guestDetails.day"
+                              ng-options="day.id as day.name  for day in days">
                               <option value="">DD</option>
                            </select>
                         </div>
                      </div>
                      <div class="expiry-year-container eta-container">
                         <div class="select-style arrival-time">
-                           <select ng-model="stayDetails.primeTime"
-                              ng-options="primeTime as primeTime  for primeTime in primeTimes">
+                           <select ng-model="guestDetails.year"
+                              ng-options="year.id as year.name  for year in years">
                               <option value="">YY</option>
                            </select>
                         </div>
