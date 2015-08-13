@@ -145,8 +145,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                                 "COMPLETE_MOVE"];
                 
                 if (mode && mode !== null) {
-                    mode = mode.toString().toUpperCase();
-                    activeMode = ( modesAvailable.indexOf(mode) >=0 ) ? mode : null;
+                    mode        = mode.toString().toUpperCase();
+                    activeMode  = ( modesAvailable.indexOf(mode) >=0 ) ? mode : null;
                 }
             };
 
@@ -155,12 +155,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @return {Boolean}
              */
             var shouldShowMoveButton = function () {
-                var sumryData = $scope.groupConfigData.summary,
-                    roomBlockExist = (parseInt(sumryData.rooms_total) > 0),
-                    noInHouseReservationExist = (parseInt(sumryData.total_checked_in_reservations) === 0),
-                    fromDateLeftRightMoveAllowed = (sumryData.is_from_date_left_move_allowed && sumryData.is_from_date_right_move_allowed),
-                    toDateLeftRightMoveAllowed = (sumryData.is_to_date_left_move_allowed && sumryData.is_to_date_right_move_allowed),
-                    notAPastGroup = !sumryData.is_a_past_group;
+                var sumryData                   = $scope.groupConfigData.summary,
+                    roomBlockExist              = (parseInt(sumryData.rooms_total) > 0),
+                    noInHouseReservationExist   = (parseInt(sumryData.total_checked_in_reservations) === 0),
+                    fromDateLeftRightMoveAllowed= (sumryData.is_from_date_left_move_allowed && sumryData.is_from_date_right_move_allowed),
+                    toDateLeftRightMoveAllowed  = (sumryData.is_to_date_left_move_allowed && sumryData.is_to_date_right_move_allowed),
+                    notAPastGroup               = !sumryData.is_a_past_group;
 
                 return (roomBlockExist && 
                         noInHouseReservationExist && 
@@ -176,13 +176,14 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @return {undefined}
              */
             var showMoveConfirmationPopup = function (data) {
-                ngDialog.open({
-                    template: '/assets/partials/groups/summary/popups/changeDates/moveDates/rvGroupMoveDatesConfirmationPopup.html',
-                    className: '',
-                    closeByDocument: false,
-                    closeByEscape: false,
-                    scope: $scope,
-                    data: JSON.stringify(data)
+                ngDialog.open(
+                {
+                    template        : '/assets/partials/groups/summary/popups/changeDates/moveDates/rvGroupMoveDatesConfirmationPopup.html',
+                    className       : '',
+                    closeByDocument : false,
+                    closeByEscape   : false,
+                    scope           : $scope,
+                    data            : JSON.stringify(data)
                 });
             };
 
@@ -195,12 +196,13 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 lastFailureCallback = options["failureCallBack"] ? options["failureCallBack"] : null;
 
                 var dataForPopup = {
-                    dataset: {
-                        fromDate: options["fromDate"] ? options["fromDate"] : null,
-                        toDate: options["toDate"] ? options["toDate"] : null,
-                        oldFromDate: options["oldFromDate"] ? options["oldFromDate"] : null,
-                        oldToDate: options["oldToDate"] ? options["oldToDate"] : null,
-                    }
+                    dataset: 
+                        {
+                            fromDate    : options["fromDate"]   ? options["fromDate"] : null,
+                            toDate      : options["toDate"]     ? options["toDate"] : null,
+                            oldFromDate : options["oldFromDate"]? options["oldFromDate"] : null,
+                            oldToDate   : options["oldToDate"]  ? options["oldToDate"] : null,
+                        }
                 };
 
                 showMoveConfirmationPopup(dataForPopup);
@@ -212,22 +214,22 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @return {[type]}         [description]
              */
             $scope.callMoveDatesAPI = function (options) {
-                var newFromDate = options["fromDate"] ? formatDateForAPI(options["fromDate"]) : null,
-                    newToDate = options["toDate"] ? formatDateForAPI(options["toDate"]) : null,
+                var newFromDate     = options["fromDate"] ? formatDateForAPI(options["fromDate"]) : null,
+                    newToDate       = options["toDate"] ? formatDateForAPI(options["toDate"]) : null,
                     successCallBack = lastSuccessCallback,
                     failureCallBack = lastFailureCallback,
-                    sumryData = $scope.groupConfigData.summary;
+                    sumryData       = $scope.groupConfigData.summary;
 
                 var params = {
-                    group_id: sumryData.group_id,
-                    from_date: newFromDate,
-                    to_date: newToDate
+                    group_id    : sumryData.group_id,
+                    from_date   : newFromDate,
+                    to_date     : newToDate
                 };
 
                 var options = {
-                    params: params,
-                    successCallBack: successCallBack, //null case will be handled from baseCtrl
-                    failureCallBack: failureCallBack //null case will be handled from baseCtrl
+                    params          : params,
+                    successCallBack : successCallBack, //null case will be handled from baseCtrl
+                    failureCallBack : failureCallBack //null case will be handled from baseCtrl
                 };
                 $scope.callAPI(rvGroupConfigurationSrv.completeMoveGroup, options);  
             };
