@@ -11,7 +11,7 @@
        if(typeof $rootScope.earlyCheckinRestrictHour !=="undefined"){
 	       	$scope.earlyCheckinRestrictLimit = $rootScope.earlyCheckinRestrictHourForDisplay+":"+$rootScope.earlyCheckinRestrictMinute+" "+$rootScope.earlyCheckinRestrictPrimetime;	    
 		    //restrict time before earlyCheckinRestrictTime
-		    if($rootScope.earlyCheckinRestrictPrimetime === "PM"){
+		    if($rootScope.earlyCheckinRestrictPrimetime === "PM" && $rootScope.earlyCheckinRestrictHour !=="12"){
 		    	$scope.primeTimes = $scope.primeTimes.slice(1);
 		    	angular.forEach( $scope.hours, function(hour,index) {
 				    if(hour === $rootScope.earlyCheckinRestrictHour){
