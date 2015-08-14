@@ -13,11 +13,14 @@
 		    //restrict time before earlyCheckinRestrictTime
 		    if($rootScope.earlyCheckinRestrictPrimetime === "PM"){
 		    	$scope.primeTimes = $scope.primeTimes.slice(1);
-		    	angular.forEach( $scope.hours, function(hour,index) {
-				    if(hour === $rootScope.earlyCheckinRestrictHour){
-				         $scope.hours =  $scope.hours.slice(index)
-				    };	      
-		  	    });
+		    	if( $rootScope.earlyCheckinRestrictHour !=="12"){
+		    		angular.forEach( $scope.hours, function(hour,index) {
+					    if(hour === $rootScope.earlyCheckinRestrictHour){
+					         $scope.hours =  $scope.hours.slice(index);
+					         $scope.hours.splice($scope.hours.length-1,1);
+					    };	      
+		  	  		});
+		    	}
 		    };
 			$scope.stayDetails = {
 							       	"hour":$rootScope.earlyCheckinRestrictHour,
