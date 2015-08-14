@@ -1,5 +1,5 @@
 <div class="block-wrapper">
-    <a class="block-title toggle has-arrow" ng-click="additionalDetails.hideDetails = !additionalDetails.hideDetails ; refreshReservationDetailsScroller(300)">Additional details</a>
+    <a class="block-title toggle has-arrow" ng-click="clickedAdditionalDetails($event)">Additional details</a>
     <div id="{details-id}" ng-class="{'hidden': additionalDetails.hideDetails }">
         <!-- class="hidden" Remove class hidden when 'a.toggle' is clicked -->
         <!-- Reservation Type -->

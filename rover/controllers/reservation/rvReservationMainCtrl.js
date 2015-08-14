@@ -985,6 +985,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         }
 
         var showDepositPopup = function(deposit, isOutOfCancellationPeriod, penalty) {
+            $scope.DailogeState = {};
+            $scope.DailogeState.successMessage = '';
+            $scope.DailogeState.failureMessage = '';
             ngDialog.open({
                 template: '/assets/partials/reservationCard/rvCancelReservationDeposits.html',
                 controller: 'RVCancelReservationDepositController',
@@ -1175,7 +1178,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 var postData = $scope.computeReservationDataforUpdate(true, true);
 
                 var saveSuccess = function(data) {
-
+                    
+                    // Update reservation type
+                    $rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservations[0].reservation_type_id);
                     var totalDeposit = 0;
                     //calculate sum of each reservation deposits
                     $scope.reservationsListArray = data;
