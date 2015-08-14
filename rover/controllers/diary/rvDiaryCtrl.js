@@ -1924,7 +1924,7 @@ sntRover
 
 				_.each(occpancies,  function(occupancy) {
 					if(_.has(occupancy, 'reservation_id')) {
-						if(occupancy['reservation_id'] === reservation_id){
+						if(occupancy['reservation_id'] === parseInt(reservation_id)){
 							row_item_data = occupancy;
 							row_data = room_detail;
 						}

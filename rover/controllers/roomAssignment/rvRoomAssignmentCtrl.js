@@ -251,6 +251,7 @@ sntRover.controller('RVroomAssignmentController',[
 	 * to open the room aleady chhosed popup
 	 * @return undefined
 	 */
+	$scope.roomAssignedByOpera = "";
 	var openPopupForErrorMessageShowing = function(errorMessage) {
 		ngDialog.open(
 		{
@@ -267,7 +268,10 @@ sntRover.controller('RVroomAssignmentController',[
 	 * @param  {[type]} data [description]
 	 * @return {[type]}      [description]
 	 */
+
 	var successCallbackAssignRoom = function(data){
+		console.log("///////////// successCallbackAssignRoom //////////////");
+		console.log(data);
 		var dataToUpdate 		= {},
 			assignedRoom 		= $scope.assignedRoom,
 			selectedRoomType 	= $scope.selectedRoomType,

@@ -25,7 +25,31 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 				return false;
 			}
 		};
-
+		var eventTimestamp = "";
+		$scope.clickedAdditionalDetails = function($event){
+			
+			$event.preventDefault();
+		    $event.stopImmediatePropagation();
+  			$event.stopPropagation();
+  			var toggleAction = function(){
+				$scope.additionalDetails.hideDetails = !$scope.additionalDetails.hideDetails ; 
+				$scope.refreshReservationDetailsScroller(300);
+				eventTimestamp = $event.timeStamp;
+  			};
+			if (parseInt(eventTimestamp)) {
+				if (($event.timeStamp - eventTimestamp) < 500) {
+					return;
+				}
+				else{
+					toggleAction();
+				}
+			}
+			else{
+				toggleAction();
+			};
+			
+		};
+ 
 		$scope.updateAdditionalDetails = function() {
 			var updateSuccess = function(data) {
 				// Set the Reservation Type in the sntCode/app/assets/rover/partials/reservationCard/rvReservationCardPayment.html partial

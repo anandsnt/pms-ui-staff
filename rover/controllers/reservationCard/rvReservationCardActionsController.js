@@ -26,7 +26,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.selectedAction.due_at_time;
         $scope.openingPopup = false;
 
-
+        $scope.hotel_time = "4:00 A.M";
         $scope.departmentSelect = {};
         $scope.departmentSelect.selected;
 
@@ -239,8 +239,10 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 //verify this is the correct hours to set using core_time
                 dateObj.setMinutes(parseInt(mins));
                 dateObj.setSeconds(0);
-                params['due_at'] = dateObj.valueOf();
-                params['time_due'] = dateObj.valueOf();
+                var dueAtStr = dateObj.toISOString();
+                var dueAtNoTimeZone = dueAtStr.split('.');
+                params['due_at'] = dueAtNoTimeZone[0];
+                //params['time_due'] = dateObj.valueOf();
             }
 
             $scope.invokeApi(rvActionTasksSrv.postNewAction, params, onSuccess, onFailure);
@@ -344,9 +346,10 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 dateObj.setMinutes(parseInt(mins));
                 dateObj.setSeconds(0);
 
-                var saveDate = dateObj;
-                params['time_due'] = saveDate.valueOf();
-                params['due_at'] = saveDate.valueOf();
+               // params['time_due'] = saveDate.valueOf()+"";
+                var dueAtStr = dateObj.toISOString();
+                var dueAtNoTimeZone = dueAtStr.split('.');
+                params['due_at'] = dueAtNoTimeZone[0];
 
                 $scope.invokeApi(rvActionTasksSrv.updateNewAction, params, onSuccess, onFailure);
             }
@@ -443,6 +446,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.refreshActionList = function(){
             $scope.fetchDepartments();//store this to use in assignments of department
             var onSuccess = function(data){
+                $scope.hotel_time = $scope.convertMilTime(data.business_date_time);
                 var list = data.data;
                 //if doing a refresh, dont replace the actions array, since it will cause the UI to flash
                 //and look like a bug, instead go through the objects and update them
@@ -523,11 +527,19 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.invokeApi(rvActionTasksSrv.getActionsTasksList, data, onSuccess, onFailure);
 
         };
-
+        $scope.convertMilTime = function(milStr){
+          //converts "16:10:00" into "04:10 PM"
+            var str = milStr.split(' ');
+            var strArray = str[1].split(':');
+            var hour = strArray[0], min = strArray[1];
+            return getFormattedTime(hour+''+min);
+        };
 
         $scope.fetchActionsList = function(){
             $scope.fetchDepartments();//store this to use in assignments of department
             var onSuccess = function(data){
+                $scope.hotel_time = $scope.convertMilTime(data.business_date_time);
+                
                 var list = data.data;
                 var matchObj;
                 for (var x in list){

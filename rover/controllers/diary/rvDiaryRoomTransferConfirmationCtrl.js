@@ -48,11 +48,24 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 
 
 		$scope.price = parseFloat(roomXfer.next.room.new_price - roomXfer.current.room.old_price);
+		
+		/**
+		* while reservation is moving from one date to another we have to store in some services
+		* this method is to reset the data that set during trnasfer
+		*/
+		var resetTheDataForReservationMoveFromOneDateToAnother  = function () {
+			// setting the service variables for reservation transfrer
+			rvDiarySrv.isReservationMovingFromOneDateToAnother = false;
+			rvDiarySrv.movingReservationData.reservation = undefined;
+			rvDiarySrv.movingReservationData.room_to = undefined;
+			rvDiarySrv.movingReservationData.originalRoom = undefined;
+			rvDiarySrv.movingReservationData.originalReservation = undefined;
+		};
 
 		$scope.moveWithoutRateChange = function() {
 			var isMoveWithoutRateChange = true;
 			$scope.saveReservation ($scope.roomXfer.next.occupancy, $scope.roomXfer.next.room, isMoveWithoutRateChange);
-
+			resetTheDataForReservationMoveFromOneDateToAnother ();
 			$scope.closeDialog();
 			$scope.renderGrid();
 		};

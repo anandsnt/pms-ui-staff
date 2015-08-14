@@ -1471,6 +1471,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         var getReservationStatusFlags = function(reservation) {
             var rStatus = reservation.reservation_status;
             return {
+                isCheckedOut: rStatus === "CHECKEDOUT",
                 isUneditable: rStatus === "CANCELED",
                 isExpected: rStatus === "RESERVED" || rStatus === "CHECKING_IN",
                 isStaying: rStatus === "CHECKEDIN" || rStatus === "CHECKING_OUT",

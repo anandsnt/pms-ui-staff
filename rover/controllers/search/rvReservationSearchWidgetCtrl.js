@@ -638,8 +638,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				$scope.$emit("updateDataFromOutside", data);
 				$scope.swipeNoResults = true;
 				$scope.focusOnSearchText();
-			} else if (data.length === 1) {
-
+			} else if (data.length === 1) {		
+				$scope.swipeNoResults = false;
 				$scope.currentReservationID = data[0].id;
 				$scope.currentConfirmationID = data[0].confirmation;
 				RVSearchSrv.data = $scope.results;
@@ -653,6 +653,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				});
 
 			} else {
+				$scope.swipeNoResults = false;
 				$scope.$emit("updateDataFromOutside", data);
 				$scope.focusOnSearchText();
 			}

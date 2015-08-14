@@ -15,7 +15,7 @@ sntRover.service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv','rvBaseWebSrvV2',
 	this.savePaymentDetails = function(data){
 		var deferred = $q.defer();
 		var url = 'staff/reservation/save_payment';
-		RVBaseWebSrv.postJSON(url, data).then(function(data) {
+		RVBaseWebSrvV2.postJSON(url, data).then(function(data) {
 			    deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
