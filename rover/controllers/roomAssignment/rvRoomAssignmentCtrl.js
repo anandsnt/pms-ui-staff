@@ -270,8 +270,6 @@ sntRover.controller('RVroomAssignmentController',[
 	 */
 
 	var successCallbackAssignRoom = function(data){
-		console.log("///////////// successCallbackAssignRoom //////////////");
-		console.log(data);
 		var dataToUpdate 		= {},
 			assignedRoom 		= $scope.assignedRoom,
 			selectedRoomType 	= $scope.selectedRoomType,
