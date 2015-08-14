@@ -36,6 +36,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return undefined
 		 */
 		var initializeChangeDateActions = function () {
+			//things are defined in parent controller (getMoveDatesActions)
 			$scope.changeDatesActions = $scope.getMoveDatesActions();
 		};
 
@@ -55,12 +56,12 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			var sumryData = $scope.groupConfigData.summary,
 				oldSumryData = summaryMemento,
 				options = {
-					fromDate: sumryData.block_from,
-					toDate: sumryData.block_to,
-					oldFromDate: oldSumryData.block_from,
-					oldToDate: oldSumryData.block_to,
-					successCallBack: successCallBackOfMoveButton,
-					failureCallBack: failureCallBackOfMoveButton
+					fromDate 		: sumryData.block_from,
+					toDate 			: sumryData.block_to,
+					oldFromDate 	: oldSumryData.block_from,
+					oldToDate 		: oldSumryData.block_to,
+					successCallBack : successCallBackOfMoveButton,
+					failureCallBack : failureCallBackOfMoveButton
 				};
 			$scope.changeDatesActions.clickedOnMoveSaveButton (options);
 		};		
@@ -70,9 +71,11 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {undefined}
 		 */
 		$scope.clickedOnMoveButton = function() {		
-			_.extend($scope.toDateOptions, {
+			_.extend($scope.toDateOptions, 
+			{
 				disabled: true
 			});
+
 			$scope.changeDatesActions.clickedOnMoveButton ();
 		};
 
@@ -81,9 +84,11 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {undefined}
 		 */
 		$scope.clickedOnCancelMoveButton = function() {		
-			_.extend($scope.toDateOptions, {
+			_.extend($scope.toDateOptions, 
+			{
 				disabled: false
 			});
+
 			$scope.changeDatesActions.cancelMoveAction ();
 		};
 

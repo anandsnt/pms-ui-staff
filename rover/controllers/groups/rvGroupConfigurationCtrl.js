@@ -201,7 +201,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                             fromDate    : options["fromDate"]   ? options["fromDate"] : null,
                             toDate      : options["toDate"]     ? options["toDate"] : null,
                             oldFromDate : options["oldFromDate"]? options["oldFromDate"] : null,
-                            oldToDate   : options["oldToDate"]  ? options["oldToDate"] : null,
+                            oldToDate   : options["oldToDate"]  ? options["oldToDate"] : null
                         }
                 };
 
@@ -264,11 +264,11 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              */
             $scope.getMoveDatesActions = function () {
                 return {
-                    shouldShowMoveButton: shouldShowMoveButton,
-                    clickedOnMoveButton: clickedOnMoveButton,
-                    isInCompleteMoveMode: isInCompleteMoveMode,
-                    clickedOnMoveSaveButton: clickedOnMoveSaveButton,
-                    cancelMoveAction: cancelMoveAction
+                    shouldShowMoveButton    : shouldShowMoveButton,
+                    clickedOnMoveButton     : clickedOnMoveButton,
+                    isInCompleteMoveMode    : isInCompleteMoveMode,
+                    clickedOnMoveSaveButton : clickedOnMoveSaveButton,
+                    cancelMoveAction        : cancelMoveAction
                 };
             };
         }());
