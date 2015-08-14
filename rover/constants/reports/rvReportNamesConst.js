@@ -1,4 +1,4 @@
-sntRover.constant('RVReportNames', {
+sntRover.constant('RVReportNamesConst', {
 	'CHECK_IN_CHECK_OUT'           : 'Check In / Check Out',
 	'UPSELL'                       : 'Upsell',
 	'WEB_CHECK_OUT_CONVERSION'     : 'Web Check Out Conversion',

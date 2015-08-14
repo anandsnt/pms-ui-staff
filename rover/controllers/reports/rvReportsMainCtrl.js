@@ -5,11 +5,12 @@ sntRover.controller('RVReportsMainCtrl', [
 	'RVreportsSrv',
 	'RVreportsSubSrv',
 	'RVReportUtilsFac',
-	'RVReportParams',
-	'RVReportMsgs',
+	'RVReportParamsConst',
+	'RVReportMsgsConst',
+	'RVReportNamesConst',
 	'$filter',
 	'$timeout',
-	function($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, $filter, $timeout) {
+	function($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -45,7 +46,6 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		$scope.codeSettings = payload.codeSettings;
 		$scope.holdStatus   = payload.holdStatus;
-
 
 
 		$scope.showReportDetails = false;
@@ -205,12 +205,12 @@ sntRover.controller('RVReportsMainCtrl', [
 			$scope.touchedReport = item;
 			$scope.touchedDate = dateName;
 
-			if ( item.title === reportUtils.getName('ARRIVAL') ) {
+			if ( item.title === reportNames['ARRIVAL'] ) {
 				if ( !angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj) ) {
 					item.chosenDueInArrivals = false;
 				}
 			};
-			if ( item.title === reportUtils.getName('DEPARTURE') ) {
+			if ( item.title === reportNames['DEPARTURE'] ) {
 				if ( !angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj) ) {
 					item.chosenDueOutDepartures = false;
 				}
@@ -328,7 +328,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			// only do this for this report
 			// I know this is ugly :(
-			if (chosenReport.title !== reportUtils.getName('CHECK_IN_CHECK_OUT')) {
+			if ( chosenReport.title !== reportNames['CHECK_IN_CHECK_OUT'] ) {
 				return;
 			};
 

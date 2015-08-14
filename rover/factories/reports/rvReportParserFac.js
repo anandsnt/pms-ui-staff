@@ -2,8 +2,8 @@ sntRover.factory('RVReportParserFac', [
     '$rootScope',
     '$filter',
     '$timeout',
-    'RVReportUtilsFac',
-    function($rootScope, $filter, $timeout, reportUtils) {
+    'RVReportNamesConst',
+    function($rootScope, $filter, $timeout, reportNames) {
         var factory = {};
 
 
@@ -16,15 +16,14 @@ sntRover.factory('RVReportParserFac', [
             // a very special parser for daily transaction report
             // in future we may make this check generic, if more
             // reports API structure follows the same pattern
-            if ( reportName === reportUtils.getName('DAILY_TRANSACTIONS') ||
-                    reportName === reportUtils.getName('DAILY_PAYMENTS')) {
+            if ( reportName === reportNames['DAILY_TRANSACTIONS'] || reportName === reportNames['DAILY_PAYMENTS'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseNumeralData( reportName, apiResponse, options );
             }
 
             // a very special parser for daily transaction report
             // in future we may make this check generic, if more
             // reports API structure follows the same pattern
-            else if ( reportName == reportUtils.getName('RATE_ADJUSTMENTS_REPORT') ) {
+            else if ( reportName == reportNames['RATE_ADJUSTMENTS_REPORT'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseRateAdjustments( reportName, apiResponse, options );
 
                 /**
@@ -41,7 +40,7 @@ sntRover.factory('RVReportParserFac', [
             }
             
             // a very special parser for deposit report
-            else if ( reportName === reportUtils.getName('DEPOSIT_REPORT') ) {
+            else if ( reportName === reportNames['DEPOSIT_REPORT'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseDepositReport( reportName, apiResponse, options );
             }
 
@@ -63,12 +62,12 @@ sntRover.factory('RVReportParserFac', [
 
 
         function $_isForGenericReports( name ) {
-            return (name === reportUtils.getName('ARRIVAL') ||
-                    name === reportUtils.getName('IN_HOUSE_GUEST') ||
-                    name === reportUtils.getName('CANCELLATION_NO_SHOW') ||
-                    name === reportUtils.getName('DEPARTURE') ||
-                    name === reportUtils.getName('LOGIN_AND_OUT_ACTIVITY') ||
-                    name === reportUtils.getName('RESERVATIONS_BY_USER')) ? true : false;
+            return ( name === reportNames['ARRIVAL'] ||
+                    name === reportNames['IN_HOUSE_GUEST'] ||
+                    name === reportNames['CANCELLATION_NO_SHOW'] ||
+                    name === reportNames['DEPARTURE'] ||
+                    name === reportNames['LOGIN_AND_OUT_ACTIVITY'] ||
+                    name === reportNames['RESERVATIONS_BY_USER'] ) ? true : false;
         };
 
 
@@ -115,7 +114,7 @@ sntRover.factory('RVReportParserFac', [
             };
 
             var checkCancel = function(item) {
-                var check = !!options['checkCancel'] && excludeReports([reportUtils.getName('ARRIVAL'), reportUtils.getName('IN_HOUSE_GUEST')])
+                var check = !!options['checkCancel'] && excludeReports( [reportNames['ARRIVAL'], reportNames['IN_HOUSE_GUEST']] );
                 return check ? !!item['cancel_reason'] : false;
             };
 
@@ -202,7 +201,7 @@ sntRover.factory('RVReportParserFac', [
 
                     // do this only after the above code that adds
                     // 'row-break' class to the row
-                    if ( reportName === reportUtils.getName('LOGIN_AND_OUT_ACTIVITY') ) {
+                    if ( reportName === reportNames['LOGIN_AND_OUT_ACTIVITY'] ) {
                         if ( makeCopy.hasOwnProperty('action_type') && makeCopy['action_type'] === 'INVALID_LOGIN' ) {
                             makeCopy['action_type'] = 'INVALID LOGIN';
                             makeCopy.className = 'row-break invalid';

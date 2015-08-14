@@ -165,7 +165,7 @@ sntRover.service('RVreportsSrv', [
 			// fetch hold status & add to payload
 			if ( hasFilter['HOLD_STATUS'] ) {
 				if ( service.payloadCache.hasOwnProperty('holdStatus') ) {
-					success( 'origins', service.payloadCache.holdStatus );
+					success( 'holdStatus', service.payloadCache.holdStatus );
 				} else {
 					subSrv.fetchHoldStatus()
 						.then( success.bind(null, 'holdStatus'), failed.bind(null, 'holdStatus', []) );
