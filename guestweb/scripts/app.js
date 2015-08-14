@@ -92,11 +92,14 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 	};
 
 	$( ".loading-container" ).hide();
-}
-
-
-
-]);
+	/*
+	 * function to handle exception when state is not found
+	 */
+	$scope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
+		event.preventDefault();
+		$state.go('noOptionAvailable');
+	})
+}]);
 
 var loadStyleSheets = function(filename){
 		var fileref = document.createElement("link");
