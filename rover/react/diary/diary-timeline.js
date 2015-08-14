@@ -24,7 +24,7 @@ var Timeline = React.createClass({
 	 * @return {String}
 	 */
 	__get_date_for_timeline_displaying: function(dateObj){
-		return (dateObj.toComponents().date.weekday + " - " + dateObj.toComponents().date.toShortDateString())
+		return (dateObj.toComponents().date.weekday + " - " + dateObj.toComponents().date.toShortDateString());
 	},
 
 	render: function() {
@@ -42,7 +42,7 @@ var Timeline = React.createClass({
 			current_time_plot_point = this.__get_property_time_line_showing_point();
 
 		(function() {
-			var time = 0; //start_time.hours;
+			var time = 0;
 
 			for(var i = 0, len = display.hours; i < len; i++) {
 				segment_hour_display.push(time++ + ':00');

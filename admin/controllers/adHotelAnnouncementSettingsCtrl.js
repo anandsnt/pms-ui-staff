@@ -31,6 +31,6 @@ admin.controller('ADHotelAnnouncementSettingsCtrl', ['$scope','$rootScope', '$st
 
 		//calling the save api
 		$scope.invokeApi(ADHotelAnnouncementSrv.saveAnnoucementSettings, postingData, successCallbackOfSaveDetails);
-	}
+	};
 
 }]);

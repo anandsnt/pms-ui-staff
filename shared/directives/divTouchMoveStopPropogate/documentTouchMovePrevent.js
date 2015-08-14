@@ -9,5 +9,5 @@ angular.module('divTouchMoveStopPropogate', []).directive('divTouchMoveStopPropo
 	      });
 	    }
     }
-  }
+  };
 });

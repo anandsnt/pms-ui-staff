@@ -93,7 +93,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				});
 			});
 
-		}
+		};
 
 		/**
 		 * API calling method to get the transaction details
@@ -171,17 +171,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		//Calculate the scroll width for bill tabs in all the cases
 		$scope.getWidthForBillTabsScroll = function() {
-			/*var width = 0;
-			if($scope.routingArrayCount > 0)
-				width = width + 200;
-			if($scope.incomingRoutingArrayCount > 0)
-				width = width + 275;
-			if($scope.clickedButton === 'checkinButton')
-				width = width + 230;
-			if($scope.reservationBillData.bills.length < 10)
-				width = width + 50;
-			width =  133 * $scope.reservationBillData.bills.length + 10 + width;
-			return width;*/
+
 			var width = 0;
 			if($scope.transactionsDetails !== undefined){
 				var width = $('#registration-summary ul li').width() * ($scope.transactionsDetails.bills.length + 1);
@@ -236,8 +226,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.billNumber = activeBillNo;
 
 			var bills = [];
-		    for(var i = 0; i < $scope.transactionsDetails.bills.length; i++ )
+		    for(var i = 0; i < $scope.transactionsDetails.bills.length; i++ ) {
 		    	bills.push(i+1);
+		    }
 
 		    $scope.fetchedData = {};
 			$scope.fetchedData.bill_numbers = bills;
@@ -387,7 +378,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			$scope.errorMessage = "";
 			//hide edit and remove options in case type is  payment
-			// $scope.hideRemoveAndEdit  = (type === "PAYMENT") ? true : false;
+
 			$scope.selectedTransaction = {};
 			$scope.selectedTransaction.id = id;
 			$scope.selectedTransaction.desc = desc;
@@ -483,13 +474,13 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				mailFailed = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
 					$scope.closeDialog();
-				}
+				};
 
 			var params = {
 				"bill_number": billNumber,
 				"to_address": mailTo,
 				"is_group": !!$scope.groupConfigData
-			}
+			};
 
 			if (!!$scope.groupConfigData) {
 				params.group_id = $scope.groupConfigData.summary.group_id;
@@ -503,7 +494,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				params: params
 			});
 
-		}
+		};
 
 		$scope.mailInvoice = function(billNumber) {
 			if ($scope.groupConfigData && $scope.groupConfigData.summary && !!$scope.groupConfigData.summary.contact_email) {
@@ -520,7 +511,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					})
 				});
 			}
-		}
+		};
 
 		$scope.printInvoice = function() {
 				$('.nav-bar').addClass('no-print');
@@ -544,7 +535,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					$('.card-tabs-nav').removeClass('no-print');
 
 				}, 100);
-			}
+			};
 			//CICO-13903 End
 
 		//Direct Bill payment starts here
@@ -555,7 +546,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				//Fetch data again to refresh the screen with new data
 				getTransactionDetails();
 				$scope.diretBillpaymentData = {};
-			}
+			};
 			$scope.callAPI(rvAccountTransactionsSrv.submitPaymentOnBill, {
 				successCallBack: successPayment,
 				params: $scope.diretBillpaymentData
@@ -653,7 +644,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
             //Lets start the processing
             $q.all(promises)
                 .then(successFetchOfAllReqdForTransactionDetails, failedToFetchOfAllReqdForTransactionDetails);
-        }
+        };
 
 
 		/**

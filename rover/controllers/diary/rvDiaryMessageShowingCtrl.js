@@ -18,6 +18,6 @@ sntRover.controller('RVDiaryMessageShowingCtrl', ['$scope',
     			}, 1000);
 
     		}
-    	}
+    	};
 	}
 ]);

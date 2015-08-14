@@ -38,7 +38,7 @@ admin.service('ADBaseWebSrvV2',['$http', '$q', '$window', function($http, $q, $w
   		};
 
 		$http(httpDict).success(function(response, status) {
-	    	deferred.resolve(response)
+	    	deferred.resolve(response);
 		}).error(function(errors, status) {
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it

@@ -12,7 +12,7 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
         $scope.assignedRoomTypes = [];
         $scope.availableRoomTypes = [];
         $scope.fetchAllRoomTypes();
-    }
+    };
 
     /**
     * Method to fetch the list of room types available.
@@ -67,7 +67,7 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
             }
        });
 
-    }
+    };
 
 
     /**
@@ -131,7 +131,7 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
         else {
             return false;
         }
-    }
+    };
     /*
      * To register selected assigned room
      *
@@ -159,7 +159,7 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
         }
 
 
-    }
+    };
     /*
      * To register selected unassigned room
      *
@@ -190,7 +190,7 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
         }
 
 
-    }
+    };
     /*
      * To handle click action for selected room type
      *
@@ -200,7 +200,7 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
 
         if($scope.selectedUnAssignedRoomIndex !== -1){
             var temp = $scope.nonAssignedroomTypes[$scope.selectedUnAssignedRoomIndex];
-            $scope.assignedRoomTypes.push(temp)
+            $scope.assignedRoomTypes.push(temp);
             $scope.nonAssignedroomTypes.splice($scope.selectedUnAssignedRoomIndex,1);
             $scope.selectedUnAssignedRoomIndex =-1;
         }
@@ -212,7 +212,7 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
     $scope.topMoveleftClicked = function(){
         if($scope.selectedAssignedRoomIndex !== -1){
             var temp = $scope.assignedRoomTypes[$scope.selectedAssignedRoomIndex];
-            $scope.nonAssignedroomTypes.push(temp)
+            $scope.nonAssignedroomTypes.push(temp);
             $scope.assignedRoomTypes.splice($scope.selectedAssignedRoomIndex,1);
             $scope.selectedAssignedRoomIndex =-1;
          }
@@ -248,11 +248,11 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
     $scope.reachedAssignedRoomTypes = function(){
         $scope.selectedAssignedRoomIndex = -1;
         lastDropedTime = new Date();
-    }
+    };
     $scope.reachedUnAssignedRoomTypes = function(){
         $scope.selectedUnAssignedRoomIndex = -1;
         lastDropedTime = new Date();
-    }
+    };
 
 
     $scope.init();

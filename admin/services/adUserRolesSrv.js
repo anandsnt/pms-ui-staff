@@ -60,7 +60,7 @@ admin.service('ADUserRolesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http,
 
 		var deferred = $q.defer();
 		var url ='api/roles/'+data.value;
-		var updateData = {"dashboard_id":data.dashboard_id}
+		var updateData = {"dashboard_id":data.dashboard_id};
 
 		ADBaseWebSrvV2.putJSON(url, updateData).then(function(data) {
 		    deferred.resolve(data);

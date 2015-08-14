@@ -193,11 +193,11 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 	    var jan = new Date(this.getFullYear(), 0, 1);
 	    var jul = new Date(this.getFullYear(), 6, 1);
 	    return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
-	}
+	};
 
 	Date.prototype.isOnDST = function() {
 	    return this.getTimezoneOffset() < this.stdTimezoneOffset();
-	}
+	};
 
 	Date.prototype.getDSTDifference = function() {
 		var firstMonth, lastMonth, firstMonthOffset, lastMonthOffset, dstDiff;
@@ -215,7 +215,7 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
       	lastMonthOffset = lastMonth.getTimezoneOffset();
 		dstDiff = (firstMonthOffset - lastMonthOffset);
 		return dstDiff;
-	}
+	};
 
 	Date.prototype.toComponents = function() {
 		var __DAYS = ['Sunday',

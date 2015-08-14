@@ -25,14 +25,12 @@ function ADBaseTableCtrl($scope, ngTableParams){
 
     $scope.$watch("filterType", function () {
         $scope.reloadTable();
-        /*$scope.tableParams.page(1);
-    	$scope.tableParams.reload();*/
+
     });
 
     $scope.searchEntered = function() {
         $scope.reloadTable();
-        /*$scope.tableParams.page(1);
-    	$scope.tableParams.reload();*/
+
     };
 
     $scope.reloadTable = function(){
@@ -56,13 +54,13 @@ function ADBaseTableCtrl($scope, ngTableParams){
 		getParams.query = $scope.searchTerm;
 		var sortData = tableParams.sorting();
 
-		var sortField = Object.keys(sortData)[0]
+		var sortField = Object.keys(sortData)[0];
 		getParams.sort_field = sortField;
 		getParams.sort_dir = sortData[sortField] === "desc"? false :true;
 
 		return getParams;
 
-    }
+    };
     $scope.fetchTableData = function(){
 
     };

@@ -19,7 +19,7 @@ sntRover.controller('rvRoomAvailabilityDatePickerController',['$scope', '$rootSc
 	        ngDialog.close();
 	      }
 
-	    }
+	    };
 	};
 	$scope.setUpCalendar();
 
