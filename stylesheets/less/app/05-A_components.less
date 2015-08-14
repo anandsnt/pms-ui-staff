@@ -8122,7 +8122,7 @@
         > .wrapper {
             margin: 0 auto;
             padding: 60px 0 20px;
-            #pixel-to-percent > .width(1228, 2048);
+            width: 640px;
             .float;
         }
 
@@ -8131,16 +8131,16 @@
         .row {
             margin-bottom: 20px;
 
+            label {
+                font-size: 14px;
+                text-transform: uppercase;
+                color: @textColor;
+
+                span,
+                &.label { color: @grey3; }
+            }
+
             .entry {
-
-                label {
-                    font-size: 14px;
-                    text-transform: uppercase;
-                    color: @textColor;
-
-                    span,
-                    &.label { color: @grey3; }
-                }
 
                 input,
                 select {
@@ -8173,10 +8173,10 @@
                 .entry {
                     margin-right: 20px;
                     .pull-left;
-
+                    
                     &#arriving,
                     &#departing {
-                        #pixel-to-percent > .width(400, 1230);
+                        #pixel-to-percent > .width(230, 640);
 
                         .entry-data {
                             background: @white @calendar no-repeat 90% 20px;
@@ -8218,25 +8218,26 @@
                             @media @highdpi { background-image: @calendar2x; }
 
                             &:hover { background-position: 90% -30px; }
-                        }
+                        }                       
                     }
 
                     &#arriving { color: @green; }
-                    &#departing {
-                        color: @red;
+                    &#departing { 
+                        color: @red; 
                         margin-right: 0;
                     }
 
                     &#type {
                         position: relative;
-                        #pixel-to-percent > .width(349, 1230);
+                        #pixel-to-percent > .width(140, 640);
 
                         .entry-data {
                             .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
 
-                            input {
+                            input { 
                                 position: relative;
                                 padding-right: 90px;
+                                text-align: center;
                             }
                         }
 
@@ -8249,7 +8250,7 @@
                             #border-radius > .rounded(0px);
 
                             .data-off,
-                            .data-on {
+                            .data-on { 
                                 font-size: 16px;
                                 padding: 5px;
                                 line-height: 25px;
@@ -8277,7 +8278,7 @@
                                     left: 0;
                                     right: 0;
                                     top: 0;
-                                }
+                                } 
 
                                 &.data-on {
                                     left: 0;
@@ -8306,7 +8307,7 @@
                         margin-right: 0;
                         #pixel-to-percent > .width(400, 1230);
 
-                        select {
+                        select { 
                             option { font-size: 16px; }
                         }
                     }
@@ -8314,68 +8315,50 @@
             }
 
             &#rooms {
+
                 .entry {
-                    margin-top: 10px;
                     position: relative;
+                    margin-bottom: 10px;
 
                     .entry-data {
                         .float;
 
                         .select {
-                            position: relative;
+                            border-right: 1px solid rgba(0,0,0,.1);
                             .pull-left;
 
                             .label {
                                 position: absolute;
-                                top: 20px;
+                                top: 0;
+                                left: 20px;
                                 z-index: 0;
+                                margin: 0;
+                                font-size: 12px;
+                                .show;
                             }
 
-                            select {
-                                vertical-align: middle;
-                                position: relative;
+                            select { 
+                                font-size: 28px;
+                                padding: 5px 30px 0 20px;
 
-                                option { font-size: 16px; }
+                                option { font-size: 16px;  }
                             }
 
-                            &.adults {
-                                #pixel-to-percent > .width(250, 1230);
+                            &.adults,
+                            &.infants,
+                            &.rooms { width: 95px; }
+                            &.children { width: 105px; }
 
-                                label { left: 15px; }
-                                select { padding-left: 65px; }
-                                &:after { #border-radius > .right(0px); }
-                            }
+                            &.room-type { 
+                                .calc-width(100, 390);
 
-                            &.children {
-                                #pixel-to-percent > .width(270, 1230);
-
-                                label { left: 10px; }
-                                select { padding-left: 75px; }
-                                &:after { #border-radius > .right(0px); }
-                            }
-
-                            &.infants {
-                                #pixel-to-percent > .width(250, 1230);
-
-                                label { left: 10px; }
-                                select { padding-left: 65px; }
-                                &:after { #border-radius > .right(0px); }
-                            }
-
-                            &.room-type {
-                                #pixel-to-percent > .width(440, 1230);
-
-                                select {
-                                    padding-left: 10px;
+                                select { 
                                     font-size: 18px;
+                                    padding: 0 0 0 10px;
                                 }
                             }
 
-                            &:after {
-                                top: 0;
-                                right: 0;
-                                .size(60px, 30px);
-                            }
+                            &:last-child { border-right: 0; }
                         }
                     }
 
@@ -8383,30 +8366,29 @@
                     .remove-room {
                         position: absolute;
                         top: 0;
-                        right: -60px;
+                        right: -80px;
                         cursor: pointer;
+                        .faux-clickable;
 
                         &.add-room { .hide; }
                     }
 
-                    &:first-of-type {
-                        margin-top: 0;
-
-                        .add-room { top: 25px; }
-                        .remove-room { .hide; }
-                    }
-
                     &:last-of-type {
+                        margin-bottom: 0;
 
-                        .add-room {
-                            .show;
-                            right: -120px;
+                        .add-room { 
+                            .show; 
+                            right: -160px;
                         }
 
                         &:first-of-type {
                             .remove-room { .hide; }
-                            .add-room { right: -60px; }
+                            .add-room { right: -80px; }
                         }
+                    }
+
+                    &:nth-of-type(4) {
+                        .add-room { .hide; }
                     }
                 }
             }
@@ -8481,7 +8463,7 @@
                         select { 
                             vertical-align: middle;
                             font-size: 16px;
-                            line-height: 25px;
+                            line-height: 50px;
                             padding-left: 65px;
                             height: 50px;
                             min-height: 50px;
@@ -8521,7 +8503,8 @@
                 .select {
                     &.adults,
                     &.children,
-                    &.infants {
+                    &.infants,
+                    &.rooms {
                         position: relative;
                         background-color: @white;
                         #border-radius > .rounded();
@@ -8535,7 +8518,7 @@
                             z-index: 1;
                         }
 
-                        select {
+                        select { 
                             position: relative;
                             font-size: 24px;
                             line-height: 40px;
@@ -8545,19 +8528,21 @@
                             border: 0;
                             width: 100%;
                             z-index: 9;
-                            .box-shadow(none);
+                            .box-shadow(none);                          
                         }
                     }
 
-                    &.adults { z-index: 30; }
-                    &.children { z-index: 20; }
-                    &.infants { z-index: 10; }
+                    &.adults { z-index: 40; }
+                    &.children { z-index: 30; }
+                    &.infants { z-index: 20; }
+                    &.rooms { z-index: 10; }
                 }
             }
 
             .add-new-button { .show; }
 
             &#sidebar-nights {
+
                 .entry-data {
                     position: relative;
                     cursor: pointer;
@@ -8565,7 +8550,7 @@
                     .faux-clickable;
                     background: @white @calendar no-repeat 90% 20px;
                     background-size: 20px;
-
+                   
                     input { .hide; }
 
                     .ui-datepicker-trigger {
@@ -8600,17 +8585,17 @@
 
                     @media @highdpi { background-image: @calendar2x; }
 
-                    &.arriving {
-                        color: @green;
+                    &.arriving { 
+                        color: @green; 
                         margin-bottom: 20px;
                     }
 
-                    &.departing {
-                        color: @red;
+                    &.departing { 
+                        color: @red; 
                     }
 
                     &:hover { background-position: 90% -30px; }
-                }
+                } 
             }
 
             &#sidebar-rooms {
@@ -8623,18 +8608,18 @@
                         .show;
                         .float;
 
-                        .icons {
+                        .icons { 
                             cursor: pointer;
-                            .pull-right;
+                            .pull-right; 
                         }
                     }
 
                     .room-details {
                         margin-top: 20px;
 
-                        h4 {
+                        h4 { 
                             font-size: 16px;
-                            font-weight: 600;
+                            font-weight: 600; 
                             .float;
 
                             span,
@@ -8682,12 +8667,14 @@
 
                     label { margin-bottom: 0; }
 
-                    input[type="text"] {
+                    input[type="text"] { 
                         margin-left: 30px;
                         .calc-width(100, 30);
-                        .hide;
+                        .hide; 
 
                         &.default { .show; }
+                        &[style="display: inline;"] {  #fade > .in(); }
+                        &[style="display: none;"] {  #fade > .out(); }
                     }
                 }
             }
@@ -8708,7 +8695,7 @@
                 .switch-button {
                     margin: 5px 0 0 5px;
                     .pull-right;
-                    .size(40px, 260px);
+                    .size(40px, 240px);
                     .show;
 
                     .data-off,
@@ -8744,6 +8731,7 @@
                 .checkbox {
                     margin: 5px 0 0 0;
                     padding: 0 10px 5px 40px;
+                    font-size: 14px;
                     .pull-right;
 
                     .icon-form { left: 10px; }
@@ -8770,11 +8758,12 @@
 
                     li {
                         display: inline-block;
+                        font-size: 14px;
                         line-height: 30px;
                         text-align: center;
                         text-transform: uppercase;
                         color: @grey3;
-                        font-weight: 600;
+                        
                         padding: 10px;
                         margin: 0 0 0 -4px;
                         .transition();
@@ -8792,8 +8781,8 @@
                                 position: absolute;
                                 left: 35px;
                                 bottom: -10px;
-                                width: 0;
-                                height: 0;
+                                width: 0; 
+                                height: 0; 
                                 border-top: 10px solid @logoGradientEnd;
                                 border-left: 10px solid transparent;
                                 border-right: 10px solid transparent;
@@ -8804,6 +8793,11 @@
                             color: @green;
                             background: @icons 10px -5841px no-repeat;
                             padding-left: 30px;
+
+                            @media @highdpi {
+                                background-image: @icons2x;
+                                background-size: 120px;
+                            }
                         }
 
                         &:first-child {
@@ -8921,14 +8915,18 @@
 
             .select {
                 height: 40px;
+                margin-right: 20px;
                 .size(40px, 180px);
                 .pull-left;
 
                 select { height: 40px; }
+
+                &:last-child { margin-right: 0; }
             }
 
             .find-rates {
                 position: relative;
+                margin-right: 20px;
                 .size(40px, 280px);
                 .pull-left;
 
@@ -9033,7 +9031,7 @@
                                 font-size: 24px;
                                 line-height: 40px;
                                 height: 40px;
-                                padding: 0 10px 0 150px;
+                                padding: 0 10px 0 120px;
                                 background: transparent;
                                 border: 0;
                                 width: 100%;
@@ -9048,7 +9046,8 @@
                     }
                 }
 
-                .select, .find-rates {
+                .select,
+                .find-rates {
                     margin-right: 20px;
                     .pull-right;
                 }
@@ -9060,8 +9059,6 @@
             overflow: hidden;
             .float;
             .square(100%);
-
-            .guest-status { .square(20px); }
 
             /* Steps ***/
             .reservation-content {
@@ -9748,6 +9745,8 @@
                     margin-bottom: 20px;
                 }
 
+                .guest-status { .square(20px); }
+
                 .data {
                     margin-bottom: 20px;
                     border-bottom: 1px solid rgba(0,0,0,.1);
@@ -10125,8 +10124,9 @@
                 }
             }
 
-            /* Multi room layouts ***/
-            &.multiple-rooms {
+            /* Multi room / stay card layouts ***/
+            &.multiple-rooms,
+            &.edit-mode {
                 .reservation-content {
                     &.rooms-and-rates-content { .calc-height(100, 130); }
                     &.addons-content { .calc-height(100, 50); }
