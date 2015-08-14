@@ -448,9 +448,9 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	/*
 	* updates DefaultPaymentAmount
 	*/
-	var updateDefaultPaymentAmount = function(){
-	$scope.renderData.defaultPaymentAmount = $filter("number")($scope.splitePaymentDetail["splitAmount"],2);
-	}
+	var updateDefaultPaymentAmount = function() {
+		$scope.renderData.defaultPaymentAmount = $filter("number")($scope.splitePaymentDetail["splitAmount"],2);
+	};
 	/*
 	* Success call back of success payment
 	*/
