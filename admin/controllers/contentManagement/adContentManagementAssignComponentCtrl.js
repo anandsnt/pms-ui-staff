@@ -20,7 +20,7 @@ admin.controller('ADContentManagementAssignComponentCtrl',['$scope', 'ngDialog',
       $scope.isDataFetched = true;
 		};
 	   $scope.invokeApi(ADContentManagementSrv.fetchGridViewList, {} , successCallComponentFetch);
-   }
+   };
    /*Function to split the fetched components to categories and sections,
     *to provide the option to assign parent
     */
@@ -32,7 +32,7 @@ admin.controller('ADContentManagementAssignComponentCtrl',['$scope', 'ngDialog',
    				$scope.categories.push($scope.componentList[i]);
    			}
    		}
-   }
+   };
    /*Function to check if the component is the same as the child component,
     *or if the component is already assigned
     */
@@ -43,7 +43,7 @@ admin.controller('ADContentManagementAssignComponentCtrl',['$scope', 'ngDialog',
    		else {
    			return component.id !== $scope.data.id && $scope.isElementOfArray($scope.data.parent_category, component) === -1;
       }
-   	}
+   	};
    /*Function to check if a component is already present in the array
    */
    $scope.isElementOfArray = function(array, component){
@@ -56,7 +56,7 @@ admin.controller('ADContentManagementAssignComponentCtrl',['$scope', 'ngDialog',
             }
          }
          return -1;
-      }
+      };
    $scope.fetchComponents();
 
    /*Function to toggle the add section,
@@ -69,7 +69,7 @@ admin.controller('ADContentManagementAssignComponentCtrl',['$scope', 'ngDialog',
    		else {
    			$scope.selectedSections.splice($scope.selectedSections.indexOf($scope.sections[index]), 1);
       }
-   }
+   };
    /*Function to toggle the add category,
     *If category not selected, it will be selected. Otherwise it will deselect the category.
     */
@@ -80,17 +80,17 @@ admin.controller('ADContentManagementAssignComponentCtrl',['$scope', 'ngDialog',
    		else {
    			$scope.selectedCategories.splice($scope.selectedCategories.indexOf($scope.categories[index]), 1);
       }
-   }
+   };
    /*Function to know the selection status for a section
     */
    $scope.isSectionSelected = function(index){
-   		return $scope.selectedSections.indexOf($scope.sections[index]) !== -1
-   }
+   		return $scope.selectedSections.indexOf($scope.sections[index]) !== -1;
+   };
    /*Function to know the selection status for a category
     */
    $scope.isCategorySelected = function(index){
-   		return $scope.selectedCategories.indexOf($scope.categories[index]) !== -1
-   }
+   		return $scope.selectedCategories.indexOf($scope.categories[index]) !== -1;
+   };
    /*Function to add the selected sections and categories to the parent sections and and categories
     *of the component, on clicking the confirm button.
     */
@@ -102,11 +102,11 @@ admin.controller('ADContentManagementAssignComponentCtrl',['$scope', 'ngDialog',
         $scope.data.parent_section = $scope.data.parent_section.concat($scope.selectedSections);
       }
    		ngDialog.close();
-   }
+   };
    /*Function to cancel the actions and dismiss the dialog
     */
    $scope.cancelClicked = function(){
    		ngDialog.close();
-   }
+   };
 
 }]);

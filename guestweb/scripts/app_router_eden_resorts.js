@@ -110,7 +110,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	templateUrl: '/assets/preCheckin/partials/Eden/noOption.html',
 	 	title: 'Feature not available'
  	});
- 	
+
 	$stateProvider.state('earlyCheckinOptions', {
     	url: '/noOptions',
 	 	templateUrl: '/assets/preCheckin/partials/Eden/noOption.html',

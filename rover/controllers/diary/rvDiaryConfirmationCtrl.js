@@ -32,11 +32,11 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
 
                         return {
                             arrival_time: arrival.time.toString(true),
-                            //arrival_date: arrival.date.day + ' ' + arrival.date.monthName + ' ' + arrival.date.year,
+
                             arrival_date: arrival_date,
                             departure_time: departure.time.toString(true),
                             departure_date: departure_date
-                            //departure_date: departure.date.day + ' ' + departure.date.monthName + ' ' + departure.date.year
+
                         };
                     },
 
@@ -91,7 +91,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                         local_version.amount = $scope.currencySymbol + ' ' + local_version.amount;
 
                         $scope.selection.rooms.push(local_version);
-                    })
+                    });
                 }
             })();
         };
@@ -125,9 +125,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
         };
 
         $scope.routeToSummary = function() {
-            /*$scope.reset_guest_details();
-            $scope.reset_company_details();
-            $scope.reset_travel_details();*/
+
             var fetchSuccess = function(isAddonsConfigured){
                 $scope.saveToVault('temporaryReservationDataFromDiaryScreen', $scope.vaultSelections);
                 //CICO-9429
@@ -145,11 +143,11 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                     });
                 }
                 $scope.closeWithAnimation ();
-            }
+            };
             var fetchFailed = function(errorMessage){
                 $scope.errorMessage = errorMessage;
                 $scope.closeWithAnimation();
-            }
+            };
             var params = {};
                 params.from_date = $scope.vaultSelections.arrival_date;
                 params.to_date = $scope.vaultSelections.departure_date;

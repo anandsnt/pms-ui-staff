@@ -210,7 +210,7 @@ sntRover
 			var room,
                 m_status = meta.occupancy.status,
 				reject = function(child) {
-					return angular.lowercase(child[m_status]) === 'available'; //child.temporary === true;
+					return angular.lowercase(child[m_status]) === 'available';
 				};
 
 			for(var i = 0, len = rooms.length; i < len; i++) {
@@ -220,7 +220,7 @@ sntRover
 			}
 		};
 
-	 	reservationRoomTransfer = function(rooms, nextRoom, room, reservation) { //, commit) {
+	 	reservationRoomTransfer = function(rooms, nextRoom, room, reservation) {
 			var data = rooms,
 				oldRoom,
 				newRoom,
@@ -239,7 +239,7 @@ sntRover
                 idxOldRoom = roomIndex(rooms, oldRoom);
                 idxNewRoom = roomIndex(rooms, newRoom);
 
-                //if(commit) {
+
                 if(idxOldRoom > -1 && idxOldRoom < data.length) {
                     data[idxOldRoom] = oldRoom;
                 }
@@ -327,7 +327,7 @@ sntRover
         		'start_date'   : start_date,
         		'__start_date' : __start_date,
         		'arrival_time' : (hh < 10 ? '0' + hh : hh) + ':' + (mm === 0 ? '00' : mm)
-        	}
+        	};
         };
 
 		return {

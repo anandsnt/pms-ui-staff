@@ -1,6 +1,6 @@
 sntRover.controller('reservationPaymentController',['$scope','$rootScope', function($scope,$rootScope){
-	
-	// To add class based on number of buttons present. 
+
+	// To add class based on number of buttons present.
 	$scope.getHasButtonClass = function(){
 
 		var status = $scope.reservationData.reservation_card.reservation_status,

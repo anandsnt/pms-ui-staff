@@ -16,7 +16,7 @@ sntRover.controller('rvHkServiceStatusDateSelectorCtrl', ['$scope', '$rootScope'
 				onChangeMonthYear: function(year, month, instance) {
 					$scope.updateCalendar(year, month);
 				}
-			}
+			};
 		};
 		$scope.setUpData();
 

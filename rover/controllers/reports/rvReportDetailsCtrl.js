@@ -90,7 +90,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.isGuestReport = true;
 					$scope.showSortBy = false;
 					break;
-                                        
+
 				case reportUtils.getName('EARLY_CHECKIN'):
 					$scope.isGuestReport = true;
 					$scope.showSortBy = true;
@@ -482,7 +482,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
 					template = '/assets/partials/reports/forecastGuestGroupReport/rvForecastGuestGroupReportRow.html';
 					break;
-				
+
 				// MARKET_SEGMENT_STAT_REPORT report row
 				case reportUtils.getName('MARKET_SEGMENT_STAT_REPORT'):
 					template = '/assets/partials/reports/marketSegmentStatReport/rvMarketSegmentStatReportRow.html';
@@ -503,12 +503,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// simple method to allow checking for report title
 		// from the template, even without making the entire reportUtils part of $scope
 		$scope.isThisReport = function (name) {
-			if ( 'array' == typeof name ) {
+			if ( 'array' === typeof name ) {
 				return !! _.find(name, function(each) {
-					return $scope.parsedApiFor == reportUtils.getName(each);
+					return $scope.parsedApiFor === reportUtils.getName(each);
 				});
 			} else {
-				return $scope.parsedApiFor == reportUtils.getName(name);
+				return $scope.parsedApiFor === reportUtils.getName(name);
 			};
 		};
 

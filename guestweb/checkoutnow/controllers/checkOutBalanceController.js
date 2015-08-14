@@ -48,7 +48,7 @@
 				$state.go('ccVerification',{'fee':$scope.billData.balance,'message':"Check-out fee",'isFromCheckoutNow':true});
 			}
 
-		}
+		};
 
 	}
 };

@@ -41,6 +41,6 @@ admin.controller('ADSocialLobbySettingsCtrl', ['$scope','$rootScope', '$state', 
 
 		//calling the save api
 		$scope.invokeApi(ADSocialLobbySrv.saveSocialLobbySettings, postingData, successCallbackOfSaveDetails);
-	}
+	};
 
 }]);
