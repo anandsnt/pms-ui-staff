@@ -13,7 +13,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
     'flyerPrograms',
     'loyaltyPrograms',
     '$filter',
-    function($rootScope, $scope, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams, $vault, baseData, activeCodes, flyerPrograms, loyaltyPrograms, $filter) {
+    'RVReservationTabService',
+    function($rootScope, $scope, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams, $vault, baseData, activeCodes, flyerPrograms, loyaltyPrograms, $filter, RVReservationTabService) {
         BaseCtrl.call(this, $scope);
         $scope.$parent.hideSidebar = false;
 
@@ -97,57 +98,60 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
          *
          */
         var fetchCurrentTimeSucess = function(data) {
-            var intHrs = parseInt(data.hotel_time.hh),
-                intMins = parseInt(data.hotel_time.mm),
-                ampm = '';
+                var intHrs = parseInt(data.hotel_time.hh),
+                    intMins = parseInt(data.hotel_time.mm),
+                    ampm = '';
 
-            // first conver 24hr time to 12hr time
-            if (intHrs > 12) {
-                intHrs -= 12;
-                ampm = 'PM';
-            } else {
-                ampm = 'AM';
-            }
-
-
-            // the time must be rounded to next 15min position
-            // if the guest came in at 3:10AM it should be rounded to 3:15AM
-            if (intMins > 45 && intHrs + 1 < 12) {
-                intHrs += 1;
-                intMins = '00';
-            } else if (intMins > 45 && intHrs + 1 === 12) {
-                if (ampm === 'AM') {
-                    intHrs = '00';
-                    intMins = '00';
+                // first conver 24hr time to 12hr time
+                if (intHrs > 12) {
+                    intHrs -= 12;
                     ampm = 'PM';
                 } else {
-                    intHrs = '00';
-                    intMins = '00';
                     ampm = 'AM';
                 }
-            } else if (intMins === 15 || intMins === 30 || intMins === 45) {
-                intMins += 15;
-            } else {
-                do {
-                    intMins += 1;
-                    if (intMins === 15 || intMins === 30 || intMins === 45) {
-                        break;
+
+
+                // the time must be rounded to next 15min position
+                // if the guest came in at 3:10AM it should be rounded to 3:15AM
+                if (intMins > 45 && intHrs + 1 < 12) {
+                    intHrs += 1;
+                    intMins = '00';
+                } else if (intMins > 45 && intHrs + 1 === 12) {
+                    if (ampm === 'AM') {
+                        intHrs = '00';
+                        intMins = '00';
+                        ampm = 'PM';
+                    } else {
+                        intHrs = '00';
+                        intMins = '00';
+                        ampm = 'AM';
                     }
-                } while ( intMins !== 15 || intMins !== 30 || intMins !== 45 );
-            };
+                } else if (intMins === 15 || intMins === 30 || intMins === 45) {
+                    intMins += 15;
+                } else {
+                    do {
+                        intMins += 1;
+                        if (intMins === 15 || intMins === 30 || intMins === 45) {
+                            break;
+                        }
+                    } while (intMins !== 15 || intMins !== 30 || intMins !== 45);
+                };
 
-            // finally append zero and convert to string -- only for $scope.reservationData.checkinTime
-            $scope.reservationData.checkinTime = {
-                hh: (intHrs < 10 && intHrs.length < 2) ? '0' + intHrs : intHrs.toString(),
-                mm: intMins.toString(),
-                ampm: ampm
-            };
+                // finally append zero and convert to string -- only for $scope.reservationData.checkinTime
+                $scope.reservationData.checkinTime = {
+                    hh: (intHrs < 10 && intHrs.length < 2) ? '0' + intHrs : intHrs.toString(),
+                    mm: intMins.toString(),
+                    ampm: ampm
+                };
 
-            // NOTE: on UI we are no appending a leading '0' for hours less than 12
-            // This could change in future, only God knows
-            $scope.fullCheckinTime = intHrs + ':' + intMins + ' ' + ampm;
-            $scope.setDepartureHours();
-        };
+                // NOTE: on UI we are no appending a leading '0' for hours less than 12
+                // This could change in future, only God knows
+                $scope.fullCheckinTime = intHrs + ':' + intMins + ' ' + ampm;
+                $scope.setDepartureHours();
+            },
+            refreshScroller = function() {
+                $scope.refreshScroller('search_reservation');
+            };
 
         var fetchMinTimeSucess = function(data) {
             var intVal = parseInt(data.min_hours);
@@ -209,8 +213,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     }
                     return "";
                 })();
-                $scope.codeSearchText = (function(){
-                    if(!!$scope.reservationData.code){
+                $scope.codeSearchText = (function() {
+                    if (!!$scope.reservationData.code) {
                         return $scope.reservationData.code.value;;
                     }
                     return "";
@@ -576,13 +580,23 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         };
 
         $scope.onMemberRateToggle = function() {
-            if($rootScope.isHLPActive && $scope.loyaltyPrograms.length > 0){
+            if ($rootScope.isHLPActive && $scope.loyaltyPrograms.length > 0) {
                 $scope.reservationData.member.value = $scope.loyaltyPrograms[0].hl_value;
                 return;
             }
-            if($rootScope.isFFPActive && $scope.flyerPrograms.length > 0){
-                $scope.reservationData.member.value = $scope.flyerPrograms[0].ff_value;                
-            }            
+            if ($rootScope.isFFPActive && $scope.flyerPrograms.length > 0) {
+                $scope.reservationData.member.value = $scope.flyerPrograms[0].ff_value;
+            }
+        };
+
+        $scope.addTab = function() {
+            $scope.reservationData.tabs = $scope.reservationData.tabs.concat(RVReservationTabService.newTab());
+            refreshScroller();
+        };
+
+        $scope.removeTab = function($index) {
+            $scope.reservationData.tabs.splice($index, 1);
+            refreshScroller();
         };
 
     }

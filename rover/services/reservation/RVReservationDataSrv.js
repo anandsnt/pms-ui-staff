@@ -2,29 +2,28 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 	function($rootScope, dateFilter, RVReservationStateService) {
 		var self = this;
 
-		self.getReservationDataModel = function() {
-			return {
-				isHourly: false,
-				isValidDeposit: false,
-				arrivalDate: '',
-				departureDate: '',
-				midStay: false, // Flag to check in edit mode if in the middle of stay
-				stayDays: [],
-				resHours: 1,
-				checkinTime: {
-					hh: '',
-					mm: '00',
-					ampm: 'AM'
-				},
-				checkoutTime: {
-					hh: '',
-					mm: '00',
-					ampm: 'AM'
-				},
-				taxDetails: {},
-				numNights: 1, // computed value, ensure to keep it updated
-				roomCount: 1, // Hard coded for now,
-				rooms: [{
+		self.getTabDataModel = function(count) {
+			var tabs = [],
+				limit = count || 1,
+				i;
+			for (i = 0; i < limit; i++) {
+				tabs.push({
+					roomType: '',
+					roomCount: 1,
+					numAdults: 1,
+					numChildren: 0,
+					numInfants: 0
+				});
+			}
+			return tabs;
+		};
+
+		self.getRoomDataModel = function(count){
+			var rooms = [],
+				limit = count || 1,
+				i;
+			for (i = 0; i < limit; i++) {
+				rooms.push({
 					numAdults: 1,
 					numChildren: 0,
 					numInfants: 0,
@@ -46,7 +45,35 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 						origin: '',
 						segment: ''
 					}
-				}],
+				});
+			}
+			return rooms;		
+		};
+
+		self.getReservationDataModel = function() {
+			return {
+				isHourly: false,
+				isValidDeposit: false,
+				tabs: self.getTabDataModel(),
+				arrivalDate: '',
+				departureDate: '',
+				midStay: false, // Flag to check in edit mode if in the middle of stay
+				stayDays: [],
+				resHours: 1,
+				checkinTime: {
+					hh: '',
+					mm: '00',
+					ampm: 'AM'
+				},
+				checkoutTime: {
+					hh: '',
+					mm: '00',
+					ampm: 'AM'
+				},
+				taxDetails: {},
+				numNights: 1, // computed value, ensure to keep it updated
+				roomCount: 1, // Hard coded for now,
+				rooms: self.getRoomDataModel(),
 				totalTaxAmount: 0, //This is for ONLY exclusive taxes
 				totalStayCost: 0,
 				totalTax: 0, // CICO-10161 > This stores the tax inclusive and exclusive together
@@ -108,7 +135,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 					ffp: []
 				}
 			};
-		}
+		};
 
 		self.getSearchDataModel = function() {
 			return {
@@ -251,9 +278,9 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 			reservationData.departureDate = stayCard.departure_date;
 			reservationData.numNights = stayCard.total_nights;
 			reservationData.isHourly = stayCard.is_hourly_reservation;
-			reservationData.number_of_adults =stayCard.number_of_adults;
-			reservationData.number_of_children =stayCard.number_of_children;
-			reservationData.number_of_infants =stayCard.number_of_infants;
+			reservationData.number_of_adults = stayCard.number_of_adults;
+			reservationData.number_of_children = stayCard.number_of_children;
+			reservationData.number_of_infants = stayCard.number_of_infants;
 			//CICO-6135
 			if (stayCard.arrival_time) { //  reservationDetails.reservation_card.departureDate ! = null
 				reservationData.checkinTime = self.parseTime(stayCard.arrival_time);
