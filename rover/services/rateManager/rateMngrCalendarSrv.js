@@ -429,8 +429,8 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	that.getCloseAllEnableDisableStatus = function(rateData, type) {
 		//Check if CLOSE ALL restriction is available in all_rates section
 		var closedRestrictionId = -1,
-			dict = {},
-		    dict.enableOpenAll = false,
+			dict = {};
+		    dict.enableOpenAll = false;
 		    dict.enableCloseAll = false;
 
 		//Get the id for 'CLOSED' restriction
