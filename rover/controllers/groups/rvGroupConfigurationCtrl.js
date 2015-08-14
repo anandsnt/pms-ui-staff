@@ -127,7 +127,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
         //Move date, from date, end date change
         (function(){
 
-            /* modesAvailable = ["START_DATE_LEFT_MOVE", "START_DATE_RIGHT_MOVE", 
+            /* modesAvailable = ["DEFAULT", "START_DATE_LEFT_MOVE", "START_DATE_RIGHT_MOVE", 
                                 "END_DATE_LEFT_MOVE", "END_DATE_RIGHT_MOVE", 
                                 "COMPLETE_MOVE"] */
             var activeMode = null,
@@ -140,7 +140,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @return {undefined}
              */
             var setMode = function(mode) {
-                var modesAvailable = ["START_DATE_LEFT_MOVE", "START_DATE_RIGHT_MOVE", 
+                var modesAvailable = ["DEFAULT", "START_DATE_LEFT_MOVE", "START_DATE_RIGHT_MOVE", 
                                 "END_DATE_LEFT_MOVE", "END_DATE_RIGHT_MOVE", 
                                 "COMPLETE_MOVE"];
                 
@@ -155,12 +155,13 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @return {Boolean}
              */
             var shouldShowMoveButton = function () {
-                var sumryData                   = $scope.groupConfigData.summary,
-                    roomBlockExist              = (parseInt(sumryData.rooms_total) > 0),
-                    noInHouseReservationExist   = (parseInt(sumryData.total_checked_in_reservations) === 0),
-                    fromDateLeftRightMoveAllowed= (sumryData.is_from_date_left_move_allowed && sumryData.is_from_date_right_move_allowed),
-                    toDateLeftRightMoveAllowed  = (sumryData.is_to_date_left_move_allowed && sumryData.is_to_date_right_move_allowed),
-                    notAPastGroup               = !sumryData.is_a_past_group;
+                var sumryData                       = $scope.groupConfigData.summary,
+                    roomBlockExist                  = (parseInt(sumryData.rooms_total) > 0),
+                    noInHouseReservationExist       = (parseInt(sumryData.total_checked_in_reservations) === 0),
+                    lengthOfStay                    = util.getDatesBetweenTwoDates (sumryData.block_from, sumryData.block_to).length,
+                    fromDateLeftRightMoveAllowed    = (sumryData.is_from_date_left_move_allowed && sumryData.is_from_date_right_move_allowed),
+                    toDateLeftRightMoveAllowed      = (sumryData.is_to_date_left_move_allowed && sumryData.is_to_date_right_move_allowed),
+                    notAPastGroup                   = !sumryData.is_a_past_group;
 
                 return (roomBlockExist && 
                         noInHouseReservationExist && 
@@ -213,9 +214,10 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @param  {[type]} options [description]
              * @return {[type]}         [description]
              */
-            $scope.callMoveDatesAPI = function (options) {
-                var newFromDate     = options["fromDate"] ? formatDateForAPI(options["fromDate"]) : null,
-                    newToDate       = options["toDate"] ? formatDateForAPI(options["toDate"]) : null,
+            $scope.callMoveDatesAPI = function (options) {                
+                var dataSet         = options && options["dataset"],
+                    newFromDate     = dataSet["fromDate"] ? formatDateForAPI(dataSet["fromDate"]) : null,
+                    newToDate       = dataSet["toDate"] ? formatDateForAPI(dataSet["toDate"]) : null,
                     successCallBack = lastSuccessCallback,
                     failureCallBack = lastFailureCallback,
                     sumryData       = $scope.groupConfigData.summary;
@@ -242,12 +244,16 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 setMode ("COMPLETE_MOVE");
             };
 
+            var setToDefaultMode = function () {
+                setMode ("DEFAULT");
+            };
+
             /**
              * [isInCompleteMoveMode description]
              * @return {Boolean} [description]
              */
             var isInCompleteMoveMode = function() {            
-                return (activeMode !== null && activeMode === "COMPLETE_MOVE");
+                return (activeMode === "COMPLETE_MOVE");
             };
 
             /**
@@ -268,7 +274,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     clickedOnMoveButton     : clickedOnMoveButton,
                     isInCompleteMoveMode    : isInCompleteMoveMode,
                     clickedOnMoveSaveButton : clickedOnMoveSaveButton,
-                    cancelMoveAction        : cancelMoveAction
+                    cancelMoveAction        : cancelMoveAction,
+                    setToDefaultMode        : setToDefaultMode
                 };
             };
         }());

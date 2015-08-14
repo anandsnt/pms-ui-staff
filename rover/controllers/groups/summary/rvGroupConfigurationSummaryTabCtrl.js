@@ -38,6 +38,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		var initializeChangeDateActions = function () {
 			//things are defined in parent controller (getMoveDatesActions)
 			$scope.changeDatesActions = $scope.getMoveDatesActions();
+
+			//initially we will be in DEFAULT mode
+			$scope.changeDatesActions.setToDefaultMode();
 		};
 
 		var successCallBackOfMoveButton = function() {
@@ -142,7 +145,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			}
 
 			//if it is is Move Date mode
-			if (!$scope.changeDatesActions.isInCompleteMoveMode()) {
+			if ($scope.changeDatesActions.isInCompleteMoveMode()) {
 				var originalStayLength = util.getDatesBetweenTwoDates (summaryMemento.block_from, summaryMemento.block_to).length;
 				$scope.groupConfigData.summary.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 				$scope.groupConfigData.summary.block_to.setDate(refData.block_to.getDate() + originalStayLength);

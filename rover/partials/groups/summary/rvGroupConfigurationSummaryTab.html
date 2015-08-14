@@ -61,8 +61,8 @@
                 </div>
                 <button type="button" class="button blue" ng-show="changeDatesActions.shouldShowMoveButton()" ng-click="clickedOnMoveButton()">Move Group</button>
                 <!-- When button pressed, disable due date input and replace "Move Group" button with: --> 
-                <button type="button" class="button blank" ng-show="!changeDatesActions.shouldShowMoveButton()" ng-click="clickedOnCancelMoveButton()">Cancel</button>
-                <button type="button" class="button green" ng-show="!changeDatesActions.shouldShowMoveButton()" ng-click="clickedOnSaveMoveButton()">Save</button>            
+                <button type="button" class="button blank" ng-show="changeDatesActions.isInCompleteMoveMode()" ng-click="clickedOnCancelMoveButton()">Cancel</button>
+                <button type="button" class="button green" ng-show="changeDatesActions.isInCompleteMoveMode()" ng-click="clickedOnSaveMoveButton()">Save</button>            
             </div>
             <div class="entry full-width with-button has-datepicker">
                 <label for="group-release-date">
