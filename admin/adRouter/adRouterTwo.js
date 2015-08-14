@@ -112,19 +112,19 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.reservationTools', {
 			templateUrl: '/assets/partials/reservationTools/adReservationToolsList.html',
 			controller: 'ADReservationTypeToolsMainCtrl',
-			url : '/reservationTools',
+			url : '/reservationTools'
 		});
-			$stateProvider.state('admin.balanceInventory', {
-				templateUrl: '/assets/partials/reservationTools/adBalanceInventory.html',
-				controller: 'ADBalanceInventoryCtrl',
-				url : '/balanceInventory',
-				resolve: {
-	                allJobs: function(ADReservationToolsSrv) {
-	                    return ADReservationToolsSrv.fetchAllJobs();
-	                }
-	            }
-			});
 
+		$stateProvider.state('admin.balanceInventory', {
+			templateUrl: '/assets/partials/reservationTools/adBalanceInventory.html',
+			controller: 'ADBalanceInventoryCtrl',
+			url : '/balanceInventory',
+			resolve: {
+                allJobs: function(ADReservationToolsSrv) {
+                    return ADReservationToolsSrv.fetchAllJobs();
+                }
+            }
+		});
 
 		$stateProvider.state('admin.housekeeping', {
 			templateUrl: '/assets/partials/housekeeping/adHousekeeping.html',
