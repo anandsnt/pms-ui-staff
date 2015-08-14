@@ -342,7 +342,7 @@
 
 
 
-        
+        <!-- item_12: Display options -->
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasDisplay.data.length" ng-class="{ 'active': filterItemsToggle.item_12 }" ng-click="toggleFilterItems('item_12')">
             <span class="title">Display(s)</span>
         </a>
@@ -356,6 +356,29 @@
                     <label class="checkbox" ng-repeat="display in chosenReport.hasDisplay.data">
                         <span class="icon-form icon-checkbox" ng-class="{ 'checked' : display.selected }"></span>
                         <input type="checkbox" ng-model="display.selected" ng-change="fauxSelectChange(chosenReport, chosenReport.hasDisplay)" name="room-filters"> {{ display.description }}
+                    </label>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <!-- item_23: Hold status -->
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasHoldStatus" ng-class="{ 'active': filterItemsToggle.item_23 }" ng-click="toggleFilterItems('item_23')">
+            <span class="title">Hold Status(es)</span>
+        </a>
+        <div class="settings-content" ng-if="chosenReport.hasHoldStatus" ng-class="{ 'hidden': !filterItemsToggle.item_23 }">
+            <div class="faux-select-options">
+                <label class="checkbox" ng-show="chosenReport.hasHoldStatus.data.length > 1">
+                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasHoldStatus.selectAll }"></span>
+                        <input type="checkbox" ng-model="chosenReport.hasHoldStatus.selectAll" ng-change="fauxSelectChange(chosenReport, chosenReport.hasHoldStatus, true)" name="room-filters"> Select All
+                </label>
+                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasHoldStatus.data.length > 1 && chosenReport.hasHoldStatus.selectAll) }">
+                    <label class="checkbox" ng-repeat="status in chosenReport.hasHoldStatus.data">
+                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : status.selected }"></span>
+                        <input type="checkbox" ng-model="status.selected" ng-change="fauxSelectChange(chosenReport, chosenReport.hasHoldStatus)" name="room-filters"> {{ status.description }}
                     </label>
                 </div>
             </div>
@@ -512,6 +535,8 @@
                 </div>
             </div>
         </div>
+
+
 
 
 

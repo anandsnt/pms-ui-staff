@@ -70,3 +70,4 @@
 //=require_tree ../rover/directives
 //=require_tree ../rover/filters
 //=require_tree ../rover/factories
+//=require_tree ../rover/constants
