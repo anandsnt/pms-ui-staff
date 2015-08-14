@@ -126,7 +126,7 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 
 	this.deleteRoute = function(data){
 		var deferred = $q.defer();
-		var url = 'api
+		var url = 'api//bill_routings/delete_routing';
 			BaseWebSrvV2.postJSON(url, data).then(function(data) {
 
 			   	 deferred.resolve(data);
