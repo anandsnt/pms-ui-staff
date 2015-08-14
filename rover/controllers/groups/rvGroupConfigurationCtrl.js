@@ -123,27 +123,27 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             }
             return (returnString);
         };
-        
+
         //Move date, from date, end date change
         (function(){
 
-            /* modesAvailable = ["START_DATE_LEFT_MOVE", "START_DATE_RIGHT_MOVE", 
-                                "END_DATE_LEFT_MOVE", "END_DATE_RIGHT_MOVE", 
+            /* modesAvailable = ["START_DATE_LEFT_MOVE", "START_DATE_RIGHT_MOVE",
+                                "END_DATE_LEFT_MOVE", "END_DATE_RIGHT_MOVE",
                                 "COMPLETE_MOVE"] */
             var activeMode = null,
                 lastSuccessCallback = null,
                 lastFailureCallback = null;
-            
+
             /**
              * to set current move
              * @param {String} mode [description]
              * @return {undefined}
              */
             var setMode = function(mode) {
-                var modesAvailable = ["START_DATE_LEFT_MOVE", "START_DATE_RIGHT_MOVE", 
-                                "END_DATE_LEFT_MOVE", "END_DATE_RIGHT_MOVE", 
+                var modesAvailable = ["START_DATE_LEFT_MOVE", "START_DATE_RIGHT_MOVE",
+                                "END_DATE_LEFT_MOVE", "END_DATE_RIGHT_MOVE",
                                 "COMPLETE_MOVE"];
-                
+
                 if (mode && mode !== null) {
                     mode        = mode.toString().toUpperCase();
                     activeMode  = ( modesAvailable.indexOf(mode) >=0 ) ? mode : null;
@@ -162,10 +162,10 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     toDateLeftRightMoveAllowed  = (sumryData.is_to_date_left_move_allowed && sumryData.is_to_date_right_move_allowed),
                     notAPastGroup               = !sumryData.is_a_past_group;
 
-                return (roomBlockExist && 
-                        noInHouseReservationExist && 
-                        fromDateLeftRightMoveAllowed && 
-                        toDateLeftRightMoveAllowed && 
+                return (roomBlockExist &&
+                        noInHouseReservationExist &&
+                        fromDateLeftRightMoveAllowed &&
+                        toDateLeftRightMoveAllowed &&
                         notAPastGroup &&
                         !isInCompleteMoveMode());
             };
@@ -196,7 +196,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 lastFailureCallback = options["failureCallBack"] ? options["failureCallBack"] : null;
 
                 var dataForPopup = {
-                    dataset: 
+                    dataset:
                         {
                             fromDate    : options["fromDate"]   ? options["fromDate"] : null,
                             toDate      : options["toDate"]     ? options["toDate"] : null,
@@ -231,7 +231,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     successCallBack : successCallBack, //null case will be handled from baseCtrl
                     failureCallBack : failureCallBack //null case will be handled from baseCtrl
                 };
-                $scope.callAPI(rvGroupConfigurationSrv.completeMoveGroup, options);  
+                $scope.callAPI(rvGroupConfigurationSrv.completeMoveGroup, options);
             };
 
             /**
@@ -246,7 +246,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * [isInCompleteMoveMode description]
              * @return {Boolean} [description]
              */
-            var isInCompleteMoveMode = function() {            
+            var isInCompleteMoveMode = function() {
                 return (activeMode !== null && activeMode === "COMPLETE_MOVE");
             };
 
