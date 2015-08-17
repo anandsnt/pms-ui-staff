@@ -3,11 +3,12 @@ sntRover.factory('RVReportUtilsFac', [
     '$filter',
     '$timeout',
     'RVReportNamesConst',
-    function($rootScope, $filter, $timeout, reportNames) {
+    'RVReportFiltersConst',
+    function($rootScope, $filter, $timeout, reportNames, reportFilters) {
         var factory = {};
 
         /**
-         * This is a function that can return CG & CC with no payment entries or only payment entries
+         * This function can return CG & CC with no payment entries or with only payment entries
          * @param  {Array} chargeGroupsAry Array of charge groups
          * @param  {Array} chargeCodesAry  Array of charge codes
          * @param  {String} setting         Remove payments or only payments
@@ -20,11 +21,11 @@ sntRover.factory('RVReportUtilsFac', [
                 cgAssociated       = false,
                 paymentEntry       = {};
 
-            if ( setting === 'REMOVE_PAYMENTS' ) {
+            if ( 'REMOVE_PAYMENTS' === setting ) {
                 _.each(chargeGroupsAry, function (each) {
                     if ( each.name !== 'Payments' ) {
                         each.selected = true;
-                        newChargeGroupsAry.push(each);
+                        newChargeGroupsAry.push( each );
                     } else {
                         paymentId = each.id;
                     };
@@ -37,14 +38,14 @@ sntRover.factory('RVReportUtilsFac', [
 
                     if ( !cgAssociated ) {
                         each.selected = true;
-                        newChargeCodesAry.push(each);
+                        newChargeCodesAry.push( each );
                     };
                 });
             }
 
-            if ( setting === 'ONLY_PAYMENTS' ) {
+            if ( 'ONLY_PAYMENTS' === setting ) {
                 paymentEntry = _.find(chargeGroupsAry, function(each) {
-                    return each.name === 'Payments';
+                    return 'Payments' === each.name;
                 });
 
                 if ( !!paymentEntry ) {
@@ -89,9 +90,9 @@ sntRover.factory('RVReportUtilsFac', [
             };
 
             // merge value when its an object, else just assign
-            if ( typeof value === 'object' ) {
+            if ( 'object' === typeof value ) {
                 // DAMN! Our Angular version is very very old. Cant use this:
-                // angular.merge({}, objRef[key], value );
+                // angular.merge( {}, objRef[key], value );
                 $.extend( true, objRef[key], value );
             } else {
                 objRef[key] = value;

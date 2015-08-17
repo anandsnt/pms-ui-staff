@@ -116,8 +116,12 @@ sntRover.service('RVreportsSrv', [
 
 			// fetch gurantee types & add to payload
 			if ( hasFilter['INCLUDE_GUARANTEE_TYPE'] ) {
-				subSrv.fetchGuaranteeTypes()
-					.then( success.bind(null, 'guaranteeTypes'), failed.bind(null, 'guaranteeTypes', []) );
+				if ( service.payloadCache.hasOwnProperty('guaranteeTypes') ) {
+					success( 'guaranteeTypes', service.payloadCache.guaranteeTypes );
+				} else {
+					subSrv.fetchGuaranteeTypes()
+						.then( success.bind(null, 'guaranteeTypes'), failed.bind(null, 'guaranteeTypes', []) );
+				};
 			};
 
 			// fetch charge groups & add to payload
