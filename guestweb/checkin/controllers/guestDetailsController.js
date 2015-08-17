@@ -18,6 +18,8 @@
 		$scope.years     = [];
 		$scope.months    = [];
 		$scope.days      = [];
+
+		
 		for(year=1900;year<=new Date().getFullYear();year++){
 			$scope.years.push(year);
 		};
@@ -57,18 +59,23 @@
 		
 	
 		var getDataToSave = function(){
-			var data = {};
-			data = $scope.guestDetails;
-			data.birthday = $scope.guestDetails.month+"-"+$scope.guestDetails.day+"-"+$scope.guestDetails.year;
+			var data 				= {};
+			var unwanted_keys 		= ["month","year","day"];
+			var newObject 			= JSON.parse(JSON.stringify($scope.guestDetails));
+            for(var i=0; i < unwanted_keys.length; i++){
+                delete newObject[unwanted_keys[i]];
+            };
+            data 					= newObject;
+            data.birthday 			= $scope.guestDetails.month+"-"+$scope.guestDetails.day+"-"+$scope.guestDetails.year;
 			return data;
 		};
 
 		//post guest details
 		$scope.postGuestDetails = function(){
-			$scope.isLoading = true;
-			var dataToSave = getDataToSave();
+			$scope.isLoading 		= true;
+			var dataToSave 			= getDataToSave();
 			guestDetailsService.postGuestDetails(dataToSave).then(function(response) {
-				$scope.isLoading = false;
+				$scope.isLoading 	= false;
 				if($rootScope.upgradesAvailable){
 					$state.go('checkinUpgrade');
 				}
