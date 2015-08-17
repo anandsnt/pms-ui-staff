@@ -7,7 +7,7 @@
 
 	var postGuestDetails = function(data) {
 		var deferred = $q.defer();
-		var url = '/api/guest_details/'+$rootScope.reservationID;
+		var url = '/guest_web/guest_details/'+$rootScope.reservationID;
 		$http.put(url,data).success(function(response) {
 			this.responseData = response;
 			deferred.resolve(this.responseData);
@@ -21,7 +21,19 @@
 	var getGuestDetails = function() {
 
 		var deferred = $q.defer();
-		var url = '/api/guest_details/'+$rootScope.reservationID;
+		var url = '/guest_web/guest_details/'+$rootScope.reservationID+'.json';
+		$http.get(url).success(function(response) {
+			deferred.resolve(response);
+		}.bind(this))
+		.error(function() {
+			deferred.reject();
+		});
+		return deferred.promise;
+	};
+
+	var fetchCountryList = function(){
+		var deferred = $q.defer();
+		var url = '/ui/country_list';
 		$http.get(url).success(function(response) {
 			deferred.resolve(response);
 		}.bind(this))
@@ -34,7 +46,8 @@
 	return {
 	responseData: responseData,
 	postGuestDetails : postGuestDetails,
-	getGuestDetails:getGuestDetails
+	getGuestDetails:getGuestDetails,
+	fetchCountryList:fetchCountryList
 	}
 };
 

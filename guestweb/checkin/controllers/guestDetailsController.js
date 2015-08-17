@@ -14,7 +14,7 @@
 	}		
 
 	if($scope.pageValid){
-
+		$scope.countries = [];
 		$scope.years = [];
 		$scope.months = [];
 		$scope.days = [];
@@ -29,23 +29,35 @@
 			$scope.days.push(day);
 		};
 
+		var fetchGuestDetails = function(){
+			$scope.isLoading = true;
+			guestDetailsService.getGuestDetails().then(function(response) {
+				$scope.isLoading          = false;
+				$scope.guestDetails       = response;
+				$scope.guestDetails.day   = ($scope.guestDetails.birthday !== null) ? parseInt($scope.guestDetails.birthday.substring(8, 10)): "";
+				$scope.guestDetails.month = ($scope.guestDetails.birthday !== null)?  parseInt($scope.guestDetails.birthday.substring(5, 7)) : "";
+				$scope.guestDetails.year  = ($scope.guestDetails.birthday !== null)?  parseInt($scope.guestDetails.birthday.substring(0, 4)): "";
+			},function(){
+				$rootScope.netWorkError   = true;
+				$scope.isLoading          = false;
+			});
+		};
 
-		// call service
-		// $scope.isLoading = true;
-		// guestDetailsService.getGuestDetails().then(function(response) {
-		// 	$scope.isLoading = false;
-		// 	$scope.guestDetails = response;
-		// 	$scope.guestDetails.day   = ($scope.guestDetails.birthday !== null) ? parseInt($scope.guestDetails.birthday.substring(8, 10)): "";
-		// 	$scope.guestDetails.month = ($scope.guestDetails.birthday !== null)?  parseInt($scope.guestDetails.birthday.substring(5, 7)) : "";
-		// 	$scope.guestDetails.year  = ($scope.guestDetails.birthday !== null)?  parseInt($scope.guestDetails.birthday.substring(0, 4)): "";
-		// },function(){
-		// 	$rootScope.netWorkError = true;
-		// 	$scope.isLoading = false;
-		// });
+
+		$scope.isLoading = true;
+		guestDetailsService.fetchCountryList().then(function(response) {
+			$scope.countries = response;
+			$scope.isLoading = false;
+			fetchGuestDetails();
+		},function(){
+			$rootScope.netWorkError = true;
+			$scope.isLoading = false;
+		});
+		
 	
 		var getDataToSave = function(){
 			var data = {};
-			data.address = $scope.guestDetails.address;
+			data = $scope.guestDetails;
 			data.birthday = $scope.guestDetails.month+"-"+$scope.guestDetails.day+"-"+$scope.guestDetails.year;
 			return data;
 		};
@@ -70,29 +82,7 @@
 				$rootScope.netWorkError = true;
 				$scope.isLoading = false;
 			})
-		};
-
-
-
-		/*to delete*/
-
-		$scope.countries = [{"id":16,"name":"US"},{"id":19,"name":"INDIA"}]
-		$scope.guestDetails =  {"birthdayData":""};
-		$scope.guestDetails.birthday = "2015-01-08";
-		$scope.guestDetails.address = {
-								        "street1": "NADAKAVU",
-								        "street2": "CLA",
-								        "city": "CALCUT",
-								        "state": "KERALA",
-								        "postal_code": "11313",
-								        "country_id": 19
-								    	}
-								    	$scope.guestDetails.day   = ($scope.guestDetails.birthday !== null) ? parseInt($scope.guestDetails.birthday.substring(8, 10)): "";
-			$scope.guestDetails.month = ($scope.guestDetails.birthday !== null)?  parseInt($scope.guestDetails.birthday.substring(5, 7)) : "";
-			$scope.guestDetails.year  = ($scope.guestDetails.birthday !== null)?  parseInt($scope.guestDetails.birthday.substring(0, 4)): "";
-		/*to delete*/
-	
-		
+		};		
 	}
 };
 

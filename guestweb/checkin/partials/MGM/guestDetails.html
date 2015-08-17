@@ -31,8 +31,8 @@
                      <em class="labelText">COUNTRY</em>
                      <div class="expiry-year-container full-width-select" style="margin-left:0px;">
                         <div class="select-style select-style-fullwidth">
-                           <select ng-model="guestDetails.address.country_id"
-                              ng-options="country.id as country.name  for country in countries">
+                           <select ng-model="guestDetails.country_id"
+                              ng-options="country.id as country.value  for country in countries">
                               <option value="">SELECT</option>
                            </select>
                         </div>
@@ -40,12 +40,12 @@
                   </div>
                   <div class="row">
                      <em class="labelText">STREET ADDRESS</em>
-                     <input type="text" ng-model="guestDetails.address.street1" class = "col-xs-12 textBox bottom-margin-10" /> 
-                     <input type="text" ng-model="guestDetails.address.street2" class = "col-xs-12 textBox bottom-margin-10" />
+                     <input type="text" ng-model="guestDetails.street1" class = "col-xs-12 textBox bottom-margin-10" /> 
+                     <input type="text" ng-model="guestDetails.street2" class = "col-xs-12 textBox bottom-margin-10" />
                   </div>
                   <div class="row">
                      <em class="labelText">CITY</em>
-                     <input type="text" ng-model="guestDetails.address.city" class = "col-xs-12 textBox"/> 
+                     <input type="text" ng-model="guestDetails.city" class = "col-xs-12 textBox"/> 
                   </div>
                   <div class="row">
                     <!--  <div class="date-container half-width-select">
@@ -64,14 +64,14 @@
                      <div class="date-container half-width-select zip-code">
                         <div class="row cabin_number_field ">
                            <em class="labelText">STATE</em>
-                           <input type="text" ng-model="guestDetails.address.state" class = "col-xs-12 textBox"/>
+                           <input type="text" ng-model="guestDetails.state" class = "col-xs-12 textBox"/>
                         </div>
                      </div>
 
                      <div class="date-container half-width-select zip-code">
                         <div class="row cabin_number_field ">
                            <em class="labelText">ZIP CODE</em>
-                           <input type="text" ng-model="guestDetails.address.postal_code" class = "col-xs-12 textBox"/>
+                           <input type="text" ng-model="guestDetails.postal_code" class = "col-xs-12 textBox"/>
                         </div>
                      </div>
                   </div>
