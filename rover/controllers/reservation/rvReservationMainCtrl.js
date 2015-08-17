@@ -1131,7 +1131,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 var postData = $scope.computeReservationDataforUpdate(true, true);
 
                 var saveSuccess = function(data) {
-                    
+
                     // Update reservation type
                     $rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservations[0].reservation_type_id);
                     var totalDeposit = 0;
