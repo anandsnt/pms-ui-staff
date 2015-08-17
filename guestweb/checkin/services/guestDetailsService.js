@@ -3,11 +3,9 @@
 
 	var responseData = {};
 
-	//fetch texts to be displayed
-
 	var postGuestDetails = function(data) {
 		var deferred = $q.defer();
-		var url = '/guest_web/guest_details/'+$rootScope.reservationID;
+		var url = '/guest_web/guest_details/'+$rootScope.reservationID+'.json';
 		$http.put(url,data).success(function(response) {
 			this.responseData = response;
 			deferred.resolve(this.responseData);

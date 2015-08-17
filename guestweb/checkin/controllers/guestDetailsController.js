@@ -15,9 +15,9 @@
 
 	if($scope.pageValid){
 		$scope.countries = [];
-		$scope.years = [];
-		$scope.months = [];
-		$scope.days = [];
+		$scope.years     = [];
+		$scope.months    = [];
+		$scope.days      = [];
 		for(year=1900;year<=new Date().getFullYear();year++){
 			$scope.years.push(year);
 		};
@@ -29,6 +29,7 @@
 			$scope.days.push(day);
 		};
 
+		//fetch details
 		var fetchGuestDetails = function(){
 			$scope.isLoading = true;
 			guestDetailsService.getGuestDetails().then(function(response) {
@@ -43,7 +44,7 @@
 			});
 		};
 
-
+		//fetch country list
 		$scope.isLoading = true;
 		guestDetailsService.fetchCountryList().then(function(response) {
 			$scope.countries = response;
@@ -61,10 +62,11 @@
 			data.birthday = $scope.guestDetails.month+"-"+$scope.guestDetails.day+"-"+$scope.guestDetails.year;
 			return data;
 		};
+
+		//post guest details
 		$scope.postGuestDetails = function(){
 			$scope.isLoading = true;
 			var dataToSave = getDataToSave();
-			console.log(dataToSave)
 			guestDetailsService.postGuestDetails(dataToSave).then(function(response) {
 				$scope.isLoading = false;
 				if($rootScope.upgradesAvailable){
