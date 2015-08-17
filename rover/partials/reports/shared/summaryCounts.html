@@ -19,18 +19,18 @@
 <!-- Web check in -->
 <ul ng-if="isThisReport( 'WEB_CHECK_IN_CONVERSION' )" class="totals">
     <li>Emails sent<span>{{ totals[0]['value'] }}</span></li>
-    <li>Up Sell Conversion<span class="brand-colors">{{ totals[1]['value'] }}%</span></li>
+    <li>Up Sell Conversion<span class="brand-colors">{{ totals[1]['value'] }}</span></li>
     <li>Revenue<span>{{ totals[2]['value'] | currency:currencySymbol:2 }}</span></li>
-    <li>Conversion<span class="brand-colors">{{ totals[4]['value'] }}%</span></li>
+    <li>Conversion<span class="brand-colors">{{ totals[4]['value'] }}</span></li>
     <li>Total Web Check-Ins<span>{{ totals[3]['value'] }}</span></li>
 </ul>
 
 <!-- Web check out -->
 <ul ng-if="isThisReport( 'WEB_CHECK_OUT_CONVERSION' )" class="totals">
     <li>Emails sent<span>{{ totals[0]['value'] }}</span></li>
-    <li>Late Check Out Conversion<span class="brand-colors">{{ totals[1]['value'] }}%</span></li>
+    <li>Late Check Out Conversion<span class="brand-colors">{{ totals[1]['value'] }}</span></li>
     <li>Revenue<span>{{ totals[2]['value'] | currency:currencySymbol:2 }}</span></li>
-    <li>Conversion<span class="brand-colors">{{ totals[4]['value'] }}%</span></li>
+    <li>Conversion<span class="brand-colors">{{ totals[4]['value'] }}</span></li>
     <li>Total Web Check-Outs<span>{{ totals[3]['value'] }}</span></li>
 </ul>
 
