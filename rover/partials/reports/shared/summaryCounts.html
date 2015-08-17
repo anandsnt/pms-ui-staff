@@ -40,13 +40,13 @@
     <li>Late Check Out Revenue<span class="brand-colors">{{ totals[1]['value'] | currency:currencySymbol:2 }}</span></li>
 </ul>
 
+
+
 <!-- Early Check In -->
 <ul ng-if="isThisReport( 'EARLY_CHECKIN' )" class="totals">
-    <li>Early Check In<span>{{ totals[0]['value'] }}</span></li>
-    <li>Early Check In Revenue<span class="brand-colors">{{ totals[1]['value'] | currency:currencySymbol:2 }}</span></li>
+    <li>Early Check In<span>{{ summaryCounts.total_early_checkins }}</span></li>
+    <li>Early Check In Revenue<span class="brand-colors">{{ summaryCounts.total_revenue | currency:currencySymbol:2 }}</span></li>
 </ul>
-
-
 
 <!-- Arrival -->
 <ul ng-if="isThisReport( 'ARRIVAL' )" class="totals">
