@@ -161,6 +161,16 @@ sntRover.service('RVreportsSrv', [
 						.then( success.bind(null, 'origins'), failed.bind(null, 'origins', []) );
 				};
 			};
+
+			// fetch hold status & add to payload
+			if ( hasFilter['HOLD_STATUS'] ) {
+				if ( service.payloadCache.hasOwnProperty('holdStatus') ) {
+					success( 'origins', service.payloadCache.holdStatus );
+				} else {
+					subSrv.fetchHoldStatus()
+						.then( success.bind(null, 'holdStatus'), failed.bind(null, 'holdStatus', []) );
+				};
+			};			
 		};
 
 		/**
@@ -206,6 +216,10 @@ sntRover.service('RVreportsSrv', [
 
 					if ( ! hasFilter.hasOwnProperty('CHOOSE_BOOKING_ORIGIN') && 'CHOOSE_BOOKING_ORIGIN' === eachFilter.value ) {
 						hasFilter['CHOOSE_BOOKING_ORIGIN'] = true;
+					};
+
+					if ( ! hasFilter.hasOwnProperty('HOLD_STATUS') && 'HOLD_STATUS' == eachFilter.value ) {
+						hasFilter['HOLD_STATUS'] = true;
 					};
 				});
 			});
