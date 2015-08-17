@@ -14,10 +14,23 @@
 	}		
 
 	if($scope.pageValid){
-		$scope.countries = [];
-		$scope.years     = [];
-		$scope.months    = [];
-		$scope.days      = [];
+		
+		$scope.countries 	= [];
+		$scope.years     	= [];
+		$scope.months   	= [];
+		$scope.days      	= [];
+		$scope.guestDetails = {
+								'day':'',
+								'month':'',
+								'year':'',
+								'postal_code':'',
+								'state':'',
+								'city':'',
+								'street1':'',
+								'street2':'',
+								'birthday':'',
+								'country_id':''
+							  };
 
 		
 		for(year=1900;year<=new Date().getFullYear();year++){
