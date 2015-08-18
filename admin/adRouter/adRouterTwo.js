@@ -28,6 +28,11 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADChannelMgrCtrl',
 			url : '/channelManager'
 		});
+		$stateProvider.state('admin.channelManagerEditRates', {
+			templateUrl: '/assets/partials/rates/adChannelManagerEditRates.html',
+			controller: 'ADChannelMgrEditCtrl',
+			url : '/channelManagerEditRates'
+		});
 
 		$stateProvider.state('admin.ratetypes', {
 			templateUrl: '/assets/partials/rateTypes/adRateTypeList.html',
