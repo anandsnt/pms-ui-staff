@@ -2,8 +2,12 @@ sntRover.service('RVReservationTabService', ['$rootScope', 'dateFilter', 'RVRese
 	function($rootScope, dateFilter, RVReservationStateService, RVReservationDataService) {
 		var self = this;
 
-		self.newTab = function() {
-			return RVReservationDataService.getTabDataModel();
+		self.newTab = function(count) {
+			return RVReservationDataService.getTabDataModel(count);
+		};
+
+		self.newRoom = function(count){
+			return RVReservationDataService.getRoomDataModel(count);	
 		};
 	}
 ]);

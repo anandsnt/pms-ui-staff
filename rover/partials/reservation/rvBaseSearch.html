@@ -197,26 +197,26 @@
                         </select>
                     </div>
                     <div class="select adults">
-                        <label for="room-1-adults" class="label">Adults</label>
-                        <select name="room-1-adults">
+                        <label class="label">Adults</label>
+                        <select>
                             <option ng-repeat="i in [0, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i==tab.numAdults">{{i}}</option>
                         </select>
                     </div>
                     <div class="select children">
-                        <label for="room-1-children" class="label">Children</label>
-                        <select name="room-1-children">
+                        <label class="label">Children</label>
+                        <select>
                             <option ng-repeat="i in [0, otherData.maxChildren] | makeRange" value="{{i}}" ng-selected="i==tab.numChildren">{{i}}</option>
                         </select>
                     </div>
                     <div class="select infants">
-                        <label for="room-1-infants" class="label">Infants</label>
-                        <select name="room-1-infants">
+                        <label class="label">Infants</label>
+                        <select>
                             <option ng-repeat="i in [0, otherData.maxInfants] | makeRange" value="{{i}}" ng-selected="i==tab.numInfants">{{i}}</option>
                         </select>
                     </div>
                     <div class="select rooms">
-                        <label for="room-1-rooms" class="label">Rooms</label>
-                        <select name="room-1-rooms" id="room-1-rooms">
+                        <label class="label">Rooms</label>
+                        <select ng-model="tab.roomCount" on-change="onRoomCountChange($index)">
                             <option value="1" selected>1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>

@@ -591,12 +591,26 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
         $scope.addTab = function() {
             $scope.reservationData.tabs = $scope.reservationData.tabs.concat(RVReservationTabService.newTab());
+            $scope.reservationData.rooms = $scope.reservationData.rooms.concat(RVReservationTabService.newRoom());
+            console.log({
+                size: $scope.reservationData.rooms.length,
+                contents: $scope.reservationData.rooms
+            });
             refreshScroller();
         };
 
         $scope.removeTab = function($index) {
             $scope.reservationData.tabs.splice($index, 1);
+            $scope.reservationData.rooms.splice($index, 1);
+            console.log({
+                size: $scope.reservationData.rooms.length,
+                contents: $scope.reservationData.rooms
+            });
             refreshScroller();
+        };
+
+        $scope.onRoomCountChange = function(tabIndex) {
+            console.log(tabIndex);
         };
 
     }
