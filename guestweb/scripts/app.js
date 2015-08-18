@@ -27,7 +27,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  	$rootScope.roomVerificationInstruction = $attrs.roomVerificationInstruction;
  	$rootScope.isSixpayments = ($attrs.paymentGateway  === "sixpayments") ? true:false;
 
- 	$rootScope.reservationID = $attrs.reservationId;	
+ 	$rootScope.reservationID = $attrs.reservationId;
 	$rootScope.userName      = $attrs.userName;
 	$rootScope.checkoutDate  = $attrs.checkoutDate;
 	$rootScope.checkoutTime  = $attrs.checkoutTime;

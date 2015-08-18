@@ -6,7 +6,7 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
     this.dashBoardDetails = {};
     this.getUserDetails = function(){
         return userDetails;
-    }
+    };
  	/*
   	* To fetch user details
   	* @return {object} user details
@@ -25,7 +25,7 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
 
  	this.fetchDashboardStatisticData = function(){
 	    var deferred = $q.defer();
-		//var url = '/ui/show?format=json&json_input=dashboard/dashboard.json';
+
 		var url = '/api/dashboards';
 		rvBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);

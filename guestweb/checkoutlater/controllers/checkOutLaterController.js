@@ -37,7 +37,7 @@
 			$state.go('checkOutLaterSuccess',{id:chargeId});
 		}
 
-	}
+	};
 
 	// fetch details
 	LateCheckOutChargesService.fetchLateCheckoutOptions().then(function(charges) {

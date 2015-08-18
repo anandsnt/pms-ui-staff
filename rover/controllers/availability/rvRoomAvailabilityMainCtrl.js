@@ -25,7 +25,7 @@ sntRover.controller('roomAvailabilityMainController', [
 		else if($scope.selectedView === 'graph'){
 			return '/assets/partials/availability/roomAvailabilityGraphStatus.html';
 		}
-	}
+	};
 
 
 
@@ -63,7 +63,7 @@ sntRover.controller('roomAvailabilityMainController', [
 		// for this successcallback we are not hiding the activty indicator
 		// we will hide it only after template loading.
 
-	}
+	};
 
 	/**
 	* error call of availability data fetch
@@ -86,9 +86,9 @@ sntRover.controller('roomAvailabilityMainController', [
 			var dataForWebservice = {
 				'from_date': $filter('date')(tzIndependentDate ($scope.data.selectedDate), $rootScope.dateFormatForAPI),
 				'to_date'  : $filter('date')(tzIndependentDate (dateAfter), $rootScope.dateFormatForAPI)
-			}
+			};
 			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityDetails, dataForWebservice, successCallbackOfAvailabilityFetch, failureCallbackOfAvailabilityFetch);
-		}, 0)
+		}, 0);
 
 	};
 

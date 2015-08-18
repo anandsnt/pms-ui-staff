@@ -5,7 +5,7 @@
 		return {
 		restrict : 'E',
 		templateUrl : "/assets/shared/directives/logoImagePartial.html"
-	}
+	};
 	};
 
 	snt.directive('logoImage', logoImage);
@@ -14,7 +14,7 @@
 		return {
 		restrict : 'E',
 		templateUrl : "/assets/shared/directives/logoImageBackPartial.html"
-	}
+	};
 	};
 
 	snt.directive('logoImageBack', logoImageBack);

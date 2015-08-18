@@ -13,7 +13,7 @@ sntRover.controller('rvRoomTransferConfirmationCtrl',['$scope','$rootScope','$fi
 		else{
 			return false;
 		}
-	}
+	};
 
 	$scope.isLargerRate = function(){
 		if(newRate>oldRate){
@@ -22,7 +22,7 @@ sntRover.controller('rvRoomTransferConfirmationCtrl',['$scope','$rootScope','$fi
 		else{
 			return false;
 		}
-	}
+	};
 
 	$scope.closeDialog = function() {
             //to add stjepan's popup showing animation
@@ -36,19 +36,19 @@ sntRover.controller('rvRoomTransferConfirmationCtrl',['$scope','$rootScope','$fi
 		$scope.roomTransfer.withoutRateChange = true;
 		$scope.assignRoom();
 		$scope.closeDialog();
-	}
+	};
 
 	$scope.applyRateChange = function() {
     	$scope.roomTransfer.withoutRateChange = false;
 		$scope.roomTransfer.newRoomRateChange = $scope.roomTransfer.newRoomRate;
 		$scope.assignRoom();
 		$scope.closeDialog();
-	}
+	};
 
 	$scope.confirm = function() {
 		$scope.roomTransfer.withoutRateChange = true;
 		$scope.assignRoom();
 		$scope.closeDialog();
-	}
+	};
 
 }]);

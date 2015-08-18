@@ -98,7 +98,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				closeByDocument: false,
 				closeByEscape: false
 			});
-		}
+		};
 
 		$scope.keepCurrentRate = function() {
 			//Save data variables keeping the Current Rate .
@@ -115,8 +115,6 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		var isRateChangeOcuured = function() {
 			var isRateChangeOcuured = false;
 			angular.forEach($scope.reservationParentData.rooms[0].stayDates, function(item, index) {
-				console.log(item);
-				console.log(item.rateDetails);
 				if (item.rateDetails.actual_amount !== item.rateDetails.modified_amount) {
 					isRateChangeOcuured = true;
 					$scope.customRate = item.rateDetails.modified_amount;
@@ -138,7 +136,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 						adults: adults,
 						children: children,
 						infants: parseInt($scope.guestData.infants_count || 0)
-					}
+					};
 					if (!$scope.reservationData.reservation_card.is_hourly_reservation) {
 						if (override) {
 							var actual_amount = $scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.actual_amount;
@@ -166,7 +164,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 						}
 					}
 				}
-			})
+			});
 
 			presentGuestInfo = JSON.parse(JSON.stringify($scope.guestData));
 			initialGuestInfo = JSON.parse(JSON.stringify($scope.guestData));
@@ -187,20 +185,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			dataToSend.accompanying_guests_details = [];
 			dataToSend.reservation_id = $scope.reservationData.reservation_card.reservation_id;
 
-			/*
-				var validGuests = [];
-					_.each(room.accompanying_guest_details, function(guest) {
-						if (!!guest.first_name && !guest.last_name) {
-							$scope.errorMessage = ["Validation failed: Accompanying guest's last name can't be blank"];
-							return;
-						} else if (!guest.first_name && !guest.last_name) {
-							guest.first_name = null;
-							guest.last_name = null;
-						} else {
-							validGuests.push(guest);
-						}
-					});
-			 */
+
 			angular.forEach($scope.guestData.accompanying_guests_details, function(guest, index) {
 				delete guest.image;
 
@@ -226,14 +211,14 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		$scope.applyCurrentRate = function() {
 			saveChanges(true); //override
 			closeDialog();
-		}
+		};
 
 		$scope.cancelOccupancyChange = function() {
 			// RESET
 			$scope.guestData = JSON.parse(JSON.stringify(initialGuestInfo));
 			presentGuestInfo = JSON.parse(JSON.stringify(initialGuestInfo));
 			closeDialog();
-		}
+		};
 
 		/* To save guest details */
 		$scope.saveGuestDetails = function() {
@@ -289,7 +274,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			presentGuestInfo.adult_count = $scope.guestData.adult_count;
 			presentGuestInfo.children_count = $scope.guestData.children_count;
 			presentGuestInfo.infants_count = $scope.guestData.infants_count;
-		}
+		};
 
 		$scope.init = function() {
 

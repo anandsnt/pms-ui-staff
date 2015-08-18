@@ -10,7 +10,7 @@ $scope.setUpData = function(){
         ngDialog.close();
       }
 
-    }
+    };
 };
 $scope.setUpData();
 

@@ -34,6 +34,6 @@ admin.service('ADGuestReviewSetupSrv',['$q', 'ADBaseWebSrv', function($q, ADBase
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
-	}
+	};
 
 }]);

@@ -341,7 +341,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					initialTime[room.id] = {
 						hours: '',
 						mins: ''
-					}
+					};
 				} else {
 					var currTime = tasktimes && tasktimes[room.id] || time;
 					initialTime[room.id] = {
@@ -349,9 +349,9 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 						mins: !!currTime ? currTime.split(':')[1] : ''
 					};
 				}
-			})
+			});
 			return initialTime;
-		}
+		};
 
 		var getRoomTaskTimes = function() {
 			var times = {};
@@ -365,7 +365,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				}
 			});
 			return times;
-		}
+		};
 
 		var resetEachTaskList = function() {
 			$scope.eachTaskList = {
@@ -394,7 +394,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				if ($scope.eachTaskList.rooms_task_completion[room.id].mins === '') {
 					$scope.eachTaskList.rooms_task_completion[room.id].mins = $scope.eachTaskList.mins;
 				}
-			})
+			});
 		};
 
 		var applyIds = function(source, entry) {

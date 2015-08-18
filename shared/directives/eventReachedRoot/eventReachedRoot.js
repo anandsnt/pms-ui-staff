@@ -24,5 +24,5 @@ angular.module('eventReachedRootModule', [])
 
             $window.eventReachedRootBind = true;
         }
-      }
+      };
     }]);

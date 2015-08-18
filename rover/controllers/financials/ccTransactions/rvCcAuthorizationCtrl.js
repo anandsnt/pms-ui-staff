@@ -13,11 +13,10 @@ sntRover.controller('RVccAuthorizationController', ['$scope','$filter','$statePa
 		var fetchAuthDataSuccess = function(data){
 			$scope.data.authData = data;
 			refreshAuthorizationScroll();
-			console.log($scope.data.authData);
-		}
+		};
     	var options = {
     		successCallBack: fetchAuthDataSuccess
-        }
+        };
         $scope.callAPI(RVccTransactionsSrv.fetchAuthData, options);
 
 	};

@@ -65,7 +65,7 @@ angular.module('stayCardModule', [])
                 $rootScope.stayCardStateBookMark = {
                     previousState: '',
                     previousStateParams: {}
-                }
+                };
             }
         });
 
