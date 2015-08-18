@@ -387,6 +387,7 @@ sntRover.service('RVReservationStateService', [
 							day: new tzIndependentDate(for_date),
 							availabilityCount: rooms[currentRoomId].availabilityNumbers[for_date],
 							taxForAddons: taxForAddons,
+							houseAvailability : room_rate.availability,
 							linkedPromos: linkedPromotions,
 							applyPromotion: applyPromotion,
 							appliedPromotion: code,
