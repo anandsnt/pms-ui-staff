@@ -1478,7 +1478,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 canChekin: !!reservation.room_no && rStatus === "CHECKING_IN",
                 isNoShow: rStatus === "NOSHOW",
                 isGuestAttached: !!reservation.lastname,
-                beforeSchdArrival: new tzIndependentDate(reservationData.arrival_date) < new tzIndependentDate($rootScope.businessDate)
+                beforeSchdArrival: new tzIndependentDate(reservation.arrival_date) < new tzIndependentDate($rootScope.businessDate)
             }
         };
 
