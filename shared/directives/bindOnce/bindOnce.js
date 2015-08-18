@@ -9,5 +9,5 @@ angular
                 $element.removeClass('ng-binding ng-scope');
             }, 0);
         }
-    }
+    };
 });

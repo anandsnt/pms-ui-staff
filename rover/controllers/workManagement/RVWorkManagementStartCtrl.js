@@ -10,7 +10,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                 closeByDocument: true,
                 scope: $scope
             });
-        }
+        };
 
         $scope.setScroller('roomsSearchResults');
         $scope.setScroller('maidsSearchResults');
@@ -24,9 +24,9 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                     $scope.errorMessage = "";
                     $scope.errorMessage = errorMessage;
                     $scope.$emit('hideLoader');
-                }
+                };
             $scope.invokeApi(RVWorkManagementSrv.fetchStatistics, $scope.stateVariables.viewingDate, onFetchSuccess, onFetchFailure);
-        }
+        };
 
 
 
@@ -60,7 +60,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
         $scope.closeDialog = function() {
             $scope.errorMessage = "";
             ngDialog.close();
-        }
+        };
 
         $scope.continueCreateWorkSheet = function() {
             var onCreateSuccess = function(data) {
@@ -76,9 +76,9 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                     $scope.errorMessage = "";
                     $scope.errorMessage = errorMessage;
                     $scope.$emit('hideLoader');
-                }
+                };
             $scope.invokeApi(RVWorkManagementSrv.createWorkSheet, $scope.stateVariables.newSheet, onCreateSuccess, onCreateFailure);
-        }
+        };
 
         $scope.showWorkSheet = function(id) {
             if (id) {
@@ -88,7 +88,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                     from: "START"
                 });
             }
-        }
+        };
 
         $scope.onRoomSelect = function(room) {
             $scope.stateVariables.assignRoom.rooms = [room.id];
@@ -112,7 +112,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                     })
                 });
             }
-        }
+        };
 
         $scope.assignRoom = function() {
             $scope.errorMessage = "";
@@ -135,7 +135,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                 onAssignFailure = function(errorMessage) {
                     $scope.$emit('hideLoader');
                     $scope.errorMessage = errorMessage;
-                }
+                };
             $scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, {
                 "date": $scope.stateVariables.viewingDate.date,
                 "task_id": $scope.stateVariables.assignRoom.work_type_id,
@@ -147,7 +147,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                     "from_search": true
                 }]
             }, onAssignSuccess, onAssignFailure);
-        }
+        };
 
         function isSearchOnSingleDigit(searchTerm){
             if($rootScope.isSingleDigitSearch){
@@ -177,7 +177,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                         $scope.stateVariables.noSearchResults = $scope.stateVariables.searchResults.rooms.length === 0;
                         $scope.refreshScroller('roomsSearchResults');
                         $scope.$emit('hideLoader');
-                    }
+                    };
                     $scope.invokeApi(RVWorkManagementSrv.searchRooms, {
                         key: searchKey,
                         date: $scope.stateVariables.viewingDate.date
@@ -189,7 +189,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                         $scope.stateVariables.noSearchResults = $scope.stateVariables.searchResults.maids.length === 0;
                         $scope.refreshScroller('maidsSearchResults');
                         $scope.$emit('hideLoader');
-                    }
+                    };
                     $scope.invokeApi(RVWorkManagementSrv.searchEmployees, {
                         key: searchKey,
                         date: $scope.stateVariables.viewingDate.date,
@@ -205,7 +205,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                 $scope.stateVariables.noSearchResults = false;
                 $scope.$apply();
             }
-        }
+        };
 
         $scope.showCalendar = function(controller) {
             ngDialog.open({
@@ -215,7 +215,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                 closeByDocument: true,
                 scope: $scope
             });
-        }
+        };
 
         $scope.showCreateCalendar = function() {
             ngDialog.open({
@@ -225,21 +225,21 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                 closeByDocument: true,
                 scope: $scope
             });
-        }
+        };
 
         $scope.onWorkTypeChanged = function() {
             if ($scope.stateVariables.searching) {
                 $scope.workManagementSearch(true);
             }
             setStats();
-        }
+        };
 
         $scope.onViewDateChanged = function() {
             if ($scope.stateVariables.searching) {
                 $scope.workManagementSearch(true);
             }
             setStats();
-        }
+        };
 
         setStats();
 

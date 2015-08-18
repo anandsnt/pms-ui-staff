@@ -260,6 +260,21 @@
     </div>
 </div>
 
+<div class="options long-list" ng-if="item.hasHoldStatus.data.length" ng-click="catchFauxSelectClick($event, 'hasHoldStatus')">
+    <label for="report-options">Hold Status(es)</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasHoldStatus)">{{ item.hasHoldStatus.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasHoldStatus.show }">
+        <label class="checkbox inline" ng-show="item.hasHoldStatus.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasHoldStatus.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasHoldStatus.selectAll" ng-change="fauxSelectChange(item, item.hasHoldStatus, true)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="status in item.hasHoldStatus.data">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : status.selected }"></span>
+            <input type="checkbox" ng-model="status.selected" ng-change="fauxSelectChange(item, item.hasHoldStatus)" name="room-filters"> {{ status.description }}
+        </label>
+    </div>
+</div>
+
 <div class="sort" ng-if="item.sortByOptions">
     <label>Sort By</label>
     <div class="select">

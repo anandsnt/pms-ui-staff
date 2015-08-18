@@ -84,7 +84,7 @@ admin.controller('ADFloorsListCtrl',
 
         var options = {
             successCallBack:    successCallbackFetch
-        }
+        };
         $scope.callAPI(ADFloorSetupSrv.fetch, options);
 	};
 

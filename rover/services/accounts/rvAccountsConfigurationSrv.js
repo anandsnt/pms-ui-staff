@@ -52,7 +52,7 @@ sntRover.service('rvAccountsConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 				});
 
 			return deferred.promise;
-		}
+		};
 
 		this.saveAccountSummary = function(data) {
 			var deferred = $q.defer(),
@@ -66,7 +66,7 @@ sntRover.service('rvAccountsConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 				});
 
 			return deferred.promise;
-		}
+		};
 
 
 
@@ -83,7 +83,7 @@ sntRover.service('rvAccountsConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 					deferred.reject(data);
 				});
 			return deferred.promise;
-		}
+		};
 
 		this.removeAccountNote = function(data) {
 			var deferred = $q.defer(),
@@ -96,7 +96,7 @@ sntRover.service('rvAccountsConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 					deferred.reject(data);
 				});
 			return deferred.promise;
-		}
+		};
 
 		this.emailInvoice = function(data) {
 			var deferred = $q.defer(),
@@ -108,6 +108,6 @@ sntRover.service('rvAccountsConfigurationSrv', ['$q', 'rvBaseWebSrvV2',
 					deferred.reject(data);
 				});
 			return deferred.promise;
-		}
+		};
 	}
 ]);

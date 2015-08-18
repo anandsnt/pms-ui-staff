@@ -94,7 +94,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 			};
 			var fetchARNotes = function() {
 				$scope.invokeApi(RVCompanyCardSrv.fetchArAccountNotes, param, successCallbackFetchArNotes);
-			}
+			};
 
 			var successCallbackFetchArDetails = function(data) {
 				$scope.$emit("hideLoader");
@@ -143,13 +143,13 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 			$scope.companySearchIntiated = true;
 			$scope.travelAgents = $scope.searchedtravelAgents;
 			$scope.$broadcast("refreshTravelAgentScroll");
-		})
+		});
 
 		$scope.$on("travelAgentSearchStopped", function() {
 			$scope.companySearchIntiated = false;
 			$scope.travelAgents = [];
 			$scope.$broadcast("refreshTravelAgentScroll");
-		})
+		});
 
 		$scope.$on("travelAgentDetached", function() {
 			$scope.searchMode = true;
@@ -252,7 +252,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 
 		$scope.clickedSaveCard = function(cardType) {
 			saveContactInformation($scope.contactInformation);
-		}
+		};
 
 		/**
 		 * function used to save the contact data, it will save only if there is any

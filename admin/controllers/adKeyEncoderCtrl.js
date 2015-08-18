@@ -20,22 +20,20 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
             $defer.resolve($scope.data);
 		};
 		$scope.invokeApi(ADKeyEncoderSrv.fetchEncoders, getParams, fetchSuccessOfItemList);
-	}
+	};
 
 
 	$scope.loadTable = function(){
 		$scope.tableParams = new ngTableParams({
 		        page: 1,  // show first page
 		        count: $scope.displyCount // count per page
-		        /*sorting: {
-		            rate: 'asc' // initial sorting
-		        }*/
+
 		    }, {
 		        total: 0, // length of data
 		        getData: $scope.fetchTableData
 		    }
 		);
-	}
+	};
 
 	$scope.loadTable();
 
@@ -53,14 +51,11 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 	};
 
 	$scope.editEncoder = function(id, index) {
-		console.log(id);
-
 		$scope.encoderData = {};
 		$scope.currentClickedElement = index;
 		$scope.isAddMode = false;
 		var successCallbackEdit = function(data) {
 			$scope.encoderData = data;
-			console.log($scope.encoderData);
 			$scope.$emit('hideLoader');
 		};
 
@@ -115,7 +110,7 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 	};
 
 	$scope.statusToggle = function(index) {
-		$scope.data[index].activated
+		$scope.data[index].activated;
 		var data = {
 			'id' : $scope.data[index].id,
 			'status' : !$scope.data[index].enabled
