@@ -95,11 +95,10 @@ sntRover.controller('rvGroupReservationEditCtrl', [
     * @param  {object} reservation
     * @return {undefined}
     */
-    $scope.updateReservation = function(reservation) {
-        if (reservation.reservation_status === "CANCELED") {
-            return false;
-        }
-        else {
+   
+    $scope.updateReservation = function(reservation) {       
+        
+
             $scope.errorMessage = "";
 
             _.extend(reservation, {
@@ -115,7 +114,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
               successCallBack: onUpdateReservationSuccess
             };
             $scope.callAPI(rvGroupConfigurationSrv.updateRoomingListItem, options);
-        }
+        
     };
 
     /**
@@ -204,7 +203,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
             options = null,
             params = null;
 
-        if (rStatusFlags.isUneditable || rStatusFlags.isStaying) {
+        if (!rStatusFlags.isExpected) {
             return false;
         }
         else {

@@ -1,3 +1,58 @@
+<!-- Check in out -->
+<ul ng-if="isThisReport( 'CHECK_IN_CHECK_OUT' )" class="totals">
+    <li ng-if="totals[0]['label'] == 'Total Check Ins'" class="sub">Check Ins<span class="green">{{ totals[0]['value'] }}</span></li>
+    <li ng-if="totals[0]['label'] == 'Total Check Outs'" class="sub">Check Outs<span class="green">{{ totals[0]['value'] }}</span></li>
+
+    <li class="sub">Via Rover<span>{{ totals[1]['value'] }}</span></li>
+    <li class="sub">Via Web<span>{{ totals[2]['value'] }}</span></li>
+    <li class="sub">Via Zest<span>{{ totals[3]['value'] }}</span></li>
+    <li>Via Kiosk<span>{{ totals[4]['value'] }}</span></li>
+
+    <li ng-if="totals[5]" class="sub">Check Outs<span class="red">{{ totals[5]['value'] }}</span></li>
+    <li ng-if="totals[5]" class="sub">Via Rover<span>{{ totals[6]['value'] }}</span></li>
+    <li ng-if="totals[5]" class="sub">Via Web<span>{{ totals[7]['value'] }}</span></li>
+    <li ng-if="totals[5]" class="sub">Via Zest<span>{{ totals[8]['value'] }}</span></li>
+    <li ng-if="totals[5]" class="sub">Via Kiosk<span>{{ totals[9]['value'] }}</span></li>
+</ul>
+
+<!-- Upsell -->
+<ul ng-if="isThisReport( 'UPSELL' )" class="totals">
+    <li>Rooms upsold<span>{{ totals[0]['value'] }}</span></li>
+    <li>Upsell Revenue<span class="brand-colors">{{ totals[1]['value'] | currency:currencySymbol:2 }}</span></li>
+</ul>
+
+<!-- Web check in -->
+<ul ng-if="isThisReport( 'WEB_CHECK_IN_CONVERSION' )" class="totals">
+    <li>Emails sent<span>{{ totals[0]['value'] }}</span></li>
+    <li>Up Sell Conversion<span class="brand-colors">{{ totals[1]['value'] }}</span></li>
+    <li>Revenue<span>{{ totals[2]['value'] | currency:currencySymbol:2 }}</span></li>
+    <li>Conversion<span class="brand-colors">{{ totals[4]['value'] }}</span></li>
+    <li>Total Web Check-Ins<span>{{ totals[3]['value'] }}</span></li>
+</ul>
+
+<!-- Web check out -->
+<ul ng-if="isThisReport( 'WEB_CHECK_OUT_CONVERSION' )" class="totals">
+    <li>Emails sent<span>{{ totals[0]['value'] }}</span></li>
+    <li>Late Check Out Conversion<span class="brand-colors">{{ totals[1]['value'] }}</span></li>
+    <li>Revenue<span>{{ totals[2]['value'] | currency:currencySymbol:2 }}</span></li>
+    <li>Conversion<span class="brand-colors">{{ totals[4]['value'] }}</span></li>
+    <li>Total Web Check-Outs<span>{{ totals[3]['value'] }}</span></li>
+</ul>
+
+<!-- Late check out -->
+<ul ng-if="isThisReport( 'LATE_CHECK_OUT' )" class="totals">
+    <li>Late Check Out Rooms<span>{{ totals[0]['value'] }}</span></li>
+    <li>Late Check Out Revenue<span class="brand-colors">{{ totals[1]['value'] | currency:currencySymbol:2 }}</span></li>
+</ul>
+
+
+
+<!-- Early Check In -->
+<ul ng-if="isThisReport( 'EARLY_CHECKIN' )" class="totals">
+    <li>Early Check In<span>{{ summaryCounts.total_early_checkins }}</span></li>
+    <li>Early Check In Revenue<span class="brand-colors">{{ summaryCounts.total_revenue | currency:currencySymbol:2 }}</span></li>
+</ul>
+
 <!-- Arrival -->
 <ul ng-if="isThisReport( 'ARRIVAL' )" class="totals">
     <li>Total Arrival Rooms<span>{{ summaryCounts.total_rooms_count }}</span></li>
