@@ -2,7 +2,7 @@
 (function() {
 	var earlyCheckinFinalController = function($scope,$rootScope,$state,$stateParams,earlyCheckinService) {
 
-	
+
 	$scope.pageValid = false;
 
 	if($rootScope.isCheckedin){
@@ -13,7 +13,7 @@
 	}
 	else{
 		$scope.pageValid = true;
-	}		
+	}
 
 	if($scope.pageValid){
 		$scope.checkinTime = $stateParams.time;
@@ -31,8 +31,8 @@
 		$scope.nextButtonClicked =  function(){
 			$state.go('preCheckinStatus');
 		};
-	};
-}
+	}
+};
 
 var dependencies = [
 '$scope','$rootScope','$state','$stateParams','earlyCheckinService',

@@ -8,10 +8,10 @@ admin.controller('ADAccountReceivablesCtrl',['$scope', '$state', 'ADHotelSetting
 		var successCallbackFetch = function(data){
 			$scope.data = data;
 			$scope.$emit('hideLoader');
-		}
+		};
 		$scope.invokeApi(ADHotelSettingsSrv.fetch, "", successCallbackFetch);
 
-	}
+	};
 
 	$scope.saveAccountReceivableStatus = function(){
 
@@ -22,7 +22,7 @@ admin.controller('ADAccountReceivablesCtrl',['$scope', '$state', 'ADHotelSetting
 
 			};
 			$scope.invokeApi(ADHotelSettingsSrv.update, data, postSuccess);
-	}
+	};
 	$scope.fetchAccountReceivableStatus();
 
 

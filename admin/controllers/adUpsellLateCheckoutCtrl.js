@@ -20,7 +20,7 @@ var setUpList = function(){
         }
     });
   });
-}
+};
 /**
 * To fetch upsell details
 *

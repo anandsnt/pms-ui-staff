@@ -51,7 +51,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 				'id' 	: roomAvailabilityData.room_types[i].id,
 				'name'	: roomAvailabilityData.room_types[i].name,
 				'availableRoomNumberList': []
-			})
+			});
 
 			//CICO-13590:
 			individualBookedRooms.push ({
@@ -122,7 +122,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			'availableRoomsWithBookableRooms': availableRoomsWithBookableRooms,
 			'individualAvailableRooms': individualAvailableRooms,
 			'totalRooms'		: roomAvailabilityData.physical_count
-		}
+		};
 
 		//CICO-13590
 		if (!isHourlyRateOn) {
@@ -135,7 +135,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			});
 		}
 		return gridData;
-	}
+	};
 
 	var formGraphData = function(dataFromAvailability, occupancyData){
 		// returning object
@@ -215,7 +215,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			'occupanciesTargeted': occupanciesTargeted,
 			'totalRooms'	: totalRoomCount
 
-		}
+		};
 		return graphData;
 
 	};
@@ -275,7 +275,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		var deferred = $q.defer();
 		var url = '/api/availability/house';
 		var businessDate = tzIndependentDate(params['business_date']).clone();
-		//var url = '/ui/show?format=json&json_input=availability/house_status.json';
+
 		delete params['business_date'];
 
 		rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
@@ -344,7 +344,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			houseDetails.departues_expected[dayInfo.date] = {};
 			houseDetails.departues_expected[dayInfo.date].value = dayInfo.house.departing;
 			houseDetails.departues_expected[dayInfo.date].percent = dayInfo.house.departing / totalDepartures * 100;
-			//Departures Actual;
+			//Departures Actual
 			houseDetails.departures_actual[dayInfo.date] = {};
 			houseDetails.departures_actual[dayInfo.date].value = dayInfo.house.departed;
 			houseDetails.departures_actual[dayInfo.date].percent = dayInfo.house.departed / totalDepartures * 100;

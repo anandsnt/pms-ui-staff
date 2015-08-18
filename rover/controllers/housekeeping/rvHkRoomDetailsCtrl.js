@@ -16,7 +16,7 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 			title: $filter('translate')('ROOM_STATUS'),
 			name: 'rover.housekeeping.roomStatus',
 			param: {}
-		}
+		};
 
 		$scope.setTitle($filter('translate')('ROOM_DETAILS'));
 		$scope.heading = $filter('translate')('ROOM_DETAILS');
@@ -117,7 +117,7 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 
 			return viewStatus;
 
-		}
+		};
 
 		$scope.guestViewStatus = getGuestStatusMapped($scope.roomDetails.reservation_status,
 			$scope.roomDetails.is_late_checkout);
@@ -134,7 +134,6 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 				$scope.roomDetails[prop] = value;
 				$scope.getHeaderColor();
 			} else {
-				console.info('RVHkRoomDetailsCtrl: No prop "' + prop + '" found on $scope.roomDetails');
 			}
 			if (prop === "room_reservation_hk_status") {
 				RVHkRoomStatusSrv.setRoomStatus($scope.roomDetails.id, prop, value);
