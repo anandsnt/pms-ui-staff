@@ -1,7 +1,6 @@
 (function() {
 	var ccVerificationViewController = function($scope,$rootScope,$state,$stateParams,$modal,ccVerificationService) {
 
-
   $scope.pageValid = false;
   $scope.cardNumber = "";
   $scope.ccv = "";
@@ -124,12 +123,11 @@
 
     $scope.showCcvPopup = function(){
       $modal.open($scope.ccvOpts); // error modal popup
-    }
+    };
 
     $scope.goToNextStep = function(){
 
-        //$scope.isFetching = true;
-        var cardExpiryDate = $scope.yearSelected+"-"+$scope.monthSelected+"-"+"01"
+        var cardExpiryDate = $scope.yearSelected+"-"+$scope.monthSelected+"-"+"01";
         var data = {'reservation_id':$rootScope.reservationID,'token':MLISessionId,'card_expiry':cardExpiryDate,'payment_type':"CC"};
         ccVerificationService.verifyCC(data).then(function(response) {
           $scope.isFetching = false;
@@ -153,7 +151,7 @@
         $scope.isFetching = false;
       });
 
-    }
+    };
 
     $scope.savePaymentDetails = function(){
 
@@ -162,7 +160,6 @@
        var sessionDetails = {};
 
        $scope.callback = function(response){
-         // $scope.isFetching = false;
           $scope.$apply();
           if(response.status ==="ok"){
               MLISessionId = response.session;
@@ -173,7 +170,7 @@
             $scope.isFetching = false;
           }
 
-       }
+       };
 
       if( ($scope.cardNumber.length === 0) ||
           ($scope.ccv.length === 0) ||
@@ -199,15 +196,15 @@
 
 
 
-    }
+    };
     $scope.fetchMLISessionId();
 
-    }
+    };
 
      /* MLI integration ends here */
 
 }
-}
+};
 
 
 

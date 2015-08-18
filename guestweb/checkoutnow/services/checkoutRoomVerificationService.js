@@ -18,7 +18,7 @@ var checkoutRoomVerificationService = function($q,$rootScope,$http) {
 			response:response,
 			verifyRoom:verifyRoom
 
-		}
+		};
 };
 
 var dependencies = [

@@ -34,7 +34,7 @@ sntRover.controller('contractEndCalendarCtrl',['$rootScope','$scope','dateFilter
 			        ngDialog.close();
 			    }
 
-    	}
+    	};
 
 	};
 	$scope.setUpData();

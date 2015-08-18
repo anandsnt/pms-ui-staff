@@ -6,7 +6,7 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 		$scope.setHeading = function(headingText) {
 			$scope.heading = headingText;
 			$scope.setTitle(headingText);
-		}
+		};
 
 		$scope.setHeading("Work Management");
 
@@ -38,7 +38,7 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 			"Due out / Departed": "check-out",
 			"Arrived / Day use / Due out": "check-in",
 			"Arrived / Day use / Due out / Departed": "check-in"
-		}
+		};
 
 		$scope.arrivalClass = {
 			"Arrival": "check-in",
@@ -55,7 +55,7 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 			"Due out / Departed": "no-show",
 			"Arrived / Day use / Due out": "check-in",
 			"Arrived / Day use / Due out / Departed": "check-in"
-		}
+		};
 
 		// CICO-12517: Changed "no-show" to "check-out"
 		// since we want the count to go up anyway.
@@ -76,11 +76,11 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 			"Due out / Departed": "check-out",
 			"Arrived / Day use / Due out": "check-out",
 			"Arrived / Day use / Due out / Departed": "check-out"
-		}
+		};
 
 		$scope.printWorkSheet = function() {
 			window.print();
-		}
+		};
 
 		$scope.addDuration = function(augend, addend) {
 			if (!addend) {
@@ -94,7 +94,7 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 			return (sumHours.length < 2 ? "0" + sumHours : sumHours) +
 				":" +
 				((sumMinutes % 60).toString().length < 2 ? "0" + (sumMinutes % 60).toString() : (sumMinutes % 60).toString());
-		}
+		};
 
 		// so this functionality has alterred a little
 		// we now have a new argument - allUnassigned
@@ -186,9 +186,9 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 										}
 										return returnString + ":" + secondSplit[0];
 									} else {
-										return "00:00"
+										return "00:00";
 									}
-								}
+								};
 
 							if (!!cia.hh && !!cib.hh) { // CASE 1 & 2
 								return ((get24hourTime(room.checkin_time) >= get24hourTime(cia.hh + ':' + (cia.mm || '00') + " " + cia.am)) &&

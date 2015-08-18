@@ -2,9 +2,9 @@ admin.controller('ADOriginsCtrl', ['$scope', 'ADOriginsSrv', '$anchorScroll', '$
 	function($scope, ADOriginsSrv, $anchorScroll, $timeout, $location) {
 		BaseCtrl.call(this, $scope);
 		$scope.$emit("changedSelectedMenu", 7);
-		$scope.currentClickedElement = -1;		
+		$scope.currentClickedElement = -1;
 		$scope.state = {
-			editStore: {},			
+			editStore: {},
 		};
 
 		/*
@@ -16,7 +16,7 @@ admin.controller('ADOriginsCtrl', ['$scope', 'ADOriginsSrv', '$anchorScroll', '$
 		};
 
 		$scope.invokeApi(ADOriginsSrv.fetch, {}, fetchSuccessCallback);
-		
+
 		/*
 		 * To handle enable/disable of use origins
 		 */
@@ -37,19 +37,8 @@ admin.controller('ADOriginsCtrl', ['$scope', 'ADOriginsSrv', '$anchorScroll', '$
 
 		$scope.setDefaultOriginSiteminder = function() {};
 
-		/*
-		$scope.$watch("data.data.product_cross_customer.default_origin", function (o, n) {
-		    //this data is pushed in upon saving the form, retrieved from other controllers
-		    //so watch this to push the data back in through this controller to the other controllers
-		    //emit this value to be pulled into other controllers
-		    console.log(arguments);
-		    console.log('emitting orgin value of: '+thisdata.data.product_cross_customer.default_origin);
-		    $scope.$emit('sm-origin-updated', {
-		        'default_origin': this.data.data.product_cross_customer.default_origin
-		    });
-		});
-		*/
-		
+
+
 		/*
 		 * To get the template of edit screen
 		 * @param {int} index of the selected item

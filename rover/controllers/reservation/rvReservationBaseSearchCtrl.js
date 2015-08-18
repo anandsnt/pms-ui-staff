@@ -193,7 +193,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.initReservationData();
                 $scope.initReservationDetails();
             } else {
-                //$scope.reservationData.isSameCard = false;
+
                 //TODO: 1. User gets diverted to the Search screen (correct)
                 //but Guest Name and Company / TA cards are not copied into the respective search fields.
                 //They are added to the reservation by default later on,
@@ -453,7 +453,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.reservationData.travelAgent.iataNumber = ui.item.iataNumber;
             };
 
-            // DO NOT return false;
+            // DO NOT return false
         };
 
         $scope.autocompleteOptions = {
@@ -530,7 +530,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         /**
          * Source handler for the codes autocomplete
          * jquery autocomplete Souce handler
-         * get two arguments - request object and response callback function 
+         * get two arguments - request object and response callback function
          */
 
         var codeACSourceHandler = function(request, response) {
@@ -540,7 +540,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 codeResults = [];
                 lastSearchText = "";
             } else if (request.term.length > 0) {
-                if (request.term != '' && lastSearchText != request.term) {
+                if (request.term !== '' && lastSearchText !== request.term) {
                     lastSearchText = request.term;
                     var filteredCodes = $filter('filter')($scope.activeCodes, {
                         name: request.term
@@ -589,7 +589,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             }
         };
 
-        $scope.addTab = function() {
+        $scope.addTab = function(tabIndex) {
+            if (!$scope.reservationData.tabs[tabIndex].roomTypeId) {
+                return false; // Need to select room type before adding another row
+            }
             $scope.reservationData.tabs = $scope.reservationData.tabs.concat(RVReservationTabService.newTab());
             $scope.reservationData.rooms = $scope.reservationData.rooms.concat(RVReservationTabService.newRoom());
             console.log({
@@ -599,9 +602,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             refreshScroller();
         };
 
-        $scope.removeTab = function($index) {
-            $scope.reservationData.tabs.splice($index, 1);
-            $scope.reservationData.rooms.splice($index, 1);
+        $scope.removeTab = function(tabIndex) {
+            $scope.reservationData.tabs.splice(tabIndex, 1);
+            $scope.reservationData.rooms.splice(tabIndex, 1);
             console.log({
                 size: $scope.reservationData.rooms.length,
                 contents: $scope.reservationData.rooms
@@ -610,7 +613,26 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         };
 
         $scope.onRoomCountChange = function(tabIndex) {
-            console.log(tabIndex);
+            _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
+                roomTypeId: $scope.reservationData.tabs[tabIndex].roomTypeId
+            }));
+
+            _.lastIndexOf($scope.reservationData.rooms, _.last(_.where($scope.reservationData.rooms, {
+                roomTypeId: $scope.reservationData.tabs[tabIndex].roomTypeId
+            })));
+        };
+
+        $scope.onRoomTypeChange = function(tabIndex) {
+            var index = 0,
+                currentRoomCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount,10),
+                i;
+            for (i = 0; i < tabIndex; i++) {
+                index += parseInt($scope.reservationData.tabs[i].roomCount, 10);
+            }
+
+            for (i = index; i < index + currentRoomCount; i++) {
+                $scope.reservationData.rooms[i].roomTypeId = $scope.reservationData.tabs[tabIndex].roomTypeId;
+            }
         };
 
     }
