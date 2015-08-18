@@ -58,7 +58,6 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	  	$scope.refreshScroller('entities');
 	};
   	var searchSuccessCards = function(data){
-  		console.log(data);
 		$scope.$emit("hideLoader");
 		$scope.results.accounts = [];
 		$scope.results.accounts = data.accounts;

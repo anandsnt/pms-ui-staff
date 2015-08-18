@@ -15,7 +15,7 @@ sntRover.service('RVGuestCardLoyaltySrv',['$q', 'RVBaseWebSrv', function($q, RVB
 				deferred.reject(data);
 			});
 
-		}
+		};
 
 
 		this.fetchHotelLoyalties = function(param){

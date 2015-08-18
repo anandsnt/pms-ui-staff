@@ -3,7 +3,7 @@ admin.controller('ADContentManagementCategoryDetailCtrl',['$scope', '$state', 'n
 
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
-	$scope.fileName = "Choose file..."
+	$scope.fileName = "Choose file...";
 	$scope.initialIcon = "";
 	/*Initializing data, for adding a new category.
     */
@@ -14,7 +14,7 @@ admin.controller('ADContentManagementCategoryDetailCtrl',['$scope', '$state', 'n
 	            "icon": '',
 	            "parent_category": [],
 	            "parent_section": []
-            }
+            };
 
 
     /*Function to fetch the category details
@@ -24,9 +24,9 @@ admin.controller('ADContentManagementCategoryDetailCtrl',['$scope', '$state', 'n
 			$scope.$emit('hideLoader');
 			$scope.data = data;
 			$scope.initialIcon = $scope.data.icon;
-		}
+		};
 		$scope.invokeApi(ADContentManagementSrv.fetchComponent, $stateParams.id , fetchCategorySuccessCallback);
-	}
+	};
 	/*Checkin if the screen is loaded for a new category or,
 	 * for existing category.
     */
@@ -41,7 +41,7 @@ admin.controller('ADContentManagementCategoryDetailCtrl',['$scope', '$state', 'n
     */
 	$scope.goBack = function(){
         $state.go('admin.cmscomponentSettings');
-	}
+	};
 	/*Function to popup the assign parent modal.
 	 *The param isSection === true, implies the modal is for assigning sections
 	 *Otherwise the modal is for assigning categories
@@ -55,21 +55,21 @@ admin.controller('ADContentManagementCategoryDetailCtrl',['$scope', '$state', 'n
                 className: '',
                 scope: $scope
             });
-	}
+	};
 	/*Function to save a category
     */
 	$scope.saveCategory = function(){
 		var saveCategorySuccessCallback = function(data){
 			$scope.$emit('hideLoader');
 			$scope.goBack();
-		}
+		};
 		var unwantedKeys = ["image"];
 		if($scope.initialIcon === $scope.data.icon) {
 			unwantedKeys = ["icon", "image"];
 		}
 		var data = dclone($scope.data, unwantedKeys);
 		$scope.invokeApi(ADContentManagementSrv.saveComponent, data , saveCategorySuccessCallback);
-	}
+	};
 
 	/* delete component starts here*/
 
@@ -86,18 +86,18 @@ admin.controller('ADContentManagementCategoryDetailCtrl',['$scope', '$state', 'n
 				closeByDocument:true
 			});
 			$scope.componentIdToDelete = id;
-		}
+		};
 		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id':id} , successCallbackFetchDeleteDetails);
 
-	}
+	};
 	/* Function to remove the category from selected list*/
 	$scope.deleteParentCategory = function(index){
 		$scope.data.parent_category.splice(index, 1);
-	}
+	};
 	/* Function to remove the section from selected list*/
 	$scope.deleteParentSection = function(index){
 		$scope.data.parent_section.splice(index, 1);
-	}
+	};
 	/* Listener to know that the current category is deleted.
 	 * Need to go back to preveous state in this case
 	 */

@@ -34,7 +34,7 @@ angular.module('groupModule', [])
                             'to_date'   : '',
                             'per_page'  : rvGroupSrv.DEFAULT_PER_PAGE,
                             'page'      : rvGroupSrv.DEFAULT_PAGE
-                        }
+                        };
                         return rvGroupSrv.getGroupList(params);
                     }
                 ]

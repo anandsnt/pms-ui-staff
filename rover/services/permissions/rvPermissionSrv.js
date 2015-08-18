@@ -15,7 +15,7 @@ sntRover.service('rvPermissionSrv',
 	*/
 	this.fetchRoverPermissions = function() {
 		var deferred = $q.defer(),
-			//url = '/ui/show?format=json&json_input=permissions/permission.json';
+
 			url = '/api/permissions';
 
 		rvBaseWebSrvV2.getJSON(url).then(function(data) {
