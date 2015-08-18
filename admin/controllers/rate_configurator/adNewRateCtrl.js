@@ -168,6 +168,10 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.is_suppress_rate_on = (data.is_suppress_rate_on) ? true : false;
             $scope.rateData.is_discount_allowed_on = (data.is_discount_allowed_on) ? true : false;
             $scope.rateData.is_member_rate = (data.is_member) ? true : false;
+            //CICO-18614
+            $scope.rateData.is_pms_only = !!data.is_pms_only;
+            $scope.rateData.is_channel_only = !!data.is_channel_only;
+            
             $scope.rateData.source_id = data.source_id;
             $scope.rateData.market_segment_id = data.market_segment_id;
             $scope.rateData.end_date = data.end_date;
