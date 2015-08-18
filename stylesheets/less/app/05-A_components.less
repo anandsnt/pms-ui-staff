@@ -1297,79 +1297,87 @@
                         }
                     }
 
-                    .data {
-                        margin-right: 40px;
-                        .calc-width(100, 145);
-
-                        h2 {
-                            line-height: 50px; 
-                            vertical-align: middle; 
-                        }
-                    }
-
-                    .status { 
-                        margin-top: 10px;
+                    .rate {
+                        font-size: 20px;
+                        font-weight: 600;
+                        margin-right: 20px;
+                        .nowrap();
                         .pull-left;
-                        .hide-text;
-                        .square(30px);
-
-                        &.guest { background: @gcard @gcardTexture; }
-                        &.company { background: @ccard @ccardTexture; }
-                        &.travel-agent { background: @tacard @tacardTexture; }
+                        
+                        .label { font-weight: 400; }
                     }
 
-                    &.card-result {
-                        .data { 
-                            margin-right: 0;
-                            .calc-width(100, 70);
+                    .icon-contracts {
+                        color: @grey3;
+                        text-transform: uppercase;
+                        font-size: 13px;
+                        line-height: 20px;
+                        padding-left: 20px;
+                        width: 150px;
+                        .pull-right;
+                    }
+                }
 
-                            .info {
-                                margin-bottom: 10px;
-                                .float;
+                &.all-cards {
+                    position: relative;
 
-                                h2 {
-                                    line-height: 1em;
-                                    margin-right: 40px;
-                                    .pull-left;
-                                }
+                    .data {
+                        margin-right: 20px;
+                        .calc-width(50, 130);
 
-                                .rate { 
-                                    font-size: 24px;
-                                    line-height: 1em;
-                                    font-weight: 600;
-                                    .pull-left;
-                                    
-                                    .label { 
-                                        display: inline-block;
-                                        font-weight: 14px;
-                                        line-height: 24px;
-                                        margin: 0 10px 0 0;
-                                        font-weight: 400;
-                                    }
+                        h2 { line-height: 50px; }
+                    }
 
-                                }
-                            }
+                    .rate {
+                        line-height: 50px;
+                        .calc-width(50, 130);
+                    }
 
-                            .confirmation,
-                            .icons {
-                                display: inline;
-                                line-height: 20px;
-                                height: 20px;
-                                overflow: hidden;
+                    .icon-contracts { margin-top: 15px; }
+                }
+
+                &.card-result {
+                    .data { 
+                        .calc-width(100, 70);
+
+                        .info {
+                            margin-bottom: 10px;
+                            .float;
+
+                            h2 {
+                                line-height: 30px;
                                 margin-right: 20px;
-
-                                &:last-child { margin-right: 0; }
+                                .calc-width(50, 95);
+                                .pull-left;
                             }
 
-                            .icons {
-                                color: @grey3;
-                                padding-left: 20px;
+                            .rate {
+                                line-height: 30px;
+                                .calc-width(50, 95);
                             }
 
-                            .confirmation { 
-                                color: @textColor;
-                                font-weight: 600; 
-                            }
+                            .icon-contracts { margin-top: 5px; }
+                        }
+
+                        .confirmation,
+                        .icons {
+                            display: inline;
+                            line-height: 20px;
+                            height: 20px;
+                            overflow: hidden;
+                        }
+
+                        .icons {
+                            color: @grey3;
+                            padding-left: 20px;
+                            margin-right: 20px;
+
+                            &:last-child { margin-right: 0; }
+                        }
+
+                        .confirmation { 
+                            font-weight: 600;
+                            margin-right: 20px;
                         }
                     }
                 }
@@ -1778,7 +1786,7 @@
             position: absolute;
             top: 60px;
             left: 0;
-            z-index: 999;
+            z-index: 2040;
             .size(90px, 100%);
             .transition(height, .2s, cubic-bezier(.10, .10, .25, .90));
             .show;
