@@ -105,6 +105,53 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$scope.reloadPage();
 		};
 
+		var successCallBackOfEarlierArrivalDateChange = function() {
+			$scope.reloadPage();
+		};
+
+		var failureCallBackOfEarlierArrivalDateChange = function(errorMessage) {
+
+		};
+
+		/**
+		 * when clicked on Save move button. this will triggr
+		 * @return {undefined}
+		 */
+		var triggerEarlierArrivalDateChange = function() {
+			var sumryData = $scope.groupConfigData.summary,
+				oldSumryData = summaryMemento,
+				options = {
+					fromDate 		: sumryData.block_from,
+					oldFromDate 	: oldSumryData.block_from,
+					successCallBack : successCallBackOfEarlierArrivalDateChange,
+					failureCallBack : failureCallBackOfEarlierArrivalDateChange
+				};
+			$scope.changeDatesActions.triggerEarlierArrDateChange (options);
+		};	
+
+		var successCallBackOfLaterArrivalDateChange = function() {
+			$scope.reloadPage();
+		};
+
+		var failureCallBackOfLaterArrivalDateChange = function(errorMessage) {
+
+		};
+
+		/**
+		 * when clicked on Save move button. this will triggr
+		 * @return {undefined}
+		 */
+		var triggerLaterArrivalDateChange = function() {
+			var sumryData = $scope.groupConfigData.summary,
+				oldSumryData = summaryMemento,
+				options = {
+					fromDate 		: sumryData.block_from,
+					oldFromDate 	: oldSumryData.block_from,
+					successCallBack : successCallBackOfEarlierArrivalDateChange,
+					failureCallBack : failureCallBackOfEarlierArrivalDateChange
+				};
+			$scope.changeDatesActions.triggerLaterArrDateChange (options);
+		};
 		/**
 		 * we have to save when the user clicked outside of summary tab
 		 * @param  {Object} event - Angular Event
@@ -146,11 +193,13 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return undefined
 		 */
 		var fromDateChoosed = function(date, datePickerObj) {
-			console.log ('oyyy');
 			$scope.groupConfigData.summary.block_from = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
 			//referring data source
-			var refData = $scope.groupConfigData.summary;
+			var refData 		= $scope.groupConfigData.summary,
+				newBlockFrom 	= $scope.groupConfigData.summary.block_from,
+				oldBlockFrom	= summaryMemento.block_from;
+
 			if (refData.release_date.toString().trim() === '') {
 				$scope.groupConfigData.summary.release_date = refData.block_from;
 			}
@@ -160,6 +209,17 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				var originalStayLength = (util.getDatesBetweenTwoDates (new tzIndependentDate(util.deepCopy(summaryMemento.block_from)), new tzIndependentDate(util.deepCopy(summaryMemento.block_to))).length - 1);
 				$scope.groupConfigData.summary.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 				$scope.groupConfigData.summary.block_to.setDate(refData.block_to.getDate() + originalStayLength);
+			}
+
+			//arrival left date change
+			else if(newBlockFrom < oldBlockFrom && $scope.changeDatesActions.arrDateLeftChangeAllowed()) {
+				triggerEarlierArrivalDateChange();
+				
+			}
+
+			//arrival right date change
+			else if(newBlockFrom > oldBlockFrom && $scope.changeDatesActions.arrDateRightChangeAllowed()) {
+				triggerLaterArrivalDateChange();
 			}
 			
 			//setting the min date for end Date
@@ -305,6 +365,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				onSelect: releaseDateChoosed,
 				disabled: shouldDisableReleaseDatePicker()
 			}, commonDateOptions);
+
+			//summary memento will change we attach date picker to controller
+			summaryMemento = _.extend({}, $scope.groupConfigData.summary);
 		};
 
 		/**

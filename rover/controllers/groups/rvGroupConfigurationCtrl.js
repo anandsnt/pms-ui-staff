@@ -151,6 +151,157 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             };
 
             /**
+             * whether arrival date left change allowed
+             * @return {Boolean}
+             */
+            var arrDateLeftChangeAllowed = function(){
+                return $scope.groupConfigData.summary.is_from_date_left_move_allowed;
+            };
+
+            /**
+             * whether arrival date left change allowed
+             * @return {Boolean}
+             */
+            var arrDateRightChangeAllowed = function(){
+                return $scope.groupConfigData.summary.is_from_date_right_move_allowed;
+            };
+
+            /**
+             * in order to show the move confirmation popup
+             * @param {Object}
+             * @return {undefined}
+             */
+            var showEarlierArrivalDateMoveConfirmationPopup = function (data) {
+                ngDialog.open(
+                {
+                    template        : '/assets/partials/groups/summary/popups/changeDates/arrivalDate/rvConfirmArrivalDateChangeToEarlier.html',
+                    className       : '',
+                    closeByDocument : false,
+                    closeByEscape   : false,
+                    scope           : $scope,
+                    data            : JSON.stringify(data)
+                });
+            };
+
+            /**
+             * [clickedOnMoveSaveButton description]
+             * @return {[type]} [description]
+             */
+            var triggerEarlierArrivalDateChange = function(options) {
+                lastSuccessCallback = options["successCallBack"] ? options["successCallBack"] : null;
+                lastFailureCallback = options["failureCallBack"] ? options["failureCallBack"] : null;
+
+                var dataForPopup = {
+                    dataset:
+                        {
+                            fromDate    : options["fromDate"]   ? options["fromDate"] : null,
+                            oldFromDate : options["oldFromDate"]? options["oldFromDate"] : null,
+                            changeInArr : true
+                        }
+                };
+
+                showEarlierArrivalDateMoveConfirmationPopup(dataForPopup);
+            };
+
+            /**
+             * in order to show the move confirmation popup
+             * @param {Object}
+             * @return {undefined}
+             */
+            var showLaterArrivalDateMoveConfirmationPopup = function (data) {
+                ngDialog.open(
+                {
+                    template        : '/assets/partials/groups/summary/popups/changeDates/arrivalDate/rvConfirmArrivalDateChangeLater.html',
+                    className       : '',
+                    closeByDocument : false,
+                    closeByEscape   : false,
+                    scope           : $scope,
+                    data            : JSON.stringify(data)
+                });
+            };
+
+            /**
+             * [clickedOnMoveSaveButton description]
+             * @return {[type]} [description]
+             */
+            var triggerLaterArrivalDateChange = function(options) {
+                lastSuccessCallback = options["successCallBack"] ? options["successCallBack"] : null;
+                lastFailureCallback = options["failureCallBack"] ? options["failureCallBack"] : null;
+
+                var dataForPopup = {
+                    dataset:
+                        {
+                            fromDate    : options["fromDate"]   ? options["fromDate"] : null,
+                            oldFromDate : options["oldFromDate"]? options["oldFromDate"] : null,
+                            changeInArr : true
+                        }
+                };
+
+                showLaterArrivalDateMoveConfirmationPopup(dataForPopup);
+            };
+
+            /**
+             * [successCallBackOfMoveDatesAPI description]
+             * @param  {[type]} data [description]
+             * @return {[type]}      [description]
+             */
+            var successCallBackOfChangeDatesAPI = function (data) {
+                $scope.closeDialog ();
+                lastSuccessCallback ();
+            };
+
+            /**
+             * [failureCallBackOfMoveDatesAPI description]
+             * @param  {[type]} errorMessage [description]
+             * @return {[type]}              [description]
+             */
+            var failureCallBackOfChangeDatesAPI= function (errorMessage) {
+                $scope.closeDialog ();
+                $scope.errorMessage = errorMessage;
+                lastFailureCallback (errorMessage);
+            };
+
+            /**
+             * function explicitly for calling the move API
+             * @param  {[type]} options [description]
+             * @return {[type]}         [description]
+             */
+            $scope.callChangeDatesAPI = function (options) {                
+                var dataSet         = options && options["dataset"],
+                    successCallBack = lastSuccessCallback,
+                    failureCallBack = lastFailureCallback,
+                    arrChangeOnly   = 'changeInArr' in dataSet && dataSet['changeInArr'],
+                    depChangeOnly   = 'changeInArr' in dataSet && dataSet['changeInArr'],
+                    conditnalParams = {};
+
+                var params = {
+                    group_id: $scope.groupConfigData.summary.group_id
+                };
+
+                if (arrChangeOnly) {
+                    conditnalParams = {
+                        from_date               : dataSet["fromDate"] ? formatDateForAPI(dataSet["fromDate"]) : null,
+                        is_change_in_from_date  : true
+                    };
+                }
+                else if (depChangeOnly) {
+                    conditnalParams = {
+                        to_date                : dataSet["toDate"] ? formatDateForAPI(dataSet["toDate"]) : null,
+                        is_change_in_to_date   : true
+                    };
+                }
+
+                _.extend(params, conditnalParams); 
+
+                var options = {
+                    params          : params,
+                    successCallBack : successCallBackOfChangeDatesAPI, //null case will be handled from baseCtrl
+                    failureCallBack : failureCallBackOfChangeDatesAPI //null case will be handled from baseCtrl
+                };
+                $scope.callAPI(rvGroupConfigurationSrv.changeDates, options);
+            };
+
+            /**
              * wanted to show the Move button in screen
              * @return {Boolean}
              */
@@ -209,7 +360,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @param  {[type]} data [description]
              * @return {[type]}      [description]
              */
-            var  successCallBackOfMoveDatesAPI = function (data) {
+            var successCallBackOfMoveDatesAPI = function (data) {
                 $scope.closeDialog ();
                 lastSuccessCallback ();
             };
@@ -234,8 +385,6 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 var dataSet         = options && options["dataset"],
                     newFromDate     = dataSet["fromDate"] ? formatDateForAPI(dataSet["fromDate"]) : null,
                     newToDate       = dataSet["toDate"] ? formatDateForAPI(dataSet["toDate"]) : null,
-                    successCallBack = lastSuccessCallback,
-                    failureCallBack = lastFailureCallback,
                     sumryData       = $scope.groupConfigData.summary;
 
                 var params = {
@@ -246,8 +395,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
                 var options = {
                     params          : params,
-                    successCallBack : successCallBackOfMoveDatesAPI, //null case will be handled from baseCtrl
-                    failureCallBack : failureCallBack //null case will be handled from baseCtrl
+                    successCallBack : successCallBackOfMoveDatesAPI,
+                    failureCallBack : failureCallBackOfMoveDatesAPI
                 };
                 $scope.callAPI(rvGroupConfigurationSrv.completeMoveGroup, options);
             };
@@ -277,7 +426,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @return {[type]} [description]
              */
             var cancelMoveAction = function() {
-                activeMode = null;
+                setToDefaultMode ();
             };
 
             /**
@@ -286,12 +435,16 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              */
             $scope.getMoveDatesActions = function () {
                 return {
-                    shouldShowMoveButton    : shouldShowMoveButton,
-                    clickedOnMoveButton     : clickedOnMoveButton,
-                    isInCompleteMoveMode    : isInCompleteMoveMode,
-                    clickedOnMoveSaveButton : clickedOnMoveSaveButton,
-                    cancelMoveAction        : cancelMoveAction,
-                    setToDefaultMode        : setToDefaultMode
+                    shouldShowMoveButton        : shouldShowMoveButton,
+                    clickedOnMoveButton         : clickedOnMoveButton,
+                    triggerEarlierArrDateChange : triggerEarlierArrivalDateChange,
+                    triggerLaterArrDateChange   : triggerLaterArrivalDateChange,                    
+                    arrDateLeftChangeAllowed    : arrDateLeftChangeAllowed,
+                    arrDateRightChangeAllowed   : arrDateRightChangeAllowed,
+                    isInCompleteMoveMode        : isInCompleteMoveMode,
+                    clickedOnMoveSaveButton     : clickedOnMoveSaveButton,
+                    cancelMoveAction            : cancelMoveAction,
+                    setToDefaultMode            : setToDefaultMode
                 };
             };
         }());

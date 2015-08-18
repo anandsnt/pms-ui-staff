@@ -472,5 +472,23 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 			return deferred.promise;
 		};
 
+		/**
+		 * to move a group completely to next same length of span
+		 * @param  {Object} params [with group id, from date, to date]
+		 * @return Promise
+		 */
+		this.changeDates = function(params) {
+			var deferred = $q.defer(),
+				url = '/api/groups/' + params.group_id + '/change_dates',
+				data = _.omit(params, 'group_id');
+				
+			rvBaseWebSrvV2.postJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;
+		};		
 	}
 ]);
