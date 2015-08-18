@@ -595,36 +595,56 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             }
             $scope.reservationData.tabs = $scope.reservationData.tabs.concat(RVReservationTabService.newTab());
             $scope.reservationData.rooms = $scope.reservationData.rooms.concat(RVReservationTabService.newRoom());
-            console.log({
-                size: $scope.reservationData.rooms.length,
-                contents: $scope.reservationData.rooms
-            });
+            devlogRoomsArray();
             refreshScroller();
         };
 
-        $scope.removeTab = function(tabIndex) {
-            $scope.reservationData.tabs.splice(tabIndex, 1);
-            $scope.reservationData.rooms.splice(tabIndex, 1);
+        var devlogRoomsArray = function() {
             console.log({
                 size: $scope.reservationData.rooms.length,
                 contents: $scope.reservationData.rooms
             });
+        }
+
+        $scope.removeTab = function(tabIndex) {            
+            var firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
+                roomTypeId: $scope.reservationData.tabs[tabIndex].roomTypeId
+            }));
+            var currentCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount, 10);
+            $scope.reservationData.tabs.splice(tabIndex, 1);
+            $scope.reservationData.rooms.splice(firstIndex, currentCount);
+            devlogRoomsArray();
             refreshScroller();
         };
 
         $scope.onRoomCountChange = function(tabIndex) {
-            _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
+            var currentCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount, 10);
+
+            var firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
                 roomTypeId: $scope.reservationData.tabs[tabIndex].roomTypeId
             }));
 
-            _.lastIndexOf($scope.reservationData.rooms, _.last(_.where($scope.reservationData.rooms, {
+            var lastIndex = _.lastIndexOf($scope.reservationData.rooms, _.last(_.where($scope.reservationData.rooms, {
                 roomTypeId: $scope.reservationData.tabs[tabIndex].roomTypeId
             })));
+
+            var totalCount = (lastIndex - firstIndex) + 1;
+
+            if (totalCount < currentCount) {
+                var copy = angular.copy($scope.reservationData.rooms[firstIndex]),
+                    i;
+                for (i = 0; i < currentCount - totalCount; i++) {
+                    $scope.reservationData.rooms.splice(lastIndex, 0, copy);
+                }
+                devlogRoomsArray();
+            } else {
+                $scope.reservationData.rooms.splice(lastIndex, totalCount - currentCount);
+            }
         };
 
         $scope.onRoomTypeChange = function(tabIndex) {
             var index = 0,
-                currentRoomCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount,10),
+                currentRoomCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount, 10),
                 i;
             for (i = 0; i < tabIndex; i++) {
                 index += parseInt($scope.reservationData.tabs[i].roomCount, 10);
