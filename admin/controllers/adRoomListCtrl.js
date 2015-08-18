@@ -14,7 +14,6 @@ admin.controller('adRoomListCtrl', ['$scope','ADRoomSrv', 'ngTableParams', '$fil
 			$scope.$emit('hideLoader');
 			//No expanded rate view
 			$scope.currentClickedElement = -1;
-			console.log(data);
 			$scope.totalCount = parseInt(data.number_of_rooms_configured);
 			$scope.totalPage = Math.ceil($scope.totalCount/$scope.displyCount);
 			$scope.total_number_of_rooms = data.total_number_of_rooms;

@@ -75,11 +75,40 @@
 					</em>
 				</div>
 				<div class="entry full-width">
-					<div id="room-likes" class="boxes col2">
-						<div ng-repeat="room_likes in data.room_likes">
-							<ad-checkbox ng-repeat="option in room_likes.options" is-checked="option.selected" label="{{option.name}}" datagroup='{{room_likes.group_name}}' index="{{$index}}" change='changed' parent-label-class='room-likes' span-class="checkbox-background" ></ad-checkbox>
-						</div>						
-					</div>							
+					<div class="boxes">
+						<fieldset ng-repeat="like in likeCopy" class="holder full-width">
+							<div class="form-title">
+								<h3><span>{{ like.group_name }}</span></h3>
+								<em class="status" ng-if="'dropdown' == like.type || 'radio' == like.type"><span>Choose a like</span></em>
+								<em class="status" ng-if="'dropdown' != like.type && 'radio' != like.type"><span>Choose any likes</span></em>
+							</div>
+							
+							<div ng-if="'dropdown' == like.type" class="entry full-width">
+								<div class="select">
+									<select ng-model="like.selected" ng-options="option.value as option.name for option in like.options" iscroll-stop-propagation>
+										<option value="">Select a like</option>
+									</select>
+								</div>
+							</div>
+
+							<div ng-if="'radio' == like.type" class="entry full-width">
+								<label class="radio" ng-repeat="option in like.options">
+									<span class="icon-form icon-radio" ng-class="{ checked : like.selected == option.value }"></span>
+									<input type="radio" name="like.group_name" ng-model="like.selected" ng-value="option.value">
+									{{ option.name }}
+								</label>
+							</div>
+
+							<div ng-if="'dropdown' != like.type && 'radio' != like.type" class="entry full-width">
+								<label class="checkbox room-likes" ng-class="{}" ng-repeat="option in like.options">
+									<span class="icon-form icon-checkbox" ng-class="{ 'checked' : option.selected, 'checkbox-background' : !option.selected }"></span>
+									<input type="checkbox" ng-model="option.selected">
+									{{ option.name }}
+								</label>
+							</div>
+						</fieldset>
+					</div>
+										
 				</div>
 			</fieldset>
 			<div class="actions float">
