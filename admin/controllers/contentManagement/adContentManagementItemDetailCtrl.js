@@ -52,7 +52,14 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	            "addon_min_duration":"",
 	            "addon_max_order":"",
 	            "parent_category": [],
-	            "parent_section": []
+	            "parent_section": [],
+	            "space": {
+	            	"max_occupancy": "",
+	            	"durations": [],
+	            	"fulfillment": "none",
+	            	"fulfillment_emails" : ""
+	            }
+
             };
 
     $scope.fetchAddons = function(){
@@ -75,6 +82,8 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
     $scope.itemTypeSelected = function(){
 
 	if($scope.data.page_template === "ADDON" && $scope.addons.length === 0){
+		$scope.fetchAddons();
+	}else if($scope.data.page_template === "SPACE" && $scope.addons.length === 0){
 		$scope.fetchAddons();
 	}
 };
