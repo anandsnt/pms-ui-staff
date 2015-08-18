@@ -8,7 +8,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 				i;
 			for (i = 0; i < limit; i++) {
 				tabs.push({
-					roomType: '',
+					roomTypeId: '',
 					roomCount: 1,
 					numAdults: 1,
 					numChildren: 0,

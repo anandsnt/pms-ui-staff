@@ -192,7 +192,7 @@
             <div class="entry" ng-repeat="tab in reservationData.tabs">
                 <div class="entry-data">
                     <div class="select room-type">
-                        <select iscroll-stop-propagation ng-model="tab.roomTypeId" ng-options="roomType.id as roomType.name for roomType in otherData.roomTypes">
+                        <select iscroll-stop-propagation ng-model="tab.roomTypeId" ng-change="onRoomTypeChange($index)" ng-options="roomType.id as roomType.name for roomType in otherData.roomTypes">
                             <option value="">All Room Types</option>
                         </select>
                     </div>
@@ -216,7 +216,7 @@
                     </div>
                     <div class="select rooms">
                         <label class="label">Rooms</label>
-                        <select ng-model="tab.roomCount" on-change="onRoomCountChange($index)">
+                        <select ng-model="tab.roomCount" ng-change="onRoomCountChange($index)">
                             <option value="1" selected>1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -226,7 +226,7 @@
                 </div>
                 <!-- show and hide of the below buttons are handlesd in CSS -->
                 <span class="remove-room icons icon-remove-60" ng-click="removeTab($index)">-</span>
-                <span class="add-room icons icon-add-60" ng-click="addTab()">+</span>
+                <span class="add-room icons icon-add-60" ng-click="addTab($index)">+</span>
             </div>
             <!-- Repeat entire div.entry content when adding room types (make sure you don't have same id's for fields!) -->
         </div>
