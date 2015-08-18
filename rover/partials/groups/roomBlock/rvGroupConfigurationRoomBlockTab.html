@@ -9,7 +9,6 @@
                 </label>
                 <input id="room-block-start" class="range-datepicker" 
                     placeholder="{{'SELECT_START_DATE'|translate}}" 
-                    value="{{startDate|date:dateFormat}}"
                     readonly 
                     ui-date="startDateOptions" 
                     rv-set-textbox-value listen-this="groupConfigData.summary.block_from|date:dateFormat"
@@ -22,14 +21,13 @@
                 </label>
                 <input id="room-block-end" class="range-datepicker" 
                     placeholder="{{'SELECT_END_DATE'|translate}}" 
-                    value="{{endDate|date:dateFormat}}"
                     readonly 
                     ui-date="endDateOptions" 
                     rv-set-textbox-value listen-this="groupConfigData.summary.block_to|date:dateFormat"
                     ng-disabled="shouldDisableEndDate()" />
             </div>
         </div>
-        <div class="actions" ng-hide="!!groupConfigData.summary.is_cancelled" ng-class="{'move-group' : !shouldDisableCreateBlockButton()}" style="width: auto;"> <!-- When block is created, add class "move-group" -->
+        <div class="actions" ng-hide="!!groupConfigData.summary.is_cancelled" ng-class="{'move-group' : !shouldDisableCreateBlockButton()}"> <!-- When block is created, add class "move-group" -->
             <!-- If block not created:  -->
             <button type="button" class="button" 
                 ng-disabled="shouldDisableCreateBlockButton()" 
@@ -49,12 +47,12 @@
             <!-- When button pressed, disable due date input and replace "Move Group" button with: -->
             <button type="button" class="button blank"
                 ng-click="clickedOnCancelMoveButton()"
-                ng-show="changeDatesActions.isInCompleteMoveMode()" style="width:auto">
+                ng-show="changeDatesActions.isInCompleteMoveMode()">
                 Cancel
             </button>
             <button type="button" class="button green"
                 ng-click="clickedOnSaveMoveButton()"
-                ng-show="changeDatesActions.isInCompleteMoveMode()" style="width:auto">
+                ng-show="changeDatesActions.isInCompleteMoveMode()">
                 Save
             </button>
         </div> 
