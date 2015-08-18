@@ -25,7 +25,7 @@
 	return {
 		responseData: responseData,
 		fetch : fetch
-	}
+	};
 };
 
 var dependencies = [

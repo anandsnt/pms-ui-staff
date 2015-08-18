@@ -1,5 +1,5 @@
 sntRover.service('RVPostChargeSrvV2',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', function( $http, $q, BaseWebSrvV2, RVBaseWebSrv ){
-   	
+
 	var that = this;
 
     this.fetchChargeGroups = function () {
@@ -55,6 +55,6 @@ sntRover.service('RVPostChargeSrvV2',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSr
         return deferred.promise;
     };
 
-    
-   
+
+
 }]);

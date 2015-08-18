@@ -56,7 +56,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			$scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
 			$scope.updateAccountSummary();
 			$state.go('rover.accounts.search');
-		}
+		};
 
 
 		/**
@@ -96,7 +96,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		var ifMandatoryValuesEntered = function() {
 			var summary = $scope.accountConfigData.summary;
 			return !!summary.posting_account_name;
-		}
+		};
 
 		/**
 		 * function to form data model for add/edit mode
@@ -143,15 +143,15 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 
 			//Save summary data on tab switch (UI)
 			if (isInAccountsTab && !$scope.isInAddMode()) {
-				// $scope.$broadcast("UPDATE_ACCOUNT_SUMMARY");
+
 			}
 
 			//Reload the summary tab contents before switching to it
 			if(tab === "ACCOUNT"){
-				//refreshSummaryTab();
+
 			} else if(tab === "TRANSACTIONS"){ //Preload the transaction data when we switch to transactions tab
-				//preLoadTransactionsData();
-				//return false;
+
+
 			} else{
 				// Switching from SUMMARY tab -
 				// Check for any updation => lets save it.
@@ -178,7 +178,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 							$scope.accountConfigData.summary.posting_account_id = data.posting_account_id;
 							$state.go('rover.accounts.config', {
 								id: data.posting_account_id
-							})
+							});
 							$stateParams.id = data.posting_account_id;
 						},
 						onAccountSaveFailure = function(errorMessage) {
@@ -198,7 +198,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 			} else {
 				console.warn('No Permission for CREATE_GROUP_SUMMARY');
 			}
-		}
+		};
 
 
 		/**
@@ -207,7 +207,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		 */
 		$scope.discardNewAccount = function() {
 			$scope.accountConfigData.summary = angular.copy(rvAccountsConfigurationSrv.baseAccountSummaryData);
-		}
+		};
 
 		/**
 		 * Autocompletions for company/travel agent
@@ -220,7 +220,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 				focus: function(event, ui) {
 					return false;
 				}
-			}
+			};
 
 			//merging auto complete setting for company card with common auto cmplt options
 			$scope.companyAutoCompleteOptions = angular.extend({
@@ -228,7 +228,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 					rvGroupConfigurationSrv.searchCompanyCards(request.term)
 						.then(function(data) {
 							var list = [];
-							var entry = {}
+							var entry = {};
 							$.map(data, function(each) {
 								entry = {
 									label: each.account_name,
@@ -265,7 +265,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 					rvGroupConfigurationSrv.searchTravelAgentCards(request.term)
 						.then(function(data) {
 							var list = [];
-							var entry = {}
+							var entry = {};
 							$.map(data, function(each) {
 								entry = {
 									label: each.account_name,
@@ -282,7 +282,9 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 					this.value = ui.item.label;
 					$scope.accountConfigData.summary.travel_agent.name = ui.item.label;
 					$scope.accountConfigData.summary.travel_agent.id = ui.item.value;
-					if (!$scope.isInAddMode()) $scope.updateAccountSummary();
+					if (!$scope.isInAddMode()) {
+						$scope.updateAccountSummary();
+					}
 					runDigestCycle();
 					return false;
 				},
@@ -320,9 +322,9 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 					}
 				});
 			} else {
-				$scope.$emit('showErrorMessage', ['Sorry, Changes will not get saved as you don\'t have enough permission'])
+				$scope.$emit('showErrorMessage', ['Sorry, Changes will not get saved as you don\'t have enough permission']);
 			}
-		}
+		};
 
 		/**
 		 * When we recieve the error message from its child controllers, we have to show them

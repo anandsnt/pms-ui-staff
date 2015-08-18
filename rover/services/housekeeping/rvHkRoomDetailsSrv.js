@@ -170,7 +170,7 @@ sntRover.service('RVHkRoomDetailsSrv', [
 					"room_service_status_id": params.inServiceID,
 					"from_date": params.from_date,
 					"to_date": params.to_date
-				}
+				};
 
 			rvBaseWebSrvV2.putJSON(url, options)
 				.then(function(data) {
@@ -225,7 +225,7 @@ sntRover.service('RVHkRoomDetailsSrv', [
 				from_date: $filter('date')(tzIndependentDate(new Date(params.year, params.month - 1, 1)), 'yyyy-MM-dd'),
 				to_date: $filter('date')(tzIndependentDate(new Date(params.year, params.month + 1, 1)), 'yyyy-MM-dd'),
 				room_id: params.room_id
-			}
+			};
 			var deferred = $q.defer(),
 				url = '/api/room_services/service_info.json?';
 			rvBaseWebSrvV2.getJSON(url, queryString)
@@ -237,6 +237,6 @@ sntRover.service('RVHkRoomDetailsSrv', [
 					deferred.reject(data);
 				});
 			return deferred.promise;
-		}
+		};
 	}
 ]);

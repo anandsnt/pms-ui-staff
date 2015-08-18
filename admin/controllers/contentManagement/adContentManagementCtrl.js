@@ -22,7 +22,7 @@ admin.controller('ADContentManagementCtrl',['$scope', '$state', '$rootScope', 'n
 				id: id
 			});
    		}
-   }
+   };
 
    /* delete component starts here*/
 
@@ -39,10 +39,10 @@ admin.controller('ADContentManagementCtrl',['$scope', '$state', '$rootScope', 'n
 				closeByDocument:true
 			});
 			$scope.componentIdToDelete = id;
-		}
+		};
 		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id':id} , successCallbackFetchDeleteDetails);
 
-	}
+	};
 
 	/* Function to set the availability status
     */
@@ -56,10 +56,10 @@ admin.controller('ADContentManagementCtrl',['$scope', '$state', '$rootScope', 'n
       data.id = id;
 
       $scope.invokeApi(ADContentManagementSrv.saveComponent, data , successCallbackAvailabilityStatus);
-   }
+   };
 
 	$scope.getFormattedTime = function(time){
 		return $filter('date')(time, $rootScope.dateFormat);
-	}
+	};
 
 }]);

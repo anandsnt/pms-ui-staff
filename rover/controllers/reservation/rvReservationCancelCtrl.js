@@ -24,7 +24,7 @@
 			};
 			$scope.cancellationData.paymentType = "";
 			$scope.DailogeState = typeof $scope.$parent.DailogeState !== 'undefined' ? $scope.$parent.DailogeState : {};
-			$scope.DailogeState.sendConfirmatonMailTo = typeof $scope.$parent.DailogeState!== 'undefined' ? $scope.$parent.DailogeState.sendConfirmatonMailTo : "";			
+			$scope.DailogeState.sendConfirmatonMailTo = typeof $scope.$parent.DailogeState!== 'undefined' ? $scope.$parent.DailogeState.sendConfirmatonMailTo : "";
 			$scope.DailogeState.isCancelled = false;
 			$scope.ngDialogData.penalty = $filter("number")($scope.ngDialogData.penalty, 2);
 			if ($scope.ngDialogData.penalty > 0) {
@@ -246,7 +246,7 @@
 				$scope.addmode = $scope.cardsList.length > 0 ? false : true;
 				refreshCardsList();
 				$scope.ngDialogData.state = 'PENALTY';
-			};		
+			};
 
 			$scope.completeCancellationProcess = function(){
 				if($scope.DailogeState.isCancelled){
@@ -380,7 +380,7 @@
 				} else {
 					$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, successPayment);
 				}
-				//$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv,successPayment);
+
 			};
 
 			$scope.applyPenalty = function() {
@@ -464,11 +464,10 @@
 			});
 			$scope.closeReservationCancelModal = function() {
 				$scope.$emit("UPDATE_CANCEL_RESERVATION_PENALTY_FLAG", false);
-				$scope.closeDialog();				
+				$scope.closeDialog();
 			};
 
-
-			/*******************************************************************/
+			// -- CICO-17706 --//
 			$scope.DailogeState = {};
 			$scope.DailogeState.successMessage = '';
 			$scope.DailogeState.failureMessage = '';
@@ -504,10 +503,6 @@
 				};
 				$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data, succesfullCallbackForEmailCancellation, failureCallbackForEmailCancellation);
 			};
-
-			/*$scope.ngData = {};
-			$scope.ngData.failureMessage = "";
-			$scope.ngData.successMessage = "";*/
 
 			// add the print orientation after printing
 			var addPrintOrientation = function() {
@@ -550,8 +545,7 @@
 				});
 			};
 
-			/***************************************************************************/
-
+			// -- CICO-17706 --//
 		}
 	]);
 

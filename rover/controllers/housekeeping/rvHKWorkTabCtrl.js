@@ -86,7 +86,7 @@ sntRover.controller('RVHKWorkTabCtrl', [
 			var callback = function(data){
 				$scope.$emit('hideLoader');
 				$_updateRoomDetails( 'current_hk_status', $scope.roomDetails.current_hk_status );
-			}
+			};
 
 			var hkStatusItem = _.find($scope.roomDetails.hk_status_list, function(item) {
 				return item.value === $scope.roomDetails.current_hk_status;
@@ -95,7 +95,7 @@ sntRover.controller('RVHKWorkTabCtrl', [
 			var data = {
 				'room_no': $scope.roomDetails.current_room_no,
 				'hkstatus_id': hkStatusItem.id
-			}
+			};
 
 			$scope.invokeApi(RVHkRoomDetailsSrv.updateHKStatus, data, callback);
 		};
@@ -114,7 +114,7 @@ sntRover.controller('RVHKWorkTabCtrl', [
 			var params = {
 				room_id: $scope.roomDetails.id,
 				work_sheet_id: $scope.roomDetails.work_sheet_id
-			}
+			};
 
 			$scope.invokeApi(RVHkRoomDetailsSrv.postRecordTime, params, callback);
 		};
@@ -139,7 +139,7 @@ sntRover.controller('RVHKWorkTabCtrl', [
 				room_id: $scope.roomDetails.id,
 				work_sheet_id: $scope.roomDetails.work_sheet_id,
 				task_completion_status : $scope.roomDetails.task_completion_status_id
-			}
+			};
 
 			$scope.invokeApi(RVHkRoomDetailsSrv.postRecordTime, params, callback);
 		};

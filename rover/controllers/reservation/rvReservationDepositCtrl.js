@@ -416,6 +416,8 @@ sntRover.controller('RVReservationDepositController',
 		};
 
 		$rootScope.$broadcast("UPDATE_DEPOSIT_BALANCE", data);
+		// Update reservation type
+		$rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id);
 	};
 
 	var paymentFailed = function(data){
@@ -474,7 +476,7 @@ sntRover.controller('RVReservationDepositController',
 					$scope.shouldShowWaiting = false;
 					successPayment(response);
 				},function(error){
-				//	$scope.errorMessage = error;
+
 					$scope.shouldShowWaiting = false;
 					paymentFailed();
 				});
@@ -482,7 +484,7 @@ sntRover.controller('RVReservationDepositController',
 			} else {
 				$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, successPayment,paymentFailed);
 			}
-		//	$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv,successPayment,paymentFailed);
+
 		};
 	};
 
@@ -546,7 +548,7 @@ sntRover.controller('RVReservationDepositController',
 	});
 	$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
 		var data 				 = swipedCardDataToSave;
-	//	data.reservation_id 	 = $scope.passData.reservationId;
+
 		data.payment_credit_type = swipedCardDataToSave.cardType;
 		data.credit_card 		 = swipedCardDataToSave.cardType;
 		data.card_expiry 		 = "20"+swipedCardDataToSave.cardExpiryYear+"-"+swipedCardDataToSave.cardExpiryMonth+"-01";

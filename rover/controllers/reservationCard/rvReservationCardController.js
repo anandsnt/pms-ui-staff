@@ -26,8 +26,8 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 		 */
 		$scope.$on('passReservationParams', function(event, data) {
 
-			// $scope.fetchReservationData(data.reservationId);
-			// $scope.currentReservationId = data.confirmationNumber;
+
+
 			$scope.$emit('staycardGuestData', data);
 			$scope.data = data;
 
@@ -72,7 +72,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 				};
 				$scope.$emit('SETGUESTDATA', guestInfo);
 				$scope.showGuestPaymentList(guestInfo);
-				// $scope.invokeApi(RVReservationCardSrv.fetchGuestcardData, param, fetchGuestcardDataSuccessCallback, fetchGuestcardDataFailureCallback, 'NONE');
+
 			}
 
 			if ($scope.timeline === "current") {
@@ -128,7 +128,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 			if (count>0){
 				$scope.prevTimeLineEmpty = false;
 				$scope.currentReservationId = $scope.reservationList[0].confirmation_num;
-				$scope.getReservationDetails($scope.reservationList[0].confirmation_num, $scope.reservationList[0].id)
+				$scope.getReservationDetails($scope.reservationList[0].confirmation_num, $scope.reservationList[0].id);
 			}
 			else {
 				$scope.prevTimeLineEmpty = true;

@@ -112,8 +112,8 @@ var GridRowItemDrag = React.createClass({
 				props.__onDragStart(props.row_data, model);
 			});
 		} else if(state.dragging) {
-			model = (props.currentDragItem),
-					scroller = props.iscroll.grid;
+			model = (props.currentDragItem);
+			scroller = props.iscroll.grid;
 			if(colNumber < 0 || colNumber/4 > display.hours || rowNumber < 0 || rowNumber > (display.total_rows-1)){
 				return;
 			}
@@ -134,7 +134,7 @@ var GridRowItemDrag = React.createClass({
 
 			//towards right
 			if(e.pageX > state.origin_x) {
-				draggingTopOrBottom = false
+				draggingTopOrBottom = false;
 				if((e.pageX + width_of_res) > window.innerWidth) {
 					if((xScPos - width_of_res) < scroller.maxScrollX) {
 						xScPos = scroller.maxScrollX;
@@ -212,9 +212,8 @@ var GridRowItemDrag = React.createClass({
 				scroller.maxScrollY <= yScPos && yScPos <= 0) {
 
 				scroller.scrollTo(xScPos, yScPos, 0);
-				//setTimeout(function(){
-					scroller._scrollFn();
-				//}, 50)
+				scroller._scrollFn();
+
 			}
 	 		if(colNumber < 0) {
 	 			colNumber = 0;
@@ -292,10 +291,6 @@ var GridRowItemDrag = React.createClass({
 		document.removeEventListener (this.mouseMovingEvent, this.__dbMouseMove);
 		var page_offset = this.getDOMNode().getBoundingClientRect();
 
-		/*if(!props.edit.active && !props.edit.passive){
-			return;
-		}*/
-
 		if(state.dragging && props.edit.active && (props.data.key !== props.currentDragItem.key)){
 			return;
 		}
@@ -343,7 +338,6 @@ var GridRowItemDrag = React.createClass({
 				mouse_down: false,
 				selected: !state.selected
 			}, function() {
-				//var data = (props.edit.passive && props.data[props.meta.id] === props.data[props.meta.id]? props.currentDragItem : props.data);
 				var data = (_.has(state, 'selected') ? props.data : props.currentDragItem);
 				props.iscroll.grid.enable();
 				props.iscroll.timeline.enable();

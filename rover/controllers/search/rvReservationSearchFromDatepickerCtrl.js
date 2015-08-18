@@ -10,7 +10,7 @@ sntRover.controller('RVReservationSearchFromDatepickerCtrl', ['$scope', 'ngDialo
 					$scope.onFromDateChanged($scope.datePicked);
 					ngDialog.close();
 				}
-			}
+			};
 		};
 		$scope.setUpData();
 	}

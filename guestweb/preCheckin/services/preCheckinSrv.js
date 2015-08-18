@@ -45,7 +45,7 @@ var preCheckinSrv = function($q,baseWebService,$rootScope,$http) {
 		fetchTripDetails : fetchTripDetails,
 		postStayDetails:postStayDetails,
 		completePrecheckin:completePrecheckin
-	}
+	};
 };
 
 var dependencies = [

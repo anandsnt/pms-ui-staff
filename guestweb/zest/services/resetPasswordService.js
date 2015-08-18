@@ -19,7 +19,7 @@
 			return {
 				responseData: responseData,
 				resetPassword : resetPassword
-			}
+			};
 		};
 
 		var dependencies = [
