@@ -22,9 +22,9 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
             var interface_id = params.interface_id;
             var channel_rate_id = params.channel_rate_id;
             var postData = {
-                id: channel_rate_id,
-                room_type_ids: params.room_type_ids,
-                active: params.active
+                    rate_id: channel_rate_id,
+                    room_type_ids: params.room_type_ids,
+                    active: params.active
             };
             var deferred = $q.defer();
             var url = "/api/channel_managers/"+interface_id+"/channel_manager_rates/"+channel_rate_id;
