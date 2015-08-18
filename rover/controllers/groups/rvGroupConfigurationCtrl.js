@@ -555,9 +555,16 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
         };
 
-        $scope.reloadPage = function() {
+        /**
+         * Refresh group page.
+         * @param {string} TAB: Set to this tab. default is SUMMARY
+         * @return {undefined}
+         */
+        $scope.reloadPage = function(tab) {
+            tab = tab || "SUMMARY";
             $state.go('rover.groups.config', {
-                id: $scope.groupConfigData.summary.group_id
+                id: $scope.groupConfigData.summary.group_id,
+                activeTab: tab
             }, {
                 reload: true
             });
