@@ -1507,5 +1507,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		};
 
 		initializeRoomAndRates();
+
+		$scope.changeActiveRoomType = function(tabIndex) {
+			$scope.activeRoom = tabIndex;
+		};
 	}
 ]);

@@ -12,13 +12,15 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 					roomCount: 1,
 					numAdults: 1,
 					numChildren: 0,
-					numInfants: 0
+					numInfants: 0,
+					fromIndex: 0,
+					toIndex: 0
 				});
 			}
 			return tabs;
 		};
 
-		self.getRoomDataModel = function(count){
+		self.getRoomDataModel = function(count) {
 			var rooms = [],
 				limit = count || 1,
 				i;
@@ -47,7 +49,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 					}
 				});
 			}
-			return rooms;		
+			return rooms;
 		};
 
 		self.getReservationDataModel = function() {
@@ -296,13 +298,13 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 			reservationData.guest.id = cards.guest_details.user_id;
 			// Demographics
 			reservationData.demographics = {
-					reservationType: stayCard.reservation_type_id || "",
-					market: stayCard.market_segment_id || "",
-					source: stayCard.source_id || "",
-					origin: stayCard.booking_origin_id || "",
-					segment: stayCard.segment_id || ""
-				};
-				//Cost
+				reservationType: stayCard.reservation_type_id || "",
+				market: stayCard.market_segment_id || "",
+				source: stayCard.source_id || "",
+				origin: stayCard.booking_origin_id || "",
+				segment: stayCard.segment_id || ""
+			};
+			//Cost
 			reservationData.totalStayCost = stayCard.total_rate;
 			// ---------------------------Room Details------------------------------------------------//
 			var roomDetails = reservationData.rooms[0]; //Only a single room is possible as this is coming from stay-card
@@ -330,17 +332,17 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 					day: dateFilter(new tzIndependentDate(item.date), 'dd')
 				});
 				roomDetails.stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')] = {
-						guests: {
-							adults: item.adults,
-							children: item.children,
-							infants: item.infants
-						},
-						rate: {
-							id: item.rate_id
-						},
-						rateDetails: item.rate
-					};
-					// TODO : Extend for each stay dates
+					guests: {
+						adults: item.adults,
+						children: item.children,
+						infants: item.infants
+					},
+					rate: {
+						id: item.rate_id
+					},
+					rateDetails: item.rate
+				};
+				// TODO : Extend for each stay dates
 				roomDetails.rateId.push(item.rate_id);
 				if (index === 0) {
 					roomDetails.roomTypeId = item.room_type_id;

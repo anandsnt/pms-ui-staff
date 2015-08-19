@@ -39,24 +39,24 @@
                     <span class="value">{{reservationData.roomCount}}</span>
                 </a>
                 <div id="sidebar-rooms" class="settings-content">
-                    <div class="entry" ng-repeat="room in reservationData.rooms">
+                    <div class="entry" ng-repeat="room in reservationData.tabs">
                         <label for="room-{{index+1}}-adults">{{'ROOM_LABEL'|translate}} {{$index+1}} </label>
                         <span ng-show="room.varyingOccupancy" translate>VAR_OCCUPANCY</span>
                         <div class="select adults">
                             <label for="room-{{index+1}}-adults" class="label" translate>ADULTS</label>
-                            <select ng-disabled="room.varyingOccupancy" iscroll-stop-propagation name="room-{{index+1}}-adults" id="room-{{index+1}}-adults" ng-model="room.numAdults" ng-change="onOccupancyChange(room,'adult',$index)">
+                            <select ng-disabled="room.varyingOccupancy" iscroll-stop-propagation ng-model="room.numAdults" ng-change="onOccupancyChange(room,'adult',$index)">
                                 <option ng-repeat="i in [0, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i==room.numAdults">{{i}}</option>
                             </select>
                         </div>
                         <div class="select children">
                             <label for="room-{{index+1}}-children" class="label" translate>CHILDREN</label>
-                            <select ng-disabled="room.varyingOccupancy" iscroll-stop-propagation name="room-{{index+1}}-children" id="room-{{index+1}}-children" ng-model="room.numChildren" ng-change="onOccupancyChange(room,'children',$index)">
+                            <select ng-disabled="room.varyingOccupancy" iscroll-stop-propagation ng-model="room.numChildren" ng-change="onOccupancyChange(room,'children',$index)">
                                 <option ng-repeat="i in [0, otherData.maxChildren] | makeRange" value="{{i}}" ng-selected="i==room.numChildren">{{i}}</option>
                             </select>
                         </div>
                         <div class="select infants">
                             <label for="room-{{index+1}}-infants" class="label" translate>INFANTS</label>
-                            <select ng-disabled="room.varyingOccupancy" iscroll-stop-propagation name="room-{{index+1}}-infants" id="room-{{index+1}}-infants" ng-model="room.numInfants" ng-change="updateOccupancy($index)">
+                            <select ng-disabled="room.varyingOccupancy" iscroll-stop-propagation ng-model="room.numInfants" ng-change="updateOccupancy($index)">
                                 <option ng-repeat="i in [0, otherData.maxInfants] | makeRange" value="{{i}}" ng-selected="i==room.numInfants">{{i}}</option>
 
                             </select>
