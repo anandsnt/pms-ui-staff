@@ -68,19 +68,24 @@
         </div>
         <!-- Actions -->
         <div id="account-actions" class="actions">
-            <button type="button" class="button red" ng-class="{'grey' : ngDialogData.reservationStatusFlags.isUneditable || ngDialogData.reservationStatusFlags.isStaying}" ng-click="removeReservation(ngDialogData)">
+            <button type="button" class="button red" ng-class="{'grey' : !ngDialogData.reservationStatusFlags.isExpected}" ng-click="removeReservation(ngDialogData)">
                 Remove
             </button>
             <button type="button" class="button" ng-class="{'grey' : !ngDialogData.reservationStatusFlags.isGuestAttached, 'brand-colors' : ngDialogData.reservationStatusFlags.isGuestAttached}" ng-click="navigateStayCard(ngDialogData)">
                 Stay Card
             </button>
-            <button type="button" class="button green" ng-class="{'grey' : ngDialogData.reservationStatusFlags.isUneditable || !ngDialogData.reservationStatusFlags.canChekin || ngDialogData.reservationStatusFlags.isCheckedOut}" ng-show="ngDialogData.reservationStatusFlags.isExpected">
+            <button type="button" class="button green" 
+                ng-class="{'grey' : !ngDialogData.reservationStatusFlags.canChekin || ngDialogData.reservationStatusFlags.isUneditable}" 
+                ng-hide="!ngDialogData.reservationStatusFlags.isExpected && ngDialogData.reservationStatusFlags.isPastArrival">
                 Check In
             </button>
-            <button type="button" class="button red" ng-class="{'grey' : ngDialogData.reservationStatusFlags.isUneditable || ngDialogData.reservationStatusFlags.isCheckedOut}" ng-show="!ngDialogData.reservationStatusFlags.isExpected" ng-click="checkoutReservation(reservation);">
+            <button type="button" class="button red" 
+                ng-class="{'grey' : !ngDialogData.reservationStatusFlags.isStaying || ngDialogData.reservationStatusFlags.isUneditable}" 
+                ng-show="!ngDialogData.reservationStatusFlags.isExpected && ngDialogData.reservationStatusFlags.isPastArrival" 
+                ng-click="checkoutReservation(reservation);">
                 Check Out
             </button>
-            <button type="button" class="button purple" ng-class="{'grey' : ngDialogData.reservationStatusFlags.isUneditable}" ng-click="updateReservation(ngDialogData)">
+            <button type="button" class="button purple" ng-click="updateReservation(ngDialogData)">
                 Update
             </button>
             <button type="button" class="button blank" ng-click="closeDialog();">Close</button>

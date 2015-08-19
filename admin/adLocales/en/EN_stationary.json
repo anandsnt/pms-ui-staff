@@ -1,6 +1,6 @@
 
 
-	"STATIONARY":"Stationery",
+	"STATIONARY":"Stationary",
 	"CUSTOMIZE":"Customize",
 	"GUEST_BILL_TITLE": "Guest Bill",
 	"GUEST_BILL_TEMPLATE":"Guest Bill Template",
@@ -46,10 +46,15 @@
 	"SOCIAL_NETWORK_URL": "Social Network URL",
 	"SOCIAL_NETWORK" : "Social Network",
 	"CONFIRMATION_LETTER_TEXT" : "CONFIRMATION LETTER TEXT",
-	"SEND_CANCELLATION_LETTER":"Send Cancellation Letter",
-	"PRINT_CANCELLATION_AND_CONFIRMATION_LETTERS":"Print Cancellation And Confirmation Letters",
-	"PRINT_CANCELLATION_LETTER":"Print Cancellation Letter",
-	"PRINT_CONFIRMATION_LETTER":"Print Confirmation Letter"
+	"SEND_CANCELLATION_LETTER": "Send Cancellation Letter",
+	"PRINT_CANCELLATION_AND_CONFIRMATION_LETTERS": "Print Cancellation And Confirmation Letters",
+	"PRINT_CANCELLATION_LETTER": "Print Cancellation Letter",
+	"PRINT_CONFIRMATION_LETTER": "Print Confirmation Letter",
+	"CANCELLATION_EMAIL_SUBJECT": "Cancellation Email Subject",
+	"ENTER_SUBJECT": "Enter Subject",
+	"CANCELLATION_EMAIL_BODY": "Cancellation Email Body",
+	"CANCELLATION_LETTER_BODY": "Cancellation Letter Body"
+
 
 
 

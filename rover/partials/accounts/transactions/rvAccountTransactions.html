@@ -139,10 +139,10 @@
                             
                             <li>
                             	<!-- Only when fees selected in table below:-->
-                                <!-- <button type="button" class="button with-icon only-icon brand-colors">
+                                <button type="button" class="button with-icon only-icon brand-colors"ng-show="((isAllChargeCodesSelected() || isAnyOneChargeCodeIsExcluded())&& hasMoveToOtherBillPermission())&& isStandAlone" ng-click="moveChargesClicked()">
                                     <span class="icons icon-move"></span> 
                                     Move selected
-                                </button> -->
+                                </button> 
                             </li>
                         </ul>
 
@@ -159,9 +159,9 @@
                                         <th class="form" ng-show="showMoveCharges">{{'BILL' |translate}} #</th>
                                         <th class="action" translate>EDIT</th>
                                         <th class="action">
-                                            <label class="checkbox inline"> 
-                                                <span class="icon-form icon-checkbox"></span> <!-- Add class "checked" if checked or all bill charges are selected. Add class "semi-checked" (and make sure it has no class "checked") when not all bill charges are selected -->
-                                                <input id="bill-{bill-id}-all" value="{value}" type="checkbox" />
+                                            <label class="checkbox inline">
+                                                <span class="icon-form icon-checkbox" ng-class="{'checked':isAllChargeCodesSelected(),'semi-checked':isAnyOneChargeCodeIsExcluded()}"></span>
+                                                <input id="bill-1-all" ng-model="transactionsDetails.isAllChargeCodeSelected" type="checkbox" ng-change="selectAllChargeCodeToggle()">
                                             </label>
                                         </th>
                                     </tr>
@@ -251,10 +251,10 @@
                                                 {{'EDIT' |translate}}
                                             </button>
                                         </td>
-                                        <td class="action">
+                                        <td class="action" ng-if="hasMoveToOtherBillPermission()">
                                             <label class="checkbox inline"> 
-                                                <span class="icon-form icon-checkbox"></span> <!-- Add class "checked" if checked -->
-                                                <input value="{charge}" type="checkbox" />
+                                                <span class="icon-form icon-checkbox" ng-class="{'checked':feesData.isSelected}"></span>
+                                                <input ng-model="feesData.isSelected" type="checkbox"/>
                                             </label>
                                         </td>
                                     </tr>
