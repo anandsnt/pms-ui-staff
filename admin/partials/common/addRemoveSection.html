@@ -18,18 +18,18 @@
                     <div class="entry has-sortable">
                         
                             <label>Included Room Types</label>
-                            <ul data-type="source"
-                                class="boxes sortable empty short-list ui-sortable" id="assigned-roles" 
+                            <ul data-type="target"
+                                class="boxes sortable empty short-list ui-sortable"
                                 data-placeholder="Drop a room type here to include changes"
                                 
                                 data-drop="true" 
                                 ng-model='selectedIncludedRoomType' 
-                                jqyoui-droppable="{multiple:true, onOver: 'reachedAssignedRoomTypes', onDrop: 'dropEvent(toincluded)'}"
+                                jqyoui-droppable="{multiple:true, onDrop: 'dropEvent(toincluded)'}"
                                 style="overflow-y: scroll !important;" 
-                                data-jqyoui-options="{accept:'.assigned-room-types'}">
+                                data-jqyoui-options="{accept:'.non-assigned-room-types'}">
 
                                     <li ng-repeat="type in includedRoomTypes track by $index" 
-                                        class="non-assigned-room-types li-draggable"
+                                    class="assigned-room-types li-draggable"
 
                                         data-drag="true" 
                                         data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
@@ -51,7 +51,7 @@
 
                     <div class="entry movers">
                         
-                        <span data-type="target" 
+                        <span data-type="source" 
                               class="icons icon-mover-right to-target" 
                               ng-click="leftToRight()" 
                               ng-class="{'active': selectedIncludedRoomTypeIndex != -1}">Add Rate
@@ -75,22 +75,22 @@
                 
                     <div class="entry has-sortable" >
                         <label>Excluded Room Types</label>
-                        <ul data-placeholder="To remove a role for the user simply drop it here" 
+                        <ul data-placeholder="Drop a room type here to exclude changes" 
 
                             class="boxes sortable ui-sortable short-list" 
                             data-drop="true" 
                             ng-model='excludedRoomTypes' 
 
-                            data-jqyoui-options="{accept:'.non-assigned-room-types'}"
-                            jqyoui-droppable="{multiple:true, onOver: 'reachedAssignedRoomTypes', onDrop: 'dropEvent(toexcluded)'}"  
-                            data-type="target" 
+                            data-jqyoui-options="{accept:'.assigned-room-types'}"
+                            jqyoui-droppable="{multiple:true, onDrop: 'dropEvent(toexcluded)'}"  
+                            data-type="source" 
                             >
 
                                 <li ng-repeat="roomtype in excludedRoomTypes track by $index" 
-                                    class="assigned-room-types li-draggable"
+                                        class="non-assigned-room-types li-draggable"
                                     data-drag="true" 
                                     data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
-                                    ng-model="excludedRoomTypes" 
+                                    ng-model="excludedRoomTypeSelected" 
 
                                     jqyoui-draggable ="{index: {{$index}}, animate:false, onStop:'showCurrentDragItem(roomtype)', onStart:'startDragItem(roomtype, 2)' }"
                                     ng-hide="!roomtype.name" 
@@ -101,7 +101,8 @@
                                             <span class="icons icon-handle"></span>
                                             <span class="icons icon-handle"></span>
                                             {{roomtype.name}}
-                                </li>
+                                </li>        
+                            
                         </ul>
                     </div>
 
