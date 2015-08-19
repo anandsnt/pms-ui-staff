@@ -184,6 +184,23 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             };
 
             /**
+             * in order to show the move confirmation popup
+             * @param {Object}
+             * @return {undefined}
+             */
+            var showLaterArrivalDateMoveConfirmationPopup = function (data) {
+                ngDialog.open(
+                {
+                    template        : '/assets/partials/groups/summary/popups/changeDates/arrivalDate/rvConfirmArrivalDateChangeLater.html',
+                    className       : '',
+                    closeByDocument : false,
+                    closeByEscape   : false,
+                    scope           : $scope,
+                    data            : JSON.stringify(data)
+                });
+            };
+
+            /**
              * [clickedOnMoveSaveButton description]
              * @return {[type]} [description]
              */
@@ -201,23 +218,6 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 };
 
                 showEarlierArrivalDateMoveConfirmationPopup(dataForPopup);
-            };
-
-            /**
-             * in order to show the move confirmation popup
-             * @param {Object}
-             * @return {undefined}
-             */
-            var showLaterArrivalDateMoveConfirmationPopup = function (data) {
-                ngDialog.open(
-                {
-                    template        : '/assets/partials/groups/summary/popups/changeDates/arrivalDate/rvConfirmArrivalDateChangeLater.html',
-                    className       : '',
-                    closeByDocument : false,
-                    closeByEscape   : false,
-                    scope           : $scope,
-                    data            : JSON.stringify(data)
-                });
             };
 
             /**
@@ -257,6 +257,80 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             };
 
             /**
+             * in order to show the move confirmation popup
+             * @param {Object}
+             * @return {undefined}
+             */
+            var showEarlierDepartureDateMoveConfirmationPopup = function (data) {
+                ngDialog.open(
+                {
+                    template        : '/assets/partials/groups/summary/popups/changeDates/departureDate/rvConfirmDepartureDateChangeToEarlier.html',
+                    className       : '',
+                    closeByDocument : false,
+                    closeByEscape   : false,
+                    scope           : $scope,
+                    data            : JSON.stringify(data)
+                });
+            };
+
+            /**
+             * in order to show the move confirmation popup
+             * @param {Object}
+             * @return {undefined}
+             */
+            var showLaterDepartureDateMoveConfirmationPopup = function (data) {
+                ngDialog.open(
+                {
+                    template        : '/assets/partials/groups/summary/popups/changeDates/departureDate/rvConfirmDepartureDateChangeLater.html',
+                    className       : '',
+                    closeByDocument : false,
+                    closeByEscape   : false,
+                    scope           : $scope,
+                    data            : JSON.stringify(data)
+                });
+            };
+            
+            /**
+             * [clickedOnMoveSaveButton description]
+             * @return {[type]} [description]
+             */
+            var triggerEarlierDepartureDateChange = function(options) {
+                lastSuccessCallback = options["successCallBack"] ? options["successCallBack"] : null;
+                lastFailureCallback = options["failureCallBack"] ? options["failureCallBack"] : null;
+
+                var dataForPopup = {
+                    dataset:
+                        {
+                            toDate      : options["toDate"]   ? options["toDate"] : null,
+                            oldToDate   : options["oldToDate"]? options["oldToDate"] : null,
+                            changeInDep : true
+                        }
+                };
+
+                showEarlierDepartureDateMoveConfirmationPopup (dataForPopup);
+            };
+
+            /**
+             * [clickedOnMoveSaveButton description]
+             * @return {[type]} [description]
+             */
+            var triggerLaterDepartureDateChange = function(options) {
+                lastSuccessCallback = options["successCallBack"] ? options["successCallBack"] : null;
+                lastFailureCallback = options["failureCallBack"] ? options["failureCallBack"] : null;
+
+                var dataForPopup = {
+                    dataset:
+                        {
+                            toDate      : options["toDate"]   ? options["toDate"] : null,
+                            oldToDate   : options["oldToDate"]? options["oldToDate"] : null,
+                            changeInDep : true
+                        }
+                };
+
+                showLaterDepartureDateMoveConfirmationPopup(dataForPopup);
+            };
+
+            /**
              * [successCallBackOfMoveDatesAPI description]
              * @param  {[type]} data [description]
              * @return {[type]}      [description]
@@ -287,7 +361,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     successCallBack = lastSuccessCallback,
                     failureCallBack = lastFailureCallback,
                     arrChangeOnly   = 'changeInArr' in dataSet && dataSet['changeInArr'],
-                    depChangeOnly   = 'changeInArr' in dataSet && dataSet['changeInArr'],
+                    depChangeOnly   = 'changeInDep' in dataSet && dataSet['changeInDep'],
                     conditnalParams = {};
 
                 var params = {
@@ -457,6 +531,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     triggerLaterArrDateChange   : triggerLaterArrivalDateChange,                    
                     arrDateLeftChangeAllowed    : arrDateLeftChangeAllowed,
                     arrDateRightChangeAllowed   : arrDateRightChangeAllowed,
+                    triggerEarlierDepDateChange : triggerEarlierDepartureDateChange,
+                    triggerLaterDepDateChange   : triggerLaterDepartureDateChange,                     
                     depDateLeftChangeAllowed    : depDateLeftChangeAllowed,
                     depDateRightChangeAllowed   : depDateRightChangeAllowed,                    
                     isInCompleteMoveMode        : isInCompleteMoveMode,

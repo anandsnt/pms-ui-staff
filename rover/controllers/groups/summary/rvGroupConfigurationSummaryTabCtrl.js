@@ -152,6 +152,76 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				};
 			$scope.changeDatesActions.triggerLaterArrDateChange (options);
 		};
+
+		/**
+		 * DEPATURE CHANGE
+		 */
+		/**
+		 * [successCallBackOfEarlierDepartureDateChange description]
+		 * @return {[type]} [description]
+		 */
+		var successCallBackOfEarlierDepartureDateChange = function() {
+			$scope.reloadPage();
+		};
+
+		/**
+		 * [failureCallBackOfEarlierDepartureDateChange description]
+		 * @param  {[type]} errorMessage [description]
+		 * @return {[type]}              [description]
+		 */
+		var failureCallBackOfEarlierDepartureDateChange = function(errorMessage) {
+
+		};
+
+		/**
+		 * when clicked on Save move button. this will triggr
+		 * @return {undefined}
+		 */
+		var triggerEarlierDepartureDateChange = function() {
+			var sumryData = $scope.groupConfigData.summary,
+				oldSumryData = summaryMemento,
+				options = {
+					toDate 			: sumryData.block_to,
+					oldToDate 		: oldSumryData.block_to,
+					successCallBack : successCallBackOfEarlierDepartureDateChange,
+					failureCallBack : failureCallBackOfEarlierDepartureDateChange
+				};
+			$scope.changeDatesActions.triggerEarlierDepDateChange (options);
+		};	
+
+		/**
+		 * [successCallBackOfLaterDepartureDateChange description]
+		 * @return {[type]} [description]
+		 */
+		var successCallBackOfLaterDepartureDateChange = function() {
+			$scope.reloadPage();
+		};
+
+		/**
+		 * [failureCallBackOfLaterDepartureDateChange description]
+		 * @param  {[type]} errorMessage [description]
+		 * @return {[type]}              [description]
+		 */
+		var failureCallBackOfLaterDepartureDateChange = function(errorMessage) {
+
+		};
+
+		/**
+		 * when clicked on Save move button. this will triggr
+		 * @return {undefined}
+		 */
+		var triggerLaterDepartureDateChange = function() {
+			var sumryData = $scope.groupConfigData.summary,
+				oldSumryData = summaryMemento,
+				options = {
+					toDate 			: sumryData.block_to,
+					oldToDate 		: oldSumryData.block_to,
+					successCallBack : successCallBackOfLaterDepartureDateChange,
+					failureCallBack : failureCallBackOfLaterDepartureDateChange
+				};
+			$scope.changeDatesActions.triggerLaterDepDateChange (options);
+		};
+
 		/**
 		 * we have to save when the user clicked outside of summary tab
 		 * @param  {Object} event - Angular Event
@@ -197,7 +267,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 			//referring data source
 			var refData 		= $scope.groupConfigData.summary,
-				newBlockFrom 	= $scope.groupConfigData.summary.block_from,
+				newBlockFrom 	= refData.block_from,
 				oldBlockFrom	= summaryMemento.block_from;
 
 			if (refData.release_date.toString().trim() === '') {
@@ -285,12 +355,28 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		var toDateChoosed = function(date, datePickerObj) {
 			$scope.groupConfigData.summary.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
-			$scope.computeSegment();
+			//referring data source
+			var refData 	= $scope.groupConfigData.summary,
+				newBlockTo 	= refData.block_to,
+				oldBlockTo	= summaryMemento.block_to,
+				chActions 	= $scope.changeDatesActions;
+
+			//departure left date change
+			if(newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {
+				triggerEarlierDepartureDateChange();				
+			}
+
+			//departure right date change
+			else if(newBlockTo > oldBlockTo && chActions.depDateRightChangeAllowed()) {
+				triggerLaterDepartureDateChange();
+			}
+
+			/*$scope.computeSegment();
 			//we are in outside of angular world
 
 			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
 				fetchApplicableRates();
-			}
+			}*/
 			runDigestCycle();
 		};
 
