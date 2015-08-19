@@ -3,7 +3,7 @@
         <form user="2" id="edit-user" class="form float">
             <fieldset class="holder full-width">
                     <div class="form-title" style="padding-bottom: 5px;">
-                        <h3><span>Add</span> Rate </h3>
+                        <h3><span ng-show="addRemoveMode==='add'" ng-hide="addRemoveMode==='edit'">Add</span><span ng-show="addRemoveMode === 'edit'" ng-hide="addRemoveMode==='add'">Edit</span> Rate </h3>
                         <select ng-change="selectRate(selectedRate)" style="width:inherit; background-color:#F8F8F8;" ng-class="{'inactive':selectedRate.placeholder === true}" ng-model="selectedRate" ng-options="rate.name for rate in rateData"></select>
                     </div>
                     <div class="entry has-sortable">
@@ -16,7 +16,7 @@
                             class="boxes sortable empty short-list" data-drop="true" 
                             ng-model='selectedIncludedRoomType' 
 
-                            jqyoui-droppable="{multiple:true, onOver: 'droppedSelectedRoomType'}" 
+                            jqyoui-droppable="{multiple:true, onDrop: 'droppedToIncluded'}" 
 
                             data-type="target">
 
@@ -30,7 +30,6 @@
                                     ng-hide="!type.name" 
 
                                     ng-class="{selected: selectedIncludedRoomTypeIndex == $index, justDropped: justDropped == $index}" 
-
                                     ng-click="selectIncludedRoomType(type, $event, $index)">
 
                                             <span class="icons icon-handle"></span>
@@ -43,7 +42,7 @@
 
 
                     <div class="entry movers">
-                        <span data-type="target" class="icons icon-mover-right to-target" ng-click="leftToRight()" ng-class="{'active': selectedIncludedRoomTypeIndex != -1}">Add Rate </span>
+                        <span data-type="target" class="icons icon-mover-right to-target" ng-click="leftToRight()" ng-class="{'active': selectedIncludedRoomTypeIndex != -1}">Add Rate</span>
                         <span data-type="source" class="icons icon-mover-left to-source" ng-click="rightToLeft()" ng-class="{'active': selectedExcludedRoomTypeIndex != -1}">Remove Rate</span>
 
                         <span class='move-all-icons'>
@@ -68,7 +67,7 @@
                             data-drop="true" ng-model='excludedRoomTypes' 
 
                             data-jqyoui-options="{accept:'.assigned-user-roles'}"
-                            jqyoui-droppable="{multiple:true, onOver: 'selectedIncludedRoomType' }" data-type="source">
+                            jqyoui-droppable="{multiple:true, onOver: 'selectedOverExcluded' }" data-type="source">
 
                                     <li ng-repeat="roomtype in excludedRoomTypes track by $index" 
                                     class="unassigned-user-roles li-draggable"
@@ -94,7 +93,7 @@
                             Cancel
                     </button>
                     <button type="button" id="save" class="button green add-data-inline" ng-class="{'grey overlay': selectedRate.placeholder == true}" ng-click="addRateToChannelMgr()">
-                            Add Rate
+                        Add <span  ng-show="addRemoveMode === 'add'" ng-hide="addRemoveMode==='edit'">Rate</span><span ng-show="addRemoveMode === 'edit'" ng-hide="addRemoveMode==='add'"><span>Rule</span> 
                     </button>
             </div>
         </form>
