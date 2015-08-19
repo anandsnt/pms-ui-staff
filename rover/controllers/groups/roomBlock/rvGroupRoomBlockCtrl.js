@@ -448,7 +448,10 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			$scope.groupConfigData.summary.block_from = $scope.startDate;
 
 			//referring data source
-			var refData = $scope.groupConfigData.summary;
+			var refData 		= $scope.groupConfigData.summary,
+				newBlockFrom 	= $scope.groupConfigData.summary.block_from,
+				oldBlockFrom	= summaryMemento.block_from;
+
 			if (refData.release_date.toString().trim() === '') {
 				$scope.groupConfigData.summary.release_date = refData.block_from;
 			}
@@ -459,6 +462,17 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				$scope.groupConfigData.summary.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 				$scope.groupConfigData.summary.block_to.setDate(refData.block_to.getDate() + originalStayLength);
 				$scope.endDate = $scope.groupConfigData.summary.block_to;
+			}
+
+			//arrival left date change
+			else if(newBlockFrom < oldBlockFrom && $scope.changeDatesActions.arrDateLeftChangeAllowed()) {
+				triggerEarlierArrivalDateChange();
+
+			}
+
+			//arrival right date change
+			else if(newBlockFrom > oldBlockFrom && $scope.changeDatesActions.arrDateRightChangeAllowed()) {
+				triggerLaterArrivalDateChange();
 			}
 
 			// we will clear end date if chosen start date is greater than end date
@@ -482,6 +496,9 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		var onEndDatePicked = function(date, datePickerObj) {
 			$scope.endDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 			$scope.groupConfigData.summary.block_to = $scope.endDate;
+
+			//setting the max date for start Date
+			$scope.startDateOptions.maxDate = $scope.endDate;
 
 			//we have to show create button
 
@@ -525,6 +542,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//date picker options - Start Date
 			$scope.startDateOptions = _.extend({
 				minDate: new tzIndependentDate($rootScope.businessDate),
+				maxDate: $scope.groupConfigData.summary.block_to,
 				disabled: $scope.groupConfigData.summary.is_cancelled,
 				onSelect: onStartDatePicked
 			}, commonDateOptions);
@@ -1227,6 +1245,54 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			});
 
 			$scope.reloadPage("ROOM_BLOCK");
+		};
+
+		var successCallBackOfEarlierArrivalDateChange = function() {
+			$scope.reloadPage("ROOM_BLOCK");
+		};
+
+		var failureCallBackOfEarlierArrivalDateChange = function(errorMessage) {
+
+		};
+
+		/**
+		 * called when start date changed to an earlier date
+		 * @return {undefined}
+		 */
+		var triggerEarlierArrivalDateChange = function() {
+			var sumryData = $scope.groupConfigData.summary,
+				oldSumryData = summaryMemento,
+				options = {
+					fromDate 		: sumryData.block_from,
+					oldFromDate 	: oldSumryData.block_from,
+					successCallBack : successCallBackOfEarlierArrivalDateChange,
+					failureCallBack : failureCallBackOfEarlierArrivalDateChange
+				};
+			$scope.changeDatesActions.triggerEarlierArrDateChange (options);
+		};
+
+		var successCallBackOfLaterArrivalDateChange = function() {
+			$scope.reloadPage("ROOM_BLOCK");
+		};
+
+		var failureCallBackOfLaterArrivalDateChange = function(errorMessage) {
+
+		};
+
+		/**
+		 * called when start date changed to a later date
+		 * @return {undefined}
+		 */
+		var triggerLaterArrivalDateChange = function() {
+			var sumryData = $scope.groupConfigData.summary,
+				oldSumryData = summaryMemento,
+				options = {
+					fromDate 		: sumryData.block_from,
+					oldFromDate 	: oldSumryData.block_from,
+					successCallBack : successCallBackOfEarlierArrivalDateChange,
+					failureCallBack : failureCallBackOfEarlierArrivalDateChange
+				};
+			$scope.changeDatesActions.triggerLaterArrDateChange (options);
 		};
 
 		/**
