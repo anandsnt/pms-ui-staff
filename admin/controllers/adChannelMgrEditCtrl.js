@@ -17,24 +17,106 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ADC
         $scope.selectInterface = function(interface){
             $scope.selectedInterface = interface;
         };
-        $scope.setRateDropdown = function(rate_id){
+        $scope.setRateDropdown = function(rate_id, old){
             for (var x in $scope.rateData){
                 if ($scope.rateData[x].id === rate_id){
                     $scope.selectedRate = $scope.rateData[x];
+                    $scope.setRoomTypesByRate($scope.rateData[x].id, old);
                 }
             }
+            
+            
         };
+        
+        $scope.setRoomTypesByRate = function(rate_id, old){
+            if (old === 'new'){
+                var onFetchSuccess = function (data) {
+                    $scope.$emit('hideLoader');
+                    $scope.excludedRoomTypes = data.room_types;
+                };
+                
+                var params =  {'id':rate_id};
+                $scope.invokeApi(ADChannelMgrSrv.getRoomTypesByRate, params, onFetchSuccess);
+
+            } else {
+                var onFetchSuccess = function (data) {
+                    $scope.$emit('hideLoader');
+                    var allRooms = data.room_types;
+                    
+                    //go thru excluded list and push out to included, the ones that match in the IDs from initial get
+                    
+                    var rateInfo;
+                    for (var r in $scope.data){
+                        if ($scope.data[r].rate.id === $scope.selectedRate.id){
+                            rateInfo = $scope.data[r];
+                        }
+                    }
+                   
+                    var includeIds = rateInfo.room_types;
+                    var excludeIds = rateInfo.rate.room_types;
+                    
+                    var toInclude = [], toExclude = [], onInclude;
+                    
+                    for (var i in allRooms){
+                       for (var inc in includeIds){
+                           if (includeIds[inc].id === allRooms[i].id){
+                               toInclude.push(allRooms[i]);
+                           }
+                       } 
+                       for (var exc in excludeIds){
+                           if (excludeIds[exc].id === allRooms[i].id){
+                                onInclude = false;
+                                for (var c in includeIds){
+                                    if (includeIds[c].id === excludeIds[exc].id) {
+                                        onInclude = true;
+                                    }
+                                }
+                                if (!onInclude){
+                                     toExclude.push(allRooms[i]);
+                                }
+                           }
+                       }
+                    }
+                    
+                        $scope.includedRoomTypes = toInclude;
+                        $scope.excludedRoomTypes = toExclude;
+                    
+                };
+                
+                var params =  {'id':rate_id};
+                $scope.invokeApi(ADChannelMgrSrv.getRoomTypesByRate, params, onFetchSuccess);
+                
+                
+            }
+        };
+        
+        
+        $scope.closeRatesInEdit = function(){
+            for (var x in $scope.data){
+                if ($scope.data[x].rate.editing){
+                    $scope.data[x].rate.editing = false;  
+                }
+            }
+            $scope.showInlineAddRemove = false;
+        };
+        
         $scope.editChannelManagerRate = function(rate){
             $scope.editingRate = rate;
             for (var x in $scope.data){
-                if ($scope.data[x].id === rate.id){
-                    rate.editing = true;
-                    $scope.showInlineAddRemove = true;
-                    $scope.showMainAddRemove = false;
+                if ($scope.data[x].rate.id === rate.rate.id){
+                    if ($scope.data[x].rate.editing){
+                        $scope.data[x].rate.editing = false;  
+                        $scope.showInlineAddRemove = false;
+                        $scope.showMainAddRemove = false;  
+                    } else {
+                        $scope.data[x].rate.editing = true;
+                        $scope.showInlineAddRemove = true;
+                        $scope.showMainAddRemove = false;
+                    }
                     
                     $scope.addRemoveMode = 'edit';//add | edit
                 } else {
-                    rate.editing = false;
+                    $scope.data[x].rate.editing = false;
                 }
             }
             
@@ -80,7 +162,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ADC
                         }
                         
                     };
-                    $scope.setRateDropdown(rate.rate.id);
+                    $scope.setRateDropdown(rate.rate.id, 'old');
                     return;
             }
         }
@@ -111,15 +193,6 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ADC
             $scope.invokeApi(ADChannelMgrSrv.deleteRateOnChannel, data, fetchSuccess, fetchFailure);
                 
         };
-        $scope.selectedOverExcluded = function(){
-            console.log('selectedOverExcluded');
-            console.log($scope.selectedIncludedRoomType)
-        }
-        
-        $scope.selectedOverIncluded = function(){
-            console.log('selectedOverIncluded');
-            console.log($scope.selectedExcludedRoomType)
-        }
         
         
         $scope.reloadTable = function(){
@@ -142,12 +215,9 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ADC
         
         
         $scope.resetShowAddRmove = function(){
-            if ($scope.data.length === 0){
-                $scope.showMainAddRemove = false;
-            } else {
-                $scope.showInlineAddRemove = false;
-                $scope.showMainAddRemove = false;
-            }
+            $scope.showInlineAddRemove = false;
+            $scope.showMainAddRemove = false;
+            $scope.closeRatesInEdit();
         };
 
         $scope.loadTable();
@@ -256,19 +326,14 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ADC
             }
           //take the selected room type from selectedIncludedRoomType  
             var excludedRoomTypeSelected = $scope.excludedRoomTypeSelected;
-            console.log(excludedRoomTypeSelected)
             for (var i in $scope.excludedRoomTypes){
-                console.log($scope.excludedRoomTypes[i])
                 if (excludedRoomTypeSelected.id === $scope.excludedRoomTypes[i].id){
+                    $scope.includedRoomTypes.push(excludedRoomTypeSelected);
                     delete $scope.excludedRoomTypes[i];
                 }
             }
-            $scope.includedRoomTypes.push(excludedRoomTypeSelected);
             $scope.selectedExcludedRoomTypeIndex = -1;
         };
-        $scope.droppedToIncluded = function(){
-            console.log(arguments);
-        }
         
         $scope.refreshLists = function(){
             $scope.includedRoomTypes = [];
@@ -284,21 +349,9 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ADC
             $scope.selectedRate = rate;
             $scope.refreshLists();
             if (!rate.placeholder){//then is valid, load up room_types
-                var fetchSuccess = function(data){
-                    $scope.includedRoomTypes = data.data.room_types;
-                    $scope.resortLists();
-                    $scope.$emit('hideLoader');
-                };
-                var fetchFailure = function(data){
-                    $scope.$emit('hideLoader');
-
-                };
-
-                $scope.invokeApi(ADChannelMgrSrv.fetchRoomTypes, {}, fetchSuccess, fetchFailure);
+                $scope.setRoomTypesByRate($scope.selectedRate.id, 'new');
+                $scope.resortLists();
             }
-        };
-        $scope.droppedSelectedRoomType = function(){
-            
         };
         
         $scope.moveAllLeft = function(){
@@ -338,8 +391,96 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ADC
 		$scope.selectedIncludedRoomType = -1;
 		lastDropedTime = new Date();
 	};
+        $scope.reachedAssignedRoomTypes = function(){
+            $scope.selectedExcludedRoomType = -1;
+            lastDropedTime = new Date();
+        };
+        $scope.dragItem;
+        $scope.startDragItem = function(e, o, lastDragItem, n){
+            var from;
+            if (n === 1){
+                from = 'included';
+            } else if (n === 2){
+                from = 'excluded';
+            }
+            if (lastDragItem){
+                $scope.dragItem = lastDragItem;
+            }
+            if (from === 'included'){
+                for (var x in $scope.excludedRoomTypes){
+                    if (typeof $scope.excludedRoomTypes[x] !== typeof undefined){
+                        if ($scope.excludedRoomTypes[x].id === $scope.dragItem.id){
+                            delete $scope.excludedRoomTypes[x];
+                        }
+                    }
+                }
+            } else if (from === 'excluded'){
+                for (var i in $scope.includedRoomTypes){
+                    if (typeof $scope.includedRoomTypes[i] !== typeof undefined){
+                        if ($scope.includedRoomTypes[i].id === $scope.dragItem.id){
+                            delete $scope.includedRoomTypes[i];
+                        }
+                    }
+                }
+            }
+           $scope.$apply();
+        };
+        $scope.toincluded = 'toincluded';
+        $scope.toexcluded = 'toexcluded';
+        $scope.dropEvent = function(e, o, to){
+            if (to === $scope.toexcluded){
+                var there = false;
+                for (var x in $scope.excludedRoomTypes){
+                    if (typeof $scope.excludedRoomTypes[x] !== typeof undefined){
+                        if ($scope.excludedRoomTypes[x].id === $scope.dragItem.id){
+                            there = true;
+                        }
+                    }
+                }
+                if (!there){
+                    $scope.excludedRoomTypes.push($scope.dragItem);
+                }
+                //verify removed from included...
+                var newInc = [];
+                for (var i in $scope.includedRoomTypes){
+                    if (typeof $scope.includedRoomTypes[i] !== typeof undefined){
+                        if ($scope.includedRoomTypes[i].id !== $scope.dragItem.id){
+                            newInc.push($scope.includedRoomTypes[i]);
+                        }
+                    }
+                }
+                $scope.includedRoomTypes = newInc;
+             } else if (to === $scope.toincluded){
+                var there = false;
+                for (var a in $scope.includedRoomTypes){
+                    if (typeof $scope.includedRoomTypes[a] !== typeof undefined){
+                        if ($scope.includedRoomTypes[a].id === $scope.dragItem.id){
+                            there = true;
+                        }
+                    }
+                }
+                if (!there){
+                    $scope.includedRoomTypes.push($scope.dragItem);
+                }
+                
+                //verify removed from included...
+                var newEx = [];
+                for (var c in $scope.excludedRoomTypes){
+                    if (typeof $scope.excludedRoomTypes[c] !== typeof undefined){
+                        if ($scope.excludedRoomTypes[c].id !== $scope.dragItem.id){
+                            newEx.push($scope.excludedRoomTypes[c]);
+                        }
+                    }
+                }
+                $scope.excludedRoomTypes = newEx;
+             }
+             $scope.$apply();
+            
+        };
+        
         
         $scope.addRateToChannel = function(selectedInterface){
+            $scope.closeRatesInEdit();
             $scope.addRemoveMode = 'add';//add | edit
             $scope.showInlineAddRemove = false;
             $scope.showMainAddRemove = true;
