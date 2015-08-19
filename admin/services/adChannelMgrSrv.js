@@ -99,6 +99,21 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
             return deferred.promise;
         };
         
+        
+        
+        
+        this.getRoomTypesByRate = function (data) {
+            var deferred = $q.defer();
+
+                var url = '/api/rates/'+data.id;
+            ADBaseWebSrvV2.getJSON(url, data).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+        
         this.fetchRoomTypes = function() {
                 var deferred = $q.defer();
                 var url = '/admin/room_types.json';
