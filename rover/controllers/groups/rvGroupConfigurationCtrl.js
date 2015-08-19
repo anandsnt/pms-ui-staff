@@ -241,6 +241,22 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             };
 
             /**
+             * whether departure date left change allowed
+             * @return {Boolean}
+             */
+            var depDateLeftChangeAllowed = function(){
+                return $scope.groupConfigData.summary.is_to_date_left_move_allowed;
+            };
+
+            /**
+             * whether departure date right change allowed
+             * @return {Boolean}
+             */
+            var depDateRightChangeAllowed = function(){
+                return $scope.groupConfigData.summary.is_to_date_right_move_allowed;
+            };
+
+            /**
              * [successCallBackOfMoveDatesAPI description]
              * @param  {[type]} data [description]
              * @return {[type]}      [description]
@@ -441,6 +457,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     triggerLaterArrDateChange   : triggerLaterArrivalDateChange,                    
                     arrDateLeftChangeAllowed    : arrDateLeftChangeAllowed,
                     arrDateRightChangeAllowed   : arrDateRightChangeAllowed,
+                    depDateLeftChangeAllowed    : depDateLeftChangeAllowed,
+                    depDateRightChangeAllowed   : depDateRightChangeAllowed,                    
                     isInCompleteMoveMode        : isInCompleteMoveMode,
                     clickedOnMoveSaveButton     : clickedOnMoveSaveButton,
                     cancelMoveAction            : cancelMoveAction,

@@ -312,7 +312,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {Boolean} [description]
 		 */
 		var shouldDisableFromDatePicker = function(){
-			return $scope.groupConfigData.summary.is_cancelled;
+			var sumryData = $scope.groupConfigData.summary,
+				chDateAct = $scope.changeDatesActions;
+			return (sumryData.is_cancelled || (!chDateAct.arrDateLeftChangeAllowed() || !chDateAct.arrDateRightChangeAllowed()));
 		};
 
 		/**
@@ -320,8 +322,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {Boolean} [description]
 		 */
 		var shouldDisableEndDatePicker = function(){
-			var sumryData = $scope.groupConfigData.summary;
-			return (sumryData.is_cancelled);
+			var sumryData = $scope.groupConfigData.summary,
+				chDateAct = $scope.changeDatesActions;
+			return (sumryData.is_cancelled || (!chDateAct.depDateLeftChangeAllowed() || !chDateAct.depDateRightChangeAllowed()));
 		};
 
 		/**
