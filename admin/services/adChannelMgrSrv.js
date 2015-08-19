@@ -18,11 +18,12 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
             });
             return deferred.promise;
         };
-        this.toggleRateActivate = function (params) {
+        this.updateRate = function (params) {
             var interface_id = params.interface_id;
-            var channel_rate_id = params.channel_rate_id;
+            var channel_rate_id = params.channel_rate_id, rate_id = params.rate_id;
+            
             var postData = {
-                    rate_id: channel_rate_id,
+                    rate_id: rate_id,
                     room_type_ids: params.room_type_ids,
                     active: params.active
             };
@@ -63,8 +64,6 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
         };
         
         this.fetchManagerDetails = function (data) {
-            console.log('fetch manager details');
-            console.log(arguments)
             var deferred = $q.defer();
 
             var url = "/api/channel_managers/"+data.id;
