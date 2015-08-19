@@ -174,7 +174,7 @@ sntRover.factory('RVReportUtilsFac', [
             // merge value when its an object, else just assign
             if ( typeof value === 'object' ) {
                 // DAMN! Our Angular version is very very old. Cant use this:
-                // angular.merge({}, objRef[key], value );
+
                 $.extend( true, objRef[key], value );
             } else {
                 objRef[key] = value;
@@ -237,7 +237,7 @@ sntRover.factory('RVReportUtilsFac', [
                     };
 
             // if filter is this, make it selected by default
-            if ( objRef['title'] == __reportNames['CANCELLATION_NO_SHOW'] && includeCancelled[filter.value] ) {
+            if ( objRef['title'] === __reportNames['CANCELLATION_NO_SHOW'] && includeCancelled[filter.value] ) {
                 selected = true;
                 objRef['hasGeneralOptions']['title'] = filter.description;
             };
@@ -254,7 +254,7 @@ sntRover.factory('RVReportUtilsFac', [
             };
 
             // if filter value is either of these, must include when report submit
-            if ( objRef['title'] == __reportNames['FORECAST_GUEST_GROUPS'] ) {
+            if ( objRef['title'] === __reportNames['FORECAST_GUEST_GROUPS'] ) {
                 objRef['hasGeneralOptions']['title'] = filter.description;
             };
 
@@ -682,12 +682,12 @@ sntRover.factory('RVReportUtilsFac', [
                 // fill up DS for display combo box
                 if ( __displayFilterNames[filter.value] ) {
 
-                    //__pushDisplayData( reportItem, filter );
+
                     //
                     // QUICK PATCH
                     // TODO: replace with a better solution
-                    if ( reportItem.title == __reportNames['MARKET_SEGMENT_STAT_REPORT'] ) {
-                        if ( filter.value == 'INCLUDE_MARKET' && data.codeSettings['is_market_on'] ) {
+                    if ( reportItem.title === __reportNames['MARKET_SEGMENT_STAT_REPORT'] ) {
+                        if ( filter.value === 'INCLUDE_MARKET' && data.codeSettings['is_market_on'] ) {
                             __pushDisplayData( reportItem, filter );
                         } else if ( filter.value === 'INCLUDE_ORIGIN' && data.codeSettings['is_origin_on'] ) {
                             __pushDisplayData( reportItem, filter );
@@ -1039,7 +1039,7 @@ sntRover.factory('RVReportUtilsFac', [
             var _dateVal      = customDate ? tzIndependentDate(customDate) : $rootScope.businessDate,
                 _businessDate = $filter('date')(_dateVal, 'yyyy-MM-dd'),
                 _dateParts    = _businessDate.match(/(\d+)/g);
-            
+
             var _year  = parseInt( _dateParts[0] ),
                 _month = parseInt( _dateParts[1] ) - 1,
                 _date  = parseInt( _dateParts[2] );
@@ -1080,7 +1080,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                 // each hour is split into 4 parts
                 // x:00, x:15, x:30, x:45
-                if (i % 4 == 0) {
+                if (i % 4 === 0) {
                     h++;
                     m = 0;
                 } else {

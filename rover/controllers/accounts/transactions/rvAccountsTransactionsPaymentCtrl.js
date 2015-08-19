@@ -210,7 +210,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		var checkReferencetextAvailableForCC = function(){
 			//call utils fn
 			$scope.referenceTextAvailable = checkIfReferencetextAvailableForCC($scope.renderData.paymentTypes,$scope.defaultPaymentTypeCard);
-		}
+		};
 
 
 		/*
@@ -492,7 +492,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 				}
 			};
 			return params;
-		}
+		};
 
 		var proceedPayment = function(arType){
 
@@ -523,7 +523,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		var showCreateArAccountPopup  = function(account_id,arType){
 			ngDialog.close();
 			var paymentDetails = setUpPaymentParams(arType);
-			var data = {"account_id":account_id,"is_auto_assign_ar_numbers": $scope.ArDetails.is_auto_assign_ar_numbers,"paymentDetails":paymentDetails}
+			var data = {"account_id":account_id,"is_auto_assign_ar_numbers": $scope.ArDetails.is_auto_assign_ar_numbers,"paymentDetails":paymentDetails};
 			$scope.$emit('arAccountWillBeCreated',data);
 		};
 
@@ -535,7 +535,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 					proceedPayment("company");
 				}
 				else{
-					showCreateArAccountPopup($scope.ArDetails.company_id,"company")
+					showCreateArAccountPopup($scope.ArDetails.company_id,"company");
 				}
 			}
 			else{
@@ -543,7 +543,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 					proceedPayment("travel_agent");
 				}
 				else{
-					showCreateArAccountPopup($scope.ArDetails.travel_agent_id,"travel_agent")
+					showCreateArAccountPopup($scope.ArDetails.travel_agent_id,"travel_agent");
 				}
 			};
 		};
@@ -571,7 +571,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 						proceedPayment("company");
 					}
 					else{
-						showCreateArAccountPopup($scope.ArDetails.company_id)
+						showCreateArAccountPopup($scope.ArDetails.company_id);
 					}
 				}
 				else if(data.travel_agent_present){
@@ -579,7 +579,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 						proceedPayment("travel_agent");
 					}
 					else{
-						showCreateArAccountPopup($scope.ArDetails.travel_agent_id)
+						showCreateArAccountPopup($scope.ArDetails.travel_agent_id);
 					}
 
 				}

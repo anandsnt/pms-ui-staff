@@ -123,7 +123,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	templateUrl: '/assets/checkin/partials/MGM/lateArrivalDetails.html',
 	 	controller : 'checkinArrivalDetailsController',
 	    title: 'Early Check-in'
-	 })
+	 });
 
 
 }]);

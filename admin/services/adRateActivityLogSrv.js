@@ -11,7 +11,7 @@ function($http, $q, ADBaseWebSrvV2) {
             });
             return deferred.promise;
 	};
-        
+
         this.filterActivityLog = function(params) {
                 var deferred = $q.defer();
                 var url = "api/actions?actionable_type=Rate&actionable_id="+params.id;

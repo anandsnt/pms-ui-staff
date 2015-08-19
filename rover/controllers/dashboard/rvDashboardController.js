@@ -90,7 +90,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
 
    $scope.gotosearch = function(){
     $state.go("rover.search");
-    // rover.search({type:'DUEIN'});
+
    };
 
 

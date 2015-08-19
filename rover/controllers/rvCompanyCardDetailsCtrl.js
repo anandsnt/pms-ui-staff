@@ -203,7 +203,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			$scope.currentSelectedTab = 'cc-ar-transactions';
 			$scope.$broadcast('setgenerateNewAutoAr', true);
 			$scope.switchTabTo('', 'cc-ar-transactions');
-			//$scope.$apply();
+
 		};
 
 		$scope.$on('ARNumberChanged', function(e, data) {
@@ -250,7 +250,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			};
 			var fetchARNotes = function() {
 				$scope.invokeApi(RVCompanyCardSrv.fetchArAccountNotes, param, successCallbackFetchArNotes);
-			}
+			};
 
 			var successCallbackFetchArDetails = function(data) {
 				$scope.$emit("hideLoader");
@@ -451,10 +451,8 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			else if ($stateParams.isBackFromStaycard){
 				// Back navigation from stay card.Do nothing here.
 				//CICO-11664 to handle the back navigation from staycard.
-				console.log("Back navigation from stay card.");
 			}
 			else if ($scope.isContactInformationSaved){
-				console.log("Card already saved");
 			}
 			else{
 
@@ -509,7 +507,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			 * Since we are explicitily triggering click event, this should be outside of angular digest loop.
 			 */
 			$timeout(function() {
-				angular.element('#uplaodCompanyLogo').trigger('click')
+				angular.element('#uplaodCompanyLogo').trigger('click');
 			}, 0, false);
 		};
 

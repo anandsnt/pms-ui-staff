@@ -8,7 +8,7 @@ sntRover.service('RVreportsSubSrv', [
 		 * centralised method for making api request and managing promises
 		 * the only reason I end up created this is to avoid code repetition
 		 * in the below service methods
-		 * @param  {Object} options {method on 'rvBaseWebSrvV2', request params, request url, response key}	
+		 * @param  {Object} options {method on 'rvBaseWebSrvV2', request params, request url, response key}
 		 * @return {Object}         a promise object, which when resolved/rejected will return the data
 		 * @private
 		 */
