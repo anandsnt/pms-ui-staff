@@ -118,7 +118,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	var $_backTitleDict = {
 		'SHOWING DASHBOARD' : 'DASHBOARD',
 		'RESERVATIONS'      : 'CREATE RESERVATION'
-	}
+	};
 
 	var $_savePrevStateTitle = function(title) {
 		var upperCase = title.toUpperCase();
@@ -251,7 +251,6 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
                     return;
                 }
 		// spiting state names so as to add them to '$_revAnimList', if needed
-		//console.debug( '[%s %O] >>> [%s %O]', fromState.name, fromParams, toState.name, toParams );
 
 		// this must be reset with every state change
 		// invidual controllers can then set it
@@ -292,7 +291,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		// reset this flag
 		$rootScope.returnBack = false;
 
-		// capture the prev state document title;
+		// capture the prev state document title
 		if (fromState.name === 'rover.reservation.staycard.roomassignment' && toState.name === 'rover.diary'){
                     //cico-13697, fix until proper workflow routes are developed
                     return;

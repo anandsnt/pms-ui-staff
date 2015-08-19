@@ -8,7 +8,7 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 			//As per CICO-9832
 			scope: $scope,
 			callback: 'backToStayCard'
-		}
+		};
 
 		$scope.heading = 'Room Upgrades';
 		$scope.setHeadingTitle($scope.heading);
@@ -244,7 +244,7 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 		 * function to set the color coding for the room number based on the room status
 		 */
 		$scope.getTopbarRoomStatusClass = function() {
-			var reservationStatus = $scope.reservationData.reservation_card.reservation_status
+			var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
 			var roomReadyStatus = $scope.reservationData.reservation_card.room_ready_status;
 			var foStatus = $scope.reservationData.reservation_card.fo_status;
 			var checkinInspectedOnly = $scope.reservationData.reservation_card.checkin_inspected_only;
@@ -278,7 +278,7 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 				return "room-grey";
 			}
 			return statusClass;
-		}
+		};
 
 	}
 ]);

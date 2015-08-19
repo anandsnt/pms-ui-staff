@@ -24,5 +24,5 @@ sntRover.directive('resize', function ($window) {
         w.bind('resize', function () {
             scope.$apply();
         });
-    }
-})
+    };
+});

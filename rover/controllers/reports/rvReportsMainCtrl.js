@@ -129,8 +129,6 @@ sntRover.controller('RVReportsMainCtrl', [
 		// replace any char with single space " "
 		// e.g -> filter:showValidSortBy:_
 		$scope.replaceWithSpace = function(value, tobeReplaced) {
-			console.log(arguments);
-
 			return (!value) ? '' : value.replace(/_/g, ' ');
 		};
 
@@ -335,7 +333,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			// if user has not chosen anything
 			// both 'checked_in' & 'checked_out' must be true
 			if (!chosenReport.chosenCico) {
-				chosenReport.chosenCico = 'BOTH'
+				chosenReport.chosenCico = 'BOTH';
 				return true;
 			};
 
@@ -541,7 +539,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				/**/
 				$scope.appliedFilter['singleValueDate'] = angular.copy( report.singleValueDate );
 			};
-			
+
 			// include rate adjustment dates
 			if (!!report.hasAdjustmentDateRange) {
 				fromKey  = reportParams['ADJUSTMENT_FROM_DATE'];
@@ -1034,7 +1032,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			focus: function(event, ui) {
 				return false;
 			}
-		}
+		};
 		$scope.listUserAutoCompleteOptions = angular.extend({
 			position: {
 				my: 'left bottom',
@@ -1063,7 +1061,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				reportsSubSrv.fetchComTaGrp(request.term)
 					.then(function(data) {
 						var list = [];
-						var entry = {}
+						var entry = {};
 						$.map(data, function(each) {
 							entry = {
 								label: each.name,
@@ -1089,7 +1087,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			focus: function(event, ui) {
 				return false;
 			}
-		}
+		};
 		$scope.listCtgAutoCompleteOptions = angular.extend({
 			position: {
 				my: 'left top',

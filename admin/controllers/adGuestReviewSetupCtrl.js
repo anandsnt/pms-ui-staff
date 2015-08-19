@@ -39,6 +39,6 @@ admin.controller('ADGuestReviewSetupCtrl', ['$scope', '$state', 'ADGuestReviewSe
 
 		//calling the save api
 		$scope.invokeApi(ADGuestReviewSetupSrv.saveGuestReviewSetup, postingData, successCallbackOfSaveDetails);
-	}
+	};
 
 }]);

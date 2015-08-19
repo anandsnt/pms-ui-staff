@@ -4,7 +4,7 @@ admin.controller('ADItemDetailsCtrl', ['$scope','ADItemSrv', '$state','$statePar
 	*/
 
 	$scope.errorMessage = '';
-	$scope.mod = 'edit'
+	$scope.mod = 'edit';
 
 	//inheriting from base controller
 	BaseCtrl.call(this, $scope);
@@ -35,7 +35,7 @@ admin.controller('ADItemDetailsCtrl', ['$scope','ADItemSrv', '$state','$statePar
 
 	$scope.goBack = function(){
 		$state.go('admin.items');
-	}
+	};
 
 	$scope.saveItemDetails = function()	{
 		var postData = {};
@@ -51,6 +51,6 @@ admin.controller('ADItemDetailsCtrl', ['$scope','ADItemSrv', '$state','$statePar
 			$scope.goBack();
 		};
 		$scope.invokeApi(ADItemSrv.saveItemDetails, postData, fetchSuccessOfSaveItemDetails);
-	}
+	};
 
 }]);

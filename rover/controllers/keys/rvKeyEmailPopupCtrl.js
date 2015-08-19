@@ -40,7 +40,6 @@ sntRover.controller('RVKeyEmailPopupController',[ '$rootScope','$scope','ngDialo
 	    };
 
 	  	var failureCallback = function(data){
-	  		console.log(data);
 	  		$scope.$emit('hideLoader');
 	  		$scope.errorMessage = data;
 	    };

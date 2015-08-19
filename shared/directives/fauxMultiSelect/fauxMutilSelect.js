@@ -69,5 +69,5 @@ angular.module('fauxMultiSelectModule', [])
             });
         }
 
-      }
+      };
     }]);

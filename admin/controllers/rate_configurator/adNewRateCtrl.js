@@ -141,7 +141,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 angular.forEach(data.room_types, function(room_type) {
                     $scope.basedonRateData.room_type_ids.push(room_type.id);
                 });
-                $scope.basedonRateData.rate_type = (data.rate_type !== null) ? data.rate_type.id : ''
+                $scope.basedonRateData.rate_type = (data.rate_type !== null) ? data.rate_type.id : '';
                 $scope.basedonRateData.based_on = (data.based_on !== null) ? data.based_on.id : '';
                 //Broadcast an event to child classed to notify that the based on rates are changed.
                 $scope.$broadcast('basedonRatesChanged');
@@ -150,7 +150,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.invokeApi(ADRatesSrv.fetchDetails, {
                 rateId: $scope.rateData.based_on.id
             }, fetchBasedonSuccess);
-        }
+        };
         var manipulateAdditionalDetails = function(data) {
             // hourly rate?
             $scope.rateData.is_hourly_rate = data.is_hourly_rate;
@@ -168,6 +168,10 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.is_suppress_rate_on = (data.is_suppress_rate_on) ? true : false;
             $scope.rateData.is_discount_allowed_on = (data.is_discount_allowed_on) ? true : false;
             $scope.rateData.is_member_rate = (data.is_member) ? true : false;
+            //CICO-18614
+            $scope.rateData.is_pms_only = !!data.is_pms_only;
+            $scope.rateData.is_channel_only = !!data.is_channel_only;
+            
             $scope.rateData.source_id = data.source_id;
             $scope.rateData.market_segment_id = data.market_segment_id;
             $scope.rateData.end_date = data.end_date;
@@ -217,7 +221,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             return !$scope.rateData.is_hourly_rate;
         };
 
-        $scope.isPromoRate = function() {            
+        $scope.isPromoRate = function() {
             return parseInt(_.findWhere($scope.rateInitialData.rate_types, {
                 name: "Specials & Promotions"
             }).id) === parseInt($scope.rateData.rate_type.id);
@@ -253,7 +257,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             if (data.based_on) {
                 $scope.rateData.based_on.id = data.based_on.id;
                 $scope.rateData.based_on.type = data.based_on.type;
-                $scope.rateData.based_on.value_abs = Math.abs(data.based_on.value)
+                $scope.rateData.based_on.value_abs = Math.abs(data.based_on.value);
                 $scope.rateData.based_on.value_sign = data.based_on.value > 0 ? "+" : "-";
             } else {
                 $scope.rateData.based_on = {
@@ -264,7 +268,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 };
             }
 
-        }
+        };
 
         // Fetch details success callback for rate edit
 
@@ -307,7 +311,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 }
             });
             return activeDateRange;
-        }
+        };
 
         $scope.$on('deletedAllDateRangeSets', function(e, dateRangeId) {
             angular.forEach($scope.rateData.date_ranges, function(dateRange, index) {
@@ -315,7 +319,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                     $scope.rateData.date_ranges.splice(index, 1);
                 }
             });
-        })
+        });
 
         $scope.addNewDateRange = function() {
             $scope.$emit("changeMenu", 'ADD_NEW_DATE_RANGE');
@@ -331,7 +335,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             } else {
                 $state.go('admin.rates');
             }
-        }
+        };
 
 
         $scope.shouldShowAddNewDateRange = function() {

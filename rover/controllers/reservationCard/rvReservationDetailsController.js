@@ -18,8 +18,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			$rootScope.stayCardStateBookMark = {
 				previousState: $scope.previousState.name,
 				previousStateParams: $scope.previousStateParams
-			}
-		}
+			};
+		};
 
 		if (!$rootScope.stayCardStateBookMark) {
 			setNavigationBookMark();
@@ -106,7 +106,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				setTimeout(function() {
 					$('body').find('#ui-datepicker-overlay')
 						.on('click', function() {
-							console.log('hey clicked');
 							$('#room-out-from').blur();
 							$('#room-out-to').blur();
 						});
@@ -160,7 +159,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		$scope.editStore = {
 			arrival: $scope.reservationData.reservation_card.arrival_date,
 			departure: $scope.reservationData.reservation_card.departure_date
-		}
+		};
 
 		$scope.arrivalDateOptions = angular.extend({
 			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
@@ -245,7 +244,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		};
 
 
-		// $scope.wake_up_time = ;
+
 		angular.forEach($scope.reservationData.reservation_card.loyalty_level.frequentFlyerProgram, function(item, index) {
 			if ($scope.reservationData.reservation_card.loyalty_level.selected_loyalty === item.id) {
 				$scope.selectedLoyalty = item;
@@ -351,7 +350,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 
 		});
 		//To pass confirmation number and resrvation id to reservation Card controller.
-		// var passData = {confirmationNumber: $stateParams.confirmationId, reservationId: $stateParams.id};
+
 		var passData = reservationListData;
 		passData.avatar = reservationListData.guest_details.avatar;
 		passData.vip = reservationListData.guest_details.vip;
@@ -460,8 +459,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		*/
 		$scope.shouldShowChangeStayDatesButton = function() {
 			return ($scope.isNightsEnabled() &&
-					!$scope.reservationData.reservation_card.is_hourly_reservation)
-		}
+					!$scope.reservationData.reservation_card.is_hourly_reservation);
+		};
 
 		$scope.isNightsEnabled = function() {
 			var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
@@ -495,7 +494,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			}
 			return isStayDatesChangeAllowed;
 
-		}
+		};
 
 		$scope.extendNights = function() {
 			// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
@@ -514,9 +513,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 						confirmNumber: reservationMainData.confirmNum
 					});
 				}
-				/*else {
-						$scope.goToRoomAndRates("CALENDAR");
-					}*/
+
 			} else {
 				//If ext PMS connected, go to change staydates screen
 				$state.go('rover.reservation.staycard.changestaydates', {
@@ -548,14 +545,14 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 					userId: $scope.guestCardData.userId
 				});
 			}
-		}
+		};
 
 		$scope.applyCustomRate = function() {
 			$scope.closeDialog(editPromptDialogId);
 			$timeout(function() {
 				$scope.editReservationRates($scope.reservationParentData.rooms[0], 0);
 			}, 1000);
-		}
+		};
 
 
 		$scope.goToRoomAndRates = function(state) {
@@ -585,7 +582,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			}
 
 
-			//rover.reservation.staycard.billcard({reservationId:$scope.reservationData.reservation_card.reservation_id, clickedButton: viewBillButton, userId:$scope.guestCardData.userId})
+
 		};
 
 		$scope.modifyCheckinCheckoutTime = function() {
@@ -705,9 +702,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 					return false;
 				}
 
-			})
+			});
 			return isSharerCheckedin;
-		}
+		};
 
 		$scope.responseValidation = {};
 
@@ -742,15 +739,15 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 					$scope.$emit('hideLoader');
 				},
 				onValidationFaliure = function(error) {
-					// console.log("onValidationFaliure", error);
+
 					$scope.$emit('hideLoader');
-				}
+				};
 			$scope.invokeApi(RVReservationCardSrv.validateStayDateChange, {
 				arrival_date: $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
 				dep_date: $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd'),
 				reservation_id: $scope.reservationData.reservation_card.reservation_id
 			}, onValidationSuccess, onValidationFaliure);
-		}
+		};
 
 		$scope.moveToRoomRates = function() {
 
@@ -796,7 +793,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			});
 
 			$scope.closeDialog();
-		}
+		};
 
 		$scope.changeStayDates = function() {
 			var newArrivalDate = $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd');
@@ -829,7 +826,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 							actual_amount: newDateDetails.rate_amount,
 							modified_amount: newDateDetails.rate_amount
 						}
-					}
+					};
 
 				}
 			}
@@ -841,7 +838,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 
 			//If it is a group reservation, which has extended the stay beyond the group staydates, then we will be taking the user to the room and rates screen after confirming the staydates
 			if($scope.stayDatesExtendedForOutsideGroup){
-				console.log("inside");
 				var stateParams = {
 						from_date: $scope.reservationParentData.arrivalDate,
 						to_date: $scope.reservationParentData.departureDate,
@@ -872,7 +868,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 							data: JSON.stringify($scope.reverseCheckoutDetails.data)
 						});
 		};
-		console.log($scope.reverseCheckoutDetails.data)
 		if($scope.reverseCheckoutDetails.data.is_reverse_checkout_failed){
 			openRoomOccupiedPopup();
 			$scope.initreverseCheckoutDetails();

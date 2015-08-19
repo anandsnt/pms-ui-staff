@@ -90,7 +90,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.isGuestReport = true;
 					$scope.showSortBy = false;
 					break;
-                                        
+
 				case reportNames['EARLY_CHECKIN']:
 					$scope.isGuestReport = true;
 					$scope.showSortBy = true;
@@ -240,76 +240,87 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 			};
 
+			// modify the summary count for certain reports as per the report totals
+			// these are done for old reports as for old reports 'totals' is what we
+			// today know as 'summaryCounts'. So we are gonna map 'totals' into 'summaryCounts'
+			// for the following reports
+			switch ( $scope.chosenReport.title ) {
+				case reportUtils.getName('CHECK_IN_CHECK_OUT'):
+					if ( 'Total Check Ins' == totals[0]['label'] ) {
+						if ( totals.length == 10 ) {
+							$scope.$parent.summaryCounts = {
+								'has_both'     : true,
+								'check_ins'      : totals[0]['value'],
+								'ins_via_rover'  : totals[1]['value'],
+								'ins_via_web'    : totals[2]['value'],
+								'ins_via_zest'   : totals[3]['value'],
+								'ins_via_kiosk'  : totals[4]['value'],
+								'check_outs'     : totals[5]['value'],
+								'outs_via_rover' : totals[6]['value'],
+								'outs_via_web'   : totals[7]['value'],
+								'outs_via_zest'  : totals[8]['value'],
+								'outs_via_kiosk' : totals[9]['value']
+							};
+						} else {
+							$scope.$parent.summaryCounts = {
+								'has_in'         : true,
+								'check_ins'      : totals[0]['value'],
+								'ins_via_rover'  : totals[1]['value'],
+								'ins_via_web'    : totals[2]['value'],
+								'ins_via_zest'   : totals[3]['value'],
+								'ins_via_kiosk'  : totals[4]['value']
+							};
+						};
+					} else if ( 'Total Check Outs' == totals[0]['label'] ) {
+						$scope.$parent.summaryCounts = {
+							'has_out'         : true,
+							'check_outs'     : totals[0]['value'],
+							'outs_via_rover' : totals[1]['value'],
+							'outs_via_web'   : totals[2]['value'],
+							'outs_via_zest'  : totals[3]['value'],
+							'outs_via_kiosk' : totals[4]['value']
+						};
+					};
+					break;
 
+				case reportUtils.getName('UPSELL'):
+					$scope.$parent.summaryCounts = {
+						'rooms_upsold'   : totals[0]['value'],
+						'upsell_revenue' : totals[1]['value']
+					};
+					break;
 
+				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
+					$scope.$parent.summaryCounts = {
+						'emails_sent'   : totals[0]['value'],
+						'up_sell_conv'  : totals[1]['value'],
+						'revenue'       : totals[2]['value'],
+						'conversion'    : totals[4]['value'],
+						'total_checkin' : totals[3]['value']
+					};
+					break;
 
-			// for hard coding styles for report headers
-			// if the header count is greater than 4
-			// split it up into two parts
-			// NOTE: this implementation may need mutation if in future style changes
-			// NOTE: this implementation also effects template, depending on design
-			// discard previous values
-			$scope.firstHalf = [];
-			$scope.restHalf = [];
+				case reportUtils.getName('WEB_CHECK_OUT_CONVERSION'):
+					$scope.$parent.summaryCounts = {
+						'emails_sent'        : totals[0]['value'],
+						'late_checkout_conv' : totals[1]['value'],
+						'revenue'            : totals[2]['value'],
+						'conversion'         : totals[4]['value'],
+						'total_checkout'     : totals[3]['value']
+					};
+					break;
 
-			// making unique copies of array
-			// slicing same array not good.
-			// say thanks to underscore.js
-			$scope.firstHalf = _.compact( totals );
-			$scope.restHalf  = _.compact( totals );
+				case reportUtils.getName('LATE_CHECK_OUT'):
+					$scope.$parent.summaryCounts = {
+						'rooms'   : totals[0]['value'],
+						'revenue' : totals[1]['value']
+					};
+					break;
 
-			// now lets slice it half and half in order that each have atmost 4
-			// since "Web Check Out Conversion" this check is required
-			if ( $scope.chosenReport.title === reportNames['WEB_CHECK_IN_CONVERSION'] || $scope.chosenReport.title === reportNames['WEB_CHECK_OUT_CONVERSION'] ) {
-				$scope.firstHalf = $scope.firstHalf.slice( 0, 3 );
-				$scope.restHalf  = $scope.restHalf.slice( 3 );
-			} else if ( $scope.chosenReport.title === reportNames['CHECK_IN_CHECK_OUT'] ) {
-				$scope.firstHalf = $scope.firstHalf.slice( 0, 5 );
-				$scope.restHalf  = $scope.restHalf.slice( 5 );
-				$scope.restHalf.reverse();
-			} else {
-				$scope.firstHalf = $scope.firstHalf.slice( 0, 4 );
-				$scope.restHalf  = $scope.restHalf.slice( 4 );
-			}
-
-
-			// now applying some very special and bizzare
-			// cosmetic effects for reprots only
-			// NOTE: direct dependecy on template
-			if ( $scope.chosenReport.title === reportNames['CHECK_IN_CHECK_OUT'] ) {
-			    if ( $scope.firstHalf[0] ) {
-			        $scope.firstHalf[0]['class'] = 'green';
-
-			        // extra hack
-			        // if the chosenCico is 'OUT'
-			        // class must be 'red'
-			        if ( $scope.chosenReport.chosenCico === 'OUT' ) {
-			            $scope.firstHalf[0]['class'] = 'red';
-			        }
-			    };
-
-				// since the rest half is reversed
-				// the red needs ti be applied to the last item
-				var restHalfLastIndex = $scope.restHalf.length - 1;
-			    if ( $scope.restHalf[restHalfLastIndex] ) {
-			        $scope.restHalf[restHalfLastIndex]['class'] = 'red';
-			    };
-			} else {
-			    // NOTE: as per todays style this applies to Late Check Out' only
-			    if ( $scope.firstHalf[1] ) {
-			        $scope.firstHalf[1]['class'] = 'orange';
-
-			        // hack to add ($) currency in front
-			        if ( $scope.chosenReport.title === reportNames['LATE_CHECK_OUT'] ) {
-			            $scope.firstHalf[1]['value'] = $rootScope.currencySymbol + $scope.firstHalf[1]['value'];
-			        };
-			    };
-
-			    // additional condition for "Web Check Out Conversion"
-			    if ( $scope.chosenReport.title === reportNames['WEB_CHECK_IN_CONVERSION'] || $scope.chosenReport.title === reportNames['WEB_CHECK_OUT_CONVERSION'] ) {
-			    	$scope.restHalf[$scope.restHalf.length - 1]['class'] = 'orange';
-			    };
+				default:
+					// no op
 			};
+
 
 
 			// change date format for all
@@ -482,7 +493,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['FORECAST_GUEST_GROUPS']:
 					template = '/assets/partials/reports/forecastGuestGroupReport/rvForecastGuestGroupReportRow.html';
 					break;
-				
+
 				// MARKET_SEGMENT_STAT_REPORT report row
 				case reportNames['MARKET_SEGMENT_STAT_REPORT']:
 					template = '/assets/partials/reports/marketSegmentStatReport/rvMarketSegmentStatReportRow.html';
@@ -503,12 +514,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// simple method to allow checking for report title from the template
 		// by matching it against the report names constant
 		$scope.isThisReport = function (name) {
-			if ( 'array' == typeof name ) {
+			if ( 'string' == typeof name ) {
+				return $scope.parsedApiFor == reportUtils.getName(name);
+			} else {
 				return !! _.find(name, function(each) {
 					return $scope.parsedApiFor == reportNames[each];
 				});
-			} else {
-				return $scope.parsedApiFor == reportNames[name];
 			};
 		};
 

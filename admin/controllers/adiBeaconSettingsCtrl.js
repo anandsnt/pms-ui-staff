@@ -38,7 +38,7 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 			$scope.errorMessage = data;
 		};
 		$scope.invokeApi(adiBeaconSettingsSrv.fetchBeaconList, getParams, fetchSuccessOfItemList,fetchFailedOfItemList);
-	}
+	};
 
 	$scope.loadTable = function(){
 		$scope.tableParams = new ngTableParams({
@@ -52,7 +52,7 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 		        getData: $scope.fetchTableData
 		    }
 		);
-	}
+	};
 
 	$scope.loadTable();
 
@@ -88,7 +88,7 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 		};
 
 		$scope.invokeApi(adiBeaconSettingsSrv.deleteBeacon, {"id":id}, deleteBeaconSuccess,deleteBeaconFailed);
-	}
+	};
 
 
 }]);

@@ -50,10 +50,7 @@ sntRover
             /* UI options like column width are computed here
                A property, and a function to compute the same are given below
             */
-            /*var DEFAULT_COLUMN_WIDTH = 200,
-                DEFAULT_TABLE_WIDTH = 4000,
-                DEFAULT_TABLE_WIDTH = 400;
-            */
+
 
             /*Considering base model class for later refactoring to avoid
               firing observer code before model has resolved...
@@ -90,7 +87,7 @@ sntRover
             $scope.$emit("updateRoverLeftMenu", "rateManager");
 
             $scope.displayMode = "CALENDAR";
-            //$scope.filterConfigured = false;
+
             var defaultDateRange = 7;
 
             $scope.backbuttonEnabled = false;
@@ -150,7 +147,9 @@ sntRover
 
                     var columsTotalWidth = numColumns * mywidth;
 
-                    if (columsTotalWidth < totalwidth) columsTotalWidth = totalwidth; //@minimum, table should cover full view.
+                    if (columsTotalWidth < totalwidth) {
+                        columsTotalWidth = totalwidth; //@minimum, table should cover full view.
+                    }
 
                     $scope.uiOptions.tableWidth = parseInt(FIRST_COLUMN_WIDTH + columsTotalWidth);
                     $scope.uiOptions.tableHeight = $window.innerHeight - TOP_BOTTOM_HEIGHT;
@@ -166,13 +165,13 @@ sntRover
 
             $scope.getSortOption = function(option){
                 if(option === "HIGH_TO_LOW"){
-                    return "Highest Rate"
+                    return "Highest Rate";
                 }
                 if(option === "LOW_TO_HIGH"){
-                    return "Lowest Rate"
+                    return "Lowest Rate";
                 }
-                return "Alphabetical"
-            }
+                return "Alphabetical";
+            };
 
             $scope.ratesDisplayed = [];
 
@@ -210,7 +209,7 @@ sntRover
              * function to handle left side menu toggling
              */
             $scope.toggleLeftMenu = function() {
-                if ($scope.currentLeftMenuClass == 'slide_right') {
+                if ($scope.currentLeftMenuClass === 'slide_right') {
                     $scope.currentLeftMenuClass = 'slide_left';
                 } else {
                     $scope.currentLeftMenuClass = 'slide_right';

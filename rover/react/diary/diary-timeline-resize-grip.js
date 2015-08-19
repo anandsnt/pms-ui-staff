@@ -59,15 +59,8 @@ var TimelineResizeGrip = React.createClass({
 		} else if(state.resizing) {
 			last_left = model[direction];
 
-			//if(Math.abs(model[direction]-model[opposite]) >= props.display.min_hours * 3600000) {
 			model[direction] = newValue;
 
-			//if(Math.abs(model[direction]-model[opposite]) < props.display.min_hours * 3600000) {
-			//	model[direction] = last_left;
-			//}
-			//} else{
-				//model[direction] = last_left;
-			//}
 			this.setState({
 				currentResizeItem: 	model
 			}, function() {
@@ -193,7 +186,6 @@ var TimelineResizeGrip = React.createClass({
             		props.iscroll.rooms._scrollFn();
             		props.iscroll.rooms.refresh();
 
-            		//state.onScrollEnd(Math.abs(props.iscroll.grid.x) / px_per_ms + x_origin);
 				} else {
 					this.setState({
 						mode: 					undefined,
@@ -252,7 +244,6 @@ var TimelineResizeGrip = React.createClass({
 					if(dateForCalculatingLeft.isOnDST()){
 						left = (dateForCalculatingLeft.getTime() + 3600000 - x_origin) * px_per_ms;
 					}
-					//time_txt = dateForCalculatingLeft.toComponents().time.toString(true);
 				}
 
 
@@ -276,12 +267,6 @@ var TimelineResizeGrip = React.createClass({
 						className: 'time'
 					}, time_txt)
 				),
-				// React.DOM.span({
-				// 	className: 'count',
-				// 	style: {
-				// 		display: direction === 'arrival' ? (this.props.edit.active || !count_txt ? 'none' : 'inline') : 'none'
-				// 	}
-				// }, count_txt),
 				React.DOM.span({
 					className: 'line',
 					style: {

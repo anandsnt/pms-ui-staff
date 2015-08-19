@@ -957,7 +957,7 @@ sntRover.factory('RVReportUtilsFac', [
             var _dateVal      = customDate ? tzIndependentDate(customDate) : $rootScope.businessDate,
                 _businessDate = $filter('date')(_dateVal, 'yyyy-MM-dd'),
                 _dateParts    = _businessDate.match(/(\d+)/g);
-            
+
             var _year  = parseInt( _dateParts[0] ),
                 _month = parseInt( _dateParts[1] ) - 1,
                 _date  = parseInt( _dateParts[2] );
@@ -998,7 +998,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                 // each hour is split into 4 parts
                 // x:00, x:15, x:30, x:45
-                if (i % 4 == 0) {
+                if (i % 4 === 0) {
                     h++;
                     m = 0;
                 } else {

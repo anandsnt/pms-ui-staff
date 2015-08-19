@@ -28,7 +28,7 @@ admin.controller('addonsDatesRangeCtrl',
                     $scope.$emit('datepicker.update', $scope.datePickerDate);
                     ngDialog.close();
              }
-            }
+            };
 
 
             $scope.cancelClicked = function() {
@@ -39,7 +39,7 @@ admin.controller('addonsDatesRangeCtrl',
                  // emit choosen date back
                 $scope.$emit('datepicker.reset', $scope.datePickerDate);
                 ngDialog.close();
-            }
+            };
         }
     ]
 );

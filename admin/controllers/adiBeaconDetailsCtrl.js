@@ -177,15 +177,15 @@ if(!$scope.addmode){
         }else{
           $scope.successMessage = data.RVSuccess;
         }
-    }
+    };
     var linkBeaconFailure = function(){
         $scope.$emit('hideLoader');
         $scope.errorMessage = data;
-    }
+    };
     var data = {};
     data.id = $scope.beaconId;
     data.is_linked = $scope.isBeaconLinked;
     $scope.invokeApi(adiBeaconSettingsSrv.setLink,data,linkBeaconSuccess,linkBeaconFailure);
-  }
+  };
 
 }]);

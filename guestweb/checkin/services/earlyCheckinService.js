@@ -23,7 +23,7 @@
 	return {
 		responseData: responseData,
 		applyEarlyCheckin : applyEarlyCheckin
-	}
+	};
 };
 
 var dependencies = [
