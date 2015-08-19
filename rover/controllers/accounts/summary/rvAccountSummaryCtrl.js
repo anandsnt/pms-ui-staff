@@ -42,9 +42,9 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 					}
 				});
 			} else {
-				$scope.$emit('showErrorMessage', ['Sorry, Changes will not get saved as you don\'t have enough permission'])
+				$scope.$emit('showErrorMessage', ['Sorry, Changes will not get saved as you don\'t have enough permission']);
 			}
-		}
+		};
 
 		/**
 		 * Whether our summary data has changed
@@ -70,7 +70,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				isDemographicsPopupOpen: false,
 				newNote: "",
 				demographics: null
-			}
+			};
 			summaryMemento = angular.copy($scope.accountConfigData.summary);
 			// Have a handler to update the summary - IFF in edit mode
 			var callUpdate = function() {
@@ -80,7 +80,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 					//call the updateAccountSummary method from the parent controller
 					$scope.updateAccountSummary();
 				}
-			}
+			};
 
 			if (!$scope.isInAddMode()) {
 				$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
@@ -92,7 +92,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 					callUpdate();
 				});
 			}
-		}
+		};
 
 		/**
 		 * get Balance Amount in format
@@ -102,8 +102,8 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			if (typeof amount === 'undefined') {
 				return "";
 			}
-			return $rootScope.currencySymbol + $filter('number')(amount, 2)
-		}
+			return $rootScope.currencySymbol + $filter('number')(amount, 2);
+		};
 
 
 		/**
@@ -112,12 +112,12 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		 */
 		$scope.isDemographicsFormValid = function() {
 			return true;
-		}
+		};
 
 		$scope.closeDemographicsPopup = function() {
 			$scope.accountSummaryData.isDemographicsPopupOpen = false;
 			$scope.closeDialog();
-		}
+		};
 
 		/**
 		 * Demographics Popup Handler
@@ -142,7 +142,6 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 					showDemographicsPopup();
 				},
 				onFetchDemographicsFailure = function(errorMessage) {
-					console.log(errorMessage);
 				};
 
 			if ($scope.accountSummaryData.demographics === null) {
@@ -155,7 +154,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				showDemographicsPopup();
 			}
 
-		}
+		};
 
 		$scope.saveDemographicsData = function() {
 			if ($scope.isInAddMode()) {
@@ -166,11 +165,11 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 
 			$scope.updateAccountSummary();
 			$scope.closeDemographicsPopup();
-		}
+		};
 
 		$scope.cancelDemographicChanges = function() {
 			$scope.accountConfigData.summary.demographics = demographicsMemento;
-		}
+		};
 
 		/**
 		 * Method to save a note
@@ -204,9 +203,8 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 					}
 				});
 			} else {
-				console.warn("Trying to save empty Note!");
 			}
-		}
+		};
 
 		$scope.removeAccountNote = function(noteId) {
 			var onRemoveAccountNoteSuccess = function(data, params) {
@@ -229,16 +227,16 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 					"noteId": noteId
 				}
 			});
-		}
+		};
 
 		$scope.onCloseWarningPopup = function() {
 			$scope.accountConfigData.summary.posting_account_status = "OPEN";
 			$scope.closeDialog();
-		}
+		};
 
 		$scope.onAccountTypeModification = function() {
 			$scope.updateAccountSummary();
-		}
+		};
 
 		$scope.onAccountStatusModification = function() {
 			//  dont allow to close account with balance -gt 0
@@ -253,7 +251,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			} else {
 				$scope.updateAccountSummary();
 			}
-		}
+		};
 
 		/**
 		 * success call back of summary details fetch
@@ -263,7 +261,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		var onAccountSummaryDetailsFetchSuccess = function(data) {
 			$scope.accountConfigData.summary = data;
 			summaryMemento = angular.copy($scope.accountConfigData.summary);
-		}
+		};
 
 		/**
 		 * when we are switching between tabs, we need to update the summary data
@@ -279,7 +277,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			};
 
 			$scope.callAPI(rvAccountsConfigurationSrv.getAccountSummary, options);
-		}
+		};
 
 		initAccountSummaryView();
 

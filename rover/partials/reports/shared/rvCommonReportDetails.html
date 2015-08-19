@@ -10,7 +10,7 @@
 
 <div ng-hide="hasNoResults" id="report-content" class="report-content scrollable" ng-class="{ 'no-totals': hasNoTotals, 'no-sorting': hasNoSorting, 'with-pagination': (!disablePrevBtn || !disableNextBtn) }" ng-iscroll="report-details-scroll">
     <div class="wrapper">
-        <table ng-class="{ 'guest-reports': isGuestReport, 'large-grid': isLargeReport, 'log-reports': isLogReport, 'transaction-reports': isTransactionReport }">
+        <table ng-class="{ 'guest-reports': isGuestReport, 'large-grid': isLargeReport, 'log-reports': isLogReport, 'transaction-reports': isTransactionReport, 'deposit-reports': isDepositReport }">
             <!-- Reports table header -->
             <thead ng-if="!!headers.length">
                 <tr>
@@ -51,7 +51,7 @@
             </thead>
 
             <!-- Reports table footer -->
-            <tfoot ng-include="'/assets/partials/reports/rvReportDetailsFooter.html'"></tfoot>
+            <tfoot ng-include="'/assets/partials/reports/shared/rvReportDetailsFooter.html'"></tfoot>
 
             <!-- Reports table content -->
             <tbody ng-include="parsedApiTemplate()"></tbody>

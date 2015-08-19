@@ -21,7 +21,7 @@
 	return {
 		responseData: responseData,
 		post : post
-	}
+	};
 };
 
 var dependencies = [

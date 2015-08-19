@@ -20,7 +20,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
                 preventClicking = true;
                 $scope.eventTimestamp = event.timeStamp;
             }
-        }
+        };
 
         window.setButtonsClickable = function() {
             $("#sidebar-nights button").css({
@@ -33,7 +33,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
                 height: '100%',
                 border: '1px solid red',
                 background: 'rgba(125,251,015,0.6)'
-            })
+            });
         };
 
         $scope.setScroller('reservation-settings');

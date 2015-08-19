@@ -2,7 +2,7 @@
 (function() {
 	var earlyCheckinFinalController = function($scope,$rootScope,$state,$stateParams,earlyCheckinService) {
 
-	
+
 	$scope.pageValid = false;
 
 	if($rootScope.isCheckedin){
@@ -13,7 +13,7 @@
 	}
 	else{
 		$scope.pageValid = true;
-	}		
+	}
 
 	if($scope.pageValid){
 		$scope.checkinTime = $stateParams.time;
@@ -22,13 +22,17 @@
 		$scope.isPosting = true;
 		var dataTosend = {'reservation_id':$rootScope.reservationID,'early_checkin_offer_id':offerId};
 		earlyCheckinService.applyEarlyCheckin(dataTosend).then(function(response) {				
-			$state.go('preCheckinStatus');
+			$scope.isPosting = false;
 		},function(){
 			$scope.netWorkError = true;
 			$scope.isPosting = false;
 		});
-	};
-}
+
+		$scope.nextButtonClicked =  function(){
+			$state.go('preCheckinStatus');
+		};
+	}
+};
 
 var dependencies = [
 '$scope','$rootScope','$state','$stateParams','earlyCheckinService',

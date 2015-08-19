@@ -5,11 +5,9 @@ login.service('loginSrv',['$http', '$q', function($http, $q){
 		//Sample params {params:{fname: "fname", lname: "lname"}}
 		$http.post("/login/submit", data).success(function(response, status) {
 			if(response.status === "success"){
-		    	//deferred.resolve(response.data);
 		    	successCallback(response.data);
 			}else{
 				// please note the type of error expecting is array
-		    	//deferred.reject(response.errors);
 		    	failureCallBack(response.errors);
 			}
 		}).error(function(response, status) {

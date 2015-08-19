@@ -15,7 +15,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		$scope.setHeadingTitle = function(heading) {
 			$scope.heading = heading;
 			$scope.setTitle(heading);
-		}
+		};
 
 		$scope.cardSaved = function() {
 			$scope.viewState.isAddNewCard = false;
@@ -35,7 +35,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			var fetchGuestcardDataSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
 				// No more future reservations returned with this API call
-				// $scope.reservationDetails.guestCard.futureReservations = data.future_reservation_count;
+
 
 				/**
 				 *	CICO-9169
@@ -102,7 +102,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				var currentGuestCardHeaderData = declonedData;
 				$scope.$broadcast("resetGuestTab");
 				// CICO-16013 - fixing multiple API calls on staycard loading
-				//$scope.$broadcast("SHOWGUESTLIKESINFO");
+
 			};
 
 			var fetchGuestcardDataFailureCallback = function(data) {
@@ -126,7 +126,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				data.id = $scope.reservationDetails.companyCard.id;
 				$scope.companyContactInformation = data;
 				// No more future reservations returned with this API call
-				// $scope.reservationDetails.companyCard.futureReservations = data.future_reservation_count;
+
 				$scope.$broadcast('companyCardAvailable');
 
 			};
@@ -148,7 +148,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.travelAgentInformation = data;
 
 				// No more future reservations returned with this API call
-				// $scope.reservationDetails.travelAgent.futureReservations = data.future_reservation_count;
+
 				$scope.$broadcast('travelAgentFetchComplete');
 
 			};
@@ -208,7 +208,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 						if (typeof d.id !== 'undefined' && d.id !== '' && d.id !== null) {
 							x++;
 						}
-					})
+					});
 					return x;
 				},
 				onRemoveSuccess = function() {
@@ -233,7 +233,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				},
 				onEachRemoveSuccess = function() {
 					// Handle indl, remove success
-				}
+				};
 
 			//Cannot Remove the last card... Tell user not to select another card
 			if (checkNumber() > 1 && card !== "") {
@@ -293,7 +293,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			var params = {};
 			params.account_id = $scope.contractRoutingType === 'TRAVEL_AGENT' ? $scope.reservationData.travelAgent.id : $scope.reservationData.company.id;
 			params.reservation_ids = [];
-			params.reservation_ids.push($scope.reservationData.reservationId)
+			params.reservation_ids.push($scope.reservationData.reservationId);
 
 			$scope.invokeApi(RVReservationSummarySrv.applyDefaultRoutingToReservation, params, routingApplySuccess);
 		};
@@ -330,10 +330,10 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				if (data.has_conflicting_routes) {
 					$scope.conflict_cards = [];
 					if (card === 'travel_agent' && data.travel_agent.routings_count > 0) {
-						$scope.conflict_cards.push($scope.reservationData.travelAgent.name)
+						$scope.conflict_cards.push($scope.reservationData.travelAgent.name);
 					}
 					if (card === 'company' && data.company.routings_count > 0) {
-						$scope.conflict_cards.push($scope.reservationData.company.name)
+						$scope.conflict_cards.push($scope.reservationData.company.name);
 					}
 					that.showConflictingRoutingPopup();
 					return false;
@@ -341,13 +341,13 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 				if (card === 'travel_agent' && data.travel_agent.routings_count > 0) {
 					$scope.contractRoutingType = "TRAVEL_AGENT";
-					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.travelAgent.id)
+					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.travelAgent.id);
 					return false;
 
 				}
 				if (card === 'company' && data.company.routings_count > 0) {
 					$scope.contractRoutingType = "COMPANY";
-					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id)
+					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id);
 					return false;
 				} else {
 					that.reloadStaycard();
@@ -450,7 +450,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					'guestId': "",
 					'vip': "" //TODO: check with API or the product team
 				};
-				// // $scope.$emit('guestCardUpdateData', contactInfoData);
+
 				$scope.guestCardData.contactInfo = contactInfoData.contactInfo;
 				$scope.guestCardData.contactInfo.avatar = contactInfoData.avatar;
 				$scope.guestCardData.contactInfo.vip = contactInfoData.vip;
@@ -535,7 +535,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			 */
 			$scope.$broadcast('cardChanged', cardIds);
 			// 	CICO-7792 END
-		}
+		};
 
 
 		var ratesFetched = function(data, saveReservation) {
@@ -664,17 +664,6 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			angular.forEach($scope.reservationData.rooms, function(room, index) {
 				room.stayDates = {};
 				rateIdSet.push(tData.rooms[index].rateId);
-				// amount: 32
-				// numAdults: 1
-				// numChildren: 0
-				// numInfants: 0
-				// rateId: 787
-				// roomNumber: "07"
-				// roomTypeId: "62"
-				// roomTypeName: "Standard Cabin"
-				// room_id: 588
-				// room_no: "07"
-				// room_type: "Standard Cabin"
 				room.numAdults = tData.rooms[index].numAdults;
 				room.numChildren = tData.rooms[index].numChildren;
 				room.numInfants = tData.rooms[index].numInfants;
@@ -698,16 +687,11 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					reservationType: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.reservation_type_id) ? '' : tData.rooms[index].demographics.reservation_type_id,
 					origin: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.booking_origin_id) ? '' : tData.rooms[index].demographics.booking_origin_id,
 					segment: (typeof tData.rooms[index].segment === "undefined" || !tData.rooms[index].demographics.segment_id) ? '' : tData.rooms[index].demographics.segment_id
-				}
+				};
 
 				// put the same stuff in the reservationData obj as well
 				//
 				self.demographics = angular.copy(room.demographics);
-
-				// self.demographics.market = (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.market) ? '' : tData.rooms[index].demographics.market;
-				// self.demographics.source = (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.source) ? '' : tData.rooms[index].demographics.source;
-				// self.demographics.reservationType = (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.reservationType) ? '' : tData.rooms[index].demographics.reservationType;
-				// self.demographics.origin = (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.origin) ? '' : tData.rooms[index].demographics.origin;
 
 				self.totalStayCost = parseFloat(self.totalStayCost) + parseFloat(tData.rooms[index].amount);
 				var success = function(data) {

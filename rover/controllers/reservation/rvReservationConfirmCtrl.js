@@ -81,7 +81,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			else {
 				return $filter('translate')('ADD_BILLING_INFO_TITLE');
 			}
-		}
+		};
 
 		/**
 		 * Function to check if the the check-in time is selected by the user.
@@ -123,10 +123,10 @@ sntRover.controller('RVReservationConfirmCtrl', [
 					reservation: $scope.reservationData.isHourly ? 'HOURLY' : 'DAILY'
 				}
 			};
-		}
+		};
 
 		$scope.confirmationMailsSent = false;
-		
+
 		// add the print orientation after printing
 		var addPrintOrientation = function() {
 			var orientation = 'portrait';
@@ -134,21 +134,21 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		};
 		// remove the print orientation after printing
 		var removePrintOrientation = function() {
-			$( '#print-orientation' ).remove();	
+			$( '#print-orientation' ).remove();
 		};
 
-		var printPage= function() {		
+		var printPage= function() {
 			// add the orientation
 			addPrintOrientation();
-	    	$timeout(function() {	    	
+	    	$timeout(function() {
 	        	$window.print();
 	        	if ( sntapp.cordovaLoaded ) {
 	            	cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-	        	};	        
+	        	};
 	    	}, 100);
 			// remove the orientation after similar delay
 			$timeout(removePrintOrientation, 100);
-		};	
+		};
 
 		$scope.printData = {};
 		var sucessCallbackPrint = function( response ){
@@ -160,7 +160,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		};
 
 		// To handle printConfirmationReservation button click
-		$scope.printConfirmationReservation = function() {	
+		$scope.printConfirmationReservation = function() {
 			$scope.callAPI(RVReservationSummarySrv.fetchResservationConfirmationPrintData,{
                 successCallBack: sucessCallbackPrint,
                 failureCallBack: failureCallbackPrint,
@@ -187,7 +187,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 						validGuests.push(guest);
 					});
 					paramsArray.push(validGuests);
-				})
+				});
 
 				var onupdateSuccess = function() {
 						$scope.$emit('hideLoader');
@@ -204,7 +204,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 					onUpdateFailure = function(errorMessage) {
 						$scope.errorMessage = errorMessage;
 						$scope.$emit('hideLoader');
-					}
+					};
 
 				_.each($scope.reservationData.rooms, function(room, index) {
 					if (paramsArray[index].length > 0) {
@@ -213,9 +213,9 @@ sntRover.controller('RVReservationConfirmCtrl', [
 							reservation_id: ($scope.reservationData.reservationIds && $scope.reservationData.reservationIds[index]) || $scope.reservationData.reservationId
 						}, onupdateSuccess, onUpdateFailure);
 					}
-				})
+				});
 
-			}
+			};
 
 			if ($scope.confirmationMailsSent) {
 				updateBackButton();
@@ -230,7 +230,6 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 				var postData = {};
 				postData.reservationId = $scope.reservationData.reservationId;
-				postData.hide_rates = $scope.reservationData.hide_rates;
 				/**
 				 * CICO-7077 Confirmation Mail to have tax details
 				 */
@@ -295,14 +294,14 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				$scope.reservationData.guest.email = $scope.reservationData.guest.sendConfirmMailTo;
 				$scope.$emit('guestEmailChanged');
 				$scope.$emit("hideLoader");
-			}
+			};
 
 			var updateGuestEmailFailureCallback = function(data) {
 				$scope.$emit("hideLoader");
-			}
+			};
 
 			$scope.invokeApi(RVContactInfoSrv.updateGuest, data, updateGuestEmailSuccessCallback, updateGuestEmailFailureCallback);
-		}
+		};
 
 		/**
 		 * Navigate to the staycard for this guest
@@ -382,10 +381,10 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		};
 		var allRoomDetailsFetched = function(data) {
 			$scope.$emit("hideLoader");
-		}
+		};
 		var failedInRoomDetailsFetch = function(data) {
 			$scope.$emit("hideLoader");
-		}
+		};
 		var successOfRoomDetailsFetch = function(data) {
 			if (data.current_hk_status === 'READY') {
 				totalRoomsAvailable++;
@@ -449,7 +448,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		 */
 		$scope.goToSearchClicked = function() {
 			$scope.initReservationData();
-			//$state.go('rover.reservation.search');
+
 			$state.go('rover.search', '');
 		};
 
@@ -457,18 +456,18 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 			var updateSuccess = function(data) {
 				$scope.$emit('hideLoader');
-			}
+			};
 
 
 			var updateFailure = function(data) {
 				$scope.$emit('hideLoader');
-			}
+			};
 			if ($scope.reservationData.checkinTime.hh !== '' && $scope.reservationData.checkoutTime.hh !== '') {
 				var postData = $scope.computeReservationDataforUpdate();
 				postData.addons = $scope.existingAddons;
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
 			}
-		}
+		};
 
 		/**
 		 * trigger the billing information popup. $scope.reservationData is the same variable used in billing info popups also.
@@ -504,7 +503,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				className: 'ngdialog-theme-default',
 				scope: $scope
 			});
-		}
+		};
 
 		$scope.setDemographics = function() {
 			ngDialog.open({
@@ -512,10 +511,9 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				className: 'ngdialog-theme-default',
 				scope: $scope
 			});
-		}
+		};
 
 		$scope.updateAdditionalDetails = function() {
-			console.log('updateAdditionalDetails', $scope.reservationData.demographics);
 			var updateSuccess = function(data) {
 				$scope.$emit('hideLoader');
 			};
@@ -531,13 +529,27 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			postData.reservationId = $scope.reservationData.reservationId;
 			postData.addons = $scope.existingAddons;
 			$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
-		}
-		
+		};
+
 		/**
          * Function to toggle show rate checkbox value
          */
 		$scope.clickedShowRate = function(){
-			$scope.reservationData.hide_rates = !$scope.reservationData.hide_rates;
+
+			var sucessCallback = function(data){
+				$scope.reservationData.hide_rates = !$scope.reservationData.hide_rates;
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = "";
+			};
+			var failureCallback = function(errorData){
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorData;
+			};
+			var data = {
+				'reservation_id': $scope.reservationData.reservationId,
+				'hide_rates'	: !$scope.reservationData.hide_rates
+			};
+			$scope.invokeApi(RVBillCardSrv.toggleHideRate, data, sucessCallback, failureCallback);
 		};
 
 		$scope.init();

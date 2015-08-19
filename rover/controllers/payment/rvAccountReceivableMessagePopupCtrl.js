@@ -41,6 +41,6 @@ sntRover.controller('RVAccountReceivableMessagePopupCtrl',['$rootScope', '$scope
 
 	$scope.closeDialog = function(){
 		ngDialog.close();
-	}
+	};
 
 }]);

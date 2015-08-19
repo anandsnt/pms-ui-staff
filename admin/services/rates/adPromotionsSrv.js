@@ -19,7 +19,7 @@ admin.service('ADPromotionsSrv', ['$q', 'ADBaseWebSrvV2',
 		};
 
 		self.getActiveRates = function() {
-			var deferred = $q.defer();			
+			var deferred = $q.defer();
 			var url = '/api/rates?is_active=true';
 			ADBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
@@ -139,7 +139,7 @@ admin.service('ADPromotionsSrv', ['$q', 'ADBaseWebSrvV2',
 			var deferred = $q.defer();
 			var url = '/api/rates/' + params.id + '/set_promotions';
 			ADBaseWebSrvV2.putJSON(url, params.promos).then(function(data) {
-				deferred.resolve(data);				
+				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
 			});

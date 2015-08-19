@@ -102,7 +102,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 		controller : 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 });
-	
+
 	$stateProvider.state('externalVerification', {
     	url: '/externalVerification',
 	 	templateUrl: '/assets/preCheckin/partials/noOption.html',

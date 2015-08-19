@@ -85,7 +85,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 				if ($scope.groupConfigData.summary.rate !== -1) {
 					var selectedRateDetails = _.findWhere($scope.groupConfigData.summary.selected_room_types_and_rates, {
 						room_type_id: roomType.room_type_id
-					})
+					});
 					row.single_rate = selectedRateDetails.single_rate;
 					row.double_rate = selectedRateDetails.double_rate;
 					row.extra_adult_rate = selectedRateDetails.extra_adult_rate;
@@ -155,8 +155,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 		};
 
 		var successCallBackOfSaveNewRoomTypesAndRates = function(data) {
-			/*$scope.updateRoomBlockDetails (selectedRoomTypeAndRates);
-			$scope.showRoomBlockDetails ();*/
+
 			$scope.fetchRoomBlockGridDetails();
 			$scope.closeDialog();
 		};
@@ -203,7 +202,9 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 		 */
 		$scope.hideRoomType = function(mySelectedID, roomType) {
 			//if it is mine room type, we will show that
-			if (parseInt(mySelectedID) === parseInt(roomType.room_type_id)) return false;
+			if (parseInt(mySelectedID) === parseInt(roomType.room_type_id)) {
+				return false;
+			}
 
 			//we are removing other selected
 			//list of selecetd room types' ids
@@ -214,7 +215,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 			});
 
 			//yes final Boolean is on the way
-			return (_.indexOf(selectedIdList, roomType.room_type_id) >= 0)
-		}
+			return (_.indexOf(selectedIdList, roomType.room_type_id) >= 0);
+		};
 	}
 ]);

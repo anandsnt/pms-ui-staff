@@ -20,7 +20,7 @@ var setUpList = function(){
         }
     });
   });
-}
+};
 /**
 * To fetch upsell details
 *
@@ -215,7 +215,7 @@ $scope.saveClick = function(){
 $scope.clickAddRoomType = function(){
 	//While addig a room type, making its max_late_checkouts defaults to 0.
 	angular.forEach($scope.upsellData.room_types,function(item, index) {
-		if(item.id === $scope.upsellData.selected_room_type){
+		if(item.id === parseInt($scope.upsellData.selected_room_type)){
 			 item.max_late_checkouts = 0;
 		}
     });

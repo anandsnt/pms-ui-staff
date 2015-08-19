@@ -10,7 +10,7 @@ sntRover.directive('forceDecimalZeroDir', ['$timeout', '$filter', function($time
             exec = function(val) {
                 value = $filter( 'number' )( scope.ngModel, 2 );
                 el.val( value );
-            }
+            };
 
             $timeout( exec, 10, false );
         }

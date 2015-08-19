@@ -13,25 +13,23 @@
         <table class="forecast-reports medium-grid">
             <thead>
                 <tr class="top-row">
-                    <th class="long-code break"></th>
-                    <th colspan="1" class="break">Today</th>
-                    <th colspan="1">MTD</th>
-                    <th colspan="1">Last Year MTD</th>
-                    <th colspan="1" class="break">% Variance</th>
-                    <th colspan="1">YTD</th>
-                    <th colspan="1">Last Year YTD</th>
-                    <th colspan="1">% Variance</th>
+                    <th class="date break">{{ chosenReport.singleValueDate | date : dateFormat }}</th>
+                    <th colspan="3" class="break">Revenue</th>
+                    <th colspan="3" class="break">Bookings</th>
+                    <th colspan="3" class="break">Room Nights</th>
+                    <th colspan="3" class="break">ADR</th>
+                    <th colspan="3" class="break">%</th>
                 </tr>
             </thead>
             
             <!-- Reports table footer -->
-            <tfoot ng-include="'/assets/partials/reports/rvReportDetailsFooter.html'"></tfoot>
+            <tfoot ng-include="'/assets/partials/reports/shared/rvReportDetailsFooter.html'"></tfoot>
 
             <!-- Reports table content -->
-            <tbody ng-repeat="item in results" ng-include="'/assets/partials/reports/rvMarketSegmentStatReportRow.html'"></tbody>
+            <tbody ng-repeat="item in results" ng-include="'/assets/partials/reports/marketSegmentStatReport/rvMarketSegmentStatReportRow.html'"></tbody>
             
             <!-- Reports table total content -->
-            <tbody ng-if="resultsTotalRow"  ng-include="'/assets/partials/reports/rvMarketSegmentStatReportTotalRow.html'"></tbody>
+            <tbody ng-if="resultsTotalRow"  ng-include="'/assets/partials/reports/marketSegmentStatReport/rvMarketSegmentStatReportTotalRow.html'"></tbody>
         </table>
     </div>
 </div>

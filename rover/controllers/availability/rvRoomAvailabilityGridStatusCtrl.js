@@ -45,7 +45,7 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 		$scope.toggleShowRoomTypeWiseBookedRooms = function(){
 			$scope.showRoomTypeWiseBookedRooms  = !$scope.showRoomTypeWiseBookedRooms ;
 			$scope.refreshScroller('room_availability_scroller');
-		}
+		};
 
 
 		/*
@@ -55,7 +55,7 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 		$scope.toggleShowRoomTypeWiseAvailableRooms = function(){
 			$scope.showRoomTypeWiseAvailableRooms  = !$scope.showRoomTypeWiseAvailableRooms ;
 			$scope.refreshScroller('room_availability_scroller');
-		}
+		};
 
 	}
 ]);

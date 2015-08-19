@@ -1,4 +1,4 @@
-
+<tr ng-repeat="each in results track by $index" class="{{ each.className }}" ngrepeatend>
 
 	<!-- Output Charge group name only for 1st charge code, e.g. first <tr> of the charge group-->
     <td ng-if="each.isReport && each.chargeGroupName" class="group" rowspan="{{ each.rowspan }}">{{ each.chargeGroupName }}</td>

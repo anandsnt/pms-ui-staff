@@ -2,7 +2,6 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 					function(ngTableParams, $scope, $state, ADDeviceSrv, $timeout, $location, $anchorScroll){
 
 	$scope.errorMessage = '';
-	// BaseCtrl.call(this, $scope);
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
 	$scope.mapping = {};
 	$scope.isAddMode = false;
@@ -11,19 +10,9 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
    /*
     * To fetch list of device mappings
     */
-	// $scope.listDevices = function(){
-		// var successCallbackFetch = function(data){
-			// $scope.$emit('hideLoader');
-			// $scope.data = data;
-			// $scope.currentClickedElement = -1;
-			// $scope.isAddMode = false;
-		// };
-		// $scope.invokeApi(ADDeviceSrv.fetch, {} , successCallbackFetch);
-	// };
 	$scope.listDevices = function($defer, params){
 		var getParams = $scope.calculateGetParams(params);
 		var fetchSuccessOfItemList = function(data){
-			console.log(JSON.stringify(data));
 			$scope.$emit('hideLoader');
 			//No expanded rate view
 			$scope.currentClickedElement = -1;
@@ -55,8 +44,7 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 
 	$scope.loadTable();
 	//To list device mappings
-	//$scope.listDevices();
-   /*
+	/*
     * To render edit device mapping screen
     * @param {index} index of selected device mapping
     * @param {id} id of the device mapping

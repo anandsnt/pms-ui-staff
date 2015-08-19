@@ -31,7 +31,7 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
            order.name = order.value;
            $scope.max_order_values.push(order);
         }
-     }
+     };
 
      init();
 
@@ -53,7 +53,7 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	            "addon_max_order":"",
 	            "parent_category": [],
 	            "parent_section": []
-            }
+            };
 
     $scope.fetchAddons = function(){
     var fetchSuccessOfAddons = function(data) {
@@ -77,7 +77,7 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	if($scope.data.page_template === "ADDON" && $scope.addons.length === 0){
 		$scope.fetchAddons();
 	}
-}
+};
 
 $scope.getSelectedAddonDescription = function(){
 	var description = "";
@@ -87,7 +87,7 @@ $scope.getSelectedAddonDescription = function(){
        }
   });
      return description;
-}
+};
 
 $scope.getSelectedAddonPrice = function(){
 	var price = "";
@@ -97,7 +97,7 @@ $scope.getSelectedAddonPrice = function(){
        }
   });
      return price;
-}
+};
 
 
 	/*Function to fetch the item details
@@ -113,9 +113,9 @@ $scope.getSelectedAddonPrice = function(){
 			}else{
 				$scope.$emit('hideLoader');
 			}
-		}
+		};
 		$scope.invokeApi(ADContentManagementSrv.fetchComponent, $stateParams.id , fetchItemSuccessCallback);
-	}
+	};
 	/*Checkin if the screen is loaded for a new item or,
 	 * for existing item.
     */
@@ -130,7 +130,7 @@ $scope.getSelectedAddonPrice = function(){
     */
 	$scope.goBack = function(){
         $state.go('admin.cmscomponentSettings');
-	}
+	};
 	/*Function to popup the assign parent modal.
 	 *The param isSection === true, implies the modal is for assigning sections
 	 *Otherwise the modal is for assigning categories
@@ -144,21 +144,21 @@ $scope.getSelectedAddonPrice = function(){
                 className: '',
                 scope: $scope
             });
-	}
+	};
 	/*Function to save an item
     */
 	$scope.saveItem = function(){
 		var saveItemSuccessCallback = function(data){
 			$scope.$emit('hideLoader');
 			$scope.goBack();
-		}
+		};
 		var unwantedKeys = ["icon"];
 		if($scope.initialIcon === $scope.data.image) {
 			unwantedKeys = ["icon", "image"];
 		}
 		var data = dclone($scope.data, unwantedKeys);
 		$scope.invokeApi(ADContentManagementSrv.saveComponent, data , saveItemSuccessCallback);
-	}
+	};
 
 	/* delete component starts here*/
 
@@ -175,18 +175,18 @@ $scope.getSelectedAddonPrice = function(){
 				closeByDocument:true
 			});
 			$scope.componentIdToDelete = id;
-		}
+		};
 		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id':id} , successCallbackFetchDeleteDetails);
 
-	}
+	};
 	/* Function to remove the category from selected list*/
 	$scope.deleteParentCategory = function(index){
 		$scope.data.parent_category.splice(index, 1);
-	}
+	};
 	/* Function to remove the section from selected list*/
 	$scope.deleteParentSection = function(index){
 		$scope.data.parent_section.splice(index, 1);
-	}
+	};
 	/* Listener to know that the current category is deleted.
 	 * Need to go back to preveous state in this case
 	 */

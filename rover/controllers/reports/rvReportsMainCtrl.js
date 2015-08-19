@@ -1,20 +1,15 @@
 sntRover.controller('RVReportsMainCtrl', [
 	'$rootScope',
 	'$scope',
-	'reportsResponse',
+	'payload',
 	'RVreportsSrv',
-	'$filter',
-	'activeUserList',
-	'guaranteeTypes',
-	'chargeGroups',
-	'chargeCodes',
-	'markets',
-	'sources',
-	'origins',
-	'codeSettings',
-	'$timeout',
+	'RVreportsSubSrv',
 	'RVReportUtilsFac',
-	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter, activeUserList, guaranteeTypes, chargeGroups, chargeCodes, markets, sources, origins, codeSettings, $timeout, reportUtils) {
+	'RVReportParams',
+	'RVReportMsgs',
+	'$filter',
+	'$timeout',
+	function($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, $filter, $timeout) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -33,27 +28,23 @@ sntRover.controller('RVReportsMainCtrl', [
 		var listTitle = $filter('translate')('STATS_&_REPORTS_TITLE');
 		$scope.setTitle(listTitle);
 		$scope.heading = listTitle;
-		$scope.$emit("updateRoverLeftMenu", "reports");
-
-		//refer angular.isArray in scope
-		$scope.isArray = angular.isArray;
+		$scope.$emit( "updateRoverLeftMenu", "reports" );
 
 
-		$scope.reportList = reportsResponse.results;
-		$scope.reportCount = reportsResponse.total_count;
+		$scope.reportList  = payload.reportsResponse.results;
+		$scope.reportCount = payload.reportsResponse.total_count;
 
+		$scope.activeUserList = payload.activeUserList;
+		$scope.guaranteeTypes = payload.guaranteeTypes;
+		$scope.chargeGroups   = payload.chargeGroups;
+		$scope.chargeCodes    = payload.chargeCodes;
 
-		$scope.activeUserList = activeUserList;
-		$scope.guaranteeTypes = guaranteeTypes;
-		$scope.chargeGroups = chargeGroups;
-		$scope.chargeCodes = chargeCodes;
+		$scope.markets = payload.markets;
+		$scope.sources = payload.sources;
+		$scope.origins = payload.origins;
 
-		$scope.markets = markets;
-		$scope.sources = sources;
-		$scope.origins = origins;
-
-		$scope.codeSettings = codeSettings;
-
+		$scope.codeSettings = payload.codeSettings;
+		$scope.holdStatus   = payload.holdStatus;
 
 
 
@@ -71,8 +62,8 @@ sntRover.controller('RVReportsMainCtrl', [
 			$scope.resetFilterItemsToggle();
 
 			// tell report list controller to refresh scroll
-			console.log('report.list.scroll.refresh');
-			$scope.$broadcast( 'report.list.scroll.refresh' );
+			console.info( reportMsgs['REPORT_LIST_SCROLL_REFRESH'] );
+			$scope.$broadcast( reportMsgs['REPORT_LIST_SCROLL_REFRESH'] );
 		};
 
 
@@ -114,6 +105,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			item_20: false,
 			item_21: false,
 			item_22: false,
+			item_23: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -137,8 +129,6 @@ sntRover.controller('RVReportsMainCtrl', [
 		// replace any char with single space " "
 		// e.g -> filter:showValidSortBy:_
 		$scope.replaceWithSpace = function(value, tobeReplaced) {
-			console.log(arguments);
-
 			return (!value) ? '' : value.replace(/_/g, ' ');
 		};
 
@@ -332,7 +322,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		// auto correct the CICO value;
 		var getProperCICOVal = function(type) {
-			var chosenReport = RVreportsSrv.getChoosenReport();
+			var chosenReport = reportsSrv.getChoosenReport();
 
 			// only do this for this report
 			// I know this is ugly :(
@@ -343,7 +333,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			// if user has not chosen anything
 			// both 'checked_in' & 'checked_out' must be true
 			if (!chosenReport.chosenCico) {
-				chosenReport.chosenCico = 'BOTH'
+				chosenReport.chosenCico = 'BOTH';
 				return true;
 			};
 
@@ -441,220 +431,246 @@ sntRover.controller('RVReportsMainCtrl', [
 		};
 
 
-
-
-		// generate reports
-		$scope.genReport = function(changeView, loadPage, resultPerPageOverride) {
-			var chosenReport = RVreportsSrv.getChoosenReport(),
-				changeView = typeof changeView === 'boolean' ? changeView : true,
-				page = !!loadPage ? loadPage : 1;
-
-			// create basic param
+		function genParams (report, page, perPage) {
 			var params = {
-				id: chosenReport.id,
-				page: page,
-				per_page: resultPerPageOverride || $scope.resultsPerPage
+				'id'       : report.id,
+				'page'     : page,
+				'per_page' : perPage
 			};
 
-			var key = '';
-			var ary = [];
-			var selected = [];
+			var key         = '',
+				fromKey     = '',
+				untilKey    = '',
+				checkInKey  = '',
+				checkOutKey = '',
+				selected    = [];
 
 			// capturing the filters applied to be
 			// shown on the report details footer
-			$scope.appliedFilter = {};
-			$scope.appliedFilter.options = [];
-			$scope.appliedFilter.display = [];
-			$scope.appliedFilter.markets = [];
-			$scope.appliedFilter.sources = [];
-			$scope.appliedFilter.origins = [];
-			$scope.appliedFilter.guarantees = [];
-			$scope.appliedFilter.chargeGroups = [];
-			$scope.appliedFilter.chargeCode = [];
+			$scope.appliedFilter = {
+				'options'      : [],
+				'display'      : [],
+				'markets'      : [],
+				'sources'      : [],
+				'origins'      : [],
+				'guarantees'   : [],
+				'chargeGroups' : [],
+				'chargeCodes'  : [],
+				'holdStatuses' : []
+			};
 
 			// include dates
-			if (!!chosenReport.hasDateFilter) {
-				params['from_date'] = $filter('date')(chosenReport.fromDate, 'yyyy/MM/dd');
-				params['to_date']   = $filter('date')(chosenReport.untilDate, 'yyyy/MM/dd');
+			if (!!report.hasDateFilter) {
+				fromKey  = reportParams['FROM_DATE'];
+				untilKey = reportParams['TO_DATE'];
 				/**/
-				$scope.appliedFilter['fromDate'] = angular.copy( chosenReport.fromDate );
-				$scope.appliedFilter['toDate']   = angular.copy( chosenReport.untilDate );
+				params[fromKey]  = $filter('date')(report.fromDate, 'yyyy/MM/dd');
+				params[untilKey] = $filter('date')(report.untilDate, 'yyyy/MM/dd');
+				/**/
+				$scope.appliedFilter['fromDate'] = angular.copy( report.fromDate );
+				$scope.appliedFilter['toDate']   = angular.copy( report.untilDate );
 			};
 
 			// include cancel dates
-			if (!!chosenReport.hasCancelDateFilter) {
-				params['cancel_from_date'] = $filter('date')(chosenReport.fromCancelDate, 'yyyy/MM/dd');
-				params['cancel_to_date']   = $filter('date')(chosenReport.untilCancelDate, 'yyyy/MM/dd');
+			if (!!report.hasCancelDateFilter) {
+				fromKey  = reportParams['CANCEL_FROM_DATE'];
+				untilKey = reportParams['CANCEL_TO_DATE'];
 				/**/
-				$scope.appliedFilter['cancelFromDate'] = angular.copy( chosenReport.fromCancelDate );
-				$scope.appliedFilter['cancelToDate']   = angular.copy( chosenReport.untilCancelDate );
+				params[fromKey]  = $filter('date')(report.fromCancelDate, 'yyyy/MM/dd');
+				params[untilKey] = $filter('date')(report.untilCancelDate, 'yyyy/MM/dd');
+				/**/
+				$scope.appliedFilter['cancelFromDate'] = angular.copy( report.fromCancelDate );
+				$scope.appliedFilter['cancelToDate']   = angular.copy( report.untilCancelDate );
 			};
 
 			// include arrival dates -- IFF both the limits of date range have been selected
-			if (!!chosenReport.hasArrivalDateFilter && !!chosenReport.fromArrivalDate && !!chosenReport.untilArrivalDate) {
-				params['arrival_from_date'] = $filter('date')(chosenReport.fromArrivalDate, 'yyyy/MM/dd');
-				params['arrival_to_date'] = $filter('date')(chosenReport.untilArrivalDate, 'yyyy/MM/dd');
+			if (!!report.hasArrivalDateFilter && !!report.fromArrivalDate && !!report.untilArrivalDate) {
+				fromKey  = reportParams['ARRIVAL_FROM_DATE'];
+				untilKey = reportParams['ARRIVAL_TO_DATE'];
 				/**/
-				$scope.appliedFilter['arrivalFromDate'] = angular.copy( chosenReport.fromArrivalDate );
-				$scope.appliedFilter['arrivalToDate']   = angular.copy( chosenReport.untilArrivalDate );
+				params[fromKey]  = $filter('date')(report.fromArrivalDate, 'yyyy/MM/dd');
+				params[untilKey] = $filter('date')(report.untilArrivalDate, 'yyyy/MM/dd');
+				/**/
+				$scope.appliedFilter['arrivalFromDate'] = angular.copy( report.fromArrivalDate );
+				$scope.appliedFilter['arrivalToDate']   = angular.copy( report.untilArrivalDate );
 			};
 
 			// include deposit due dates
-			if (!!chosenReport.hasDepositDateFilter) {
-				params['deposit_from_date'] = $filter('date')(chosenReport.fromDepositDate, 'yyyy/MM/dd');
-				params['deposit_to_date']   = $filter('date')(chosenReport.untilDepositDate, 'yyyy/MM/dd');
+			if (!!report.hasDepositDateFilter) {
+				fromKey  = reportParams['DEPOSIT_FROM_DATE'];
+				untilKey = reportParams['DEPOSIT_TO_DATE'];
 				/**/
-				$scope.appliedFilter['depositFromDate'] = angular.copy( chosenReport.fromDepositDate );
-				$scope.appliedFilter['depositToDate']   = angular.copy( chosenReport.untilDepositDate );
+				params[fromKey]  = $filter('date')(report.fromDepositDate, 'yyyy/MM/dd');
+				params[untilKey] = $filter('date')(report.untilDepositDate, 'yyyy/MM/dd');
+				/**/
+				$scope.appliedFilter['depositFromDate'] = angular.copy( report.fromDepositDate );
+				$scope.appliedFilter['depositToDate']   = angular.copy( report.untilDepositDate );
 			};
 
 			// include paid dates
-			if (!!chosenReport.hasPaidDateRange) {
-				params['paid_from_date'] = $filter('date')(chosenReport.fromPaidDate, 'yyyy/MM/dd');
-				params['paid_to_date']   = $filter('date')(chosenReport.untilPaidDate, 'yyyy/MM/dd');
+			if (!!report.hasPaidDateRange) {
+				fromKey  = reportParams['PAID_FROM_DATE'];
+				untilKey = reportParams['PAID_TO_DATE'];
 				/**/
-				$scope.appliedFilter['paidFromDate'] = angular.copy( chosenReport.fromPaidDate );
-				$scope.appliedFilter['paidToDate']   = angular.copy( chosenReport.untilPaidDate );
+				params[fromKey]  = $filter('date')(report.fromPaidDate, 'yyyy/MM/dd');
+				params[untilKey] = $filter('date')(report.untilPaidDate, 'yyyy/MM/dd');
+				/**/
+				$scope.appliedFilter['paidFromDate'] = angular.copy( report.fromPaidDate );
+				$scope.appliedFilter['paidToDate']   = angular.copy( report.untilPaidDate );
 			};
 
 			// include create dates
-			if (!!chosenReport.hasCreateDateFilter) {
-				params['create_from_date'] = $filter('date')(chosenReport.fromCreateDate, 'yyyy/MM/dd');
-				params['create_to_date']   = $filter('date')(chosenReport.untilCreateDate, 'yyyy/MM/dd');
+			if (!!report.hasCreateDateFilter) {
+				fromKey  = reportParams['CREATE_FROM_DATE'];
+				untilKey = reportParams['CREATE_TO_DATE'];
 				/**/
-				$scope.appliedFilter['createFromDate'] = angular.copy( chosenReport.fromCreateDate );
-				$scope.appliedFilter['createToDate']   = angular.copy( chosenReport.untilCreateDate );
+				params[fromKey]  = $filter('date')(report.fromCreateDate, 'yyyy/MM/dd');
+				params[untilKey] = $filter('date')(report.untilCreateDate, 'yyyy/MM/dd');
+				/**/
+				$scope.appliedFilter['createFromDate'] = angular.copy( report.fromCreateDate );
+				$scope.appliedFilter['createToDate']   = angular.copy( report.untilCreateDate );
 			};
 
 			// include single dates
-			if (!!chosenReport.hasSingleDateFilter) {
-				params['date'] = $filter('date')(chosenReport.singleValueDate, 'yyyy/MM/dd');
+			if (!!report.hasSingleDateFilter) {
+				key = reportParams['SINGLE_DATE'];
 				/**/
-				$scope.appliedFilter['singleValueDate'] = angular.copy( chosenReport.singleValueDate );
+				params[key] = $filter('date')(report.singleValueDate, 'yyyy/MM/dd');
+				/**/
+				$scope.appliedFilter['singleValueDate'] = angular.copy( report.singleValueDate );
 			};
-			
+
 			// include rate adjustment dates
-			if (!!chosenReport.hasAdjustmentDateRange) {
-				params['from_date'] = $filter('date')(chosenReport.fromAdjustmentDate, 'yyyy/MM/dd');
-				params['to_date']   = $filter('date')(chosenReport.untilAdjustmentDate, 'yyyy/MM/dd');
+			if (!!report.hasAdjustmentDateRange) {
+				fromKey  = reportParams['ADJUSTMENT_FROM_DATE'];
+				untilKey = reportParams['ADJUSTMENT_TO_DATE'];
 				/**/
-				$scope.appliedFilter['adjustmentFromDate'] = angular.copy( chosenReport.fromAdjustmentDate );
-				$scope.appliedFilter['adjustmentToDate']   = angular.copy( chosenReport.untilAdjustmentDate );
+				params[fromKey]  = $filter('date')(report.fromAdjustmentDate, 'yyyy/MM/dd');
+				params[untilKey] = $filter('date')(report.untilAdjustmentDate, 'yyyy/MM/dd');
+				/**/
+				$scope.appliedFilter['adjustmentFromDate'] = angular.copy( report.fromAdjustmentDate );
+				$scope.appliedFilter['adjustmentToDate']   = angular.copy( report.untilAdjustmentDate );
 			};
 
 			// include times
-			if (chosenReport.hasTimeFilter) {
-
-				if ( chosenReport.fromTime ) {
-					params['from_time'] = chosenReport.fromTime;
+			if (report.hasTimeFilter) {
+				if ( report.fromTime ) {
+					key         = reportParams['FROM_TIME'];
+					params[key] = report.fromTime;
 					/**/
-					$scope.appliedFilter['fromTime'] = angular.copy( chosenReport.fromTime );
+					$scope.appliedFilter['fromTime'] = angular.copy( report.fromTime );
 				};
 
-				if ( chosenReport.untilTime ) {
-					params['to_time']   = chosenReport.untilTime;
+				if ( report.untilTime ) {
+					key         = reportParams['TO_TIME'];
+					params[key] = report.untilTime;
 					/**/
-					$scope.appliedFilter['toTime']   = angular.copy( chosenReport.untilTime );
+					$scope.appliedFilter['toTime'] = angular.copy( report.untilTime );
 				};
 			};
 
 			// include CICO filter
-			if (!!chosenReport.hasCicoFilter) {
-				params['checked_in'] = getProperCICOVal('checked_in');
-				params['checked_out'] = getProperCICOVal('checked_out');
+			if (!!report.hasCicoFilter) {
+				checkInKey  = reportParams['CHECKED_IN'];
+				checkOutKey = reportParams['CHECKED_OUT'];
 				/**/
-				if ( params['checked_in'] && params['checked_out'] ) {
+				params[checkInKey]  = getProperCICOVal('checked_in');
+				params[checkOutKey] = getProperCICOVal('checked_out');
+				/**/
+				if ( params[checkInKey] && params[checkOutKey] ) {
 					$scope.appliedFilter['cicoTypes'] = 'Check Ins & Check Outs';
-				} else if ( params['checked_in'] ) {
+				} else if ( params[checkInKey] ) {
 					$scope.appliedFilter['cicoTypes'] = 'Only Check Ins';
-				} else if ( params['checked_out'] ) {
+				} else if ( params[checkOutKey] ) {
 					$scope.appliedFilter['cicoTypes'] = 'Only Check Outs';
 				}
 			};
 
 			// include user ids
-			if (chosenReport.hasUserFilter && chosenReport.chosenUsers && chosenReport.chosenUsers.length) {
-				key = 'user_ids[]';
+			if (report.hasUserFilter && report.chosenUsers && report.chosenUsers.length) {
+				key         = reportParams['USER_IDS'];
 				params[key] = [];
-				_.each(chosenReport.chosenUsers, function(user) {
+				/**/
+				_.each(report.chosenUsers, function(user) {
 					params[key].push( user );
 				});
 				/**/
 				$scope.appliedFilter['users'] = [];
-				_.each(chosenReport.chosenUsers, function (id) {
-					var user = _.find($scope.activeUserList, function (each) {
+				_.each(report.chosenUsers, function (id) {
+					var _user = _.find($scope.activeUserList, function (each) {
 						return each.id === id;
 					});
-					if ( !!user ) {
-						$scope.appliedFilter['users'].push( user.full_name );
+					if ( !! _user ) {
+						$scope.appliedFilter['users'].push( _user.full_name );
 					};
 				});
 			};
 
 			// include sort bys
-			if (chosenReport.sortByOptions) {
-				if (!!chosenReport.chosenSortBy) {
-					params['sort_field'] = chosenReport.chosenSortBy;
-				};
-				var _chosenSortBy = _.find(chosenReport.sortByOptions, function(item) {
-					return item && item.value === chosenReport.chosenSortBy;
-				});
-				if (!!_chosenSortBy && typeof _chosenSortBy.sortDir === 'boolean') {
-					params['sort_dir'] = _chosenSortBy.sortDir;
+			if ( report.sortByOptions ) {
+				if ( !! report.chosenSortBy ) {
+					key         = reportParams['SORT_FIELD'];
+					params[key] = report.chosenSortBy;
 				};
 				/**/
-				if ( !!_chosenSortBy ) {
+				var _chosenSortBy = _.find(report.sortByOptions, function(item) {
+					return item && item.value === report.chosenSortBy;
+				});
+				if ( !! _chosenSortBy && 'boolean' === typeof _chosenSortBy.sortDir ) {
+					key         = reportParams['SORT_DIR'];
+					params[key] = _chosenSortBy.sortDir;
+				};
+				/**/
+				if ( !! _chosenSortBy ) {
 					$scope.appliedFilter['sortBy'] = _chosenSortBy.description;
 				};
-				if ( !!_chosenSortBy && typeof _chosenSortBy.sortDir === 'boolean' ) {
+				if ( !! _chosenSortBy && 'boolean' === typeof _chosenSortBy.sortDir ) {
 					$scope.appliedFilter['sortDir'] = _chosenSortBy.sortDir ? 'Ascending' : 'Descending';
 				};
 			};
 
 			// include group bys
-			if ( chosenReport.groupByOptions ) {
-				if ( chosenReport.chosenGroupBy === 'DATE' ) {
-					params['group_by_date'] = true;
-					/**/
-					$scope.appliedFilter['groupBy'] = 'Date';
+			if ( report.groupByOptions ) {
+				key = '';
+				/**/
+				if ( 'DATE' === report.chosenGroupBy ) {
+					key = reportParams['GROUP_BY_DATE'];
+				} else if ( 'USER' === report.chosenGroupBy ) {
+					key = reportParams['GROUP_BY_USER'];
+				} else if ( 'GROUP_NAME' === report.chosenGroupBy ) {
+					key = reportParams['GROUP_BY_GROUP_NAME'];
 				};
-
-				if ( chosenReport.chosenGroupBy === 'USER' ) {
-					params['group_by_user'] = true;
-					/**/
-					$scope.appliedFilter['groupBy'] = 'User';
+				/**/
+				if ( !! key ) {
+					params[key]                     = true;
+					$scope.appliedFilter['groupBy'] = key.replace( 'GROUP_BY_', '' )
+														 .replace( '_', ' ' );
 				};
 			};
 
-
-
-			if ( chosenReport.hasOwnProperty('hasGeneralOptions') && chosenReport['hasGeneralOptions']['data'].length ) {
-
-				// keeping direct ref to option from 'chosenReport'
-				// reseting all
-				chosenReport.chosenOptions = {};
-
-				_.each(chosenReport['hasGeneralOptions']['data'], function(each) {
+			// reset 'chosenOptions' and generate params for selected options
+			if ( report['hasGeneralOptions']['data'].length ) {
+				report.chosenOptions = {};
+				/**/
+				_.each(report['hasGeneralOptions']['data'], function(each) {
 					if ( each.selected ) {
-						key = each.paramKey;
-						params[key] = true;
-
-						// keeping direct ref to option from 'chosenReport'
-						chosenReport.chosenOptions[key] = true;
-
+						key                             = each.paramKey;
+						params[key]                     = true;
+						report.chosenOptions[key] = true;
 						/**/
 						$scope.appliedFilter.options.push( each.description );
-					} else if ( !each.selected && each.mustSend ) {
-						key = each.paramKey;
+					} else if ( ! each.selected && each.mustSend ) {
+						key         = each.paramKey;
 						params[key] = false;
 					};
 				});
 			};
 
-			if ( chosenReport.hasOwnProperty('hasDisplay') && chosenReport['hasDisplay']['data'].length ) {
-				_.each(chosenReport['hasDisplay']['data'], function(each) {
+			// generate params for selected displays
+			if ( report['hasDisplay']['data'].length ) {
+				_.each(report['hasDisplay']['data'], function(each) {
 					if ( each.selected ) {
-						key = each.paramKey;
+						key         = each.paramKey;
 						params[key] = true;
 						/**/
 						$scope.appliedFilter.display.push( each.description );
@@ -662,24 +678,22 @@ sntRover.controller('RVReportsMainCtrl', [
 				});
 			};
 
-
-
 			// include company/ta/group
-			if (chosenReport.hasOwnProperty('hasIncludeComapnyTaGroup') && !!chosenReport.chosenIncludeComapnyTaGroup) {
-				key = chosenReport.hasIncludeComapnyTaGroup.value.toLowerCase();
-				params[key] = chosenReport.chosenIncludeComapnyTaGroup;
-				/* Note using the ui value here */
-				$scope.appliedFilter['companyTaGroup'] = chosenReport.uiChosenIncludeComapnyTaGroup;
+			if ( report.hasOwnProperty('hasIncludeComapnyTaGroup') && !!report.chosenIncludeComapnyTaGroup ) {
+				key         = report.hasIncludeComapnyTaGroup.value.toLowerCase();
+				params[key] = report.chosenIncludeComapnyTaGroup;
+				/* Note: Using the ui value here */
+				$scope.appliedFilter['companyTaGroup'] = report.uiChosenIncludeComapnyTaGroup;
 			};
 
-
 			// selected markets
-			if (chosenReport.hasOwnProperty('hasMarketsList')) {
-				selected = _.where(chosenReport['hasMarketsList']['data'], { selected: true });
+			if ( report.hasOwnProperty('hasMarketsList') ) {
+				selected = _.where( report['hasMarketsList']['data'], { selected: true } );
 
 				if ( selected.length > 0 ) {
-					key = 'market_ids[]';
+					key         = reportParams['MARKET_IDS'];
 					params[key] = [];
+					/**/
 					_.each(selected, function(market) {
 						params[key].push( market.value );
 						/**/
@@ -687,19 +701,20 @@ sntRover.controller('RVReportsMainCtrl', [
 					});
 
 					// in case if all markets are selected
-					if ( chosenReport['hasMarketsList']['data'].length === selected.length ) {
+					if ( report['hasMarketsList']['data'].length === selected.length ) {
 						$scope.appliedFilter.markets = ['All Markets'];
 					};
 				};
 			};
 
 			// selected source
-			if (chosenReport.hasOwnProperty('hasSourcesList')) {
-				selected = _.where(chosenReport['hasSourcesList']['data'], { selected: true });
+			if ( report.hasOwnProperty('hasSourcesList') ) {
+				selected = _.where( report['hasSourcesList']['data'], { selected: true } );
 
 				if ( selected.length > 0 ) {
-					key = 'source_ids[]';
+					key         = reportParams['SOURCE_IDS'];
 					params[key] = [];
+					/**/
 					_.each(selected, function(source) {
 						params[key].push( source.value );
 						/**/
@@ -707,19 +722,20 @@ sntRover.controller('RVReportsMainCtrl', [
 					});
 
 					// in case if all sources are selected
-					if ( chosenReport['hasSourcesList']['data'].length === selected.length ) {
+					if ( report['hasSourcesList']['data'].length === selected.length ) {
 						$scope.appliedFilter.sources = ['All Sources'];
 					};
 				};
 			};
 
 			// selected origin
-			if (chosenReport.hasOwnProperty('hasOriginsList')) {
-				selected = _.where(chosenReport['hasOriginsList']['data'], { selected: true });
+			if ( report.hasOwnProperty('hasOriginsList') ) {
+				selected = _.where( report['hasOriginsList']['data'], { selected: true } );
 
 				if ( selected.length > 0 ) {
-					key = 'booking_origin_ids[]';
+					key         = reportParams['BOOKING_ORIGIN_IDS'];
 					params[key] = [];
+					/**/
 					_.each(selected, function(origin) {
 						params[key].push( origin.value );
 						/**/
@@ -727,19 +743,20 @@ sntRover.controller('RVReportsMainCtrl', [
 					});
 
 					// in case if all origins are selected
-					if ( chosenReport['hasOriginsList']['data'].length === selected.length ) {
+					if ( report['hasOriginsList']['data'].length === selected.length ) {
 						$scope.appliedFilter.origins = ['All Origins'];
 					};
 				};
 			};
 
 			// include guarantee type
-			if (chosenReport.hasOwnProperty('hasGuaranteeType')) {
-				selected = _.where(chosenReport['hasGuaranteeType']['data'], { selected: true });
+			if ( report.hasOwnProperty('hasGuaranteeType') ) {
+				selected = _.where( report['hasGuaranteeType']['data'], { selected: true } );
 
 				if ( selected.length > 0) {
-					key = 'include_guarantee_type[]';
+					key         = reportParams['INCLUDE_GUARANTEE_TYPE'];
 					params[key] = [];
+					/**/
 					_.each(selected, function(guarantee) {
 						params[key].push( guarantee.name );
 						/**/
@@ -747,19 +764,20 @@ sntRover.controller('RVReportsMainCtrl', [
 					});
 
 					// in case if all guarantee type is selected
-					if ( chosenReport['hasGuaranteeType']['data'].length === selected.length ) {
+					if ( report['hasGuaranteeType']['data'].length === selected.length ) {
 						$scope.appliedFilter.guarantees = ['All Guarantees'];
 					};
 				};
 			};
 
 			// include charge groups
-			if (chosenReport.hasOwnProperty('hasByChargeGroup')) {
-				selected = _.where(chosenReport['hasByChargeGroup']['data'], { selected: true });
+			if (report.hasOwnProperty('hasByChargeGroup')) {
+				selected = _.where( report['hasByChargeGroup']['data'], { selected: true } );
 
 				if ( selected.length > 0 ) {
-					key = 'charge_group_ids[]';
+					key         = reportParams['CHARGE_GROUP_IDS'];
 					params[key] = [];
+					/**/ 
 					_.each(selected, function(cg) {
 						params[key].push( cg.id );
 						/**/
@@ -767,53 +785,75 @@ sntRover.controller('RVReportsMainCtrl', [
 					});
 
 					// in case if all charge groups is selected
-					if ( chosenReport['hasByChargeGroup']['data'].length === selected.length ) {
+					if ( report['hasByChargeGroup']['data'].length === selected.length ) {
 						$scope.appliedFilter.chargeGroups = ['All Groups'];
 					};
 				};
 			};
 
 			// include charge code
-			if (chosenReport.hasOwnProperty('hasByChargeCode')) {
-				selected = _.where(chosenReport['hasByChargeCode']['data'], { selected: true });
+			if (report.hasOwnProperty('hasByChargeCode')) {
+				selected = _.where(report['hasByChargeCode']['data'], { selected: true });
 
 				if ( selected.length > 0 ) {
-					key = 'charge_code_ids[]';
+					key         = reportParams['CHARGE_CODE_IDS'];
 					params[key] = [];
+					/**/
 					_.each(selected, function(cc) {
 						params[key].push( cc.id );
 						/**/
-						$scope.appliedFilter.chargeCode.push( cc.description );
+						$scope.appliedFilter.chargeCodes.push( cc.description );
 					});
 
 					// in case if all charge code is selected
-					if ( chosenReport['hasByChargeCode']['data'].length === selected.length ) {
-						$scope.appliedFilter.chargeCode = ['All Codes'];
+					if ( report['hasByChargeCode']['data'].length === selected.length ) {
+						$scope.appliedFilter.chargeCodes = ['All Codes'];
 					};
 				};
 			};
 
+			// include hold status
+			if ( report.hasOwnProperty('hasHoldStatus') ) {
+				selected = _.where(report['hasHoldStatus']['data'], { selected: true });
 
+				if ( selected.length > 0 ) {
+					key         = reportParams['HOLD_STATUS_IDS'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(status) {
+						params[key].push( status.id );
+						/**/
+						$scope.appliedFilter.holdStatuses.push( status.description );
+					});
 
-
+					// in case if all charge code is selected
+					if ( report['hasHoldStatus']['data'].length === selected.length ) {
+						$scope.appliedFilter.holdStatuses = ['All Status'];
+					};
+				};
+			};
 
 			// need to reset the "group by" if any new filter has been applied
-			if ( !!chosenReport.groupByOptions && !!$scope.oldParams ) {
+			if ( !!report.groupByOptions && !!$scope.oldParams ) {
 				for (key in params) {
 					if ( !params.hasOwnProperty(key) ) {
 					    continue;
 					};
 
-					if ( key === 'group_by_date' || key === 'group_by_user' || key === 'page' || key === 'per_page' ) {
+					if ( key === 'group_by_date' || key === 'group_by_user' || key === 'group_by_group_name' || key === 'page' || key === 'per_page' ) {
 						continue;
 					} else if ( params[key] !== $scope.oldParams[key] ) {
-						chosenReport.chosenGroupBy = 'BLANK';
+						report.chosenGroupBy = 'BLANK';
 						/**/
 						if ( params.hasOwnProperty('group_by_date') ) {
 							params['group_by_date'] = undefined;
 						};
 						if ( params.hasOwnProperty('group_by_user') ) {
 							params['group_by_user'] = undefined;
+						};
+						/**/
+						if ( params.hasOwnProperty('group_by_group_name') ) {
+							params['group_by_group_name'] = undefined;
 						};
 						/**/
 						$scope.appliedFilter['groupBy'] = undefined;
@@ -825,11 +865,20 @@ sntRover.controller('RVReportsMainCtrl', [
 			// keep a copy of the current params
 			$scope.oldParams = angular.copy( params );
 
+			return params;
+		};
 
 
+		// generate reports
+		$scope.genReport = function(changeView, loadPage, resultPerPageOverride) {
+			var chosenReport = reportsSrv.getChoosenReport(),
+				changeView   = 'boolean' === typeof changeView ? changeView : true,
+				page         = !!loadPage ? loadPage : 1;
+
+			var params = genParams(chosenReport, page, resultPerPageOverride || $scope.resultsPerPage);
+
+			// fill in data into seperate props
 			var updateDS = function (response) {
-
-				// fill in data into seperate props
 				$scope.totals          = response.totals || [];
 				$scope.headers         = response.headers || [];
 				$scope.subHeaders      = response.sub_headers || [];
@@ -844,48 +893,52 @@ sntRover.controller('RVReportsMainCtrl', [
 			};
 
 			var sucssCallback = function(response) {
-				if (changeView) {
+				var msg = '';
+
+				if ( changeView ) {
 					$rootScope.setPrevState.hide = false;
 					$scope.showReportDetails = true;
 				};
 
-				updateDS(response);
+				updateDS( response );
 
 				$scope.errorMessage = [];
-				$scope.$emit('hideLoader');
+				$scope.$emit( 'hideLoader' );
 
-				if (!changeView && !loadPage) {
-					console.log('report.updated');
-					$scope.$broadcast('report.updated');
-				} else if (!!loadPage && !resultPerPageOverride) {
-					console.log('report.page.changed');
-					$scope.$broadcast('report.page.changed');
-				} else if (!!resultPerPageOverride) {
-					console.log('report.printing');
-					$scope.$broadcast('report.printing');
+				if ( !changeView && !loadPage ) {
+					msg = reportMsgs['REPORT_UPDATED'];					
+				} else if ( !!loadPage && !resultPerPageOverride ) {
+					msg = reportMsgs['REPORT_PAGE_CHANGED'];					
+				} else if ( !!resultPerPageOverride ) {
+					msg = reportMsgs['REPORT_PRINTING'];
 				} else {
-					console.log('report.submit');
-					$scope.$broadcast('report.submit');
+					msg = reportMsgs['REPORT_SUBMITED'];
+					
+				};
+
+				if ( !! msg ) {
+					console.info( msg );
+					$scope.$broadcast( msg );
 				};
 			};
 
 			var errorCallback = function (response) {
-				if (changeView) {
+				if ( changeView ) {
 					$rootScope.setPrevState.hide = false;
 					$scope.showReportDetails = true;
 				};
 
-				updateDS(response);
+				updateDS( response );
 
 				$scope.errorMessage = response;
-				$scope.$emit('hideLoader');
+				$scope.$emit( 'hideLoader' );
 
-				console.log('report.API.failure');
-				$rootScope.$broadcast('report.API.failure');
+				console.info( reportMsgs['REPORT_API_FAILED'] );
+				$rootScope.$broadcast( reportMsgs['REPORT_API_FAILED'] );
 			};
 
 			$scope.clearErrorMessage();
-			$scope.invokeApi(RVreportsSrv.fetchReportDetails, params, sucssCallback, errorCallback);
+			$scope.invokeApi(reportsSubSrv.fetchReportDetails, params, sucssCallback, errorCallback);
 		};
 
 		$scope.clearErrorMessage = function () {
@@ -979,7 +1032,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			focus: function(event, ui) {
 				return false;
 			}
-		}
+		};
 		$scope.listUserAutoCompleteOptions = angular.extend({
 			position: {
 				my: 'left bottom',
@@ -1005,10 +1058,10 @@ sntRover.controller('RVReportsMainCtrl', [
 		};
 		var ctgAutoCompleteCommon = {
 			source: function(request, response) {
-				RVreportsSrv.fetchComTaGrp(request.term)
+				reportsSubSrv.fetchComTaGrp(request.term)
 					.then(function(data) {
 						var list = [];
-						var entry = {}
+						var entry = {};
 						$.map(data, function(each) {
 							entry = {
 								label: each.name,
@@ -1034,7 +1087,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			focus: function(event, ui) {
 				return false;
 			}
-		}
+		};
 		$scope.listCtgAutoCompleteOptions = angular.extend({
 			position: {
 				my: 'left top',

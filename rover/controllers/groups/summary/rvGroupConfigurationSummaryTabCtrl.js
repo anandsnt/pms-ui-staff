@@ -93,7 +93,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 			//we are in outside of angular world
 			runDigestCycle();
-		}
+		};
 
 
 		/**
@@ -107,7 +107,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					updateSegment();
 				},
 				onFetchDemographicsFailure = function(errorMessage) {
-					console.log(errorMessage);
 				},
 				updateSegment = function() {
 					var aptSegment = ""; //Variable to store the suitable segment ID
@@ -135,7 +134,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			} else {
 				updateSegment();
 			}
-		}
+		};
 
 		/**
 		 * when to date choosed, this function will fire
@@ -153,7 +152,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				fetchApplicableRates();
 			}
 			runDigestCycle();
-		}
+		};
 
 		/**
 		 * when release date choosed, this function will fire
@@ -166,7 +165,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 			//we are in outside of angular world
 			runDigestCycle();
-		}
+		};
 
 		/**
 		 * to set date picker option for summary view
@@ -211,7 +210,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 */
 		$scope.isDemographicsFormValid = function() {
 			return true;
-		}
+		};
 
 		/**
 		 * Demographics Popup Handler
@@ -228,7 +227,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 			var showDemographicsPopup = function() {
 					$scope.groupSummaryData.isDemographicsPopupOpen = true;
-					// $scope.computeSegment();
+
 
 					demographicsMemento = angular.copy($scope.groupConfigData.summary.demographics);
 					ngDialog.open({
@@ -247,7 +246,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					showDemographicsPopup();
 				},
 				onFetchDemographicsFailure = function(errorMessage) {
-					console.log(errorMessage);
 				};
 
 			if ($scope.groupSummaryData.demographics === null) {
@@ -267,7 +265,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				$scope.errorMessage = ["Please save the group first"];
 				return;
 			}
-			console.log($scope.accountConfigData.summary.posting_account_name);
 			$scope.attachedEntities = {};
 			$scope.attachedEntities.posting_account = {};
 			$scope.attachedEntities.posting_account.id = $scope.groupConfigData.summary.group_id;
@@ -276,7 +273,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$scope.billingEntity = "GROUP_DEFAULT_BILLING";
 
 			$scope.billingInfoModalOpened = true;
-			//$scope.isFromAccounts = true;
+
 			ngDialog.open({
 				template: '/assets/partials/bill/rvBillingInformationPopup.html',
 				controller: 'rvBillingInformationPopupCtrl',
@@ -297,10 +294,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				$scope.errorMessage = ["Please save the group to save Demographics"];
 				return;
 			}
-			console.log('save demographcis');
 			$scope.updateGroupSummary();
 			$scope.closeDialog();
-		}
+		};
 
 		$scope.onRateChange = function() {
 			if (!$scope.groupConfigData.summary.group_id) {
@@ -312,7 +308,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				rate_id: $scope.groupConfigData.summary.rate
 			}, function(response) {
 				$scope.$emit('hideLoader');
-				if (!response.is_changed && !response.is_room_rate_available) {					
+				if (!response.is_changed && !response.is_room_rate_available) {
 					ngDialog.open({
 						template: '/assets/partials/groups/summary/warnChangeRateNotPossible.html',
 						className: '',
@@ -328,13 +324,13 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorMessage;
 				$scope.groupConfigData.summary.rate = summaryMemento.rate;
-			})
-		}
+			});
+		};
 
 
 		$scope.cancelDemographicChanges = function() {
 			$scope.groupConfigData.summary.demographics = demographicsMemento;
-		}
+		};
 
 		/**
 		 * Warn release the rooms
@@ -351,7 +347,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					closeByEscape: false
 				});
 			}
-		}
+		};
 
 		/**
 		 * Handle release rooms
@@ -360,13 +356,13 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		$scope.releaseRooms = function() {
 			var onReleaseRoomsSuccess = function(data) {
 					//: Handle successful release
-					// $scope.groupConfigData.summary.release_date = $rootScope.businessDate;
+
 					$scope.closeDialog();
 					fetchSummaryData();
 				},
 				onReleaseRoomsFailure = function(errorMessage) {
-					$scope.errorMessage = errorMessage
-				}
+					$scope.errorMessage = errorMessage;
+				};
 			$scope.callAPI(rvGroupConfigurationSrv.releaseRooms, {
 				successCallBack: onReleaseRoomsSuccess,
 				failureCallBack: onReleaseRoomsFailure,
@@ -374,13 +370,13 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					groupId: $scope.groupConfigData.summary.group_id
 				}
 			});
-		}
+		};
 
 		$scope.abortCancelGroup = function() {
 			// Reset the hold status to the last saved status
 			$scope.groupConfigData.summary.hold_status = $scope.groupSummaryData.existingHoldStatus;
 			$scope.closeDialog();
-		}
+		};
 
 		$scope.cancelGroup = function(cancellationReason) {
 			var onCancelGroupSuccess = function() {
@@ -396,7 +392,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				onCancelGroupFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
 					$scope.abortCancelGroup();
-				}
+				};
 			$scope.callAPI(rvGroupConfigurationSrv.cancelGroup, {
 				successCallBack: onCancelGroupSuccess,
 				failureCallBack: onCancelGroupFailure,
@@ -405,13 +401,13 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					reason: cancellationReason
 				}
 			});
-		}
+		};
 
 		$scope.onHoldStatusChange = function() {
 			if (!$scope.isInAddMode()) {
 				var selectedStatus = _.findWhere($scope.groupConfigData.holdStatusList, {
 					id: parseInt($scope.groupConfigData.summary.hold_status)
-				})
+				});
 				if (selectedStatus && selectedStatus.name === 'Cancel' && !!selectedStatus.is_system) {
 					ngDialog.open({
 						template: '/assets/partials/groups/summary/warnCancelGroupPopup.html',
@@ -421,13 +417,12 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 						closeByEscape: false
 					});
 				} else {
-					console.log('on hold status');
 					$scope.updateGroupSummary();
 					$scope.groupSummaryData.existingHoldStatus = parseInt($scope.groupConfigData.summary.hold_status);
 
 				}
 			}
-		}
+		};
 
 		/**
 		 * Method to check if the cancel option be available in the hold status select options
@@ -436,7 +431,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		$scope.isCancellable = function() {
 
 			return (rvPermissionSrv.getPermissionValue('CANCEL_GROUP') && !!$scope.groupConfigData.summary.is_cancelled || ($scope.groupConfigData.summary.total_checked_in_reservations === 0 && parseFloat($scope.groupConfigData.summary.balance) === 0.0));
-		}
+		};
 
 		/**
 		 * Method to show addons popup
@@ -453,7 +448,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				},
 				onFetchAddonFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
-				}
+				};
 
 			$scope.callAPI(rvGroupConfigurationSrv.getGroupEnhancements, {
 				successCallBack: onFetchAddonSuccess,
@@ -462,7 +457,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					"id": $scope.groupConfigData.summary.group_id
 				}
 			});
-		}
+		};
 
 
 		$scope.getRevenue = function() {
@@ -485,7 +480,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				closeByDocument: false,
 				closeByEscape: false
 			});
-		}
+		};
 
 		/**
 		 * manage addons selection/ updates
@@ -507,7 +502,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					$scope.openGroupAddonsScreen();
 				},
 				onFetchAddonsFailure = function(errorMessage) {
-					console.log(errorMessage);
 				};
 
 			$scope.callAPI(RVReservationAddonsSrv.fetchAddonData, {
@@ -519,8 +513,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					is_active: true,
 					is_not_rate_only: true
 				}
-			})
-		}
+			});
+		};
 
 		$scope.removeAddon = function(addon) {
 			var onRemoveAddonSuccess = function(data) {
@@ -539,7 +533,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					"id": $scope.groupConfigData.summary.group_id
 				}
 			});
-		}
+		};
 
 
 		/**
@@ -577,9 +571,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					}
 				});
 			} else {
-				console.warn("Trying to save empty Note!");
 			}
-		}
+		};
 
 		$scope.removeGroupNote = function(noteId) {
 			var onRemoveGroupNoteSuccess = function(data, params) {
@@ -602,7 +595,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					"noteId": noteId
 				}
 			});
-		}
+		};
 
 
 		var getPassData = function() {
@@ -754,6 +747,15 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		};
 
 		/**
+		 * to set the active left side menu
+		 * @return {undefined}
+		 */
+		var setActiveLeftSideMenu = function () {
+			var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup": "menuManageGroup";
+			$scope.$emit("updateRoverLeftMenu", activeMenu);
+		};
+
+		/**
 		 * Function used to initialize summary view
 		 * @return undefined
 		 */
@@ -764,7 +766,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$scope.setScroller("groupSummaryScroller");
 
 			//updating the left side menu
-			$scope.$emit("updateRoverLeftMenu", "menuCreateGroup");
+			setActiveLeftSideMenu();
 
 			//we have a list of scope varibales which we wanted to initialize
 			initializeVariables();
