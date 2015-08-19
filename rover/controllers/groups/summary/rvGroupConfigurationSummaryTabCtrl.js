@@ -285,6 +285,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		var toDateChoosed = function(date, datePickerObj) {
 			$scope.groupConfigData.summary.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
+			//setting the max date for from Date
+			$scope.fromDateOptions.maxDate = refData.block_to;
 			$scope.computeSegment();
 			//we are in outside of angular world
 
@@ -354,13 +356,15 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			//from Date options
 			$scope.fromDateOptions = _.extend({
 				onSelect: fromDateChoosed,
-				disabled: shouldDisableFromDatePicker()
+				disabled: shouldDisableFromDatePicker(),
+				maxDate: $scope.groupConfigData.summary.block_to
 			}, commonDateOptions);
 
 			//to date options
 			$scope.toDateOptions = _.extend({
 				onSelect: toDateChoosed,
-				disabled: shouldDisableEndDatePicker()
+				disabled: shouldDisableEndDatePicker(),
+				minDate: $scope.groupConfigData.summary.block_from
 			}, commonDateOptions);
 
 			//release date options
