@@ -539,9 +539,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		};
 
 		var permissionCheck = function(roomId, rateId) {
-                        if ($scope.allowOverbook() === false){
-                            return false;
-                        }
 			var BOOK_RESTRICTED_ROOM_RATE = rvPermissionSrv.getPermissionValue('BOOK_RESTRICTED_ROOM_RATE'),
 				BOOK_ROOM_WITHOUT_INVENTORY = rvPermissionSrv.getPermissionValue('BOOK_ROOM_WITHOUT_INVENTORY');
 
