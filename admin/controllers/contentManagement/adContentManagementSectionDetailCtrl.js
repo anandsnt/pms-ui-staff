@@ -5,13 +5,17 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ng
 	BaseCtrl.call(this, $scope);
 	$scope.fileName = "Choose file...";
 	$scope.initialIcon = '';
+	$scope.alignments = [{"name":"Left", "value": "Left"}, {"name":"Center", "value": "Center"}, {"name":"Right", "value": "Right"}];
 	/*Initializing data, for adding a new section.
     */
 	$scope.data = {
 	            "component_type": "SECTION",
 	            "status": false,
 	            "name": "",
-	            "icon": ''
+	            "icon": '',
+	            "description_visible":false,
+	            "description_alignment": "Center",
+	            "description": ""
             };
 
 
