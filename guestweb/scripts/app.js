@@ -49,6 +49,8 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  	$rootScope.isAutoCheckinOn = (($attrs.isAutoCheckin === 'true') && ($attrs.isPrecheckinOnly === 'true')) ? true :false;;
  	$rootScope.isExternalVerification = ($attrs.isExternalVerification === "true") ? true :false;
  	$rootScope.hotelIdentifier = $attrs.hotelIdentifier;
+ 	$rootScope.guestAddressOn = $attrs.guestAddressOn === 'true' ? true:false;
+ 	console.log($rootScope.guestAddressOn);
 
 
     //Params for zest mobile and desktop screens
@@ -92,11 +94,14 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 	};
 
 	$( ".loading-container" ).hide();
-}
-
-
-
-]);
+	/*
+	 * function to handle exception when state is not found
+	 */
+	$scope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
+		event.preventDefault();
+		$state.go('noOptionAvailable');
+	})
+}]);
 
 var loadStyleSheets = function(filename){
 		var fileref = document.createElement("link");
