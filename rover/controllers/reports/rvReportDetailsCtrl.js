@@ -7,8 +7,9 @@ sntRover.controller('RVReportDetailsCtrl', [
     'RVreportsSrv',
 	'RVReportUtilsFac',
 	'RVReportParserFac',
+	'RVReportMsgs',
 	'ngDialog',
-	function($scope, $rootScope, $filter, $timeout, $window, RVreportsSrv, reportUtils, reportParser, ngDialog) {
+	function($scope, $rootScope, $filter, $timeout, $window, reportsSrv, reportUtils, reportParser, reportMsgs, ngDialog) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -62,7 +63,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				resultsTotalRow = $scope.$parent.resultsTotalRow;
 
 
-			$scope.chosenReport = RVreportsSrv.getChoosenReport();
+			$scope.chosenReport = reportsSrv.getChoosenReport();
 
 			$scope.setTitle( $scope.chosenReport.title + ' ' + ($scope.chosenReport.sub_title ? $scope.chosenReport.sub_title : '') );
 			$scope.$parent.heading = $scope.chosenReport.title + ' ' + ($scope.chosenReport.sub_title ? $scope.chosenReport.sub_title : '');
@@ -89,7 +90,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.isGuestReport = true;
 					$scope.showSortBy = false;
 					break;
-                                        
+
 				case reportUtils.getName('EARLY_CHECKIN'):
 					$scope.isGuestReport = true;
 					$scope.showSortBy = true;
@@ -492,7 +493,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
 					template = '/assets/partials/reports/forecastGuestGroupReport/rvForecastGuestGroupReportRow.html';
 					break;
-				
+
 				// MARKET_SEGMENT_STAT_REPORT report row
 				case reportUtils.getName('MARKET_SEGMENT_STAT_REPORT'):
 					template = '/assets/partials/reports/marketSegmentStatReport/rvMarketSegmentStatReportRow.html';
@@ -517,7 +518,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				return $scope.parsedApiFor == reportUtils.getName(name);
 			} else {
 				return !! _.find(name, function(each) {
-					return $scope.parsedApiFor == reportUtils.getName(each);
+					return $scope.parsedApiFor === reportUtils.getName(each);
 				});
 			};
 		};
@@ -882,56 +883,56 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 
 
-		var reportSubmit = $scope.$on('report.submit', function() {
+		var reportSubmited = $scope.$on(reportMsgs['REPORT_SUBMITED'], function() {
 			$_pageNo = 1;
 			$scope.errorMessage = [];
-
+			/**/
 			afterFetch();
 			findBackNames();
 			calPagination();
 			refreshScroll();
 		});
 
-		var reportUpdated = $scope.$on('report.updated', function() {
+		var reportUpdated = $scope.$on(reportMsgs['REPORT_UPDATED'], function() {
 			$scope.errorMessage = [];
-
+			/**/
 			afterFetch();
 			findBackNames();
 			calPagination();
 			refreshScroll();
 		});
 
-		var reportPageChanged = $scope.$on('report.page.changed', function() {
+		var reportPageChanged = $scope.$on(reportMsgs['REPORT_PAGE_CHANGED'], function() {
 			$scope.errorMessage = [];
-
+			/**/
 			afterFetch();
 			calPagination();
 			refreshScroll();
 		});
 
-		var reportPrinting = $scope.$on('report.printing', function() {
+		var reportPrinting = $scope.$on(reportMsgs['REPORT_PRINTING'], function() {
 			$scope.errorMessage = [];
-
+			/**/
 			afterFetch();
 			findBackNames();
 			printReport();
 			refreshScroll();
 		});
 
-		var reportAPIfailure = $scope.$on('report.API.failure', function() {
+		var reportAPIfailed = $scope.$on(reportMsgs['REPORT_API_FAILED'], function() {
 			$scope.errorMessage = $scope.$parent.errorMessage;
-
+			/**/
 			afterFetch();
 			calPagination();
 			refreshScroll();
 		});
 
 		// removing event listners when scope is destroyed
-		$scope.$on( 'destroy', reportSubmit );
+		$scope.$on( 'destroy', reportSubmited );
 		$scope.$on( 'destroy', reportUpdated );
 		$scope.$on( 'destroy', reportPageChanged );
 		$scope.$on( 'destroy', reportPrinting );
-		$scope.$on( 'destroy', reportAPIfailure );
+		$scope.$on( 'destroy', reportAPIfailed );
 
     }
 ]);

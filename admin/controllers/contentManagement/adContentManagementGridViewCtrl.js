@@ -25,7 +25,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 			$scope.setItems();
 		};
 	   $scope.invokeApi(ADContentManagementSrv.fetchGridViewList, {} , successCallbackGridFetch);
-   }
+   };
    /* Function to split the fetch components to sections, categories and items
     */
    $scope.setUpLists =function(){
@@ -40,7 +40,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    				$scope.items.push($scope.data[i]);
    			}
    		}
-   }
+   };
 
 
 
@@ -66,7 +66,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 		            $defer.resolve(orderedData);
 		        }
 		    });
-   }
+   };
    /* Function to set the table params for categories
     */
    $scope.setCategories =function(){
@@ -89,7 +89,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 		            $defer.resolve(orderedData);
 		        }
 		    });
-   }
+   };
    /* Function to set the table params for items
     */
    $scope.setItems =function(){
@@ -112,7 +112,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 		            $defer.resolve(orderedData);
 		        }
 		    });
-   }
+   };
    /* Function to filter the data set by section and category and unmapped items
     */
    $scope.filterBySectionAndCategory = function(){
@@ -152,7 +152,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 
    		$scope.applyFiltersToSectionsAndItems();
 
-   }
+   };
    /* Function to apply the filterd data to the current list of categories and items
     */
    $scope.applyFiltersToSectionsAndItems = function(){
@@ -165,11 +165,11 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    				$scope.items.push($scope.filteredData[i]);
    			}
    		}
-   		// $scope.setCategories();
-   		// $scope.setItems();
+
+
    		$scope.itemParams.reload();
    		$scope.categoryParams.reload();
-   }
+   };
    /* Function to set the filter params, when the view selection changes
     */
    $scope.viewSelected = function(){
@@ -177,7 +177,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    		$scope.fromCategory = 'all';
    		$scope.showUnMappedList = false;
    		$scope.filterBySectionAndCategory();
-   }
+   };
 
    $scope.fetchGridViewList();
    /* Listener for the component deletion.

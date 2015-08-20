@@ -57,7 +57,7 @@ admin.controller('ADBalanceInventoryCtrl', [
 			var _callback = function(status) {
 				$scope.$emit('hideLoader');
 
-				if ( status == 'INPROGRESS' ) {
+				if ( status === 'INPROGRESS' ) {
 					$scope.anyJobRunning = true;
 				} else {
 					$scope.anyJobRunning = false;
@@ -102,7 +102,7 @@ admin.controller('ADBalanceInventoryCtrl', [
 		};
 
 		$rootScope.$on('datepicker.update', function(event, chosenDate) {
-			if ( $scope.dateNeeded == 'from' ) {
+			if ( $scope.dateNeeded === 'from' ) {
 				$scope.payload.begin_date = chosenDate;
 
 				// make sure the dates are valid -> end is after begin

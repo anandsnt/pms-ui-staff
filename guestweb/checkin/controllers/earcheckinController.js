@@ -11,10 +11,10 @@
 	}
 	else{
 		$scope.pageValid = true;
-	}		
+	}
 
 	if($scope.pageValid){
-		
+
 		$scope.checkinTime = $stateParams.time;
 		$scope.earlyCheckinCharge = $stateParams.charge;
 		var offerId = $stateParams.id;
@@ -22,7 +22,7 @@
 		$scope.nextButtonClicked = function(){
 			$state.go('earlyCheckinFinal',{'time':$scope.checkinTime,'charge': $stateParams.charge,'id':offerId});
 		};
-		
+
 		$scope.changeArrivalTime = function(){
 			$state.go('laterArrival',{'time':$scope.checkinTime,'isearlycheckin':true});
 		};

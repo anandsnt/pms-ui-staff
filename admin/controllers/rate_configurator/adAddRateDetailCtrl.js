@@ -168,7 +168,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             };
 
             // Save Rate Success Callback
-            var saveSuccessCallback = function(data) {                
+            var saveSuccessCallback = function(data) {
                 $scope.manipulateData(data);
                 $scope.detailsMenu = "";
                 $('#activityLogArea').scope().detailsMenu = '';
@@ -230,7 +230,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                     var data = {
                         "id": $scope.rateData.id,
                         "end_date": $scope.rateData.end_date
-                    }
+                    };
                     $scope.invokeApi(ADRatesAddDetailsSrv.validateEndDate, data, validateEndDateSuccessCallback, validateEndDateFailureCallback);
                 } else {
                     $scope.startSave();

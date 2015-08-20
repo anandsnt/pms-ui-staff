@@ -4,12 +4,15 @@ sntRover.controller('RVReportListCrl', [
     '$filter',
     'RVreportsSrv',
     'RVReportUtilsFac',
+    'RVReportMsgs',
     '$timeout',
-    function($scope, $rootScope, $filter, RVreportsSrv, reportUtils, $timeout) {
+    function($scope, $rootScope, $filter, reportsSrv, reportUtils, reportMsgs, $timeout) {
 
         BaseCtrl.call(this, $scope);
 
-        $scope.setScroller('report-list-scroll', {
+        var LIST_ISCROLL_ATTR = 'report-list-scroll';
+
+        $scope.setScroller(LIST_ISCROLL_ATTR, {
             preventDefault: false
         });
 
@@ -17,7 +20,7 @@ sntRover.controller('RVReportListCrl', [
          * inorder to refresh after list rendering
          */
         $scope.$on("NG_REPEAT_COMPLETED_RENDERING", function(event) {
-            $timeout($scope.refreshScroller.bind($scope, 'report-list-scroll'), 2010);
+            $timeout( $scope.refreshScroller.bind($scope, LIST_ISCROLL_ATTR), 2010 );
         });
 
         /**
@@ -45,7 +48,8 @@ sntRover.controller('RVReportListCrl', [
                     'markets'        : $scope.$parent.markets,
                     'sources'        : $scope.$parent.sources,
                     'origins'        : $scope.$parent.origins,
-                    'codeSettings'   : $scope.$parent.codeSettings
+                    'codeSettings'   : $scope.$parent.codeSettings,
+                    'holdStatus'     : $scope.$parent.holdStatus
                 });
 
 
@@ -80,25 +84,25 @@ sntRover.controller('RVReportListCrl', [
 
             // SUPER forcing scroll refresh!
             // 2000 is the delay for slide anim, so firing again after 2010
-            $timeout($scope.refreshScroller.bind($scope, 'report-list-scroll'), 100);
-            $timeout($scope.refreshScroller.bind($scope, 'report-list-scroll'), 2010);
+            $timeout( $scope.refreshScroller.bind($scope, LIST_ISCROLL_ATTR), 100 );
+            $timeout( $scope.refreshScroller.bind($scope, LIST_ISCROLL_ATTR), 2010 );
 
         }($scope.$parent.reportList);
 
         // show hide filter toggle
         $scope.toggleFilter = function() {
             this.item.show_filter = this.item.show_filter ? false : true;
-            $scope.refreshScroller('report-list-scroll');
+            $scope.refreshScroller( LIST_ISCROLL_ATTR );
         };
 
         $scope.setnGenReport = function() {
-            RVreportsSrv.setChoosenReport(this.item);
+            reportsSrv.setChoosenReport( this.item );
             $scope.genReport();
         };
 
 
-        var serveRefresh = $scope.$on('report.list.scroll.refresh', function() {
-            $timeout($scope.refreshScroller.bind($scope, 'report-list-scroll'), 100);
+        var serveRefresh = $scope.$on(reportMsgs['REPORT_LIST_SCROLL_REFRESH'], function() {
+            $timeout( $scope.refreshScroller.bind($scope, LIST_ISCROLL_ATTR), 100 );
         });
 
         // removing event listners when scope is destroyed

@@ -66,7 +66,7 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
             return [];
         }
 
-    }
+    };
 
   /*
     * To fetch checkin details
@@ -75,7 +75,7 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
         var fetchCheckoutDetailsFailureCallback = function(data) {
             $scope.$emit('hideLoader');
             $scope.isLoading = false;
-        }
+        };
 		var fetchCheckoutDetailsSuccessCallback = function(data) {
 
 			$scope.$emit('hideLoader');
@@ -133,7 +133,7 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
             $scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute = 'MM';
             $scope.checkoutData.alternate_weekends_checkout_email_alert_time_hour = 'HH';
         }
-    }
+    };
 
   /*
     * To save checkout details
@@ -176,7 +176,7 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
           };
     	var saveCheckoutDetailsSuccessCallback = function(data) {
     		$scope.$emit('hideLoader');
-    	}
+    	};
     	$scope.invokeApi(adCheckoutSrv.save, uploadData,saveCheckoutDetailsSuccessCallback,saveCheckoutDetailsFailureCallback);
     };
 

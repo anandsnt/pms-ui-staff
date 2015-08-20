@@ -9,7 +9,7 @@ snt.factory('authInterceptor', function ($rootScope, $q,$location) {
 
 				config.headers.Authorization = $rootScope.accessToken;
 			}
-			
+
 			return config;
 		},
 		response: function (response) {

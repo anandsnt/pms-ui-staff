@@ -23,6 +23,16 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADRatesListCtrl',
 			url : '/rates'
 		});
+		$stateProvider.state('admin.channelManager', {
+			templateUrl: '/assets/partials/rates/adChannelManager.html',
+			controller: 'ADChannelMgrCtrl',
+			url : '/channelManager'
+		});
+		$stateProvider.state('admin.channelManagerEditRates', {
+			templateUrl: '/assets/partials/rates/adChannelManagerEditRates.html',
+			controller: 'ADChannelMgrEditCtrl',
+			url : '/channelManagerEditRates'
+		});
 
 		$stateProvider.state('admin.ratetypes', {
 			templateUrl: '/assets/partials/rateTypes/adRateTypeList.html',
@@ -507,7 +517,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
                         simple_name: 'Siteminder',
 			url : '/siteminderSetup'
 		});
-                
+
 		$stateProvider.state('admin.synxisSetup', {
 			templateUrl: '/assets/partials/SynxisSetup/adSynxisSetup.html',
 			controller: 'adExternalInterfaceCtrl',

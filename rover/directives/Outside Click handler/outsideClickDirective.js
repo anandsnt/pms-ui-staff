@@ -17,5 +17,5 @@ sntRover.directive('outsideClickHandler', function($window) {
              w.off('click');
         });
     }
-  }
+  };
 });

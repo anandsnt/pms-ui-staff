@@ -21,7 +21,7 @@ sntRover.service('RateMgrOccupancyGraphSrv', ['$q', 'BaseWebSrvV2',
                 deferred.reject(data);
             });
             return deferred.promise;
-        }
+        };
 
 
     }

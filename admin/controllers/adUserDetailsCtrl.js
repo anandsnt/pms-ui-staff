@@ -67,7 +67,7 @@ admin.controller('ADUserDetailsCtrl',
 				$scope.mod = "edit";
 				$scope.userDetailsEdit(id);
 			}
-			// $scope.setMyDashboards();
+
 		};
 
 		$scope.invokeApi(ADUserRolesSrv.fetchUserRoles, {}, successCallbackRoles);
@@ -78,7 +78,7 @@ admin.controller('ADUserDetailsCtrl',
    /**
     * To check whether logged in user is sntadmin or hoteladmin
     */
-   // $scope.BackAction = $scope.hotelId;
+
 	if($rootScope.adminRole === "snt-admin"){
 		$scope.isAdminSnt = true;
 		 $scope.BackAction = "admin.users({id:"+$scope.hotelId+"})";
@@ -243,7 +243,7 @@ admin.controller('ADUserDetailsCtrl',
 	};
 
 	var setFocusOnPasswordField = function() {
-		//$('#edit-user #password').focus();
+
 		$scope.focusOnPassword = true;
 	};
 
@@ -318,11 +318,11 @@ admin.controller('ADUserDetailsCtrl',
 	$scope.reachedUnAssignedRoles = function(event, ui){
 		$scope.selectedAssignedRole = -1;
 		lastDropedTime = new Date();
-	}
+	};
 
 	$scope.reachedAssignedRoles = function(event, ui){
 		$scope.selectedUnassignedRole = -1;
 		lastDropedTime = new Date();
-	}
+	};
 
 }]);

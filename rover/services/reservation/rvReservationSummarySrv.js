@@ -25,7 +25,7 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
             }, function(errorMessage) {
                 deferred.reject(errorMessage);
             });
-        }
+        };
 
 
         this.fetchDemographicMarketSegments = function(deferred) {
@@ -132,10 +132,10 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
             var url = '/api/reservations/hourly_confirmation_emails?';
             _.each(data.reservation_ids, function(id) {
                 url += 'reservation_ids[]=' + id + '&';
-            })
+            });
             _.each(data.emails, function(mail) {
                 url += 'emails[]=' + mail + '&';
-            })
+            });
 
             delete data['reservation_ids'];
             delete data['emails'];

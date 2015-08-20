@@ -237,7 +237,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     /* Cashier filter starts here */
     var callCashierFilterService = function(){
         $scope.$broadcast('refreshDetails');
-    }
+    };
     $scope.$on('cashierDateChanged',function(){
     	//call filter service
     	callCashierFilterService();

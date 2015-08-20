@@ -34,6 +34,6 @@ admin.service('ADSocialLobbySrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSr
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
-	}
+	};
 
 }]);

@@ -12,7 +12,7 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$
 
             $scope.reservationNotesState = {
                 hideDetails: hideNotes
-            }
+            };
 
             $scope.setScroller('reservationNotes');
         };
@@ -25,7 +25,7 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$
                 closeByDocument: false,
                 closeByEscape: false
             });
-        }
+        };
 
         $scope.navigateToGroup = function(event) {
             if ($rootScope.isStandAlone && !!$scope.reservationData.reservation_card.group_id) {
@@ -37,7 +37,7 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$
             } else {
                 event.preventDefault();
             }
-        }
+        };
 
         init();
     }
