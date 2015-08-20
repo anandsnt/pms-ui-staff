@@ -459,13 +459,13 @@ sntRover.factory('RVReportParserFac', [
                 // we'll work with a copy of the ith item
                 makeCopy = angular.copy( apiResponse[i] );
 
-                // if we have 'stay_dates' for this reservation
+                // if we have 'group_data' for this group
                 if ( makeCopy.hasOwnProperty('group_data') && makeCopy['group_data'].length ) {
-                    for (k = 0, l = makeCopy['group_data'].length; k < l; k++) {
+                    for ( k = 0, l = makeCopy['group_data'].length; k < l; k++ ) {
                         groupData = makeCopy['group_data'][k];
 
                         // include the first groupData details in the
-                        // same row as that of the main reservation details
+                        // same row as that of the main group details
                         if ( k === 0 ) {
                             angular.extend(makeCopy, {
                                 'isReport'              : true,
@@ -504,7 +504,10 @@ sntRover.factory('RVReportParserFac', [
                     returnAry.push( makeCopy );
                 };
 
-                // if we have 'stay_dates_total' for this reservation
+                console.log( makeCopy.hasOwnProperty('group_total') );
+                console.log( makeCopy['group_total'].hasOwnProperty('rooms_available') );
+
+                // if we have 'group_total' for this group
                 if ( makeCopy.hasOwnProperty('group_total') && makeCopy['group_total'].hasOwnProperty('rooms_available') ) {
                     groupDataTotal = makeCopy['group_total'];
                     customData = {};

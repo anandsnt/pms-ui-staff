@@ -82,11 +82,11 @@ sntRover.service('RVreportsSubSrv', [
 							'pickup_percentage'      : 10
 						}],
 						'group_total' : {
-							'rooms_available_total'       : 123,
-							'rooms_held_non_deduct_total' : 231,
-							'rooms_held_deduct_total'     : 21,
-							'rooms_held_picked_up_total'  : 34,
-							'pickup_percentage_total'     : 37
+							'rooms_available'       : 123,
+							'rooms_held_non_deduct' : 231,
+							'rooms_held_deduct'     : 21,
+							'rooms_held_picked_up'  : 34,
+							'pickup_percentage'     : 37
 						}
 					}, {
 						'group_name' : 'HEWLETT-PACKARD CONFERENCE',
@@ -111,11 +111,11 @@ sntRover.service('RVreportsSubSrv', [
 							'pickup_percentage'     : 19
 						}],
 						'group_total' : {
-							'rooms_available_total'       : 123,
-							'rooms_held_non_deduct_total' : 231,
-							'rooms_held_deduct_total'     : 21,
-							'rooms_held_picked_up_total'  : 34,
-							'pickup_percentage_total'     : 37
+							'rooms_available'       : 123,
+							'rooms_held_non_deduct' : 231,
+							'rooms_held_deduct'     : 21,
+							'rooms_held_picked_up'  : 34,
+							'pickup_percentage'     : 37
 						}
 					}],
 					sub_headers: ["Group", "Date", "Status", "Room Type", "Room Avl.", "Non-Deduct", "Deduct", "Picked up", "%"],

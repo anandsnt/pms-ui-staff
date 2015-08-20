@@ -1,7 +1,7 @@
 <!-- Angular currency filter will change negative values from for e.g. -34 to ($34)
 This is why: http://stackoverflow.com/questions/17441254/why-angularjs-currency-filter-formats-negative-numbers-with-parenthesis#answer-17441429 -->
 
-<tr ng-repeat="each in results track by $index" ngrepeatend>
+<tr ng-repeat="each in results track by $index" class="{{ each.className }}" ngrepeatend>
     <td ng-if="each.isReport" class="name" rowspan="{{ each.rowspan }}"> <!-- Set rowspan as {no. of records + 1} E.g. if there are 5 records for group, rowspan should be set to 6. That means we'll show 5 records + 1 totals row -->
         <div class="info">
             <strong>{{ each.group_name }}</strong>
