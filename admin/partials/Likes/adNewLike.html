@@ -34,21 +34,21 @@
 					<div class="boxes">
 						<label class="radio" ng-class="{checked:likeData.type == 'radio'}">
 							<span class="icon-form icon-radio " ng-class="{checked:likeData.type == 'radio'}"></span>
-							<input type="radio" ng-model="likeData.type" value="radio" class="change-data" >
+							<input type="radio" ng-model="likeData.type" value="radio" class="change-data" ng-disabled="isEditmode">
 							{{'ONE_SELECTION_TWO_OPTIONS_TEXT' | translate}}
 							<span>({{'RADIO_BTN_LIST' | translate}})</span>
 						</label>
 
 						<label class="radio" ng-class="{checked:likeData.type == 'dropdown'}">
 							<span class="icon-form icon-radio " ng-class="{checked:likeData.type == 'dropdown'}"></span>
-							<input type="radio" ng-model="likeData.type" value="dropdown" class="change-data" >
+							<input type="radio" ng-model="likeData.type" value="dropdown" class="change-data" ng-disabled="isEditmode">
 							{{'ONE_SELECTION_MULTIPLE_OPTIONS_TEXT' | translate}}
 							<span>({{'SELECTBOX' | translate}})</span>
 						</label>
 
 						<label class="radio" ng-class="{checked:likeData.type == 'checkbox'}">
 							<span class="icon-form icon-radio " ng-class="{checked:likeData.type == 'checkbox'}"></span>
-							<input type="radio" ng-model="likeData.type" value="checkbox" class="change-data" >
+							<input type="radio" ng-model="likeData.type" value="checkbox" class="change-data" ng-disabled="isEditmode">
 							{{'MULTIPLE_OPTIONS_MULTIPLE_SELECTION_TEXT' | translate}}
 							<span>({{'CHECKBOX_LIST' | translate}})</span>
 						</label>
