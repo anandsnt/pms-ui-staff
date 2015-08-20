@@ -497,6 +497,22 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			$scope.endDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 			$scope.groupConfigData.summary.block_to = $scope.endDate;
 
+			//referring data source
+			var refData 		= $scope.groupConfigData.summary,
+				newBlockTo 	= refData.block_to,
+				oldBlockTo	= summaryMemento.block_to,
+				chActions 	= $scope.changeDatesActions;
+
+			//departure left date change
+			if(newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {
+				triggerEarlierDepartureDateChange();
+			}
+
+			//departure right date change
+			else if(newBlockTo > oldBlockTo && chActions.depDateRightChangeAllowed()) {
+				triggerLaterDepartureDateChange();
+			}
+
 			//setting the max date for start Date
 			$scope.startDateOptions.maxDate = $scope.endDate;
 
@@ -1296,6 +1312,76 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		/**
+		 * DEPATURE CHANGE
+		 */
+		/**
+		 * [successCallBackOfEarlierDepartureDateChange description]
+		 * @return {[type]} [description]
+		 */
+		var successCallBackOfEarlierDepartureDateChange = function() {
+			$scope.reloadPage("ROOM_BLOCK");
+		};
+
+		/**
+		 * [failureCallBackOfEarlierDepartureDateChange description]
+		 * @param  {[type]} errorMessage [description]
+		 * @return {[type]}              [description]
+		 */
+		var failureCallBackOfEarlierDepartureDateChange = function(errorMessage) {
+
+		};
+
+		/**
+		 * when clicked on Save move button. this will triggr
+		 * @return {undefined}
+		 */
+		var triggerEarlierDepartureDateChange = function() {
+			var sumryData = $scope.groupConfigData.summary,
+				oldSumryData = summaryMemento,
+				options = {
+					toDate 			: sumryData.block_to,
+					oldToDate 		: oldSumryData.block_to,
+					successCallBack : successCallBackOfEarlierDepartureDateChange,
+					failureCallBack : failureCallBackOfEarlierDepartureDateChange
+				};
+			$scope.changeDatesActions.triggerEarlierDepDateChange (options);
+		};
+
+		/**
+		 * [successCallBackOfLaterDepartureDateChange description]
+		 * @return {[type]} [description]
+		 */
+		var successCallBackOfLaterDepartureDateChange = function() {
+			$scope.reloadPage("ROOM_BLOCK");
+		};
+
+		/**
+		 * [failureCallBackOfLaterDepartureDateChange description]
+		 * @param  {[type]} errorMessage [description]
+		 * @return {[type]}              [description]
+		 */
+		var failureCallBackOfLaterDepartureDateChange = function(errorMessage) {
+
+		};
+
+		/**
+		 * when clicked on Save move button. this will triggr
+		 * @return {undefined}
+		 */
+		var triggerLaterDepartureDateChange = function() {
+			var sumryData = $scope.groupConfigData.summary,
+				oldSumryData = summaryMemento,
+				options = {
+					toDate 			: sumryData.block_to,
+					oldToDate 		: oldSumryData.block_to,
+					successCallBack : successCallBackOfLaterDepartureDateChange,
+					failureCallBack : failureCallBackOfLaterDepartureDateChange
+				};
+			$scope.changeDatesActions.triggerLaterDepDateChange (options);
+		};
+
+
+		/**
 		 * This function sets tab data
 		 * @return {undefined}
 		 */
@@ -1343,5 +1429,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			}
 
 		}();
+
+
 	}
 ]);
