@@ -143,6 +143,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportNames['DEPOSIT_REPORT']:
 				case reportNames['RATE_ADJUSTMENTS_REPORT']:
+				case reportNames['GROUP_PICKUP_REPORT']:
 					$scope.hasNoTotals = true;
 					$scope.isDepositReport = true;
 					break;
@@ -234,6 +235,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.rightColSpan = 4;
 					break;
 
+				case reportNames['GROUP_PICKUP_REPORT']:
+					$scope.leftColSpan = 6;
+					$scope.rightColSpan = 3;
+					break;
+
 				default:
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 2;
@@ -245,7 +251,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// today know as 'summaryCounts'. So we are gonna map 'totals' into 'summaryCounts'
 			// for the following reports
 			switch ( $scope.chosenReport.title ) {
-				case reportUtils.getName('CHECK_IN_CHECK_OUT'):
+				case reportNames['CHECK_IN_CHECK_OUT']:
 					if ( 'Total Check Ins' == totals[0]['label'] ) {
 						if ( totals.length == 10 ) {
 							$scope.$parent.summaryCounts = {
@@ -283,14 +289,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 					};
 					break;
 
-				case reportUtils.getName('UPSELL'):
+				case reportNames['UPSELL']:
 					$scope.$parent.summaryCounts = {
 						'rooms_upsold'   : totals[0]['value'],
 						'upsell_revenue' : totals[1]['value']
 					};
 					break;
 
-				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
+				case reportNames['WEB_CHECK_IN_CONVERSION']:
 					$scope.$parent.summaryCounts = {
 						'emails_sent'   : totals[0]['value'],
 						'up_sell_conv'  : totals[1]['value'],
@@ -300,7 +306,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					};
 					break;
 
-				case reportUtils.getName('WEB_CHECK_OUT_CONVERSION'):
+				case reportNames['WEB_CHECK_OUT_CONVERSION']:
 					$scope.$parent.summaryCounts = {
 						'emails_sent'        : totals[0]['value'],
 						'late_checkout_conv' : totals[1]['value'],
@@ -310,7 +316,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					};
 					break;
 
-				case reportUtils.getName('LATE_CHECK_OUT'):
+				case reportNames['LATE_CHECK_OUT']:
 					$scope.$parent.summaryCounts = {
 						'rooms'   : totals[0]['value'],
 						'revenue' : totals[1]['value']
@@ -320,8 +326,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 				default:
 					// no op
 			};
-
-
 
 			// change date format for all
 			for (var i = 0, j = results.length; i < j; i++) {
@@ -337,7 +341,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 			        results[i][ results[i].length - 2 ] += ':00 PM';
 			    }
 			};
-
 
 			// hack to edit the title 'LATE CHECK OUT TIME' to 'SELECTED LATE CHECK OUT TIME'
 			// notice the text case, they are as per api response and ui
@@ -355,6 +358,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 				refreshScroll();
 				refreshSidebarScroll();
 			}, 200);
+
+
+
 
 
 			// new more detailed reports
@@ -477,6 +483,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['LOGIN_AND_OUT_ACTIVITY']:
 					template = '/assets/partials/reports/generalReportRows/rvLoginActivityReportRow.html';
 					break;
+				case reportNames['GROUP_PICKUP_REPORT']:
+					template = '/assets/partials/reports/generalReportRows/rvGroupPickupReportRow.html';
+					break;
 
 
 				// RESERVATIONS_BY_USER report row
@@ -515,7 +524,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// by matching it against the report names constant
 		$scope.isThisReport = function (name) {
 			if ( 'string' == typeof name ) {
-				return $scope.parsedApiFor == reportUtils.getName(name);
+				return $scope.parsedApiFor == reportNames[name];
 			} else {
 				return !! _.find(name, function(each) {
 					return $scope.parsedApiFor == reportNames[each];

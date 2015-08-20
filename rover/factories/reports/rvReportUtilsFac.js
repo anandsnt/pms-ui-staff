@@ -293,6 +293,10 @@ sntRover.factory('RVReportUtilsFac', [
                     report['reportIconCls'] = 'icon-report icon-rate';
                     break;
 
+                case reportNames['GROUP_PICKUP_REPORT']:
+                    report['reportIconCls'] = 'icon-report icon-group';
+                    break;
+
                 default:
                     report['reportIconCls'] = 'icon-report';
                     break;

@@ -21,5 +21,6 @@ sntRover.constant('RVReportNamesConst', {
 	'FORECAST_GUEST_GROUPS'        : 'Forecast Guests & Groups',
 	'MARKET_SEGMENT_STAT_REPORT'   : 'Market Segment Statistics Report',
 	'COMPARISION_BY_DATE'          : 'Comparison',
-	'RATE_ADJUSTMENTS_REPORT'      : 'Rate Adjustment Report'
+	'RATE_ADJUSTMENTS_REPORT'      : 'Rate Adjustment Report',
+	'GROUP_PICKUP_REPORT'          : 'Group Pick Up Report'
 });

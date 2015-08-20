@@ -25,18 +25,10 @@ sntRover.factory('RVReportParserFac', [
             // reports API structure follows the same pattern
             else if ( reportName == reportNames['RATE_ADJUSTMENTS_REPORT'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseRateAdjustments( reportName, apiResponse, options );
+            }
 
-                /**
-                 * DEPRICATED!!!
-                 * Since the Product team asked to remove grouping.
-                 * Keeping it here for any future needs. Wont execute below this
-                 * since we already returned! :)
-                 */
-                if ( options['groupedByKey'] === 'adjusted_user_id' ) {
-                    return _.isEmpty(apiResponse) ? apiResponse : $_preParseGroupedRateAdjustments( reportName, apiResponse, options );
-                } else {
-                    return _.isEmpty(apiResponse) ? apiResponse : $_parseRateAdjustments( reportName, apiResponse, options );
-                }
+            else if ( reportName == reportNames['GROUP_PICKUP_REPORT'] ) {
+                return _.isEmpty(apiResponse) ? apiResponse : $_parseGroupPickupReport( reportName, apiResponse, options );
             }
 
             // a very special parser for deposit report
@@ -446,6 +438,94 @@ sntRover.factory('RVReportParserFac', [
                     returnAry.push( makeCopy );
                 };
             };
+
+            return returnAry;
+        };
+
+
+
+        function $_parseGroupPickupReport ( reportName, apiResponse, options ) {
+            var returnAry = [],
+                customData = [],
+                makeCopy,
+                groupData,
+                groupDataTotal;
+
+            var i, j, k, l;
+
+            // loop through the api response
+            for (i = 0, j = apiResponse.length; i < j; i++) {
+
+                // we'll work with a copy of the ith item
+                makeCopy = angular.copy( apiResponse[i] );
+
+                // if we have 'stay_dates' for this reservation
+                if ( makeCopy.hasOwnProperty('group_data') && makeCopy['group_data'].length ) {
+                    for (k = 0, l = makeCopy['group_data'].length; k < l; k++) {
+                        groupData = makeCopy['group_data'][k];
+
+                        // include the first groupData details in the
+                        // same row as that of the main reservation details
+                        if ( k === 0 ) {
+                            angular.extend(makeCopy, {
+                                'isReport'              : true,
+                                'rowspan'               : l + 1,
+                                'date'                  : groupData.date,
+                                'hold_status'           : groupData.hold_status,
+                                'room_type'             : groupData.room_type,
+                                'rooms_available'       : groupData.rooms_available,
+                                'rooms_held_non_deduct' : groupData.rooms_held_non_deduct,
+                                'rooms_held_deduct'     : groupData.rooms_held_deduct,
+                                'rooms_held_picked_up'  : groupData.rooms_held_picked_up,
+                                'pickup_percentage'     : groupData.pickup_percentage,
+                            });
+                            returnAry.push( makeCopy );
+                        }
+
+                        // create additional sub rows to represent the
+                        // rest of the stay_dates
+                        else {
+                            customData = {};
+                            angular.extend(customData, {
+                                'isSubReport'           : true,
+                                'date'                  : groupData.date,
+                                'hold_status'           : groupData.hold_status,
+                                'room_type'             : groupData.room_type,
+                                'rooms_available'       : groupData.rooms_available,
+                                'rooms_held_non_deduct' : groupData.rooms_held_non_deduct,
+                                'rooms_held_deduct'     : groupData.rooms_held_deduct,
+                                'rooms_held_picked_up'  : groupData.rooms_held_picked_up,
+                                'pickup_percentage'     : groupData.pickup_percentage,
+                            });
+                            returnAry.push( customData );
+                        };
+                    };
+                } else {
+                    returnAry.push( makeCopy );
+                };
+
+                // if we have 'stay_dates_total' for this reservation
+                if ( makeCopy.hasOwnProperty('group_total') && makeCopy['group_total'].hasOwnProperty('rooms_available') ) {
+                    groupDataTotal = makeCopy['group_total'];
+                    customData = {};
+
+                    console.log('here');
+                    angular.extend(customData, {
+                        'isSubTotal'            : true,
+                        'className'             : 'row-break',
+                        'rooms_available'       : groupDataTotal.rooms_available,
+                        'rooms_held_non_deduct' : groupDataTotal.rooms_held_non_deduct,
+                        'rooms_held_deduct'     : groupDataTotal.rooms_held_deduct,
+                        'rooms_held_picked_up'  : groupDataTotal.rooms_held_picked_up,
+                        'pickup_percentage'     : groupDataTotal.pickup_percentage,
+                    });
+                    returnAry.push( customData );
+                } else {
+                    returnAry.push( makeCopy );
+                };
+            };
+
+            console.log( returnAry );
 
             return returnAry;
         };
