@@ -48,7 +48,7 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 
 
 		$scope.price = parseFloat(roomXfer.next.room.new_price - roomXfer.current.room.old_price);
-		
+
 		/**
 		* while reservation is moving from one date to another we have to store in some services
 		* this method is to reset the data that set during trnasfer
