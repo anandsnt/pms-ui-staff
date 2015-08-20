@@ -115,4 +115,5 @@
 "CLOSE":"Close",
 "RATE_MANAGER_EXITS":"Rate Manager updates exist for these values",
 "OVERWRITE_RATE_MANAGER":"Overwrite Rate Manager",
-"DONT_OVERWRITE_RATE_MANAGER":"Do not Overwrite Rate Manager"
+"DONT_OVERWRITE_RATE_MANAGER":"Do not Overwrite Rate Manager",
+"ASK_GUEST_ADDRESS_DETAILS":"ASK GUEST ADDRESS DETAILS"
