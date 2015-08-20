@@ -39,9 +39,12 @@
             <input ng-blur="hideResults();" ng-focus="isRateFilterActive = true" name="find-rates" type="text" placeholder="Find Rates" value="" autocomplete="off" class="ui-autocomplete-input" ng-model="stateCheck.rateFilterText" ng-change="filterRates();">
         </div>
         <!-- ng-disabled="activeCriteria == 'RATE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay)" -->
-        <div class="select" ng-show="activeCriteria == 'ROOM_TYPE'">
-            <select ng-model="stateCheck.preferredType" ng-disabled="activeCriteria == 'RATE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay && stateCheck.dateModeActiveDate != reservationData.arrivalDate) || reservationData.status == 'CHECKEDIN' || reservationData.status == 'CHECKING_OUT'" ng-options="roomType.id as roomType.name for roomType in roomTypes|filter:{level:'!!'}|orderBy:'level'" ng-change="filterRooms($event); resetRates();">
-                <option value="" translate>RESV_ALL_ROOMS</option>
+        <div class="select" ng-show="activeCriteria == 'ROOM_TYPE'">            
+            <select ng-model="stateCheck.preferredType" ng-change="filterRooms($event); resetRates();" ng-disabled="activeCriteria == 'RATE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay && stateCheck.dateModeActiveDate != reservationData.arrivalDate) || reservationData.status == 'CHECKEDIN' || reservationData.status == 'CHECKING_OUT'">
+                <option value="" translate ng-if="reservationData.tabs.length < 2">RESV_ALL_ROOMS</option>
+                <option value="{{roomType.id}}" ng-repeat="roomType in roomTypes|filter:{level:'!!'}|orderBy:'level'" ng-selected="roomType.id == stateCheck.preferredType" ng-hide="isRoomTypeSelected(roomType.id);">
+                    {{roomType.name}}
+                </option>
             </select>
         </div>
     </div>
@@ -341,7 +344,7 @@
                                     <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on && !!roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].inclusiveAddonsExist">INCL</td>
                                     <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>
                                     <!-- taxes -->
-                                     <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].tax.incl | number: 2}}</td>
+                                    <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].tax.incl | number: 2}}</td>
                                     <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>
                                     <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].tax.excl | number: 2}}</td>
                                     <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>

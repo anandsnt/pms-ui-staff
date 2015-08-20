@@ -87,7 +87,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			//defaults and hardcoded values
 			$scope.tax = roomRates.tax || 0;
 			$scope.rooms = $scope.reservationData.rooms;
-			$scope.activeRoom = 0;
+			$scope.activeRoom = !$scope.activeRoom ? 0 : $scope.activeRoom;
 			if ($stateParams.view === "DEFAULT") {
 				var isRoomAvailable = true;
 				var isHouseAvailable = true;
@@ -218,8 +218,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			}
 			$scope.enhanceStay();
 		};
-		var populateStayDates = function(rateId, roomId) {
-			_.each($scope.reservationData.rooms[$scope.activeRoom].stayDates, function(details, date) {
+		var populateStayDates = function(rateId, roomId, roomIndex) {
+			_.each($scope.reservationData.rooms[roomIndex].stayDates, function(details, date) {
 				details.rate.id = rateId;
 				details.rate.name = $scope.displayData.allRates[rateId].name;
 				// CICO-6079
@@ -419,28 +419,28 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		 *	the room & rates screen in the STAY_DATES mode
 		 */
 		$scope.handleDaysBooking = function(event) {
-				event.stopPropagation();
-				if (!$scope.stateCheck.rateSelected.allDays) {
-					//if the dates are not all set with rates
-					return false;
+			event.stopPropagation();
+			if (!$scope.stateCheck.rateSelected.allDays) {
+				//if the dates are not all set with rates
+				return false;
+			} else {
+				// TODO : Handle multiple rates selected
+
+				if (RVReservationDataService.isVaryingRates($scope.reservationData.rooms[$scope.activeRoom].stayDates, $scope.reservationData.arrivalDate, $scope.reservationData.departureDate, $scope.reservationData.numNights)) {
+					$scope.reservationData.rooms[$scope.activeRoom].rateName = "Multiple Rates Selected";
 				} else {
-					// TODO : Handle multiple rates selected
-
-					if (RVReservationDataService.isVaryingRates($scope.reservationData.rooms[$scope.activeRoom].stayDates, $scope.reservationData.arrivalDate, $scope.reservationData.departureDate, $scope.reservationData.numNights)) {
-						$scope.reservationData.rooms[$scope.activeRoom].rateName = "Multiple Rates Selected";
-					} else {
-						$scope.reservationData.rooms[0].rateName = $scope.displayData.allRates[$scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.reservationData.arrivalDate].rate.id].name;
-					}
-					$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[$scope.reservationData.rooms[$scope.activeRoom].roomTypeId].ratedetails;
-					$scope.computeTotalStayCost();
-
-					if ($stateParams.fromState === "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState === "STAY_CARD") {
-						populateStayDates(rateId, roomId);
-					}
-					transferState();
+					$scope.reservationData.rooms[0].rateName = $scope.displayData.allRates[$scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.reservationData.arrivalDate].rate.id].name;
 				}
-			};
-			// CICO-12757 : To save and go back to stay card
+				$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[$scope.reservationData.rooms[$scope.activeRoom].roomTypeId].ratedetails;
+				$scope.computeTotalStayCost();
+
+				if ($stateParams.fromState === "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState === "STAY_CARD") {
+					populateStayDates(rateId, roomId);
+				}
+				transferState();
+			}
+		};
+		// CICO-12757 : To save and go back to stay card
 		$scope.saveAndGotoStayCard = function() {
 			var staycardDetails = {
 				title: $filter('translate')('STAY_CARD'),
@@ -604,24 +604,39 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				$scope.stateCheck.rateSelected.allDays = isRateSelected().allDays;
 				$scope.stateCheck.rateSelected.oneDay = isRateSelected().oneDay;
 			} else {
-				populateStayDates(rateId, roomId);
-				currentRoom.roomTypeId = roomId;
-				currentRoom.roomTypeName = $scope.roomAvailability[roomId].name;
-				currentRoom.rateId = rateId;
-				currentRoom.isSuppressed = $scope.displayData.allRates[rateId].is_suppress_rate_on;
-				currentRoom.rateName = $scope.displayData.allRates[rateId].name;
-				$scope.reservationData.demographics.market = $scope.displayData.allRates[rateId].market_segment.id === null ? "" : $scope.displayData.allRates[rateId].market_segment.id;
-				$scope.reservationData.demographics.source = $scope.displayData.allRates[rateId].source.id === null ? "" : $scope.displayData.allRates[rateId].source.id;
-				currentRoom.rateAvg = $scope.roomAvailability[roomId].total[rateId].average;
-				currentRoom.rateTotal = $scope.roomAvailability[roomId].total[rateId].total;
+				var currentRoomTypeId = $scope.reservationData.tabs[$scope.activeRoom].roomTypeId,
+					firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
+						roomTypeId: currentRoomTypeId
+					})),
+					lastIndex = _.lastIndexOf($scope.reservationData.rooms, _.last(_.where($scope.reservationData.rooms, {
+						roomTypeId: currentRoomTypeId
+					}))),
+					i;
+				for (i = firstIndex; i <= lastIndex; i++) {
+					currentRoom = $scope.reservationData.rooms[i];
+					populateStayDates(rateId, roomId, i);
+					_.extend(currentRoom, {
+						roomTypeId: roomId,
+						roomTypeName: $scope.roomAvailability[roomId].name,
+						rateId: rateId,
+						isSuppressed: $scope.displayData.allRates[rateId].is_suppress_rate_on,
+						rateName: $scope.displayData.allRates[rateId].name,
+						rateAvg: $scope.roomAvailability[roomId].total[rateId].average,
+						rateTotal: $scope.roomAvailability[roomId].total[rateId].total
+					});
 
-				//TODO: update the Tax Amount information
-				$scope.reservationData.totalStayCost = $scope.roomAvailability[roomId].total[rateId].total;
-				$scope.reservationData.totalTaxAmount = 0;
+					$scope.reservationData.demographics.market = $scope.displayData.allRates[rateId].market_segment.id === null ? "" : $scope.displayData.allRates[rateId].market_segment.id;
+					$scope.reservationData.demographics.source = $scope.displayData.allRates[rateId].source.id === null ? "" : $scope.displayData.allRates[rateId].source.id;
 
-				//TODO : 7641 - Update the rateDetails array in the reservationData
-				$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[roomId].ratedetails;
-				$scope.checkOccupancyLimit(null, false, $scope.activeRoom);
+					//TODO: update the Tax Amount information
+					// $scope.reservationData.totalStayCost = $scope.roomAvailability[roomId].total[rateId].total;
+					// $scope.reservationData.totalTaxAmount = 0;
+
+					//TODO : 7641 - Update the rateDetails array in the reservationData
+					$scope.reservationData.rateDetails[i] = $scope.roomAvailability[roomId].ratedetails;
+					// TODO: Revisit all occupancyLimit warnings
+					// $scope.checkOccupancyLimit(null, false, i);
+				}
 				transferState();
 			}
 
@@ -725,7 +740,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				// If a room type of category Level2 is selected, show this room type plus the lowest priced room type of the level 3 category.
 				// If a room type of category Level3 is selected, only show the selected room type.
 				$scope.displayData.roomTypes = _.filter($scope.displayData.allRooms, function(room) {
-					return room.id === $scope.stateCheck.preferredType ||
+					return room.id === parseInt($scope.stateCheck.preferredType, 10) ||
 						hasContractedRate($scope.roomAvailability[room.id].rates);
 				});
 
@@ -1510,6 +1525,17 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 		$scope.changeActiveRoomType = function(tabIndex) {
 			$scope.activeRoom = tabIndex;
+			init();
+		};
+
+		$scope.isRoomTypeSelected = function(roomTypeId) {
+			var chosen = false;
+			_.each($scope.reservationData.tabs, function(tabData, index) {
+				if (parseInt(tabData.roomTypeId, 10) === roomTypeId && $scope.activeRoom != index) {
+					chosen = true;
+				}
+			});
+			return chosen;
 		};
 	}
 ]);
