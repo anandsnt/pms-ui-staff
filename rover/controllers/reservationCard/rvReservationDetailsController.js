@@ -733,7 +733,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 								is_outside_group_stay_dates: response.data.outside_group_stay_dates,
 								group_name: response.data.group_name,
 								is_invalid_move: response.data.is_invalid_move,
-								is_house_available: !!response.is_house_available
+								is_house_available: !!response.data.is_house_available
 							})
 						});
 					} else {
