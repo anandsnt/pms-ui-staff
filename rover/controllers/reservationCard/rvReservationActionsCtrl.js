@@ -775,6 +775,10 @@ sntRover.controller('reservationActionsController', [
 		 * @return {Boolean}
 		 */
 		$scope.isReinstateVisible = function() {
+                        //set not visible for Hourly in 1.11
+                    if ($scope.reservationData.reservation_card.is_hourly_reservation){
+                        return false;
+                    }
 			var resData = $scope.reservationData.reservation_card;
 			return resData.reservation_status === 'CANCELED' && // ONLY cancelled reservations can be reinstated
 				new TZIDate(resData.departure_date) > new TZIDate($rootScope.businessDate) && // can't reinstate if the reservation's dates have passed
