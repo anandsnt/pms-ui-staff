@@ -854,6 +854,15 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 										validRate = false;
 									}
 
+									// CICO-19098 - House Availability Check
+									if (today[rateId].houseAvailability < 1) {
+										validRate = false;
+										today[rateId].restrictions.push({
+											key: '',
+											value: 'NO HOUSE AVAILABILITY'
+										});
+									}
+
 									var rateConfiguration = today[rateId].rateBreakUp,
 										numAdults = parseInt($scope.reservationData.rooms[$scope.activeRoom].numAdults),
 										numChildren = parseInt($scope.reservationData.rooms[$scope.activeRoom].numChildren);
