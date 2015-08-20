@@ -527,6 +527,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		}
 
 		var permissionCheck = function(roomId, rateId) {
+                        if ($scope.allowOverbook() === false){
+                            return false;
+                        }
 			var BOOK_RESTRICTED_ROOM_RATE = rvPermissionSrv.getPermissionValue('BOOK_RESTRICTED_ROOM_RATE'),
 				BOOK_ROOM_WITHOUT_INVENTORY = rvPermissionSrv.getPermissionValue('BOOK_ROOM_WITHOUT_INVENTORY');
 
@@ -539,11 +542,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 				if (restrictions.length > 0 && !BOOK_RESTRICTED_ROOM_RATE) {
 					authorization = false;
-					console.warn('-- no premission to BOOK_RESTRICTED_ROOM_RATE --');
 				}
 				if (roomCount < 1 && !BOOK_ROOM_WITHOUT_INVENTORY) {
 					authorization = false;
-					console.warn('-- no premission to BOOK_ROOM_WITHOUT_INVENTORY --');
 				}
 				return authorization;
 			}
@@ -552,7 +553,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		$scope.handleBooking = function(roomId, rateId, event) {
 			event.stopPropagation();
 			if (!permissionCheck(roomId, rateId)) {
-				console.warn('--permissionCheck failed');
 				return false;
 			}
 
