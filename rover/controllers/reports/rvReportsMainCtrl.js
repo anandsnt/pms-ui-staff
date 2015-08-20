@@ -777,7 +777,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				if ( selected.length > 0 ) {
 					key         = reportParams['CHARGE_GROUP_IDS'];
 					params[key] = [];
-					/**/ 
+					/**/
 					_.each(selected, function(cg) {
 						params[key].push( cg.id );
 						/**/
@@ -906,14 +906,13 @@ sntRover.controller('RVReportsMainCtrl', [
 				$scope.$emit( 'hideLoader' );
 
 				if ( !changeView && !loadPage ) {
-					msg = reportMsgs['REPORT_UPDATED'];					
+					msg = reportMsgs['REPORT_UPDATED'];
 				} else if ( !!loadPage && !resultPerPageOverride ) {
-					msg = reportMsgs['REPORT_PAGE_CHANGED'];					
+					msg = reportMsgs['REPORT_PAGE_CHANGED'];
 				} else if ( !!resultPerPageOverride ) {
 					msg = reportMsgs['REPORT_PRINTING'];
 				} else {
 					msg = reportMsgs['REPORT_SUBMITED'];
-					
 				};
 
 				if ( !! msg ) {

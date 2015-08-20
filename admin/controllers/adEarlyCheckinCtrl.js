@@ -3,6 +3,7 @@ admin.controller('ADEarlyCheckinCtrl',['$scope','$rootScope','$state','adUpsellE
 BaseCtrl.call(this, $scope);
 $scope.upsellData = {};
 $scope.upsell_rate = {};
+$scope.upsell_end_time = {};
 $scope.upsell_rate.selected_rate_id = "";
 $scope.excludedBlockCodes=[];
 $scope.block_codes = blockCodeData.block_codes;
@@ -241,6 +242,11 @@ $scope.setEarlyCheckinTimeForRates = function(){
        $scope.upsell_rate.hours = ($scope.upsellData.early_checkin_time === "" || $scope.upsellData.early_checkin_time === null)? "" : $scope.upsellData.early_checkin_time.substring(0, 2);
        $scope.upsell_rate.minutes = ($scope.upsellData.early_checkin_time === "" || $scope.upsellData.early_checkin_time === null)? "" : $scope.upsellData.early_checkin_time.substring(3, 5);
        $scope.upsell_rate.meridiem = ($scope.upsellData.early_checkin_time === "" || $scope.upsellData.early_checkin_time === null)? "AM" : $scope.upsellData.early_checkin_time.substring(6);
+
+       $scope.upsell_end_time.hours = ($scope.upsellData.early_checkin_ends_at === "" || $scope.upsellData.early_checkin_ends_at === null)? "" : $scope.upsellData.early_checkin_ends_at.substring(0, 2);
+       $scope.upsell_end_time.minutes = ($scope.upsellData.early_checkin_ends_at === "" || $scope.upsellData.early_checkin_ends_at === null)? "" : $scope.upsellData.early_checkin_ends_at.substring(3, 5);
+       $scope.upsell_end_time.meridiem = ($scope.upsellData.early_checkin_ends_at === "" || $scope.upsellData.early_checkin_ends_at === null)? "AM" : $scope.upsellData.early_checkin_ends_at.substring(6);
+
 };
 
 $scope.setUpUpsellWindowDataToSave = function () {
@@ -308,7 +314,9 @@ $scope.saveClick = function(){
 
     $scope.setUpUpsellWindowDataToSave();
     $scope.upsellData.early_checkin_time = ($scope.upsell_rate.hours !== null && $scope.upsell_rate.hours !== "")?$scope.upsell_rate.hours + ":" + $scope.upsell_rate.minutes + " " + $scope.upsell_rate.meridiem : "";
-   	var upsellEarlyCheckinSaveSuccessCallback = function(data) {
+   	$scope.upsellData.early_checkin_ends_at = ($scope.upsell_end_time.hours !== null && $scope.upsell_end_time.hours !== "")?$scope.upsell_end_time.hours + ":" + $scope.upsell_end_time.minutes + " " + $scope.upsell_end_time.meridiem : "";
+
+    var upsellEarlyCheckinSaveSuccessCallback = function(data) {
       $scope.$emit('hideLoader');
    	};
     // had to ovveride default error handler for custom actions.
@@ -431,6 +439,16 @@ $scope.startWatching = function(){
             $scope.upsell_rate.minutes = "";
         }else if($scope.upsell_rate.minutes === "" || $scope.upsell_rate.minutes === null){
             $scope.upsell_rate.minutes = "00";
+        }
+   });
+
+    $scope.$watch(function(){
+      return ($scope.upsell_end_time.hours === "" ||$scope.upsell_end_time.hours === null )? "": $scope.upsell_end_time.hours;
+    }, function(newValue, oldValue){
+        if($scope.upsell_end_time.hours === "" || $scope.upsell_end_time.hours === null){
+            $scope.upsell_end_time.minutes = "";
+        }else if($scope.upsell_end_time.minutes === "" || $scope.upsell_end_time.minutes === null){
+            $scope.upsell_end_time.minutes = "00";
         }
    });
 };

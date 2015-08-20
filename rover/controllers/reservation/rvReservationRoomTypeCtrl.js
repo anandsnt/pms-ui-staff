@@ -263,8 +263,20 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				}
 			}
 		};
-		$scope.allowOverbook = function() { //check user permission for overbook_house
-			return rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+
+		$scope.restrictIfOverbook = function(roomId, rateId) {			
+			var	canOverbookHouse = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE'),
+				canOverbookRoomType = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+
+			if(canOverbookHouse && canOverbookRoomType){
+				return false;
+			}
+			if(!canOverbookHouse && $scope.getLeastHouseAvailability(roomId, rateId) < 1){
+				return true;
+			}
+			if(!canOverbookRoomType && $scope.getLeastHouseAvailability(roomId, rateId) < 1){
+				return true;
+			}
 		};
 
 		$scope.setRates = function() {
@@ -527,6 +539,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		};
 
 		var permissionCheck = function(roomId, rateId) {
+                        if ($scope.allowOverbook() === false){
+                            return false;
+                        }
 			var BOOK_RESTRICTED_ROOM_RATE = rvPermissionSrv.getPermissionValue('BOOK_RESTRICTED_ROOM_RATE'),
 				BOOK_ROOM_WITHOUT_INVENTORY = rvPermissionSrv.getPermissionValue('BOOK_ROOM_WITHOUT_INVENTORY');
 
@@ -837,6 +852,15 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 									if (today[rateId].availabilityCount < 1) {
 										validRate = false;
+									}
+
+									// CICO-19098 - House Availability Check
+									if (today[rateId].houseAvailability < 1) {
+										validRate = false;
+										today[rateId].restrictions.push({
+											key: '',
+											value: 'NO HOUSE AVAILABILITY'
+										});
 									}
 
 									var rateConfiguration = today[rateId].rateBreakUp,
@@ -1353,6 +1377,17 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			});
 			return leastAvailability;
 		};
+
+		$scope.getLeastHouseAvailability = function(roomId, rateId) {
+			var leastAvailability = $scope.roomAvailability[roomId].ratedetails[$scope.reservationData.arrivalDate][rateId].availabilityCount
+			angular.forEach($scope.roomAvailability[roomId].ratedetails, function(rateDetail, date) {
+				if ((date === $scope.reservationData.arrivalDate || date !== $scope.reservationData.departureDate) && rateDetail[rateId].availabilityCount < leastAvailability) {
+					leastAvailability = rateDetail[rateId].houseAvailability;
+				}
+			});
+			return leastAvailability;
+		};
+
 
 		$scope.getAllRestrictions = function(roomId, rateId) {
 			var restrictions = [];

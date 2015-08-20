@@ -4,7 +4,7 @@ admin.controller('ADOriginsCtrl', ['$scope', 'ADOriginsSrv', '$anchorScroll', '$
 		$scope.$emit("changedSelectedMenu", 7);
 		$scope.currentClickedElement = -1;
 		$scope.state = {
-			editStore: {},
+			editStore: {}
 		};
 
 		/*

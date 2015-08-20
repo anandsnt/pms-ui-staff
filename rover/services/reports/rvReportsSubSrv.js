@@ -25,10 +25,10 @@ sntRover.service('RVreportsSubSrv', [
 						sub_title: "By group",
 						title: "Group Pick Up Report",
 						filters: [{
-							description: "Date Range", 
+							description: "Date Range",
 							value: "DATE_RANGE"
 						}, {
-							description: "Hold Status", 
+							description: "Hold Status",
 							value: "HOLD_STATUS"
 						}],
 						sort_fields: [{
@@ -43,7 +43,7 @@ sntRover.service('RVreportsSubSrv', [
 					});
 				};
 				/** TEST CODE REMOVED WHEN THE API IS READY */
-				
+
 				if ( !! options.resKey ) {
 					deferred.resolve( data[options.resKey] );
 				} else {

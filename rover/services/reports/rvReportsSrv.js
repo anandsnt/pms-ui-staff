@@ -174,7 +174,7 @@ sntRover.service('RVreportsSrv', [
 					subSrv.fetchHoldStatus()
 						.then( success.bind(null, 'holdStatus'), failed.bind(null, 'holdStatus', []) );
 				};
-			};			
+			};
 		};
 
 		/**
