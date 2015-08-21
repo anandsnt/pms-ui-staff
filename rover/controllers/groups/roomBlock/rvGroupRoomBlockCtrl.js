@@ -558,7 +558,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//date picker options - Start Date
 			$scope.startDateOptions = _.extend({
 				minDate: new tzIndependentDate($rootScope.businessDate),
-				maxDate: $scope.groupConfigData.summary.block_to,
+				maxDate: new tzIndependentDate($scope.groupConfigData.summary.block_to),
 				disabled: $scope.groupConfigData.summary.is_cancelled,
 				onSelect: onStartDatePicked
 			}, commonDateOptions);
