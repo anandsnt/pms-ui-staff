@@ -50,7 +50,6 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  	$rootScope.isExternalVerification = ($attrs.isExternalVerification === "true") ? true :false;
  	$rootScope.hotelIdentifier = $attrs.hotelIdentifier;
  	$rootScope.guestAddressOn = $attrs.guestAddressOn === 'true' ? true:false;
- 	console.log($rootScope.guestAddressOn);
 
 
     //Params for zest mobile and desktop screens

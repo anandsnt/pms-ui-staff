@@ -4,11 +4,12 @@
 		    <button id="modal-close" type="button" class="dark-title modal-close" ng-click="closeDialog()"><span class="icons icon-close"></button>
 
 		    <div class="modal-header">
-		        <h1>Rate Details</h1>
+		        <h1>Rate Details</h1>		        
 		        <em>{{ngDialogData.room.roomTypeName}}<br/>{{ngDialogData.room.rateName}}</em>
 		    </div>
 
 		    <div id="rate-grid" class="scrollable" ng-iscroll="rateDetails">
+		    	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		        <div class="wrapper">
 		            <table class="rate-grid">
 		                <thead>
@@ -41,7 +42,13 @@
 		                </tbody>
 		            </table>
 		            <div class="entry full-width" ng-disabled="stayDay.rateDetails.is_discount_allowed == 'false' || pastDay(date)">
-		                <label for="adjustment-reason">Adjustment reason (<span>optional</span>)</label>
+		                <label ng-hide="otherData.forceAdjustmentReason" for="adjustment-reason">
+		                	Adjustment reason (<span>optional</span>)
+		                </label>
+		                <label ng-show="otherData.forceAdjustmentReason" for="adjustment-reason">
+		                	Adjustment reason 
+		                	<strong>*</strong>
+		                </label>		                
 		                <textarea id="adjustment-reason" placeholder="Rate Adjusted because ...." rows="2" ng-model="adjustment_reason"/>
             		</div>
 		        </div>
