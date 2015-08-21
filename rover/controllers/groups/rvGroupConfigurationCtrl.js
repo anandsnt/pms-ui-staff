@@ -223,6 +223,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             var triggerEarlierArrivalDateChange = function(options) {
                 lastSuccessCallback = options["successCallBack"] ? options["successCallBack"] : null;
                 lastFailureCallback = options["failureCallBack"] ? options["failureCallBack"] : null;
+                lastCancelCallback  = options["cancelPopupCallBack"] ? options["cancelPopupCallBack"] : null;
 
                 var dataForPopup = {
                     dataset:
@@ -243,6 +244,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             var triggerLaterArrivalDateChange = function(options) {
                 lastSuccessCallback = options["successCallBack"] ? options["successCallBack"] : null;
                 lastFailureCallback = options["failureCallBack"] ? options["failureCallBack"] : null;
+                lastCancelCallback  = options["cancelPopupCallBack"] ? options["cancelPopupCallBack"] : null;
 
                 var dataForPopup = {
                     dataset:
@@ -305,7 +307,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     data            : JSON.stringify(data)
                 });
             };
-            
+
             /**
              * [clickedOnMoveSaveButton description]
              * @return {[type]} [description]
@@ -313,6 +315,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             var triggerEarlierDepartureDateChange = function(options) {
                 lastSuccessCallback = options["successCallBack"] ? options["successCallBack"] : null;
                 lastFailureCallback = options["failureCallBack"] ? options["failureCallBack"] : null;
+                lastCancelCallback  = options["cancelPopupCallBack"] ? options["cancelPopupCallBack"] : null;
 
                 var dataForPopup = {
                     dataset:
@@ -333,6 +336,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             var triggerLaterDepartureDateChange = function(options) {
                 lastSuccessCallback = options["successCallBack"] ? options["successCallBack"] : null;
                 lastFailureCallback = options["failureCallBack"] ? options["failureCallBack"] : null;
+                lastCancelCallback  = options["cancelPopupCallBack"] ? options["cancelPopupCallBack"] : null;
 
                 var dataForPopup = {
                     dataset:
@@ -345,6 +349,15 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
                 showLaterDepartureDateMoveConfirmationPopup(dataForPopup);
             };
+
+            /**
+             * Called when user cancels a change date popup
+             * @return {undefined}
+             */
+             $scope.cancelChangeDatesAction = function() {
+                $scope.closeDialog ();
+                lastCancelCallback();
+             };
 
             /**
              * [successCallBackOfMoveDatesAPI description]
