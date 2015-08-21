@@ -170,19 +170,27 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 				});
 			});
 
-			console.log($scope.guestLikesData.preferences);
 			angular.forEach($scope.guestLikesData.preferences, function(value, key) {
+
+				// also this object created is nevery updated inside the loop below
+				// and that F&*KS UP the data sent to the server
+				// yeah its Vijay who wrote this comment, no need to git blame
 				var preferenceUpdateData = {};
+
 				angular.forEach(value.values, function(prefValue, prefKey) {
 
-					if (prefValue.isChecked) {
-						preferenceUpdateData.type = value.name;
-						preferenceUpdateData.value = prefValue.details;
-					}
+					if ( prefValue.isChecked ) {
+						updateData.preference.push({
+							'type'  : value.name,
+							'value' : prefValue.details
+						});
+					};
 				});
-				updateData.preference.push(preferenceUpdateData);
+
+				// who the F&*K would want to push the value after the above loop!!
+				// yeah its Vijay who wrote this comment, no need to git blame
+				// updateData.preference.push(preferenceUpdateData);
 			});
-			console.log( updateData.preference );
 
 			var dataToUpdate = JSON.parse(JSON.stringify(updateData));
 		    var dataUpdated = (angular.equals(dataToUpdate, presentLikeInfo))?true:false;
