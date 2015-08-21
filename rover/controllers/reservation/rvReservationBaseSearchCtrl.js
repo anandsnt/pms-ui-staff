@@ -649,7 +649,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             }
 
             for (i = index; i < index + currentRoomCount; i++) {
-                $scope.reservationData.rooms[i].roomTypeId = $scope.reservationData.tabs[tabIndex].roomTypeId;
+                $scope.reservationData.rooms[i].roomTypeId = parseInt($scope.reservationData.tabs[tabIndex].roomTypeId, 10);
             }
         };
 
@@ -670,10 +670,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
         $scope.isRoomTypeSelected = function(tabIndex, roomTypeId) {
             var chosen = false;
-            _.each($scope.reservationData.tabs,function(tabData,index) {
-               if(parseInt(tabData.roomTypeId,10) === roomTypeId && tabIndex != index){
+            _.each($scope.reservationData.tabs, function(tabData, index) {
+                if (parseInt(tabData.roomTypeId, 10) === roomTypeId && tabIndex != index) {
                     chosen = true;
-               } 
+                }
             });
             return chosen;
         }

@@ -264,17 +264,17 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			}
 		};
 
-		$scope.restrictIfOverbook = function(roomId, rateId) {			
-			var	canOverbookHouse = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE'),
+		$scope.restrictIfOverbook = function(roomId, rateId) {
+			var canOverbookHouse = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE'),
 				canOverbookRoomType = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
 
-			if(canOverbookHouse && canOverbookRoomType){
+			if (canOverbookHouse && canOverbookRoomType) {
 				return false;
 			}
-			if(!canOverbookHouse && $scope.getLeastHouseAvailability(roomId, rateId) < 1){
+			if (!canOverbookHouse && $scope.getLeastHouseAvailability(roomId, rateId) < 1) {
 				return true;
 			}
-			if(!canOverbookRoomType && $scope.getLeastHouseAvailability(roomId, rateId) < 1){
+			if (!canOverbookRoomType && $scope.getLeastHouseAvailability(roomId, rateId) < 1) {
 				return true;
 			}
 		};
@@ -364,14 +364,14 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			if (!!$scope.reservationData.code && !!$scope.reservationData.code.id) {
 				var isPromotionApplied = function(rate) {
 					var promotionApplied = false;
-					_.each(rate.rooms,function(room) {
+					_.each(rate.rooms, function(room) {
 						_.each(room.ratedetails, function(dayDetails) {
 							promotionApplied = promotionApplied || dayDetails[rate.rate.id].applyPromotion;
-						});	
-					});					
+						});
+					});
 					return promotionApplied;
 				};
-				
+
 				$scope.displayData.availableRates.sort(function(a, b) {
 					if (isPromotionApplied(a)) {
 						return -1;
@@ -619,7 +619,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				$scope.stateCheck.rateSelected.allDays = isRateSelected().allDays;
 				$scope.stateCheck.rateSelected.oneDay = isRateSelected().oneDay;
 			} else {
-				var currentRoomTypeId = $scope.reservationData.tabs[$scope.activeRoom].roomTypeId,
+				var currentRoomTypeId = parseInt($scope.reservationData.tabs[$scope.activeRoom].roomTypeId, 10),
 					firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
 						roomTypeId: currentRoomTypeId
 					})),
