@@ -32,13 +32,11 @@
                         {{preferences.values[$index*2+1].details}}
                     </label>
                 </div> -->
-
-
-
+                
                 <div ng-if="'dropdown' == preferences.type" class="entry full-width">
                   <label>{{ preferences.name }}</label>
                   <div class="select">
-                    <select ng-model="preferences.isChecked" ng-options="value.id as value.details for value in preferences.values" ng-change="changedPreference( $parent.$index, $index*2 )" iscroll-stop-propagation>
+                    <select ng-model="preferences.isChecked" ng-options="value.id as value.details for value in preferences.values" ng-change="changedRadioComboPreference( $parent.$index )" iscroll-stop-propagation>
                       <option value="">Select a preferences</option>
                     </select>
                   </div>
@@ -47,14 +45,14 @@
                 <div ng-if="'radio' == preferences.type" class="entry full-width">
                   <label>{{ preferences.name }}</label>
                   <div class="check-block" ng-repeat="x in getHalfArrayPref(preferences.values) track by $index">
-                      <label class="checkbox"  ng-class="{ 'checked': preferences.isChecked }">
-                          <span class="icon-form icon-checkbox"  ng-class="{ 'checked': preferences.isChecked == preferences.values[$index*2].isChecked }"></span>
-                          <input type="radio" name="preferences.name" ng-change="changedPreference( $parent.$index, $index*2 )" ng-model="preferences.isChecked"/>
+                      <label class="radio"  ng-class="{ 'checked': preferences.isChecked }">
+                          <span class="icon-form icon-radio"  ng-class="{ 'checked': preferences.isChecked === preferences.values[$index*2].id }"></span>
+                          <input type="radio" name="preferences.name"  ng-model="preferences.isChecked" ng-value="preferences.values[$index*2].id" ng-change="changedRadioComboPreference( $parent.$index )" />
                           {{ preferences.values[$index*2].details }}
                       </label>
-                      <label class="checkbox" ng-class="{ 'checked': preferences.isChecked }">
-                          <span class="icon-form icon-checkbox" ng-class="{ 'checked': preferences.isChecked == preferences.values[$index*2+1].isChecked }"></span>
-                          <input type="radio" name="preferences.name" ng-change="changedPreference($parent.$index, $index*2+1)" ng-model="preferences.isChecked"/>
+                      <label class="radio" ng-class="{ 'checked': preferences.isChecked }">
+                          <span class="icon-form icon-radio" ng-class="{ 'checked': preferences.isChecked === preferences.values[$index*2+1].id }"></span>
+                          <input type="radio" name="preferences.name" ng-model="preferences.isChecked" ng-value="preferences.values[$index*2+1].id" ng-change="changedRadioComboPreference( $parent.$index )" />
                           {{ preferences.values[$index*2+1].details }}
                       </label>
                   </div>
@@ -65,12 +63,12 @@
                   <div class="check-block" ng-repeat="x in getHalfArrayPref(preferences.values) track by $index">
                       <label class="checkbox"  ng-class="{ 'checked': preferences.values[$index*2].isChecked }">
                           <span class="icon-form icon-checkbox"  ng-class="{ 'checked': preferences.values[$index*2].isChecked }"></span>
-                          <input type="checkbox" name="{{ preferences.name }}" ng-change="changedPreference( $parent.$index, $index*2 )" ng-model="preferences.values[$index*2].isChecked"/>
+                          <input type="checkbox" name="{{ preferences.name }}" ng-model="preferences.values[$index*2].isChecked" ng-change="changedCheckboxPreference( $parent.$index, $index*2 )" />
                           {{ preferences.values[$index*2].details }}
                       </label>
                       <label class="checkbox" ng-class="{'checked': preferences.values[$index*2+1].isChecked}">
                           <span class="icon-form icon-checkbox" ng-class="{'checked': preferences.values[$index*2+1].isChecked}"></span>
-                          <input type="checkbox" name="{{preferences.name}}" ng-change="changedPreference($parent.$index, $index*2+1)" ng-model="preferences.values[$index*2+1].isChecked"/>
+                          <input type="checkbox" name="{{preferences.name}}" ng-model="preferences.values[$index*2+1].isChecked" ng-change="changedCheckboxPreference($parent.$index, $index*2+1)" />
                           {{ preferences.values[$index*2+1].details }}
                       </label>
                   </div>

@@ -33,24 +33,59 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 
 			$scope.guestLikesData = data;
 
-			angular.forEach($scope.guestLikesData.preferences, function(eachPref, key) {
-				$scope.calculatedHeight += 34;
-				var rowCount = 0;
-				angular.forEach(eachPref.values, function(prefValue, prefKey) {
-					rowCount++;
-					if (rowCount % 2 !== 0) {
-						$scope.calculatedHeight += 50;
-					}
-					var userPreference = $scope.guestLikesData.user_preference;
-					if (userPreference.indexOf(prefValue.id) !== -1) {
-						prefValue.isChecked = true;
-						eachPref.isChecked = true;
+
+			var i, j, k, l;
+			var each, values, match;
+			for ( i = 0, j = $scope.guestLikesData.preferences.length; i < j; i++ ) {
+				each   = $scope.guestLikesData.preferences[i];
+				values = each['values'];
+
+				// create a model within each like when the type is dropdown or radio
+				// otherwise it will be a checkbox, so model inside values
+				if ( 'dropdown' == each.type || 'radio' == each.type ) {
+
+					if ( ! $scope.guestLikesData.user_preference.length ) {
+						each.isChecked = '';
 					} else {
-						prefValue.isChecked = false;
-						eachPref.isChecked = false;
-					}
-				});
-			});
+						match = _.find(values, function(item) {
+							return _.contains( $scope.guestLikesData.user_preference, item.id );
+						});
+
+						if ( !! match ) {
+							each.isChecked = match.id;
+						} else {
+							each.isChecked = '';
+						};
+					};
+				} else {
+					for ( k = 0, l = values.length; k < l; k++ ) {
+						values[k]['isChecked'] = false;
+
+						if ( _.contains($scope.guestLikesData.user_preference, values[k]['id']) ) {
+							values[k]['isChecked'] = true;
+						};
+					};
+				};
+			};
+			// angular.forEach($scope.guestLikesData.preferences, function(eachPref) {
+			// 	$scope.calculatedHeight += 34;
+			// 	var rowCount = 0;
+			// 	angular.forEach(eachPref.values, function(prefValue, prefKey) {
+			// 		rowCount++;
+			// 		if (rowCount % 2 !== 0) {
+			// 			$scope.calculatedHeight += 50;
+			// 		}
+			// 		var userPreference = $scope.guestLikesData.user_preference;
+			// 		if (userPreference.indexOf(prefValue.id) !== -1) {
+			// 			prefValue.isChecked = true;
+			// 			eachPref.isChecked = true;
+			// 		} else {
+			// 			prefValue.isChecked = false;
+			// 			eachPref.isChecked = false;
+			// 		}
+			// 	});
+			// });
+
 
 			var rowCount = 0;
 			angular.forEach($scope.guestLikesData.room_features, function(value, key) {
@@ -134,6 +169,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 
 				});
 			});
+
 			angular.forEach($scope.guestLikesData.preferences, function(value, key) {
 				var preferenceUpdateData = {};
 				angular.forEach(value.values, function(prefValue, prefKey) {
@@ -167,13 +203,24 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 			$scope.saveLikes();
 		});
 
-		$scope.changedPreference = function(parentIndex, index) {
+		$scope.changedCheckboxPreference = function(parentIndex, index) {
 			angular.forEach($scope.guestLikesData.preferences[parentIndex].values, function(value, key) {
 				if (key !== index) {
 					value.isChecked = false;
 				}
 			});
 		};
+
+		$scope.changedRadioComboPreference = function(index) {
+			_.each($scope.guestLikesData.preferences[index]['values'], function(item) {
+				item.isChecked = false;
+
+				if ( item.id === $scope.guestLikesData.preferences[index]['isChecked'] ) {
+					item.isChecked = true;
+				};
+			});
+		};
+
 
 		$scope.getHalfArray = function(ar) {
 			//TODO: Cross check math.ceil for all browsers
