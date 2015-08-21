@@ -14,6 +14,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         $scope.heading = "Reservations";
 
         $scope.viewState = {
+            currentTab : 0,
             isAddNewCard: false,
             pendingRemoval: {
                 status: false,
@@ -163,6 +164,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationDetails = RVReservationDataService.getReservationDetailsModel();
 
             $scope.viewState = {
+                currentTab : 0,
                 isAddNewCard: false,
                 pendingRemoval: {
                     status: false,

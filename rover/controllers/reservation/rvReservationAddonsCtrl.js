@@ -16,7 +16,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
         $scope.fromPage = "";
         $scope.duration_of_stay = $scope.reservationData.numNights ? $scope.reservationData.numNights : 1;
 
-        if($stateParams.from_screen === "staycard"){
+        if ($stateParams.from_screen === "staycard") {
 
             $scope.fromPage = "staycard";
             $rootScope.setPrevState = {
@@ -92,29 +92,29 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
 
 
         var init = function() {
-                $scope.reservationData.isHourly = true;
-                var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
-                temporaryReservationDataFromDiaryScreen = JSON.parse(temporaryReservationDataFromDiaryScreen);
-                if (temporaryReservationDataFromDiaryScreen) {
-                    var getRoomsSuccess = function(data) {
-                        var roomsArray = {};
-                        angular.forEach(data.rooms, function(value, key) {
-                            var roomKey = value.id;
-                            roomsArray[roomKey] = value;
-                        });
-                        $scope.populateDatafromDiary(roomsArray, temporaryReservationDataFromDiaryScreen);
-                    };
-                    $scope.invokeApi(RVReservationSummarySrv.fetchRooms, {}, getRoomsSuccess);
-                }
+            $scope.reservationData.isHourly = true;
+            var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
+            temporaryReservationDataFromDiaryScreen = JSON.parse(temporaryReservationDataFromDiaryScreen);
+            if (temporaryReservationDataFromDiaryScreen) {
+                var getRoomsSuccess = function(data) {
+                    var roomsArray = {};
+                    angular.forEach(data.rooms, function(value, key) {
+                        var roomKey = value.id;
+                        roomsArray[roomKey] = value;
+                    });
+                    $scope.populateDatafromDiary(roomsArray, temporaryReservationDataFromDiaryScreen);
+                };
+                $scope.invokeApi(RVReservationSummarySrv.fetchRooms, {}, getRoomsSuccess);
+            }
 
-                $scope.duration_of_stay = 1;
+            $scope.duration_of_stay = 1;
 
-                $scope.is_rate_addons_fetch = false;
-                $scope.addonsData.existingAddons = [];
-            };
-            // by default load Best Sellers addon
-            // Best Sellers in not a real charge code [just hard coding -1 as charge group id to fetch best sell addons]
-            // same will be overrided if with valid charge code id
+            $scope.is_rate_addons_fetch = false;
+            $scope.addonsData.existingAddons = [];
+        };
+        // by default load Best Sellers addon
+        // Best Sellers in not a real charge code [just hard coding -1 as charge group id to fetch best sell addons]
+        // same will be overrided if with valid charge code id
         $scope.activeAddonCategoryId = -1;
 
         $scope.heading = 'Enhance Stay';
@@ -140,17 +140,31 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
 
         $scope.refreshAddonsScroller = function() {
             $timeout(function() {
-                if ($scope.$parent.myScroll['enhanceStays']){
+                if ($scope.$parent.myScroll['enhanceStays']) {
                     $scope.$parent.myScroll['enhanceStays'].refresh();
                 }
             }, 700);
         };
 
-        $scope.goToSummaryAndConfirm = function() {
+        $scope.proceed = function() {
             $scope.closePopup();
+            if ($scope.viewState.currentTab === $scope.reservationData.tabs.length - 1) {
+                goToSummaryAndConfirm();
+            } else {
+                $scope.viewState.currentTab++;
+                $state.go('rover.reservation.staycard.mainCard.roomType', {
+                    from_date: $scope.reservationData.arrivalDate,
+                    to_date: $scope.reservationData.departureDate,
+                    view: "ROOM_RATE",
+                    company_id: null,
+                    travel_agent_id: null,
+                    fromState: 'rover.reservation.staycard.mainCard.addons'
+                });
+            }
+        };
 
-
-            if($scope.fromPage === "staycard"){
+        var goToSummaryAndConfirm = function() {
+            if ($scope.fromPage === "staycard") {
                 var saveData = {};
                 saveData.addons = $scope.addonsData.existingAddons;
                 saveData.reservationId = $scope.reservationData.reservationId;
@@ -168,10 +182,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                     $scope.errorMessage = errorMessage;
                 };
                 $scope.invokeApi(RVReservationSummarySrv.updateReservation, saveData, successCallBack, failureCallBack);
-
             } else {
-
-
                 var save = function() {
                     if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id) {
                         /**
@@ -196,7 +207,6 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                     });
                 }
             }
-
         };
 
         $scope.selectAddonCategory = function(category, event) {
@@ -216,8 +226,8 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
 
         $scope.selectAddon = function(addon, addonQty) {
             var alreadyAdded = false;
-            angular.forEach($scope.addonsData.existingAddons,function(item, index) {
-                if(item.id === addon.id){
+            angular.forEach($scope.addonsData.existingAddons, function(item, index) {
+                if (item.id === addon.id) {
                     alreadyAdded = true;
                     item.quantity = parseInt(item.quantity) + parseInt(addonQty);
                     item.totalAmount = (item.quantity) * (item.price_per_piece);

@@ -87,7 +87,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			//defaults and hardcoded values
 			$scope.tax = roomRates.tax || 0;
 			$scope.rooms = $scope.reservationData.rooms;
-			$scope.activeRoom = !$scope.activeRoom ? 0 : $scope.activeRoom;
+			$scope.activeRoom = $scope.viewState.currentTab;
 			if ($stateParams.view === "DEFAULT") {
 				var isRoomAvailable = true;
 				var isHouseAvailable = true;
@@ -361,14 +361,17 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				});
 			}
 
-			if (!!$scope.reservationData.code) {
+			if (!!$scope.reservationData.code && !!$scope.reservationData.code.id) {
 				var isPromotionApplied = function(rate) {
 					var promotionApplied = false;
-					_.each(rate.rooms[$scope.activeRoom].ratedetails, function(dayDetails) {
-						promotionApplied = promotionApplied || dayDetails[rate.rate.id].applyPromotion;
-					});
+					_.each(rate.rooms,function(room) {
+						_.each(room.ratedetails, function(dayDetails) {
+							promotionApplied = promotionApplied || dayDetails[rate.rate.id].applyPromotion;
+						});	
+					});					
 					return promotionApplied;
 				};
+				
 				$scope.displayData.availableRates.sort(function(a, b) {
 					if (isPromotionApplied(a)) {
 						return -1;
@@ -647,8 +650,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					//TODO : 7641 - Update the rateDetails array in the reservationData
 					$scope.reservationData.rateDetails[i] = $scope.roomAvailability[roomId].ratedetails;
 					// TODO: Revisit all occupancyLimit warnings
-					// $scope.checkOccupancyLimit(null, false, i);
+					// $scope.checkOccupancyLimit(null, false, i);					
 				}
+				$scope.viewState.currentTab = $scope.activeRoom;
 				transferState();
 			}
 
@@ -1555,10 +1559,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 		initializeRoomAndRates();
 
-		$scope.changeActiveRoomType = function(tabIndex) {
-			$scope.activeRoom = tabIndex;
-			init();
-		};
+		// $scope.changeActiveRoomType = function(tabIndex) {
+		// 	$scope.activeRoom = tabIndex;
+		// 	init();
+		// };
 
 		$scope.isRoomTypeSelected = function(roomTypeId) {
 			var chosen = false;
