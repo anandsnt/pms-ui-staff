@@ -11,11 +11,9 @@ login.service('resetSrv',['$http', '$q', function($http, $q){
 
 		$http.put("/api/password_resets/"+data.token+"/update.json", data).success(function(response, status) {
 			if(response.status === "success"){
-		    	//deferred.resolve(response.data);
 		    	successCallback(response.data);
 			}else{
 				// please note the type of error expecting is array
-		    	//deferred.reject(response.errors);
 		    	failureCallBack(response.errors);
 			}
 		}).error(function(response, status) {
@@ -57,11 +55,9 @@ login.service('resetSrv',['$http', '$q', function($http, $q){
 
 		$http.put(url, data).success(function(response, status) {
 			if(response.status === "success"){
-		    	//deferred.resolve(response.data);
 		    	successCallback(response.data);
 			}else{
 				// please note the type of error expecting is array
-		    	//deferred.reject(response.errors);
 		    	failureCallBack(response.errors);
 			}
 		}).error(function(response, status) {

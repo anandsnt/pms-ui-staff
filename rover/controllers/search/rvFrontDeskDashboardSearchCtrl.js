@@ -65,7 +65,7 @@ sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', 
 
         //changing the header's heading
         $scope.$emit("UpdateHeading", 'DASHBOARD_FRONTDESK_HEADING');
-    }
+    };
 
     /**
     * recievable function to handle backbutton click on header area

@@ -71,7 +71,7 @@ function BaseCtrl($scope) {
 			failureCallBackParameters = options["failureCallBackParameters"] ? options["failureCallBackParameters"] : null;
 
 		if(showLoader){
-			$scope.$emit('showLoader')
+			$scope.$emit('showLoader');
 		}
 
 
@@ -105,7 +105,7 @@ function BaseCtrl($scope) {
 				}
 			}
 		);
-	}
+	};
 
 	//handle drag and drop events
 	$scope.hideCurrentDragItem = function(ev, ui){
@@ -125,8 +125,6 @@ function BaseCtrl($scope) {
     $scope.getSimplifiedDayName = function(date){
     	var returnText = "";
         try{
-            // var passedDate = new Date(date);
-            // var currentDate = new Date($scope.businessDate);
             var passedDate = tzIndependentDate(date);
             var currentDate = tzIndependentDate($scope.businessDate);
 			var timeDiff = (passedDate.getTime() - currentDate.getTime());

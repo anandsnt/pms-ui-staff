@@ -34,7 +34,7 @@ admin.controller('ADDateRangeModalCtrl', ['$scope',
             $scope.toDate = $scope.fromDate;
           }
         }
-      }
+      };
 
       $scope.toDateOptions = {
         changeYear: true,
@@ -47,9 +47,9 @@ admin.controller('ADDateRangeModalCtrl', ['$scope',
             $scope.fromDate = $scope.toDate;
           }
         }
-      }
+      };
 
-    }
+    };
 
     $scope.setUpData();
 

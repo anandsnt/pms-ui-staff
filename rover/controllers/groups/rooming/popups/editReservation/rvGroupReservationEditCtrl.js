@@ -1,15 +1,15 @@
 sntRover.controller('rvGroupReservationEditCtrl', [
-    '$rootScope', 
-    '$scope', 
-    'rvGroupRoomingListSrv', 
-    '$filter', 
+    '$rootScope',
+    '$scope',
+    'rvGroupRoomingListSrv',
+    '$filter',
     '$timeout',
     'rvUtilSrv',
     'rvGroupConfigurationSrv',
     '$state',
-    function ($rootScope, 
-        $scope, 
-        rvGroupRoomingListSrv, 
+    function ($rootScope,
+        $scope,
+        rvGroupRoomingListSrv,
         $filter,
         $timeout,
         util,
@@ -61,7 +61,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
     $scope.isEmptyRoomNumber = function(roomNo) {
         return (roomNo === null || roomNo === '');
     };
-      
+
     /**
      * to run angular digest loop,
      * will check if it is not running
@@ -71,8 +71,8 @@ sntRover.controller('rvGroupReservationEditCtrl', [
         if (!$scope.$$phase) {
             $scope.$digest();
         }
-    };   
-         
+    };
+
     /**
     * utility method to get the formmated date for API
     * @param  {String} dateString
@@ -95,11 +95,10 @@ sntRover.controller('rvGroupReservationEditCtrl', [
     * @param  {object} reservation
     * @return {undefined}
     */
+   
     $scope.updateReservation = function(reservation) {       
-        if (reservation.reservation_status === "CANCELED") {
-            return false;
-        } 
-        else {
+        
+
             $scope.errorMessage = "";
 
             _.extend(reservation, {
@@ -110,12 +109,12 @@ sntRover.controller('rvGroupReservationEditCtrl', [
               room_id: parseInt(reservation.room_id)
             });
 
-            var options = {              
+            var options = {
               params: reservation,
               successCallBack: onUpdateReservationSuccess
             };
             $scope.callAPI(rvGroupConfigurationSrv.updateRoomingListItem, options);
-        }
+        
     };
 
     /**
@@ -125,7 +124,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
      */
     $scope.navigateStayCard = function(reservation) {
         // Navigate to StayCard
-        if (reservation.reservationStatusFlags.isGuestAttached) {            
+        if (reservation.reservationStatusFlags.isGuestAttached) {
             $scope.closeDialog();
             $timeout(function() {
                 $scope.$emit('showLoader');
@@ -144,7 +143,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
     * @return {undefined}
     */
     var successCallBackOfListOfFreeRoomsAvailable = function (data) {
-        var roomId = initialPopupData.room_id, 
+        var roomId = initialPopupData.room_id,
             assignedRoom = [],
             isSameRoomType = (initialPopupData.room_type_id === $scope.ngDialogData.room_type_id);
 
@@ -200,13 +199,13 @@ sntRover.controller('rvGroupReservationEditCtrl', [
     * @return {undefined}
     */
     $scope.removeReservation = function(reservation) {
-        var rStatusFlags = reservation.reservationStatusFlags, 
-            options = null, 
+        var rStatusFlags = reservation.reservationStatusFlags,
+            options = null,
             params = null;
 
-        if (rStatusFlags.isUneditable || rStatusFlags.isStaying) {
+        if (!rStatusFlags.isExpected) {
             return false;
-        } 
+        }
         else {
             params = {
                 id: reservation.id,
@@ -219,7 +218,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
             };
             $scope.callAPI(rvGroupConfigurationSrv.removeRoomingListItem, options);
         }
-    }
+    };
 
     /**
      * when the reservation from choosed
@@ -228,7 +227,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
     var reservationFromDateChoosed = function(date, datePickerObj) {
         $scope.roomingListState.editedReservationStart = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
         runDigestCycle();
-    }
+    };
 
     /**
      * when the reservation to choosed
@@ -237,7 +236,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
     var reservationToDateChoosed = function(date, datePickerObj) {
         $scope.roomingListState.editedReservationEnd = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
         runDigestCycle();
-    }
+    };
 
     /**
      * utility function to set datepicker options
@@ -268,7 +267,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
             onClose: function(value) {
                 $('#ui-datepicker-div').removeClass('reservation hide-arrow');
                 $('#ui-datepicker-overlay').off('click').remove();
-            }            
+            }
         };
 
         //date picker options - From
@@ -287,7 +286,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
     */
     (function initilizeMe() {
         //variable initilizations
-        _.extend(initialPopupData, $scope.ngDialogData); 
+        _.extend(initialPopupData, $scope.ngDialogData);
 
         //date picker
         setDatePickerOptions();

@@ -97,10 +97,15 @@ $scope.fetchCheckinDetails = function(){
     $scope.$emit('hideLoader');
     $scope.isLoading = false;
     $scope.checkinData = data;
-    $scope.checkinData.auto_checkin_from_hour = $scope.checkinData.start_auto_checkin_from.split(":")[0];
-    $scope.checkinData.auto_checkin_from_minute = $scope.checkinData.start_auto_checkin_from.split(":")[1];
-    $scope.checkinData.auto_checkin_to_hour = $scope.checkinData.start_auto_checkin_to.split(":")[0];
-    $scope.checkinData.auto_checkin_to_minute = $scope.checkinData.start_auto_checkin_to.split(":")[1];
+    if($scope.checkinData.start_auto_checkin_from){
+      $scope.checkinData.auto_checkin_from_hour = $scope.checkinData.start_auto_checkin_from.split(":")[0];
+      $scope.checkinData.auto_checkin_from_minute = $scope.checkinData.start_auto_checkin_from.split(":")[1];
+    }
+    if($scope.checkinData.start_auto_checkin_to){
+      $scope.checkinData.auto_checkin_to_hour = $scope.checkinData.start_auto_checkin_to.split(":")[0];
+      $scope.checkinData.auto_checkin_to_minute = $scope.checkinData.start_auto_checkin_to.split(":")[1];
+    };  
+   
     setUpData();
 
 };
@@ -157,7 +162,7 @@ $scope.saveCheckin = function(){
     'zest_app_checkin_alert_time':zestCheckinAlertTime,
     'require_cc_for_checkin_email' : $scope.checkinData.require_cc_for_checkin_email,
     'is_precheckin_only':$scope.checkinData.is_precheckin_only? 'true':'false',
-    //'is_sent_to_queue':$scope.checkinData.is_sent_to_queue ==='yes'? 'true':'false',
+
     'checkin_action':$scope.checkinData.checkin_action,
     'excluded_rate_codes':excluded_rate_codes,
     'excluded_block_codes':excluded_block_codes,
@@ -173,7 +178,8 @@ $scope.saveCheckin = function(){
     'start_auto_checkin_from_prime_time': $scope.checkinData.start_auto_checkin_from_prime_time,
     'start_auto_checkin_to' : startAutoCheckinTo,
     'start_auto_checkin_to_prime_time': $scope.checkinData.start_auto_checkin_to_prime_time,
-    'excluded_room_types':excluded_room_types
+    'excluded_room_types':excluded_room_types,
+    'guest_address_on':$scope.checkinData.guest_address_on
 
   };
 

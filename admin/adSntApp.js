@@ -43,7 +43,6 @@ var AdminGlobalApp = function(){
     // success function of coddova plugin's appending
     this.fetchCompletedOfCordovaPlugins = function(data){
     	$('body').append(data);
-        //alert("cordova success");
         that.iBeaconLinker = new iBeaconOperation();
     	that.cordovaLoaded = true;
     };

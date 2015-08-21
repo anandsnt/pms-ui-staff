@@ -23,7 +23,7 @@ sntRover.controller('RVArTransactionsDatePickerController',['$scope','$rootScope
                 }
                 ngDialog.close();
             }
-        }
+        };
     };
 
     $scope.setUpData();

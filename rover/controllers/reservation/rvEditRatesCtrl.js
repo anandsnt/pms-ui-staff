@@ -8,20 +8,19 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 
 		$scope.setScroller('rateDetails');
 		$scope.refreshRateDetails = function() {
-			$timeout(function() {
-				$scope.refreshScroller('rateDetails');
-			}, 2000);
-		}
-		$scope.refreshRateDetails();
+            $timeout(function() {
+    			$scope.refreshScroller('rateDetails');
+     		}, 2000);
+        };
+        $scope.refreshRateDetails();
 
 		/**
 		 * utility function to get reservation ID
 		 * @return {String} - reservationID
 		 */
 		var getReservationID = function() {
-
 			if ($scope.ngDialogData.index === 0) {
-				//when there is only reservation in reservation summary screen and 
+				//when there is only reservation in reservation summary screen and 			
 				//on accessing from staycard
 				return ($scope.reservationData.reservationId || $scope.reservationParentData.reservationId);
 			} else {

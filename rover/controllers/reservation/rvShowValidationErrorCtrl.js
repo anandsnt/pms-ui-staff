@@ -19,7 +19,7 @@ sntRover.controller('RVShowRoomNotAvailableCtrl',['$rootScope', '$scope', 'ngDia
             reservationDataToKeepinVault.guestLastName  = $scope.reservationData.guest.lastName;
             reservationDataToKeepinVault.companyID      = $scope.reservationData.company.id;
             reservationDataToKeepinVault.travelAgentID  = $scope.reservationData.travelAgent.id;
-            //$vault.set('searchReservationData', JSON.stringify(reservationDataToKeepinVault));
+
             $state.go('rover.diary', {
                 isfromcreatereservation: true
             });

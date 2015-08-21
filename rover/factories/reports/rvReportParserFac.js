@@ -24,7 +24,7 @@ sntRover.factory('RVReportParserFac', [
             // a very special parser for daily transaction report
             // in future we may make this check generic, if more
             // reports API structure follows the same pattern
-            else if ( reportName == reportUtils.getName('RATE_ADJUSTMENTS_REPORT') ) {
+            else if ( reportName === reportUtils.getName('RATE_ADJUSTMENTS_REPORT') ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseRateAdjustments( reportName, apiResponse, options );
 
                 /**
@@ -33,13 +33,13 @@ sntRover.factory('RVReportParserFac', [
                  * Keeping it here for any future needs. Wont execute below this
                  * since we already returned! :)
                  */
-                if ( options['groupedByKey'] == 'adjusted_user_id' ) {
+                if ( options['groupedByKey'] === 'adjusted_user_id' ) {
                     return _.isEmpty(apiResponse) ? apiResponse : $_preParseGroupedRateAdjustments( reportName, apiResponse, options );
                 } else {
                     return _.isEmpty(apiResponse) ? apiResponse : $_parseRateAdjustments( reportName, apiResponse, options );
                 }
             }
-            
+
             // a very special parser for deposit report
             else if ( reportName === reportUtils.getName('DEPOSIT_REPORT') ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseDepositReport( reportName, apiResponse, options );
@@ -115,7 +115,7 @@ sntRover.factory('RVReportParserFac', [
             };
 
             var checkCancel = function(item) {
-                var check = !!options['checkCancel'] && excludeReports([reportUtils.getName('ARRIVAL'), reportUtils.getName('IN_HOUSE_GUEST')])
+                var check = !!options['checkCancel'] && excludeReports([reportUtils.getName('ARRIVAL'), reportUtils.getName('IN_HOUSE_GUEST')]);
                 return check ? !!item['cancel_reason'] : false;
             };
 
@@ -226,16 +226,10 @@ sntRover.factory('RVReportParserFac', [
                 };
 
                 // dont remove yet
-                // console.log( 'API reponse changed as follows: ');
-                // console.log( returnAry );
             } else {
                 returnAry = apiResponse;
-
                 // dont remove yet
-                // console.log( 'No API changes applied' );
             };
-
-
 
             return returnAry;
         };
@@ -379,7 +373,7 @@ sntRover.factory('RVReportParserFac', [
 
 
 
-        
+
         function $_parseRateAdjustments ( reportName, apiResponse, options ) {
             var returnAry = [],
                 customData = [],
@@ -401,8 +395,8 @@ sntRover.factory('RVReportParserFac', [
                         stayDates = makeCopy['stay_dates'][k];
 
                         // include the first stayDates details in the
-                        // same row as that of the main reservation details  
-                        if ( k == 0 ) {
+                        // same row as that of the main reservation details
+                        if ( k === 0 ) {
                             angular.extend(makeCopy, {
                                 'isReport'        : true,
                                 'rowspan'         : l + 1,
@@ -417,7 +411,7 @@ sntRover.factory('RVReportParserFac', [
                         }
 
                         // create additional sub rows to represent the
-                        // rest of the stay_dates 
+                        // rest of the stay_dates
                         else {
                             customData = {};
                             angular.extend(customData, {
@@ -482,8 +476,8 @@ sntRover.factory('RVReportParserFac', [
                         depositData = makeCopy['deposit_data'][k];
 
                         // include the first depositData details in the
-                        // same row as that of the main reservation details  
-                        if ( k == 0 ) {
+                        // same row as that of the main reservation details
+                        if ( k === 0 ) {
                             angular.extend(makeCopy, {
                                 'isReport'               : true,
                                 'rowspan'                : l + 1,
@@ -497,7 +491,7 @@ sntRover.factory('RVReportParserFac', [
                         }
 
                         // create additional sub rows to represent the
-                        // rest of the 'deposit_data' 
+                        // rest of the 'deposit_data'
                         else {
                             customData = {};
                             angular.extend(customData, {
@@ -545,7 +539,7 @@ sntRover.factory('RVReportParserFac', [
          * Each key will be the 'adjust_by' username and its value
          * will be an array of objects. Each object will represent
          * an reservation (unique key 'confirmation_no')
-         * 
+         *
          * @param {Array} apiResponse [{}, {}, {}, {}, {}]
          * @return {Object} =>        { us1: [{}, {}, {}], us2: [{}, {}], us3: [{}] }
          */
@@ -555,7 +549,7 @@ sntRover.factory('RVReportParserFac', [
              * THIS IS DEPRICATED!!!
              * KEEPING HERE FOR ANY FUTURE NEEDS
              */
-            
+
             var makeCopy,
                 withOutStay,
                 usersInThisRes;
@@ -598,7 +592,7 @@ sntRover.factory('RVReportParserFac', [
                     // create a very unique 'uid', we'll remove 'userId' from it later
                     uid = userId + '__' + userNa;
 
-                    if ( usersInThisRes[uid] == undefined ) {
+                    if ( usersInThisRes[uid] === undefined ) {
                         usersInThisRes[uid] = angular.copy( withOutStay );
                     };
 
@@ -614,7 +608,7 @@ sntRover.factory('RVReportParserFac', [
                         continue;
                     };
 
-                    if ( tempObj[keyId] == undefined ) {
+                    if ( tempObj[keyId] === undefined ) {
                         tempObj[keyId] = [];
                     };
 

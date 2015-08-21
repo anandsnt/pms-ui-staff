@@ -38,7 +38,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$rootScope.setPrevState = {
 			title: $filter( 'translate' )( 'DASHBOARD' ),
 			name: 'rover.dashboard'
-		}
+		};
 
 		// set title in header
 		$scope.setTitle($filter( 'translate')('ROOM_STATUS'));
@@ -99,8 +99,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		var $_oldFilterValues = angular.copy( RVHkRoomStatusSrv.currentFilters );
 			$_oldRoomTypes    = angular.copy( roomTypes );
 
-		$scope.resultFrom         = $_page,
-		$scope.resultUpto         = $_perPage,
+		$scope.resultFrom         = $_page;
+		$scope.resultUpto         = $_perPage;
 		$scope.netTotalCount      = 0;
 		$scope.uiTotalCount       = 0;
 		$scope.disablePrevBtn     = true;
@@ -112,7 +112,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.isStandAlone         = $rootScope.isStandAlone;
 		$scope.isMaintenanceStaff   = $rootScope.isMaintenanceStaff;
-		$scope.isMaintenanceManager = $rootScope.isMaintenanceManager
+		$scope.isMaintenanceManager = $rootScope.isMaintenanceManager;
 		$scope.hasActiveWorkSheet   = false;
 
 		$scope.roomTypes          = roomTypes;
@@ -340,7 +340,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.closeDialog = function() {
 		    $scope.errorMessage = "";
 		    ngDialog.close();
-		}
+		};
 
 		var $_findEmpAry = function() {
 			var workid = $scope.assignRoom.work_type_id || $scope.topFilter.byWorkType,
@@ -413,7 +413,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		            $scope.$emit('hideLoader');
 
 		            var assignee = _.find($scope.activeWorksheetEmp, function(emp) {
-		            	return emp.id === $scope.assignRoom.user_id
+		            	return emp.id === $scope.assignRoom.user_id;
 		            });
 		            $_tobeAssignedRoom.canAssign = false;
 		            $_tobeAssignedRoom.assigned_staff = {
@@ -474,7 +474,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.roomSelectChange = function(item, i) {
 			var _value = item.selected,
 				_key   = i + '';
-			
+
 			// double to make sure its a truthy value
 			if ( !! _value ) {
 				$scope.multiRoomAction.anyChosen = true;
@@ -500,7 +500,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			};
 
 			// check if all rooms have been selected to make the 'All Selected' enabled in filters
-			if ( $scope.uiTotalCount == $scope.multiRoomAction.rooms.length ) {
+			if ( $scope.uiTotalCount === $scope.multiRoomAction.rooms.length ) {
 				$scope.multiRoomAction.allChosen = true;
 			} else {
 				$scope.multiRoomAction.allChosen = false;
@@ -835,8 +835,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				};
 
 			// reset before fetch/process
-			// $scope.hasActiveWorkSheet = false;
-			// $scope.currentView        = 'rooms';
+
+
 
 			// if the assignements has been loaded
 			// as part of the inital load, just process it
@@ -859,13 +859,13 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				stayover: 0,
 				completed: 0,
 				total: 0
-			}
+			};
 
 			var totalHH = totalMM = hh = mm = i = 0;
 			for ($scope.counts.total = assignments.length; i < $scope.counts.total; i++) {
 				var room = assignments[i].room;
 
-				totalHH += parseInt(room.time_allocated.split(':')[0]),
+				totalHH += parseInt(room.time_allocated.split(':')[0]);
 				totalMM += parseInt(room.time_allocated.split(':')[1]);
 
 				if (room.reservation_status.indexOf("Arrived") >= 0) {
@@ -994,7 +994,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			// caching DOM nodes invloved
 			var $rooms        = document.getElementById( 'rooms' ),
-				$roomsList    = $rooms.children[0];
+				$roomsList    = $rooms.children[0],
 				$refresh      = document.getElementById( 'pull-refresh-page' ),
 				$refreshArrow = document.getElementById( 'refresh-icon' ),
 				$refreshTxt   = document.getElementById( 'refresh-text' ),

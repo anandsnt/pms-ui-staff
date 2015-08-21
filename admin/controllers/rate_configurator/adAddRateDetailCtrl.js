@@ -17,7 +17,11 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
 
         $scope.shouldShowMemberRates = function(){
             return !$rootScope.isHourlyRatesEnabled && (!!$rootScope.isFFPActive || !!$rootScope.isHLPActive);
-        }
+        };
+
+        $scope.isHourlyRatesEnabled = function () {
+            return !!$rootScope.isHourlyRatesEnabled;
+        };
 
         $scope.isPromotional = function() {
             var ispromo = false;
@@ -33,7 +37,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 });
             }
             return ispromo;
-        }
+        };
 
 
 
@@ -51,7 +55,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 });
             }
             return hideBasedOn;
-        }
+        };
 
         /*
          * Validate Rate Details Form
@@ -112,7 +116,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             $scope.rateTypesDetails.depositPolicies = $scope.depositRequiredActivated ? $scope.rateTypesDetails.depositPolicies : [];
             $scope.rateTypesDetails.cancelationPenalties = $scope.cancelPenaltiesActivated ? $scope.rateTypesDetails.cancelationPenalties : [];
             $scope.rateData.currency_code_id = $scope.rateTypesDetails.hotel_settings.currency.id;
-        }
+        };
 
         /*
          * Set add on data
@@ -158,11 +162,13 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'end_date': $scope.rateData.end_date,
                 'is_hourly_rate': $scope.rateData.is_hourly_rate,
                 'is_member': $scope.rateData.is_member_rate,
-                'commission_details':$scope.rateData.commission_details
+                'commission_details':$scope.rateData.commission_details,
+                'is_pms_only' : $scope.rateData.is_pms_only,
+                'is_channel_only' : $scope.rateData.is_channel_only
             };
 
             // Save Rate Success Callback
-            var saveSuccessCallback = function(data) {                
+            var saveSuccessCallback = function(data) {
                 $scope.manipulateData(data);
                 $scope.detailsMenu = "";
                 $('#activityLogArea').scope().detailsMenu = '';
@@ -185,7 +191,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 };
                 $scope.invokeApi(ADRatesAddDetailsSrv.updateNewRate, updatedData, saveSuccessCallback, saveFailureCallback);
             }
-        }
+        };
 
 
         $scope.endDateValidationPopup = function() {
@@ -224,7 +230,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                     var data = {
                         "id": $scope.rateData.id,
                         "end_date": $scope.rateData.end_date
-                    }
+                    };
                     $scope.invokeApi(ADRatesAddDetailsSrv.validateEndDate, data, validateEndDateSuccessCallback, validateEndDateFailureCallback);
                 } else {
                     $scope.startSave();
@@ -234,12 +240,12 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             }
         };
 
-        $scope.init();
+        
 
         $scope.deleteEndDate = function() {
             $scope.rateData.end_date = "";
             $scope.rateData.end_date_for_display = "";
-        }
+        };
 
 
         $scope.popupCalendar = function() {
@@ -256,8 +262,21 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             if ($scope.rateData.date_ranges.length < 1) {
                 $scope.rateData.is_hourly_rate = value;
             }
-        }
+        };
 
+        $scope.togglePMSOnly = function(){
+            if(!!$scope.rateData.is_channel_only && !!$scope.rateData.is_pms_only){
+                $scope.rateData.is_channel_only = false;
+            }
+            
+        };
 
+        $scope.toggleChannelOnly = function(){
+            if(!!$scope.rateData.is_channel_only && !!$scope.rateData.is_pms_only){
+                $scope.rateData.is_pms_only = false;
+            }
+        };
+
+        $scope.init();
     }
 ]);
