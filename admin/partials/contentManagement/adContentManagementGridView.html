@@ -200,6 +200,15 @@
                         ng-click="itemParams.sorting({'page_template' : itemParams.isSortBy('page_template', 'asc') ? 'desc' : 'asc'})" rowspan="2">
                         <div><i class="glyphicon glyphicon-user"></i> <span translate>TYPE_LABEL</span></div>
                     </th>
+
+                    <th class="sortable" ng-class="{
+                        'sort-asc': itemParams.isSortBy('page_template', 'asc'),
+                        'sort-desc': itemParams.isSortBy('page_template', 'desc')
+                      }"
+                        ng-click="itemParams.sorting({'page_template' : itemParams.isSortBy('page_template', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>SCREEN_ID_LABEL</span></div>
+                    </th>
+
                     <th class="sortable" ng-class="{
                         'sort-asc': itemParams.isSortBy('last_updated', 'asc'),
                         'sort-desc': itemParams.isSortBy('last_updated', 'desc')
@@ -219,6 +228,7 @@
                 <tbody>
                     <tr ng-repeat="gridItem in $data | filter:searchText">
                         <td><a ng-click="componentSelected(selectedView, gridItem.id)">{{gridItem.name}}</a></td>
+                        <td>{{gridItem.page_template}}</td>
                         <td>{{gridItem.page_template}}</td>
                         <td><em>{{getFormattedTime(gridItem.last_updated)}}</em></td>                        
                         <td >
