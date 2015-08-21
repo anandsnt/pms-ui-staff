@@ -79,11 +79,11 @@
                 delete newObject[unwanted_keys[i]];
             };
             data 					= newObject;
-            if($scope.guestDetails.month === "" || $scope.guestDetails.day === "" || $scope.guestDetails.year ===""){
-            	delete data["birthday"];
+            if($scope.guestDetails.month && $scope.guestDetails.day && $scope.guestDetails.year){
+            	data.birthday = $scope.guestDetails.month+"-"+$scope.guestDetails.day+"-"+$scope.guestDetails.year;
             }
             else{
-            	data.birthday = $scope.guestDetails.month+"-"+$scope.guestDetails.day+"-"+$scope.guestDetails.year;
+            	delete data["birthday"];
             };
             
 			return data;
