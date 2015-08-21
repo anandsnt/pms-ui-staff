@@ -263,8 +263,20 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				}
 			}
 		};
-		$scope.allowOverbook = function() { //check user permission for overbook_house
-			return rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+
+		$scope.restrictIfOverbook = function(roomId, rateId) {			
+			var	canOverbookHouse = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE'),
+				canOverbookRoomType = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+
+			if(canOverbookHouse && canOverbookRoomType){
+				return false;
+			}
+			if(!canOverbookHouse && $scope.getLeastHouseAvailability(roomId, rateId) < 1){
+				return true;
+			}
+			if(!canOverbookRoomType && $scope.getLeastHouseAvailability(roomId, rateId) < 1){
+				return true;
+			}
 		};
 
 		$scope.setRates = function() {
@@ -1362,6 +1374,17 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			});
 			return leastAvailability;
 		};
+
+		$scope.getLeastHouseAvailability = function(roomId, rateId) {
+			var leastAvailability = $scope.roomAvailability[roomId].ratedetails[$scope.reservationData.arrivalDate][rateId].availabilityCount
+			angular.forEach($scope.roomAvailability[roomId].ratedetails, function(rateDetail, date) {
+				if ((date === $scope.reservationData.arrivalDate || date !== $scope.reservationData.departureDate) && rateDetail[rateId].availabilityCount < leastAvailability) {
+					leastAvailability = rateDetail[rateId].houseAvailability;
+				}
+			});
+			return leastAvailability;
+		};
+
 
 		$scope.getAllRestrictions = function(roomId, rateId) {
 			var restrictions = [];
