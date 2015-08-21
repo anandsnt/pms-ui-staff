@@ -33,10 +33,10 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 
 			$scope.guestLikesData = data;
 
-			angular.forEach($scope.guestLikesData.preferences, function(value, key) {
+			angular.forEach($scope.guestLikesData.preferences, function(eachPref, key) {
 				$scope.calculatedHeight += 34;
 				var rowCount = 0;
-				angular.forEach(value.values, function(prefValue, prefKey) {
+				angular.forEach(eachPref.values, function(prefValue, prefKey) {
 					rowCount++;
 					if (rowCount % 2 !== 0) {
 						$scope.calculatedHeight += 50;
@@ -44,8 +44,10 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 					var userPreference = $scope.guestLikesData.user_preference;
 					if (userPreference.indexOf(prefValue.id) !== -1) {
 						prefValue.isChecked = true;
+						eachPref.isChecked = true;
 					} else {
 						prefValue.isChecked = false;
+						eachPref.isChecked = false;
 					}
 				});
 			});
