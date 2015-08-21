@@ -449,7 +449,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 			//referring data source
 			var refData 		= $scope.groupConfigData.summary,
-				newBlockFrom 	= $scope.groupConfigData.summary.block_from,
+				newBlockFrom 	= refData.block_from,
 				oldBlockFrom	= summaryMemento.block_from;
 
 			if (refData.release_date.toString().trim() === '') {
@@ -1246,6 +1246,9 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//setting the min date for end Date
 			$scope.endDateOptions.minDate = $scope.groupConfigData.summary.block_from;
 
+			//setting max date of from date
+			$scope.startDateOptions.maxDate = $scope.groupConfigData.summary.block_to;
+
 			$scope.changeDatesActions.clickedOnMoveButton ();
 
 		};
@@ -1263,6 +1266,22 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			$scope.reloadPage("ROOM_BLOCK");
 		};
 
+		var cancelCallBackofDateChange = function () {
+			//resetting the calendar date's to actual one
+			$scope.groupConfigData.summary.block_from 	= '';
+
+			$scope.groupConfigData.summary.block_from 	= new tzIndependentDate(summaryMemento.block_from);
+			$scope.groupConfigData.summary.block_to  	= new tzIndependentDate(summaryMemento.block_to);
+			$scope.startDate = $scope.groupConfigData.summary.block_to;
+			$scope.endDate   = $scope.groupConfigData.summary.block_to;
+
+			//setting the min date for end Date
+			$scope.endDateOptions.minDate = $scope.groupConfigData.summary.block_from;
+
+			//setting max date of from date
+			$scope.startDateOptions.maxDate = $scope.groupConfigData.summary.block_to;
+		}
+
 		var successCallBackOfEarlierArrivalDateChange = function() {
 			$scope.reloadPage("ROOM_BLOCK");
 		};
@@ -1279,10 +1298,11 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			var sumryData = $scope.groupConfigData.summary,
 				oldSumryData = summaryMemento,
 				options = {
-					fromDate 		: sumryData.block_from,
-					oldFromDate 	: oldSumryData.block_from,
-					successCallBack : successCallBackOfEarlierArrivalDateChange,
-					failureCallBack : failureCallBackOfEarlierArrivalDateChange
+					fromDate 			: sumryData.block_from,
+					oldFromDate 		: oldSumryData.block_from,
+					successCallBack 	: successCallBackOfEarlierArrivalDateChange,
+					failureCallBack 	: failureCallBackOfEarlierArrivalDateChange,
+					cancelPopupCallBack	: cancelCallBackofDateChange
 				};
 			$scope.changeDatesActions.triggerEarlierArrDateChange (options);
 		};
@@ -1303,10 +1323,11 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			var sumryData = $scope.groupConfigData.summary,
 				oldSumryData = summaryMemento,
 				options = {
-					fromDate 		: sumryData.block_from,
-					oldFromDate 	: oldSumryData.block_from,
-					successCallBack : successCallBackOfEarlierArrivalDateChange,
-					failureCallBack : failureCallBackOfEarlierArrivalDateChange
+					fromDate 			: sumryData.block_from,
+					oldFromDate 		: oldSumryData.block_from,
+					successCallBack 	: successCallBackOfEarlierArrivalDateChange,
+					failureCallBack 	: failureCallBackOfEarlierArrivalDateChange,
+					cancelPopupCallBack	: cancelCallBackofDateChange
 				};
 			$scope.changeDatesActions.triggerLaterArrDateChange (options);
 		};
@@ -1339,10 +1360,11 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			var sumryData = $scope.groupConfigData.summary,
 				oldSumryData = summaryMemento,
 				options = {
-					toDate 			: sumryData.block_to,
-					oldToDate 		: oldSumryData.block_to,
-					successCallBack : successCallBackOfEarlierDepartureDateChange,
-					failureCallBack : failureCallBackOfEarlierDepartureDateChange
+					toDate 				: sumryData.block_to,
+					oldToDate 			: oldSumryData.block_to,
+					successCallBack 	: successCallBackOfEarlierDepartureDateChange,
+					failureCallBack 	: failureCallBackOfEarlierDepartureDateChange,
+					cancelPopupCallBack	: cancelCallBackofDateChange
 				};
 			$scope.changeDatesActions.triggerEarlierDepDateChange (options);
 		};
@@ -1372,10 +1394,11 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			var sumryData = $scope.groupConfigData.summary,
 				oldSumryData = summaryMemento,
 				options = {
-					toDate 			: sumryData.block_to,
-					oldToDate 		: oldSumryData.block_to,
-					successCallBack : successCallBackOfLaterDepartureDateChange,
-					failureCallBack : failureCallBackOfLaterDepartureDateChange
+					toDate 				: sumryData.block_to,
+					oldToDate 			: oldSumryData.block_to,
+					successCallBack 	: successCallBackOfLaterDepartureDateChange,
+					failureCallBack 	: failureCallBackOfLaterDepartureDateChange,
+					cancelPopupCallBack	: cancelCallBackofDateChange
 				};
 			$scope.changeDatesActions.triggerLaterDepDateChange (options);
 		};

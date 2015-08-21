@@ -105,6 +105,20 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$scope.reloadPage();
 		};
 
+		var cancelCallBackofDateChange = function () {
+			//resetting the calendar date's to actual one
+			$scope.groupConfigData.summary.block_from 	= '';
+
+			$scope.groupConfigData.summary.block_from 	= new tzIndependentDate(summaryMemento.block_from);
+			$scope.groupConfigData.summary.block_to  	= new tzIndependentDate(summaryMemento.block_to);
+
+			//setting the min date for end Date
+			$scope.toDateOptions.minDate = $scope.groupConfigData.summary.block_from;
+
+			//setting max date of from date
+			$scope.fromDateOptions.maxDate = $scope.groupConfigData.summary.block_to;
+		}
+
 		var successCallBackOfEarlierArrivalDateChange = function() {
 			$scope.reloadPage();
 		};
@@ -124,7 +138,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					fromDate 		: sumryData.block_from,
 					oldFromDate 	: oldSumryData.block_from,
 					successCallBack : successCallBackOfEarlierArrivalDateChange,
-					failureCallBack : failureCallBackOfEarlierArrivalDateChange
+					failureCallBack : failureCallBackOfEarlierArrivalDateChange,
+					cancelPopupCallBack	: cancelCallBackofDateChange
 				};
 			$scope.changeDatesActions.triggerEarlierArrDateChange (options);
 		};	
@@ -148,7 +163,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					fromDate 		: sumryData.block_from,
 					oldFromDate 	: oldSumryData.block_from,
 					successCallBack : successCallBackOfEarlierArrivalDateChange,
-					failureCallBack : failureCallBackOfEarlierArrivalDateChange
+					failureCallBack : failureCallBackOfEarlierArrivalDateChange,
+					cancelPopupCallBack	: cancelCallBackofDateChange
 				};
 			$scope.changeDatesActions.triggerLaterArrDateChange (options);
 		};
@@ -184,7 +200,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					toDate 			: sumryData.block_to,
 					oldToDate 		: oldSumryData.block_to,
 					successCallBack : successCallBackOfEarlierDepartureDateChange,
-					failureCallBack : failureCallBackOfEarlierDepartureDateChange
+					failureCallBack : failureCallBackOfEarlierDepartureDateChange,
+					cancelPopupCallBack	: cancelCallBackofDateChange
 				};
 			$scope.changeDatesActions.triggerEarlierDepDateChange (options);
 		};	
@@ -217,7 +234,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					toDate 			: sumryData.block_to,
 					oldToDate 		: oldSumryData.block_to,
 					successCallBack : successCallBackOfLaterDepartureDateChange,
-					failureCallBack : failureCallBackOfLaterDepartureDateChange
+					failureCallBack : failureCallBackOfLaterDepartureDateChange,
+					cancelPopupCallBack	: cancelCallBackofDateChange
 				};
 			$scope.changeDatesActions.triggerLaterDepDateChange (options);
 		};
