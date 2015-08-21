@@ -1,5 +1,5 @@
 (function() {
-	var guestDetailsController = function($scope,$rootScope,$state,guestDetailsService) {
+	var guestDetailsController = function($scope,$rootScope,$state,guestDetailsService,$modal) {
 
 	$scope.pageValid = false;
 
@@ -79,37 +79,56 @@
                 delete newObject[unwanted_keys[i]];
             };
             data 					= newObject;
-            data.birthday 			= $scope.guestDetails.month+"-"+$scope.guestDetails.day+"-"+$scope.guestDetails.year;
+            if($scope.guestDetails.month === "" || $scope.guestDetails.day === "" || $scope.guestDetails.year ===""){
+            	delete data["birthday"];
+            }
+            else{
+            	data.birthday = $scope.guestDetails.month+"-"+$scope.guestDetails.day+"-"+$scope.guestDetails.year;
+            };
+            
 			return data;
+		};
+		
+		$scope.opts = {
+			backdrop: true,
+			backdropClick: true,
+			templateUrl: '/assets/checkin/partials/guestDetailsErrorModal.html',
+			controller: ModalInstanceCtrl
 		};
 
 		//post guest details
 		$scope.postGuestDetails = function(){
-			$scope.isLoading 		= true;
-			var dataToSave 			= getDataToSave();
-			guestDetailsService.postGuestDetails(dataToSave).then(function(response) {
-				$scope.isLoading 	= false;
-				if($rootScope.upgradesAvailable){
-					$state.go('checkinUpgrade');
-				}
-				else{
-					  if($rootScope.isAutoCheckinOn){
-					    $state.go('checkinArrival');
-					  }
-					  else{
-					    $state.go('checkinKeys');
-					  }
-				}
-			},function(){
-				$rootScope.netWorkError = true;
-				$scope.isLoading = false;
-			})
+
+			if($scope.guestDetails.country_id  && $scope.guestDetails.street1  && $scope.guestDetails.street2  && $scope.guestDetails.city  && $scope.guestDetails.state && $scope.guestDetails.postal_code ){
+				$scope.isLoading 		= true;
+				var dataToSave 			= getDataToSave();
+				guestDetailsService.postGuestDetails(dataToSave).then(function(response) {
+					$scope.isLoading 	= false;
+					if($rootScope.upgradesAvailable){
+						$state.go('checkinUpgrade');
+					}
+					else{
+						  if($rootScope.isAutoCheckinOn){
+						    $state.go('checkinArrival');
+						  }
+						  else{
+						    $state.go('checkinKeys');
+						  }
+					}
+				},function(){
+					$rootScope.netWorkError = true;
+					$scope.isLoading = false;
+				});
+			}
+			else{
+				$modal.open($scope.opts);
+			};
 		};		
 	}
 };
 
 var dependencies = [
-'$scope','$rootScope','$state','guestDetailsService',
+'$scope','$rootScope','$state','guestDetailsService','$modal',
 guestDetailsController
 ];
 
