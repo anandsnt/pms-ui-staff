@@ -109,6 +109,10 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		$scope.$on("resetGuestTab", function() {
 			$scope.guestCardTabSwitch("guest-contact");
 		});
+		
+		$scope.$on("guest_email_updated", function(e, email) {
+			$scope.guestCardData.contactInfo.email = email;
+		});
 
 		$scope.$on('reservationCardisClicked', function() {
 
