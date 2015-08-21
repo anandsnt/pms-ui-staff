@@ -32,7 +32,7 @@
                         {{preferences.values[$index*2+1].details}}
                     </label>
                 </div> -->
-                
+
                 <div ng-if="'dropdown' == preferences.type" class="entry full-width">
                   <label>{{ preferences.name }}</label>
                   <div class="select">
@@ -63,12 +63,12 @@
                   <div class="check-block" ng-repeat="x in getHalfArrayPref(preferences.values) track by $index">
                       <label class="checkbox"  ng-class="{ 'checked': preferences.values[$index*2].isChecked }">
                           <span class="icon-form icon-checkbox"  ng-class="{ 'checked': preferences.values[$index*2].isChecked }"></span>
-                          <input type="checkbox" name="{{ preferences.name }}" ng-model="preferences.values[$index*2].isChecked" ng-change="changedCheckboxPreference( $parent.$index, $index*2 )" />
+                          <input type="checkbox" name="{{ preferences.name }}" ng-model="preferences.values[$index*2].isChecked" />
                           {{ preferences.values[$index*2].details }}
                       </label>
                       <label class="checkbox" ng-class="{'checked': preferences.values[$index*2+1].isChecked}">
                           <span class="icon-form icon-checkbox" ng-class="{'checked': preferences.values[$index*2+1].isChecked}"></span>
-                          <input type="checkbox" name="{{preferences.name}}" ng-model="preferences.values[$index*2+1].isChecked" ng-change="changedCheckboxPreference($parent.$index, $index*2+1)" />
+                          <input type="checkbox" name="{{preferences.name}}" ng-model="preferences.values[$index*2+1].isChecked" />
                           {{ preferences.values[$index*2+1].details }}
                       </label>
                   </div>

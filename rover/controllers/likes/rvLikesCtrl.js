@@ -170,6 +170,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 				});
 			});
 
+			console.log($scope.guestLikesData.preferences);
 			angular.forEach($scope.guestLikesData.preferences, function(value, key) {
 				var preferenceUpdateData = {};
 				angular.forEach(value.values, function(prefValue, prefKey) {
@@ -181,6 +182,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 				});
 				updateData.preference.push(preferenceUpdateData);
 			});
+			console.log( updateData.preference );
 
 			var dataToUpdate = JSON.parse(JSON.stringify(updateData));
 		    var dataUpdated = (angular.equals(dataToUpdate, presentLikeInfo))?true:false;
