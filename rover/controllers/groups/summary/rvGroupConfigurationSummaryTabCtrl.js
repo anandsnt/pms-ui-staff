@@ -283,8 +283,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 			//arrival left date change
 			else if(newBlockFrom < oldBlockFrom && $scope.changeDatesActions.arrDateLeftChangeAllowed()) {
-				triggerEarlierArrivalDateChange();
-				
+				triggerEarlierArrivalDateChange();				
 			}
 
 			//arrival right date change
@@ -403,7 +402,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		var shouldDisableFromDatePicker = function(){
 			var sumryData = $scope.groupConfigData.summary,
 				chDateAct = $scope.changeDatesActions;
-			return (sumryData.is_cancelled || (!chDateAct.arrDateLeftChangeAllowed() || !chDateAct.arrDateRightChangeAllowed()));
+			return (!$scope.isInAddMode() && (sumryData.is_cancelled || (!sumryData.is_from_date_right_move_allowed && !sumryData.is_from_date_left_move_allowed)));
 		};
 
 		/**
@@ -413,7 +412,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		var shouldDisableEndDatePicker = function(){
 			var sumryData = $scope.groupConfigData.summary,
 				chDateAct = $scope.changeDatesActions;
-			return (sumryData.is_cancelled || (!chDateAct.depDateLeftChangeAllowed() || !chDateAct.depDateRightChangeAllowed()));
+			return (!$scope.isInAddMode() && (sumryData.is_cancelled || (!sumryData.is_to_date_right_move_allowed && !sumryData.is_to_date_left_move_allowed)));
 		};
 
 		/**
@@ -433,8 +432,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			var commonDateOptions = {
 				dateFormat: $rootScope.jqDateFormat,
 				numberOfMonths: 1,
-				yearRange: '-1:',
-				minDate: tzIndependentDate($rootScope.businessDate)
+				yearRange: '-1:'
 			};
 
 			var sumryData = $scope.groupConfigData.summary,
@@ -444,7 +442,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$scope.fromDateOptions = _.extend({
 				onSelect: fromDateChoosed,
 				disabled: shouldDisableFromDatePicker(),
-				maxDate: $scope.groupConfigData.summary.block_to
+				maxDate: $scope.groupConfigData.summary.block_to,
+				minDate: tzIndependentDate($rootScope.businessDate)
 			}, commonDateOptions);
 
 			//to date options
@@ -457,7 +456,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			//release date options
 			$scope.releaseDateOptions = _.extend({
 				onSelect: releaseDateChoosed,
-				disabled: shouldDisableReleaseDatePicker()
+				disabled: shouldDisableReleaseDatePicker(),
+				minDate: tzIndependentDate($rootScope.businessDate)
 			}, commonDateOptions);
 
 			//summary memento will change we attach date picker to controller

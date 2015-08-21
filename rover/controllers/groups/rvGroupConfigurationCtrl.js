@@ -155,7 +155,14 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @return {Boolean}
              */
             var arrDateLeftChangeAllowed = function(){
-                return $scope.groupConfigData.summary.is_from_date_left_move_allowed;
+                var sumryData                   = $scope.groupConfigData.summary,
+                    roomBlockExist              = (parseInt(sumryData.rooms_total) > 0),                 
+                    notAPastGroup               = !sumryData.is_a_past_group,
+                    fromDateleftMovedAllowed    = sumryData.is_from_date_left_move_allowed;                
+                
+                return (roomBlockExist &&
+                        notAPastGroup &&
+                        fromDateleftMovedAllowed);
             };
 
             /**
@@ -163,7 +170,16 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @return {Boolean}
              */
             var arrDateRightChangeAllowed = function(){
-                return $scope.groupConfigData.summary.is_from_date_right_move_allowed;
+                var sumryData                   = $scope.groupConfigData.summary,
+                    roomBlockExist              = (parseInt(sumryData.rooms_total) > 0),
+                    noInHouseReservationExist   = (parseInt(sumryData.total_checked_in_reservations) === 0),                    
+                    notAPastGroup               = !sumryData.is_a_past_group,
+                    fromDateRightMovedAllowed   = sumryData.is_from_date_right_move_allowed;                     
+                
+                return (roomBlockExist &&
+                        noInHouseReservationExist &&
+                        notAPastGroup &&
+                        fromDateRightMovedAllowed);
             };
 
             /**
