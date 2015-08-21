@@ -860,6 +860,25 @@ sntRover.factory('RVReportUtilsFac', [
                 report['sort_fields'][5] = null;
                 report['sort_fields'][6] = user;
             };
+
+            // need to reorder the sort_by options
+            // for group pick report in the following order
+            if ( report['title'] === reportNames['GROUP_PICKUP_REPORT'] ) {
+                var groupName  = angular.copy( report['sort_fields'][1] ),
+                    date       = angular.copy( report['sort_fields'][0] ),
+                    holdStatus = angular.copy( report['sort_fields'][2] ),
+                    percentage = angular.copy( report['sort_fields'][3] );
+
+                report['sort_fields'][0] = groupName;
+                report['sort_fields'][1] = date;
+                report['sort_fields'][2] = holdStatus;
+                report['sort_fields'][3] = null;
+                report['sort_fields'][4] = null;
+                report['sort_fields'][5] = null;
+                report['sort_fields'][6] = null;
+                report['sort_fields'][7] = null;
+                report['sort_fields'][8] = percentage;
+            };
         };
 
 

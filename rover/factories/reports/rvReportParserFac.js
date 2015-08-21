@@ -504,15 +504,11 @@ sntRover.factory('RVReportParserFac', [
                     returnAry.push( makeCopy );
                 };
 
-                console.log( makeCopy.hasOwnProperty('group_total') );
-                console.log( makeCopy['group_total'].hasOwnProperty('rooms_available') );
-
                 // if we have 'group_total' for this group
                 if ( makeCopy.hasOwnProperty('group_total') && makeCopy['group_total'].hasOwnProperty('rooms_available') ) {
                     groupDataTotal = makeCopy['group_total'];
                     customData = {};
 
-                    console.log('here');
                     angular.extend(customData, {
                         'isSubTotal'            : true,
                         'className'             : 'row-break',
@@ -527,8 +523,6 @@ sntRover.factory('RVReportParserFac', [
                     returnAry.push( makeCopy );
                 };
             };
-
-            console.log( returnAry );
 
             return returnAry;
         };
