@@ -629,9 +629,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 totalCount = (lastIndex - firstIndex) + 1;
 
             if (totalCount < currentCount) {
-                var copy = angular.copy($scope.reservationData.rooms[firstIndex]),
+                var copy,
                     i;
                 for (i = 0; i < currentCount - totalCount; i++) {
+                    copy = angular.copy($scope.reservationData.rooms[firstIndex]);
                     $scope.reservationData.rooms.splice(lastIndex, 0, copy);
                 }
                 devlogRoomsArray();
