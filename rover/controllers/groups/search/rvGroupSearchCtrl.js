@@ -388,7 +388,7 @@ sntRover.controller('rvGroupSearchCtrl', [
          * @return {Boolean} [description]
          */
         $scope.isFirstTimeWithNoResult = function() {
-            return ($scope.amFirstTimeHere && !hasSomeSearchResults());
+            return ($scope.amFirstTimeHere && !hasSomeSearchResults())
         };
 
         /**
@@ -396,7 +396,7 @@ sntRover.controller('rvGroupSearchCtrl', [
          * @return {[type]} [description]
          */
         $scope.shouldShowNoResult = function() {
-            return (!$scope.amFirstTimeHere && !hasSomeSearchResults());
+            return (!$scope.amFirstTimeHere && !hasSomeSearchResults())
         };
 
         /**
@@ -418,7 +418,8 @@ sntRover.controller('rvGroupSearchCtrl', [
         //just redirecting to group creation page
         $scope.gotoAddNewGroup = function() {
             $state.go('rover.groups.config', {
-                'id': "NEW_GROUP"
+                'id': "NEW_GROUP",
+                'newGroupName' : $scope.query
             });
         };
 
@@ -480,8 +481,8 @@ sntRover.controller('rvGroupSearchCtrl', [
             $state.go('rover.groups.config', {
                 id: groupId,
                 activeTab: 'SUMMARY'
-            });
-        };
+            })
+        }
 
 
         /**
