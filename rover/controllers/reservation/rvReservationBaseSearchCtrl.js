@@ -643,13 +643,14 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         $scope.onRoomTypeChange = function(tabIndex) {
             var index = 0,
                 currentRoomCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount, 10),
+                roomType = parseInt($scope.reservationData.tabs[tabIndex].roomTypeId, 10),
                 i;
+            $scope.reservationData.tabs[tabIndex].roomTypeId = roomType;
             for (i = 0; i < tabIndex; i++) {
                 index += parseInt($scope.reservationData.tabs[i].roomCount, 10);
             }
-
             for (i = index; i < index + currentRoomCount; i++) {
-                $scope.reservationData.rooms[i].roomTypeId = parseInt($scope.reservationData.tabs[tabIndex].roomTypeId, 10);
+                $scope.reservationData.rooms[i].roomTypeId = roomType;
             }
         };
 

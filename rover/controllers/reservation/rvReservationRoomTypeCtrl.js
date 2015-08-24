@@ -619,7 +619,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				$scope.stateCheck.rateSelected.allDays = isRateSelected().allDays;
 				$scope.stateCheck.rateSelected.oneDay = isRateSelected().oneDay;
 			} else {
-				var currentRoomTypeId = parseInt($scope.reservationData.tabs[$scope.activeRoom].roomTypeId, 10),
+				var currentRoomTypeId = !$scope.reservationData.tabs[$scope.activeRoom].roomTypeId? "" : parseInt($scope.reservationData.tabs[$scope.activeRoom].roomTypeId, 10),
 					firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
 						roomTypeId: currentRoomTypeId
 					})),
@@ -627,6 +627,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 						roomTypeId: currentRoomTypeId
 					}))),
 					i;
+				if (!$scope.reservationData.tabs[$scope.activeRoom].roomTypeId) {
+					$scope.reservationData.tabs[$scope.activeRoom].roomTypeId = parseInt(roomId);
+				}
 				for (i = firstIndex; i <= lastIndex; i++) {
 					currentRoom = $scope.reservationData.rooms[i];
 					populateStayDates(rateId, roomId, i);
@@ -760,7 +763,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 						hasContractedRate($scope.roomAvailability[room.id].rates);
 				});
 
-				if ($scope.displayData.roomTypes.length > 0 &&
+				if ($scope.reservationData.tabs.length < 2 && // Not showing other room types in case of multiple reservations
+					$scope.displayData.roomTypes.length > 0 &&
 					!$scope.stateCheck.rateSelected.oneDay &&
 					$scope.reservationData.status !== "CHECKEDIN" &&
 					$scope.reservationData.status !== "CHECKING_OUT") {
