@@ -251,7 +251,8 @@ sntRover.service('RVReservationStateService', [
 				 */
 				var for_date = roomRate.date,
 					adultsOnTheDay = stayDates[for_date].guests.adults,
-					childrenOnTheDay = stayDates[for_date].guests.children;
+					childrenOnTheDay = stayDates[for_date].guests.children,
+					houseAvailability = roomRate.house.availability;
 
 				if (roomRate.date === arrival || roomRate.date !== departure) {
 					displayDates.push({
@@ -386,7 +387,7 @@ sntRover.service('RVReservationStateService', [
 							day: new tzIndependentDate(for_date),
 							availabilityCount: rooms[currentRoomId].availabilityNumbers[for_date],
 							taxForAddons: taxForAddons,
-							houseAvailability : room_rate.availability,
+							houseAvailability : houseAvailability,
 							linkedPromos: linkedPromotions,
 							applyPromotion: applyPromotion,
 							appliedPromotion: code,

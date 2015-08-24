@@ -101,6 +101,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.otherData.originIsForced = baseSearchData.settings.force_origin_of_booking;
             $scope.otherData.reservationTypeIsForced = baseSearchData.settings.force_reservation_type;
             $scope.otherData.segmentsIsForced = baseSearchData.settings.force_segments;
+            //CICO-17731 Force Adjustment Reasons
+            $scope.otherData.forceAdjustmentReason = baseSearchData.settings.force_rate_adjustment_reason;
             $scope.otherData.isAddonEnabled = baseSearchData.settings.is_addon_on;
 
             $scope.guestCardData = {};

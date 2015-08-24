@@ -54,6 +54,7 @@
 "PHONE_LABEL": "Phone",
 "ADDRESS_LABEL": "Address",
 "URL_LABEL": "URL",
+"SCREEN_ID_LABEL":"screen id",
 
 "SECTION_ICON_LABEL": "Section icon",
 "CATEGORY_ICON_LABEL": "Category icon",
