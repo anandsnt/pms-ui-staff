@@ -49,6 +49,7 @@
 
             <rv-textbox ng-if="account_type == 'COMPANY'" value="contactInformation.account_details.account_number" label="Corporate ID" placeholder = "Enter Corporate ID" styleclass="margin"></rv-textbox>
             <rv-textbox ng-if="account_type == 'TRAVELAGENT'" value="contactInformation.account_details.account_number" label="IATA Number" placeholder = "Enter IATA Number" styleclass="margin"></rv-textbox>
+
             <div class="entry commission" ng-show ="contactInformation.commission_details">
                 <label for="travel-agent-commission">Commission</label>
                 <div class="switch-button off" ng-class="{'on': contactInformation.commission_details.is_on}">
@@ -63,15 +64,37 @@
                     </label>
                 </div>
         
-            <input id="travel-agent-commission-value" value="{{contactInformation.commission_value}}" ng-model="contactInformation.commission_details.value" type="text" ng-if="contactInformation.commission_details.is_on"/>            
-            <div class="select" ng-if="contactInformation.commission_details.is_on">
-            <select name="travel-agent-commission-type" value="contactInformation.commission_details.type" ng-model="contactInformation.commission_details.type">
-                <option value="percent">%</option>
-                <option value="amount">{{currencySymbol}}</option>
-            </select>
+                <input id="travel-agent-commission-value" value="{{contactInformation.commission_value}}" ng-model="contactInformation.commission_details.value" type="text" ng-if="contactInformation.commission_details.is_on"/>            
+                <div class="select" ng-if="contactInformation.commission_details.is_on">
+                    <select name="travel-agent-commission-type" value="contactInformation.commission_details.type" ng-model="contactInformation.commission_details.type">
+                        <option value="percent">%</option>
+                        <option value="amount">{{currencySymbol}}</option>
+                    </select>
+                </div>
+                
             </div>
-        </div>
-            
+
+            <div class="entry margin" ng-show="contactInformation.commission_details.is_on">
+                <rv-dropdown label-in-drop-down="{{'SELECT_PREPAID_COMMISSION_CHARGE_CODE' | translate}}" list="rateData.commission_details.prepaid_commission_charge_code" selected-id='rateData.commission_details.selected_prepaid_commission_charge_code' selbox-class="placeholder" div-class="full-width" label="{{'PREPAID_COMMISSION_CHARGE_CODE' | translate}}"></rv-dropdown>
+            </div>
+
+            <div class="entry" ng-show="contactInformation.commission_details.is_on">
+                <label ng-show="contactInformation.commission_details.type === 'amount'">Per Stay/Per Night</label>
+                <div class="select select-col col1-1" ng-show="contactInformation.commission_details.type === 'amount'">                        
+                    <select class="styled" value="contactInformation.commission_details.commission_type" ng-model="contactInformation.commission_details.commission_type">
+                    <option value="perStay">Per Stay</option>
+                    <option value="perNight">Per Night</option>  
+                    </select>
+                </div>
+                <label ng-show="contactInformation.commission_details.type === 'percent'">Charge Code</label>
+                <div class="select select-col col1-1" ng-show="contactInformation.commission_details.type === 'percent'">
+                    <select ng-model="contactInformation.commission_details.selected_charge_code" class="styled">
+                        <option value="">Select Charge Code</option>
+                        <option ng-repeat="charge_codes in contactInformation.commission_details.charge_codes"  value="{{charge_codes.value}}" ng-selected="charge_codes.value === contactInformation.commission_details.selected_charge_code">{{charge_codes.name}}</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="entry full-width">
                 <label><span translate>BILLING_INFORMATION</span>
                     <span ng-show ="contactInformation.account_details !== undefined"> ({{contactInformation.account_details.routes_count}} 
