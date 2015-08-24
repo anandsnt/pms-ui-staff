@@ -130,8 +130,11 @@
                             <a  class="add-new-button open-modal" ng-click = "openAddParentModal(false)" translate>ADD_CATEGORY_LABEL</a>
                         </li>
                     </ul>
-                </div>  
-
+                </div>
+                <div class="entry" ng-show="data.page_template=='SCREEN'">
+                    <label for="screen-id"><span translate>SCREEN_ID_LABEL</span> <strong>*</strong></label>
+                    <input type="text" name="screen-id" ng-model="data.screen_id" id="item-name" placeholder="Enter screen id" value="{Item Name}" required />
+                </div>
 
                 <div ng-show="data.page_template=='ADDON'">
 
@@ -152,7 +155,6 @@
 
                      <ad-dropdown label="{{'ADDON_MAX_ORDER_LABEL' | translate}}" label-in-drop-down="{{' '}}" list="max_order_values" selected-Id='data.addon_max_order' required='no' selbox-class='placeholder' ng-show="data.page_template=='ADDON'"></ad-dropdown>
 
-                    </div>
                 </div>
 
             </fieldset>
