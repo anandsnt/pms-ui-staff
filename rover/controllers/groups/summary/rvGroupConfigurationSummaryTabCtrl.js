@@ -304,7 +304,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			//referring data source
 			var refData 		= $scope.groupConfigData.summary,
 				newBlockFrom 	= refData.block_from,
-				oldBlockFrom	= summaryMemento.block_from;
+				oldBlockFrom	= (typeof summaryMemento.block_from === "object") ? summaryMemento.block_from : new tzIndependentDate(summaryMemento.block_from);
 
 			if (refData.release_date.toString().trim() === '') {
 				$scope.groupConfigData.summary.release_date = refData.block_from;
@@ -397,7 +397,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			//referring data source
 			var refData 	= $scope.groupConfigData.summary,
 				newBlockTo 	= refData.block_to,
-				oldBlockTo	= summaryMemento.block_to,
+				oldBlockTo	= (typeof summaryMemento.block_to === "object") ? summaryMemento.block_to : new tzIndependentDate(summaryMemento.block_to);
 				chActions 	= $scope.changeDatesActions;
 
 			// departure left date change
