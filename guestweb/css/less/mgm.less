@@ -1,5 +1,9 @@
 body {
-  	background: url(/assets/img/MGM/mgm-bg@2x.png) no-repeat center top !important;
+  	background: url(/assets/img/MGM/mgm-bg@2x.png) no-repeat center center fixed; 
+  	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 
 .checkin-button,.link-btn.with-bg{
@@ -261,4 +265,44 @@ body {
 	background-color: #8e6935;
 }
 
+/* guest details starts here */
 
+.select-style-fullwidth select{
+	width:103% !important;
+}
+
+.select-style-fullwidth:after{
+	left: 95% !important;
+}
+.bottom-margin-10{
+	margin-bottom:10px !important;
+}
+.full-width-select{
+	float:none !important;
+	width:100% !important;
+}
+
+.half-width-select{
+	width:46% !important;
+	float: left !important;
+}
+.zip-code{
+	padding-left:10px !important;
+}
+
+@media (max-width:990px) {
+	.zip-code{
+		margin-top:5px !important;
+		padding-top:14px !important;
+	}
+	.padding-5{
+		padding:0 5% !important;
+	}
+}
+@media (min-width:990px) {
+	.half-width-select{
+		width:50% !important;
+	}
+}
+
+/* guest details ends here */

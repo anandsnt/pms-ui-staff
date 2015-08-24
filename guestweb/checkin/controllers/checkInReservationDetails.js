@@ -42,18 +42,23 @@
 
 	$scope.checkInButtonClicked = function(){
 		if($scope.checked){
-			// if room upgrades are available
-			if($rootScope.upgradesAvailable){
-				$state.go('checkinUpgrade');
+			if(!$rootScope.guestAddressOn){
+				// if room upgrades are available
+				if($rootScope.upgradesAvailable){
+					$state.go('checkinUpgrade');
+				}
+				else{
+					  if($rootScope.isAutoCheckinOn){
+					    $state.go('checkinArrival');
+					  }
+					  else{
+					    $state.go('checkinKeys');
+					  }
+				};
 			}
 			else{
-				  if($rootScope.isAutoCheckinOn){
-				    $state.go('checkinArrival');
-				  }
-				  else{
-				    $state.go('checkinKeys');
-				  }
-			}
+					$state.go('guestDetails');	
+			}				
 		}
 		else{
 			$modal.open($scope.opts); // error modal popup

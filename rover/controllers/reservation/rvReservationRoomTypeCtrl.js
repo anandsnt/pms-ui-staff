@@ -7,6 +7,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		$scope.containerHeight = $(window).height() - 280;
 		$scope.showLessRooms = true;
 		$scope.showLessRates = false;
+                $scope.isHouseAvailable = false;
 
 		$scope.restrictionColorClass = {
 			'CLOSED': 'red',
@@ -104,6 +105,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 						}
 					}
 				});
+                                
+                                $scope.isHouseAvailable = isHouseAvailable;
 				if (!isRoomAvailable && !isHouseAvailable && isCallingFirstTime) {
 					$scope.toggleCalendar();
 				}
@@ -263,8 +266,28 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				}
 			}
 		};
-		$scope.allowOverbook = function() { //check user permission for overbook_house
-			return rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+
+		$scope.restrictIfOverbook = function(roomId, rateId) {			
+			var	canOverbookHouse = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE'),
+				canOverbookRoomType = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+			if(canOverbookHouse && canOverbookRoomType){
+                            //CICO-17948
+                            //check actual hotel availability with permissions
+                            //When a user has "Overbook Room Type" they should be able to over sell a particular room type, as long as the action does not oversell the house inventory
+                            //
+                            //$scope.isHouseAvailable set on init()
+                            if ($scope.isHouseAvailable){
+				return false;
+                            } else {
+                                return true;
+                            }
+			}
+			if(!canOverbookHouse && $scope.getLeastHouseAvailability(roomId, rateId) < 1){
+				return true;
+			}
+			if(!canOverbookRoomType && $scope.getLeastAvailability(roomId, rateId) < 1){
+				return true;
+			}
 		};
 
 		$scope.setRates = function() {
@@ -839,6 +862,15 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 										validRate = false;
 									}
 
+									// CICO-19098 - House Availability Check
+									if (today[rateId].houseAvailability < 1) {
+										validRate = false;
+										today[rateId].restrictions.push({
+											key: '',
+											value: 'NO HOUSE AVAILABILITY'
+										});
+									}
+
 									var rateConfiguration = today[rateId].rateBreakUp,
 										numAdults = parseInt($scope.reservationData.rooms[$scope.activeRoom].numAdults),
 										numChildren = parseInt($scope.reservationData.rooms[$scope.activeRoom].numChildren);
@@ -1353,6 +1385,17 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			});
 			return leastAvailability;
 		};
+
+		$scope.getLeastHouseAvailability = function(roomId, rateId) {
+			var leastAvailability = $scope.roomAvailability[roomId].ratedetails[$scope.reservationData.arrivalDate][rateId].houseAvailability;
+			angular.forEach($scope.roomAvailability[roomId].ratedetails, function(rateDetail, date) {
+				if ((date === $scope.reservationData.arrivalDate || date !== $scope.reservationData.departureDate) && rateDetail[rateId].houseAvailability < leastAvailability) {
+					leastAvailability = rateDetail[rateId].houseAvailability;
+				}
+			});
+			return leastAvailability;
+		};
+
 
 		$scope.getAllRestrictions = function(roomId, rateId) {
 			var restrictions = [];
