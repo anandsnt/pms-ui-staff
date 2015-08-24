@@ -13,7 +13,7 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ng
 	            "status": false,
 	            "name": "",
 	            "icon": '',
-	            "description_visible":false,
+	            "is_description_visible":false,
 	            "description_alignment": "Center",
 	            "description": ""
             };
