@@ -227,10 +227,9 @@
                     <div class="select rooms">
                         <label class="label">Rooms</label>
                         <select ng-model="tab.roomCount" ng-change="onRoomCountChange($index)" ng-disabled="isHourlyRateOn">
-                            <option value="1" selected>1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
+                            <option ng-repeat="i in [1, otherData.maxRoomCount] | makeRange" value="{{i}}" ng-selected="i==tab.roomCount">
+                                {{i}}
+                            </option>                            
                         </select>
                     </div>
                 </div>

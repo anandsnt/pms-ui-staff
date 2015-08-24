@@ -14,7 +14,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         $scope.heading = "Reservations";
 
         $scope.viewState = {
-            currentTab : 0,
+            currentTab: 0,
             isAddNewCard: false,
             pendingRemoval: {
                 status: false,
@@ -65,6 +65,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             // default max value if max_adults, max_children, max_infants is not configured
             var defaultMaxvalue = 5;
             var guestMaxSettings = baseSearchData.settings.max_guests;
+            var maxRoomCount = parseInt(baseSearchData.settings.max_room_quantity, 10) || 5; //Defaulting to 5
 
             /**
              *   We have moved the fetching of 'baseData' form 'rover.reservation' state
@@ -87,6 +88,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.otherData.maxAdults = (guestMaxSettings.max_adults === null || guestMaxSettings.max_adults === '') ? defaultMaxvalue : guestMaxSettings.max_adults;
             $scope.otherData.maxChildren = (guestMaxSettings.max_children === null || guestMaxSettings.max_children === '') ? defaultMaxvalue : guestMaxSettings.max_children;
             $scope.otherData.maxInfants = (guestMaxSettings.max_infants === null || guestMaxSettings.max_infants === '') ? defaultMaxvalue : guestMaxSettings.max_infants;
+            $scope.otherData.maxRoomCount = maxRoomCount;
+
             $scope.otherData.roomTypes = baseSearchData.roomTypes;
             $scope.otherData.fromSearch = false;
             $scope.otherData.recommendedRateDisplay = baseSearchData.settings.recommended_rate_display;
@@ -166,7 +169,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationDetails = RVReservationDataService.getReservationDetailsModel();
 
             $scope.viewState = {
-                currentTab : 0,
+                currentTab: 0,
                 isAddNewCard: false,
                 pendingRemoval: {
                     status: false,
@@ -397,7 +400,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                                 }
                                 var taxableRateAmount = roomAmount; // default taxableRoomAmount to the calculated room amount. This inclusive addons are to be adjusted wrt this value!
                                 currentRoom.rateTotal = currentRoom.rateTotal + roomAmount; // cumulative total of all days goes to roomTotal
-                                currentRoom.rateAvg = currentRoom.rateTotal /  $scope.reservationData.numNights;
+                                currentRoom.rateAvg = currentRoom.rateTotal / $scope.reservationData.numNights;
                             }
                             // --------------------------------------------------------------------------------//
                             // -- Calculate the rate amount for the Room for that rate for that day --
@@ -915,7 +918,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
 
 
-
                     depositAmount = data.results.deposit_amount;
                     var isOutOfCancellationPeriod = (typeof data.results.cancellation_policy_id !== 'undefined');
                     if (isOutOfCancellationPeriod) {
@@ -1038,8 +1040,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     return false;
                 }
                 /*
-                *Proceed with reservation creation flow
-                */
+                 *Proceed with reservation creation flow
+                 */
             };
 
             var params = {};
@@ -1064,8 +1066,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
             }
             /*
-            *Proceed with reservation creation flow
-            */
+             *Proceed with reservation creation flow
+             */
         };
 
         $scope.okClickedForConflictingRoutes = function() {
