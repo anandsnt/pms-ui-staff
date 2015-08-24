@@ -177,11 +177,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                                 if (!flag) {
                                     $scope.addonsData.existingAddons.push(RVReservationPackageSrv.parseRateAddonItem(addon));
                                     for (roomIndex = $scope.roomDetails.firstIndex; roomIndex <= $scope.roomDetails.lastIndex; roomIndex++) {
-                                        if (!_.find($scope.reservationData.rooms[roomIndex].addons, {
-                                                id: addon.id
-                                            })) {
-                                            $scope.reservationData.rooms[roomIndex].addons.push(RVReservationPackageSrv.parseAddonItem(addon, true));
-                                        }
+                                        $scope.reservationData.rooms[roomIndex].addons.push(RVReservationPackageSrv.parseAddonItem(addon, true));
                                     }
                                 }
                             });
