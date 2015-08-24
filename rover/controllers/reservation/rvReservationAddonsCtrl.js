@@ -232,7 +232,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 $state.go('rover.reservation.staycard.mainCard.roomType', {
                     from_date: $scope.reservationData.arrivalDate,
                     to_date: $scope.reservationData.departureDate,
-                    view: "ROOM_RATE",
+                    view: "DEFAULT",
                     company_id: null,
                     travel_agent_id: null,
                     fromState: 'rover.reservation.staycard.mainCard.addons'
