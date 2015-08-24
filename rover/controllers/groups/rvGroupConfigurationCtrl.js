@@ -351,6 +351,42 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             };
 
             /**
+             * Show warning if date picked is invalid
+             * @param {object} options for popup
+             */
+            var showDateChangeInvalidWarning = function(options) {
+                lastSuccessCallback = options["successCallBack"] ? options["successCallBack"] : null;
+                lastFailureCallback = options["failureCallBack"] ? options["failureCallBack"] : null;
+                lastCancelCallback  = options["cancelPopupCallBack"] ? options["cancelPopupCallBack"] : null;
+
+                var dataForPopup = {
+                    dataset:
+                        {
+                            message: options["message"] ? options["message"] : ""
+                        }
+                };
+
+                showDateChangeInvalidWarningPopup(dataForPopup);
+            };
+
+            /**
+             * in order to show the change date invalid popup
+             * @param {Object}
+             * @return {undefined}
+             */
+            var showDateChangeInvalidWarningPopup = function (data) {
+                ngDialog.open(
+                {
+                    template        : '/assets/partials/groups/summary/popups/changeDates/rvGroupChangeDatesInvalidWarningPopup.html',
+                    className       : '',
+                    closeByDocument : false,
+                    closeByEscape   : false,
+                    scope           : $scope,
+                    data            : JSON.stringify(data)
+                });
+            };
+
+            /**
              * Called when user cancels a change date popup
              * @return {undefined}
              */
@@ -554,19 +590,20 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              */
             $scope.getMoveDatesActions = function () {
                 return {
-                    shouldShowMoveButton        : shouldShowMoveButton,
-                    clickedOnMoveButton         : clickedOnMoveButton,
-                    triggerEarlierArrDateChange : triggerEarlierArrivalDateChange,
-                    triggerLaterArrDateChange   : triggerLaterArrivalDateChange,                    
-                    arrDateLeftChangeAllowed    : arrDateLeftChangeAllowed,
-                    arrDateRightChangeAllowed   : arrDateRightChangeAllowed,
-                    triggerEarlierDepDateChange : triggerEarlierDepartureDateChange,
-                    triggerLaterDepDateChange   : triggerLaterDepartureDateChange,                     
-                    depDateLeftChangeAllowed    : depDateLeftChangeAllowed,
-                    depDateRightChangeAllowed   : depDateRightChangeAllowed,                    
-                    isInCompleteMoveMode        : isInCompleteMoveMode,
-                    clickedOnMoveSaveButton     : clickedOnMoveSaveButton,
-                    cancelMoveAction            : cancelMoveAction,
+                    shouldShowMoveButton         : shouldShowMoveButton,
+                    clickedOnMoveButton          : clickedOnMoveButton,
+                    triggerEarlierArrDateChange  : triggerEarlierArrivalDateChange,
+                    triggerLaterArrDateChange    : triggerLaterArrivalDateChange,                    
+                    arrDateLeftChangeAllowed     : arrDateLeftChangeAllowed,
+                    arrDateRightChangeAllowed    : arrDateRightChangeAllowed,
+                    triggerEarlierDepDateChange  : triggerEarlierDepartureDateChange,
+                    triggerLaterDepDateChange    : triggerLaterDepartureDateChange,                     
+                    depDateLeftChangeAllowed     : depDateLeftChangeAllowed,
+                    depDateRightChangeAllowed    : depDateRightChangeAllowed, 
+                    showDateChangeInvalidWarning : showDateChangeInvalidWarning,
+                    isInCompleteMoveMode         : isInCompleteMoveMode,
+                    clickedOnMoveSaveButton      : clickedOnMoveSaveButton,
+                    cancelMoveAction             : cancelMoveAction,
                     setToDefaultMode            : setToDefaultMode
                 };
             };

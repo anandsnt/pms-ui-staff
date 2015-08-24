@@ -450,12 +450,12 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//referring data source
 			var refData 		= $scope.groupConfigData.summary,
 				newBlockFrom 	= refData.block_from,
-				oldBlockFrom	= summaryMemento.block_from;
+				oldBlockFrom	= summaryMemento.block_from,
+				chActions 		= $scope.changeDatesActions;
 
 			if (refData.release_date.toString().trim() === '') {
 				$scope.groupConfigData.summary.release_date = refData.block_from;
 			}
-
 			//if it is is Move Date mode
 			if ($scope.changeDatesActions.isInCompleteMoveMode()) {
 				var originalStayLength = (util.getDatesBetweenTwoDates (new tzIndependentDate(util.deepCopy(summaryMemento.block_from)), new tzIndependentDate(util.deepCopy(summaryMemento.block_to))).length - 1);
@@ -465,14 +465,18 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			}
 
 			//arrival left date change
-			else if(newBlockFrom < oldBlockFrom && $scope.changeDatesActions.arrDateLeftChangeAllowed()) {
+			else if(newBlockFrom < oldBlockFrom && chActions.arrDateLeftChangeAllowed()) {
 				triggerEarlierArrivalDateChange();
 
 			}
 
 			//arrival right date change
-			else if(newBlockFrom > oldBlockFrom && $scope.changeDatesActions.arrDateRightChangeAllowed()) {
-				triggerLaterArrivalDateChange();
+			else if(newBlockFrom > oldBlockFrom && chActions.arrDateRightChangeAllowed()) {
+				// check move validity
+				if(new tzIndependentDate(refData.first_dep_date) <= newBlockFrom)
+					triggerLaterArrivalDateChangeInvalidError();
+				else
+					triggerLaterArrivalDateChange();
 			}
 
 			// we will clear end date if chosen start date is greater than end date
@@ -498,14 +502,18 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			$scope.groupConfigData.summary.block_to = $scope.endDate;
 
 			//referring data source
-			var refData 		= $scope.groupConfigData.summary,
+			var refData 	= $scope.groupConfigData.summary,
 				newBlockTo 	= refData.block_to,
 				oldBlockTo	= summaryMemento.block_to,
 				chActions 	= $scope.changeDatesActions;
 
 			//departure left date change
 			if(newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {
-				triggerEarlierDepartureDateChange();
+				// check move validity
+				if(new tzIndependentDate(refData.last_arrival_date) >= newBlockTo)
+					triggerEarlierDepartureDateChangeInvalidError();
+				else
+					triggerEarlierDepartureDateChange();
 			}
 
 			//departure right date change
@@ -1174,6 +1182,26 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		/**
+		 * Call to reset the calender dates to the actual one.
+		 * @return {undefined}
+		 */
+		var resetDatePickers = function() {
+			//resetting the calendar date's to actual one
+			$scope.groupConfigData.summary.block_from 	= '';
+
+			$scope.groupConfigData.summary.block_from 	= new tzIndependentDate(summaryMemento.block_from);
+			$scope.groupConfigData.summary.block_to  	= new tzIndependentDate(summaryMemento.block_to);
+			$scope.startDate = $scope.groupConfigData.summary.block_to;
+			$scope.endDate   = $scope.groupConfigData.summary.block_to;
+
+			//setting the min date for end Date
+			$scope.endDateOptions.minDate = $scope.groupConfigData.summary.block_from;
+
+			//setting max date of from date
+			$scope.startDateOptions.maxDate = $scope.groupConfigData.summary.block_to;
+		};
+
+		/**
 		 * Initialize scope variables
 		 * @return {undefined}
 		 */
@@ -1238,16 +1266,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			});
 
 			//resetting the calendar date's to actual one
-			$scope.groupConfigData.summary.block_from 	= '';
-
-			$scope.groupConfigData.summary.block_from 	= new tzIndependentDate(summaryMemento.block_from);
-			$scope.groupConfigData.summary.block_to  	= new tzIndependentDate(summaryMemento.block_to);
-
-			//setting the min date for end Date
-			$scope.endDateOptions.minDate = $scope.groupConfigData.summary.block_from;
-
-			//setting max date of from date
-			$scope.startDateOptions.maxDate = $scope.groupConfigData.summary.block_to;
+			resetDatePickers();
 
 			$scope.changeDatesActions.clickedOnMoveButton ();
 
@@ -1267,19 +1286,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		var cancelCallBackofDateChange = function () {
-			//resetting the calendar date's to actual one
-			$scope.groupConfigData.summary.block_from 	= '';
-
-			$scope.groupConfigData.summary.block_from 	= new tzIndependentDate(summaryMemento.block_from);
-			$scope.groupConfigData.summary.block_to  	= new tzIndependentDate(summaryMemento.block_to);
-			$scope.startDate = $scope.groupConfigData.summary.block_to;
-			$scope.endDate   = $scope.groupConfigData.summary.block_to;
-
-			//setting the min date for end Date
-			$scope.endDateOptions.minDate = $scope.groupConfigData.summary.block_from;
-
-			//setting max date of from date
-			$scope.startDateOptions.maxDate = $scope.groupConfigData.summary.block_to;
+			resetDatePickers();
 		}
 
 		var successCallBackOfEarlierArrivalDateChange = function() {
@@ -1313,6 +1320,22 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 		var failureCallBackOfLaterArrivalDateChange = function(errorMessage) {
 
+		};
+
+		var triggerEarlierDepartureDateChangeInvalidError = function() {
+			var options = {
+				cancelPopupCallBack	: cancelCallBackofDateChange,
+				message 			: "GROUP_EARLIER_DEP_DATE_CHANGE_WARNING"
+			}
+			$scope.changeDatesActions.showDateChangeInvalidWarning(options);
+		};
+
+		var triggerLaterArrivalDateChangeInvalidError = function() {
+			var options = {
+				cancelPopupCallBack	: cancelCallBackofDateChange,
+				message 			: "GROUP_LATER_ARR_DATE_CHANGE_WARNING"
+			}
+			$scope.changeDatesActions.showDateChangeInvalidWarning(options);
 		};
 
 		/**

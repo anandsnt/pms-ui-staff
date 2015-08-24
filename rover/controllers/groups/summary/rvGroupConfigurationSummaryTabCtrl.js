@@ -31,6 +31,24 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		};
 
 		/**
+		 * Use to reset calender date pickers to actual dates
+		 * @return {undefined}
+		 */
+		var resetDatePickers = function() {
+			//resetting the calendar date's to actual one
+			$scope.groupConfigData.summary.block_from 	= '';
+
+			$scope.groupConfigData.summary.block_from 	= new tzIndependentDate(summaryMemento.block_from);
+			$scope.groupConfigData.summary.block_to  	= new tzIndependentDate(summaryMemento.block_to);
+
+			//setting the min date for end Date
+			$scope.toDateOptions.minDate = $scope.groupConfigData.summary.block_from;
+
+			//setting max date of from date
+			$scope.fromDateOptions.maxDate = $scope.groupConfigData.summary.block_to;
+		};
+
+		/**
 		 * Our Move date, start date, end date change are defined in parent controller
 		 * We need to share those actions with room block 
 		 * @return undefined
@@ -80,13 +98,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			});
 
 			//resetting the calendar date's to actual one
-			$scope.groupConfigData.summary.block_from 	= '';
-		
-			$scope.groupConfigData.summary.block_from 	= new tzIndependentDate(summaryMemento.block_from);
-			$scope.groupConfigData.summary.block_to  	= new tzIndependentDate(summaryMemento.block_to);
-			
-			//setting the min date for end Date
-			$scope.toDateOptions.minDate = $scope.groupConfigData.summary.block_from;
+			resetDatePickers();
 
 			$scope.changeDatesActions.clickedOnMoveButton ();
 		
@@ -106,17 +118,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		};
 
 		var cancelCallBackofDateChange = function () {
-			//resetting the calendar date's to actual one
-			$scope.groupConfigData.summary.block_from 	= '';
-
-			$scope.groupConfigData.summary.block_from 	= new tzIndependentDate(summaryMemento.block_from);
-			$scope.groupConfigData.summary.block_to  	= new tzIndependentDate(summaryMemento.block_to);
-
-			//setting the min date for end Date
-			$scope.toDateOptions.minDate = $scope.groupConfigData.summary.block_from;
-
-			//setting max date of from date
-			$scope.fromDateOptions.maxDate = $scope.groupConfigData.summary.block_to;
+			resetDatePickers();
 		}
 
 		var successCallBackOfEarlierArrivalDateChange = function() {
@@ -240,6 +242,22 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$scope.changeDatesActions.triggerLaterDepDateChange (options);
 		};
 
+		var triggerEarlierDepartureDateChangeInvalidError = function() {
+			var options = {
+				cancelPopupCallBack	: cancelCallBackofDateChange,
+				message 			: "GROUP_EARLIER_DEP_DATE_CHANGE_WARNING"
+			}
+			$scope.changeDatesActions.showDateChangeInvalidWarning(options);
+		};
+
+		var triggerLaterArrivalDateChangeInvalidError = function() {
+			var options = {
+				cancelPopupCallBack	: cancelCallBackofDateChange,
+				message 			: "GROUP_LATER_ARR_DATE_CHANGE_WARNING"
+			}
+			$scope.changeDatesActions.showDateChangeInvalidWarning(options);
+		};
+
 		/**
 		 * we have to save when the user clicked outside of summary tab
 		 * @param  {Object} event - Angular Event
@@ -306,9 +324,13 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 			//arrival right date change
 			else if(newBlockFrom > oldBlockFrom && $scope.changeDatesActions.arrDateRightChangeAllowed()) {
-				triggerLaterArrivalDateChange();
+				// check move validity
+				if(new tzIndependentDate(refData.first_dep_date) <= newBlockFrom)
+					triggerLaterArrivalDateChangeInvalidError();
+				else
+					triggerLaterArrivalDateChange();
 			}
-			
+
 			//setting the min date for end Date
 			$scope.toDateOptions.minDate = refData.block_from;
 
@@ -378,9 +400,13 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				oldBlockTo	= summaryMemento.block_to,
 				chActions 	= $scope.changeDatesActions;
 
-			//departure left date change
+			// departure left date change
 			if(newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {
-				triggerEarlierDepartureDateChange();				
+				// check move validity
+				if(new tzIndependentDate(refData.last_arrival_date) >= newBlockTo)
+					triggerEarlierDepartureDateChangeInvalidError();
+				else
+					triggerEarlierDepartureDateChange();
 			}
 
 			//departure right date change
