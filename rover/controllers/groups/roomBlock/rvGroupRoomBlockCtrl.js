@@ -450,7 +450,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//referring data source
 			var refData 		= $scope.groupConfigData.summary,
 				newBlockFrom 	= refData.block_from,
-				oldBlockFrom	= summaryMemento.block_from,
+				oldBlockFrom	= new tzIndependentDate(summaryMemento.block_from),
 				chActions 		= $scope.changeDatesActions;
 
 			if (refData.release_date.toString().trim() === '') {
@@ -504,7 +504,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//referring data source
 			var refData 	= $scope.groupConfigData.summary,
 				newBlockTo 	= refData.block_to,
-				oldBlockTo	= summaryMemento.block_to,
+				oldBlockTo	= new tzIndependentDate(summaryMemento.block_to),
 				chActions 	= $scope.changeDatesActions;
 
 			//departure left date change
@@ -926,38 +926,15 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		/**
-		 * when a tab switch is there, parant controller will propogate
-		 * API, we will get this event, we are using this to fetch new room block deails
+		 * we will update the summary data, when we got this one
+		 * @param  {Object} data
+		 * @return undefined
 		 */
-		$scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab) {
-			if (activeTab !== 'ROOM_BLOCK') {
-				return;
-			}
-			$scope.fetchRoomBlockGridDetails();
+		var fetchSuccessOfSummaryData = function(data) {
+			$scope.groupConfigData.summary = _.extend($scope.groupConfigData.summary, data.groupSummary);
 
-			//on tab switching, we have change min date
-			setDatePickers();
-
-
-		});
-
-		/**
-		 * when a tab switch is there, parant controller will propogate
-		 * API, we will get this event, we are using this to fetch new room block deails
-		 */
-		$scope.$on("UPDATED_GROUP_INFO", function(event) {
-			//to prevent from initial API calling and only exectutes when group from_date, to_date,status updaet success
-			if ($scope.hasBlockDataUpdated) {
-				$scope.fetchRoomBlockGridDetails();
-			}
-		});
-
-		/**
-		 * when failed to update data
-		 */
-		$scope.$on("FAILED_TO_UPDATE_GROUP_INFO", function(event, errorMessage) {
-			$scope.$parent.errorMessage = errorMessage;
-		});
+			summaryMemento = _.extend({}, $scope.groupConfigData.summary);
+		};
 
 		/**
 		 * Success callback of room block details API
@@ -1007,6 +984,102 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			};
 			$scope.callAPI(rvGroupConfigurationSrv.getRoomBlockGridDetails, options);
 		};
+
+        /**
+         * [successFetchOfAllReqdForRoomBlock description]
+         * @param  {object} data
+         * @return {undefined}
+         */
+        var successFetchOfAllReqdForRoomBlock = function(data) {
+            $scope.$emit('hideLoader');
+        };
+
+        /**
+         * [successFetchOfAllReqdForRoomBlock description]
+         * @param  {object} error message from API
+         * @return {undefined}
+         */
+        var failedToFetchOfAllReqdForRoomBlock = function(errorMessage) {
+            $scope.$emit('hideLoader');
+            $scope.errorMessage = errorMessage;
+        };
+
+        /**
+         * we have to call multiple API on initial screen, which we can't use our normal function in teh controller
+         * depending upon the API fetch completion, loader may disappear.
+         * @return {[type]} [description]
+         */
+        var callInitialAPIs = function() {
+        	var hasNeccessaryPermission = (hasPermissionToCreateRoomBlock() &&
+				hasPermissionToEditRoomBlock());
+
+			if (!hasNeccessaryPermission) {
+				$scope.errorMessage = ['Sorry, You dont have enough permission to proceed!!'];
+				return;
+			}
+
+			var paramsForRoomBlockDetails = {
+				group_id: $scope.groupConfigData.summary.group_id
+			};
+
+            var promises = [];
+            //we are not using our normal API calling since we have multiple API calls needed
+            $scope.$emit('showLoader');
+
+            promises.push(rvGroupConfigurationSrv
+                .getRoomBlockGridDetails(paramsForRoomBlockDetails)
+                .then(successCallBackOfFetchRoomBlockGridDetails)
+            );
+
+            // params for summary data fetch
+            var paramsForSummaryDataFetch = {
+				"groupId": $scope.groupConfigData.summary.group_id
+			};
+            promises.push(rvGroupConfigurationSrv
+                .getGroupSummary(paramsForSummaryDataFetch)
+                .then(fetchSuccessOfSummaryData)
+            );
+
+
+            //Lets start the processing
+            $q.all(promises)
+                .then(successFetchOfAllReqdForRoomBlock, failedToFetchOfAllReqdForRoomBlock);
+        };
+
+		/**
+		 * when a tab switch is there, parant controller will propogate
+		 * API, we will get this event, we are using this to fetch new room block deails
+		 */
+		$scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab) {
+			if (activeTab !== 'ROOM_BLOCK') {
+				return;
+			}
+
+			callInitialAPIs();
+
+			//on tab switching, we have change min date
+			setDatePickers();
+
+
+		});
+
+		/**
+		 * when a tab switch is there, parant controller will propogate
+		 * API, we will get this event, we are using this to fetch new room block deails
+		 */
+		$scope.$on("UPDATED_GROUP_INFO", function(event) {
+			//to prevent from initial API calling and only exectutes when group from_date, to_date,status updaet success
+			if ($scope.hasBlockDataUpdated) {
+				$scope.fetchRoomBlockGridDetails();
+			}
+		});
+
+		/**
+		 * when failed to update data
+		 */
+		$scope.$on("FAILED_TO_UPDATE_GROUP_INFO", function(event, errorMessage) {
+			$scope.$parent.errorMessage = errorMessage;
+		});
 
 		/**
 		 * we want to display date in what format set from hotel admin
@@ -1432,8 +1505,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {undefined}
 		 */
 		var initializeRoomBlockDetails = function(){
-			$scope.fetchRoomBlockGridDetails();
-
+			callInitialAPIs();
 			//on tab switching, we have change min date
 			setDatePickers();
 		};
