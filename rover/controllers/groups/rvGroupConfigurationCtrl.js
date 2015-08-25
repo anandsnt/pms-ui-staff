@@ -109,6 +109,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 $scope.groupConfigData.summary.block_to = new tzIndependentDate($scope.groupConfigData.summary.block_to);
             }
 
+            // if we searched a group name that wasnt in the db
+            // pass over that search term here
+            if ( !!$stateParams.newGroupName ) {
+                $scope.groupConfigData.summary.group_name = $stateParams.newGroupName
+            };
+
         };
 
         /**

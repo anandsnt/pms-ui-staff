@@ -24,7 +24,7 @@ sntRover.controller('rvAllRoutesCtrl',['$scope','$rootScope','$filter','RVBillin
             return route.attached_billing_groups[0].name ;
         }
 
-    }
+    };
     /**
     * function to get the charge type
     */
@@ -35,7 +35,7 @@ sntRover.controller('rvAllRoutesCtrl',['$scope','$rootScope','$filter','RVBillin
             return 'BILLING GROUP(S)';
         }
 
-    }
+    };
     /**
     * function to delete route
     */
@@ -54,7 +54,7 @@ sntRover.controller('rvAllRoutesCtrl',['$scope','$rootScope','$filter','RVBillin
             data.from_bill = $scope.routes[index].from_bill;
             data.to_bill = $scope.routes[index].to_bill;
             $scope.invokeApi(RVBillinginfoSrv.deleteRoute, data, successCallback, errorCallback);
-    }
+    };
 
 
 }]);

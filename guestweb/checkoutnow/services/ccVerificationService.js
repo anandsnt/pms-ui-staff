@@ -19,7 +19,7 @@ var ccVerificationService = function($q,$http) {
 			response:response,
 			verifyCC:verifyCC
 
-		}
+		};
 };
 
 var dependencies = [

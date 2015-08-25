@@ -110,8 +110,8 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 					}
 				},
 				series: $scope.graphData
-			}
-		}
+			};
+		};
 
 		var fetchContractsDetailsSuccessCallback = function(data) {
 
@@ -229,9 +229,9 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 					symbol: 'triangle',
 					radius: 0
 				}
-			}]
-			return graphData
-		}
+			}];
+			return graphData;
+		};
 
 		// Fetch data for rates
 		var fetchRatesSuccessCallback = function(data) {
@@ -470,7 +470,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		 */
 		$scope.$on('saveContract', function(event) {
 			event.preventDefault();
-			//event.stopPropagation();
+
 			$scope.updateContract();
 		});
 		/**

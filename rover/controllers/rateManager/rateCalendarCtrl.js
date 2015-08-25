@@ -340,7 +340,7 @@ sntRover.controller('RateCalendarCtrl', [
                 RateMngrCalendarSrv.businessDate = $rootScope.businessDate;
                 if ($scope.calendarMode === "RATE_VIEW") {
                     var params = calculateRateViewCalGetParams();
-                    
+
                 if ($scope.ratesRoomsToggle !== 'RATES') {
                     params.roomrate = 'ROOMS';
                 }
@@ -354,7 +354,7 @@ sntRover.controller('RateCalendarCtrl', [
         };
 
         $scope.reloadRoomsCount = 0;
-        
+
         $rootScope.$on('loadingRooms', function() {
             $scope.reloadingRooms = true;
             if ($scope.reloadRoomsCount >= 1) {
@@ -362,7 +362,7 @@ sntRover.controller('RateCalendarCtrl', [
             }
             ++$scope.reloadRoomsCount;
         });
-        
+
         $scope.$on('showRatesBtnClicked', function() {
             $scope.ratesRoomsToggle = 'RATES';
             $scope.activeToggleButton = 'Rates';
@@ -480,7 +480,7 @@ sntRover.controller('RateCalendarCtrl', [
         $scope.openCloseAllRestrictions = function(action) {
 
             var restrictionUpdateSuccess = function() {
-                //$scope.$emit('hideLoader');
+
                 loadTable();
             };
 
@@ -559,7 +559,7 @@ sntRover.controller('RateCalendarCtrl', [
                 }
                 $scope.popupData.room_restrictions = $scope.getRestrictionsForDateRoomType(date, roomTypeName);
             }
-            
+
             $scope.popupData.ratesRoomsToggle = $scope.ratesRoomsToggle;
             $scope.popupData.selectedDate = date;
             $scope.popupData.selectedRate = rate;

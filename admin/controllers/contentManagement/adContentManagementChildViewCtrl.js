@@ -15,7 +15,7 @@ admin.controller('ADContentManagementChildViewCtrl',['$scope', '$state', 'ADCont
 	$scope.toggleExpansion = function(index){
 
    		$scope.contentList[index].isExpanded = !$scope.contentList[index].isExpanded;
-   }
+   };
 
    /* save new order*/
 
@@ -23,7 +23,7 @@ admin.controller('ADContentManagementChildViewCtrl',['$scope', '$state', 'ADCont
     var successCallbackSavePosition = function(data){
 
       $scope.$emit('hideLoader');
-    }
+    };
     var data = {};
     data.id = id;
     data.parent_id = $scope.parent_id;
@@ -31,7 +31,7 @@ admin.controller('ADContentManagementChildViewCtrl',['$scope', '$state', 'ADCont
     data.previous_position = prevPosition +1;
     $scope.invokeApi(ADContentManagementSrv.saveComponentOrder, data , successCallbackSavePosition);
 
-  }
+  };
 
    $scope.sortableOptions = {
 
@@ -41,7 +41,7 @@ admin.controller('ADContentManagementChildViewCtrl',['$scope', '$state', 'ADCont
       }
    }
 
-   }
+   };
 
 }]);
 

@@ -29,7 +29,7 @@ angular.module('accountsModule', [])
                             'status'    : '',
                             'per_page'  : rvAccountsSrv.DEFAULT_PER_PAGE,
                             'page'      : rvAccountsSrv.DEFAULT_PAGE
-                        }
+                        };
                         return rvAccountsSrv.getAccountsList(params);
                     }
                 ]
@@ -38,7 +38,7 @@ angular.module('accountsModule', [])
 
         //group summary : CICO-6096
         $stateProvider.state('rover.accounts.config', {
-            url: '/account/:id/:activeTab/:isFromCards',
+            url: '/account/:id/:activeTab/:isFromArTransactions',
             templateUrl: '/assets/partials/accounts/rvAccountsConfiguration.html',
             controller: 'rvAccountsConfigurationCtrl',
             onEnter: ['$stateParams', function($stateParams) {

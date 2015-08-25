@@ -27,7 +27,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  	$rootScope.roomVerificationInstruction = $attrs.roomVerificationInstruction;
  	$rootScope.isSixpayments = ($attrs.paymentGateway  === "sixpayments") ? true:false;
 
- 	$rootScope.reservationID = $attrs.reservationId;	
+ 	$rootScope.reservationID = $attrs.reservationId;
 	$rootScope.userName      = $attrs.userName;
 	$rootScope.checkoutDate  = $attrs.checkoutDate;
 	$rootScope.checkoutTime  = $attrs.checkoutTime;
@@ -49,6 +49,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  	$rootScope.isAutoCheckinOn = (($attrs.isAutoCheckin === 'true') && ($attrs.isPrecheckinOnly === 'true')) ? true :false;;
  	$rootScope.isExternalVerification = ($attrs.isExternalVerification === "true") ? true :false;
  	$rootScope.hotelIdentifier = $attrs.hotelIdentifier;
+ 	$rootScope.guestAddressOn = $attrs.guestAddressOn === 'true' ? true:false;
 
 
     //Params for zest mobile and desktop screens
@@ -92,11 +93,14 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 	};
 
 	$( ".loading-container" ).hide();
-}
-
-
-
-]);
+	/*
+	 * function to handle exception when state is not found
+	 */
+	$scope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
+		event.preventDefault();
+		$state.go('noOptionAvailable');
+	})
+}]);
 
 var loadStyleSheets = function(filename){
 		var fileref = document.createElement("link");
