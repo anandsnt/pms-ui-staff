@@ -140,14 +140,14 @@
 
                 <div ng-show="data.page_template=='SPACE'" class="entry full-width">
 
-                     <ad-dropdown label="{{'SPACE_MAX_OCCUPANCY_LABEL' | translate}}" label-in-drop-down="{{'SPACE_MAX_OCCUPANCY_PLACEHOLDER' | translate}}" list="addons" selected-Id='data.addon_id' required='yes' selbox-class='placeholder' ng-show="data.page_template=='SPACE'"></ad-dropdown>
+                     <ad-dropdown label="{{'SPACE_MAX_OCCUPANCY_LABEL' | translate}}" label-in-drop-down="{{'SPACE_MAX_OCCUPANCY_PLACEHOLDER' | translate}}" list="space_occupancys" selected-Id='data.space.max_occupancy' required='yes' selbox-class='placeholder' ng-show="data.page_template=='SPACE'"></ad-dropdown>
 
 
                      <label class="entry full-width" for="addon-description"><span translate>SPACE_DURATION_LABEL </span></label>
 
                     <div class="entry full-width">
                        <div id="space-durations" class="boxes col2">
-                          <ad-checkbox ng-repeat="addon in addons" is-checked="false" label="{{addon.name}}" parent-label-class="room-likes" span-class="checkbox-background"></ad-checkbox>
+                          <ad-checkbox ng-repeat="duration in space_durations" is-checked="false" label="{{duration.name}}" parent-label-class="room-likes" span-class="checkbox-background"></ad-checkbox>
 
                        </div>
                     </div>
@@ -184,7 +184,7 @@
                 <div ng-show="data.page_template=='ADDON'">
 
 
-                     <ad-dropdown label="{{'EARLY_CHECKIN_ADDON' | translate}}" label-in-drop-down="{{'EARLY_CHECKIN_ADDON' | translate}}" list="addons" selected-Id='data.addon_id' required='no' selbox-class='placeholder' ng-show="data.page_template=='ADDON'"></ad-dropdown>  
+                     <ad-dropdown label="{{'EARLY_CHECKIN_ADDON' | translate}}" label-in-drop-down="{{'EARLY_CHECKIN_ADDON' | translate}}" list="addons" selected-Id='data.addon_id' required='yes' selbox-class='placeholder' ng-show="data.page_template=='ADDON'"></ad-dropdown>  
 
                     <div class="entry full-width" ng-show="data.page_template=='ADDON'">
                        <label for="addon-description"><span translate>ADDON_DESCRIPTION_LABEL </span></label>
@@ -201,7 +201,6 @@
                      <ad-dropdown label="{{'ADDON_MAX_ORDER_LABEL' | translate}}" label-in-drop-down="{{' '}}" list="max_order_values" selected-Id='data.addon_max_order' required='no' selbox-class='placeholder' ng-show="data.page_template=='ADDON'"></ad-dropdown>
 
                 </div>
-
             </fieldset>
             <div class="actions float">
                 <button type="button" ng-click="goBack()" class="button blank" translate>CANCEL</button>
