@@ -2,7 +2,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
     '$scope',
     '$rootScope',
     'rvAllotmentSrv',
-    'initialGroupListing',
+    'initialAllotmentListing',
     'businessDate',
     '$filter',
     '$timeout',
@@ -11,8 +11,8 @@ sntRover.controller('rvAllotmentSearchCtrl', [
     'rvPermissionSrv',
     function($scope,
         $rootScope,
-        rvGroupSrv,
-        initialGroupListing,
+        rvAllotmentSrv,
+        initialAllotmentListing,
         businessDate,
         $filter,
         $timeout,
@@ -33,33 +33,33 @@ sntRover.controller('rvAllotmentSearchCtrl', [
 
         /**
          * util function to get CSS class against diff. Hold status
-         * @param {Object} - group
+         * @param {Object} - Allotment
          * @return {String}
          */
-        $scope.getClassAgainstHoldStatus = function(group) {
+        $scope.getClassAgainstHoldStatus = function(allotment) {
             // https://stayntouch.atlassian.net/browse/CICO-13899?focusedCommentId=42708&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-42708
             // API returns a string value for 'is_take_from_inventory'
-            return group.is_take_from_inventory === 'true' ? '' : 'tentative';
+            return allotment.is_take_from_inventory === 'true' ? '' : 'tentative';
         };
 
-        var isCancelledGroup = function(group) {
-            return (group.hold_status.toLowerCase() === 'cancel');
+        var isCancelledAllotment = function(allotment) {
+            return (allotment.hold_status.toLowerCase() === 'cancel');
         };
 
         /**
          * util function to get CSS class against diff. Hold status
-         * @param {Object} - group
+         * @param {Object} - Allotment
          * @return {String}
          */
-        $scope.getClassAgainstPickedStatus = function(group) {
+        $scope.getClassAgainstPickedStatus = function(allotment) {
             var classes = '';
 
             //Add class "green" if No. > 0
-            if (group.total_picked_count > 0) {
+            if (allotment.total_picked_count > 0) {
                 classes = 'green';
             }
             //Add class "red" if cancelled
-            if (isCancelledGroup(group)) {
+            if (isCancelledAllotment(allotment)) {
                 classes += ' red';
             }
             return classes;
@@ -67,23 +67,23 @@ sntRover.controller('rvAllotmentSearchCtrl', [
 
         /**
          * util function to get CSS class against guest for arrival
-         * @param {Object} - group
+         * @param {Object} - allotment
          * @return {String}
          */
-        $scope.getGuestClassForArrival = function(group) {
+        $scope.getGuestClassForArrival = function(allotment) {
             //"cancel" if cancelled, "check-in" if not cancelled
-            var classes = isCancelledGroup(group) ? 'cancel' : 'check-in';
+            var classes = isCancelledAllotment(allotment) ? 'cancel' : 'check-in';
             return classes;
         };
 
         /**
          * util function to get CSS class against guest for arrival
-         * @param {Object} - group
+         * @param {Object} - Allotment
          * @return {String}
          */
-        $scope.getGuestClassForDeparture = function(group) {
+        $scope.getGuestClassForDeparture = function(allotment) {
             //"cancel" if cancelled, 'check-out' if not cancelled
-            var classes = isCancelledGroup(group) ? 'cancel' : 'check-out';
+            var classes = isCancelledAllotment(allotment) ? 'cancel' : 'check-out';
             return classes;
         };
 
@@ -201,7 +201,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
          * this function will execute
          * @return {None}
          */
-        $scope.hasPermissionToAddNewGroup = function() {
+        $scope.hasPermissionToAddNewAllotment = function() {
             return (rvPermissionSrv.getPermissionValue('CREATE_GROUP_SUMMARY'));
         };
 
@@ -223,10 +223,10 @@ sntRover.controller('rvAllotmentSearchCtrl', [
         };
 
         /**
-         * utility function to form API params for group search
+         * utility function to form API params for allotment search
          * return {Object}
          */
-        var formGroupSearchParams = function() {
+        var formAllotmentSearchParams = function() {
             var params = {
                 query: $scope.query,
                 from_date: $scope.fromDateForAPI !== '' ? $filter('date')($scope.fromDateForAPI, $rootScope.dateFormatForAPI) : '',
@@ -238,25 +238,25 @@ sntRover.controller('rvAllotmentSearchCtrl', [
         };
 
         /**
-         * to Search for group
+         * to Search for allotment
          * @return - None
          */
         $scope.search = function() {
             //am trying to search something, so we have to change the initial search helping screen if no rsults
             $scope.amFirstTimeHere = false;
 
-            var params = formGroupSearchParams();
+            var params = formAllotmentSearchParams();
             var options = {
                 params: params,
                 successCallBack: successCallBackOfSearch,
                 failureCallBack: failureCallBackOfSearch
             };
-            $scope.callAPI(rvGroupSrv.getGroupList, options);
+            $scope.callAPI(rvAllotmentSrv.getAllotmentList, options);
         };
 
         /**
          * on success of search API
-         * @param {Array} - array of objects - groups
+         * @param {Array} - array of objects - allotments
          * @return {None}
          */
         var successCallBackOfSearch = function(data) {
@@ -338,9 +338,9 @@ sntRover.controller('rvAllotmentSearchCtrl', [
          */
         var setInitialPaginationAndAPIThings = function() {
             //pagination
-            $scope.perPage = rvGroupSrv.DEFAULT_PER_PAGE;
+            $scope.perPage = rvAllotmentSrv.DEFAULT_PER_PAGE;
             $scope.start = 1;
-            $scope.end = initialGroupListing.groups.length;
+            $scope.end = initialAllotmentListing.allotments.length;
 
             //what is page that we are requesting in the API
             $scope.page = 1;
@@ -381,7 +381,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
          * @return {Boolean}
          */
         var hasSomeSearchResults = function() {
-            return ($scope.groupList.length > 0);
+            return ($scope.allotmentList.length > 0);
         };
 
         /**
@@ -416,10 +416,10 @@ sntRover.controller('rvAllotmentSearchCtrl', [
             return ($scope.start === 1);
         };
 
-        //just redirecting to group creation page
-        $scope.gotoAddNewGroup = function() {
-            $state.go('rover.groups.config', {
-                'id': "NEW_GROUP"
+        //just redirecting to allotment creation page
+        $scope.gotoAddNewAllotment = function() {
+            $state.go('rover.allotments.config', {
+                'id': "NEW_ALLOTMENT"
             });
         };
 
@@ -474,12 +474,12 @@ sntRover.controller('rvAllotmentSearchCtrl', [
         };
 
         /**
-         * Navigate to the group configuration state for editing the group
+         * Navigate to the allotment configuration state for editing the allotment
          * @return undefined
          */
-        $scope.gotoEditGroupConfiguration = function(groupId) {
-            $state.go('rover.groups.config', {
-                id: groupId,
+        $scope.gotoEditAllotmentConfiguration = function(allotmentId) {
+            $state.go('rover.allotments.config', {
+                id: allotmentId,
                 activeTab: 'SUMMARY'
             });
         };
@@ -491,19 +491,19 @@ sntRover.controller('rvAllotmentSearchCtrl', [
          */
         var initializeMe = function() {
             //chnaging the heading of the page
-            $scope.setHeadingTitle('GROUPS');
+            $scope.setHeadingTitle('ALLOTMENTS');
 
             //updating the left side menu
-            $scope.$emit("updateRoverLeftMenu", "menuManageGroup");
+            $scope.$emit("updateRoverLeftMenu", "menuManageAllotment");
 
             //date related setups and things
             setDatePickerOptions();
 
-            //groupList
-            $scope.groupList = initialGroupListing.groups;
+            //allotmentlist
+            $scope.allotmentList = initialAllotmentListing.allotments;
 
             //total result count
-            $scope.totalResultCount = initialGroupListing.total_count;
+            $scope.totalResultCount = initialAllotmentListing.total_count;
 
             //Yes am first time here
             $scope.amFirstTimeHere = true;
