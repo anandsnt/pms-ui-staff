@@ -546,9 +546,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 		var permissionCheck = function(roomId, rateId) {
 			var BOOK_RESTRICTED_ROOM_RATE = rvPermissionSrv.getPermissionValue('BOOK_RESTRICTED_ROOM_RATE'),
-				BOOK_ROOM_WITHOUT_INVENTORY = rvPermissionSrv.getPermissionValue('BOOK_ROOM_WITHOUT_INVENTORY');
-
-			if (BOOK_RESTRICTED_ROOM_RATE && BOOK_ROOM_WITHOUT_INVENTORY) {
+				OVERBOOK_ROOM_TYPE = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+                        
+			if (BOOK_RESTRICTED_ROOM_RATE && OVERBOOK_ROOM_TYPE) {
 				return true;
 			} else {
 				var authorization = true;
@@ -558,9 +558,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				if (restrictions.length > 0 && !BOOK_RESTRICTED_ROOM_RATE) {
 					authorization = false;
 				}
-				if (roomCount < 1 && !BOOK_ROOM_WITHOUT_INVENTORY) {
+				if (roomCount < 1 && !OVERBOOK_ROOM_TYPE) {
 					authorization = false;
 				}
+                                
 				return authorization;
 			}
 		}
