@@ -40,7 +40,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
          */
         $scope.isInAddonSelectionMode = function() {
             return $scope.groupConfigData.selectAddons;
-        };
+        }
 
         /**
          * function to set title and things
@@ -68,7 +68,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
         var ifMandatoryValuesEntered = function() {
             var summary = $scope.groupConfigData.summary;
             return !!summary.group_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to && !!summary.release_date;
-        };
+        }
 
         /**
          * shouldShowRoomingListTab whether to show rooming list tab
@@ -99,7 +99,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
             $scope.accountConfigData = {
                 summary: summaryData.accountSummary
-            };
+            }
             if (!$scope.groupConfigData.summary.release_date) {
                 $scope.groupConfigData.summary.release_date = $scope.groupConfigData.summary.block_from;
             }
@@ -108,6 +108,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 $scope.groupConfigData.summary.block_from = new tzIndependentDate($scope.groupConfigData.summary.block_from);
                 $scope.groupConfigData.summary.block_to = new tzIndependentDate($scope.groupConfigData.summary.block_to);
             }
+
+            // if we searched a group name that wasnt in the db
+            // pass over that search term here
+            if ( !!$stateParams.newGroupName ) {
+                $scope.groupConfigData.summary.group_name = $stateParams.newGroupName
+            };
 
         };
 
@@ -174,10 +180,10 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     });
                 });
 
-            };
+            }
             var params = {
                 "account_id": $scope.accountConfigData.summary.posting_account_id
-            };
+            }
             $scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, {
                 successCallBack: onTransactionFetchSuccess,
                 params: params
@@ -191,7 +197,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             }, {
                 reload: true
             });
-        };
+        }
 
         /**
          * Handle closing of addons screen
@@ -200,7 +206,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
         $scope.closeGroupAddonsScreen = function() {
             $scope.groupConfigData.selectAddons = false;
             $scope.reloadPage();
-        };
+        }
 
         /**
          * Handle opening the addons Management screen
@@ -208,7 +214,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
          */
         $scope.openGroupAddonsScreen = function() {
             $scope.groupConfigData.selectAddons = true;
-        };
+        }
 
         /**
          * to get the current tab url
@@ -239,7 +245,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                             $scope.groupConfigData.summary.group_id = data.group_id;
                             $state.go('rover.groups.config', {
                                 id: data.group_id
-                            });
+                            })
                             $stateParams.id = data.group_id;
                         },
                         onGroupSaveFailure = function(errorMessage) {
@@ -261,10 +267,10 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     $scope.errorMessage = ["Group's name, from date, to date, room release date and hold status are mandatory"];
                 }
             } else {
-                $scope.$emit("showErrorMessage", ["Sorry, you don\'t have enough permission to save the details"]);
+                $scope.$emit("showErrorMessage", ["Sorry, you don\'t have enough permission to save the details"])
             }
 
-        };
+        }
 
 
         /**
@@ -305,9 +311,9 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     }
                 });
             } else {
-                $scope.$emit("showErrorMessage", ["Sorry, the changes will not get saved as you don\'t have enough permission to update the details"]);
+                $scope.$emit("showErrorMessage", ["Sorry, the changes will not get saved as you don\'t have enough permission to update the details"])
             }
-        };
+        }
 
         /**
          * Code to duplicate group
@@ -316,7 +322,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
          */
         $scope.duplicateGroup = function() {
             //TODO: Duplicate Group - Future functionality
-        };
+        }
 
         /**
          * Discard the new Group
@@ -324,19 +330,19 @@ sntRover.controller('rvGroupConfigurationCtrl', [
          */
         $scope.discardNewGroup = function() {
             $scope.groupConfigData.summary = angular.copy(rvGroupConfigurationSrv.baseConfigurationSummary);
-        };
+        }
 
         $scope.onCompanyCardChange = function() {
             if ($scope.groupConfigData.summary.company && $scope.groupConfigData.summary.company.name === "") {
-                $scope.groupConfigData.summary.company = null;
+                $scope.groupConfigData.summary.company = null
             }
-        };
+        }
 
         $scope.onTravelAgentCardChange = function() {
             if ($scope.groupConfigData.summary.travel_agent && $scope.groupConfigData.summary.travel_agent.name === "") {
-                $scope.groupConfigData.summary.travel_agent = null;
+                $scope.groupConfigData.summary.travel_agent = null
             }
-        };
+        }
 
         /**
          * Autocompletions for company/travel agent
@@ -349,7 +355,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 focus: function(event, ui) {
                     return false;
                 }
-            };
+            }
 
             //merging auto complete setting for company card with common auto cmplt options
             $scope.companyAutoCompleteOptions = angular.extend({
@@ -357,7 +363,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     rvGroupConfigurationSrv.searchCompanyCards(request.term)
                         .then(function(data) {
                             var list = [];
-                            var entry = {};
+                            var entry = {}
                             $.map(data, function(each) {
                                 entry = {
                                     label: each.account_name,
@@ -384,7 +390,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     if (!$scope.isInAddMode() && (!$scope.groupConfigData.summary.company || !$scope.groupConfigData.summary.company.name)) {
                         $scope.groupConfigData.summary.company = {
                             id: ""
-                        };
+                        }
                         $scope.updateGroupSummary();
                     }
                 }
@@ -396,7 +402,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     rvGroupConfigurationSrv.searchTravelAgentCards(request.term)
                         .then(function(data) {
                             var list = [];
-                            var entry = {};
+                            var entry = {}
                             $.map(data, function(each) {
                                 entry = {
                                     label: each.account_name,
@@ -423,7 +429,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     if (!$scope.isInAddMode() && (!$scope.groupConfigData.summary.travel_agent || !$scope.groupConfigData.summary.travel_agent.name)) {
                         $scope.groupConfigData.summary.travel_agent = {
                             id: ""
-                        };
+                        }
                         $scope.updateGroupSummary();
                     }
                 }
@@ -437,14 +443,14 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             var count = 0;
             angular.forEach($scope.groupConfigData.selectedAddons, function(addon) {
                 count += parseInt(addon.addon_count);
-            });
+            })
             if (count > 0) {
                 $scope.groupConfigData.summary.addons_count = count;
             } else {
                 $scope.groupConfigData.summary.addons_count = null;
             }
 
-        };
+        }
 
         $scope.updateAndBack = function() {
             if ($scope.groupConfigData.activeTab === "SUMMARY") {
@@ -453,7 +459,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 $scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
             }
             $state.go('rover.groups.search');
-        };
+        }
 
         /**
          * function to set Back Navigation params
@@ -466,7 +472,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             };
             //setting title and things
             setTitle();
-        };
+        }
 
         /**
          * When we recieve the error message from its child controllers, we have to show them
@@ -484,7 +490,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             if (!!value) {
                 return $rootScope.currencySymbol + $filter('number')(value, 2);
             } else {
-                return "";
+                return ""
             }
         };
 
