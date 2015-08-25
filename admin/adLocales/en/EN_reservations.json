@@ -29,4 +29,5 @@
 
 "BALANCE_INVENTORY": "Balance Inventory",
 "START_JOB": "Start Job",
-"REFRESH_STATUS": "Refresh Status"
+"REFRESH_STATUS": "Refresh Status",
+"FORCE_ADJ_REASON" :"FORCE RATE ADJUSTMENT REASON"
