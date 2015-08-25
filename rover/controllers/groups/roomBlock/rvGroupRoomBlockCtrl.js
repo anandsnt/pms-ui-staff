@@ -873,7 +873,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				openInhouseReservationsExistsPopup();
 			}
 			else {
-				$scope.saveNewRoomTypesAndRates();
+				saveNewRoomTypesAndRates();
 			}
 		};
 
@@ -888,6 +888,19 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				closeByDocument: false,
 				closeByEscape: false
 			});
+		};
+
+		/*
+		 * To apply rate change only to new reservations by setting flag update_existing_reservations_rate.
+		 */
+		$scope.updateRateToNewReservations = function () {
+			ngDialog.close();
+			angular.forEach (roomsAndRatesSelected, function (row) {
+				if (row.is_configured_in_group) {
+					row.update_existing_reservations_rate = false;
+				}
+			});
+			$scope.saveNewRoomTypesAndRates();
 		};
 
 		/**
