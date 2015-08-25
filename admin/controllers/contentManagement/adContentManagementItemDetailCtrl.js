@@ -9,6 +9,9 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	 $scope.addons = [];
      $scope.min_duration_values = [];
      $scope.max_order_values = [];
+     $scope.space_occupancys = [];
+     $scope.space_durations = [];
+
 
 
 
@@ -62,29 +65,40 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 
             };
 
-    $scope.fetchAddons = function(){
+$scope.fetchAddons = function(){
     var fetchSuccessOfAddons = function(data) {
 
-       $scope.addons = $scope.getAddonsWithNameValues(data.results);
+       $scope.addons = $scope.getListWithNameValues(data.results);
        $scope.$emit('hideLoader');
    };
    $scope.invokeApi(ADRatesAddonsSrv.fetch, {"no_pagination": true}, fetchSuccessOfAddons);
 };
 
-    $scope.getAddonsWithNameValues = function(addons){
+    $scope.getListWithNameValues = function(addons){
         angular.forEach(addons,function(item, index) {
-       item.value = item.id;
+       		item.value = item.id;
 
-  });
+  	  });
         return addons;
 };
 
-    $scope.itemTypeSelected = function(){
+// for fetch meeting room Details
+$scope.fetchSpaces = function(){
+    var fetchSuccessOfSpaces = function(data) {
+       $scope.space_occupancys = $scope.getListWithNameValues(data.results);   // change need 
+	   $scope.space_durations = $scope.getListWithNameValues(data.results);  // change need
+       $scope.$emit('hideLoader');
+    };
+   $scope.invokeApi(ADContentManagementSrv.fetchMeetingRooms, {"no_pagination": true}, fetchSuccessOfSpaces);
+};
+
+
+$scope.itemTypeSelected = function(){
 
 	if($scope.data.page_template === "ADDON" && $scope.addons.length === 0){
 		$scope.fetchAddons();
-	}else if($scope.data.page_template === "SPACE" && $scope.addons.length === 0){
-		$scope.fetchAddons();
+	}else if($scope.data.page_template === "SPACE" && $scope.space_occupancys.length === 0){
+		$scope.fetchSpaces();
 	}
 };
 
@@ -94,7 +108,7 @@ $scope.getSelectedAddonDescription = function(){
        if(item.value === $scope.data.addon_id) {
        	description = item.description;
        }
-  });
+  	});
      return description;
 };
 
@@ -107,7 +121,6 @@ $scope.getSelectedAddonPrice = function(){
   });
      return price;
 };
-
 
 	/*Function to fetch the item details
     */

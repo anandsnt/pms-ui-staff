@@ -136,4 +136,23 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
 		return deferred.promise;
 	};
 
+	/* 
+	* To fectch meeting rooms for items
+	* @param 
+	* @return {list} containing occupancy{list} and duration{list}
+	*/
+	this.fetchMeetingRooms = function(params) {
+			var deferred = $q.defer(),
+				url      = '/api/addons', // change need
+				params   = params || {};
+
+			ADBaseWebSrvV2.getJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function(errorMessage) {
+					deferred.reject(errorMessage);
+				});
+
+			return deferred.promise;
+		};
 }]);
