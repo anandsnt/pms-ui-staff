@@ -140,14 +140,14 @@
 
                 <div ng-show="data.page_template=='SPACE'" class="entry full-width">
 
-                     <ad-dropdown label="{{'SPACE_MAX_OCCUPANCY_LABEL' | translate}}" label-in-drop-down="{{'SPACE_MAX_OCCUPANCY_PLACEHOLDER' | translate}}" list="space_occupancys" selected-Id='data.space.max_occupancy' required='yes' selbox-class='placeholder' ng-show="data.page_template=='SPACE'"></ad-dropdown>
+                     <ad-dropdown label="{{'SPACE_MAX_OCCUPANCY_LABEL' | translate}}" label-in-drop-down="{{'SPACE_MAX_OCCUPANCY_PLACEHOLDER' | translate}}" list="space_occupancys" selected-Id='data.maximum_occupancy' required='yes' selbox-class='placeholder' ng-show="data.page_template=='SPACE'"></ad-dropdown>
 
 
                      <label class="entry full-width" for="addon-description"><span translate>SPACE_DURATION_LABEL </span></label>
 
                     <div class="entry full-width">
                        <div id="space-durations" class="boxes col2">
-                          <ad-checkbox ng-repeat="duration in space_durations" is-checked="false" label="{{duration.name}}" parent-label-class="room-likes" span-class="checkbox-background"></ad-checkbox>
+                          <ad-checkbox ng-repeat="duration in space_durations" is-checked="duration.isChecked" label="{{duration.name}}" parent-label-class="room-likes" span-class="checkbox-background" datagroup="{{duration}}" index = "{{$index}}" change="setSpaceDurations"></ad-checkbox>
 
                        </div>
                     </div>
@@ -168,7 +168,7 @@
                         </label>                        
                         <!-- Remove class "hidden" when "Specific User(s)" option is selected. Add it back if other option is selected -->
                         <span ng-show="data.space.fulfillment =='email'" translate>SPACE_FULFILLMENT_EMAIL_ACCOUNTS_LABEL</span>
-                        <input id="audience-specific-user" class = "campaign-textbox" placeholder="Enter email accounts" type="text" ng-show="data.space.fulfillment =='email'" ng-model="data.space.fulfillment_emails" /> 
+                        <input id="audience-specific-user" class = "campaign-textbox" placeholder="Enter email accounts" type="text" ng-show="data.space.fulfillment =='email'" ng-model="data.recipient_email_accounts" /> 
                                                  
 
                     </div>

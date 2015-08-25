@@ -143,7 +143,7 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
 	*/
 	this.fetchMeetingRooms = function(params) {
 			var deferred = $q.defer(),
-				url      = '/api/addons', // change need
+				url      = '/api/cms_components/meeting_room_properties', 
 				params   = params || {};
 
 			ADBaseWebSrvV2.getJSON(url, params)

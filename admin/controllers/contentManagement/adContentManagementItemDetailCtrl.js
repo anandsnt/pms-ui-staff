@@ -51,31 +51,27 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	            "page_template": "POI",
 	            "website_url": "",
 	            "description": "",
-	            "addon_id":"",
-	            "screen_id":"",
-	            "addon_min_duration":"",
-	            "addon_max_order":"",
+	            "addon_id": "",
+	            "screen_id": "",
+	            "addon_min_duration": "",
+	            "addon_max_order": "",
+  				"durations": [],
+  				"recipient_email_accounts": "",
+  				"maximum_occupancy": "",
 	            "parent_category": [],
 	            "parent_section": [],
-	            "space": {
-	            	"max_occupancy": "",
-	            	"durations": [],
-	            	"fulfillment": "none",
-	            	"fulfillment_emails" : ""
-	            }
-
             };
 
 $scope.fetchAddons = function(){
     var fetchSuccessOfAddons = function(data) {
 
-       $scope.addons = $scope.getListWithNameValues(data.results);
+       $scope.addons = $scope.getAddonsWithNameValues(data.results);
        $scope.$emit('hideLoader');
    };
    $scope.invokeApi(ADRatesAddonsSrv.fetch, {"no_pagination": true}, fetchSuccessOfAddons);
 };
 
-    $scope.getListWithNameValues = function(addons){
+    $scope.getAddonsWithNameValues = function(addons){
         angular.forEach(addons,function(item, index) {
        		item.value = item.id;
 
@@ -86,13 +82,49 @@ $scope.fetchAddons = function(){
 // for fetch meeting room Details
 $scope.fetchSpaces = function(){
     var fetchSuccessOfSpaces = function(data) {
-       $scope.space_occupancys = $scope.getListWithNameValues(data.results);   // change need 
-	   $scope.space_durations = $scope.getListWithNameValues(data.results);  // change need
+       $scope.space_occupancys = $scope.getListWithNameValues(data.meeting_room_occupancy);  // change need 
+	   // $scope.space_durations = data.meeting_room_durations;  // change need
+       $scope.space_durations = $scope.getDurationsWithNameValues([1,2,3,4]);
        $scope.$emit('hideLoader');
     };
    $scope.invokeApi(ADContentManagementSrv.fetchMeetingRooms, {"no_pagination": true}, fetchSuccessOfSpaces);
 };
+$scope.getDurationsWithNameValues = function(items) {
+	var list = [];
+	var obj;
+    angular.forEach(items,function(item, index) {
+        obj = {};
+       	obj.value = item;
+       	obj.name = item;
+       	obj.isChecked = $scope.data.durations.indexOf(item) === -1?  false : true;
+       	list.push(obj);
 
+    });
+        return list;
+};
+$scope.getListWithNameValues = function(items) {
+	var list = [];
+	var obj;
+    angular.forEach(items,function(item, index) {
+        obj = {};
+       	obj.value = item;
+       	obj.name = item;
+       	list.push(obj);
+
+    });
+        return list;
+};
+
+$scope.setSpaceDurations = function(val,index) {
+	var duration = $scope.space_durations[index];
+	var flag = $scope.data.durations.indexOf(duration.value);
+	if(flag === -1){
+		$scope.data.durations.push(duration.value);
+	}
+	else{
+		$scope.data.durations.splice(0,flag);
+	}
+}
 
 $scope.itemTypeSelected = function(){
 
