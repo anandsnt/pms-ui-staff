@@ -49,6 +49,7 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	            "website_url": "",
 	            "description": "",
 	            "addon_id":"",
+	            "screen_id":"",
 	            "addon_min_duration":"",
 	            "addon_max_order":"",
 	            "parent_category": [],
