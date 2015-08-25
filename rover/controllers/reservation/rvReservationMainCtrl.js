@@ -593,9 +593,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             var numAdults = parseInt(room.numAdults),
                 numChildren = parseInt(room.numChildren);
 
-            if (from === 'adult' && (numAdults === 0 && numChildren === 0)) {
+            if ((from === 'adult' || from === "numAdults") && (numAdults === 0 && numChildren === 0)) {
                 room.numChildren = 1;
-            } else if (from === 'children' && (numChildren === 0 && numAdults === 0)) {
+            } else if ((from === 'children' || from === "numChildren") && (numChildren === 0 && numAdults === 0)) {
                 room.numAdults = 1;
             }
         };
@@ -1456,14 +1456,59 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         };
 
         //CICO-11716
-        $scope.onOccupancyChange = function(room, occupantType, idx) {
-            $scope.updateOccupancy(idx);
-            if (!$scope.reservationData.isHourly) {
-                $scope.validateOccupant(room, occupantType);
-                $scope.checkOccupancyLimit(null, true, idx);
+        $scope.onOccupancyChange = function(type, tabIndex) {
+            var currentRoomTypeId = $scope.reservationData.tabs[tabIndex].roomTypeId,
+                firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
+                    roomTypeId: currentRoomTypeId
+                })),
+                lastIndex = _.lastIndexOf($scope.reservationData.rooms, _.last(_.where($scope.reservationData.rooms, {
+                    roomTypeId: currentRoomTypeId
+                }))),
+                i;
+            for (i = firstIndex; i <= lastIndex; i++) {
+                $scope.reservationData.rooms[i][type] = parseInt($scope.reservationData.tabs[tabIndex][type], 10);
+                if (!$scope.reservationData.isHourly) {
+                    $scope.validateOccupant($scope.reservationData.rooms[i], type);
+                    $scope.checkOccupancyLimit(null, true, i);
+                }
+                $scope.updateOccupancy(i);
             }
             $scope.$broadcast('SIDE_BAR_OCCUPANCY_UPDATE');
         };
+
+        $scope.removeTab = function(tabIndex) {
+            var firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
+                roomTypeId: $scope.reservationData.tabs[tabIndex].roomTypeId
+            }));
+            var currentCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount, 10);
+            $scope.reservationData.tabs.splice(tabIndex, 1);
+            $scope.reservationData.rooms.splice(firstIndex, currentCount);            
+            refreshScroller();
+        };
+
+
+        $scope.onRoomCountChange = function(tabIndex) {
+            var currentCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount, 10),
+                currentRoomTypeId = $scope.reservationData.tabs[tabIndex].roomTypeId,
+                firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
+                    roomTypeId: currentRoomTypeId
+                })),
+                lastIndex = _.lastIndexOf($scope.reservationData.rooms, _.last(_.where($scope.reservationData.rooms, {
+                    roomTypeId: currentRoomTypeId
+                }))),
+                totalCount = (lastIndex - firstIndex) + 1;
+            if (totalCount < currentCount) {
+                var copy,
+                    i;
+                for (i = 0; i < currentCount - totalCount; i++) {
+                    copy = angular.copy($scope.reservationData.rooms[firstIndex]);
+                    $scope.reservationData.rooms.splice(lastIndex, 0, copy);
+                }
+            } else {
+                $scope.reservationData.rooms.splice(lastIndex, totalCount - currentCount);
+            }
+        };
+
     }
 
 ]);

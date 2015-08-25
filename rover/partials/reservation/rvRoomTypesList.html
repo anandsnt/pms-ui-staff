@@ -3,9 +3,9 @@
     <!-- Reservation header -->
     <div id="rooms-and-rates-header" class="reservation-header">
         <!-- If multiple room types: -->
-        <ul id="multiple-rooms" class="display" ng-show="reservationData.rooms.length > 1">
-            <li ng-class="{'active' : activeRoom === $index}" ng-repeat="tab in reservationData.tabs" ng-click="changeActiveRoomType($index)">
-                ROOMS {{tab.fromIndex}}-{{tab.toIndex}}
+        <ul id="multiple-rooms" class="display" ng-if="reservationData.rooms.length > 1">
+            <li ng-class="{'active' : activeRoom === $index}" ng-repeat="tab in reservationData.tabs">
+               {{getTabTitle($index)}}
             </li>            
         </ul>
         <div class="switch-button" ng-click="toggleCalendar()">

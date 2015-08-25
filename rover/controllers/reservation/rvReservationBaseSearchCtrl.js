@@ -604,42 +604,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 size: $scope.reservationData.rooms.length,
                 contents: $scope.reservationData.rooms
             });
-        }
-
-        $scope.removeTab = function(tabIndex) {
-            var firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
-                roomTypeId: $scope.reservationData.tabs[tabIndex].roomTypeId
-            }));
-            var currentCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount, 10);
-            $scope.reservationData.tabs.splice(tabIndex, 1);
-            $scope.reservationData.rooms.splice(firstIndex, currentCount);
-            devlogRoomsArray();
-            refreshScroller();
-        };
-
-        $scope.onRoomCountChange = function(tabIndex) {
-            var currentCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount, 10),
-                currentRoomTypeId = $scope.reservationData.tabs[tabIndex].roomTypeId,
-                firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
-                    roomTypeId: currentRoomTypeId
-                })),
-                lastIndex = _.lastIndexOf($scope.reservationData.rooms, _.last(_.where($scope.reservationData.rooms, {
-                    roomTypeId: currentRoomTypeId
-                }))),
-                totalCount = (lastIndex - firstIndex) + 1;
-
-            if (totalCount < currentCount) {
-                var copy,
-                    i;
-                for (i = 0; i < currentCount - totalCount; i++) {
-                    copy = angular.copy($scope.reservationData.rooms[firstIndex]);
-                    $scope.reservationData.rooms.splice(lastIndex, 0, copy);
-                }
-                devlogRoomsArray();
-            } else {
-                $scope.reservationData.rooms.splice(lastIndex, totalCount - currentCount);
-            }
-        };
+        }     
 
         $scope.onRoomTypeChange = function(tabIndex) {
             var index = 0,
@@ -678,7 +643,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 }
             });
             return chosen;
-        }
+        };
 
     }
 ]);

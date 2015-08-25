@@ -7,7 +7,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		$scope.containerHeight = $(window).height() - 280;
 		$scope.showLessRooms = true;
 		$scope.showLessRates = false;
-                $scope.isHouseAvailable = false;
+		$scope.isHouseAvailable = false;
 
 		$scope.restrictionColorClass = {
 			'CLOSED': 'red',
@@ -76,8 +76,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				});
 				return hasRate;
 			},
-			getCurrentRoomDetails = function() {
-				var currentRoomTypeId = parseInt($scope.reservationData.tabs[$scope.activeRoom].roomTypeId, 10) || "",
+			getTabRoomDetails = function(roomIndex) {
+				var currentRoomTypeId = parseInt($scope.reservationData.tabs[roomIndex].roomTypeId, 10) || "",
 					firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
 						roomTypeId: currentRoomTypeId
 					})),
@@ -90,6 +90,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					firstIndex: firstIndex,
 					lastIndex: lastIndex
 				};
+			},
+			getCurrentRoomDetails = function() {
+				return getTabRoomDetails($scope.activeRoom);
 			},
 			init = function(isCallingFirstTime) {
 				$scope.$emit('showLoader');
@@ -121,7 +124,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 							}
 						}
 					});
-					
+
 					$scope.isHouseAvailable = isHouseAvailable;
 					if (!isRoomAvailable && !isHouseAvailable && isCallingFirstTime) {
 						$scope.toggleCalendar();
@@ -254,6 +257,14 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			});
 		};
 
+		$scope.getTabTitle = function(tabIndex) {
+			var roomDetail = getTabRoomDetails(tabIndex);
+			if (roomDetail.firstIndex === roomDetail.lastIndex) {
+				return "ROOM " + (roomDetail.firstIndex + 1);
+			}
+			return "ROOMS " + (roomDetail.firstIndex + 1) + "-" + (roomDetail.lastIndex + 1);
+		};
+
 		$scope.initRoomRates = function(isfromCalendar) {
 			var fetchSuccess = function(data) {
 				roomRates = data;
@@ -286,17 +297,17 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		$scope.restrictIfOverbook = function(roomId, rateId) {
 			var canOverbookHouse = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE'),
 				canOverbookRoomType = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
-			if(canOverbookHouse && canOverbookRoomType){
-                //CICO-17948
-                //check actual hotel availability with permissions
-                //When a user has "Overbook Room Type" they should be able to over sell a particular room type, as long as the action does not oversell the house inventory
-                //
-                //$scope.isHouseAvailable set on init()
-                if ($scope.isHouseAvailable){
+			if (canOverbookHouse && canOverbookRoomType) {
+				//CICO-17948
+				//check actual hotel availability with permissions
+				//When a user has "Overbook Room Type" they should be able to over sell a particular room type, as long as the action does not oversell the house inventory
+				//
+				//$scope.isHouseAvailable set on init()
+				if ($scope.isHouseAvailable) {
 					return false;
-                } else {
-                    return true;
-                }
+				} else {
+					return true;
+				}
 			}
 			if (!canOverbookHouse && $scope.getLeastHouseAvailability(roomId, rateId) < 1) {
 				return true;
@@ -1159,7 +1170,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			var parsedRooms = RVReservationStateService.parseRoomRates(roomRates,
 					$scope.reservationData.arrivalDate,
 					$scope.reservationData.departureDate,
-					$scope.reservationData.rooms[$scope.activeRoom].stayDates,
+					$scope.reservationData.rooms[$scope.stateCheck.roomDetails.firstIndex].stayDates,
 					$scope.activeRoom,
 					$scope.reservationData.numNights,
 					$scope.reservationData.code,

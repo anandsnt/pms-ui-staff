@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSearchSrv', '$state', '$stateParams', 'dateFilter', '$timeout',
-    function($scope, RVReservationBaseSearchSrv, $state, $stateParams, dateFilter, $timeout) {
+sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSearchSrv', '$state', '$stateParams', 'dateFilter', '$timeout', 'RVReservationTabService',
+    function($scope, RVReservationBaseSearchSrv, $state, $stateParams, dateFilter, $timeout, RVReservationTabService) {
         $scope.reservationSettingsVisible = false;
 
         var resizableMinWidth = 30;
@@ -116,8 +116,6 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             $scope.stayDatesClicked();
         };
 
-
-
         $scope.setDepartureDate = function() {
 
             var dateOffset = $scope.reservationData.numNights;
@@ -207,5 +205,16 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
         $scope.$on('GETREFRESHACCORDIAN', function() {
             setTimeout($scope.refreshScroll, 3000);
         });
+
+        $scope.addTabFromSidebar = function(){
+              if (!$scope.reservationData.tabs[$scope.reservationData.tabs.length - 1].roomTypeId) {
+                return false; // Need to select room type before adding another row
+            }
+            $scope.reservationData.tabs = $scope.reservationData.tabs.concat(RVReservationTabService.newTab());
+            $scope.reservationData.rooms = $scope.reservationData.rooms.concat(RVReservationTabService.newRoom());            
+            refreshScroller();
+        };
+
+
     }
 ]);
