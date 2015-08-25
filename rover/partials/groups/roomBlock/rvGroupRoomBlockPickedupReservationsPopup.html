@@ -1,0 +1,13 @@
+<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog">
+	<div class="modal-content alert wide">
+		<button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()">
+			<span class="icons icon-close invert"></span>
+		</button>
+
+		<span class="icons icon-popup-alert"></span>
+		<span class="message h2" translate>GROUP_CUSTOM_RATE_HAS_CHANGED</span>
+
+		<button type="button" class="button green modal-close" ng-click="checkIfInhouseReservationsExists();" translate>APPLY_TO_NEW_AND_EXISTING_RESERVATIONS</button>
+		<button type="button" class="button blue modal-close" ng-click="saveNewRoomTypesAndRates();" translate>APPLY_TO_NEW_RESERVATIONS_ONLY</button>
+	</div>
+</div>
