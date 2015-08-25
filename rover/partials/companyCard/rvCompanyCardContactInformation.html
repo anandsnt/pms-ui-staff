@@ -90,13 +90,7 @@
                         <option value="perNight" translate>PER_NIGHT</option> 
                     </select>
                 </div>
-                <label ng-show="contactInformation.commission_details.type === 'percent'" translate>CHARGE_CODE</label>
-                <div class="select" ng-show="contactInformation.commission_details.type === 'percent'">
-                    <select ng-model="contactInformation.commission_details.selected_charge_code" class="styled">
-                        <option value="" translate>SELECT_CHARGE_CODE</option>
-                        <option ng-repeat="charge_codes in contactInformation.commission_details.charge_codes"  value="{{charge_codes.value}}" ng-selected="charge_codes.value === contactInformation.commission_details.selected_charge_code">{{charge_codes.name}}</option>
-                    </select>
-                </div>
+                
             </div>
 
             <div class="entry full-width">
