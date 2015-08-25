@@ -9,6 +9,7 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
         var sourcesData           = {};
         var originsData           = {};
         var reservationTypes      = {};
+        var segmentData			  = {};
 
         this.fetchPaymentMethods = function() {
             var deferred = $q.defer();
@@ -22,14 +23,21 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
         };
 
         this.fetchLengthSegments = function(deferred) {
-            var url = '/api/segments?is_active=true';
-            rvBaseWebSrvV2.getJSON(url).then(function(data) {
-                that.reservationData.demographics.is_use_segments = data.is_use_segments;
-                that.reservationData.demographics.segments = data.segments;
-                deferred.resolve(that.reservationData);
-            }, function(errorMessage) {
-                deferred.reject(errorMessage);
-            });
+        	if(isEmpty(segmentData)){
+        		var url = '/api/segments?is_active=true';
+	            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+	            	segmentData = data;
+	                that.reservationData.demographics.is_use_segments = data.is_use_segments;
+	                that.reservationData.demographics.segments = data.segments;
+	                deferred.resolve(that.reservationData);
+	            }, function(errorMessage) {
+	                deferred.reject(errorMessage);
+	            });
+        	}else{
+        		 that.reservationData.demographics.is_use_segments = segmentData.is_use_segments;
+	             that.reservationData.demographics.segments = segmentData.segments;
+	             deferred.resolve(that.reservationData);
+        	};          
         }
 
 
