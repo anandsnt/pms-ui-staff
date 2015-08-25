@@ -12,9 +12,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 					roomCount: 1,
 					numAdults: 1,
 					numChildren: 0,
-					numInfants: 0,
-					fromIndex: 0,
-					toIndex: 0
+					numInfants: 0
 				});
 			}
 			return tabs;
@@ -266,6 +264,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 				reservationEditMode = false,
 				isManual = false,
 				showSelectedCreditCard = false;
+
 			//---------------------- ReservationData -------------------------------------------------------------------------//
 			reservationData.status = stayCard.reservation_status; //status
 			reservationData.inHouse = stayCard.reservation_status === "CHECKEDIN";
@@ -424,6 +423,15 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 			roomDetails.varyingOccupancy = self.isVaryingOccupancy(roomDetails.stayDates, reservationData.arrivalDate, reservationData.departureDate, reservationData.numNights);
 			roomDetails.rateName = self.isVaryingRates(roomDetails.stayDates, reservationData.arrivalDate, reservationData.departureDate, reservationData.numNights) ?
 				"Multiple Rates Selected" : stayCard.package_description;
+
+			//---------------------- Tab Data -------------------------------------------------------------------------//
+			var activeTab = reservationData.tabs[0];
+			_.extend(activeTab, {
+				roomTypeId: roomDetails.roomTypeId,
+				numAdults: roomDetails.numAdults,
+				numChildren: roomDetails.numChildren,
+				numInfants: roomDetails.numInfants
+			});
 
 			return {
 				reservationData: reservationData,
