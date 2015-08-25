@@ -57,7 +57,7 @@
                 <ad-dropdown label="{{'SECTION_DESCRIPTION_ALIGNMENT_LABEL' | translate}}" list="alignments" selected-Id='data.description_alignment' required='no' selbox-class='placeholder' ></ad-dropdown>
 
                 <div class="entry full-width">
-                    <label for="item-description" ><span translate>SECTION_DESCRIPTION_LABEL</span> <strong ng-show="data.is_description_visible">*</strong></label>
+                    <label for="item-description" ><span translate>SECTION_DESCRIPTION_LABEL</span></label>
                     <textarea name="section-description" maxlength="256" ng-model="data.description" id="section-description" rows="4" placeholder="Enter Section description ..."></textarea>
                     <p class="counter" ><span ng-class = "{'done':256 == data.description.length}">{{256 - data.description.length}}</span> {{'CHARACTERS_REMINING' |translate}}</p>
                 </div>
