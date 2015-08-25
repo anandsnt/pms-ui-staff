@@ -82,8 +82,9 @@
     "GROUP_SELECTED_RESERVATIONS_ARE_ALREADY_ROOM_ASSIGNED": "Sorry, selected reservations are already room assigned",
     "GROUP_AUTO_ROOM_ASSIGN_CONFIRMATION": "Confirm Room Assign",
     "GROUP_AUTO_ROOM_ASSIGN_CONFIRMATION_PARTIALLY_OKEY": "Some reservations don't meet auto assign room criteria",
-    "GROUP_AUTO_ROOM_ASSIGN_FAILED_IN_PROCESSING": "Sorry, Group auto room assignment has failed for some reason. Please retry after closing this"
-
-
+    "GROUP_AUTO_ROOM_ASSIGN_FAILED_IN_PROCESSING": "Sorry, Group auto room assignment has failed for some reason. Please retry after closing this",
+    "GROUP_LATER_ARR_DATE_CHANGE_WARNING": "Reservations are due to depart on/prior to new arrival date. Please amend reservations before moving group dates.",
+    "GROUP_EARLIER_DEP_DATE_CHANGE_WARNING": "Reservations are due to arrive on/after new departure date. Please amend reservations before moving group dates.",
+    "GROUP_MOVE_CONFIRM": "Move group and associated reservations?"
 
 
