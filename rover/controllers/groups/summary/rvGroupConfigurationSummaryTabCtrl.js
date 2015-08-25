@@ -331,6 +331,11 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					triggerLaterArrivalDateChange();
 			}
 
+			// let the date update
+			else {
+				$scope.updateGroupSummary();
+			}
+
 			//setting the min date for end Date
 			$scope.toDateOptions.minDate = refData.block_from;
 
@@ -414,6 +419,11 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				triggerLaterDepartureDateChange();
 			}
 
+			// let the date update
+			else {
+				$scope.updateGroupSummary();
+			}
+
 			//setting the max date for from Date
 			$scope.fromDateOptions.maxDate = refData.block_to;
 
@@ -446,7 +456,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		var shouldDisableFromDatePicker = function(){
 			var sumryData = $scope.groupConfigData.summary,
 				chDateAct = $scope.changeDatesActions;
-			return (!$scope.isInAddMode() && (sumryData.is_cancelled || (!sumryData.is_from_date_right_move_allowed && !sumryData.is_from_date_left_move_allowed)));
+			return (!$scope.isInAddMode() && (sumryData.is_cancelled || sumryData.is_a_past_group || (!sumryData.is_from_date_right_move_allowed && !sumryData.is_from_date_left_move_allowed)));
 		};
 
 		/**
@@ -454,9 +464,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {Boolean} [description]
 		 */
 		var shouldDisableEndDatePicker = function(){
-			var sumryData = $scope.groupConfigData.summary,
-				chDateAct = $scope.changeDatesActions;
-			return (!$scope.isInAddMode() && (sumryData.is_cancelled || (!sumryData.is_to_date_right_move_allowed && !sumryData.is_to_date_left_move_allowed)));
+			var sumryData 		 = $scope.groupConfigData.summary,
+				chDateAct 		 = $scope.changeDatesActions,
+				endDateHasPassed = new tzIndependentDate(sumryData.block_to) < tzIndependentDate($rootScope.businessDate);
+			return (!$scope.isInAddMode() && (sumryData.is_cancelled || endDateHasPassed || (!sumryData.is_to_date_right_move_allowed && !sumryData.is_to_date_left_move_allowed)));
 		};
 
 		/**

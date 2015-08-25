@@ -479,6 +479,11 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 					triggerLaterArrivalDateChange();
 			}
 
+			// let the date update
+			else {
+				$scope.updateGroupSummary();
+			}
+
 			// we will clear end date if chosen start date is greater than end date
 			if ($scope.startDate > $scope.endDate) {
 				$scope.endDate = '';
@@ -521,6 +526,11 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				triggerLaterDepartureDateChange();
 			}
 
+			// let the date update
+			else {
+				$scope.updateGroupSummary();
+			}
+
 			//setting the max date for start Date
 			$scope.startDateOptions.maxDate = $scope.endDate;
 
@@ -528,6 +538,27 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 
 			runDigestCycle();
+		};
+
+		/**
+		 * every logic to disable the from date picker should be here
+		 * @return {Boolean} [description]
+		 */
+		var shouldDisableStartDatePicker = function(){
+			var sumryData = $scope.groupConfigData.summary,
+				chDateAct = $scope.changeDatesActions;
+			return (!$scope.isInAddMode() && (sumryData.is_cancelled || sumryData.is_a_past_group || (!sumryData.is_from_date_right_move_allowed && !sumryData.is_from_date_left_move_allowed)));
+		};
+
+		/**
+		 * every logic to disable the end date picker should be here
+		 * @return {Boolean} [description]
+		 */
+		var shouldDisableEndDatePicker = function(){
+			var sumryData 		 = $scope.groupConfigData.summary,
+				chDateAct 		 = $scope.changeDatesActions,
+				endDateHasPassed = new tzIndependentDate(sumryData.block_to) < tzIndependentDate($rootScope.businessDate);
+			return (!$scope.isInAddMode() && (sumryData.is_cancelled || endDateHasPassed || (!sumryData.is_to_date_right_move_allowed && !sumryData.is_to_date_left_move_allowed)));
 		};
 
 		/**
@@ -567,14 +598,14 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			$scope.startDateOptions = _.extend({
 				minDate: new tzIndependentDate($rootScope.businessDate),
 				maxDate: new tzIndependentDate($scope.groupConfigData.summary.block_to),
-				disabled: $scope.groupConfigData.summary.is_cancelled,
+				disabled: shouldDisableStartDatePicker(),
 				onSelect: onStartDatePicked
 			}, commonDateOptions);
 
 			//date picker options - End Date
 			$scope.endDateOptions = _.extend({
 				minDate: ($scope.startDate !== '') ? new tzIndependentDate($scope.startDate): new tzIndependentDate($rootScope.businessDate),
-				disabled: $scope.groupConfigData.summary.is_cancelled,
+				disabled: shouldDisableEndDatePicker(),
 				onSelect: onEndDatePicked
 			}, commonDateOptions);
 		};

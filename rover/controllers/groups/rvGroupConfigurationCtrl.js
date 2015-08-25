@@ -263,7 +263,13 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @return {Boolean}
              */
             var depDateLeftChangeAllowed = function(){
-                return $scope.groupConfigData.summary.is_to_date_left_move_allowed;
+                var sumryData                   = $scope.groupConfigData.summary,
+                    roomBlockExist              = (parseInt(sumryData.rooms_total) > 0),
+                    noInHouseReservationExist   = (parseInt(sumryData.total_checked_in_reservations) === 0);
+
+                return (roomBlockExist &&
+                        noInHouseReservationExist &&
+                        sumryData.is_to_date_left_move_allowed);
             };
 
             /**
@@ -271,7 +277,13 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @return {Boolean}
              */
             var depDateRightChangeAllowed = function(){
-                return $scope.groupConfigData.summary.is_to_date_right_move_allowed;
+                var sumryData                   = $scope.groupConfigData.summary,
+                    roomBlockExist              = (parseInt(sumryData.rooms_total) > 0),
+                    noInHouseReservationExist   = (parseInt(sumryData.total_checked_in_reservations) === 0);
+
+                return (roomBlockExist &&
+                        noInHouseReservationExist &&
+                        sumryData.is_to_date_right_move_allowed);
             };
 
             /**
