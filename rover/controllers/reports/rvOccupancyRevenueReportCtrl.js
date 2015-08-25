@@ -203,7 +203,6 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			$scope.chosenLastYear = $scope.$parent.chosenReport.chosenOptions.include_last_year;
 			$scope.chosenVariance = $scope.$parent.chosenReport.chosenOptions.include_variance;
 
-
 			$scope.selectedDays = [];
 			for (; ms <= last; ms += step) {
 				$scope.selectedDays.push(dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd'));
