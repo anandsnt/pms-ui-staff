@@ -866,8 +866,7 @@ sntRover.factory('RVReportUtilsFac', [
             if ( report['title'] === reportNames['GROUP_PICKUP_REPORT'] ) {
                 var groupName  = angular.copy( report['sort_fields'][1] ),
                     date       = angular.copy( report['sort_fields'][0] ),
-                    holdStatus = angular.copy( report['sort_fields'][2] ),
-                    percentage = angular.copy( report['sort_fields'][3] );
+                    holdStatus = angular.copy( report['sort_fields'][2] );
 
                 report['sort_fields'][0] = groupName;
                 report['sort_fields'][1] = date;
@@ -877,7 +876,7 @@ sntRover.factory('RVReportUtilsFac', [
                 report['sort_fields'][5] = null;
                 report['sort_fields'][6] = null;
                 report['sort_fields'][7] = null;
-                report['sort_fields'][8] = percentage;
+                report['sort_fields'][8] = null;
             };
         };
 
@@ -892,7 +891,7 @@ sntRover.factory('RVReportUtilsFac', [
             if ( report['sort_fields'] && report['sort_fields'].length ) {
                 _.each(report['sort_fields'], function(item, index, list) {
 
-                    if ( item !== null ) {
+                    if ( !! item ) {
                         item['sortDir'] = undefined;
                     };
 

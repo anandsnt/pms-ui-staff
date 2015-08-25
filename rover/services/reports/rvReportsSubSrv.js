@@ -126,7 +126,8 @@ sntRover.service('RVreportsSubSrv', [
 		service.fetchHoldStatus = function() {
 			return callApi({
 				method : 'getJSON',
-				url    : 'api/hold_status?is_active=true'
+				url    : 'api/group_hold_statuses',
+				resKey : 'data'
 			});
 		};
 
