@@ -14,6 +14,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
         $scope.currentState = $state.current.name;
         $scope.interfaceId = $state.current.interface_id;
         $scope.simpleName = $state.current.simple_name;
+        $scope.failedMessages = {};
         
         //these setup a generic method to access each service api, using the router namespace
         $scope.serviceController;
@@ -24,11 +25,13 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
         };
         $scope.init = function(){
             var interface = $scope.interfaceConfig[$scope.currentState];
-            $scope.serviceController = interface.controller;
-            $scope.interfaceName = interface.name;
-            //fetch payment methods, source origins, then values
-            
-            $scope.fetchSetup();
+            if (interface){
+                $scope.serviceController = interface.controller;
+                $scope.interfaceName = interface.name;
+                //fetch payment methods, source origins, then values
+
+                $scope.fetchSetup();
+            }
         };
         ///////////////////////////
         ///FETCH
@@ -298,5 +301,14 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
                   });
               }, 1000);
           }; 
+          
+          /*
+           * Failed OTA Messages
+           */
+          $scope.resubmitFailedMessage = function(msg){
+              console.log('resubmit failed message', msg);
+              
+              
+          };
             
     }]);

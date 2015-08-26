@@ -107,6 +107,17 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADReservationTypeListController',
 			url : '/reservationtypes'
 		});
+                
+		$stateProvider.state('admin.interfaceMessages', {
+			templateUrl: '/assets/partials/interfaces/adInterfaceMessages.html',
+			controller: 'adExternalInterfaceCtrl',
+			url : '/interfaceMessages',
+                        resolve: {
+                            failedMessages: function(adExternalInterfaceCommonSrv) {
+                                return adExternalInterfaceCommonSrv.fetchFailedMessages();
+                            }
+	            }
+		});
 
 
 		$stateProvider.state('admin.reservationTools', {

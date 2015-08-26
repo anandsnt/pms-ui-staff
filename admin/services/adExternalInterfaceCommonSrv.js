@@ -21,6 +21,16 @@ admin.service('adExternalInterfaceCommonSrv',['$http', '$q', 'ADBaseWebSrv', 'AD
 		});	
 		return deferred.promise;
 	};
+	this.fetchFailedMessages = function(){
+		var deferred = $q.defer();
+		var url = '/api/booking_origins.json';
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
 	/*
 	* To fetch hotel PaymentMethods
 	*/
