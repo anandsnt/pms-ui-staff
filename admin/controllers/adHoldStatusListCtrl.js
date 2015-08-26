@@ -10,7 +10,7 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
 	$scope.listHoldStatus = function(){
 		var successCallbackFetch = function(data){
 			$scope.$emit('hideLoader');
-			$scope.data.holdStatuses = data.data.hold_status;
+			$scope.data.holdStatuses = data.hold_status;
 			$scope.currentClickedElement = -1;
 			$scope.isAddMode = false;
 		};
@@ -70,7 +70,7 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
     		$scope.$emit('hideLoader');
 			if($scope.isAddMode){
 				// To add new data to scope
-    			$scope.data.holdStatuses.push(data.data);
+    			$scope.data.holdStatuses.push(data);
 	    	} else {
 	    		//To update data with new value
 	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].name = $scope.holdstatusData.name;
