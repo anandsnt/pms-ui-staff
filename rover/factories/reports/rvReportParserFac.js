@@ -501,14 +501,17 @@ sntRover.factory('RVReportParserFac', [
                         };
                     };
                 } else {
+                    angular.extend(makeCopy, {
+                        'isReport'  : true,
+                        'rowspan'   : 2
+                    });
                     returnAry.push( makeCopy );
                 };
 
                 // if we have 'group_total' for this group
-                if ( makeCopy.hasOwnProperty('group_total') && makeCopy['group_total'].hasOwnProperty('rooms_available') ) {
+                if ( makeCopy.hasOwnProperty('group_total') ) {
                     groupDataTotal = makeCopy['group_total'];
                     customData = {};
-
                     angular.extend(customData, {
                         'isSubTotal'            : true,
                         'className'             : 'row-break',
@@ -520,7 +523,13 @@ sntRover.factory('RVReportParserFac', [
                     });
                     returnAry.push( customData );
                 } else {
-                    returnAry.push( makeCopy );
+                    customData = {};
+                    angular.extend(customData, {
+                        'isSubTotal' : true,
+                        'isEmpty'    : true,
+                        'className'  : 'row-break'
+                    });
+                    returnAry.push( customData );
                 };
             };
 
