@@ -40,7 +40,7 @@
         </div>
         <!-- ng-disabled="activeCriteria == 'RATE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay)" -->
         <div class="select" ng-show="activeCriteria == 'ROOM_TYPE'">            
-            <select ng-model="stateCheck.preferredType" ng-change="filterRooms($event); resetRates();" ng-disabled="activeCriteria == 'RATE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay && stateCheck.dateModeActiveDate != reservationData.arrivalDate) || reservationData.status == 'CHECKEDIN' || reservationData.status == 'CHECKING_OUT'">
+            <select ng-model="stateCheck.preferredType" ng-change="onRoomTypeChange($event)" ng-disabled="activeCriteria == 'RATE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay && stateCheck.dateModeActiveDate != reservationData.arrivalDate) || reservationData.status == 'CHECKEDIN' || reservationData.status == 'CHECKING_OUT'">
                 <option value="" translate ng-if="reservationData.tabs.length < 2">RESV_ALL_ROOMS</option>
                 <option value="{{roomType.id}}" ng-repeat="roomType in roomTypes|filter:{level:'!!'}|orderBy:'level'" ng-selected="roomType.id == stateCheck.preferredType" ng-hide="isRoomTypeSelected(roomType.id);">
                     {{roomType.name}}

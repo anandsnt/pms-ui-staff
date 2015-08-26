@@ -676,7 +676,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					$scope.reservationData.tabs[$scope.activeRoom].roomTypeId = parseInt(roomId);
 				}
 				for (i = $scope.stateCheck.roomDetails.firstIndex; i <= $scope.stateCheck.roomDetails.lastIndex; i++) {
-					populateStayDates(rateId, roomId, i);
+
 					_.extend($scope.reservationData.rooms[i], {
 						roomTypeId: roomId,
 						roomTypeName: $scope.roomAvailability[roomId].name,
@@ -686,6 +686,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 						rateAvg: $scope.roomAvailability[roomId].total[rateId].average,
 						rateTotal: $scope.roomAvailability[roomId].total[rateId].total
 					});
+
+					populateStayDates(rateId, roomId, i);
 
 					$scope.reservationData.demographics.market = $scope.displayData.allRates[rateId].market_segment.id === null ? "" : $scope.displayData.allRates[rateId].market_segment.id;
 					$scope.reservationData.demographics.source = $scope.displayData.allRates[rateId].source.id === null ? "" : $scope.displayData.allRates[rateId].source.id;
@@ -729,10 +731,13 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		// However, the user should be able to change the room type for the first night on the Stay Dates screen,
 		// while the reservation is not yet checked in. The control should be disabled for any subsequent nights.
 		$scope.resetRates = function() {
-			_.each($scope.reservationData.rooms[$scope.activeRoom].stayDates, function(stayDate, idx) {
-				stayDate.rate.id = '';
-				stayDate.rate.name = '';
-			});
+			var roomIndex = $scope.stateCheck.roomDetails.firstIndex;
+			for (; roomIndex <= $scope.stateCheck.roomDetails.lastIndex; roomIndex++) {
+				_.each($scope.reservationData.rooms[roomIndex].stayDates, function(stayDate, idx) {
+					stayDate.rate.id = '';
+					stayDate.rate.name = '';
+				});
+			}
 			$scope.stateCheck.rateSelected.allDays = false;
 			// reset value, else rate selection will get bypassed
 			// check $scope.handleBooking method
@@ -923,12 +928,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 									}
 
 									var rateConfiguration = today[rateId].rateBreakUp,
-										numAdults = parseInt($scope.reservationData.rooms[$scope.activeRoom].numAdults),
-										numChildren = parseInt($scope.reservationData.rooms[$scope.activeRoom].numChildren);
+										numAdults = parseInt($scope.reservationData.rooms[$scope.stateCheck.roomDetails.firstIndex].numAdults),
+										numChildren = parseInt($scope.reservationData.rooms[$scope.stateCheck.roomDetails.firstIndex].numChildren);
 									// In case of stayDatesMode the occupancy has to be considered only for the single day
 									if ($scope.stateCheck.stayDatesMode) {
-										numAdults = parseInt($scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].guests.adults);
-										numChildren = parseInt($scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].guests.children);
+										numAdults = parseInt($scope.reservationData.rooms[$scope.stateCheck.roomDetails.firstIndex].stayDates[$scope.stateCheck.dateModeActiveDate].guests.adults);
+										numChildren = parseInt($scope.reservationData.rooms[$scope.stateCheck.roomDetails.firstIndex].stayDates[$scope.stateCheck.dateModeActiveDate].guests.children);
 									}
 
 									var stayLength = parseInt($scope.reservationData.numNights);
@@ -1360,7 +1365,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				return false;
 			}
 			$scope.stateCheck.dateModeActiveDate = selectedDate;
-			$scope.stateCheck.selectedStayDate = $scope.reservationData.rooms[$scope.activeRoom].stayDates[selectedDate];
+			$scope.stateCheck.selectedStayDate = $scope.reservationData.rooms[$scope.stateCheck.roomDetails.firstIndex].stayDates[selectedDate];
 			init();
 		};
 
@@ -1393,17 +1398,21 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		};
 
 		$scope.updateDayOccupancy = function(occupants) {
-			$scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].guests[occupants] = parseInt($scope.stateCheck.selectedStayDate.guests[occupants]);
+			$scope.reservationData.rooms[$scope.stateCheck.roomDetails.firstIndex].stayDates[$scope.stateCheck.dateModeActiveDate].guests[occupants] =
+				parseInt($scope.stateCheck.selectedStayDate.guests[occupants]);
 			/**
 			 * CICO-8504
 			 * In case of multiple rates selected, the side bar and the reservation summary need to showcase the first date's occupancy!
 			 *
 			 */
 			if ($scope.reservationData.arrivalDate === $scope.stateCheck.dateModeActiveDate) {
-				var occupancy = $scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].guests;
-				$scope.reservationData.rooms[$scope.activeRoom].numAdults = occupancy.adults;
-				$scope.reservationData.rooms[$scope.activeRoom].numChildren = occupancy.children;
-				$scope.reservationData.rooms[$scope.activeRoom].numInfants = occupancy.infants;
+				var occupancy = $scope.reservationData.rooms[$scope.stateCheck.roomDetails.firstIndex].stayDates[$scope.stateCheck.dateModeActiveDate].guests,
+					roomIndex = $scope.stateCheck.roomDetails.firstIndex;
+				for (; roomIndex <= $scope.stateCheck.roomDetails.lastIndex; roomIndex++) {
+					$scope.reservationData.rooms[roomIndex].numAdults = occupancy.adults;
+					$scope.reservationData.rooms[roomIndex].numChildren = occupancy.children;
+					$scope.reservationData.rooms[roomIndex].numInfants = occupancy.infants;
+				}
 			}
 
 			if (!$scope.checkOccupancyLimit($scope.stateCheck.dateModeActiveDate)) {
@@ -1411,11 +1420,14 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				// TODO : Reset other stuff as well
 				$scope.stateCheck.rateSelected.oneDay = false;
 				$scope.stateCheck.rateSelected.allDays = false;
-				_.each($scope.reservationData.rooms[$scope.activeRoom].stayDates, function(stayDate) {
-					stayDate.rate = {
-						id: ""
-					};
-				});
+				var roomIndex = $scope.stateCheck.roomDetails.firstIndex;
+				for (; roomIndex <= $scope.stateCheck.roomDetails.lastIndex; roomIndex++) {
+					_.each($scope.reservationData.rooms[roomIndex].stayDates, function(stayDate) {
+						stayDate.rate = {
+							id: ""
+						};
+					});
+				}
 			}
 			init();
 		};
@@ -1616,5 +1628,20 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			});
 			return chosen;
 		};
+
+		$scope.onRoomTypeChange = function($event) {
+			var tabIndex = $scope.viewState.currentTab,
+				roomType = parseInt($scope.stateCheck.preferredType, 10),
+				roomIndex;
+
+			$scope.reservationData.tabs[tabIndex].roomTypeId = roomType;
+
+			for (roomIndex = $scope.stateCheck.roomDetails.firstIndex; roomIndex <= $scope.stateCheck.roomDetails.lastIndex; roomIndex++) {
+				$scope.reservationData.rooms[roomIndex].roomTypeId = roomType;
+			}
+			$scope.filterRooms($event);
+			$scope.resetRates();
+		};
+
 	}
 ]);
