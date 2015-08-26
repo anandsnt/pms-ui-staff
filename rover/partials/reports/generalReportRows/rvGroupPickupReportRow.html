@@ -15,7 +15,7 @@ This is why: http://stackoverflow.com/questions/17441254/why-angularjs-currency-
     <td ng-if="each.isReport">{{ each.rooms_held_non_deduct }}</td>
     <td ng-if="each.isReport">{{ each.rooms_held_deduct }}</td>
     <td ng-if="each.isReport">{{ each.rooms_held_picked_up }}</td>
-    <td ng-if="each.isReport">{{ each.pickup_percentage }}%</td>
+    <td ng-if="each.isReport">{{ each.pickup_percentage }}<span ng-if="each.pickup_percentage">%</span></td>
 
 
     <td ng-if="each.isSubReport" class="date">{{ each.date | date : dateFormat }}</td>
@@ -25,7 +25,7 @@ This is why: http://stackoverflow.com/questions/17441254/why-angularjs-currency-
     <td ng-if="each.isSubReport">{{ each.rooms_held_non_deduct }}</td>
     <td ng-if="each.isSubReport">{{ each.rooms_held_deduct }}</td>
     <td ng-if="each.isSubReport">{{ each.rooms_held_picked_up }}</td>
-    <td ng-if="each.isSubReport">{{ each.pickup_percentage }}%</td>
+    <td ng-if="each.isSubReport">{{ each.pickup_percentage }}<span ng-if="each.pickup_percentage">%</span></td>
 
     
     <td ng-if="each.isSubTotal" colspan="2"></td>

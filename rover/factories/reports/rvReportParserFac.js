@@ -449,7 +449,8 @@ sntRover.factory('RVReportParserFac', [
                 customData = [],
                 makeCopy,
                 groupData,
-                groupDataTotal;
+                groupDataTotal,
+                hasData;
 
             var i, j, k, l;
 
@@ -458,6 +459,8 @@ sntRover.factory('RVReportParserFac', [
 
                 // we'll work with a copy of the ith item
                 makeCopy = angular.copy( apiResponse[i] );
+
+                hasData = true;
 
                 // if we have 'group_data' for this group
                 if ( makeCopy.hasOwnProperty('group_data') && makeCopy['group_data'].length ) {
@@ -501,15 +504,18 @@ sntRover.factory('RVReportParserFac', [
                         };
                     };
                 } else {
+                    hasData = false;
+
                     angular.extend(makeCopy, {
                         'isReport'  : true,
-                        'rowspan'   : 2
+                        'rowspan'   : 0,
+                        'className' : 'row-break'
                     });
                     returnAry.push( makeCopy );
                 };
 
-                // if we have 'group_total' for this group
-                if ( makeCopy.hasOwnProperty('group_total') ) {
+                // if we have data and 'group_total' for this group
+                if ( hasData && makeCopy.hasOwnProperty('group_total') ) {
                     groupDataTotal = makeCopy['group_total'];
                     customData = {};
                     angular.extend(customData, {
@@ -522,14 +528,14 @@ sntRover.factory('RVReportParserFac', [
                         'pickup_percentage'     : groupDataTotal.pickup_percentage,
                     });
                     returnAry.push( customData );
-                } else {
-                    customData = {};
-                    angular.extend(customData, {
-                        'isSubTotal' : true,
-                        'isEmpty'    : true,
-                        'className'  : 'row-break'
-                    });
-                    returnAry.push( customData );
+                // } else {
+                //     customData = {};
+                //     angular.extend(customData, {
+                //         'isSubTotal' : true,
+                //         'isEmpty'    : true,
+                //         'className'  : 'row-break'
+                //     });
+                //     returnAry.push( customData );
                 };
             };
 
