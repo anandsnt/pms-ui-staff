@@ -1970,100 +1970,102 @@ body { overflow: hidden; }
 	}
 
 /* Left sidebar			 	==============================*/
-	.sidebar-left {
-		position: absolute;
-		top: 150px;
-		left: 0;
-		padding-right: 25px;
-		z-index: 1040;
-		width: 30px;
-		.calc-height(100, 150);
-		.transition(width, .2s, cubic-bezier(.10, .10, .25, .90));
-		.show;
-
-		.scrollable {
-			position: relative;
-			background: @rcardTexture1;
-			height: 100%;
-			.box-shadow(1px 0 1px rgba(0,0,0,.2));
-
-			> .wrapper { padding: 0; }
-			> .iScrollVerticalScrollbar { 
-				right: 7px;
-
-				.iScrollIndicator { background: rgba(0,0,0,.05); }
-			}
-
-			.settings-title {
-				font-size: 16px;
-				text-transform: uppercase;
-				font-weight: 600;
-				line-height: 40px;
-				color: @textColor;
-				background-color: rgba(0,0,0,.05);
-				width: 235px;
-				padding: 0 20px;
-				.float;
-
-				.title {
-					width: 155px;
-					padding: 12px 0 9px;
-					line-height: 1.2;
-					.pull-left;
-				}
-
-				.value {
-					width: 20px;
-					text-align: right;
-					.pull-left;
-				}
-			}
-
-			.settings-content {
-				width: 235px;
-				padding: 20px;
-
-				label:not(.radio) {
-					font-size: 14px;
-					text-transform: uppercase;
-					color: @textColor;
-
-					span,
-					&.label { color: @grey3; }
-				}
-			}
-
-			@media @highdpi { background-size: 40px; }
-		}
-
-		&#report-update {
-			top: 50px;
-			.calc-height(100, 50);
+	@media not print {
+		.sidebar-left {
+			position: absolute;
+			top: 150px;
+			left: 0;
+			padding-right: 25px;
+			z-index: 1040;
+			width: 30px;
+			.calc-height(100, 150);
 			.transition(width, .2s, cubic-bezier(.10, .10, .25, .90));
-
-			&.open {
-				width: 260px;
-			}
+			.show;
 
 			.scrollable {
+				position: relative;
+				background: @rcardTexture1;
+				height: 100%;
+				.box-shadow(1px 0 1px rgba(0,0,0,.2));
 
-				> .wrapper { padding-bottom: 80px; }
-				> .iScrollVerticalScrollbar {
-					bottom: 100px;
-					z-index: 4; 
+				> .wrapper { padding: 0; }
+				> .iScrollVerticalScrollbar { 
+					right: 7px;
+
+					.iScrollIndicator { background: rgba(0,0,0,.05); }
 				}
-				
-				.actions {
-					position: absolute;
-					bottom: 0;
-					left: 0;
-					padding: 20px;
-					background: #bfbfbf @darkTexture;
-					z-index: 9;
-					.box-shadow(0 -1px 1px rgba(0,0,0,.15));
-					.size(80px, 100%);
 
-					.button { width: 100%; }
+				.settings-title {
+					font-size: 16px;
+					text-transform: uppercase;
+					font-weight: 600;
+					line-height: 40px;
+					color: @textColor;
+					background-color: rgba(0,0,0,.05);
+					width: 235px;
+					padding: 0 20px;
+					.float;
+
+					.title {
+						width: 155px;
+						padding: 12px 0 9px;
+						line-height: 1.2;
+						.pull-left;
+					}
+
+					.value {
+						width: 20px;
+						text-align: right;
+						.pull-left;
+					}
+				}
+
+				.settings-content {
+					width: 235px;
+					padding: 20px;
+
+					label:not(.radio) {
+						font-size: 14px;
+						text-transform: uppercase;
+						color: @textColor;
+
+						span,
+						&.label { color: @grey3; }
+					}
+				}
+
+				@media @highdpi { background-size: 40px; }
+			}
+
+			&#report-update {
+				top: 50px;
+				.calc-height(100, 50);
+				.transition(width, .2s, cubic-bezier(.10, .10, .25, .90));
+
+				&.open {
+					width: 260px;
+				}
+
+				.scrollable {
+
+					> .wrapper { padding-bottom: 80px; }
+					> .iScrollVerticalScrollbar {
+						bottom: 100px;
+						z-index: 4; 
+					}
+					
+					.actions {
+						position: absolute;
+						bottom: 0;
+						left: 0;
+						padding: 20px;
+						background: #bfbfbf @darkTexture;
+						z-index: 9;
+						.box-shadow(0 -1px 1px rgba(0,0,0,.15));
+						.size(80px, 100%);
+
+						.button { width: 100%; }
+					}
 				}
 			}
 		}
@@ -2662,6 +2664,302 @@ body { overflow: hidden; }
 
 			.button { .pull-right; }
 		}
+	}
+
+/* Dual Calendar			==============================*/
+	.calendar {
+		border-collapse: separate;
+		border-spacing: 5px;
+		width: 100%;
+		margin: 0;
+
+		th {
+			font-weight: 600;
+			text-align: center;
+			text-transform: uppercase;
+			vertical-align: middle;
+		}
+
+		.month {
+			th {
+				position: relative;
+				font-size: 18px;
+				line-height: 50px;
+				background-color: @white;
+				#border-radius > .rounded();
+				.box-shadow(1px 1px 0 rgba(0,0,0,.15));
+
+				.calendar-nav {
+					position: absolute;
+					top: 5px;
+					.hide-text;
+					.square(40px);
+
+					&.calendar-prev { left: 5px; }
+					&.calendar-next { right: 5px; }
+				}
+			}
+		}
+
+		.days {
+			th {
+				color: @grey3;
+				line-height: 20px;
+			}
+		}
+
+		td {
+			position: relative;
+			text-align: right;
+			font-size: 14px;
+			line-height: 25px;
+			vertical-align: top;
+			background-color: rgba(0,0,0,.1);
+			background-repeat: no-repeat;
+			overflow: visible !important;
+
+			.tooltip {
+				position: absolute;
+				bottom: 20px;
+				visibility: hidden;
+				background-color: @white;
+				pointer-events: none;
+				z-index: 999;
+				padding: 10px;
+				.transition;
+				.opacity(0);
+				.box-shadow();
+				#border-radius > .rounded();
+
+				.restriction-info { .hide; }
+
+				li {
+					color: @textColor;
+					line-height: 1em;
+					text-align: left;
+					margin-bottom: 5px;	
+
+					.label {
+						float: none;
+						font-weight: 400;
+						line-height: 15px;
+					}
+
+					strong {
+						line-height: 20px;
+						font-weight: 600;
+						max-width: 320px;
+						.show;
+						.nowrap();
+					}
+
+					&:last-child { margin-bottom: 0; }
+				}
+
+				&.has-restrictions {
+					width: 380px;
+					.float;
+
+					.details,
+					.restriction-info {
+						width: 50%;
+						.pull-left;
+					}
+
+					.restriction-info { 
+						.show; 
+
+						li { 
+							position: relative;
+							height: 20px;
+							line-height: 20px;
+							padding-left: 30px;
+
+							.restriction-icon {
+								position: absolute;
+								top: 0;
+								left: 0;
+								color: @white;
+								text-align: center;
+								.square(20px);
+
+								&.bg-red { background-color: @red; }
+								&.bg-blue { background-color: @blue; }
+								&.bg-grey { background-color: @grey3; }
+								&.bg-purple { background-color: @purpleStart; }
+								&.bg-green { background-color: @green; }
+
+								&.closed {
+
+								}
+
+								&.arrival {
+
+								}
+							}
+
+							&:first-child { padding-left: 0; }
+						}
+					}	
+				}
+
+				&:after {
+					position: absolute;
+					content: "";
+					bottom: -20px;
+					width: 0;
+					height: 0;
+					border-top: 10px solid @white;
+					border-right: 10px solid transparent;
+					border-left: 10px solid transparent;
+				}
+			}
+
+			.day,
+			.data {
+				padding: 0 5px;
+				height: 25px;
+			}
+
+			.day {
+				font-size: 18px;
+				font-weight: 600;
+			}
+
+			.guest-status {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				.square(25px);
+
+				&.check-in { background-position: 5px -115px; }
+				&.check-out { background-position: 5px -155px; }
+			}
+
+			.restrictions {
+				position: absolute;
+				top: 0;
+				left: 0;
+				color: rgba(0,0,0,.3);
+				text-align: center;
+				font-weight: 600;
+				.square(25px);
+			}
+
+			&.available {
+				color: @green;
+				background-color: rgba(137,189,85,.3);
+			}
+
+			&.unavailable {
+				color: @red;
+				background-color: rgba(230,56,56,.3); 
+			}
+
+			&.past-day { color: @grey3; }
+
+			&.last-month,
+			&.next-month { background-color: rgba(0,0,0,.025); }
+
+			&.split-view {
+				.guest-status {
+					&.check-in { top: 0; }
+				}
+			}
+
+			&.check-in { 
+				color: @white;
+				background-color: @green; 
+
+				&.unavailable { 
+					color: @red;
+					
+                    .check-in{	
+                    	background-position: 7px -595px;
+                    	.rotate(180deg);
+                    }
+                }
+			}
+
+			&.check-out { 
+				color: @white;
+				background-color: @red; 
+			}
+
+			&:hover,
+			&:active {
+				.tooltip {
+					visibility: hidden;
+					.opacity(0);
+				}
+
+				> .tooltip {
+					visibility: visible;
+					.opacity(100);
+				}				
+			}
+		}
+	}
+
+	.calendar-legend {
+		overflow: hidden;
+		padding: 10px 0;
+        .size(45px, 100%);
+        .show;
+       	.float;
+
+        li {
+            font-size: 14px;
+            line-height: 25px;
+            vertical-align: middle;
+            text-transform: uppercase;
+            margin-right: 10px;
+            .pull-left;
+
+            &.break {
+                padding-right: 10px;
+                .box-shadow(1px 0 0 @grey2);
+            }
+
+            span {
+                margin-right: 10px;
+                .square(25px);
+                .show;
+                .pull-left;
+
+                &.check-in,
+                &.check-out { 
+                    background-image: @icons;
+                    background-repeat: no-repeat;
+
+                    @media @highdpi {
+                        background-image: @icons2x;
+                        background-size: 120px;
+                    }
+                }
+
+                &.availabile { background-color: rgba(137,189,85,.3); }
+                
+                &.unavailable { background-color: rgba(230,56,56,.3); }
+
+                &.check-in { 
+                    background-color: @green;
+                    background-position: 6px -115px; 
+
+                    &.unavailable { 
+                    	background-position: 7px -595px;
+                    	.rotate(180deg);
+                    }
+                }
+                
+                &.check-out { 
+                    background-color: @red;
+                    background-position: 6px -155px;
+                }
+            }
+
+            &:last-child { margin-right: 0; }
+        }
 	}
 
 /* 6. IE

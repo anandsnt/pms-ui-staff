@@ -8119,7 +8119,7 @@
         position: relative;
         .calc-height(100, 60);
 
-        > .wrapper {
+        > .wrapper { 
             margin: 0 auto;
             padding: 60px 0 20px;
             width: 640px;
@@ -8692,7 +8692,7 @@
                 overflow: visible;
                 z-index: 40;
 
-                .switch-button {
+                .switch-button { 
                     margin: 5px 0 0 5px;
                     .pull-right;
                     .size(40px, 240px);
@@ -8707,14 +8707,14 @@
 
                         .switch-icon { .gradient(@greenStart, @greenEnd); }
 
-                        &.data-off {
+                        &.data-off { 
                             left: auto;
                             right: 0;
 
                             .switch-icon { margin: 0 5px 0 0; }
                         }
-
-                        &.data-on {
+                        
+                        &.data-on { 
                             left: auto;
                             right: 100%;
 
@@ -8810,10 +8810,10 @@
 
         .stay-days {
             position: relative;
-            height: 0px;
             background: @rcardTexture1;
             z-index: 30;
             overflow: hidden;
+            .size(0px, 100%);
             .transition(height, .3s, cubic-bezier(.10, .10, .25, .90));
 
             .days {
@@ -8838,7 +8838,7 @@
                     .faux-clickable;
                     .pull-left;
 
-                    span {
+                    span { 
                         position: absolute;
                         line-height: 1em;
 
@@ -8846,7 +8846,7 @@
                         &.expense { top: 5px; left: 5px; }
                         &.date { top: 5px; right: 5px; }
                         &.guest-status { bottom: 5px; left: 5px; }
-                        &.price {
+                        &.price { 
                             position: static;
                             bottom: auto;
                             right: auto;
@@ -8858,8 +8858,8 @@
 
                         &.day,
                         &.expense,
-                        &.date {
-                            font-size: 11px;
+                        &.date { 
+                            font-size: 11px; 
                         }
 
                         &.guest-status {
@@ -8871,9 +8871,9 @@
                         }
                     }
 
-                    &.locked {
+                    &.locked { 
                         cursor: default;
-                        .opacity(30);
+                        .opacity(30); 
                     }
 
                     &.booked {
@@ -8892,19 +8892,19 @@
 
                     &.check-in,
                     &.check-out {
-                        padding-left: 30px;
-                    }
+                        padding-left: 30px; 
+                    }                    
                 }
             }
 
             .button {
                 position: absolute;
-                top: 10px;
+                top: 15px;
                 right: 10px;
                 padding: 0 40px;
-            }
+            }            
 
-            &.open {
+            &.open { 
                 height: 70px;
             }
         }
@@ -8912,7 +8912,7 @@
         .reservation-filters {
             padding: 20px;
             .float;
-
+            
             .select {
                 height: 40px;
                 margin-right: 20px;
@@ -8950,7 +8950,7 @@
                 .pull-right;
                 .float;
 
-                li {
+                li { 
                     cursor: pointer;
                     margin: 0 0 0 1px;
                     font-size: 14px;
@@ -8964,8 +8964,8 @@
                     #border-radius > .rounded(0);
                     .pull-left;
 
-                    &:hover {
-                        color: @logoPrimary;
+                    &:hover { 
+                        color: @logoPrimary; 
                         .box-shadow();
                     }
 
@@ -8996,7 +8996,7 @@
                         padding: 0 30px 0 10px;
                         .no-transition();
 
-                        .label {
+                        .label { 
                             line-height: 40px;
                             font-weight: 400;
                         }
@@ -9008,7 +9008,7 @@
                         left: 0;
                         padding: 0;
                         .box-shadow(none);
-                        .size(auto, 180px);
+                        .size(auto, 170px);
 
                         .select {
                             float: none;
@@ -9026,7 +9026,7 @@
                                 z-index: 1;
                             }
 
-                            select {
+                            select { 
                                 position: relative;
                                 font-size: 24px;
                                 line-height: 40px;
@@ -9036,14 +9036,14 @@
                                 border: 0;
                                 width: 100%;
                                 z-index: 9;
-                                .box-shadow(none);
+                                .box-shadow(none);                          
                             }
 
                             &.adults { z-index: 30; }
                             &.children { z-index: 20; }
                             &.infants { z-index: 10; }
                         }
-                    }
+                    }                    
                 }
 
                 .select,
@@ -9478,6 +9478,51 @@
                     &.with-stay-days { .calc-height(100, 220); }
                 }
 
+                /* Change Dates ***/
+                &.stay-dates-content {
+                    padding: 0 20px;
+                    width: 100%;
+                    overflow: visible;
+                    .float;
+                    .calc-height(100, 130);
+
+                    .calendar-left,
+                    .calendar-right {
+                        position: relative;
+                        .calc-height(100, 45);
+                        #pixel-to-percent > .width(944, 1968);
+                        .pull-left;
+                    }
+
+                    .calendar-left { 
+                        #pixel-to-percent > .right-margin(80, 1968); 
+
+                        .tooltip {
+                            left: -20px;
+
+                            &:after { left: 20px; }
+                        }
+                    }
+
+                    .calendar-right {
+                        .tooltip {
+                            right: -20px;
+
+                            &:after { right: 20px; }
+                        }
+                    }
+
+                    .calendar-legend { 
+                        position: absolute;
+                        left: 0;
+                        bottom: 0;
+                        background-color: @white;
+                        z-index: 999;
+                        padding-left: 40px;
+                        .box-shadow(0 -1px 1px rgba(0,0,0,.1));
+                    }
+                }
+
                 /* Enhance Stay ***/
                 &.addons-content {
                     height: 100%;
@@ -9547,176 +9592,6 @@
                             }
                         }
                     }
-                }
-
-                /* Change Dates ***/
-                &.stay-dates-content {
-                    .calc-height(100, 130);
-
-                    > .wrapper {
-                        padding: 0 20px 20px 20px;
-                        .float;
-                    }
-
-                    .calendar-left,
-                    .calendar-right {
-                        position: relative;
-                        margin-bottom: 20px;
-                        #pixel-to-percent > .width(944, 1968);
-                        .pull-left;
-
-                        #calendar-prev,
-                        #calendar-next {
-                            position: absolute;
-                            top: 5px;
-                            overflow: hidden;
-                            cursor: pointer;
-                            background-color: transparent;
-                            border: 0;
-                            .show;
-                            .hide-text;
-                            .square(40px);
-
-                            &#calendar-prev { left: 5px; }
-                            &#calendar-next { right: 5px; }
-                        }
-
-                        &.calendar-left { #pixel-to-percent > .right-margin(80, 1968); }
-                    }
-
-                    .update-details {
-                        padding: 15px;
-                        .float;
-                        .faux-clickable;
-                        .size(80px, 100%);
-
-                        .data {
-                            padding-right: 15px;
-                            border-right: 1px solid rgba(0,0,0,.1);
-                            height: 50px;
-                            .calc-width(100,230);
-                            .pull-left;
-
-                            li {
-                                font-size: 15px;
-                                line-height: 50px;
-                                margin: 0;
-                                padding-right: 20px;
-                                width: 28%;
-                                white-space: nowrap;
-                                overflow: hidden;
-                                text-overflow: ellipsis;
-                                .show;
-                                .pull-left;
-
-                                .guest-status { margin: 15px 10px 0 0; }
-
-                                &.room-type {
-                                    line-height: 40px;
-                                    padding: 5px 20px 4px 0;
-                                    white-space: normal;
-                                    overflow: visible;
-
-                                   .select {
-                                        background-color: @grey1;
-
-                                        select,
-                                        &:after { background-color: @grey1; }
-                                    }
-                                }
-
-                                &:first-child { width: 16%; }
-                                &:last-child { width: 28%; }
-                            }
-                        }
-
-                        .action {
-                            overflow: hidden;
-                            .size(50px, 230px);
-                            .pull-right;
-
-                            .button { line-height: 48px; }
-                        }
-
-                        &.no-updates {
-                            background-color: transparent;
-                            padding: 0;
-                            height: auto;
-                            .box-shadow(none);
-                            #border-radius > .rounded(0px);
-
-                            .action {
-                                width: 100%;
-                                float: none;
-                                text-align: center;
-                            }
-                        }
-                    }
-                }
-            }
-
-            /* Calendar Legend ***/
-            .stay-dates-legend {
-                position: absolute;
-                left: 0;
-                bottom: 0;
-                background-color: @white;
-                z-index: 999;
-                overflow: hidden;
-                .float;
-                .box-shadow(0 -1px -1px rgba(0,0,0,.1));
-                .size(50px, 100%);
-
-                .notice {
-                    text-align: center;
-                    text-transform: uppercase;
-                    font-weight: 600;
-                    padding: 10px 20px;
-                    margin: 0;
-                    border: 0;
-                    #border-radius > .rounded(0);
-                    #pixel-to-percent > .width(410, 1968);
-                    .pull-left;
-                }
-
-                li {
-                    font-size: 13px;
-                    line-height: 50px;
-                    vertical-align: middle;
-                    text-transform: uppercase;
-                    margin-right: 15px;
-                    .pull-left;
-
-                    span {
-                        margin: 14px 5px 0 0;
-                        .square(22px);
-                        .show;
-                        .pull-left;
-
-                        &.check-in {
-                            background: @green @icons no-repeat 6px -1415px;
-
-                            @media @highdpi {
-                                background-image: @icons2x;
-                                background-size: 120px;
-                            }
-                        }
-
-                        &.check-out {
-                            background: @red @icons no-repeat 6px -1475px;
-                            @media @highdpi {
-                                background-image: @icons2x;
-                                background-size: 120px;
-                            }
-                        }
-
-                        &.no-type-availability { background: rgba(0,0,0,.1); }
-                        &.no-house-availability { background: rgba(230,56,56,.3); }
-                        &.mid-stay { background: rgba(137,189,85,.2); }
-                        &.availability { border: 2px solid @green; .background(); }
-                    }
-
-                    &:first-child { margin-left: 15px; }
                 }
             }
 
@@ -10124,7 +9999,11 @@
                 }
             }
 
+
             /* Multi room / stay card layouts ***/
+
+            /* Multi room layouts ***/
+
             &.multiple-rooms,
             &.edit-mode {
                 .reservation-content {

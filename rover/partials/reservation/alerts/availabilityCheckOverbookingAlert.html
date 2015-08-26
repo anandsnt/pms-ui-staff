@@ -1,0 +1,20 @@
+<div role="dialog" id="modal" class="modal-show">
+    <div class="modal-content availability-calendar">
+        <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()">
+            <span class="icons icon-close invert"></span>
+        </button>
+        <strong class="h2 message">Availability Conflict</strong>
+        <div id="reservationcalendar" class="fc fc-ltr" ui-calendar="fullCalendarOptions" ng-model="eventSources" calendar="myCalendar" iscroll-stop-propagation ng-hide="isChanging"></div>
+        <ul class="calendar-legend">
+            <li><span class="check-in"></span>Arrival</li>
+            <li><span class="check-in unavailable"></span>Arrival Unavailable</li>
+            <li><span class="check-out"></span>Departure</li>
+            <li><span class="availabile"></span>Available</li>
+            <li><span class="unavailable"></span>No House Availability</li>
+        </ul>
+        <div class="actions">
+            <button type="button" id="goto-calendar" class="button blue modal-close">Rooms &amp; Rates Calendar</button>
+            <button type="button" id="goto-romsandrates" class="button green modal-close">Continue</button>
+        </div>
+    </div>
+</div>

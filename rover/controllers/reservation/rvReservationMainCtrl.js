@@ -842,12 +842,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
             data.confirmation_email = $scope.reservationData.guest.sendConfirmMailTo;
             data.room_id = [];
-            angular.forEach($scope.reservationData.rooms, function(room, currentRoomIndex) {
+            data.room_type_ids = [];
+            angular.forEach($scope.reservationData.rooms, function(room, currentRoomIndex) {                
+                data.room_type_ids.push(room.roomTypeId)
                 if (typeof roomIndex === 'undefined' || currentRoomIndex === roomIndex) {
                     data.room_id.push(room.room_id);
                 }
             });
-
             data.outside_group_stay_dates = RVReservationStateService.getReservationFlag('outsideStaydatesForGroup');
 
             //to delete ends here

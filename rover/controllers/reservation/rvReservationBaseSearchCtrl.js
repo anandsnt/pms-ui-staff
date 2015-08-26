@@ -370,6 +370,17 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
         };
 
+        $scope.checkAvailability = function() {
+            ngDialog.open({
+                template: '/assets/partials/reservation/alerts/availabilityCheckOverbookingAlert.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false
+            });
+            // $scope.navigate();
+        };
+
 
 
         // jquery autocomplete Souce handler
@@ -604,7 +615,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 size: $scope.reservationData.rooms.length,
                 contents: $scope.reservationData.rooms
             });
-        }     
+        }
 
         $scope.onRoomTypeChange = function(tabIndex) {
             var index = 0,
