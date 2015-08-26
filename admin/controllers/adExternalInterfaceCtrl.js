@@ -51,11 +51,10 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             } else {
                 var onSuccess = function(data){
                     for (var i in data.data){
-                        if (data.data[i].message_type !== 'restriction'){
-                            data.data[i].can_resubmit = true;
-                        } else {
-                            data.data[i].can_resubmit = false;
-                        }
+                        //if (data.data[i].message_type !== 'restriction'){
+                            data.data[i].can_resubmit = true;//placeholder
+                        //} else {
+//                        }
                         
                         
                        // if (data.data[i].message_type !== 'restriction'){
@@ -76,12 +75,14 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             $scope.ota.has_checked = false;
         };
         $scope.destroyFailedMessage = function(msg){
+            msg.can_delete = false;
+                
             var message_id = [msg.message_id];
                 var onSuccess = function(data){
-                    for (var i in $scope.data.data){
-                        if ($scope.data.data[i].message_id === message_id){
-                            $scope.checkBox($scope.data.data[i]);
-                            delete $scope.data.data[i];
+                    for (var i in $scope.failedMessages){
+                        if ($scope.failedMessages[i].message_id === message_id){
+                            $scope.checkBox($scope.failedMessages[i]);
+                            delete $scope.failedMessages[i];
                         }
                     }
                     //$scope.failedMessages = data.data;
