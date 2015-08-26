@@ -5,11 +5,6 @@ sntRover.factory('RVReportUtilsFac', [
     function($rootScope, $filter, $timeout) {
         var factory = {};
 
-
-
-
-
-
         /** @type {Object} A standard dict that can act as a central report name look uo */
         var __reportNames = {
             'CHECK_IN_CHECK_OUT'           : 'Check In / Check Out',
@@ -37,10 +32,6 @@ sntRover.factory('RVReportUtilsFac', [
             'RATE_ADJUSTMENTS_REPORT'      : 'Rate Adjustment Report'
         };
 
-
-
-
-
         /**
          * A simple getter to returned the actual report name form __reportNames dict
          * @param  {String} name The capitalized standard report name
@@ -48,6 +39,49 @@ sntRover.factory('RVReportUtilsFac', [
          */
         factory.getName = function (name) {
             return __reportNames[name] ? __reportNames[name] : undefined;
+        };
+
+        var __paramNames = {
+            'FROM_DATE'            : 'from_date',
+            'TO_DATE'              : 'to_date',
+            'CANCEL_FROM_DATE'     : 'cancel_from_date',
+            'CANCEL_TO_DATE'       : 'cancel_to_date',
+            'ARRIVAL_FROM_DATE'    : 'arrival_from_date',
+            'ARRIVAL_TO_DATE'      : 'arrival_to_date',
+            'DEPOSIT_FROM_DATE'    : 'deposit_from_date',
+            'DEPOSIT_TO_DATE'      : 'deposit_to_date',
+            'PAID_FROM_DATE'       : 'paid_from_date',
+            'CREATE_FROM_DATE'     : 'create_from_date',
+            'CREATE_TO_DATE'       : 'create_to_date',
+            'ADJUSTMENT_FROM_DATE' : 'from_date',
+            'ADJUSTMENT_TO_DATE'   : 'to_date',
+            'SINGLE_DATE'          : 'date',
+
+            'FROM_TIME' : 'from_time',
+            'TO_TIME'   : 'to_time',
+
+            'CHECKED_IN'  : 'checked_in',
+            'CHECKED_OUT' : 'checked_out',
+
+            'SORT_FIELD' : 'sort_field',
+            'SORT_DIR'   : 'sort_dir',
+
+            'GROUP_BY_DATE'       : 'group_by_date',
+            'GROUP_BY_USER'       : 'group_by_user',
+            'GROUP_BY_GROUP_NAME' : 'group_by_group_name',
+
+            'USER_IDS'               : 'user_ids[]',
+            'MARKET_IDS'             : 'market_ids[]',
+            'SOURCE_IDS'             : 'source_ids[]',
+            'BOOKING_ORIGIN_IDS'     : 'booking_origin_ids[]',
+            'INCLUDE_GUARANTEE_TYPE' : 'include_guarantee_type[]',
+            'CHARGE_GROUP_IDS'       : 'charge_group_ids[]',
+            'CHARGE_CODE_IDS'        : 'charge_code_ids[]',
+            'HOLD_STATUS_IDS'        : 'hold_status_ids[]'
+        };
+
+        factory.getParamName = function(name) {
+            return __paramNames[name] ? __paramNames[name] : undefined;
         };
 
 
@@ -140,7 +174,7 @@ sntRover.factory('RVReportUtilsFac', [
             // merge value when its an object, else just assign
             if ( typeof value === 'object' ) {
                 // DAMN! Our Angular version is very very old. Cant use this:
-                // angular.merge({}, objRef[key], value );
+
                 $.extend( true, objRef[key], value );
             } else {
                 objRef[key] = value;
@@ -203,7 +237,7 @@ sntRover.factory('RVReportUtilsFac', [
                     };
 
             // if filter is this, make it selected by default
-            if ( objRef['title'] == __reportNames['CANCELLATION_NO_SHOW'] && includeCancelled[filter.value] ) {
+            if ( objRef['title'] === __reportNames['CANCELLATION_NO_SHOW'] && includeCancelled[filter.value] ) {
                 selected = true;
                 objRef['hasGeneralOptions']['title'] = filter.description;
             };
@@ -220,7 +254,7 @@ sntRover.factory('RVReportUtilsFac', [
             };
 
             // if filter value is either of these, must include when report submit
-            if ( objRef['title'] == __reportNames['FORECAST_GUEST_GROUPS'] ) {
+            if ( objRef['title'] === __reportNames['FORECAST_GUEST_GROUPS'] ) {
                 objRef['hasGeneralOptions']['title'] = filter.description;
             };
 
@@ -648,12 +682,12 @@ sntRover.factory('RVReportUtilsFac', [
                 // fill up DS for display combo box
                 if ( __displayFilterNames[filter.value] ) {
 
-                    //__pushDisplayData( reportItem, filter );
+
                     //
                     // QUICK PATCH
                     // TODO: replace with a better solution
-                    if ( reportItem.title == __reportNames['MARKET_SEGMENT_STAT_REPORT'] ) {
-                        if ( filter.value == 'INCLUDE_MARKET' && data.codeSettings['is_market_on'] ) {
+                    if ( reportItem.title === __reportNames['MARKET_SEGMENT_STAT_REPORT'] ) {
+                        if ( filter.value === 'INCLUDE_MARKET' && data.codeSettings['is_market_on'] ) {
                             __pushDisplayData( reportItem, filter );
                         } else if ( filter.value === 'INCLUDE_ORIGIN' && data.codeSettings['is_origin_on'] ) {
                             __pushDisplayData( reportItem, filter );
@@ -751,6 +785,20 @@ sntRover.factory('RVReportUtilsFac', [
                         defaultTitle : 'Select Origins',
                         title        : 'Select Origins',
                         data         : angular.copy( data.origins )
+                    });
+                };
+
+                // check for "hold status" and keep a ref to that item
+                // create the filter option only when there is any data
+                if ( filter.value === 'HOLD_STATUS' && data.holdStatus.length ) {
+                    __setData(reportItem, 'hasHoldStatus', {
+                        type         : 'FAUX_SELECT',
+                        filter       : filter,
+                        show         : false,
+                        selectAll    : false,
+                        defaultTitle : 'Select Hold Status',
+                        title        : 'Select Hold Status',
+                        data         : angular.copy( data.holdStatus )
                     });
                 };
             });
@@ -991,7 +1039,7 @@ sntRover.factory('RVReportUtilsFac', [
             var _dateVal      = customDate ? tzIndependentDate(customDate) : $rootScope.businessDate,
                 _businessDate = $filter('date')(_dateVal, 'yyyy-MM-dd'),
                 _dateParts    = _businessDate.match(/(\d+)/g);
-            
+
             var _year  = parseInt( _dateParts[0] ),
                 _month = parseInt( _dateParts[1] ) - 1,
                 _date  = parseInt( _dateParts[2] );
@@ -1032,7 +1080,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                 // each hour is split into 4 parts
                 // x:00, x:15, x:30, x:45
-                if (i % 4 == 0) {
+                if (i % 4 === 0) {
                     h++;
                     m = 0;
                 } else {

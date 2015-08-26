@@ -320,5 +320,5 @@ angular.module('ngReact', [])
           renderComponent();
         }
       }
-    }
+    };
   }]);

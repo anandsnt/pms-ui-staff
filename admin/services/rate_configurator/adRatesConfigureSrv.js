@@ -23,7 +23,7 @@ admin.service('ADRatesConfigureSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$rootSco
                 deferred.reject(data);
             });
             return deferred.promise;
-        }
+        };
 
         this.updateHourlySet = function(data){
             var deferred = $q.defer();
@@ -35,7 +35,7 @@ admin.service('ADRatesConfigureSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$rootSco
                 deferred.reject(data);
             });
             return deferred.promise;
-        }
+        };
 
         this.saveSet = function (data) {
 

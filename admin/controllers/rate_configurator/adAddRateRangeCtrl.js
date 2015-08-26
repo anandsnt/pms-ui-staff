@@ -64,12 +64,12 @@ admin
                  * TODO: Only if lastDate > businessDate
                  */
                 if (!_.isEmpty(lastSelectedDate)) {
-                    //dLastSelectedDate = tzIndependentDate(lastSelectedDate);
+
                     // Get next Day
-                    dLastSelectedDate = new Date( /*dLastSelectedDate.getTime()*/ tzIndependentDate(lastSelectedDate).getTime() + 24 * 60 * 60 * 1000);
+                    dLastSelectedDate = new Date(  tzIndependentDate(lastSelectedDate).getTime() + 24 * 60 * 60 * 1000);
 
                     $scope.begin_date = $filter('date')(dLastSelectedDate, rateFilterDefaults.DATE_FORMAT);
-                    $scope.end_date = $scope.begin_date; //$filter('date')(dLastSelectedDate, rateFilterDefaults.DATE_FORMAT);
+                    $scope.end_date = $scope.begin_date;
                 }
 
             };

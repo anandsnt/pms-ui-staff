@@ -25,7 +25,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 
 
 
-	}
+	};
 	//Get the alert length - set in admin settings
 	var fetchConfig = function(){
 		var fetchSuccessOfCampaignData = function(data){
@@ -36,7 +36,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		};
 		$scope.invokeApi(ADCampaignSrv.fetchCampaignConfig, {}, fetchSuccessOfCampaignData);
 
-	}
+	};
 
 	var computeCampaignDataToUIFormat = function(data){
 
@@ -73,7 +73,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		$scope.campaignData.recurrence_end_date = data.recurrence_end_date;
 		$scope.campaignData.alert_ios8 = data.alert_ios8;
 		$scope.campaignData.alert_ios7 = data.alert_ios7;
-	}
+	};
 
 	var fetchCampaignDetails = function(id){
 
@@ -82,10 +82,10 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 			$scope.$emit('hideLoader');
 		};
 
-		var params = {'id': id}
+		var params = {'id': id};
 		$scope.invokeApi(ADCampaignSrv.fetchCampaignData, params, fetchSuccessOfCampaignData);
 
-	}
+	};
 
 	var computeCampaignSaveData = function(){
 		var campaign = {};
@@ -136,10 +136,10 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 			$scope.campaignData.status = 'ACTIVE';
 			$scope.$emit('hideLoader');
 			$scope.gobackToCampaignListing();
-		}
+		};
 		var data = {"id": id};
 		$scope.invokeApi(ADCampaignSrv.startCampaign, data, campaignStartSuccess);
-	}
+	};
 
 	$scope.saveAsDraft = function(action){
 		var saveSucess = function(data){
@@ -151,7 +151,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 			}else{
 				$scope.gobackToCampaignListing();
 			}
-		}
+		};
 		var data = computeCampaignSaveData();
 
 		if($scope.mode === 'EDIT'){
@@ -163,7 +163,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		}
 	};
 	$scope.onFromDateChanged = function(datePicked){
-		console.log(datePicked);
+
 	};
 
 	$scope.gobackToCampaignListing = function(){
@@ -173,7 +173,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 
 	$scope.statusChanged = function(){
 		$scope.campaignData.status = $scope.campaignData.status === 'ACTIVE' ? 'INACTIVE': 'ACTIVE';
-	}
+	};
 
 	$scope.getTimeConverted = function(time) {
 		if (time === null || time === undefined || time.indexOf("undefined") > -1) {
@@ -189,10 +189,10 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 			$scope.$emit('hideLoader');
 			$scope.gobackToCampaignListing();
 
-		}
-		var params = {"id" : $scope.campaignData.id}
+		};
+		var params = {"id" : $scope.campaignData.id};
 		$scope.invokeApi(ADCampaignSrv.deleteCampaign, params, deleteSuccess);
-	}
+	};
 
 	$scope.showDatePicker = function(){
         ngDialog.open({
@@ -225,7 +225,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
           	return false;
           }
           return true;
-	}
+	};
 
 	$scope.$watch(function(){
 		return $scope.campaignData.delivery_details;

@@ -1,15 +1,15 @@
 (function() {
 
 	var checkinArrivalDetailsController = function($scope, preCheckinSrv,$rootScope,$state,$modal,$stateParams) {
-	
+
 	var init = function(){
 
        $scope.hours = ["01","02","03","04","05","06","07","08","09","10","11","12"];
        $scope.minutes = ["00","15","30","45"];
-       $scope.primeTimes = ["AM","PM"]; 
+       $scope.primeTimes = ["AM","PM"];
 
        if(typeof $rootScope.earlyCheckinRestrictHour !=="undefined"){
-	       	$scope.earlyCheckinRestrictLimit = $rootScope.earlyCheckinRestrictHourForDisplay+":"+$rootScope.earlyCheckinRestrictMinute+" "+$rootScope.earlyCheckinRestrictPrimetime;	    
+	       	$scope.earlyCheckinRestrictLimit = $rootScope.earlyCheckinRestrictHourForDisplay+":"+$rootScope.earlyCheckinRestrictMinute+" "+$rootScope.earlyCheckinRestrictPrimetime;
 		    //restrict time before earlyCheckinRestrictTime
 		    if($rootScope.earlyCheckinRestrictPrimetime === "PM"){
 		    	$scope.primeTimes = $scope.primeTimes.slice(1);
@@ -18,15 +18,15 @@
 					    if(hour === $rootScope.earlyCheckinRestrictHour){
 					         $scope.hours =  $scope.hours.slice(index);
 					         $scope.hours.splice($scope.hours.length-1,1);
-					    };	      
+					    };
 		  	  		});
 		    	}
 		    };
 			$scope.stayDetails = {
 							       	"hour":$rootScope.earlyCheckinRestrictHour,
 							       	"minute":$rootScope.earlyCheckinRestrictMinute,
-							       	"primeTime" : $rootScope.earlyCheckinRestrictPrimetime 
-							      };      
+							       	"primeTime" : $rootScope.earlyCheckinRestrictPrimetime
+							      };
        }else{
        		$scope.stayDetails = {
 							       	"hour":"",
@@ -47,7 +47,7 @@
 	      }
 	    };
 	    $scope.checkinTime = (typeof $stateParams.time !=="undefined") ? $stateParams.time :"";
-	    
+
 	};
 	init();
 
@@ -66,14 +66,13 @@
 		 else if ($scope.stayDetails.primeTime === 'AM' && hour === 12) {
 		    hour = hour-12;
 		 }
-		 hour = (hour <10)?("0"+hour): hour
+		 hour = (hour <10)?("0"+hour): hour;
 		 var dataTosend = {
 		 	"arrival_time":  hour+":"+$scope.stayDetails.minute,
 		 	"comments":$scope.stayDetails.comment
-		 }
+		 };
 
-
-		preCheckinSrv.postStayDetails(dataTosend).then(function(response) {			
+		preCheckinSrv.postStayDetails(dataTosend).then(function(response) {
 			$rootScope.earlyCheckinHour   =  response.last_early_checkin_hour;
 			$rootScope.earlyCheckinMinute =  response.last_early_checkin_minute;
 			$rootScope.earlyCheckinPM     =  response.last_early_checkin_primetime;
@@ -96,7 +95,7 @@
 				$scope.isLoading = false;
 			});
 		}
-	}
+	};
 };
 
 var dependencies = [

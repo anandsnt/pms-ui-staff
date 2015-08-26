@@ -49,7 +49,7 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 				upperLimit: upperLimit,
 				ticks: ticks
 			};
-		}
+		};
 
 		$scope.reportStatus = {
 			sort: {
@@ -62,7 +62,7 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 					ascending: true
 				}
 			}
-		}
+		};
 
 
 		$scope.sort = function(market, values) {
@@ -94,22 +94,22 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 					if (status.sort.market.ascending) {
 						$scope.markets.sort(function(a, b) {
 							if ($scope.results.market[a] > $scope.results.market[b]) {
-								return -1
+								return -1;
 							} else if ($scope.results.market[a] < $scope.results.market[b]) {
-								return 1
+								return 1;
 							} else {
-								return 0
+								return 0;
 							}
 						});
 						status.sort.market.ascending = false;
 					} else {
 						$scope.markets.sort(function(a, b) {
 							if ($scope.results.market[a] > $scope.results.market[b]) {
-								return 1
+								return 1;
 							} else if ($scope.results.market[a] < $scope.results.market[b]) {
-								return -1
+								return -1;
 							} else {
-								return 0
+								return 0;
 							}
 						});
 						status.sort.market.ascending = true;
@@ -119,22 +119,22 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 					if (status.sort.source.ascending) {
 						$scope.sources.sort(function(a, b) {
 							if ($scope.results.source[a] > $scope.results.source[b]) {
-								return -1
+								return -1;
 							} else if ($scope.results.source[a] < $scope.results.source[b]) {
-								return 1
+								return 1;
 							} else {
-								return 0
+								return 0;
 							}
 						});
 						status.sort.source.ascending = false;
 					} else {
 						$scope.sources.sort(function(a, b) {
 							if ($scope.results.source[a] > $scope.results.source[b]) {
-								return 1
+								return 1;
 							} else if ($scope.results.source[a] < $scope.results.source[b]) {
-								return -1
+								return -1;
 							} else {
-								return 0
+								return 0;
 							}
 						});
 						status.sort.source.ascending = true;
@@ -150,7 +150,7 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 				$scope.markets = _.without($scope.markets, 'Not Defined');
 				$scope.markets.push('Not Defined');
 			}
-		}
+		};
 
 		$scope.setScroller('report-details-scroll');
 
@@ -182,24 +182,24 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 					$scope.sources = _.keys($scope.results.source);
 					var sourcesValues = _.values($scope.results.source);
 					$scope.sourcesValuesTotal = sourcesValues.reduce(function(a, b) {
-						return a + b
+						return a + b;
 					});
 					var sourcesValuesPercentage = [];
 					_.each(sourcesValues, function(sourceValue) {
 						sourcesValuesPercentage.push(sourceValue / $scope.sourcesValuesTotal);
-					})
+					});
 				};
 
 				if ( ! _.isEmpty($scope.results.market)  ) {
 					$scope.markets = _.keys($scope.results.market);
 					var marketsValues = _.values($scope.results.market);
 					$scope.marketsValuesTotal = marketsValues.reduce(function(a, b) {
-						return a + b
+						return a + b;
 					});
 					var marketsValuesPercentage = [];
 					_.each(marketsValues, function(marketValue) {
 						marketsValuesPercentage.push(marketValue / $scope.marketsValuesTotal);
-					})
+					});
 				};
 
 				$scope.reportStatus.graph = {
@@ -211,7 +211,7 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 			$timeout(function() {
 				$scope.refreshScroller('report-details-scroll');
 			}, 1000);
-		}
+		};
 
 		$scope.$on('report.updated', function() {
 			init();

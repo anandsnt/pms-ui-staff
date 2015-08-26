@@ -37,7 +37,7 @@ admin.controller('ADRatesAddonsCtrl', [
 				if(data.pms_type !== null) {
 					$scope.isConnectedToPMS = true;
 				}
-			}
+			};
 			$scope.invokeApi(ADHotelSettingsSrv.fetch, {}, fetchSuccessOfHotelSettings);
 		};
 		$scope.checkPMSConnection();
@@ -118,7 +118,7 @@ admin.controller('ADRatesAddonsCtrl', [
 				$scope.chargeGroups = data.results;
 
 				// when ever we are ready to emit 'hideLoader'
-				$scope.apiLoadCount++
+				$scope.apiLoadCount++;
 				if ( $scope.apiLoadCount > 4 ) {
 					$scope.$emit('hideLoader');
 				};
@@ -209,11 +209,11 @@ admin.controller('ADRatesAddonsCtrl', [
 	            // we must set the end_date to begin_date
 	            // so that user may not submit invalid dates
 	            if ( tzIndependentDate($scope.singleAddon.begin_date) - tzIndependentDate($scope.singleAddon.end_date) > 0 ) {
-	                $scope.singleAddon.end_date = chosenDate
+	                $scope.singleAddon.end_date = chosenDate;
 	                $scope.singleAddon.end_date_for_display   = $filter('date')(tzIndependentDate(chosenDate), $rootScope.dateFormat);
 	            }
 			} else {
-				  $scope.singleAddon.end_date = chosenDate
+				  $scope.singleAddon.end_date = chosenDate;
 	              $scope.singleAddon.end_date_for_display   = $filter('date')(tzIndependentDate(chosenDate), $rootScope.dateFormat);
 			}
 		});
@@ -388,7 +388,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
 				$scope.$emit('hideLoader');
 
-				// $scope.tableParams.reload();
+
 			};
 
 			var data = {
@@ -450,7 +450,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			    }, 1000);
 			};
 			$scope.invokeApi(ADRatesAddonsSrv.importPackages, {}, fetchSuccessOfPackageList);
-		}
+		};
 
 	}
 ]);

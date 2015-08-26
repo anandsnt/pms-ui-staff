@@ -7,8 +7,8 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 		};
 		$scope.hasPermissionForCommissionUpdate = function(){
 			return rvPermissionSrv.getPermissionValue('UPDATE_COMMISSION') && !isEmpty($scope.reservationData.reservation_card.commission_details);
-		};	
-		
+		};
+
 		$scope.isSegmentAutoComputed = function() {
 			var currentSegment = $scope.reservationParentData.demographics.segment,
 				aptSegment = "";
@@ -27,12 +27,12 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 		};
 		var eventTimestamp = "";
 		$scope.clickedAdditionalDetails = function($event){
-			
+
 			$event.preventDefault();
 		    $event.stopImmediatePropagation();
   			$event.stopPropagation();
   			var toggleAction = function(){
-				$scope.additionalDetails.hideDetails = !$scope.additionalDetails.hideDetails ; 
+				$scope.additionalDetails.hideDetails = !$scope.additionalDetails.hideDetails;
 				$scope.refreshReservationDetailsScroller(300);
 				eventTimestamp = $event.timeStamp;
   			};
@@ -47,9 +47,9 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			else{
 				toggleAction();
 			};
-			
+
 		};
- 
+
 		$scope.updateAdditionalDetails = function() {
 			var updateSuccess = function(data) {
 				// Set the Reservation Type in the sntCode/app/assets/rover/partials/reservationCard/rvReservationCardPayment.html partial
@@ -80,7 +80,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 				'segment_id': parseInt($scope.reservationParentData.demographics.segment),
 				'commission_data':$scope.reservationData.reservation_card.commission_details
 			}, updateSuccess, updateFailure);
-		}
+		};
 
 		$rootScope.$on('UPDATERESERVATIONTYPE', function(e, data) {
             $scope.reservationParentData.demographics.reservationType = data;

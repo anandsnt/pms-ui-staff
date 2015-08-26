@@ -18,9 +18,9 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 				isSharerCheckedin = true;
 				return false;
 			}
-		})
+		});
 		return isSharerCheckedin;
-	}
+	};
 
 	$scope.clickCancel = function(){
 		ngDialog.close();

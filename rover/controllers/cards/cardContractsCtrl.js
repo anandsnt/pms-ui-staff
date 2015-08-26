@@ -18,7 +18,7 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 		if (typeof $scope.reservationDetails === 'undefined') {
 			$scope.currentCard = $stateParams.id;
 		} else {
-			// $scope.currentCard = $scope.reservationDetails.companyCard.id;
+
 			$scope.currentCard = $scope.contactInformation.id;
 		}
 
@@ -112,8 +112,8 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 					}
 				},
 				series: $scope.graphData
-			}
-		}
+			};
+		};
 
 		var fetchContractsDetailsSuccessCallback = function(data) {
 			$scope.contractList.isAddMode = false;
@@ -216,9 +216,9 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 					symbol: 'triangle',
 					radius: 0
 				}
-			}]
-			return graphData
-		}
+			}];
+			return graphData;
+		};
 
 		// Fetch data for rates
 		var fetchRatesSuccessCallback = function(data) {
@@ -467,7 +467,7 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 		 */
 		$scope.$on('saveContract', function(event) {
 			event.preventDefault();
-			//event.stopPropagation();
+
 			$scope.updateContract();
 		});
 		/**

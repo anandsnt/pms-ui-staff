@@ -22,7 +22,7 @@ sntRover.service('RVreportsSrv', [
 
 		/**
 		 * save the chosen report object in here
-		 * @param {Object} item 
+		 * @param {Object} item
 		 */
 		service.setChoosenReport = function(item) {
 			choosenReport = item;
@@ -59,7 +59,7 @@ sntRover.service('RVreportsSrv', [
 		};
 
 		/**
-		 * load any additional apis to load and 
+		 * load any additional apis to load and
 		 * resolve deferred when all apis have been loaded.
 		 * deferred when resolved on the router will be provided with the
 		 * payload of all the api data as an object
@@ -77,7 +77,7 @@ sntRover.service('RVreportsSrv', [
 
 				// since payload will have two additional keys
 				// 'reportsResponse' and 'codeSettings'
-				if ( payloads - filters == 2 ) {
+				if ( payloads - filters === 2 ) {
 
 					// save it to $vault
 					service.payloadCache = angular.copy( payload );
@@ -160,7 +160,17 @@ sntRover.service('RVreportsSrv', [
 					subSrv.fetchBookingOrigins()
 						.then( success.bind(null, 'origins'), failed.bind(null, 'origins', []) );
 				};
-			};			
+			};
+
+			// fetch hold status & add to payload
+			if ( hasFilter['HOLD_STATUS'] ) {
+				if ( service.payloadCache.hasOwnProperty('holdStatus') ) {
+					success( 'origins', service.payloadCache.holdStatus );
+				} else {
+					subSrv.fetchHoldStatus()
+						.then( success.bind(null, 'holdStatus'), failed.bind(null, 'holdStatus', []) );
+				};
+			};
 		};
 
 		/**
@@ -184,28 +194,32 @@ sntRover.service('RVreportsSrv', [
 
 				_.each(eachResult.filters, function(eachFilter) {
 
-					if ( ! hasFilter.hasOwnProperty('INCLUDE_GUARANTEE_TYPE') && 'INCLUDE_GUARANTEE_TYPE' == eachFilter.value ) {
+					if ( ! hasFilter.hasOwnProperty('INCLUDE_GUARANTEE_TYPE') && 'INCLUDE_GUARANTEE_TYPE' === eachFilter.value ) {
 						hasFilter['INCLUDE_GUARANTEE_TYPE'] = true;
 					};
 
-					if ( ! hasFilter.hasOwnProperty('INCLUDE_CHARGE_GROUP') && 'INCLUDE_CHARGE_GROUP' == eachFilter.value ) {
+					if ( ! hasFilter.hasOwnProperty('INCLUDE_CHARGE_GROUP') && 'INCLUDE_CHARGE_GROUP' === eachFilter.value ) {
 						hasFilter['INCLUDE_CHARGE_GROUP'] = true;
 					};
 
-					if ( ! hasFilter.hasOwnProperty('INCLUDE_CHARGE_CODE') && 'INCLUDE_CHARGE_CODE' == eachFilter.value ) {
+					if ( ! hasFilter.hasOwnProperty('INCLUDE_CHARGE_CODE') && 'INCLUDE_CHARGE_CODE' === eachFilter.value ) {
 						hasFilter['INCLUDE_CHARGE_CODE'] = true;
 					};
 
-					if ( ! hasFilter.hasOwnProperty('CHOOSE_MARKET') && 'CHOOSE_MARKET' == eachFilter.value ) {
+					if ( ! hasFilter.hasOwnProperty('CHOOSE_MARKET') && 'CHOOSE_MARKET' === eachFilter.value ) {
 						hasFilter['CHOOSE_MARKET'] = true;
 					};
 
-					if ( ! hasFilter.hasOwnProperty('CHOOSE_SOURCE') && 'CHOOSE_SOURCE' == eachFilter.value ) {
+					if ( ! hasFilter.hasOwnProperty('CHOOSE_SOURCE') && 'CHOOSE_SOURCE' === eachFilter.value ) {
 						hasFilter['CHOOSE_SOURCE'] = true;
 					};
 
-					if ( ! hasFilter.hasOwnProperty('CHOOSE_BOOKING_ORIGIN') && 'CHOOSE_BOOKING_ORIGIN' == eachFilter.value ) {
+					if ( ! hasFilter.hasOwnProperty('CHOOSE_BOOKING_ORIGIN') && 'CHOOSE_BOOKING_ORIGIN' === eachFilter.value ) {
 						hasFilter['CHOOSE_BOOKING_ORIGIN'] = true;
+					};
+
+					if ( ! hasFilter.hasOwnProperty('HOLD_STATUS') && 'HOLD_STATUS' == eachFilter.value ) {
+						hasFilter['HOLD_STATUS'] = true;
 					};
 				});
 			});
