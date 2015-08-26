@@ -4,7 +4,7 @@ admin.controller('ADEmvTerminalDetailsCtrl', ['$scope','$rootScope','ADEmvTermin
 	*/
 
 	$scope.errorMessage = '';
-	$scope.mod = 'edit'
+	$scope.mod = 'edit';
 
 	//inheriting from base controller
 	BaseCtrl.call(this, $scope);
@@ -34,7 +34,7 @@ admin.controller('ADEmvTerminalDetailsCtrl', ['$scope','$rootScope','ADEmvTermin
 
 	$scope.goBack = function(){
 		$state.go('admin.emvTerminals');
-	}
+	};
 
 	$scope.saveItemDetails = function()	{
 		var postData = {};
@@ -57,6 +57,6 @@ admin.controller('ADEmvTerminalDetailsCtrl', ['$scope','$rootScope','ADEmvTermin
 		else{
 			$scope.invokeApi(ADEmvTerminalsSrv.saveItemDetails, postData, fetchSuccessOfSaveItemDetails);
 		}
-	}
+	};
 
 }]);

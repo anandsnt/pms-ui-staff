@@ -30,11 +30,11 @@ $scope.login = function(){
 		$scope.isLoggedIn = true;
 		// verify if hotel time is past midnight or not
 		$scope.isTimePastMidnight = (data.is_show_warning ==="true") ? false: true;
-	}
+	};
 	var loginFailure = function(data){
 		$rootScope.$broadcast('hideLoader');
 		$scope.errorMessage = data;
-	}
+	};
 	var data = {"password":$scope.password};
 
 	$scope.invokeApi(RVEndOfDayModalSrv.login,data,loginSuccess,loginFailure);
@@ -46,8 +46,8 @@ $scope.startEndOfDayProcess = function(){
 };
 
 $scope.yesClick = function(){
-	$scope.isTimePastMidnight = true
-}
+	$scope.isTimePastMidnight = true;
+};
 
 $scope.continueClicked = function(){
 
@@ -64,7 +64,7 @@ $scope.continueClicked = function(){
 		$rootScope.$broadcast('hideLoader');
 		$rootScope.isBussinessDateChanging = true;
 		ngDialog.close();
-	}
+	};
 	$scope.invokeApi(RVEndOfDayModalSrv.startProcess,{},startProcessSuccess,startProcessFailure);
 };
 

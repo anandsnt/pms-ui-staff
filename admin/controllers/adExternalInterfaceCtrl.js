@@ -15,7 +15,6 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
         $scope.interfaceId = $state.current.interface_id;
         $scope.simpleName = $state.current.simple_name;
         $scope.failedMessages = {};
-        
         //these setup a generic method to access each service api, using the router namespace
         $scope.serviceController;
         $scope.interfaceName;
@@ -39,7 +38,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
         // initial fetch when view initializes
         $scope.fetchSetupSuccessCallback = function (data) {
             $scope.data = data;
-            
+
             //load up origins and payment methods
             $scope.invokeApi(adExternalInterfaceCommonSrv.fetchOrigins, {},fetchOriginsSuccessCallback);
             $scope.invokeApi(adExternalInterfaceCommonSrv.fetchPaymethods, {}, fetchPaymethodsSuccess);
@@ -60,15 +59,15 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
 		$scope.booking.booking_origins = data.booking_origins;
                 setOrigin();
 	};
-        
+
 	var fetchPaymethodsSuccess = function(data) {
 		$scope.$emit('hideLoader');
                 $scope.isLoading = false;
 		$scope.payments.payments = data.payments;
                 setPayment();
 	};
-        
-        // Set the selected payment and origin 
+
+        // Set the selected payment and origin
         var setPayment = function(){
             var value = parseInt($scope.data.data.product_cross_customer.default_payment_id);
             if (typeof value !== typeof undefined) {
@@ -117,7 +116,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
         };
         //////////////////////
         //Active / Inactive Toggle to turn ON/OFF interface for the hotel
-        
+
         $scope.toggleSMActiveSuccess = function () {
             $scope.data.data.product_cross_customer.active = !$scope.data.data.product_cross_customer.active;
             $scope.invokeApi(adExternalInterfaceCommonSrv.fetchSetup, {
@@ -136,7 +135,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
                     } else {
                         active = true;
                     }
-                    
+
                     $scope.invokeApi(adExternalInterfaceCommonSrv.toggleActive, {
                         'interface_id': id,
                         'active': active
@@ -144,7 +143,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
                 }
             }
         };
-        
+
         $scope.setRefreshTime = function(){
             if ($scope.data.data.product_cross_customer.full_refresh !== null){
                $scope.lastRefreshedTime = new Date($scope.data.data.product_cross_customer.full_refresh);
@@ -154,8 +153,8 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
                var n = new Date();
                var nd = n.valueOf();
                var twentyFourHrs = 86400000;
-               //var aMin = 60000;//for debugging
-              // if ((nd-$scope.lastRefreshedTimeObj.valueOf()) > aMin){//for debugging
+
+
                if ((nd-$scope.lastRefreshedTimeObj.valueOf()) > twentyFourHrs){
                    $scope.refreshButtonEnabled = 'enabled';
                } else {
@@ -177,7 +176,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
                     var lastRefreshedDate = new Date($scope.data.data.product_cross_customer.full_refresh);
                     lastRefreshed = lastRefreshedDate.valueOf();
                 } catch(err){
-                    
+
                 }
             }
             var fullRefreshSuccess = function(){
@@ -190,7 +189,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
                 if (response[0]){
                     if (response[0].length > 0){
                         msg = ': "'+response[0]+'"';
-                    } 
+                    }
                 }
                 $scope.errorMessage = $scope.interfaceName+' Full Refresh Failed' + msg;
                 $scope.$emit('hideLoader');
@@ -198,7 +197,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             if ((lastRefreshed < refreshNow) || lastRefreshed === null){
                 //run refresh
                 $scope.invokeApi($scope.serviceController.fullRefresh, data, fullRefreshSuccess, fullRefreshFail);
-        
+
             } else {
                 //update w/ error
             }
@@ -208,7 +207,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
         $scope.testSetup = function () {
             var testSetupSuccessCallback = function (data) {
                 //double check to see if it Actually failed..
-                if (data.status == 'failure') {
+                if (data.status === 'failure') {
                     var msg = '';
                     if (typeof data[0] === typeof 'str') {
                         if (data[0].length > 1) {
@@ -240,7 +239,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
 
             var checkCallback = function (response) {
                 $scope.$emit('hideLoader');
-                if (response.status == 'failure') {
+                if (response.status === 'failure') {
                     testSetupFailureCallback(response);
                 } else {
                     testSetupSuccessCallback(response);
@@ -251,8 +250,8 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             var testData = dclone($scope.data, unwantedKeys);
             $scope.invokeApi($scope.serviceController.testSetup, testData, checkCallback);
         };
-        
-        
+
+
         //COUNTDOWN Timer Utilities
         $scope.timeSince = function(date) {
             var seconds = Math.floor((new Date() - date) / 1000);//local to the user
@@ -281,15 +280,15 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
         };
         $scope.formatDate = function(now) {
             var year = "" + now.getFullYear();
-            var month = "" + (now.getMonth() + 1); if (month.length == 1) { month = "0" + month; }
-            var day = "" + now.getDate(); if (day.length == 1) { day = "0" + day; }
-            var hour = "" + now.getHours(); if (hour.length == 1) { hour = "0" + hour; }
-            var minute = "" + now.getMinutes(); if (minute.length == 1) { minute = "0" + minute; }
-            var second = "" + now.getSeconds(); if (second.length == 1) { second = "0" + second; }
+            var month = "" + (now.getMonth() + 1); if (month.length === 1) { month = "0" + month; }
+            var day = "" + now.getDate(); if (day.length === 1) { day = "0" + day; }
+            var hour = "" + now.getHours(); if (hour.length === 1) { hour = "0" + hour; }
+            var minute = "" + now.getMinutes(); if (minute.length === 1) { minute = "0" + minute; }
+            var second = "" + now.getSeconds(); if (second.length === 1) { second = "0" + second; }
             return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
           };
           //////////////////////
-          
+
           $scope.countdownTimer = function(){
               setTimeout(function(){
                   $scope.$apply(function(){
@@ -310,5 +309,4 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
               
               
           };
-            
     }]);

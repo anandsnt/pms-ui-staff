@@ -1,6 +1,6 @@
 var GridRow = React.createClass({
 	shouldComponentUpdate: function(nextProps, nextState) {
-		var render = true; //false;
+		var render = true;
 
 		/*if(this.props.viewport !== nextProps.viewport ||
 		   this.props.display !== nextProps.display) {
@@ -85,6 +85,6 @@ var GridRow = React.createClass({
 				currentResizeItem: props.currentResizeItem,
 				currentResizeItemRow: props.currentResizeItemRow
 			});
-		})); //GridRowBackground({ display: this.props.display })); //hourly_divs);
+		}));
 	}
 });

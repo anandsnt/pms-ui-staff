@@ -16,7 +16,6 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		//If SAFLOK_MSR is the chosen encoder type, we would show a dropdown with active encoders listed.
 		/***************************CICO-11444 *****************************************/
 		$scope.encoderSelected = "";
-console.log($scope.encoderTypes);
 		if($scope.fromView === "checkin"){
 			$scope.isRemoteEncodingEnabled = $scope.reservationBillData.is_remote_encoder_enabled;
 		}else{
@@ -117,15 +116,15 @@ console.log($scope.encoderTypes);
 		}
 		if ($scope.numberOfKeysSelected > 0){
 			if($scope.isRemoteEncodingEnabled && $scope.encoderSelected === ""){
-				return false
+				return false;
 			}
-			return true
+			return true;
 		}
 	};
 
 	$scope.selectedEncoder = function(){
 		sessionStorage.encoderSelected = $scope.encoderSelected;
-	}
+	};
 	/*
 	* If the device is not connected, try the connection again after 1 sec.
 	* repeat the connection check for 10 seconds.
@@ -323,7 +322,7 @@ console.log($scope.encoderTypes);
 			that.printKeyStatus[index-1].printed = true;
 			$scope.printedKeysCount = index;
 			$scope.buttonText = 'Print key '+ (index+1)+'/'+that.printKeyStatus.length;
-			//$scope.$apply();
+
 			if(that.numOfKeys === 0){
 				that.showKeyPrintSuccess();
 				return true;
@@ -542,7 +541,7 @@ console.log($scope.encoderTypes);
 
 		$('#encoder-type').blur();
 		//TODO:verfiy if required
-		//$scope.$apply();
+
 	};
 
 	/*

@@ -18,7 +18,7 @@ var checkoutNowService = function($q,$rootScope,$http) {
 			response:response,
 			completeCheckout:completeCheckout
 
-		}
+		};
 };
 
 var dependencies = [

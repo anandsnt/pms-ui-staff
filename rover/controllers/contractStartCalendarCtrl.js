@@ -42,7 +42,7 @@ sntRover.controller('contractStartCalendarCtrl',['$rootScope','$scope','dateFilt
 			     ngDialog.close();
 	     }
 
-    	}
+    	};
 	};
 	$scope.setUpData();
 

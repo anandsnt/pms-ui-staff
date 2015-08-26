@@ -212,5 +212,5 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 			return "room-grey";
 		}
 		return statusClass;
-	}
+	};
 }]);
