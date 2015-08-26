@@ -233,9 +233,11 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 							data.rate = -1;
 						}
 						summaryHolder.allotmentSummary = data;
-						getAccountSummary(deferred, {
+						// To be covered in CICO-19135
+						/*getAccountSummary(deferred, {
 							accountId: data.posting_account_id
-						});
+						});*/
+						deferred.resolve(summaryHolder);	// CICO-12555 avoid account summary call.
 					},
 					function(errorMessage) {
 						deferred.reject(errorMessage);
@@ -419,7 +421,7 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 		 */
 		this.getRates = function(data) {
 			var deferred = $q.defer(),
-				url = 'api/allotments/rates';
+				url = 'api/groups/rates';
 			rvBaseWebSrvV2.getJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
@@ -431,7 +433,7 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 
 		this.toggleHideRate = function( params ){
 			var deferred = $q.defer(),
-				url = 'api/allotments/'+params.allotment_id+'/hide_rates';
+				url = 'api/groups/'+params.allotment_id+'/hide_rates';
 				rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 				   	 deferred.resolve(data);
 				},function(data){
@@ -442,7 +444,7 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 
 		this.updateRate = function(params) {
 			var deferred = $q.defer(),
-				url = 'api/allotments/'+params.allotment_id+'/change_rate';
+				url = 'api/groups/'+params.allotment_id+'/change_rate';
 				rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 				   	 deferred.resolve(data);
 				},function(data){
