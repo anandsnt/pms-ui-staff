@@ -3,6 +3,8 @@
 		<header class="content-title float">
 			<h2 translate> FAILED_INTERFACE_MESSAGES </h2>
 			<span class="count"> ({{failedMessages.length}})</span>
+                        <div style='float:right;'><button class="entry button" ng-click='resubmitSelected()' ng-class="{ 'grey overlay' : !ota.has_checked, 'blue' : ota.has_checked }">Resubmit Selected</button>
+                        <button class="entry button" ng-click='deleteSelected()' ng-class="{ 'grey overlay' : !ota.has_checked, 'red' : ota.has_checked }">Delete Selected</button></div>
 		</header>
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -13,29 +15,43 @@
 				<tbody>
 
 					<tr ng-repeat = "message in failedMessages" >
-
-						<td width = "50%" ><strong>{{message.name}}</strong><em translate> SYSTEM_DEFINED_LABEL</em></td>
-
-
-						<td >
+                                            <td width = "5%" >
+                                            <!-- Checkbox data type -->
+                                                <label class="checkbox" ng-class="{}">
+                                                <span class="icon-form icon-checkbox" ng-class="{ 'checked' : message.selected, 'checkbox-background' : !message.selected }"></span>
+                                                <input type="checkbox" ng-model="message.selected" ng-click='checkBox(message)'>
+                                                    {{ message.name }}
+                                                </label>
+                                            </td>
+                                            
+						<td width = "10%" >
                                                     <div class="entry" >
-							<label ></label>
-							<div >
-                                                            <button ng-click="resubmitFailedMessage($index)" ng-class="{ 'overlay' : !message.can_resubmit}">Re-Submit</button>
-								<span class="switch-icon"></span>
-
-							</div>
+							<label>{{message.interface}}</label>
+                                                    </div>
+                                                </td>
+						<td width = "10%" >
+                                                    <div class="entry" >
+							<label>{{message.message_type}} </label>
+                                                    </div>
+                                                </td>
+						<td width = "30%" >
+                                                    <div class="entry" >
+							<label>{{message.response | limitTo:limitResponseLength}} </label>
+                                                    </div>
+                                                </td>
+                                                    
+						<td width = "20%" >
+                                                    <div class="entry" >
+							<label>{{message.processed_at | date : dateFormat}} {{getTimeConverted(message.processed_at)}}</label>
                                                     </div>
                                                 </td>
                                                 
-						<td class="activate" >
-                                                    <div class="entry" >
-							<label ></label>
-							<div class="switch-button single" ng-click="saveReservationType($index)" ng-class="{ on : message.is_active}" >
-								<input type="checkbox" ng-model="message.is_active"  value="" name=""  id="">
-								<span class="switch-icon"></span>
-
-							</div>
+						<td width = "30%" >
+                                                     <div style="float:right; margin-left:10px;" class="entry button" ng-click="resubmitFailedMessage(message)" ng-class="{ 'grey overlay' : !message.can_resubmit, 'blue' : message.can_resubmit }" >
+							<label>Re-Submit </label>
+                                                    </div>
+                                                    <div style="float:right; margin-left:10px;" class="entry button" ng-click="destroyFailedMessage(message)"ng-class="{ 'grey overlay' : !message.can_delete, 'red' : message.can_delete}" >
+							<label>Delete</label>
                                                     </div>
                                                 </td>
 

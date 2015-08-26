@@ -121,12 +121,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.interfaceMessages', {
 			templateUrl: '/assets/partials/interfaces/adInterfaceMessages.html',
 			controller: 'adExternalInterfaceCtrl',
-			url : '/interfaceMessages',
-                        resolve: {
-                            failedMessages: function(adExternalInterfaceCommonSrv) {
-                                return adExternalInterfaceCommonSrv.fetchFailedMessages();
-                            }
-	            }
+			url : '/interfaceMessages'
 		});
 
 
