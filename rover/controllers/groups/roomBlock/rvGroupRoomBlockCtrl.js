@@ -862,10 +862,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			ngDialog.close();
 			var isInhouseReservationsExists = false;
 			angular.forEach (roomsAndRatesSelected, function (row) {
-				if (row.is_configured_in_group) {
-					if (row.total_inhouse_reservations_count > 0) {
-						isInhouseReservationsExists = true;
-					}
+				if (row.total_inhouse_reservations_count > 0) {
+					isInhouseReservationsExists = true;
 				}
 			});
 

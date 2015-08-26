@@ -211,7 +211,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 		var isGroupCustomRateChanged = function () {
 			updateExistingReservationsRate = false;
 			angular.forEach ($scope.selectedRoomTypeAndRates, function (row) {
-				if (row.is_configured_in_group) {
+				if (row.total_reservations_count > 0) {
 					if (row.single_rate !== row.old_single_rate || row.double_rate !== row.old_double_rate || row.extra_adult_rate !== row.old_extra_adult_rate) {
 						updateExistingReservationsRate = true;
 						row.update_existing_reservations_rate = true;
