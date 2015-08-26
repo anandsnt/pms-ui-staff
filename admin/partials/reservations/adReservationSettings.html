@@ -119,7 +119,7 @@
 
 					<ad-checkbox hide="{{!reservationSettingsData.has_enabled_commissions}}" is-checked="reservationSettingsData.tax_on_commissions" label="{{ 'TAX_ON_COMMISSIONS' | translate}}" div-class="margin-top-30 padding-left-15" ></ad-checkbox>
 
-            		<ad-dropdown hide="{{!reservationSettingsData.has_enabled_commissions || !reservationSettingsData.tax_on_commissions}}" label-in-drop-down="{{'SELECT_TAX_TRANSACTION_CODE' | translate}}" list="data.tax_transaction_codes" selected-id='data.selected_tax_transaction_code' selbox-class="placeholder" div-class="full-width" label="{{'TAX_TRANSACTION_CODE' | translate}}"></ad-dropdown>
+            		<ad-dropdown hide="{{!reservationSettingsData.has_enabled_commissions || !reservationSettingsData.tax_on_commissions}}" label-in-drop-down="{{'SELECT_TAX_TRANSACTION_CODE' | translate}}" list="reservationSettingsData.tax_transaction_codes" selected-id='reservationSettingsData.selected_tax_transaction_code' selbox-class="placeholder" div-class="full-width" label="{{'TAX_TRANSACTION_CODE' | translate}}"></ad-dropdown>
 
 					<ad-checkbox is-checked="reservationSettingsData.commission_by_agent" label="{{ 'Commissions by Agent' | translate}}" div-class="" hide='{{!reservationSettingsData.has_enabled_commissions}}'></ad-checkbox>					
 					<ad-checkbox is-checked="reservationSettingsData.commission_by_rate" label="{{ 'Commissions by Rate' | translate}}" div-class="" hide='{{!reservationSettingsData.has_enabled_commissions}}'></ad-checkbox>
@@ -146,7 +146,7 @@
                 		</div>
             		</div>	
 
-            		<ad-dropdown hide="{{!reservationSettingsData.has_enabled_commissions}}" label-in-drop-down="{{'SELECT_PREPAID_COMMISSION_CHARGE_CODE' | translate}}" list="data.prepaid_commission_charge_codes" selected-id='data.selected_prepaid_commission_charge_code' selbox-class="placeholder" div-class="full-width" label="{{'PREPAID_COMMISSION_CHARGE_CODE' | translate}}"></ad-dropdown>
+            		<ad-dropdown hide="{{!reservationSettingsData.has_enabled_commissions}}" label-in-drop-down="{{'SELECT_PREPAID_COMMISSION_CHARGE_CODE' | translate}}" list="reservationSettingsData.prepaid_commission_charge_codes" selected-id='reservationSettingsData.selected_prepaid_commission_charge_code' selbox-class="placeholder" div-class="full-width" label="{{'PREPAID_COMMISSION_CHARGE_CODE' | translate}}"></ad-dropdown>
 
 				</fieldset>	
 				
