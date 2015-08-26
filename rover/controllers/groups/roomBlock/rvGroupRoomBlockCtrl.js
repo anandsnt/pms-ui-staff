@@ -873,7 +873,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				openInhouseReservationsExistsPopup();
 			}
 			else {
-				saveNewRoomTypesAndRates();
+				$scope.saveNewRoomTypesAndRates();
 			}
 		};
 
