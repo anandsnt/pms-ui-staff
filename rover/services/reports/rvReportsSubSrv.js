@@ -16,7 +16,9 @@ sntRover.service('RVreportsSubSrv', [
 			var deferred = $q.defer();
 
 			var success = function(data) {
-				if ( !! options.resKey ) {
+				if ( !! options.resKey2 && !! options.resKey ) {
+					deferred.resolve( data[options.resKey][options.resKey2] );
+				} else if ( !! options.resKey ) {
 					deferred.resolve( data[options.resKey] );
 				} else {
 					deferred.resolve( data );
@@ -125,9 +127,10 @@ sntRover.service('RVreportsSubSrv', [
 
 		service.fetchHoldStatus = function() {
 			return callApi({
-				method : 'getJSON',
-				url    : 'api/group_hold_statuses',
-				resKey : 'data'
+				method  : 'getJSON',
+				url     : 'api/group_hold_statuses',
+				resKey  : 'data',
+				resKey2 : 'hold_status'
 			});
 		};
 

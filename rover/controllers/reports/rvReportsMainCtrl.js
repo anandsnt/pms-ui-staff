@@ -45,7 +45,7 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.origins = payload.origins;
 
 		$scope.codeSettings = payload.codeSettings;
-		$scope.holdStatus   = payload.holdStatus.hold_status;
+		$scope.holdStatus   = payload.holdStatus;
 
 		console.log( $scope.holdStatus );
 

@@ -524,6 +524,8 @@ sntRover.factory('RVReportParserFac', [
                 };
             };
 
+            console.log(returnAry);
+
             return returnAry;
         };
 
