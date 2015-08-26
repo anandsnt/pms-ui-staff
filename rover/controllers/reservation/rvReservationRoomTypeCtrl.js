@@ -273,14 +273,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			if(canOverbookHouse && canOverbookRoomType){
                             //CICO-17948
                             //check actual hotel availability with permissions
-                            //When a user has "Overbook Room Type" they should be able to over sell a particular room type, as long as the action does not oversell the house inventory
-                            //
-                            //$scope.isHouseAvailable set on init()
-                            if ($scope.isHouseAvailable){
 				return false;
-                            } else {
-                                return true;
-                            }
 			}
 			if(!canOverbookHouse && $scope.getLeastHouseAvailability(roomId, rateId) < 1){
 				return true;
@@ -551,7 +544,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 		var permissionCheck = function(roomId, rateId) {
 			var BOOK_RESTRICTED_ROOM_RATE = rvPermissionSrv.getPermissionValue('BOOK_RESTRICTED_ROOM_RATE'),
-				BOOK_ROOM_WITHOUT_INVENTORY = rvPermissionSrv.getPermissionValue('BOOK_ROOM_WITHOUT_INVENTORY');
+				BOOK_ROOM_WITHOUT_INVENTORY = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM');//CICO-19821
 
 			if (BOOK_RESTRICTED_ROOM_RATE && BOOK_ROOM_WITHOUT_INVENTORY) {
 				return true;

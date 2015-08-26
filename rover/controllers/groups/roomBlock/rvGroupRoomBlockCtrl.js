@@ -133,7 +133,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		var hasPermissionToOverBook = function() {
-			return (rvPermissionSrv.getPermissionValue('BOOK_ROOM_WITHOUT_INVENTORY'));
+			return (rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE'));//CICO-19821
 		};
 
 		/**
@@ -544,7 +544,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				return false;
 			}
 			if (isOverBooked()) {
-				showOverBookingPopup()
+				showOverBookingPopup();
 			} else {
 				$scope.saveRoomBlock();
 			}
