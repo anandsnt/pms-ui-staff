@@ -87,7 +87,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             $scope.groupConfigData = {
                 activeTab: $stateParams.activeTab, // Possible values are SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY
                 summary: summaryData.groupSummary,
-                holdStatusList: holdStatusList.data.hold_status,
+                holdStatusList: holdStatusList.hold_status,
                 selectAddons: false, // To be set to true while showing addons full view
                 addons: {},
                 selectedAddons: []
