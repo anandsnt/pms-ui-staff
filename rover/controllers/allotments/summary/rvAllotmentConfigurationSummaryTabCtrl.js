@@ -245,7 +245,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 
 					demographicsMemento = angular.copy($scope.allotmentConfigData.summary.demographics);
 					ngDialog.open({
-						template: '/assets/partials/allotments/summary/groupDemographicsPopup.html',
+						template: '/assets/partials/allotments/summary/allotmentDemographicsPopup.html',
 						className: '',
 						scope: $scope,
 						closeByDocument: false,
