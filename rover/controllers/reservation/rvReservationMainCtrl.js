@@ -842,6 +842,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
             data.confirmation_email = $scope.reservationData.guest.sendConfirmMailTo;
             data.room_id = [];
+            data.room_types = [];
+            angular.forEach($scope.reservationData.tabs, function(tab) {
+                data.room_types.push({id:tab.roomTypeId,num_rooms:parseInt(tab.roomCount, 10)});
+            });
+
             angular.forEach($scope.reservationData.rooms, function(room, currentRoomIndex) {
                 if (typeof roomIndex === 'undefined' || currentRoomIndex === roomIndex) {
                     data.room_id.push(room.room_id);
