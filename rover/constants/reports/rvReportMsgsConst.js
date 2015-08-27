@@ -1,4 +1,4 @@
-sntRover.constant('RVReportMsgs', {
+sntRover.constant('RVReportMsgsConst', {
 	'REPORT_SUBMITED'            : 'report.submited',
 	'REPORT_UPDATED'             : 'report.updated',
 	'REPORT_PAGE_CHANGED'        : 'report.page.changed',

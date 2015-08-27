@@ -2,95 +2,13 @@ sntRover.factory('RVReportUtilsFac', [
     '$rootScope',
     '$filter',
     '$timeout',
-    function($rootScope, $filter, $timeout) {
+    'RVReportNamesConst',
+    'RVReportFiltersConst',
+    function($rootScope, $filter, $timeout, reportNames, reportFilters) {
         var factory = {};
 
-        /** @type {Object} A standard dict that can act as a central report name look uo */
-        var __reportNames = {
-            'CHECK_IN_CHECK_OUT'           : 'Check In / Check Out',
-            'UPSELL'                       : 'Upsell',
-            'WEB_CHECK_OUT_CONVERSION'     : 'Web Check Out Conversion',
-            'WEB_CHECK_IN_CONVERSION'      : 'Web Check In Conversion',
-            'LATE_CHECK_OUT'               : 'Late Check Out',
-            'EARLY_CHECKIN'                : 'Early Check In',
-            'IN_HOUSE_GUEST'               : 'In-House Guests',
-            'ARRIVAL'                      : 'Arrival',
-            'DEPARTURE'                    : 'Departure',
-            'BOOKING_SOURCE_MARKET_REPORT' : 'Booking Source & Market Report',
-            'CANCELLATION_NO_SHOW'         : 'Cancellation & No Show',
-            'DEPOSIT_REPORT'               : 'Deposit Report',
-            'LOGIN_AND_OUT_ACTIVITY'       : 'Login and out Activity',
-            'OCCUPANCY_REVENUE_SUMMARY'    : 'Occupancy & Revenue Summary',
-            'RESERVATIONS_BY_USER'         : 'Reservations By User',
-            'DAILY_TRANSACTIONS'           : 'Daily Transactions',
-            'DAILY_PAYMENTS'               : 'Daily Payments',
-            'FORECAST_BY_DATE'             : 'Forecast',
-            'ROOMS_QUEUED'                 : 'Rooms Queued',
-            'FORECAST_GUEST_GROUPS'        : 'Forecast Guests & Groups',
-            'MARKET_SEGMENT_STAT_REPORT'   : 'Market Segment Statistics Report',
-            'COMPARISION_BY_DATE'          : 'Comparison',
-            'RATE_ADJUSTMENTS_REPORT'      : 'Rate Adjustment Report'
-        };
-
         /**
-         * A simple getter to returned the actual report name form __reportNames dict
-         * @param  {String} name The capitalized standard report name
-         * @return {String}      The actual report name
-         */
-        factory.getName = function (name) {
-            return __reportNames[name] ? __reportNames[name] : undefined;
-        };
-
-        var __paramNames = {
-            'FROM_DATE'            : 'from_date',
-            'TO_DATE'              : 'to_date',
-            'CANCEL_FROM_DATE'     : 'cancel_from_date',
-            'CANCEL_TO_DATE'       : 'cancel_to_date',
-            'ARRIVAL_FROM_DATE'    : 'arrival_from_date',
-            'ARRIVAL_TO_DATE'      : 'arrival_to_date',
-            'DEPOSIT_FROM_DATE'    : 'deposit_from_date',
-            'DEPOSIT_TO_DATE'      : 'deposit_to_date',
-            'PAID_FROM_DATE'       : 'paid_from_date',
-            'CREATE_FROM_DATE'     : 'create_from_date',
-            'CREATE_TO_DATE'       : 'create_to_date',
-            'ADJUSTMENT_FROM_DATE' : 'from_date',
-            'ADJUSTMENT_TO_DATE'   : 'to_date',
-            'SINGLE_DATE'          : 'date',
-
-            'FROM_TIME' : 'from_time',
-            'TO_TIME'   : 'to_time',
-
-            'CHECKED_IN'  : 'checked_in',
-            'CHECKED_OUT' : 'checked_out',
-
-            'SORT_FIELD' : 'sort_field',
-            'SORT_DIR'   : 'sort_dir',
-
-            'GROUP_BY_DATE'       : 'group_by_date',
-            'GROUP_BY_USER'       : 'group_by_user',
-            'GROUP_BY_GROUP_NAME' : 'group_by_group_name',
-
-            'USER_IDS'               : 'user_ids[]',
-            'MARKET_IDS'             : 'market_ids[]',
-            'SOURCE_IDS'             : 'source_ids[]',
-            'BOOKING_ORIGIN_IDS'     : 'booking_origin_ids[]',
-            'INCLUDE_GUARANTEE_TYPE' : 'include_guarantee_type[]',
-            'CHARGE_GROUP_IDS'       : 'charge_group_ids[]',
-            'CHARGE_CODE_IDS'        : 'charge_code_ids[]',
-            'HOLD_STATUS_IDS'        : 'hold_status_ids[]'
-        };
-
-        factory.getParamName = function(name) {
-            return __paramNames[name] ? __paramNames[name] : undefined;
-        };
-
-
-
-
-
-
-        /**
-         * This is a function that can return CG & CC with no payment entries or only payment entries
+         * This function can return CG & CC with no payment entries or with only payment entries
          * @param  {Array} chargeGroupsAry Array of charge groups
          * @param  {Array} chargeCodesAry  Array of charge codes
          * @param  {String} setting         Remove payments or only payments
@@ -103,11 +21,11 @@ sntRover.factory('RVReportUtilsFac', [
                 cgAssociated       = false,
                 paymentEntry       = {};
 
-            if ( setting === 'REMOVE_PAYMENTS' ) {
+            if ( 'REMOVE_PAYMENTS' === setting ) {
                 _.each(chargeGroupsAry, function (each) {
                     if ( each.name !== 'Payments' ) {
                         each.selected = true;
-                        newChargeGroupsAry.push(each);
+                        newChargeGroupsAry.push( each );
                     } else {
                         paymentId = each.id;
                     };
@@ -120,14 +38,14 @@ sntRover.factory('RVReportUtilsFac', [
 
                     if ( !cgAssociated ) {
                         each.selected = true;
-                        newChargeCodesAry.push(each);
+                        newChargeCodesAry.push( each );
                     };
                 });
             }
 
-            if ( setting === 'ONLY_PAYMENTS' ) {
+            if ( 'ONLY_PAYMENTS' === setting ) {
                 paymentEntry = _.find(chargeGroupsAry, function(each) {
-                    return each.name === 'Payments';
+                    return 'Payments' === each.name;
                 });
 
                 if ( !!paymentEntry ) {
@@ -172,9 +90,9 @@ sntRover.factory('RVReportUtilsFac', [
             };
 
             // merge value when its an object, else just assign
-            if ( typeof value === 'object' ) {
+            if ( 'object' === typeof value ) {
                 // DAMN! Our Angular version is very very old. Cant use this:
-
+                // angular.merge( {}, objRef[key], value );
                 $.extend( true, objRef[key], value );
             } else {
                 objRef[key] = value;
@@ -237,7 +155,7 @@ sntRover.factory('RVReportUtilsFac', [
                     };
 
             // if filter is this, make it selected by default
-            if ( objRef['title'] === __reportNames['CANCELLATION_NO_SHOW'] && includeCancelled[filter.value] ) {
+            if ( objRef['title'] == reportNames['CANCELLATION_NO_SHOW'] && includeCancelled[filter.value] ) {
                 selected = true;
                 objRef['hasGeneralOptions']['title'] = filter.description;
             };
@@ -254,7 +172,7 @@ sntRover.factory('RVReportUtilsFac', [
             };
 
             // if filter value is either of these, must include when report submit
-            if ( objRef['title'] === __reportNames['FORECAST_GUEST_GROUPS'] ) {
+            if ( objRef['title'] == reportNames['FORECAST_GUEST_GROUPS'] ) {
                 objRef['hasGeneralOptions']['title'] = filter.description;
             };
 
@@ -286,97 +204,101 @@ sntRover.factory('RVReportUtilsFac', [
 
         /**
          * Apply the specific icon class for each report
-         * @param  {Object} reportItem The ith report
+         * @param  {Object} report The ith report
          */
-        factory.applyIconClass = function ( reportItem ) {
-            switch ( reportItem['title'] ) {
-                case __reportNames['CHECK_IN_CHECK_OUT']:
-                    reportItem['reportIconCls'] = 'icon-report icon-check-in-check-out';
+        factory.applyIconClass = function ( report ) {
+            switch ( report['title'] ) {
+                case reportNames['CHECK_IN_CHECK_OUT']:
+                    report['reportIconCls'] = 'icon-report icon-check-in-check-out';
                     break;
 
-                case __reportNames['UPSELL']:
-                    reportItem['reportIconCls'] = 'icon-report icon-upsell';
+                case reportNames['UPSELL']:
+                    report['reportIconCls'] = 'icon-report icon-upsell';
                     break;
 
-                case __reportNames['WEB_CHECK_OUT_CONVERSION']:
-                    reportItem['reportIconCls'] = 'icon-report icon-check-out';
+                case reportNames['WEB_CHECK_OUT_CONVERSION']:
+                    report['reportIconCls'] = 'icon-report icon-check-out';
                     break;
 
-                case __reportNames['WEB_CHECK_IN_CONVERSION']:
-                    reportItem['reportIconCls'] = 'icon-report icon-check-in';
+                case reportNames['WEB_CHECK_IN_CONVERSION']:
+                    report['reportIconCls'] = 'icon-report icon-check-in';
                     break;
 
-                case __reportNames['LATE_CHECK_OUT']:
-                    reportItem['reportIconCls'] = 'guest-status late-check-out';
+                case reportNames['LATE_CHECK_OUT']:
+                    report['reportIconCls'] = 'guest-status late-check-out';
                     break;
 
-                case __reportNames['IN_HOUSE_GUEST']:
-                    reportItem['reportIconCls'] = 'guest-status inhouse';
+                case reportNames['IN_HOUSE_GUEST']:
+                    report['reportIconCls'] = 'guest-status inhouse';
                     break;
 
-                case __reportNames['ARRIVAL']:
-                    reportItem['reportIconCls'] = 'guest-status check-in';
+                case reportNames['ARRIVAL']:
+                    report['reportIconCls'] = 'guest-status check-in';
                     break;
 
-                case __reportNames['DEPARTURE']:
-                    reportItem['reportIconCls'] = 'guest-status check-out';
+                case reportNames['DEPARTURE']:
+                    report['reportIconCls'] = 'guest-status check-out';
                     break;
 
-                case __reportNames['CANCELLATION_NO_SHOW']:
-                    reportItem['reportIconCls'] = 'guest-status cancel';
+                case reportNames['CANCELLATION_NO_SHOW']:
+                    report['reportIconCls'] = 'guest-status cancel';
                     break;
 
-                case __reportNames['BOOKING_SOURCE_MARKET_REPORT']:
-                    reportItem['reportIconCls'] = 'icon-report icon-booking';
+                case reportNames['BOOKING_SOURCE_MARKET_REPORT']:
+                    report['reportIconCls'] = 'icon-report icon-booking';
                     break;
 
-                case __reportNames['LOGIN_AND_OUT_ACTIVITY']:
-                    reportItem['reportIconCls'] = 'icon-report icon-activity';
+                case reportNames['LOGIN_AND_OUT_ACTIVITY']:
+                    report['reportIconCls'] = 'icon-report icon-activity';
                     break;
 
-                case __reportNames['DEPOSIT_REPORT']:
-                    reportItem['reportIconCls'] = 'icon-report icon-deposit';
+                case reportNames['DEPOSIT_REPORT']:
+                    report['reportIconCls'] = 'icon-report icon-deposit';
                     break;
 
-                case __reportNames['OCCUPANCY_REVENUE_SUMMARY']:
-                    reportItem['reportIconCls'] = 'icon-report icon-occupancy';
+                case reportNames['OCCUPANCY_REVENUE_SUMMARY']:
+                    report['reportIconCls'] = 'icon-report icon-occupancy';
                     break;
 
-                case __reportNames['RESERVATIONS_BY_USER']:
-                    reportItem['reportIconCls'] = 'icon-report icon-reservations';
+                case reportNames['RESERVATIONS_BY_USER']:
+                    report['reportIconCls'] = 'icon-report icon-reservations';
                     break;
 
-                case __reportNames['DAILY_TRANSACTIONS']:
-                case __reportNames['DAILY_PAYMENTS']:
-                    reportItem['reportIconCls'] = 'icon-report icon-transactions';
+                case reportNames['DAILY_TRANSACTIONS']:
+                case reportNames['DAILY_PAYMENTS']:
+                    report['reportIconCls'] = 'icon-report icon-transactions';
                     break;
 
-                case __reportNames['ROOMS_QUEUED']:
-                    reportItem['reportIconCls'] = 'icons guest-status icon-queued';
+                case reportNames['ROOMS_QUEUED']:
+                    report['reportIconCls'] = 'icons guest-status icon-queued';
                     break;
 
-                case __reportNames['FORECAST_BY_DATE']:
-                    reportItem['reportIconCls'] = 'icon-report icon-forecast';
+                case reportNames['FORECAST_BY_DATE']:
+                    report['reportIconCls'] = 'icon-report icon-forecast';
                     break;
 
-                case __reportNames['MARKET_SEGMENT_STAT_REPORT']:
-                    reportItem['reportIconCls'] = 'icon-report icon-market';
+                case reportNames['MARKET_SEGMENT_STAT_REPORT']:
+                    report['reportIconCls'] = 'icon-report icon-market';
                     break;
 
-                case __reportNames['FORECAST_GUEST_GROUPS']:
-                    reportItem['reportIconCls'] = 'icon-report icon-forecast';
+                case reportNames['FORECAST_GUEST_GROUPS']:
+                    report['reportIconCls'] = 'icon-report icon-forecast';
                     break;
 
-                case __reportNames['COMPARISION_BY_DATE']:
-                    reportItem['reportIconCls'] = 'icon-report icon-comparison';
+                case reportNames['COMPARISION_BY_DATE']:
+                    report['reportIconCls'] = 'icon-report icon-comparison';
                     break;
 
-                case __reportNames['RATE_ADJUSTMENTS_REPORT']:
-                    reportItem['reportIconCls'] = 'icon-report icon-rate';
+                case reportNames['RATE_ADJUSTMENTS_REPORT']:
+                    report['reportIconCls'] = 'icon-report icon-rate';
+                    break;
+
+                case reportNames['GROUP_PICKUP_REPORT']:
+                    report['reportIconCls'] = 'icon-report icon-group';
                     break;
 
                 default:
-                    reportItem['reportIconCls'] = 'icon-report';
+                    report['reportIconCls'] = 'icon-report';
                     break;
             };
         };
@@ -388,72 +310,72 @@ sntRover.factory('RVReportUtilsFac', [
 
         /**
          * The various ways a particular report can behave, all specified here
-         * @param  {Object} reportItem The ith report
+         * @param  {Object} report The ith report
          * @TODO: Now that I think about it, this is not very efficient, we should find a better way to define and apply the behaviour.
          * Current implementation has many dependendcy across many files. Not Good.
          */
-        factory.applyFlags = function ( reportItem ) {
-            switch ( reportItem['title'] ) {
-                case __reportNames['ARRIVAL']:
-                    reportItem['hasDateLimit'] = false;
+        factory.applyFlags = function ( report ) {
+            switch ( report['title'] ) {
+                case reportNames['ARRIVAL']:
+                    report['hasDateLimit'] = false;
                     break;
 
-                case __reportNames['DEPARTURE']:
-                    reportItem['hasDateLimit'] = false;
+                case reportNames['DEPARTURE']:
+                    report['hasDateLimit'] = false;
                     break;
 
-                case __reportNames['CANCELLATION_NO_SHOW']:
-                    reportItem['hasDateLimit']  = false;
-                    reportItem['canRemoveDate'] = true;
+                case reportNames['CANCELLATION_NO_SHOW']:
+                    report['hasDateLimit']  = false;
+                    report['canRemoveDate'] = true;
                     break;
 
-                case __reportNames['BOOKING_SOURCE_MARKET_REPORT']:
-                    reportItem['canRemoveDate']       = true;
-                    reportItem['hasDateLimit']        = false;
-                    reportItem['hasArrivalDateLimit'] = false;
+                case reportNames['BOOKING_SOURCE_MARKET_REPORT']:
+                    report['canRemoveDate']       = true;
+                    report['hasDateLimit']        = false;
+                    report['hasArrivalDateLimit'] = false;
                     break;
 
-                case __reportNames['LOGIN_AND_OUT_ACTIVITY']:
-                    reportItem['hasDateLimit']  = false;
-                    reportItem['hasUserFilter'] = true;
+                case reportNames['LOGIN_AND_OUT_ACTIVITY']:
+                    report['hasDateLimit']  = false;
+                    report['hasUserFilter'] = true;
                     break;
 
-                case __reportNames['DEPOSIT_REPORT']:
-                    reportItem['hasDateLimit']  = false;
-                    reportItem['canRemoveDate'] = true;
+                case reportNames['DEPOSIT_REPORT']:
+                    report['hasDateLimit']  = false;
+                    report['canRemoveDate'] = true;
                     break;
 
-                case __reportNames['OCCUPANCY_REVENUE_SUMMARY']:
-                    reportItem['hasDateLimit'] = false;
+                case reportNames['OCCUPANCY_REVENUE_SUMMARY']:
+                    report['hasDateLimit'] = false;
                     break;
 
-                case __reportNames['RESERVATIONS_BY_USER']:
-                    reportItem['hasUserFilter'] = true;
-                    reportItem['hasDateLimit']  = false;
-                    reportItem['canRemoveDate'] = true;
+                case reportNames['RESERVATIONS_BY_USER']:
+                    report['hasUserFilter'] = true;
+                    report['hasDateLimit']  = false;
+                    report['canRemoveDate'] = true;
                     break;
 
-                case __reportNames['FORECAST_BY_DATE']:
-                case __reportNames['DAILY_TRANSACTIONS']:
-                case __reportNames['DAILY_PAYMENTS']:
-                    reportItem['hasDateLimit'] = false;
+                case reportNames['FORECAST_BY_DATE']:
+                case reportNames['DAILY_TRANSACTIONS']:
+                case reportNames['DAILY_PAYMENTS']:
+                    report['hasDateLimit'] = false;
                     break;
 
-                case __reportNames['MARKET_SEGMENT_STAT_REPORT']:
-                    reportItem['hasDateLimit'] = true;
+                case reportNames['MARKET_SEGMENT_STAT_REPORT']:
+                    report['hasDateLimit'] = true;
                     break;
 
-                case __reportNames['ROOMS_QUEUED']:
-                    reportItem['hasSysDateLimit'] = true;
+                case reportNames['ROOMS_QUEUED']:
+                    report['hasSysDateLimit'] = true;
                     break;
 
-                case __reportNames['RATE_ADJUSTMENTS_REPORT']:
-                    reportItem['hasUserFilter'] = true;
-                    reportItem['canRemoveDate'] = true;
+                case reportNames['RATE_ADJUSTMENTS_REPORT']:
+                    report['hasUserFilter'] = true;
+                    report['canRemoveDate'] = true;
                     break;
 
                 default:
-                    reportItem['hasDateLimit'] = false;     // CICO-16820: Changed to false
+                    report['hasDateLimit'] = false;     // CICO-16820: Changed to false
                     break;
             };
         };
@@ -465,16 +387,16 @@ sntRover.factory('RVReportUtilsFac', [
 
         /**
          * Process the filters and create proper DS to show and play in UI
-         * @param  {Object} reportItem The ith report
+         * @param  {Object} report The ith report
          * @param  {Object} data       Additonal data sources like CG, CC, Markets, Source etc
          */
-        factory.processFilters = function ( reportItem, data ) {
+        factory.processFilters = function ( report, data ) {
 
             // pre-process charge groups and charge codes
             var processedCGCC = {};
 
             // create DS for options combo box
-            __setData(reportItem, 'hasGeneralOptions', {
+            __setData(report, 'hasGeneralOptions', {
                 type         : 'FAUX_SELECT',
                 show         : false,
                 selectAll    : false,
@@ -484,10 +406,10 @@ sntRover.factory('RVReportUtilsFac', [
             });
 
             // create a name space for chosen options
-            reportItem.chosenOptions = {};
+            report.chosenOptions = {};
 
             // create DS for display combo box
-            __setData(reportItem, 'hasDisplay', {
+            __setData(report, 'hasDisplay', {
                 type         : 'FAUX_SELECT',
                 show         : false,
                 selectAll    : false,
@@ -497,141 +419,141 @@ sntRover.factory('RVReportUtilsFac', [
             });
 
             // track all the dates avaliable on this report
-            reportItem.allDates = [];
+            report.allDates = [];
 
             // going around and taking a note on filters
-            _.each(reportItem['filters'], function(filter) {
+            _.each(report['filters'], function(filter) {
 
                 if ( (filter.value === 'INCLUDE_CHARGE_CODE' || filter.value === 'INCLUDE_CHARGE_GROUP') && _.isEmpty(processedCGCC) ) {
-                    if ( reportItem['title'] === __reportNames['DAILY_TRANSACTIONS'] ) {
+                    if ( report['title'] === reportNames['DAILY_TRANSACTIONS'] ) {
                         processedCGCC = __adjustChargeGroupsCodes( data.chargeGroups, data.chargeCodes, 'REMOVE_PAYMENTS' );
                     };
 
-                    if ( reportItem['title'] === __reportNames['DAILY_PAYMENTS'] ) {
+                    if ( report['title'] === reportNames['DAILY_PAYMENTS'] ) {
                         processedCGCC = __adjustChargeGroupsCodes( data.chargeGroups, data.chargeCodes, 'ONLY_PAYMENTS' );
                     };
                 };
 
                 // check for date filter and keep a ref to that item
                 if ( filter.value === 'DATE_RANGE' ) {
-                    reportItem['hasDateFilter'] = filter;
+                    report['hasDateFilter'] = filter;
 
                     // for 'Cancellation & No Show' report the description should be 'Arrival Date Range'
                     // rather than the default 'Date Range'
-                    if ( reportItem['title'] === 'Cancellation & No Show' ) {
-                        reportItem['hasDateFilter']['description'] = 'Arrival Date Range';
+                    if ( report['title'] === 'Cancellation & No Show' ) {
+                        report['hasDateFilter']['description'] = 'Arrival Date Range';
                     };
 
                     // for 'Booking Source & Market Report' report the description should be 'Booked Date'
-                    if ( reportItem['title'] === 'Booking Source & Market Report' ) {
-                        reportItem['hasDateFilter']['description'] = 'Booked Date';
+                    if ( report['title'] === 'Booking Source & Market Report' ) {
+                        report['hasDateFilter']['description'] = 'Booked Date';
                     };
 
                     // track - showRemove flag, model names.
                     // push date name to 'allDates'
-                    angular.extend(reportItem['hasDateFilter'], {
+                    angular.extend(report['hasDateFilter'], {
                         showRemove : true,
                         fromModel  : 'fromDate',
                         untilModel : 'untilDate'
                     });
-                    reportItem.allDates.push( 'hasDateFilter' );
+                    report.allDates.push( 'hasDateFilter' );
                 };
 
                 // check for cancellation date filter and keep a ref to that item
                 if ( filter.value === 'CANCELATION_DATE_RANGE' || filter.value === 'CANCELLATION_DATE_RANGE' ) {
-                    reportItem['hasCancelDateFilter'] = filter;
+                    report['hasCancelDateFilter'] = filter;
 
                     // track - showRemove flag, model names.
                     // push date name to 'allDates'
-                    angular.extend(reportItem['hasCancelDateFilter'], {
+                    angular.extend(report['hasCancelDateFilter'], {
                         showRemove : true,
                         fromModel  : 'fromCancelDate',
                         untilModel : 'untilCancelDate'
                     });
-                    reportItem.allDates.push( 'hasCancelDateFilter' );
+                    report.allDates.push( 'hasCancelDateFilter' );
                 };
 
                 // check for arrival date filter and keep a ref to that item
                 if ( filter.value === 'ARRIVAL_DATE_RANGE' ) {
-                    reportItem['hasArrivalDateFilter'] = filter;
+                    report['hasArrivalDateFilter'] = filter;
 
                     // track - showRemove flag, model names.
                     // push date name to 'allDates'
-                    angular.extend(reportItem['hasArrivalDateFilter'], {
+                    angular.extend(report['hasArrivalDateFilter'], {
                         showRemove : true,
                         fromModel  : 'fromArrivalDate',
                         untilModel : 'untilArrivalDate'
                     });
-                    reportItem.allDates.push( 'hasArrivalDateFilter' );
+                    report.allDates.push( 'hasArrivalDateFilter' );
                 };
 
                 // check for Deposit due date range filter and keep a ref to that item
                 if ( filter.value === 'DEPOSIT_DATE_RANGE' ) {
-                    reportItem['hasDepositDateFilter'] = filter;
+                    report['hasDepositDateFilter'] = filter;
 
                     // track - showRemove flag, model names.
                     // push date name to 'allDates'
-                    angular.extend(reportItem['hasDepositDateFilter'], {
+                    angular.extend(report['hasDepositDateFilter'], {
                         showRemove : true,
                         fromModel  : 'fromDepositDate',
                         untilModel : 'untilDepositDate'
                     });
-                    reportItem.allDates.push( 'hasDepositDateFilter' );
+                    report.allDates.push( 'hasDepositDateFilter' );
                 };
 
                 // check for create date range filter and keep a ref to that item
                 if ( filter.value === 'CREATE_DATE_RANGE' ) {
-                    reportItem['hasCreateDateFilter'] = filter;
+                    report['hasCreateDateFilter'] = filter;
 
                     // track - showRemove flag, model names.
                     // push date name to 'allDates'
-                    angular.extend(reportItem['hasCreateDateFilter'], {
+                    angular.extend(report['hasCreateDateFilter'], {
                         showRemove : true,
                         fromModel  : 'fromCreateDate',
                         untilModel : 'untilCreateDate'
                     });
-                    reportItem.allDates.push( 'hasCreateDateFilter' );
+                    report.allDates.push( 'hasCreateDateFilter' );
                 };
 
                 // check for paid date range filter and keep a ref to that item
                 if ( filter.value === 'PAID_DATE_RANGE' ) {
-                    reportItem['hasPaidDateRange'] = filter;
+                    report['hasPaidDateRange'] = filter;
 
                     // track - showRemove flag, model names.
                     // push date name to 'allDates'
-                    angular.extend(reportItem['hasPaidDateRange'], {
+                    angular.extend(report['hasPaidDateRange'], {
                         showRemove : true,
                         fromModel  : 'fromPaidDate',
                         untilModel : 'untilPaidDate'
                     });
-                    reportItem.allDates.push( 'hasPaidDateRange' );
+                    report.allDates.push( 'hasPaidDateRange' );
                 };
 
                 // check for "by single date" filter and keep a ref to that item
                 if ( filter.value === 'SINGLE_DATE' ) {
-                    reportItem['hasSingleDateFilter'] = filter;
+                    report['hasSingleDateFilter'] = filter;
 
                     // track - showRemove flag, model names.
                     // push date name to 'allDates'
-                    angular.extend(reportItem['hasSingleDateFilter'], {
+                    angular.extend(report['hasSingleDateFilter'], {
                         showRemove : true,
                         fromModel  : 'singleValueDate'
                     });
-                    reportItem.allDates.push( 'hasSingleDateFilter' );
+                    report.allDates.push( 'hasSingleDateFilter' );
                 };
 
                 // check for rate adjustment date range filter and keep a ref to that item
                 if ( filter.value === 'ADJUSTMENT_DATE_RANGE' ) {
-                    reportItem['hasAdjustmentDateRange'] = filter;
+                    report['hasAdjustmentDateRange'] = filter;
 
                     // track - showRemove flag, model names.
                     // push date name to 'allDates'
-                    angular.extend(reportItem['hasAdjustmentDateRange'], {
+                    angular.extend(report['hasAdjustmentDateRange'], {
                         showRemove : true,
                         fromModel  : 'fromAdjustmentDate',
                         untilModel : 'untilAdjustmentDate'
                     });
-                    reportItem.allDates.push( 'hasAdjustmentDateRange' );
+                    report.allDates.push( 'hasAdjustmentDateRange' );
                 };
 
 
@@ -640,8 +562,8 @@ sntRover.factory('RVReportUtilsFac', [
                 // check for time filter and keep a ref to that item
                 // create std 15min stepped time slots
                 if ( filter.value === 'TIME_RANGE' ) {
-                    reportItem['hasTimeFilter'] = filter;
-                    reportItem['timeFilterOptions'] = factory.createTimeSlots();
+                    report['hasTimeFilter'] = filter;
+                    report['timeFilterOptions'] = factory.createTimeSlots();
                 };
 
 
@@ -650,8 +572,8 @@ sntRover.factory('RVReportUtilsFac', [
                 // check for CICO filter and keep a ref to that item
                 // create the CICO filter options
                 if ( filter.value === 'CICO' ) {
-                    reportItem['hasCicoFilter'] = filter;
-                    reportItem['cicoOptions'] = [{
+                    report['hasCicoFilter'] = filter;
+                    report['cicoOptions'] = [{
                         value: 'BOTH',
                         label: 'Show Check Ins and  Check Outs'
                     }, {
@@ -668,7 +590,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                 // check for include company/ta/group filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_COMPANYCARD_TA_GROUP' || filter.value === 'GROUP_COMPANY_TA_CARD' ) {
-                    reportItem['hasIncludeComapnyTaGroup'] = filter;
+                    report['hasIncludeComapnyTaGroup'] = filter;
                 };
 
 
@@ -676,28 +598,28 @@ sntRover.factory('RVReportUtilsFac', [
 
                 // fill up DS for options combo box
                 if ( __optionFilterNames[filter.value] ) {
-                    __pushGeneralOptionData( reportItem, filter );
+                    __pushGeneralOptionData( report, filter );
                 };
 
                 // fill up DS for display combo box
                 if ( __displayFilterNames[filter.value] ) {
 
-
+                    //__pushDisplayData( report, filter );
                     //
                     // QUICK PATCH
                     // TODO: replace with a better solution
-                    if ( reportItem.title === __reportNames['MARKET_SEGMENT_STAT_REPORT'] ) {
-                        if ( filter.value === 'INCLUDE_MARKET' && data.codeSettings['is_market_on'] ) {
-                            __pushDisplayData( reportItem, filter );
+                    if ( report.title == reportNames['MARKET_SEGMENT_STAT_REPORT'] ) {
+                        if ( filter.value == 'INCLUDE_MARKET' && data.codeSettings['is_market_on'] ) {
+                            __pushDisplayData( report, filter );
                         } else if ( filter.value === 'INCLUDE_ORIGIN' && data.codeSettings['is_origin_on'] ) {
-                            __pushDisplayData( reportItem, filter );
+                            __pushDisplayData( report, filter );
                         } else if ( filter.value === 'INCLUDE_SEGMENT' && data.codeSettings['is_segments_on'] ) {
-                            __pushDisplayData( reportItem, filter );
+                            __pushDisplayData( report, filter );
                         } else if ( filter.value === 'INCLUDE_SOURCE' && data.codeSettings['is_source_on'] ) {
-                            __pushDisplayData( reportItem, filter );
+                            __pushDisplayData( report, filter );
                         };
                     } else {
-                        __pushDisplayData( reportItem, filter );
+                        __pushDisplayData( report, filter );
                     };
                 };
 
@@ -707,7 +629,7 @@ sntRover.factory('RVReportUtilsFac', [
                 // check for "include guarantee type" and keep a ref to that item
                 // create the filter option only when there is any data
                 if ( filter.value === 'INCLUDE_GUARANTEE_TYPE' && data.guaranteeTypes.length ) {
-                    __setData(reportItem, 'hasGuaranteeType', {
+                    __setData(report, 'hasGuaranteeType', {
                         type         : 'FAUX_SELECT',
                         filter       : filter,
                         show         : false,
@@ -721,7 +643,7 @@ sntRover.factory('RVReportUtilsFac', [
                 // check for "by charge group" and keep a ref to that item
                 // create the filter option only when there is any data
                 if ( filter.value === 'INCLUDE_CHARGE_GROUP' && processedCGCC.chargeGroups.length ) {
-                    __setData(reportItem, 'hasByChargeGroup', {
+                    __setData(report, 'hasByChargeGroup', {
                         type         : 'FAUX_SELECT',
                         filter       : filter,
                         show         : false,
@@ -735,7 +657,7 @@ sntRover.factory('RVReportUtilsFac', [
                 // check for "by charge group" and keep a ref to that item
                 // create the filter option only when there is any data
                 if ( filter.value === 'INCLUDE_CHARGE_CODE' && processedCGCC.chargeCodes.length ) {
-                    __setData(reportItem, 'hasByChargeCode', {
+                    __setData(report, 'hasByChargeCode', {
                         type         : 'FAUX_SELECT',
                         filter       : filter,
                         show         : false,
@@ -749,7 +671,7 @@ sntRover.factory('RVReportUtilsFac', [
                 // check for "show markets" and keep a ref to that item
                 // create the filter option only when there is any data
                 if ( filter.value === 'CHOOSE_MARKET' && data.markets.length ) {
-                    __setData(reportItem, 'hasMarketsList', {
+                    __setData(report, 'hasMarketsList', {
                         type         : 'FAUX_SELECT',
                         filter       : filter,
                         show         : false,
@@ -763,7 +685,7 @@ sntRover.factory('RVReportUtilsFac', [
                 // check for "show sources" and keep a ref to that item
                 // create the filter option only when there is any data
                 if ( filter.value === 'CHOOSE_SOURCE' && data.sources.length ) {
-                    __setData(reportItem, 'hasSourcesList', {
+                    __setData(report, 'hasSourcesList', {
                         type         : 'FAUX_SELECT',
                         filter       : filter,
                         show         : false,
@@ -777,7 +699,7 @@ sntRover.factory('RVReportUtilsFac', [
                 // check for "show origins" and keep a ref to that item
                 // create the filter option only when there is any data
                 if ( filter.value === 'CHOOSE_BOOKING_ORIGIN' && data.origins.length ) {
-                    __setData(reportItem, 'hasOriginsList', {
+                    __setData(report, 'hasOriginsList', {
                         type         : 'FAUX_SELECT',
                         filter       : filter,
                         show         : false,
@@ -791,7 +713,7 @@ sntRover.factory('RVReportUtilsFac', [
                 // check for "hold status" and keep a ref to that item
                 // create the filter option only when there is any data
                 if ( filter.value === 'HOLD_STATUS' && data.holdStatus.length ) {
-                    __setData(reportItem, 'hasHoldStatus', {
+                    __setData(report, 'hasHoldStatus', {
                         type         : 'FAUX_SELECT',
                         filter       : filter,
                         show         : false,
@@ -809,10 +731,10 @@ sntRover.factory('RVReportUtilsFac', [
 
 
         // to process the report group by
-        factory.processGroupBy = function ( reportItem ) {
+        factory.processGroupBy = function ( report ) {
             // remove the value for 'BLANK'
-            if ( reportItem['group_fields'] && reportItem['group_fields'].length ) {
-                reportItem['groupByOptions'] = _.reject(reportItem['group_fields'], { value: 'BLANK' });
+            if ( report['group_fields'] && report['group_fields'].length ) {
+                report['groupByOptions'] = _.reject(report['group_fields'], { value: 'BLANK' });
             };
         };
 
@@ -822,121 +744,139 @@ sntRover.factory('RVReportUtilsFac', [
 
 
         // to reorder the sort by to match the report details column positon
-        factory.reOrderSortBy = function ( reportItem ) {
+        factory.reOrderSortBy = function ( report ) {
 
             // for (arrival, departure) report the sort by items must be
             // ordered in a specific way as per the design
             // [date - name - room] > TO > [room - name - date]
-            if ( reportItem['title'] === __reportNames['ARRIVAL'] ||
-                 reportItem['title'] === __reportNames['DEPARTURE'] ) {
-                var dateSortBy = angular.copy( reportItem['sort_fields'][0] ),
-                    roomSortBy = angular.copy( reportItem['sort_fields'][2] );
+            if ( report['title'] === reportNames['ARRIVAL'] ||
+                 report['title'] === reportNames['DEPARTURE'] ) {
+                var dateSortBy = angular.copy( report['sort_fields'][0] ),
+                    roomSortBy = angular.copy( report['sort_fields'][2] );
 
                 dateSortBy['colspan'] = 2;
                 roomSortBy['colspan'] = 0;
 
-                reportItem['sort_fields'][0] = roomSortBy;
-                reportItem['sort_fields'][2] = dateSortBy;
+                report['sort_fields'][0] = roomSortBy;
+                report['sort_fields'][2] = dateSortBy;
             };
 
             // for in-house report the sort by items must be
             // ordered in a specific way as per the design
             // [name - room] > TO > [room - name]
-            if ( reportItem['title'] === __reportNames['IN_HOUSE_GUEST'] ) {
-                var nameSortBy = angular.copy( reportItem['sort_fields'][0] ),
-                    roomSortBy = angular.copy( reportItem['sort_fields'][1] );
+            if ( report['title'] === reportNames['IN_HOUSE_GUEST'] ) {
+                var nameSortBy = angular.copy( report['sort_fields'][0] ),
+                    roomSortBy = angular.copy( report['sort_fields'][1] );
 
                 nameSortBy['colspan'] = 2;
                 roomSortBy['colspan'] = 0;
 
-                reportItem['sort_fields'][0] = roomSortBy;
-                reportItem['sort_fields'][1] = nameSortBy;
+                report['sort_fields'][0] = roomSortBy;
+                report['sort_fields'][1] = nameSortBy;
             };
 
             // for Login and out Activity report
             // the colspans should be adjusted
             // the sort descriptions should be update to design
             //    THIS MUST NOT BE CHANGED IN BACKEND
-            if ( reportItem['title'] === __reportNames['LOGIN_AND_OUT_ACTIVITY'] ) {
-                reportItem['sort_fields'][0]['description'] = 'Date & Time';
+            if ( report['title'] === reportNames['LOGIN_AND_OUT_ACTIVITY'] ) {
+                report['sort_fields'][0]['description'] = 'Date & Time';
 
-                reportItem['sort_fields'][0]['colspan'] = 2;
-                reportItem['sort_fields'][1]['colspan'] = 2;
+                report['sort_fields'][0]['colspan'] = 2;
+                report['sort_fields'][1]['colspan'] = 2;
             };
 
 
             // need to reorder the sort_by options
             // for deposit report in the following order
-            if ( reportItem['title'] === __reportNames['DEPOSIT_REPORT'] ) {
-                var reservationSortBy = angular.copy( reportItem['sort_fields'][4] ),
-                    dueDateSortBy     = angular.copy( reportItem['sort_fields'][1] ),
-                    paidDateSortBy    = angular.copy( reportItem['sort_fields'][2] );
+            if ( report['title'] === reportNames['DEPOSIT_REPORT'] ) {
+                var reservationSortBy = angular.copy( report['sort_fields'][4] ),
+                    dueDateSortBy     = angular.copy( report['sort_fields'][1] ),
+                    paidDateSortBy    = angular.copy( report['sort_fields'][2] );
 
-                reportItem['sort_fields'][0] = reservationSortBy;
-                reportItem['sort_fields'][1] = null;
-                reportItem['sort_fields'][2] = dueDateSortBy;
-                reportItem['sort_fields'][3] = null;
-                reportItem['sort_fields'][4] = paidDateSortBy;
-                reportItem['sort_fields'][5] = null;
+                report['sort_fields'][0] = reservationSortBy;
+                report['sort_fields'][1] = null;
+                report['sort_fields'][2] = dueDateSortBy;
+                report['sort_fields'][3] = null;
+                report['sort_fields'][4] = paidDateSortBy;
+                report['sort_fields'][5] = null;
             };
 
             // need to reorder the sort_by options
             // for Reservation by User in the following order
-            if ( reportItem['title'] === __reportNames['RESERVATIONS_BY_USER'] ) {
-                var reservationType = angular.copy( reportItem['sort_fields'][6] ),
-                    guestName       = angular.copy( reportItem['sort_fields'][3] ),
-                    arrivalDate     = angular.copy( reportItem['sort_fields'][1] ),
-                    rateAmount      = angular.copy( reportItem['sort_fields'][5] ),
-                    createdOn       = angular.copy( reportItem['sort_fields'][0] ),
-                    guranteeType    = angular.copy( reportItem['sort_fields'][2] ),
-                    overrideAmount  = angular.copy( reportItem['sort_fields'][4] );
+            if ( report['title'] === reportNames['RESERVATIONS_BY_USER'] ) {
+                var reservationType = angular.copy( report['sort_fields'][6] ),
+                    guestName       = angular.copy( report['sort_fields'][3] ),
+                    arrivalDate     = angular.copy( report['sort_fields'][1] ),
+                    rateAmount      = angular.copy( report['sort_fields'][5] ),
+                    createdOn       = angular.copy( report['sort_fields'][0] ),
+                    guranteeType    = angular.copy( report['sort_fields'][2] ),
+                    overrideAmount  = angular.copy( report['sort_fields'][4] );
 
-                reportItem['sort_fields'][0] = reservationType;
-                reportItem['sort_fields'][1] = guestName;
-                reportItem['sort_fields'][2] = arrivalDate;
-                reportItem['sort_fields'][3] = rateAmount;
-                reportItem['sort_fields'][4] = createdOn;
-                reportItem['sort_fields'][5] = guranteeType;
-                reportItem['sort_fields'][6] = overrideAmount;
-                reportItem['sort_fields'][7] = null;
+                report['sort_fields'][0] = reservationType;
+                report['sort_fields'][1] = guestName;
+                report['sort_fields'][2] = arrivalDate;
+                report['sort_fields'][3] = rateAmount;
+                report['sort_fields'][4] = createdOn;
+                report['sort_fields'][5] = guranteeType;
+                report['sort_fields'][6] = overrideAmount;
+                report['sort_fields'][7] = null;
             };
 
             // need to reorder the sort_by options
             // for daily transactions in the following order
-            if ( reportItem['title'] === __reportNames['DAILY_TRANSACTIONS'] ||
-                    reportItem['title'] === __reportNames['DAILY_PAYMENTS'] ) {
-                var chargeGroup = angular.copy( reportItem['sort_fields'][1] ),
-                    chargeCode  = angular.copy( reportItem['sort_fields'][0] ),
-                    revenue     = angular.copy( reportItem['sort_fields'][3] ),
-                    mtd         = angular.copy( reportItem['sort_fields'][2] ),
-                    ytd         = angular.copy( reportItem['sort_fields'][4] );
+            if ( report['title'] === reportNames['DAILY_TRANSACTIONS'] ||
+                    report['title'] === reportNames['DAILY_PAYMENTS'] ) {
+                var chargeGroup = angular.copy( report['sort_fields'][1] ),
+                    chargeCode  = angular.copy( report['sort_fields'][0] ),
+                    revenue     = angular.copy( report['sort_fields'][3] ),
+                    mtd         = angular.copy( report['sort_fields'][2] ),
+                    ytd         = angular.copy( report['sort_fields'][4] );
 
-                reportItem['sort_fields'][0] = chargeGroup;
-                reportItem['sort_fields'][1] = chargeCode;
-                reportItem['sort_fields'][2] = null;
-                reportItem['sort_fields'][3] = revenue;
-                reportItem['sort_fields'][4] = null;
-                reportItem['sort_fields'][5] = null;
-                reportItem['sort_fields'][6] = mtd;
-                reportItem['sort_fields'][7] = null;
-                reportItem['sort_fields'][8] = null;
-                reportItem['sort_fields'][9] = ytd;
+                report['sort_fields'][0] = chargeGroup;
+                report['sort_fields'][1] = chargeCode;
+                report['sort_fields'][2] = null;
+                report['sort_fields'][3] = revenue;
+                report['sort_fields'][4] = null;
+                report['sort_fields'][5] = null;
+                report['sort_fields'][6] = mtd;
+                report['sort_fields'][7] = null;
+                report['sort_fields'][8] = null;
+                report['sort_fields'][9] = ytd;
             };
 
             // need to reorder the sort_by options
             // for rate adjustment report in the following order
-            if ( reportItem['title'] === __reportNames['RATE_ADJUSTMENTS_REPORT'] ) {
-                var date      = angular.copy( reportItem['sort_fields'][1] ),
-                    guestUser = angular.copy( reportItem['sort_fields'][0] ),
-                    user      = angular.copy( reportItem['sort_fields'][2] );
+            if ( report['title'] === reportNames['RATE_ADJUSTMENTS_REPORT'] ) {
+                var date      = angular.copy( report['sort_fields'][1] ),
+                    guestUser = angular.copy( report['sort_fields'][0] ),
+                    user      = angular.copy( report['sort_fields'][2] );
 
-                reportItem['sort_fields'][0] = guestUser;
-                reportItem['sort_fields'][1] = date;
-                reportItem['sort_fields'][2] = null;
-                reportItem['sort_fields'][3] = null;
-                reportItem['sort_fields'][4] = null;
-                reportItem['sort_fields'][5] = null;
-                reportItem['sort_fields'][6] = user;
+                report['sort_fields'][0] = guestUser;
+                report['sort_fields'][1] = date;
+                report['sort_fields'][2] = null;
+                report['sort_fields'][3] = null;
+                report['sort_fields'][4] = null;
+                report['sort_fields'][5] = null;
+                report['sort_fields'][6] = user;
+            };
+
+            // need to reorder the sort_by options
+            // for group pick report in the following order
+            if ( report['title'] === reportNames['GROUP_PICKUP_REPORT'] ) {
+                var groupName  = angular.copy( report['sort_fields'][1] ),
+                    date       = angular.copy( report['sort_fields'][0] ),
+                    holdStatus = angular.copy( report['sort_fields'][2] );
+
+                report['sort_fields'][0] = groupName;
+                report['sort_fields'][1] = date;
+                report['sort_fields'][2] = holdStatus;
+                report['sort_fields'][3] = null;
+                report['sort_fields'][4] = null;
+                report['sort_fields'][5] = null;
+                report['sort_fields'][6] = null;
+                report['sort_fields'][7] = null;
+                report['sort_fields'][8] = null;
             };
         };
 
@@ -945,20 +885,20 @@ sntRover.factory('RVReportUtilsFac', [
 
 
         // to process the report sort by
-        factory.processSortBy = function ( reportItem ) {
+        factory.processSortBy = function ( report ) {
 
             // sort by options - include sort direction
-            if ( reportItem['sort_fields'] && reportItem['sort_fields'].length ) {
-                _.each(reportItem['sort_fields'], function(item, index, list) {
+            if ( report['sort_fields'] && report['sort_fields'].length ) {
+                _.each(report['sort_fields'], function(item, index, list) {
 
-                    if ( item !== null ) {
+                    if ( !! item ) {
                         item['sortDir'] = undefined;
                     };
 
                 });
 
                 // adding custom name ref for easy access
-                reportItem['sortByOptions'] = reportItem['sort_fields'];
+                report['sortByOptions'] = report['sort_fields'];
             };
         };
 
@@ -967,65 +907,65 @@ sntRover.factory('RVReportUtilsFac', [
 
 
         // to assign inital date values for this report
-        factory.initDateValues = function ( reportItem ) {
+        factory.initDateValues = function ( report ) {
             var _getDates = factory.processDate();
 
-            switch ( reportItem['title'] ) {
+            switch ( report['title'] ) {
 
                 // dates range must be the current business date
-                case __reportNames['ARRIVAL']:
-                case __reportNames['DEPARTURE']:
-                    reportItem['fromDate']  = _getDates.businessDate;
-                    reportItem['untilDate'] = _getDates.businessDate;
+                case reportNames['ARRIVAL']:
+                case reportNames['DEPARTURE']:
+                    report['fromDate']  = _getDates.businessDate;
+                    report['untilDate'] = _getDates.businessDate;
                     break;
 
                 // arrival date range must be from business date to a week after
                 // deposit date range must the current business date
-                case __reportNames['DEPOSIT_REPORT']:
-                    reportItem['fromArrivalDate']  = _getDates.businessDate;
-                    reportItem['untilArrivalDate'] = _getDates.aWeekAfter;
+                case reportNames['DEPOSIT_REPORT']:
+                    report['fromArrivalDate']  = _getDates.businessDate;
+                    report['untilArrivalDate'] = _getDates.aWeekAfter;
                     /**/
-                    reportItem['fromDepositDate']  = _getDates.businessDate;
-                    reportItem['untilDepositDate'] = _getDates.businessDate;
+                    report['fromDepositDate']  = _getDates.businessDate;
+                    report['untilDepositDate'] = _getDates.businessDate;
                     /**/
-                    reportItem['fromPaidDate']  = _getDates.businessDate;
-                    reportItem['untilPaidDate'] = _getDates.businessDate;
+                    report['fromPaidDate']  = _getDates.businessDate;
+                    report['untilPaidDate'] = _getDates.businessDate;
                     break;
 
                 // date range must be yesterday - relative to current business date
-                case __reportNames['OCCUPANCY_REVENUE_SUMMARY']:
-                    reportItem['fromDate']  = _getDates.yesterday;
-                    reportItem['untilDate'] = _getDates.yesterday;
+                case reportNames['OCCUPANCY_REVENUE_SUMMARY']:
+                    report['fromDate']  = _getDates.yesterday;
+                    report['untilDate'] = _getDates.yesterday;
                     break;
 
                 // date range must be yesterday - relative to current business date
-                case __reportNames['DAILY_TRANSACTIONS']:
-                case __reportNames['DAILY_PAYMENTS']:
-                case __reportNames['MARKET_SEGMENT_STAT_REPORT']:
-                case __reportNames['COMPARISION_BY_DATE']:
-                    reportItem['singleValueDate']  = _getDates.yesterday;
+                case reportNames['DAILY_TRANSACTIONS']:
+                case reportNames['DAILY_PAYMENTS']:
+                case reportNames['MARKET_SEGMENT_STAT_REPORT']:
+                case reportNames['COMPARISION_BY_DATE']:
+                    report['singleValueDate']  = _getDates.yesterday;
                     break;
 
                 // dates range must be the current business date
-                case __reportNames['FORECAST_BY_DATE']:
-                case __reportNames['FORECAST_GUEST_GROUPS']:
-                    reportItem['fromDate']  = _getDates.businessDate;
-                    reportItem['untilDate'] = _getDates.aMonthAfter;
+                case reportNames['FORECAST_BY_DATE']:
+                case reportNames['FORECAST_GUEST_GROUPS']:
+                    report['fromDate']  = _getDates.businessDate;
+                    report['untilDate'] = _getDates.aMonthAfter;
                     break;
 
                 // by default date range must be from a week ago to current business date
                 default:
-                    reportItem['fromDate']            = _getDates.aWeekAgo;
-                    reportItem['fromCancelDate']      = _getDates.aWeekAgo;
-                    reportItem['fromArrivalDate']     = _getDates.aWeekAgo;
-                    reportItem['fromCreateDate']      = _getDates.aWeekAgo;
-                    reportItem['fromAdjustmentDate']  = _getDates.aWeekAgo;
+                    report['fromDate']            = _getDates.aWeekAgo;
+                    report['fromCancelDate']      = _getDates.aWeekAgo;
+                    report['fromArrivalDate']     = _getDates.aWeekAgo;
+                    report['fromCreateDate']      = _getDates.aWeekAgo;
+                    report['fromAdjustmentDate']  = _getDates.aWeekAgo;
                     /**/
-                    reportItem['untilDate']            = _getDates.businessDate;
-                    reportItem['untilCancelDate']      = _getDates.businessDate;
-                    reportItem['untilArrivalDate']     = _getDates.businessDate;
-                    reportItem['untilCreateDate']      = _getDates.businessDate;
-                    reportItem['untilAdjustmentDate']  = _getDates.businessDate;
+                    report['untilDate']            = _getDates.businessDate;
+                    report['untilCancelDate']      = _getDates.businessDate;
+                    report['untilArrivalDate']     = _getDates.businessDate;
+                    report['untilCreateDate']      = _getDates.businessDate;
+                    report['untilAdjustmentDate']  = _getDates.businessDate;
                     break;
             };
         };
