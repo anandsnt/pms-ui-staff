@@ -443,7 +443,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
                 var params = {
                     group_id                : $scope.groupConfigData.summary.group_id,
-                    changeReservationDates  : changeReservationDates
+                    change_reservation_dates: changeReservationDates
                 };
 
                 if (arrChangeOnly) {
