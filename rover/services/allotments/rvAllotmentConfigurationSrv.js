@@ -41,7 +41,7 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 		this.getHoldStatusList = function() {
 			var deferred = $q.defer(),
 
-				url = '/api/group_hold_statuses';
+				url = '/api/allotment_hold_statuses';
 
 			rvBaseWebSrvV2.getJSON(url).then(
 				function(data) {
@@ -421,7 +421,7 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 		 */
 		this.getRates = function(data) {
 			var deferred = $q.defer(),
-				url = 'api/groups/rates';
+				url = 'api/allotments/rates';
 			rvBaseWebSrvV2.getJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
@@ -433,7 +433,7 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 
 		this.toggleHideRate = function( params ){
 			var deferred = $q.defer(),
-				url = 'api/groups/'+params.allotment_id+'/hide_rates';
+				url = 'api/allotments/'+params.allotment_id+'/hide_rates';
 				rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 				   	 deferred.resolve(data);
 				},function(data){
@@ -444,7 +444,7 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 
 		this.updateRate = function(params) {
 			var deferred = $q.defer(),
-				url = 'api/groups/'+params.allotment_id+'/change_rate';
+				url = 'api/allotments/'+params.allotment_id+'/change_rate';
 				rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 				   	 deferred.resolve(data);
 				},function(data){
