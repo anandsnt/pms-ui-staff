@@ -30,10 +30,12 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
 		$scope.data.holdStatuses.map(function(x){
 			if(x.id===id)
 				{
-				$scope.holdstatusData.name =x.name;
-				$scope.holdstatusData.id =x.id;
-				$scope.holdstatusData.is_take_from_inventory =x.is_take_from_inventory;
-				$scope.holdstatusData.is_system=x.is_system;
+					$scope.holdstatusData.name =x.name;
+					$scope.holdstatusData.id = x.id;
+					$scope.holdstatusData.is_take_from_inventory = x.is_take_from_inventory;
+					$scope.holdstatusData.is_system = x.is_system;
+					$scope.holdstatusData.is_group_only = x.is_group_only;
+					$scope.holdstatusData.is_allotment_only = x.is_allotment_only;
 				}
 		});
 	};
@@ -76,6 +78,9 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
 	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].name = $scope.holdstatusData.name;
 	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_take_from_inventory = $scope.holdstatusData.is_take_from_inventory;
 	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_system=$scope.holdstatusData.is_system;
+	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_system=$scope.holdstatusData.is_system;
+	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_group_only=$scope.holdstatusData.is_group_only;
+	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_allotment_only=$scope.holdstatusData.is_allotment_only;
 	    	}
     		$scope.currentClickedElement = -1;
     	};
