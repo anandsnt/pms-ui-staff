@@ -41,7 +41,7 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 		this.getHoldStatusList = function() {
 			var deferred = $q.defer(),
 
-				url = '/api/allotment_hold_statuses';
+				url = '/api/group_hold_statuses';
 
 			rvBaseWebSrvV2.getJSON(url).then(
 				function(data) {
