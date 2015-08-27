@@ -479,9 +479,11 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 					triggerLaterArrivalDateChange();
 			}
 
-			// let the date update
-			else {
-				$scope.updateGroupSummary();
+			// let the date update if it is future group as well is in edit mode
+			else if (!$scope.isInAddMode() && !refData.is_a_past_group){
+				$timeout(function() {
+					$scope.updateGroupSummary();
+				}, 100);				
 			}
 
 			// we will clear end date if chosen start date is greater than end date
@@ -526,9 +528,11 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				triggerLaterDepartureDateChange();
 			}
 
-			// let the date update
-			else {
-				$scope.updateGroupSummary();
+			// let the date update if it is future group as well is in edit mode
+			else if (!$scope.isInAddMode() && !refData.is_a_past_group){
+				$timeout(function() {
+					$scope.updateGroupSummary();
+				}, 100);				
 			}
 
 			//setting the max date for start Date

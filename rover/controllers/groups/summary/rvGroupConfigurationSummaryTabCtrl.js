@@ -1,5 +1,5 @@
-sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv', 'RVReservationCardSrv', 'rvUtilSrv', '$state', 'rvPermissionSrv',
-	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv) {
+sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv', 'RVReservationCardSrv', 'rvUtilSrv', '$state', 'rvPermissionSrv', '$timeout',
+	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv, $timeout) {
 
 
 		var summaryMemento, demographicsMemento;
@@ -82,7 +82,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					oldFromDate 	: oldSumryData.block_from,
 					oldToDate 		: oldSumryData.block_to,
 					successCallBack : successCallBackOfMoveButton,
-					failureCallBack : failureCallBackOfMoveButton
+					failureCallBack : failureCallBackOfMoveButton,
+					cancelPopupCallBack	: cancelCallBackofDateChange
 				};
 			$scope.changeDatesActions.clickedOnMoveSaveButton (options);
 		};		
@@ -325,15 +326,19 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			//arrival right date change
 			else if(newBlockFrom > oldBlockFrom && $scope.changeDatesActions.arrDateRightChangeAllowed()) {
 				// check move validity
-				if(new tzIndependentDate(refData.first_dep_date) <= newBlockFrom)
+				if(new tzIndependentDate(refData.first_dep_date) <= newBlockFrom) {
 					triggerLaterArrivalDateChangeInvalidError();
-				else
+				}
+				else {
 					triggerLaterArrivalDateChange();
+				}
 			}
 
-			// let the date update
-			else {
-				$scope.updateGroupSummary();
+			// let the date update if it is future group as well is in edit mode
+			else if (!$scope.isInAddMode() && !refData.is_a_past_group){
+				$timeout(function() {
+					$scope.updateGroupSummary();
+				}, 100);				
 			}
 
 			//setting the min date for end Date
@@ -408,10 +413,12 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			// departure left date change
 			if(newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {
 				// check move validity
-				if(new tzIndependentDate(refData.last_arrival_date) >= newBlockTo)
+				if(new tzIndependentDate(refData.last_arrival_date) >= newBlockTo){
 					triggerEarlierDepartureDateChangeInvalidError();
-				else
+				}
+				else{
 					triggerEarlierDepartureDateChange();
+				}
 			}
 
 			//departure right date change
@@ -419,9 +426,11 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				triggerLaterDepartureDateChange();
 			}
 
-			// let the date update
-			else {
-				$scope.updateGroupSummary();
+			// let the date update if it is future group as well is in edit mode
+			else if (!$scope.isInAddMode() && !refData.is_a_past_group){
+				$timeout(function() {
+					$scope.updateGroupSummary();
+				}, 100);
 			}
 
 			//setting the max date for from Date
@@ -454,9 +463,19 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {Boolean} [description]
 		 */
 		var shouldDisableFromDatePicker = function(){
-			var sumryData = $scope.groupConfigData.summary,
-				chDateAct = $scope.changeDatesActions;
-			return (!$scope.isInAddMode() && (sumryData.is_cancelled || sumryData.is_a_past_group || (!sumryData.is_from_date_right_move_allowed && !sumryData.is_from_date_left_move_allowed)));
+			var sData 					= $scope.groupConfigData.summary,
+				noOfInhouseIsNotZero 	= (sData.total_checked_in_reservations > 0),
+				cancelledGroup 			= sData.is_cancelled,
+				is_A_PastGroup 			= sData.is_a_past_group,
+				inEditMode 				= !$scope.isInAddMode();
+			
+			return ( inEditMode &&  
+				   	( 
+				   	  noOfInhouseIsNotZero 	|| 
+					  cancelledGroup 		|| 
+					  is_A_PastGroup
+					)
+				   );
 		};
 
 		/**
@@ -464,10 +483,19 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {Boolean} [description]
 		 */
 		var shouldDisableEndDatePicker = function(){
-			var sumryData 		 = $scope.groupConfigData.summary,
-				chDateAct 		 = $scope.changeDatesActions,
-				endDateHasPassed = new tzIndependentDate(sumryData.block_to) < tzIndependentDate($rootScope.businessDate);
-			return (!$scope.isInAddMode() && (sumryData.is_cancelled || endDateHasPassed || (!sumryData.is_to_date_right_move_allowed && !sumryData.is_to_date_left_move_allowed)));
+			var sData 					= $scope.groupConfigData.summary,
+				endDateHasPassed 		= new tzIndependentDate(sData.block_to) < new tzIndependentDate($rootScope.businessDate);
+				cancelledGroup 			= sData.is_cancelled,
+				toRightMoveNotAllowed 	= !sData.is_to_date_right_move_allowed,
+				inEditMode 				= !$scope.isInAddMode();
+
+			return ( inEditMode &&  
+				   	( 
+				   	 endDateHasPassed 	|| 
+					 cancelledGroup 	||  
+					 toRightMoveNotAllowed
+					)
+				   );
 		};
 
 		/**

@@ -1,6 +1,8 @@
 <div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
     <div class="modal-content alert">
-        <button id="modal-close" type="button" class="modal-close"><span class="icons icon-close invert"></span></button>
+        <button id="modal-close" type="button" class="modal-close" ng-click="cancelChangeDatesAction()">
+            <span class="icons icon-close invert"></span>
+        </button>
 
         <span class="icons icon-popup-alert"></span>
         <!-- 03-04-error.png -->

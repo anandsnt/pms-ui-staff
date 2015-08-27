@@ -1,6 +1,6 @@
 <div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
     <div class="modal-content group-date">
-        <button id="modal-close" type="button" class="modal-close"><span class="icons icon-close invert"></span></button>
+        <button id="modal-close" type="button" class="modal-close" ng-click="cancelChangeDatesAction()"><span class="icons icon-close invert"></span></button>
 
         <span class="h2 message">Reservations departing after {{formatDateForUI(ngDialogData.dataset.toDate)}} will be moved to new departure rate. Review amended length of stay.</span>
         <div class="moved before">
@@ -20,7 +20,7 @@
         </div>
 
         <div class="actions">
-            <button type="button" class="button green" ng-click="callChangeDatesAPI(ngDialogData)">Change Group End Date</button>
+            <button type="button" class="button green" ng-click="callChangeDatesAPI(ngDialogData, true)">Change Group End Date</button>
             <button type="button" class="button blank" ng-click="cancelChangeDatesAction()">Cancel</button>
         </div>
     </div>

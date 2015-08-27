@@ -402,7 +402,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * Called when user cancels a change date popup
              * @return {undefined}
              */
-             $scope.cancelChangeDatesAction = function() {
+            $scope.cancelChangeDatesAction = function() {
                 $scope.closeDialog ();
                 lastCancelCallback();
              };
@@ -433,7 +433,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @param  {[type]} options [description]
              * @return {[type]}         [description]
              */
-            $scope.callChangeDatesAPI = function (options) {                
+            $scope.callChangeDatesAPI = function (options, changeReservationDates) {                
                 var dataSet         = options && options["dataset"],
                     successCallBack = lastSuccessCallback,
                     failureCallBack = lastFailureCallback,
@@ -442,7 +442,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     conditnalParams = {};
 
                 var params = {
-                    group_id: $scope.groupConfigData.summary.group_id
+                    group_id                : $scope.groupConfigData.summary.group_id,
+                    changeReservationDates  : changeReservationDates
                 };
 
                 if (arrChangeOnly) {
@@ -508,6 +509,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             var clickedOnMoveSaveButton = function(options) {
                 lastSuccessCallback = options["successCallBack"] ? options["successCallBack"] : null;
                 lastFailureCallback = options["failureCallBack"] ? options["failureCallBack"] : null;
+                lastCancelCallback  = options["cancelPopupCallBack"] ? options["cancelPopupCallBack"] : null;
 
                 var dataForPopup = {
                     dataset:
