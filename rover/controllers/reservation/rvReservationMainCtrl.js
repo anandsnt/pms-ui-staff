@@ -808,20 +808,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             //  end of payload changes
             data.stay_dates = stay;
 
-            //addons
-            if (!!RVReservationStateService.getReservationFlag('RATE_CHANGED') ||
-                !$scope.reservationData.rooms[0].is_package_exist || //is_package_exist flag is set only while editing a reservation! -- Changes for CICO-17173
-                ($scope.reservationData.rooms[0].is_package_exist && $scope.reservationData.rooms[0].addons.length === parseInt($scope.reservationData.rooms[0].package_count))) { //-- Changes for CICO-17173
-                data.addons = [];
-                RVReservationStateService.setReservationFlag('RATE_CHANGED', false);
-                _.each($scope.reservationData.rooms[0].addons, function(addon) {
-                    data.addons.push({
-                        id: addon.id,
-                        quantity: addon.quantity || 1
-                    });
-                });
-            }
-
             data.company_id = $scope.reservationData.company.id;
             data.travel_agent_id = $scope.reservationData.travelAgent.id;
 
@@ -844,8 +830,30 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             data.room_id = [];
 
             data.room_types = [];
-            angular.forEach($scope.reservationData.tabs, function(tab) {
-                data.room_types.push({id:tab.roomTypeId,num_rooms:parseInt(tab.roomCount, 10)});
+            angular.forEach($scope.reservationData.tabs, function(tab, tabIndex) {
+                //addons
+                var firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
+                        roomTypeId: tab.roomTypeId
+                    })),
+                    addonsForRoomType = [];
+                if (!!RVReservationStateService.getReservationFlag('RATE_CHANGED') ||
+                    !$scope.reservationData.rooms[firstIndex].is_package_exist || //is_package_exist flag is set only while editing a reservation! -- Changes for CICO-17173
+                    ($scope.reservationData.rooms[firstIndex].is_package_exist && $scope.reservationData.rooms[firstIndex].addons.length === parseInt($scope.reservationData.rooms[firstIndex].package_count))) { //-- Changes for CICO-17173                    
+                    if(tabIndex === $scope.reservationData.tabs.length - 1){
+                        RVReservationStateService.setReservationFlag('RATE_CHANGED', false);
+                    }
+                    _.each($scope.reservationData.rooms[firstIndex].addons, function(addon) {
+                        addonsForRoomType.push({
+                            id: addon.id,
+                            quantity: addon.quantity || 1
+                        });
+                    });
+                }
+                data.room_types.push({
+                    id: tab.roomTypeId,
+                    num_rooms: parseInt(tab.roomCount, 10),
+                    addons: addonsForRoomType
+                });
             });
             angular.forEach($scope.reservationData.rooms, function(room, currentRoomIndex) {
                 if (typeof roomIndex === 'undefined' || currentRoomIndex === roomIndex) {
@@ -1161,18 +1169,20 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) > 0;
 
                     if (typeof data.reservations !== 'undefined' && data.reservations instanceof Array) {
-                        angular.forEach(data.reservations, function(reservation, key) {
-                            angular.forEach($scope.reservationData.rooms, function(room, key) {
-                                if (parseInt(reservation.room_id) === parseInt(room.room_id)) {
-                                    room.confirm_no = reservation.confirm_no;
-                                }
-                            });
-                        });
-                        $scope.reservationData.reservations = data.reservations;
                         $scope.reservationData.reservationIds = [];
                         angular.forEach(data.reservations, function(reservation, key) {
                             $scope.reservationData.reservationIds.push(reservation.id);
+                            if (!$scope.reservationData.isHourly) {
+                                $scope.reservationData.rooms[key].confirm_no = reservation.confirm_no; // For NIGHTLY the API is supposed to hand over the rooms in the same order as requested
+                            } else {
+                                angular.forEach($scope.reservationData.rooms, function(room, key) {
+                                    if (parseInt(reservation.room_id) === parseInt(room.room_id)) {
+                                        room.confirm_no = reservation.confirm_no;
+                                    }
+                                });
+                            }
                         });
+                        $scope.reservationData.reservations = data.reservations;
                         $scope.reservationData.reservationId = $scope.reservationData.reservations[0].id;
                         $scope.reservationData.confirmNum = $scope.reservationData.reservations[0].confirm_no;
                         $scope.reservationData.status = $scope.reservationData.reservations[0].status;
@@ -1486,7 +1496,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             }));
             var currentCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount, 10);
             $scope.reservationData.tabs.splice(tabIndex, 1);
-            $scope.reservationData.rooms.splice(firstIndex, currentCount);            
+            $scope.reservationData.rooms.splice(firstIndex, currentCount);
             refreshScroller();
         };
 
