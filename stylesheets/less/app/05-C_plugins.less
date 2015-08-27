@@ -4592,6 +4592,26 @@
 				}
 			}
 
+			&.available {
+				.fc-event-inner {
+					.fc-event-day,
+					.fc-event-title {
+						color: @green;
+						background-color: rgba(137,189,85,.3); 
+					}
+				}
+			}
+
+			&.unavailable {
+				.fc-event-inner {
+					.fc-event-day,
+					.fc-event-title {
+						color: @red;
+						background-color: rgba(230,56,56,.3); 
+					}
+				}				
+			}
+
 			&.check-in,
 			&.check-out {
 				.fc-event-inner {
@@ -4599,6 +4619,12 @@
 					.fc-event-title { color: @white; }
 				}
 			}
+
+			&.past-day{
+				.fc-event-inner {
+					background: @grey3; 
+				}
+			}			
 
 			&.check-in {
 				.fc-event-inner {
@@ -4613,6 +4639,15 @@
 						}
 					}
 				}
+				&.unavailable { 
+					.fc-event-inner {
+						.fc-event-day,
+						.fc-event-title { 						
+							color: @red;
+							background-color: @green;                     		                   		
+                    	}                    	
+                	}
+                }
 			}
 
 			&.check-out { 

@@ -370,15 +370,81 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
         };
 
+        $scope.alertOverbooking = function(close) {
+            var tabIndex = 0,
+                timer = 0;
+            if (close) {
+                $scope.closeDialog();
+                timer = 1000
+            }
+            $timeout(function() {
+                for (; tabIndex < $scope.reservationData.tabs.length; tabIndex++) {
+                    var tab = $scope.reservationData.tabs[tabIndex];
+                    if ((!tab.overbookingStatus.room || !tab.overbookingStatus.house) && !tab.overbookingStatus.alerted) {
+                        tab.overbookingStatus.alerted = true;
+                        ngDialog.open({
+                            template: '/assets/partials/reservation/alerts/availabilityCheckOverbookingAlert.html',
+                            scope: $scope,
+                            controller: 'overbookingAlertCtrl',
+                            closeByDocument: false,
+                            closeByEscape: false,
+                            data: JSON.stringify({
+                                houseFull: !tab.overbookingStatus.house,
+                                roomTypeId: tab.roomTypeId
+                            })
+                        });
+                        break;
+                    }
+                }
+                if (tabIndex === $scope.reservationData.tabs.length) {
+                    $scope.navigate();
+                }
+            }, timer);
+        };
+
         $scope.checkAvailability = function() {
-            ngDialog.open({
-                template: '/assets/partials/reservation/alerts/availabilityCheckOverbookingAlert.html',
-                className: 'ngdialog-theme-default',
-                scope: $scope,
-                closeByDocument: false,
-                closeByEscape: false
+            $scope.invokeApi(RVReservationBaseSearchSrv.checkOverbooking, {
+                from_date: $scope.reservationData.arrivalDate,
+                to_date: $scope.reservationData.departureDate
+            }, function(availability) {
+                $scope.availabilityData = availability;
+                var houseAvailable = true,
+                    roomtypesAvailable = _($scope.reservationData.tabs.length).times(function(n) {
+                        return true
+                    });
+                _.each(availability, function(dailyStat) {
+                    houseAvailable = houseAvailable && (dailyStat.house.availability > 0);
+                    _.each($scope.reservationData.tabs, function(tab, tabIndex) {
+                        if (!!tab.roomTypeId) {
+                            roomtypesAvailable[tabIndex] = roomtypesAvailable[tabIndex] &&
+                                (dailyStat.room_types[tab.roomTypeId] > 0);
+                        }
+                    });
+                });
+
+                if (houseAvailable && _.reduce(roomtypesAvailable, function(a, b) {
+                        return a && b
+                    })) {
+                    $scope.navigate();
+                } else {
+                    // initiate flags in the tabs data model
+                    _.each($scope.reservationData.tabs, function(tab, tabIndex) {
+                        tab.overbookingStatus = {
+                            house: houseAvailable,
+                            room: roomtypesAvailable[tabIndex],
+                            alerted: false
+                        }
+                    });
+                    $scope.alertOverbooking();
+                }
+
+                $scope.$emit('hideLoader');
+
+            }, function(errorMessage) {
+                $scope.$emit('hideLoader');
+                $scope.errorMessage = errorMessage;
             });
-            // $scope.navigate();
+            // 
         };
 
 
