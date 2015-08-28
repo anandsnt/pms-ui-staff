@@ -38,7 +38,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
                 }
 
                 $scope.updatePopupWidth();
-                
+
             setTimeout(function(){
                         $scope.$emit('hideLoader');
             },200);

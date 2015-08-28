@@ -16,38 +16,9 @@ sntRover.service('RVreportsSubSrv', [
 			var deferred = $q.defer();
 
 			var success = function(data) {
-
-				/** TEST CODE REMOVED WHEN THE API IS READY */
-				if ( '/api/reports' == options.url ) {
-					data.results.push({
-						id: 2344,
-						description: "Rooms Picked up by Group",
-						sub_title: "By group",
-						title: "Group Pick Up Report",
-						filters: [{
-							description: "Date Range", 
-							value: "DATE_RANGE"
-						}, {
-							description: "Hold Status", 
-							value: "HOLD_STATUS"
-						}],
-						sort_fields: [{
-							value: "DATE", description: "Date"
-						}, {
-							value: "GROUP_NAME", description: "Group Name"
-						}, {
-							value: "HOLD_STATUS", description: "Hold Status"
-						}, {
-							value: "PICKUP_PERCENTAGE", description: "Pickup Percentage"
-						}],
-						group_fields: [{
-							value: "GROUP_NAME", description: "Group Name"
-						}]
-					});
-				};
-				/** TEST CODE REMOVED WHEN THE API IS READY */
-				
-				if ( !! options.resKey ) {
+				if ( !! options.resKey2 && !! options.resKey ) {
+					deferred.resolve( data[options.resKey][options.resKey2] );
+				} else if ( !! options.resKey ) {
 					deferred.resolve( data[options.resKey] );
 				} else {
 					deferred.resolve( data );
@@ -57,25 +28,8 @@ sntRover.service('RVreportsSubSrv', [
 			var failed = function(data) {
 				deferred.reject( data || {} );
 			};
-
-
-			/** TEST CODE REMOVED WHEN THE API IS READY */
-			if ( 'api/hold_status?is_active=true' == options.url ) {
-				success([{
-					id: 1,
-					description: 'Hold This'
-				}, {
-					id: 2,
-					description: 'Hold That'
-				}, {
-					id: 3,
-					description: 'Hold Something Else'
-				}]);
-			} else if ( ! options.url || ! options.method || ! rvBaseWebSrvV2.hasOwnProperty(options.method) ) {
-			/** TEST CODE REMOVED WHEN THE API IS READY */
-
-			/** ORIGNIAL CODE, UNCOMMENT BEFORE QA */
-			// if ( ! options.url || ! options.method || ! rvBaseWebSrvV2.hasOwnProperty(options.method) ) {
+			
+			if ( ! options.url || ! options.method || ! rvBaseWebSrvV2.hasOwnProperty(options.method) ) {
 				failed();
 			} else if ( !! options.params ) {
 				rvBaseWebSrvV2[options.method]( options.url, options.params ).then( success, failed );
@@ -173,8 +127,10 @@ sntRover.service('RVreportsSubSrv', [
 
 		service.fetchHoldStatus = function() {
 			return callApi({
-				method : 'getJSON',
-				url    : 'api/hold_status?is_active=true'
+				method  : 'getJSON',
+				url     : 'api/group_hold_statuses',
+				resKey  : 'data',
+				resKey2 : 'hold_status'
 			});
 		};
 

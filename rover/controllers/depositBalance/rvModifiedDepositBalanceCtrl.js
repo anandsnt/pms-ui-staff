@@ -415,7 +415,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				$scope.authorizedCode = response.authorization_code;
 				$scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.depositBalanceMakePaymentData.amount);
 				$scope.$apply();
-				
 			},function(error){
 				$scope.depositPaidSuccesFully = false;
 				$scope.errorMessage = error;
