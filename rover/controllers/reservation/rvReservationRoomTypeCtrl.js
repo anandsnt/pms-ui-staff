@@ -584,8 +584,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 		var permissionCheck = function(roomId, rateId) {
 			var BOOK_RESTRICTED_ROOM_RATE = rvPermissionSrv.getPermissionValue('BOOK_RESTRICTED_ROOM_RATE'),
-				OVERBOOK_ROOM_TYPE = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
-                        
+			OVERBOOK_ROOM_TYPE = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');//CICO-19821
 			if (BOOK_RESTRICTED_ROOM_RATE && OVERBOOK_ROOM_TYPE) {
 				return true;
 			} else {
