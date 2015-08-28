@@ -85,6 +85,7 @@
     "GROUP_AUTO_ROOM_ASSIGN_FAILED_IN_PROCESSING": "Sorry, Group auto room assignment has failed for some reason. Please retry after closing this",
     "GROUP_LATER_ARR_DATE_CHANGE_WARNING": "Reservations are due to depart on/prior to new arrival date. Please amend reservations before moving group dates.",
     "GROUP_EARLIER_DEP_DATE_CHANGE_WARNING": "Reservations are due to arrive on/after new departure date. Please amend reservations before moving group dates.",
-    "GROUP_MOVE_CONFIRM": "Move group and associated reservations?"
+    "GROUP_MOVE_CONFIRM": "Move group and associated reservations?",
+    "ROOM_TYPE_NO_AVAILABILITY_CHANGE_DATES": "Room Block Allocation exceeds Room Type availability"
 
 
