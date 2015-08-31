@@ -188,7 +188,6 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		var setDatePickerOptions = function() {
 			//date picker options - Common
 			var commonDateOptions = {
-				showOn: 'button',
 				dateFormat: $rootScope.jqDateFormat,
 				numberOfMonths: 1,
 				yearRange: '-1:',
