@@ -215,7 +215,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
             $($scope.reservationData.rooms[$scope.activeRoom].addons).each(function(index, elem) {});
         }
 
-        $scope.selectAddon = function(addon, addonQty) {
+        $scope.bookAddon =  function(addon,addonQty){
             var alreadyAdded = false;
             angular.forEach($scope.addonsData.existingAddons,function(item, index) {
                 if(item.id === addon.id){
@@ -269,6 +269,79 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                 $scope.computeTotalStayCost();
             }
         }
+
+        $scope.selectAddon = function(addon, addonQty) {        
+
+             if($rootScope.isItemInventoryOn){
+                $scope.selectedAddonName = addon.title;
+                var fetchHeadCount = function(type,count){
+                    var remainingCount = 0;
+                    if(type ==='Entire Stay'){
+                        remainingCount = $scope.duration_of_stay * count;
+                    }else{
+                        remainingCount = count;
+                    };
+                    return remainingCount;
+                };
+                var headCount = 0;
+                if(addon.amountType.description      === 'Person'){
+                    headCount = fetchHeadCount(addon.postType.description,$scope.reservationData.number_of_adults+$scope.reservationData.number_of_children);
+                }
+                else if(addon.amountType.description === 'Adult'){
+                    headCount = fetchHeadCount(addon.postType.description,$scope.reservationData.number_of_adults);
+                }
+                else if(addon.amountType.description === 'Child'){
+                    headCount = fetchHeadCount(addon.postType.description,$scope.reservationData.number_of_children);
+                }
+                else if(addon.amountType.description === 'Flat'){
+                    headCount = fetchHeadCount(addon.postType.description,1);
+                };
+                
+
+                 var successCallBackInventoryCheck = function(response){
+                    $scope.$emit('hideLoader');
+                    var availableAddonCount = 7;  
+
+                     var remainingCount = availableAddonCount - headCount;        
+                     if(remainingCount >= 0){
+                        $scope.bookAddon(addon, addonQty);
+                     }
+                     else{
+                        $scope.addon =  addon;
+                        $scope.addonQty = addonQty;
+                        $scope.remainingCount = availableAddonCount;
+                        ngDialog.open({
+                            template: '/assets/partials/reservationCard/rvInsufficientInventory.html',
+                            className: 'ngdialog-theme-default',
+                            closeByDocument: true,
+                            scope: $scope
+                        });
+                     };
+                };
+                successCallBackInventoryCheck();
+
+
+                var paramDict  = {'addon_id':addon.id,'from_date': $scope.reservationData.arrivalDate,
+                'to_date': $scope.reservationData.departureDate,}
+                $scope.invokeApi(RVReservationAddonsSrv.checkInventory, paramDict, successCallBackInventoryCheck);
+             }else{
+                $scope.bookAddon(addon, addonQty);
+             };
+
+            
+
+             console.log($scope.reservationData.arrivalDate)
+               console.log($scope.reservationData.departureDate)
+
+             // //TODO 
+             // if(overbookpermission && inventoryon){
+             //    $scope.invokeApi(RVReservationAddonsSrv.fetchAddons, paramDict, successCallBackFetchAddons);
+             // }
+             // else{
+             //    bookAddon(addon, addonQty);
+             // }
+            
+        };
 
         $scope.removeSelectedAddons = function(index) {
             // subtract selected addon amount from total stay cost

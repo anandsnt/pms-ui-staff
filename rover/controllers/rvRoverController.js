@@ -111,6 +111,7 @@ sntRover.controller('roverController',
 	  $rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
     $rootScope.printCancellationLetter = hotelDetails.print_cancellation_letter;
     $rootScope.printConfirmationLetter = hotelDetails.print_confirmation_letter;
+    $rootScope.isItemInventoryOn    = hotelDetails.is_item_inventory_on;
 
       // CICO-18040
       $rootScope.isFFPActive = hotelDetails.is_ffp_active;
