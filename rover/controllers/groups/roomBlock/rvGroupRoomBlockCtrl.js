@@ -20,6 +20,9 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		$q,
 		dateFilter) {
 
+		var update_existing_reservations_rate = false;
+		var roomsAndRatesSelected;
+
 		/**
 		 * util function to check whether a string is empty
 		 * @param {String/Object}
@@ -133,7 +136,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		var hasPermissionToOverBook = function() {
-			return (rvPermissionSrv.getPermissionValue('BOOK_ROOM_WITHOUT_INVENTORY'));
+			return (rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE'));//CICO-19821
 		};
 
 		/**
@@ -837,6 +840,103 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			$q.all(promises)
 				.then(successFetchOfAllReqdForRoomAndRatesPopup, failedToFetchAllReqdForRoomAndRatesPopup);
 		};
+
+		/**
+		 * To open Room Block Pickedup Reservations Popup.
+		 */
+		$scope.$on('updateRate', function (event, selectedRoomTypeAndRates) {
+			roomsAndRatesSelected = selectedRoomTypeAndRates;
+			ngDialog.open({
+				template: '/assets/partials/groups/roomBlock/rvGroupRoomBlockPickedupReservationsPopup.html',
+				scope: $scope,
+				className: '',
+				closeByDocument: false,
+				closeByEscape: false
+			});
+		});
+
+		/**
+		 * To check whether inhouse reservations exists.
+		 */
+		$scope.checkIfInhouseReservationsExists = function () {
+			ngDialog.close();
+			var isInhouseReservationsExists = false;
+			angular.forEach (roomsAndRatesSelected, function (row) {
+				if (row.total_inhouse_reservations_count > 0) {
+					isInhouseReservationsExists = true;
+				}
+			});
+
+			if (isInhouseReservationsExists) {
+				openInhouseReservationsExistsPopup();
+			}
+			else {
+				$scope.saveNewRoomTypesAndRates();
+			}
+		};
+
+		/*
+		 * Open popup to inform if inhouse reservations exists. 
+		 */
+		var openInhouseReservationsExistsPopup = function () {
+			ngDialog.open({
+				template: '/assets/partials/groups/roomBlock/rvGroupInhouseReservationsExistsPopup.html',
+				scope: $scope,
+				className: '',
+				closeByDocument: false,
+				closeByEscape: false
+			});
+		};
+
+		/*
+		 * To apply rate change only to new reservations by setting flag update_existing_reservations_rate.
+		 */
+		$scope.updateRateToNewReservations = function () {
+			ngDialog.close();
+			angular.forEach (roomsAndRatesSelected, function (row) {
+				if (row.is_configured_in_group) {
+					row.update_existing_reservations_rate = false;
+				}
+			});
+			$scope.saveNewRoomTypesAndRates();
+		};
+
+		/**
+		 * To update selected room types and rates.
+		 */
+		$scope.saveNewRoomTypesAndRates = function () {
+			ngDialog.close();
+			var options = {
+				params: formSaveNewRoomTypesAndRatesParams(roomsAndRatesSelected),
+				successCallBack: successCallBackOfSaveNewRoomTypesAndRates
+			};
+			$scope.callAPI(rvGroupConfigurationSrv.updateSelectedRoomTypesAndRates, options);
+		}
+
+		var successCallBackOfSaveNewRoomTypesAndRates = function () {
+			$scope.fetchRoomBlockGridDetails();
+		};
+
+		/**
+		 * function to form save roomtype and rates API params
+		 * @return {Object}
+		 */
+		var formSaveNewRoomTypesAndRatesParams = function(roomsAndRatesSelected) {
+			//we only want rows who have room type choosed
+			var selectedRoomTypeAndRates = _.filter(roomsAndRatesSelected, function(obj) {
+				return (typeof obj.room_type_id !== "undefined" && obj.room_type_id !== '');
+			});
+			//since selectedRoomTypeAndRates containst some unwanted keys
+			var wanted_keys = ["room_type_id", "single_rate", "double_rate", "extra_adult_rate", "rate_id", "best_available_rate_id", "update_existing_reservations_rate"];
+			selectedRoomTypeAndRates = util.getListOfKeyValuesFromAnArray(selectedRoomTypeAndRates, wanted_keys);
+
+			var params = {
+				group_id: $scope.groupConfigData.summary.group_id,
+				room_type_and_rates: selectedRoomTypeAndRates
+			};
+			return params;
+		};
+
 
 		/**
 		 * when Add Room & Rates button clicked, we will save new room Block

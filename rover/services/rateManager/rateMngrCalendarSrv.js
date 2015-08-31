@@ -18,9 +18,6 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 				}
 				deferred.resolve(data);
 			},function(data){
-                            
-                            
-                            
 				deferred.reject(data);
 			});
 		}
@@ -99,13 +96,13 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
                 nameCardString = nameCardString + "&name_card_ids[]=" + params.name_card_ids[i];
         }
 
-        return dateString + rateString + rateTypeString + nameCardString;  
+        return dateString + rateString + rateTypeString + nameCardString;
     };
 	this.fetchCalendarData = function(params){
-                var url = "/api/daily_rates", fetchingRooms = that.isFetchingRooms(params);
-                if (fetchingRooms){
-                    url = url+'/room_restrictions';
-                }
+        var url = "/api/daily_rates", fetchingRooms = that.isFetchingRooms(params);
+        if (fetchingRooms){
+            url = url+'/room_restrictions';
+        }
 
 		var deferred = $q.defer();
 		var rejectDeferred = function(data){
@@ -116,44 +113,45 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		return deferred.promise;
 
 	};
+
     this.getDailyRates = function(params, url, deferred, rejectDeferred){
 		var urlString = that.getUrlEnd(url,params);
-                    
+
 		BaseWebSrvV2.getJSON(urlString).then(function(data) {
-                        var fetchingRooms = that.isFetchingRooms(params);
+            var fetchingRooms = that.isFetchingRooms(params);
 			that.dailyRates = data;
-                            if (fetchingRooms){
-                                data.room_type_restrictions = data.result.room_types;
-                                that.dailyRates.results = data.result.room_types;
-                            }
+            if (fetchingRooms){
+                data.room_type_restrictions = data.result.room_types;
+                that.dailyRates.results = data.result.room_types;
+            }
 
 			var calendarData = that.calculateRateViewCalData();
-                            
-                            if (fetchingRooms){
-                                calendarData.room_type_restrictions = data.room_type_restrictions;
-                                calendarData.total_room_types = data.room_type_restrictions[0].room_types.length;
-                            }
-                            calendarData.room_types_all = [];
-                            calendarData.isChildRate = [];
-                            var rateObj;
-                            if (data.results[0]){
-                                for (var c in data.results[0].rates){
-                                rateObj = data.results[0].rates[c];
-                                    if (rateObj.is_child){
-                                        calendarData.isChildRate.push(rateObj.id);
-                                    }
-                                }
-                            }
-                            
-                            if (fetchingRooms){
-                                for (var i in data.room_type_restrictions[0].room_types){
-                                    calendarData.room_types_all.push({
-                                        room_type_id:data.room_type_restrictions[0].room_types[i].room_type.id,
-                                        name:data.room_type_restrictions[0].room_types[i].room_type.name
-                                    });
 
-                                }
-                            }
+            if (fetchingRooms){
+                calendarData.room_type_restrictions = data.room_type_restrictions;
+                calendarData.total_room_types = data.room_type_restrictions[0].room_types.length;
+            }
+            calendarData.room_types_all = [];
+            calendarData.isChildRate = [];
+            var rateObj;
+            if (data.results[0]){
+                for (var c in data.results[0].rates){
+                rateObj = data.results[0].rates[c];
+                    if (rateObj.is_child){
+                        calendarData.isChildRate.push(rateObj.id);
+                    }
+                }
+            }
+
+            if (fetchingRooms){
+                for (var i in data.room_type_restrictions[0].room_types){
+                    calendarData.room_types_all.push({
+                        room_type_id:data.room_type_restrictions[0].room_types[i].room_type.id,
+                        name:data.room_type_restrictions[0].room_types[i].room_type.name
+                    });
+
+                }
+            }
 
 			//If only one rate exists in the search results,
 			//then room type calendar for that rate should be displayed.

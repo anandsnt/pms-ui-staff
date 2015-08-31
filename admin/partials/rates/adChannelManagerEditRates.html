@@ -9,52 +9,76 @@
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 
-            <div id="new-form-holder"></div>
             <!--ng-table component -->
-            <table class="grid" ng-class="{'edit-data': currentClickedElement == $index}">
+            <table ng-repeat="rate in data" >
                 <tbody ng-if='data.length > 0'>
-                    <tr ng-repeat="rate in data" > 
-                        <td ng-hide="currentClickedElement == $index">
-                            <a class="edit-data" ng-click="editChannelManagerRate(rate)">
-                                <div  class="arrow-down-icon"><img src="/assets/arrow-down.png"></div>
-                                <strong> {{rate.rate.rate_name}} </strong>
-                            </a>
-                        </td>
+                    <tr>
 
-                        <td ng-class = "{'green': rate.active}"  ng-hide="currentClickedElement == $index">
-                            <div class="entry" ng-click="toggleActive(rate)">
-                                <div class="switch-button single right-float" ng-class="{'on': rate.active}">
-                                    <input type="checkbox"  ng-checked="rate.active">
-                                    <span class="switch-icon"></span>
-                                </div>
-                            </div>
+                        
+                        <td>
+                            <table class="grid smaller-spacing inline-channel-editing" ng-class="{'inline-editing':rate.rate.editing}">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <a class="edit-data" ng-click="editChannelManagerRate(rate)">
+                                                <div class="arrow-up-icon"><img src="/assets/arrow-up.png" ng-hide='!rate.rate.editing' ng-show='rate.rate.editing'></div>
+                                                <div class="arrow-down-icon"><img src="/assets/arrow-down.png" ng-hide='rate.rate.editing' ng-show='!rate.rate.editing'></div>
+                                                <strong> {{rate.rate.rate_name}} </strong>
+                                            </a>
+                                        </td>
+
+                                        <td ng-class = "{'green': rate.active}">
+                                            <div class="entry" ng-click="toggleActive(rate)">
+                                                <div class="switch-button single right-float" ng-class="{'on': rate.active}">
+                                                    <input type="checkbox"  ng-checked="rate.active">
+                                                    <span class="switch-icon"></span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="delete">
+                                            <a class="icons icon-delete large-icon delete_item" ng-click="deleteItem(rate.id)" style="float:right"> </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </td>
-                        <td class="delete" ng-hide="currentClickedElement == $index && isEdit">
-                            <a class="icons icon-delete large-icon delete_item" ng-click="deleteItem(rate.id)" style="float:right"> </a>
-                        </td>
-                        <table>
-                            <tbody ng-hide='!rate.editing' ng-show='rate.editing'>
-                                <div ng-include="'/assets/partials/common/addRemoveSection.html'" class='' ng-hide='!showInlineAddRemove' ng-show='showInlineAddRemove'></div>
-                            </tbody>
-                        </table>
                     </tr>
-                <div>
-                    <table>
-                        <tbody ng-hide='!showMainAddRemove' ng-show='showMainAddRemove'>
-                            <div ng-include="'/assets/partials/common/addRemoveSection.html'" class='' ng-hide='!showMainAddRemove' ng-show='showMainAddRemove'></div>
-                        </tbody>
-                    </table>
-                    <div ng-click="addRateToChannel(selectedInterface)" class="nowrap center_align add_new_date_range_container newset-container" ng-hide='showMainAddRemove' ng-show='!showMainAddRemove'> 
-                        <a class="icons icon-add green">
-                            <span style="margin-left:5px;">ADD RATE TO CHANNEL MANAGER</span>
-                        </a>
-                    </div>
-                </div>
+                    <tr>
+                        <td  ng-hide='!rate.rate.editing' ng-show='rate.rate.editing'>
+                            <table class='smaller-spacing inline-channel-editing inline-editing' ng-hide='!rate.rate.editing' ng-show='rate.rate.editing'>
+                                <tr  ng-hide='!rate.rate.editing' ng-show='rate.rate.editing'>
+                                    <div ng-include="'/assets/partials/common/addRemoveSection.html'" class='' ></div>
+                                </tr>
+                            </table>
+                        </td>
+                        
+                        
+                        
+                    </tr>
+
+
+
                 </tbody>
             </table>
+            
+            <table>
+                <tbody ng-hide='!showMainAddRemove' ng-show='showMainAddRemove'>
+                    <tr>
+                        <div style='position: relative' ng-include="'/assets/partials/common/addRemoveSection.html'" 
+                             ng-hide='!showMainAddRemove' 
+                             ng-show='showMainAddRemove'>
+                        </div>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div ng-click="addRateToChannel(selectedInterface)" class="nowrap center_align add_new_date_range_container newset-container" ng-hide='showMainAddRemove' ng-show='!showMainAddRemove'> 
+                <a class="icons icon-add green">
+                    <span style="margin-left:5px;">ADD RATE TO CHANNEL MANAGER</span>
+                </a>
+            </div>
+            
         </section>
-        <!--end -->
-        
-
     </div>
+
 </section>
