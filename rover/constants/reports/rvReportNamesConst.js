@@ -1,4 +1,4 @@
-sntRover.constant('RVReportNames', {
+sntRover.constant('RVReportNamesConst', {
 	'CHECK_IN_CHECK_OUT'           : 'Check In / Check Out',
 	'UPSELL'                       : 'Upsell',
 	'WEB_CHECK_OUT_CONVERSION'     : 'Web Check Out Conversion',
@@ -21,5 +21,6 @@ sntRover.constant('RVReportNames', {
 	'FORECAST_GUEST_GROUPS'        : 'Forecast Guests & Groups',
 	'MARKET_SEGMENT_STAT_REPORT'   : 'Market Segment Statistics Report',
 	'COMPARISION_BY_DATE'          : 'Comparison',
-	'RATE_ADJUSTMENTS_REPORT'      : 'Rate Adjustment Report'
+	'RATE_ADJUSTMENTS_REPORT'      : 'Rate Adjustment Report',
+	'GROUP_PICKUP_REPORT'          : 'Group Pick Up Report'
 });

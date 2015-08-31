@@ -1099,7 +1099,7 @@ table {
                             strong { font-weight: 600; }
 
                             &.name {
-                                width: 40%;
+                                width: 12cm;
                                 border-bottom: 0;
 
                                 .info {
@@ -1144,8 +1144,15 @@ table {
                                     }
                                 }
 
-                                &.short { min-width: 25%; }
+                                &.short { width: 6cm; }
                             }
+
+                            &.room-type {
+                                max-width: 3cm;
+                                .nowrap();
+                            }
+
+                            &.date { white-space: nowrap; }
 
                             &.info {
                                 font-style: italic;
@@ -1155,13 +1162,12 @@ table {
 
                             &:first-child { padding-left: 0; }
 
-                            &[rowspan] { 
-                                height: auto;
-                                border-bottom: 1px solid @grey2; 
-                            }
+                            &[rowspan] { height: auto; }
                         }
 
                         &.row-break {
+                            border-bottom: 1px solid @grey2;
+
                             td { border-bottom-color: @grey2; }
                         }
                     }
