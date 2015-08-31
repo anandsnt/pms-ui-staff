@@ -297,10 +297,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		$scope.restrictIfOverbook = function(roomId, rateId) {
 			var canOverbookHouse = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE'),
 				canOverbookRoomType = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
-                                                  
-			if(canOverbookHouse && canOverbookRoomType){
-                            //CICO-17948
-                            //check actual hotel availability with permissions
+
+			if (canOverbookHouse && canOverbookRoomType) {
+				//CICO-17948
+				//check actual hotel availability with permissions
 
 				return false;
 			}
@@ -584,7 +584,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 		var permissionCheck = function(roomId, rateId) {
 			var BOOK_RESTRICTED_ROOM_RATE = rvPermissionSrv.getPermissionValue('BOOK_RESTRICTED_ROOM_RATE'),
-			OVERBOOK_ROOM_TYPE = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');//CICO-19821
+				OVERBOOK_ROOM_TYPE = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE'); //CICO-19821
 			if (BOOK_RESTRICTED_ROOM_RATE && OVERBOOK_ROOM_TYPE) {
 				return true;
 			} else {
@@ -597,7 +597,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				}
 				if (roomCount < 1 && !OVERBOOK_ROOM_TYPE) {
 					authorization = false;
-				}                                
+				}
 				return authorization;
 			}
 		}
@@ -697,7 +697,38 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					// $scope.checkOccupancyLimit(null, false, i);					
 				}
 				$scope.viewState.currentTab = $scope.activeRoom;
-				transferState();
+				if ($scope.otherData.showOverbookingAlert) {
+
+					var leastHouseAvailability = $scope.getLeastHouseAvailability(roomId, rateId),
+						leastRoomTypeAvailability = $scope.getLeastHouseAvailability(roomId, rateId),
+						numberOfRooms = $scope.reservationData.tabs[$scope.activeRoom].roomCount;
+
+					if (leastHouseAvailability < 1 ||
+						leastRoomTypeAvailability < numberOfRooms) {
+						// Show appropriate Popup Here
+						$scope.invokeApi(RVReservationBaseSearchSrv.checkOverbooking, {
+							from_date: $scope.reservationData.arrivalDate,
+							to_date: $scope.reservationData.departureDate
+						}, function(availability) {
+							$scope.availabilityData = availability;
+							ngDialog.open({
+								template: '/assets/partials/reservation/alerts/availabilityCheckOverbookingAlert.html',
+								scope: $scope,
+								controller: 'overbookingAlertCtrl',
+								closeByDocument: false,
+								closeByEscape: false,
+								data: JSON.stringify({
+									houseFull: (leastHouseAvailability < 1),
+									roomTypeId: roomId
+								})
+							});
+						});
+					} else {
+						transferState();
+					}
+				} else {
+					transferState();
+				}
 			}
 
 			// check whether any one of the rooms rate has isSuppressed on and turn on flag
@@ -712,7 +743,16 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				}
 			});
 			$scope.$emit("REFRESHACCORDIAN");
-		}
+		};
+
+		$scope.alertOverbooking = function(close) {
+			var timer = 0;
+			if (close) {
+				$scope.closeDialog();
+				timer = 1000
+			}
+			$timeout(transferState, timer);
+		};
 
 		$scope.showAllRooms = function() {
 			$scope.showLessRooms = false;
