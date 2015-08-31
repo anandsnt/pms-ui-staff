@@ -156,7 +156,7 @@
                     <label for="fulfillment" translate>SPACE_FULFILLMENT_LABEL </label>
                     <div class="boxes">
                         
-                        <label class="radio">
+                        <!-- <label class="radio">
                             <span class="icon-form icon-radio" ng-class="{'checked': data.fulfillment =='none'}"></span>
                             <input name="audience" id="audience-everyone" value="none" type="radio" ng-model="data.fulfillment" />
                             <span translate>SPACE_FULFILLMENT_NONE</span>
@@ -165,10 +165,10 @@
                             <span class="icon-form icon-radio" ng-class="{'checked': data.fulfillment =='email'}"></span>
                             <input name="audience" id="audience-users" type="radio" value="email" ng-model="data.fulfillment"/>
                             <span translate>SPACE_FULFILLMENT_EMAIL</span>
-                        </label>                        
+                        </label>    -->                     
                         <!-- Remove class "hidden" when "Specific User(s)" option is selected. Add it back if other option is selected -->
-                        <span ng-show="data.fulfillment =='email'" translate>SPACE_FULFILLMENT_EMAIL_ACCOUNTS_LABEL</span>
-                        <input id="audience-specific-user" class = "campaign-textbox" placeholder="Enter email accounts" type="text" ng-show= "data.fulfillment =='email'" ng-model="data.recipient_email_accounts" /> 
+                        <span ng-show="true" translate>SPACE_FULFILLMENT_EMAIL_ACCOUNTS_LABEL</span>
+                        <input id="audience-specific-user" class = "campaign-textbox" placeholder="Enter email accounts" type="text" ng-show= "true" ng-model="data.recipient_emails" /> 
                                                  
 
                     </div>

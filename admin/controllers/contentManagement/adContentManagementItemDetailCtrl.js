@@ -55,9 +55,8 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	            "screen_id": "",
 	            "addon_min_duration": "",
 	            "addon_max_order": "",
-	            "fulfillment": "",
   				"durations": [],						
-  				"recipient_email_accounts": "",
+  				"recipient_emails": "",
   				"max_occupancy": "",
 	            "parent_category": [],
 	            "parent_section": [],
@@ -84,7 +83,7 @@ $scope.fetchSpaces = function(){
     var fetchSuccessOfSpaces = function(data) {
        $scope.space_occupancys = $scope.getListWithNameValues(data.meeting_room_occupancy); 
 	   // $scope.space_durations = data.meeting_room_durations;  // change need
-       $scope.space_durations = $scope.getDurationsWithNameValues(['1-2','2-3','3-4']);
+       $scope.space_durations = $scope.getDurationsWithNameValues(data.meeting_room_durations);
        $scope.$emit('hideLoader');
     };
    $scope.invokeApi(ADContentManagementSrv.fetchMeetingRooms, {"no_pagination": true}, fetchSuccessOfSpaces);
@@ -114,15 +113,27 @@ $scope.getListWithNameValues = function(items) {
     });
         return list;
 };
+$scope.getDurationsNames = function (items) {
+	var duration = [];
+	var name;
+	angular.forEach(items,function(item,index){
+		duration.push(item.name);
+	});
+		return duration;
+};
 
 $scope.setSpaceDurations = function(val,index) {
+	console.log(val);
 	var duration = $scope.space_durations[index];
+	console.log(duration);
 	var flag = $scope.data.durations.indexOf(duration.value);
 	if(flag === -1){
 		$scope.data.durations.push(duration.value);
+		console.log($scope.data.durations);
 	}
 	else{
-		$scope.data.durations.splice(0,flag);
+		$scope.data.durations.splice(flag,1);
+		console.log($scope.data.durations);
 	}
 }
 
@@ -168,6 +179,7 @@ $scope.getSelectedAddonPrice = function(){
 			}else{
 				if(data.page_template === 'SPACE'){
 					$scope.fetchSpaces();
+					$scope.data.durations = $scope.getDurationsNames($scope.data.durations);
 				}else{
 					$scope.$emit('hideLoader');
 				}
