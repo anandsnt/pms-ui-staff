@@ -107,6 +107,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.otherData.segmentsIsForced = baseSearchData.settings.force_segments;
             //CICO-17731 Force Adjustment Reasons
             $scope.otherData.forceAdjustmentReason = baseSearchData.settings.force_rate_adjustment_reason;
+            // CICO-12562 Zoku - Overbooking Alert
+            $scope.otherData.show_overbooking_alert = baseSearchData.settings.show_overbooking_alert;
+            
             $scope.otherData.isAddonEnabled = baseSearchData.settings.is_addon_on;
 
             $scope.guestCardData = {};
