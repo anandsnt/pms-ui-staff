@@ -13,7 +13,7 @@ sntRover.controller('searchCompanyCardController', ['$scope', 'RVCompanyCardSear
 				setTimeout(function() {
 					refreshScroller();
 				}, 750);
-			}
+			};
 			/**
 			 * function used for refreshing the scroller
 			 */

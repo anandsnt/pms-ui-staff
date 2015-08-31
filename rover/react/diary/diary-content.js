@@ -21,10 +21,6 @@ var DiaryContent = React.createClass({
 				display: display
 			},function() {
             });
-            //, function() {
-                //this.state.iscroll.grid.scrollTo((display.x_origin - display.x_n) * display.px_per_ms, this.state.iscroll.grid.y);
-                //this.state.iscroll.timeline.scrollTo((display.x_origin - display.x_n) * display.px_per_ms, 0);
-            //});
 		}
 		//reffreshing the timeline scroller and calling the onscroll fn so that others will get corrected
 		iscroll.timeline.scrollTo(iscroll.timeline.x, iscroll.timeline.y);
@@ -32,13 +28,13 @@ var DiaryContent = React.createClass({
 		iscroll.timeline._scrollFn();
 	},
 	__toggleRows: function(state) {
-		this.state.angular_evt.toggleRows(state, Math.abs(this.state.iscroll.grid.x) / this.state.display.px_per_ms + this.state.display.x_n); //.x_origin);
+		this.state.angular_evt.toggleRows(state, Math.abs(this.state.iscroll.grid.x) / this.state.display.px_per_ms + this.state.display.x_n);
 	},
 	__onGridScrollStart: function(iscroll_object) {
 
 	},
 	__onGridScrollEnd: function(iscroll_object) {
-		this.state.angular_evt.onScrollEnd(Math.abs(this.state.iscroll.grid.x) / this.state.display.px_per_ms + this.state.display.x_n); //x_origin);
+		this.state.angular_evt.onScrollEnd(Math.abs(this.state.iscroll.grid.x) / this.state.display.px_per_ms + this.state.display.x_n);
 	},
 	__onGridScroll: function(iscroll_object) {
 		var el = iscroll_object, iscroll = this.state.iscroll;
@@ -93,13 +89,9 @@ var DiaryContent = React.createClass({
 	  by the grid row item.
 	*/
 	__onResizeCommand: function(row_item_data) {
-		//if(_.isObject(row_item_data)) {
-			this.setProps({
-				currentResizeItem: row_item_data
-			});
-		//} else if( _.isArray(row_item_data)) {
-
-		//}
+		this.setProps({
+			currentResizeItem: row_item_data
+		});
 	},
 	__onResizeStart: function(row_data, row_item_data) {
 		this.state.angular_evt.onResizeStart.apply(this, Array.prototype.slice.call(arguments));
@@ -190,20 +182,6 @@ var DiaryContent = React.createClass({
 
   		var hops = Object.prototype.hasOwnProperty,
   			self = this;
-  		/*if(this.props.viewport !== nextProps.viewport ||
-  		   this.props.display !== nextProps.display ||
-  		   this.props.filter !== nextProps.filter ||
-  		   this.props.edit !== nextProps.edit) {
-
-  			this.setState({
-  				display: nextProps.display,
-  				viewport: nextProps.viewport,
-  				filter: nextProps.filter,
-  				edit: nextProps.edit
-  			});
-  		}*/
-
-
 
 		if(hops.call(this.props, 'stats') && this.props.stats !== nextProps.stats) {
   			this.setState({
@@ -295,7 +273,6 @@ var DiaryContent = React.createClass({
 		display.px_per_ms 			= display.px_per_int / 900000;
 		display.x_0 				= viewport.row_header_right;
 		display.total_rows			= scope.gridProps.data.length;
-		//display.x_origin 			= filter.arrival_date.getTime();
         display.x_origin_start_time = filter.arrival_time;
         display.scrollTo            = (display.x_origin - display.x_n) * display.px_per_ms;
 

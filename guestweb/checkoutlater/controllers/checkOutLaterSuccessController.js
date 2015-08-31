@@ -59,7 +59,7 @@
 		$scope.success = true;
 		$scope.posted = true;
 		$rootScope.isLateCheckoutAvailable = false;
-		$rootScope.checkoutTime = $scope.lateCheckOut.time +':00 '+$scope.lateCheckOut.ap
+		$rootScope.checkoutTime = $scope.lateCheckOut.time +':00 '+$scope.lateCheckOut.ap;
 	}
 	else{
 		$scope.lateCheckOut = _.find(charges, function(charge) {
@@ -76,8 +76,8 @@
 		$scope.success = response.status ? true : false;
 	 	if($scope.success === true){
 			$scope.posted = true;
-			$scope.oldCheckoutTime = angular.copy($rootScope.checkoutTime);	
-			$rootScope.checkoutTime = $scope.lateCheckOut.time +':00 '+$scope.lateCheckOut.ap
+			$scope.oldCheckoutTime = angular.copy($rootScope.checkoutTime);
+			$rootScope.checkoutTime = $scope.lateCheckOut.time +':00 '+$scope.lateCheckOut.ap;
 		 	$rootScope.checkoutTimessage = "Your new check-out time is ";
 		 	$rootScope.isLateCheckoutAvailable = false;
 		}

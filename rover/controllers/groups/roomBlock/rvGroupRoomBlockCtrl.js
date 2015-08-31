@@ -133,7 +133,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		var hasPermissionToOverBook = function() {
-			return (rvPermissionSrv.getPermissionValue('BOOK_ROOM_WITHOUT_INVENTORY'));
+			return (rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE'));//CICO-19821
 		};
 
 		/**
@@ -219,10 +219,10 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 				//throwing undefined items
 				list_of_triples = _.filter(list_of_triples, function(element) {
-					return (typeof element !== "undefined")
+					return (typeof element !== "undefined");
 				});
 
-				return (list_of_triples.length > 0)
+				return (list_of_triples.length > 0);
 			} else {
 				return !!roomType.rate_config.extra_adult_rate && !!roomType.rate_config.double_rate;
 			}
@@ -241,10 +241,10 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 				//throwing undefined items
 				list_of_quadruples = _.filter(list_of_quadruples, function(element) {
-					return (typeof element !== "undefined")
+					return (typeof element !== "undefined");
 				});
 
-				return (list_of_quadruples.length > 0 && $scope.shouldShowTripleEntryRow(roomType))
+				return (list_of_quadruples.length > 0 && $scope.shouldShowTripleEntryRow(roomType));
 			} else {
 				return !!roomType.rate_config.extra_adult_rate && !!roomType.rate_config.double_rate;
 			}
@@ -287,8 +287,6 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		/**
-<<<<<<< HEAD
-=======
 		 * should we wanted to disable single box entry
 		 * @param {Object} [dateData] [description]
 		 * @param {Object} - Room Type data row
@@ -349,7 +347,6 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		/**
->>>>>>> 912b9e5ac6d8266027ca4703b1824cbeeea10a5d
 		 * to copy the single & single_pick up value entered in the column
 		 * to the row
 		 * @param {Object} - cell data
@@ -421,9 +418,9 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//we are changing the model to
 			$scope.hasBookingDataChanged = true;
 
-			// if (isOverBooked()) {
-			// 	showOverBookingPopup()
-			// }
+
+
+
 			runDigestCycle();
 		};
 
@@ -455,7 +452,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			$scope.endDateOptions.minDate = $scope.startDate;
 
 			//we have to show create button
-			//$scope.createButtonClicked = false;
+
 
 			runDigestCycle();
 		};
@@ -469,7 +466,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			$scope.endDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
 			//we have to show create button
-			//$scope.createButtonClicked = false;
+
 
 			runDigestCycle();
 		};
@@ -544,7 +541,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				return false;
 			}
 			if (isOverBooked()) {
-				showOverBookingPopup()
+				showOverBookingPopup();
 			} else {
 				$scope.saveRoomBlock();
 			}
@@ -556,7 +553,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 */
 		$scope.clickedOnDiscardButton = function() {
 			$scope.groupConfigData.summary.selected_room_types_and_bookings =
-				util.deepCopy($scope.copy_selected_room_types_and_bookings)
+				util.deepCopy($scope.copy_selected_room_types_and_bookings);
 
 			//and our isn't changed
 			$scope.hasBookingDataChanged = false;
@@ -627,7 +624,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				});
 			});
 			return is_over_booked;
-		}
+		};
 
 		/**
 		 * Method to show oerbooking popup - No permission popup
@@ -756,8 +753,6 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			if (!ref.length) {
 				return 0;
 			}
-
-			//$scope.$emit('showLoader');
 			//first of all, we need group by 'date' data as our current data is room type row based
 			// we need these 'datewisedata' in single array
 			_.each(ref, function(el) {
@@ -774,14 +769,14 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			_.each(dateWiseGroupedData, function(el) {
 				sum = 0;
 				_.each(el, function(eachDateData) {
-					sum += $scope.getTotalBookedOfIndividualRoomType(eachDateData)
+					sum += $scope.getTotalBookedOfIndividualRoomType(eachDateData);
 				});
 				totalBookedOfEachDate.push(sum);
 			});
 
 			//returning max among them, simple
 			var max = _.max(totalBookedOfEachDate);
-			//$scope.$emit('hideLoader');
+
 			return max;
 		};
 
@@ -832,7 +827,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//get Room type & rates for this group
 			var paramsForRoomTypeAndRates = {
 				id: $scope.groupConfigData.summary.group_id
-			}
+			};
 			promises.push(rvGroupConfigurationSrv
 				.getSelectedRoomTypesAndRates(paramsForRoomTypeAndRates)
 				.then(successCallBackOfRoomTypeAndRatesFetch)
@@ -928,7 +923,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 			//we changed data, so
 			refreshScroller();
-		}
+		};
 
 		/**
 		 * To fetch room block details
@@ -951,7 +946,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				successCallBack: successCallBackOfFetchRoomBlockGridDetails
 			};
 			$scope.callAPI(rvGroupConfigurationSrv.getRoomBlockGridDetails, options);
-		}
+		};
 
 		/**
 		 * we want to display date in what format set from hotel admin
@@ -1122,7 +1117,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {undefined}
 		 */
 		var setActiveLeftSideMenu = function () {
-			var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup": "menuManageGroup";			
+			var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup": "menuManageGroup";
 			$scope.$emit("updateRoverLeftMenu", activeMenu);
 		};
 

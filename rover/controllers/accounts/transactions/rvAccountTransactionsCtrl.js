@@ -33,8 +33,114 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
+		$scope.hasMoveToOtherBillPermission = function() {
+        	return ($rootScope.isStandAlone && rvPermissionSrv.getPermissionValue ('MOVE_CHARGES_RESERVATION_ACCOUNT'));
+  		};
+
+  		//only for standalone
+		var setChargeCodesSelectedStatus = function(bool){
+				var billTabsData = $scope.transactionsDetails.bills;
+				var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees.fees_details;
+				chargeCodesId = [];
+				_.each(chargeCodes, function(chargeCode) {
+				  chargeCode.isSelected = bool;
+				  chargeCodesId.push(chargeCode.id);
+				});
+				$scope.transactionsDetails.isAllChargeCodeSelected = bool;
+		};
+		/*
+	    * Check if all the items are selected
+	    */
+		$scope.isAllChargeCodesSelected = function(){
+			var isAllChargeCodesSelected = true;
+			var billTabsData = $scope.transactionsDetails.bills;
+			if(!$rootScope.isStandAlone){
+				isAllChargeCodesSelected = false;
+			}
+			else{
+				console.log(billTabsData[$scope.currentActiveBill]);
+				var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees.fees_details;
+		        if (chargeCodes){
+		            if(chargeCodes.length > 0){
+		                _.each(chargeCodes, function(chargeCode) {
+		                  if(!chargeCode.isSelected){
+		                    isAllChargeCodesSelected = false;
+		                  }
+		                });
+		            } else{
+		                isAllChargeCodesSelected = false;
+		            }
+		        } else{
+		            isAllChargeCodesSelected = false;
+		        }
+			}
+	        return isAllChargeCodesSelected;
+		};
+
+		/*
+	    * Check if selection is partial
+	    */
+		$scope.isAnyOneChargeCodeIsExcluded = function(){
+			var isAnyOneChargeCodeIsExcluded = false;
+			var isAnyOneChargeCodeIsIncluded = false;
+			var billTabsData = $scope.transactionsDetails.bills;		
+			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees.fees_details
+			if(chargeCodes.length>0){
+				_.each(chargeCodes, function(chargeCode,index) {
+				  if(!chargeCode.isSelected){
+				  	isAnyOneChargeCodeIsExcluded = true;
+				  }
+				  else{
+				  	isAnyOneChargeCodeIsIncluded = true;
+				  }
+				});
+			}
+			else{
+				isAnyOneChargeCodeIsExcluded = false;
+				isAnyOneChargeCodeIsIncluded = false;
+			}
+			return isAnyOneChargeCodeIsExcluded && isAnyOneChargeCodeIsIncluded;
+		};
+
+		$scope.selectAllChargeCodeToggle = function(){
+			$scope.transactionsDetails.isAllChargeCodeSelected ? setChargeCodesSelectedStatus(true) :setChargeCodesSelectedStatus(false);
+		};
+
+		$scope.moveChargesClicked = function(){
+			var billTabsData = $scope.transactionsDetails.bills;
+			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees.fees_details;
+			//Data to pass to the popup
+			//1. Selected transaction ids
+			//2. Confirmation number
+			//3. AccountName
+			//4. CurrentBillNumber
+			//5. Current Bill id
+			$scope.moveChargeData = {};
+			$scope.moveChargeData.selectedTransactionIds = [];
+			var accountName = (typeof $scope.accountConfigData.summary.posting_account_name !== "undefined") ?$scope.accountConfigData.summary.posting_account_name :"";
+			$scope.moveChargeData.displayName = accountName;
+			$scope.moveChargeData.currentActiveBillNumber = parseInt($scope.currentActiveBill) + parseInt(1);
+			$scope.moveChargeData.fromBillId = billTabsData[$scope.currentActiveBill].bill_id;
 
 
+			if(chargeCodes.length>0){
+				_.each(chargeCodes, function(chargeCode,index) {
+					if(chargeCode.isSelected){
+						$scope.moveChargeData.selectedTransactionIds.push(chargeCode.id);
+					}
+			    });
+			    ngDialog.open({
+		    		template: '/assets/partials/bill/rvMoveTransactionPopup.html',
+		    		controller: 'RVMoveChargeCtrl',
+		    		className: '',
+		    		scope: $scope
+	    		});
+			}
+			else{
+				return;
+			};
+		};
+	
 		/**
 		 * function to check whether the user has permission
 		 * to make move charges from one bill to another
@@ -78,6 +184,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.refreshScroller('registration-content');
 			$scope.refreshScroller('bill-tab-scroller');
 			$scope.refreshScroller('billDays');
+			setChargeCodesSelectedStatus(false);
 
 			/*
 			 * Adding billValue and oldBillValue with data. Adding with each bills fees details
@@ -93,7 +200,20 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				});
 			});
 
-		}
+		};
+
+		$scope.$on('moveChargeSuccsess', function() {
+
+			 var paramsForTransactionDetails = {
+                account_id: $scope.accountConfigData.summary.posting_account_id
+            };
+            var chargesMoved = function(data){
+            	$scope.$emit('hideLoader');
+            	onTransactionFetchSuccess(data);
+            };
+			$scope.invokeApi(rvAccountTransactionsSrv.fetchTransactionDetails, paramsForTransactionDetails, chargesMoved);
+		});
+
 
 		/**
 		 * API calling method to get the transaction details
@@ -171,17 +291,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		//Calculate the scroll width for bill tabs in all the cases
 		$scope.getWidthForBillTabsScroll = function() {
-			/*var width = 0;
-			if($scope.routingArrayCount > 0)
-				width = width + 200;
-			if($scope.incomingRoutingArrayCount > 0)
-				width = width + 275;
-			if($scope.clickedButton === 'checkinButton')
-				width = width + 230;
-			if($scope.reservationBillData.bills.length < 10)
-				width = width + 50;
-			width =  133 * $scope.reservationBillData.bills.length + 10 + width;
-			return width;*/
+
 			var width = 0;
 			if($scope.transactionsDetails !== undefined){
 				var width = $('#registration-summary ul li').width() * ($scope.transactionsDetails.bills.length + 1);
@@ -236,8 +346,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.billNumber = activeBillNo;
 
 			var bills = [];
-		    for(var i = 0; i < $scope.transactionsDetails.bills.length; i++ )
+		    for(var i = 0; i < $scope.transactionsDetails.bills.length; i++ ) {
 		    	bills.push(i+1);
+		    }
 
 		    $scope.fetchedData = {};
 			$scope.fetchedData.bill_numbers = bills;
@@ -387,7 +498,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			$scope.errorMessage = "";
 			//hide edit and remove options in case type is  payment
-			// $scope.hideRemoveAndEdit  = (type === "PAYMENT") ? true : false;
+
 			$scope.selectedTransaction = {};
 			$scope.selectedTransaction.id = id;
 			$scope.selectedTransaction.desc = desc;
@@ -483,13 +594,13 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				mailFailed = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
 					$scope.closeDialog();
-				}
+				};
 
 			var params = {
 				"bill_number": billNumber,
 				"to_address": mailTo,
 				"is_group": !!$scope.groupConfigData
-			}
+			};
 
 			if (!!$scope.groupConfigData) {
 				params.group_id = $scope.groupConfigData.summary.group_id;
@@ -503,7 +614,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				params: params
 			});
 
-		}
+		};
 
 		$scope.mailInvoice = function(billNumber) {
 			if ($scope.groupConfigData && $scope.groupConfigData.summary && !!$scope.groupConfigData.summary.contact_email) {
@@ -520,7 +631,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					})
 				});
 			}
-		}
+		};
 
 		$scope.printInvoice = function() {
 				$('.nav-bar').addClass('no-print');
@@ -544,7 +655,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					$('.card-tabs-nav').removeClass('no-print');
 
 				}, 100);
-			}
+			};
 			//CICO-13903 End
 
 		//Direct Bill payment starts here
@@ -555,7 +666,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				//Fetch data again to refresh the screen with new data
 				getTransactionDetails();
 				$scope.diretBillpaymentData = {};
-			}
+			};
 			$scope.callAPI(rvAccountTransactionsSrv.submitPaymentOnBill, {
 				successCallBack: successPayment,
 				params: $scope.diretBillpaymentData
@@ -653,7 +764,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
             //Lets start the processing
             $q.all(promises)
                 .then(successFetchOfAllReqdForTransactionDetails, failedToFetchOfAllReqdForTransactionDetails);
-        }
+        };
 
 
 		/**

@@ -244,8 +244,6 @@ sntRover.controller('RateCalendarCtrl', [
         var loadTable = function() {
             $scope.currentExpandedRow = -1; //reset the expanded row
             $scope.loading = true;
-            $scope.$emit('showLoader');
-            setTimeout(function() {
                 // If only one rate is selected in the filter section, the defult view is room type calendar
                 if ($scope.currentFilterData.rates_selected_list.length === 1) {
                     $scope.calendarMode = "ROOM_TYPE_VIEW";
@@ -266,6 +264,7 @@ sntRover.controller('RateCalendarCtrl', [
 
 
                     if ($scope.ratesRoomsToggle === 'ROOMS') {
+                        $scope.calendarData = data;
                         $scope.everyRestriction = $scope.calendarData.room_type_restrictions;
                         var d, rm_type, r_date, rm_type_name;
                         $scope.calendarData.data_new = [];
@@ -278,7 +277,7 @@ sntRover.controller('RateCalendarCtrl', [
                                 $scope.calendarData.data_new.push($scope.calendarData.data[x]);
 
                             } else {
-                                delete $scope.calendarData.data[x];
+                           //     delete $scope.calendarData.data[x];
                             }
                         }
 
@@ -339,21 +338,23 @@ sntRover.controller('RateCalendarCtrl', [
 
                 //Set the current business date value to the service. Done for calculating the history dates
                 RateMngrCalendarSrv.businessDate = $rootScope.businessDate;
-
                 if ($scope.calendarMode === "RATE_VIEW") {
-                    $scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, calculateRateViewCalGetParams(), calenderDataFetchSuccess)
+                    var params = calculateRateViewCalGetParams();
+
+                if ($scope.ratesRoomsToggle !== 'RATES') {
+                    params.roomrate = 'ROOMS';
+                }
+                    $scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, params, calenderDataFetchSuccess)
                         .then(finalizeCapture);
 
                 } else {
-                    $scope.invokeApi(RateMngrCalendarSrv.fetchRoomTypeCalenarData, calculateRoomTypeViewCalGetParams(), calenderDataFetchSuccess)
+                    $scope.invokeApi(RateMngrCalendarSrv.fetchRoomTypeCalendarData, calculateRoomTypeViewCalGetParams(), calenderDataFetchSuccess)
                         .then(finalizeCapture);
-
-
                 }
-            }, 200);
         };
 
         $scope.reloadRoomsCount = 0;
+
         $rootScope.$on('loadingRooms', function() {
             $scope.reloadingRooms = true;
             if ($scope.reloadRoomsCount >= 1) {
@@ -361,6 +362,7 @@ sntRover.controller('RateCalendarCtrl', [
             }
             ++$scope.reloadRoomsCount;
         });
+
         $scope.$on('showRatesBtnClicked', function() {
             $scope.ratesRoomsToggle = 'RATES';
             $scope.activeToggleButton = 'Rates';
@@ -432,7 +434,6 @@ sntRover.controller('RateCalendarCtrl', [
             for (var i in $scope.currentFilterData.rates_selected_list) {
                 data.rate_ids.push($scope.currentFilterData.rates_selected_list[i].id);
             }
-
             return data;
         };
 
@@ -462,7 +463,6 @@ sntRover.controller('RateCalendarCtrl', [
         $scope.goToRoomTypeCalendarView = function(rate) {
             if ($scope.ratesRoomsToggle !== 'ROOMS') {
                 $scope.$emit('showLoader');
-                $scope.loading = true;
                 setTimeout(function() {
                     $scope.ratesDisplayed.length = 0;
                     $scope.ratesDisplayed.push(rate);
@@ -480,7 +480,7 @@ sntRover.controller('RateCalendarCtrl', [
         $scope.openCloseAllRestrictions = function(action) {
 
             var restrictionUpdateSuccess = function() {
-                //$scope.$emit('hideLoader');
+
                 loadTable();
             };
 
@@ -559,6 +559,8 @@ sntRover.controller('RateCalendarCtrl', [
                 }
                 $scope.popupData.room_restrictions = $scope.getRestrictionsForDateRoomType(date, roomTypeName);
             }
+
+            $scope.popupData.ratesRoomsToggle = $scope.ratesRoomsToggle;
             $scope.popupData.selectedDate = date;
             $scope.popupData.selectedRate = rate;
             if (rate === "") {

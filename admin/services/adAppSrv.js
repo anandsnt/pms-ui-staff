@@ -3,7 +3,7 @@ admin.service('ADAppSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', functi
 	this.fetch = function(){
 		var deferred = $q.defer();
 		var url = '/admin/settings/menu_items.json';
-		// var url = '/sample_json/menu_items.json';
+
 
 		var fetchSuccess = function(data){
 			deferred.resolve(data);

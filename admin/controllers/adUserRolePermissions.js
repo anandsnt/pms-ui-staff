@@ -37,16 +37,16 @@ admin.controller('ADUserRolePermissionsCtrl', [
 		var failureCallback = function(data){
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = data;
-		}
+		};
 		$scope.invokeApi(ADUserRolePermissionSrv.fetchUserRolePermission, {}, successCallback, failureCallback);
-    }
+    };
 	$scope.fetchUserRolePermission();
 
 	$scope.calculateArrayDifferance = function(source, toRemove) {
     		return source.filter(function(value){
         	return toRemove.indexOf(value) === -1;
     		});
-		}
+		};
 
     $scope.initiatePermissionforSelectedUserRole = function(){
 
@@ -63,7 +63,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
 
     	});
     	$scope.unAssignedPermissions = $scope.calculateArrayDifferance($scope.permissions, $scope.assignedPermissions);
-    }
+    };
 
     $scope.selectUserRole = function($event, index){
     	$scope.selectedUserRole = $scope.userRoles[index];
@@ -71,7 +71,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
     	$scope.selectedUnassignedPermission =-1;
     	$scope.selectedAssignedPermission =-1;
     	$scope.initiatePermissionforSelectedUserRole();
-    }
+    };
 
     $scope.$watch("assignedPermissions.length", function(oldValue,newValue){
     		if(oldValue<newValue){
@@ -88,7 +88,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
 					$scope.errorMessage = data;
 					$scope.$emit('hideLoader');
 					$scope.initiatePermissionforSelectedUserRole();
-				}
+				};
 				var postData = {};
 				postData.permissions = [];
 				postData.permissions.length =0;
@@ -110,7 +110,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
 					$scope.errorMessage = data;
 					$scope.$emit('hideLoader');
 					$scope.initiatePermissionforSelectedUserRole();
-				}
+				};
 				var postData = {};
 				postData.permissions = [];
 				postData.permissions.length =0;

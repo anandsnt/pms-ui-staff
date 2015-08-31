@@ -81,7 +81,7 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 	var openPopupForErrorMessageShowing = function(errorMessage) {
 		ngDialog.open(
 		{
-			template 	: '/assets/partials/roomAssignment/rvRoomAssignmentShowErrorMessage.html',			
+			template 	: '/assets/partials/roomAssignment/rvRoomAssignmentShowErrorMessage.html',
 			className 	: 'ngdialog-theme-default',
 			controller 	: 'rvRoomAlreadySelectedCtrl',
 			scope 		: $scope,

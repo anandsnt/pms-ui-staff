@@ -159,15 +159,15 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                         var hourTwelved = function(hour) {
                             var hourCorrected = (hour < 12 ? hour : hour % 12);
                             return hourCorrected === 0 ? 12 : hourCorrected;
-                        }
+                        };
 
                         if (!!value.day_checkout_cutoff_time) {
-                            var checkoutTime = value.day_checkout_cutoff_time.split(":")
+                            var checkoutTime = value.day_checkout_cutoff_time.split(":");
                             value.checkout = {
                                 hh: hourTwelved(parseInt(checkoutTime[0])),
                                 mm: checkoutTime[1],
                                 am: parseInt(checkoutTime[0]) > 11 ? "PM" : "AM"
-                            }
+                            };
                         } else {
                             value.checkout = angular.copy(dummy);
                         }
@@ -178,7 +178,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                                 hh: hourTwelved(parseInt(duskTime[0])),
                                 mm: duskTime[1],
                                 am: parseInt(duskTime[0]) > 11 ? "PM" : "AM"
-                            }
+                            };
                         } else {
                             value.dusk = angular.copy(dummy);
                         }
@@ -189,7 +189,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                                 hh: hourTwelved(parseInt(dawnTime[0])),
                                 mm: dawnTime[1],
                                 am: parseInt(dawnTime[0]) > 11 ? "PM" : "AM"
-                            }
+                            };
                         } else {
                             value.dawn = angular.copy(dummy);
                         }
@@ -200,7 +200,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                                 hh: hourTwelved(parseInt(nightCheckoutTime[0])),
                                 mm: nightCheckoutTime[1],
                                 am: parseInt(nightCheckoutTime[0]) > 11 ? "PM" : "AM"
-                            }
+                            };
                         } else {
                             value.night_checkout = angular.copy(dummy);
                         }
@@ -489,31 +489,16 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         };
 
         $scope.checkFieldEntered = function(index) {
-            /*var enableSetUpdateButton = false;
-            // if($scope.rateData.id === ""){
-            angular.forEach($scope.data.sets[index].room_rates, function(value, key) {
-                if (value.hasOwnProperty("single")) {//} && value.single !== "") {
-                    enableSetUpdateButton = true;
-                }
-                if (value.hasOwnProperty("double")) { //} && value.double !== "") {
-                    enableSetUpdateButton = true;
-                }
-                if (value.hasOwnProperty("extra_adult")) { //} && value.extra_adult !== "") {
-                    enableSetUpdateButton = true;
-                }
-                if (value.hasOwnProperty("child")) { //} && value.child !== "") {
-                    enableSetUpdateButton = true;
-                }
-            });*/
-            // }
 
-            if ($scope.otherData.setChanged) { //enableSetUpdateButton && $scope.otherData.setChanged) {
+
+
+            if ($scope.otherData.setChanged) {
                 $scope.data.sets[index].isEnabled = true;
             } else {
                 $scope.data.sets[index].isEnabled = false;
             }
 
-            return $scope.data.sets[index].isEnabled; //enableSetUpdateButton;
+            return $scope.data.sets[index].isEnabled;
         };
 
         $scope.popupCalendar = function() {
@@ -643,7 +628,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             else {
                 return false;
             }
-        }
+        };
 
         $scope.collapse = function(index) {
             var setLength = $scope.data.sets.length;

@@ -5694,7 +5694,7 @@
                     }
                 }
 
-                .iScrollVerticalScrollbar { .hide; }
+                /*.iScrollVerticalScrollbar { .hide; }*/
 
                 &.no-content {
                     background: none;
@@ -7349,7 +7349,7 @@
                     tbody {
                         tr {
                             td {
-                                padding: 5px 10px;
+                                padding: 5px;
                                 border-bottom: 1px solid @grey2;
 
                                 .number { margin-right: 5px; }
@@ -7391,7 +7391,7 @@
                                 strong { font-weight: 600; }
 
                                 &.name {
-                                    min-width: 40%;
+                                    min-width: 320px;
                                     border-bottom: 0;
 
                                     .info {
@@ -7436,8 +7436,15 @@
                                         }
                                     }
 
-                                    &.short { min-width: 25%; }
+                                    &.short { min-width: 220px; }
                                 }
+
+                                &.room-type {
+                                    max-width: 180px;
+                                    .nowrap();
+                                }
+
+                                &.date { white-space: nowrap; }
 
                                 &.info {
                                     font-size: 12px;

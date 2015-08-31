@@ -8,8 +8,8 @@ sntRover.controller('rvReservationCardActivityLogCtrl',
             var hideLog = true;
             $scope.activityLog = {
                 hideDetails: hideLog
-            }
-        }
+            };
+        };
 
         $scope.toggleActivityLogDetails = function() {
             $scope.activityLog.hideDetails = !$scope.activityLog.hideDetails;
@@ -17,7 +17,7 @@ sntRover.controller('rvReservationCardActivityLogCtrl',
             $timeout(function(){
                 $scope.$parent.myScroll['resultDetails'].scrollTo($scope.$parent.myScroll['resultDetails'].maxScrollX,
                     $scope.$parent.myScroll['resultDetails'].maxScrollY, 500);
-            }, 500)
+            }, 500);
 
         };
 
@@ -25,7 +25,7 @@ sntRover.controller('rvReservationCardActivityLogCtrl',
             $state.go('rover.reservation.staycard.activitylog',{
                 id: $stateParams.id
             });
-        }
+        };
         init();
     }
 ]);

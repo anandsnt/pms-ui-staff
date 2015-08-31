@@ -67,7 +67,7 @@ var GridRowItem = React.createClass({
 						}
 					});
 				}
-				break
+				break;
 		}
 		return caption;
 

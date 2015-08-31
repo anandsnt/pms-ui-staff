@@ -14,7 +14,7 @@ admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADConte
 
 		};
 	   $scope.invokeApi(ADContentManagementSrv.fetchTreeViewList, {} , successCallbackTreeFetch);
-   }
+   };
    /* Function to set the expansion status as false for all the components
     */
    $scope.setExpandStatus = function(data){
@@ -25,13 +25,13 @@ admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADConte
    			data[i].isExpanded = false;
    			$scope.setExpandStatus(data[i].children);
    		}
-   }
+   };
    /* Function to toggle the expansion status
     */
    $scope.toggleExpansion = function(index){
 
    		$scope.contentList[index].isExpanded = !$scope.contentList[index].isExpanded;
-   }
+   };
 
    $scope.fetchTreeViewList();
    /* Listener for the component deletion.
@@ -57,7 +57,7 @@ admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADConte
                break;
             }
          }
-   }
+   };
    /* Listener for the component status update.
     */
    $scope.$on('statusUpdated', function(event, data) {
@@ -81,7 +81,7 @@ admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADConte
                break;
             }
          }
-   }
+   };
 
 }]);
 
