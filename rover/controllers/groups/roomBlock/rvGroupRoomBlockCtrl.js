@@ -473,7 +473,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//arrival right date change
 			else if(newBlockFrom > oldBlockFrom && chActions.arrDateRightChangeAllowed()) {
 				// check move validity
-				if(new tzIndependentDate(refData.first_dep_date) <= newBlockFrom)
+				if(new tzIndependentDate(refData.first_dep_date) < newBlockFrom)
 					triggerLaterArrivalDateChangeInvalidError();
 				else
 					triggerLaterArrivalDateChange();
@@ -517,7 +517,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//departure left date change
 			if(newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {
 				// check move validity
-				if(new tzIndependentDate(refData.last_arrival_date) >= newBlockTo)
+				if(new tzIndependentDate(refData.last_arrival_date) > newBlockTo)
 					triggerEarlierDepartureDateChangeInvalidError();
 				else
 					triggerEarlierDepartureDateChange();

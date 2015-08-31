@@ -326,7 +326,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			//arrival right date change
 			else if(newBlockFrom > oldBlockFrom && $scope.changeDatesActions.arrDateRightChangeAllowed()) {
 				// check move validity
-				if(new tzIndependentDate(refData.first_dep_date) <= newBlockFrom) {
+				if(new tzIndependentDate(refData.first_dep_date) < newBlockFrom) {
 					triggerLaterArrivalDateChangeInvalidError();
 				}
 				else {
@@ -413,7 +413,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			// departure left date change
 			if(newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {
 				// check move validity
-				if(new tzIndependentDate(refData.last_arrival_date) >= newBlockTo){
+				if(new tzIndependentDate(refData.last_arrival_date) > newBlockTo){
 					triggerEarlierDepartureDateChangeInvalidError();
 				}
 				else{
