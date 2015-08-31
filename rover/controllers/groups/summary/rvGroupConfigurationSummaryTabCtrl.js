@@ -107,6 +107,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			//resetting the calendar date's to actual one
 			resetDatePickers();
 
+			//setting max date of from date
+			$scope.fromDateOptions.maxDate = '';
+
 			$scope.changeDatesActions.clickedOnMoveButton ();
 		
 		};
