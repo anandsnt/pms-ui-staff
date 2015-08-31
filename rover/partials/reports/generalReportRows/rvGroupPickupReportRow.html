@@ -1,0 +1,38 @@
+<!-- Angular currency filter will change negative values from for e.g. -34 to ($34)
+This is why: http://stackoverflow.com/questions/17441254/why-angularjs-currency-filter-formats-negative-numbers-with-parenthesis#answer-17441429 -->
+
+<tr ng-repeat="each in results track by $index" class="{{ each.className }}" ngrepeatend>
+    <td ng-if="each.isReport" class="name" rowspan="{{ each.rowspan }}"> <!-- Set rowspan as {no. of records + 1} E.g. if there are 5 records for group, rowspan should be set to 6. That means we'll show 5 records + 1 totals row -->
+        <div class="info">
+            <strong>{{ each.group_name }}</strong>
+            <em>{{ each.group_code }}</em>
+        </div>
+    </td>
+    <td ng-if="each.isReport" class="date">{{ each.date | date : dateFormat }}</td>
+    <td ng-if="each.isReport">{{ each.hold_status }}</td>
+    <td ng-if="each.isReport" class="room-type">{{ each.room_type }}</td>
+    <td ng-if="each.isReport">{{ each.rooms_available }}</td>
+    <td ng-if="each.isReport">{{ each.rooms_held_non_deduct }}</td>
+    <td ng-if="each.isReport">{{ each.rooms_held_deduct }}</td>
+    <td ng-if="each.isReport">{{ each.rooms_held_picked_up }}</td>
+    <td ng-if="each.isReport">{{ each.pickup_percentage }}<span ng-if="each.pickup_percentage">%</span></td>
+
+
+    <td ng-if="each.isSubReport" class="date">{{ each.date | date : dateFormat }}</td>
+    <td ng-if="each.isSubReport">{{ each.hold_status }}</td>
+    <td ng-if="each.isSubReport" class="room-type">{{ each.room_type }}</td>
+    <td ng-if="each.isSubReport">{{ each.rooms_available }}</td>
+    <td ng-if="each.isSubReport">{{ each.rooms_held_non_deduct }}</td>
+    <td ng-if="each.isSubReport">{{ each.rooms_held_deduct }}</td>
+    <td ng-if="each.isSubReport">{{ each.rooms_held_picked_up }}</td>
+    <td ng-if="each.isSubReport">{{ each.pickup_percentage }}<span ng-if="each.pickup_percentage">%</span></td>
+
+    
+    <td ng-if="each.isSubTotal" colspan="2"></td>
+    <td ng-if="each.isSubTotal"><strong>Total</strong></td>
+    <td ng-if="each.isSubTotal">{{ each.rooms_available }}</td>
+    <td ng-if="each.isSubTotal">{{ each.rooms_held_non_deduct }}</td>
+    <td ng-if="each.isSubTotal">{{ each.rooms_held_deduct }}</td>
+    <td ng-if="each.isSubTotal">{{ each.rooms_held_picked_up }}</td>
+    <td ng-if="each.isSubTotal">{{ each.pickup_percentage }}%</td>
+</tr>

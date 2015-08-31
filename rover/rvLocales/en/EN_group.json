@@ -86,6 +86,8 @@
     "GROUP_LATER_ARR_DATE_CHANGE_WARNING": "Reservations are due to depart on/prior to new arrival date. Please amend reservations before moving group dates.",
     "GROUP_EARLIER_DEP_DATE_CHANGE_WARNING": "Reservations are due to arrive on/after new departure date. Please amend reservations before moving group dates.",
     "GROUP_MOVE_CONFIRM": "Move group and associated reservations?",
-    "ROOM_TYPE_NO_AVAILABILITY_CHANGE_DATES": "Room Block Allocation exceeds Room Type availability"
-
-
+    "ROOM_TYPE_NO_AVAILABILITY_CHANGE_DATES": "Room Block Allocation exceeds Room Type availability",
+    "GROUP_CUSTOM_RATE_HAS_CHANGED": "Group Custom Rate has Changed",
+    "APPLY_TO_NEW_AND_EXISTING_RESERVATIONS": "Apply to New &amp; Existing Reservations",
+    "APPLY_TO_NEW_RESERVATIONS_ONLY": "Apply to New Reservations Only",
+    "INHOUSE_RESERVATIONS_EXISTS_BUT_ARE_EXCLUDED_FROM_THIS_RATE_UPDATE": "Inhouse Reservations exists but are excluded from this rate update"
