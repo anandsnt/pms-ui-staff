@@ -431,7 +431,6 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @return {Boolean}
              */
             $scope.shouldShowProceedButtonInNoAvailaility = function () {
-                return true;
                 return hasPermissionToOverBook ();
             };
 
