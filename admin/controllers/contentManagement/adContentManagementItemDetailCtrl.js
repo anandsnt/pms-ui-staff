@@ -123,17 +123,13 @@ $scope.getDurationsNames = function (items) {
 };
 
 $scope.setSpaceDurations = function(val,index) {
-	console.log(val);
 	var duration = $scope.space_durations[index];
-	console.log(duration);
 	var flag = $scope.data.durations.indexOf(duration.value);
 	if(flag === -1){
 		$scope.data.durations.push(duration.value);
-		console.log($scope.data.durations);
 	}
 	else{
 		$scope.data.durations.splice(flag,1);
-		console.log($scope.data.durations);
 	}
 }
 
@@ -179,11 +175,11 @@ $scope.getSelectedAddonPrice = function(){
 			}else{
 				if(data.page_template === 'SPACE'){
 					$scope.fetchSpaces();
-					$scope.data.durations = $scope.getDurationsNames($scope.data.durations);
 				}else{
 					$scope.$emit('hideLoader');
 				}
 			}
+			$scope.data.durations = $scope.getDurationsNames($scope.data.durations);
 		};
 		$scope.invokeApi(ADContentManagementSrv.fetchComponent, $stateParams.id , fetchItemSuccessCallback);
 	};
