@@ -316,7 +316,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			singleAddonData.charge_group_id = $scope.singleAddon.charge_group_id;
 			singleAddonData.description = $scope.singleAddon.description;
 			singleAddonData.is_reservation_only = $scope.singleAddon.is_reservation_only;
-			singleAddonData.inventory_count = $scope.singleAddon.inventory_count;
+			singleAddonData.inventory_count = parseInt($scope.singleAddon.inventory_count);
 			singleAddonData.name = $scope.singleAddon.name;
 			singleAddonData.post_type_id = $scope.singleAddon.post_type_id;
 			singleAddonData.rate_code_only = $scope.singleAddon.rate_code_only;
