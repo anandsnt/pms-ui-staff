@@ -140,7 +140,7 @@
 
                 <div ng-show="data.page_template=='SPACE'" class="entry full-width">
 
-                     <ad-dropdown label="{{'SPACE_MAX_OCCUPANCY_LABEL' | translate}}" label-in-drop-down="{{'SPACE_MAX_OCCUPANCY_PLACEHOLDER' | translate}}" list="space_occupancys" selected-Id='data.maximum_occupancy' required='yes' selbox-class='placeholder' ng-show="data.page_template=='SPACE'"></ad-dropdown>
+                     <ad-dropdown label="{{'SPACE_MAX_OCCUPANCY_LABEL' | translate}}" label-in-drop-down="{{'SPACE_MAX_OCCUPANCY_PLACEHOLDER' | translate}}" list="space_occupancys" selected-Id='data.max_occupancy' required='yes' selbox-class='placeholder' ng-show="data.page_template=='SPACE'"></ad-dropdown>
 
 
                      <label class="entry full-width" for="addon-description"><span translate>SPACE_DURATION_LABEL </span></label>
@@ -157,18 +157,18 @@
                     <div class="boxes">
                         
                         <label class="radio">
-                            <span class="icon-form icon-radio" ng-class="{'checked': data.space.fulfillment =='none'}"></span>
-                            <input name="audience" id="audience-everyone" value="none" type="radio" ng-model="data.space.fulfillment" />
+                            <span class="icon-form icon-radio" ng-class="{'checked': data.fulfillment =='none'}"></span>
+                            <input name="audience" id="audience-everyone" value="none" type="radio" ng-model="data.fulfillment" />
                             <span translate>SPACE_FULFILLMENT_NONE</span>
                         </label>
                         <label class="radio">
-                            <span class="icon-form icon-radio" ng-class="{'checked': data.space.fulfillment =='email'}"></span>
-                            <input name="audience" id="audience-users" type="radio" value="email" ng-model="data.space.fulfillment"/>
+                            <span class="icon-form icon-radio" ng-class="{'checked': data.fulfillment =='email'}"></span>
+                            <input name="audience" id="audience-users" type="radio" value="email" ng-model="data.fulfillment"/>
                             <span translate>SPACE_FULFILLMENT_EMAIL</span>
                         </label>                        
                         <!-- Remove class "hidden" when "Specific User(s)" option is selected. Add it back if other option is selected -->
-                        <span ng-show="data.space.fulfillment =='email'" translate>SPACE_FULFILLMENT_EMAIL_ACCOUNTS_LABEL</span>
-                        <input id="audience-specific-user" class = "campaign-textbox" placeholder="Enter email accounts" type="text" ng-show="data.space.fulfillment =='email'" ng-model="data.recipient_email_accounts" /> 
+                        <span ng-show="data.fulfillment =='email'" translate>SPACE_FULFILLMENT_EMAIL_ACCOUNTS_LABEL</span>
+                        <input id="audience-specific-user" class = "campaign-textbox" placeholder="Enter email accounts" type="text" ng-show= "data.fulfillment =='email'" ng-model="data.recipient_email_accounts" /> 
                                                  
 
                     </div>
