@@ -62,6 +62,12 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		};
 
 		var successCallBackOfMoveButton = function() {
+			$scope.computeSegment();
+
+			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
+				fetchApplicableRates();
+			}
+						
 			$scope.reloadPage();
 		};
 
@@ -123,11 +129,20 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		}
 
 		var successCallBackOfEarlierArrivalDateChange = function() {
+			$scope.computeSegment();
+
+			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
+				fetchApplicableRates();
+			}
 			$scope.reloadPage();
 		};
 
-		var failureCallBackOfEarlierArrivalDateChange = function(errorMessage) {
-
+		/**
+		 * [failureCallBackOfEarlierArrivalDateChange description]
+		 * @param  {[type]} error [description]
+		 * @return {[type]}       [description]
+		 */
+		var failureCallBackOfEarlierArrivalDateChange = function(error) {
 		};
 
 		/**
@@ -148,6 +163,11 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		};	
 
 		var successCallBackOfLaterArrivalDateChange = function() {
+			$scope.computeSegment();
+
+			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
+				fetchApplicableRates();
+			}			
 			$scope.reloadPage();
 		};
 
@@ -180,6 +200,11 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {[type]} [description]
 		 */
 		var successCallBackOfEarlierDepartureDateChange = function() {
+			$scope.computeSegment();
+
+			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
+				fetchApplicableRates();
+			}			
 			$scope.reloadPage();
 		};
 
@@ -214,6 +239,11 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {[type]} [description]
 		 */
 		var successCallBackOfLaterDepartureDateChange = function() {
+			$scope.computeSegment();
+
+			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
+				fetchApplicableRates();
+			}			
 			$scope.reloadPage();
 		};
 
@@ -343,12 +373,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 			//setting the min date for end Date
 			$scope.toDateOptions.minDate = refData.block_from;
-
-			/*$scope.computeSegment();
-
-			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
-				fetchApplicableRates();
-			}*/
 
 			//we are in outside of angular world
 			runDigestCycle();
@@ -484,7 +508,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 */
 		var shouldDisableEndDatePicker = function(){
 			var sData 					= $scope.groupConfigData.summary,
-				endDateHasPassed 		= new tzIndependentDate(sData.block_to) < new tzIndependentDate($rootScope.businessDate);
+				endDateHasPassed 		= new tzIndependentDate(sData.block_to) < new tzIndependentDate($rootScope.businessDate),
 				cancelledGroup 			= sData.is_cancelled,
 				toRightMoveNotAllowed 	= !sData.is_to_date_right_move_allowed,
 				inEditMode 				= !$scope.isInAddMode();
@@ -1049,7 +1073,18 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			if (activeTab !== 'SUMMARY') {
 				return;
 			}
-			fetchSummaryData();
+
+			fetchSummaryData();			
+			
+			//to date picker will be in disabled in move mode
+			//in order to fix the issue of keeping that state even after coming back to this
+			//tab after going to some other tab
+			_.extend($scope.toDateOptions, 
+			{
+				disabled: shouldDisableEndDatePicker()
+			});			
+
+			initializeChangeDateActions ();
 
 			//we are resetting the API call in progress check variable
 			$scope.isUpdateInProgress = false;

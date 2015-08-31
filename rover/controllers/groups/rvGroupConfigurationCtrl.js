@@ -132,7 +132,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                                 "COMPLETE_MOVE"] */
             var activeMode = null,
                 lastSuccessCallback = null,
-                lastFailureCallback = null;
+                lastFailureCallback = null,
+                lastApiFnParams     = null;
 
             /**
              * to set current move
@@ -418,14 +419,89 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             };
 
             /**
+             * if the user has enough permission to over book room type
+             * @return {Boolean}
+             */
+            var hasPermissionToOverBook = function () {
+                return rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');               
+            };
+
+            /**
+             * should show proceed button
+             * @return {Boolean}
+             */
+            $scope.shouldShowProceedButtonInNoAvailaility = function () {
+                return hasPermissionToOverBook ();
+            };
+
+            /**
+             * when user say 'proceed' from no availbility popup
+             * @return {undefined}
+             */
+            $scope.forcefullyOverbook = function() {
+                var args = lastApiFnParams;
+
+                if (!_.isObject(args)) {
+                    console.log ('there is something wrong in the flow');
+                    return false;
+                }
+
+                //is in move mode
+                if (isInCompleteMoveMode()) {
+                    $scope.callMoveDatesAPI (args[0], true);
+                }
+
+                //is in left/right date change                
+                else {
+                    $scope.callChangeDatesAPI (args[0], args[1], true);
+                }
+            };
+            
+            /**
+             * [openNoAvailabilityPopup description]
+             * @return {[type]} [description]
+             */
+            var openNoAvailabilityPopup = function () {
+                ngDialog.open(
+                {
+                    template        : '/assets/partials/groups/summary/popups/changeDates/rvGroupChangeDatesNoAvailabilityPopup.html',
+                    className       : '',
+                    closeByDocument : false,
+                    closeByEscape   : false,
+                    scope           : $scope
+                });
+            };
+
+            /**
              * [failureCallBackOfMoveDatesAPI description]
              * @param  {[type]} errorMessage [description]
              * @return {[type]}              [description]
              */
-            var failureCallBackOfChangeDatesAPI= function (errorMessage) {
+            var failureCallBackOfChangeDatesAPI= function (error) {
                 $scope.closeDialog ();
-                $scope.errorMessage = errorMessage;
-                lastFailureCallback (errorMessage);
+                
+                //since we are expecting some custom http error status in the response
+                //and we are using that to differentiate among errors
+                if(error.hasOwnProperty ('httpStatus')) {
+                    switch (error.httpStatus) {
+                        case 470:
+                            $timeout(
+                                function(){
+                                    openNoAvailabilityPopup ();
+                                }, 
+                            750);
+                            break;
+                        default:
+                            $scope.errorMessage = error.errors;
+                            lastFailureCallback (error.errors);
+                            break;
+                    }
+                }
+
+                else {
+                    $scope.errorMessage = error.errors;
+                    lastFailureCallback (error.errors);
+                }
             };
 
             /**
@@ -433,17 +509,21 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @param  {[type]} options [description]
              * @return {[type]}         [description]
              */
-            $scope.callChangeDatesAPI = function (options, changeReservationDates) {                
+            $scope.callChangeDatesAPI = function (options, changeReservationDates, forcefullyOverbook) {                
                 var dataSet         = options && options["dataset"],
                     successCallBack = lastSuccessCallback,
                     failureCallBack = lastFailureCallback,
                     arrChangeOnly   = 'changeInArr' in dataSet && dataSet['changeInArr'],
                     depChangeOnly   = 'changeInDep' in dataSet && dataSet['changeInDep'],
-                    conditnalParams = {};
+                    conditnalParams = {},                    
+                    forcefullyOverbook = typeof forcefullyOverbook === "undefined" ? false : forcefullyOverbook;
+
+                lastApiFnParams = _.extend({}, arguments);
 
                 var params = {
                     group_id                : $scope.groupConfigData.summary.group_id,
-                    change_reservation_dates: changeReservationDates
+                    change_reservation_dates: changeReservationDates,
+                    force_fully_over_book   : forcefullyOverbook
                 };
 
                 if (arrChangeOnly) {
@@ -459,7 +539,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     };
                 }
 
-                _.extend(params, conditnalParams); 
+                _.extend(params, conditnalParams);             
 
                 var options = {
                     params          : params,
@@ -539,10 +619,31 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @param  {[type]} errorMessage [description]
              * @return {[type]}              [description]
              */
-            var failureCallBackOfMoveDatesAPI= function (errorMessage) {
+            var failureCallBackOfMoveDatesAPI= function (error) {
                 $scope.closeDialog ();
-                $scope.errorMessage = errorMessage;
-                lastFailureCallback (errorMessage);
+                
+                //since we are expecting some custom http error status in the response
+                //and we are using that to differentiate among errors
+                if(error.hasOwnProperty ('httpStatus')) {
+                    switch (error.httpStatus) {
+                        case 470:
+                            $timeout(
+                                function(){
+                                    openNoAvailabilityPopup ();
+                                }, 
+                            750);
+                            break;
+                        default:
+                            $scope.errorMessage = error.errors;
+                            lastFailureCallback (error.errors);
+                            break;
+                    }
+                }
+
+                else {
+                    $scope.errorMessage = error.errors;
+                    lastFailureCallback (error.errors);
+                }
             };
 
             /**
@@ -550,16 +651,20 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @param  {[type]} options [description]
              * @return {[type]}         [description]
              */
-            $scope.callMoveDatesAPI = function (options) {                
+            $scope.callMoveDatesAPI = function (options, forcefullyOverbook) {                
                 var dataSet         = options && options["dataset"],
                     newFromDate     = dataSet["fromDate"] ? formatDateForAPI(dataSet["fromDate"]) : null,
                     newToDate       = dataSet["toDate"] ? formatDateForAPI(dataSet["toDate"]) : null,
-                    sumryData       = $scope.groupConfigData.summary;
+                    sumryData       = $scope.groupConfigData.summary,
+                    forcefullyOverbook = typeof forcefullyOverbook === "undefined" ? false : forcefullyOverbook;
+
+                lastApiFnParams = _.extend({}, arguments);
 
                 var params = {
-                    group_id    : sumryData.group_id,
-                    from_date   : newFromDate,
-                    to_date     : newToDate
+                    group_id                : sumryData.group_id,
+                    from_date               : newFromDate,
+                    to_date                 : newToDate,
+                    force_fully_over_book   : forcefullyOverbook
                 };
 
                 var options = {
@@ -578,9 +683,21 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 setMode ("COMPLETE_MOVE");
             };
 
+            /**
+             * to set to default mode
+             * @return {undefined}
+             */
             var setToDefaultMode = function () {
                 setMode ("DEFAULT");
             };
+
+            /**
+             * whether date change is in default mode
+             * @return {Boolean} [description]
+             */
+            var isInDefaultMode = function () {
+                return (_.indexOf(["DEFAULT", null], activeMode) >= 0);
+            }
 
             /**
              * [isInCompleteMoveMode description]
@@ -618,7 +735,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     isInCompleteMoveMode         : isInCompleteMoveMode,
                     clickedOnMoveSaveButton      : clickedOnMoveSaveButton,
                     cancelMoveAction             : cancelMoveAction,
-                    setToDefaultMode            : setToDefaultMode
+                    setToDefaultMode             : setToDefaultMode
                 };
             };
         }());

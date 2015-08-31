@@ -549,9 +549,19 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean} [description]
 		 */
 		var shouldDisableStartDatePicker = function(){
-			var sumryData = $scope.groupConfigData.summary,
-				chDateAct = $scope.changeDatesActions;
-			return (!$scope.isInAddMode() && (sumryData.is_cancelled || sumryData.is_a_past_group || (!sumryData.is_from_date_right_move_allowed && !sumryData.is_from_date_left_move_allowed)));
+			var sData 					= $scope.groupConfigData.summary,
+				noOfInhouseIsNotZero 	= (sData.total_checked_in_reservations > 0),
+				cancelledGroup 			= sData.is_cancelled,
+				is_A_PastGroup 			= sData.is_a_past_group,
+				inEditMode 				= !$scope.isInAddMode();
+				
+			return ( inEditMode &&  
+				   	(
+				   	  noOfInhouseIsNotZero 	|| 
+					  cancelledGroup 		|| 
+					  is_A_PastGroup
+					)
+				   );
 		};
 
 		/**
@@ -559,10 +569,19 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean} [description]
 		 */
 		var shouldDisableEndDatePicker = function(){
-			var sumryData 		 = $scope.groupConfigData.summary,
-				chDateAct 		 = $scope.changeDatesActions,
-				endDateHasPassed = new tzIndependentDate(sumryData.block_to) < tzIndependentDate($rootScope.businessDate);
-			return (!$scope.isInAddMode() && (sumryData.is_cancelled || endDateHasPassed || (!sumryData.is_to_date_right_move_allowed && !sumryData.is_to_date_left_move_allowed)));
+			var sData 					= $scope.groupConfigData.summary,
+				endDateHasPassed 		= new tzIndependentDate(sData.block_to) < new tzIndependentDate($rootScope.businessDate),
+				cancelledGroup 			= sData.is_cancelled,
+				toRightMoveNotAllowed 	= !sData.is_to_date_right_move_allowed,
+				inEditMode 				= !$scope.isInAddMode();
+
+			return ( inEditMode &&  
+				   	( 
+				   	 endDateHasPassed 	|| 
+					 cancelledGroup 	||  
+					 toRightMoveNotAllowed
+					)
+				   );
 		};
 
 		/**
@@ -1092,6 +1111,16 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 			callInitialAPIs();
 
+			//end date picker will be in disabled in move mode
+			//in order to fix the issue of keeping that state even after coming back to this
+			//tab after going to some other tab
+			_.extend($scope.endDateOptions, 
+			{
+				disabled: shouldDisableEndDatePicker()
+			});			
+
+			initializeChangeDateActions ();
+			
 			//on tab switching, we have change min date
 			setDatePickers();
 
@@ -1358,7 +1387,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 					oldFromDate 	: oldSumryData.block_from,
 					oldToDate 		: oldSumryData.block_to,
 					successCallBack : successCallBackOfMoveButton,
-					failureCallBack : failureCallBackOfMoveButton
+					failureCallBack : failureCallBackOfMoveButton,
+					cancelPopupCallBack	: cancelCallBackofDateChange
 				};
 			$scope.changeDatesActions.clickedOnMoveSaveButton (options);
 		};
