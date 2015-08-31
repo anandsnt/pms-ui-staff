@@ -6,7 +6,9 @@ sntRover.controller('overbookingAlertCtrl', ['$scope',
                 left: [],
                 right: []
             },
-            arrival = tzIndependentDate($scope.reservationData.arrivalDate);
+            arrivalDateString = $scope.ngDialogData.arrivalDate || $scope.reservationData.arrivalDate,
+            departureDateString = $scope.ngDialogData.departureDate || $scope.reservationData.departureDate,
+            arrival = tzIndependentDate(arrivalDateString);
 
         var renderFullCalendar = function() {
             //calender options used by full calender, related settings are done here
@@ -46,15 +48,15 @@ sntRover.controller('overbookingAlertCtrl', ['$scope',
                 var eventData = {
                     className: (function() {
                         var classes = "";
-                        if (dailyStat.date === $scope.reservationData.arrivalDate) {
+                        if (dailyStat.date === arrivalDateString) {
                             classes += 'check-in ';
-                        } else if (dailyStat.date === $scope.reservationData.departureDate) {
+                        } else if (dailyStat.date === departureDateString) {
                             classes += 'check-out ';
                         }
 
                         if (dayAvailabilityToDisplay <= 0) {
                             classes += 'unavailable ';
-                        } else if (dailyStat.date !== $scope.reservationData.departureDate) {
+                        } else if (dailyStat.date !== departureDateString) {
                             classes += 'available ';
                         }
                         return classes;
