@@ -17,7 +17,7 @@
 			<div class="entry margin">
 				<label for="country">Nationality</label>
 				<div form="contact-info" class="select">
-					<select iscroll-stop-propagation ng-options="country.id as country.value for country  in countries" ng-model="guestCardData.contactInfo.nationality_id">
+					<select iscroll-stop-propagation ng-options="country.id as country.value for country in countries" ng-model="guestCardData.contactInfo.nationality_id">
 						<option style="display:none" value=""></option>
 					</select>
 				</div>
@@ -25,7 +25,7 @@
 			<div class="entry margin">
 				<label for="country">Id Type</label>
 				<div form="contact-info" class="select">
-					<select iscroll-stop-propagation ng-options="id_type_list.id as id_type_list.value for id in id_type_list" ng-model="guestCardData.contactInfo.id_type">
+					<select iscroll-stop-propagation ng-options="idType.id as idType.value for idType in idTypeList" ng-model="guestCardData.contactInfo.id_type">
 						<option style="display:none" value=""></option>
 					</select>
 				</div>
