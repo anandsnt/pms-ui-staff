@@ -12,9 +12,9 @@
 						styleclass="full-width" required="yes"></ad-textbox>
 						<ad-checkbox is-checked="holdstatusData.is_take_from_inventory" label="{{ 'TAKE_FROM_INVENTORY' | translate}}" div-class="full-width">
 						</ad-checkbox>
-						<ad-checkbox is-checked="holdstatusData.is_group_only" label="{{ 'GROUP_ONLY' | translate}}" div-class="full-width" ng-click="holdstatusData.is_allotment_only = holdstatusData.is_allotment_only ? false : null">
+						<ad-checkbox is-checked="holdstatusData.is_group_only" label="{{ 'GROUP_ONLY' | translate}}" div-class="full-width" ng-click="holdstatusData.is_allotment_only = false">
 						</ad-checkbox>
-						<ad-checkbox is-checked="holdstatusData.is_allotment_only" label="{{ 'ALLOTMENT_ONLY' | translate}}" div-class="full-width" ng-click="holdstatusData.is_group_only = holdstatusData.is_group_only ? false : null">
+						<ad-checkbox is-checked="holdstatusData.is_allotment_only" label="{{ 'ALLOTMENT_ONLY' | translate}}" div-class="full-width" ng-click="holdstatusData.is_group_only = false">
 						</ad-checkbox>
 				</fieldset>
 				<div class="actions float">
