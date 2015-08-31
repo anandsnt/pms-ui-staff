@@ -9,6 +9,9 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	 $scope.addons = [];
      $scope.min_duration_values = [];
      $scope.max_order_values = [];
+     $scope.space_occupancys = [];
+     $scope.space_durations = [];
+
 
 
 
@@ -48,22 +51,19 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	            "page_template": "POI",
 	            "website_url": "",
 	            "description": "",
-	            "addon_id":"",
-	            "screen_id":"",
-	            "addon_min_duration":"",
-	            "addon_max_order":"",
+	            "addon_id": "",
+	            "screen_id": "",
+	            "addon_min_duration": "",
+	            "addon_max_order": "",
+	            "fulfillment": "",
+  				"durations": [],						
+  				"recipient_email_accounts": "",
+  				"max_occupancy": "",
 	            "parent_category": [],
 	            "parent_section": [],
-	            "space": {
-	            	"max_occupancy": "",
-	            	"durations": [],
-	            	"fulfillment": "none",
-	            	"fulfillment_emails" : ""
-	            }
-
             };
 
-    $scope.fetchAddons = function(){
+$scope.fetchAddons = function(){
     var fetchSuccessOfAddons = function(data) {
 
        $scope.addons = $scope.getAddonsWithNameValues(data.results);
@@ -74,18 +74,64 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 
     $scope.getAddonsWithNameValues = function(addons){
         angular.forEach(addons,function(item, index) {
-       item.value = item.id;
+       		item.value = item.id;
 
-  });
+  	  });
         return addons;
 };
 
-    $scope.itemTypeSelected = function(){
+$scope.fetchSpaces = function(){
+    var fetchSuccessOfSpaces = function(data) {
+       $scope.space_occupancys = $scope.getListWithNameValues(data.meeting_room_occupancy); 
+	   // $scope.space_durations = data.meeting_room_durations;  // change need
+       $scope.space_durations = $scope.getDurationsWithNameValues(['1-2','2-3','3-4']);
+       $scope.$emit('hideLoader');
+    };
+   $scope.invokeApi(ADContentManagementSrv.fetchMeetingRooms, {"no_pagination": true}, fetchSuccessOfSpaces);
+};
+$scope.getDurationsWithNameValues = function(items) {
+	var list = [];
+	var obj;
+    angular.forEach(items,function(item, index) {
+        obj = {};
+       	obj.value = item;
+       	obj.name = item;
+       	obj.isChecked = $scope.data.durations.indexOf(item) === -1?  false : true;
+       	list.push(obj);
+
+    });
+        return list;
+};
+$scope.getListWithNameValues = function(items) {
+	var list = [];
+	var obj;
+    angular.forEach(items,function(item, index) {
+        obj = {};
+       	obj.value = item;
+       	obj.name = item;
+       	list.push(obj);
+
+    });
+        return list;
+};
+
+$scope.setSpaceDurations = function(val,index) {
+	var duration = $scope.space_durations[index];
+	var flag = $scope.data.durations.indexOf(duration.value);
+	if(flag === -1){
+		$scope.data.durations.push(duration.value);
+	}
+	else{
+		$scope.data.durations.splice(0,flag);
+	}
+}
+
+$scope.itemTypeSelected = function(){
 
 	if($scope.data.page_template === "ADDON" && $scope.addons.length === 0){
 		$scope.fetchAddons();
-	}else if($scope.data.page_template === "SPACE" && $scope.addons.length === 0){
-		$scope.fetchAddons();
+	}else if($scope.data.page_template === "SPACE" && $scope.space_occupancys.length === 0){
+		$scope.fetchSpaces();
 	}
 };
 
@@ -95,7 +141,7 @@ $scope.getSelectedAddonDescription = function(){
        if(item.value === $scope.data.addon_id) {
        	description = item.description;
        }
-  });
+  	});
      return description;
 };
 
@@ -109,7 +155,6 @@ $scope.getSelectedAddonPrice = function(){
      return price;
 };
 
-
 	/*Function to fetch the item details
     */
 	$scope.fetchItem = function(){
@@ -121,7 +166,11 @@ $scope.getSelectedAddonPrice = function(){
 				$scope.data.addon_max_order = $scope.data.addon_max_order === null? "" : $scope.data.addon_max_order;
 				$scope.data.addon_min_duration = $scope.data.addon_min_duration === null ? "" : $scope.data.addon_min_duration;
 			}else{
-				$scope.$emit('hideLoader');
+				if(data.page_template === 'SPACE'){
+					$scope.fetchSpaces();
+				}else{
+					$scope.$emit('hideLoader');
+				}
 			}
 		};
 		$scope.invokeApi(ADContentManagementSrv.fetchComponent, $stateParams.id , fetchItemSuccessCallback);
