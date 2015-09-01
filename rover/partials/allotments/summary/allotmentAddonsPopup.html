@@ -1,0 +1,40 @@
+<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
+    <div class="modal-content room-enhancements">
+        <span class="h2 message">{{allotmentConfigData.summary.allotment_name}} Enhancements</span>
+        <!-- Initial markup -->
+        <!-- Markup as you add items -->
+        <div class="scrollable" ng-iscroll="resultDetails" ng-iscroll-delay="500">        
+        <ul class=" wrapper enhancements-added">
+            <li ng-repeat="addon in allotmentConfigData.selectedAddons" class="addons-list">
+                <span class="item">{{ addon.name }}</span>
+
+                <!-- if addon type is adult /child type multiplification factor will be (addon_count*number of days*(adult_count or child_count)) -->
+                <!-- if addon type is person multiplification factor will be (addon_count*number of days*(adult_count+child_count))-->
+
+                <span>
+                    <span class="count" ng-hide="addon.post_type ==='Entire Stay'"> ({{addon.addon_count}})</span> 
+                </span>
+
+               
+                <span class="base" ng-hide="addon.is_inclusive">at {{currencySymbol}}{{addon.amount | number : 2}} / {{addon.amount_type.value}} 
+                    <span ng-show="addon.post_type.description ==='First Night'">per stay</span>
+                    <span ng-show="addon.post_type.description ==='Entire Stay'"> per night</span>
+                </span>
+
+                 <span>
+                        <span class="price" ng-hide="addon.is_inclusive || addon.post_type ==='Entire Stay'">{{currencySymbol}}{{addon.amount | number : 2}}</span>
+                        <span class="price" ng-hide="addon.is_inclusive || addon.post_type !=='Entire Stay'">{{currencySymbol}}{{addon.amount | number : 2}}</span>
+                </span>
+                     
+               
+                <span class="price" ng-show="addon.is_inclusive">INCL</span>
+                <button type="button" ng-hide="addon.is_inclusive" class="icons icon-trash" ng-click="removeAddon(addon)" translate>REMOVE</button>
+            </li>
+        </ul>
+        </div>
+        <div class="actions">
+            <button type="button" ng-click="closeDialog(); manageAddons()" class="button orange modal-hide" translate>ADD_MORE_TO_THIS_GROUP</button>
+            <button class="button blank" ng-click="closeDialog(); reloadPage();" translate>CLOSE</button>
+        </div>
+    </div>    
+</div>

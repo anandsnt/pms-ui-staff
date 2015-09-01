@@ -232,7 +232,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		$scope.openDemographicsPopup = function() {
 			if ($scope.isInAddMode()) {
 				// If the group has not been saved yet, prompt user for the same
-				$scope.errorMessage = ["Please save the group first"];
+				$scope.errorMessage = ["Please save the allotment first"];
 				return;
 			}
 
@@ -274,8 +274,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		};
 		$scope.openBillingInformation = function() {
 			if ($scope.isInAddMode()) {
-				// If the group has not been saved yet, prompt user for the same
-				$scope.errorMessage = ["Please save the group first"];
+				// If the allotment has not been saved yet, prompt user for the same
+				$scope.errorMessage = ["Please save the allotment first"];
 				return;
 			}
 			$scope.attachedEntities = {};
@@ -303,8 +303,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 
 		$scope.saveDemographicsData = function() {
 			if ($scope.isInAddMode()) {
-				// If the group has not been saved yet, prompt user for the same
-				$scope.errorMessage = ["Please save the group to save Demographics"];
+				// If the allotment has not been saved yet, prompt user for the same
+				$scope.errorMessage = ["Please save the allotment to save Demographics"];
 				return;
 			}
 			$scope.updateAllotmentSummary();
@@ -350,7 +350,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 * @return undefined
 		 */
 		$scope.warnReleaseRooms = function() {
-			// Release Rooms NA for cancelled groups and groups that arent saved yet
+			// Release Rooms NA for cancelled allotment and allotments that arent saved yet
 			if (!$scope.allotmentConfigData.summary.is_cancelled && !$scope.isInAddMode()) {
 				ngDialog.open({
 					template: '/assets/partials/allotments/summary/warnReleaseRoomsPopup.html',
@@ -393,7 +393,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 
 		$scope.cancelAllotment = function(cancellationReason) {
 			var onCancelAllotmentSuccess = function() {
-					// reload the groupSummary
+					// reload the allotmentSummary
 					$scope.closeDialog();
 					$state.go('rover.allotments.config', {
 						id: $scope.allotmentConfigData.summary.allotment_id
@@ -487,7 +487,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 */
 		$scope.openAddonsPopup = function() {
 			ngDialog.open({
-				template: '/assets/partials/allotments/summary/groupAddonsPopup.html',
+				template: '/assets/partials/allotments/summary/allotmentAddonsPopup.html',
 				className: '',
 				scope: $scope,
 				closeByDocument: false,
@@ -502,8 +502,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		$scope.manageAddons = function() {
 
 			if ($scope.isInAddMode()) {
-				// If the group has not been saved yet, prompt user for the same
-				$scope.errorMessage = ["Please save the group to manage Add-ons"];
+				// If the allotment has not been saved yet, prompt user for the same
+				$scope.errorMessage = ["Please save the allotment to manage Add-ons"];
 				return;
 			}
 
@@ -555,8 +555,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 */
 		$scope.saveAllotmentNote = function() {
 			if ($scope.isInAddMode()) {
-				// If the group has not been saved yet, prompt user for the same
-				$scope.errorMessage = ["Please save the group to Post Note"];
+				// If the allotment has not been saved yet, prompt user for the same
+				$scope.errorMessage = ["Please save the allotment to Post Note"];
 				return;
 			}
 
