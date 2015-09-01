@@ -61,6 +61,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
         $scope.existingAddonsLength = 0;
 
         $scope.roomNumber = '';
+        var addonsDataCopy = [];
         var successCallBack = function(data) {
             $scope.$emit('hideLoader');
             $scope.roomNumber = data.room_no;
@@ -83,6 +84,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
                 };
             });
             $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
+            addonsDataCopy = angular.copy($scope.addonsData.existingAddons);
 
         };
         if (!RVReservationStateService.getReservationFlag('RATE_CHANGED') && typeof $scope.reservationData.reservationId !== "undefined" && $scope.reservationData.reservationId !== "" && $scope.reservationData.reservationId !== null) {
@@ -214,7 +216,8 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
             $($scope.reservationData.rooms[$scope.activeRoom].addons).each(function(index, elem) {});
         };
 
-        $scope.selectAddon = function(addon, addonQty) {
+        $scope.bookAddon =  function(addon,addonQty){
+            $scope.closePopup();
             var alreadyAdded = false;
             angular.forEach($scope.addonsData.existingAddons,function(item, index) {
                 if(item.id === addon.id){
@@ -266,6 +269,86 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope',
             } else {
                 $scope.computeTotalStayCost();
             }
+        };
+
+        $scope.selectAddon = function(addon, addonQty) {        
+
+             if($rootScope.isItemInventoryOn){
+
+                /*
+                *  the following is for the calculation to check if the inventory limit is exeeded
+                *  as the count is dependant on duration of stay ,type and number of guests etc
+                *
+                */
+                $scope.selectedAddonName = addon.title;
+                var fetchHeadCount = function(type,count){
+                    var remainingCount = 0;
+                    if(type ==='Entire Stay'){
+                        remainingCount = $scope.duration_of_stay * count;
+                    }else{
+                        remainingCount = count;
+                    };
+                    return remainingCount;
+                };
+                var headCount = 0;
+                if(addon.amountType.description      === 'Person'){
+                    headCount = fetchHeadCount(addon.postType.description,$scope.reservationData.number_of_adults+$scope.reservationData.number_of_children);
+                }
+                else if(addon.amountType.description === 'Adult'){
+                    headCount = fetchHeadCount(addon.postType.description,$scope.reservationData.number_of_adults);
+                }
+                else if(addon.amountType.description === 'Child'){
+                    headCount = fetchHeadCount(addon.postType.description,$scope.reservationData.number_of_children);
+                }
+                else if(addon.amountType.description === 'Flat'){
+                    headCount = fetchHeadCount(addon.postType.description,1);
+                };
+
+                var newAddonQty = 0 ; 
+                var alreadyAdded = false;
+                angular.forEach($scope.addonsData.existingAddons,function(item, index) {
+                    if(item.id === addon.id){
+                        newAddonQty = parseInt(item.quantity) + parseInt(addonQty);
+                        alreadyAdded = true;
+                    }
+                });
+                var oldAddonQty = 0;
+                angular.forEach(addonsDataCopy,function(item, index) {
+                    if(item.id === addon.id){
+                        oldAddonQty = parseInt(item.quantity) + parseInt(addonQty);
+                    }
+                });
+                var difference = alreadyAdded ? ((newAddonQty - oldAddonQty) === 0)? 1 : (newAddonQty - oldAddonQty)  :newAddonQty;
+
+                 var successCallBackInventoryCheck = function(response){
+                    $scope.$emit('hideLoader');
+                    var availableAddonCount = response.available_count; 
+                    var remainingCount = availableAddonCount - (headCount* difference); 
+                    /*
+                    *  if the available count is less we prompts warning popup
+                    */  
+                     if(remainingCount >= 0 || availableAddonCount === null){
+                        $scope.bookAddon(addon, addonQty);
+                     }
+                     else{
+                        $scope.addon =  addon;
+                        $scope.addonQty = addonQty;
+                        $scope.remainingCount = availableAddonCount;
+                        ngDialog.open({
+                            template: '/assets/partials/reservationCard/rvInsufficientInventory.html',
+                            className: 'ngdialog-theme-default',
+                            closeByDocument: true,
+                            scope: $scope
+                        });
+                     };
+                };
+               
+                var paramDict  = {'addon_id':addon.id,'from_date': $scope.reservationData.arrivalDate,
+                'to_date': $scope.reservationData.departureDate,}
+                $scope.invokeApi(RVReservationAddonsSrv.checkInventory, paramDict, successCallBackInventoryCheck);
+             }else{
+                $scope.bookAddon(addon, addonQty);
+             };            
         };
 
         $scope.removeSelectedAddons = function(index) {
