@@ -109,7 +109,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.otherData.forceAdjustmentReason = baseSearchData.settings.force_rate_adjustment_reason;
             // CICO-12562 Zoku - Overbooking Alert
             $scope.otherData.showOverbookingAlert = baseSearchData.settings.show_overbooking_alert;
-            
+
             $scope.otherData.isAddonEnabled = baseSearchData.settings.is_addon_on;
 
             $scope.guestCardData = {};
@@ -836,13 +836,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             angular.forEach($scope.reservationData.tabs, function(tab, tabIndex) {
                 //addons
                 var firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
-                        roomTypeId: tab.roomTypeId
+                        roomTypeId: parseInt(tab.roomTypeId, 10)
                     })),
                     addonsForRoomType = [];
                 if (!!RVReservationStateService.getReservationFlag('RATE_CHANGED') ||
                     !$scope.reservationData.rooms[firstIndex].is_package_exist || //is_package_exist flag is set only while editing a reservation! -- Changes for CICO-17173
                     ($scope.reservationData.rooms[firstIndex].is_package_exist && $scope.reservationData.rooms[firstIndex].addons.length === parseInt($scope.reservationData.rooms[firstIndex].package_count))) { //-- Changes for CICO-17173                    
-                    if(tabIndex === $scope.reservationData.tabs.length - 1){
+                    if (tabIndex === $scope.reservationData.tabs.length - 1) {
                         RVReservationStateService.setReservationFlag('RATE_CHANGED', false);
                     }
                     _.each($scope.reservationData.rooms[firstIndex].addons, function(addon) {
