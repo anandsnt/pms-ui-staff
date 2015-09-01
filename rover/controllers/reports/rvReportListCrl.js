@@ -4,7 +4,7 @@ sntRover.controller('RVReportListCrl', [
     '$filter',
     'RVreportsSrv',
     'RVReportUtilsFac',
-    'RVReportMsgs',
+    'RVReportMsgsConst',
     '$timeout',
     function($scope, $rootScope, $filter, reportsSrv, reportUtils, reportMsgs, $timeout) {
 
@@ -23,25 +23,23 @@ sntRover.controller('RVReportListCrl', [
             $timeout( $scope.refreshScroller.bind($scope, LIST_ISCROLL_ATTR), 2010 );
         });
 
+
+
         /**
          *   Post processing fetched data to modify and add additional data
-         *   Note: This is a self executing function
-         *
-         *   @param {Array} - reportList: which points to $scope.$parent.reportList, see end of this function
+         *   @param {Array} - report: which points to $scope.$parent.report, see end of this function
          */
-        var postProcess = function(reportList) {
-            for (var i = 0, j = reportList.length; i < j; i++) {
+        var postProcess = function(report) {
+            for (var i = 0, j = report.length; i < j; i++) {
 
                 // add icon class to this report
-                reportUtils.applyIconClass( reportList[i] );
+                reportUtils.applyIconClass( report[i] );
 
                 // add required flags this report
-                reportUtils.applyFlags( reportList[i] );
-
-
+                reportUtils.applyFlags( report[i] );
 
                 // to process the filters for this report
-                reportUtils.processFilters(reportList[i], {
+                reportUtils.processFilters(report[i], {
                     'guaranteeTypes' : $scope.$parent.guaranteeTypes,
                     'chargeGroups'   : $scope.$parent.chargeGroups,
                     'chargeCodes'    : $scope.$parent.chargeCodes,
@@ -52,32 +50,28 @@ sntRover.controller('RVReportListCrl', [
                     'holdStatus'     : $scope.$parent.holdStatus
                 });
 
-
-
                 // to reorder & map the sort_by to report details columns - for this report
                 // re-order must be called before processing
-                reportUtils.reOrderSortBy( reportList[i] );
+                reportUtils.reOrderSortBy( report[i] );
 
                 // to process the sort by for this report
                 // processing must be called after re-odering
-                reportUtils.processSortBy( reportList[i] );
+                reportUtils.processSortBy( report[i] );
 
                 // to assign inital date values for this report
-                reportUtils.initDateValues( reportList[i] );
+                reportUtils.initDateValues( report[i] );
 
                 // to process the group by for this report
-                reportUtils.processGroupBy( reportList[i] );
-
-
+                reportUtils.processGroupBy( report[i] );
 
 
                 // CICO-8010: for Yotel make "date" default sort by filter
                 if ($rootScope.currentHotelData === 'Yotel London Heathrow') {
-                    var sortDate = _.find(reportList[i].sortByOptions, function(item) {
+                    var sortDate = _.find(report[i].sortByOptions, function(item) {
                         return item.value === 'DATE';
                     });
                     if (!!sortDate) {
-                        reportList[i].chosenSortBy = sortDate.value;
+                        report[i].chosenSortBy = sortDate.value;
                     };
                 };
             };
@@ -86,8 +80,11 @@ sntRover.controller('RVReportListCrl', [
             // 2000 is the delay for slide anim, so firing again after 2010
             $timeout( $scope.refreshScroller.bind($scope, LIST_ISCROLL_ATTR), 100 );
             $timeout( $scope.refreshScroller.bind($scope, LIST_ISCROLL_ATTR), 2010 );
+        };
 
-        }($scope.$parent.reportList);
+        postProcess( $scope.$parent.reportList );
+
+
 
         // show hide filter toggle
         $scope.toggleFilter = function() {

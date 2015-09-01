@@ -140,10 +140,10 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			//Remove those dates fromt the available dates response
 			if (calendarDetails.has_multiple_rates === 'true') {
 				for (var i = calendarDetails.available_dates.length - 1; i >= 0; i--) {
-					thisTime = tzIndependentDate(calendarDetails.available_dates[i].date)
+					thisTime = tzIndependentDate(calendarDetails.available_dates[i].date);
 					if (thisTime < checkinTime || thisTime > checkoutTime) {
 						$scope.stayDetails.calendarDetails.available_dates.splice(i, 1);
-					};
+					}
 				}
 				return true;
 			}

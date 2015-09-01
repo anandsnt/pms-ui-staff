@@ -539,7 +539,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.fetchDepartments();//store this to use in assignments of department
             var onSuccess = function(data){
                 $scope.hotel_time = $scope.convertMilTime(data.business_date_time);
-                
+
                 var list = data.data;
                 var matchObj;
                 for (var x in list){

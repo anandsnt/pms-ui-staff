@@ -56,6 +56,12 @@
                            <span translate>ADDON_LABEL</span> 
                         </label>
 
+                        <label class="radio" ng-class = "{'checked': data.page_template=='SPACE'}"> 
+                            <span class="icon-form icon-radio" ng-class = "{'checked': data.page_template=='SPACE'}"></span>
+                            <input type="radio" name="item-type" ng-model="data.page_template" id="link" value="SPACE" ng-change = "itemTypeSelected()"/>
+                           <span translate>SPACE_LABEL</span> 
+                        </label>
+
                     </div>
                 </div>
                 <div class="entry full-width" ng-hide="data.page_template=='SCREEN'">
@@ -74,16 +80,16 @@
                     <label for="item-description" ><span translate>DESCRIPTION_LABEL</span> <strong ng-show="data.page_template=='SCREEN'">*</strong></label>
                     <textarea name="item-description" ng-model="data.description" id="item-description" rows="4" placeholder="Item description ..."></textarea>
                 </div>
-                <div class="entry" ng-hide="data.page_template=='SCREEN' || data.page_template=='ADDON'">
+                <div class="entry" ng-hide="data.page_template=='SCREEN' || data.page_template=='ADDON' || data.page_template=='SPACE'">
                     <label for="item-phone" translate>PHONE_LABEL</label>
                     <input type="text" name="item-phone" ng-model="data.phone" id="item-phone" placeholder="Enter Phone number" value="" />
                 </div>
-                <div class="entry full-width" ng-hide="data.page_template=='SCREEN' || data.page_template=='ADDON'">
+                <div class="entry full-width" ng-hide="data.page_template=='SCREEN' || data.page_template=='ADDON' || data.page_template=='SPACE'">
                     <label for="item-address"><span translate>ADDRESS_LABEL</span> <strong ng-show="data.page_template=='POI'">*</strong></label>
                     <input type="text" name="aitem-ddress" ng-model="data.address" id="item-address" placeholder="Enter Address" value=""  />
                 </div>
                 
-                <div class="entry full-width" ng-hide="data.page_template=='SCREEN' || data.page_template=='ADDON'">
+                <div class="entry full-width" ng-hide="data.page_template=='SCREEN' || data.page_template=='ADDON' || data.page_template=='SPACE'">
                     <label for="item-url"><span translate>URL_LABEL </span><strong ng-show="data.page_template=='LINK'">*</strong></label>
                     <input type="text" name="item-url" ng-model="data.website_url" id="item-url" placeholder="Enter URL" value=""  />
                 </div>                
@@ -132,11 +138,53 @@
                     </ul>
                 </div>  
 
+                <div ng-show="data.page_template=='SPACE'" class="entry full-width">
+
+                     <ad-dropdown label="{{'SPACE_MAX_OCCUPANCY_LABEL' | translate}}" label-in-drop-down="{{'SPACE_MAX_OCCUPANCY_PLACEHOLDER' | translate}}" list="space_occupancys" selected-Id='data.max_occupancy' required='yes' selbox-class='placeholder' ng-show="data.page_template=='SPACE'"></ad-dropdown>
+
+
+                     <label class="entry full-width" for="addon-description"><span translate>SPACE_DURATION_LABEL </span></label>
+
+                    <div class="entry full-width">
+                       <div id="space-durations" class="boxes col2">
+                          <ad-checkbox ng-repeat="duration in space_durations" is-checked="duration.isChecked" label="{{duration.name}}" parent-label-class="room-likes" span-class="checkbox-background" datagroup="{{duration}}" index = "{{$index}}" change="setSpaceDurations"></ad-checkbox>
+
+                       </div>
+                    </div>
+
+                    <div class="entry full-width">
+                    <label for="fulfillment" translate>SPACE_FULFILLMENT_LABEL </label>
+                    <div class="boxes">
+                        
+                        <!-- <label class="radio">
+                            <span class="icon-form icon-radio" ng-class="{'checked': data.fulfillment =='none'}"></span>
+                            <input name="audience" id="audience-everyone" value="none" type="radio" ng-model="data.fulfillment" />
+                            <span translate>SPACE_FULFILLMENT_NONE</span>
+                        </label>
+                        <label class="radio">
+                            <span class="icon-form icon-radio" ng-class="{'checked': data.fulfillment =='email'}"></span>
+                            <input name="audience" id="audience-users" type="radio" value="email" ng-model="data.fulfillment"/>
+                            <span translate>SPACE_FULFILLMENT_EMAIL</span>
+                        </label>    -->                     
+                        <!-- Remove class "hidden" when "Specific User(s)" option is selected. Add it back if other option is selected -->
+                        <span ng-show="true" translate>SPACE_FULFILLMENT_EMAIL_ACCOUNTS_LABEL</span>
+                        <input id="audience-specific-user" class = "campaign-textbox" placeholder="Enter email accounts" type="text" ng-show= "true" ng-model="data.recipient_emails" /> 
+                                                 
+
+                    </div>
+                    </div>
+                     
+                </div>
+
+                <div class="entry" ng-show="data.page_template=='SCREEN'">
+                    <label for="screen-id"><span translate>SCREEN_ID_LABEL</span> <strong>*</strong></label>
+                    <input type="text" name="screen-id" ng-model="data.screen_id" id="item-name" placeholder="Enter screen id" value="{Item Name}" required />
+                </div>
 
                 <div ng-show="data.page_template=='ADDON'">
 
 
-                     <ad-dropdown label="{{'EARLY_CHECKIN_ADDON' | translate}}" label-in-drop-down="{{'EARLY_CHECKIN_ADDON' | translate}}" list="addons" selected-Id='data.addon_id' required='no' selbox-class='placeholder' ng-show="data.page_template=='ADDON'"></ad-dropdown>  
+                     <ad-dropdown label="{{'EARLY_CHECKIN_ADDON' | translate}}" label-in-drop-down="{{'EARLY_CHECKIN_ADDON' | translate}}" list="addons" selected-Id='data.addon_id' required='yes' selbox-class='placeholder' ng-show="data.page_template=='ADDON'"></ad-dropdown>  
 
                     <div class="entry full-width" ng-show="data.page_template=='ADDON'">
                        <label for="addon-description"><span translate>ADDON_DESCRIPTION_LABEL </span></label>
@@ -152,9 +200,7 @@
 
                      <ad-dropdown label="{{'ADDON_MAX_ORDER_LABEL' | translate}}" label-in-drop-down="{{' '}}" list="max_order_values" selected-Id='data.addon_max_order' required='no' selbox-class='placeholder' ng-show="data.page_template=='ADDON'"></ad-dropdown>
 
-                    </div>
                 </div>
-
             </fieldset>
             <div class="actions float">
                 <button type="button" ng-click="goBack()" class="button blank" translate>CANCEL</button>

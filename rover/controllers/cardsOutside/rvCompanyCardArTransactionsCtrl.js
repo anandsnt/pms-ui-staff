@@ -341,7 +341,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 					$state.go('rover.accounts.config',{
 						id: associatedId,
 						activeTab: 'ACCOUNT',
-						isFromCards: true
+						isFromArTransactions: true
 					});
 				}
 

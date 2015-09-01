@@ -1,7 +1,7 @@
 
 snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
 
-    $urlRouterProvider.otherwise("/checkoutRoomVerification");
+    $urlRouterProvider.otherwise("/noOptionAvailable");
 
     // checkout now states
 
@@ -92,11 +92,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
 	// pre checkin states
 
-    $stateProvider.state('preCheckinTripDetails', {
-    	url: '/tripDetails',
-	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
-	 	title: 'Pre Check-in'
-	}).state('preCheckinStatus', {
+    $stateProvider.state('preCheckinStatus', {
 		url: '/preCheckinStatus',
 		templateUrl: '/assets/preCheckin/partials/CARLYLE/preCheckinStatus.html',
 		controller : 'preCheckinStatusController',
@@ -119,17 +115,11 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	title: 'Email Verification'
 	});
 
-	$stateProvider.state('earlyCheckinOptions', {
-    	url: '/noOptions',
+
+	$stateProvider.state('noOptionAvailable', {
+    	url: '/noOptionAvailable',
 	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
 	 	title: 'Feature not available'
-	});
-
-
-	$stateProvider.state('externalVerification', {
-    	url: '/externalVerification',
-	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
-	 	title: 'External verification'
 	});
 
 }]);
