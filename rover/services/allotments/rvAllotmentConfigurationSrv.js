@@ -38,12 +38,12 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 		 * Function to get list of Hold status to display
 		 * @return {Promise} - After resolving it will return the list of Hold status
 		 */
-		this.getHoldStatusList = function() {
+		this.getHoldStatusList = function(params) {
 			var deferred = $q.defer(),
 
 				url = '/api/group_hold_statuses';
 
-			rvBaseWebSrvV2.getJSON(url).then(
+			rvBaseWebSrvV2.getJSON(url, params).then(
 				function(data) {
 					deferred.resolve(data);
 				},

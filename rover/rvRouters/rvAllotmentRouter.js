@@ -67,7 +67,10 @@ angular.module('allotmentModule', [])
                 ],
                 holdStatusList: ['rvAllotmentConfigurationSrv',
                     function (rvAllotmentConfigurationSrv) {
-                        return rvAllotmentConfigurationSrv.getHoldStatusList ();
+                        var params = {
+                            is_group : false
+                        }
+                        return rvAllotmentConfigurationSrv.getHoldStatusList (params);
                     }
                 ]
             }
