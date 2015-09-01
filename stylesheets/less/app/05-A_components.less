@@ -1778,7 +1778,7 @@
             position: absolute;
             top: 60px;
             left: 0;
-            z-index: 999;
+            z-index: 2040;
             .size(90px, 100%);
             .transition(height, .2s, cubic-bezier(.10, .10, .25, .90));
             .show;
@@ -1800,12 +1800,15 @@
                         position: absolute;
                         top: 0;
                         padding: 20px;
+                        cursor: pointer;
+                        .box-shadow(-1px 0 3px rgba(0,0,0,.5));
                         .size(90px, 100%);
                         .show;
 
                         .guest-image {
                             &.icon-company,
-                            &.icon-travel-agent {
+                            &.icon-travel-agent,
+                            &.icon-group-large {
                                 text-align: center;
                                 text-transform: uppercase;
                                 color: @white;
@@ -1984,29 +1987,27 @@
                         &#guest-card-header { background: @gcard @gcardTexture; }
                         &#company-card-header { background: @ccard @ccardTexture; }
                         &#travel-agent-card-header { background: @tacard @tacardTexture; }
+                        &#group-card-header { background: @groupcard @groupcardTexture; }
 
                         &.first {
                             left: 0;
                             z-index: 10;
-                            .calc-width(100, 180);
+                            .calc-width(100, 150);
                         }
 
                         &.second {
-                            cursor: pointer;
-                            z-index: 20;
-                            .box-shadow(-1px 0 3px rgba(0,0,0,.5));
-                            #calc-position > .left(100, 180);
-
-                            .icon-show-conversations { .hide; }
+                            z-index: 20; 
+                            #calc-position > .left(100, 150);
                         }
 
                         &.third {
-                            cursor: pointer;
-                            z-index: 30;
-                            .box-shadow(-1px 0 3px rgba(0,0,0,.5));
-                            #calc-position > .left(100, 90);
+                            z-index: 30; 
+                            #calc-position > .left(100, 100);
+                        }
 
-                            .icon-show-conversations { .hide; }
+                        &.fourth {
+                            z-index: 40;
+                            #calc-position > .left(100, 50);
                         }
 
                         &.move-to-left {
@@ -3513,7 +3514,8 @@
                             }
 
                             &.second,
-                            &.third { .hide; }
+                            &.third,
+                            &.fourth { .hide; }
 
                             .card-actions { .show; }
                         }
@@ -3582,31 +3584,6 @@
             &.group-card {
                 .cards-wrapper {
                     background: @groupcard @groupcardTexture;
-
-                    /* Card headers ***/
-                    .cards-header {
-                        .card-header {
-                            form { 
-                                margin-left: 0;
-                                .calc-width(100, 260);
-
-                                .holder {
-
-                                    &.data {
-                                        .icons { 
-                                            padding-left: 35px;
-                                            margin-right: 20px;
-                                        }
-                                    }
-                                }
-                            }
-
-                            .card-actions { 
-                                width: 140px;
-                                .button { width: 140px; } 
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -9630,7 +9607,7 @@
                 .guest-status { .square(20px); }
 
                 .data {
-                    margin-bottom: 20px;
+                    margin-bottom: 10px;
                     border-bottom: 1px solid rgba(0,0,0,.1);
                     .float;
 
@@ -9640,14 +9617,14 @@
                         .calc-width(50, 10);
                         .pull-left;
 
-                        .guest-status { margin: 10px 10px 0 0; }
+                        .guest-status { margin-right: 10px; }
 
                         &:first-child { margin-right: 20px; }
                     }
                 }
 
                 .stay-dates {
-                    margin-bottom: 20px;
+                    margin-bottom: 10px;
                     border-bottom: 1px solid rgba(0,0,0,.1);
                     .float;
 
@@ -9664,7 +9641,7 @@
 
                     .check-data {
                         cursor: pointer;
-                        margin: 10px 0 20px 0;
+                        margin: 10px 0;
                         padding-left: 40px;
                         .size(40px, 100%);
                         .faux-clickable;
@@ -9694,21 +9671,19 @@
 
                     .check-data-set,
                     .check-data-not-set {
-                        margin: 10px 0 0 -10px;
+                        margin-left: -10px;
                         padding-left: 40px;
                         line-height: 40px;
                         .size(40px, 100%);
                         .show;
 
-                        &.check-data-not-set {
-                            color: @grey3;
-                        }
+                        &.check-data-not-set { color: @grey3; }
                     }
                 }
 
                 .rooms {
                     text-align: center;
-                    margin-bottom: 20px;
+                    margin-bottom: 10px;
                     .faux-clickable;
 
                     .title {
@@ -9922,7 +9897,7 @@
                 }
 
                 .total-stay-cost {
-                    margin-top: -20px;
+                    margin-top: -10px;
                     #pixel-to-percent > .left-padding(240, 780);
 
                     li {
