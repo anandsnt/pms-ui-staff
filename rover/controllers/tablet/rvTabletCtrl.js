@@ -56,7 +56,7 @@ sntRover.controller('rvTabletCtrl', [
             
             $scope.hotelLogo = 'assets/partials/tablet/kiosk/assets/'+$scope.hotel.title+'/logo.svg';
             $scope.at = 'home';
-            $scope.hideNavBtns = false;
+            $scope.hideNavBtns = true;
             $scope.inRover = true;
             
             $scope.headingText = 'Header Text Here';
@@ -347,7 +347,7 @@ sntRover.controller('rvTabletCtrl', [
                     //fetch the idle timer settings
                     $scope.$emit('hideLoader');
                 };
-                
+                var findBy;
                 switch(at){
                     case 'find-by-email':{
                             //fetch reservation list using email as the param
@@ -356,16 +356,20 @@ sntRover.controller('rvTabletCtrl', [
                         $scope.from = 'find-by-email';
                         $scope.prevStateNav.push($scope.from);
                         $scope.clearInputText();
+                        findBy = 'email';
                         break;
                     };
                 case 'find-by-confirmation':
+                        findBy = 'confirmation_number';
                         $scope.input.lastConfirmationValue = textValue;
                         $scope.from = 'find-by-confirmation';
                         $scope.prevStateNav.push($scope.from);
                         $scope.clearInputText();
                     break;
                 }
-                $scope.invokeApi(rvTabletSrv.fetchReservations, {}, fetchCompleted);
+                $scope.invokeApi(rvTabletSrv.fetchReservations, {
+                    'find_by':findBy
+                }, fetchCompleted);
                 
                 
                 
@@ -480,7 +484,9 @@ sntRover.controller('rvTabletCtrl', [
                         break;
                         
                     default:
-                        stateToGoTo = null;
+                        stateToGoTo = 'home';
+                        stateToGoTo = 'rover.kiosk';
+                        $scope.hideNavBtns = true;
                         break;    
                 }
                 

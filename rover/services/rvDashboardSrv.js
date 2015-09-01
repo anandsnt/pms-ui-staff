@@ -44,11 +44,12 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
 	};
         
         
-        this.getUserRole = function(id){
+        this.getUserRole = function(id, $scope){
             var deferred = $q.defer();
             var url = '/admin/users/'+id+'/edit.json';
             rvBaseWebSrvV2.getJSON(url).then(function(data) {
                 var roles = [], role, roleId;
+                userDetails.hasKioskRole = false;
                 if (userDetails.userRoles){
                     if (userDetails.userRoles.length > 0){
                         for (var i in userDetails.userRoles){
@@ -58,6 +59,10 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
                                 if (roleId == role){
                                     console.log('detected: ',userDetails.userRoles[i].name);
                                     roles.push({'name': userDetails.userRoles[i].name, 'id':userDetails.userRoles[i].value});
+                                    if (userDetails.userRoles[i].name === 'Kiosk'){
+                                        userDetails.hasKioskRole = true;
+                                        $scope.kioskModeEnabled = true;
+                                    }
                                 }
                             }
                         }
