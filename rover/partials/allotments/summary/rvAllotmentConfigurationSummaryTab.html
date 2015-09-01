@@ -31,13 +31,12 @@
                 <input id="allotment-email" ng-model="allotmentConfigData.summary.contact_email" type="text" />
             </div>
             <div class="entry break full-width">
+
+                <a ng-click="openDemographicsPopup();" class="button" ng-class="{'grey': isInAddMode(), 'white brand-text': !isInAddMode()}" translate>DEMOGRAPHICS</a>
+
                 <a ng-click="openBillingInformation();" class="button blue" ng-if="allotmentConfigData.summary.posting_account_billing_info" translate>BILLING_INFORMATION</a>
 
                 <a ng-click="openBillingInformation();" class="button"  ng-class="{'grey': isInAddMode(), 'blue': !isInAddMode()}"  ng-if="!allotmentConfigData.summary.posting_account_billing_info" translate>ADD_BILLING_INFO</a>
-
-                <a ng-click="openDepositRulesPopup();" ng-disabled class="button" ng-class="{'grey': isInAddMode(), 'white brand-text': !isInAddMode()}" translate>DEPOSIT_RULES</a>
-
-                <a ng-click="openDemographicsPopup();" class="button" ng-class="{'grey': isInAddMode(), 'white brand-text': !isInAddMode()}" translate>DEMOGRAPHICS</a>
             </div>
         </div>
         <div class="holder right">
