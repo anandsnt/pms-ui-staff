@@ -394,7 +394,6 @@ sntRover.factory('RVReportUtilsFac', [
 
             // pre-process charge groups and charge codes
             var processedCGCC = {};
-
             // create DS for options combo box
             __setData(report, 'hasGeneralOptions', {
                 type         : 'FAUX_SELECT',
@@ -723,6 +722,31 @@ sntRover.factory('RVReportUtilsFac', [
                         data         : angular.copy( data.holdStatus )
                     });
                 };
+
+                if ( filter.value === 'ADDON_GROUPS') {
+                    __setData(report, 'hasAddonGroups', {
+                        type         : 'FAUX_SELECT',
+                        filter       : filter,
+                        show         : false,
+                        selectAll    : false,
+                        defaultTitle : 'Select Addon Group',
+                        title        : 'Select Addon Group',
+                        data         : angular.copy( data.addonGroups )
+                    });
+                };
+
+                if ( filter.value === 'ADDONS') {
+                    __setData(report, 'hasAddons', {
+                        type         : 'FAUX_SELECT',
+                        filter       : filter,
+                        show         : false,
+                        selectAll    : false,
+                        defaultTitle : 'Select Addon',
+                        title        : 'Select Addon',
+                        data         : angular.copy( data.addons )
+                    });
+                };
+
             });
         };
 
