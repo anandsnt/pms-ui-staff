@@ -1,0 +1,15 @@
+<div id="group-card-header" class="card-header" ng-class="UICardClass('company-card')" ng-controller="RVCompanyCardCtrl" ng-click="companyCardClicked($event)" ng-show="isStandAlone" outside-click-handler>
+    <section>
+        <div class="guest-image icons icon-group-large new">
+            <span class="search-indicator"></span>
+        </div>
+        <form method="post" action="{action}" name="search-group" id="search-group" class="card-search-form" role="search">
+            <div class="holder">
+                <div class="entry">
+                    <input name="group-name" id="group-name" placeholder="Group Name" value="" class="masked-input fixed long-name h1" type="text">
+                    <input name="group-code" id="group-code" placeholder="Group Code #" value="" class="masked-input fixed code h1" type="text">
+                </div>
+            </div>
+        </form>
+    </section>
+</div>
