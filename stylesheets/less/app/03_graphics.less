@@ -795,6 +795,35 @@
 		}
 	}
 
+/* Restrictions icons 	==================================*/
+	.restriction-icon {
+		color: @white;
+		text-align: center;
+		.square(20px);
+
+		/* Color only ***/
+		&.bg-red { background-color: @red; }
+		&.bg-blue { background-color: @blue; }
+		&.bg-grey { background-color: @grey3; }
+		&.bg-purple { background-color: @purpleStart; }
+		&.bg-green { background-color: @green; }
+
+		/* With image ***/
+		&.closed,
+		&.arrival {
+			background-image: @icons;
+			background-repeat: no-repeat;
+
+			@media @highdpi {
+				background-image: @icons2x;
+				background-size: 120px;
+			}
+		}
+
+		&.closed { background-position: 5px -7835px; }
+		&.arrival {	background-position: 5px -7895px; }
+	}
+
 /* 4. LAYOUT
 ==========================================================*/
 /* 5. COMPONENTS

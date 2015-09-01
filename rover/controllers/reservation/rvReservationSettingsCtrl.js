@@ -212,7 +212,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             }
             $scope.reservationData.tabs = $scope.reservationData.tabs.concat(RVReservationTabService.newTab());
             $scope.reservationData.rooms = $scope.reservationData.rooms.concat(RVReservationTabService.newRoom());            
-            refreshScroller();
+            $scope.refreshScroll();
         };
 
 

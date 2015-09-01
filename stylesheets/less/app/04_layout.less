@@ -2720,15 +2720,18 @@ body { overflow: hidden; }
 
 			.tooltip {
 				position: absolute;
+				right: -20px;
 				bottom: 20px;
 				visibility: hidden;
 				background-color: @white;
 				pointer-events: none;
 				z-index: 999;
 				padding: 10px;
+				width: 220px;
+				.float;
 				.transition;
 				.opacity(0);
-				.box-shadow();
+				.box-shadow(0 0 2px rgba(0,0,0,.2));
 				#border-radius > .rounded();
 
 				.restriction-info { .hide; }
@@ -2758,7 +2761,6 @@ body { overflow: hidden; }
 
 				&.has-restrictions {
 					width: 380px;
-					.float;
 
 					.details,
 					.restriction-info {
@@ -2779,39 +2781,23 @@ body { overflow: hidden; }
 								position: absolute;
 								top: 0;
 								left: 0;
-								color: @white;
-								text-align: center;
-								.square(20px);
-
-								&.bg-red { background-color: @red; }
-								&.bg-blue { background-color: @blue; }
-								&.bg-grey { background-color: @grey3; }
-								&.bg-purple { background-color: @purpleStart; }
-								&.bg-green { background-color: @green; }
-
-								&.closed {
-
-								}
-
-								&.arrival {
-
-								}
 							}
 
 							&:first-child { padding-left: 0; }
 						}
-					}	
+					}
 				}
 
 				&:after {
 					position: absolute;
-					content: "";
-					bottom: -20px;
-					width: 0;
-					height: 0;
-					border-top: 10px solid @white;
-					border-right: 10px solid transparent;
+					bottom: -10px;
+					width: 0; 
+					height: 0; 
 					border-left: 10px solid transparent;
+					border-right: 10px solid transparent;
+					border-top: 10px solid @white;
+					clear: none;
+					.show;
 				}
 			}
 
@@ -2861,12 +2847,6 @@ body { overflow: hidden; }
 			&.last-month,
 			&.next-month { background-color: rgba(0,0,0,.025); }
 
-			&.split-view {
-				.guest-status {
-					&.check-in { top: 0; }
-				}
-			}
-
 			&.check-in { 
 				color: @white;
 				background-color: @green; 
@@ -2884,6 +2864,21 @@ body { overflow: hidden; }
 			&.check-out { 
 				color: @white;
 				background-color: @red; 
+			}
+
+			&.split-view {
+				.guest-status {
+					&.check-in { top: 0; }
+				}
+
+				&.unavailable {
+					.guest-status {
+						&.check-in { 
+							background-position: 7px -595px;
+                    		.rotate(180deg);
+						 }
+					}
+				}
 			}
 
 			&:hover,
@@ -2955,6 +2950,13 @@ body { overflow: hidden; }
                 &.check-out { 
                     background-color: @red;
                     background-position: 6px -155px;
+                }
+
+                &.restrictions {
+                	color: rgba(0,0,0,.3);
+					text-align: center;
+					font-weight: 600;
+					background-color: rgba(0,0,0,.1);
                 }
             }
 
