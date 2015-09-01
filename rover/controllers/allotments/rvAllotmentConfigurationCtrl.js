@@ -67,7 +67,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          */
         var ifMandatoryValuesEntered = function() {
             var summary = $scope.allotmentConfigData.summary;
-            return !!summary.allotment_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to && !!summary.release_date;
+            return !!summary.allotment_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to;
         };
 
         /**
