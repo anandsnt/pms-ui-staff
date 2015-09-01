@@ -231,7 +231,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          */
         $scope.saveNewAllotment = function() {
             $scope.errorMessage = "";
-            if (rvPermissionSrv.getPermissionValue('CREATE_GROUP_SUMMARY') && !$scope.allotmentConfigData.summary.allotment_id) {
+            if (rvPermissionSrv.getPermissionValue('CREATE_ALLOTMENT_SUMMARY') && !$scope.allotmentConfigData.summary.allotment_id) {
                 if (ifMandatoryValuesEntered()) {
                     var onAllotmentSaveSuccess = function(data) {
                             $scope.allotmentConfigData.summary.allotment_id = data.allotment_id;
@@ -271,7 +271,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          */
         $scope.updateAllotmentSummary = function() {
 
-            if (rvPermissionSrv.getPermissionValue('EDIT_GROUP_SUMMARY')) {
+            if (rvPermissionSrv.getPermissionValue('EDIT_ALLOTMENT_SUMMARY')) {
                 if (angular.equals($scope.allotmentSummaryMemento, $scope.allotmentConfigData.summary)) {
                     return false;
                 }

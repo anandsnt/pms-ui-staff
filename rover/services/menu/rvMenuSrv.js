@@ -429,8 +429,8 @@ sntRover.service('rvMenuSrv',
 			'menuCreateGroup': 		['GROUP_CREATE'],
 			'menuManageGroup': 		['GROUP_MANAGE'],
 
-			'menuCreateAllotment': 	['GROUP_CREATE'],
-			'menuManageAllotment': 	['GROUP_MANAGE'],
+			'menuCreateAllotment': 	['ALLOTMENTS_CREATE'],
+			'menuManageAllotment': 	['ALLOTMENTS_MANAGE'],
 
 			'accounts':        		['ACCESS_ACCOUNTS'],
 
