@@ -14,7 +14,25 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
         $scope.currentState = $state.current.name;
         $scope.interfaceId = $state.current.interface_id;
         $scope.simpleName = $state.current.simple_name;
-
+        $scope.failedMessages = [];
+        $scope.limitResponseLength = 999;
+        $scope.ota = {
+            checkbox_isDisabled: false,
+            has_checked: false
+        };
+        $scope.has_checked_number = 0;
+        $scope.checkBox = function(item){
+            if (item.selected){
+                $scope.has_checked_number--;
+            } else {
+                $scope.has_checked_number++;
+            }
+            if ($scope.has_checked_number > 0){
+                $scope.ota.has_checked = true;
+            } else {
+                $scope.ota.has_checked = false;
+            }
+        };
         //these setup a generic method to access each service api, using the router namespace
         $scope.serviceController;
         $scope.interfaceName;
@@ -24,12 +42,137 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
         };
         $scope.init = function(){
             var interface = $scope.interfaceConfig[$scope.currentState];
-            $scope.serviceController = interface.controller;
-            $scope.interfaceName = interface.name;
-            //fetch payment methods, source origins, then values
+            if (interface){
+                $scope.serviceController = interface.controller;
+                $scope.interfaceName = interface.name;
+                //fetch payment methods, source origins, then values
 
-            $scope.fetchSetup();
+                $scope.fetchSetup();
+            } else {
+                var onSuccess = function(data){
+                    for (var i in data.data){
+                        //if (data.data[i].message_type !== 'restriction'){
+                            data.data[i].can_resubmit = true;//placeholder
+                        //} else {
+//                        }
+                        
+                        
+                       // if (data.data[i].message_type !== 'restriction'){
+                            data.data[i].can_delete = true;//placeholder
+                       // } else {
+                        //    data.data[i].can_resubmit = false;
+                       // }
+                    }
+                    $scope.failedMessages = data.data;
+                    
+                    $scope.$emit('hideLoader');
+                };
+                 $scope.invokeApi(adExternalInterfaceCommonSrv.fetchFailedMessages, {},onSuccess);
+            }
         };
+        $scope.resetChecked = function(){
+            $scope.has_checked_number = 0;
+            $scope.ota.has_checked = false;
+        };
+        $scope.destroyFailedMessage = function(msg){
+            msg.can_delete = false;
+                
+            var message_id = [msg.message_id];
+                var onSuccess = function(data){
+                    for (var i in $scope.failedMessages){
+                        if ($scope.failedMessages[i].message_id === message_id){
+                            $scope.checkBox($scope.failedMessages[i]);
+                            delete $scope.failedMessages[i];
+                        }
+                    }
+                    //$scope.failedMessages = data.data;
+                    $scope.$emit('hideLoader');
+                };
+                 $scope.invokeApi(adExternalInterfaceCommonSrv.deleteFailedMessages, {id:message_id},onSuccess);
+        };
+        
+        $scope.resubmitFailedMessage = function(msg){
+            var message_id = [msg.message_id];
+                var onSuccess = function(data){
+                   // $scope.failedMessages = data.data;
+                    $scope.$emit('hideLoader');
+                };
+                 $scope.invokeApi(adExternalInterfaceCommonSrv.resubmitFailedMessages, {id:message_id},onSuccess);
+        };
+        $scope.resubmitCheckedFailedMessage = function(msg, many){
+            var messages = [];
+            if (many){//msg will be the list of IDs from resubmitSelected
+                messages = msg;
+            } else {
+                for (var msg in $scope.failedMessages){
+                    if (msg.is_checked){
+                        messages.push(msg.message_id);
+                    }
+                }
+            }
+            var onSuccess = function(data){
+               // $scope.failedMessages = data.data;
+                $scope.$emit('hideLoader');
+            };
+           
+            $scope.invokeApi(adExternalInterfaceCommonSrv.resubmitFailedMessages, {id:messages},onSuccess);
+             
+        };
+        
+        $scope.resubmitSelected = function(){
+            var forResubmit = [];
+            for (var i in $scope.failedMessages){
+                if ($scope.failedMessages[i].selected){
+                    forResubmit.push($scope.failedMessages[i].message_id);
+                }
+            }
+            $scope.resubmitCheckedFailedMessage(forResubmit, true);
+            
+        };
+        $scope.deleteSelected = function(){
+            var forDelete = [];
+            for (var i in $scope.failedMessages){
+                if ($scope.failedMessages[i].selected){
+                    forDelete.push($scope.failedMessages[i].message_id);
+                }
+            }
+            $scope.deleteCheckedFailedMessage(forDelete, true);
+            
+        };
+        
+        
+        $scope.deleteCheckedFailedMessage = function(msg, many){
+            var messages = [];
+            if (many){//msg will be the list of IDs from resubmitSelected
+                messages = msg;
+            } else {
+                for (var msg in $scope.failedMessages){
+                    if (msg.is_checked){
+                        messages.push(msg.message_id);
+                    }
+                }
+            }
+            var onSuccess = function(data){
+               // $scope.failedMessages = data.data;
+                $scope.$emit('hideLoader');
+                $scope.resetChecked();
+                $scope.init();
+            };
+                 $scope.invokeApi(adExternalInterfaceCommonSrv.deleteFailedMessages, {id:messages},onSuccess);
+        };
+        
+        
+	$scope.getTimeConverted = function(time) {
+		if (time === null || time === undefined || time.indexOf("undefined") > -1) {
+			return "";
+		}
+                if (time.indexOf('T') !== -1){
+                    var t = time.split('T');
+                    time = t[1];
+                }
+		var timeDict = tConvert(time);
+		return (timeDict.hh + ":" + timeDict.mm + " " + timeDict.ampm);
+	};
         ///////////////////////////
         ///FETCH
         //
@@ -297,6 +440,9 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
                     $scope.setRefreshTime();
                   });
               }, 1000);
-          };
-
+          }; 
+          
+          /*
+           * Failed OTA Messages
+           */
     }]);
