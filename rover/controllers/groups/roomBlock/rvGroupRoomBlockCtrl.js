@@ -20,6 +20,10 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		$q,
 		dateFilter) {
 
+		var summaryMemento;
+		var update_existing_reservations_rate = false;
+		var roomsAndRatesSelected;
+
 		/**
 		 * util function to check whether a string is empty
 		 * @param {String/Object}
@@ -133,7 +137,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		var hasPermissionToOverBook = function() {
-			return (rvPermissionSrv.getPermissionValue('BOOK_ROOM_WITHOUT_INVENTORY'));
+			return (rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE'));//CICO-19821
 		};
 
 		/**
@@ -443,6 +447,46 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 */
 		var onStartDatePicked = function(date, datePickerObj) {
 			$scope.startDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+			$scope.groupConfigData.summary.block_from = $scope.startDate;
+
+			//referring data source
+			var refData 		= $scope.groupConfigData.summary,
+				newBlockFrom 	= refData.block_from,
+				oldBlockFrom	= new tzIndependentDate(summaryMemento.block_from),
+				chActions 		= $scope.changeDatesActions;
+
+			if (refData.release_date.toString().trim() === '') {
+				$scope.groupConfigData.summary.release_date = refData.block_from;
+			}
+			//if it is is Move Date mode
+			if ($scope.changeDatesActions.isInCompleteMoveMode()) {
+				var originalStayLength = (util.getDatesBetweenTwoDates (new tzIndependentDate(util.deepCopy(summaryMemento.block_from)), new tzIndependentDate(util.deepCopy(summaryMemento.block_to))).length - 1);
+				$scope.groupConfigData.summary.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+				$scope.groupConfigData.summary.block_to.setDate(refData.block_to.getDate() + originalStayLength);
+				$scope.endDate = $scope.groupConfigData.summary.block_to;
+			}
+
+			//arrival left date change
+			else if(newBlockFrom < oldBlockFrom && chActions.arrDateLeftChangeAllowed()) {
+				triggerEarlierArrivalDateChange();
+
+			}
+
+			//arrival right date change
+			else if(newBlockFrom > oldBlockFrom && chActions.arrDateRightChangeAllowed()) {
+				// check move validity
+				if(new tzIndependentDate(refData.first_dep_date) < newBlockFrom)
+					triggerLaterArrivalDateChangeInvalidError();
+				else
+					triggerLaterArrivalDateChange();
+			}
+
+			// let the date update if it is future group as well is in edit mode
+			else if (!$scope.isInAddMode() && !refData.is_a_past_group){
+				$timeout(function() {
+					$scope.updateGroupSummary();
+				}, 100);				
+			}
 
 			// we will clear end date if chosen start date is greater than end date
 			if ($scope.startDate > $scope.endDate) {
@@ -464,11 +508,82 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 */
 		var onEndDatePicked = function(date, datePickerObj) {
 			$scope.endDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+			$scope.groupConfigData.summary.block_to = $scope.endDate;
+
+			//referring data source
+			var refData 	= $scope.groupConfigData.summary,
+				newBlockTo 	= refData.block_to,
+				oldBlockTo	= new tzIndependentDate(summaryMemento.block_to),
+				chActions 	= $scope.changeDatesActions;
+
+			//departure left date change
+			if(newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {
+				// check move validity
+				if(new tzIndependentDate(refData.last_arrival_date) > newBlockTo)
+					triggerEarlierDepartureDateChangeInvalidError();
+				else
+					triggerEarlierDepartureDateChange();
+			}
+
+			//departure right date change
+			else if(newBlockTo > oldBlockTo && chActions.depDateRightChangeAllowed()) {
+				triggerLaterDepartureDateChange();
+			}
+
+			// let the date update if it is future group as well is in edit mode
+			else if (!$scope.isInAddMode() && !refData.is_a_past_group){
+				$timeout(function() {
+					$scope.updateGroupSummary();
+				}, 100);				
+			}
+
+			//setting the max date for start Date
+			$scope.startDateOptions.maxDate = $scope.endDate;
 
 			//we have to show create button
 
 
 			runDigestCycle();
+		};
+
+		/**
+		 * every logic to disable the from date picker should be here
+		 * @return {Boolean} [description]
+		 */
+		var shouldDisableStartDatePicker = function(){
+			var sData 					= $scope.groupConfigData.summary,
+				noOfInhouseIsNotZero 	= (sData.total_checked_in_reservations > 0),
+				cancelledGroup 			= sData.is_cancelled,
+				is_A_PastGroup 			= sData.is_a_past_group,
+				inEditMode 				= !$scope.isInAddMode();
+				
+			return ( inEditMode &&  
+				   	(
+				   	  noOfInhouseIsNotZero 	|| 
+					  cancelledGroup 		|| 
+					  is_A_PastGroup
+					)
+				   );
+		};
+
+		/**
+		 * every logic to disable the end date picker should be here
+		 * @return {Boolean} [description]
+		 */
+		var shouldDisableEndDatePicker = function(){
+			var sData 					= $scope.groupConfigData.summary,
+				endDateHasPassed 		= new tzIndependentDate(sData.block_to) < new tzIndependentDate($rootScope.businessDate),
+				cancelledGroup 			= sData.is_cancelled,
+				toRightMoveNotAllowed 	= !sData.is_to_date_right_move_allowed,
+				inEditMode 				= !$scope.isInAddMode();
+
+			return ( inEditMode &&  
+				   	( 
+				   	 endDateHasPassed 	|| 
+					 cancelledGroup 	||  
+					 toRightMoveNotAllowed
+					)
+				   );
 		};
 
 		/**
@@ -507,14 +622,15 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//date picker options - Start Date
 			$scope.startDateOptions = _.extend({
 				minDate: new tzIndependentDate($rootScope.businessDate),
-				disabled: $scope.groupConfigData.summary.is_cancelled,
+				maxDate: $scope.groupConfigData.summary.block_to,
+				disabled: shouldDisableStartDatePicker(),
 				onSelect: onStartDatePicked
 			}, commonDateOptions);
 
 			//date picker options - End Date
 			$scope.endDateOptions = _.extend({
 				minDate: ($scope.startDate !== '') ? new tzIndependentDate($scope.startDate): new tzIndependentDate($rootScope.businessDate),
-				disabled: $scope.groupConfigData.summary.is_cancelled,
+				disabled: shouldDisableEndDatePicker(),
 				onSelect: onEndDatePicked
 			}, commonDateOptions);
 		};
@@ -839,6 +955,103 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		/**
+		 * To open Room Block Pickedup Reservations Popup.
+		 */
+		$scope.$on('updateRate', function (event, selectedRoomTypeAndRates) {
+			roomsAndRatesSelected = selectedRoomTypeAndRates;
+			ngDialog.open({
+				template: '/assets/partials/groups/roomBlock/rvGroupRoomBlockPickedupReservationsPopup.html',
+				scope: $scope,
+				className: '',
+				closeByDocument: false,
+				closeByEscape: false
+			});
+		});
+
+		/**
+		 * To check whether inhouse reservations exists.
+		 */
+		$scope.checkIfInhouseReservationsExists = function () {
+			ngDialog.close();
+			var isInhouseReservationsExists = false;
+			angular.forEach (roomsAndRatesSelected, function (row) {
+				if (row.total_inhouse_reservations_count > 0) {
+					isInhouseReservationsExists = true;
+				}
+			});
+
+			if (isInhouseReservationsExists) {
+				openInhouseReservationsExistsPopup();
+			}
+			else {
+				$scope.saveNewRoomTypesAndRates();
+			}
+		};
+
+		/*
+		 * Open popup to inform if inhouse reservations exists. 
+		 */
+		var openInhouseReservationsExistsPopup = function () {
+			ngDialog.open({
+				template: '/assets/partials/groups/roomBlock/rvGroupInhouseReservationsExistsPopup.html',
+				scope: $scope,
+				className: '',
+				closeByDocument: false,
+				closeByEscape: false
+			});
+		};
+
+		/*
+		 * To apply rate change only to new reservations by setting flag update_existing_reservations_rate.
+		 */
+		$scope.updateRateToNewReservations = function () {
+			ngDialog.close();
+			angular.forEach (roomsAndRatesSelected, function (row) {
+				if (row.is_configured_in_group) {
+					row.update_existing_reservations_rate = false;
+				}
+			});
+			$scope.saveNewRoomTypesAndRates();
+		};
+
+		/**
+		 * To update selected room types and rates.
+		 */
+		$scope.saveNewRoomTypesAndRates = function () {
+			ngDialog.close();
+			var options = {
+				params: formSaveNewRoomTypesAndRatesParams(roomsAndRatesSelected),
+				successCallBack: successCallBackOfSaveNewRoomTypesAndRates
+			};
+			$scope.callAPI(rvGroupConfigurationSrv.updateSelectedRoomTypesAndRates, options);
+		}
+
+		var successCallBackOfSaveNewRoomTypesAndRates = function () {
+			$scope.fetchRoomBlockGridDetails();
+		};
+
+		/**
+		 * function to form save roomtype and rates API params
+		 * @return {Object}
+		 */
+		var formSaveNewRoomTypesAndRatesParams = function(roomsAndRatesSelected) {
+			//we only want rows who have room type choosed
+			var selectedRoomTypeAndRates = _.filter(roomsAndRatesSelected, function(obj) {
+				return (typeof obj.room_type_id !== "undefined" && obj.room_type_id !== '');
+			});
+			//since selectedRoomTypeAndRates containst some unwanted keys
+			var wanted_keys = ["room_type_id", "single_rate", "double_rate", "extra_adult_rate", "rate_id", "best_available_rate_id", "update_existing_reservations_rate"];
+			selectedRoomTypeAndRates = util.getListOfKeyValuesFromAnArray(selectedRoomTypeAndRates, wanted_keys);
+
+			var params = {
+				group_id: $scope.groupConfigData.summary.group_id,
+				room_type_and_rates: selectedRoomTypeAndRates
+			};
+			return params;
+		};
+
+
+		/**
 		 * when Add Room & Rates button clicked, we will save new room Block
 		 * @return None
 		 */
@@ -866,38 +1079,15 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		/**
-		 * when a tab switch is there, parant controller will propogate
-		 * API, we will get this event, we are using this to fetch new room block deails
+		 * we will update the summary data, when we got this one
+		 * @param  {Object} data
+		 * @return undefined
 		 */
-		$scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab) {
-			if (activeTab !== 'ROOM_BLOCK') {
-				return;
-			}
-			$scope.fetchRoomBlockGridDetails();
+		var fetchSuccessOfSummaryData = function(data) {
+			$scope.groupConfigData.summary = _.extend($scope.groupConfigData.summary, data.groupSummary);
 
-			//on tab switching, we have change min date
-			setDatePickers();
-
-
-		});
-
-		/**
-		 * when a tab switch is there, parant controller will propogate
-		 * API, we will get this event, we are using this to fetch new room block deails
-		 */
-		$scope.$on("UPDATED_GROUP_INFO", function(event) {
-			//to prevent from initial API calling and only exectutes when group from_date, to_date,status updaet success
-			if ($scope.hasBlockDataUpdated) {
-				$scope.fetchRoomBlockGridDetails();
-			}
-		});
-
-		/**
-		 * when failed to update data
-		 */
-		$scope.$on("FAILED_TO_UPDATE_GROUP_INFO", function(event, errorMessage) {
-			$scope.$parent.errorMessage = errorMessage;
-		});
+			summaryMemento = _.extend({}, $scope.groupConfigData.summary);
+		};
 
 		/**
 		 * Success callback of room block details API
@@ -947,6 +1137,112 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			};
 			$scope.callAPI(rvGroupConfigurationSrv.getRoomBlockGridDetails, options);
 		};
+
+        /**
+         * [successFetchOfAllReqdForRoomBlock description]
+         * @param  {object} data
+         * @return {undefined}
+         */
+        var successFetchOfAllReqdForRoomBlock = function(data) {
+            $scope.$emit('hideLoader');
+        };
+
+        /**
+         * [successFetchOfAllReqdForRoomBlock description]
+         * @param  {object} error message from API
+         * @return {undefined}
+         */
+        var failedToFetchOfAllReqdForRoomBlock = function(errorMessage) {
+            $scope.$emit('hideLoader');
+            $scope.errorMessage = errorMessage;
+        };
+
+        /**
+         * we have to call multiple API on initial screen, which we can't use our normal function in teh controller
+         * depending upon the API fetch completion, loader may disappear.
+         * @return {[type]} [description]
+         */
+        var callInitialAPIs = function() {
+        	var hasNeccessaryPermission = (hasPermissionToCreateRoomBlock() &&
+				hasPermissionToEditRoomBlock());
+
+			if (!hasNeccessaryPermission) {
+				$scope.errorMessage = ['Sorry, You dont have enough permission to proceed!!'];
+				return;
+			}
+
+			var paramsForRoomBlockDetails = {
+				group_id: $scope.groupConfigData.summary.group_id
+			};
+
+            var promises = [];
+            //we are not using our normal API calling since we have multiple API calls needed
+            $scope.$emit('showLoader');
+
+            promises.push(rvGroupConfigurationSrv
+                .getRoomBlockGridDetails(paramsForRoomBlockDetails)
+                .then(successCallBackOfFetchRoomBlockGridDetails)
+            );
+
+            // params for summary data fetch
+            var paramsForSummaryDataFetch = {
+				"groupId": $scope.groupConfigData.summary.group_id
+			};
+            promises.push(rvGroupConfigurationSrv
+                .getGroupSummary(paramsForSummaryDataFetch)
+                .then(fetchSuccessOfSummaryData)
+            );
+
+
+            //Lets start the processing
+            $q.all(promises)
+                .then(successFetchOfAllReqdForRoomBlock, failedToFetchOfAllReqdForRoomBlock);
+        };
+
+		/**
+		 * when a tab switch is there, parant controller will propogate
+		 * API, we will get this event, we are using this to fetch new room block deails
+		 */
+		$scope.$on("GROUP_TAB_SWITCHED", function(event, activeTab) {
+			if (activeTab !== 'ROOM_BLOCK') {
+				return;
+			}
+
+			callInitialAPIs();
+
+			//end date picker will be in disabled in move mode
+			//in order to fix the issue of keeping that state even after coming back to this
+			//tab after going to some other tab
+			_.extend($scope.endDateOptions, 
+			{
+				disabled: shouldDisableEndDatePicker()
+			});			
+
+			initializeChangeDateActions ();
+			
+			//on tab switching, we have change min date
+			setDatePickers();
+
+
+		});
+
+		/**
+		 * when a tab switch is there, parant controller will propogate
+		 * API, we will get this event, we are using this to fetch new room block deails
+		 */
+		$scope.$on("UPDATED_GROUP_INFO", function(event) {
+			//to prevent from initial API calling and only exectutes when group from_date, to_date,status updaet success
+			if ($scope.hasBlockDataUpdated) {
+				$scope.fetchRoomBlockGridDetails();
+			}
+		});
+
+		/**
+		 * when failed to update data
+		 */
+		$scope.$on("FAILED_TO_UPDATE_GROUP_INFO", function(event, errorMessage) {
+			$scope.$parent.errorMessage = errorMessage;
+		});
 
 		/**
 		 * we want to display date in what format set from hotel admin
@@ -1122,6 +1418,266 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		/**
+		 * Call to reset the calender dates to the actual one.
+		 * @return {undefined}
+		 */
+		var resetDatePickers = function() {
+			//resetting the calendar date's to actual one
+			$scope.groupConfigData.summary.block_from 	= '';
+
+			$scope.groupConfigData.summary.block_from 	= new tzIndependentDate(summaryMemento.block_from);
+			$scope.groupConfigData.summary.block_to  	= new tzIndependentDate(summaryMemento.block_to);
+			$scope.startDate = $scope.groupConfigData.summary.block_to;
+			$scope.endDate   = $scope.groupConfigData.summary.block_to;
+
+			//setting the min date for end Date
+			$scope.endDateOptions.minDate = $scope.groupConfigData.summary.block_from;
+
+			//setting max date of from date
+			$scope.startDateOptions.maxDate = $scope.groupConfigData.summary.block_to;
+		};
+
+		/**
+		 * Initialize scope variables
+		 * @return {undefined}
+		 */
+		var initializeVariables = function () {
+
+			$scope.changeDatesActions = {};
+
+			//we use this to ensure that we will call the API only if there is any change in the data
+			summaryMemento = _.extend({}, $scope.groupConfigData.summary);
+
+			//since we are recieving two ouside click event on tapping outside, we wanted to check and act
+			$scope.isUpdateInProgress = false;
+		}
+
+		/**
+		 * Our Move date, start date, end date change are defined in parent controller
+		 * We need to share those actions with room block
+		 * @return undefined
+		 */
+		var initializeChangeDateActions = function () {
+			//things are defined in parent controller (getMoveDatesActions)
+			$scope.changeDatesActions = $scope.getMoveDatesActions();
+
+			//initially we will be in DEFAULT mode
+			$scope.changeDatesActions.setToDefaultMode();
+		};
+
+		var successCallBackOfMoveButton = function() {
+			$scope.reloadPage("ROOM_BLOCK");
+		};
+
+		var failureCallBackOfMoveButton = function(errorMessage) {
+
+		};
+
+		/**
+		 * when clicked on Save move button. this will triggr
+		 * @return {undefined}
+		 */
+		$scope.clickedOnSaveMoveButton = function() {
+			var sumryData = $scope.groupConfigData.summary,
+				oldSumryData = summaryMemento,
+				options = {
+					fromDate 		: sumryData.block_from,
+					toDate 			: sumryData.block_to,
+					oldFromDate 	: oldSumryData.block_from,
+					oldToDate 		: oldSumryData.block_to,
+					successCallBack : successCallBackOfMoveButton,
+					failureCallBack : failureCallBackOfMoveButton,
+					cancelPopupCallBack	: cancelCallBackofDateChange
+				};
+			$scope.changeDatesActions.clickedOnMoveSaveButton (options);
+		};
+
+		/**
+		 * when clicked on move button. this will triggr
+		 * @return {undefined}
+		 */
+		$scope.clickedOnMoveButton = function() {
+			_.extend($scope.endDateOptions,
+			{
+				disabled: true
+			});
+
+			//resetting the calendar date's to actual one
+			resetDatePickers();
+
+			//setting max date of from date
+			$scope.fromDateOptions.maxDate = '';
+
+			$scope.changeDatesActions.clickedOnMoveButton ();
+
+		};
+
+		/**
+		 * when clicked on cancel move button. this will triggr
+		 * @return {undefined}
+		 */
+		$scope.clickedOnCancelMoveButton = function() {
+			_.extend($scope.endDateOptions,
+			{
+				disabled: false
+			});
+
+			$scope.reloadPage("ROOM_BLOCK");
+		};
+
+		var cancelCallBackofDateChange = function () {
+			resetDatePickers();
+		}
+
+		var successCallBackOfEarlierArrivalDateChange = function() {
+			$scope.reloadPage("ROOM_BLOCK");
+		};
+
+		var failureCallBackOfEarlierArrivalDateChange = function(errorMessage) {
+
+		};
+
+		/**
+		 * called when start date changed to an earlier date
+		 * @return {undefined}
+		 */
+		var triggerEarlierArrivalDateChange = function() {
+			var sumryData = $scope.groupConfigData.summary,
+				oldSumryData = summaryMemento,
+				options = {
+					fromDate 			: sumryData.block_from,
+					oldFromDate 		: oldSumryData.block_from,
+					successCallBack 	: successCallBackOfEarlierArrivalDateChange,
+					failureCallBack 	: failureCallBackOfEarlierArrivalDateChange,
+					cancelPopupCallBack	: cancelCallBackofDateChange
+				};
+			$scope.changeDatesActions.triggerEarlierArrDateChange (options);
+		};
+
+		var successCallBackOfLaterArrivalDateChange = function() {
+			$scope.reloadPage("ROOM_BLOCK");
+		};
+
+		var failureCallBackOfLaterArrivalDateChange = function(errorMessage) {
+
+		};
+
+		var triggerEarlierDepartureDateChangeInvalidError = function() {
+			var options = {
+				cancelPopupCallBack	: cancelCallBackofDateChange,
+				message 			: "GROUP_EARLIER_DEP_DATE_CHANGE_WARNING"
+			}
+			$scope.changeDatesActions.showDateChangeInvalidWarning(options);
+		};
+
+		var triggerLaterArrivalDateChangeInvalidError = function() {
+			var options = {
+				cancelPopupCallBack	: cancelCallBackofDateChange,
+				message 			: "GROUP_LATER_ARR_DATE_CHANGE_WARNING"
+			}
+			$scope.changeDatesActions.showDateChangeInvalidWarning(options);
+		};
+
+		/**
+		 * called when start date changed to a later date
+		 * @return {undefined}
+		 */
+		var triggerLaterArrivalDateChange = function() {
+			var sumryData = $scope.groupConfigData.summary,
+				oldSumryData = summaryMemento,
+				options = {
+					fromDate 			: sumryData.block_from,
+					oldFromDate 		: oldSumryData.block_from,
+					successCallBack 	: successCallBackOfEarlierArrivalDateChange,
+					failureCallBack 	: failureCallBackOfEarlierArrivalDateChange,
+					cancelPopupCallBack	: cancelCallBackofDateChange
+				};
+			$scope.changeDatesActions.triggerLaterArrDateChange (options);
+		};
+
+		/**
+		 * DEPATURE CHANGE
+		 */
+		/**
+		 * [successCallBackOfEarlierDepartureDateChange description]
+		 * @return {[type]} [description]
+		 */
+		var successCallBackOfEarlierDepartureDateChange = function() {
+			$scope.reloadPage("ROOM_BLOCK");
+		};
+
+		/**
+		 * [failureCallBackOfEarlierDepartureDateChange description]
+		 * @param  {[type]} errorMessage [description]
+		 * @return {[type]}              [description]
+		 */
+		var failureCallBackOfEarlierDepartureDateChange = function(errorMessage) {
+
+		};
+
+		/**
+		 * when clicked on Save move button. this will triggr
+		 * @return {undefined}
+		 */
+		var triggerEarlierDepartureDateChange = function() {
+			var sumryData = $scope.groupConfigData.summary,
+				oldSumryData = summaryMemento,
+				options = {
+					toDate 				: sumryData.block_to,
+					oldToDate 			: oldSumryData.block_to,
+					successCallBack 	: successCallBackOfEarlierDepartureDateChange,
+					failureCallBack 	: failureCallBackOfEarlierDepartureDateChange,
+					cancelPopupCallBack	: cancelCallBackofDateChange
+				};
+			$scope.changeDatesActions.triggerEarlierDepDateChange (options);
+		};
+
+		/**
+		 * [successCallBackOfLaterDepartureDateChange description]
+		 * @return {[type]} [description]
+		 */
+		var successCallBackOfLaterDepartureDateChange = function() {
+			$scope.reloadPage("ROOM_BLOCK");
+		};
+
+		/**
+		 * [failureCallBackOfLaterDepartureDateChange description]
+		 * @param  {[type]} errorMessage [description]
+		 * @return {[type]}              [description]
+		 */
+		var failureCallBackOfLaterDepartureDateChange = function(errorMessage) {
+
+		};
+
+		/**
+		 * when clicked on Save move button. this will triggr
+		 * @return {undefined}
+		 */
+		var triggerLaterDepartureDateChange = function() {
+			var sumryData = $scope.groupConfigData.summary,
+				oldSumryData = summaryMemento,
+				options = {
+					toDate 				: sumryData.block_to,
+					oldToDate 			: oldSumryData.block_to,
+					successCallBack 	: successCallBackOfLaterDepartureDateChange,
+					failureCallBack 	: failureCallBackOfLaterDepartureDateChange,
+					cancelPopupCallBack	: cancelCallBackofDateChange
+				};
+			$scope.changeDatesActions.triggerLaterDepDateChange (options);
+		};
+
+
+		/**
+		 * This function sets tab data
+		 * @return {undefined}
+		 */
+		var initializeRoomBlockDetails = function(){
+			callInitialAPIs();
+			//on tab switching, we have change min date
+			setDatePickers();
+		};
+
+		/**
 		 * Function to initialise room block details
 		 * @return - None
 		 */
@@ -1131,8 +1687,14 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//updating the left side menu
 			setActiveLeftSideMenu();
 
+			//we have a list of scope varibales which we wanted to initialize
+			initializeVariables();
+
 			//IF you are looking for where the hell the API is CALLING
 			//scroll above, and look for the event 'GROUP_TAB_SWITCHED'
+
+			//start date change, end date change, move date actions
+			initializeChangeDateActions();
 
 			//date related setups and things
 			setDatePickers();
@@ -1146,6 +1708,13 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			//we have a list of scope varibales which we wanted to assign when it is in add/edit mode
 			initializeAddOrEditModeVariables();
 
+			// as per CICO-17081 we can enter a tab directly without TAB_SWITCHING
+			if ($scope.groupConfigData.activeTab === "ROOM_BLOCK") {
+				initializeRoomBlockDetails();
+			}
+
 		}();
+
+
 	}
 ]);
