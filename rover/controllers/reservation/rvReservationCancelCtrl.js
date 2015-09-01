@@ -499,7 +499,7 @@
 				};
 				var data = {
 					"postData": postData,
-					"reservationId": $scope.passData.reservationId,
+					"reservationId": $scope.passData.reservationId
 				};
 				$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data, succesfullCallbackForEmailCancellation, failureCallbackForEmailCancellation);
 			};
