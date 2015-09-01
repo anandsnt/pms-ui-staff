@@ -143,8 +143,7 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 		 */
 		this.updateSelectedRoomTypesAndRates = function(params) {
 			var deferred = $q.defer(),
-				url = '/api/groups/update_room_type_and_rates';
-
+			url = '/api/groups/update_room_type_and_rates';
 
 			rvBaseWebSrvV2.postJSON(url, params).then(
 				function(data) {
@@ -157,7 +156,6 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 
 			return deferred.promise;
 		};
-
 
 		this.cancelGroup = function(params) {
 			var deferred = $q.defer(),

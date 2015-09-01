@@ -80,10 +80,16 @@
             </div>
         </fieldset>
         <fieldset class="holder right">
-            <ad-textarea rows="2" div-class="full-width" text-area-class="full-width rate_description" value="rateData.description" label="Description " placeholder="Enter Rate Description" required="true"></ad-textarea>            
-            <section ng-show="shouldShowMemberRates()">
-                <ad-toggle-button is-checked="rateData.is_member_rate" label="MEMBER RATE"></ad-toggle-button>
-            </section>
+            <ad-textarea rows="2" div-class="full-width" text-area-class="full-width rate_description" value="rateData.description" label="Description " placeholder="Enter Rate Description" required="true"></ad-textarea>
+            <div class="entry" ng-if="!isHourlyRatesEnabled();">
+                <ad-toggle-button is-checked="rateData.is_pms_only" ng-click="togglePMSOnly()" label="PMS ONLY"></ad-toggle-button>            
+                <ad-toggle-button is-checked="rateData.is_channel_only" ng-click="toggleChannelOnly()" label="CHANNEL ONLY"></ad-toggle-button>
+            </div> 
+            <div class="entry full-width">           
+                <section ng-show="shouldShowMemberRates()">
+                    <ad-toggle-button is-checked="rateData.is_member_rate" label="MEMBER RATE"></ad-toggle-button>
+                </section>
+            </div>
         </fieldset>
         <!-- CICO-18040 PROMOTION FREE FORM ENTRY TO BE HIDDEN -->
         <fieldset class="holder left" ng-show="hidePromotionFreeFormEntry">

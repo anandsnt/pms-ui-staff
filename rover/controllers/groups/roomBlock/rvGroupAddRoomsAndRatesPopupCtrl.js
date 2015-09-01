@@ -16,6 +16,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 		util,
 		rvGroupConfigurationSrv) {
 
+		var updateExistingReservationsRate;
 
 		/**
 		 * to initialize rooms & rates popup
@@ -27,7 +28,6 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 			//setting the scroller
 			$scope.setScroller('room_type_scroller');
 
-
 			$scope.defaultRoomTypeDetails = {
 				"best_available_rate_amount": '',
 				"single_rate": '',
@@ -38,8 +38,16 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 
 			//selected room types & its rates
 			$scope.selectedRoomTypeAndRates = util.deepCopy($scope.groupConfigData.summary.selected_room_types_and_rates);
+			angular.forEach ($scope.selectedRoomTypeAndRates, function (row) {
+				if (row.is_configured_in_group) {
+					row.update_existing_reservations_rate = false;
+					row.old_single_rate = row.single_rate;
+					row.old_double_rate = row.double_rate;
+					row.old_extra_adult_rate = row.extra_adult_rate;
+				}
+			});
 
-			var wanted_keys = ["room_type_id", "room_type_name", "best_available_rate_amount", "rate_id", "best_available_rate_id"];
+			var wanted_keys = ["room_type_id", "room_type_name", "best_available_rate_amount", "rate_id", "best_available_rate_id", "update_existing_reservations_rate"];
 			$scope.roomTypes = util.getListOfKeyValuesFromAnArray($scope.selectedRoomTypeAndRates, wanted_keys);
 
 			//adding currency symbol to best available rate
@@ -49,12 +57,11 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 				return roomType;
 			});
 
-
-
 			//we only showing if associated with that group
 			$scope.selectedRoomTypeAndRates = _.where($scope.selectedRoomTypeAndRates, {
 				is_configured_in_group: true
 			});
+
 			//if nothing is configured, we have to add a new row
 			if ($scope.selectedRoomTypeAndRates.length === 0) {
 				$scope.selectedRoomTypeAndRates = [];
@@ -155,7 +162,6 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 		};
 
 		var successCallBackOfSaveNewRoomTypesAndRates = function(data) {
-
 			$scope.fetchRoomBlockGridDetails();
 			$scope.closeDialog();
 		};
@@ -170,7 +176,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 				return (typeof obj.room_type_id !== "undefined" && obj.room_type_id !== '');
 			});
 			//since selectedRoomTypeAndRates containst some unwanted keys
-			var wanted_keys = ["room_type_id", "single_rate", "double_rate", "extra_adult_rate", "rate_id", "best_available_rate_id"];
+			var wanted_keys = ["room_type_id", "single_rate", "double_rate", "extra_adult_rate", "rate_id", "best_available_rate_id", "update_existing_reservations_rate"];
 			selectedRoomTypeAndRates = util.getListOfKeyValuesFromAnArray(selectedRoomTypeAndRates, wanted_keys);
 
 			var params = {
@@ -182,17 +188,38 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 		};
 
 		/**
-		 * to Save New room types and rates
-		 * @return undefined
-		 */
-		$scope.saveNewRoomTypesAndRates = function() {
-			var options = {
-				params: formSaveNewRoomTypesAndRatesParams(),
-				successCallBack: successCallBackOfSaveNewRoomTypesAndRates
-			};
-
-			$scope.callAPI(rvGroupConfigurationSrv.updateSelectedRoomTypesAndRates, options);
+		 * Check whether group custom rate is changed and open new popup if true, otherwise updates room
+		 * types and rates.  
+		 */ 
+		$scope.checkIfGroupCustomRateChanged = function() {
+			ngDialog.close();
+			if (isGroupCustomRateChanged()) {
+				$scope.$emit("updateRate", $scope.selectedRoomTypeAndRates);
+			}
+			else {
+				var options = {
+					params: formSaveNewRoomTypesAndRatesParams(),
+					successCallBack: successCallBackOfSaveNewRoomTypesAndRates
+				};
+				$scope.callAPI(rvGroupConfigurationSrv.updateSelectedRoomTypesAndRates, options);
+			}
 		};
+
+		/**
+		 * Checks whether group custom rate is changed.
+		 */
+		var isGroupCustomRateChanged = function () {
+			updateExistingReservationsRate = false;
+			angular.forEach ($scope.selectedRoomTypeAndRates, function (row) {
+				if (row.total_reservations_count > 0) {
+					if (row.single_rate !== row.old_single_rate || row.double_rate !== row.old_double_rate || row.extra_adult_rate !== row.old_extra_adult_rate) {
+						updateExistingReservationsRate = true;
+						row.update_existing_reservations_rate = true;
+					}
+				}
+			});
+			return updateExistingReservationsRate;
+		}
 
 		/**
 		 * wanted to hide a particular room type from the list of room types we are showing
