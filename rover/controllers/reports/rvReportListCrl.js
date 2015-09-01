@@ -47,7 +47,9 @@ sntRover.controller('RVReportListCrl', [
                     'sources'        : $scope.$parent.sources,
                     'origins'        : $scope.$parent.origins,
                     'codeSettings'   : $scope.$parent.codeSettings,
-                    'holdStatus'     : $scope.$parent.holdStatus
+                    'holdStatus'     : $scope.$parent.holdStatus,
+                    'addonGroups'    : $scope.$parent.addonGroups,
+                    'addons'         : $scope.$parent.addons
                 });
 
                 // to reorder & map the sort_by to report details columns - for this report

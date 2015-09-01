@@ -31,7 +31,6 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.heading = listTitle;
 		$scope.$emit( "updateRoverLeftMenu", "reports" );
 
-
 		$scope.reportList  = payload.reportsResponse.results;
 		$scope.reportCount = payload.reportsResponse.total_count;
 
@@ -47,7 +46,8 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.codeSettings = payload.codeSettings;
 		$scope.holdStatus   = payload.holdStatus;
 
-		console.log( $scope.holdStatus );
+		$scope.addonGroups = payload.addonGroups;
+		$scope.addons = payload.addons;
 
 
 		$scope.showReportDetails = false;
@@ -369,10 +369,6 @@ sntRover.controller('RVReportsMainCtrl', [
                 _sortBy.sortDir = true;
             };
         };
-
-
-
-
 
 
 

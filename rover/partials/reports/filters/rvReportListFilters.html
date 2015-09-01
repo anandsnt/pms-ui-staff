@@ -190,10 +190,6 @@
 </div>
 
 
-
-
-
-
 <div class="filter" ng-if="item.hasIncludeComapnyTaGroup">
     <label>Company/TA/Group</label>
     <input class="icons icon-search" auto-complete auto-options="listCtgAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="item.uiChosenIncludeComapnyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(item)" ng-change="removeCompTaGrpId(item)">
@@ -275,6 +271,59 @@
     </div>
 </div>
 
+
+<div class="options" ng-if="item.hasAddonGroups">
+    <label for="addon-groups">Add-On Group(s)</label>
+    <div class="faux-select">Show All</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasGeneralOptions.show }">  <!-- Remove class "hidden" when ".faux-select" clicked -->
+        <label class="checkbox inline" ng-show="item.hasGeneralOptions.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasGeneralOptions.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasGeneralOptions.selectAll" ng-change="fauxSelectChange(item, item.hasGeneralOptions, true)" name="room-filters"> Show All
+        </label>
+        <label class="checkbox inline" ng-repeat="group in addonGroups">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : option.selected }"></span>
+            <input type="checkbox" ng-model="option.selected" ng-change="fauxSelectChange(item, item.hasGeneralOptions)" name="room-filters"> {{ group.addon_group_name }}
+        </label>
+    </div>
+</div>
+
+<div class="options" ng-if="item.hasAddons">
+    <label for="addons">Add-On(s)</label>
+    <div class="faux-select">Show All</div>
+    <div class="faux-select-options cols-2 hidden"> <!-- Remove class "hidden" when ".faux-select" clicked -->
+        <div ng-repeat="gruop in addonGroups track by $index">
+            <div class="col" ng-if="$index % 2 === 0">
+                <strong>{group.addon_group_name}</strong>
+                <label class="checkbox inline" ng-repeat="addon in addons">
+                    <span class="icon-form icon-checkbox">
+                    <input name="addons" id="addons-{addon-id}" value="{Addon Name}" type="checkbox" />
+                    {addon.name}
+                </label>
+
+            </div>
+            <div class="col" ng-if="$index % 2 === 1">
+                <strong>{group.addon_group_name}</strong>
+                <label class="checkbox inline" ng-repeat="addon in addons">
+                    <span class="icon-form icon-checkbox">
+                    <input name="addons" id="addons-{addon-id}" value="{Addon Name}" type="checkbox" />
+                    {addon.name}
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="options" ng-if="item.hasHoldStatus.data.length">
+    <label for="addon-status">Reservation Status</label>
+    <div class="faux-select">Show All</div>
+    <div class="faux-select-options hidden"> <!-- Remove class "hidden" when ".faux-select" clicked -->
+        <label class="checkbox inline">
+            <input name="addon-status" id="addon-reserved" value="Reserved (Due In)" type="checkbox" checked />
+            Reserved (Due In)
+        </label>
+    </div>
+</div>
+
 <div class="sort" ng-if="item.sortByOptions">
     <label>Sort By</label>
     <div class="select">
@@ -339,3 +388,4 @@
 </div>
 
 <a class="button green" ng-click="setnGenReport()">Show</a>
+
