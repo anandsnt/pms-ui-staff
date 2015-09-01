@@ -202,7 +202,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
          * @return {None}
          */
         $scope.hasPermissionToAddNewAllotment = function() {
-            return (rvPermissionSrv.getPermissionValue('CREATE_GROUP_SUMMARY'));
+            return (rvPermissionSrv.getPermissionValue('CREATE_ALLOTMENT_SUMMARY'));
         };
 
         /**
