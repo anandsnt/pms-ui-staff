@@ -569,7 +569,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				var onSaveAllotmentNoteSuccess = function(data) {
 						$scope.allotmentConfigData.summary.notes = data.notes;
 						$scope.allotmentSummaryData.newNote = "";
-						$scope.refreshScroller("groupSummaryScroller");
+						$scope.refreshScroller("allotmentSummaryScroller");
 					},
 					onSaveAllotmentNoteFailure = function(errorMessage) {
 						$scope.errorMessage = errorMessage;
@@ -592,7 +592,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 					$scope.allotmentConfigData.summary.notes = _.without($scope.allotmentConfigData.summary.notes, _.findWhere($scope.allotmentConfigData.summary.notes, {
 						note_id: params.noteId
 					}));
-					$scope.refreshScroller("groupSummaryScroller");
+					$scope.refreshScroller("allotmentSummaryScroller");
 				},
 				onRemoveAllotmentNoteFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
@@ -776,7 +776,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			BaseCtrl.call(this, $scope);
 
 			//summary scroller
-			$scope.setScroller("groupSummaryScroller");
+			$scope.setScroller("allotmentSummaryScroller");
 
 			//updating the left side menu
 			setActiveLeftSideMenu();
