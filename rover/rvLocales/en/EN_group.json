@@ -83,7 +83,6 @@
     "GROUP_AUTO_ROOM_ASSIGN_CONFIRMATION": "Confirm Room Assign",
     "GROUP_AUTO_ROOM_ASSIGN_CONFIRMATION_PARTIALLY_OKEY": "Some reservations don't meet auto assign room criteria",
     "GROUP_AUTO_ROOM_ASSIGN_FAILED_IN_PROCESSING": "Sorry, Group auto room assignment has failed for some reason. Please retry after closing this",
-<<<<<<< HEAD
     "GROUP_MASS_CHECKOUT_CONFIRMATION": "Confirm Check Out",
     "GROUP_MASS_CHECKOUT_CONFIRMATION_PARTIALLY_OKEY": "Some reservations do not meet checkout criteria.",
     "GROUP_NO_RESERVATIONS_MEET_CHECKOUT_CRITERIA": "No reservations meet check out criteria!",
