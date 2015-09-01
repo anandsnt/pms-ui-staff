@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {../_include/head.html}
+    </head>
+    <body id="{hotel-id}"> <!-- hotel-id should be hotel name, like "zoku", "yotel" or "grand-hotel". We can then apply specific styles throughtout the entire app based on this id value -->
+        
+        <!-- Header -->
+        {../_include/navigation.html}   
+        
+        <!-- Content -->
+        <section id="main" role="main">
+            <div id="content">
+                <h1>Sign The Screen</h1>
+                <form type="post" action="" id="signature">
+                    <canvas class="pad"></canvas>
+                    <input type="hidden" name="output" />
+                </form>
+                <div id="actions">
+                    <button type="button" class="button transparent prev">Clear</button>
+                    <button type="button" class="button next">Next</button>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>

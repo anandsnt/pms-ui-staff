@@ -1,0 +1,16 @@
+<!-- Content -->
+<section id="main" class="centered" role="main" ng-show='at === "find-by-email" || at === "find-by-confirmation"' ng-click='resetTime()'>
+    <div id="content">
+        <h1>{{headingText}}</h1>
+        <h3>{{subHeadingText}}</h3>
+        <form method="post" class="form">
+            <div class="entry input">
+                <input type="text" ng-model='input.inputTextValue' placeholder="{{inputTextPlaceholder}}" value="" />
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" ng-click='inputTextHandler(at, input.inputTextValue)' ng-class="{'overlay': input.inputTextValue.length < 1}">Next</button>
+            </div>
+        </form>
+    </div>
+<ng-include src="'assets/partials/tablet/rvTabletFooter.html'" ></ng-include>
+</section>

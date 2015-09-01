@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {../_include/head.html}
+    </head>
+    <body id="{hotel-id}"> <!-- hotel-id should be hotel name, like "zoku", "yotel" or "grand-hotel". We can then apply specific styles throughtout the entire app based on this id value -->
+        
+        <!-- Header -->
+        {../_include/navigation.html}   
+        
+        <!-- Content -->
+        <section id="main" role="main">
+            <div id="content">
+                <h1>Make you key.</h1>
+                <h2>Select a blank key from the bowl and place it on the target below. When the green light appears, the key is made</h2>
+                <div id="keys">
+                    {../assets/icons/create-key.svg}
+                </div>
+            </div>
+        </section>
+    </body>
+</html>

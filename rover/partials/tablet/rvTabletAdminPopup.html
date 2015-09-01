@@ -1,0 +1,45 @@
+<!-- Popup -->
+<div id='tablet-popup' ng-click='resetCounter();'>
+    <div id="popup" class=" open"> <!-- Remove class "open" to hide popup content -->
+        <div id="popup-content">
+            <table class='admin-table'>
+                <tr>
+                <h2 class="nocaps header">Kiosk Admin</h2>
+                </tr>
+                <tr>
+                    <td><label class='admin-item-label'>Kiosk Idle Timer</label></td>
+                    <td>
+                        <input class="switch-button" ng-class="{'on': true}"  type="checkbox" ng-model="settings.adminIdleTimeEnabled" ng-change='updateSettings("enabled",settings.adminIdleTimeEnabled)' />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><label class='admin-item-label'>Idle Time (Seconds)</label></td>
+                    <td><input type="number" min='0' max='9999' ng-model='settings.adminIdleTimeMax' ng-change='updateSettings("max",settings.adminIdleTimeMax)' class='admin-input'/></td>
+                </tr>
+
+                <tr class='admin-item'>
+                    <td>
+                        <label class='admin-item-label'>Idle Screen Prompt Time (Seconds)</label>
+                    </td>
+                    <td>
+                        <input type="number" min='0' max='9999' ng-model='settings.adminIdleTimePrompt' ng-change='updateSettings("prompt",settings.adminIdleTimePrompt)' class='admin-input'/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="button" class="button" ng-click='cancelAdminSettings();
+                                    closePopup();'>Cancel</button>
+                    </td>
+                    <td>
+                        <button type="button" class="button" ng-click='saveAdminSettings();
+                                    closePopup();'>Save</button>
+                    </td>
+                </tr>
+
+            </table>
+
+        </div>
+    </div>
+    <div id="popup-overlay" class="open"></div> <!-- Remove class "open" to hide popup overlay -->
+</div>

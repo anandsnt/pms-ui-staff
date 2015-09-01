@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {../_include/head.html}
+    </head>
+    <body id="{hotel-id}"> <!-- hotel-id should be hotel name, like "zoku", "yotel" or "grand-hotel". We can then apply specific styles throughtout the entire app based on this id value -->
+        
+        <!-- Header -->
+        {../_include/navigation.html}   
+        
+        <!-- Content -->
+        <section id="main" role="main">
+            <div id="content">
+                <h1>Check your reservation details</h1>
+                <div id="flex-holder">
+                    <!-- Calculate {maxheight} with this formula: window.height - combined heights of <h1>, <h2> and <h3> elements + 8
+                        - if some <h> elements are missing just exclude them or use 0. 
+                        - 8 is added to make sure bottom rounded corner is set off screen
+                    -->
+                    <div id="textual" class="reservation-details pull-left" style="max-height:{maxheight}px;"> <!-- Add ng-scroll here -->
+                        <div class="wrapper">
+                            <div id="guests">
+                                <p>
+                                    <strong>{Guest Name}</strong>                          
+                                    <span>{No.} residents</span>
+                                    {Room Type}
+                                </p>
+                                <p>Additional Guests ({Count})</p>
+                                <button type="button" class="button">Add / Remove Guests</button>
+                            </div>
+                            <ul id="rate">
+                                <li>Nights<span>{Nights}</span></li>
+                                <li>Average Daily Rate<span>€{Value}</span></li>
+                                <li class="break">Office Pacakge<span>€{Value}</span></li>
+                                <li class="sub">Taxes<span>€{Value}</span></li>
+                                <li class="sub">Subtotal<span>€{Value}</span></li>
+                                <li class="sub">Deposits<span>- €{Value}</span></li>
+                                <li class="total">Balance due<span>€{Value}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="actions" class="pull-right">
+                        <button type="button" class="button">Next</button>
+                        <p><strong>Questions?</strong>Tap “Cancel” and see a sidekick.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>
