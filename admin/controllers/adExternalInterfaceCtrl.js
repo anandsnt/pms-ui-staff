@@ -133,7 +133,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             var forDelete = [];
             for (var i in $scope.failedMessages){
                 if ($scope.failedMessages[i].selected){
-                    forDelete.push($scope.failedMessages[i].message_id);
+                    forDelete.push($scope.failedMessages[i].id);
                 }
             }
             $scope.deleteCheckedFailedMessage(forDelete, true);
