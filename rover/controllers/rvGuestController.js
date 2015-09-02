@@ -1,6 +1,6 @@
-sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService',
-
-	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService) {
+sntRover.controller('guestCardController', [
+	'$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv',
+	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv) {
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
 
@@ -342,10 +342,10 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		};
 
 
-		$scope.UICards = ['guest-card', 'company-card', 'travel-agent-card'];
+		$scope.UICards = ['guest-card', 'company-card', 'travel-agent-card', 'group-card'];
 
 		// className based on UICards index
-		var subCls = ['first', 'second', 'third'];
+		var subCls = ['first', 'second', 'third', 'fourth'];
 
 		$scope.UICardClass = function(from) {
 			// based on from (guest-card, company-card || travel-agent-card)
@@ -623,6 +623,33 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			previousSearchData.email = $scope.searchData.guestCard.email;
 
 			return ($scope.searchData.guestCard.guestLastName.length >= 2 || $scope.searchData.guestCard.guestFirstName.length >= 1 || $scope.searchData.guestCard.guestCity !== '' || $scope.searchData.guestCard.guestLoyaltyNumber !== '' || $scope.searchData.guestCard.email !== '');
+		};
+
+		$scope.searchGroups = function() {
+			var onGroupSearchSuccess = function(data) {
+					$scope.searchingGroups = true;
+					$scope.searchedGroups = data.groups;
+					$scope.$broadcast('GROUP_SEARCH_ON');
+				},
+				onGroupSearchFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage;
+				};
+			if (!!$scope.searchData.groupCard.name || !!$scope.searchData.groupCard.code) {
+				$scope.callAPI(rvGroupSrv.getGroupList, {
+					params: {
+						query: $scope.searchData.groupCard.name,
+						from_date: $scope.reservationData.arrivalDate,
+						to_date: $scope.reservationData.departureDate
+					},
+					successCallBack: onGroupSearchSuccess,
+					failureCallBack: onGroupSearchFailure
+				});
+			} else {
+				$scope.searchingGroups = false;
+				$scope.searchedGroups = [];
+				$scope.$apply();
+				$scope.$broadcast('GROUP_SEARCH_OFF');
+			}
 		};
 
 		$scope.searchCompany = function() {
