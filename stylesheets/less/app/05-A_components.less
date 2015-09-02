@@ -2754,6 +2754,7 @@
 
                                         .disabled {
                                             select { background: rgba(0,0,0,.01); }
+                                            
                                             &:after { .hide; }
                                         }
 
@@ -2761,7 +2762,7 @@
 
                                         &.date-range {
                                             margin-right: 0;
-                                            .calc-width(100, 600);
+                                            .calc-width(100, 560);
                                             .float;
 
                                             .has-datepicker {
@@ -2776,20 +2777,26 @@
 
                                     .actions {
                                         margin-top: 24px;
-                                        width: 100px;
+                                        width: 140px;
+                                        .float;
                                         .pull-left;
 
-                                        .button { width: 100%; }
+                                        .button {
+                                            padding: 0;
+                                            width: 100%;
+                                            .show;
+                                        }
 
                                         &.move-group {
                                             margin-right: 20px;
 
                                             .button {
-                                                width: 80px;
-                                                padding: 0 10px;
+                                                &:not(.blue) {
+                                                    .calc-width(50, 5);
+                                                    .pull-left;
 
-                                                &.blank { margin-right: 10px; }
-                                                &.blue { width: 100%; }
+                                                    &.blank { margin-right: 10px; }
+                                                }
                                             }
                                         }
                                     }
