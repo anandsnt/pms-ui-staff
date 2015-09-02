@@ -155,6 +155,10 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 					travelAgentName: "",
 					travelAgentCity: "",
 					travelAgentIATA: ""
+				},
+				groupCard: {
+					name: "",
+					code: ""
 				}
 			};
 		};

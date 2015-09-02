@@ -1,13 +1,16 @@
-<div id="group-card-header" class="card-header" ng-class="UICardClass('company-card')" ng-controller="RVCompanyCardCtrl" ng-click="companyCardClicked($event)" ng-show="isStandAlone" outside-click-handler>
-    <section>
-        <div class="guest-image icons icon-group-large new">
+<div id="group-card-header" class="card-header" ng-class="UICardClass('group-card')" ng-controller="RVCompanyCardCtrl" ng-click="companyCardClicked($event)" ng-show="isStandAlone" outside-click-handler>
+    <section ng-if="!searchMode">
+
+    </section>
+    <section section ng-if="searchMode">
+        <div class="guest-image icons icon-group-large new" ng-click="switchCard('group-card')">
             <span class="search-indicator"></span>
         </div>
-        <form method="post" action="{action}" name="search-group" id="search-group" class="card-search-form" role="search">
+        <form method="post" name="search-group" id="search-group" class="card-search-form" role="search">
             <div class="holder">
-                <div class="entry">
-                    <input name="group-name" id="group-name" placeholder="Group Name" value="" class="masked-input fixed long-name h1" type="text">
-                    <input name="group-code" id="group-code" placeholder="Group Code #" value="" class="masked-input fixed code h1" type="text">
+                <div class="entry" ng-click="openGuestCard()">
+                    <input name="group-name" id="group-name" placeholder="Group Name" value="" class="masked-input fixed long-name h1" type="text" rv-delay-textbox ng-model="searchData.groupCard.name" delay="1000" function-to-fire="searchGroups">
+                    <input name="group-code" id="group-code" placeholder="Group Code #" value="" class="masked-input fixed code h1" type="text" rv-delay-textbox ng-model="searchData.groupCard.code" delay="1000" function-to-fire="searchGroups">
                 </div>
             </div>
         </form>
