@@ -454,15 +454,11 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					$scope.computeTotalStayCost();
 
 					if ($stateParams.fromState === "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState === "STAY_CARD" || $stateParams.fromState === "rover.reservation.staycard.mainCard.addons") {
-						if (rateId && roomId){
-                                                        populateStayDates(rateId, roomId);
-                                                } else {
-                                                    populateStayDates($scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id, $scope.reservationData.rooms[0].roomTypeId);
-                                                }
+                                            populateStayDates($scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id, $scope.reservationData.rooms[0].roomTypeId);
 					}
 					transferState();
-				}
-			}
+				};
+			};
 			// CICO-12757 : To save and go back to stay card
 		$scope.saveAndGotoStayCard = function() {
 			var staycardDetails = {
