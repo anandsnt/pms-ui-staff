@@ -123,7 +123,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             var forResubmit = [];
             for (var i in $scope.failedMessages){
                 if ($scope.failedMessages[i].selected){
-                    forResubmit.push($scope.failedMessages[i].message_id);
+                    forResubmit.push($scope.failedMessages[i].id);
                 }
             }
             $scope.resubmitCheckedFailedMessage(forResubmit, true);
@@ -148,7 +148,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             } else {
                 for (var msg in $scope.failedMessages){
                     if (msg.is_checked){
-                        messages.push(msg.message_id);
+                        messages.push(msg.id);
                     }
                 }
             }
