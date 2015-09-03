@@ -75,17 +75,17 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 		$scope.$on('ARTransactionSearchFilter', function(e, data) {
 			$scope.isWithFilters = data;
 		});
-		var setSearchBackButtonCaption = function(){
-            if($rootScope.previousState.controller ==="rvAllotmentConfigurationCtrl")
-            {
-                $scope.searchBackButtonCaption = $filter('translate')('ALLOTMENTS');
-            }else{
-                $scope.searchBackButtonCaption = $filter('translate')('FIND_CARDS');
-            }
+		var setBackButtonCaption = function(){
+	        if($rootScope.previousState.controller ==="rvAllotmentConfigurationCtrl")
+	        {
+	            $scope.searchBackButtonCaption = $filter('translate')('ALLOTMENTS');
+	        }else{
+	            $scope.searchBackButtonCaption = $filter('translate')('FIND_CARDS');
+	        }
         };
 		$rootScope.$broadcast("viewFromCardsOutside");
 		// Handle back button Click on card details page.
-		setSearchBackButtonCaption();
+		setBackButtonCaption();
 		$scope.headerBackButtonClicked = function() {
 
 			// Save details if made changes.
