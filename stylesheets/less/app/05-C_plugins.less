@@ -3907,7 +3907,7 @@
 				}
 			}
 
-			/* Group checkin ***/
+			/* Group checkin / checkout ***/
 			&.group-checkin {
 				width: 320px;
 
@@ -3943,6 +3943,8 @@
 						.size(100%, 40%);
 
 						.message { color: @white; }
+
+						&.check-out { background-color: @red; }
 					}
 
 					.failed {
@@ -3975,6 +3977,86 @@
 				&.has-failures { 
 					width: 540px; 
 					padding: 0;
+				}
+			}
+
+			/* Move Group ***/
+			&.group-date {
+				width: 360px;
+
+				.moved {
+					color: @textColor;
+					font-weight: 600;
+					margin-bottom: 10px;
+					.float;
+
+					.label {
+						color: @textColor;
+						font-size: 16px;
+						line-height: 40px;
+						text-transform: uppercase;
+						text-align: right;
+						width: 120px;
+						margin-right: 20px;
+						.pull-left;
+					}
+
+					p {
+						background-color: @white;
+						line-height: 20px;
+						padding: 10px;
+						margin: 0;
+						#border-radius > .rounded();
+						.calc-width(50, 70);
+						.pull-left;
+
+						&.full-width { .calc-width(100, 140); }
+					}
+
+					.guest-status { 
+						margin-right: 10px;
+						.square(20px); 
+					}
+
+					&.before {
+						color: @grey3;
+						font-weight: 400;
+						margin-top: 20px;
+
+						.label { color: @grey3; }
+
+						p { text-decoration: line-through; }
+
+						.guest-status { background-color: @grey2; }
+					}
+				}
+
+				.actions {
+					margin-top: 20px;
+					padding-top: 20px;
+					border-top: 1px solid rgba(0,0,0,.1);
+				
+					.button {
+						margin: 0 auto 10px;
+
+						&:last-child { margin-bottom: 0; }
+					}
+				}
+
+				&.move-group {
+					width: 480px;
+
+					.actions {
+						text-align: center;
+
+						.button {
+							display: inline-block;
+							margin: 0 10px 0 0;
+							width: auto;
+
+							&:last-child { margin-right: 0; }
+						}
+					}
 				}
 			}
 

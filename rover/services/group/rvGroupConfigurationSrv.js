@@ -35,12 +35,12 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 		 * Function to get list of Hold status to display
 		 * @return {Promise} - After resolving it will return the list of Hold status
 		 */
-		this.getHoldStatusList = function() {
+		this.getHoldStatusList = function(params) {
 			var deferred = $q.defer(),
 
 				url = '/api/group_hold_statuses';
 
-			rvBaseWebSrvV2.getJSON(url).then(
+			rvBaseWebSrvV2.getJSON(url, params).then(
 				function(data) {
 					deferred.resolve(data);
 				},
@@ -443,8 +443,50 @@ sntRover.service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccounts
 				},function(data){
 				    deferred.reject(data);
 				});
+			return deferred.promise;	
+		};
+
+		/**
+		 * to move a group completely to next same length of span
+		 * @param  {Object} params [with group id, from date, to date]
+		 * @return Promise
+		 */
+		this.completeMoveGroup = function(params) {
+			var deferred = $q.defer(),
+				url = '/api/groups/' + params.group_id + '/move_dates',
+				data = {
+					from_date: params.from_date,
+					to_date: params.to_date,
+					old_from_date: params.old_from_date,
+					old_to_date: params.old_to_date
+				};
+				
+			rvBaseWebSrvV2.postJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
 			return deferred.promise;
 		};
 
+		/**
+		 * to move a group completely to next same length of span
+		 * @param  {Object} params [with group id, from date, to date]
+		 * @return Promise
+		 */
+		this.changeDates = function(params) {
+			var deferred = $q.defer(),
+				url = '/api/groups/' + params.group_id + '/change_dates',
+				data = _.omit(params, 'group_id');
+				
+			rvBaseWebSrvV2.postJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;
+		};		
 	}
 ]);

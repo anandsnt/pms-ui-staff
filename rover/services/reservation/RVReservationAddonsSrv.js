@@ -27,5 +27,16 @@ sntRover.service('RVReservationAddonsSrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
+        this.checkInventory = function(params) {
+            var deferred = $q.defer();
+            var url =  '/api/addons/'+params.addon_id+'/inventory_details';
+            RVBaseWebSrvV2.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+            return deferred.promise;
+        };
+
     }
 ]);
