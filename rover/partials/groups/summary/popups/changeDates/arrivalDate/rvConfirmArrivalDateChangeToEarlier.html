@@ -1,0 +1,29 @@
+<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
+    <div class="modal-content group-date">
+        <button id="modal-close" type="button" class="modal-close" ng-click="cancelChangeDatesAction()"><span class="icons icon-close invert"></span></button>
+        
+        <!-- 03-change-arrival-earlier.png -->
+        <span class="h2 message">Extend reservations arriving on {{formatDateForUI(ngDialogData.dataset.oldFromDate)}}?</span>
+        <div class="moved before">
+            <span class="label">Old Arrival</span>
+            <p class="full-width">
+                <span class="guest-status small-icon check-in"></span>
+                {{formatDateForUI(ngDialogData.dataset.oldFromDate)}}
+            </p>
+        </div>
+
+        <div class="moved">
+            <span class="label">New Arrival</span>
+            <p class="full-width">
+                <span class="guest-status small-icon check-in"></span>
+                {{formatDateForUI(ngDialogData.dataset.fromDate)}}
+            </p>
+        </div>
+
+        <div class="actions">
+            <button type="button" class="button green" ng-click="callChangeDatesAPI(ngDialogData, true)">Extend reservations</button>
+            <button type="button" class="button red" ng-click="callChangeDatesAPI(ngDialogData, false)">Do not extend reservations</button>
+            <button type="button" class="button blank" ng-click="cancelChangeDatesAction()">Cancel</button>
+        </div>
+    </div>
+</div>
