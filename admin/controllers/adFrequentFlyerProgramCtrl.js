@@ -75,5 +75,5 @@ function($scope, $state, $stateParams, ADFrequentFlyerProgramSrv, ngTableParams,
 	};
         $scope.getTitleAligned = function(title){
             return title;
-        }
+        };
 }]);

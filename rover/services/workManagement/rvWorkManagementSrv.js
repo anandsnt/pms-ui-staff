@@ -20,7 +20,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		this.fetchWorkTypes = function() {
 			var deferred = $q.defer();
@@ -31,7 +31,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		this.fetchShifts = function() {
 			var deferred = $q.defer();
@@ -39,13 +39,13 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			RVBaseWebSrvV2.getJSON(url).then(function(data) {
 				_.each(data.results, function(shift) {
 					shift.display_name = shift.name + "(" + shift.time + ")";
-				})
+				});
 				deferred.resolve(data.results);
 			}, function(data) {
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 
 		/**
@@ -73,7 +73,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		this.fetchWorkSheet = function(params) {
 			var deferred = $q.defer();
@@ -84,7 +84,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		this.deleteWorkSheet = function(params) {
 			var deferred = $q.defer();
@@ -95,7 +95,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		this.fetchWorkSheetDetails = function(params) {
 			var deferred = $q.defer();
@@ -106,7 +106,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		this.saveWorkSheet = function(params) {
 			var deferred = $q.defer();
@@ -117,7 +117,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		/**
 		 * Method to search Employees from the Work Management Landing page

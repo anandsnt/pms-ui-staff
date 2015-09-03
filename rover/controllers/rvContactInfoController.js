@@ -7,7 +7,7 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
      * storing to check if data will be updated
      */
     var presentContactInfo = JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
-    //  presentContactInfo.birthday = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
+
     $scope.errorMessage = "";
 
     $scope.$on('clearNotifications', function() {
@@ -43,7 +43,6 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
         $scope.$emit("CHANGEAVATAR", avatarImage);
         //to reset current data in header info for determining any change
         $scope.$emit("RESETHEADERDATA", $scope.guestCardData.contactInfo);
-
         updateSearchCache(avatarImage);
         $scope.$emit('hideLoader');
 
@@ -90,9 +89,9 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
                   id: data.id
                 });
             }
-            // $scope.replaceCard('guest', {
-            //   id: data.id
-            // }, false);
+
+
+
           }
         }
         //TODO : Reduce all these places where guestId is kept and used to just ONE
@@ -104,7 +103,7 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
           $scope.reservationData.guest.firstName = $scope.guestCardData.contactInfo.first_name;
           $scope.reservationData.guest.lastName = $scope.guestCardData.contactInfo.last_name;
           //TODO : Check if this is needed here
-          // $scope.reservationData.guest.city = $scope.guestCardData.contactInfo.address.city;
+
           $scope.reservationData.guest.loyaltyNumber = $scope.guestLoyaltyNumber;
         }
         $scope.guestCardData.userId = data.id;
@@ -126,7 +125,7 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
       if (angular.equals(dataToUpdate, presentContactInfo)) {
         dataUpdated = true;
       } else {
-        //presentContactInfo = JSON.parse(JSON.stringify(dataToUpdate));
+
         RVContactInfoSrv.completeContactInfoClone = JSON.parse(JSON.stringify(dataToUpdate));
         //change date format to be send to API
         dataToUpdate.birthday = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
@@ -190,7 +189,7 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
       $timeout(function() {
         $scope.refreshScroller('contact_info');
       }, 700);
-    }
+    };
     $scope.$on('CONTACTINFOLOADED', refreshContactsScroll);
     $scope.$on('REFRESHLIKESSCROLL', refreshContactsScroll);
   }

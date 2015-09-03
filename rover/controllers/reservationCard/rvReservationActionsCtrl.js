@@ -443,9 +443,9 @@ sntRover.controller('reservationActionsController', [
 
 					// Sample Response from api/reservations/:id/policies inside the results hash
 					// calculated_penalty_amount: 40
-					// cancellation_policy_id: 36
-					// penalty_type: "percent"
-					// penalty_value: 20
+
+
+
 
 					depositAmount = data.results.deposit_amount;
 					var isOutOfCancellationPeriod = (data.results.cancellation_policy_id === undefined);
@@ -472,7 +472,7 @@ sntRover.controller('reservationActionsController', [
 							promptCancel('', nights, (data.results.penalty_type === 'percent'));
 						}
 					}
-					//promptCancel(cancellationCharge, nights);
+
 
 				};
 
@@ -518,8 +518,7 @@ sntRover.controller('reservationActionsController', [
 			return showSmartBand;
 		};
 
-		//({reservationId:, clickedButton: 'checkoutButton'})
-		//	goToCheckoutButton(reservationData.reservation_card.reservation_id, 'checkoutButton');
+
 		$scope.goToCheckoutButton = function(reservationId, clickedButton, smartbandHasBalance) {
 			if (smartbandHasBalance === "true") {
 				$scope.clickedButton = clickedButton;
@@ -602,7 +601,7 @@ sntRover.controller('reservationActionsController', [
 			}
 			return isEmailAttachedFlag;
 		};
-		
+
 		$scope.ngData = {};
 		$scope.ngData.failureMessage = "";
 		$scope.ngData.successMessage = "";

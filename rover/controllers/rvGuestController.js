@@ -28,7 +28,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 							$scope.searchGuest();
 						}
 					}
-					if (searchData.company.id !== null) {
+					if (!!searchData.company.id) {
 						if ($scope.searchData.guestCard.guestFirstName === '' && $scope.searchData.guestCard.guestLastName === '') {
 							if ($stateParams.reservation && $stateParams.reservation !== 'HOURLY' && $stateParams.mode && $stateParams.mode !== 'OTHER') {
 								$scope.switchCard('company-card');
@@ -39,7 +39,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 							id: searchData.company.id
 						});
 					}
-					if (searchData.travelAgent.id !== null) {
+					if (!!searchData.travelAgent.id) {
 						if ($scope.searchData.guestCard.guestFirstName === '' && $scope.searchData.guestCard.guestLastName === '') {
 							if ($stateParams.reservation && $stateParams.reservation !== 'HOURLY' && $stateParams.mode && $stateParams.mode !== 'OTHER') {
 								$scope.switchCard('travel-agent-card');
@@ -402,7 +402,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			// //refresh scroll in the contact tab of the card-content view. Handled in rover/controllers/rvCompanyCardsContactCtrl.js
 			$scope.$broadcast("contactTabActive");
 			// //refreshing the scroller in guestcard's tab
-			// $scope.$broadcast('REFRESHLIKESSCROLL');
+
 		};
 
 		/**
@@ -540,7 +540,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.showContractedRates({
 					companyCard: '',
 					travelAgent: $scope.reservationDetails.travelAgent.id
-				})
+				});
 			} else if (cardType === 'guest') {
 				$scope.$broadcast('guestCardDetached');
 				$scope.viewState.pendingRemoval.status = true;
@@ -548,7 +548,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.showContractedRates({
 					companyCard: $scope.reservationDetails.companyCard.id,
 					travelAgent: ''
-				})
+				});
 			}
 		};
 
@@ -610,7 +610,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			'city': '',
 			'loyaltyNumber': '',
 			'email': ''
-		}
+		};
 
 		var shouldSearch = function() {
 			if (previousSearchData.lastName === $scope.searchData.guestCard.guestLastName && previousSearchData.firstName === $scope.searchData.guestCard.guestFirstName && previousSearchData.city === $scope.searchData.guestCard.guestCity && previousSearchData.loyaltyNumber === $scope.searchData.guestCard.guestLoyaltyNumber && previousSearchData.email === $scope.searchData.guestCard.email) {
@@ -623,7 +623,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			previousSearchData.email = $scope.searchData.guestCard.email;
 
 			return ($scope.searchData.guestCard.guestLastName.length >= 2 || $scope.searchData.guestCard.guestFirstName.length >= 1 || $scope.searchData.guestCard.guestCity !== '' || $scope.searchData.guestCard.guestLoyaltyNumber !== '' || $scope.searchData.guestCard.email !== '');
-		}
+		};
 
 		$scope.searchCompany = function() {
 			var successCallBackFetchCompanies = function(data) {
@@ -636,7 +636,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 							var companyData = {};
 							companyData.id = item.id;
 							companyData.account_name = item.account_name;
-							// companyData.lastName = item.account_last_name;
+
 							companyData.logo = item.company_logo;
 							if (item.address !== null) {
 								companyData.address = {};
@@ -705,7 +705,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 							var travelAgentData = {};
 							travelAgentData.id = item.id;
 							travelAgentData.account_name = item.account_name;
-							// travelAgentData.lastName = item.account_last_name;
+
 							travelAgentData.logo = item.company_logo;
 							if (item.address !== null) {
 								travelAgentData.address = {};
@@ -895,7 +895,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				'guestId': "",
 				'vip': false
 			};
-			// // $scope.$emit('guestCardUpdateData', contactInfoData);
+
 			$scope.guestCardData.contactInfo = contactInfoData.contactInfo;
 			$scope.guestCardData.contactInfo.avatar = contactInfoData.avatar;
 			$scope.guestCardData.contactInfo.vip = contactInfoData.vip;

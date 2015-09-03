@@ -21,7 +21,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
                     deferred.reject(data);
                 });
                 return deferred.promise;
-            }
+            };
 
             that.fetchSelectedRestrictions = function () {
                var url = "/api/restriction_types";
@@ -32,7 +32,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
                     deferred.reject(data);
                 });
                 return deferred.promise;
-              }
+              };
 
             that.fetchRestictionDetails = function () {
                var url = "/api/restriction_types";
@@ -43,7 +43,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
                     deferred.reject(data);
                 });
                 return deferred.promise;
-              }
+              };
 
             that.fetchAddons = function () {
                 var params = {
@@ -71,7 +71,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.addRatesDetailsData.cancelationPenalties = data.results;
                     that.fetchAddons();
-                    // deferred.resolve(that.addRatesDetailsData);
+
                 }, function (data) {
                     deferred.reject(data);
                 });

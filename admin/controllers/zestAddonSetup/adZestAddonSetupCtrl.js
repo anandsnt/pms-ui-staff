@@ -18,7 +18,7 @@ admin.controller('adZestAddonSetupCtrl',['$scope','adZestAddonSetupSrv','$state'
            $scope.addonSetup.is_zest_enable_purchase = false;
         }
    });
-  }
+  };
 
 
   $scope.fetchAddonSetup = function(){

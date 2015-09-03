@@ -244,7 +244,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 			},
 			'failureCallBack': function(errorObject){
 				var message = [errorObject.RVErrorDesc];
-				that.lastSuccessfulIDReaded = ''
+				that.lastSuccessfulIDReaded = '';
 				$scope.createSmartBandFailure(message);
 				$scope.$apply(); //since it is calling from outside of Angular scope, we need to call this one
 			},

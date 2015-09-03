@@ -14,6 +14,6 @@ sntRover.service('RVHkDashboardSrv', [
 				deferred.reject(errorMessage);
 			});
 			return deferred.promise;
-		}
+		};
 	}
 ]);

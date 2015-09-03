@@ -21,7 +21,7 @@
 		return {
 			responseData: responseData,
 			checkin : checkin
-		}
+		};
 	};
 
 	var dependencies = [

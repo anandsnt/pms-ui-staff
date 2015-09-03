@@ -8,16 +8,15 @@ angular.module('qtip2', [])
           qtipClass = attrs.class || 'qtip-tipsy',
           content,
           htmlString,
-          category // variable to handle dynamic content tooltip( for eg: dateRange, rateType) - this should be passed as element attr
+          category; // variable to handle dynamic content tooltip( for eg: dateRange, rateType) - this should be passed as element attr
 
-        // tooltipText = $compile($('#invoiceTooltipTemplate').html())(scope);
         if (attrs.title) {
           content = {
             'title': attrs.title,
             'text': attrs.content
-          }
+          };
         } else {
-          content = attrs.content
+          content = attrs.content;
         }
 
         $(element).qtip({
@@ -31,7 +30,7 @@ angular.module('qtip2', [])
                   scope.isActiveDateRange = function(beginDateTime, endDateTime){
                     var hotelBusinessDateTime = new tzIndependentDate($rootScope.businessDate).getTime();
                     return (beginDateTime <= hotelBusinessDateTime && hotelBusinessDateTime <= endDateTime);
-                  }
+                  };
                   switch (category) {
                     case 'dateRange':
                       console.log($rootScope.businessDate);
@@ -75,7 +74,7 @@ angular.module('qtip2', [])
             delay: 100
           },
           style: 'qtip-snt'
-        })
+        });
       }
-    }
-  })
+    };
+  });

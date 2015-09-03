@@ -8,7 +8,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 	function($scope, $rootScope, $filter, RVreportsSrv, $timeout, dateFilter) {
 		$scope.occupanyRevenueState = {
 			name: "Occupancy & Revenue Summary"
-		}
+		};
 
 		$scope.stateStore = {
 			occupancy: [{
@@ -45,7 +45,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 				key: "total_revenue",
 				name: "Total Revenue"
 			}]
-		}
+		};
 
 		$scope.setScroller('leftPanelScroll', {
 			preventDefault: false,
@@ -72,27 +72,27 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			$scope.$parent.myScroll['leftPanelScroll'].on('scroll', function() {
 				var yPos = this.y;
 				$scope.$parent.myScroll['rightPanelScroll'].scrollTo(0, yPos);
-			})
+			});
 			$scope.$parent.myScroll['rightPanelScroll'].on('scroll', function() {
 				var yPos = this.y;
 				$scope.$parent.myScroll['leftPanelScroll'].scrollTo(0, yPos);
-			})
+			});
 
 		}, 1000);
 
 		$scope.getNumber = function() {
 			return new Array((1 + !!$scope.chosenLastYear + !!$scope.chosenVariance) * $scope.selectedDays.length);
-		}
+		};
 
 		$scope.getHeader = function(indexValue) {
 			if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
-				return (indexValue % 3 === 0) ? "This Year" : (indexValue % 3 === 2) ? "Variance" : "Last Year"
+				return (indexValue % 3 === 0) ? "This Year" : (indexValue % 3 === 2) ? "Variance" : "Last Year";
 			} else if (!!$scope.chosenLastYear || !!$scope.chosenVariance) {
-				return (indexValue % 2 === 0) ? "This Year" : !!$scope.chosenVariance ? "Variance" : "Last Year"
+				return (indexValue % 2 === 0) ? "This Year" : !!$scope.chosenVariance ? "Variance" : "Last Year";
 			} else {
-				return "This Year"
+				return "This Year";
 			}
-		}
+		};
 
 		$scope.getValue = function(key, columnIndex) {
 			var candidate = $scope.results[key][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]];
@@ -107,7 +107,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			} else {
 				return -1;
 			}
-		}
+		};
 
 
 		$scope.getNigtlyValue = function(key, columnIndex) {
@@ -123,7 +123,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			} else {
 				return -1;
 			}
-		}
+		};
 
 		$scope.getClass = function(columnIndex) {
 			if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
@@ -133,7 +133,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			} else {
 				return "day-end";
 			}
-		}
+		};
 
 		$scope.getChargeCodeValue = function(chargeGroupIndex, columnIndex) {
 			var candidate = $scope.results.charge_groups[chargeGroupIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]];
@@ -148,7 +148,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			} else {
 				return '';
 			}
-		}
+		};
 
 		$scope.getMarketOccupancyValue = function(marketIndex, columnIndex) {
 			var candidate = $scope.results.market_room_number[marketIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]];
@@ -163,7 +163,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			} else {
 				return -1;
 			}
-		}
+		};
 
 		$scope.getMarketRevenueValue = function(marketIndex, columnIndex) {
 			var candidate = $scope.results.market_revenue[marketIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]];
@@ -178,7 +178,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			} else {
 				return '';
 			}
-		}
+		};
 
 		function refreshScrollers() {
 			$scope.refreshScroller('rightPanelScroll');
@@ -210,7 +210,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
 			$timeout(function() {
 				refreshScrollers();
-			}, 400)
+			}, 400);
 		};
 
 		init();
@@ -237,4 +237,4 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 		});
 
 	}
-])
+]);

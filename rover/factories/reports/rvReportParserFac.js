@@ -2,8 +2,8 @@ sntRover.factory('RVReportParserFac', [
     '$rootScope',
     '$filter',
     '$timeout',
-    'RVReportUtilsFac',
-    function($rootScope, $filter, $timeout, reportUtils) {
+    'RVReportNamesConst',
+    function($rootScope, $filter, $timeout, reportNames) {
         var factory = {};
 
 
@@ -16,32 +16,23 @@ sntRover.factory('RVReportParserFac', [
             // a very special parser for daily transaction report
             // in future we may make this check generic, if more
             // reports API structure follows the same pattern
-            if ( reportName === reportUtils.getName('DAILY_TRANSACTIONS') ||
-                    reportName === reportUtils.getName('DAILY_PAYMENTS')) {
+            if ( reportName === reportNames['DAILY_TRANSACTIONS'] || reportName === reportNames['DAILY_PAYMENTS'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseNumeralData( reportName, apiResponse, options );
             }
 
             // a very special parser for daily transaction report
             // in future we may make this check generic, if more
             // reports API structure follows the same pattern
-            else if ( reportName == reportUtils.getName('RATE_ADJUSTMENTS_REPORT') ) {
+            else if ( reportName == reportNames['RATE_ADJUSTMENTS_REPORT'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseRateAdjustments( reportName, apiResponse, options );
-
-                /**
-                 * DEPRICATED!!!
-                 * Since the Product team asked to remove grouping.
-                 * Keeping it here for any future needs. Wont execute below this
-                 * since we already returned! :)
-                 */
-                if ( options['groupedByKey'] == 'adjusted_user_id' ) {
-                    return _.isEmpty(apiResponse) ? apiResponse : $_preParseGroupedRateAdjustments( reportName, apiResponse, options );
-                } else {
-                    return _.isEmpty(apiResponse) ? apiResponse : $_parseRateAdjustments( reportName, apiResponse, options );
-                }
             }
-            
+
+            else if ( reportName == reportNames['GROUP_PICKUP_REPORT'] ) {
+                return _.isEmpty(apiResponse) ? apiResponse : $_parseGroupPickupReport( reportName, apiResponse, options );
+            }
+
             // a very special parser for deposit report
-            else if ( reportName === reportUtils.getName('DEPOSIT_REPORT') ) {
+            else if ( reportName === reportNames['DEPOSIT_REPORT'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseDepositReport( reportName, apiResponse, options );
             }
 
@@ -63,12 +54,12 @@ sntRover.factory('RVReportParserFac', [
 
 
         function $_isForGenericReports( name ) {
-            return (name === reportUtils.getName('ARRIVAL') ||
-                    name === reportUtils.getName('IN_HOUSE_GUEST') ||
-                    name === reportUtils.getName('CANCELLATION_NO_SHOW') ||
-                    name === reportUtils.getName('DEPARTURE') ||
-                    name === reportUtils.getName('LOGIN_AND_OUT_ACTIVITY') ||
-                    name === reportUtils.getName('RESERVATIONS_BY_USER')) ? true : false;
+            return ( name === reportNames['ARRIVAL'] ||
+                    name === reportNames['IN_HOUSE_GUEST'] ||
+                    name === reportNames['CANCELLATION_NO_SHOW'] ||
+                    name === reportNames['DEPARTURE'] ||
+                    name === reportNames['LOGIN_AND_OUT_ACTIVITY'] ||
+                    name === reportNames['RESERVATIONS_BY_USER'] ) ? true : false;
         };
 
 
@@ -115,7 +106,7 @@ sntRover.factory('RVReportParserFac', [
             };
 
             var checkCancel = function(item) {
-                var check = !!options['checkCancel'] && excludeReports([reportUtils.getName('ARRIVAL'), reportUtils.getName('IN_HOUSE_GUEST')])
+                var check = !!options['checkCancel'] && excludeReports( [reportNames['ARRIVAL'], reportNames['IN_HOUSE_GUEST']] );
                 return check ? !!item['cancel_reason'] : false;
             };
 
@@ -202,7 +193,7 @@ sntRover.factory('RVReportParserFac', [
 
                     // do this only after the above code that adds
                     // 'row-break' class to the row
-                    if ( reportName === reportUtils.getName('LOGIN_AND_OUT_ACTIVITY') ) {
+                    if ( reportName === reportNames['LOGIN_AND_OUT_ACTIVITY'] ) {
                         if ( makeCopy.hasOwnProperty('action_type') && makeCopy['action_type'] === 'INVALID_LOGIN' ) {
                             makeCopy['action_type'] = 'INVALID LOGIN';
                             makeCopy.className = 'row-break invalid';
@@ -226,16 +217,10 @@ sntRover.factory('RVReportParserFac', [
                 };
 
                 // dont remove yet
-                // console.log( 'API reponse changed as follows: ');
-                // console.log( returnAry );
             } else {
                 returnAry = apiResponse;
-
                 // dont remove yet
-                // console.log( 'No API changes applied' );
             };
-
-
 
             return returnAry;
         };
@@ -379,7 +364,7 @@ sntRover.factory('RVReportParserFac', [
 
 
 
-        
+
         function $_parseRateAdjustments ( reportName, apiResponse, options ) {
             var returnAry = [],
                 customData = [],
@@ -401,8 +386,8 @@ sntRover.factory('RVReportParserFac', [
                         stayDates = makeCopy['stay_dates'][k];
 
                         // include the first stayDates details in the
-                        // same row as that of the main reservation details  
-                        if ( k == 0 ) {
+                        // same row as that of the main reservation details
+                        if ( k === 0 ) {
                             angular.extend(makeCopy, {
                                 'isReport'        : true,
                                 'rowspan'         : l + 1,
@@ -417,7 +402,7 @@ sntRover.factory('RVReportParserFac', [
                         }
 
                         // create additional sub rows to represent the
-                        // rest of the stay_dates 
+                        // rest of the stay_dates
                         else {
                             customData = {};
                             angular.extend(customData, {
@@ -459,6 +444,108 @@ sntRover.factory('RVReportParserFac', [
 
 
 
+        function $_parseGroupPickupReport ( reportName, apiResponse, options ) {
+            var returnAry = [],
+                customData = [],
+                makeCopy,
+                groupData,
+                groupDataTotal,
+                hasData;
+
+            var i, j, k, l;
+
+            // loop through the api response
+            for (i = 0, j = apiResponse.length; i < j; i++) {
+
+                // we'll work with a copy of the ith item
+                makeCopy = angular.copy( apiResponse[i] );
+
+                hasData = true;
+
+                // if we have 'group_data' for this group
+                if ( makeCopy.hasOwnProperty('group_data') && makeCopy['group_data'].length ) {
+                    for ( k = 0, l = makeCopy['group_data'].length; k < l; k++ ) {
+                        groupData = makeCopy['group_data'][k];
+
+                        // include the first groupData details in the
+                        // same row as that of the main group details
+                        if ( k === 0 ) {
+                            angular.extend(makeCopy, {
+                                'isReport'              : true,
+                                'rowspan'               : l + 1,
+                                'date'                  : groupData.date,
+                                'hold_status'           : groupData.hold_status,
+                                'room_type'             : groupData.room_type,
+                                'rooms_available'       : groupData.rooms_available,
+                                'rooms_held_non_deduct' : groupData.rooms_held_non_deduct,
+                                'rooms_held_deduct'     : groupData.rooms_held_deduct,
+                                'rooms_held_picked_up'  : groupData.rooms_held_picked_up,
+                                'pickup_percentage'     : groupData.pickup_percentage,
+                            });
+                            returnAry.push( makeCopy );
+                        }
+
+                        // create additional sub rows to represent the
+                        // rest of the stay_dates
+                        else {
+                            customData = {};
+                            angular.extend(customData, {
+                                'isSubReport'           : true,
+                                'date'                  : groupData.date,
+                                'hold_status'           : groupData.hold_status,
+                                'room_type'             : groupData.room_type,
+                                'rooms_available'       : groupData.rooms_available,
+                                'rooms_held_non_deduct' : groupData.rooms_held_non_deduct,
+                                'rooms_held_deduct'     : groupData.rooms_held_deduct,
+                                'rooms_held_picked_up'  : groupData.rooms_held_picked_up,
+                                'pickup_percentage'     : groupData.pickup_percentage,
+                            });
+                            returnAry.push( customData );
+                        };
+                    };
+                } else {
+                    hasData = false;
+
+                    angular.extend(makeCopy, {
+                        'isReport'  : true,
+                        'rowspan'   : 0,
+                        'className' : 'row-break'
+                    });
+                    returnAry.push( makeCopy );
+                };
+
+                // if we have data and 'group_total' for this group
+                if ( hasData && makeCopy.hasOwnProperty('group_total') ) {
+                    groupDataTotal = makeCopy['group_total'];
+                    customData = {};
+                    angular.extend(customData, {
+                        'isSubTotal'            : true,
+                        'className'             : 'row-break',
+                        'rooms_available'       : groupDataTotal.rooms_available,
+                        'rooms_held_non_deduct' : groupDataTotal.rooms_held_non_deduct,
+                        'rooms_held_deduct'     : groupDataTotal.rooms_held_deduct,
+                        'rooms_held_picked_up'  : groupDataTotal.rooms_held_picked_up,
+                        'pickup_percentage'     : groupDataTotal.pickup_percentage,
+                    });
+                    returnAry.push( customData );
+                // } else {
+                //     customData = {};
+                //     angular.extend(customData, {
+                //         'isSubTotal' : true,
+                //         'isEmpty'    : true,
+                //         'className'  : 'row-break'
+                //     });
+                //     returnAry.push( customData );
+                };
+            };
+
+            console.log(returnAry);
+
+            return returnAry;
+        };
+
+
+
         function $_parseDepositReport ( reportName, apiResponse, options ) {
             var returnAry  = [],
                 customData = [],
@@ -482,8 +569,8 @@ sntRover.factory('RVReportParserFac', [
                         depositData = makeCopy['deposit_data'][k];
 
                         // include the first depositData details in the
-                        // same row as that of the main reservation details  
-                        if ( k == 0 ) {
+                        // same row as that of the main reservation details
+                        if ( k === 0 ) {
                             angular.extend(makeCopy, {
                                 'isReport'               : true,
                                 'rowspan'                : l + 1,
@@ -497,7 +584,7 @@ sntRover.factory('RVReportParserFac', [
                         }
 
                         // create additional sub rows to represent the
-                        // rest of the 'deposit_data' 
+                        // rest of the 'deposit_data'
                         else {
                             customData = {};
                             angular.extend(customData, {
@@ -545,7 +632,7 @@ sntRover.factory('RVReportParserFac', [
          * Each key will be the 'adjust_by' username and its value
          * will be an array of objects. Each object will represent
          * an reservation (unique key 'confirmation_no')
-         * 
+         *
          * @param {Array} apiResponse [{}, {}, {}, {}, {}]
          * @return {Object} =>        { us1: [{}, {}, {}], us2: [{}, {}], us3: [{}] }
          */
@@ -555,7 +642,7 @@ sntRover.factory('RVReportParserFac', [
              * THIS IS DEPRICATED!!!
              * KEEPING HERE FOR ANY FUTURE NEEDS
              */
-            
+
             var makeCopy,
                 withOutStay,
                 usersInThisRes;
@@ -598,7 +685,7 @@ sntRover.factory('RVReportParserFac', [
                     // create a very unique 'uid', we'll remove 'userId' from it later
                     uid = userId + '__' + userNa;
 
-                    if ( usersInThisRes[uid] == undefined ) {
+                    if ( usersInThisRes[uid] === undefined ) {
                         usersInThisRes[uid] = angular.copy( withOutStay );
                     };
 
@@ -614,7 +701,7 @@ sntRover.factory('RVReportParserFac', [
                         continue;
                     };
 
-                    if ( tempObj[keyId] == undefined ) {
+                    if ( tempObj[keyId] === undefined ) {
                         tempObj[keyId] = [];
                     };
 

@@ -511,6 +511,8 @@
 		&.icon-comparison { background-position: 0 -300px;}
 		&.icon-forecast { background-position: 0 -330px;}
 		&.icon-market { background-position: 0 -360px;}
+		&.icon-rate { background-position: 0 -390px;}
+		&.icon-group { background-position: 0 -420px;}
 
 		@media @highdpi {
 			background-image: @iconReports2x;
@@ -791,6 +793,35 @@
 			background-image: @iconStayCard2x;
 			background-size: 40px;
 		}
+	}
+
+/* Restrictions icons 	==================================*/
+	.restriction-icon {
+		color: @white;
+		text-align: center;
+		.square(20px);
+
+		/* Color only ***/
+		&.bg-red { background-color: @red; }
+		&.bg-blue { background-color: @blue; }
+		&.bg-grey { background-color: @grey3; }
+		&.bg-purple { background-color: @purpleStart; }
+		&.bg-green { background-color: @green; }
+
+		/* With image ***/
+		&.closed,
+		&.arrival {
+			background-image: @icons;
+			background-repeat: no-repeat;
+
+			@media @highdpi {
+				background-image: @icons2x;
+				background-size: 120px;
+			}
+		}
+
+		&.closed { background-position: 5px -7835px; }
+		&.arrival {	background-position: 5px -7895px; }
 	}
 
 /* 4. LAYOUT

@@ -75,25 +75,15 @@ var CardOperation = function(){
 			return false;
 		}
 		else{
-			//alert(cordova);
-			//alert(JSON.stringify(cordova));
-			//alert("----service------"+service+"===action======"+action+"======arguments========="+arguments);
-
-
 			//calling cordova service
 			cordova.exec(
 						// if success call back require any parameters
 						function(data){
-							//alert("successCallBackParameters");
 							if(successCallBackParameters !== null){
-								//alert("cordoveexec---DATA----"+JSON.stringify(data));
-								//alert("cordoveexec---successparama----"+JSON.stringify(successCallBackParameters));
 								successCallBack(data, successCallBackParameters);
 								that.callRecursively(options);
 							}
 							else{
-								//alert("cordoveexec---DATA ||----"+JSON.stringify(data));
-								//alert("cordoveexec---successparama 2----"+JSON.stringify(successCallBackParameters));
 								successCallBack(data);
 								that.callRecursively(options);
 							}
@@ -101,7 +91,6 @@ var CardOperation = function(){
 						},
 						// if failure/error call back require any parameters
 						function(error){
-							//alert("failureCallBackParameters");
 							if(failureCallBackParameters !== null){
 								failureCallBack(error, failureCallBackParameters);
 							}

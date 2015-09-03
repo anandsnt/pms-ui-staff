@@ -34,6 +34,6 @@ admin.service('ADHotelAnnouncementSrv',['$q', 'ADBaseWebSrv', function($q, ADBas
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
-	}
+	};
 
 }]);

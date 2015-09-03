@@ -64,7 +64,7 @@ sntRover.service('rvUtilSrv', [function(){
 		    }
 
 		    return datesBetween;
-		}
+		};
 
 		/**
 		 * to get the millisecond value against a date/date string
@@ -92,7 +92,7 @@ sntRover.service('rvUtilSrv', [function(){
 		 * @return {String}            [millisecond]
 		 */
 		this.addOneDay = function(date_){
-			return (this.toMilliSecond (date_) + (24 * 3600 * 1000))
+			return (this.toMilliSecond (date_) + (24 * 3600 * 1000));
 		};
 
 		/**
@@ -133,7 +133,7 @@ sntRover.service('rvUtilSrv', [function(){
     	*/
     	this.convertToInteger = function(string, withWhatToBeReplacedifNotANumber){
     		withWhatToBeReplacedifNotANumber = withWhatToBeReplacedifNotANumber ? withWhatToBeReplacedifNotANumber : 0;
-    		if (self.isNumeric (string)) { return parseInt (string)};
+    		if (self.isNumeric (string)) { return parseInt (string);}
     		return withWhatToBeReplacedifNotANumber;
     	};
 
@@ -145,7 +145,7 @@ sntRover.service('rvUtilSrv', [function(){
     	*/
     	this.convertToDouble = function(string, withWhatToBeReplacedifNotANumber){
     		withWhatToBeReplacedifNotANumber = withWhatToBeReplacedifNotANumber ? withWhatToBeReplacedifNotANumber : 0;
-    		if (self.isNumeric (string)) { return parseFloat (string)};
+    		if (self.isNumeric (string)) { return parseFloat (string);}
     		return withWhatToBeReplacedifNotANumber;
     	};
 

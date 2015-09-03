@@ -66,7 +66,7 @@ admin.service('ADEmvTerminalsSrv',['$q', 'ADBaseWebSrv','ADBaseWebSrvV2', functi
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
-	}
+	};
 
 	/* method to update the emv terminal details
 	* @param {object} details of emv terminal
@@ -80,6 +80,6 @@ admin.service('ADEmvTerminalsSrv',['$q', 'ADBaseWebSrv','ADBaseWebSrvV2', functi
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
-	}
+	};
 
 }]);

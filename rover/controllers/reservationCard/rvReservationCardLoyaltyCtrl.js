@@ -68,7 +68,7 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
             if (hotelLoyaltyProgram !== null && use_hlp === true) {
                 for (var i = 0; i < hotelLoyaltyProgram.length; i++) {
                     if (id === hotelLoyaltyProgram[i].id) {
-                        flag = true
+                        flag = true;
                         $scope.selectedLoyalty = hotelLoyaltyProgram[i];
                         $scope.selectedLoyaltyID = hotelLoyaltyProgram[i].id;
                         $scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = hotelLoyaltyProgram[i].id;
