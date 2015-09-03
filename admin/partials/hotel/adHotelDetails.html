@@ -226,6 +226,10 @@
 				<label for="website_address"> Hotel Website </label>
 				<input type="text" ng-model="data.website_address" value="{{data.website_address}}" required="no" placeholder="Enter website address" name="website_address">
 			</div>
+			<div class="entry">
+				<label for="hotel_email_address"> Hotel Email Address </label>
+				<input type="text" ng-model="data.hotel_email_address" value="{{data.hotel_email_address}}" required="no">
+			</div>
 			<div class="entry date has-datepicker" ng-if="isAdminSnt">
 				<label for="pms-start-date"> PMS Start Date  </label>
 				<input type="text" ng-model="data.pms_start_date" placeholder="Enter PMS start Date" name="pms-start-date" id="pms-start-date" readonly ng-click="setPmsStartDate()">

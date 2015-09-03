@@ -33,6 +33,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			// passReservationParams
 			//TODO : Once this works pull it to a separate method
 			var fetchGuestcardDataSuccessCallback = function(data) {
+				$scope.idTypeList = data.id_type_list;
 				$scope.$emit('hideLoader');
 				// No more future reservations returned with this API call
 

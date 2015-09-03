@@ -34,7 +34,7 @@ angular.module('groupModule', [])
                             'to_date'   : '',
                             'per_page'  : rvGroupSrv.DEFAULT_PER_PAGE,
                             'page'      : rvGroupSrv.DEFAULT_PAGE
-                        };
+                        }
                         return rvGroupSrv.getGroupList(params);
                     }
                 ]
@@ -43,7 +43,7 @@ angular.module('groupModule', [])
 
         //group summary : CICO-12790
         $stateProvider.state('rover.groups.config', {
-            url: '/config/:id/:activeTab',
+            url: '/config/:id/:activeTab/:newGroupName',
             templateUrl: '/assets/partials/groups/rvGroupConfiguration.html',
             controller: 'rvGroupConfigurationCtrl',
             onEnter: ['$stateParams', function($stateParams) {
@@ -67,7 +67,10 @@ angular.module('groupModule', [])
                 ],
                 holdStatusList: ['rvGroupConfigurationSrv',
                     function (rvGroupConfigurationSrv) {
-                        return rvGroupConfigurationSrv.getHoldStatusList ();
+                        var params = {
+                            is_group: true
+                        }
+                        return rvGroupConfigurationSrv.getHoldStatusList (params);
                     }
                 ]
             }

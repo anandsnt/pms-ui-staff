@@ -1,0 +1,56 @@
+<section id="enhance-stay" class="content reservations-inner stay-card-inner" ng-controller="rvAllotmentConfigurationAddonsCtrl">
+    <div id="enhance-stay-content" class="reservations-content-wrapper">
+        <div id="addons-content" class="reservation-content addons-content scrollable" ng-iscroll="enhanceGroupStays" ng-iscroll-delay="1000">
+            <div class="wrapper">
+                <div id="addon-items" class="addons">                    
+                    <!-- Categories -->
+                    <ul class="addon-categories">
+                        <li ng-class="{'ui-state-active': -1 === activeAddonCategoryId }">
+                            <a ng-click="selectAddonCategory('', $event)" class="button white" translate>BEST_SELLER</a>
+                        </li>
+                        <li ng-repeat="addonCategory in allotmentConfigData.addons.addonCategories" ng-class="{ 'ui-state-active': addonCategory.id === activeAddonCategoryId }">
+                            <a ng-click="selectAddonCategory(addonCategory, $event)" class="button white">{{ addonCategory.name }}</a>
+                        </li>
+                    </ul>
+                    
+                    <!-- Items -->
+                    <div class="addon-items">
+
+                        <div class="options">
+                            <button type="button" ng-click="openAddonsPopup()" class="button white"><span class="label" translate>ENHANCEMENTS</span>
+                            <span class="count">{{ allotmentConfigData.summary.addons_count }}</span></button>
+                        </div>
+                        <!-- FIX style="margin-top:60px; width: 100%;" -->
+                        <ul id="addon-best-sellers" class="addon-tab">
+                            <li ng-repeat="addon in addons">
+                                <div class="data">
+                                    <span class="categories">
+                                        <span ng-show="addon.isBestSeller" class="current" translate>BEST_SELLER</span>
+                                        <label ng-show="addon.isBestSeller">|</label>
+                                        <span>{{ addon.category }}</span>
+                                    </span>
+                                    <h2>{{ addon.title }}</h2>
+                                    <em>{{ addon.description }}</em>
+                                </div>
+                                <div class="price">
+                                   {{currencySymbol}}{{ addon.price | number : 2}}
+                                   <span class="amount-type">{{ addon.amountTypeDesc | uppercase}}</span>
+                                   <span class="post-type">{{ addon.postTypeDesc | uppercase}}</span>
+                                </div>
+                                <div class="add-enhancement" ng-init="addonQty=1">
+                                    <button id="enhance-room-1-champagne" type="button" class="button green" ng-click="selectAddon(addon, addonQty)">Add</button>
+                                    <div class="select">
+                                        <label class="label" for="room-1-champagne-quantity" translate>QUANTITY</label>
+                                        <select name="room-1-champagne-quantity" ng-model="addonQty">
+                                            <option ng-repeat="i in [1, 3] | makeRange" value="{{i}}">{{i}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>   
+            </div> 
+        </div>
+    </div>
+</section>
