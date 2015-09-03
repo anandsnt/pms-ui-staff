@@ -2,13 +2,13 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 	function($rootScope, dateFilter, RVReservationStateService) {
 		var self = this;
 
-		self.getTabDataModel = function(count) {
+		self.getTabDataModel = function(count, roomTypes) {
 			var tabs = [],
 				limit = count || 1,
 				i;
 			for (i = 0; i < limit; i++) {
 				tabs.push({
-					roomTypeId: '',
+					roomTypeId: roomTypes && roomTypes[i] || '',
 					roomCount: 1,
 					numAdults: 1,
 					numChildren: 0,

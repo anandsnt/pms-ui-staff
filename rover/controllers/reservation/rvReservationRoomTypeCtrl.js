@@ -485,7 +485,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					}
 					$scope.reservationData.rateDetails[roomIndex] = $scope.roomAvailability[$scope.reservationData.tabs[$scope.activeRoom].roomTypeId].ratedetails;
 					if ($stateParams.fromState === "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState === "STAY_CARD") {
-						populateStayDates(rateId, roomId, roomIndex);
+						populateStayDates($scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id, $scope.reservationData.rooms[0].roomTypeId);
 					}
 				}
 				$scope.computeTotalStayCost();

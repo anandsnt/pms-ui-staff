@@ -607,7 +607,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 						if (houseAvailable && _.reduce(roomtypesAvailable, function(a, b) {
 								return a && b
 							})) {
-							navigateToRateAndRates();
+							navigateToRoomAndRates();
 						} else {
 							$timeout(function() {
 								ngDialog.open({

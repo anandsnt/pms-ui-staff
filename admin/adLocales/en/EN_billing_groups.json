@@ -5,4 +5,6 @@
 "BILLING_GROUP_NAME": "Name",
 "BILLING_GROUP_NAME_PLACEHOLDER": "Enter Name",
 "TAKE_FROM_INVENTORY": "Take from inventory",
-"HOLD_STATUS_NAME_PLACEHOLDER": "Enter hold status"
+"HOLD_STATUS_NAME_PLACEHOLDER": "Enter hold status",
+"ALLOTMENT_ONLY": "Allotment only",
+"GROUP_ONLY": "Group only"
