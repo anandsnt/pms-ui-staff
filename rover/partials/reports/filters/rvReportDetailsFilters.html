@@ -378,7 +378,7 @@
                 <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasHoldStatus.data.length > 1 && chosenReport.hasHoldStatus.selectAll) }">
                     <label class="checkbox" ng-repeat="status in chosenReport.hasHoldStatus.data">
                         <span class="icon-form icon-checkbox" ng-class="{ 'checked' : status.selected }"></span>
-                        <input type="checkbox" ng-model="status.selected" ng-change="fauxSelectChange(chosenReport, chosenReport.hasHoldStatus)" name="room-filters"> {{ status.description }}
+                        <input type="checkbox" ng-model="status.selected" ng-change="fauxSelectChange(chosenReport, chosenReport.hasHoldStatus)" name="room-filters"> {{ status.name }}
                     </label>
                 </div>
             </div>

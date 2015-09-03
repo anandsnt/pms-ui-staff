@@ -1,0 +1,23 @@
+<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
+    <div class="modal-content group-date move-group">
+        <button id="modal-close" type="button" class="modal-close" ng-click="cancelChangeDatesAction()"><span class="icons icon-close invert"></span></button>
+
+        <span class="h2 message" translate>GROUP_MOVE_CONFIRM</span>
+        
+        <div class="moved before">
+            <span class="label">Old Dates</span>
+            <p><span class="guest-status small-icon check-in"></span>{{formatDateForUI(ngDialogData.dataset.oldFromDate)}}</p>
+            <p><span class="guest-status small-icon check-out"></span>{{formatDateForUI(ngDialogData.dataset.oldToDate)}}</p>
+        </div>
+
+        <div class="moved">
+            <span class="label">New Dates</span>
+            <p><span class="guest-status small-icon check-in"></span>{{formatDateForUI(ngDialogData.dataset.fromDate)}}</p>
+            <p><span class="guest-status small-icon check-out"></span>{{formatDateForUI(ngDialogData.dataset.toDate)}}</p>
+        </div>
+        <div class="actions">
+            <button type="button" class="button blank" ng-click="cancelChangeDatesAction()">Cancel</button>
+            <button type="button" class="button green" ng-click="callMoveDatesAPI(ngDialogData)">Confirm Move</button>
+        </div>
+    </div>
+</div>

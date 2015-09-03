@@ -2275,6 +2275,22 @@
                                         .button { width: 100%; }
                                     }
 
+                                    &.stay-dates {
+                                        .float;
+
+                                        .entry-data {
+                                            margin-right: 10px;
+                                            #pixel-to-percent > .width(260, 904);
+                                            .pull-left;
+                                        }
+
+                                        .button {
+                                            margin-top: 24px;
+                                            padding: 0 15px;
+                                            height: 40px;
+                                        }
+                                    }
+
                                     &.price-adjust {
                                         .float;
 
@@ -2738,11 +2754,17 @@
 
                                         label { margin: 0; }
 
+                                        .disabled {
+                                            select { background: rgba(0,0,0,.01); }
+                                            
+                                            &:after { .hide; }
+                                        }
+
                                         &.status { width: 160px; }
 
                                         &.date-range {
                                             margin-right: 0;
-                                            .calc-width(100, 520);
+                                            .calc-width(100, 560);
                                             .float;
 
                                             .has-datepicker {
@@ -2751,14 +2773,34 @@
                                                 .pull-left;
                                             }
                                         }
+
+                                        &:last-child { margin-right: 0; }
                                     }
 
                                     .actions {
                                         margin-top: 24px;
-                                        width: 100px;
+                                        width: 140px;
+                                        .float;
                                         .pull-left;
 
-                                        .button { width: 100%; }
+                                        .button {
+                                            padding: 0;
+                                            width: 100%;
+                                            .show;
+                                        }
+
+                                        &.move-group {
+                                            margin-right: 20px;
+
+                                            .button {
+                                                &:not(.blue) {
+                                                    .calc-width(50, 5);
+                                                    .pull-left;
+
+                                                    &.blank { margin-right: 10px; }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
 
@@ -7351,7 +7393,7 @@
                     tbody {
                         tr {
                             td {
-                                padding: 5px 10px;
+                                padding: 5px;
                                 border-bottom: 1px solid @grey2;
 
                                 .number { margin-right: 5px; }
@@ -7393,7 +7435,7 @@
                                 strong { font-weight: 600; }
 
                                 &.name {
-                                    min-width: 40%;
+                                    min-width: 320px;
                                     border-bottom: 0;
 
                                     .info {
@@ -7438,8 +7480,15 @@
                                         }
                                     }
 
-                                    &.short { min-width: 25%; }
+                                    &.short { min-width: 220px; }
                                 }
+
+                                &.room-type {
+                                    max-width: 180px;
+                                    .nowrap();
+                                }
+
+                                &.date { white-space: nowrap; }
 
                                 &.info {
                                     font-size: 12px;
