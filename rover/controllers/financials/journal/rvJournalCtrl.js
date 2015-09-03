@@ -31,6 +31,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.data.isRevenueToggleSummaryActive = true;
     $scope.data.isPaymentToggleSummaryActive = true;
     $scope.data.selectedCashier = "";
+    $scope.data.activePaymentTab = "";
 
     $scope.setScroller('employee-content');
     $scope.setScroller('department-content');
