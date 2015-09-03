@@ -837,7 +837,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             angular.forEach($scope.reservationData.tabs, function(tab, tabIndex) {
                 //addons
                 var firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
-                        roomTypeId: tab.roomTypeId
+                        roomTypeId: parseInt(tab.roomTypeId, 10)
                     })),
                     addonsForRoomType = [];
                 if (!!RVReservationStateService.getReservationFlag('RATE_CHANGED') ||
