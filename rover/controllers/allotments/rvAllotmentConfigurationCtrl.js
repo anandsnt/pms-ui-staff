@@ -87,7 +87,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             $scope.allotmentConfigData = {
                 activeTab: $stateParams.activeTab, // Possible values are SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY
                 summary: summaryData.allotmentSummary,
-                holdStatusList: holdStatusList.hold_status,
+                holdStatusList: holdStatusList.data.hold_status,
                 selectAddons: false, // To be set to true while showing addons full view
                 addons: {},
                 selectedAddons: []

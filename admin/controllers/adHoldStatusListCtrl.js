@@ -10,7 +10,7 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
 	$scope.listHoldStatus = function(){
 		var successCallbackFetch = function(data){
 			$scope.$emit('hideLoader');
-			$scope.data.holdStatuses = data.hold_status;
+			$scope.data.holdStatuses = data.data.hold_status;
 			$scope.currentClickedElement = -1;
 			$scope.isAddMode = false;
 		};
