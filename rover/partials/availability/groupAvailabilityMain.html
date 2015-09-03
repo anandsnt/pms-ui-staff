@@ -1,0 +1,20 @@
+<section id="availability-content" class="availability-content" role="main" ng-controller="groupAvailabilityMainController">
+
+	<!-- Grid -->
+	<div class="availability-header">
+		<div class="date has-datepicker" ng-click="clickedOnDatePicker()">
+		 	<input name="availability-start-date" id="availability-start-date" class="hasDatepicker" type="text" ng-model="data.formattedSelectedDate" ng-change="changedAvailabilityDataParams()" />
+		 	<button type="button" class="ui-datepicker-trigger">...</button>
+		 </div>
+		<!-- TODO: confirm date ranges available with Jos. 14 days is the default view -->
+		<div class="select">
+			<select id="days-view" name="days-view">
+				<option value="7">Showing 7 days</option>
+				<option value="14" selected>Showing 14 days</option>
+				<option value="30">Showing 30 days</option>
+			</select>
+		</div>
+	</div>
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	<div ng-include="'/assets/partials/availability/roomAvailabilityGridStatus.html'"></div>
+</section>
