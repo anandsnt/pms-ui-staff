@@ -32,11 +32,11 @@
             </div>
             <div class="entry break full-width">
 
-                <a ng-click="openDemographicsPopup();" class="button" ng-class="{'grey': isInAddMode(), 'white brand-text': !isInAddMode()}" translate>DEMOGRAPHICS</a>
+                <a ng-click="openDemographicsPopup();" ng-disabled class="button" ng-class="{'grey': isInAddMode(), 'white brand-text': !isInAddMode()}" translate>DEMOGRAPHICS</a>
 
                 <a ng-click="openBillingInformation();" class="button blue" ng-if="allotmentConfigData.summary.posting_account_billing_info" translate>BILLING_INFORMATION</a>
 
-                <a ng-click="openBillingInformation();" class="button"  ng-class="{'grey': isInAddMode(), 'blue': !isInAddMode()}"  ng-if="!allotmentConfigData.summary.posting_account_billing_info" translate>ADD_BILLING_INFO</a>
+                <a ng-click="openBillingInformation();" ng-disabled class="button"  ng-class="{'grey': isInAddMode(), 'blue': !isInAddMode()}"  ng-if="!allotmentConfigData.summary.posting_account_billing_info" translate>ADD_BILLING_INFO</a>
             </div>
         </div>
         <div class="holder right">
@@ -64,7 +64,6 @@
             <div class="entry full-width with-button has-datepicker">
                 <label for="allotment-release-date">
                     {{'ALLOTMENT_MASTER_CUTOFF' | translate}}
-                    <strong>*</strong>
                 </label>
                 <!-- cutoffDateOptions -->
                 <input class="datepicker" type="text" ui-date="releaseDateOptions" value="{{allotmentConfigData.summary.release_date|date:dateFormat}}" readonly ng-class="{'not-selected': !allotmentConfigData.summary.release_date}" />
