@@ -27,15 +27,15 @@
 	<!-- New card: MLI form -->
 	<div id="cc-new-card" class="new-card" ng-show="!shouldShowIframe && addmode && shouldShowAddNewCard"> <!-- Remove class "hidden" if there are no exsisting cards available -->
 		<div class="entry card-type">
-			<label for="card-type">Card type </label>
-			<div class="select">
+			<label for="card-type" ng-hide="isGiftCard">Card type </label>
+			<div class="select" ng-hide="isGiftCard">
 				<select name="card-type" ng-disabled="!isManualCCEntryEnabled" ng-model="cardData.cardType" class="placeholder">
 					<option value="" selected>Select Card type</option>
 					<option ng-repeat="cardType in creditCardTypes" value="{{cardType.cardcode}}" ng-selected="cardType.cardcode == cardData.cardType">{{cardType.cardname}}</option>
 				</select>
 			</div>
 		</div>
-		<div class="entry card-number">
+		<div class="entry card-number" ng-class="{'card-type':isGiftCard}">
 			<label for="card-number">Card number (<span>No spaces</span>)</label>
 			<input name="card-number" ng-readonly="!isManualCCEntryEnabled" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="16" type="text" />
 		</div>

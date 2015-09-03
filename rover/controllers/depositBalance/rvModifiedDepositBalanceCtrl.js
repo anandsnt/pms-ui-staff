@@ -131,9 +131,12 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	};
 
 
-	if($scope.reservationData.reservation_card.payment_method_used === "CC"){
+	if($scope.reservationData.reservation_card.payment_method_used === "CC" || $scope.reservationData.reservation_card.payment_method_used === 'GIFT_CARD'){
 		$scope.shouldCardAvailable 				 = true;
 		$scope.depositBalanceMakePaymentData.payment_type = "CC";
+                if ($scope.reservationData.reservation_card.payment_method_used === 'GIFT_CARD'){
+                    $scope.depositBalanceMakePaymentData.payment_type = "GIFT_CARD";
+                }
 		$scope.depositBalanceMakePaymentData.card_code = $scope.reservationData.reservation_card.payment_details.card_type_image.replace(".png", "");
 		$scope.depositBalanceMakePaymentData.ending_with = $scope.reservationData.reservation_card.payment_details.card_number;
 		$scope.depositBalanceMakePaymentData.card_expiry = $scope.reservationData.reservation_card.payment_details.card_expiry;
@@ -167,7 +170,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				// To handle fees details on reservation summary,
 				// While we change payment methods
 				// Handling Credit Cards seperately.
-				if(value.name !== "CC"){
+				if(value.name !== "CC" && value.name !== "GIFT_CARD"){
 					$scope.feeData.feesInfo = value.charge_code.fees_information;
 					$scope.setupFeeData();
 				}
@@ -178,11 +181,22 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		});
 	};
 	$scope.changePaymentType = function(){
-		if($scope.depositBalanceMakePaymentData.payment_type === "CC"){
+		if($scope.depositBalanceMakePaymentData.payment_type === "CC" || $scope.depositBalanceMakePaymentData.payment_type === "GIFT_CARD"){
+                    if ($scope.depositBalanceMakePaymentData.payment_type === "GIFT_CARD"){
+                        $rootScope.depositUsingGiftCard = true;
+                    } else {
+                        $rootScope.depositUsingGiftCard = false;
+                    }
 			if($rootScope.paymentGateway !== "sixpayments"){
 				$scope.shouldShowMakePaymentScreen       = false;
 				$scope.shouldShowExistingCards =  ($scope.cardsList.length>0) ? true :false;
 				$scope.addmode = ($scope.cardsList.length>0) ? false :true;
+                                
+                                if ($scope.depositBalanceMakePaymentData.payment_type === "GIFT_CARD"){
+                                    $scope.shouldShowExistingCards = true;
+                                    $scope.addmode = true;
+                                }
+                                
 				refreshScroll();
 			} else {
 				$scope.isManual = false;
@@ -194,7 +208,10 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				$scope.shouldCardAvailable 				 = false;
 				$scope.isAddToGuestCardVisible 			 = false;
 				checkReferencetextAvailableFornonCC();
+                                $rootScope.depositUsingGiftCard = false;
 		};
+                
+                $rootScope.$emit('depositUsingGiftCardChange');
 	};
 	$scope.changeOnsiteCallIn = function(){
 		$scope.shouldShowMakePaymentScreen = ($scope.isManual) ? false:true;
@@ -385,7 +402,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			},
 			"reservation_id": $scope.reservationData.reservation_card.reservation_id
 		};
-		if($scope.depositBalanceMakePaymentData.payment_type === "CC"){
+		if($scope.depositBalanceMakePaymentData.payment_type === "CC" || $scope.depositBalanceMakePaymentData.payment_type === 'GIFT_CARD'){
 			if (typeof($scope.depositBalanceMakePaymentData.card_code) !== "undefined") {
 				dataToSrv.postData.credit_card_type = $scope.depositBalanceMakePaymentData.card_code.toUpperCase();
 			}
@@ -406,7 +423,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			}
 		}
 
-		if($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.depositBalanceMakePaymentData.payment_type === "CC"){
+		if($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && ($scope.depositBalanceMakePaymentData.payment_type === "CC" || $scope.depositBalanceMakePaymentData.payment_type === 'GIFT_CARD')){
 			dataToSrv.postData.is_emv_request = true;
 			$scope.shouldShowWaiting = true;
 			RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {

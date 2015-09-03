@@ -32,6 +32,14 @@ sntRover.controller('RVCardOptionsCtrl',
 		$scope.$on('REFRESH_IFRAME', function(e){
 			 $scope.refreshIframe();
 		});
+              //  $scope.isGiftCard = false;
+                $rootScope.$on('depositUsingGiftCardChange',function(e, v){
+                   if ($rootScope.depositUsingGiftCard){
+                       $scope.isGiftCard = true;
+                   } else {
+                       $scope.isGiftCard = false;
+                   }
+                });
 		//Not a good method
 		//To fix the issue CICO-11440
 		//From diary screen create reservation guest data is available only after reaching the summary ctrl
