@@ -213,8 +213,8 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		var orientation = 'portrait';
 
 		switch( $scope.data.activeTab ) {
-			case 0:
-			case 1:
+			case 'REVENUE':
+			case 'PAYMENTS':
 				orientation = 'landscape';
 				break;
 

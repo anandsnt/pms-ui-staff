@@ -103,7 +103,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						action: "staff#/staff/dashboard/postCharge"
 					}, {
 						title: "MENU_CASHIER",
-						action: "staff#/staff/financials/journal/2"
+						action: "staff#/staff/financials/journal/CASHIER"
 					}, {
 		            	title: "MENU_ACCOUNTS",
 		            	action: "staff#/staff/accounts/search",
@@ -181,7 +181,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-financials",
 					submenu: [{
 						title: "MENU_JOURNAL",
-						action: "staff#/staff/financials/journal/0"
+						action: "staff#/staff/financials/journal/REVENUE"
 					}, {
 						title: "MENU_CC_TRANSACTIONS",
 						action: "staff#/staff/financials/ccTransactions/0"

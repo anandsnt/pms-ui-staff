@@ -6,7 +6,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 	$scope.setTitle($filter('translate')('MENU_JOURNAL'));
 
 	$scope.data = {};
-	$scope.data.activeTab = $stateParams.id === '' ? 0 : $stateParams.id;
+	$scope.data.activeTab = $stateParams.id === '' ? 'SUMMARY' : $stateParams.id;
 	$scope.data.filterData = {};
 	$scope.data.revenueData = {};
     $scope.data.paymentData = {};
@@ -204,10 +204,10 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         }
     };
 
-    if( $stateParams.id === '0' || $stateParams.id === 0 ){
+    if( $stateParams.id === 'REVENUE' ){
         // 2. Go to Financials -> Journal.
         // a) Upon logging in, default Tab should be Revenue
-        $scope.data.activeTab = 0;
+        $scope.data.activeTab = 'REVENUE';
         $scope.$emit("updateRoverLeftMenu", "journals");
         // b) All employee fields should default to ALL users
         // c) All date fields should default to yesterday's date
@@ -217,10 +217,10 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         $scope.data.toDate   = $filter('date')(yesterday, 'yyyy-MM-dd');
         $scope.data.cashierDate = $filter('date')(yesterday, 'yyyy-MM-dd');
     }
-    else if( $stateParams.id === '2' || $stateParams.id === 0 ){
+    else if( $stateParams.id === 'CASHIER' ){
         // 1. Go to Front Office -> Cashier
         // a) Upon logging in, default Tab should be Cashier
-        $scope.data.activeTab = 2;
+        $scope.data.activeTab = 'CASHIER';
         $scope.$emit("updateRoverLeftMenu", "cashier");
         // c) All date fields should default to Business Date
         $scope.data.fromDate = $rootScope.businessDate;
@@ -251,15 +251,15 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
     /* Cashier filter ends here */
 
-    $scope.activatedTab = function(index){
-    	$scope.data.activeTab = index;
-    	if(index === 0) {
+    $scope.activatedTab = function(tabName){
+    	$scope.data.activeTab = tabName;
+    	if(tabName === 'REVENUE') {
             $rootScope.$broadcast('REFRESHREVENUECONTENT');
         }
-    	else if(index === 2) {
+    	else if(tabName === 'CASHIER') {
             $scope.$broadcast('cashierTabActive');
         }
-    	else {
+    	else if(tabName === 'PAYMENTS'){
             $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
         }
     	$scope.$broadcast("CLOSEPRINTBOX");
