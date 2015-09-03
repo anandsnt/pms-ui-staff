@@ -747,6 +747,18 @@ sntRover.factory('RVReportUtilsFac', [
                     });
                 };
 
+                if ( filter.value === 'RESERVATION_STATUS') {
+                    __setData(report, 'hasReservationStatus', {
+                        type         : 'FAUX_SELECT',
+                        filter       : filter,
+                        show         : false,
+                        selectAll    : false,
+                        defaultTitle : 'Select Reservation Status',
+                        title        : 'Select Reservation Status',
+                        data         : angular.copy( data.reservationStatus )
+                    });
+                };
+
             });
         };
 

@@ -68,6 +68,7 @@ sntRover.service('RVreportsSrv', [
 		 * @private
 		 */
 		function fetchAdditionalAPIs (deferred, data) {
+			console.log(data);
 			var payload   = {},
 				hasFilter = checkFilters( data );
 
@@ -175,6 +176,25 @@ sntRover.service('RVreportsSrv', [
 						.then( success.bind(null, 'holdStatus'), failed.bind(null, 'holdStatus', []) );
 				};
 			};
+
+			if ( hasFilter['ADDON_GROUPS'] ) {
+				if ( service.payloadCache.hasOwnProperty('addonGroups') ) {
+					success( 'addonGroups', service.payloadCache.addonGroups );
+				} else {
+					subSrv.fetchAddonGroups()
+						.then( success.bind(null, 'addonGroups'), failed.bind(null, 'addonGroups', []) );
+				};
+			};
+
+			if ( hasFilter['RESERVATION_STATUS'] ) {
+				if ( service.payloadCache.hasOwnProperty('reservationStatus') ) {
+					success( 'reservationStatus', service.payloadCache.addons );
+				} else {
+					subSrv.fetchAddonGroups()
+						.then( success.bind(null, 'reservationStatus'), failed.bind(null, 'reservationStatus', []) );
+				};
+			};
+
 		};
 
 		/**
@@ -225,6 +245,15 @@ sntRover.service('RVreportsSrv', [
 					if ( ! hasFilter.hasOwnProperty('HOLD_STATUS') && 'HOLD_STATUS' == eachFilter.value ) {
 						hasFilter['HOLD_STATUS'] = true;
 					};
+
+					if ( ! hasFilter.hasOwnProperty('ADDON_GROUPS') && 'ADDON_GROUPS' == eachFilter.value ) {
+						hasFilter['ADDON_GROUPS'] = true;
+					};
+
+					if ( ! hasFilter.hasOwnProperty('RESERVATION_STATUS') && 'RESERVATION_STATUS' == eachFilter.value ) {
+						hasFilter['RESERVATION_STATUS'] = true;
+					};
+
 				});
 			});
 

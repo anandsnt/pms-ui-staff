@@ -14,6 +14,8 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
+		$scope.IsVisible = false;
+
 		// set a back button, by default keep hidden
 		$rootScope.setPrevState = {
 			hide: true,
@@ -47,7 +49,7 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.holdStatus   = payload.holdStatus;
 
 		$scope.addonGroups = payload.addonGroups;
-		$scope.addons = payload.addons;
+		$scope.reservationStatus = payload.reservationStatus;
 
 
 		$scope.showReportDetails = false;
@@ -395,6 +397,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			fauxDS.show = !fauxDS.show;
 		};
+
 		$scope.fauxSelectChange = function(reportItem, fauxDS, allTapped) {
 			var selectedItems;
 
@@ -428,6 +431,62 @@ sntRover.controller('RVReportsMainCtrl', [
 			};
 		};
 
+		$scope.showAndHideAddons = function () {
+			$scope.isVisible = $scope.isVisible ? false : true;
+		}
+
+		$scope.showAddons = function (reportItem, fauxDS, allTapped) {
+			$timeout (function () {
+				var selectedItems;
+				var selectedIds = [];
+
+				if ( allTapped ) {
+					if ( fauxDS.showAll ) {
+						fauxDS.title = 'All Selected';
+						selectedItems = _.where(fauxDS.data, { selected: true });
+					} else {
+						fauxDS.title = fauxDS.defaultTitle;
+					};
+
+					_.each(fauxDS.data, function(each) {
+						each.selected = fauxDS.selectAll;
+					});
+				} else {
+					selectedItems = _.where(fauxDS.data, { selected: true });
+
+					if ( selectedItems.length === 0 ) {
+						fauxDS.title = fauxDS.defaultTitle;
+					} else if ( selectedItems.length === 1 ) {
+						fauxDS.title = selectedItems[0].description || selectedItems[0].name;
+					} else if ( selectedItems.length === fauxDS.data.length ) {
+						fauxDS.selectAll = true;
+						fauxDS.title = 'All Selected';
+					} else {
+						fauxDS.selectAll = false;
+						fauxDS.title = selectedItems.length + ' Selected';
+					};
+				}
+				angular.forEach(selectedItems, function (key) {
+					selectedIds.push(key.id);
+				});
+				var ids = {
+					"addon_group_ids" : selectedIds
+				};
+
+				var sucssCallback = function (data) {
+					$scope.addonDetails = [];
+					$scope.addonDetails = data.results;
+					$scope.$emit( 'hideLoader' );
+				};
+
+				var errorCallback = function (data) {
+					$scope.$emit( 'hideLoader' );
+				};
+
+				$scope.invokeApi(reportsSubSrv.getAddons, ids, sucssCallback, errorCallback);
+				console.log($scope.addonDetails);
+			}, 1000);
+		};
 
 		function genParams (report, page, perPage) {
 			var params = {

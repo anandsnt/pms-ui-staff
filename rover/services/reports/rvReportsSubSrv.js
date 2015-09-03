@@ -134,6 +134,31 @@ sntRover.service('RVreportsSubSrv', [
 			});
 		};
 
+		service.fetchAddonGroups = function() {
+			return callApi({
+				method  : 'getJSON',
+				url     : 'api/charge_groups',
+				resKey  : 'results'
+			});
+		};
+
+		service.getAddons = function (params) {
+			return callApi({
+				method  : 'postJSON',
+				url     : 'api/addons/detail',
+				params  : params
+			});
+		};
+
+		service.fetchReservationStatus = function() {
+			return callApi({
+				method  : 'getJSON',
+				url     : 'api/group_hold_statuses',
+				resKey  : 'data',
+				resKey2 : 'hold_status'
+			});
+		};
+
 		return service;
 	}
 ]);
