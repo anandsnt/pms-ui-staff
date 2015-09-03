@@ -1,7 +1,6 @@
 <div class="block-wrapper">
     <a class="block-title toggle has-arrow" ng-click="clickedAdditionalDetails($event)">Additional details</a>
-    <div id="{details-id}" ng-class="{'hidden': additionalDetails.hideDetails }">
-        <!-- class="hidden" Remove class hidden when 'a.toggle' is clicked -->
+    <div ng-class="{'hidden': additionalDetails.hideDetails }">
         <!-- Reservation Type -->
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="block-item item-type additional-detail">
@@ -16,11 +15,11 @@
             </div>
         </div>
         
-        <div class="block-item item-commission additional-detail" ng-if="hasPermissionForCommissionUpdate()">
+        <!-- If TA is attached and commission is turned on: -->
+        <div class="block-item item-commission">
             <h3 class="block-title">Commission</h3>
-
-            <div class="switch-button off" ng-class="{'on': reservationData.reservation_card.commission_details.is_on}">
-                <input id="travel-agent-commission" value="commission" type="checkbox" checked />
+            <div class="switch-button" ng-class="{'on': reservationData.reservation_card.commission_details.is_on}">
+                <input id="ta-commission" value="1" type="checkbox" checked disabled />
                 <label class="data-off">
                     <span class="value">Off</span>
                     <span class="switch-icon">On</span>
@@ -30,9 +29,8 @@
                     <span class="value">On</span>
                 </label>
             </div>
-
             <div class="entry">
-                <input id="ta-commission" value="{{reservationData.reservation_card.commission_details.commission_value}}" type="text" ng-model="reservationData.reservation_card.commission_details.commission_value" ng-blur="updateAdditionalDetails()" />
+                <input value="{{reservationData.reservation_card.commission_details.commission_value}}" type="text" ng-model="reservationData.reservation_card.commission_details.commission_value" ng-blur="updateAdditionalDetails()" />
                 <div class="select">
                     <select name="travel-agent-commission-type" ng-model="reservationData.reservation_card.commission_details.commission_type" ng-change="updateAdditionalDetails()">
                         <option value="percent">%</option>
@@ -41,6 +39,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Market -->
         <div class="block-item item-market additional-detail" ng-if="otherData.marketsEnabled">
             <h3 class="block-title">Market</h3>
