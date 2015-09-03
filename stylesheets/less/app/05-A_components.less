@@ -8168,10 +8168,10 @@
         position: relative;
         .calc-height(100, 60);
 
-        > .wrapper {
+        > .wrapper { 
             margin: 0 auto;
             padding: 60px 0 20px;
-            #pixel-to-percent > .width(1228, 2048);
+            width: 640px;
             .float;
         }
 
@@ -8180,16 +8180,16 @@
         .row {
             margin-bottom: 20px;
 
+            label {
+                font-size: 14px;
+                text-transform: uppercase;
+                color: @textColor;
+
+                span,
+                &.label { color: @grey3; }
+            }
+
             .entry {
-
-                label {
-                    font-size: 14px;
-                    text-transform: uppercase;
-                    color: @textColor;
-
-                    span,
-                    &.label { color: @grey3; }
-                }
 
                 input,
                 select {
@@ -8222,10 +8222,10 @@
                 .entry {
                     margin-right: 20px;
                     .pull-left;
-
+                    
                     &#arriving,
                     &#departing {
-                        #pixel-to-percent > .width(400, 1230);
+                        #pixel-to-percent > .width(230, 640);
 
                         .entry-data {
                             background: @white @calendar no-repeat 90% 20px;
@@ -8267,25 +8267,26 @@
                             @media @highdpi { background-image: @calendar2x; }
 
                             &:hover { background-position: 90% -30px; }
-                        }
+                        }                       
                     }
 
                     &#arriving { color: @green; }
-                    &#departing {
-                        color: @red;
+                    &#departing { 
+                        color: @red; 
                         margin-right: 0;
                     }
 
                     &#type {
                         position: relative;
-                        #pixel-to-percent > .width(349, 1230);
+                        #pixel-to-percent > .width(140, 640);
 
                         .entry-data {
                             .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
 
-                            input {
+                            input { 
                                 position: relative;
                                 padding-right: 90px;
+                                text-align: center;
                             }
                         }
 
@@ -8298,7 +8299,7 @@
                             #border-radius > .rounded(0px);
 
                             .data-off,
-                            .data-on {
+                            .data-on { 
                                 font-size: 16px;
                                 padding: 5px;
                                 line-height: 25px;
@@ -8326,7 +8327,7 @@
                                     left: 0;
                                     right: 0;
                                     top: 0;
-                                }
+                                } 
 
                                 &.data-on {
                                     left: 0;
@@ -8355,7 +8356,7 @@
                         margin-right: 0;
                         #pixel-to-percent > .width(400, 1230);
 
-                        select {
+                        select { 
                             option { font-size: 16px; }
                         }
                     }
@@ -8363,68 +8364,50 @@
             }
 
             &#rooms {
+
                 .entry {
-                    margin-top: 10px;
                     position: relative;
+                    margin-bottom: 10px;
 
                     .entry-data {
                         .float;
 
                         .select {
-                            position: relative;
+                            border-right: 1px solid rgba(0,0,0,.1);
                             .pull-left;
 
                             .label {
                                 position: absolute;
-                                top: 20px;
+                                top: 0;
+                                left: 20px;
                                 z-index: 0;
+                                margin: 0;
+                                font-size: 12px;
+                                .show;
                             }
 
-                            select {
-                                vertical-align: middle;
-                                position: relative;
+                            select { 
+                                font-size: 28px;
+                                padding: 5px 30px 0 20px;
 
-                                option { font-size: 16px; }
+                                option { font-size: 16px;  }
                             }
 
-                            &.adults {
-                                #pixel-to-percent > .width(250, 1230);
+                            &.adults,
+                            &.infants,
+                            &.rooms { width: 95px; }
+                            &.children { width: 105px; }
 
-                                label { left: 15px; }
-                                select { padding-left: 65px; }
-                                &:after { #border-radius > .right(0px); }
-                            }
+                            &.room-type { 
+                                .calc-width(100, 390);
 
-                            &.children {
-                                #pixel-to-percent > .width(270, 1230);
-
-                                label { left: 10px; }
-                                select { padding-left: 75px; }
-                                &:after { #border-radius > .right(0px); }
-                            }
-
-                            &.infants {
-                                #pixel-to-percent > .width(250, 1230);
-
-                                label { left: 10px; }
-                                select { padding-left: 65px; }
-                                &:after { #border-radius > .right(0px); }
-                            }
-
-                            &.room-type {
-                                #pixel-to-percent > .width(440, 1230);
-
-                                select {
-                                    padding-left: 10px;
+                                select { 
                                     font-size: 18px;
+                                    padding: 0 0 0 10px;
                                 }
                             }
 
-                            &:after {
-                                top: 0;
-                                right: 0;
-                                .size(60px, 30px);
-                            }
+                            &:last-child { border-right: 0; }
                         }
                     }
 
@@ -8432,30 +8415,29 @@
                     .remove-room {
                         position: absolute;
                         top: 0;
-                        right: -60px;
+                        right: -80px;
                         cursor: pointer;
+                        .faux-clickable;
 
                         &.add-room { .hide; }
                     }
 
-                    &:first-of-type {
-                        margin-top: 0;
-
-                        .add-room { top: 25px; }
-                        .remove-room { .hide; }
-                    }
-
                     &:last-of-type {
+                        margin-bottom: 0;
 
-                        .add-room {
-                            .show;
-                            right: -120px;
+                        .add-room { 
+                            .show; 
+                            right: -160px;
                         }
 
                         &:first-of-type {
                             .remove-room { .hide; }
-                            .add-room { right: -60px; }
+                            .add-room { right: -80px; }
                         }
+                    }
+
+                    &:nth-of-type(4) {
+                        .add-room { .hide; }
                     }
                 }
             }
@@ -8530,7 +8512,7 @@
                         select { 
                             vertical-align: middle;
                             font-size: 16px;
-                            line-height: 25px;
+                            line-height: 50px;
                             padding-left: 65px;
                             height: 50px;
                             min-height: 50px;
@@ -8570,7 +8552,8 @@
                 .select {
                     &.adults,
                     &.children,
-                    &.infants {
+                    &.infants,
+                    &.rooms {
                         position: relative;
                         background-color: @white;
                         #border-radius > .rounded();
@@ -8584,7 +8567,7 @@
                             z-index: 1;
                         }
 
-                        select {
+                        select { 
                             position: relative;
                             font-size: 24px;
                             line-height: 40px;
@@ -8594,19 +8577,21 @@
                             border: 0;
                             width: 100%;
                             z-index: 9;
-                            .box-shadow(none);
+                            .box-shadow(none);                          
                         }
                     }
 
-                    &.adults { z-index: 30; }
-                    &.children { z-index: 20; }
-                    &.infants { z-index: 10; }
+                    &.adults { z-index: 40; }
+                    &.children { z-index: 30; }
+                    &.infants { z-index: 20; }
+                    &.rooms { z-index: 10; }
                 }
             }
 
             .add-new-button { .show; }
 
             &#sidebar-nights {
+
                 .entry-data {
                     position: relative;
                     cursor: pointer;
@@ -8614,7 +8599,7 @@
                     .faux-clickable;
                     background: @white @calendar no-repeat 90% 20px;
                     background-size: 20px;
-
+                   
                     input { .hide; }
 
                     .ui-datepicker-trigger {
@@ -8649,17 +8634,17 @@
 
                     @media @highdpi { background-image: @calendar2x; }
 
-                    &.arriving {
-                        color: @green;
+                    &.arriving { 
+                        color: @green; 
                         margin-bottom: 20px;
                     }
 
-                    &.departing {
-                        color: @red;
+                    &.departing { 
+                        color: @red; 
                     }
 
                     &:hover { background-position: 90% -30px; }
-                }
+                } 
             }
 
             &#sidebar-rooms {
@@ -8672,18 +8657,18 @@
                         .show;
                         .float;
 
-                        .icons {
+                        .icons { 
                             cursor: pointer;
-                            .pull-right;
+                            .pull-right; 
                         }
                     }
 
                     .room-details {
                         margin-top: 20px;
 
-                        h4 {
+                        h4 { 
                             font-size: 16px;
-                            font-weight: 600;
+                            font-weight: 600; 
                             .float;
 
                             span,
@@ -8731,12 +8716,14 @@
 
                     label { margin-bottom: 0; }
 
-                    input[type="text"] {
+                    input[type="text"] { 
                         margin-left: 30px;
                         .calc-width(100, 30);
-                        .hide;
+                        .hide; 
 
                         &.default { .show; }
+                        &[style="display: inline;"] {  #fade > .in(); }
+                        &[style="display: none;"] {  #fade > .out(); }
                     }
                 }
             }
@@ -8754,10 +8741,10 @@
                 overflow: visible;
                 z-index: 40;
 
-                .switch-button {
+                .switch-button { 
                     margin: 5px 0 0 5px;
                     .pull-right;
-                    .size(40px, 260px);
+                    .size(40px, 240px);
                     .show;
 
                     .data-off,
@@ -8769,14 +8756,14 @@
 
                         .switch-icon { .gradient(@greenStart, @greenEnd); }
 
-                        &.data-off {
+                        &.data-off { 
                             left: auto;
                             right: 0;
 
                             .switch-icon { margin: 0 5px 0 0; }
                         }
-
-                        &.data-on {
+                        
+                        &.data-on { 
                             left: auto;
                             right: 100%;
 
@@ -8793,6 +8780,7 @@
                 .checkbox {
                     margin: 5px 0 0 0;
                     padding: 0 10px 5px 40px;
+                    font-size: 14px;
                     .pull-right;
 
                     .icon-form { left: 10px; }
@@ -8819,11 +8807,12 @@
 
                     li {
                         display: inline-block;
+                        font-size: 14px;
                         line-height: 30px;
                         text-align: center;
                         text-transform: uppercase;
                         color: @grey3;
-                        font-weight: 600;
+                        
                         padding: 10px;
                         margin: 0 0 0 -4px;
                         .transition();
@@ -8841,8 +8830,8 @@
                                 position: absolute;
                                 left: 35px;
                                 bottom: -10px;
-                                width: 0;
-                                height: 0;
+                                width: 0; 
+                                height: 0; 
                                 border-top: 10px solid @logoGradientEnd;
                                 border-left: 10px solid transparent;
                                 border-right: 10px solid transparent;
@@ -8853,6 +8842,11 @@
                             color: @green;
                             background: @icons 10px -5841px no-repeat;
                             padding-left: 30px;
+
+                            @media @highdpi {
+                                background-image: @icons2x;
+                                background-size: 120px;
+                            }
                         }
 
                         &:first-child {
@@ -8865,10 +8859,10 @@
 
         .stay-days {
             position: relative;
-            height: 0px;
             background: @rcardTexture1;
             z-index: 30;
             overflow: hidden;
+            .size(0px, 100%);
             .transition(height, .3s, cubic-bezier(.10, .10, .25, .90));
 
             .days {
@@ -8893,7 +8887,7 @@
                     .faux-clickable;
                     .pull-left;
 
-                    span {
+                    span { 
                         position: absolute;
                         line-height: 1em;
 
@@ -8901,7 +8895,7 @@
                         &.expense { top: 5px; left: 5px; }
                         &.date { top: 5px; right: 5px; }
                         &.guest-status { bottom: 5px; left: 5px; }
-                        &.price {
+                        &.price { 
                             position: static;
                             bottom: auto;
                             right: auto;
@@ -8913,8 +8907,8 @@
 
                         &.day,
                         &.expense,
-                        &.date {
-                            font-size: 11px;
+                        &.date { 
+                            font-size: 11px; 
                         }
 
                         &.guest-status {
@@ -8926,9 +8920,9 @@
                         }
                     }
 
-                    &.locked {
+                    &.locked { 
                         cursor: default;
-                        .opacity(30);
+                        .opacity(30); 
                     }
 
                     &.booked {
@@ -8947,19 +8941,19 @@
 
                     &.check-in,
                     &.check-out {
-                        padding-left: 30px;
-                    }
+                        padding-left: 30px; 
+                    }                    
                 }
             }
 
             .button {
                 position: absolute;
-                top: 10px;
+                top: 15px;
                 right: 10px;
                 padding: 0 40px;
-            }
+            }            
 
-            &.open {
+            &.open { 
                 height: 70px;
             }
         }
@@ -8967,17 +8961,21 @@
         .reservation-filters {
             padding: 20px;
             .float;
-
+            
             .select {
                 height: 40px;
+                margin-right: 20px;
                 .size(40px, 180px);
                 .pull-left;
 
                 select { height: 40px; }
+
+                &:last-child { margin-right: 0; }
             }
 
             .find-rates {
                 position: relative;
+                margin-right: 20px;
                 .size(40px, 280px);
                 .pull-left;
 
@@ -9001,7 +8999,7 @@
                 .pull-right;
                 .float;
 
-                li {
+                li { 
                     cursor: pointer;
                     margin: 0 0 0 1px;
                     font-size: 14px;
@@ -9015,8 +9013,8 @@
                     #border-radius > .rounded(0);
                     .pull-left;
 
-                    &:hover {
-                        color: @logoPrimary;
+                    &:hover { 
+                        color: @logoPrimary; 
                         .box-shadow();
                     }
 
@@ -9047,7 +9045,7 @@
                         padding: 0 30px 0 10px;
                         .no-transition();
 
-                        .label {
+                        .label { 
                             line-height: 40px;
                             font-weight: 400;
                         }
@@ -9059,7 +9057,7 @@
                         left: 0;
                         padding: 0;
                         .box-shadow(none);
-                        .size(auto, 180px);
+                        .size(auto, 170px);
 
                         .select {
                             float: none;
@@ -9077,27 +9075,28 @@
                                 z-index: 1;
                             }
 
-                            select {
+                            select { 
                                 position: relative;
                                 font-size: 24px;
                                 line-height: 40px;
                                 height: 40px;
-                                padding: 0 10px 0 150px;
+                                padding: 0 10px 0 120px;
                                 background: transparent;
                                 border: 0;
                                 width: 100%;
                                 z-index: 9;
-                                .box-shadow(none);
+                                .box-shadow(none);                          
                             }
 
                             &.adults { z-index: 30; }
                             &.children { z-index: 20; }
                             &.infants { z-index: 10; }
                         }
-                    }
+                    }                    
                 }
 
-                .select, .find-rates {
+                .select,
+                .find-rates {
                     margin-right: 20px;
                     .pull-right;
                 }
@@ -9109,8 +9108,6 @@
             overflow: hidden;
             .float;
             .square(100%);
-
-            .guest-status { .square(20px); }
 
             /* Steps ***/
             .reservation-content {
@@ -9530,6 +9527,51 @@
                     &.with-stay-days { .calc-height(100, 220); }
                 }
 
+                /* Change Dates ***/
+                &.stay-dates-content {
+                    padding: 0 20px;
+                    width: 100%;
+                    overflow: visible;
+                    .float;
+                    .calc-height(100, 130);
+
+                    .calendar-left,
+                    .calendar-right {
+                        position: relative;
+                        .calc-height(100, 45);
+                        #pixel-to-percent > .width(944, 1968);
+                        .pull-left;
+                    }
+
+                    .calendar-left { 
+                        #pixel-to-percent > .right-margin(80, 1968); 
+
+                        .tooltip {
+                            left: -20px;
+
+                            &:after { left: 20px; }
+                        }
+                    }
+
+                    .calendar-right {
+                        .tooltip {
+                            right: -20px;
+
+                            &:after { right: 20px; }
+                        }
+                    }
+
+                    .calendar-legend { 
+                        position: absolute;
+                        left: 0;
+                        bottom: 0;
+                        background-color: @white;
+                        z-index: 999;
+                        padding-left: 40px;
+                        .box-shadow(0 -1px 1px rgba(0,0,0,.1));
+                    }
+                }
+
                 /* Enhance Stay ***/
                 &.addons-content {
                     height: 100%;
@@ -9600,176 +9642,6 @@
                         }
                     }
                 }
-
-                /* Change Dates ***/
-                &.stay-dates-content {
-                    .calc-height(100, 130);
-
-                    > .wrapper {
-                        padding: 0 20px 20px 20px;
-                        .float;
-                    }
-
-                    .calendar-left,
-                    .calendar-right {
-                        position: relative;
-                        margin-bottom: 20px;
-                        #pixel-to-percent > .width(944, 1968);
-                        .pull-left;
-
-                        #calendar-prev,
-                        #calendar-next {
-                            position: absolute;
-                            top: 5px;
-                            overflow: hidden;
-                            cursor: pointer;
-                            background-color: transparent;
-                            border: 0;
-                            .show;
-                            .hide-text;
-                            .square(40px);
-
-                            &#calendar-prev { left: 5px; }
-                            &#calendar-next { right: 5px; }
-                        }
-
-                        &.calendar-left { #pixel-to-percent > .right-margin(80, 1968); }
-                    }
-
-                    .update-details {
-                        padding: 15px;
-                        .float;
-                        .faux-clickable;
-                        .size(80px, 100%);
-
-                        .data {
-                            padding-right: 15px;
-                            border-right: 1px solid rgba(0,0,0,.1);
-                            height: 50px;
-                            .calc-width(100,230);
-                            .pull-left;
-
-                            li {
-                                font-size: 15px;
-                                line-height: 50px;
-                                margin: 0;
-                                padding-right: 20px;
-                                width: 28%;
-                                white-space: nowrap;
-                                overflow: hidden;
-                                text-overflow: ellipsis;
-                                .show;
-                                .pull-left;
-
-                                .guest-status { margin: 15px 10px 0 0; }
-
-                                &.room-type {
-                                    line-height: 40px;
-                                    padding: 5px 20px 4px 0;
-                                    white-space: normal;
-                                    overflow: visible;
-
-                                   .select {
-                                        background-color: @grey1;
-
-                                        select,
-                                        &:after { background-color: @grey1; }
-                                    }
-                                }
-
-                                &:first-child { width: 16%; }
-                                &:last-child { width: 28%; }
-                            }
-                        }
-
-                        .action {
-                            overflow: hidden;
-                            .size(50px, 230px);
-                            .pull-right;
-
-                            .button { line-height: 48px; }
-                        }
-
-                        &.no-updates {
-                            background-color: transparent;
-                            padding: 0;
-                            height: auto;
-                            .box-shadow(none);
-                            #border-radius > .rounded(0px);
-
-                            .action {
-                                width: 100%;
-                                float: none;
-                                text-align: center;
-                            }
-                        }
-                    }
-                }
-            }
-
-            /* Calendar Legend ***/
-            .stay-dates-legend {
-                position: absolute;
-                left: 0;
-                bottom: 0;
-                background-color: @white;
-                z-index: 999;
-                overflow: hidden;
-                .float;
-                .box-shadow(0 -1px -1px rgba(0,0,0,.1));
-                .size(50px, 100%);
-
-                .notice {
-                    text-align: center;
-                    text-transform: uppercase;
-                    font-weight: 600;
-                    padding: 10px 20px;
-                    margin: 0;
-                    border: 0;
-                    #border-radius > .rounded(0);
-                    #pixel-to-percent > .width(410, 1968);
-                    .pull-left;
-                }
-
-                li {
-                    font-size: 13px;
-                    line-height: 50px;
-                    vertical-align: middle;
-                    text-transform: uppercase;
-                    margin-right: 15px;
-                    .pull-left;
-
-                    span {
-                        margin: 14px 5px 0 0;
-                        .square(22px);
-                        .show;
-                        .pull-left;
-
-                        &.check-in {
-                            background: @green @icons no-repeat 6px -1415px;
-
-                            @media @highdpi {
-                                background-image: @icons2x;
-                                background-size: 120px;
-                            }
-                        }
-
-                        &.check-out {
-                            background: @red @icons no-repeat 6px -1475px;
-                            @media @highdpi {
-                                background-image: @icons2x;
-                                background-size: 120px;
-                            }
-                        }
-
-                        &.no-type-availability { background: rgba(0,0,0,.1); }
-                        &.no-house-availability { background: rgba(230,56,56,.3); }
-                        &.mid-stay { background: rgba(137,189,85,.2); }
-                        &.availability { border: 2px solid @green; .background(); }
-                    }
-
-                    &:first-child { margin-left: 15px; }
-                }
             }
 
             /* Final screen ***/
@@ -9796,6 +9668,8 @@
                     font-weight: 600;
                     margin-bottom: 20px;
                 }
+
+                .guest-status { .square(20px); }
 
                 .data {
                     margin-bottom: 20px;
@@ -10174,8 +10048,13 @@
                 }
             }
 
+
+            /* Multi room / stay card layouts ***/
+
             /* Multi room layouts ***/
-            &.multiple-rooms {
+
+            &.multiple-rooms,
+            &.edit-mode {
                 .reservation-content {
                     &.rooms-and-rates-content { .calc-height(100, 130); }
                     &.addons-content { .calc-height(100, 50); }
