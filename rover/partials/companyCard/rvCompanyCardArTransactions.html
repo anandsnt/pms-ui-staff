@@ -56,8 +56,11 @@
                     <span class="value" ng-class="{'red': arTransactionDetails.available_credit == '0.00','green': arTransactionDetails.available_credit != '0.00'}">{{currencySymbol}}{{arTransactionDetails.available_credit}}</span>
                     
                 </div>
-                <button ng-click="addCreditAmount()" type="button" class="button purple with-icon only-icon">
+                <!-- <button ng-click="addCreditAmount()" type="button" class="button purple with-icon only-icon">
                     <span class="icons icon-pencil"></span>
+                </button> -->
+                <button type="button" class="button green with-icon only-icon" ng-click="payAmount()">
+                    <span class="icons icon-wallet"></span>
                 </button>
             </li>
             <li>
