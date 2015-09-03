@@ -1,0 +1,38 @@
+<div id="availability-grid" class="availability-grid scrollable" ng-controller="rvGroupAvailabilityStatusController" >
+	<div class="wrapper">
+		<table id="dates-grid" class="dates-grid" ng-class="{'grid-7':true}">
+			<colgroup>
+				<!-- Total number of <col> elements must match number of days displayed + first col for row labels. So in the 14 days grid, you'll have 15 <col> elements -->
+				<col> <!-- First col is always defined like this. It's used for row labels -->
+				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}"> <!-- Use this for every week day in the grid -->
+			</colgroup>
+
+			<thead>
+				<tr>
+					<th class="heading"></th> <!-- First is blank, again for row label -->
+					<th ng-repeat="eachDate in data.dates">
+						<div class="inner"  ng-class="{'weekend': eachDate.isWeekend}">
+							<span ng-bind="eachDate.date|date:dayInWeek"></span>
+							{{eachDate.date|date:shortMonthAndDate}}
+						</div>
+					</th> 
+				</tr>				
+			</thead>
+			<tbody>
+				<tr class="room-details main">
+					<th class="heading" scope="row">Group Rooms (Total)</th> <!-- Click on this toggles the visibility of hold status rows for Total -->
+					<td ng-repeat="groupTotalRoom in data.groupTotalRooms track by $index">
+						<div class="inner">{{groupTotalRoom | number : 2}}</div>
+					</td>
+				</tr>
+				<tr class="room-details main">
+					<th class="heading" scope="row">Group Rooms (Picked)</th> <!-- Click on this toggles the visibility of hold status rows for Picked -->
+								<!-- Repeat for {X} days -->
+					<td ng-repeat="groupTotalPickedUp in data.groupTotalPickedUps track by $index">
+						<div class="inner green">{{groupTotalPickedUp}}</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

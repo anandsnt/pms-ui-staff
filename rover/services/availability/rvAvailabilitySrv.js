@@ -13,6 +13,9 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	this.getGridData = function(){
 		return that.data.gridData;
 	};
+	this.getGridDataForGroupAvailability = function(){
+		return that.data.gridDataForGroupAvailability;
+	};	
 
 	this.updateData = function(data){
 		that.data = data;
@@ -218,6 +221,55 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		};
 		return graphData;
 
+	};
+	var formGridDataForGroupAvailability = function(datafromApi){
+		var gridDataForGroupAvailability = {};
+		var dates = [];
+		var groupTotalRooms =[];
+		var groupTotalPickedUps = [];
+
+		_.each(datafromApi.results,function(element,index,lis){		
+			var dateToCheck = tzIndependentDate(element.date);
+			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
+			dates.push({'date': element.date, 'isWeekend': isWeekend, 'dateObj': new Date(element.date)});
+
+			groupTotalRooms.push(element.group_total_rooms);
+
+			groupTotalPickedUps.push(element.group_total_pickups);
+
+		});
+
+		gridDataForGroupAvailability = {
+			'dates'	: dates,
+			'groupTotalRooms': groupTotalRooms,
+			'groupTotalPickedUps':groupTotalPickedUps
+		};
+		return gridDataForGroupAvailability;
+	}
+	/**
+	* function to fetch group availability between from date & to date
+	*/
+	this.fetchGroupAvailabilityDetails = function(params){
+		var firstDate 	= tzIndependentDate(params.from_date);
+		var secondDate 	= tzIndependentDate(params.to_date);
+
+		var dataForWebservice = {
+			from_date	: firstDate,
+			to_date		: secondDate
+		};
+
+		//Webservice calling section
+		var deferred = $q.defer();
+		var url = ' api/group_availability';
+		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(resultFromAPI) {
+			//storing response temporarily in that.data, will change in occupancy call
+			that.data.gridDataForGroupAvailability = formGridDataForGroupAvailability(resultFromAPI);
+			console.log(that.data.gridDataForGroupAvailability);
+			deferred.resolve(that.data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
 	};
 
 

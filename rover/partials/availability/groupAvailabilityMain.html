@@ -8,7 +8,7 @@
 		 </div>
 		<!-- TODO: confirm date ranges available with Jos. 14 days is the default view -->
 		<div class="select">
-			<select id="days-view" name="days-view">
+			<select id="days-view" name="days-view" ng-model="numberOfDaysSelected" ng-change="changedAvailabilityDataParams()">
 				<option value="7">Showing 7 days</option>
 				<option value="14" selected>Showing 14 days</option>
 				<option value="30">Showing 30 days</option>
@@ -16,5 +16,5 @@
 		</div>
 	</div>
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-	<div ng-include="'/assets/partials/availability/roomAvailabilityGridStatus.html'"></div>
+	<div ng-include="'/assets/partials/availability/groupAvailabilityStatus.html'"></div>
 </section>
