@@ -4478,9 +4478,57 @@
                         .entry {
                             .float;
 
+                            .switch-button {
+                                font-size: 14px;
+                                text-transform: uppercase;
+                                margin-right: 10px;
+                                height: 50px;
+                                #border-radius > .rounded(50px);
+                                .opacity(50);
+                                .calc-width(100, 160);
+                                .pull-left;
+
+                                input[type="checkbox"] { 
+                                    line-height: 50px;
+                                    .size(50px, 100%);
+                                }   
+
+                                .data-off,
+                                .data-on {
+                                    left: auto;
+                                    line-height: 40px;
+                                    height: 40px;
+
+                                    &.data-off { 
+                                        right: -100%;
+
+                                        .switch-icon { 
+                                            margin: 0 5px 0 0; 
+                                            .gradient(@greenStart, @greenEnd);                                    
+                                        }
+                                    }
+                                    
+                                    &.data-on { 
+                                        right: 0;
+
+                                        .switch-icon { 
+                                            margin: 0 0 0 5px; 
+                                            .gradient(@redStart, @redEnd);
+
+                                            &.grey { .gradient(@grey2, @grey4); }
+                                        }
+                                    }
+                                }
+
+                                &.on {
+                                    .data-off { right: 0; }
+                                    .data-on { right: 100%; }
+                                }
+                            }
+
                             input {
                                 margin-right: 10px;
-                                .square(50px);
+                                .size(50px, 80px);
                                 .pull-left;
                             }
 
