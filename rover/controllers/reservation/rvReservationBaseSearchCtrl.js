@@ -464,7 +464,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             var processDisplay = function(data) {
                 $scope.$emit("hideLoader");
 
-                angular.forEach(data.accounts, function(item) {
+                _.each(data.accounts, function(item) {
                     eachItem = {};
 
                     eachItem = {
@@ -495,6 +495,17 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     };
                 });
 
+                if ($scope.reservationData.rooms.length === 1 && !!data.groups && data.groups.length > 0) {
+                    _.each(data.groups, function(group) {
+                        companyCardResults.push({
+                            label: group.name,
+                            value: group.name,
+                            type: 'GROUP',
+                            id: group.id,
+                            code: group.codes
+                        });
+                    });
+                }
                 // call response callback function
                 // with the processed results array
                 response(companyCardResults);
@@ -504,7 +515,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             var fetchData = function() {
                 if (request.term !== '' && lastSearchText !== request.term) {
                     $scope.invokeApi(RVReservationBaseSearchSrv.fetchCompanyCard, {
-                        'query': request.term
+                        'query': request.term,
+                        'include_group': $scope.reservationData.room.length === 1,
+                        'from_date': $scope.reservationData.arrivalDate,
+                        'to_date': $scope.reservationData.departureDate,
                     }, processDisplay);
                     lastSearchText = request.term;
                 }
@@ -524,6 +538,12 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.reservationData.company.id = ui.item.id;
                 $scope.reservationData.company.name = ui.item.label;
                 $scope.reservationData.company.corporateid = ui.item.corporateid;
+            } else if (ui.item.type === 'GROUP') {
+                $scope.reservationData.group = {
+                    id: ui.item.id,
+                    name: ui.item.label,
+                    code: ui.item.code
+                };
             } else {
                 $scope.reservationData.travelAgent.id = ui.item.id;
                 $scope.reservationData.travelAgent.name = ui.item.label;

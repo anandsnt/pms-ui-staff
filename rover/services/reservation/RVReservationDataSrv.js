@@ -133,6 +133,11 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 				guestMemberships: {
 					hlp: [],
 					ffp: []
+				},
+				group: {
+					id: "",
+					name: "",
+					code: ""
 				}
 			};
 		};
