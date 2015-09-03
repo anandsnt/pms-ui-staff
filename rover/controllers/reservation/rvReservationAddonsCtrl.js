@@ -320,6 +320,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
         };
 
         $scope.selectAddon = function(addon, addonQty, overBook) {
+            $scope.closePopup();
             if (!$rootScope.isItemInventoryOn || overBook) {
                 insertAddon(addon, addonQty)
             } else {
