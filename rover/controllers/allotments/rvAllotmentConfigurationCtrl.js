@@ -316,6 +316,20 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             //TODO: Duplicate Allotment - Future functionality
         };
 
+        $scope.goToTACard = function(){            
+            $state.go('rover.companycarddetails', {
+                id: summaryData.allotmentSummary.travel_agent.id,
+                type: 'TRAVELAGENT'
+            });
+        }
+        
+        $scope.goToCompanyCard = function(){
+            $state.go('rover.companycarddetails', {
+                id: summaryData.allotmentSummary.company.id,
+                type: 'TRAVELAGENT'
+            });
+        }
+
         /**
          * Discard the new Allotment
          * @return undefined
