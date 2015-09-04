@@ -699,11 +699,9 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @returns {undefined}
 		 */
 		var failureCallBackOfSaveRoomBlock = function(error) {
-			console.log(error);
 			error.httpStatus = 470;
 			if(error.hasOwnProperty ('httpStatus')) {
 				if (error.httpStatus === 470) {
-					debugger;
 					var message 			 	= null,
 						isHouseOverbooked  	 	= error.is_house_overbooked,
 						overBookedRoomTypes  	= [],
@@ -795,10 +793,10 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * Method to show oerbooking popup
 		 * @return undefined
 		 */
-		var showOverBookingPopup = function(messages) {
+		var showOverBookingPopup = function(message) {
 			// Show overbooking message
 			var dialogData = {
-				messages: messages
+				message: message
 			}
 
 			ngDialog.open({
