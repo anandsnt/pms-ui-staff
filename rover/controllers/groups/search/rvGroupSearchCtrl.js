@@ -214,10 +214,6 @@ sntRover.controller('rvGroupSearchCtrl', [
                 return false;
             }
 
-            if ($scope.query.length < 3) {
-                return false;
-            }
-
             $scope.search();
         };
 
