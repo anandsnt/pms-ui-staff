@@ -7,7 +7,7 @@
         <div class="summary" ng-show="data.activeTab === 'SUMMARY'">
             <span>{{'BAL_AS_OF_EOD' | translate}}</span>
             <strong>{Date}</strong>
-            <button type="button" class="button blue" translate>PRINT</button>
+            <button ng-click="printSummary()" type="button" class="button blue" translate>PRINT</button>
         </div>
         <div class="entry filter" ng-show="data.activeTab === 'REVENUE' || data.activeTab === 'PAYMENTS'">
             <label for="revenue-departments" translate>EMPLOYEE / DEPARTMENT / HOUSE</label>

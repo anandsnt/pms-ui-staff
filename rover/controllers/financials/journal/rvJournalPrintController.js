@@ -196,6 +196,10 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 
 	/** PRINT Functionality **/
 
+	$scope.$on("PRINTSUMMARY",function(){
+		printJournal();
+	});
+
 	$scope.printRevenue = function(){
 		printJournal();
 	};
@@ -213,8 +217,11 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		var orientation = 'portrait';
 
 		switch( $scope.data.activeTab ) {
-			case 'REVENUE':
-			case 'PAYMENTS':
+			case 'SUMMARY'	:
+				orientation = 'landscape';
+				break;
+			case 'REVENUE'	:
+			case 'PAYMENTS'	:
 				orientation = 'landscape';
 				break;
 
@@ -264,5 +271,4 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		// remove the orientation after similar delay
 		$timeout(removePrintOrientation, 100);
 	};
-
 }]);

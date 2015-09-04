@@ -286,4 +286,9 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         return date + ', ' + time;
     };
 
+    /* To PRINT Summary Deatils */
+    $scope.printSummary = function(){
+        $scope.$broadcast("PRINTSUMMARY");
+    };
+
 }]);
