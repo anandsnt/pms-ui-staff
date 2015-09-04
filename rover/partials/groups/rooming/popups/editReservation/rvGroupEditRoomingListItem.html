@@ -85,7 +85,7 @@
                 ng-class="{'grey' : shouldDisableCheckoutButton(ngDialogData)}" 
                 ng-show="!ngDialogData.reservationStatusFlags.isExpected && ngDialogData.reservationStatusFlags.isPastArrival" 
                 ng-disabled="shouldDisableCheckoutButton(ngDialogData)"
-                ng-click="closeThisDialog(0);checkoutReservation(ngDialogData);">
+                ng-click="checkoutReservation(ngDialogData);">
                 Check Out
             </button>
             <button type="button" class="button purple" ng-click="updateReservation(ngDialogData)">
