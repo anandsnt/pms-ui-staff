@@ -321,7 +321,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          * @return {Boolean} [description]
          */
         $scope.shouldShowCompanyCardNavigationButton = function() {
-            return (!!summaryData.allotmentSummary.company.id)
+            return (!$scope.isInAddMode() && !!summaryData.allotmentSummary.company.id)
         };
 
         /**
@@ -329,7 +329,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          * @return {Boolean} [description]
          */
         $scope.shouldShowTravelAgentNavigationButton = function() {
-            return (!!summaryData.allotmentSummary.travel_agent.id)
+            return (!$scope.isInAddMode() && !!summaryData.allotmentSummary.travel_agent.id)
         };
 
         $scope.goToTACard = function(){            
