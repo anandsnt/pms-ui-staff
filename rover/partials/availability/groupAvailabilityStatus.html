@@ -1,15 +1,14 @@
-<div id="availability-grid" class="availability-grid scrollable" ng-controller="rvGroupAvailabilityStatusController" ng-iscroll-delay="100" ng-iscroll='groupscroller'>
+<div id="availability-grid" class="availability-grid scrollable" ng-controller="rvGroupAvailabilityStatusController" ng-iscroll-delay="100" ng-iscroll='groupscroller' ng-hide="hideBeforeDataFetch">
 	<div class="wrapper">
-		<table id="dates-grid" class="dates-grid" ng-class="{'grid-7':true}">
+		<table id="dates-grid" class="dates-grid" ng-class="{'grid-7': data.dates.length<=7, 'grid-14': data.dates.length<=14, 'grid-30': data.dates.length<=30}">
 			<colgroup>
-				<!-- Total number of <col> elements must match number of days displayed + first col for row labels. So in the 14 days grid, you'll have 15 <col> elements -->
-				<col> <!-- First col is always defined like this. It's used for row labels -->
-				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}"> <!-- Use this for every week day in the grid -->
+				<col>
+				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}"> 
 			</colgroup>
 
 			<thead>
 				<tr>
-					<th class="heading"></th> <!-- First is blank, again for row label -->
+					<th class="heading"></th> 
 					<th ng-repeat="eachDate in data.dates">
 						<div class="inner"  ng-class="{'weekend': eachDate.isWeekend}">
 							<span ng-bind="eachDate.date|date:dayInWeek"></span>
@@ -22,7 +21,7 @@
 				<tr class="room-details main">
 					<th class="heading rows-toggle" scope="row" ng-click="togleHoldStatusVisibility('groupRoomTotal')">Group Rooms (Total)</th>
 					<td ng-repeat="groupTotalRoom in data.groupTotalRooms track by $index">
-						<div class="inner">{{groupTotalRoom | number : 2}}</div>
+						<div class="inner">{{groupTotalRoom}}</div>
 					</td>
 				</tr>
 				<tr class="room-details" ng-repeat="rowData in data.holdstatuses track by $index" ng-class="{'hidden':hideHoldStatusOf.groupRoomTotal}">
