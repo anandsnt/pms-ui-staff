@@ -223,26 +223,29 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 
 	};
 	var formGridDataForGroupAvailability = function(datafromApi){
+		console.log(datafromApi);
 		var gridDataForGroupAvailability = {};
 		var dates = [];
 		var groupTotalRooms =[];
 		var groupTotalPickedUps = [];
-
-		_.each(datafromApi.results,function(element,index,lis){		
+		var holdstatus = [];
+		_.each(datafromApi.results,function(element,index,lis){
+			//Extracting date detail		
 			var dateToCheck = tzIndependentDate(element.date);
 			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
 			dates.push({'date': element.date, 'isWeekend': isWeekend, 'dateObj': new Date(element.date)});
-
+			//Extracting groupTotalRooms
 			groupTotalRooms.push(element.group_total_rooms);
-
-			groupTotalPickedUps.push(element.group_total_pickups);
-
+			//Extracting groupTotal picked ups
+			groupTotalPickedUps.push(element.group_total_pickups);			
+			holdstatus.push(element.hold_status);
 		});
-
+		console.log(holdstatus);
 		gridDataForGroupAvailability = {
 			'dates'	: dates,
 			'groupTotalRooms': groupTotalRooms,
-			'groupTotalPickedUps':groupTotalPickedUps
+			'groupTotalPickedUps':groupTotalPickedUps,
+			'holdstatuses': _.zip.apply(null, holdstatus)
 		};
 		return gridDataForGroupAvailability;
 	}

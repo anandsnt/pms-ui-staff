@@ -6,7 +6,19 @@ sntRover.controller('rvGroupAvailabilityStatusController', [
 		BaseCtrl.call(this, $scope);
 
 		$scope.hideMeBeforeFetching = false;
-		
+		$scope.hideHoldStatusOf = {};
+		$scope.hideHoldStatusOf["groupRoomTotal"] = true;
+		$scope.hideHoldStatusOf["groupRoomPicked"] = true;
+
+		$scope.togleHoldStatusVisibility = function(eventSource){
+			if(eventSource === "groupRoomTotal"){
+				$scope.hideHoldStatusOf["groupRoomTotal"]=!$scope.hideHoldStatusOf["groupRoomTotal"];
+			}else if(eventSource === "groupRoomPicked"){
+				$scope.hideHoldStatusOf["groupRoomPicked"]=!$scope.hideHoldStatusOf["groupRoomPicked"];
+			};
+
+		};
+
 		$scope.data = rvAvailabilitySrv.getGridDataForGroupAvailability();
 		//if already fetched we will show without calling the API
 		if(!isEmptyObject($scope.data)){

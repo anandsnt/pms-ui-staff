@@ -20,16 +20,27 @@
 			</thead>
 			<tbody>
 				<tr class="room-details main">
-					<th class="heading" scope="row">Group Rooms (Total)</th> <!-- Click on this toggles the visibility of hold status rows for Total -->
+					<th class="heading" scope="row" ng-click="togleHoldStatusVisibility('groupRoomTotal')">Group Rooms (Total)</th>
 					<td ng-repeat="groupTotalRoom in data.groupTotalRooms track by $index">
 						<div class="inner">{{groupTotalRoom | number : 2}}</div>
 					</td>
 				</tr>
+				<tr class="room-details" ng-repeat="rowData in data.holdstatuses track by $index" ng-class="{'hidden':hideHoldStatusOf.groupRoomTotal}">
+					<th scope="row">{{rowData[0].hold_status}}</th>
+					<td ng-repeat="cellData in rowData track by $index">
+						<div class="inner">{{cellData.total_number_of_rooms_blocked}}</div>
+					</td>
+				</tr>				
 				<tr class="room-details main">
-					<th class="heading" scope="row">Group Rooms (Picked)</th> <!-- Click on this toggles the visibility of hold status rows for Picked -->
-								<!-- Repeat for {X} days -->
+					<th class="heading" scope="row" ng-click="togleHoldStatusVisibility('groupRoomPicked')">Group Rooms (Picked)</th> 
 					<td ng-repeat="groupTotalPickedUp in data.groupTotalPickedUps track by $index">
 						<div class="inner green">{{groupTotalPickedUp}}</div>
+					</td>
+				</tr>
+				<tr class="room-details" ng-repeat="rowData in data.holdstatuses track by $index" ng-class="{'hidden':hideHoldStatusOf.groupRoomPicked}">
+					<th scope="row">{{rowData[0].hold_status}}</th>
+					<td ng-repeat="cellData in rowData track by $index">
+						<div class="inner">{{cellData.total_number_of_pickup_count}}</div>
 					</td>
 				</tr>
 			</tbody>
