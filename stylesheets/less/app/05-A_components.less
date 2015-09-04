@@ -733,6 +733,7 @@
         #find-cards,
         #find-group,
         #find-account,
+        #find-allotment,
         #rooms {
            &.no-results {
                 .wrapper,
@@ -1789,1817 +1790,1767 @@
                 overflow: hidden;
                 .square(100%);
                 .show;
+            }
 
-                /* Card headers ***/
-                .cards-header {
-                    position: relative;
-                    overflow: hidden;
-                    .size(90px, 100%);
+            /* Card headers ***/
+            .cards-header {
+                position: relative;
+                overflow: hidden;
+                .size(90px, 100%);
+            }
 
-                    .card-header {
-                        position: absolute;
-                        top: 0;
-                        padding: 20px;
-                        .size(90px, 100%);
+            .card-header {
+                position: absolute;
+                top: 0;
+                padding: 20px;
+                transition: all .3s cubic-bezier(.10, .10, .25, .90) !important;
+                .box-shadow(-1px 0 3px rgba(0,0,0,.5));
+                .size(90px, 100%);
+                .show;
+
+                .guest-image {
+                    &.icon-company,
+                    &.icon-travel-agent,
+                    &.icon-group-large,
+                    &.icon-allotment-large {
+                        text-align: center;
+                        text-transform: uppercase;
+                        color: @white;
+                        font-size: 12px;
+                        line-height: 12px;
+                        font-weight: 600;
+                        text-shadow: 1px 1px 0 rgba(0,0,0,.15);
+                        background-color: rgba(0,0,0,.1);
+                        .square(50px);
+
+                        span { .show; }        
+
+                        &.new { line-height: 80px; }                     
+                    }   
+                }
+
+                form,
+                .card-search-form {
+                    height: 50px;
+                    margin-left: 20px;
+                    .calc-width(100, 70);
+                    .pull-left;
+                    .float;
+                    .show;
+
+                    .masked-input {
+                        color: @white;
+                        cursor: pointer;
+                        clear: none;
+                        padding: 0 5px;
+                        margin-right: 5px;
+                        .placeholder-text(30px, 40px, 700, rgba(255,255,255,.6), normal);
+                        .show;
+                        .pull-left;
+                        .no-transition;
+
+                        &[data-size="0"] {
+                            width: 30px;
+                            background-color: rgba(0,0,0,.1);
+
+                            &.icons { width: 50px; }
+
+                            &:active { background-color: rgba(0,0,0,.2); }
+                        }
+
+                        &.fixed {
+                            color: @logoPrimary;
+                            background-color: rgba(0,0,0,.1);
+                        }
+
+                        &.active {
+                            color: @logoPrimary;
+                            background-color: rgba(0,0,0,.2);
+                            margin-right: 5px;
+                            .box-shadow(inset 0 0 2px rgba(0,0,0,.1));
+                        }
+                    }
+
+                    .holder {
+                        clear: both;
+                        margin-top: -10px;
+                        overflow: hidden;
+                        .size(30px, 100%);
                         .show;
 
-                        .guest-image {
-                            &.icon-company,
-                            &.icon-travel-agent {
-                                text-align: center;
-                                text-transform: uppercase;
-                                color: @white;
-                                font-size: 12px;
-                                line-height: 12px;
-                                font-weight: 600;
-                                text-shadow: 1px 1px 0 rgba(0,0,0,.15);
-                                background-color: rgba(0,0,0,.1);
-                                .square(50px);
-
-                                span { .show; }
-
-                                &.new { line-height: 80px; }
-                            }
-                        }
-
-                        form,
-                        .card-search-form {
-                            height: 50px;
-                            margin-left: 20px;
-                            .calc-width(100, 70);
+                        .entry {
                             .pull-left;
-                            .float;
-                            .show;
 
                             .masked-input {
-                                color: @white;
-                                cursor: pointer;
-                                clear: none;
-                                padding: 0 5px;
-                                margin-right: 5px;
-                                .placeholder-text(30px, 40px, 700, rgba(255,255,255,.6), normal);
-                                .show;
-                                .pull-left;
-                                .no-transition;
-
-                                &[data-size="0"] {
-                                    width: 30px;
-                                    background-color: rgba(0,0,0,.1);
-
-                                    &.icons { width: 50px; }
-
-                                    &:active { background-color: rgba(0,0,0,.2); }
-                                }
-
-                                &.fixed {
-                                    color: @logoPrimary;
-                                    background-color: rgba(0,0,0,.1);
-                                }
-
-                                &.active {
-                                    color: @logoPrimary;
-                                    background-color: rgba(0,0,0,.2);
-                                    margin-right: 5px;
-                                    .box-shadow(inset 0 0 2px rgba(0,0,0,.1));
-                                }
-                            }
-
-                            .holder {
-                                clear: both;
-                                margin-top: -10px;
-                                .size(30px, 100%);
-                                .show;
-
-                                .entry {
-                                    .pull-left;
-
-                                    .masked-input {
-                                        font-size: 30px;
-                                        line-height: 30px;
-                                        height: 30px;
-                                        font-weight: 700;
-                                    }
-                                }
-
-                                .switch-button,
-                                .status {
-                                    line-height: 30px;
-                                    vertical-align: middle;
-                                    text-transform: uppercase;
-                                    margin: 7px 0 0 20px;
-                                    .pull-left;
-                                }
-
-                                .switch-button {
-                                    width: 80px;
-                                    text-shadow: none;
-                                    background: rgba(0,0,0,.5);
-                                    .box-shadow(inset 1px 1px 1px rgba(0,0,0,.75));
-                                    .hide;
-
-                                    .value {
-                                        font-weight: 700;
-                                        .calc-width(100, 25);
-                                    }
-
-                                    .switch-icon {
-                                        font-size: 10px;
-                                        text-shadow: none;
-                                        font-weight: 600;
-                                        color: rgba(0,0,0,.5);
-                                        .square(20px);
-                                    }
-
-                                    .data-off {
-                                        .value { color: rgba(255,255,255,.4); }
-                                        .switch-icon { background: rgba(255,255,255,.7); }
-                                    }
-
-                                    .data-on {
-                                        .value { color: @white; }
-                                        .switch-icon { background: @yellow; }
-                                    }
-                                }
-
-                                &.data {
-                                    height: 35px;
-                                    margin-top: 0;
-
-                                    .masked-input {
-                                        line-height: 35px;
-                                        min-height: 35px;
-
-                                        &.icons { padding-left: 30px; }
-                                        &.icon-gc-location {
-                                            margin-right: 0;
-
-                                            &[value=""] { margin-right: 5px; }
-                                        }
-                                    }
-                                }
-                            }
-
-                            &.card-search-form {
-                                padding-top: 15px;
-
-                                .entry { float: none; }
-
-                                .masked-input {
-                                    margin-right: 10px;
-                                    .hide;
-
-                                    &.name,
-                                    &.long-name { .show; }
-
-                                    &.name { width: 180px; }
-                                    &.long-name { width: 370px; }
-                                    &.city { width: 140px; }
-
-                                    &.email { .calc-width(50, 270); }
-                                    &.loyalty { .calc-width(50, 270); }
-
-                                    &.code { .calc-width(100, 530); }
-
-                                    &:last-child { margin-right: 0; }
-                                }
+                                font-size: 30px;
+                                line-height: 30px;
+                                height: 30px;
+                                font-weight: 700;
                             }
                         }
 
-                        .card-actions {
-                            width: 160px;
+                        .switch-button,
+                        .status {
+                            line-height: 30px;
+                            vertical-align: middle;
+                            text-transform: uppercase;
+                            margin: 7px 0 0 20px;
+                            .pull-left;
+                        }
+
+                        .switch-button {
+                            width: 80px;
+                            text-shadow: none;
+                            background: rgba(0,0,0,.5);
+                            .box-shadow(inset 1px 1px 1px rgba(0,0,0,.75));
                             .hide;
-                            .pull-right;
 
-                            .button {
-                                width: 160px;
-                                padding: 0;
+                            .value {
+                                font-weight: 700;
+                                .calc-width(100, 25);
+                            }
 
-                                &.blank {
-                                    color: rgba(0,0,0,.4);
-                                    line-height: 40px;
-                                }
+                            .switch-icon {
+                                font-size: 10px;
+                                text-shadow: none;
+                                font-weight: 600;
+                                color: rgba(0,0,0,.5);
+                                .square(20px);
+                            }
+
+                            .data-off {
+                                .value { color: rgba(255,255,255,.4); }
+                                .switch-icon { background: rgba(255,255,255,.7); }
+                            }
+
+                            .data-on {
+                                .value { color: @white; }
+                                .switch-icon { background: @yellow; }
                             }
                         }
 
-                        &#guest-card-header { background: @gcard @gcardTexture; }
-                        &#company-card-header { background: @ccard @ccardTexture; }
-                        &#travel-agent-card-header { background: @tacard @tacardTexture; }
+                        &.data {
+                            height: 35px;
+                            margin-top: 0;
 
-                        &.first {
-                            left: 0;
-                            z-index: 10;
-                            .calc-width(100, 180);
+                            .masked-input {
+                                line-height: 35px;
+                                min-height: 35px;
+
+                                &.icons { padding-left: 30px; }
+                                &.icon-gc-location {
+                                    margin-right: 0;
+
+                                    &[value=""] { margin-right: 5px; }
+                                }
+                            }
                         }
+                    }
 
-                        &.second {
-                            cursor: pointer;
-                            z-index: 20;
-                            .box-shadow(-1px 0 3px rgba(0,0,0,.5));
-                            #calc-position > .left(100, 180);
+                    &.card-search-form {
+                        padding-top: 15px;
 
-                            .icon-show-conversations { .hide; }
-                        }
+                        .entry { float: none; }
 
-                        &.third {
-                            cursor: pointer;
-                            z-index: 30;
-                            .box-shadow(-1px 0 3px rgba(0,0,0,.5));
-                            #calc-position > .left(100, 90);
+                        .masked-input {
+                            margin-right: 10px;
+                            .hide;
 
-                            .icon-show-conversations { .hide; }
-                        }
+                            &.name,
+                            &.long-name { .show; }
 
-                        &.move-to-left {
-                            z-index: 99 !important;
-                            #move > #to > .left(moveToLeft, .6s, cubic-bezier(.10, .10, .25, .90), both);
-                        }
+                            &.name { width: 180px; }
+                            &.long-name { width: 370px; }
+                            &.city { width: 140px; }
 
-                        &.move-to-right {
-                            z-index: 1;
-                            #move > #to > .right(moveToRight, .6s, cubic-bezier(.10, .10, .25, .90), both);
+                            &.email { .calc-width(50, 270); }
+                            &.loyalty { .calc-width(50, 270); }
+
+                            &.code { .calc-width(100, 530); }
+
+                            &:last-child { margin-right: 0; }
                         }
                     }
                 }
 
-                /* Card content with tabs ***/
-                .cards-content {
+                .card-actions {
+                    text-align: right;
+                    width: 140px;
+                    .hide;
+                    .pull-right;
+
+                    .button {
+                        font-size: 15px;
+                        padding: 0;
+                        .size(40px, 140px);
+
+                        &.blank { 
+                            color: rgba(0,0,0,.4);
+                            line-height: 40px; 
+                        }
+                    }
+
+                    &.dual-actions {
+                        width: 260px;
+
+                        .button {
+                            width: 120px;
+                            margin-right: 10px;
+
+                            &.company,
+                            &.travel-agent {
+                                width: 50px;
+
+                                .icons {
+                                    .size(40px, 50px);
+
+                                    &.icon-company { background-position: 14px -3454px; }
+                                    &.icon-travel-agent { background-position: 13px -3572px; }
+                                }
+                            }
+
+                            &.company { .gradient(lighten(@ccard, 10), @ccard); }
+                            &.travel-agent { .gradient(lighten(@tacard, 10), @tacard); }
+
+                            &:last-child { margin-right: 0; }
+                        }
+                    }
+                }
+
+                &#guest-card-header { background: @gcard @gcardTexture; }
+                &#company-card-header { background: @ccard @ccardTexture; }
+                &#travel-agent-card-header { background: @tacard @tacardTexture; }
+                &#group-card-header { background: @groupcard @groupcardTexture; }
+                &#allotment-card-header { background: @allotmentcard @allotmentcardTexture; }
+
+                &.first {
+                    left: 0;
+                    z-index: 10;
+                    .calc-width(100, 150);
+                }
+
+                &.second,
+                &.third,
+                &.fourth { cursor: pointer; }
+
+                &.second {
+                    z-index: 20; 
+                    #calc-position > .left(100, 150);
+                }
+
+                &.third { 
+                    z-index: 30; 
+                    #calc-position > .left(100, 100);
+                }
+
+                &.fourth {
+                    z-index: 40;
+                    #calc-position > .left(100, 50);
+                }
+            }
+
+            /* Card content with tabs ***/
+            .cards-content {
+                overflow: hidden;
+                .calc-height(100, 80);
+            }
+
+            .card-content {
+                .square(100%);
+                .hide;
+
+                .card-tabs-nav {
+                    .size(50px, 100%);
+
+                    li {
+                        margin: 5px 0 0 0;
+                        padding: 0;
+                        line-height: 45px;
+                        vertical-align: middle;
+                        background: rgba(0,0,0,.2);
+                        .box-shadow();
+                        #border-radius > .top();
+                        .pull-left;
+
+                        a {
+                            color: @white;
+                            font-weight: 600;
+                            padding: 0 20px;
+                            .show;
+                            .no-transition;
+
+                            &.error,
+                            &.warning {
+                                padding-left: 30px;
+                                position: relative;
+
+                                &:after {
+                                    content: "!";
+                                    position: absolute;
+                                    top: 16px;
+                                    left: 10px;
+                                    font-size: 12px;
+                                    line-height: 14px;
+                                    text-align: center;
+                                    color: @white;
+                                    .square(14px);
+                                    #border-radius > .rounded(14px);
+                                }
+                            }
+
+                            &.error:after { background: @red; }
+                            &.warning:after { background: @yellow; }
+                        }
+
+                        &.ui-tabs-active {
+                            font-size: 18px;
+                            line-height: 50px;
+                            margin-top: 0;
+                            .background(@white);
+                            .box-shadow(none);
+
+                            a {
+                                color: @textColor;
+
+                                &.error,
+                                &.warning {
+                                    &:after { top: 18px; }
+                                }
+                            }
+                        }
+
+                        &.social-lobby {
+                            .pull-right;
+
+                            &.ui-tabs-active {
+                                background: @softRed;
+
+                                a { color: @white; }
+                            }
+                        }
+
+                        &.with-filters {
+                            &.ui-tabs-active {
+                                position: relative;
+
+                                &:after {
+                                    content: "";
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    background: rgba(0,0,0,.1);
+                                    #border-radius > .top();
+                                    .square(100%);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .card-tab {
+                    position: relative;
+                    color: @textColor;
                     overflow: hidden;
-                    .calc-height(100, 80);
+                    .background(@white);
+                    #border-radius > .rounded();
+                    #border-radius > .left-top(0px);
+                    .calc-height(100, 60);
 
-                    .card-content {
-                        .square(100%);
-                        .hide;
+                    > .wrapper { 
+                        padding: 20px;
+                        position: relative;
+                        .float;
+                    }
 
-                        .card-tabs-nav {
-                            .size(50px, 100%);
+                    /* Columns holder ***/
+                    .holder {
+                        height: 100%;
+                        .float;
+                        #pixel-to-percent > .width(904, 1888);
+                        .pull-left;
 
-                            li {
-                                margin: 5px 0 0 0;
+                        .h3 {
+                            font-weight: 400;
+                            padding-bottom: 10px;
+                            margin-bottom: 10px;
+                            border-bottom: 1px solid rgba(0,0,0,.1);
+                            clear: both;
+                            .float;
+
+                            &.margin { padding-top: 20px; }
+                        }
+
+                        .entry {
+                            #fade > .in();
+                            #pixel-to-percent > .width(432, 904);
+
+                            label { margin-bottom: 0; }
+
+                            input[size] {
+                                text-align: center;
+                                margin-right: 5px;
+
+                                &:last-child { margin-right: 0; }
+                            }
+
+                            .balance-green { color: @green; }
+                            .balance-red { color: @red; }
+
+                            .contracted-nights {
+                                line-height: 40px;
+                                background: @white @calendar no-repeat 95% -90px !important;
+                                background-size: 20px;
+                                cursor: pointer;
+                                .no-transition;
+                                .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
+                                #border-radius > .rounded();
+                                .show;
+
+                                &:hover,
+                                &:active { background-position: 95% -140px !important; }
+
+                                @media @highdpi {
+                                    background-image: @calendar2x;
+                                }
+                            }
+
+                            .switch-button {
+
+                                .data-off,
+                                .data-on {
+                                    left: auto;
+
+                                    &.data-off {
+                                        right: -100%;
+
+                                        .switch-icon {
+                                            margin: 0 5px 0 0;
+                                            .gradient(@greenStart, @greenEnd);
+                                        }
+                                    }
+
+                                    &.data-on {
+                                        right: 0;
+
+                                        .switch-icon {
+                                            margin: 0 0 0 5px;
+                                            .gradient(@redStart, @redEnd);
+
+                                            &.grey { .gradient(@grey2, @grey4); }
+                                        }
+                                    }
+                                }
+
+                                &.on {
+                                    .data-off { right: 0; }
+                                    .data-on { right: 100%; }
+                                }
+                            }
+
+                            .button {
+                                position: relative;
+                                height: 40px;
+
+                                .count {
+                                    position: absolute;
+                                    top: -6px;
+                                    right: -6px;
+                                    font-size: 12px;
+                                    line-height: 24px;
+                                    color: @white;
+                                    background-color: @softRedStart;
+                                    #border-radius > .rounded(24px);
+                                    .square(24px);
+                                }
+                            }
+
+                            &.margin { #pixel-to-percent > .right-margin(40, 904); }
+
+                            &.no-label {
+                                padding-top: 24px;
+
+                                &.full-width { padding-top: 0; }
+                            }
+
+                            &.with-button {
+                                .float;
+
+                                input,
+                                .select {
+                                    #pixel-to-percent > .width(432, 904);
+                                    .pull-left;
+                                }
+
+                                .button { 
+                                    #pixel-to-percent > .left-margin(40, 904);
+                                    .pull-left;
+
+                                    &.with-icon {
+                                        padding: 0 20px 0 40px;
+                                        font-size: 16px;
+                                        line-height: 40px;
+                                        .size(40px, auto);
+
+                                        .icons {
+                                            top: 10px;
+                                            left: 10px;
+                                            margin-left: 0;
+                                        }
+                                    }
+                                }
+                            }
+
+                            &.only-button { 
+                                .button { width: 100%; }
+                            }
+
+                            &.stay-dates {
+                                .float;
+
+                                .entry-data {
+                                    margin-right: 10px;
+                                    #pixel-to-percent > .width(260, 904);
+                                    .pull-left;
+                                }
+
+                                .button {
+                                    margin-top: 24px;
+                                    padding: 0 15px;
+                                    height: 40px;
+                                }
+
+                                &.no-actions {
+                                    .entry-data { 
+                                        .calc-width(50, 5);
+
+                                        &:last-child { margin-right: 0; }
+                                    }
+                                }
+                            }
+
+                            &.price-adjust {
+                                .float;
+
+                                .select {
+                                    #pixel-to-percent > .width(122, 432);
+                                    .pull-left;
+                                }
+
+                                input {
+                                    margin: 0 10px;
+                                    #pixel-to-percent > .width(148, 432);
+                                    .pull-left;
+                                }
+                            }
+
+                            &.with-notes {
+                                .float;
+
+                                textarea {
+                                    height: 80px;
+                                    #pixel-to-percent > .right-margin(40, 904);
+                                    #pixel-to-percent > .width(664, 904);
+                                    .pull-left;
+                                }
+
+                                .button {
+                                    line-height: 40px;
+                                    #pixel-to-percent > .width(200, 904);
+                                    .pull-left;
+                                }
+                            }
+
+                            &.full-width,
+                            &.radio-check {
+                                float: none;
+                                width: 100%;
+                            }
+
+                            &.clear { float: none; }
+
+                            &.small { #pixel-to-percent > .width(196, 904); }
+
+                            &.radio-check {
+                                .float;
+
+                                .checkbox,
+                                .radio { #pixel-to-percent > .width(432, 904); }
+
+                                &.full-width {
+                                    .checkbox,
+                                    .radio { width: 100%; }
+                                }
+
+                                .check-block { 
+                                    margin-bottom: 10px; 
+                                    .float;
+                                }
+                            }
+
+                            &.break {
+                                padding-top: 10px;
+                                border-top: 1px solid rgba(0,0,0,.1);
+                                .float;
+
+                                .button {
+                                    .calc-width(50, 10);
+                                    .pull-left;
+
+                                    &:nth-child(2) { margin-left: 20px; }
+                                }
+                            }
+
+                            &.has-datepicker {
+                                .ui-datepicker-trigger { top: 24px; }
+                            }
+
+                            &.commission {
+                                .float;
+
+                                .switch-button {
+                                    margin-right: 10px;
+                                    height: 40px;
+                                    .calc-width(45, 10);
+                                    .pull-left;
+
+                                    input[type="checkbox"] { 
+                                        line-height: 40px;
+                                        height: 40px;
+                                    }   
+
+                                    .data-off,
+                                    .data-on {
+                                        line-height: 30px;
+                                        height: 30px;
+                                    }   
+                                }
+
+                                input[type="text"] { 
+                                    margin-right: 10px;
+                                    .calc-width(30, 10);
+                                    .pull-left;
+                                }
+
+                                .select { 
+                                    .size(40px, 25%);
+                                    .pull-left;
+                                }
+                            }
+
+                            &.hidden { #fade > .out(); }
+                        }
+
+                        &.left {
+                            #pixel-to-percent > .right-margin(80, 1888);
+
+                            .entry {
+                                
+                                .button:not(.with-label) { padding: 0; }
+
+                                &.radio-check {
+                                    .checkbox:nth-child(even),
+                                    .radio:nth-child(even) { #pixel-to-percent > .right-margin(40, 904); }
+
+                                    .check-block {
+                                        .checkbox:nth-child(even),
+                                        .radio:nth-child(even) { margin-right: 0; }
+
+                                        .checkbox:nth-child(odd),
+                                        .radio:nth-child(odd) { #pixel-to-percent > .right-margin(40, 904); }
+                                    }
+                                }
+                            }
+                        }
+
+                        &.right {
+                            .entry {
+                                &.radio-check {
+                                    .checkbox:nth-child(odd),
+                                    .radio:nth-child(odd) { #pixel-to-percent > .right-margin(40, 904); }
+
+                                    .check-block {
+                                        .checkbox:nth-child(even),
+                                        .radio:nth-child(even) { #pixel-to-percent > .right-margin(40, 904); }
+
+                                        .checkbox:nth-child(odd),
+                                        .radio:nth-child(odd) { margin-right: 0; }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    /* Occupancy graph ***/
+                    .occupancy-graph {
+                        clear: both;
+                        background-color: @white;
+                        padding: 20px;
+                        margin-bottom: 20px;
+                        position: relative;
+                        .box-shadow();
+                        #border-radius > .rounded();
+                        .show;
+
+                        .h3 {
+                            position: absolute;
+                            top: 20px;
+                            left: 20px;
+                            font-weight: 400;
+                        }
+                    }
+
+                    /* Active items - in payment & loyalty ***/
+                    .active-item {
+                        position: relative;
+                        padding: 0 20px;
+                        margin-bottom: 10px;
+                        line-height: 50px;
+                        vertical-align: middle;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        .clickable;
+                        .no-transition();
+
+                        > .primary:not(.value) {
+                            position: absolute;
+                            top: 0;
+                            right: 20px;
+                            margin-right: 0;
+                        }
+
+                        &.primary .value { font-weight: 600; }
+
+                        &.item-payment {
+                            figure,
+                            > span { margin-right: 80px; }
+                        }
+
+                        &.item-loyalty {
+                            > span {
+                                margin-right: 20px;
+
+                                &.name {
+                                    font-size: 14px;
+                                    color: @grey3;
+                                }
+                            }
+                        }
+                    }
+
+                    .add-new-button {
+                        width: 100%;
+                        .show;
+                    }
+
+                    /* Notes tab ***/
+                    &.notes-tab {
+                        padding: 20px;
+                        .float;
+
+                        .h3 {
+                            font-weight: 400;
+                            padding-bottom: 10px;
+                            margin-bottom: 20px;
+                            border-bottom: 1px solid rgba(0,0,0,.1);
+                            clear: both;
+                        }
+
+                        .entry {
+                            text-align: right;
+                            #pixel-to-percent > .width(904, 1888);
+                            #pixel-to-percent > .right-margin(80, 1888);
+                            .pull-left;
+
+                            .button {
+                                margin-top: 20px;
+                            }
+                        }
+
+                        .holder {
+                            position: relative; 
+                            .calc-height(100, 50);
+
+                            > .wrapper { padding: 0 20px 0 0; }
+                            
+                            > .iScrollVerticalScrollbar {
+                                top: 0;
+                                bottom: 0;
+                                right: 0;
+                            }
+                        }
+                    }
+
+                    /* With inner header ***/
+                    &.inner-header {
+
+                        .tab-header {
+                            overflow: hidden;
+                            .size(80px, 100%);
+                            .box-shadow(inset 0 -1px 1px rgba(0,0,0,.15));
+                            .float;
+
+                            .entry { margin: 0; }
+
+                            .button { 
+                                padding: 0 20px; 
+                                height: 40px;
+                            }
+
+                            .actions {
+                                text-align: right;
+                                .pull-right;
+                            }
+
+                            &.with-filters { background: rgba(0,0,0,.1); }
+                        }
+
+                        .tab-details {
+                            position: relative;
+                            overflow: hidden;
+                            .calc-height(100, 80);
+
+                            >.wrapper {
+                                padding: 20px; 
+                                position: relative;
+                                .float;
+                            }
+
+                            .notice {
+                                position: absolute;
+                                top: 10px;
+                                left: 10px;
+                                z-index: 9990;
+                                .calc-width(100, 20);
+                            }
+
+                            .iScrollVerticalScrollbar { bottom: 20px; }
+                        }
+                    }
+
+                    /* Contracts & Reservations ***/
+                    &.contracts,
+                    &.reservations {
+
+                        .tab-header {
+                            padding: 20px;
+
+                            .entry {
+                                width: 340px;
+
+                                &.date-range {
+                                    .float;
+
+                                    .has-datepicker {
+                                        width: 140px;
+                                        .pull-left;
+
+                                        input { .box-shadow(inset 1px 1px 0 rgba(0,0,0,.3)); }
+                                    }
+
+                                    span {
+                                        color: @grey3;
+                                        font-size: 14px;
+                                        text-transform: uppercase;
+                                        line-height: 40px;
+                                        margin: 0 10px;
+                                        .pull-left;
+                                    }
+                                }
+                            }
+                        }
+
+                        .tab-details {
+
+                            .contract-stats {
+                                li {
+                                    color: @grey3;
+                                    text-transform: uppercase;
+                                    margin-bottom: 20px;
+                                    line-height: 30px;
+                                    .float;
+
+                                    span {
+                                        font-size: 30px;
+                                        font-weight: 300;
+                                        color: @textColor;
+                                        text-transform: none;
+                                        .pull-right;
+
+                                        &.green { color: @green; }
+                                        &.red { color: @red; }
+                                        &.blue { color: @blue; }
+                                    }
+                                }
+                            }
+
+                            .search-results {
                                 padding: 0;
-                                line-height: 45px;
-                                vertical-align: middle;
-                                background: rgba(0,0,0,.2);
-                                .box-shadow();
-                                #border-radius > .top();
+
+                                li {
+                                    a,
+                                    .faux-anchor {
+                                        .date {
+                                            line-height: 20px;
+                                            .show;
+                                            .pull-left;
+
+                                            .guest-status {
+                                                margin: 0 10px 0 0;
+                                                background-color: rgba(0,0,0,.1);
+                                                .show;
+                                                .square(20px);
+                                                .pull-left;
+
+                                                &.check-in,
+                                                &.arrival { background-color: @green; }
+                                                &.check-out,
+                                                &.late-check-out,
+                                                &.departed { background-color: @red; }
+                                                &.inhouse { background-color: @blue; }
+                                                &.cancel { background-color: @grey3; }
+                                                &.no-show { background: @grey2; }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    &.reservations {
+                        .tab-details {
+                            &.with-pagination { .calc-height(100, 140); }
+                        }
+                    }
+
+                    /* Room Blocks ***/
+                    &.rooms {
+                        .tab-header {
+                            padding: 5px 20px;
+
+                            .entry {
+                                margin-right: 20px;
+                                width: 100px;
+
+                                label { margin: 0; }
+
+                                .disabled {
+                                    select { background: rgba(0,0,0,.01); }
+                                    
+                                    &:after { .hide; }
+                                }
+
+                                &.status { width: 160px; }
+
+                                &.date-range {
+                                    margin-right: 0;
+                                    .calc-width(100, 560);
+                                    .float;
+
+                                    .has-datepicker {
+                                        margin-right: 20px;
+                                        .calc-width(50, 20);
+                                        .pull-left;
+                                    }
+                                }
+
+                                &:last-child { margin-right: 0; }
+                            }
+
+                            .actions {
+                                margin-top: 24px;
+                                width: 140px;
+                                .float;
                                 .pull-left;
 
-                                a {
-                                    color: @white;
-                                    font-weight: 600;
-                                    padding: 0 20px;
+                                .button {
+                                    padding: 0;
+                                    width: 100%;
                                     .show;
-                                    .no-transition;
+                                }
 
-                                    &.error,
-                                    &.warning {
-                                        padding-left: 30px;
+                                &.move-group {
+                                    margin-right: 20px;
+
+                                    .button {
+                                        &:not(.blue) {
+                                            .calc-width(50, 5);
+                                            .pull-left;
+
+                                            &.blank { margin-right: 10px; }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        .tab-details {
+                            position: relative;
+
+                            .no-content {
+                                .button {
+                                    font-size: 24px;
+                                    line-height: 70px;
+                                }
+                            }
+
+                            .room-block-actions {
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                padding: 10px;
+                                z-index: 1020;
+                                background: @grey1;
+                                .float;
+                                .box-shadow(1px 3px 3px rgba(0,0,0,.15));
+                                .size(100px, 180px);
+
+                                .button {
+                                    font-size: 14px;
+                                    line-height: 35px;
+                                    height: 35px;
+                                    padding: 0;
+                                    #fade > .in();
+
+                                    &.green,
+                                    &.red {
+                                        margin-bottom: 10px;
+                                        .calc-width(50, 5);
+                                        .pull-left;
+                                    }
+
+                                    &.green { margin-right: 10px; }
+
+                                    &.blue { width: 100%; }
+
+                                    &.hidden { #fade > .out(); }
+                                }
+                            }
+
+                            .room-block-timeline {
+                                position: absolute;
+                                top: 0;
+                                left: 180px;
+                                z-index: 9910;
+                                height: 100px;
+                                .float;
+                                .calc-width(100, 180);
+
+                                > .wrapper { padding: 0; }
+
+                                li {
+                                    text-align: center;
+                                    font-weight: 600;
+                                    text-transform: uppercase;
+                                    margin: 0 10px 0 0;
+                                    padding: 20px 10px 10px 0;
+                                    .size(100px, 180px);
+                                    .box-shadow(2px 0 0 rgba(0,0,0,.3));
+                                    .pull-left;
+
+                                    .inner {
+                                        color: @white;
+                                        background: @gcard;
+                                        padding: 10px;
+                                        #border-radius > .rounded();
+                                        .square(100%);
+                                        .show;
+
+                                        em { 
+                                            text-transform: none;
+                                            font-weight: 400;
+                                            .show;
+                                        }
+                                    } 
+
+                                    &:first-child { 
+                                        padding-right: 40px;
+                                        margin-left: 10px;
+                                        width: 220px;
+                                    }
+
+                                    &:last-child {
+                                        margin-right: 0;
+                                        .box-shadow(none);
+                                    }                                      
+                                }
+                            }
+
+                            .room-block-sidebar,
+                            .room-block-grid {
+                                position: absolute;
+                                top: 100px;
+                                .calc-height(100, 100);
+                                .show; 
+
+                                > .wrapper { padding: 0; }
+
+                                .row {
+                                    margin-bottom: 10px;
+                                    background-color: rgba(0,0,0,.03);
+                                    width: 100%;
+                                    min-height: 50px;
+
+                                    .line {
+                                        padding: 0 10px;
+                                        margin: 0;
+                                        overflow: hidden;
+                                        .flex(center);
+                                        .size(50px, 100%);
+
+                                        &.small { height: 30px; }
+
+                                        &.cellspan { 
+                                            justify-content: center; 
+
+                                            .green { color: @green; }
+                                            .red { color: @red; }
+                                        }
+                                    }
+                                }
+                            }
+
+                            .room-block-sidebar {                   
+                                left: 0;
+                                width: 180px;
+                                z-index: 1040;
+                                background: @grey1;
+                                .box-shadow(1px 3px 3px rgba(0,0,0,.15));
+
+                                > .iScrollVerticalScrollbar {
+                                    right: auto;
+                                    top: 0;
+                                    bottom: 10px;
+                                    left: 10px;
+                                }
+
+                                .row {
+                                    padding: 5px 0;
+                                    margin-left: 20px;
+                                    overflow: auto;
+                                    .calc-width(100, 20);
+                                    #border-radius > .left();
+
+                                    .line {
+                                        padding-right: 20px;
+                                        color: @grey3;
+                                        font-style: italic;
+                                        justify-content: flex-end;
+
+                                        &.line-toggle {
+                                            font-size: 14px;
+                                            text-transform: uppercase;
+                                            font-style: normal;
+                                            color: @textColor;
+                                            justify-content: flex-start;
+                                            cursor: pointer;
+                                            background: @arrowDown 90% 50% no-repeat;
+
+                                            &.active { background-image: @arrowUp; }
+                                        }
+
+                                        &.add {
+                                            color: @green;
+                                            font-weight: 600;
+                                            font-style: normal;
+                                            cursor: pointer;
+                                        }
+                                    }
+
+                                    &.open { 
+                                        padding: 35px 0 5px; 
+
+                                        &.end { padding-bottom: 35px; }
+                                    }
+                                }
+                            }                                
+
+                            .room-block-grid {
+                                left: 180px;
+                                .calc-width(100, 180);
+                                
+                                > .iScrollVerticalScrollbar { .hide; }
+
+                                > .iScrollHorizontalScrollbar { 
+                                    top: auto;
+                                    bottom: 10px;
+                                    left: 10px;
+                                    right: 10px;
+                                }
+
+                                .row {
+                                    .float;
+
+                                    .column {
                                         position: relative;
+                                        width: 180px;
+                                        margin-right: 10px;
+                                        padding: 5px 0;
+                                        .box-shadow(2px 0 0 rgba(0,0,0,.3));
+                                        .pull-left;
 
-                                        &:after {
-                                            content: "!";
-                                            position: absolute;
-                                            top: 16px;
-                                            left: 10px;
-                                            font-size: 12px;
-                                            line-height: 14px;
+                                        .line {
+
+                                            &.small { 
+                                                color: @grey3;
+                                                font-size: 14px;
+                                            }
+                                            
+                                            &.cellspan { color: @textColor; }
+                                        }
+
+                                        .cell {
+                                            padding: 0;
                                             text-align: center;
-                                            color: @white;
-                                            .square(14px);
-                                            #border-radius > .rounded(14px);
+                                            .calc-width(50, 5);
+                                            .pull-left;
+
+                                            &:first-child { margin-right: 10px; }
                                         }
-                                    }
 
-                                    &.error:after { background: @red; }
-                                    &.warning:after { background: @yellow; }
-                                }
+                                        input {
+                                            .box-shadow(inset 1px 1px 1px rgba(0,0,0,.3));
 
-                                &.ui-tabs-active {
-                                    font-size: 18px;
-                                    line-height: 50px;
-                                    margin-top: 0;
-                                    .background(@white);
-                                    .box-shadow(none);
-
-                                    a {
-                                        color: @textColor;
-
-                                        &.error,
-                                        &.warning {
-                                            &:after { top: 18px; }
+                                            &[disabled] { 
+                                                color: @grey3;
+                                                .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
+                                            }
                                         }
-                                    }
-                                }
-
-                                &.social-lobby {
-                                    .pull-right;
-
-                                    &.ui-tabs-active {
-                                        background: @softRed;
-
-                                        a { color: @white; }
-                                    }
-                                }
-
-                                &.with-filters {
-                                    &.ui-tabs-active {
-                                        position: relative;
 
                                         &:after {
                                             content: "";
                                             position: absolute;
-                                            top: 0;
                                             left: 0;
-                                            background: rgba(0,0,0,.1);
-                                            #border-radius > .top();
-                                            .square(100%);
+                                            bottom: -10px;
+                                            .box-shadow(2px 0 0 rgba(0,0,0,.3));
+                                            .size(10px, 100%);
                                         }
-                                    }
-                                }
-                            }
-                        }
 
-                        .card-tab {
-                            position: relative;
-                            color: @textColor;
-                            overflow: hidden;
-                            .background(@white);
-                            #border-radius > .rounded();
-                            #border-radius > .left-top(0px);
-                            .calc-height(100, 60);
+                                        &:first-child { 
+                                            margin-left: 10px;
+                                            width: 220px;
 
-                            > .wrapper { 
-                                padding: 20px;
-                                position: relative;
-                                .float;
-                            }
+                                            .line {
+                                                position: relative;
+                                                padding-right: 40px;
 
-                            /* Columns holder ***/
-                            .holder {
-                                height: 100%;
-                                .float;
-                                #pixel-to-percent > .width(904, 1888);
-                                .pull-left;
-
-                                .h3 {
-                                    font-weight: 400;
-                                    padding-bottom: 10px;
-                                    margin-bottom: 10px;
-                                    border-bottom: 1px solid rgba(0,0,0,.1);
-                                    clear: both;
-                                    .float;
-
-                                    &.margin { padding-top: 20px; }
-                                }
-
-                                .entry {
-                                    #fade > .in();
-                                    #pixel-to-percent > .width(432, 904);
-
-                                    label { margin-bottom: 0; }
-
-                                    input[size] {
-                                        text-align: center;
-                                        margin-right: 5px;
-
-                                        &:last-child { margin-right: 0; }
-                                    }
-
-                                    .balance-green { color: @green; }
-                                    .balance-red { color: @red; }
-
-                                    .contracted-nights {
-                                        line-height: 40px;
-                                        background: @white @calendar no-repeat 95% -90px !important;
-                                        background-size: 20px;
-                                        cursor: pointer;
-                                        .no-transition;
-                                        .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
-                                        #border-radius > .rounded();
-                                        .show;
-
-                                        &:hover,
-                                        &:active { background-position: 95% -140px !important; }
-
-                                        @media @highdpi {
-                                            background-image: @calendar2x;
-                                        }
-                                    }
-
-                                    .switch-button {
-
-                                        .data-off,
-                                        .data-on {
-                                            left: auto;
-
-                                            &.data-off {
-                                                right: -100%;
-
-                                                .switch-icon {
-                                                    margin: 0 5px 0 0;
-                                                    .gradient(@greenStart, @greenEnd);
+                                                .icon-mover-right {
+                                                    position: absolute;
+                                                    top: 5px;
+                                                    right: 0;
+                                                    .hide-text;
+                                                    .square(40px);
+                                                    .show;
                                                 }
-                                            }
-
-                                            &.data-on {
-                                                right: 0;
-
-                                                .switch-icon {
-                                                    margin: 0 0 0 5px;
-                                                    .gradient(@redStart, @redEnd);
-                                                }
-                                            }
-                                        }
-
-                                        &.on {
-                                            .data-off { right: 0; }
-                                            .data-on { right: 100%; }
-                                        }
-                                    }
-
-                                    &.margin { #pixel-to-percent > .right-margin(40, 904); }
-
-                                    &.no-label {
-                                        padding-top: 24px;
-
-                                        &.full-width { padding-top: 0; }
-                                    }
-
-                                    &.with-button,
-                                    &.only-button { 
-                                        .button {
-                                            position: relative;
-
-                                            .count {
-                                                position: absolute;
-                                                top: -6px;
-                                                right: -6px;
-                                                font-size: 12px;
-                                                line-height: 24px;
-                                                color: @white;
-                                                background-color: @softRedStart;
-                                                #border-radius > .rounded(24px);
-                                                .square(24px);
-                                            }
-                                        }
-                                    }
-
-                                    &.with-button {
-                                        .float;
-
-                                        input,
-                                        .select {
-                                            #pixel-to-percent > .width(432, 904);
-                                            .pull-left;
-                                        }
-
-                                        .button { 
-                                            #pixel-to-percent > .left-margin(40, 904);
-                                            .pull-left;
-
-                                            &.with-icon {
-                                                padding: 0 20px 0 40px;
-                                                font-size: 16px;
-                                                line-height: 40px;
-                                                .size(40px, auto);
-
-                                                .icons {
-                                                    top: 10px;
-                                                    left: 10px;
-                                                    margin-left: 0;
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    &.only-button { 
-                                        .button { width: 100%; }
-                                    }
-
-                                    &.stay-dates {
-                                        .float;
-
-                                        .entry-data {
-                                            margin-right: 10px;
-                                            #pixel-to-percent > .width(260, 904);
-                                            .pull-left;
-                                        }
-
-                                        .button {
-                                            margin-top: 24px;
-                                            padding: 0 15px;
-                                            height: 40px;
-                                        }
-                                    }
-
-                                    &.price-adjust {
-                                        .float;
-
-                                        .select {
-                                            #pixel-to-percent > .width(122, 432);
-                                            .pull-left;
-                                        }
-
-                                        input {
-                                            margin: 0 10px;
-                                            #pixel-to-percent > .width(148, 432);
-                                            .pull-left;
-                                        }
-                                    }
-
-                                    &.with-notes {
-                                        .float;
-
-                                        textarea {
-                                            height: 80px;
-                                            #pixel-to-percent > .right-margin(40, 904);
-                                            #pixel-to-percent > .width(664, 904);
-                                            .pull-left;
-                                        }
-
-                                        .button {
-                                            line-height: 40px;
-                                            #pixel-to-percent > .width(200, 904);
-                                            .pull-left;
-                                        }
-                                    }
-
-                                    &.full-width,
-                                    &.radio-check {
-                                        float: none;
-                                        width: 100%;
-                                    }
-
-                                    &.clear { float: none; }
-
-                                    &.small { #pixel-to-percent > .width(196, 904); }
-
-                                    &.radio-check {
-                                        .float;
-
-                                        .checkbox,
-                                        .radio { #pixel-to-percent > .width(432, 904); }
-
-                                        &.full-width {
-                                            .checkbox,
-                                            .radio { width: 100%; }
-                                        }
-
-                                        .check-block { 
-                                            margin-bottom: 10px; 
-                                            .float;
-                                        }
-                                    }
-
-                                    &.break {
-                                        padding-top: 10px;
-                                        border-top: 1px solid rgba(0,0,0,.1);
-                                        .float;
-
-                                        .button {
-                                            .calc-width(50, 10);
-                                            .pull-left;
-
-                                            &:nth-child(2) { margin-left: 20px; }
-                                        }
-                                    }
-
-                                    &.has-datepicker {
-                                        .ui-datepicker-trigger { top: 24px; }
-                                    }
-
-                                    &.commission {
-                                        .float;
-
-                                        .switch-button {
-                                            margin-right: 10px;
-                                            height: 40px;
-                                            .calc-width(45, 10);
-                                            .pull-left;
-
-                                            input[type="checkbox"] { 
-                                                line-height: 40px;
-                                                height: 40px;
-                                            }   
-
-                                            .data-off,
-                                            .data-on {
-                                                line-height: 30px;
-                                                height: 30px;
-                                            }   
-                                        }
-
-                                        input[type="text"] { 
-                                            margin-right: 10px;
-                                            .calc-width(30, 10);
-                                            .pull-left;
-                                        }
-
-                                        .select { 
-                                            .size(40px, 25%);
-                                            .pull-left;
-                                        }
-                                    }
-
-                                    &.hidden { #fade > .out(); }
-                                }
-
-                                .notes {
-                                    margin-top: 20px;
-                                    clear: both;
-                                    .show;
-
-                                    li {
-                                        position: relative;
-                                        font-size: 14px;
-                                        min-height: 40px;
-                                        padding: 0 0 20px 60px;
-                                        margin-bottom: 20px;
-                                        border-bottom: 1px solid rgba(0,0,0,.1);
-
-                                        .guest-image {
-                                            position: absolute;
-                                            top: 0;
-                                            left: 0;
-                                            .square(40px);
-
-                                            .vip {
-                                                bottom: -10px;
-                                                left: 0;
-                                            }
-                                        }
-
-                                        .note-title {
-                                            font-size: 16px;
-                                            text-transform: uppercase;
-
-                                            h4 {
-                                                display: inline-block;
-                                                margin-right: 20px;
-                                                color: @logoPrimary;
-                                                font-size: 16px;
-                                                font-weight: 600;
-                                            }
-
-                                            time {
-                                                display: inline-block;
-                                                color: @grey3;
-                                                margin-right: 20px;
-                                            }
-
-                                            .icon-trash {
-                                                display: inline-block;
-                                                cursor: pointer;
-                                                .pull-right;
                                             }
                                         }
 
                                         &:last-child {
-                                            margin-bottom: 0;
-                                            border-bottom: 0;
-                                        }
-                                    }
-                                }
+                                            padding-right: 0;
+                                            margin-right: 0;
+                                            .box-shadow(none);
 
-                                &.left {
-                                    #pixel-to-percent > .right-margin(80, 1888);
-
-                                    .entry {
-                                        &.radio-check {
-                                            .checkbox:nth-child(even),
-                                            .radio:nth-child(even) { #pixel-to-percent > .right-margin(40, 904); }
-
-                                            .check-block {
-                                                .checkbox:nth-child(even),
-                                                .radio:nth-child(even) { margin-right: 0; }
-
-                                                .checkbox:nth-child(odd),
-                                                .radio:nth-child(odd) { #pixel-to-percent > .right-margin(40, 904); }
-                                            }
-                                        }
-                                    }
-                                }
-
-                                &.right {
-                                    .entry {
-                                        &.radio-check {
-                                            .checkbox:nth-child(odd),
-                                            .radio:nth-child(odd) { #pixel-to-percent > .right-margin(40, 904); }
-
-                                            .check-block {
-                                                .checkbox:nth-child(even),
-                                                .radio:nth-child(even) { #pixel-to-percent > .right-margin(40, 904); }
-
-                                                .checkbox:nth-child(odd),
-                                                .radio:nth-child(odd) { margin-right: 0; }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            /* Occupancy graph ***/
-                            .occupancy-graph {
-                                clear: both;
-                                background-color: @white;
-                                padding: 20px;
-                                margin-bottom: 20px;
-                                position: relative;
-                                .box-shadow();
-                                #border-radius > .rounded();
-                                .show;
-
-                                .h3 {
-                                    position: absolute;
-                                    top: 20px;
-                                    left: 20px;
-                                    font-weight: 400;
-                                }
-                            }
-
-                            /* Active items - in payment & loyalty ***/
-                            .active-item {
-                                position: relative;
-                                padding: 0 20px;
-                                margin-bottom: 10px;
-                                line-height: 50px;
-                                vertical-align: middle;
-                                white-space: nowrap;
-                                overflow: hidden;
-                                text-overflow: ellipsis;
-                                .clickable;
-                                .no-transition();
-
-                                > .primary:not(.value) {
-                                    position: absolute;
-                                    top: 0;
-                                    right: 20px;
-                                    margin-right: 0;
-                                }
-
-                                &.primary .value { font-weight: 600; }
-
-                                &.item-payment {
-                                    figure,
-                                    > span { margin-right: 80px; }
-                                }
-
-                                &.item-loyalty {
-                                    > span {
-                                        margin-right: 20px;
-
-                                        &.name {
-                                            font-size: 14px;
-                                            color: @grey3;
-                                        }
-                                    }
-                                }
-                            }
-
-                            .add-new-button {
-                                width: 100%;
-                                .show;
-                            }
-
-                            /* Notes tab ***/
-                            &.notes-tab {
-                                padding: 20px;
-                                .float;
-
-                                .h3 {
-                                    font-weight: 400;
-                                    padding-bottom: 10px;
-                                    margin-bottom: 20px;
-                                    border-bottom: 1px solid rgba(0,0,0,.1);
-                                    clear: both;
-                                }
-
-                                .entry {
-                                    text-align: right;
-                                    #pixel-to-percent > .width(904, 1888);
-                                    #pixel-to-percent > .right-margin(80, 1888);
-                                    .pull-left;
-
-                                    .button {
-                                        margin-top: 20px;
-                                    }
-                                }
-
-                                .holder {
-                                    position: relative; 
-                                    .calc-height(100, 50);
-
-                                    > .wrapper { padding: 0 20px 0 0; }
-                                    
-                                    > .iScrollVerticalScrollbar {
-                                        top: 0;
-                                        bottom: 0;
-                                        right: 0;
-                                    }
-                                }
-                            }
-
-                            /* With inner header ***/
-                            &.inner-header {
-
-                                .tab-header {
-                                    overflow: hidden;
-                                    .size(80px, 100%);
-                                    .box-shadow(inset 0 -1px 1px rgba(0,0,0,.15));
-                                    .float;
-
-                                    .entry { margin: 0; }
-
-                                    .button { 
-                                        padding: 0 20px; 
-                                        height: 40px;
-                                    }
-
-                                    .actions {
-                                        text-align: right;
-                                        .pull-right;
-                                    }
-
-                                    &.with-filters { background: rgba(0,0,0,.1); }
-                                }
-
-                                .tab-details {
-                                    position: relative;
-                                    overflow: hidden;
-                                    .calc-height(100, 80);
-
-                                    >.wrapper {
-                                        padding: 20px; 
-                                        position: relative;
-                                        .float;
-                                    }
-
-                                    .notice {
-                                        position: absolute;
-                                        top: 10px;
-                                        left: 10px;
-                                        z-index: 9990;
-                                        .calc-width(100, 20);
-                                    }
-
-                                    .iScrollVerticalScrollbar { bottom: 20px; }
-                                }
-                            }
-
-                            /* Contracts & Reservations ***/
-                            &.contracts,
-                            &.reservations {
-
-                                .tab-header {
-                                    padding: 20px;
-
-                                    .entry {
-                                        width: 340px;
-
-                                        &.date-range {
-                                            .float;
-
-                                            .has-datepicker {
-                                                width: 140px;
-                                                .pull-left;
-
-                                                input { .box-shadow(inset 1px 1px 0 rgba(0,0,0,.3)); }
-                                            }
-
-                                            span {
-                                                color: @grey3;
-                                                font-size: 14px;
-                                                text-transform: uppercase;
-                                                line-height: 40px;
-                                                margin: 0 10px;
-                                                .pull-left;
-                                            }
-                                        }
-                                    }
-                                }
-
-                                .tab-details {
-
-                                    .contract-stats {
-                                        li {
-                                            color: @grey3;
-                                            text-transform: uppercase;
-                                            margin-bottom: 20px;
-                                            line-height: 30px;
-                                            .float;
-
-                                            span {
-                                                font-size: 30px;
-                                                font-weight: 300;
-                                                color: @textColor;
-                                                text-transform: none;
-                                                .pull-right;
-
-                                                &.green { color: @green; }
-                                                &.red { color: @red; }
-                                                &.blue { color: @blue; }
-                                            }
-                                        }
-                                    }
-
-                                    .search-results {
-                                        padding: 0;
-
-                                        li {
-                                            a,
-                                            .faux-anchor {
-                                                .date {
-                                                    line-height: 20px;
-                                                    .show;
-                                                    .pull-left;
-
-                                                    .guest-status {
-                                                        margin: 0 10px 0 0;
-                                                        background-color: rgba(0,0,0,.1);
-                                                        .show;
-                                                        .square(20px);
-                                                        .pull-left;
-
-                                                        &.check-in,
-                                                        &.arrival { background-color: @green; }
-                                                        &.check-out,
-                                                        &.late-check-out,
-                                                        &.departed { background-color: @red; }
-                                                        &.inhouse { background-color: @blue; }
-                                                        &.cancel { background-color: @grey3; }
-                                                        &.no-show { background: @grey2; }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            &.reservations {
-                                .tab-details {
-                                    &.with-pagination { .calc-height(100, 140); }
-                                }
-                            }
-
-                            /* Room Blocks ***/
-                            &.rooms {
-                                .tab-header {
-                                    padding: 5px 20px;
-
-                                    .entry {
-                                        margin-right: 20px;
-                                        width: 100px;
-
-                                        label { margin: 0; }
-
-                                        .disabled {
-                                            select { background: rgba(0,0,0,.01); }
-                                            
                                             &:after { .hide; }
                                         }
 
-                                        &.status { width: 160px; }
+                                    }
 
-                                        &.date-range {
+                                    &.open { padding: 0; }
+                                }
+                            }
+                        }
+                    }
+
+                    /* AR Transactions & Rooming List ***/
+                    &.transactions,
+                    &.rooming-list,
+                    &.bills,
+                    &.activity {
+                        .tab-header {
+                            .float;
+
+                            .search-form {
+                                text-align: left;
+                                background: rgba(0,0,0,.1);
+                                .square(80px);
+                                .transition(width, .2s, cubic-bezier(.10, .10, .25, .90));
+                                .pull-left;
+
+                                .entry {
+                                    overflow: hidden;
+                                    visibility: hidden;
+
+                                    &.filter { 
+                                        visibility: visible;
+
+                                        .button { 
+                                            padding: 0;
+                                            background-color: @white;
+                                            .square(40px); 
+                                        }
+                                    }
+                                }
+
+                                &.open { 
+                                    width: 100%;
+
+                                    .entry { 
+                                        padding: 0 10px 0 0;
+                                        margin: 0 10px 0 0;
+                                        border-right: 1px solid rgba(0,0,0,.1);
+                                        border-left: 0;
+                                        visibility: visible;
+                                        .box-shadow(none);
+
+                                        &:last-of-type {
+                                            padding-right: 0;
                                             margin-right: 0;
-                                            .calc-width(100, 560);
-                                            .float;
+                                            border-right: 0;
+                                        }
+                                    }
+                                }
+                            }
 
-                                            .has-datepicker {
-                                                margin-right: 20px;
-                                                .calc-width(50, 20);
-                                                .pull-left;
+                            .totals {
+                                padding: 20px;
+                                .calc-width(100, 80);
+                                .pull-left;
+
+                                li {
+                                    line-height: 1em;
+                                    margin-bottom: 0;
+                                    padding: 0 10px;
+                                    border-right: 1px solid rgba(0,0,0,.1);
+                                    .pull-left;
+
+                                    .data {
+                                        display: inline-block;
+                                        margin-right: 10px;
+
+                                        .label {
+                                            margin: 0;
+                                            float: none;
+                                        }
+
+                                        .value {
+                                            font-size: 28px;
+                                            line-height: 24px;
+                                            font-weight: 300;
+                                            color: @textColor;
+                                            .show;
+
+                                            &.green { color: @green; }
+                                            &.red { color: @red; }
+                                        }
+                                    }
+
+                                    .button {
+                                        height: 40px;
+                                        
+                                        &.white { margin-right: 10px; }
+                                        &.with-icon { width: 40px; }
+                                    }
+
+                                    &:first-child { padding-left: 0; }
+
+                                    &:nth-last-child(2) {
+                                        padding-right: 0;
+                                        border-right: 0; 
+
+                                        .data { margin-right: 0; }                                         
+                                    }
+                                    
+                                    &:last-child { 
+                                        text-align: right;
+                                        padding-right: 0;
+                                        border-right: 0; 
+                                        .pull-right;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    /* AR Transactions ***/
+                    &.transactions {
+                        .tab-header {
+                            .float;
+
+                            .search-form {
+                                padding: 20px;
+
+                                .entry {
+                                    height: 40px;
+
+                                    &.filter {
+                                        width: 50px;
+
+                                        .button { 
+                                             &.active { .gradient(@logoGradientStart, @logoGradientEnd); }
+                                        }
+                                    }
+
+                                    &.showing {
+                                        .calc-width(22, 10);
+                                    }
+
+                                    &.search {
+                                        .calc-width(38, 10);
+
+                                        .clear-query { right: 10px; }
+                                        .query { width: 100%; }
+                                    }
+
+                                    &.dates { .calc-width(40, 70); }
+                                }
+                            }
+
+                            .totals {
+                                li {
+                                    .button { .pull-right; }
+                                }                                    
+                            }
+                        }
+
+                        .tab-details {
+                            .wrapper { padding: 0; }
+
+                            &.with-pagination { .calc-height(100, 140); }
+                        }
+                    }                        
+
+                    /* Rooming List ***/
+                    &.rooming-list {
+                        .tab-header {
+                            .search-form {
+                                padding: 0 20px;
+
+                                .entry {
+                                    padding: 20px 0;
+                                    height: 80px;
+
+                                    label { 
+                                        line-height: 1em;
+                                        margin-bottom: 4px; 
+                                    }
+
+                                    select { .nowrap(); }
+
+                                    &.number { width: 100px; }
+                                    &.type { width: 240px; }
+                                    &.occupancy { width: 140px; }
+
+                                    &.date-range { 
+                                        .calc-width(100, 670); 
+
+                                        .has-datepicker {
+                                            .calc-width(50, 5);
+                                            .pull-left;
+
+                                            .clear-query { 
+                                                top: 20px;
+                                                right: 0;
+                                                background-color: @white;
+                                                .square(38px);
+
+                                                .icons {
+                                                    top: 11px;
+                                                    right: 11px;
+                                                }
+                                            }
+
+                                            .red { color: @red; }
+                                            .green { color: @green; }
+
+                                            &:first-child { margin-right: 10px; }
+                                        }                                            
+                                    }
+
+                                    &.filter {
+                                        width: 60px;
+                                        .show;
+
+                                        .button { 
+                                            .no-transition();
+
+                                            &.icon-add-60 { background-position: 10px -3690px; }
+                                            &.icon-remove-60 { background-position: 10px -3750px; }
+                                        }
+                                    }
+
+                                    &.action {
+                                        width: 80px;
+
+                                        .button { 
+                                            padding: 0;
+                                            width: 100%; 
+                                        }
+                                    }
+                                }
+
+                                &.open {
+
+                                    .entry { 
+                                        padding: 10px 10px 10px 0;
+
+                                        &.filter,
+                                        &.action { padding-top: 28px; }
+                                    }
+                                }
+                            }
+
+                            .totals {
+                                li {
+                                    .data {
+                                        .value { text-align: center; }
+                                    }
+
+                                    .checkbox {
+                                        font-size: 14px;
+                                        text-transform: uppercase;
+                                        margin-right: 10px;
+                                        .pull-left;
+                                    }
+
+                                    .button {
+                                        font-size: 14px;
+                                        padding: 0 10px;
+                                        margin-right: 10px;
+                                        .pull-left;
+
+                                        &.batch {
+                                            padding: 0 0 0 40px;
+                                            text-align: left;
+                                            width: 120px;
+
+                                            .icons {
+                                                top: 10px;
+                                                left: 10px;
+                                                margin: 0;
                                             }
                                         }
 
                                         &:last-child { margin-right: 0; }
                                     }
-
-                                    .actions {
-                                        margin-top: 24px;
-                                        width: 140px;
-                                        .float;
-                                        .pull-left;
-
-                                        .button {
-                                            padding: 0;
-                                            width: 100%;
-                                            .show;
-                                        }
-
-                                        &.move-group {
-                                            margin-right: 20px;
-
-                                            .button {
-                                                &:not(.blue) {
-                                                    .calc-width(50, 5);
-                                                    .pull-left;
-
-                                                    &.blank { margin-right: 10px; }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-
-                                .tab-details {
-                                    position: relative;
-
-                                    .no-content {
-                                        .button {
-                                            font-size: 24px;
-                                            line-height: 70px;
-                                        }
-                                    }
-
-                                    .room-block-actions {
-                                        position: absolute;
-                                        top: 0;
-                                        left: 0;
-                                        padding: 10px;
-                                        z-index: 1020;
-                                        background: @grey1;
-                                        .float;
-                                        .box-shadow(1px 3px 3px rgba(0,0,0,.15));
-                                        .size(100px, 180px);
-
-                                        .button {
-                                            font-size: 14px;
-                                            line-height: 35px;
-                                            height: 35px;
-                                            padding: 0;
-                                            #fade > .in();
-
-                                            &.green,
-                                            &.red {
-                                                margin-bottom: 10px;
-                                                .calc-width(50, 5);
-                                                .pull-left;
-                                            }
-
-                                            &.green { margin-right: 10px; }
-
-                                            &.blue { width: 100%; }
-
-                                            &.hidden { #fade > .out(); }
-                                        }
-                                    }
-
-                                    .room-block-timeline {
-                                        position: absolute;
-                                        top: 0;
-                                        left: 180px;
-                                        z-index: 9910;
-                                        height: 100px;
-                                        .float;
-                                        .calc-width(100, 180);
-
-                                        > .wrapper { padding: 0; }
-
-                                        li {
-                                            text-align: center;
-                                            font-weight: 600;
-                                            text-transform: uppercase;
-                                            margin: 0 10px 0 0;
-                                            padding: 20px 10px 10px 0;
-                                            .size(100px, 180px);
-                                            .box-shadow(2px 0 0 rgba(0,0,0,.3));
-                                            .pull-left;
-
-                                            .inner {
-                                                color: @white;
-                                                background: @gcard;
-                                                padding: 10px;
-                                                #border-radius > .rounded();
-                                                .square(100%);
-                                                .show;
-
-                                                em { 
-                                                    text-transform: none;
-                                                    font-weight: 400;
-                                                    .show;
-                                                }
-                                            } 
-
-                                            &:first-child { 
-                                                padding-right: 40px;
-                                                margin-left: 10px;
-                                                width: 220px;
-                                            }
-
-                                            &:last-child {
-                                                margin-right: 0;
-                                                .box-shadow(none);
-                                            }                                      
-                                        }
-                                    }
-
-                                    .room-block-sidebar,
-                                    .room-block-grid {
-                                        position: absolute;
-                                        top: 100px;
-                                        .calc-height(100, 100);
-                                        .show; 
-
-                                        > .wrapper { padding: 0; }
-
-                                        .row {
-                                            margin-bottom: 10px;
-                                            background-color: rgba(0,0,0,.03);
-                                            width: 100%;
-                                            min-height: 50px;
-
-                                            .line {
-                                                padding: 0 10px;
-                                                margin: 0;
-                                                overflow: hidden;
-                                                .flex(center);
-                                                .size(50px, 100%);
-
-                                                &.small { height: 30px; }
-
-                                                &.cellspan { 
-                                                    justify-content: center; 
-
-                                                    .green { color: @green; }
-                                                    .red { color: @red; }
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    .room-block-sidebar {                   
-                                        left: 0;
-                                        width: 180px;
-                                        z-index: 1040;
-                                        background: @grey1;
-                                        .box-shadow(1px 3px 3px rgba(0,0,0,.15));
-
-                                        > .iScrollVerticalScrollbar {
-                                            right: auto;
-                                            top: 0;
-                                            bottom: 10px;
-                                            left: 10px;
-                                        }
-
-                                        .row {
-                                            padding: 5px 0;
-                                            margin-left: 20px;
-                                            overflow: auto;
-                                            .calc-width(100, 20);
-                                            #border-radius > .left();
-
-                                            .line {
-                                                padding-right: 20px;
-                                                color: @grey3;
-                                                font-style: italic;
-                                                justify-content: flex-end;
-
-                                                &.line-toggle {
-                                                    font-size: 14px;
-                                                    text-transform: uppercase;
-                                                    font-style: normal;
-                                                    color: @textColor;
-                                                    justify-content: flex-start;
-                                                    cursor: pointer;
-                                                    background: @arrowDown 90% 50% no-repeat;
-
-                                                    &.active { background-image: @arrowUp; }
-                                                }
-
-                                                &.add {
-                                                    color: @green;
-                                                    font-weight: 600;
-                                                    font-style: normal;
-                                                    cursor: pointer;
-                                                }
-                                            }
-
-                                            &.open { 
-                                                padding: 35px 0 5px; 
-
-                                                &.end { padding-bottom: 35px; }
-                                            }
-                                        }
-                                    }                                
-
-                                    .room-block-grid {
-                                        left: 180px;
-                                        .calc-width(100, 180);
-                                        
-                                        > .iScrollVerticalScrollbar { .hide; }
-
-                                        > .iScrollHorizontalScrollbar { 
-                                            top: auto;
-                                            bottom: 10px;
-                                            left: 10px;
-                                            right: 10px;
-                                        }
-
-                                        .row {
-                                            .float;
-
-                                            .column {
-                                                position: relative;
-                                                width: 180px;
-                                                margin-right: 10px;
-                                                padding: 5px 0;
-                                                .box-shadow(2px 0 0 rgba(0,0,0,.3));
-                                                .pull-left;
-
-                                                .line {
-
-                                                    &.small { 
-                                                        color: @grey3;
-                                                        font-size: 14px;
-                                                    }
-                                                    
-                                                    &.cellspan { color: @textColor; }
-                                                }
-
-                                                .cell {
-                                                    padding: 0;
-                                                    text-align: center;
-                                                    .calc-width(50, 5);
-                                                    .pull-left;
-
-                                                    &:first-child { margin-right: 10px; }
-                                                }
-
-                                                input {
-                                                    .box-shadow(inset 1px 1px 1px rgba(0,0,0,.3));
-
-                                                    &[disabled] { 
-                                                        color: @grey3;
-                                                        .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
-                                                    }
-                                                }
-
-                                                &:after {
-                                                    content: "";
-                                                    position: absolute;
-                                                    left: 0;
-                                                    bottom: -10px;
-                                                    .box-shadow(2px 0 0 rgba(0,0,0,.3));
-                                                    .size(10px, 100%);
-                                                }
-
-                                                &:first-child { 
-                                                    margin-left: 10px;
-                                                    width: 220px;
-
-                                                    .line {
-                                                        position: relative;
-                                                        padding-right: 40px;
-
-                                                        .icon-mover-right {
-                                                            position: absolute;
-                                                            top: 5px;
-                                                            right: 0;
-                                                            .hide-text;
-                                                            .square(40px);
-                                                            .show;
-                                                        }
-                                                    }
-                                                }
-
-                                                &:last-child {
-                                                    padding-right: 0;
-                                                    margin-right: 0;
-                                                    .box-shadow(none);
-
-                                                    &:after { .hide; }
-                                                }
-
-                                            }
-
-                                            &.open { padding: 0; }
-                                        }
-                                    }
-                                }
-                            }
-
-                            /* AR Transactions & Rooming List ***/
-                            &.transactions,
-                            &.rooming-list,
-                            &.bills,
-                            &.activity {
-                                .tab-header {
-                                    .float;
-
-                                    .search-form {
-                                        text-align: left;
-                                        background: rgba(0,0,0,.1);
-                                        .square(80px);
-                                        .transition(width, .2s, cubic-bezier(.10, .10, .25, .90));
-                                        .pull-left;
-
-                                        .entry {
-                                            overflow: hidden;
-                                            visibility: hidden;
-
-                                            &.filter { 
-                                                visibility: visible;
-
-                                                .button { 
-                                                    padding: 0;
-                                                    background-color: @white;
-                                                    .square(40px); 
-                                                }
-                                            }
-                                        }
-
-                                        &.open { 
-                                            width: 100%;
-
-                                            .entry { 
-                                                padding: 0 10px 0 0;
-                                                margin: 0 10px 0 0;
-                                                border-right: 1px solid rgba(0,0,0,.1);
-                                                border-left: 0;
-                                                visibility: visible;
-                                                .box-shadow(none);
-
-                                                &:last-of-type {
-                                                    padding-right: 0;
-                                                    margin-right: 0;
-                                                    border-right: 0;
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    .totals {
-                                        padding: 20px;
-                                        .calc-width(100, 80);
-                                        .pull-left;
-
-                                        li {
-                                            line-height: 1em;
-                                            margin-bottom: 0;
-                                            padding: 0 10px;
-                                            border-right: 1px solid rgba(0,0,0,.1);
-                                            .pull-left;
-
-                                            .data {
-                                                display: inline-block;
-                                                margin-right: 10px;
-
-                                                .label {
-                                                    margin: 0;
-                                                    float: none;
-                                                }
-
-                                                .value {
-                                                    font-size: 28px;
-                                                    line-height: 24px;
-                                                    font-weight: 300;
-                                                    color: @textColor;
-                                                    .show;
-
-                                                    &.green { color: @green; }
-                                                    &.red { color: @red; }
-                                                }
-                                            }
-
-                                            .button {
-                                                height: 40px;
-                                                
-                                                &.white { margin-right: 10px; }
-                                                &.with-icon { width: 40px; }
-                                            }
-
-                                            &:first-child { padding-left: 0; }
-
-                                            &:nth-last-child(2) {
-                                                padding-right: 0;
-                                                border-right: 0; 
-
-                                                .data { margin-right: 0; }                                         
-                                            }
-                                            
-                                            &:last-child { 
-                                                text-align: right;
-                                                padding-right: 0;
-                                                border-right: 0; 
-                                                .pull-right;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            /* AR Transactions ***/
-                            &.transactions {
-                                .tab-header {
-                                    .float;
-
-                                    .search-form {
-                                        padding: 20px;
-
-                                        .entry {
-                                            height: 40px;
-
-                                            &.filter {
-                                                width: 50px;
-
-                                                .button { 
-                                                     &.active { .gradient(@logoGradientStart, @logoGradientEnd); }
-                                                }
-                                            }
-
-                                            &.showing {
-                                                .calc-width(22, 10);
-                                            }
-
-                                            &.search {
-                                                .calc-width(38, 10);
-
-                                                .clear-query { right: 10px; }
-                                                .query { width: 100%; }
-                                            }
-
-                                            &.dates { .calc-width(40, 70); }
-                                        }
-                                    }
-
-                                    .totals {
-                                        li {
-                                            .button { .pull-right; }
-                                        }                                    
-                                    }
-                                }
-
-                                .tab-details {
-                                    .wrapper { padding: 0; }
-
-                                    &.with-pagination { .calc-height(100, 140); }
-                                }
-                            }                        
-
-                            /* Rooming List ***/
-                            &.rooming-list {
-                                .tab-header {
-                                    .search-form {
-                                        padding: 0 20px;
-
-                                        .entry {
-                                            padding: 20px 0;
-                                            height: 80px;
-
-                                            label { 
-                                                line-height: 1em;
-                                                margin-bottom: 4px; 
-                                            }
-
-                                            select { .nowrap(); }
-
-                                            &.number { width: 100px; }
-                                            &.type { width: 240px; }
-                                            &.occupancy { width: 140px; }
-
-                                            &.date-range { 
-                                                .calc-width(100, 670); 
-
-                                                .has-datepicker {
-                                                    .calc-width(50, 5);
-                                                    .pull-left;
-
-                                                    .clear-query { 
-                                                        top: 20px;
-                                                        right: 0;
-                                                        background-color: @white;
-                                                        .square(38px);
-
-                                                        .icons {
-                                                            top: 11px;
-                                                            right: 11px;
-                                                        }
-                                                    }
-
-                                                    .red { color: @red; }
-                                                    .green { color: @green; }
-
-                                                    &:first-child { margin-right: 10px; }
-                                                }                                            
-                                            }
-
-                                            &.filter {
-                                                width: 60px;
-                                                .show;
-
-                                                .button { 
-                                                    .no-transition();
-
-                                                    &.icon-add-60 { background-position: 10px -3690px; }
-                                                    &.icon-remove-60 { background-position: 10px -3750px; }
-                                                }
-                                            }
-
-                                            &.action {
-                                                width: 80px;
-
-                                                .button { 
-                                                    padding: 0;
-                                                    width: 100%; 
-                                                }
-                                            }
-                                        }
-
-                                        &.open {
-
-                                            .entry { 
-                                                padding: 10px 10px 10px 0;
-
-                                                &.filter,
-                                                &.action { padding-top: 28px; }
-                                            }
-                                        }
-                                    }
-
-                                    .totals {
-                                        li {
-                                            .data {
-                                                .value { text-align: center; }
-                                            }
-
-                                            .checkbox {
-                                                font-size: 14px;
-                                                text-transform: uppercase;
-                                                margin-right: 10px;
-                                                .pull-left;
-                                            }
-
-                                            .button {
-                                                font-size: 14px;
-                                                padding: 0 10px;
-                                                margin-right: 10px;
-                                                .pull-left;
-
-                                                &.batch {
-                                                    padding: 0 0 0 40px;
-                                                    text-align: left;
-                                                    width: 120px;
-
-                                                    .icons {
-                                                        top: 10px;
-                                                        left: 10px;
-                                                        margin: 0;
-                                                    }
-                                                }
-
-                                                &:last-child { margin-right: 0; }
-                                            }
-                                        }
-                                    }
-                                }
-
-                                .tab-details {
-                                    
-                                    .rooming-list-header {
-                                        margin: 10px 20px;
-                                        .float;
-
-                                        li {
-                                            color: @white;
-                                            font-size: 14px;
-                                            line-height: 35px;
-                                            margin: 0 5px 0 0;
-                                            .pull-left;
-
-                                            &.sort {
-                                                cursor: pointer;
-                                                padding: 0 20px 0 10px;
-                                                background-color: @grey2;
-                                                background-position: 95% 50%;
-                                                background-repeat: no-repeat;
-                                                .nowrap();
-                                                .box-shadow(1px 1px 0 rgba(0,0,0,.3));
-
-                                                &.sorting-asc,
-                                                &.sorting-desc { background-color: darken(@grey2, 10); }
-                                                
-                                                &.sorting-asc { background-image: @arrowSortAsc; }
-                                                &.sorting-desc { background-image: @arrowSortDesc; }
-                                            }
-
-                                            &.check {
-                                                width: 60px;
-                                                text-align: center;
-
-                                                .checkbox {
-                                                    margin: 0;
-                                                    padding: 0;
-                                                    .size(35px, 60px);
-
-                                                    .icon-form { 
-                                                        top: 7px; 
-                                                        left: 20px;
-                                                    }
-
-                                                    input {
-                                                        min-height: 35px;
-                                                        line-height: 35px;
-                                                    }
-                                                }
-                                            }
-
-                                            &.status { 
-                                                width: 80px;
-                                                margin-right: 0;
-                                            }
-
-                                            &.room,
-                                            &.rate { .calc-width(13, 29); }
-                                            &.date { .calc-width(17, 30); }
-                                            &.name,
-                                            &.type { .calc-width(20, 29); }
-                                        }
-                                    }
-
-                                    .rooming-grid {
-                                        position: relative;
-                                        .calc-height(100, 55);
-
-                                        .search-results {
-                                            padding: 0 20px 20px 20px;
-                                        }
-
-                                        .iScrollVerticalScrollbar { 
-                                            top: 0;
-                                            bottom: 20px;
-                                        }
-
-                                        &.with-pagination { .calc-height(100, 115); }
-                                    }
-                                }
-                            }
-
-                            /* Group Transactions ***/
-                            &.bills {
-                                .tab-header {
-                                    .totals {
-                                        width: 100%;
-                                        float: none;
-                                    }
-                                }
-
-                                .tab-details {
-                                    .registration-content { height: 100%; }
-                                }
-                            }
-
-                            /* Activity Log ***/
-                            &.activity {
-                                .tab-header {
-                                    .totals {
-                                        width: 100%;
-                                        float: none;
-                                    }
-                                }
-
-                                .tab-details {
-                                    .report-content {
-                                        position: relative;
-                                        height: 100%;
-
-                                        > .wrapper { padding: 10px 20px; }
-                                        .iScrollVerticalScrollbar {  bottom: 20px; }
-
-                                        &.with-pagination { .calc-height(100, 50); }
-                                    }
                                 }
                             }
                         }
 
-                        &.card-tabs { padding: 20px; }
+                        .tab-details {
+                            
+                            .rooming-list-header {
+                                margin: 10px 20px;
+                                .float;
 
-                        /* Cards search ***/
-                        &.card-search {
-                            .float;
+                                li {
+                                    color: @white;
+                                    font-size: 14px;
+                                    line-height: 35px;
+                                    margin: 0 5px 0 0;
+                                    .pull-left;
 
-                            .results-count {
-                                margin-left: 20px;
-                                padding: 0 20px;
-                                font-size: 18px;
-                                line-height: 50px;
-                                color: @textColor;
-                                text-transform: uppercase;
-                                .background(@white);
-                                .box-shadow(none);
-                                #border-radius > .top();
-                                .pull-left;
+                                    &.sort {
+                                        cursor: pointer;
+                                        padding: 0 20px 0 10px;
+                                        background-color: @grey2;
+                                        background-position: 95% 50%;
+                                        background-repeat: no-repeat;
+                                        .nowrap();
+                                        .box-shadow(1px 1px 0 rgba(0,0,0,.3));
+
+                                        &.sorting-asc,
+                                        &.sorting-desc { background-color: darken(@grey2, 10); }
+                                        
+                                        &.sorting-asc { background-image: @arrowSortAsc; }
+                                        &.sorting-desc { background-image: @arrowSortDesc; }
+                                    }
+
+                                    &.check {
+                                        width: 60px;
+                                        text-align: center;
+
+                                        .checkbox {
+                                            margin: 0;
+                                            padding: 0;
+                                            .size(35px, 60px);
+
+                                            .icon-form { 
+                                                top: 7px; 
+                                                left: 20px;
+                                            }
+
+                                            input {
+                                                min-height: 35px;
+                                                line-height: 35px;
+                                            }
+                                        }
+                                    }
+
+                                    &.status { 
+                                        width: 80px;
+                                        margin-right: 0;
+                                    }
+
+                                    &.room,
+                                    &.rate { .calc-width(13, 29); }
+                                    &.date { .calc-width(17, 30); }
+                                    &.name,
+                                    &.type { .calc-width(20, 29); }
+                                }
                             }
 
-                            .skip {
-                                height: 40px;
-                                margin: 0 20px 10px 0;
-                                padding-right: 30px;
-                                .pull-right;                        
-                            }
-
-                            .search-cards {
+                            .rooming-grid {
                                 position: relative;
-                                margin: 0 20px;
-                                overflow: hidden;
-                                color: @textColor;
-                                .background(@white);
-                                #border-radius > .rounded();
-                                #border-radius > .left-top(0px);
-                                .calc-height(100, 80);
-                                .calc-width(100, 40);
+                                .calc-height(100, 55);
 
-                                &.no-content {
-                                    color: @grey3;
-                                    .calc-height(100, 30);
-                                    #border-radius > .left-top(2px);
-
-                                    &.no-results { .calc-height(100, 80); }
+                                .search-results {
+                                    padding: 0 20px 20px 20px;
                                 }
 
-                                &.no-results {
-                                    .wrapper,
-                                    .search-results { height: 100%; }
+                                .iScrollVerticalScrollbar { 
+                                    top: 0;
+                                    bottom: 20px;
                                 }
+
+                                &.with-pagination { .calc-height(100, 115); }
+                            }
+                        }
+                    }
+
+                    /* Group Transactions ***/
+                    &.bills {
+                        .tab-header {
+                            .totals {
+                                width: 100%;
+                                float: none;
+                            }
+                        }
+
+                        .tab-details {
+                            .registration-content { height: 100%; }
+                        }
+                    }
+
+                    /* Activity Log ***/
+                    &.activity {
+                        .tab-header {
+                            .totals {
+                                width: 100%;
+                                float: none;
+                            }
+                        }
+
+                        .tab-details {
+                            .report-content {
+                                position: relative;
+                                height: 100%;
+
+                                > .wrapper { padding: 10px 20px; }
+                                .iScrollVerticalScrollbar {  bottom: 20px; }
+
+                                &.with-pagination { .calc-height(100, 50); }
                             }
                         }
                     }
                 }
+
+                &.card-tabs { padding: 20px; }
+
+                /* Cards search ***/
+                &.card-search {
+                    .float;
+
+                    .results-count {
+                        margin-left: 20px;
+                        padding: 0 20px;
+                        font-size: 18px;
+                        line-height: 50px;
+                        color: @textColor;
+                        text-transform: uppercase;
+                        .background(@white);
+                        .box-shadow(none);
+                        #border-radius > .top();
+                        .pull-left;
+                    }
+
+                    .skip {
+                        height: 40px;
+                        margin: 0 20px 10px 0;
+                        padding-right: 30px;
+                        .pull-right;                        
+                    }
+
+                    .search-cards {
+                        position: relative;
+                        margin: 0 20px;
+                        overflow: hidden;
+                        color: @textColor;
+                        .background(@white);
+                        #border-radius > .rounded();
+                        #border-radius > .left-top(0px);
+                        .calc-height(100, 80);
+                        .calc-width(100, 40);
+
+                        &.no-content {
+                            color: @grey3;
+                            .calc-height(100, 30);
+                            #border-radius > .left-top(2px);
+
+                            &.no-results { .calc-height(100, 80); }
+                        }
+
+                        &.no-results {
+                            .wrapper,
+                            .search-results { height: 100%; }
+                        }
+                    }
+                }
             }
+
+            /* No transition while resizing ***/
+            &.ui-resizable-resizing { .no-transition(); }
 
             /* Open card ***/
-            &.default-open { .calc-height(100, 90); }
+            &.open,
+            &.fullscreen {
+                .card-header {
+                    form { 
+                        .calc-width(100, 250);
 
-            &.open {
-                .cards-wrapper {
+                        &.card-search-form { .calc-width(100, 70); }
 
-                    .cards-header {
-                        .card-header {
-
-                            &.first {
-                                width: 100%;
-
-                                form {
-                                    .calc-width(100, 250);
-
-                                    .holder { 
-                                        .switch-button { .show; }
-                                    }
-
-                                    &.card-search-form {
-                                        .calc-width(100, 70);
-
-                                        .masked-input { .show; }
-                                    }
-                                }
-                            }
-
-                            &.second,
-                            &.third { .hide; }
-
-                            .card-actions { .show; }
-                        }
+                        &.dual-actions { .calc-width(100, 350); } 
                     }
 
-                    .cards-content {
-                        .card-content {
-                            &.visible { .show; }
-                        }
-                    }
+                    .card-actions { .show; }
                 }
             }
 
-            &.ui-resizable-resizing { .no-transition(); }
+            &.open {
+                .card-header {
+                    &.first { 
+                        width: 100%; 
+
+                        .masked-input,
+                        .switch-button { .show; }
+                    }
+
+                    &.second,
+                    &.third,
+                    &.fourth { .hide; }
+                }
+
+                .card-content {
+                    &.visible { .show; }
+                }
+            }
 
             /* Fullscreen cards ***/
             &.fullscreen {
                 .calc-height(100, 60);
 
-                .cards-wrapper {
-                    .cards-header {
-                        .card-header {
-
-                            form { .calc-width(100, 250); }
-
-                            .card-actions { .hide; }
-                        }
-                    }
-
-                    .cards-content {
-                        .card-content { .show; }
-                    }
-                }
-
-                /* New Card ***/
-                &.new-card {
-                    .cards-wrapper {
-                        .cards-header {
-                            .card-header {
-                                .card-actions { .show; }
-                            }
-                        }
-                    }
-                }
+                .card-content { .show; }
             }
 
             /* Card scenarios ***/
@@ -3624,31 +3575,12 @@
             &.group-card {
                 .cards-wrapper {
                     background: @groupcard @groupcardTexture;
+                }
+            }
 
-                    /* Card headers ***/
-                    .cards-header {
-                        .card-header {
-                            form { 
-                                margin-left: 0;
-                                .calc-width(100, 260);
-
-                                .holder {
-
-                                    &.data {
-                                        .icons { 
-                                            padding-left: 35px;
-                                            margin-right: 20px;
-                                        }
-                                    }
-                                }
-                            }
-
-                            .card-actions { 
-                                width: 140px;
-                                .button { width: 140px; } 
-                            }
-                        }
-                    }
+            &.allotment-card {
+                .cards-wrapper {
+                    background: @allotmentcard @allotmentcardTexture;
                 }
             }
         }
