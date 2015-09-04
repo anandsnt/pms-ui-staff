@@ -229,6 +229,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		var groupTotalRooms =[];
 		var groupTotalPickedUps = [];
 		var holdstatus = [];
+
 		_.each(datafromApi.results,function(element,index,lis){
 			//Extracting date detail		
 			var dateToCheck = tzIndependentDate(element.date);
@@ -240,7 +241,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			groupTotalPickedUps.push(element.group_total_pickups);			
 			holdstatus.push(element.hold_status);
 		});
-		console.log(holdstatus);
+		
 		gridDataForGroupAvailability = {
 			'dates'	: dates,
 			'groupTotalRooms': groupTotalRooms,

@@ -1,4 +1,4 @@
-<div id="availability-grid" class="availability-grid scrollable" ng-controller="rvGroupAvailabilityStatusController" >
+<div id="availability-grid" class="availability-grid scrollable" ng-controller="rvGroupAvailabilityStatusController" ng-iscroll-delay="100" ng-iscroll='groupscroller'>
 	<div class="wrapper">
 		<table id="dates-grid" class="dates-grid" ng-class="{'grid-7':true}">
 			<colgroup>
@@ -40,7 +40,7 @@
 				<tr class="room-details" ng-repeat="rowData in data.holdstatuses track by $index" ng-class="{'hidden':hideHoldStatusOf.groupRoomPicked}">
 					<th scope="row">{{rowData[0].hold_status}}</th>
 					<td ng-repeat="cellData in rowData track by $index">
-						<div class="inner green">{{cellData.total_number_of_pickup_count}}</div>
+						<div class="inner green">{{cellData.total_no_of_pickedup_count}}</div>
 					</td>
 				</tr>
 			</tbody>
