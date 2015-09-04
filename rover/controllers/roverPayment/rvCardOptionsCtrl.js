@@ -200,27 +200,27 @@ sntRover.controller('RVCardOptionsCtrl',
             
             $scope.giftCardAmountAvailable = false;
             $scope.giftCardAvailableBalance = 0;
-            $scope.$on('giftCardAvailableBalance',function(balance, evt){
-               console.log('balance updated');
-               console.log(arguments)
-               $scope.giftCardAvailableBalance = balance;
+            $scope.$on('giftCardAvailableBalance',function(e, giftCardData){
+               $scope.giftCardAvailableBalance = giftCardData.amount;
             });
             $scope.cardNumberInput = function(n){
                 if ($scope.isGiftCard){
                     var len = n.length;
-                    if (len === 19 || len === 21 || len === 22){
+                    if (len >= 19 && len <= 22){
                         //then go check the balance of the card
-                        
                         
                         if ($scope.isGiftCard){
                             //switch this back for the UI if the payment was a gift card
                             var fetchGiftCardBalanceSuccess = function(giftCardData){
                                 $scope.giftCardAvailableBalance = giftCardData.amount;
-                                $scope.$emit('giftCardAvailableBalance',{'balance':$scope.giftCardAvailableBalance});
+                                $scope.giftCardAmountAvailable = true;
+                                $scope.$emit('giftCardAvailableBalance',giftCardData);
                                 //data.expiry_date //unused at this time
                                 $scope.$emit('hideLoader');
                             };
                             $scope.invokeApi(RVReservationCardSrv.checkGiftCardBalance, {'card_number':n}, fetchGiftCardBalanceSuccess);
+                        } else {
+                            $scope.giftCardAmountAvailable = false;
                         }
                         
                         

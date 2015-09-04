@@ -81,14 +81,18 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	};
 
 	$scope.reservationData.reservation_card.payment_method_used = ($scope.reservationData.reservation_card.payment_method_used) ? $scope.reservationData.reservation_card.payment_method_used :"";
-
+        $scope.validPayment = true;
 	$scope.disableMakePayment = function(){
+            if (!$scope.validPayment){
+                return false;
+            } else {
 		 if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined"){
 			return ($scope.depositBalanceMakePaymentData.payment_type.length > 0) ? false :true;
 		}
 		else{
 			return true;
 		};
+            }
 	};
 
 	/**
@@ -114,9 +118,13 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.showMakePaymentButtonStatus = function(){
 		var buttonClass = "";
 		if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined"){
-			buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0) ? "green" :"grey";
+			buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0 && $scope.validPayment) ? "green" :"grey";
 		}else {
+                    if (!$scope.validPayment){
+			buttonClass = "grey overlay";
+                    } else {
 			buttonClass = "grey";
+                    }
 		};
 		return buttonClass;
 	};
@@ -405,6 +413,24 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		}
 
 	}
+        
+        $scope.updatedAmountToPay = function(amt){
+            //used if checking against gift card balance
+                
+               if ($scope.depositBalanceMakePaymentData.payment_type === 'GIFT_CARD'){
+                if ($scope.giftCardAvailableBalance){
+                    var avail = parseFloat(($scope.giftCardAvailableBalance).toFixed(2));
+                    var toPay = parseFloat(parseFloat(amt).toFixed(2));
+                    if (avail < toPay){
+                        $scope.validPayment = false;
+                        console.warn('pmt amount is higher than gift card available balance')
+                    } else {
+                        $scope.validPayment = true;
+                    }
+                }
+            }
+            
+        };
 
 	/*
 	 * call make payment API on clicks select payment
@@ -425,7 +451,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
                     if ($scope.reservationData.reservation_card.payment_details.card_number !== ''){
                         card_number = $scope.reservationData.reservation_card.payment_details.card_number;
                     } else {
-                        card_number = parseInt($('#card-number').val());
+                        card_number = $.trim($('#card-number').val());//trim to remove whitespaces from copy-paste
                     }
                     dataToSrv.postData.card_number = card_number;
                     
@@ -477,10 +503,9 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	 * setting payment id
 	 */
         $scope.giftCardAvailableBalance = '';
-        $scope.$on('giftCardAvailableBalance',function(balance, evt){
-            console.log('balance updated');
-            console.log(arguments)
-            $scope.giftCardAvailableBalance = balance;
+        $scope.$on('giftCardAvailableBalance',function(e, giftCardData){
+            $scope.giftCardAvailableBalance = giftCardData.amount;
+            $scope.giftCardAmountAvailable = true;
         });
         
 	$scope.successSavePayment = function(data){

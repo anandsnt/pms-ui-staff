@@ -113,19 +113,16 @@
                                 
                                 
                                 <div class="entry full-width deposit-amount" ng-show="(shouldShowMakePaymentScreen && !depositPaidSuccesFully) || depositWithGiftCard" ng-class="{'amount': isShowFees()}"><!-- Add class "amount" when fee exsists -->
-                                     <label ng-show="depositWithGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable"> Available Card Balance ({{currencySymbol}}{{giftCardAvailableBalance}}) </label>
+                                     
+                                    
+                                    <label ng-show="depositWithGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable"> Available Card Balance ({{currencySymbol}}) </label>
+                                    <input ng-show="depositWithGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable" name="giftCardAmount" id="amount" ng-model="giftCardAvailableBalance" type="text" class="amount overlay" value="{{ giftCardAvailableBalance }}"/>
+                                    
+                                     
                                     <label for="amount">Amount to pay (<span>{{currencySymbol}})</span> </label>
-                                   
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
 
 				    <!-- CICO-12408 : Use only when fee exsists -->
-				    <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="depositBalanceMakePaymentData.amount" type="text" class="amount" value="{{ depositBalanceMakePaymentData.amount | number:2 }}"/>
+				    <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="depositBalanceMakePaymentData.amount" type="text" class="amount" ng-class="{'red-text': depositWithGiftCard && !validPayment}" value="{{ depositBalanceMakePaymentData.amount | number:2 }}" ng-change="updatedAmountToPay(depositBalanceMakePaymentData.amount)"/>
 				    <span ng-show="isShowFees()" class="delimiter">+</span> 
 				    <input ng-show="isShowFees()" name="fee" id="fee" ng-keyup="calculateTotalAmount(depositBalanceMakePaymentData.amount)" ng-model="feeData.calculatedFee" value="{{feeData.calculatedFee}}" type="text" class="fee" />
 				    <span ng-show="isShowFees()" class="delimiter">fee</span>
