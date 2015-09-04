@@ -1,12 +1,12 @@
-sntRover.controller('RVArTransactionsPayCreditsController',['$scope', 'RVBillPaymentSrv','RVPaymentSrv','RVGuestCardSrv','RVReservationCardSrv', 'ngDialog', '$rootScope','$timeout','$filter', function($scope, RVBillPaymentSrv, RVPaymentSrv, RVGuestCardSrv, RVReservationCardSrv, ngDialog, $rootScope,$timeout,$filter){
+sntRover.controller('RVArTransactionsPayCreditsController',['$scope','RVPaymentSrv', 'ngDialog', '$rootScope','$timeout','$filter','rvAccountTransactionsSrv', function($scope, RVPaymentSrv, ngDialog, $rootScope,$timeout,$filter,rvAccountTransactionsSrv){
 	BaseCtrl.call(this, $scope);
 
 	$scope.feeData = {};
 	var zeroAmount = parseFloat("0.00");
-	$scope.saveData = {};
+	$scope.saveData = {'paymentType':''};
 	$scope.renderData = {};
 	$scope.renderData.defaultPaymentAmount = $scope.arTransactionDetails.available_credit;
-
+    var bill_id = $scope.contactInformation.account_details.bill_id;
 	/*
 	* if no payment type is selected disable payment button
 	*/
@@ -175,27 +175,26 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope', 'RVBillPay
 		} else {
 			$scope.errorMessage = "";
 			var dataToSrv = {
-				"postData": {
-					"bill_number": $scope.renderData.billNumberSelected,
+				"data_to_pass": {
+					"bill_number": 1,
 					"payment_type": $scope.saveData.paymentType,
 					"amount": $scope.renderData.defaultPaymentAmount,
-					"payment_type_id": ($scope.saveData.paymentType === 'CC') ? $scope.saveData.payment_type_id : null
 				},
-				"reservation_id": $scope.reservationData.reservationId
+				"bill_id":bill_id
 			};
 			if($scope.isShowFees()){
 				if($scope.feeData.calculatedFee) {
-					dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
+					dataToSrv.data_to_pass.fees_amount = $scope.feeData.calculatedFee;
 				}
 				if($scope.feeData.feesInfo) {
-					dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
+					dataToSrv.data_to_pass.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
 				}
 			}
 
 			if($scope.referenceTextAvailable){
-				dataToSrv.postData.reference_text = $scope.renderData.referanceText;
+				dataToSrv.data_to_pass.reference_text = $scope.renderData.referanceText;
 			};
-			$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, successPayment, failedPayment);
+			$scope.invokeApi(rvAccountTransactionsSrv.submitPaymentOnBill, dataToSrv, successPayment, failedPayment);
 		}
 	};	
 }]);
