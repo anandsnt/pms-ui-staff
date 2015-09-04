@@ -20,7 +20,7 @@
 			</thead>
 			<tbody>
 				<tr class="room-details main">
-					<th class="heading" scope="row" ng-click="togleHoldStatusVisibility('groupRoomTotal')">Group Rooms (Total)</th>
+					<th class="heading rows-toggle" scope="row" ng-click="togleHoldStatusVisibility('groupRoomTotal')">Group Rooms (Total)</th>
 					<td ng-repeat="groupTotalRoom in data.groupTotalRooms track by $index">
 						<div class="inner">{{groupTotalRoom | number : 2}}</div>
 					</td>
@@ -32,7 +32,7 @@
 					</td>
 				</tr>				
 				<tr class="room-details main">
-					<th class="heading" scope="row" ng-click="togleHoldStatusVisibility('groupRoomPicked')">Group Rooms (Picked)</th> 
+					<th class="heading rows-toggle" scope="row" ng-click="togleHoldStatusVisibility('groupRoomPicked')">Group Rooms (Picked)</th> 
 					<td ng-repeat="groupTotalPickedUp in data.groupTotalPickedUps track by $index">
 						<div class="inner green">{{groupTotalPickedUp}}</div>
 					</td>
@@ -40,7 +40,7 @@
 				<tr class="room-details" ng-repeat="rowData in data.holdstatuses track by $index" ng-class="{'hidden':hideHoldStatusOf.groupRoomPicked}">
 					<th scope="row">{{rowData[0].hold_status}}</th>
 					<td ng-repeat="cellData in rowData track by $index">
-						<div class="inner">{{cellData.total_number_of_pickup_count}}</div>
+						<div class="inner green">{{cellData.total_number_of_pickup_count}}</div>
 					</td>
 				</tr>
 			</tbody>
