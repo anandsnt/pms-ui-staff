@@ -98,6 +98,6 @@ admin.service('ADItemSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
-	}
+	};
 
 }]);

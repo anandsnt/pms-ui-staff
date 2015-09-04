@@ -94,7 +94,7 @@
                     </div>
                 </div>
                 <!-- This here is dynamic content, depending on actual room booked -->
-                <div class="rooms" ng-repeat="room in reservationData.rooms" ng-init="roomIndex = $index ; showAccompanyingGuests = false">
+                <div class="rooms" ng-repeat="room in reservationData.rooms track by $index" ng-init="roomIndex = $index ; showAccompanyingGuests = false">
                     <div class="title">
                         <span translate>ROOM</span> {{room.roomNumber}}
                         <div class="count">

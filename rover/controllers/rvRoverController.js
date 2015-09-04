@@ -103,7 +103,6 @@ sntRover.controller('roverController',
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
 
     $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
-    // $rootScope.isManualCCEntryEnabled = false;
     $rootScope.paymentGateway = hotelDetails.payment_gateway;
     $rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
     $rootScope.isAddonOn = hotelDetails.is_addon_on;
@@ -111,6 +110,7 @@ sntRover.controller('roverController',
 	  $rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
     $rootScope.printCancellationLetter = hotelDetails.print_cancellation_letter;
     $rootScope.printConfirmationLetter = hotelDetails.print_confirmation_letter;
+    $rootScope.isItemInventoryOn    = hotelDetails.is_item_inventory_on;
 
       // CICO-18040
       $rootScope.isFFPActive = hotelDetails.is_ffp_active;
@@ -138,9 +138,6 @@ sntRover.controller('roverController',
         });
         $scope.$digest();
       }
-      // if (responseData.response_message === "error_on_token_creation") {
-        // $scope.$broadcast('six_token_recived',{'six_payment_data':responseData});
-      // }
     }, false);
 
     //set flag if standalone PMS
@@ -381,7 +378,7 @@ sntRover.controller('roverController',
 
     $scope.toggleHotelList = function(e) {
       $scope.showHotelSwitchList = !$scope.showHotelSwitchList;
-    }
+    };
 
     $scope.closeDrawerMenu = function() {
       $scope.menuOpen = false;
@@ -440,10 +437,6 @@ sntRover.controller('roverController',
     // '$emit' and '$on' somehow get more priority, by the time they are execured, $scopes have shifted
     // thus cancelling out animation, feels like animations are never considered
     //
-    // $scope.$on("navToggled", function() {
-    //   $scope.menuOpen = !$scope.menuOpen;
-    //   $scope.showSubMenu = false;
-    // });
 
     //when state change start happens, we need to show the activity activator to prevent further clicking
     //this will happen when prefetch the data
@@ -484,15 +477,12 @@ sntRover.controller('roverController',
     });
 
     $scope.successCallBackSwipe = function(data) {
-      // $scope.$broadcast('SWIPEHAPPENED', data);
       $scope.$broadcast('SWIPE_ACTION', data);
     };
 
     $scope.failureCallBackSwipe = function(errorMessage) {
     	$scope.errorMessage = errorMessage;
     	if($rootScope.desktopSwipeEnabled){
-    		console.log("Could not connect to desktop card reader");
-    		//$rootScope.showWebsocketConnectionError();
     	}
     };
 
@@ -505,7 +495,7 @@ sntRover.controller('roverController',
     var initiateDesktopCardReader = function(){
 
     	sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options);
-    }
+    };
 
     $scope.initiateCardReader = function() {
       if (sntapp.cardSwipeDebug === true) {
@@ -562,16 +552,7 @@ sntRover.controller('roverController',
      * @param {{passData}} information to pass to popup - from view, reservationid. guest id userid etc
      * @param {{object}} - payment data - used for swipe
      */
-    /* $scope.showAddNewPaymentModal = function(passData, paymentData) {
-       $scope.passData = passData;
-       $scope.paymentData = paymentData;
-       $scope.guestInformationsToPaymentModal = $scope.guestInfoToPaymentModal;
-       ngDialog.open({
-         template: '/assets/partials/payment/rvPaymentModal.html',
-         controller: 'RVPaymentMethodCtrl',
-         scope: $scope
-       });
-     };*/
+
     /*
      * Call payment after CONTACT INFO
      */
@@ -706,7 +687,6 @@ sntRover.controller('roverController',
     $scope.goToDashboard = function() {
       ngDialog.close();
       // to reload app in case the bussiness date is changed
-      // $state.go('rover.dashboard', {}, {reload: true});
       $window.location.reload();
     };
 
@@ -769,7 +749,6 @@ sntRover.controller('roverController',
     $scope.openPaymentDialogModal = function(passData, paymentData) {
       $scope.passData = passData;
       $scope.paymentData = paymentData;
-      // $scope.guestInformationsToPaymentModal = $scope.guestInfoToPaymentModal;
       ngDialog.open({
         template: '/assets/partials/roverPayment/rvAddPayment.html',
         controller: 'RVPaymentAddPaymentCtrl',

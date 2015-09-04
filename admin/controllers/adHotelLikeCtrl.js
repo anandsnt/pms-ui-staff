@@ -37,7 +37,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
 	    $scope.likeTitle  ="Add New";
 	    $scope.likeSubtitle ="Like category";
 	    $scope.likeData   = {};
-	    $scope.likeData.type = "textbox";
+	    $scope.likeData.type = '';
 	    $scope.likeData.options =[{'name':''}];
 	    $scope.isAddmode = true;
 	    $scope.isEditmode = false;

@@ -43,7 +43,10 @@
     "MENU_CREATE_GROUP": "Create Group",
     "MENU_MANAGE_GROUP": "Manage Group",
     "MENU_ACCOUNTS": "Accounts",
-    
+    "MENU_ALLOTMENTS": "Allotments",
+    "MENU_CREATE_ALLOTMENT": "New Allotment",
+    "MENU_MANAGE_ALLOTMENT": "Manage Allotment",
+
 	"ICARE_SERVICES": "iCare Services",
     "OK":"Ok",
 	"DELETE":"Delete"

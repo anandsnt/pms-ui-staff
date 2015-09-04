@@ -1,4 +1,4 @@
-<section id="replacing-div-first" class="content current" ng-click="">
+<section id="replacing-div-first" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="">
 	<div data-view="EarlyCheckinView">
 		<section>
 			<header class="content-title float">
@@ -126,6 +126,31 @@
 						<ad-textbox value="upsellWindows[2].charge"   label = "{{'EARLY_CHECKIN_CHARGE' | translate}} [{{upsellData.hotel_currency}}]" placeholder = "Enter charge" disabled="disableThirdOption" styleclass="early_checkin_upsell" ></ad-textbox>
 
 						<ad-dropdown label="{{'EARLY_CHECKIN_ADDON' | translate}}" label-in-drop-down="{{'EARLY_CHECKIN_ADDON' | translate}}" list="addons" selected-Id='upsellWindows[2].addon_id' required='no' selbox-class='placeholder' div-class="early_checkin_upsell" options = "{'showOptionsIf': isAddonAvailable}"></ad-dropdown>
+
+						<div class="entry full-width">
+							<label translate> EARLY_CHECKIN_END_TIME </label>
+							<div class="entry full-width float">
+								<div class="select select-col col1-3">
+									<select ng-options="hour for hour  in hours" ng-model="upsell_end_time.hours">
+										<option  value="" translate >HH</option>
+									</select>
+
+								</div>
+								<div class="select select-col col1-3">
+									<select ng-options="minute for minute  in minutes" ng-model="upsell_end_time.minutes" >
+										<option  value="" translate >MM</option>
+									</select>
+
+								</div>
+								<div class="select select-col col1-3">
+									<select name="primetime" class="styled" ng-model="upsell_end_time.meridiem">
+										<option value="AM" translate>AM</option>
+										<option value="PM" selected="" translate>PM</option>
+									</select>
+								</div>
+							</div>
+
+						</div>
 
 						<ad-textbox value="upsellData.number_of_early_checkins_per_day"   label = "{{'NUMBER_OF_EARLY_CHECKINS_PER_DAY' | translate}}" placeholder = "{{'TYPE_NUMBER' | translate}}" ></ad-textbox>
 

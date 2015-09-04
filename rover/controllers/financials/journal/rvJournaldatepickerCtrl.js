@@ -42,7 +42,7 @@ sntRover.controller('RVJournalDatePickerController',['$scope','$rootScope','ngDi
                 }
                 ngDialog.close();
             }
-        }
+        };
     };
 
     $scope.setUpData();

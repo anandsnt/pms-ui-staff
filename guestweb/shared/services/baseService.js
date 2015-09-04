@@ -41,7 +41,7 @@
 			details: details,
 			fetch: fetch,
 			post :post
-		}
+		};
 	};
 
 	var dependencies = [

@@ -1,5 +1,5 @@
 
-	<section id="replacing-div-second" class="content current" ng-hide="isLoading" ng-click="clearErrorMessage()"><div data-view="ZestCheckinConfiguration" >
+	<section id="replacing-div-second" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-hide="isLoading" ng-click="clearErrorMessage()"><div data-view="ZestCheckinConfiguration" >
 		<header class="content-title float">
 			<h2>{{ 'GUEST_CHECKIN_SETUP' | translate}}</h2>
 			<a ui-sref="admin.checkinEmail" class="action email">{{ 'SEND_CHECKIN_EMAIL' | translate}}</a>
@@ -356,6 +356,8 @@
 
 					</div>
 					<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_alert_message" label = "{{ 'CHECKIN_ALERT' | translate}}" placeholder = "" ng-show="hideAddOption"></ad-textarea>
+
+					<ad-toggle-button is-checked="checkinData.guest_address_on" label="{{ 'ASK_GUEST_ADDRESS_DETAILS' | translate}}"></ad-toggle-button>
 
 				</fieldset>
 

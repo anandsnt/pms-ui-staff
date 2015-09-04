@@ -13,13 +13,13 @@ admin.controller('adDeleteContentController',['$scope', '$rootScope', 'ADContent
 			$scope.$emit('hideLoader');
 			ngDialog.close();
 			$rootScope.$broadcast('componentDeleted',{'id':$scope.componentIdToDelete});
-		}
+		};
 
 		$scope.invokeApi(ADContentManagementSrv.deleteSection, {'id':$scope.componentIdToDelete} , successCallbackdeleteSection);
-    }
+    };
 
     $scope.cancelDelete = function(){
    	 	ngDialog.close();
-    }
+    };
 
 }]);

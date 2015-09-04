@@ -1,4 +1,4 @@
-<section class="content current" ng-click="clearErrorMessage()">
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
     <header class="content-title">
         <h2 ng-show="!isAddMode"><span translate>EDIT_SECTION_LABEL</span> <span>{{data.name}}</span></h2>
         <h2 ng-show="isAddMode" translate>ADD_SECTION_LABEL</h2>
@@ -41,6 +41,28 @@
                     <input type="text" name="item-url" ng-model="data.website_url" id="item-url" placeholder="Enter URL" value=""  />
                 </div>   
             </fieldset>
+
+            <fieldset class="holder right">
+                
+                <div class="entry full-width">
+                    <label for="section-description-availability"><span translate>SECTION_DESCRIPTION_VISIBLE_LABEL</span> </label>
+                    <div class="switch-button" ng-class="{'on': data.is_description_visible}">
+                        <input name="section-description-availability" id="section-description-availability" value="1" type="checkbox" ng-model="data.is_description_visible" />
+                        <span class="switch-icon"></span>
+                    </div>
+
+                    
+                </div> 
+
+                <ad-dropdown label="{{'SECTION_DESCRIPTION_ALIGNMENT_LABEL' | translate}}" list="alignments" selected-Id='data.description_alignment' required='no' selbox-class='placeholder' ></ad-dropdown>
+
+                <div class="entry full-width">
+                    <label for="item-description" ><span translate>SECTION_DESCRIPTION_LABEL</span></label>
+                    <textarea name="section-description" maxlength="256" ng-model="data.description" id="section-description" rows="4" placeholder="Enter section description ..."></textarea>
+                    <p class="counter" ><span ng-class = "{'done':256 == data.description.length}">{{256 - data.description.length}}</span> {{'CHARACTERS_REMINING' |translate}}</p>
+                </div>
+            </fieldset>
+
             <div class="actions float">
                 <button type="button" ng-click="goBack()" class="button blank" translate>CANCEL</button>
                 <button type="button" ng-click="saveSection()" class="button green" translate>SAVE_CHANGES</button>  

@@ -1,4 +1,4 @@
-<section id="replacing-div-second" class="content current" ng-hide="isLoading" ng-click="clearErrorMessage()"><div data-view="ZestCheckinConfiguration" >
+<section id="replacing-div-second" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-hide="isLoading" ng-click="clearErrorMessage()"><div data-view="ZestCheckinConfiguration" >
 	
 	<header class="content-title float">
 		<h2 translate>RESERVATION_SETTINGS</h2>
@@ -39,6 +39,11 @@
 						<div class="col1-3">
 							<ad-textbox inputtype="text" value="reservationSettingsData.max_guests.max_infants" styleclass = "col1-3"
 							label = "{{'MAX_INFANTS' | translate}}" placeholder = "" style=" width: 100px;"
+							></ad-textbox>
+						</div>
+						<div class="col1-3">
+							<ad-textbox inputtype="text" value="reservationSettingsData.max_room_quantity" styleclass = "col1-3"
+							label = "{{'MAX_ROOM_QUANTITY' | translate}}" placeholder = "" style=" width: 100px;"
 							></ad-textbox>
 						</div>
 					</div>    
@@ -113,9 +118,12 @@
 					<ad-toggle-button label="Hourly Rates" is-checked="reservationSettingsData.is_hourly_rate_on" ></ad-toggle-button>
 					<ad-toggle-button label="{{'ADDONS_FOR_RESERVATIONS' | translate}}" is-checked="reservationSettingsData.is_addon_on" ></ad-toggle-button>
 				</fieldset>
-				<fieldset class="holder right  margin-bottom-20-important">
-					<ad-toggle-button label="Commissions" is-checked="reservationSettingsData.has_enabled_commissions"  div-class="full-width"></ad-toggle-button>
-					<ad-checkbox is-checked="reservationSettingsData.commission_by_agent" label="{{ 'Commissions by Agent' | translate}}" div-class="" hide='{{!reservationSettingsData.has_enabled_commissions}}'></ad-checkbox>					
+				<fieldset class="holder right">
+					<ad-toggle-button label="Commissions" is-checked="reservationSettingsData.has_enabled_commissions"></ad-toggle-button>
+
+					<ad-toggle-button label="Item Inventory" is-checked="reservationSettingsData.is_item_inventory_on" ></ad-toggle-button>
+
+					<ad-checkbox is-checked="reservationSettingsData.commission_by_agent" label="{{ 'Commissions by Agent' | translate}}" div-class="float" hide='{{!reservationSettingsData.has_enabled_commissions}}'></ad-checkbox>					
 					<ad-checkbox is-checked="reservationSettingsData.commission_by_rate" label="{{ 'Commissions by Rate' | translate}}" div-class="" hide='{{!reservationSettingsData.has_enabled_commissions}}'></ad-checkbox>
 					<div class="entry margin-bottom-0-important" ng-hide="!reservationSettingsData.commission_by_agent || !reservationSettingsData.has_enabled_commissions">            		
                 		<div class="select-col col1-3 ">
@@ -140,6 +148,7 @@
                 		</div>
             		</div>					
 				</fieldset>		
+
 				
 				<fieldset class="holder left">
 					<ad-checkbox is-checked="reservationSettingsData.disable_cc_swipe" label="{{ 'DISABLE_CC_SWIPE_AT_CHECK_IN' | translate}}" div-class="full-width" ></ad-checkbox>
@@ -154,6 +163,10 @@
 					<ad-checkbox is-checked="reservationSettingsData.force_market_code" label="{{ 'FORCE_MARKET_CODE' | translate}}" div-class="full-width" ></ad-checkbox>
 					<ad-checkbox is-checked="reservationSettingsData.force_origin_of_booking" label="{{ 'FORCE_ORIGIN_OF_BOOKING' | translate}}" div-class="full-width" ></ad-checkbox>
 					<ad-checkbox is-checked="reservationSettingsData.force_segments" label="{{ 'FORCE_SEGMENT' | translate}}" div-class="full-width" ></ad-checkbox>
+					<ad-checkbox is-checked="reservationSettingsData.force_rate_adjustment_reason" label="{{ 'FORCE_ADJ_REASON' | translate}}" div-class="full-width"></ad-checkbox>
+					<ad-checkbox is-checked="reservationSettingsData.show_overbooking_alert" label="{{ 'SHOW_OVERBOOKING_ALERT' | translate}}" div-class="full-width"></ad-checkbox>
+
+					
 				</fieldset>
 
 			</fieldset>

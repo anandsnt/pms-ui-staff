@@ -1,4 +1,4 @@
-<div id="wrapper" class="content current" ng-click="clearErrorMessage()" >
+<div id="wrapper" class="content current admin-scrollfix" ng-click="clearErrorMessage()" div-touch-move-stop-propogate >
 	<header class="content-title float">
 		<h2>{{title}}</h2>
 		<a ng-click ="back()" class="action back">Back</a>
@@ -57,7 +57,7 @@
 				<input type="text" ng-model="data.latitude" value="{{data.latitude}}" required="" readonly="readonly" placeholder="Enter hotel latitude" name="hotel-latitude" >
 			</div>
 
-			<div class="entry full-width registration-for-rover" ng-hide="isAdminSnt">
+			<div class="entry full-width registration-for-rover" ng-if="!isAdminSnt">
 				<label for="rover"> Rover Registration </label>
 				<div  id="registration-for-rover" class="boxes">
 					<label class="radio" ng-class="{checked: data.required_signature_at == 'CHECKIN'}"> <span class="icon-form icon-radio" ng-class="{checked: data.required_signature_at == 'CHECKIN'}"></span>
@@ -89,7 +89,7 @@
 			
 			<ad-textbox value="data.number_of_rooms" label = "Number of rooms" placeholder = "Type number" readonly="{{readOnly}}"></ad-textbox>
 
-			<div class="entry is-pms-tokenized" ng-show="isAdminSnt">
+			<div class="entry is-pms-tokenized" ng-if="isAdminSnt">
 				<label>Enable single digit room number search</label>
 				<div class="switch-button single" ng-class="{ on : data.is_single_digit_search == true }" ng-click="data.is_single_digit_search = !data.is_single_digit_search">
 					<input type="checkbox" value="{{data.is_single_digit_search}}" id="is-single-digit-search">
@@ -188,7 +188,7 @@
 				</div>
 			</div>
 			
-			<div class="entry hotel-pms-type" ng-show="isAdminSnt">
+			<div class="entry hotel-pms-type" ng-if="isAdminSnt">
 				<label for="hotel-pms-type"> PMS Type</label>
 				<div class="select">
 					<select ng-model="data.hotel_pms_type" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
@@ -206,7 +206,7 @@
 					</select>
 				</div>
 			</div>
-			<div class="entry is-pms-tokenized" ng-show="isAdminSnt && data.hotel_pms_type ==='OWS'">
+			<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
 				<label for="is-pms-tokenized">PMS Tokenized</label>
 				<div class="switch-button single" ng-class="{ on : data.is_pms_tokenized == 'true' }" ng-click="toggleClicked()">
 					<input type="checkbox" value="{{data.is_pms_tokenized}}" name="is-pms-tokenized" id="is-pms-tokenized">
@@ -218,18 +218,26 @@
 				<label for="auto-logout"> Auto logout delay [Minutes] <strong>*</strong> </label>
 				<input type="text" ng-model="data.auto_logout_delay" value="{{data.auto_logout_delay}}" required="yes" placeholder="Enter auto logout delay" name="auto-logout" id="auto-logout">
 			</div>
-			<div class="entry" ng-hide="isAdminSnt">
-				<label for="auto-logout"> Password Expiry [Days] <strong>*</strong> </label>
-				<input type="text" ng-model="data.password_expiry" value="{{data.password_expiry}}" required="yes" placeholder="Enter password expiry delay">
+			<div class="entry" ng-if="!isAdminSnt">
+				<label for="password_expiry"> Password Expiry [Days] <strong>*</strong> </label>
+				<input type="text" ng-model="data.password_expiry" value="{{data.password_expiry}}" required="yes" placeholder="Enter password expiry delay" name="password_expiry">
+			</div>
+			<div class="entry">
+				<label for="website_address"> Hotel Website </label>
+				<input type="text" ng-model="data.website_address" value="{{data.website_address}}" required="no" placeholder="Enter website address" name="website_address">
+			</div>
+			<div class="entry">
+				<label for="hotel_email_address"> Hotel Email Address </label>
+				<input type="text" ng-model="data.hotel_email_address" value="{{data.hotel_email_address}}" required="no">
 			</div>
 			<div class="entry date has-datepicker" ng-if="isAdminSnt">
-				<label for="auto-logout"> PMS Start Date  </label>
+				<label for="pms-start-date"> PMS Start Date  </label>
 				<input type="text" ng-model="data.pms_start_date" placeholder="Enter PMS start Date" name="pms-start-date" id="pms-start-date" readonly ng-click="setPmsStartDate()">
 				<button ng-click="setPmsStartDate()" class="ui-datepicker-trigger" type="button">
                          ...
                 </button>
 			</div>			
-			<div class="entry full-width" ng-show="isAdminSnt">
+			<div class="entry full-width" ng-if="isAdminSnt">
 				<label for="hotel-pms-type"> Language </label>
 				<div class="select">
 					<select ng-model="data.selected_language" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
@@ -246,7 +254,7 @@
 				<input type="text" ng-model="data.hotel_from_address" value="{{data.hotel_from_address}}" placeholder="Enter Email domain and from address for GUEST" name="hotel_from_address" id="hotel_from_address">
 			</div>
 
-			<div class="entry is-pms-tokenized" ng-show="isAdminSnt && data.hotel_pms_type ==='OWS'">
+			<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
 				<label for="use-kiosk-entity-id-for-fetch-booking">Use KIOSK entity id in FetchBooking</label>
 				<div class="switch-button single" ng-class="{ on : data.use_kiosk_entity_id_for_fetch_booking == 'true' }" ng-click="kioskEntityToggleClicked()">
 					<input type="checkbox" value="{{data.use_kiosk_entity_id_for_fetch_booking}}" name="use-kiosk-entity-id-for-fetch-booking" id="use-kiosk-entity-id-for-fetch-booking">
@@ -254,14 +262,14 @@
 				</div>
 			</div>
 
-			<div class="entry is-pms-tokenized" ng-show="isAdminSnt && data.hotel_pms_type ==='OWS'">
+			<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
 				<label for="use-snt-entity-id-for-checkin-checkout">Use SNT entity id in Check In/Out</label>
 				<div class="switch-button single" ng-class="{ on : data.use_snt_entity_id_for_checkin_checkout == 'true' }" ng-click="sntEntityToggleClicked()">
 					<input type="checkbox" value="{{data.use_snt_entity_id_for_checkin_checkout}}" name="use-snt-entity-id-for-checkin-checkout" id="use-snt-entity-id-for-checkin-checkout">
 					<span class="switch-icon"></span>
 				</div>
 			</div>
-			<div class="entry is-pms-tokenized" ng-show="isAdminSnt && data.hotel_pms_type ==='OWS'">
+			<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
 				<label for="do_not_update_video_checkout">Do not update video checkout</label>
 				<div class="switch-button single" ng-class="{ on : data.do_not_update_video_checkout == 'true' }" ng-click="doNotUpdateVideoToggleClicked()">
 					<input type="checkbox" value="{{data.do_not_update_video_checkout}}" name="do-not-update-video-checkout" id="do-not-update-video-checkout">
@@ -269,7 +277,7 @@
 				</div>
 			</div>
 			
-			<div class="entry is-pms-tokenized" ng-show="isAdminSnt && data.hotel_pms_type ==='OWS'">
+			<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
 				<label for="room_status_update_per_room_type">ROOM STATUS UPDATE PER ROOM TYPE</label>
 				<div class="switch-button single" ng-class="{ on : data.is_room_status_import_per_room_type_on == 'true' }" ng-click="roomStatusUpdatePerRoomType()">
 					<input type="checkbox" value="{{data.is_room_status_import_per_room_type_on}}" name="room_status_update_per_room_type" id="room_status_update_per_room_type">
@@ -285,11 +293,11 @@
 				</select>
 			</div> -->
 
-			<div class="entry full-width" ng-hide="isAdminSnt">
+			<div class="entry full-width" ng-if="!isAdminSnt">
 				<label for="hotel-logo"> Hotel Logo Image for Rover (316x70px 9:2 ratio)  </label>
 				<div class="file-upload with-preview">
 					<span class="input">{{hotel_logo_file}}</span>
-					<a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-show="isLogoAvailable(data.hotel_logo)" ng-click = "data.hotel_logo = 'false'"></a>
+					<a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-if="isLogoAvailable(data.hotel_logo)" ng-click = "data.hotel_logo = 'false'"></a>
 					<input type="file" ng-model="data.hotel_logo" accept="image/*" app-filereader />
 					<button type="button" class="button brand-colors">
 						Choose file
@@ -298,11 +306,11 @@
 				<span class="file-preview"> <img ng-src="{{data.hotel_logo}}" alt="" height="112" width="auto"> </span>
 			</div>
 
-			<div class="entry full-width" ng-hide="isAdminSnt">
+			<div class="entry full-width" ng-if="!isAdminSnt">
 				<label for="hotel-logo"> Hotel Logo Image for Templates (500x115px)  </label>
 				<div class="file-upload with-preview">
 					<span class="input">{{hotel_template_logo_file}}</span>
-					<a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-show="isLogoAvailable(data.hotel_template_logo)" ng-click = "data.hotel_template_logo = 'false'"></a>
+					<a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-if="isLogoAvailable(data.hotel_template_logo)" ng-click = "data.hotel_template_logo = 'false'"></a>
 					<input type="file" ng-model="data.hotel_template_logo" accept="image/*" app-filereader />
 					<button type="button" class="button brand-colors">
 						Choose file
@@ -340,13 +348,13 @@
 
 		</fieldset>
 
-		<fieldset class="holder right" ng-show="isAdminSnt && data.hotel_pms_type ==='OWS'">
+		<fieldset class="holder right" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
 			<div class="form-title">
 				<h3><span>Hotel</span> External Reference Import </h3>
 				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 			</div>
 
-			<div class="entry" ng-show="isAdminSnt">
+			<div class="entry" ng-if="isAdminSnt">
 				<label for="is-external-references-import-on">Enable</label>
 				<div class="switch-button single" ng-class="{ on : data.is_external_references_import_on}">
 					<input type="checkbox" ng-model="data.is_external_references_import_on" value="{{data.is_external_references_import_on}}" name="is-external-references-import-on" id="is-external-references-import-on">
@@ -360,13 +368,13 @@
 			</div>
 		</fieldset>
 
-		<fieldset class="holder right" ng-show="isAdminSnt && data.hotel_pms_type ==='OWS'">
+		<fieldset class="holder right" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
 			<div class="form-title">
 				<h3><span>Hotel</span> Hold Room Import </h3>
 				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 			</div>
 
-			<div class="entry" ng-show="isAdminSnt">
+			<div class="entry" ng-if="isAdminSnt">
 				<label for="is_hold_room_import_on">Enable</label>
 				<div class="switch-button single" ng-class="{ on : data.is_hold_room_import_on }">
 					<input type="checkbox" ng-model="data.is_hold_room_import_on" value="{{ data.is_hold_room_import_on }}" name="is_hold_room_import_on" id="is_hold_room_import_on">
@@ -381,7 +389,7 @@
 		</fieldset>
 		
 
-		<fieldset class="holder left" ng-show="isAdminSnt">
+		<fieldset class="holder left" ng-if="isAdminSnt">
 			<div class="form-title">
 				<h3>
 					<span>Hotel</span>
@@ -406,108 +414,108 @@
 				</label>				
 			</div>
 			<div class="entry full-width"></div>
-			<div class="entry" ng-show="data.payment_gateway === 'SAFERPAY'" >
+			<div class="entry" ng-if="data.payment_gateway === 'SAFERPAY'" >
 				<label>
 					Saferpay ACCOUNT ID
 				</label>
 				<input type="text" ng-model="data.saferpay_account_id">
 			</div>
-			<div class="entry" ng-show="data.payment_gateway === 'SAFERPAY'" >
+			<div class="entry" ng-if="data.payment_gateway === 'SAFERPAY'" >
 				<label>
 					Saferpay HTTPS Password
 				</label>
 				<input type="text" ng-model="data.saferpay_https_password">
 			</div>
-			<div class="entry" ng-show="data.payment_gateway === 'SAFERPAY'" >
+			<div class="entry" ng-if="data.payment_gateway === 'SAFERPAY'" >
 				<label>
 					Saferpay auth URL
 				</label>
 				<input type="text" ng-model="data.saferpay_auth_url" readonly="readonly">
 			</div>
-			<div class="entry" ng-show="data.payment_gateway === 'SAFERPAY'" >
+			<div class="entry" ng-if="data.payment_gateway === 'SAFERPAY'" >
 				<label>
 					Saferpay settlement URL
 				</label>
 				<input type="text" ng-model="data.saferpay_settlement_url" readonly="readonly">
 			</div>	
-			<div class="entry" ng-show="data.payment_gateway === 'MLI'">
+			<div class="entry" ng-if="data.payment_gateway === 'MLI'">
 				<label for="mli-payment-gateway-url">
 					MerchantLink payment gateway url
 				</label>
 				<input type="text" ng-model="data.mli_payment_gateway_url" value="{{data.mli_payment_gateway_url}}" placeholder="Enter MLI payment gateway url">
 			</div>
 
-			<div class="entry" ng-show="data.payment_gateway === 'MLI'">
+			<div class="entry" ng-if="data.payment_gateway === 'MLI'">
 				<label for="mli-merchant-id">
 					MerchantLink Merchant ID
 				</label>
 				<input type="text" ng-model="data.mli_merchant_id" value="{{data.mli_merchant_id}}" placeholder="Enter MLI Merchant ID">
 			</div>
 
-			<div class="entry" ng-show="data.payment_gateway === 'MLI'">
+			<div class="entry" ng-if="data.payment_gateway === 'MLI'">
 				<label for=" mli-api-version">
 					MerchantLink api version
 				</label>
 				<input type="text" ng-model="data.mli_api_version" value="{{data.mli_api_version}}" placeholder="Enter MLI api version">
 			</div>
 
-			<div class="entry" ng-show="data.payment_gateway === 'MLI'">
+			<div class="entry" ng-if="data.payment_gateway === 'MLI'">
 				<label for="mli-api-key">
 					MerchantLink api key
 				</label>
 				<input type="password" ng-model="data.mli_api_key" value="{{data.mli_api_key}}" placeholder="Enter MLI api key">
 			</div>
 
-			<div class="entry" ng-show="data.payment_gateway === 'MLI'">
+			<div class="entry" ng-if="data.payment_gateway === 'MLI'">
 				<label for="mli-site-code">
 					MerchantLink site code
 				</label>
 				<input type="text" ng-model="data.mli_site_code" value="{{data.mli_site_code}}" placeholder="Enter MLI api key">
 			</div>
 
-			<div class="entry full-width" ng-show="data.payment_gateway === 'MLI'">
+			<div class="entry full-width" ng-if="data.payment_gateway === 'MLI'">
 				<button type="button" id="test-mli-payment-gateway" class="button blue" ng-click="testMLIPaymentGateway()">
 					TEST MERCHANTLINK PAYMENT GATEWAY
 				</button>
 			</div>
-			<div class="entry" ng-show="data.payment_gateway === 'sixpayments'">
+			<div class="entry" ng-if="data.payment_gateway === 'sixpayments'">
 				<label for="mli-payment-gateway-url">
 					Six Payments merchant ID
 				</label>
 				<input type="text" ng-model="data.six_merchant_id" value="{{data.six_merchant_id}}" placeholder="Enter six payment merchant id">
 			</div>
 
-			<div class="entry" ng-show="data.payment_gateway === 'sixpayments'">
+			<div class="entry" ng-if="data.payment_gateway === 'sixpayments'">
 				<label for="mli-merchant-id">
 					Six Payments validation code
 				</label>
 				<input type="text" ng-model="data.six_validation_code" value="{{data.six_validation_code}}" placeholder="Enter six payment validation code">
 			</div>
-			<div class="entry" ng-show="data.payment_gateway === 'sixpayments'">
+			<div class="entry" ng-if="data.payment_gateway === 'sixpayments'">
 				<label for="six-ipage-url">
 					Six Payments URL
 				</label>
 				<input type="text" ng-model="data.six_ipage_url" value="{{data.six_ipage_url}}" readonly="readonly">
 			</div>
-			<div class="entry" ng-show="data.payment_gateway === 'sixpayments'">
+			<div class="entry" ng-if="data.payment_gateway === 'sixpayments'">
 				<label for="six-server-location-id">
 					Six Payments Location Id
 				</label>
 				<input type="text" ng-model="data.six_server_location_id" value="{{data.six_server_location_id}}">
 			</div>
-			<div class="entry" ng-show="data.payment_gateway === 'sixpayments'">
+			<div class="entry" ng-if="data.payment_gateway === 'sixpayments'">
 				<label for="six-server-ipaddress">
 					Six Payments Server IP
 				</label>
 				<input type="text" ng-model="data.six_server_ipaddress" value="{{data.six_server_ipaddress}}">
 			</div>
-			<div class="entry" ng-show="data.payment_gateway === 'sixpayments'">
+			<div class="entry" ng-if="data.payment_gateway === 'sixpayments'">
 				<label for="six-server-port">
 					Six Payments Server Port
 				</label>
 				<input type="text" ng-model="data.six_server_port" value="{{data.six_server_port}}">
 			</div>
-			<div class="entry" ng-show="data.payment_gateway === 'sixpayments'">
+			<div class="entry" ng-if="data.payment_gateway === 'sixpayments'">
 				<label for="six-server-port">
 					Six Payments Communication Protocol
 				</label>
@@ -530,7 +538,7 @@
 				</div>
 			</div>
 		</fieldset>
-		<fieldset class="holder right" ng-show="isAdminSnt && data.payment_gateway == 'MLI'" >
+		<fieldset class="holder right" ng-if="isAdminSnt && data.payment_gateway == 'MLI'" >
 			<div class="form-title">
 				<h3><span>Hotel</span> MerchantLink Settings </h3>
 				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
@@ -569,7 +577,7 @@
 
 		</fieldset>
 		
-		<fieldset class="holder right" ng-show="isAdminSnt">
+		<fieldset class="holder right" ng-if="isAdminSnt">
 			<div class="form-title">
 				<h3><span>Hotel</span> CC Desktop Swipe </h3>
 				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
@@ -596,7 +604,7 @@
 			<button type="button" ng-click="clickedSave()" class="button green">
 				Save Changes
 			</button>
-			<button type="button" ui-sref="admin.users({id:id})" ng-show="isAdminSnt && isEdit" class="button green">
+			<button type="button" ui-sref="admin.users({id:id})" ng-if="isAdminSnt && isEdit" class="button green">
 				User Setup
 			</button>
 		</div>

@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSearchSrv', '$state', '$stateParams', 'dateFilter', '$timeout',
-    function($scope, RVReservationBaseSearchSrv, $state, $stateParams, dateFilter, $timeout) {
+sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSearchSrv', '$state', '$stateParams', 'dateFilter', '$timeout', 'RVReservationTabService',
+    function($scope, RVReservationBaseSearchSrv, $state, $stateParams, dateFilter, $timeout, RVReservationTabService) {
         $scope.reservationSettingsVisible = false;
 
         var resizableMinWidth = 30;
@@ -20,7 +20,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
                 preventClicking = true;
                 $scope.eventTimestamp = event.timeStamp;
             }
-        }
+        };
 
         window.setButtonsClickable = function() {
             $("#sidebar-nights button").css({
@@ -33,7 +33,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
                 height: '100%',
                 border: '1px solid red',
                 background: 'rgba(125,251,015,0.6)'
-            })
+            });
         };
 
         $scope.setScroller('reservation-settings');
@@ -115,8 +115,6 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             initStayDates(0);
             $scope.stayDatesClicked();
         };
-
-
 
         $scope.setDepartureDate = function() {
 
@@ -207,5 +205,16 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
         $scope.$on('GETREFRESHACCORDIAN', function() {
             setTimeout($scope.refreshScroll, 3000);
         });
+
+        $scope.addTabFromSidebar = function(){
+              if (!$scope.reservationData.tabs[$scope.reservationData.tabs.length - 1].roomTypeId) {
+                return false; // Need to select room type before adding another row
+            }
+            $scope.reservationData.tabs = $scope.reservationData.tabs.concat(RVReservationTabService.newTab());
+            $scope.reservationData.rooms = $scope.reservationData.rooms.concat(RVReservationTabService.newRoom());            
+            $scope.refreshScroll();
+        };
+
+
     }
 ]);

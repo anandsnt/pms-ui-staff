@@ -1,4 +1,4 @@
-<section id="replacing-div-first" class="content current" ng-click='clearErrorMessage()'>
+<section id="replacing-div-first" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()'>
 	
 	<div data-view="HotelDepartmentsView" class="inline-edit">
 		<header class="content-title float">
@@ -24,6 +24,18 @@
 								</span>							
 							</label>
 						</td>
+						<td data-title="'Is group only'" class="entry full-width radio-check text-center-important" header-class="text-center-important">
+							<label class="checkbox disable_hand_icon "  >
+								<span class="icon-form icon-checkbox left-auto " ng-class="{ checked :holdstatus.is_group_only  }">		
+								</span>							
+							</label>
+						</td>
+						<td data-title="'Is allotment only'" class="entry full-width radio-check text-center-important" header-class="text-center-important">
+							<label class="checkbox disable_hand_icon "  >
+								<span class="icon-form icon-checkbox left-auto " ng-class="{ checked :holdstatus.is_allotment_only  }">		
+								</span>							
+							</label>
+						</td>
 						<td data-title="'Delete'" class="delete" header-class="width-15 text-center-important">
 							<a id="3" class="icons icon-delete large-icon delete_item"  ng-hide="holdstatus.is_system" ></a>
 						</td>						
@@ -35,7 +47,19 @@
 						<td class="entry full-width radio-check text-center-important" ng-hide="currentClickedElement == $index" >
 							<label class="checkbox disable_hand_icon">
 								<span class="icon-form icon-checkbox text-center-important left-auto" ng-class="{ checked :holdstatus.is_take_from_inventory  }"></span>						
-								<input type="checkbox" ng-click="editHoldStatus($index,holdstatus.id)" ng-model="holdstatus.is_take_from_inventory">
+								<input type="checkbox" ng-click="editHoldStatus($index,holdstatus.id)">
+							</label>
+						</td>
+						<td class="entry full-width radio-check text-center-important" ng-hide="currentClickedElement == $index" >
+							<label class="checkbox disable_hand_icon">
+								<span class="icon-form icon-checkbox text-center-important left-auto" ng-class="{ checked :holdstatus.is_group_only  }"></span>						
+								<input type="checkbox" ng-click="editHoldStatus($index,holdstatus.id)">
+							</label>
+						</td>
+						<td class="entry full-width radio-check text-center-important" ng-hide="currentClickedElement == $index" >
+							<label class="checkbox disable_hand_icon">
+								<span class="icon-form icon-checkbox text-center-important left-auto" ng-class="{ checked :holdstatus.is_allotment_only  }"></span>						
+								<input type="checkbox" ng-click="editHoldStatus($index,holdstatus.id)">
 							</label>
 						</td>
 						<td class="delete" ng-hide="currentClickedElement == $index" >

@@ -13,7 +13,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
     'flyerPrograms',
     'loyaltyPrograms',
     '$filter',
-    function($rootScope, $scope, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams, $vault, baseData, activeCodes, flyerPrograms, loyaltyPrograms, $filter) {
+    'RVReservationTabService',
+    function($rootScope, $scope, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams, $vault, baseData, activeCodes, flyerPrograms, loyaltyPrograms, $filter, RVReservationTabService) {
         BaseCtrl.call(this, $scope);
         $scope.$parent.hideSidebar = false;
 
@@ -97,57 +98,60 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
          *
          */
         var fetchCurrentTimeSucess = function(data) {
-            var intHrs = parseInt(data.hotel_time.hh),
-                intMins = parseInt(data.hotel_time.mm),
-                ampm = '';
+                var intHrs = parseInt(data.hotel_time.hh),
+                    intMins = parseInt(data.hotel_time.mm),
+                    ampm = '';
 
-            // first conver 24hr time to 12hr time
-            if (intHrs > 12) {
-                intHrs -= 12;
-                ampm = 'PM';
-            } else {
-                ampm = 'AM';
-            }
-
-
-            // the time must be rounded to next 15min position
-            // if the guest came in at 3:10AM it should be rounded to 3:15AM
-            if (intMins > 45 && intHrs + 1 < 12) {
-                intHrs += 1;
-                intMins = '00';
-            } else if (intMins > 45 && intHrs + 1 === 12) {
-                if (ampm === 'AM') {
-                    intHrs = '00';
-                    intMins = '00';
+                // first conver 24hr time to 12hr time
+                if (intHrs > 12) {
+                    intHrs -= 12;
                     ampm = 'PM';
                 } else {
-                    intHrs = '00';
-                    intMins = '00';
                     ampm = 'AM';
                 }
-            } else if (intMins === 15 || intMins === 30 || intMins === 45) {
-                intMins += 15;
-            } else {
-                do {
-                    intMins += 1;
-                    if (intMins === 15 || intMins === 30 || intMins === 45) {
-                        break;
+
+
+                // the time must be rounded to next 15min position
+                // if the guest came in at 3:10AM it should be rounded to 3:15AM
+                if (intMins > 45 && intHrs + 1 < 12) {
+                    intHrs += 1;
+                    intMins = '00';
+                } else if (intMins > 45 && intHrs + 1 === 12) {
+                    if (ampm === 'AM') {
+                        intHrs = '00';
+                        intMins = '00';
+                        ampm = 'PM';
+                    } else {
+                        intHrs = '00';
+                        intMins = '00';
+                        ampm = 'AM';
                     }
-                } while ( intMins !== 15 || intMins !== 30 || intMins !== 45 );
-            };
+                } else if (intMins === 15 || intMins === 30 || intMins === 45) {
+                    intMins += 15;
+                } else {
+                    do {
+                        intMins += 1;
+                        if (intMins === 15 || intMins === 30 || intMins === 45) {
+                            break;
+                        }
+                    } while (intMins !== 15 || intMins !== 30 || intMins !== 45);
+                };
 
-            // finally append zero and convert to string -- only for $scope.reservationData.checkinTime
-            $scope.reservationData.checkinTime = {
-                hh: (intHrs < 10 && intHrs.length < 2) ? '0' + intHrs : intHrs.toString(),
-                mm: intMins.toString(),
-                ampm: ampm
-            };
+                // finally append zero and convert to string -- only for $scope.reservationData.checkinTime
+                $scope.reservationData.checkinTime = {
+                    hh: (intHrs < 10 && intHrs.length < 2) ? '0' + intHrs : intHrs.toString(),
+                    mm: intMins.toString(),
+                    ampm: ampm
+                };
 
-            // NOTE: on UI we are no appending a leading '0' for hours less than 12
-            // This could change in future, only God knows
-            $scope.fullCheckinTime = intHrs + ':' + intMins + ' ' + ampm;
-            $scope.setDepartureHours();
-        };
+                // NOTE: on UI we are no appending a leading '0' for hours less than 12
+                // This could change in future, only God knows
+                $scope.fullCheckinTime = intHrs + ':' + intMins + ' ' + ampm;
+                $scope.setDepartureHours();
+            },
+            refreshScroller = function() {
+                $scope.refreshScroller('search_reservation');
+            };
 
         var fetchMinTimeSucess = function(data) {
             var intVal = parseInt(data.min_hours);
@@ -189,7 +193,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.initReservationData();
                 $scope.initReservationDetails();
             } else {
-                //$scope.reservationData.isSameCard = false;
+
                 //TODO: 1. User gets diverted to the Search screen (correct)
                 //but Guest Name and Company / TA cards are not copied into the respective search fields.
                 //They are added to the reservation by default later on,
@@ -209,8 +213,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     }
                     return "";
                 })();
-                $scope.codeSearchText = (function(){
-                    if(!!$scope.reservationData.code){
+                $scope.codeSearchText = (function() {
+                    if (!!$scope.reservationData.code) {
                         return $scope.reservationData.code.value;;
                     }
                     return "";
@@ -349,7 +353,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 /*  For every room initate the stayDates object
                  *   The total room count is taken from the roomCount value in the reservationData object
                  */
-                for (var roomNumber = 0; roomNumber < $scope.reservationData.roomCount; roomNumber++) {
+                for (var roomNumber = 0; roomNumber < $scope.reservationData.rooms.length; roomNumber++) {
                     initStayDates(roomNumber);
                 }
 
@@ -364,6 +368,83 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 }
             }
 
+        };
+
+        $scope.alertOverbooking = function(close) {
+            var tabIndex = 0,
+                timer = 0;
+            if (close) {
+                $scope.closeDialog();
+                timer = 1000
+            }
+            $timeout(function() {
+                for (; tabIndex < $scope.reservationData.tabs.length; tabIndex++) {
+                    var tab = $scope.reservationData.tabs[tabIndex];
+                    if ((!tab.overbookingStatus.room || !tab.overbookingStatus.house) && !tab.overbookingStatus.alerted) {
+                        tab.overbookingStatus.alerted = true;
+                        ngDialog.open({
+                            template: '/assets/partials/reservation/alerts/availabilityCheckOverbookingAlert.html',
+                            scope: $scope,
+                            controller: 'overbookingAlertCtrl',
+                            closeByDocument: false,
+                            closeByEscape: false,
+                            data: JSON.stringify({
+                                houseFull: !tab.overbookingStatus.house,
+                                roomTypeId: tab.roomTypeId
+                            })
+                        });
+                        break;
+                    }
+                }
+                if (tabIndex === $scope.reservationData.tabs.length) {
+                    $scope.navigate();
+                }
+            }, timer);
+        };
+
+        $scope.checkAvailability = function() {
+            $scope.invokeApi(RVReservationBaseSearchSrv.checkOverbooking, {
+                from_date: $scope.reservationData.arrivalDate,
+                to_date: $scope.reservationData.departureDate
+            }, function(availability) {
+                $scope.availabilityData = availability;
+                var houseAvailable = true,
+                    roomtypesAvailable = _($scope.reservationData.tabs.length).times(function(n) {
+                        return true
+                    });
+                _.each(availability, function(dailyStat) {
+                    houseAvailable = houseAvailable && (dailyStat.house.availability > 0);
+                    _.each($scope.reservationData.tabs, function(tab, tabIndex) {
+                        if (!!tab.roomTypeId) {
+                            roomtypesAvailable[tabIndex] = roomtypesAvailable[tabIndex] &&
+                                (dailyStat.room_types[tab.roomTypeId] > 0);
+                        }
+                    });
+                });
+
+                if (houseAvailable && _.reduce(roomtypesAvailable, function(a, b) {
+                        return a && b
+                    })) {
+                    $scope.navigate();
+                } else {
+                    // initiate flags in the tabs data model
+                    _.each($scope.reservationData.tabs, function(tab, tabIndex) {
+                        tab.overbookingStatus = {
+                            house: houseAvailable,
+                            room: roomtypesAvailable[tabIndex],
+                            alerted: false
+                        }
+                    });
+                    $scope.alertOverbooking();
+                }
+
+                $scope.$emit('hideLoader');
+
+            }, function(errorMessage) {
+                $scope.$emit('hideLoader');
+                $scope.errorMessage = errorMessage;
+            });
+            // 
         };
 
 
@@ -449,7 +530,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.reservationData.travelAgent.iataNumber = ui.item.iataNumber;
             };
 
-            // DO NOT return false;
+            // DO NOT return false
         };
 
         $scope.autocompleteOptions = {
@@ -526,7 +607,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         /**
          * Source handler for the codes autocomplete
          * jquery autocomplete Souce handler
-         * get two arguments - request object and response callback function 
+         * get two arguments - request object and response callback function
          */
 
         var codeACSourceHandler = function(request, response) {
@@ -536,7 +617,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 codeResults = [];
                 lastSearchText = "";
             } else if (request.term.length > 0) {
-                if (request.term != '' && lastSearchText != request.term) {
+                if (request.term !== '' && lastSearchText !== request.term) {
                     lastSearchText = request.term;
                     var filteredCodes = $filter('filter')($scope.activeCodes, {
                         name: request.term
@@ -576,13 +657,69 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         };
 
         $scope.onMemberRateToggle = function() {
-            if($rootScope.isHLPActive && $scope.loyaltyPrograms.length > 0){
+            if ($rootScope.isHLPActive && $scope.loyaltyPrograms.length > 0) {
                 $scope.reservationData.member.value = $scope.loyaltyPrograms[0].hl_value;
                 return;
             }
-            if($rootScope.isFFPActive && $scope.flyerPrograms.length > 0){
-                $scope.reservationData.member.value = $scope.flyerPrograms[0].ff_value;                
-            }            
+            if ($rootScope.isFFPActive && $scope.flyerPrograms.length > 0) {
+                $scope.reservationData.member.value = $scope.flyerPrograms[0].ff_value;
+            }
+        };
+
+        $scope.addTab = function(tabIndex) {
+            if (!$scope.reservationData.tabs[tabIndex].roomTypeId) {
+                return false; // Need to select room type before adding another row
+            }
+            $scope.reservationData.tabs = $scope.reservationData.tabs.concat(RVReservationTabService.newTab());
+            $scope.reservationData.rooms = $scope.reservationData.rooms.concat(RVReservationTabService.newRoom());
+            devlogRoomsArray();
+            refreshScroller();
+        };
+
+        var devlogRoomsArray = function() {
+            console.log({
+                size: $scope.reservationData.rooms.length,
+                contents: $scope.reservationData.rooms
+            });
+        }
+
+        $scope.onRoomTypeChange = function(tabIndex) {
+            var index = 0,
+                currentRoomCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount, 10),
+                roomType = parseInt($scope.reservationData.tabs[tabIndex].roomTypeId, 10),
+                i;
+            $scope.reservationData.tabs[tabIndex].roomTypeId = roomType;
+            for (i = 0; i < tabIndex; i++) {
+                index += parseInt($scope.reservationData.tabs[i].roomCount, 10);
+            }
+            for (i = index; i < index + currentRoomCount; i++) {
+                $scope.reservationData.rooms[i].roomTypeId = roomType;
+            }
+        };
+
+        $scope.onOccupancyChange = function(type, tabIndex) {
+            var currentRoomTypeId = $scope.reservationData.tabs[tabIndex].roomTypeId,
+                firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
+                    roomTypeId: currentRoomTypeId
+                })),
+                lastIndex = _.lastIndexOf($scope.reservationData.rooms, _.last(_.where($scope.reservationData.rooms, {
+                    roomTypeId: currentRoomTypeId
+                }))),
+                i;
+            for (i = firstIndex; i <= lastIndex; i++) {
+                $scope.reservationData.rooms[i][type] = parseInt($scope.reservationData.tabs[tabIndex][type], 10);
+            }
+            devlogRoomsArray();
+        };
+
+        $scope.isRoomTypeSelected = function(tabIndex, roomTypeId) {
+            var chosen = false;
+            _.each($scope.reservationData.tabs, function(tabData, index) {
+                if (parseInt(tabData.roomTypeId, 10) === roomTypeId && tabIndex != index) {
+                    chosen = true;
+                }
+            });
+            return chosen;
         };
 
     }

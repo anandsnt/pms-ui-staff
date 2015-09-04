@@ -1,0 +1,43 @@
+<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
+	<div class="modal-content form group-checkin" ng-if="ngDialogData.failure_reservation_ids.length == 0">
+		<button id="modal-close" type="button" class="modal-close" ng-click="closeMassCheckinSuccessPopup()" ><span class="icons icon-close invert"></button>
+		<span class="icons icon-popup-success"></span>
+		<span class="h2 message" ng-show="ngDialogData.success_reservation_ids.length<=1">{{ngDialogData.success_reservation_ids.length}} Reservation checked out succesfully!</span>
+		<span class="h2 message" ng-show="ngDialogData.success_reservation_ids.length>1">{{ngDialogData.success_reservation_ids.length}} Reservations checked out succesfully!</span>
+		<div class="actions">
+	        <button type="button" class="button blank" ng-click="closeMassCheckinSuccessPopup()">Close</button>
+	    </div>
+	</div>
+	<div class="modal-content form group-checkin has-failures" ng-if="ngDialogData.failure_reservation_ids.length > 0">
+		<button id="modal-close" type="button" class="modal-close" ng-click="closeMassCheckinSuccessPopup()" ><span class="icons icon-close invert"></button>
+        <div class="feedback">
+            <div class="failed">
+                <span class="icons icon-popup-alert"></span>
+                <span class="h3 message" ng-show="ngDialogData.failedReservations.length<=1">{{ngDialogData.failure_reservation_ids.length}} Reservation were not checked out:</span>
+                <span class="h3 message" ng-show="ngDialogData.failedReservations.length>1">{{ngDialogData.failure_reservation_ids.length}} Reservations were not checked out:</span>
+                <div class="notice error scrollable" ng-iscroll="failed_reservations_scroller" ng-iscroll-delay="100">
+                    <ul class="wrapper">
+                        <li ng-repeat="reservation in ngDialogData.failedReservations track by $index" ng-if="isGuestBlank(reservation)" ngrepeatend>
+                        	<em translate>GROUP_PENDING</em>
+                        	<span>#{{reservation.confirm_no}}</span>
+                        </li>
+                        <li ng-repeat="reservation in ngDialogData.failedReservations track by $index" ng-if="!isGuestBlank(reservation)" ngrepeatend>
+                        	{{reservation.lastname}}, {{reservation.firstname}}
+                        	<span>#{{reservation.confirm_no}}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="actions">
+                    <button type="button" class="button blank" ng-click="closeMassCheckinSuccessPopup()"> Close</button>
+                </div>
+            </div>
+            <div class="succeeded check-out">
+                <div class="succeded-content">
+                    <span class="icons icon-popup-success white"></span>
+                    <span class="h3 message" ng-show="ngDialogData.success_reservation_ids.length<=1">{{ngDialogData.success_reservation_ids.length}} Reservation checked out succesfully!</span>
+                    <span class="h3 message" ng-show="ngDialogData.success_reservation_ids.length>1">{{ngDialogData.success_reservation_ids.length}} Reservations checked out succesfully!</span>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>

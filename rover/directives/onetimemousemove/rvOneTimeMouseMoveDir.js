@@ -10,5 +10,5 @@ sntRover.directive('onetimemousemove', ['$window', function($window) {
                 w.off('mousemove');
             });
         }
-    }
+    };
 }]);

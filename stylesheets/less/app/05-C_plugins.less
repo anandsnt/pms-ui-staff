@@ -3867,7 +3867,7 @@
 				}
 			}
 
-			/* Group checkin ***/
+			/* Group checkin / checkout ***/
 			&.group-checkin {
 				width: 320px;
 
@@ -3903,6 +3903,8 @@
 						.size(100%, 40%);
 
 						.message { color: @white; }
+
+						&.check-out { background-color: @red; }
 					}
 
 					.failed {
@@ -3935,6 +3937,86 @@
 				&.has-failures { 
 					width: 540px; 
 					padding: 0;
+				}
+			}
+
+			/* Move Group ***/
+			&.group-date {
+				width: 360px;
+
+				.moved {
+					color: @textColor;
+					font-weight: 600;
+					margin-bottom: 10px;
+					.float;
+
+					.label {
+						color: @textColor;
+						font-size: 16px;
+						line-height: 40px;
+						text-transform: uppercase;
+						text-align: right;
+						width: 120px;
+						margin-right: 20px;
+						.pull-left;
+					}
+
+					p {
+						background-color: @white;
+						line-height: 20px;
+						padding: 10px;
+						margin: 0;
+						#border-radius > .rounded();
+						.calc-width(50, 70);
+						.pull-left;
+
+						&.full-width { .calc-width(100, 140); }
+					}
+
+					.guest-status { 
+						margin-right: 10px;
+						.square(20px); 
+					}
+
+					&.before {
+						color: @grey3;
+						font-weight: 400;
+						margin-top: 20px;
+
+						.label { color: @grey3; }
+
+						p { text-decoration: line-through; }
+
+						.guest-status { background-color: @grey2; }
+					}
+				}
+
+				.actions {
+					margin-top: 20px;
+					padding-top: 20px;
+					border-top: 1px solid rgba(0,0,0,.1);
+				
+					.button {
+						margin: 0 auto 10px;
+
+						&:last-child { margin-bottom: 0; }
+					}
+				}
+
+				&.move-group {
+					width: 480px;
+
+					.actions {
+						text-align: center;
+
+						.button {
+							display: inline-block;
+							margin: 0 10px 0 0;
+							width: auto;
+
+							&:last-child { margin-right: 0; }
+						}
+					}
 				}
 			}
 
@@ -4326,6 +4408,116 @@
 					}
 				}
 			}
+
+			/* Availability Calendar ***/
+			&.availability-calendar {
+				padding: 0;
+				width: 960px;
+				.float;
+
+				.h2 {
+					margin-top: 40px;
+
+					&.red { color: @red; }
+					&.green { color: @green; }
+				}
+
+				.info {
+					background-color: @white;
+					padding: 10px;
+					margin: 0 auto 10px;
+					width: 820px;
+					#border-radius > .rounded();
+					.float;
+
+					li {
+						display: inline-block;
+						text-transform: uppercase;
+						line-height: 30px;
+						padding: 0 10px;
+						margin: 0;
+						border-right: 1px solid rgba(0,0,0,.1);
+						.calc-width(50, 60);
+						.nowrap();
+						.show;
+						.pull-left;
+
+						.label { 
+							display: inline;
+							float: none;
+							line-height: 30px; 
+						}
+
+						&.price { width: 120px; }
+
+						&:last-child { border-right: 0; }
+					}
+				}
+
+			    .calendar-holder { .float; }
+
+				.calendar-left,
+                .calendar-right {
+                	margin: 0 15px;
+                    .calc-width(50, 30);
+                    .pull-left;
+                }
+
+                .calendar-legend { 
+                	padding: 20px;
+                	margin-bottom: 20px;
+                }
+
+                .actions {
+                	position: relative;
+					text-align: right;
+					padding: 20px;
+					background-color: rgba(0,0,0,.05);
+					.box-shadow(-2px 0 2px rgba(0,0,0,.15));
+					.size(90px, 100%);
+
+					.switch-button {
+				        position: absolute;
+				        top: 20px;
+				        left: 20px;
+				        font-size: 14px;
+				        text-transform: uppercase;
+				        .size(40px, 180px);
+
+				        .switch-icon { .gradient(@redStart, @redEnd); }
+
+				        .available {
+				        	.switch-icon { .gradient(@greenStart, @greenEnd); }
+				        }
+
+				        .data-off,
+				        .data-on { 
+				        	line-height: 30px;
+				        	height: 30px;
+				        }
+
+				        .data-off {
+				        	.switch-icon { margin: 0 5px 0 0; }
+				        }
+
+				        .data-on {
+				        	.switch-icon { margin: 0 0 0 5px; }
+				        }
+
+				        input[type="checkbox"] { 
+				            line-height: 40px;
+				            min-height: 40px;
+				        }
+				    }
+
+					.button {
+						display: inline-block;
+						width: auto;
+
+						&:first-child { margin-right: 10px; }
+					}
+				}
+			}
 		}
 	}
 
@@ -4407,27 +4599,23 @@
 	/* Header ***/
 		.fc-header {
 			margin-bottom: 0;
+			background-color: @white;
+			#border-radius > .rounded();
+			.box-shadow(1px 1px 0 rgba(0,0,0,.15));
 
 			td {
-				background-color: @white;
-				white-space: nowrap;
-		  		overflow: hidden;
-		  		text-overflow: ellipsis;
-		  		line-height: 40px;
+				line-height: 50px;
 		  		height: 50px;
 		  		padding: 5px 0;
-		  		vertical-align: middle;
+		  		.nowrap();
 
 		  		&.fc-header-left {
 		  			width: 40px;
 					text-align: left;
-					#border-radius > .left();
-					.box-shadow(-1px 1px 0 rgba(0,0,0,.15));
-		  		}
+				}
 
 		  		&.fc-header-center {
 					text-align: center;
-					.box-shadow(0 1px 0 rgba(0,0,0,.15));
 
 					h2 { 
 						font-size: 18px;
@@ -4439,8 +4627,6 @@
 				&.fc-header-right {
 					width: 40px;
 					text-align: right;
-					#border-radius > .right();
-					.box-shadow(1px 1px 0 rgba(0,0,0,.15));
 				}
 
 				.fc-button {
@@ -4467,9 +4653,7 @@
 				overflow: visible;
 			}
 
-			&.updating {
-				#fade > .out(); 
-			}
+			&.updating { #fade > .out(); }
 		}
 
 	/* Dates ***/
@@ -4490,6 +4674,7 @@
 		}
 
 		.fc-event {
+			white-space: pre;
 			z-index: 9;
 
 			.fc-event-inner {
@@ -4501,6 +4686,7 @@
 
 				.fc-event-title,
 				.fc-event-day {
+					position: relative;
 					text-align: right;
 					line-height: 25px;
 					padding-right: 5px;
@@ -4519,249 +4705,166 @@
 					font-size: 12px;
 					vertical-align: bottom;
 				}
+
+				&:after { z-index: 10; }
+			}
+
+			&.fc-event-draggable {
+				.fc-event-inner {
+					cursor: @draggable, pointer;
+            		cursor: @draggable 16 16, pointer;
+				}
+
+				&.ui-draggable-dragging {
+					.fc-event-inner {
+						cursor: @dragging, move;
+                		cursor: @dragging 16 16, move;
+                	}
+				}
+			}
+
+			&.available {
+				.fc-event-inner {
+					.fc-event-day,
+					.fc-event-title {
+						color: @green;
+						background-color: rgba(137,189,85,.3); 
+					}
+				}
+			}
+
+			&.unavailable {
+				.fc-event-inner {
+					.fc-event-day,
+					.fc-event-title {
+						color: @red;
+						background-color: rgba(230,56,56,.3); 
+					}
+				}				
 			}
 
 			&.check-in,
-            &.check-out,
-            &.check-in-unavailable,
-            &.check-out-unavailable {
-                .fc-event-inner {
-                    cursor: @draggable, pointer;
-                    cursor: @draggable 16 16, pointer;
+			&.check-out {
+				.fc-event-inner {
+					.fc-event-day,
+					.fc-event-title { color: @white; }
+				}
+			}
 
-                    .fc-event-day,
-                    .fc-event-title { color: @white; }
+			&.past-day{
+				.fc-event-inner {
+					background: @grey3; 
+				}
+			}			
+
+			&.check-in {
+				.fc-event-inner {
+					background: @green; 
+
+					.fc-event-title { 
+						background: @icons no-repeat 5px -115px; 
+
+						@media @highdpi {
+							background-image: @icons2x;
+							background-size: 120px;
+						}
+					}
+				}
+				&.unavailable { 
+					.fc-event-inner {
+						.fc-event-day,
+						.fc-event-title { 						
+							color: @red;
+							background-color: @green;                     		                   		
+                    	}                    	
+                	}
                 }
+			}
 
-                &.ui-draggable-dragging {
-                    .fc-event-inner {
-                        cursor: @dragging, move;
-                        cursor: @dragging 16 16, move;
-                    }
-                }
-            }
+			&.check-out { 
+				.fc-event-inner {
+					background: @red; 
 
-            &.check-in,
-            &.check-in-unavailable {
-                .fc-event-inner {
-                    background: @green; 
+					.fc-event-title { 
+						text-indent: 9999px; 
+						background: @icons no-repeat 5px -155px; 
 
-                    .fc-event-title { 
-                        background: @icons no-repeat 5px -115px; 
+						@media @highdpi {
+							background-image: @icons2x;
+							background-size: 120px;
+						}
+					}
+				}
+			}
 
-                        @media @highdpi {
-                            background-image: @icons2x;
-                            background-size: 120px;
-                        }
-                    }
-                }
-            }
+			&.mid-stay {
+				.fc-event-inner {
+					.background();
 
-            &.check-out,
-            &.check-out-unavailable { 
-                .fc-event-inner {
-                    background: @red; 
+					.fc-event-day,
+					.fc-event-title { color: @green; }
 
-                    .fc-event-title { 
-                        text-indent: 9999px; 
-                        background: @icons no-repeat 5px -155px; 
+					&:after {
+						content: ' ';
+					    position: absolute;
+					    left: 0;
+					    right: 0;
+					    top: 0;
+					    bottom: 0;
+					    background-color: rgba(137,189,85,.3);
+					}
+				}
+			}
 
-                        @media @highdpi {
-                            background-image: @icons2x;
-                            background-size: 120px;
-                        }
-                    }
-                }
-            }
+			&.type-available {
+				.fc-event-inner {
+					.background();
+					.box-shadow(inset 0 0 0 3px @green);
 
-            &.check-in-unavailable,
-            &.check-out-unavailable { 
-                .fc-event-day,
-                .fc-event-title { .opacity(50); }
-            }
+					.fc-event-day { color: @textColor; }
+					.fc-event-title { color: @grey3; }
+				}
+			}
 
-            &.check-in-unavailable {
-                .fc-event-inner { background: lighten(@green, 15); }
-            }
+			&.split-view {
+				.fc-event-inner { height: 25px !important; }
+				
+				&.check-in {
+					.fc-event-inner {
+						.fc-event-title { 
+							margin-top: -25px;
+							text-indent: 9999px; 
+						}
+					}
+				}
 
-            &.check-out-unavailable { 
-                .fc-event-inner { background: lighten(@red, 15); }
-            }
+				&.check-out {
+					.fc-event-inner {
+						.fc-event-title { text-indent: 0; }
+						.fc-event-day { .hide; }
+					}
+				}  
 
-            &.mid-stay,
-            &.mid-stay-type-unavailable,
-            &.mid-stay-house-unavailable { 
-                .fc-event-inner {
-                    .background();
+				/* Restore looks when dragging ***/
+				&.ui-draggable-dragging {
+					.fc-event-inner { height: 50px !important; }
 
-                    &:after {
-                        content: ' ';
-                        position: absolute;
-                        left: 0;
-                        right: 0;
-                        top: 0;
-                        bottom: 0;
-                        background-color: rgba(137,189,85,.3);
-                    }
-                }
-            }
-
-            &.mid-stay { 
-                .fc-event-inner {
-                    .fc-event-day,
-                    .fc-event-title { color: @green; }
-                }
-            }
-
-            &.mid-stay-type-unavailable {
-                .fc-event-inner {
-                    .fc-event-day,
-                    .fc-event-title { color: rgba(0,0,0,.3); }
-                }
-            }
-
-            &.mid-stay-house-unavailable {
-                .fc-event-inner {
-                    .fc-event-day,
-                    .fc-event-title { color: @red; }
-                }
-            }
-
-            &.type-available {
-                .fc-event-inner {
-                    border: 3px solid @green;
-                    .background();
-
-                    .fc-event-day { color: @textColor; }
-                    .fc-event-title { color: @grey3; }
-                }
-            }
-
-            &.type-unavailable {
-                .fc-event-inner {
-                    .background();
-
-                    .fc-event-day,
-                    .fc-event-title { color: @grey2; }
-
-                    &:after {
-                        content: ' ';
-                        position: absolute;
-                        left: 0;
-                        right: 0;
-                        top: 0;
-                        bottom: 0;
-                        background-color: rgba(0,0,0,.15);
-                    }
-                }
-            }
-
-            &.house-unavailable {
-                .fc-event-inner {
-                    .background();
-
-                    .fc-event-day { color: @red; }
-                    .fc-event-title { color: @red; }
-
-                    &:after {
-                        content: ' ';
-                        position: absolute;
-                        left: 0;
-                        right: 0;
-                        top: 0;
-                        bottom: 0;
-                        background-color: rgba(230,56,56,.3);
-                    }
-                }
-            }
-
-            &.split-view {
-                .fc-event-inner { height: 25px !important; }
-                
-                &.check-in {
-                    .fc-event-inner {
-                        .fc-event-title { 
-                            margin-top: -25px;
-                            text-indent: 9999px; 
-                        }
-                    }
-                }
-                &.check-out {
-                    .fc-event-inner {
-                        .fc-event-title { text-indent: 0; }
-                        .fc-event-day { .hide; }
-                    }
-                }  
-
-                /* Restore looks when dragging ***/
-                &.ui-draggable-dragging {
-                    .fc-event-inner { height: 50px !important; }
-
-                    &.check-in {
-                        .fc-event-inner {
-                            .fc-event-title { 
-                                margin-top: 0;
-                                text-indent: 0; 
-                            }
-                        }
-                    }
-                    &.check-out {
-                        .fc-event-inner {
-                            .fc-event-title { text-indent: 9999px; }
-                            .fc-event-day { .show; }
-                        }
-                    } 
-                }
-            }
-
-            &[data-rate]:not([data-rate=""]):not(.hide-tooltip) {
-                .show;
-
-                &:before,
-                &:after {
-                    position: absolute;
-                    visibility: hidden;
-                    pointer-events: none;
-                    z-index: 999;
-                    .transition;
-                    .opacity(0);
-                }
-
-                &:before {
-                    content: attr(data-rate); 
-                    bottom: 49px;
-                    right: 10px;
-                    padding: 10px;
-                    background-color: @white;
-                    font-size: 18px;
-                    font-weight: 600;
-                    min-width: 200px;
-                    .show;
-                    .box-shadow();
-                    #border-radius > .rounded();
-                }
-
-                &:after {
-                    content: "";
-                    bottom: 40px;
-                    left: 20px;
-                    width: 0;
-                    height: 0;
-                    border-top: 10px solid @white;
-                    border-right: 10px solid transparent;
-                    border-left: 10px solid transparent;
-                }
-
-                &:hover:before,
-                &:hover:after {
-                    visibility: visible;
-                    .opacity(100);
-                }
-
-                &[data-room-type]:not([data-room-type=""]) {
-                    &:before { content: attr(data-room-type) "\A" attr(data-rate);  }
-                }
-            }
+					&.check-in {
+						.fc-event-inner {
+							.fc-event-title { 
+								margin-top: 0;
+								text-indent: 0; 
+							}
+						}
+					}
+					&.check-out {
+						.fc-event-inner {
+							.fc-event-title { text-indent: 9999px; }
+							.fc-event-day { .show; }
+						}
+					} 
+				}
+			}
 		}		
 	
 	/* Calendar table ***/
@@ -4806,8 +4909,6 @@
 				}
 			}
 		}
-		
-		/* Deposits / Balance ***/
 
 
 /* 6. IE

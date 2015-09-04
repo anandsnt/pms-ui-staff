@@ -7,8 +7,8 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 		};
 		$scope.hasPermissionForCommissionUpdate = function(){
 			return rvPermissionSrv.getPermissionValue('UPDATE_COMMISSION') && !isEmpty($scope.reservationData.reservation_card.commission_details);
-		};	
-		
+		};
+
 		$scope.isSegmentAutoComputed = function() {
 			var currentSegment = $scope.reservationParentData.demographics.segment,
 				aptSegment = "";
@@ -24,7 +24,31 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			} else {
 				return false;
 			}
-		}
+		};
+		var eventTimestamp = "";
+		$scope.clickedAdditionalDetails = function($event){
+
+			$event.preventDefault();
+		    $event.stopImmediatePropagation();
+  			$event.stopPropagation();
+  			var toggleAction = function(){
+				$scope.additionalDetails.hideDetails = !$scope.additionalDetails.hideDetails;
+				$scope.refreshReservationDetailsScroller(300);
+				eventTimestamp = $event.timeStamp;
+  			};
+			if (parseInt(eventTimestamp)) {
+				if (($event.timeStamp - eventTimestamp) < 500) {
+					return;
+				}
+				else{
+					toggleAction();
+				}
+			}
+			else{
+				toggleAction();
+			};
+
+		};
 
 		$scope.updateAdditionalDetails = function() {
 			var updateSuccess = function(data) {
@@ -56,7 +80,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 				'segment_id': parseInt($scope.reservationParentData.demographics.segment),
 				'commission_data':$scope.reservationData.reservation_card.commission_details
 			}, updateSuccess, updateFailure);
-		}
+		};
 
 		$rootScope.$on('UPDATERESERVATIONTYPE', function(e, data) {
             $scope.reservationParentData.demographics.reservationType = data;

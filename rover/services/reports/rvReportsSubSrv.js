@@ -8,7 +8,7 @@ sntRover.service('RVreportsSubSrv', [
 		 * centralised method for making api request and managing promises
 		 * the only reason I end up created this is to avoid code repetition
 		 * in the below service methods
-		 * @param  {Object} options {method on 'rvBaseWebSrvV2', request params, request url, response key}	
+		 * @param  {Object} options {method on 'rvBaseWebSrvV2', request params, request url, response key}
 		 * @return {Object}         a promise object, which when resolved/rejected will return the data
 		 * @private
 		 */
@@ -16,7 +16,9 @@ sntRover.service('RVreportsSubSrv', [
 			var deferred = $q.defer();
 
 			var success = function(data) {
-				if ( !! options.resKey ) {
+				if ( !! options.resKey2 && !! options.resKey ) {
+					deferred.resolve( data[options.resKey][options.resKey2] );
+				} else if ( !! options.resKey ) {
 					deferred.resolve( data[options.resKey] );
 				} else {
 					deferred.resolve( data );
@@ -26,7 +28,7 @@ sntRover.service('RVreportsSubSrv', [
 			var failed = function(data) {
 				deferred.reject( data || {} );
 			};
-
+			
 			if ( ! options.url || ! options.method || ! rvBaseWebSrvV2.hasOwnProperty(options.method) ) {
 				failed();
 			} else if ( !! options.params ) {
@@ -120,6 +122,15 @@ sntRover.service('RVreportsSubSrv', [
 				method : 'getJSON',
 				url    : 'api/reports/search_by_company_agent_group?query=' + query,
 				resKey : 'results'
+			});
+		};
+
+		service.fetchHoldStatus = function() {
+			return callApi({
+				method  : 'getJSON',
+				url     : 'api/group_hold_statuses',
+				resKey  : 'data',
+				resKey2 : 'hold_status'
 			});
 		};
 

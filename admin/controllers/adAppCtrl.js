@@ -67,21 +67,21 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					submenu: [],
 					iconClass: "icon-dashboard"
 				},
-				// {
-				// 	title: "MENU_AVAILABILITY",
-				// 	action: "",
-				// 	iconClass: "icon-availability",
-				// 	submenu: [{
-				// 		title: "MENU_HOUSE_STATUS",
-				// 		action: ""
-				// 	}, {
-				// 		title: "MENU_AVAILABILITY",
-				// 		action: ""
-				// 	}]
-				// },
+
+
+
+
+
+
+
+
+
+
+
+
 				{
 					title: "MENU_FRONT_DESK",
-					//hidden: true,
+
 					action: "",
 					iconClass: "icon-frontdesk",
 					submenu: [
@@ -112,7 +112,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		       	 	}]
 				}, {
 			        title: "MENU_GROUPS",
-			        //hidden: true,
+
 			        action: "",
 			        iconClass: "icon-groups",
 			        menuIndex: "menuGroups",
@@ -125,6 +125,14 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			            title: "MENU_MANAGE_GROUP",
 			            action: "staff#/staff/groups/search",
 			            menuIndex: "menuManageGroup"
+			        }, {
+			            title: "MENU_CREATE_ALLOTMENT",
+			            action: "staff#/staff/allotments/config/NEW_ALLOTMENT/SUMMARY",
+			            menuIndex: "menuCreateAllotment"
+			        }, {
+			            title: "MENU_MANAGE_ALLOTMENT",
+			            action: "staff#/staff/allotments/search",
+			            menuIndex: "menuManageAllotment"
 			        }]
 		    	},{
 					title: "MENU_CONVERSATIONS",
@@ -159,7 +167,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					}]
 				}, {
 					title: "MENU_HOUSEKEEPING",
-					//hidden: true,
+
 					action: "",
 					iconClass: "icon-housekeeping",
 					submenu: [{
@@ -221,7 +229,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					  };
 			          angular.forEach($scope.menu, function(menu, index) {
 			              if(menu.title === 'MENU_FRONT_DESK'){
-			                menu.submenu.push(eodSubMenu)
+			                menu.submenu.push(eodSubMenu);
 			              }
 			          });
        			};
@@ -235,7 +243,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-dashboard"
 				}, {
 					title: "MENU_HOUSEKEEPING",
-					//hidden: true,
+
 					action: "",
 					iconClass: "icon-housekeeping",
 					submenu: [{
@@ -463,7 +471,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		       * TODO: Fix this bug in ng-translate and implement in this here.
 		       */
 		      setTimeout(function() {
-		        $translate('NA')
+		        $translate('NA');
 		      }, 1000); //Word around.
 		    } else {
 		      $translate.use('EN');
@@ -557,20 +565,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$scope.hasLoader = false;
 		});
 
-		/*$scope.isHotelListOpen = function() {
-			$scope.hotelListOpen = ($scope.hotelListOpen === "open") ? "" : "open";
-		};
-		$scope.redirectToHotel = function(hotel_id) {
-			ADAppSrv.redirectToHotel(hotel_id).then(function(data) {
-				//CICO-9816 bug fix
-				$('body').addClass('no-animation');
-				$('#admin-header').css({'z-index':'0'});
-				$('section.content-scroll').css({'overflow':'visible'});
 
-				$window.location.href = "/admin";
-			}, function() {
-			});
-		};*/
 
 		/**
 		    *   Method to go back to previous state.

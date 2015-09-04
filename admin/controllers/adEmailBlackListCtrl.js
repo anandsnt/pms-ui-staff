@@ -63,24 +63,24 @@ admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSr
 			$scope.emailList = data;
 			$scope.loadTable();
 
-      //       $scope.tableParams = new ngTableParams({
+
 		    //    page: 1,            // show first page
 		    //    	count: 100,    // count per page - Need to change when on pagination implemntation
-		    //     sorting: { email: 'asc'     // initial sorting
-		    //     }
-		    // }, {
 
-		    //     getData: function($defer, params) {
-		    //         // use build-in angular filter
-		    //         var orderedData = params.sorting() ?
-		    //                             $filter('orderBy')($scope.emailList, params.orderBy()) :
-		    //                             $scope.emailList;
 
-		    //         $scope.orderedData =  orderedData;
 
-		    //         $defer.resolve(orderedData);
-		    //     }
-		    // });
+
+
+
+
+
+
+
+
+
+
+
+
 
 		};
 	   $scope.invokeApi(ADEmailBlackListSrv.fetch, {} , successCallbackFetch);
@@ -100,7 +100,7 @@ admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSr
 
 	$scope.addNewClicked = function(){
 		$scope.isAddMode = true;
-	}
+	};
   /*
    * To save/update room type details
    */

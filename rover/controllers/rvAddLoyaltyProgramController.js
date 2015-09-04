@@ -52,7 +52,7 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
                     $scope.loyaltyPrograms = [];
                 }
             }
-            //now setup ffps and hlps;
+            //now setup ffps and hlps
             $scope.getFFPS();
             $scope.getHLPS();
         };

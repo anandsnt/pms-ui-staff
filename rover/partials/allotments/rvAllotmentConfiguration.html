@@ -1,0 +1,72 @@
+<div class="group-card cards" ng-class="{'new-card': isInAddMode() , 'fullscreen' : !isInAddonSelectionMode()}">
+    <div class="cards-wrapper">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <!-- Header -->
+        <header class="cards-header">
+            <div id="group-card-header" class="card-header" ng-class="{'no-print' : addNoPrintClass}">
+                <form>
+                    <div class="holder">
+                        <div class="entry">
+                            <input id="allotment-name" placeholder="Allotment Name" ng-model="allotmentConfigData.summary.allotment_name" type="text" class="masked-input h1" data-size="{{allotmentConfigData.summary.allotment_name.length}}" auto-grow-field/>
+                        </div>
+                    </div>
+                    <div class="holder data">
+                        <!-- These should not allow free text input, you should only be able to search and add -->
+                        <!-- Search only companies -->
+                        <input placeholder="" ng-init="focusedCompanyCard = false" ng-focus="focusedCompanyCard = true" ng-blur="focusedCompanyCard = false" ng-class="{'active': focusedCompanyCard}" class="masked-input icons icon-gc-company" auto-complete auto-options="companyAutoCompleteOptions" data-card-type="" type="text" value="" autocomplete="off" ng-change="onCompanyCardChange()" ng-model="allotmentConfigData.summary.company.name" style="width:{{ ((allotmentConfigData.summary.company && allotmentConfigData.summary.company.name && allotmentConfigData.summary.company.name.length) || 2) * 9 + 45}}px">
+                        <!-- Search only companies -->
+                        <input placeholder="" ng-init="focusedTravelAgent = false" ng-focus="focusedTravelAgent = true" ng-blur="focusedTravelAgent = false" ng-class="{'active': focusedTravelAgent}" class="masked-input icons icon-gc-ta" auto-complete auto-options="travelAgentAutoCompleteOptions" data-card-type="" type="text" value="" autocomplete="off" ng-change="onTravelAgentCardChange()" ng-model="allotmentConfigData.summary.travel_agent.name" style="width:{{ ((allotmentConfigData.summary.travel_agent && allotmentConfigData.summary.travel_agent.name && allotmentConfigData.summary.travel_agent.name.length) || 2) * 9 + 45}}px">
+                        <!-- Search only travel agents -->
+                    </div>
+                </form>
+                <div class="card-actions" ng-hide="isInAddMode()">
+                    <!--  HIDE BUTTON FOR NOW TILL DUPLICATE FUNCTIONALITY IS COMPLETE-->
+                    <button type="button" class="button blue hidden" ng-click="duplicateAllotment()">Duplicate</button>
+                </div>
+                <div class="card-actions" ng-show="isInAddMode()">
+                    <button type="button" class="button green" ng-click="saveNewAllotment()">Save Allotment</button>
+                    <button type="button" class="button blank" ng-click="discardNewAllotment()">Discard</button>
+                </div>
+            </div>
+        </header>
+        <!-- Content -->
+        <div class="cards-content" ng-if="!isInAddonSelectionMode()">
+            <div  id="group-card-content" class="card-tabs card-content">
+                <!-- Allotment tabs navigation -->
+                <ul id="group-card-tabs-nav" class="card-tabs-nav no-print">
+                    <li  ng-click="switchTabTo('SUMMARY')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'SUMMARY'}">
+                        <a id="summary" translate>ALLOTMENT_SUMMARY</a>
+                    </li>
+                    <li class="with-filters" ng-click="switchTabTo('DETAILS')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'DETAILS'}">
+                        <a translate>ALLOTMENT_DETAILS</a>
+                    </li>
+                    <li ng-show="shouldShowRoomingListTab()" class="with-filters" ng-click="switchTabTo('RESERVATIONS')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'RESERVATIONS'}">
+                        <a translate>ALLOTMENT_RESERVATIONS</a>
+                    </li>
+                    <li ng-click="switchTabTo('ACTIVITY')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'ACTIVITY'}">
+                        <a translate>ALLOTMENT_ACTIVITY</a>
+                    </li>
+                </ul>
+                <!-- Allotment Tab - Summary -->
+                <!-- SUMMARY, DETAILS, RESERVATIONS, ACTIVITY -->
+                <!-- Allotment Card Tab - Room Block Details -->
+                <ng-include src="'/assets/partials/allotments/summary/rvAllotmentConfigurationSummaryTab.html'"
+                        ng-show="allotmentConfigData.activeTab == 'SUMMARY'">
+                </ng-include>
+
+                <ng-include src="'/assets/partials/allotments/details/rvAllotmentConfigurationDetailsTab.html'"
+                        ng-show="allotmentConfigData.activeTab == 'DETAILS'">
+                </ng-include>
+
+                <ng-include src="'/assets/partials/allotments/reservations/rvAllotmentReservationsListTab.html'"
+                        ng-show="allotmentConfigData.activeTab == 'RESERVATIONS'">
+                </ng-include>
+
+                <ng-include src="'/assets/partials/allotments/activity/rvAllotmentActivityTab.html'"
+                        ng-show="allotmentConfigData.activeTab == 'ACTIVITY'">
+                </ng-include>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-if="isInAddonSelectionMode()" ng-include="'/assets/partials/allotments/summary/rvAllotmentConfigurationAddons.html'"></div>
