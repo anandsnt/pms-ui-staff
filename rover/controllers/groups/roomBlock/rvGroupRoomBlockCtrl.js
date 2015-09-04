@@ -699,7 +699,6 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @returns {undefined}
 		 */
 		var failureCallBackOfSaveRoomBlock = function(error) {
-			error.httpStatus = 470;
 			if(error.hasOwnProperty ('httpStatus')) {
 				if (error.httpStatus === 470) {
 					var message 			 	= null,
