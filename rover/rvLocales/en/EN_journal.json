@@ -37,4 +37,16 @@
 	"TOTAL_CLOSING_BALANCE_CHECK_MSG":"Total Closing Balance Check",
 	"CLOSE_SHIFT":"Close Shift",
 	"CASH_SUBMITTED":"Cash submitted",
-	"CHECKS_SUBMITTED":"Checks submitted"
+	"CHECKS_SUBMITTED":"Checks submitted",
+	"PRE_STAY" : "Pre-Stay",
+	"IN_HOUSE" : "In-House",
+	"POST_STAY" : "Post-Stay",
+	"BAL_AS_OF_EOD" : "Balances as of EOD",
+	"AR_BALANCE" : "A/R Balance",
+	"TOTALS" : "TOTALS",
+	"GUEST_BAL" : "Guest Balance",
+	"DEPOSIT_BAL" : "Deposit Balance",
+	"OPENING" : "Opening",
+	"DEBIT" : "Debit",
+	"CREDIT" : "Credit",
+	"CLOSING" : "Closing"

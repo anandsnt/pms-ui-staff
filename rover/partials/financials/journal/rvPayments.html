@@ -1,13 +1,13 @@
 <span ng-controller="RVJournalPaymentController" ng-click="clickedOnPayment($event)">
     <!-- Grouped -->
     <ul class="journal-groups">
-        <li ng-click="clickedPaymentGroup('')" ng-class="{'active':data.activePaymentTab === ''}"><span class="icons icon-navbar only-icon icon-total"></span>Total</li>
+        <li ng-click="clickedPaymentGroup('')" ng-class="{'active':data.activePaymentTab === ''}"><span class="icons icon-navbar only-icon icon-total"></span>{{'TOTAL' | translate}}</li>
 
-        <li ng-click="clickedPaymentGroup('PRE_STAY')" ng-class="{'active':data.activePaymentTab === 'PRE_STAY'}"><span class="icons icon-navbar only-icon icon-prestay"></span>Pre-Stay</li>
+        <li ng-click="clickedPaymentGroup('PRE_STAY')" ng-class="{'active':data.activePaymentTab === 'PRE_STAY'}"><span class="icons icon-navbar only-icon icon-prestay"></span>{{'PRE_STAY' | translate}}</li>
 
-        <li ng-click="clickedPaymentGroup('IN_HOUSE')" ng-class="{'active':data.activePaymentTab === 'IN_HOUSE'}"><span class="icons icon-navbar only-icon icon-inhouse"></span>In-House</li>
+        <li ng-click="clickedPaymentGroup('IN_HOUSE')" ng-class="{'active':data.activePaymentTab === 'IN_HOUSE'}"><span class="icons icon-navbar only-icon icon-inhouse"></span>{{'IN_HOUSE' | translate}}</li>
 
-        <li ng-click="clickedPaymentGroup('POST_STAY')" ng-class="{'active':data.activePaymentTab === 'POST_STAY'}"><span class="icons icon-navbar only-icon icon-poststay"></span>Post-Stay</li>
+        <li ng-click="clickedPaymentGroup('POST_STAY')" ng-class="{'active':data.activePaymentTab === 'POST_STAY'}"><span class="icons icon-navbar only-icon icon-poststay"></span>{{'POST_STAY' | translate}}</li>
     </ul>
     <!-- Content PAYMENTS-->
     <div id="journal-content" class="journal-content grouped scrollable" ng-iscroll='payment_content'>

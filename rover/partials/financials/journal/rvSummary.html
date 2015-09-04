@@ -1,39 +1,39 @@
 <!-- Content -->
 <div id="journal-content" class="journal-content summary">
     <div class="journal-summary first">
-        <h3>Deposit Balance</h3>
+        <h3 translate>DEPOSIT_BAL</h3>
         <ul>
-            <li>Opening<span>${value}</span></li>
-            <li>Debit<span>${value}</span></li>
-            <li>Credit<span>${value}</span></li>
-            <li>Closing<span>${value}</span></li>
+            <li>{{'OPENING' | translate}}<span>{{currencySymbol}}{value}</span></li>
+            <li>{{'DEBIT' | translate}}<span>{{currencySymbol}}{value}</span></li>
+            <li>{{'CREDIT' | translate}}<span>{{currencySymbol}}{value}</span></li>
+            <li>{{'CLOSING' | translate}}<span>{{currencySymbol}}{value}</span></li>
         </ul>
     </div>
     <div class="journal-summary">
-        <h3>Guest Balance</h3>
+        <h3 translate>GUEST_BAL</h3>
         <ul>
-            <li><span>${value}</span></li>
-            <li><span>${value}</span></li>
-            <li><span>${value}</span></li>
-            <li><span>${value}</span></li>
+            <li><span>{{currencySymbol}}{value}</span></li>
+            <li><span>{{currencySymbol}}{value}</span></li>
+            <li><span>{{currencySymbol}}{value}</span></li>
+            <li><span>{{currencySymbol}}{value}</span></li>
         </ul>
     </div>
     <div class="journal-summary">
-        <h3>A/R Balance</h3>
+        <h3 translate>AR_BALANCE</h3>
         <ul>
-            <li><span>${value}</span></li>
-            <li><span>${value}</span></li>
-            <li><span>${value}</span></li>
-            <li><span>${value}</span></li>
+            <li><span>{{currencySymbol}}{value}</span></li>
+            <li><span>{{currencySymbol}}{value}</span></li>
+            <li><span>{{currencySymbol}}{value}</span></li>
+            <li><span>{{currencySymbol}}{value}</span></li>
         </ul>
     </div>
     <div class="journal-summary totals">
-        <h3>Totals</h3>
+        <h3 translate>TOTALS</h3>
         <ul>
-            <li><span>${value}</span></li>
-            <li><span>${value}</span></li>
-            <li><span>${value}</span></li>
-            <li><span>${value}</span></li>
+            <li><span>{{currencySymbol}}{value}</span></li>
+            <li><span>{{currencySymbol}}{value}</span></li>
+            <li><span>{{currencySymbol}}{value}</span></li>
+            <li><span>{{currencySymbol}}{value}</span></li>
         </ul>
     </div>
 </div>
