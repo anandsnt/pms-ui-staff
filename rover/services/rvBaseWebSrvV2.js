@@ -60,10 +60,9 @@ sntRover.service('rvBaseWebSrvV2',['$http', '$q', '$window', function($http, $q,
 
 			//set of custom error emssage range http status
 			else if(status >= 470 && status <= 490) {
-				var error = {};
-				error.httpStatus = status;
-				error.errorMessage = errors.errors;
-				deferred.reject (error);
+				errors.httpStatus = status;
+				errors.errorMessage = errors.errors;
+				deferred.reject (errors);
 			}
 
 			else{
