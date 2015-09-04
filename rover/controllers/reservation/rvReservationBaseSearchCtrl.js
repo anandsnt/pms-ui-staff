@@ -363,7 +363,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         to_date: $scope.reservationData.departureDate,
                         fromState: $state.current.name,
                         company_id: $scope.reservationData.company.id,
-                        travel_agent_id: $scope.reservationData.travelAgent.id
+                        travel_agent_id: $scope.reservationData.travelAgent.id,
+                        group_id: $scope.reservationData.group.id
                     });
                 }
             }
@@ -516,7 +517,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 if (request.term !== '' && lastSearchText !== request.term) {
                     $scope.invokeApi(RVReservationBaseSearchSrv.fetchCompanyCard, {
                         'query': request.term,
-                        'include_group': $scope.reservationData.room.length === 1,
+                        'include_group': $scope.reservationData.rooms.length === 1,
                         'from_date': $scope.reservationData.arrivalDate,
                         'to_date': $scope.reservationData.departureDate,
                     }, processDisplay);

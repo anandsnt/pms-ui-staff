@@ -1,13 +1,13 @@
 <div ng-controller="RVGroupCardCtrl">
     <!-- Company Card Content -->
     <div id="group-card-content" class="card-tabs card-content" ng-class="UICardContentCls('group-card')" ng-if="!searchMode">
-        <ul ng-id="{'company-card-tabs-nav': account_type == 'COMPANY', 'travel-agent-card-tabs-nav': account_type == 'TRAVELAGENT'}" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-            <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contact-info'}" ng-click="switchTabTo($event, 'cc-contact-info')">
-                <a translate>CONTACT_INFORMATION</a>
+        <ul id="group-card-tabs-nav" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+            <li class="ui-tabs-active">
+                <a translate>SUMMARY</a>
             </li>
         </ul>
         <!-- Company - Contact Information -->
-        <span ng-include="'/assets/partials/companyCard/rvCompanyCardContactInformation.html'"></span>
+        <span ng-include="'/assets/partials/groups/summary/rvGroupConfigurationSummaryTab.html'"></span>
     </div>
     <!-- Company Search -->
     <div id="company-card-content" class="card-search card-content" ng-class="UICardContentCls('group-card')" ng-if="searchMode">
@@ -16,7 +16,7 @@
             <div ng-controller="groupResults" class="wrapper" ng-show="searchingGroups && searchedGroups.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="groupResultsScroll" ng-iscroll-delay='500'>
                 <ul id="search-group-results" class="search-results">
                     <li class="group" ng-repeat="group in searchedGroups" ngrepeatend ngrepeatstarted>
-                        <a ng-click="">
+                        <a ng-click="selectGroup(group, $event)">
                             <div class="data">
                                 <h2 ng-bind-html="'{{stringify(escapeNull(group.group_name))}}' | highlight:searchData.groupCard.name:false">              </h2>
                                 <span class="confirmation" ng-bind-html="'{{stringify(escapeNull(group.group_code))}}' | highlight:searchData.groupCard.code:false"></span>

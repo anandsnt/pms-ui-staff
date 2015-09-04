@@ -1,5 +1,5 @@
-sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter', 'RVContactInfoSrv', '$q', 'RVReservationStateService', 'RVReservationDataService',
-	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter, RVContactInfoSrv, $q, RVReservationStateService, RVReservationDataService) {
+sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter', 'RVContactInfoSrv', '$q', 'RVReservationStateService', 'RVReservationDataService', 'rvGroupConfigurationSrv',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter, RVContactInfoSrv, $q, RVReservationStateService, RVReservationDataService, rvGroupConfigurationSrv) {
 		BaseCtrl.call(this, $scope);
 		//Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
@@ -119,6 +119,25 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			}
 		};
 
+		$scope.initGroupCard = function(groupId) {
+			$scope.invokeApi(rvGroupConfigurationSrv.getGroupSummary, {
+				groupId: groupId
+			}, function(response) {
+				$scope.$emit("hideLoader");
+				$scope.groupConfigData = {
+					activeTab: 'SUMMARY', // Possible values are SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY
+					summary: response.groupSummary,
+					// holdStatusList: holdStatusList.data.hold_status,
+					selectAddons: false, // To be set to true while showing addons full view
+					addons: {},
+					selectedAddons: []
+				};				
+				$scope.$broadcast('groupCardAvailable');
+			}, function(errorMessage) {
+				$scope.$emit("hideLoader");
+				$scope.errorMessage = errorMessage;
+			});
+		};
 
 		// fetch reservation company card details
 		$scope.initCompanyCard = function() {
@@ -181,6 +200,11 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			if (!isCardSame.agent) {
 				$scope.$broadcast('travelAgentDetached');
 				$scope.initTravelAgentCard();
+			}
+
+			if (!isCardSame.group) {
+				$scope.$broadcast('groupDetached');
+				$scope.initGroupCard($scope.reservationDetails.group.id);
 			}
 
 			// The future counts of the cards attached with the reservation

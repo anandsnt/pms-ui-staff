@@ -181,6 +181,10 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 				travelAgent: {
 					id: "",
 					futureReservations: 0
+				},
+				group: {
+					id: "",
+					futureReservations: 0
 				}
 			};
 		};

@@ -19,7 +19,7 @@ sntRover.controller('guestCardController', [
 			if (!$scope.reservationData.isSameCard || !$scope.otherData.reservationCreated) {
 				// open search list card if any of the search fields are entered on main screen
 				var searchData = $scope.reservationData;
-				if ($scope.searchData.guestCard.guestFirstName !== '' || $scope.searchData.guestCard.guestLastName !== '' || searchData.company.id !== null || searchData.travelAgent.id !== null) {
+				if ($scope.searchData.guestCard.guestFirstName !== '' || $scope.searchData.guestCard.guestLastName !== '' || searchData.company.id !== null || searchData.travelAgent.id !== null || !!$scope.reservationData.group.id) {
 					// based on search values from base screen
 					// init respective search
 					if ($scope.reservationDetails.guestCard.id === '') {
@@ -49,6 +49,10 @@ sntRover.controller('guestCardController', [
 						$scope.initTravelAgentCard({
 							id: searchData.travelAgent.id
 						});
+					}
+					if (!!$scope.reservationData.group.id) {
+						$scope.switchCard('group-card');
+						$scope.initGroupCard($scope.reservationData.group.id);
 					}
 				}
 			} else {
@@ -635,9 +639,10 @@ sntRover.controller('guestCardController', [
 					$scope.errorMessage = errorMessage;
 				};
 			if (!!$scope.searchData.groupCard.name || !!$scope.searchData.groupCard.code) {
-				$scope.callAPI(rvGroupSrv.getGroupList, {
+				$scope.callAPI(rvGroupSrv.searchGroupCard, {
 					params: {
-						query: $scope.searchData.groupCard.name,
+						name: $scope.searchData.groupCard.name,
+						code: $scope.searchData.groupCard.code,
 						from_date: $scope.reservationData.arrivalDate,
 						to_date: $scope.reservationData.departureDate
 					},
@@ -817,6 +822,23 @@ sntRover.controller('guestCardController', [
 
 		$scope.replaceCardCaller = function(cardType, card, future) {
 			$scope.replaceCard(cardType, card, future);
+		};
+
+		$scope.selectGroup = function(group, $event) {
+			$event.stopPropagation();
+			if ($scope.viewState.identifier === "CREATION") {
+				// In create reservation
+				$scope.reservationData.group = {
+					id: group.id,
+					name: group.group_name,
+					code: group.group_code
+				};
+				$scope.closeGuestCard();
+				$scope.viewState.isAddNewCard = false;
+				$scope.initGroupCard(group.id);
+			} else {
+				// In staycard
+			}
 		};
 
 		$scope.selectCompany = function(company, $event) {

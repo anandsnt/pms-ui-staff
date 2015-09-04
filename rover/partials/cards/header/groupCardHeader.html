@@ -1,6 +1,27 @@
-<div id="group-card-header" class="card-header" ng-class="UICardClass('group-card')" ng-controller="RVCompanyCardCtrl" ng-click="companyCardClicked($event)" ng-show="isStandAlone" outside-click-handler>
+<div id="group-card-header" class="card-header" ng-class="UICardClass('group-card')" ng-controller="RVGroupCardCtrl" ng-show="isStandAlone" outside-click-handler>
     <section ng-if="!searchMode">
-
+        <div class="guest-image icons icon-group-large" ng-click="switchCard('group-card')"></div>
+        <form name="edit-group" id="new-group">
+            <div class="holder">
+                <div class="entry">
+                    <input id="group-name" placeholder="" value="{{groupConfigData.summary.group_name}}" type="text" class="masked-input h1" />
+                </div>
+            </div>
+            <div class="holder data">
+                <!-- These should not allow free text input, you should only be able to search and add -->
+                <input class="masked-input icons icon-gc-company" id="group-company" value="{{groupConfigData.summary.company.name}}" type="text" />
+                <!-- Search only companies -->
+                <input class="masked-input icons icon-gc-ta" id="group-ta" value="{{groupConfigData.summary.travel_agent.name}}" type="text" />
+                <!-- Search only travel agents -->
+            </div>
+        </form>
+        <div class="card-actions dual-actions">
+            <!-- Add class "dual-actions" if in Stay Card/Create Reservation screens -->
+            <button type="button" class="button blue" ng-hide="true">Duplicate</button>
+            <!-- If in Stay Card or Create Reservation, show these instead: -->
+            <button type="button" class="button brand-colors dual-actions">Group Details</button>
+            <button type="button" class="button red dual-actions">Remove Group</button>
+        </div>
     </section>
     <section section ng-if="searchMode">
         <div class="guest-image icons icon-group-large new" ng-click="switchCard('group-card')">

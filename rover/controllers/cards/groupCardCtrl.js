@@ -1,70 +1,26 @@
-sntRover.controller('RVGroupCardCtrl', ['$scope', '$rootScope', 'RVCompanyCardSrv', '$timeout', 'ngDialog', '$filter', '$stateParams', 'rvGroupSrv', 'rvUtilSrv',
-	function($scope, $rootScope, RVCompanyCardSrv, $timeout, ngDialog, $filter, $stateParams, rvGroupSrv, rvUtilSrv) {
-		$scope.searchMode = true;		
-		$scope.currentSelectedTab = '';
+sntRover.controller('RVGroupCardCtrl', ['$scope', '$rootScope', 'RVCompanyCardSrv', '$timeout', 'ngDialog', '$filter', '$stateParams', 'rvGroupSrv', 'rvUtilSrv', '$controller',
+	function($scope, $rootScope, RVCompanyCardSrv, $timeout, ngDialog, $filter, $stateParams, rvGroupSrv, rvUtilSrv, $controller) {
+		$scope.searchMode = true;
 
-		// initialize company search fields
-		// $scope.searchingGroups = false;
-		
+		$scope.$on('groupCardAvailable', function(obj, isNew) {
+			$scope.searchMode = false;
+			$timeout(function() {
+				$scope.groupSummaryMemento = angular.copy($scope.groupConfigData.summary);
+				$scope.$emit('hideLoader');
+			}, 500);
+		});
 
-		var presentContactInfo = {};
-		
+		$scope.isInAddMode = function() {
+			return false;
+		}
 
-		//handle tab switching in both cards
-		$scope.switchTabTo = function($event, tabToSwitch) {
-			$event.stopPropagation();
-			$event.stopImmediatePropagation();
-
-			if ($scope.currentSelectedTab === 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
-				if ($scope.viewState.isAddNewCard) {
-					$scope.$broadcast("setCardContactErrorMessage", [$filter('translate')('COMPANY_SAVE_PROMPT')]);
-				} else {
-					saveContactInformation($scope.contactInformation);
+		$scope.getMoveDatesActions = function() {
+			return {
+				setToDefaultMode: function() {
+					return false;
 				}
 			}
-			if ($scope.currentSelectedTab === 'cc-contracts' && tabToSwitch !== 'cc-contracts') {
-				$scope.$broadcast("contactTabActive");
-				$scope.$broadcast("saveContract");
-			} else if ($scope.currentSelectedTab === 'cc-ar-accounts' && tabToSwitch !== 'cc-ar-accounts') {
-				$scope.$broadcast("saveArAccount");
-			}
-
-			if (tabToSwitch === 'cc-ar-accounts') {
-				$scope.$broadcast("arAccountTabActive");
-			} else if (tabToSwitch === 'cc-contracts') {
-				$scope.$broadcast("contractTabActive");
-			} else if (tabToSwitch === 'cc-contact-info') {
-				$scope.$broadcast("contactTabActive");
-			} else if (tabToSwitch === 'cc-ar-transactions') {
-				$scope.$broadcast("arTransactionTabActive");
-				$scope.isWithFilters = false;
-			}
-			if (!$scope.viewState.isAddNewCard) {
-				$scope.currentSelectedTab = tabToSwitch;
-			}
-		};		
-		
-		$scope.$on('companyCardAvailable', function(obj, isNew) {
-			$scope.searchMode = false;
-			$scope.contactInformation = $scope.companyContactInformation;
-			// object holding copy of contact information
-			// before save we will compare 'contactInformation' against 'presentContactInfo'
-			// to check whether data changed
-			$scope.currentSelectedTab = 'cc-contact-info';
-			presentContactInfo = angular.copy($scope.contactInformation);
-			if (isNew === true) {
-				$scope.contactInformation.account_details.account_name = $scope.searchData.companyCard.companyName;
-				$scope.contactInformation.address_details.city = $scope.searchData.companyCard.companyCity;
-				$scope.contactInformation.account_details.account_number = $scope.searchData.companyCard.companyCorpId;
-			}
-			$scope.$broadcast("contactTabActive");
-			$timeout(function() {
-				$scope.$emit('hideLoader');
-			}, 1000);
-			if (!isNew) {
-				callCompanyCardServices();
-			}
-		});
+		};
 
 		$scope.$on("companyCardDetached", function() {
 			$scope.searchMode = true;
@@ -73,12 +29,12 @@ sntRover.controller('RVGroupCardCtrl', ['$scope', '$rootScope', 'RVCompanyCardSr
 		});
 
 		$scope.$on("GROUP_SEARCH_ON", function() {
-			$scope.searchingGroups = true;			
+			$scope.searchingGroups = true;
 			$scope.$broadcast("refreshGroupsListScroller");
 		});
 
 		$scope.$on("GROUP_SEARCH_OFF", function() {
-			$scope.searchingGroups = false;			
+			$scope.searchingGroups = false;
 			$scope.$broadcast("refreshGroupsListScroller");
 		});
 
@@ -193,21 +149,21 @@ sntRover.controller('RVGroupCardCtrl', ['$scope', '$rootScope', 'RVCompanyCardSr
 		$scope.stringify = rvUtilSrv.stringify;
 		$scope.isEmpty = _.isEmpty;
 		$scope.formatDateForUI = function(date_) {
-            var type_ = typeof date_,
-                returnString = '';
-            switch (type_) {
-                //if date string passed
-                case 'string':
-                    returnString = $filter('date')(new tzIndependentDate(date_), $rootScope.dateFormat);
-                    break;
+			var type_ = typeof date_,
+				returnString = '';
+			switch (type_) {
+				//if date string passed
+				case 'string':
+					returnString = $filter('date')(new tzIndependentDate(date_), $rootScope.dateFormat);
+					break;
 
-                    //if date object passed
-                case 'object':
-                    returnString = $filter('date')(date_, $rootScope.dateFormat);
-                    break;
-            }
-            return (returnString);
-        };
+					//if date object passed
+				case 'object':
+					returnString = $filter('date')(date_, $rootScope.dateFormat);
+					break;
+			}
+			return (returnString);
+		};
 
 
 		/**

@@ -73,6 +73,10 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
                 url += '&travel_agent_id=' + param.travel_agent_id;
             }
 
+            if (!!param.group_id) {
+                url += '&group_id=' + param.group_id;
+            }
+
             RVBaseWebSrvV2.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(errorMessage) {
