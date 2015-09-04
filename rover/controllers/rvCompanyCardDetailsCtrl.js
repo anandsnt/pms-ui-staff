@@ -75,11 +75,17 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 		$scope.$on('ARTransactionSearchFilter', function(e, data) {
 			$scope.isWithFilters = data;
 		});
-
-
+		var setBackButtonCaption = function(){
+	        if($rootScope.previousState.controller ==="rvAllotmentConfigurationCtrl")
+	        {
+	            $scope.searchBackButtonCaption = $filter('translate')('ALLOTMENTS');
+	        }else{
+	            $scope.searchBackButtonCaption = $filter('translate')('FIND_CARDS');
+	        }
+        };
 		$rootScope.$broadcast("viewFromCardsOutside");
 		// Handle back button Click on card details page.
-		$scope.searchBackButtonCaption = $filter('translate')('FIND_CARDS');
+		setBackButtonCaption();
 		$scope.headerBackButtonClicked = function() {
 
 			// Save details if made changes.
@@ -93,11 +99,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 				$scope.$broadcast("saveArAccount");
 			}
 
-			$state.go(
-				"rover.companycardsearch", {
-					"textInQueryBox": $stateParams.query
-				}
-			);
+			$state.go($rootScope.previousState, $rootScope.previousStateParams);
 		};
 		$scope.isContactInformationSaved = false;
 		//inheriting some useful things
