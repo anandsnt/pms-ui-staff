@@ -133,11 +133,15 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		/**
-		 * Has Permission To Over book
+		 * CICO-16821: Check permission to overbook room type and house separately.
 		 * @return {Boolean}
 		 */
-		var hasPermissionToOverBook = function() {
-			return (rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE'));//CICO-19821
+		var hasPermissionToOverBookRoomType = function() {
+			return (rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE'));
+		};
+
+		var hasPermissionToOverBookHouse = function() {
+			return (rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE'));
 		};
 
 		/**
@@ -699,10 +703,15 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			error.httpStatus = 470;
 			if(error.hasOwnProperty ('httpStatus')) {
 				if (error.httpStatus === 470) {
-					var messages 			= [],
-						isHouseOverbooked 	= error.is_house_overbooked,
-						overBookedRoomTypes = [],
-						isRoomTypeOverbooked = false;
+					debugger;
+					var message 			 	= null,
+						isHouseOverbooked  	 	= error.is_house_overbooked,
+						overBookedRoomTypes  	= [],
+						isRoomTypeOverbooked   	= false,
+						overBookingOccurs		= false,
+						canOverbookHouse		= hasPermissionToOverBookHouse(),
+						canOverbookRoomType		= hasPermissionToOverBookRoomType(),
+						canOverBookBoth			= canOverbookHouse && canOverbookRoomType;
 
 					_.each(error.room_type_hash, function(roomType) {
 						var overBookedDates = _.where(roomType.details, {
@@ -712,19 +721,29 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 							overBookedRoomTypes.push(roomType);
 					});
 					isRoomTypeOverbooked = overBookedRoomTypes.length > 0;
+					overBookingOccurs	 = isRoomTypeOverbooked || isHouseOverbooked;
 
 					// show appropriate overbook message.
-					// used message list for futer needs (specific messages for room types)
-					if ( isHouseOverbooked && isRoomTypeOverbooked) {
-						messages.push("HOUSE_AND_ROOMTYPE_OVERBOOK");
+					if (isHouseOverbooked && isRoomTypeOverbooked && canOverBookBoth) {
+						message = "HOUSE_AND_ROOMTYPE_OVERBOOK";
+						showOverBookingPopup(message);
+						return;
 					}
-					else if(isHouseOverbooked) {
-						messages.push("HOUSE_OVERBOOK");
+					else if(isHouseOverbooked && canOverbookHouse) {
+						message = "HOUSE_OVERBOOK";
+						showOverBookingPopup(message);
+						return;
 					}
-					else if(overBookedRoomTypes){
-						messages.push("ROOMTYPE_OVERBOOK");
+					else if(overBookedRoomTypes && canOverbookRoomType){
+						message = "ROOMTYPE_OVERBOOK";
+						showOverBookingPopup(message);
+						return;
 					}
-					showOverBookingPopup(messages);
+					// Overbooking occurs and has no permission.
+					else if(overBookingOccurs) {
+						showNoPermissionOverBookingPopup();
+						return false;
+					}
 				}
 			}
 		};
@@ -739,10 +758,6 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 */
 		$scope.saveRoomBlock = function(forceOverbook) {
 			forceOverbook = forceOverbook || false;
-			if (!hasPermissionToOverBook() && forceOverbook) {
-				showNoPermissionOverBookingPopup();
-				return false;
-			}
 
 			$timeout(function() {
 				//TODO : Make API call to save the room block.
