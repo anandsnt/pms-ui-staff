@@ -116,7 +116,7 @@
                                      
                                     
                                     <label ng-show="depositWithGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable"> Available Card Balance ({{currencySymbol}}) </label>
-                                    <input ng-show="depositWithGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable" name="giftCardAmount" id="amount" ng-model="giftCardAvailableBalance" type="text" class="amount overlay" value="{{ giftCardAvailableBalance }}"/>
+                                    <input ng-show="depositWithGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable"  name="giftCardAmount" id="amount" ng-readonly="true" ng-model="giftCardAvailableBalance" type="text" class="amount" value="{{ giftCardAvailableBalance }}"/>
                                     
                                      
                                     <label for="amount">Amount to pay (<span>{{currencySymbol}})</span> </label>

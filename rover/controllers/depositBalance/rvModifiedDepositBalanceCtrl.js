@@ -423,7 +423,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
                     var toPay = parseFloat(parseFloat(amt).toFixed(2));
                     if (avail < toPay){
                         $scope.validPayment = false;
-                        console.warn('pmt amount is higher than gift card available balance')
                     } else {
                         $scope.validPayment = true;
                     }
@@ -509,7 +508,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
         });
         
 	$scope.successSavePayment = function(data){
-            console.log('$rootScope.depositUsingGiftCard: '+$rootScope.depositUsingGiftCard);
             
                 
                 $scope.$emit("hideLoader");
