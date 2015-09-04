@@ -97,7 +97,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, saveData, successCallBack, failureCallBack);
                 } else {
                     var save = function() {
-                        if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id) {
+                        if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id || $scope.reservationData.group.id) {
                             /**
                              * 1. Move check for guest / company / ta card attached to the screen before the reservation summary screen.
                              * This may either be the rooms and rates screen or the Add on screen when turned on.
@@ -109,7 +109,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             });
                         }
                     };
-                    if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
+                    if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id && !$scope.reservationData.group.id) {
                         $scope.$emit('PROMPTCARD');
                         $scope.$watch("reservationData.guest.id", save);
                         $scope.$watch("reservationData.company.id", save);

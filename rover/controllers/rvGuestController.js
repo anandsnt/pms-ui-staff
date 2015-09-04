@@ -855,6 +855,10 @@ sntRover.controller('guestCardController', [
 				$scope.closeGuestCard();
 				$scope.viewState.isAddNewCard = false;
 				$scope.initGroupCard(group.id);
+				$scope.showContractedRates({
+					companyCard: $scope.reservationDetails.companyCard.id,
+					travelAgent: $scope.reservationDetails.travelAgent.id
+				});
 			} else {
 				// In staycard
 			}
