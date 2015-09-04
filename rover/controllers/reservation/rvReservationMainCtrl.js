@@ -813,6 +813,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
             data.company_id = $scope.reservationData.company.id;
             data.travel_agent_id = $scope.reservationData.travelAgent.id;
+            data.group_id = $scope.reservationData.group.id;
 
             // DEMOGRAPHICS
             var demographicsData = $scope.reservationData.demographics;
