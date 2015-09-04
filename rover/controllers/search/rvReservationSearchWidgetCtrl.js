@@ -712,7 +712,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			};
 
 			swipeData.is_encrypted = true;
-			if(data.RVCardReadIsEncrypted === 0){
+			if(data.RVCardReadIsEncrypted === 0 || data.RVCardReadIsEncrypted === '0'){
 				swipeData.is_encrypted = false;
 			}
 
