@@ -279,7 +279,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				to_date: $scope.reservationData.departureDate,
 				company_id: $scope.reservationData.company.id,
 				travel_agent_id: $scope.reservationData.travelAgent.id,
-				group: $scope.reservationData.group.id
+				group_id: $scope.reservationData.group.id
 			}, fetchSuccess);
 
 			if (isfromCalendar) {

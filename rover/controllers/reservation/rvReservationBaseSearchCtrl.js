@@ -206,19 +206,24 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     $scope.searchData.guestCard.guestLastName = $scope.reservationData.guest.lastName;
                 }
                 $scope.companySearchText = (function() {
-                    if ($scope.reservationData.company.id !== null && $scope.reservationData.company.id !== "") {
+                    if (!!$scope.reservationData.group.id) {
+                        return $scope.reservationData.group.name;
+                    } else if (!!$scope.reservationData.company.id) {
                         return $scope.reservationData.company.name;
-                    } else if ($scope.reservationData.travelAgent.id !== null && $scope.reservationData.travelAgent.id !== "") {
+                    } else if (!!$scope.reservationData.travelAgent.id) {
                         return $scope.reservationData.travelAgent.name;
                     }
                     return "";
                 })();
                 $scope.codeSearchText = (function() {
-                    if (!!$scope.reservationData.code) {
+                    if (!!$scope.reservationData.group.id) {
+                        return $scope.reservationData.group.code;
+                    } else if (!!$scope.reservationData.code) {
                         return $scope.reservationData.code.value;;
                     }
                     return "";
                 })();
+
             }
 
             if ($scope.reservationData.arrivalDate === '') {
