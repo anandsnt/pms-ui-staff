@@ -8,6 +8,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 	$scope.data = {};
 	$scope.data.activeTab = $stateParams.id === '' ? 'SUMMARY' : $stateParams.id;
 	$scope.data.filterData = {};
+    $scope.data.summaryData = {};
 	$scope.data.revenueData = {};
     $scope.data.paymentData = {};
 	$scope.data.filterData = journalResponse;
@@ -217,6 +218,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         $scope.data.fromDate = $filter('date')(yesterday, 'yyyy-MM-dd');
         $scope.data.toDate   = $filter('date')(yesterday, 'yyyy-MM-dd');
         $scope.data.cashierDate = $filter('date')(yesterday, 'yyyy-MM-dd');
+        $scope.data.summaryDate = $filter('date')(yesterday, 'yyyy-MM-dd');
     }
     else if( $stateParams.id === 'CASHIER' ){
         // 1. Go to Front Office -> Cashier
@@ -227,6 +229,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         $scope.data.fromDate = $rootScope.businessDate;
         $scope.data.toDate   = $rootScope.businessDate;
         $scope.data.cashierDate = $rootScope.businessDate;
+        $scope.data.summaryDate = $rootScope.businessDate;
         // b) All employee fields should default to logged in user
         $timeout(function(){
             filterByLoggedInUser();

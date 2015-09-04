@@ -6,7 +6,7 @@
     <form method="post" action="" id="journal-header" name="journal-header" class="journal-header">
         <div class="summary" ng-show="data.activeTab === 'SUMMARY'">
             <span>{{'BAL_AS_OF_EOD' | translate}}</span>
-            <strong>{Date}</strong>
+            <strong>{{ data.summaryDate | date : 'MMMM d, y'}}</strong>
             <button ng-click="printSummary()" type="button" class="button blue" translate>PRINT</button>
         </div>
         <div class="entry filter" ng-show="data.activeTab === 'REVENUE' || data.activeTab === 'PAYMENTS'">
