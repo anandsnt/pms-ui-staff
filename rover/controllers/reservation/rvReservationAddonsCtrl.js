@@ -244,7 +244,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         amount_type: addon.amountType.description,
                         post_type: addon.postType.description
                     });
-                    $scope.existingAddonsLength = $scope.existingAddonsLength.length;
+                    $scope.existingAddonsLength = $scope.existingAddons.length;
 
                     for (i = startIndex; i <= endIndex; i++) {
                         if (!$scope.reservationData.rooms[i].addons) {
@@ -320,6 +320,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
         };
 
         $scope.selectAddon = function(addon, addonQty, overBook) {
+            $scope.closePopup();
             if (!$rootScope.isItemInventoryOn || overBook) {
                 insertAddon(addon, addonQty)
             } else {
@@ -442,6 +443,15 @@ sntRover.controller('RVReservationAddonsCtrl', [
             } else {
                 $scope.roomDetails = getCurrentRoomDetails();
                 var successCallBack = function(data) {
+                    var roomIndex,
+                        startIndex = $scope.roomDetails.firstIndex,
+                        endIndex = $scope.roomDetails.lastIndex;
+
+                    if ($stateParams.reservation === "HOURLY") {
+                        startIndex = 0;
+                        endIndex = $scope.reservationData.rooms.length - 1;
+                    };
+
                     $scope.$emit('hideLoader');
                     $scope.roomNumber = data.room_no;
                     $scope.duration_of_stay = data.duration_of_stay;
@@ -461,8 +471,18 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
                         if (!alreadyAdded) {
                             $scope.addonsData.existingAddons.push(addonsData);
+                            for (roomIndex = startIndex; roomIndex <= endIndex; roomIndex++) {
+                                $scope.reservationData.rooms[roomIndex].addons.push({
+                                    quantity: addonsData.quantity,
+                                    id: addonsData.id,
+                                    price: parseFloat(addonsData.price_per_piece),
+                                    amountType: addonsData.amount_type,
+                                    postType: addonsData.post_type
+                                });
+                            }
                         }
                     });
+
                     addonsDataCopy = angular.copy($scope.addonsData.existingAddons);
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
                 };
