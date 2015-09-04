@@ -155,7 +155,7 @@
                 </div>
             </div>
         </div>
-        <!-- Room(s) details -->
+        <!-- Room(s) details 
         <div id="rooms" class="row">
             <div id="room-1" class="entry" ng-repeat="room in reservationData.rooms">
                 <label for="room-1-adults">Room <span>(s)</span></label>
@@ -185,6 +185,59 @@
                     </div>
                 </div>
             </div>
+        </div>-->
+        <!-- Room(s) details -->
+        <div id="rooms" class="row">
+            <label for="room-1-adults">Room Type <span>(s)</span></label>
+            <div class="entry" ng-repeat="tab in reservationData.tabs" ng-init="tabIndex = $index">
+                <div class="entry-data">
+                    <div class="select room-type">
+                        <select iscroll-stop-propagation ng-model="tab.roomTypeId" ng-change="onRoomTypeChange($index)">
+                            <option value="" ng-if="tabIndex === 0 && reservationData.tabs.length === 1">All Room Types</option>
+                            <option value="" ng-if="tabIndex >0 && !tab.roomTypeId" class="placeholder">Select Room Type</option>
+                            <option value="{{roomType.id}}" ng-repeat="roomType in otherData.roomTypes" ng-hide="isRoomTypeSelected(tabIndex, roomType.id)" ng-selected="tab.roomTypeId == roomType.id">
+                                {{roomType.name}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="select adults">
+                        <label class="label">Adults</label>
+                        <select iscroll-stop-propagation ng-model="tab.numAdults" ng-change="onOccupancyChange('numAdults', $index)">
+                            <option ng-repeat="i in [0, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i==tab.numAdults">
+                                {{i}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="select children">
+                        <label class="label">Children</label>
+                        <select iscroll-stop-propagation ng-model="tab.numChildren" ng-change="onOccupancyChange('numChildren', $index)">
+                            <option ng-repeat="i in [0, otherData.maxChildren] | makeRange" value="{{i}}" ng-selected="i==tab.numChildren">
+                                {{i}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="select infants">
+                        <label class="label">Infants</label>
+                        <select iscroll-stop-propagation ng-model="tab.numInfants" ng-change="onOccupancyChange('numInfants', $index)">
+                            <option ng-repeat="i in [0, otherData.maxInfants] | makeRange" value="{{i}}" ng-selected="i==tab.numInfants">
+                                {{i}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="select rooms">
+                        <label class="label">Rooms</label>
+                        <select ng-model="tab.roomCount" ng-change="onRoomCountChange($index)" ng-disabled="isHourlyRateOn">
+                            <option ng-repeat="i in [1, otherData.maxRoomCount] | makeRange" value="{{i}}" ng-selected="i==tab.roomCount">
+                                {{i}}
+                            </option>                            
+                        </select>
+                    </div>
+                </div>
+                <!-- show and hide of the below buttons are handlesd in CSS -->
+                <span ng-if="!isHourlyRateOn" class="remove-room icons icon-remove-60" ng-click="removeTab($index)">-</span>
+                <span ng-if="!isHourlyRateOn" class="add-room icons icon-add-60" ng-click="addTab($index)">+</span>
+            </div>
+            <!-- Repeat entire div.entry content when adding room types (make sure you don't have same id's for fields!) -->
         </div>
         <!-- Guest info -->
         <div id="guest" class="row">
@@ -221,7 +274,7 @@
                     </label>
                     <div class="select" ng-show="reservationData.member.isSelected">
                         <label for="loyalty" class="label">Type</label>
-                        <select id="loyalty" ng-model="reservationData.member.value">                            
+                        <select id="loyalty" ng-model="reservationData.member.value">
                             <optgroup label="Hotel Loyalty Program" ng-if="isHLPActive && loyaltyPrograms.length > 0">
                                 <option ng-repeat="loyaltyProgram in loyaltyPrograms" value="{{loyaltyProgram.hl_value}}" ng-selected="reservationData.member.value === loyaltyProgram.hl_value">{{loyaltyProgram.hl_description}}</option>
                                 <!-- repeat for all HLP -->

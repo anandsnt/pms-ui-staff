@@ -39,6 +39,9 @@
     "MENU_GROUPS": "Groups",
     "MENU_CREATE_GROUP": "New Group",
     "MENU_MANAGE_GROUP": "Manage Groups",
+    "MENU_ALLOTMENTS": "Allotments",
+    "MENU_CREATE_ALLOTMENT": "New Allotment",
+    "MENU_MANAGE_ALLOTMENT": "Manage Allotment",
     "MENU_ACCOUNTS": "Accounts",
     
     "DUEIN_TITLE": "Checking In",

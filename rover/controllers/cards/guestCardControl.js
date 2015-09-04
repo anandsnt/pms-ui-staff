@@ -4,7 +4,7 @@ sntRover.controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout'
 		$scope.guestCardData.selectedLoyaltyLevel = "";
                 $scope.loyaltyTabEnabled = false;
 
-		if ($scope.reservationDetails.guestCard.id !== null && $scope.reservationDetails.guestCard.id !== "") {
+		if (!!$scope.reservationDetails.guestCard.id) {
 			$scope.searchMode = false;
 		}
 
