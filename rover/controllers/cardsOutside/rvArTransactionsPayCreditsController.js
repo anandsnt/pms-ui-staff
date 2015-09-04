@@ -7,15 +7,23 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope', 'RVBillPay
 	$scope.renderData = {};
 	$scope.renderData.defaultPaymentAmount = $scope.arTransactionDetails.available_credit;
 
+	/*
+	* if no payment type is selected disable payment button
+	*/
 	$scope.disableMakePayment = function(){
-		 if($scope.saveData.paymentType.length > 0){
+		if($scope.saveData.paymentType.length > 0){
 			return false;
 		}
 		else{
 			return true;
 		};
 	};
-
+	$scope.handleCloseDialog = function(){
+		$scope.closeDialog();
+	};
+	/*
+	* Fee setup starts here
+	*/
 	$scope.isShowFees = function(){
 		var isShowFees = false;
 		var feesData = $scope.feeData;
@@ -31,7 +39,6 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope', 'RVBillPay
 	};
 
 	$scope.calculateFee = function(){
-
 		if($scope.isStandAlone){
 			var feesInfo = $scope.feeData.feesInfo;
 			var amountSymbol = "";
@@ -43,11 +50,9 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope', 'RVBillPay
 				minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
 			}
 			var totalAmount = ($scope.renderData.defaultPaymentAmount === "") ? zeroAmount :
-							parseFloat($scope.renderData.defaultPaymentAmount);
-
+			parseFloat($scope.renderData.defaultPaymentAmount);
 			$scope.feeData.minFees = minFees;
 			$scope.feeData.defaultAmount = totalAmount;
-
 			if($scope.isShowFees()){
 				if(amountSymbol === "percent"){
 					var calculatedFee = parseFloat(totalAmount * (feePercent/100));
@@ -69,20 +74,15 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope', 'RVBillPay
 	};
 
 	$scope.setupFeeData = function(){
-
 		if($scope.isStandAlone){
-
 			var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
 			var defaultAmount = $scope.renderData ?
-			 	parseFloat($scope.renderData.defaultPaymentAmount) : zeroAmount;
-
+			parseFloat($scope.renderData.defaultPaymentAmount) : zeroAmount;
 			var minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
 			$scope.feeData.minFees = minFees;
 			$scope.feeData.defaultAmount = defaultAmount;
-
 			if($scope.isShowFees()){
 				if(typeof feesInfo.amount !== 'undefined' && feesInfo!== null){
-
 					var amountSymbol = feesInfo.amount_symbol;
 					var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
 					$scope.feeData.actualFees = feesAmount;
@@ -98,20 +98,14 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope', 'RVBillPay
 			}
 		}
 	};
-
 	$scope.calculateTotalAmount = function(amount) {
 		var feesAmount  = (typeof $scope.feeData.calculatedFee === 'undefined' || $scope.feeData.calculatedFee === '' || $scope.feeData.calculatedFee === '-') ? zeroAmount : parseFloat($scope.feeData.calculatedFee);
 		var amountToPay = (typeof amount === 'undefined' || amount === '') ? zeroAmount : parseFloat(amount);
 		$scope.feeData.totalOfValueAndFee = parseFloat(amountToPay + feesAmount).toFixed(2);
 	};
-
-	$scope.handleCloseDialog = function(){
-		$scope.paymentModalOpened = false;
-		$scope.$emit('HANDLE_MODAL_OPENED');
-		$scope.closeDialog();
-	};
-
-
+	/*
+	* Fee setup ends here
+	*/
 	var checkReferencetextAvailable = function(){
 		angular.forEach($scope.renderData.paymentTypes, function(value, key) {
 			if(value.name === $scope.saveData.paymentType){
@@ -120,19 +114,14 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope', 'RVBillPay
 				$scope.setupFeeData();
 			}
 		});
-
 	};
-
 	$scope.paymentTypeChanged =  function(){
 		checkReferencetextAvailable();
 	};
-
-	
 	/*
 	* Success call back - for initial screen
 	*/
 	$scope.getPaymentListSuccess = function(data){
-
 		$scope.$emit('hideLoader');
 		$scope.renderData.paymentTypes = data;
 		$scope.creditCardTypes = [];
@@ -143,19 +132,12 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope', 'RVBillPay
 		});
 		checkReferencetextAvailable();
 	};
-
-
-	
 	var init = function(){	
-		// setupbasicBillData();
 		$scope.referenceTextAvailable = false;
 		$scope.showInitalPaymentScreen = true;
 		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.getPaymentListSuccess);
 	};
-
 	init();
-
-	
 	/*
 	* Success call back of success payment
 	*/
@@ -182,7 +164,6 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope', 'RVBillPay
 	* Action - On click submit payment button
 	*/
 	$scope.submitPayment = function(){
-
 		if($scope.saveData.paymentType === '' || $scope.saveData.paymentType === null){
 			$timeout(function() {
 				$scope.errorMessage = ["Please select payment type"];
@@ -192,7 +173,6 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope', 'RVBillPay
 				$scope.errorMessage = ["Please enter amount"];
 			}, 1000);
 		} else {
-
 			$scope.errorMessage = "";
 			var dataToSrv = {
 				"postData": {
@@ -203,8 +183,6 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope', 'RVBillPay
 				},
 				"reservation_id": $scope.reservationData.reservationId
 			};
-
-
 			if($scope.isShowFees()){
 				if($scope.feeData.calculatedFee) {
 					dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
@@ -218,10 +196,6 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope', 'RVBillPay
 				dataToSrv.postData.reference_text = $scope.renderData.referanceText;
 			};
 			$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, successPayment, failedPayment);
-
 		}
-
-	};
-
-	
+	};	
 }]);
