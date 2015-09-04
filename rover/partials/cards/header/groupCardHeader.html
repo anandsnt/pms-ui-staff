@@ -20,7 +20,7 @@
             <button type="button" class="button blue" ng-hide="true">Duplicate</button>
             <!-- If in Stay Card or Create Reservation, show these instead: -->
             <button type="button" class="button brand-colors dual-actions">Group Details</button>
-            <button type="button" class="button red dual-actions">Remove Group</button>
+            <button type="button" class="button red dual-actions" ng-click="removeGroupCard()">Remove Group</button>
         </div>
     </section>
     <section section ng-if="searchMode">

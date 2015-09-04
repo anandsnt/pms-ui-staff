@@ -490,6 +490,25 @@ sntRover.controller('guestCardController', [
 			};
 		})();
 
+		$scope.removeGroupCard = function() {
+			if ($scope.viewState.identifier === "CREATION") {
+				// reservationCreation				
+				$scope.reservationData.group = {
+					id: "",
+					name: "",
+					code: ""
+				}
+				$scope.showContractedRates({
+					companyCard: $scope.reservationDetails.companyCard.id,
+					travelAgent: $scope.reservationDetails.travelAgent.id
+				});
+				$scope.$broadcast("groupCardDetached");
+				$scope.closeGuestCard();
+			} else {
+				// Handle group removal in stay-card
+			}
+		}
+
 		$scope.detachCard = function(cardType) {
 			if ($scope.viewState.identifier === "CREATION") {
 				if (cardType === "guest") {
