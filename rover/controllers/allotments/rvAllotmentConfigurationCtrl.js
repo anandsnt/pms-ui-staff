@@ -316,19 +316,35 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             //TODO: Duplicate Allotment - Future functionality
         };
 
+        /**
+         * if comapny card id is null, we will not show
+         * @return {Boolean} [description]
+         */
+        $scope.shouldShowCompanyCardNavigationButton = function() {
+            return (!!summaryData.allotmentSummary.company.id)
+        };
+
+        /**
+         * if travel agent id is null, we will not show
+         * @return {Boolean} [description]
+         */
+        $scope.shouldShowTravelAgentNavigationButton = function() {
+            return (!!summaryData.allotmentSummary.travel_agent.id)
+        };
+
         $scope.goToTACard = function(){            
             $state.go('rover.companycarddetails', {
                 id: summaryData.allotmentSummary.travel_agent.id,
                 type: 'TRAVELAGENT'
             });
-        }
+        };
         
         $scope.goToCompanyCard = function(){
             $state.go('rover.companycarddetails', {
                 id: summaryData.allotmentSummary.company.id,
                 type: 'TRAVELAGENT'
             });
-        }
+        };
 
         /**
          * Discard the new Allotment

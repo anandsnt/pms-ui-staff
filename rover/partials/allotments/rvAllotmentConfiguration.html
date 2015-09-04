@@ -32,8 +32,8 @@
         <!-- Content -->
         <div class="cards-content" ng-if="!isInAddonSelectionMode()">
             <div  id="group-card-content" class="card-tabs card-content">
-            <button type="button" class="button green" ng-click="goToCompanyCard()">Company</button>
-            <button type="button" class="button green" ng-click="goToTACard()">TA</button>
+            <button type="button" class="button green" ng-click="goToCompanyCard()" ng-show="shouldShowCompanyCardNavigationButton()">Company</button>
+            <button type="button" class="button green" ng-click="goToTACard()" ng-show="shouldShowTravelAgentNavigationButton()">TA</button>
                 <!-- Allotment tabs navigation -->
                 <ul id="group-card-tabs-nav" class="card-tabs-nav no-print">
                     <li  ng-click="switchTabTo('SUMMARY')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'SUMMARY'}">
