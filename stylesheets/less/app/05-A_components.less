@@ -6636,6 +6636,27 @@
                     }
 
                     &.hidden { #fade > .out(); }
+
+                    &.cols-2 {
+                        width: 200%;
+                        .float;
+
+                        strong {
+                            font-weight: 600;
+                            margin: 10px 10px 0;
+                            .show;
+                        }
+
+                        .col {
+                            .calc-width(50, 10);
+                            .pull-left;
+
+                            .radio,
+                            .checkbox { #border-radius > .rounded(0); }
+
+                            &:nth-child(odd) { margin-right: 20px; }
+                        }
+                    }
                 }
 
                 .button {

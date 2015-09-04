@@ -14,7 +14,9 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
-		$scope.IsVisible = false;
+		$scope.isVisible = false;
+        var isNotTimeOut = false;
+        var timeOut;
 
 		// set a back button, by default keep hidden
 		$rootScope.setPrevState = {
@@ -49,6 +51,7 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.holdStatus   = payload.holdStatus;
 
 		$scope.addonGroups = payload.addonGroups;
+		console.log($scope.addonGroups);
 		$scope.reservationStatus = payload.reservationStatus;
 
 
@@ -432,61 +435,84 @@ sntRover.controller('RVReportsMainCtrl', [
 		};
 
 		$scope.showAndHideAddons = function () {
-			$scope.isVisible = $scope.isVisible ? false : true;
-		}
+            $scope.isVisible = $scope.isVisible ? false : true;
+        };
 
-		$scope.showAddons = function (reportItem, fauxDS, allTapped) {
-			$timeout (function () {
-				var selectedItems;
-				var selectedIds = [];
+        $scope.getGroupName = function (groupId) {
+        	var groupName;
+        	angular.forEach ($scope.addonGroups, function (key) {
+        		if (key.id == groupId) {
+        			console.log(key.name);
+        			groupName = key.name;
+        		}
+        	});
+        	return groupName;
+        };
 
-				if ( allTapped ) {
-					if ( fauxDS.showAll ) {
-						fauxDS.title = 'All Selected';
-						selectedItems = _.where(fauxDS.data, { selected: true });
-					} else {
-						fauxDS.title = fauxDS.defaultTitle;
-					};
+        $scope.getAddons = function (fauxDS, allTapped) {
+            if (isNotTimeOut) {
+                clearTimeout(timeOut);
+            }
+            isNotTimeOut = true;
+            timeOut = setTimeout(function () {
+                isNotTimeOut = false;
+                showAddons(fauxDS, allTapped)
+            }, 2000);
+        };
 
-					_.each(fauxDS.data, function(each) {
-						each.selected = fauxDS.selectAll;
-					});
-				} else {
-					selectedItems = _.where(fauxDS.data, { selected: true });
+        var showAddons = function (fauxDS, allTapped) {
+            var selectedItems;
+            var selectedIds = [];
 
-					if ( selectedItems.length === 0 ) {
-						fauxDS.title = fauxDS.defaultTitle;
-					} else if ( selectedItems.length === 1 ) {
-						fauxDS.title = selectedItems[0].description || selectedItems[0].name;
-					} else if ( selectedItems.length === fauxDS.data.length ) {
-						fauxDS.selectAll = true;
-						fauxDS.title = 'All Selected';
-					} else {
-						fauxDS.selectAll = false;
-						fauxDS.title = selectedItems.length + ' Selected';
-					};
-				}
-				angular.forEach(selectedItems, function (key) {
-					selectedIds.push(key.id);
-				});
-				var ids = {
-					"addon_group_ids" : selectedIds
-				};
+            if ( allTapped ) {
+                if ( fauxDS.showAll ) {
+                    fauxDS.title = 'All Selected';
+                } else {
+                    fauxDS.title = fauxDS.defaultTitle;
+                };
 
-				var sucssCallback = function (data) {
-					$scope.addonDetails = [];
-					$scope.addonDetails = data.results;
-					$scope.$emit( 'hideLoader' );
-				};
+                _.each(fauxDS.data, function(each) {
+                    each.selected = fauxDS.selectAll;
+                });
 
-				var errorCallback = function (data) {
-					$scope.$emit( 'hideLoader' );
-				};
+                selectedItems = _.where(fauxDS.data, { selected: true });
+            } else {
+                selectedItems = _.where(fauxDS.data, { selected: true });
 
-				$scope.invokeApi(reportsSubSrv.getAddons, ids, sucssCallback, errorCallback);
-				console.log($scope.addonDetails);
-			}, 1000);
-		};
+                if ( selectedItems.length === 0 ) {
+                    fauxDS.title = fauxDS.defaultTitle;
+                } else if ( selectedItems.length === 1 ) {
+                    fauxDS.title = selectedItems[0].description || selectedItems[0].name;
+                } else if ( selectedItems.length === fauxDS.data.length ) {
+                    fauxDS.selectAll = true;
+                    fauxDS.title = 'All Selected';
+                } else {
+                    fauxDS.selectAll = false;
+                    fauxDS.title = selectedItems.length + ' Selected';
+                };
+            }
+
+            angular.forEach(selectedItems, function (key) {
+                selectedIds.push(key.id);
+            });
+
+            var ids = {
+                "addon_group_ids" : selectedIds
+            };
+
+            var sucssCallback = function (data) {
+                $scope.addonDetails = [];
+                $scope.addonDetails = data.results;
+                $scope.groupNames = selectedItems;
+                $scope.$emit( 'hideLoader' );
+            };
+
+            var errorCallback = function (data) {
+                $scope.$emit( 'hideLoader' );
+            };
+
+            $scope.invokeApi(reportsSubSrv.getAddons, ids, sucssCallback, errorCallback);
+        };
 
 		function genParams (report, page, perPage) {
 			var params = {

@@ -3,10 +3,11 @@ sntRover.controller('RVReportListCrl', [
     '$rootScope',
     '$filter',
     'RVreportsSrv',
+    'RVreportsSubSrv',
     'RVReportUtilsFac',
     'RVReportMsgsConst',
     '$timeout',
-    function($scope, $rootScope, $filter, reportsSrv, reportUtils, reportMsgs, $timeout) {
+    function($scope, $rootScope, $filter, reportsSrv, reportsSubSrv, reportUtils, reportMsgs, $timeout) {
 
         BaseCtrl.call(this, $scope);
 
@@ -107,5 +108,7 @@ sntRover.controller('RVReportListCrl', [
         // removing event listners when scope is destroyed
         $scope.$on( 'destroy', serveRefresh );
 
+        
     }
+
 ]);

@@ -190,7 +190,7 @@ sntRover.service('RVreportsSrv', [
 				if ( service.payloadCache.hasOwnProperty('reservationStatus') ) {
 					success( 'reservationStatus', service.payloadCache.addons );
 				} else {
-					subSrv.fetchAddonGroups()
+					subSrv.fetchReservationStatus()
 						.then( success.bind(null, 'reservationStatus'), failed.bind(null, 'reservationStatus', []) );
 				};
 			};

@@ -153,9 +153,8 @@ sntRover.service('RVreportsSubSrv', [
 		service.fetchReservationStatus = function() {
 			return callApi({
 				method  : 'getJSON',
-				url     : 'api/group_hold_statuses',
-				resKey  : 'data',
-				resKey2 : 'hold_status'
+				url     : 'api/reservations/status',
+				resKey  : 'reservation_status'
 			});
 		};
 
