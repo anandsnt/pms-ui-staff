@@ -36,24 +36,25 @@
 			</div>
 		</div>
 		<div class="entry card-number" ng-class="{'card-type':isGiftCard}">
-			<label for="card-number">Card number (<span>No spaces</span>)</label>
-			<input name="card-number" ng-readonly="!isManualCCEntryEnabled" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="16" type="text" />
+                    <label for="card-number">Card number (<span>No spaces</span>)</label>
+			<input ng-show="isGiftCard" name="card-number" ng-readonly="!isManualCCEntryEnabled" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber)" />
+			<input ng-show="!isGiftCard" name="card-number" ng-readonly="!isManualCCEntryEnabled" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="16" type="text" />
 		</div>
-		<div class="entry card-expiry">
+		<div class="entry card-expiry" ng-hide="isGiftCard">
 			<label for="expiry-month">Expires (<span>Month/Year</span>)</label>
 			<input name="expiry-month" ng-readonly="!isManualCCEntryEnabled" id="expiry-month" placeholder="MM" ng-model="cardData.expiryMonth" maxlength="2" size="3" type="text" />
 			<input name="expiry-year" ng-readonly="!isManualCCEntryEnabled" id="expiry-year" placeholder="YY"  ng-model="cardData.expiryYear" maxlength="2" size="3" type="text" />
 		</div>
-		<div class="entry card-name">
+		<div class="entry card-name" ng-hide="isGiftCard">
 			<label for="name-on-card">Name on card</label>
 			<input name="name-on-card" id="name-on-card" placeholder="Enter name on card" ng-model="cardData.userName"type="text" />
 		</div>  
-		<div class="entry card-ccv">
+		<div class="entry card-ccv" ng-hide="isGiftCard">
 			<label for="ccv">CCV</label>
 			<input name="ccv" id="ccv" placeholder="CCV" ng-model="cardData.CCV" maxlength="4" size="4" type="text" />
 		</div>
 		<div class="entry card-action">
-			<button type="button" class="button blue" ng-click="getToken($event)">Add</button>
+			<button type="button" class="button blue" ng-hide="isGiftCard" ng-click="getToken($event)">Add</button>
 		</div>
 	</div>
 	<!-- New card: Call-In -->

@@ -234,6 +234,7 @@
                     <div class="entry full-width" id="selected-card" ng-show="showSelectedCreditCard && !showCCPage && (reservationData.paymentType.type.value === 'CC' || reservationData.paymentType.type.value === 'GIFT_CARD') && !showCC &&(paymentGateway !== 'sixpayments' || isManual || reservationEditMode)" ng-click="changePaymentType()">
                         <label ng-show="!isGiftCard" ng-hide="isGiftCard">Credit Card (<span>Tap to change</span>)</label>
                         <label ng-show="isGiftCard" ng-hide="!isGiftCard">Gift Card (<span>Tap to change</span>)</label>
+                        <label ng-show="isGiftCard" ng-hide="!isGiftCard">Available Balance ({{currencySymbol}}{{giftCardAvailableBalance}})</label>
                         <label class="active-item item-payment" id="pay-with-amex">
                             <figure class="card-logo">
                                 <img ng-src="/assets/{{renderData.creditCardType}}.png" alt="">
