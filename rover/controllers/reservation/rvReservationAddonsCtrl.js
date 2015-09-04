@@ -244,7 +244,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         amount_type: addon.amountType.description,
                         post_type: addon.postType.description
                     });
-                    $scope.existingAddonsLength = $scope.existingAddons.length;
+                    $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
 
                     for (i = startIndex; i <= endIndex; i++) {
                         if (!$scope.reservationData.rooms[i].addons) {
@@ -431,7 +431,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
             $scope.addons = [];
             $scope.activeRoom = $scope.viewState.currentTab;
             $scope.fromPage = "";
-            $scope.duration_of_stay = $scope.reservationData.numNights || 1;
+            $scope.duration_of_stay = $scope.reservationData.numNights || 1;            
             $scope.existingAddonsLength = 0;
             $scope.setHeadingTitle('Enhance Stay');
 
