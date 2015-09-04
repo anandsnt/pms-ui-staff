@@ -244,7 +244,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         amount_type: addon.amountType.description,
                         post_type: addon.postType.description
                     });
-                    $scope.existingAddonsLength = $scope.existingAddons.length;
+                    $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
 
                     for (i = startIndex; i <= endIndex; i++) {
                         if (!$scope.reservationData.rooms[i].addons) {
