@@ -1,0 +1,158 @@
+<!-- Search form -->
+<form method="get" action="" name="groups-search-form" id="groups-search-form" class="search-form has-dates" role="search" >
+
+    <div class="entry search">
+        
+        <button id="groups-clear-query" 
+                class="clear-query"
+                ng-click="clearSearchQuery()" 
+                ng-class="{'visible': !isEmpty(query)}">
+            <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
+        </button>
+
+        <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button>
+        
+        <input  name="groups-query" 
+                id="groups-query" 
+                class="query" 
+
+                placeholder="Allotment Code, Allotment Name, Travel Agent or Company Name" 
+                type="search"  
+
+                autocomplete="off" 
+                ng-model="query"  
+
+                rv-delay-textbox
+                delay="1000" 
+                function-to-fire="searchQueryChanged"/>
+    </div>
+    <div class="entry dates">
+        <div class="entry-data has-datepicker">
+            <label for="groups-date-from" translate>FROM</label>
+
+            <button id="groups-date-from-clear" 
+                    class="clear-query" ng-class="{'visible': !isEmpty(fromDate)}" ng-click="clearFromDate()"> <!-- To hide this, remove class "visible" -->
+                    <!-- }" 
+                        " -->                       
+                    <span class="icons icon-clear-search" translate>
+                        CLEAR_QUERY
+                    </span>
+            </button>
+
+            <input  name="groups-date-from" 
+                    id="groups-date-from" 
+                    class="datepicker" 
+                    readonly 
+                    type="text" 
+                    rv-clear-text-box 
+                    listen-this="fromDate"
+                    ui-date="fromDateOptions" 
+                    value="{{fromDate}}"/>
+        </div>
+        <div class="entry-data has-datepicker">
+            <label for="groups-date-to" translate>TO</label>
+            
+            <button id="groups-date-to-clear" 
+                    class="clear-query"  
+                    ng-click="clearToDate()" 
+                    ng-class="{'visible': !isEmpty(toDate)}"> <!-- Add class visible when date is selected -->
+                    <span class="icons icon-clear-search" translate>
+                        CLEAR_QUERY
+                    </span>
+            </button>
+
+            <input  name="groups-date-to" 
+                    id="groups-date-to"
+                    class="datepicker" 
+                    readonly 
+                    type="text" 
+                    ui-date="toDateOptions" 
+                    value="{{toDate}}" 
+                    rv-clear-text-box 
+                    listen-this="toDate"/>
+        </div>
+    </div>
+</form>
+<!-- Pagination -->
+<div class="search-pagination" ng-show="shouldShowPagination()">
+    <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
+    <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
+    <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalResultCount}}</strong> items</p>
+</div>
+
+<!-- Search panel - WITH RESULTS -->
+<section id="find-group" class="content scrollable" role="main" 
+    ng-class="{'no-pagination': !shouldShowPagination(), 'no-results': shouldShowNoResult()}"
+    ng-iscroll="result_showing_area" ng-iscroll-delay="1000" > <!-- If no pagination, add class "no-pagination" -->
+    <div class="wrapper">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <ul class="search-results">
+            <!-- If no results, show this: -->
+            <li class="no-content" ng-show="isFirstTimeWithNoResult()">
+                <div class="info">
+                    <span class="icon-no-content icon-groups"></span>
+                    <strong class="h1">Find Guests</strong>
+                    <span class="h2">                
+                            Search by
+                            <strong>Allotment Code</strong>,
+                            <strong>Allotment Name</strong>,
+                            <strong>Travel Agent</strong>
+                            or
+                            <strong>Company Name.</strong>
+                        </span>
+                </div>
+            </li>
+
+           
+            <!-- If no results, show this: -->
+            <li class="no-content" ng-show="shouldShowNoResult()">
+                <div class="info">
+                    <span class="icon-no-content icon-groups"></span>
+                    <strong class="h1">No Matches</strong>
+                    <span class="h2">Check that you didn't mispell the <strong>Allotment Name</strong> or <strong>Code</strong>.<a ng-click="gotoAddNewAllotment()" ng-show="hasPermissionToAddNewAllotment()" class="inline-link">Or add a New Allotment</a>.</span>
+                </div>
+            </li>
+            <li class="group" ng-show="!shouldShowNoResult()" ng-repeat="allotment in allotmentList" ngrepeatend ngrepeatstarted>
+                <a ng-click="gotoEditAllotmentConfiguration(allotment.id)">
+                    <div class="data">
+                        <h2 ng-bind-html="{{escapeNull(stringify(allotment.allotment_name))}}|highlight:query:false">
+                        </h2>
+                        <span class="confirmation" ng-bind-html="{{stringify(escapeNull(allotment.allotment_code))}}|highlight:query:false"></span>
+                        <!-- If linked company exists: -->
+                        <span class="icons icon-guest-company" ng-hide="isEmpty(allotment.company)">
+                            {{allotment.company}}
+                        </span>
+                        <!-- If linked travel agent exists: -->
+                        <span class="icons icon-guest-travelagent" ng-hide="isEmpty(allotment.travel_agent)">
+                            {{allotment.travel_agent}}
+                        </span>
+                    </div>
+                    <div class="arrival">
+                        <span class="guest-status" ng-class="getGuestClassForArrival(allotment)">
+                            <!--{arrival or cancel}-->
+                        </span>
+                        <time datetime="allotment.arrival_date">
+                            {{formatDateForUI(allotment.arrival_date)}}
+                        </time>
+                    </div>
+                    <div class="departure">
+                        <span class="guest-status" ng-class="getGuestClassForDeparture(allotment)">
+                            <!--{departure or cancel} -->
+                        </span>
+                        <time datetime="allotment.departure_date">
+                            {{formatDateForUI(allotment.departure_date)}}
+                        </time>
+                    </div>
+                    <div class="blocked" ng-class="getClassAgainstHoldStatus(allotment)"> <!-- If Status = Tentative, add class "tentative" -->
+                        <strong>{{allotment.total_booked === null? '0':allotment.total_booked}}</strong>
+                        <span>{{allotment.hold_status}}</span>
+                    </div>
+                    <div class="picked" ng-class="getClassAgainstPickedStatus(allotment)"> <!-- Add class "green" if No. > 0, or class "red" if cancelled -->
+                        <strong>{{allotment.total_picked_count === null? '0' :allotment.total_picked_count}}</strong>
+                        <span>Picked Up</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</section>

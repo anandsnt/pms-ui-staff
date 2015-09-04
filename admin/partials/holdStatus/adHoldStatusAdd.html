@@ -1,5 +1,5 @@
 <div style="display: block;" id="add-new" class="edit-data" >
-		<div class="data-holder"> 
+		<div class="data-holder">
 			<!-- Edit Department -->
 			<form class="form inline-form float">
 				<div class="form-title">
@@ -7,12 +7,16 @@
 					<em class="status" > {{'HOLD_STATUS_NAME_PLACEHOLDER' | translate}} <strong>*</strong> {{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
 				</div>
 				<fieldset class="holder left float">
-						<ad-textbox inputtype="text" value="holdstatusData.name" 
-						label = "{{'NAME' | translate}}" placeholder = "{{'HOLD_STATUS_NAME_PLACEHOLDER' | translate}}"  
+						<ad-textbox inputtype="text" value="holdstatusData.name"
+						label = "{{'NAME' | translate}}" placeholder = "{{'HOLD_STATUS_NAME_PLACEHOLDER' | translate}}"
 						styleclass="full-width" required="yes"></ad-textbox>
 						<ad-checkbox is-checked="holdstatusData.is_take_from_inventory" label="{{ 'TAKE_FROM_INVENTORY' | translate}}" div-class="full-width">
-						</ad-checkbox>						
-				</fieldset>				
+						</ad-checkbox>
+						<ad-checkbox is-checked="holdstatusData.is_group_only" label="{{ 'GROUP_ONLY' | translate}}" div-class="full-width" ng-click="holdstatusData.is_allotment_only = false">
+						</ad-checkbox>
+						<ad-checkbox is-checked="holdstatusData.is_allotment_only" label="{{ 'ALLOTMENT_ONLY' | translate}}" div-class="full-width" ng-click="holdstatusData.is_group_only = false">
+						</ad-checkbox>
+				</fieldset>
 				<div class="actions float">
 					<button type="button" id="cancel" class="button blank edit-data-inline" ng-click="clickCancel()" translate>
 						CANCEL
