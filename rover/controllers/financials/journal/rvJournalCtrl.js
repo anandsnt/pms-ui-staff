@@ -205,31 +205,8 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
             $scope.data.isActiveRevenueFilter = false; // Close the entire filter box
         }
     };
-    
-    // Flag for Summary Tab permission
-    $scope.hasSummaryTabAuthPermission = function() {
-        //return rvPermissionSrv.getPermissionValue ('OVERRIDE_CC_AUTHORIZATION');
-        return false;
-    };
 
-    if( $stateParams.id === 'REVENUE' ){
-        // 2. Go to Financials -> Journal.
-        // a) Upon logging in, default Tab should be SUMMARY ( if having permission ) 
-        // Otherwise default Tab will be REVENUE
-        if($scope.hasSummaryTabAuthPermission()) $scope.data.activeTab = 'SUMMARY';
-        else $scope.data.activeTab = 'REVENUE';
-
-        $scope.$emit("updateRoverLeftMenu", "journals");
-        // b) All employee fields should default to ALL users
-        // c) All date fields should default to yesterday's date
-        var yesterday = tzIndependentDate($rootScope.businessDate);
-        yesterday.setDate(yesterday.getDate()-1);
-        $scope.data.fromDate = $filter('date')(yesterday, 'yyyy-MM-dd');
-        $scope.data.toDate   = $filter('date')(yesterday, 'yyyy-MM-dd');
-        $scope.data.cashierDate = $filter('date')(yesterday, 'yyyy-MM-dd');
-        $scope.data.summaryDate = $filter('date')(yesterday, 'yyyy-MM-dd');
-    }
-    else if( $stateParams.id === 'CASHIER' ){
+    if( $stateParams.id === 'CASHIER' ){
         // if we come from the cashier scenario, we should not display the summary screen at all
         $scope.data.isShowSummaryTab = false;
         // 1. Go to Front Office -> Cashier
@@ -247,7 +224,18 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         },2000);
     }
     else{
-        $scope.data.activeTab = $stateParams.id;
+        // 2. Go to Financials -> Journal.
+        // a) Upon logging in, default Tab should be SUMMARY
+        $scope.data.activeTab = 'SUMMARY';
+        $scope.$emit("updateRoverLeftMenu", "journals");
+        // b) All employee fields should default to ALL users
+        // c) All date fields should default to yesterday's date
+        var yesterday = tzIndependentDate($rootScope.businessDate);
+        yesterday.setDate(yesterday.getDate()-1);
+        $scope.data.fromDate = $filter('date')(yesterday, 'yyyy-MM-dd');
+        $scope.data.toDate   = $filter('date')(yesterday, 'yyyy-MM-dd');
+        $scope.data.cashierDate = $filter('date')(yesterday, 'yyyy-MM-dd');
+        $scope.data.summaryDate = $filter('date')(yesterday, 'yyyy-MM-dd');
     }
 
     /** Employee/Departments Filter ends here .. **/
