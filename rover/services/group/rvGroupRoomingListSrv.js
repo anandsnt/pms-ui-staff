@@ -95,6 +95,32 @@ sntRover.service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 		};
 
 		/**
+		 * function to perform mass checkout
+		 * @return {Promise}
+		 */
+		this.performMassCheckout = function(params) {
+			var deferred = $q.defer(),
+				group_id = params.id,
+				url = '/api/group_checkouts/',
+				params = {
+					"group_id": params.group_id,
+					"reservation_ids": params.reservation_ids
+				};
+
+
+			rvBaseWebSrvV2.postJSON(url, params).then(
+				function(data) {
+					deferred.resolve(data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;
+		};
+
+		/**
 		 * function to perform auto room assignment
 		 * @return {Promise}
 		 */

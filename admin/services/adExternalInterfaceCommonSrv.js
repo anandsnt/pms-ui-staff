@@ -21,6 +21,41 @@ admin.service('adExternalInterfaceCommonSrv',['$http', '$q', 'ADBaseWebSrv', 'AD
 		});
 		return deferred.promise;
 	};
+	this.fetchFailedMessages = function(){
+		var deferred = $q.defer();
+		var url = '/api/ota_messages.json';
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
+        
+        this.deleteFailedMessages = function(messages) {
+		var deferred = $q.defer();
+		var url = '/api/ota_messages/delete_all';
+
+		ADBaseWebSrv.postJSON(url, messages).then(function(data) {
+			deferred.resolve(data);
+		}, function(errorMessage) {
+			deferred.reject(errorMessage);
+		});
+		return deferred.promise;
+	};
+        this.resubmitFailedMessages = function(messages) {
+		var deferred = $q.defer();
+		var url = '/api/ota_messages/requeue';
+
+		ADBaseWebSrv.postJSON(url, messages).then(function(data) {
+			deferred.resolve(data);
+		}, function(errorMessage) {
+			deferred.reject(errorMessage);
+		});
+		return deferred.promise;
+	};
+
+        
 	/*
 	* To fetch hotel PaymentMethods
 	*/

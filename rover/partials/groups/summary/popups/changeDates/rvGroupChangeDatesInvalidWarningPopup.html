@@ -1,0 +1,17 @@
+<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
+    <div class="modal-content alert">
+        <button id="modal-close" type="button" class="modal-close" ng-click="cancelChangeDatesAction()">
+            <span class="icons icon-close invert"></span>
+        </button>
+
+        <span class="icons icon-popup-alert"></span>
+        <!-- 03-04-error.png -->
+        <span class="h2 message">{{ngDialogData.dataset.message | translate}}</span>
+        <!-- 05-06-error.png
+        <span class="h2 message">Reservations are due to arrive on/after new departure date. Please amend reservations before moving group dates.</span> -->
+
+        <div class="actions">
+            <button type="button" class="button blue" ng-click="cancelChangeDatesAction()">Ok</button>
+        </div>
+    </div>
+</div>
