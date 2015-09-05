@@ -82,7 +82,7 @@
         </div>
         <!--Tabs -->
         <ul id="journal-options" class="display">
-            <li ng-class="{'active':data.activeTab === 'SUMMARY'}" ng-click="activatedTab('SUMMARY')">
+            <li ng-if="hasSummaryTabAuthPermission() && data.isShowSummaryTab" ng-class="{'active':data.activeTab === 'SUMMARY'}" ng-click="activatedTab('SUMMARY')">
                 <span class="icons icon-navbar icon-summary" translate>SUMMARY</span></li>
             <li id="show-revenue" ng-class="{'active':data.activeTab === 'REVENUE'}" ng-click="activatedTab('REVENUE')">
                 <span class="icons icon-navbar icon-revenue" translate>REVENUE</span>{{currencySymbol}}{{data.revenueData.total_revenue | number: precisonTwo}}</li>
@@ -98,7 +98,7 @@
     </form> 
 
     <!-- Content SUMMARY-->
-    <div ng-show="data.activeTab === 'SUMMARY'" ng-include="'/assets/partials/financials/journal/rvSummary.html'"></div>
+    <div ng-if="hasSummaryTabAuthPermission() && data.isShowSummaryTab" ng-show="data.activeTab === 'SUMMARY'" ng-include="'/assets/partials/financials/journal/rvSummary.html'"></div>
 
     <!-- Content REVENUE-->
     <div ng-show="data.activeTab === 'REVENUE'" ng-include="'/assets/partials/financials/journal/rvRevenue.html'"></div>

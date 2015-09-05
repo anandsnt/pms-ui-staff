@@ -1,4 +1,4 @@
-sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVJournalSrv', 'journalResponse','$timeout',function($scope, $filter,$stateParams, ngDialog, $rootScope, RVJournalSrv, journalResponse, $timeout) {
+sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVJournalSrv', 'journalResponse','$timeout','rvPermissionSrv',function($scope, $filter,$stateParams, ngDialog, $rootScope, RVJournalSrv, journalResponse, $timeout, rvPermissionSrv) {
 
 	BaseCtrl.call(this, $scope);
 	// Setting up the screen heading and browser title.
@@ -6,7 +6,6 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 	$scope.setTitle($filter('translate')('MENU_JOURNAL'));
 
 	$scope.data = {};
-	$scope.data.activeTab = $stateParams.id === '' ? 'SUMMARY' : $stateParams.id;
 	$scope.data.filterData = {};
     $scope.data.summaryData = {};
 	$scope.data.revenueData = {};
@@ -28,6 +27,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.data.selectedEmployeeList = [];
     $scope.data.isDrawerOpened = false;
 	$scope.data.reportType  = "";
+    $scope.data.isShowSummaryTab  = true;
 
     $scope.data.isRevenueToggleSummaryActive = true;
     $scope.data.isPaymentToggleSummaryActive = true;
@@ -205,11 +205,20 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
             $scope.data.isActiveRevenueFilter = false; // Close the entire filter box
         }
     };
+    
+    // Flag for Summary Tab permission
+    $scope.hasSummaryTabAuthPermission = function() {
+        //return rvPermissionSrv.getPermissionValue ('OVERRIDE_CC_AUTHORIZATION');
+        return false;
+    };
 
     if( $stateParams.id === 'REVENUE' ){
         // 2. Go to Financials -> Journal.
-        // a) Upon logging in, default Tab should be Revenue
-        $scope.data.activeTab = 'REVENUE';
+        // a) Upon logging in, default Tab should be SUMMARY ( if having permission ) 
+        // Otherwise default Tab will be REVENUE
+        if($scope.hasSummaryTabAuthPermission()) $scope.data.activeTab = 'SUMMARY';
+        else $scope.data.activeTab = 'REVENUE';
+
         $scope.$emit("updateRoverLeftMenu", "journals");
         // b) All employee fields should default to ALL users
         // c) All date fields should default to yesterday's date
@@ -221,6 +230,8 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         $scope.data.summaryDate = $filter('date')(yesterday, 'yyyy-MM-dd');
     }
     else if( $stateParams.id === 'CASHIER' ){
+        // if we come from the cashier scenario, we should not display the summary screen at all
+        $scope.data.isShowSummaryTab = false;
         // 1. Go to Front Office -> Cashier
         // a) Upon logging in, default Tab should be Cashier
         $scope.data.activeTab = 'CASHIER';
@@ -234,6 +245,9 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         $timeout(function(){
             filterByLoggedInUser();
         },2000);
+    }
+    else{
+        $scope.data.activeTab = $stateParams.id;
     }
 
     /** Employee/Departments Filter ends here .. **/
