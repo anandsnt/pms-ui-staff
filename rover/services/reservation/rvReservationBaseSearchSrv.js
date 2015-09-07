@@ -145,5 +145,16 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
             });
             return deferred.promise;
         };
+
+        this.checkOverbooking = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/availability/overbooking_check';
+            RVBaseWebSrvV2.getJSON(url,params).then(function(response) {
+                deferred.resolve(response.results);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
     }
 ]);

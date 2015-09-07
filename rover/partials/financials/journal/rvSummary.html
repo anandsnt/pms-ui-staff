@@ -1,0 +1,60 @@
+<!-- Content -->
+<div ng-controller="RVJournalSummaryController" id="journal-content" class="journal-content summary">
+    
+    <div class="journal-summary first">
+        <h3 translate>DEPOSIT_BAL</h3>
+        <ul>
+            <li>{{'OPENING' | translate}}<span>{{currencySymbol}}{{data.summaryData.deposit_opening_balance | number: precisonTwo }}</span></li>
+            <li>{{'DEBIT' | translate}}<span>{{currencySymbol}}{{data.summaryData.deposit_debits | number: precisonTwo }}</span></li>
+            <li>{{'CREDIT' | translate}}<span>{{currencySymbol}}{{data.summaryData.deposit_credits | number: precisonTwo }}</span></li>
+            <li>{{'CLOSING' | translate}}<span>{{currencySymbol}}{{data.summaryData.deposit_closing_balance | number: precisonTwo }}</span></li>
+        </ul>
+    </div>
+    <div class="journal-summary">
+        <h3 translate>GUEST_BAL</h3>
+        <ul>
+            <li><span>{{currencySymbol}}{{data.summaryData.guest_opening_balance | number: precisonTwo }}</span></li>
+            <li><span>{{currencySymbol}}{{data.summaryData.guest_debits | number: precisonTwo }}</span></li>
+            <li><span>{{currencySymbol}}{{data.summaryData.guest_credits | number: precisonTwo }}</span></li>
+            <li><span>{{currencySymbol}}{{data.summaryData.guest_closing_balance | number: precisonTwo }}</span></li>
+        </ul>
+    </div>
+    <div class="journal-summary">
+        <h3 translate>AR_BALANCE</h3>
+        <ul>
+            <li><span>{{currencySymbol}}{{data.summaryData.ar_opening_balance | number: precisonTwo }}</span></li>
+            <li><span>{{currencySymbol}}{{data.summaryData.ar_debits | number: precisonTwo }}</span></li>
+            <li><span>{{currencySymbol}}{{data.summaryData.ar_credits | number: precisonTwo }}</span></li>
+            <li><span>{{currencySymbol}}{{data.summaryData.ar_closing_balance | number: precisonTwo }}</span></li>
+        </ul>
+    </div>
+    <div class="journal-summary totals">
+        <h3 translate>TOTALS</h3>
+        <ul>
+            <li>
+                <span>
+                    {{currencySymbol}}
+                    {{data.summaryData.deposit_opening_balance+data.summaryData.guest_opening_balance+data.summaryData.ar_opening_balance | number: precisonTwo }}
+                </span>
+            </li>
+            <li>
+                <span>
+                    {{currencySymbol}}
+                    {{data.summaryData.deposit_debits+data.summaryData.guest_debits+data.summaryData.ar_debits | number: precisonTwo }}
+                </span>
+            </li>
+            <li>
+                <span>
+                    {{currencySymbol}}
+                    {{data.summaryData.deposit_credits+data.summaryData.guest_credits+data.summaryData.ar_credits | number: precisonTwo }}
+                </span>
+            </li>
+            <li>
+                <span>
+                    {{currencySymbol}}
+                    {{data.summaryData.deposit_closing_balance+data.summaryData.guest_closing_balance+data.summaryData.ar_closing_balance | number: precisonTwo }}
+                </span>
+            </li>
+        </ul>
+    </div>
+</div>

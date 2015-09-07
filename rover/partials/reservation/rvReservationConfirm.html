@@ -35,7 +35,7 @@
                 </div>
 
                 <!-- This here is dynamic content, depending on number of rooms booked -->
-                <div class="rooms" ng-repeat="room in reservationData.rooms">
+                <div class="rooms" ng-repeat="room in reservationData.rooms track by $index">
                     <div class="title">
                         <span translate>ROOM</span>
                         {{$index + 1}}
@@ -135,7 +135,7 @@
                             <input name="send-confirmation" value="send-confirmation" type="checkbox" ng-model="otherData.isGuestPrimaryEmailChecked"/>
                             <span>&nbsp;</span>
                         </label>
-                        <input class="summary_email" ng-model="reservationData.guest.email" ng-blur="primaryEmailEntered()">
+                        <input class="summary_email" ng-model="reservationData.guest.email" ng-blur="primaryEmailEntered()" ng-change="watchEmailUpdate()">
 
                         <label for="email" translate>ADDITIONAL_EMAIL_ADDRESS</label>
                         <label class="checkbox inline">

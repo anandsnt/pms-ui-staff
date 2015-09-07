@@ -660,7 +660,8 @@
 "BALANCE_INVENTORY": "Balance Inventory",
 "START_JOB": "Start Job",
 "REFRESH_STATUS": "Refresh Status",
-"FORCE_ADJ_REASON" :"FORCE RATE ADJUSTMENT REASON"
+"FORCE_ADJ_REASON" :"FORCE RATE ADJUSTMENT REASON",
+"SHOW_OVERBOOKING_ALERT" : "SHOW OVERBOOKING ALERT"
 ,
 
     "ROOMS":"Rooms",
@@ -826,7 +827,8 @@
     "SELECT_CHARGE_CODE":"Select Charge Code",
     "NO_SHOW_CHARGE_CODE":"No show charge code",
     "ADDONS_FOR_RESERVATIONS" : "Add-ons for Reservations",
-    "CUSTOM_GROUP_RATE_CHARGE_CODE":"Custom Group Rate Charge Code"
+    "CUSTOM_GROUP_RATE_CHARGE_CODE":"Custom Group Rate Charge Code",
+    "MAX_ROOM_QUANTITY" :"Max Rooms"
 ,	
 	"SETTINGS_AND_PARAMS":"Settings & Parameters",
     "CHANGE_BUSSINESS_DAY":"Change Business Day",

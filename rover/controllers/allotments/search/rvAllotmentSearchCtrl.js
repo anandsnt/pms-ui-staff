@@ -215,10 +215,6 @@ sntRover.controller('rvAllotmentSearchCtrl', [
                 return false;
             }
 
-            if ($scope.query.length < 3) {
-                return false;
-            }
-
             $scope.search();
         };
 
