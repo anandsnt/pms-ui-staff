@@ -2448,6 +2448,7 @@
                                 
                                 .button:not(.with-label) { padding: 0; }
 
+
                                 &.radio-check {
                                     .checkbox:nth-child(even),
                                     .radio:nth-child(even) { #pixel-to-percent > .right-margin(40, 904); }
@@ -11571,7 +11572,7 @@
 
             .entry {
                 padding-top: 10px;
-                margin-right: 20px;
+                margin-right: 10px;
                 .pull-left;
 
                 label {
@@ -11623,12 +11624,10 @@
                     position: relative;
                     #border-radius > .rounded();
                     .box-shadow();
-                    .size(50px, 180px);
+                    .size(50px, 160px);
                     .show;
 
-                    input { .hide; }
-
-                    .ui-datepicker-trigger {
+                    input {
                         position: absolute;
                         top: 0;
                         left: 0;
@@ -11644,7 +11643,7 @@
 
                     .month,
                     .year {
-                        left: 65px;
+                        left: 55px;
                         font-size: 16px;
                         line-height: 1em;
                     }
@@ -11667,15 +11666,41 @@
 
                 &.filter {
                     margin-left: 20px;
-                    width: 220px;
+                    width: 180px;
                 }
 
                 &.date { width: 180px; }
             }
 
+            .summary {
+                position: relative;
+                padding: 20px;
+                text-transform: uppercase;
+                line-height: 1;
+                .calc-width(100, 440);
+                .pull-left;
+
+                span {
+                    font-size: 14px;
+                    .show;
+                }
+
+                strong {
+                    font-size: 36px;
+                    font-weight: 300;
+                    .show;
+                }
+
+                .button {
+                    position: absolute;
+                    top: 25px;
+                    right: 25px;
+                }
+            }
+
             .display {
                 min-width: 110px;
-                max-width: 330px;
+                max-width: 440px;
                 .pull-right;
 
                 li {
@@ -11910,6 +11935,55 @@
             &.ui-resizable-resizing { .no-transition(); }
         }
 
+        /* Payments content ***/
+        .journal-groups {
+            position: absolute;
+            top: 90px;
+            left: 0;
+            z-index: 99;
+            background: @rcardTexture2;
+            padding: 0 10px;
+            .size(80px, 100%);
+            .box-shadow(inset 0 -1px 2px rgba(0,0,0,.15));
+            .float;
+
+            li {
+                font-size: 14px;
+                line-height: 20px;
+                text-transform: uppercase;
+                text-align: center;
+                cursor: pointer;
+                padding: 15px 0;
+                .size(80px, 100px);
+                .opacity(50);
+                .pull-left;
+
+                .icons {
+                    .size(30px, 100%);
+                }
+
+                &.active { 
+                    position: relative;
+                    cursor: default;
+                    .opacity(100);
+
+                    &:after {
+                        content: "";
+                        position: absolute;
+                        left: 50%;
+                        bottom: 0;
+                        width: 0; 
+                        height: 0; 
+                        margin-left: -10px;
+                        border-bottom: 10px solid darken(@white, 3);
+                        border-left: 10px solid transparent;
+                        border-right: 10px solid transparent;
+                        z-index: 1000;
+                    }
+                }
+            }
+        }
+
         /* Journal content ***/
         .journal-content {
             position: relative;
@@ -11917,6 +11991,69 @@
             .float;
 
             .wrapper { padding: 20px; }
+
+            /* Summary ***/
+            .journal-summary {
+                padding: 20px 0;
+                border-bottom: 1px solid rgba(0,0,0,.3);
+                .flex(center);
+                .float;
+
+                h3 {
+                    font-size: 20px;
+                    font-weight: 300;
+                    color: @grey4;
+                    text-transform: uppercase;
+                    text-align: right;
+                    margin-bottom: 0;
+                    width: 160px;
+                    .pull-left;
+                }
+
+                ul {
+                    padding-left: 40px;
+                    .calc-width(100, 160);
+                    .pull-left;
+
+                    li {
+                        text-transform: uppercase;
+                        text-align: right;
+                        margin: 0 20px 0 0;
+                        border-bottom: 0;
+                        padding-bottom: 0;
+                        color: @grey3;
+                        .pull-left;
+                        .calc-width(25, 20);
+
+                        span {
+                            font-size: 26px;
+                            line-height: 40px;
+                            font-weight: 300;
+                            color: @textColor;
+                            .show;
+                        }
+
+                        &:last-child { margin-right: 0; }
+                    }
+                }
+
+                &.first { 
+                    padding-top: 0; 
+
+                    h3 { padding-top: 24px; }
+                }
+
+                &.totals {
+                    padding-bottom: 0;
+                    border-bottom: 0;
+
+                    h3 { color: @textColor; }
+
+                    li {
+                        span { font-weight: 600; }
+                    }
+                }
+            }
 
             /* Revenue / Payment tables ***/
             .journal-grid {
@@ -12311,6 +12448,15 @@
                         }
                     }
                 }
+            }
+
+            /* Summary ***/
+            &.summary { padding: 60px 40px 0; }
+
+            /* Revenue / Payments groups ***/
+            &.grouped {
+                margin-top: 80px;
+                .calc-height(100, 170);
             }
         }
     }
