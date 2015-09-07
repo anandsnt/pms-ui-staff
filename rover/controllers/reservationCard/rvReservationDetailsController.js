@@ -639,9 +639,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 					userId: $scope.guestCardData.userId
 				});
 			}
-
-
-
 		};
 
 		$scope.modifyCheckinCheckoutTime = function() {
