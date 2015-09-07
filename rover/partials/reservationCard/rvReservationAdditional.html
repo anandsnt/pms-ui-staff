@@ -17,7 +17,10 @@
         
         <!-- If TA is attached and commission is turned on: -->
         <div class="block-item item-commission additional-detail">
-            <h3 class="block-title">Commission</h3>
+            <h3 class="block-title">
+                {{'COMMISSION' | translate }}
+                <span ng-if="reservationData.reservation_card.commission_details.is_prepaid" clas="label" translate>PREPAID</span>
+            </h3>
             <div class="entry">
                 <div class="switch-button" ng-class="{'on': reservationData.reservation_card.commission_details.is_on}">
                     <input id="ta-commission" value="1" type="checkbox" checked disabled />
