@@ -56,7 +56,9 @@
 </div>
 
 <div class="date-range" ng-if="item.hasDateFilter">
-    <label>{{ item.hasDateFilter.description }}</label>
+    <label>{{ item.hasDateFilter.description }}
+    </label>
+    <button type="button" class="button blue" ng-if="item.hasAddonGroups">Set To Tomorrow</button>
     <div class="has-datepicker">
         <input ng-if="item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
         <input ng-if="item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsSysLimit" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
@@ -271,55 +273,59 @@
     </div>
 </div>
 
-
-<div class="options" ng-if="item.hasAddonGroups">
+<div class="options" ng-if="item.hasAddonGroups.data.length" ng-click="catchFauxSelectClick($event, 'hasAddonGroups')">
     <label for="addon-groups">Add-On Group(s)</label>
-    <div class="faux-select">Show All</div>
-    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasGeneralOptions.show }">  <!-- Remove class "hidden" when ".faux-select" clicked -->
-        <label class="checkbox inline" ng-show="item.hasGeneralOptions.data.length > 1">
-            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasGeneralOptions.selectAll }"></span>
-            <input type="checkbox" ng-model="item.hasGeneralOptions.selectAll" ng-change="fauxSelectChange(item, item.hasGeneralOptions, true)" name="room-filters"> Show All
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasAddonGroups)">{{ item.hasAddonGroups.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasAddonGroups.show }">
+        <label class="checkbox inline" ng-show="item.hasAddonGroups.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasAddonGroups.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasAddonGroups.selectAll" ng-change="getAddons(item, item.hasAddonGroups, true)" name="room-filters"> Select All
         </label>
-        <label class="checkbox inline" ng-repeat="group in addonGroups">
-            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : option.selected }"></span>
-            <input type="checkbox" ng-model="option.selected" ng-change="fauxSelectChange(item, item.hasGeneralOptions)" name="room-filters"> {{ group.addon_group_name }}
+        <label class="checkbox inline" ng-repeat="group in item.hasAddonGroups.data">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : group.selected }"></span>
+            <input type="checkbox" ng-model="group.selected" ng-change="getAddons(item, item.hasAddonGroups)" name="room-filters"> {{ group.name }}
         </label>
     </div>
 </div>
 
-<div class="options" ng-if="item.hasAddons">
+<div class="options" ng-if="item.hasAddonGroups.data.length">
     <label for="addons">Add-On(s)</label>
-    <div class="faux-select">Show All</div>
-    <div class="faux-select-options cols-2 hidden"> <!-- Remove class "hidden" when ".faux-select" clicked -->
-        <div ng-repeat="gruop in addonGroups track by $index">
-            <div class="col" ng-if="$index % 2 === 0">
-                <strong>{group.addon_group_name}</strong>
-                <label class="checkbox inline" ng-repeat="addon in addons">
-                    <span class="icon-form icon-checkbox">
-                    <input name="addons" id="addons-{addon-id}" value="{Addon Name}" type="checkbox" />
-                    {addon.name}
+    <div class="faux-select placeholder" ng-click="toggleAddons()">Select Addons</div>
+    <div class="faux-select-options cols-2" ng-show="isVisible">
+        <div class="col" >
+            <span ng-repeat="group in addonDetails" ng-if="$index%2 == 0">
+            <strong>{{getGroupName(group.group_id)}}</strong>
+                <label class="checkbox inline" ng-repeat="addon in group.list_of_addons">
+                    <span class="icon-form icon-checkbox" ng-class="{ 'checked' : addon.selected }"></span>
+                    <input type="checkbox" ng-model="addon.selected" name="room-filters">
+                    {{addon.addon_name}}
                 </label>
-
-            </div>
-            <div class="col" ng-if="$index % 2 === 1">
-                <strong>{group.addon_group_name}</strong>
-                <label class="checkbox inline" ng-repeat="addon in addons">
-                    <span class="icon-form icon-checkbox">
-                    <input name="addons" id="addons-{addon-id}" value="{Addon Name}" type="checkbox" />
-                    {addon.name}
-                </label>
-            </div>
+            </span>
         </div>
+        <div class="col" >
+            <span ng-repeat="group in addonDetails" ng-if="$index%2 == 1">
+                <strong>{{getGroupName(group.group_id)}}</strong>
+                <label class="checkbox inline" ng-repeat="addon in group.list_of_addons">
+                    <span class="icon-form icon-checkbox" ng-class="{ 'checked' : addon.selected }"></span>
+                    <input type="checkbox" ng-model="addon.selected" name="room-filters">
+                    {{addon.addon_name}}
+                </label>
+            </span>
+        </div>        
     </div>
 </div>
 
-<div class="options" ng-if="item.hasHoldStatus.data.length">
+<div class="options" ng-if="item.hasReservationStatus.data.length" ng-click="catchFauxSelectClick($event, 'hasReservationStatus')">
     <label for="addon-status">Reservation Status</label>
-    <div class="faux-select">Show All</div>
-    <div class="faux-select-options hidden"> <!-- Remove class "hidden" when ".faux-select" clicked -->
-        <label class="checkbox inline">
-            <input name="addon-status" id="addon-reserved" value="Reserved (Due In)" type="checkbox" checked />
-            Reserved (Due In)
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasReservationStatus)">{{ item.hasReservationStatus.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasReservationStatus.show }">
+        <label class="checkbox inline" ng-show="item.hasReservationStatus.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasReservationStatus.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasReservationStatus.selectAll" ng-change="fauxSelectChange(item, item.hasReservationStatus, true)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="status in item.hasReservationStatus.data">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : status.selected }"></span>
+            <input type="checkbox" ng-model="status.selected" ng-change="fauxSelectChange(item.id, item.hasReservationStatus)" id="addon-reserved" name="addon-status"> {{ status.value }}
         </label>
     </div>
 </div>
