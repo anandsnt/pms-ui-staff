@@ -245,15 +245,20 @@
                                             margin: 0 5px 5px 5px;
                                             background-color: @white;
                                             #border-radius > .rounded();
-
-                                            &.last-row { margin-bottom: 0; }
                                         }
                                     }
 
+                                    /* Room Availability ***/
                                     &.room-details {
                                         &:not(.main) {
                                             th,
-                                            td { font-style: italic; }
+                                            td { 
+                                                font-style: italic; 
+
+                                                .inner {
+                                                    &.last-row { margin-bottom: 5px; }
+                                                }
+                                            }
 
                                             &:nth-child(odd) { 
                                                 td  { 
@@ -277,19 +282,23 @@
                                         &.main {
                                             .heading {
                                                 cursor: pointer;
-                                                background: @arrowDown 100% 50% no-repeat;
 
-                                                &.active { background-image: @arrowUp; }
+                                                &.rows-toggle {
+                                                    background: @arrowDown 100% 50% no-repeat;
 
-                                                @media @highdpi {
-                                                    background-image: @arrowDown2x; 
-                                                    background-size: 14px 14px; 
+                                                    &.active { background-image: @arrowUp; }
 
-                                                    &.active { 
-                                                        background-image: @arrowUp2x; 
+                                                    @media @highdpi {
+                                                        background-image: @arrowDown2x; 
                                                         background-size: 14px 14px; 
+
+                                                        &.active { 
+                                                            background-image: @arrowUp2x; 
+                                                            background-size: 14px 14px; 
+                                                        }
                                                     }
                                                 }
+                                                
                                             }
                                             
                                             td { 
@@ -301,96 +310,99 @@
                                         }
                                     }
 
+                                    /* Group Availability ***/
                                     &.group-details {
-                                        .heading {
-                                            padding: 0;
-                                            text-align: left;
-                                            background: rgba(0,0,0,.1);
+                                        &:not(.main) {
+                                            .button { line-height: 50px; }
 
-                                            .inner { 
-                                                position: relative;
-                                                line-height: 40px;
-                                                margin: 5px 5px 0 5px;
-                                                background: @white; 
-                                                #border-radius > .rounded();
-                                                .float;
+                                            .inner:not(.last-group) { margin-bottom: 0; }
+                                        }
 
-                                                .name {
-                                                    cursor: pointer;
-                                                    padding: 5px 10px 5px 35px;
-                                                    background: @arrowDown 10px 50% no-repeat;
-                                                    width: 530px;
-                                                    .nowrap();
-                                                    .pull-left;
+                                        &.main {
+                                            .heading {
+                                                padding: 0;
+                                                text-align: left;
+                                                background: rgba(0,0,0,.1);
 
-                                                    @media @highdpi {
-                                                        background-image: @arrowDown2x; 
-                                                        background-size: 14px 14px; 
-                                                    }
-                                                }
-
-                                                .status {
-                                                    padding: 5px 10px;
-                                                    font-weight: 400;
-                                                    width: 240px;
-                                                    .pull-left;
-
-                                                    .label {
-                                                        display: inline;
-                                                        float: none;
-                                                    }
-                                                }
-
-                                                .next-view {
-                                                    font-size: 16px;
-                                                    line-height: 40px;
-                                                    font-weight: 600;
-                                                    text-transform: uppercase;
-                                                    color: @logoPrimary;
-                                                    margin: 5px 0 5px 10px;
-                                                    padding: 0 30px 0 10px;
-                                                    height: 40px;
-                                                    .size(40px, 160px);
-                                                    .transition();
-                                                    .pull-left;
-
-                                                    &:hover,
-                                                    &:active { color: @textColor; }
-                                                }
-                                            }
-
-                                            &.active {
                                                 .inner { 
-                                                    margin-bottom: 5px;
-
-                                                    .name { 
-                                                        background-image: @arrowUp; 
+                                                    position: relative;
+                                                    line-height: 40px;
+                                                    margin: 5px 5px 0 5px;
+                                                    background: @white; 
+                                                    #border-radius > .rounded();
+                                                    .float;
+          
+                                                    .name {
+                                                        cursor: pointer;
+                                                        padding: 5px 10px 5px 35px;
+                                                        background: @arrowDown 10px 50% no-repeat;
+                                                        width: 520px;
+                                                        .nowrap();
+                                                        .pull-left;
 
                                                         @media @highdpi {
-                                                            background-image: @arrowUp2x; 
+                                                            background-image: @arrowDown2x; 
                                                             background-size: 14px 14px; 
+                                                        }
+                                                    }
+
+                                                    .status {
+                                                        padding: 5px 10px;
+                                                        font-weight: 400;
+                                                        width: 240px;
+                                                        .pull-left;
+
+                                                        .label {
+                                                            display: inline;
+                                                            float: none;
+                                                        }
+                                                    }
+
+                                                    .next-view {
+                                                        font-size: 16px;
+                                                        line-height: 40px;
+                                                        font-weight: 600;
+                                                        text-transform: uppercase;
+                                                        color: @logoPrimary;
+                                                        margin: 5px 10px;
+                                                        padding: 0 30px 0 10px;
+                                                        height: 40px;
+                                                        .size(40px, 160px);
+                                                        .transition();
+                                                        .pull-right;
+
+                                                        &:hover,
+                                                        &:active { color: @textColor; }
+                                                    }
+                                                }
+
+                                                &.active { 
+                                                    .inner { 
+                                                        margin-bottom: 5px;
+
+                                                        .name { 
+                                                            background-image: @arrowUp; 
+
+                                                            @media @highdpi {
+                                                                background-image: @arrowUp2x; 
+                                                                background-size: 14px 14px; 
+                                                            }
                                                         }
                                                     }
                                                 }
                                             }
-                                        }
 
-                                        &.last-group-row {
-                                            .rows-toggle {
-                                                .inner { margin-bottom: 5px; }
+                                            &.last-group {
+                                                .heading {
+                                                    .inner { margin-bottom: 5px; }
+                                                }
                                             }
-                                        }
-                                    }
-
-                                    &.group-details-row {
-                                        .button { line-height: 50px; }
-
-                                        &.last-row { 
-                                            .button { margin-bottom: 0; }
                                         }
                                     }
                                 }
                             }
+
+                            &.summary { margin-bottom: 10px; }
                         }
                     }
                 }
