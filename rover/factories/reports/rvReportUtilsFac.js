@@ -374,6 +374,10 @@ sntRover.factory('RVReportUtilsFac', [
                     report['canRemoveDate'] = true;
                     break;
 
+                case reportNames['ADDON_FORECAST']:
+                    report['canRemoveDate'] = true;
+                    break;
+
                 default:
                     report['hasDateLimit'] = false;     // CICO-16820: Changed to false
                     break;
@@ -743,7 +747,19 @@ sntRover.factory('RVReportUtilsFac', [
                         selectAll    : false,
                         defaultTitle : 'Select Addon',
                         title        : 'Select Addon',
-                        data         : angular.copy( data.addons )
+                        data         : []   // this data will be filled dynamically, sorry
+                    });
+                };
+
+                if ( filter.value === 'RESERVATION_STATUS') {
+                    __setData(report, 'hasReservationStatus', {
+                        type         : 'FAUX_SELECT',
+                        filter       : filter,
+                        show         : false,
+                        selectAll    : false,
+                        defaultTitle : 'Select Reservation Status',
+                        title        : 'Select Reservation Status',
+                        data         : angular.copy( data.reservationStatus )
                     });
                 };
 
@@ -977,6 +993,11 @@ sntRover.factory('RVReportUtilsFac', [
                     report['untilDate'] = _getDates.aMonthAfter;
                     break;
 
+                case reportNames['ADDON_FORECAST']:
+                    report['fromDate']  = _getDates.businessDate;
+                    report['untilDate'] = _getDates.businessDate;
+                    break;
+
                 // by default date range must be from a week ago to current business date
                 default:
                     report['fromDate']            = _getDates.aWeekAgo;
@@ -1011,6 +1032,7 @@ sntRover.factory('RVReportUtilsFac', [
             var returnObj = {
                 'businessDate' : new Date(_year, _month, _date),
                 'yesterday'    : new Date(_year, _month, _date - 1),
+                'tomorrow'     : new Date(_year, _month, _date + 1),
                 'aWeekAgo'     : new Date(_year, _month, _date - 7),
                 'aWeekAfter'   : new Date(_year, _month, _date + 7),
                 'aMonthAfter'  : new Date(_year, _month, _date + 30)
