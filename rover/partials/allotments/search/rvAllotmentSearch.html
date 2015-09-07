@@ -1,9 +1,9 @@
 <!-- Search form -->
-<form method="get" action="" name="groups-search-form" id="groups-search-form" class="search-form has-dates" role="search" >
+<form method="get" action="" name="allotment-search-form" id="allotment-search-form" class="search-form has-dates" role="search" >
 
     <div class="entry search">
         
-        <button id="groups-clear-query" 
+        <button id="allotment-clear-query" 
                 class="clear-query"
                 ng-click="clearSearchQuery()" 
                 ng-class="{'visible': !isEmpty(query)}">
@@ -12,8 +12,8 @@
 
         <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button>
         
-        <input  name="groups-query" 
-                id="groups-query" 
+        <input  name="allotment-query" 
+                id="allotment-query" 
                 class="query" 
 
                 placeholder="Allotment Code, Allotment Name, Travel Agent or Company Name" 
@@ -28,9 +28,9 @@
     </div>
     <div class="entry dates">
         <div class="entry-data has-datepicker">
-            <label for="groups-date-from" translate>FROM</label>
+            <label for="allotment-date-from" translate>FROM</label>
 
-            <button id="groups-date-from-clear" 
+            <button id="allotment-date-from-clear" 
                     class="clear-query" ng-class="{'visible': !isEmpty(fromDate)}" ng-click="clearFromDate()"> <!-- To hide this, remove class "visible" -->
                     <!-- }" 
                         " -->                       
@@ -39,8 +39,8 @@
                     </span>
             </button>
 
-            <input  name="groups-date-from" 
-                    id="groups-date-from" 
+            <input  name="allotment-date-from" 
+                    id="allotment-date-from" 
                     class="datepicker" 
                     readonly 
                     type="text" 
@@ -50,9 +50,9 @@
                     value="{{fromDate}}"/>
         </div>
         <div class="entry-data has-datepicker">
-            <label for="groups-date-to" translate>TO</label>
+            <label for="allotment-date-to" translate>TO</label>
             
-            <button id="groups-date-to-clear" 
+            <button id="allotment-date-to-clear" 
                     class="clear-query"  
                     ng-click="clearToDate()" 
                     ng-class="{'visible': !isEmpty(toDate)}"> <!-- Add class visible when date is selected -->
@@ -61,8 +61,8 @@
                     </span>
             </button>
 
-            <input  name="groups-date-to" 
-                    id="groups-date-to"
+            <input  name="allotment-date-to" 
+                    id="allotment-date-to"
                     class="datepicker" 
                     readonly 
                     type="text" 
@@ -81,7 +81,7 @@
 </div>
 
 <!-- Search panel - WITH RESULTS -->
-<section id="find-group" class="content scrollable" role="main" 
+<section id="find-allotment" class="content scrollable" role="main" 
     ng-class="{'no-pagination': !shouldShowPagination(), 'no-results': shouldShowNoResult()}"
     ng-iscroll="result_showing_area" ng-iscroll-delay="1000" > <!-- If no pagination, add class "no-pagination" -->
     <div class="wrapper">
@@ -90,24 +90,16 @@
             <!-- If no results, show this: -->
             <li class="no-content" ng-show="isFirstTimeWithNoResult()">
                 <div class="info">
-                    <span class="icon-no-content icon-groups"></span>
-                    <strong class="h1">Find Guests</strong>
-                    <span class="h2">                
-                            Search by
-                            <strong>Allotment Code</strong>,
-                            <strong>Allotment Name</strong>,
-                            <strong>Travel Agent</strong>
-                            or
-                            <strong>Company Name.</strong>
-                        </span>
+                    <span class="icon-no-content icon-allotments"></span>
+                    <strong class="h1">Find Allotments</strong>
+                    <span class="h2">Search by <strong>Allotment Name</strong> or <strong>Code</strong></span>
                 </div>
             </li>
-
            
             <!-- If no results, show this: -->
             <li class="no-content" ng-show="shouldShowNoResult()">
                 <div class="info">
-                    <span class="icon-no-content icon-groups"></span>
+                    <span class="icon-no-content icon-allotments"></span>
                     <strong class="h1">No Matches</strong>
                     <span class="h2">Check that you didn't mispell the <strong>Allotment Name</strong> or <strong>Code</strong>.<a ng-click="gotoAddNewAllotment()" ng-show="hasPermissionToAddNewAllotment()" class="inline-link">Or add a New Allotment</a>.</span>
                 </div>

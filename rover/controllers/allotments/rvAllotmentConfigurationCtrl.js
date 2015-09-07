@@ -67,7 +67,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          */
         var ifMandatoryValuesEntered = function() {
             var summary = $scope.allotmentConfigData.summary;
-            return !!summary.allotment_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to && !!summary.release_date;
+            return !!summary.allotment_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to;
         };
 
         /**
@@ -87,7 +87,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             $scope.allotmentConfigData = {
                 activeTab: $stateParams.activeTab, // Possible values are SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY
                 summary: summaryData.allotmentSummary,
-                holdStatusList: holdStatusList.hold_status,
+                holdStatusList: holdStatusList.data.hold_status,
                 selectAddons: false, // To be set to true while showing addons full view
                 addons: {},
                 selectedAddons: []
@@ -231,7 +231,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          */
         $scope.saveNewAllotment = function() {
             $scope.errorMessage = "";
-            if (rvPermissionSrv.getPermissionValue('CREATE_GROUP_SUMMARY') && !$scope.allotmentConfigData.summary.allotment_id) {
+            if (rvPermissionSrv.getPermissionValue('CREATE_ALLOTMENT_SUMMARY') && !$scope.allotmentConfigData.summary.allotment_id) {
                 if (ifMandatoryValuesEntered()) {
                     var onAllotmentSaveSuccess = function(data) {
                             $scope.allotmentConfigData.summary.allotment_id = data.allotment_id;
@@ -271,7 +271,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          */
         $scope.updateAllotmentSummary = function() {
 
-            if (rvPermissionSrv.getPermissionValue('EDIT_GROUP_SUMMARY')) {
+            if (rvPermissionSrv.getPermissionValue('EDIT_ALLOTMENT_SUMMARY')) {
                 if (angular.equals($scope.allotmentSummaryMemento, $scope.allotmentConfigData.summary)) {
                     return false;
                 }
@@ -314,6 +314,36 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          */
         $scope.duplicateAllotment = function() {
             //TODO: Duplicate Allotment - Future functionality
+        };
+
+        /**
+         * if comapny card id is null, we will not show
+         * @return {Boolean} [description]
+         */
+        $scope.shouldShowCompanyCardNavigationButton = function() {
+            return (!$scope.isInAddMode() && !!$scope.allotmentConfigData.summary.company.id)
+        };
+
+        /**
+         * if travel agent id is null, we will not show
+         * @return {Boolean} [description]
+         */
+        $scope.shouldShowTravelAgentNavigationButton = function() {
+            return (!$scope.isInAddMode() && !!$scope.allotmentConfigData.summary.travel_agent.id)
+        };
+
+        $scope.goToTACard = function(){            
+            $state.go('rover.companycarddetails', {
+                id: summaryData.allotmentSummary.travel_agent.id,
+                type: 'TRAVELAGENT'
+            });
+        };
+        
+        $scope.goToCompanyCard = function(){
+            $state.go('rover.companycarddetails', {
+                id: summaryData.allotmentSummary.company.id,
+                type: 'TRAVELAGENT'
+            });
         };
 
         /**

@@ -77,10 +77,10 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
         $scope.destroyFailedMessage = function(msg){
             msg.can_delete = false;
                 
-            var message_id = [msg.message_id];
+            var message_id = [msg.id];
                 var onSuccess = function(data){
                     for (var i in $scope.failedMessages){
-                        if ($scope.failedMessages[i].message_id === message_id){
+                        if ($scope.failedMessages[i].id === message_id[0]){
                             $scope.checkBox($scope.failedMessages[i]);
                             delete $scope.failedMessages[i];
                         }
@@ -92,7 +92,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
         };
         
         $scope.resubmitFailedMessage = function(msg){
-            var message_id = [msg.message_id];
+            var message_id = [msg.id];
                 var onSuccess = function(data){
                    // $scope.failedMessages = data.data;
                     $scope.$emit('hideLoader');
@@ -106,7 +106,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             } else {
                 for (var msg in $scope.failedMessages){
                     if (msg.is_checked){
-                        messages.push(msg.message_id);
+                        messages.push(msg.id);
                     }
                 }
             }
@@ -123,7 +123,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             var forResubmit = [];
             for (var i in $scope.failedMessages){
                 if ($scope.failedMessages[i].selected){
-                    forResubmit.push($scope.failedMessages[i].message_id);
+                    forResubmit.push($scope.failedMessages[i].id);
                 }
             }
             $scope.resubmitCheckedFailedMessage(forResubmit, true);
@@ -133,7 +133,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             var forDelete = [];
             for (var i in $scope.failedMessages){
                 if ($scope.failedMessages[i].selected){
-                    forDelete.push($scope.failedMessages[i].message_id);
+                    forDelete.push($scope.failedMessages[i].id);
                 }
             }
             $scope.deleteCheckedFailedMessage(forDelete, true);
@@ -148,7 +148,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             } else {
                 for (var msg in $scope.failedMessages){
                     if (msg.is_checked){
-                        messages.push(msg.message_id);
+                        messages.push(msg.id);
                     }
                 }
             }

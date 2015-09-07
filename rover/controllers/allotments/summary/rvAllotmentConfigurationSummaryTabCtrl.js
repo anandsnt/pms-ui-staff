@@ -109,42 +109,49 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			runDigestCycle();
 		};
 
+		var onFetchDemographicsSuccess = function(demographicsData) {
+				$scope.allotmentSummaryData.demographics = demographicsData.demographics;
+				updateSegment();
+		};
 
+		var onFetchDemographicsFailure = function(errorMessage) {
+
+		};
+
+		var updateSegment = function() {
+			var configSummaryData 	= $scope.allotmentConfigData.summary,
+				demographics 	= $scope.allotmentSummaryData.demographics,
+				blockFromDate	= configSummaryData.block_from,
+				blockToDate		= configSummaryData.block_to,
+				aptSegment		= "" //Variable to store the suitable segment ID;
+
+			// CICO-15107 --
+			if (!!blockToDate && !!blockFromDate) {
+				var dayDiff = Math.floor((new tzIndependentDate(blockToDate) - new tzIndependentDate(blockFromDate)) / 86400000);
+				_.each(demographics.segments, function(segment) {
+					if (dayDiff < segment.los) {
+						if (!aptSegment) {
+							aptSegment = segment.value;
+						}
+					}
+				});
+				$scope.allotmentSummaryData.computedSegment = !!aptSegment;
+				configSummaryData.demographics.segment_id = aptSegment;
+			} else {
+				return false;
+			}
+		};
 		/**
 		 * [computeSegment description]
 		 * @return {[type]} [description]
 		 */
 		$scope.computeSegment = function() {
-			// CICO-15107 --
-			var onFetchDemographicsSuccess = function(demographicsData) {
-					$scope.allotmentSummaryData.demographics = demographicsData.demographics;
-					updateSegment();
-				},
-				onFetchDemographicsFailure = function(errorMessage) {
-				},
-				updateSegment = function() {
-					var aptSegment = ""; //Variable to store the suitable segment ID
-					if (!!$scope.allotmentConfigData.summary.block_to && !!$scope.allotmentConfigData.summary.block_from) {
-						var dayDiff = Math.floor((new tzIndependentDate($scope.allotmentConfigData.summary.block_to) - new tzIndependentDate($scope.allotmentConfigData.summary.block_from)) / 86400000);
-						angular.forEach($scope.allotmentSummaryData.demographics.segments, function(segment) {
-							if (dayDiff < segment.los) {
-								if (!aptSegment) {
-									aptSegment = segment.value;
-								}
-							}
-						});
-						$scope.allotmentSummaryData.computedSegment = !!aptSegment;
-						$scope.allotmentConfigData.summary.demographics.segment_id = aptSegment;
-					} else {
-						return false;
-					}
-				};
-
 			if ($scope.allotmentSummaryData.demographics === null) {
-				$scope.callAPI(RVReservationSummarySrv.fetchInitialData, {
+				var options = {
 					successCallBack: onFetchDemographicsSuccess,
 					failureCallBack: onFetchDemographicsFailure
-				});
+				}
+				$scope.callAPI(RVReservationSummarySrv.fetchInitialData, options);
 			} else {
 				updateSegment();
 			}
@@ -157,12 +164,14 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 * @return undefined
 		 */
 		var toDateChoosed = function(date, datePickerObj) {
-			$scope.allotmentConfigData.summary.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+			var summaryData = $scope.allotmentConfigData.summary;
+
+			summaryData.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
 			$scope.computeSegment();
 			//we are in outside of angular world
 
-			if (!!$scope.allotmentConfigData.summary.block_from && !!$scope.allotmentConfigData.summary.block_to) {
+			if (!!summaryData.block_from && !!summaryData.block_to) {
 				fetchApplicableRates();
 			}
 			runDigestCycle();
@@ -226,6 +235,27 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		};
 
 		/**
+		 * Opens the dialog box
+		 * @return {undefined}
+		 */
+		var showDemographicsPopup = function() {
+			$scope.allotmentSummaryData.isDemographicsPopupOpen = true;
+
+
+			demographicsMemento = angular.copy($scope.allotmentConfigData.summary.demographics);
+			ngDialog.open({
+				template: '/assets/partials/allotments/summary/allotmentDemographicsPopup.html',
+				className: '',
+				scope: $scope,
+				closeByDocument: false,
+				closeByEscape: false,
+				preCloseCallback: function() {
+					$scope.allotmentSummaryData.isDemographicsPopupOpen = false;
+				}
+			});
+		};
+
+		/**
 		 * Demographics Popup Handler
 		 * @return undefined
 		 */
@@ -238,35 +268,19 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 
 			$scope.errorMessage = "";
 
-			var showDemographicsPopup = function() {
-					$scope.allotmentSummaryData.isDemographicsPopupOpen = true;
-
-
-					demographicsMemento = angular.copy($scope.allotmentConfigData.summary.demographics);
-					ngDialog.open({
-						template: '/assets/partials/allotments/summary/allotmentDemographicsPopup.html',
-						className: '',
-						scope: $scope,
-						closeByDocument: false,
-						closeByEscape: false,
-						preCloseCallback: function() {
-							$scope.allotmentSummaryData.isDemographicsPopupOpen = false;
-						}
-					});
-				},
-				onFetchDemographicsSuccess = function(demographicsData) {
+			var onFetchDemographicsSuccess = function(demographicsData) {
 					$scope.allotmentSummaryData.demographics = demographicsData.demographics;
 					showDemographicsPopup();
 				},
 				onFetchDemographicsFailure = function(errorMessage) {
+				},
+				options = {
+					successCallBack: onFetchDemographicsSuccess,
+					failureCallBack: onFetchDemographicsFailure
 				};
 
 			if ($scope.allotmentSummaryData.demographics === null) {
-				$scope.callAPI(RVReservationSummarySrv.fetchInitialData, {
-					successCallBack: onFetchDemographicsSuccess,
-					failureCallBack: onFetchDemographicsFailure
-				});
-
+				$scope.callAPI(RVReservationSummarySrv.fetchInitialData, options);
 			} else {
 				showDemographicsPopup();
 			}
@@ -311,33 +325,59 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			$scope.closeDialog();
 		};
 
+		var showChangeDateNotPossiblePopup = function() {
+			ngDialog.open({
+				template: '/assets/partials/allotments/summary/warnChangeRateNotPossible.html',
+				className: '',
+				scope: $scope,
+				closeByDocument: false,
+				closeByEscape: false
+			});
+		};
+
+		/**
+		 * Success callback function for rate change
+		 * @param {object} response of API
+		 * @return {undefined}
+		 */
+		var onRateChangeSuccess = function(data) {
+			$scope.$emit('hideLoader');
+
+			if (!data.is_changed && !data.is_room_rate_available) {
+				showChangeDateNotPossiblePopup();
+				$scope.allotmentConfigData.summary.rate = summaryMemento.rate;
+			} else{
+			  summaryMemento.rate = $scope.allotmentConfigData.summary.rate;
+			}
+		};
+
+		/**
+		 * Failure callback function for rate change
+		 * @param {string} response of API
+		 * @return {undefined}
+		 */
+		var onRateChangeFailure = function(errorMessage) {
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = errorMessage;
+			$scope.allotmentConfigData.summary.rate = summaryMemento.rate;
+		};
+
+		/**
+		 * [onRateChange description]
+		 * @return {undefined}
+		 */
 		$scope.onRateChange = function() {
-			if (!$scope.allotmentConfigData.summary.allotment_id) {
+			var summaryData = $scope.allotmentConfigData.summary;
+			if (!summaryData.allotment_id) {
 				return false;
 			}
 
-			$scope.invokeApi(rvAllotmentConfigurationSrv.updateRate, {
+			var params = {
 				allotment_id: $scope.allotmentConfigData.summary.allotment_id,
 				rate_id: $scope.allotmentConfigData.summary.rate
-			}, function(response) {
-				$scope.$emit('hideLoader');
-				if (!response.is_changed && !response.is_room_rate_available) {
-					ngDialog.open({
-						template: '/assets/partials/allotments/summary/warnChangeRateNotPossible.html',
-						className: '',
-						scope: $scope,
-						closeByDocument: false,
-						closeByEscape: false
-					});
-					$scope.allotmentConfigData.summary.rate = summaryMemento.rate;
-				}else{
-				  summaryMemento.rate = $scope.allotmentConfigData.summary.rate;
-				}
-			}, function(errorMessage) {
-				$scope.$emit('hideLoader');
-				$scope.errorMessage = errorMessage;
-				$scope.allotmentConfigData.summary.rate = summaryMemento.rate;
-			});
+			};
+
+			$scope.invokeApi(rvAllotmentConfigurationSrv.updateRate, params, onRateChangeSuccess, onRateChangeFailure);
 		};
 
 
@@ -363,26 +403,32 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		};
 
 		/**
+		 * Handle successful release
+		 */
+		var onReleaseRoomsSuccess = function(data) {
+			$scope.closeDialog();
+			fetchSummaryData();
+		};
+
+		var onReleaseRoomsFailure = function(data) {
+			$scope.errorMessage = data;
+		};
+
+		/**
 		 * Handle release rooms
 		 * @return undefined
 		 */
 		$scope.releaseRooms = function() {
-			var onReleaseRoomsSuccess = function(data) {
-					//: Handle successful release
-
-					$scope.closeDialog();
-					fetchSummaryData();
-				},
-				onReleaseRoomsFailure = function(errorMessage) {
-					$scope.errorMessage = errorMessage;
-				};
-			$scope.callAPI(rvAllotmentConfigurationSrv.releaseRooms, {
-				successCallBack: onReleaseRoomsSuccess,
-				failureCallBack: onReleaseRoomsFailure,
-				params: {
+			var params  = {
 					allotmentId: $scope.allotmentConfigData.summary.allotment_id
-				}
-			});
+				},
+				options = {
+					successCallBack: onReleaseRoomsSuccess,
+					failureCallBack: onReleaseRoomsFailure,
+					params: params
+				};
+
+			$scope.callAPI(rvAllotmentConfigurationSrv.releaseRooms, options);
 		};
 
 		$scope.abortCancelAllotment = function() {

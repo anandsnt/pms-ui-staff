@@ -1,5 +1,5 @@
-sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter', 'RVContactInfoSrv', '$q', 'RVReservationStateService',
-	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter, RVContactInfoSrv, $q, RVReservationStateService) {
+sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter', 'RVContactInfoSrv', '$q', 'RVReservationStateService', 'RVReservationDataService',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter, RVContactInfoSrv, $q, RVReservationStateService, RVReservationDataService) {
 		BaseCtrl.call(this, $scope);
 		//Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
@@ -570,14 +570,26 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		};
 
 		$scope.populateDatafromDiary = function(roomsArray, tData, saveReservation) {
-			angular.forEach(tData.rooms, function(value, key) {
-				value['roomTypeId'] = roomsArray[value.room_id].room_type_id;
+			var roomTypes = [];
+			this.rooms = [];
+
+			angular.forEach(tData.rooms, function(value) {
+				value['roomTypeId'] = parseInt(roomsArray[value.room_id].room_type_id, 10);
 				value['roomTypeName'] = roomsArray[value.room_id].room_type_name;
 				value['roomNumber'] = roomsArray[value.room_id].room_no;
+				roomTypes.push(parseInt(value.roomTypeId, 10))
+			});
+			roomTypes = _.uniq(roomTypes);
+			$scope.reservationData.tabs = RVReservationDataService.getTabDataModel(roomTypes.length, roomTypes);
+			$scope.reservationData.rooms = []
+			_.each($scope.reservationData.tabs, function(tab) {
+				var roomsOfType = _.filter(tData.rooms, function(room) {
+					return parseInt(room.roomTypeId, 10) === parseInt(tab.roomTypeId, 10)
+				});
+				tab.roomCount = roomsOfType.length;
+				$scope.reservationData.rooms = $scope.reservationData.rooms.concat(roomsOfType);
 			});
 
-			this.rooms = [];
-			$scope.reservationData.rooms = tData.rooms;
 			$scope.reservationData.arrivalDate = dateFilter(new tzIndependentDate(tData.arrival_date), 'yyyy-MM-dd');
 			$scope.reservationData.departureDate = dateFilter(new tzIndependentDate(tData.departure_date), 'yyyy-MM-dd');
 			var arrivalTimeSplit = tData.arrival_time.split(":");
@@ -654,10 +666,15 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			$scope.reservationData.company = {};
 			$scope.reservationData.company.id = hResData.company_card_id;
 
-			$scope.initGuestCard();
-			$scope.initCompanyCard();
-			$scope.initTravelAgentCard();
-
+			if (!!$scope.reservationData.guest.id) {
+				$scope.initGuestCard();
+			}
+			if (!!$scope.reservationData.company.id) {
+				$scope.initCompanyCard();
+			}
+			if (!!$scope.reservationData.travelAgent.id) {
+				$scope.initTravelAgentCard();
+			}
 
 			this.totalStayCost = 0;
 			var rateIdSet = [];

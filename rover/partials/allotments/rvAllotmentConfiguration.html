@@ -1,10 +1,11 @@
-<div class="group-card cards" ng-class="{'new-card': isInAddMode() , 'fullscreen' : !isInAddonSelectionMode()}">
+<div class="allotment-card cards" ng-class="{'new-card': isInAddMode() , 'fullscreen' : !isInAddonSelectionMode()}">
     <div class="cards-wrapper">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <!-- Header -->
         <header class="cards-header">
-            <div id="group-card-header" class="card-header" ng-class="{'no-print' : addNoPrintClass}">
-                <form>
+            <div id="allotment-card-header" class="card-header" ng-class="{'no-print' : addNoPrintClass}">
+                <div class="guest-image icons icon-allotment-large"></div>
+                <form class="dual-actions">
                     <div class="holder">
                         <div class="entry">
                             <input id="allotment-name" placeholder="Allotment Name" ng-model="allotmentConfigData.summary.allotment_name" type="text" class="masked-input h1" data-size="{{allotmentConfigData.summary.allotment_name.length}}" auto-grow-field/>
@@ -19,9 +20,15 @@
                         <!-- Search only travel agents -->
                     </div>
                 </form>
-                <div class="card-actions" ng-hide="isInAddMode()">
+                <div class="card-actions dual-actions" ng-hide="isInAddMode()">
                     <!--  HIDE BUTTON FOR NOW TILL DUPLICATE FUNCTIONALITY IS COMPLETE-->
                     <button type="button" class="button blue hidden" ng-click="duplicateAllotment()">Duplicate</button>
+                    <button type="button" class="button company" ng-click="goToCompanyCard()" ng-show="shouldShowCompanyCardNavigationButton()">
+                         <span class="icons icon-company"></span>
+                    </button>
+                    <button type="button" class="button travel-agent" ng-click="goToTACard()" ng-show="shouldShowTravelAgentNavigationButton()">
+                        <span class="icons icon-travel-agent"></span>
+                    </button>
                 </div>
                 <div class="card-actions" ng-show="isInAddMode()">
                     <button type="button" class="button green" ng-click="saveNewAllotment()">Save Allotment</button>
@@ -31,9 +38,10 @@
         </header>
         <!-- Content -->
         <div class="cards-content" ng-if="!isInAddonSelectionMode()">
-            <div  id="group-card-content" class="card-tabs card-content">
+            <div id="allotment-card-content" class="card-tabs card-content">
+                
                 <!-- Allotment tabs navigation -->
-                <ul id="group-card-tabs-nav" class="card-tabs-nav no-print">
+                <ul id="allotment-card-tabs-nav" class="card-tabs-nav no-print">
                     <li  ng-click="switchTabTo('SUMMARY')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'SUMMARY'}">
                         <a id="summary" translate>ALLOTMENT_SUMMARY</a>
                     </li>
