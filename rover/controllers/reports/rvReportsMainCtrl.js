@@ -221,6 +221,9 @@ sntRover.controller('RVReportsMainCtrl', [
 				}
 			}
 		};
+		$scope.setTomorrowDate = function(item, model) {
+			item.model = reportUtils.processDate().tomorrow;
+		};
 
 		// logic to re-show the remove date button
 		$scope.showRemoveDateBtn = function() {
@@ -467,11 +470,14 @@ sntRover.controller('RVReportsMainCtrl', [
             isNotTimeOut = true;
             timeOut = setTimeout(function () {
                 isNotTimeOut = false;
-                showAddons(selectedItems);
+                showAddons(reportItem, selectedItems);
             }, 2000);
+
+            // calling the super
+            $scope.fauxSelectChange(item, fauxDS);
         };
 
-        var showAddons = function (selectedItems) {
+        var showAddons = function (reportItem, selectedItems) {
             var selectedIds = [];
 
             angular.forEach(selectedItems, function (key) {
@@ -483,8 +489,7 @@ sntRover.controller('RVReportsMainCtrl', [
             };
 
             var sucssCallback = function (data) {
-                $scope.addonDetails = [];
-                $scope.addonDetails = data.results;
+                reportItem.hasAddons.data = data.results;
                 $scope.$emit( 'hideLoader' );
             };
 
@@ -520,7 +525,9 @@ sntRover.controller('RVReportsMainCtrl', [
 				'guarantees'   : [],
 				'chargeGroups' : [],
 				'chargeCodes'  : [],
-				'holdStatuses' : []
+				'holdStatuses' : [],
+				'addonGroups'  : [],
+				'addons'       : []
 			};
 
 			// include dates
@@ -896,6 +903,53 @@ sntRover.controller('RVReportsMainCtrl', [
 					};
 				};
 			};
+
+			// include addon groups
+			if ( report.hasOwnProperty('hasAddonGroups') ) {
+				selected = _.where(report['hasAddonGroups']['data'], { selected: true });
+
+				if ( selected.length > 0 ) {
+					key         = reportParams['ADDONS_GROUPS'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(group) {
+						params[key].push( group.id );
+						/**/
+						$scope.appliedFilter.addonGroups.push( group.description );
+					});
+
+					// in case if all addon groups are selected
+					if ( report['hasAddonGroups']['data'].length === selected.length ) {
+						$scope.appliedFilter.addonGroups = ['All Addon Groups'];
+					};
+				};
+			};
+
+			// include addons
+			if ( report.hasOwnProperty('hasAddons') ) {
+				selected = [];
+				_.each(report['hasAddons']['data'], function(each) {
+					var chosen = _.where(each['list_of_addons'], { selected: true });
+					selected   = selected.concat(chosen);
+				});
+
+				if ( selected.length > 0 ) {
+					key         = reportParams['ADDONS'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(each) {
+						params[key].push( each.addon_id );
+						/**/
+						$scope.appliedFilter.addons.push( each.addon_name );
+					});
+
+					// in case if all addon groups are selected
+					if ( report['hasAddons']['data'].length === selected.length ) {
+						$scope.appliedFilter.addons = ['All Addons'];
+					};
+				};
+			};
+
 
 			// need to reset the "group by" if any new filter has been applied
 			if ( !!report.groupByOptions && !!$scope.oldParams ) {
