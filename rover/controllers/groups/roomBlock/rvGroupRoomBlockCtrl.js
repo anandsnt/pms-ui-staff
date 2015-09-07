@@ -711,12 +711,24 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 						canOverBookBoth			= canOverbookHouse && canOverbookRoomType;
 
 					_.each(error.room_type_hash, function(roomType) {
-						var overBookedDates = _.where(roomType.details, {
-													is_overbooked: true
-											  });
-						if (overBookedDates.length)
+						var overBookedDates 		= _.where(roomType.details, {is_overbooked: true}),
+							editedRoomTypeDetails  	= _.findWhere($scope.groupConfigData.summary.selected_room_types_and_bookings, {
+															room_type_id: roomType.room_type_id
+										  				});
+
+						// check if overbooking case has occured due to a new change
+						var alreadyOverbooked = _.filter(editedRoomTypeDetails.dates,
+							function(dateData) {
+								var newTotal 		 = $scope.getTotalBookedOfIndividualRoomType(dateData);
+									detailHasChanged = dateData.old_total != newTotal;
+								return (dateData.availability < 0 && !detailHasChanged);
+							});
+
+						// only mark this roomtype & date if if not already overbooked.
+						if (overBookedDates.length > alreadyOverbooked.length)
 							overBookedRoomTypes.push(roomType);
 					});
+
 					isRoomTypeOverbooked = overBookedRoomTypes.length > 0;
 					overBookingOccurs	 = isRoomTypeOverbooked || isHouseOverbooked;
 
