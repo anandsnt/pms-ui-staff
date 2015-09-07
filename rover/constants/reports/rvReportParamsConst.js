@@ -1,4 +1,4 @@
-sntRover.constant('RVReportParams', {
+sntRover.constant('RVReportParamsConst', {
 	'FROM_DATE'            : 'from_date',
     'TO_DATE'              : 'to_date',
     'CANCEL_FROM_DATE'     : 'cancel_from_date',

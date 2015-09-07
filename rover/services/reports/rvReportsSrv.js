@@ -116,8 +116,12 @@ sntRover.service('RVreportsSrv', [
 
 			// fetch gurantee types & add to payload
 			if ( hasFilter['INCLUDE_GUARANTEE_TYPE'] ) {
-				subSrv.fetchGuaranteeTypes()
-					.then( success.bind(null, 'guaranteeTypes'), failed.bind(null, 'guaranteeTypes', []) );
+				if ( service.payloadCache.hasOwnProperty('guaranteeTypes') ) {
+					success( 'guaranteeTypes', service.payloadCache.guaranteeTypes );
+				} else {
+					subSrv.fetchGuaranteeTypes()
+						.then( success.bind(null, 'guaranteeTypes'), failed.bind(null, 'guaranteeTypes', []) );
+				};
 			};
 
 			// fetch charge groups & add to payload
@@ -165,7 +169,7 @@ sntRover.service('RVreportsSrv', [
 			// fetch hold status & add to payload
 			if ( hasFilter['HOLD_STATUS'] ) {
 				if ( service.payloadCache.hasOwnProperty('holdStatus') ) {
-					success( 'origins', service.payloadCache.holdStatus );
+					success( 'holdStatus', service.payloadCache.holdStatus );
 				} else {
 					subSrv.fetchHoldStatus()
 						.then( success.bind(null, 'holdStatus'), failed.bind(null, 'holdStatus', []) );
