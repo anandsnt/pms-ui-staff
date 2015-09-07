@@ -402,70 +402,14 @@ sntRover.controller('RVReportsMainCtrl', [
 		};
 
 		$scope.fauxSelectChange = function(reportItem, fauxDS, allTapped) {
+			var selectedItems = getSelectedItems(reportItem, fauxDS, allTapped);
+		};
+
+		var getSelectedItems = function (reportItem, fauxDS, allTapped) {
 			var selectedItems;
 
 			if ( allTapped ) {
-				if ( fauxDS.selectAll ) {
-					fauxDS.title = 'All Selected';
-				} else {
-					fauxDS.title = fauxDS.defaultTitle;
-				};
-
-				_.each(fauxDS.data, function(each) {
-					each.selected = fauxDS.selectAll;
-				});
-			} else {
-				selectedItems = _.where(fauxDS.data, { selected: true });
-
-				if ( selectedItems.length === 0 ) {
-					fauxDS.title = fauxDS.defaultTitle;
-				} else if ( selectedItems.length === 1 ) {
-					fauxDS.title = selectedItems[0].description || selectedItems[0].name;
-				} else if ( selectedItems.length === fauxDS.data.length ) {
-					fauxDS.selectAll = true;
-					fauxDS.title = 'All Selected';
-				} else {
-					fauxDS.selectAll = false;
-					fauxDS.title = selectedItems.length + ' Selected';
-				};
-
-				// CICO-10202
-				$scope.$emit( 'report.filter.change' );
-			};
-		};
-
-		$scope.showAndHideAddons = function () {
-            $scope.isVisible = $scope.isVisible ? false : true;
-        };
-
-        $scope.getGroupName = function (groupId) {
-        	var groupName;
-        	angular.forEach ($scope.addonGroups, function (key) {
-        		if (key.id == groupId) {
-        			console.log(key.name);
-        			groupName = key.name;
-        		}
-        	});
-        	return groupName;
-        };
-
-        $scope.getAddons = function (fauxDS, allTapped) {
-            if (isNotTimeOut) {
-                clearTimeout(timeOut);
-            }
-            isNotTimeOut = true;
-            timeOut = setTimeout(function () {
-                isNotTimeOut = false;
-                showAddons(fauxDS, allTapped)
-            }, 2000);
-        };
-
-        var showAddons = function (fauxDS, allTapped) {
-            var selectedItems;
-            var selectedIds = [];
-
-            if ( allTapped ) {
-                if ( fauxDS.showAll ) {
+                if ( fauxDS.selectAll ) {
                     fauxDS.title = 'All Selected';
                 } else {
                     fauxDS.title = fauxDS.defaultTitle;
@@ -482,7 +426,7 @@ sntRover.controller('RVReportsMainCtrl', [
                 if ( selectedItems.length === 0 ) {
                     fauxDS.title = fauxDS.defaultTitle;
                 } else if ( selectedItems.length === 1 ) {
-                    fauxDS.title = selectedItems[0].description || selectedItems[0].name;
+                    fauxDS.title = selectedItems[0].description || selectedItems[0].name || selectedItems[0].value;
                 } else if ( selectedItems.length === fauxDS.data.length ) {
                     fauxDS.selectAll = true;
                     fauxDS.title = 'All Selected';
@@ -490,20 +434,56 @@ sntRover.controller('RVReportsMainCtrl', [
                     fauxDS.selectAll = false;
                     fauxDS.title = selectedItems.length + ' Selected';
                 };
+
+				// CICO-10202
+				$scope.$emit( 'report.filter.change' );
+			};
+
+			return selectedItems;
+		}
+
+
+		$scope.toggleAddons = function () {
+            $scope.isVisible = $scope.isVisible ? false : true;
+        };
+
+        $scope.getGroupName = function (groupId) {
+        	var groupName;
+        	angular.forEach ($scope.addonGroups, function (key) {
+        		if (key.id == groupId) {
+        			groupName = key.name;
+        		}
+        	});
+        	return groupName;
+        };
+
+        $scope.getAddons = function (reportItem, fauxDS, allTapped) {
+        	var selectedItems = getSelectedItems(reportItem, fauxDS, allTapped);
+
+            if (isNotTimeOut) {
+                clearTimeout(timeOut);
             }
+            isNotTimeOut = true;
+            timeOut = setTimeout(function () {
+                isNotTimeOut = false;
+                showAddons(selectedItems);
+            }, 2000);
+        };
+
+        var showAddons = function (selectedItems) {
+            var selectedIds = [];
 
             angular.forEach(selectedItems, function (key) {
                 selectedIds.push(key.id);
             });
 
-            var ids = {
+            var groupIds = {
                 "addon_group_ids" : selectedIds
             };
 
             var sucssCallback = function (data) {
                 $scope.addonDetails = [];
                 $scope.addonDetails = data.results;
-                $scope.groupNames = selectedItems;
                 $scope.$emit( 'hideLoader' );
             };
 
@@ -511,7 +491,7 @@ sntRover.controller('RVReportsMainCtrl', [
                 $scope.$emit( 'hideLoader' );
             };
 
-            $scope.invokeApi(reportsSubSrv.getAddons, ids, sucssCallback, errorCallback);
+            $scope.invokeApi(reportsSubSrv.getAddons, groupIds, sucssCallback, errorCallback);
         };
 
 		function genParams (report, page, perPage) {

@@ -177,6 +177,7 @@ sntRover.service('RVreportsSrv', [
 				};
 			};
 
+			// fetch addon groups & add to payload
 			if ( hasFilter['ADDON_GROUPS'] ) {
 				if ( service.payloadCache.hasOwnProperty('addonGroups') ) {
 					success( 'addonGroups', service.payloadCache.addonGroups );
@@ -186,6 +187,7 @@ sntRover.service('RVreportsSrv', [
 				};
 			};
 
+			// fetch reservation status & add to payload
 			if ( hasFilter['RESERVATION_STATUS'] ) {
 				if ( service.payloadCache.hasOwnProperty('reservationStatus') ) {
 					success( 'reservationStatus', service.payloadCache.addons );
