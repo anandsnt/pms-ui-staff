@@ -28,7 +28,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 							$scope.searchGuest();
 						}
 					}
-					if (searchData.company.id !== null) {
+					if (!!searchData.company.id) {
 						if ($scope.searchData.guestCard.guestFirstName === '' && $scope.searchData.guestCard.guestLastName === '') {
 							if ($stateParams.reservation && $stateParams.reservation !== 'HOURLY' && $stateParams.mode && $stateParams.mode !== 'OTHER') {
 								$scope.switchCard('company-card');
@@ -39,7 +39,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 							id: searchData.company.id
 						});
 					}
-					if (searchData.travelAgent.id !== null) {
+					if (!!searchData.travelAgent.id) {
 						if ($scope.searchData.guestCard.guestFirstName === '' && $scope.searchData.guestCard.guestLastName === '') {
 							if ($stateParams.reservation && $stateParams.reservation !== 'HOURLY' && $stateParams.mode && $stateParams.mode !== 'OTHER') {
 								$scope.switchCard('travel-agent-card');
