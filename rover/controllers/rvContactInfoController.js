@@ -43,7 +43,6 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
         $scope.$emit("CHANGEAVATAR", avatarImage);
         //to reset current data in header info for determining any change
         $scope.$emit("RESETHEADERDATA", $scope.guestCardData.contactInfo);
-
         updateSearchCache(avatarImage);
         $scope.$emit('hideLoader');
 

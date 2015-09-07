@@ -56,7 +56,16 @@ sntRover.service('rvBaseWebSrvV2',['$http', '$q', '$window', function($http, $q,
 			else if(status === 401){ // 401- Unauthorized
 				// so lets redirect to login page
 				$window.location.href = '/logout' ;
-			}else{
+			}
+
+			//set of custom error emssage range http status
+			else if(status >= 470 && status <= 490) {
+				errors.httpStatus = status;
+				errors.errorMessage = errors.errors;
+				deferred.reject (errors);
+			}
+
+			else{
 				deferred.reject(errors);
 			}
 

@@ -1,0 +1,146 @@
+<form id="allotment-summary" name="allotment-summary" ng-click="clearErrorMessage()" class="form card-tab scrollable" ng-controller="rvAllotmentConfigurationSummaryTabCtrl" ng-iscroll="allotmentSummaryScroller" ng-iscroll-delay="500" outside-click-handler>
+    <div class="wrapper">
+        <div class="holder left">
+            <strong class="h3" translate>ALLOTMENT_INFO</strong>
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div class="entry full-width">
+                <label for="allotment-name">
+                    {{ 'NAME' | translate}}
+                    <strong>*</strong>
+                </label>
+                <input id="allotment-name" ng-model="allotmentConfigData.summary.allotment_name" type="text" />
+            </div>
+            <div class="entry margin">
+                <label for="allotment-code" translate>ALLOTMENT_CODE</label>
+                <input id="allotment-code" ng-model="allotmentConfigData.summary.allotment_code" type="text" />
+            </div>
+            <div class="entry">
+                <label for="allotment-firstname" translate>CONTACT_FIRST_NAME</label>
+                <input id="allotment-firstname" ng-model="allotmentConfigData.summary.first_name" type="text" />
+            </div>
+            <div class="entry margin">
+                <label for="allotment-lastname" translate>CONTACT_LAST_NAME</label>
+                <input id="allotment-lastname" ng-model="allotmentConfigData.summary.last_name" type="text" />
+            </div>
+            <div class="entry">
+                <label for="allotment-phone" translate>CONTACT_PHONE</label>
+                <input id="allotment-phone" ng-model="allotmentConfigData.summary.contact_phone" type="text" />
+            </div>
+            <div class="entry full-width">
+                <label for="allotment-email" translate>CONTACT_EMAIL</label>
+                <input id="allotment-email" ng-model="allotmentConfigData.summary.contact_email" type="text" />
+            </div>
+            <div class="entry break full-width">
+
+                <a ng-click="openDemographicsPopup();" ng-disabled class="button" ng-class="{'grey': isInAddMode(), 'white brand-text': !isInAddMode()}" translate>DEMOGRAPHICS</a>
+
+                <a ng-click="openBillingInformation();" class="button white blue-text" ng-if="allotmentConfigData.summary.posting_account_billing_info" translate>BILLING_INFORMATION</a>
+
+                <a ng-click="openBillingInformation();" ng-disabled class="button"  ng-class="{'grey': isInAddMode(), 'blue': !isInAddMode()}"  ng-if="!allotmentConfigData.summary.posting_account_billing_info" translate>ADD_BILLING_INFO</a>
+            </div>
+        </div>
+        <div class="holder right">
+            <strong class="h3" translate>ROOM_BLOCK_SUMMARY</strong>
+            <div class="entry full-width stay-dates no-actions">
+                <div class="entry-data">
+                    <label for="allotment-block-from">
+                        {{'FROM' | translate}}
+                        <strong>*</strong>
+                    </label>
+                    <!-- value="{Start Date - not earlier than business or arrival date, not after departure date}" -->
+                    <!--<input id="allotment-block-from" ng-if="!isInAddMode()" type="text" value="{{allotmentConfigData.summary.block_from | date:dateFormat}}" readonly />-->
+                    <!-- If new group, add class "datepicker" -->
+                    <input id="allotment-block-from" class="datepicker" type="text" ui-date="fromDateOptions" value="{{allotmentConfigData.summary.block_from|date:dateFormat}}" rv-clear-text-box listen-this="allotmentConfigData.summary.block_from" readonly ng-class="{'not-selected': !allotmentConfigData.summary.block_from}" />
+                </div>
+                <div class="entry-data">
+                    <label for="allotment-block-to">
+                        {{'TO' | translate}}
+                        <strong>*</strong>
+                    </label>
+                    <!-- value="{End Date - not earlier than Start Date, not after departure date}" -->
+                    <!--!<input ng-if="!isInAddMode()" id="allotment-block-to" type="text" value="{{allotmentConfigData.summary.block_to | date:dateFormat}}" readonly />-->
+                    <!-- If new group, add class "datepicker" -->
+                    <input id="allotment-block-to" class="datepicker" type="text" ui-date="toDateOptions" value="{{allotmentConfigData.summary.block_to|date:dateFormat}}" rv-clear-text-box listen-this="allotmentConfigData.summary.block_to" readonly ng-class="{'not-selected': !allotmentConfigData.summary.block_to}" />
+                </div>
+            </div>
+            <div class="entry full-width with-button">
+                <label for="allotment-release-date">
+                    {{'ALLOTMENT_MASTER_CUTOFF' | translate}}
+                </label>
+                <!-- cutoffDateOptions -->
+                <input class="datepicker" type="text" ui-date="releaseDateOptions" value="{{allotmentConfigData.summary.release_date|date:dateFormat}}" readonly ng-class="{'not-selected': !allotmentConfigData.summary.release_date}" />
+                <button type="button" ng-click="warnReleaseRooms();" class="button" ng-class="{'red': !isInAddMode() ,'grey': isInAddMode() || !!allotmentConfigData.summary.is_cancelled}" translate>ALLOTMENT_SET_CUTOFF</button>
+                <!-- Class grey is for new allotment (when this button does nothing), red is for existing allotment -->
+            </div>
+            <div class="entry margin">
+                <label for="allotment-hold-status">
+                    {{'HOLD_STATUS' | translate}}
+                    <strong>*</strong>
+                </label>
+                <div class="select">
+                    <select id="allotment-hold-status" ng-model="allotmentConfigData.summary.hold_status" iscroll-stop-propagation ng-change="onHoldStatusChange();" ng-disabled="!!allotmentConfigData.summary.is_cancelled">
+                        <option value="" selected translate ng-if="!allotmentConfigData.summary.hold_status">SET_STATUS</option>
+                        <option ng-repeat="holdstatus in allotmentConfigData.holdStatusList" value="{{holdstatus.id}}" ng-selected="holdstatus.id == allotmentConfigData.summary.hold_status" ng-hide="holdstatus.name == 'Cancel' && holdstatus.is_system && !isCancellable()">
+                            {{holdstatus.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry margin small">
+                <label for="allotment-rooms" translate>ROOMS</label>
+                <input id="allotment-rooms" ng-model="allotmentConfigData.summary.rooms_total" type="text" readonly />
+            </div>
+            <div class="entry small">
+                <label for="allotment-pickup" TRANSLATE>PICK_UP</label>
+                <input id="allotment-pickup" ng-model="allotmentConfigData.summary.rooms_pickup" type="text" readonly />
+            </div>
+            <div class="entry full-width with-button">
+                <label for="allotment-rate" translate>RATE</label>
+                <div class="select">
+                    <select id="allotment-rate" ng-model="allotmentConfigData.summary.rate" iscroll-stop-propagation ng-change="onRateChange()">
+                        <optgroup>Group Rates</optgroup>
+                        <option value="" ng-if="!allotmentConfigData.summary.rate" selected>Select Rate</option>
+                        <option value="-1" ng-selected="allotmentConfigData.summary.rate == -1">Custom Rate</option>
+                        <optgroup ng-show="!!allotmentSummaryData.rates.length" label="Group Rates">
+                            <!-- ... repeat for all rates -->
+                            <option ng-repeat="rate in allotmentSummaryData.rates" ng-selected="allotmentConfigData.summary.rate == rate.id" value="{{rate.id}}">{{rate.name}}</option>
+                        </optgroup>
+                        <optgroup ng-show="!!allotmentSummaryData.contractedRates.length" label="Company/ Travel Agent Contract">
+                            <option ng-repeat="rate in allotmentSummaryData.contractedRates" ng-selected="allotmentConfigData.summary.rate == rate.id" value="{{rate.id}}">{{rate.name}}</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <a ng-click="!allotmentConfigData.summary.is_cancelled ? (isInAddMode() ? manageAddons() : viewAddons()) : false" class="button with-icon" ng-class="{'brand-colors' : !isInAddMode() && !allotmentConfigData.summary.is_cancelled, 'grey' : isInAddMode() || !!allotmentConfigData.summary.is_cancelled}">
+                    <!-- {addons-link} can either be for a popup (existing group) or an addons screne (new group) -->
+                    <!-- If addons already exist, show:  -->
+                    <span ng-show="allotmentConfigData.summary.addons_count > 0" class="count">
+                        {{allotmentConfigData.summary.addons_count}}
+                    </span>
+                    <span class="icons icon-addons"></span> Add-Ons
+                </a>
+            </div>
+            <!-- Notes -->
+            <strong class="h3 margin">Notes</strong>
+            <div class="entry full-width no-label with-notes">
+                <textarea id="allotment-notes" ng-model="allotmentSummaryData.newNote" placeholder="Write a note" rows="2"></textarea>
+                <button type="button" class="button post" ng-class="{'brand-colors' : !isInAddMode() , 'grey' : isInAddMode()}" ng-click="saveAllotmentNote()">Post</button>
+            </div>
+            <ul class="notes">
+                <li ng-repeat="note in allotmentConfigData.summary.notes">
+                    <figure class="guest-image">
+                        <img src="{{note.user_image}}" alt="" />
+                    </figure>
+                    <div class="note-title">
+                        <h4>{{note.username}}</h4>
+                        <time datetime="{{note.posted_date}}">
+                            <span class="time">{{note.posted_date}}</span>
+                            <span class="date">{{note.posted_time}}</span>
+                        </time>
+                        <button type="button" class="icons icon-trash" ng-click="removeAllotmentNote(note.note_id)">Delete post</button>
+                    </div>
+                    <p>{{note.description}}</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</form>
