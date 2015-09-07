@@ -388,6 +388,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				});
 			});
 		};
+
 		$scope.toggleFauxSelect = function(e, fauxDS) {
 			$timeout(function(){
 				$scope.refreshScroller('report-list-scroll');

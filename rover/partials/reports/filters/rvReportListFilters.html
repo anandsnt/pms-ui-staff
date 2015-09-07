@@ -280,7 +280,7 @@
         <label class="checkbox inline" ng-show="item.hasAddonGroups.data.length > 1">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasAddonGroups.selectAll }"></span>
             <input type="checkbox" ng-model="item.hasAddonGroups.selectAll" ng-change="getAddons(item, item.hasAddonGroups, true)" name="room-filters"> Select All
-        </label> 
+        </label>
         <label class="checkbox inline" ng-repeat="group in item.hasAddonGroups.data">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : group.selected }"></span>
             <input type="checkbox" ng-model="group.selected" ng-change="getAddons(item, item.hasAddonGroups)" name="room-filters"> {{ group.name }}
@@ -292,14 +292,26 @@
     <label for="addons">Add-On(s)</label>
     <div class="faux-select placeholder" ng-click="toggleAddons()">Select Addons</div>
     <div class="faux-select-options cols-2" ng-show="isVisible">
-        <div class="col" ng-repeat="group in addonDetails">
+        <div class="col" >
+            <span ng-repeat="group in addonDetails" ng-if="$index%2 == 0">
             <strong>{{getGroupName(group.group_id)}}</strong>
-            <label class="checkbox inline" ng-repeat="addon in group.list_of_addons">
-                <span class="icon-form icon-checkbox" ng-class="{ 'checked' : addon.selected }"></span>
-                <input type="checkbox" ng-model="addon.selected" name="room-filters">
-                {{addon.addon_name}}
-            </label>
+                <label class="checkbox inline" ng-repeat="addon in group.list_of_addons">
+                    <span class="icon-form icon-checkbox" ng-class="{ 'checked' : addon.selected }"></span>
+                    <input type="checkbox" ng-model="addon.selected" name="room-filters">
+                    {{addon.addon_name}}
+                </label>
+            </span>
         </div>
+        <div class="col" >
+            <span ng-repeat="group in addonDetails" ng-if="$index%2 == 1">
+                <strong>{{getGroupName(group.group_id)}}</strong>
+                <label class="checkbox inline" ng-repeat="addon in group.list_of_addons">
+                    <span class="icon-form icon-checkbox" ng-class="{ 'checked' : addon.selected }"></span>
+                    <input type="checkbox" ng-model="addon.selected" name="room-filters">
+                    {{addon.addon_name}}
+                </label>
+            </span>
+        </div>        
     </div>
 </div>
 
