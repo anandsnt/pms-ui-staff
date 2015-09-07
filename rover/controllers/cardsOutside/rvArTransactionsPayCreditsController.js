@@ -5,7 +5,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope','RVPaymentS
 	var zeroAmount = parseFloat("0.00");
 	$scope.saveData = {'paymentType':''};
 	$scope.renderData = {};
-	$scope.renderData.defaultPaymentAmount = $scope.arTransactionDetails.available_credit;
+	$scope.renderData.defaultPaymentAmount = $scope.arTransactionDetails.amount_owing;
     var bill_id = $scope.contactInformation.account_details.bill_id;
 	/*
 	* if no payment type is selected disable payment button
