@@ -98,6 +98,34 @@
 			}
 		}
 
+		&.group-card {
+			.ui-resizable-handle {
+				&.ui-resizable-s {
+					background-color: @groupcard;
+					background-image: @icons, @groupcardTexture;
+
+					@media @highdpi {
+						background-image: @icons2x, @groupcardTexture;
+						background-size: 120px, 40px;
+					}
+				}
+			}
+		}
+
+		&.allotment-card {
+			.ui-resizable-handle {
+				&.ui-resizable-s {
+					background-color: @allotmentcard;
+					background-image: @icons, @allotmentcardTexture;
+
+					@media @highdpi {
+						background-image: @icons2x, @allotmentcardTexture;
+						background-size: 120px, 40px;
+					}
+				}
+			}
+		}
+
 		&.sidebar-left {
 			.ui-resizable-handle {
 				&.ui-resizable-e {
