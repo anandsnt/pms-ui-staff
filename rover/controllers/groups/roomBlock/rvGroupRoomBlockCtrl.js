@@ -720,7 +720,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 						var alreadyOverbooked = _.filter(editedRoomTypeDetails.dates,
 							function(dateData) {
 								var newTotal 		 = $scope.getTotalBookedOfIndividualRoomType(dateData);
-									detailHasChanged = dateData.old_total < newTotal;
+									detailHasChanged = dateData.old_total != newTotal;
 								return (dateData.availability < 0 && !detailHasChanged);
 							});
 
