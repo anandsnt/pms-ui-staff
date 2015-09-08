@@ -849,10 +849,51 @@ sntRover.controller('guestCardController', [
 		};
 
 		/**
+		 * [showGroupOtherRoomTypeAvailablePopup description]
+		 * @return {undefined}
+		 */
+		var showGroupOtherRoomTypeAvailablePopup = function() {
+            ngDialog.open({
+                template: '/assets/partials/cards/popups/group/rvResAttachingToGroupOtherRoomTypeAvailabe.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false
+            });			
+		};
+
+		/**
+		 * [showGroupNoRoomTypeAvailablePopup description]
+		 * @return {undefined}
+		 */
+		var showGroupNoRoomTypeAvailablePopup = function() {
+            ngDialog.open({
+                template: '/assets/partials/cards/popups/group/rvResAttachingToGroupNoAvailability.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false
+            });			
+		};
+
+		/**
+		 * [showGroupNoRoomTypeAvailablePopup description]
+		 * @return {undefined}
+		 */
+		var showGroupRoomTypeIsNotConfiguredPopup = function() {
+            ngDialog.open({
+                template: '/assets/partials/cards/popups/group/rvResAttachingToGroupRoomTypeIsNotConfigured.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false
+            });			
+		};
+		/**
 		 * to navigate to room & rates screen
 		 * @return {[type]} [description]
 		 */
-		var navigateToRoomAndRates = function() {
+		$scope.navigateToRoomAndRates = function() {
 			var resData = $scope.reservationData;
 			$state.go('rover.reservation.staycard.mainCard.roomType', {
 				from_date 		: resData.arrivalDate,
@@ -860,7 +901,7 @@ sntRover.controller('guestCardController', [
 				fromState 		: 'STAY_CARD',
 				company_id 		: resData.company.id,
 				travel_agent_id	: resData.travelAgent.id,
-				group_id 		: resData.group.id
+				group_id 		: resData.group && resData.group.id
 			});
 		}
 
@@ -891,11 +932,24 @@ sntRover.controller('guestCardController', [
 		var failureCallBackOfAttachGroupToReservation = function(error) {
 			if(error.hasOwnProperty ('httpStatus')) {
 
-				//470 is reserved for insufficient_room_type
+				//470 is reserved for other room type is available
 				if (error.httpStatus === 470) {
+					showGroupOtherRoomTypeAvailablePopup ();
 				}
+
+				//471 - NO availability in group
+				else if (error.httpStatus === 471) {
+					showGroupNoRoomTypeAvailablePopup ();
+				}	
+
+				//472 - Room type is not configured in Group
+				else if (error.httpStatus === 472) {
+					showGroupRoomTypeIsNotConfiguredPopup ();
+				}								
 			}
-			$scope.errrorMessage = error;
+			else {
+				$scope.errrorMessage = error;
+			}			
 		};
 
 		/**
@@ -996,7 +1050,7 @@ sntRover.controller('guestCardController', [
 				companyCard: resData.companyCard.id,
 				travelAgent: resData.travelAgent.id
 			});*/
-			navigateToRoomAndRates();
+			$scope.navigateToRoomAndRates();
 		};
 		
 		/**
