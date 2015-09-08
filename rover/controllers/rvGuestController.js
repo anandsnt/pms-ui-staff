@@ -1,6 +1,6 @@
 sntRover.controller('guestCardController', [
-	'$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv', 'rvUtilSrv',
-	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv, util) {
+	'$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv', '$state',
+	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv, $state) {
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
 
@@ -506,6 +506,7 @@ sntRover.controller('guestCardController', [
 				$scope.closeGuestCard();
 			} else {
 				// Handle group removal in stay-card
+				detachGroupFromThisReservation ();
 			}
 		}
 
@@ -844,13 +845,20 @@ sntRover.controller('guestCardController', [
 		};
 
 		/**
-         * function to stringify a string
-         * sample use case:- directive higlight filter
-         * sometimes through error parsing speial charactes
-         * @param {String}
-         * @return {String}
-         */
-        $scope.stringify = util.stringify;
+		 * to navigate to room & rates screen
+		 * @return {[type]} [description]
+		 */
+		var navigateToRoomAndRates = function() {
+			var resData = $scope.reservationData;
+			$state.go('rover.reservation.staycard.mainCard.roomType', {
+				from_date 		: resData.arrivalDate,
+				to_date 		: resData.departureDate,
+				fromState 		: 'STAY_CARD',
+				company_id 		: resData.company.id,
+				travel_agent_id	: resData.travelAgent.id,
+				group_id 		: resData.group.id
+			});
+		}
 
 		/**
 		 * Utility method to change the central reservation data model with our group data
@@ -906,14 +914,15 @@ sntRover.controller('guestCardController', [
 			switchToNomralCardViewingMode();
 
 			//fecthing the group details and showing them
-			$scope.initGroupCard(group.id);
+			$scope.initGroupCard(selectedGroup.id);
 
 			//redirecting to room & rates screen
-			var resData = $scope.reservationDetails;
+			navigateToRoomAndRates();
+			/*var resData = $scope.reservationDetails;
 			$scope.showContractedRates({
 				companyCard: resData.companyCard.id,
 				travelAgent: resData.travelAgent.id
-			});
+			});*/
 		};
 
 		/**
@@ -936,6 +945,82 @@ sntRover.controller('guestCardController', [
 			};
 
 			$scope.callAPI (rvGroupSrv.attachGroupToReservation, options);
+		};
+
+		/**
+		 * when we failed in attaching a group
+		 */
+		var failureCallBackOfDetachGroupFromThisReservation = function(error) {
+			$scope.errrorMessage = error;
+		};
+
+		/**
+		 * utility method to switch to normal card viewing mode
+		 * @return {undefined}
+		 */
+		var switchToAddCardViewMode = function() {
+			$scope.viewState.isAddNewCard = true;
+		};
+		
+		/**
+		 * utility method to unset group data
+		 * @return {undefined}
+		 */
+		var resetReservationGroupData = function() {
+			$scope.reservationData.group = {
+				id 	: "",
+				name: "",
+				code: ""
+			};
+		};		
+
+		/**
+		 * when the API call is success
+		 * @param  {Object} success data from API
+		 * @return {undefined}
+		 */
+		var successCallBackOfDetachGroupFromThisReservation = function(data, successCallBackParams) {
+			//updating the central reservation data model
+			resetReservationGroupData ();	
+
+			//we will be in card opened mode, so closing
+			$scope.closeGuestCard();
+
+			//we are in details viewing mode
+			switchToAddCardViewMode();
+
+			$scope.$broadcast("groupCardDetached");
+
+			//redirecting to room & rates screen
+			/*var resData = $scope.reservationDetails;
+			$scope.showContractedRates({
+				companyCard: resData.companyCard.id,
+				travelAgent: resData.travelAgent.id
+			});*/
+			navigateToRoomAndRates();
+		};
+		
+		/**
+		 * [detachGroupToThisReservation description]
+		 * @param  {Object} selectedGroup
+		 * @return undefined
+		 */
+		var detachGroupFromThisReservation = function(selectedGroup) {
+			var resData = $scope.reservationData;
+
+			//calling the API
+			var params = {
+				reservation_id 	: resData.reservationId,
+				group_id 		: resData.group.id
+			};
+
+			var options = {
+				params 			: params,
+				successCallBack : successCallBackOfDetachGroupFromThisReservation,
+				failureCallBack : failureCallBackOfDetachGroupFromThisReservation
+			};
+
+			$scope.callAPI (rvGroupSrv.detachGroupFromReservation, options);
 		};
 
 		$scope.selectGroup = function(group, $event) {

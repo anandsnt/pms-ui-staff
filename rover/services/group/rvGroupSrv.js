@@ -38,7 +38,7 @@ sntRover.service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 		this.searchGroupCard = function(params) {
 			var deferred = $q.defer(),
 
-				url = '/api/groups//group_search';
+				url = '/api/groups/group_search';
 
 			var data = {
 				'name': params.name,
@@ -68,6 +68,29 @@ sntRover.service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 		this.attachGroupToReservation = function(params) {
 			var deferred = $q.defer(),
 				url = '/api/reservations/' + params.reservation_id + '/add_group',
+				data = {
+					'group_id' : params.group_id
+				};
+
+			rvBaseWebSrvV2.postJSON(url, data).then(
+				function(data) {
+					deferred.resolve(data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;			
+		};
+
+		/**
+		 * to attach a group to a particular reservation
+		 * @return {undefined}
+		 */
+		this.detachGroupFromReservation = function(params) {
+			var deferred = $q.defer(),
+				url = '/api/reservations/' + params.reservation_id + '/remove_group',
 				data = {
 					'group_id' : params.group_id
 				};
