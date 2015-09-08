@@ -33,6 +33,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		value.card_expiry = value.expiry_date;//Same comment above
 	});
 
+        $scope.depositWithGiftCard = false;
 	$scope.depositPaidSuccesFully = false;
 	$scope.shouldShowExistingCards = true;
 	$scope.shouldShowAddNewCard   = true;
@@ -141,7 +142,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 
 
 	if($scope.reservationData.reservation_card.payment_method_used === "CC" || $scope.reservationData.reservation_card.payment_method_used === 'GIFT_CARD'){
-		$scope.shouldCardAvailable 				 = true;
+		$scope.shouldCardAvailable = true;
 		$scope.depositBalanceMakePaymentData.payment_type = "CC";
                 if ($scope.reservationData.reservation_card.payment_method_used === 'GIFT_CARD'){
                     $scope.depositBalanceMakePaymentData.payment_type = "GIFT_CARD";
@@ -152,10 +153,10 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.paymentId = $scope.reservationData.reservation_card.payment_details.id;
 	}
 	else{
-		// Please check CICO-12046
-		if($scope.isStandAlone){
-			$scope.depositBalanceMakePaymentData.payment_type = angular.copy($scope.reservationData.reservation_card.payment_method_used);
-		}
+            // Please check CICO-12046
+            if($scope.isStandAlone){
+                    $scope.depositBalanceMakePaymentData.payment_type = angular.copy($scope.reservationData.reservation_card.payment_method_used);
+            }
 	};
 	if($rootScope.paymentGateway === "sixpayments"){
     	//initilayy C&P ACTIVE

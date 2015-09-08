@@ -1,7 +1,7 @@
 <!-- Credit card options - hidden until payment type is set as CC -->
 	<!-- If hidden by default, add class="hidden" -->
 	<!-- Card toggle - Use only if there are exsiting cards on file -->
-	<ul class="card-toggle" ng-hide="isFromGuestCard  || hasAccompanyguest || cardsList.length === 0">
+	<ul class="card-toggle" ng-hide="isFromGuestCard  || hasAccompanyguest || isGiftCard || cardsList.length === 0">
 		<li ng-class="{'active':!addmode}" ng-click="addmode = false">
 			Existing Cards
 		</li>
@@ -25,22 +25,21 @@
 	</div>
 
 	<!-- New card: MLI form -->
-	<div id="cc-new-card" class="new-card" ng-show="!shouldShowIframe && addmode && shouldShowAddNewCard"> <!-- Remove class "hidden" if there are no exsisting cards available -->
+	<div id="cc-new-card" class="new-card" ng-hide="isGiftCard" ng-show="!shouldShowIframe && addmode && shouldShowAddNewCard"> <!-- Remove class "hidden" if there are no exsisting cards available -->
 		<div class="entry card-type">
-			<label for="card-type" ng-hide="isGiftCard">Card type </label>
-			<div class="select" ng-hide="isGiftCard">
+			<label for="card-type" >Card type </label>
+			<div class="select">
 				<select name="card-type" ng-disabled="!isManualCCEntryEnabled" ng-model="cardData.cardType" class="placeholder">
 					<option value="" selected>Select Card type</option>
 					<option ng-repeat="cardType in creditCardTypes" value="{{cardType.cardcode}}" ng-selected="cardType.cardcode == cardData.cardType">{{cardType.cardname}}</option>
 				</select>
 			</div>
 		</div>
-		<div class="entry card-number" ng-class="{'card-type':isGiftCard}">
+		<div class="entry card-number">
                     <label for="card-number">Card number (<span>No spaces</span>)</label>
-			<input ng-show="isGiftCard" name="card-number" ng-readonly="!isManualCCEntryEnabled" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber)" />
-			<input ng-show="!isGiftCard" name="card-number" ng-readonly="!isManualCCEntryEnabled" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="16" type="text" />
+			<input name="card-number" ng-readonly="!isManualCCEntryEnabled" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="16" type="text" />
 		</div>
-		<div class="entry card-expiry" ng-hide="isGiftCard">
+		<div class="entry card-expiry">
 			<label for="expiry-month">Expires (<span>Month/Year</span>)</label>
 			<input name="expiry-month" ng-readonly="!isManualCCEntryEnabled" id="expiry-month" placeholder="MM" ng-model="cardData.expiryMonth" maxlength="2" size="3" type="text" />
 			<input name="expiry-year" ng-readonly="!isManualCCEntryEnabled" id="expiry-year" placeholder="YY"  ng-model="cardData.expiryYear" maxlength="2" size="3" type="text" />
@@ -49,12 +48,19 @@
 			<label for="name-on-card">Name on card</label>
 			<input name="name-on-card" id="name-on-card" placeholder="Enter name on card" ng-model="cardData.userName"type="text" />
 		</div>  
-		<div class="entry card-ccv" ng-hide="isGiftCard">
+		<div class="entry card-ccv">
 			<label for="ccv">CCV</label>
 			<input name="ccv" id="ccv" placeholder="CCV" ng-model="cardData.CCV" maxlength="4" size="4" type="text" />
 		</div>
 		<div class="entry card-action">
-			<button type="button" class="button blue" ng-hide="isGiftCard" ng-click="getToken($event)">Add</button>
+			<button type="button" class="button blue" ng-click="getToken($event)">Add</button>
+		</div>
+	</div>
+	<!-- New card: MLI form -->
+	<div id="cc-new-card" class="new-card" ng-show="isGiftCard"> <!-- Remove class "hidden" if there are no exsisting cards available -->
+		<div class="entry card-number card-type">
+                    <label for="card-number">Card number (<span>No spaces</span>)</label>
+			<input ng-show="isGiftCard" name="card-number" ng-readonly="!isManualCCEntryEnabled" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber, this)" />
 		</div>
 	</div>
 	<!-- New card: Call-In -->

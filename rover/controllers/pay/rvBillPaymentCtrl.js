@@ -194,31 +194,49 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
                $scope.giftCardAvailableBalance = giftCardData.amount;
             });
             
-            $scope.cardNumberInput = function(n){
-                if ($scope.saveData.paymentType === 'GIFT_CARD'){
+            
+            
+            
+            
+            $scope.timer = null;
+            $scope.cardNumberInput = function(n, e){
+                if ($scope.saveData.paymentType === "GIFT_CARD"){
                     var len = n.length;
-                    if (len >= 19 && len <= 22){
+                    $scope.num = n;
+                    if (len >= 8 && len <= 22){
                         //then go check the balance of the card
-                        
-                            //switch this back for the UI if the payment was a gift card
-                            var fetchGiftCardBalanceSuccess = function(giftCardData){
-                                $scope.giftCardAvailableBalance = giftCardData.amount;
-                                $scope.giftCardAmountAvailable = true;
-                                $scope.$emit('giftCardAvailableBalance',giftCardData);
-                                //data.expiry_date //unused at this time
-                                $scope.$emit('hideLoader');
-                            };
-                            $scope.invokeApi(RVReservationCardSrv.checkGiftCardBalance, {'card_number':n}, fetchGiftCardBalanceSuccess);
-                        } else {
-                            $scope.giftCardAmountAvailable = false;
-                        } 
-                        
+                        $('#card-number').keydown(function(){
+                            clearTimeout($scope.timer); 
+                            $scope.timer = setTimeout($scope.fetchGiftCardBalance, 1500);
+                        });
                     } else {
                         //hide the field and reset the amount stored
                         $scope.giftCardAmountAvailable = false;
                     }
+                }
             };
-            
+            $scope.num;
+            $scope.fetchGiftCardBalance = function() {
+                if ($scope.saveData.paymentType === "GIFT_CARD"){
+                       //switch this back for the UI if the payment was a gift card
+                   var fetchGiftCardBalanceSuccess = function(giftCardData){
+                       $scope.giftCardAvailableBalance = giftCardData.amount;
+                       $scope.giftCardAmountAvailable = true;
+                       $scope.$emit('giftCardAvailableBalance',giftCardData);
+                       //data.expiry_date //unused at this time
+                       $scope.$emit('hideLoader');
+                   };
+                   $scope.invokeApi(RVReservationCardSrv.checkGiftCardBalance, {'card_number':$scope.num}, fetchGiftCardBalanceSuccess);
+               } else {
+                   $scope.giftCardAmountAvailable = false;
+               }
+            };
+        
+        
+        
+        
+        
+        
         $scope.validPayment = true;
             
         $scope.updatedAmountToPay = function(amt){
@@ -254,6 +272,9 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				($scope.isExistPaymentType) ? $scope.showCreditCardInfo = true :$scope.showGuestCreditCardList();
 				 refreshCardsList();
 			}
+                        if ($scope.isGiftCardPmt === true){
+                            $scope.showCC = false;
+                        }
 		} else {
 			$scope.showCreditCardInfo = false;
 		};

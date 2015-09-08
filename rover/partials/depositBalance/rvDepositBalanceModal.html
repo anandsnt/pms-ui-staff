@@ -58,7 +58,7 @@
 				<input type="text" ng-model="makePaymentData.amount" value="{{makePaymentData.amount}}" name="amount" id="amount">
 			</div>
 			<!-- Show these options only if there are existing cards -->
-			<ul id="make-payment-options" class="modal-options">
+			<ul id="make-payment-options" class="modal-options" ng-hide="isGiftCard">
 				<li id="existing-cards" ng-class="{'active': !addCardActive}" ng-click="clickedShowExistingCard()">
 					Existing Cards
 				</li>

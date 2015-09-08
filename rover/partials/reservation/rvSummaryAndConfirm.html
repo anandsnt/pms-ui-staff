@@ -200,7 +200,7 @@
                 </div>
             </div>
         </form>
-        <form class="form payment-info scrollable" ng-iscroll='paymentInfo' ng-hide="(reservationData.paymentType.type.value === 'CC' || reservationData.paymentType.type.value === 'GIFT_CARD') && showCC" ng-click="clearErrorMessage()">
+        <form class="form payment-info scrollable" ng-iscroll='paymentInfo' ng-hide="(reservationData.paymentType.type.value === 'CC') && showCC" ng-click="clearErrorMessage()">
             <div class="wrapper" style="height:120%;">
                 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
                 <div id="set-payment" class="payment-form for-reservation">
@@ -214,6 +214,17 @@
                                 <option ng-selected="paymentTypes.value == reservationData.paymentType.type.value" value="{{paymentTypes.value}}" ng-repeat="paymentTypes in reservationData.paymentMethods">{{paymentTypes.description}}</option>
                             </select>
                         </div>
+                    </div>
+                    
+                    
+                    <div class="entry card-number" ng-show="reservationData.paymentType.type.value === 'GIFT_CARD'" ng-hide="reservationData.paymentType.type.value !== 'GIFT_CARD'">
+                        <label for="card-number">Card number (<span>No spaces</span>)</label>
+                           <input ng-show="isGiftCard" name="card-number" ng-readonly="!isManualCCEntryEnabled" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber, this)" />
+                    </div>
+                    
+                    <div class="entry card-number" ng-show="reservationData.paymentType.type.value === 'GIFT_CARD'" ng-hide="reservationData.paymentType.type.value !== 'GIFT_CARD'">
+                        <label ng-show="isGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable"> Available Card Balance ({{currencySymbol}}) </label>
+                        <input ng-show="isGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable"  name="giftCardAmount" id="amount" ng-readonly="true" ng-model="giftCardAvailableBalance" type="text" class="amount" value="{{ giftCardAvailableBalance }}"/>
                     </div>
                     <!-- Card Input type - output only if Six Payments and payment type is CC -->
                     <div class="entry" ng-show="paymentGateway === 'sixpayments' && reservationData.paymentType.type.value ==='CC' && !showCC">
