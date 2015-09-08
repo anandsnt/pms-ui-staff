@@ -386,6 +386,15 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	      	});
 		};
 
+		$scope.payAmount = function(){
+			ngDialog.open({
+	      		template:'/assets/partials/companyCard/rvArTransactionsPayCredits.html',
+		        controller: 'RVArTransactionsPayCreditsController',
+		        className: '',
+		        scope: $scope
+	      	});
+		};
+
 		$scope.getTimeConverted = function(time){
 			if(time === null || time === undefined){
 				return "";
