@@ -637,6 +637,9 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 							companyData.id = item.id;
 							companyData.account_name = item.account_name;
 
+							companyData.isMultipleContracts = false;
+							if(item.current_contracts.length > 1) companyData.isMultipleContracts = true;
+
 							companyData.logo = item.company_logo;
 							if (item.address !== null) {
 								companyData.address = {};
@@ -644,8 +647,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 								companyData.address.city = item.address.city;
 								companyData.address.state = item.address.state;
 							}
-							if (item.current_contract !== null) {
-								companyData.rate = item.current_contract;
+							if (item.current_contracts.length > 0) {
+								companyData.rate = item.current_contracts[0];
 								companyData.rate.difference = (function() {
 									if (parseInt(companyData.rate.based_on.value) < 0) {
 										if (companyData.rate.based_on.type === "amount") {
@@ -669,6 +672,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 									return "";
 								})();
 							}
+							
 							companyData.email = item.email;
 							companyData.phone = item.phone;
 							$scope.searchedCompanies.push(companyData);
@@ -713,8 +717,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 								travelAgentData.address.city = item.address.city;
 								travelAgentData.address.state = item.address.state;
 							}
-							if (item.current_contract !== null) {
-								travelAgentData.rate = item.current_contract;
+							if (item.current_contracts.length > 0) {
+								travelAgentData.rate = item.current_contracts[0];
 								travelAgentData.rate.difference = (function() {
 									if (parseInt(travelAgentData.rate.based_on.value) < 0) {
 										if (travelAgentData.rate.based_on.type === "amount") {
