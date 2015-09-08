@@ -1,6 +1,6 @@
-sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService',
+sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$state', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService',
 
-	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService) {
+	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $state ,$stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService) {
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
 
@@ -825,12 +825,12 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		};
 		var navigateToRoomAndRates = function(arrival, departure) {
 			$state.go('rover.reservation.staycard.mainCard.roomType', {
-				from_date: arrival || reservationMainData.arrivalDate,
-				to_date: departure || reservationMainData.departureDate,
+				from_date: arrival || $scope.reservationData.arrivalDate,
+				to_date: departure || $scope.reservationData.departureDate,
 				view: 'DEFAULT',
 				fromState: $state.current.name,
-				company_id: $scope.$parent.reservationData.company.id,
-				travel_agent_id: $scope.$parent.reservationData.travelAgent.id
+				company_id: $scope.reservationData.company.id,
+				travel_agent_id: $scope.reservationData.travelAgent.id
 			});
 		};
 		// To change to contracted Rate and proceed.
