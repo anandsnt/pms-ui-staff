@@ -2490,6 +2490,7 @@
                                 
                                 .button:not(.with-label) { padding: 0; }
 
+
                                 &.radio-check {
                                     .checkbox:nth-child(even),
                                     .radio:nth-child(even) { #pixel-to-percent > .right-margin(40, 904); }
@@ -3175,6 +3176,19 @@
                                             margin: 0;
                                             float: none;
                                         }
+
+
+                                            &:nth-last-child(2) {
+                                                padding-right: 0;
+                                                border-right: 0;                                         
+                                            }
+                                            
+                                            &:last-child { 
+                                                text-align: right;
+                                                padding-right: 0;
+                                                border-right: 0; 
+                                                .pull-right;
+                                            }
 
                                         .value {
                                             font-size: 28px;

@@ -1,0 +1,15 @@
+<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
+	<div class="modal-content form confirmation">
+	    <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>
+	    <span class="message h2" translate>GROUP_MASS_CHECKIN_CONFIRMATION</span>
+	    <span class="text">
+	    	Check In 1 Reservation</strong> for group "{{groupConfigData.summary.group_name}}"?
+	    </span>
+
+	    <div class="actions">
+	        <button type="button" class="button green" ng-click="completeCheckIn(ngDialogData)">Check In</button>
+	        <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
+	    </div>
+	</div>
+</div>
+

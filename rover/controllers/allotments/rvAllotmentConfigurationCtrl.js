@@ -342,7 +342,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
         $scope.goToCompanyCard = function(){
             $state.go('rover.companycarddetails', {
                 id: summaryData.allotmentSummary.company.id,
-                type: 'TRAVELAGENT'
+                type: 'COMPANY'
             });
         };
 
