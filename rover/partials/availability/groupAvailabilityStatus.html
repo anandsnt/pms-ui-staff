@@ -63,11 +63,10 @@
 						</div>
 					</th>
 				</tr>
-				<tr class="group-details" ng-class="{'hidden':!groupDetail.isDropDownOpened}"> <!-- Remove class hidden when L119 is clicked -->
+				<tr class="group-details" ng-class="{'hidden':!groupDetail.isDropDownOpened}"> 
 					<th scope="row">Rooms Held</th>
-						<!-- Repeat for {X} days -->
 						<td ng-repeat="roomHeld in groupDetail.details">
-							<button type="button" class="button brand-colors">{{roomHeld.total_blocked_rooms}}</button> <!-- Clicking this opens modals/release-rooms-group.html -->
+							<button type="button" class="button brand-colors" ng-click ="roomHeldButtonClicked(roomHeld)">{{roomHeld.total_blocked_rooms}}</button> <!-- Clicking this opens modals/release-rooms-group.html -->
 						</td>
 				</tr>
 				<tr class="group-details" ng-class="{'hidden':!groupDetail.isDropDownOpened}">

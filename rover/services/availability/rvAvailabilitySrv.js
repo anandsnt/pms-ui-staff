@@ -222,8 +222,11 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		return graphData;
 
 	};
+	/*
+	* param - Object from api/group_availability response
+	* return - Object 
+	*/
 	var formGridDataForGroupAvailability = function(datafromApi){
-		console.log(datafromApi);
 		var gridDataForGroupAvailability = {};
 		var dates = [];
 		var groupTotalRooms =[];
@@ -243,18 +246,21 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			//Extracting groupTotal picked ups
 			groupTotalPickedUps.push(element.group_total_pickups);			
 			holdstatus.push(element.hold_status);
+			//Forms array(temp) of details of groups date wise
 			_.each(element.group_availability,function(ele, ind, list){
 				var detail ={
 					"id":ele.group_id,
+					"Name":ele.name,
 					"date":element.date,					
 					"total_blocked_rooms":ele.total_blocked_rooms,
 					"total_pickedup_rooms":ele.total_pickedup_rooms
 				};
 				temp.push(detail);
 			});
+			//Forms two dimensional array[datewise][groupwise]
 			groupDetail.push(temp);
 		});
-		
+		//Forms groupwise Details. 
 		_.each(datafromApi.results[0].group_availability, function(element, index, list){
 			var groupdetail ={
 				"name":element.name,
@@ -298,11 +304,10 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 
 		//Webservice calling section
 		var deferred = $q.defer();
-		var url = ' api/group_availability';
+		var url = 'api/group_availability';
 		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(resultFromAPI) {
 			//storing response temporarily in that.data, will change in occupancy call
 			that.data.gridDataForGroupAvailability = formGridDataForGroupAvailability(resultFromAPI);
-			console.log(that.data.gridDataForGroupAvailability);
 			deferred.resolve(that.data);
 		},function(data){
 			deferred.reject(data);

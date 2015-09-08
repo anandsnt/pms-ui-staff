@@ -356,7 +356,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		$scope.releaseRooms = function() {
 			var onReleaseRoomsSuccess = function(data) {
 					//: Handle successful release
-
 					$scope.closeDialog();
 					fetchSummaryData();
 				},
