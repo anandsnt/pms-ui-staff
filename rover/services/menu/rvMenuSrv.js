@@ -160,7 +160,7 @@ sntRover.service('rvMenuSrv',
 		            menuIndex: "postcharges"
 		        }, {
 		            title: "MENU_CASHIER",
-		            action: "rover.financials.journal({ id: 2 })",
+		            action: "rover.financials.journal({ id: 'CASHIER' })",
 		            menuIndex: "cashier"
 		        }, {
 		            title: "MENU_ACCOUNTS",
@@ -257,11 +257,11 @@ sntRover.service('rvMenuSrv',
 		        menuIndex: "financials",
 		        submenu: [{
 		            title: "MENU_JOURNAL",
-		            action: "rover.financials.journal({ id : 0})",
+		            action: "rover.financials.journal({ id : 'REVENUE'})",
 		            menuIndex: "journals"
 		        }, {
 		            title: "MENU_CC_TRANSACTIONS",
-		            action: "rover.financials.ccTransactions({ id : 0})",
+		            action: "rover.financials.ccTransactions({ id : 'REVENUE'})",
 		            menuIndex: "ccTransactions"
 		        }, {
 		            title: "MENU_ACCOUNTING",

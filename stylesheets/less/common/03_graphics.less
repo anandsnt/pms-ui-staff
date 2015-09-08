@@ -416,19 +416,23 @@
 	.ui-datepicker-prev,
 	.ui-datepicker-next,
 	.fc-button-prev,
-	.fc-button-next {
+	.fc-button-next,
+	.calendar-prev,
+	.calendar-next {
 		background-position: 50% 14px;
 		background-repeat: no-repeat;
 
 		&.ui-datepicker-prev,
-		&.fc-button-prev { 
+		&.fc-button-prev,
+		&.calendar-prev { 
 			background-image: @arrowBlackLeft; 
 			
 			&:hover { background-image: @arrowLeft; }
 		}
 
 		&.ui-datepicker-next,
-		&.fc-button-next { 
+		&.fc-button-next,
+		&.calendar-next {  
 			background-image: @arrowBlackRight; 
 			
 			&:hover { background-image: @arrowRight; }
@@ -438,14 +442,16 @@
 			background-size: 14px 14px;
 
 			&.ui-datepicker-prev,
-			&.fc-button-prev { 
+			&.fc-button-prev,
+			&.calendar-prev { 
 				background-image: @arrowBlackLeft2x; 
 
 				&:hover { background-image: @arrowLeft2x; }
 			}
 
 			&.ui-datepicker-next,
-			&.fc-button-next { 
+			&.fc-button-next,
+			&.calendar-next {  
 				background-image: @arrowBlackRight2x; 
 
 				&:hover { background-image: @arrowRight2x; }
