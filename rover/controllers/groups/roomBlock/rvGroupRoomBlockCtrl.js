@@ -743,7 +743,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 						showOverBookingPopup(message);
 						return;
 					}
-					else if(overBookedRoomTypes && canOverbookRoomType){
+					else if(isRoomTypeOverbooked && canOverbookRoomType){
 						message = "ROOMTYPE_OVERBOOK";
 						showOverBookingPopup(message);
 						return;
