@@ -1,7 +1,8 @@
 sntRover.controller('rvGroupAvailabilityStatusController', [
 	'$scope',
 	'rvAvailabilitySrv',
-	function($scope, rvAvailabilitySrv){
+	'$state',
+	function($scope, rvAvailabilitySrv, $state){
 
 		BaseCtrl.call(this, $scope);		
 
@@ -28,10 +29,23 @@ sntRover.controller('rvGroupAvailabilityStatusController', [
 			var scrollerOptions = {scrollX: true, preventDefault: false};
   			$scope.setScroller ('groupscroller', scrollerOptions);
 		};
+		
+		$scope.gotoGroupScreen = function(GroupId){
+			$state.go('rover.groups.config', {
+				id: GroupId,
+				activeTab: 'ROOMING'
+			});
+			$scope.$emit("CLOSEAVAILIBILTY");
+		};
 
+		$scope.toggleButtonClicked = function(index){
+			$scope.data.groupDetails[index].isDropDownOpened = !$scope.data.groupDetails[index].isDropDownOpened;
+			$scope.refreshScroller('groupscroller');
+		};
+		
 		var init = function(){
-			$scope.hideHoldStatusOf = {};
 			$scope.hideBeforeDataFetch =true;
+			$scope.hideHoldStatusOf = {};
 			$scope.hideHoldStatusOf["groupRoomTotal"] = true;
 			$scope.hideHoldStatusOf["groupRoomPicked"] = true;			
 			$scope.data = rvAvailabilitySrv.getGridDataForGroupAvailability();
@@ -43,7 +57,6 @@ sntRover.controller('rvGroupAvailabilityStatusController', [
 				$scope.$emit("hideLoader");
 			};
 		};
-
 		init();
 	}
 ]);

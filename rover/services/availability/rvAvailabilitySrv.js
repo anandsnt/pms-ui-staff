@@ -229,8 +229,11 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		var groupTotalRooms =[];
 		var groupTotalPickedUps = [];
 		var holdstatus = [];
+		var groupDetails =[];
+		var groupDetail = [];		
 
 		_.each(datafromApi.results,function(element,index,lis){
+			var temp = [];
 			//Extracting date detail		
 			var dateToCheck = tzIndependentDate(element.date);
 			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
@@ -240,16 +243,47 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			//Extracting groupTotal picked ups
 			groupTotalPickedUps.push(element.group_total_pickups);			
 			holdstatus.push(element.hold_status);
+			_.each(element.group_availability,function(ele, ind, list){
+				var detail ={
+					"id":ele.group_id,
+					"date":element.date,					
+					"total_blocked_rooms":ele.total_blocked_rooms,
+					"total_pickedup_rooms":ele.total_pickedup_rooms
+				};
+				temp.push(detail);
+			});
+			groupDetail.push(temp);
+		});
+		
+		_.each(datafromApi.results[0].group_availability, function(element, index, list){
+			var groupdetail ={
+				"name":element.name,
+				"id":element.group_id,
+				"isDropDownOpened":false,
+				"holdStatusName":getGroupName(element.hold_status_id,datafromApi.hold_status),
+				"details":_.zip.apply(null, groupDetail)[index]
+			};
+			groupDetails.push(groupdetail);
 		});
 		
 		gridDataForGroupAvailability = {
 			'dates'	: dates,
 			'groupTotalRooms': groupTotalRooms,
 			'groupTotalPickedUps':groupTotalPickedUps,
-			'holdstatuses': _.zip.apply(null, holdstatus)
+			'holdstatuses': _.zip.apply(null, holdstatus),
+			'groupDetails':groupDetails,
+			'holdStatus':datafromApi.hold_status
 		};
 		return gridDataForGroupAvailability;
 	}
+	/*
+	* param - Group id
+	* return Group name
+	*/
+	var getGroupName = function(GroupId, holdstatuses){
+		return _.find(holdstatuses, function(elem){ 
+			return elem.id === GroupId}).hold_status;
+	};
 	/**
 	* function to fetch group availability between from date & to date
 	*/
