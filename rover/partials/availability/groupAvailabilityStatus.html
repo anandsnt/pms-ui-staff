@@ -1,0 +1,82 @@
+<div id="availability-grid" class="availability-grid scrollable" ng-controller="rvGroupAvailabilityStatusController" ng-iscroll-delay="100" ng-iscroll='groupscroller' ng-hide="hideBeforeDataFetch">
+	<div class="wrapper">
+		<table id="dates-grid" class="dates-grid" ng-class="{'grid-7': data.dates.length<=7, 'grid-14': data.dates.length<=14, 'grid-30': data.dates.length<=30}">
+			<colgroup>
+				<col>
+				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}"> 
+			</colgroup>
+
+			<thead>
+				<tr>
+					<th class="heading"></th> 
+					<th ng-repeat="eachDate in data.dates">
+						<div class="inner"  ng-class="{'weekend': eachDate.isWeekend}">
+							<span ng-bind="eachDate.date|date:dayInWeek"></span>
+							{{eachDate.date|date:shortMonthAndDate}}
+						</div>
+					</th> 
+				</tr>				
+			</thead>
+			<tbody>
+				<tr class="room-details main">
+					<th class="heading rows-toggle" scope="row" ng-click="togleHoldStatusVisibility('groupRoomTotal')">Group Rooms (Total)</th>
+					<td ng-repeat="groupTotalRoom in data.groupTotalRooms track by $index">
+						<div class="inner">{{groupTotalRoom}}</div>
+					</td>
+				</tr>
+				<tr class="room-details" ng-repeat="rowData in data.holdstatuses track by $index" ng-class="{'hidden':hideHoldStatusOf.groupRoomTotal}">
+					<th scope="row">{{rowData[0].hold_status}}</th>
+					<td ng-repeat="cellData in rowData track by $index">
+						<div class="inner">{{cellData.total_number_of_rooms_blocked}}</div>
+					</td>
+				</tr>				
+				<tr class="room-details main">
+					<th class="heading rows-toggle" scope="row" ng-click="togleHoldStatusVisibility('groupRoomPicked')">Group Rooms (Picked)</th> 
+					<td ng-repeat="groupTotalPickedUp in data.groupTotalPickedUps track by $index">
+						<div class="inner green">{{groupTotalPickedUp}}</div>
+					</td>
+				</tr>
+				<tr class="room-details" ng-repeat="rowData in data.holdstatuses track by $index" ng-class="{'hidden':hideHoldStatusOf.groupRoomPicked}">
+					<th scope="row">{{rowData[0].hold_status}}</th>
+					<td ng-repeat="cellData in rowData track by $index">
+						<div class="inner green">{{cellData.total_no_of_pickedup_count}}</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="dates-grid" ng-repeat="groupDetail in data.groupDetails">
+			<colgroup>
+			<!-- Total number of <col> elements must match number of days displayed + first col for row labels. So in the 14 days grid, you'll have 15 <col> elements -->
+				<col>
+				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">
+			</colgroup>
+			<tbody>
+				<tr class="group-details main" ng-class="{'last-group':groupDetail.isDropDownOpened || $last }"> <!-- Add class "last-group" for last group in the screen -->
+					<th class="heading" scope="row" colspan="{{data.dates.length+1}}">
+						<div class="inner">
+							<div class="name rows-toggle" ng-click="toggleButtonClicked($index)">{{groupDetail.name}}</div> <!-- Click on this toggles the visibility of rooms held / rooms picked up rows --> 
+							<div class="status">
+								<span class="label">Hold Status:</span>
+											{{groupDetail.holdStatusName}}
+							</div>
+							<button type="button" class="has-arrow next-view" ng-click="gotoGroupScreen(groupDetail.id)">Group Details</button>
+						</div>
+					</th>
+				</tr>
+				<tr class="group-details" ng-class="{'hidden':!groupDetail.isDropDownOpened}"> 
+					<th scope="row">Rooms Held</th>
+						<td ng-repeat="roomHeld in groupDetail.details">
+							<button type="button" class="button brand-colors" ng-click ="roomHeldButtonClicked(roomHeld)">{{roomHeld.total_blocked_rooms}}</button> <!-- Clicking this opens modals/release-rooms-group.html -->
+						</td>
+				</tr>
+				<tr class="group-details" ng-class="{'hidden':!groupDetail.isDropDownOpened}">
+					<th scope="row">Rooms Picked Up</th>
+								<!-- Repeat for {X} days -->
+						<td ng-repeat="roomPicked in groupDetail.details">
+							<div class="inner">{{roomPicked.total_pickedup_rooms}}</div> <!-- Add class "last-group" for last group in the screen -->
+						</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
