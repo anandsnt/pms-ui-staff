@@ -1516,6 +1516,10 @@
                         &.green { color: @green; }
                         &.red { color: @red; }
                     }
+
+                    &.with-image {
+                        .data { .calc-width(100, 590); }
+                    }
                 }
 
                 /* Group accounts ***/
@@ -2021,6 +2025,10 @@
                 &#travel-agent-card-header { background: @tacard @tacardTexture; }
                 &#group-card-header { background: @groupcard @groupcardTexture; }
                 &#allotment-card-header { background: @allotmentcard @allotmentcardTexture; }
+                &#group-allotment-card-header {
+                    background: @allotmentcardTexture;
+                    .gradient-horizontal(@allotmentcard, @groupcard);
+                }
 
                 &.first {
                     left: 0;
@@ -3596,6 +3604,13 @@
             &.allotment-card {
                 .cards-wrapper {
                     background: @allotmentcard @allotmentcardTexture;
+                }
+            }
+
+            &.group-allotment-card {
+                .cards-wrapper {
+                    background: @allotmentcardTexture;
+                    .gradient-horizontal(@allotmentcard, @groupcard);
                 }
             }
         }
