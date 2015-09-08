@@ -43,6 +43,7 @@ sntRover.controller('rvGroupAvailabilityStatusController', [
 				id: GroupId,
 				activeTab: 'ROOMING'
 			});
+			$scope.$emit('showLoader');
 			$scope.$emit("CLOSEAVAILIBILTY");
 		};
 		/*
@@ -85,7 +86,8 @@ sntRover.controller('rvGroupAvailabilityStatusController', [
 				successCallBack: onReleaseRoomsSuccess,
 				failureCallBack: onReleaseRoomsFailure,
 				params: {
-					groupId:$scope.data.clickedHeldRoomDetail.id
+					groupId:$scope.data.clickedHeldRoomDetail.id,
+					date:$scope.data.clickedHeldRoomDetail.date
 				}
 			});
 		};
