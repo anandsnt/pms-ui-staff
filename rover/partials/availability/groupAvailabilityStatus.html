@@ -51,7 +51,7 @@
 				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">
 			</colgroup>
 			<tbody>
-				<tr class="group-details main" ng-class="{'last-group':groupDetail.isDropDownOpened}"> <!-- Add class "last-group" for last group in the screen -->
+				<tr class="group-details main" ng-class="{'last-group':groupDetail.isDropDownOpened || $last }"> <!-- Add class "last-group" for last group in the screen -->
 					<th class="heading" scope="row" colspan="{{data.dates.length+1}}">
 						<div class="inner">
 							<div class="name rows-toggle" ng-click="toggleButtonClicked($index)">{{groupDetail.name}}</div> <!-- Click on this toggles the visibility of rooms held / rooms picked up rows --> 
