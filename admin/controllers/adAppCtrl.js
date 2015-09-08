@@ -103,7 +103,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						action: "staff#/staff/dashboard/postCharge"
 					}, {
 						title: "MENU_CASHIER",
-						action: "staff#/staff/financials/journal/2"
+						action: "staff#/staff/financials/journal/CASHIER"
 					}, {
 		            	title: "MENU_ACCOUNTS",
 		            	action: "staff#/staff/accounts/search",
@@ -125,6 +125,14 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			            title: "MENU_MANAGE_GROUP",
 			            action: "staff#/staff/groups/search",
 			            menuIndex: "menuManageGroup"
+			        }, {
+			            title: "MENU_CREATE_ALLOTMENT",
+			            action: "staff#/staff/allotments/config/NEW_ALLOTMENT/SUMMARY",
+			            menuIndex: "menuCreateAllotment"
+			        }, {
+			            title: "MENU_MANAGE_ALLOTMENT",
+			            action: "staff#/staff/allotments/search",
+			            menuIndex: "menuManageAllotment"
 			        }]
 		    	},{
 					title: "MENU_CONVERSATIONS",
@@ -181,7 +189,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-financials",
 					submenu: [{
 						title: "MENU_JOURNAL",
-						action: "staff#/staff/financials/journal/0"
+						action: "staff#/staff/financials/journal/REVENUE"
 					}, {
 						title: "MENU_CC_TRANSACTIONS",
 						action: "staff#/staff/financials/ccTransactions/0"

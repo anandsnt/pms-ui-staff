@@ -35,7 +35,9 @@
 "BILLING_GROUP_NAME": "Name",
 "BILLING_GROUP_NAME_PLACEHOLDER": "Enter Name",
 "TAKE_FROM_INVENTORY": "Take from inventory",
-"HOLD_STATUS_NAME_PLACEHOLDER": "Enter hold status"
+"HOLD_STATUS_NAME_PLACEHOLDER": "Enter hold status",
+"ALLOTMENT_ONLY": "Allotment only",
+"GROUP_ONLY": "Group only"
 ,"CAMPAIGNS_LIST_TITLE": "Campaigns",
 "CAMPAIGN": "Campaign",
 "ID": "ID",
@@ -291,6 +293,14 @@
 "LINK_LABEL": "Link",
 "SCREEN_LABEL": "Screen",
 "ADDON_LABEL": "Add On",
+"SPACE_LABEL": "Space",
+"SPACE_MAX_OCCUPANCY_LABEL": "Maximum Occupancy",
+"SPACE_MAX_OCCUPANCY_PLACEHOLDER": "No of People",
+"SPACE_DURATION_LABEL": "Duration",
+"SPACE_FULFILLMENT_LABEL": "FULFILLMENT",
+"SPACE_FULFILLMENT_NONE": "None",
+"SPACE_FULFILLMENT_EMAIL": "Email",
+"SPACE_FULFILLMENT_EMAIL_ACCOUNTS_LABEL": "Email Accounts (separated by semi-colon ;)",
 "ADDON_DESCRIPTION_LABEL": "Add On Description",
 "ADDON_PRICE_LABEL": "Add On Price",
 "ADDON_MIN_DURATION_LABEL": "Minimum duration [days]",
@@ -541,7 +551,8 @@
 	"WORKSTATIONS":"Work Stations",
 	"LOCATION_LABEL": "Location",
 	"ECODER_ID_LABEL": "Encoder ID",
-	"ENCODER_ID_PLACEHOLDER": "Enter encoder id"
+	"ENCODER_ID_PLACEHOLDER": "Enter encoder id",
+        "FAILED_INTERFACE_MESSAGES": "Failed OTA Messages"
 
 ,
 	"PAYMENT_METHODS": "Payment Methods",
@@ -634,7 +645,8 @@
 "BALANCE_INVENTORY": "Balance Inventory",
 "START_JOB": "Start Job",
 "REFRESH_STATUS": "Refresh Status",
-"FORCE_ADJ_REASON" :"FORCE RATE ADJUSTMENT REASON"
+"FORCE_ADJ_REASON" :"FORCE RATE ADJUSTMENT REASON",
+"SHOW_OVERBOOKING_ALERT" : "SHOW OVERBOOKING ALERT"
 ,
 
     "ROOMS":"Rooms",
@@ -800,7 +812,8 @@
     "SELECT_CHARGE_CODE":"Select Charge Code",
     "NO_SHOW_CHARGE_CODE":"No show charge code",
     "ADDONS_FOR_RESERVATIONS" : "Add-ons for Reservations",
-    "CUSTOM_GROUP_RATE_CHARGE_CODE":"Custom Group Rate Charge Code"
+    "CUSTOM_GROUP_RATE_CHARGE_CODE":"Custom Group Rate Charge Code",
+    "MAX_ROOM_QUANTITY" :"Max Rooms"
 ,	
 	"SETTINGS_AND_PARAMS":"Settings & Parameters",
     "CHANGE_BUSSINESS_DAY":"Change Business Day",
