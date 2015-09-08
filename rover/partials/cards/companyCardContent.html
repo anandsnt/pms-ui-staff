@@ -43,18 +43,14 @@
             <div ng-controller="companyResults" class="wrapper" ng-show="companySearchIntiated && companies.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="companyResultScroll" ng-iscroll-delay='500'>
                 <ul id="search-company-results" class="search-results">
                     <li ng-repeat="company in companies" class="card card-result">
-                        <a ng-click="selectCompany(company, $event)">
+                        <a ng-click="selectCardType(company, $event)">
                             <div ng-show="company.logo == ''" class="guest-image icons icon-company"></div>
-                            <!-- In case we add logos at some point, use this:
-                            <figure class="guest-image">
-                                <img src="{company-logo}" alt="">
-                            </figure> -->
                             <figure ng-hide="company.logo == ''" class="guest-image">
                                 <img ng-src="{{company.logo}}"/>
                             </figure>
                             <div class="data">
                                 <div class="info">
-                                    <h2 ng-bind-html=" company.account_name |highlight:searchData.companyCard.companyName:false"></h2>
+                                    <h2 ng-bind-html="company.account_name |highlight:searchData.companyCard.companyName:false"></h2>
                                     <div class="rate" ng-if="company.rate">
                                         <span class="label">Rate</span> 
                                         {{company.rate.difference}}

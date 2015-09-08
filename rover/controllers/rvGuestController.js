@@ -637,6 +637,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 							companyData.id = item.id;
 							companyData.account_name = item.account_name;
 
+							companyData.account_type = item.account_type;
 							companyData.isMultipleContracts = false;
 							if(item.current_contracts.length > 1) companyData.isMultipleContracts = true;
 
@@ -709,6 +710,10 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 							var travelAgentData = {};
 							travelAgentData.id = item.id;
 							travelAgentData.account_name = item.account_name;
+
+							travelAgentData.account_type = item.account_type;
+							travelAgentData.isMultipleContracts = false;
+							if(item.current_contracts.length > 1) travelAgentData.isMultipleContracts = true;
 
 							travelAgentData.logo = item.company_logo;
 							if (item.address !== null) {
@@ -796,8 +801,70 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			$scope.replaceCard(cardType, card, future);
 		};
 
-		$scope.selectCompany = function(company, $event) {
+		// CICO-11893
+		// To show contracted Rate confirmation popup
+		var showContractRatePopup = function( data ){
+			$scope.cardData = data;
+			ngDialog.open({
+	    		template: '/assets/partials/cards/alerts/contractRatesConfirmation.html',
+	    		className: '',
+	    		closeByDocument: false,
+	    		closeByEscape: false,
+	    		scope: $scope
+    		});
+		};
+		// To keep existing rate and proceed.
+		$scope.keepExistingRate = function( cardData ){
+			if(cardData.account_type === 'COMPANY'){
+				$scope.selectCompany(cardData);
+			}
+			if(cardData.account_type === 'TRAVELAGENT'){
+				$scope.selectTravelAgent(cardData);
+			}
+			ngDialog.close();
+		};
+		var navigateToRoomAndRates = function(arrival, departure) {
+			$state.go('rover.reservation.staycard.mainCard.roomType', {
+				from_date: arrival || reservationMainData.arrivalDate,
+				to_date: departure || reservationMainData.departureDate,
+				view: 'DEFAULT',
+				fromState: $state.current.name,
+				company_id: $scope.$parent.reservationData.company.id,
+				travel_agent_id: $scope.$parent.reservationData.travelAgent.id
+			});
+		};
+		// To change to contracted Rate and proceed.
+		$scope.changeToContractedRate = function( cardData ){
+			console.log("changeToContractedRate"+cardData);
+			navigateToRoomAndRates();
+			ngDialog.close();
+		};
+
+		// To handle card selection from COMPANY / TA.
+		$scope.selectCardType = function(cardData , $event){
 			$event.stopPropagation();
+			console.log(cardData);
+
+			if(cardData.account_type === 'COMPANY'){
+				if(cardData.isMultipleContracts){
+					showContractRatePopup(cardData);
+				}
+				else{
+					$scope.selectCompany(cardData);
+				}
+			}
+			else if(cardData.account_type === 'TRAVELAGENT'){
+				if(cardData.isMultipleContracts){
+					showContractRatePopup(cardData);
+				}
+				else{
+					$scope.selectTravelAgent(cardData);
+				}
+			}
+		};
+
+		$scope.selectCompany = function(company) {
+			//$event.stopPropagation();
 			//CICO-7792
 			if ($scope.viewState.identifier === "CREATION") {
 				$scope.reservationData.company.id = company.id;
@@ -822,11 +889,10 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					$scope.checkFuture('company', company);
 				}
 			}
-
 		};
 
-		$scope.selectTravelAgent = function(travelAgent, $event) {
-			$event.stopPropagation();
+		$scope.selectTravelAgent = function(travelAgent) {
+			//$event.stopPropagation();
 			//CICO-7792
 			if ($scope.viewState.identifier === "CREATION") {
 				// Update main reservation scope
