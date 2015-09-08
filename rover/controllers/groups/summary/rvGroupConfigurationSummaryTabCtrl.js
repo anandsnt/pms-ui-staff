@@ -88,8 +88,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					oldFromDate 	: oldSumryData.block_from,
 					oldToDate 		: oldSumryData.block_to,
 					successCallBack : successCallBackOfMoveButton,
-					failureCallBack : failureCallBackOfMoveButton,
-					cancelPopupCallBack	: cancelCallBackofDateChange
+					failureCallBack : failureCallBackOfMoveButton
 				};
 			$scope.changeDatesActions.clickedOnMoveSaveButton (options);
 		};		

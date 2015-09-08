@@ -405,7 +405,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              */
             $scope.cancelChangeDatesAction = function() {
                 $scope.closeDialog ();
-                lastCancelCallback();
+                if (lastCancelCallback)
+                    lastCancelCallback();
              };
 
             /**
