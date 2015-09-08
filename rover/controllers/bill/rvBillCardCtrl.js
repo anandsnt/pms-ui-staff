@@ -1309,7 +1309,7 @@ sntRover.controller('RVbillCardController',
 					};
 					//CICO-12554 indicator if the track data is encrypted or not
 					data.is_encrypted = true;
-					if(swipedTrackDataForCheckin.RVCardReadIsEncrypted === 0){
+					if(swipedTrackDataForCheckin.RVCardReadIsEncrypted === 0 || swipedTrackDataForCheckin.RVCardReadIsEncrypted === '0'){
 						data.is_encrypted = false;
 						data.card_number = swipedTrackDataForCheckin.RVCardReadPAN;
 					}

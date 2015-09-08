@@ -27,7 +27,8 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
             "from_date":$scope.data.fromDate,
             "to_date":$scope.data.toDate,
             "employee_ids" : $scope.data.selectedEmployeeList ,
-            "department_ids" : $scope.data.selectedDepartmentList
+            "department_ids" : $scope.data.selectedDepartmentList,
+            "type" : ($scope.data.activePaymentTab === "" ? "" : ($scope.data.activePaymentTab).toLowerCase())
         };
 		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, postData, successCallBackFetchPaymentData);
 	};
@@ -203,5 +204,14 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         return isDisabled;
     };
     // Pagination logic ends ...
+
+    // Hanlde payment group active toggle
+    $scope.clickedPaymentGroup = function( activePaymentTab ){
+        $scope.data.activePaymentTab = activePaymentTab;
+
+        console.log("activePaymentTab"+activePaymentTab);
+
+        initPaymentData();
+    };
 
 }]);
