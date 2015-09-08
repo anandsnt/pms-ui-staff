@@ -1,0 +1,89 @@
+<!-- Report content -->
+<div id="report-content" class="report-content grid scrollable">
+    <div class="wrapper">
+        <ul class="grid-header dates">
+            <li class="guests">Guests</li>
+            <li class="revenue" translate>Revenue</li>
+        </ul>
+        <!-- Level 1 - Date -->
+        <a class="title-1 has-arrow toggle">
+            <strong>{Date}</strong>
+            <span>{Guests #}</span>
+            <span>${Revenue}</span>
+        </a>
+        <div id="addon-{date}" class="grid-content hidden">
+
+            <!-- Level 2 - Add-On Group -->
+            <a class="title-2 has-arrow toggle">
+                <strong>{Group Name}</strong>
+                <span>{Guests #}</span>
+                <span>${Revenue}</span>
+            </a>
+            <div id="addon-{group}-{date}" class="grid-content hidden">
+                <ul class="grid-header addons">
+                    <li class="name">Add-On</li>
+                    <li>Booked</li>
+                    <li>Remaining</li>
+                    <li>Guests</li>
+                    <li>Revenue</li>
+                </ul>
+
+                <!-- Level 3 - Add-On -->
+                <a class="title-3 has-arrow toggle">
+                    <strong class="name">{Add-On Name}</strong>
+                    <span>{Booked #}</span>
+                    <span>{Remaining #}</span>
+                    <span>{Guests #}</span>
+                    <span>${Revenue}</span>
+                </a>
+                <table id="addon-{addon-name}-{group}-{date}" class="grid-content hidden">
+                    <thead>
+                        <tr>
+                            <th><span class="sort sorting-asc">Room</span></th>
+                            <th><span class="sort">Guest Name</span></th>
+                            <th><span>Guests</span></th>
+                            <th><span>Accompanying</span></th>
+                            <th><span>Price</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <!-- Level 4 - Guests -->
+                        <tr>
+                            <td class="room">
+                                <strong class="title"> <!-- Add class 'unassigned' if room not assigned -->
+                                    {Room No. or 'N/A' if unassigned}
+                                </strong>
+                            </td>
+                            <td class="name">
+                                <span class="guest-status small-icon {reservation-status}">{reservation-status}</span>
+                                <strong class="title">{Lastname, Firstname}</strong>
+                            </td>
+                            <td class="guests">
+                                <span>{Count} Adults</span>&#8226; <span>{Count} Children</span></td>
+                            <td class="guests">
+                                <span>{Acc. Lastname, Acc. Firstname}</span>&#8226;
+                                ... repeat for each accompanying guest <!-- Drop '&#8226;' for the last one -->
+                            </td>
+                            <td>
+                                ${Price}
+                            </td>
+                        </tr>
+
+                        <!-- Pagination // Shown when needed -->
+                        <tr class="pagination">
+                            <td colspan="5">
+                                <div class="search-pagination">
+                                    <button type="button" class="button dark-grey next">Next</button>
+                                    <button type="button" class="button dark-grey prev">Previous</button>
+                                    <p>Showing <strong>1-{X}</strong> of <strong id="total-count">{Total}</strong> items</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <ng-include src="'/assets/partials/reports/addonForecastReport/rvAddonReportsFooter.html'">
+    </div>
+</div>
