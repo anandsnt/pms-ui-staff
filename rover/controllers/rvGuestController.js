@@ -889,6 +889,12 @@ sntRover.controller('guestCardController', [
 		 * when we failed in attaching a group
 		 */
 		var failureCallBackOfAttachGroupToReservation = function(error) {
+			if(error.hasOwnProperty ('httpStatus')) {
+
+				//470 is reserved for insufficient_room_type
+				if (error.httpStatus === 470) {
+				}
+			}
 			$scope.errrorMessage = error;
 		};
 
@@ -911,22 +917,11 @@ sntRover.controller('guestCardController', [
 			//updating the central reservation data model
 			updateReservationGroupData (selectedGroup);	
 
-			//we will be in card opened mode, so closing
-			$scope.closeGuestCard();
-
 			//we are in card adding mode
 			switchToNomralCardViewingMode();
 
 			//fecthing the group details and showing them
 			$scope.initGroupCard(selectedGroup.id);
-
-			//redirecting to room & rates screen
-			navigateToRoomAndRates();
-			/*var resData = $scope.reservationDetails;
-			$scope.showContractedRates({
-				companyCard: resData.companyCard.id,
-				travelAgent: resData.travelAgent.id
-			});*/
 		};
 
 		/**
