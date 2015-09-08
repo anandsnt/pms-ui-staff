@@ -81,7 +81,8 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
                 "employee_ids" : $scope.data.selectedEmployeeList ,
                 "department_ids" : $scope.data.selectedDepartmentList,
                 "page_no" :  chargeCodeItem.page_no,
-                "per_page": $scope.data.filterData.perPage
+                "per_page": $scope.data.filterData.perPage,
+                "type" : ($scope.data.activePaymentTab === "" ? "" : ($scope.data.activePaymentTab).toLowerCase())
             };
             $scope.invokeApi(RVJournalSrv.fetchPaymentDataByTransactions, postData, successCallBackFetchPaymentDataTransactions);
         }
