@@ -4,7 +4,8 @@ sntRover.controller('rvGroupAvailabilityStatusController', [
 	'$state',
 	'ngDialog',
 	'rvGroupConfigurationSrv',
-	function($scope, rvAvailabilitySrv, $state, ngDialog, rvGroupConfigurationSrv){
+	'$timeout',
+	function($scope, rvAvailabilitySrv, $state, ngDialog, rvGroupConfigurationSrv, $timeout){
 
 		BaseCtrl.call(this, $scope);		
 
@@ -34,18 +35,26 @@ sntRover.controller('rvGroupAvailabilityStatusController', [
   			$scope.setScroller ('groupscroller', scrollerOptions);
 		};
 		/**
-		* Function for navigate to Group config screen
+		* Function to send notification for close availiblity slider
 		* Param  - Group id
-		* return - Null 
 		*/		
 		$scope.gotoGroupScreen = function(GroupId){
-			$state.go('rover.groups.config', {
-				id: GroupId,
-				activeTab: 'ROOMING'
-			});
-			$scope.$emit('showLoader');
-			$scope.$emit("CLOSEAVAILIBILTY");
+			$scope.selectedGroupId = GroupId;
+			$scope.$emit("CLOSE_AVAILIBILTY_SLIDER");
 		};
+		/**
+		*  On getting backword notification after CLOSE_AVAILIBILTY_SLIDER, state changes to group screen 
+		*/
+		$scope.$on('CLOSED_AVAILIBILTY_SLIDER', function(event){
+			var GroupId = $scope.selectedGroupId;
+			$timeout(function(){
+				$state.go('rover.groups.config', {
+					id: GroupId,
+					activeTab: 'ROOMING'
+				});
+				$scope.$emit('showLoader');
+			}, 1000);
+		});
 		/*
 		* Function for show/hide Room status of Groups
 		* param - index of clicked row
@@ -99,6 +108,10 @@ sntRover.controller('rvGroupAvailabilityStatusController', [
 			$scope.hideHoldStatusOf = {};
 			$scope.hideHoldStatusOf["groupRoomTotal"] = true;
 			$scope.hideHoldStatusOf["groupRoomPicked"] = true;
+
+			//we need to store the clicked group id since there is an issue with closing of availablity 
+			$scope.selectedGroupId = null;
+
 			$scope.data = rvAvailabilitySrv.getGridDataForGroupAvailability();
 			setScroller();	
 			//if already fetched we will show without calling the API

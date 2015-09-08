@@ -569,8 +569,8 @@ sntRover.controller('roverController',
       $scope.guestInfoToPaymentModal = guestData;
 
     });
-    $scope.$on('CLOSEAVAILIBILTY', function(event) {
-      $scope.$broadcast('CLOSEAVAILIBILTY');
+    $scope.$on('CLOSE_AVAILIBILTY_SLIDER', function(event) {
+      $scope.$broadcast('CLOSED_AVAILIBILTY_SLIDER');
     });
     /*
      * Tp close dialog box
