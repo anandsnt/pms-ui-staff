@@ -63,11 +63,11 @@
             </div>
             <div class="entry full-width with-button has-datepicker">
                 <label for="allotment-release-date">
-                    {{'ALLOTMENT_MASTER_CUTOFF' | translate}}
+                    {{'ALLOTMENT_RELEASE_DATE' | translate}}
                 </label>
                 <!-- cutoffDateOptions -->
                 <input class="datepicker" type="text" ui-date="releaseDateOptions" value="{{allotmentConfigData.summary.release_date|date:dateFormat}}" readonly ng-class="{'not-selected': !allotmentConfigData.summary.release_date}" />
-                <button type="button" ng-click="warnReleaseRooms();" class="button" ng-class="{'red': !isInAddMode() ,'grey': isInAddMode() || !!allotmentConfigData.summary.is_cancelled}" translate>ALLOTMENT_SET_CUTOFF</button>
+                <button type="button" ng-click="warnReleaseRooms();" class="button" ng-class="{'red': !isInAddMode() ,'grey': isInAddMode() || !!allotmentConfigData.summary.is_cancelled}" translate>ALLOTMENT_RELEASE_NOW</button>
                 <!-- Class grey is for new allotment (when this button does nothing), red is for existing allotment -->
             </div>
             <div class="entry margin">
