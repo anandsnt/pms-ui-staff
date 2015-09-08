@@ -133,6 +133,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					selectedAddons: []
 				};				
 				$scope.$broadcast('groupCardAvailable');
+				$scope.$broadcast('groupSummaryDataChanged', $scope.groupConfigData);
 			}, function(errorMessage) {
 				$scope.$emit("hideLoader");
 				$scope.errorMessage = errorMessage;

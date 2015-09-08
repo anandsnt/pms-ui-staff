@@ -1097,6 +1097,20 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		});
 
 		/**
+		 * When group data gets changed from some where, trigger this event
+		 * @param  {[type]} event       [description]
+		 * @param  {[type]} data){		} [description]
+		 * @return {[type]}             [description]
+		 */
+		$scope.$on ('groupSummaryDataChanged', function(event, data){
+			//$scope.groupConfigData = data;
+			
+			//updating info may take some time a little
+			$timeout(function(){
+				$scope.refreshScroller("groupSummaryScroller");
+			}, 100);			
+		});
+		/**
 		 * [initializeVariables description]
 		 * @param  {[type]} argument [description]
 		 * @return {[type]}          [description]

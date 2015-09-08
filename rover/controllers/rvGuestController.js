@@ -903,7 +903,18 @@ sntRover.controller('guestCardController', [
 				travel_agent_id	: resData.travelAgent.id,
 				group_id 		: resData.group && resData.group.id
 			});
-		}
+		};
+
+		/**
+		 * navigate to group details
+		 * @return {[type]} [description]
+		 */
+		$scope.gotoGroupDetails = function() {
+			$state.go('rover.groups.config', {
+                id: $scope.reservationData.group.id,
+                activeTab: 'SUMMARY'
+            });
+		};
 
 		/**
 		 * Utility method to change the central reservation data model with our group data
