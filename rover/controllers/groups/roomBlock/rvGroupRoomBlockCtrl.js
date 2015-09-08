@@ -1542,7 +1542,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			resetDatePickers();
 
 			//setting max date of from date
-			$scope.fromDateOptions.maxDate = '';
+			$scope.startDateOptions.maxDate = '';
 
 			$scope.changeDatesActions.clickedOnMoveButton ();
 
