@@ -146,9 +146,11 @@ sntRover.controller('rvGroupReservationEditCtrl', [
         ngDialog.open({
             template: '/assets/partials/groups/rooming/popups/editReservation/rvGroupEditRoomingListItemCheckoutConfirmation.html',
             className: '',
-            scope: $scope,
+            scope: $scope.$parent,
             closeByDocument: false,
-            closeByEscape: false
+            closeByEscape: false,
+            controller: 'rvGroupReservationCheckoutCtrl',
+            data: JSON.stringify(selectedReservation)
         });
     };
 
@@ -165,42 +167,15 @@ sntRover.controller('rvGroupReservationEditCtrl', [
         }, 800);
     };
 
-    var completeCheckoutSuccessCallback = function(data) {
-        //calling initially required APIs
-        $scope.$emit("REFRESH_GROUP_ROOMING_LIST_DATA");
-        selectedReservation = null;
-        $timeout(function() {
-            $scope.closeDialog();
-        }, 700);
-    };
-
-    var completeCheckoutFailureCallback = function(error) {
-
-    };
-
-    /**
-     * Checks the selected reservation out. fires when user confirms checkout action.
-     */
-    $scope.completeCheckOut = function() {
-            var params = {
-                "reservation_id" : selectedReservation.id
-            };
-
-            var options = {
-                params: params,
-                successCallBack: completeCheckoutSuccessCallback,
-                failureCallBack: completeCheckoutFailureCallback
-            };
-            $scope.callAPI(RVBillCardSrv.completeCheckout, options);
-    };
-
    var showCheckinConfirmationPopup = function() {
         ngDialog.open({
             template: '/assets/partials/groups/rooming/popups/editReservation/rvGroupEditRoomingListItemCheckinConfirmation.html',
             className: '',
-            scope: $scope,
+            scope: $scope.$parent,
             closeByDocument: false,
-            closeByEscape: false
+            closeByEscape: false,
+            controller: 'rvGroupReservationCheckinCtrl',
+            data: JSON.stringify(selectedReservation)
         });
     };
 
@@ -214,35 +189,6 @@ sntRover.controller('rvGroupReservationEditCtrl', [
         $timeout(function() {
             selectedReservation = reservation;
             showCheckinConfirmationPopup();
-        }, 800);
-    };
-
-    var completeCheckinSuccessCallback = function(data) {
-        //calling initially required APIs
-        $scope.$emit("REFRESH_GROUP_ROOMING_LIST_DATA");
-        selectedReservation = null;
-        $timeout(function() {
-            $scope.closeDialog();
-        }, 700);
-    };
-
-    var completeCheckinFailureCallback = function(error) {
-
-    };
-
-    /**
-     * Checks the selected reservation out. fires when user confirms checkout action.
-     */
-    $scope.completeCheckIn = function() {
-        $timeout(function() {
-            var params = {
-                "reservation_id" : selectedReservation.confirm_no
-            };
-
-            $scope.invokeApi(RVBillCardSrv.completeCheckin,
-                             params,
-                             completeCheckoutSuccessCallback,
-                             completeCheckoutFailureCallback );
         }, 800);
     };
 
