@@ -62,6 +62,29 @@ sntRover.service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 		};
 
 		/**
+		 * to attach a group to a particular reservation
+		 * @return {undefined}
+		 */
+		this.attachGroupToReservation = function(params) {
+			var deferred = $q.defer(),
+				url = '/api/reservations/' + params.reservation_id + '/add_group',
+				data = {
+					'group_id' : params.group_id
+				};
+
+			rvBaseWebSrvV2.postJSON(url, data).then(
+				function(data) {
+					deferred.resolve(data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;			
+		};
+
+		/**
 		 * function to get business date
 		 * @return {Promise} - After resolving it will return the business date
 		 */

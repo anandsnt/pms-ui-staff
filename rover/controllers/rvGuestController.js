@@ -1,6 +1,6 @@
 sntRover.controller('guestCardController', [
-	'$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv',
-	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv) {
+	'$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv', 'rvUtilSrv',
+	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv, util) {
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
 
@@ -843,6 +843,101 @@ sntRover.controller('guestCardController', [
 			$scope.replaceCard(cardType, card, future);
 		};
 
+		/**
+         * function to stringify a string
+         * sample use case:- directive higlight filter
+         * sometimes through error parsing speial charactes
+         * @param {String}
+         * @return {String}
+         */
+        $scope.stringify = util.stringify;
+
+		/**
+		 * Utility method to change the central reservation data model with our group data
+		 * @param  {Object} groupData
+		 * @return {undefined}
+		 */
+		var updateReservationGroupData = function (groupData) {
+			
+			//if it is not set initially
+			if (_.isUndefined($scope.reservationData.group)) {
+				$scope.reservationData.group = {};
+			}
+
+			_.extend ($scope.reservationData.group, 
+			{
+				id 	: groupData.id,
+				name: groupData.group_name,
+				code: groupData.group_code
+			});
+		};
+
+
+		/**
+		 * when we failed in attaching a group
+		 */
+		var failureCallBackOfAttachGroupToReservation = function(error) {
+			$scope.errrorMessage = error;
+		};
+
+		/**
+		 * utility method to switch to normal card viewing mode
+		 * @return {undefined}
+		 */
+		var switchToNomralCardViewingMode = function() {
+			$scope.viewState.isAddNewCard = false;
+		};
+
+		/**
+		 * when the API call is success
+		 * @param  {Object} success data from API
+		 * @return {undefined}
+		 */
+		var successCallBackOfAttachGroupToReservation = function(data, successCallBackParams) {
+			var selectedGroup = successCallBackParams.selectedGroup;
+
+			//updating the central reservation data model
+			updateReservationGroupData (selectedGroup);	
+
+			//we will be in card opened mode, so closing
+			$scope.closeGuestCard();
+
+			//we are in card adding mode
+			switchToNomralCardViewingMode();
+
+			//fecthing the group details and showing them
+			$scope.initGroupCard(group.id);
+
+			//redirecting to room & rates screen
+			var resData = $scope.reservationDetails;
+			$scope.showContractedRates({
+				companyCard: resData.companyCard.id,
+				travelAgent: resData.travelAgent.id
+			});
+		};
+
+		/**
+		 * [attachGroupToThisReservation description]
+		 * @param  {Object} selectedGroup
+		 * @return undefined
+		 */
+		var attachGroupToThisReservation = function(selectedGroup) {
+			//calling the API
+			var params = {
+				reservation_id 	: $scope.reservationData.reservationId,
+				group_id 		: selectedGroup.id
+			};
+
+			var options = {
+				params 			: params,
+				successCallBack : successCallBackOfAttachGroupToReservation,
+				failureCallBack : failureCallBackOfAttachGroupToReservation,
+				successCallBackParameters: 	{ selectedGroup: selectedGroup}
+			};
+
+			$scope.callAPI (rvGroupSrv.attachGroupToReservation, options);
+		};
+
 		$scope.selectGroup = function(group, $event) {
 			$event.stopPropagation();
 			if ($scope.viewState.identifier === "CREATION") {
@@ -861,6 +956,7 @@ sntRover.controller('guestCardController', [
 				});
 			} else {
 				// In staycard
+				attachGroupToThisReservation (group);
 			}
 		};
 
