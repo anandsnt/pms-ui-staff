@@ -753,6 +753,9 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 						showNoPermissionOverBookingPopup();
 						return false;
 					}
+					else {
+						$scope.saveRoomBlock(true);
+					}
 				}
 			}
 		};
