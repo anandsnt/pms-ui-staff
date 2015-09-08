@@ -34,40 +34,42 @@
 
                 <a ng-click="openDemographicsPopup();" ng-disabled class="button" ng-class="{'grey': isInAddMode(), 'white brand-text': !isInAddMode()}" translate>DEMOGRAPHICS</a>
 
-                <a ng-click="openBillingInformation();" class="button blue" ng-if="allotmentConfigData.summary.posting_account_billing_info" translate>BILLING_INFORMATION</a>
+                <a ng-click="openBillingInformation();" class="button white blue-text" ng-if="allotmentConfigData.summary.posting_account_billing_info" translate>BILLING_INFORMATION</a>
 
                 <a ng-click="openBillingInformation();" ng-disabled class="button"  ng-class="{'grey': isInAddMode(), 'blue': !isInAddMode()}"  ng-if="!allotmentConfigData.summary.posting_account_billing_info" translate>ADD_BILLING_INFO</a>
             </div>
         </div>
         <div class="holder right">
             <strong class="h3" translate>ROOM_BLOCK_SUMMARY</strong>
-            <div class="entry margin has-datepicker">
-                <label for="allotment-block-from">
-                    {{'FROM' | translate}}
-                    <strong>*</strong>
-                </label>
-                <!-- value="{Start Date - not earlier than business or arrival date, not after departure date}" -->
-                <!--<input id="allotment-block-from" ng-if="!isInAddMode()" type="text" value="{{allotmentConfigData.summary.block_from | date:dateFormat}}" readonly />-->
-                <!-- If new group, add class "datepicker" -->
-                <input id="allotment-block-from" class="datepicker" type="text" ui-date="fromDateOptions" value="{{allotmentConfigData.summary.block_from|date:dateFormat}}" rv-clear-text-box listen-this="allotmentConfigData.summary.block_from" readonly ng-class="{'not-selected': !allotmentConfigData.summary.block_from}" />
+            <div class="entry full-width stay-dates no-actions">
+                <div class="entry-data">
+                    <label for="allotment-block-from">
+                        {{'FROM' | translate}}
+                        <strong>*</strong>
+                    </label>
+                    <!-- value="{Start Date - not earlier than business or arrival date, not after departure date}" -->
+                    <!--<input id="allotment-block-from" ng-if="!isInAddMode()" type="text" value="{{allotmentConfigData.summary.block_from | date:dateFormat}}" readonly />-->
+                    <!-- If new group, add class "datepicker" -->
+                    <input id="allotment-block-from" class="datepicker" type="text" ui-date="fromDateOptions" value="{{allotmentConfigData.summary.block_from|date:dateFormat}}" rv-clear-text-box listen-this="allotmentConfigData.summary.block_from" readonly ng-class="{'not-selected': !allotmentConfigData.summary.block_from}" />
+                </div>
+                <div class="entry-data">
+                    <label for="allotment-block-to">
+                        {{'TO' | translate}}
+                        <strong>*</strong>
+                    </label>
+                    <!-- value="{End Date - not earlier than Start Date, not after departure date}" -->
+                    <!--!<input ng-if="!isInAddMode()" id="allotment-block-to" type="text" value="{{allotmentConfigData.summary.block_to | date:dateFormat}}" readonly />-->
+                    <!-- If new group, add class "datepicker" -->
+                    <input id="allotment-block-to" class="datepicker" type="text" ui-date="toDateOptions" value="{{allotmentConfigData.summary.block_to|date:dateFormat}}" rv-clear-text-box listen-this="allotmentConfigData.summary.block_to" readonly ng-class="{'not-selected': !allotmentConfigData.summary.block_to}" />
+                </div>
             </div>
-            <div class="entry has-datepicker">
-                <label for="allotment-block-to">
-                    {{'TO' | translate}}
-                    <strong>*</strong>
-                </label>
-                <!-- value="{End Date - not earlier than Start Date, not after departure date}" -->
-                <!--!<input ng-if="!isInAddMode()" id="allotment-block-to" type="text" value="{{allotmentConfigData.summary.block_to | date:dateFormat}}" readonly />-->
-                <!-- If new group, add class "datepicker" -->
-                <input id="allotment-block-to" class="datepicker" type="text" ui-date="toDateOptions" value="{{allotmentConfigData.summary.block_to|date:dateFormat}}" rv-clear-text-box listen-this="allotmentConfigData.summary.block_to" readonly ng-class="{'not-selected': !allotmentConfigData.summary.block_to}" />
-            </div>
-            <div class="entry full-width with-button has-datepicker">
+            <div class="entry full-width with-button">
                 <label for="allotment-release-date">
-                    {{'ALLOTMENT_MASTER_CUTOFF' | translate}}
+                    {{'ALLOTMENT_RELEASE_DATE' | translate}}
                 </label>
                 <!-- cutoffDateOptions -->
                 <input class="datepicker" type="text" ui-date="releaseDateOptions" value="{{allotmentConfigData.summary.release_date|date:dateFormat}}" readonly ng-class="{'not-selected': !allotmentConfigData.summary.release_date}" />
-                <button type="button" ng-click="warnReleaseRooms();" class="button" ng-class="{'red': !isInAddMode() ,'grey': isInAddMode() || !!allotmentConfigData.summary.is_cancelled}" translate>ALLOTMENT_SET_CUTOFF</button>
+                <button type="button" ng-click="warnReleaseRooms();" class="button" ng-class="{'red': !isInAddMode() ,'grey': isInAddMode() || !!allotmentConfigData.summary.is_cancelled}" translate>ALLOTMENT_RELEASE_NOW</button>
                 <!-- Class grey is for new allotment (when this button does nothing), red is for existing allotment -->
             </div>
             <div class="entry margin">
