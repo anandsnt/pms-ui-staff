@@ -430,7 +430,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			}
 		};
 
-
 		$scope.clickedDiscardCard = function(cardType, discard) {
 			discardCard(cardType, discard);
 		};
@@ -823,6 +822,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			}
 			ngDialog.close();
 		};
+		// Navigation to Room & Rates screen
 		var navigateToRoomAndRates = function(arrival, departure) {
 			$state.go('rover.reservation.staycard.mainCard.roomType', {
 				from_date: arrival || $scope.reservationData.arrivalDate,
@@ -835,18 +835,16 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		};
 		// To change to contracted Rate and proceed.
 		$scope.changeToContractedRate = function( cardData ){
-			console.log("changeToContractedRate"+cardData);
+			$scope.keepExistingRate(cardData);
 			navigateToRoomAndRates();
 			ngDialog.close();
 		};
-
 		// To handle card selection from COMPANY / TA.
 		$scope.selectCardType = function(cardData , $event){
 			$event.stopPropagation();
-			console.log(cardData);
-
+			
 			if(cardData.account_type === 'COMPANY'){
-				if(cardData.isMultipleContracts){
+				if(typeof cardData.rate !== 'undefined'){
 					showContractRatePopup(cardData);
 				}
 				else{
@@ -854,7 +852,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				}
 			}
 			else if(cardData.account_type === 'TRAVELAGENT'){
-				if(cardData.isMultipleContracts){
+				if(typeof cardData.rate !== 'undefined'){
 					showContractRatePopup(cardData);
 				}
 				else{
@@ -862,9 +860,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				}
 			}
 		};
-
+		// On selecting comapny card
 		$scope.selectCompany = function(company) {
-			//$event.stopPropagation();
 			//CICO-7792
 			if ($scope.viewState.identifier === "CREATION") {
 				$scope.reservationData.company.id = company.id;
@@ -890,9 +887,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				}
 			}
 		};
-
+		// On selecting travel agent card
 		$scope.selectTravelAgent = function(travelAgent) {
-			//$event.stopPropagation();
 			//CICO-7792
 			if ($scope.viewState.identifier === "CREATION") {
 				// Update main reservation scope
