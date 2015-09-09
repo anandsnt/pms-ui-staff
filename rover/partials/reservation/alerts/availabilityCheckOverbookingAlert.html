@@ -11,8 +11,14 @@
             <li><span class="check-in unavailable"></span>Arrival Unavailable</li>
             <li><span class="check-out"></span>Departure</li>
             <li><span class="availabile"></span>Available</li>
-            <li><span class="unavailable" ng-show="ngDialogData.houseFull"></span>No House Availability</li>
-            <li><span class="unavailable" ng-hide="ngDialogData.houseFull"></span>No Type Availability</li>
+            <li ng-show="ngDialogData.houseFull">
+                <span class="unavailable"></span>
+                No House Availability
+            </li>
+            <li ng-hide="ngDialogData.houseFull">
+                <span class="unavailable"></span>
+                No Type Availability
+            </li>
         </ul>
         <div class="actions">
             <button type="button" id="goto-calendar" class="button blue modal-close" ng-hide="true">

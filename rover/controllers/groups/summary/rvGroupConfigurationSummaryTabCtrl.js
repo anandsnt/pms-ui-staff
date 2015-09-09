@@ -270,7 +270,11 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return undefined
 		 */
 		$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
-			if ($scope.isInAddMode() || targetElement.id === 'summary' ||
+			if(typeof targetElement === 'undefined' || !(targetElement instanceof Element)){
+				return;
+			}
+
+			if ($scope.isInAddMode() || (targetElement.id === 'summary') ||
 				targetElement.id === "cancel-action" || //TODO: Need to check with Dilip/Shiju PC for more about this
 				whetherSummaryDataChanged() ||
 				$scope.groupSummaryData.isDemographicsPopupOpen || $scope.isUpdateInProgress) {
@@ -1062,6 +1066,16 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$scope.computeSegment();
 		});
 
+		/**
+		 * Since this is reusing from stayccard, we need to refresh the scrollers when the drawer icon clicked
+		 * @param  {[type]} event       [description]
+		 * @return {[type]}             [description]
+		 */
+		$scope.$on ('REFRESH_ALL_CARD_SCROLLERS', function(event){
+			$timeout(function(){
+				$scope.refreshScroller("groupSummaryScroller");
+			}, 100);			
+		});
 		/**
 		 * [initializeVariables description]
 		 * @param  {[type]} argument [description]

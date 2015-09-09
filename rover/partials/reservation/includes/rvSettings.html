@@ -78,7 +78,7 @@
                             </select>
                         </div>
                     </div>
-                    <button type="button" class="add-new-button" ng-hide="reservationData.tabs.length == 4" ng-click="addTabFromSidebar()">+ Add room</button>
+                    <button type="button" class="add-new-button" ng-hide="restrictMultipleBookings()" ng-click="addTabFromSidebar()">+ Add room</button>
                 </div>
             </div>
             <!-- Functionality of radio buttons will be defined later. So hiding the demographics section - CICO-9461. -->
