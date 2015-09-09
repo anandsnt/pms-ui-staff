@@ -472,6 +472,8 @@ sntRover.controller('roverController',
     $scope.$on('GUESTCARDVISIBLE', function(event, data) {
       $scope.isGuestCardVisible = false;
       if (data) {
+        //inoder to refresh the scroller in tab's and I dont knw why 'GUESTCARDVISIBLE' listened here :(
+        $scope.$broadcast ('REFRESH_ALL_CARD_SCROLLERS');
         $scope.isGuestCardVisible = true;
       }
     });
