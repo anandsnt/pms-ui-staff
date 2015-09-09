@@ -796,5 +796,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             return chosen;
         };
 
+        $scope.restrictMultipleBookings = function(){
+            return !!$rootScope.isHourlyRateOn || !!$scope.reservationData.group.id;
+        }
+
     }
 ]);
