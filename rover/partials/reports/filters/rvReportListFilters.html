@@ -58,7 +58,7 @@
 <div class="date-range" ng-if="item.hasDateFilter">
     <label>{{ item.hasDateFilter.description }}
     </label>
-    <button type="button" class="button blue" ng-if="item.hasAddonGroups" ng-click="setTomorrowDate(item, 'fromDate')">Set To Tomorrow</button>
+    <button type="button" class="set-to-tomorrow button blue" ng-if="item.hasAddonGroups" ng-click="setTomorrowDate(item)">Set To Tomorrow</button>
     <div class="has-datepicker">
         <input ng-if="item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
         <input ng-if="item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsSysLimit" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
@@ -325,7 +325,7 @@
         </label>
         <label class="checkbox inline" ng-repeat="status in item.hasReservationStatus.data">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : status.selected }"></span>
-            <input type="checkbox" ng-model="status.selected" ng-change="fauxSelectChange(item.id, item.hasReservationStatus)" id="addon-reserved" name="addon-status"> {{ status.value }}
+            <input type="checkbox" ng-model="status.selected" ng-change="fauxSelectChange(item.id, item.hasReservationStatus)" id="addon-reserved" name="addon-status"> {{ status.status }}
         </label>
     </div>
 </div>

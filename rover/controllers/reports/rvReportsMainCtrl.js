@@ -54,8 +54,6 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.addons            = payload.addons;
 		$scope.reservationStatus = payload.reservationStatus;
 
-		console.log( $scope.addons );
-
 
 		$scope.showReportDetails = false;
 
@@ -114,7 +112,10 @@ sntRover.controller('RVReportsMainCtrl', [
 			item_20: false,
 			item_21: false,
 			item_22: false,
-			item_23: false
+			item_23: false,
+			item_24: false,
+			item_25: false,
+			item_26: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -223,8 +224,10 @@ sntRover.controller('RVReportsMainCtrl', [
 				}
 			}
 		};
-		$scope.setTomorrowDate = function(item, model) {
-			item.model = reportUtils.processDate().tomorrow;
+
+		$scope.setTomorrowDate = function (item) {
+			item.fromDate = reportUtils.processDate().tomorrow;
+			item.untilDate = reportUtils.processDate().tomorrow;
 		};
 
 		// logic to re-show the remove date button
