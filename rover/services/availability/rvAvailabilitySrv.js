@@ -288,7 +288,8 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	*/
 	var getGroupName = function(GroupId, holdstatuses){
 		return _.find(holdstatuses, function(elem){ 
-			return elem.id === GroupId}).hold_status;
+				return (elem.id === GroupId)?true:false;
+				}).name;
 	};
 	/**
 	* function to fetch group availability between from date & to date
