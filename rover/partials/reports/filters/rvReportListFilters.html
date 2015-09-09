@@ -325,7 +325,7 @@
         </label>
         <label class="checkbox inline" ng-repeat="status in item.hasReservationStatus.data">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : status.selected }"></span>
-            <input type="checkbox" ng-model="status.selected" ng-change="fauxSelectChange(item.id, item.hasReservationStatus)" id="addon-reserved" name="addon-status"> {{ status.value }}
+            <input type="checkbox" ng-model="status.selected" ng-change="fauxSelectChange(item.id, item.hasReservationStatus)" id="addon-reserved" name="addon-status"> {{ status.status }}
         </label>
     </div>
 </div>
