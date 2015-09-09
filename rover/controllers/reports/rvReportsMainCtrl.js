@@ -534,7 +534,8 @@ sntRover.controller('RVReportsMainCtrl', [
 				'chargeCodes'  : [],
 				'holdStatuses' : [],
 				'addonGroups'  : [],
-				'addons'       : []
+				'addons'       : [],
+				'reservationStatus' : []
 			};
 
 			// include dates
@@ -934,10 +935,14 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			// include addons
 			if ( report.hasOwnProperty('hasAddons') ) {
+				var addonsLength = 0;
+
 				selected = [];
 				_.each(report['hasAddons']['data'], function(each) {
 					var chosen = _.where(each['list_of_addons'], { selected: true });
 					selected   = selected.concat(chosen);
+
+					addonsLength += each['list_of_addons'].length;
 				});
 
 				if ( selected.length > 0 ) {
@@ -948,6 +953,27 @@ sntRover.controller('RVReportsMainCtrl', [
 						params[key].push( each.addon_id );
 						/**/
 						$scope.appliedFilter.addons.push( each.addon_name );
+					});
+
+					// in case if all addon groups are selected
+					if ( addonsLength === selected.length ) {
+						$scope.appliedFilter.addons = ['All Addons'];
+					};
+				};
+			};
+
+			// include addons
+			if ( report.hasOwnProperty('hasReservationStatus') ) {
+				selected = _.where(report['hasReservationStatus']['data'], { selected: true });
+
+				if ( selected.length > 0 ) {
+					key         = reportParams['RESERVATION_STATUS'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(each) {
+						params[key].push( each.id );
+						/**/
+						$scope.appliedFilter.reservationStatus.push( each.status );
 					});
 
 					// in case if all addon groups are selected

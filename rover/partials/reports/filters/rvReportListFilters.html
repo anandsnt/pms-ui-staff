@@ -323,9 +323,9 @@
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasReservationStatus.selectAll }"></span>
             <input type="checkbox" ng-model="item.hasReservationStatus.selectAll" ng-change="fauxSelectChange(item, item.hasReservationStatus, true)" name="room-filters"> Select All
         </label>
-        <label class="checkbox inline" ng-repeat="status in item.hasReservationStatus.data">
-            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : status.selected }"></span>
-            <input type="checkbox" ng-model="status.selected" ng-change="fauxSelectChange(item.id, item.hasReservationStatus)" id="addon-reserved" name="addon-status"> {{ status.value }}
+        <label class="checkbox inline" ng-repeat="each in item.hasReservationStatus.data">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : each.selected }"></span>
+            <input type="checkbox" ng-model="each.selected" ng-change="fauxSelectChange(item.id, item.hasReservationStatus)" id="addon-reserved" name="addon-status"> {{ each.status }}
         </label>
     </div>
 </div>
