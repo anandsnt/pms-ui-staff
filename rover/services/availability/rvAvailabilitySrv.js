@@ -265,7 +265,6 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			var groupdetail ={
 				"name":element.name,
 				"id":element.group_id,
-				"isDropDownOpened":false,
 				"holdStatusName":getGroupName(element.hold_status_id,datafromApi.hold_status),
 				"details":_.zip.apply(null, groupDetail)[index]
 			};

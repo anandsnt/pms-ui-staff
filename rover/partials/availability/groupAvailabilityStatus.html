@@ -51,7 +51,7 @@
 				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">
 			</colgroup>
 			<tbody>
-				<tr class="group-details main" ng-class="{'last-group':groupDetail.isDropDownOpened || $last }"> <!-- Add class "last-group" for last group in the screen -->
+				<tr class="group-details main" ng-class="{'last-group':showDropDownForGroup($index) || $last }"> <!-- Add class "last-group" for last group in the screen -->
 					<th class="heading" scope="row" colspan="{{data.dates.length+1}}">
 						<div class="inner">
 							<div class="name rows-toggle" ng-click="toggleButtonClicked($index)">{{groupDetail.name}}</div> <!-- Click on this toggles the visibility of rooms held / rooms picked up rows --> 
@@ -63,13 +63,13 @@
 						</div>
 					</th>
 				</tr>
-				<tr class="group-details" ng-class="{'hidden':!groupDetail.isDropDownOpened}"> 
+				<tr class="group-details" ng-class="{'hidden':!showDropDownForGroup($index) || $last }"> 
 					<th scope="row">Rooms Held</th>
 						<td ng-repeat="roomHeld in groupDetail.details">
 							<button type="button" class="button brand-colors" ng-click ="roomHeldButtonClicked(roomHeld)">{{roomHeld.total_blocked_rooms}}</button> <!-- Clicking this opens modals/release-rooms-group.html -->
 						</td>
 				</tr>
-				<tr class="group-details" ng-class="{'hidden':!groupDetail.isDropDownOpened}">
+				<tr class="group-details" ng-class="{'hidden':!showDropDownForGroup($index) || $last }">
 					<th scope="row">Rooms Picked Up</th>
 								<!-- Repeat for {X} days -->
 						<td ng-repeat="roomPicked in groupDetail.details">

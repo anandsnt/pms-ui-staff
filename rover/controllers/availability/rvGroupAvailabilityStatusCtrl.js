@@ -55,13 +55,24 @@ sntRover.controller('rvGroupAvailabilityStatusController', [
 				$scope.$emit('showLoader');
 			}, 1000);
 		});
+		$scope.showDropDownForGroup = function(index){
+			return _.contains($scope.idsOfDropDownOpenedGroups, $scope.data.groupDetails[index].id);
+		};
 		/*
 		* Function for show/hide Room status of Groups
 		* param - index of clicked row
 		* return Null
 		*/
 		$scope.toggleButtonClicked = function(index){
-			$scope.data.groupDetails[index].isDropDownOpened = !$scope.data.groupDetails[index].isDropDownOpened;
+			if(_.contains($scope.idsOfDropDownOpenedGroups, $scope.data.groupDetails[index].id)){
+				var temp =_.filter($scope.idsOfDropDownOpenedGroups, 
+					function(num){ 
+						return num !== $scope.data.groupDetails[index].id; 
+					});
+				$scope.idsOfDropDownOpenedGroups = temp;
+			}else{
+				$scope.idsOfDropDownOpenedGroups.push($scope.data.groupDetails[index].id);
+			}
 			$scope.refreshScroller('groupscroller');
 		};
 		/*
@@ -104,6 +115,7 @@ sntRover.controller('rvGroupAvailabilityStatusController', [
 		* Initialisation goes here!
 		*/
 		var init = function(){
+			$scope.idsOfDropDownopenedGroups =[];
 			$scope.hideBeforeDataFetch =true;
 			$scope.hideHoldStatusOf = {};
 			$scope.hideHoldStatusOf["groupRoomTotal"] = true;
