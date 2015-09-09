@@ -111,35 +111,4 @@ angular.module('tabletKioskModule', [])
         });
         
         
-        
-        
-        /*
-        //check-in find reservation
-        $stateProvider.state('rover.kiosk.reservation', {
-            url: '/tabletview',
-            templateUrl: '/assets/partials/tablet/kiosk/specific/find-reservation.html',
-            controller: 'rvTabletCtrl'
-        });
-        //kiosk-admin
-        $stateProvider.state('rover.tab-kiosk-admin', {
-            url: '/tabletview',
-            templateUrl: '/assets/partials/tablet/kiosk/specific/login.html',
-            controller: 'rvTabletCtrl'
-        });
-        
-        
-        //check-in [ email ]
-        $stateProvider.state('rover.tab-kiosk-checkin-email', {
-            url: '/tabletview',
-            templateUrl: '/assets/partials/tablet/kiosk/specific/find-reservation.html',
-            controller: 'rvTabletCtrl'
-        });
-        //check-in [ confirmation ]
-        $stateProvider.state('rover.tab-kiosk-checkin-confirmation', {
-            url: '/tabletview',
-            templateUrl: '/assets/partials/tablet/kiosk/specific/find-reservation.html',
-            controller: 'rvTabletCtrl'
-        });
-        
-        */
 }]);
