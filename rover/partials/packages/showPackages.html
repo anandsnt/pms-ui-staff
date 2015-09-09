@@ -4,49 +4,57 @@
         <div class="scrollable" ng-iscroll="resultDetails" ng-iscroll-delay="500">        
             <ul class="wrapper" >  
                 <li ng-repeat="existingPackages in packageData.existing_packages" class="addons-list">
-                    <span class="item">{{existingPackages.package_name}}</span>
+                    <span class="item">{{existingPackages.name}}</span>
 
                     <!-- if addon type is adult /child type multiplification factor will be (addon_count*number of days*(adult_count or child_count)) -->
                     <!-- if addon type is person multiplification factor will be (addon_count*number of days*(adult_count+child_count))-->
 
-                    <span ng-if="existingPackages.amount_type ==='Adult'">
-                        <span class="count" ng-hide="existingPackages.post_type ==='Entire Stay'"> ({{existingPackages.count * reservationData.reservation_card.number_of_adults}})</span> 
-                        <span class="count" ng-show="existingPackages.post_type ==='Entire Stay'"> ({{existingPackages.count* packageData.duration_of_stay *reservationData.reservation_card.number_of_adults}})</span>
+                    <span ng-if="existingPackages.amount_type.value ==='ADULT'">
+                        <span class="count" ng-hide="existingPackages.post_type.value ==='STAY'"> ({{existingPackages.addon_count * reservationData.reservation_card.number_of_adults}})</span> 
+                        <span class="count" ng-show="existingPackages.post_type.value ==='STAY'"> ({{existingPackages.addon_count* packageData.duration_of_stay *reservationData.reservation_card.number_of_adults}})</span>
                     </span>
-                    <span ng-if="existingPackages.amount_type ==='Child'">
-                        <span class="count" ng-hide="existingPackages.post_type ==='Entire Stay'"> ({{existingPackages.count*reservationData.reservation_card.number_of_children}})</span> 
-                        <span class="count" ng-show="existingPackages.post_type ==='Entire Stay'"> ({{existingPackages.count* packageData.duration_of_stay*reservationData.reservation_card.number_of_children}})</span>
-                    </span>
-
-                    <span ng-if="existingPackages.amount_type ==='Flat'">
-                        <span class="count" ng-hide="existingPackages.post_type ==='Entire Stay'"> ({{existingPackages.count}})</span> 
-                        <span class="count" ng-show="existingPackages.post_type ==='Entire Stay'"> ({{existingPackages.count* packageData.duration_of_stay}})</span>
-                    </span>
-                    <span ng-if="existingPackages.amount_type ==='Person'">
-                        <span class="count" ng-hide="existingPackages.post_type ==='Entire Stay'"> ({{existingPackages.count*(reservationData.reservation_card.number_of_children+reservationData.reservation_card.number_of_adults)}})</span> 
-                        <span class="count" ng-show="existingPackages.post_type ==='Entire Stay'"> ({{existingPackages.count* packageData.duration_of_stay*(reservationData.reservation_card.number_of_children+reservationData.reservation_card.number_of_adults)}})</span>
+                    <span ng-if="existingPackages.amount_type.value ==='CHILD'">
+                        <span class="count" ng-hide="existingPackages.post_type.value ==='STAY'"> ({{existingPackages.addon_count*reservationData.reservation_card.number_of_children}})</span> 
+                        <span class="count" ng-show="existingPackages.post_type.value ==='STAY'"> ({{existingPackages.addon_count* packageData.duration_of_stay*reservationData.reservation_card.number_of_children}})</span>
                     </span>
 
-                    <span class="base" ng-hide="existingPackages.is_inclusive">at {{currencySymbol}}{{existingPackages.price_per_piece | number : 2}} / {{existingPackages.amount_type}} <span ng-show="existingPackages.post_type ==='First Night'">per stay</span><span ng-show="existingPackages.post_type ==='Entire Stay'"> per night</span></span>
+                    <span ng-if="existingPackages.amount_type.value ==='FLAT'">
+                        <span class="count" ng-hide="existingPackages.post_type.value ==='STAY'"> ({{existingPackages.addon_count}})</span> 
+                        <span class="count" ng-show="existingPackages.post_type.value ==='STAY'"> ({{existingPackages.addon_count* packageData.duration_of_stay}})</span>
+                    </span>
+                    <span ng-if="existingPackages.amount_type.value ==='PERSON'">
+                        <span class="count" ng-hide="existingPackages.post_type.value ==='STAY'"> ({{existingPackages.addon_count*(reservationData.reservation_card.number_of_children+reservationData.reservation_card.number_of_adults)}})</span> 
+                        <span class="count" ng-show="existingPackages.post_type.value ==='STAY'"> ({{existingPackages.addon_count* packageData.duration_of_stay*(reservationData.reservation_card.number_of_children+reservationData.reservation_card.number_of_adults)}})</span>
+                    </span>
+
+                    <span class="base" ng-hide="existingPackages.is_inclusive">
+                        at {{currencySymbol}}{{existingPackages.amount | number : 2}} / {{existingPackages.amount_type.description}} 
+                        <span ng-show="existingPackages.post_type.value ==='NIGHT'">
+                            per stay
+                        </span>
+                        <span ng-show="existingPackages.post_type.value ==='STAY'"> 
+                            per night
+                        </span>
+                    </span>
 
                     <!-- if addon type is adult /child type multiplification factor will be (addon_count*number of days*(adult_count or child_count)) -->
                     <!-- if addon type is person multiplification factor will be (addon_count*number of days*(adult_count+child_count))-->
                     
-                    <span ng-if="existingPackages.amount_type ==='Adult'">
-                        <span class="price" ng-hide="existingPackages.is_inclusive || existingPackages.post_type ==='Entire Stay'">{{currencySymbol}}{{existingPackages.totalAmount * reservationData.reservation_card.number_of_adults| number : 2}}</span>
-                        <span class="price" ng-hide="existingPackages.is_inclusive || existingPackages.post_type !=='Entire Stay'">{{currencySymbol}}{{existingPackages.totalAmount * packageData.duration_of_stay * reservationData.reservation_card.number_of_adults| number : 2}}</span>
+                    <span ng-if="existingPackages.amount_type.value ==='ADULT'">
+                        <span class="price" ng-hide="existingPackages.is_inclusive || existingPackages.post_type.value ==='STAY'">{{currencySymbol}}{{existingPackages.totalAmount * reservationData.reservation_card.number_of_adults| number : 2}}</span>
+                        <span class="price" ng-hide="existingPackages.is_inclusive || existingPackages.post_type.value !=='STAY'">{{currencySymbol}}{{existingPackages.totalAmount * packageData.duration_of_stay * reservationData.reservation_card.number_of_adults| number : 2}}</span>
                     </span>
-                     <span ng-if="existingPackages.amount_type ==='Child'">
-                        <span class="price" ng-hide="existingPackages.is_inclusive || existingPackages.post_type ==='Entire Stay'">{{currencySymbol}}{{existingPackages.totalAmount*reservationData.reservation_card.number_of_children | number : 2}}</span>
-                        <span class="price" ng-hide="existingPackages.is_inclusive || existingPackages.post_type !=='Entire Stay'">{{currencySymbol}}{{existingPackages.totalAmount * packageData.duration_of_stay*reservationData.reservation_card.number_of_children| number : 2}}</span>
+                     <span ng-if="existingPackages.amount_type.value ==='CHILD'">
+                        <span class="price" ng-hide="existingPackages.is_inclusive || existingPackages.post_type.value ==='STAY'">{{currencySymbol}}{{existingPackages.totalAmount*reservationData.reservation_card.number_of_children | number : 2}}</span>
+                        <span class="price" ng-hide="existingPackages.is_inclusive || existingPackages.post_type.value !=='STAY'">{{currencySymbol}}{{existingPackages.totalAmount * packageData.duration_of_stay*reservationData.reservation_card.number_of_children| number : 2}}</span>
                     </span>
-                    <span ng-if="existingPackages.amount_type ==='Flat'">
-                        <span class="price" ng-hide="existingPackages.is_inclusive || existingPackages.post_type ==='Entire Stay'">{{currencySymbol}}{{existingPackages.totalAmount | number : 2}}</span>
-                        <span class="price" ng-hide="existingPackages.is_inclusive || existingPackages.post_type !=='Entire Stay'">{{currencySymbol}}{{existingPackages.totalAmount * packageData.duration_of_stay| number : 2}}</span>
+                    <span ng-if="existingPackages.amount_type.value ==='FLAT'">
+                        <span class="price" ng-hide="existingPackages.is_inclusive || existingPackages.post_type.value ==='STAY'">{{currencySymbol}}{{existingPackages.totalAmount | number : 2}}</span>
+                        <span class="price" ng-hide="existingPackages.is_inclusive || existingPackages.post_type.value !=='STAY'">{{currencySymbol}}{{existingPackages.totalAmount * packageData.duration_of_stay| number : 2}}</span>
                     </span>
-                    <span ng-if="existingPackages.amount_type ==='Person'">
-                        <span class="price" ng-hide="existingPackages.is_inclusive || existingPackages.post_type ==='Entire Stay'">{{currencySymbol}}{{existingPackages.totalAmount*(reservationData.reservation_card.number_of_children+reservationData.reservation_card.number_of_adults) | number : 2}}</span>
-                        <span class="price" ng-hide="existingPackages.is_inclusive || existingPackages.post_type !=='Entire Stay'">{{currencySymbol}}{{existingPackages.totalAmount * packageData.duration_of_stay*(reservationData.reservation_card.number_of_children+reservationData.reservation_card.number_of_adults)| number : 2}}</span>
+                    <span ng-if="existingPackages.amount_type.value ==='PERSON'">
+                        <span class="price" ng-hide="existingPackages.is_inclusive || existingPackages.post_type.value ==='STAY'">{{currencySymbol}}{{existingPackages.totalAmount*(reservationData.reservation_card.number_of_children+reservationData.reservation_card.number_of_adults) | number : 2}}</span>
+                        <span class="price" ng-hide="existingPackages.is_inclusive || existingPackages.post_type.value !=='STAY'">{{currencySymbol}}{{existingPackages.totalAmount * packageData.duration_of_stay*(reservationData.reservation_card.number_of_children+reservationData.reservation_card.number_of_adults)| number : 2}}</span>
                     </span>
 
                     <span class="price" ng-show="existingPackages.is_inclusive">INCL</span>

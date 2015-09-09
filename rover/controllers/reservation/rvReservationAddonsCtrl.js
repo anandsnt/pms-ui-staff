@@ -1,6 +1,6 @@
 sntRover.controller('RVReservationAddonsCtrl', [
-    '$scope', '$rootScope', 'addonData', '$state', 'ngDialog', 'RVReservationAddonsSrv', '$filter', '$timeout', 'RVReservationSummarySrv', '$stateParams', '$vault', 'RVReservationPackageSrv', 'RVReservationStateService',
-    function($scope, $rootScope, addonData, $state, ngDialog, RVReservationAddonsSrv, $filter, $timeout, RVReservationSummarySrv, $stateParams, $vault, RVReservationPackageSrv, RVReservationStateService) {
+    '$scope', '$rootScope', 'addonData', '$state', 'ngDialog', 'RVReservationAddonsSrv', '$filter', '$timeout', 'RVReservationSummarySrv', '$stateParams', '$vault', 'RVReservationPackageSrv', 'RVReservationStateService', 'rvGroupConfigurationSrv',
+    function($scope, $rootScope, addonData, $state, ngDialog, RVReservationAddonsSrv, $filter, $timeout, RVReservationSummarySrv, $stateParams, $vault, RVReservationPackageSrv, RVReservationStateService, rvGroupConfigurationSrv) {
 
         var setBackButton = function() {
                 if ($stateParams.from_screen === "staycard") {
@@ -40,7 +40,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             view: "ROOM_RATE",
                             company_id: null,
                             travel_agent_id: null,
-                            fromState: 'rover.reservation.staycard.mainCard.addons'
+                            fromState: 'rover.reservation.staycard.mainCard.addons',
+                            group_id: $scope.reservationData.group.id
                         }
                     };
                 }
@@ -303,7 +304,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     view: "DEFAULT",
                     company_id: null,
                     travel_agent_id: null,
-                    fromState: 'rover.reservation.staycard.mainCard.addons'
+                    fromState: 'rover.reservation.staycard.mainCard.addons',
+                    group_id: $scope.reservationData.group.id
                 });
             }
         };
@@ -431,7 +433,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
             $scope.addons = [];
             $scope.activeRoom = $scope.viewState.currentTab;
             $scope.fromPage = "";
-            $scope.duration_of_stay = $scope.reservationData.numNights || 1;            
+            $scope.duration_of_stay = $scope.reservationData.numNights || 1;
             $scope.existingAddonsLength = 0;
             $scope.setHeadingTitle('Enhance Stay');
 
@@ -454,17 +456,18 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
                     $scope.$emit('hideLoader');
                     $scope.roomNumber = data.room_no;
-                    $scope.duration_of_stay = data.duration_of_stay;
+                    $scope.duration_of_stay = data.duration_of_stay || $scope.reservationData.numNights;
                     $scope.addonsData.existingAddons = [];
-                    angular.forEach(data.existing_packages, function(item) {
+                    var associatedPackages = data.existing_packages || data; 
+                    angular.forEach(associatedPackages, function(item) {
                         var addonsData = {
-                                id: item.package_id,
-                                title: item.package_name,
-                                quantity: item.count,
-                                totalAmount: item.count * item.price_per_piece,
-                                price_per_piece: item.price_per_piece,
-                                amount_type: item.amount_type,
-                                post_type: item.post_type,
+                                id: item.id,
+                                title: item.name,
+                                quantity: item.addon_count,
+                                totalAmount: item.count * item.amount,
+                                price_per_piece: item.amount,
+                                amount_type: item.amount_type.value,
+                                post_type: item.post_type.value,
                                 is_inclusive: item.is_inclusive
                             },
                             alreadyAdded = false;
@@ -488,6 +491,15 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 };
                 if (!RVReservationStateService.getReservationFlag('RATE_CHANGED') && !!$scope.reservationData.reservationId) {
                     $scope.invokeApi(RVReservationPackageSrv.getReservationPackages, $scope.reservationData.reservationId, successCallBack);
+                }
+                else if (!!$scope.reservationData.group.id) {
+                    $scope.is_rate_addons_fetch = true;                   
+                    $scope.callAPI(rvGroupConfigurationSrv.getGroupEnhancements, {
+                        successCallBack: successCallBack,
+                        params: {
+                            "id": $scope.reservationData.group.id
+                        }
+                    });
                 }
                 // by default load Best Sellers addon
                 // Best Sellers in not a real charge code [just hard coding -1 as charge group id to fetch best sell addons]
