@@ -36,8 +36,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 */
 		var resetDatePickers = function() {
 			//resetting the calendar date's to actual one
-			$scope.groupConfigData.summary.block_from 	= '';
-
 			$scope.groupConfigData.summary.block_from 	= new tzIndependentDate(summaryMemento.block_from);
 			$scope.groupConfigData.summary.block_to  	= new tzIndependentDate(summaryMemento.block_to);
 
@@ -62,12 +60,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		};
 
 		var successCallBackOfMoveButton = function() {
-			$scope.computeSegment();
-
-			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
-				fetchApplicableRates();
-			}
-						
 			$scope.reloadPage();
 		};
 
@@ -131,11 +123,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		}
 
 		var successCallBackOfEarlierArrivalDateChange = function() {
-			$scope.computeSegment();
-
-			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
-				fetchApplicableRates();
-			}
 			$scope.reloadPage();
 		};
 
@@ -165,11 +152,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		};	
 
 		var successCallBackOfLaterArrivalDateChange = function() {
-			$scope.computeSegment();
-
-			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
-				fetchApplicableRates();
-			}			
 			$scope.reloadPage();
 		};
 
@@ -202,11 +184,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {[type]} [description]
 		 */
 		var successCallBackOfEarlierDepartureDateChange = function() {
-			$scope.computeSegment();
-
-			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
-				fetchApplicableRates();
-			}			
 			$scope.reloadPage();
 		};
 
@@ -241,11 +218,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {[type]} [description]
 		 */
 		var successCallBackOfLaterDepartureDateChange = function() {
-			$scope.computeSegment();
-
-			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
-				fetchApplicableRates();
-			}			
 			$scope.reloadPage();
 		};
 
@@ -429,7 +401,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 */
 		var toDateChoosed = function(date, datePickerObj) {
 			$scope.groupConfigData.summary.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
-
 			//referring data source
 			var refData 	= $scope.groupConfigData.summary,
 				newBlockTo 	= refData.block_to,
@@ -458,9 +429,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					$scope.updateGroupSummary();
 				}, 100);
 			}
-
-			//setting the max date for from Date
-			$scope.fromDateOptions.maxDate = refData.block_to;
 
 			/*$scope.computeSegment();
 			//we are in outside of angular world
