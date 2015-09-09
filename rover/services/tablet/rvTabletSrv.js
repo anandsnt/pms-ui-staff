@@ -17,10 +17,26 @@ sntRover.service('rvTabletSrv',
                     });
                     return deferred.promise;
                 };
-                
-                this.fetchReservations = function (data) {
+                this.fetchReservationDetails = function (param) {
                     var deferred = $q.defer(),
-                            url = '/api/reservations';
+                            url = '/staff/staycards/reservation_details.json?reservation='+param.id;
+                    
+
+                    rvBaseWebSrvV2.getJSON(url).then(function (data) {
+                        deferred.resolve(data);
+                    }, function (data) {
+                        deferred.reject(data);
+                    });
+                    return deferred.promise;
+                };
+                
+                this.fetchReservations = function (param) {
+                    var filter = '';
+                    if (param.find_by){
+                        filter = '?'+param.find_by+'='+param.value;
+                    }
+                    var deferred = $q.defer(),
+                            url = '/api/reservations'+filter;
                         /*
                          * confirmation_number
                             departure_date
@@ -30,7 +46,7 @@ sntRover.service('rvTabletSrv',
                          */
                     
 
-                    rvBaseWebSrvV2.getJSON(url, data).then(function (data) {
+                    rvBaseWebSrvV2.getJSON(url).then(function (data) {
                         deferred.resolve(data);
                     }, function (data) {
                         deferred.reject(data);

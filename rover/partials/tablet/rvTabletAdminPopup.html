@@ -9,8 +9,18 @@
                 <tr>
                     <td><label class='admin-item-label'>Kiosk Idle Timer</label></td>
                     <td>
-                        <input class="switch-button" ng-class="{'on': true}"  type="checkbox" ng-model="settings.adminIdleTimeEnabled" ng-change='updateSettings("enabled",settings.adminIdleTimeEnabled)' />
+                        <div class="entry">
+                                <!--input type="checkbox" ng-change='updateSettings("enabled", settings.adminIdleTimeEnabled)' /need style added for kiosk-->
+                                <button ng-hide="idleSettingsPopup.enabled" ng-show="!idleSettingsPopup.enabled" style="float:right" type="button" class="button grey" ng-click='updateSettings("enabled", true);'>
+                                        Disabled
+                                </button>
+                                <button ng-hide="!idleSettingsPopup.enabled" ng-show="idleSettingsPopup.enabled" style="float:right" type="button" class="button green" ng-click='updateSettings("enabled", false);'>
+                                        Enabled
+                                </button>
+                        </div>
                     </td>
+                    
+                    
                 </tr>
 
                 <tr>

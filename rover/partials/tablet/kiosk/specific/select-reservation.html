@@ -9,8 +9,8 @@
         </div>
         
         <ul id="selection"> <!-- Show no more than 3 results per page -->
-            <li ng-repeat="reservation in resList">
-                <div class="details">
+            <li ng-repeat="reservation in resList track by $index">
+                <div class="details" ng-click="selectReservation(reservation)">
                     <strong class="name">{{reservation.guest_details[0].last_name}}, {{reservation.guest_details[0].first_name}}</strong>
                     <div class="date">
                         {{reservation.arrival_date | date:dateFormat}} ({{reservation.stay_dates.length}} {{hoursNights}})

@@ -35,6 +35,38 @@ angular.module('tabletKioskModule', [])
             url: '/kiosk',
             templateUrl: '/assets/partials/tablet/kiosk/generic/input-text.html',
         });
+        //check-in [ find-by-email ]
+        $stateProvider.state('rover.tab-kiosk-input-email', {
+            url: '/kiosk',
+            templateUrl: '/assets/partials/tablet/kiosk/generic/input-text.html',
+        });
+        
+        
+        
+        // [ admin login screen [login/exit ]
+        $stateProvider.state('rover.tab-kiosk-admin-login-screen', {
+            url: '/kiosk',
+            templateUrl: '/assets/partials/tablet/kiosk/generic/modal.html',
+        });
+        // [ admin login username ]
+        $stateProvider.state('rover.tab-kiosk-admin-login-username', {
+            url: '/kiosk',
+            templateUrl: '/assets/partials/tablet/kiosk/generic/input-text.html',
+        });
+        // [ admin login password ]
+        $stateProvider.state('rover.tab-kiosk-admin-login-password', {
+            url: '/kiosk',
+            templateUrl: '/assets/partials/tablet/kiosk/generic/input-text.html',
+        });
+        
+        
+        
+        
+        //check-in [ find-by-email ]
+        $stateProvider.state('rover.tab-kiosk-make-key', {
+            url: '/kiosk',
+            templateUrl: '/assets/partials/tablet/kiosk/specific/make-key.html',
+        });
         
         //check-in [ select-reservation ]
         $stateProvider.state('rover.tab-kiosk-select-reservation', {
@@ -42,10 +74,40 @@ angular.module('tabletKioskModule', [])
             templateUrl: '/assets/partials/tablet/kiosk/specific/select-reservation.html',
         });
         
+        //check-in [ reservation-details ]
+        $stateProvider.state('rover.tab-kiosk-reservation-details', {
+            url: '/kiosk',
+            templateUrl: '/assets/partials/tablet/kiosk/specific/reservation-details.html',
+        });
+        
+        //check-in [ reservation credit card sign ]
+        $stateProvider.state('rover.tab-kiosk-reservation-sign', {
+            url: '/kiosk',
+            templateUrl: '/assets/partials/tablet/kiosk/specific/sign.html',
+        });
+        
+        //check-in [ reservation credit card sign Time Out]
+        $stateProvider.state('rover.tab-kiosk-reservation-signature-time-out', {
+            url: '/kiosk',
+            templateUrl: '/assets/partials/tablet/kiosk/specific/signature-time-out.html',
+        });
+        
         //check-in [ no-match ]
         $stateProvider.state('rover.tab-kiosk-no-match', {
             url: '/kiosk',
             templateUrl: '/assets/partials/tablet/kiosk/specific/no-match.html',
+        });
+        
+        //check-in [ terms conditions left ]
+        $stateProvider.state('rover.tab-kiosk-terms-conditions', {
+            url: '/kiosk',
+            templateUrl: '/assets/partials/tablet/kiosk/generic/general-left.html',
+        });
+        
+        //check-in [ select keys # ]
+        $stateProvider.state('rover.tab-kiosk-select-keys-after-checkin', {
+            url: '/kiosk',
+            templateUrl: '/assets/partials/tablet/kiosk/specific/select-keys-after-checkin.html',
         });
         
         

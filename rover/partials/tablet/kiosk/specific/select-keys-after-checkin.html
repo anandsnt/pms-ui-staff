@@ -1,35 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        {../_include/head.html}
-    </head>
-    <body id="{hotel-id}"> <!-- hotel-id should be hotel name, like "zoku", "yotel" or "grand-hotel". We can then apply specific styles throughtout the entire app based on this id value -->
-        
-        <!-- Header -->
-        {../_include/navigation.html}   
-        
-        <!-- Content -->
-        <section id="main" role="main">
-            <div id="content">
-                <h2 class="no-margin">Congratulations {Guest First Name}.</h2>
-                <h1>You are now officially checked in to room:</h1>
-                <div id="room">
-                    <span class="number">{Room No.}</span>
-                </div>
-                <div id="keys">
-                    <h2>How many keys do you need?</h2>
-                    <div id="key-options">
-                        <button type="button" class="button">1</button>
-                        <button type="button" class="button">2</button>
-                    </div>
-                </div>
-                <div id="actions" class="align-left small-text">
-                    <p>Additional Guests:
-                        <br />{Add'l Guest 1} <!-- Repeat this for each Add'l guest -->
-                    </p>
-                    <button type="button" class="button transparent">Add / Remove Guests</button>
+<section id="main" class="centered" role="main" ng-hide='at !== "select-keys"' ng-click='resetTime()'>
+        <div id="content">
+            <h2 class="no-margin">Congratulations {{selectedReservation.guest_details[0].first_name}}.</h2>
+            <h1>You are now officially checked in to room:</h1>
+            <div id="room">
+                <span class="number">{{selectedReservation.stay_dates[0].room_number}}</span>
+            </div>
+            <div id="keys">
+                <h2>How many keys do you need?</h2>
+                <div id="key-options">
+                    <button type="button" class="button" ng-click="goToScreen($event, 'make-keys')">1</button>
+                    <button type="button" class="button" ng-click="goToScreen($event, 'make-keys')">2</button>
                 </div>
             </div>
-        </section>
-    </body>
-</html>
+            <div id="actions" class="align-left small-text">
+                <!--p>Additional Guests:
+                    <br />{Add'l Guest 1} <!-- Repeat this for each Add'l guest >
+                </p-->
+                <button type="button" class="button transparent">Add / Remove Guests</button>
+            </div>
+        </div>
+        <ng-include src="'assets/partials/tablet/rvTabletFooter.html'" ></ng-include>
+</section>

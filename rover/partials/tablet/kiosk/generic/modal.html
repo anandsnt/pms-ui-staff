@@ -1,20 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        {../_include/head.html}
-    </head>
-    <body id="{hotel-id}"> <!-- hotel-id should be hotel name, like "zoku", "yotel" or "grand-hotel". We can then apply specific styles throughtout the entire app based on this id value -->
-        
-        <!-- Header -->
-        {../_include/navigation.html}   
-        
-        <!-- Content -->
-        <section id="main" class="centered" role="main">
-            <div id="content">
-                <h1>Heading Text Here</h1>
-                <h2>Subhead Text Here</h2>
-                <button type="button" class="button">Button</button>
-            </div>
-        </section>
-    </body>
-</html>
+<section id="main" class="centered" role="main" ng-show='at === "admin-login-screen"' ng-click='resetTime()'>
+    <div id="content">
+        <h1>{{headingText}}</h1>
+        <h2>{{subHeadingText}}</h2>
+        <button type="button" class="button" ng-click="loginAdmin()">LOGIN</button>
+        <button type="button" class="button" ng-click="goToLast()">Exit</button>
+    </div>
+</section>
