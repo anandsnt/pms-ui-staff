@@ -54,8 +54,6 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.addons            = payload.addons;
 		$scope.reservationStatus = payload.reservationStatus;
 
-		console.log( $scope.addons );
-
 
 		$scope.showReportDetails = false;
 
@@ -223,8 +221,10 @@ sntRover.controller('RVReportsMainCtrl', [
 				}
 			}
 		};
-		$scope.setTomorrowDate = function(item, model) {
-			item.model = reportUtils.processDate().tomorrow;
+
+		$scope.setTomorrowDate = function (item) {
+			item.fromDate = reportUtils.processDate().tomorrow;
+			item.untilDate = reportUtils.processDate().tomorrow;
 		};
 
 		// logic to re-show the remove date button
