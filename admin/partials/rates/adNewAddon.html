@@ -171,6 +171,14 @@
 						<input type="checkbox" ng-model="singleAddon.manual_posting">
 					</label>
 				</div>
+
+				<div ng-hide="isConnectedToPMS" class="entry full-width radio-check">
+					<label class="checkbox">
+						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.forecast_for_next_day }"></span>
+						<label>{{'FORECAST_FOR_NEXT_DAY' | translate}}</label>
+						<input type="checkbox" ng-model="singleAddon.forecast_for_next_day">
+					</label>
+				</div>
 				
 			</fieldset>
 
