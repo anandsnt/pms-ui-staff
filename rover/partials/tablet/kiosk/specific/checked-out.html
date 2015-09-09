@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {../_include/head.html}
+    </head>
+    <body id="{hotel-id}"> <!-- hotel-id should be hotel name, like "zoku", "yotel" or "grand-hotel". We can then apply specific styles throughtout the entire app based on this id value -->
+        
+        <!-- Header -->
+        {../_include/navigation.html}   
+        
+        <!-- Content -->
+        <section id="main" role="main">
+            <div id="content">
+                <h1>Thanks for staying at Zoku!</h1>
+                <h3>We e-mailed your bill to you. Do you want to print it now?</h3>
+                <nav id="options" role="nav">
+                    <ul role="menu">
+                        <li>
+                            <button type="button" class="button option">
+                                {../assets/icons/print.svg}
+                            </button>
+                            Print Bill
+                        </li>
+                        <li class="break">
+                            <span>Or</span>
+                        </li>
+                        <li>
+                            <button type="button" class="button option">
+                                {../assets/icons/no-print.svg}
+                            </button>
+                            No, thanks
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </section>
+    </body>
+</html>
