@@ -50,6 +50,7 @@ sntRover.controller('RVReportListCrl', [
                     'codeSettings'     : $scope.$parent.codeSettings,
                     'holdStatus'       : $scope.$parent.holdStatus,
                     'addonGroups'      : $scope.$parent.addonGroups,
+                    'addons'           : $scope.$parent.addons,
                     'reservationStatus': $scope.$parent.reservationStatus
                 });
 

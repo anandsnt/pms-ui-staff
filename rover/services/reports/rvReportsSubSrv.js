@@ -142,11 +142,12 @@ sntRover.service('RVreportsSubSrv', [
 			});
 		};
 
-		service.getAddons = function (params) {
+		service.fetchAddons = function (params) {
 			return callApi({
 				method  : 'postJSON',
 				url     : 'api/addons/detail',
-				params  : params
+				params  : params,
+				resKey  : 'results'
 			});
 		};
 

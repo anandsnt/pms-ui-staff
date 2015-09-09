@@ -68,7 +68,6 @@ sntRover.service('RVreportsSrv', [
 		 * @private
 		 */
 		function fetchAdditionalAPIs (deferred, data) {
-			console.log(data);
 			var payload   = {},
 				hasFilter = checkFilters( data );
 
@@ -179,11 +178,28 @@ sntRover.service('RVreportsSrv', [
 
 			// fetch addon groups & add to payload
 			if ( hasFilter['ADDON_GROUPS'] ) {
+				var getAddonGroupId = function(source) {
+					return {
+						'addon_group_ids' : _.pluck(source, 'id')
+		            };
+				};
+
 				if ( service.payloadCache.hasOwnProperty('addonGroups') ) {
 					success( 'addonGroups', service.payloadCache.addonGroups );
 				} else {
 					subSrv.fetchAddonGroups()
-						.then( success.bind(null, 'addonGroups'), failed.bind(null, 'addonGroups', []) );
+						.then(function(data) {
+							success( 'addonGroups', data );
+
+							if ( hasFilter['ADDONS'] ) {
+								if ( service.payloadCache.hasOwnProperty('addons') ) {
+									success( 'addons', service.payloadCache.addons );
+								} else {
+									subSrv.fetchAddons( getAddonGroupId(data) )
+										.then(success.bind(null, 'addons'), failed.bind(null, 'addons', []));
+								};
+							};
+						}, failed.bind(null, 'addonGroups', []));
 				};
 			};
 
@@ -250,6 +266,10 @@ sntRover.service('RVreportsSrv', [
 
 					if ( ! hasFilter.hasOwnProperty('ADDON_GROUPS') && 'ADDON_GROUPS' == eachFilter.value ) {
 						hasFilter['ADDON_GROUPS'] = true;
+					};
+
+					if ( ! hasFilter.hasOwnProperty('ADDONS') && 'ADDONS' == eachFilter.value ) {
+						hasFilter['ADDONS'] = true;
 					};
 
 					if ( ! hasFilter.hasOwnProperty('RESERVATION_STATUS') && 'RESERVATION_STATUS' == eachFilter.value ) {
