@@ -7,101 +7,97 @@
             </ul>
 
             <div ng-repeat="(key1, item1) in results">
-
-            <!-- Level 1 - Date -->
-            <a href="#addon-{date}" class="title-1 has-arrow toggle">
-                <strong>{{ key1 | date : dateFormat }}</strong>
-                <span>{{ item1.guests }}</span>
-                <span>{{ item1.revenue | currency:currencySymbol:2 }}</span>
-            </a>
-            <div ng-repeat="(key2, item2) in item1.addon_groups" id="addon-{date}" class="grid-content"> <!-- Toggle class hidden when L135-139 tapped -->
-                <!-- Level 2 - Add-On Group -->
-                <a href="#addon-{group}-{date}" class="title-2 has-arrow toggle">
-                    <strong>{{ getKeyName(item2) }}</strong>
-                    <span>{{ getKeyValues(item2).guests }}</span>
-                    <span>{{ getKeyValues(item2).revenue }}</span>
+                <!-- Level 1 - Date -->
+                <a href="#addon-{date}" class="title-1 toggle" ng-class="{ 'has-arrow': item1.addon_groups.length }" ng-click="toggleSub(item1)">
+                    <strong>{{ key1 | date : dateFormat }}</strong>
+                    <span>{{ item1.guests }}</span>
+                    <span>{{ item1.revenue | currency:currencySymbol:2 }}</span>
                 </a>
-                <div id="addon-{group}-{date}" class="grid-content"> <!-- Toggle class hidden when L142-146 tapped -->
-                    <ul class="grid-header addons">
-                        <li class="name">Add-On</li>
-                        <li>Booked</li>
-                        <li>Remaining</li>
-                        <li>Guests</li>
-                        <li>Revenue</li>
-                    </ul>
-                    <div ng-repeat="(key3, item3) in getKeyValues(item2).addons">
-                        <!-- Level 3 - Add-On -->
-                        <a href="#addon-{addon-name}-{group}-{date}" class="title-3 has-arrow toggle">
-                            <strong class="name">{{ getKeyName(key3) }}</strong>
-                            <span>{{ getKeyValues(item3).booked }}</span>
-                            <span>{{ getKeyValues(item3).remaining }}</span>
-                            <span>{{ getKeyValues(item3).guests }}</span>
-                            <span>{{ getKeyValues(item3).revenue | currency:currencySymbol:2 }}</span>
-                        </a>
-                    </div>
-                    
-                    <table id="addon-{addon-name}-{group}-{date}" class="grid-content hidden"> <!-- Toggle class hidden when L156-162 tapped -->
-                        <thead>
-                            <tr>
-                                <th><span class="sort sorting-asc">Room</span></th>
-                                <th><span class="sort">Guest Name</span></th>
-                                <th><span>Guests</span></th>
-                                <th><span>Accompanying</span></th>
-                                <th><span>Price</span></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Level 4 - Guests -->
-                            <tr ng-repeat="(key4, item4) in getKeyValues(item3).reservations">
-                                <td class="room">
-                                    <strong ng-class="{ 'unassigned': !item4.room }" class="title"> <!-- Add class 'unassigned' if room not assigned -->
-                                        {{ item4.room }}
-                                    </strong>
-                                </td>
-                                <td class="name">
-                                    <span class="guest-status small-icon {reservation-status}">{reservation-status}</span>
-                                    <strong class="title">{{ item4.guest_name }}</strong>
-                                </td>
-                                <td class="guests">
-                                    <span>{{ item4.guests_count.adults }} Adults</span>&#8226; <span>{{ item4.guests_count.children }} Children</span></td>
-                                <td class="guests">
-                                    <span ng-repeat="guest in item4.accompanying_guests">{{ guest }}</span>&#8226;
-                                </td>
-                                <td>
-                                    {{ item4.price | currency:currencySymbol:2 }}
-                                </td>
-                            </tr>
-                            ... repeat
-                            <!-- Pagination // Shown when needed -->
-                            <tr class="pagination">
-                                <td colspan="5">
-                                    <div class="search-pagination">
-                                        <button type="button" class="button dark-grey next">Next</button>
-                                        <button type="button" class="button dark-grey prev">Previous</button>
-                                        <p>Showing <strong>1-{X}</strong> of <strong id="total-count">{Total}</strong> items</p>
-                                    </div>
-                                </td>
-                            </tr> 
-                        </tbody>
-                    </table>
-                    ... repeat L156-207 for every Add-On in Group and Date
-                </div>
-                ... repeat L142-209 for every Add-On Group and Date
-            </div>    
-            ... repeat L135-211 for every Date  
+                <div ng-repeat="item2 in item1.addon_groups" ng-init="item2Values = getKeyValues(item2)" class="grid-content" ng-class="{ 'hidden': !item1.hidden }"> <!-- Toggle class hidden when L135-139 tapped -->
+                    <!-- Level 2 - Add-On Group -->
+                    <a href="#addon-{group}-{date}" class="title-2 toggle" ng-class="{ 'has-arrow': item2Values.addons.length }" ng-click="toggleSub(item2)">
+                        <strong>{{ getKey(item3) }} - {{ getKeyName(item2) }}</strong>
+                        <span>{{ item2Values.guests }}</span>
+                        <span>{{ item2Values.revenue }}</span>
+                    </a>
+                    <div id="addon-{group}-{date}" class="grid-content" ng-class="{ 'hidden': !item2.hidden }"> <!-- Toggle class hidden when L142-146 tapped -->
+                        <ul class="grid-header addons">
+                            <li class="name">Add-On</li>
+                            <li>Booked</li>
+                            <li>Remaining</li>
+                            <li>Guests</li>
+                            <li>Revenue</li>
+                        </ul>
+                        <div ng-repeat="item3 in item2Values.addons" ng-init="item3Values = getKeyValues(item3)">
+                            <!-- Level 3 - Add-On -->
+                            <a href="#addon-{addon-name}-{group}-{date}" class="title-3 toggle" ng-class="{ 'has-arrow': item3Values.reservations.length }" ng-click="toggleSub(item3)">
+                                <strong class="name">{{ getKey(item3) }} - {{ getKeyName(item3) }}</strong>
+                                <span>{{ item3Values.booked }}</span>
+                                <span>{{ item3Values.remaining }}</span>
+                                <span>{{ item3Values.guests }}</span>
+                                <span>{{ item3Values.revenue | currency:currencySymbol:2 }}</span>
+                            </a>
 
+                            <table ng-if="item3Values.reservations.length" class="grid-content" ng-class="{ 'hidden': !item3.hidden }"> <!-- Toggle class hidden when L156-162 tapped -->
+                                <thead>
+                                    <tr>
+                                        <th><span class="sort sorting-asc" ng-click="loadRes('sort', item2Values, 'ROOM')">Room</span></th>
+                                        <th><span class="sort sorting-dsc" ng-click="loadRes('sort', item2Values, 'NAME')">Guest Name</span></th>
+                                        <th><span>Guests</span></th>
+                                        <th><span>Accompanying</span></th>
+                                        <th><span>Price</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Level 4 - Guests -->
+                                    <tr ng-repeat="item4 in item3Values.reservations">
+                                        <td class="room">
+                                            <strong ng-class="{ 'unassigned': !item4.room }" class="title"> <!-- Add class 'unassigned' if room not assigned -->
+                                                {{ item4.room || 'N/A' }}
+                                            </strong>
+                                        </td>
+                                        <td class="name">
+                                            <span class="guest-status small-icon {{ getStatusClass(item4.status) }}">{{ item4.status }}</span>
+                                            <strong class="title">{{ item4.guest_name }}</strong>
+                                        </td>
+                                        <td class="guests">
+                                            <span>{{ item4.guests_count.adults }} Adults</span>&#8226; <span>{{ item4.guests_count.children }} Children</span></td>
+                                        <td class="guests">
+                                            <span ng-repeat="guest in item4.accompanying_guests">
+                                                {{ guest }}<span ng-if="!$last">&#8226;</span>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            {{ item4.price | currency:currencySymbol:2 }}
+                                        </td>
+                                    </tr>
+                                    <!-- Pagination // Shown when needed -->
+                                    <tr class="pagination" ng-if="!item2Values.disablePrevBtn || !item2Values.disableNextBtn">
+                                        <td colspan="5">
+                                            <div class="search-pagination">
+                                                <label class="button dark-grey next" ng-click="loadRes('next', item2Values)" ng-class="{'disabled': item2Values.disableNextBtn}">Next</label>
+                                                <label class="button dark-grey prev" ng-click="loadRes('prev', item2Values)" ng-class="{'disabled': item2Values.disablePrevBtn}">Previous</label>
+                                                <p>Showing <strong>{{ item2Values.resultFrom }}-{{ item2Values.resultUpto }}</strong> of <strong id="total-count">{{ item2Values.netTotalCount }}</strong> items</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <ul class="grid-footer">
                 <li>
-                    Add-Ons from <span>{Date}</span> to <span>{Date}</span><br />
-                    Add-On Groups <span>{All or list selected}</span><br />
-                    Add-Ons <span>{All or list selected}</span><br />
-                    Reservation Status <span>{All or list selected}</span>
+                    Add-Ons from <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br />
+                    Add-On Groups <span>{{ appliedFilter.addonGroups.join(', ') }}</span><br />
+                    Add-Ons <span>{{ appliedFilter.addons.join(', ') }}</span><br />
+                    Reservation Status <span>{{ appliedFilter.reservationStatus.join(', ') }}</span>
                 </li>
                 <li>
-                    Business date <span>{Business Date}</span><br />
-                    User <span>{User}</span>
+                    Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br />
+                    User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
                 </li>
             </ul>     
         </div>
