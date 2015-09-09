@@ -458,42 +458,44 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     $scope.roomNumber = data.room_no;
                     $scope.duration_of_stay = data.duration_of_stay || $scope.reservationData.numNights;
                     $scope.addonsData.existingAddons = [];
-                    var associatedPackages = data.existing_packages || data; 
+                    var associatedPackages = data.existing_packages || data;
                     angular.forEach(associatedPackages, function(item) {
                         var addonsData = {
-                                id: item.id,
-                                title: item.name,
-                                quantity: item.addon_count,
-                                totalAmount: item.count * item.amount,
-                                price_per_piece: item.amount,
-                                amount_type: item.amount_type.value,
-                                post_type: item.post_type.value,
-                                is_inclusive: item.is_inclusive
-                            },
-                            alreadyAdded = false;
+                            id: item.id,
+                            title: item.name,
+                            quantity: item.addon_count,
+                            totalAmount: item.addon_count * item.amount,
+                            price_per_piece: item.amount,
+                            amount_type: item.amount_type.value,
+                            post_type: item.post_type.value,
+                            is_inclusive: item.is_inclusive
+                        };
 
-                        if (!alreadyAdded) {
-                            $scope.addonsData.existingAddons.push(addonsData);
-                            for (roomIndex = startIndex; roomIndex <= endIndex; roomIndex++) {
-                                $scope.reservationData.rooms[roomIndex].addons.push({
-                                    quantity: addonsData.quantity,
-                                    id: addonsData.id,
-                                    price: parseFloat(addonsData.price_per_piece),
-                                    amountType: addonsData.amount_type,
-                                    postType: addonsData.post_type
-                                });
-                            }
+                        $scope.addonsData.existingAddons.push(addonsData);
+
+                        for (roomIndex = startIndex; roomIndex <= endIndex; roomIndex++) {
+                            $scope.reservationData.rooms[roomIndex].addons.push({
+                                quantity: addonsData.quantity,
+                                id: addonsData.id,
+                                price: parseFloat(addonsData.price_per_piece),
+                                amountType: item.amount_type,
+                                postType: item.post_type,
+                                title: addonsData.title,
+                                totalAmount: addonsData.totalAmount
+                            });
                         }
+
                     });
 
                     addonsDataCopy = angular.copy($scope.addonsData.existingAddons);
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
+
+                    $scope.computeTotalStayCost();
                 };
                 if (!RVReservationStateService.getReservationFlag('RATE_CHANGED') && !!$scope.reservationData.reservationId) {
                     $scope.invokeApi(RVReservationPackageSrv.getReservationPackages, $scope.reservationData.reservationId, successCallBack);
-                }
-                else if (!!$scope.reservationData.group.id) {
-                    $scope.is_rate_addons_fetch = true;                   
+                } else if (!!$scope.reservationData.group.id) {
+                    $scope.is_rate_addons_fetch = true;
                     $scope.callAPI(rvGroupConfigurationSrv.getGroupEnhancements, {
                         successCallBack: successCallBack,
                         params: {

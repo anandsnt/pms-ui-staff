@@ -508,7 +508,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                             value: group.name,
                             type: 'GROUP',
                             id: group.id,
-                            code: group.codes
+                            code: group.code
                         });
                     });
                 }
@@ -534,6 +534,15 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             if (request.term.length === 0) {
                 companyCardResults = [];
                 lastSearchText = "";
+                if (!!$scope.reservationData.group.id) { // Reset in case of group
+                    $scope.reservationData.group = {
+                        id: "",
+                        name: "",
+                        code: ""
+                    };
+                    $scope.codeSearchText = "";
+                    $scope.companySearchText = "";
+                }
             } else if (request.term.length > 2) {
                 fetchData();
             }
@@ -550,6 +559,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     name: ui.item.label,
                     code: ui.item.code
                 };
+                $scope.codeSearchText = ui.item.code;
             } else {
                 $scope.reservationData.travelAgent.id = ui.item.id;
                 $scope.reservationData.travelAgent.name = ui.item.label;
@@ -561,6 +571,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
         $scope.autocompleteOptions = {
             delay: 0,
+            minLength: 0,
             position: {
                 my: 'left bottom',
                 at: 'left top',
@@ -642,37 +653,74 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             if (request.term.length === 0) {
                 codeResults = [];
                 lastSearchText = "";
+                if (!!$scope.reservationData.group.id) { // Reset in case of group
+                    $scope.reservationData.group = {
+                        id: "",
+                        name: "",
+                        code: ""
+                    };
+                    $scope.codeSearchText = "";
+                    $scope.companySearchText = "";
+                }
             } else if (request.term.length > 0) {
                 if (request.term !== '' && lastSearchText !== request.term) {
                     lastSearchText = request.term;
-                    var filteredCodes = $filter('filter')($scope.activeCodes, {
-                        name: request.term
+                    $scope.invokeApi(RVReservationBaseSearchSrv.autoCompleteCodes, {
+                        'code': request.term,
+                        'include_group': $scope.reservationData.rooms.length === 1,
+                        'from_date': $scope.reservationData.arrivalDate,
+                        'to_date': $scope.reservationData.departureDate,
+                    }, function(filteredCodes) {
+                        codeResults = [];
+                        angular.forEach(filteredCodes.promotions, function(item) {
+                            eachItem = {
+                                label: item.name,
+                                value: item.name,
+                                type: 'PROMO',
+                                id: item.id,
+                                discount: item.discount,
+                                from: item.from_date,
+                                to: item.to_date
+                            };
+                            codeResults.push(eachItem);
+                        });
+                        angular.forEach(filteredCodes.groups, function(item) {
+                            eachItem = {
+                                label: item.name,
+                                value: item.code,
+                                type: 'GROUP',
+                                id: item.id,
+                                from: item.from_date,
+                                to: item.to_date,
+                                name: item.name
+                            };
+                            codeResults.push(eachItem);
+                        });
+                        $scope.$emit("hideLoader");
+                        response(codeResults);
                     });
-                    codeResults = [];
-                    angular.forEach(filteredCodes, function(item) {
-                        eachItem = {
-                            label: item.name,
-                            value: item.name,
-                            type: 'PROMO',
-                            id: item.id,
-                            discount: item.discount,
-                            from: item.from_date,
-                            to: item.to_date
-                        };
-                        codeResults.push(eachItem);
-                    });
-                    response(codeResults);
                 }
             }
         };
 
         var codeACSelectHandler = function(event, code) {
-            $scope.reservationData.code = code.item;
+            if (code.item.type === "PROMO") {
+                $scope.reservationData.code = code.item;
+            } else if (code.item.type === "GROUP") {
+                $scope.reservationData.group = {
+                    id: code.item.id,
+                    name: code.item.name,
+                    code: code.item.value
+                };
+                $scope.codeSearchText = code.item.value;
+                $scope.companySearchText = code.item.name;
+            }
         };
 
         // Autocomplete options for promo/group code
         $scope.codesACOptions = {
             delay: 0,
+            minLength: 0,
             position: {
                 my: 'left bottom',
                 at: 'left top',
@@ -747,6 +795,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             });
             return chosen;
         };
+
+        $scope.restrictMultipleBookings = function(){
+            return !!$rootScope.isHourlyRateOn || !!$scope.reservationData.group.id;
+        }
 
     }
 ]);

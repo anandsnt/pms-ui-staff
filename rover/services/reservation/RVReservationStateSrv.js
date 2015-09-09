@@ -151,7 +151,7 @@ sntRover.service('RVReservationStateService', [
 
 					if (taxData.post_type === 'NIGHT') { // NIGHT tax computations
 						if (isInclusive) {
-							taxInclusiveTotal = parseFloat(taxInclusiveTotal) +	 parseFloat(taxCalculated);
+							taxInclusiveTotal = parseFloat(taxInclusiveTotal) + parseFloat(taxCalculated);
 						} else {
 							taxExclusiveTotal = parseFloat(taxExclusiveTotal) + parseFloat(taxCalculated);
 						}
@@ -171,8 +171,7 @@ sntRover.service('RVReservationStateService', [
 						description: taxData.description,
 						roomIndex: roomIndex
 					});
-				} else {
-				}
+				} else {}
 			});
 			return {
 				EXCL: {
@@ -280,7 +279,10 @@ sntRover.service('RVReservationStateService', [
 							stayTaxes: {}
 						};
 					}
-					rooms[roomTypeId].availabilityNumbers[for_date] = roomType.availability;
+					rooms[roomTypeId].availabilityNumbers[for_date] = {
+						room: roomType.availability,
+						group: roomType.group_availability
+					}
 				});
 
 				//step2: Parse the rates and populate the object created for rooms in step1
@@ -385,9 +387,9 @@ sntRover.service('RVReservationStateService', [
 							associatedAddons: addonsApplied,
 							rateBreakUp: room_rate,
 							day: new tzIndependentDate(for_date),
-							availabilityCount: rooms[currentRoomId].availabilityNumbers[for_date],
+							availabilityCount: ratesMeta[rate_id].rate_type.name === "Group Rates" ? rooms[currentRoomId].availabilityNumbers[for_date].group : rooms[currentRoomId].availabilityNumbers[for_date].room,
 							taxForAddons: taxForAddons,
-							houseAvailability : houseAvailability,
+							houseAvailability: houseAvailability,
 							linkedPromos: linkedPromotions,
 							applyPromotion: applyPromotion,
 							appliedPromotion: code,
