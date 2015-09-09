@@ -700,7 +700,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				if ($scope.otherData.showOverbookingAlert) {
 
 					var leastHouseAvailability = $scope.getLeastHouseAvailability(roomId, rateId),
-						leastRoomTypeAvailability = $scope.getLeastHouseAvailability(roomId, rateId),
+						leastRoomTypeAvailability = $scope.getLeastAvailability(roomId, rateId),
 						numberOfRooms = $scope.reservationData.tabs[$scope.activeRoom].roomCount;
 
 					if (leastHouseAvailability < 1 ||
