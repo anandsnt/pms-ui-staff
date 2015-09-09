@@ -88,9 +88,6 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 
 			//referring data source
 			var refData = $scope.allotmentConfigData.summary;
-			if (refData.release_date.toString().trim() === '') {
-				$scope.allotmentConfigData.summary.release_date = refData.block_from;
-			}
 
 			// we will clear end date if chosen start date is greater than end date
 			if (refData.block_from > refData.block_to) {

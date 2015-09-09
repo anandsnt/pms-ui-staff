@@ -786,6 +786,16 @@ table {
                 }
             }
 
+            &.condensed-print {
+                th,
+                td { 
+                    font-size: 6pt;
+                    padding: 2pt 2pt 2pt 0; 
+
+                    &:first-child { padding-left: 2pt; }
+                }
+            }
+
             &.log-reports {
                 tr {
                     &.invalid {
@@ -1169,6 +1179,18 @@ table {
                             border-bottom: 1px solid @grey2;
 
                             td { border-bottom-color: @grey2; }
+                        }
+                    }
+                }
+
+                &.condensed-print {
+                    tbody {
+                        tr {
+                            td { 
+                                height: auto;
+
+                                &[rowspan] { padding-right: 4pt; }
+                            }
                         }
                     }
                 }
