@@ -33,8 +33,6 @@ sntRover.controller('RVAddonForecastReportCtrl', [
 
 		console.log(allAddonHash);
 
-		
-
 		var getKey = function(item) {
 			return _.keys(item)[0]
 		};
