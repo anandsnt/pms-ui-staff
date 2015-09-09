@@ -270,7 +270,7 @@
         </label>
         <label class="checkbox inline" ng-repeat="status in item.hasHoldStatus.data">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : status.selected }"></span>
-            <input type="checkbox" ng-model="status.selected" ng-change="fauxSelectChange(item, item.hasHoldStatus)" name="room-filters"> {{ status.description }}
+            <input type="checkbox" ng-model="status.selected" ng-change="fauxSelectChange(item, item.hasHoldStatus)" name="room-filters"> {{ status.name }}
         </label>
     </div>
 </div>

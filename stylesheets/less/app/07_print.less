@@ -786,6 +786,16 @@ table {
                 }
             }
 
+            &.condensed-print {
+                th,
+                td { 
+                    font-size: 6pt;
+                    padding: 2pt 2pt 2pt 0; 
+
+                    &:first-child { padding-left: 2pt; }
+                }
+            }
+
             &.log-reports {
                 tr {
                     &.invalid {
@@ -1099,7 +1109,7 @@ table {
                             strong { font-weight: 600; }
 
                             &.name {
-                                width: 40%;
+                                width: 12cm;
                                 border-bottom: 0;
 
                                 .info {
@@ -1144,8 +1154,15 @@ table {
                                     }
                                 }
 
-                                &.short { min-width: 25%; }
+                                &.short { width: 6cm; }
                             }
+
+                            &.room-type {
+                                max-width: 3cm;
+                                .nowrap();
+                            }
+
+                            &.date { white-space: nowrap; }
 
                             &.info {
                                 font-style: italic;
@@ -1155,14 +1172,25 @@ table {
 
                             &:first-child { padding-left: 0; }
 
-                            &[rowspan] { 
-                                height: auto;
-                                border-bottom: 1px solid @grey2; 
-                            }
+                            &[rowspan] { height: auto; }
                         }
 
                         &.row-break {
+                            border-bottom: 1px solid @grey2;
+
                             td { border-bottom-color: @grey2; }
+                        }
+                    }
+                }
+
+                &.condensed-print {
+                    tbody {
+                        tr {
+                            td { 
+                                height: auto;
+
+                                &[rowspan] { padding-right: 4pt; }
+                            }
                         }
                     }
                 }
@@ -1804,7 +1832,8 @@ table {
 
 /* Journal                   ==============================*/
     .journal-header,
-    .journal-print { .hide; }
+    .journal-print,
+    .journal-groups { .hide; }
 
     .journal-content {
         font-size: 8pt;
@@ -1812,6 +1841,73 @@ table {
         text-transform: uppercase;
         .float;
 
+        /* Summary ***/
+        .journal-summary {
+            padding: 8pt 0;
+            margin: 0 2cm;
+            border-bottom: 1px solid @grey2;
+            .flex(center);
+            .float;
+
+            h3 {
+                font-size: 10pt;
+                font-weight: 300;
+                color: @grey4;
+                text-transform: uppercase;
+                text-align: left;
+                width: 4cm;
+                .pull-left;
+            }
+
+            ul {
+                width: -webkit-calc(~'100% - 4cm');
+                width: -moz-calc(~'100% - 4cm');
+                width: calc(~'100% - 4cm');
+                .pull-left;
+
+                li {
+                    text-transform: uppercase;
+                    text-align: right;
+                    margin: 0 1.33cm 0 0;
+                    color: @grey3;
+                    width: -webkit-calc(~'25% - 1cm');
+                    width: -moz-calc(~'25% - 1cm');
+                    width: calc(~'25% - 1cm');
+                    .pull-left;
+                    
+                    span {
+                        font-size: 14pt;
+                        font-weight: 300;
+                        color: @textColor;
+                        .show;
+                    }
+
+                    &:last-child { margin-right: 0; }
+                }
+            }
+
+            &.first { 
+                padding-top: 1cm; 
+
+                h3 { padding-top: 10pt; }
+            }
+
+            &.totals {
+                padding-bottom: 0;
+                border-bottom: 0;
+
+                h3 { 
+                    color: @textColor; 
+                    font-weight: 400;
+                }
+
+                li {
+                    span { font-weight: 400; }
+                }
+            }
+        }
+
+        /* Revenue / Payment ***/
         .journal-grid {
             
             .grid-header {
@@ -1961,6 +2057,7 @@ table {
             }
         }
 
+        /* Cashier ***/
         .journal-shift {
             padding-left: 1cm;
             width: 65%;

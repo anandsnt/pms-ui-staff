@@ -341,7 +341,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 					$state.go('rover.accounts.config',{
 						id: associatedId,
 						activeTab: 'ACCOUNT',
-						isFromCards: true
+						isFromArTransactions: true
 					});
 				}
 
@@ -381,6 +381,15 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			ngDialog.open({
 	      		template:'/assets/partials/companyCard/rvArTransactionsAddCredits.html',
 		        controller: 'RVArTransactionsAddCreditsController',
+		        className: '',
+		        scope: $scope
+	      	});
+		};
+
+		$scope.payAmount = function(){
+			ngDialog.open({
+	      		template:'/assets/partials/companyCard/rvArTransactionsPayCredits.html',
+		        controller: 'RVArTransactionsPayCreditsController',
 		        className: '',
 		        scope: $scope
 	      	});

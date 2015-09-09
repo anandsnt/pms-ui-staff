@@ -1153,8 +1153,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             }
         };
 
-    
-
         $rootScope.$on('UPDATERESERVATIONTYPE', function(e, data) {
             $scope.reservationData.reservation_type = data;
         });

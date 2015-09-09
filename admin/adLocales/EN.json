@@ -35,7 +35,9 @@
 "BILLING_GROUP_NAME": "Name",
 "BILLING_GROUP_NAME_PLACEHOLDER": "Enter Name",
 "TAKE_FROM_INVENTORY": "Take from inventory",
-"HOLD_STATUS_NAME_PLACEHOLDER": "Enter hold status"
+"HOLD_STATUS_NAME_PLACEHOLDER": "Enter hold status",
+"ALLOTMENT_ONLY": "Allotment only",
+"GROUP_ONLY": "Group only"
 ,"CAMPAIGNS_LIST_TITLE": "Campaigns",
 "CAMPAIGN": "Campaign",
 "ID": "ID",
@@ -240,7 +242,8 @@
 "CLOSE":"Close",
 "RATE_MANAGER_EXITS":"Rate Manager updates exist for these values",
 "OVERWRITE_RATE_MANAGER":"Overwrite Rate Manager",
-"DONT_OVERWRITE_RATE_MANAGER":"Do not Overwrite Rate Manager"
+"DONT_OVERWRITE_RATE_MANAGER":"Do not Overwrite Rate Manager",
+"ASK_GUEST_ADDRESS_DETAILS":"ASK GUEST ADDRESS DETAILS"
 ,
 
 
@@ -267,6 +270,7 @@
 "NO_OF_ITEMS_LABEL": "No. of items",
 "STATUS_LABEL": "Status",
 "TYPE_LABEL": "Type",
+"SCREEN_ID_LABEL": "screen id",
 "DELETE_LABEL": "delete",
 
 "EDIT_SECTION_LABEL": "Edit Section",
@@ -289,6 +293,14 @@
 "LINK_LABEL": "Link",
 "SCREEN_LABEL": "Screen",
 "ADDON_LABEL": "Add On",
+"SPACE_LABEL": "Space",
+"SPACE_MAX_OCCUPANCY_LABEL": "Maximum Occupancy",
+"SPACE_MAX_OCCUPANCY_PLACEHOLDER": "No of People",
+"SPACE_DURATION_LABEL": "Duration",
+"SPACE_FULFILLMENT_LABEL": "FULFILLMENT",
+"SPACE_FULFILLMENT_NONE": "None",
+"SPACE_FULFILLMENT_EMAIL": "Email",
+"SPACE_FULFILLMENT_EMAIL_ACCOUNTS_LABEL": "Email Accounts (separated by semi-colon ;)",
 "ADDON_DESCRIPTION_LABEL": "Add On Description",
 "ADDON_PRICE_LABEL": "Add On Price",
 "ADDON_MIN_DURATION_LABEL": "Minimum duration [days]",
@@ -297,6 +309,7 @@
 "PHONE_LABEL": "Phone",
 "ADDRESS_LABEL": "Address",
 "URL_LABEL": "URL",
+"SCREEN_ID_LABEL":"screen id",
 
 "SECTION_ICON_LABEL": "Section icon",
 "CATEGORY_ICON_LABEL": "Category icon",
@@ -320,13 +333,18 @@
 "REPLACE_ICON_LABEL" : "Replace icon",
 "REPLACE_IMAGE_LABEL" : "Replace image",
 "ADD_ICON_LABEL" : "Add icon",
-"ADD_IMAGE_LABEL" : "Add image"
+"ADD_IMAGE_LABEL" : "Add image",
+"SECTION_DESCRIPTION_VISIBLE_LABEL": "SECTION DESCRIPTION VISIBLE",
+"SECTION_DESCRIPTION_ALIGNMENT_LABEL": "SECTION DESCRIPTION ALIGNMENT",
+"SECTION_DESCRIPTION_LABEL": "SECTION DESCRIPTION"
+
 
 ,"EARLY_CHECKIN_UPSELL": "Early Checkin Upsell",
 "EARLY_CHECKIN" : "Early Checkin",
 "EARLY_CHECKIN_GENERAL": "GENERAL",
 "EARLY_CHECKIN_UPSELL_WINDOWS": "Early Checkin Upsell Windows",
 "EARLY_CHECKIN_START_TIME" : "Start Time",
+"EARLY_CHECKIN_END_TIME": "EARLY CHECKIN TIME ENDS AT",
 "EARLY_CHECKIN_CHARGE" : "Charge",
 "EARLY_CHECKIN_ADDON" : "Add On",
 "EARLY_CHECKIN_BY_RATE" : "RATE CODES BYPASS EARLY CHECK IN OFFER",
@@ -533,7 +551,8 @@
 	"WORKSTATIONS":"Work Stations",
 	"LOCATION_LABEL": "Location",
 	"ECODER_ID_LABEL": "Encoder ID",
-	"ENCODER_ID_PLACEHOLDER": "Enter encoder id"
+	"ENCODER_ID_PLACEHOLDER": "Enter encoder id",
+        "FAILED_INTERFACE_MESSAGES": "Failed OTA Messages"
 
 ,
 	"PAYMENT_METHODS": "Payment Methods",
@@ -625,7 +644,9 @@
 
 "BALANCE_INVENTORY": "Balance Inventory",
 "START_JOB": "Start Job",
-"REFRESH_STATUS": "Refresh Status"
+"REFRESH_STATUS": "Refresh Status",
+"FORCE_ADJ_REASON" :"FORCE RATE ADJUSTMENT REASON",
+"SHOW_OVERBOOKING_ALERT" : "SHOW OVERBOOKING ALERT"
 ,
 
     "ROOMS":"Rooms",
@@ -791,7 +812,8 @@
     "SELECT_CHARGE_CODE":"Select Charge Code",
     "NO_SHOW_CHARGE_CODE":"No show charge code",
     "ADDONS_FOR_RESERVATIONS" : "Add-ons for Reservations",
-    "CUSTOM_GROUP_RATE_CHARGE_CODE":"Custom Group Rate Charge Code"
+    "CUSTOM_GROUP_RATE_CHARGE_CODE":"Custom Group Rate Charge Code",
+    "MAX_ROOM_QUANTITY" :"Max Rooms"
 ,	
 	"SETTINGS_AND_PARAMS":"Settings & Parameters",
     "CHANGE_BUSSINESS_DAY":"Change Business Day",

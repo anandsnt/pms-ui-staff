@@ -22,7 +22,11 @@
                                     <li>Complimentary Rooms</li>
                                     <li>Occupied Rooms (Excl. Comp.)</li>
 
-                                    <li ng-repeat="market in markets" ng-show="appliedFilter.markets.indexOf('All Markets') > -1 || appliedFilter.markets.indexOf(market.name) > -1"><em>{{market.name}}</em>
+                                    <li ng-repeat="market in markets" ng-show="appliedFilter.markets.indexOf('All Markets') > -1 || appliedFilter.markets.indexOf(market.name) > -1">
+                                        <em>{{ market.name }}</em>
+                                    </li>
+                                    <li ng-show="'All Markets' == appliedFilter.markets">
+                                        <em>Unassigned</em>
                                     </li>
                                     <!-- .. repeat for all market codes -->
 
@@ -37,7 +41,11 @@
                                     <li >ADR (Incl. Comp.)</li>
                                     <li >ADR (Excl. Comp.)</li>
 
-                                    <li ng-repeat="market in markets" ng-show="appliedFilter.markets.indexOf('All Markets') > -1 || appliedFilter.markets.indexOf(market.name) > -1"><em>{{market.name}}</em>
+                                    <li ng-repeat="market in markets" ng-show="appliedFilter.markets.indexOf('All Markets') > -1 || appliedFilter.markets.indexOf(market.name) > -1">
+                                        <em>{{ market.name }}</em>
+                                    </li>
+                                    <li ng-show="'All Markets' == appliedFilter.markets">
+                                        <em>Unassigned</em>
                                     </li>
                                     <!-- .. repeat for all markets -->
 
@@ -73,11 +81,18 @@
                                                             {{absoulte(getValue(occupancy.key,$index))}}
                                                     </td>
                                             </tr>
+
                                             <tr ng-repeat="market in markets" ng-show="appliedFilter.markets.indexOf('All Markets') > -1 || appliedFilter.markets.indexOf(market.name) > -1" ng-init="outerIndex = $index" ng-class="{'negative' : getMarketOccupancyValue(outerIndex,$index) < 0}">
                                                     <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
                                                             {{absoulte(getMarketOccupancyValue(outerIndex,$index)) | number:0}}
                                                     </td>
                                             </tr>
+                                            <tr ng-show="'All Markets' == appliedFilter.markets" ng-init="outerIndex = markets.length">
+                                                <td ng-repeat="n in getNumber() track by $index" class={{ getClass($index) }}>
+                                                    {{ absoulte(getMarketOccupancyValue(outerIndex, $index)) | number : 0 }}
+                                                </td>
+                                            </tr>
+
                                             <tr ng-repeat="occupancyTotal in stateStore.occupancyTotals track by $index" ng-class="{'double-row': !!results.nightly}">
                                                     <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}} ng-class="{'negative' : getValue(occupancyTotal.key,$index) < 0}">
                                                             <strong>{{absoulte(getValue(occupancyTotal.key,$index)) | number:2}} %</strong>
@@ -89,11 +104,18 @@
                                                             {{ absoulte(getValue(revenue.key,$index)) | currency:currencySymbol:2 }}
                                                     </td>
                                             </tr>
+
                                             <tr ng-repeat="market in markets" ng-show="appliedFilter.markets.indexOf('All Markets') > -1 || appliedFilter.markets.indexOf(market.name) > -1" ng-init="outerIndex = $index" ng-class="{'negative' : getMarketRevenueValue(outerIndex,$index) < 0}">
                                                     <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
                                                             {{ absoulte(getMarketRevenueValue(outerIndex,$index)) | currency:currencySymbol:2 }}
                                                     </td>
                                             </tr>
+                                            <tr ng-show="'All Markets' == appliedFilter.markets" ng-init="outerIndex = markets.length">
+                                                <td ng-repeat="n in getNumber() track by $index" class={{ getClass($index) }}>
+                                                    {{ absoulte(getMarketRevenueValue(outerIndex, $index)) | currency:currencySymbol:2 }}
+                                                </td>
+                                            </tr>
+
                                             <tr ng-repeat="chargeGroup in results.charge_groups" ng-init="outerIndex = $index">
                                                     <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}} ng-class="{'negative' : getChargeCodeValue(outerIndex,$index) < 0}">
                                                             {{absoulte(getChargeCodeValue(outerIndex,$index)) | currency:currencySymbol:2 }}

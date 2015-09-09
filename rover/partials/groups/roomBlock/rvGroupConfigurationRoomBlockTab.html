@@ -9,10 +9,9 @@
                 </label>
                 <input id="room-block-start" class="range-datepicker" 
                     placeholder="{{'SELECT_START_DATE'|translate}}" 
-                    value="{{startDate|date:dateFormat}}"
                     readonly 
                     ui-date="startDateOptions" 
-                    rv-clear-text-box listen-this="startDate" 
+                    rv-set-textbox-value listen-this="groupConfigData.summary.block_from|date:dateFormat"
                     ng-disabled="shouldDisableStartDate()" />
             </div>
             <div class="has-datepicker">
@@ -22,30 +21,41 @@
                 </label>
                 <input id="room-block-end" class="range-datepicker" 
                     placeholder="{{'SELECT_END_DATE'|translate}}" 
-                    value="{{endDate|date:dateFormat}}"
                     readonly 
                     ui-date="endDateOptions" 
-                    rv-clear-text-box listen-this="endDate" 
+                    rv-set-textbox-value listen-this="groupConfigData.summary.block_to|date:dateFormat"
                     ng-disabled="shouldDisableEndDate()" />
             </div>
         </div>
-        <div class="entry status" ng-class="{'hidden': shouldHideHoldStatus()}">
-            <!-- Add class "hidden" to hide when its a new group and/or start & end dates have not been defined -->
-            <label for="group-hold-status" translate>HOLD_STATUS</label>
-            <div class="select">
-                <select id="group-hold-status" 
-                    ng-model="selectedHoldStatus" 
-                    iscroll-stop-propagation
-                    ng-disabled="shouldDisableHoldStatusChange()">
-                    <option ng-repeat="holdstatus in holdStatusList" 
-                        value="{{holdstatus.id}}" 
-                        ng-hide="holdstatus.name == 'Cancel' && holdstatus.is_system && selectedHoldStatus!=holdstatus.id"
-                        ng-selected="selectedHoldStatus === holdstatus.id">
-                        {{holdstatus.name}}
-                    </option>
-                </select>
-            </div>
-        </div>
+        <div class="actions" ng-hide="!!groupConfigData.summary.is_cancelled" ng-class="{'move-group' : !shouldDisableCreateBlockButton()}"> <!-- When block is created, add class "move-group" -->
+            <!-- If block not created:  -->
+            <button type="button" class="button" 
+                ng-disabled="shouldDisableCreateBlockButton()" 
+                ng-hide="shouldHideCreateBlockButton()" 
+                ng-click="clickedOnCreateButton()" 
+                ng-class="{'grey' : shouldDisableCreateBlockButton(), 
+                           'green': !shouldDisableCreateBlockButton()}" 
+                translate>
+                CREATE_BLOCK
+            </button>
+            <!-- If block created -->
+            <button type="button" class="button blue"
+                ng-show="changeDatesActions.shouldShowMoveButton()"
+                ng-click="clickedOnMoveButton()">
+                Move Group
+            </button>
+            <!-- When button pressed, disable due date input and replace "Move Group" button with: -->
+            <button type="button" class="button blank"
+                ng-click="clickedOnCancelMoveButton()"
+                ng-show="changeDatesActions.isInCompleteMoveMode()">
+                Cancel
+            </button>
+            <button type="button" class="button green"
+                ng-click="clickedOnSaveMoveButton()"
+                ng-show="changeDatesActions.isInCompleteMoveMode()">
+                Save
+            </button>
+        </div> 
         <div class="entry" ng-class="{'hidden': shouldHideRoomsAndPickUpArea()}">
             <!-- Add class "hidden" to hide when it's a new group and/or start & end dates have not been defined -->
             <label for="group-total-rooms" translate>TOTAL_ROOMS</label>
@@ -58,28 +68,19 @@
             <input id="group-total-rooms"  ng-model="totalPickups" 
                 ng-readonly="shouldChangeTotalPickUpToReadOnly()" />
         </div>
-        <div class="actions" ng-hide="!!groupConfigData.summary.is_cancelled">
-            <!-- If new group and/or start & end dates have not been defined:  -->
-            <button type="button" class="button" 
-                ng-disabled="shouldDisableCreateBlockButton()" 
-                ng-hide="shouldHideCreateBlockButton()" 
-                ng-click="clickedOnCreateButton()" 
-                ng-class="{'grey' : shouldDisableCreateBlockButton(), 
-	        			   'green': !shouldDisableCreateBlockButton()}" 
-                translate>
-                CREATE_BLOCK
-            </button>
-            <!-- // When start & end dates are set, enable button and change class "grey" with "green" -->
-            <!-- If existing group and/or room blocks are set: -->
-            <button type="button" class="button" 
-                ng-click="clickedOnUpdateButton()" 
-                ng-disabled="shouldDisableUpdateBlockButton()" 
-                ng-hide="shouldHideUpdateButton()" 
-                ng-class="{'grey' : shouldDisableUpdateBlockButton(), 
-	        			   'green': !shouldDisableUpdateBlockButton()}" 
-                translate>
-                UPDATE
-            </button>
+        <div class="entry status" ng-class="{'hidden': shouldHideHoldStatus()}">
+            <!-- Add class "hidden" to hide when its a new group and/or start & end dates have not been defined -->
+            <label for="group-hold-status" translate>HOLD_STATUS</label>
+            <div class="select disabled">
+                <select id="group-hold-status" disabled>
+                    <option ng-repeat="holdstatus in holdStatusList"
+                        value="{{holdstatus.id}}"
+                        ng-hide="holdstatus.name == 'Cancel' && holdstatus.is_system && selectedHoldStatus!=holdstatus.id"
+                        ng-selected="selectedHoldStatus === holdstatus.id">
+                        {{holdstatus.name}}
+                    </option>
+                </select>
+            </div>
         </div>
     </div>
     <div id="group-room-block-content" class="tab-details">

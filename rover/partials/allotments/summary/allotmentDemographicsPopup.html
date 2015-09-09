@@ -1,0 +1,142 @@
+<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog">
+    <form method="post" action="" class="modal-content form demographics" ng-cloak>
+
+        <button ng-click="closeDialog()" ng-hide="allotmentSummaryData.promptMandatoryDemographics" id="modal-close" class="modal-close" type="button"><span class="icons icon-close invert"></span></button>
+
+        <strong class="h2 message" ng-hide="allotmentSummaryData.promptMandatoryDemographics">Demographics</strong>
+        <!-- <span class="text" ng-hide="allotmentSummaryData.promptMandatoryDemographics">Fields marked with <strong>*</strong> are mandatory</span> -->
+        
+        <!-- <strong class="h2 message" ng-show="allotmentSummaryData.promptMandatoryDemographics">Demographics Missing!</strong> -->
+        <!-- <span class="text" ng-show="allotmentSummaryData.promptMandatoryDemographics">Set mandatory demographics to continue</span> -->
+
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+        <!-- [<[< RESERVATION TYPES >]>] -->
+        <div class="entry margin">
+            <label for="reservation-type">
+                Reservation type
+                <!-- <strong ng-show="">*</strong> -->
+            </label>
+            <div class="select">
+                <select iscroll-stop-propagation name="reservation-type" id="reservation-type" 
+                    ng-class="{'placeholder': !allotmentConfigData.summary.demographics.reservation_type_id}" 
+                    ng-model="allotmentConfigData.summary.demographics.reservation_type_id">
+                    <option value="" selected translate>RESERVATION_TYPE_PLACEHOLDER</option>
+                    <option ng-repeat="reservationType in allotmentSummaryData.demographics.reservationTypes" 
+                        value="{{reservationType.value}}" 
+                        ng-selected="reservationType.value == allotmentConfigData.summary.demographics.reservation_type_id">
+                        {{reservationType.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <!-- [<[< MARKETS >]>] -->
+        <div class="entry margin" ng-show="allotmentSummaryData.demographics.is_use_markets">
+            <label for="market">
+                Market
+                <!-- <strong ng-show="">*</strong> -->
+            </label>
+            <div class="select">
+                <select iscroll-stop-propagation name="market" id="market" 
+                    ng-class="{'placeholder': !allotmentConfigData.summary.demographics.market_segment_id}" 
+                    ng-model="allotmentConfigData.summary.demographics.market_segment_id">
+                    <option value="" selected translate>MARKET_PLACEHOLDER</option>
+                    <option ng-repeat="market in allotmentSummaryData.demographics.markets" 
+                        value="{{market.value}}" 
+                        ng-selected="market.value == allotmentConfigData.summary.demographics.market_segment_id">
+                        {{market.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <!-- [<[< SOURCES >]>] -->
+        <div class="entry margin" ng-show="allotmentSummaryData.demographics.is_use_sources">
+            <label for="source">
+                Source
+                <!-- <strong ng-show="">*</strong> -->
+            </label>
+            <div class="select">
+                <select iscroll-stop-propagation name="source" id="source" 
+                    ng-class="{'placeholder': !allotmentConfigData.summary.demographics.source_id}" 
+                    ng-model="allotmentConfigData.summary.demographics.source_id">
+                    <option value="" selected translate>SOURCE_PLACEHOLDER</option>
+                    <option ng-repeat="source in allotmentSummaryData.demographics.sources" 
+                        value="{{source.value}}" 
+                        ng-selected="source.value == allotmentConfigData.summary.demographics.source_id">
+                        {{source.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <!-- [<[< ORIGINS >]>] -->
+        <div class="entry margin" ng-show="allotmentSummaryData.demographics.is_use_origins">
+            <label for="origin">
+                Origin of Booking
+                <!-- <strong ng-show="">*</strong> -->
+            </label>
+            <div class="select">
+                <select iscroll-stop-propagation name="origin" id="origin" 
+                    ng-class="{'placeholder': !allotmentConfigData.summary.demographics.booking_origin_id}" 
+                    ng-model="allotmentConfigData.summary.demographics.booking_origin_id">
+                    <option value="" selected translate>ORIGIN_BOOKING_PLACEHOLDER</option>
+                    <option ng-repeat="origin in allotmentSummaryData.demographics.origins" 
+                        value="{{origin.value}}" 
+                        ng-selected="origin.value == allotmentConfigData.summary.demographics.booking_origin_id">
+                        {{origin.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <!-- [<[< SEGMENTS >]>] -->
+        <div class="entry margin" ng-show="allotmentSummaryData.demographics.is_use_segments">
+            <label for="origin">
+                Segment
+                <!-- <strong ng-show="">*</strong> -->
+            </label>
+            <div class="select">
+                <select iscroll-stop-propagation name="segment" id="segment" 
+                    ng-class="{'placeholder': !allotmentConfigData.summary.demographics.segment_id}" 
+                    ng-model="allotmentConfigData.summary.demographics.segment_id"
+                    ng-disabled="!!allotmentConfigData.summary.demographics.segment_id && !!allotmentSummaryData.computedSegment">
+                    <option value="" selected translate>SEGMENT_PLACEHOLDER</option>
+                    <option ng-repeat="segment in allotmentSummaryData.demographics.segments" 
+                        value="{{segment.value}}" 
+                        ng-selected="segment.value == allotmentConfigData.summary.demographics.segment_id">
+                        {{segment.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="actions">
+            <button type="button" 
+                class="button blank" 
+                ng-hide="allotmentSummaryData.promptMandatoryDemographics" 
+                ng-click="cancelDemographicChanges();closeDialog();">
+                Cancel
+            </button>
+
+            <button type="button" class="button"
+                ng-hide="allotmentSummaryData.promptMandatoryDemographics" 
+                ng-disabled="!isDemographicsFormValid(false)" 
+                ng-class="isDemographicsFormValid(false) ? 'green' : 'grey'",
+                ng-click="saveDemographicsData();">
+                Save
+            </button>
+
+            <button ng-show="allotmentSummaryData.promptMandatoryDemographics" 
+                type="button" 
+                class="button" 
+                ng-disabled="!isDemographicsFormValid(false)" 
+                ng-class="isDemographicsFormValid(false) ? 'green' : 'grey'">
+                Save & Continue
+            </button>
+            
+        </div>
+    </form>
+</div>

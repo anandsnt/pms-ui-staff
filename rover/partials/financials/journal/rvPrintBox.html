@@ -1,5 +1,5 @@
 <!-- PRINT BOX FOR REVENUE -->
-<div ng-show="data.activeTab==0" class="holder">
+<div ng-show="data.activeTab === 'REVENUE'" class="holder">
     <div class="entry">
         <label for="revenue-charge-group" translate>CHARGE_GROUPS</label>
         <div class="select">
@@ -37,7 +37,7 @@
 </div>
 
 <!-- PRINT BOX FOR PAYMENTS -->
-<div ng-show="data.activeTab==1" class="holder">
+<div ng-show="data.activeTab === 'PAYMENTS'" class="holder">
     <div class="entry">
         <label for="payments-payment-type">{{'PAYMENT_TYPE' | translate}} / {{'CHARGE_CODE' | translate}}</label>
         <div class="select">
@@ -66,7 +66,7 @@
 </div>
 
 <!-- PRINT BOX FOR CASHIER -->
-<div ng-show="data.activeTab==2" class="holder">
+<div ng-show="data.activeTab === 'CASHIER'" class="holder">
     <div class="entry">
         <label for="cashier-report" translate>REPORT</label>
         <div class="select">

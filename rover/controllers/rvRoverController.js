@@ -110,6 +110,7 @@ sntRover.controller('roverController',
 	  $rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
     $rootScope.printCancellationLetter = hotelDetails.print_cancellation_letter;
     $rootScope.printConfirmationLetter = hotelDetails.print_confirmation_letter;
+    $rootScope.isItemInventoryOn    = hotelDetails.is_item_inventory_on;
 
       // CICO-18040
       $rootScope.isFFPActive = hotelDetails.is_ffp_active;
@@ -567,6 +568,9 @@ sntRover.controller('roverController',
     $scope.$on('SETGUESTDATA', function(event, guestData) {
       $scope.guestInfoToPaymentModal = guestData;
 
+    });
+    $scope.$on('CLOSE_AVAILIBILTY_SLIDER', function(event) {
+      $scope.$broadcast('CLOSED_AVAILIBILTY_SLIDER');
     });
     /*
      * Tp close dialog box
