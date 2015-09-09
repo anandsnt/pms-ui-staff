@@ -167,18 +167,6 @@ sntRover.controller('rvGroupReservationEditCtrl', [
         }, 800);
     };
 
-   var showCheckinConfirmationPopup = function() {
-        ngDialog.open({
-            template: '/assets/partials/groups/rooming/popups/editReservation/rvGroupEditRoomingListItemCheckinConfirmation.html',
-            className: '',
-            scope: $scope.$parent,
-            closeByDocument: false,
-            closeByEscape: false,
-            controller: 'rvGroupReservationCheckinCtrl',
-            data: JSON.stringify(selectedReservation)
-        });
-    };
-
     /**
      * Call to checkin a single reservation
      * @param {object} Selected Reservation
@@ -186,9 +174,10 @@ sntRover.controller('rvGroupReservationEditCtrl', [
     $scope.checkinReservation = function(reservation) {
         $scope.closeDialog();
 
+        // call group checkin API with one reservation id.
         $timeout(function() {
-            selectedReservation = reservation;
-            showCheckinConfirmationPopup();
+            $scope.addOrRemoveFromSelectedReservation(reservation);
+            $scope.groupCheckin();
         }, 800);
     };
 
