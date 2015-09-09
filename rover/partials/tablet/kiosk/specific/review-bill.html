@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {../_include/head.html}
+    </head>
+    <body id="{hotel-id}"> <!-- hotel-id should be hotel name, like "zoku", "yotel" or "grand-hotel". We can then apply specific styles throughtout the entire app based on this id value -->
+        
+        <!-- Header -->
+        {../_include/navigation.html}   
+        
+        <!-- Content -->
+        <section id="main" role="main">
+            <div id="content">
+                <h1>Review your bill</h1>
+                <div id="flex-holder">
+                    <!-- Calculate {maxheight} with this formula: window.height - combined heights of <h1>, <h2> and <h3> elements + 8
+                        - if some <h> elements are missing just exclude them or use 0. 
+                        - 8 is added to make sure bottom rounded corner is set off screen
+                    -->
+                    <div id="textual" class="review-bill pull-left" style="max-height:{maxheight}px;"> <!-- Add ng-scroll here -->
+                        <div class="wrapper">
+                            <div id="bill">
+                                <p>
+                                    <strong>{Guest Name}</strong>                          
+                                    <span>{No.} nights</span>
+                                </p>
+                                <div id="bill-grid">
+                                    <div id="grid-head">
+                                        <div class="row">
+                                            <span class="cell date">Date</span>
+                                            <span class="cell desc">Description</span>
+                                            <span class="cell amount">Amount</span>
+                                        </div>
+                                    </div>
+                                    <div id="grid-body">
+                                        <div class="row">
+                                            <span class="cell date">{Date}</span>
+                                            <span class="cell desc">{Charge Type}</span>
+                                            <span class="cell amount">€{Value}</span>
+                                        </div>
+                                        ... repeat
+                                    </div>
+                                </div>
+                            </div>
+                            <ul id="rate">
+                                <li class="sub">Subtotal<span>€{Value}</span></li>
+                                <li class="sub">Deposits<span>€{Value}</span></li>
+                                <li class="total">Balance due<span>€{Value}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="actions" class="pull-right">
+                        <button type="button" class="button">Next</button>
+                        <p><strong>Questions?</strong>Tap “Cancel” and see a sidekick.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>
