@@ -1,5 +1,5 @@
 <!-- Report content -->
-    <div id="report-content" class="report-content grid scrollable" ng-controller="RVAddonForecastReportCtrl" ng-iscroll="addon-forecast-report-scroll">
+    <div id="report-content" class="report-content grid scrollable" ng-controller="RVAddonForecastReportByDateCtrl" ng-iscroll="addon-forecast-report-scroll">
         <div class="wrapper">
             <ul class="grid-header dates">
                 <li class="guests">Guests</li>
@@ -16,7 +16,7 @@
                 <div ng-repeat="item2 in item1.addon_groups" ng-init="item2Values = getKeyValues(item2)" class="grid-content" ng-class="{ 'hidden': !item1.hidden }"> <!-- Toggle class hidden when L135-139 tapped -->
                     <!-- Level 2 - Add-On Group -->
                     <a href="#addon-{group}-{date}" class="title-2 toggle" ng-class="{ 'has-arrow': item2Values.addons.length }" ng-click="toggleSub(item2)">
-                        <strong>{{ getKey(item3) }} - {{ getKeyName(item2) }}</strong>
+                        <strong>{{ getKeyName(item2) }}</strong>
                         <span>{{ item2Values.guests }}</span>
                         <span>{{ item2Values.revenue }}</span>
                     </a>
@@ -31,7 +31,7 @@
                         <div ng-repeat="item3 in item2Values.addons" ng-init="item3Values = getKeyValues(item3)">
                             <!-- Level 3 - Add-On -->
                             <a href="#addon-{addon-name}-{group}-{date}" class="title-3 toggle" ng-class="{ 'has-arrow': item3Values.reservations.length }" ng-click="toggleSub(item3)">
-                                <strong class="name">{{ getKey(item3) }} - {{ getKeyName(item3) }}</strong>
+                                <strong class="name">{{ getKeyName(item3) }}</strong>
                                 <span>{{ item3Values.booked }}</span>
                                 <span>{{ item3Values.remaining }}</span>
                                 <span>{{ item3Values.guests }}</span>
@@ -41,8 +41,8 @@
                             <table ng-if="item3Values.reservations.length" class="grid-content" ng-class="{ 'hidden': !item3.hidden }"> <!-- Toggle class hidden when L156-162 tapped -->
                                 <thead>
                                     <tr>
-                                        <th><span class="sort sorting-asc" ng-click="loadRes('sort', item2Values, 'ROOM')">Room</span></th>
-                                        <th><span class="sort sorting-dsc" ng-click="loadRes('sort', item2Values, 'NAME')">Guest Name</span></th>
+                                        <th><span class="sort" ng-class="{ 'sorting-asc': true === item3Values.roomSortDir, 'sorting-desc': false === item3Values.roomSortDir }" ng-click="sortRes('ROOM', item3Values)">Room</span></th>
+                                        <th><span class="sort" ng-class="{ 'sorting-asc': true === item3Values.nameSortDir, 'sorting-desc': false === item3Values.nameSortDir }" ng-click="sortRes('NAME', item3Values)">Guest Name</span></th>
                                         <th><span>Guests</span></th>
                                         <th><span>Accompanying</span></th>
                                         <th><span>Price</span></th>
@@ -72,12 +72,12 @@
                                         </td>
                                     </tr>
                                     <!-- Pagination // Shown when needed -->
-                                    <tr class="pagination" ng-if="!item2Values.disablePrevBtn || !item2Values.disableNextBtn">
+                                    <tr class="pagination" ng-if="!item3Values.disablePrevBtn || !item3Values.disableNextBtn">
                                         <td colspan="5">
                                             <div class="search-pagination">
-                                                <label class="button dark-grey next" ng-click="loadRes('next', item2Values)" ng-class="{'disabled': item2Values.disableNextBtn}">Next</label>
-                                                <label class="button dark-grey prev" ng-click="loadRes('prev', item2Values)" ng-class="{'disabled': item2Values.disablePrevBtn}">Previous</label>
-                                                <p>Showing <strong>{{ item2Values.resultFrom }}-{{ item2Values.resultUpto }}</strong> of <strong id="total-count">{{ item2Values.netTotalCount }}</strong> items</p>
+                                                <label class="button dark-grey next" ng-click="loadRes('next', item3Values)" ng-class="{'disabled': item3Values.disableNextBtn}">Next</label>
+                                                <label class="button dark-grey prev" ng-click="loadRes('prev', item3Values)" ng-class="{'disabled': item3Values.disablePrevBtn}">Previous</label>
+                                                <p>Showing <strong>{{ item3Values.resultFrom }}-{{ item3Values.resultUpto }}</strong> of <strong id="total-count">{{ item3Values.netTotalCount }}</strong> items</p>
                                             </div>
                                         </td>
                                     </tr>

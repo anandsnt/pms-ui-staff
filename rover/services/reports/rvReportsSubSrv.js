@@ -159,6 +159,15 @@ sntRover.service('RVreportsSubSrv', [
 			});
 		};
 
+		service.fetchAddonReservations = function(params) {
+			return callApi({
+				method : 'getJSON',
+				url    : '/api/reports/' + params.id + '/addon_reservations',
+				params : _.omit(params, 'id'),
+				resKey : 'results',
+			});
+		};
+
 		return service;
 	}
 ]);

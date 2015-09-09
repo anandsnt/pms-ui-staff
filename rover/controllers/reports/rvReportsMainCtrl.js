@@ -494,7 +494,7 @@ sntRover.controller('RVReportsMainCtrl', [
             };
 
             var sucssCallback = function (data) {
-                reportItem.hasAddons.data = data.results;
+                reportItem.hasAddons.data = data;
                 $scope.$emit( 'hideLoader' );
             };
 
@@ -717,12 +717,20 @@ sntRover.controller('RVReportsMainCtrl', [
 				} else if ( 'GROUP_NAME' === report.chosenGroupBy ) {
 					key = reportParams['GROUP_BY_GROUP_NAME'];
 				};
+
 				/**/
 				if ( !! key ) {
 					params[key]                     = true;
 					$scope.appliedFilter['groupBy'] = key.replace( 'GROUP_BY_', '' )
 														 .replace( '_', ' ' );
 				};
+
+				// patch
+				if ( 'ADDON' === report.chosenGroupBy || 'DATE' === report.chosenGroupBy ) {
+					key = reportParams['ADDON_GROUP_BY'];
+					params[key] = report.chosenGroupBy;
+					$scope.appliedFilter['groupBy'] = 'GROUP BY ' + report.chosenGroupBy;
+				}
 			};
 
 			// reset 'chosenOptions' and generate params for selected options
