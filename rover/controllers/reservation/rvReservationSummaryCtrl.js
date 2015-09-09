@@ -431,14 +431,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             
             
             if (dataToMakePaymentApi.postData.payment_type === "GIFT_CARD") {
-                if ($scope.cardData){
-                    dataToMakePaymentApi.postData.card_number = $scope.cardData.cardNumber;
-                    if ($scope.cardData.cardNumber === ''){
-                        dataToMakePaymentApi.postData.card_number = $.trim($('[name=card-number]').val());
-                    }
-                } else {
-                    dataToMakePaymentApi.postData.card_number = $.trim($('[name=card-number]').val());//trim to remove whitespaces from copy-paste
-                }
+                delete dataToMakePaymentApi.postData.payment_type_id;
+                dataToMakePaymentApi.postData.card_number = $.trim($scope.num);//trim to remove whitespaces from copy-paste
             };
 
             if ($scope.isShowFees()) {
@@ -1108,7 +1102,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                     $scope.addmode = false;
                     $scope.shouldShowAddNewCard = false;
                     $scope.showCC = false;
-                    console.log($scope.shouldShowIframe, $scope.addmode, $scope.shouldShowAddNewCard)
                 }
             } else {
                 $scope.isSubmitButtonEnabled = true;

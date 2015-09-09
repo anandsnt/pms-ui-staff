@@ -503,7 +503,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
                     var card_number;
                     if ($scope.reservationData.reservation_card.payment_details.card_number !== ''){
                         card_number = $scope.reservationData.reservation_card.payment_details.card_number;
-                        console.log('$scope.reservationData.reservation_card.payment_details.card_number: '+$scope.reservationData.reservation_card.payment_details.card_number)
                     } else {
                         if ($scope.showingDepositModal){
                             card_number = $.trim($scope.cardData.cardNumber);
@@ -511,7 +510,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
                             card_number = $.trim($('#card-number').val());//trim to remove whitespaces from copy-paste
                         }
                         
-                        console.log(card_number)
                     }
                     dataToSrv.postData.card_number = card_number;
                     
