@@ -115,7 +115,7 @@ sntRover.controller('rvGroupAvailabilityStatusController', [
 		* Initialisation goes here!
 		*/
 		var init = function(){
-			$scope.idsOfDropDownopenedGroups =[];
+			$scope.idsOfDropDownOpenedGroups =[];
 			$scope.hideBeforeDataFetch =true;
 			$scope.hideHoldStatusOf = {};
 			$scope.hideHoldStatusOf["groupRoomTotal"] = true;
