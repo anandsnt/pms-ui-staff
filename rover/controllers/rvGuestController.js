@@ -353,7 +353,7 @@ sntRover.controller('guestCardController', [
 		$scope.UICards = ['guest-card', 'company-card', 'travel-agent-card', 'group-card', 'allotment-card'];
 
 		// className based on UICards index
-		var subCls = ['first', 'second', 'third', 'fourth', 'fifth'];
+		var subCls = ['first', 'second', 'third', 'fourth', 'fourth'];
 
 		$scope.UICardClass = function(from) {
 			// based on from (guest-card, company-card || travel-agent-card)
@@ -901,7 +901,8 @@ sntRover.controller('guestCardController', [
 				fromState 		: 'STAY_CARD',
 				company_id 		: resData.company.id,
 				travel_agent_id	: resData.travelAgent.id,
-				group_id 		: resData.group && resData.group.id
+				group_id 		: resData.group && resData.group.id,
+				allotment_id 	: resData.allotment && resData.allotment.id
 			});
 		};
 
@@ -1055,12 +1056,6 @@ sntRover.controller('guestCardController', [
 
 			$scope.$broadcast("groupCardDetached");
 
-			//redirecting to room & rates screen
-			/*var resData = $scope.reservationDetails;
-			$scope.showContractedRates({
-				companyCard: resData.companyCard.id,
-				travelAgent: resData.travelAgent.id
-			});*/
 			$scope.navigateToRoomAndRates();
 		};
 		
@@ -1107,6 +1102,182 @@ sntRover.controller('guestCardController', [
 				// In staycard
 				attachGroupToThisReservation (group);
 			}
+		};
+
+		/**
+		 * if in create reservation mode
+		 * @return {Boolean}
+		 */
+		var isInCreateReservationMode = function(){
+			return ($scope.viewState.identifier === "CREATION");
+		};
+
+		/**
+		 * [showAllotmentOtherRoomTypeAvailablePopup description]
+		 * @return {undefined}
+		 */
+		var showAllotmentOtherRoomTypeAvailablePopup = function() {
+	        ngDialog.open({
+	            template: '/assets/partials/cards/popups/allotment/rvResAttachingToAllotmentOtherRoomTypeAvailabe.html',
+	            className: '',
+	            scope: $scope,
+	            closeByDocument: false,
+	            closeByEscape: false
+	        });			
+		};
+
+		/**
+		 * [showGroupNoRoomTypeAvailablePopup description]
+		 * @return {undefined}
+		 */
+		var showAllotmentNoRoomTypeAvailablePopup = function() {
+	        ngDialog.open({
+	            template: '/assets/partials/cards/popups/allotment/rvResAttachingToAllotmentNoAvailability.html',
+	            className: '',
+	            scope: $scope,
+	            closeByDocument: false,
+	            closeByEscape: false
+	        });			
+		};
+
+		/**
+		 * [showGroupNoRoomTypeAvailablePopup description]
+		 * @return {undefined}
+		 */
+		var showAllotmentRoomTypeIsNotConfiguredPopup = function() {
+	        ngDialog.open({
+	            template: '/assets/partials/cards/popups/allotment/rvResAttachingToAllotmentRoomTypeIsNotConfigured.html',
+	            className: '',
+	            scope: $scope,
+	            closeByDocument: false,
+	            closeByEscape: false
+	        });			
+		};
+
+		/**
+		 * navigate to group details
+		 * @return {[type]} [description]
+		 */
+		$scope.gotoAllotmentDetails = function() {
+			$state.go('rover.allotment.config', {
+	            id: $scope.reservationData.allotment.id,
+	            activeTab: 'SUMMARY'
+	        });
+		};
+
+		/**
+		 * Utility method to change the central reservation data model with our allotment data
+		 * @param  {Object} allotmentData
+		 * @return {undefined}
+		 */
+		var updateReservationAllotmentData = function (allotmentData) {
+			
+			//if it is not set initially
+			if (_.isUndefined($scope.reservationData.allotment)) {
+				$scope.reservationData.allotment = {};
+			}
+
+			_.extend ($scope.reservationData.allotment, 
+			{
+				id 	: allotmentData.id,
+				name: allotmentData.group_name,
+				code: allotmentData.group_code
+			});
+		};
+
+		/**
+		 * when we failed in attaching a group
+		 */
+		var failureCallBackOfAttachAllotmentToReservation = function(error) {
+			if(error.hasOwnProperty ('httpStatus')) {
+
+				//470 is reserved for other room type is available
+				if (error.httpStatus === 470) {
+					showAllotmentOtherRoomTypeAvailablePopup ();
+				}
+
+				//471 - NO availability in group
+				else if (error.httpStatus === 471) {
+					showAllotmentNoRoomTypeAvailablePopup ();
+				}	
+
+				//472 - Room type is not configured in Group
+				else if (error.httpStatus === 472) {
+					showAllotmentRoomTypeIsNotConfiguredPopup ();
+				}								
+			}
+			else {
+				$scope.errrorMessage = error;
+			}			
+		};
+
+
+		/**
+		 * when the API call is success
+		 * @param  {Object} success data from API
+		 * @return {undefined}
+		 */
+		var successCallBackOfAttachGroupToReservation = function(data, successCallBackParams) {
+			var selectedGroup = successCallBackParams.selectedGroup;
+
+			//updating the central reservation data model
+			updateReservationAllotmentData (selectedGroup);	
+
+			//we are in card adding mode
+			switchToNomralCardViewingMode();
+
+			//fecthing the group details and showing them
+			initializeAllotmentCard(selectedGroup.id);
+		};
+
+		/**
+		 * [attachAllotmentToThisReservation description]
+		 * @param  {Object} selectedAllotment
+		 * @return undefined
+		 */
+		var attachAllotmentToThisReservation = function(selectedAllotment) {
+			//calling the API
+			var params = {
+				reservation_id 	: $scope.reservationData.reservationId,
+				group_id 		: selectedAllotment.id
+			};
+
+			var options = {
+				params 			: params,
+				successCallBack : successCallBackOfAttachAllotmentToReservation,
+				failureCallBack : failureCallBackOfAttachAllotmentToReservation,
+				successCallBackParameters: 	{ selectedAllotment: selectedAllotment}
+			};
+
+			$scope.callAPI (rvGroupSrv.attachAllotmentToReservation, options);
+		};
+
+		/**
+		 * when the user selects the allotment from the allotment search results,
+		 * this will trigger
+		 * @param {Object} - allotment object
+		 * @param {Object} - clicked event
+		 * @return {undefined}
+		 */
+		$scope.selectAllotment = function(selectedAllotment, $event) {
+			$event.stopPropagation();
+
+			if (isInCreateReservationMode()) {
+				return;
+			}
+
+			//staycard card attaching
+			else {
+				attachAllotmentToThisReservation (selectedAllotment);
+			}
+		};
+
+		/**
+		 * function to search allotment
+		 * @return {[type]} [description]
+		 */
+		$scope.searchAllotments = function() {
+			$scope.$broadCast ('FETCH_ALLOTMENT_SEARCH_DATA');
 		};
 
 		$scope.selectCompany = function(company, $event) {

@@ -1,0 +1,73 @@
+ <div id="search-group-content" class="search-cards scrollable">
+    <!-- Company Card Results listing -->
+    <div class="wrapper" ng-show="searchingAllotment && searchedAllotment.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="result_showing_area" ng-iscroll-delay='500'>
+        <ul id="search-allotment-group-results" class="search-results">
+            <li class="group with-image" ng-repeat="allotment in allotmentList" ngrepeatend ngrepeatstarted>
+                <div class="guest-image icons icon-allotment"></div>
+                <a ng-click="selectAllotment(allotment, $event)">
+                    <div class="data">
+                        <h2 ng-bind-html="{{stringify(escapeNull(allotment.group_name))}} | highlight:searchData.groupCard.name:false">              </h2>
+                        <span class="confirmation" ng-bind-html="{{stringify(escapeNull(allotment.group_code))}} | highlight:searchData.groupCard.code:false"></span>
+                        <!-- If linked company exists: -->
+                        <span class="icons icon-guest-company" ng-hide="isEmpty(allotment.company)">
+                            {{allotment.company}}
+                        </span>
+                        <!-- If linked travel agent exists: -->
+                        <span class="icons icon-guest-travelagent" ng-hide="isEmpty(allotment.travel_agent)">
+                            {{allotment.travel_agent}}
+                        </span>
+                    </div>
+                    <div class="arrival">
+                        <span class="guest-status" ng-class="getGuestClassForArrival(allotment)">
+                            <!--{arrival or cancel}-->
+                        </span>
+                        <time datetime="allotment.arrival_date">
+                            {{formatDateForUI(allotment.arrival_date)}}
+                        </time>
+                    </div>
+                    <div class="departure">
+                        <span class="guest-status" ng-class="getGuestClassForDeparture(allotment)">
+                        <!--{departure or cancel} -->
+                        </span>
+                        <time datetime="allotment.departure_date">
+                            {{formatDateForUI(allotment.departure_date)}}
+                        </time>
+                    </div>
+                    <div class="blocked" ng-class="getClassAgainstHoldStatus(allotment)">
+                        <!-- If Status = Tentative, add class "tentative" -->
+                        <strong>{{allotment.total_booked === null? '0':allotment.total_booked}}</strong>
+                        <span>{{allotment.hold_status}}</span>
+                    </div>
+                    <div class="picked" ng-class="getClassAgainstPickedStatus(allotment)">
+                        <!-- Add class "green" if No. > 0, or class "red" if cancelled -->
+                        <strong>{{allotment.total_picked_count === null? '0' :allotment.total_picked_count}}</strong>
+                        <span>Picked Up</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div id="search-group-no-results" class="search-cards no-content" ng-show="searchingAllotment && searchedAllotment.length === 0">
+        <!-- Company Card No Results -->
+        <div class="info">
+            <span class="icon-no-content icon-cards"></span>
+            <strong class="h1">No Matches</strong>
+            <span class="h2">
+                Check that you didn't mispell the 
+                <strong>
+                    Group Name
+                </strong> 
+                or 
+                <strong>
+                    Code
+                </strong>
+            </span>
+        </div>
+        <!-- Company Card Empty -->
+        <div class="info" ng-hide='searchingAllotment'>
+            <span class="icon-no-content icon-groups"></span>
+            <strong class="h1">Find Group</strong>
+            <span class="h2">Search by <strong>Group Name</strong> or <strong>Code</strong></span>
+        </div>
+    </div>
+</div>
