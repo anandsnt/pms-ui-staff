@@ -1,0 +1,109 @@
+<!-- Report content -->
+    <div id="report-content" class="report-content grid scrollable" ng-controller="RVAddonForecastReportCtrl" ng-iscroll="addon-forecast-report-scroll">
+        <div class="wrapper">
+            <ul class="grid-header dates">
+                <li class="guests">Guests</li>
+                <li class="revenue">Revenue</li>
+            </ul>
+
+            <div ng-repeat="(key1, item1) in results">
+
+            <!-- Level 1 - Date -->
+            <a href="#addon-{date}" class="title-1 has-arrow toggle">
+                <strong>{{ key1 | date : dateFormat }}</strong>
+                <span>{{ item1.guests }}</span>
+                <span>{{ item1.revenue | currency:currencySymbol:2 }}</span>
+            </a>
+            <div ng-repeat="(key2, item2) in item1.addon_groups" id="addon-{date}" class="grid-content"> <!-- Toggle class hidden when L135-139 tapped -->
+                <!-- Level 2 - Add-On Group -->
+                <a href="#addon-{group}-{date}" class="title-2 has-arrow toggle">
+                    <strong>{{ getKeyName(item2) }}</strong>
+                    <span>{{ getKeyValues(item2).guests }}</span>
+                    <span>{{ getKeyValues(item2).revenue }}</span>
+                </a>
+                <div id="addon-{group}-{date}" class="grid-content"> <!-- Toggle class hidden when L142-146 tapped -->
+                    <ul class="grid-header addons">
+                        <li class="name">Add-On</li>
+                        <li>Booked</li>
+                        <li>Remaining</li>
+                        <li>Guests</li>
+                        <li>Revenue</li>
+                    </ul>
+                    <div ng-repeat="(key3, item3) in getKeyValues(item2).addons">
+                        <!-- Level 3 - Add-On -->
+                        <a href="#addon-{addon-name}-{group}-{date}" class="title-3 has-arrow toggle">
+                            <strong class="name">{{ getKeyName(key3) }}</strong>
+                            <span>{{ getKeyValues(item3).booked }}</span>
+                            <span>{{ getKeyValues(item3).remaining }}</span>
+                            <span>{{ getKeyValues(item3).guests }}</span>
+                            <span>{{ getKeyValues(item3).revenue | currency:currencySymbol:2 }}</span>
+                        </a>
+                    </div>
+                    
+                    <table id="addon-{addon-name}-{group}-{date}" class="grid-content hidden"> <!-- Toggle class hidden when L156-162 tapped -->
+                        <thead>
+                            <tr>
+                                <th><span class="sort sorting-asc">Room</span></th>
+                                <th><span class="sort">Guest Name</span></th>
+                                <th><span>Guests</span></th>
+                                <th><span>Accompanying</span></th>
+                                <th><span>Price</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Level 4 - Guests -->
+                            <tr ng-repeat="(key4, item4) in getKeyValues(item3).reservations">
+                                <td class="room">
+                                    <strong ng-class="{ 'unassigned': !item4.room }" class="title"> <!-- Add class 'unassigned' if room not assigned -->
+                                        {{ item4.room }}
+                                    </strong>
+                                </td>
+                                <td class="name">
+                                    <span class="guest-status small-icon {reservation-status}">{reservation-status}</span>
+                                    <strong class="title">{{ item4.guest_name }}</strong>
+                                </td>
+                                <td class="guests">
+                                    <span>{{ item4.guests_count.adults }} Adults</span>&#8226; <span>{{ item4.guests_count.children }} Children</span></td>
+                                <td class="guests">
+                                    <span ng-repeat="guest in item4.accompanying_guests">{{ guest }}</span>&#8226;
+                                </td>
+                                <td>
+                                    {{ item4.price | currency:currencySymbol:2 }}
+                                </td>
+                            </tr>
+                            ... repeat
+                            <!-- Pagination // Shown when needed -->
+                            <tr class="pagination">
+                                <td colspan="5">
+                                    <div class="search-pagination">
+                                        <button type="button" class="button dark-grey next">Next</button>
+                                        <button type="button" class="button dark-grey prev">Previous</button>
+                                        <p>Showing <strong>1-{X}</strong> of <strong id="total-count">{Total}</strong> items</p>
+                                    </div>
+                                </td>
+                            </tr> 
+                        </tbody>
+                    </table>
+                    ... repeat L156-207 for every Add-On in Group and Date
+                </div>
+                ... repeat L142-209 for every Add-On Group and Date
+            </div>    
+            ... repeat L135-211 for every Date  
+
+            </div>
+
+            <ul class="grid-footer">
+                <li>
+                    Add-Ons from <span>{Date}</span> to <span>{Date}</span><br />
+                    Add-On Groups <span>{All or list selected}</span><br />
+                    Add-Ons <span>{All or list selected}</span><br />
+                    Reservation Status <span>{All or list selected}</span>
+                </li>
+                <li>
+                    Business date <span>{Business Date}</span><br />
+                    User <span>{User}</span>
+                </li>
+            </ul>     
+        </div>
+    </div>   
+</section>

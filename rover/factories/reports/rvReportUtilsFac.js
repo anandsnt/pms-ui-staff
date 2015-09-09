@@ -73,6 +73,29 @@ sntRover.factory('RVReportUtilsFac', [
         };
 
 
+        var selectAllAddonGroups = function(data) {
+            var data = data;
+
+            _.each(data, function(item) {
+                item.selected = true;
+            });
+
+            return data;
+        };
+
+        var selectAllAddons = function(data) {
+            var data = data;
+
+            _.each(data, function(item) {
+                _.each(item['list_of_addons'], function(entry) {
+                    entry.selected = true;
+                });
+            });
+
+            return data;
+        };
+
+
 
 
 
@@ -732,10 +755,10 @@ sntRover.factory('RVReportUtilsFac', [
                         type         : 'FAUX_SELECT',
                         filter       : filter,
                         show         : false,
-                        selectAll    : false,
+                        selectAll    : true,
                         defaultTitle : 'Select Addon Group',
-                        title        : 'Select Addon Group',
-                        data         : angular.copy( data.addonGroups )
+                        title        : 'All Selected',
+                        data         : selectAllAddonGroups( angular.copy(data.addonGroups) ),
                     });
                 };
 
@@ -744,10 +767,10 @@ sntRover.factory('RVReportUtilsFac', [
                         type         : 'FAUX_SELECT',
                         filter       : filter,
                         show         : false,
-                        selectAll    : false,
+                        selectAll    : true,
                         defaultTitle : 'Select Addon',
-                        title        : 'Select Addon',
-                        data         : []   // this data will be filled dynamically, sorry
+                        title        : 'All Selected',
+                        data         : selectAllAddons( angular.copy(data.addons) )
                     });
                 };
 

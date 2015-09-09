@@ -50,9 +50,11 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.codeSettings = payload.codeSettings;
 		$scope.holdStatus   = payload.holdStatus;
 
-		$scope.addonGroups = payload.addonGroups;
-		console.log($scope.addonGroups);
+		$scope.addonGroups       = payload.addonGroups;
+		$scope.addons            = payload.addons;
 		$scope.reservationStatus = payload.reservationStatus;
+
+		console.log( $scope.addons );
 
 
 		$scope.showReportDetails = false;
@@ -497,7 +499,7 @@ sntRover.controller('RVReportsMainCtrl', [
                 $scope.$emit( 'hideLoader' );
             };
 
-            $scope.invokeApi(reportsSubSrv.getAddons, groupIds, sucssCallback, errorCallback);
+            $scope.invokeApi(reportsSubSrv.fetchAddons, groupIds, sucssCallback, errorCallback);
         };
 
 		function genParams (report, page, perPage) {
@@ -909,7 +911,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				selected = _.where(report['hasAddonGroups']['data'], { selected: true });
 
 				if ( selected.length > 0 ) {
-					key         = reportParams['ADDONS_GROUPS'];
+					key         = reportParams['ADDONS_GROUPS_IDS'];
 					params[key] = [];
 					/**/
 					_.each(selected, function(group) {
@@ -934,7 +936,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				});
 
 				if ( selected.length > 0 ) {
-					key         = reportParams['ADDONS'];
+					key         = reportParams['ADDONS_IDS'];
 					params[key] = [];
 					/**/
 					_.each(selected, function(each) {

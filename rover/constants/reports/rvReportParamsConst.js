@@ -36,6 +36,6 @@ sntRover.constant('RVReportParamsConst', {
     'CHARGE_GROUP_IDS'       : 'charge_group_ids[]',
     'CHARGE_CODE_IDS'        : 'charge_code_ids[]',
     'HOLD_STATUS_IDS'        : 'hold_status_ids[]',
-    'ADDONS_GROUPS'          : 'addon_groups[]',
-    'ADDONS'                 : 'addons[]'
+    'ADDONS_GROUPS_IDS'      : 'addon_group_ids[]',
+    'ADDONS_IDS'             : 'addon_ids[]'
 });
