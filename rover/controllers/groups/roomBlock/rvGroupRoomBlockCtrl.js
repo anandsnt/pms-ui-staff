@@ -150,7 +150,19 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableStartDate = function() {
-			return !hasPermissionToEditSummaryGroup() || !!$scope.groupConfigData.summary.is_cancelled;
+			var sData 					= $scope.groupConfigData.summary,
+				noOfInhouseIsNotZero 	= (sData.total_checked_in_reservations > 0),
+				cancelledGroup 			= sData.is_cancelled,
+				is_A_PastGroup 			= sData.is_a_past_group,
+				inEditMode 				= !$scope.isInAddMode();
+
+			return ( inEditMode &&
+				   	(
+				   	  noOfInhouseIsNotZero 	||
+					  cancelledGroup 		||
+					  is_A_PastGroup
+					)
+				   );
 		};
 
 		/**
@@ -184,7 +196,19 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableEndDate = function() {
-			return !hasPermissionToEditSummaryGroup()  || !!$scope.groupConfigData.summary.is_cancelled;
+			var sData 					= $scope.groupConfigData.summary,
+				endDateHasPassed 		= new tzIndependentDate(sData.block_to) < new tzIndependentDate($rootScope.businessDate),
+				cancelledGroup 			= sData.is_cancelled,
+				toRightMoveNotAllowed 	= !sData.is_to_date_right_move_allowed,
+				inEditMode 				= !$scope.isInAddMode();
+
+			return ( inEditMode &&
+				   	(
+				   	 endDateHasPassed 	||
+					 cancelledGroup 	||
+					 toRightMoveNotAllowed
+					)
+				   );
 		};
 
 		/**
@@ -1270,11 +1294,6 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			});			
 
 			initializeChangeDateActions ();
-			
-			//on tab switching, we have change min date
-			setDatePickers();
-
-
 		});
 
 		/**
@@ -1474,8 +1493,6 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 */
 		var resetDatePickers = function() {
 			//resetting the calendar date's to actual one
-			$scope.groupConfigData.summary.block_from 	= '';
-
 			$scope.groupConfigData.summary.block_from 	= new tzIndependentDate(summaryMemento.block_from);
 			$scope.groupConfigData.summary.block_to  	= new tzIndependentDate(summaryMemento.block_to);
 			$scope.startDate = $scope.groupConfigData.summary.block_to;
@@ -1537,8 +1554,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 					oldFromDate 	: oldSumryData.block_from,
 					oldToDate 		: oldSumryData.block_to,
 					successCallBack : successCallBackOfMoveButton,
-					failureCallBack : failureCallBackOfMoveButton,
-					cancelPopupCallBack	: cancelCallBackofDateChange
+					failureCallBack : failureCallBackOfMoveButton
 				};
 			$scope.changeDatesActions.clickedOnMoveSaveButton (options);
 		};

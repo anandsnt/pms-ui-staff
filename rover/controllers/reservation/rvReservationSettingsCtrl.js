@@ -206,14 +206,18 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             setTimeout($scope.refreshScroll, 3000);
         });
 
-        $scope.addTabFromSidebar = function(){
-              if (!$scope.reservationData.tabs[$scope.reservationData.tabs.length - 1].roomTypeId) {
+        $scope.addTabFromSidebar = function() {
+            if (!$scope.reservationData.tabs[$scope.reservationData.tabs.length - 1].roomTypeId) {
                 return false; // Need to select room type before adding another row
             }
             $scope.reservationData.tabs = $scope.reservationData.tabs.concat(RVReservationTabService.newTab());
-            $scope.reservationData.rooms = $scope.reservationData.rooms.concat(RVReservationTabService.newRoom());            
+            $scope.reservationData.rooms = $scope.reservationData.rooms.concat(RVReservationTabService.newRoom());
             $scope.refreshScroll();
         };
+
+        $scope.restrictMultipleBookings = function() {
+            return $scope.reservationData.tabs.length === 4 || !!$scope.reservationData.group.id;
+        }
 
 
     }

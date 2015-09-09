@@ -50,8 +50,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 * @return undefined
 		 */
 		$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
-			if ($scope.isInAddMode() || targetElement.id === 'summary' ||
-				targetElement.id === "cancel-action" || //TODO: Need to check with Dilip/Shiju PC for more about this
+			if ($scope.isInAddMode() || (targetElement && (targetElement.id === 'summary' ||
+				targetElement.id === "cancel-action" )) || //TODO: Need to check with Dilip/Shiju PC for more about this
 				whetherSummaryDataChanged() ||
 				$scope.allotmentSummaryData.isDemographicsPopupOpen || $scope.isUpdateInProgress) {
 

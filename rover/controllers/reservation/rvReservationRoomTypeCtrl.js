@@ -278,7 +278,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				from_date: $scope.reservationData.arrivalDate,
 				to_date: $scope.reservationData.departureDate,
 				company_id: $scope.reservationData.company.id,
-				travel_agent_id: $scope.reservationData.travelAgent.id
+				travel_agent_id: $scope.reservationData.travelAgent.id,
+				group_id: $scope.reservationData.group.id
 			}, fetchSuccess);
 
 			if (isfromCalendar) {
@@ -536,7 +537,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 			// CICO-9429: Show Addon step only if its been set ON in admin
 			var navigate = function() {
-				if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id) {
+				if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id || $scope.reservationData.group.id) {
 					if ($rootScope.isAddonOn && isAddonsConfigured) {
 						$state.go('rover.reservation.staycard.mainCard.addons', {
 							"from_date": $scope.reservationData.arrivalDate,
@@ -554,7 +555,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					"to_date": $scope.reservationData.departureDate
 				});
 			} else {
-				if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id) {
+				if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id && !$scope.reservationData.group.id) {
 					$scope.$emit('PROMPTCARD');
 					$scope.$watch("reservationData.guest.id", navigate);
 					$scope.$watch("reservationData.company.id", navigate);
