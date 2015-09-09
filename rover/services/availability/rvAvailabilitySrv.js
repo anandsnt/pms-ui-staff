@@ -265,7 +265,6 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			var groupdetail ={
 				"name":element.name,
 				"id":element.group_id,
-				"isDropDownOpened":false,
 				"holdStatusName":getGroupName(element.hold_status_id,datafromApi.hold_status),
 				"details":_.zip.apply(null, groupDetail)[index]
 			};
@@ -288,7 +287,8 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	*/
 	var getGroupName = function(GroupId, holdstatuses){
 		return _.find(holdstatuses, function(elem){ 
-			return elem.id === GroupId}).hold_status;
+				return (elem.id === GroupId)?true:false;
+				}).name;
 	};
 	/**
 	* function to fetch group availability between from date & to date
