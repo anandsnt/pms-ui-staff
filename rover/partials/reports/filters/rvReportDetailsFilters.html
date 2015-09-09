@@ -405,59 +405,44 @@
             </div>
         </div>
 
-
+        <!-- item_25: Addons -->
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasAddonGroups" ng-class="{ 'active': filterItemsToggle.item_25 }" ng-click="toggleFilterItems('item_25')">
             <span class="title">Add-On(s)</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasAddonGroups" ng-class="{ 'hidden': !filterItemsToggle.item_25 }">
-            <div class="faux-select-options cols-2" ng-show="isVisible">
-                <div class="col">
-                    <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasAddonGroups.data.length > 1 && chosenReport.hasAddonGroups.selectAll) }">
-                        <span ng-repeat="group in chosenReport.hasAddons.data" ng-if="$index%2 == 0">
-                            <strong>{{ getGroupName(group.group_id) }}</strong>
-                            <label class="checkbox inline" ng-repeat="addon in group.list_of_addons">
-                                <span class="icon-form icon-checkbox" ng-class="{ 'checked' : addon.selected }"></span>
-                                <input type="checkbox" ng-model="addon.selected" name="room-filters">
-                                {{ addon.addon_name }}
-                            </label>
-                        </span>
+        <div class="settings-content" ng-if="chosenReport.hasAddons" ng-class="{ 'hidden': !filterItemsToggle.item_25 }">
+            <div class="faux-select-options">
+                <span ng-repeat="group in chosenReport.hasAddons.data">
+                    <strong>{{ getGroupName(group.group_id) }}</strong>
+                    <div class="nested-options">
+                        <label class="checkbox" ng-repeat="addon in group.list_of_addons">
+                            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : addon.selected }"></span>
+                            <input type="checkbox" ng-model="addon.selected" name="room-filters">
+                            {{ addon.addon_name }}
+                        </label>
                     </div>
-                </div>
-                <div class="col">
-                    <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasAddonGroups.data.length > 1 && chosenReport.hasAddonGroups.selectAll) }">
-                        <span ng-repeat="group in chosenReport.hasAddons.data" ng-if="$index%2 == 1">
-                            <strong>{{ getGroupName(group.group_id) }}</strong>
-                            <label class="checkbox inline" ng-repeat="addon in group.list_of_addons">
-                                <span class="icon-form icon-checkbox" ng-class="{ 'checked' : addon.selected }"></span>
-                                <input type="checkbox" ng-model="addon.selected" name="room-filters">
-                                {{ addon.addon_name }}
-                            </label>
-                        </span>
-                    </div>
-                </div>        
+                </span>
             </div>
         </div>
 
 
-
+        <!-- item_26: Addons -->
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasReservationStatus" ng-class="{ 'active': filterItemsToggle.item_26 }" ng-click="toggleFilterItems('item_26')">
             <span class="title">Reservation Status</span>
         </a>
         <div class="settings-content" ng-if="chosenReport.hasReservationStatus" ng-class="{ 'hidden': !filterItemsToggle.item_26 }">
-            <div class="faux-select-options" ng-class="{ 'hidden': !chosenReport.hasReservationStatus.show }">
-                <label class="checkbox inline" ng-show="chosenReport.hasReservationStatus.data.length > 1">
+            <div class="faux-select-options">
+                <label class="checkbox" ng-show="chosenReport.hasReservationStatus.data.length > 1">
                     <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasReservationStatus.selectAll }"></span>
                     <input type="checkbox" ng-model="chosenReport.hasReservationStatus.selectAll" ng-change="fauxSelectChange(chosenReport, chosenReport.hasReservationStatus, true)" name="room-filters"> Select All
                 </label>
                 <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasReservationStatus.data.length > 1 && chosenReport.hasReservationStatus.selectAll) }">
-                    <label class="checkbox inline" ng-repeat="status in chosenReport.hasReservationStatus.data">
+                    <label class="checkbox" ng-repeat="status in chosenReport.hasReservationStatus.data">
                         <span class="icon-form icon-checkbox" ng-class="{ 'checked' : status.selected }"></span>
                         <input type="checkbox" ng-model="status.selected" ng-change="fauxSelectChange(chosenReport.id, chosenReport.hasReservationStatus)" id="addon-reserved" name="addon-status"> {{ status.status }}
                     </label>
                 </div>
             </div>
         </div>
-
 
 
         <!-- item_13: Sort by -->

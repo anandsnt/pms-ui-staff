@@ -479,7 +479,7 @@ sntRover.controller('RVReportsMainCtrl', [
             }, 2000);
 
             // calling the super
-            $scope.fauxSelectChange(item, fauxDS);
+            $scope.fauxSelectChange(reportItem, fauxDS);
         };
 
         var showAddons = function (reportItem, selectedItems) {
