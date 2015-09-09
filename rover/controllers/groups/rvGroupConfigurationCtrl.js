@@ -491,8 +491,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                             750);
                             break;
                         default:
-                            $scope.errorMessage = error.errors;
-                            lastFailureCallback (error.errors);
+                            $scope.errorMessage = error;
+                            lastFailureCallback (error);
                             break;
                     }
                 }
@@ -633,15 +633,15 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                             750);
                             break;
                         default:
-                            $scope.errorMessage = error.errors;
-                            lastFailureCallback (error.errors);
+                            $scope.errorMessage = error;
+                            lastFailureCallback (error);
                             break;
                     }
                 }
 
                 else {
-                    $scope.errorMessage = error.errors;
-                    lastFailureCallback (error.errors);
+                    $scope.errorMessage = error;
+                    lastFailureCallback (error);
                 }
             };
 
