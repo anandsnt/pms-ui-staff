@@ -33,7 +33,7 @@ sntRover.controller('RVCardOptionsCtrl',
 		$scope.$on('REFRESH_IFRAME', function(e){
 			 $scope.refreshIframe();
 		});
-              //  $scope.isGiftCard = false;
+                $scope.isGiftCard = false;
                 $rootScope.$on('depositUsingGiftCardChange',function(e, v){
                    if ($rootScope.depositUsingGiftCard){
                        $scope.isGiftCard = true;

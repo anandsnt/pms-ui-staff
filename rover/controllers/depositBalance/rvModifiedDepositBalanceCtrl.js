@@ -95,7 +95,60 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		};
             }
 	};
-
+        $scope.showingDepositModal = false;
+        $scope.$watch('depositBalanceMakePaymentData.payment_type',function(to, from){
+            if (to === 'GIFT_CARD'){
+                $scope.depositWithGiftCard = true;
+                $scope.showingDepositModal = true;
+            } else {
+                $scope.depositWithGiftCard = false;
+                $scope.showingDepositModal = false;
+                //$scope.isGiftCard = false;//removes duplicate card_input fields when toggling between credit card and gift card due to multi-controller use
+            }
+        });
+        
+        
+        
+        
+            $scope.giftCardAmountAvailable = false;
+            $scope.giftCardAvailableBalance = 0;
+            $scope.$on('giftCardAvailableBalance',function(e, giftCardData){
+               $scope.giftCardAvailableBalance = giftCardData.amount;
+            });
+            $scope.timer = null;
+            $scope.cardNumberInput = function(n, e){
+                if ($scope.depositWithGiftCard){
+                    var len = n.length;
+                    $scope.num = n;
+                    if (len >= 8 && len <= 22){
+                        //then go check the balance of the card
+                        $('[name=card-number]').keydown(function(){
+                            clearTimeout($scope.timer); 
+                            $scope.timer = setTimeout($scope.fetchGiftCardBalance, 1500);
+                        });
+                    } else {
+                        //hide the field and reset the amount stored
+                        $scope.giftCardAmountAvailable = false;
+                    }
+                }
+            };
+            $scope.num;
+            $scope.fetchGiftCardBalance = function() {
+                if ($scope.depositWithGiftCard){
+                       //switch this back for the UI if the payment was a gift card
+                   var fetchGiftCardBalanceSuccess = function(giftCardData){
+                       $scope.giftCardAvailableBalance = giftCardData.amount;
+                       $scope.giftCardAmountAvailable = true;
+                       $scope.$emit('giftCardAvailableBalance',giftCardData);
+                       //data.expiry_date //unused at this time
+                       $scope.$emit('hideLoader');
+                   };
+                   $scope.invokeApi(RVReservationCardSrv.checkGiftCardBalance, {'card_number':$scope.num}, fetchGiftCardBalanceSuccess);
+               } else {
+                   $scope.giftCardAmountAvailable = false;
+               }
+            };
+        
 	/**
 	* function to check whether the user has permission
 	* to make payment
@@ -450,8 +503,15 @@ sntRover.controller('RVDepositBalanceCtrl',[
                     var card_number;
                     if ($scope.reservationData.reservation_card.payment_details.card_number !== ''){
                         card_number = $scope.reservationData.reservation_card.payment_details.card_number;
+                        console.log('$scope.reservationData.reservation_card.payment_details.card_number: '+$scope.reservationData.reservation_card.payment_details.card_number)
                     } else {
-                        card_number = $.trim($('#card-number').val());//trim to remove whitespaces from copy-paste
+                        if ($scope.showingDepositModal){
+                            card_number = $.trim($scope.cardData.cardNumber);
+                        } else {
+                            card_number = $.trim($('#card-number').val());//trim to remove whitespaces from copy-paste
+                        }
+                        
+                        console.log(card_number)
                     }
                     dataToSrv.postData.card_number = card_number;
                     

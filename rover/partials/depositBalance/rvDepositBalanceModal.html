@@ -71,7 +71,7 @@
 			<!-- <div id="select-make-payment-card" class="select-card scrollable cards-list-height" ng-hide="addCardActive">
 				<div id="available-cards" ng-iscroll='available-cards' ng-iscroll-delay='50'  data-is-existing-card="no" class="cards-list "> -->
 					
-			 <div id="select-make-payment-card" class="select-card " ng-hide="addCardActive">
+			 <div id="select-make-payment-card" class="select-card " ng-hide="addCardActive"  ng-hide="isGiftCard || showingDepositModal">
 				<div  data-is-existing-card="no" class="cards-list scrollable existing-cards-height"  ng-iscroll='available_cards' ng-iscroll-delay='50' >
 					<div class="wrapper" >
 						<!-- Selected card -->
@@ -96,7 +96,7 @@
 				</div>
 			</div>
 			<!-- New Card form - this is same as in {modals/pay-bill/card-attached.html}, lines 98-129 -->
-			<div id="new-make-payment-card" class="new-card" ng-show="addCardActive">
+			<div id="new-make-payment-card" class="new-card" ng-show="addCardActive" ng-hide="isGiftCard">
 				<div class="holder">
 					<div class="entry margin">
 						<label for="card-number">Card number</label>

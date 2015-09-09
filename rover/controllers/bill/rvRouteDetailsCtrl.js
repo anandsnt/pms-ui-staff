@@ -112,25 +112,25 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     * function to show the add payment view
     */
 	$scope.showAddPayment = function(){
-        if(!$rootScope.isManualCCEntryEnabled){
-            $scope.isManualCCEntryEnabled = false;
-            var dialog = ngDialog.open({
-                template: '/assets/partials/payment/rvPaymentModal.html',
-                controller: '',
-                scope: $scope
-              });
-            return;
-        }
+            if(!$rootScope.isManualCCEntryEnabled){
+                $scope.isManualCCEntryEnabled = false;
+                var dialog = ngDialog.open({
+                    template: '/assets/partials/payment/rvPaymentModal.html',
+                    controller: '',
+                    scope: $scope
+                  });
+                return;
+            }
 
-		$scope.isAddPayment = true;
-		$scope.showCreditCardDropDown = true;
-		$scope.renderAddedPayment = {};
-		$scope.renderAddedPayment.creditCardType  = "";
-		$scope.renderAddedPayment.cardExpiry = "";
-		$scope.renderAddedPayment.endingWith = "";
-		$scope.renderAddedPayment.payment_type = "";
-		$scope.isShownExistingCCPayment = false;
-        $scope.$broadcast('showaddpayment');
+            $scope.isAddPayment = true;
+            $scope.showCreditCardDropDown = true;
+            $scope.renderAddedPayment = {};
+            $scope.renderAddedPayment.creditCardType  = "";
+            $scope.renderAddedPayment.cardExpiry = "";
+            $scope.renderAddedPayment.endingWith = "";
+            $scope.renderAddedPayment.payment_type = "";
+            $scope.isShownExistingCCPayment = false;
+            $scope.$broadcast('showaddpayment');
 	};
 	$scope.$on("SHOW_SWIPED_DATA_ON_BILLING_SCREEN", function(e, swipedCardDataToRender){
 		$scope.isAddPayment = true;

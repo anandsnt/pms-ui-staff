@@ -61,13 +61,13 @@
 
             <!-- Fields -->
             <div class="entry full-width" ng-hide="showCCPage || depositPaidSuccesFully" ng-class="{'amount': isShowFees()}">
-                <label ng-show="depositWithGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable"> Available Card Balance ({{currencySymbol}}) </label>
-                <input ng-show="depositWithGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable" name="giftCardAmount" id="amount" ng-model="giftCardAvailableBalance" type="text" class="amount" ng-readonly="true" value="{{ giftCardAvailableBalance }}"/>
+                <label ng-show="depositWithGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable || !isGiftCardPmt || depositPaidSuccesFully"> Available Card Balance ({{currencySymbol}}) </label>
+                <input ng-show="depositWithGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable || !isGiftCardPmt || depositPaidSuccesFully" name="giftCardAmount" id="amount" ng-model="giftCardAvailableBalance" type="text" class="amount" ng-readonly="true" value="{{ giftCardAvailableBalance }}"/>
                                     
-		<div ng-show="isGiftCardPmt" ng-hide="!isGiftCardPmt" class="entry card-number" ng-class="{'card-type':isGiftCard}">
+		<div ng-show="isGiftCardPmt" ng-hide="!isGiftCardPmt || depositPaidSuccesFully" class="entry card-number" ng-class="{'card-type':isGiftCard}">
                     <label for="card-number">Card number (<span>No spaces</span>)</label>
-			<input ng-show="isGiftCard" name="card-number" ng-readonly="!isManualCCEntryEnabled" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber)" />
-			<input ng-show="!isGiftCard" name="card-number" ng-readonly="!isManualCCEntryEnabled" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="16" type="text" />
+                    <input ng-show="isGiftCard" name="card-number" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber)" />
+                    <input ng-show="!isGiftCard" name="card-number" ng-readonly="!isManualCCEntryEnabled" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="16" type="text" />
 		</div>
                 
                 

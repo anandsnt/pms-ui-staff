@@ -217,15 +217,6 @@
                     </div>
                     
                     
-                    <div class="entry card-number" ng-show="reservationData.paymentType.type.value === 'GIFT_CARD'" ng-hide="reservationData.paymentType.type.value !== 'GIFT_CARD'">
-                        <label for="card-number">Card number (<span>No spaces</span>)</label>
-                           <input ng-show="isGiftCard" name="card-number" ng-readonly="!isManualCCEntryEnabled" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber, this)" />
-                    </div>
-                    
-                    <div class="entry card-number" ng-show="reservationData.paymentType.type.value === 'GIFT_CARD'" ng-hide="reservationData.paymentType.type.value !== 'GIFT_CARD'">
-                        <label ng-show="isGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable"> Available Card Balance ({{currencySymbol}}) </label>
-                        <input ng-show="isGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable"  name="giftCardAmount" id="amount" ng-readonly="true" ng-model="giftCardAvailableBalance" type="text" class="amount" value="{{ giftCardAvailableBalance }}"/>
-                    </div>
                     <!-- Card Input type - output only if Six Payments and payment type is CC -->
                     <div class="entry" ng-show="paymentGateway === 'sixpayments' && reservationData.paymentType.type.value ==='CC' && !showCC">
                         <label for="card-source">Card Input</label>
@@ -275,6 +266,16 @@
                     <!-- Use only if deposit is required -->
                     <div class="notice deposit" ng-if="depositData.isDepositRequired && reservationData.isValidDeposit" ng-hide="depositData.attempted || showCC">
                         <p>Deposit required: <strong>{{depositData.description}}</strong>.</p>
+                        <div class="entry card-number" ng-show="reservationData.paymentType.type.value === 'GIFT_CARD'" ng-hide="reservationData.paymentType.type.value !== 'GIFT_CARD' || depositData.attempted || !depositData.isDepositRequired || !isDepositEditable">
+                            <label for="card-number">Card number (<span>No spaces</span>)</label>
+                               <input ng-show="isGiftCard" name="card-number" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber, this)" />
+                        </div>
+
+                        <div class="entry card-number" ng-show="reservationData.paymentType.type.value === 'GIFT_CARD'" ng-hide="reservationData.paymentType.type.value !== 'GIFT_CARD' || depositData.attempted || !depositData.isDepositRequired || !isDepositEditable">
+                            <label ng-show="isGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable"> Available Card Balance ({{currencySymbol}}) </label>
+                            <input ng-show="isGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable"  name="giftCardAmount" id="amount" ng-readonly="true" ng-model="giftCardAvailableBalance" type="text" class="amount" value="{{ giftCardAvailableBalance }}"/>
+                        </div>
+                        
                         <!-- Payment fields -->
                         <div ng-include="'/assets/partials/reservation/rvPaymentFields.html'"></div>
                         <!-- Buttons - remove class "hidden" when payment type is defined-->
@@ -300,7 +301,7 @@
                     </div>
 
                     <!-- Deposit payment failed -->
-                    <div class="feedback deposit-failed" ng-if="depositData.isDepositRequired" ng-show="depositData.attempted &&depositData.depositAttemptFailure">
+                    <div class="feedback deposit-failed" ng-if="depositData.isDepositRequired" ng-show="depositData.attempted && depositData.depositAttemptFailure">
                         <!-- <div class="notice error">Payment failed. Try again or change payment method.</div> -->
                         <div class="notice error">{{paymentErrorMessage}}</div>
                          <!-- Show when deposit payment fails  -->

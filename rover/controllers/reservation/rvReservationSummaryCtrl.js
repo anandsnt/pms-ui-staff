@@ -431,7 +431,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             
             
             if (dataToMakePaymentApi.postData.payment_type === "GIFT_CARD") {
-                dataToMakePaymentApi.postData.card_number = $scope.cardData.cardNumber;
+                if ($scope.cardData){
+                    dataToMakePaymentApi.postData.card_number = $scope.cardData.cardNumber;
+                    if ($scope.cardData.cardNumber === ''){
+                        dataToMakePaymentApi.postData.card_number = $.trim($('[name=card-number]').val());
+                    }
+                } else {
+                    dataToMakePaymentApi.postData.card_number = $.trim($('[name=card-number]').val());//trim to remove whitespaces from copy-paste
+                }
             };
 
             if ($scope.isShowFees()) {

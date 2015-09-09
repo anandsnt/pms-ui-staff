@@ -518,6 +518,14 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/siteminderSetup'
 		});
 
+		$stateProvider.state('admin.givexSetup', {
+			templateUrl: '/assets/partials/Givex/adGivexSetup.html',
+			controller: 'adExternalInterfaceCtrl',
+                        interface_id: 4,
+                        simple_name: 'Givex',
+			url : '/siteminderSetup'
+		});
+
 		$stateProvider.state('admin.synxisSetup', {
 			templateUrl: '/assets/partials/SynxisSetup/adSynxisSetup.html',
 			controller: 'adExternalInterfaceCtrl',
