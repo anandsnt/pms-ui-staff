@@ -3,10 +3,8 @@
     <head>
         <ng-include src="'assets/partials/tablet/kiosk/_include/head.html'"></ng-include>
     </head>
-    <body id="{{hotel.title}}"> <!-- hotel-id should be hotel name, like "zoku", "yotel" or "grand-hotel". We can then apply specific styles throughtout the entire app based on this id value -->
-        
         <!-- Header --> 
-        <ng-include src="'assets/partials/tablet/kiosk/_include/navigation.html'" ></ng-include>
+        <ng-include src="'assets/css/kiosk/_include/navigation.html'" ></ng-include>
 
         <!-- Content -->
         <section id="main" class="centered" role="main">
@@ -16,5 +14,4 @@
                 <button type="button" class="button transparent" ng-click='goToScreen($event,"home")'>Exit</button>
             </div>
         </section>
-    </body>
 </html>
