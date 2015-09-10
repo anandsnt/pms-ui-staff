@@ -345,8 +345,8 @@ sntRover.factory('RVReportUtilsFac', [
                     report['canRemoveDate'] = true;
                     break;
 
-                case reportNames['OCCUPANCY_REVENUE_SUMMARY']:
-                    report['hasDateLimit'] = false;
+                case reportNames['OCCUPANCY_REVENUE_SUMMARY']:                    
+                    report['hasPrevDateLimit'] = true;
                     break;
 
                 case reportNames['RESERVATIONS_BY_USER']:
