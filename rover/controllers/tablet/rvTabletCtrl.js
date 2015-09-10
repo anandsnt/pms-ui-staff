@@ -48,7 +48,7 @@ sntRover.controller('rvTabletCtrl', [
                 
             };
             
-            $scope.hotelLogo = 'assets/partials/tablet/kiosk/assets/'+$scope.hotel.title+'/logo.svg';
+            $scope.hotelLogo = 'assets/css/kiosk/assets/'+$scope.hotel.title+'/logo.svg';
             $scope.at = 'home';
             $scope.hideNavBtns = true;
             $scope.inRover = true;
