@@ -293,7 +293,7 @@
     <div class="faux-select placeholder" ng-click="toggleAddons()">{{ item.hasAddons.title }}</div>
     <div class="faux-select-options cols-2" ng-show="isVisible">
         <div class="col">
-            <span ng-repeat="group in item.hasAddons.data" ng-if="$index%2 == 0">
+            <span ng-repeat="group in item.hasAddons.data" ng-show="$index%2 == 0">
                 <strong>{{ getGroupName(group.group_id) }}</strong>
                 <label class="checkbox inline" ng-repeat="addon in group.list_of_addons">
                     <span class="icon-form icon-checkbox" ng-class="{ 'checked' : addon.selected }"></span>
@@ -303,7 +303,7 @@
             </span>
         </div>
         <div class="col">
-            <span ng-repeat="group in item.hasAddons.data" ng-if="$index%2 == 1">
+            <span ng-repeat="group in item.hasAddons.data" ng-show="$index%2 == 1">
                 <strong>{{ getGroupName(group.group_id) }}</strong>
                 <label class="checkbox inline" ng-repeat="addon in group.list_of_addons">
                     <span class="icon-form icon-checkbox" ng-class="{ 'checked' : addon.selected }"></span>
@@ -311,7 +311,7 @@
                     {{ addon.addon_name }}
                 </label>
             </span>
-        </div>        
+        </div>
     </div>
 </div>
 
