@@ -129,7 +129,7 @@
             <strong class="h3 margin">Notes</strong>
             <div class="entry full-width no-label with-notes">
                 <textarea id="group-notes" ng-disabled="isInStaycardScreen()" ng-model="groupSummaryData.newNote" placeholder="Write a note" rows="2"></textarea>
-                <button type="button" ng-disabled="isInStaycardScreen()" class="button post" ng-class="{'brand-colors' : !isInAddMode() , 'grey' : isInAddMode()}" ng-click="saveGroupNote()">Post</button>
+                <button type="button" ng-disabled="isInStaycardScreen()" class="button post" ng-class="{'brand-colors' : !isInAddMode() , 'grey' : isInAddMode()||isInStaycardScreen()}" ng-click="saveGroupNote()">Post</button>
             </div>
             <ul class="notes" ng-disabled="isInStaycardScreen()">
                 <li ng-repeat="note in groupConfigData.summary.notes">
