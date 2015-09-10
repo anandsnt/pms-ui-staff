@@ -22,8 +22,8 @@
                     </select>
                 </div>
             </div>
-            <div class="entry" ng-if="isHourlyRatesEnabled">
-                <label>Periodicity </label>
+            <div class="entry" ng-show="isHourlyRatesEnabled();">
+                <label>Periodicity</label>
                 <div class="switch" ng-class="{'disabled' : rateData.date_ranges.length > 1}">
                     <span ng-click="toggleHourlyRate(true)" ng-class="{'active' : rateData.is_hourly_rate}">Hourly</span>
                     <span ng-click="toggleHourlyRate(false)" ng-class="{'active' : !rateData.is_hourly_rate}">Daily</span>

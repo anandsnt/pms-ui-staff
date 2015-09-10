@@ -6,7 +6,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			hideDetails: true
 		};
 		$scope.hasPermissionForCommissionUpdate = function(){
-			return rvPermissionSrv.getPermissionValue('UPDATE_COMMISSION') && !isEmpty($scope.reservationData.reservation_card.commission_details);
+			return rvPermissionSrv.getPermissionValue('UPDATE_COMMISSION');
 		};
 
 		$scope.isSegmentAutoComputed = function() {

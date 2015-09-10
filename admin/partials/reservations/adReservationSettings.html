@@ -118,14 +118,19 @@
 					<ad-toggle-button label="Hourly Rates" is-checked="reservationSettingsData.is_hourly_rate_on" ></ad-toggle-button>
 					<ad-toggle-button label="{{'ADDONS_FOR_RESERVATIONS' | translate}}" is-checked="reservationSettingsData.is_addon_on" ></ad-toggle-button>
 				</fieldset>
-				<fieldset class="holder right">
-					<ad-toggle-button label="Commissions" is-checked="reservationSettingsData.has_enabled_commissions"></ad-toggle-button>
+				<fieldset class="holder right  margin-bottom-20-important">
+
+					<ad-toggle-button label="Commissions" is-checked="reservationSettingsData.has_enabled_commissions"  div-class=""></ad-toggle-button>
 
 					<ad-toggle-button label="Item Inventory" is-checked="reservationSettingsData.is_item_inventory_on" ></ad-toggle-button>
 
-					<ad-checkbox is-checked="reservationSettingsData.commission_by_agent" label="{{ 'Commissions by Agent' | translate}}" div-class="float" hide='{{!reservationSettingsData.has_enabled_commissions}}'></ad-checkbox>					
+					<ad-checkbox hide="{{!reservationSettingsData.has_enabled_commissions}}" is-checked="reservationSettingsData.tax_on_commissions" label="{{ 'TAX_ON_COMMISSIONS' | translate}}" div-class="margin-top-30 padding-left-15" ></ad-checkbox>
+
+            		<ad-dropdown hide="{{!reservationSettingsData.has_enabled_commissions || !reservationSettingsData.tax_on_commissions}}" label-in-drop-down="{{'SELECT_TAX_TRANSACTION_CODE' | translate}}" list="reservationSettingsData.tax_transaction_codes" selected-id='reservationSettingsData.selected_tax_transaction_code' selbox-class="placeholder" div-class="full-width" label="{{'TAX_TRANSACTION_CODE' | translate}}"></ad-dropdown>
+
+					<ad-checkbox is-checked="reservationSettingsData.commission_by_agent" label="{{ 'Commissions by Agent' | translate}}" div-class="" hide='{{!reservationSettingsData.has_enabled_commissions}}'></ad-checkbox>					
 					<ad-checkbox is-checked="reservationSettingsData.commission_by_rate" label="{{ 'Commissions by Rate' | translate}}" div-class="" hide='{{!reservationSettingsData.has_enabled_commissions}}'></ad-checkbox>
-					<div class="entry margin-bottom-0-important" ng-hide="!reservationSettingsData.commission_by_agent || !reservationSettingsData.has_enabled_commissions">            		
+					<div class="entry" ng-hide="!reservationSettingsData.commission_by_agent || !reservationSettingsData.has_enabled_commissions">            		
                 		<div class="select-col col1-3 ">
                     		<ad-textbox inputtype="text" value="reservationSettingsData.agent_commission_value" styleclass="col1-3" label="" placeholder="" style=" width: 66px;"></ad-textbox>
                 		</div>
@@ -146,9 +151,11 @@
                         		<option value="percent">%</option>
                     		</select>
                 		</div>
-            		</div>					
-				</fieldset>		
+            		</div>	
 
+            		<ad-dropdown hide="{{!reservationSettingsData.has_enabled_commissions}}" label-in-drop-down="{{'SELECT_PREPAID_COMMISSION_CHARGE_CODE' | translate}}" list="reservationSettingsData.prepaid_commission_charge_codes" selected-id='reservationSettingsData.selected_prepaid_commission_charge_code' selbox-class="placeholder" div-class="full-width" label="{{'PREPAID_COMMISSION_CHARGE_CODE' | translate}}"></ad-dropdown>
+
+				</fieldset>
 				
 				<fieldset class="holder left">
 					<ad-checkbox is-checked="reservationSettingsData.disable_cc_swipe" label="{{ 'DISABLE_CC_SWIPE_AT_CHECK_IN' | translate}}" div-class="full-width" ></ad-checkbox>
