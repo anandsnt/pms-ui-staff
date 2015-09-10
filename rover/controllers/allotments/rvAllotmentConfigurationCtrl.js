@@ -472,7 +472,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
         };
 
         $scope.updateAndBack = function() {
-            if ($scope.allotmentConfigData.activeTab === "SUMMARY") {
+            if (!$scope.isInAddMode() && $scope.allotmentConfigData.activeTab === "SUMMARY") {
                 $scope.updateAllotmentSummary();
             } else if ($scope.allotmentConfigData.activeTab === "ACCOUNT") {
                 $scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
