@@ -1,0 +1,31 @@
+
+        <!-- Content -->
+<section id="main" class="centered" role="main" ng-hide='at !== "select-reservation"' ng-click='resetTime()'>
+    <div id="content">
+        <h1>Select a Reservation</h1>
+        <div id="labels">
+            <span class="label">Name</span>
+            <span class="label">Check Out Date / Room Type</span>
+        </div>
+        
+        <ul id="selection"> <!-- Show no more than 3 results per page -->
+            <li ng-repeat="reservation in resList track by $index">
+                <div class="details" ng-click="selectReservation(reservation)">
+                    <strong class="name">{{reservation.guest_details[0].last_name}}, {{reservation.guest_details[0].first_name}}</strong>
+                    <div class="date">
+                        {{reservation.arrival_date | date:dateFormat}} ({{reservation.stay_dates.length}} {{hoursNights}})
+                        <!--span>{{reservation.room_type}}</span-->
+                        <span>{{reservation.stay_dates[0].room_type}}</span>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div id="actions" class='select-reservation'> <!-- If showing only "Next" button, add class "align-right". When showing only "Previous" button, or both buttons, remove that class -->
+            <button type="button" class="button transparent prev" ng-click='reservationPreviousPage()' ng-class='{"overlay":reservationPageNum==1}'>Previous</button>
+            <label ng-show='reservationPages > 1' ng-hide='reservationPages == 1'>{{reservationPageNum}} / {{reservationPages}}</label>
+            <button type="button" class="button transparent next" ng-click='reservationNextPage()' ng-class='{"overlay":reservationPageNum==reservationPages}'>Next</button>
+        </div> 
+    </div> 
+    
+<ng-include src="'assets/partials/tablet/rvTabletFooter.html'" ></ng-include>
+</section>
