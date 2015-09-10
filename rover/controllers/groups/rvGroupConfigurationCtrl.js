@@ -1132,7 +1132,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
         /**
          * function to set Back Navigation params
          */
-        var setBackNavigation = function() {
+        var setBackNavigation = function() {            
             $rootScope.setPrevState = {
                 title: $filter('translate')('GROUPS'),
                 callback: 'updateAndBack',
