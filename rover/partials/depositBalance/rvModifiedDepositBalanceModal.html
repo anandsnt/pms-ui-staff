@@ -190,11 +190,11 @@
 	                    </li>
 	                </ul>
 	            </div>
-				<div class="actions" ng-show="shouldShowMakePaymentScreen || depositWithGiftCard">
+				<div class="actions" ng-show="shouldShowMakePaymentScreen && !depositWithGiftCard">
 					<button type="button" id="close" class="button blank modal-close" ng-click="closeDepositModal()">
 						Close
 					</button>
-					<span ng-hide="depositPaidSuccesFully || depositWithGiftCard">
+					<span ng-hide="depositPaidSuccesFully">
 							<span>
 								<button type="button" ng-disabled="disableMakePayment()" ng-class="showMakePaymentButtonStatus()" ng-click="clickedMakePayment()"  id="make-payment"  class="button modal-close" 
 								ng-hide="hideMakePayment()" >
