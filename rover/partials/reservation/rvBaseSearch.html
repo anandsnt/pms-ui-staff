@@ -226,7 +226,7 @@
                     </div>
                     <div class="select rooms">
                         <label class="label">Rooms</label>
-                        <select ng-model="tab.roomCount" ng-change="onRoomCountChange($index)" ng-disabled="isHourlyRateOn">
+                        <select ng-model="tab.roomCount" ng-change="onRoomCountChange($index)" ng-disabled="restrictMultipleBookings()">
                             <option ng-repeat="i in [1, otherData.maxRoomCount] | makeRange" value="{{i}}" ng-selected="i==tab.roomCount">
                                 {{i}}
                             </option>                            
@@ -234,8 +234,8 @@
                     </div>
                 </div>
                 <!-- show and hide of the below buttons are handlesd in CSS -->
-                <span ng-if="!isHourlyRateOn" class="remove-room icons icon-remove-60" ng-click="removeTab($index)">-</span>
-                <span ng-if="!isHourlyRateOn" class="add-room icons icon-add-60" ng-click="addTab($index)">+</span>
+                <span ng-if="!restrictMultipleBookings()" class="remove-room icons icon-remove-60" ng-click="removeTab($index)">-</span>
+                <span ng-if="!restrictMultipleBookings()" class="add-room icons icon-add-60" ng-click="addTab($index)">+</span>
             </div>
             <!-- Repeat entire div.entry content when adding room types (make sure you don't have same id's for fields!) -->
         </div>
@@ -254,12 +254,11 @@
         <!-- Company / Travel Agent -->
         <div id="company-promo" class="row">
             <div id="autocomplete-search" class="entry">
-                <label for="company-or-agent">Company / Travel Agent <span>(optional)</span></label>
+                <label for="company-or-agent">Company / Travel Agent / Group <span>(optional)</span></label>
                 <input auto-complete auto-options="autocompleteOptions" name="company-or-agent" id="company-or-agent" data-card-type="" type="text" placeholder="Name, Corp. ID or IATA #" value="" autocomplete="off" ng-model="companySearchText" ul-class="find-cards" />
             </div>
             <div class="entry" ng-show="isPromoActive && !isHourlyRateOn">
-                <label for="codes-value" ng-show="groupIsNotImplemented">Group / Promo Code <span>(optional)</span></label>
-                <label for="codes-value">Promo Code <span>(optional)</span></label>
+                <label for="codes-value" >Group / Promo Code <span>(optional)</span></label>                
                 <input auto-complete auto-options="codesACOptions" name="codes-value" id="codes-value" data-card-type="" type="text" placeholder="Code" value="" autocomplete="off" ng-model="codeSearchText" ul-class="find-cards" />
             </div>
         </div>

@@ -13,6 +13,12 @@ login.config([
 			controller: 'loginCtrl',
 			title: 'Login'
 		});
+		$stateProvider.state('kiosk', {
+                        url: '/kiosk',
+                        templateUrl: '/assets/partials/tablet/kiosk/specific/home.html',
+                        controller: 'rvTabletCtrl',
+			title: 'Kiosk'
+		});
 
 		$stateProvider.state('resetpassword', {
 			url: '/reset/:token/:notifications',
