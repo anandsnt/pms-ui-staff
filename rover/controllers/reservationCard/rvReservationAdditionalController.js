@@ -27,7 +27,6 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 		};
 		var eventTimestamp = "";
 		$scope.clickedAdditionalDetails = function($event){
-
 			$event.preventDefault();
 		    $event.stopImmediatePropagation();
   			$event.stopPropagation();
@@ -77,8 +76,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 				'source_id': parseInt($scope.reservationParentData.demographics.source),
 				'market_segment_id': parseInt($scope.reservationParentData.demographics.market),
 				'booking_origin_id': parseInt($scope.reservationParentData.demographics.origin),
-				'segment_id': parseInt($scope.reservationParentData.demographics.segment),
-				'commission_data':$scope.reservationData.reservation_card.commission_details
+				'segment_id': parseInt($scope.reservationParentData.demographics.segment)
 			}, updateSuccess, updateFailure);
 		};
 

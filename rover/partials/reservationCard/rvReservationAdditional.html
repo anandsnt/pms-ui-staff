@@ -33,9 +33,9 @@
                         <span class="value">On</span>
                     </label>
                 </div>
-                <input value="{{reservationData.reservation_card.commission_details.commission_value}}" type="text" ng-model="reservationData.reservation_card.commission_details.commission_value" ng-blur="updateAdditionalDetails()" />
+                <input value="{{reservationData.reservation_card.commission_details.commission_value}}" type="text" ng-model="reservationData.reservation_card.commission_details.commission_value" ng-blur="updateAdditionalDetails()" ng-disabled='true'/>
                 <div class="select">
-                    <select name="travel-agent-commission-type" ng-model="reservationData.reservation_card.commission_details.commission_type" ng-change="updateAdditionalDetails()">
+                    <select name="travel-agent-commission-type" ng-model="reservationData.reservation_card.commission_details.commission_type" ng-change="updateAdditionalDetails()" ng-disabled='true'>
                         <option value="percent">%</option>
                         <option value="amount">{{currencySymbol}}</option>
                     </select>
