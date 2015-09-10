@@ -435,7 +435,7 @@ sntRover.controller('RVReportsMainCtrl', [
                 if ( selectedItems.length === 0 ) {
                     fauxDS.title = fauxDS.defaultTitle;
                 } else if ( selectedItems.length === 1 ) {
-                    fauxDS.title = selectedItems[0].description || selectedItems[0].name || selectedItems[0].value;
+                    fauxDS.title = selectedItems[0].description || selectedItems[0].name || selectedItems[0].status;
                 } else if ( selectedItems.length === fauxDS.data.length ) {
                     fauxDS.selectAll = true;
                     fauxDS.title = 'All Selected';
@@ -494,6 +494,7 @@ sntRover.controller('RVReportsMainCtrl', [
             };
 
             var sucssCallback = function (data) {
+            	reportItem.hasAddons.data = {};
                 reportItem.hasAddons.data = data;
                 $scope.$emit( 'hideLoader' );
             };
