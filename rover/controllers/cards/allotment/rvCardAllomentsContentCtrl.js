@@ -7,8 +7,7 @@ sntRover.controller('rvCardAllomentsContentCtrl', ['$scope', 'rvUtilSrv', functi
      * @param {String/Object}
      * @return {boolean}
      */
-    $scope.isEmpty = util.isEmpty;
-    $scope.searchMode = true;
+    $scope.isEmpty = util.isEmpty;    
     /**
      * function to stringify a string
      * sample use case:- directive higlight filter
@@ -195,6 +194,8 @@ sntRover.controller('rvCardAllomentsContentCtrl', ['$scope', 'rvUtilSrv', functi
         //total result count
         $scope.totalResultCount = 0;
 
+        $scope.searchMode = true;
+        
         //scroller and related things
         setScrollerForMe();
 	}();
