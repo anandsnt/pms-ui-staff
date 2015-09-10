@@ -1,0 +1,201 @@
+sntRover.controller('RVAddonForecastReportByDateCtrl', [
+	'$rootScope',
+	'$scope',
+	'RVreportsSrv',
+	'RVreportsSubSrv',
+	'RVReportUtilsFac',
+	'RVReportParamsConst',
+	'RVReportMsgsConst',
+	'RVReportNamesConst',
+	'$filter',
+	'$timeout',
+	function($rootScope, $scope, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout) {
+		
+		BaseCtrl.call(this, $scope);
+
+		$scope.setScroller('addon-forecast-report-scroll', {
+		    preventDefault: false
+		});
+
+
+		var chosenReport = $scope.$parent.chosenReport,
+			results      = $scope.$parent.$parent.results,
+			addonGroups  = $scope.$parent.$parent.addonGroups,
+			addons       = $scope.$parent.$parent.addons,
+			allAddonHash = {};
+
+		_.each(addonGroups, function(item) {
+			allAddonHash[item.id] = item.description;
+		});
+
+		_.each(addons, function(item) {
+			_.each(item['list_of_addons'], function(entry) {
+				allAddonHash[entry.addon_id] = entry.addon_name;
+			});
+		});		
+
+		$scope.getKey = function(item) {
+			return _.keys(item)[0];
+		};
+
+		$scope.getKeyValues = function(item) {
+			return item[$scope.getKey(item)];
+		};
+
+		$scope.getKeyName = function(item) {
+			return allAddonHash[$scope.getKey(item)] || id;
+		};
+
+		$scope.toggleSub = function(item) {
+			if ( ! item.hasOwnProperty('hidden') ) {
+				item.hidden = true;
+			} else {
+				item.hidden = !item.hidden;
+			};
+
+			$scope.refreshScroller( 'addon-forecast-report-scroll' );
+		};
+
+		var resClassNames = {
+			'RESERVED' : 'arrival',
+			'CHECKEDIN' : 'check-in',
+			'CHECKEDOUT': 'check-out',
+			'CANCELED': 'cancel',
+			'NOSHOW': 'no-show'
+		}
+		$scope.getStatusClass = function(status) {
+			return resClassNames[status] || '';
+		};
+
+
+		var calPagination = function(addon) {
+			var perPage = 25,
+				pageNo = addon.pageNo || 1,
+				netTotalCount = addon.total_count || 0,
+				uiTotalCount = addon.reservations.length,
+				disablePrevBtn = false,
+				disableNextBtn = false,
+				resultFrom,
+				resultUpto;
+
+			if ( netTotalCount === 0 && uiTotalCount === 0 ) {
+				disablePrevBtn = true;
+				disableNextBtn = true;
+			} else if ( pageNo === 1 ) {
+				resultFrom = 1;
+				resultUpto = netTotalCount < perPage ? netTotalCount : perPage;
+				disablePrevBtn = true;
+				disableNextBtn = netTotalCount > perPage ? false : true;
+			} else {
+				resultFrom = perPage * (pageNo - 1) + 1;
+				resultUpto = (resultFrom + perPage - 1) < netTotalCount ? (resultFrom + perPage - 1) : netTotalCount;
+				disablePrevBtn = false;
+				disableNextBtn = resultUpto === netTotalCount ? true : false;
+			};
+
+			return {
+				'perPage': perPage,
+				'pageNo': pageNo,
+				'netTotalCount': netTotalCount,
+				'uiTotalCount': uiTotalCount,
+				'disablePrevBtn': disablePrevBtn,
+				'disableNextBtn': disableNextBtn,
+				'resultFrom': resultFrom,
+				'resultUpto': resultUpto
+			}
+ 		};
+
+
+ 		_.each(results, function(eachResult, resultKey) {
+ 			_.each(eachResult.addon_groups, function(addonGroup) {
+ 				_.each($scope.getKeyValues(addonGroup).addons, function(addonsObj) {
+ 					_.each(addonsObj, function(addon, addonKey) {
+ 						_.extend(addon, {
+ 							'sortField': undefined,
+ 							'roomSortDir': undefined,
+ 							'nameSortDir': undefined,
+
+ 							'date': resultKey,
+ 							'addonGroupId': $scope.getKey(addonGroup),
+ 							'addonId': addonKey,
+ 						});
+
+ 						_.extend( addon, calPagination(addon) );
+ 					});
+ 				});
+ 			});
+ 		});
+
+
+
+
+ 		var callResAPI = function(addon, params) {
+ 			var params = params || {},
+ 				statuses,
+ 				key;;
+
+ 			var success = function (data) {
+				$scope.$emit( 'hideLoader' );
+				addon.reservations = data;
+ 			};
+
+ 			var error = function (data) {
+				$scope.$emit( 'hideLoader' );
+ 			};
+
+ 			_.extend(params, {
+ 				'id'             : chosenReport.id,
+ 				'date'           : addon.date,
+ 				'addon_group_id' : addon.addonGroupId,
+ 				'addon_id'       : addon.addonId,
+ 				'page'           : addon.pageNo,
+ 				'per_page'       : addon.perPage,
+ 			});
+
+ 			statuses = _.where(chosenReport['hasReservationStatus']['data'], { selected: true });
+ 			if ( statuses.length > 0 ) {
+ 				key         = reportParams['RESERVATION_STATUS'];
+ 				params[key] = [];
+ 				/**/
+ 				_.each(statuses, function(each) {
+ 					params[key].push( each.id );
+ 				});
+ 			};
+
+ 			$scope.invokeApi(reportsSubSrv.fetchAddonReservations, params, success, error);
+ 		};
+
+ 		$scope.sortRes = function(field, addon) {
+ 			var params = {};
+
+ 			addon.sortField = field;
+ 			params['sort_field'] = field;
+
+			if ( 'ROOM' == field ) {
+				addon.roomSortDir = (addon.roomSortDir == undefined || addon.roomSortDir == false) ? true : false;
+				addon.nameSortDir = undefined;
+				params['sort_dir'] = addon.roomSortDir;
+			} else if ( 'NAME' == field ) {
+				addon.nameSortDir = (addon.nameSortDir == undefined || addon.nameSortDir == false) ? true : false;
+				addon.roomSortDir = undefined;
+				params['sort_dir'] = addon.nameSortDir;
+			};
+
+			callResAPI( addon, params );
+ 		};
+
+ 		$scope.loadRes = function(type, addon) {
+ 			if ( 'next' == type && ! addon.disableNextBtn ) {
+ 				addon.pageNo++;
+ 				_.extend( addon, calPagination(addon) );
+
+ 				callResAPI( addon );
+ 			} else if ( 'prev' == type && ! addon.disablePrevBtn ) {
+ 				addon.pageNo--;
+ 				_.extend( addon, calPagination(addon) );
+ 				
+ 				callResAPI( addon );
+ 			};
+ 		};
+	}
+]);

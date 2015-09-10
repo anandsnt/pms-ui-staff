@@ -785,6 +785,7 @@
     "RATE_ONLY":"Rate Only",
     "RESERVATION_ONLY":"Reservation Only",
     "MANUAL_POSTING":"Manual Posting",
+    "FORECAST_FOR_NEXT_DAY":"Forecast for Next Day",
     "EDIT":"Edit",
     "ADD_NEW_SMALL":"Add New",
     "ADD_ON":"Add-On",
