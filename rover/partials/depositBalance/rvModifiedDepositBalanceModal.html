@@ -194,7 +194,7 @@
 					<button type="button" id="close" class="button blank modal-close" ng-click="closeDepositModal()">
 						Close
 					</button>
-					<span ng-hide="depositPaidSuccesFully">
+					<span ng-hide="depositPaidSuccesFully || depositWithGiftCard">
 							<span>
 								<button type="button" ng-disabled="disableMakePayment()" ng-class="showMakePaymentButtonStatus()" ng-click="clickedMakePayment()"  id="make-payment"  class="button modal-close" 
 								ng-hide="hideMakePayment()" >
