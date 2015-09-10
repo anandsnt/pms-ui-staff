@@ -327,6 +327,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 };
             };
         };
+        
         $scope.navigate = function() {
             //if selected thing is 'hours'
             if (!$scope.isNightsActive) {
@@ -745,22 +746,14 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 return false; // Need to select room type before adding another row
             }
             $scope.reservationData.tabs = $scope.reservationData.tabs.concat(RVReservationTabService.newTab());
-            $scope.reservationData.rooms = $scope.reservationData.rooms.concat(RVReservationTabService.newRoom());
-            devlogRoomsArray();
+            $scope.reservationData.rooms = $scope.reservationData.rooms.concat(RVReservationTabService.newRoom());            
             refreshScroller();
         };
-
-        var devlogRoomsArray = function() {
-            console.log({
-                size: $scope.reservationData.rooms.length,
-                contents: $scope.reservationData.rooms
-            });
-        }
 
         $scope.onRoomTypeChange = function(tabIndex) {
             var index = 0,
                 currentRoomCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount, 10),
-                roomType = parseInt($scope.reservationData.tabs[tabIndex].roomTypeId, 10),
+                roomType = parseInt($scope.reservationData.tabs[tabIndex].roomTypeId, 10) || "",
                 i;
             $scope.reservationData.tabs[tabIndex].roomTypeId = roomType;
             for (i = 0; i < tabIndex; i++) {
@@ -783,7 +776,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             for (i = firstIndex; i <= lastIndex; i++) {
                 $scope.reservationData.rooms[i][type] = parseInt($scope.reservationData.tabs[tabIndex][type], 10);
             }
-            devlogRoomsArray();
         };
 
         $scope.isRoomTypeSelected = function(tabIndex, roomTypeId) {

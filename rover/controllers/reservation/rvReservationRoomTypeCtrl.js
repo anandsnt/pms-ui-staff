@@ -1693,7 +1693,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 		$scope.onRoomTypeChange = function($event) {
 			var tabIndex = $scope.viewState.currentTab,
-				roomType = parseInt($scope.stateCheck.preferredType, 10),
+				roomType = parseInt($scope.stateCheck.preferredType, 10) || "",
 				roomIndex;
 
 			$scope.reservationData.tabs[tabIndex].roomTypeId = roomType;

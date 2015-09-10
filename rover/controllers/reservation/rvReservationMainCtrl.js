@@ -1478,7 +1478,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
         //CICO-11716
         $scope.onOccupancyChange = function(type, tabIndex) {
-            var currentRoomTypeId = $scope.reservationData.tabs[tabIndex].roomTypeId,
+            var currentRoomTypeId = parseInt($scope.reservationData.tabs[tabIndex].roomTypeId, 10) || "",
                 firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
                     roomTypeId: currentRoomTypeId
                 })),
@@ -1495,22 +1495,30 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 $scope.updateOccupancy(i);
             }
             $scope.$broadcast('SIDE_BAR_OCCUPANCY_UPDATE');
+            devlogRoomsArray();
         };
 
         $scope.removeTab = function(tabIndex) {
             var firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
-                roomTypeId: $scope.reservationData.tabs[tabIndex].roomTypeId
+                roomTypeId: parseInt($scope.reservationData.tabs[tabIndex].roomTypeId, 10) || ""
             }));
             var currentCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount, 10);
             $scope.reservationData.tabs.splice(tabIndex, 1);
-            $scope.reservationData.rooms.splice(firstIndex, currentCount);
-            refreshScroller();
+            $scope.reservationData.rooms.splice(firstIndex, currentCount);            
+            devlogRoomsArray();
         };
+
+        var devlogRoomsArray = function() {
+            console.log({
+                size: $scope.reservationData.rooms.length,
+                contents: $scope.reservationData.rooms
+            });
+        }
 
 
         $scope.onRoomCountChange = function(tabIndex) {
             var currentCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount, 10),
-                currentRoomTypeId = $scope.reservationData.tabs[tabIndex].roomTypeId,
+                currentRoomTypeId = parseInt($scope.reservationData.tabs[tabIndex].roomTypeId, 10) || "",
                 firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
                     roomTypeId: currentRoomTypeId
                 })),
@@ -1526,8 +1534,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     $scope.reservationData.rooms.splice(lastIndex, 0, copy);
                 }
             } else {
-                $scope.reservationData.rooms.splice(lastIndex, totalCount - currentCount);
+                $scope.reservationData.rooms.splice(firstIndex, totalCount - currentCount);
             }
+            devlogRoomsArray();
         };
 
     }
