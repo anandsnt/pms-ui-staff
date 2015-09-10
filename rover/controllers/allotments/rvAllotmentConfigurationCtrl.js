@@ -100,9 +100,6 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             $scope.accountConfigData = {
                 summary: summaryData.accountSummary
             };
-            if (!$scope.allotmentConfigData.summary.release_date) {
-                $scope.allotmentConfigData.summary.release_date = $scope.allotmentConfigData.summary.block_from;
-            }
 
             if (!$scope.isInAddMode()) {
                 $scope.allotmentConfigData.summary.block_from = new tzIndependentDate($scope.allotmentConfigData.summary.block_from);
@@ -314,6 +311,36 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          */
         $scope.duplicateAllotment = function() {
             //TODO: Duplicate Allotment - Future functionality
+        };
+
+        /**
+         * if comapny card id is null, we will not show
+         * @return {Boolean} [description]
+         */
+        $scope.shouldShowCompanyCardNavigationButton = function() {
+            return (!$scope.isInAddMode() && !!$scope.allotmentConfigData.summary.company.id)
+        };
+
+        /**
+         * if travel agent id is null, we will not show
+         * @return {Boolean} [description]
+         */
+        $scope.shouldShowTravelAgentNavigationButton = function() {
+            return (!$scope.isInAddMode() && !!$scope.allotmentConfigData.summary.travel_agent.id)
+        };
+
+        $scope.goToTACard = function(){            
+            $state.go('rover.companycarddetails', {
+                id: summaryData.allotmentSummary.travel_agent.id,
+                type: 'TRAVELAGENT'
+            });
+        };
+        
+        $scope.goToCompanyCard = function(){
+            $state.go('rover.companycarddetails', {
+                id: summaryData.allotmentSummary.company.id,
+                type: 'COMPANY'
+            });
         };
 
         /**

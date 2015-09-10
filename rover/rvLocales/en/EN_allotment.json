@@ -35,6 +35,8 @@
     "ALLOTMENT_CHECK_IN":"Check In",
     "ALLOTMENT_CHECK_OUT":"Check Out",
     "ALLOTMENT_SET_CUTOFF": "SET CUT-OFF",
+    "ALLOTMENT_RELEASE_DATE": "Allotment Release Date",
+    "ALLOTMENT_RELEASE_NOW": "Release Now",
     "ALLOTMENT_AUTO_ASSIGN_ROOMS":"Auto-Assign Rooms",
     "ALLOTMENT_EMAIL":"Email",
     "ALLOTMENT_PRINT":"Print",

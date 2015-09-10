@@ -60,6 +60,21 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
         return deferred.promise;
     };
 
+    /*
+     * Service function to fetch journal summary
+     * @return {object} journal summary
+     */
+    that.fetchSummaryData = function (params) {
+    	var deferred = $q.defer();
+        var url = "api/financial_transactions/daily_balance_details?date="+params.date;
+        BaseWebSrvV2.getJSON(url).then(function (data) {
+            deferred.resolve(data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
     /*********************************************************************************************
 
     Flags used for REVENUE DATA and PAYMENTS DATA.

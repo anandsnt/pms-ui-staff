@@ -206,6 +206,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 						$scope.$emit('hideLoader');
 					};
 
+
 				_.each($scope.reservationData.rooms, function(room, index) {
 					if (paramsArray[index].length > 0) {
 						$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, {
@@ -214,6 +215,9 @@ sntRover.controller('RVReservationConfirmCtrl', [
 						}, onupdateSuccess, onUpdateFailure);
 					}
 				});
+				if(typeof $rootScope.searchData !== "undefined"){
+					$rootScope.searchData.guestCard.email = $scope.reservationData.guest.email;
+				};				
 
 			};
 
@@ -553,5 +557,9 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		};
 
 		$scope.init();
+
+		$scope.watchEmailUpdate = function(){
+       		$rootScope.$broadcast('guest_email_updated', $scope.reservationData.guest.email);
+   		};
 	}
 ]);

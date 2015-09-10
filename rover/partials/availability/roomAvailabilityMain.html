@@ -2,10 +2,10 @@
 
 	<!-- Grid -->
 	<div class="availability-header">
-		 <div class="date has-datepicker" ng-click="clickedOnDatePicker()">
-		 	<input name="availability-start-date" id="availability-start-date" class="hasDatepicker" type="text" ng-model="data.formattedSelectedDate" ng-change="changedAvailabilityDataParams()" />
+		<div class="date has-datepicker" ng-click="clickedOnDatePicker()">
+			<input name="availability-start-date" id="availability-start-date" class="hasDatepicker" type="text" ng-model="data.formattedSelectedDate" ng-change="changedAvailabilityDataParams()" />
 		 	<button type="button" class="ui-datepicker-trigger">...</button>
-		 </div>				
+		</div>
 	    <div class="select">
 			<select id="days-view" name="days-view" ng-model="numberOfDaysSelected" ng-change="changedAvailabilityDataParams()">
 				<option value="7" ng-selected="numberOfDaysSelected==7">7 Days</option>

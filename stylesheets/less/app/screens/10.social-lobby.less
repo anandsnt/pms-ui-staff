@@ -1,0 +1,347 @@
+.social-lobby-content {
+
+    /* Scrollable area ***/
+    > .wrapper { padding: 20px; }
+
+    /* Posts timeline **/
+    .timeline-title {
+        margin-bottom: 10px;
+        .float;
+
+        h2 {
+            display: inline-block;
+            text-transform: uppercase;
+            font-weight: 600;
+            clear: none;
+            .pull-left;
+        }
+
+        .icon-group {
+            color: @grey3;
+            padding-left: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            clear: none;
+            .pull-right;
+        }
+    }
+
+    .lobby-posts {
+        margin-bottom: 20px;
+
+        > li {
+            margin: 0 0 0 10px;
+            padding: 0 0 10px 100px;
+            border-left: 2px solid rgba(0,0,0,.1);
+            position: relative;
+            z-index: 1;
+
+            .post-status {
+                position: absolute;
+                top: 15px;
+                left: -10px;
+                background: @background;
+                padding: 10px 0;
+                .size(40px, 20px);
+
+                .icons {
+                    .square(20px);
+                }
+            }
+
+            time {
+                position: absolute;
+                top: 25px;
+                left: 20px;
+                font-size: 12px;
+                line-height: 20px;
+                vertical-align: middle;
+                text-transform: uppercase;
+                color: @grey3;
+            }
+
+            /* Unread post checkbox ***/
+            .post-details {
+                &.unread {
+                    .checkbox {
+                        position: absolute;
+                        line-height: 20px;
+                        margin: 0;
+                        padding: 0;
+                        .square(20px);
+                        .hide-text;
+                        .show;
+
+                        .icon-form { 
+                            top: 0; 
+                            left: 0; 
+                            background: @grey1;
+
+                            &.checked {
+                                .gradient(@softRedStart, @softRedEnd);
+                            }
+                        }
+
+                        input {
+                            height: 20px;
+                            min-height: 20px;
+                        }
+                    }
+                }
+
+                .view-stay-card { 
+                    &:hover {
+                        .data {
+                            h3 { color: @logoPrimary; }
+                        }
+                    }
+                }
+                
+            }
+
+            > .post-details {
+                position: relative;
+                background: @white;
+                #border-radius > .rounded();
+                .box-shadow();
+                .show;
+
+                /* Post link to details ***/
+                .view-stay-card {
+                    padding: 10px;
+                    .calc-width(100, 50);
+                    .show;
+                    .float;
+
+                    .data {
+                        margin-left: 10px;
+                        .calc-width(100, 60);
+                        .pull-left;
+
+                        h3 {
+                            display: inline-block;
+                            font-size: 20px;
+                            line-height: 20px;
+                            vertical-align: middle;
+                            font-weight: 600;
+                            color: @textColor;
+                            .transition;
+                        }
+
+                        .job-title,
+                        .icons,
+                        .room {
+                            display: inline-block;
+                            font-size: 12px;
+                            line-height: 20px;
+                            vertical-align: middle;
+                            text-transform: uppercase;
+                            color: @grey3;
+                            margin-left: 10px;
+
+                            &.icons { padding-left: 20px; }
+                            &.icon-staff-blue { color: @blue; }
+
+                            &.room {
+                                font-size: 16px;
+                                font-weight: 600;
+                                color: @textColor;
+                                margin: 0 10px 0 0;
+                            }
+                        }
+
+                        h4 {
+                            font-size: 20px;
+                            font-style: italic;
+                            font-weight: 400;
+                            line-height: 26px;
+                            vertical-align: middle;
+                            color: @textColor;
+
+                            &.appearance { color: @grey3; }
+
+                            &.staff { 
+                                color: @blue; 
+                            }
+                        }
+                    }
+                }
+
+                /* Expand conversation link ***/
+                .has-arrow.toggle {
+                    position: absolute;
+                    top: 15px;
+                    right: 60px;
+                    background-position: 50% 50%;
+                    .square(40px);
+                    .hide-text;
+                    .show;
+                }
+
+                /* Edit post / Reply link ***/
+                .button.only-icon {
+                    position: absolute;
+                    top: 15px;
+                    right: 10px;
+                    background: @grey1;
+                    .square(40px);
+                }
+
+                /* Post is unread ***/
+                &.unread {
+                    padding-left: 45px;
+
+                    .checkbox {
+                        top: 25px;
+                        left: 15px;
+                    }
+
+                    > .view-stay-card { 
+                        .data {
+                            h4 {
+                                color: @softRed; 
+                                &.appearance { color: @grey3; }
+                                &.staff { color: @blue; }
+                            }
+                        }
+                    }
+
+                    .conversation {
+                        margin-left: -45px;
+                    }
+                }
+
+                /* Post has replies ***/
+                &.has-conversation {
+                    position: relative;
+
+                    > .view-stay-card { 
+                        .calc-width(100, 110);
+
+                        .data {
+                            h4 {
+                                position: relative;
+                                min-height: 20px;
+                                padding-left: 50px;
+                                
+                                .icons {
+                                    display: inline-block;
+                                    position: absolute;
+                                    top: 3px;
+                                    left: 0;
+                                    color: @white;
+                                    font-size: 14px;
+                                    line-height: 20px;
+                                    font-weight: 600;
+                                    font-style: normal;
+                                    vertical-align: middle;
+                                    text-align: right;
+                                    padding-right: 5px;
+                                    margin: 0;
+                                }
+                            }
+                        }
+                    }
+
+                    &.has-unread {
+                        > a .data {
+                            h4 { color: @softRed; }
+                        }
+
+                        &.conversation-open {
+                            > a .data {
+                                h4 { color: @textColor; }
+                            }
+
+                            &.unread {
+                                > a .data {
+                                    h4 { color: @softRed; }
+                                }
+                            }
+                        }
+                    }
+
+                    &:before,
+                    &:after {
+                        content: "";
+                        position: absolute;
+                        left: 0;
+                        width: 100%;
+                        height: 2px;
+                        background: @white;
+                        #border-radius > .bottom();
+                        .box-shadow();
+                    }
+
+                    &:before { bottom: 2px; }
+                    &:after { bottom: 4px; }
+
+                    &.conversation-open {
+                        &:before,
+                        &:after { .hide; }
+                    }
+                }
+
+                /* Conversation ***/
+                .conversation {
+                    margin: 0 10px;
+                    padding: 10px 0;
+                    border-top: 2px solid rgba(0,0,0,.1);
+
+                    ul {
+                        margin-bottom: 15px;
+                        border-bottom: 2px solid rgba(0,0,0,.1);
+
+                        li {
+                            position: relative;
+                            padding-left: 60px;
+                            margin-bottom: 15px;
+
+                            .post-details {
+                                position: relative;
+                                .show;
+
+                                .view-stay-card { padding: 0; }
+
+                                .button.only-icon {
+                                    top: 5px;
+                                    right: 0;
+                                }
+
+                                &.unread {
+                                    .checkbox {
+                                        top: 15px;
+                                        left: -45px;
+                                    }
+
+                                    .view-stay-card { 
+                                        .data {
+                                            h4 {
+                                                color: @softRed; 
+                                                &.appearance { color: @grey3; }
+                                                &.staff { color: @blue; }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    form {
+                        input {
+                            background: @grey1;
+                            margin-right: 10px;
+                            .placeholder-text(16px, 40px, 400, @grey4);
+                            .calc-width(100, 95);
+                        }
+
+                        .button { .size(40px,80px); }
+                    }
+                }
+            }
+        }
+
+        &:last-child { margin-bottom: 0; }
+    }
+}

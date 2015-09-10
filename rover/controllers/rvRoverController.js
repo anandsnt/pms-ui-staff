@@ -472,6 +472,8 @@ sntRover.controller('roverController',
     $scope.$on('GUESTCARDVISIBLE', function(event, data) {
       $scope.isGuestCardVisible = false;
       if (data) {
+        //inoder to refresh the scroller in tab's and I dont knw why 'GUESTCARDVISIBLE' listened here :(
+        $scope.$broadcast ('REFRESH_ALL_CARD_SCROLLERS');
         $scope.isGuestCardVisible = true;
       }
     });
@@ -568,6 +570,9 @@ sntRover.controller('roverController',
     $scope.$on('SETGUESTDATA', function(event, guestData) {
       $scope.guestInfoToPaymentModal = guestData;
 
+    });
+    $scope.$on('CLOSE_AVAILIBILTY_SLIDER', function(event) {
+      $scope.$broadcast('CLOSED_AVAILIBILTY_SLIDER');
     });
     /*
      * Tp close dialog box

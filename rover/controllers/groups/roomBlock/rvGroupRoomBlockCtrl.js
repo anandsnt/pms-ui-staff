@@ -133,11 +133,15 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		/**
-		 * Has Permission To Over book
+		 * CICO-16821: Check permission to overbook room type and house separately.
 		 * @return {Boolean}
 		 */
-		var hasPermissionToOverBook = function() {
-			return (rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE'));//CICO-19821
+		var hasPermissionToOverBookRoomType = function() {
+			return (rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE'));
+		};
+
+		var hasPermissionToOverBookHouse = function() {
+			return (rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE'));
 		};
 
 		/**
@@ -146,7 +150,19 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableStartDate = function() {
-			return !hasPermissionToEditSummaryGroup() || !!$scope.groupConfigData.summary.is_cancelled;
+			var sData 					= $scope.groupConfigData.summary,
+				noOfInhouseIsNotZero 	= (sData.total_checked_in_reservations > 0),
+				cancelledGroup 			= sData.is_cancelled,
+				is_A_PastGroup 			= sData.is_a_past_group,
+				inEditMode 				= !$scope.isInAddMode();
+
+			return ( inEditMode &&
+				   	(
+				   	  noOfInhouseIsNotZero 	||
+					  cancelledGroup 		||
+					  is_A_PastGroup
+					)
+				   );
 		};
 
 		/**
@@ -180,7 +196,19 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableEndDate = function() {
-			return !hasPermissionToEditSummaryGroup()  || !!$scope.groupConfigData.summary.is_cancelled;
+			var sData 					= $scope.groupConfigData.summary,
+				endDateHasPassed 		= new tzIndependentDate(sData.block_to) < new tzIndependentDate($rootScope.businessDate),
+				cancelledGroup 			= sData.is_cancelled,
+				toRightMoveNotAllowed 	= !sData.is_to_date_right_move_allowed,
+				inEditMode 				= !$scope.isInAddMode();
+
+			return ( inEditMode &&
+				   	(
+				   	 endDateHasPassed 	||
+					 cancelledGroup 	||
+					 toRightMoveNotAllowed
+					)
+				   );
 		};
 
 		/**
@@ -647,20 +675,12 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 
 		/**
 		 * when save button clicked,
-		 * we will first check whether the availability is not matching is the total booked
-		 * if it is available, we will call the save API
 		 * @return None
 		 */
 		$scope.clickedOnSaveButton = function() {
-			if (!hasPermissionToOverBook() && isOverBooked()) {
-				showNoPermissionOverBookingPopup();
-				return false;
-			}
-			if (isOverBooked()) {
-				showOverBookingPopup();
-			} else {
-				$scope.saveRoomBlock();
-			}
+			// do not force overbooking for the first time
+
+			$scope.saveRoomBlock(false);
 		};
 
 		/**
@@ -675,9 +695,15 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			$scope.hasBookingDataChanged = false;
 		};
 
-		var successCallBackOfSaveRoomBlock = function(date) {
+		var successCallBackOfSaveRoomBlock = function(data) {
+			// CICO-18621: Assuming room block will be saved if I call
+			// it with force flag.
+			if (!data.saved_room_block) {
+				$scope.saveRoomBlock(true);
+				return false;
+			}
 
-			//we have save everything we have
+			//we have saved everything we have
 			//so our data is new
 			$scope.copy_selected_room_types_and_bookings =
 				angular.copy($scope.groupConfigData.summary.selected_room_types_and_bookings);
@@ -691,55 +717,99 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		/**
+		 * Handles the failure case of inventory save
+		 * A 407 status for response means overbooking occurs.
+		 * @param 	{object} 	API response
+		 * @returns {undefined}
+		 */
+		var failureCallBackOfSaveRoomBlock = function(error) {
+			if(error.hasOwnProperty ('httpStatus')) {
+				if (error.httpStatus === 470) {
+					var message 			 	= null,
+						isHouseOverbooked  	 	= error.is_house_overbooked,
+						overBookedRoomTypes  	= [],
+						isRoomTypeOverbooked   	= false,
+						overBookingOccurs		= false,
+						canOverbookHouse		= hasPermissionToOverBookHouse(),
+						canOverbookRoomType		= hasPermissionToOverBookRoomType(),
+						canOverBookBoth			= canOverbookHouse && canOverbookRoomType;
+
+					_.each(error.room_type_hash, function(roomType) {
+						var overBookedDates 		= _.where(roomType.details, {is_overbooked: true}),
+							editedRoomTypeDetails  	= _.findWhere($scope.groupConfigData.summary.selected_room_types_and_bookings, {
+															room_type_id: roomType.room_type_id
+										  				});
+
+						// check if overbooking case has occured due to a new change
+						var alreadyOverbooked = _.filter(editedRoomTypeDetails.dates,
+							function(dateData) {
+								var newTotal 		 = $scope.getTotalBookedOfIndividualRoomType(dateData);
+									detailHasChanged = dateData.old_total != newTotal;
+								return (dateData.availability < 0 && !detailHasChanged);
+							});
+
+						// only mark this roomtype & date if if not already overbooked.
+						if (overBookedDates.length > alreadyOverbooked.length)
+							overBookedRoomTypes.push(roomType);
+					});
+
+					isRoomTypeOverbooked = overBookedRoomTypes.length > 0;
+					overBookingOccurs	 = isRoomTypeOverbooked || isHouseOverbooked;
+
+					// show appropriate overbook message.
+					if (isHouseOverbooked && isRoomTypeOverbooked && canOverBookBoth) {
+						message = "HOUSE_AND_ROOMTYPE_OVERBOOK";
+						showOverBookingPopup(message);
+						return;
+					}
+					else if(isHouseOverbooked && canOverbookHouse) {
+						message = "HOUSE_OVERBOOK";
+						showOverBookingPopup(message);
+						return;
+					}
+					else if(isRoomTypeOverbooked && canOverbookRoomType){
+						message = "ROOMTYPE_OVERBOOK";
+						showOverBookingPopup(message);
+						return;
+					}
+					// Overbooking occurs and has no permission.
+					else if(overBookingOccurs) {
+						showNoPermissionOverBookingPopup();
+						return false;
+					}
+					else {
+						$scope.saveRoomBlock(true);
+					}
+				}
+			}
+		};
+
+		/**
 		 * Method to make the API call to save the room block grid
 		 * Will be called from
 		 * 	1. The controller $scope.onBlockRoomGrid
 		 * 	2. The warnReleaseRoomsPopup.html template
+		 * @param {boolean} forceOverbook
 		 * @return undefined
 		 */
-		$scope.saveRoomBlock = function() {
-			if (!hasPermissionToOverBook() && isOverBooked()) {
-				showNoPermissionOverBookingPopup();
-				return false;
-			}
+		$scope.saveRoomBlock = function(forceOverbook) {
+			forceOverbook = forceOverbook || false;
 
 			$timeout(function() {
 				//TODO : Make API call to save the room block.
 				var params = {
 					group_id: $scope.groupConfigData.summary.group_id,
-					results: $scope.groupConfigData.summary.selected_room_types_and_bookings
+					results: $scope.groupConfigData.summary.selected_room_types_and_bookings,
+					forcefully_overbook_and_assign_rooms: forceOverbook
 				};
 
 				var options = {
 					params: params,
-					successCallBack: successCallBackOfSaveRoomBlock
+					successCallBack: successCallBackOfSaveRoomBlock,
+					failureCallBack: failureCallBackOfSaveRoomBlock
 				};
 				$scope.callAPI(rvGroupConfigurationSrv.saveRoomBlockBookings, options);
 			}, 0);
-		};
-
-		/**
-		 * Method to validate overbooking - Returns true if overbooked
-		 * @return boolean
-		 */
-		var isOverBooked = function() {
-			// TODO write check here
-			var ref = $scope.groupConfigData.summary.selected_room_types_and_bookings,
-				is_over_booked = false,
-				indvdlTotal = 0;
-
-			_.each(ref, function(eachRoomType) {
-				_.each(eachRoomType.dates, function(dateData) {
-					indvdlTotal = $scope.getTotalBookedOfIndividualRoomType(dateData);
-
-					//if there is some diff with old total we calculated earlier and new total
-					if ((indvdlTotal !== dateData.old_total) &&
-						(indvdlTotal - dateData.old_total) > dateData.availability) {
-						is_over_booked = true;
-					}
-				});
-			});
-			return is_over_booked;
 		};
 
 		/**
@@ -761,14 +831,19 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * Method to show oerbooking popup
 		 * @return undefined
 		 */
-		var showOverBookingPopup = function() {
+		var showOverBookingPopup = function(message) {
 			// Show overbooking message
+			var dialogData = {
+				message: message
+			}
+
 			ngDialog.open({
 				template: '/assets/partials/groups/roomBlock/rvGroupWarnOverBookingPopup.html',
 				className: '',
 				scope: $scope,
 				closeByDocument: false,
-				closeByEscape: false
+				closeByEscape: false,
+				data: JSON.stringify(dialogData)
 			});
 		};
 
@@ -1219,11 +1294,6 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			});			
 
 			initializeChangeDateActions ();
-			
-			//on tab switching, we have change min date
-			setDatePickers();
-
-
 		});
 
 		/**
@@ -1423,8 +1493,6 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 */
 		var resetDatePickers = function() {
 			//resetting the calendar date's to actual one
-			$scope.groupConfigData.summary.block_from 	= '';
-
 			$scope.groupConfigData.summary.block_from 	= new tzIndependentDate(summaryMemento.block_from);
 			$scope.groupConfigData.summary.block_to  	= new tzIndependentDate(summaryMemento.block_to);
 			$scope.startDate = $scope.groupConfigData.summary.block_to;
@@ -1486,8 +1554,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 					oldFromDate 	: oldSumryData.block_from,
 					oldToDate 		: oldSumryData.block_to,
 					successCallBack : successCallBackOfMoveButton,
-					failureCallBack : failureCallBackOfMoveButton,
-					cancelPopupCallBack	: cancelCallBackofDateChange
+					failureCallBack : failureCallBackOfMoveButton
 				};
 			$scope.changeDatesActions.clickedOnMoveSaveButton (options);
 		};
@@ -1506,7 +1573,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			resetDatePickers();
 
 			//setting max date of from date
-			$scope.fromDateOptions.maxDate = '';
+			$scope.startDateOptions.maxDate = '';
 
 			$scope.changeDatesActions.clickedOnMoveButton ();
 
