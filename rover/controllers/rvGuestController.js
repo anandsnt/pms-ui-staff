@@ -438,7 +438,6 @@ sntRover.controller('guestCardController', [
 			}
 		};
 
-
 		$scope.clickedDiscardCard = function(cardType, discard) {
 			discardCard(cardType, discard);
 		};
@@ -693,6 +692,10 @@ sntRover.controller('guestCardController', [
 							companyData.id = item.id;
 							companyData.account_name = item.account_name;
 
+							companyData.account_type = item.account_type;
+							companyData.isMultipleContracts = false;
+							if(item.current_contracts.length > 1) companyData.isMultipleContracts = true;
+
 							companyData.logo = item.company_logo;
 							if (item.address !== null) {
 								companyData.address = {};
@@ -700,8 +703,8 @@ sntRover.controller('guestCardController', [
 								companyData.address.city = item.address.city;
 								companyData.address.state = item.address.state;
 							}
-							if (item.current_contract !== null) {
-								companyData.rate = item.current_contract;
+							if (item.current_contracts.length > 0) {
+								companyData.rate = item.current_contracts[0];
 								companyData.rate.difference = (function() {
 									if (parseInt(companyData.rate.based_on.value) < 0) {
 										if (companyData.rate.based_on.type === "amount") {
@@ -725,6 +728,7 @@ sntRover.controller('guestCardController', [
 									return "";
 								})();
 							}
+							
 							companyData.email = item.email;
 							companyData.phone = item.phone;
 							$scope.searchedCompanies.push(companyData);
@@ -762,6 +766,10 @@ sntRover.controller('guestCardController', [
 							travelAgentData.id = item.id;
 							travelAgentData.account_name = item.account_name;
 
+							travelAgentData.account_type = item.account_type;
+							travelAgentData.isMultipleContracts = false;
+							if(item.current_contracts.length > 1) travelAgentData.isMultipleContracts = true;
+
 							travelAgentData.logo = item.company_logo;
 							if (item.address !== null) {
 								travelAgentData.address = {};
@@ -769,8 +777,8 @@ sntRover.controller('guestCardController', [
 								travelAgentData.address.city = item.address.city;
 								travelAgentData.address.state = item.address.state;
 							}
-							if (item.current_contract !== null) {
-								travelAgentData.rate = item.current_contract;
+							if (item.current_contracts.length > 0) {
+								travelAgentData.rate = item.current_contracts[0];
 								travelAgentData.rate.difference = (function() {
 									if (parseInt(travelAgentData.rate.based_on.value) < 0) {
 										if (travelAgentData.rate.based_on.type === "amount") {
@@ -1280,8 +1288,68 @@ sntRover.controller('guestCardController', [
 			$scope.$broadCast ('FETCH_ALLOTMENT_SEARCH_DATA');
 		};
 
-		$scope.selectCompany = function(company, $event) {
+		// CICO-11893
+		// To show contracted Rate confirmation popup
+		var showContractRatePopup = function( data ){
+			$scope.cardData = data;
+			ngDialog.open({
+	    		template: '/assets/partials/cards/alerts/contractRatesConfirmation.html',
+	    		className: '',
+	    		closeByDocument: false,
+	    		closeByEscape: false,
+	    		scope: $scope
+    		});
+		};
+		// To keep existing rate and proceed.
+		$scope.keepExistingRate = function( cardData ){
+			if(cardData.account_type === 'COMPANY'){
+				$scope.selectCompany(cardData);
+			}
+			if(cardData.account_type === 'TRAVELAGENT'){
+				$scope.selectTravelAgent(cardData);
+			}
+			ngDialog.close();
+		};
+		// Navigation to Room & Rates screen
+		var navigateToRoomAndRates = function(arrival, departure) {
+			$state.go('rover.reservation.staycard.mainCard.roomType', {
+				from_date: arrival || $scope.reservationData.arrivalDate,
+				to_date: departure || $scope.reservationData.departureDate,
+				view: 'DEFAULT',
+				fromState: $state.current.name,
+				company_id: $scope.reservationData.company.id,
+				travel_agent_id: $scope.reservationData.travelAgent.id
+			});
+		};
+		// To change to contracted Rate and proceed.
+		$scope.changeToContractedRate = function( cardData ){
+			$scope.keepExistingRate(cardData);
+			navigateToRoomAndRates();
+			ngDialog.close();
+		};
+		// To handle card selection from COMPANY / TA.
+		$scope.selectCardType = function(cardData , $event){
 			$event.stopPropagation();
+			
+			if(cardData.account_type === 'COMPANY'){
+				if(typeof cardData.rate !== 'undefined'){
+					showContractRatePopup(cardData);
+				}
+				else{
+					$scope.selectCompany(cardData);
+				}
+			}
+			else if(cardData.account_type === 'TRAVELAGENT'){
+				if(typeof cardData.rate !== 'undefined'){
+					showContractRatePopup(cardData);
+				}
+				else{
+					$scope.selectTravelAgent(cardData);
+				}
+			}
+		};
+		// On selecting comapny card
+		$scope.selectCompany = function(company) {
 			//CICO-7792
 			if ($scope.viewState.identifier === "CREATION") {
 				$scope.reservationData.company.id = company.id;
@@ -1306,11 +1374,9 @@ sntRover.controller('guestCardController', [
 					$scope.checkFuture('company', company);
 				}
 			}
-
 		};
-
-		$scope.selectTravelAgent = function(travelAgent, $event) {
-			$event.stopPropagation();
+		// On selecting travel agent card
+		$scope.selectTravelAgent = function(travelAgent) {
 			//CICO-7792
 			if ($scope.viewState.identifier === "CREATION") {
 				// Update main reservation scope

@@ -289,25 +289,35 @@
 
 					.highlight { color: @logoPrimary; }
 
-					img,
-					.icons {
+					.icons,
+					.group-info,
+					img {
 						position: absolute;
 						top: 10px;
 						left: 10px;
 						.square(30px);
 						#border-radius > .rounded();
-					}
 
-					.icons {
 						&.icon-company { 
-							background-position: 4px -3458px;
+							background-position: 7px -3514px;
 							background-color: @ccard; 
 						}
 
 						&.icon-travel-agent { 
-							background-position: 4px -3576px;
+							background-position: 6px -3634px;
 							background-color: @tacard; 
 						}
+					}
+
+					.group-info {
+						font-size: 18px;
+						line-height: 30px;
+						text-transform: uppercase;
+						font-weight: 600;
+						text-align: center;
+						color: @grey3;
+						width: 30px;
+						background-color: @gcard;
 					}
 				}
 			}
@@ -3326,6 +3336,23 @@
 				.actions {
 					padding-top: 19px;
 					border-top: 1px solid rgba(0,0,0,.1);
+				}
+			}
+
+			/* Report print options ***/
+			&.report-options {
+				width: 360px;
+
+				.entry {
+					margin-bottom: 20px;
+
+					.radio {
+						text-transform: uppercase;
+						margin-bottom: 10px;
+						width: 100%;
+
+						&.checked { font-weight: 600; }
+					}
 				}
 			}
 

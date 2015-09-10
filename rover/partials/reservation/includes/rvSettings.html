@@ -1,5 +1,5 @@
 <div id="reservations-settings" class="sidebar-left" role="complementary" ng-controller="RVReservationSettingsCtrl" ui-jq="resizable" ui-options="resizableOptions" ng-click="clickedOnReservationSettings($event)" style="width: {{reservationSettingsWidth}}px;" ng-hide="hideSidebar">
-    <div class="scrollable" ng-iscroll="reservation-settings" ng-iscroll-delay="500">
+    <div class="scrollable" ng-iscroll="reservation-settings" ng-iscroll-delay="1000">
         <div class="wrapper">
             <div ui-jq="accordion" ui-options="accordionInitiallyNotCollapsedOptions">
                 <a class="settings-title toggle has-arrow active">
@@ -42,7 +42,7 @@
                     <div class="entry" ng-repeat="tab in reservationData.tabs">
                         <label>{{'ROOM_LABEL'|translate}} {{$index+1}}
                             <!-- If not room 1 enable removal: -->
-                            <button type="button" class="remove-room icons icon-remove-10" ng-hide="$first" ng-click="removeTab($index)">Remove Room</button>
+                            <button type="button" class="remove-room icons icon-remove-10" ng-hide="$first" ng-click="removeTabFromSidebar($index)">Remove Room</button>
                         </label>
                         <span ng-show="room.varyingOccupancy" translate>VAR_OCCUPANCY</span>
                         <div class="select adults">

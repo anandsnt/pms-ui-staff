@@ -1693,7 +1693,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 		$scope.onRoomTypeChange = function($event) {
 			var tabIndex = $scope.viewState.currentTab,
-				roomType = parseInt($scope.stateCheck.preferredType, 10),
+				roomType = parseInt($scope.stateCheck.preferredType, 10) || "",
 				roomIndex;
 
 			$scope.reservationData.tabs[tabIndex].roomTypeId = roomType;
@@ -1703,6 +1703,15 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			}
 			$scope.filterRooms($event);
 			$scope.resetRates();
+		};
+
+		$scope.changeActiveRoomType = function(tabIndex) {
+			if ($scope.stateCheck.stayDatesMode) {
+				return false;
+			}
+			$scope.activeRoom = tabIndex;
+			$scope.viewState.currentTab = tabIndex;
+			init();
 		};
 
 	}

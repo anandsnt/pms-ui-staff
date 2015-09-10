@@ -321,6 +321,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			singleAddonData.post_type_id = $scope.singleAddon.post_type_id;
 			singleAddonData.rate_code_only = $scope.singleAddon.rate_code_only;
 			singleAddonData.manual_posting = $scope.singleAddon.manual_posting;
+			singleAddonData.forecast_for_next_day = $scope.singleAddon.forecast_for_next_day;
 
 			// convert dates to system format yyyy-MM-dd
 			// if not date null should be passed - read story CICO-7287
