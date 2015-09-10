@@ -93,6 +93,8 @@
     "ALLOTMENT_CHECK_IN":"Check In",
     "ALLOTMENT_CHECK_OUT":"Check Out",
     "ALLOTMENT_SET_CUTOFF": "SET CUT-OFF",
+    "ALLOTMENT_RELEASE_DATE": "Allotment Release Date",
+    "ALLOTMENT_RELEASE_NOW": "Release Now",
     "ALLOTMENT_AUTO_ASSIGN_ROOMS":"Auto-Assign Rooms",
     "ALLOTMENT_EMAIL":"Email",
     "ALLOTMENT_PRINT":"Print",
@@ -106,7 +108,9 @@
     "ALLOTMENT_SELECTED_RESERVATIONS_ARE_ALREADY_ROOM_ASSIGNED": "Sorry, selected reservations are already room assigned",
     "ALLOTMENT_AUTO_ROOM_ASSIGN_CONFIRMATION": "Confirm Room Assign",
     "ALLOTMENT_AUTO_ROOM_ASSIGN_CONFIRMATION_PARTIALLY_OKEY": "Some reservations don't meet auto assign room criteria",
-    "ALLOTMENT_AUTO_ROOM_ASSIGN_FAILED_IN_PROCESSING": "Sorry, Allotment auto room assignment has failed for some reason. Please retry after closing this"
+    "ALLOTMENT_AUTO_ROOM_ASSIGN_FAILED_IN_PROCESSING": "Sorry, Allotment auto room assignment has failed for some reason. Please retry after closing this",
+    "INSUFFICIENT_INV_ALLOTMENT_REVIEW_ROOM_BLOCK":"Insufficient Inventory on Allotment, please review Allotment Room Block",
+    "ROOM_TYPE_NOT_CONFIGURED_IN_ALLOTMENT":"Room type is not configured in Allotment, please review and try again"    
 
 
 
@@ -518,7 +522,9 @@
     "INHOUSE_RESERVATIONS_EXISTS_BUT_ARE_EXCLUDED_FROM_THIS_RATE_UPDATE": "Inhouse Reservations exists but are excluded from this rate update",
     "ROOMTYPE_OVERBOOK": "Room Block Allocation exceeds Room type Availability.",
     "HOUSE_OVERBOOK": "Room Block Allocation exceeds House Availability.",
-    "HOUSE_AND_ROOMTYPE_OVERBOOK": "Room Block Allocation exceeds Room Type availability and House availability."
+    "HOUSE_AND_ROOMTYPE_OVERBOOK": "Room Block Allocation exceeds Room Type availability and House availability.",
+    "INSUFFICIENT_INV_GROUP_REVIEW_ROOM_BLOCK":"Insufficient Inventory on Group, please review Group Room Block",
+    "ROOM_TYPE_NOT_CONFIGURED_IN_GROUP":"Room type is not configured in Group, please review and try again"
 
 
 ,	

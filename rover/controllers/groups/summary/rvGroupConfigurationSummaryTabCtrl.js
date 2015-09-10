@@ -36,8 +36,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 */
 		var resetDatePickers = function() {
 			//resetting the calendar date's to actual one
-			$scope.groupConfigData.summary.block_from 	= '';
-
 			$scope.groupConfigData.summary.block_from 	= new tzIndependentDate(summaryMemento.block_from);
 			$scope.groupConfigData.summary.block_to  	= new tzIndependentDate(summaryMemento.block_to);
 
@@ -62,12 +60,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		};
 
 		var successCallBackOfMoveButton = function() {
-			$scope.computeSegment();
-
-			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
-				fetchApplicableRates();
-			}
-						
 			$scope.reloadPage();
 		};
 
@@ -88,8 +80,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					oldFromDate 	: oldSumryData.block_from,
 					oldToDate 		: oldSumryData.block_to,
 					successCallBack : successCallBackOfMoveButton,
-					failureCallBack : failureCallBackOfMoveButton,
-					cancelPopupCallBack	: cancelCallBackofDateChange
+					failureCallBack : failureCallBackOfMoveButton
 				};
 			$scope.changeDatesActions.clickedOnMoveSaveButton (options);
 		};		
@@ -132,11 +123,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		}
 
 		var successCallBackOfEarlierArrivalDateChange = function() {
-			$scope.computeSegment();
-
-			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
-				fetchApplicableRates();
-			}
 			$scope.reloadPage();
 		};
 
@@ -166,11 +152,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		};	
 
 		var successCallBackOfLaterArrivalDateChange = function() {
-			$scope.computeSegment();
-
-			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
-				fetchApplicableRates();
-			}			
 			$scope.reloadPage();
 		};
 
@@ -203,11 +184,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {[type]} [description]
 		 */
 		var successCallBackOfEarlierDepartureDateChange = function() {
-			$scope.computeSegment();
-
-			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
-				fetchApplicableRates();
-			}			
 			$scope.reloadPage();
 		};
 
@@ -242,11 +218,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {[type]} [description]
 		 */
 		var successCallBackOfLaterDepartureDateChange = function() {
-			$scope.computeSegment();
-
-			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
-				fetchApplicableRates();
-			}			
 			$scope.reloadPage();
 		};
 
@@ -299,7 +270,11 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return undefined
 		 */
 		$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
-			if ($scope.isInAddMode() || targetElement.id === 'summary' ||
+			if(typeof targetElement === 'undefined' || !(targetElement instanceof Element)){
+				return;
+			}
+
+			if ($scope.isInAddMode() || (targetElement.id === 'summary') ||
 				targetElement.id === "cancel-action" || //TODO: Need to check with Dilip/Shiju PC for more about this
 				whetherSummaryDataChanged() ||
 				$scope.groupSummaryData.isDemographicsPopupOpen || $scope.isUpdateInProgress) {
@@ -430,7 +405,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 */
 		var toDateChoosed = function(date, datePickerObj) {
 			$scope.groupConfigData.summary.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
-
 			//referring data source
 			var refData 	= $scope.groupConfigData.summary,
 				newBlockTo 	= refData.block_to,
@@ -459,9 +433,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					$scope.updateGroupSummary();
 				}, 100);
 			}
-
-			//setting the max date for from Date
-			$scope.fromDateOptions.maxDate = refData.block_to;
 
 			/*$scope.computeSegment();
 			//we are in outside of angular world
@@ -726,7 +697,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		$scope.releaseRooms = function() {
 			var onReleaseRoomsSuccess = function(data) {
 					//: Handle successful release
-
 					$scope.closeDialog();
 					fetchSummaryData();
 				},
@@ -1096,6 +1066,16 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$scope.computeSegment();
 		});
 
+		/**
+		 * Since this is reusing from stayccard, we need to refresh the scrollers when the drawer icon clicked
+		 * @param  {[type]} event       [description]
+		 * @return {[type]}             [description]
+		 */
+		$scope.$on ('REFRESH_ALL_CARD_SCROLLERS', function(event){
+			$timeout(function(){
+				$scope.refreshScroller("groupSummaryScroller");
+			}, 100);			
+		});
 		/**
 		 * [initializeVariables description]
 		 * @param  {[type]} argument [description]

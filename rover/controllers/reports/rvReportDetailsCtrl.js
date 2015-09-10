@@ -81,6 +81,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.showSortBy    = true;
 			$scope.hasPagination = true;
 			$scope.isTransactionReport = false;
+			$scope.isCondensedPrint = false;
 
 			switch ( $scope.chosenReport.title ) {
 				case reportNames['IN_HOUSE_GUEST']:
@@ -143,9 +144,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportNames['DEPOSIT_REPORT']:
 				case reportNames['RATE_ADJUSTMENTS_REPORT']:
+					$scope.hasNoTotals = true;
+					$scope.isDepositReport = true;
+					break;
+
 				case reportNames['GROUP_PICKUP_REPORT']:
 					$scope.hasNoTotals = true;
 					$scope.isDepositReport = true;
+					$scope.isCondensedPrint = true;
 					break;
 
 				default:

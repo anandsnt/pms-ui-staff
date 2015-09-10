@@ -50,8 +50,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 * @return undefined
 		 */
 		$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
-			if ($scope.isInAddMode() || targetElement.id === 'summary' ||
-				targetElement.id === "cancel-action" || //TODO: Need to check with Dilip/Shiju PC for more about this
+			if ($scope.isInAddMode() || (targetElement && (targetElement.id === 'summary' ||
+				targetElement.id === "cancel-action" )) || //TODO: Need to check with Dilip/Shiju PC for more about this
 				whetherSummaryDataChanged() ||
 				$scope.allotmentSummaryData.isDemographicsPopupOpen || $scope.isUpdateInProgress) {
 
@@ -88,9 +88,6 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 
 			//referring data source
 			var refData = $scope.allotmentConfigData.summary;
-			if (refData.release_date.toString().trim() === '') {
-				$scope.allotmentConfigData.summary.release_date = refData.block_from;
-			}
 
 			// we will clear end date if chosen start date is greater than end date
 			if (refData.block_from > refData.block_to) {

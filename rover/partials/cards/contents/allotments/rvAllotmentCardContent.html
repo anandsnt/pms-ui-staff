@@ -1,0 +1,16 @@
+<div ng-controller="rvCardAllomentsContentCtrl">
+    <!-- Company Card Content -->
+    <div id="group-card-content" class="card-tabs card-content" ng-class="UICardContentCls('allotment-card')" ng-if="!searchMode">
+        <ul id="allotment-card-tabs-nav" class="card-tabs-nav ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+            <li class="ui-tabs-active">
+                <a translate>SUMMARY</a>
+            </li>
+        </ul>
+        <!-- Company - Contact Information -->
+        <span ng-include="'/assets/partials/allotments/summary/rvAllotmentConfigurationSummaryTab.html'"></span>
+    </div>
+    <!-- Company Search -->
+    <div id="company-card-content" class="card-search card-content" ng-class="UICardContentCls('allotment-card')" ng-if="searchMode">
+       <span ng-include="'/assets/partials/cards/contents/allotments/rvAllotmentCardSearchResults.html'"></span>
+    </div>
+</div>
