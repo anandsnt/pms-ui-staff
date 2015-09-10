@@ -82,7 +82,7 @@
                     <div class="entry full-width float" ng-show="rateData.commission_details.type === 'percent'">
                         <label translate>CHARGE_CODES</label>
                         <div id="newspaper-options" class="boxes">
-                            <label class="checkbox inline" ng-repeat="charge_code in rateData.commission_details.charge_codes">
+                            <label class="checkbox" ng-repeat="charge_code in rateData.commission_details.charge_codes">
                                 
                                 <span class="icon-form icon-checkbox" ng-class="{ checked : charge_code.is_checked }"></span>
                                 <input type="checkbox"  name="newspaper" data-id="1" ng-click="charge_code.is_checked = !charge_code.is_checked ">
