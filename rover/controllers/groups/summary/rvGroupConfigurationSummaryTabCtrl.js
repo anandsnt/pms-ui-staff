@@ -268,7 +268,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {[type]} [description]
 		 */
 		$scope.shouldShowMoveButton = function() {
-			return ($scope.changeDatesActions && $scope.changeDatesActions.shouldShowMoveButton() && !$scope.isInStaycardScreen());
+			if ($scope.isInStaycardScreen()) {
+				return false;
+			}
+			return ($scope.changeDatesActions && $scope.changeDatesActions.shouldShowMoveButton());
 		};
 
 		/**
@@ -276,7 +279,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {[type]} [description]
 		 */
 		$scope.shouldShowMoveCancelButton = function() {
-			return ($scope.changeDatesActions && $scope.changeDatesActions.isInCompleteMoveMode() && !$scope.isInStaycardScreen());
+			if ($scope.isInStaycardScreen()) {
+				return false;
+			}
+			return ($scope.changeDatesActions && $scope.changeDatesActions.isInCompleteMoveMode());
 		};
 
 		/**
@@ -284,8 +290,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {[type]} [description]
 		 */
 		$scope.shouldShowMoveSaveButton = function() {
-			console.log ($scope.changeDatesActions, $scope.changeDatesActions.isInCompleteMoveMode(), !$scope.isInStaycardScreen());
-			return ($scope.changeDatesActions &&  $scope.changeDatesActions.isInCompleteMoveMode() && !$scope.isInStaycardScreen());
+			if ($scope.isInStaycardScreen()) {
+				return false;
+			}
+			return ($scope.changeDatesActions &&  $scope.changeDatesActions.isInCompleteMoveMode());
 		};
 
 		/**
@@ -812,7 +820,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		$scope.viewAddons = function() {
 			var onFetchAddonSuccess = function(data) {
 					$scope.groupConfigData.selectedAddons = data;
-					if ($scope.groupConfigData.selectedAddons.length > 0) {
+					if ($scope.groupConfigData.selectedAddons.length > 0 || $scope.isInStaycardScreen ()) {
 						$scope.openAddonsPopup();
 					} else {
 						$scope.manageAddons();
