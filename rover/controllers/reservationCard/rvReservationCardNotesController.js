@@ -39,6 +39,52 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$
             }
         };
 
+        /**
+         * whether the group card attached to reservation
+         * @return {Boolean}
+         */
+        $scope.isGroupCardAttachedToReservation = function() {
+            return ($scope.reservationDetails && $scope.reservationDetails.group && $scope.reservationDetails.group.id.trim() !== '');
+        };
+
+        /**
+         * whether the group card attached to reservation
+         * @return {Boolean}
+         */
+        $scope.isCompanyCardAttachedToReservation = function() {          
+            return ($scope.reservationDetails && $scope.reservationDetails.companyCard && $scope.reservationDetails.companyCard.id.trim() !== '');
+        };
+
+        /**
+         * whether the travel agent attached to reservation
+         * @return {Boolean}
+         */
+        $scope.isTravelAgentAttachedToReservation = function() {            
+            return ($scope.reservationDetails && $scope.reservationDetails.travelAgent && $scope.reservationDetails.travelAgent.id.trim() !== '');
+        };
+
+        /**
+         * whether the allotment card attached to reservation
+         * @return {Boolean}
+         */
+        $scope.isAllotmentCardAttachedToReservation = function() {            
+            return ($scope.reservationDetails && $scope.reservationDetails.allotment && $scope.reservationDetails.allotment.id.trim() !== '');
+        };
+
+        /**
+         * if no cards has attached to reservation
+         * @return {Boolean}
+         */
+        $scope.noCardAttachedToReservation = function() {
+            return (
+                    !$scope.isGroupCardAttachedToReservation() && 
+                    !$scope.isCompanyCardAttachedToReservation() &&
+                    !$scope.isTravelAgentAttachedToReservation() &&
+                    !$scope.isAllotmentCardAttachedToReservation()
+                    );
+        };
+
+
         init();
     }
 ]);
