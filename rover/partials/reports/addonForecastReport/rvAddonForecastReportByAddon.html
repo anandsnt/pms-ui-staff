@@ -90,10 +90,18 @@
 
             <ul class="grid-footer">
                 <li>
-                    Add-Ons from <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br />
-                    Add-On Groups <span>{{ appliedFilter.addonGroups.join(', ') }}</span><br />
-                    Add-Ons <span>{{ appliedFilter.addons.join(', ') }}</span><br />
-                    Reservation Status <span>{{ appliedFilter.reservationStatus.join(', ') }}</span>
+                    <div ng-if="appliedFilter.fromDate || appliedFilter.toDate">
+                        Add-Ons from <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span>
+                    </div>
+                    <div ng-if="appliedFilter.addonGroups.length">
+                        Add-On Groups: <span>{{ appliedFilter.addonGroups.join(', ') }}</span>
+                    </div>
+                    <div ng-if="appliedFilter.addons.length">
+                        Add-Ons: <span>{{ appliedFilter.addons.join(', ') }}</span>
+                    </div>
+                    <div ng-if="appliedFilter.reservationStatus.length">
+                        Reservation Status: <span>{{ appliedFilter.reservationStatus.join(', ') }}</span>
+                    </div>
                 </li>
                 <li>
                     Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br />

@@ -780,8 +780,8 @@ sntRover.factory('RVReportUtilsFac', [
                         filter       : filter,
                         show         : false,
                         selectAll    : false,
-                        defaultTitle : 'Select Reservation Status',
-                        title        : 'Select Reservation Status',
+                        defaultTitle : 'Select Status',
+                        title        : 'Select Status',
                         data         : angular.copy( data.reservationStatus )
                     });
                 };

@@ -186,7 +186,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 			} else if ( 'NAME' == field ) {
 				eachDate.nameSortDir = (eachDate.nameSortDir == undefined || eachDate.nameSortDir == false) ? true : false;
 				eachDate.roomSortDir = undefined;
-				params['sort_dir'] = addon.nameSortDir;
+				params['sort_dir'] = eachDate.nameSortDir;
 			};
 
 			console.log(eachDate);
