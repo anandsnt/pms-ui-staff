@@ -130,7 +130,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					// holdStatusList: holdStatusList.data.hold_status,
 					selectAddons: false, // To be set to true while showing addons full view
 					addons: {},
-					selectedAddons: []
+					selectedAddons: [],
+					activeScreen: 'STAY_CARD'
 				};				
 				$scope.$broadcast('groupCardAvailable');
 				$scope.$broadcast('groupSummaryDataChanged', $scope.groupConfigData);

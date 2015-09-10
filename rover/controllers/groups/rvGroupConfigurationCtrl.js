@@ -750,7 +750,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 holdStatusList: holdStatusList.data.hold_status,
                 selectAddons: false, // To be set to true while showing addons full view
                 addons: {},
-                selectedAddons: []
+                selectedAddons: [],
+                activeScreen: 'GROUP_ACTUAL'
             };
             $timeout(function() {
                 $scope.groupSummaryMemento = angular.copy($scope.groupConfigData.summary);

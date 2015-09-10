@@ -8,29 +8,29 @@
                     {{ 'NAME' | translate}}
                     <strong>*</strong>
                 </label>
-                <input id="group-name" ng-model="groupConfigData.summary.group_name" type="text" />
+                <input id="group-name" ng-model="groupConfigData.summary.group_name" ng-disabled="isInStaycardScreen()" type="text" />
             </div>
             <div class="entry margin">
                 <label for="group-code" translate>GROUP_CODE</label>
-                <input id="group-code" ng-model="groupConfigData.summary.group_code" type="text" />
+                <input id="group-code" ng-model="groupConfigData.summary.group_code" type="text" ng-disabled="isInStaycardScreen()"/>
             </div>
             <div class="entry">
                 <label for="group-firstname" translate>CONTACT_FIRST_NAME</label>
-                <input id="group-firstname" ng-model="groupConfigData.summary.first_name" type="text" />
+                <input id="group-firstname" ng-model="groupConfigData.summary.first_name" type="text" ng-disabled="isInStaycardScreen()"/>
             </div>
             <div class="entry margin">
                 <label for="group-lastname" translate>CONTACT_LAST_NAME</label>
-                <input id="group-lastname" ng-model="groupConfigData.summary.last_name" type="text" />
+                <input id="group-lastname" ng-model="groupConfigData.summary.last_name" type="text" ng-disabled="isInStaycardScreen()"/>
             </div>
             <div class="entry">
                 <label for="group-phone" translate>CONTACT_PHONE</label>
-                <input id="group-phone" ng-model="groupConfigData.summary.contact_phone" type="text" />
+                <input id="group-phone" ng-model="groupConfigData.summary.contact_phone" type="text" ng-disabled="isInStaycardScreen()"/>
             </div>
             <div class="entry full-width">
                 <label for="group-email" translate>CONTACT_EMAIL</label>
-                <input id="group-email" ng-model="groupConfigData.summary.contact_email" type="text" />
+                <input id="group-email" ng-model="groupConfigData.summary.contact_email" type="text" ng-disabled="isInStaycardScreen()"/>
             </div>
-            <div class="entry break full-width">
+            <div class="entry break full-width" ng-hide="isInStaycardScreen()">
                 <a ng-click="openDemographicsPopup();" class="button" ng-class="{'grey': isInAddMode(), 'white brand-text': !isInAddMode()}" translate>DEMOGRAPHICS</a>
                 <a ng-click="openBillingInformation();" class="button blue" ng-if="groupConfigData.summary.posting_account_billing_info" translate>BILLING_INFORMATION</a>
                 <a ng-click="openBillingInformation();" class="button"  ng-class="{'grey': isInAddMode(), 'blue': !isInAddMode()}"  ng-if="!groupConfigData.summary.posting_account_billing_info" translate>ADD_BILLING_INFO</a>
@@ -59,10 +59,10 @@
                     <!-- If new group, add class "datepicker" -->
                     <input id="group-block-to" class="datepicker" type="text" ui-date="toDateOptions" rv-set-textbox-value listen-this="groupConfigData.summary.block_to|date:dateFormat" readonly ng-class="{'not-selected': !groupConfigData.summary.block_to}" />
                 </div>
-                <button type="button" class="button blue" ng-show="changeDatesActions.shouldShowMoveButton()" ng-click="clickedOnMoveButton()">Move Group</button>
+                <button type="button" class="button blue" ng-show="shouldShowMoveButton()" ng-click="clickedOnMoveButton()">Move Group</button>
                 <!-- When button pressed, disable due date input and replace "Move Group" button with: --> 
-                <button type="button" class="button blank" ng-show="changeDatesActions.isInCompleteMoveMode()" ng-click="clickedOnCancelMoveButton()">Cancel</button>
-                <button type="button" class="button green" ng-show="changeDatesActions.isInCompleteMoveMode()" ng-click="clickedOnSaveMoveButton()">Save</button>            
+                <button type="button" class="button blank" ng-show="shouldShowMoveCancelButton()" ng-click="clickedOnCancelMoveButton()">Cancel</button>
+                <button type="button" class="button green" ng-show="shouldShowMoveSaveButton()" ng-click="clickedOnSaveMoveButton()">Save</button>            
             </div>
             <div class="entry full-width with-button has-datepicker">
                 <label for="group-release-date">
@@ -71,7 +71,7 @@
                 </label>
                 <!-- releaseDateOptions -->
                 <input class="datepicker" type="text" ui-date="releaseDateOptions" value="{{groupConfigData.summary.release_date|date:dateFormat}}" readonly ng-class="{'not-selected': !groupConfigData.summary.release_date}" />
-                <button type="button" ng-click="warnReleaseRooms();" class="button" ng-class="{'red': !isInAddMode() ,'grey': isInAddMode() || !!groupConfigData.summary.is_cancelled}" translate>RELEASE_NOW</button>
+                <button type="button" ng-hide="isInStaycardScreen()" ng-click="warnReleaseRooms();" class="button" ng-class="{'red': !isInAddMode() ,'grey': isInAddMode() || !!groupConfigData.summary.is_cancelled}" translate>RELEASE_NOW</button>
                 <!-- Class grey is for new group (when this button does nothing), red is for existing group -->
             </div>
             <div class="entry clear">
@@ -80,7 +80,7 @@
                     <strong>*</strong>
                 </label>
                 <div class="select">
-                    <select id="group-hold-status" ng-model="groupConfigData.summary.hold_status" iscroll-stop-propagation ng-change="onHoldStatusChange();" ng-disabled="!!groupConfigData.summary.is_cancelled">
+                    <select id="group-hold-status" ng-model="groupConfigData.summary.hold_status" iscroll-stop-propagation ng-change="onHoldStatusChange();" ng-disabled="shouldDisableHoldStatusChange()">
                         <option value="" selected translate ng-if="!groupConfigData.summary.hold_status">SET_STATUS</option>
                         <option ng-repeat="holdstatus in groupConfigData.holdStatusList" value="{{holdstatus.id}}" ng-selected="holdstatus.id == groupConfigData.summary.hold_status" ng-hide="holdstatus.name == 'Cancel' && holdstatus.is_system && !isCancellable()">
                             {{holdstatus.name}}
@@ -90,20 +90,20 @@
             </div>
             <div class="entry margin">
                 <label for="group-revenue" translate>GROUP_APR</label>
-                <input id="group-revenue" value="{{getRevenue()}}" type="text" readonly />
+                <input id="group-revenue" value="{{getRevenue()}}" type="text" readonly ng-disabled="isInStaycardScreen()"/>
             </div>
             <div class="entry margin small">
                 <label for="group-rooms" translate>ROOMS</label>
-                <input id="group-rooms" ng-model="groupConfigData.summary.rooms_total" type="text" readonly />
+                <input id="group-rooms" ng-model="groupConfigData.summary.rooms_total" type="text" readonly ng-disabled="isInStaycardScreen()"/>
             </div>
             <div class="entry small">
                 <label for="group-pickup" TRANSLATE>PICK_UP</label>
-                <input id="group-pickup" ng-model="groupConfigData.summary.rooms_pickup" type="text" readonly />
+                <input id="group-pickup" ng-model="groupConfigData.summary.rooms_pickup" type="text" readonly ng-disabled="isInStaycardScreen()"/>
             </div>
             <div class="entry full-width with-button">
                 <label for="group-rate" translate>RATE</label>
                 <div class="select">
-                    <select id="group-rate" ng-model="groupConfigData.summary.rate" iscroll-stop-propagation ng-change="onRateChange()">
+                    <select id="group-rate" ng-model="groupConfigData.summary.rate" iscroll-stop-propagation ng-change="onRateChange()" ng-disabled="isInStaycardScreen()">
                         <optgroup>Group Rates</optgroup>
                         <option value="" ng-if="!groupConfigData.summary.rate" selected>Select Rate</option>
                         <option value="-1" ng-selected="groupConfigData.summary.rate == -1">Custom Rate</option>
@@ -128,10 +128,10 @@
             <!-- Notes -->
             <strong class="h3 margin">Notes</strong>
             <div class="entry full-width no-label with-notes">
-                <textarea id="group-notes" ng-model="groupSummaryData.newNote" placeholder="Write a note" rows="2"></textarea>
-                <button type="button" class="button post" ng-class="{'brand-colors' : !isInAddMode() , 'grey' : isInAddMode()}" ng-click="saveGroupNote()">Post</button>
+                <textarea id="group-notes" ng-disabled="isInStaycardScreen()" ng-model="groupSummaryData.newNote" placeholder="Write a note" rows="2"></textarea>
+                <button type="button" ng-disabled="isInStaycardScreen()" class="button post" ng-class="{'brand-colors' : !isInAddMode() , 'grey' : isInAddMode()}" ng-click="saveGroupNote()">Post</button>
             </div>
-            <ul class="notes">
+            <ul class="notes" ng-disabled="isInStaycardScreen()">
                 <li ng-repeat="note in groupConfigData.summary.notes">
                     <figure class="guest-image">
                         <img src="{{note.user_image}}" alt="" />
