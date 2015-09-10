@@ -192,12 +192,8 @@ sntRover.service('RVreportsSrv', [
 							success( 'addonGroups', data );
 
 							if ( hasFilter['ADDONS'] ) {
-								if ( service.payloadCache.hasOwnProperty('addons') ) {
-									success( 'addons', service.payloadCache.addons );
-								} else {
-									subSrv.fetchAddons( getAddonGroupId(data) )
+								subSrv.fetchAddons( getAddonGroupId(data) )
 										.then(success.bind(null, 'addons'), failed.bind(null, 'addons', []));
-								};
 							};
 						}, failed.bind(null, 'addonGroups', []));
 				};

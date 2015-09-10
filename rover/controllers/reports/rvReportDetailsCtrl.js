@@ -443,7 +443,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['ADDON_FORECAST']:
 					$scope.hasReportTotals  = false;
 					$scope.showReportHeader = true;
-					if ( 'ADDON' == $scope.$parent.reportGroupedBy ) {
+					console.log( $scope.chosenReport.chosenGroupBy );
+					if ( 'ADDON' == $scope.chosenReport.chosenGroupBy ) {
 						$scope.detailsTemplateUrl = '/assets/partials/reports/addonForecastReport/rvAddonForecastReportByAddon.html';
 					} else {
 						$scope.detailsTemplateUrl = '/assets/partials/reports/addonForecastReport/rvAddonForecastReportByDate.html';

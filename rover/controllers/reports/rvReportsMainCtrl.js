@@ -990,34 +990,34 @@ sntRover.controller('RVReportsMainCtrl', [
 			};
 
 
-			// need to reset the "group by" if any new filter has been applied
-			if ( !!report.groupByOptions && !!$scope.oldParams ) {
-				for (key in params) {
-					if ( !params.hasOwnProperty(key) ) {
-					    continue;
-					};
+			// // need to reset the "group by" if any new filter has been applied
+			// if ( !!report.groupByOptions && !!$scope.oldParams ) {
+			// 	for (key in params) {
+			// 		if ( !params.hasOwnProperty(key) ) {
+			// 		    continue;
+			// 		};
 
-					if ( key === 'group_by_date' || key === 'group_by_user' || key === 'group_by_group_name' || key === 'page' || key === 'per_page' ) {
-						continue;
-					} else if ( params[key] !== $scope.oldParams[key] ) {
-						report.chosenGroupBy = 'BLANK';
-						/**/
-						if ( params.hasOwnProperty('group_by_date') ) {
-							params['group_by_date'] = undefined;
-						};
-						if ( params.hasOwnProperty('group_by_user') ) {
-							params['group_by_user'] = undefined;
-						};
-						/**/
-						if ( params.hasOwnProperty('group_by_group_name') ) {
-							params['group_by_group_name'] = undefined;
-						};
-						/**/
-						$scope.appliedFilter['groupBy'] = undefined;
-						break;
-					};
-				};
-			};
+			// 		if ( key === 'group_by_date' || key === 'group_by_user' || key === 'group_by_group_name' || key === 'page' || key === 'per_page' ) {
+			// 			continue;
+			// 		} else if ( params[key] !== $scope.oldParams[key] ) {
+			// 			report.chosenGroupBy = 'BLANK';
+			// 			/**/
+			// 			if ( params.hasOwnProperty('group_by_date') ) {
+			// 				params['group_by_date'] = undefined;
+			// 			};
+			// 			if ( params.hasOwnProperty('group_by_user') ) {
+			// 				params['group_by_user'] = undefined;
+			// 			};
+			// 			/**/
+			// 			if ( params.hasOwnProperty('group_by_group_name') ) {
+			// 				params['group_by_group_name'] = undefined;
+			// 			};
+			// 			/**/
+			// 			$scope.appliedFilter['groupBy'] = undefined;
+			// 			break;
+			// 		};
+			// 	};
+			// };
 
 			// keep a copy of the current params
 			$scope.oldParams = angular.copy( params );

@@ -1,4 +1,4 @@
-sntRover.controller('RVAddonForecastReportByDateCtrl', [
+sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 	'$rootScope',
 	'$scope',
 	'RVreportsSrv',
@@ -43,7 +43,11 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 		};
 
 		$scope.getKeyName = function(item) {
-			return allAddonHash[$scope.getKey(item)] || id;
+			return allAddonHash[$scope.getKey(item)] || item;
+		};
+
+		$scope.getOnlyName = function(id) {
+			return allAddonHash[id] || id;
 		};
 
 		$scope.toggleSub = function(item) {
@@ -68,11 +72,11 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 		};
 
 
-		var calPagination = function(addon) {
+		var calPagination = function(eachDate) {
 			var perPage = 25,
-				pageNo = addon.pageNo || 1,
-				netTotalCount = addon.total_count || 0,
-				uiTotalCount = addon.reservations.length,
+				pageNo = eachDate.pageNo || 1,
+				netTotalCount = eachDate.total_count || 0,
+				uiTotalCount = eachDate.reservations.length,
 				disablePrevBtn = false,
 				disableNextBtn = false,
 				resultFrom,
@@ -106,22 +110,26 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
  		};
 
 
- 		_.each(results, function(eachResult, resultKey) {
- 			_.each(eachResult.addon_groups, function(addonGroup) {
- 				_.each($scope.getKeyValues(addonGroup).addons, function(addonsObj) {
- 					_.each(addonsObj, function(addon, addonKey) {
- 						_.extend(addon, {
- 							'sortField': undefined,
- 							'roomSortDir': undefined,
- 							'nameSortDir': undefined,
+ 		_.each(results, function(eachAddonGroup, addonGroupKey) { 			
+ 			_.each(eachAddonGroup.addons, function(eachAddon) {
+ 				// console.log($scope.getKeyValues(eachAddon));
 
- 							'date': resultKey,
- 							'addonGroupId': $scope.getKey(addonGroup),
- 							'addonId': addonKey,
- 						});
+ 				_.each($scope.getKeyValues(eachAddon).dates, function(dateObj) {
+ 					var addonKey = $scope.getKey(eachAddon),
+ 						dateKey  = $scope.getKey(dateObj),
+ 						eachDate = $scope.getKeyValues(dateObj);
 
- 						_.extend( addon, calPagination(addon) );
+ 					_.extend(eachDate, {
+ 						'sortField': undefined,
+ 						'roomSortDir': undefined,
+ 						'nameSortDir': undefined,
+
+ 						'date': dateKey,
+ 						'addonGroupId': addonGroupKey,
+ 						'addonId': addonKey,
  					});
+
+ 					_.extend( eachDate, calPagination(eachDate) );
  				});
  			});
  		});
@@ -129,14 +137,14 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 
 
 
- 		var callResAPI = function(addon, params) {
+ 		var callResAPI = function(eachDate, params) {
  			var params = params || {},
  				statuses,
  				key;;
 
  			var success = function (data) {
 				$scope.$emit( 'hideLoader' );
-				addon.reservations = data;
+				eachDate.reservations = data;
  			};
 
  			var error = function (data) {
@@ -145,11 +153,11 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 
  			_.extend(params, {
  				'id'             : chosenReport.id,
- 				'date'           : addon.date,
- 				'addon_group_id' : addon.addonGroupId,
- 				'addon_id'       : addon.addonId,
- 				'page'           : addon.pageNo,
- 				'per_page'       : addon.perPage,
+ 				'date'           : eachDate.date,
+ 				'addon_group_id' : eachDate.addonGroupId,
+ 				'addon_id'       : eachDate.addonId,
+ 				'page'           : eachDate.pageNo,
+ 				'per_page'       : eachDate.perPage,
  			});
 
  			statuses = _.where(chosenReport['hasReservationStatus']['data'], { selected: true });
@@ -165,36 +173,39 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
  			$scope.invokeApi(reportsSubSrv.fetchAddonReservations, params, success, error);
  		};
 
- 		$scope.sortRes = function(field, addon) {
+ 		$scope.sortRes = function(field, eachDate) {
  			var params = {};
 
- 			addon.sortField = field;
+ 			eachDate.sortField = field;
  			params['sort_field'] = field;
 
 			if ( 'ROOM' == field ) {
-				addon.roomSortDir = (addon.roomSortDir == undefined || addon.roomSortDir == false) ? true : false;
-				addon.nameSortDir = undefined;
-				params['sort_dir'] = addon.roomSortDir;
+				eachDate.roomSortDir = (eachDate.roomSortDir == undefined || eachDate.roomSortDir == false) ? true : false;
+				eachDate.nameSortDir = undefined;
+				params['sort_dir'] = eachDate.roomSortDir;
 			} else if ( 'NAME' == field ) {
-				addon.nameSortDir = (addon.nameSortDir == undefined || addon.nameSortDir == false) ? true : false;
-				addon.roomSortDir = undefined;
+				eachDate.nameSortDir = (eachDate.nameSortDir == undefined || eachDate.nameSortDir == false) ? true : false;
+				eachDate.roomSortDir = undefined;
 				params['sort_dir'] = addon.nameSortDir;
 			};
 
-			callResAPI( addon, params );
+			console.log(eachDate);
+			console.log(params);
+
+			callResAPI( eachDate, params );
  		};
 
- 		$scope.loadRes = function(type, addon) {
- 			if ( 'next' == type && ! addon.disableNextBtn ) {
- 				addon.pageNo++;
- 				_.extend( addon, calPagination(addon) );
+ 		$scope.loadRes = function(type, eachDate) {
+ 			if ( 'next' == type && ! eachDate.disableNextBtn ) {
+ 				eachDate.pageNo++;
+ 				_.extend( eachDate, calPagination(eachDate) );
 
- 				callResAPI( addon );
- 			} else if ( 'prev' == type && ! addon.disablePrevBtn ) {
- 				addon.pageNo--;
- 				_.extend( addon, calPagination(addon) );
+ 				callResAPI( eachDate );
+ 			} else if ( 'prev' == type && ! eachDate.disablePrevBtn ) {
+ 				eachDate.pageNo--;
+ 				_.extend( eachDate, calPagination(eachDate) );
  				
- 				callResAPI( addon );
+ 				callResAPI( eachDate );
  			};
  		};
 	}
