@@ -57,6 +57,12 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		$scope.showReportDetails = false;
 
+		var addonsCount = 0;
+		_.each ($scope.addons, function (each) {
+			addonsCount += each.list_of_addons.length;
+		});
+
+
 		// lets fix the results per page to, user can't edit this for now
 		// 25 is the current number set by backend server
 		$scope.resultsPerPage = 25;
@@ -449,8 +455,38 @@ sntRover.controller('RVReportsMainCtrl', [
 			};
 
 			return selectedItems;
-		}
+		};
 
+		// show the no.of addons selected
+		$scope.getNoOfSelectedAddons = function (reportItem, fauxDS) {
+			var selectedItems = [],
+			    count = 0;
+
+			_.each (fauxDS.data, function (each) {
+				var selectedAddons = _.where(each.list_of_addons, { selected: true });
+				selectedItems.push(selectedAddons);
+				count += selectedAddons.length;
+			});
+
+			if ( count === 0 ) {
+                fauxDS.title = fauxDS.defaultTitle;
+            }
+            else if ( count === 1 ) {
+            	_.each (selectedItems, function (each) {
+            		_.each (each, function (addon) {
+            			if (addon.selected == true) {
+            				fauxDS.title = addon.addon_name;
+            			}
+            		});
+            	});
+            }
+            else if ( count == addonsCount ) {
+            	fauxDS.title = "All Selected";
+            }
+            else {
+            	fauxDS.title = count + ' Selected';
+            }
+		};
 
 		$scope.toggleAddons = function () {
             $scope.isVisible = $scope.isVisible ? false : true;
@@ -482,6 +518,7 @@ sntRover.controller('RVReportsMainCtrl', [
             $scope.fauxSelectChange(reportItem, fauxDS);
         };
 
+        // fetch the addons corresponding to selected addon groups
         var showAddons = function (reportItem, selectedItems) {
             var selectedIds = [];
 

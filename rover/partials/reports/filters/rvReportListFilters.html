@@ -297,7 +297,7 @@
                 <strong>{{ getGroupName(group.group_id) }}</strong>
                 <label class="checkbox inline" ng-repeat="addon in group.list_of_addons">
                     <span class="icon-form icon-checkbox" ng-class="{ 'checked' : addon.selected }"></span>
-                    <input type="checkbox" ng-model="addon.selected" name="room-filters">
+                    <input type="checkbox" ng-model="addon.selected" ng-change="getNoOfSelectedAddons(item, item.hasAddons)" name="room-filters">
                     {{ addon.addon_name }}
                 </label>
             </span>
@@ -307,7 +307,7 @@
                 <strong>{{ getGroupName(group.group_id) }}</strong>
                 <label class="checkbox inline" ng-repeat="addon in group.list_of_addons">
                     <span class="icon-form icon-checkbox" ng-class="{ 'checked' : addon.selected }"></span>
-                    <input type="checkbox" ng-model="addon.selected" name="room-filters">
+                    <input type="checkbox" ng-model="addon.selected" ng-change="getNoOfSelectedAddons(item, item.hasAddons)" name="room-filters">
                     {{ addon.addon_name }}
                 </label>
             </span>
