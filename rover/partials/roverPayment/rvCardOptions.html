@@ -1,7 +1,7 @@
 <!-- Credit card options - hidden until payment type is set as CC -->
 	<!-- If hidden by default, add class="hidden" -->
 	<!-- Card toggle - Use only if there are exsiting cards on file -->
-	<ul class="card-toggle" ng-hide="isFromGuestCard  || hasAccompanyguest || cardsList.length === 0">
+	<ul class="card-toggle" ng-hide="isFromGuestCard  || hasAccompanyguest || isGiftCard || cardsList.length === 0">
 		<li ng-class="{'active':!addmode}" ng-click="addmode = false">
 			Existing Cards
 		</li>
@@ -25,9 +25,9 @@
 	</div>
 
 	<!-- New card: MLI form -->
-	<div id="cc-new-card" class="new-card" ng-show="!shouldShowIframe && addmode && shouldShowAddNewCard"> <!-- Remove class "hidden" if there are no exsisting cards available -->
+	<div id="cc-new-card" class="new-card" ng-hide="isGiftCard || depositWithGiftCard" ng-show="!shouldShowIframe && addmode && shouldShowAddNewCard"> <!-- Remove class "hidden" if there are no exsisting cards available -->
 		<div class="entry card-type">
-			<label for="card-type">Card type </label>
+			<label for="card-type" >Card type </label>
 			<div class="select">
 				<select name="card-type" ng-disabled="!isManualCCEntryEnabled" ng-model="cardData.cardType" class="placeholder">
 					<option value="" selected>Select Card type</option>
@@ -36,7 +36,7 @@
 			</div>
 		</div>
 		<div class="entry card-number">
-			<label for="card-number">Card number (<span>No spaces</span>)</label>
+                    <label for="card-number">Card number (<span>No spaces</span>)</label>
 			<input name="card-number" ng-readonly="!isManualCCEntryEnabled" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="16" type="text" />
 		</div>
 		<div class="entry card-expiry">
@@ -44,7 +44,7 @@
 			<input name="expiry-month" ng-readonly="!isManualCCEntryEnabled" id="expiry-month" placeholder="MM" ng-model="cardData.expiryMonth" maxlength="2" size="3" type="text" />
 			<input name="expiry-year" ng-readonly="!isManualCCEntryEnabled" id="expiry-year" placeholder="YY"  ng-model="cardData.expiryYear" maxlength="2" size="3" type="text" />
 		</div>
-		<div class="entry card-name">
+		<div class="entry card-name" ng-hide="isGiftCard">
 			<label for="name-on-card">Name on card</label>
 			<input name="name-on-card" id="name-on-card" placeholder="Enter name on card" ng-model="cardData.userName"type="text" />
 		</div>  
@@ -56,10 +56,17 @@
 			<button type="button" class="button blue" ng-click="getToken($event)">Add</button>
 		</div>
 	</div>
+	<!-- New card: MLI form -->
+	<div id="cc-new-card" class="new-card" ng-show="isGiftCard && !showingDepositModal" ng-hide="!isDepositEditable"> <!-- Remove class "hidden" if there are no exsisting cards available -->
+		<div class="entry card-number card-type">
+                    <label for="card-number">Card number (<span>No spaces</span>)</label>
+			<input ng-show="isGiftCard" name="card-number" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber, this)" />
+		</div>
+	</div>
 	<!-- New card: Call-In -->
 	<iframe ng-if="paymentGateway === 'sixpayments' && addmode" class="payment-iframe iframe-scroll" src="{{iFrameUrl}}" id="sixIframe" seamless></iframe>
 	<!-- Show only when creating reservation or paying the bill -->
-	<div class="actions" ng-hide="hideCancelCard">
+	<div class="actions" ng-hide="hideCancelCard || depositWithGiftCard">
 		<button type="button" class="button blank" ng-click="cancelCardSelection()">
 			Cancel Card selection
 		</button>

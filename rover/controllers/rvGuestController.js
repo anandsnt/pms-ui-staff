@@ -350,10 +350,10 @@ sntRover.controller('guestCardController', [
 		};
 
 
-		$scope.UICards = ['guest-card', 'company-card', 'travel-agent-card', 'group-card'];
+		$scope.UICards = ['guest-card', 'company-card', 'travel-agent-card', 'group-card', 'allotment-card'];
 
 		// className based on UICards index
-		var subCls = ['first', 'second', 'third', 'fourth'];
+		var subCls = ['first', 'second', 'third', 'fourth', 'fourth'];
 
 		$scope.UICardClass = function(from) {
 			// based on from (guest-card, company-card || travel-agent-card)
@@ -437,7 +437,6 @@ sntRover.controller('guestCardController', [
 				$scope.removeCard($scope.viewState.pendingRemoval.cardType);
 			}
 		};
-
 
 		$scope.clickedDiscardCard = function(cardType, discard) {
 			discardCard(cardType, discard);
@@ -693,6 +692,10 @@ sntRover.controller('guestCardController', [
 							companyData.id = item.id;
 							companyData.account_name = item.account_name;
 
+							companyData.account_type = item.account_type;
+							companyData.isMultipleContracts = false;
+							if(item.current_contracts.length > 1) companyData.isMultipleContracts = true;
+
 							companyData.logo = item.company_logo;
 							if (item.address !== null) {
 								companyData.address = {};
@@ -700,8 +703,8 @@ sntRover.controller('guestCardController', [
 								companyData.address.city = item.address.city;
 								companyData.address.state = item.address.state;
 							}
-							if (item.current_contract !== null) {
-								companyData.rate = item.current_contract;
+							if (item.current_contracts.length > 0) {
+								companyData.rate = item.current_contracts[0];
 								companyData.rate.difference = (function() {
 									if (parseInt(companyData.rate.based_on.value) < 0) {
 										if (companyData.rate.based_on.type === "amount") {
@@ -725,6 +728,7 @@ sntRover.controller('guestCardController', [
 									return "";
 								})();
 							}
+							
 							companyData.email = item.email;
 							companyData.phone = item.phone;
 							$scope.searchedCompanies.push(companyData);
@@ -762,6 +766,10 @@ sntRover.controller('guestCardController', [
 							travelAgentData.id = item.id;
 							travelAgentData.account_name = item.account_name;
 
+							travelAgentData.account_type = item.account_type;
+							travelAgentData.isMultipleContracts = false;
+							if(item.current_contracts.length > 1) travelAgentData.isMultipleContracts = true;
+
 							travelAgentData.logo = item.company_logo;
 							if (item.address !== null) {
 								travelAgentData.address = {};
@@ -769,8 +777,8 @@ sntRover.controller('guestCardController', [
 								travelAgentData.address.city = item.address.city;
 								travelAgentData.address.state = item.address.state;
 							}
-							if (item.current_contract !== null) {
-								travelAgentData.rate = item.current_contract;
+							if (item.current_contracts.length > 0) {
+								travelAgentData.rate = item.current_contracts[0];
 								travelAgentData.rate.difference = (function() {
 									if (parseInt(travelAgentData.rate.based_on.value) < 0) {
 										if (travelAgentData.rate.based_on.type === "amount") {
@@ -901,7 +909,8 @@ sntRover.controller('guestCardController', [
 				fromState 		: 'STAY_CARD',
 				company_id 		: resData.company.id,
 				travel_agent_id	: resData.travelAgent.id,
-				group_id 		: resData.group && resData.group.id
+				group_id 		: resData.group && resData.group.id,
+				allotment_id 	: resData.allotment && resData.allotment.id
 			});
 		};
 
@@ -1055,12 +1064,6 @@ sntRover.controller('guestCardController', [
 
 			$scope.$broadcast("groupCardDetached");
 
-			//redirecting to room & rates screen
-			/*var resData = $scope.reservationDetails;
-			$scope.showContractedRates({
-				companyCard: resData.companyCard.id,
-				travelAgent: resData.travelAgent.id
-			});*/
 			$scope.navigateToRoomAndRates();
 		};
 		
@@ -1109,8 +1112,244 @@ sntRover.controller('guestCardController', [
 			}
 		};
 
-		$scope.selectCompany = function(company, $event) {
+		/**
+		 * if in create reservation mode
+		 * @return {Boolean}
+		 */
+		var isInCreateReservationMode = function(){
+			return ($scope.viewState.identifier === "CREATION");
+		};
+
+		/**
+		 * [showAllotmentOtherRoomTypeAvailablePopup description]
+		 * @return {undefined}
+		 */
+		var showAllotmentOtherRoomTypeAvailablePopup = function() {
+	        ngDialog.open({
+	            template: '/assets/partials/cards/popups/allotment/rvResAttachingToAllotmentOtherRoomTypeAvailabe.html',
+	            className: '',
+	            scope: $scope,
+	            closeByDocument: false,
+	            closeByEscape: false
+	        });			
+		};
+
+		/**
+		 * [showGroupNoRoomTypeAvailablePopup description]
+		 * @return {undefined}
+		 */
+		var showAllotmentNoRoomTypeAvailablePopup = function() {
+	        ngDialog.open({
+	            template: '/assets/partials/cards/popups/allotment/rvResAttachingToAllotmentNoAvailability.html',
+	            className: '',
+	            scope: $scope,
+	            closeByDocument: false,
+	            closeByEscape: false
+	        });			
+		};
+
+		/**
+		 * [showGroupNoRoomTypeAvailablePopup description]
+		 * @return {undefined}
+		 */
+		var showAllotmentRoomTypeIsNotConfiguredPopup = function() {
+	        ngDialog.open({
+	            template: '/assets/partials/cards/popups/allotment/rvResAttachingToAllotmentRoomTypeIsNotConfigured.html',
+	            className: '',
+	            scope: $scope,
+	            closeByDocument: false,
+	            closeByEscape: false
+	        });			
+		};
+
+		/**
+		 * navigate to group details
+		 * @return {[type]} [description]
+		 */
+		$scope.gotoAllotmentDetails = function() {
+			$state.go('rover.allotment.config', {
+	            id: $scope.reservationData.allotment.id,
+	            activeTab: 'SUMMARY'
+	        });
+		};
+
+		/**
+		 * Utility method to change the central reservation data model with our allotment data
+		 * @param  {Object} allotmentData
+		 * @return {undefined}
+		 */
+		var updateReservationAllotmentData = function (allotmentData) {
+			
+			//if it is not set initially
+			if (_.isUndefined($scope.reservationData.allotment)) {
+				$scope.reservationData.allotment = {};
+			}
+
+			_.extend ($scope.reservationData.allotment, 
+			{
+				id 	: allotmentData.id,
+				name: allotmentData.group_name,
+				code: allotmentData.group_code
+			});
+		};
+
+		/**
+		 * when we failed in attaching a group
+		 */
+		var failureCallBackOfAttachAllotmentToReservation = function(error) {
+			if(error.hasOwnProperty ('httpStatus')) {
+
+				//470 is reserved for other room type is available
+				if (error.httpStatus === 470) {
+					showAllotmentOtherRoomTypeAvailablePopup ();
+				}
+
+				//471 - NO availability in group
+				else if (error.httpStatus === 471) {
+					showAllotmentNoRoomTypeAvailablePopup ();
+				}	
+
+				//472 - Room type is not configured in Group
+				else if (error.httpStatus === 472) {
+					showAllotmentRoomTypeIsNotConfiguredPopup ();
+				}								
+			}
+			else {
+				$scope.errrorMessage = error;
+			}			
+		};
+
+
+		/**
+		 * when the API call is success
+		 * @param  {Object} success data from API
+		 * @return {undefined}
+		 */
+		var successCallBackOfAttachGroupToReservation = function(data, successCallBackParams) {
+			var selectedGroup = successCallBackParams.selectedGroup;
+
+			//updating the central reservation data model
+			updateReservationAllotmentData (selectedGroup);	
+
+			//we are in card adding mode
+			switchToNomralCardViewingMode();
+
+			//fecthing the group details and showing them
+			initializeAllotmentCard(selectedGroup.id);
+		};
+
+		/**
+		 * [attachAllotmentToThisReservation description]
+		 * @param  {Object} selectedAllotment
+		 * @return undefined
+		 */
+		var attachAllotmentToThisReservation = function(selectedAllotment) {
+			//calling the API
+			var params = {
+				reservation_id 	: $scope.reservationData.reservationId,
+				group_id 		: selectedAllotment.id
+			};
+
+			var options = {
+				params 			: params,
+				successCallBack : successCallBackOfAttachAllotmentToReservation,
+				failureCallBack : failureCallBackOfAttachAllotmentToReservation,
+				successCallBackParameters: 	{ selectedAllotment: selectedAllotment}
+			};
+
+			$scope.callAPI (rvGroupSrv.attachAllotmentToReservation, options);
+		};
+
+		/**
+		 * when the user selects the allotment from the allotment search results,
+		 * this will trigger
+		 * @param {Object} - allotment object
+		 * @param {Object} - clicked event
+		 * @return {undefined}
+		 */
+		$scope.selectAllotment = function(selectedAllotment, $event) {
 			$event.stopPropagation();
+
+			if (isInCreateReservationMode()) {
+				return;
+			}
+
+			//staycard card attaching
+			else {
+				attachAllotmentToThisReservation (selectedAllotment);
+			}
+		};
+
+		/**
+		 * function to search allotment
+		 * @return {[type]} [description]
+		 */
+		$scope.searchAllotments = function() {
+			$scope.$broadCast ('FETCH_ALLOTMENT_SEARCH_DATA');
+		};
+
+		// CICO-11893
+		// To show contracted Rate confirmation popup
+		var showContractRatePopup = function( data ){
+			$scope.cardData = data;
+			ngDialog.open({
+	    		template: '/assets/partials/cards/alerts/contractRatesConfirmation.html',
+	    		className: '',
+	    		closeByDocument: false,
+	    		closeByEscape: false,
+	    		scope: $scope
+    		});
+		};
+		// To keep existing rate and proceed.
+		$scope.keepExistingRate = function( cardData ){
+			if(cardData.account_type === 'COMPANY'){
+				$scope.selectCompany(cardData);
+			}
+			if(cardData.account_type === 'TRAVELAGENT'){
+				$scope.selectTravelAgent(cardData);
+			}
+			ngDialog.close();
+		};
+		// Navigation to Room & Rates screen
+		var navigateToRoomAndRates = function(arrival, departure) {
+			$state.go('rover.reservation.staycard.mainCard.roomType', {
+				from_date: arrival || $scope.reservationData.arrivalDate,
+				to_date: departure || $scope.reservationData.departureDate,
+				view: 'DEFAULT',
+				fromState: $state.current.name,
+				company_id: $scope.reservationData.company.id,
+				travel_agent_id: $scope.reservationData.travelAgent.id
+			});
+		};
+		// To change to contracted Rate and proceed.
+		$scope.changeToContractedRate = function( cardData ){
+			$scope.keepExistingRate(cardData);
+			navigateToRoomAndRates();
+			ngDialog.close();
+		};
+		// To handle card selection from COMPANY / TA.
+		$scope.selectCardType = function(cardData , $event){
+			$event.stopPropagation();
+			
+			if(cardData.account_type === 'COMPANY'){
+				if(typeof cardData.rate !== 'undefined'){
+					showContractRatePopup(cardData);
+				}
+				else{
+					$scope.selectCompany(cardData);
+				}
+			}
+			else if(cardData.account_type === 'TRAVELAGENT'){
+				if(typeof cardData.rate !== 'undefined'){
+					showContractRatePopup(cardData);
+				}
+				else{
+					$scope.selectTravelAgent(cardData);
+				}
+			}
+		};
+		// On selecting comapny card
+		$scope.selectCompany = function(company) {
 			//CICO-7792
 			if ($scope.viewState.identifier === "CREATION") {
 				$scope.reservationData.company.id = company.id;
@@ -1135,11 +1374,9 @@ sntRover.controller('guestCardController', [
 					$scope.checkFuture('company', company);
 				}
 			}
-
 		};
-
-		$scope.selectTravelAgent = function(travelAgent, $event) {
-			$event.stopPropagation();
+		// On selecting travel agent card
+		$scope.selectTravelAgent = function(travelAgent) {
 			//CICO-7792
 			if ($scope.viewState.identifier === "CREATION") {
 				// Update main reservation scope

@@ -41,7 +41,7 @@
             <div ng-controller="travelAgentResults" class="wrapper" ng-show="travelAgentSearchIntiated && travelAgents.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="travelAgentResultScroll">
                 <ul id="search-travel-agent-results" class="search-results">
                     <li ng-repeat="travelAgent in travelAgents" class="card card-result">
-                        <a ng-click="selectTravelAgent(travelAgent, $event)">
+                        <a ng-click="selectCardType(travelAgent, $event)">
                             <div ng-show="travelAgent.logo == ''" class="guest-image icons icon-travel-agent"></div>
                             <figure ng-hide="travelAgent.logo == ''" class="guest-image">
                                     <img ng-src="{{travelAgent.logo}}"/>
@@ -53,6 +53,7 @@
                                         <span class="label">Rate</span> 
                                         {{travelAgent.rate.difference}}{{ travelAgent.rate.based_on.name }}{{travelAgent.rate.surplus}}
                                     </div>
+                                    <span ng-if="travelAgent.isMultipleContracts" class="icons icon-contracts">Multiple Contracts</span>
                                 </div>
                                 <span class="confirmation">{{ travelAgent.address.postalCode }}</span>
                                 <span class="icons icon-location" ng-if="travelAgent.address.city != '' && travelAgent.address.city != null"> 

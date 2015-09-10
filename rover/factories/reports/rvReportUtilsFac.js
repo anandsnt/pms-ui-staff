@@ -73,6 +73,29 @@ sntRover.factory('RVReportUtilsFac', [
         };
 
 
+        var selectAllAddonGroups = function(data) {
+            var data = data;
+
+            _.each(data, function(item) {
+                item.selected = true;
+            });
+
+            return data;
+        };
+
+        var selectAllAddons = function(data) {
+            var data = data;
+
+            _.each(data, function(item) {
+                _.each(item['list_of_addons'], function(entry) {
+                    entry.selected = true;
+                });
+            });
+
+            return data;
+        };
+
+
 
 
 
@@ -374,6 +397,10 @@ sntRover.factory('RVReportUtilsFac', [
                     report['canRemoveDate'] = true;
                     break;
 
+                case reportNames['ADDON_FORECAST']:
+                    report['canRemoveDate'] = true;
+                    break;
+
                 default:
                     report['hasDateLimit'] = false;     // CICO-16820: Changed to false
                     break;
@@ -394,7 +421,6 @@ sntRover.factory('RVReportUtilsFac', [
 
             // pre-process charge groups and charge codes
             var processedCGCC = {};
-
             // create DS for options combo box
             __setData(report, 'hasGeneralOptions', {
                 type         : 'FAUX_SELECT',
@@ -723,6 +749,43 @@ sntRover.factory('RVReportUtilsFac', [
                         data         : angular.copy( data.holdStatus )
                     });
                 };
+
+                if ( filter.value === 'ADDON_GROUPS') {
+                    __setData(report, 'hasAddonGroups', {
+                        type         : 'FAUX_SELECT',
+                        filter       : filter,
+                        show         : false,
+                        selectAll    : true,
+                        defaultTitle : 'Select Addon Group',
+                        title        : 'All Selected',
+                        data         : selectAllAddonGroups( angular.copy(data.addonGroups) ),
+                    });
+                };
+
+                if ( filter.value === 'ADDONS') {
+                    __setData(report, 'hasAddons', {
+                        type         : 'FAUX_SELECT',
+                        filter       : filter,
+                        show         : false,
+                        selectAll    : true,
+                        defaultTitle : 'Select Addon',
+                        title        : 'All Selected',
+                        data         : selectAllAddons( angular.copy(data.addons) )
+                    });
+                };
+
+                if ( filter.value === 'RESERVATION_STATUS') {
+                    __setData(report, 'hasReservationStatus', {
+                        type         : 'FAUX_SELECT',
+                        filter       : filter,
+                        show         : false,
+                        selectAll    : false,
+                        defaultTitle : 'Select Status',
+                        title        : 'Select Status',
+                        data         : angular.copy( data.reservationStatus )
+                    });
+                };
+
             });
         };
 
@@ -953,6 +1016,11 @@ sntRover.factory('RVReportUtilsFac', [
                     report['untilDate'] = _getDates.aMonthAfter;
                     break;
 
+                case reportNames['ADDON_FORECAST']:
+                    report['fromDate']  = _getDates.businessDate;
+                    report['untilDate'] = _getDates.businessDate;
+                    break;
+
                 // by default date range must be from a week ago to current business date
                 default:
                     report['fromDate']            = _getDates.aWeekAgo;
@@ -987,6 +1055,7 @@ sntRover.factory('RVReportUtilsFac', [
             var returnObj = {
                 'businessDate' : new Date(_year, _month, _date),
                 'yesterday'    : new Date(_year, _month, _date - 1),
+                'tomorrow'     : new Date(_year, _month, _date + 1),
                 'aWeekAgo'     : new Date(_year, _month, _date - 7),
                 'aWeekAfter'   : new Date(_year, _month, _date + 7),
                 'aMonthAfter'  : new Date(_year, _month, _date + 30)

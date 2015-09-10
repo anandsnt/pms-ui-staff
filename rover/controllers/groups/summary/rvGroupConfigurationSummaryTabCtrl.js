@@ -1052,10 +1052,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			//to date picker will be in disabled in move mode
 			//in order to fix the issue of keeping that state even after coming back to this
 			//tab after going to some other tab
-			_.extend($scope.toDateOptions, 
-			{
-				disabled: shouldDisableEndDatePicker()
-			});			
+			setDatePickerOptions();
 
 			initializeChangeDateActions ();
 
