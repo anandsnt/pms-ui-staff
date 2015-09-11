@@ -574,9 +574,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					}, $scope.fromDateOptions);
 				}
 			}
-			
-
-
 
 			//to date options
 			$scope.toDateOptions = _.extend({
