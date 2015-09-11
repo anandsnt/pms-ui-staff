@@ -28,12 +28,12 @@
                      
                
                 <span class="price" ng-show="addon.is_inclusive">INCL</span>
-                <button type="button" ng-hide="addon.is_inclusive" class="icons icon-trash" ng-click="removeAddon(addon)" translate>REMOVE</button>
+                <button type="button" ng-hide="addon.is_inclusive||isInStaycardScreen()" class="icons icon-trash" ng-click="removeAddon(addon)" translate>REMOVE</button>
             </li>
         </ul>
         </div>
         <div class="actions">
-            <button type="button" ng-click="closeDialog(); manageAddons()" class="button orange modal-hide" translate>ADD_MORE_TO_THIS_GROUP</button>
+            <button type="button" ng-hide="isInStaycardScreen()" ng-click="closeDialog(); manageAddons()" class="button orange modal-hide" translate>ADD_MORE_TO_THIS_GROUP</button>
             <button class="button blank" ng-click="closeDialog(); reloadPage();" translate>CLOSE</button>
         </div>
     </div>    

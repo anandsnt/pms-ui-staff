@@ -49,6 +49,17 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
+         this.autoCompleteCodes = function(data) {
+            var deferred = $q.defer();
+            var url = '/api/code_search';
+            RVBaseWebSrvV2.getJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
 
         this.fetchCurrentTime = function() {
             var deferred = $q.defer();
@@ -71,6 +82,10 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
 
             if (!!param.travel_agent_id) {
                 url += '&travel_agent_id=' + param.travel_agent_id;
+            }
+
+            if (!!param.group_id) {
+                url += '&group_id=' + param.group_id;
             }
 
             RVBaseWebSrvV2.getJSON(url).then(function(data) {

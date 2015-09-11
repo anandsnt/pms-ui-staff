@@ -1,0 +1,87 @@
+<div ng-controller="RVGroupCardCtrl">
+    <!-- Company Card Content -->
+    <div id="group-card-content" class="card-tabs card-content" ng-class="UICardContentCls('group-card')" ng-if="!searchMode">
+        <ul id="group-card-tabs-nav" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+            <li class="ui-tabs-active">
+                <a translate>SUMMARY</a>
+            </li>
+        </ul>
+        <!-- Company - Contact Information -->
+        <span ng-include="'/assets/partials/groups/summary/rvGroupConfigurationSummaryTab.html'"></span>
+    </div>
+    <!-- Company Search -->
+    <div id="company-card-content" class="card-search card-content" ng-class="UICardContentCls('group-card')" ng-if="searchMode">
+        <div id="search-group-content" class="search-cards scrollable">
+            <!-- Company Card Results listing -->
+            <div ng-controller="groupResults" class="wrapper" ng-show="searchingGroups && searchedGroups.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="groupResultsScroll" ng-iscroll-delay='500'>
+                <ul id="search-group-results" class="search-results">
+                    <li class="group" ng-repeat="group in searchedGroups" ngrepeatend ngrepeatstarted>
+                        <a ng-click="selectGroup(group, $event)">
+                            <div class="data">
+                                <h2 ng-bind-html="{{stringify(escapeNull(group.group_name))}} | highlight:searchData.groupCard.name:false">              </h2>
+                                <span class="confirmation" ng-bind-html="{{stringify(escapeNull(group.group_code))}} | highlight:searchData.groupCard.code:false"></span>
+                                <!-- If linked company exists: -->
+                                <span class="icons icon-guest-company" ng-hide="isEmpty(group.company)">
+                                    {{group.company}}
+                                </span>
+                                <!-- If linked travel agent exists: -->
+                                <span class="icons icon-guest-travelagent" ng-hide="isEmpty(group.travel_agent)">
+                                    {{group.travel_agent}}
+                                </span>
+                            </div>
+                            <div class="arrival">
+                                <span class="guest-status" ng-class="getGuestClassForArrival(group)">
+                                    <!--{arrival or cancel}-->
+                                </span>
+                                <time datetime="group.arrival_date">
+                                    {{formatDateForUI(group.arrival_date)}}
+                                </time>
+                            </div>
+                            <div class="departure">
+                                <span class="guest-status" ng-class="getGuestClassForDeparture(group)">
+                                <!--{departure or cancel} -->
+                                </span>
+                                <time datetime="group.departure_date">
+                                    {{formatDateForUI(group.departure_date)}}
+                                </time>
+                            </div>
+                            <div class="blocked" ng-class="getClassAgainstHoldStatus(group)">
+                                <!-- If Status = Tentative, add class "tentative" -->
+                                <strong>{{group.total_booked === null? '0':group.total_booked}}</strong>
+                                <span>{{group.hold_status}}</span>
+                            </div>
+                            <div class="picked" ng-class="getClassAgainstPickedStatus(group)">
+                                <!-- Add class "green" if No. > 0, or class "red" if cancelled -->
+                                <strong>{{group.total_picked_count === null? '0' :group.total_picked_count}}</strong>
+                                <span>Picked Up</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div id="search-group-no-results" class="search-cards no-content">
+                <!-- Company Card No Results -->
+                <div class="info" ng-show="searchingGroups && searchedGroups.length === 0">
+                    <span class="icon-no-content icon-cards"></span>
+                    <strong class="h1">No Matches</strong>
+                    <span class="h2">
+                        Check that you didn't mispell the 
+                        <strong>
+                            Group Name
+                        </strong> 
+                        or 
+                        <strong>
+                            Code
+                        </strong>
+                    </span>
+                </div>
+                <!-- Company Card Empty -->
+                <div class="info" ng-hide='searchingGroups'>
+                    <span class="icon-no-content icon-groups"></span>
+                    <strong class="h1">Find Group</strong>
+                    <span class="h2">Search by <strong>Group Name</strong> or <strong>Code</strong></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

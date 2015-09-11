@@ -1,0 +1,920 @@
+ /* Invoice ***/
+.invoice { .hide; }
+
+/* Registration content ***/
+.registration-content {
+    position: relative;
+    .calc-height(100, 50);
+
+    > .wrapper { 
+        padding: 20px 20px 10px 20px; 
+        .float; 
+    }
+    
+    > .iScrollVerticalScrollbar { bottom: 20px; }
+
+    /* Billing information ***/
+    .billing-information {
+        clear: both;
+        padding: 0;
+        .show;
+
+        table {
+            width: 100%;
+            font-size: 14px;
+            line-height: 21px;
+            table-layout: fixed;
+            text-transform: uppercase;
+            border-collapse: collapse;
+            margin: 0;
+
+            tr {
+                th,
+                td { padding: 5px 10px; }
+
+                th {
+                    font-weight: 600;
+                    background: rgba(0,0,0,.05);
+
+                   &:first-child {
+                        width: 120px;
+                        #border-radius > .left-top();
+                    }
+
+                    &:nth-child(2) { width: 120px; }
+
+                    &:last-child { #border-radius > .right-top(); }
+                }
+            }
+        }
+    }
+
+    /* Registration summary ***/
+    .registration-summary {
+        position: relative;
+
+        /* Registration summary tabs navigation ***/
+        .bill-tabs {
+            position: relative;
+            height: 50px;
+            .calc-width(100, 280);
+
+            .wrapper {
+                li {
+                    margin: 5px 0 0 0;
+                    line-height: 1em;
+                    vertical-align: middle;
+                    min-width: 95px;
+                    height: 45px;
+                    background: rgba(0,0,0,.05);
+                    .show;
+                    .pull-left;
+                    .box-shadow(~"inset -1px 0 1px rgba(0,0,0,.1)");
+                    #border-radius > .top();
+
+                    .bill-toggle {
+                        color: @grey4;
+                        text-transform: uppercase;
+                        padding: 10px;
+                        cursor: pointer;
+                        .float;
+                        .show;
+                        .no-transition;
+
+                        .price {
+                            font-weight: 600;
+                            .pull-left;
+
+                            span { 
+                                font-size: 14px;
+                                font-weight: 400;
+                                .show;
+                            }
+                        }
+
+                        .card-logo,
+                        .payment {
+                            font-size: 12px;
+                            line-height: 12px;
+                            margin-left: 20px;
+                            text-align: right;
+                            .pull-left;
+                            .size(20px, 50px);
+                            .opacity(50);
+
+                            img { .size(auto, 40px); }
+                        }
+                    }
+
+                    &.new-bill {
+                        min-width: 45px; 
+                        background: transparent;
+                        padding: 5px 0 0 5px;
+                        .box-shadow(none);
+
+                        .button {
+                            .square(45px);
+                            #border-radius > .bottom(0);
+                            .box-shadow(none);
+
+                            .icons { margin-top: -8px; }
+
+                            &:hover,
+                            &:active { 
+                                .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.3)");
+                            }
+                        }
+                    }
+
+                    &.ui-tabs-active,
+                    &.active {
+                        line-height: 1em;
+                        margin-top: 0;
+                        height: 50px;
+                        background: rgba(0,0,0,.1);
+                        .box-shadow(none);
+
+                        a {
+                            color: @textColor;
+
+                            .card-logo,
+                            .payment { .opacity(100); }
+                        }
+                    }
+                }
+            }
+
+            .iScrollHorizontalScrollbar { .hide; }
+        }
+
+        .incoming-billing {
+            position: absolute;
+            top: 10px;
+            right: 0;
+            font-size: 15px;
+            line-height: 40px;
+            text-transform: uppercase;
+            padding-right: 15px;
+            background: @arrowUp no-repeat 100% 45%;
+
+            &.active { background-image: @arrowDown; }
+        }
+
+        /* Registration summary tabs ***/
+        .bill-summary {
+            position: relative;
+            
+            /* Short bill summary ***/
+            .bill-summary-wrapper {
+                width: 100%;
+                padding: 10px;
+                background: rgba(0,0,0,.1);
+                #border-radius > .rounded();
+
+                .iScrollHorizontalScrollbar { .hide; }
+
+                .wrapper {
+                    padding: 0;
+                    margin: 0;
+                    height: 52px;
+                    min-width: 100%;
+
+                    li {
+                        margin: 0 5px 0 0;
+                        .show;
+                        .pull-left;
+
+                        .toggle,
+                        .no-expense {
+                            position: relative;
+                            color: @grey3;
+                            font-size: 11px;
+                            line-height: 16px;
+                            text-transform: uppercase;
+                            font-weight: 600;
+                            height: 50px;
+                            min-width: 60px;
+                            max-width: 120px;
+                            padding: 0 5px;
+                            cursor: pointer;
+                            .clickable;
+                            .show;
+
+                            .date { 
+                                position: absolute;
+                                top: 5px;
+                                right: 5px; 
+                            }
+
+                            .guest-status {
+                                position: absolute;
+                                top: 30px;
+                                left: 5px;
+                                float: none;
+                                .square(15px);
+
+                                &.check-in { background-position: 3px -77px; }
+                                &.check-out { background-position: 3px -103px; }
+                            }
+
+                            .day,
+                            .expense {
+                                text-align: left;
+                                margin-top: 5px;
+                                .nowrap();
+                                .show;
+                            }
+
+                            .price {
+                                font-size: 16px;
+                                text-align: right;
+                                margin-top: 10px;
+                                .show;
+                            }
+
+                            .expense {
+
+                            }
+
+                            &.active {
+                                background: @white;
+                                height: 60px;
+                                #border-radius > .bottom(0);
+                                .box-shadow(1px 0 0 rgba(0,0,0,.15));
+                            }
+                        }
+
+                        .with-icon {
+                            padding-top: 28px;
+                            font-size: 11px;
+                            line-height: 8px;
+                            .size(50px, 60px);
+
+                            .icons { top: 5px; }
+                        }
+
+                        .no-expense {
+                            cursor: default;
+                            .box-shadow(none);
+
+                            &:hover,
+                            &:active { .box-shadow(none); }
+                        }
+
+                        &.active { 
+                            .toggle,
+                            .no-expense { color: @textColor; }
+                        }
+
+                        &.package {
+                            .toggle,
+                            .no-expense { background-color: @grey1; }
+                        }
+
+                        &.check-in,
+                        &.check-out {
+                            .toggle,
+                            .no-expense {
+                                padding-left: 30px;
+
+                                .day,
+                                .expense { margin-left: -25px; }
+                            }
+                        }
+
+                        &.add-new,
+                        &.check-out {
+                            margin-right: 10px;
+                            padding-right: 10px;
+                            position: relative;
+
+                            &:after {
+                                content: "";
+                                position: absolute;
+                                top: 0;
+                                right: 0;
+                                height: 50px;
+                                border-right: 1px solid rgba(0,0,0,.1);
+                            }
+                        }
+
+                        &:last-child {
+                            margin-right: 0;
+                            padding-right: 0;
+
+                            &:after { .hide; } 
+                        }
+                    }
+                }
+            }
+
+            /* Detailed bill summary ***/
+            .summary-expanded {
+                width: 100%;
+                padding: 10px;
+                background: @white;
+                #border-radius > .rounded();
+                .show;                        
+
+                /* Stay charges ***/
+                .toggle {
+                    color: @textColor;
+                    width: 100%;
+                    background-position: 98% 50%;
+                    .show;
+
+                    .price {
+                        display: inline-block;
+                        font-size: 30px;
+                        line-height: 20px;
+                        font-weight: 300;
+                        #pixel-to-percent > .width(240, 1926);
+
+                        span {
+                            font-size: 12px;
+                            font-weight: 400;
+                            text-transform: uppercase;
+                            .show;
+                        }
+                    }
+
+                    .rate,
+                    .room {
+                        display: inline-block;
+                        font-size: 18px;
+                        vertical-align: top;
+                        text-transform: uppercase;
+
+                        span {
+                            color: @grey3;
+                            font-size: 14px;
+                            line-height: 1em;
+                            text-transform: uppercase;
+                            .show;
+                        }
+
+                        &.rate { #pixel-to-percent > .width(645, 1926); }
+                        &.room { 
+                            padding-left: 20px;
+                            #pixel-to-percent > .width(1020, 1926); 
+                        }
+                    }
+                }
+
+                /* Stay details ***/
+                .stay-details {
+                    position: relative;
+                    clear: both;
+                    padding: 10px 0;
+                    .show;
+                    .float;
+
+                    .rate-details,
+                    .room-details {
+                        color: @grey4;
+                        font-size: 14px;
+                        line-height: 21px;
+                        .show;
+                        .pull-left;
+
+                        li {
+                            margin-bottom: 0;
+                            line-height: 21px;
+                        }
+                    }
+
+                    .rate-details {
+                        padding-right: 20px;
+                        #pixel-to-percent > .width(885, 1926);
+                    }
+
+                    .room-details { 
+                        padding-left: 30px; 
+                        #pixel-to-percent > .width(1020, 1926);
+                    }
+
+                    &:before {
+                        content: "";
+                        position: absolute;
+                        top: 10px;
+                        background-color: rgba(0,0,0,.1);
+                        width: 1px;
+                        #pixel-to-percent > .left(885, 1926);
+                        .calc-height(100, 20);
+                        .show;
+                    }
+                }
+
+                /* Expense details table ***/
+                .expense-details {
+                    margin: 0;
+                    .calc-width(100, 20);
+
+                    th {
+                        font-size: 14px;
+                        line-height: 40px;
+                        font-weight: 400;
+                        text-transform: uppercase;
+                        color: @grey3;
+
+                        &.price { width: 160px; }
+                    }
+
+                    td {
+                        font-size: 18px;
+                        line-height: 24px;
+                        text-transform: uppercase;
+                        min-height: 30px;
+                        padding: 5px 0;
+                        border-bottom: 1px solid rgba(0,0,0,.1);
+                        width: 25%;
+
+                        &.price {
+                            font-size: 30px;
+                            line-height: 24px;
+                            font-weight: 300;
+                        }
+                    }
+
+                    tr:last-child {
+                        td { border-bottom: 0; }
+                    }
+                }
+            }
+        }           
+    }
+
+    .registration-card { .hide; }
+    
+    /* Total Stay Fees ***/
+    .total-stay-fees {
+        margin-top: 10px;
+        .float;
+
+        .overview {
+            .pull-left;
+
+            .toggle {
+                text-align: left;
+                margin-right: 20px;
+                padding-right: 20px;
+                background-position: 100% 65%;
+                max-width: 240px;
+                .show;
+                .pull-left;
+
+                .title {
+                    font-size: 14px;
+                    line-height: 14px;
+                    text-transform: uppercase;
+                    .show;
+                }
+
+                .value {
+                    font-size: 36px;
+                    line-height: 46px;
+                    font-weight: 400;
+                    .show;
+                    .nowrap();
+
+                    &.red { color: @red; }
+                    &.green { color: @green; }
+                }
+            }
+
+            .button { 
+                margin-right: 10px;
+                .pull-left;
+                .show;
+
+                &.green {
+                    position: relative;
+                    margin-right: 20px;
+
+                    &:after {
+                        content: "";
+                        position: absolute;
+                        top: 0;
+                        right: -10px;
+                        background-color: rgba(0,0,0,.1);
+                        .show;
+                        .size(100%, 1px);
+                    }
+                }
+
+                &.brand-colors { 
+                    position: relative;
+                    font-size: 11px;
+                    line-height: 1em;
+                    width: 80px;
+
+                    .icons { top: 8px; }
+                }
+            }
+
+            .checkbox {
+                font-size: 14px;
+                line-height: 1;
+                text-align: center;
+                text-transform: uppercase;
+                padding: 30px 0 0 0;
+                white-space: normal;
+                overflow: visible;
+                width: 80px; 
+
+                .icon-form {
+                    top: 5px;
+                    left: 50%;
+                    margin-left: -10px;
+                }
+            }
+        } 
+
+        .group-overview {
+            width: 100%;
+            .float;
+
+            li {
+                font-size: 14px;
+                line-height: 40px;
+                text-transform: uppercase;
+                margin: 0 10px 0 0;                
+                .pull-left;
+
+                .title,
+                .value {
+                    .pull-left;
+                }
+
+                .value {
+                    font-size: 30px;
+                    margin-left: 5px;
+
+                    &.red { color: @red; }
+                    &.green { color: @green; }
+                }
+
+                .button {
+                    margin-right: 5px;
+
+                    &.with-icon { .square(40px); }
+                }
+
+                &.break {
+                    padding: 0 10px 0 0;
+                    border-right: 1px solid rgba(0,0,0,.1);
+                }
+
+                &:last-child { 
+                    margin-right: 5px;
+                    .pull-right; 
+                }
+            }
+        }
+
+        .signature {
+            position: relative;
+            margin-left: 10px;
+            .pull-left;
+
+            .toggle {
+                color: @textColor;
+                text-transform: uppercase;
+                position: relative;
+                background-position: 85% 50%;
+                .size(60px, 80px);
+                .clickable;
+
+                .icons {
+                    position: absolute;
+                    height: 24px;
+
+                    &.icon-signature { 
+                        top: 15px; 
+                        left: 15px;
+                        width: 30px;
+                    }
+
+                    &.icon-smartphone { 
+                        top: 18px; 
+                        left: 20px;
+                        width: 20px;
+                    }
+                }
+
+                &.active { 
+                    height: 70px; 
+                    background-position: 85% 42%;
+                    #border-radius > .bottom(0);
+                    .box-shadow(1px 0 0 rgba(0,0,0,.15));
+                }
+            }
+
+            &:after {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: -10px;
+                background-color: rgba(0,0,0,.1);
+                .show;
+                .size(100%, 1px);
+            }
+        }
+
+        .item-payment {
+            .pull-right;
+            .float;
+
+            .next-view {
+                position: relative;
+                line-height: 14px;
+                height: 60px;
+                padding: 10px 15px;
+                .pull-left;
+                .clickable;
+
+                span { color: @textColor; }
+
+                .card-logo {
+                    margin: 0 20px 0 0;
+                    .size(40px, 50px);
+
+                    img { .size(25px, 50px); }
+
+                    .number {
+                        text-align: right;
+                        margin-right: 0;
+                        float: none;
+                        align-items: none;
+                        .show;
+                    }
+                }
+
+                .type,
+                .name {
+                    line-height: 40px;
+                    text-transform: none;
+                    .show;
+                    .nowrap();
+                }
+
+                .name { 
+                    font-size: 14px;
+                    color: @grey4;
+                    max-width: 240px; 
+                }
+
+                .type { 
+                    font-size: 18px;
+                    font-weight: 600;
+                    max-width: 160px; 
+                }
+
+                .icon-swiped { margin-top: 3px; }
+
+                &:after {
+                    content: "";
+                    position: absolute;
+                    top: 28px;
+                    right: 14px;
+                    border-left: 4px solid transparent;
+                    border-right: 4px solid transparent;
+                    border-top: 4px solid @textColor;
+                    .square(0px);
+                }
+            }
+
+            .add-new-button { 
+                padding: 0 40px; 
+                height: 60px;
+                .pull-left;
+            }
+
+            .button {
+                margin: 10px;
+                .square(40px);
+                .pull-left;
+            }
+        }
+
+        .details {
+            clear: both;
+            padding-top: 10px;
+
+            /* Total stay fees table ***/
+            .total-fees {
+                width: 100%;
+                font-size: 14px;
+                line-height: 21px;
+                text-transform: uppercase;
+                table-layout: auto;
+                border-collapse: separate; 
+                border-spacing: 0 10px;
+                margin: 0;
+
+                .action {
+                    .checkbox {
+                        margin: 0;
+                        padding: 0;
+                        .size(35px, 60px);
+
+                        .icon-form { 
+                            top: 7px; 
+                            left: 20px;
+                        }
+
+                        input {
+                            min-height: 35px;
+                            line-height: 35px;
+                        }
+                    }
+                }
+
+                .active {
+                    .action {
+                        .icon-form { background-color: @grey1; }
+                    }
+                }
+
+                tfoot {
+                    td:last-child { text-align: right; }
+                }
+
+                tr {
+                    th {
+                        padding: 0 10px;
+                        font-weight: 600;
+
+                        &.form,
+                        &.action { 
+                            padding: 0;
+                            text-align: center;
+                        }
+
+                        &.form { width: 80px; }
+                        &.action { width: 60px; }
+                    }
+
+                    td {
+                        color: @grey4;
+                        background: rgba(0,0,0,.05);
+                        padding: 10px;
+
+                        .select { width: 60px; }
+
+                        &.description {
+                            padding: 0 10px;
+
+                            span { 
+                                line-height: 16px;
+                                .show; 
+
+                                &.reference { color: @grey3; }
+                            }
+                        }
+
+                        &.total-label { 
+                            text-align: right; 
+
+                            .button { margin-right: 5px; }
+                        }
+
+                        &.total-value { 
+                            font-size: 18px;
+                            font-weight: 600;
+
+                            strong {
+                                color: @logoPrimary;
+                                font-size: 30px;
+                                font-weight: 600;
+                            }
+
+                            &.red,
+                            &.red strong { color: @red; }
+                            &.green,
+                            &.green strong { color: @green; }
+                        }
+
+                        &.action { padding: 10px 0; }
+                    }
+
+                    &.active {
+                        td {
+                            color: @textColor;
+                            background: @white;
+                        }
+                    }
+
+                    &.edit {
+                        td { 
+                            vertical-align: middle; 
+
+                            .button { 
+                                .square(40px); 
+
+                                &:not(.inline) { .show; }
+                            }
+                        }
+                    }
+                }
+
+                tr:last-child {
+                    td { border-bottom: 0; }
+                }
+            }
+
+            /* Signature **/
+            &.signature-wrapper {
+                display: table;
+                table-layout: fixed;
+                position: relative;
+                padding: 10px 10px 40px;
+                line-height: 1em;
+                background: @white;
+                #border-radius > .rounded();
+                .size(200px, 100%);
+                .box-shadow();
+
+                figure {
+                    background-color: #fff;
+                    display: table-cell;
+                    vertical-align: middle;
+                    text-align: center;
+                    overflow: hidden;
+                    .size(200px, 100%);
+
+                    img { 
+                        max-width: 100%;
+                        max-height: 100%;
+                        height: auto;
+                    }
+                }
+
+                .signature-date {
+                    position: absolute;
+                    bottom: 10px;
+                    left: 0;
+                    text-align: center;
+                    width: 100%;
+                }
+            }
+
+            /* Charges Accepted ***/
+            &.charges-accepted {
+                text-align: center;
+                padding: 10px;
+                background: @white;
+                #border-radius > .rounded();
+                .box-shadow();
+
+                em { .show; }
+            }
+        }
+    }
+
+    /* Complete registration */
+    .complete-registration {
+        margin-top: 10px;
+
+        h2 { margin-bottom: 10px; }
+
+        .entry {
+            width: 50%;
+            .float;
+            .pull-left;
+
+            .checkbox,
+            a {
+                line-height: 30px;
+                .pull-left;
+                .show;
+            }
+
+            a { margin-left: 5px; }
+
+            .checkbox {
+                .icon-checkbox { top: 5px; }
+
+                &.single { margin-top: 10px; }
+                &:last-child { clear: both; }
+            }
+        }
+
+        .actions {
+            width: 50%;
+            .pull-right;
+
+            .button {
+                font-size: 18px;
+                line-height: 50px;
+                width: 100%;
+                .show;
+
+                &.blank { 
+                    margin-top: 10px;
+                    line-height: 40px; 
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {../_include/head.html}
+    </head>
+    <body id="{hotel-id}"> <!-- hotel-id should be hotel name, like "zoku", "yotel" or "grand-hotel". We can then apply specific styles throughtout the entire app based on this id value -->
+        
+        <!-- Header -->
+        {../_include/navigation.html}   
+        
+        <!-- Content -->
+        <section id="main" role="main">
+            <div id="content">
+                <h1>{Guest First Name}, <br/>you are now checked in.</h1>
+                <div id="keys">
+                    <h2>How many keys do you need?</h2>
+                    <div id="key-options">
+                        <button type="button" class="button">1</button>
+                        <button type="button" class="button">2</button>
+                    </div>
+                </div>
+                <div id="actions" class="align-left small-text">
+                    <p>Additional Guests:
+                        <br />{Add'l Guest 1} <!-- Repeat this for each Add'l guest -->
+                    </p>
+                    <button type="button" class="button transparent">Add / Remove Guests</button>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>

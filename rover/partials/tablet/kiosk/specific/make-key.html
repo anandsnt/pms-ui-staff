@@ -1,0 +1,15 @@
+ 
+        
+<!-- Content -->
+<section id="main" class="centered" role="main" ng-hide='at !== "make-keys"' ng-click='resetTime()'>
+    <div id="content">
+        <h1>Make your key.</h1>
+        <h2>Select a blank key from the bowl and place it on the target below. When the green light appears, the key is made</h2>
+        
+        <div id="keys">
+                <ng-include src="'assets/css/kiosk/assets/icons/create-key.svg'" style='fill:green' ng-class="{'green': greenKey == true}"></ng-include>
+        </div>
+        
+    </div>
+    <ng-include src="'assets/partials/tablet/rvTabletFooter.html'" ></ng-include>
+</section>

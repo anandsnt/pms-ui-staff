@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {../_include/head.html}
+    </head>
+    <body id="{hotel-id}"> <!-- hotel-id should be hotel name, like "zoku", "yotel" or "grand-hotel". We can then apply specific styles throughtout the entire app based on this id value -->
+        
+        <!-- Header -->
+        {../_include/navigation.html}   
+        
+        <!-- Content -->
+        <section id="main" class="centered" role="main">
+            <div id="content">
+                {../assets/icons/oos.svg}
+                <?php echo url_get_contents($config['url'] . "assets/icons/oos.svg"); ?>
+                <h1>Out of service</h1>
+                <h2>Please try another kiosk or speak to a staff member.</h2>
+            </div>
+        </section>
+    </body>
+</html>
