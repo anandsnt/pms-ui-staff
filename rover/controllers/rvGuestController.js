@@ -1225,7 +1225,7 @@ sntRover.controller('guestCardController', [
 		 * @param  {Object} success data from API
 		 * @return {undefined}
 		 */
-		var successCallBackOfAttachGroupToReservation = function(data, successCallBackParams) {
+		var successCallBackOfAttachAllotmentToReservation = function(data, successCallBackParams) {
 			var selectedGroup = successCallBackParams.selectedGroup;
 
 			//updating the central reservation data model
