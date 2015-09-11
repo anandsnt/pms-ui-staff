@@ -258,6 +258,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		};
 
 		$scope.getTabTitle = function(tabIndex) {
+			if (tabIndex >= $scope.reservationData.tabs.length) {
+				return "INVALID TAB";
+			}
 			var roomDetail = getTabRoomDetails(tabIndex);
 			if (roomDetail.firstIndex === roomDetail.lastIndex) {
 				return "ROOM " + (roomDetail.firstIndex + 1);
@@ -1561,6 +1564,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 		var initEventListeners = function() {
 			$scope.$on('SIDE_BAR_OCCUPANCY_UPDATE', function() {
+				init();
+			});
+
+			$scope.$on('TABS_MODIFIED', function() {
 				init();
 			});
 
