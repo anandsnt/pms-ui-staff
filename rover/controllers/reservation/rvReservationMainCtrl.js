@@ -856,7 +856,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 }
                 if (!$scope.reservationData.isHourly) {
                     data.room_types.push({
-                        id: tab.roomTypeId,
+                        id: parseInt(tab.roomTypeId, 10),
                         num_rooms: parseInt(tab.roomCount, 10),
                         addons: addonsForRoomType
                     });
@@ -1499,12 +1499,19 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         };
 
         $scope.removeTab = function(tabIndex) {
+
             var firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
                 roomTypeId: parseInt($scope.reservationData.tabs[tabIndex].roomTypeId, 10) || ""
             }));
             var currentCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount, 10);
             $scope.reservationData.tabs.splice(tabIndex, 1);
-            $scope.reservationData.rooms.splice(firstIndex, currentCount);            
+            $scope.reservationData.rooms.splice(firstIndex, currentCount);
+
+            if ($scope.viewState.currentTab == tabIndex) {
+                $scope.viewState.currentTab = 0; //In case of deleting current tab, reset to first
+            };
+
+            $scope.$broadcast('TABS_MODIFIED');
             devlogRoomsArray();
         };
 
