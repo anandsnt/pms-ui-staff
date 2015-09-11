@@ -75,10 +75,8 @@ sntRover.controller('rvTabletCtrl', [
                     $scope.setupIdleTimer();
                     $scope.$emit('hideLoader');
                 };
-                $scope.invokeApi(rvTabletSrv.fetchSettings, {}, fetchCompleted);
+                //$scope.invokeApi(rvTabletSrv.fetchSettings, {}, fetchCompleted);
                 setTitle();
-                
-                
                 
             };
             
