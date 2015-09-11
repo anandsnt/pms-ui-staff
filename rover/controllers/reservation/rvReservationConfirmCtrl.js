@@ -219,8 +219,6 @@ sntRover.controller('RVReservationConfirmCtrl', [
 					$rootScope.searchData.guestCard.email = $scope.reservationData.guest.email;
 				};				
 
-				$rootScope.searchData.guestCard.email = $scope.reservationData.guest.email;
-
 			};
 
 			if ($scope.confirmationMailsSent) {
