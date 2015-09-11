@@ -117,27 +117,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             $scope.rateTypesDetails.cancelationPenalties = $scope.cancelPenaltiesActivated ? $scope.rateTypesDetails.cancelationPenalties : [];
             $scope.rateData.currency_code_id = $scope.rateTypesDetails.hotel_settings.currency.id;
         };
-        /*
-         * Set commission data
-         */
-        var setupCommissionData = function(){
-            
-            var chargeCodes = $scope.rateData.commission_details.charge_codes,
-                selectedChargeCodes = [];
-            
-            if( typeof chargeCodes !== 'undefined' && chargeCodes.length >0 ){
-                angular.forEach( chargeCodes ,function( item, index) {
-                    if( item.is_checked ){
-                        selectedChargeCodes.push(item.id);
-                    }
-                });
-            }
-
-            var commissionData = dclone($scope.rateData.commission_details,["charge_codes"]);
-            commissionData.selected_commission_charge_code_ids = selectedChargeCodes;
-
-            return commissionData;
-        };
+        
         /*
          * Set add on data
          */
@@ -157,7 +137,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
         $scope.startSave = function() {
             var amount = parseInt($scope.rateData.based_on.value_sign + $scope.rateData.based_on.value_abs);
             var addOns = setUpAddOnData();
-            var commissions = setupCommissionData();
             var data = {
                 'name': $scope.rateData.name,
                 'description': $scope.rateData.description,
@@ -183,7 +162,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'end_date': $scope.rateData.end_date,
                 'is_hourly_rate': $scope.rateData.is_hourly_rate,
                 'is_member': $scope.rateData.is_member_rate,
-                'commission_details':commissions,
                 'is_pms_only' : $scope.rateData.is_pms_only,
                 'is_channel_only' : $scope.rateData.is_channel_only
             };
