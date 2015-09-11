@@ -1,5 +1,6 @@
 sntRover.controller('rvTabletCtrl', [
 	'$scope',
+        '$document',
 	'$rootScope',
 	'$filter',
 	'$stateParams',
@@ -7,7 +8,7 @@ sntRover.controller('rvTabletCtrl', [
 	'$timeout',
         'rvTabletSrv',
         'ngDialog',
-	function($scope, $rootScope, $filter, $stateParams, $state, $timeout, rvTabletSrv, ngDialog) {
+	function($scope, $document, $rootScope, $filter, $stateParams, $state, $timeout, rvTabletSrv, ngDialog) {
             BaseCtrl.call(this, $scope);
             $scope.hotel = {
                 "title": "Zoku"
@@ -48,6 +49,15 @@ sntRover.controller('rvTabletCtrl', [
                 
             };
             
+            
+            var setTitle = function() {
+                var title = $scope.hotel.title;
+                //yes, we are setting the heading and title
+                 $scope.title = $document[0].title = title;
+                 $scope.windowTitle = angular.element(window.document)[0].title = title;
+            };
+            
+            
             $scope.hotelLogo = 'assets/css/kiosk/assets/'+$scope.hotel.title+'/logo.svg';
             $scope.at = 'home';
             $scope.hideNavBtns = true;
@@ -59,17 +69,14 @@ sntRover.controller('rvTabletCtrl', [
             
             var initTabletConfig = function(){
                 //$scope.settings = $rootScope.kiosk;
-                
                 var fetchCompleted = function(data){
                     $scope.settings = data;
                     //fetch the idle timer settings
                     $scope.setupIdleTimer();
                     $scope.$emit('hideLoader');
                 };
-                $scope.invokeApi(rvTabletSrv.fetchSettings, {}, fetchCompleted);
-                
-                
-                
+                //$scope.invokeApi(rvTabletSrv.fetchSettings, {}, fetchCompleted);
+                setTitle();
                 
             };
             
@@ -242,6 +249,7 @@ sntRover.controller('rvTabletCtrl', [
                clearInterval($scope.idleTimer);
             };
             $scope.resetTime = function(){
+                $scope.closePopup();
                clearInterval($scope.idleTimer);
                $scope.startCounter();
             };
@@ -428,6 +436,14 @@ sntRover.controller('rvTabletCtrl', [
                         $scope.goToScreen(null, 'admin', true);
                         break;
                     };
+                    case 'input-last':{
+                            //fetch reservation list using email as the param
+                            //onsuccess push results to window
+                        $scope.input.last_name = textValue;
+                        $scope.clearInputText();
+                        $scope.goToScreen(null, 'find-reservation', true);
+                        break;
+                    };
                     case 'find-by-email':{
                             //fetch reservation list using email as the param
                             //onsuccess push results to window
@@ -514,9 +530,19 @@ sntRover.controller('rvTabletCtrl', [
                         $scope.hideNavBtns = true;
                         break;
                         
-                    case "check-in":
+                    case "input-last":
+                        $scope.at = 'input-last';
+                        stateToGoTo = 'rover.tab-kiosk-input-last';
+                        $scope.headingText = 'Type Your Last Name';
+                        $scope.subHeadingText = '';
+                        $scope.inputTextPlaceholder = '';
+                        $scope.hideNavBtns = false;
+                    break;
+                        
+                    case "find-reservation":
                         $scope.at = 'find-reservation';
-                        stateToGoTo = 'rover.tab-kiosk-find-reservation';
+                        //stateToGoTo = 'rover.tab-kiosk-find-reservation';
+                        stateToGoTo = 'rover.tab-kiosk-input-last';
                         $scope.hideNavBtns = false;
                         break;
                         

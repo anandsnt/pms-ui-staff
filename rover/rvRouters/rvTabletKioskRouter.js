@@ -110,5 +110,17 @@ angular.module('tabletKioskModule', [])
             templateUrl: '/assets/partials/tablet/kiosk/specific/select-keys-after-checkin.html',
         });
         
+        //pick up key [ home screen ]
+        $stateProvider.state('rover.tab-kiosk-pickup-key', {
+            url: '/kiosk',
+            templateUrl: '/assets/partials/tablet/kiosk/specific/select-keys-after-checkin.html',
+        });
+        
+        //pick up key [ home screen ]
+        $stateProvider.state('rover.tab-kiosk-input-last', {
+            url: '/kiosk',
+            templateUrl: '/assets/partials/tablet/kiosk/generic/input-text.html',
+        });
+        
         
 }]);

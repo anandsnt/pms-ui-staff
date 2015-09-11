@@ -1,5 +1,5 @@
 <!-- Content -->
-<section id="main" class="centered" role="main" ng-hide='at !== "reservation-details"' ng-click='resetTime()'>
+<section id="main" class="centered" role="main" ng-hide='at !== "reservation-details"' click-touch='resetTime()'>
     <div id="content">
         <h1>Check your reservation details</h1>
         <div id="flex-holder">
@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div id="actions" class="pull-right">
-                <button type="button" class="button" ng-click="goToScreen(null, 'cc-sign', true, 'reservation-details')">Next</button>
+                <button type="button" class="button" click-touch="goToScreen(null, 'cc-sign', true, 'reservation-details')">Next</button>
                 <p><strong>Questions?</strong>Tap “Cancel” and see a sidekick.</p>
             </div>
         </div>

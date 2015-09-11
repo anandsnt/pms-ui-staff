@@ -1,11 +1,11 @@
 <!-- Content -->
-<section id="main" class="centered" role="main" ng-hide='at !== "find-reservation"' ng-click='resetTime()'>
+<section id="main" class="centered" role="main" ng-hide='at !== "find-reservation"' click-touch='resetTime()'>
     <div id="content">
         <h1>Next, type one of the following</h1>
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
-                    <button type="button" class="button option" ng-click='goToScreen($event,"find-by-date", false, "check-in"); resetTime();'>
+                    <button type="button" class="button option" click-touch='goToScreen($event,"find-by-date", false, "find-reservation"); resetTime();'>
                         <ng-include src="'assets/css/kiosk/assets/icons/moon.svg'"></ng-include>
                     </button>
                     Departure Date
@@ -14,7 +14,7 @@
                     <span>Or</span>
                 </li>
                 <li>
-                    <button type="button" class="button option" ng-click='goToScreen($event,"find-by-email", false, "check-in"); resetTime(); clearInputText();'>
+                    <button type="button" class="button option" click-touch='goToScreen($event,"find-by-email", false, "find-reservation"); resetTime(); clearInputText();'>
                         <ng-include src="'assets/css/kiosk/assets/icons/email.svg'"></ng-include>
                     </button>
                     E-mail
@@ -24,7 +24,7 @@
                     <span>Or</span>
                 </li>
                 <li>
-                    <button type="button" class="button option" ng-click='goToScreen($event,"find-by-confirmation", false, "check-in"); resetTime()'>
+                    <button type="button" class="button option" click-touch='goToScreen($event,"find-by-confirmation", false, "find-reservation"); resetTime()'>
                         <ng-include src="'assets/css/kiosk/assets/icons/confirmation.svg'"></ng-include>
                     </button>
                     Confirmation

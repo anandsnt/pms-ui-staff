@@ -1,5 +1,5 @@
 <!-- Popup -->
-<div id='tablet-popup' ng-click='resetCounter();'>
+<div id='tablet-popup' click-touch='resetCounter();'>
     <div id="popup" class=" open"> <!-- Remove class "open" to hide popup content -->
         <div id="popup-content">
             <table class='admin-table'>
@@ -11,10 +11,10 @@
                     <td>
                         <div class="entry">
                                 <!--input type="checkbox" ng-change='updateSettings("enabled", settings.adminIdleTimeEnabled)' /need style added for kiosk-->
-                                <button ng-hide="idleSettingsPopup.enabled" ng-show="!idleSettingsPopup.enabled" style="float:right" type="button" class="button grey" ng-click='updateSettings("enabled", true);'>
+                                <button ng-hide="idleSettingsPopup.enabled" ng-show="!idleSettingsPopup.enabled" style="float:right" type="button" class="button grey" click-touch='updateSettings("enabled", true);'>
                                         Disabled
                                 </button>
-                                <button ng-hide="!idleSettingsPopup.enabled" ng-show="idleSettingsPopup.enabled" style="float:right" type="button" class="button green" ng-click='updateSettings("enabled", false);'>
+                                <button ng-hide="!idleSettingsPopup.enabled" ng-show="idleSettingsPopup.enabled" style="float:right" type="button" class="button green" click-touch='updateSettings("enabled", false);'>
                                         Enabled
                                 </button>
                         </div>
@@ -38,11 +38,11 @@
                 </tr>
                 <tr>
                     <td>
-                        <button type="button" class="button" ng-click='cancelAdminSettings();
+                        <button type="button" class="button" click-touch='cancelAdminSettings();
                                     closePopup();'>Cancel</button>
                     </td>
                     <td>
-                        <button type="button" class="button" ng-click='saveAdminSettings();
+                        <button type="button" class="button" click-touch='saveAdminSettings();
                                     closePopup();'>Save</button>
                     </td>
                 </tr>
