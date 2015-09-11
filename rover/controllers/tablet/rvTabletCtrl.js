@@ -57,8 +57,7 @@ sntRover.controller('rvTabletCtrl', [
                  $scope.windowTitle = angular.element(window.document)[0].title = title;
             };
             
-            
-            $scope.hotelLogo = 'assets/css/kiosk/assets/'+$scope.hotel.title+'/logo.svg';
+            $scope.hotelLogo = 'assets/css/kiosk/assets/'+$scope.hotel.title.toLowerCase()+'/logo.svg';
             $scope.at = 'home';
             $scope.hideNavBtns = true;
             $scope.inRover = true;
