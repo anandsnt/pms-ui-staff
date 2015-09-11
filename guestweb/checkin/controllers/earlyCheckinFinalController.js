@@ -21,7 +21,7 @@
 		var offerId= $stateParams.id;
 		$scope.isPosting = true;
 		var dataTosend = {'reservation_id':$rootScope.reservationID,'early_checkin_offer_id':offerId};
-		earlyCheckinService.applyEarlyCheckin(dataTosend).then(function(response) {				
+		earlyCheckinService.applyEarlyCheckin(dataTosend).then(function(response) {
 			$scope.isPosting = false;
 		},function(){
 			$scope.netWorkError = true;

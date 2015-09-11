@@ -14,17 +14,34 @@
 				<label for="birthday"> Birthday </label>
 				<input type="text" ng-model="birthdayText" name="guest-birthday" maxlength="8" id="guest-birthday" class="datepicker" ng-click="popupCalendar()" readonly />
 			</div>
-			<div class="entry radio-check full-width">
-				<label >Email Opt In</label>
-				<label id="guestcard_email_checkbox" class="checkbox"ng-class="{'checked': guestCardData.contactInfo.is_opted_promotion_email}">
-					<span class="icon-form icon-checkbox" ng-class="{'checked': guestCardData.contactInfo.is_opted_promotion_email}"></span>
-					<input type="checkbox"  name="opt-in" id="opt-in" ng-model="guestCardData.contactInfo.is_opted_promotion_email">
-					<span class="guest_card_promotions">Promotions &amp; News Email Opt In </span> 
-				</label>
+			<div class="entry margin">
+				<label for="country">Nationality</label>
+				<div form="contact-info" class="select">
+					<select iscroll-stop-propagation ng-options="country.id as country.value for country in countries" ng-model="guestCardData.contactInfo.nationality_id">
+						<option style="display:none" value=""></option>
+					</select>
+				</div>
 			</div>
+			<div class="entry margin">
+				<label for="country">Id Type</label>
+				<div form="contact-info" class="select">
+					<select iscroll-stop-propagation ng-options="idType.id as idType.value for idType in idTypeList" ng-model="guestCardData.contactInfo.id_type">
+						<option style="display:none" value=""></option>
+					</select>
+				</div>
+			</div>
+			<rv-textbox value="guestCardData.contactInfo.id_number" label = "Id Number"></rv-textbox>
+			
 		</div> 		
 		<div class="holder right">
 				<rv-textbox value="guestCardData.contactInfo.email" label="E-mail address" styleclass="full-width"></rv-textbox>
+				<div class="entry radio-check full-width">
+					<label id="guestcard_email_checkbox" class="checkbox"ng-class="{'checked': guestCardData.contactInfo.is_opted_promotion_email}">
+						<span class="icon-form icon-checkbox" ng-class="{'checked': guestCardData.contactInfo.is_opted_promotion_email}"></span>
+						<input type="checkbox"  name="opt-in" id="opt-in" ng-model="guestCardData.contactInfo.is_opted_promotion_email">
+						<span class="guest_card_promotions">Promotions &amp; News Email Opt In </span> 
+				</label>
+				</div>
 				<rv-textbox value="guestCardData.contactInfo.address.street1" label="Address" styleclass="full-width"></rv-textbox>
 				<rv-textbox value="guestCardData.contactInfo.address.city" styleclass="margin" label="City" ></rv-textbox>
 				<rv-textbox value="guestCardData.contactInfo.address.postal_code" label="Postal code" ></rv-textbox>

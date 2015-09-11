@@ -1257,6 +1257,151 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         };
 
         /**
+         * we want to verify from the user before going into mass checkout
+         * @return undefined
+         */
+        var openCheckoutConfirmationPopup = function() {
+            ngDialog.open({
+                template: '/assets/partials/groups/rooming/popups/massCheckout/rvGroupMassCheckoutSomeResReadyPopUp.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        };
+
+        /**
+         * when no reservations meet checkin criteria
+         * @return undefined
+         */
+        var openNoReservationMeetCheckoutCriteria = function() {
+            ngDialog.open({
+                template: '/assets/partials/groups/rooming/popups/massCheckout/rvGroupMassCheckoutNoResMeetCriteria.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        };
+
+        /**
+         * we will show mass checkin success pop up on completed success
+         * @return undefined
+         */
+        var openMassCheckoutSuccessPopup = function(data) {
+            ngDialog.open({
+                template: '/assets/partials/groups/rooming/popups/massCheckout/rvGroupResMassCheckoutSuccessPopUp.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false,
+                data: JSON.stringify(data),
+                controller: 'rvGroupRoomingMassCheckoutPopUpCtrl'
+            });
+        };
+
+        /**
+         * we will show mass checkin success pop up on completed success
+         * @return undefined
+         */
+        var openMassCheckoutFailedPopup = function(errorMessage) {
+            var errorMessageForPopup = {
+                errorMessage: errorMessage
+            };
+
+            ngDialog.open({
+                template: '/assets/partials/groups/rooming/popups/massCheckout/rvGroupResMassCheckoutFailedPopup.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false,
+                data: JSON.stringify(errorMessageForPopup)
+            });
+        };
+
+        /**
+         * when selected reservations meet the criteria and user confirmed to go ahead
+         * @return undefined
+         */
+        $scope.checkOutQualifiedReservations = function() {
+            $scope.closeDialog();
+            $timeout(function() {
+                var params = {
+                    group_id: $scope.groupConfigData.summary.group_id,
+                    reservation_ids: _.pluck($scope.qualifiedReservations, "id")
+                };
+
+                var options = {
+                    params: params,
+                    successCallBack: successCallBackOfCheckoutQualifiedReservations,
+                    failureCallBack: failureCallBackOfCheckoutQualifiedReservations
+                };
+                $scope.callAPI(rvGroupRoomingListSrv.performMassCheckout, options);
+            }, 800);
+        };
+
+        /**
+         * to perform mass checkout
+         * @return undefined
+         */
+        $scope.groupCheckout = function() {
+            var qualifiedRes = _.where($scope.selected_reservations, {
+                    'can_checkout': true
+                }),
+                qualifiedResCount = qualifiedRes.length,
+                selectedResCount = $scope.selected_reservations.length;
+
+            if (qualifiedResCount > 0) {
+                $scope.qualifiedReservations = qualifiedRes;
+                $scope.messageForMassCheckout = (selectedResCount === qualifiedResCount) ?
+                    '' : 'GROUP_MASS_CHECKOUT_CONFIRMATION_PARTIALLY_OKEY';
+                openCheckoutConfirmationPopup();
+            } else {
+                openNoReservationMeetCheckoutCriteria();
+            }
+        };
+
+        /**
+         * we want to refresh the listing reservation when mass checkout completed
+         * @return undefined
+         */
+        $scope.closeMassCheckoutSuccessPopup = function() {
+            $scope.closeDialog();
+            //resetting the selected reservations
+            $scope.selected_reservations = [];
+
+            $timeout(function() {
+                callInitialAPIs();
+            }, 800);
+        };
+
+        /**
+         * when the mass checkout is success (api will return success even if it includes some of the reservation which are failed during the operation)
+         * @return undefined
+         */
+        var successCallBackOfCheckoutQualifiedReservations = function(data) {
+            var failureReservations = data.failure_reservation_ids;
+
+            if (failureReservations.length > 0) {
+                data.failedReservations = [];
+                _.each(data.failure_reservation_ids, function(reservation_id) {
+                    data.failedReservations.push(_.findWhere($scope.selected_reservations, {
+                        id: reservation_id
+                    }));
+                });
+            }
+            openMassCheckoutSuccessPopup(data);
+        };
+
+        /**
+         * When there is some failure in API side on mass checkout
+         * @return undefined
+         */
+        var failureCallBackOfCheckoutQualifiedReservations = function(errorMessage) {
+            openMassCheckoutFailedPopup(errorMessage);
+        };
+
+        /**
          * [successFetchOfAllReqdForRoomingList description]
          * @param  {[type]} data [description]
          * @return {[type]}      [description]
@@ -1474,10 +1619,12 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 isCheckedOut: rStatus === "CHECKEDOUT",
                 isUneditable: rStatus === "CANCELED",
                 isExpected: rStatus === "RESERVED" || rStatus === "CHECKING_IN",
-                isStaying: rStatus === "CHECKEDIN" || rStatus === "CHECKING_OUT",
-                canChekin: !!reservation.room_no && new tzIndependentDate(reservation.arrival_date) === new tzIndependentDate($rootScope.businessDate),
-                isGuestAttached: !!reservation.lastname
-            };
+                isStaying: rStatus === "CHECKEDIN" || rStatus === "CHECKING_OUT",                
+                canChekin: !!reservation.room_no && rStatus === "CHECKING_IN",
+                isNoShow: rStatus === "NOSHOW",
+                isGuestAttached: !!reservation.lastname,
+                isPastArrival: new tzIndependentDate($rootScope.businessDate) >= new tzIndependentDate(reservation.arrival_date)
+            }
         };
 
         $scope.checkoutReservation = function(reservation) {

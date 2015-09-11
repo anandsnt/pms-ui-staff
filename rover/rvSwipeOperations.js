@@ -21,7 +21,7 @@ var SwipeOperation = function(){
 				getTokenFrom.etb = swipedCardData.RVCardReadETB;
 			}
 			getTokenFrom.is_encrypted = true;
-			if(swipedCardData.RVCardReadIsEncrypted === 0){
+			if(swipedCardData.RVCardReadIsEncrypted === 0 || swipedCardData.RVCardReadIsEncrypted === '0'){
 				getTokenFrom.is_encrypted = false;
 			}
 			return getTokenFrom;

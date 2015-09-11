@@ -1,4 +1,4 @@
-sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv', '$filter','ngDialog','rvPermissionSrv',
+sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv', '$filter', 'ngDialog', 'rvPermissionSrv',
 	function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter, ngDialog, rvPermissionSrv) {
 		//inheriting some useful things
 		BaseCtrl.call(this, $scope);
@@ -39,9 +39,9 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		$scope.setScroller('edit_staydate_calendar', scrollerOptions);
 
 		// Flag for CC auth permission
-	    $scope.hasCCAuthPermission = function() {
-	        return rvPermissionSrv.getPermissionValue ('OVERRIDE_CC_AUTHORIZATION');
-	    };
+		$scope.hasCCAuthPermission = function() {
+			return rvPermissionSrv.getPermissionValue('OVERRIDE_CC_AUTHORIZATION');
+		};
 
 		this.dataAssign = function() {
 			//Data from Resolve method
@@ -81,21 +81,21 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				weekMode: 'fixed',
 				ignoreTimezone: false, // For ignoring timezone,
 				eventDrop: $scope.changedDateOnCalendar,
-				eventAfterRender: function(event, element){
+				eventAfterRender: function(event, element) {
 					//FIX FOR CICO-7897 explicitly setting draggability in touch evnvironment
-					if('startEditable' in event && 'ontouchstart' in document.documentElement){
+					if ('startEditable' in event && 'ontouchstart' in document.documentElement) {
 						element.draggable();
 					}
 				},
 				//CICO-7897's 2nd fix
-				viewRender: function(event, element){
-					if(!isFirstTime){
-						$scope.$apply(function(){
+				viewRender: function(event, element) {
+					if (!isFirstTime) {
+						$scope.$apply(function() {
 							$scope.isChanging = true;
 							$scope.$emit("showLoader");
 						});
-						setTimeout(function(){
-							$scope.$apply(function(){
+						setTimeout(function() {
+							$scope.$apply(function() {
 								$scope.isChanging = false;
 								$scope.$emit("hideLoader");
 							});
@@ -140,10 +140,10 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			//Remove those dates fromt the available dates response
 			if (calendarDetails.has_multiple_rates === 'true') {
 				for (var i = calendarDetails.available_dates.length - 1; i >= 0; i--) {
-					thisTime = tzIndependentDate(calendarDetails.available_dates[i].date)
+					thisTime = tzIndependentDate(calendarDetails.available_dates[i].date);
 					if (thisTime < checkinTime || thisTime > checkoutTime) {
 						$scope.stayDetails.calendarDetails.available_dates.splice(i, 1);
-					};
+					}
 				}
 				return true;
 			}
@@ -275,7 +275,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.refreshMyScroller();
 		};
 
-				//function to show room details, total, avg.. after successful checking for room available
+		//function to show room details, total, avg.. after successful checking for room available
 		$scope.showRoomAvailable = function() {
 			//setting nights based on calender checking/checkout days
 			var timeDiff = $scope.checkoutDateInCalender.getTime() - $scope.checkinDateInCalender.getTime();
@@ -286,9 +286,9 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.isStayRatesSuppressed = false;
 			var checkinRate = '';
 			$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
-				if(this.is_sr === "true"){
+				if (this.is_sr === "true") {
 					$scope.isStayRatesSuppressed = true;
-					return false;// Exit from loop
+					return false; // Exit from loop
 				}
 				//we have to add rate between the calendar checkin date & calendar checkout date only
 				if (tzIndependentDate(this.date).getTime() >= $scope.checkinDateInCalender.getTime() && tzIndependentDate(this.date).getTime() < $scope.checkoutDateInCalender.getTime()) {
@@ -301,7 +301,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 			});
 
-			if(!$scope.isStayRatesSuppressed){
+			if (!$scope.isStayRatesSuppressed) {
 				//calculating the avg. rate
 				if ($scope.calendarNightDiff > 0) {
 					$scope.avgRate = Math.round(($scope.totRate / $scope.calendarNightDiff + 0.00001) * 100 / 100);
@@ -325,13 +325,13 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		/*
 		 * success callback of ConfirmUpdates
 		 */
-		$scope.continueWithoutCC = function(){
+		$scope.continueWithoutCC = function() {
 			$scope.requireAuthorization = false;
 			$scope.confirmUpdates();
 			$scope.closeDialog();
 		};
 
-		$scope.continueAfterSuccessAuth = function(){
+		$scope.continueAfterSuccessAuth = function() {
 			$scope.goBack();
 			$scope.closeDialog();
 		};
@@ -383,38 +383,37 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		};
 
 		// Success after autherization
-		this.successCallbackCCAuthConfirmUpdates = function(data){
+		this.successCallbackCCAuthConfirmUpdates = function(data) {
 			$scope.$emit('hideLoader');
 
 			// CICO-7306 : With Authorization flow .: Auth Success
-			if(data.auth_status){
-			 	$scope.isInProgressScreen = false;
-		    	$scope.isSuccessScreen = true;
-		    	$scope.isFailureScreen = false;
-		    	$scope.cc_auth_amount = data.cc_auth_amount;
-		    	$scope.cc_auth_code = data.cc_auth_code;
-		    }
-		    else{
-		    	// CICO-7306 : With Authorization flow .: Auth declined
-		    	$scope.isInProgressScreen = false;
-		    	$scope.isSuccessScreen = false;
-		    	$scope.isFailureScreen = true;
-		    	$scope.cc_auth_amount = data.cc_auth_amount;
-		    }
+			if (data.auth_status) {
+				$scope.isInProgressScreen = false;
+				$scope.isSuccessScreen = true;
+				$scope.isFailureScreen = false;
+				$scope.cc_auth_amount = data.cc_auth_amount;
+				$scope.cc_auth_code = data.cc_auth_code;
+			} else {
+				// CICO-7306 : With Authorization flow .: Auth declined
+				$scope.isInProgressScreen = false;
+				$scope.isSuccessScreen = false;
+				$scope.isFailureScreen = true;
+				$scope.cc_auth_amount = data.cc_auth_amount;
+			}
 		};
 
 		// Handle confirmUpdates process with Autherization..
-		var performCCAuthAndconfirmUpdatesProcess = function(postParams){
+		var performCCAuthAndconfirmUpdatesProcess = function(postParams) {
 
 			// CICO-7306 authorization for CC.
-			if($scope.requireAuthorization && $scope.isStandAlone){
+			if ($scope.requireAuthorization && $scope.isStandAlone) {
 				// Start authorization process...
 				$scope.isInProgressScreen = true;
- 		    	$scope.isSuccessScreen = false;
- 		    	$scope.isFailureScreen = false;
- 		    	$scope.isCCAuthPermission = $scope.hasCCAuthPermission();
+				$scope.isSuccessScreen = false;
+				$scope.isFailureScreen = false;
+				$scope.isCCAuthPermission = $scope.hasCCAuthPermission();
 
- 		    	ngDialog.open({
+				ngDialog.open({
 					template: '/assets/partials/bill/ccAuthorization.html',
 					className: '',
 					closeByDocument: false,
@@ -422,53 +421,50 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				});
 				postParams.authorize_credit_card = true;
 				$scope.invokeApi(RVChangeStayDatesSrv.confirmUpdates, postParams, that.successCallbackCCAuthConfirmUpdates, that.failureCallbackConfirmUpdates);
-			}
-			else{
+			} else {
 				postParams.authorize_credit_card = false;
 				$scope.invokeApi(RVChangeStayDatesSrv.confirmUpdates, postParams, that.successCallbackConfirmUpdates, that.failureCallbackConfirmUpdates);
 			}
 		};
 
-		var setFlagForPreAuthPopup = function(){
+		var setFlagForPreAuthPopup = function() {
 			// CICO-17266 Setting up flags for showing messages ..
-		    $scope.message_incoming_from_room = false;
-		    $scope.message_out_going_to_room = false;
-		    $scope.message_out_going_to_comp_tra = false;
+			$scope.message_incoming_from_room = false;
+			$scope.message_out_going_to_room = false;
+			$scope.message_out_going_to_comp_tra = false;
 
-		    if($scope.availabilityDetails.routing_info.incoming_from_room){
-		    	$scope.message_incoming_from_room = true;
-		    }
-		    else if($scope.availabilityDetails.routing_info.out_going_to_room){
-		    	$scope.message_out_going_to_room = true;
-		    }
-		    else if($scope.availabilityDetails.routing_info.out_going_to_comp_tra){
-		    	$scope.message_out_going_to_comp_tra = true;
-		    }
+			if ($scope.availabilityDetails.routing_info.incoming_from_room) {
+				$scope.message_incoming_from_room = true;
+			} else if ($scope.availabilityDetails.routing_info.out_going_to_room) {
+				$scope.message_out_going_to_room = true;
+			} else if ($scope.availabilityDetails.routing_info.out_going_to_comp_tra) {
+				$scope.message_out_going_to_comp_tra = true;
+			}
 		};
 
 		// CICO-17266 Considering Billing info details before Auth..
-		var showPreAuthPopupWithBillingInfo = function(data){
+		var showPreAuthPopupWithBillingInfo = function(data) {
 
-	 		$scope.clickedFullAuth = function(){
-	 			// @params : data , isCheckinWithoutAuth: false
-	 			$scope.requireAuthorization = true;
+			$scope.clickedFullAuth = function() {
+				// @params : data , isCheckinWithoutAuth: false
+				$scope.requireAuthorization = true;
 				performCCAuthAndconfirmUpdatesProcess(data);
 				ngDialog.close();
-		    };
+			};
 
-		    $scope.clickedManualAuth = function(){
-		    	// As of now , Manual auth is performed at stay card..
+			$scope.clickedManualAuth = function() {
+				// As of now , Manual auth is performed at stay card..
 				// Proceeding change stay dates without authorization..
 				// @params : data , isCheckinWithoutAuth :true
 				$scope.requireAuthorization = false;
 				performCCAuthAndconfirmUpdatesProcess(data);
 				ngDialog.close();
-		    };
+			};
 
-		    setFlagForPreAuthPopup();
+			setFlagForPreAuthPopup();
 
-		    // CICO-17266 Considering Billing info details before Auth..
-		    ngDialog.open({
+			// CICO-17266 Considering Billing info details before Auth..
+			ngDialog.open({
 				template: '/assets/partials/bill/ccAuthAndBillingInfoConfirm.html',
 				className: '',
 				closeByDocument: false,
@@ -486,16 +482,14 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 			setFlagForPreAuthPopup();
 
-			if(!$scope.message_incoming_from_room && !$scope.message_out_going_to_room && !$scope.message_out_going_to_comp_tra){
+			if (!$scope.message_incoming_from_room && !$scope.message_out_going_to_room && !$scope.message_out_going_to_comp_tra) {
 				performCCAuthAndconfirmUpdatesProcess(postParams);
- 		    }
- 		    else if($scope.requireAuthorization){
- 		    	// CICO-17266 PMS: Rover - CC Auth should consider Billing Information.
+			} else if ($scope.requireAuthorization) {
+				// CICO-17266 PMS: Rover - CC Auth should consider Billing Information.
 				showPreAuthPopupWithBillingInfo(postParams);
- 		    }
- 		    else{
- 		    	performCCAuthAndconfirmUpdatesProcess(postParams);
- 		    }
+			} else {
+				performCCAuthAndconfirmUpdatesProcess(postParams);
+			}
 		};
 		/*
 		 this function is used to check the whether the movement of dates is valid accoriding to our reqmt.
@@ -562,7 +556,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			if (!$rootScope.isStandAlone) {
 				//Check if the stay range is restricted, if so display a restrication message
 				if (that.isStayRangeRestricted($scope.checkinDateInCalender,
-					$scope.checkoutDateInCalender)) {
+						$scope.checkoutDateInCalender)) {
 					that.showRestrictedStayRange();
 					return false;
 				}
@@ -693,7 +687,8 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			}, 300);
 		};
 
-		$scope.goToRoomAndRates = function() {
+
+		var navigateToRateAndRates = function() {
 			$state.go('rover.reservation.staycard.mainCard.roomType', {
 				from_date: $scope.confirmedCheckinDate,
 				to_date: $scope.confirmedCheckoutDate,
@@ -701,6 +696,59 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				company_id: $scope.reservationData.company.id,
 				travel_agent_id: $scope.reservationData.travelAgent.id
 			});
+		}
+
+		$scope.goToRoomAndRates = function() {
+			if ($scope.otherData.showOverbookingAlert) {
+				$scope.invokeApi(RVReservationBaseSearchSrv.checkOverbooking, {
+					from_date: $scope.confirmedCheckinDate,
+					to_date: $scope.confirmedCheckoutDate
+				}, function(availability) {
+					$scope.availabilityData = availability;
+					var houseAvailable = true,
+						roomtypesAvailable = _($scope.reservationData.tabs.length).times(function(n) {
+							return true
+						});
+					_.each(availability, function(dailyStat) {
+						houseAvailable = houseAvailable && (dailyStat.house.availability > 0);
+						_.each($scope.reservationData.tabs, function(tab, tabIndex) {
+							if (!!tab.roomTypeId) {
+								roomtypesAvailable[tabIndex] = roomtypesAvailable[tabIndex] &&
+									(dailyStat.room_types[tab.roomTypeId] > 0);
+							}
+						});
+					});
+
+					if (houseAvailable && _.reduce(roomtypesAvailable, function(a, b) {
+							return a && b
+						})) {
+						navigateToRateAndRates();
+					} else {
+						ngDialog.open({
+							template: '/assets/partials/reservation/alerts/availabilityCheckOverbookingAlert.html',
+							scope: $scope,
+							controller: 'overbookingAlertCtrl',
+							closeByDocument: false,
+							closeByEscape: false,
+							data: JSON.stringify({
+								houseFull: !houseAvailable,
+								roomTypeId: $scope.reservationData.tabs[0].roomTypeId
+							})
+						});
+					}
+				});
+			} else {
+				navigateToRateAndRates();
+			}
+		};
+
+		$scope.alertOverbooking = function(close) {
+			var timer = 0;
+			if (close) {
+				$scope.closeDialog();
+				timer = 1000
+			}
+			$timeout(navigateToRateAndRates, timer);
 		};
 
 		$scope.$on('$viewContentLoaded', function() {
