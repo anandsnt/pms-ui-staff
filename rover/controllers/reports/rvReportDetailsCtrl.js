@@ -734,6 +734,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		};
 		//loads the content in the existing report view in the DOM.
 		$scope.fetchFullReport = function() {
+			var template;
 
 			if ( reportNames['OCCUPANCY_REVENUE_SUMMARY'] == $scope.chosenReport.title && $_needOccRevPreFetch() ) {
 
@@ -754,14 +755,16 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				if ( 'ADDON' == $scope.chosenReport.chosenGroupBy ) {
 					$scope.openLevel = 'GROUP';
+					template = '/assets/partials/reports/addonForecastReport/rvGrpByGroupPrintPopup.html';
 				} else {
 					$scope.openLevel = 'DATE';
+					template = '/assets/partials/reports/addonForecastReport/rvGrpByDatePrintPopup.html';
 				};
 
 				// show popup
 				ngDialog.open({
 					controller: 'RVAddonForecastPrintPopupCtrl',
-					template: '/assets/partials/reports/addonForecastReport/rvAddonForecastPrintPopup.html',
+					template: template,
 					className: 'ngdialog-theme-default',
 					closeByDocument: true,
 					scope: $scope,
@@ -871,7 +874,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// restore the old dates if dates were indeed saved
 			// this is hardcodding.. NEED BETTER WAY TO MANAGE
 		    $timeout(function() {
-				if ( angular.isDate($scope.fromDateCopy) && angular.isDate($scope.untilDateCopy) ) {
+				if ( reportNames['OCCUPANCY_REVENUE_SUMMARY'] == $scope.chosenReport.title && angular.isDate($scope.fromDateCopy) && angular.isDate($scope.untilDateCopy) ) {
 					$scope.chosenReport.fromDate = angular.copy( $scope.fromDateCopy );
 					$scope.chosenReport.untilDate = angular.copy( $scope.untilDateCopy );
 
@@ -887,7 +890,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				// restore the old dates if dates were indeed saved
 				// this is hardcodding.. NEED BETTER WAY TO MANAGE
-				if ( !!$scope.fromDateCopy && !!$scope.untilDateCopy ) {
+				if ( reportNames['OCCUPANCY_REVENUE_SUMMARY'] == $scope.chosenReport.title && !!$scope.fromDateCopy && !!$scope.untilDateCopy ) {
 					$scope.chosenReport.fromDate = angular.copy( $scope.chosenReport.fromDateCopy );
 					$scope.chosenReport.untilDate = angular.copy( $scope.chosenReport.untilDateCopy );
 

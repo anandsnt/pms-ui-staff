@@ -1,0 +1,36 @@
+<div id="modal" class="modal-show" ng-cloak>
+	<div class="modal-content form report-options">
+	    <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>
+
+	    <strong class="h2 message">Print Details Level</strong>
+
+	    <!-- Mind the ordering based on grouping by date or addon -->
+	    <div class="entry radio-check full-width">
+	        <label class="radio">
+	            <span class="icon-form icon-radio" ng-class="{ 'checked' : openLevel == values.date }"></span>
+	            <input type="radio" name="vijay" ng-model="openLevel" ng-value="values.date">
+	            Date
+	        </label>
+	        <label class="radio">
+	            <span class="icon-form icon-radio" ng-class="{ 'checked' : openLevel == values.group }"></span>
+	            <input type="radio" name="vijay" ng-model="openLevel" ng-value="values.group">
+	            Add-On Group
+	        </label>
+	        <label class="radio">
+	            <span class="icon-form icon-radio" ng-class="{ 'checked' : openLevel == values.addon }"></span>
+	            <input type="radio" name="vijay" ng-model="openLevel" ng-value="values.addon">
+	            Add-On
+	            </label>
+	        <label class="radio">
+	            <span class="icon-form icon-radio" ng-class="{ 'checked' : openLevel == values.all }"></span>
+	            <input type="radio" name="vijay" ng-model="openLevel" ng-value="values.all">
+	            Everything
+	        </label>     
+	    </div>
+
+	    <div class="actions">
+	        <button type="button" class="button blue" ng-click="continueWithPrint()">Print report</button>
+	        <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
+	    </div>
+	</form>
+</div>

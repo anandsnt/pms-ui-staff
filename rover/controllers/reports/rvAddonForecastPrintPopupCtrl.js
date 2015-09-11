@@ -6,6 +6,7 @@ sntRover.controller('RVAddonForecastPrintPopupCtrl', [
 	'RVReportUtilsFac',
 	function($rootScope, $scope, $filter, $timeout, reportUtils) {
 		$scope.openLevel = $scope.$parent.openLevel;
+		$scope.addonGroupBy = $scope.$parent.addonGroupBy;
 
 		$scope.values = {
 			'date'  : 'DATE',

@@ -6,40 +6,24 @@
 
 	    <!-- Mind the ordering based on grouping by date or addon -->
 	    <div class="entry radio-check full-width">
-	        <label ng-if="'DATE' == openLevel" class="radio">
-	            <span class="icon-form icon-radio" ng-class="{ 'checked' : openLevel == values.date }"></span>
-	            <input type="radio" name="print-details" ng-model="openLevel" ng-value="values.date">
-	            Date
-	        </label>
-	        
-	        <label ng-if="'GROUP' == openLevel" class="radio">
+	        <label class="radio">
 	            <span class="icon-form icon-radio" ng-class="{ 'checked' : openLevel == values.group }"></span>
-	            <input type="radio" name="print-details" ng-model="openLevel" ng-value="values.group">
+	            <input type="radio" name="vijay" ng-model="openLevel" ng-value="values.group">
 	            Add-On Group
 	        </label>
-
-
-	        <label ng-if="'DATE' == openLevel" class="radio">
-	            <span class="icon-form icon-radio" ng-class="{ 'checked' : openLevel == values.group }"></span>
-	            <input type="radio" name="print-details" ng-model="openLevel" ng-value="values.group">
-	            Add-On Group
-	        </label>
-
 	        <label class="radio">
 	            <span class="icon-form icon-radio" ng-class="{ 'checked' : openLevel == values.addon }"></span>
-	            <input type="radio" name="print-details" ng-model="openLevel" ng-value="values.addon">
+	            <input type="radio" name="vijay" ng-model="openLevel" ng-value="values.addon">
 	            Add-On
 	        </label>
-
-	        <label ng-if="'GROUP' == openLevel" class="radio">
+	        <label class="radio">
 	            <span class="icon-form icon-radio" ng-class="{ 'checked' : openLevel == values.date }"></span>
-	            <input type="radio" name="print-details" ng-model="openLevel" ng-value="values.date">
+	            <input type="radio" name="vijay" ng-model="openLevel" ng-value="values.date">
 	            Date
 	        </label>
-
 	        <label class="radio">
 	            <span class="icon-form icon-radio" ng-class="{ 'checked' : openLevel == values.all }"></span>
-	            <input type="radio" name="print-details" ng-model="openLevel" ng-value="values.all">
+	            <input type="radio" name="vijay" ng-model="openLevel" ng-value="values.all">
 	            Everything
 	        </label>     
 	    </div>
