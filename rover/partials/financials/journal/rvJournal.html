@@ -98,15 +98,15 @@
     </form> 
 
     <!-- Content SUMMARY-->
-    <div ng-if="data.isShowSummaryTab" ng-show="data.activeTab === 'SUMMARY'" ng-include="'/assets/partials/financials/journal/rvSummary.html'"></div>
+    <span ng-if="data.isShowSummaryTab" ng-show="data.activeTab === 'SUMMARY'" ng-include="'/assets/partials/financials/journal/rvSummary.html'"></span>
 
     <!-- Content REVENUE-->
-    <div ng-show="data.activeTab === 'REVENUE'" ng-include="'/assets/partials/financials/journal/rvRevenue.html'"></div>
+    <span ng-show="data.activeTab === 'REVENUE'" ng-include="'/assets/partials/financials/journal/rvRevenue.html'"></span>
 
     <!-- Content PAYMENTS-->
-    <div ng-show="data.activeTab === 'PAYMENTS'" ng-include="'/assets/partials/financials/journal/rvPayments.html'"></div>
+    <span ng-show="data.activeTab === 'PAYMENTS'" ng-include="'/assets/partials/financials/journal/rvPayments.html'"></span>
 
     <!-- Content CASHIER-->
-    <div ng-show="data.activeTab === 'CASHIER'" ng-include="'/assets/partials/financials/journal/rvCashier.html'"></div>
+    <span ng-show="data.activeTab === 'CASHIER'" ng-include="'/assets/partials/financials/journal/rvCashier.html'"></span>
     
 </section>

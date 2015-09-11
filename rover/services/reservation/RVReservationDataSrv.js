@@ -133,6 +133,11 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 				guestMemberships: {
 					hlp: [],
 					ffp: []
+				},
+				group: {
+					id: "",
+					name: "",
+					code: ""
 				}
 			};
 		};
@@ -155,6 +160,10 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 					travelAgentName: "",
 					travelAgentCity: "",
 					travelAgentIATA: ""
+				},
+				groupCard: {
+					name: "",
+					code: ""
 				}
 			};
 		};
@@ -170,6 +179,10 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 					futureReservations: 0
 				},
 				travelAgent: {
+					id: "",
+					futureReservations: 0
+				},
+				group: {
 					id: "",
 					futureReservations: 0
 				}

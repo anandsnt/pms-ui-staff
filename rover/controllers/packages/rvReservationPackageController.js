@@ -15,7 +15,7 @@ sntRover.controller('RVReservationPackageController',
 		$scope.$emit('hideLoader');
 		$scope.packageData = data;
 		angular.forEach($scope.packageData.existing_packages,function(item, index) {
-           item.totalAmount = (item.count)*(item.price_per_piece);
+           item.totalAmount = (item.addon_count)*(item.amount);
   		});
 	};
 	$scope.invokeApi(RVReservationPackageSrv.getReservationPackages, reservationId, successCallBack);

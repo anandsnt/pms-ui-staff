@@ -11,6 +11,7 @@ var sntRover = angular.module('sntRover',[
 		'ui.date',
 		'ui.calendar',
 		'dashboardModule',
+		'tabletKioskModule',
 		'companyCardModule',
 		'stayCardModule',
 		'housekeepingModule',

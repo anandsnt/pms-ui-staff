@@ -1,0 +1,279 @@
+.addons-content {
+    position: relative;
+    overflow: hidden;
+    .calc-height(100, 50);
+
+    .wrapper { padding: 20px; }
+
+    /* View title ***/
+    .view-title {
+        position: relative;
+        height: 40px;
+        margin-bottom: 20px;
+
+        h1,
+        .button {
+            line-height: 40px;
+        }
+
+        .button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding-right: 30px;
+            z-index: 9;
+
+            &.active {
+                padding-bottom: 1px;
+                #border-radius > .bottom(0);
+            }
+        }
+    }
+
+    /* Cart ***/
+    .addon-cart {
+        position: relative;
+        margin: -20px 0 20px 0;
+        padding: 20px 20px 0 20px;
+        z-index: 99;
+        .faux-clickable;
+
+        .notice { margin: 0 0 20px 0; }
+        
+        .cart-items {
+            text-transform: uppercase;
+            table-layout: fixed;
+            border-collapse: separate; 
+            border-spacing: 0 10px;
+            width: 100%;
+            margin: 0;
+
+            thead {
+                th {
+                    font-size: 14px;
+                    line-height: 14px;
+                    vertical-align: middle;
+                    padding: 0 5px;
+                    font-weight: 600;
+
+                    &.add-on { #pixel-to-percent > .width(560, 1888); }
+                    &.date { #pixel-to-percent > .width(320, 1888); }
+                    &.quantity { #pixel-to-percent > .width(240, 1888); }
+                    &.price { #pixel-to-percent > .width(200, 1888); }
+                    &.tax { #pixel-to-percent > .width(170, 1888); }
+                    &.total { #pixel-to-percent > .width(320, 1888); }
+                    &.edit { #pixel-to-percent > .width(100, 1888); }
+                }
+            }
+
+            tfoot {
+                td {
+                    padding: 5px 0;
+                    height: 50px;
+                    line-height: 40px;
+
+                    &.total-label { 
+                        text-align: right; 
+                        padding-right: 40px;
+                        #pixel-to-percent > .width(1320, 1888); 
+                    }
+
+                    &.total-price { 
+                        #pixel-to-percent > .width(568, 1888); 
+
+                        strong { .pull-left; }
+                        .button { 
+                            padding: 0 30px;
+                            .pull-right; 
+                        }
+                    }
+                }
+            }
+
+            tbody {
+                td {
+                    padding: 5px 10px 5px 0;
+                    height: 50px;
+                    line-height: 40px;
+                    vertical-align: middle;
+                    background: @grey1;
+                    .box-shadow();
+
+                    .has-datepicker,
+                    .select {
+                        height: 40px;
+
+                        input,
+                        select,
+                        button {
+                            text-transform: none;
+                            width: 100%;
+                            height: 39px;
+                        }
+
+                        &.has-datepicker { width: 100px; }
+                        &.select { width: 60px; }
+                    }
+
+                    .button {
+                        .square(40px);
+                    }
+            
+                    &:first-child { 
+                        padding-left: 10px; 
+                        #border-radius > .left(); 
+                    }
+
+                    &:last-child { 
+                        padding-right: 10px;
+                        #border-radius > .right(); 
+                    }
+                }
+            }
+        }
+    }
+
+    /* Add ons ***/
+    .addons {
+        .float;
+
+        /* Categories ***/
+        .addon-categories {
+            #pixel-to-percent > .width(360,2048);
+            .pull-left;
+
+            li {
+                font-size: 15px;
+                line-height: 40px;
+                width: 100%;
+                margin-bottom: 10px;
+                .show;
+
+                a { 
+                    text-align: left;
+                    font-weight: 600;
+                    .show; 
+                }
+
+                &.ui-state-active,
+                &.active {
+                    a {
+                        color: @white;
+                        text-shadow: 1px 1px 0 rgba(0,0,0,.15);
+                        .box-shadow(inset 0 -1px 0 rgba(0,0,0,.2));
+                        .gradient (@logoGradientStart, @logoGradientEnd);
+
+                        &:hover,
+                        &:active { .gradient (@logoGradientEnd, @logoGradientStart); }
+                    }
+                }
+            }
+        }
+
+        /* Items ***/
+        .addon-items {
+            position: relative;
+            #pixel-to-percent > .left-margin(45,2048);
+            #pixel-to-percent > .width(1640,2048);
+            .pull-left;
+
+            .addon-tab {
+                position: relative;
+                top: 0;
+                left: 0;
+
+                li {
+                    padding: 15px;
+                    vertical-align: middle;
+                    .float;
+                    .faux-clickable;
+
+                    .data {
+                        margin-right: 40px;
+                        #pixel-to-percent > .width(900,1680);
+                        .pull-left;
+
+                        .categories {
+                            font-size: 14px;
+                            text-transform: uppercase;
+                            .show;
+
+                            span {
+                                margin: 0 5px;
+
+                                &.current { color: @logoPrimary; }
+                                &:first-child { margin-left: 0; }
+                                &:last-child { margin-right: 0; }
+                            }                               
+                        }
+
+                        h2 { 
+                            font-weight: 700;
+                            white-space: normal;
+                        }
+
+                        em {
+                            font-size: 14px;
+                            line-height: 18px;
+                            color: @grey4;
+                            white-space: normal;
+                            .show;
+                        }
+                    }
+
+                    .price {
+                        position: relative;
+                        font-size: 36px;
+                        line-height: 40px;
+                        vertical-align: middle;
+                        font-weight: 300;
+                        padding-right: 70px;
+                        .show;
+                        .pull-left;
+
+                        span {
+                            position: absolute;
+                            right: 0;
+                            width: 65px;
+                            color: @grey3;
+                            font-size: 12px;
+                            line-height: 12px;
+                            text-transform: uppercase;
+                            text-align: left;
+                            font-weight: 400;
+                            overflow: hidden;
+
+                            &.amount-type { top: 7px; }
+                            &.post-type { top: 22px; }
+                        }
+                    }
+
+                    .button { 
+                        width: auto;
+                        .pull-right;
+                    }
+                }
+
+                &.ui-tabs-panel {
+                    z-index: 10;
+
+                    &.set-back {
+                        z-index: 20;
+                        #fade > .out();
+                    }
+
+                    &.loading {
+                        z-index: 99;
+                        #fade > .in();
+                    }
+
+                    /* Open panel ***/
+                    &[aria-expanded="true"] {
+                        position: relative;
+                        top: 0;
+                    }
+                }
+            }
+        }
+    }
+}

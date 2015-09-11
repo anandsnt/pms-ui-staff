@@ -28,7 +28,7 @@ sntRover.controller('overbookingAlertCtrl', ['$scope',
                 disableResizing: false,
                 contentHeight: 240,
                 weekMode: 'fixed',
-                ignoreTimezone: false, // For ignoring timezone,                 
+                ignoreTimezone: false // For ignoring timezone,
             };
 
             $scope.leftCalendarOptions = dclone(fullCalendarOptions);

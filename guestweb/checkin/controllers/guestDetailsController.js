@@ -99,7 +99,7 @@
 		//post guest details
 		$scope.postGuestDetails = function(){
 
-			if($scope.guestDetails.country_id  && $scope.guestDetails.street1  && $scope.guestDetails.street2  && $scope.guestDetails.city  && $scope.guestDetails.state && $scope.guestDetails.postal_code ){
+			if($scope.guestDetails.country_id  && $scope.guestDetails.street1 && $scope.guestDetails.city  && $scope.guestDetails.state && $scope.guestDetails.postal_code ){
 				$scope.isLoading 		= true;
 				var dataToSave 			= getDataToSave();
 				guestDetailsService.postGuestDetails(dataToSave).then(function(response) {

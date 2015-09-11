@@ -41,7 +41,10 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	  * @param {object} status of login and data
 	  */
 	 $scope.successCallback = function(data){
-
+                var params = '';
+                 if (data.redirect_url === '/kiosk'){
+                     params = '?user_credentials='+data.user_credentials;
+                 }
 	 	//Clear all session storage contents. We are starting a new session.
 	 	var i = sessionStorage.length;
 	 	while(i--) {
@@ -57,9 +60,11 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 
 	 		 $scope.hasLoader = true;
 	 		 //we need to show the animation before redirecting to the url, so introducing a timeout there
-	 		 setTimeout(function(){
-	 		 	$window.location.href = data.redirect_url;
-	 		 }, 300);
+                        setTimeout(function(){
+                                $window.location.href = data.redirect_url+params;
+                        }, 300);
+                         
+                         
 
 	 	}
 	 };

@@ -134,6 +134,40 @@ sntRover.service('RVreportsSubSrv', [
 			});
 		};
 
+		service.fetchAddonGroups = function() {
+			return callApi({
+				method  : 'getJSON',
+				url     : 'api/charge_groups',
+				resKey  : 'results'
+			});
+		};
+
+		service.fetchAddons = function (params) {
+			return callApi({
+				method  : 'postJSON',
+				url     : 'api/addons/detail',
+				params  : params,
+				resKey  : 'results'
+			});
+		};
+
+		service.fetchReservationStatus = function() {
+			return callApi({
+				method  : 'getJSON',
+				url     : 'api/reservations/status',
+				resKey  : 'reservation_status'
+			});
+		};
+
+		service.fetchAddonReservations = function(params) {
+			return callApi({
+				method : 'getJSON',
+				url    : '/api/reports/' + params.id + '/addon_reservations',
+				params : _.omit(params, 'id'),
+				resKey : 'results',
+			});
+		};
+
 		return service;
 	}
 ]);

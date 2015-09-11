@@ -81,6 +81,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.showSortBy    = true;
 			$scope.hasPagination = true;
 			$scope.isTransactionReport = false;
+			$scope.isCondensedPrint = false;
 
 			switch ( $scope.chosenReport.title ) {
 				case reportNames['IN_HOUSE_GUEST']:
@@ -143,9 +144,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportNames['DEPOSIT_REPORT']:
 				case reportNames['RATE_ADJUSTMENTS_REPORT']:
+					$scope.hasNoTotals = true;
+					$scope.isDepositReport = true;
+					break;
+
 				case reportNames['GROUP_PICKUP_REPORT']:
 					$scope.hasNoTotals = true;
 					$scope.isDepositReport = true;
+					$scope.isCondensedPrint = true;
 					break;
 
 				default:
@@ -439,6 +445,18 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.showReportHeader   = true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/comparisonStatReport/rvComparisonStatReport.html';
 					break;
+
+				case reportNames['ADDON_FORECAST']:
+					$scope.hasReportTotals  = false;
+					$scope.showReportHeader = true;
+					console.log( $scope.chosenReport.chosenGroupBy );
+					if ( 'ADDON' == $scope.chosenReport.chosenGroupBy ) {
+						$scope.detailsTemplateUrl = '/assets/partials/reports/addonForecastReport/rvAddonForecastReportByAddon.html';
+					} else {
+						$scope.detailsTemplateUrl = '/assets/partials/reports/addonForecastReport/rvAddonForecastReportByDate.html';
+					};
+					break;
+					
 
 				default:
 					$scope.hasReportTotals    = true;
@@ -791,6 +809,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['DAILY_PAYMENTS']:
 				case reportNames['FORECAST_BY_DATE']:
 				case reportNames['FORECAST_GUEST_GROUPS']:
+				case reportNames['GROUP_PICKUP_REPORT']:
 				case reportNames['MARKET_SEGMENT_STAT_REPORT']:
 					orientation = 'landscape';
 					break;

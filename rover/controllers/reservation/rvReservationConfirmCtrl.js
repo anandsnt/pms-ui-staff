@@ -215,6 +215,9 @@ sntRover.controller('RVReservationConfirmCtrl', [
 						}, onupdateSuccess, onUpdateFailure);
 					}
 				});
+				if(typeof $rootScope.searchData !== "undefined"){
+					$rootScope.searchData.guestCard.email = $scope.reservationData.guest.email;
+				};				
 
 				$rootScope.searchData.guestCard.email = $scope.reservationData.guest.email;
 

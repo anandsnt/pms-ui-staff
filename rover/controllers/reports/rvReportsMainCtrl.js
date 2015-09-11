@@ -14,6 +14,10 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
+		$scope.isVisible = false;
+        var isNotTimeOut = false;
+        var timeOut;
+
 		// set a back button, by default keep hidden
 		$rootScope.setPrevState = {
 			hide: true,
@@ -31,7 +35,6 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.heading = listTitle;
 		$scope.$emit( "updateRoverLeftMenu", "reports" );
 
-
 		$scope.reportList  = payload.reportsResponse.results;
 		$scope.reportCount = payload.reportsResponse.total_count;
 
@@ -47,7 +50,9 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.codeSettings = payload.codeSettings;
 		$scope.holdStatus   = payload.holdStatus;
 
-		console.log( $scope.holdStatus );
+		$scope.addonGroups       = payload.addonGroups;
+		$scope.addons            = payload.addons;
+		$scope.reservationStatus = payload.reservationStatus;
 
 
 		$scope.showReportDetails = false;
@@ -107,7 +112,10 @@ sntRover.controller('RVReportsMainCtrl', [
 			item_20: false,
 			item_21: false,
 			item_22: false,
-			item_23: false
+			item_23: false,
+			item_24: false,
+			item_25: false,
+			item_26: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -177,6 +185,29 @@ sntRover.controller('RVReportsMainCtrl', [
 			}
 		}, datePickerCommon);
 
+		// common from and untill date picker options
+		// with added limits to yesterday (BD - 1)
+		$scope.fromDateOptionsTillYesterday = angular.extend({
+			maxDate: function() {
+				var currentDate = new tzIndependentDate($rootScope.businessDate);				
+				currentDate.setDate(currentDate.getDate() - 1);
+				return $filter('date')(currentDate, $rootScope.dateFormat);
+			}(),
+			onSelect: function(value) {
+				$scope.untilDateOptions.minDate = value;
+			}
+		}, datePickerCommon);
+		$scope.untilDateOptionsTillYesterday = angular.extend({
+			maxDate: function() {
+				var currentDate = new tzIndependentDate($rootScope.businessDate);
+				currentDate.setDate(currentDate.getDate() - 1);
+				return $filter('date')(currentDate, $rootScope.dateFormat);
+			}(),
+			onSelect: function(value) {
+				$scope.fromDateOptions.maxDate = value;
+			}
+		}, datePickerCommon);
+
 		// from and untill date picker options
 		// with added limits to system (today) date
 		$scope.fromDateOptionsSysLimit = angular.extend({
@@ -215,6 +246,11 @@ sntRover.controller('RVReportsMainCtrl', [
 					item.chosenDueOutDepartures = false;
 				}
 			}
+		};
+
+		$scope.setTomorrowDate = function (item) {
+			item.fromDate = reportUtils.processDate().tomorrow;
+			item.untilDate = reportUtils.processDate().tomorrow;
 		};
 
 		// logic to re-show the remove date button
@@ -372,10 +408,6 @@ sntRover.controller('RVReportsMainCtrl', [
 
 
 
-
-
-
-
 		$scope.catchFauxSelectClick = function(e, currentFaux) {
 			e && e.stopPropagation();
 
@@ -387,6 +419,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				});
 			});
 		};
+
 		$scope.toggleFauxSelect = function(e, fauxDS) {
 			$timeout(function(){
 				$scope.refreshScroller('report-list-scroll');
@@ -399,39 +432,102 @@ sntRover.controller('RVReportsMainCtrl', [
 
 			fauxDS.show = !fauxDS.show;
 		};
+
 		$scope.fauxSelectChange = function(reportItem, fauxDS, allTapped) {
+			var selectedItems = getSelectedItems(reportItem, fauxDS, allTapped);
+		};
+
+		var getSelectedItems = function (reportItem, fauxDS, allTapped) {
 			var selectedItems;
 
 			if ( allTapped ) {
-				if ( fauxDS.selectAll ) {
-					fauxDS.title = 'All Selected';
-				} else {
-					fauxDS.title = fauxDS.defaultTitle;
-				};
+                if ( fauxDS.selectAll ) {
+                    fauxDS.title = 'All Selected';
+                } else {
+                    fauxDS.title = fauxDS.defaultTitle;
+                };
 
-				_.each(fauxDS.data, function(each) {
-					each.selected = fauxDS.selectAll;
-				});
-			} else {
-				selectedItems = _.where(fauxDS.data, { selected: true });
+                _.each(fauxDS.data, function(each) {
+                    each.selected = fauxDS.selectAll;
+                });
 
-				if ( selectedItems.length === 0 ) {
-					fauxDS.title = fauxDS.defaultTitle;
-				} else if ( selectedItems.length === 1 ) {
-					fauxDS.title = selectedItems[0].description || selectedItems[0].name;
-				} else if ( selectedItems.length === fauxDS.data.length ) {
-					fauxDS.selectAll = true;
-					fauxDS.title = 'All Selected';
-				} else {
-					fauxDS.selectAll = false;
-					fauxDS.title = selectedItems.length + ' Selected';
-				};
+                selectedItems = _.where(fauxDS.data, { selected: true });
+            } else {
+                selectedItems = _.where(fauxDS.data, { selected: true });
+
+                if ( selectedItems.length === 0 ) {
+                    fauxDS.title = fauxDS.defaultTitle;
+                } else if ( selectedItems.length === 1 ) {
+                    fauxDS.title = selectedItems[0].description || selectedItems[0].name || selectedItems[0].status;
+                } else if ( selectedItems.length === fauxDS.data.length ) {
+                    fauxDS.selectAll = true;
+                    fauxDS.title = 'All Selected';
+                } else {
+                    fauxDS.selectAll = false;
+                    fauxDS.title = selectedItems.length + ' Selected';
+                };
 
 				// CICO-10202
 				$scope.$emit( 'report.filter.change' );
 			};
-		};
 
+			return selectedItems;
+		}
+
+
+		$scope.toggleAddons = function () {
+            $scope.isVisible = $scope.isVisible ? false : true;
+        };
+
+        $scope.getGroupName = function (groupId) {
+        	var groupName;
+        	angular.forEach ($scope.addonGroups, function (key) {
+        		if (key.id == groupId) {
+        			groupName = key.name;
+        		}
+        	});
+        	return groupName;
+        };
+
+        $scope.getAddons = function (reportItem, fauxDS, allTapped) {
+        	var selectedItems = getSelectedItems(reportItem, fauxDS, allTapped);
+
+            if (isNotTimeOut) {
+                clearTimeout(timeOut);
+            }
+            isNotTimeOut = true;
+            timeOut = setTimeout(function () {
+                isNotTimeOut = false;
+                showAddons(reportItem, selectedItems);
+            }, 2000);
+
+            // calling the super
+            $scope.fauxSelectChange(reportItem, fauxDS);
+        };
+
+        var showAddons = function (reportItem, selectedItems) {
+            var selectedIds = [];
+
+            angular.forEach(selectedItems, function (key) {
+                selectedIds.push(key.id);
+            });
+
+            var groupIds = {
+                "addon_group_ids" : selectedIds
+            };
+
+            var sucssCallback = function (data) {
+            	reportItem.hasAddons.data = {};
+                reportItem.hasAddons.data = data;
+                $scope.$emit( 'hideLoader' );
+            };
+
+            var errorCallback = function (data) {
+                $scope.$emit( 'hideLoader' );
+            };
+
+            $scope.invokeApi(reportsSubSrv.fetchAddons, groupIds, sucssCallback, errorCallback);
+        };
 
 		function genParams (report, page, perPage) {
 			var params = {
@@ -458,7 +554,10 @@ sntRover.controller('RVReportsMainCtrl', [
 				'guarantees'   : [],
 				'chargeGroups' : [],
 				'chargeCodes'  : [],
-				'holdStatuses' : []
+				'holdStatuses' : [],
+				'addonGroups'  : [],
+				'addons'       : [],
+				'reservationStatus' : []
 			};
 
 			// include dates
@@ -642,12 +741,20 @@ sntRover.controller('RVReportsMainCtrl', [
 				} else if ( 'GROUP_NAME' === report.chosenGroupBy ) {
 					key = reportParams['GROUP_BY_GROUP_NAME'];
 				};
+
 				/**/
 				if ( !! key ) {
 					params[key]                     = true;
 					$scope.appliedFilter['groupBy'] = key.replace( 'GROUP_BY_', '' )
 														 .replace( '_', ' ' );
 				};
+
+				// patch
+				if ( 'ADDON' === report.chosenGroupBy || 'DATE' === report.chosenGroupBy ) {
+					key = reportParams['ADDON_GROUP_BY'];
+					params[key] = report.chosenGroupBy;
+					$scope.appliedFilter['groupBy'] = 'GROUP BY ' + report.chosenGroupBy;
+				}
 			};
 
 			// reset 'chosenOptions' and generate params for selected options
@@ -835,8 +942,82 @@ sntRover.controller('RVReportsMainCtrl', [
 				};
 			};
 
+			// include addon groups
+			if ( report.hasOwnProperty('hasAddonGroups') ) {
+				selected = _.where(report['hasAddonGroups']['data'], { selected: true });
+
+				if ( selected.length > 0 ) {
+					key         = reportParams['ADDONS_GROUPS_IDS'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(group) {
+						params[key].push( group.id );
+						/**/
+						$scope.appliedFilter.addonGroups.push( group.description );
+					});
+
+					// in case if all addon groups are selected
+					if ( report['hasAddonGroups']['data'].length === selected.length ) {
+						$scope.appliedFilter.addonGroups = ['All Addon Groups'];
+					};
+				};
+			};
+
+			// include addons
+			if ( report.hasOwnProperty('hasAddons') ) {
+				var addonsLength = 0;
+
+				selected = [];
+				_.each(report['hasAddons']['data'], function(each) {
+					var chosen = _.where(each['list_of_addons'], { selected: true });
+					selected   = selected.concat(chosen);
+
+					addonsLength += each['list_of_addons'].length;
+				});
+
+				if ( selected.length > 0 ) {
+					key         = reportParams['ADDONS_IDS'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(each) {
+						params[key].push( each.addon_id );
+						/**/
+						$scope.appliedFilter.addons.push( each.addon_name );
+					});
+
+					// in case if all addon groups are selected
+					if ( addonsLength === selected.length ) {
+						$scope.appliedFilter.addons = ['All Addons'];
+					};
+				};
+			};
+
+			// include addons
+			if ( report.hasOwnProperty('hasReservationStatus') ) {
+				selected = _.where(report['hasReservationStatus']['data'], { selected: true });
+
+				if ( selected.length > 0 ) {
+					key         = reportParams['RESERVATION_STATUS'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(each) {
+						params[key].push( each.id );
+						/**/
+						$scope.appliedFilter.reservationStatus.push( each.status );
+					});
+
+					// in case if all addon groups are selected
+					if ( report['hasAddons']['data'].length === selected.length ) {
+						$scope.appliedFilter.addons = ['All Addons'];
+					};
+				};
+			};
+
+
 			// need to reset the "group by" if any new filter has been applied
-			if ( !!report.groupByOptions && !!$scope.oldParams ) {
+			// Added a patch to ignore the following for addon forecast report
+			// @TODO: Fix this. May be refactor the whole logic
+			if ( !!report.groupByOptions && !!$scope.oldParams && reportNames['ADDON_FORECAST'] != report.title ) {
 				for (key in params) {
 					if ( !params.hasOwnProperty(key) ) {
 					    continue;
