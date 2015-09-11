@@ -301,7 +301,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {[type]} [description]
 		 */
 		$scope.shouldDisableHoldStatusChange = function() {
-			return ($scope.groupConfigData.summary.is_cancelled && !$scope.isInStaycardScreen());
+			return ($scope.groupConfigData.summary.is_cancelled || $scope.isInStaycardScreen());
 		};
 		/**
 		 * we have to save when the user clicked outside of summary tab
