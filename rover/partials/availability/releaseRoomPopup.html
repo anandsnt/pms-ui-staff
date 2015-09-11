@@ -4,7 +4,9 @@
 	    	<span class="icons icon-close invert"></span>
 	    </button>
 	    <span class="icons icon-popup-alert"></span>
-	    <span class="text">{{data.clickedHeldRoomDetail.Name}}, {{data.clickedHeldRoomDetail.date|date:shortMonthAndDate}}</span>
+	    <span class="text" >{{data.clickedHeldRoomDetail.Name}}&nbsp,&nbsp
+	    <span ng-bind="data.clickedHeldRoomDetail.date|date:dayInWeek"></span>
+	    {{data.clickedHeldRoomDetail.date|date:shortMonthAndDate}}</span>
 	    <span class="h2 message">Release remaining rooms for the day?</span>
 	    <button type="button" class="button red modal-close" ng-click="releaseRooms()">Release rooms</a></button>
 	    <button type="button" class="button blank modal-close" ng-click="closeDialog()">Cancel</a></button>
