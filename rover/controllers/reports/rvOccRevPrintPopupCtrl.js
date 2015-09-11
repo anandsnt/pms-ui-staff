@@ -1,4 +1,4 @@
-sntRover.controller('RVPrePrintPopupCtrl', [
+sntRover.controller('RVOccRevPrintPopupCtrl', [
 	'$rootScope',
 	'$scope',
 	'$filter',

@@ -43,7 +43,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 		};
 
 		$scope.getKeyName = function(item) {
-			return allAddonHash[$scope.getKey(item)] || id;
+			return allAddonHash[$scope.getKey(item)] || item;
 		};
 
 		$scope.toggleSub = function(item) {
@@ -197,5 +197,30 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
  				callResAPI( addon );
  			};
  		};
+
+
+
+ 		$scope.openLevel = $scope.$parent.openLevel;
+ 		var reportPrinting = $scope.$on(reportMsgs['REPORT_PRINTING'], function() {
+ 			switch( $scope.openLevel ) {
+ 				case 'DATE':
+ 					break;
+
+ 				case 'GROUP':
+ 					break;
+
+ 				case 'ADDON':
+ 					break;
+
+ 				case 'ALL':
+ 					break;
+
+ 				default:
+ 					// no-op
+ 			};
+ 		});
+
+ 		// removing event listners when scope is destroyed
+ 		$scope.$on( 'destroy', reportPrinting );
 	}
 ]);

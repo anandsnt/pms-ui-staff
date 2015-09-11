@@ -449,7 +449,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['ADDON_FORECAST']:
 					$scope.hasReportTotals  = false;
 					$scope.showReportHeader = true;
-					console.log( $scope.chosenReport.chosenGroupBy );
 					if ( 'ADDON' == $scope.chosenReport.chosenGroupBy ) {
 						$scope.detailsTemplateUrl = '/assets/partials/reports/addonForecastReport/rvAddonForecastReportByAddon.html';
 					} else {
@@ -692,14 +691,51 @@ sntRover.controller('RVReportDetailsCtrl', [
 		    $scope.genReport( false );
 		};
 
+
+
+		var $_needOccRevPreFetch = function () {
+			var allowedDateRange = 0,
+				chosenDateRange,
+				chosenVariance,
+				chosenLastYear;
+
+			// get date range
+			// READ MORE: http://stackoverflow.com/questions/3224834/get-difference-between-2-dates-in-javascript#comment-3328094
+			chosenDateRange = $scope.chosenReport.untilDate.getTime() - $scope.chosenReport.fromDate.getTime();
+			chosenDateRange = ( chosenDateRange / (1000 * 60 * 60 * 24) | 0 );
+
+			// find out the user selection choices
+			chosenVariance = $scope.chosenReport.chosenOptions['include_variance'] ? true : false;
+			chosenLastYear = $scope.chosenReport.chosenOptions['include_last_year'] ? true : false;
+
+			// fromdate <- 5 days -> untildate
+			// diff should be 4 (5 - 1), including fromdate
+			if ( chosenVariance && chosenLastYear ) {
+				allowedDateRange = 4;
+			}
+
+			// fromdate <- 10 days -> untildate
+			// diff should be 9 (10 - 1), including fromdate
+			else if ( chosenVariance || chosenLastYear ) {
+				allowedDateRange = 9;
+			}
+
+			// fromdate <- 15 days -> untildate,
+			// diff should be 14 (15 - 1), including fromdate
+			else {
+				allowedDateRange = 14;
+			};
+
+			// if the current chosen dates are within
+			// the allowedDateRange, dont show pop
+			// go straight to printing
+			// (allowedDateRange + 1) -> since we reduced it above
+			return chosenDateRange > allowedDateRange ? true : false;
+		};
 		//loads the content in the existing report view in the DOM.
 		$scope.fetchFullReport = function() {
 
-			// report scope limiter popup
-			// here we will give user another
-			// chance to limit the reports to
-			// a certain range
-			if ( $_preFetchFullReport() ) {
+			if ( reportNames['OCCUPANCY_REVENUE_SUMMARY'] == $scope.chosenReport.title && $_needOccRevPreFetch() ) {
 
 				// make a copy of the from and until dates
 				$scope.fromDateCopy = angular.copy( $scope.chosenReport.fromDate );
@@ -707,16 +743,43 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				// show popup
 				ngDialog.open({
-					controller: 'RVPrePrintPopupCtrl',
-				    template: '/assets/partials/reports/shared/rvPrePrintPopup.html',
+					controller: 'RVOccRevPrintPopupCtrl',
+				    template: '/assets/partials/reports/occupancyRevenueReport/rvOccRevPrintPopup.html',
 				    className: 'ngdialog-theme-default',
 				    closeByDocument: true,
 				    scope: $scope,
 				    data: []
 				});
+			} else if ( reportNames['ADDON_FORECAST'] == $scope.chosenReport.title ) {
+
+				if ( 'ADDON' == $scope.chosenReport.chosenGroupBy ) {
+					$scope.openLevel = 'GROUP';
+				} else {
+					$scope.openLevel = 'DATE';
+				};
+
+				// show popup
+				ngDialog.open({
+					controller: 'RVAddonForecastPrintPopupCtrl',
+					template: '/assets/partials/reports/addonForecastReport/rvAddonForecastPrintPopup.html',
+					className: 'ngdialog-theme-default',
+					closeByDocument: true,
+					scope: $scope,
+					data: []
+				});
 			} else {
 				$_fetchFullReport();
 			};
+		};
+
+		function $_fetchFullReport () {
+
+			// since we are loading the entire report and show its print preview
+			// we need to keep a back up of the original report with its pageNo
+			$scope.returnToPage = $_pageNo;
+
+			// should-we-change-view, specify-page, per-page-value
+			$scope.genReport( false, 1, 1000 );
 		};
 
 		// restore the old dates and close
@@ -732,62 +795,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$_fetchFullReport();
 		};
 
-		// determine if we need to show pre print popup
-		// currently only for 'OCCUPANCY_REVENUE_SUMMARY' report
-		function $_preFetchFullReport () {
-			var allowedDateRange = 0,
-				chosenDateRange,
-				chosenVariance,
-				chosenLastYear;
-
-			if ( $scope.chosenReport.title === reportNames['OCCUPANCY_REVENUE_SUMMARY'] ) {
-
-				// get date range
-				// READ MORE: http://stackoverflow.com/questions/3224834/get-difference-between-2-dates-in-javascript#comment-3328094
-				chosenDateRange = $scope.chosenReport.untilDate.getTime() - $scope.chosenReport.fromDate.getTime();
-				chosenDateRange = ( chosenDateRange / (1000 * 60 * 60 * 24) | 0 );
-
-				// find out the user selection choices
-				chosenVariance = $scope.chosenReport.chosenOptions['include_variance'] ? true : false;
-				chosenLastYear = $scope.chosenReport.chosenOptions['include_last_year'] ? true : false;
-
-				// fromdate <- 5 days -> untildate
-				// diff should be 4 (5 - 1), including fromdate
-				if ( chosenVariance && chosenLastYear ) {
-					allowedDateRange = 4;
-				}
-
-				// fromdate <- 10 days -> untildate
-				// diff should be 9 (10 - 1), including fromdate
-				else if ( chosenVariance || chosenLastYear ) {
-					allowedDateRange = 9;
-				}
-
-				// fromdate <- 15 days -> untildate,
-				// diff should be 14 (15 - 1), including fromdate
-				else {
-					allowedDateRange = 14;
-				};
-
-				// if the current chosen dates are within
-				// the allowedDateRange, dont show pop
-				// go straight to printing
-				// (allowedDateRange + 1) -> since we reduced it above
-				return chosenDateRange > allowedDateRange ? true : false;
-			} else {
-				return false;
-			};
-		};
-
-		function $_fetchFullReport () {
-
-			// since we are loading the entire report and show its print preview
-			// we need to keep a back up of the original report with its pageNo
-			$scope.returnToPage = $_pageNo;
-
-			// should-we-change-view, specify-page, per-page-value
-			$scope.genReport( false, 1, 1000 );
-		};
+		
 
 
 
