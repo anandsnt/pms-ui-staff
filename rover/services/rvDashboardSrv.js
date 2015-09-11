@@ -15,7 +15,6 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
 		var deferred = $q.defer();
 		var url =  '/api/rover_header_info.json';
 		RVBaseWebSrv.getJSON(url).then(function(data) {
-                    console.log('user details are here...');
                     
 		var fetchUserRolesData = function(){
 			var url = '/api/roles.json';
@@ -57,7 +56,6 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
                             for (var x in data.user_roles){
                                 role = data.user_roles[x];
                                 if (roleId == role){
-                                    console.log('detected: ',userDetails.userRoles[i].name);
                                     roles.push({'name': userDetails.userRoles[i].name, 'id':userDetails.userRoles[i].value});
                                     if (userDetails.userRoles[i].name === 'Kiosk'){
                                         userDetails.hasKioskRole = true;
