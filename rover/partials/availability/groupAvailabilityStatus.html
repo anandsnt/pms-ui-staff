@@ -31,7 +31,7 @@
 					</td>
 				</tr>				
 				<tr class="room-details main">
-					<th class="heading rows-toggle" scope="row" ng-click="togleHoldStatusVisibility('groupRoomPicked')">Group Rooms (Picked)</th> 
+					<th class="heading rows-toggle" scope="row" ng-click="togleHoldStatusVisibility('groupRoomPicked')">Group Rooms (Picked Up)</th> 
 					<td ng-repeat="groupTotalPickedUp in data.groupTotalPickedUps track by $index">
 						<div class="inner green">{{groupTotalPickedUp}}</div>
 					</td>
@@ -66,7 +66,7 @@
 				<tr class="group-details" ng-class="{'hidden':!showDropDownForGroup($index)}"> 
 					<th scope="row">Rooms Held</th>
 						<td ng-repeat="roomHeld in groupDetail.details">
-							<button type="button" class="button brand-colors" ng-click ="roomHeldButtonClicked(roomHeld)">{{roomHeld.total_blocked_rooms}}</button> <!-- Clicking this opens modals/release-rooms-group.html -->
+							<button type="button" class="button " ng-click ="roomHeldButtonClicked(roomHeld)" ng-class="{'brand-colors':roomHeld.total_blocked_rooms!=0}" ng-disabled="roomHeld.total_blocked_rooms==0">{{roomHeld.total_blocked_rooms}}</button> <!-- Clicking this opens modals/release-rooms-group.html -->
 						</td>
 				</tr>
 				<tr class="group-details" ng-class="{'hidden':!showDropDownForGroup($index)}">
