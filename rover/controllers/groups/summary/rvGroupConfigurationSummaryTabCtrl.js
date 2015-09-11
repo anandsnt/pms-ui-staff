@@ -565,14 +565,30 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				disabled: shouldDisableFromDatePicker(),
 				maxDate: $scope.groupConfigData.summary.block_to,
 				minDate: tzIndependentDate($rootScope.businessDate)
-			}, commonDateOptions);
+			}, commonDateOptions);			
+
+			if (sumryData.block_from instanceof Date) {
+				if (tzIndependentDate (sumryData.block_from) < tzIndependentDate($rootScope.businessDate)) {
+					$scope.fromDateOptions = _.extend({
+						minDate: tzIndependentDate(sumryData.block_from)
+					}, $scope.fromDateOptions);
+				}
+			}
+			
+
+
 
 			//to date options
 			$scope.toDateOptions = _.extend({
 				onSelect: toDateChoosed,
-				disabled: shouldDisableEndDatePicker(),
-				minDate: $scope.groupConfigData.summary.block_from
+				disabled: shouldDisableEndDatePicker()				
 			}, commonDateOptions);
+
+			if ($scope.groupConfigData.summary.block_from !== '') {
+				$scope.toDateOptions = _.extend({
+					minDate: tzIndependentDate($scope.groupConfigData.summary.block_from)
+				}, $scope.toDateOptions);
+			}
 
 			//release date options
 			$scope.releaseDateOptions = _.extend({
@@ -1092,7 +1108,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			//to date picker will be in disabled in move mode
 			//in order to fix the issue of keeping that state even after coming back to this
 			//tab after going to some other tab
-			setDatePickerOptions();
+			//setDatePickerOptions();
 
 			initializeChangeDateActions ();
 
