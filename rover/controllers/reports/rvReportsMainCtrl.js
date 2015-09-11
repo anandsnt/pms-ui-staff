@@ -1020,9 +1020,9 @@ sntRover.controller('RVReportsMainCtrl', [
 						$scope.appliedFilter.reservationStatus.push( each.status );
 					});
 
-					// in case if all addon groups are selected
-					if ( report['hasAddons']['data'].length === selected.length ) {
-						$scope.appliedFilter.addons = ['All Addons'];
+					// in case if all reservation status are selected
+					if ( report['hasReservationStatus']['data'].length === selected.length ) {
+						$scope.appliedFilter.reservationStatus = ['All Reservation Status'];
 					};
 				};
 			};
