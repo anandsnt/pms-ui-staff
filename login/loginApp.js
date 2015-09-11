@@ -46,9 +46,11 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
                      params = '?user_credentials='+data.user_credentials;
                      $state.isKiosk = true;
                      localStorage['isKiosk'] = true;
+                     localStorage['kioskUser'] = params;
                  } else {
                      $state.isKiosk = false;
                      localStorage['isKiosk'] = false;
+                     localStorage['kioskUser'] = '';
                  }
 	 	//Clear all session storage contents. We are starting a new session.
 	 	var i = sessionStorage.length;

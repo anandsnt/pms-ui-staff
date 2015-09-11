@@ -1,7 +1,7 @@
 sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function( $q, RVBaseWebSrv, rvBaseWebSrvV2){
 
 
-	var that = this;
+    var that = this;
     var userDetails = {}; //varibale to keep header_info.json's output
     this.dashBoardDetails = {};
     this.getUserDetails = function(){
@@ -13,7 +13,7 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
   	*/
 	this.fetchUserInfo = function(){
 		var deferred = $q.defer();
-		var url =  '/api/rover_header_info.json';
+		var url =  '/api/rover_header_info.json'+localStorage['kioskUser'];//if logged in via kiosk, require the credentials to be passed [see loginApp.js]
 		RVBaseWebSrv.getJSON(url).then(function(data) {
                     
 		var fetchUserRolesData = function(){
@@ -105,7 +105,7 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
 
 	this.fetchHotelDetails = function(){
 		var deferred = $q.defer();
-		var url = '/api/hotel_settings.json';
+		var url = '/api/hotel_settings.json'+localStorage['kioskUser'];//if logged in via kiosk, require the credentials to be passed [see loginApp.js];
 		RVBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		},function(errorMessage){
