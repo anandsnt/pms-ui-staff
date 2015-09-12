@@ -76,6 +76,7 @@ sntRover.controller('rvTabletCtrl', [
                 };
                 //$scope.invokeApi(rvTabletSrv.fetchSettings, {}, fetchCompleted);
                 setTitle();
+                    $('.root-view').addClass('kiosk');
                 
             };
             
