@@ -57,15 +57,35 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		$scope.showReportDetails = false;
 
+
+		// ctrls created for a specific reports, e.g: OccRev, may require
+		// to show a modal for user to modify the report for print.
+		// such ctrls can create 'showModal' and 'afterPrint' methods when initiating,
+		// 'DetailsCtrl' will try and call 'showModal' and 'afterPrint',
+		// before and after printing the report, allowing that ctrl to do what it
+		// wants to do before bring and remove anything after print
+		// NOTE: 'resetSelf' will be called by the 'ListCtrl', while opening a new report
+		// in which case the old and new report IDs will be different
+		$scope.printOptions = {
+			resetSelf : function () {
+				this.showModal  = undefined;
+				this.afterPrint = undefined;
+			}
+		};
+		$scope.printOptions.resetSelf();
+
+
+
 		// lets fix the results per page to, user can't edit this for now
 		// 25 is the current number set by backend server
 		$scope.resultsPerPage = 25;
 
 		$scope.goBackReportList = function() {
 			$rootScope.setPrevState.hide = true;
-			$scope.showReportDetails = false;
-			$scope.heading = listTitle;
-			$scope.showSidebar = false;
+			$scope.showReportDetails     = false;
+			$scope.heading               = listTitle;
+			$scope.showSidebar           = false;
+
 			$scope.resetFilterItemsToggle();
 
 			// tell report list controller to refresh scroll
@@ -445,7 +465,7 @@ sntRover.controller('RVReportsMainCtrl', [
                 };
 
 				// CICO-10202
-				$scope.$emit( 'report.filter.change' );
+				$scope.$emit( reportMsgs['REPORT_FILTER_CHANGED'] );
 			};
 
 			return selectedItems;

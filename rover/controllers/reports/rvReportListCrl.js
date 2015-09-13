@@ -97,6 +97,17 @@ sntRover.controller('RVReportListCrl', [
         };
 
         $scope.setnGenReport = function() {
+            var lastReportID  = reportsSrv.getChoosenReport().id,
+                mainCtrlScope = $scope.$parent;
+
+            // if the two reports are not the same, just call
+            // 'resetSelf' on printOption to clear out any method
+            // that may have been created a specific report ctrl
+            // READ MORE: rvReportsMainCtrl:L#:61-75
+            if ( lastReportID != this.item.id ) {
+                mainCtrlScope.printOptions.resetSelf();
+            };
+            
             reportsSrv.setChoosenReport( this.item );
             $scope.genReport();
         };

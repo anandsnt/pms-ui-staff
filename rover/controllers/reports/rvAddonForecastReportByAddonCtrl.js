@@ -9,7 +9,8 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 	'RVReportNamesConst',
 	'$filter',
 	'$timeout',
-	function($rootScope, $scope, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout) {
+	'ngDialog',
+	function($rootScope, $scope, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, ngDialog) {
 		
 		BaseCtrl.call(this, $scope);
 
@@ -18,11 +19,13 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 		});
 
 
-		var chosenReport = $scope.$parent.chosenReport,
-			results      = $scope.$parent.$parent.results,
-			addonGroups  = $scope.$parent.$parent.addonGroups,
-			addons       = $scope.$parent.$parent.addons,
-			allAddonHash = {};
+		var detailsCtrlScope = $scope.$parent,
+			mainCtrlScope    = detailsCtrlScope.$parent,
+			chosenReport     = detailsCtrlScope.chosenReport,
+			results          = mainCtrlScope.results,
+			addonGroups      = mainCtrlScope.addonGroups,
+			addons           = mainCtrlScope.addons,
+			allAddonHash     = {};
 
 		_.each(addonGroups, function(item) {
 			allAddonHash[item.id] = item.description;
@@ -208,5 +211,66 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  				callResAPI( eachDate );
  			};
  		};
+
+
+
+ 		mainCtrlScope.printOptions.showModal = function() {
+ 			$scope.printLevel = {};
+ 			$scope.levelValues = {
+ 				'date'  : 'DATE',
+ 				'group' : 'GROUP',
+ 				'addon' : 'ADDON',
+ 				'all'   : 'ALL'
+ 			};
+
+			$scope.printLevel.value = 'GROUP';
+
+ 			// show popup
+ 			ngDialog.open({
+ 				template: '/assets/partials/reports/addonForecastReport/rvGrpByGroupPrintPopup.html',
+ 				className: 'ngdialog-theme-default',
+ 				closeByDocument: true,
+ 				scope: $scope,
+ 				data: []
+ 			});
+		};
+
+		mainCtrlScope.printOptions.afterPrint = function() {
+			// reset show alls
+			$scope.openAddon = false;
+			$scope.openDate = false;
+			$scope.openResrv = false;
+		};
+
+		// restore the old dates and close
+		$scope.closeDialog = function() {
+			mainCtrlScope.printOptions.afterPrint();
+		    ngDialog.close();
+		};
+
+		$scope.continueWithPrint = function () {
+			switch( $scope.printLevel.value ) {
+				case 'ADDON':
+					$scope.openAddon = true;
+					break;
+
+				case 'DATE':
+					$scope.openAddon = true;
+					$scope.openDate = true;
+					break;
+
+				case 'ALL':
+					$scope.openAddon = true;
+					$scope.openDate = true;
+					$scope.openResrv = true;
+					break;
+
+				default:
+					// no-op
+			};
+
+			ngDialog.close();
+			$scope.$emit( reportMsgs['REPORT_PRE_PRINT_DONE'] );
+		};
 	}
 ]);

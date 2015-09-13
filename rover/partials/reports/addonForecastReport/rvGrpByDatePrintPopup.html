@@ -7,23 +7,23 @@
 	    <!-- Mind the ordering based on grouping by date or addon -->
 	    <div class="entry radio-check full-width">
 	        <label class="radio">
-	            <span class="icon-form icon-radio" ng-class="{ 'checked' : openLevel == values.date }"></span>
-	            <input type="radio" name="vijay" ng-model="openLevel" ng-value="values.date">
+	            <span class="icon-form icon-radio" ng-class="{ 'checked' : printLevel.value == levelValues.date }"></span>
+	            <input type="radio" name="print-option" ng-model="printLevel.value" ng-value="levelValues.date">
 	            Date
 	        </label>
 	        <label class="radio">
-	            <span class="icon-form icon-radio" ng-class="{ 'checked' : openLevel == values.group }"></span>
-	            <input type="radio" name="vijay" ng-model="openLevel" ng-value="values.group">
+	            <span class="icon-form icon-radio" ng-class="{ 'checked' : printLevel.value == levelValues.group }"></span>
+	            <input type="radio" name="print-option" ng-model="printLevel.value" ng-value="levelValues.group">
 	            Add-On Group
 	        </label>
 	        <label class="radio">
-	            <span class="icon-form icon-radio" ng-class="{ 'checked' : openLevel == values.addon }"></span>
-	            <input type="radio" name="vijay" ng-model="openLevel" ng-value="values.addon">
+	            <span class="icon-form icon-radio" ng-class="{ 'checked' : printLevel.value == levelValues.addon }"></span>
+	            <input type="radio" name="print-option" ng-model="printLevel.value" ng-value="levelValues.addon">
 	            Add-On
 	            </label>
 	        <label class="radio">
-	            <span class="icon-form icon-radio" ng-class="{ 'checked' : openLevel == values.all }"></span>
-	            <input type="radio" name="vijay" ng-model="openLevel" ng-value="values.all">
+	            <span class="icon-form icon-radio" ng-class="{ 'checked' : printLevel.value == levelValues.all }"></span>
+	            <input type="radio" name="print-option" ng-model="printLevel.value" ng-value="levelValues.all">
 	            Everything
 	        </label>     
 	    </div>
