@@ -110,36 +110,17 @@ angular.module('tabletKioskModule', [])
             templateUrl: '/assets/partials/tablet/kiosk/specific/select-keys-after-checkin.html',
         });
         
-        
-        
-        
-        /*
-        //check-in find reservation
-        $stateProvider.state('rover.kiosk.reservation', {
-            url: '/tabletview',
-            templateUrl: '/assets/partials/tablet/kiosk/specific/find-reservation.html',
-            controller: 'rvTabletCtrl'
+        //pick up key [ home screen ]
+        $stateProvider.state('rover.tab-kiosk-pickup-key', {
+            url: '/kiosk',
+            templateUrl: '/assets/partials/tablet/kiosk/specific/select-keys-after-checkin.html',
         });
-        //kiosk-admin
-        $stateProvider.state('rover.tab-kiosk-admin', {
-            url: '/tabletview',
-            templateUrl: '/assets/partials/tablet/kiosk/specific/login.html',
-            controller: 'rvTabletCtrl'
+        
+        //pick up key [ home screen ]
+        $stateProvider.state('rover.tab-kiosk-input-last', {
+            url: '/kiosk',
+            templateUrl: '/assets/partials/tablet/kiosk/generic/input-text.html',
         });
         
         
-        //check-in [ email ]
-        $stateProvider.state('rover.tab-kiosk-checkin-email', {
-            url: '/tabletview',
-            templateUrl: '/assets/partials/tablet/kiosk/specific/find-reservation.html',
-            controller: 'rvTabletCtrl'
-        });
-        //check-in [ confirmation ]
-        $stateProvider.state('rover.tab-kiosk-checkin-confirmation', {
-            url: '/tabletview',
-            templateUrl: '/assets/partials/tablet/kiosk/specific/find-reservation.html',
-            controller: 'rvTabletCtrl'
-        });
-        
-        */
 }]);

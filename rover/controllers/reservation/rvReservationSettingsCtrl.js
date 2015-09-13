@@ -40,6 +40,12 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
 
         $scope.refreshScroll = function() {
             $scope.refreshScroller('reservation-settings');
+            if (!!$scope.myScroll && !!$scope.myScroll['reservation-settings']) { // Hack for scroller issue. -- till a better solution is found!
+                $timeout(function() {
+                    $scope.myScroll['reservation-settings'].refresh();
+                }, 300);
+
+            }
         };
 
         $scope.arrivalDateOptions = {

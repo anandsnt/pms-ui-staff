@@ -1,4 +1,4 @@
-<section id="main" class="centered" role="main" ng-hide='at !== "select-keys"' ng-click='resetTime()'>
+<section id="main" class="centered" role="main" ng-hide='at !== "select-keys"' click-touch='resetTime()'>
         <div id="content">
             <h2 class="no-margin">Congratulations {{selectedReservation.guest_details[0].first_name}}.</h2>
             <h1>You are now officially checked in to room:</h1>
@@ -8,8 +8,8 @@
             <div id="keys">
                 <h2>How many keys do you need?</h2>
                 <div id="key-options">
-                    <button type="button" class="button" ng-click="goToScreen($event, 'make-keys')">1</button>
-                    <button type="button" class="button" ng-click="goToScreen($event, 'make-keys')">2</button>
+                    <button type="button" class="button" click-touch="goToScreen($event, 'make-keys')">1</button>
+                    <button type="button" class="button" click-touch="goToScreen($event, 'make-keys')">2</button>
                 </div>
             </div>
             <div id="actions" class="align-left small-text">

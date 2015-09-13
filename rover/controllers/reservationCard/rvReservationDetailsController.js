@@ -623,7 +623,18 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 										houseFull: !houseAvailable,
 										roomTypeId: reservationMainData.tabs[0].roomTypeId,
 										arrivalDate: reservationMainData.arrivalDate,
-										departureDate: reservationMainData.departureDate
+										departureDate: reservationMainData.departureDate,
+										isRoomAvailable: function() {
+											return _.reduce(roomtypesAvailable, function(a, b) {
+												return a && b
+											});
+										}(),
+										activeView: function() {
+											if (!houseAvailable) {
+												return 'HOUSE'
+											}
+											return 'ROOM'
+										}()
 									})
 								});
 							}, 1000);
@@ -881,7 +892,18 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 									houseFull: !houseAvailable,
 									roomTypeId: reservationMainData.tabs[0].roomTypeId,
 									arrivalDate: $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
-									departureDate: $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd')
+									departureDate: $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd'),
+									isRoomAvailable: function() {
+										return _.reduce(roomtypesAvailable, function(a, b) {
+											return a && b
+										});
+									}(),
+									activeView: function() {
+										if (!houseAvailable) {
+											return 'HOUSE'
+										}
+										return 'ROOM'
+									}()
 								})
 							});
 						}, 1000);
@@ -893,7 +915,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				);
 			}
 			$scope.closeDialog();
-		};		
+		};
 
 		$scope.changeStayDates = function() {
 			var newArrivalDate = $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd');

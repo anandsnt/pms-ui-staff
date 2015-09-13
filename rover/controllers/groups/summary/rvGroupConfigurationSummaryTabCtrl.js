@@ -264,6 +264,46 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		};
 
 		/**
+		 * [shouldShowMoveButton description]
+		 * @return {[type]} [description]
+		 */
+		$scope.shouldShowMoveButton = function() {
+			if ($scope.isInStaycardScreen()) {
+				return false;
+			}
+			return ($scope.changeDatesActions && $scope.changeDatesActions.shouldShowMoveButton());
+		};
+
+		/**
+		 * [shouldShowMoveButton description]
+		 * @return {[type]} [description]
+		 */
+		$scope.shouldShowMoveCancelButton = function() {
+			if ($scope.isInStaycardScreen()) {
+				return false;
+			}
+			return ($scope.changeDatesActions && $scope.changeDatesActions.isInCompleteMoveMode());
+		};
+
+		/**
+		 * [shouldShowMoveButton description]
+		 * @return {[type]} [description]
+		 */
+		$scope.shouldShowMoveSaveButton = function() {
+			if ($scope.isInStaycardScreen()) {
+				return false;
+			}
+			return ($scope.changeDatesActions &&  $scope.changeDatesActions.isInCompleteMoveMode());
+		};
+
+		/**
+		 * [shouldDisableHoldStatusChange description]
+		 * @return {[type]} [description]
+		 */
+		$scope.shouldDisableHoldStatusChange = function() {
+			return ($scope.groupConfigData.summary.is_cancelled || $scope.isInStaycardScreen());
+		};
+		/**
 		 * we have to save when the user clicked outside of summary tab
 		 * @param  {Object} event - Angular Event
 		 * @param  {Object} data  - the clicked element
@@ -467,7 +507,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				is_A_PastGroup 			= sData.is_a_past_group,
 				inEditMode 				= !$scope.isInAddMode();
 			
-			return ( inEditMode &&  
+			return ($scope.isInStaycardScreen()) || ( inEditMode &&  
 				   	( 
 				   	  noOfInhouseIsNotZero 	|| 
 					  cancelledGroup 		|| 
@@ -487,7 +527,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				toRightMoveNotAllowed 	= !sData.is_to_date_right_move_allowed,
 				inEditMode 				= !$scope.isInAddMode();
 
-			return ( inEditMode &&  
+			return ($scope.isInStaycardScreen()) || ( inEditMode &&  
 				   	( 
 				   	 endDateHasPassed 	|| 
 					 cancelledGroup 	||  
@@ -501,7 +541,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {Boolean} [description]
 		 */
 		var shouldDisableReleaseDatePicker = function(){
-			return $scope.groupConfigData.summary.is_cancelled;
+			return ($scope.isInStaycardScreen() || $scope.groupConfigData.summary.is_cancelled);
 		};
 
 		/**
@@ -780,7 +820,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		$scope.viewAddons = function() {
 			var onFetchAddonSuccess = function(data) {
 					$scope.groupConfigData.selectedAddons = data;
-					if ($scope.groupConfigData.selectedAddons.length > 0) {
+					if ($scope.groupConfigData.selectedAddons.length > 0 || $scope.isInStaycardScreen ()) {
 						$scope.openAddonsPopup();
 					} else {
 						$scope.manageAddons();
@@ -1052,10 +1092,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			//to date picker will be in disabled in move mode
 			//in order to fix the issue of keeping that state even after coming back to this
 			//tab after going to some other tab
-			_.extend($scope.toDateOptions, 
-			{
-				disabled: shouldDisableEndDatePicker()
-			});			
+			setDatePickerOptions();
 
 			initializeChangeDateActions ();
 
@@ -1115,6 +1152,15 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		var setActiveLeftSideMenu = function () {
 			var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup": "menuManageGroup";
 			$scope.$emit("updateRoverLeftMenu", activeMenu);
+		};
+
+		/**
+		 * [isInStaycardScreen description]
+		 * @return {Boolean} [description]
+		 */
+		$scope.isInStaycardScreen = function() {
+			var sumData = $scope.groupConfigData;
+			return  ('activeScreen' in sumData && sumData.activeScreen === 'STAY_CARD');
 		};
 
 		/**

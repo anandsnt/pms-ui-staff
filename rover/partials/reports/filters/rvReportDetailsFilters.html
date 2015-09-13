@@ -96,18 +96,20 @@
             <div class="entry date-range">
                 <label for="arrival-range-from">From</label>
                 <div class="has-datepicker">
-                    <input ng-if="chosenReport.hasDateLimit && !chosenReport.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
+                    <input ng-if="chosenReport.hasPrevDateLimit && !chosenReport.hasDateLimit && !chosenReport.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsTillYesterday" ng-model="chosenReport.fromDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
+                    <input ng-if="!chosenReport.hasPrevDateLimit && chosenReport.hasDateLimit && !chosenReport.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
                     <input ng-if="chosenReport.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsSysLimit" ng-model="chosenReport.fromDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
-                    <input ng-if="!chosenReport.hasDateLimit && !chosenReport.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="chosenReport.fromDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
+                    <input ng-if="!chosenReport.hasPrevDateLimit && !chosenReport.hasDateLimit && !chosenReport.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="chosenReport.fromDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
                     <button ng-if="chosenReport.canRemoveDate" ng-class="{'visible': chosenReport.hasDateFilter.showRemove}" class="clear-query">
                         <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'hasDateFilter')">Clear query</span>
                     </button>
                 </div>
                 <label for="arrival-range-to">To</label>
                 <div class="has-datepicker">
-                    <input ng-if="chosenReport.hasDateLimit && !chosenReport.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilDate"  ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
+                    <input ng-if="chosenReport.hasPrevDateLimit && !chosenReport.hasDateLimit && !chosenReport.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsTillYesterday" ng-model="chosenReport.untilDate"  ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
+                    <input ng-if="!chosenReport.hasPrevDateLimit && chosenReport.hasDateLimit && !chosenReport.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilDate"  ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
                     <input ng-if="chosenReport.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsSysLimit" ng-model="chosenReport.untilDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
-                    <input ng-if="!chosenReport.hasDateLimit && !chosenReport.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.untilDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
+                    <input ng-if="!chosenReport.hasPrevDateLimit && !chosenReport.hasDateLimit && !chosenReport.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.untilDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
                     <button ng-if="chosenReport.canRemoveDate" ng-class="{'visible': chosenReport.hasDateFilter.showRemove}" class="clear-query">
                         <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'hasDateFilter')">Clear query</span>
                     </button>

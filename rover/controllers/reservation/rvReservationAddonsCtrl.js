@@ -294,10 +294,21 @@ sntRover.controller('RVReservationAddonsCtrl', [
 
         $scope.proceed = function() {
             $scope.closePopup();
-            if ($stateParams.reservation === "HOURLY" || $scope.viewState.currentTab === $scope.reservationData.tabs.length - 1) {
+            var allRatesSelected = _.reduce(_.pluck($scope.reservationData.rooms, 'rateId'), function(a, b) {
+                return !!a && !!b
+            });
+            if ($stateParams.reservation === "HOURLY" || allRatesSelected) {
                 goToSummaryAndConfirm();
             } else {
-                $scope.viewState.currentTab++;
+                var roomIndexWithoutRate = _.findIndex($scope.reservationData.rooms, {
+                    rateId: ""
+                });
+
+                var tabIndexWithoutRate = _.findIndex($scope.reservationData.tabs, {
+                    roomTypeId: $scope.reservationData.rooms[roomIndexWithoutRate].roomTypeId
+                });
+
+                $scope.viewState.currentTab = tabIndexWithoutRate;
                 $state.go('rover.reservation.staycard.mainCard.roomType', {
                     from_date: $scope.reservationData.arrivalDate,
                     to_date: $scope.reservationData.departureDate,

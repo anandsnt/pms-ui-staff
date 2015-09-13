@@ -258,6 +258,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		};
 
 		$scope.getTabTitle = function(tabIndex) {
+			if (tabIndex >= $scope.reservationData.tabs.length) {
+				return "INVALID TAB";
+			}
 			var roomDetail = getTabRoomDetails(tabIndex);
 			if (roomDetail.firstIndex === roomDetail.lastIndex) {
 				return "ROOM " + (roomDetail.firstIndex + 1);
@@ -544,6 +547,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 							"to_date": $scope.reservationData.departureDate
 						});
 					} else {
+						$scope.computeTotalStayCost();
 						$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm');
 					}
 				}
@@ -555,14 +559,28 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					"to_date": $scope.reservationData.departureDate
 				});
 			} else {
-				if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id && !$scope.reservationData.group.id) {
-					$scope.$emit('PROMPTCARD');
-					$scope.$watch("reservationData.guest.id", navigate);
-					$scope.$watch("reservationData.company.id", navigate);
-					$scope.$watch("reservationData.travelAgent.id", navigate);
+				var allRatesSelected = _.reduce(_.pluck($scope.reservationData.rooms, 'rateId'), function(a, b) {
+					return !!a && !!b
+				});
+				if (allRatesSelected) {
+					if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id && !$scope.reservationData.group.id) {
+						$scope.$emit('PROMPTCARD');
+						$scope.$watch("reservationData.guest.id", navigate);
+						$scope.$watch("reservationData.company.id", navigate);
+						$scope.$watch("reservationData.travelAgent.id", navigate);
+					} else {
+						navigate();
+					}
 				} else {
-					navigate();
+					var roomIndexWithoutRate = _.findIndex($scope.reservationData.rooms, {
+						rateId: ""
+					});
+					var tabIndexWithoutRate = _.findIndex($scope.reservationData.tabs, {
+						roomTypeId: $scope.reservationData.rooms[roomIndexWithoutRate].roomTypeId
+					});
+					$scope.changeActiveRoomType(tabIndexWithoutRate || 0);
 				}
+
 			}
 
 		}
@@ -720,7 +738,14 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 								closeByEscape: false,
 								data: JSON.stringify({
 									houseFull: (leastHouseAvailability < 1),
-									roomTypeId: roomId
+									roomTypeId: roomId,
+									isRoomAvailable: (leastRoomTypeAvailability > 0),									
+									activeView: function(){
+										if(leastHouseAvailability < 1){
+											return 'HOUSE'
+										}
+										return 'ROOM'
+									}()
 								})
 							});
 						});
@@ -1549,6 +1574,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				init();
 			});
 
+			$scope.$on('TABS_MODIFIED', function() {
+				init();
+			});
+
 			$scope.$on('resetGuestTab', function() {
 				$scope.invokeApi(RVReservationBaseSearchSrv.fetchUserMemberships, $scope.reservationDetails.guestCard.id, function(data) {
 					$scope.$emit('hideLoader');
@@ -1703,6 +1732,15 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			}
 			$scope.filterRooms($event);
 			$scope.resetRates();
+		};
+
+		$scope.changeActiveRoomType = function(tabIndex) {
+			if ($scope.stateCheck.stayDatesMode) {
+				return false;
+			}
+			$scope.activeRoom = tabIndex;
+			$scope.viewState.currentTab = tabIndex;
+			init();
 		};
 
 	}

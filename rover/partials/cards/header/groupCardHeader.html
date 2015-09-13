@@ -1,7 +1,7 @@
 <div id="group-card-header" class="card-header" ng-class="UICardClass('group-card')" ng-controller="RVGroupCardCtrl" ng-show="isStandAlone" outside-click-handler>
     <section ng-if="!searchMode">
         <div class="guest-image icons icon-group-large" ng-click="switchCard('group-card')"></div>
-        <form name="edit-group" id="new-group">
+        <form name="edit-group" id="new-group" class="dual-actions">
             <div class="holder">
                 <div class="entry">
                     <input id="group-name" placeholder="" value="{{groupConfigData.summary.group_name}}" type="text" class="masked-input h1" />
@@ -19,8 +19,8 @@
             <!-- Add class "dual-actions" if in Stay Card/Create Reservation screens -->
             <button type="button" class="button blue" ng-hide="true">Duplicate</button>
             <!-- If in Stay Card or Create Reservation, show these instead: -->
-            <button type="button" class="button brand-colors dual-actions" ng-click="gotoGroupDetails()">Group Details</button>
-            <button type="button" class="button red dual-actions" ng-click="removeGroupCard()">Remove Group</button>
+            <button type="button" class="button brand-colors" ng-click="gotoGroupDetails()">Group Details</button>
+            <button type="button" class="button red" ng-click="removeGroupCard()">Remove Group</button>
         </div>
     </section>
     <section section ng-if="searchMode">

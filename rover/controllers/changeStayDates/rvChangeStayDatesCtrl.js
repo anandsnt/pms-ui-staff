@@ -732,7 +732,18 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 							closeByEscape: false,
 							data: JSON.stringify({
 								houseFull: !houseAvailable,
-								roomTypeId: $scope.reservationData.tabs[0].roomTypeId
+								roomTypeId: $scope.reservationData.tabs[0].roomTypeId,
+								isRoomAvailable: function() {
+									return _.reduce(roomtypesAvailable, function(a, b) {
+										return a && b
+									});
+								}(),
+								activeView: function() {
+									if (!houseAvailable) {
+										return 'HOUSE'
+									}
+									return 'ROOM'
+								}()
 							})
 						});
 					}

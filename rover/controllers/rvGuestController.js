@@ -353,7 +353,7 @@ sntRover.controller('guestCardController', [
 		$scope.UICards = ['guest-card', 'company-card', 'travel-agent-card', 'group-card', 'allotment-card'];
 
 		// className based on UICards index
-		var subCls = ['first', 'second', 'third', 'fourth', 'fourth'];
+		var subCls = ['first', 'second', 'third', 'fourth', 'fifth'];
 
 		$scope.UICardClass = function(from) {
 			// based on from (guest-card, company-card || travel-agent-card)
@@ -1225,7 +1225,7 @@ sntRover.controller('guestCardController', [
 		 * @param  {Object} success data from API
 		 * @return {undefined}
 		 */
-		var successCallBackOfAttachGroupToReservation = function(data, successCallBackParams) {
+		var successCallBackOfAttachAllotmentToReservation = function(data, successCallBackParams) {
 			var selectedGroup = successCallBackParams.selectedGroup;
 
 			//updating the central reservation data model

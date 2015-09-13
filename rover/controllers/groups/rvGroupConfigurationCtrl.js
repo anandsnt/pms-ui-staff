@@ -750,7 +750,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 holdStatusList: holdStatusList.data.hold_status,
                 selectAddons: false, // To be set to true while showing addons full view
                 addons: {},
-                selectedAddons: []
+                selectedAddons: [],
+                activeScreen: 'GROUP_ACTUAL'
             };
             $timeout(function() {
                 $scope.groupSummaryMemento = angular.copy($scope.groupConfigData.summary);
@@ -1120,7 +1121,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
         }
 
         $scope.updateAndBack = function() {
-            if ($scope.groupConfigData.activeTab === "SUMMARY") {
+            if (!$scope.isInAddMode() && $scope.groupConfigData.activeTab === "SUMMARY") {
                 $scope.updateGroupSummary();
             } else if ($scope.groupConfigData.activeTab === "ACCOUNT") {
                 $scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
@@ -1131,7 +1132,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
         /**
          * function to set Back Navigation params
          */
-        var setBackNavigation = function() {
+        var setBackNavigation = function() {            
             $rootScope.setPrevState = {
                 title: $filter('translate')('GROUPS'),
                 callback: 'updateAndBack',

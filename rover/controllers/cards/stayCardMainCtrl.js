@@ -119,25 +119,83 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			}
 		};
 
-		$scope.initGroupCard = function(groupId) {
-			$scope.invokeApi(rvGroupConfigurationSrv.getGroupSummary, {
-				groupId: groupId
-			}, function(response) {
-				$scope.$emit("hideLoader");
-				$scope.groupConfigData = {
-					activeTab: 'SUMMARY', // Possible values are SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY
-					summary: response.groupSummary,
-					// holdStatusList: holdStatusList.data.hold_status,
-					selectAddons: false, // To be set to true while showing addons full view
-					addons: {},
-					selectedAddons: []
-				};				
-				$scope.$broadcast('groupCardAvailable');
-				$scope.$broadcast('groupSummaryDataChanged', $scope.groupConfigData);
-			}, function(errorMessage) {
-				$scope.$emit("hideLoader");
-				$scope.errorMessage = errorMessage;
+		/**
+		 * [successCallbackOfGroupDetailsFetch description]
+		 * @return {[type]} [description]
+		 */
+		var successCallbackOfGroupDetailsFetch = function(response) {
+			_.extend($scope.groupConfigData, 
+			{
+				activeTab: 'SUMMARY', // Possible values are SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY
+				summary: response.groupSummary,
+				selectAddons: false, // To be set to true while showing addons full view
+				addons: {},
+				selectedAddons: []					
 			});
+		};
+
+		/**
+		 * [successCallBackOfGroupHoldListFetch description]
+		 * @param  {[type]} holdStatusList [description]
+		 * @return {[type]}                [description]
+		 */
+		var successCallBackOfGroupHoldListFetch = function(holdStatusList)  {
+			_.extend($scope.groupConfigData, 
+			{
+				holdStatusList: holdStatusList.data.hold_status
+			});
+		};
+
+		/**
+		 * [successFetchOfAllReqdForGroupDetailsShowing description]
+		 * @param  {[type]} data [description]
+		 * @return {[type]}      [description]
+		 */
+		var successFetchOfAllReqdForGroupDetailsShowing = function(data) {
+			$scope.$broadcast('groupCardAvailable');
+			$scope.$broadcast('groupSummaryDataChanged', $scope.groupConfigData);
+			$scope.$emit("hideLoader");
+		};
+
+		/**
+		 * [failedToFetchOfAllReqdForGroupDetailsShowing description]
+		 * @return {[type]} [description]
+		 */
+		var failedToFetchOfAllReqdForGroupDetailsShowing = function() {
+			$scope.errorMessage = errorMessage;
+			$scope.$emit("hideLoader");
+		};
+
+		$scope.initGroupCard = function(groupId) {
+            var promises = [];
+            //we are not using our normal API calling since we have multiple API calls needed
+            $scope.$emit('showLoader');
+
+            $scope.groupConfigData = { 
+            	activeScreen: 'STAY_CARD'
+            };
+
+            //group details fetch
+            var paramsForGroupDetails = {
+                groupId: groupId
+            };
+            promises.push(rvGroupConfigurationSrv
+                .getGroupSummary(paramsForGroupDetails)
+                .then(successCallbackOfGroupDetailsFetch)
+            );
+
+            //reservation list fetch
+            var paramsForHoldListFetch = {
+            	is_group: true
+            };
+            promises.push(rvGroupConfigurationSrv
+                .getHoldStatusList(paramsForHoldListFetch)
+                .then(successCallBackOfGroupHoldListFetch)
+            );
+
+            //Lets start the processing
+            $q.all(promises)
+                .then(successFetchOfAllReqdForGroupDetailsShowing, failedToFetchOfAllReqdForGroupDetailsShowing);
 		};
 
 		// fetch reservation company card details
