@@ -27,7 +27,12 @@ sntRover.controller('overbookingAlertCtrl', ['$scope',
                         dayAvailabilityToDisplay = dailyStat.room_types[$scope.ngDialogData.roomTypeId];
                     }
                     var eventData = {
-                        day: new tzIndependentDate(dailyStat.date).getDate().toString(),
+                        day: (function() {
+                            if (dailyStat.date === arrivalDateString || dailyStat.date === departureDateString) {
+                                return new tzIndependentDate(dailyStat.date).getDate().toString();
+                            }
+                            return "";
+                        })(),
                         className: (function() {
                             var classes = "";
                             if (dailyStat.date === arrivalDateString) {
