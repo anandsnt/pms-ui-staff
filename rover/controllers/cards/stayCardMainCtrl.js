@@ -161,7 +161,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		 * [failedToFetchOfAllReqdForGroupDetailsShowing description]
 		 * @return {[type]} [description]
 		 */
-		var failedToFetchOfAllReqdForGroupDetailsShowing = function() {
+		var failedToFetchOfAllReqdForGroupDetailsShowing = function(errorMessage) {
 			$scope.errorMessage = errorMessage;
 			$scope.$emit("hideLoader");
 		};
@@ -284,6 +284,25 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 		});
 
+		/**
+		 * if we wanted to reload particular staycard details
+		 * @return {undeifned} [description]
+		 */
+		$scope.reloadTheStaycard = function (){
+			$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+					"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
+					"confirmationId": $stateParams.confirmationId,
+					"isrefresh": false
+			});
+		};
+
+		/**
+		 * if current screen is in staycard
+		 * @return {Boolean} [description]
+		 */
+		$scope.isInStayCardScreen = function () {
+			return ($scope.viewState.identifier === "STAY_CARD");
+		};
 		$scope.removeCard = function(card, future) {
 			// This method returns the numnber of cards attached to the staycard
 			var checkNumber = function() {
