@@ -269,7 +269,6 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     noInHouseReservationExist   = (parseInt(sumryData.total_checked_in_reservations) === 0);
 
                 return (roomBlockExist &&
-                        noInHouseReservationExist &&
                         sumryData.is_to_date_left_move_allowed);
             };
 
@@ -283,7 +282,6 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     noInHouseReservationExist   = (parseInt(sumryData.total_checked_in_reservations) === 0);
 
                 return (roomBlockExist &&
-                        noInHouseReservationExist &&
                         sumryData.is_to_date_right_move_allowed);
             };
 
@@ -405,7 +403,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              */
             $scope.cancelChangeDatesAction = function() {
                 $scope.closeDialog ();
-                lastCancelCallback();
+                if (lastCancelCallback)
+                    lastCancelCallback();
              };
 
             /**
@@ -492,15 +491,15 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                             750);
                             break;
                         default:
-                            $scope.errorMessage = error.errors;
-                            lastFailureCallback (error.errors);
+                            $scope.errorMessage = error;
+                            lastFailureCallback (error);
                             break;
                     }
                 }
 
                 else {
-                    $scope.errorMessage = error.errors;
-                    lastFailureCallback (error.errors);
+                    $scope.errorMessage = error;
+                    lastFailureCallback (error);
                 }
             };
 
@@ -634,15 +633,15 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                             750);
                             break;
                         default:
-                            $scope.errorMessage = error.errors;
-                            lastFailureCallback (error.errors);
+                            $scope.errorMessage = error;
+                            lastFailureCallback (error);
                             break;
                     }
                 }
 
                 else {
-                    $scope.errorMessage = error.errors;
-                    lastFailureCallback (error.errors);
+                    $scope.errorMessage = error;
+                    lastFailureCallback (error);
                 }
             };
 
@@ -751,7 +750,8 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 holdStatusList: holdStatusList.data.hold_status,
                 selectAddons: false, // To be set to true while showing addons full view
                 addons: {},
-                selectedAddons: []
+                selectedAddons: [],
+                activeScreen: 'GROUP_ACTUAL'
             };
             $timeout(function() {
                 $scope.groupSummaryMemento = angular.copy($scope.groupConfigData.summary);
@@ -1121,7 +1121,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
         }
 
         $scope.updateAndBack = function() {
-            if ($scope.groupConfigData.activeTab === "SUMMARY") {
+            if (!$scope.isInAddMode() && $scope.groupConfigData.activeTab === "SUMMARY") {
                 $scope.updateGroupSummary();
             } else if ($scope.groupConfigData.activeTab === "ACCOUNT") {
                 $scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
@@ -1132,7 +1132,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
         /**
          * function to set Back Navigation params
          */
-        var setBackNavigation = function() {
+        var setBackNavigation = function() {            
             $rootScope.setPrevState = {
                 title: $filter('translate')('GROUPS'),
                 callback: 'updateAndBack',

@@ -62,6 +62,22 @@ sntRover.controller('RVReportsMainCtrl', [
 			addonsCount += each.list_of_addons.length;
 		});
 
+		// ctrls created for a specific reports, e.g: OccRev, may require
+		// to show a modal for user to modify the report for print.
+		// such ctrls can create 'showModal' and 'afterPrint' methods when initiating,
+		// 'DetailsCtrl' will try and call 'showModal' and 'afterPrint',
+		// before and after printing the report, allowing that ctrl to do what it
+		// wants to do before bring and remove anything after print
+		// NOTE: 'resetSelf' will be called by the 'ListCtrl', while opening a new report
+		// in which case the old and new report IDs will be different
+		$scope.printOptions = {
+			resetSelf : function () {
+				this.showModal  = undefined;
+				this.afterPrint = undefined;
+			}
+		};
+		$scope.printOptions.resetSelf();
+
 
 		// lets fix the results per page to, user can't edit this for now
 		// 25 is the current number set by backend server
@@ -69,9 +85,10 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		$scope.goBackReportList = function() {
 			$rootScope.setPrevState.hide = true;
-			$scope.showReportDetails = false;
-			$scope.heading = listTitle;
-			$scope.showSidebar = false;
+			$scope.showReportDetails     = false;
+			$scope.heading               = listTitle;
+			$scope.showSidebar           = false;
+
 			$scope.resetFilterItemsToggle();
 
 			// tell report list controller to refresh scroll
@@ -186,6 +203,29 @@ sntRover.controller('RVReportsMainCtrl', [
 		}, datePickerCommon);
 		$scope.untilDateOptions = angular.extend({
 			maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+			onSelect: function(value) {
+				$scope.fromDateOptions.maxDate = value;
+			}
+		}, datePickerCommon);
+
+		// common from and untill date picker options
+		// with added limits to yesterday (BD - 1)
+		$scope.fromDateOptionsTillYesterday = angular.extend({
+			maxDate: function() {
+				var currentDate = new tzIndependentDate($rootScope.businessDate);				
+				currentDate.setDate(currentDate.getDate() - 1);
+				return $filter('date')(currentDate, $rootScope.dateFormat);
+			}(),
+			onSelect: function(value) {
+				$scope.untilDateOptions.minDate = value;
+			}
+		}, datePickerCommon);
+		$scope.untilDateOptionsTillYesterday = angular.extend({
+			maxDate: function() {
+				var currentDate = new tzIndependentDate($rootScope.businessDate);
+				currentDate.setDate(currentDate.getDate() - 1);
+				return $filter('date')(currentDate, $rootScope.dateFormat);
+			}(),
 			onSelect: function(value) {
 				$scope.fromDateOptions.maxDate = value;
 			}
@@ -451,7 +491,7 @@ sntRover.controller('RVReportsMainCtrl', [
                 };
 
 				// CICO-10202
-				$scope.$emit( 'report.filter.change' );
+				$scope.$emit( reportMsgs['REPORT_FILTER_CHANGED'] );
 			};
 
 			return selectedItems;
@@ -1029,7 +1069,9 @@ sntRover.controller('RVReportsMainCtrl', [
 
 
 			// need to reset the "group by" if any new filter has been applied
-			if ( !!report.groupByOptions && !!$scope.oldParams ) {
+			// Added a patch to ignore the following for addon forecast report
+			// @TODO: Fix this. May be refactor the whole logic
+			if ( !!report.groupByOptions && !!$scope.oldParams && reportNames['ADDON_FORECAST'] != report.title ) {
 				for (key in params) {
 					if ( !params.hasOwnProperty(key) ) {
 					    continue;

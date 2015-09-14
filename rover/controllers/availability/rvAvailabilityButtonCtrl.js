@@ -62,8 +62,8 @@ sntRover.controller('rvAvailabilityButtonController', [
 			return "";
 		};
 
-
-
-
+		$scope.$on('CLOSE_AVAILIBILTY_SLIDER', function(event) {
+			$scope.clickedOnAvailabilityButton(null);
+		});
 	}
 ]);

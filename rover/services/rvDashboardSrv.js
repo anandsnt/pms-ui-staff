@@ -1,7 +1,7 @@
 sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function( $q, RVBaseWebSrv, rvBaseWebSrvV2){
 
 
-	var that = this;
+    var that = this;
     var userDetails = {}; //varibale to keep header_info.json's output
     this.dashBoardDetails = {};
     this.getUserDetails = function(){
@@ -13,15 +13,68 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
   	*/
 	this.fetchUserInfo = function(){
 		var deferred = $q.defer();
-		var url =  '/api/rover_header_info.json';
+		var url =  '/api/rover_header_info.json'+localStorage['kioskUser'];//if logged in via kiosk, require the credentials to be passed [see loginApp.js]
 		RVBaseWebSrv.getJSON(url).then(function(data) {
-			userDetails = data;
+                    
+		var fetchUserRolesData = function(){
+			var url = '/api/roles.json';
+
+			rvBaseWebSrvV2.getJSON(url).then(function(data) {
+				userDetails.userRoles = data.user_roles;
+			    deferred.resolve(userDetails.userRolesData);
+                            
+                            
+			},function(data){
+			    deferred.reject(data);
+			});
+			return deferred.promise;
+		};
+                
+                
+                
+		userDetails = data;
+                fetchUserRolesData();//needed to detect kiosk role until included in userRoleDetails (future sprint)
+                
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);
 		});
 		return deferred.promise;
 	};
+        
+        
+        this.getUserRole = function(id, $scope){
+            var deferred = $q.defer();
+            var url = '/admin/users/'+id+'/edit.json';
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                var roles = [], role, roleId;
+                userDetails.hasKioskRole = false;
+                if (userDetails.userRoles){
+                    if (userDetails.userRoles.length > 0){
+                        for (var i in userDetails.userRoles){
+                            roleId = userDetails.userRoles[i].value;
+                            for (var x in data.user_roles){
+                                role = data.user_roles[x];
+                                if (roleId == role){
+                                    roles.push({'name': userDetails.userRoles[i].name, 'id':userDetails.userRoles[i].value});
+                                    if (userDetails.userRoles[i].name === 'Kiosk'){
+                                        userDetails.hasKioskRole = true;
+                                        $scope.kioskModeEnabled = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                userDetails.roles = roles;
+                
+                deferred.resolve(data);
+            },function(data){
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
  	this.fetchDashboardStatisticData = function(){
 	    var deferred = $q.defer();
@@ -52,7 +105,7 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
 
 	this.fetchHotelDetails = function(){
 		var deferred = $q.defer();
-		var url = '/api/hotel_settings.json';
+		var url = '/api/hotel_settings.json'+localStorage['kioskUser'];//if logged in via kiosk, require the credentials to be passed [see loginApp.js];
 		RVBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		},function(errorMessage){

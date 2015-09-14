@@ -117,7 +117,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             $scope.rateTypesDetails.cancelationPenalties = $scope.cancelPenaltiesActivated ? $scope.rateTypesDetails.cancelationPenalties : [];
             $scope.rateData.currency_code_id = $scope.rateTypesDetails.hotel_settings.currency.id;
         };
-
+        
         /*
          * Set add on data
          */
@@ -162,7 +162,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'end_date': $scope.rateData.end_date,
                 'is_hourly_rate': $scope.rateData.is_hourly_rate,
                 'is_member': $scope.rateData.is_member_rate,
-                'commission_details':$scope.rateData.commission_details,
                 'is_pms_only' : $scope.rateData.is_pms_only,
                 'is_channel_only' : $scope.rateData.is_channel_only
             };

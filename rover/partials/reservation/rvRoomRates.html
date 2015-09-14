@@ -42,6 +42,7 @@
         <div class="select" ng-show="activeCriteria == 'ROOM_TYPE'">            
             <select ng-model="stateCheck.preferredType" ng-change="onRoomTypeChange($event)" ng-disabled="activeCriteria == 'RATE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay && stateCheck.dateModeActiveDate != reservationData.arrivalDate) || reservationData.status == 'CHECKEDIN' || reservationData.status == 'CHECKING_OUT'">
                 <option value="" translate ng-if="reservationData.tabs.length < 2">RESV_ALL_ROOMS</option>
+                <option value="" ng-if="viewState.currentTab >0 && !stateCheck.preferredType" class="placeholder">Select Room Type</option>
                 <option value="{{roomType.id}}" ng-repeat="roomType in roomTypes|filter:{level:'!!'}|orderBy:'level'" ng-selected="roomType.id == stateCheck.preferredType" ng-hide="isRoomTypeSelected(roomType.id);">
                     {{roomType.name}}
                 </option>
@@ -113,6 +114,7 @@
                                       <span class="corporate" ng-if="displayData.allRates[rate].account_id">COR</span>
                                       <span class="corporate" ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].applyPromotion">PROMOTION</span>
                                       <span class="corporate" ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].isMember">MEMBER</span>
+                                      <span class="corporate" ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].isGroupRate">GROUP</span>
                                     
                                     <!-- If restriction applies, show: -->
                                     <span class="restricted" 
@@ -243,6 +245,7 @@
                             <span class="corporate" ng-if="rate.rate.account_id">COR</span>
                             <span class="corporate" ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].applyPromotion">PROMOTION</span>
                             <span class="corporate" ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].isMember">MEMBER</span>
+                            <span class="corporate" ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].isGroupRate">GROUP</span>
                             <!-- If restriction applies, show: selectedRoom, rate.rate.id -->
                             <span class="restricted" ng-if="!stateCheck.stayDatesMode && getAllRestrictions(selectedRoom,rate.rate.id).length > 1">MULTIPLE RESTRICTIONS APPLY</span>
                             <span class="restricted {{restrictionColorClass[getAllRestrictions(selectedRoom,rate.rate.id)[0].key]}}" ng-if="!stateCheck.stayDatesMode && getAllRestrictions(selectedRoom,rate.rate.id).length == 1">

@@ -12,7 +12,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
 		};
 
         var params = {
-            "date": $rootScope.businessDate
+            "date": $scope.data.summaryDate
         };
 		$scope.invokeApi(RVJournalSrv.fetchSummaryData, params, successCallBackFetchSummaryData);
     };

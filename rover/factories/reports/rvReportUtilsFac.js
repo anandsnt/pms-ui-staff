@@ -368,8 +368,8 @@ sntRover.factory('RVReportUtilsFac', [
                     report['canRemoveDate'] = true;
                     break;
 
-                case reportNames['OCCUPANCY_REVENUE_SUMMARY']:
-                    report['hasDateLimit'] = false;
+                case reportNames['OCCUPANCY_REVENUE_SUMMARY']:                    
+                    report['hasPrevDateLimit'] = true;
                     break;
 
                 case reportNames['RESERVATIONS_BY_USER']:
@@ -780,8 +780,8 @@ sntRover.factory('RVReportUtilsFac', [
                         filter       : filter,
                         show         : false,
                         selectAll    : false,
-                        defaultTitle : 'Select Reservation Status',
-                        title        : 'Select Reservation Status',
+                        defaultTitle : 'Select Status',
+                        title        : 'Select Status',
                         data         : angular.copy( data.reservationStatus )
                     });
                 };

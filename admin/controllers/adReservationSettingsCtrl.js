@@ -55,7 +55,7 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
         $scope.errorMessage = data;
         $scope.$emit('hideLoader');
       };
-      var data = $scope.reservationSettingsData;
+      var data = dclone($scope.reservationSettingsData,['prepaid_commission_charge_codes','tax_transaction_codes']);
 
       $scope.invokeApi(ADReservationSettingsSrv.saveChanges, data, saveChangesSuccessCallback, saveChangesFailureCallback);
 

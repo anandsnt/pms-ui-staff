@@ -11,6 +11,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
   'rvGroupConfigurationSrv',
   '$state',
   '$window',
+  '$stateParams',
   function (
     $scope,
     $rootScope,
@@ -23,7 +24,8 @@ sntRover.controller('rvGroupRoomingListCtrl', [
     ngDialog,
     rvGroupConfigurationSrv,
     $state,
-    $window) {
+    $window,
+    $stateParams) {
 
         BaseCtrl.call(this, $scope);
 
@@ -1900,13 +1902,12 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             //pagination
             initialisePagination();
-
             //calling initially required APIs
             // CICO-17898 The initial APIs need to be called in the scenario while we come back to the Rooming List Tab from the stay card
             var isInRoomingList = ($scope.groupConfigData.activeTab === "ROOMING"),
-            	comingFromStaycard = ("rover.reservation.staycard.reservationcard.reservationdetails" === $rootScope.getPrevStateName());
+            	amDirectlyComingToRoomingList = $stateParams.activeTab === 'ROOMING';
 
-            if (isInRoomingList && comingFromStaycard) {
+            if (isInRoomingList && (amDirectlyComingToRoomingList)) {
                 callInitialAPIs();
             }
         }();

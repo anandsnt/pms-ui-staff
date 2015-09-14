@@ -6,7 +6,8 @@ sntRover.controller('RVCardOptionsCtrl',
 	 '$location',
 	 '$document',
 	 'RVPaymentSrv',
-	function($rootScope, $scope, $state, ngDialog, $location, $document, RVPaymentSrv){
+         'RVReservationCardSrv',
+	function($rootScope, $scope, $state, ngDialog, $location, $document, RVPaymentSrv,RVReservationCardSrv){
 		BaseCtrl.call(this, $scope);
 		 $scope.renderDataFromSwipe = function(swipedDataToRenderInScreen){
 	    	$scope.cardData.cardNumber = swipedDataToRenderInScreen.cardNumber;
@@ -32,6 +33,16 @@ sntRover.controller('RVCardOptionsCtrl',
 		$scope.$on('REFRESH_IFRAME', function(e){
 			 $scope.refreshIframe();
 		});
+                $scope.isGiftCard = false;
+                $rootScope.$on('depositUsingGiftCardChange',function(e, v){
+                   if ($rootScope.depositUsingGiftCard){
+                       $scope.isGiftCard = true;
+                       $scope.hideCancelCard = true;
+                   } else {
+                       $scope.isGiftCard = false;
+                       $scope.hideCancelCard = false;
+                   }
+                });
 		//Not a good method
 		//To fix the issue CICO-11440
 		//From diary screen create reservation guest data is available only after reaching the summary ctrl
@@ -180,7 +191,52 @@ sntRover.controller('RVCardOptionsCtrl',
 	    		$scope.refreshIframe();
 	    	};
 	    };
-
+            $scope.$on('cancelCardSelection',function(){
+                $scope.depositWithGiftCard = false;
+                $scope.isGiftCard = false;
+                $scope.hideCancelCard = false;
+            });
+            
+            
+            $scope.giftCardAmountAvailable = false;
+            $scope.giftCardAvailableBalance = 0;
+            $scope.$on('giftCardAvailableBalance',function(e, giftCardData){
+               $scope.giftCardAvailableBalance = giftCardData.amount;
+            });
+            $scope.timer = null;
+            $scope.cardNumberInput = function(n, e){
+                if ($scope.isGiftCard){
+                    var len = n.length;
+                    $scope.num = n;
+                    if (len >= 8 && len <= 22){
+                        //then go check the balance of the card
+                        $('[name=card-number]').keydown(function(){
+                            clearTimeout($scope.timer); 
+                            $scope.timer = setTimeout($scope.fetchGiftCardBalance, 1500);
+                        });
+                    } else {
+                        //hide the field and reset the amount stored
+                        $scope.giftCardAmountAvailable = false;
+                    }
+                }
+            };
+            $scope.num;
+            $scope.fetchGiftCardBalance = function() {
+                if ($scope.isGiftCard){
+                       //switch this back for the UI if the payment was a gift card
+                   var fetchGiftCardBalanceSuccess = function(giftCardData){
+                       $scope.giftCardAvailableBalance = giftCardData.amount;
+                       $scope.giftCardAmountAvailable = true;
+                       $scope.$emit('giftCardAvailableBalance',giftCardData);
+                       //data.expiry_date //unused at this time
+                       $scope.$emit('hideLoader');
+                   };
+                   $scope.invokeApi(RVReservationCardSrv.checkGiftCardBalance, {'card_number':$scope.num}, fetchGiftCardBalanceSuccess);
+               } else {
+                   $scope.giftCardAmountAvailable = false;
+               }
+            };
+            
 	    $scope.$on("RENDER_SWIPED_DATA", function(e, swipedCardDataToRender){
 
 			$scope.renderDataFromSwipe(swipedCardDataToRender);

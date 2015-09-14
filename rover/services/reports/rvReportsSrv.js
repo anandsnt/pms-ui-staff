@@ -178,29 +178,24 @@ sntRover.service('RVreportsSrv', [
 
 			// fetch addon groups & add to payload
 			if ( hasFilter['ADDON_GROUPS'] ) {
-				var getAddonGroupId = function(source) {
-					return {
-						'addon_group_ids' : _.pluck(source, 'id')
-		            };
-				};
+				
+				// NOTE: caching nothing due to dependecies
+				// NOTE: two API completing in one if
+				subSrv.fetchAddonGroups()
+					.then(function(data) {
+						success( 'addonGroups', data );
 
-				if ( service.payloadCache.hasOwnProperty('addonGroups') ) {
-					success( 'addonGroups', service.payloadCache.addonGroups );
-				} else {
-					subSrv.fetchAddonGroups()
-						.then(function(data) {
-							success( 'addonGroups', data );
-
-							if ( hasFilter['ADDONS'] ) {
-								if ( service.payloadCache.hasOwnProperty('addons') ) {
-									success( 'addons', service.payloadCache.addons );
-								} else {
-									subSrv.fetchAddons( getAddonGroupId(data) )
-										.then(success.bind(null, 'addons'), failed.bind(null, 'addons', []));
-								};
+						var getAddonGroupId = function() {
+							return {
+								'addon_group_ids' : _.pluck(data, 'id')
 							};
-						}, failed.bind(null, 'addonGroups', []));
-				};
+						};
+
+						if ( hasFilter['ADDONS'] ) {
+							subSrv.fetchAddons( getAddonGroupId() )
+									.then(success.bind(null, 'addons'), failed.bind(null, 'addons', []));
+						};
+					}, failed.bind(null, 'addonGroups', []));
 			};
 
 			// fetch reservation status & add to payload

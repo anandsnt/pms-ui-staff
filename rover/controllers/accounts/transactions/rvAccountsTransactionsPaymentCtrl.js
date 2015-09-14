@@ -30,6 +30,9 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		var hasPermissionToRefundPayment = function() {
 			return rvPermissionSrv.getPermissionValue ('POST_REFUND');
 		};
+                 $scope.$on('isGiftCardPmt',function(v){
+                     $scope.isGiftCardPmt = v;
+                 });
 
 		var init = function(){
 			$scope.saveData = {};
@@ -61,7 +64,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			$scope.hasPermissionToRefundPayment = hasPermissionToRefundPayment();
 		};
 		init();
-
+                
 
 		/**
 		 * to run angular digest loop,

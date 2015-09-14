@@ -96,7 +96,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		    }
 	    }
 	    $scope.floors = data.floors;
-
+		$scope.likeCopy = angular.copy( $scope.data.room_likes );
 		$scope.data.room_image = "";
 		$scope.data.room_number="";
 		$scope.data.room_type_id="";

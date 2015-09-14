@@ -1,5 +1,5 @@
-sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter', 'RVContactInfoSrv', '$q', 'RVReservationStateService', 'RVReservationDataService',
-	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter, RVContactInfoSrv, $q, RVReservationStateService, RVReservationDataService) {
+sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter', 'RVContactInfoSrv', '$q', 'RVReservationStateService', 'RVReservationDataService', 'rvGroupConfigurationSrv',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter, RVContactInfoSrv, $q, RVReservationStateService, RVReservationDataService, rvGroupConfigurationSrv) {
 		BaseCtrl.call(this, $scope);
 		//Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
@@ -119,6 +119,84 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			}
 		};
 
+		/**
+		 * [successCallbackOfGroupDetailsFetch description]
+		 * @return {[type]} [description]
+		 */
+		var successCallbackOfGroupDetailsFetch = function(response) {
+			_.extend($scope.groupConfigData, 
+			{
+				activeTab: 'SUMMARY', // Possible values are SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY
+				summary: response.groupSummary,
+				selectAddons: false, // To be set to true while showing addons full view
+				addons: {},
+				selectedAddons: []					
+			});
+		};
+
+		/**
+		 * [successCallBackOfGroupHoldListFetch description]
+		 * @param  {[type]} holdStatusList [description]
+		 * @return {[type]}                [description]
+		 */
+		var successCallBackOfGroupHoldListFetch = function(holdStatusList)  {
+			_.extend($scope.groupConfigData, 
+			{
+				holdStatusList: holdStatusList.data.hold_status
+			});
+		};
+
+		/**
+		 * [successFetchOfAllReqdForGroupDetailsShowing description]
+		 * @param  {[type]} data [description]
+		 * @return {[type]}      [description]
+		 */
+		var successFetchOfAllReqdForGroupDetailsShowing = function(data) {
+			$scope.$broadcast('groupCardAvailable');
+			$scope.$broadcast('groupSummaryDataChanged', $scope.groupConfigData);
+			$scope.$emit("hideLoader");
+		};
+
+		/**
+		 * [failedToFetchOfAllReqdForGroupDetailsShowing description]
+		 * @return {[type]} [description]
+		 */
+		var failedToFetchOfAllReqdForGroupDetailsShowing = function() {
+			$scope.errorMessage = errorMessage;
+			$scope.$emit("hideLoader");
+		};
+
+		$scope.initGroupCard = function(groupId) {
+            var promises = [];
+            //we are not using our normal API calling since we have multiple API calls needed
+            $scope.$emit('showLoader');
+
+            $scope.groupConfigData = { 
+            	activeScreen: 'STAY_CARD'
+            };
+
+            //group details fetch
+            var paramsForGroupDetails = {
+                groupId: groupId
+            };
+            promises.push(rvGroupConfigurationSrv
+                .getGroupSummary(paramsForGroupDetails)
+                .then(successCallbackOfGroupDetailsFetch)
+            );
+
+            //reservation list fetch
+            var paramsForHoldListFetch = {
+            	is_group: true
+            };
+            promises.push(rvGroupConfigurationSrv
+                .getHoldStatusList(paramsForHoldListFetch)
+                .then(successCallBackOfGroupHoldListFetch)
+            );
+
+            //Lets start the processing
+            $q.all(promises)
+                .then(successFetchOfAllReqdForGroupDetailsShowing, failedToFetchOfAllReqdForGroupDetailsShowing);
+		};
 
 		// fetch reservation company card details
 		$scope.initCompanyCard = function() {
@@ -181,6 +259,11 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			if (!isCardSame.agent) {
 				$scope.$broadcast('travelAgentDetached');
 				$scope.initTravelAgentCard();
+			}
+
+			if (!isCardSame.group) {
+				$scope.$broadcast('groupDetached');
+				$scope.initGroupCard($scope.reservationDetails.group.id);
 			}
 
 			// The future counts of the cards attached with the reservation

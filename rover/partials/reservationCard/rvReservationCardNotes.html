@@ -26,12 +26,31 @@
             {{reservationData.reservation_card.notes.reservation_notes.length}}
         </button>
     </div>
-    <div class="block-item item-group">
+    <!--<div class="block-item item-group">
         <h3 class="block-title">Group</h3>
         <button type="button" class="next-view" ng-class="{'has-arrow': isStandAlone}" ng-if="!!reservationData.reservation_card.group_name" ng-click="navigateToGroup($event)">
             {{reservationData.reservation_card.group_name}}
         </button>
         <!-- If no group attached, replace button with this: -->
-        <div class="no-group" ng-if="!reservationData.reservation_card.group_name"></div>
+        <!--<div class="no-group" ng-if="!reservationData.reservation_card.group_name"></div>
+    </div>-->
+    <div class="block-item item-cards">
+        <h3 class="block-title">Associated with</h3>
+        <!-- Output only those attached -->
+        <span class="icons icon-guest-company" ng-if="isCompanyCardAttachedToReservation()">
+            {{reservationData.reservation_card.company_card_name}}
+        </span>
+        <span class="icons icon-guest-travelagent" ng-if="isTravelAgentAttachedToReservation()">
+            {{reservationData.reservation_card.travel_agent_card_name}}
+        </span>
+        <span class="icons icon-group" ng-if="isGroupCardAttachedToReservation()">
+            {{reservationData.reservation_card.group_name}}
+        </span>
+        <span class="icons icon-allotment" ng-if="isAllotmentCardAttachedToReservation()">
+            {{reservationData.reservation_card.allotment_name}}
+        </span>
+        
+        <!-- If no company/ta/group/allotment attached, show this instead: -->
+        <div class="no-cards" ng-if="noCardAttachedToReservation()"></div> 
     </div>
 </div>

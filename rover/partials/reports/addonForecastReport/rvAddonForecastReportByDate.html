@@ -13,14 +13,14 @@
                     <span>{{ item1.guests }}</span>
                     <span>{{ item1.revenue | currency:currencySymbol:2 }}</span>
                 </a>
-                <div ng-repeat="item2 in item1.addon_groups" ng-init="item2Values = getKeyValues(item2)" class="grid-content" ng-class="{ 'hidden': !item1.hidden }"> <!-- Toggle class hidden when L135-139 tapped -->
+                <div ng-repeat="item2 in item1.addon_groups" ng-init="item2Values = getKeyValues(item2)" class="grid-content" ng-class="{ 'hidden': !openGroup && !item1.hidden }"> <!-- Toggle class hidden when L135-139 tapped -->
                     <!-- Level 2 - Add-On Group -->
                     <a href="#addon-{group}-{date}" class="title-2 toggle" ng-class="{ 'has-arrow': item2Values.addons.length }" ng-click="toggleSub(item2)">
                         <strong>{{ getKeyName(item2) }}</strong>
                         <span>{{ item2Values.guests }}</span>
                         <span>{{ item2Values.revenue }}</span>
                     </a>
-                    <div id="addon-{group}-{date}" class="grid-content" ng-class="{ 'hidden': !item2.hidden }"> <!-- Toggle class hidden when L142-146 tapped -->
+                    <div id="addon-{group}-{date}" class="grid-content" ng-class="{ 'hidden': !openAddon && !item2.hidden }"> <!-- Toggle class hidden when L142-146 tapped -->
                         <ul class="grid-header addons">
                             <li class="name">Add-On</li>
                             <li>Booked</li>
@@ -38,7 +38,7 @@
                                 <span>{{ item3Values.revenue | currency:currencySymbol:2 }}</span>
                             </a>
 
-                            <table ng-if="item3Values.reservations.length" class="grid-content" ng-class="{ 'hidden': !item3.hidden }"> <!-- Toggle class hidden when L156-162 tapped -->
+                            <table ng-if="item3Values.reservations.length" class="grid-content" ng-class="{ 'hidden': !openResrv && !item3.hidden }"> <!-- Toggle class hidden when L156-162 tapped -->
                                 <thead>
                                     <tr>
                                         <th><span class="sort" ng-class="{ 'sorting-asc': true === item3Values.roomSortDir, 'sorting-desc': false === item3Values.roomSortDir }" ng-click="sortRes('ROOM', item3Values)">Room</span></th>
@@ -90,10 +90,18 @@
 
             <ul class="grid-footer">
                 <li>
-                    Add-Ons from <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br />
-                    Add-On Groups <span>{{ appliedFilter.addonGroups.join(', ') }}</span><br />
-                    Add-Ons <span>{{ appliedFilter.addons.join(', ') }}</span><br />
-                    Reservation Status <span>{{ appliedFilter.reservationStatus.join(', ') }}</span>
+                    <div ng-if="appliedFilter.fromDate || appliedFilter.toDate">
+                        Add-Ons from <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span>
+                    </div>
+                    <div ng-if="appliedFilter.addonGroups.length">
+                        Add-On Groups: <span>{{ appliedFilter.addonGroups.join(', ') }}</span>
+                    </div>
+                    <div ng-if="appliedFilter.addons.length">
+                        Add-Ons: <span>{{ appliedFilter.addons.join(', ') }}</span>
+                    </div>
+                    <div ng-if="appliedFilter.reservationStatus.length">
+                        Reservation Status: <span>{{ appliedFilter.reservationStatus.join(', ') }}</span>
+                    </div>
                 </li>
                 <li>
                     Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br />

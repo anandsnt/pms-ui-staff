@@ -9,7 +9,8 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 	'RVReportNamesConst',
 	'$filter',
 	'$timeout',
-	function($rootScope, $scope, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout) {
+	'ngDialog',
+	function($rootScope, $scope, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, ngDialog) {
 		
 		BaseCtrl.call(this, $scope);
 
@@ -18,11 +19,13 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 		});
 
 
-		var chosenReport = $scope.$parent.chosenReport,
-			results      = $scope.$parent.$parent.results,
-			addonGroups  = $scope.$parent.$parent.addonGroups,
-			addons       = $scope.$parent.$parent.addons,
-			allAddonHash = {};
+		var detailsCtrlScope = $scope.$parent,
+			mainCtrlScope    = detailsCtrlScope.$parent,
+			chosenReport     = detailsCtrlScope.chosenReport,
+			results          = mainCtrlScope.results,
+			addonGroups      = mainCtrlScope.addonGroups,
+			addons           = mainCtrlScope.addons,
+			allAddonHash     = {};
 
 		_.each(addonGroups, function(item) {
 			allAddonHash[item.id] = item.description;
@@ -43,7 +46,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 		};
 
 		$scope.getKeyName = function(item) {
-			return allAddonHash[$scope.getKey(item)] || id;
+			return allAddonHash[$scope.getKey(item)] || item;
 		};
 
 		$scope.toggleSub = function(item) {
@@ -175,7 +178,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 				addon.roomSortDir = (addon.roomSortDir == undefined || addon.roomSortDir == false) ? true : false;
 				addon.nameSortDir = undefined;
 				params['sort_dir'] = addon.roomSortDir;
-			} else if ( 'NAME' == sortField ) {
+			} else if ( 'NAME' == field ) {
 				addon.nameSortDir = (addon.nameSortDir == undefined || addon.nameSortDir == false) ? true : false;
 				addon.roomSortDir = undefined;
 				params['sort_dir'] = addon.nameSortDir;
@@ -197,5 +200,66 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
  				callResAPI( addon );
  			};
  		};
+
+
+
+ 		mainCtrlScope.printOptions.showModal = function() {			
+ 			$scope.printLevel = {};
+ 			$scope.levelValues = {
+ 				'date'  : 'DATE',
+ 				'group' : 'GROUP',
+ 				'addon' : 'ADDON',
+ 				'all'   : 'ALL'
+ 			};
+
+			$scope.printLevel.value = 'DATE';
+
+ 			// show popup
+ 			ngDialog.open({
+ 				template: '/assets/partials/reports/addonForecastReport/rvGrpByDatePrintPopup.html',
+ 				className: 'ngdialog-theme-default',
+ 				closeByDocument: true,
+ 				scope: $scope,
+ 				data: []
+ 			});
+		};
+
+		mainCtrlScope.printOptions.afterPrint = function() {
+			// reset show alls
+			$scope.openGroup = false;
+			$scope.openAddon = false;
+			$scope.openResrv = false;
+		};
+
+		// restore the old dates and close
+		$scope.closeDialog = function() {
+			mainCtrlScope.printOptions.afterPrint();
+		    ngDialog.close();
+		};
+
+		$scope.continueWithPrint = function () {
+			switch( $scope.printLevel.value ) {
+				case 'GROUP':
+					$scope.openGroup = true;
+					break;
+
+				case 'ADDON':
+					$scope.openGroup = true;
+					$scope.openAddon = true;
+					break;
+
+				case 'ALL':
+					$scope.openGroup = true;
+					$scope.openAddon = true;
+					$scope.openResrv = true;
+					break;
+
+				default:
+					// no-op
+			};
+
+			ngDialog.close();
+			$scope.$emit( reportMsgs['REPORT_PRE_PRINT_DONE'] );
+		};
 	}
 ]);
