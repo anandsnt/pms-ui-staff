@@ -1163,6 +1163,15 @@ sntRover.controller('rvGroupConfigurationCtrl', [
         };
 
         /**
+         * to set the active left side menu
+         * @return {undefined}
+         */
+        var setActiveLeftSideMenu = function () {
+            var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup": "menuManageGroup";
+            $scope.$emit("updateRoverLeftMenu", activeMenu);
+        };
+
+        /**
          * function to initialize things for group config.
          * @return - None
          */
@@ -1176,6 +1185,9 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
             //back navigation
             setBackNavigation();
+
+            //updating the left side menu
+            setActiveLeftSideMenu();            
         };
 
         initGroupConfig();
