@@ -81,7 +81,7 @@
         </fieldset>
         <fieldset class="holder right">
             <ad-textarea rows="2" div-class="full-width" text-area-class="full-width rate_description" value="rateData.description" label="Description " placeholder="Enter Rate Description" required="true"></ad-textarea>
-            <div class="entry" ng-if="!isHourlyRatesEnabled();" ng-hide="!isStandAlone">
+            <div class="entry" ng-show="!isHourlyRatesEnabled() && isStandAlone" ng-hide="!isStandAlone || isHourlyRatesEnabled()">
                 <ad-toggle-button is-checked="rateData.is_pms_only" ng-click="togglePMSOnly()" label="PMS ONLY"></ad-toggle-button>            
                 <ad-toggle-button is-checked="rateData.is_channel_only" ng-click="toggleChannelOnly()" label="CHANNEL ONLY"></ad-toggle-button>
             </div> 
