@@ -117,6 +117,15 @@
 				</h3>
 			</div>
 			<fieldset class="holder left float">
+                            <!-- auto-enroll switch -->
+                                <div class="entry inline-flex" >
+                                    <label class="switch-label">Auto-Enroll</label>
+                                    <div class="switch-button single" ng-class="{ on: editData.loyalty_program_auto_enroll }" ng-click="editData.loyalty_program_auto_enroll = !editData.loyalty_program_auto_enroll">
+                                        <input type="checkbox">
+                                        <span class="switch-icon"></span>
+                                    </div>
+                                </div>
+                            
 				<!-- program name -->
 				<ad-textbox value="editData.loyalty_program_name"   label = "Program Name" placeholder = "Enter Program Name"  styleclass="full-width"></ad-textbox>
 				<!--  program code-->

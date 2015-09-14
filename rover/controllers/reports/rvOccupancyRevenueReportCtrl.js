@@ -5,7 +5,9 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 	'RVreportsSrv',
 	'$timeout',
 	'dateFilter',
-	function($scope, $rootScope, $filter, RVreportsSrv, $timeout, dateFilter) {
+	'ngDialog',
+	'RVReportMsgsConst',
+	function($scope, $rootScope, $filter, RVreportsSrv, $timeout, dateFilter, ngDialog, reportMsgs) {
 		$scope.occupanyRevenueState = {
 			name: "Occupancy & Revenue Summary"
 		};
@@ -215,26 +217,114 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
 		init();
 
-		$scope.$on('report.filter.change', function() {
+		
+
+		// re-render must be initiated before for taks like printing.
+		// thats why timeout time is set to min value 50ms
+		var reportSubmited    = $scope.$on( reportMsgs['REPORT_SUBMITED'], init );
+		var reportPrinting    = $scope.$on( reportMsgs['REPORT_PRINTING'], init );
+		var reportUpdated     = $scope.$on( reportMsgs['REPORT_UPDATED'], init );
+		var reportPageChanged = $scope.$on( reportMsgs['REPORT_PAGE_CHANGED'], init );
+		var reportFilterChanged = $scope.$on(reportMsgs['REPORT_FILTER_CHANGED'], function() {
 			$timeout(function() {
 				refreshScrollers();
 			}, 400);
 		});
 
-		// re-render must be initiated before for taks like printing.
-		// thats why timeout time is set to min value 50ms
-		$scope.$on('report.submit', function() {
-			init();
-		});
-		$scope.$on('report.printing', function() {
-			init();
-		});
-		$scope.$on('report.updated', function() {
-			init();
-		});
-		$scope.$on('report.page.changed', function() {
-			init();
-		});
+		$scope.$on( 'destroy', reportSubmited );
+		$scope.$on( 'destroy', reportUpdated );
+		$scope.$on( 'destroy', reportPrinting );
+		$scope.$on( 'destroy', reportPageChanged );
+		$scope.$on( 'destroy', reportFilterChanged );
+
+
+
+
+		var detailsCtrlScope = $scope.$parent,
+			mainCtrlScope    = detailsCtrlScope.$parent,
+			chosenReport     = detailsCtrlScope.chosenReport;
+
+		var checkDateGap = function() {
+			var allowedDateRange = 0,
+				chosenDateRange,
+				chosenVariance,
+				chosenLastYear;
+
+			// get date range
+			// READ MORE: http://stackoverflow.com/questions/3224834/get-difference-between-2-dates-in-javascript#comment-3328094
+			chosenDateRange = chosenReport.untilDate.getTime() - chosenReport.fromDate.getTime();
+			chosenDateRange = ( chosenDateRange / (1000 * 60 * 60 * 24) | 0 );
+
+			// find out the user selection choices
+			chosenVariance = chosenReport.chosenOptions['include_variance'] ? true : false;
+			chosenLastYear = chosenReport.chosenOptions['include_last_year'] ? true : false;
+
+			// fromdate <- 5 days -> untildate
+			// diff should be 4 (5 - 1), including fromdate
+			if ( chosenVariance && chosenLastYear ) {
+				allowedDateRange = 4;
+			}
+
+			// fromdate <- 10 days -> untildate
+			// diff should be 9 (10 - 1), including fromdate
+			else if ( chosenVariance || chosenLastYear ) {
+				allowedDateRange = 9;
+			}
+
+			// fromdate <- 15 days -> untildate,
+			// diff should be 14 (15 - 1), including fromdate
+			else {
+				allowedDateRange = 14;
+			};
+
+			// if the current chosen dates are within
+			// the allowedDateRange, dont show pop
+			// go straight to printing
+			// (allowedDateRange + 1) -> since we reduced it above
+			return chosenDateRange > allowedDateRange ? true : false;
+		};
+
+		mainCtrlScope.printOptions.showModal = function() {
+
+			// make a copy of the from and until dates
+			chosenReport.fromDateCopy  = angular.copy( chosenReport.fromDate );
+			chosenReport.untilDateCopy = angular.copy( chosenReport.untilDate );
+
+			// show popup
+			if ( checkDateGap() ) {
+				ngDialog.open({
+					controller      : 'RVOccRevPrintPopupCtrl',
+				    template        : '/assets/partials/reports/occupancyRevenueReport/rvOccRevPrintPopup.html',
+				    className       : 'ngdialog-theme-default',
+				    closeByDocument : true,
+				    scope           : $scope,
+				    data            : []
+				});
+			} else {
+				$scope.$emit( reportMsgs['REPORT_PRE_PRINT_DONE'] );
+			};
+		};
+
+		mainCtrlScope.printOptions.afterPrint = function() {
+			chosenReport.fromDate  = angular.copy( chosenReport.fromDateCopy );
+			chosenReport.untilDate = angular.copy( chosenReport.untilDateCopy );
+
+			$timeout(function() {
+				chosenReport.fromDateCopy  = undefined;
+				chosenReport.untilDateCopy = undefined;
+			}, 0);
+		};
+
+		// restore the old dates and close
+		$scope.closeDialog = function() {
+			mainCtrlScope.printOptions.afterPrint();
+		    ngDialog.close();
+		};
+
+		$scope.continueWithPrint = function () {
+			ngDialog.close();
+			$scope.$emit( reportMsgs['REPORT_PRE_PRINT_DONE'] );
+		};
 
 	}
 ]);

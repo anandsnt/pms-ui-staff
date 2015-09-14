@@ -58,7 +58,7 @@
                     </span>
 
                     <span class="price" ng-show="existingPackages.is_inclusive">INCL</span>
-                    <button type="button" class="icons icon-trash" ng-hide="existingPackages.is_inclusive" ng-click="removeSelectedAddons(existingPackages.package_id, $index)">Remove</button>
+                    <button type="button" class="icons icon-trash" ng-hide="existingPackages.is_inclusive" ng-click="removeSelectedAddons(existingPackages.id, $index)">Remove</button>
                 </li>
             </ul>
         </div>

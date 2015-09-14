@@ -1,6 +1,6 @@
-<nav id="header" role="nav">
+<nav id="header" role="nav" class="kiosk">
     <!-- Back button, if applicable -->
-    <button type="button" id="back-button" class="button blank" ng-hide="hideNavBtns" ng-click='navToPrev()'>
+    <button type="button" id="back-button" class="button blank" ng-hide="hideNavBtns" click-touch='navToPrev()'>
         <ng-include src="'assets/css/kiosk/assets/icons/back.svg'"></ng-include>
     </button>
 
@@ -10,7 +10,7 @@
     </div>
 
     <!-- Close button, if applicable -->
-    <button type="button" id="close-button" class="button blank" ng-click='navToHome()'>
+    <button type="button" id="close-button" class="button blank" click-touch='navToHome()'>
         <ng-include src="'assets/css/kiosk/assets/icons/close.svg'" ng-hide="hideNavBtns"></ng-include>
     </button>
 </nav> 

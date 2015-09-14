@@ -1,5 +1,5 @@
         <!-- Content -->
-<section id="main" class="centered" role="main" ng-hide='at !== "terms-conditions"' ng-click='resetTime()'>
+<section id="main" class="centered" role="main" ng-hide='at !== "terms-conditions"' click-touch='resetTime()'>
     <div id="content">
         <h1>{{headingText}}</h1>
         <div id="flex-holder">
@@ -14,8 +14,8 @@
                 </div>
             </div>
             <div id="actions" class="pull-right">
-                <button type="button" class="button" ng-click="agreeTerms()">{{agreeButtonText}}</button>
-                <button type="button" class="button transparent" ng-click="cancelAtTerms()">{{cancelButtonText}}</button>
+                <button type="button" class="button" click-touch="agreeTerms()">{{agreeButtonText}}</button>
+                <button type="button" class="button transparent" click-touch="cancelAtTerms()">{{cancelButtonText}}</button>
                 <p><strong>Subheading</strong>{{subHeadingText}}</p>
             </div>
         </div>

@@ -38,6 +38,14 @@ sntRover.config([
                 }
             }
 
+
+        });
+
+        $stateProvider.state('kiosk', {
+                url: '/kiosk',
+                templateUrl: '/assets/partials/tablet/kiosk/specific/home.html',
+                controller: 'rvTabletCtrl',
+                title: 'Kiosk'
         });
 
     }

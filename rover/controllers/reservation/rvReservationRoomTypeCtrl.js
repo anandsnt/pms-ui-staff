@@ -738,7 +738,14 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 								closeByEscape: false,
 								data: JSON.stringify({
 									houseFull: (leastHouseAvailability < 1),
-									roomTypeId: roomId
+									roomTypeId: roomId,
+									isRoomAvailable: (leastRoomTypeAvailability > 0),									
+									activeView: function(){
+										if(leastHouseAvailability < 1){
+											return 'HOUSE'
+										}
+										return 'ROOM'
+									}()
 								})
 							});
 						});

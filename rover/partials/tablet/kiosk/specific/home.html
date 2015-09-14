@@ -1,24 +1,24 @@
-<ng-include ng-hide='showHeader === false' src="'assets/partials/tablet/rvTabletHeader.html'" ></ng-include>
+<ng-include class="kiosk" ng-hide='showHeader === false' src="'assets/partials/tablet/rvTabletHeader.html'" ></ng-include>
     <!-- Content -->
     <section ng-hide='at !== "home"' id="main" class="centered" role="main">
         <div id="content">
             <nav id="options" class="large-icons" role="nav">
                 <ul role="menu">
                     <li> 
-                        <button type="button" class="button option" ng-click='goToScreen($event,"pickupkey", false, "home")'>
+                        <button type="button" class="button option" click-touch='goToScreen($event,"input-last", false, "home")'>
                             <ng-include src="'assets/css/kiosk/assets/icons/key.svg'"></ng-include>
                         </button>
                         Pick up Key
                         <span>If you have already checked in online.</span>
                     </li>
                     <li>
-                        <button type="button" class="button option" ng-click='goToScreen($event,"check-in", false, "home")'>
+                        <button type="button" class="button option" click-touch='goToScreen($event,"input-last", false, "home")'>
                             <ng-include src="'assets/css/kiosk/assets/icons/checkin.svg'"></ng-include>
                         </button>
                         Check In
                     </li>
                     <li>
-                        <button type="button" class="button option" ng-click='goToScreen($event,"check-out", false, "home")'>
+                        <button type="button" class="button option" click-touch='goToScreen($event,"check-out", false, "home")'>
                             <ng-include src="'assets/css/kiosk/assets/icons/checkout.svg'"></ng-include>
                         </button>
                         Check Out
@@ -26,39 +26,40 @@
                 </ul>
             </nav>
         </div>
-    <ng-include src="'assets/partials/tablet/rvTabletFooter.html'" ></ng-include>
+    <ng-include src="'assets/partials/tablet/rvTabletFooter.html'" class="kiosk"></ng-include>
     </section>
 <!--  Check-in Find Reservation -->
-<ng-include src="'assets/partials/tablet/kiosk/specific/find-reservation.html'" ></ng-include>
+<ng-include src="'assets/partials/tablet/kiosk/specific/find-reservation.html'" class="kiosk"></ng-include>
 
 <!--  Check-in Find by date -->
-<ng-include src="'assets/partials/tablet/kiosk/generic/input-date.html'" ></ng-include>
+<ng-include src="'assets/partials/tablet/kiosk/generic/input-date.html'" class="kiosk"></ng-include>
 
 <!--  Check-in Find by email | Find by Confirmation -->
-<ng-include src="'assets/partials/tablet/kiosk/generic/input-text.html'" ></ng-include>
+<ng-include src="'assets/partials/tablet/kiosk/generic/input-text.html'" class="kiosk"></ng-include>
 
 <!--  Check-in Select Reservation -->
-<ng-include src="'assets/partials/tablet/kiosk/specific/select-reservation.html'" ></ng-include>
+<ng-include src="'assets/partials/tablet/kiosk/specific/select-reservation.html'" class="kiosk"></ng-include>
 
 <!--  Check-in No Match -->
-<ng-include src="'assets/partials/tablet/kiosk/specific/no-match.html'" ></ng-include>
+<ng-include src="'assets/partials/tablet/kiosk/specific/no-match.html'" class="kiosk"></ng-include>
 
 <!--  Check-in Reservation-Details -->
-<ng-include src="'assets/partials/tablet/kiosk/specific/reservation-details.html'" ></ng-include>
+<ng-include src="'assets/partials/tablet/kiosk/specific/reservation-details.html'" class="kiosk"></ng-include>
 
 <!--  Check-in Reservation-Details -->
-<ng-include src="'assets/partials/tablet/kiosk/specific/sign.html'" ></ng-include>
+<ng-include src="'assets/partials/tablet/kiosk/specific/sign.html'" class="kiosk"></ng-include>
 
 <!--  Check-in Reservation-Details -->
-<ng-include src="'assets/partials/tablet/kiosk/specific/signature-time-out.html'" ></ng-include>
+<ng-include src="'assets/partials/tablet/kiosk/specific/signature-time-out.html'" class="kiosk" ></ng-include>
 
 <!--  Check-in Make Key -->
-<ng-include src="'assets/partials/tablet/kiosk/specific/make-key.html'" ></ng-include>
+<ng-include src="'assets/partials/tablet/kiosk/specific/make-key.html'" class="kiosk"></ng-include>
 
 <!--  Check-in Terms Conditions -->
-<ng-include src="'assets/partials/tablet/kiosk/generic/general-left.html'" ></ng-include>
+<ng-include src="'assets/partials/tablet/kiosk/generic/general-left.html'" class="kiosk"></ng-include>
 
 <!--  Check-in Select Keys -->
-<ng-include src="'assets/partials/tablet/kiosk/specific/select-keys-after-checkin.html'" ></ng-include>
-<!--  Check-in Select Keys -->
-<ng-include src="'assets/partials/tablet/kiosk/generic/modal.html'" ></ng-include>
+<ng-include src="'assets/partials/tablet/kiosk/specific/select-keys-after-checkin.html'" class="kiosk"></ng-include>
+
+<!--  admin screen initial -->
+<ng-include src="'assets/partials/tablet/kiosk/generic/modal.html'" class="kiosk"></ng-include>

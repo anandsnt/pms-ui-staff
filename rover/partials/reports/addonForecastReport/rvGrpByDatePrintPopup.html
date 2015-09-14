@@ -1,0 +1,36 @@
+<div id="modal" class="modal-show" ng-cloak>
+	<div class="modal-content form report-options">
+	    <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>
+
+	    <strong class="h2 message">Print Details Level</strong>
+
+	    <!-- Mind the ordering based on grouping by date or addon -->
+	    <div class="entry radio-check full-width">
+	        <label class="radio">
+	            <span class="icon-form icon-radio" ng-class="{ 'checked' : printLevel.value == levelValues.date }"></span>
+	            <input type="radio" name="print-option" ng-model="printLevel.value" ng-value="levelValues.date">
+	            Date
+	        </label>
+	        <label class="radio">
+	            <span class="icon-form icon-radio" ng-class="{ 'checked' : printLevel.value == levelValues.group }"></span>
+	            <input type="radio" name="print-option" ng-model="printLevel.value" ng-value="levelValues.group">
+	            Add-On Group
+	        </label>
+	        <label class="radio">
+	            <span class="icon-form icon-radio" ng-class="{ 'checked' : printLevel.value == levelValues.addon }"></span>
+	            <input type="radio" name="print-option" ng-model="printLevel.value" ng-value="levelValues.addon">
+	            Add-On
+	            </label>
+	        <label class="radio">
+	            <span class="icon-form icon-radio" ng-class="{ 'checked' : printLevel.value == levelValues.all }"></span>
+	            <input type="radio" name="print-option" ng-model="printLevel.value" ng-value="levelValues.all">
+	            Everything
+	        </label>     
+	    </div>
+
+	    <div class="actions">
+	        <button type="button" class="button blue" ng-click="continueWithPrint()">Print report</button>
+	        <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
+	    </div>
+	</form>
+</div>

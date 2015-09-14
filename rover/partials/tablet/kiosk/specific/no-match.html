@@ -1,13 +1,13 @@
 
 <!-- Content -->
-<section id="main" class="centered" role="main" ng-hide='at !== "no-match"' ng-click='resetTime()'>
+<section id="main" class="centered" role="main" ng-hide='at !== "no-match"' click-touch='resetTime()'>
     <div id="content">
         <h1>Sorry.</h1>
         <h2>We can't seem to find your reservation.</h2>
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
-                    <button type="button" class="button option" ng-click='goToScreen($event,"re-enter-name", true)'>
+                    <button type="button" class="button option" click-touch='goToScreen($event,"input-last", true)'>
                         <ng-include src="'assets/css/kiosk/assets/icons/keyboard.svg'"></ng-include>
                     </button>
                     Re-Enter
@@ -17,7 +17,7 @@
                     <span>Or</span>
                 </li>
                 <li>
-                    <button type="button" class="button option" ng-click='goToScreen($event,"re-enter-email", true)'>
+                    <button type="button" class="button option" click-touch='goToScreen($event,"re-enter-email", true)'>
                         <ng-include src="'assets/css/kiosk/assets/icons/keyboard.svg'"></ng-include>
                     </button>
                     Re-Enter
@@ -27,7 +27,7 @@
                     <span>Or</span>
                 </li>
                 <li>
-                    <button type="button" class="button option" ng-click='goToScreen($event,"talk-to-", true)'>
+                    <button type="button" class="button option" click-touch='goToScreen($event,"talk-to-", true)'>
                         <ng-include src="'assets/css/kiosk/assets/icons/staff.svg'"></ng-include>
                     </button>
                     Talk
