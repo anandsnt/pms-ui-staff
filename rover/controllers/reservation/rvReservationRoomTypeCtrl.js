@@ -740,9 +740,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 								data: JSON.stringify({
 									houseFull: (leastHouseAvailability < 1),
 									roomTypeId: roomId,
-									isRoomAvailable: (leastRoomTypeAvailability > 0),									
-									activeView: function(){
-										if(leastHouseAvailability < 1){
+									isRoomAvailable: (leastRoomTypeAvailability > 0),
+									activeView: function() {
+										if (leastHouseAvailability < 1) {
 											return 'HOUSE'
 										}
 										return 'ROOM'
@@ -872,7 +872,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				// If a room type of category Level3 is selected, only show the selected room type.
 				$scope.displayData.roomTypes = _.filter($scope.displayData.allRooms, function(room) {
 					return room.id === parseInt($scope.stateCheck.preferredType, 10) ||
-						hasContractedRate($scope.roomAvailability[room.id].rates);
+						(!$scope.reservationData.group.id && hasContractedRate($scope.roomAvailability[room.id].rates)); // In case of group skip this check
 				});
 
 				if ($scope.reservationData.tabs.length < 2 && // Not showing other room types in case of multiple reservations
