@@ -344,6 +344,7 @@ sntRover.controller('RateCalendarCtrl', [
                 if ($scope.ratesRoomsToggle !== 'RATES') {
                     params.roomrate = 'ROOMS';
                 }
+                $scope.popupData.currentFilterData = $scope.currentFilterData;//pass this in for the popup views to use
                     $scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, params, calenderDataFetchSuccess)
                         .then(finalizeCapture);
 
@@ -490,7 +491,7 @@ sntRover.controller('RateCalendarCtrl', [
             }
             params.details = [];
 
-            item = {};
+            var item = {};
             item.from_date = dateFilter($scope.currentFilterData.begin_date, 'yyyy-MM-dd');
             item.to_date = dateFilter($scope.currentFilterData.end_date, 'yyyy-MM-dd');
             item.restrictions = [];
@@ -509,6 +510,13 @@ sntRover.controller('RateCalendarCtrl', [
 
             item.restrictions.push(rr);
             params.details.push(item);
+            if ($scope.currentFilterData){
+                var rateIds = [];
+                for (var r in $scope.currentFilterData.rates){
+                    rateIds.push($scope.currentFilterData.rates[r].id);
+                }
+                params.rate_ids = rateIds;
+            }
 
             $scope.invokeApi(RateMngrCalendarSrv.updateRestrictions, params, restrictionUpdateSuccess);
         };
