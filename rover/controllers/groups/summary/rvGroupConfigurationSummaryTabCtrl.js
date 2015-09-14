@@ -1159,15 +1159,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		};
 
 		/**
-		 * to set the active left side menu
-		 * @return {undefined}
-		 */
-		var setActiveLeftSideMenu = function () {
-			var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup": "menuManageGroup";
-			$scope.$emit("updateRoverLeftMenu", activeMenu);
-		};
-
-		/**
 		 * [isInStaycardScreen description]
 		 * @return {Boolean} [description]
 		 */
@@ -1188,9 +1179,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				tap: true,
 				preventDefault: false
 			});
-
-			//updating the left side menu
-			setActiveLeftSideMenu();
 
 			//we have a list of scope varibales which we wanted to initialize
 			initializeVariables();

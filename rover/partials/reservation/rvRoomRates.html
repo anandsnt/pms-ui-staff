@@ -70,16 +70,20 @@
                             <!-- Use class red when number of available rooms is less than e.g. 5 (not sure how this number should be defined and should it be 0 or some other number). Otherwise use class "green". -->
                             <span class="count red" ng-show="stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].availabilityCount < 5">
                                 {{roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].availabilityCount}} room(s) left
+                                <label ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].isGroupRate"> in Group Block</label>
                             </span>
                             <span class="count red" ng-show="!stateCheck.stayDatesMode && getLeastAvailability(room.id, roomAvailability[room.id].defaultRate) < 5">
                                 {{getLeastAvailability(room.id, roomAvailability[room.id].defaultRate)}} room(s) left
+                                <label ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].isGroupRate"> in Group Block</label>
                             </span>
                             <span class="count green" ng-show="stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].availabilityCount > 4">
                                 {{roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].availabilityCount}} room(s) left
+                                <label ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].isGroupRate"> in Group Block</label>
                             </span>
                             <span class="count green" ng-show="!stateCheck.stayDatesMode && getLeastAvailability(room.id, roomAvailability[room.id].defaultRate) > 4">
                                 {{getLeastAvailability(room.id, roomAvailability[room.id].defaultRate)}} room(s) left
-                            </span>
+                                <label ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].isGroupRate"> in Group Block</label>
+                            </span>                            
                         </div>
                         <div class="book-rate" ng-class="{hidden: isVisibleRoom}">
                             <h4 ng-hide="isCorRate(roomAvailability[room.id].defaultRate)" translate>RESV_BEST_RATE</h4>
@@ -269,15 +273,19 @@
                             <!-- Use class red when number of available rooms is less than e.g. 5 (not sure how this number should be defined and should it be 0 or some other number). Otherwise use class "green". -->
                             <span class="count red" ng-show="stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].availabilityCount < 5">
                                 {{roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].availabilityCount}} room(s) left
+                                  <label ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].isGroupRate"> in Group Block</label>
                             </span>
                             <span class="count red" ng-show="!stateCheck.stayDatesMode && getLeastAvailability(selectedRoom, rate.rate.id) < 5">
                                 {{getLeastAvailability(selectedRoom, rate.rate.id)}} room(s) left
+                                  <label ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].isGroupRate"> in Group Block</label>
                             </span>
                             <span class="count green" ng-show="stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].availabilityCount > 4">
                                 {{roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].availabilityCount}} room(s) left
+                                  <label ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].isGroupRate"> in Group Block</label>
                             </span>
                             <span class="count green" ng-show="!stateCheck.stayDatesMode && getLeastAvailability(selectedRoom, rate.rate.id) > 4">
                                 {{getLeastAvailability(selectedRoom, rate.rate.id)}} room(s) left
+                                  <label ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].isGroupRate"> in Group Block</label>
                             </span>
                             <div class="price" ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">
                                 {{currencySymbol}}{{roomAvailability[selectedRoom].total[rate.rate.id].average | number:2}}

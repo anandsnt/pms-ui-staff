@@ -50,8 +50,7 @@ sntRover.controller('guestCardController', [
 							id: searchData.travelAgent.id
 						});
 					}
-					if (!!$scope.reservationData.group.id) {
-						$scope.switchCard('group-card');
+					if (!!$scope.reservationData.group.id) {						
 						$scope.initGroupCard($scope.reservationData.group.id);
 					}
 				}
@@ -994,8 +993,10 @@ sntRover.controller('guestCardController', [
 			//we are in card adding mode
 			switchToNomralCardViewingMode();
 
-			//fecthing the group details and showing them
-			$scope.initGroupCard(selectedGroup.id);
+			//we need to upadte the rate and other associated field, to do that, we are reloading the staycard
+			if ($scope.isInStayCardScreen()) {
+				$scope.reloadTheStaycard();
+			}
 		};
 
 		/**
