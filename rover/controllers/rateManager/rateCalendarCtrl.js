@@ -510,10 +510,10 @@ sntRover.controller('RateCalendarCtrl', [
 
             item.restrictions.push(rr);
             params.details.push(item);
-            if ($scope.currentFilterData){
+            if ($scope.calendarData.data){
                 var rateIds = [];
-                for (var r in $scope.currentFilterData.rates){
-                    rateIds.push($scope.currentFilterData.rates[r].id);
+                for (var r in $scope.calendarData.data){
+                    rateIds.push($scope.calendarData.data[r].id);
                 }
                 params.rate_ids = rateIds;
             }
