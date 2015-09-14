@@ -6,8 +6,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             $scope.rateTypesDetails = {};
             setRateInitialData();
             $scope.detailsMenu = '';
+            $scope.isStandAlone = $rootScope.isStandAlone;
         };
-
         /*
          * change detials sub menu selection
          */
