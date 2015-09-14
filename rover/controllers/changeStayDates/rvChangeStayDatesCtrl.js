@@ -1,5 +1,5 @@
-sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv', '$filter', 'ngDialog', 'rvPermissionSrv',
-	function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter, ngDialog, rvPermissionSrv) {
+sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv', '$filter', 'ngDialog', 'rvPermissionSrv', 'RVReservationBaseSearchSrv',
+	function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter, ngDialog, rvPermissionSrv, RVReservationBaseSearchSrv) {
 		//inheriting some useful things
 		BaseCtrl.call(this, $scope);
 
@@ -702,7 +702,8 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			if ($scope.otherData.showOverbookingAlert) {
 				$scope.invokeApi(RVReservationBaseSearchSrv.checkOverbooking, {
 					from_date: $scope.confirmedCheckinDate,
-					to_date: $scope.confirmedCheckoutDate
+					to_date: $scope.confirmedCheckoutDate,
+					group_id: $scope.reservationData.group.id
 				}, function(availability) {
 					$scope.availabilityData = availability;
 					var houseAvailable = true,

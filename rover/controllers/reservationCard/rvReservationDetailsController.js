@@ -590,7 +590,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				if ($scope.otherData.showOverbookingAlert) {
 					$scope.invokeApi(RVReservationBaseSearchSrv.checkOverbooking, {
 						from_date: reservationMainData.arrivalDate,
-						to_date: reservationMainData.departureDate
+						to_date: reservationMainData.departureDate,
+						group_id: reservationMainData.group.id
 					}, function(availability) {
 						$scope.availabilityData = availability;
 						var houseAvailable = true,
@@ -857,7 +858,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			if ($scope.otherData.showOverbookingAlert) {
 				$scope.invokeApi(RVReservationBaseSearchSrv.checkOverbooking, {
 					from_date: $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
-					to_date: $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd')
+					to_date: $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd'),
+					group_id: reservationMainData.group.id
 				}, function(availability) {
 					$scope.availabilityData = availability;
 					var houseAvailable = true,

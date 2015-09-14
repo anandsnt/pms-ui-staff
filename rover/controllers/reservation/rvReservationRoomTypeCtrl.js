@@ -727,7 +727,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 						// Show appropriate Popup Here
 						$scope.invokeApi(RVReservationBaseSearchSrv.checkOverbooking, {
 							from_date: $scope.reservationData.arrivalDate,
-							to_date: $scope.reservationData.departureDate
+							to_date: $scope.reservationData.departureDate,
+							group_id: $scope.reservationData.group.id
 						}, function(availability) {
 							$scope.availabilityData = availability;
 							ngDialog.open({
@@ -745,7 +746,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 											return 'HOUSE'
 										}
 										return 'ROOM'
-									}()
+									}(),
+									isGroupRate: !!$scope.reservationData.group.id
 								})
 							});
 						});
