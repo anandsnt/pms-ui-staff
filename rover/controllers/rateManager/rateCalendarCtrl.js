@@ -510,6 +510,13 @@ sntRover.controller('RateCalendarCtrl', [
 
             item.restrictions.push(rr);
             params.details.push(item);
+            if ($scope.currentFilterData){
+                var rateIds = [];
+                for (var r in $scope.currentFilterData.rates){
+                    rateIds.push($scope.currentFilterData.rates[r].id);
+                }
+                params.rate_ids = rateIds;
+            }
 
             $scope.invokeApi(RateMngrCalendarSrv.updateRestrictions, params, restrictionUpdateSuccess);
         };
