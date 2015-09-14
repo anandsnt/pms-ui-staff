@@ -11,14 +11,14 @@
             <div ng-repeat="(key1, item1) in results">
                 <!-- Level 1 - Date -->
                 <a href="#addon-{date}" class="title-1 toggle" ng-class="{ 'has-arrow': item1.addons.length }" ng-click="toggleSub(item1)">
-                    <strong>{{ getOnlyName(key1) }}</strong>
+                    <strong>{{ getAddonGrpName(key1) }}</strong>
                     <span>{{ item1.guests }}</span>
                     <span>{{ item1.revenue | currency:currencySymbol:2 }}</span>
                 </a>
                 <div ng-repeat="item2 in item1.addons" ng-init="item2Values = getKeyValues(item2)" class="grid-content" ng-class="{ 'hidden': !openAddon && !item1.hidden }"> <!-- Toggle class hidden when L135-139 tapped -->
                     <!-- Level 2 - Add-On Group -->
                     <a href="#addon-{group}-{date}" class="title-2 toggle" ng-class="{ 'has-arrow': item2Values.dates.length }" ng-click="toggleSub(item2Values)">
-                        <strong>{{ getKeyName(item2) }}</strong>
+                        <strong>{{ getAddonName(item2) }}</strong>
                         <span>{{ item2Values.guests }}</span>
                         <span>{{ item2Values.revenue | currency:currencySymbol:2 }}</span>
                     </a>

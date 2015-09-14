@@ -570,9 +570,20 @@ sntRover.controller('RVReportsMainCtrl', [
                 "addon_group_ids" : selectedIds
             };
 
+            // this is very crude way of manupulating the data
+            // this must some day be moved all to or atleast
+            // handled by the service
             var sucssCallback = function (data) {
-            	reportItem.hasAddons.data = {};
-                reportItem.hasAddons.data = data;
+                var data = data;
+
+                _.each(data, function(item) {
+	                _.each(item['list_of_addons'], function(entry) {
+	                    entry.selected = true;
+	                });
+	            });
+
+	            reportItem.hasAddons.data = data;
+
                 $scope.$emit( 'hideLoader' );
             };
 

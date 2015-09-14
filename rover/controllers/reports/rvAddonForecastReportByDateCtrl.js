@@ -23,19 +23,11 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 			mainCtrlScope    = detailsCtrlScope.$parent,
 			chosenReport     = detailsCtrlScope.chosenReport,
 			results          = mainCtrlScope.results,
-			addonGroups      = mainCtrlScope.addonGroups,
-			addons           = mainCtrlScope.addons,
-			allAddonHash     = {};
+			addonGrpHash = {},
+			addonHash    = {},
+			addonGroups,
+			addons;
 
-		_.each(addonGroups, function(item) {
-			allAddonHash[item.id] = item.description;
-		});
-
-		_.each(addons, function(item) {
-			_.each(item['list_of_addons'], function(entry) {
-				allAddonHash[entry.addon_id] = entry.addon_name;
-			});
-		});		
 
 		$scope.getKey = function(item) {
 			return _.keys(item)[0];
@@ -45,8 +37,12 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 			return item[$scope.getKey(item)];
 		};
 
-		$scope.getKeyName = function(item) {
-			return allAddonHash[$scope.getKey(item)] || item;
+		$scope.getAddonGrpName = function(item) {
+			return addonGrpHash[$scope.getKey(item)] || item;
+		};
+
+		$scope.getAddonName = function(item) {
+			return addonHash[$scope.getKey(item)] || item;
 		};
 
 		$scope.toggleSub = function(item) {
@@ -70,8 +66,40 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 			return resClassNames[status] || '';
 		};
 
+		$scope.sortRes = function(field, addon) {
+ 			var params = {};
 
-		var calPagination = function(addon) {
+ 			addon.sortField = field;
+ 			params['sort_field'] = field;
+
+			if ( 'ROOM' == field ) {
+				addon.roomSortDir = (addon.roomSortDir == undefined || addon.roomSortDir == false) ? true : false;
+				addon.nameSortDir = undefined;
+				params['sort_dir'] = addon.roomSortDir;
+			} else if ( 'NAME' == field ) {
+				addon.nameSortDir = (addon.nameSortDir == undefined || addon.nameSortDir == false) ? true : false;
+				addon.roomSortDir = undefined;
+				params['sort_dir'] = addon.nameSortDir;
+			};
+
+			callResAPI( addon, params );
+ 		};
+
+ 		$scope.loadRes = function(type, addon) {
+ 			if ( 'next' == type && ! addon.disableNextBtn ) {
+ 				addon.pageNo++;
+ 				_.extend( addon, calPagination(addon) );
+
+ 				callResAPI( addon );
+ 			} else if ( 'prev' == type && ! addon.disablePrevBtn ) {
+ 				addon.pageNo--;
+ 				_.extend( addon, calPagination(addon) );
+ 				
+ 				callResAPI( addon );
+ 			};
+ 		};
+
+		function calPagination (addon) {
 			var perPage = 25,
 				pageNo = addon.pageNo || 1,
 				netTotalCount = addon.total_count || 0,
@@ -105,37 +133,13 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 				'disableNextBtn': disableNextBtn,
 				'resultFrom': resultFrom,
 				'resultUpto': resultUpto
-			}
+			};
  		};
 
-
- 		_.each(results, function(eachResult, resultKey) {
- 			_.each(eachResult.addon_groups, function(addonGroup) {
- 				_.each($scope.getKeyValues(addonGroup).addons, function(addonsObj) {
- 					_.each(addonsObj, function(addon, addonKey) {
- 						_.extend(addon, {
- 							'sortField': undefined,
- 							'roomSortDir': undefined,
- 							'nameSortDir': undefined,
-
- 							'date': resultKey,
- 							'addonGroupId': $scope.getKey(addonGroup),
- 							'addonId': addonKey,
- 						});
-
- 						_.extend( addon, calPagination(addon) );
- 					});
- 				});
- 			});
- 		});
-
-
-
-
- 		var callResAPI = function(addon, params) {
+ 		function callResAPI (addon, params) {
  			var params = params || {},
  				statuses,
- 				key;;
+ 				key;
 
  			var success = function (data) {
 				$scope.$emit( 'hideLoader' );
@@ -168,38 +172,66 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
  			$scope.invokeApi(reportsSubSrv.fetchAddonReservations, params, success, error);
  		};
 
- 		$scope.sortRes = function(field, addon) {
- 			var params = {};
 
- 			addon.sortField = field;
- 			params['sort_field'] = field;
+ 		function init () {
+			addonGroups  = mainCtrlScope.addonGroups;
+			addons       = mainCtrlScope.addons;
+			addonGrpHash = {};
+			addonHash    = {};
 
-			if ( 'ROOM' == field ) {
-				addon.roomSortDir = (addon.roomSortDir == undefined || addon.roomSortDir == false) ? true : false;
-				addon.nameSortDir = undefined;
-				params['sort_dir'] = addon.roomSortDir;
-			} else if ( 'NAME' == field ) {
-				addon.nameSortDir = (addon.nameSortDir == undefined || addon.nameSortDir == false) ? true : false;
-				addon.roomSortDir = undefined;
-				params['sort_dir'] = addon.nameSortDir;
-			};
 
-			callResAPI( addon, params );
- 		};
+			_.each(addonGroups, function(item) {
+				addonGrpHash[item.id] = item.description;
+			});
 
- 		$scope.loadRes = function(type, addon) {
- 			if ( 'next' == type && ! addon.disableNextBtn ) {
- 				addon.pageNo++;
- 				_.extend( addon, calPagination(addon) );
+			_.each(addons, function(item) {
+				_.each(item['list_of_addons'], function(entry) {
+					addonHash[entry.addon_id] = entry.addon_name;
+				});
+			});
+			
+			_.each(results, function(eachResult, resultKey) {
+				_.each(eachResult.addon_groups, function(addonGroup) {
+					_.each($scope.getKeyValues(addonGroup).addons, function(addonsObj) {
+						_.each(addonsObj, function(addon, addonKey) {
+							_.extend(addon, {
+								'sortField': undefined,
+								'roomSortDir': undefined,
+								'nameSortDir': undefined,
 
- 				callResAPI( addon );
- 			} else if ( 'prev' == type && ! addon.disablePrevBtn ) {
- 				addon.pageNo--;
- 				_.extend( addon, calPagination(addon) );
- 				
- 				callResAPI( addon );
- 			};
- 		};
+								'date': resultKey,
+								'addonGroupId': $scope.getKey(addonGroup),
+								'addonId': addonKey,
+							});
+
+							_.extend( addon, calPagination(addon) );
+						});
+					});
+				});
+			});
+		};
+
+		init();	
+
+
+		// re-render must be initiated before for taks like printing.
+		// thats why timeout time is set to min value 50ms
+		var reportSubmited    = $scope.$on( reportMsgs['REPORT_SUBMITED'], init );
+		var reportPrinting    = $scope.$on( reportMsgs['REPORT_PRINTING'], init );
+		var reportUpdated     = $scope.$on( reportMsgs['REPORT_UPDATED'], init );
+		var reportPageChanged = $scope.$on( reportMsgs['REPORT_PAGE_CHANGED'], init );
+
+		$scope.$on( 'destroy', reportSubmited );
+		$scope.$on( 'destroy', reportUpdated );
+		$scope.$on( 'destroy', reportPrinting );
+		$scope.$on( 'destroy', reportPageChanged );
+
+ 		
+
+
+
+
+
 
 
 

@@ -23,19 +23,12 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 			mainCtrlScope    = detailsCtrlScope.$parent,
 			chosenReport     = detailsCtrlScope.chosenReport,
 			results          = mainCtrlScope.results,
-			addonGroups      = mainCtrlScope.addonGroups,
-			addons           = mainCtrlScope.addons,
-			allAddonHash     = {};
+			addonGrpHash = {},
+			addonHash    = {},
+			addonGroups,
+			addons;
 
-		_.each(addonGroups, function(item) {
-			allAddonHash[item.id] = item.description;
-		});
-
-		_.each(addons, function(item) {
-			_.each(item['list_of_addons'], function(entry) {
-				allAddonHash[entry.addon_id] = entry.addon_name;
-			});
-		});		
+	
 
 		$scope.getKey = function(item) {
 			return _.keys(item)[0];
@@ -49,8 +42,12 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 			return allAddonHash[$scope.getKey(item)] || item;
 		};
 
-		$scope.getOnlyName = function(id) {
-			return allAddonHash[id] || id;
+		$scope.getAddonGrpName = function(id) {
+			return addonGrpHash[id] || id;
+		};
+
+		$scope.getAddonName = function(item) {
+			return addonHash[$scope.getKey(item)] || item;
 		};
 
 		$scope.toggleSub = function(item) {
@@ -75,7 +72,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 		};
 
 
-		var calPagination = function(eachDate) {
+		function calPagination (eachDate) {
 			var perPage = 25,
 				pageNo = eachDate.pageNo || 1,
 				netTotalCount = eachDate.total_count || 0,
@@ -109,71 +106,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 				'disableNextBtn': disableNextBtn,
 				'resultFrom': resultFrom,
 				'resultUpto': resultUpto
-			}
- 		};
-
-
- 		_.each(results, function(eachAddonGroup, addonGroupKey) { 			
- 			_.each(eachAddonGroup.addons, function(eachAddon) {
- 				// console.log($scope.getKeyValues(eachAddon));
-
- 				_.each($scope.getKeyValues(eachAddon).dates, function(dateObj) {
- 					var addonKey = $scope.getKey(eachAddon),
- 						dateKey  = $scope.getKey(dateObj),
- 						eachDate = $scope.getKeyValues(dateObj);
-
- 					_.extend(eachDate, {
- 						'sortField': undefined,
- 						'roomSortDir': undefined,
- 						'nameSortDir': undefined,
-
- 						'date': dateKey,
- 						'addonGroupId': addonGroupKey,
- 						'addonId': addonKey,
- 					});
-
- 					_.extend( eachDate, calPagination(eachDate) );
- 				});
- 			});
- 		});
-
-
-
-
- 		var callResAPI = function(eachDate, params) {
- 			var params = params || {},
- 				statuses,
- 				key;;
-
- 			var success = function (data) {
-				$scope.$emit( 'hideLoader' );
-				eachDate.reservations = data;
- 			};
-
- 			var error = function (data) {
-				$scope.$emit( 'hideLoader' );
- 			};
-
- 			_.extend(params, {
- 				'id'             : chosenReport.id,
- 				'date'           : eachDate.date,
- 				'addon_group_id' : eachDate.addonGroupId,
- 				'addon_id'       : eachDate.addonId,
- 				'page'           : eachDate.pageNo,
- 				'per_page'       : eachDate.perPage,
- 			});
-
- 			statuses = _.where(chosenReport['hasReservationStatus']['data'], { selected: true });
- 			if ( statuses.length > 0 ) {
- 				key         = reportParams['RESERVATION_STATUS'];
- 				params[key] = [];
- 				/**/
- 				_.each(statuses, function(each) {
- 					params[key].push( each.id );
- 				});
- 			};
-
- 			$scope.invokeApi(reportsSubSrv.fetchAddonReservations, params, success, error);
+			};
  		};
 
  		$scope.sortRes = function(field, eachDate) {
@@ -211,6 +144,100 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  				callResAPI( eachDate );
  			};
  		};
+
+
+
+
+ 		function callResAPI (eachDate, params) {
+ 			var params = params || {},
+ 				statuses,
+ 				key;
+
+ 			var success = function (data) {
+				$scope.$emit( 'hideLoader' );
+				eachDate.reservations = data;
+ 			};
+
+ 			var error = function (data) {
+				$scope.$emit( 'hideLoader' );
+ 			};
+
+ 			_.extend(params, {
+ 				'id'             : chosenReport.id,
+ 				'date'           : eachDate.date,
+ 				'addon_group_id' : eachDate.addonGroupId,
+ 				'addon_id'       : eachDate.addonId,
+ 				'page'           : eachDate.pageNo,
+ 				'per_page'       : eachDate.perPage,
+ 			});
+
+ 			statuses = _.where(chosenReport['hasReservationStatus']['data'], { selected: true });
+ 			if ( statuses.length > 0 ) {
+ 				key         = reportParams['RESERVATION_STATUS'];
+ 				params[key] = [];
+ 				/**/
+ 				_.each(statuses, function(each) {
+ 					params[key].push( each.id );
+ 				});
+ 			};
+
+ 			$scope.invokeApi(reportsSubSrv.fetchAddonReservations, params, success, error);
+ 		};
+
+ 		function init () {
+ 			addonGroups  = mainCtrlScope.addonGroups;
+			addons       = mainCtrlScope.addons;
+			addonGrpHash = {};
+			addonHash    = {};
+
+ 			_.each(addonGroups, function(item) {
+ 				addonGrpHash[item.id] = item.description;
+ 			});
+
+ 			_.each(addons, function(item) {
+ 				_.each(item['list_of_addons'], function(entry) {
+ 					addonHash[entry.addon_id] = entry.addon_name;
+ 				});
+ 			});	
+
+ 			_.each(results, function(eachAddonGroup, addonGroupKey) { 			
+ 				_.each(eachAddonGroup.addons, function(eachAddon) {
+
+ 					_.each($scope.getKeyValues(eachAddon).dates, function(dateObj) {
+ 						var addonKey = $scope.getKey(eachAddon),
+ 							dateKey  = $scope.getKey(dateObj),
+ 							eachDate = $scope.getKeyValues(dateObj);
+
+ 						_.extend(eachDate, {
+ 							'sortField': undefined,
+ 							'roomSortDir': undefined,
+ 							'nameSortDir': undefined,
+
+ 							'date': dateKey,
+ 							'addonGroupId': addonGroupKey,
+ 							'addonId': addonKey,
+ 						});
+
+ 						_.extend( eachDate, calPagination(eachDate) );
+ 					});
+ 				});
+ 			});
+ 		};
+
+ 		init();
+
+
+ 		// re-render must be initiated before for taks like printing.
+		// thats why timeout time is set to min value 50ms
+		var reportSubmited    = $scope.$on( reportMsgs['REPORT_SUBMITED'], init );
+		var reportPrinting    = $scope.$on( reportMsgs['REPORT_PRINTING'], init );
+		var reportUpdated     = $scope.$on( reportMsgs['REPORT_UPDATED'], init );
+		var reportPageChanged = $scope.$on( reportMsgs['REPORT_PAGE_CHANGED'], init );
+
+		$scope.$on( 'destroy', reportSubmited );
+		$scope.$on( 'destroy', reportUpdated );
+		$scope.$on( 'destroy', reportPrinting );
+		$scope.$on( 'destroy', reportPageChanged );
 
 
 
