@@ -50,8 +50,7 @@ sntRover.controller('guestCardController', [
 							id: searchData.travelAgent.id
 						});
 					}
-					if (!!$scope.reservationData.group.id) {
-						$scope.switchCard('group-card');
+					if (!!$scope.reservationData.group.id) {						
 						$scope.initGroupCard($scope.reservationData.group.id);
 					}
 				}
