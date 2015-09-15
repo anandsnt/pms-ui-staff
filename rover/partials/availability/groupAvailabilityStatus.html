@@ -25,7 +25,7 @@
 					</td>
 				</tr>
 				<tr class="room-details" ng-repeat="rowData in data.holdstatuses track by $index" ng-class="{'hidden':hideHoldStatusOf.groupRoomTotal}">
-					<th scope="row">{{rowData[0].hold_status}}</th>
+					<th scope="row">{{getGroupName(rowData[0].id)}}</th>
 					<td ng-repeat="cellData in rowData track by $index">
 						<div class="inner">{{cellData.total_number_of_rooms_blocked}}</div>
 					</td>
@@ -36,8 +36,8 @@
 						<div class="inner green">{{groupTotalPickedUp}}</div>
 					</td>
 				</tr>
-				<tr class="room-details" ng-repeat="rowData in data.holdstatuses track by $index" ng-class="{'hidden':hideHoldStatusOf.groupRoomPicked}">
-					<th scope="row">{{rowData[0].hold_status}}</th>
+				<tr class="room-details" ng-repeat="rowData in data.holdstatuses track by $index" ng-class="getClassForHoldStatusRowInPickedUp(rowData[0].id)">
+					<th scope="row">{{getGroupName(rowData[0].id)}}</th>
 					<td ng-repeat="cellData in rowData track by $index">
 						<div class="inner green">{{cellData.total_no_of_pickedup_count}}</div>
 					</td>
