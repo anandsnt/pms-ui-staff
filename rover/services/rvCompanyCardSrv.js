@@ -19,6 +19,20 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			});
 			return deferred.promise;
 		};
+		/**
+		 * getting details of commission status of travel agent card
+		 */
+		this.fetchCommissionDetail = function(data) {
+			var deferred = $q.defer();
+			var url = ' /api/hotel_settings/default_agent_commission_details';
+			rvBaseWebSrvV2.getJSON(url).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
+
 
 		/**
 		 * service function used for retreive country list
