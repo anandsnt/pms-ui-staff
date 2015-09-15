@@ -260,7 +260,6 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		// FOR DEV WORK
 		// PLEASE DO NO REMOVE THIS LINE, U CAN COMMENT IT OUT
 		// PLEASE DO NO REMOVE THIS LINE, U CAN COMMENT IT OUT
-		// PLEASE DO NO REMOVE THIS LINE, U CAN COMMENT IT OUT
 		console.debug( '[%s %O] >>> [%s %O]', fromState.name, fromParams, toState.name, toParams );
 		/**
 		 * I don't know who you are. I don't know what you want.
