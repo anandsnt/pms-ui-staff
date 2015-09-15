@@ -758,6 +758,9 @@ sntRover.controller('rvTabletCtrl', [
             };
             
             $scope.loginAdmin = function(){
+                $scope.headingText = 'Admin Username';
+                $scope.subHeadingText = '';
+                $scope.inputTextPlaceholder = '';
                 $scope.goToScreen(null, 'admin-login-username', true);
             };
 

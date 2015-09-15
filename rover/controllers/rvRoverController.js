@@ -18,6 +18,12 @@ sntRover.controller('roverController',
 
 
     $rootScope.isOWSErrorShowing = false;
+    $scope.kiosk = false;
+    if (localStorage['kioskUser']){
+        $scope.kiosk = true;
+        $scope.$emit('hideLoader');
+        return;
+    }
     if (hotelDetails.language) {
       $translate.use(hotelDetails.language.value);
       $translate.fallbackLanguage('EN');
