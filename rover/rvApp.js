@@ -298,7 +298,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 
 		// capture the prev state document title
 		if (fromState.name === 'rover.reservation.staycard.roomassignment' && toState.name === 'rover.diary'){
-            //cico-13697, fix until proper workflow routes are developed
+            // cico-13697, fix until proper workflow routes are developed
             return;
         }
         $_savePrevStateTitle(document.title);
