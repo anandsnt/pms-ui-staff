@@ -57,6 +57,10 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		$scope.showReportDetails = false;
 
+		var addonsCount = 0;
+		_.each ($scope.addons, function (each) {
+			addonsCount += each.list_of_addons.length;
+		});
 
 		// ctrls created for a specific reports, e.g: OccRev, may require
 		// to show a modal for user to modify the report for print.
@@ -73,7 +77,6 @@ sntRover.controller('RVReportsMainCtrl', [
 			}
 		};
 		$scope.printOptions.resetSelf();
-
 
 
 		// lets fix the results per page to, user can't edit this for now
@@ -492,8 +495,38 @@ sntRover.controller('RVReportsMainCtrl', [
 			};
 
 			return selectedItems;
-		}
+		};
 
+		// show the no.of addons selected
+		$scope.getNoOfSelectedAddons = function (reportItem, fauxDS) {
+			var selectedItems = [],
+			    count = 0;
+
+			_.each (fauxDS.data, function (each) {
+				var selectedAddons = _.where(each.list_of_addons, { selected: true });
+				selectedItems.push(selectedAddons);
+				count += selectedAddons.length;
+			});
+
+			if ( count === 0 ) {
+                fauxDS.title = fauxDS.defaultTitle;
+            }
+            else if ( count === 1 ) {
+            	_.each (selectedItems, function (each) {
+            		_.each (each, function (addon) {
+            			if (addon.selected == true) {
+            				fauxDS.title = addon.addon_name;
+            			}
+            		});
+            	});
+            }
+            else if ( count == addonsCount ) {
+            	fauxDS.title = "All Selected";
+            }
+            else {
+            	fauxDS.title = count + ' Selected';
+            }
+		};
 
 		$scope.toggleAddons = function () {
             $scope.isVisible = $scope.isVisible ? false : true;
@@ -525,6 +558,7 @@ sntRover.controller('RVReportsMainCtrl', [
             $scope.fauxSelectChange(reportItem, fauxDS);
         };
 
+        // fetch the addons corresponding to selected addon groups
         var showAddons = function (reportItem, selectedItems) {
             var selectedIds = [];
 
@@ -536,9 +570,20 @@ sntRover.controller('RVReportsMainCtrl', [
                 "addon_group_ids" : selectedIds
             };
 
+            // this is very crude way of manupulating the data
+            // this must some day be moved all to or atleast
+            // handled by the service
             var sucssCallback = function (data) {
-            	reportItem.hasAddons.data = {};
-                reportItem.hasAddons.data = data;
+                var data = data;
+
+                _.each(data, function(item) {
+	                _.each(item['list_of_addons'], function(entry) {
+	                    entry.selected = true;
+	                });
+	            });
+
+	            reportItem.hasAddons.data = data;
+
                 $scope.$emit( 'hideLoader' );
             };
 
@@ -1026,9 +1071,9 @@ sntRover.controller('RVReportsMainCtrl', [
 						$scope.appliedFilter.reservationStatus.push( each.status );
 					});
 
-					// in case if all addon groups are selected
-					if ( report['hasAddons']['data'].length === selected.length ) {
-						$scope.appliedFilter.addons = ['All Addons'];
+					// in case if all reservation status are selected
+					if ( report['hasReservationStatus']['data'].length === selected.length ) {
+						$scope.appliedFilter.reservationStatus = ['All Reservation Status'];
 					};
 				};
 			};

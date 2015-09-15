@@ -722,7 +722,7 @@
     "WRITING_BAND_TYPE": "Writing band type..",
     "KEY_BAND_CREATED_SUCCESSFULLY": "Key, Band created successfully",
     "KEY_BAND_CREATED_FAILED_WRITING_BANDTYPE": "Key created, Band Added, Writing band type failed.."
-,    
+,"DEFAULT_TITLE" : "Hotel Self-Service",    
     
     "NEW_PAYMENT_METHOD": "New Payment Method",
     "PAYMENT_TYPE": "Payment type",
