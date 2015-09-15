@@ -55,9 +55,9 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	*/
 	var $_mustRevAnim = false,
 		$_userReqBack = false,
-		$_prevStateName = null,
-		$_prevStateParam = null,
-		$_prevStateTitle = null;
+		$_prevStateName = '',
+		$_prevStateParam = {},
+		$_prevStateTitle = '';
 
 	var StateStore = function(stateName, checkAgainst) {
 		var self = this;
@@ -116,7 +116,6 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	$rootScope.diaryState = new StateStore('rover.diary', ['rover.dashboard.manager', 'rover.reservation.search']);
 
 
-
 	var $_backTitleDict = {
 		'SHOWING DASHBOARD' : 'DASHBOARD',
 		'RESERVATIONS'      : 'CREATE RESERVATION'
@@ -133,6 +132,10 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 
 	$rootScope.getPrevStateName = function() {
 		return $_prevStateName;
+	};
+
+	$rootScope.getPrevStateParam = function() {
+		return $_prevStateParam;
 	};
 
 
@@ -271,8 +274,8 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 
 
 		// saving the prevState name and params
-                    $_prevStateName  = fromState.name;
-                    $_prevStateParam = fromParams;
+		$_prevStateName  = fromState.name;
+		$_prevStateParam = fromParams;
 
 	});
 
@@ -295,10 +298,10 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 
 		// capture the prev state document title
 		if (fromState.name === 'rover.reservation.staycard.roomassignment' && toState.name === 'rover.diary'){
-                    //cico-13697, fix until proper workflow routes are developed
-                    return;
-                }
-                $_savePrevStateTitle(document.title);
+            //cico-13697, fix until proper workflow routes are developed
+            return;
+        }
+        $_savePrevStateTitle(document.title);
 
 		if ( $rootScope.setNextState.data ) {
 			_.extend(toParams, $rootScope.setNextState.data);
