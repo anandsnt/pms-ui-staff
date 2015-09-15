@@ -469,13 +469,16 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     $scope.roomNumber = data.room_no;
                     $scope.duration_of_stay = data.duration_of_stay || $scope.reservationData.numNights;
                     $scope.addonsData.existingAddons = [];
+                    for (roomIndex = startIndex; roomIndex <= endIndex; roomIndex++) { //Reset Addons list in Room Model - CICO-20061
+                        $scope.reservationData.rooms[roomIndex].addons = [];
+                    }
                     var associatedPackages = data.existing_packages || data;
                     angular.forEach(associatedPackages, function(item) {
                         var addonsData = {
                             id: item.id,
                             title: item.name,
                             quantity: item.addon_count,
-                            totalAmount: item.addon_count * item.amount,
+                            totalAmount: item.addon_count * parseFloat(item.amount),
                             price_per_piece: item.amount,
                             amount_type: item.amount_type.value,
                             post_type: item.post_type.value,
@@ -488,11 +491,13 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             $scope.reservationData.rooms[roomIndex].addons.push({
                                 quantity: addonsData.quantity,
                                 id: addonsData.id,
-                                price: parseFloat(addonsData.price_per_piece),
+                                price: parseFloat(item.amount),
                                 amountType: item.amount_type,
                                 postType: item.post_type,
                                 title: addonsData.title,
-                                totalAmount: addonsData.totalAmount
+                                totalAmount: addonsData.totalAmount,
+                                is_inclusive: addonsData.is_inclusive,
+                                taxes: item.taxes
                             });
                         }
 
