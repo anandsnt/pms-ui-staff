@@ -454,6 +454,7 @@ sntRover.controller('rvTabletCtrl', [
                         
                         $scope.invokeApi(rvTabletSrv.fetchReservations, {
                             'find_by':findBy,
+                            'last_name':$scope.input.last_name,
                             'value': textValue
                         }, fetchCompleted);
                         break;
@@ -467,6 +468,7 @@ sntRover.controller('rvTabletCtrl', [
                         
                         $scope.invokeApi(rvTabletSrv.fetchReservations, {
                             'find_by':findBy,
+                            'last_name':$scope.input.last_name,
                             'value': textValue
                         }, fetchCompleted);
                     break;
@@ -756,6 +758,18 @@ sntRover.controller('rvTabletCtrl', [
                     }
                 }
             };
+            
+            $scope.agreeTerms = function(){
+                
+                
+            };
+            
+            
+            
+            
+            
+            
+            
             
             $scope.loginAdmin = function(){
                 $scope.headingText = 'Admin Username';
