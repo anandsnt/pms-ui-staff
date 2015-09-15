@@ -708,8 +708,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 					populateStayDates(rateId, roomId, i);
 
-					$scope.reservationData.demographics.market = $scope.displayData.allRates[rateId].market_segment.id === null ? "" : $scope.displayData.allRates[rateId].market_segment.id;
-					$scope.reservationData.demographics.source = $scope.displayData.allRates[rateId].source.id === null ? "" : $scope.displayData.allRates[rateId].source.id;
+					$scope.reservationData.rooms[i].demographics.market = $scope.displayData.allRates[rateId].market_segment.id === null ? "" : $scope.displayData.allRates[rateId].market_segment.id;
+					$scope.reservationData.rooms[i].demographics.source = $scope.displayData.allRates[rateId].source.id === null ? "" : $scope.displayData.allRates[rateId].source.id;
 					//7641 - Update the rateDetails array in the reservationData
 					$scope.reservationData.rateDetails[i] = $scope.roomAvailability[roomId].ratedetails;
 					// Revisit all occupancyLimit warnings
