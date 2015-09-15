@@ -19,7 +19,7 @@ sntRover.service('rvTabletSrv',
                 };
                 this.fetchReservationDetails = function (param) {
                     var deferred = $q.defer(),
-                            url = '/staff/staycards/reservation_details.json?reservation='+param.id+localStorage['kioskUser'];
+                            url = '/staff/staycards/reservation_details.json?reservation='+param.id;//+localStorage['kioskUser'];
                     
 
                     rvBaseWebSrvV2.getJSON(url).then(function (data) {
@@ -32,8 +32,11 @@ sntRover.service('rvTabletSrv',
                 
                 this.fetchReservations = function (param) {
                     var filter = '';
-                    if (param.find_by){
-                        filter = '?'+param.find_by+'='+param.value+localStorage['kioskUser'];
+                    if (param.last_name){
+                         filter = '?last_name='+param.last_name;
+                    }
+                    if (param.find_by !='' && param.last_name !=''){
+                        filter += '&'+param.find_by+'='+param.value;//+localStorage['kioskUser'];
                     }
                     var deferred = $q.defer(),
                             url = '/api/reservations'+filter;
