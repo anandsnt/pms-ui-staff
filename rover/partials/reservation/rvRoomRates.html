@@ -60,7 +60,7 @@
         <div>
             <ul ng-if="activeCriteria == 'RECOMMENDED'" class="rooms-and-rates wrapper"></ul>
             <ul class="rooms-and-rates wrapper" ng-if="activeCriteria == 'ROOM_TYPE'">
-                <li ng-repeat="room in displayData.roomTypes" ng-hide="$index > 1 && showLessRooms" ng-init="isVisibleRoom = (selectedRoomType == room.id)">
+                <li ng-repeat="room in displayData.roomTypes track by $index" ng-hide="$index > 1 && showLessRooms" ng-init="isVisibleRoom = (selectedRoomType == room.id)">
                     <a class="has-arrow toggle" ng-class="{active: isVisibleRoom}" ng-click="isVisibleRoom = !isVisibleRoom; refreshScroll()">
                         <div class="data">
                             <h2>{{room.name}}</h2>
