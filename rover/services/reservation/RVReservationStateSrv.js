@@ -226,11 +226,13 @@ sntRover.service('RVReservationStateService', [
 		 * @param  {[type]} departure [description]
 		 * @return {[type]}           [description]
 		 */
-		self.parseRoomRates = function(roomRates, arrival, departure, stayDates, activeRoom, numNights, code, membershipValidity) {
+		self.parseRoomRates = function(roomRates, arrival, departure, stayDates, activeRoom, numNights, additionalData, membershipValidity) {
 			var rooms = {},
 				ratesMeta = {},
 				roomDetails = [],
-				displayDates = [];
+				displayDates = [],
+				code = additionalData.code,
+				selectedGroup = additionalData.group.id;
 
 			$(roomRates.room_types).each(function(i, d) {
 				roomDetails[d.id] = d;
@@ -387,14 +389,14 @@ sntRover.service('RVReservationStateService', [
 							associatedAddons: addonsApplied,
 							rateBreakUp: room_rate,
 							day: new tzIndependentDate(for_date),
-							availabilityCount: ratesMeta[rate_id].rate_type.name === "Group Rates" ? rooms[currentRoomId].availabilityNumbers[for_date].group : rooms[currentRoomId].availabilityNumbers[for_date].room,
+							availabilityCount: ratesMeta[rate_id].rate_type.name === "Group Rates" || !!selectedGroup ? rooms[currentRoomId].availabilityNumbers[for_date].group : rooms[currentRoomId].availabilityNumbers[for_date].room,
 							taxForAddons: taxForAddons,
 							houseAvailability: houseAvailability,
 							linkedPromos: linkedPromotions,
 							applyPromotion: applyPromotion,
 							appliedPromotion: code,
 							isMember: ratesMeta[rate_id].is_member && membershipValidity,
-							isGroupRate: ratesMeta[rate_id].rate_type.name === "Group Rates"
+							isGroupRate: ratesMeta[rate_id].rate_type.name === "Group Rates" || !!selectedGroup
 						};
 
 						var currentRoomRateDetails = currentRoom.ratedetails[for_date][rate_id];
