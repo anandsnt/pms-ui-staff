@@ -708,8 +708,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 					populateStayDates(rateId, roomId, i);
 
-					$scope.reservationData.demographics.market = $scope.displayData.allRates[rateId].market_segment.id === null ? "" : $scope.displayData.allRates[rateId].market_segment.id;
-					$scope.reservationData.demographics.source = $scope.displayData.allRates[rateId].source.id === null ? "" : $scope.displayData.allRates[rateId].source.id;
+					$scope.reservationData.rooms[i].demographics.market = $scope.displayData.allRates[rateId].market_segment.id === null ? "" : $scope.displayData.allRates[rateId].market_segment.id;
+					$scope.reservationData.rooms[i].demographics.source = $scope.displayData.allRates[rateId].source.id === null ? "" : $scope.displayData.allRates[rateId].source.id;
 					//7641 - Update the rateDetails array in the reservationData
 					$scope.reservationData.rateDetails[i] = $scope.roomAvailability[roomId].ratedetails;
 					// Revisit all occupancyLimit warnings
@@ -897,7 +897,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 							//try for candidate rooms in the same level
 							candidateRooms = _.filter($scope.roomAvailability, function(room) {
 								return room.level === level &&
-									room.id !== $scope.stateCheck.preferredType &&
+									parseInt(room.id,10) !== parseInt($scope.stateCheck.preferredType,10) &&
 									room.availability === true &&
 									room.rates.length > 0 &&
 									parseInt(room.averagePerNight) >= parseInt($scope.roomAvailability[$scope.stateCheck.preferredType].averagePerNight) &&
@@ -1259,7 +1259,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					$scope.reservationData.rooms[$scope.stateCheck.roomDetails.firstIndex].stayDates,
 					$scope.activeRoom,
 					$scope.reservationData.numNights,
-					$scope.reservationData.code,
+					{
+						code: $scope.reservationData.code,
+						group: $scope.reservationData.group
+					},
 					$scope.reservationData.member.isSelected),
 				rooms = parsedRooms.rooms;
 			$scope.displayData.dates = parsedRooms.displayDates;
