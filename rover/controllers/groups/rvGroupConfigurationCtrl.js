@@ -1129,7 +1129,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
          */
         var resolvedBackBtn = (function ($r) {
 
-            /** @type {Object} the default state which should be used if all checks fails */
+            /** the default state which should be used if all checks fails */
             var title = 'GROUPS',
                 name  = 'rover.groups.search',
                 param = {};
@@ -1161,14 +1161,18 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
             // if its part of reservation flow
             // else if its part of proper flow
-            if ( _.indexOf(reservationFlow.forRoutes, prevName) > 0 ) {
+            if ( _.indexOf(reservationFlow.forRoutes, prevName) >= 0 ) {
                 title = reservationFlow.backTitle;
                 name  = reservationFlow.goBackTo;
-            } else ( _.indexOf(flowStates, prevName) > 0 ) {
+            } else if ( _.indexOf(flowStates, prevName) >= 0 ) {
                 title = prevTitle;
                 name  = prevName;
                 param = prevParam;
             };
+
+            console.log( _.indexOf(reservationFlow.forRoutes, prevName) );
+
+            console.log( _.indexOf(flowStates, prevName) );
 
             return {
                 'title' : title,
@@ -1176,6 +1180,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 'param' : param
             };
         })( $rootScope );
+        console.log( resolvedBackBtn );
 
         $scope.updateAndBack = function() {
             if ( !$scope.isInAddMode() && 'SUMMARY' === $scope.groupConfigData.activeTab ) {

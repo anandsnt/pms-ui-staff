@@ -251,11 +251,26 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	*	app/assets/rover/partials/staycard/rvStaycard.html
 	*/
 	$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-                if (fromState.name === 'rover.reservation.staycard.roomassignment' && toState.name === 'rover.diary'){
-                    //cico-13697, fix until proper workflow routes are developed
-                    return;
-                }
-		// spiting state names so as to add them to '$_revAnimList', if needed
+        if (fromState.name === 'rover.reservation.staycard.roomassignment' && toState.name === 'rover.diary'){
+            //cico-13697, fix until proper workflow routes are developed
+            return;
+        }
+		
+
+		// FOR DEV WORK
+		// PLEASE DO NO REMOVE THIS LINE, U CAN COMMENT IT OUT
+		// PLEASE DO NO REMOVE THIS LINE, U CAN COMMENT IT OUT
+		// PLEASE DO NO REMOVE THIS LINE, U CAN COMMENT IT OUT
+		console.debug( '[%s %O] >>> [%s %O]', fromState.name, fromParams, toState.name, toParams );
+		/**
+		 * I don't know who you are. I don't know what you want.
+		 * If you are looking for ransom I can tell you I don't have money, but what I do have are a very particular set of skills.
+		 * Skills I have acquired over a very long career. Skills that make me a nightmare for people like you.
+		 * If you let my code stay or comment, that'll be the end of it.
+		 * I will not look for you, I will not pursue you, but if you don't...
+		 * I will look for you, I will find you and I will kill you.
+		 */
+
 
 		// this must be reset with every state change
 		// invidual controllers can then set it
