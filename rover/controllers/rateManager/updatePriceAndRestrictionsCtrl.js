@@ -715,6 +715,13 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
                     data.room_type_id = $scope.popupData.selectedRoomType;
                     delete data.rate_id;
                 }
+            } 
+            data.rate_ids = [];    
+            //the user is in the Rates screen, which may have multiple rates selected in view, check for 'all_data_selected'
+            if ($scope.calendarData.data){
+                for (var f in $scope.calendarData.data){
+                    data.rate_ids.push($scope.calendarData.data[f].id);
+                }
             }
 
             data.room_type_id = $scope.popupData.selectedRoomType;
