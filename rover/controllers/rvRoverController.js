@@ -118,9 +118,6 @@ sntRover.controller('roverController',
       
       $rootScope.kiosk = hotelDetails.kiosk;
 
-      //Tablet-Kiosk
-      $scope.kioskModeEnabled = false;
-
     //set MLI Merchant Id
     try {
       sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
@@ -340,10 +337,6 @@ sntRover.controller('roverController',
     });
 
     $scope.init = function() {
-        if ($scope.kioskModeEnabled){
-            $state.go('rover.kiosk', {});
-            return;
-        }
         BaseCtrl.call(this, $scope);
         $rootScope.adminRole = '';
 

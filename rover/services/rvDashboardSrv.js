@@ -13,7 +13,7 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
   	*/
 	this.fetchUserInfo = function(){
 		var deferred = $q.defer();
-		var url =  '/api/rover_header_info.json'+localStorage['kioskUser'];//if logged in via kiosk, require the credentials to be passed [see loginApp.js]
+		var url =  '/api/rover_header_info.json';
 		RVBaseWebSrv.getJSON(url).then(function(data) {
                     
 		var fetchUserRolesData = function(){
@@ -59,7 +59,6 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
                                     roles.push({'name': userDetails.userRoles[i].name, 'id':userDetails.userRoles[i].value});
                                     if (userDetails.userRoles[i].name === 'Kiosk'){
                                         userDetails.hasKioskRole = true;
-                                        $scope.kioskModeEnabled = true;
                                     }
                                 }
                             }
@@ -105,7 +104,7 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
 
 	this.fetchHotelDetails = function(){
 		var deferred = $q.defer();
-		var url = '/api/hotel_settings.json'+localStorage['kioskUser'];//if logged in via kiosk, require the credentials to be passed [see loginApp.js];
+		var url = '/api/hotel_settings.json';
 		RVBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		},function(errorMessage){
