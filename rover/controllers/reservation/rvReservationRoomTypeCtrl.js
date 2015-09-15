@@ -897,7 +897,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 							//try for candidate rooms in the same level
 							candidateRooms = _.filter($scope.roomAvailability, function(room) {
 								return room.level === level &&
-									room.id !== $scope.stateCheck.preferredType &&
+									parseInt(room.id,10) !== parseInt($scope.stateCheck.preferredType,10) &&
 									room.availability === true &&
 									room.rates.length > 0 &&
 									parseInt(room.averagePerNight) >= parseInt($scope.roomAvailability[$scope.stateCheck.preferredType].averagePerNight) &&
