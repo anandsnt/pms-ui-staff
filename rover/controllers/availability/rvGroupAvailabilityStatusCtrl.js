@@ -59,6 +59,35 @@ sntRover.controller('rvGroupAvailabilityStatusController', [
 			return _.contains($scope.idsOfDropDownOpenedGroups, $scope.data.groupDetails[index].id);
 		};
 		/*
+		* param - Holdstatus id
+		* return Hold status name
+		*/
+		$scope.getGroupName = function(id){
+			return _.find($scope.data.holdStatus, function(elem){ 
+				return (elem.id === id)?true:false;
+				}).name;
+		};
+		/*
+		* return class name for holdstatus row in picked up
+		*/
+		$scope.getClassForHoldStatusRowInPickedUp = function(id){
+			if(!isTakenFromInventory(id) ||$scope.hideHoldStatusOf.groupRoomPicked){
+				return 'hidden';
+			}else{
+				return '';
+			};
+
+		};
+		/*
+		* param - Hold status id
+		* return - true if taken from inventory else false
+		*/
+		 var isTakenFromInventory = function(id){
+			return _.find($scope.data.holdStatus, function(elem){ 
+				return (elem.id === id)?true:false;
+				}).is_take_from_inventory;
+		};
+		/*
 		* Function for show/hide Room status of Groups
 		* param - index of clicked row
 		* return Null
