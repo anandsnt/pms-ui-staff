@@ -61,7 +61,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
         var fetchCommissionDetails = function(){
             var fetchCommissionDetailsSuccess = function(data){
-                $scope.rateData.commission_details = data.commission_details;
+                if(_.isEmpty($scope.rateData.commission_details)){
+                    $scope.rateData.commission_details = data.commission_details;
+                }
             };
             $scope.invokeApi(ADRatesSrv.fetchCommissionDetails, {}, fetchCommissionDetailsSuccess);
         };
