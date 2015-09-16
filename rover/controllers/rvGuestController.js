@@ -1325,8 +1325,10 @@ sntRover.controller('guestCardController', [
 		// To change to contracted Rate and proceed.
 		$scope.changeToContractedRate = function( cardData ){
 			$scope.keepExistingRate(cardData);
-			navigateToRoomAndRates();
+			$scope.navigateToRoomAndRates();
 			ngDialog.close();
+			//we will be in card opened mode, so closing
+			$scope.closeGuestCard();
 		};
 		// To handle card selection from COMPANY / TA.
 		$scope.selectCardType = function(cardData , $event){
