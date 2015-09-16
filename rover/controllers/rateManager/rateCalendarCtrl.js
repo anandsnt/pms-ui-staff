@@ -21,6 +21,8 @@ sntRover.controller('RateCalendarCtrl', [
         $scope.firstrun = true;
         $scope.initDefault = true;
         $scope.activeToggleButton = 'Rates';
+        $scope.anyRoomHasClosedRestriction = false;
+        $scope.closedRateRestrictionId = 1;
 
         $scope.activityObj = {};
         $scope.activityObj.changedField = '';
@@ -242,6 +244,8 @@ sntRover.controller('RateCalendarCtrl', [
         };
         $scope.reloadingRooms = false;
         var loadTable = function() {
+            $scope.calendarData.anyRoomHasClosedRestriction = false;
+            var restriction;
             $scope.currentExpandedRow = -1; //reset the expanded row
             $scope.loading = true;
                 // If only one rate is selected in the filter section, the defult view is room type calendar
@@ -305,7 +309,7 @@ sntRover.controller('RateCalendarCtrl', [
 
                             }
                         }
-
+                        
                         for (var ev in $scope.calendarData.data) {
                             rm_type = $scope.calendarData.data[ev];
                             rm_type_name = $scope.calendarData.data[ev].name;
@@ -313,12 +317,19 @@ sntRover.controller('RateCalendarCtrl', [
                             for (var xi = 0; xi < $scope.calendarData.dates.length; xi++) {
                                 r_date = $scope.calendarData.dates[xi];
                                 $scope.calendarData.data[ev][r_date] = $scope.getRestrictionsForDateRoomType(r_date, rm_type_name);
+                                restriction = $scope.calendarData.data[ev][r_date];//array of restricitons for that date
+                                for (var rir in restriction){
+                                    if (restriction[rir].restriction_type_id === $scope.closedRateRestrictionId){
+                                        $scope.calendarData.anyRoomHasClosedRestriction = true;
+                                    }
+                                }
+                                
                             }
 
                         }
                         $scope.calendarData.data = $scope.calendarData.data_new;
                         data.data = $scope.calendarData.data;
-                    }
+                    } 
 
                     if (typeof data.selectedRateDetails !== 'undefined') {
                         $scope.currentSelectedRate = data.selectedRateDetails;
@@ -341,12 +352,12 @@ sntRover.controller('RateCalendarCtrl', [
                 if ($scope.calendarMode === "RATE_VIEW") {
                     var params = calculateRateViewCalGetParams();
 
-                if ($scope.ratesRoomsToggle !== 'RATES') {
-                    params.roomrate = 'ROOMS';
-                }
-                $scope.popupData.currentFilterData = $scope.currentFilterData;//pass this in for the popup views to use
-                    $scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, params, calenderDataFetchSuccess)
-                        .then(finalizeCapture);
+                    if ($scope.ratesRoomsToggle !== 'RATES') {
+                        params.roomrate = 'ROOMS';
+                    }
+                    $scope.popupData.currentFilterData = $scope.currentFilterData;//pass this in for the popup views to use
+                        $scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, params, calenderDataFetchSuccess)
+                            .then(finalizeCapture);
 
                 } else {
                     $scope.invokeApi(RateMngrCalendarSrv.fetchRoomTypeCalendarData, calculateRoomTypeViewCalGetParams(), calenderDataFetchSuccess)
@@ -479,10 +490,13 @@ sntRover.controller('RateCalendarCtrl', [
          * Calls the API to update the "CLOSED" restriction.
          */
         $scope.openCloseAllRestrictions = function(action) {
-
+            
             var restrictionUpdateSuccess = function() {
 
                 loadTable();
+                if (action === 'remove'){
+                    $scope.calendarData.anyRoomHasClosedRestriction = false;
+                }
             };
 
             var params = {};
