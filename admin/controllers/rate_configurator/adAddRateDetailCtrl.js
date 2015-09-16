@@ -121,21 +121,21 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
          * Set commission data
          */
         var setupCommissionData = function(){
-            
-        var chargeCodes = $scope.rateData.commission_details.charge_codes,
-            selectedChargeCodes = [];
-            
-            if( typeof chargeCodes !== 'undefined' && chargeCodes.length >0 ){
-                angular.forEach( chargeCodes ,function( item, index) {
-                    if( item.is_checked ){
-                        selectedChargeCodes.push(item.id);
-                    }
-                });
+            if(typeof $scope.rateData.commission_details !== 'undefined'){
+                var chargeCodes = $scope.rateData.commission_details.charge_codes,
+                    selectedChargeCodes = [];
+
+                if( typeof chargeCodes !== 'undefined' && chargeCodes.length >0 ){
+                    angular.forEach( chargeCodes ,function( item, index) {
+                        if( item.is_checked ){
+                            selectedChargeCodes.push(item.id);
+                        }
+                    });
+                }
+
+                var commissionData = dclone($scope.rateData.commission_details,["charge_codes"]);
+                commissionData.selected_commission_charge_code_ids = selectedChargeCodes;
             }
-
-            var commissionData = dclone($scope.rateData.commission_details,["charge_codes"]);
-            commissionData.selected_commission_charge_code_ids = selectedChargeCodes;
-
             return commissionData;
         };        
         /*

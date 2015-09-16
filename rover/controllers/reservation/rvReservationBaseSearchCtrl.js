@@ -327,7 +327,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 };
             };
         };
-        
+
         $scope.navigate = function() {
             //if selected thing is 'hours'
             if (!$scope.isNightsActive) {
@@ -663,6 +663,13 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     $scope.codeSearchText = "";
                     $scope.companySearchText = "";
                 }
+                if (!!$scope.reservationData.code) { // Reset in case of promotion code CICO-19484
+                    $scope.reservationData.code = {
+                        id: '',
+                        type: '',
+                        discount: {}
+                    }
+                }
             } else if (request.term.length > 0) {
                 if (request.term !== '' && lastSearchText !== request.term) {
                     lastSearchText = request.term;
@@ -746,7 +753,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 return false; // Need to select room type before adding another row
             }
             $scope.reservationData.tabs = $scope.reservationData.tabs.concat(RVReservationTabService.newTab());
-            $scope.reservationData.rooms = $scope.reservationData.rooms.concat(RVReservationTabService.newRoom());            
+            $scope.reservationData.rooms = $scope.reservationData.rooms.concat(RVReservationTabService.newRoom());
             refreshScroller();
         };
 
@@ -788,7 +795,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             return chosen;
         };
 
-        $scope.restrictMultipleBookings = function(){
+        $scope.restrictMultipleBookings = function() {
             return !!$rootScope.isHourlyRateOn || !!$scope.reservationData.group.id;
         }
 

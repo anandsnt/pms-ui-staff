@@ -18,6 +18,12 @@ sntRover.controller('roverController',
 
 
     $rootScope.isOWSErrorShowing = false;
+    $scope.kiosk = false;
+    if (localStorage['kioskUser']){
+        $scope.kiosk = true;
+        $scope.$emit('hideLoader');
+        return;
+    }
     if (hotelDetails.language) {
       $translate.use(hotelDetails.language.value);
       $translate.fallbackLanguage('EN');
@@ -118,9 +124,6 @@ sntRover.controller('roverController',
       $rootScope.isPromoActive = hotelDetails.is_promotion_active;
       
       $rootScope.kiosk = hotelDetails.kiosk;
-
-      //Tablet-Kiosk
-      $scope.kioskModeEnabled = false;
 
     //set MLI Merchant Id
     try {
@@ -341,10 +344,6 @@ sntRover.controller('roverController',
     });
 
     $scope.init = function() {
-        if ($scope.kioskModeEnabled){
-            $state.go('rover.kiosk', {});
-            return;
-        }
         BaseCtrl.call(this, $scope);
         $rootScope.adminRole = '';
 
