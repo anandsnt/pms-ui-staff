@@ -12,12 +12,16 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
   	* @return {object} user details
   	*/
 	this.fetchUserInfo = function(){
+            var kioskParams = '';
+            if (localStorage['kioskUser']){
+                kioskParams = localStorage['kioskUser'];
+            }
 		var deferred = $q.defer();
-		var url =  '/api/rover_header_info.json'+localStorage['kioskUser'];//if logged in via kiosk, require the credentials to be passed [see loginApp.js]
+		var url =  '/api/rover_header_info.json'+kioskParams;
 		RVBaseWebSrv.getJSON(url).then(function(data) {
                     
 		var fetchUserRolesData = function(){
-			var url = '/api/roles.json';
+			var url = '/api/roles.json'+kioskParams;
 
 			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 				userDetails.userRoles = data.user_roles;
@@ -59,7 +63,6 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
                                     roles.push({'name': userDetails.userRoles[i].name, 'id':userDetails.userRoles[i].value});
                                     if (userDetails.userRoles[i].name === 'Kiosk'){
                                         userDetails.hasKioskRole = true;
-                                        $scope.kioskModeEnabled = true;
                                     }
                                 }
                             }
@@ -104,8 +107,12 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
 	};
 
 	this.fetchHotelDetails = function(){
+            var kioskParams = '';
+            if (localStorage['kioskUser']){
+                kioskParams = localStorage['kioskUser'];
+            }
 		var deferred = $q.defer();
-		var url = '/api/hotel_settings.json'+localStorage['kioskUser'];//if logged in via kiosk, require the credentials to be passed [see loginApp.js];
+		var url = '/api/hotel_settings.json'+kioskParams;
 		RVBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		},function(errorMessage){
