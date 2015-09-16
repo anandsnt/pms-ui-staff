@@ -1050,6 +1050,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     $scope.groupConfigData.summary.company.id = ui.item.value;
                     if (!$scope.isInAddMode()) {
                         $scope.updateGroupSummary();
+                        $scope.$broadcast("COMPANY_CARD_CHANGED");
                     }
                     runDigestCycle();
                     return false;
@@ -1060,6 +1061,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                             id: ""
                         }
                         $scope.updateGroupSummary();
+                        $scope.$broadcast("COMPANY_CARD_CHANGED");
                     }
                 }
             }, cardsAutoCompleteCommon);
@@ -1089,6 +1091,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     $scope.groupConfigData.summary.travel_agent.id = ui.item.value;
                     if (!$scope.isInAddMode()) {
                         $scope.updateGroupSummary();
+                        $scope.$broadcast("TA_CARD_CHANGED");
                     }
                     runDigestCycle();
                     return false;
@@ -1099,6 +1102,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                             id: ""
                         }
                         $scope.updateGroupSummary();
+                        $scope.$broadcast("TA_CARD_CHANGED");
                     }
                 }
             }, cardsAutoCompleteCommon);
