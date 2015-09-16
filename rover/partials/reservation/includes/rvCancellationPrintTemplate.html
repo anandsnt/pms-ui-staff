@@ -42,12 +42,20 @@
                                 <p>
                                 {{printData.guest_details.guest_name_upcase}}
                                 <br/>
-                                {{printData.guest_details.street1}}
-                                <span ng-if="printData.guest_details.street1"> , </span>
+                                <span ng-if="!printData.guest_details.city">
+                                  {{printData.guest_details.street1}}
+                                </span>
+                                <span ng-if="printData.guest_details.city && printData.guest_details.street1">
+                                  {{printData.guest_details.street1}},
+                                </span>
                                 {{printData.guest_details.city}}
                                 <br/>
-                                {{printData.guest_details.state}}
-                                <span ng-if="printData.guest_details.street1"> , </span>
+                                <span ng-if="!printData.guest_details.postal_code">
+                                  {{printData.guest_details.state}}
+                                </span>
+                                <span ng-if="printData.guest_details.postal_code && printData.guest_details.state">
+                                  {{printData.guest_details.state}},
+                                </span>
                                 {{printData.guest_details.postal_code}}
                                 <br/>
                                 </p>

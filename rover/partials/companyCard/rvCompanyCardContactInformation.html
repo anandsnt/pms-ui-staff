@@ -50,7 +50,7 @@
             <rv-textbox ng-if="account_type == 'COMPANY'" value="contactInformation.account_details.account_number" label="Corporate ID" placeholder = "Enter Corporate ID" styleclass="margin"></rv-textbox>
             <rv-textbox ng-if="account_type == 'TRAVELAGENT'" value="contactInformation.account_details.account_number" label="IATA Number" placeholder = "Enter IATA Number" styleclass="margin"></rv-textbox>
 
-            <div class="entry commission" ng-show ="contactInformation.commission_details && account_type == 'TRAVELAGENT'">
+            <div class="entry commission" ng-show ="!isEmpty(contactInformation.commission_details)&& account_type == 'TRAVELAGENT'">
                 <label for="travel-agent-commission" translate>COMMISSION</label>
                 <div class="switch-button off" ng-class="{'on': contactInformation.commission_details.is_on}">
                     <input id="travel-agent-commission" ng-click="contactInformation.commission_details.is_on = !contactInformation.commission_details.is_on" value="commission" type="checkbox" checked />

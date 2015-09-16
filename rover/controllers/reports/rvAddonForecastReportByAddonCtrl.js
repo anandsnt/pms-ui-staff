@@ -76,7 +76,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 			var perPage = 25,
 				pageNo = eachDate.pageNo || 1,
 				netTotalCount = eachDate.total_count || 0,
-				uiTotalCount = eachDate.reservations.length,
+				uiTotalCount = !!eachDate.reservations ? eachDate.reservations.length : 0,
 				disablePrevBtn = false,
 				disableNextBtn = false,
 				resultFrom,
@@ -124,9 +124,6 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 				eachDate.roomSortDir = undefined;
 				params['sort_dir'] = eachDate.nameSortDir;
 			};
-
-			console.log(eachDate);
-			console.log(params);
 
 			callResAPI( eachDate, params );
  		};
@@ -200,28 +197,56 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  				});
  			});	
 
- 			_.each(results, function(eachAddonGroup, addonGroupKey) { 			
- 				_.each(eachAddonGroup.addons, function(eachAddon) {
+ 			for (reportKey in results) {
+ 				if ( ! results.hasOwnProperty(reportKey) ) {
+ 					continue;
+ 				};
 
- 					_.each($scope.getKeyValues(eachAddon).dates, function(dateObj) {
- 						var addonKey = $scope.getKey(eachAddon),
- 							dateKey  = $scope.getKey(dateObj),
- 							eachDate = $scope.getKeyValues(dateObj);
+ 				var addonGroupId = reportKey,
+ 					addonsAry    = results[reportKey]['addons'];
 
- 						_.extend(eachDate, {
- 							'sortField': undefined,
- 							'roomSortDir': undefined,
- 							'nameSortDir': undefined,
+ 				var i, j;
+ 				for (i = 0, j = addonsAry.length; i < j; i++) {
+ 					var addonObj = addonsAry[i];
 
- 							'date': dateKey,
- 							'addonGroupId': addonGroupKey,
- 							'addonId': addonKey,
- 						});
+ 					for (addonKey in addonObj) {
+ 						if ( '$$hashKey' == addonKey || ! addonObj.hasOwnProperty(addonKey) ) {
+ 							continue;
+ 						};
 
- 						_.extend( eachDate, calPagination(eachDate) );
- 					});
- 				});
- 			});
+ 						var addonId  = addonKey,
+ 							datesAry = addonObj[addonKey]['dates'];
+
+ 						var k, l;
+ 						for (k = 0, l = datesAry.length; k < l; k++) {
+ 							var dateObj = datesAry[k];
+
+ 							for (dateKey in dateObj) {
+ 								if ( '$$hashKey' == dateKey || ! dateObj.hasOwnProperty(dateKey) ) {
+ 									continue;
+ 								};
+
+ 								var date = dateKey,
+ 									addonData = dateObj[dateKey];
+
+ 								_.extend(addonData, {
+ 									'sortField'   : undefined,
+ 									'roomSortDir' : undefined,
+ 									'nameSortDir' : undefined,
+ 									/**/
+ 									'date'         : date,
+ 									'addonGroupId' : addonGroupId,
+ 									'addonId'      : addonId
+ 								});
+
+ 								_.extend( addonData, calPagination(addonData) );
+ 							};
+ 						};
+ 					};
+ 				};
+ 			};
+
+ 			/* LOOP ENDS */
  		};
 
  		init();

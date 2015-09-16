@@ -261,7 +261,9 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             }
         };
 
-        
+        $scope.isEmpty = function (obj) {
+            return _.isEmpty(obj);
+        };        
 
         $scope.deleteEndDate = function() {
             $scope.rateData.end_date = "";
@@ -295,6 +297,19 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
         $scope.toggleChannelOnly = function(){
             if(!!$scope.rateData.is_channel_only && !!$scope.rateData.is_pms_only){
                 $scope.rateData.is_pms_only = false;
+            }
+        };
+
+        $scope.onChangeRateType = function() {
+            // CICO-19686 In case, the based On rates have to be removed;
+            if ($scope.hideBasedOn()) {
+                console.log('reset based on details');
+                $scope.rateData.based_on = {
+                    id: "",
+                    type: "",
+                    value_abs: "",
+                    value_sign: ""
+                };
             }
         };
 

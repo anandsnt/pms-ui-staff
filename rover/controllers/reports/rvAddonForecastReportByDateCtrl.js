@@ -100,10 +100,10 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
  		};
 
 		function calPagination (addon) {
-			var perPage = 25,
-				pageNo = addon.pageNo || 1,
-				netTotalCount = addon.total_count || 0,
-				uiTotalCount = addon.reservations.length,
+			var perPage        = 25,
+				pageNo         = addon.pageNo || 1,
+				netTotalCount  = addon.total_count || 0,
+				uiTotalCount   = !!addon.reservations ? addon.reservations.length : 0,
 				disablePrevBtn = false,
 				disableNextBtn = false,
 				resultFrom,
@@ -179,7 +179,6 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 			addonGrpHash = {};
 			addonHash    = {};
 
-
 			_.each(addonGroups, function(item) {
 				addonGrpHash[item.id] = item.description;
 			});
@@ -189,26 +188,57 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 					addonHash[entry.addon_id] = entry.addon_name;
 				});
 			});
-			
-			_.each(results, function(eachResult, resultKey) {
-				_.each(eachResult.addon_groups, function(addonGroup) {
-					_.each($scope.getKeyValues(addonGroup).addons, function(addonsObj) {
-						_.each(addonsObj, function(addon, addonKey) {
-							_.extend(addon, {
-								'sortField': undefined,
-								'roomSortDir': undefined,
-								'nameSortDir': undefined,
 
-								'date': resultKey,
-								'addonGroupId': $scope.getKey(addonGroup),
-								'addonId': addonKey,
-							});
+			for (reportKey in results) {
+				if ( ! results.hasOwnProperty(reportKey) ) {
+					continue;
+				};
 
-							_.extend( addon, calPagination(addon) );
-						});
-					});
-				});
-			});
+				var date        = reportKey,
+					addonGroups = results[reportKey]['addon_groups'];
+				
+				var i, j;
+				for (i = 0, j = addonGroups.length; i < j; i++) {
+					var addonGrpObj = addonGroups[i];
+
+					for (addonGroupKey in addonGrpObj) {
+						if ( '$$hashKey' == addonGroupKey || ! addonGrpObj.hasOwnProperty(addonGroupKey) ) {
+							continue;
+						};
+
+						var addonGroupId = addonGroupKey,
+							addons       = addonGrpObj[addonGroupKey]['addons'];
+
+						var k, l;
+						for (k = 0, l = addons.length; k < l; k++) {
+							var addonObj = addons[k];
+
+							for (addonKey in addonObj) {
+								if ( '$$hashKey' == addonKey || ! addonObj.hasOwnProperty(addonKey) ) {
+									continue;
+								};
+
+								var addonId = addonKey,
+									addon   = addonObj[addonKey];
+
+								_.extend(addon, {
+									'sortField'   : undefined,
+									'roomSortDir' : undefined,
+									'nameSortDir' : undefined,
+									/**/
+									'date'         : date,
+									'addonGroupId' : addonGroupId,
+									'addonId'      : addonId
+								});
+
+								_.extend( addon, calPagination(addon) );
+							};
+						};
+					};
+				};
+			};
+
+			/* LOOP ENDS */
 		};
 
 		init();	
