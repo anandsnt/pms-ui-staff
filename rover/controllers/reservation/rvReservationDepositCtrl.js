@@ -444,7 +444,7 @@ sntRover.controller('RVReservationDepositController',
 				"postData": {
 					"bill_number": 1,
 					"payment_type": $scope.depositData.paymentType,
-					"amount": $scope.reservationData.depositAmount,
+					"amount": $scope.reservationData.depositAmountWithoutFilter,
 					"payment_type_id":($scope.depositData.paymentType === 'CC' && $scope.depositData.selectedCard !== -1) ? $scope.depositData.selectedCard :null
 				},
 				"reservation_id": $stateParams.id
