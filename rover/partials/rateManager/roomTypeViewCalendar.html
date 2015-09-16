@@ -5,13 +5,18 @@
                 <tr>
                     <th class="cell first-row actions"><!--  style="{width:th.width}" -->
                         <button ng-click="openCloseAllRestrictions('remove')" 	
-                                class="button green" 
-                                ng-class="{'open': calendarData.disableOpenAllBtn === true || calendarData.anyRoomHasClosedRestriction === true}" 
-                                ng-disabled="calendarData.disableOpenAllBtn === true || calendarData.anyRoomHasClosedRestriction === true"> Open All</button>
+                                class="button" 
+                                ng-class="{'green': anyRoomHasClosedRestriction,'grey': !anyRoomHasClosedRestriction}" 
+                                ng-disabled="!anyRoomHasClosedRestriction"> 
+                            Open All
+                        </button>
+                        
                         <button ng-click="openCloseAllRestrictions('add')" 
-                                class="button red" 
-                                ng-class="{'open': calendarData.disableCloseAllBtn}" 
-                                ng-disabled="calendarData.disableCloseAllBtn"> Close All</button>
+                                class="button" 
+                                ng-class="{'red': !calendarData.disableCloseAllBtn,'grey': calendarData.disableCloseAllBtn}" 
+                                ng-disabled="calendarData.disableCloseAllBtn"> 
+                            Close All
+                        </button>
                     </th>
                 </tr>
             </thead>

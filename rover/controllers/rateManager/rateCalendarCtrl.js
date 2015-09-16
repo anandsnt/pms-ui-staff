@@ -21,7 +21,6 @@ sntRover.controller('RateCalendarCtrl', [
         $scope.firstrun = true;
         $scope.initDefault = true;
         $scope.activeToggleButton = 'Rates';
-        $scope.anyRoomHasClosedRestriction = false;
         $scope.closedRateRestrictionId = 1;
 
         $scope.activityObj = {};
@@ -116,17 +115,7 @@ sntRover.controller('RateCalendarCtrl', [
                 }
                 switch (z) {
                     case '3':
-                        if (n >= 1) {
-                            return 3;
-                        }
-                        break;
-
                     case '4':
-                        if (n >= 1) {
-                            return 3;
-                        }
-                        break;
-
                     case '5':
                         if (n >= 1) {
                             return 3;
@@ -134,13 +123,6 @@ sntRover.controller('RateCalendarCtrl', [
                         break;
 
                     case '6':
-                        if (n > 1) {
-                            return 2;
-                        } else {
-                            return 3;
-                        }
-                        break;
-
                     case '7':
                         if (n > 1) {
                             return 2;
@@ -244,7 +226,7 @@ sntRover.controller('RateCalendarCtrl', [
         };
         $scope.reloadingRooms = false;
         var loadTable = function() {
-            $scope.calendarData.anyRoomHasClosedRestriction = false;
+            $scope.anyRoomHasClosedRestriction = false;
             var restriction;
             $scope.currentExpandedRow = -1; //reset the expanded row
             $scope.loading = true;
@@ -256,6 +238,7 @@ sntRover.controller('RateCalendarCtrl', [
 
                 var calenderDataFetchSuccess = function(data) {
                     //Set the calendar type
+                    
                     if (data.type === 'ROOM_TYPES_LIST') {
                         $scope.calendarMode = "ROOM_TYPE_VIEW";
                         $scope.current_overrides = data.room_type_restrictions;
@@ -320,23 +303,27 @@ sntRover.controller('RateCalendarCtrl', [
                                 restriction = $scope.calendarData.data[ev][r_date];//array of restricitons for that date
                                 for (var rir in restriction){
                                     if (restriction[rir].restriction_type_id === $scope.closedRateRestrictionId){
-                                        $scope.calendarData.anyRoomHasClosedRestriction = true;
+                                        $scope.anyRoomHasClosedRestriction = true;
                                     }
                                 }
                                 
                             }
-
                         }
                         $scope.calendarData.data = $scope.calendarData.data_new;
                         data.data = $scope.calendarData.data;
+                        
                     } 
-
-                    if (typeof data.selectedRateDetails !== 'undefined') {
-                        $scope.currentSelectedRate = data.selectedRateDetails;
-                        $scope.ratesDisplayed.push(data.selectedRateDetails);
-                    }
-                    $scope.calendarData = {}; //wipe it out first..
-                    $scope.calendarData = data;
+                        if (typeof data.selectedRateDetails !== 'undefined') {
+                            $scope.currentSelectedRate = data.selectedRateDetails;
+                            $scope.ratesDisplayed.push(data.selectedRateDetails);
+                        }
+                        $scope.calendarData = {}; //wipe it out first..
+                        $scope.calendarData = data;
+                    
+                    
+                    
+                    
+                    
                     if (!$scope.reloadingRooms) { //workaround to fix the loader from disappearing too quickly
                         $scope.$emit('hideLoader');
                     } else if ($scope.reloadRoomsCount >= 1) {
@@ -345,8 +332,39 @@ sntRover.controller('RateCalendarCtrl', [
                     } else {
                         ++$scope.reloadRoomsCount;
                     }
-                };
+                    
+                    
+                    var _date, _row, _restriction;
+                    for (var i in $scope.calendarData.dates){
+                        _date = $scope.calendarData.dates[i];
+                        for (var e in $scope.calendarData.data){
+                            _row = $scope.calendarData.data[e];
+                            
+                            if (typeof _row[_date].restrictions === typeof {}){
+                               for (var a in _row[_date].restrictions){
+                                    _restriction = _row[_date].restrictions[a].restriction_type_id;
 
+                                    if (_restriction === $scope.closedRateRestrictionId){
+                                        $scope.anyRoomHasClosedRestriction = true;
+                                    }
+                                }
+                            } else {
+                               for (var a in _row[_date]){
+                                    _restriction = _row[_date][a].restriction_type_id;
+
+                                    if (_restriction === $scope.closedRateRestrictionId){
+                                        $scope.anyRoomHasClosedRestriction = true;
+                                    }
+                                }
+                            }
+                            
+                            
+                            
+                            
+                        }
+                    }
+                    
+                };
                 //Set the current business date value to the service. Done for calculating the history dates
                 RateMngrCalendarSrv.businessDate = $rootScope.businessDate;
                 if ($scope.calendarMode === "RATE_VIEW") {
@@ -495,7 +513,9 @@ sntRover.controller('RateCalendarCtrl', [
 
                 loadTable();
                 if (action === 'remove'){
-                    $scope.calendarData.anyRoomHasClosedRestriction = false;
+                    $scope.anyRoomHasClosedRestriction = false;
+                } else {
+                    $scope.anyRoomHasClosedRestriction = true;
                 }
             };
 
