@@ -53,6 +53,7 @@ sntRover.controller('RVReservationDepositController',
 		$scope.reservationData.referanceText = "";
 		$scope.isDepositEditable = ($scope.depositDetails.deposit_policy.allow_deposit_edit !== null && $scope.depositDetails.deposit_policy.allow_deposit_edit) ? true:false;
 		$scope.depositPolicyName = $scope.depositDetails.deposit_policy.description;
+		$scope.reservationData.depositAmountWithoutFilter = $scope.depositDetails.deposit_amount;
 		$scope.reservationData.depositAmount = $filter('number')(($scope.depositDetails.deposit_amount), 2);
 
 
@@ -440,6 +441,7 @@ sntRover.controller('RVReservationDepositController',
 		} else {
 			$scope.errorMessage = "";
 			$scope.depositInProcess = true;
+			console.log($scope.reservationData);
 			var dataToSrv = {
 				"postData": {
 					"bill_number": 1,
