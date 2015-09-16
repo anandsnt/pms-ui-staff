@@ -295,7 +295,18 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
 		};
 
-
+		var successCallbackOfInitialFetch = function(data) {
+			$scope.$emit("hideLoader");
+			$scope.contactInformation = data;
+			
+		};
+		/**
+		 * successcall back of commssion detail
+		 */
+		var successCallbackOffetchCommissionDetail = function(data){
+			$scope.$emit("hideLoader");
+			$scope.contactInformation["commission_details"] = data.commission_details;
+		}
 
 		/**
 		 * successcall back of country list fetch
@@ -323,7 +334,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			$scope.arAccountNotes = {};
 			$scope.arAccountDetails = {};
 			presentContactInfo = {};
-
+			$scope.invokeApi(RVCompanyCardSrv.fetchCommissionDetail, data, successCallbackOffetchCommissionDetail);
 		}
 		//we are checking for edit screen
 		else if (typeof id !== 'undefined' && id !== "") {

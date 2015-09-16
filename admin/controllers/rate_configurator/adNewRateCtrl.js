@@ -40,7 +40,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "date_ranges": [],
                 "addOns": [],
                 "end_date": "",
-                "end_date_for_display": ""
+                "end_date_for_display": "",
+                "commission_details":{}
             };
             // intialize rateData dictionary - END
 
