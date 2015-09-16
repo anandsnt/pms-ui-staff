@@ -724,7 +724,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
                 }
             } 
             
-            data.room_ids = [];
+           // data.room_ids = [];
             var all = $scope.popupData.all_data_selected;//if a user wants All rates/rooms applied to or not
             var rateView, allRooms = $scope.calendarData.data;
             var room, totalRooms = allRooms.length;
@@ -739,16 +739,16 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
             
             if (all){
                 if (!rateView){ //for room view
-                    for (var c in allRooms){
+                    /*for (var c in allRooms){
                         room = allRooms[c];
-                        data.room_ids.push(room.id);
-                    }
+                        data.room_ids.push(room.id);//currently invalid param 'room_ids'
+                    }*/
                     if (ratesDisplayed > 1 || totalRooms > 1){
                         delete data.room_type_id;
                     }
                 } else {
                     delete data.room_type_id;
-                    delete data.room_ids;
+                  //  delete data.room_ids;
                     if (ratesDisplayed > 1){
                         delete data.rate_id;
                     }
@@ -759,7 +759,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
                 } else {//in room view remove the rate_id param
                     delete data.rate_id;  
                 }
-                delete data.room_ids;
+               // delete data.room_ids;
             }
 
             if (ratesDisplayed === 1){
