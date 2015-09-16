@@ -125,9 +125,6 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 				params['sort_dir'] = eachDate.nameSortDir;
 			};
 
-			console.log(eachDate);
-			console.log(params);
-
 			callResAPI( eachDate, params );
  		};
 
