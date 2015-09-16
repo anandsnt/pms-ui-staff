@@ -44,7 +44,7 @@ var setUpData = function(){
 
     angular.forEach($scope.rate_codes,function(rate, index) {
       angular.forEach($scope.checkinData.excluded_rate_codes,function(excludedrate, index) {
-        if(rate.id === excludedrate){
+        if(parseInt(rate.id) === excludedrate){
           $scope.excludedRateCodes.push(rate);
           rate.ticked = true;// for the multi-select implementation
         }
@@ -53,7 +53,7 @@ var setUpData = function(){
 
     angular.forEach($scope.block_codes,function(block, index) {
       angular.forEach($scope.checkinData.excluded_block_codes,function(excludedblock, index) {
-        if(block.id === excludedblock){
+        if(parseInt(block.id) === excludedblock){
           $scope.excludedBlockCodes.push(block);
           block.ticked = true;// for the multi-select implementation
         }
@@ -61,7 +61,7 @@ var setUpData = function(){
      });
     angular.forEach($scope.roomTypes,function(roomType, index) {
             angular.forEach($scope.checkinData.excluded_room_types,function(excludedRoomType, index) {
-                if(roomType.id === excludedRoomType){
+                if(parseInt(roomType.id) === excludedRoomType){
                     $scope.excludedRoomTypes.push(roomType);
                     roomType.ticked = true;// for the multi-select implementation
                 }
