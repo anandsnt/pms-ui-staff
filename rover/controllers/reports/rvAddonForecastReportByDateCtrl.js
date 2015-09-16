@@ -103,7 +103,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 			var perPage        = 25,
 				pageNo         = addon.pageNo || 1,
 				netTotalCount  = addon.total_count || 0,
-				uiTotalCount   = addon.reservations.length,
+				uiTotalCount   = !!addon.reservations ? addon.reservations.length : 0,
 				disablePrevBtn = false,
 				disableNextBtn = false,
 				resultFrom,
