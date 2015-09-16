@@ -298,6 +298,19 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             }
         };
 
+        $scope.onChangeRateType = function() {
+            // CICO-19686 In case, the based On rates have to be removed;
+            if ($scope.hideBasedOn()) {
+                console.log('reset based on details');
+                $scope.rateData.based_on = {
+                    id: "",
+                    type: "",
+                    value_abs: "",
+                    value_sign: ""
+                };
+            }
+        };
+
         $scope.init();
     }
 ]);
