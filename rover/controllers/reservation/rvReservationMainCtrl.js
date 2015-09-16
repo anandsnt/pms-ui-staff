@@ -244,7 +244,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         var max = -1;
                         var name = "";
                         $($scope.otherData.roomTypes).each(function(i, d) {
-                            if (roomId === d.id) {
+                            if (parseInt(roomId) === d.id) {
                                 max = d.max_occupancy;
                                 name = d.name;
                             }
