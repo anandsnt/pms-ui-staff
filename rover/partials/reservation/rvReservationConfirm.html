@@ -189,7 +189,7 @@
                         <button type="button" id="go-to-search" ng-hide="reservationData.isHourly" class="button white blue-text" ng-click="goToSearchClicked()" translate>
                             SEARCH_RESERVATIONS
                         </button>
-                        <button type="button" id="" class="button blue-text"  translate ng-click="checkin()" ng-disabled="!enableCheckInButton()" ng-class="{'white': enableCheckInButton(), 'grey': !enableCheckInButton()}" ng-hide="isHourlyRateOn">
+                        <button type="button" id="" class="button blue-text"  translate ng-click="checkin()" ng-disabled="!enableCheckInButton()" ng-class="{'white': enableCheckInButton(), 'grey': !enableCheckInButton()}" ng-hide="true"><!--Hidden for now-->
                             CHECKIN
                         </button>
                         <button type="button" id="" class="button white blue-text"  translate ng-click="gotoDiaryScreen()" ng-show="reservationData.isHourly">
