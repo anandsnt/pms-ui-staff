@@ -51,8 +51,8 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$
          * whether the group card attached to reservation
          * @return {Boolean}
          */
-        $scope.isCompanyCardAttachedToReservation = function() {          
-            return ($scope.reservationDetails && $scope.reservationDetails.companyCard && $scope.reservationDetails.companyCard.id.trim() !== '');
+        $scope.isCompanyCardAttachedToReservation = function() {  
+            return ($scope.reservationDetails && $scope.reservationDetails.companyCard && $scope.reservationDetails.companyCard.id.toString().trim() !== '');
         };
 
         /**
