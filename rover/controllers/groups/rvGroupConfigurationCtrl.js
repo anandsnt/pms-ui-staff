@@ -1120,27 +1120,92 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
         }
 
-        $scope.updateAndBack = function() {
-            if (!$scope.isInAddMode() && $scope.groupConfigData.activeTab === "SUMMARY") {
-                $scope.updateGroupSummary();
-            } else if ($scope.groupConfigData.activeTab === "ACCOUNT") {
-                $scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
-            }
-            $state.go('rover.groups.search');
-        }
+
 
         /**
-         * function to set Back Navigation params
+         * THIS IS SELF EXECUTED FUNCTIONS VALUE
+         * decide what the title, name and param of back button
+         * @param {Object} $r  shorthand ref to $rootScoop
          */
+        var resolvedBackBtn = (function ($r) {
+
+            /** the default state which should be used if all checks fails */
+            var title = 'GROUPS',
+                name  = 'rover.groups.search',
+                param = {};
+
+            /**
+             * @type {String} the previous state title
+             * @type {String} the previous state name
+             */
+            var prevTitle = $r.getPrevStateTitle(),
+                prevName  = $r.getPrevStateName(),
+                prevParam = $r.getPrevStateParam() || {};
+
+            /** @type {Object} states that are part of reservation flow */
+            var reservationFlow = {
+                forRoutes: [
+                    'rover.reservation.staycard.mainCard.roomType',
+                    'rover.reservation.staycard.mainCard.addons',
+                    'rover.reservation.staycard.mainCard.summaryAndConfirm',
+                    'rover.reservation.staycard.mainCard.reservationConfirm'
+                ],
+                goBackTo: 'rover.reservation.search',
+                backTitle: 'FIND RESERVATION'
+            }
+
+            /** @type {Array} states that are part of a proper flow */
+            var flowStates = [
+                'rover.reservation.staycard.reservationcard.reservationdetails'
+            ];
+
+            // if its part of reservation flow
+            // else if its part of proper flow
+            if ( _.indexOf(reservationFlow.forRoutes, prevName) >= 0 ) {
+                title = reservationFlow.backTitle;
+                name  = reservationFlow.goBackTo;
+            } else if ( _.indexOf(flowStates, prevName) >= 0 ) {
+                title = prevTitle;
+                name  = prevName;
+                param = prevParam;
+            };
+
+            console.log( _.indexOf(reservationFlow.forRoutes, prevName) );
+
+            console.log( _.indexOf(flowStates, prevName) );
+
+            return {
+                'title' : title,
+                'name'  : name,
+                'param' : param
+            };
+        })( $rootScope );
+        console.log( resolvedBackBtn );
+
+        $scope.updateAndBack = function() {
+            if ( !$scope.isInAddMode() && 'SUMMARY' === $scope.groupConfigData.activeTab ) {
+                $scope.updateGroupSummary();
+            } else if ( 'ACCOUNT' === $scope.groupConfigData.activeTab ) {
+                $scope.$broadcast( 'UPDATE_ACCOUNT_SUMMARY' );
+            };
+
+            $state.go( resolvedBackBtn.name, resolvedBackBtn.param );
+        }
+
+        // function to set Back Navigation params
         var setBackNavigation = function() {            
             $rootScope.setPrevState = {
-                title: $filter('translate')('GROUPS'),
-                callback: 'updateAndBack',
-                scope: $scope
+                'title'    : resolvedBackBtn.title,
+                'callback' : 'updateAndBack',
+                'scope'    : $scope
             };
-            //setting title and things
+
+            // setting title and things
             setTitle();
-        }
+        };
+
+
+
 
         /**
          * When we recieve the error message from its child controllers, we have to show them

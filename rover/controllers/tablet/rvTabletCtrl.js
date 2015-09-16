@@ -76,8 +76,7 @@ sntRover.controller('rvTabletCtrl', [
                 };
                 //$scope.invokeApi(rvTabletSrv.fetchSettings, {}, fetchCompleted);
                 setTitle();
-                    $('.root-view').addClass('kiosk');
-                
+                $('.root-view').addClass('kiosk');
             };
             
             
@@ -455,6 +454,7 @@ sntRover.controller('rvTabletCtrl', [
                         
                         $scope.invokeApi(rvTabletSrv.fetchReservations, {
                             'find_by':findBy,
+                            'last_name':$scope.input.last_name,
                             'value': textValue
                         }, fetchCompleted);
                         break;
@@ -468,6 +468,7 @@ sntRover.controller('rvTabletCtrl', [
                         
                         $scope.invokeApi(rvTabletSrv.fetchReservations, {
                             'find_by':findBy,
+                            'last_name':$scope.input.last_name,
                             'value': textValue
                         }, fetchCompleted);
                     break;
@@ -758,7 +759,22 @@ sntRover.controller('rvTabletCtrl', [
                 }
             };
             
+            $scope.agreeTerms = function(){
+                
+                
+            };
+            
+            
+            
+            
+            
+            
+            
+            
             $scope.loginAdmin = function(){
+                $scope.headingText = 'Admin Username';
+                $scope.subHeadingText = '';
+                $scope.inputTextPlaceholder = '';
                 $scope.goToScreen(null, 'admin-login-username', true);
             };
 
