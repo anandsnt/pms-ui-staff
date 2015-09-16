@@ -261,7 +261,9 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             }
         };
 
-        
+        $scope.isEmpty = function (obj) {
+            return _.isEmpty(obj);
+        };        
 
         $scope.deleteEndDate = function() {
             $scope.rateData.end_date = "";
