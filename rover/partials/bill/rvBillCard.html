@@ -226,6 +226,8 @@
 											<td ng-show="expense.post_type=='Entire Stay'&&expense.amount_type=='Child'">PER CHILD/PER NIGHT</td>
 											<td ng-show="expense.post_type=='First Night'&&expense.amount_type=='Child'">PER CHILD/FIRST NIGHT</td>
 											<td ng-show="expense.post_type=='First Night'&&expense.amount_type=='Adult'">PER ADULT/FIRST NIGHT</td>
+											<td ng-show="(expense.post_type=='Every Week' && expense.amount_type=='Adult')">PER ADULT/EVERY WEEK</td>
+											<td ng-show="(expense.post_type=='Every Week' && expense.amount_type=='Child')">PER CHILD/EVERY WEEK</td>
 											<td ng-show="(expense.amount_type=='Flat'||expense.amount_type=='Person')&&expense.post_type=='First Night'">FIRST NIGHT</td>
 											<td ng-show="(expense.amount_type=='Flat'||expense.amount_type=='Person')&&expense.post_type=='Entire Stay'">PER NIGHT</td>
 											<td ng-show="(expense.post_type=='' && expense.amount_type=='')"></td>
