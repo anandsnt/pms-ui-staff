@@ -354,13 +354,17 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			var refData 		= $scope.groupConfigData.summary,
 				newBlockFrom 	= refData.block_from,
 				oldBlockFrom	= new tzIndependentDate(summaryMemento.block_from);
-
+			
 			if (refData.release_date.toString().trim() === '') {
 				$scope.groupConfigData.summary.release_date = refData.block_from;
 			}
 
+			if ($scope.isInAddMode()){
+				updateRateAndSegment();				
+			} 
+
 			//if it is is Move Date mode
-			if ($scope.changeDatesActions.isInCompleteMoveMode()) {
+			else if ($scope.changeDatesActions.isInCompleteMoveMode()) { 
 				var originalStayLength = (util.getDatesBetweenTwoDates (new tzIndependentDate(util.deepCopy(summaryMemento.block_from)), new tzIndependentDate(util.deepCopy(summaryMemento.block_to))).length - 1);
 				$scope.groupConfigData.summary.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 				$scope.groupConfigData.summary.block_to.setDate(refData.block_to.getDate() + originalStayLength);
@@ -437,6 +441,13 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			}
 		};
 
+		var updateRateAndSegment = function(){
+			if(!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
+				fetchApplicableRates();
+				$scope.computeSegment();
+			}				
+		}
+
 		/**
 		 * when to date choosed, this function will fire
 		 * @param  {Object} date
@@ -448,12 +459,16 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			//referring data source
 			var refData 	= $scope.groupConfigData.summary,
 				newBlockTo 	= refData.block_to,
-				oldBlockTo	= new tzIndependentDate(summaryMemento.block_to);
+				oldBlockTo	= new tzIndependentDate(summaryMemento.block_to),
 				chActions 	= $scope.changeDatesActions;
 
+			if ($scope.isInAddMode()){
+				updateRateAndSegment();
+			}
+
+			// check move validity
 			// departure left date change
-			if(newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {
-				// check move validity
+			else if(newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {				
 				if(new tzIndependentDate(refData.last_arrival_date) > newBlockTo){
 					triggerEarlierDepartureDateChangeInvalidError();
 				}
@@ -473,13 +488,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					$scope.updateGroupSummary();
 				}, 100);
 			}
-
-			/*$scope.computeSegment();
-			//we are in outside of angular world
-
-			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
-				fetchApplicableRates();
-			}*/
 			runDigestCycle();
 		};
 
