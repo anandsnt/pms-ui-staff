@@ -486,9 +486,6 @@ sntRover.controller('RateCalendarCtrl', [
             };
 
             var params = {};
-            if ($scope.currentSelectedRate !== "") {
-                params.rate_id = $scope.currentSelectedRate.id;
-            }
             params.details = [];
 
             var item = {};
@@ -510,6 +507,9 @@ sntRover.controller('RateCalendarCtrl', [
 
             item.restrictions.push(rr);
             params.details.push(item);
+            if ($scope.currentSelectedRate !== "") {
+                params.rate_id = $scope.currentSelectedRate.id;
+            }
             if ($scope.calendarData.data){
                 var rateIds = [];
                 for (var r in $scope.calendarData.data){
@@ -558,6 +558,7 @@ sntRover.controller('RateCalendarCtrl', [
         $scope.showUpdatePriceAndRestrictionsDialog = function(date, rate, roomType, type, isForAllData) {
             $stateParams.openUpdatePriceRestrictions = true;
             //flag to show update price restriction window
+            $scope.popupData.all_room_types = $scope.calendarData.room_types_all;
             if ($scope.ratesRoomsToggle === 'ROOMS') {
                 var roomTypeName;
                 for (var i in $scope.calendarData.room_types_all) {
