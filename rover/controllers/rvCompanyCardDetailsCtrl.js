@@ -294,12 +294,6 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			//we are not associating with scope in order to avoid watch
 			presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
 		};
-
-		var successCallbackOfInitialFetch = function(data) {
-			$scope.$emit("hideLoader");
-			$scope.contactInformation = data;
-			
-		};
 		/**
 		 * successcall back of commssion detail
 		 */
