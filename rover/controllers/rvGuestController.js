@@ -1327,6 +1327,8 @@ sntRover.controller('guestCardController', [
 			$scope.keepExistingRate(cardData);
 			$scope.navigateToRoomAndRates();
 			ngDialog.close();
+			//we will be in card opened mode, so closing
+			$scope.closeGuestCard();
 		};
 		// To handle card selection from COMPANY / TA.
 		$scope.selectCardType = function(cardData , $event){
