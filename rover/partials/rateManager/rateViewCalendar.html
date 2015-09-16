@@ -7,8 +7,8 @@
                         <button ng-click="openCloseAllRestrictions('remove')" 
                                 class="button green rm-buttonOpenClose"
                                 style=" margin-left:50px;"
-                                ng-class="{'grey': calendarData.disableOpenAllBtn}" 
-                                ng-disabled="calendarData.disableOpenAllBtn">
+                                ng-class="{'grey': calendarData.disableOpenAllBtn === true || calendarData.anyRoomHasClosedRestriction === false}" 
+                                ng-disabled="calendarData.disableOpenAllBtn === true || calendarData.anyRoomHasClosedRestriction === false">
                             Open All
                         </button>
                         <button ng-click="openCloseAllRestrictions('add')" 

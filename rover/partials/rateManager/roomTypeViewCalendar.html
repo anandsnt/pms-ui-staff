@@ -6,8 +6,8 @@
                     <th class="cell first-row actions"><!--  style="{width:th.width}" -->
                         <button ng-click="openCloseAllRestrictions('remove')" 	
                                 class="button green" 
-                                ng-class="{'open': calendarData.disableOpenAllBtn}" 
-                                ng-disabled="calendarData.disableOpenAllBtn"> Open All</button>
+                                ng-class="{'open': calendarData.disableOpenAllBtn === true || calendarData.anyRoomHasClosedRestriction === true}" 
+                                ng-disabled="calendarData.disableOpenAllBtn === true || calendarData.anyRoomHasClosedRestriction === true"> Open All</button>
                         <button ng-click="openCloseAllRestrictions('add')" 
                                 class="button red" 
                                 ng-class="{'open': calendarData.disableCloseAllBtn}" 
