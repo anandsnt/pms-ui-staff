@@ -1126,6 +1126,22 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				$scope.refreshScroller("groupSummaryScroller");
 			}, 100);			
 		});
+
+		/**
+		 * We need to refresh the rates once company card info is changed
+		 */
+		$scope.$on("COMPANY_CARD_CHANGED", function(event) {
+			fetchApplicableRates();
+		});
+
+		/**
+		 * We need to refresh the rates once TA card info is changed
+		 */
+		$scope.$on("TA_CARD_CHANGED", function(event) {
+			fetchApplicableRates();
+		});
+
+
 		/**
 		 * [initializeVariables description]
 		 * @param  {[type]} argument [description]
