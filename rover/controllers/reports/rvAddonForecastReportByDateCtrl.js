@@ -189,6 +189,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 				});
 			});
 
+			$scope.modifiedResults = {};
 			for (reportKey in results) {
 				if ( ! results.hasOwnProperty(reportKey) ) {
 					continue;
@@ -209,6 +210,12 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 						var addonGroupId = addonGroupKey,
 							addons       = addonGrpObj[addonGroupKey]['addons'];
 
+						if ( addonGrpObj[addonGroupKey]['guests'] > 0 ) {
+							addonGrpObj[addonGroupKey]['hasData'] = true;
+						} else {
+							addonGrpObj[addonGroupKey]['hasData'] = false;
+						};
+
 						var k, l;
 						for (k = 0, l = addons.length; k < l; k++) {
 							var addonObj = addons[k];
@@ -221,24 +228,32 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 								var addonId = addonKey,
 									addon   = addonObj[addonKey];
 
-								_.extend(addon, {
-									'sortField'   : undefined,
-									'roomSortDir' : undefined,
-									'nameSortDir' : undefined,
-									/**/
-									'date'         : date,
-									'addonGroupId' : addonGroupId,
-									'addonId'      : addonId
-								});
+								// helping template in rendering by
+								// telling which addonGroups are empty
+								if ( 0 < addonObj[addonKey]['guests'] ) {
+									addonObj[addonKey]['hasData'] = true;
 
-								_.extend( addon, calPagination(addon) );
+									_.extend(addon, {
+										'sortField'   : undefined,
+										'roomSortDir' : undefined,
+										'nameSortDir' : undefined,
+										/**/
+										'date'         : date,
+										'addonGroupId' : addonGroupId,
+										'addonId'      : addonId
+									});
+
+									_.extend( addon, calPagination(addon) );
+								} else {
+									addonObj[addonKey]['hasData'] = false;
+								};
 							};
 						};
 					};
 				};
 			};
-
 			/* LOOP ENDS */
+			$scope.modifiedResults = angular.copy( results );
 		};
 
 		init();	

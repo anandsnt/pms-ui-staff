@@ -1,25 +1,19 @@
 <div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> 
 
 <!-- Removed the animation class added while drawer menu open/close as it may be conflicting with ui-view animations -->
-<div class="container tabs" ng-click="closeDrawerMenu()" ng-class="{ 'return-back': returnBack }" ng-show="!kiosk">
-<!-- 
-	<div id="availability"> = default, hidden state
-	<div id="availability" class="availability-open"> = when open
-	add class "availability-closing" when closing availabiltiy screen, so you'll have:  <div id="availability" class="availability-open availability-closing">
+<div class="container" ng-click="closeDrawerMenu()" ng-class="{ 'return-back': returnBack }" ng-show="!kiosk">
 
-	when closed, strip the classes so you end up with the default state: <div id="availability">
--->
-<!-- we will not show availability feature as discussed with Nikci by Ganesh  for 3pms  -Please see CICO-6073 comment by Ganesh -->
+	<!-- Availability -->
 	<div ng-show="shouldShowAvailabilityHouseButton()" id="availability" ng-controller="rvAvailabilityButtonController" 
 		ng-class="{	'availability-open': showAvailability, 
 					'availability-closing': isClosing}">
 		<a href="#availability" class="availability-toggle " ng-class="{'active': showAvailability}" ng-click="clickedOnAvailabilityButton()">Menu</a> <!-- Add class "active" when open -->
-		<div ng-include="getAvailabilityTemplateUrl()"></div>
+		<div class="availability-container" ng-include="getAvailabilityTemplateUrl()"></div>
 	</div>
 	<div class="ui-router-wrapper">		
-		<div ui-view class="main-view" ></div>
+		<div ui-view class="main-view"></div>
 	</div>
 </div>
-<!-- <div ng-include="'/assets/partials/dashboard/rvLeftNavbar.html'"></div> -->
 
+<!-- Menu -->
 <nav id="main-menu" role="navigation"  ng-include="'/assets/partials/dashboard/rvLeftNavbar.html'" ng-class-without-animation="{'menu-open': menuOpen, 'menu-hotel':showHotelSwitchList, 'ng-animate': !menuOpen}" ng-show="!kiosk"></nav>

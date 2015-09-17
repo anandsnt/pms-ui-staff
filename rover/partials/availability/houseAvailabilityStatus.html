@@ -1,6 +1,5 @@
-<!--  House status content  -->
-<section id="house-status-content" class="house-status-content" role="main" ng-controller="RVHouseAvailabilityStatusCtrl" ng-hide="!houseDetailsFetched">
-	<div id="house-status-grid" class="house-status-grid scrollable" ng-iscroll="house-status-grid">
+<span ng-controller="RVHouseAvailabilityStatusCtrl" ng-hide="!houseDetailsFetched">
+	<div class="house-status-grid scrollable" ng-iscroll="house-status-grid">
 		<div class="wrapper">
 			<table id="dates-grid" class="dates-grid">
 				<!-- Here you'll always have 4 col elements -->
@@ -146,4 +145,4 @@
 			</table>
 		</div>
 	</div>
-</section>
+</span>
