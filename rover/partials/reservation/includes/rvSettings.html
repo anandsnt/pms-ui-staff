@@ -40,7 +40,7 @@
                 </a>
                 <div id="sidebar-rooms" class="settings-content">
                     <div class="entry" ng-repeat="tab in reservationData.tabs">
-                        <label>{{'ROOM_LABEL'|translate}} {{$index+1}}
+                        <label>{{'ROOM_TYPE'|translate}} {{$index+1}}
                             <!-- If not room 1 enable removal: -->
                             <button type="button" class="remove-room icons icon-remove-10" ng-hide="$first" ng-click="removeTabFromSidebar($index)">Remove Room</button>
                         </label>

@@ -46,6 +46,17 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
             return deferred.promise;
         };
 
+        this.fetchCommissionDetails = function (data) {
+            var deferred = $q.defer();
+            var url = " /api/hotel_settings/default_rate_commission_details";
+            ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
         this.fetchRateTypes = function () {
             var deferred = $q.defer();
 

@@ -8,6 +8,12 @@ sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSr
 			refreshScroller();
 		});
 
+
+		$scope.isEmpty = function (obj) {
+			return _.isEmpty(obj);
+		};
+
+
 		//trigger the billing information popup
 	    $scope.openBillingInformation = function(accountType){
 
