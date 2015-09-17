@@ -24,7 +24,6 @@ sntRover.controller('rvGroupReservationEditCtrl', [
 
     //variables
     var initialPopupData = {};
-    var selectedReservation = null;
 
     /**
      * should we allow to change the room of a particular reservation
@@ -142,7 +141,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
 
     };
 
-    var showCheckoutConfirmationPopup = function() {
+    var showCheckoutConfirmationPopup = function(data) {
         ngDialog.open({
             template: '/assets/partials/groups/rooming/popups/editReservation/rvGroupEditRoomingListItemCheckoutConfirmation.html',
             className: '',
@@ -150,7 +149,19 @@ sntRover.controller('rvGroupReservationEditCtrl', [
             closeByDocument: false,
             closeByEscape: false,
             controller: 'rvGroupReservationCheckoutCtrl',
-            data: JSON.stringify(selectedReservation)
+            data: JSON.stringify(data)
+        });
+    };
+
+    var showCheckinConfirmationPopup = function(data) {
+        ngDialog.open({
+            template: '/assets/partials/groups/rooming/popups/editReservation/rvGroupEditRoomingListItemCheckinConfirmation.html',
+            className: '',
+            scope: $scope.$parent,
+            closeByDocument: false,
+            closeByEscape: false,
+            controller: 'rvGroupReservationCheckinCtrl',
+            data: JSON.stringify(data)
         });
     };
 
@@ -159,11 +170,16 @@ sntRover.controller('rvGroupReservationEditCtrl', [
      * @param {object} Selected Reservation
      */
     $scope.checkoutReservation = function(reservation) {
-        $scope.closeDialog();
+        var summaryData     = $scope.groupConfigData.summary,
+            dataForPopup    = {
+                                group_name: summaryData.group_name,
+                                group_id: summaryData.group_id,
+                                reservation_id: reservation.id
+                              };
 
+        $scope.closeDialog();
         $timeout(function() {
-            selectedReservation = reservation;
-            showCheckoutConfirmationPopup();
+            showCheckoutConfirmationPopup(dataForPopup);
         }, 800);
     };
 
@@ -172,12 +188,16 @@ sntRover.controller('rvGroupReservationEditCtrl', [
      * @param {object} Selected Reservation
      */
     $scope.checkinReservation = function(reservation) {
-        $scope.closeDialog();
+        var summaryData     = $scope.groupConfigData.summary,
+            dataForPopup    = {
+                                group_name: summaryData.group_name,
+                                group_id: summaryData.group_id,
+                                reservation_id: reservation.id
+                              };
 
-        // call group checkin API with one reservation id.
+        $scope.closeDialog();
         $timeout(function() {
-            $scope.addOrRemoveFromSelectedReservation(reservation);
-            $scope.groupCheckin();
+            showCheckinConfirmationPopup(dataForPopup);
         }, 800);
     };
 
