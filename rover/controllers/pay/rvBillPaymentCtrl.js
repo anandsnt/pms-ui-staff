@@ -217,7 +217,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
             
             $scope.timer = null;
             $scope.cardNumberInput = function(n, e){
-                if ($scope.saveData.paymentType === "GIFT_CARD"){
+                if ($scope.saveData.paymentType === "GIFT_CARD" || $scope.useDepositGiftCard){
                     var len = n.length;
                     $scope.num = n;
                     if (len >= 8 && len <= 22){
@@ -234,7 +234,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
             };
             $scope.num;
             $scope.fetchGiftCardBalance = function() {
-                if ($scope.saveData.paymentType === "GIFT_CARD"){
+                if ($scope.saveData.paymentType === "GIFT_CARD" || $scope.useDepositGiftCard){
                        //switch this back for the UI if the payment was a gift card
                    var fetchGiftCardBalanceSuccess = function(giftCardData){
                        $scope.giftCardAvailableBalance = giftCardData.amount;
