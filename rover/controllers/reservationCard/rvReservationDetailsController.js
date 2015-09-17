@@ -845,9 +845,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 
 		$scope.changeStayDates = function(flags) {
 
-			if (!flags || !flags.skipAddonCheck) {
-				if ($scope.responseValidation.addons_to_overbook && $scope.responseValidation.addons_to_overbook.length > 0) {
-					alertAddonOverbooking();
+			if (!flags || !flags.skipAddonCheck) {				
+				if (!!$scope.responseValidation.new_stay_dates && $scope.responseValidation.new_stay_dates.length > 0 &&
+					$scope.responseValidation.addons_to_overbook && $scope.responseValidation.addons_to_overbook.length > 0) {
+					alertAddonOverbooking(true);
 					return false;
 				}
 			}
