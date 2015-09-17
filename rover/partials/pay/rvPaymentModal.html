@@ -63,7 +63,7 @@
                         <select id="payment-options" ng-model="saveData.paymentType"  name="payment-options" ng-change="showHideCreditCard()">
                             <option value="" translate>SELECT_PAYMENT_TYPE</option>
                              <!-- changes for CICO-13763 -->
-                            <option ng-repeat="paymentData in renderData.paymentTypes" value="{{paymentData.name}}" ng-selected="paymentData.name == defaultPaymentTypeOfBill">{{paymentData.description}}</option>
+                            <option ng-repeat="paymentData in renderData.paymentTypes" value="{{paymentData.name}}" ng-selected="paymentData.name == defaultPaymentTypeOfBill || allowPmtWithGiftCard == true">{{paymentData.description}}</option>
                         </select>
                     </div>
                 </div>

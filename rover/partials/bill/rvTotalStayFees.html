@@ -9,7 +9,7 @@
 			{{totalFees.balance_amount}}
 		</span> 
 	</button>
-	<button type="button" class="button with-icon green" ng-click='showAdvancedBillDialog()' ng-show="showPayButton && billData.credit_card_details.payment_type !=='DB'"> 
+	<button type="button" class="button with-icon green" ng-click='showAdvancedBillDialog()' ng-show="(showPayButton && billData.credit_card_details.payment_type !=='DB') || allowPmtWithGiftCard === true"> 
 		<span class="icons icon-wallet"></span> 
 		{{ 'PAY' | translate }}
 	</button>

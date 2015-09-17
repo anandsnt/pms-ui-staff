@@ -110,8 +110,25 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			}
 		}
 	};
-
+        $scope.allowPmtWithGiftCard = false;
 	$scope.setupFeeData = function(){
+            if ($rootScope.allowPmtWithGiftCard && !$scope.isStandAlone){
+                //then restrict options to pay to only gift card;
+                if ($scope.renderData){
+                    var restrictedPmtTypes = [];
+                    for (var i in $scope.renderData.paymentTypes){
+                        if ($scope.renderData.paymentTypes[i].name === 'GIFT_CARD'){
+                            $scope.allowPmtWithGiftCard = true;
+                            restrictedPmtTypes.push($scope.renderData.paymentTypes[i]);
+                            break;
+                        }
+                    }
+                    $scope.renderData.paymentTypes = restrictedPmtTypes;
+                    $scope.saveData.paymentType = 'GIFT_CARD';
+                }
+            }
+            
+            
 		// CICO-9457 : Setup fees details initilaly - for standalone only
 		if($scope.isStandAlone){
 
