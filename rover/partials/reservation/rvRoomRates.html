@@ -97,11 +97,7 @@
                             <button class="button white blue-text" ng-show="stateCheck.selectedStayDate.rate.id == roomAvailability[room.id].defaultRate && stateCheck.preferredType == room.id" ng-click="handleNoEdit($event, room.id, roomAvailability[room.id].defaultRate)">
                                 CURRENT RATE
                             </button>
-                            <button class="button" ng-hide="(stateCheck.selectedStayDate.rate.id == roomAvailability[room.id].defaultRate && stateCheck.preferredType == room.id) || restrictIfOverbook(room.id, roomAvailability[room.id].defaultRate)" ng-class="{'red': stateCheck.restrictedContractedRates[room.id].indexOf(roomAvailability[room.id].defaultRate) > -1,
-                                    'grey': !stateCheck.stayDatesMode && getAllRestrictions(room.id,roomAvailability[room.id].defaultRate).length > 0, 
-                                    'white grey-text': stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].restrictions.length > 0, 
-                                    'white green-text': stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].restrictions.length == 0, 
-                                    'green': !stateCheck.stayDatesMode && getAllRestrictions(room.id,roomAvailability[room.id].defaultRate).length == 0 }" ng-click="handleBooking(room.id,roomAvailability[room.id].defaultRate,$event)" translate>
+                            <button class="button" ng-hide="(stateCheck.selectedStayDate.rate.id == roomAvailability[room.id].defaultRate && stateCheck.preferredType == room.id) || restrictIfOverbook(room.id, roomAvailability[room.id].defaultRate)" ng-class="getBookButtonStyle(room.id, roomAvailability[room.id].defaultRate)" ng-click="handleBooking(room.id,roomAvailability[room.id].defaultRate,$event)" translate>
                                 RESV_BOOK
                             </button>
                         </div>
@@ -157,12 +153,8 @@
 
                                 <button ng-show="stateCheck.selectedStayDate.rate.id == rate && stateCheck.preferredType == room.id" class="button white blue-text" ng-click="handleNoEdit($event, room.id, rate)">CURRENT RATE</button>
                                 <button class="button"
-                                    ng-hide="(stateCheck.selectedStayDate.rate.id == rate && stateCheck.preferredType == room.id) || restrictIfOverbook(room.id, roomAvailability[room.id].defaultRate)"  
-                                    ng-class="{'red': stateCheck.restrictedContractedRates[room.id].indexOf(rate) > -1, 
-                                      'grey': !stateCheck.stayDatesMode && getAllRestrictions(room.id,rate).length > 0, 
-                                      'white grey-text' : stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions.length > 0, 
-                                      'white green-text' : stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions.length == 0, 
-                                      'green' :  !stateCheck.stayDatesMode && getAllRestrictions(room.id,rate).length == 0 }" 
+                                    ng-hide="(stateCheck.selectedStayDate.rate.id == rate && stateCheck.preferredType == room.id) || restrictIfOverbook(room.id,rate)"  
+                                    ng-class="getBookButtonStyle(room.id,rate)" 
                                     ng-click="handleBooking(room.id,rate, $event)" translate>RESV_BOOK</button>
                             </a>
                             <!-- Rate Details -->
@@ -302,11 +294,7 @@
                                 If it's booked room, use class "white blue-text", and have text "Booked".
                             -->
                            
-                            <button ng-hide="(stateCheck.selectedStayDate.rate.id == rate.rate.id && stateCheck.preferredType == selectedRoom) || restrictIfOverbook(selectedRoom, rate.rate.id)" ng-class="{'red': stateCheck.restrictedContractedRates[selectedRoom].indexOf(rate.rate.id) > -1,
-                                    'grey': !stateCheck.stayDatesMode && getAllRestrictions(selectedRoom,rate.rate.id).length > 0, 
-                                    'white grey-text' : stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].restrictions.length > 0, 
-                                    'white green-text' : stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].restrictions.length == 0, 
-                                    'green' :  !stateCheck.stayDatesMode && getAllRestrictions(selectedRoom,rate.rate.id).length == 0 }" class="button" ng-click="handleBooking(selectedRoom,rate.rate.id, $event)" translate>
+                            <button ng-hide="(stateCheck.selectedStayDate.rate.id == rate.rate.id && stateCheck.preferredType == selectedRoom) || restrictIfOverbook(selectedRoom, rate.rate.id)" class="button" ng-class="getBookButtonStyle(selectedRoom, rate.rate.id)" translate>
                                 RESV_BOOK
                             </button>
                         </div>
