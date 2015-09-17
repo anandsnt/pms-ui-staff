@@ -344,12 +344,16 @@ sntRover.service('RVReservationStateService', [
 									updateStayTaxes(taxOnCurrentAddon.taxDescription);
 								}
 								addonsApplied.push({ // for Book keeping
+									name: addon.name,
 									addonAmount: currentAddonAmount,
 									isInclusive: addon.is_inclusive,
 									postType: addon.post_type.value,
 									amountType: addon.amount_type.value,
 									taxBreakUp: taxOnCurrentAddon,
-									id: addon.id
+									id: addon.id,
+									inventory: _.findWhere(addon.inventory, {
+										date: for_date
+									}).available_count
 								});
 								if (!addon.is_inclusive && shouldPostAddon) {
 									addonRate = parseFloat(addonRate) + parseFloat(currentAddonAmount);

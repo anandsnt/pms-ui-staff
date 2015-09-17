@@ -401,7 +401,11 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             template: '/assets/partials/reservationCard/rvInsufficientInventory.html',
                             className: 'ngdialog-theme-default',
                             closeByDocument: true,
-                            scope: $scope
+                            scope: $scope,
+                            data: JSON.stringify({
+                                name: $scope.selectedAddonName,
+                                count: availableAddonCount,
+                            })
                         });
                     };
                 };
