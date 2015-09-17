@@ -691,7 +691,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				$scope.stateCheck.rateSelected.oneDay = isRateSelected().oneDay;
 			} else {
 				var i;
-				if (!$scope.reservationData.tabs[$scope.activeRoom].roomTypeId) {
+				if (!$scope.reservationData.tabs[$scope.activeRoom].roomTypeId || parseInt($scope.reservationData.tabs[$scope.activeRoom].roomTypeId) !== parseInt(roomId)) {
 					$scope.reservationData.tabs[$scope.activeRoom].roomTypeId = parseInt(roomId);
 				}
 				for (i = $scope.stateCheck.roomDetails.firstIndex; i <= $scope.stateCheck.roomDetails.lastIndex; i++) {
