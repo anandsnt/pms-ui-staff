@@ -1,5 +1,5 @@
-sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv', '$filter', 'ngDialog', 'rvPermissionSrv', 'RVReservationBaseSearchSrv',
-	function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter, ngDialog, rvPermissionSrv, RVReservationBaseSearchSrv) {
+sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv', '$filter', 'ngDialog', 'rvPermissionSrv', 'RVReservationBaseSearchSrv', '$timeout',
+	function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter, ngDialog, rvPermissionSrv, RVReservationBaseSearchSrv, $timeout) {
 		//inheriting some useful things
 		BaseCtrl.call(this, $scope);
 
