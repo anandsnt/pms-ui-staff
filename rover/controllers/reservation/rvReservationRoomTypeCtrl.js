@@ -1868,6 +1868,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 							data: JSON.stringify({
 								name: addon.name,
 								count: addon.inventory,
+								canOverbookInventory: rvPermissionSrv.getPermissionValue('OVERRIDE_ITEM_INVENTORY')
 							})
 						});
 						break;
