@@ -1939,10 +1939,72 @@ table {
         }
     }
 
-/* Journal                   ==============================*/
+/* Journal                  ==============================*/
     .journal-header,
     .journal-print,
     .journal-groups { .hide; }
+
+    /* Header / Footer ***/
+    .journal-header-print,
+    .journal-footer-print {
+        clear: both;
+
+        li {
+            font-size: 8pt;
+            line-height: 1;
+            text-transform: uppercase;
+            color: @grey3;
+            .show;
+
+            span { color: @textColor; }
+        }
+
+        &.summary { margin: 0 4cm; }
+    }
+
+    .journal-header-print {
+        padding-bottom: 8pt;
+
+        li {
+            text-align: center;
+
+            span {
+                font-size: 12pt;
+                line-height: 1;
+                font-weight: 300;
+                .show;
+
+                &.green,
+                &.red,
+                &.brand-colors { font-weight: 600; }
+            }
+
+            &:last-child {
+                margin-right: 0;
+                padding-right: 0;
+                border-right: 0;
+            }
+        }
+
+        &.summary { padding-bottom: 1cm; }
+    }
+
+    .journal-footer-print {
+        padding-top: 8pt;
+        .float;
+
+        li {
+            width: 50%;
+            margin: 0;
+            .pull-left;
+
+            &:last-child {
+                text-align: right;
+            }
+        }
+
+        &.summary { padding-bottom: 1cm; }
+    }
 
     .journal-content {
         font-size: 8pt;
@@ -2053,9 +2115,9 @@ table {
                 font-weight: 600;
 
                 &.payment {
-                    padding-left: -webkit-calc(~"90% - 130px");
-                    padding-left: -moz-calc(~"90% - 130px");
-                    padding-left: calc(~"90% - 130px");
+                    padding-left: -webkit-calc(~"90% - 50px");
+                    padding-left: -moz-calc(~"90% - 50px");
+                    padding-left: calc(~"90% - 50px");
 
                     span { margin-left: 20px; }
                 }
