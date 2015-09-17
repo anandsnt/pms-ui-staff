@@ -57,5 +57,33 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 			$scope.refreshScroller('room_availability_scroller');
 		};
 
+		/**
+		 * For iScroll, we need width of the table
+		 * @return {Integer}
+		 */
+		$scope.getWidthForTable = function() {
+
+			//if no data exist we will just return 0
+			if (!_.has($scope.data, 'dates')) {
+				return 0;
+			};
+
+			var leftMostRowCaptionWidth = 273,
+				totalColumns 			= $scope.data && $scope.data.dates && $scope.data.dates.length,
+				individualColWidth 		= 0;
+
+			//on each column length, width is different
+			if (totalColumns <= 7) {
+				individualColWidth = 147;
+			}
+			else if (totalColumns <= 14) {
+				individualColWidth = 71;
+			}
+			else if (totalColumns <= 30) {
+				individualColWidth = 60;
+			}			
+			return (totalColumns * individualColWidth + leftMostRowCaptionWidth);
+		};
+
 	}
 ]);

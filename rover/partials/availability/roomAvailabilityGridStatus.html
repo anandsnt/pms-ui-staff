@@ -1,6 +1,6 @@
 <div class="availability-grid scrollable " ng-controller="rvRoomAvailabilityGridStatusController" ng-iscroll='room_availability_scroller' ng-iscroll-delay="100" ng-show="hideMeBeforeFetching">
-	<div class="wrapper">
-		<table class="dates-grid">
+	<div class="wrapper" style="width: {{getWidthForTable()}}px">
+		<table class="dates-grid" >
 			<colgroup>
 				<col>
 				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">		
