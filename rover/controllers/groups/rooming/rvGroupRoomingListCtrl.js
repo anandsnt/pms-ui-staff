@@ -87,22 +87,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         };
 
         /**
-         * Function to decide whether to disable room type changing from edit reservation popup
-         * @param {Object} - reservation
-         * @return {Boolean}
-         */
-        $scope.shouldDisableReservationRoomTypeChange = function(reservation) {
-            //as per CICO-17082, we need to show the room type in select box of edit with others
-            //but should be disabled
-            var room_type_id_list = _.pluck($scope.roomTypesAndData, 'room_type_id'),
-            	containNonEditableRoomType = !_.contains(room_type_id_list, parseInt(reservation.room_type_id)),
-            	rStatus = reservation.reservation_status;
-
-            //CICO-18717: disable room type switch once a user checks in
-            return (!(rStatus === "RESERVED" || rStatus === "CHECKING_IN") || containNonEditableRoomType);
-        };
-
-        /**
          * do wanted to show checking/checkout button area
          * @return {Boolean}
          */
