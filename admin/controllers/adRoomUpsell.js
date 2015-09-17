@@ -89,7 +89,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
     $scope.clickAddRoomType = function () {
       //While addig a room type, making its max_los defaults to 0.
       angular.forEach($scope.upsellData.room_types, function (item, index) {
-        if (item.id === $scope.upsellData.selected_room_type) {
+        if (item.id === parseInt($scope.upsellData.selected_room_type)) {
           item.max_los = 0;
         }
       });

@@ -155,8 +155,13 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
             }
 
             $scope.refreshFilterScroll();
+            if (filterData.rate_type_selected_list.length === 0){
+                $scope.resetRatesList();
+            }
         };
-
+        $scope.resetRatesList = function(){
+            filterData.rates = filterData.allRates;
+        };
         /**
         * Display the selected rates in a list having close button.
         * Duplicates are not allowed in the list.

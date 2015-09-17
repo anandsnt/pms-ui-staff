@@ -185,11 +185,16 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			var saveSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
 				if ($scope.isEdit) {
+                                    var p = parseInt($scope.currentClickedElement);
+                                    if ($scope.orderedData){
+                                    if ($scope.orderedData[p]){
 					$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code = data.charge_code;
 					$scope.orderedData[parseInt($scope.currentClickedElement)].description = data.description;
 					$scope.orderedData[parseInt($scope.currentClickedElement)].charge_group = data.charge_group;
 					$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code_type = data.charge_code_type;
 					$scope.orderedData[parseInt($scope.currentClickedElement)].link_with = data.link_with;
+                                    }
+                                    }
 
 				} else {
 					$scope.data.charge_codes.push(data);
@@ -239,6 +244,14 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					delete item["id"];
 				}
 			});
+                        
+                        if ($scope.isStandAlone && !$scope.prefetchData.selected_charge_group){
+                            $scope.errorMessage = 'Group Charge Code Required';
+                            $scope.validForm = false;
+                            return;
+                        }
+                        
+                        
 			$scope.invokeApi(ADChargeCodesSrv.save, postData, saveSuccessCallback);
 		};
 		/*

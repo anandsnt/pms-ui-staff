@@ -329,26 +329,32 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         };
 
         $scope.navigate = function() {
+
+            // CICO-19685: if user moves back and forth in create reservation, before saving
+            $scope.reservationGuestSearchChanged();
+
             //if selected thing is 'hours'
             if (!$scope.isNightsActive) {
                 var reservationDataToKeepinVault = {},
                     roomData = $scope.reservationData.rooms[0];
 
-                reservationDataToKeepinVault.fromDate = new tzIndependentDate($scope.reservationData.arrivalDate).getTime();
-                reservationDataToKeepinVault.toDate = new tzIndependentDate($scope.reservationData.departureDate).getTime();
-                reservationDataToKeepinVault.arrivalTime = $scope.reservationData.checkinTime;
-                reservationDataToKeepinVault.departureTime = $scope.reservationData.checkoutTime;
-                reservationDataToKeepinVault.minHours = $scope.reservationData.resHours;
-                reservationDataToKeepinVault.adults = roomData.numAdults;
-                reservationDataToKeepinVault.children = roomData.numChildren;
-                reservationDataToKeepinVault.infants = roomData.numInfants;
-                reservationDataToKeepinVault.roomTypeID = roomData.roomTypeId;
-                reservationDataToKeepinVault.guestFirstName = $scope.searchData.guestCard.guestFirstName;
-                reservationDataToKeepinVault.guestLastName = $scope.searchData.guestCard.guestLastName;
-                reservationDataToKeepinVault.companyID = $scope.reservationData.company.id;
-                reservationDataToKeepinVault.travelAgentID = $scope.reservationData.travelAgent.id;
+                _.extend(reservationDataToKeepinVault, {
+                    'fromDate'       : new tzIndependentDate($scope.reservationData.arrivalDate).getTime(),
+                    'toDate'         : new tzIndependentDate($scope.reservationData.departureDate).getTime(),
+                    'arrivalTime'    : $scope.reservationData.checkinTime,
+                    'departureTime'  : $scope.reservationData.checkoutTime,
+                    'minHours'       : $scope.reservationData.resHours,
+                    'adults'         : roomData.numAdults,
+                    'children'       : roomData.numChildren,
+                    'infants'        : roomData.numInfants,
+                    'roomTypeID'     : roomData.roomTypeId,
+                    'guestFirstName' : $scope.searchData.guestCard.guestFirstName,
+                    'guestLastName'  : $scope.searchData.guestCard.guestLastName,
+                    'companyID'      : $scope.reservationData.company.id,
+                    'travelAgentID'  : $scope.reservationData.travelAgent.id
+                });
 
-                $vault.set('searchReservationData', JSON.stringify(reservationDataToKeepinVault));
+                $vault.set( 'searchReservationData', JSON.stringify(reservationDataToKeepinVault) );
 
                 $state.go('rover.diary', {
                     isfromcreatereservation: true
@@ -365,12 +371,12 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
                 if ($scope.checkOccupancyLimit()) {
                     $state.go('rover.reservation.staycard.mainCard.roomType', {
-                        from_date: $scope.reservationData.arrivalDate,
-                        to_date: $scope.reservationData.departureDate,
-                        fromState: $state.current.name,
-                        company_id: $scope.reservationData.company.id,
-                        travel_agent_id: $scope.reservationData.travelAgent.id,
-                        group_id: $scope.reservationData.group.id
+                        'from_date'       : $scope.reservationData.arrivalDate,
+                        'to_date'         : $scope.reservationData.departureDate,
+                        'fromState'       : $state.current.name,
+                        'company_id'      : $scope.reservationData.company.id,
+                        'travel_agent_id' : $scope.reservationData.travelAgent.id,
+                        'group_id'        : $scope.reservationData.group.id
                     });
                 }
             }

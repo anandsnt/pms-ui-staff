@@ -711,7 +711,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					$scope.reservationData.rooms[i].demographics.market = $scope.displayData.allRates[rateId].market_segment.id === null ? "" : $scope.displayData.allRates[rateId].market_segment.id;
 					$scope.reservationData.rooms[i].demographics.source = $scope.displayData.allRates[rateId].source.id === null ? "" : $scope.displayData.allRates[rateId].source.id;
 
-					if(i === 0){
+					if (i === 0) {
 						$scope.reservationData.demographics.source = $scope.reservationData.rooms[i].demographics.source;
 						$scope.reservationData.demographics.market = $scope.reservationData.rooms[i].demographics.market;
 					}
@@ -903,7 +903,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 							//try for candidate rooms in the same level
 							candidateRooms = _.filter($scope.roomAvailability, function(room) {
 								return room.level === level &&
-									parseInt(room.id,10) !== parseInt($scope.stateCheck.preferredType,10) &&
+									parseInt(room.id, 10) !== parseInt($scope.stateCheck.preferredType, 10) &&
 									room.availability === true &&
 									room.rates.length > 0 &&
 									parseInt(room.averagePerNight) >= parseInt($scope.roomAvailability[$scope.stateCheck.preferredType].averagePerNight) &&
@@ -1264,8 +1264,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					$scope.reservationData.departureDate,
 					$scope.reservationData.rooms[$scope.stateCheck.roomDetails.firstIndex].stayDates,
 					$scope.activeRoom,
-					$scope.reservationData.numNights,
-					{
+					$scope.reservationData.numNights, {
 						code: $scope.reservationData.code,
 						group: $scope.reservationData.group
 					},
@@ -1752,6 +1751,29 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			$scope.activeRoom = tabIndex;
 			$scope.viewState.currentTab = tabIndex;
 			init();
+		};
+
+		// CICO-20187
+		$scope.getBookButtonStyle = function(roomId, rateId) {
+			if ($scope.stateCheck.restrictedContractedRates[roomId] && $scope.stateCheck.restrictedContractedRates[roomId].indexOf(rateId) > -1) {
+				return 'red';
+			}
+
+			if (!$scope.stateCheck.stayDatesMode) {
+				if ($scope.getAllRestrictions(roomId, rateId).length > 0) {
+					return 'brand-colors'
+				} else {
+					return 'green'
+				}
+			} else { //Staydates mode
+				if ($scope.roomAvailability[roomId].ratedetails[$scope.stateCheck.dateModeActiveDate] &&
+					$scope.roomAvailability[roomId].ratedetails[$scope.stateCheck.dateModeActiveDate][rateId] &&
+					$scope.roomAvailability[roomId].ratedetails[$scope.stateCheck.dateModeActiveDate][rateId].restrictions.length > 0) {
+					return 'white brand-text'
+				} else {
+					return 'white green-text'
+				}
+			}
 		};
 
 	}
