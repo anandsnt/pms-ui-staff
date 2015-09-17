@@ -294,7 +294,8 @@
                                 If it's booked room, use class "white blue-text", and have text "Booked".
                             -->
                            
-                            <button ng-hide="(stateCheck.selectedStayDate.rate.id == rate.rate.id && stateCheck.preferredType == selectedRoom) || restrictIfOverbook(selectedRoom, rate.rate.id)" class="button" ng-class="getBookButtonStyle(selectedRoom, rate.rate.id)" translate>
+                            <button ng-hide="(stateCheck.selectedStayDate.rate.id == rate.rate.id && stateCheck.preferredType == selectedRoom) || restrictIfOverbook(selectedRoom, rate.rate.id)" class="button" ng-class="getBookButtonStyle(selectedRoom, rate.rate.id)"
+                            ng-click="handleBooking(selectedRoom,rate.rate.id, $event)" translate>
                                 RESV_BOOK
                             </button>
                         </div>
