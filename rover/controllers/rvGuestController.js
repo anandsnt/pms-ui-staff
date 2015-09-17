@@ -1313,21 +1313,10 @@ sntRover.controller('guestCardController', [
 			}
 			ngDialog.close();
 		};
-		// Navigation to Room & Rates screen
-		var navigateToRoomAndRates = function(arrival, departure) {
-			$state.go('rover.reservation.staycard.mainCard.roomType', {
-				from_date: arrival || $scope.reservationData.arrivalDate,
-				to_date: departure || $scope.reservationData.departureDate,
-				view: 'DEFAULT',
-				fromState: $state.current.name,
-				company_id: $scope.reservationData.company.id,
-				travel_agent_id: $scope.reservationData.travelAgent.id
-			});
-		};
 		// To change to contracted Rate and proceed.
 		$scope.changeToContractedRate = function( cardData ){
 			$scope.keepExistingRate(cardData);
-			$scope.navigateToRoomAndRates();
+			//$scope.navigateToRoomAndRates();
 			ngDialog.close();
 			//we will be in card opened mode, so closing
 			$scope.closeGuestCard();
@@ -1357,6 +1346,7 @@ sntRover.controller('guestCardController', [
 		$scope.selectCompany = function(company) {
 			//CICO-7792
 			if ($scope.viewState.identifier === "CREATION") {
+				console.log("CREATION");
 				$scope.reservationData.company.id = company.id;
 				$scope.showContractedRates({
 					companyCard: company.id,
@@ -1374,8 +1364,10 @@ sntRover.controller('guestCardController', [
 				$scope.viewState.isAddNewCard = false;
 			} else {
 				if (!$scope.reservationDetails.companyCard.futureReservations || $scope.reservationDetails.companyCard.futureReservations <= 0) {
+					console.log("$scope.replaceCardCaller");
 					$scope.replaceCardCaller('company', company, false);
 				} else {
+					console.log("$scope.checkFuture");
 					$scope.checkFuture('company', company);
 				}
 			}
@@ -1551,6 +1543,16 @@ sntRover.controller('guestCardController', [
 				$scope.$broadcast('saveContactInfo');
 			}
 		};
+
+		$scope.$on("companySearchStopped", function() {
+			console.log("RvGuestCtrl+comapny");
+			$scope.navigateToRoomAndRates();
+		});
+
+		$scope.$on("travelAgentSearchStopped", function() {
+			console.log("RvGuestCtrl+TA");
+			$scope.navigateToRoomAndRates();
+		});
 
 	}
 ]);
