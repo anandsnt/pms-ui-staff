@@ -902,6 +902,8 @@ sntRover.controller('guestCardController', [
 		 */
 		$scope.navigateToRoomAndRates = function() {
 			var resData = $scope.reservationData;
+			console.log("navigateToRoomAndRates");
+			console.log(resData);
 			$state.go('rover.reservation.staycard.mainCard.roomType', {
 				from_date 		: resData.arrivalDate,
 				to_date 		: resData.departureDate,
