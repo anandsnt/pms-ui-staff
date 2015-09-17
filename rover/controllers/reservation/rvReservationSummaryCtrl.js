@@ -137,9 +137,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         });
 
         // CICO-9457 : Data for fees details.
-
         $scope.setupFeeData = function() {
-
             var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
             var defaultAmount = $scope.reservationData ?
                 parseFloat($scope.reservationData.depositAmount) : zeroAmount;
@@ -414,7 +412,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 "postData": {
                     "bill_number": 1,
                     "payment_type": $scope.reservationData.paymentType.type.value,
-                    "amount": $scope.reservationData.depositAmountWithoutFilter,
+                    "amount": $scope.reservationData.depositAmount,
                     "payment_type_id": null,
                     "reservation_ids": $scope.reservationData.reservationIds
                 },

@@ -54,8 +54,8 @@ sntRover.controller('RVReservationDepositController',
 		$scope.isDepositEditable = ($scope.depositDetails.deposit_policy.allow_deposit_edit !== null && $scope.depositDetails.deposit_policy.allow_deposit_edit) ? true:false;
 		$scope.depositPolicyName = $scope.depositDetails.deposit_policy.description;
 		$scope.reservationData.depositAmountWithoutFilter = $scope.depositDetails.deposit_amount;
-		$scope.reservationData.depositAmount = $filter('number')(($scope.depositDetails.deposit_amount), 2);
-
+		//$scope.reservationData.depositAmount = $filter('number')(($scope.depositDetails.deposit_amount), 2);
+		$scope.reservationData.depositAmount = $scope.depositDetails.deposit_amount;
 
 		$scope.closeDialog = function(){
 			$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG", false);
@@ -446,7 +446,7 @@ sntRover.controller('RVReservationDepositController',
 				"postData": {
 					"bill_number": 1,
 					"payment_type": $scope.depositData.paymentType,
-					"amount": $scope.reservationData.depositAmountWithoutFilter,
+					"amount": $scope.reservationData.depositAmount,
 					"payment_type_id":($scope.depositData.paymentType === 'CC' && $scope.depositData.selectedCard !== -1) ? $scope.depositData.selectedCard :null
 				},
 				"reservation_id": $stateParams.id
