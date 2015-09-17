@@ -975,18 +975,61 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			}, 100);
 		};
 
-		// Handle TRY AGAIN on auth failure popup.
-		$scope.tryAgain = function() {
-			authInProgress();
-			manualAuthAPICall();
-		};
-		// CICO-17067 PMS: Rover - Stay Card: Add manual authorization ends here...
+    // Handle TRY AGAIN on auth failure popup.
+    $scope.tryAgain = function(){
+		authInProgress();
+		manualAuthAPICall();
+	};
+    // CICO-17067 PMS: Rover - Stay Card: Add manual authorization ends here...
 
-		//>>wakeup call check after guest prefs are fetched
-		$scope.$on('wakeup_call_ON', function(evt, data) {
-			if (data) {
-				$scope.activeWakeUp = data.active;
-			}
-		});
-	}
-]);
+    //>>wakeup call check after guest prefs are fetched
+        $scope.$on('wakeup_call_ON',function(evt, data){
+            if (data){
+                $scope.activeWakeUp = data.active;
+            }
+        });
+       
+            $scope.updateGiftCardNumber = function(n){
+                $rootScope.$broadcast('GIFTCARD_DETAILS',n);
+            };
+       
+            $scope.giftCardAmountAvailable = false;
+            $scope.giftCardAvailableBalance = 0;
+            $scope.$on('giftCardAvailableBalance',function(e, giftCardData){
+               $scope.giftCardAvailableBalance = giftCardData.amount;
+            });
+            $scope.timer = null;
+            $scope.cardNumberInput = function(n, e){
+                    var len = n.length;
+                    $scope.num = n;
+                    if (len >= 8 && len <= 22){
+                        //then go check the balance of the card
+                        $('[name=card-number]').keydown(function(){
+                            clearTimeout($scope.timer); 
+                            $scope.updateGiftCardNumber(n);
+                            $scope.timer = setTimeout($scope.fetchGiftCardBalance, 1500);
+                        });
+                    } else {
+                        //hide the field and reset the amount stored
+                        $scope.giftCardAmountAvailable = false;
+                    }
+            };
+            $scope.num;
+            $scope.fetchGiftCardBalance = function() {
+               // if ($scope.depositData.paymentType === 'GIFT_CARD'){
+                       //switch this back for the UI if the payment was a gift card
+                   $scope.giftCardAmountAvailable = false;
+                   var fetchGiftCardBalanceSuccess = function(giftCardData){
+                       $scope.giftCardAvailableBalance = giftCardData.amount;
+                       $scope.giftCardAmountAvailable = true;
+                       $scope.$emit('giftCardAvailableBalance',giftCardData);
+                       //data.expiry_date //unused at this time
+                       $scope.$emit('hideLoader');
+                   };
+                   $scope.invokeApi(RVReservationCardSrv.checkGiftCardBalance, {'card_number':$scope.num}, fetchGiftCardBalanceSuccess);
+              // } else {
+              //     $scope.giftCardAmountAvailable = false;
+              // }
+            };
+        
+}]);

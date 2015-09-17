@@ -48,6 +48,9 @@
             <div class="notice deposit" ng-hide="showCCPage || depositInProcess || depositPaidSuccesFully">
                 <p>Deposit required: <strong>{{depositPolicyName}}</strong>.</p>
                 <div class="entry full-width" ng-class="{'amount': isShowFees()}">
+                    <input ng-show="depositData.paymentType === 'GIFT_CARD'" name="card-number" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber, this)" />
+                    <label ng-show="depositData.paymentType === 'GIFT_CARD' && giftCardAmountAvailable" ng-hide="depositData.paymentType !== 'GIFT_CARD' || !giftCardAmountAvailable"> Available Card Balance ({{currencySymbol}}) </label>
+                    <input ng-show="depositData.paymentType === 'GIFT_CARD' && giftCardAmountAvailable" ng-hide="depositData.paymentType !== 'GIFT_CARD' || !giftCardAmountAvailable"  name="giftCardAmount" id="amount" ng-readonly="true" ng-model="giftCardAvailableBalance" type="text" class="amount" value="{{ giftCardAvailableBalance }}"/>
                     <label for="amount">Amount to pay (<span>{{currencySymbol}}</span>)</label>
                     
                     <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="reservationData.depositAmount" type="text" ng-disabled="!isDepositEditable"  class="amount"/>
