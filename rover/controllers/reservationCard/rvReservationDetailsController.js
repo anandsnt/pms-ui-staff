@@ -586,7 +586,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			$scope.closeDialog(editPromptDialogId);
 			if ($scope.reservationData.reservation_card.is_hourly_reservation) {
 				return false;
-			} else if ($rootScope.isStandAlone) {				
+			} else if ($rootScope.isStandAlone) {
 				navigateToRoomAndRates();
 			} else {
 				$state.go('rover.reservation.staycard.billcard', {
@@ -723,9 +723,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		$scope.editStayDates = function() {
 			// reservation_id, arrival_date, departure_date
 			$scope.errorMessage = "";
+
 			var onValidationSuccess = function(response) {
 
-
+					$scope.responseValidation = {};
 					if (response.errors.length === 0) {
 						$scope.responseValidation = response.data;
 						$scope.stayDatesExtendedForOutsideGroup = (response.data.is_group_reservation && response.data.outside_group_stay_dates) ? true : false;
@@ -746,6 +747,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 							})
 						});
 					} else {
+						$scope.responseValidation = {};
 						$scope.errorMessage = response.errors;
 					}
 
@@ -798,11 +800,58 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			initStayDates(0);
 			navigateToRoomAndRates($filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
 				$filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd')
-			);			
+			);
 			$scope.closeDialog();
 		};
 
-		$scope.changeStayDates = function() {
+		var alertAddonOverbooking = function(close) {
+			var addonIndex = 0,
+				timer = 0;
+			if (close) {
+				$scope.closeDialog();
+				timer = 1500
+			}
+			$timeout(function() {
+				for (; addonIndex < $scope.responseValidation.addons_to_overbook.length; addonIndex++) {
+					var addon = $scope.responseValidation.addons_to_overbook[addonIndex];
+					if (!addon.isAlerted) {
+						addon.isAlerted = true;
+						ngDialog.open({
+							template: '/assets/partials/reservationCard/rvInsufficientInventory.html',
+							className: 'ngdialog-theme-default',
+							closeByDocument: true,
+							scope: $scope,
+							data: JSON.stringify({
+								name: addon.name,
+								count: addon.inventory,
+								canOverbookInventory: rvPermissionSrv.getPermissionValue('OVERRIDE_ITEM_INVENTORY')
+							})
+						});
+						break;
+					}
+				}
+				if (addonIndex === $scope.stateCheck.exhaustedAddons.length) {
+					$scope.changeStayDates({
+						skipAddonCheck: true
+					});
+				}
+			}, timer);
+		};
+
+
+		$scope.selectAddon = function() {
+			alertAddonOverbooking(true);
+		};
+
+		$scope.changeStayDates = function(flags) {
+
+			if (!flags || !flags.skipAddonCheck) {
+				if ($scope.responseValidation.addons_to_overbook && $scope.responseValidation.addons_to_overbook.length > 0) {
+					alertAddonOverbooking();
+					return false;
+				}
+			}
+
 			var newArrivalDate = $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd');
 			var newDepartureDate = $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd');
 			var existingStayDays = $scope.reservationParentData.rooms[0].stayDates;
