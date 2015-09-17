@@ -197,6 +197,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  				});
  			});	
 
+ 			$scope.modifiedResults = {};
  			for (reportKey in results) {
  				if ( ! results.hasOwnProperty(reportKey) ) {
  					continue;
@@ -204,6 +205,12 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 
  				var addonGroupId = reportKey,
  					addonsAry    = results[reportKey]['addons'];
+
+ 				if ( results[reportKey]['guests'] > 0 ) {
+ 					results[reportKey]['hasData'] = true;
+ 				} else {
+ 					results[reportKey]['hasData'] = false;
+ 				};
 
  				var i, j;
  				for (i = 0, j = addonsAry.length; i < j; i++) {
@@ -217,6 +224,12 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  						var addonId  = addonKey,
  							datesAry = addonObj[addonKey]['dates'];
 
+ 						if ( addonObj[addonKey]['guests'] > 0 ) {
+ 							addonObj[addonKey]['hasData'] = true;
+ 						} else {
+ 							addonObj[addonKey]['hasData'] = false;
+ 						};
+
  						var k, l;
  						for (k = 0, l = datesAry.length; k < l; k++) {
  							var dateObj = datesAry[k];
@@ -229,24 +242,27 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  								var date = dateKey,
  									addonData = dateObj[dateKey];
 
- 								_.extend(addonData, {
- 									'sortField'   : undefined,
- 									'roomSortDir' : undefined,
- 									'nameSortDir' : undefined,
- 									/**/
- 									'date'         : date,
- 									'addonGroupId' : addonGroupId,
- 									'addonId'      : addonId
- 								});
+ 								if ( addonObj[addonKey]['guests'] > 0 ) {
+	 								_.extend(addonData, {
+	 									'sortField'   : undefined,
+	 									'roomSortDir' : undefined,
+	 									'nameSortDir' : undefined,
+	 									/**/
+	 									'date'         : date,
+	 									'addonGroupId' : addonGroupId,
+	 									'addonId'      : addonId
+	 								});
 
- 								_.extend( addonData, calPagination(addonData) );
+	 								_.extend( addonData, calPagination(addonData) );
+	 							};
  							};
  						};
  					};
  				};
  			};
-
  			/* LOOP ENDS */
+ 			$scope.modifiedResults = angular.copy( results );
+
  		};
 
  		init();
