@@ -49,7 +49,7 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
-         this.autoCompleteCodes = function(data) {
+        this.autoCompleteCodes = function(data) {
             var deferred = $q.defer();
             var url = '/api/code_search';
             RVBaseWebSrvV2.getJSON(url, data).then(function(data) {
@@ -117,10 +117,10 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
-        this.fetchAddonsForRates = function() {
+        this.fetchAddonsForRates = function(params) {
             var deferred = $q.defer(),
                 url = '/api/addons/rate_addons';
-            RVBaseWebSrvV2.getJSON(url).then(function(data) {
+            RVBaseWebSrvV2.getJSON(url, params).then(function(data) {
                 deferred.resolve(data.rate_addons);
             }, function(data) {
                 deferred.reject(data);
@@ -164,7 +164,7 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
         this.checkOverbooking = function(params) {
             var deferred = $q.defer();
             var url = '/api/availability/overbooking_check';
-            RVBaseWebSrvV2.getJSON(url,params).then(function(response) {
+            RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
                 deferred.resolve(response.results);
             }, function(data) {
                 deferred.reject(data);
