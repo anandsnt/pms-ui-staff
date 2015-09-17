@@ -48,10 +48,20 @@ sntRover.controller('RVCardOptionsCtrl',
                 
               
 	$scope.showMakePaymentButtonStatus = function(){
+            
 		var buttonClass = "";
-		if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined"){
+                
+                if ($scope.depositBalanceMakePaymentData){
+                    if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined"){
 			buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0 && $scope.validPayment) ? "green" :"grey";
-		}else {
+                    } else {
+                        if (!$scope.validPayment){
+                            buttonClass = "grey overlay";
+                        } else {
+                            buttonClass = "grey";
+                        }
+                    };
+                } else {
                     if (!$scope.validPayment){
 			buttonClass = "grey overlay";
                     } else {
