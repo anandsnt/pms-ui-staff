@@ -830,7 +830,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 						break;
 					}
 				}
-				if (addonIndex === $scope.stateCheck.exhaustedAddons.length) {
+				if (addonIndex === $scope.responseValidation.addons_to_overbook.length) {
 					$scope.changeStayDates({
 						skipAddonCheck: true
 					});
