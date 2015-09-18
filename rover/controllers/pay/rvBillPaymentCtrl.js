@@ -110,8 +110,25 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			}
 		}
 	};
-
+        $scope.allowPmtWithGiftCard = false;
 	$scope.setupFeeData = function(){
+            if ($rootScope.allowPmtWithGiftCard && !$scope.isStandAlone){
+                //then restrict options to pay to only gift card;
+                if ($scope.renderData){
+                    var restrictedPmtTypes = [];
+                    for (var i in $scope.renderData.paymentTypes){
+                        if ($scope.renderData.paymentTypes[i].name === 'GIFT_CARD'){
+                            $scope.allowPmtWithGiftCard = true;
+                            restrictedPmtTypes.push($scope.renderData.paymentTypes[i]);
+                            break;
+                        }
+                    }
+                    $scope.renderData.paymentTypes = restrictedPmtTypes;
+                    $scope.saveData.paymentType = 'GIFT_CARD';
+                }
+            }
+            
+            
 		// CICO-9457 : Setup fees details initilaly - for standalone only
 		if($scope.isStandAlone){
 
@@ -200,7 +217,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
             
             $scope.timer = null;
             $scope.cardNumberInput = function(n, e){
-                if ($scope.saveData.paymentType === "GIFT_CARD"){
+                if ($scope.saveData.paymentType === "GIFT_CARD" || $scope.useDepositGiftCard){
                     var len = n.length;
                     $scope.num = n;
                     if (len >= 8 && len <= 22){
@@ -217,7 +234,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
             };
             $scope.num;
             $scope.fetchGiftCardBalance = function() {
-                if ($scope.saveData.paymentType === "GIFT_CARD"){
+                if ($scope.saveData.paymentType === "GIFT_CARD" || $scope.useDepositGiftCard){
                        //switch this back for the UI if the payment was a gift card
                    var fetchGiftCardBalanceSuccess = function(giftCardData){
                        $scope.giftCardAvailableBalance = giftCardData.amount;

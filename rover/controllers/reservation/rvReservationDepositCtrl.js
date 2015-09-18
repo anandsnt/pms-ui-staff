@@ -53,8 +53,9 @@ sntRover.controller('RVReservationDepositController',
 		$scope.reservationData.referanceText = "";
 		$scope.isDepositEditable = ($scope.depositDetails.deposit_policy.allow_deposit_edit !== null && $scope.depositDetails.deposit_policy.allow_deposit_edit) ? true:false;
 		$scope.depositPolicyName = $scope.depositDetails.deposit_policy.description;
-		$scope.reservationData.depositAmount = $filter('number')(($scope.depositDetails.deposit_amount), 2);
-
+		$scope.reservationData.depositAmountWithoutFilter = $scope.depositDetails.deposit_amount;
+		//$scope.reservationData.depositAmount = $filter('number')(($scope.depositDetails.deposit_amount), 2);
+		$scope.reservationData.depositAmount = $scope.depositDetails.deposit_amount;
 
 		$scope.closeDialog = function(){
 			$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG", false);
@@ -433,6 +434,9 @@ sntRover.controller('RVReservationDepositController',
 	  /*
 	* Action - On click submit payment button
 	*/
+       $rootScope.$on('GIFTCARD_DETAILS',function(e, n){
+           $scope.cardData.cardNumber = n;
+       });
 	$scope.submitPayment = function(){
 
 		if($scope.reservationData.depositAmount === '' || $scope.reservationData.depositAmount === null){
@@ -440,6 +444,7 @@ sntRover.controller('RVReservationDepositController',
 		} else {
 			$scope.errorMessage = "";
 			$scope.depositInProcess = true;
+			console.log($scope.reservationData);
 			var dataToSrv = {
 				"postData": {
 					"bill_number": 1,
@@ -454,9 +459,13 @@ sntRover.controller('RVReservationDepositController',
 				dataToSrv.postData.add_to_guest_card =  $scope.depositData.addToGuestCard;
 			}
 			else{
-				dataToSrv.postData.add_to_guest_card =  false;
+                                dataToSrv.postData.add_to_guest_card =  false;
 			};
-
+                        if ($scope.depositData.paymentType === 'GIFT_CARD'){
+                            delete dataToSrv.postData.payment_type_id;
+                            dataToSrv.postData.card_number = $scope.cardData.cardNumber;
+                        };
+                        
 			if($scope.isShowFees()){
 				if($scope.feeData.calculatedFee) {
 					dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;

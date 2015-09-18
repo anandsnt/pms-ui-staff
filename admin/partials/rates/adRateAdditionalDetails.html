@@ -56,7 +56,7 @@
 	 	<fieldset class="holder right">	 		
 	 		<ad-toggle-button is-checked="rateData.is_discount_allowed_on" label="DISCOUNT ALLOWED"></ad-toggle-button>
 	 		<ad-toggle-button is-checked="rateData.is_suppress_rate_on" label="SUPPRESS RATE"></ad-toggle-button>
-            <div ng-show='rateData.commission_details'>
+            <div ng-hide='isEmpty(rateData.commission_details)'>
                 <ad-toggle-button is-checked="rateData.commission_details.is_on" label="{{ 'COMMISSION' | translate }}"></ad-toggle-button>
                 <ad-checkbox div-class="actions_margin_top" hide="{{!rateData.commission_details.is_on}}" is-checked="rateData.commission_details.is_prepaid" label="{{ 'PREPAID' | translate }}" parent-label-class="room-likes" span-class="checkbox-background"></ad-checkbox>
                 <div class="entry full-width" ng-hide="!rateData.commission_details.is_on">
@@ -86,7 +86,7 @@
                                 
                                 <span class="icon-form icon-checkbox" ng-class="{ checked : charge_code.is_checked }"></span>
                                 <input type="checkbox"  name="newspaper" data-id="1" ng-click="charge_code.is_checked = !charge_code.is_checked ">
-                                <div id="newspaper-name">{{charge_code.name}}</div>
+                                <div id="newspaper-name">{{charge_code.code}} {{charge_code.name}}</div>
                                 
                             </label>
                         </div>

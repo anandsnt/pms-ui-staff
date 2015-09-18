@@ -46,23 +46,24 @@
                     </b>
 
                     <b ng-if="printData.guest_details.street1 !== '' || printData.guest_details.city !== ''">
-                      <span ng-if="printData.guest_details.street1 !== ''">
+                      <span ng-if="!printData.guest_details.city">
                         {{ printData.guest_details.street1 }}
                       </span>
-                      <span ng-if="printData.guest_details.city !== ''">
-                        {{ printData.guest_details.city }}
+                      <span ng-if="printData.guest_details.city && printData.guest_details.street1">
+                        {{ printData.guest_details.street1 }},
                       </span>
+                      {{ printData.guest_details.city }}
                       <br/>
                     </b>
 
                     <b ng-if="printData.guest_details.state !== '' || printData.guest_details.postal_code !== ''">
-                      <span ng-if="printData.guest_details.state !== ''">
+                      <span ng-if="!printData.guest_details.postal_code">
                         {{ printData.guest_details.state }}
                       </span>
-
-                      <span ng-if="printData.guest_details.postal_code !== ''">
-                        {{ printData.guest_details.postal_code }}
+                      <span ng-if="printData.guest_details.postal_code && printData.guest_details.state">
+                        {{ printData.guest_details.state }},
                       </span>
+                      {{ printData.guest_details.postal_code }}
                       <br/>
                     </b>
                     
@@ -141,7 +142,7 @@
                       <br>
                         {{ printData.hotel_details.street }}
                       <br>
-                        {{ printData.hotel_details.city }} , {{ printData.hotel_details.state }} , {{ printData.hotel_details.zipcode }}
+                        {{ printData.hotel_details.city }}, {{ printData.hotel_details.state }}, {{ printData.hotel_details.zipcode }}
                     </p>
                     <p>
                       Ph:

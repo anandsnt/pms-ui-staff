@@ -48,7 +48,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.allAddOns = [];
             $scope.basedonRateData = {};
             $scope.errorMessage = '';
-
+            fetchCommissionDetails();
             setRateAdditionalDetails();
             // webservice call to fetch rate details for edit
             if ($stateParams.rateId) {
@@ -58,6 +58,15 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             }
         };
 
+
+        var fetchCommissionDetails = function(){
+            var fetchCommissionDetailsSuccess = function(data){
+                if(_.isEmpty($scope.rateData.commission_details)){
+                    $scope.rateData.commission_details = data.commission_details;
+                }
+            };
+            $scope.invokeApi(ADRatesSrv.fetchCommissionDetails, {}, fetchCommissionDetailsSuccess);
+        };
         $scope.rateInitialData = rateInitialData;
 
         var setRateAdditionalDetails = function() {

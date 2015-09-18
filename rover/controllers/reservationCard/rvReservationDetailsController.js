@@ -587,66 +587,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			if ($scope.reservationData.reservation_card.is_hourly_reservation) {
 				return false;
 			} else if ($rootScope.isStandAlone) {
-				if ($scope.otherData.showOverbookingAlert) {
-					$scope.invokeApi(RVReservationBaseSearchSrv.checkOverbooking, {
-						from_date: reservationMainData.arrivalDate,
-						to_date: reservationMainData.departureDate,
-						group_id: reservationMainData.group.id
-					}, function(availability) {
-						$scope.availabilityData = availability;
-						var houseAvailable = true,
-							roomtypesAvailable = _(reservationMainData.tabs.length).times(function(n) {
-								return true
-							});
-						_.each(availability, function(dailyStat) {
-							houseAvailable = houseAvailable && (dailyStat.house.availability > 0);
-							_.each(reservationMainData.tabs, function(tab, tabIndex) {
-								if (!!tab.roomTypeId) {
-									roomtypesAvailable[tabIndex] = roomtypesAvailable[tabIndex] &&
-										(dailyStat.room_types[tab.roomTypeId] > 0);
-								}
-							});
-						});
-
-						if (houseAvailable && _.reduce(roomtypesAvailable, function(a, b) {
-								return a && b
-							})) {
-							navigateToRoomAndRates();
-						} else {
-							$timeout(function() {
-								ngDialog.open({
-									template: '/assets/partials/reservation/alerts/availabilityCheckOverbookingAlert.html',
-									scope: $scope,
-									controller: 'overbookingAlertCtrl',
-									closeByDocument: false,
-									closeByEscape: false,
-									data: JSON.stringify({
-										houseFull: !houseAvailable,
-										roomTypeId: reservationMainData.tabs[0].roomTypeId,
-										arrivalDate: reservationMainData.arrivalDate,
-										departureDate: reservationMainData.departureDate,
-										isRoomAvailable: function() {
-											return _.reduce(roomtypesAvailable, function(a, b) {
-												return a && b
-											});
-										}(),
-										activeView: function() {
-											if (!houseAvailable) {
-												return 'HOUSE'
-											}
-											return 'ROOM'
-										}()
-									})
-								});
-							}, 1000);
-
-						}
-					});
-				} else {
-					navigateToRoomAndRates();
-				}
-
-
+				navigateToRoomAndRates();
 			} else {
 				$state.go('rover.reservation.staycard.billcard', {
 					reservationId: $scope.reservationData.reservation_card.reservation_id,
@@ -782,9 +723,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		$scope.editStayDates = function() {
 			// reservation_id, arrival_date, departure_date
 			$scope.errorMessage = "";
+
 			var onValidationSuccess = function(response) {
 
-
+					$scope.responseValidation = {};
 					if (response.errors.length === 0) {
 						$scope.responseValidation = response.data;
 						$scope.stayDatesExtendedForOutsideGroup = (response.data.is_group_reservation && response.data.outside_group_stay_dates) ? true : false;
@@ -805,6 +747,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 							})
 						});
 					} else {
+						$scope.responseValidation = {};
 						$scope.errorMessage = response.errors;
 					}
 
@@ -855,71 +798,61 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			$scope.reservationParentData.departureDate = $filter('date')(departureDate, 'yyyy-MM-dd');
 			$scope.reservationParentData.numNights = Math.floor((Date.parse(departureDate) - Date.parse(arrivalDate)) / 86400000);
 			initStayDates(0);
-			if ($scope.otherData.showOverbookingAlert) {
-				$scope.invokeApi(RVReservationBaseSearchSrv.checkOverbooking, {
-					from_date: $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
-					to_date: $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd'),
-					group_id: reservationMainData.group.id
-				}, function(availability) {
-					$scope.availabilityData = availability;
-					var houseAvailable = true,
-						roomtypesAvailable = _(reservationMainData.tabs.length).times(function(n) {
-							return true
-						});
-					_.each(availability, function(dailyStat) {
-						houseAvailable = houseAvailable && (dailyStat.house.availability > 0);
-						_.each(reservationMainData.tabs, function(tab, tabIndex) {
-							if (!!tab.roomTypeId) {
-								roomtypesAvailable[tabIndex] = roomtypesAvailable[tabIndex] &&
-									(dailyStat.room_types[tab.roomTypeId] > 0);
-							}
-						});
-					});
-
-					if (houseAvailable && _.reduce(roomtypesAvailable, function(a, b) {
-							return a && b
-						})) {
-						navigateToRoomAndRates($filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
-							$filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd')
-						);
-					} else {
-						$timeout(function() {
-							ngDialog.open({
-								template: '/assets/partials/reservation/alerts/availabilityCheckOverbookingAlert.html',
-								scope: $scope,
-								controller: 'overbookingAlertCtrl',
-								closeByDocument: false,
-								closeByEscape: false,
-								data: JSON.stringify({
-									houseFull: !houseAvailable,
-									roomTypeId: reservationMainData.tabs[0].roomTypeId,
-									arrivalDate: $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
-									departureDate: $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd'),
-									isRoomAvailable: function() {
-										return _.reduce(roomtypesAvailable, function(a, b) {
-											return a && b
-										});
-									}(),
-									activeView: function() {
-										if (!houseAvailable) {
-											return 'HOUSE'
-										}
-										return 'ROOM'
-									}()
-								})
-							});
-						}, 1000);
-					}
-				});
-			} else {
-				navigateToRoomAndRates($filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
-					$filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd')
-				);
-			}
+			navigateToRoomAndRates($filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
+				$filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd')
+			);
 			$scope.closeDialog();
 		};
 
-		$scope.changeStayDates = function() {
+		var alertAddonOverbooking = function(close) {
+			var addonIndex = 0,
+				timer = 0;
+			if (close) {
+				$scope.closeDialog();
+				timer = 1500
+			}
+			$timeout(function() {
+				for (; addonIndex < $scope.responseValidation.addons_to_overbook.length; addonIndex++) {
+					var addon = $scope.responseValidation.addons_to_overbook[addonIndex];
+					if (!addon.isAlerted) {
+						addon.isAlerted = true;
+						ngDialog.open({
+							template: '/assets/partials/reservationCard/rvInsufficientInventory.html',
+							className: 'ngdialog-theme-default',
+							closeByDocument: true,
+							scope: $scope,
+							data: JSON.stringify({
+								name: addon.name,
+								count: addon.inventory,
+								canOverbookInventory: rvPermissionSrv.getPermissionValue('OVERRIDE_ITEM_INVENTORY')
+							})
+						});
+						break;
+					}
+				}
+				if (addonIndex === $scope.responseValidation.addons_to_overbook.length) {
+					$scope.changeStayDates({
+						skipAddonCheck: true
+					});
+				}
+			}, timer);
+		};
+
+
+		$scope.selectAddon = function() {
+			alertAddonOverbooking(true);
+		};
+
+		$scope.changeStayDates = function(flags) {
+
+			if (!flags || !flags.skipAddonCheck) {				
+				if (!!$scope.responseValidation.new_stay_dates && $scope.responseValidation.new_stay_dates.length > 0 &&
+					$scope.responseValidation.addons_to_overbook && $scope.responseValidation.addons_to_overbook.length > 0) {
+					alertAddonOverbooking(true);
+					return false;
+				}
+			}
+
 			var newArrivalDate = $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd');
 			var newDepartureDate = $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd');
 			var existingStayDays = $scope.reservationParentData.rooms[0].stayDates;
@@ -1092,18 +1025,62 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			}, 100);
 		};
 
-		// Handle TRY AGAIN on auth failure popup.
-		$scope.tryAgain = function() {
-			authInProgress();
-			manualAuthAPICall();
-		};
-		// CICO-17067 PMS: Rover - Stay Card: Add manual authorization ends here...
 
-		//>>wakeup call check after guest prefs are fetched
-		$scope.$on('wakeup_call_ON', function(evt, data) {
-			if (data) {
-				$scope.activeWakeUp = data.active;
-			}
-		});
-	}
-]);
+    // Handle TRY AGAIN on auth failure popup.
+    $scope.tryAgain = function(){
+		authInProgress();
+		manualAuthAPICall();
+	};
+    // CICO-17067 PMS: Rover - Stay Card: Add manual authorization ends here...
+
+    //>>wakeup call check after guest prefs are fetched
+        $scope.$on('wakeup_call_ON',function(evt, data){
+            if (data){
+                $scope.activeWakeUp = data.active;
+            }
+        });
+       
+            $scope.updateGiftCardNumber = function(n){
+                $rootScope.$broadcast('GIFTCARD_DETAILS',n);
+            };
+       
+            $scope.giftCardAmountAvailable = false;
+            $scope.giftCardAvailableBalance = 0;
+            $scope.$on('giftCardAvailableBalance',function(e, giftCardData){
+               $scope.giftCardAvailableBalance = giftCardData.amount;
+            });
+            $scope.timer = null;
+            $scope.cardNumberInput = function(n, e){
+                    var len = n.length;
+                    $scope.num = n;
+                    if (len >= 8 && len <= 22){
+                        //then go check the balance of the card
+                        $('[name=card-number]').keydown(function(){
+                            clearTimeout($scope.timer); 
+                            $scope.updateGiftCardNumber(n);
+                            $scope.timer = setTimeout($scope.fetchGiftCardBalance, 1500);
+                        });
+                    } else {
+                        //hide the field and reset the amount stored
+                        $scope.giftCardAmountAvailable = false;
+                    }
+            };
+            $scope.num;
+            $scope.fetchGiftCardBalance = function() {
+               // if ($scope.depositData.paymentType === 'GIFT_CARD'){
+                       //switch this back for the UI if the payment was a gift card
+                   $scope.giftCardAmountAvailable = false;
+                   var fetchGiftCardBalanceSuccess = function(giftCardData){
+                       $scope.giftCardAvailableBalance = giftCardData.amount;
+                       $scope.giftCardAmountAvailable = true;
+                       $scope.$emit('giftCardAvailableBalance',giftCardData);
+                       //data.expiry_date //unused at this time
+                       $scope.$emit('hideLoader');
+                   };
+                   $scope.invokeApi(RVReservationCardSrv.checkGiftCardBalance, {'card_number':$scope.num}, fetchGiftCardBalanceSuccess);
+              // } else {
+              //     $scope.giftCardAmountAvailable = false;
+              // }
+            };
+        
+}]);
