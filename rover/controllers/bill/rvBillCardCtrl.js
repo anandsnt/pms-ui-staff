@@ -91,7 +91,6 @@ sntRover.controller('RVbillCardController',
 	$scope.reservationBillData = reservationBillData;
 
 	//set up flags for checkbox actions
-
 	$scope.hasMoveToOtherBillPermission = function() {
         return ($rootScope.isStandAlone && rvPermissionSrv.getPermissionValue ('MOVE_CHARGES_RESERVATION_ACCOUNT'));
     };
@@ -639,7 +638,28 @@ sntRover.controller('RVbillCardController',
 	  * To add class active if fees is open
 	  * @param {bool} - new data added along with bill data for each bill
 	  */
+        $rootScope.allowPmtWithGiftCard = false;
+         $scope.cardsListSuccess = function(data){
+             $scope.fetchPmtList = true;
+             $scope.allowPmtWithGiftCard = false;
+             $rootScope.allowPmtWithGiftCard = false;
+             $scope.$emit('hideLoader');
+             for (var i in data){
+                 if (data[i].name === "GIFT_CARD"){
+                    $scope.allowPmtWithGiftCard = true;
+                    $rootScope.allowPmtWithGiftCard = true;
+                 }
+             }
+         };
+         $scope.fetchPmtList = false;
 	 $scope.showFeesDetailsOpenClose = function(openCloseStatus){
+             if (!$rootScope.isStandAlone){//CICO-19009 adding gift card support, used to validate gift card is enabled
+                 if (!$scope.fetchPmtList){
+                    $scope.fetchPmtList = true;
+                    $scope.invokeApi(RVPaymentSrv.fetchAvailPayments, {} , $scope.cardsListSuccess);
+                 }
+             }
+             
 	 	var length = 0;
 	 	var openCloseClass = " ";
 

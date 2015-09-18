@@ -30,6 +30,11 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 
 		$scope.initGuestCard = function(guestData) {
+			if (!guestData) {
+				guestData = {
+					id: ""
+				}
+			}
 			// passReservationParams
 			//TODO : Once this works pull it to a separate method
 			var fetchGuestcardDataSuccessCallback = function(data) {
@@ -111,9 +116,9 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			};
 
 
-			if ($scope.reservationDetails.guestCard.id !== '' && $scope.reservationDetails.guestCard.id !== null) {
+			if (!!guestData.id || !!$scope.reservationDetails.guestCard.id || !!$scope.reservationData.guest.id) {
 				var param = {
-					'id': $scope.reservationDetails.guestCard.id
+					'id': guestData.id || $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id
 				};
 				$scope.invokeApi(RVReservationCardSrv.getGuestDetails, param, fetchGuestcardDataSuccessCallback, fetchGuestcardDataFailureCallback, 'NONE');
 			}
@@ -124,13 +129,12 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		 * @return {[type]} [description]
 		 */
 		var successCallbackOfGroupDetailsFetch = function(response) {
-			_.extend($scope.groupConfigData, 
-			{
+			_.extend($scope.groupConfigData, {
 				activeTab: 'SUMMARY', // Possible values are SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY
 				summary: response.groupSummary,
 				selectAddons: false, // To be set to true while showing addons full view
 				addons: {},
-				selectedAddons: []					
+				selectedAddons: []
 			});
 		};
 
@@ -139,9 +143,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		 * @param  {[type]} holdStatusList [description]
 		 * @return {[type]}                [description]
 		 */
-		var successCallBackOfGroupHoldListFetch = function(holdStatusList)  {
-			_.extend($scope.groupConfigData, 
-			{
+		var successCallBackOfGroupHoldListFetch = function(holdStatusList) {
+			_.extend($scope.groupConfigData, {
 				holdStatusList: holdStatusList.data.hold_status
 			});
 		};
@@ -167,35 +170,35 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		};
 
 		$scope.initGroupCard = function(groupId) {
-            var promises = [];
-            //we are not using our normal API calling since we have multiple API calls needed
-            $scope.$emit('showLoader');
+			var promises = [];
+			//we are not using our normal API calling since we have multiple API calls needed
+			$scope.$emit('showLoader');
 
-            $scope.groupConfigData = { 
-            	activeScreen: 'STAY_CARD'
-            };
+			$scope.groupConfigData = {
+				activeScreen: 'STAY_CARD'
+			};
 
-            //group details fetch
-            var paramsForGroupDetails = {
-                groupId: groupId
-            };
-            promises.push(rvGroupConfigurationSrv
-                .getGroupSummary(paramsForGroupDetails)
-                .then(successCallbackOfGroupDetailsFetch)
-            );
+			//group details fetch
+			var paramsForGroupDetails = {
+				groupId: groupId
+			};
+			promises.push(rvGroupConfigurationSrv
+				.getGroupSummary(paramsForGroupDetails)
+				.then(successCallbackOfGroupDetailsFetch)
+			);
 
-            //reservation list fetch
-            var paramsForHoldListFetch = {
-            	is_group: true
-            };
-            promises.push(rvGroupConfigurationSrv
-                .getHoldStatusList(paramsForHoldListFetch)
-                .then(successCallBackOfGroupHoldListFetch)
-            );
+			//reservation list fetch
+			var paramsForHoldListFetch = {
+				is_group: true
+			};
+			promises.push(rvGroupConfigurationSrv
+				.getHoldStatusList(paramsForHoldListFetch)
+				.then(successCallBackOfGroupHoldListFetch)
+			);
 
-            //Lets start the processing
-            $q.all(promises)
-                .then(successFetchOfAllReqdForGroupDetailsShowing, failedToFetchOfAllReqdForGroupDetailsShowing);
+			//Lets start the processing
+			$q.all(promises)
+				.then(successFetchOfAllReqdForGroupDetailsShowing, failedToFetchOfAllReqdForGroupDetailsShowing);
 		};
 
 		// fetch reservation company card details
@@ -288,11 +291,11 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		 * if we wanted to reload particular staycard details
 		 * @return {undeifned} [description]
 		 */
-		$scope.reloadTheStaycard = function (){
+		$scope.reloadTheStaycard = function() {
 			$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-					"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
-					"confirmationId": $stateParams.confirmationId,
-					"isrefresh": false
+				"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
+				"confirmationId": $stateParams.confirmationId,
+				"isrefresh": false
 			});
 		};
 
@@ -300,7 +303,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		 * if current screen is in staycard
 		 * @return {Boolean} [description]
 		 */
-		$scope.isInStayCardScreen = function () {
+		$scope.isInStayCardScreen = function() {
 			return ($scope.viewState.identifier === "STAY_CARD");
 		};
 		$scope.removeCard = function(card, future) {
