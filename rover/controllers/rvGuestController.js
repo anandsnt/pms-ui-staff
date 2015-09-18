@@ -906,8 +906,6 @@ sntRover.controller('guestCardController', [
 		 */
 		$scope.navigateToRoomAndRates = function() {
 			var resData = $scope.reservationData;
-			console.log("navigateToRoomAndRates");
-			console.log(resData);
 			$state.go('rover.reservation.staycard.mainCard.roomType', {
 				from_date 		: resData.arrivalDate,
 				to_date 		: resData.departureDate,
@@ -1362,7 +1360,6 @@ sntRover.controller('guestCardController', [
 		$scope.selectCompany = function(company) {
 			//CICO-7792
 			if ($scope.viewState.identifier === "CREATION") {
-				console.log("CREATION");
 				$scope.reservationData.company.id = company.id;
 				$scope.showContractedRates({
 					companyCard: company.id,
@@ -1380,10 +1377,8 @@ sntRover.controller('guestCardController', [
 				$scope.viewState.isAddNewCard = false;
 			} else {
 				if (!$scope.reservationDetails.companyCard.futureReservations || $scope.reservationDetails.companyCard.futureReservations <= 0) {
-					console.log("$scope.replaceCardCaller");
 					$scope.replaceCardCaller('company', company, false);
 				} else {
-					console.log("$scope.checkFuture");
 					$scope.checkFuture('company', company);
 				}
 			}
@@ -1559,16 +1554,5 @@ sntRover.controller('guestCardController', [
 				$scope.$broadcast('saveContactInfo');
 			}
 		};
-
-		/*$scope.$on("companySearchStopped", function() {
-			console.log("RvGuestCtrl+comapny");
-			$scope.navigateToRoomAndRates();
-		});
-
-		$scope.$on("travelAgentSearchStopped", function() {
-			console.log("RvGuestCtrl+TA");
-			$scope.navigateToRoomAndRates();
-		});
-		*/
 	}
 ]);
