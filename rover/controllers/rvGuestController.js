@@ -57,9 +57,9 @@ sntRover.controller('guestCardController', [
 			} else {
 				// populate cards
 				$scope.closeGuestCard();
-				if ($scope.reservationDetails.guestCard.id !== "" && $scope.reservationDetails.guestCard.id !== null) {
+				if (!!$scope.reservationDetails.guestCard.id || !!$scope.reservationData.guest.id) {
 					$scope.initGuestCard({
-						id: $scope.reservationDetails.guestCard.id
+						id: $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id
 					});
 				}
 				if ($scope.reservationDetails.companyCard.id !== "" && $scope.reservationDetails.companyCard.id !== null) {
@@ -72,6 +72,10 @@ sntRover.controller('guestCardController', [
 						id: $scope.reservationDetails.travelAgent.id
 					});
 				}
+				if (!!$scope.reservationData.group.id) {						
+						$scope.initGroupCard($scope.reservationData.group.id);
+				}
+				
 				$scope.reservationData.isSameCard = false;
 			}
 

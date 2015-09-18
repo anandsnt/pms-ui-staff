@@ -975,7 +975,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			}, 100);
 		};
 
-
     // Handle TRY AGAIN on auth failure popup.
     $scope.tryAgain = function(){
 		authInProgress();
