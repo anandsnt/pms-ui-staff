@@ -99,9 +99,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
         };
 
 		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, postData, successCallBackFetchRevenueData);
-		console.log($scope.data.selectedChargeGroup);
        	var uiValue = _.find($scope.data.activeChargeGroups, function(each) {
-       		console.log(each.id);
        		return (each.id).toString() === $scope.data.selectedChargeGroup;
        	});
        	$scope.data.uiSelectedChargeGroup = !!uiValue ? uiValue['name'] : '';
@@ -186,8 +184,8 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		}
 		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, postData , successCallBackFetchPaymentData);
 
-		var uiValue = _.find($scope.data.paymentData.payment_types, function(each) {
-			return each.id === $scope.data.selectedPaymentType;
+		var uiValue = _.find($scope.data.activePaymentTypes, function(each) {
+			return each.charge_code_id === parseInt($scope.data.selectedPaymentType);
 		});
 		$scope.data.uiSelectedPaymentType = !!uiValue ? uiValue['payment_type'] : '';
 	};

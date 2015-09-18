@@ -1,11 +1,3 @@
-<!-- Print header -->
-<ul class="journal-header-print">
-    <li>
-        {Total/Pre-Stay/In-House/Post-Stay} Payments
-        <span>${Amount}</span>
-    </li>
-</ul>
-
 <!-- Content for Payments -->
 <div ng-controller="RVccPaymentsController" id="cc-transactions-content" class="journal-content scrollable" ng-iscroll='payment_content'>
     <div class="wrapper">
@@ -95,16 +87,3 @@
         </div>
     </div>
 </div>
-
-<ul class="journal-footer-print">
-    <li>
-        From <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{{ appliedFilter.toDate | date:dateFormat }}</span><br />
-        Departments(s) <span>{Name}, {Name} or All</span><br />
-        Employee(s) <span>{Name}, {Name} or All</span><br />
-        Payment Type(s) <span>{Name}, {Name} or All</span>
-    </li>
-    <li>
-        Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br />
-        User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
-    </li>
-</ul>

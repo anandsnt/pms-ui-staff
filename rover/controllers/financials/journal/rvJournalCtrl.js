@@ -213,7 +213,6 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
     // On selecting select button.
     $scope.clickedSelectButton = function(){
-        console.log($scope.data.filterData);
 
         if($scope.data.filterData.isSelectButtonActive){
             setupDeptAndEmpList();
