@@ -55,7 +55,7 @@ sntRover.controller('RVReservationDepositController',
 		$scope.depositPolicyName = $scope.depositDetails.deposit_policy.description;
 		$scope.reservationData.depositAmountWithoutFilter = $scope.depositDetails.deposit_amount;
 		//$scope.reservationData.depositAmount = $filter('number')(($scope.depositDetails.deposit_amount), 2);
-		$scope.reservationData.depositAmount = $scope.depositDetails.deposit_amount;
+		$scope.reservationData.depositAmount = parseFloat($scope.depositDetails.deposit_amount).toFixed(2);
 
 		$scope.closeDialog = function(){
 			$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG", false);
