@@ -7,10 +7,10 @@
 		        <h1>Rate Details</h1>		        
 		        <em>{{ngDialogData.room.roomTypeName}}<br/>{{ngDialogData.room.rateName}}</em>
 		    </div>
-
-		    <div id="rate-grid" class="scrollable" ng-iscroll="rateDetails">
-		    	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		    
+		    <div id="rate-grid" class="scrollable" ng-iscroll="rateDetails" ng-iscroll-delay="2000">		    	
 		        <div class="wrapper">
+		        	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		            <table class="rate-grid">
 		                <thead>
 		                    <tr>
