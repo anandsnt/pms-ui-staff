@@ -142,6 +142,10 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     // On selecting 'All Departments' radio button.
     $scope.selectAllDepartment = function(){
     	$scope.data.filterData.checkedAllDepartments = true;
+        $scope.data.selectedDepartmentName = [];
+        $scope.data.selectedDepartmentName.push('ALL');
+        $scope.data.selectedEmployeesName = [];
+        $scope.data.selectedEmployeesName.push('ALL');
     	clearAllDeptSelection();
         clearAllEmployeeSelection();
         getSelectButtonStatus();
@@ -202,11 +206,14 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
             $scope.data.filterTitle = "All Departments";
             $scope.data.selectedDepartmentName = [];
             $scope.data.selectedDepartmentName.push('ALL');
-            $scope.data.selectedEmployeesName = [];
-            $scope.data.selectedEmployeesName.push('ALL');
         }
         else{
             $scope.data.filterTitle = filterTitle;
+        }
+
+        if ($scope.data.selectedEmployeesName.length === 0) {
+            $scope.data.selectedEmployeesName = [];
+            $scope.data.selectedEmployeesName.push('ALL');
         }
     };
 
