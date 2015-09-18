@@ -59,6 +59,16 @@ sntRover.controller('rvGroupReservationEditCtrl', [
     };
 
     /**
+     * Put all logic to show/hide the checkout button here.
+     * @param {object} Reservation
+     * @return {undefined}
+     */
+    $scope.shouldShowCheckoutButton = function(reservation) {
+        return (!$scope.reservationStatusFlags.isExpected &&
+                 $scope.reservationStatusFlags.isPastArrival);
+    };
+
+    /**
      * Conditionally disable the checkout button
      * @param {object} Reservation
      */
@@ -69,6 +79,16 @@ sntRover.controller('rvGroupReservationEditCtrl', [
      };
 
     /**
+     * Put all logic to show/hide the checkin button here.
+     * @param {object} Reservation
+     * @return {undefined}
+     */
+    $scope.shouldShowCheckinButton = function(reservation) {
+        return (!$scope.reservationStatusFlags.isExpected &&
+                 $scope.reservationStatusFlags.isPastArrival);
+    };
+
+    /**
      * Conditionally disable the checkout button
      * @param {object} Reservation
      */
@@ -76,6 +96,10 @@ sntRover.controller('rvGroupReservationEditCtrl', [
         return (!$scope.reservationStatusFlags.canChekin ||
                 $scope.reservationStatusFlags.isUneditable ||
                 !reservation.can_checkin);
+     };
+
+     $scope.shouldDisableStaycardButton = function(reservation) {
+        return (!$scope.reservationStatusFlags.isGuestAttached);
      };
 
     /**
@@ -92,6 +116,11 @@ sntRover.controller('rvGroupReservationEditCtrl', [
 
         //CICO-18717: disable room type switch once a user checks in
         return (!(rStatus === "RESERVED" || rStatus === "CHECKING_IN") || containNonEditableRoomType);
+    };
+
+    $scope.shouldDisableReservationOccuppancyChange = function(reservation) {
+        return ($scope.reservationStatusFlags.isUneditable ||
+                $scope.reservationStatusFlags.isCheckedOut);
     };
 
     /**
