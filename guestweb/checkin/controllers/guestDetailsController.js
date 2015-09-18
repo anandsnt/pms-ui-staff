@@ -104,6 +104,7 @@
 				var dataToSave 			= getDataToSave();
 				guestDetailsService.postGuestDetails(dataToSave).then(function(response) {
 					$scope.isLoading 	= false;
+					$rootScope.isGuestAddressVerified =  true;
 					if($rootScope.upgradesAvailable){
 						$state.go('checkinUpgrade');
 					}
