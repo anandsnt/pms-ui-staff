@@ -1173,7 +1173,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         totalDeposit = parseFloat(totalDeposit) + parseFloat(reservation.deposit_amount);
                     });
 
-                    $scope.reservationData.depositAmount = parseInt(totalDeposit).toFixed(2);
+                    $scope.reservationData.depositAmount = parseFloat(totalDeposit).toFixed(2);
                     $scope.reservationData.depositEditable = (data.allow_deposit_edit !== null && data.allow_deposit_edit) ? true : false;
                     $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) > 0;
 
