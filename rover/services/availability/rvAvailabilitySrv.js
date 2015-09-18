@@ -294,8 +294,8 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	* function to fetch group availability between from date & to date
 	*/
 	this.fetchGroupAvailabilityDetails = function(params){
-		var firstDate 	= tzIndependentDate(params.from_date);
-		var secondDate 	= tzIndependentDate(params.to_date);
+		var firstDate 	= (params.from_date);
+		var secondDate 	= (params.to_date);
 
 		var dataForWebservice = {
 			from_date	: firstDate,
@@ -320,8 +320,8 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	* function to fetch availability between from date & to date
 	*/
 	this.fetchAvailabilityDetails = function(params){
-		var firstDate 	= tzIndependentDate(params.from_date);
-		var secondDate 	= tzIndependentDate(params.to_date);
+		var firstDate 	= params.from_date;
+		var secondDate 	= params.to_date;
 
 		var dataForWebservice = {
 			from_date	: firstDate,
@@ -345,8 +345,8 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	* function to fetch occupancy details date wise
 	*/
 	this.fetchOccupancyDetails = function(params, deferred){
-		var firstDate 	= tzIndependentDate(params.from_date);
-		var secondDate 	= tzIndependentDate(params.to_date);
+		var firstDate 	= params.from_date;
+		var secondDate 	= params.to_date;
 
 		var dataForWebservice = {
 			from_date	: firstDate,
