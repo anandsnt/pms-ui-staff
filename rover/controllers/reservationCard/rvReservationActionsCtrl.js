@@ -579,6 +579,12 @@ sntRover.controller('reservationActionsController', [
 		 * @return {Boolean}
 		 */
 		$scope.showDepositBalance = function(reservationStatus) {
+                    var cashDesposit = false;
+                    if ($scope.reservationData.reservation_card.payment_method_used === 'CA'){
+                        cashDesposit = true;
+                    } 
+                    $rootScope.initFromCashDeposit = cashDesposit;
+                    
 			//As per CICO-15833
 			//we wanted to show the Balance & Deposit popup for DUEIN & CHECKING IN reservation only
 			reservationStatus = reservationStatus.toUpperCase();
