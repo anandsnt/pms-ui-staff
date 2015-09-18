@@ -35,8 +35,11 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.data.activePaymentTab = "";
     $scope.setScroller('employee-content');
     $scope.setScroller('department-content');
+
     $scope.data.selectedDepartmentName = [];
-    $scope.data.selectedDepartmentName.push('All Departments');
+    $scope.data.selectedDepartmentName.push('ALL');
+    $scope.data.selectedEmployeesName = [];
+    $scope.data.selectedEmployeesName.push('ALL');
 
     var retrieveCashierName = function(){
         if($scope.data.filterData.selectedCashier !== ""){
@@ -192,13 +195,16 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
             }
         });
 
+
         if(($scope.data.selectedDepartmentList.length + $scope.data.selectedEmployeeList.length) > 1 ){
             $scope.data.filterTitle = "Multiple";
         }
         else if( ($scope.data.selectedDepartmentList.length === 0) && ($scope.data.selectedEmployeeList.length === 0) ){
             $scope.data.filterTitle = "All Departments";
             $scope.data.selectedDepartmentName = [];
-            $scope.data.selectedDepartmentName.push('All Departments');
+            $scope.data.selectedDepartmentName.push('ALL');
+            $scope.data.selectedEmployeesName = [];
+            $scope.data.selectedEmployeesName.push('ALL');
         }
         else{
             $scope.data.filterTitle = filterTitle;

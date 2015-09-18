@@ -99,13 +99,12 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
         };
 
 		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, postData, successCallBackFetchRevenueData);
-
+		console.log($scope.data.selectedChargeGroup);
        	var uiValue = _.find($scope.data.activeChargeGroups, function(each) {
-       		return each.id == $scope.data.selectedChargeGroup;
+       		console.log(each.id);
+       		return (each.id).toString() === $scope.data.selectedChargeGroup;
        	});
-       	console.log(uiValue);
        	$scope.data.uiSelectedChargeGroup = !!uiValue ? uiValue['name'] : '';
-       	console.log($scope.data.selectedChargeGroup);
 	};
 
 	// On changing charge code on PRINT filter
