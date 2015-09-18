@@ -277,7 +277,7 @@
             <span class="title">Users</span>
         </a>
         <div class="settings-content" ng-if="chosenReport.hasUserFilter" ng-class="{'hidden': !filterItemsToggle.item_08}">
-            <input class="icons icon-search" auto-complete auto-options="detailsUserAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Email Id" value="" autocomplete="off" ng-model="chosenReport.uiChosenUsers" report-source="reportList" report-index="{{ $index }}" report-model="chosenUsers" ul-class="find-cards" ng-focus="returnItem(chosenReport)">
+            <input class="icons icon-search" auto-complete auto-options="detailsUserAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Email Id" value="" autocomplete="off" ng-model="chosenReport.uiChosenUsers" report-source="reportList" report-index="{{ $index }}" report-model="chosenUsers" ul-class="find-user" ng-focus="returnItem(chosenReport)">
             <select multiple class="hidden" ng-model="chosenReport.chosenUsers" ng-options="user.id as user.full_name for user in activeUserList"></select>
         </div>
 
