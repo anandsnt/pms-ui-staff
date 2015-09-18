@@ -63,14 +63,14 @@
                         <select id="payment-options" ng-model="saveData.paymentType"  name="payment-options" ng-change="showHideCreditCard()">
                             <option value="" translate>SELECT_PAYMENT_TYPE</option>
                              <!-- changes for CICO-13763 -->
-                            <option ng-repeat="paymentData in renderData.paymentTypes" value="{{paymentData.name}}" ng-selected="paymentData.name == defaultPaymentTypeOfBill">{{paymentData.description}}</option>
+                            <option ng-repeat="paymentData in renderData.paymentTypes" value="{{paymentData.name}}" ng-selected="paymentData.name == defaultPaymentTypeOfBill || allowPmtWithGiftCard == true">{{paymentData.description}}</option>
                         </select>
                     </div>
                 </div>
             
                 <div ng-show="saveData.paymentType === 'GIFT_CARD'" ng-hide="saveData.paymentType !== 'GIFT_CARD'" class="entry card-number card-type">
                     <label for="card-number">Card number (<span>No spaces</span>)</label>
-			<input ng-show="saveData.paymentType === 'GIFT_CARD'" name="card-number" ng-readonly="!isManualCCEntryEnabled" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber, this)" />
+			<input ng-show="saveData.paymentType === 'GIFT_CARD'" name="card-number" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber, this)" />
                     <label ng-show="depositWithGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable"> Available Card Balance ({{currencySymbol}}) </label>
                     <input ng-show="depositWithGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable" name="giftCardAmount" id="amount" ng-model="giftCardAvailableBalance" ng-readonly="true" ng-readonly="true" type="text" class="amount" value="{{ giftCardAvailableBalance }}"/>
                    

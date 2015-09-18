@@ -33,7 +33,62 @@ sntRover.controller('RVCardOptionsCtrl',
 		$scope.$on('REFRESH_IFRAME', function(e){
 			 $scope.refreshIframe();
 		});
+                
+                $rootScope.$on('depositModalAllowGiftCard', function(){
+                    $scope.allowPmtWithGiftCard = true;
+                });
+                
+                
+                //also if !standalone, check if gift card allowed
+                $scope.checkForGiftCard = function(){
+                    if (!$rootScope.isStandAlone){//CICO-19009 adding gift card support, used to validate gift card is enabled
+                         $scope.invokeApi(RVPaymentSrv.fetchAvailPayments, {} , $scope.cardsListSuccess);
+                    }
+                }
+                
+              
+	$scope.showMakePaymentButtonStatus = function(){
+            
+		var buttonClass = "";
+                
+                if ($scope.depositBalanceMakePaymentData){
+                    if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined"){
+			buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0 && $scope.validPayment) ? "green" :"grey";
+                    } else {
+                        if (!$scope.validPayment){
+                            buttonClass = "grey overlay";
+                        } else {
+                            buttonClass = "grey";
+                        }
+                    };
+                } else {
+                    if (!$scope.validPayment){
+			buttonClass = "grey overlay";
+                    } else {
+			buttonClass = "grey";
+                    }
+		};
+		return buttonClass;
+	};
+                $scope.useDepositGiftCard = false;
+                $scope.cardsListSuccess = function(data){
+                    $scope.allowPmtWithGiftCard = false;
+                    $rootScope.allowPmtWithGiftCard = false;
+                    $scope.$emit('hideLoader');
+                        for (var i in data){
+                            if (data[i].name === "GIFT_CARD"){
+                               $scope.allowPmtWithGiftCard = true;
+                               $scope.$parent.allowPmtWithGiftCard = true;
+                               $scope.$parent.$parent.allowPmtWithGiftCard = true;
+                               $scope.$parent.$parent.$parent.allowPmtWithGiftCard = true;
+                               $rootScope.allowPmtWithGiftCard = true;
+                               $rootScope.$broadcast('depositModalAllowGiftCard', true);
+                            }
+                        }
+                };
+                
                 $scope.isGiftCard = false;
+                $scope.allowPmtWithGiftCard = false;
                 $rootScope.$on('depositUsingGiftCardChange',function(e, v){
                    if ($rootScope.depositUsingGiftCard){
                        $scope.isGiftCard = true;
@@ -204,8 +259,15 @@ sntRover.controller('RVCardOptionsCtrl',
                $scope.giftCardAvailableBalance = giftCardData.amount;
             });
             $scope.timer = null;
-            $scope.cardNumberInput = function(n, e){
-                if ($scope.isGiftCard){
+            $scope.cardNumberInput = function(n, e, force){
+                if (force){
+                    $scope.isGiftCard = true;
+                    $scope.useDepositGiftCard = true;
+                    $rootScope.useDepositGiftCard = true;
+                } else {
+                    $rootScope.useDepositGiftCard = false;
+                }
+                if ($scope.isGiftCard || force){
                     var len = n.length;
                     $scope.num = n;
                     if (len >= 8 && len <= 22){
