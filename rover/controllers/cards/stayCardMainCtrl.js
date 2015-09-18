@@ -30,6 +30,11 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 
 		$scope.initGuestCard = function(guestData) {
+			if (!guestData) {
+				guestData = {
+					id: ""
+				}
+			}
 			// passReservationParams
 			//TODO : Once this works pull it to a separate method
 			var fetchGuestcardDataSuccessCallback = function(data) {
