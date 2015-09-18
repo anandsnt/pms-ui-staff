@@ -343,6 +343,15 @@ sntRover.service('RVReservationStateService', [
 									taxForAddons.excl = parseFloat(taxForAddons.excl) + parseFloat(taxOnCurrentAddon.EXCL.NIGHT);
 									updateStayTaxes(taxOnCurrentAddon.taxDescription);
 								}
+
+								var inventoryForDay = _.findWhere(addon.inventory, {
+									date: for_date
+								});
+
+								if (!inventoryForDay) {
+									console.warn('Inventory details not returned for:' + for_date + 'for add on ' + addon.id);
+								}
+
 								addonsApplied.push({ // for Book keeping
 									name: addon.name,
 									addonAmount: currentAddonAmount,
@@ -351,9 +360,7 @@ sntRover.service('RVReservationStateService', [
 									amountType: addon.amount_type.value,
 									taxBreakUp: taxOnCurrentAddon,
 									id: addon.id,
-									inventory: _.findWhere(addon.inventory, {
-										date: for_date
-									}).available_count
+									inventory: inventoryForDay && inventoryForDay.available_count || null
 								});
 								if (!addon.is_inclusive && shouldPostAddon) {
 									addonRate = parseFloat(addonRate) + parseFloat(currentAddonAmount);
