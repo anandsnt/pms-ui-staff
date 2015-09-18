@@ -697,7 +697,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				for (i = $scope.stateCheck.roomDetails.firstIndex; i <= $scope.stateCheck.roomDetails.lastIndex; i++) {
 
 					_.extend($scope.reservationData.rooms[i], {
-						roomTypeId: roomId,
+						roomTypeId: parseInt(roomId),
 						roomTypeName: $scope.roomAvailability[roomId].name,
 						rateId: rateId,
 						isSuppressed: $scope.displayData.allRates[rateId].is_suppress_rate_on,
