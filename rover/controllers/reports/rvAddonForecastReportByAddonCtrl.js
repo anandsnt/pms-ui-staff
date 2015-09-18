@@ -14,9 +14,6 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 		
 		BaseCtrl.call(this, $scope);
 
-		$scope.setScroller('addon-forecast-report-scroll', {
-		    preventDefault: false
-		});
 
 
 		var detailsCtrlScope = $scope.$parent,
@@ -28,7 +25,21 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 			addonGroups,
 			addons;
 
+
+
+		var SCROLL_NAME = 'addon-forecast-report-scroll';
+		var refreshScroll = function(scrollUp) {
+			if ( !! mainCtrlScope.myScroll.hasOwnProperty(SCROLL_NAME) ) {
+				$scope.refreshScroller( SCROLL_NAME );
+				if ( !!scrollUp ) {
+					mainCtrlScope.myScroll[SCROLL_NAME].scrollTo(0, 0, 100);
+				};
+			};
+		};
+		$scope.setScroller( SCROLL_NAME, { preventDefault: false } );
+
 	
+
 
 		$scope.getKey = function(item) {
 			return _.keys(item)[0];
@@ -61,11 +72,11 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 		};
 
 		var resClassNames = {
-			'RESERVED' : 'arrival',
-			'CHECKEDIN' : 'check-in',
-			'CHECKEDOUT': 'check-out',
-			'CANCELED': 'cancel',
-			'NOSHOW': 'no-show'
+			'DUE IN'    : 'check-in',
+			'INHOUSE'   : 'inhouse',
+			'DUE OUT'   : 'check-out',
+			'CANCELLED' : 'cancel',
+			'NOSHOW'    : 'no-show'
 		}
 		$scope.getStatusClass = function(status) {
 			return resClassNames[status] || '';
@@ -263,6 +274,8 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  			/* LOOP ENDS */
  			$scope.modifiedResults = angular.copy( results );
 
+ 			// refresh scroll
+ 			$timeout( refreshScroll.bind(null, 'scrollUp'), 300 );
  		};
 
  		init();
