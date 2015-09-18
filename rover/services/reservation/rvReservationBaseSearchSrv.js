@@ -89,7 +89,7 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
             }
             
             if (!!param.promotion_code) {
-                url += '&promotion_code=' + param.promotion_code;
+                url += '&promotion_code=' + encodeURI(param.promotion_code);//to handle special characters
             }
 
             RVBaseWebSrvV2.getJSON(url).then(function(data) {
