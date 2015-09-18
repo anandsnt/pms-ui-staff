@@ -303,6 +303,12 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 			var deferred = $q.defer(),
 				url = '/api/gift_cards/balance_inquiry';
 			rvBaseWebSrvV2.postJSON(url,data).then(function(response) {
+                            if (response){
+                                if (typeof response.amount === typeof 123){
+                                    response.amount = parseFloat(response.amount).toFixed(2);
+                                }
+                            }
+                            
 				deferred.resolve(response);
 			}, function(response) {
 				deferred.reject(response);
