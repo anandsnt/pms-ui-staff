@@ -2,7 +2,7 @@
 	<!-- If hidden by default, add class="hidden" -->
 	<!-- Card toggle - Use only if there are exsiting cards on file -->
 	
-        <ul class="card-toggle" ng-hide="isFromGuestCard  || hasAccompanyguest || cardsList.length === 0" ng-init="checkForGiftCard(); addmode = false; isGiftCard = false">
+        <ul class="card-toggle" ng-hide="isFromGuestCard  || hasAccompanyguest || cardsList.length === 0 || initFromCashDeposit" ng-init="checkForGiftCard(); addmode = false; isGiftCard = false">
 		<li ng-class="{'active':!addmode && !isGiftCard}" ng-click="addmode = false; isGiftCard = false; useDepositGiftCard = false; hideCancelCard = false; depositWithGiftCard = false;">
 			Existing Cards
 		</li>
@@ -14,7 +14,7 @@
 		</li>
 	</ul>
 	<!-- Exsiting cards - use only when they exsit -->
-	<div id="cc-exsiting-card" class="cards-list cards-container scrollable" ng-show="!addmode && !useDepositGiftCard" ng-iscroll="cardsList">
+	<div id="cc-exsiting-card" class="cards-list cards-container scrollable" ng-show="!addmode && !useDepositGiftCard && !initFromCashDeposit" ng-iscroll="cardsList">
 		<div class="wrapper">
 
 			<label class="active-item item-payment" ng-click="setCreditCardFromList($index)" ng-repeat="card in cardsList" ng-show="card.is_credit_card"> <!-- Add class "primary" when selected -->

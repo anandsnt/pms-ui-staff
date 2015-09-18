@@ -279,6 +279,9 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	$scope.showHideCreditCard = function(){
                 if ($scope.saveData.paymentType === "GIFT_CARD"){
                     $scope.resetSplitPaymentDetailForGiftCard();
+                    $scope.shouldShowMakePaymentButton = true;
+                    $scope.splitBillEnabled = false;
+                    
                     $scope.isGiftCardPmt = true;
                 } else {
                     $scope.isGiftCardPmt = false;
@@ -309,6 +312,24 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.renderData.billNumberSelected = $scope.currentActiveBillNumber;
 		$scope.renderDefaultValues();
 		$scope.creditCardTypes = [];
+                
+                
+            if ($rootScope.allowPmtWithGiftCard && !$scope.isStandAlone){
+                //then restrict options to pay to only gift card;
+                if ($scope.renderData){
+                    var restrictedPmtTypes = [];
+                    for (var i in $scope.renderData.paymentTypes){
+                        if ($scope.renderData.paymentTypes[i].name === 'GIFT_CARD'){
+                            $scope.allowPmtWithGiftCard = true;
+                            restrictedPmtTypes.push($scope.renderData.paymentTypes[i]);
+                            break;
+                        }
+                    }
+                    $scope.renderData.paymentTypes = restrictedPmtTypes;
+                    $scope.saveData.paymentType = 'GIFT_CARD';
+                }
+            }
+                
 		angular.forEach($scope.renderData.paymentTypes, function(item, key) {
 			if(item.name === 'CC'){
 				$scope.creditCardTypes = item.values;

@@ -43,8 +43,10 @@ sntRover.controller('RVCardOptionsCtrl',
                 $scope.checkForGiftCard = function(){
                     if (!$rootScope.isStandAlone){//CICO-19009 adding gift card support, used to validate gift card is enabled
                          $scope.invokeApi(RVPaymentSrv.fetchAvailPayments, {} , $scope.cardsListSuccess);
-                    }
-                }
+                    };
+                        
+                    
+                };
                 
               
 	$scope.showMakePaymentButtonStatus = function(){
@@ -85,6 +87,13 @@ sntRover.controller('RVCardOptionsCtrl',
                                $rootScope.$broadcast('depositModalAllowGiftCard', true);
                             }
                         }
+                        
+                    
+                    if ($rootScope.initFromCashDeposit){
+                        $scope.initFromCashDeposit = true;
+                    } else {
+                        $scope.initFromCashDeposit = false;
+                    }
                 };
                 
                 $scope.isGiftCard = false;
