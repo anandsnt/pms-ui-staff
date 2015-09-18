@@ -33,9 +33,13 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.data.isPaymentToggleSummaryActive = true;
     $scope.data.selectedCashier = "";
     $scope.data.activePaymentTab = "";
-
     $scope.setScroller('employee-content');
     $scope.setScroller('department-content');
+
+    $scope.data.selectedDepartmentName = [];
+    $scope.data.selectedDepartmentName.push('ALL');
+    $scope.data.selectedEmployeesName = [];
+    $scope.data.selectedEmployeesName.push('ALL');
 
     var retrieveCashierName = function(){
         if($scope.data.filterData.selectedCashier !== ""){
@@ -170,27 +174,36 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         var filterTitle = "";
         // To get the list of departments id selected.
         $scope.data.selectedDepartmentList = [];
+        $scope.data.selectedDepartmentName = [];
         angular.forEach($scope.data.filterData.departments,function(item, index) {
             if(item.checked){
                 $scope.data.selectedDepartmentList.push(item.id);
+                $scope.data.selectedDepartmentName.push(item.name);
                 filterTitle = item.name;
             }
         });
 
         // To get the list of employee id selected.
         $scope.data.selectedEmployeeList = [];
+        $scope.data.selectedEmployeesName = [];
         angular.forEach($scope.data.filterData.employees,function(item, index) {
             if(item.checked){
                 $scope.data.selectedEmployeeList.push(item.id);
+                $scope.data.selectedEmployeesName.push(item.name);
                 filterTitle = item.name;
             }
         });
+
 
         if(($scope.data.selectedDepartmentList.length + $scope.data.selectedEmployeeList.length) > 1 ){
             $scope.data.filterTitle = "Multiple";
         }
         else if( ($scope.data.selectedDepartmentList.length === 0) && ($scope.data.selectedEmployeeList.length === 0) ){
             $scope.data.filterTitle = "All Departments";
+            $scope.data.selectedDepartmentName = [];
+            $scope.data.selectedDepartmentName.push('ALL');
+            $scope.data.selectedEmployeesName = [];
+            $scope.data.selectedEmployeesName.push('ALL');
         }
         else{
             $scope.data.filterTitle = filterTitle;

@@ -3,12 +3,34 @@
     <ul class="journal-groups">
         <li ng-click="clickedPaymentGroup('')" ng-class="{'active':data.activePaymentTab === ''}"><span class="icons icon-navbar only-icon icon-total"></span>{{'TOTAL' | translate}}</li>
 
-        <li ng-click="clickedPaymentGroup('PRE_STAY')" ng-class="{'active':data.activePaymentTab === 'PRE_STAY'}"><span class="icons icon-navbar only-icon icon-prestay"></span>{{'PRE_STAY' | translate}}</li>
+        <li ng-click="clickedPaymentGroup('PRE_STAY')" ng-class="{'active':data.activePaymentTab === 'PRE_STAY'}"><span class="icons icon-navbar only-icon icon-prestay" ng-click="prestay=true"></span>{{'PRE_STAY' | translate}}</li>
 
         <li ng-click="clickedPaymentGroup('IN_HOUSE')" ng-class="{'active':data.activePaymentTab === 'IN_HOUSE'}"><span class="icons icon-navbar only-icon icon-inhouse"></span>{{'IN_HOUSE' | translate}}</li>
 
         <li ng-click="clickedPaymentGroup('POST_STAY')" ng-class="{'active':data.activePaymentTab === 'POST_STAY'}"><span class="icons icon-navbar only-icon icon-poststay"></span>{{'POST_STAY' | translate}}</li>
     </ul>
+
+    <!-- Print header -->
+    <ul class="journal-header-print">
+        <li ng-if="data.activePaymentTab === 'PRE_STAY'">
+            Pre-Stay Payments
+            <span>{{currencySymbol}}{{ data.paymentData.total_payment | number: precisonTwo}}</span>
+        </li>
+        <li ng-if="data.activePaymentTab === 'IN_HOUSE'">
+            In-house Payments
+            <span>{{currencySymbol}}{{ data.paymentData.total_payment | number: precisonTwo}}</span>
+        </li>
+        <li ng-if="data.activePaymentTab === 'POST_STAY'">
+            Post-Stay Payments
+            <span>{{currencySymbol}}{{ data.paymentData.total_payment | number: precisonTwo}}</span>
+        </li>
+        <li ng-if="data.activePaymentTab === ''">
+            Total Payments
+            <span>{{currencySymbol}}{{ data.paymentData.total_payment | number: precisonTwo}}</span>
+        </li>
+    </ul>
+
+
     <!-- Content PAYMENTS-->
     <div id="journal-content" class="journal-content grouped scrollable" ng-iscroll='payment_content'>
         
@@ -118,17 +140,22 @@
                     </div>
 
                 </div>
-
-                <div class="grid-footer">
-                    <p class="filters-applied">
-                        <span><label>{{'EMPLOYEE / DEPARTMENT / HOUSE' | translate}}: </label> {{ data.filterTitle }}</span>
-                        <span><label>Date Range - From:</label> {{ data.fromDate | date : dateFormat }} <label>To: </label>{{ data.toDate | date : dateFormat }}</span>
-                        <span ng-if="data.uiSelectedPaymentType"><label>{{'PAYMENT_TYPE' | translate}} / {{'CHARGE_CODE' | translate}}: </label>  {{ data.uiSelectedPaymentType }}</span>
-                    </p>
-                    <p class="payment"><span translate>TOTAL</span> {{currencySymbol}}{{ data.paymentData.total_payment | number: precisonTwo}}</p>
-                </div>
             </div>
 
         </div>
+
     </div>
+
+    <ul class="journal-footer-print">
+        <li>
+            From <span>{{ data.fromDate | date : dateFormat }}</span> to <span>{{ data.toDate | date : dateFormat }}</span><br />
+            Departments(s) <span>{{data.selectedDepartmentName.join(', ')}}</span><br />
+            Employee(s) <span>{{data.selectedEmployeesName.join(', ')}}</span><br />
+            Payment Type(s) <span>{{data.uiSelectedPaymentType}}</span>
+        </li>
+        <li>
+            Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br />
+            User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
+        </li>
+    </ul>
 </span>
