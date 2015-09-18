@@ -38,8 +38,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             from_date: $scope.reservationData.arrivalDate,
                             to_date: $scope.reservationData.departureDate,
                             view: "ROOM_RATE",
-                            company_id: null,
-                            travel_agent_id: null,
+                            company_id: $scope.reservationData.company.id,
+                            travel_agent_id: $scope.reservationData.travelAgent.id,
                             fromState: 'rover.reservation.staycard.mainCard.addons',
                             group_id: $scope.reservationData.group.id
                         }
