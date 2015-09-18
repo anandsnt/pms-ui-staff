@@ -90,7 +90,7 @@ angular.module('stayCardModule', [])
                 if (!$stateParams.travel_agent_id) {
                     $stateParams.travel_agent_id = null;
                 }
-                if(!$stateParams.group_id){
+                if (!$stateParams.group_id) {
                     $stateParams.group_id = null;
                 }
             },
@@ -107,10 +107,12 @@ angular.module('stayCardModule', [])
                 sortOrder: function(RVReservationBaseSearchSrv) {
                     return RVReservationBaseSearchSrv.fetchSortPreferences();
                 },
-                rateAddons: function(RVReservationBaseSearchSrv) {
-                    return RVReservationBaseSearchSrv.fetchAddonsForRates();
+                rateAddons: function($stateParams, RVReservationBaseSearchSrv) {
+                    return RVReservationBaseSearchSrv.fetchAddonsForRates({
+                        from_date: $stateParams.from_date,
+                        to_date: $stateParams.to_date
+                    });
                 },
-
                 isAddonsConfigured: function(RVReservationBaseSearchSrv, $stateParams) { //CICO-16874
 
                     var params = {};
