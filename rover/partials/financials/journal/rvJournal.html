@@ -1,7 +1,7 @@
 
 <!-- Content -->
 <section id="journal" class="content" role="main">
-    
+
     <!-- Header -->
     <form method="post" action="" id="journal-header" name="journal-header" class="journal-header">
         <div class="summary" ng-show="data.activeTab === 'SUMMARY'">
@@ -93,9 +93,11 @@
         </ul>
     </form>
 
+    
+
     <form ng-controller="RVJournalPrintController" ng-hide="data.activeTab === 'SUMMARY'" id="journal-print-options" class="journal-print" role="complementary" ng-class="{ 'open': data.isDrawerOpened }" ui-jq="resizable" resize ui-options="resizableOptions" style="height: {{data.printBoxHeight}}px;" ng-click="clickedDrawer($event)">
         <div ng-include="'/assets/partials/financials/journal/rvPrintBox.html'"></div>
-    </form> 
+    </form>
 
     <!-- Content SUMMARY-->
     <span ng-if="data.isShowSummaryTab" ng-show="data.activeTab === 'SUMMARY'" ng-include="'/assets/partials/financials/journal/rvSummary.html'"></span>
