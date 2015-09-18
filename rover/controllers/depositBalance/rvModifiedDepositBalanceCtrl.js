@@ -489,7 +489,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	 * call make payment API on clicks select payment
 	 */
 	$scope.clickedMakePayment = function(){
-
 		var dataToSrv = {
 			"postData": {
 				"payment_type": $scope.depositBalanceMakePaymentData.payment_type,
@@ -499,12 +498,16 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			"reservation_id": $scope.reservationData.reservation_card.reservation_id
 		};
                 
-                if ($scope.depositBalanceMakePaymentData.payment_type === 'GIFT_CARD'){
+                if ($scope.depositBalanceMakePaymentData.payment_type === 'GIFT_CARD' || $rootScope.useDepositGiftCard){
                     var card_number;
                     if ($scope.reservationData.reservation_card.payment_details.card_number !== ''){
                         card_number = $scope.reservationData.reservation_card.payment_details.card_number;
                     } else {
-                        if ($scope.showingDepositModal){
+                        if ($scope.showingDepositModal || $rootScope.useDepositGiftCard){
+                            if ($rootScope.useDepositGiftCard){
+                                dataToSrv.postData.payment_type = 'GIFT_CARD';
+                                card_number = $.trim($scope.cardData.cardNumber);
+                            }
                             card_number = $.trim($scope.cardData.cardNumber);
                         } else {
                             card_number = $.trim($('#card-number').val());//trim to remove whitespaces from copy-paste
@@ -518,6 +521,9 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		if($scope.depositBalanceMakePaymentData.payment_type === "CC" || $scope.depositBalanceMakePaymentData.payment_type === 'GIFT_CARD'){
 			if (typeof($scope.depositBalanceMakePaymentData.card_code) !== "undefined") {
 				dataToSrv.postData.credit_card_type = $scope.depositBalanceMakePaymentData.card_code.toUpperCase();
+                                if ($rootScope.useDepositGiftCard){
+                                    delete dataToSrv.postData.credit_card_type;
+                                }
 			}
 		}
 
@@ -535,7 +541,11 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
 			}
 		}
-
+                if ($rootScope.useDepositGiftCard){
+                                dataToSrv.postData.payment_type = 'GIFT_CARD';
+                                dataToSrv.postData.card_number = $.trim($('#card-number').val());
+                                delete dataToSrv.postData.payment_type_id;
+                            }
 		if($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && ($scope.depositBalanceMakePaymentData.payment_type === "CC" || $scope.depositBalanceMakePaymentData.payment_type === 'GIFT_CARD')){
 			dataToSrv.postData.is_emv_request = true;
 			$scope.shouldShowWaiting = true;

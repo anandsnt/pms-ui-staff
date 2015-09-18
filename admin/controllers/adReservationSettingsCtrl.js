@@ -38,11 +38,11 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
     }];
    
    _.each(reservationSettingsData.prepaid_commission_charge_codes, function(chargeCode, index){     
-      chargeCode.name = chargeCode.name +" "+chargeCode.code;
+      chargeCode.name = chargeCode.code +" "+chargeCode.name;
     });
 
    _.each(reservationSettingsData.tax_transaction_codes, function(chargeCode, index){     
-      chargeCode.name = chargeCode.name +" "+chargeCode.code;
+      chargeCode.name = chargeCode.code +" "+chargeCode.name;
     });
 
     $scope.reservationSettingsData = reservationSettingsData;
