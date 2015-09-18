@@ -1520,7 +1520,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 }
 
                 _.extend(reservationData, {
-                    reservationStatusFlags: getReservationStatusFlags(selectedReservation),
                     arrival_date: new tzIndependentDate(reservationData.arrival_date),
                     departure_date: new tzIndependentDate(reservationData.departure_date),
                     //Pls note, roomsFreeToAssign include already assigned room of that particular reservation
@@ -1607,20 +1606,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
     		//calling initially required APIs
             callInitialAPIs();
     	});
-
-        var getReservationStatusFlags = function(reservation) {
-            var rStatus = reservation.reservation_status;
-            return {
-                isCheckedOut: rStatus === "CHECKEDOUT",
-                isUneditable: rStatus === "CANCELED",
-                isExpected: rStatus === "RESERVED" || rStatus === "CHECKING_IN",
-                isStaying: rStatus === "CHECKEDIN" || rStatus === "CHECKING_OUT",                
-                canChekin: !!reservation.room_no && rStatus === "CHECKING_IN",
-                isNoShow: rStatus === "NOSHOW",
-                isGuestAttached: !!reservation.lastname,
-                isPastArrival: new tzIndependentDate($rootScope.businessDate) >= new tzIndependentDate(reservation.arrival_date)
-            }
-        };
 
         $scope.checkoutReservation = function(reservation) {
             //  It navigates to the Guest Bill for the selected record.

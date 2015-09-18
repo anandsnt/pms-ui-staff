@@ -63,8 +63,8 @@ sntRover.controller('rvGroupReservationEditCtrl', [
      * @param {object} Reservation
      */
      $scope.shouldDisableCheckoutButton = function(reservation) {
-        return (!reservation.reservationStatusFlags.isStaying ||
-                reservation.reservationStatusFlags.isUneditable ||
+        return (!$scope.reservationStatusFlags.isStaying ||
+                $scope.reservationStatusFlags.isUneditable ||
                 !reservation.can_checkout);
      };
 
@@ -73,8 +73,8 @@ sntRover.controller('rvGroupReservationEditCtrl', [
      * @param {object} Reservation
      */
      $scope.shouldDisableCheckinButton = function(reservation) {
-        return (!reservation.reservationStatusFlags.canChekin ||
-                reservation.reservationStatusFlags.isUneditable ||
+        return (!$scope.reservationStatusFlags.canChekin ||
+                $scope.reservationStatusFlags.isUneditable ||
                 !reservation.can_checkin);
      };
 
@@ -92,6 +92,23 @@ sntRover.controller('rvGroupReservationEditCtrl', [
 
         //CICO-18717: disable room type switch once a user checks in
         return (!(rStatus === "RESERVED" || rStatus === "CHECKING_IN") || containNonEditableRoomType);
+    };
+
+    /**
+     * Function to decide whether to show a particular occupancy
+     * based on the key that we getting from the function we are deciding
+     * @return {Boolean}
+     */
+    $scope.shouldShowThisOccupancyAgainstRoomType = function(keyToCheck) {
+        //finding the selected room type data
+        var selectedRoomType = _.findWhere($scope.ngDialogData.allowedRoomTypes, {
+            room_type_id: parseInt($scope.ngDialogData.room_type_id)
+        });
+        //we are hiding the occupancy if selected room type is undefined
+        if (typeof selectedRoomType === "undefined") {
+            return false;
+        }
+        return selectedRoomType[keyToCheck];
     };
 
     /**
@@ -224,7 +241,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
      */
     $scope.navigateStayCard = function(reservation) {
         // Navigate to StayCard
-        if (reservation.reservationStatusFlags.isGuestAttached) {
+        if ($scope.reservationStatusFlags.isGuestAttached) {
             $scope.closeDialog();
             $timeout(function() {
 
@@ -299,7 +316,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
     * @return {undefined}
     */
     $scope.removeReservation = function(reservation) {
-        var rStatusFlags = reservation.reservationStatusFlags,
+        var rStatusFlags = $scope.reservationStatusFlags,
             options = null,
             params = null;
 
@@ -336,6 +353,29 @@ sntRover.controller('rvGroupReservationEditCtrl', [
     var reservationToDateChoosed = function(date, datePickerObj) {
         $scope.roomingListState.editedReservationEnd = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
         runDigestCycle();
+    };
+
+    var getReservationStatusFlags = function(reservation) {
+        var rStatus = reservation.reservation_status;
+        return {
+            isCheckedOut: rStatus === "CHECKEDOUT",
+            isUneditable: rStatus === "CANCELED",
+            isExpected: rStatus === "RESERVED" || rStatus === "CHECKING_IN",
+            isStaying: rStatus === "CHECKEDIN" || rStatus === "CHECKING_OUT",                
+            canChekin: !!reservation.room_no && rStatus === "CHECKING_IN",
+            isNoShow: rStatus === "NOSHOW",
+            isGuestAttached: !!reservation.lastname,
+            isPastArrival: new tzIndependentDate($rootScope.businessDate) >= new tzIndependentDate(reservation.arrival_date)
+        }
+    };
+
+    /**
+     * Initialize important variables here
+     * @return {undefined}
+     */
+    var initializeVariables = function() {
+        _.extend(initialPopupData, $scope.ngDialogData);
+        $scope.reservationStatusFlags = getReservationStatusFlags($scope.ngDialogData);
     };
 
     /**
@@ -386,7 +426,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
     */
     (function initilizeMe() {
         //variable initilizations
-        _.extend(initialPopupData, $scope.ngDialogData);
+        initializeVariables();
 
         //date picker
         setDatePickerOptions();
