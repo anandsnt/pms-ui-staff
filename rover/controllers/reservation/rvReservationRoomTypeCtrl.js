@@ -55,7 +55,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			dateButtonContainerWidth: $scope.reservationData.stayDays.length * 80,
 			suppressedRates: [],
 			showClosedRates: false,
-			roomDetails: {}
+			roomDetails: {},
+			exhaustedAddons: [],
+			selectedRoomRate: {
+				rateId: "",
+				roomId: ""
+			}
 		};
 
 		// activate room type default view based on reservation settings
@@ -518,7 +523,51 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			if (!$scope.stateCheck.stayDatesMode) {
 				$scope.navigateOut();
 			}
-		}
+		};
+
+		var findExhaustedRateAddons = function(roomId, rateId) {
+
+			var arrival = $scope.reservationData.arrivalDate,
+				departure = $scope.reservationData.departureDate,
+				exhaustedRateAddons = [];
+
+			if (!$scope.stateCheck.stayDatesMode) { // Not in stay dates mode
+				_.each($scope.roomAvailability[roomId].ratedetails, function(rateDetail, forDate) {
+					if (forDate === arrival || forDate !== departure) {
+						_.each(rateDetail[rateId].associatedAddons, function(addon) {
+
+							// TODO: Need to see the applicable count based on the amount_type
+							var applicableCount = 1;
+
+							if (_.isNumber(addon.inventory) && addon.inventory < applicableCount) {
+								var currentIndex = _.findIndex(exhaustedRateAddons, {
+									id: addon.id
+								});
+								if (currentIndex > -1) { //entry exists already
+									if (exhaustedRateAddons[currentIndex].inventory > addon.inventory) {
+										exhaustedRateAddons[currentIndex].inventory = addon.inventory; //reset to the minimum of the counts	
+									}
+								} else {
+									exhaustedRateAddons.push(addon);
+								}
+							}
+						});
+					}
+				});
+			} else { // In stay dates mode
+				_.each($scope.roomAvailability[roomId].ratedetails[$scope.stateCheck.dateModeActiveDate][rateId].associatedAddons, function(addon) {
+
+					// TODO: Need to see the applicable count based on the amount_type
+					var applicableCount = 1;
+
+					if (_.isNumber(addon.inventory) && addon.inventory < applicableCount) {
+						exhaustedRateAddons.push(addon);
+					}
+				});
+			}
+
+			return exhaustedRateAddons;
+		};
 
 		var haveAddonsChanged = function(entireSet, associatedAddons) {
 			if ($stateParams.fromState === "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState === "STAY_CARD") {
@@ -621,10 +670,32 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			}
 		}
 
-		$scope.handleBooking = function(roomId, rateId, event) {
+		$scope.handleBooking = function(roomId, rateId, event, flags) {
+
 			$scope.stateCheck.preferredType = parseInt($scope.stateCheck.preferredType, 10) || "";
-			event.stopPropagation();
+
+			if (!!event) {
+				event.stopPropagation();
+			}
+
 			if (!permissionCheck(roomId, rateId)) {
+				return false;
+			}
+
+			$scope.stateCheck.exhaustedAddons = [];
+			//Check for addonthing
+			if (!flags || !flags.skipAddonCheck) {
+				$scope.stateCheck.exhaustedAddons = findExhaustedRateAddons(roomId, rateId);
+
+			}
+
+			if ($scope.stateCheck.exhaustedAddons.length > 0) {
+				// run through the addon popup routine;
+				$scope.stateCheck.selectedRoomRate = {
+					roomId: roomId,
+					rateId: rateId
+				}
+				alertAddonOverbooking();
 				return false;
 			}
 
@@ -690,6 +761,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				$scope.stateCheck.rateSelected.allDays = isRateSelected().allDays;
 				$scope.stateCheck.rateSelected.oneDay = isRateSelected().oneDay;
 			} else {
+
 				var i;
 				if (!$scope.reservationData.tabs[$scope.activeRoom].roomTypeId || parseInt($scope.reservationData.tabs[$scope.activeRoom].roomTypeId) !== parseInt(roomId)) {
 					$scope.reservationData.tabs[$scope.activeRoom].roomTypeId = parseInt(roomId);
@@ -1774,6 +1846,44 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					return 'white green-text'
 				}
 			}
+		};
+
+		var alertAddonOverbooking = function(close) {
+			var addonIndex = 0,
+				timer = 0;
+			if (close) {
+				$scope.closeDialog();
+				timer = 1500
+			}
+			$timeout(function() {
+				for (; addonIndex < $scope.stateCheck.exhaustedAddons.length; addonIndex++) {
+					var addon = $scope.stateCheck.exhaustedAddons[addonIndex];
+					if (!addon.isAlerted) {
+						addon.isAlerted = true;
+						ngDialog.open({
+							template: '/assets/partials/reservationCard/rvInsufficientInventory.html',
+							className: 'ngdialog-theme-default',
+							closeByDocument: true,
+							scope: $scope,
+							data: JSON.stringify({
+								name: addon.name,
+								count: addon.inventory,
+								canOverbookInventory: rvPermissionSrv.getPermissionValue('OVERRIDE_ITEM_INVENTORY')
+							})
+						});
+						break;
+					}
+				}
+				if (addonIndex === $scope.stateCheck.exhaustedAddons.length) {
+					$scope.handleBooking($scope.stateCheck.selectedRoomRate.roomId, $scope.stateCheck.selectedRoomRate.rateId, false, {
+						skipAddonCheck: true
+					});
+				}
+			}, timer);
+		};
+
+		$scope.selectAddon = function() {
+			alertAddonOverbooking(true);
 		};
 
 	}

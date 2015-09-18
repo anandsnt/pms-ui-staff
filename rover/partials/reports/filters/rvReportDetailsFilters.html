@@ -472,7 +472,7 @@
         <div class="settings-content" ng-if="chosenReport.groupByOptions" ng-class="{'hidden': !filterItemsToggle.item_14}">
             <div class="select">
                 <select ng-model="chosenReport.chosenGroupBy" ng-options="groupBy.value as groupBy.description for groupBy in chosenReport.groupByOptions" ng-change="groupByChanged(chosenReport)">
-                    <option value="">BLANK</option>
+                    <option value="">Group By</option>
                 </select>
             </div>
         </div>

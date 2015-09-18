@@ -911,7 +911,13 @@ sntRover.controller('guestCardController', [
 			$state.go('rover.reservation.staycard.mainCard.roomType', {
 				from_date 		: resData.arrivalDate,
 				to_date 		: resData.departureDate,
-				fromState 		: 'STAY_CARD',
+				fromState 		: function() {
+									if ($state.current.name === "rover.reservation.staycard.reservationcard.reservationdetails") {
+										return 'STAY_CARD'
+									} else {
+										return $state.current.name
+									}
+								}(),
 				company_id 		: resData.company.id,
 				travel_agent_id	: resData.travelAgent.id,
 				group_id 		: resData.group && resData.group.id,

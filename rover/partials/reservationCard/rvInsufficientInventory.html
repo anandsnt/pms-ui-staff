@@ -2,9 +2,10 @@
 	<div class="modal-content alert">
 		<button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
 		<span class="icons icon-popup-alert"></span>
-	    <span class="h2 message">Insufficient inventory for {{selectedAddonName}}</span>
-	    <span class="text">We have {{remainingCount}} {{selectedAddonName}} Available</span>	    
-	    <button type="button" class="button green" ng-click="selectAddon(addon,addonQty,true)">Overbook Item</button>
-	    <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
+	    <span class="h2 message">Insufficient inventory for {{ngDialogData.name}}</span>
+	    <span class="text">We have {{ngDialogData.count}} {{ngDialogData.name}} Available</span>	    
+	    <button ng-show="ngDialogData.canOverbookInventory" type="button" class="button green" ng-click="selectAddon(addon,addonQty,true)">Overbook Item</button>
+	    <button ng-show="ngDialogData.canOverbookInventory" type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
+	    <button ng-hide="ngDialogData.canOverbookInventory" type="button" class="button blank" ng-click="closeDialog()">OK</button>
 	</div>
 </div>

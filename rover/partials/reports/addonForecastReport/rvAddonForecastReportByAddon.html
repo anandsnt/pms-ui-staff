@@ -4,6 +4,8 @@
 
         <div class="wrapper">
             <ul class="grid-header dates">
+                <li class="guests">Booked</li>
+                <li class="guests">Remaining</li>
                 <li class="guests">Guests</li>
                 <li class="revenue">Revenue</li>
             </ul>
@@ -25,9 +27,9 @@
                     <div ng-if="item2Values.hasData" ng-repeat="item3 in item2Values.dates" ng-init="item3Values = getKeyValues(item3)" class="grid-content" ng-class="{ 'hidden': !openDate && !item2Values.hidden }"> <!-- Toggle class hidden when L142-146 tapped -->
                         <ul class="grid-header addons">
                             <li class="name">Add-On</li>
-                            <li>Booked</li>
-                            <li>Remaining</li>
-                            <li>Guests</li>
+                            <li> </li>
+                            <li> </li>
+                            <li> </li>
                             <li>Revenue</li>
                         </ul>
                         <!-- Level 3 - Add-On -->
@@ -44,6 +46,7 @@
                                 <tr>
                                     <th><span class="sort" ng-class="{ 'sorting-asc': true === item3Values.roomSortDir, 'sorting-desc': false === item3Values.roomSortDir }" ng-click="sortRes('ROOM', item3Values)">Room</span></th>
                                     <th><span class="sort" ng-class="{ 'sorting-asc': true === item3Values.nameSortDir, 'sorting-desc': false === item3Values.nameSortDir }" ng-click="sortRes('NAME', item3Values)">Guest Name</span></th>
+                                    <th><span>Reservation #</span></th>
                                     <th><span>Guests</span></th>
                                     <th><span>Accompanying</span></th>
                                     <th><span>Price</span></th>
@@ -61,8 +64,12 @@
                                         <span class="guest-status small-icon {{ getStatusClass(item4.status) }}">{{ item4.status }}</span>
                                         <strong class="title">{{ item4.guest_name }}</strong>
                                     </td>
+                                    <td>
+                                        <span>{{ item4.confirm_no }}</span>
+                                    </td>
                                     <td class="guests">
-                                        <span>{{ item4.guests_count.adults }} Adults</span>&#8226; <span>{{ item4.guests_count.children }} Children</span></td>
+                                        <span>{{ item4.guests_count.adults }} Adults</span>&#8226; <span>{{ item4.guests_count.children }} Children</span>
+                                    </td>
                                     <td class="guests">
                                         <span ng-repeat="guest in item4.accompanying_guests">
                                             {{ guest }}<span ng-if="!$last">&#8226;</span>
