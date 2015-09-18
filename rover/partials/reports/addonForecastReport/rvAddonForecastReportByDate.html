@@ -45,6 +45,7 @@
                                     <tr>
                                         <th><span class="sort" ng-class="{ 'sorting-asc': true === item3Values.roomSortDir, 'sorting-desc': false === item3Values.roomSortDir }" ng-click="sortRes('ROOM', item3Values)">Room</span></th>
                                         <th><span class="sort" ng-class="{ 'sorting-asc': true === item3Values.nameSortDir, 'sorting-desc': false === item3Values.nameSortDir }" ng-click="sortRes('NAME', item3Values)">Guest Name</span></th>
+                                        <th><span>Reservation #</span></th>
                                         <th><span>Guests</span></th>
                                         <th><span>Accompanying</span></th>
                                         <th><span>Price</span></th>
@@ -62,8 +63,12 @@
                                             <span class="guest-status small-icon {{ getStatusClass(item4.status) }}">{{ item4.status }}</span>
                                             <strong class="title">{{ item4.guest_name }}</strong>
                                         </td>
+                                        <td>
+                                            <span>{{ item4.confirm_no }}</span>
+                                        </td>
                                         <td class="guests">
-                                            <span>{{ item4.guests_count.adults }} Adults</span>&#8226; <span>{{ item4.guests_count.children }} Children</span></td>
+                                            <span>{{ item4.guests_count.adults }} Adults</span>&#8226; <span>{{ item4.guests_count.children }} Children</span>
+                                        </td>
                                         <td class="guests">
                                             <span ng-repeat="guest in item4.accompanying_guests">
                                                 {{ guest }}<span ng-if="!$last">&#8226;</span>
