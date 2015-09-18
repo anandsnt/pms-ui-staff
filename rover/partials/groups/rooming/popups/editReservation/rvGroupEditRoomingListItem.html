@@ -8,11 +8,11 @@
         <div class="holder">
             <div class="entry margin">
                 <label for="firstname">First Name</label>
-                <input id="firstname" placeholder="Pending" ng-model="ngDialogData.firstname" type="text" ng-disabled="reservationStatusFlags.isUneditable" />
+                <input id="firstname" placeholder="Pending" ng-model="ngDialogData.firstname" type="text" ng-disabled="shouldDisableNameField(ngDialogData)" />
             </div>
             <div class="entry">
                 <label for="lastname">Last Name</label>
-                <input id="lastname" placeholder="Pending" ng-model="ngDialogData.lastname" type="text" ng-disabled="reservationStatusFlags.isUneditable" />
+                <input id="lastname" placeholder="Pending" ng-model="ngDialogData.lastname" type="text" ng-disabled="shouldDisableNameField(ngDialogData)" />
             </div>
             <div class="entry margin type">
                 <label for="rooming-room-type">{{'GROUP_ROOM_TYPE'|translate}}</label>
@@ -69,7 +69,7 @@
         <!-- Actions -->
         <div id="account-actions" class="actions">
             <button type="button" class="button red"
-                ng-class="{'grey' : !reservationStatusFlags.isExpected}"
+                ng-class="{'grey' : shouldDisableRemoveButton(ngDialogData)}"
                 ng-click="removeReservation(ngDialogData)">
                 Remove
             </button>

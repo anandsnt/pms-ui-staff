@@ -102,6 +102,14 @@ sntRover.controller('rvGroupReservationEditCtrl', [
         return (!$scope.reservationStatusFlags.isGuestAttached);
      };
 
+     $scope.shouldDisableRemoveButton = function(reservation) {
+        return !$scope.reservationStatusFlags.reservationStatusFlags.isExpected;
+     };
+
+     $scope.shouldDisableNameField = function(reservation) {
+        return $scope.reservationStatusFlags.isUneditable;
+     };
+
     /**
      * Function to decide whether to disable room type changing from edit reservation popup
      * @param {Object} - reservation
@@ -384,13 +392,13 @@ sntRover.controller('rvGroupReservationEditCtrl', [
         runDigestCycle();
     };
 
-    var getReservationStatusFlags = function(reservation) {
+    var computeReservationStatusFlags = function(reservation) {
         var rStatus = reservation.reservation_status;
         return {
             isCheckedOut: rStatus === "CHECKEDOUT",
             isUneditable: rStatus === "CANCELED",
             isExpected: rStatus === "RESERVED" || rStatus === "CHECKING_IN",
-            isStaying: rStatus === "CHECKEDIN" || rStatus === "CHECKING_OUT",                
+            isStaying: rStatus === "CHECKEDIN" || rStatus === "CHECKING_OUT",
             canChekin: !!reservation.room_no && rStatus === "CHECKING_IN",
             isNoShow: rStatus === "NOSHOW",
             isGuestAttached: !!reservation.lastname,
@@ -404,7 +412,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
      */
     var initializeVariables = function() {
         _.extend(initialPopupData, $scope.ngDialogData);
-        $scope.reservationStatusFlags = getReservationStatusFlags($scope.ngDialogData);
+        $scope.reservationStatusFlags = computeReservationStatusFlags($scope.ngDialogData);
     };
 
     /**
