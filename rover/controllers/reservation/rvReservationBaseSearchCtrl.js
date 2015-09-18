@@ -28,7 +28,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         $scope.activeCodes = activeCodes.promotions;
         $scope.loyaltyPrograms = loyaltyPrograms.data;
         $scope.flyerPrograms = flyerPrograms.data;
-
+        $scope.codeSearchText = "";
 
         /*
          * To setup departure time based on arrival time and hours selected
@@ -212,15 +212,25 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         return $scope.reservationData.company.name;
                     } else if (!!$scope.reservationData.travelAgent.id) {
                         return $scope.reservationData.travelAgent.name;
-                    }
+                    } 
+                    return "";
+                })();
+                $scope.searchPromoCode = (function() {
+                    if ($scope.reservationData.searchPromoCode) {
+                        $scope.codeSearchText = $scope.reservationData.searchPromoCode;
+                        return $scope.reservationData.searchPromoCode;
+                    } 
                     return "";
                 })();
                 $scope.codeSearchText = (function() {
+                    if ($scope.reservationData.searchPromoCode){
+                        return $scope.reservationData.searchPromoCode;
+                    }
                     if (!!$scope.reservationData.group.id) {
                         return $scope.reservationData.group.code;
                     } else if (!!$scope.reservationData.code) {
-                        return $scope.reservationData.code.value;;
-                    }
+                        return $scope.reservationData.code.value;
+                    } 
                     return "";
                 })();
 
@@ -351,7 +361,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     'guestFirstName' : $scope.searchData.guestCard.guestFirstName,
                     'guestLastName'  : $scope.searchData.guestCard.guestLastName,
                     'companyID'      : $scope.reservationData.company.id,
-                    'travelAgentID'  : $scope.reservationData.travelAgent.id
+                    'travelAgentID'  : $scope.reservationData.travelAgent.id,
+                    'promotionCode'  : $scope.reservationData.searchPromoCode
                 });
 
                 $vault.set( 'searchReservationData', JSON.stringify(reservationDataToKeepinVault) );
@@ -376,7 +387,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         'fromState'       : $state.current.name,
                         'company_id'      : $scope.reservationData.company.id,
                         'travel_agent_id' : $scope.reservationData.travelAgent.id,
-                        'group_id'        : $scope.reservationData.group.id
+                        'group_id'        : $scope.reservationData.group.id,
+                        'promotion_code'  : $scope.reservationData.searchPromoCode
                     });
                 }
             }
@@ -537,10 +549,11 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 }
             };
 
-            // quite simple to understand
+            // quite simple to understand :)
             if (request.term.length === 0) {
                 companyCardResults = [];
                 lastSearchText = "";
+                $scope.searchPromoCode = "";
                 if (!!$scope.reservationData.group.id) { // Reset in case of group
                     $scope.reservationData.group = {
                         id: "",
@@ -634,6 +647,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             // check whether guest card attached and remove if attached.
             $scope.reservationDetails.guestCard.id = '';
         };
+        $scope.reservationGuestPromoCodeChanged = function() {
+            // check whether guest card attached and remove if attached.
+           // $scope.reservationDetails. = '';
+        };
 
         $scope.switchNightsHours = function() {
             if ($scope.isNightsActive) {
@@ -660,6 +677,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             if (request.term.length === 0) {
                 codeResults = [];
                 lastSearchText = "";
+                $scope.searchPromoCode = "";
+                $scope.reservationData.searchPromoCode = "";
                 if (!!$scope.reservationData.group.id) { // Reset in case of group
                     $scope.reservationData.group = {
                         id: "",
@@ -674,11 +693,12 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         id: '',
                         type: '',
                         discount: {}
-                    }
+                    };
                 }
             } else if (request.term.length > 0) {
                 if (request.term !== '' && lastSearchText !== request.term) {
                     lastSearchText = request.term;
+                    $scope.reservationData.searchPromoCode = request.term;
                     $scope.invokeApi(RVReservationBaseSearchSrv.autoCompleteCodes, {
                         'code': request.term,
                         'include_group': $scope.reservationData.rooms.length === 1,
@@ -718,6 +738,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         };
 
         var codeACSelectHandler = function(event, code) {
+            if (code.item){
+                $scope.reservationData.searchPromoCode = code.item.label;
+                $scope.searchPromoCode = code.item.label;
+            }
             if (code.item.type === "PROMO") {
                 $scope.reservationData.code = code.item;
             } else if (code.item.type === "GROUP") {
