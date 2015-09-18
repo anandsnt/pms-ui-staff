@@ -5,14 +5,13 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 
 		//As per CICO-14354, we are setting adjustment reason as the last one we entered
 		$scope.adjustment_reason = $scope.ngDialogData.lastReason;
-
-		$scope.setScroller('rateDetails');
+		
 		$scope.refreshRateDetails = function() {
             $timeout(function() {
     			$scope.refreshScroller('rateDetails');
      		}, 2000);
         };
-        $scope.refreshRateDetails();
+        
 
 		/**
 		 * utility function to get reservation ID
@@ -108,6 +107,9 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 				return tzIndependentDate($rootScope.businessDate) > new tzIndependentDate(date);
 			}
 		};
+
+		$scope.setScroller('rateDetails');
+		$scope.refreshRateDetails();
 
 	}
 ]);
