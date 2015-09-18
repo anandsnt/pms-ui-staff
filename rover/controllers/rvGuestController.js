@@ -1324,13 +1324,18 @@ sntRover.controller('guestCardController', [
 			ngDialog.close();
 			//we will be in card opened mode, so closing
 			$scope.closeGuestCard();
+
+			$timeout(function() {
+	            $scope.navigateToRoomAndRates();
+	        }, 3000);
 		};
+
 		// To handle card selection from COMPANY / TA.
 		$scope.selectCardType = function(cardData , $event){
 			$event.stopPropagation();
 			
 			if(cardData.account_type === 'COMPANY'){
-				if(typeof cardData.rate !== 'undefined'){
+				if(!!cardData.rate && $state.current.name !== "rover.reservation.staycard.mainCard.roomType"){
 					showContractRatePopup(cardData);
 				}
 				else{
@@ -1338,7 +1343,7 @@ sntRover.controller('guestCardController', [
 				}
 			}
 			else if(cardData.account_type === 'TRAVELAGENT'){
-				if(typeof cardData.rate !== 'undefined'){
+				if(!!cardData.rate && $state.current.name !== "rover.reservation.staycard.mainCard.roomType"){
 					showContractRatePopup(cardData);
 				}
 				else{
@@ -1346,6 +1351,7 @@ sntRover.controller('guestCardController', [
 				}
 			}
 		};
+
 		// On selecting comapny card
 		$scope.selectCompany = function(company) {
 			//CICO-7792
@@ -1548,7 +1554,7 @@ sntRover.controller('guestCardController', [
 			}
 		};
 
-		$scope.$on("companySearchStopped", function() {
+		/*$scope.$on("companySearchStopped", function() {
 			console.log("RvGuestCtrl+comapny");
 			$scope.navigateToRoomAndRates();
 		});
@@ -1557,6 +1563,6 @@ sntRover.controller('guestCardController', [
 			console.log("RvGuestCtrl+TA");
 			$scope.navigateToRoomAndRates();
 		});
-
+		*/
 	}
 ]);
