@@ -278,6 +278,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
         $scope.isGiftCardPmt = false;
 	$scope.showHideCreditCard = function(){
                 if ($scope.saveData.paymentType === "GIFT_CARD"){
+                    $scope.resetSplitPaymentDetailForGiftCard();
                     $scope.isGiftCardPmt = true;
                 } else {
                     $scope.isGiftCardPmt = false;
@@ -364,6 +365,23 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			});
 			refreshCardsList();
 		}
+	};
+        $scope.resetSplitPaymentDetailForGiftCard = function(){//split bill payments hidden for gift cards for now (cico-19009) per priya
+		$scope.splitBillEnabled = false;
+		$scope.splitePaymentDetail = {
+			totalNoOfsplits:1,
+			completedSplitPayments:0,
+			totalAmount:0,
+			splitAmount:0,
+			carryAmount:0
+		};
+		$scope.messageOfSuccessSplitPayment ='';
+		$scope.paymentErrorMessage ='';
+		//reset value
+		if(!$scope.splitBillEnabled){
+			$scope.renderData.defaultPaymentAmount = angular.copy(startingAmount );
+			$scope.splitSelected = false;
+		};
 	};
 	$scope.resetSplitPaymentDetail = function(){
 		$scope.splitBillEnabled = (typeof($scope.splitBillEnabled) === "undefined") ? false : !$scope.splitBillEnabled;
