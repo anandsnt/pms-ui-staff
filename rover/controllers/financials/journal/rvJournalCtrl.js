@@ -179,7 +179,6 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
             if(item.checked){
                 $scope.data.selectedDepartmentList.push(item.id);
                 $scope.data.selectedDepartmentName.push(item.name);
-                console.log()
                 filterTitle = item.name;
             }
         });
