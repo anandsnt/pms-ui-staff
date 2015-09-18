@@ -1,3 +1,11 @@
+<!-- Print header -->
+<ul class="journal-header-print">
+    <li>
+        Revenue
+        <span>{{currencySymbol}}{{ data.revenueData.total_revenue | number: precisonTwo}}</span>
+    </li>
+</ul>
+
 <!-- Content REVENUE-->
 <div id="journal-content" class="journal-content scrollable" ng-controller="RVJournalRevenueController" ng-iscroll='revenue_content' ng-click="clickedOnRevenue($event)">
     
@@ -68,16 +76,22 @@
                     </div>
                 </div>
 
-                <div class="grid-footer">
-                    <p class="filters-applied">
-                        <span><label>{{'EMPLOYEE / DEPARTMENT / HOUSE' | translate}}: </label> {{ data.filterTitle }}</span>
-                        <span><label>Date Range - From: </label> {{ data.fromDate | date : dateFormat }} <label>TO: </label>{{ data.toDate | date : dateFormat }}</span>
-                        <span ng-if="data.uiSelectedChargeGroup"><label>{{'CHARGE_GROUPS' | translate}}: </label> {{ data.uiSelectedChargeGroup }}</span>
-                        <span ng-if="data.uiSelectedChargeCode"><label>{{'CHARGE_CODE_NAME' | translate}}: </label> {{ data.uiSelectedChargeCode }}</span>
-                    </p>
-                    <p class="payment"><span translate>TOTAL</span> {{currencySymbol}}{{ data.revenueData.total_revenue | number: precisonTwo}}</p>
-                </div>
             </div>
 
     </div>
 </div>
+
+
+<!-- Print footer -->
+<ul class="journal-footer-print">
+    <li>
+        From <span>{{ data.fromDate | date : dateFormat }}</span> to <span>{{ data.toDate | date : dateFormat }}</span><br />
+        Departments(s) <span>{{data.selectedDepartmentName.join(', ')}}</span><br />
+        Employee(s) <span>{{data.selectedEmployeesName.join(', ')}}</span><br />
+        Charge Group(s) <span>{{ data.uiSelectedChargeGroup }}</span>
+    </li>
+    <li>
+        Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br />
+        User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
+    </li>
+</ul>
