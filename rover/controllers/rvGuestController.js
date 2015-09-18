@@ -1324,6 +1324,10 @@ sntRover.controller('guestCardController', [
 			ngDialog.close();
 			//we will be in card opened mode, so closing
 			$scope.closeGuestCard();
+
+			$timeout(function() {
+	            $scope.navigateToRoomAndRates();
+	        }, 3000);
 		};
 		// To handle card selection from COMPANY / TA.
 		$scope.selectCardType = function(cardData , $event){
@@ -1548,7 +1552,7 @@ sntRover.controller('guestCardController', [
 			}
 		};
 
-		$scope.$on("companySearchStopped", function() {
+		/*$scope.$on("companySearchStopped", function() {
 			console.log("RvGuestCtrl+comapny");
 			$scope.navigateToRoomAndRates();
 		});
@@ -1557,6 +1561,6 @@ sntRover.controller('guestCardController', [
 			console.log("RvGuestCtrl+TA");
 			$scope.navigateToRoomAndRates();
 		});
-
+		*/
 	}
 ]);
