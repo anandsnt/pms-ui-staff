@@ -1278,7 +1278,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                     if ($scope.reservationsListArray) {
                         angular.forEach($scope.reservationsListArray.reservations, function(reservation, key) {
-                            if (!index || key === index) {
+                            if ((!index && !_.isNumber(index)) || key === index) {
                                 reservation.deposit_amount = data.deposit_amount;
                                 totalDepositOnRateUpdate = parseFloat(totalDepositOnRateUpdate) + parseFloat(data.deposit_amount);
                             } else {
