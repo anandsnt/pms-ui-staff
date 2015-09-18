@@ -795,9 +795,18 @@ sntRover.factory('RVReportUtilsFac', [
 
         // to process the report group by
         factory.processGroupBy = function ( report ) {
-            // remove the value for 'BLANK'
+            var blank = {
+                    description: 'Group By',
+                    value: ''
+                };
+
             if ( report['group_fields'] && report['group_fields'].length ) {
+
+                // remove the value for 'BLANK' sent from server (if any)
                 report['groupByOptions'] = _.reject(report['group_fields'], { value: 'BLANK' });
+
+                // insert our blank at 0th pos
+                report['groupByOptions'].splice(0, 0, blank);
             };
         };
 
