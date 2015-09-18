@@ -1,19 +1,12 @@
 <!-- Credit card options - hidden until payment type is set as CC -->
 	<!-- If hidden by default, add class="hidden" -->
 	<!-- Card toggle - Use only if there are exsiting cards on file -->
-	<ul ng-show="isStandAlone" ng-hide="!isStandAlone" class="card-toggle" ng-hide="isFromGuestCard  || hasAccompanyguest || isGiftCard || cardsList.length === 0">
-		<li ng-class="{'active':!addmode}" ng-click="addmode = false; isGiftCard = true">
+	
+        <ul class="card-toggle" ng-hide="isFromGuestCard  || hasAccompanyguest || cardsList.length === 0" ng-init="checkForGiftCard(); addmode = false; isGiftCard = false">
+		<li ng-class="{'active':!addmode && !isGiftCard}" ng-click="addmode = false; isGiftCard = false; useDepositGiftCard = false; hideCancelCard = false; depositWithGiftCard = false;">
 			Existing Cards
 		</li>
-		<li ng-class="{'active':addmode}" ng-click="addmode = true; isGiftCard = true">
-			Add New Card
-		</li>
-	</ul>
-        <ul ng-show="!isStandAlone" ng-hide="isStandAlone" class="card-toggle" ng-hide="isFromGuestCard  || hasAccompanyguest || cardsList.length === 0" ng-init="checkForGiftCard()">
-		<li ng-class="{'active':!addmode && !isGiftCard}" ng-click="addmode = false; isGiftCard = false; useDepositGiftCard = false">
-			Existing Cards
-		</li>
-		<li ng-class="{'active':addmode && !isGiftCard}" ng-click="addmode = true; isGiftCard = false; useDepositGiftCard = false;">
+		<li ng-class="{'active':addmode && !isGiftCard}" ng-click="addmode = true; isGiftCard = false; useDepositGiftCard = false; hideCancelCard = false; depositWithGiftCard = false;">
 			Add New Card
 		</li>
                 <li ng-show="!isStandAlone && allowPmtWithGiftCard" ng-hide="!allowPmtWithGiftCard" ng-class="{'active':isGiftCard}" ng-click="useDepositGiftCard = true; addmode = false; isGiftCard = true; depositWithGiftCard = true;">
@@ -68,7 +61,7 @@
 		</div>
 	</div>
 	<!-- New card: MLI form -->
-	<div id="cc-new-card" class="new-card" ng-show="isGiftCard && !showingDepositModal && !depositWithGiftCard" ng-hide="!isDepositEditable"> <!-- Remove class "hidden" if there are no exsisting cards available -->
+	<div id="cc-new-card" class="new-card" ng-show="isGiftCard && !showingDepositModal && !depositWithGiftCard && !useDepositGiftCard" ng-hide="!isDepositEditable || !useDepositGiftCard"> <!-- Remove class "hidden" if there are no exsisting cards available -->
 		<div class="entry card-number card-type">
                     <label for="card-number">Card number (<span>No spaces</span>)</label>
 			<input ng-show="isGiftCard" name="card-number" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber, this, depositWithGiftCard)" />
@@ -89,7 +82,7 @@
 	<!-- New card: Call-In -->
 	<iframe ng-if="paymentGateway === 'sixpayments' && addmode" class="payment-iframe iframe-scroll" src="{{iFrameUrl}}" id="sixIframe" seamless></iframe>
 	<!-- Show only when creating reservation or paying the bill -->
-	<div class="actions" ng-hide="hideCancelCard || depositWithGiftCard">
+	<div class="actions" ng-hide="hideCancelCard || depositWithGiftCard" ng-show="!hideCancelCard && !depositWithGiftCard">
 		<button type="button" class="button blank" ng-click="cancelCardSelection()">
 			Cancel Card selection
 		</button>

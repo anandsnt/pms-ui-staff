@@ -27,7 +27,7 @@
 
         <div class="payment-form">
             <!-- Split payment -->
-                <div class="entry split" ng-class="{active: splitBillEnabled }"  ng-hide="depositPaidSuccesFully">
+                <div class="entry split" ng-class="{active: splitBillEnabled }"  ng-hide="depositPaidSuccesFully || saveData.paymentType === 'GIFT_CARD'">
 
                     <label class="checkbox inline" ng-class="{checked: splitBillEnabled }">
                     <span class="icon-form icon-checkbox" ng-class="{checked: splitBillEnabled }">
