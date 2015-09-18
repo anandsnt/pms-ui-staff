@@ -77,7 +77,7 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.reservation.staycard.mainCard.roomType', {
-            url: '/roomType/:from_date/:to_date/:fromState:view/:company_id/:travel_agent_id/:group_id',
+            url: '/roomType/:from_date/:to_date/:fromState:view/:company_id/:travel_agent_id/:group_id/:promotion_code',
             templateUrl: '/assets/partials/reservation/rvRoomTypesList.html',
             controller: 'RVReservationRoomTypeCtrl',
             onEnter: function($stateParams) {
@@ -93,6 +93,11 @@ angular.module('stayCardModule', [])
                 if (!$stateParams.group_id) {
                     $stateParams.group_id = null;
                 }
+                
+                if(!$stateParams.promotion_code){
+                    $stateParams.promotion_code = null;
+                }
+                    
             },
             resolve: {
                 roomRates: function(RVReservationBaseSearchSrv, $stateParams) {
@@ -101,7 +106,8 @@ angular.module('stayCardModule', [])
                     params.to_date = $stateParams.to_date;
                     params.company_id = $stateParams.company_id;
                     params.travel_agent_id = $stateParams.travel_agent_id;
-                    params.group_id = $stateParams.group_id
+                    params.group_id = $stateParams.group_id,
+                    params.promotion_code = $stateParams.promotion_code
                     return RVReservationBaseSearchSrv.fetchAvailability(params);
                 },
                 sortOrder: function(RVReservationBaseSearchSrv) {

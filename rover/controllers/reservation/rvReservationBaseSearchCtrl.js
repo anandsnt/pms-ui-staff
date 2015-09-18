@@ -351,7 +351,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     'guestFirstName' : $scope.searchData.guestCard.guestFirstName,
                     'guestLastName'  : $scope.searchData.guestCard.guestLastName,
                     'companyID'      : $scope.reservationData.company.id,
-                    'travelAgentID'  : $scope.reservationData.travelAgent.id
+                    'travelAgentID'  : $scope.reservationData.travelAgent.id,
+                    'promotionCode'  : $scope.reservationData.searchPromoCode
                 });
 
                 $vault.set( 'searchReservationData', JSON.stringify(reservationDataToKeepinVault) );
@@ -376,7 +377,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         'fromState'       : $state.current.name,
                         'company_id'      : $scope.reservationData.company.id,
                         'travel_agent_id' : $scope.reservationData.travelAgent.id,
-                        'group_id'        : $scope.reservationData.group.id
+                        'group_id'        : $scope.reservationData.group.id,
+                        'promotion_code'  : $scope.reservationData.searchPromoCode
                     });
                 }
             }
@@ -679,6 +681,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             } else if (request.term.length > 0) {
                 if (request.term !== '' && lastSearchText !== request.term) {
                     lastSearchText = request.term;
+                    $scope.reservationData.searchPromoCode = request.term;
                     $scope.invokeApi(RVReservationBaseSearchSrv.autoCompleteCodes, {
                         'code': request.term,
                         'include_group': $scope.reservationData.rooms.length === 1,
