@@ -49,9 +49,18 @@ sntRover.controller('RVCardOptionsCtrl',
                 };
                 $rootScope.$on('giftCardSelected',function(){
                       $scope.shouldShowIframe = false;
+                      if ($rootScope.isStandAlone){
+                        $('#cc-new-card').addClass('ng-hide');
+                      }
                 });
                 $rootScope.$on('creditCardSelected',function(){
-                      $scope.shouldShowIframe = true;
+                    if (!$rootScope.isStandAlone){
+                        $scope.shouldShowIframe = true;
+                        $('#cc-new-card').removeClass('ng-hide');
+                    }
+                    if ($rootScope.isStandAlone){
+                        $('#cc-new-card').removeClass('ng-hide');
+                    }
                 });
                 $scope.hideIfFromStayCardDirect = function(){
                   if (!$rootScope.isStandAlone){
