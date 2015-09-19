@@ -47,7 +47,17 @@ sntRover.controller('RVCardOptionsCtrl',
                         
                     
                 };
-                
+                $rootScope.$on('giftCardSelected',function(){
+                      $scope.shouldShowIframe = false;
+                });
+                $rootScope.$on('creditCardSelected',function(){
+                      $scope.shouldShowIframe = true;
+                });
+                $scope.hideIfFromStayCardDirect = function(){
+                  if (!$rootScope.isStandAlone){
+                      $scope.shouldShowIframe = true;
+                    }
+                };
               
 	$scope.showMakePaymentButtonStatus = function(){
             

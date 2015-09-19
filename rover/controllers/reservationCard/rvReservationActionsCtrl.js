@@ -544,6 +544,7 @@ sntRover.controller('reservationActionsController', [
                 
                 
 		$scope.showDepositBalanceModal = function() {
+                    $rootScope.fromStayCard = true;
 			var reservationId = $scope.reservationData.reservation_card.reservation_id;
 			var dataToSrv = {
 				"reservationId": reservationId
