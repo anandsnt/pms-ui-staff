@@ -248,6 +248,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
                     
                     
                     if ($scope.depositBalanceMakePaymentData.payment_type === "CC"){
+                        $scope.shouldShowIframe = true;
                         $rootScope.$broadcast('creditCardSelected');
                     }
                     if ($scope.depositBalanceMakePaymentData.payment_type === "GIFT_CARD"){
