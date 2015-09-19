@@ -245,7 +245,14 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	};
 	$scope.changePaymentType = function(){
 		if($scope.depositBalanceMakePaymentData.payment_type === "CC" || $scope.depositBalanceMakePaymentData.payment_type === "GIFT_CARD"){
+                    
+                    
+                    if ($scope.depositBalanceMakePaymentData.payment_type === "CC"){
+                        $rootScope.$broadcast('creditCardSelected');
+                    }
                     if ($scope.depositBalanceMakePaymentData.payment_type === "GIFT_CARD"){
+                        $rootScope.$broadcast('giftCardSelected');
+                      $scope.shouldShowIframe = false;
                         $rootScope.depositUsingGiftCard = true;
                         $scope.depositWithGiftCard = true;
                     } else {
