@@ -581,7 +581,7 @@ sntRover.controller('reservationActionsController', [
 		 */
 		$scope.showDepositBalance = function(reservationStatus) {
                     var cashDesposit = false;
-                    if ($scope.reservationData.reservation_card.payment_method_used === 'CA'){
+                    if ($scope.reservationData.reservation_card.payment_method_used !== 'CC'){
                         cashDesposit = true;
                     } 
                     $rootScope.initFromCashDeposit = cashDesposit;
