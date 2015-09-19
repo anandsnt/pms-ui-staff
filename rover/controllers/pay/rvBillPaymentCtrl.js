@@ -254,14 +254,24 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
         
         
         
+        $rootScope.$on('validatedGiftCardPmt',function(n, valid){
+            if (valid){
+               $scope.validPayment = true;
+           } else {
+               $scope.validPayment = false;
+           }
+        });
         $scope.validPayment = true;
             
         $scope.updatedAmountToPay = function(amt){
             //used if checking against gift card balance
-               if ($scope.saveData.paymentType === 'GIFT_CARD'){
-                if ($scope.giftCardAvailableBalance){
-                    var avail = parseFloat(($scope.giftCardAvailableBalance).toFixed(2));
-                    var toPay = parseFloat(parseFloat(amt).toFixed(2));
+            if ($scope.saveData.paymentType === 'GIFT_CARD'){
+                var bal = $scope.giftCardAvailableBalance;
+                if (bal){
+                    var avail = parseFloat(bal).toFixed(2);
+                    var toPay = parseFloat(amt).toFixed(2);
+                    avail = parseFloat(avail);
+                    toPay = parseFloat(toPay);
                     if (avail < toPay){
                         $scope.validPayment = false;
                     } else {
@@ -271,7 +281,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
             } else {
                 $scope.validPayment = true;
             }
-            
+            $rootScope.$broadcast('validatedGiftCardPmt',$scope.validPayment);
         };
 
 

@@ -476,22 +476,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 
 	}
         
-        $scope.updatedAmountToPay = function(amt){
-            //used if checking against gift card balance
-                
-               if ($scope.depositBalanceMakePaymentData.payment_type === 'GIFT_CARD'){
-                if ($scope.giftCardAvailableBalance){
-                    var avail = parseFloat(($scope.giftCardAvailableBalance).toFixed(2));
-                    var toPay = parseFloat(parseFloat(amt).toFixed(2));
-                    if (avail < toPay){
-                        $scope.validPayment = false;
-                    } else {
-                        $scope.validPayment = true;
-                    }
-                }
-            }
-            
-        };
 
 	/*
 	 * call make payment API on clicks select payment
@@ -583,6 +567,36 @@ sntRover.controller('RVDepositBalanceCtrl',[
             $scope.giftCardAvailableBalance = giftCardData.amount;
             $scope.giftCardAmountAvailable = true;
         });
+        
+        $rootScope.$on('validatedGiftCardPmt',function(n, valid){
+            if (valid){
+               $scope.validPayment = true;
+           } else {
+               $scope.validPayment = false;
+           }
+        });
+        $scope.updatedAmountToPay = function(amt){
+            //used if checking against gift card balance
+               if ($scope.depositBalanceMakePaymentData.payment_type === 'GIFT_CARD'){
+                   var bal = $scope.giftCardAvailableBalance;
+                if (bal){
+                    var avail = parseFloat(bal).toFixed(2);
+                    var toPay = parseFloat(amt).toFixed(2);
+                    avail = parseFloat(avail);
+                    toPay = parseFloat(toPay);
+                    if (avail < toPay){
+                        $scope.validPayment = false;
+                    } else {
+                        $scope.validPayment = true;
+                    }
+                }
+            } else {
+                $scope.validPayment = true;
+            }
+            $rootScope.$broadcast('validatedGiftCardPmt',$scope.validPayment);
+            
+        };
+        
         
 	$scope.successSavePayment = function(data){
             

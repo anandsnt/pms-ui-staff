@@ -68,6 +68,13 @@ sntRover.controller('RVCardOptionsCtrl',
                     }
                 };
               
+        $rootScope.$on('validatedGiftCardPmt',function(n, valid){
+            if (valid){
+               $scope.validPayment = true;
+           } else {
+               $scope.validPayment = false;
+           }
+        });
 	$scope.showMakePaymentButtonStatus = function(){
             
 		var buttonClass = "";
