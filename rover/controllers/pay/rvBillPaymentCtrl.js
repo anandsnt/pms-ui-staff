@@ -178,6 +178,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	*/
 	$scope.showGuestCreditCardList = function(){
 		$scope.showCCPage = true;
+		$scope.swippedCard = true;
 		refreshCardsList();
 	};
 
@@ -783,6 +784,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			value.isSelected = false;
 		});
 		$scope.showCCPage = false;
+		$scope.swippedCard = false;
 		$scope.showCreditCardInfo = true;
 		$scope.$broadcast("clearCardDetails");
 
@@ -844,6 +846,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		});
 		$scope.cardsList[index].isSelected = true;
 		$scope.saveData.payment_type_id =  $scope.cardsList[index].value;
+		$scope.swippedCard = false;
 		$scope.showCCPage = false;
 		if($scope.isStandAlone)	{
 			$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
@@ -861,6 +864,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 
 		$scope.newPaymentInfo = data;
 		$scope.showCCPage = false;
+		$scope.swippedCard = false;
 		setTimeout(function(){
 			savePayment(data);
 		}, 200);
@@ -874,12 +878,14 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 
 	$scope.$on('cancelCardSelection',function(e,data){
 		$scope.showCCPage = false;
+		$scope.swippedCard = false;
 		$scope.isManual = false;
 		$scope.saveData.paymentType = "";
 	});
 
 	$scope.$on("SHOW_SWIPED_DATA_ON_PAY_SCREEN", function(e, swipedCardDataToRender){
 		$scope.showCCPage 						 = true;
+		$scope.swippedCard 						 = true;
 		$scope.addmode                 			 = true;
 		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 	});

@@ -31,9 +31,11 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.cardsList       = [];
 	$scope.setScroller('cardsList',{'click':true, 'tap':true});
 	$scope.showCCPage = false;
+        $scope.swippedCard = false;
 	if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
 		$scope.showManualEntryDisabledPopup = false;
 		$scope.showCCPage = true;
+		$scope.swippedCard = true;
 	}
 	else{
 		$scope.showManualEntryDisabledPopup = ($rootScope.isManualCCEntryEnabled) ? false : true;
@@ -98,6 +100,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$scope.showManualEntryDisabledPopup = false;
 			$scope.dataToSave.paymentType = "CC";
 			$scope.showCCPage 			  = true;
+			$scope.swippedCard 			  = true;
 			$scope.addmode                = true;
 			$scope.showAddtoGuestCard = ($scope.passData.details.swipedDataToRenderInScreen.swipeFrom === "guestCard") ? false : true;
 		}
@@ -119,6 +122,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 
 		if($scope.paymentGateway !== 'sixpayments'){
 			$scope.showCCPage = ($scope.dataToSave.paymentType === "CC") ? true: false;
+			$scope.swippedCard = ($scope.dataToSave.paymentType === "CC") ? true: false;
 			$scope.addmode =($scope.dataToSave.paymentType === "CC" &&  $scope.cardsList.length === 0) ? true: false;
 			$scope.showInitialScreen = ($scope.dataToSave.paymentType === "CC") ? false: true;
 			refreshCardsList();
@@ -131,6 +135,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	};
 
 	$scope.changeOnsiteCallIn = function(){
+		$scope.swippedCard = ($scope.isManual) ? true:false;
 		$scope.showCCPage = ($scope.isManual) ? true:false;
 		$scope.addmode =  ($scope.isManual && $scope.cardsList.length === 0) ? true:false;
 		$scope.showInitialScreen = ($scope.isManual) ?false :true;
@@ -142,6 +147,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 
 	$scope.showCCList = function(){
 		refreshCardsList();
+		$scope.swippedCard =  true;
 		$scope.showCCPage =  true;
 		$scope.addmode = false;
 	};
@@ -189,6 +195,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 
 	var renderScreen = function(){
 		$scope.showCCPage = false;
+		$scope.swippedCard = false;
 		$scope.showSelectedCreditCard  = true;
 		$scope.addmode                 = false;
 		$scope.renderData.creditCardType = (!$scope.cardData.tokenDetails.isSixPayment)?
@@ -611,6 +618,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.renderData.is_swiped = $scope.cardsList[index].is_swiped;
 		$scope.renderData.auth_color_code = $scope.cardsList[index].auth_color_code;
 		$scope.showCCPage = false;
+		$scope.swippedCard = false;
 		$scope.showSelectedCreditCard  = true;
 		$scope.addmode                 = false;
 		$scope.isNewCardAdded = false;
@@ -624,6 +632,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.swipedCardDataToSave = swipedCardDataToSave;
 		$scope.dataToSave.paymentType = "CC";
 		$scope.showCCPage = false;
+		$scope.swippedCard = false;
 		$scope.showSelectedCreditCard  = true;
 		$scope.addmode                 = false;
 		$scope.renderData.creditCardType = swipedCardDataToSave.cardType.toLowerCase();
@@ -637,6 +646,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	});
 
 	$scope.$on('cancelCardSelection',function(e,data){
+		$scope.swippedCard = false;
 		$scope.showCCPage = false;
 		$scope.dataToSave.paymentType = "";
 		$scope.isManual = false;
