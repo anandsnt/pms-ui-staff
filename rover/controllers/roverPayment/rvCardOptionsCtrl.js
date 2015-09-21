@@ -341,6 +341,5 @@ sntRover.controller('RVCardOptionsCtrl',
 		});
 
 
-                        $scope.swippedCard = true;
 
 }]);
