@@ -139,6 +139,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 		setTimeout(function(){
 			$scope.saveData.payment_type = "CC";
 			$scope.showCreditCardDropDown = true;
+                        $scope.swippedCard = true;
 			$scope.$broadcast('RENDER_DATA_ON_BILLING_SCREEN', swipedCardDataToRender);
 			$scope.$digest();
 		}, 2000);

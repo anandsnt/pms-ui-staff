@@ -396,6 +396,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				$scope.$emit('hideLoader');
 				swipedCardData.token = tokenValue;
 				$scope.showAddNewPaymentModel(swipedCardData);
+                                $scope.swippedCard = true;
 			};
 			$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
 		});
