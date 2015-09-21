@@ -64,7 +64,11 @@ sntRover.controller('RVCardOptionsCtrl',
                 });
                 $scope.hideIfFromStayCardDirect = function(){
                   if (!$rootScope.isStandAlone){
-                      $scope.shouldShowIframe = true;
+                      if ($scope.swippedCard){
+                          $scope.shouldShowIframe = false;
+                      } else {
+                          $scope.shouldShowIframe = true;
+                        }
                     }
                 };
               
