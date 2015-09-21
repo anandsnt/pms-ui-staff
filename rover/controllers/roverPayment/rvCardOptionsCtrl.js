@@ -335,7 +335,7 @@ sntRover.controller('RVCardOptionsCtrl',
             };
             
 	    $scope.$on("RENDER_SWIPED_DATA", function(e, swipedCardDataToRender){
-
+                        $scope.swippedCard = true;
 			$scope.renderDataFromSwipe(swipedCardDataToRender);
 			$scope.passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
 		});

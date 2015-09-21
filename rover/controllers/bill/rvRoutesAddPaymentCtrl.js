@@ -148,6 +148,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 		$scope.$on("RENDER_DATA_ON_BILLING_SCREEN", function(e, swipedCardDataToRender){
 			$scope.showCCPage 						 = true;
 			$scope.addmode                 			 = true;
+                        $scope.swippedCard = true;
 			$scope.saveData.newPaymentFormVisible    = true;
 			$scope.$apply();
 			$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
