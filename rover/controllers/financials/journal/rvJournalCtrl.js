@@ -256,6 +256,8 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         $scope.data.toDate   = $filter('date')(yesterday, 'yyyy-MM-dd');
         $scope.data.cashierDate = $filter('date')(yesterday, 'yyyy-MM-dd');
         $scope.data.summaryDate = $filter('date')(yesterday, 'yyyy-MM-dd');
+        // CICO-20294 : Hide summary tab if the reservation is of type Hourly.
+        if($rootScope.isHourlyRateOn) $scope.data.isShowSummaryTab = false;
     }
 
     /** Employee/Departments Filter ends here .. **/
