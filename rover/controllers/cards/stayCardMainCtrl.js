@@ -784,20 +784,21 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			this.totalStayCost = 0;
 			var rateIdSet = [];
 			var self = this;
-			angular.forEach($scope.reservationData.rooms, function(room, index) {
+			angular.forEach($scope.reservationData.rooms, function(room) {
+				var refData = _.findWhere(tData.rooms, {room_no : room.room_no});
 				room.stayDates = {};
-				rateIdSet.push(tData.rooms[index].rateId);
-				room.numAdults = tData.rooms[index].numAdults;
-				room.numChildren = tData.rooms[index].numChildren;
-				room.numInfants = tData.rooms[index].numInfants;
-				room.roomTypeId = tData.rooms[index].roomTypeId;
-				room.amount = tData.rooms[index].amount;
-				room.room_id = tData.rooms[index].room_id;
-				room.room_no = tData.rooms[index].room_no;
-				room.room_type = tData.rooms[index].room_type;
+				rateIdSet.push(refData.rateId);
+				room.numAdults = refData.numAdults;
+				room.numChildren = refData.numChildren;
+				room.numInfants = refData.numInfants;
+				room.roomTypeId = refData.roomTypeId;
+				room.amount = refData.amount;
+				room.room_id = refData.room_id;
+				room.room_no = refData.room_no;
+				room.room_type = refData.room_type;
 
-				room.rateId = tData.rooms[index].rateId;
-				room.roomAmount = tData.rooms[index].amount;
+				room.rateId = refData.rateId;
+				room.roomAmount = refData.amount;
 				// CICO-16850
 				//  In case of updating a reservation from Diary
 				// the reservation's already attached demographics
@@ -805,18 +806,18 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 				//CICO-16927 - added undefined check for demographics
 				room.demographics = {
-					market: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.market_segment_id) ? '' : tData.rooms[index].demographics.market_segment_id,
-					source: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.source_id) ? '' : tData.rooms[index].demographics.source_id,
-					reservationType: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.reservation_type_id) ? '' : tData.rooms[index].demographics.reservation_type_id,
-					origin: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.booking_origin_id) ? '' : tData.rooms[index].demographics.booking_origin_id,
-					segment: (typeof tData.rooms[index].segment === "undefined" || !tData.rooms[index].demographics.segment_id) ? '' : tData.rooms[index].demographics.segment_id
+					market: (typeof refData.demographics === "undefined" || !refData.demographics.market_segment_id) ? '' : refData.demographics.market_segment_id,
+					source: (typeof refData.demographics === "undefined" || !refData.demographics.source_id) ? '' : refData.demographics.source_id,
+					reservationType: (typeof refData.demographics === "undefined" || !refData.demographics.reservation_type_id) ? '' : refData.demographics.reservation_type_id,
+					origin: (typeof refData.demographics === "undefined" || !refData.demographics.booking_origin_id) ? '' : refData.demographics.booking_origin_id,
+					segment: (typeof refData.segment === "undefined" || !refData.demographics.segment_id) ? '' : refData.demographics.segment_id
 				};
 
 				// put the same stuff in the reservationData obj as well
 				//
 				self.demographics = angular.copy(room.demographics);
 
-				self.totalStayCost = parseFloat(self.totalStayCost) + parseFloat(tData.rooms[index].amount);
+				self.totalStayCost = parseFloat(self.totalStayCost) + parseFloat(refData.amount);
 				var success = function(data) {
 					room.rateName = data.name;
 					//CICO-16850
