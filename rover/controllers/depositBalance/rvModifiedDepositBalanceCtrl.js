@@ -252,8 +252,12 @@ sntRover.controller('RVDepositBalanceCtrl',[
                         $rootScope.$broadcast('creditCardSelected');
                     }
                     if ($scope.depositBalanceMakePaymentData.payment_type === "GIFT_CARD"){
+                        if(!$rootScope.isStandAlone){
+                            $scope.initFromCashDeposit = true;
+                          }
+                        
                         $rootScope.$broadcast('giftCardSelected');
-                      $scope.shouldShowIframe = false;
+                        $scope.shouldShowIframe = false;
                         $rootScope.depositUsingGiftCard = true;
                         $scope.depositWithGiftCard = true;
                     } else {
