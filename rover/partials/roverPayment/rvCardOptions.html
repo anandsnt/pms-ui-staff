@@ -2,8 +2,8 @@
 	<!-- If hidden by default, add class="hidden" -->
 	<!-- Card toggle - Use only if there are exsiting cards on file -->
 	
-        <ul class="card-toggle" ng-hide="isFromGuestCard  || hasAccompanyguest || initFromCashDeposit || isGiftCard" ng-init="checkForGiftCard(); addmode = false; isGiftCard = false">
-		<li ng-class="{'active':!addmode && !isGiftCard}" ng-hide="cardsList.length === 0" ng-click="shouldShowIframe = true; addmode = false; isGiftCard = false; useDepositGiftCard = false; hideCancelCard = false; depositWithGiftCard = false;">
+        <ul class="card-toggle" ng-hide="isFromGuestCard  || hasAccompanyguest || cardsList.length === 0 || initFromCashDeposit" ng-init="checkForGiftCard(); addmode = false; isGiftCard = false">
+		<li ng-class="{'active':!addmode && !isGiftCard}" ng-click="shouldShowIframe = true; addmode = false; isGiftCard = false; useDepositGiftCard = false; hideCancelCard = false; depositWithGiftCard = false;">
 			Existing Cards
 		</li>
 		<li ng-class="{'active':addmode && !isGiftCard}" ng-click="shouldShowIframe = false; addmode = true; isGiftCard = false; useDepositGiftCard = false; hideCancelCard = false; depositWithGiftCard = false;">
@@ -29,7 +29,7 @@
 	</div>
 
 	<!-- New card: MLI form -->
-	<div id="cc-new-card" class="new-card" ng-hide="(isManual || paymentGateway === 'sixpayments') || isGiftCard || depositWithGiftCard || shouldShowIframe" ng-show=" (!isManual && paymentGateway !== 'sixpayments') || (!shouldShowIframe && addmode && shouldShowAddNewCard) || swippedCard" ng-init="hideIfFromStayCardDirect()"> <!-- Remove class "hidden" if there are no exsisting cards available -->
+	<div id="cc-new-card" class="new-card" ng-hide="isManual || isGiftCard || depositWithGiftCard || shouldShowIframe" ng-show="(!shouldShowIframe && addmode && shouldShowAddNewCard) || swippedCard" ng-init="hideIfFromStayCardDirect()"> <!-- Remove class "hidden" if there are no exsisting cards available -->
 		<div class="entry card-type">
 			<label for="card-type" >Card type </label>
 			<div class="select">
