@@ -58,6 +58,65 @@ sntRover.controller('rvGroupAvailabilityStatusController', [
 		$scope.showDropDownForGroup = function(index){
 			return _.contains($scope.idsOfDropDownOpenedGroups, $scope.data.groupDetails[index].id);
 		};
+
+
+		/**
+		 * For iScroll, we need width of the table
+		 * @return {Integer}
+		 */
+		$scope.getWidthForTable = function() {
+
+			//if no data exist we will just return 0
+			if (!_.has($scope.data, 'dates')) {
+				return 0;
+			};
+
+			var leftMostRowCaptionWidth = 273,
+				totalColumns 			= $scope.data && $scope.data.dates && $scope.data.dates.length,
+				individualColWidth 		= 0;
+
+			//on each column length, width is different
+			if (totalColumns <= 7) {
+				individualColWidth = 147;
+			}
+			else if (totalColumns <= 14) {
+				individualColWidth = 71;
+			}
+			else if (totalColumns <= 30) {
+				individualColWidth = 55;
+			}			
+			return (totalColumns * individualColWidth + leftMostRowCaptionWidth);
+		};
+
+		/*
+		* param - Holdstatus id
+		* return Hold status name
+		*/
+		$scope.getGroupName = function(id){
+			var group = _.findWhere($scope.data.holdStatus, {id: id});
+			return group && group.name;
+		};
+
+		/*
+		* return class name for holdstatus row in picked up
+		*/
+		$scope.getClassForHoldStatusRowInPickedUp = function(id){
+			if(!isTakenFromInventory(id) ||$scope.hideHoldStatusOf.groupRoomPicked){
+				return 'hidden';
+			}else{
+				return '';
+			};
+
+		};
+
+		/*
+		* param - Hold status id
+		* return - true if taken from inventory else false
+		*/
+		 var isTakenFromInventory = function(id){
+		 	var group = _.findWhere($scope.data.holdStatus, {id: id});
+		 	return group && group.is_take_from_inventory;
+		};
 		/*
 		* Function for show/hide Room status of Groups
 		* param - index of clicked row

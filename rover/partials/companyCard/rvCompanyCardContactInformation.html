@@ -49,29 +49,50 @@
 
             <rv-textbox ng-if="account_type == 'COMPANY'" value="contactInformation.account_details.account_number" label="Corporate ID" placeholder = "Enter Corporate ID" styleclass="margin"></rv-textbox>
             <rv-textbox ng-if="account_type == 'TRAVELAGENT'" value="contactInformation.account_details.account_number" label="IATA Number" placeholder = "Enter IATA Number" styleclass="margin"></rv-textbox>
-            <div class="entry commission" ng-show ="contactInformation.commission_details">
-                <label for="travel-agent-commission">Commission</label>
+
+            <div class="entry commission" ng-show ="!isEmpty(contactInformation.commission_details)&& account_type == 'TRAVELAGENT'">
+                <label for="travel-agent-commission" translate>COMMISSION</label>
                 <div class="switch-button off" ng-class="{'on': contactInformation.commission_details.is_on}">
                     <input id="travel-agent-commission" ng-click="contactInformation.commission_details.is_on = !contactInformation.commission_details.is_on" value="commission" type="checkbox" checked />
                     <label class="data-off">
-                        <span class="value">Off</span>
-                        <span class="switch-icon">On</span>
+                        <span class="value" translate>OFF</span>
+                        <span class="switch-icon" translate>ON</span>
                     </label>
                     <label class="data-on">
-                        <span class="switch-icon grey">Off</span>
-                        <span class="value">On</span>
+                        <span class="switch-icon grey" translate>OFF</span>
+                        <span class="value" translate>ON</span>
                     </label>
                 </div>
         
-            <input id="travel-agent-commission-value" value="{{contactInformation.commission_value}}" ng-model="contactInformation.commission_details.value" type="text" ng-if="contactInformation.commission_details.is_on"/>            
-            <div class="select" ng-if="contactInformation.commission_details.is_on">
-            <select name="travel-agent-commission-type" value="contactInformation.commission_details.type" ng-model="contactInformation.commission_details.type">
-                <option value="percent">%</option>
-                <option value="amount">{{currencySymbol}}</option>
-            </select>
+                <input id="travel-agent-commission-value" value="{{contactInformation.commission_value}}" ng-model="contactInformation.commission_details.value" type="text" ng-if="contactInformation.commission_details.is_on"/>            
+                <div class="select" ng-if="contactInformation.commission_details.is_on">
+                    <select name="travel-agent-commission-type" value="contactInformation.commission_details.type" ng-model="contactInformation.commission_details.type">
+                        <option value="percent">%</option>
+                        <option value="amount">{{currencySymbol}}</option>
+                    </select>
+                </div>
             </div>
-        </div>
-            
+
+            <div class="entry commission margin" ng-show="contactInformation.commission_details.is_on">
+                <label translate>PREPAID</label>
+                <label class="checkbox"ng-class="{'checked': contactInformation.commission_details.is_prepaid}">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': contactInformation.commission_details.is_prepaid }"></span>
+                    <input type="checkbox"  name="opt-in" id="opt-in" ng-model="contactInformation.commission_details.is_prepaid">
+                    <span translate>PREPAID</span>
+                </label>
+            </div>
+
+            <div class="entry" ng-show="contactInformation.commission_details.is_on">
+                <label ng-show="contactInformation.commission_details.type === 'amount'" translate>PER_STAY_OR_PER_NIGHT</label>
+                <div class="select" ng-show="contactInformation.commission_details.type === 'amount'">                        
+                    <select class="styled" value="contactInformation.commission_details.commission_type" ng-model="contactInformation.commission_details.commission_type">
+                        <option value="perStay" translate>PER_STAY</option>
+                        <option value="perNight" translate>PER_NIGHT</option> 
+                    </select>
+                </div>
+                
+            </div>
+
             <div class="entry full-width">
                 <label><span translate>BILLING_INFORMATION</span>
                     <span ng-show ="contactInformation.account_details !== undefined"> ({{contactInformation.account_details.routes_count}} 

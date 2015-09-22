@@ -1,3 +1,11 @@
+<!-- Print header -->
+<ul class="journal-header-print summary">
+    <li>
+        {{'BAL_AS_OF_EOD' | translate}}
+        <span>{{ data.summaryDate | date : 'MMMM d, y'}}</span>
+    </li>
+</ul>
+
 <!-- Content -->
 <div ng-controller="RVJournalSummaryController" id="journal-content" class="journal-content summary">
     
@@ -58,3 +66,14 @@
         </ul>
     </div>
 </div>
+
+<!-- Print footer -->
+<ul class="journal-footer-print summary">
+    <li>
+        Date <span>{{ data.summaryDate | date : 'MMMM d, y'}}</span>
+    </li>
+    <li>
+        Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br />
+        User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
+    </li>
+</ul>

@@ -36,10 +36,16 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             });
         };
 
-        $scope.setScroller('reservation-settings');
+
 
         $scope.refreshScroll = function() {
             $scope.refreshScroller('reservation-settings');
+            if (!!$scope.myScroll && !!$scope.myScroll['reservation-settings']) { // Hack for scroller issue. -- till a better solution is found!
+                $timeout(function() {
+                    $scope.myScroll['reservation-settings'].refresh();
+                }, 300);
+
+            }
         };
 
         $scope.arrivalDateOptions = {
@@ -203,7 +209,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
         });
 
         $scope.$on('GETREFRESHACCORDIAN', function() {
-            setTimeout($scope.refreshScroll, 3000);
+            $timeout($scope.refreshScroll, 3000);
         });
 
         $scope.addTabFromSidebar = function() {
@@ -212,13 +218,21 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             }
             $scope.reservationData.tabs = $scope.reservationData.tabs.concat(RVReservationTabService.newTab());
             $scope.reservationData.rooms = $scope.reservationData.rooms.concat(RVReservationTabService.newRoom());
+            // init stay dates on the last of the rooms -- the most recent one added!
+            initStayDates($scope.reservationData.rooms.length - 1);
             $scope.refreshScroll();
         };
 
         $scope.restrictMultipleBookings = function() {
             return $scope.reservationData.tabs.length === 4 || !!$scope.reservationData.group.id;
-        }
+        };
 
+        $scope.removeTabFromSidebar = function(tabIndex) {
+            $scope.removeTab(tabIndex);
+            $scope.refreshScroll();
+        };
+
+        $scope.setScroller('reservation-settings');
 
     }
 ]);

@@ -705,6 +705,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 */
 
 		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
+                $scope.swippedCard = true;
 
 			if ($scope.billingInfoModalOpened) {
 				var swipeOperationObj = new SwipeOperation();

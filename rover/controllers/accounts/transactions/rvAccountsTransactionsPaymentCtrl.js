@@ -30,6 +30,9 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		var hasPermissionToRefundPayment = function() {
 			return rvPermissionSrv.getPermissionValue ('POST_REFUND');
 		};
+                 $scope.$on('isGiftCardPmt',function(v){
+                     $scope.isGiftCardPmt = v;
+                 });
 
 		var init = function(){
 			$scope.saveData = {};
@@ -61,7 +64,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			$scope.hasPermissionToRefundPayment = hasPermissionToRefundPayment();
 		};
 		init();
-
+                
 
 		/**
 		 * to run angular digest loop,
@@ -218,6 +221,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		 */
 		$scope.showCardAddmode = function(){
 			$scope.showCCPage = true;
+                        $scope.swippedCard = true;
 		};
 
 
@@ -349,6 +353,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 
 		 	$scope.saveData.payment_type_id = data.id;
 		 	$scope.showCCPage = false;
+                        $scope.swippedCard = false;
 		 	$scope.showCreditCardInfo = true;
 		 	$scope.newCardAdded = true;
 		 	$scope.swipedCardDataToSave = {};
@@ -397,6 +402,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		$scope.$on("TOKEN_CREATED", function(e, data){
 		 	$scope.newPaymentInfo = data;
 		 	$scope.showCCPage = false;
+                        $scope.swippedCard = false;
 		 	setTimeout(function(){
 		 		savePayment(data);
 		 	}, 200);
@@ -415,6 +421,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		 */
 		$scope.$on('cancelCardSelection',function(e,data){
 			$scope.showCCPage = false;
+                        $scope.swippedCard = false;
 			$scope.isManual = false;
 			$scope.saveData.paymentType = "";
 		});
@@ -425,6 +432,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		$scope.$on("SHOW_SWIPED_DATA_ON_PAY_SCREEN", function(e, swipedCardDataToRender){
 			//set variables to display the add mode
 			$scope.showCCPage 						 = true;
+                        $scope.swippedCard = true;
 			$scope.addmode                 			 = true;
 			$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 		});

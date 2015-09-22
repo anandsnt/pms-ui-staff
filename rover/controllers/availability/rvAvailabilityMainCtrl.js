@@ -1,6 +1,6 @@
 sntRover.controller('rvAvailabilityMainController', [
-	'$scope', 'rvAvailabilitySrv',
-	function($scope, rvAvailabilitySrv){
+	'$scope', 'rvAvailabilitySrv', '$rootScope',
+	function($scope, rvAvailabilitySrv, $rootScope){
 
 		//variable to get/set value availabilty or house
 		$scope.availabilityToShow = 'room';
@@ -28,6 +28,14 @@ sntRover.controller('rvAvailabilityMainController', [
 			else if($scope.availabilityToShow === 'groups'){
 				return '/assets/partials/availability/groupAvailabilityMain.html';
 			}
+		};
+
+		/**
+		 * we will not show group in soome hotels
+		 * @return {Boolean} [description]
+		 */
+		$scope.shouldShowGroupInSelectBox = function() {
+			return (!$rootScope.isHourlyRateOn);
 		};
 
 }]);

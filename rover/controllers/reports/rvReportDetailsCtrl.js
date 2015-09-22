@@ -446,6 +446,17 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.detailsTemplateUrl = '/assets/partials/reports/comparisonStatReport/rvComparisonStatReport.html';
 					break;
 
+				case reportNames['ADDON_FORECAST']:
+					$scope.hasReportTotals  = false;
+					$scope.showReportHeader = true;
+					if ( 'ADDON' == $scope.chosenReport.chosenGroupBy ) {
+						$scope.detailsTemplateUrl = '/assets/partials/reports/addonForecastReport/rvAddonForecastReportByAddon.html';
+					} else {
+						$scope.detailsTemplateUrl = '/assets/partials/reports/addonForecastReport/rvAddonForecastReportByDate.html';
+					};
+					break;
+					
+
 				default:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
@@ -680,92 +691,23 @@ sntRover.controller('RVReportDetailsCtrl', [
 		    $scope.genReport( false );
 		};
 
-		//loads the content in the existing report view in the DOM.
+		// basically refetching reports but for 1000 results
+		// Also if a specific report ctrl has created a pre-print
+		// 'showModal' method to get some inputs from user before print
+		// call the method here.
+		// READ MORE: rvReportsMainCtrl:L#:61-75
 		$scope.fetchFullReport = function() {
-
-			// report scope limiter popup
-			// here we will give user another
-			// chance to limit the reports to
-			// a certain range
-			if ( $_preFetchFullReport() ) {
-
-				// make a copy of the from and until dates
-				$scope.fromDateCopy = angular.copy( $scope.chosenReport.fromDate );
-				$scope.untilDateCopy = angular.copy( $scope.chosenReport.untilDate );
-
-				// show popup
-				ngDialog.open({
-					controller: 'RVPrePrintPopupCtrl',
-				    template: '/assets/partials/reports/shared/rvPrePrintPopup.html',
-				    className: 'ngdialog-theme-default',
-				    closeByDocument: true,
-				    scope: $scope,
-				    data: []
-				});
+			if ( 'function' == typeof $scope.printOptions.showModal ) {
+				$scope.printOptions.showModal();
 			} else {
 				$_fetchFullReport();
 			};
 		};
 
-		// restore the old dates and close
-		$scope.closeDialog = function() {
-			$scope.chosenReport.fromDate = angular.copy( $scope.fromDateCopy );
-			$scope.chosenReport.untilDate = angular.copy( $scope.untilDateCopy );
-
-		    ngDialog.close();
-		};
-
-		$scope.continueWithPrint = function () {
-			ngDialog.close();
-			$_fetchFullReport();
-		};
-
-		// determine if we need to show pre print popup
-		// currently only for 'OCCUPANCY_REVENUE_SUMMARY' report
-		function $_preFetchFullReport () {
-			var allowedDateRange = 0,
-				chosenDateRange,
-				chosenVariance,
-				chosenLastYear;
-
-			if ( $scope.chosenReport.title === reportNames['OCCUPANCY_REVENUE_SUMMARY'] ) {
-
-				// get date range
-				// READ MORE: http://stackoverflow.com/questions/3224834/get-difference-between-2-dates-in-javascript#comment-3328094
-				chosenDateRange = $scope.chosenReport.untilDate.getTime() - $scope.chosenReport.fromDate.getTime();
-				chosenDateRange = ( chosenDateRange / (1000 * 60 * 60 * 24) | 0 );
-
-				// find out the user selection choices
-				chosenVariance = $scope.chosenReport.chosenOptions['include_variance'] ? true : false;
-				chosenLastYear = $scope.chosenReport.chosenOptions['include_last_year'] ? true : false;
-
-				// fromdate <- 5 days -> untildate
-				// diff should be 4 (5 - 1), including fromdate
-				if ( chosenVariance && chosenLastYear ) {
-					allowedDateRange = 4;
-				}
-
-				// fromdate <- 10 days -> untildate
-				// diff should be 9 (10 - 1), including fromdate
-				else if ( chosenVariance || chosenLastYear ) {
-					allowedDateRange = 9;
-				}
-
-				// fromdate <- 15 days -> untildate,
-				// diff should be 14 (15 - 1), including fromdate
-				else {
-					allowedDateRange = 14;
-				};
-
-				// if the current chosen dates are within
-				// the allowedDateRange, dont show pop
-				// go straight to printing
-				// (allowedDateRange + 1) -> since we reduced it above
-				return chosenDateRange > allowedDateRange ? true : false;
-			} else {
-				return false;
-			};
-		};
+		// when user press submit from pre-print modal, continue our calls to '$_fetchFullReport'
+		// READ MORE: rvReportsMainCtrl:L#:61-75
+		var prePrintDone = $rootScope.$on( reportMsgs['REPORT_PRE_PRINT_DONE'], $_fetchFullReport );
+		$scope.$on( 'destroy', prePrintDone );
 
 		function $_fetchFullReport () {
 
@@ -776,9 +718,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// should-we-change-view, specify-page, per-page-value
 			$scope.genReport( false, 1, 1000 );
 		};
-
-
-
 
 		// add the print orientation before printing
 		var addPrintOrientation = function() {
@@ -848,31 +787,17 @@ sntRover.controller('RVReportDetailsCtrl', [
 		    *	======[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]======
 		    */
 
-			// restore the old dates if dates were indeed saved
-			// this is hardcodding.. NEED BETTER WAY TO MANAGE
-		    $timeout(function() {
-				if ( angular.isDate($scope.fromDateCopy) && angular.isDate($scope.untilDateCopy) ) {
-					$scope.chosenReport.fromDate = angular.copy( $scope.fromDateCopy );
-					$scope.chosenReport.untilDate = angular.copy( $scope.untilDateCopy );
-
-					$scope.fromDateCopy = undefined;
-					$scope.untilDateCopy = undefined;
-				};
-		    }, 50);
 
 		    // in background we need to keep the report with its original state
 		    $timeout(function() {
 		    	// remove the orientation
 				removePrintOrientation();
 
-				// restore the old dates if dates were indeed saved
-				// this is hardcodding.. NEED BETTER WAY TO MANAGE
-				if ( !!$scope.fromDateCopy && !!$scope.untilDateCopy ) {
-					$scope.chosenReport.fromDate = angular.copy( $scope.chosenReport.fromDateCopy );
-					$scope.chosenReport.untilDate = angular.copy( $scope.chosenReport.untilDateCopy );
-
-					$scope.chosenReport.fromDateCopy = undefined;
-					$scope.chosenReport.untilDateCopy = undefined;
+				// If a specific report ctrl has created a pre-print 'afterPrint' method
+				// to get clear/remove anything after print
+				// READ MORE: rvReportsMainCtrl:L#:61-75
+				if ( 'function' == typeof $scope.printOptions.afterPrint ) {
+					$scope.printOptions.afterPrint();
 				};
 
 		        // load the report with the original page

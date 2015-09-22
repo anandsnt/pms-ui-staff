@@ -3,10 +3,11 @@ sntRover.controller('RVReportListCrl', [
     '$rootScope',
     '$filter',
     'RVreportsSrv',
+    'RVreportsSubSrv',
     'RVReportUtilsFac',
     'RVReportMsgsConst',
     '$timeout',
-    function($scope, $rootScope, $filter, reportsSrv, reportUtils, reportMsgs, $timeout) {
+    function($scope, $rootScope, $filter, reportsSrv, reportsSubSrv, reportUtils, reportMsgs, $timeout) {
 
         BaseCtrl.call(this, $scope);
 
@@ -40,14 +41,17 @@ sntRover.controller('RVReportListCrl', [
 
                 // to process the filters for this report
                 reportUtils.processFilters(report[i], {
-                    'guaranteeTypes' : $scope.$parent.guaranteeTypes,
-                    'chargeGroups'   : $scope.$parent.chargeGroups,
-                    'chargeCodes'    : $scope.$parent.chargeCodes,
-                    'markets'        : $scope.$parent.markets,
-                    'sources'        : $scope.$parent.sources,
-                    'origins'        : $scope.$parent.origins,
-                    'codeSettings'   : $scope.$parent.codeSettings,
-                    'holdStatus'     : $scope.$parent.holdStatus
+                    'guaranteeTypes'   : $scope.$parent.guaranteeTypes,
+                    'chargeGroups'     : $scope.$parent.chargeGroups,
+                    'chargeCodes'      : $scope.$parent.chargeCodes,
+                    'markets'          : $scope.$parent.markets,
+                    'sources'          : $scope.$parent.sources,
+                    'origins'          : $scope.$parent.origins,
+                    'codeSettings'     : $scope.$parent.codeSettings,
+                    'holdStatus'       : $scope.$parent.holdStatus,
+                    'addonGroups'      : $scope.$parent.addonGroups,
+                    'addons'           : $scope.$parent.addons,
+                    'reservationStatus': $scope.$parent.reservationStatus
                 });
 
                 // to reorder & map the sort_by to report details columns - for this report
@@ -93,6 +97,17 @@ sntRover.controller('RVReportListCrl', [
         };
 
         $scope.setnGenReport = function() {
+            var lastReportID  = reportsSrv.getChoosenReport().id,
+                mainCtrlScope = $scope.$parent;
+
+            // if the two reports are not the same, just call
+            // 'resetSelf' on printOption to clear out any method
+            // that may have been created a specific report ctrl
+            // READ MORE: rvReportsMainCtrl:L#:61-75
+            if ( lastReportID != this.item.id ) {
+                mainCtrlScope.printOptions.resetSelf();
+            };
+            
             reportsSrv.setChoosenReport( this.item );
             $scope.genReport();
         };
@@ -105,5 +120,7 @@ sntRover.controller('RVReportListCrl', [
         // removing event listners when scope is destroyed
         $scope.$on( 'destroy', serveRefresh );
 
+        
     }
+
 ]);

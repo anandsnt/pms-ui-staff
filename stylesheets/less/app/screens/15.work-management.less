@@ -1,0 +1,684 @@
+#work-management {
+    z-index: 99;
+
+    .wrapper {
+        margin: 0 auto;
+        padding: 60px 0 20px; 
+        #pixel-to-percent > .width(1568, 2048); 
+
+        .dashboard-block { 
+            border-bottom: 0; 
+
+            &.buttons {
+                .actions { 
+                    margin: 0 auto;
+
+                    li {
+                        margin-right: 40px;
+
+                        .button {
+                            padding: 0 40px;
+                            font-size: 20px;
+                            line-height: 60px;
+                        }
+
+                        &:last-child { margin-right: 0; }
+                    }
+                }
+            }
+        }
+    }
+}
+
+#work-management-search {
+    z-index: 999;
+    .background(@white);
+
+    &.no-results {
+        .wrapper,
+        .search-results { height: 100%; }            
+    }
+
+    &.showing-search {
+        #move > #from > .bottom();
+    }
+
+    &.closing-search {
+        #move > #to > .bottom();
+    }
+}
+
+@media not print {
+    #worksheet-content {
+        .float;
+
+        /* Worksheet options ***/
+        .worksheet-header {
+            position: relative;
+            padding: 10px 20px;
+            height: 90px;
+            background: rgba(0,0,0,.1);
+            .float;
+
+            .entry {
+                margin-right: 20px;
+                .pull-left;
+
+                label:not(.checkbox) {
+                    font-size: 14px;
+                    line-height: 1em;
+                    text-transform: uppercase;
+                    .show;
+                }
+
+                select {
+                    font-size: 18px;
+                    padding: 12px 10px;
+                    height: 50px;
+                }
+
+                .multi-select {
+                    position: relative;
+
+                    .multi-select-button {
+                        font-size: 18px;
+                        vertical-align: middle;
+                        text-align: left;
+                        border: 0;
+                        padding: 0 10px;
+                        cursor: pointer;
+                        .faux-clickable;
+                        .size(50px, 100%);
+                        .show;
+                    }
+
+                    .multi-select-options {
+                        position: absolute;
+                        top: 48px;
+                        left: 0;
+                        padding: 20px;
+                        z-index: 1020;
+                        .size(520px, 280px);
+                        .faux-clickable;
+                        .hide;
+                        #fade > .out();
+
+                        .entry {
+                            width: 100%;
+                            float: none;
+
+                            &.search {
+                                position: relative;
+                                overflow: hidden;
+                                .transition;
+                                .size(60px, 100%);
+
+                                .icon-search {
+                                    position: absolute;
+                                    top: 10px;
+                                    left: 10px;
+                                    z-index: 99;
+                                }
+
+                                .query {
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    font-size: 21px;
+                                    font-weight: 700;
+                                    padding-left: 30px;
+                                    color: @logoPrimary; 
+                                    z-index: 9;
+                                    background: @grey1;
+                                    .box-shadow(inset 1px 1px 0 rgba(0,0,0,.15));
+                                    #border-radius > .rounded(25px);
+
+                                    &:focus,
+                                    &:active { .box-shadow(inset 1px 1px 0 rgba(0,0,0,.3)); }
+                                }
+
+                                .clear-query {
+                                    position: absolute;
+                                    top: 0;
+                                    right: 0;
+                                    z-index: 99;
+                                    visibility: hidden;
+                                    .square(40px);
+
+                                    .icons {
+                                        position: absolute;
+                                        top: 12.5px;
+                                        right: 12.5px;
+                                        background-color: @grey3;
+                                        .hide-text;
+                                        .square(15px);
+                                        .opacity(0);
+                                        .show;
+                                        #fade > .out();
+                                        #border-radius > .rounded(15px);
+                                    }
+
+                                    &.visible { 
+                                        .icons {
+                                            visibility: visible;
+                                            .opacity(100); 
+                                            #fade > .in(); 
+                                        }
+                                    }
+
+                                    &:hover,
+                                    &.active { 
+                                        .icons { background-color: @logoPrimary; }
+                                    }
+                                }
+                            }
+
+                            &.scrollable {
+                                position: relative;
+                                .calc-height(100, 60);
+
+                                .wrapper { padding: 0; }
+                                .iScrollVerticalScrollbar { 
+                                    top: 0;
+                                    bottom: 0;
+                                    right: 0;
+                                }
+
+                                .checkbox {
+                                    line-height: 30px;
+                                    padding-bottom: 5px;
+                                    margin: 0 20px 5px 0;
+                                    border-bottom: 1px solid rgba(0,0,0,.1);
+                                    .show;
+
+                                    .icon-form { top: 5px; }
+
+                                    input {
+                                        line-height: 30px;
+                                        min-height: 30px;
+                                    }
+
+                                    &:last-child {
+                                        margin-bottom: 0;
+                                        padding-bottom: 0;
+                                        border-bottom: 0;
+                                    }
+                                }
+                            }
+                        }
+
+                        &.show { 
+                            .show;
+                            #fade > .in(); 
+                        }
+                    }
+
+                }
+
+                .entry-data {
+                    background: @white @calendar no-repeat 92% 16px;
+                    background-size: 20px;
+                    position: relative;
+                    #border-radius > .rounded();
+                    .box-shadow();
+                    .size(50px, 100%);
+                    .show;
+
+                    input { .hide; }
+
+                    .ui-datepicker-trigger {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        z-index: 99;
+                        cursor: pointer;
+                        .square(100%);
+                        .opacity(0);
+                    }
+
+                    .day,
+                    .month,
+                    .year { position: absolute; }
+
+                    .month,
+                    .year {
+                        left: 65px;
+                        font-size: 16px;
+                        line-height: 1em;
+                    }
+
+                    .day {
+                        top: 15px;
+                        left: 10px;
+                        font-size: 40px;
+                    }
+
+                    .month { top: 10px; }
+                    .year { top: 24px; }
+
+                    @media @highdpi {
+                        background-image: @calendar2x;
+                    }
+
+                    &:hover { background-position: 92% -34px; }
+                }
+
+                &.maid {
+                    #pixel-to-percent > .width(460, 2048);
+                }
+
+                &.employees {
+                    #pixel-to-percent > .width(440, 2048);
+                }
+
+                &.date {
+                    #pixel-to-percent > .width(400, 2048);
+                }
+
+                &.task {
+                    #pixel-to-percent > .width(440, 2048);
+                }
+
+                &.shift {
+                    #pixel-to-percent > .width(360, 2048);
+                }                
+            }
+
+            .actions {
+                padding-top: 20px;
+                #pixel-to-percent > .width(640, 2048);
+                .pull-right;
+
+                .button {
+                    line-height: 50px;
+                    margin-right: 10px;
+                    .calc-width(33.333, 9);
+
+                    &:last-child { margin-right: 0; }
+                }
+            }
+        }
+
+        /* Worksheet content - room ***/
+        .worksheet-room {
+            position: relative;
+            text-align: center;
+            margin-bottom: 10px;
+            cursor: @draggable, pointer;
+            cursor: @draggable 16 16, pointer;
+            .faux-clickable;
+
+            h3 {
+                font-size: 36px;
+                font-weight: 700;
+                
+                &.clean,
+                &.inspected { color: @green; }
+
+                &.dirty,
+                &.pickup { color: @red; }
+
+                &.out { color: @grey3; }
+            }
+
+            &.single-sheet {
+                padding: 10px;
+                text-align: left;
+                .float;
+
+                h3 {
+                    line-height: 40px;
+                    width: 100px;
+                    .pull-left;
+                }
+
+                .reservation-status {
+                    .calc-width(100, 180);
+                    .pull-left;
+
+                    .guest-status { 
+                        margin: 5px 5px 0 0;
+                        .square(30px);
+                    }
+
+                    .current,
+                    .next { 
+                        font-size: 14px;
+                        line-height: 40px;
+                        text-transform: uppercase;
+                        .size(40px, 50%);
+                        .pull-left;
+
+                        &.check-in { color: @green; }
+                        &.check-out { color: @red; }
+                        &.inhouse { color: @blue; }
+                    }
+                }
+
+                .icon-queued {
+                    margin-right: 10px;
+                    .show;
+                    .pull-left;
+                }
+                
+                .vip {
+                    margin-top: 5px;
+                    font-size: 12px;
+                    line-height: 30px;
+                    .square(30px);
+                    .pull-left;
+                }
+
+                .button,
+                .no-action {
+                    position: absolute;
+                    top: 0;
+                    .square(60px);
+                    .box-shadow(none);
+                    .hide-text;
+                    .no-transition;
+
+                    &.green { 
+                        background-image: @icons;
+                        background-color: @green; 
+                        background-repeat: no-repeat;
+                        border: 0;
+                        .icons > .icon-assign-room;
+
+                        @media @highdpi {
+                            background-image: @icons2x;
+                            background-size: 120px;
+                        }
+                    }
+                    
+                    &.red { 
+                        background-image: @icons;
+                        background-color: @red; 
+                        background-repeat: no-repeat;
+                        border: 0;
+                        .icons > .icon-unassign-room;
+
+                        @media @highdpi {
+                            background-image: @icons2x;
+                            background-size: 120px;
+                        }
+                    }
+                    
+                    &.no-action { background: @grey2; }
+                }
+
+                &.unassigned { 
+                    padding-right: 80px;
+                    
+                    .button,
+                    .no-action { 
+                        right: 0; 
+                        #border-radius > .left(0px);
+                    }
+                }
+
+                &.assigned {
+                    padding-left: 80px;
+                    
+                    .button,
+                    .no-action { 
+                        left: 0; 
+                        #border-radius > .right(0px);
+                    }
+                }
+            }
+
+            &.multi-sheet {
+                padding: 5px;
+
+                h3 { line-height: 1em; }
+
+                .guest,
+                .room { 
+                    font-size: 12px;
+                    line-height: 14px;
+                    text-transform: uppercase;
+                }
+
+                .guest {
+                    &.check-in { color: @green; }
+                    &.check-out { color: @red; }
+                    &.inhouse { color: @blue; }
+                }
+
+                .room {
+                    &.clean,
+                    &.inspected { color: @green; }
+
+                    &.dirty { color: @red; }
+                    &.pickup { color: @orange; }
+                }
+            }
+
+            &.ui-sortable-helper {
+                cursor: @dragging, move;
+                cursor: @dragging 16 16, move;
+            }
+
+            &.ui-state-disabled { 
+                cursor: default; 
+                .box-shadow(none);
+            }
+        }
+
+        /* Unassigned / Assigned rooms list ***/
+        .unassigned-rooms,
+        .assigned-rooms {
+            h2 {
+                text-align: center;
+                font-weight: 600;
+                text-transform: uppercase;
+                margin: 10px 0;
+            }
+
+            .worksheet-content {
+                position: relative;
+
+                .ui-state-highlight {
+                    margin-bottom: 10px;
+                    background: lighten(@yellow, 20);
+                    width: 100%;
+                    .show;
+                    .box-shadow(inset 0 0 1px @yellow);
+                }
+            }
+
+            &.single-sheet {
+                width: 50%;
+                padding: 20px 0;
+                .calc-height(100, 90);
+                .pull-left;
+
+                .worksheet-content {
+                    .calc-height(100, 120);
+
+                    .wrapper { 
+                        padding: 0 20px 20px 20px; 
+
+                        &.placeholder {
+                            position: absolute;
+                            .square(100%);
+                            .show;
+                        }
+                    }
+                    
+                    .iScrollVerticalScrollbar { 
+                        top: 0;
+                        right: 5px;
+                    }      
+
+                    .ui-state-highlight { height: 60px; }        
+                }
+            }
+
+            &.multi-sheet {
+                .worksheet-content {
+                    padding-top: 10px;
+                    border-top: 1px solid rgba(0,0,0,.1);
+                    .calc-height(100, 80);
+
+                    .wrapper { padding-bottom: 10px; }
+                    .iScrollVerticalScrollbar { .hide; }
+
+                    .ui-state-highlight { height: 70px; }    
+                }
+            }
+        }
+               
+        .unassigned-rooms {
+            background-color: rgba(0,0,0,.05);
+
+            &.single-sheet {
+                .box-shadow(inset 1px 0 2px rgba(0,0,0,.15));
+
+                .worksheet-actions {
+                    padding-bottom: 20px;
+                    margin: 0 20px 20px 20px;
+                    border-bottom: 1px solid rgba(0,0,0,.1);
+                    .float;
+
+                    .select {
+                        margin-top: 10px;
+                        .calc-width(50, 10);
+                        .pull-left;
+
+                        select { 
+                            padding: 12px 10px;
+                            height: 50px;
+                        }
+
+                        &:first-child { margin-right: 20px; }
+                    }
+                }
+            }           
+
+            &.multi-sheet {
+                position: absolute;
+                top: 110px;
+                left: 20px;
+                padding: 5px;
+                #border-radius > .top();
+                #pixel-to-percent > .width(250, 2048);
+                .calc-height(100, 110);
+
+                &:after {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    right: -20px;
+                    width: 1px;
+                    background: rgba(0,0,0,.1);
+                    .size(100%, 1px);
+                }
+
+                h2 { font-size: 16px; }
+
+                .filter { .size(40px, 100%); }
+
+                .worksheet-content { margin-top: 10px; }
+            }
+        }
+
+        .assigned-rooms {
+
+            &.single-sheet {
+
+                .worksheet-summary {
+                    margin: 0 20px 20px 20px;
+                    padding-bottom: 20px;
+                    border-bottom: 1px solid rgba(0,0,0,.1);
+                    text-align: center;
+                    .calc-width(100, 40);
+
+                    li {
+                        margin-right: 10px;
+                        padding-right: 10px;
+                    }
+                }
+            }
+
+            &.multi-sheet {
+                position: absolute;
+                top: 110px;
+                .float;
+                #pixel-to-percent > .left(370, 2048);
+                #pixel-to-percent > .width(1798, 2048);
+                .calc-height(100, 110);
+
+                .sheet-content,
+                .sheet-placeholder {
+                    background-color: rgba(0,0,0,.05);
+                    padding: 5px;
+                    margin-right: 10px;
+                    height: 100%;
+                    .calc-width(16.6666, 20);
+                    #border-radius > .top();
+                    .pull-left;
+                }
+
+                .sheet-placeholder {
+                    background-color: rgba(0,0,0,.025);
+                    border-width: 1px 1px 0 1px;
+                    border-style: dashed;
+                    border-color: rgba(0,0,0,.1);
+                }
+
+                .sheet-content {
+                    .button {
+                        font-size: 14px;
+                        line-height: 28px;
+                        padding: 2px 5px;
+                        width: 100%;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+
+                    .data {
+                        margin: 4px 0;
+                        .float;
+
+                        li {
+                            width: 20%;
+                            padding: 0 5px;
+                            margin: 0;
+                            text-align: center;
+                            font-weight: 600;
+                            .pull-left;
+
+                            span { 
+                                .show; 
+                                
+                                &.total { border-top: 1px solid rgba(0,0,0,.2); }
+                            }
+
+                            &.shift { 
+                                width: 60%; 
+
+                                .total { color: @grey3; }
+                            }
+                            
+                            &.departures { 
+                                color: @red;
+
+                                .total { border-color: @red; }
+                            }
+                            
+                            &.stayovers { 
+                                color: @blue;
+
+                                .total { border-color: @blue; }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

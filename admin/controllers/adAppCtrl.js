@@ -125,14 +125,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			            title: "MENU_MANAGE_GROUP",
 			            action: "staff#/staff/groups/search",
 			            menuIndex: "menuManageGroup"
-			        }, {
-			            title: "MENU_CREATE_ALLOTMENT",
-			            action: "staff#/staff/allotments/config/NEW_ALLOTMENT/SUMMARY",
-			            menuIndex: "menuCreateAllotment"
-			        }, {
-			            title: "MENU_MANAGE_ALLOTMENT",
-			            action: "staff#/staff/allotments/search",
-			            menuIndex: "menuManageAllotment"
 			        }]
 		    	},{
 					title: "MENU_CONVERSATIONS",
@@ -407,6 +399,16 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			}
 
 		};
+
+		$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+			// Show a loading message until promises are not resolved
+			$scope.$emit('showLoader');
+		});
+
+		$rootScope.$on('$stateChangeSuccess', function(e, curr, currParams, from, fromParams) {
+		  // Hide loading message
+		  $scope.$emit('hideLoader');
+		});
 
 		/*
 		 * function to handle exception when state is not found

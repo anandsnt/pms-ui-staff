@@ -244,7 +244,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         var max = -1;
                         var name = "";
                         $($scope.otherData.roomTypes).each(function(i, d) {
-                            if (roomId === d.id) {
+                            if (parseInt(roomId) === d.id) {
                                 max = d.max_occupancy;
                                 name = d.name;
                             }
@@ -311,7 +311,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     if (typeof currentTaxes[taxType][taxId] === "undefined") {
                         currentTaxes[taxType][taxId] = description;
                     } else {
-                        currentTaxes[taxType][taxId].amount = parseFloat(currentTaxes[taxType][taxId].amount) + parseFloat(description.amount); // add the amount here
+                        currentTaxes[taxType][taxId].amount = parseFloat(currentTaxes[taxType][taxId].amount) + Number(parseFloat(description.amount).toFixed(2)); // add the amount here
                     }
                 } else { //[[[[[[ PER_STAY NEEDS TO BE DONE ONLY ONCE FOR A RATE ID & TAX ID COMBO]]]]]]
                     if (typeof currentTaxes[taxType][taxId] === "undefined") {
@@ -335,7 +335,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                          *   ThereAgain : for now sticking to the largest tax amount of all
                          *   === TODO === Mail product team for a clarification on this!!!
                          */
-                        currentTaxes[taxType][taxId].amount = currentTaxes[taxType][taxId].amount > description.amount ? currentTaxes[taxType][taxId].amount : description.amount;
+                        currentTaxes[taxType][taxId].amount = currentTaxes[taxType][taxId].amount > description.amount ? currentTaxes[taxType][taxId].amount : Number(parseFloat(description.amount).toFixed(2));
                     }
                 }
             });
@@ -388,9 +388,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                             // -- Calculate the rate amount for the Room for that rate for that day --
                             // --------------------------------------------------------------------------------//
                             { // STEP ONE -- rate computation block
-                                var roomAmount = RVReservationStateService.calculateRate(todaysMetaData.rateBreakUp, adultsOnTheDay, childrenOnTheDay);
+                                var roomAmount = RVReservationStateService.calculateRate(todaysMetaData.rateBreakUp, adultsOnTheDay, childrenOnTheDay),
+                                    roomAmountRounded = Number(roomAmount.toFixed(2));
                                 if (todaysMetaData.applyPromotion) {
                                     roomAmount = RVReservationStateService.applyDiscount(roomAmount, todaysMetaData.appliedPromotion.discount, $scope.reservationData.numNights);
+                                    roomAmountRounded = Number(roomAmount.toFixed(2));
                                 }
                                 if (reset) { // -- in case of rate changes reset the modified rate amount as well
                                     stay.rateDetails.actual_amount = $filter('number')(roomAmount, 2);
@@ -399,10 +401,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                                 if (stay && stay.rateDetails) { //CICO-6079 -- In case of modified rates, set the roomAmount to that rate
                                     if (stay.rateDetails.actual_amount !== stay.rateDetails.modified_amount) {
                                         roomAmount = parseFloat(stay.rateDetails.modified_amount);
+                                        roomAmountRounded = Number(roomAmount.toFixed(2));
                                     }
                                 }
-                                var taxableRateAmount = roomAmount; // default taxableRoomAmount to the calculated room amount. This inclusive addons are to be adjusted wrt this value!
-                                currentRoom.rateTotal = currentRoom.rateTotal + roomAmount; // cumulative total of all days goes to roomTotal
+                                var taxableRateAmount = roomAmountRounded; // default taxableRoomAmount to the calculated room amount. This inclusive addons are to be adjusted wrt this value!
+                                currentRoom.rateTotal = currentRoom.rateTotal + roomAmountRounded; // cumulative total of all days goes to roomTotal
                                 currentRoom.rateAvg = currentRoom.rateTotal / $scope.reservationData.numNights;
                             }
                             // --------------------------------------------------------------------------------//
@@ -415,21 +418,24 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                                         addon.effectivePrice = 0.0; // RESET addon rate
                                     }
                                     var baseRate = parseFloat(addon.quantity) * parseFloat(addon.price), //calculate the base
-                                        finalRate = 0.0, //default calculated amount to the base rate
+                                        finalRate = 0.0, //default calculated amount to the base rate,
+                                        finalRateRounded = 0.0,
                                         postType = addon.post_type || addon.postType,
                                         amountType = addon.amount_type || addon.amountType,
                                         shouldPostAddon = RVReservationStateService.shouldPostAddon(postType.frequency, date, roomMetaData.arrival);
                                     if (shouldPostAddon) {
                                         finalRate = parseFloat(RVReservationStateService.getAddonAmount(amountType.value, baseRate, adultsOnTheDay, childrenOnTheDay));
+                                        finalRateRounded = Number(finalRate.toFixed(2));
                                         if (!!_.findWhere(todaysMetaData.associatedAddons, {
                                                 id: addon.id
                                             })) {
                                             //check if the addon is associated
                                             if (todaysMetaData.applyPromotion) {
                                                 finalRate = RVReservationStateService.applyDiscount(finalRate, todaysMetaData.appliedPromotion.discount, $scope.reservationData.numNights);
+                                                finalRateRounded = Number(finalRate.toFixed(2));
                                             }
                                             if (!addon.is_inclusive) {
-                                                currentRoom.associatedAddonTotal += finalRate;
+                                                currentRoom.associatedAddonTotal += finalRateRounded;
                                             }
                                             currentRoom.rateAvg = (currentRoom.rateTotal + currentRoom.associatedAddonTotal) / $scope.reservationData.numNights;
                                         }
@@ -437,15 +443,15 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                                     }
                                     // cummulative sum (Not just multiplication of rate per day with the num of nights) >> Has to done at "day level" to handle the reservations with varying occupancy!
                                     if (postType.frequency > 0 && shouldPostAddon) {
-                                        addon.effectivePrice = parseFloat(addon.effectivePrice) + parseFloat(finalRate);
+                                        addon.effectivePrice = parseFloat(addon.effectivePrice) + parseFloat(finalRateRounded);
 
                                     } else if (postType.frequency === 0 && shouldPostAddon) {
-                                        addon.effectivePrice = finalRate; //Posted only on the first Night
+                                        addon.effectivePrice = finalRateRounded; //Posted only on the first Night
                                     }
                                     if (!addon.is_inclusive) {
-                                        roomMetaData.addOnCumulative += parseFloat(finalRate);
+                                        roomMetaData.addOnCumulative += parseFloat(finalRateRounded);
                                     } else {
-                                        taxableRateAmount -= parseFloat(finalRate); //reduce the addon amount from this day's calculated rate
+                                        taxableRateAmount -= parseFloat(finalRateRounded); //reduce the addon amount from this day's calculated rate
                                     }
                                     // --------------------------------------------------------------------------------//
                                     // -- Calculate the tax for add-ons --
@@ -475,16 +481,16 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                 angular.forEach($scope.reservationData.taxDetails.incl, function(tax) {
                     $scope.reservationData.taxInformation = angular.copy($scope.reservationData.taxDetails.incl);
-                    roomMetaData.taxesInclusiveExclusive = parseFloat(roomMetaData.taxesInclusiveExclusive) + parseFloat(tax.amount);
+                    roomMetaData.taxesInclusiveExclusive = parseFloat(roomMetaData.taxesInclusiveExclusive) + Number(parseFloat(tax.amount).toFixed(2));
                 });
 
                 angular.forEach($scope.reservationData.taxDetails.excl, function(tax, code) {
-                    roomMetaData.totalTaxes = parseFloat(roomMetaData.totalTaxes) + parseFloat(tax.amount); // add only exclusive taxes here
-                    roomMetaData.taxesInclusiveExclusive = parseFloat(roomMetaData.taxesInclusiveExclusive) + parseFloat(tax.amount);
+                    roomMetaData.totalTaxes = parseFloat(roomMetaData.totalTaxes) + Number(parseFloat(tax.amount).toFixed(2)); // add only exclusive taxes here
+                    roomMetaData.taxesInclusiveExclusive = parseFloat(roomMetaData.taxesInclusiveExclusive) + Number(parseFloat(tax.amount).toFixed(2));
                     if (typeof $scope.reservationData.taxInformation[code] === 'undefined') {
                         $scope.reservationData.taxInformation[code] = tax;
                     } else {
-                        $scope.reservationData.taxInformation[code].amount = parseFloat($scope.reservationData.taxInformation[code].amount) + parseFloat(tax.amount);
+                        $scope.reservationData.taxInformation[code].amount = parseFloat($scope.reservationData.taxInformation[code].amount) + Number(parseFloat(tax.amount).toFixed(2));
                     }
                 });
 
@@ -856,7 +862,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 }
                 if (!$scope.reservationData.isHourly) {
                     data.room_types.push({
-                        id: tab.roomTypeId,
+                        id: parseInt(tab.roomTypeId, 10),
                         num_rooms: parseInt(tab.roomCount, 10),
                         addons: addonsForRoomType
                     });
@@ -1167,11 +1173,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         totalDeposit = parseFloat(totalDeposit) + parseFloat(reservation.deposit_amount);
                     });
 
-                    // CICO-13748 : Added depositAmountWithoutFilter to handle PAY DEPOSIT LATER or PAY NOW buttons.
-                    $scope.reservationData.depositAmountWithoutFilter = totalDeposit;
-
-                    totalDeposit = $filter('number')(totalDeposit, 2);
-                    $scope.reservationData.depositAmount = totalDeposit;
+                    $scope.reservationData.depositAmount = parseFloat(totalDeposit).toFixed(2);
                     $scope.reservationData.depositEditable = (data.allow_deposit_edit !== null && data.allow_deposit_edit) ? true : false;
                     $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) > 0;
 
@@ -1272,7 +1274,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
                     if ($scope.reservationsListArray) {
                         angular.forEach($scope.reservationsListArray.reservations, function(reservation, key) {
-                            if (!index || key === index) {
+                            if ((!index && !_.isNumber(index)) || key === index) {
                                 reservation.deposit_amount = data.deposit_amount;
                                 totalDepositOnRateUpdate = parseFloat(totalDepositOnRateUpdate) + parseFloat(data.deposit_amount);
                             } else {
@@ -1283,10 +1285,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         totalDepositOnRateUpdate = parseFloat(data.deposit_amount);
                     }
 
-                    // CICO-13748 , CICO-14143 : Added depositAmountWithoutFilter to handle PAY DEPOSIT LATER or PAY NOW buttons.
-                    $scope.reservationData.depositAmountWithoutFilter = totalDepositOnRateUpdate;
-                    totalDepositOnRateUpdate = $filter('number')(totalDepositOnRateUpdate, 2);
-                    $scope.reservationData.depositAmount = totalDepositOnRateUpdate;
+                    $scope.reservationData.depositAmount = parseFloat(totalDepositOnRateUpdate).toFixed(2);
                     $scope.reservationData.depositEditable = (data.allow_deposit_edit !== null && data.allow_deposit_edit) ? true : false;
                     $scope.reservationData.isValidDeposit = parseInt($scope.reservationData.depositAmount) > 0;
                     $scope.reservationData.fees_details = data.fees_details;
@@ -1478,7 +1477,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
         //CICO-11716
         $scope.onOccupancyChange = function(type, tabIndex) {
-            var currentRoomTypeId = $scope.reservationData.tabs[tabIndex].roomTypeId,
+            var currentRoomTypeId = parseInt($scope.reservationData.tabs[tabIndex].roomTypeId, 10) || "",
                 firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
                     roomTypeId: currentRoomTypeId
                 })),
@@ -1495,22 +1494,37 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 $scope.updateOccupancy(i);
             }
             $scope.$broadcast('SIDE_BAR_OCCUPANCY_UPDATE');
+            devlogRoomsArray();
         };
 
         $scope.removeTab = function(tabIndex) {
+
             var firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
-                roomTypeId: $scope.reservationData.tabs[tabIndex].roomTypeId
+                roomTypeId: parseInt($scope.reservationData.tabs[tabIndex].roomTypeId, 10) || ""
             }));
             var currentCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount, 10);
             $scope.reservationData.tabs.splice(tabIndex, 1);
             $scope.reservationData.rooms.splice(firstIndex, currentCount);
-            refreshScroller();
+
+            if ($scope.viewState.currentTab == tabIndex) {
+                $scope.viewState.currentTab = 0; //In case of deleting current tab, reset to first
+            };
+
+            $scope.$broadcast('TABS_MODIFIED');
+            devlogRoomsArray();
         };
+
+        var devlogRoomsArray = function() {
+            console.log({
+                size: $scope.reservationData.rooms.length,
+                contents: $scope.reservationData.rooms
+            });
+        }
 
 
         $scope.onRoomCountChange = function(tabIndex) {
             var currentCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount, 10),
-                currentRoomTypeId = $scope.reservationData.tabs[tabIndex].roomTypeId,
+                currentRoomTypeId = parseInt($scope.reservationData.tabs[tabIndex].roomTypeId, 10) || "",
                 firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
                     roomTypeId: currentRoomTypeId
                 })),
@@ -1526,8 +1540,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     $scope.reservationData.rooms.splice(lastIndex, 0, copy);
                 }
             } else {
-                $scope.reservationData.rooms.splice(lastIndex, totalCount - currentCount);
+                $scope.reservationData.rooms.splice(firstIndex, totalCount - currentCount);
             }
+            devlogRoomsArray();
         };
 
     }

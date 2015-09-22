@@ -57,19 +57,22 @@
 
 <div class="date-range" ng-if="item.hasDateFilter">
     <label>{{ item.hasDateFilter.description }}</label>
-    <div class="has-datepicker">
-        <input ng-if="item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+    <button type="button" class="set-to-tomorrow button blue" ng-if="item.hasAddonGroups" ng-click="setTomorrowDate(item)">Set To Tomorrow</button>
+    <div class="has-datepicker">    
+        <input ng-if="item.hasPrevDateLimit && !item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsTillYesterday" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        <input ng-if="!item.hasPrevDateLimit && item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
         <input ng-if="item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsSysLimit" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
-        <input ng-if="!item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        <input ng-if="!item.hasPrevDateLimit && !item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
         <button ng-if="item.canRemoveDate" ng-class="{'visible': item.hasDateFilter.showRemove}" class="clear-query">
             <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'hasDateFilter')">Clear query</span>
         </button>
     </div>
     <span class="span-to"> To </span>
     <div class="has-datepicker">
-        <input ng-if="item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        <input ng-if="item.hasPrevDateLimit && !item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsTillYesterday" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        <input ng-if="!item.hasPrevDateLimit && item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
         <input ng-if="item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsSysLimit" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
-        <input ng-if="!item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        <input ng-if="!item.hasPrevDateLimit && !item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
         <button ng-if="item.canRemoveDate" ng-class="{'visible': item.hasDateFilter.showRemove}" class="clear-query">
             <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'hasDateFilter')">Clear query</span>
         </button>
@@ -170,7 +173,7 @@
 
 <div class="filter" ng-if="item.hasUserFilter">
     <label>User</label>
-    <input class="icons icon-search" auto-complete auto-options="listUserAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Email Id" value="" autocomplete="off" ng-model="item.uiChosenUsers" report-source="reportList" report-index="{{ $index }}" report-model="chosenUsers" ul-class="find-cards" ng-focus="returnItem(item)">
+    <input class="icons icon-search" auto-complete auto-options="listUserAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Email Id" value="" autocomplete="off" ng-model="item.uiChosenUsers" report-source="reportList" report-index="{{ $index }}" report-model="chosenUsers" ul-class="find-user" ng-focus="returnItem(item)">
     <select multiple class="hidden" ng-model="item.chosenUsers" ng-options="user.id as user.full_name for user in activeUserList"></select>
 </div>
 
@@ -188,10 +191,6 @@
         </label>
     </div>
 </div>
-
-
-
-
 
 
 <div class="filter" ng-if="item.hasIncludeComapnyTaGroup">
@@ -275,6 +274,63 @@
     </div>
 </div>
 
+<div class="options" ng-if="item.hasAddonGroups.data.length" ng-click="catchFauxSelectClick($event, 'hasAddonGroups')">
+    <label for="addon-groups">Add-On Group(s)</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasAddonGroups)">{{ item.hasAddonGroups.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasAddonGroups.show }">
+        <label class="checkbox inline" ng-show="item.hasAddonGroups.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasAddonGroups.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasAddonGroups.selectAll" ng-change="getAddons(item, item.hasAddonGroups, true)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="group in item.hasAddonGroups.data">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : group.selected }"></span>
+            <input type="checkbox" ng-model="group.selected" ng-change="getAddons(item, item.hasAddonGroups)" name="room-filters"> {{ group.name }}
+        </label>
+    </div>
+</div>
+
+<div class="options" ng-if="item.hasAddonGroups.data.length">
+    <label for="addons">Add-On(s)</label>
+    <div class="faux-select placeholder" ng-click="toggleAddons()">{{ item.hasAddons.title }}</div>
+    <div class="faux-select-options cols-2" ng-show="isVisible">
+        <div class="col">
+            <span ng-repeat="group in item.hasAddons.data" ng-show="$index%2 == 0">
+                <strong>{{ getGroupName(group.group_id) }}</strong>
+                <label class="checkbox inline" ng-repeat="addon in group.list_of_addons">
+                    <span class="icon-form icon-checkbox" ng-class="{ 'checked' : addon.selected }"></span>
+                    <input type="checkbox" ng-model="addon.selected" ng-change="getNoOfSelectedAddons(item, item.hasAddons)" name="room-filters">
+                    {{ addon.addon_name }}
+                </label>
+            </span>
+        </div>
+        <div class="col">
+            <span ng-repeat="group in item.hasAddons.data" ng-show="$index%2 == 1">
+                <strong>{{ getGroupName(group.group_id) }}</strong>
+                <label class="checkbox inline" ng-repeat="addon in group.list_of_addons">
+                    <span class="icon-form icon-checkbox" ng-class="{ 'checked' : addon.selected }"></span>
+                    <input type="checkbox" ng-model="addon.selected" ng-change="getNoOfSelectedAddons(item, item.hasAddons)" name="room-filters">
+                    {{ addon.addon_name }}
+                </label>
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="options" ng-if="item.hasReservationStatus.data.length" ng-click="catchFauxSelectClick($event, 'hasReservationStatus')">
+    <label for="addon-status">Reservation Status</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasReservationStatus)">{{ item.hasReservationStatus.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasReservationStatus.show }">
+        <label class="checkbox inline" ng-show="item.hasReservationStatus.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasReservationStatus.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasReservationStatus.selectAll" ng-change="fauxSelectChange(item, item.hasReservationStatus, true)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="each in item.hasReservationStatus.data">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : each.selected }"></span>
+            <input type="checkbox" ng-model="each.selected" ng-change="fauxSelectChange(item.id, item.hasReservationStatus)" id="addon-reserved" name="addon-status"> {{ each.status }}
+        </label>
+    </div>
+</div>
+
 <div class="sort" ng-if="item.sortByOptions">
     <label>Sort By</label>
     <div class="select">
@@ -288,7 +344,7 @@
     <label>Group By</label>
     <div class="select">
         <select ng-model="item.chosenGroupBy" ng-options="groupBy.value as groupBy.description for groupBy in item.groupByOptions" ng-change="groupByChanged(item)" iscroll-stop-propagation>
-            <option value="">BLANK</option>
+            <option value="">Group By</option>
         </select>
     </div>
 </div>
@@ -339,3 +395,4 @@
 </div>
 
 <a class="button green" ng-click="setnGenReport()">Show</a>
+

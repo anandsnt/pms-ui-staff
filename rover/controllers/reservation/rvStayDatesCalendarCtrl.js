@@ -31,6 +31,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			$scope.nights = getNumOfStayNights();
 			that.renderFullCalendar();
 			fetchAvailabilityDetails();
+                        $scope.reservationData.searchPromoCode = '';//clear last used promo
 
 		};
 
@@ -76,6 +77,9 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			}
 			if($scope.reservationData.company.id !== ""){
 				params.company_id = $scope.reservationData.company.id;
+			}
+			if($scope.reservationData.searchPromoCode !== ""){
+				params.promotion_code = $scope.reservationData.searchPromoCode;
 			}
 			//Initialise data
 			RVStayDatesCalendarSrv.availabilityData = {};

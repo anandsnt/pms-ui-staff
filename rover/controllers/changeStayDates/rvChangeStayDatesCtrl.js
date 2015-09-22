@@ -1,5 +1,5 @@
-sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv', '$filter', 'ngDialog', 'rvPermissionSrv',
-	function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter, ngDialog, rvPermissionSrv) {
+sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv', '$filter', 'ngDialog', 'rvPermissionSrv', 'RVReservationBaseSearchSrv', '$timeout',
+	function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter, ngDialog, rvPermissionSrv, RVReservationBaseSearchSrv, $timeout) {
 		//inheriting some useful things
 		BaseCtrl.call(this, $scope);
 
@@ -698,48 +698,8 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			});
 		}
 
-		$scope.goToRoomAndRates = function() {
-			if ($scope.otherData.showOverbookingAlert) {
-				$scope.invokeApi(RVReservationBaseSearchSrv.checkOverbooking, {
-					from_date: $scope.confirmedCheckinDate,
-					to_date: $scope.confirmedCheckoutDate
-				}, function(availability) {
-					$scope.availabilityData = availability;
-					var houseAvailable = true,
-						roomtypesAvailable = _($scope.reservationData.tabs.length).times(function(n) {
-							return true
-						});
-					_.each(availability, function(dailyStat) {
-						houseAvailable = houseAvailable && (dailyStat.house.availability > 0);
-						_.each($scope.reservationData.tabs, function(tab, tabIndex) {
-							if (!!tab.roomTypeId) {
-								roomtypesAvailable[tabIndex] = roomtypesAvailable[tabIndex] &&
-									(dailyStat.room_types[tab.roomTypeId] > 0);
-							}
-						});
-					});
-
-					if (houseAvailable && _.reduce(roomtypesAvailable, function(a, b) {
-							return a && b
-						})) {
-						navigateToRateAndRates();
-					} else {
-						ngDialog.open({
-							template: '/assets/partials/reservation/alerts/availabilityCheckOverbookingAlert.html',
-							scope: $scope,
-							controller: 'overbookingAlertCtrl',
-							closeByDocument: false,
-							closeByEscape: false,
-							data: JSON.stringify({
-								houseFull: !houseAvailable,
-								roomTypeId: $scope.reservationData.tabs[0].roomTypeId
-							})
-						});
-					}
-				});
-			} else {
-				navigateToRateAndRates();
-			}
+		$scope.goToRoomAndRates = function() {			
+			navigateToRateAndRates();
 		};
 
 		$scope.alertOverbooking = function(close) {

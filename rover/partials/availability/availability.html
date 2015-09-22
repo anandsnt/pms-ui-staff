@@ -1,32 +1,31 @@
-	<!-- Content -->
-	<div id="availability-container" class="availability-container" ng-controller="rvAvailabilityMainController" >
-			
-		<!-- Navbar -->
-		<header class="nav-bar" role="banner">
-			<div class="select">
-				<select id="availability-toggle" ng-model="availabilityToShow" ng-change="setAvailability()">
-					<option value="room" ng-selected="availabilityToShow=='room'">Availability</option>
-					<option value="house" ng-selected="availabilityToShow=='house'">House Status</option>
-					<option value="groups" ng-selected="availabilityToShow=='groups'">Groups</option>
-				</select>
- 			</div>
-
-			<!-- Logo -->
-			<div class="logo">
-			    <img ng-src= "{{userInfo.logo}}" alt="">
+<span ng-controller="rvAvailabilityMainController">
+		
+	<!-- Navbar -->
+	<header class="nav-bar" role="banner">
+		<div class="select">
+			<select id="availability-toggle" ng-model="availabilityToShow" ng-change="setAvailability()">
+				<option value="room" ng-selected="availabilityToShow=='room'">Availability</option>
+				<option value="house" ng-selected="availabilityToShow=='house'">House Status</option>
+				<option value="groups" ng-selected="availabilityToShow=='groups'" ng-show="shouldShowGroupInSelectBox()">Groups</option>
+			</select>
 			</div>
 
-			<!-- Title -->
-		    <h1>
-		        <strong class="hotel">{{currentHotelData.name}}</strong>
-		        {{page.title}}
-		        <div class="user">
-		            <strong>{{userInfo.first_name}}{{userInfo.last_name}}</strong>
-		            <em class="date" ng-hide="isBussinessDateChanging"> {{userInfo.business_date | date:'EEEE, d MMMM y'}}</em>
-		            <em class="date updating" ng-show="isBussinessDateChanging">End of Day Routine in Progress</em>
-		        </div>
-		    </h1>
-		</header>
-		
-		<section ng-include="getTemplateUrl()"></section>	
-	</div>
+		<!-- Logo -->
+		<div class="logo">
+		    <img ng-src= "{{userInfo.logo}}" alt="">
+		</div>
+
+		<!-- Title -->
+	    <h1>
+	        <strong class="hotel">{{currentHotelData.name}}</strong>
+	        {{page.title}}
+	        <div class="user">
+	            <strong>{{userInfo.first_name}}{{userInfo.last_name}}</strong>
+	            <em class="date" ng-hide="isBussinessDateChanging"> {{userInfo.business_date | date:'EEEE, d MMMM y'}}</em>
+	            <em class="date updating" ng-show="isBussinessDateChanging">End of Day Routine in Progress</em>
+	        </div>
+	    </h1>
+	</header>
+
+	<section class="availability-content" role="main" ng-include="getTemplateUrl()"></section>	
+</span>

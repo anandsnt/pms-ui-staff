@@ -1,11 +1,11 @@
 sntRover.directive('overbookingAlert', function() {
     return {        
         restrict: 'AE',
-        scope: {
-            eventSourcesLeft: '=eventSourcesLeft',
-            eventSourcesRight: '=eventSourcesRight',
-            leftCalendarOptions: '=leftCalendarOptions',
-            rightCalendarOptions: '=rightCalendarOptions',
+        scope: {            
+            eventSourcesLeft: '=',
+            eventSourcesRight: '=',
+            leftCalendarOptions: '=',
+            rightCalendarOptions: '=',
             nextButtonClickHandler: '&',
             prevButtonClickHandler: '&',
             disablePrevButton: '=disablePrevButton'
@@ -19,9 +19,6 @@ sntRover.directive('overbookingAlert', function() {
                 $scope.prevButtonClickHandler();
 
             };
-        },
-        link: function(scope, elm, attrs, controller) {
-
         },
         templateUrl: '../../assets/directives/overbookingAlert/rvOverbookingCalendar.html'
     };

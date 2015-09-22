@@ -7,8 +7,8 @@
         <form name="change-name" id="change-name">
             <div class="holder">
                 <div class="entry" ng-click="openGuestCard()">
-                    <input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.first_name.length}}"  ng-model="guestCardData.contactInfo.first_name" ng-blur="updateContactInfo()" auto-grow-field />
-                    <input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.last_name.length}}" ng-model="guestCardData.contactInfo.last_name" ng-blur="updateContactInfo()" auto-grow-field />
+                    <input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.first_name.length}}"  ng-model="guestCardData.contactInfo.first_name" placeholder="First Name" ng-blur="updateContactInfo()" auto-grow-field />
+                    <input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.last_name.length}}" ng-model="guestCardData.contactInfo.last_name" placeholder="Last Name" ng-blur="updateContactInfo()" auto-grow-field />
                     <strong class="status">{{guestCardData.selectedLoyaltyLevel}}</strong>
                 </div>
                 

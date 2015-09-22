@@ -24,7 +24,7 @@ sntRover.controller('RVReservationDepositController',
 		$scope.depositPaidSuccesFully = false;
 		$scope.successMessage = "";
 		$scope.authorizedCode = "";
-		$scope.showCCPage = false;
+		$scope.swippedCard = false;
 		$scope.newCardAdded = false;
 		$scope.shouldShowWaiting = false;
 		$scope.isSwipedCardSave = false;
@@ -53,8 +53,7 @@ sntRover.controller('RVReservationDepositController',
 		$scope.reservationData.referanceText = "";
 		$scope.isDepositEditable = ($scope.depositDetails.deposit_policy.allow_deposit_edit !== null && $scope.depositDetails.deposit_policy.allow_deposit_edit) ? true:false;
 		$scope.depositPolicyName = $scope.depositDetails.deposit_policy.description;
-		$scope.reservationData.depositAmount = $filter('number')(($scope.depositDetails.deposit_amount), 2);
-
+		$scope.reservationData.depositAmount = parseFloat($scope.depositDetails.deposit_amount).toFixed(2);
 
 		$scope.closeDialog = function(){
 			$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG", false);
@@ -96,6 +95,7 @@ sntRover.controller('RVReservationDepositController',
 
 		var showCardOptions = function(){
 			$scope.showCCPage = true;
+			$scope.swippedCard = true;
 			$scope.addmode = $scope.cardsList.length>0 ?false:true;
 		};
 
@@ -321,6 +321,7 @@ sntRover.controller('RVReservationDepositController',
 				$scope.depositData.cardNumber = retrieveCardNumber();
 				$scope.depositData.expiry_date = retrieveExpiryDate();
 				$scope.depositData.card_type = retrieveCardtype();
+				$scope.swippedCard = false;
 				$scope.showCCPage = false;
 				$scope.cardSelected = true;
 
@@ -433,6 +434,9 @@ sntRover.controller('RVReservationDepositController',
 	  /*
 	* Action - On click submit payment button
 	*/
+       $rootScope.$on('GIFTCARD_DETAILS',function(e, n){
+           $scope.cardData.cardNumber = n;
+       });
 	$scope.submitPayment = function(){
 
 		if($scope.reservationData.depositAmount === '' || $scope.reservationData.depositAmount === null){
@@ -440,6 +444,7 @@ sntRover.controller('RVReservationDepositController',
 		} else {
 			$scope.errorMessage = "";
 			$scope.depositInProcess = true;
+			console.log($scope.reservationData);
 			var dataToSrv = {
 				"postData": {
 					"bill_number": 1,
@@ -454,9 +459,13 @@ sntRover.controller('RVReservationDepositController',
 				dataToSrv.postData.add_to_guest_card =  $scope.depositData.addToGuestCard;
 			}
 			else{
-				dataToSrv.postData.add_to_guest_card =  false;
+                                dataToSrv.postData.add_to_guest_card =  false;
 			};
-
+                        if ($scope.depositData.paymentType === 'GIFT_CARD'){
+                            delete dataToSrv.postData.payment_type_id;
+                            dataToSrv.postData.card_number = $scope.cardData.cardNumber;
+                        };
+                        
 			if($scope.isShowFees()){
 				if($scope.feeData.calculatedFee) {
 					dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
@@ -495,6 +504,7 @@ sntRover.controller('RVReservationDepositController',
 
 	$scope.onCardClick = function(){
 		$scope.showCCPage = true;
+		$scope.swippedCard = true;
 		$scope.addmode = $scope.cardsList.length>0 ?false:true;
 		refreshCardsList();
 	};
@@ -504,6 +514,7 @@ sntRover.controller('RVReservationDepositController',
 		$scope.depositData.cardNumber = $scope.cardsList[index].mli_token;
 		$scope.depositData.expiry_date = $scope.cardsList[index].card_expiry;
 		$scope.depositData.card_type = $scope.cardsList[index].card_code;
+		$scope.swippedCard = false;
 		$scope.showCCPage = false;
 		$scope.cardSelected = true;
 
@@ -518,6 +529,7 @@ sntRover.controller('RVReservationDepositController',
 	$scope.$on("TOKEN_CREATED", function(e,data){
 		$scope.newPaymentInfo = data;
 		$scope.showCCPage = false;
+		$scope.swippedCard = false;
 		$scope.cardSelected = false;
 		savePayment();
 	});
@@ -531,6 +543,7 @@ sntRover.controller('RVReservationDepositController',
 	});
 
 	$scope.$on('cancelCardSelection',function(e,data){
+		$scope.swippedCard = false;
 		$scope.showCCPage = false;
 		$scope.depositData.paymentType  = "";
 		$scope.isManual = "";
@@ -540,6 +553,7 @@ sntRover.controller('RVReservationDepositController',
 	});
 
 	$scope.$on("SHOW_SWIPED_DATA_ON_STAY_CARD_DEPOSIT_SCREEN", function(e, swipedCardDataToRender){
+		$scope.swippedCard = true;
 		$scope.showCCPage = true;
 		$scope.addmode = true;
 		$scope.depositData.paymentType  = "CC";
@@ -569,6 +583,7 @@ sntRover.controller('RVReservationDepositController',
 				$scope.depositData.expiry_date = successParams.cardExpiryMonth+"/"+successParams.cardExpiryYear;
 				$scope.depositData.card_type = successParams.cardType.toLowerCase();
 				$scope.showCCPage = false;
+				$scope.swippedCard = false;
 				$scope.cardSelected = true;
 	};
 

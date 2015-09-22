@@ -1,0 +1,16 @@
+<nav id="header" role="nav" class="kiosk">
+    <!-- Back button, if applicable -->
+    <button type="button" id="back-button" class="button blank" click-touch='navToPrev()' ng-hide="hideNavBtns" ng-show="!hideNavBtns">
+        <ng-include src="'assets/css/kiosk/assets/icons/back.svg'"></ng-include>
+    </button>
+
+    <!-- Hotel logo -->
+    <div id="logo">
+        <ng-include src="hotelLogo"></ng-include>
+    </div>
+
+    <!-- Close button, if applicable -->
+    <button type="button" id="close-button" class="button blank" click-touch='navToHome()' ng-hide="hideNavBtns" ng-show="!hideNavBtns">
+        <ng-include src="'assets/css/kiosk/assets/icons/close.svg'"></ng-include>
+    </button>
+</nav> 

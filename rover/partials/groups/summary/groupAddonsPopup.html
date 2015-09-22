@@ -1,10 +1,13 @@
 <div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
-    <div class="modal-content room-enhancements">
-        <span class="h2 message">{{groupConfigData.summary.group_name}} Enhancements</span>
+    <div class="modal-content" ng-class="{'alert': groupConfigData.selectedAddons.length === 0, 'room-enhancements':groupConfigData.selectedAddons.length>0}">
+        <span class="h2 message" ng-show="groupConfigData.selectedAddons.length > 0">{{groupConfigData.summary.group_name}} Enhancements</span>
+        <span class="icons icon-popup-alert" ng-show="groupConfigData.selectedAddons.length === 0"></span>
         <!-- Initial markup -->
         <!-- Markup as you add items -->
+        <span class="h2 message" ng-show="groupConfigData.selectedAddons.length === 0">No Addons added!</span>
+
         <div class="scrollable" ng-iscroll="resultDetails" ng-iscroll-delay="500">        
-        <ul class=" wrapper enhancements-added">
+        <ul class=" wrapper enhancements-added" ng-if="groupConfigData.selectedAddons.length>0">
             <li ng-repeat="addon in groupConfigData.selectedAddons" class="addons-list">
                 <span class="item">{{ addon.name }}</span>
 
@@ -28,12 +31,12 @@
                      
                
                 <span class="price" ng-show="addon.is_inclusive">INCL</span>
-                <button type="button" ng-hide="addon.is_inclusive" class="icons icon-trash" ng-click="removeAddon(addon)" translate>REMOVE</button>
+                <button type="button" ng-hide="addon.is_inclusive||isInStaycardScreen()" class="icons icon-trash" ng-click="removeAddon(addon)" translate>REMOVE</button>
             </li>
         </ul>
         </div>
         <div class="actions">
-            <button type="button" ng-click="closeDialog(); manageAddons()" class="button orange modal-hide" translate>ADD_MORE_TO_THIS_GROUP</button>
+            <button type="button" ng-hide="isInStaycardScreen()" ng-click="closeDialog(); manageAddons()" class="button orange modal-hide" translate>ADD_MORE_TO_THIS_GROUP</button>
             <button class="button blank" ng-click="closeDialog(); reloadPage();" translate>CLOSE</button>
         </div>
     </div>    

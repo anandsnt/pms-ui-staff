@@ -699,6 +699,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
          * Click handler for save button in popup.
          * Calls the API and dismiss the popup on success
          */
+        
         $scope.saveRestriction = function () {
             if ($scope.calendarData.is_child){
                 //manual update is disabled for rates which are based on other rates
@@ -707,17 +708,65 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
 
             //The dates to which the restriction should be applied
             var datesSelected = getAllSelectedDates();
-
+            
             var data = {};
-             data.rate_id = $scope.popupData.selectedRate;
-            if ($scope.ratesRoomsToggle !== 'RATES'){
-                if ($scope.popupData.fromRoomTypeView || $scope.ratesRoomsToggle === 'ROOMS') {
-                    data.room_type_id = $scope.popupData.selectedRoomType;
-                    delete data.rate_id;
+            data.rate_id = $scope.popupData.selectedRate;
+            data.room_type_id = $scope.popupData.selectedRoomType;
+            data.rate_ids = []; 
+            var ratesInView = $scope.ratesDisplayed;
+            var ratesDisplayed = ratesInView.length;
+            
+            if (ratesInView){// multiple rates may be selected in view, check for 'all_data_selected'
+                for (var f in ratesInView){
+                    if (ratesInView.length > 1){
+                        data.rate_ids.push(ratesInView[f].id);//these will always be sent to the api to apply restrictions to all rates in filter
+                    } 
                 }
+            } 
+            
+           // data.room_ids = [];
+            var all = $scope.popupData.all_data_selected;//if a user wants All rates/rooms applied to or not
+            var rateView, allRooms = $scope.calendarData.data;
+            var room, totalRooms = allRooms.length;
+            if ($scope.ratesRoomsToggle === 'RATES'){
+                rateView = true;
+                if ($scope.ratesDisplayed.length === 1){
+                    rateView = false;//the screen defaults to room view if only 1 is selected
+                }
+            } else {
+                rateView = false;
+            }
+            
+            if (all){
+                if (!rateView){ //for room view
+                    /*for (var c in allRooms){
+                        room = allRooms[c];
+                        data.room_ids.push(room.id);//currently invalid param 'room_ids'
+                    }*/
+                    if (ratesDisplayed > 1 || totalRooms > 1){
+                        delete data.room_type_id;
+                    }
+                } else {
+                    delete data.room_type_id;
+                  //  delete data.room_ids;
+                    if (ratesDisplayed > 1){
+                        delete data.rate_id;
+                    }
+                }
+            } else {//otherwise just send the selected room_type_id
+                if (rateView){
+                    delete data.rate_ids;
+                } else {//in room view remove the rate_id param
+                    delete data.rate_id;  
+                }
+               // delete data.room_ids;
             }
 
-            data.room_type_id = $scope.popupData.selectedRoomType;
+            if (ratesDisplayed === 1){
+                delete data.rate_ids;
+            }
+            
+
             data.details = calculateDetailsToSave(datesSelected);
             var saveRestrictionSuccess = function () {
 

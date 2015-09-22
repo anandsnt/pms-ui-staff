@@ -18,6 +18,12 @@ sntRover.controller('roverController',
 
 
     $rootScope.isOWSErrorShowing = false;
+    $scope.kiosk = false;
+    if (localStorage['kioskUser']){
+        $scope.kiosk = true;
+        $scope.$emit('hideLoader');
+        return;
+    }
     if (hotelDetails.language) {
       $translate.use(hotelDetails.language.value);
       $translate.fallbackLanguage('EN');
@@ -116,7 +122,8 @@ sntRover.controller('roverController',
       $rootScope.isFFPActive = hotelDetails.is_ffp_active;
       $rootScope.isHLPActive = hotelDetails.is_hlp_active;
       $rootScope.isPromoActive = hotelDetails.is_promotion_active;
-
+      
+      $rootScope.kiosk = hotelDetails.kiosk;
 
     //set MLI Merchant Id
     try {
@@ -152,6 +159,10 @@ sntRover.controller('roverController',
     $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
     $rootScope.adminRole = $scope.userInfo.user_role;
     $rootScope.isHotelStaff = $scope.userInfo.is_staff;
+    
+    
+    
+    $scope.$emit('kioskMode',function(){});
 
     // self executing check
     $rootScope.isMaintenanceStaff = (function(roles) {
@@ -188,7 +199,7 @@ sntRover.controller('roverController',
     $rootScope.default_dashboard = hotelDetails.current_user.default_dashboard;
     $rootScope.userName = userInfoDetails.first_name + ' ' + userInfoDetails.last_name;
     $rootScope.userId = hotelDetails.current_user.id;
-
+    RVDashboardSrv.getUserRole($rootScope.userId, $scope);
 
     $scope.isDepositBalanceScreenOpened = false;
     $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function(e, value) {
@@ -342,6 +353,7 @@ sntRover.controller('roverController',
         // if menu is open, close it
         $scope.isMenuOpen();
         $scope.menuOpen = false;
+        
     };
 
     $scope.init();

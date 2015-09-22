@@ -24,8 +24,9 @@
 					<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag">{{hotelPhone}}.</a></p>
 				</div>
 			
-				<div ng-show="posted && success && isCheckoutCompleted && !netWorkError" class="checkout-status centeralign checkout-now-status">
-					<p class="msg-head">Check-out is complete.</p>
+				<div ng-show="posted && success && isCheckoutCompleted && !netWorkError" class="checkout-status centeralign checkout-now-status no-border new-checkout-status">
+					<p class="msg-head">Check-out is complete</p>
+					<span style="border-top: 1px solid white;padding-left: 120px;"></span>
 					<p class="msg-body">An email with your bill details has been sent to:</br>
 						 {{emailAddress}}.</p>
 					<p class="msg-foot">Thank you for staying with us!</p>

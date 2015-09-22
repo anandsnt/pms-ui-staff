@@ -1,0 +1,68 @@
+/* 1. HEADINGS
+==========================================================*/
+    h1, 
+    h2, 
+    h3 {
+        line-height: 1.2;
+        text-align: center;
+        font-weight: normal;
+    }
+
+    h1 { font-size: 36px; }
+
+    h1,
+    h2 { 
+        text-transform: uppercase; 
+        margin-bottom: 21px;
+
+        &.no-margin,
+        &:last-child { margin-bottom: 0;}
+    }
+
+    h2,
+    h3 { font-size: 21px; }
+
+    h2 { 
+        &.nocaps { 
+            font-size: 36px;
+            text-transform: none;
+        }
+    }
+
+    h3 { 
+        margin-bottom: 18px;
+
+        &:last-child { margin-bottom: 0;}
+    }
+
+    h4 {
+        font-size: 16px;
+        line-height: 1.1;
+        margin-bottom: 1.3rem;
+        font-weight: bold;
+    } 
+
+/* 2. PARAGRAPHS & LISTS
+==========================================================*/   
+    p {
+        font-size: 14px;
+        line-height: 1.2;
+        margin-bottom: 1.3rem;
+
+        &:last-child { margin-bottom: 0; }
+    }
+
+    dl,
+    ol,
+    ul {
+        font-size: 1rem;
+        margin: 0 0 1.3rem;
+        padding: 0;
+    }
+
+    dd,
+    dt,
+    li {
+        line-height: @baseLineHeight;
+        margin: 0;
+    }

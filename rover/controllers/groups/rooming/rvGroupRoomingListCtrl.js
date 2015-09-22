@@ -11,6 +11,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
   'rvGroupConfigurationSrv',
   '$state',
   '$window',
+  '$stateParams',
   function (
     $scope,
     $rootScope,
@@ -23,7 +24,8 @@ sntRover.controller('rvGroupRoomingListCtrl', [
     ngDialog,
     rvGroupConfigurationSrv,
     $state,
-    $window) {
+    $window,
+    $stateParams) {
 
         BaseCtrl.call(this, $scope);
 
@@ -355,6 +357,10 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                     var correspondingActualData = _.findWhere(data.result, {
                         room_type_id: roomTypeData.room_type_id
                     });
+
+                    //CICO-20169 Handles cases where total rooms are updated in room block
+                    _.extend(roomTypeData, correspondingActualData);
+
                     roomTypeData.availableRoomCount = toI(correspondingActualData.total_rooms) - toI(correspondingActualData.total_pickedup_rooms);
                 });
 
@@ -469,6 +475,11 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             //if there is no room type attached, we have to show some message
             if ($scope.roomTypesAndData.length === 0) {
                 return showNoRoomTypesAttachedPopUp();
+            }
+
+            if(!$scope.possibleNumberOfRooms.length){
+                $scope.errorMessage = ['No Rooms have been added for the selected Room in the Room Block.'];
+                return;
             }
 
             //wiping the weepy
@@ -1900,13 +1911,12 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             //pagination
             initialisePagination();
-
             //calling initially required APIs
             // CICO-17898 The initial APIs need to be called in the scenario while we come back to the Rooming List Tab from the stay card
             var isInRoomingList = ($scope.groupConfigData.activeTab === "ROOMING"),
-            	comingFromStaycard = ("rover.reservation.staycard.reservationcard.reservationdetails" === $rootScope.getPrevStateName());
+            	amDirectlyComingToRoomingList = $stateParams.activeTab === 'ROOMING';
 
-            if (isInRoomingList && comingFromStaycard) {
+            if (isInRoomingList && (amDirectlyComingToRoomingList)) {
                 callInitialAPIs();
             }
         }();

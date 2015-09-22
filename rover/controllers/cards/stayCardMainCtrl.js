@@ -30,6 +30,11 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 
 		$scope.initGuestCard = function(guestData) {
+			if (!guestData) {
+				guestData = {
+					id: ""
+				}
+			}
 			// passReservationParams
 			//TODO : Once this works pull it to a separate method
 			var fetchGuestcardDataSuccessCallback = function(data) {
@@ -111,33 +116,89 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			};
 
 
-			if ($scope.reservationDetails.guestCard.id !== '' && $scope.reservationDetails.guestCard.id !== null) {
+			if (!!guestData.id || !!$scope.reservationDetails.guestCard.id || !!$scope.reservationData.guest.id) {
 				var param = {
-					'id': $scope.reservationDetails.guestCard.id
+					'id': guestData.id || $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id
 				};
 				$scope.invokeApi(RVReservationCardSrv.getGuestDetails, param, fetchGuestcardDataSuccessCallback, fetchGuestcardDataFailureCallback, 'NONE');
 			}
 		};
 
-		$scope.initGroupCard = function(groupId) {
-			$scope.invokeApi(rvGroupConfigurationSrv.getGroupSummary, {
-				groupId: groupId
-			}, function(response) {
-				$scope.$emit("hideLoader");
-				$scope.groupConfigData = {
-					activeTab: 'SUMMARY', // Possible values are SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY
-					summary: response.groupSummary,
-					// holdStatusList: holdStatusList.data.hold_status,
-					selectAddons: false, // To be set to true while showing addons full view
-					addons: {},
-					selectedAddons: []
-				};				
-				$scope.$broadcast('groupCardAvailable');
-				$scope.$broadcast('groupSummaryDataChanged', $scope.groupConfigData);
-			}, function(errorMessage) {
-				$scope.$emit("hideLoader");
-				$scope.errorMessage = errorMessage;
+		/**
+		 * [successCallbackOfGroupDetailsFetch description]
+		 * @return {[type]} [description]
+		 */
+		var successCallbackOfGroupDetailsFetch = function(response) {
+			_.extend($scope.groupConfigData, {
+				activeTab: 'SUMMARY', // Possible values are SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY
+				summary: response.groupSummary,
+				selectAddons: false, // To be set to true while showing addons full view
+				addons: {},
+				selectedAddons: []
 			});
+		};
+
+		/**
+		 * [successCallBackOfGroupHoldListFetch description]
+		 * @param  {[type]} holdStatusList [description]
+		 * @return {[type]}                [description]
+		 */
+		var successCallBackOfGroupHoldListFetch = function(holdStatusList) {
+			_.extend($scope.groupConfigData, {
+				holdStatusList: holdStatusList.data.hold_status
+			});
+		};
+
+		/**
+		 * [successFetchOfAllReqdForGroupDetailsShowing description]
+		 * @param  {[type]} data [description]
+		 * @return {[type]}      [description]
+		 */
+		var successFetchOfAllReqdForGroupDetailsShowing = function(data) {
+			$scope.$broadcast('groupCardAvailable');
+			$scope.$broadcast('groupSummaryDataChanged', $scope.groupConfigData);
+			$scope.$emit("hideLoader");
+		};
+
+		/**
+		 * [failedToFetchOfAllReqdForGroupDetailsShowing description]
+		 * @return {[type]} [description]
+		 */
+		var failedToFetchOfAllReqdForGroupDetailsShowing = function(errorMessage) {
+			$scope.errorMessage = errorMessage;
+			$scope.$emit("hideLoader");
+		};
+
+		$scope.initGroupCard = function(groupId) {
+			var promises = [];
+			//we are not using our normal API calling since we have multiple API calls needed
+			$scope.$emit('showLoader');
+
+			$scope.groupConfigData = {
+				activeScreen: 'STAY_CARD'
+			};
+
+			//group details fetch
+			var paramsForGroupDetails = {
+				groupId: groupId
+			};
+			promises.push(rvGroupConfigurationSrv
+				.getGroupSummary(paramsForGroupDetails)
+				.then(successCallbackOfGroupDetailsFetch)
+			);
+
+			//reservation list fetch
+			var paramsForHoldListFetch = {
+				is_group: true
+			};
+			promises.push(rvGroupConfigurationSrv
+				.getHoldStatusList(paramsForHoldListFetch)
+				.then(successCallBackOfGroupHoldListFetch)
+			);
+
+			//Lets start the processing
+			$q.all(promises)
+				.then(successFetchOfAllReqdForGroupDetailsShowing, failedToFetchOfAllReqdForGroupDetailsShowing);
 		};
 
 		// fetch reservation company card details
@@ -226,6 +287,25 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 		});
 
+		/**
+		 * if we wanted to reload particular staycard details
+		 * @return {undeifned} [description]
+		 */
+		$scope.reloadTheStaycard = function() {
+			$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+				"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
+				"confirmationId": $stateParams.confirmationId,
+				"isrefresh": false
+			});
+		};
+
+		/**
+		 * if current screen is in staycard
+		 * @return {Boolean} [description]
+		 */
+		$scope.isInStayCardScreen = function() {
+			return ($scope.viewState.identifier === "STAY_CARD");
+		};
 		$scope.removeCard = function(card, future) {
 			// This method returns the numnber of cards attached to the staycard
 			var checkNumber = function() {
@@ -704,20 +784,21 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			this.totalStayCost = 0;
 			var rateIdSet = [];
 			var self = this;
-			angular.forEach($scope.reservationData.rooms, function(room, index) {
+			angular.forEach($scope.reservationData.rooms, function(room) {
+				var refData = _.findWhere(tData.rooms, {room_no : room.room_no});
 				room.stayDates = {};
-				rateIdSet.push(tData.rooms[index].rateId);
-				room.numAdults = tData.rooms[index].numAdults;
-				room.numChildren = tData.rooms[index].numChildren;
-				room.numInfants = tData.rooms[index].numInfants;
-				room.roomTypeId = tData.rooms[index].roomTypeId;
-				room.amount = tData.rooms[index].amount;
-				room.room_id = tData.rooms[index].room_id;
-				room.room_no = tData.rooms[index].room_no;
-				room.room_type = tData.rooms[index].room_type;
+				rateIdSet.push(refData.rateId);
+				room.numAdults = refData.numAdults;
+				room.numChildren = refData.numChildren;
+				room.numInfants = refData.numInfants;
+				room.roomTypeId = refData.roomTypeId;
+				room.amount = refData.amount;
+				room.room_id = refData.room_id;
+				room.room_no = refData.room_no;
+				room.room_type = refData.room_type;
 
-				room.rateId = tData.rooms[index].rateId;
-				room.roomAmount = tData.rooms[index].amount;
+				room.rateId = refData.rateId;
+				room.roomAmount = refData.amount;
 				// CICO-16850
 				//  In case of updating a reservation from Diary
 				// the reservation's already attached demographics
@@ -725,18 +806,18 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 				//CICO-16927 - added undefined check for demographics
 				room.demographics = {
-					market: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.market_segment_id) ? '' : tData.rooms[index].demographics.market_segment_id,
-					source: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.source_id) ? '' : tData.rooms[index].demographics.source_id,
-					reservationType: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.reservation_type_id) ? '' : tData.rooms[index].demographics.reservation_type_id,
-					origin: (typeof tData.rooms[index].demographics === "undefined" || !tData.rooms[index].demographics.booking_origin_id) ? '' : tData.rooms[index].demographics.booking_origin_id,
-					segment: (typeof tData.rooms[index].segment === "undefined" || !tData.rooms[index].demographics.segment_id) ? '' : tData.rooms[index].demographics.segment_id
+					market: (typeof refData.demographics === "undefined" || !refData.demographics.market_segment_id) ? '' : refData.demographics.market_segment_id,
+					source: (typeof refData.demographics === "undefined" || !refData.demographics.source_id) ? '' : refData.demographics.source_id,
+					reservationType: (typeof refData.demographics === "undefined" || !refData.demographics.reservation_type_id) ? '' : refData.demographics.reservation_type_id,
+					origin: (typeof refData.demographics === "undefined" || !refData.demographics.booking_origin_id) ? '' : refData.demographics.booking_origin_id,
+					segment: (typeof refData.segment === "undefined" || !refData.demographics.segment_id) ? '' : refData.demographics.segment_id
 				};
 
 				// put the same stuff in the reservationData obj as well
 				//
 				self.demographics = angular.copy(room.demographics);
 
-				self.totalStayCost = parseFloat(self.totalStayCost) + parseFloat(tData.rooms[index].amount);
+				self.totalStayCost = parseFloat(self.totalStayCost) + parseFloat(refData.amount);
 				var success = function(data) {
 					room.rateName = data.name;
 					//CICO-16850

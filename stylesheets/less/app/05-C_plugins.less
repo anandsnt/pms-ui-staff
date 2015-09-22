@@ -112,7 +112,8 @@
 			}
 		}
 
-		&.allotment-card {
+		&.allotment-card,
+		&.group-allotment-card {
 			.ui-resizable-handle {
 				&.ui-resizable-s {
 					background-color: @allotmentcard;
@@ -198,39 +199,34 @@
 		-webkit-overflow-scrolling: touch;
 
         li {
-            margin: 0;
-            .box-shadow(0 1px 2px rgba(0,0,0,.1));
+			margin: 0;
+			.box-shadow(0 1px 2px rgba(0,0,0,.1));
 
-            a {
-                padding: 10px;
-                font-size: 18px;
-                line-height: 30px;
-                font-weight: 600;
-                color: @textColor;
-                .show;
+			a {
+				padding: 10px;
+				font-size: 18px;
+				line-height: 30px;
+				font-weight: 600;
+				color: @textColor;
+				.show;
 
-                .highlight { color: @logoPrimary; }
-            }
-        }
-        
-        &.find-cards {
-            width: auto !important;
-        
-            li {
-                a {
-                    position: relative;
-                    padding: 10px 20px 10px 50px;
-                    font-size: 18px;
-                    line-height: 30px;
-                    font-weight: 600;
-                    color: @textColor;
-                    .show;
+				.highlight { color: @logoPrimary; }
+			}
+		}
 
-                    .highlight { color: @logoPrimary; }
+		&.find-cards {
+			width: auto;
+			max-width: 420px !important;
 
-                    img,
+			li {
+				a {
+					position: relative;
+					padding: 10px 20px 10px 50px;
+					.show;
+
 					.icons,
-					.group-info {
+					.group-info,
+					img {
 						position: absolute;
 						top: 10px;
 						left: 10px;
@@ -239,19 +235,27 @@
 					}
 
 					.icons {
+						.hide-text;
+
 						&.icon-company { 
-							background-position: 4px -3458px;
+							background-position: 7px -3514px;
 							background-color: @ccard; 
 						}
 
 						&.icon-travel-agent { 
-							background-position: 4px -3576px;
+							background-position: 6px -3634px;
 							background-color: @tacard; 
 						}
 
-						&.icon-group { 
+						&.icon-group,
+						&.icon-group-large { 
 							background-position: 5px -7774px;
 							background-color: @groupcard; 
+						}
+
+						&.icon-allotment { 
+							background-position: 5px -8433px;
+							background-color: @allotmentcard; 
 						}
 					}
 
@@ -265,48 +269,11 @@
 						width: 30px;
 						background-color: @grey1;
 					}
-                }
-            }
-        }
-
-        &.find-diary-card {
-			width: 420px;
-
-			li {
-				a {
-					position: relative;
-					padding: 10px 20px 10px 50px;
-					font-size: 18px;
-					line-height: 30px;
-					font-weight: 600;
-					color: @textColor;
-					.show;
-
-					.highlight { color: @logoPrimary; }
-
-					img,
-					.icons {
-						position: absolute;
-						top: 10px;
-						left: 10px;
-						.square(30px);
-						#border-radius > .rounded();
-					}
-
-					.icons {
-						&.icon-company { 
-							background-position: 4px -3458px;
-							background-color: @ccard; 
-						}
-
-						&.icon-travel-agent { 
-							background-position: 4px -3576px;
-							background-color: @tacard; 
-						}
-					}
 				}
 			}
 		}
+
+		&.find-user { width: auto; }
     }
 
 	.ui-helper-hidden-accessible { .hide; }
@@ -3321,6 +3288,23 @@
 				.actions {
 					padding-top: 19px;
 					border-top: 1px solid rgba(0,0,0,.1);
+				}
+			}
+
+			/* Report print options ***/
+			&.report-options {
+				width: 360px;
+
+				.entry {
+					margin-bottom: 20px;
+
+					.radio {
+						text-transform: uppercase;
+						margin-bottom: 10px;
+						width: 100%;
+
+						&.checked { font-weight: 600; }
+					}
 				}
 			}
 

@@ -5,15 +5,16 @@
                 <tr>
                     <th class="cell" style="height: 53px; padding: 0 20 0 0;">
                         <button ng-click="openCloseAllRestrictions('remove')" 
-                                class="button green rm-buttonOpenClose"
+                                class="button rm-buttonOpenClose"
                                 style=" margin-left:50px;"
-                                ng-class="{'grey': calendarData.disableOpenAllBtn}" 
-                                ng-disabled="calendarData.disableOpenAllBtn">
+                                ng-class="{'green': anyRoomHasClosedRestriction, 'grey': !anyRoomHasClosedRestriction}" 
+                                ng-disabled="!anyRoomHasClosedRestriction">
                             Open All
                         </button>
+                        
                         <button ng-click="openCloseAllRestrictions('add')" 
-                                class="button red rm-buttonOpenClose" 
-                                ng-class="{'grey': calendarData.disableCloseAllBtn}" 
+                                class="button  rm-buttonOpenClose" 
+                                ng-class="{'red': !calendarData.disableCloseAllBtn, 'grey': calendarData.disableCloseAllBtn}" 
                                 ng-disabled="calendarData.disableCloseAllBtn">
                             Close All
                         </button>
@@ -31,7 +32,7 @@
                 <tr class="cell" ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last && loading === false}" ng-show="calendarMode === 'RATE_VIEW'">
                     <td class="first-row force-align">
                         <div ng-click="goToRoomTypeCalendarView(rate)">
-                            <span ng-class="{'gray': rateIsChild(rate) == true && ratesRoomsToggle != 'ROOMS'}" title="{{rate.name}}">{{rate.name}}</span>
+                            <span ng-class="{'gray': rateIsChild(rate) == true && ratesRoomsToggle !== 'ROOMS'}" title="{{rate.name}}">{{rate.name}}</span>
                             <span> 
                                 <img src="/assets/arrow-down.png" ng-hide="hideRoomsDownArrow"/>
                             </span>
