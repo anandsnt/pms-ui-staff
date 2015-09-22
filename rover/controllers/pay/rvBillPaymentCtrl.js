@@ -178,6 +178,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	*/
 	$scope.showGuestCreditCardList = function(){
 		$scope.showCCPage = true;
+		$scope.swippedCard = true;
 		refreshCardsList();
 	};
 
@@ -254,14 +255,24 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
         
         
         
+        $rootScope.$on('validatedGiftCardPmt',function(n, valid){
+            if (valid){
+               $scope.validPayment = true;
+           } else {
+               $scope.validPayment = false;
+           }
+        });
         $scope.validPayment = true;
             
         $scope.updatedAmountToPay = function(amt){
             //used if checking against gift card balance
-               if ($scope.saveData.paymentType === 'GIFT_CARD'){
-                if ($scope.giftCardAvailableBalance){
-                    var avail = parseFloat(($scope.giftCardAvailableBalance).toFixed(2));
-                    var toPay = parseFloat(parseFloat(amt).toFixed(2));
+            if ($scope.saveData.paymentType === 'GIFT_CARD'){
+                var bal = $scope.giftCardAvailableBalance;
+                if (bal){
+                    var avail = parseFloat(bal).toFixed(2);
+                    var toPay = parseFloat(amt).toFixed(2);
+                    avail = parseFloat(avail);
+                    toPay = parseFloat(toPay);
                     if (avail < toPay){
                         $scope.validPayment = false;
                     } else {
@@ -271,13 +282,17 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
             } else {
                 $scope.validPayment = true;
             }
-            
+            $rootScope.$broadcast('validatedGiftCardPmt',$scope.validPayment);
         };
 
 
         $scope.isGiftCardPmt = false;
 	$scope.showHideCreditCard = function(){
                 if ($scope.saveData.paymentType === "GIFT_CARD"){
+                    $scope.resetSplitPaymentDetailForGiftCard();
+                    $scope.shouldShowMakePaymentButton = true;
+                    $scope.splitBillEnabled = false;
+                    
                     $scope.isGiftCardPmt = true;
                 } else {
                     $scope.isGiftCardPmt = false;
@@ -308,6 +323,24 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.renderData.billNumberSelected = $scope.currentActiveBillNumber;
 		$scope.renderDefaultValues();
 		$scope.creditCardTypes = [];
+                
+                
+            if ($rootScope.allowPmtWithGiftCard && !$scope.isStandAlone){
+                //then restrict options to pay to only gift card;
+                if ($scope.renderData){
+                    var restrictedPmtTypes = [];
+                    for (var i in $scope.renderData.paymentTypes){
+                        if ($scope.renderData.paymentTypes[i].name === 'GIFT_CARD'){
+                            $scope.allowPmtWithGiftCard = true;
+                            restrictedPmtTypes.push($scope.renderData.paymentTypes[i]);
+                            break;
+                        }
+                    }
+                    $scope.renderData.paymentTypes = restrictedPmtTypes;
+                    $scope.saveData.paymentType = 'GIFT_CARD';
+                }
+            }
+                
 		angular.forEach($scope.renderData.paymentTypes, function(item, key) {
 			if(item.name === 'CC'){
 				$scope.creditCardTypes = item.values;
@@ -364,6 +397,23 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			});
 			refreshCardsList();
 		}
+	};
+        $scope.resetSplitPaymentDetailForGiftCard = function(){//split bill payments hidden for gift cards for now (cico-19009) per priya
+		$scope.splitBillEnabled = false;
+		$scope.splitePaymentDetail = {
+			totalNoOfsplits:1,
+			completedSplitPayments:0,
+			totalAmount:0,
+			splitAmount:0,
+			carryAmount:0
+		};
+		$scope.messageOfSuccessSplitPayment ='';
+		$scope.paymentErrorMessage ='';
+		//reset value
+		if(!$scope.splitBillEnabled){
+			$scope.renderData.defaultPaymentAmount = angular.copy(startingAmount );
+			$scope.splitSelected = false;
+		};
 	};
 	$scope.resetSplitPaymentDetail = function(){
 		$scope.splitBillEnabled = (typeof($scope.splitBillEnabled) === "undefined") ? false : !$scope.splitBillEnabled;
@@ -734,6 +784,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			value.isSelected = false;
 		});
 		$scope.showCCPage = false;
+		$scope.swippedCard = false;
 		$scope.showCreditCardInfo = true;
 		$scope.$broadcast("clearCardDetails");
 
@@ -795,6 +846,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		});
 		$scope.cardsList[index].isSelected = true;
 		$scope.saveData.payment_type_id =  $scope.cardsList[index].value;
+		$scope.swippedCard = false;
 		$scope.showCCPage = false;
 		if($scope.isStandAlone)	{
 			$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
@@ -812,6 +864,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 
 		$scope.newPaymentInfo = data;
 		$scope.showCCPage = false;
+		$scope.swippedCard = false;
 		setTimeout(function(){
 			savePayment(data);
 		}, 200);
@@ -825,12 +878,14 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 
 	$scope.$on('cancelCardSelection',function(e,data){
 		$scope.showCCPage = false;
+		$scope.swippedCard = false;
 		$scope.isManual = false;
 		$scope.saveData.paymentType = "";
 	});
 
 	$scope.$on("SHOW_SWIPED_DATA_ON_PAY_SCREEN", function(e, swipedCardDataToRender){
 		$scope.showCCPage 						 = true;
+		$scope.swippedCard 						 = true;
 		$scope.addmode                 			 = true;
 		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 	});

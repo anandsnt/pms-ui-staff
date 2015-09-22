@@ -1040,6 +1040,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					$scope.$emit('hideLoader');
 					swipedCardData.token = tokenValue;
 					processSwipedData(swipedCardData);
+                                        $scope.swippedCard = true;
 				};
 				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
 			};

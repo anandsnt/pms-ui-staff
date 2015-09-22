@@ -544,6 +544,7 @@ sntRover.controller('reservationActionsController', [
                 
                 
 		$scope.showDepositBalanceModal = function() {
+                    $rootScope.fromStayCard = true;
 			var reservationId = $scope.reservationData.reservation_card.reservation_id;
 			var dataToSrv = {
 				"reservationId": reservationId
@@ -579,6 +580,12 @@ sntRover.controller('reservationActionsController', [
 		 * @return {Boolean}
 		 */
 		$scope.showDepositBalance = function(reservationStatus) {
+                    var cashDesposit = false;
+                    if ($scope.reservationData.reservation_card.payment_method_used !== 'CC'){
+                        cashDesposit = true;
+                    } 
+                    $rootScope.initFromCashDeposit = cashDesposit;
+                    
 			//As per CICO-15833
 			//we wanted to show the Balance & Deposit popup for DUEIN & CHECKING IN reservation only
 			reservationStatus = reservationStatus.toUpperCase();

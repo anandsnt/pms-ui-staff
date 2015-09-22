@@ -186,14 +186,6 @@ sntRover.service('rvMenuSrv',
 		            title: "MENU_MANAGE_GROUP",
 		            action: "rover.groups.search",
 		            menuIndex: "menuManageGroup"
-		        }, {
-		            title: "MENU_CREATE_ALLOTMENT",
-		            action: "rover.allotments.config({id:'NEW_ALLOTMENT'})",
-		            menuIndex: "menuCreateAllotment"
-		        }, {
-		            title: "MENU_MANAGE_ALLOTMENT",
-		            action: "rover.allotments.search",
-		            menuIndex: "menuManageAllotment"
 		        }]
 		    }, {
 		        title: "MENU_CONVERSATIONS",
