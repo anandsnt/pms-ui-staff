@@ -1,6 +1,7 @@
 <div class="availability-grid scrollable " ng-controller="rvRoomAvailabilityGridStatusController" ng-iscroll='room_availability_scroller' ng-iscroll-delay="100" ng-show="hideMeBeforeFetching">
 	<div class="wrapper" style="{{getWidthForTable()}}">
-		<table class="dates-grid" >
+		<!-- Day & Date Columns -->
+		<table class="dates-grid">
 			<colgroup>
 				<col>
 				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">		
@@ -16,80 +17,249 @@
 					</th>
 				</tr>
 			</thead>
+		</table> 
+
+		<!-- Occupancy -->
+		<table class="dates-grid blue">
+			<colgroup>
+				<col>
+				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">		
+			</colgroup>
 			<tbody>
-				<tr>
-					<th class="heading">Occupancy %</th>
-					<td  ng-repeat="occupancy in data.occupancies track by $index">
-						<div class="inner">{{occupancy | number : 2 }}%</div>
+				<!-- Total % -->
+				<tr class="main">
+					<th class="heading rows-toggle" scope="row">Occupancy %</th> <!-- TODO: toggle visibility of inventory, OOO and rooms to sell when clciked. When opening, don't show room types. When closing, hide room types as well -->
+					<td ng-repeat="occupancy in data.occupancies track by $index">
+						<div class="inner">{{occupancy | number : 0 }}%</div>
 					</td>
 				</tr>
-				<tr>
-					<th class="heading">Total Bookable Rooms</th>
-					<td  ng-repeat="bookableRoom in data.bookableRooms track by $index">
+				<!-- Inventory -->
+				<tr class="hidden">
+					<th class="rows-toggle" scope="row">Rooms Inventory</th> <!-- TODO: toggle visibility of room types inventory -->
+					<td ng-repeat="bookableRoom in data.bookableRooms track by $index">
 						<div class="inner" ng-bind="bookableRoom"></div>
 					</td>
-				</tr>					
-				<tr class="room-details main">
-					<th class="heading rows-toggle" ng-click="toggleShowRoomTypeWiseAvailableRooms()">Available Rooms</th>
-					<td  ng-repeat="availableRoom in data.availableRooms track by $index">
-						<div class="inner" ng-bind="availableRoom"></div>
-					</td>
-				</tr>							
-				<tr class="room-details" ng-class="{'hidden': !showRoomTypeWiseAvailableRooms}"  ng-repeat="individualAvailableRoomList in data.individualAvailableRooms track by $index">
-					<th class="" ng-bind="individualAvailableRoomList.name" ></th>
-					<td  ng-repeat="individualAvailableRoom in individualAvailableRoomList.availableRoomNumberList track by $index">
-						<div class="inner" ng-bind="individualAvailableRoom"></div>
-					</td>
 				</tr>
-				<tr class="room-details main" ng-if="!isHourlyRateOn">
-					<th class="heading rows-toggle" ng-click="toggleShowRoomTypeWiseBookedRooms()">Booked Rooms</th>
-					<td  ng-repeat="bookedRoom in data.bookedRooms track by $index">
-						<div class="inner green" ng-bind="bookedRoom"></div>
+				<!-- Inventory - Room types
+				<tr class="italic hidden">
+					<th scope="row"></th>
+					<td>
+						<div class="inner">-</div>
 					</td>
-				</tr>							
-				<tr class="room-details" ng-if="!isHourlyRateOn" ng-class="{'hidden': !showRoomTypeWiseBookedRooms }"  ng-repeat="individualBookedRoomList in data.individualBookedRooms track by $index">
-					<th class="" ng-bind="individualBookedRoomList.name" ></th>
-					<td  ng-repeat="individualBookedRoom in individualBookedRoomList.bookedNumberList track by $index">
-						<div class="inner green" ng-bind="individualBookedRoom"></div>
-					</td>
-				</tr>				
-				<tr class="room-details main" ng-if="!isHourlyRateOn">
-					<th class="heading">Group Rooms (Total)</th>
-					<td  ng-repeat="roomCount in data.groupTotalRooms track by $index">
-						<div class="inner" ng-bind="roomCount"></div>
-					</td>
-				</tr>
-				<tr class="room-details main" ng-if="!isHourlyRateOn">
-					<th class="heading">Group Rooms (Picked Up)</th>
-					<td  ng-repeat="roomCount in data.groupTotalPickedUp track by $index">
-						<div class="inner green" ng-bind="roomCount"></div>
-					</td>
-				</tr>								
-				<tr>
-					<th class="">Out of Order rooms</th>
-					<td  ng-repeat="outOfOrderRoom in data.outOfOrderRooms track by $index">
+				</tr> -->
+				<!-- OOO -->
+				<tr class="hidden">
+					<th scope="row">OOO Rooms</th>
+					<td ng-repeat="outOfOrderRoom in data.outOfOrderRooms track by $index">
 						<div class="inner" ng-bind="outOfOrderRoom"></div>
 					</td>
 				</tr>
-				<tr>
-					<th class="">Total Reserved Rooms</th>
-					<td  ng-repeat="reservedRoom in data.reservedRooms track by $index">
-						<div class="inner" ng-bind="reservedRoom"></div>
-					</td>
-				</tr>	
-				<tr ng-hide="true">
-					<th class="">[Overbooking]</th>
-					<td  ng-repeat="overBookableRoom in data.overBookableRooms track by $index">
-						<div class="inner" >[{{overBookableRoom}}]</div>
+				<!-- Rooms to Sell -->
+				<tr class="hidden">
+					<th scope="row">Rooms To Sell</th>
+					<td ng-repeat="availableRoom in data.availableRooms track by $index">
+						<div class="inner" ng-bind="availableRoom"></div>
 					</td>
 				</tr>
-				<tr ng-hide="true">
-					<th class="">[Available rooms with overbooking]</th>
-					<td  ng-repeat="availableRoomsWithBookableRoom in data.availableRoomsWithBookableRooms track by $index">
-						<div class="inner"> [{{availableRoomsWithBookableRoom}}]</div>
-					</td>
-				</tr>													
 			</tbody>
 		</table> 
+
+		<!-- Available Rooms -->
+		<table class="dates-grid green">
+			<colgroup>
+				<col>
+				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">		
+			</colgroup>
+			<tbody>
+				<tr class="main">
+					<th class="heading rows-toggle" ng-click="toggleShowRoomTypeWiseAvailableRooms()">Available Rooms</th>
+					<td ng-repeat="availableRoom in data.availableRooms track by $index">
+						<div class="inner" ng-bind="availableRoom"></div>
+					</td>
+				</tr>
+				<!-- Room types -->
+				<tr class="italic" ng-class="{'hidden': !showRoomTypeWiseAvailableRooms}" ng-repeat="individualAvailableRoomList in data.individualAvailableRooms track by $index">
+					<th scope="row" ng-bind="individualAvailableRoomList.name"></th>
+					<td ng-repeat="individualAvailableRoom in individualAvailableRoomList.availableRoomNumberList track by $index">
+						<div class="inner" ng-bind="individualAvailableRoom"></div>
+					</td>
+				</tr>				
+			</tbody>
+		</table>
+
+		<!-- Sold Rooms -->
+		<table class="dates-grid orange">
+			<colgroup>
+				<col>
+				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">		
+			</colgroup>
+			<tbody>
+				<tr class="main" ng-if="!isHourlyRateOn">
+					<th class="heading rows-toggle" ng-click="toggleShowRoomTypeWiseBookedRooms()">Rooms Sold</th>
+					<td ng-repeat="bookedRoom in data.bookedRooms track by $index">
+						<div class="inner" ng-bind="bookedRoom"></div>
+					</td>
+				</tr>
+				<!-- Adults / Children -->
+				<tr ng-class="{'hidden': !showRoomTypeWiseBookedRooms }"> <!-- TODO: Add data -->
+					<th scope="row">Adults / Children</th>
+					<td>
+						<div class="inner">-</div>
+					</td>
+				</tr>
+				<tr class="italic" ng-if="!isHourlyRateOn" ng-class="{'hidden': !showRoomTypeWiseBookedRooms }" ng-repeat="individualBookedRoomList in data.individualBookedRooms track by $index">
+					<th scope="row" ng-bind="individualBookedRoomList.name" ></th>
+					<td ng-repeat="individualBookedRoom in individualBookedRoomList.bookedNumberList track by $index">
+						<div class="inner" ng-bind="individualBookedRoom"></div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<!-- Non Group Rooms -->
+		<table class="dates-grid">
+			<colgroup>
+				<col>
+				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">		
+			</colgroup>
+			<tbody>
+				<tr class="main">
+					<th class="heading" scope="row">Non Group Rooms</th>
+					<td>
+						<div class="inner">-</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<!-- Group / Allotment Rooms -->
+		<table class="dates-grid purple">
+			<colgroup>
+				<col>
+				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">		
+			</colgroup>
+			<tbody>
+				<tr class="main">
+					<th class="heading rows-toggle" scope="row">Group / Allotment</th>
+					<td>
+						<div class="inner">-</div>
+					</td>
+				</tr>
+				<tr class="hidden">
+					<th scope="row">Group Blocks Tentative</th>
+					<td>
+						<div class="inner">-</div>
+					</td>
+				</tr>
+				<tr class="hidden">
+					<th scope="row">Group Blocks Definite</th>
+					<td>
+						<div class="inner">-</div>
+					</td>
+				</tr>
+				<tr class="hidden">
+					<th scope="row">Group Picked Up</th>
+					<td>
+						<div class="inner">-</div>
+					</td>
+				</tr>
+				<tr class="hidden">
+					<th scope="row">Allotment Tentative</th>
+					<td>
+						<div class="inner">-</div>
+					</td>
+				</tr>
+				<tr class="hidden">
+					<th scope="row">Allotment Definite</th>
+					<td>
+						<div class="inner">-</div>
+					</td>
+				</tr>
+				<tr class="hidden">
+					<th scope="row">Allotment Picked Up</th>
+					<td>
+						<div class="inner">-</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </div>
+
+
+<!-- Old code - DELETE AFTER IMPLEMENTATION:
+	<tbody>
+		<tr>
+			<th class="heading">Occupancy %</th>
+			<td ng-repeat="occupancy in data.occupancies track by $index">
+				<div class="inner">{{occupancy | number : 2 }}%</div>
+			</td>
+		</tr>
+		<tr>
+			<th class="heading">Total Bookable Rooms</th>
+			<td  ng-repeat="bookableRoom in data.bookableRooms track by $index">
+				<div class="inner" ng-bind="bookableRoom"></div>
+			</td>
+		</tr>					
+		<tr class="room-details main">
+			<th class="heading rows-toggle" ng-click="toggleShowRoomTypeWiseAvailableRooms()">Available Rooms</th>
+			<td  ng-repeat="availableRoom in data.availableRooms track by $index">
+				<div class="inner" ng-bind="availableRoom"></div>
+			</td>
+		</tr>							
+		<tr class="room-details" ng-class="{'hidden': !showRoomTypeWiseAvailableRooms}"  ng-repeat="individualAvailableRoomList in data.individualAvailableRooms track by $index">
+			<th class="" ng-bind="individualAvailableRoomList.name" ></th>
+			<td  ng-repeat="individualAvailableRoom in individualAvailableRoomList.availableRoomNumberList track by $index">
+				<div class="inner" ng-bind="individualAvailableRoom"></div>
+			</td>
+		</tr>
+		<tr class="room-details main" ng-if="!isHourlyRateOn">
+			<th class="heading rows-toggle" ng-click="toggleShowRoomTypeWiseBookedRooms()">Booked Rooms</th>
+			<td  ng-repeat="bookedRoom in data.bookedRooms track by $index">
+				<div class="inner green" ng-bind="bookedRoom"></div>
+			</td>
+		</tr>							
+		<tr class="room-details" ng-if="!isHourlyRateOn" ng-class="{'hidden': !showRoomTypeWiseBookedRooms }"  ng-repeat="individualBookedRoomList in data.individualBookedRooms track by $index">
+			<th class="" ng-bind="individualBookedRoomList.name" ></th>
+			<td  ng-repeat="individualBookedRoom in individualBookedRoomList.bookedNumberList track by $index">
+				<div class="inner green" ng-bind="individualBookedRoom"></div>
+			</td>
+		</tr>				
+		<tr class="room-details main" ng-if="!isHourlyRateOn">
+			<th class="heading">Group Rooms (Total)</th>
+			<td  ng-repeat="roomCount in data.groupTotalRooms track by $index">
+				<div class="inner" ng-bind="roomCount"></div>
+			</td>
+		</tr>
+		<tr class="room-details main" ng-if="!isHourlyRateOn">
+			<th class="heading">Group Rooms (Picked Up)</th>
+			<td  ng-repeat="roomCount in data.groupTotalPickedUp track by $index">
+				<div class="inner green" ng-bind="roomCount"></div>
+			</td>
+		</tr>								
+		<tr>
+			<th class="">Out of Order rooms</th>
+			<td  ng-repeat="outOfOrderRoom in data.outOfOrderRooms track by $index">
+				<div class="inner" ng-bind="outOfOrderRoom"></div>
+			</td>
+		</tr>
+		<tr>
+			<th class="">Total Reserved Rooms</th>
+			<td  ng-repeat="reservedRoom in data.reservedRooms track by $index">
+				<div class="inner" ng-bind="reservedRoom"></div>
+			</td>
+		</tr>	
+		<tr ng-hide="true">
+			<th class="">[Overbooking]</th>
+			<td  ng-repeat="overBookableRoom in data.overBookableRooms track by $index">
+				<div class="inner" >[{{overBookableRoom}}]</div>
+			</td>
+		</tr>
+		<tr ng-hide="true">
+			<th class="">[Available rooms with overbooking]</th>
+			<td  ng-repeat="availableRoomsWithBookableRoom in data.availableRoomsWithBookableRooms track by $index">
+				<div class="inner"> [{{availableRoomsWithBookableRoom}}]</div>
+			</td>
+		</tr>													
+	</tbody>
+-->
