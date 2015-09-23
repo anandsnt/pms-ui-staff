@@ -25,6 +25,9 @@ sntRover.controller('rvAvailabilityMainController', [
 			else if($scope.availabilityToShow === 'house'){
 				return '/assets/partials/availability/houseAvailabilityStatus.html';
 			}
+			else if ($scope.availabilityToShow === 'item-inventory') {
+				return '/assets/partials/availability/itemInventoryMain.html';
+			}
 			else if($scope.availabilityToShow === 'groups'){
 				return '/assets/partials/availability/groupAvailabilityMain.html';
 			}

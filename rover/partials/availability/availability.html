@@ -6,6 +6,7 @@
 			<select id="availability-toggle" ng-model="availabilityToShow" ng-change="setAvailability()">
 				<option value="room" ng-selected="availabilityToShow=='room'">Availability</option>
 				<option value="house" ng-selected="availabilityToShow=='house'">House Status</option>
+				<option value="item-inventory" ng-selected="availabilityToShow=='item-inventory'">Item Inventory</option>
 				<option value="groups" ng-selected="availabilityToShow=='groups'" ng-show="shouldShowGroupInSelectBox()">Groups</option>
 			</select>
 			</div>
