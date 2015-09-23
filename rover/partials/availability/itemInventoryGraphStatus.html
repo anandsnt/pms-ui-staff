@@ -1,4 +1,4 @@
-<div id="availability-graph" class="availability-graph scrollable " ng-controller="rvRoomAvailabilityGraphStatusController"  ng-show="hideMeBeforeFetching">
+<div id="availability-graph" class="availability-graph scrollable " ng-controller="rvItemInventoryGraphStatusController"  ng-show="hideMeBeforeFetching">
 <!-- ng-iscroll="availability-graph-scroller" ng-iscroll-delay="100"  -->
 	<div id="graph-options-area">
 
@@ -7,7 +7,7 @@
             <label class="checkbox">
                 <span  class="icon-form icon-checkbox " ng-class="{'checked': eachGraphData.checked}" style="{{returnLegendStyle($index, eachGraphData.checked)}}"></span>
                 <input type="checkbox" name="room-filters"  class="ng-valid ng-dirty" ng-click="clickedOnLegend(eachGraphData.name, eachGraphData.checked)" ng-model="eachGraphData.checked">
-                <label class="ng-scope">{{eachGraphData.name}}</label>
+                <label class="ng-scope">{{eachGraphData.date}}</label>
             </label>
         </div>
     </div>
@@ -17,7 +17,6 @@
     		<div id="nav-listing">
     			<ul>
     				<li ng-repeat="eachDate in data.dates track by $index"> <span>{{eachDate.dateObj|date:dayInWeek}}</span> {{eachDate.dateObj|date:shortMonthAndDate}}</li>
-
     			</ul>
     		</div>
     		<div highchart id="availabilityGraphShowingArea" config="availabilityGraphCongif" ></div>

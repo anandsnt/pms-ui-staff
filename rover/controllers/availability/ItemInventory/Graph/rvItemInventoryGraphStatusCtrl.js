@@ -1,4 +1,4 @@
-sntRover.controller('rvRoomAvailabilityGraphStatusController', [
+sntRover.controller('rvItemInventoryGraphStatusController', [
 	'$scope',
 	'rvAvailabilitySrv',
 	'dateFilter',
@@ -8,8 +8,6 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 		BaseCtrl.call(this, $scope);
 
 		var plottedChart = null;
-
-
 		var isAlreadyRemoved = false;
   		$scope.hideMeBeforeFetching = false;
 
@@ -19,31 +17,27 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
   		$scope.setScroller ('graph-scroller', scrollerOptionsForGraph);
 
 
-
-
  		var colors = ['#c1c1c1', '#dc829c', '#83c3df', '#82de89', '#f6981a', '#f2d6af'];
-
  		var legendClasses = [];
-
  		var timeoutFunction = null;
 
- 		for(var i = 0 ;i < colors.length; i++){
+ 		for (var i = 0 ;i < colors.length; i++) {
  			legendClasses.push("background: "+colors[i]+" !important;");
 		}
 
-		$scope.returnLegendStyle  = function(index, legendModel){
-			if(legendModel){
+		$scope.returnLegendStyle  = function (index, legendModel) {
+			if (legendModel) {
 				return legendClasses[index];
 			}
-			else{
+			else {
 				return "";
 			}
 		};
 
 		var resizedWindow = function(){
 			/*
-				Caution, DOM accessing, TODO: try to convert it into angular way
-			*/
+			 *	Caution, DOM accessing, TODO: try to convert it into angular way
+			 */
 			var navListNode = $("#graph-showing-area #nav-listing");
 			var LabelElements = navListNode.find("ul li");
         	navListNode.css({"left" :plottedChart.plotLeft, "width": plottedChart.plotSizeX});
@@ -59,6 +53,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
         	$scope.refreshScroller('graph-scroller');
 
 		};
+		
 		var getMaxSeriesLengthData = function(){
 			var max = 0;
 			for(var i = 0; i < plottedChart.series.length; i++){
@@ -68,6 +63,8 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 			}
 			return max;
 		};
+
+
 
 		var formGraphData = function(){
 			$scope.graphData = [{
@@ -135,9 +132,8 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
  		};
 
 
-		var doInitialOperation = function(){
+		var doInitialOperation = function () {
 			$scope.data = rvAvailabilitySrv.getGraphData();
-
 			formGraphData();
 
 			Highcharts.theme = {
@@ -307,7 +303,6 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 
 			        }
 
-
 			    };
 
 			$scope.$emit("hideLoader");
@@ -336,29 +331,23 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 		/**
 		* when data changed from super controller, it will broadcast an event 'changedRoomAvailableData'
 		*/
-		var cr = $scope.$on("changedRoomAvailableData", function(event){
-			if(!isAlreadyRemoved){
+		var cr = $scope.$on("changedRoomAvailableData", function (event) {
+			if (!isAlreadyRemoved) {
 				$scope.hideMeBeforeFetching = false;
 				doInitialOperation();
-	        	setTimeout(function(){
-
-		        	for(var i = 0; i < $scope.graphData.length; i++){
+	        	setTimeout (function () {
+		        	for (var i = 0; i < $scope.graphData.length; i++) {
 		        		$scope.clickedOnLegend($scope.graphData[i].name, !$scope.graphData[i].checked);
 		        	}
-		        	$scope.$apply(function(){
+		        	$scope.$apply (function () {
 		        		resizedWindow();
 		        		$scope.hideMeBeforeFetching = true;
 		        	});
 		        	$(window).resize();
-
 	        	}, 1000);
         	}
-
 		});
 
-		/**
-		*
-		*/
 		$scope.$on("$destroy", function(){
 			isAlreadyRemoved = true;
 			$(window).unbind('resize');

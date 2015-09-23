@@ -10,9 +10,14 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	this.getGraphData = function(){
 		return that.data.graphData;
 	};
-	this.getGridData = function(){
+	this.getGridData = function () {
 		return that.data.gridData;
 	};
+
+	this.getGridDataForInventory = function () {
+		return that.data.gridDataForInventory;
+	};
+
 	this.getGridDataForGroupAvailability = function(){
 		return that.data.gridDataForGroupAvailability;
 	};	
@@ -226,7 +231,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	* param - Object from api/group_availability response
 	* return - Object 
 	*/
-	var formGridDataForGroupAvailability = function(datafromApi){
+	var formGridDataForGroupAvailability = function (datafromApi) {
 		var gridDataForGroupAvailability = {};
 		var dates = [];
 		var groupTotalRooms =[];
@@ -309,7 +314,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			//storing response temporarily in that.data, will change in occupancy call
 			that.data.gridDataForGroupAvailability = formGridDataForGroupAvailability(resultFromAPI);
 			deferred.resolve(that.data);
-		},function(data){
+		},function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -326,13 +331,13 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			from_date	: firstDate,
 			to_date		: secondDate
 		};
-
 		//Webservice calling section
 		var deferred = $q.defer();
-		var url = 'api/availability';
+		var url = 'api/availability/addons';
 		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(resultFromAPI) {
 			//storing response temporarily in that.data, will change in occupancy call
-			that.data.gridDataForGroupAvailability = formGridDataForGroupAvailability(resultFromAPI);
+			//that.data.gridDataForGroupAvailability = formGridDataForGroupAvailability(resultFromAPI);
+			that.data.griddataForInventory = resultFromAPI;
 			deferred.resolve(that.data);
 		},function(data){
 			deferred.reject(data);

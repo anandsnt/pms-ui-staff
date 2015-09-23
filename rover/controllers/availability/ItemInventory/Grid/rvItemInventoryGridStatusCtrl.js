@@ -9,8 +9,7 @@ sntRover.controller('rvItemInventoryGridStatusController', [
 		$scope.showRoomTypeWiseAvailableRooms = false;
 		$scope.showRoomTypeWiseBookedRooms = false;
 
-		$scope.data = rvAvailabilitySrv.getGridData();
-		console.log($scope.data);
+		$scope.data = rvAvailabilitySrv.getGridDataForInventory();
 		//if already fetched we will show without calling the API
 		if(!isEmptyObject($scope.data)){
 			$scope.refreshScroller('room_availability_scroller');
@@ -30,8 +29,8 @@ sntRover.controller('rvItemInventoryGridStatusController', [
 		/**
 		* when data changed from super controller, it will broadcast an event 'changedRoomAvailableData'
 		*/
-		$scope.$on("changedRoomAvailableData", function(event){
-			$scope.data = rvAvailabilitySrv.getGridData();
+		$scope.$on("changedRoomAvailableData", function (event) {
+			$scope.data = rvAvailabilitySrv.getGridDataForInventory();
 			$scope.refreshScroller('room_availability_scroller');
 			$scope.hideMeBeforeFetching = true;
 			$scope.$emit("hideLoader");
@@ -65,7 +64,6 @@ sntRover.controller('rvItemInventoryGridStatusController', [
 			if (!_.has($scope.data, 'dates')) {
 				return 0;
 			};
-
 			var leftMostRowCaptionWidth = 273,
 				totalColumns 			= $scope.data && $scope.data.dates && $scope.data.dates.length,
 				individualColWidth 		= 0;

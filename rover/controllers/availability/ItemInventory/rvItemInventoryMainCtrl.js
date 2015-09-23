@@ -21,12 +21,11 @@ sntRover.controller('itemInventoryMainController', [
 	$scope.data.formattedSelectedDate = $filter('date')($scope.data.selectedDate, $rootScope.fullMonthFullDayFullYear );
 
 	$scope.setSelectedView = function (selectedView) {
-		console.log(selectedView);
 		$scope.$emit("showLoader");
 		$scope.selectedView = selectedView;
 	};
 
-	$scope.loadSelectedView = function() {
+	$scope.loadSelectedView = function () {
 		if($scope.selectedView === 'grid'){
 			return '/assets/partials/availability/itemInventoryGridStatus.html';
 		}
@@ -49,36 +48,34 @@ sntRover.controller('itemInventoryMainController', [
 	/**
 	* success call of availability data fetch
 	*/
-	var successCallbackOfAvailabilityFetch = function(data){
+	var successCallbackOfInventoryFetch = function (data) {
 		$scope.$emit("hideLoader");
 		$scope.$broadcast("changedRoomAvailableData");
 		// for this successcallback we are not hiding the activty indicator
 		// we will hide it only after template loading.
-
 	};
 
 	/**
 	* error call of availability data fetch
 	*/
-	var failureCallbackOfAvailabilityFetch = function(errorMessage){
+	var failureCallbackOfAvailabilityFetch = function (errorMessage) {
 		$scope.$emit("hideLoader");
 	};
-
 
 	/**
 	* When there is any change of for availability data params we need to call the api
 	*/
-	$scope.changedAvailabilityDataParams = function(){
-		$timeout(function(){
+	$scope.changedAvailabilityDataParams = function () {
+		$timeout(function () {
 		//calculating date after number of dates selected in the select box
 			var dateAfter = tzIndependentDate ($scope.data.selectedDate);
 
-			dateAfter.setDate (dateAfter.getDate() + parseInt($scope.numberOfDaysSelected) - 1);
+			dateAfter.setDate(dateAfter.getDate() + parseInt($scope.numberOfDaysSelected) - 1);
 			var dataForWebservice = {
 				'from_date': $filter('date')(tzIndependentDate ($scope.data.selectedDate), $rootScope.dateFormatForAPI),
 				'to_date'  : $filter('date')(tzIndependentDate (dateAfter), $rootScope.dateFormatForAPI)
 			};
-			$scope.invokeApi(rvAvailabilitySrv.fetchItemInventoryDetails, dataForWebservice, successCallbackOfAvailabilityFetch, failureCallbackOfAvailabilityFetch);
+			$scope.invokeApi(rvAvailabilitySrv.fetchItemInventoryDetails, dataForWebservice, successCallbackOfInventoryFetch, failureCallbackOfAvailabilityFetch);
 		}, 0);
 	};
 
