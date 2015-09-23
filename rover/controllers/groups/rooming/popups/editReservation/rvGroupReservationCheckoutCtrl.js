@@ -25,17 +25,17 @@ sntRover.controller('rvGroupReservationCheckoutCtrl', [
     /**
      * Checks the selected reservation out. fires when user confirms checkout action.
      */
-    $scope.completeCheckOut = function(reservation) {
-            var params = {
-                "reservation_id" : reservation.id
-            };
+    $scope.completeCheckOut = function(reservationID) {
+        var params = {
+            "reservation_id" : reservationID
+        };
 
-            var options = {
-                params: params,
-                successCallBack: completeCheckoutSuccessCallback,
-                failureCallBack: completeCheckoutFailureCallback
-            };
-            $scope.callAPI(RVBillCardSrv.completeCheckout, options);
+        var options = {
+            params: params,
+            successCallBack: completeCheckoutSuccessCallback,
+            failureCallBack: completeCheckoutFailureCallback
+        };
+        $scope.callAPI(RVBillCardSrv.completeCheckout, options);
     };
 
 }]);
