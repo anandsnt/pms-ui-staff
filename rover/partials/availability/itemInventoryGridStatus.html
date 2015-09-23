@@ -1,0 +1,31 @@
+<div id="availability-grid" ng-controller="rvItemInventoryGridStatusController" class="availability-grid scrollable" ng-iscroll='room_availability_scroller' ng-iscroll-delay="100" ng-show="hideMeBeforeFetching">
+	<div class="wrapper" style="width: {{getWidthForTable()}}px">
+		<table class="dates-grid">
+			<colgroup>
+				<!-- Total number of <col> elements must match number of days displayed + first col for row labels. So in the 14 days grid, you'll have 15 <col> elements -->
+				<col> <!-- First col is always defined like this. It's used for row labels -->
+				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}"> <!-- Use this for every week day in the grid -->
+				<!-- <col class="grid-col weekend"> --> <!-- Use this for every weekend day in the grid -->
+			</colgroup>
+			<thead>
+				<tr>
+					<th class="heading"></th> <!-- First is blank, again for row label -->
+					<th ng-repeat="eachDate in data.dates">
+						<div class="inner" ng-class="{'weekend': eachDate.isWeekend}">
+							<span ng-bind="eachDate.date|date:dayInWeek"></span>{{eachDate.date|date:shortMonthAndDate}}
+						</div>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="individualAvailableRoomList in data.individualAvailableRooms track by $index">
+					<th class="heading" scope="row" ng-bind="individualAvailableRoomList.name"></th>
+					<td ng-repeat="individualAvailableRoom in individualAvailableRoomList.availableRoomNumberList track by $index">
+						<div class="inner" ng-bind="individualAvailableRoom" ng-class="{ 'unavailable' : individualAvailableRoom <= 0, 'warning' : individualAvailableRoom <= 3}"> <!-- Add class "disabled" if restricted. Otherwise, add "unavailable" if value <= 0, add class "warning" if value >0 and <= 3 -->
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

@@ -315,6 +315,31 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		return deferred.promise;
 	};
 
+	/**
+	* function to fetch item inventory between from date & to date
+	*/
+	this.fetchItemInventoryDetails = function (params) {
+		var firstDate 	= (params.from_date);
+		var secondDate 	= (params.to_date);
+
+		var dataForWebservice = {
+			from_date	: firstDate,
+			to_date		: secondDate
+		};
+
+		//Webservice calling section
+		var deferred = $q.defer();
+		var url = 'api/availability';
+		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(resultFromAPI) {
+			//storing response temporarily in that.data, will change in occupancy call
+			that.data.gridDataForGroupAvailability = formGridDataForGroupAvailability(resultFromAPI);
+			deferred.resolve(that.data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
 
 	/**
 	* function to fetch availability between from date & to date
