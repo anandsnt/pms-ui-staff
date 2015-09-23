@@ -752,25 +752,40 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		};
 
 		/**
+		 * [onReleaseRoomsSuccess description]
+		 * @param  {[type]} data [description]
+		 * @return {[type]}      [description]
+		 */
+		var onReleaseRoomsSuccess = function(data) {
+			//: Handle successful release
+			$scope.closeDialog();
+			fetchSummaryData();
+		};
+
+		/**
+		 * [onReleaseRoomsFailure description]
+		 * @param  {[type]} errorMessage [description]
+		 * @return {[type]}              [description]
+		 */
+		var onReleaseRoomsFailure = function(errorMessage) {
+			$scope.errorMessage = errorMessage;
+		};
+
+		/**
 		 * Handle release rooms
 		 * @return undefined
 		 */
 		$scope.releaseRooms = function() {
-			var onReleaseRoomsSuccess = function(data) {
-					//: Handle successful release
-					$scope.closeDialog();
-					fetchSummaryData();
-				},
-				onReleaseRoomsFailure = function(errorMessage) {
-					$scope.errorMessage = errorMessage;
-				};
-			$scope.callAPI(rvGroupConfigurationSrv.releaseRooms, {
+			var params = {
+				groupId: $scope.groupConfigData.summary.group_id
+			};
+
+			var options = {
+				params: params,
 				successCallBack: onReleaseRoomsSuccess,
-				failureCallBack: onReleaseRoomsFailure,
-				params: {
-					groupId: $scope.groupConfigData.summary.group_id
-				}
-			});
+				failureCallBack: onReleaseRoomsFailure
+			};				
+			$scope.callAPI(rvGroupConfigurationSrv.releaseRooms, options);
 		};
 
 		$scope.abortCancelGroup = function() {
@@ -779,29 +794,43 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$scope.closeDialog();
 		};
 
-		$scope.cancelGroup = function(cancellationReason) {
-			var onCancelGroupSuccess = function() {
-					// reload the groupSummary
-					$scope.closeDialog();
-					$state.go('rover.groups.config', {
-						id: $scope.groupConfigData.summary.group_id
-					}, {
-						reload: true
-					});
+		/**
+		 * [onCancelGroupSuccess description]
+		 * @return {[type]} [description]
+		 */
+		var onCancelGroupSuccess = function(data) {
+			// reload the groupSummary
+			$scope.closeDialog();
+			$scope.reloadPage();
+		};
 
-				},
-				onCancelGroupFailure = function(errorMessage) {
-					$scope.errorMessage = errorMessage;
-					$scope.abortCancelGroup();
-				};
-			$scope.callAPI(rvGroupConfigurationSrv.cancelGroup, {
+		/**
+		 * [onCancelGroupFailure description]
+		 * @param  {[type]} errorMessage [description]
+		 * @return {[type]}              [description]
+		 */
+		var onCancelGroupFailure = function(errorMessage) {
+			$scope.errorMessage = errorMessage;
+			$scope.abortCancelGroup();
+		};
+
+		/**
+		 * [cancelGroup description]
+		 * @param  {[type]} cancellationReason [description]
+		 * @return {[type]}                    [description]
+		 */
+		$scope.cancelGroup = function(cancellationReason) {
+			var params = {
+				group_id: $scope.groupConfigData.summary.group_id,
+				reason: cancellationReason
+			};
+
+			var options = {
+				params: params,
 				successCallBack: onCancelGroupSuccess,
-				failureCallBack: onCancelGroupFailure,
-				params: {
-					group_id: $scope.groupConfigData.summary.group_id,
-					reason: cancellationReason
-				}
-			});
+				failureCallBack: onCancelGroupFailure
+			};				
+			$scope.callAPI(rvGroupConfigurationSrv.cancelGroup, options);
 		};
 
 		$scope.onHoldStatusChange = function() {
@@ -830,42 +859,64 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {Boolean}
 		 */
 		$scope.isCancellable = function() {
-
-			return (rvPermissionSrv.getPermissionValue('CANCEL_GROUP') && !!$scope.groupConfigData.summary.is_cancelled || ($scope.groupConfigData.summary.total_checked_in_reservations === 0 && parseFloat($scope.groupConfigData.summary.balance) === 0.0));
+			var sData 					= $scope.groupConfigData.summary,
+				hasPermissionToCancel 	= rvPermissionSrv.getPermissionValue('CANCEL_GROUP'),
+				isCancelledGroup		= !!sData.is_cancelled,
+				noOfInhouseIsZero       = (sData.total_checked_in_reservations === 0),
+				balIsZero				= (parseFloat(sData.balance) === 0.0);
+			
+			return (hasPermissionToCancel && 
+					isCancelledGroup || 
+					(noOfInhouseIsZero && balIsZero));
 		};
 
+		/**
+		 * [onFetchAddonSuccess description]
+		 * @param  {[type]} data [description]
+		 * @return {[type]}      [description]
+		 */
+		var onFetchAddonSuccess = function(data) {
+			$scope.groupConfigData.selectedAddons = data;
+			if ($scope.groupConfigData.selectedAddons.length > 0 || $scope.isInStaycardScreen ()) {
+				$scope.openAddonsPopup();
+			} else {
+				$scope.manageAddons();
+			}
+		};
+
+		/**
+		 * [onFetchAddonFailure description]
+		 * @param  {[type]} errorMessage [description]
+		 * @return {[type]}              [description]
+		 */
+		var onFetchAddonFailure = function(errorMessage) {
+			$scope.errorMessage = errorMessage;
+		};
 		/**
 		 * Method to show addons popup
 		 * @return undefined
 		 */
 		$scope.viewAddons = function() {
-			var onFetchAddonSuccess = function(data) {
-					$scope.groupConfigData.selectedAddons = data;
-					if ($scope.groupConfigData.selectedAddons.length > 0 || $scope.isInStaycardScreen ()) {
-						$scope.openAddonsPopup();
-					} else {
-						$scope.manageAddons();
-					}
-				},
-				onFetchAddonFailure = function(errorMessage) {
-					$scope.errorMessage = errorMessage;
-				};
+			var params = {
+				id: $scope.groupConfigData.summary.group_id
+			};
 
-			$scope.callAPI(rvGroupConfigurationSrv.getGroupEnhancements, {
+			var options = {
+				params: params,
 				successCallBack: onFetchAddonSuccess,
-				failureCallBack: onFetchAddonFailure,
-				params: {
-					"id": $scope.groupConfigData.summary.group_id
-				}
-			});
+				failureCallBack: onFetchAddonFailure
+			};				
+			$scope.callAPI(rvGroupConfigurationSrv.getGroupEnhancements, options);
 		};
 
 
 		$scope.getRevenue = function() {
+			var sData = $scope.groupConfigData.summary;
 			if ($scope.isInAddMode()) {
 				return "";
 			}
-			return $rootScope.currencySymbol + $filter('number')($scope.groupConfigData.summary.revenue_actual, 2) + '/ ' + $rootScope.currencySymbol + $filter('number')($scope.groupConfigData.summary.revenue_potential, 2);
+			return $rootScope.currencySymbol + $filter('number')(sData.revenue_actual, 2) + '/ ' + 
+					$rootScope.currencySymbol + $filter('number')(sData.revenue_potential, 2);
 		};
 
 

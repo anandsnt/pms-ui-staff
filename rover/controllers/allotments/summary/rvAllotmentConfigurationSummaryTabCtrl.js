@@ -289,6 +289,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				$scope.errorMessage = ["Please save the allotment first"];
 				return;
 			}
+
 			$scope.attachedEntities = {};
 			$scope.attachedEntities.posting_account = {};
 			$scope.attachedEntities.posting_account.id = $scope.allotmentConfigData.summary.allotment_id;
