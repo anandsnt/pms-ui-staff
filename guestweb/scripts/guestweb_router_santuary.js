@@ -8,18 +8,18 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	$stateProvider.state('checkoutBalance', {
         url: '/checkoutBalance',
         controller: 'checkOutBalanceController',
-       	templateUrl: '/assets/checkoutnow/partials/Knickerbocker/checkoutBalance.html',
+       	templateUrl: '/assets/checkoutnow/partials/Sanctuary/checkoutBalance.html',
 	    title: 'Balance - Check-out Now'
     })
     .state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/checkoutnow/partials/Knickerbocker/checkOutStatus.html',
+       	templateUrl: '/assets/checkoutnow/partials/Sanctuary/checkOutStatus.html',
 		title: 'Status - Check-out Now'
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
        	controller: 'checkOutConfirmationController',
-       	templateUrl: '/assets/checkoutnow/partials/Knickerbocker/checkoutConfirmation.html',
+       	templateUrl: '/assets/checkoutnow/partials/Sanctuary/checkoutConfirmation.html',
 		title: 'Confirm - Check-out Now'
     });
 
@@ -27,17 +27,17 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
     $stateProvider.state('checkOutOptions', {
     	url: '/checkOutOptions',
-	 	templateUrl: '/assets/landing/Knickerbocker/landing.html',
+	 	templateUrl: '/assets/landing/Sanctuary/landing.html',
 	 	controller: 'checkOutLandingController',
 	 	title: 'Check-out'
 	 }).state('checkOutLaterOptions', {
 	 	url: '/checkOutLaterOptions',
-		templateUrl: '/assets/checkoutlater/partials/Knickerbocker/checkOutLater.html',
+		templateUrl: '/assets/checkoutlater/partials/Sanctuary/checkOutLater.html',
 	 	controller: 'checkOutLaterController',
 		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
 		url: '/checkOutLaterOptions/:id',
-		templateUrl: '/assets/checkoutlater/partials/Knickerbocker/checkOutLaterSuccess.html',
+		templateUrl: '/assets/checkoutlater/partials/Sanctuary/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Check-out Later'
 	 });
@@ -78,12 +78,12 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
 	 $stateProvider.state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',
-	 	templateUrl: '/assets/checkoutnow/partials/Knickerbocker/checkoutRoomVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Sanctuary/checkoutRoomVerification.html',
 	 	controller : 'checkoutRoomVerificationViewController',
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-	 	templateUrl: '/assets/checkoutnow/partials/Knickerbocker/ccVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Sanctuary/ccVerification.html',
 	 	controller : 'ccVerificationViewController',
 	 	title: 'CC verification'
 	 });

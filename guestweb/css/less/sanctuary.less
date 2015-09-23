@@ -14,6 +14,7 @@
 
 @black:#000;
 @yellow:#DBE23E;
+@dark-yellow:#CED526;
 
 
 .template-bg{
@@ -31,7 +32,10 @@
 	color:@black !important;
 }
 .light-template-bg{
-   background:@light-brown;
+   background:@yellow;
+}
+.dark-template-bg{
+	background:@dark-yellow !important;
 }
 .white-text{
 	color:@white !important;
@@ -51,6 +55,10 @@ body {
 	border:none !important;
 }
 
+
+.circle-bg {
+    background: url("/assets/img/Sanctuary/circle-bg.png") no-repeat scroll center top transparent;
+}
 
 .checkout-status{
 	border-top:none !important;
@@ -78,15 +86,15 @@ body {
 /* ----------------late checkout options page----------------- */
 
 .checkouttime1 {
-    background: none repeat scroll 0 0 #89604a;
+    background: none repeat scroll 0 0 #F0F671;
 }
 .checkouttime2 {
-    background: none repeat scroll 0 0 #653f2a;
+    background: none repeat scroll 0 0 #DBE23E;
 }
 .checkouttime3 {
-    background: none repeat scroll 0 0 #2e180d;
+    background: none repeat scroll 0 0 #CED526;
 }
-.checkout-later-back-button,.no-thanks a{
+.checkout-later-back-button,.no-thanks a,.checkouttime1, .checkouttime2, .checkouttime3{
 	color: @black !important;
 }
 
@@ -120,13 +128,13 @@ body {
 
 .viewbill-toggle{
 	a,a:hover{
-		color:@yellow !important;
+		color:@black !important;
 	}
 }
 
 .now-later-options{
 	a,a:hover{
-		color:@white !important;
+		color:@black !important;
 	}
 }
 a, a:hover {
