@@ -571,6 +571,12 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             //mass checkin/checkout
             $scope.qualifiedReservations = [];
             $scope.messageForMassCheckin = '';
+
+            //variables for state maintanace - D
+            $scope.roomingListState = {
+                editedReservationStart: "",
+                editedReservationEnd: ""
+            };
         };
 
         /**
@@ -1858,13 +1864,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         var initializeMe = function() {
             //updating the left side menu
             setActiveLeftSideMenu();
-
-            //variables for state maintanace
-            $scope.roomingListState = {
-                editedReservationStart: "",
-                editedReservationEnd: ""
-            };
-
 
             //IF you are looking for where the hell the API is CALLING
             //scroll above, and look for the event 'GROUP_TAB_SWITCHED'
