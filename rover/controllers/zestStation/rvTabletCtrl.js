@@ -13,9 +13,11 @@ sntRover.controller('rvTabletCtrl', [
             $scope.hotel = {
                 "title": "Zoku"
             };
+            
+            
+            
             $scope.title = $scope.hotel.title;
             $scope.showHeader = true;
-            $scope.kioskModeEnabled = true;
             $scope.reservationsPerPage = 3;//in select
             $scope.hoursNights = 'Nights';
             
@@ -177,7 +179,7 @@ sntRover.controller('rvTabletCtrl', [
             $scope.openAdminPopup = function() {
                 $scope.idle_timer_enabled = false;
                 ngDialog.open({
-                    template: '/assets/partials/tablet/rvTabletAdminPopup.html',
+                    template: '/assets/partials/zestStation/rvTabletAdminPopup.html',
                     className: 'ngdialog-theme-default',
                     scope: $scope,
                     closeByDocument: false,
@@ -191,7 +193,7 @@ sntRover.controller('rvTabletCtrl', [
                     $scope.goToScreen(null, 'cc-sign-time-out', true, 'cc-sign');
                 } else {
                 ngDialog.open({
-                        template: '/assets/partials/tablet/rvTabletIdlePopup.html',
+                        template: '/assets/partials/zestStation/rvTabletIdlePopup.html',
                         className: 'ngdialog-theme-default',
                         scope: $scope,
                         closeByDocument: false,
