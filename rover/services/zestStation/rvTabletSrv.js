@@ -17,6 +17,20 @@ sntRover.service('rvTabletSrv',
                     });
                     return deferred.promise;
                 };
+                
+                this.fetchHotelSettings = function () {//to get terms & conditions
+                    var deferred = $q.defer();
+                    var url = '/api/hotel_settings.json';
+
+                    rvBaseWebSrvV2.getJSON(url).then(function (data) {
+                        deferred.resolve(data);
+                    }, function (data) {
+                        deferred.reject(data);
+                    });
+                    return deferred.promise;
+                };
+                
+                
                 this.fetchReservationDetails = function (param) {
                     var deferred = $q.defer(),
                             url = '/staff/staycards/reservation_details.json?reservation='+param.id;

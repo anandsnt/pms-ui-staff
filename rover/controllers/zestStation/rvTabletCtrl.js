@@ -21,7 +21,6 @@ sntRover.controller('rvTabletCtrl', [
             $scope.reservationsPerPage = 3;//in select
             $scope.hoursNights = 'Nights';
             
-            
             $scope.$watch('at',function(to, from, evt){
                 if (to !== 'home' && from === 'home'){
                     $scope.resetTime();
@@ -52,6 +51,25 @@ sntRover.controller('rvTabletCtrl', [
             };
             
             
+            $scope.arrivalDateOptions = {
+                showOn: 'button',
+                dateFormat: 'MM-dd-yyyy',
+                numberOfMonths: 2,
+                yearRange: '-0:',
+                minDate: tzIndependentDate(new Date()),
+                beforeShow: function(input, inst) {
+                    $('#ui-datepicker-div').addClass('reservation arriving');
+                },
+                onClose: function(dateText, inst) {
+                    //in order to remove the that flickering effect while closing
+                    $timeout(function() {
+                        $('#ui-datepicker-div').removeClass('reservation arriving');
+                    }, 200);
+
+                }
+            };
+            
+            
             var setTitle = function() {
                 var title = $scope.hotel.title;
                 //yes, we are setting the heading and title
@@ -76,8 +94,16 @@ sntRover.controller('rvTabletCtrl', [
                     $scope.setupIdleTimer();
                     $scope.$emit('hideLoader');
                 };
+                var fetchHotelCompleted = function(data){
+                    $scope.hotel_settings = data;
+                    $scope.hotel_terms_and_conditions = $scope.hotel_settings.terms_and_conditions;
+                    //fetch the idle timer settings
+                    $scope.$emit('hideLoader');
+                };
+                $scope.invokeApi(rvTabletSrv.fetchHotelSettings, {}, fetchHotelCompleted);
                 //$scope.invokeApi(rvTabletSrv.fetchSettings, {}, fetchCompleted);
                 setTitle();
+                
                 $('.root-view').addClass('kiosk');
             };
             
@@ -115,13 +141,16 @@ sntRover.controller('rvTabletCtrl', [
             };
             
             $scope.cancelAdminSettings = function(){
+                if ($scope.settings){
                     $scope.settings.adminIdleTimeEnabled = $scope.adminIdleTimeEnabled;
                     $scope.settings.adminIdleTimePrompt = $scope.adminIdleTimePrompt;
                     $scope.settings.adminIdleTimeMax = $scope.adminIdleTimeMax;  
-                    
+                }
+                if ($scope.idleSettingsPopup && $scope.settings){
                     $scope.idleSettingsPopup.max = $scope.settings.adminIdleTimeMax;
                     $scope.idleSettingsPopup.prompt = $scope.settings.adminIdleTimePrompt;
                     $scope.idleSettingsPopup.enabled = $scope.settings.adminIdleTimeEnabled;
+                }
             };
             
             $scope.saveAdminSettings = function(){
@@ -311,44 +340,69 @@ sntRover.controller('rvTabletCtrl', [
             };
             
             $scope.selectedReservation = {};
-            $scope.selectReservation = function(r){
-                $scope.selectedReservation=r;
+            $scope.selectReservation = function(r, fromSelect){
+                $scope.selectedReservation = r;
                 console.log('reservation selected',r);
               
                   $scope.selectedReservation.reservation_details = {};
-                  $scope.selectedReservation.reservation_details.daily_rate  = 119.00;
-                  $scope.selectedReservation.reservation_details.package_price = 80.00;
-                  $scope.selectedReservation.reservation_details.taxes = 18.00;
                   
-                  var nights = $scope.selectedReservation.stay_dates.length;
                   
-                  $scope.selectedReservation.reservation_details.sub_total = nights*$scope.selectedReservation.reservation_details.daily_rate;
-                  $scope.selectedReservation.reservation_details.deposits = 100.00;
-                  $scope.selectedReservation.reservation_details.balance = $scope.selectedReservation.reservation_details.sub_total - $scope.selectedReservation.reservation_details.deposits;
                   
-              
-                var fetchCompleted = function(data){
-                    console.log('fetch completed');
-                    $scope.selectedReservation.reservation_details = data;
-                    $scope.selectedReservation.reservation_details.daily_rate  = 119.00;
-                    $scope.selectedReservation.reservation_details.package_price = 80.00;
-                    $scope.selectedReservation.reservation_details.taxes = 18.00;
-
-                    var nights = $scope.selectedReservation.stay_dates.length;
-
-                    $scope.selectedReservation.reservation_details.sub_total = nights*$scope.selectedReservation.reservation_details.daily_rate;
-                    $scope.selectedReservation.reservation_details.deposits = 100.00;
-                    $scope.selectedReservation.reservation_details.balance = $scope.selectedReservation.reservation_details.sub_total - $scope.selectedReservation.reservation_details.deposits+'.00';
-
-                };
-                $scope.invokeApi(rvTabletSrv.fetchReservationDetails, {
-                    'id': r.id
-                }, fetchCompleted);
+                  
                 
+                $scope.$emit('showLoader');
+                $scope.invokeApi(rvTabletSrv.fetchReservationDetails, {
+                    'id': r.confirmation_number
+                }, $scope.onSuccessFetchReservationDetails);
+                
+                var fromScreen;
+                if (!fromSelect){
+                    fromScreen = 'select-reservation';
+                } else {
+                    fromScreen = $scope.from;
+                }
+                console.info('fromScreen: '+fromScreen);
               
-              $scope.goToScreen(null, 'reservation-details', true, 'select-reservation');
-              
+              $scope.goToScreen(null, 'reservation-details', true, fromScreen);
             };
+            
+            $scope.onSuccessFetchReservationDetails = function(data){
+                $scope.$emit('hideLoader');
+                    $scope.selectedReservation.reservation_details = data;
+                    
+                    var info = data.data.reservation_card;
+                    var nites, avgDailyRate, packageRate, taxes, subtotal, deposits, balanceDue;
+                    //console.log(info)
+                    nites = parseInt(info.total_nights);
+                    avgDailyRate = parseFloat(info.avg_daily_rate).toFixed(2);
+                    deposits = parseFloat(info.deposit_amount).toFixed(2);
+                    if (info.package_price){
+                        packageRate = parseFloat(info.package_price).toFixed(2);
+                    } else {
+                        packageRate = 0;
+                    }
+                    
+                    subtotal = nites * avgDailyRate;
+                    balanceDue = parseFloat(info.balance_amount).toFixed(2);
+                    //console.info('balanceDue',balanceDue, 'subtotal',subtotal, 'deposits',deposits)
+                    taxes = parseFloat(balanceDue - subtotal - deposits).toFixed(2);
+                    
+                    
+                    console.info(nites, avgDailyRate, packageRate, taxes, subtotal, deposits, balanceDue);
+                  
+                  $scope.selectedReservation.reservation_details.daily_rate  = avgDailyRate;
+                  
+                  $scope.selectedReservation.reservation_details.package_price = packageRate;
+                  
+                  $scope.selectedReservation.reservation_details.taxes = taxes;
+                  
+                  $scope.selectedReservation.reservation_details.sub_total = subtotal;
+                  
+                  $scope.selectedReservation.reservation_details.deposits = deposits;
+                  
+                  $scope.selectedReservation.reservation_details.balance = balanceDue;
+            };
+            
             
             $scope.goToSelectReservation = function(){
                 var total = $scope.reservationPages;
@@ -399,11 +453,12 @@ sntRover.controller('rvTabletCtrl', [
             $scope.lastTextInput = '';
             
             $scope.inputTextHandler = function(at, textValue){
+                console.info('at: '+at)
                 if (!$scope.from){
                     $scope.from = 'home';
                 }
                 var fetchCompleted = function(data){
-                    if (data.results.length > 0){//debuggin
+                    if (data.results.length > 1){//debuggin
                     //if (data.results.length > 0){
                         $scope.reservationList = [];
                         $scope.resList = [];
@@ -411,12 +466,16 @@ sntRover.controller('rvTabletCtrl', [
                         $scope.reservationPages = Math.ceil(data.results.length/$scope.reservationsPerPage);
                         $scope.goToSelectReservation();
                         $scope.reservationPageNum = 1;
-                    } else {
+                    } else if (data.results.length === 1){
+                        $scope.selectReservation(data.results[0], true);
+                    }else {
                         $scope.goToScreen(null, 'no-match', true, at);
                     }
                     //fetch the idle timer settings
                     $scope.$emit('hideLoader');
                 };
+                
+                
                 var findBy;
                 switch(at){
                     case 'admin-login-username':{
@@ -440,11 +499,43 @@ sntRover.controller('rvTabletCtrl', [
                     case 'input-last':{
                             //fetch reservation list using email as the param
                             //onsuccess push results to window
+                        findBy = 'email';
                         $scope.input.last_name = textValue;
                         $scope.clearInputText();
-                        $scope.goToScreen(null, 'find-reservation', true);
+                        
+                        if ($scope.from === 'no-match'){
+                            $scope.invokeApi(rvTabletSrv.fetchReservations, {
+                            'find_by':findBy,
+                            'last_name':$scope.input.last_name,
+                            'value': $scope.input.lastEmailValue
+                        }, fetchCompleted);
+                        } else {
+                            $scope.goToScreen(null, 'find-reservation', true);
+                        }
+                        
                         break;
                     };
+                    /*
+                    case 'input-email':{
+                            //fetch reservation list using email as the param
+                            //onsuccess push results to window
+                        findBy = 'date';
+                        $scope.input.last_name = textValue;
+                        $scope.clearInputText();
+                        
+                        if ($scope.from === 'no-match'){
+                            $scope.invokeApi(rvTabletSrv.fetchReservations, {
+                            'find_by':findBy,
+                            'last_name':$scope.input.last_name,
+                            'value': $scope.input.date
+                        }, fetchCompleted);
+                        } else {
+                            $scope.goToScreen(null, 'find-reservation', true);
+                        }
+                        
+                        break;
+                    };
+                                */
                     case 'find-by-email':{
                             //fetch reservation list using email as the param
                             //onsuccess push results to window
@@ -458,6 +549,21 @@ sntRover.controller('rvTabletCtrl', [
                             'find_by':findBy,
                             'last_name':$scope.input.last_name,
                             'value': textValue
+                        }, fetchCompleted);
+                        break;
+                    };
+                    case 'find-by-date':{
+                            //fetch reservation by last name + departure date
+                       
+                        findBy = 'date';
+                        $scope.from = at;
+                        $scope.prevStateNav.push($scope.from);
+                        $scope.clearInputText();
+                        
+                        $scope.invokeApi(rvTabletSrv.fetchReservations, {
+                            'find_by':findBy,
+                            'last_name':$scope.input.last_name,
+                            'value': $scope.input.date
                         }, fetchCompleted);
                         break;
                     };
@@ -512,6 +618,7 @@ sntRover.controller('rvTabletCtrl', [
             };
 
             $scope.goToScreen = function(event, screen, override, from){
+                console.info($scope.prevStateNav)
                 //screen = check-in, check-out, pickup-key;
                 var stateToGoTo, cancel = false;
                 if (typeof screen === null || typeof screen === typeof undefined){
@@ -526,6 +633,7 @@ sntRover.controller('rvTabletCtrl', [
                 if (screen !== 'home'){
                     $scope.hideNavBtns = false;
                 }
+                
                 switch(screen){
                     case "home":
                         $scope.at = 'home';
@@ -539,6 +647,10 @@ sntRover.controller('rvTabletCtrl', [
                         $scope.headingText = 'Type Your Last Name';
                         $scope.subHeadingText = '';
                         $scope.inputTextPlaceholder = '';
+                        if (from === 'no-match'){
+                            $scope.input.inputTextValue = $scope.input.last_name;
+                        }
+                        
                         $scope.hideNavBtns = false;
                     break;
                         
@@ -552,6 +664,7 @@ sntRover.controller('rvTabletCtrl', [
                     case "find-by-date":
                         $scope.at = 'find-by-date';
                         stateToGoTo = 'rover.tab-kiosk-find-reservation-by-date';
+                        $scope.datepicker_heading = 'Find By Date';
                         $scope.hideNavBtns = false;
                         break;
                         
@@ -749,26 +862,58 @@ sntRover.controller('rvTabletCtrl', [
                     $state.go(stateToGoTo, stateParams);
                 } else {
                     if (!cancel){
-                        event.preventDefault();
-                        event.stopImmediatePropagation();
-                        event.stopPropagation();
-
+                        if (event){
+                            event.preventDefault();
+                            event.stopImmediatePropagation();
+                            event.stopPropagation();
+                        }
                         $state.go(stateToGoTo, stateParams);
                     } else {
                         $scope.$emit('hideLoader');
                         $scope.$parent.$emit('hideLoader');
                     }
                 }
+                /*
+                setTimeout(function(){
+                    //take focus to the designated input field, to auto-prompt the popup keyboard on mobile devices
+                    $('.start-focused').focus();
+                },1750);
+                */
             };
-            
             $scope.agreeTerms = function(){
                 
                 
             };
             
-            
-            
-            
+            $scope.dateOptions = {
+                changeYear: true,
+                changeMonth: true,
+                minDate: tzIndependentDate(new Date()),
+                yearRange: "0:+10",
+                onSelect: function(value) {
+                    console.log(arguments);
+                    $scope.input.date = value;
+                    console.log($scope.input.date);
+                    var d = $scope.input.date;
+                    var text = d.split('/');
+                    
+                    $('#datepicker').val(text[2]+'-'+text[0]+'-'+text[1]);
+                    ngDialog.close();
+                }
+        };
+	$scope.showDatePicker = function(){
+            ngDialog.open({
+                    template: '/assets/partials/zestStation/datePicker.html',
+                    //controller: 'ADcampaignDatepicker',
+                    className: 'ngdialog-theme-default',
+                    scope: $scope,
+                    closeByDocument: true
+                });
+                setTimeout(function(){
+                        $('.ui-datepicker-inline').removeClass('ui-datepicker-inline');
+                },5);
+                $scope.openDialog = ngDialog;
+	};
             
             
             
