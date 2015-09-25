@@ -10,6 +10,7 @@ sntRover.controller('rvItemInventoryGridStatusController', [
 		$scope.showRoomTypeWiseBookedRooms = false;
 
 		$scope.data = rvAvailabilitySrv.getGridDataForInventory();
+		console.log($scope.data);
 		//if already fetched we will show without calling the API
 		if(!isEmptyObject($scope.data)){
 			$scope.refreshScroller('room_availability_scroller');

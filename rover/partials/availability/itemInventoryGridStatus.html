@@ -18,10 +18,10 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="eachDate in data.dates track by $index">
-					<th class="heading" scope="row" ng-bind="individualAvailableRoomList.name"></th>
-					<td ng-repeat="individualAvailableRoom in individualAvailableRoomList.availableRoomNumberList track by $index">
-						<div class="inner" ng-bind="individualAvailableRoom" ng-class="{ 'unavailable' : individualAvailableRoom <= 0, 'warning' : individualAvailableRoom <= 3}"> <!-- Add class "disabled" if restricted. Otherwise, add "unavailable" if value <= 0, add class "warning" if value >0 and <= 3 -->
+				<tr ng-repeat="addon in data.addons track by $index">
+					<th class="heading" scope="row" ng-bind="addon.name"></th>
+					<td ng-repeat="date in addon.dates track by $index">
+						<div class="inner" ng-bind="date.availability" ng-class="{ 'unavailable' : date.availability <= 0, 'warning' : date.availability <= 3}"> <!-- Add class "disabled" if restricted. Otherwise, add "unavailable" if value <= 0, add class "warning" if value >0 and <= 3 -->
 						</div>
 					</td>
 				</tr>
