@@ -6,7 +6,7 @@
     <nav id="options" role="nav">
         <ul role="menu">
             <li>
-                <button type="button" class="button option" click-touch='goToScreen($event,"cc-sign", true, "reservation-details")'>
+                <button type="button" class="button option" touch-press='goToScreen($event,"cc-sign", true, "reservation-details")'>
                     <ng-include src="'assets/css/kiosk/assets/icons/pen.svg'"></ng-include>
                 </button>
                 Re-Sign
@@ -15,7 +15,7 @@
                 <span>Or</span>
             </li>
             <li>
-                <button type="button" class="button option" click-touch='goToScreen($event,"staff-help", true, "cc-sign")'>
+                <button type="button" class="button option" touch-press='goToScreen($event,"staff-help", true, "cc-sign")'>
                     <ng-include src="'assets/css/kiosk/assets/icons/staff.svg'"></ng-include>
                 </button>
                 Speak

@@ -18,7 +18,7 @@ sntRover.controller('roverController',
 
 
     $rootScope.isOWSErrorShowing = false;
-    $scope.kiosk = false;
+     $scope.kiosk = false;
     if (localStorage['kioskUser']){
         $scope.kiosk = true;
         $scope.$emit('hideLoader');
@@ -123,8 +123,6 @@ sntRover.controller('roverController',
       $rootScope.isHLPActive = hotelDetails.is_hlp_active;
       $rootScope.isPromoActive = hotelDetails.is_promotion_active;
       
-      $rootScope.kiosk = hotelDetails.kiosk;
-
     //set MLI Merchant Id
     try {
       sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
@@ -162,8 +160,6 @@ sntRover.controller('roverController',
     
     
     
-    $scope.$emit('kioskMode',function(){});
-
     // self executing check
     $rootScope.isMaintenanceStaff = (function(roles) {
       // Values taken form DB
