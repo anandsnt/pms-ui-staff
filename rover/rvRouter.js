@@ -28,18 +28,12 @@ sntRover.config([
             controller: 'roverController',
             resolve: {
                 hotelDetails: function(RVHotelDetailsSrv) {
-                    if (localStorage['isKiosk'] == 'true'){
-                        return;
-                    }
                     return RVHotelDetailsSrv.fetchHotelDetails();
                 },
                 userInfoDetails: function(RVDashboardSrv) {
                         return RVDashboardSrv.fetchUserInfo();
                 },
                 permissions: function (rvPermissionSrv) {
-                    if (localStorage['isKiosk'] == 'true'){
-                        return;
-                    }
                     return rvPermissionSrv.fetchRoverPermissions();
                 }
             }
