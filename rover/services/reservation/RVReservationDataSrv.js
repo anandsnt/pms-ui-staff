@@ -137,7 +137,9 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 				group: {
 					id: "",
 					name: "",
-					code: ""
+					code: "",
+					company: "",
+					travelAgent: ""
 				}
 			};
 		};
