@@ -569,7 +569,7 @@
 
     .report-header {
         position: relative;
-        padding: 5px 20px;
+        padding: 5px 10px;
         overflow: hidden;
         background: @white;
         z-index: 1090;
@@ -580,7 +580,7 @@
 
         .totals {
             margin: 5px 0;
-            .calc-width(100, 130);
+            .calc-width(100, 140);
             .pull-left;
 
             li {
@@ -620,27 +620,14 @@
         }
 
         .actions {
-            /*max-width: 320px;*/
-            width: 130px;
+            width: 140px;
             overflow: hidden;
+            text-align: right;
             .pull-right;
-
-            .select {
-                margin-right: 5px;
-                .hide;
-                .pull-left;
-
-                select {
-                    padding-right: 20px;
-                    height: 40px;
-                    .box-shadow(none);
-                }
-            }
 
             .button {
                 margin-right: 5px;
                 .square(40px);
-                .pull-left;
 
                 &:last-child { margin-right: 0; }
             }
