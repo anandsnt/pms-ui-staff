@@ -15,8 +15,25 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
 		var deferred = $q.defer();
 		var url =  '/api/rover_header_info.json';
 		RVBaseWebSrv.getJSON(url).then(function(data) {
+                    
+		var fetchUserRolesData = function(){
+			var url = '/api/roles.json';
+
+			rvBaseWebSrvV2.getJSON(url).then(function(data) {
+				userDetails.userRoles = data.user_roles;
+			    deferred.resolve(userDetails.userRolesData);
+                            
+                            
+			},function(data){
+			    deferred.reject(data);
+			});
+			return deferred.promise;
+		};
+                
+                
                 
 		userDetails = data;
+                fetchUserRolesData();//needed to detect kiosk role until included in userRoleDetails (future sprint)
                 
 			deferred.resolve(data);
 		},function(data){
@@ -40,7 +57,7 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
                                 role = data.user_roles[x];
                                 if (roleId == role){
                                     roles.push({'name': userDetails.userRoles[i].name, 'id':userDetails.userRoles[i].value});
-                                    if (userDetails.userRoles[i].name === 'Kiosk' || userDetails.userRoles[i].name === 'Zest Station'){
+                                    if (userDetails.userRoles[i].name === 'Kiosk'){
                                         userDetails.hasKioskRole = true;
                                     }
                                 }
