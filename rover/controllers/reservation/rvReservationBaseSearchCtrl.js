@@ -528,8 +528,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                             type: 'GROUP',
                             id: group.id,
                             code: group.code,
-                            company: group.company,
-                            travelAgent: group.travel_agent
+                            company: group.company_id,
+                            travelAgent: group.travel_agent_id
                         });
                     });
                 }
@@ -735,8 +735,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                                 from: item.from_date,
                                 to: item.to_date,
                                 name: item.name,
-                                company: item.company,
-                                travelAgent: item.travel_agent
+                                company: item.company_id,
+                                travelAgent: item.travel_agent_id
                             };
                             codeResults.push(eachItem);
                         });

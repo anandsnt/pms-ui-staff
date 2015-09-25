@@ -70,18 +70,26 @@ sntRover.controller('guestCardController', [
 						id: $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id
 					});
 				}
-				if ($scope.reservationDetails.companyCard.id !== "" && $scope.reservationDetails.companyCard.id !== null) {
+				if (!!$scope.reservationDetails.companyCard.id && !$scope.reservationData.group.id) {
 					$scope.initCompanyCard({
 						id: $scope.reservationDetails.companyCard.id
 					});
 				}
-				if ($scope.reservationDetails.travelAgent.id !== "" && $scope.reservationDetails.travelAgent.id !== null) {
+				if (!!$scope.reservationDetails.travelAgent.id && !$scope.reservationData.group.id) {
 					$scope.initTravelAgentCard({
 						id: $scope.reservationDetails.travelAgent.id
 					});
 				}
 				if (!!$scope.reservationData.group.id) {
 					$scope.initGroupCard($scope.reservationData.group.id);
+					if (!!$scope.reservationData.group.travelAgent) {
+						$scope.reservationDetails.travelAgent.id = $scope.reservationData.group.travelAgent;
+						$scope.initTravelAgentCard();
+					}
+					if (!!$scope.reservationData.group.company) {
+						$scope.reservationDetails.companyCard.id = $scope.reservationData.group.company;
+						$scope.initCompanyCard();
+					}
 				}
 
 				$scope.reservationData.isSameCard = false;
@@ -957,7 +965,9 @@ sntRover.controller('guestCardController', [
 			_.extend($scope.reservationData.group, {
 				id: groupData.id,
 				name: groupData.group_name,
-				code: groupData.group_code
+				code: groupData.group_code,
+				company: groupData.company_id,
+				travelAgent: groupData.travel_agent_id
 			});
 		};
 
@@ -1005,6 +1015,15 @@ sntRover.controller('guestCardController', [
 
 			//updating the central reservation data model
 			updateReservationGroupData(selectedGroup);
+
+			if (!!$scope.reservationData.group.travelAgent) {
+				$scope.reservationDetails.travelAgent.id = $scope.reservationData.group.travelAgent;
+				$scope.initTravelAgentCard();
+			}
+			if (!!$scope.reservationData.group.company) {
+				$scope.reservationDetails.companyCard.id = $scope.reservationData.group.company;
+				$scope.initCompanyCard();
+			}
 
 			//we are in card adding mode
 			switchToNomralCardViewingMode();
@@ -1116,11 +1135,21 @@ sntRover.controller('guestCardController', [
 				$scope.reservationData.group = {
 					id: group.id,
 					name: group.group_name,
-					code: group.group_code
+					code: group.group_code,
+					company: group.company_id,
+					travelAgent: group.travel_agent_id
 				};
 				$scope.closeGuestCard();
 				$scope.viewState.isAddNewCard = false;
 				$scope.initGroupCard(group.id);
+				if (!!$scope.reservationData.group.travelAgent) {
+					$scope.reservationDetails.travelAgent.id = $scope.reservationData.group.travelAgent;
+					$scope.initTravelAgentCard();
+				}
+				if (!!$scope.reservationData.group.company) {
+					$scope.reservationDetails.companyCard.id = $scope.reservationData.group.company;
+					$scope.initCompanyCard();
+				}
 				$scope.showContractedRates({
 					companyCard: $scope.reservationDetails.companyCard.id,
 					travelAgent: $scope.reservationDetails.travelAgent.id
