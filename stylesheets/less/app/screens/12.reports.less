@@ -1220,6 +1220,8 @@
 
                             &[colspan="2"] { width: 160px; }
                             &[colspan="3"] { width: 240px; }
+                            &[colspan="4"] { width: 320px; }
+                            &[colspan="5"] { width: 400px; }
                         }
 
                         &.bottom-row {
@@ -1254,7 +1256,7 @@
 
                             &.day-end { border-right: 1px solid @grey4; }
 
-                            strong { font-size: 16px; }
+                            strong { font-weight: 600; }
 
                             &:last-child { border-right-width: 0; }
                         }
@@ -1731,6 +1733,73 @@
                         em { color: rgba(0,0,0,.5); }
 
                         strong { font-weight: 600; }
+
+                        .switch-button {
+                            #border-radius > .rounded();
+                            .size(50px, 50%);
+                            .pull-left;
+
+                            input { .size(50px, 100%); }
+
+                            .data-off,
+                            .data-on {
+                                padding: 5px;
+                                line-height: 20px;
+                                .size(40px, 100%);
+
+                                .switch-icon,
+                                .value {
+                                    font-size: 12px;
+                                    text-transform: uppercase;
+                                    text-align: center;
+                                    font-weight: 400;
+                                    margin: 0;
+                                    .size(20px, 100%);
+                                    #border-radius > .rounded();
+                                    .show;
+                                }
+                            }
+
+                            .data-off {
+                                left: 0;
+                                right: 0;
+                                top: 0;
+
+                                .switch-icon { .gradient(@redStart, @redEnd); }
+                            }
+
+                            .data-on {
+                                left: 0;
+                                right: 0;
+                                top: 100%;
+
+                                .switch-icon { .gradient(@greenStart, @greenEnd); }
+                            }
+
+                            &.on {
+                                .data-off {
+                                    left: 0;
+                                    right: 0;
+                                    top: -100%;
+                                }
+
+                                .data-on {
+                                    left: 0;
+                                    right: 0;
+                                    top: 0;
+                                }
+                            }
+
+                            &:first-child { 
+                                margin-right: 5px;
+                                .calc-width(50, 5);
+                            }
+                        }
+
+                        &.action-row {
+                            padding: 5px 5px 5px 10px;
+                            height: 60px;
+                        }
 
                         &.main-heading {
                             font-size: 16px;
