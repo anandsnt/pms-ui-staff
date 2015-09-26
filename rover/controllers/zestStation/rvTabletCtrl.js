@@ -925,6 +925,6 @@ sntRover.controller('rvTabletCtrl', [
                 $scope.goToScreen(null, 'admin-login-username', true);
             };
 
-            initTabletConfig();
+           // initTabletConfig();
 	}
 ]);
