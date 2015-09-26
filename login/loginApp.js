@@ -48,6 +48,7 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
                      $state.isKiosk = false;
                      localStorage['isKiosk'] = false;
                  }
+                 console.log(data)
 	 	//Clear all session storage contents. We are starting a new session.
 	 	var i = sessionStorage.length;
 	 	while(i--) {
