@@ -858,7 +858,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 			afterFetch();
 			findBackNames();
 			printReport();
-			refreshScroll();
 		});
 
 		var reportAPIfailed = $scope.$on(reportMsgs['REPORT_API_FAILED'], function() {
