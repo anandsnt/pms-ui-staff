@@ -22,9 +22,7 @@ sntRover.controller('rvTabletCtrl', [
             $scope.hoursNights = 'Nights';
             
             $scope.$watch('at',function(to, from, evt){
-                console.info('now at: '+to+', from: '+from);
                 
-                $('.root-view').addClass('kiosk');
                 if (to !== 'home' && from === 'home'){
                     $scope.resetTime();
                 } else if (to === 'home' && from !== 'home'){
@@ -90,6 +88,7 @@ sntRover.controller('rvTabletCtrl', [
             $scope.inputTextPlaceholder = 'Input Text Here';
             
             var initTabletConfig = function(){
+                $('head').append('<link rel="stylesheet" type="text/css" href="../assets/css/zestStation/zoku.css">');
                 //$scope.settings = $rootScope.kiosk;
                 var fetchCompleted = function(data){
                     $scope.settings = data;
