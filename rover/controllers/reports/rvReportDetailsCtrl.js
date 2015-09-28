@@ -744,16 +744,16 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportNames['OCCUPANCY_REVENUE_SUMMARY']:
 					orientation = 'landscape';
-					margin: '2mm 2mm';
+					//margin: '2mm 2mm';
 					break;
 
 				default:
 					orientation = 'portrait';
-					margin: '1cm 0.5cm';
+					// margin: '1cm 0.5cm';
 					break;
 			}
 
-			$( 'head' ).append( "<style id='print-orientation'>@page { size: " + orientation + "; margin: " + margin + "; }</style>" );
+			$( 'head' ).append( "<style id='print-orientation'>@page { size: " + orientation + "; }</style>" );
 		};
 
 		// add the print orientation after printing
