@@ -179,6 +179,13 @@
 						<input type="checkbox" ng-model="singleAddon.forecast_for_next_day">
 					</label>
 				</div>
+				<div ng-show="showChargeFullWeeksOnly()" class="entry radio-check">
+					<label class="checkbox">
+						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.chargeFullWeeksOnly }"></span>
+						<label>{{'CHARGE_FULL_WEEKS_ONLY' | translate}}</label>
+						<input type="checkbox" ng-model="singleAddon.chargeFullWeeksOnly">
+					</label>
+				</div>
 				
 			</fieldset>
 
