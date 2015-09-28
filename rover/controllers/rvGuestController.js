@@ -513,13 +513,26 @@ sntRover.controller('guestCardController', [
 		})();
 
 		$scope.removeGroupCard = function() {
+
+			resetReservationData.resetCompanyCard();
+			resetReservationData.resetTravelAgent();
+
+			$scope.reservationDetails.companyCard.id = "";
+			$scope.reservationDetails.travelAgent.id = "";
+
+			$scope.$broadcast("companyCardDetached");
+			$scope.$broadcast("travelAgentDetached");
+
 			if ($scope.viewState.identifier === "CREATION") {
 				// reservationCreation				
 				$scope.reservationData.group = {
 					id: "",
 					name: "",
-					code: ""
+					code: "",
+					company: "",
+					travelAgent: ""
 				}
+				
 				$scope.showContractedRates({
 					companyCard: $scope.reservationDetails.companyCard.id,
 					travelAgent: $scope.reservationDetails.travelAgent.id
@@ -1015,15 +1028,6 @@ sntRover.controller('guestCardController', [
 
 			//updating the central reservation data model
 			updateReservationGroupData(selectedGroup);
-
-			if (!!$scope.reservationData.group.travelAgent) {
-				$scope.reservationDetails.travelAgent.id = $scope.reservationData.group.travelAgent;
-				$scope.initTravelAgentCard();
-			}
-			if (!!$scope.reservationData.group.company) {
-				$scope.reservationDetails.companyCard.id = $scope.reservationData.group.company;
-				$scope.initCompanyCard();
-			}
 
 			//we are in card adding mode
 			switchToNomralCardViewingMode();
@@ -1577,6 +1581,17 @@ sntRover.controller('guestCardController', [
 		$scope.vipToggleClicked = function() {
 			$scope.guestCardData.contactInfo.vip = !$scope.guestCardData.contactInfo.vip;
 			$scope.updateContactInfo();
+		};
+
+		/**
+		 * Hide detach card in case of group reservations		 
+		 */
+		$scope.allowDetachAgent = function() {
+			return !$scope.reservationData.group.id;
+		};
+
+		$scope.allowDetachCompany = function() {
+			return !$scope.reservationData.group.id;
 		};
 
 

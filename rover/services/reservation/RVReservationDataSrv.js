@@ -285,7 +285,9 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 			reservationData.inHouse = stayCard.reservation_status === "CHECKEDIN";
 			reservationData.group = { //group
 				id: stayCard.group_id,
-				name: stayCard.group_name
+				name: stayCard.group_name,
+				company: cards.company_id || "",
+				travelAgent: cards.travel_agent_id || ""
 			};
 			//ID
 			reservationData.confirmNum = stayCard.confirmation_num;
