@@ -40,7 +40,11 @@ sntRover.config([
 
 
         });
-
+         $stateProvider.state('station', {
+            url: '/kiosk',
+            templateUrl: '/assets/partials/zestStation/kiosk/specific/home.html',
+            controller: 'rvTabletCtrl'
+        });
 
     }
 ]);
