@@ -39,7 +39,7 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
                                 role = data.user_roles[x];
                                 if (roleId == role){
                                     roles.push({'name': userDetails.userRoles[i].name, 'id':userDetails.userRoles[i].value});
-                                    if (userDetails.userRoles[i].name === 'Kiosk'){
+                                    if (userDetails.userRoles[i].name === 'Kiosk' || userDetails.userRoles[i].name === 'Zest Station'){
                                         userDetails.hasKioskRole = true;
                                     }
                                 }

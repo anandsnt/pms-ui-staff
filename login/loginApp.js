@@ -40,7 +40,7 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	  * @param {object} status of login and data
 	  */
 	 $scope.successCallback = function(data){
-                 if (data.redirect_url === '/kiosk' || data.redirect_url === '/ZestStation'){
+                 if (data.redirect_url === '/kiosk' || data.redirect_url === '/station'){
                      localStorage['isKiosk'] = true;
                  } else {
                      localStorage['isKiosk'] = false;
