@@ -96,21 +96,21 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             $scope.$broadcast("UPDATED_ALLOTMENT_INFO");
         };
 
--       /**
--        * method to fetch summary data
--        * @return undefined
--        */
--       var fetchSummaryData = function() {
--           var params = {
--               "allotmentId": $scope.allotmentConfigData.summary.allotment_id
--           };
--           var options = {
--               successCallBack: fetchSuccessOfSummaryData,
--               params: params
--           };
--
--           $scope.callAPI(rvAllotmentConfigurationSrv.getAllotmentSummary, options);
--       };
+       /**
+        * method to fetch summary data
+        * @return undefined
+        */
+       var fetchSummaryData = function() {
+           var params = {
+               "allotmentId": $scope.allotmentConfigData.summary.allotment_id
+           };
+           var options = {
+               successCallBack: fetchSuccessOfSummaryData,
+               params: params
+           };
+
+           $scope.callAPI(rvAllotmentConfigurationSrv.getAllotmentSummary, options);
+       };
 
         /**
          * Refresh the allotment summary data when we get this event
@@ -359,7 +359,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          * @return {Boolean} [description]
          */
         $scope.shouldShowCompanyCardNavigationButton = function() {
-            return (!$scope.isInAddMode() && !!$scope.allotmentConfigData.summary.company.id)
+            return (!$scope.isInAddMode() && !!$scope.allotmentConfigData.summary.company.id);
         };
 
         /**
@@ -367,7 +367,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          * @return {Boolean} [description]
          */
         $scope.shouldShowTravelAgentNavigationButton = function() {
-            return (!$scope.isInAddMode() && !!$scope.allotmentConfigData.summary.travel_agent.id)
+            return (!$scope.isInAddMode() && !!$scope.allotmentConfigData.summary.travel_agent.id);
         };
 
         $scope.goToTACard = function(){            

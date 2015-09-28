@@ -797,27 +797,29 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 selectedAddons: [],
                 activeScreen: 'GROUP_ACTUAL'
             };
+            var groupSummary = $scope.groupConfigData.summary;
+
             $timeout(function() {
-                $scope.groupSummaryMemento = angular.copy($scope.groupConfigData.summary);
+                $scope.groupSummaryMemento = angular.copy(groupSummary);
             }, 500);
 
 
             $scope.accountConfigData = {
                 summary: summaryData.accountSummary
             }
-            if (!$scope.groupConfigData.summary.release_date) {
-                $scope.groupConfigData.summary.release_date = $scope.groupConfigData.summary.block_from;
+            if (!groupSummary.release_date) {
+               groupSummary.release_date = groupSummary.block_from;
             }
 
             if (!$scope.isInAddMode()) {
-                $scope.groupConfigData.summary.block_from = new tzIndependentDate($scope.groupConfigData.summary.block_from);
-                $scope.groupConfigData.summary.block_to = new tzIndependentDate($scope.groupConfigData.summary.block_to);
+                groupSummary.block_from = new tzIndependentDate(groupSummary.block_from);
+                groupSummary.block_to = new tzIndependentDate(groupSummary.block_to);
             }
 
             // if we searched a group name that wasnt in the db
             // pass over that search term here
             if ( !!$stateParams.newGroupName ) {
-                $scope.groupConfigData.summary.group_name = $stateParams.newGroupName
+                groupSummary.group_name = $stateParams.newGroupName
             };
 
         };
