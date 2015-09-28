@@ -43,9 +43,13 @@ admin.controller('ADRatesAddonsCtrl', [
 		$scope.checkPMSConnection();
 
 		$scope.init();
-
-
-
+		$scope.showChargeFullWeeksOnly = function(){
+			if(!$scope.isConnectedToPMS&&($scope.singleAddon.post_type_id ===3)&&($scope.singleAddon.is_reservation_only ===true)){
+				return true;
+			}else{
+				return false;
+			};
+		};
 
 		$scope.fetchTableData = function($defer, params) {
 			var getParams = $scope.calculateGetParams(params);
