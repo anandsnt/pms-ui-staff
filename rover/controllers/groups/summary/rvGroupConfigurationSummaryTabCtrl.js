@@ -759,7 +759,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		var onReleaseRoomsSuccess = function(data) {
 			//: Handle successful release
 			$scope.closeDialog();
-			fetchSummaryData();
+			$scope.$emit("FETCH_SUMMARY");
 		};
 
 		/**
@@ -1097,17 +1097,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			};
 		});
 
-		/**
-		 * we will update the summary data, when we got this one
-		 * @param  {Object} data
-		 * @return undefined
-		 */
-		var fetchSuccessOfSummaryData = function(data) {
-			$scope.groupConfigData.summary = _.extend($scope.groupConfigData.summary, data.groupSummary);
-
-			summaryMemento = _.extend({}, $scope.groupConfigData.summary);
-		};
-
 		var fetchApplicableRates = function() {
 			var onFetchRatesSuccess = function(data) {
 					// split result to contracted vs others for enabling grouping on the dropdown
@@ -1136,22 +1125,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		};
 
 		/**
-		 * method to fetch summary data
-		 * @return undefined
-		 */
-		var fetchSummaryData = function() {
-			var params = {
-				"groupId": $scope.groupConfigData.summary.group_id
-			};
-			var options = {
-				successCallBack: fetchSuccessOfSummaryData,
-				params: params
-			};
-
-			$scope.callAPI(rvGroupConfigurationSrv.getGroupSummary, options);
-		};
-
-		/**
 		 * when a tab switch is there, parant controller will propogate an event
 		 * we will use this to fetch summary data
 		 */
@@ -1160,8 +1133,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				return;
 			}
 
-			fetchSummaryData();			
-			
+			$scope.$emit("FETCH_SUMMARY");
+
 			//to date picker will be in disabled in move mode
 			//in order to fix the issue of keeping that state even after coming back to this
 			//tab after going to some other tab

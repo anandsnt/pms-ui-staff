@@ -740,6 +740,50 @@ sntRover.controller('rvGroupConfigurationCtrl', [
         }());
 
         /**
+         * we will update the summary data, when we got this one
+         * @return undefined
+         */
+        var fetchSuccessOfSummaryData = function(data) {
+            var summaryData = $scope.groupConfigData.summary; // ref for group summary
+            summaryData = _.extend(summaryData, data.groupSummary);
+            if (!summaryData.release_date) {
+                summaryData.release_date = summaryData.block_from;
+            }
+
+            if (!$scope.isInAddMode()) {
+                summaryData.block_from = new tzIndependentDate(summaryData.block_from);
+                summaryData.block_to = new tzIndependentDate(summaryData.block_to);
+            }
+
+            // let others know we have refreshed summary data
+            $scope.$broadcast("UPDATED_GROUP_INFO");
+        };
+
+        /**
+         * method to fetch summary data
+         * @return undefined
+         */
+        var fetchSummaryData = function() {
+            var params = {
+                "groupId": $scope.groupConfigData.summary.group_id
+            };
+            var options = {
+                successCallBack: fetchSuccessOfSummaryData,
+                params: params
+            };
+
+            $scope.callAPI(rvGroupConfigurationSrv.getGroupSummary, options);
+        };
+
+        /**
+         * Refresh the group summary data when we get this event
+         */
+        $scope.$on("FETCH_SUMMARY", function(event) {
+            event.stopPropagation();
+            fetchSummaryData();
+        });
+
+        /**
          * function to form data model for add/edit mode
          * @return - None
          */
