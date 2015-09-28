@@ -1917,7 +1917,9 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             	amDirectlyComingToRoomingList = $stateParams.activeTab === 'ROOMING';
 
             if (isInRoomingList && (amDirectlyComingToRoomingList)) {
-                callInitialAPIs();
+                $timeout(function(){
+                    callInitialAPIs();
+                }, 10);                
             }
         }();
 
