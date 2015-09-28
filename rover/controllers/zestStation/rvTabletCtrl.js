@@ -88,7 +88,7 @@ sntRover.controller('rvTabletCtrl', [
             $scope.inputTextPlaceholder = 'Input Text Here';
             
             var initTabletConfig = function(){
-                $('head').append('<link rel="stylesheet" type="text/css" href="../assets/css/zestStation/zoku.css">');
+//                $('head').append('<link rel="stylesheet" type="text/css" href="../assets/css/zestStation/zoku.css">');
                 //$scope.settings = $rootScope.kiosk;
                 var fetchCompleted = function(data){
                     $scope.settings = data;
