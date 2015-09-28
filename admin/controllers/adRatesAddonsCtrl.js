@@ -326,13 +326,12 @@ admin.controller('ADRatesAddonsCtrl', [
 			singleAddonData.rate_code_only = $scope.singleAddon.rate_code_only;
 			singleAddonData.manual_posting = $scope.singleAddon.manual_posting;
 			singleAddonData.forecast_for_next_day = $scope.singleAddon.forecast_for_next_day;
+			singleAddonData.chargeFullWeeksOnly = $scope.singleAddon.chargeFullWeeksOnly;
 
 			// convert dates to system format yyyy-MM-dd
 			// if not date null should be passed - read story CICO-7287
 			singleAddonData.begin_date = $scope.singleAddon.begin_date ? $filter('date')(tzIndependentDate($scope.singleAddon.begin_date), 'yyyy-MM-dd') : null;
 			singleAddonData.end_date = $scope.singleAddon.end_date? $filter('date')(tzIndependentDate($scope.singleAddon.end_date), 'yyyy-MM-dd') : null;
-
-			console.log(singleAddonData);
 
 			// if we are adding new addon
 			if ( $scope.isAddMode ) {
