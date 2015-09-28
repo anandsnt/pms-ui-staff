@@ -559,6 +559,7 @@ sntRover.controller('reservationActionsController', [
 			$scope.depositBalanceData = data;
 			$scope.passData = {
 				"details": {
+					"origin" : "STAYCARD",
 					"firstName": $scope.data.guest_details.first_name,
 					"lastName": $scope.data.guest_details.last_name,
 					"paymentTypes": $scope.paymentTypes

@@ -165,7 +165,7 @@ sntRover.controller('RVCardOptionsCtrl',
 
 		var time = new Date().getTime();
 		$scope.shouldShowAddNewCard = true;
-		if(typeof $scope.passData !==" undefined"){
+		if(typeof $scope.passData !== "undefined"){
 			var firstName = (typeof $scope.passData.details.firstName ==="undefined")?"":$scope.passData.details.firstName;
 			var lastName = (typeof $scope.passData.details.lastName ==="undefined")?"":$scope.passData.details.lastName;
 		};
@@ -181,7 +181,7 @@ sntRover.controller('RVCardOptionsCtrl',
 				$scope.showAddtoGuestCard = true;
 			}
 		}
-		if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
+		if(typeof $scope.passData !== "undefined" && !isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
 			$scope.renderDataFromSwipe($scope.passData.details.swipedDataToRenderInScreen);
 		}
 		$scope.shouldShowIframe = false;

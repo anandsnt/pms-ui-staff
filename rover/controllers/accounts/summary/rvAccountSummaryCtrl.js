@@ -1,9 +1,9 @@
-sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', '$stateParams', 'rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'ngDialog', 'rvPermissionSrv',
-	function($scope, $rootScope, $filter, $stateParams, rvAccountsConfigurationSrv, RVReservationSummarySrv, ngDialog, rvPermissionSrv) {
+sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', '$stateParams', 'RVPaymentSrv', 'RVDepositBalanceSrv','rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'ngDialog', 'rvPermissionSrv',
+	function($scope, $rootScope, $filter, $stateParams, RVPaymentSrv, RVDepositBalanceSrv, rvAccountsConfigurationSrv, RVReservationSummarySrv, ngDialog, rvPermissionSrv) {
 		BaseCtrl.call(this, $scope);
 
 		var summaryMemento = {};
-
+		$scope.paymentTypes =[];
 
 
 		/**
@@ -306,5 +306,42 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				refreshSummaryData();
 			}
 		});
+
+		// CICO-16913
+		$scope.openBalanceScreen = function() {
+			$scope.invokeApi(RVPaymentSrv.fetchAvailPayments, {}, successCallBackOfFetchPayment);
+            //$rootScope.fromStayCard = true;
+            
+			//"posting_account_id": $scope.accountConfigData.summary.posting_account_id
+			var dataToSrv = {
+				"reservationId": 1331927
+			};
+			$scope.invokeApi(RVDepositBalanceSrv.getDepositBalanceData, dataToSrv, $scope.successCallBackFetchDepositBalance);
+		};
+
+		var successCallBackOfFetchPayment = function (data) {
+			$scope.$emit('hideLoader');
+			$scope.paymentTypes = data;
+		};
+ 
+		$scope.successCallBackFetchDepositBalance = function(data) {
+			$scope.$emit('hideLoader');
+			$scope.depositBalanceData = data;
+			$scope.passData = {
+				"origin": "GROUP",
+				"details": {
+					"firstName": "",
+					"lastName": "",
+					"paymentTypes": $scope.paymentTypes
+				}
+			};
+			ngDialog.open({
+				template: '/assets/partials/depositBalance/rvModifiedDepositBalanceModal.html',
+				controller: 'RVDepositBalanceCtrl',
+				className: 'ngdialog-theme-default1',
+				closeByDocument: false,
+				scope: $scope
+			});
+		};
 	}
 ]);

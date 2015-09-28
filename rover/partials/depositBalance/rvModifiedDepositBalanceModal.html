@@ -5,8 +5,8 @@
 			<span class="icons icon-close invert"> </span>
 		</button>
 		<!-- Left side -->
-		
-		<fieldset class="content-left">
+
+		<fieldset class="content-left" ng-show="passData.origin=='STAYCARD'">
 			<strong class="h2 message">Balance</strong>
 			<ul id="expenses" class="expenses">
 				<li>
@@ -48,6 +48,22 @@
 				</li>
 			</ul>
 		</fieldset>
+
+		<fieldset class="content-left" ng-show="passData.origin=='GROUP'">
+            <strong class="h2 message">Balance</strong>
+            <ul id="expenses" class="expenses">
+                <li>Projected Room Revenue<span>${value}</span></li>
+                <li>Projected Add-On Revenue<span>${value}</span></li>
+                <li>Projected Tax Excl.<span>${value}</span></li>
+                <li class="total">Total Projected Revenue <span>${value}</span></li>
+                <li>Actual Room Revenue<span>${value}</span></li>
+                <li>Actual Add-On Revenue<span>${value}</span></li>
+                <li>Actual Tax Excl.<span>${value}</span></li>
+                <li class="deposit">Total Balance <span class="{red or green}">${value}</span></li>
+                <li class="balance">Payments Received <span class="{red or green}">${value}</span></li>
+            </ul>
+        </fieldset>
+
 		<!-- Right side -->
 		<fieldset class="content-right">
 			<strong class="h2 message">Deposit</strong>
