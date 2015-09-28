@@ -1,0 +1,30 @@
+<ng-include  ng-hide='showHeader === false' src="'assets/partials/zestStation/rvTabletHeader.html'" ng-controller = "rvTabletCtrl"></ng-include>
+        <!-- Content -->
+<section ng-hide='at !== "home"' id="main" class="centered kiosk" role="main" >
+    <div id="content">
+        <nav id="options" class="large-icons" role="nav">
+            <ul role="menu">
+                <li> 
+                    <button type="button" class="button option" touch-press='goToScreen($event,"input-last", false, "home")'>
+                        <ng-include src="'assets/css/zestStation/icons/key.svg'"></ng-include>
+                    </button>
+                    Pick up Key
+                    <span>If you have already checked in online.</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='goToScreen($event,"input-last", false, "home")'>
+                        <ng-include src="'assets/css/zestStation/icons/checkin.svg'"></ng-include>
+                    </button>
+                    Check In
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='goToScreen($event,"check-out", false, "home")'>
+                        <ng-include src="'assets/css/zestStation/icons/checkout.svg'"></ng-include>
+                    </button>
+                    Check Out
+                </li>
+            </ul>
+        </nav>
+    </div>
+<ng-include src="'assets/partials/zestStation/rvTabletFooter.html'" ></ng-include>
+</section>

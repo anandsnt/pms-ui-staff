@@ -40,12 +40,10 @@ sntRover.config([
 
 
         });
-
-        $stateProvider.state('kiosk', {
-                url: '/kiosk',
-                templateUrl: '/assets/partials/zestStation/kiosk/specific/home.html',
-                controller: 'rvTabletCtrl',
-                title: 'Zest Station'
+         $stateProvider.state('station', {
+            url: '/kiosk',
+            templateUrl: '/assets/partials/zestStation/kiosk/specific/home.html',
+            controller: 'rvTabletCtrl'
         });
 
     }

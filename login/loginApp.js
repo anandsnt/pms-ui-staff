@@ -4,11 +4,10 @@ var login = angular.module('login',['ui.router', 'ng-iscroll', 'documentTouchMov
  * Set page Titles
  */
 login.run(function($rootScope){
-
-	$rootScope.$on('$stateChangeStart',
-		function(event, toState, toParams, fromState, fromParams){
-		$rootScope.title =toState.title;
-	});
+    $rootScope.$on('$stateChangeStart',
+            function(event, toState, toParams, fromState, fromParams){
+            $rootScope.title =toState.title;
+    });
 });
 
 
@@ -42,13 +41,10 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	  */
 	 $scope.successCallback = function(data){
                  if (data.redirect_url === '/kiosk' || data.redirect_url === '/ZestStation'){
-                     $state.isKiosk = true;
                      localStorage['isKiosk'] = true;
                  } else {
-                     $state.isKiosk = false;
                      localStorage['isKiosk'] = false;
                  }
-                 console.log(data)
 	 	//Clear all session storage contents. We are starting a new session.
 	 	var i = sessionStorage.length;
 	 	while(i--) {
