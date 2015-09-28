@@ -43,7 +43,7 @@ admin.controller('ADJobDatePicker', [
         } else {
             $scope.datePickerDate = $scope.parentScope.payload.end_date || weekAfter;
             $scope.dateOptions = angular.extend({
-                maxDate: tzIndependentDate(weekAfter),
+                maxDate: tzIndependentDate(weekAfter)
             }, datePickerCommon);
         };
 

@@ -786,6 +786,16 @@ table {
                 }
             }
 
+            &.condensed-print {
+                th,
+                td { 
+                    font-size: 6pt;
+                    padding: 2pt 2pt 2pt 0; 
+
+                    &:first-child { padding-left: 2pt; }
+                }
+            }
+
             &.log-reports {
                 tr {
                     &.invalid {
@@ -1099,7 +1109,7 @@ table {
                             strong { font-weight: 600; }
 
                             &.name {
-                                width: 40%;
+                                width: 12cm;
                                 border-bottom: 0;
 
                                 .info {
@@ -1144,8 +1154,15 @@ table {
                                     }
                                 }
 
-                                &.short { min-width: 25%; }
+                                &.short { width: 6cm; }
                             }
+
+                            &.room-type {
+                                max-width: 3cm;
+                                .nowrap();
+                            }
+
+                            &.date { white-space: nowrap; }
 
                             &.info {
                                 font-style: italic;
@@ -1155,14 +1172,25 @@ table {
 
                             &:first-child { padding-left: 0; }
 
-                            &[rowspan] { 
-                                height: auto;
-                                border-bottom: 1px solid @grey2; 
-                            }
+                            &[rowspan] { height: auto; }
                         }
 
                         &.row-break {
+                            border-bottom: 1px solid @grey2;
+
                             td { border-bottom-color: @grey2; }
+                        }
+                    }
+                }
+
+                &.condensed-print {
+                    tbody {
+                        tr {
+                            td { 
+                                height: auto;
+
+                                &[rowspan] { padding-right: 4pt; }
+                            }
                         }
                     }
                 }
@@ -1507,6 +1535,115 @@ table {
             }
         }
 
+        &.grid {
+            text-transform: uppercase;
+
+            .grid-header {
+                width: 100%;
+                -webkit-justify-content: flex-end;
+                justify-content: flex-end;
+                .flex(flex-start);
+
+                li {
+                    margin: 0;
+                    width: 60px;
+
+                    &.name { .calc-width(100, 240); }
+                }
+
+                &.dates { font-weight: 600; }
+                &.addons { 
+                    color: @grey3; 
+                    margin-top: 4pt;
+                }
+            }
+
+            .grid-footer {
+                margin-top: 4pt;
+                .float;
+
+                li {
+                    line-height: 1.2;
+                    width: 50%;
+                    margin: 0;
+                    .pull-left;
+
+                    span { color: @grey3; }
+
+                    &:last-child { text-align: right; }
+                }
+            }
+
+            .toggle {
+                color: @textColor;
+                background: transparent;
+                line-height: 14pt;
+                .show;
+                .float;
+
+                strong,
+                span { 
+                    .nowrap();
+                    .pull-left;
+                }
+
+                strong { 
+                    font-weight: 600;
+                    .calc-width(100, 120);
+
+                    &.name { .calc-width(100, 240); }
+                }
+
+                span { width: 60px; }
+
+                /* Title Levels ***/
+                &.title-1 { border-bottom: 2px solid @grey3; }
+
+                &.title-2 { 
+                    border-bottom: 1px solid @grey3; 
+
+                    &:first-child { margin-top: 4pt; }
+                }
+
+                &.title-3 { border-bottom: 1px solid @grey2; }
+            }
+
+            .grid-content {
+                padding-bottom: 8pt;
+
+                tr {
+                    td {
+                        padding: 2pt 4pt 0;
+                        line-height: 20px;
+
+                        strong { font-weight: 600; }
+
+                        .unassigned,
+                        &.guests { color: @grey3; }
+
+                        &.room {
+                            width: 60px;
+                            .nowrap();
+                        }
+
+                        &.guests {
+                            max-width: 3cm;
+                            .nowrap();
+
+                            span { 
+                                margin: 0 5px; 
+
+                                &:first-child { margin-left: 0; }
+                                &:last-child { margin-right: 0; }
+                            }
+                        }
+                    }
+
+                    &.pagination { .hide; }
+                }
+            }
+        }
+
         &.occupancy-footer { display: table; }
     }
 
@@ -1802,9 +1939,72 @@ table {
         }
     }
 
-/* Journal                   ==============================*/
+/* Journal                  ==============================*/
     .journal-header,
-    .journal-print { .hide; }
+    .journal-print,
+    .journal-groups { .hide; }
+
+    /* Header / Footer ***/
+    .journal-header-print,
+    .journal-footer-print {
+        clear: both;
+
+        li {
+            font-size: 8pt;
+            line-height: 1;
+            text-transform: uppercase;
+            color: @grey3;
+            .show;
+
+            span { color: @textColor; }
+        }
+
+        &.summary { margin: 0 2cm; }
+    }
+
+    .journal-header-print {
+        padding-bottom: 8pt;
+
+        li {
+            text-align: center;
+
+            span {
+                font-size: 12pt;
+                line-height: 1;
+                font-weight: 300;
+                .show;
+
+                &.green,
+                &.red,
+                &.brand-colors { font-weight: 600; }
+            }
+
+            &:last-child {
+                margin-right: 0;
+                padding-right: 0;
+                border-right: 0;
+            }
+        }
+
+        &.summary { padding-bottom: 1cm; }
+    }
+
+    .journal-footer-print {
+        padding-top: 8pt;
+        .float;
+
+        li {
+            width: 50%;
+            margin: 0;
+            .pull-left;
+
+            &:last-child {
+                text-align: right;
+            }
+        }
+
+        &.summary { padding-bottom: 1cm; }
+    }
 
     .journal-content {
         font-size: 8pt;
@@ -1812,6 +2012,71 @@ table {
         text-transform: uppercase;
         .float;
 
+        /* Summary ***/
+        .journal-summary {
+            padding: 8pt 0;
+            margin: 0 2cm;
+            border-bottom: 1px solid @grey2;
+            .flex(center);
+            .float;
+
+            h3 {
+                font-size: 10pt;
+                font-weight: 300;
+                color: @grey4;
+                text-transform: uppercase;
+                text-align: left;
+                width: 4cm;
+                .pull-left;
+            }
+
+            ul {
+                width: -webkit-calc(~'100% - 4cm');
+                width: -moz-calc(~'100% - 4cm');
+                width: calc(~'100% - 4cm');
+                .pull-left;
+
+                li {
+                    text-transform: uppercase;
+                    text-align: right;
+                    margin: 0 1.33cm 0 0;
+                    color: @grey3;
+                    width: -webkit-calc(~'25% - 1cm');
+                    width: -moz-calc(~'25% - 1cm');
+                    width: calc(~'25% - 1cm');
+                    .pull-left;
+                    
+                    span {
+                        font-size: 14pt;
+                        font-weight: 300;
+                        color: @textColor;
+                        .show;
+                    }
+
+                    &:last-child { margin-right: 0; }
+                }
+            }
+
+            &.first { 
+                h3 { padding-top: 10pt; }
+            }
+
+            &.totals {
+                padding-bottom: 0;
+                border-bottom: 0;
+
+                h3 { 
+                    color: @textColor; 
+                    font-weight: 400;
+                }
+
+                li {
+                    span { font-weight: 400; }
+                }
+            }
+        }
+
+        /* Revenue / Payment ***/
         .journal-grid {
             
             .grid-header {
@@ -1848,9 +2113,9 @@ table {
                 font-weight: 600;
 
                 &.payment {
-                    padding-left: -webkit-calc(~"90% - 130px");
-                    padding-left: -moz-calc(~"90% - 130px");
-                    padding-left: calc(~"90% - 130px");
+                    padding-left: -webkit-calc(~"90% - 50px");
+                    padding-left: -moz-calc(~"90% - 50px");
+                    padding-left: calc(~"90% - 50px");
 
                     span { margin-left: 20px; }
                 }
@@ -1961,6 +2226,7 @@ table {
             }
         }
 
+        /* Cashier ***/
         .journal-shift {
             padding-left: 1cm;
             width: 65%;

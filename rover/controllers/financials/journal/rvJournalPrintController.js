@@ -6,6 +6,8 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	var resizableMaxHeight = 90;
 	$scope.eventTimestamp = '';
 	$scope.data.printBoxHeight = resizableMinHeight;
+	$scope.data.uiSelectedPaymentType = 'ALL';
+	$scope.data.uiSelectedChargeGroup = 'ALL';
 	// Drawer resize options.
 	$scope.resizableOptions = {
 		minHeight: resizableMinHeight,
@@ -99,11 +101,10 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
         };
 
 		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, postData, successCallBackFetchRevenueData);
-
-       	var uiValue = _.find($scope.data.revenueData.charge_groups, function(each) {
-       		return each.id === $scope.data.selectedChargeGroup;
+       	var uiValue = _.find($scope.data.activeChargeGroups, function(each) {
+       		return (each.id).toString() === $scope.data.selectedChargeGroup;
        	});
-       	$scope.data.uiSelectedChargeGroup = !!uiValue ? uiValue['name'] : '';
+       	$scope.data.uiSelectedChargeGroup = !!uiValue ? uiValue['name']: 'ALL';
 	};
 
 	// On changing charge code on PRINT filter
@@ -114,7 +115,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 			$scope.data.revenueData.charge_groups[0].charge_codes = [];
 			$scope.data.revenueData.charge_groups[0].charge_codes = data.charge_codes;
 			$scope.data.revenueData.charge_groups[0].active = true;
-			//$scope.data.revenueData.total_revenue = data.charge_codes[0].total;
+
 
 			$rootScope.$broadcast('REFRESHREVENUECONTENT');
             $scope.errorMessage = "";
@@ -185,16 +186,20 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		}
 		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, postData , successCallBackFetchPaymentData);
 
-		var uiValue = _.find($scope.data.paymentData.payment_types, function(each) {
-			return each.id === $scope.data.selectedPaymentType;
+		var uiValue = _.find($scope.data.activePaymentTypes, function(each) {
+			return each.charge_code_id === parseInt($scope.data.selectedPaymentType);
 		});
-		$scope.data.uiSelectedPaymentType = !!uiValue ? uiValue['payment_type'] : '';
+		$scope.data.uiSelectedPaymentType = !!uiValue ? uiValue['payment_type']:'ALL';
 	};
 
 	/** Code for Payment Tab - PRINT BOX - filters ends here .. **/
 
 
 	/** PRINT Functionality **/
+
+	$scope.$on("PRINTSUMMARY",function(){
+		printJournal();
+	});
 
 	$scope.printRevenue = function(){
 		printJournal();
@@ -213,8 +218,11 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		var orientation = 'portrait';
 
 		switch( $scope.data.activeTab ) {
-			case 0:
-			case 1:
+			case 'SUMMARY'	:
+				orientation = 'landscape';
+				break;
+			case 'REVENUE'	:
+			case 'PAYMENTS'	:
 				orientation = 'landscape';
 				break;
 
@@ -264,5 +272,4 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		// remove the orientation after similar delay
 		$timeout(removePrintOrientation, 100);
 	};
-
 }]);

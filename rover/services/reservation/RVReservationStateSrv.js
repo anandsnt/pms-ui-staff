@@ -140,7 +140,7 @@ sntRover.service('RVReservationStateService', [
 						});
 					}
 
-					// THE TAX CALCULATION HAPPENS HERE					
+					// THE TAX CALCULATION HAPPENS HERE
 					if (taxData.amount_symbol === '%') { // The formula for inclusive tax computation is different from that for exclusive. Kindly NOTE.
 						taxCalculated = parseFloat(multiplier * (parseFloat(taxValue / 100) * taxOn));
 					} else {
@@ -151,7 +151,7 @@ sntRover.service('RVReservationStateService', [
 
 					if (taxData.post_type === 'NIGHT') { // NIGHT tax computations
 						if (isInclusive) {
-							taxInclusiveTotal = parseFloat(taxInclusiveTotal) +	 parseFloat(taxCalculated);
+							taxInclusiveTotal = parseFloat(taxInclusiveTotal) + parseFloat(taxCalculated);
 						} else {
 							taxExclusiveTotal = parseFloat(taxExclusiveTotal) + parseFloat(taxCalculated);
 						}
@@ -171,9 +171,7 @@ sntRover.service('RVReservationStateService', [
 						description: taxData.description,
 						roomIndex: roomIndex
 					});
-				} else {
-					console.warn('Error condition! Tax code in results but not in meta data');
-				}
+				} else {}
 			});
 			return {
 				EXCL: {
@@ -228,11 +226,13 @@ sntRover.service('RVReservationStateService', [
 		 * @param  {[type]} departure [description]
 		 * @return {[type]}           [description]
 		 */
-		self.parseRoomRates = function(roomRates, arrival, departure, stayDates, activeRoom, numNights, code, membershipValidity) {
+		self.parseRoomRates = function(roomRates, arrival, departure, stayDates, activeRoom, numNights, additionalData, membershipValidity) {
 			var rooms = {},
 				ratesMeta = {},
 				roomDetails = [],
-				displayDates = [];
+				displayDates = [],
+				code = additionalData.code,
+				selectedGroup = additionalData.group.id;
 
 			$(roomRates.room_types).each(function(i, d) {
 				roomDetails[d.id] = d;
@@ -281,7 +281,10 @@ sntRover.service('RVReservationStateService', [
 							stayTaxes: {}
 						};
 					}
-					rooms[roomTypeId].availabilityNumbers[for_date] = roomType.availability;
+					rooms[roomTypeId].availabilityNumbers[for_date] = {
+						room: roomType.availability,
+						group: roomType.group_availability
+					}
 				});
 
 				//step2: Parse the rates and populate the object created for rooms in step1
@@ -340,13 +343,24 @@ sntRover.service('RVReservationStateService', [
 									taxForAddons.excl = parseFloat(taxForAddons.excl) + parseFloat(taxOnCurrentAddon.EXCL.NIGHT);
 									updateStayTaxes(taxOnCurrentAddon.taxDescription);
 								}
+
+								var inventoryForDay = _.findWhere(addon.inventory, {
+									date: for_date
+								});
+
+								if (!inventoryForDay) {
+									console.warn('Inventory details not returned for:' + for_date + 'for add on ' + addon.id);
+								}
+
 								addonsApplied.push({ // for Book keeping
+									name: addon.name,
 									addonAmount: currentAddonAmount,
 									isInclusive: addon.is_inclusive,
 									postType: addon.post_type.value,
 									amountType: addon.amount_type.value,
 									taxBreakUp: taxOnCurrentAddon,
-									id: addon.id
+									id: addon.id,
+									inventory: inventoryForDay && inventoryForDay.available_count || null
 								});
 								if (!addon.is_inclusive && shouldPostAddon) {
 									addonRate = parseFloat(addonRate) + parseFloat(currentAddonAmount);
@@ -386,13 +400,14 @@ sntRover.service('RVReservationStateService', [
 							associatedAddons: addonsApplied,
 							rateBreakUp: room_rate,
 							day: new tzIndependentDate(for_date),
-							availabilityCount: rooms[currentRoomId].availabilityNumbers[for_date],
+							availabilityCount: ratesMeta[rate_id].rate_type.name === "Group Rates" || !!selectedGroup ? rooms[currentRoomId].availabilityNumbers[for_date].group : rooms[currentRoomId].availabilityNumbers[for_date].room,
 							taxForAddons: taxForAddons,
-							houseAvailability : houseAvailability,
+							houseAvailability: houseAvailability,
 							linkedPromos: linkedPromotions,
 							applyPromotion: applyPromotion,
 							appliedPromotion: code,
-							isMember: ratesMeta[rate_id].is_member && membershipValidity
+							isMember: ratesMeta[rate_id].is_member && membershipValidity,
+							isGroupRate: ratesMeta[rate_id].rate_type.name === "Group Rates" || !!selectedGroup
 						};
 
 						var currentRoomRateDetails = currentRoom.ratedetails[for_date][rate_id];

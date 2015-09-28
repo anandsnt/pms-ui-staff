@@ -43,7 +43,7 @@ admin.service('ADReservationToolsSrv', [
 
         /**
          * Post a schedule job
-         * @param  {Object} params Contains the begin/end date and job id 
+         * @param  {Object} params Contains the begin/end date and job id
          * @return {Object}        An object with the job's current status
          */
         this.postScheduleJob = function(params) {

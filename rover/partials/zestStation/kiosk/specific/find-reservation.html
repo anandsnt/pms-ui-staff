@@ -1,0 +1,39 @@
+<!-- Content -->
+<section id="main" class="centered" role="main" ng-hide='at !== "find-reservation"' click-touch='resetTime()'>
+    <div id="content">
+        <h1>Next, type one of the following</h1>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='goToScreen($event,"find-by-date", false, "find-reservation"); resetTime();'>
+                        <ng-include src="'assets/css/zestStation/icons/moon.svg'"></ng-include>
+                    </button>
+                    Departure Date
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='goToScreen($event,"find-by-email", false, "find-reservation"); resetTime(); clearInputText();'>
+                        <ng-include src="'assets/css/zestStation/icons/email.svg'"></ng-include>
+                    </button>
+                    E-mail
+                    <span>Used to make Reservation</span>
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='goToScreen($event,"find-by-confirmation", false, "find-reservation"); resetTime()'>
+                        <ng-include src="'assets/css/zestStation/icons/confirmation.svg'"></ng-include>
+                    </button>
+                    Confirmation
+                    <span>Number</span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+<ng-include src="'assets/partials/zestStation/rvTabletFooter.html'" ></ng-include>
+</section>
+
+        

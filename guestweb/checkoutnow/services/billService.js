@@ -24,7 +24,7 @@ var BillService = function($q,baseWebService,$rootScope,$http) {
 		bills: bills,
 		billDisplayDetails : billDisplayDetails,
 		fetchBillData :fetchBillData
-	}
+	};
 };
 
 var dependencies = [

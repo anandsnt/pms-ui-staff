@@ -15,7 +15,7 @@
 			$rootScope.stayDetails.minute =  "";
 			$rootScope.stayDetails.primeTime = "";
 		}
-	}
+	};
 
     $scope.isLoading = true;
 	preCheckinSrv.fetchTripDetails().then(function(response) {

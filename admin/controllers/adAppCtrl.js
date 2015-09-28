@@ -67,21 +67,21 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					submenu: [],
 					iconClass: "icon-dashboard"
 				},
-				// {
-				// 	title: "MENU_AVAILABILITY",
-				// 	action: "",
-				// 	iconClass: "icon-availability",
-				// 	submenu: [{
-				// 		title: "MENU_HOUSE_STATUS",
-				// 		action: ""
-				// 	}, {
-				// 		title: "MENU_AVAILABILITY",
-				// 		action: ""
-				// 	}]
-				// },
+
+
+
+
+
+
+
+
+
+
+
+
 				{
 					title: "MENU_FRONT_DESK",
-					//hidden: true,
+
 					action: "",
 					iconClass: "icon-frontdesk",
 					submenu: [
@@ -103,7 +103,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						action: "staff#/staff/dashboard/postCharge"
 					}, {
 						title: "MENU_CASHIER",
-						action: "staff#/staff/financials/journal/2"
+						action: "staff#/staff/financials/journal/CASHIER"
 					}, {
 		            	title: "MENU_ACCOUNTS",
 		            	action: "staff#/staff/accounts/search",
@@ -112,7 +112,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		       	 	}]
 				}, {
 			        title: "MENU_GROUPS",
-			        //hidden: true,
+
 			        action: "",
 			        iconClass: "icon-groups",
 			        menuIndex: "menuGroups",
@@ -159,7 +159,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					}]
 				}, {
 					title: "MENU_HOUSEKEEPING",
-					//hidden: true,
+
 					action: "",
 					iconClass: "icon-housekeeping",
 					submenu: [{
@@ -181,7 +181,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-financials",
 					submenu: [{
 						title: "MENU_JOURNAL",
-						action: "staff#/staff/financials/journal/0"
+						action: "staff#/staff/financials/journal/REVENUE"
 					}, {
 						title: "MENU_CC_TRANSACTIONS",
 						action: "staff#/staff/financials/ccTransactions/0"
@@ -221,7 +221,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					  };
 			          angular.forEach($scope.menu, function(menu, index) {
 			              if(menu.title === 'MENU_FRONT_DESK'){
-			                menu.submenu.push(eodSubMenu)
+			                menu.submenu.push(eodSubMenu);
 			              }
 			          });
        			};
@@ -235,7 +235,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-dashboard"
 				}, {
 					title: "MENU_HOUSEKEEPING",
-					//hidden: true,
+
 					action: "",
 					iconClass: "icon-housekeeping",
 					submenu: [{
@@ -400,6 +400,16 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 		};
 
+		$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+			// Show a loading message until promises are not resolved
+			$scope.$emit('showLoader');
+		});
+
+		$rootScope.$on('$stateChangeSuccess', function(e, curr, currParams, from, fromParams) {
+		  // Hide loading message
+		  $scope.$emit('hideLoader');
+		});
+
 		/*
 		 * function to handle exception when state is not found
 		 */
@@ -463,7 +473,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		       * TODO: Fix this bug in ng-translate and implement in this here.
 		       */
 		      setTimeout(function() {
-		        $translate('NA')
+		        $translate('NA');
 		      }, 1000); //Word around.
 		    } else {
 		      $translate.use('EN');
@@ -475,6 +485,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			if (data.pms_type === null) {
 				$scope.isStandAlone = true;
 			}
+                        $rootScope.isStandAlone = $scope.isStandAlone;
 			$rootScope.currencySymbol = getCurrencySign(data.currency.value);
 			$rootScope.dateFormat = getDateFormat(data.date_format.value);
 			$scope.$emit('hideLoader');
@@ -557,20 +568,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$scope.hasLoader = false;
 		});
 
-		/*$scope.isHotelListOpen = function() {
-			$scope.hotelListOpen = ($scope.hotelListOpen === "open") ? "" : "open";
-		};
-		$scope.redirectToHotel = function(hotel_id) {
-			ADAppSrv.redirectToHotel(hotel_id).then(function(data) {
-				//CICO-9816 bug fix
-				$('body').addClass('no-animation');
-				$('#admin-header').css({'z-index':'0'});
-				$('section.content-scroll').css({'overflow':'visible'});
 
-				$window.location.href = "/admin";
-			}, function() {
-			});
-		};*/
 
 		/**
 		    *   Method to go back to previous state.

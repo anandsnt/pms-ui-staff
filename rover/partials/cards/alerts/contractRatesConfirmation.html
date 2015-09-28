@@ -1,0 +1,16 @@
+<div id="modal" class="modal-show" role="dialog">
+	<div class="modal-content alert medium">
+		<button ng-click="closeDialog()" id="modal-close" type="button" class="modal-close">
+			<span class="icons icon-close invert"></span>
+		</button>
+		
+	    <span class="icons icon-popup-alert"></span>
+	    <span class="h2 message">Contracted rate exists on selected card. Update rate on reservation?</span>
+
+	    <div class="actions">
+	    	<button ng-click="changeToContractedRate(cardData)" type="button" class="button green">Change to contracted rate</button>
+			<button ng-click="keepExistingRate(cardData)" type="button" class="button blue">Keep existing rate</button>
+	    	<button ng-click="closeDialog()" type="button" class="button blank">Cancel</button>
+	    </div>
+	</div>
+</div>

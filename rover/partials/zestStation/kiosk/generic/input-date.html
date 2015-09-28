@@ -1,0 +1,19 @@
+        <!-- Content -->
+<section id="main" class="centered" role="main" ng-hide='at !== "find-by-date"' click-touch='resetTime()'>
+    <div id="content">
+        <h1>{{datepicker_heading}}</h1>
+        <h3><strong>When will you check out?</strong></h3>
+        <form method="post" class="form short">
+            <div class="entry input">
+                <ng-include src="'assets/css/zestStation/icons/date.svg'"></ng-include>
+                <!--input id="datepicker" type="date" placeholder="MM, DD, YYYY" class="hasDatepicker" ui-date="dateOptions" ng-model="input.date" ui-date-format="MMDDYYY" click-touch="showDatePicker()"-->
+                
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" click-touch="inputTextHandler(at, input.date)">Next</button>
+            </div>
+        </form>
+    </div>
+<ng-include src="'assets/partials/zestStation/rvTabletFooter.html'" ></ng-include>
+</section>
+   

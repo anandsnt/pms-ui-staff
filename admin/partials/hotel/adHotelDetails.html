@@ -228,7 +228,7 @@
 			</div>
 			<div class="entry">
 				<label for="hotel_email_address"> Hotel Email Address </label>
-				<input type="text" ng-model="data.hotel_email_address" value="{{data.hotel_email_address}}" required="no"
+				<input type="text" ng-model="data.hotel_email_address" value="{{data.hotel_email_address}}" required="no">
 			</div>
 			<div class="entry date has-datepicker" ng-if="isAdminSnt">
 				<label for="pms-start-date"> PMS Start Date  </label>
@@ -236,7 +236,7 @@
 				<button ng-click="setPmsStartDate()" class="ui-datepicker-trigger" type="button">
                          ...
                 </button>
-			</div>			
+			</div>		
 			<div class="entry full-width" ng-if="isAdminSnt">
 				<label for="hotel-pms-type"> Language </label>
 				<div class="select">
@@ -258,6 +258,14 @@
 				<label for="use-kiosk-entity-id-for-fetch-booking">Use KIOSK entity id in FetchBooking</label>
 				<div class="switch-button single" ng-class="{ on : data.use_kiosk_entity_id_for_fetch_booking == 'true' }" ng-click="kioskEntityToggleClicked()">
 					<input type="checkbox" value="{{data.use_kiosk_entity_id_for_fetch_booking}}" name="use-kiosk-entity-id-for-fetch-booking" id="use-kiosk-entity-id-for-fetch-booking">
+					<span class="switch-icon"></span>
+				</div>
+			</div>
+
+			<div class="entry" ng-if="isAdminSnt">
+				<label for="arrangement_codes"> Arrangement Codes </label>
+				<div class="switch-button single" ng-class="{ on : data.is_arrangement_codes_on == true }" ng-click="data.is_arrangement_codes_on = !data.is_arrangement_codes_on">
+					<input type="checkbox" value="{{data.is_arrangement_codes_on}}">
 					<span class="switch-icon"></span>
 				</div>
 			</div>
@@ -387,7 +395,6 @@
 				<input type="text" ng-model="data.hold_room_import_freq" value="{{ data.hold_room_import_freq }}" placeholder="Enter frequency" name="hold_room_import_freq" id="hold_room_import_freq">
 			</div>
 		</fieldset>
-		
 
 		<fieldset class="holder left" ng-if="isAdminSnt">
 			<div class="form-title">

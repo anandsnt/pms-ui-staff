@@ -23,23 +23,22 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
         };
 
         this.fetchLengthSegments = function(deferred) {
-        	if(isEmpty(segmentData)){
-        		var url = '/api/segments?is_active=true';
-	            rvBaseWebSrvV2.getJSON(url).then(function(data) {
-	            	segmentData = data;
-	                that.reservationData.demographics.is_use_segments = data.is_use_segments;
-	                that.reservationData.demographics.segments = data.segments;
-	                deferred.resolve(that.reservationData);
-	            }, function(errorMessage) {
-	                deferred.reject(errorMessage);
-	            });
-        	}else{
-        		 that.reservationData.demographics.is_use_segments = segmentData.is_use_segments;
-	             that.reservationData.demographics.segments = segmentData.segments;
-	             deferred.resolve(that.reservationData);
-        	};          
-        }
-
+            if(isEmpty(segmentData)){
+                var url = '/api/segments?is_active=true';
+                rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                    segmentData = data;
+                    that.reservationData.demographics.is_use_segments = data.is_use_segments;
+                    that.reservationData.demographics.segments = data.segments;
+                    deferred.resolve(that.reservationData);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+            }else{
+                 that.reservationData.demographics.is_use_segments = segmentData.is_use_segments;
+                 that.reservationData.demographics.segments = segmentData.segments;
+                 deferred.resolve(that.reservationData);
+            };
+        };
 
         this.fetchDemographicMarketSegments = function(deferred) {
 
@@ -73,7 +72,7 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
                     that.reservationData.demographics.is_use_markets = sourcesData.sourcesData;
                     that.reservationData.demographics.markets = sourcesData.sources;
             };
-            
+
         };
 
         this.fetchDemographicOrigins = function(deferred) {
@@ -99,7 +98,7 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
             }else{
                 originsSuccessCallback(originsData);
             };
-           
+
         };
 
         this.fetchDemographicReservationTypes = function(deferred) {
@@ -122,7 +121,7 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
                 });
             }else{
                 reservationTypesCallback(reservationTypes);
-            };          
+            };
 
         };
 
@@ -176,10 +175,10 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
             var url = '/api/reservations/hourly_confirmation_emails?';
             _.each(data.reservation_ids, function(id) {
                 url += 'reservation_ids[]=' + id + '&';
-            })
+            });
             _.each(data.emails, function(mail) {
                 url += 'emails[]=' + mail + '&';
-            })
+            });
 
             delete data['reservation_ids'];
             delete data['emails'];

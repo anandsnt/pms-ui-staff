@@ -1,3 +1,7 @@
 sntRover.controller('topController', ['$state', '$scope', function($state, $scope) {
-	$state.go('rover.dashboard');
+        if (localStorage.isKiosk == 'true'){
+            $state.go('station');
+        } else {
+            $state.go('rover.dashboard');
+        }
 }]);

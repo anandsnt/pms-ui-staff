@@ -1,0 +1,40 @@
+
+<!-- Content -->
+<section id="main" class="centered" role="main" ng-hide='at !== "no-match"' click-touch='resetTime()'>
+    <div id="content">
+        <h1 style="padding-top: 23px;">Sorry.</h1>
+        <h2>We can't seem to find your reservation.</h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='goToScreen($event,"input-last", true, "no-match")'>
+                        <ng-include src="'assets/css/zestStation/icons/keyboard.svg'"></ng-include>
+                    </button>
+                    Re-Enter
+                    <span>"{{input.last_name}}"</span>
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='goToScreen($event,"re-enter-email", true, "no-match")'>
+                        <ng-include src="'assets/css/zestStation/icons/keyboard.svg'"></ng-include>
+                    </button>
+                    Re-Enter
+                    <span>"{{input.lastEmailValue}}"</span>
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='goToScreen($event,"talk-to-", true, "no-match")'>
+                        <ng-include src="'assets/css/zestStation/icons/staff.svg'"></ng-include>
+                    </button>
+                    Talk
+                    <span>To a Staff Member</span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+<ng-include src="'assets/partials/zestStation/rvTabletFooter.html'" ></ng-include>
+</section>

@@ -5,8 +5,8 @@ admin.directive('appFilereader', function($q){
     return {
         restrict: 'A'
         , require: '?ngModel'
-        ,scope: {            
-            fileNameKey:'@fileNameKey'            
+        ,scope: {
+            fileNameKey:'@fileNameKey'
         }
         , link: function(scope, element, attrs, ngModel){
             if(!ngModel) {
@@ -41,7 +41,7 @@ admin.directive('appFilereader', function($q){
                     };
                     reader.readAsDataURL(file);
 
-                    if(typeof scope.fileNameKey != 'undefined'){
+                    if(typeof scope.fileNameKey !== 'undefined'){
                         scope.$parent[scope.fileNameKey] = file.name;
                     }else{
                         scope.$parent.fileName = file.name;

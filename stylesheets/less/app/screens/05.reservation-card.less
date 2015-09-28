@@ -1,0 +1,959 @@
+#reservation-card {
+
+    /* Left side tabs navigation ***/
+    .reservation-tabs-nav {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        .box-shadow(inset -1px 0 2px rgba(0,0,0,.1));
+
+        li {
+            position: relative;
+            
+            a { 
+                font-weight: 600;
+                text-transform: uppercase;
+                color: @grey3;
+                .show; 
+                .no-transition;
+
+                &:hover { color: @textColor;  }
+            }
+
+            &.ui-tabs-active {
+                a { color: @textColor; }
+            }
+        }
+
+        /* Upcoming / Current / History tabs nav ***/
+        &#reservation-timeline {
+            z-index: 111;
+            background: @rcardTexture1;
+            #pixel-to-percent > .width(180, 2048);
+
+            li {
+                text-align: center;
+                font-size: 14px;
+                text-align: center;
+                margin-bottom: 20px;
+
+                a {
+                    padding: 40px 15px 0 10px;
+
+                    span {
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                        font-size: 12px;
+                        line-height: 14px;
+                        font-weight: 700;
+                        color: rgba(0,0,0,.2);
+                        background: rgba(0,0,0,.15);
+                        .square(14px);
+                        #border-radius > .rounded(14px);
+                    }
+                }
+
+                &.ui-tabs-active {
+                    a { 
+                        span {
+                            &.highlight { 
+                                color: @textColor; 
+                                background: @white;
+                            }
+                        }
+                    }
+                }
+            }
+
+            @media @highdpi { background-size: 40px; }
+        }
+
+        /* Reservation tabs nav ***/
+        &.reservations-tabs {
+            z-index: 99;
+            background: @rcardTexture2;
+            #pixel-to-percent > .width(280, 1868); /* 2048-180 = 1868 */
+
+            li {
+                line-height: 40px;
+                margin: 0;
+                vertical-align: middle;
+
+                a {
+                    margin: 0 10px;
+                    border-bottom: 1px solid rgba(0,0,0,.1);
+
+                    .guest-status {
+                        background-color: rgba(0,0,0,.1);
+                        margin: 10px 10px 0 0;
+                        .square(20px);
+                    }
+                }
+
+                &.ui-tabs-active {
+                    a {
+                        .guest-status {
+                            &.pre-check-in { background-color: @orange; }
+                            &.check-in,
+                            &.arrival { background-color: @green; }
+                            &.check-out,
+                            &.late-check-out,
+                            &.departed { background-color: @red; }
+                            &.inhouse { background-color: @blue; }
+                            &.cancel { background-color: @grey3; }
+                            &.no-show { background: @grey2; }
+                        }
+                    }
+                }
+            }
+
+            .add-new-button {
+                margin: 10px;
+                .show;
+            }
+
+            @media @highdpi { background-size: 40px; }
+        }
+    }
+
+    /* Reservation card content **/
+    .reservation-list {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        z-index: 99;
+        overflow: hidden;
+        .background(@white);
+        #pixel-to-percent > .left(180, 2048);
+        #pixel-to-percent > .width(1868, 2048);
+
+        .reservation {
+            position: absolute;
+            top: 0;
+            #pixel-to-percent > .left(280, 1868);
+            #pixel-to-percent > .width(1588, 1868);
+            z-index: 90;
+            height: 100%;
+
+            &.no-content { 
+                left: 0; 
+                width: 100%;
+                padding: 0 160px;
+            }
+        }
+    }
+
+    /* Reservation header ***/
+    .reservation-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 999;
+        .float;
+
+        .actions {
+            float: none;
+            width: 100%;
+            text-align: right;
+
+            .button,
+            .inactive-nights {
+                display: inline-block;
+                display: inline-flex;
+                vertical-align: top;
+                text-shadow: none;
+                .no-transition;
+
+                .label { 
+                    display: inline;
+                    float: none;
+                    font-size: 12px;
+                }
+            }
+
+            .button {
+                margin-right: 20px;
+
+                &.toggle,
+                &.next-view {
+                    color: @textColor;
+                    background-color: @grey1;
+                    background-position: 90% 50%;
+
+                    &:hover,
+                    &:active { 
+                        color: @textColor;
+                        background-color: @grey1; 
+                    }
+                }
+
+                &.toggle {
+                    &.active {
+                        padding-bottom: 40px;
+                        background-position: 90% -webkit-calc(~"50% - 5px");
+                        background-position: 90% -moz-calc(~"50% - 5px");
+                        background-position: 90% calc(~"50% - 5px");
+                        .box-shadow(1px 0 0 rgba(0,0,0,.2));
+                        #border-radius > .bottom(0px);
+                    }
+                }
+
+                &.times {
+                    position: relative;
+                    padding: 0 10px 0 35px;
+
+                    .time {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                    }
+
+                    &.check-in { color: @green; }
+                    &.check-out,
+                    &.late-check-out { color: @red; }
+                    &.late-check-out { background-color: lighten(@yellow, 20); }
+
+                    &.not-set {
+                        color: @grey3;
+                        font-size: 12px;
+                        font-weight: 400;
+                    }
+                }
+
+                &.has-arrow { padding-right: 30px; }
+
+                &.dates {
+                    background-position: 98% 50%;
+                    .pull-left; 
+
+                    .date {
+                        text-transform: none;
+                        font-weight: 400;
+                    }
+
+                    &.active {
+                        background-position: 98% -webkit-calc(~"50% - 5px");
+                        background-position: 98% -moz-calc(~"50% - 5px");
+                        background-position: 98% calc(~"50% - 5px");
+                    }
+                }
+
+                &:first-child,
+                &:last-child { margin-right: 0; }
+            }
+        }
+
+        .reservation-guests,
+        .reservation-times,
+        .reservation-dates { 
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            overflow: hidden;
+            background: @grey1;
+            z-index: 90;
+            height: auto;
+            transform: scaleY(1);  
+            transform-origin: top;
+            .float;
+            .transition(transform, .3s,cubic-bezier(.10, .10, .25, .90));
+            .box-shadow(1px 1px 0 rgba(0,0,0,.2));
+            .show;
+
+            &.hidden {
+                display: block !important;
+                height: 0px !important;
+                padding: 0;
+                margin: 0;
+                transform: scaleY(0); 
+            }
+        }
+
+        /* Reservation guest info ***/
+        .reservation-guests {
+
+            .notice { margin-bottom: 10px; }
+
+            .guest-count {
+                width: 100%;
+                .float;
+
+                li {
+                    line-height: 40px;
+                    margin: 0;
+                    .show;
+                    .pull-left;
+
+                    .label {
+                        width: 60px;
+                        overflow: hidden;
+                    }
+
+                    .guest-icon {
+                        font-size: 12px;
+                        line-height: 30px;
+                        text-transform: uppercase;
+                        text-align: center;
+                        font-weight: 600;
+                        color: @white;
+                        background: @grey2;
+                        margin: 5px 10px 0 0;
+                        .square(30px);
+                        .pull-left;
+                    }
+
+                    .select,
+                    input {
+                        text-align: center;
+                        .size(40px, 50px);
+                        .pull-left;
+
+                        &[disabled],
+                        &[readonly] { color: @textColor; }
+                    }
+
+                    &:first-child { 
+                        padding-right: 40px;
+                        .calc-width(100, 360); 
+                    }
+
+                    &:nth-child(2) { width: 160px; }
+                    &:last-child { 
+                        padding-left: 40px;
+                        width: 200px;
+                    }
+                }
+            }
+
+            .form {
+                margin-top: 10px;
+                max-width: 400px;
+                .calc-width(100, 360);
+                .float;
+
+                label {
+                    display: inline-block;
+                    font-size: 14px;
+                    line-height: 20px;
+                    text-transform: uppercase;
+                    margin: 10px 0 0 0;
+                }
+
+                .entry {
+
+                    .guest-image {
+                        margin-right: 10px;
+                        .pull-left;
+                        .square(40px); 
+                    }
+
+                    input {
+                        margin-right: 10px;
+                        .calc-width(50, 30);
+                        .pull-left;
+
+                        &:nth-of-type(2) { margin-right: 0; }
+                    }
+                }
+            }
+
+            &.editable { 
+                .guest-count {
+                    li {
+                        padding-bottom: 10px;
+                        border-bottom: 1px solid rgba(0,0,0,.1);
+                    }
+                }
+            }
+        }
+
+        /* Arrival / Departure times ***/
+        .reservation-times {
+            .check-data {
+                position: relative;
+                padding-left: 120px;
+                height: 40px;
+                .calc-width(50, 20);
+                .faux-clickable;
+                .pull-left;
+                .float;
+
+                .label {
+                    position: absolute;
+                    top: 0;
+                    left: 40px;
+                    line-height: 40px;
+
+                }            
+                
+                .select {
+                    max-width: 75px;
+                    width: 33%;
+                    .pull-left;
+
+                    select { 
+                        background: transparent;
+                        .box-shadow(none);
+                    }
+
+                    &:after { #border-radius > .right(0px); }
+                }
+
+                &.locked { 
+                    .opacity(40); 
+
+                    .label { cursor: default; }
+                }
+
+                &:first-child { margin-right: 40px;}
+            }
+
+            &.late-check-out { background-color: lighten(@yellow, 20); }
+        }
+
+        /* Arrival / Departure dates ***/
+        .reservation-dates {
+            
+            .check-data {
+                margin-right: 20px;
+                .calc-width(50, 100);
+                .pull-left;
+
+                .guest-status {
+                    position: absolute;
+                    top: 10px;
+                    left: 10px;
+                    .square(20px);
+                }
+
+                input { 
+                    padding-left: 40px;
+                    width: 100%; 
+                }
+            }
+
+            .button {
+                font-size: 16px;
+                .size(40px, 160px);
+                .pull-left;
+            }
+        }
+    }
+
+    /* Reservation card actions **/
+    .reservation-actions {
+        position: relative;
+        right: 20px;
+        top: 70px; 
+        bottom: 20px;
+        .show;
+        .calc-height(100, 90);
+        #pixel-to-percent > .width(388, 1588);
+        .pull-right;
+
+        .balance {
+            position: relative;
+            text-align: right; 
+            padding: 10px 0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(0,0,0,.1); 
+
+            .label { 
+                position: absolute;
+                top: 10px;
+                left: 0;
+                text-align: left;
+                line-height: 30px; 
+            }
+            
+            .red { color: @red; }
+            .green { color: @green; }
+        }
+
+        .button { 
+            padding: 0;
+            line-height: 50px;
+            margin-bottom: 10px;
+            width: 100%;
+            .show; 
+
+            &.green,
+            &.grey,
+            &.red { font-size: 18px; }
+
+            &.staycard-button {
+                font-size: 16px;
+                text-shadow: none;
+                text-align: left;
+                color: @blue;
+                background-color: @white;
+                height: 50px;
+                padding: 0 20px 0 50px;
+                .box-shadow();
+
+                &.routing {
+                    line-height: 16px;
+                    padding: 9px 20px 9px 50px;
+
+                    span { 
+                        color: @logoPrimary;
+                        .show;
+                    }
+                }
+
+                &.icon-queue {                   
+                    &.in {
+                        color: @red;
+                        line-height: 16px;
+                        padding: 9px 20px 9px 50px;
+                    }
+                }
+
+                &:hover,
+                &:active { .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.15)"); }
+            }
+
+            &.bottom-button {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                font-size: 16px;
+
+            }
+
+            &:last-child { margin-bottom: 0; }
+        }
+    }
+
+    /* Reservation card content ***/
+    .reservation-content {
+        position: relative;
+        left: 20px;
+        top: 70px;
+        bottom: 20px;
+        overflow: hidden;
+        .calc-height(100, 90);
+        #pixel-to-percent > .width(1090, 1588);
+        .pull-left;
+
+        /* Scrollable area ***/
+        .wrapper { padding: 0 20px 20px 0; }
+        .iScrollVerticalScrollbar { 
+            top: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        /* Title ***/
+        .block-title {
+            color: @textColor;
+            font-size: 14px;
+            text-transform: uppercase;
+            text-align: left;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(0,0,0,.1);
+            width: 100%;
+            .float;
+
+            span { 
+                color: @grey3;
+                margin: 0;
+                .pull-right; 
+            }
+
+            strong { font-weight: 600; }
+
+            &.has-arrow { 
+                cursor: pointer;
+                font-size: 16px;
+                line-height: 1em;
+                font-weight: 600;
+                background-position: 100% 50%;
+                padding: 15px 0 5px;
+                margin-bottom: 20px;
+
+                &.active { border-bottom: 0; }
+            }
+        }
+
+        /* Card elements ***/
+        .block-item {
+            width: 100%;
+            clear: both;
+            margin-bottom: 20px;
+            .float;
+            .show;
+
+            /* Title ***/
+            .block-title {
+                .button {
+                    float: none;
+                    font-size: 12px;
+                    line-height: 16px;
+                    margin: -2px 0 0 5px;
+                    padding: 0 5px;
+                    height: 18px;
+                }
+            }
+
+            /* Content ***/
+            .next-view,
+            .no-view {
+                text-align: left;
+                color: @textColor;
+                line-height: 50px;
+                padding: 0 10px;
+                .size(50px, 100%);
+            }
+
+            .select-item,
+            select { height: 50px; }
+
+            .next-view {
+                .clickable();
+                
+                &.has-arrow { padding-right: 40px; }
+            }
+
+            .no-view { 
+                .faux-clickable(); 
+                .box-shadow(none);
+            }
+
+            /* Block Item - Payment Method ***/
+            &.item-payment {
+                .next-view,
+                .no-view { 
+                    position: relative;
+
+                    .icons {
+                        position: absolute;
+                        top: 10px;
+                        right: 40px;
+                        margin: 0;
+                    }
+                }
+
+                .next-view {
+                    &:after {
+                        content: "";
+                        position: absolute;
+                        top: 23px;
+                        right: 14px;
+                        border-left: 4px solid transparent;
+                        border-right: 4px solid transparent;
+                        border-top: 4px solid @textColor;
+                        .square(0px);
+                    }
+                }
+            }
+
+            /* Block Item - Room ***/
+            &.item-room {
+                .room-number,
+                .room-status { 
+                    margin-right: 20px; 
+                }
+
+                .room-number {
+                    font-size: 30px;
+                    line-height: 50px;
+                    width: 100px;
+                    .pull-left;
+                }
+            }
+
+            /* Block Item - ADR ***/
+            &.item-rate {
+                .next-view,
+                .no-view {
+                    .float;
+
+                    .number {
+                        font-size: 30px;
+                        vertical-align: middle;
+                        font-weight: 300;
+                        margin-right: 10px; 
+                        width: 100px;
+                        .pull-left;
+                    }
+
+                    .rate {
+                        margin-right: 10px;
+                        .nowrap();
+                        .calc-width(100, 120);
+                        .pull-left;
+
+                        &.custom {
+                            position: relative;
+                            line-height: 1em;
+                            margin-top: 10px;
+                            padding-bottom: 16px;
+
+                            span {
+                                position: absolute;
+                                bottom: 0;
+                                left: 0;
+                                font-size: 12px;
+                                color: @grey3;
+                                text-transform: uppercase;
+                            }
+                        }                 
+                    }
+                }
+            }
+
+            /* Block item - Wake up ***/
+            &.item-wake-up { 
+                .next-view { 
+                    font-size: 24px; 
+                    font-weight: 300; 
+                }
+
+                .no-view { 
+                    font-weight: 300; 
+                    font-style: italic; 
+                    color: @grey3;
+                    .clickable();
+                }
+            } 
+
+            /* Block item - Loyalty ***/
+            &.item-loyalty { 
+                .selected {
+                    width: 100%;
+
+                    .value.code { margin-right: 20px; }
+                    .value.number { margin-left: 10px; }
+                }
+            }
+
+            /* Rows with buttons ***/
+            &.has-buttons,
+            &.has-button {
+                .next-view,
+                .no-view,
+                .select-item { .pull-left; }
+
+                .actions {
+                    .pull-right;
+
+                    .add-new-button {
+                        padding: 0;
+                        line-height: 48px;
+                        .size(50px, 60px); 
+                    }
+
+                    .button {
+                        margin-right: 10px;
+                        overflow: visible;
+                        .size(50px, 60px);
+                        .pull-left;
+
+                        &.with-icon {
+                            padding-top: 25px;
+                            line-height: 25px;
+
+                            .icons { top: 10px; }
+                        }
+
+                        &:last-child { margin: 0; }
+                    }
+
+                    .count {
+                        position: absolute;
+                        top: -6px;
+                        right: -6px;
+                        font-size: 12px;
+                        line-height: 24px;
+                        background-color: @softRedStart;
+                        #border-radius > .rounded(24px);
+                        .square(24px);
+                    }
+                }
+            }
+
+            &.has-buttons {
+                .next-view,
+                .no-view,
+                .select-item { .calc-width(100, 140); }
+
+                .actions { width: 130px; }
+
+                /* CC display adjustment ***/
+                &.item-payment {
+                    .card-logo { margin-right: 20px; }
+                    .icons { right: 30px; }
+                }
+            }
+
+            &.has-button {
+                .next-view,
+                .no-view,
+                .select-item { .calc-width(100, 70); }
+
+                .actions { width: 60px; }
+            }
+        }
+
+        /* Grouped card elements ***/
+        .block-wrapper {
+            .float;
+
+            .block-item {
+                margin-right: 20px;
+                clear: none;
+                .pull-left;
+
+                .next-view,
+                .no-view,
+                select { width: 100%; }
+
+                /* Actions / Notes / Group **/
+                &.item-actions,
+                &.item-notes { 
+                    .staycard-button {
+                        font-size: 30px;
+                        font-weight: 300;
+                        text-align: right;
+
+                        &.icon-actions { color: @green; }
+                        &.icon-new-actions { color: @red; }
+                        &.icon-notes { color: @blue; }
+                        
+                        &.icon-no-actions,
+                        &.icon-no-notes { color: @grey3; }
+
+                        span { color: @textColor; }
+                    }
+                }
+
+                &.item-actions { .calc-width(25, 15); }
+                &.item-notes { .calc-width(20, 15); }
+                
+                &.item-cards {
+                    margin-right: 0;
+                    .calc-width(55, 15); 
+
+                    .icons {
+                        color: @grey3;
+                        font-size: 14px;
+                        line-height: 17px;
+                        padding-left: 25px;
+                        .nowrap();
+                    }
+
+                    .no-cards {
+                        background: rgba(0,0,0,.1);
+                        #border-radius > .rounded();
+                        .size(50px, 100%);
+                        .show;
+                    }
+                }
+
+                /* Wake up / Newspaper ***/
+                &.item-wake-up { .calc-width(25, 10); }
+                &.item-newspaper {
+                    margin-right: 0; 
+                    .calc-width(75, 10);
+                }
+
+                /* Additional details **/
+                &.additional-detail { 
+                    .calc-width(50, 10); 
+
+                    &:nth-child(odd) { margin-right: 0; }
+                }
+
+                &.item-commission {
+                    .entry {
+                        .float;
+
+                        .switch-button {
+                            font-size: 14px;
+                            text-transform: uppercase;
+                            margin-right: 10px;
+                            height: 50px;
+                            #border-radius > .rounded(50px);
+                            .calc-width(100, 160);
+                            .pull-left;
+
+                            input[type="checkbox"] { 
+                                line-height: 50px;
+                                .size(50px, 100%);
+                            }   
+
+                            .data-off,
+                            .data-on {
+                                left: auto;
+                                line-height: 40px;
+                                height: 40px;
+
+                                &.data-off { 
+                                    right: -100%;
+
+                                    .switch-icon { 
+                                        margin: 0 5px 0 0; 
+                                        .gradient(@greenStart, @greenEnd);                                    
+                                    }
+                                }
+                                
+                                &.data-on { 
+                                    right: 0;
+
+                                    .switch-icon { 
+                                        margin: 0 0 0 5px; 
+                                        .gradient(@redStart, @redEnd);
+
+                                        &.grey { .gradient(@grey2, @grey4); }
+                                    }
+                                }
+                            }
+
+                            &.on {
+                                .data-off { right: 0; }
+                                .data-on { right: 100%; }
+                            }
+                        }
+
+                        input {
+                            margin-right: 10px;
+                            .size(50px, 80px);
+                            .pull-left;
+                        }
+
+                        .select {
+                            .size(50px, 60px);
+                            .pull-left;
+                        }
+                    }
+                }
+            }
+        } 
+
+        &.check-in {
+            .room-number {
+                &.ready { color: @green; }
+                &.not-ready { color: @red; }
+            }
+        }
+    }
+
+    /* Panel animations ***/
+    .ui-tabs-panel {
+        z-index: 10;
+
+        &.set-back {
+            z-index: 20;
+            #fade > .out();
+        }
+
+        &.loading {
+            z-index: 99;
+            #fade > .in();
+        }
+    }
+}

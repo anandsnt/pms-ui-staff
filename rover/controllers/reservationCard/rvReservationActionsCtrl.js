@@ -12,6 +12,7 @@ sntRover.controller('reservationActionsController', [
 	'$timeout',
 	'$window',
 	'RVReservationSummarySrv',
+        'RVPaymentSrv',
 	'$stateParams',
 	function($rootScope,
 		$scope,
@@ -26,6 +27,7 @@ sntRover.controller('reservationActionsController', [
 		$timeout,
 		$window,
 		RVReservationSummarySrv,
+                RVPaymentSrv,
 		$stateParams) {
 
 		BaseCtrl.call(this, $scope);
@@ -443,9 +445,9 @@ sntRover.controller('reservationActionsController', [
 
 					// Sample Response from api/reservations/:id/policies inside the results hash
 					// calculated_penalty_amount: 40
-					// cancellation_policy_id: 36
-					// penalty_type: "percent"
-					// penalty_value: 20
+
+
+
 
 					depositAmount = data.results.deposit_amount;
 					var isOutOfCancellationPeriod = (data.results.cancellation_policy_id === undefined);
@@ -472,7 +474,7 @@ sntRover.controller('reservationActionsController', [
 							promptCancel('', nights, (data.results.penalty_type === 'percent'));
 						}
 					}
-					//promptCancel(cancellationCharge, nights);
+
 
 				};
 
@@ -518,8 +520,7 @@ sntRover.controller('reservationActionsController', [
 			return showSmartBand;
 		};
 
-		//({reservationId:, clickedButton: 'checkoutButton'})
-		//	goToCheckoutButton(reservationData.reservation_card.reservation_id, 'checkoutButton');
+
 		$scope.goToCheckoutButton = function(reservationId, clickedButton, smartbandHasBalance) {
 			if (smartbandHasBalance === "true") {
 				$scope.clickedButton = clickedButton;
@@ -540,8 +541,10 @@ sntRover.controller('reservationActionsController', [
 		/*
 		 * Show Deposit/Balance Modal
 		 */
+                
+                
 		$scope.showDepositBalanceModal = function() {
-
+                    $rootScope.fromStayCard = true;
 			var reservationId = $scope.reservationData.reservation_card.reservation_id;
 			var dataToSrv = {
 				"reservationId": reservationId
@@ -577,6 +580,12 @@ sntRover.controller('reservationActionsController', [
 		 * @return {Boolean}
 		 */
 		$scope.showDepositBalance = function(reservationStatus) {
+                    var cashDesposit = false;
+                    if ($scope.reservationData.reservation_card.payment_method_used !== 'CC'){
+                        cashDesposit = true;
+                    } 
+                    $rootScope.initFromCashDeposit = cashDesposit;
+                    
 			//As per CICO-15833
 			//we wanted to show the Balance & Deposit popup for DUEIN & CHECKING IN reservation only
 			reservationStatus = reservationStatus.toUpperCase();
@@ -602,7 +611,7 @@ sntRover.controller('reservationActionsController', [
 			}
 			return isEmailAttachedFlag;
 		};
-		
+
 		$scope.ngData = {};
 		$scope.ngData.failureMessage = "";
 		$scope.ngData.successMessage = "";

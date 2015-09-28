@@ -4,7 +4,7 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
     BaseCtrl.call(this, $scope);
     $scope.errorMessage = "";
 
-
+    var init = function(){
     $scope.defaultRateDisplays = [{
       "value": 0,
       "name": "Recommended"
@@ -36,7 +36,18 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
       "value": "perNight",
       "name": "Per Night"
     }];
+   
+   _.each(reservationSettingsData.prepaid_commission_charge_codes, function(chargeCode, index){     
+      chargeCode.name = chargeCode.code +" "+chargeCode.name;
+    });
+
+   _.each(reservationSettingsData.tax_transaction_codes, function(chargeCode, index){     
+      chargeCode.name = chargeCode.code +" "+chargeCode.name;
+    });
+
     $scope.reservationSettingsData = reservationSettingsData;
+
+  }
 
 
     /**
@@ -55,12 +66,12 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
         $scope.errorMessage = data;
         $scope.$emit('hideLoader');
       };
-      var data = $scope.reservationSettingsData;
+      var data = dclone($scope.reservationSettingsData,['prepaid_commission_charge_codes','tax_transaction_codes']);
 
       $scope.invokeApi(ADReservationSettingsSrv.saveChanges, data, saveChangesSuccessCallback, saveChangesFailureCallback);
 
     };
 
-
+    init();
   }
 ]);

@@ -214,10 +214,6 @@ sntRover.controller('rvGroupSearchCtrl', [
                 return false;
             }
 
-            if ($scope.query.length < 3) {
-                return false;
-            }
-
             $scope.search();
         };
 
@@ -418,7 +414,8 @@ sntRover.controller('rvGroupSearchCtrl', [
         //just redirecting to group creation page
         $scope.gotoAddNewGroup = function() {
             $state.go('rover.groups.config', {
-                'id': "NEW_GROUP"
+                'id': "NEW_GROUP",
+                'newGroupName' : $scope.query
             });
         };
 

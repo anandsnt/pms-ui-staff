@@ -22,7 +22,7 @@ sntRover.service('RVreportsSrv', [
 
 		/**
 		 * save the chosen report object in here
-		 * @param {Object} item 
+		 * @param {Object} item
 		 */
 		service.setChoosenReport = function(item) {
 			choosenReport = item;
@@ -59,7 +59,7 @@ sntRover.service('RVreportsSrv', [
 		};
 
 		/**
-		 * load any additional apis to load and 
+		 * load any additional apis to load and
 		 * resolve deferred when all apis have been loaded.
 		 * deferred when resolved on the router will be provided with the
 		 * payload of all the api data as an object
@@ -77,7 +77,7 @@ sntRover.service('RVreportsSrv', [
 
 				// since payload will have two additional keys
 				// 'reportsResponse' and 'codeSettings'
-				if ( payloads - filters == 2 ) {
+				if ( payloads - filters === 2 ) {
 
 					// save it to $vault
 					service.payloadCache = angular.copy( payload );
@@ -116,14 +116,34 @@ sntRover.service('RVreportsSrv', [
 
 			// fetch gurantee types & add to payload
 			if ( hasFilter['INCLUDE_GUARANTEE_TYPE'] ) {
-				subSrv.fetchGuaranteeTypes()
-					.then( success.bind(null, 'guaranteeTypes'), failed.bind(null, 'guaranteeTypes', []) );
+				if ( service.payloadCache.hasOwnProperty('guaranteeTypes') ) {
+					success( 'guaranteeTypes', service.payloadCache.guaranteeTypes );
+				} else {
+					subSrv.fetchGuaranteeTypes()
+						.then( success.bind(null, 'guaranteeTypes'), failed.bind(null, 'guaranteeTypes', []) );
+				};
 			};
 
 			// fetch charge groups & add to payload
-			if ( hasFilter['INCLUDE_CHARGE_GROUP'] ) {
-				subSrv.fetchChargeGroups()
-					.then( success.bind(null, 'chargeGroups'), failed.bind(null, 'chargeGroups', []) );
+			if ( hasFilter['INCLUDE_CHARGE/ADDON_GROUP'] ) {
+				// subSrv.fetchChargeGroups()
+				// 	.then( success.bind(null, 'chargeGroups'), failed.bind(null, 'chargeGroups', []) );
+
+				// NOTE: caching nothing due to dependecies
+				// NOTE: two API completing in one if
+				subSrv.fetchChargeNAddonGroups()
+					.then(function(data) {
+						success( 'chargeNAddonGroups', data );
+
+						var getAddonGroupId = {
+							'addon_group_ids' : _.pluck(data, 'id')
+						};
+
+						if ( hasFilter['ADDONS'] ) {
+							subSrv.fetchAddons( getAddonGroupId )
+									.then(success.bind(null, 'addons'), failed.bind(null, 'addons', []));
+						};
+					}, failed.bind(null, 'chargeNAddonGroups', []));
 			};
 
 			// fetch charge groups & add to payload
@@ -160,7 +180,50 @@ sntRover.service('RVreportsSrv', [
 					subSrv.fetchBookingOrigins()
 						.then( success.bind(null, 'origins'), failed.bind(null, 'origins', []) );
 				};
-			};			
+			};
+
+			// fetch hold status & add to payload
+			if ( hasFilter['HOLD_STATUS'] ) {
+				if ( service.payloadCache.hasOwnProperty('holdStatus') ) {
+					success( 'holdStatus', service.payloadCache.holdStatus );
+				} else {
+					subSrv.fetchHoldStatus()
+						.then( success.bind(null, 'holdStatus'), failed.bind(null, 'holdStatus', []) );
+				};
+			};
+
+			// fetch addon groups & add to payload
+			// if ( hasFilter['ADDON_GROUPS'] ) {
+				
+			// 	// NOTE: caching nothing due to dependecies
+			// 	// NOTE: two API completing in one if
+			// 	subSrv.fetchAddonGroups()
+			// 		.then(function(data) {
+			// 			success( 'addonGroups', data );
+
+			// 			var getAddonGroupId = function() {
+			// 				return {
+			// 					'addon_group_ids' : _.pluck(data, 'id')
+			// 				};
+			// 			};
+
+			// 			if ( hasFilter['ADDONS'] ) {
+			// 				subSrv.fetchAddons( getAddonGroupId() )
+			// 						.then(success.bind(null, 'addons'), failed.bind(null, 'addons', []));
+			// 			};
+			// 		}, failed.bind(null, 'addonGroups', []));
+			// };
+
+			// fetch reservation status & add to payload
+			if ( hasFilter['RESERVATION_STATUS'] ) {
+				if ( service.payloadCache.hasOwnProperty('reservationStatus') ) {
+					success( 'reservationStatus', service.payloadCache.reservationStatus );
+				} else {
+					subSrv.fetchReservationStatus()
+						.then( success.bind(null, 'reservationStatus'), failed.bind(null, 'reservationStatus', []) );
+				};
+			};
+
 		};
 
 		/**
@@ -184,29 +247,51 @@ sntRover.service('RVreportsSrv', [
 
 				_.each(eachResult.filters, function(eachFilter) {
 
-					if ( ! hasFilter.hasOwnProperty('INCLUDE_GUARANTEE_TYPE') && 'INCLUDE_GUARANTEE_TYPE' == eachFilter.value ) {
+					if ( ! hasFilter.hasOwnProperty('INCLUDE_GUARANTEE_TYPE') && 'INCLUDE_GUARANTEE_TYPE' === eachFilter.value ) {
 						hasFilter['INCLUDE_GUARANTEE_TYPE'] = true;
 					};
 
-					if ( ! hasFilter.hasOwnProperty('INCLUDE_CHARGE_GROUP') && 'INCLUDE_CHARGE_GROUP' == eachFilter.value ) {
-						hasFilter['INCLUDE_CHARGE_GROUP'] = true;
+					// since API for 'charge group' and 'addon group' are the same
+					if ( (! hasFilter.hasOwnProperty('INCLUDE_CHARGE_GROUP') && 'INCLUDE_CHARGE_GROUP' === eachFilter.value) || (! hasFilter.hasOwnProperty('ADDON_GROUPS') && 'ADDON_GROUPS' == eachFilter.value) ) {
+						hasFilter['INCLUDE_CHARGE/ADDON_GROUP'] = true;
 					};
 
-					if ( ! hasFilter.hasOwnProperty('INCLUDE_CHARGE_CODE') && 'INCLUDE_CHARGE_CODE' == eachFilter.value ) {
+					if ( ! hasFilter.hasOwnProperty('INCLUDE_CHARGE_CODE') && 'INCLUDE_CHARGE_CODE' === eachFilter.value ) {
 						hasFilter['INCLUDE_CHARGE_CODE'] = true;
 					};
 
-					if ( ! hasFilter.hasOwnProperty('CHOOSE_MARKET') && 'CHOOSE_MARKET' == eachFilter.value ) {
+					if ( ! hasFilter.hasOwnProperty('ADDONS') && 'ADDONS' == eachFilter.value ) {
+						hasFilter['ADDONS'] = true;
+					};
+
+					if ( ! hasFilter.hasOwnProperty('CHOOSE_MARKET') && 'CHOOSE_MARKET' === eachFilter.value ) {
 						hasFilter['CHOOSE_MARKET'] = true;
 					};
 
-					if ( ! hasFilter.hasOwnProperty('CHOOSE_SOURCE') && 'CHOOSE_SOURCE' == eachFilter.value ) {
+					if ( ! hasFilter.hasOwnProperty('CHOOSE_SOURCE') && 'CHOOSE_SOURCE' === eachFilter.value ) {
 						hasFilter['CHOOSE_SOURCE'] = true;
 					};
 
-					if ( ! hasFilter.hasOwnProperty('CHOOSE_BOOKING_ORIGIN') && 'CHOOSE_BOOKING_ORIGIN' == eachFilter.value ) {
+					if ( ! hasFilter.hasOwnProperty('CHOOSE_BOOKING_ORIGIN') && 'CHOOSE_BOOKING_ORIGIN' === eachFilter.value ) {
 						hasFilter['CHOOSE_BOOKING_ORIGIN'] = true;
 					};
+
+					if ( ! hasFilter.hasOwnProperty('HOLD_STATUS') && 'HOLD_STATUS' == eachFilter.value ) {
+						hasFilter['HOLD_STATUS'] = true;
+					};
+
+					// if ( ! hasFilter.hasOwnProperty('ADDON_GROUPS') && 'ADDON_GROUPS' == eachFilter.value ) {
+					// 	hasFilter['ADDON_GROUPS'] = true;
+					// };
+
+					// if ( ! hasFilter.hasOwnProperty('ADDONS') && 'ADDONS' == eachFilter.value ) {
+					// 	hasFilter['ADDONS'] = true;
+					// };
+
+					if ( ! hasFilter.hasOwnProperty('RESERVATION_STATUS') && 'RESERVATION_STATUS' == eachFilter.value ) {
+						hasFilter['RESERVATION_STATUS'] = true;
+					};
+
 				});
 			});
 

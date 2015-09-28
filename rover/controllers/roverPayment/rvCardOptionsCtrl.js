@@ -6,7 +6,8 @@ sntRover.controller('RVCardOptionsCtrl',
 	 '$location',
 	 '$document',
 	 'RVPaymentSrv',
-	function($rootScope, $scope, $state, ngDialog, $location, $document, RVPaymentSrv){
+         'RVReservationCardSrv',
+	function($rootScope, $scope, $state, ngDialog, $location, $document, RVPaymentSrv,RVReservationCardSrv){
 		BaseCtrl.call(this, $scope);
 		 $scope.renderDataFromSwipe = function(swipedDataToRenderInScreen){
 	    	$scope.cardData.cardNumber = swipedDataToRenderInScreen.cardNumber;
@@ -26,12 +27,116 @@ sntRover.controller('RVCardOptionsCtrl',
 			if(!!$("#sixIframe").length){
 				var iFrame = document.getElementById('sixIframe');
 				iFrame.src = iFrame.src;
-			};			
+			};
 		};
 
 		$scope.$on('REFRESH_IFRAME', function(e){
 			 $scope.refreshIframe();
 		});
+                
+                $rootScope.$on('depositModalAllowGiftCard', function(){
+                    $scope.allowPmtWithGiftCard = true;
+                });
+                
+                
+                //also if !standalone, check if gift card allowed
+                $scope.checkForGiftCard = function(){
+                    if (!$rootScope.isStandAlone){//CICO-19009 adding gift card support, used to validate gift card is enabled
+                         $scope.invokeApi(RVPaymentSrv.fetchAvailPayments, {} , $scope.cardsListSuccess);
+                    };
+                        
+                    
+                };
+                $rootScope.$on('giftCardSelected',function(){
+                      $scope.shouldShowIframe = false;
+                      if ($rootScope.isStandAlone){
+                        $('#cc-new-card').addClass('ng-hide');
+                      }
+                });
+                $rootScope.$on('creditCardSelected',function(){
+                    if (!$rootScope.isStandAlone){
+                        $scope.shouldShowIframe = true;
+                        $('#cc-new-card').removeClass('ng-hide');
+                    }
+                    if ($rootScope.isStandAlone){
+                        $('#cc-new-card').removeClass('ng-hide');
+                    }
+                });
+                $scope.hideIfFromStayCardDirect = function(){
+                  if (!$rootScope.isStandAlone){
+                      if ($scope.swippedCard){
+                          $scope.shouldShowIframe = false;
+                      } else {
+                          $scope.shouldShowIframe = true;
+                        }
+                    }
+                };
+              
+        $rootScope.$on('validatedGiftCardPmt',function(n, valid){
+            if (valid){
+               $scope.validPayment = true;
+           } else {
+               $scope.validPayment = false;
+           }
+        });
+	$scope.showMakePaymentButtonStatus = function(){
+            
+		var buttonClass = "";
+                
+                if ($scope.depositBalanceMakePaymentData){
+                    if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined"){
+			buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0 && $scope.validPayment) ? "green" :"grey";
+                    } else {
+                        if (!$scope.validPayment){
+                            buttonClass = "grey overlay";
+                        } else {
+                            buttonClass = "grey";
+                        }
+                    };
+                } else {
+                    if (!$scope.validPayment){
+			buttonClass = "grey overlay";
+                    } else {
+			buttonClass = "grey";
+                    }
+		};
+		return buttonClass;
+	};
+                $scope.useDepositGiftCard = false;
+                $scope.cardsListSuccess = function(data){
+                    $scope.allowPmtWithGiftCard = false;
+                    $rootScope.allowPmtWithGiftCard = false;
+                    $scope.$emit('hideLoader');
+                        for (var i in data){
+                            if (data[i].name === "GIFT_CARD"){
+                               $scope.allowPmtWithGiftCard = true;
+                               $scope.$parent.allowPmtWithGiftCard = true;
+                               $scope.$parent.$parent.allowPmtWithGiftCard = true;
+                               $scope.$parent.$parent.$parent.allowPmtWithGiftCard = true;
+                               $rootScope.allowPmtWithGiftCard = true;
+                               $rootScope.$broadcast('depositModalAllowGiftCard', true);
+                            }
+                        }
+                        
+                    
+                    if ($rootScope.initFromCashDeposit){
+                        $scope.initFromCashDeposit = true;
+                    } else {
+                        $scope.initFromCashDeposit = false;
+                    }
+                };
+                
+                $scope.isGiftCard = false;
+                $scope.allowPmtWithGiftCard = false;
+                $rootScope.$on('depositUsingGiftCardChange',function(e, v){
+                   if ($rootScope.depositUsingGiftCard){
+                       $scope.isGiftCard = true;
+                       $scope.hideCancelCard = true;
+                   } else {
+                       $scope.isGiftCard = false;
+                       $scope.hideCancelCard = false;
+                   }
+                });
 		//Not a good method
 		//To fix the issue CICO-11440
 		//From diary screen create reservation guest data is available only after reaching the summary ctrl
@@ -180,9 +285,61 @@ sntRover.controller('RVCardOptionsCtrl',
 	    		$scope.refreshIframe();
 	    	};
 	    };
-
+            $scope.$on('cancelCardSelection',function(){
+                $scope.depositWithGiftCard = false;
+                $scope.isGiftCard = false;
+                $scope.hideCancelCard = false;
+            });
+            
+            
+            $scope.giftCardAmountAvailable = false;
+            $scope.giftCardAvailableBalance = 0;
+            $scope.$on('giftCardAvailableBalance',function(e, giftCardData){
+               $scope.giftCardAvailableBalance = giftCardData.amount;
+            });
+            $scope.timer = null;
+            $scope.cardNumberInput = function(n, e, force){
+                if (force){
+                    $scope.isGiftCard = true;
+                    $scope.useDepositGiftCard = true;
+                    $rootScope.useDepositGiftCard = true;
+                } else {
+                    $rootScope.useDepositGiftCard = false;
+                }
+                if ($scope.isGiftCard || force){
+                    var len = n.length;
+                    $scope.num = n;
+                    if (len >= 8 && len <= 22){
+                        //then go check the balance of the card
+                        $('[name=card-number]').keydown(function(){
+                            clearTimeout($scope.timer); 
+                            $scope.timer = setTimeout($scope.fetchGiftCardBalance, 1500);
+                        });
+                    } else {
+                        //hide the field and reset the amount stored
+                        $scope.giftCardAmountAvailable = false;
+                    }
+                }
+            };
+            $scope.num;
+            $scope.fetchGiftCardBalance = function() {
+                if ($scope.isGiftCard){
+                       //switch this back for the UI if the payment was a gift card
+                   var fetchGiftCardBalanceSuccess = function(giftCardData){
+                       $scope.giftCardAvailableBalance = giftCardData.amount;
+                       $scope.giftCardAmountAvailable = true;
+                       $scope.$emit('giftCardAvailableBalance',giftCardData);
+                       //data.expiry_date //unused at this time
+                       $scope.$emit('hideLoader');
+                   };
+                   $scope.invokeApi(RVReservationCardSrv.checkGiftCardBalance, {'card_number':$scope.num}, fetchGiftCardBalanceSuccess);
+               } else {
+                   $scope.giftCardAmountAvailable = false;
+               }
+            };
+            
 	    $scope.$on("RENDER_SWIPED_DATA", function(e, swipedCardDataToRender){
-
+                        $scope.swippedCard = true;
 			$scope.renderDataFromSwipe(swipedCardDataToRender);
 			$scope.passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
 		});

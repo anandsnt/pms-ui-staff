@@ -5,10 +5,11 @@ sntRover.controller('RVReportDetailsCtrl', [
     '$timeout',
     '$window',
     'RVreportsSrv',
-	'RVReportUtilsFac',
 	'RVReportParserFac',
+	'RVReportMsgsConst',
+	'RVReportNamesConst',
 	'ngDialog',
-	function($scope, $rootScope, $filter, $timeout, $window, RVreportsSrv, reportUtils, reportParser, ngDialog) {
+	function($scope, $rootScope, $filter, $timeout, $window, reportsSrv, reportParser, reportMsgs, reportNames, ngDialog) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -62,7 +63,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				resultsTotalRow = $scope.$parent.resultsTotalRow;
 
 
-			$scope.chosenReport = RVreportsSrv.getChoosenReport();
+			$scope.chosenReport = reportsSrv.getChoosenReport();
 
 			$scope.setTitle( $scope.chosenReport.title + ' ' + ($scope.chosenReport.sub_title ? $scope.chosenReport.sub_title : '') );
 			$scope.$parent.heading = $scope.chosenReport.title + ' ' + ($scope.chosenReport.sub_title ? $scope.chosenReport.sub_title : '');
@@ -80,70 +81,77 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.showSortBy    = true;
 			$scope.hasPagination = true;
 			$scope.isTransactionReport = false;
+			$scope.isCondensedPrint = false;
 
 			switch ( $scope.chosenReport.title ) {
-				case reportUtils.getName('IN_HOUSE_GUEST'):
-				case reportUtils.getName('DEPARTURE'):
-				case reportUtils.getName('ARRIVAL'):
+				case reportNames['IN_HOUSE_GUEST']:
+				case reportNames['DEPARTURE']:
+				case reportNames['ARRIVAL']:
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					$scope.showSortBy = false;
 					break;
-                                        
-				case reportUtils.getName('EARLY_CHECKIN'):
+
+				case reportNames['EARLY_CHECKIN']:
 					$scope.isGuestReport = true;
 					$scope.showSortBy = true;
 					break;
 
-				case reportUtils.getName('CANCELLATION_NO_SHOW'):
+				case reportNames['CANCELLATION_NO_SHOW']:
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					$scope.hasNoSorting = true;
 					$scope.showSortBy = false;
 					break;
 
-				case reportUtils.getName('LOGIN_AND_OUT_ACTIVITY'):
+				case reportNames['LOGIN_AND_OUT_ACTIVITY']:
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					$scope.isLogReport = true;
 					$scope.showSortBy = false;
 					break;
 
-				case reportUtils.getName('RESERVATIONS_BY_USER'):
+				case reportNames['RESERVATIONS_BY_USER']:
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					break;
 
-				case reportUtils.getName('LATE_CHECK_OUT'):
+				case reportNames['LATE_CHECK_OUT']:
 					$scope.hasNoTotals = true;
 					break;
 
-				case reportUtils.getName('CHECK_IN_CHECK_OUT'):
+				case reportNames['CHECK_IN_CHECK_OUT']:
 					if ( $scope.chosenReport.chosenCico === 'IN' || $scope.chosenReport.chosenCico === 'OUT' ) {
 						$scope.hasNoTotals = true;
 					};
 					break;
 
-				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
-				case reportUtils.getName('WEB_CHECK_OUT_CONVERSION'):
-				case reportUtils.getName('MARKET_SEGMENT_STAT_REPORT'):
+				case reportNames['WEB_CHECK_IN_CONVERSION']:
+				case reportNames['WEB_CHECK_OUT_CONVERSION']:
+				case reportNames['MARKET_SEGMENT_STAT_REPORT']:
 					$scope.isLargeReport = true;
 					break;
 
-				case reportUtils.getName('BOOKING_SOURCE_MARKET_REPORT'):
+				case reportNames['BOOKING_SOURCE_MARKET_REPORT']:
 					$scope.hasPagination = false;
 					break;
 
-				case reportUtils.getName('DAILY_TRANSACTIONS'):
-				case reportUtils.getName('DAILY_PAYMENTS'):
+				case reportNames['DAILY_TRANSACTIONS']:
+				case reportNames['DAILY_PAYMENTS']:
 					$scope.hasNoTotals = true;
 					$scope.isTransactionReport = true;
 					break;
 
-				case reportUtils.getName('DEPOSIT_REPORT'):
-				case reportUtils.getName('RATE_ADJUSTMENTS_REPORT'):
+				case reportNames['DEPOSIT_REPORT']:
+				case reportNames['RATE_ADJUSTMENTS_REPORT']:
 					$scope.hasNoTotals = true;
 					$scope.isDepositReport = true;
+					break;
+
+				case reportNames['GROUP_PICKUP_REPORT']:
+					$scope.hasNoTotals = true;
+					$scope.isDepositReport = true;
+					$scope.isCondensedPrint = true;
 					break;
 
 				default:
@@ -153,7 +161,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			// hack to set the colspan for reports details tfoot
 			switch ( $scope.chosenReport.title ) {
-				case reportUtils.getName('CHECK_IN_CHECK_OUT'):
+				case reportNames['CHECK_IN_CHECK_OUT']:
 					if ( $scope.chosenReport.chosenCico === 'BOTH' ) {
 						$scope.leftColSpan = 6;
 						$scope.rightColSpan = 5;
@@ -163,74 +171,79 @@ sntRover.controller('RVReportDetailsCtrl', [
 					}
 					break;
 
-				case reportUtils.getName('UPSELL'):
+				case reportNames['UPSELL']:
 					$scope.leftColSpan = 5;
 					$scope.rightColSpan = 5;
 					break;
 
-				case reportUtils.getName('LOGIN_AND_OUT_ACTIVITY'):
+				case reportNames['LOGIN_AND_OUT_ACTIVITY']:
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 3;
 					break;
 
-				case reportUtils.getName('DEPARTURE'):
+				case reportNames['DEPARTURE']:
 					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 3;
 					break;
 
-				case reportUtils.getName('ARRIVAL'):
-				case reportUtils.getName('IN_HOUSE_GUEST'):
-				case reportUtils.getName('DEPOSIT_REPORT'):
-				case reportUtils.getName('RESERVATIONS_BY_USER'):
+				case reportNames['ARRIVAL']:
+				case reportNames['IN_HOUSE_GUEST']:
+				case reportNames['DEPOSIT_REPORT']:
+				case reportNames['RESERVATIONS_BY_USER']:
 					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 4;
 					break;
 
-				case reportUtils.getName('CANCELLATION_NO_SHOW'):
+				case reportNames['CANCELLATION_NO_SHOW']:
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 3;
 					break;
 
-				case reportUtils.getName('DAILY_TRANSACTIONS'):
-				case reportUtils.getName('DAILY_PAYMENTS'):
+				case reportNames['DAILY_TRANSACTIONS']:
+				case reportNames['DAILY_PAYMENTS']:
 					$scope.leftColSpan = 5;
 					$scope.rightColSpan = 5;
 					break;
 
-				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
-				case reportUtils.getName('WEB_CHECK_OUT_CONVERSION'):
+				case reportNames['WEB_CHECK_IN_CONVERSION']:
+				case reportNames['WEB_CHECK_OUT_CONVERSION']:
 					$scope.leftColSpan = 8;
 					$scope.rightColSpan = 8;
 					break;
 
-				case reportUtils.getName('ROOMS_QUEUED'):
+				case reportNames['ROOMS_QUEUED']:
 					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 3;
 					break;
 
-				case reportUtils.getName('FORECAST_BY_DATE'):
+				case reportNames['FORECAST_BY_DATE']:
 					$scope.leftColSpan = 8;
 					$scope.rightColSpan = 4;
 					break;
 
-				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
+				case reportNames['FORECAST_GUEST_GROUPS']:
 					$scope.leftColSpan = 6;
 					$scope.rightColSpan = 7;
 					break;
 
-				case reportUtils.getName('MARKET_SEGMENT_STAT_REPORT'):
+				case reportNames['MARKET_SEGMENT_STAT_REPORT']:
 					$scope.leftColSpan = 8;
 					$scope.rightColSpan = 8;
 					break;
 
-				case reportUtils.getName('COMPARISION_BY_DATE'):
+				case reportNames['COMPARISION_BY_DATE']:
 					$scope.leftColSpan = 4;
 					$scope.rightColSpan = 4;
 					break;
 
-				case reportUtils.getName('RATE_ADJUSTMENTS_REPORT'):
+				case reportNames['RATE_ADJUSTMENTS_REPORT']:
 					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 4;
+					break;
+
+				case reportNames['GROUP_PICKUP_REPORT']:
+					$scope.leftColSpan = 6;
+					$scope.rightColSpan = 3;
 					break;
 
 				default:
@@ -244,7 +257,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// today know as 'summaryCounts'. So we are gonna map 'totals' into 'summaryCounts'
 			// for the following reports
 			switch ( $scope.chosenReport.title ) {
-				case reportUtils.getName('CHECK_IN_CHECK_OUT'):
+				case reportNames['CHECK_IN_CHECK_OUT']:
 					if ( 'Total Check Ins' == totals[0]['label'] ) {
 						if ( totals.length == 10 ) {
 							$scope.$parent.summaryCounts = {
@@ -282,14 +295,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 					};
 					break;
 
-				case reportUtils.getName('UPSELL'):
+				case reportNames['UPSELL']:
 					$scope.$parent.summaryCounts = {
 						'rooms_upsold'   : totals[0]['value'],
 						'upsell_revenue' : totals[1]['value']
 					};
 					break;
 
-				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
+				case reportNames['WEB_CHECK_IN_CONVERSION']:
 					$scope.$parent.summaryCounts = {
 						'emails_sent'   : totals[0]['value'],
 						'up_sell_conv'  : totals[1]['value'],
@@ -299,7 +312,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					};
 					break;
 
-				case reportUtils.getName('WEB_CHECK_OUT_CONVERSION'):
+				case reportNames['WEB_CHECK_OUT_CONVERSION']:
 					$scope.$parent.summaryCounts = {
 						'emails_sent'        : totals[0]['value'],
 						'late_checkout_conv' : totals[1]['value'],
@@ -309,7 +322,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					};
 					break;
 
-				case reportUtils.getName('LATE_CHECK_OUT'):
+				case reportNames['LATE_CHECK_OUT']:
 					$scope.$parent.summaryCounts = {
 						'rooms'   : totals[0]['value'],
 						'revenue' : totals[1]['value']
@@ -320,13 +333,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					// no op
 			};
 
-
-
 			// change date format for all
 			for (var i = 0, j = results.length; i < j; i++) {
 			    results[i][0] = $filter('date')(results[i][0], $rootScope.dateFormat);
 
-			    if ( $scope.chosenReport.title === reportUtils.getName('LATE_CHECK_OUT') ) {
+			    if ( $scope.chosenReport.title === reportNames['LATE_CHECK_OUT'] ) {
 
 			        // hack to add curency ($) symbol in front of values
 			        results[i][ results[i].length - 1 ] = $rootScope.currencySymbol + results[i][ results[i].length - 1 ];
@@ -337,10 +348,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 			    }
 			};
 
-
 			// hack to edit the title 'LATE CHECK OUT TIME' to 'SELECTED LATE CHECK OUT TIME'
 			// notice the text case, they are as per api response and ui
-			if ( $scope.chosenReport.title === reportUtils.getName('LATE_CHECK_OUT') ) {
+			if ( $scope.chosenReport.title === reportNames['LATE_CHECK_OUT'] ) {
 			    for (var i = 0, j = headers.length; i < j; i++) {
 			        if ( headers[i] === 'Late Check Out Time' ) {
 			            headers[i] = 'Selected Late Check Out Time';
@@ -354,6 +364,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 				refreshScroll();
 				refreshSidebarScroll();
 			}, 200);
+
+
+
 
 
 			// new more detailed reports
@@ -373,31 +386,31 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, parseAPIoptions) );
 
 			// if there are any results
-			$scope.hasNoResults = _.isEmpty($scope.$parent.results);
+			$scope.hasNoResults = _.isEmpty( $scope.$parent.results );
 
 
 			// a very different parent template / row template / content template for certain reports
 			// otherwise they all will share the same template
 			switch ( $scope.parsedApiFor ) {
-				case reportUtils.getName('UPSELL'):
+				case reportNames['UPSELL']:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/upsellReport/rvUpsellReport.html';
 					break;
 
-				case reportUtils.getName('BOOKING_SOURCE_MARKET_REPORT'):
+				case reportNames['BOOKING_SOURCE_MARKET_REPORT']:
 					$scope.hasReportTotals    = false;
 					$scope.showReportHeader   = !_.isEmpty($scope.$parent.results.market) || !_.isEmpty($scope.$parent.results.source) ? true : false;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/bookingSourceMarketReport/rvBookingSourceMarketReport.html';
 					break;
 
-				case reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY'):
+				case reportNames['OCCUPANCY_REVENUE_SUMMARY']:
 					$scope.hasReportTotals    = false;
 					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/occupancyRevenueReport/rvOccupancyRevenueReport.html';
 					break;
 
-				case reportUtils.getName('RESERVATIONS_BY_USER'):
+				case reportNames['RESERVATIONS_BY_USER']:
 					if ( !!$scope.$parent.reportGroupedBy ) {
 						$scope.hasReportTotals    = true;
 						$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
@@ -409,29 +422,40 @@ sntRover.controller('RVReportDetailsCtrl', [
 					};
 					break;
 
-				case reportUtils.getName('FORECAST_BY_DATE'):
+				case reportNames['FORECAST_BY_DATE']:
 					$scope.hasReportTotals    = false;
 					$scope.showReportHeader   = true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/forecastByDateReport/rvForecastByDateReport.html';
 					break;
 
-				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
+				case reportNames['FORECAST_GUEST_GROUPS']:
 					$scope.hasReportTotals    = false;
 					$scope.showReportHeader   = true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/forecastGuestGroupReport/rvForecastGuestGroupReport.html';
 					break;
 
-				case reportUtils.getName('MARKET_SEGMENT_STAT_REPORT'):
+				case reportNames['MARKET_SEGMENT_STAT_REPORT']:
 					$scope.hasReportTotals    = false;
 					$scope.showReportHeader   = true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/marketSegmentStatReport/rvMarketSegmentStatReport.html';
 					break;
 
-				case reportUtils.getName('COMPARISION_BY_DATE'):
+				case reportNames['COMPARISION_BY_DATE']:
 					$scope.hasReportTotals    = false;
 					$scope.showReportHeader   = true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/comparisonStatReport/rvComparisonStatReport.html';
 					break;
+
+				case reportNames['ADDON_FORECAST']:
+					$scope.hasReportTotals  = false;
+					$scope.showReportHeader = true;
+					if ( 'ADDON' == $scope.chosenReport.chosenGroupBy ) {
+						$scope.detailsTemplateUrl = '/assets/partials/reports/addonForecastReport/rvAddonForecastReportByAddon.html';
+					} else {
+						$scope.detailsTemplateUrl = '/assets/partials/reports/addonForecastReport/rvAddonForecastReportByDate.html';
+					};
+					break;
+					
 
 				default:
 					$scope.hasReportTotals    = true;
@@ -448,53 +472,56 @@ sntRover.controller('RVReportDetailsCtrl', [
 			switch ( $scope.parsedApiFor ) {
 
 				// general reports rows
-				case reportUtils.getName('ARRIVAL'):
+				case reportNames['ARRIVAL']:
 					template = '/assets/partials/reports/generalReportRows/rvArrivalReportRow.html';
 					break;
-				case reportUtils.getName('CANCELLATION_NO_SHOW'):
+				case reportNames['CANCELLATION_NO_SHOW']:
 					template = '/assets/partials/reports/generalReportRows/rvCancellationReportRow.html';
 					break;
-				case reportUtils.getName('DAILY_TRANSACTIONS'):
-				case reportUtils.getName('DAILY_PAYMENTS'):
+				case reportNames['DAILY_TRANSACTIONS']:
+				case reportNames['DAILY_PAYMENTS']:
 					template = '/assets/partials/reports/generalReportRows/rvDailyTransPaymentsReportRow.html';
 					break;
-				case reportUtils.getName('DEPARTURE'):
+				case reportNames['DEPARTURE']:
 					template = '/assets/partials/reports/generalReportRows/rvDepartureReportRow.html';
 					break;
-				case reportUtils.getName('DEPOSIT_REPORT'):
+				case reportNames['DEPOSIT_REPORT']:
 					template = '/assets/partials/reports/generalReportRows/rvDepositReportRow.html';
 					break;
-				case reportUtils.getName('IN_HOUSE_GUEST'):
+				case reportNames['IN_HOUSE_GUEST']:
 					template = '/assets/partials/reports/generalReportRows/rvInHouseReportRow.html';
 					break;
-				case reportUtils.getName('RATE_ADJUSTMENTS_REPORT'):
+				case reportNames['RATE_ADJUSTMENTS_REPORT']:
 					template = '/assets/partials/reports/generalReportRows/rvRateAdjustmentReportRow.html';
 					break;
-				case reportUtils.getName('ROOMS_QUEUED'):
+				case reportNames['ROOMS_QUEUED']:
 					template = '/assets/partials/reports/generalReportRows/rvRoomQueuedReportRow.html';
 					break;
-				case reportUtils.getName('LOGIN_AND_OUT_ACTIVITY'):
+				case reportNames['LOGIN_AND_OUT_ACTIVITY']:
 					template = '/assets/partials/reports/generalReportRows/rvLoginActivityReportRow.html';
+					break;
+				case reportNames['GROUP_PICKUP_REPORT']:
+					template = '/assets/partials/reports/generalReportRows/rvGroupPickupReportRow.html';
 					break;
 
 
 				// RESERVATIONS_BY_USER report row
-				case reportUtils.getName('RESERVATIONS_BY_USER'):
+				case reportNames['RESERVATIONS_BY_USER']:
 					template = '/assets/partials/reports/reservationByUserReport/rvReservationByUserReportRow.html';
 					break;
 
 				// FORECAST_BY_DATE report row
-				case reportUtils.getName('FORECAST_BY_DATE'):
+				case reportNames['FORECAST_BY_DATE']:
 					template = '/assets/partials/reports/forecastByDateReport/rvForecastByDateReportRow.html';
 					break;
 
 				// FORECAST_GUEST_GROUPS report row
-				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
+				case reportNames['FORECAST_GUEST_GROUPS']:
 					template = '/assets/partials/reports/forecastGuestGroupReport/rvForecastGuestGroupReportRow.html';
 					break;
-				
+
 				// MARKET_SEGMENT_STAT_REPORT report row
-				case reportUtils.getName('MARKET_SEGMENT_STAT_REPORT'):
+				case reportNames['MARKET_SEGMENT_STAT_REPORT']:
 					template = '/assets/partials/reports/marketSegmentStatReport/rvMarketSegmentStatReportRow.html';
 					break;
 
@@ -510,14 +537,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 
 
-		// simple method to allow checking for report title
-		// from the template, even without making the entire reportUtils part of $scope
+		// simple method to allow checking for report title from the template
+		// by matching it against the report names constant
 		$scope.isThisReport = function (name) {
 			if ( 'string' == typeof name ) {
-				return $scope.parsedApiFor == reportUtils.getName(name);
+				return $scope.parsedApiFor == reportNames[name];
 			} else {
 				return !! _.find(name, function(each) {
-					return $scope.parsedApiFor == reportUtils.getName(each);
+					return $scope.parsedApiFor == reportNames[each];
 				});
 			};
 		};
@@ -664,92 +691,23 @@ sntRover.controller('RVReportDetailsCtrl', [
 		    $scope.genReport( false );
 		};
 
-		//loads the content in the existing report view in the DOM.
+		// basically refetching reports but for 1000 results
+		// Also if a specific report ctrl has created a pre-print
+		// 'showModal' method to get some inputs from user before print
+		// call the method here.
+		// READ MORE: rvReportsMainCtrl:L#:61-75
 		$scope.fetchFullReport = function() {
-
-			// report scope limiter popup
-			// here we will give user another
-			// chance to limit the reports to
-			// a certain range
-			if ( $_preFetchFullReport() ) {
-
-				// make a copy of the from and until dates
-				$scope.fromDateCopy = angular.copy( $scope.chosenReport.fromDate );
-				$scope.untilDateCopy = angular.copy( $scope.chosenReport.untilDate );
-
-				// show popup
-				ngDialog.open({
-					controller: 'RVPrePrintPopupCtrl',
-				    template: '/assets/partials/reports/shared/rvPrePrintPopup.html',
-				    className: 'ngdialog-theme-default',
-				    closeByDocument: true,
-				    scope: $scope,
-				    data: []
-				});
+			if ( 'function' == typeof $scope.printOptions.showModal ) {
+				$scope.printOptions.showModal();
 			} else {
 				$_fetchFullReport();
 			};
 		};
 
-		// restore the old dates and close
-		$scope.closeDialog = function() {
-			$scope.chosenReport.fromDate = angular.copy( $scope.fromDateCopy );
-			$scope.chosenReport.untilDate = angular.copy( $scope.untilDateCopy );
-
-		    ngDialog.close();
-		};
-
-		$scope.continueWithPrint = function () {
-			ngDialog.close();
-			$_fetchFullReport();
-		};
-
-		// determine if we need to show pre print popup
-		// currently only for 'OCCUPANCY_REVENUE_SUMMARY' report
-		function $_preFetchFullReport () {
-			var allowedDateRange = 0,
-				chosenDateRange,
-				chosenVariance,
-				chosenLastYear;
-
-			if ( $scope.chosenReport.title === reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY') ) {
-
-				// get date range
-				// READ MORE: http://stackoverflow.com/questions/3224834/get-difference-between-2-dates-in-javascript#comment-3328094
-				chosenDateRange = $scope.chosenReport.untilDate.getTime() - $scope.chosenReport.fromDate.getTime();
-				chosenDateRange = ( chosenDateRange / (1000 * 60 * 60 * 24) | 0 );
-
-				// find out the user selection choices
-				chosenVariance = $scope.chosenReport.chosenOptions['include_variance'] ? true : false;
-				chosenLastYear = $scope.chosenReport.chosenOptions['include_last_year'] ? true : false;
-
-				// fromdate <- 5 days -> untildate
-				// diff should be 4 (5 - 1), including fromdate
-				if ( chosenVariance && chosenLastYear ) {
-					allowedDateRange = 4;
-				}
-
-				// fromdate <- 10 days -> untildate
-				// diff should be 9 (10 - 1), including fromdate
-				else if ( chosenVariance || chosenLastYear ) {
-					allowedDateRange = 9;
-				}
-
-				// fromdate <- 15 days -> untildate,
-				// diff should be 14 (15 - 1), including fromdate
-				else {
-					allowedDateRange = 14;
-				};
-
-				// if the current chosen dates are within
-				// the allowedDateRange, dont show pop
-				// go straight to printing
-				// (allowedDateRange + 1) -> since we reduced it above
-				return chosenDateRange > allowedDateRange ? true : false;
-			} else {
-				return false;
-			};
-		};
+		// when user press submit from pre-print modal, continue our calls to '$_fetchFullReport'
+		// READ MORE: rvReportsMainCtrl:L#:61-75
+		var prePrintDone = $rootScope.$on( reportMsgs['REPORT_PRE_PRINT_DONE'], $_fetchFullReport );
+		$scope.$on( 'destroy', prePrintDone );
 
 		function $_fetchFullReport () {
 
@@ -761,31 +719,30 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.genReport( false, 1, 1000 );
 		};
 
-
-
-
 		// add the print orientation before printing
 		var addPrintOrientation = function() {
 			var orientation = 'portrait';
 			var margin = '1cm 0.5cm';
 
 			switch( $scope.chosenReport.title ) {
-				case reportUtils.getName('ARRIVAL'):
-				case reportUtils.getName('IN_HOUSE_GUEST'):
-				case reportUtils.getName('DEPARTURE'):
-				case reportUtils.getName('DEPOSIT_REPORT'):
-				case reportUtils.getName('CANCELLATION_NO_SHOW'):
-				case reportUtils.getName('WEB_CHECK_OUT_CONVERSION'):
-				case reportUtils.getName('WEB_CHECK_IN_CONVERSION'):
-				case reportUtils.getName('DAILY_TRANSACTIONS'):
-				case reportUtils.getName('DAILY_PAYMENTS'):
-				case reportUtils.getName('FORECAST_BY_DATE'):
-				case reportUtils.getName('FORECAST_GUEST_GROUPS'):
-				case reportUtils.getName('MARKET_SEGMENT_STAT_REPORT'):
+				case reportNames['ARRIVAL']:
+				case reportNames['IN_HOUSE_GUEST']:
+				case reportNames['DEPARTURE']:
+				case reportNames['DEPOSIT_REPORT']:
+				case reportNames['CANCELLATION_NO_SHOW']:
+				case reportNames['WEB_CHECK_OUT_CONVERSION']:
+				case reportNames['WEB_CHECK_IN_CONVERSION']:
+				case reportNames['DAILY_TRANSACTIONS']:
+				case reportNames['DAILY_PAYMENTS']:
+				case reportNames['FORECAST_BY_DATE']:
+				case reportNames['FORECAST_GUEST_GROUPS']:
+				case reportNames['GROUP_PICKUP_REPORT']:
+				case reportNames['MARKET_SEGMENT_STAT_REPORT']:
+				case reportNames['RATE_ADJUSTMENTS_REPORT']:
 					orientation = 'landscape';
 					break;
 
-				case reportUtils.getName('OCCUPANCY_REVENUE_SUMMARY'):
+				case reportNames['OCCUPANCY_REVENUE_SUMMARY']:
 					orientation = 'landscape';
 					margin: '2mm 2mm';
 					break;
@@ -831,31 +788,17 @@ sntRover.controller('RVReportDetailsCtrl', [
 		    *	======[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]======
 		    */
 
-			// restore the old dates if dates were indeed saved
-			// this is hardcodding.. NEED BETTER WAY TO MANAGE
-		    $timeout(function() {
-				if ( angular.isDate($scope.fromDateCopy) && angular.isDate($scope.untilDateCopy) ) {
-					$scope.chosenReport.fromDate = angular.copy( $scope.fromDateCopy );
-					$scope.chosenReport.untilDate = angular.copy( $scope.untilDateCopy );
-
-					$scope.fromDateCopy = undefined;
-					$scope.untilDateCopy = undefined;
-				};
-		    }, 50);
 
 		    // in background we need to keep the report with its original state
 		    $timeout(function() {
 		    	// remove the orientation
 				removePrintOrientation();
 
-				// restore the old dates if dates were indeed saved
-				// this is hardcodding.. NEED BETTER WAY TO MANAGE
-				if ( !!$scope.fromDateCopy && !!$scope.untilDateCopy ) {
-					$scope.chosenReport.fromDate = angular.copy( $scope.chosenReport.fromDateCopy );
-					$scope.chosenReport.untilDate = angular.copy( $scope.chosenReport.untilDateCopy );
-
-					$scope.chosenReport.fromDateCopy = undefined;
-					$scope.chosenReport.untilDateCopy = undefined;
+				// If a specific report ctrl has created a pre-print 'afterPrint' method
+				// to get clear/remove anything after print
+				// READ MORE: rvReportsMainCtrl:L#:61-75
+				if ( 'function' == typeof $scope.printOptions.afterPrint ) {
+					$scope.printOptions.afterPrint();
 				};
 
 		        // load the report with the original page
@@ -882,56 +825,56 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 
 
-		var reportSubmit = $scope.$on('report.submit', function() {
+		var reportSubmited = $scope.$on(reportMsgs['REPORT_SUBMITED'], function() {
 			$_pageNo = 1;
 			$scope.errorMessage = [];
-
+			/**/
 			afterFetch();
 			findBackNames();
 			calPagination();
 			refreshScroll();
 		});
 
-		var reportUpdated = $scope.$on('report.updated', function() {
+		var reportUpdated = $scope.$on(reportMsgs['REPORT_UPDATED'], function() {
 			$scope.errorMessage = [];
-
+			/**/
 			afterFetch();
 			findBackNames();
 			calPagination();
 			refreshScroll();
 		});
 
-		var reportPageChanged = $scope.$on('report.page.changed', function() {
+		var reportPageChanged = $scope.$on(reportMsgs['REPORT_PAGE_CHANGED'], function() {
 			$scope.errorMessage = [];
-
+			/**/
 			afterFetch();
 			calPagination();
 			refreshScroll();
 		});
 
-		var reportPrinting = $scope.$on('report.printing', function() {
+		var reportPrinting = $scope.$on(reportMsgs['REPORT_PRINTING'], function() {
 			$scope.errorMessage = [];
-
+			/**/
 			afterFetch();
 			findBackNames();
 			printReport();
 			refreshScroll();
 		});
 
-		var reportAPIfailure = $scope.$on('report.API.failure', function() {
+		var reportAPIfailed = $scope.$on(reportMsgs['REPORT_API_FAILED'], function() {
 			$scope.errorMessage = $scope.$parent.errorMessage;
-
+			/**/
 			afterFetch();
 			calPagination();
 			refreshScroll();
 		});
 
 		// removing event listners when scope is destroyed
-		$scope.$on( 'destroy', reportSubmit );
+		$scope.$on( 'destroy', reportSubmited );
 		$scope.$on( 'destroy', reportUpdated );
 		$scope.$on( 'destroy', reportPageChanged );
 		$scope.$on( 'destroy', reportPrinting );
-		$scope.$on( 'destroy', reportAPIfailure );
+		$scope.$on( 'destroy', reportAPIfailed );
 
     }
 ]);

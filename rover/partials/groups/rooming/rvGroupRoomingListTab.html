@@ -76,14 +76,17 @@
         </li>
         <li ng-show="shouldShowCheckInCheckoutButton()">
 
-            <button type="button" class="button" ng-disabled="shouldDisableCheckinButton()" 
-            ng-click="groupCheckin()"
-            ng-class="{'grey': shouldDisableCheckinButton(), 'green': !shouldDisableCheckinButton()}">
-                {{'GROUP_CHECK_IN'|translate}}
-            </button> 
+            <button type="button" class="button"
+                ng-disabled="shouldDisableCheckinButton()"
+                ng-click="groupCheckin()"
+                ng-class="{'grey': shouldDisableCheckinButton(), 'green': !shouldDisableCheckinButton()}">
+                    {{'GROUP_CHECK_IN'|translate}}
+            </button>
 
-            <button type="button" class="button" ng-hide="true" ng-disabled="shouldDisableCheckoutButton()" 
-            ng-class="{'grey': shouldDisableCheckoutButton(), 'red': !shouldDisableCheckoutButton()}">
+            <button type="button" class="button"
+                ng-disabled="shouldDisableCheckoutButton()"
+                ng-click="groupCheckout()"
+                ng-class="{'grey': shouldDisableCheckoutButton(), 'red': !shouldDisableCheckoutButton()}">
                 {{'GROUP_CHECK_OUT'|translate}}
             </button>
 

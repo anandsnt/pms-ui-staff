@@ -1,5 +1,5 @@
 <div id="reservations-settings" class="sidebar-left" role="complementary" ng-controller="RVReservationSettingsCtrl" ui-jq="resizable" ui-options="resizableOptions" ng-click="clickedOnReservationSettings($event)" style="width: {{reservationSettingsWidth}}px;" ng-hide="hideSidebar">
-    <div class="scrollable" ng-iscroll="reservation-settings" ng-iscroll-delay="500">
+    <div class="scrollable" ng-iscroll="reservation-settings" ng-iscroll-delay="1000">
         <div class="wrapper">
             <div ui-jq="accordion" ui-options="accordionInitiallyNotCollapsedOptions">
                 <a class="settings-title toggle has-arrow active">
@@ -15,7 +15,7 @@
                         <!-- Day name if arrival date is not today or tomorrow -->
                     </label>
                     <div class="entry-data arriving" ng-class="{'disabled-calendar': reservationData.inHouse}">
-                        <input ng-if="!reservationData.inHouse" ui-date="arrivalDateOptions" id="sidebar-check-in-date" name="check-in-date" type="text" class="datepicker" ui-date-format ng-model="reservationData.arrivalDate" readonly ng-change="arrivalDateChanged()"/>
+                        <input ng-if="!reservationData.inHouse" ui-date="arrivalDateOptions" id="sidebar-check-in-date" name="check-in-date" type="text" class="datepicker" ui-date-format ng-model="reservationData.arrivalDate" readonly ng-change="arrivalDateChanged()" />
                         <strong class="day">{{reservationData.arrivalDate|date:dayInMonth}}</strong>
                         <span class="month">{{reservationData.arrivalDate|date:fullMonth}}</span>
                         <span class="year">{{reservationData.arrivalDate|date:fullYear}}</span>
@@ -26,7 +26,7 @@
                         <!-- Day name if departure date is not today or tomorrow -->
                     </label>
                     <div class="entry-data departing" ng-class="{'disabled-calendar': reservationData.inHouse}">
-                        <input ng-if="!reservationData.inHouse" ui-date="departureDateOptions" name="check-out-date" id="sidebar-check-out-date" type="text" class="datepicker" ui-date-format ng-model="reservationData.departureDate" ui-date readonly ng-change="departureDateChanged()"/>
+                        <input ng-if="!reservationData.inHouse" ui-date="departureDateOptions" name="check-out-date" id="sidebar-check-out-date" type="text" class="datepicker" ui-date-format ng-model="reservationData.departureDate" ui-date readonly ng-change="departureDateChanged()" />
                         <strong class="day">{{reservationData.departureDate|date:dayInMonth}}</strong>
                         <span class="month">{{reservationData.departureDate|date:fullMonth}}</span>
                         <span class="year">{{reservationData.departureDate|date:fullYear}}</span>
@@ -35,52 +35,50 @@
             </div>
             <div ui-jq="accordion" ui-options="accordionInitiallyNotCollapsedOptions">
                 <a class="settings-title toggle has-arrow active">
-                    <span class="title" translate>ROOMS_LABEL</span>
-                    <span class="value">{{reservationData.roomCount}}</span>
+                    <span class="title" translate>ROOM_TYPES</span>
+                    <span class="value">{{reservationData.tabs.length}}</span>
                 </a>
                 <div id="sidebar-rooms" class="settings-content">
-                    <div class="entry" ng-repeat="room in reservationData.rooms">
-                        <label for="room-{{index+1}}-adults">{{'ROOM_LABEL'|translate}} {{$index+1}} </label>
+                    <div class="entry" ng-repeat="tab in reservationData.tabs">
+                        <label>{{'ROOM_TYPE'|translate}} {{$index+1}}
+                            <!-- If not room 1 enable removal: -->
+                            <button type="button" class="remove-room icons icon-remove-10" ng-hide="$first" ng-click="removeTabFromSidebar($index)">Remove Room</button>
+                        </label>
                         <span ng-show="room.varyingOccupancy" translate>VAR_OCCUPANCY</span>
                         <div class="select adults">
-                            <label for="room-{{index+1}}-adults" class="label" translate>ADULTS</label>
-                            <select ng-disabled="room.varyingOccupancy" iscroll-stop-propagation name="room-{{index+1}}-adults" id="room-{{index+1}}-adults" ng-model="room.numAdults" ng-change="onOccupancyChange(room,'adult',$index)">
-                                <option ng-repeat="i in [0, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i==room.numAdults">{{i}}</option>
+                            <label class="label" translate>ADULTS</label>
+                            <select ng-disabled="tab.varyingOccupancy" ng-change="onOccupancyChange('numAdults', $index)" ng-model="tab.numAdults" iscroll-stop-propagation>
+                                <option ng-repeat="i in [0, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i==tab.numAdults">
+                                    {{i}}
+                                </option>
                             </select>
                         </div>
                         <div class="select children">
-                            <label for="room-{{index+1}}-children" class="label" translate>CHILDREN</label>
-                            <select ng-disabled="room.varyingOccupancy" iscroll-stop-propagation name="room-{{index+1}}-children" id="room-{{index+1}}-children" ng-model="room.numChildren" ng-change="onOccupancyChange(room,'children',$index)">
-                                <option ng-repeat="i in [0, otherData.maxChildren] | makeRange" value="{{i}}" ng-selected="i==room.numChildren">{{i}}</option>
+                            <label class="label" translate>CHILDREN</label>
+                            <select ng-change="onOccupancyChange('numChildren', $index)" ng-disabled="tab.varyingOccupancy" ng-model="tab.numChildren" iscroll-stop-propagation>
+                                <option ng-repeat="i in [0, otherData.maxChildren] | makeRange" value="{{i}}" ng-selected="i==tab.numChildren">
+                                    {{i}}
+                                </option>
                             </select>
                         </div>
                         <div class="select infants">
-                            <label for="room-{{index+1}}-infants" class="label" translate>INFANTS</label>
-                            <select ng-disabled="room.varyingOccupancy" iscroll-stop-propagation name="room-{{index+1}}-infants" id="room-{{index+1}}-infants" ng-model="room.numInfants" ng-change="updateOccupancy($index)">
-                                <option ng-repeat="i in [0, otherData.maxInfants] | makeRange" value="{{i}}" ng-selected="i==room.numInfants">{{i}}</option>
-
+                            <label class="label" translate>INFANTS</label>
+                            <select ng-change="onOccupancyChange('numInfants', $index)" ng-disabled="tab.varyingOccupancy"ng-model="tab.numInfants" iscroll-stop-propagation>
+                                <option ng-repeat="i in [0, otherData.maxInfants] | makeRange" value="{{i}}" ng-selected="i==tab.numInfants">
+                                    {{i}}
+                                </option>
                             </select>
                         </div>
-                        <!-- Room details should be attached here when book button is pressed -->
-                        <div id="room-{{index+1}}-details" class="room-details" ng-hide="room.roomTypeId == '' || room.rateId == ''">
-                            <h4>
-                                {{room.roomTypeName}}
-                                <button id="remove-room-{{index+1}}" ng-hide="isHourly" ng-click="editRoomRates($index)" type="button" class="edit-room icons icon-edit-10" translate>EDIT_ROOM_LABEL</button>
-                            </h4>
-                            <ul class="rate-and-enhancements">
-                                <li>
-                                    <em>{{room.rateName}}</em>
-                                    <span class="price">
-                                        <label ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateAvg | number : 2}}</label>
-                                        <label ng-if="room.isSuppressed">SR</label>
-                                        <span translate>AVG_NIGHT</span>
-                                    <span class="total" ng-if="room.isSuppressed">SR</span>
-                                    <span class="total" ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateTotal | number : 2}}</span>
-                                    </span>
-                                </li>
-                            </ul>
+                        <div class="select rooms">
+                            <label class="label" translate>ROOMS</label>
+                            <select ng-model="tab.roomCount" iscroll-stop-propagation ng-change="onRoomCountChange($index)" ng-disabled="isHourlyRateOn">
+                                <option ng-repeat="i in [1, otherData.maxRoomCount] | makeRange" value="{{i}}" ng-selected="i==tab.roomCount">
+                                    {{i}}
+                                </option>
+                            </select>
                         </div>
                     </div>
+                    <button type="button" class="add-new-button" ng-hide="restrictMultipleBookings()" ng-click="addTabFromSidebar()">+ Add room</button>
                 </div>
             </div>
             <!-- Functionality of radio buttons will be defined later. So hiding the demographics section - CICO-9461. -->

@@ -26,6 +26,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 				"dayuse"               : false,
 				"queued"               : false,
 				"lateCheckout"         : false,
+				"pre_checkin"          : false,
 				"floorFilterSingle"    : "",
 				"floorFilterStart"     : "",
 				"floorFilterEnd"       : "",
@@ -37,7 +38,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 				"page"                 : 1,
 				"perPage"              : $window.innerWidth < 599 ? 25 : 50
 			};
-		}
+		};
 
 		this.currentFilters = this.initFilters();
 
@@ -103,10 +104,11 @@ sntRover.service('RVHkRoomStatusSrv', [
 				});
 
 				// process the reservation status
-				if ( filter.vacant )   { reservation_status.push('VACANT'); };
-				if ( filter.occupied ) { reservation_status.push('OCCUPIED'); };
-				if ( filter.queued )   { reservation_status.push('QUEUED'); };
-				if ( filter.lateCheckout )   { reservation_status.push('LATE_CHECKOUT'); };
+				if ( filter.vacant )       { reservation_status.push('VACANT'); };
+				if ( filter.occupied )     { reservation_status.push('OCCUPIED'); };
+				if ( filter.queued )       { reservation_status.push('QUEUED'); };
+				if ( filter.lateCheckout ) { reservation_status.push('LATE_CHECKOUT'); };
+				if ( filter.pre_checkin )  { reservation_status.push('PRE_CHECKIN'); };
 
 				// process front office status
 				if ( filter.stayover )     { front_office_status.push('STAY_OVER'); };
@@ -176,11 +178,11 @@ sntRover.service('RVHkRoomStatusSrv', [
 				});
 
 			return deferred.promise;
-		}
+		};
 
 		// batch loading a lot of things
 		this.fetchPayload = function(passedParams) {
-			var deferred           = $q.defer();
+			var deferred           = $q.defer(),
 				passedParams       = passedParams,
 				paramWorkTypeId    = false,
 				paramEmployeeId    = false,
@@ -248,7 +250,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 			};
 
 			return deferred.promise;
-		}
+		};
 
 		// Get all floors for the current hotel.
 		var hotelFloors = [];
@@ -269,7 +271,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 			};
 
 			return deferred.promise;
-		}
+		};
 
 		// fetch all room types
 		this.roomTypes = [];
@@ -437,7 +439,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 		};
 
 
-		
+
 
 
 		this.toggleFilter = function(item) {
@@ -610,7 +612,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 			matchedRoom[property] = value;
 			matchedRoom.ooOsTitle = calculateOoOsTitle(matchedRoom);
 			this.setRoomStatusClass(matchedRoom);
-		}
+		};
 
 		this.setWorkStatus = function(id, status) {
 			var matchedRoom = _.find(roomList.rooms, function(room) {
@@ -620,12 +622,12 @@ sntRover.service('RVHkRoomStatusSrv', [
 			matchedRoom.description = matchedRoom.hk_status.description;
 			matchedRoom.hk_status.value = status.value;
 			this.setRoomStatusClass(matchedRoom);
-		}
+		};
 
 		// set the arrival time or 'IN' text for arrivied
 		var calculateTimeOrIn = function(room) {
 			if (room.room_reservation_status.indexOf('Arrived') >= 0 && !(room.room_reservation_status.indexOf('Day use') >= 0)) {
-				return 'IN'
+				return 'IN';
 			}
 			if (room.room_reservation_status.indexOf('Arrival') >= 0) {
 				return room.arrival_time;
@@ -636,7 +638,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 		// set the departure/latecheckout time or 'OUT' for departed
 		var calculateTimeOrOut = function(room) {
 			if (room.room_reservation_status.indexOf('Departed') >= 0) {
-				return 'OUT'
+				return 'OUT';
 			} else if (room.room_reservation_status.indexOf('Due out') >= 0) {
 				return room.is_late_checkout === 'true' ? room.late_checkout_time : room.departure_time;
 			}
@@ -655,13 +657,13 @@ sntRover.service('RVHkRoomStatusSrv', [
 				return {
 					'name': angular.copy(room.assignee_maid.name),
 					'class': 'assigned'
-				}
+				};
 			} else {
 				room.canAssign = true;
 				return {
 					'name': 'Unassigned',
 					'class': 'unassigned'
-				}
+				};
 			}
 		};
 		// exposing the method to service

@@ -12,7 +12,8 @@
                 </select>
             </div>
         </strong>
-        <span class="text">Or enter negative amount to make a refund</span>
+        <span ng-hide="saveData.paymentType === 'GIFT_CARD'" ng-show="saveData.paymentType !== 'GIFT_CARD'" class="text">Or enter negative amount to make a refund</span>
+        <span ng-show="saveData.paymentType === 'GIFT_CARD'" ng-hide="saveData.paymentType !== 'GIFT_CARD'" class="text">No Refunds available for Gift Cards</span>
         <!-- Title when bill# is defined: <strong class="h2 message">Pay Bill #{bill num}</strong> -->
         <div ng-show="messageOfSuccessSplitPayment!='' && splitBillEnabled" ng-class="{notice: messageOfSuccessSplitPayment!=''}" class='success success_message'>
             <span ng-bind-html ="messageOfSuccessSplitPayment">
@@ -26,7 +27,7 @@
 
         <div class="payment-form">
             <!-- Split payment -->
-                <div class="entry split" ng-class="{active: splitBillEnabled }"  ng-hide="depositPaidSuccesFully">
+                <div class="entry split" ng-class="{active: splitBillEnabled }"  ng-hide="depositPaidSuccesFully || saveData.paymentType === 'GIFT_CARD' || !isStandAlone">
 
                     <label class="checkbox inline" ng-class="{checked: splitBillEnabled }">
                     <span class="icon-form icon-checkbox" ng-class="{checked: splitBillEnabled }">
@@ -62,9 +63,17 @@
                         <select id="payment-options" ng-model="saveData.paymentType"  name="payment-options" ng-change="showHideCreditCard()">
                             <option value="" translate>SELECT_PAYMENT_TYPE</option>
                              <!-- changes for CICO-13763 -->
-                            <option ng-repeat="paymentData in renderData.paymentTypes" value="{{paymentData.name}}" ng-selected="paymentData.name == defaultPaymentTypeOfBill">{{paymentData.description}}</option>
+                            <option ng-repeat="paymentData in renderData.paymentTypes" value="{{paymentData.name}}" ng-selected="paymentData.name == defaultPaymentTypeOfBill || allowPmtWithGiftCard == true">{{paymentData.description}}</option>
                         </select>
                     </div>
+                </div>
+            
+                <div ng-show="saveData.paymentType === 'GIFT_CARD'" ng-hide="saveData.paymentType !== 'GIFT_CARD'" class="entry card-number card-type">
+                    <label for="card-number">Card number (<span>No spaces</span>)</label>
+			<input ng-show="saveData.paymentType === 'GIFT_CARD'" name="card-number" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber, this)" />
+                    <label ng-show="depositWithGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable"> Available Card Balance ({{currencySymbol}}) </label>
+                    <input ng-show="depositWithGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable" name="giftCardAmount" id="amount" ng-model="giftCardAvailableBalance" ng-readonly="true" ng-readonly="true" type="text" class="amount" value="{{ giftCardAvailableBalance }}"/>
+                   
                 </div>
 
                 <!-- Card Input type - output only if Six Payments and payment type is CC -->
@@ -104,7 +113,7 @@
                 <label for="amount">{{'AMOUNT_TO_PAY' | translate}} (<span>{{currencySymbol}}</span>)</label>
                 
                 <!-- CICO-12408 : Use only when fee exsists -->
-                <input ng-keyup="calculateFee()" value="{{renderData.defaultPaymentAmount}}" type="text" ng-model="renderData.defaultPaymentAmount" class="amount" ng-disabled="splitSelected"/>
+                <input ng-keyup="calculateFee()" value="{{renderData.defaultPaymentAmount}}" type="text" ng-model="renderData.defaultPaymentAmount" class="amount" ng-disabled="splitSelected" ng-change="updatedAmountToPay(renderData.defaultPaymentAmount)" ng-class="{'red-text': saveData.paymentType === 'GIFT_CARD' && !validPayment}"/>
                 <span ng-show="isShowFees()" class="delimiter">+</span> 
                 <input ng-show="isShowFees()" name="fee" id="fee" ng-keyup="calculateTotalAmount(renderData.defaultPaymentAmount)" ng-model="feeData.calculatedFee" value="{{feeData.calculatedFee}}" type="text" class="fee" />
                 <span ng-show="isShowFees()" class="delimiter">fee</span>

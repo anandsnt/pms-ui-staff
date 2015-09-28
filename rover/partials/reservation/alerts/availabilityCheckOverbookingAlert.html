@@ -1,0 +1,57 @@
+<div role="dialog" id="modal" class="modal-show">
+    <div class="modal-content availability-calendar">
+        <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()">
+            <span class="icons icon-close invert"></span>
+        </button>        
+        <strong class="h2 message red" ng-show="ngDialogData.houseFull && ngDialogData.activeView === 'HOUSE'">
+            House Availability Conflict
+        </strong>
+        <strong class="h2 message green" ng-show="!ngDialogData.houseFull && ngDialogData.activeView === 'HOUSE'">
+            House Available
+        </strong>
+        <strong class="h2 message red" ng-show="!ngDialogData.isRoomAvailable && ngDialogData.activeView === 'ROOM'">
+            Room Type Availability Conflict
+        </strong>
+        <strong class="h2 message green" ng-show="ngDialogData.isRoomAvailable && ngDialogData.activeView === 'ROOM'">
+            Room Type Available
+        </strong>
+
+        <overbooking-alert event-sources-left='stateVariables.eventSources.left' event-sources-right='stateVariables.eventSources.right' left-calendar-options='leftCalendarOptions' right-calendar-options='rightCalendarOptions' next-button-click-handler='nextButtonClickHandler()' prev-button-click-handler='prevButtonClickHandler()' disable-prev-button='disablePrevButton'></overbooking-alert>
+        
+        <ul class="calendar-legend">
+            <li><span class="check-in"></span>Arrival</li>
+            <li><span class="check-in unavailable"></span>Arrival Unavailable</li>
+            <li><span class="check-out"></span>Departure</li>
+            <li><span class="availabile"></span>Available</li>
+            <li ng-show="ngDialogData.activeView === 'HOUSE'">
+                <span class="unavailable"></span> No House Availability
+            </li>
+            <li ng-show="ngDialogData.activeView === 'ROOM'">
+                <span class="unavailable"></span> No Room Type Availability
+            </li>
+        </ul>
+        <div class="actions">
+            <div class="switch-button">
+                <!-- Add class "on" when checked -->
+                <input id="house-type-toggle" value="1" type="checkbox" ng-click="toggleCalendarView()">
+                <section ng-class="{'available': (ngDialogData.activeView === 'ROOM' && ngDialogData.isRoomAvailable) || (ngDialogData.activeView === 'HOUSE' && !ngDialogData.houseFull)}">
+                    <label ng-class="{'data-on' : ngDialogData.activeView === 'ROOM', 'data-off' : ngDialogData.activeView === 'HOUSE'}">
+                        <!-- Add class 'unavailable' if Room Type has Availability Conflict -->
+                        <span class="value">Room Type</span>
+                        <span class="switch-icon">House</span>
+                    </label>
+                    <label ng-class="{'data-off' : ngDialogData.activeView === 'ROOM', 'data-on' : ngDialogData.activeView === 'HOUSE'}">
+                        <!-- Add class 'unavailable' if House has Availability Conflict -->
+                        <span class="switch-icon">Room Type</span>
+                        <span class="value">House</span>
+                    </label>
+                </section>
+            </div>
+            <button type="button" id="goto-calendar" class="button blue modal-close" ng-hide="true">
+                Rooms &amp; Rates Calendar
+            </button>
+            <button type="button" id="goto-romsandrates" class="button green modal-close" ng-click="alertOverbooking(true, ngDialogData.arrivalDate, ngDialogData.departureDate)"> Continue
+            </button>
+        </div>
+    </div>
+</div>

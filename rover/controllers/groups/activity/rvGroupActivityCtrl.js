@@ -19,21 +19,21 @@ sntRover.controller('rvGroupActivityCtrl', [
 				"page": 1,
 				"type": !!$scope.groupConfigData ? "group" : "account",
 				"per_page": 50
-			}
+			};
 			var fetchCompleted = function(data) {
-				$scope.$broadcast('PopulateLogData', data)
-			}
+				$scope.$broadcast('PopulateLogData', data);
+			};
 			$scope.invokeApi(rvGroupAccountActivitySrv.fetchActivityLog, params, fetchCompleted);
-		}
+		};
 		$scope.$on('updateLogdata', function(e, params) {
 				params["id"] = $scope.selectedGroupOrAccountId;
 				params["type"] = !!$scope.groupConfigData ? "group" : "account";
 				var fetchCompleted = function(data) {
-					$scope.$broadcast('PopulateLogData', data)
-				}
+					$scope.$broadcast('PopulateLogData', data);
+				};
 				$scope.invokeApi(rvGroupAccountActivitySrv.fetchActivityLog, params, fetchCompleted);
 
-			})
+			});
 
 		/**
 		 * When there is a TAB switch, we will get this. We will initialize things from here

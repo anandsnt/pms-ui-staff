@@ -117,24 +117,30 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADReservationTypeListController',
 			url : '/reservationtypes'
 		});
+                
+		$stateProvider.state('admin.interfaceMessages', {
+			templateUrl: '/assets/partials/interfaces/adInterfaceMessages.html',
+			controller: 'adExternalInterfaceCtrl',
+			url : '/interfaceMessages'
+		});
 
 
 		$stateProvider.state('admin.reservationTools', {
 			templateUrl: '/assets/partials/reservationTools/adReservationToolsList.html',
 			controller: 'ADReservationTypeToolsMainCtrl',
-			url : '/reservationTools',
+			url : '/reservationTools'
 		});
-			$stateProvider.state('admin.balanceInventory', {
-				templateUrl: '/assets/partials/reservationTools/adBalanceInventory.html',
-				controller: 'ADBalanceInventoryCtrl',
-				url : '/balanceInventory',
-				resolve: {
-	                allJobs: function(ADReservationToolsSrv) {
-	                    return ADReservationToolsSrv.fetchAllJobs();
-	                }
-	            }
-			});
 
+		$stateProvider.state('admin.balanceInventory', {
+			templateUrl: '/assets/partials/reservationTools/adBalanceInventory.html',
+			controller: 'ADBalanceInventoryCtrl',
+			url : '/balanceInventory',
+			resolve: {
+                allJobs: function(ADReservationToolsSrv) {
+                    return ADReservationToolsSrv.fetchAllJobs();
+                }
+            }
+		});
 
 		$stateProvider.state('admin.housekeeping', {
 			templateUrl: '/assets/partials/housekeeping/adHousekeeping.html',
@@ -517,13 +523,27 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
                         simple_name: 'Siteminder',
 			url : '/siteminderSetup'
 		});
-                
+
+		$stateProvider.state('admin.givexSetup', {
+			templateUrl: '/assets/partials/Givex/adGivexSetup.html',
+			controller: 'adExternalInterfaceCtrl',
+                        interface_id: 4,
+                        simple_name: 'Givex',
+			url : '/siteminderSetup'
+		});
+
 		$stateProvider.state('admin.synxisSetup', {
 			templateUrl: '/assets/partials/SynxisSetup/adSynxisSetup.html',
 			controller: 'adExternalInterfaceCtrl',
                         interface_id: 3,
                         simple_name: 'Synxis',
 			url : '/synxisSetup'
+		});
+                
+		$stateProvider.state('admin.zestStationConfig', {
+			templateUrl: '/assets/partials/zestStation/adZestStationCfg.html',
+			controller: 'ADZestStationCtrl',
+			url : '/zestStationConfig'
 		});
 
 		$stateProvider.state('admin.emailBlacklist', {

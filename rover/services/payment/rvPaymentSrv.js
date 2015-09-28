@@ -22,6 +22,16 @@ sntRover.service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv','rvBaseWebSrvV2',
 
 		return deferred.promise;
 	};
+        this.fetchAvailPayments = function(data){
+		var deferred = $q.defer();
+		var url = '/staff/payments/addNewPayment.json';
+		RVBaseWebSrv.getJSON(url,data).then(function(data) {
+			    deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});
+		return deferred.promise;
+	};
 	this.savePaymentDetails = function(data){
 		var deferred = $q.defer();
 		var url = 'staff/reservation/save_payment';

@@ -68,7 +68,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 		$scope.setClass = function(day) {
 			return [true, ($scope.serviceStatus[$filter('date')(tzIndependentDate(day), 'yyyy-MM-dd')] && $scope.serviceStatus[$filter('date')(tzIndependentDate(day), 'yyyy-MM-dd')].id > 1 ? 'room-out' : '')];
-		}
+		};
 
 
 		// fetch callback of saved oo/os details
@@ -104,7 +104,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				return item.id === $_originalStatusId;
 			});
 
-			// $scope.ooOsTitle = item.description;
+
 
 			// check and update if room in service
 			$scope.inService = $scope.updateService.room_service_status_id !== $_inServiceId ? false : true;
@@ -208,7 +208,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 		$scope.closeDialog = function() {
 			ngDialog.close();
-		}
+		};
 
 		var datePickerCommon = {
 			dateFormat: $rootScope.jqDateFormat,
@@ -222,7 +222,6 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				setTimeout(function() {
 					$('body').find('#ui-datepicker-overlay')
 						.on('click', function() {
-							console.log('hey clicked');
 							$('#room-out-from').blur();
 							$('#room-out-to').blur();
 						});
@@ -239,7 +238,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				$scope.updateService.to_date = $filter('date')(tzIndependentDate($scope.updateService.from_date), 'yyyy-MM-dd');
 			}
 			$scope.untilDateOptions.minDate = $filter('date')(tzIndependentDate($scope.updateService.from_date), $rootScope.dateFormat);
-		}
+		};
 
 		$scope.fromDateOptions = angular.extend({
 			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
@@ -367,7 +366,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			}
 
 			$scope.invokeApi(RVHkRoomDetailsSrv.fetchRoomStatus, params, onFetchSuccess, onFetchFailure);
-		}
+		};
 
 		$scope.updateCalendar = function(year, month) {
 			function onFetchSuccess(data) {
@@ -385,7 +384,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				month: month || tzIndependentDate($scope.updateService.selected_date).getMonth(),
 				room_id: $scope.roomDetails.id
 			}, onFetchSuccess, onFetchFailure);
-		}
+		};
 
 		$scope.$watch("updateService.selected_date", function() {
 			if ($scope.updateService.room_service_status_id > 1) {
@@ -396,11 +395,11 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				$scope.showSaved = false;
 			}
 			$scope.refreshScroller('room-tab-scroll');
-		})
+		});
 
 
 		$scope.onViewDateChanged = function() {
-			$scope.updateService.selected_date = $filter('date')(tzIndependentDate($scope.updateService.selected_date), 'yyyy-MM-dd')
+			$scope.updateService.selected_date = $filter('date')(tzIndependentDate($scope.updateService.selected_date), 'yyyy-MM-dd');
 			$scope.updateService.room_service_status_id = $scope.serviceStatus[$scope.updateService.selected_date].id;
 			// The $_originalStatusId flag is used to make sure that the same change is not sent back to the server -- to many flags whew...
 			$_originalStatusId = $scope.updateService.room_service_status_id;
@@ -447,7 +446,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 					}
 				}
 			}
-		}
+		};
 
 	}
 ]);

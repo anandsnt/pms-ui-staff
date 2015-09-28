@@ -56,8 +56,11 @@
                     <span class="value" ng-class="{'red': arTransactionDetails.available_credit == '0.00','green': arTransactionDetails.available_credit != '0.00'}">{{currencySymbol}}{{arTransactionDetails.available_credit}}</span>
                     
                 </div>
-                <button ng-click="addCreditAmount()" type="button" class="button purple with-icon only-icon">
+                <!-- <button ng-click="addCreditAmount()" type="button" class="button purple with-icon only-icon">
                     <span class="icons icon-pencil"></span>
+                </button> -->
+                <button type="button" class="button green with-icon only-icon" ng-click="payAmount()">
+                    <span class="icons icon-wallet"></span>
                 </button>
             </li>
             <li>
@@ -84,7 +87,7 @@
                 <li class="reservation transaction" ng-click="goToReservationDetails($index, $event)" ng-repeat="transaction in arTransactionDetails.ar_transactions">
                     
                     <div class="faux-anchor" class="guest-{reservation-status}"> 
-                        <figure class="guest-image">
+                        <figure class="guest-image" ng-if="transaction.associated_type == 'Reservation'">
                             <img src="{{transaction.icon_url}}" alt="" />
                             <span class="vip" ng-if="transaction.guest_is_vip">VIP</span>
                         </figure>
@@ -106,6 +109,7 @@
                                 </time>                                
                             </div>
                         </div>
+                        <div class="group-info" ng-if="transaction.associated_type == 'PostingAccount'">A</div>
                         <div class="data" ng-if="transaction.associated_type == 'PostingAccount'">
                             <h2><span>{{transaction.account_name}}</span></h2>
                             <span class="confirmation">{{transaction.account_number}}</span>

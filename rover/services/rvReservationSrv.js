@@ -15,17 +15,6 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 		this.fetch = function(data) {
 
 			var deferred = $q.defer();
-			//Commented. Since we are using another API to get country list
-			// var fetchCountryList = function(data) {
-			// var url = 'api/countries.json';
-			// RVBaseWebSrv.getJSON(url).then(function(data) {
-			// that.reservationData.countries = data;
-			// deferred.resolve(that.reservationData);
-			// }, function(data) {
-			// deferred.reject(data);
-			// });
-			//
-			// };
 			var reservationId = data.reservationId;
 			var isRefresh = data.isRefresh;
 			var isReservationIdAlreadyCalled = false;
@@ -234,19 +223,17 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 		this.fetchDepositDetails = function(id) {
 			var deferred = $q.defer();
 			var url = 'api/reservations/' + id + '/deposit_policy';
-			//var url = '/sample_json/reservations/res_deposit.json';
 			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		};		
+		};
 
 		this.sendConfirmationEmail = function(data) {
 			var deferred = $q.defer();
 			var url = '/api/reservations/' + data.reservationId + '/email_confirmation';
-			//var url = '/sample_json/reservations/res_deposit.json';
 			rvBaseWebSrvV2.postJSON(url, data.postData).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -285,7 +272,7 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		this.reinstateReservation = function(param) {
 			var deferred = $q.defer(),
@@ -296,18 +283,38 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 				deferred.reject(response);
 			});
 			return deferred.promise;
-		}
+		};
 
 		this.checkReinstationAvailbility = function(reservationId) {
 			var deferred = $q.defer(),
-				url = '/api/reservations/' + reservationId + '/check_reinstate_availability';			
+				url = '/api/reservations/' + reservationId + '/check_reinstate_availability';
 			rvBaseWebSrvV2.getJSON(url).then(function(response) {
 				deferred.resolve(response);
 			}, function(response) {
 				deferred.reject(response);
 			});
 			return deferred.promise;
-		}
+		};
+
+		this.checkGiftCardBalance = function(params) {
+                        var data = {
+                            'card_number':params.card_number
+                        };
+			var deferred = $q.defer(),
+				url = '/api/gift_cards/balance_inquiry';
+			rvBaseWebSrvV2.postJSON(url,data).then(function(response) {
+                            if (response){
+                                if (typeof response.amount === typeof 123){
+                                    response.amount = parseFloat(response.amount).toFixed(2);
+                                }
+                            }
+                            
+				deferred.resolve(response);
+			}, function(response) {
+				deferred.reject(response);
+			});
+			return deferred.promise;
+		};
 
 	}
 ]);

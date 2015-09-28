@@ -37,7 +37,7 @@ admin.controller('ADRatesAddonsCtrl', [
 				if(data.pms_type !== null) {
 					$scope.isConnectedToPMS = true;
 				}
-			}
+			};
 			$scope.invokeApi(ADHotelSettingsSrv.fetch, {}, fetchSuccessOfHotelSettings);
 		};
 		$scope.checkPMSConnection();
@@ -118,7 +118,7 @@ admin.controller('ADRatesAddonsCtrl', [
 				$scope.chargeGroups = data.results;
 
 				// when ever we are ready to emit 'hideLoader'
-				$scope.apiLoadCount++
+				$scope.apiLoadCount++;
 				if ( $scope.apiLoadCount > 4 ) {
 					$scope.$emit('hideLoader');
 				};
@@ -209,11 +209,11 @@ admin.controller('ADRatesAddonsCtrl', [
 	            // we must set the end_date to begin_date
 	            // so that user may not submit invalid dates
 	            if ( tzIndependentDate($scope.singleAddon.begin_date) - tzIndependentDate($scope.singleAddon.end_date) > 0 ) {
-	                $scope.singleAddon.end_date = chosenDate
+	                $scope.singleAddon.end_date = chosenDate;
 	                $scope.singleAddon.end_date_for_display   = $filter('date')(tzIndependentDate(chosenDate), $rootScope.dateFormat);
 	            }
 			} else {
-				  $scope.singleAddon.end_date = chosenDate
+				  $scope.singleAddon.end_date = chosenDate;
 	              $scope.singleAddon.end_date_for_display   = $filter('date')(tzIndependentDate(chosenDate), $rootScope.dateFormat);
 			}
 		});
@@ -316,17 +316,19 @@ admin.controller('ADRatesAddonsCtrl', [
 			singleAddonData.charge_group_id = $scope.singleAddon.charge_group_id;
 			singleAddonData.description = $scope.singleAddon.description;
 			singleAddonData.is_reservation_only = $scope.singleAddon.is_reservation_only;
+			singleAddonData.inventory_count = parseInt($scope.singleAddon.inventory_count);
 			singleAddonData.name = $scope.singleAddon.name;
 			singleAddonData.post_type_id = $scope.singleAddon.post_type_id;
 			singleAddonData.rate_code_only = $scope.singleAddon.rate_code_only;
 			singleAddonData.manual_posting = $scope.singleAddon.manual_posting;
+			singleAddonData.forecast_for_next_day = $scope.singleAddon.forecast_for_next_day;
 
 			// convert dates to system format yyyy-MM-dd
 			// if not date null should be passed - read story CICO-7287
 			singleAddonData.begin_date = $scope.singleAddon.begin_date ? $filter('date')(tzIndependentDate($scope.singleAddon.begin_date), 'yyyy-MM-dd') : null;
 			singleAddonData.end_date = $scope.singleAddon.end_date? $filter('date')(tzIndependentDate($scope.singleAddon.end_date), 'yyyy-MM-dd') : null;
 
-
+			console.log(singleAddonData);
 
 			// if we are adding new addon
 			if ( $scope.isAddMode ) {
@@ -388,7 +390,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
 				$scope.$emit('hideLoader');
 
-				// $scope.tableParams.reload();
+
 			};
 
 			var data = {
@@ -450,7 +452,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			    }, 1000);
 			};
 			$scope.invokeApi(ADRatesAddonsSrv.importPackages, {}, fetchSuccessOfPackageList);
-		}
+		};
 
 	}
 ]);

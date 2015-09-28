@@ -17,13 +17,13 @@
             <div class="entry margin">
                 <label>Type <strong>*</strong> </label>
                 <div class="select">
-                    <select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types">
+                    <select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types" ng-change="onChangeRateType()"> 
                         <option value="" disabled>Select Rate Type</option>
                     </select>
                 </div>
             </div>
-            <div class="entry" ng-if="isHourlyRatesEnabled">
-                <label>Periodicity </label>
+            <div class="entry" ng-show="isHourlyRatesEnabled();">
+                <label>Periodicity</label>
                 <div class="switch" ng-class="{'disabled' : rateData.date_ranges.length > 1}">
                     <span ng-click="toggleHourlyRate(true)" ng-class="{'active' : rateData.is_hourly_rate}">Hourly</span>
                     <span ng-click="toggleHourlyRate(false)" ng-class="{'active' : !rateData.is_hourly_rate}">Daily</span>
@@ -81,7 +81,7 @@
         </fieldset>
         <fieldset class="holder right">
             <ad-textarea rows="2" div-class="full-width" text-area-class="full-width rate_description" value="rateData.description" label="Description " placeholder="Enter Rate Description" required="true"></ad-textarea>
-            <div class="entry" ng-if="!isHourlyRatesEnabled();">
+            <div class="entry" ng-show="!isHourlyRatesEnabled() && isStandAlone" ng-hide="!isStandAlone || isHourlyRatesEnabled()">
                 <ad-toggle-button is-checked="rateData.is_pms_only" ng-click="togglePMSOnly()" label="PMS ONLY"></ad-toggle-button>            
                 <ad-toggle-button is-checked="rateData.is_channel_only" ng-click="toggleChannelOnly()" label="CHANNEL ONLY"></ad-toggle-button>
             </div> 

@@ -1,12 +1,13 @@
 <div ng-include="'/assets/partials/common/header.html'"></div>
 <section id="rooms-and-rates" class="content reservations-inner">
-
-    <ul class="reservation-header" ng-show="rooms.length > 1">
-        <li ng-repeat="room in rooms" class="load-room" ng-class="{'active': $index == activeRoom , 'hidden' : rooms.length < 2}" translate> ROOM_LABEL {{$index + 1}}</li>
-    </ul>
-
     <!-- Reservation header -->
     <div id="rooms-and-rates-header" class="reservation-header">
+        <!-- If multiple room types: -->
+        <ul id="multiple-rooms" class="display" ng-if="reservationData.rooms.length > 1">
+            <li ng-class="{'active':activeRoom === tabIndex}" ng-click="changeActiveRoomType(tabIndex)" ng-show="reservationData.tabs.length > tabIndex" ng-repeat="tabIndex in [0,1,2,3]">
+                {{getTabTitle(tabIndex)}}
+            </li>
+        </ul>
         <div class="switch-button" ng-click="toggleCalendar()">
             <!-- CICO-15042 we will be disabling calendar switch for now -->
             <input name="rooms-availability-toggle" id="rooms-availability-toggle" value="rooms-availability" type="checkbox" disabled="disabled"/>
@@ -27,7 +28,6 @@
             <span class="icon-form icon-checkbox" ng-class="{'checked': stateCheck.showClosedRates}"></span> {{'SHOW_CLOSED_RATES'|translate}}
         </label>
     </div>
-
     <!-- Stay Dates: visible only when checked -->
     <div id="stay-days" class="stay-days" ng-class="{'open': stateCheck.stayDatesMode}">
         <div id="stay-days-listing" class="days scrollable" ng-iscroll="stayDates">
@@ -50,10 +50,8 @@
         <!-- When all booked -->
         <!-- <button type="button" class="button green">Done</button>-->
     </div>
-
     <div ng-if="stateCheck.activeMode=='ROOM_RATE'" ng-include src="'assets/partials/reservation/rvRoomRates.html'"></div>
     <div ng-if="stateCheck.activeMode=='CALENDAR'" ng-include src="'assets/partials/reservation/rvStayDatesCalendar.html'"></div>
-
 </section>
 <ul class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ui-corner-all find-rate" tabindex="0" ng-show="filteredRates.length > 0 && isRateFilterActive==true" style="width: 280px; top: 265px; left: 25px;">
     <li ng-repeat="rate in filteredRates" class="ui-menu-item" role="presentation">
