@@ -41,7 +41,7 @@ sntRover.config([
 
         });
          $stateProvider.state('station', {
-            url: '/station',
+            url: '/zest_station',
             templateUrl: '/assets/partials/zestStation/kiosk/specific/home.html',
             controller: 'rvTabletCtrl'
         });
