@@ -306,7 +306,11 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		$scope.isInStayCardScreen = function() {
 			return ($scope.viewState.identifier === "STAY_CARD");
 		};
-		$scope.removeCard = function(card, future) {
+		$scope.removeCard = function(card, cardId, options) {
+			var cardId 			= cardId || null,
+				successCallBack = (!!options) ? options.successCallBack : null,
+				failureCallBack = (!!options) ? options.failureCallBack : null;
+
 			// This method returns the numnber of cards attached to the staycard
 			var checkNumber = function() {
 					var x = 0;
@@ -320,6 +324,11 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				onRemoveSuccess = function() {
 					$scope.cardRemoved(card);
 					$scope.$emit('hideLoader');
+					// call custom callback functions if exists
+					if(successCallBack) {
+						successCallBack();
+					}
+
 					/**
 					 * 	Reload the stay card if any of the attached cards are changed! >>> 7078 / 7370
 					 * 	the state would be STAY_CARD in the reservation edit mode also.. hence checking for confirmation id in the state params
@@ -336,6 +345,10 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				},
 				onRemoveFailure = function() {
 					$scope.$emit('hideLoader');
+					// call custom callback functions if exists
+					if(failureCallBack) {
+						failureCallBack();
+					}
 				},
 				onEachRemoveSuccess = function() {
 					// Handle indl, remove success
@@ -350,14 +363,16 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					_.each($scope.reservationData.reservationIds, function(reservationId) {
 						promises.push(RVCompanyCardSrv.removeCard({
 							'reservation': reservationId,
-							'cardType': card
+							'cardType': card,
+							'cardId': cardId
 						}).then(onEachRemoveSuccess));
 					});
 					$q.all(promises).then(onRemoveSuccess, onRemoveFailure);
 				} else {
 					$scope.invokeApi(RVCompanyCardSrv.removeCard, {
 						'reservation': typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
-						'cardType': card
+						'cardType': card,
+						'cardId': cardId
 					}, onRemoveSuccess, onRemoveFailure);
 				}
 
@@ -566,9 +581,11 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.guestCardData.contactInfo.birthday = null;
 			}
 			if (card === 'company') {
+				$scope.reservationData.company.id = "";
 				$scope.reservationDetails.companyCard.id = "";
 				$scope.reservationDetails.companyCard.futureReservations = 0;
 			} else if (card === 'travel_agent') {
+				$scope.reservationData.travelAgent.id = "";
 				$scope.reservationDetails.travelAgent.id = "";
 				$scope.reservationDetails.travelAgent.futureReservations = 0;
 			}
