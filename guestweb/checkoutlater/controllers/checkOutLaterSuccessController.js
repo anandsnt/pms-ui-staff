@@ -80,6 +80,11 @@
 			$rootScope.checkoutTime = $scope.lateCheckOut.time +':00 '+$scope.lateCheckOut.ap;
 		 	$rootScope.checkoutTimessage = "Your new check-out time is ";
 		 	$rootScope.isLateCheckoutAvailable = false;
+		 	
+		 	//TODO
+
+		 	$scope.keyExpiry = "";
+
 		}
 	    else{
 	    	$scope.netWorkError = true;

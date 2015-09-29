@@ -38,6 +38,10 @@
 					</p>
 					<p class="latecheckout-charged centeralign">
 						<span class="light-black-text">Late Check-out ({{ lateCheckOut.time }} {{ lateCheckOut.ap }} ) .... {{currencySymbol}}{{ lateCheckOut.amount }}</span></p>
+					<p class="leadtext">
+						<em class="lightcontent chekout-late-final base-text">{{keyExpiry}}</em>
+					</p>
+
 				</div>
 				<div class="col-md-6 no-padding now-later-options margin-top-60">
 					<a ui-sref="checkOutConfirmation" class="link-btn with-bg pink-bg back-to-checkout white-text">Done</a>
