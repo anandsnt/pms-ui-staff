@@ -14,6 +14,7 @@
  *= require '../rover/css/groups.less'
  *= require '../rover/css/styles_ng_rover.css.less'
  *= require '../rover/css/rover_scroll_fix.css.less'
+ *= require '../rover/css/zestStation.css.less'
  *= require '../shared/lib/css/ngDialog.css'
  *= require '../shared/lib/css/ngDialog-theme-default.css'
  *= require '../shared/lib/css/ngDialog-theme-plain.css'
