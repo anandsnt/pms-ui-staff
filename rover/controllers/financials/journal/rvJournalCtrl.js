@@ -245,8 +245,9 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     }
     else{
         // 2. Go to Financials -> Journal.
-        // a) Upon logging in, default Tab should be SUMMARY
-        $scope.data.activeTab = 'SUMMARY';
+        // a) Upon logging in, default Tab should be =>
+        // REVENUE (If Hourly) or SUMMARY.
+        $scope.data.activeTab = ($rootScope.isHourlyRateOn) ? 'REVENUE':'SUMMARY';
         $scope.$emit("updateRoverLeftMenu", "journals");
         // b) All employee fields should default to ALL users
         // c) All date fields should default to yesterday's date
@@ -256,6 +257,8 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         $scope.data.toDate   = $filter('date')(yesterday, 'yyyy-MM-dd');
         $scope.data.cashierDate = $filter('date')(yesterday, 'yyyy-MM-dd');
         $scope.data.summaryDate = $filter('date')(yesterday, 'yyyy-MM-dd');
+        // CICO-20294 : Hide summary tab if the reservation is of type Hourly.
+        if($rootScope.isHourlyRateOn) $scope.data.isShowSummaryTab = false;
     }
 
     /** Employee/Departments Filter ends here .. **/
