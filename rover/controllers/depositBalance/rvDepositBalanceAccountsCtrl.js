@@ -12,7 +12,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	$scope.shouldShowWaiting = false;
 	$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG", true);
 
-	angular.forEach($scope.depositBalanceData.data.existing_payments, function (value, key) {
+	/*angular.forEach($scope.depositBalanceData.data.existing_payments, function (value, key) {
 		value.isSelected = false;
 		value.mli_token = value.ending_with; //For common payment HTML to work - Payment modifications story
 		value.card_expiry = value.expiry_date;//Same comment above
@@ -150,7 +150,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	* to make payment
 	* @return {Boolean}
 	*/
-	$scope.hasPermissionToMakePayment = function () {
+	/*$scope.hasPermissionToMakePayment = function () {
 		return rvPermissionSrv.getPermissionValue ('MAKE_PAYMENT');
 	};
 
@@ -158,14 +158,14 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	* function to determine the visibility of Make Payment button
 	* @return {Boolean}
 	*/
-	$scope.hideMakePayment = function () {
+	/*$scope.hideMakePayment = function () {
 		return (!$scope.hasPermissionToMakePayment());
 	};
 
 	/*
 	 * class based on the make payment button status
 	 */
-	$scope.showMakePaymentButtonStatus = function () {
+	/*$scope.showMakePaymentButtonStatus = function () {
 		var buttonClass = "";
 		if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined"){
 			buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0 && $scope.validPayment) ? "green" :"grey";
@@ -296,7 +296,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	/*
 	 * on succesfully created the token
 	 */
-	$scope.$on("TOKEN_CREATED", function (e, tokenDetails) {
+	/*$scope.$on("TOKEN_CREATED", function (e, tokenDetails) {
 		$scope.cardValues = tokenDetails;
 	    var cardExpiry = "";
 	    if(!$scope.cardValues.tokenDetails.isSixPayment){
@@ -469,7 +469,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	/*
 	 * call make payment API on clicks select payment
 	 */
-	$scope.clickedMakePayment = function () {
+	/*$scope.clickedMakePayment = function () {
 		var dataToSrv = {
 			"postData": {
 				"payment_type": $scope.depositBalanceMakePaymentData.payment_type,
@@ -556,7 +556,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	 * show the make payment screen and make payment button active
 	 * setting payment id
 	 */
-    $scope.giftCardAvailableBalance = '';
+    /*$scope.giftCardAvailableBalance = '';
     $scope.$on('giftCardAvailableBalance',function (e, giftCardData) {
         $scope.giftCardAvailableBalance = giftCardData.amount;
         $scope.giftCardAmountAvailable = true;
@@ -604,7 +604,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 		$scope.isAddToGuestCardVisible 			 = true;    
 	};
 
-	$scope.closeDepositModal = function () {
+	*/$scope.closeDepositModal = function () {
 		$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG", false);
 		$scope.closeDialog();
 	};
@@ -614,7 +614,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	 * Update balance data in staycard
 	 * closing the modal
 	 */
-	$scope.successMakePayment = function (data) {
+	/*$scope.successMakePayment = function (data) {
 		$scope.$emit("hideLoader");
 
 		if($scope.reservationData.reservation_card.is_rates_suppressed === "false" || $scope.reservationData.reservation_card.is_rates_suppressed === false){
@@ -662,7 +662,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	/*
 	 * Show the selected cards list in make payment screen
 	 */
-	$scope.setCreditCardFromList = function (index) {
+	/*$scope.setCreditCardFromList = function (index) {
 		$scope.shouldShowIframe 	   			 = false;
 		$scope.shouldShowMakePaymentScreen       = true;
 		$scope.showAddtoGuestCard    			 = false;
@@ -688,7 +688,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	/*
 	 * Card selected from centralized controler
 	 */
-	$scope.$on('cardSelected',function (e, data) {
+	/*$scope.$on('cardSelected',function (e, data) {
 		$scope.shouldCardAvailable 				 = true;
 		$scope.setCreditCardFromList(data.index);
 	});
@@ -735,5 +735,5 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	});
 
 	//CICO-12488
-	$scope.changePaymentType();
+	$scope.changePaymentType();*/
 }]);
