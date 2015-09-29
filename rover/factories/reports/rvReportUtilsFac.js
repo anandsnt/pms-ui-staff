@@ -46,9 +46,7 @@ sntRover.factory('RVReportUtilsFac', [
                         newChargeCodesAry.push( each );
                     };
                 });
-            }
-
-            if ( 'ONLY_PAYMENTS' === setting ) {
+            } else if ( 'ONLY_PAYMENTS' === setting ) {
                 paymentEntry = _.find(chargeGroupsAryCopy, function(each) {
                     return 'Payments' === each.name;
                 });
@@ -69,6 +67,16 @@ sntRover.factory('RVReportUtilsFac', [
                         };
                     });
                 };
+            } else {
+                _.each(chargeGroupsAryCopy, function(each) {
+                    each.selected = true;
+                    newChargeGroupsAry.push(each);
+                });
+
+                _.each(chargeCodesAryCopy, function(each) {
+                    each.selected = true;
+                    newChargeCodesAry.push(each);
+                });
             };
 
             return {
@@ -149,7 +157,9 @@ sntRover.factory('RVReportUtilsFac', [
             'INCLUDE_BOTH'       : true,
             'EXCLUDE_NON_GTD'    : true,
             'SHOW_RATE_ADJUSTMENTS_ONLY' : true,
-            'INCLUDE_TAX'        : true
+            'INCLUDE_TAX'        : true,
+            'INCLUDE_TAX_RATE': true,
+            'INCLUDE_ADDON_RATE': true,
         };
 
         var __displayFilterNames = {
@@ -325,6 +335,10 @@ sntRover.factory('RVReportUtilsFac', [
                     report['reportIconCls'] = 'icon-report icon-group';
                     break;
 
+                case reportNames['DAILY_PRODUCTION']:
+                    report['reportIconCls'] = 'icon-report icon-forecast';
+                    break;
+
                 default:
                     report['reportIconCls'] = 'icon-report';
                     break;
@@ -406,6 +420,11 @@ sntRover.factory('RVReportUtilsFac', [
                     report['canRemoveDate'] = true;
                     break;
 
+                case reportNames['DAILY_PRODUCTION']:
+                    report['hasDateLimit']  = false;
+                    report['canRemoveDate'] = true;
+                    break;
+
                 default:
                     report['hasDateLimit'] = false;     // CICO-16820: Changed to false
                     break;
@@ -426,6 +445,7 @@ sntRover.factory('RVReportUtilsFac', [
 
             // pre-process charge groups and charge codes
             var processedCGCC = {};
+
             // create DS for options combo box
             __setData(report, 'hasGeneralOptions', {
                 type         : 'FAUX_SELECT',
@@ -458,10 +478,10 @@ sntRover.factory('RVReportUtilsFac', [
                 if ( (filter.value === 'INCLUDE_CHARGE_CODE' || filter.value === 'INCLUDE_CHARGE_GROUP') && _.isEmpty(processedCGCC) ) {
                     if ( report['title'] === reportNames['DAILY_TRANSACTIONS'] ) {
                         processedCGCC = __adjustChargeGroupsCodes( data.chargeNAddonGroups, data.chargeCodes, 'REMOVE_PAYMENTS' );
-                    };
-
-                    if ( report['title'] === reportNames['DAILY_PAYMENTS'] ) {
+                    } else if ( report['title'] === reportNames['DAILY_PAYMENTS'] ) {
                         processedCGCC = __adjustChargeGroupsCodes( data.chargeNAddonGroups, data.chargeCodes, 'ONLY_PAYMENTS' );
+                    } else {
+                        processedCGCC = __adjustChargeGroupsCodes( data.chargeNAddonGroups, data.chargeCodes, '' );
                     };
                 };
 
@@ -697,6 +717,8 @@ sntRover.factory('RVReportUtilsFac', [
                         title        : 'All Selected',
                         data         : angular.copy( processedCGCC.chargeCodes )
                     });
+
+                    console.log( report );
                 };
 
                 // check for "show markets" and keep a ref to that item
