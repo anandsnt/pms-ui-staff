@@ -2,10 +2,9 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 	'$stateParams', '$timeout', 'ngDialog',
 	'RVReservationCardSrv',
 	function($scope, $rootScope, $stateParams, $timeout, ngDialog, RVReservationCardSrv) {
-
-		//As per CICO-14354, we are setting adjustment reason as the last one we entered
-		$scope.adjustment_reason = $scope.ngDialogData.lastReason;
 		
+		BaseCtrl.call (this, $scope);
+
 		$scope.refreshRateDetails = function() {
             $timeout(function() {
     			$scope.refreshScroller('rateDetails');
@@ -98,18 +97,35 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 			}
 		};
 
-		$scope.pastDay = function(date) {
+		/**
+		 * [shouldDisableRateChange description]
+		 * @param  {Object} stayDetails
+		 * @param  {String} date
+		 * @return {Boolean}
+		 */
+		$scope.shouldDisableRateChange = function(stayDetails, date) {
+			var resData 		= $scope.reservationData,
+				isGroupReservtn = resData.group_id || resData.reservation_card.group_id,
+				pastDay 		= (new tzIndependentDate($rootScope.businessDate) > new tzIndependentDate(date));
+
 			// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
 			// Just to clarify: User should be able to enter custom rates at any time for a group reservation
-			if ($scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id) {
-				return tzIndependentDate($rootScope.businessDate) >= new tzIndependentDate(date);
-			} else {
-				return tzIndependentDate($rootScope.businessDate) > new tzIndependentDate(date);
+			if (isGroupReservtn) {
+				pastDay = (new tzIndependentDate($rootScope.businessDate) >= new tzIndependentDate(date));
 			}
+
+			return (stayDetails.rateDetails.is_discount_allowed == 'false' || pastDay);
 		};
 
-		$scope.setScroller('rateDetails');
-		$scope.refreshRateDetails();
-
+		/**
+		 * things we need to do while initializing
+		 * @return {[type]} [description]
+		 */
+		var initializeMe = function() {
+			//As per CICO-14354, we are setting adjustment reason as the last one we entered
+			$scope.adjustment_reason = $scope.ngDialogData.lastReason;
+			$scope.setScroller('rateDetails');
+			$scope.refreshRateDetails();			
+		}();
 	}
 ]);
