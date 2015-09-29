@@ -12,7 +12,7 @@ sntRover.service('RVDepositBalanceSrv',['$q', 'BaseWebSrvV2', function($q, BaseW
 
 	this.getRevenueDetails = function (data) {
 		var deferred = $q.defer();
-		var url = 'api/posting_accounts/'+data.posting_account_id+'/revenue_details';
+		var url = 'api/posting_accounts/'+data.posting_account_id+'/deposit_and_balance';
 		BaseWebSrvV2.getJSON(url).then(function (data) {
 			deferred.resolve(data);
 		},function(data){
