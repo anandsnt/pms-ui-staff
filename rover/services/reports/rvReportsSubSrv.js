@@ -54,7 +54,56 @@ sntRover.service('RVreportsSubSrv', [
 				// TEST CODE, REMOVE BEFORE MERGE
 				if ( options.url.indexOf('/submit') ) {
 					deferred.resolve({
-						results: []
+						results: {
+							'Bunk': {
+								'2015-07-12': {
+									'available_rooms_count': 22,
+									'total_rooms_count': 200,
+									'rate_revenue': 1681.00,
+									'adr': 50,
+									'actual_revenue': 1925
+								},
+								'2015-07-13': {
+									'available_rooms_count': 25,
+									'total_rooms_count': 200,
+									'rate_revenue': 1781.00,
+									'adr': 60,
+									'actual_revenue': 1525
+								}
+							},
+							'Classic View': {
+								'2015-07-12': {
+									'available_rooms_count': 22,
+									'total_rooms_count': 200,
+									'rate_revenue': 1681.00,
+									'adr': 50,
+									'actual_revenue': 1925
+								},
+								'2015-07-13': {
+									'available_rooms_count': 25,
+									'total_rooms_count': 200,
+									'rate_revenue': 1781.00,
+									'adr': 60,
+									'actual_revenue': 1525
+								}
+							},
+							'Total': {
+								'2015-07-12': {
+									'available_rooms_count': 22,
+									'total_rooms_count': 200,
+									'rate_revenue': 1681.00,
+									'adr': 50,
+									'actual_revenue': 1925
+								},
+								'2015-07-13': {
+									'available_rooms_count': 25,
+									'total_rooms_count': 200,
+									'rate_revenue': 1781.00,
+									'adr': 60,
+									'actual_revenue': 1525
+								}
+							}
+						}
 					});
 					return
 				};

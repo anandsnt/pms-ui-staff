@@ -717,8 +717,6 @@ sntRover.factory('RVReportUtilsFac', [
                         title        : 'All Selected',
                         data         : angular.copy( processedCGCC.chargeCodes )
                     });
-
-                    console.log( report );
                 };
 
                 // check for "show markets" and keep a ref to that item

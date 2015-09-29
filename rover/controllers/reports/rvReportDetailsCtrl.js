@@ -455,6 +455,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 						$scope.detailsTemplateUrl = '/assets/partials/reports/addonForecastReport/rvAddonForecastReportByDate.html';
 					};
 					break;
+
+				case reportNames['DAILY_PRODUCTION']:
+					$scope.hasReportTotals    = false;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/dailyProduction/rvDailyProductionReport.html';
+					break;
 					
 
 				default:
