@@ -33,8 +33,20 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
 
         $scope.selectedActionMessage = '';
         $scope.selectedDepartment = '';
-
+        $scope.actionsSyncing = false;
+        
+        $scope.reservationId = '';
+        $scope.isStandAlone = true;
+        
         var init = function() {
+            if ($rootScope.isStandAlone){
+                $scope.isStandAlone = true;
+            } else {
+                $scope.isStandAlone = false;
+            }
+            if ($scope.$parent.reservationData.reservation_card.reservation_id){
+                $scope.reservationId = $scope.$parent.reservationData.reservation_card.reservation_id;
+            }
             $scope.populateTimeFieldValue();
             $scope.setScroller("rvActionListScroller");
 
@@ -44,15 +56,36 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
            };
             $scope.$watch('RVReservationCardSrv.data',  setActionsCount);
             $scope.setUpData();
+            if (!$scope.isStandAlone){
+                $scope.syncActions($scope.reservationId);
+            }
+        };
+        $scope.actionsSyncd = false;
+        $scope.syncActions = function(id){
+            /*
+             * method to sync action count for the staycard
+             * this reaches out to 
+             */
+            var onSuccess = function(data){
+              $scope.actions.totalCount = data.total_count;
+              $scope.actions.pendingCount = data.pending_action_count;
+              $scope.actionsSyncd = true;
+              $scope.$emit('hideLoader');
+            };
+            var onFailure = function(response){
+                
+              $scope.actionsSyncd = true;
+            };
+            $scope.invokeApi(rvActionTasksSrv.syncActionCount, id, onSuccess, onFailure);
         };
 
         $scope.setInitialActionsCount = function(data){
             if (data){
                 $scope.actions.totalCount = data.action_count;
-                $scope.actions.pendingCount = data.pending_action_count;
+                $scope.actions.pendingCount = data.pending_count;
                 var pending = $scope.actions.pendingCount, total = $scope.actions.totalCount;
 
-                if (total === 0 && pending === 0){
+                if (total === 0){
                     $scope.actionsCount = 'none';//none, pending, all-completed
                 } else if (total > 0 && pending === 0){
                     $scope.actionsCount = 'all-completed';
