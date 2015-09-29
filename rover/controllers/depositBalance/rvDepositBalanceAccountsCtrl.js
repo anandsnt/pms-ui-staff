@@ -1,28 +1,11 @@
-sntRover.controller('RVDepositBalanceCtrl',[
-					'$scope',
-					'ngDialog',
-					'$rootScope',
-					'RVDepositBalanceSrv',
-					'RVPaymentSrv',
-					'$stateParams',
-					'$filter',
-					'$timeout',
-					'rvPermissionSrv',
-                    'RVReservationCardSrv',
-		function($scope,
-				ngDialog,
-				$rootScope,
-				RVDepositBalanceSrv,
-				RVPaymentSrv,
-				$stateParams,
-				$filter,
-				$timeout, rvPermissionSrv, RVReservationCardSrv){
+sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$rootScope', 'RVDepositBalanceSrv', 'RVPaymentSrv', '$stateParams', '$filter', '$timeout', 'rvPermissionSrv', 'RVReservationCardSrv',
+	function($scope, ngDialog, $rootScope, RVDepositBalanceSrv, RVPaymentSrv, $stateParams, $filter, $timeout, rvPermissionSrv, RVReservationCardSrv) {
 
 	BaseCtrl.call(this, $scope);
 
 	//adding a flag to be set after some timeout to remove flickering action in iPad
 	$scope.pageloadingOver = false;
-	$timeout(function() {
+	$timeout(function () {
 		$scope.pageloadingOver = true;
 	}, 3500);
 
@@ -42,7 +25,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.authorizedCode = "";
 	$scope.showExistingAndAddNewPayments = true;
 	$scope.showOnlyAddCard = false;
-	$scope.cardsList =[];
+	$scope.cardsList = [];
 
 	angular.forEach($scope.depositBalanceData.data.existing_payments, function (obj, index) {
 		if (obj.is_credit_card) {
@@ -76,14 +59,14 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.setScroller('cardsList',{'click':true, 'tap':true});
 	$scope.setScroller('deopositdue');
 
-	var refreshScroll = function() {
-		$timeout(function() {
+	var refreshScroll = function () {
+		$timeout(function () {
 			$scope.refreshScroller('deopositdue');
 		}, 1500);
 	};
 
-	var refreshScroll = function() {
-		$timeout(function() {
+	var refreshScroll = function () {
+		$timeout(function () {
 			$scope.refreshScroller('cardsList');
 		}, 1500);
 	};
@@ -117,7 +100,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
             //$scope.isGiftCard = false;//removes duplicate card_input fields when toggling between credit card and gift card due to multi-controller use
         }
     });
-        
+
     $scope.giftCardAmountAvailable = false;
     $scope.giftCardAvailableBalance = 0;
 
@@ -161,7 +144,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
            $scope.giftCardAmountAvailable = false;
        }
     };
-        
+
 	/**
 	* function to check whether the user has permission
 	* to make payment
