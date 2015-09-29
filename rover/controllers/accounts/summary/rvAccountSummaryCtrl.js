@@ -308,7 +308,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		});
 
 		// CICO-16913
-		$scope.openBalanceScreen = function() {
+		$scope.openDepositBalanceModal = function() {
 			$scope.invokeApi(RVPaymentSrv.fetchAvailPayments, {}, successCallBackOfFetchPayment);
             //$rootScope.fromStayCard = true;
             
@@ -335,6 +335,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 					"paymentTypes": $scope.paymentTypes
 				}
 			};
+
 			ngDialog.open({
 				template: '/assets/partials/depositBalance/rvModifiedDepositBalanceModal.html',
 				controller: 'RVDepositBalanceCtrl',

@@ -5,7 +5,7 @@
 			<span class="icons icon-close invert"> </span>
 		</button>
 		<!-- Left side -->
-		<fieldset class="content-left" ng-show="passData.details.origin=='STAYCARD'">
+		<fieldset class="content-left" ng-show="passData.origin=='STAYCARD'">
 			<strong class="h2 message">Balance</strong>
 			<ul id="expenses" class="expenses">
 				<li>
@@ -48,7 +48,7 @@
 			</ul>
 		</fieldset>
 
-		<fieldset class="content-left" ng-show="passData.details.origin=='GROUP'">
+		<fieldset class="content-left" ng-show="passData.origin=='GROUP'">
             <strong class="h2 message">Balance</strong>
             <ul id="expenses" class="expenses">
                 <li>Projected Room Revenue<span>${value}</span></li>

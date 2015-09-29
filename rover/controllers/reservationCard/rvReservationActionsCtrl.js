@@ -558,8 +558,8 @@ sntRover.controller('reservationActionsController', [
 			$scope.$emit('hideLoader');
 			$scope.depositBalanceData = data;
 			$scope.passData = {
+				"origin" : "STAYCARD",
 				"details": {
-					"origin" : "STAYCARD",
 					"firstName": $scope.data.guest_details.first_name,
 					"lastName": $scope.data.guest_details.last_name,
 					"paymentTypes": $scope.paymentTypes
