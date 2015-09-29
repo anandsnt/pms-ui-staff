@@ -314,9 +314,9 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
             
 			//"posting_account_id": $scope.accountConfigData.summary.posting_account_id
 			var dataToSrv = {
-				"reservationId": 1331927
+				"posting_account_id": $scope.accountConfigData.summary.posting_account_id
 			};
-			$scope.invokeApi(RVDepositBalanceSrv.getDepositBalanceData, dataToSrv, $scope.successCallBackFetchDepositBalance);
+			$scope.invokeApi(RVDepositBalanceSrv.getRevenueDetails, dataToSrv, $scope.successCallBackFetchDepositBalance);
 		};
 
 		var successCallBackOfFetchPayment = function (data) {
@@ -338,7 +338,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 
 			ngDialog.open({
 				template: '/assets/partials/depositBalance/rvModifiedDepositBalanceModal.html',
-				controller: 'RVDepositBalanceCtrl',
+				controller: 'RVDepositBalanceAccountsCtrl',
 				className: 'ngdialog-theme-default1',
 				closeByDocument: false,
 				scope: $scope
