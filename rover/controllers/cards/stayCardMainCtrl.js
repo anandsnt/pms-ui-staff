@@ -249,24 +249,37 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			// Restore view state
 			$scope.viewState.pendingRemoval.status = false;
 			$scope.viewState.pendingRemoval.cardType = "";
+			var timer = 0;
 
 			//init all cards with new data
 			if (!isCardSame.guest) {
 				$scope.$broadcast('guestCardDetached');
 				$scope.initGuestCard();
-			}
-			if (!isCardSame.company) {
-				$scope.$broadcast('companyCardDetached');
-				$scope.initCompanyCard();
-			}
-			if (!isCardSame.agent) {
-				$scope.$broadcast('travelAgentDetached');
-				$scope.initTravelAgentCard();
+				timer += 300;
 			}
 
 			if (!isCardSame.group) {
-				$scope.$broadcast('groupDetached');
-				$scope.initGroupCard($scope.reservationDetails.group.id);
+				$timeout(function() {
+					$scope.$broadcast('groupDetached');
+					$scope.initGroupCard($scope.reservationDetails.group.id);
+				}, timer);
+				timer += 300;
+			}
+
+			if (!isCardSame.company) {
+				$timeout(function() {
+					$scope.$broadcast('companyCardDetached');
+					$scope.initCompanyCard();
+				}, timer);
+				timer += 300;
+
+			}
+			
+			if (!isCardSame.agent) {
+				$timeout(function() {
+					$scope.$broadcast('travelAgentDetached');
+					$scope.initTravelAgentCard();
+				}, timer);
 			}
 
 			// The future counts of the cards attached with the reservation
@@ -429,6 +442,15 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		};
 
 		this.attachCompanyTACardRoutings = function(card) {
+
+			// CICO-20161
+			/**
+			 * In this case there does not need to be any prompt for Rate or Billing Information to copy, 
+			 * since all primary reservation information should come from the group itself.
+			 */
+			if (!!$scope.reservationData.group.id) {
+				return false;
+			}
 
 			var fetchSuccessofDefaultRouting = function(data) {
 				$scope.$emit("hideLoader");
@@ -785,7 +807,9 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			var rateIdSet = [];
 			var self = this;
 			angular.forEach($scope.reservationData.rooms, function(room) {
-				var refData = _.findWhere(tData.rooms, {room_no : room.room_no});
+				var refData = _.findWhere(tData.rooms, {
+					room_no: room.room_no
+				});
 				room.stayDates = {};
 				rateIdSet.push(refData.rateId);
 				room.numAdults = refData.numAdults;
