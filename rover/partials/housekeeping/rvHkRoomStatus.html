@@ -296,6 +296,13 @@
                         <label translate>Late Checkout</label>
                     </label>
                 </div>
+                <div class="entry radio-check">
+                    <label class="checkbox">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked' : currentFilters.pre_checkin}"></span>
+                        <input name="room-filters" type="checkbox" ng-model="currentFilters.pre_checkin">
+                        <label translate>Pre Checkin</label>
+                    </label>
+                </div>
             </div>
             <div class="holder">
                 <strong class="title" translate>FRONT_OFFICE_STATUS</strong>

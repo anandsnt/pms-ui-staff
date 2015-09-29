@@ -485,6 +485,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			if (data.pms_type === null) {
 				$scope.isStandAlone = true;
 			}
+                        $rootScope.isStandAlone = $scope.isStandAlone;
 			$rootScope.currencySymbol = getCurrencySign(data.currency.value);
 			$rootScope.dateFormat = getDateFormat(data.date_format.value);
 			$scope.$emit('hideLoader');

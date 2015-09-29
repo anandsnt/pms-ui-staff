@@ -1,6 +1,6 @@
         <!-- Content -->
-<section id="main" class="centered" role="main" ng-hide='at !== "terms-conditions"' click-touch='resetTime()'>
-    <div id="content">
+<section id="main" class="centered kiosk" role="main" ng-hide='at !== "terms-conditions"' click-touch='resetTime()'>
+    <div id="content" style="margin-top:275px;">
         <h1>{{headingText}}</h1>
         <div id="flex-holder">
             <div id="textual" class="pull-left"> <!-- Add ng-scroll here -->
@@ -11,8 +11,8 @@
                 </div>
             </div>
             <div id="actions" class="pull-right">
-                <button type="button" class="button" touch-press="agreeTerms()">{{agreeButtonText}}</button>
-                <button type="button" class="button transparent" touch-press="cancelAtTerms()">{{cancelButtonText}}</button>
+                <button type="button" class="button" touch-press="agreeTerms()" >TERMS_ACCEPT</button>
+                <button type="button" class="button transparent" touch-press="cancelAtTerms()" >TERMS_CANCEL</button>
                 <p><strong translate>TERMS_SUBHEADING</strong><label translate>TERMS_SUBHEADING_TEXT</label></p>
             </div>
         </div>

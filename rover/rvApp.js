@@ -10,8 +10,8 @@ var sntRover = angular.module('sntRover',[
 		'pascalprecht.translate',
 		'ui.date',
 		'ui.calendar',
-		'dashboardModule',
 		'tabletKioskModule',
+		'dashboardModule',
 		'companyCardModule',
 		'stayCardModule',
 		'housekeepingModule',
@@ -41,11 +41,6 @@ sntRover.config(function ($httpProvider) {
 });
 
 sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state, $stateParams) {
-        if (localStorage['isKiosk'] == 'true'){
-            //the piggy-back method shouldnt require anything else to be loaded
-            console.info('loading Zest Station...');
-            return;
-        }   
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
 
