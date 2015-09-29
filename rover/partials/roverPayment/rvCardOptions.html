@@ -29,7 +29,7 @@
 	</div>
 
 	<!-- New card: MLI form -->
-	<div id="cc-new-card" class="new-card" ng-hide="isGiftCard || depositWithGiftCard || shouldShowIframe" ng-show="(!shouldShowIframe && addmode && shouldShowAddNewCard) || swippedCard" ng-init="hideIfFromStayCardDirect()"> <!-- Remove class "hidden" if there are no exsisting cards available -->
+	<div id="cc-new-card" class="new-card" ng-hide="(paymentGateway === 'sixpayments' && addmode) || isManual || isGiftCard || depositWithGiftCard || shouldShowIframe" ng-show="(!shouldShowIframe && addmode && shouldShowAddNewCard && paymentGateway !== 'sixpayments') || swippedCard" ng-init="hideIfFromStayCardDirect()"> <!-- Remove class "hidden" if there are no exsisting cards available -->
 		<div class="entry card-type">
 			<label for="card-type" >Card type </label>
 			<div class="select">
@@ -80,7 +80,7 @@
         </div>
         
 	<!-- New card: Call-In -->
-	<iframe ng-if="paymentGateway === 'sixpayments' && addmode" class="payment-iframe iframe-scroll" src="{{iFrameUrl}}" id="sixIframe" seamless></iframe>
+	<iframe ng-if="(paymentGateway === 'sixpayments' && addmode) || isManual" class="payment-iframe iframe-scroll" src="{{iFrameUrl}}" id="sixIframe" seamless></iframe>
 	<!-- Show only when creating reservation or paying the bill -->
 	<div class="actions" ng-hide="hideCancelCard || depositWithGiftCard" ng-show="!hideCancelCard && !depositWithGiftCard">
 		<button type="button" class="button blank" ng-click="cancelCardSelection()">
