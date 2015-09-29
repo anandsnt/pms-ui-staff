@@ -422,7 +422,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                                         finalRateRounded = 0.0,
                                         postType = addon.post_type || addon.postType,
                                         amountType = addon.amount_type || addon.amountType,
-                                        shouldPostAddon = RVReservationStateService.shouldPostAddon(postType.frequency, date, roomMetaData.arrival);
+                                        chargefullweeksonly = addon.chargefullweeksonly,
+                                        shouldPostAddon = RVReservationStateService.shouldPostAddon(postType.frequency, date, roomMetaData.arrival, roomMetaData.departure,chargefullweeksonly);
                                     if (shouldPostAddon) {
                                         finalRate = parseFloat(RVReservationStateService.getAddonAmount(amountType.value, baseRate, adultsOnTheDay, childrenOnTheDay));
                                         finalRateRounded = Number(finalRate.toFixed(2));
