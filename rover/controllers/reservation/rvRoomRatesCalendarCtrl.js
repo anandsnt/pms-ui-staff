@@ -9,6 +9,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		//inheriting some useful things
 		BaseCtrl.call(this, $scope);
 		var that = this,
+			currentMasterData,
 			setTitleAndScroller = function() {
 				$scope.heading = $filter('translate')('CHANGE_STAY_DATES_TITLE');
 				$scope.setTitle($scope.heading);
@@ -39,6 +40,53 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				return $filter('date')(new Date(y, m + 2, 0), 'yyyy-MM-dd');
 
 			},
+			resetCalendarEvents = function() {
+				$scope.eventSources.length = 0;
+
+				var calendarData = [],
+					arrivalDateString = $scope.reservationData.arrivalDate,
+					departureDateString = $scope.reservationData.departureDate;
+
+				_.each($scope.currentMasterData.results, function(dailyStat) {
+					dayAvailabilityToDisplay = dailyStat.house.availability;
+
+					var eventData = {
+						day: (function() {
+							if (dailyStat.date === arrivalDateString || dailyStat.date === departureDateString) {
+								return new tzIndependentDate(dailyStat.date).getDate().toString();
+							}
+							return "";
+						})(),
+						className: (function() {
+							var classes = "";
+							if (dailyStat.date === arrivalDateString) {
+								classes += 'check-in ';
+							} else if (dailyStat.date === departureDateString) {
+								classes += 'check-out ';
+							}
+
+							if (dayAvailabilityToDisplay <= 0) {
+								classes += 'unavailable ';
+							} else if (dailyStat.date !== departureDateString) {
+								classes += 'available ';
+							}
+							return classes;
+						})(),
+						start: new tzIndependentDate(dailyStat.date),
+						end: new tzIndependentDate(dailyStat.date),
+						editable: false,
+						title: (function() {
+							if (dayAvailabilityToDisplay <= 0) {
+								return dayAvailabilityToDisplay.toString();
+							}
+							return "";
+						})()
+					};
+					calendarData.push(eventData);
+				});
+
+				$scope.eventSources.push(calendarData);
+			},
 			getCalendarData = function(from, to) {
 				$scope.invokeApi(RVStayDatesCalendarSrv.fetchCalendarData, {
 					from_date: from,
@@ -46,6 +94,8 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				}, function(data) { //Success Callback
 					$scope.$emit('hideLoader');
 					console.log(data);
+					currentMasterData = data;
+					resetCalendarEvents();
 				}, function(errorMessage) { // Failure Callback
 					$scope.errorMessage = errorMessage;
 				});
@@ -53,7 +103,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 
 
 		this.init = function() {
-			$scope.eventSources = [];			
+			$scope.eventSources = [];
 			$scope.$emit('roomTypesCalOptionSelected');
 			if ($scope.reservationData.rooms[0].roomTypeId === "") {
 				$scope.stateCheck.calendarState.calendarType = "BEST_AVAILABLE";
@@ -109,13 +159,13 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 
 
 		$scope.selectedBestAvailableRatesCalOption = function() {
-			$scope.stateCheck.calendarState.calendarType = 'BEST_AVAILABLE';			
+			$scope.stateCheck.calendarState.calendarType = 'BEST_AVAILABLE';
 		};
 		/**
 		 * Event handler for Room type view selecton
 		 */
 		$scope.selectedRoomTypesCalOption = function() {
-			$scope.stateCheck.calendarState.calendarType = 'ROOM_TYPE';			
+			$scope.stateCheck.calendarState.calendarType = 'ROOM_TYPE';
 		};
 
 
