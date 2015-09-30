@@ -310,25 +310,23 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		$scope.paymentTypes = [];
 		$scope.creditCardTypes = [];
 
-		$scope.openDepositBalanceModal = function() {
-			$scope.invokeApi(RVPaymentSrv.fetchAvailPayments, {}, successCallBackOfFetchPayment);
-            //$rootScope.fromStayCard = true;
-            
-			var dataToSrv = {
-				"posting_account_id": $scope.accountConfigData.summary.posting_account_id
-			};
-			$scope.invokeApi(RVDepositBalanceSrv.getRevenueDetails, dataToSrv, $scope.successCallBackFetchDepositBalance);
-		};
-
+		// Prefetching payment details
 		var successCallBackOfFetchPayment = function (data) {
 			$scope.$emit('hideLoader');
 			$scope.paymentTypes = data;
-
 			angular.forEach($scope.paymentTypes, function (item, key) {
 				if(item.name == 'CC'){
 					$scope.creditCardTypes = item.values;
 				}
 			});
+		};
+		$scope.invokeApi(RVPaymentSrv.fetchAvailPayments, {}, successCallBackOfFetchPayment);
+
+		$scope.openDepositBalanceModal = function() {
+			var dataToSrv = {
+				"posting_account_id": $scope.accountConfigData.summary.posting_account_id
+			};
+			$scope.invokeApi(RVDepositBalanceSrv.getRevenueDetails, dataToSrv, $scope.successCallBackFetchDepositBalance);
 		};
  
 		$scope.successCallBackFetchDepositBalance = function(data) {
@@ -358,31 +356,20 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		 *	MLI SWIPE actions
 		 */
 		var processSwipedData = function(swipedCardData) {
-			alert("processSwipedData");
-			var passData = getPassData();
 			var swipeOperationObj = new SwipeOperation();
 			var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
-			passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
 			$scope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
 		};
 
 		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
-			
 			var swipeOperationObj = new SwipeOperation();
 			var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
 			var tokenizeSuccessCallback = function(tokenValue) {
-				alert("success");
 				$scope.$emit('hideLoader');
 				swipedCardData.token = tokenValue;
 				processSwipedData(swipedCardData);
 			};
-			var tokenizeFailuerCallback = function() {
-				alert("failure");
-				$scope.$emit('hideLoader');
-				swipedCardData.token = 12345678;
-				processSwipedData(swipedCardData);
-			};
-			$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback , tokenizeFailuerCallback);
+			$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback );
 		});
 
 		// -- CICO-16913 - Implement Deposit / Balance screen in Accounts -- //
