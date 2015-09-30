@@ -26,8 +26,10 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			$scope.eventSources = [];
 
 			$scope.calendarType = "ROOM_TYPE";
+			$scope.$emit('roomTypesCalOptionSelected');
 			if ($scope.reservationData.rooms[0].roomTypeId === "") {
 				$scope.calendarType = "BEST_AVAILABLE";
+				$scope.$emit('bestAvailableRatesCalOptionSelected');
 			}
 			$scope.checkinDateInCalender = $scope.confirmedCheckinDate = tzIndependentDate($scope.reservationData.arrivalDate);
 			$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = tzIndependentDate($scope.reservationData.departureDate);
@@ -80,12 +82,14 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 
 		$scope.selectedBestAvailableRatesCalOption = function() {
 			$scope.calendarType = 'BEST_AVAILABLE';
+			$scope.$emit('bestAvailableRatesCalOptionSelected');
 		};
 		/**
 		 * Event handler for Room type view selecton
 		 */
 		$scope.selectedRoomTypesCalOption = function() {
 			$scope.calendarType = 'ROOM_TYPE';
+			$scope.$emit('roomTypesCalOptionSelected');
 		};
 
 

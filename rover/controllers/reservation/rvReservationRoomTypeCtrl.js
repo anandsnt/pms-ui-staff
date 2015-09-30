@@ -9,6 +9,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		$scope.showLessRates = false;
 		$scope.isHouseAvailable = false;
 
+
 		$scope.restrictionColorClass = {
 			'CLOSED': 'red',
 			'CLOSED_ARRIVAL': 'red',
@@ -1881,6 +1882,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		$scope.selectAddon = function() {
 			alertAddonOverbooking(true);
 		};
+		$scope.$on('bestAvailableRatesCalOptionSelected', function(event){ 
+			$scope.bestAvailableRates = 'on'; 
+		});
+		$scope.$on('roomTypesCalOptionSelected', function(event){ 
+			$scope.bestAvailableRates = 'off'; 
+		});
 
 	}
 ]);

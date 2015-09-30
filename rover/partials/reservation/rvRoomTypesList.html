@@ -20,12 +20,12 @@
                 <span class="value">Rooms &amp; Rates</span>
             </label>
         </div>
-        <label class="checkbox inline dates-toggle" ng-click="toggleStayDaysMode()" ng-hide="stateCheck.activeMode=='CALENDAR'">
-            <span class="icon-form icon-checkbox" ng-class="{'checked': stateCheck.stayDatesMode}"></span> {{'SHOW_STAY_DATES'|translate}}
+        <label class="checkbox inline dates-toggle" ng-click="toggleStayDaysMode()">
+            <span class="icon-form icon-checkbox" ng-class="{'checked': stateCheck.stayDatesMode}"></span> {{'SEARCH_WITH_RESTRICTIONS'|translate}}
         </label>
-        <label class="checkbox inline" ng-click="toggleClosedRates();">
+        <label class="checkbox inline" ng-click="toggleClosedRates();" ng-show="bestAvailableRates=='on'">
             <!-- <input name="show-closed-rates" id="show-closed-rates" value="closed-rates" type="checkbox" checked /> {{'SHOW_CLOSED_RATES'|translate}} -->
-            <span class="icon-form icon-checkbox" ng-class="{'checked': stateCheck.showClosedRates}"></span> {{'SHOW_CLOSED_RATES'|translate}}
+            <span class="icon-form icon-checkbox" ng-class="{'checked': stateCheck.showClosedRates}"></span> {{'ONLY_AVAILABLE_ROOM'|translate}}
         </label>
     </div>
     <!-- Stay Dates: visible only when checked -->
