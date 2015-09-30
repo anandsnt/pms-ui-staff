@@ -5,12 +5,14 @@ sntRover.controller('rvTabletCtrl', [
         '$timeout',
         'rvTabletSrv',
         'ngDialog',
+        '$window',
     function($scope, 
         $document, 
         $state, 
         $timeout, 
         rvTabletSrv, 
-        ngDialog) {
+        ngDialog,
+        $window) {
                 
             BaseCtrl.call(this, $scope);
             $scope.hotel = {
@@ -20,6 +22,18 @@ sntRover.controller('rvTabletCtrl', [
             $scope.showHeader = true;
             $scope.reservationsPerPage = 3;//in select
             $scope.hoursNights = 'Nights';
+            
+            
+            $scope.signatureData = "";
+            //options fo signature plugin
+            var screenWidth = angular.element($window).width(); // Calculating screen width.
+            $scope.signaturePluginOptions = {
+                            height : 130,
+                            width : screenWidth-60,
+                            lineWidth : 1
+            };
+            
+            $scope.emailOptional = true;//if false, email input will allow user to skip after selecting reservation
             
             $scope.$watch('at',function(to, from, evt){
                 
@@ -361,7 +375,6 @@ sntRover.controller('rvTabletCtrl', [
             $scope.selectReservation = function(r, fromSelect){
                 $scope.selectedReservation = r;
                 console.log('reservation selected',r);
-              
                   $scope.selectedReservation.reservation_details = {};
                   
                   
@@ -384,6 +397,8 @@ sntRover.controller('rvTabletCtrl', [
             $scope.onSuccessFetchReservationDetails = function(data){
                     $scope.$emit('hideLoader');
                     $scope.selectedReservation.reservation_details = data;
+                    console.info(data);
+                    //$scope.input.lastEmailValue = data.reservation_card;
                     
                     var info = data.data.reservation_card;
                     var nites, avgDailyRate, packageRate, taxes, subtotal, deposits, balanceDue;
@@ -561,7 +576,7 @@ sntRover.controller('rvTabletCtrl', [
                     };
                     
                     case 'input-email':{
-                        if ($scope.from === 'reservation-details'){
+                        if ($scope.from === 'card-swipe'){
                              //fetch reservation list using email as the param
                                 //onsuccess push results to window
                             $scope.input.email = textValue;
@@ -577,7 +592,7 @@ sntRover.controller('rvTabletCtrl', [
                         $scope.selectedFindBy = findBy;
                         $scope.input.lastEmailValue = textValue;
                         $scope.from = 'find-by-email';
-                        $scope.prevStateNav.push($scope.from);
+                        $scope.setLast($scope.from);
                         $scope.clearInputText();
                         findBy = 'email';
                         
@@ -595,7 +610,7 @@ sntRover.controller('rvTabletCtrl', [
                        
                         findBy = 'date';
                         $scope.from = at;
-                        $scope.prevStateNav.push($scope.from);
+                        $scope.setLast($scope.from);
                         $scope.clearInputText();
                         
                         $scope.selectedFindBy = 'find-by-date';
@@ -610,7 +625,7 @@ sntRover.controller('rvTabletCtrl', [
                         findBy = 'confirmation_number';
                         $scope.input.lastConfirmationValue = textValue;
                         $scope.from = 'find-by-confirmation';
-                        $scope.prevStateNav.push($scope.from);
+                        $scope.setLast($scope.from);
                         $scope.clearInputText();
                         $scope.selectedFindBy = 'find-by-confirmation';
                         $scope.invokeApi(rvTabletSrv.fetchReservations, {
@@ -650,16 +665,38 @@ sntRover.controller('rvTabletCtrl', [
                     first_name: first
                 });
             };
-
+            $scope.clearSignature = function(){
+                $scope.signatureData = '';
+                $("#signature").jSignature("clear");
+            };
             $scope.submitSignature = function(){
+                
+	 	$scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
+                
+                var guestEmailEnteredOrOnReservation = function(){
+                    var useEmail = '';
+                    if ($scope.input.lastEmailValue !== ''){
+                        useEmail = $scope.input.lastEmailValue;
+                    }
+                    if ($scope.selectedReservation.guest_details[0].email !== ''){
+                        useEmail = $scope.selectedReservation.guest_details[0].email;
+                    };
+                    if (useEmail !== ''){
+                        return true;
+                    } else return false;
+                };
+                var haveValidGuestEmail = guestEmailEnteredOrOnReservation();
+                
                 //detect if coming from email input
                 for (var i in $scope.prevStateNav){
-                    if (($scope.prevStateNav[i] === 'find-by-email' || $scope.prevStateNav[i] === 'input-email') && $scope.input.email !== ''){
-                        $scope.goToScreen(null, 'select-keys-after-checkin', true, $scope.from);
+                    if (($scope.prevStateNav[i] === 'find-by-email' || $scope.prevStateNav[i] === 'input-email') && haveValidGuestEmail){
+                            $scope.goToScreen(null, 'select-keys-after-checkin', true, $scope.from);
                         return;
                     }
                 }
                 $scope.goToScreen(null, 'input-email', true, $scope.from);
+                
+                $scope.clearSignature();
             };
             $scope.goToLast = function(){
                 if (!$scope.from){
@@ -671,7 +708,6 @@ sntRover.controller('rvTabletCtrl', [
 
             $scope.goToScreen = function(event, screen, override, from){
                 console.log('here: ', arguments)
-                console.info($scope.prevStateNav);
                 //screen = check-in, check-out, pickup-key;
                 var stateToGoTo, cancel = false;
                 if (typeof screen === null || typeof screen === typeof undefined){
@@ -680,7 +716,7 @@ sntRover.controller('rvTabletCtrl', [
                 if (typeof from !== null && typeof from !== typeof undefined){
                     if (from !== $scope.from){
                         $scope.from = from;
-                        $scope.prevStateNav.push($scope.from);
+                        $scope.setLast($scope.from);
                     }
                 }
                 if (screen !== 'home'){
@@ -742,6 +778,7 @@ sntRover.controller('rvTabletCtrl', [
                         
                     case "card-swipe":
                         $scope.at = 'card-swipe';
+                        $scope.setLast('reservation-details');
                         //stateToGoTo = 'station.tab-kiosk-find-by-email';
                         $scope.headingText = 'To Complete Check-in...';
                         $scope.subHeadingText = '';
@@ -751,7 +788,7 @@ sntRover.controller('rvTabletCtrl', [
                         
                     case "add-guests":
                         $scope.at = 'add-guests';
-                        $scope.prevStateNav.push('reservation-details');
+                        $scope.setLast('reservation-details');
                         $scope.addGuestsHeading = 'Additional Guests';
                         //stateToGoTo = 'station.tab-kiosk-find-by-email';
                         $scope.hideNavBtns = false;
@@ -759,13 +796,13 @@ sntRover.controller('rvTabletCtrl', [
                         
                     case "add-guest-last":
                         $scope.at = 'add-guest-last';
-                        $scope.prevStateNav.push('add-guests');
+                        $scope.setLast('add-guests');
                         $scope.headingText = 'Enter the Guests Last Name';
                         //stateToGoTo = 'station.tab-kiosk-find-by-email';
                         $scope.hideNavBtns = false;
                         break;
                     case "add-guest-first":
-                        $scope.prevStateNav.push('add-guest-last');
+                        $scope.setLast('add-guest-last');
                         $scope.at = 'add-guest-first';
                         $scope.headingText = 'Enter the Guests First Name';
                         //stateToGoTo = 'station.tab-kiosk-find-by-email';
@@ -850,6 +887,9 @@ sntRover.controller('rvTabletCtrl', [
                         
                     case "cc-sign":
                         $scope.at = 'cc-sign';
+                        $scope.setLast('card-swipe');
+                        
+                        $scope.clearSignature();
                        // stateToGoTo = 'station.tab-kiosk-reservation-sign';
                         $scope.hideNavBtns = false;
                         break;
@@ -858,7 +898,7 @@ sntRover.controller('rvTabletCtrl', [
                     case "make-keys":
                         $scope.greenKey = false;
                         $scope.at = 'make-keys';
-                            $scope.prevStateNav.push('select-keys-after-checkin');
+                            $scope.setLast('select-keys-after-checkin');
                        // stateToGoTo = 'station.tab-kiosk-make-key';
                         setTimeout(function(){
                             $scope.greenKey = true;
@@ -918,7 +958,7 @@ sntRover.controller('rvTabletCtrl', [
                         break;
                         
                     case 'deliver-registration':{
-                            $scope.prevStateNav.push('deliver-registration');
+                            $scope.setLast('deliver-registration');
                              //fetch reservation list using email as the param
                                 //onsuccess push results to window
                             $scope.at = 'deliver-registration';
@@ -1058,11 +1098,20 @@ sntRover.controller('rvTabletCtrl', [
                     $('.start-focused').focus();
                 },1750);
                 */
+               
+                console.info($scope.prevStateNav);
             };
             $scope.agreeTerms = function(){
                 $scope.goToScreen(null, 'last_confirm', true);
             };
-            
+            $scope.skipEmailEntryAfterSwipe = function(){
+                if ($scope.from === 'card-swipe'){
+                    $scope.clearInputText();
+                    $scope.from = 'input-email';
+                    $scope.setLast('input-email');
+                    $scope.goToScreen(null, 'terms-conditions', true, 'input-email');
+                }
+            };
             $scope.dateOptions = {
                 changeYear: true,
                 changeMonth: true,
@@ -1113,6 +1162,19 @@ sntRover.controller('rvTabletCtrl', [
                 $scope.subHeadingText = '';
                 $scope.inputTextPlaceholder = '';
                 $scope.goToScreen(null, 'admin-login-username', true);
+            };
+
+            $scope.setLast = function(state){
+                if($scope.prevStateNav.length > 0){
+                    if ($scope.prevStateNav[$scope.prevStateNav.length-1] !== state){
+                        $scope.prevStateNav.push(state);
+                    }
+                } else {
+                    $scope.prevStateNav.push(state);
+                }
+                
+               
+                
             };
 
             initTabletConfig();
