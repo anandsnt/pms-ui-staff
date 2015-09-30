@@ -9,6 +9,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		$scope.showLessRates = false;
 		$scope.isHouseAvailable = false;
 
+
 		$scope.restrictionColorClass = {
 			'CLOSED': 'red',
 			'CLOSED_ARRIVAL': 'red',
@@ -43,7 +44,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				allDays: false,
 				oneDay: false
 			},
-			activeMode: "ROOM_RATE",
+			activeMode: $stateParams.view && $stateParams.view === "CALENDAR" ? "CALENDAR" : "ROOM_RATE",
 			stayDatesMode: false,
 			selectedStayDate: "",
 			guestOptionsIsEditable: false,
@@ -60,6 +61,11 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			selectedRoomRate: {
 				rateId: "",
 				roomId: ""
+			},
+			calendarState: {
+				showOnlyAvailableRooms: true,
+				searchWithRestrictions: false,
+				calendarType: "BEST_AVAILABLE"
 			}
 		};
 
@@ -1515,19 +1521,14 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 		$scope.to_trusted = function(html_code) {
 			return $sce.trustAsHtml(html_code);
-		}
-
-
+		};
 
 		$scope.toggleCalendar = function() {
-			//CICO-15042, CICO-15042 Disable navigation to the calendar screen temporarily
-			//$scope.stateCheck.activeMode = $scope.stateCheck.activeMode === "ROOM_RATE" ? "CALENDAR" : "ROOM_RATE";
-			//$scope.heading = $scope.stateCheck.activeMode === "ROOM_RATE" ? "Rooms & Rates" : " Change Stay Dates";
-			$scope.stateCheck.activeMode = 'ROOM_RATE';
-			$scope.heading = "Rooms & Rates";
+			$scope.stateCheck.activeMode = $scope.stateCheck.activeMode === "ROOM_RATE" ? "CALENDAR" : "ROOM_RATE";
+			$scope.heading = $scope.stateCheck.activeMode === "ROOM_RATE" ? "Rooms & Rates" : " Rate Calendar";
 			$scope.setHeadingTitle($scope.heading);
-			//$("#rooms-and-rates-header .data-off span").toggleClass("value switch-icon");
-		}
+			$("#rooms-and-rates-header .data-off span").toggleClass("value switch-icon");
+		};
 
 		$scope.showStayDateDetails = function(selectedDate) {
 			// by pass departure stay date from stay dates manipulation
@@ -1887,5 +1888,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			alertAddonOverbooking(true);
 		};
 
+		$scope.toggleSearchWithRestrictions = function(){
+			$scope.stateCheck.calendarState.searchWithRestrictions = !$scope.stateCheck.calendarState.searchWithRestrictions;
+		};
+
+		$scope.toggleShowOnlyAvailable = function(){
+			$scope.stateCheck.calendarState.showOnlyAvailableRooms = !$scope.stateCheck.calendarState.showOnlyAvailableRooms;
+		};
 	}
 ]);
