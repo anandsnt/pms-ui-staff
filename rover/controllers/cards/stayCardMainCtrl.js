@@ -288,6 +288,32 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		});
 
 		/**
+		 * to navigate to room & rates screen
+		 * @return {[type]} [description]
+		 */
+		$scope.navigateToRoomAndRates = function(options) {
+			var resData 		  	  = $scope.reservationData,
+				disableBackToStaycard = (options && options.disableBackToStaycard);
+
+			$state.go('rover.reservation.staycard.mainCard.roomType', {
+				from_date 			 : resData.arrivalDate,
+				to_date 			 : resData.departureDate,
+				fromState 			 : function() {
+											if ($state.current.name === "rover.reservation.staycard.reservationcard.reservationdetails") {
+												return 'STAY_CARD'
+											} else {
+												return $state.current.name
+											}
+										}(),
+				company_id 			 : resData.company.id,
+				travel_agent_id		 : resData.travelAgent.id,
+				group_id 			 : resData.group && resData.group.id,
+				allotment_id 		 : resData.allotment && resData.allotment.id,
+				disable_back_staycard: disableBackToStaycard
+			});
+		};
+
+		/**
 		 * if we wanted to reload particular staycard details
 		 * @return {undeifned} [description]
 		 */
@@ -306,96 +332,115 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		$scope.isInStayCardScreen = function() {
 			return ($scope.viewState.identifier === "STAY_CARD");
 		};
-		$scope.removeCard = function(card, cardId, options) {
-			var cardId 			= cardId || null,
-				successCallBack = (!!options) ? options.successCallBack : null,
-				failureCallBack = (!!options) ? options.failureCallBack : null;
 
-			// This method returns the numnber of cards attached to the staycard
-			var checkNumber = function() {
-					var x = 0;
-					_.each($scope.reservationDetails, function(d, i) {
-						if (typeof d.id !== 'undefined' && d.id !== '' && d.id !== null) {
-							x++;
-						}
-					});
-					return x;
-				},
-				onRemoveSuccess = function() {
-					$scope.cardRemoved(card);
-					$scope.$emit('hideLoader');
-					// call custom callback functions if exists
-					if(successCallBack) {
-						successCallBack();
-					}
+		// closure for remove card logics
+		(function() {
+			var removedCard = null;
 
-					/**
-					 * 	Reload the stay card if any of the attached cards are changed! >>> 7078 / 7370
-					 * 	the state would be STAY_CARD in the reservation edit mode also.. hence checking for confirmation id in the state params
-					 * 	The confirmationId will not be in the reservation edit/create stateParams except for the confirmation screen...
-					 * 	However, in the confirmation screen the identifier would be "CONFIRM"
-					 */
-					if ($scope.viewState.identifier === "STAY_CARD" && typeof $stateParams.confirmationId !== "undefined") {
-						$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-							"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
-							"confirmationId": $stateParams.confirmationId,
-							"isrefresh": false
-						});
-					}
-				},
-				onRemoveFailure = function() {
-					$scope.$emit('hideLoader');
-					// call custom callback functions if exists
-					if(failureCallBack) {
-						failureCallBack();
-					}
-				},
-				onEachRemoveSuccess = function() {
-					// Handle indl, remove success
-				};
+			/**
+			 * Final success callback for card removal API
+			 * @param {object} API response
+			 */
+			var onRemoveCardSuccessCallBack = function(response) {
+				$scope.$emit('hideLoader');
+				$scope.cardRemoved(removedCard);
 
-			//Cannot Remove the last card... Tell user not to select another card
-			if (checkNumber() > 1 && card !== "") {
-				if ($scope.reservationData && $scope.reservationData.reservationIds && $scope.reservationData.reservationIds.length > 1) {
-					var promises = []; // Use this array to push the promises returned for every call
-					$scope.$emit('showLoader');
-					// Loop through the reservation ids and call the cancel API for each of them
-					_.each($scope.reservationData.reservationIds, function(reservationId) {
-						promises.push(RVCompanyCardSrv.removeCard({
-							'reservation': reservationId,
-							'cardType': card,
-							'cardId': cardId
-						}).then(onEachRemoveSuccess));
-					});
-					$q.all(promises).then(onRemoveSuccess, onRemoveFailure);
-				} else {
-					$scope.invokeApi(RVCompanyCardSrv.removeCard, {
-						'reservation': typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
+				/* CICO-20270: Redirect to rooms and rates if contracted rate selected
+				 * else reload staycard after detaching card */
+				if (response.contracted_rate_selected) {
+					$scope.navigateToRoomAndRates();
+				}
+				else {
+					that.reloadStaycard();
+				}
+			};
+
+			var onRemoveCardFailureCallBack = function(error) {
+				$scope.$emit('hideLoader');
+			};
+
+			/**
+			 * Handle individual, remove success
+			 * @param {object} API response
+			 */
+			var onRemoveEachCardSuccessCallBack = function(response) {
+
+			};
+
+			/**
+			 * This function calls API for every reservations present in reservationsData.
+			 * @param {object} Reservation data
+			 */
+			var callRemoveCardsAPIforAllReservations = function(reservationData, card, cardId) {
+				var promises = [];
+				// Loop through the reservation ids and call the cancel API for each of them
+				_.each(reservationData.reservationIds, function(reservationId) {
+					var params = {
+						'reservation': reservationId,
 						'cardType': card,
 						'cardId': cardId
-					}, onRemoveSuccess, onRemoveFailure);
-				}
+					};
+					promises.push(RVCompanyCardSrv.removeCard(params)
+								.then(onRemoveEachCardSuccessCallBack));
+				});
+				$q.all(promises).then(onRemoveCardSuccessCallBack, onRemoveCardFailureCallBack);
+			};
 
-			} else {
-				//Bring up alert here
-				if ($scope.viewState.pendingRemoval.status) {
-					$scope.viewState.pendingRemoval.status = false;
-					$scope.viewState.pendingRemoval.cardType = "";
-					// If user has not replaced a new card, keep this one. Else remove this card
-					// The below flag tracks the card and has to be reset once a new card has been linked,
-					// along with a call to remove the flagged card
-					$scope.viewState.lastCardSlot = card;
-					var templateUrl = '/assets/partials/cards/alerts/cardRemoval.html';
-					ngDialog.open({
-						template: templateUrl,
-						className: 'ngdialog-theme-default stay-card-alerts',
-						scope: $scope,
-						closeByDocument: false,
-						closeByEscape: false
-					});
+			var callRemoveCardsAPIforReservation = function(card, cardId) {
+				var params = {
+				'reservation': (typeof $stateParams.id === "undefined") ? $scope.reservationData.reservationId : $stateParams.id,
+				'cardType': card,
+				'cardId': cardId
+				};
+				$scope.invokeApi(RVCompanyCardSrv.removeCard,
+								 params,
+								 onRemoveCardSuccessCallBack,
+								 onRemoveCardFailureCallBack);
+			};
+
+			$scope.removeCard = function(card, cardId) {
+				var cardId 			   = cardId || null,
+					totalCardsAttached = _.filter($scope.reservationDetails, function(card) {
+											return !!card.id;
+										 }).length;
+				removedCard = card;
+				//Cannot Remove the last card... Tell user not to select another card
+				if (totalCardsAttached > 1 && card !== "") {
+					var reservationData 		= $scope.reservationData,
+						hasMultipleReservations = (reservationData &&
+												   reservationData.reservationIds &&
+												   reservationData.reservationIds.length > 1);
+
+					if (hasMultipleReservations) {
+						$scope.$emit('showLoader');
+						callRemoveCardsAPIforAllReservations(reservationData, card, cardId)
+
+					} else {
+						callRemoveCardsAPIforReservation(card, cardId);
+					}
+
 				}
-			}
-		};
+				else {
+					//Bring up alert here
+					if ($scope.viewState.pendingRemoval.status) {
+						$scope.viewState.pendingRemoval.status = false;
+						$scope.viewState.pendingRemoval.cardType = "";
+						// If user has not replaced a new card, keep this one. Else remove this card
+						// The below flag tracks the card and has to be reset once a new card has been linked,
+						// along with a call to remove the flagged card
+						$scope.viewState.lastCardSlot = card;
+						var templateUrl = '/assets/partials/cards/alerts/cardRemoval.html';
+						ngDialog.open({
+							template: templateUrl,
+							className: 'ngdialog-theme-default stay-card-alerts',
+							scope: $scope,
+							closeByDocument: false,
+							closeByEscape: false
+						});
+					}
+				}
+			};
+		})();
 
 		$scope.noRoutingToReservation = function() {
 			ngDialog.close();

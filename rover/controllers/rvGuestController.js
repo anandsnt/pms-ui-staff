@@ -624,34 +624,6 @@ sntRover.controller('guestCardController', [
 			}
 		};
 
-		var successCallBackOfDetachCardsAPI = function() {
-			//if contracted rate was selected redirect to rooms and rates
-			//$scope.navigateToRoomAndRates();
-			// else reload page
-			if ($scope.isInStayCardScreen()) {
-				$scope.reloadTheStaycard();
-			}
-		};
-
-		var failureCallBackOfDetachCardsAPI = function() {
-			// TO DO: handle special case: 470 or show error msg.
-		};
-
-		$scope.callremoveCardsAPI = function(cardType, cardId) {
-			var params = {
-				card_id: cardId,
-				card_type: cardType,
-				reservation: $scope.reservationData.reservationId
-			};
-			var options = {
-				params: params,
-				successCallBack: successCallBackOfDetachCardsAPI,
-				failureCallBack: failureCallBackOfDetachCardsAPI
-			}
-			// use existing API - TODO: check with Dilip
-			$scope.removeCard(cardType, cardId, options);
-		};
-
 		$scope.deleteCard = function(cardType, cardId) {
 			if (cardType === 'travel_agent') {
 				$scope.$broadcast('travelAgentDetached');
@@ -660,7 +632,7 @@ sntRover.controller('guestCardController', [
 			} else if (cardType === 'guest') {
 				$scope.$broadcast('guestCardDetached');
 			}
-			$scope.callremoveCardsAPI(cardType, cardId);
+			$scope.removeCard(cardType, cardId);
 		};
 
 		// init staycard header
@@ -980,28 +952,6 @@ sntRover.controller('guestCardController', [
                 closeByDocument: false,
                 closeByEscape: false
             });			
-		};
-		/**
-		 * to navigate to room & rates screen
-		 * @return {[type]} [description]
-		 */
-		$scope.navigateToRoomAndRates = function() {
-			var resData = $scope.reservationData;
-			$state.go('rover.reservation.staycard.mainCard.roomType', {
-				from_date 		: resData.arrivalDate,
-				to_date 		: resData.departureDate,
-				fromState 		: function() {
-									if ($state.current.name === "rover.reservation.staycard.reservationcard.reservationdetails") {
-										return 'STAY_CARD'
-									} else {
-										return $state.current.name
-									}
-								}(),
-				company_id 		: resData.company.id,
-				travel_agent_id	: resData.travelAgent.id,
-				group_id 		: resData.group && resData.group.id,
-				allotment_id 	: resData.allotment && resData.allotment.id
-			});
 		};
 
 		/**
