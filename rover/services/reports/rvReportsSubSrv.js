@@ -16,30 +16,6 @@ sntRover.service('RVreportsSubSrv', [
 			var deferred = $q.defer();
 
 			var success = function(data) {
-
-				// TEST CODE, REMOVE BEFORE MERGE
-				if ( '/api/reports' === options.url ) {
-					data.results.unshift({
-						id: 999,
-						description: "Daily Production by Room Type",
-						sub_title: "(History & Forecast)",
-						title: "Daily Production by Room Type",
-						filters: [
-							{value: "INCLUDE_TAX_RATE", description: "Include Tax in Rate"},
-							{value: "INCLUDE_ADDON_RATE", description: "Include Add Ons in Rate"},
-							{value: "INCLUDE_CANCELLED", description: "Include Cancel"},
-							{value: "INCLUDE_NO_SHOW", description: "Include No Show"},
-							{value: "DATE_RANGE", description: "Date Range"},
-							{value: "INCLUDE_CHARGE_CODE", description: "Charge Code"},
-							{value: "INCLUDE_CHARGE_GROUP", description: "Charge Group"}
-						],
-						sort_fields: [
-							{value: "ADR", description: "ADR"}
-						]
-					});
-				};
-				// TEST CODE, REMOVE BEFORE MERGE
-
 				if ( !! options.resKey2 && !! options.resKey ) {
 					deferred.resolve( data[options.resKey][options.resKey2] );
 				} else if ( !! options.resKey ) {
