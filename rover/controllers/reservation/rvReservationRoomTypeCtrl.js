@@ -61,6 +61,11 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			selectedRoomRate: {
 				rateId: "",
 				roomId: ""
+			},
+			calendarState: {
+				showOnlyAvailableRooms: true,
+				searchWithRestrictions: false,
+				calendarType: "BEST_AVAILABLE"
 			}
 		};
 
@@ -1882,12 +1887,13 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		$scope.selectAddon = function() {
 			alertAddonOverbooking(true);
 		};
-		$scope.$on('bestAvailableRatesCalOptionSelected', function(event){ 
-			$scope.bestAvailableRates = 'on'; 
-		});
-		$scope.$on('roomTypesCalOptionSelected', function(event){ 
-			$scope.bestAvailableRates = 'off'; 
-		});
 
+		$scope.toggleSearchWithRestrictions = function(){
+			$scope.stateCheck.calendarState.searchWithRestrictions = !$scope.stateCheck.calendarState.searchWithRestrictions;
+		};
+
+		$scope.toggleShowOnlyAvailable = function(){
+			$scope.stateCheck.calendarState.showOnlyAvailableRooms = !$scope.stateCheck.calendarState.showOnlyAvailableRooms;
+		};
 	}
 ]);

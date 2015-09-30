@@ -17,8 +17,8 @@
             </select>
 		</div>
 		<ul id="filter-calendar">
-			<li id="show-types" ng-class="{'active': calendarType == 'ROOM_TYPE'}" ng-click="selectedRoomTypesCalOption()" translate>ROOM_TYPES</li>
-			<li id="show-bar" ng-class="{'active': calendarType == 'BEST_AVAILABLE'}" ng-click="selectedBestAvailableRatesCalOption()" translate>BEST_AVAILABLE</li>
+			<li id="show-types" ng-class="{'active': stateCheck.calendarState.calendarType == 'ROOM_TYPE'}" ng-click="selectedRoomTypesCalOption()" translate>ROOM_TYPES</li>
+			<li id="show-bar" ng-class="{'active': stateCheck.calendarState.calendarType == 'BEST_AVAILABLE'}" ng-click="selectedBestAvailableRatesCalOption()" translate>BEST_AVAILABLE</li>
 		</ul>
 	</div>
 
