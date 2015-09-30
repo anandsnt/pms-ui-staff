@@ -51,7 +51,8 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 					departureDateString = $scope.reservationData.departureDate;
 
 				_.each(currentMasterData.results, function(dailyStat) {
-					dayAvailabilityToDisplay = dailyStat.house.availability;
+
+					var dayAvailabilityToDisplay = dailyStat.house.availability;					
 
 					var eventData = {
 						day: (function() {
@@ -103,6 +104,8 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 					$scope.$emit('hideLoader');
 					console.log(data);
 					currentMasterData = data;
+					$scope.stateVariables.rooms = data.room_types;
+					$scope.stateVariables.rates = data.rates;
 					resetCalendarEvents();
 				}, function(errorMessage) { // Failure Callback
 					$scope.errorMessage = errorMessage;
@@ -121,8 +124,10 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			};
 
 			$scope.stateVariables = {
-				selectedRoom: $scope.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
-				selectedRate: $scope.reservationData.rooms[$scope.stateCheck.roomDetails.firstIndex].rateId
+				selectedRoom: parseInt($scope.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,10) || "",
+				selectedRate: parseInt($scope.reservationData.rooms[$scope.stateCheck.roomDetails.firstIndex].rateId,10) || "",
+				rooms: [],
+				rates: []
 			}
 
 			$scope.$emit('roomTypesCalOptionSelected');

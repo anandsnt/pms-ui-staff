@@ -5,15 +5,15 @@
 	<div class="reservation-filters">
 		<!-- Change room type visible for the calendar -->
 		<div id="change-room-type" class="select" ng-show="stateCheck.calendarState.calendarType == 'ROOM_TYPE'">
-			<select ng-model="roomTypeForCalendar"
-                ng-options="roomType.id as roomType.name for roomType in availabilityDetails.room_types">
-                <option value="" disabled selected translate>RESV_ALL_ROOMS</option>
+			<select ng-model="stateVariables.selectedRoom"
+                ng-options="room.id as room.name for room in stateVariables.rooms">
+                <option value="" selected translate>RESV_ALL_ROOMS</option>
             </select>
 		</div>
 		<div id="change-room-type" class="select" ng-show="stateCheck.calendarState.calendarType == 'ROOM_TYPE'">
-			<select ng-model="roomTypeForCalendar"
-                ng-options="roomType.id as roomType.name for roomType in availabilityDetails.room_types">
-                <option value="" disabled selected translate>RESV_ALL_RATES</option>
+			<select ng-model="stateVariables.selectedRate"
+                ng-options="rate.id as rate.name for rate in stateVariables.rates">
+                <option value="" selected translate>RESV_ALL_RATES</option>
             </select>
 		</div>
 		<ul id="filter-calendar">
