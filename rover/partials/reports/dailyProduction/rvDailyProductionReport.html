@@ -39,8 +39,8 @@
                     </div>
                 </li>
                 <li ng-repeat="name in roomNames track by $index">
-                	<span ng-if="! $last">{{ name }}</span>
-                	<strong ng-if="$last">{{ name }}</strong>
+                	<span ng-show="!$last">{{ name }}</span>
+                	<strong ng-show="$last">{{ name }}</strong>
                 </li>
             </ul>
         </div>
@@ -61,11 +61,11 @@
                 </thead>
                 <tbody>
                     <!-- For individual rates use this -->
-                    <tr ng-repeat="rowData in reportData track by $index" ng-init="thisLast = $last">
+                    <tr ng-repeat="rowData in reportData track by $index" ng-init="outerLast = $last">
                     	<td ng-repeat="item in rowData track by $index" class="{{ item.cls }}">
-                    		<em ng-if="!thisLast && item.isAvail">{{ item.value }}</em>
-                    		<span ng-if="!thisLast && item.isRev">{{ item.value }}</span>
-                    		<strong ng-if="thisLast">{{ item.value }}</strong>
+                    		<em ng-show="!outerLast && item.isAvail">{{ item.value }}</em>
+                    		<span ng-show="!outerLast && item.isRev">{{ item.value }}</span>
+                    		<strong ng-show="outerLast">{{ item.value }}</strong>
                     	</td>
                     </tr>
 

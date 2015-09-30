@@ -15,8 +15,7 @@ sntRover.controller('RVDailyProdReportCtrl', [
 
 		var detailsCtrlScope = $scope.$parent,
 			mainCtrlScope    = detailsCtrlScope.$parent,
-			chosenReport     = detailsCtrlScope.chosenReport,
-			results          = mainCtrlScope.results;
+			chosenReport     = detailsCtrlScope.chosenReport;
 
 
 
@@ -88,7 +87,8 @@ sntRover.controller('RVDailyProdReportCtrl', [
 				$scope.uiFilter.showRevenue = true;
 			}
 
-			reInit();
+			$scope.$emit('showLoader');
+			$timeout( reInit, 100 );
 		});
 
 		// cant disable both, when one disabled one the other should be enabled
@@ -97,7 +97,8 @@ sntRover.controller('RVDailyProdReportCtrl', [
 				$scope.uiFilter.showAvailability = true;
 			};
 
-			reInit();
+			$scope.$emit('showLoader');
+			$timeout( reInit, 100 );
 		});
 
 
@@ -141,6 +142,8 @@ sntRover.controller('RVDailyProdReportCtrl', [
 				cellWidth = 80;
 
 			$scope.rightPaneWidth = 0;
+
+			var results = $scope.results;
 
 			for( roomKey in results ) {
 				if ( ! results.hasOwnProperty(roomKey) ) {
@@ -244,8 +247,11 @@ sntRover.controller('RVDailyProdReportCtrl', [
 			};
 
 			$scope.rightPaneWidth = noOfDays * cellWidth * $scope.colSpan;
-
-			$timeout( refreshScrollers, 500 );
+			
+			$timeout(function() {
+				refreshScrollers();
+				$scope.$emit('hideLoader');
+			}, 500 );
 		};
 
 
@@ -254,12 +260,26 @@ sntRover.controller('RVDailyProdReportCtrl', [
 			calThings();
 		};
 
+		init();
+
 		function reInit (argument) {
-			// body...
+			console.log('reinit');
 
 			calThings();
 		};
 
-		init();
+
+
+		// re-render must be initiated before for taks like printing.
+		// thats why timeout time is set to min value 50ms
+		var reportSubmited    = $scope.$on( reportMsgs['REPORT_SUBMITED'], reInit );
+		var reportPrinting    = $scope.$on( reportMsgs['REPORT_PRINTING'], reInit );
+		var reportUpdated     = $scope.$on( reportMsgs['REPORT_UPDATED'], reInit );
+		var reportPageChanged = $scope.$on( reportMsgs['REPORT_PAGE_CHANGED'], reInit );
+
+		$scope.$on( 'destroy', reportSubmited );
+		$scope.$on( 'destroy', reportUpdated );
+		$scope.$on( 'destroy', reportPrinting );
+		$scope.$on( 'destroy', reportPageChanged );
 	}
 ]);
