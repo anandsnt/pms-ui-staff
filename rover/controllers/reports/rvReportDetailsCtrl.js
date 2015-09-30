@@ -745,6 +745,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['GROUP_PICKUP_REPORT']:
 				case reportNames['MARKET_SEGMENT_STAT_REPORT']:
 				case reportNames['RATE_ADJUSTMENTS_REPORT']:
+				case reportNames['DAILY_PRODUCTION']:
 					orientation = 'landscape';
 					break;
 

@@ -13,6 +13,15 @@ sntRover.controller('RVDailyProdReportCtrl', [
 	function($rootScope, $scope, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, ngDialog) {
 		BaseCtrl.call(this, $scope);
 
+		var detailsCtrlScope = $scope.$parent,
+			mainCtrlScope    = detailsCtrlScope.$parent,
+			chosenReport     = detailsCtrlScope.chosenReport,
+			results          = mainCtrlScope.results;
+
+
+
+
+
 
 		var LEFT_PANE_SCROLL  = 'left-pane-scroll',
 			RIGHT_PANE_SCROLL = 'right-pane-scroll';
@@ -28,34 +37,52 @@ sntRover.controller('RVDailyProdReportCtrl', [
 			'scrollX'        : true
 		});
 
-		$timeout(function() {
-			$scope.$parent
-				.myScroll[ LEFT_PANE_SCROLL ]
+		var refreshScrollers = function() {
+			if ( !! mainCtrlScope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL) ) {
+				$scope.refreshScroller( LEFT_PANE_SCROLL );
+			};
+
+			if ( !! mainCtrlScope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL) ) {
+				$scope.refreshScroller( RIGHT_PANE_SCROLL );
+			};
+		};
+
+		var setupScrollListner = function() {
+			mainCtrlScope.myScroll[ LEFT_PANE_SCROLL ]
 				.on('scroll', function() {
-					$scope.$parent
-						.myScroll[ RIGHT_PANE_SCROLL ]
+					mainCtrlScope.myScroll[ RIGHT_PANE_SCROLL ]
 						.scrollTo( 0, this.y );
 				});
 
-			$scope.$parent
-				.myScroll[ RIGHT_PANE_SCROLL ]
+			mainCtrlScope.myScroll[ RIGHT_PANE_SCROLL ]
 				.on('scroll', function() {
-					$scope.$parent
-						.myScroll[ LEFT_PANE_SCROLL ]
+					mainCtrlScope.myScroll[ LEFT_PANE_SCROLL ]
 						.scrollTo( 0, this.y );
 				});
+		};
 
-		}, 1000);
+		var isScrollReady = function isScrollReady () {
+			if ( !! mainCtrlScope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL) && !! mainCtrlScope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL) ) {
+				setupScrollListner();
+			} else {
+				$timeout(isScrollReady, 1000);
+			};
+		};
+		isScrollReady();
+
+		
 
 
+		// default colspan value
 		$scope.colSpan = 5;
 
+		// ui filter by default showing both avail. and rev.
 		$scope.uiFilter = {
 			'showAvailability' : true,
 			'showRevenue'      : true
 		};
 
-		// cant disable both, when one disabled the other should be enabled
+		// cant disable both, when one disabled one the other should be enabled
 		$scope.$watch('uiFilter.showAvailability', function(newValue) {
 			if ( false == newValue && ! $scope.uiFilter.showRevenue ) {
 				$scope.uiFilter.showRevenue = true;
@@ -64,7 +91,7 @@ sntRover.controller('RVDailyProdReportCtrl', [
 			reInit();
 		});
 
-		// cant disable both, when one disabled the other should be enabled
+		// cant disable both, when one disabled one the other should be enabled
 		$scope.$watch('uiFilter.showRevenue', function(newValue) {
 			if ( false == newValue && ! $scope.uiFilter.showAvailability ) {
 				$scope.uiFilter.showAvailability = true;
@@ -73,11 +100,6 @@ sntRover.controller('RVDailyProdReportCtrl', [
 			reInit();
 		});
 
-
-
-		var dataValidator = function() {
-
-		};
 
 
 		var calThings = function() {
@@ -102,53 +124,32 @@ sntRover.controller('RVDailyProdReportCtrl', [
 
 			$scope.headerTop  = [];
 			$scope.headerBot  = [];
-
-			// TODO: fix this;
-			for( date in $scope.results['Bunk'] ) {
-				if ( ! $scope.results['Bunk'].hasOwnProperty(date) ) {
-					continue;
-				};
-
-				$scope.headerTop.push( $filter('date')(date, $rootScope.shortMonthAndDate) );
-
-				if ( 5 == $scope.colSpan ) {
-					startIndex   = 0;
-					endIndex     = SUB_HEADER_NAMES.length;
-					triggerIndex = SUB_HEADER_NAMES.length - 1;
-				} else if ( 3 == $scope.colSpan ) {
-					startIndex   = 2;
-					endIndex     = SUB_HEADER_NAMES.length;
-					triggerIndex = SUB_HEADER_NAMES.length - 1;
-				} else if ( 2 == $scope.colSpan ) {
-					startIndex   = 0;
-					endIndex     = 1 + 1;
-					triggerIndex = 1;
-				};
-				for (; startIndex < endIndex; startIndex++) {
-					$scope.headerBot.push({
-						'name' : SUB_HEADER_NAMES[startIndex],
-						'cls'  : startIndex == triggerIndex ? 'day-end' : ''
-					});
-				};
-			};
-
-
 			
+
 			var allDatesValInRoom = [],
 				eachDateVal       = [];
-
 			$scope.reportData = [];	// this will be an array of arrays
+			$scope.roomNames = [];	// keeping seperate array so that we can avoid object being itrated aphabetically
+
 
 			var roomObj, dateObj;
 
 			var loopCount = 0;
 
-			for( roomKey in $scope.results ) {
-				if ( ! $scope.results.hasOwnProperty(roomKey) ) {
+
+			var noOfDays = 0,
+				cellWidth = 80;
+
+			$scope.rightPaneWidth = 0;
+
+			for( roomKey in results ) {
+				if ( ! results.hasOwnProperty(roomKey) ) {
 					continue;
 				};
 
-				roomObj = $scope.results[roomKey];
+				$scope.roomNames.push( roomKey );
+
+				roomObj = results[roomKey];
 				allDatesValInRoom = [];
 
 				for( dateKey in roomObj ) {
@@ -156,6 +157,32 @@ sntRover.controller('RVDailyProdReportCtrl', [
 						continue;
 					};
 
+					if ( 0 == loopCount ) {
+						$scope.headerTop.push( $filter('date')(dateKey, $rootScope.shortMonthAndDate) );
+
+						if ( 5 == $scope.colSpan ) {
+							startIndex   = 0;
+							endIndex     = SUB_HEADER_NAMES.length;
+							triggerIndex = SUB_HEADER_NAMES.length - 1;
+						} else if ( 3 == $scope.colSpan ) {
+							startIndex   = 2;
+							endIndex     = SUB_HEADER_NAMES.length;
+							triggerIndex = SUB_HEADER_NAMES.length - 1;
+						} else if ( 2 == $scope.colSpan ) {
+							startIndex   = 0;
+							endIndex     = 1 + 1;
+							triggerIndex = 1;
+						};
+						for (; startIndex < endIndex; startIndex++) {
+							$scope.headerBot.push({
+								'name' : SUB_HEADER_NAMES[startIndex],
+								'cls'  : startIndex == triggerIndex ? 'day-end' : ''
+							});
+						};
+
+						noOfDays += 1;
+					};
+					
 					dateObj = roomObj[dateKey];
 
 					eachDateVal = [];
@@ -211,8 +238,14 @@ sntRover.controller('RVDailyProdReportCtrl', [
 					allDatesValInRoom = allDatesValInRoom.concat( eachDateVal );
 				};
 
+				loopCount += 1;
+
 				$scope.reportData.push( allDatesValInRoom );
 			};
+
+			$scope.rightPaneWidth = noOfDays * cellWidth * $scope.colSpan;
+
+			$timeout( refreshScrollers, 500 );
 		};
 
 
