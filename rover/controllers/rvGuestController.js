@@ -659,15 +659,22 @@ sntRover.controller('guestCardController', [
 		};
 
 		$scope.deleteCard = function(cardType, cardId) {
-			if (cardType === 'travel_agent') {
+			$scope.closeDialog();
+			$timeout(function() {
+				$scope.closeGuestCard();
+				$scope.removeCard(cardType, cardId);
+			}, 700);
+		};
+
+		$scope.$on("CARD_REMOVED", function(event, card) {
+			if (card === 'travel_agent') {
 				$scope.$broadcast('travelAgentDetached');
-			} else if (cardType === 'company') {
+			} else if (card === 'company') {
 				$scope.$broadcast('companyCardDetached');
-			} else if (cardType === 'guest') {
+			} else if (card === 'guest') {
 				$scope.$broadcast('guestCardDetached');
 			}
-			$scope.removeCard(cardType, cardId);
-		};
+		});
 
 		// init staycard header
 

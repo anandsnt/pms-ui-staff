@@ -358,6 +358,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			 */
 			var onRemoveCardSuccessCallBack = function(response) {
 				$scope.cardRemoved(removedCard);
+				$scope.$broadcast("CARD_REMOVED", removedCard);
+
 				/* CICO-20270: Redirect to rooms and rates if contracted rate was previously selected
 				 * else reload staycard after detaching card */
 				if (response.contracted_rate_was_selected) {
