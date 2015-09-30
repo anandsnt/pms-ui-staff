@@ -10,7 +10,7 @@
         </ul>
         <div class="switch-button" ng-click="toggleCalendar()">
             <!-- CICO-15042 we will be disabling calendar switch for now -->
-            <input name="rooms-availability-toggle" id="rooms-availability-toggle" value="rooms-availability" type="checkbox" disabled="disabled"/>
+            <input name="rooms-availability-toggle" id="rooms-availability-toggle" value="rooms-availability" type="checkbox"/>
             <label class="data-off" ng-class="{'calendar': stateCheck.activeMode=='CALENDAR'}">
                 <span class="value">Calendar</span>
                 <span class="switch-icon">Rooms &amp; Rates</span>
@@ -50,9 +50,9 @@
         <!-- When all booked -->
         <!-- <button type="button" class="button green">Done</button>-->
     </div>
-    <!-- <div ng-if="stateCheck.activeMode=='ROOM_RATE'" ng-include src="'assets/partials/reservation/rvRoomRates.html'"></div>
-    <div ng-if="stateCheck.activeMode=='CALENDAR'" ng-include src="'assets/partials/reservation/rvStayDatesCalendar.html'"></div> -->
-    <div ng-if="stateCheck.activeMode=='ROOM_RATE'" ng-include src="'assets/partials/reservation/rvRoomRatesCalendar.html'"></div>
+    <div ng-if="stateCheck.activeMode=='ROOM_RATE'" ng-include src="'assets/partials/reservation/rvRoomRates.html'"></div>
+    <!-- <div ng-if="stateCheck.activeMode=='CALENDAR'" ng-include src="'assets/partials/reservation/rvStayDatesCalendar.html'"></div> -->
+    <div ng-if="stateCheck.activeMode=='CALENDAR'" ng-include src="'assets/partials/reservation/rvRoomRatesCalendar.html'"></div>
 </section>
 <ul class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ui-corner-all find-rate" tabindex="0" ng-show="filteredRates.length > 0 && isRateFilterActive==true" style="width: 280px; top: 265px; left: 25px;">
     <li ng-repeat="rate in filteredRates" class="ui-menu-item" role="presentation">

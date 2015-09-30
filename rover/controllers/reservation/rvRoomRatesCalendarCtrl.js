@@ -3,16 +3,24 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 	'$rootScope',
 	'$scope',
 	'RVStayDatesCalendarSrv',
-	'$filter',
-	'ngDialog',
-	function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filter, ngDialog) {
+	'$filter',	
+	'$timeout',
+	function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filter, $timeout) {
 		//inheriting some useful things
 		BaseCtrl.call(this, $scope);
-		var that = this;
-		$scope.heading = $filter('translate')('CHANGE_STAY_DATES_TITLE');
-		$scope.setTitle($scope.heading);
-		//scroller options
-		$scope.setScroller('room-rates-calendar');
+		var that = this,
+			setTitleAndScroller = function() {
+				$scope.heading = $filter('translate')('CHANGE_STAY_DATES_TITLE');
+				$scope.setTitle($scope.heading);
+				//scroller options
+				$scope.setScroller('room-rates-calendar');
+			},
+			refreshScroller = function() {
+				$timeout(function() {
+					$scope.refreshScroller('room-rates-calendar');
+				}, 1000);
+			};
+
 
 		this.init = function() {
 			$scope.eventSources = [];
@@ -56,34 +64,31 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			};
 
 			$scope.leftCalendarOptions = dclone(fullCalendarOptions);
-			
+
 			// //Setting events for right calendar
-			 $scope.rightCalendarOptions = dclone(fullCalendarOptions);
+			$scope.rightCalendarOptions = dclone(fullCalendarOptions);
 
 			// //Set month of rigt calendar
 			$scope.rightCalendarOptions.month = $scope.leftCalendarOptions.month + 1;
 
 			$scope.disablePrevButton = $scope.isPrevButtonDisabled();
 
-			setTimeout(function(){
-				$scope.refreshScroller('room-rates-calendar');
-			}, 1500);
-
+			refreshScroller();
 
 		};
 
-		
+
 		$scope.selectedBestAvailableRatesCalOption = function() {
 			$scope.calendarType = 'BEST_AVAILABLE';
 		};
 		/**
-		* Event handler for Room type view selecton
-		*/
+		 * Event handler for Room type view selecton
+		 */
 		$scope.selectedRoomTypesCalOption = function() {
 			$scope.calendarType = 'ROOM_TYPE';
 		};
 
-		
+
 		$scope.isPrevButtonDisabled = function() {
 			var disabled = false;
 			if (parseInt(tzIndependentDate($rootScope.businessDate).getMonth()) === parseInt($scope.leftCalendarOptions.month)) {
@@ -94,10 +99,10 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		};
 
 		/**
-		* Handles the forward and backward change for the calendar months
-		*/
-		var changeMonth = function(direction){
-			if(direction === 'FORWARD'){
+		 * Handles the forward and backward change for the calendar months
+		 */
+		var changeMonth = function(direction) {
+			if (direction === 'FORWARD') {
 				$scope.leftCalendarOptions.month = parseInt($scope.leftCalendarOptions.month) + 1;
 				$scope.rightCalendarOptions.month = parseInt($scope.rightCalendarOptions.month) + 1;
 			} else {
@@ -108,23 +113,21 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		};
 
 		/**
-		* Click handler for the next month arrow
-		* Fetches the details for the next set of dates -
-		* Starting from last fetched date to the max visible date in calendar when we change month
-		*/
+		 * Click handler for the next month arrow
+		 * Fetches the details for the next set of dates -
+		 * Starting from last fetched date to the max visible date in calendar when we change month
+		 */
 		$scope.nextButtonClickHandler = function() {
-			
 			changeMonth('FORWARD');
 		};
 
 		/**
-		* Click handler for the next month arrow
-		* Fetches the details for the next set of dates -
-		* Stars from the first visible date in calendar when go back a month
-		* to the start date available in the availability details
-		*/
+		 * Click handler for the next month arrow
+		 * Fetches the details for the next set of dates -
+		 * Stars from the first visible date in calendar when go back a month
+		 * to the start date available in the availability details
+		 */
 		$scope.prevButtonClickHandler = function() {
-		
 			changeMonth('BACKWARD');
 		};
 
