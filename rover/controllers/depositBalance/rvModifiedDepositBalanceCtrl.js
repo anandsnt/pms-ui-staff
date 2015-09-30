@@ -314,7 +314,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	 * on succesfully created the token
 	 */
 	$scope.$on("TOKEN_CREATED", function (e, tokenDetails) {
-		alert("TOKEN_CREATED");
 		$scope.cardValues = tokenDetails;
 	    var cardExpiry = "";
 	    if(!$scope.cardValues.tokenDetails.isSixPayment){
@@ -707,7 +706,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	 * Card selected from centralized controler
 	 */
 	$scope.$on('cardSelected',function (e, data) {
-		alert("cardSelected");
 		$scope.shouldCardAvailable 				 = true;
 		$scope.setCreditCardFromList(data.index);
 	});
@@ -730,7 +728,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	});
 
 	$scope.$on("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN", function (e, swipedCardDataToRender){
-		alert("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN");
 		$scope.shouldShowMakePaymentScreen       = false;
 		$scope.addmode                 			 = true;
 		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
@@ -739,7 +736,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	});
 
 	$scope.$on("SWIPED_DATA_TO_SAVE", function (e, swipedCardDataToSave){
-		alert("SWIPED_DATA_TO_SAVE");
 		$scope.depositBalanceMakePaymentData.card_code   = swipedCardDataToSave.cardType.toLowerCase();
 		$scope.depositBalanceMakePaymentData.ending_with = swipedCardDataToSave.cardNumber.slice(-4);
 		$scope.depositBalanceMakePaymentData.card_expiry  = swipedCardDataToSave.cardExpiryMonth+"/"+swipedCardDataToSave.cardExpiryYear;

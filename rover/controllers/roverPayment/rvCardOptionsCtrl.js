@@ -10,8 +10,6 @@ sntRover.controller('RVCardOptionsCtrl',
 	function($rootScope, $scope, $state, ngDialog, $location, $document, RVPaymentSrv,RVReservationCardSrv){
 		BaseCtrl.call(this, $scope);
 		 $scope.renderDataFromSwipe = function(swipedDataToRenderInScreen){
-		 	alert("renderDataFromSwipe");
-		 	alert(swipedDataToRenderInScreen.cardNumber);
 	    	$scope.cardData.cardNumber = swipedDataToRenderInScreen.cardNumber;
 			$scope.cardData.userName   = swipedDataToRenderInScreen.nameOnCard;
 			$scope.cardData.expiryMonth = swipedDataToRenderInScreen.cardExpiryMonth;
@@ -341,9 +339,7 @@ sntRover.controller('RVCardOptionsCtrl',
             };
             
 	    $scope.$on("RENDER_SWIPED_DATA", function(e, swipedCardDataToRender){
-	    	//alert("RENDER_SWIPED_DATA");
-	    	alert(swipedCardDataToRender);
-                        $scope.swippedCard = true;
+            $scope.swippedCard = true;
 			$scope.renderDataFromSwipe(swipedCardDataToRender);
 			$scope.passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
 		});

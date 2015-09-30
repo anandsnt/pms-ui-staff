@@ -589,7 +589,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	});
 
 	$scope.$on("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN", function (e, swipedCardDataToRender){
-		alert("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN");
+		
 		$scope.shouldShowMakePaymentScreen       = false;
 		$scope.addmode                 			 = true;
 		$rootScope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
@@ -613,20 +613,15 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 		$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.successSavePayment);
 	});
 
-	$scope.$on('SWIPE_ACTION',function(e,swipedCardData){
-		alert("22222SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN");
+	$scope.$on('SWIPE_ACTION',function(e,swipedCardDataToRender){
+		
 		$scope.shouldShowMakePaymentScreen       = false;
 		$scope.addmode                 			 = true;
-
-		var swipeOperationObj = new SwipeOperation();
-		var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
-
-
 		$rootScope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 		//Not good
 		$scope.swipedCardHolderName = swipedCardDataToRender.nameOnCard;
-
 	});
+	
 	//CICO-12488
 	$scope.changePaymentType();
 }]);
