@@ -357,12 +357,10 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			 * @param {object} API response
 			 */
 			var onRemoveCardSuccessCallBack = function(response) {
-				$scope.$emit('hideLoader');
 				$scope.cardRemoved(removedCard);
-
-				/* CICO-20270: Redirect to rooms and rates if contracted rate selected
+				/* CICO-20270: Redirect to rooms and rates if contracted rate was previously selected
 				 * else reload staycard after detaching card */
-				if (response.contracted_rate_selected) {
+				if (response.contracted_rate_was_selected) {
 					$scope.navigateToRoomAndRates();
 				}
 				else {
@@ -372,6 +370,19 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 			var onRemoveCardFailureCallBack = function(error) {
 				$scope.$emit('hideLoader');
+				if(error.hasOwnProperty ('httpStatus')) {
+					if (error.httpStatus === 470) {
+						/* CICO-20270: a 470 failure response indicates that transactions exist
+						 * in bill routing. we need to show user a warning in this case */
+ 						ngDialog.open({
+							template: '/assets/partials/cards/popups/detachCardsAPIErrorPopup.html',
+							className: 'ngdialog-theme-default stay-card-alerts',
+							scope: $scope,
+							closeByDocument: false,
+							closeByEscape: false
+						});
+					}
+				}
 			};
 
 			/**
