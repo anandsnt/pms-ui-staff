@@ -12,7 +12,7 @@ sntRover.service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv','rvBaseWebSrvV2',
 			});
 		return deferred.promise;
 	};
-        this.fetchAvailPayments = function(data){
+    this.fetchAvailPayments = function(data){
 		var deferred = $q.defer();
 		var url = '/staff/payments/addNewPayment.json';
 		RVBaseWebSrv.getJSON(url,data).then(function(data) {

@@ -20,4 +20,23 @@ sntRover.service('RVDepositBalanceSrv',['$q', 'BaseWebSrvV2', function($q, BaseW
 		});
 		return deferred.promise;
 	};
+
+	/*
+		* Service function to submit payment
+		* @method POST
+		* @param {object} data
+		* @return {object} defer promise
+		*/
+
+	this.submitPaymentOnBill = function(data){
+		var deferred = $q.defer();
+		var url = '/api/bills/'+data.bill_id+'/submit_payment';
+		BaseWebSrvV2.postJSON(url, data.postData).then(function(data) {
+			    deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});
+		return deferred.promise;
+	};
+	
 }]);

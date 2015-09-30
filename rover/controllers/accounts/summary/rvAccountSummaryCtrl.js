@@ -3,8 +3,6 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		BaseCtrl.call(this, $scope);
 
 		var summaryMemento = {};
-		$scope.paymentTypes =[];
-
 
 		/**
 		 * to run angular digest loop,
@@ -307,12 +305,15 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			}
 		});
 
-		// CICO-16913
+		// -- CICO-16913 - Implement Deposit / Balance screen in Accounts -- //
+
+		$scope.paymentTypes = [];
+		$scope.creditCardTypes = [];
+
 		$scope.openDepositBalanceModal = function() {
 			$scope.invokeApi(RVPaymentSrv.fetchAvailPayments, {}, successCallBackOfFetchPayment);
             //$rootScope.fromStayCard = true;
             
-			//"posting_account_id": $scope.accountConfigData.summary.posting_account_id
 			var dataToSrv = {
 				"posting_account_id": $scope.accountConfigData.summary.posting_account_id
 			};
@@ -322,17 +323,26 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		var successCallBackOfFetchPayment = function (data) {
 			$scope.$emit('hideLoader');
 			$scope.paymentTypes = data;
+
+			angular.forEach($scope.paymentTypes, function (item, key) {
+				if(item.name == 'CC'){
+					$scope.creditCardTypes = item.values;
+				}
+			});
 		};
  
 		$scope.successCallBackFetchDepositBalance = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.depositBalanceData = data;
+			//$scope.depositBalanceData.data.credit_card_types = $scope.creditCardTypes;
+			console.log($scope.depositBalanceData);
 			$scope.passData = {
 				"origin": "GROUP",
 				"details": {
 					"firstName": "",
 					"lastName": "",
-					"paymentTypes": $scope.paymentTypes
+					"paymentTypes": $scope.paymentTypes,
+					"accountId" : $scope.accountConfigData.summary.posting_account_id
 				}
 			};
 
@@ -344,5 +354,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				scope: $scope
 			});
 		};
+
+		// -- CICO-16913 - Implement Deposit / Balance screen in Accounts -- //
 	}
 ]);
