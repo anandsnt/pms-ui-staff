@@ -30,9 +30,27 @@ sntRover.controller('rvTabletCtrl', [
                 }
             });
             
+            
+            $scope.$on('showLoader',function(){
+                $scope.hasLoader = true;
+            });
+            $scope.$on('hideLoader',function(){
+                $scope.hasLoader = false;
+            });
+            
+            
+            
             $scope.hasPrev = false;
             $scope.hasNext = false;
             
+            $scope.selectedFindBy = '';    
+            //config to show / hide options depending on hotel setting (ie. check-out only)
+            $scope.show = {
+                    pickupkey: true,
+                    swipecardScreen: true,
+                    check_in: true,
+                    check_out: false
+                };
             $scope.setPrev = function(){
                 /*
                  * 
@@ -42,8 +60,6 @@ sntRover.controller('rvTabletCtrl', [
                             param: {}
                     };
                  */
-                
-                
                 
             };
             $scope.setNext = function(){
@@ -349,9 +365,6 @@ sntRover.controller('rvTabletCtrl', [
                   $scope.selectedReservation.reservation_details = {};
                   
                   
-                  
-                  
-                
                 $scope.$emit('showLoader');
                 $scope.invokeApi(rvTabletSrv.fetchReservationDetails, {
                     'id': r.confirmation_number
@@ -369,26 +382,31 @@ sntRover.controller('rvTabletCtrl', [
             };
             
             $scope.onSuccessFetchReservationDetails = function(data){
-                $scope.$emit('hideLoader');
+                    $scope.$emit('hideLoader');
                     $scope.selectedReservation.reservation_details = data;
                     
                     var info = data.data.reservation_card;
                     var nites, avgDailyRate, packageRate, taxes, subtotal, deposits, balanceDue;
                     //console.log(info)
                     nites = parseInt(info.total_nights);
-                    avgDailyRate = parseFloat(info.avg_daily_rate).toFixed(2);
-                    deposits = parseFloat(info.deposit_amount).toFixed(2);
-                    if (info.package_price){
-                        packageRate = parseFloat(info.package_price).toFixed(2);
+                    
+                    avgDailyRate = parseFloat(info.deposit_attributes.room_cost).toFixed(2);
+                    
+                    deposits = parseFloat(info.deposit_attributes.deposit_paid).toFixed(2);
+                    
+                    if (info.deposit_attributes.packages){
+                        packageRate = parseFloat(info.deposit_attributes.packages).toFixed(2);
                     } else {
                         packageRate = 0;
                     }
                     
-                    subtotal = nites * avgDailyRate;
-                    balanceDue = parseFloat(info.balance_amount).toFixed(2);
-                    //console.info('balanceDue',balanceDue, 'subtotal',subtotal, 'deposits',deposits)
-                    taxes = parseFloat(balanceDue - subtotal - deposits).toFixed(2);
+                    taxes = parseFloat(info.deposit_attributes.fees).toFixed(2);
                     
+                    subtotal = parseFloat(info.deposit_attributes.sub_total).toFixed(2);
+                    
+                    balanceDue = parseFloat(info.deposit_attributes.total_cost_of_stay).toFixed(2);
+                    
+                    //console.info('balanceDue',balanceDue, 'subtotal',subtotal, 'deposits',deposits)
                     
                     console.info(nites, avgDailyRate, packageRate, taxes, subtotal, deposits, balanceDue);
                   
@@ -405,7 +423,8 @@ sntRover.controller('rvTabletCtrl', [
                   $scope.selectedReservation.reservation_details.balance = balanceDue;
             };
             
-            
+            $scope.modalBtn1 = 'LOGIN';
+            $scope.modalBtn2 = 'Exit';
             $scope.goToSelectReservation = function(){
                 var total = $scope.reservationPages;
                     $scope.resList = [];
@@ -454,13 +473,14 @@ sntRover.controller('rvTabletCtrl', [
             
             $scope.lastTextInput = '';
             
-            $scope.inputTextHandler = function(at, textValue){
-                console.info('at: '+at)
+            $scope.inputTextHandler = function(at, textValue, el){
+                console.log('at: '+at);
                 if (!$scope.from){
                     $scope.from = 'home';
                 }
                 console.log('from: '+$scope.from);
-                
+                //lose focus of inputfield to drop keyboard in mobile
+                $('#logo').focus();
                 
                 var fetchCompleted = function(data){
                     
@@ -494,6 +514,23 @@ sntRover.controller('rvTabletCtrl', [
                         $scope.goToScreen(null, 'admin-login-password', true);
                         break;
                     };
+                    case 'add-guest-last':{
+                            //fetch reservation list using email as the param
+                            //onsuccess push results to window
+                        $scope.input.addguest_last = textValue;
+                        $scope.clearInputText();
+                        $scope.goToScreen(null, 'add-guest-first', true);
+                        break;
+                    };
+                    case 'add-guest-first':{
+                            //fetch reservation list using email as the param
+                            //onsuccess push results to window
+                        $scope.input.addguest_first = textValue;
+                        $scope.clearInputText();
+                        $scope.addGuestToReservation($scope.input.addguest_first,$scope.input.addguest_last);
+                        $scope.goToScreen(null, 'add-guests', true);
+                        break;
+                    };
                     case 'admin-login-password':{
                             //fetch reservation list using email as the param
                             //onsuccess push results to window
@@ -522,6 +559,7 @@ sntRover.controller('rvTabletCtrl', [
                         
                         break;
                     };
+                    
                     case 'input-email':{
                         if ($scope.from === 'reservation-details'){
                              //fetch reservation list using email as the param
@@ -536,11 +574,14 @@ sntRover.controller('rvTabletCtrl', [
                     case 'find-by-email':{
                             //fetch reservation list using email as the param
                             //onsuccess push results to window
+                        $scope.selectedFindBy = findBy;
                         $scope.input.lastEmailValue = textValue;
                         $scope.from = 'find-by-email';
                         $scope.prevStateNav.push($scope.from);
                         $scope.clearInputText();
                         findBy = 'email';
+                        
+                        $scope.selectedFindBy = 'find-by-email';
                         
                         $scope.invokeApi(rvTabletSrv.fetchReservations, {
                             'find_by':findBy,
@@ -557,6 +598,7 @@ sntRover.controller('rvTabletCtrl', [
                         $scope.prevStateNav.push($scope.from);
                         $scope.clearInputText();
                         
+                        $scope.selectedFindBy = 'find-by-date';
                         $scope.invokeApi(rvTabletSrv.fetchReservations, {
                             'find_by':findBy,
                             'last_name':$scope.input.last_name,
@@ -570,7 +612,7 @@ sntRover.controller('rvTabletCtrl', [
                         $scope.from = 'find-by-confirmation';
                         $scope.prevStateNav.push($scope.from);
                         $scope.clearInputText();
-                        
+                        $scope.selectedFindBy = 'find-by-confirmation';
                         $scope.invokeApi(rvTabletSrv.fetchReservations, {
                             'find_by':findBy,
                             'last_name':$scope.input.last_name,
@@ -594,17 +636,30 @@ sntRover.controller('rvTabletCtrl', [
             $scope.clearInputText = function(){
                 $scope.input.inputTextValue = '';
             };
+            
+            $scope.deliverRegistration = function(){
+               $scope.goToScreen(null, 'deliver-registration', true, 'key-success');
+            };
+            
+
+            $scope.addGuestToReservation = function(){
+                var first = $scope.input.addguest_first,
+                last = $scope.input.addguest_last;
+                $scope.selectedReservation.guest_details.push({
+                    last_name: last,
+                    first_name: first
+                });
+            };
 
             $scope.submitSignature = function(){
                 //detect if coming from email input
                 for (var i in $scope.prevStateNav){
-                    if ($scope.prevStateNav[i] === 'find-by-email' || $scope.prevStateNav[i] === 'input-email'){
+                    if (($scope.prevStateNav[i] === 'find-by-email' || $scope.prevStateNav[i] === 'input-email') && $scope.input.email !== ''){
                         $scope.goToScreen(null, 'select-keys-after-checkin', true, $scope.from);
                         return;
                     }
                 }
                 $scope.goToScreen(null, 'input-email', true, $scope.from);
-                
             };
             $scope.goToLast = function(){
                 if (!$scope.from){
@@ -615,6 +670,7 @@ sntRover.controller('rvTabletCtrl', [
             };
 
             $scope.goToScreen = function(event, screen, override, from){
+                console.log('here: ', arguments)
                 console.info($scope.prevStateNav);
                 //screen = check-in, check-out, pickup-key;
                 var stateToGoTo, cancel = false;
@@ -684,6 +740,38 @@ sntRover.controller('rvTabletCtrl', [
                         $scope.hideNavBtns = false;
                         break;
                         
+                    case "card-swipe":
+                        $scope.at = 'card-swipe';
+                        //stateToGoTo = 'station.tab-kiosk-find-by-email';
+                        $scope.headingText = 'To Complete Check-in...';
+                        $scope.subHeadingText = '';
+                        $scope.inputTextPlaceholder = '';
+                        $scope.hideNavBtns = false;
+                        break;
+                        
+                    case "add-guests":
+                        $scope.at = 'add-guests';
+                        $scope.prevStateNav.push('reservation-details');
+                        $scope.addGuestsHeading = 'Additional Guests';
+                        //stateToGoTo = 'station.tab-kiosk-find-by-email';
+                        $scope.hideNavBtns = false;
+                        break;
+                        
+                    case "add-guest-last":
+                        $scope.at = 'add-guest-last';
+                        $scope.prevStateNav.push('add-guests');
+                        $scope.headingText = 'Enter the Guests Last Name';
+                        //stateToGoTo = 'station.tab-kiosk-find-by-email';
+                        $scope.hideNavBtns = false;
+                        break;
+                    case "add-guest-first":
+                        $scope.prevStateNav.push('add-guest-last');
+                        $scope.at = 'add-guest-first';
+                        $scope.headingText = 'Enter the Guests First Name';
+                        //stateToGoTo = 'station.tab-kiosk-find-by-email';
+                        $scope.hideNavBtns = false;
+                        break;
+                        
                         
                     case "input-email":
                         $scope.at = 'input-email';
@@ -691,6 +779,29 @@ sntRover.controller('rvTabletCtrl', [
                         $scope.headingText = 'Type Your Email Address';
                         $scope.subHeadingText = '';
                         $scope.inputTextPlaceholder = '';
+                        $scope.hideNavBtns = false;
+                        break;
+                        
+                    case "talk-to-staff":
+                        $scope.at = 'talk-to-staff';
+                        //stateToGoTo = 'station.tab-kiosk-find-reservation-by-date';
+                        $scope.headingText = 'Please Wait for a representative to assist you.';
+                        $scope.subHeadingText = '';
+                        
+                        $scope.modalBtn1 = 'Return';
+                        $scope.modalBtn2 = '';
+                        
+                        $scope.at = 'last_confirm';
+                        $scope.hideNavBtns = false;
+                        
+                        
+                        $scope.hideNavBtns = false;
+                        break;
+                        
+                    case "re-enter-date":
+                        $scope.at = 'find-by-date';
+                        //stateToGoTo = 'station.tab-kiosk-find-reservation-by-date';
+                        $scope.datepicker_heading = 'Find By Date';
                         $scope.hideNavBtns = false;
                         break;
                         
@@ -703,6 +814,26 @@ sntRover.controller('rvTabletCtrl', [
                         $scope.input.inputTextValue = $scope.input.lastEmailValue;
                         $scope.hideNavBtns = false;
 //                "lastConfirmationValue": ''
+                        break;
+                        
+                    case "re-enter-confirmation":
+                        $scope.at = 'find-by-confirmation';
+                        //stateToGoTo = 'station.tab-kiosk-find-by-email';
+                        $scope.headingText = 'Type Your Confirmation Number';
+                        $scope.subHeadingText = '';
+                        $scope.inputTextPlaceholder = '';
+                        $scope.input.inputTextValue = $scope.input.lastConfirmationValue;
+                        $scope.hideNavBtns = false;
+//                "lastConfirmationValue": ''
+                        break;
+                        
+                    case "key-success":
+                        $scope.at = 'key-success';
+                        //stateToGoTo = 'station.tab-kiosk-find-by-email';
+                        $scope.headingText = 'Success!';
+                        $scope.subHeadingText = 'Please grab your key(s) from the target below';
+                        $scope.modalBtn1 = 'Next';
+                        $scope.hideNavBtns = false;
                         break;
                         
                     case "select-reservation":
@@ -727,20 +858,15 @@ sntRover.controller('rvTabletCtrl', [
                     case "make-keys":
                         $scope.greenKey = false;
                         $scope.at = 'make-keys';
+                            $scope.prevStateNav.push('select-keys-after-checkin');
                        // stateToGoTo = 'station.tab-kiosk-make-key';
                         setTimeout(function(){
-                            console.log('skipping in 3 seconds...');
                             $scope.greenKey = true;
-                            setTimeout(function(){
-                                $scope.subHeadingText = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.";
-                                $scope.headingText = "Terms & Conditions";
-                                $scope.agreeButtonText = "I Agree";
-                                $scope.cancelButtonText = "Cancel";
-                                
-                                $scope.goToScreen(null, 'terms-conditions', true, $scope.from);
-                            },3000);
+                            console.log('done');
+                                //$scope.goToScreen(null, 'terms-conditions', true, $scope.from);
+                                $scope.goToScreen(null, 'key-success', true, $scope.from);
                             
-                        },5000);
+                        },1000);
                         $scope.hideNavBtns = false;
                         break;
                         
@@ -751,19 +877,25 @@ sntRover.controller('rvTabletCtrl', [
                         break;
                         
                     case "terms-conditions":
+                        $scope.subHeadingText = "";
+                        $scope.headingText = "Terms & Conditions";
+                        $scope.agreeButtonText = "I Agree";
+                        $scope.cancelButtonText = "Cancel";
                         $scope.at = 'terms-conditions';
                        // stateToGoTo = 'station.tab-kiosk-terms-conditions';
                         $scope.hideNavBtns = false;
                         break;
                         
                     case "no-match":
+                        console.info('no match from:');
+                        console.info($scope.from)
                         $scope.at = 'no-match';
                        // stateToGoTo = 'station.tab-kiosk-no-match';
                         $scope.hideNavBtns = false;
                         break;
                         
                     case "select-keys-after-checkin":
-                        $scope.at = 'select-keys';
+                        $scope.at = 'select-keys-after-checkin';
                        // stateToGoTo = 'station.tab-kiosk-select-keys-after-checkin';
                         $scope.hideNavBtns = false;
                         break;
@@ -773,6 +905,55 @@ sntRover.controller('rvTabletCtrl', [
                        // stateToGoTo = 'station.tab-kiosk-pickup-key';
                         $scope.hideNavBtns = false;
                         break;
+                        
+                    case "last_confirm":
+                        $scope.headingText = 'Done!';
+                        $scope.subHeadingText = '';
+                        
+                        $scope.modalBtn1 = '';
+                        $scope.modalBtn2 = 'Exit';
+                        
+                        $scope.at = 'last_confirm';
+                        $scope.hideNavBtns = false;
+                        break;
+                        
+                    case 'deliver-registration':{
+                            $scope.prevStateNav.push('deliver-registration');
+                             //fetch reservation list using email as the param
+                                //onsuccess push results to window
+                            $scope.at = 'deliver-registration';
+                            $scope.headingText = "Your Registration is Ready";
+                            $scope.subHeadingText = "Please select how to receive your registration";
+                            $scope.hideNavBtns = true;
+                           // $scope.goToScreen(null, 'terms-conditions', true);
+                        break;
+                    };
+                    case 'print-delivery':{
+                             //fetch reservation list using email as the param
+                                //onsuccess push results to window
+                            window.print(); 
+                            $scope.at = 'last_confirm';
+                            $scope.headingText = "Your Registration is Printed Below";
+                            $scope.subHeadingText = "";
+                            
+                            $scope.goToScreen(null, 'last_confirm', true, $scope.from);
+                            $scope.hideNavBtns = false;
+                           // $scope.goToScreen(null, 'terms-conditions', true);
+                        break;
+                    };
+                    case 'email-delivery':{
+                             //fetch reservation list using email as the param
+                                //onsuccess push results to window
+                            $scope.at = 'email-delivery';
+                            $scope.headingText = "Your Registration Has Been sent to:";
+                            $scope.subHeadingText = $scope.input.lastEmailValue;
+                            $scope.at = 'last_confirm'; 
+                           
+                            $scope.hideNavBtns = false;
+                           // $scope.goToScreen(null, 'terms-conditions', true);
+                        break;
+                    };
+                        
                         /*
                     case "admin-login":
                         stateToGoTo = 'station.tab-kiosk-admin-login';
@@ -806,6 +987,8 @@ sntRover.controller('rvTabletCtrl', [
                         break;
                         
                     case "admin-login-screen":
+                        $scope.modalBtn1 = 'LOGIN';
+                        $scope.modalBtn2 = 'Exit';
                         //stateToGoTo = 'station.tab-kiosk-admin';
                         //$scope.openAdminPopup();
                         
@@ -877,8 +1060,7 @@ sntRover.controller('rvTabletCtrl', [
                 */
             };
             $scope.agreeTerms = function(){
-                
-                
+                $scope.goToScreen(null, 'last_confirm', true);
             };
             
             $scope.dateOptions = {
@@ -896,6 +1078,18 @@ sntRover.controller('rvTabletCtrl', [
                     $('#datepicker').val(text[2]+'-'+text[0]+'-'+text[1]);
                     ngDialog.close();
                 }
+        };
+        
+        
+                        $scope.addGuestsHeading = 'Additional Guests';
+        $scope.removeGuest = function(i){//where i is the index in $scope.selectedReservation.guest_details
+            var guests = [];
+            for (var x in $scope.selectedReservation.guest_details){
+                if (i !== x || x === 0){
+                    guests.push($scope.selectedReservation.guest_details[x]);
+                }
+            }
+            $scope.selectedReservation.guest_details = guests;
         };
 	$scope.showDatePicker = function(){
             ngDialog.open({
