@@ -166,6 +166,10 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 			$scope.closeDialog();
 		};
 
+		var successCallBackOfSaveNewRoomTypesAndRates = function(error) {
+			$scope.$emit("showErrorMessage", error);
+		};
+
 		/**
 		 * function to form save roomtype and rates API params
 		 * @return {Object}
@@ -199,7 +203,8 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 			else {
 				var options = {
 					params: formSaveNewRoomTypesAndRatesParams(),
-					successCallBack: successCallBackOfSaveNewRoomTypesAndRates
+					successCallBack: successCallBackOfSaveNewRoomTypesAndRates,
+					failureCallBack: successCallBackOfSaveNewRoomTypesAndRates
 				};
 				$scope.callAPI(rvGroupConfigurationSrv.updateSelectedRoomTypesAndRates, options);
 			}
