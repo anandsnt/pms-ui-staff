@@ -321,7 +321,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			});
 		};
 		$scope.invokeApi(RVPaymentSrv.fetchAvailPayments, {}, successCallBackOfFetchPayment);
-
+		// Show DEPOSIT/BALANCE popup 
 		$scope.openDepositBalanceModal = function() {
 			var dataToSrv = {
 				"posting_account_id": $scope.accountConfigData.summary.posting_account_id
@@ -360,7 +360,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
 			$scope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
 		};
-
+		// Catching Swipe here 
 		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 			var swipeOperationObj = new SwipeOperation();
 			var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
