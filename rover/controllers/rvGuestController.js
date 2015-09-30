@@ -50,7 +50,10 @@ sntRover.controller('guestCardController', [
 							id: searchData.travelAgent.id
 						});
 					}
-					if (!!$scope.reservationData.group.id) {
+
+					// CICO-20547 do NOT init group cards for overlays
+					if (!!$scope.reservationData.group.id && $rootScope.isStandAlone) {
+
 						$scope.initGroupCard($scope.reservationData.group.id);
 						if (!!$scope.reservationData.group.travelAgent) {
 							$scope.reservationDetails.travelAgent.id = $scope.reservationData.group.travelAgent;
@@ -80,7 +83,9 @@ sntRover.controller('guestCardController', [
 						id: $scope.reservationDetails.travelAgent.id
 					});
 				}
-				if (!!$scope.reservationData.group.id) {
+				
+				// CICO-20547 do NOT init group cards for overlays
+				if (!!$scope.reservationData.group.id && $rootScope.isStandAlone) {
 					$scope.initGroupCard($scope.reservationData.group.id);
 					if (!!$scope.reservationData.group.travelAgent) {
 						$scope.reservationDetails.travelAgent.id = $scope.reservationData.group.travelAgent;
