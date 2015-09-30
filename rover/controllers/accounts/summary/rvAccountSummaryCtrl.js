@@ -357,7 +357,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		/*
 		 *	MLI SWIPE actions
 		 */
-		var processSwipedData = function(swipedCardData) {
+		/*var processSwipedData = function(swipedCardData) {
 
 			var passData = getPassData();
 			var swipeOperationObj = new SwipeOperation();
@@ -376,7 +376,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				processSwipedData(swipedCardData);
 			};
 			$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
-		});
+		});*/
 
 		// -- CICO-16913 - Implement Deposit / Balance screen in Accounts -- //
 	}
