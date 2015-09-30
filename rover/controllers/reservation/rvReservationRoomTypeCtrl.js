@@ -1698,6 +1698,11 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		}
 
 		var setBackButton = function() {
+			// CICO-20270: to force selection of a rate after removing a card with contracted rate.
+			if($stateParams.disable_back_staycard){
+				return;
+			}
+
 			// smart switch btw edit reservation flow and create reservation flow
 			if (!!$state.params && $state.params.isFromChangeStayDates) {
 				$rootScope.setPrevState = {
