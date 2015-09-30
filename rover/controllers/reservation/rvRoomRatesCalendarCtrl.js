@@ -41,9 +41,13 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 
 			},
 			resetCalendarEvents = function() {
-				$scope.eventSources.length = 0;
+				$scope.eventSources.left.length = 0;
+				$scope.eventSources.right.length = 0;
 
-				var calendarData = [],
+				var calendarData = {
+						left: [],
+						right: []
+					},
 					arrivalDateString = $scope.reservationData.arrivalDate,
 					departureDateString = $scope.reservationData.departureDate;
 
@@ -82,10 +86,15 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 							return "";
 						})()
 					};
-					calendarData.push(eventData);
+					if ($scope.leftCalendarOptions.month === new tzIndependentDate(dailyStat.date).getMonth()) {
+						calendarData.left.push(eventData);
+					} else if ($scope.rightCalendarOptions.month === new tzIndependentDate(dailyStat.date).getMonth()) {
+						calendarData.right.push(eventData);
+					}
 				});
 
-				$scope.eventSources.push(calendarData);
+				$scope.eventSources.left.push(calendarData.left);
+				$scope.eventSources.right.push(calendarData.right);
 			},
 			getCalendarData = function(from, to) {
 				$scope.invokeApi(RVStayDatesCalendarSrv.fetchCalendarData, {
@@ -103,7 +112,10 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 
 
 		this.init = function() {
-			$scope.eventSources = [];
+			$scope.eventSources = {
+				left: [],
+				right: []
+			};
 			$scope.$emit('roomTypesCalOptionSelected');
 			if ($scope.reservationData.rooms[0].roomTypeId === "") {
 				$scope.stateCheck.calendarState.calendarType = "BEST_AVAILABLE";
