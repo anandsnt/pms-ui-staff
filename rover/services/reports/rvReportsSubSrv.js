@@ -57,50 +57,50 @@ sntRover.service('RVreportsSubSrv', [
 						results: {
 							'Bunk': {
 								'2015-07-12': {
-									'available_rooms_count': 22,
-									'total_rooms_count': 200,
-									'rate_revenue': 1681.00,
-									'adr': 50,
-									'actual_revenue': 1925
+									'available_rooms_count': 1,
+									'total_rooms_count': 2,
+									'rate_revenue': 3,
+									'adr': 4,
+									'actual_revenue': 5
 								},
 								'2015-07-13': {
-									'available_rooms_count': 25,
-									'total_rooms_count': 200,
-									'rate_revenue': 1781.00,
-									'adr': 60,
-									'actual_revenue': 1525
+									'available_rooms_count': 6,
+									'total_rooms_count': 7,
+									'rate_revenue': 8,
+									'adr': 9,
+									'actual_revenue': 10
 								}
 							},
 							'Classic View': {
 								'2015-07-12': {
-									'available_rooms_count': 22,
-									'total_rooms_count': 200,
-									'rate_revenue': 1681.00,
-									'adr': 50,
-									'actual_revenue': 1925
+									'available_rooms_count': 11,
+									'total_rooms_count': 12,
+									'rate_revenue': 13,
+									'adr': 14,
+									'actual_revenue': 15
 								},
 								'2015-07-13': {
-									'available_rooms_count': 25,
-									'total_rooms_count': 200,
-									'rate_revenue': 1781.00,
-									'adr': 60,
-									'actual_revenue': 1525
+									'available_rooms_count': 16,
+									'total_rooms_count': 17,
+									'rate_revenue': 18,
+									'adr': 19,
+									'actual_revenue': 20
 								}
 							},
 							'Total': {
 								'2015-07-12': {
-									'available_rooms_count': 22,
-									'total_rooms_count': 200,
-									'rate_revenue': 1681.00,
-									'adr': 50,
-									'actual_revenue': 1925
+									'available_rooms_count': 21,
+									'total_rooms_count': 22,
+									'rate_revenue': 23,
+									'adr': 24,
+									'actual_revenue': 25
 								},
 								'2015-07-13': {
-									'available_rooms_count': 25,
-									'total_rooms_count': 200,
-									'rate_revenue': 1781.00,
-									'adr': 60,
-									'actual_revenue': 1525
+									'available_rooms_count': 26,
+									'total_rooms_count': 27,
+									'rate_revenue': 28,
+									'adr': 29,
+									'actual_revenue': 30
 								}
 							}
 						}
