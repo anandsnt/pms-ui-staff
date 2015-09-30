@@ -3,7 +3,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 	'$rootScope',
 	'$scope',
 	'RVStayDatesCalendarSrv',
-	'$filter',	
+	'$filter',
 	'$timeout',
 	function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filter, $timeout) {
 		//inheriting some useful things
@@ -19,6 +19,36 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				$timeout(function() {
 					$scope.refreshScroller('room-rates-calendar');
 				}, 1000);
+			},
+			getFirstDayOfMonth = function(date) {
+				var date = new Date(date),
+					y = date.getFullYear(),
+					m = date.getMonth();
+				return $filter('date')(new Date(y, m, 1), 'yyyy-MM-dd');
+			},
+			getLastDayOfMonth = function(date) {
+				var date = new Date(date),
+					y = date.getFullYear(),
+					m = date.getMonth();
+				return $filter('date')(new Date(y, m + 1, 0), 'yyyy-MM-dd');
+			},
+			getLastDayOfNextMonth = function(date) {
+				var date = new Date(date),
+					y = date.getFullYear(),
+					m = date.getMonth();
+				return $filter('date')(new Date(y, m + 2, 0), 'yyyy-MM-dd');
+
+			},
+			getCalendarData = function(from, to) {
+				$scope.invokeApi(RVStayDatesCalendarSrv.fetchCalendarData, {
+					from_date: from,
+					to_date: to
+				}, function(data) { //Success Callback
+					$scope.$emit('hideLoader');
+					console.log(data);
+				}, function(errorMessage) { // Failure Callback
+					$scope.errorMessage = errorMessage;
+				});
 			};
 
 
@@ -36,6 +66,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			//roomTypeForCalendar - Room type which specifies the calendar data
 			$scope.finalRoomType = $scope.roomTypeForCalendar = $scope.reservationData.rooms[0].roomTypeId;
 			that.renderFullCalendar();
+			getCalendarData(getFirstDayOfMonth($scope.checkinDateInCalender), getLastDayOfNextMonth($scope.checkinDateInCalender));
 		};
 
 
@@ -102,6 +133,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		 * Handles the forward and backward change for the calendar months
 		 */
 		var changeMonth = function(direction) {
+			var startDate;
 			if (direction === 'FORWARD') {
 				$scope.leftCalendarOptions.month = parseInt($scope.leftCalendarOptions.month) + 1;
 				$scope.rightCalendarOptions.month = parseInt($scope.rightCalendarOptions.month) + 1;
@@ -110,6 +142,8 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				$scope.rightCalendarOptions.month = parseInt($scope.rightCalendarOptions.month) - 1;
 			}
 			$scope.disablePrevButton = $scope.isPrevButtonDisabled();
+			startDate = new Date($scope.leftCalendarOptions.year, $scope.leftCalendarOptions.month);
+			getCalendarData(getFirstDayOfMonth(startDate), getLastDayOfNextMonth(startDate));
 		};
 
 		/**
