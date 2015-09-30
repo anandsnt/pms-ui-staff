@@ -41,8 +41,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 
 			},
 			resetCalendarEvents = function() {
-				$scope.eventSources.left.length = 0;
-				$scope.eventSources.right.length = 0;
+
 
 				var calendarData = {
 						left: [],
@@ -108,6 +107,10 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				}, function(errorMessage) { // Failure Callback
 					$scope.errorMessage = errorMessage;
 				});
+			},
+			resetBoundData = function() {
+				$scope.eventSources.left.length = 0;
+				$scope.eventSources.right.length = 0;
 			};
 
 
@@ -116,8 +119,16 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				left: [],
 				right: []
 			};
+
+			$scope.stateVariables = {
+				selectedRoom: $scope.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
+				selectedRate: $scope.reservationData.rooms[$scope.stateCheck.roomDetails.firstIndex].rateId
+			}
+
 			$scope.$emit('roomTypesCalOptionSelected');
-			if ($scope.reservationData.rooms[0].roomTypeId === "") {
+			if (!!$scope.stateVariables.selectedRoom) {
+				$scope.stateCheck.calendarState.calendarType = "ROOM_TYPE";
+			} else {
 				$scope.stateCheck.calendarState.calendarType = "BEST_AVAILABLE";
 			}
 			$scope.checkinDateInCalender = $scope.confirmedCheckinDate = tzIndependentDate($scope.reservationData.arrivalDate);
@@ -204,6 +215,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			}
 			$scope.disablePrevButton = $scope.isPrevButtonDisabled();
 			startDate = new Date($scope.leftCalendarOptions.year, $scope.leftCalendarOptions.month);
+			resetBoundData();
 			getCalendarData(getFirstDayOfMonth(startDate), getLastDayOfNextMonth(startDate));
 		};
 

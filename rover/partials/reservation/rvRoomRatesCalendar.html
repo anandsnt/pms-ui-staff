@@ -4,15 +4,15 @@
 	<!-- Filters -->
 	<div class="reservation-filters">
 		<!-- Change room type visible for the calendar -->
-		<div id="change-room-type" class="select" ng-hide="calendarType == 'BEST_AVAILABLE'">
+		<div id="change-room-type" class="select" ng-show="stateCheck.calendarState.calendarType == 'ROOM_TYPE'">
 			<select ng-model="roomTypeForCalendar"
-                ng-options="roomType.id as roomType.name for roomType in availabilityDetails.room_types" ng-change=""ng-disabled="!isRoomTypeChangeAllowed()">
+                ng-options="roomType.id as roomType.name for roomType in availabilityDetails.room_types">
                 <option value="" disabled selected translate>RESV_ALL_ROOMS</option>
             </select>
 		</div>
-		<div id="change-room-type" class="select" ng-hide="calendarType == 'BEST_AVAILABLE'">
+		<div id="change-room-type" class="select" ng-show="stateCheck.calendarState.calendarType == 'ROOM_TYPE'">
 			<select ng-model="roomTypeForCalendar"
-                ng-options="roomType.id as roomType.name for roomType in availabilityDetails.room_types" ng-change=""ng-disabled="!isRoomTypeChangeAllowed()">
+                ng-options="roomType.id as roomType.name for roomType in availabilityDetails.room_types">
                 <option value="" disabled selected translate>RESV_ALL_RATES</option>
             </select>
 		</div>
