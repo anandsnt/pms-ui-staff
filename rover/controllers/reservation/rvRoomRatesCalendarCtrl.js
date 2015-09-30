@@ -47,7 +47,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 					arrivalDateString = $scope.reservationData.arrivalDate,
 					departureDateString = $scope.reservationData.departureDate;
 
-				_.each($scope.currentMasterData.results, function(dailyStat) {
+				_.each(currentMasterData.results, function(dailyStat) {
 					dayAvailabilityToDisplay = dailyStat.house.availability;
 
 					var eventData = {
