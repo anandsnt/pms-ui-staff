@@ -634,13 +634,13 @@ sntRover.controller('rvTabletCtrl', [
                 switch(screen){
                     case "home":
                         $scope.at = 'home';
-                        stateToGoTo = 'station';
+                        //stateToGoTo = 'station';
                         $scope.hideNavBtns = true;
                         break;
                         
                     case "input-last":
                         $scope.at = 'input-last';
-                        stateToGoTo = 'station.tab-kiosk-input-last';
+                        //stateToGoTo = 'station.tab-kiosk-input-last';
                         $scope.headingText = 'Type Your Last Name';
                         $scope.subHeadingText = '';
                         $scope.inputTextPlaceholder = '';
@@ -654,20 +654,20 @@ sntRover.controller('rvTabletCtrl', [
                     case "find-reservation":
                         $scope.at = 'find-reservation';
                         //stateToGoTo = 'station.tab-kiosk-find-reservation';
-                        stateToGoTo = 'station.tab-kiosk-input-last';
+                        //stateToGoTo = 'station.tab-kiosk-input-last';
                         $scope.hideNavBtns = false;
                         break;
                         
                     case "find-by-date":
                         $scope.at = 'find-by-date';
-                        stateToGoTo = 'station.tab-kiosk-find-reservation-by-date';
+                        //stateToGoTo = 'station.tab-kiosk-find-reservation-by-date';
                         $scope.datepicker_heading = 'Find By Date';
                         $scope.hideNavBtns = false;
                         break;
                         
                     case "find-by-confirmation":
                         $scope.at = 'find-by-confirmation';
-                        stateToGoTo = 'station.tab-kiosk-find-reservation-by-confirmation';
+                        //stateToGoTo = 'station.tab-kiosk-find-reservation-by-confirmation';
                         $scope.headingText = 'Type Your Confirmation Number';
                         $scope.subHeadingText = '';
                         $scope.inputTextPlaceholder = '';
@@ -677,7 +677,7 @@ sntRover.controller('rvTabletCtrl', [
                         
                     case "find-by-email":
                         $scope.at = 'find-by-email';
-                        stateToGoTo = 'station.tab-kiosk-find-by-email';
+                        //stateToGoTo = 'station.tab-kiosk-find-by-email';
                         $scope.headingText = 'Type Your Email Address';
                         $scope.subHeadingText = '';
                         $scope.inputTextPlaceholder = '';
@@ -687,7 +687,7 @@ sntRover.controller('rvTabletCtrl', [
                         
                     case "input-email":
                         $scope.at = 'input-email';
-                        stateToGoTo = 'station.tab-kiosk-input-email';
+                       // stateToGoTo = 'station.tab-kiosk-input-email';
                         $scope.headingText = 'Type Your Email Address';
                         $scope.subHeadingText = '';
                         $scope.inputTextPlaceholder = '';
@@ -696,7 +696,7 @@ sntRover.controller('rvTabletCtrl', [
                         
                     case "re-enter-email":
                         $scope.at = 'find-by-email';
-                        stateToGoTo = 'station.tab-kiosk-find-by-email';
+                        //stateToGoTo = 'station.tab-kiosk-find-by-email';
                         $scope.headingText = 'Type Your Email Address';
                         $scope.subHeadingText = '';
                         $scope.inputTextPlaceholder = '';
@@ -707,19 +707,19 @@ sntRover.controller('rvTabletCtrl', [
                         
                     case "select-reservation":
                         $scope.at = 'select-reservation';
-                        stateToGoTo = 'station.tab-kiosk-select-reservation';
+                       // stateToGoTo = 'station.tab-kiosk-select-reservation';
                         $scope.hideNavBtns = false;
                         break;
                         
                     case "reservation-details":
                         $scope.at = 'reservation-details';
-                        stateToGoTo = 'station.tab-kiosk-reservation-details';
+                        //stateToGoTo = 'station.tab-kiosk-reservation-details';
                         $scope.hideNavBtns = false;
                         break;
                         
                     case "cc-sign":
                         $scope.at = 'cc-sign';
-                        stateToGoTo = 'station.tab-kiosk-reservation-sign';
+                       // stateToGoTo = 'station.tab-kiosk-reservation-sign';
                         $scope.hideNavBtns = false;
                         break;
                         
@@ -727,7 +727,7 @@ sntRover.controller('rvTabletCtrl', [
                     case "make-keys":
                         $scope.greenKey = false;
                         $scope.at = 'make-keys';
-                        stateToGoTo = 'station.tab-kiosk-make-key';
+                       // stateToGoTo = 'station.tab-kiosk-make-key';
                         setTimeout(function(){
                             console.log('skipping in 3 seconds...');
                             $scope.greenKey = true;
@@ -746,31 +746,31 @@ sntRover.controller('rvTabletCtrl', [
                         
                     case "cc-sign-time-out":
                         $scope.at = 'cc-sign-time-out';
-                        stateToGoTo = 'station.tab-kiosk-reservation-signature-time-out';
+                       // stateToGoTo = 'station.tab-kiosk-reservation-signature-time-out';
                         $scope.hideNavBtns = true;
                         break;
                         
                     case "terms-conditions":
                         $scope.at = 'terms-conditions';
-                        stateToGoTo = 'station.tab-kiosk-terms-conditions';
+                       // stateToGoTo = 'station.tab-kiosk-terms-conditions';
                         $scope.hideNavBtns = false;
                         break;
                         
                     case "no-match":
                         $scope.at = 'no-match';
-                        stateToGoTo = 'station.tab-kiosk-no-match';
+                       // stateToGoTo = 'station.tab-kiosk-no-match';
                         $scope.hideNavBtns = false;
                         break;
                         
                     case "select-keys-after-checkin":
                         $scope.at = 'select-keys';
-                        stateToGoTo = 'station.tab-kiosk-select-keys-after-checkin';
+                       // stateToGoTo = 'station.tab-kiosk-select-keys-after-checkin';
                         $scope.hideNavBtns = false;
                         break;
                         
                     case "pickupkey":
                         $scope.at = 'pickup-key';
-                        stateToGoTo = 'station.tab-kiosk-pickup-key';
+                       // stateToGoTo = 'station.tab-kiosk-pickup-key';
                         $scope.hideNavBtns = false;
                         break;
                         /*
@@ -810,7 +810,7 @@ sntRover.controller('rvTabletCtrl', [
                         //$scope.openAdminPopup();
                         
                         $scope.at = 'admin-login-screen';
-                        stateToGoTo = 'station.tab-kiosk-admin-login-screen';
+                       // stateToGoTo = 'station.tab-kiosk-admin-login-screen';
                         $scope.headingText = 'Administrator';
                         $scope.subHeadingText = '';
                         $scope.inputTextPlaceholder = '';
@@ -823,7 +823,7 @@ sntRover.controller('rvTabletCtrl', [
                         //$scope.openAdminPopup();
                         
                         $scope.at = 'admin-login-username';
-                        stateToGoTo = 'station.tab-kiosk-admin-login-username';
+                       // stateToGoTo = 'station.tab-kiosk-admin-login-username';
                         $scope.headingText = 'Admin Username';
                         $scope.subHeadingText = '';
                         $scope.inputTextPlaceholder = '';
@@ -836,7 +836,7 @@ sntRover.controller('rvTabletCtrl', [
                         //$scope.openAdminPopup();
                         
                         $scope.at = 'admin-login-password';
-                        stateToGoTo = 'station.tab-kiosk-admin-login-password';
+                       // stateToGoTo = 'station.tab-kiosk-admin-login-password';
                         $scope.headingText = 'Admin Password';
                         $scope.subHeadingText = '';
                         $scope.inputTextPlaceholder = '';
@@ -846,7 +846,6 @@ sntRover.controller('rvTabletCtrl', [
                         break;
                         
                     default:
-                        stateToGoTo = 'home';
                         stateToGoTo = 'station';
                         $scope.hideNavBtns = true;
                         break;    
@@ -856,7 +855,7 @@ sntRover.controller('rvTabletCtrl', [
                 if (override){
                     $scope.closePopup();
                     $scope.resetCounter();
-                    $state.go(stateToGoTo, stateParams);
+                  //  $state.go(stateToGoTo, stateParams);
                 } else {
                     if (!cancel){
                         if (event){
@@ -864,7 +863,7 @@ sntRover.controller('rvTabletCtrl', [
                             event.stopImmediatePropagation();
                             event.stopPropagation();
                         }
-                        $state.go(stateToGoTo, stateParams);
+                      //  $state.go(stateToGoTo, stateParams);
                     } else {
                         $scope.$emit('hideLoader');
                         $scope.$parent.$emit('hideLoader');
