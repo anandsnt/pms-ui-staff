@@ -44,7 +44,11 @@
                     margin: 20px;
                 }
 
-                &.single-title { line-height: 40px; }
+                &.single-title { 
+                    line-height: 40px; 
+
+                    span { line-height: 40px; }
+                }
             }
 
             em {
@@ -569,7 +573,7 @@
 
     .report-header {
         position: relative;
-        padding: 5px 20px;
+        padding: 5px 10px;
         overflow: hidden;
         background: @white;
         z-index: 1090;
@@ -580,7 +584,7 @@
 
         .totals {
             margin: 5px 0;
-            .calc-width(100, 130);
+            .calc-width(100, 140);
             .pull-left;
 
             li {
@@ -620,27 +624,14 @@
         }
 
         .actions {
-            /*max-width: 320px;*/
-            width: 130px;
+            width: 140px;
             overflow: hidden;
+            text-align: right;
             .pull-right;
-
-            .select {
-                margin-right: 5px;
-                .hide;
-                .pull-left;
-
-                select {
-                    padding-right: 20px;
-                    height: 40px;
-                    .box-shadow(none);
-                }
-            }
 
             .button {
                 margin-right: 5px;
                 .square(40px);
-                .pull-left;
 
                 &:last-child { margin-right: 0; }
             }
@@ -649,9 +640,10 @@
 
     .report-content {
         position: relative;
+        padding: 0 20px;
         .calc-height(100, 50);
 
-        > .wrapper { padding: 20px; }
+        > .wrapper { padding: 20px 0; }
 
         h2 {
             font-size: 18px;
