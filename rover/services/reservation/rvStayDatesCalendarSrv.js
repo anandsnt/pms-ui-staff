@@ -6,16 +6,47 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
 
         this.lastFetchedDate = "";
 
+        var calendarDataCache = {
+            expiryLimit: 60, //seconds
+            reponses: []
+        }
+
 
         this.fetchCalendarData = function(params) {
             var deferred = $q.defer();
-            var url = '/api/calendar_availability';
-            RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
-                deferred.resolve(response);
-            }, function(errorMessage) {
-                deferred.reject(errorMessage);
-            });
-            return deferred.promise;            
+            var url = '/api/calendar_availability',
+                cachedData = _.findWhere(calendarDataCache.reponses, {
+                    from: params.from_date,
+                    to: params.to_date
+                });
+
+            if (cachedData && Math.floor(Date.now() / 1000) - cachedData.timeStamp < calendarDataCache.expiryLimit) {
+                deferred.resolve(cachedData.response);
+            } else {
+
+                if (!cachedData) {
+                    calendarDataCache.reponses.push({
+                        from: params.from_date,
+                        to: params.to_date
+                    });
+                }
+
+                RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
+                    deferred.resolve(response);
+                    
+                    cachedData = _.findWhere(calendarDataCache.reponses, {
+                        from: params.from_date,
+                        to: params.to_date
+                    });
+
+                    cachedData.response = response;
+                    cachedData.timeStamp = Math.floor(Date.now() / 1000);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+            }
+
+            return deferred.promise;
         };
 
         this.fetchAvailability = function(params) {
