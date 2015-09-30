@@ -160,6 +160,7 @@ sntRover.factory('RVReportUtilsFac', [
             'INCLUDE_TAX'        : true,
             'INCLUDE_TAX_RATE': true,
             'INCLUDE_ADDON_RATE': true,
+            'INCLUDE_ADDONS': true
         };
 
         var __displayFilterNames = {
@@ -211,6 +212,12 @@ sntRover.factory('RVReportUtilsFac', [
 
             // if filter value is either of these, must include when report submit
             if ( objRef['title'] == reportNames['FORECAST_GUEST_GROUPS'] ) {
+                objRef['hasGeneralOptions']['title'] = filter.description;
+            };
+
+            // if filter is this, make it selected by default
+            if ( objRef['title'] == reportNames['DAILY_PRODUCTION'] && filter.value == 'INCLUDE_ADDONS' ) {
+                selected = true;
                 objRef['hasGeneralOptions']['title'] = filter.description;
             };
 
