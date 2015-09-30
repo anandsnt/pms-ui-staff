@@ -588,7 +588,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 		$scope.depositBalanceMakePaymentData.payment_type = "";
 	});
 
-	$scope.$on("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN", function (e, swipedCardDataToRender){
+	$rootScope.$on("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN", function (e, swipedCardDataToRender){
 		alert("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN");
 		$scope.shouldShowMakePaymentScreen       = false;
 		$scope.addmode                 			 = true;

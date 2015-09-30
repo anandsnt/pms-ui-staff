@@ -363,11 +363,11 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			var swipeOperationObj = new SwipeOperation();
 			var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
 			passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
-			$scope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
+			$rootScope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
 		};
 
 		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
-			alert("SWIPE_ACTION");
+			
 			var swipeOperationObj = new SwipeOperation();
 			var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
 			var tokenizeSuccessCallback = function(tokenValue) {
