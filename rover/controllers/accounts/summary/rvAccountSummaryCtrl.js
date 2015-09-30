@@ -1,5 +1,5 @@
-sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', '$stateParams', 'RVPaymentSrv', 'RVDepositBalanceSrv','rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'ngDialog', 'rvPermissionSrv',
-	function($scope, $rootScope, $filter, $stateParams, RVPaymentSrv, RVDepositBalanceSrv, rvAccountsConfigurationSrv, RVReservationSummarySrv, ngDialog, rvPermissionSrv) {
+sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', '$stateParams', 'RVPaymentSrv', 'RVDepositBalanceSrv','rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'ngDialog', 'rvPermissionSrv', 'RVReservationCardSrv',
+	function($scope, $rootScope, $filter, $stateParams, RVPaymentSrv, RVDepositBalanceSrv, rvAccountsConfigurationSrv, RVReservationSummarySrv, ngDialog, rvPermissionSrv , RVReservationCardSrv) {
 		BaseCtrl.call(this, $scope);
 
 		var summaryMemento = {};
@@ -357,13 +357,13 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		/*
 		 *	MLI SWIPE actions
 		 */
-		/*var processSwipedData = function(swipedCardData) {
-
+		var processSwipedData = function(swipedCardData) {
+			alert("processSwipedData");
 			var passData = getPassData();
 			var swipeOperationObj = new SwipeOperation();
 			var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
 			passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
-			$rootScope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
+			$scope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
 		};
 
 		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
@@ -371,12 +371,19 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			var swipeOperationObj = new SwipeOperation();
 			var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
 			var tokenizeSuccessCallback = function(tokenValue) {
+				alert("success");
 				$scope.$emit('hideLoader');
 				swipedCardData.token = tokenValue;
 				processSwipedData(swipedCardData);
 			};
-			$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
-		});*/
+			var tokenizeFailuerCallback = function() {
+				alert("failure");
+				$scope.$emit('hideLoader');
+				swipedCardData.token = 12345678;
+				processSwipedData(swipedCardData);
+			};
+			$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback , tokenizeFailuerCallback);
+		});
 
 		// -- CICO-16913 - Implement Deposit / Balance screen in Accounts -- //
 	}

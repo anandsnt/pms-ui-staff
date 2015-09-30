@@ -1,5 +1,5 @@
-sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$rootScope', 'RVDepositBalanceSrv', 'RVPaymentSrv', 'RVReservationCardSrv', '$stateParams', '$filter', '$timeout', 'rvPermissionSrv', 'RVReservationCardSrv',
-	function($scope, ngDialog, $rootScope, RVDepositBalanceSrv, RVPaymentSrv, RVReservationCardSrv , $stateParams, $filter, $timeout, rvPermissionSrv, RVReservationCardSrv) {
+sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$rootScope', 'RVDepositBalanceSrv', 'RVPaymentSrv', '$stateParams', '$filter', '$timeout', 'rvPermissionSrv', 'RVReservationCardSrv',
+	function($scope, ngDialog, $rootScope, RVDepositBalanceSrv, RVPaymentSrv , $stateParams, $filter, $timeout, rvPermissionSrv, RVReservationCardSrv) {
 
 	BaseCtrl.call(this, $scope);
 
@@ -589,6 +589,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	});
 
 	$scope.$on("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN", function (e, swipedCardDataToRender){
+		alert("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN");
 		$scope.shouldShowMakePaymentScreen       = false;
 		$scope.addmode                 			 = true;
 		$rootScope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
@@ -624,7 +625,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	/*
 	 *	MLI SWIPE actions
 	 */
-	var processSwipedData = function(swipedCardData) {
+	/*var processSwipedData = function(swipedCardData) {
 
 		var passData = getPassData();
 		var swipeOperationObj = new SwipeOperation();
@@ -650,7 +651,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 			processSwipedData(swipedCardData);
 		};
 		$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
-	});
+	});*/
 
 	//CICO-12488
 	$scope.changePaymentType();
