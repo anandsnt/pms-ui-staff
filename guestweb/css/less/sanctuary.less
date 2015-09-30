@@ -1,0 +1,301 @@
+@charset: "utf-8";
+/*Accent colors*/
+@white:#fff;
+
+/* delete */
+
+
+@yellow:#30180c;
+@brown:#30180c;
+@brown-text:#443427;
+@light-brown:#653f2a;
+
+/* delete */
+
+@black:#000;
+@yellow:#DBE23E;
+@dark-yellow:#CED526;
+
+
+.template-bg{
+   background:none;
+}
+
+.template-button{
+   background:@yellow !important;
+   color:@black !important;
+}
+.template-heading-text{
+   color:@black !important;
+}
+.template-text,.subTitletext{
+	color:@black !important;
+}
+.light-template-bg{
+   background:@yellow;
+}
+.dark-template-bg{
+	background:@dark-yellow !important;
+}
+.white-text{
+	color:@white !important;
+}
+.grey-text{
+	color:@black !important;
+}
+
+
+body {
+  	background: none !important;
+}
+
+
+
+.jumbotron .check-inout-wrapper{
+	border:none !important;
+}
+
+
+.circle-bg {
+    background: url("/assets/img/Sanctuary/circle-bg.png") no-repeat scroll center top transparent;
+}
+
+.checkout-status{
+	border-top:none !important;
+	border-bottom:none !important;
+}
+
+
+.verti-ruler {
+    background: none repeat scroll 0 0 #D3D3D3;
+}
+.msg-head,.msg-body{
+	color:@black !important;
+}
+.balancevalue{
+	color:@black !important;
+}
+.key-delivery-message {
+	text-align:center;
+}
+.bottom-logo{
+	margin-top:60px !important;
+}
+
+
+/* ----------------late checkout options page----------------- */
+
+.checkouttime1 {
+    background: none repeat scroll 0 0 #F0F671;
+}
+.checkouttime2 {
+    background: none repeat scroll 0 0 #DBE23E;
+}
+.checkouttime3 {
+    background: none repeat scroll 0 0 #CED526;
+}
+.checkout-later-back-button,.no-thanks a,.checkouttime1, .checkouttime2, .checkouttime3{
+	color: @black !important;
+}
+
+
+.no-thanks,.questions
+{
+	a,a:hover{
+		text-decoration:underline  !important;
+		color: @black !important;
+	}
+}
+/* ------------------------------------------------------------------- */
+
+/* --------------------checkout confirmation page---------------------- */
+
+.jumbotron .headtext{
+	color:@black;
+}
+
+.col-xs-12.checkoutnow.single,.link-btn.with-bg{
+	background:@yellow;
+	color:@black !important;
+}
+/* -------------------------------------------------------------------- */
+
+/* -------------------------checkout balance page----------------------- */
+.accept-charges-button.single{
+	background:@yellow;
+	color:@white;
+}
+
+.viewbill-toggle{
+	a,a:hover{
+		color:@black !important;
+	}
+}
+
+.now-later-options{
+	a,a:hover{
+		color:@black !important;
+	}
+}
+a, a:hover {
+    color: @black !important;
+}
+
+.msg-head.brown-text.thanks-msg{
+	.template-heading-text;
+}
+/* --------------------------------------------------------------------------- */
+
+/* ----------------------------checkout later page--------------------------- */
+.back-to-checkout{
+	padding:5% !important;
+}
+
+.backbtn {
+    left: 10%;    
+}
+.checkout-later-back-button{
+	color:#fff !important;
+}
+
+/* --------------------------------------------------------------------------- */
+
+
+/* responsive starts here */
+
+@media (max-width: 480px) {
+	body {
+  		background: none !important;
+	}
+	.checkin-button.template-button.verification-button{
+		margin: 10px 0 0 !important;
+	}
+}
+
+@media (min-width: 990px) {
+	.bottom-logo{
+		margin-top:70px !important;
+	}
+}
+
+
+/* --------------------------------------------------------------------------- */
+
+/*------------------------------- date picker starts here---------------------*/
+.date-picker-header{
+  background-color: @yellow;
+  color:@black !important;
+}
+.departure-date p:last-child{
+  color:@black !important;
+}
+.pickadate-cell li {
+ border: 1px solid #fff;
+}
+
+.date-picker-back,.date-picker-ok{
+	color:@black !important;
+}
+.date-picker-wrap{
+  background-color: @white !important;
+  background: #fff !important;
+}
+.pickadate-cell .pickadate-disabled,
+.pickadate-cell .pickadate-disabled a {
+  color: #959595 !important;
+}
+
+.date-picker-ok{
+  padding-top: 0px;
+  background:  none !important;
+  color:#000;
+}
+
+.departure-date{
+   p:first-child{
+       color:@black;
+   }
+  
+}
+.pickadate-centered-heading, .pickadate-cell .pickadate-head{
+	color:#18171c;
+}
+
+.pickadate-cell .pickadate-disabled, .pickadate-cell .pickadate-enabled, .pickadate-cell .pickadate-outofrange-disabled{
+    background-color:#E5E5E5 !important;
+}
+.pickadate-cell .pickadate-active{
+    background-color:@yellow !important;
+    color:@white !important;
+}
+.pickadate-cell .pickadate-enabled, .pickadate-prev,.pickadate-next {
+    color:#000 !important;
+}
+.pickadate-controls{
+    a, a:hover
+    {
+        color:#18171c !important;
+    }
+}
+
+.pickadate-cell{
+	.pickadate-active{
+		color:#fff !important;
+	}
+}
+.pickadate-cell li{
+	border-right: 1px solid #fff !important;
+	border-left: 1px solid #fff !important;
+}
+
+
+/*-------------------------------------------------------------------------*/
+
+.row .reservation-dates,.room_details{
+	color:@black;
+}
+.checkin-button{
+	color:@black !important;
+}
+
+.row .date-container{
+	border-bottom:none;
+}
+
+.upgrade-details .upgrades-btn{
+	background:@yellow;
+}
+.upgrade-details .upgrades-btn p{
+	color:@black;
+}
+.proceed-to-checkin{
+	background:#464646;
+}
+
+.now-later-options{
+	margin: 0 10px;
+}
+.upgrades-container{
+	padding-bottom:30px !important;
+}
+
+
+
+.link-btn.with-bg.nextbtn.early-checkin-button{
+	padding:0px 2px !important;
+	font-size:24px !important;
+	height:72px;
+	font-weight:lighter !important;
+}
+
+.link-btn.with-bg.nextbtn.early-checkin-button.gray-bg{
+	color:@white !important;
+}
+
+.row.checkin-wrapper-top.arrival-details.verification-container.date-container{
+	padding-top:0px;
+}
+
+.checkin-button.template-button.verification-button{
+	margin: 60px 0 0;
+}
