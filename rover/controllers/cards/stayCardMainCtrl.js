@@ -264,7 +264,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.initTravelAgentCard();
 			}
 
-			if (!isCardSame.group) {
+			// CICO-20547 do NOT init group cards for overlays
+			if (!isCardSame.group && $rootScope.isStandAlone) {
 				$scope.$broadcast('groupDetached');
 				$scope.initGroupCard($scope.reservationDetails.group.id);
 			}
@@ -785,7 +786,9 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			var rateIdSet = [];
 			var self = this;
 			angular.forEach($scope.reservationData.rooms, function(room) {
-				var refData = _.findWhere(tData.rooms, {room_no : room.room_no});
+				var refData = _.findWhere(tData.rooms, {
+					room_no: room.room_no
+				});
 				room.stayDates = {};
 				rateIdSet.push(refData.rateId);
 				room.numAdults = refData.numAdults;
