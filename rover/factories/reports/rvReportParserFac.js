@@ -13,6 +13,10 @@ sntRover.factory('RVReportParserFac', [
 
         factory.parseAPI = function ( reportName, apiResponse, options ) {
 
+            if ( reportName === reportNames['DAILY_PRODUCTION'] ) {
+                return _.isEmpty(apiResponse) ? apiResponse : $_parseDailyProduction( reportName, apiResponse, options );
+            }
+
             // a very special parser for daily transaction report
             // in future we may make this check generic, if more
             // reports API structure follows the same pattern
@@ -48,6 +52,97 @@ sntRover.factory('RVReportParserFac', [
             };
         };
 
+
+
+
+
+
+        function $_parseDailyProduction ( reportName, apiResponse, options ) {
+            /**
+             * we are gonna transform the actual api response with the following strucutre:
+             * 
+             * [{
+             *      '2015-04-01': [{
+             *          ...
+             *          room_type_id: 1,
+             *          room_type: 'bunk'
+             *      }, {
+             *          ...
+             *          room_type_id: 2,
+             *          room_type: 'classic'
+             *      }]
+             * }, {
+             *      '2015-04-02': [{
+             *          ...
+             *          room_type_id: 1,
+             *          room_type: 'bunk'
+             *      }, {
+             *          ...
+             *          room_type_id: 2,
+             *          room_type: 'classic'
+             *      }]
+             * }]
+             * 
+             * to the following structure:
+             *
+             * {
+             *      'bunk__1': {
+             *          '2015-04-01': {
+             *              ...
+             *              ...
+             *          },
+             *          '2015-04-02': {
+             *              ...
+             *              ...
+             *          }
+             *      },
+             *      'classic__2': {
+             *          '2015-04-01': {
+             *              ...
+             *              ...
+             *          },
+             *          '2015-04-02': {
+             *              ...
+             *              ...
+             *          }
+             *      }
+             * }
+             *
+             * WHY? Coz we have to!
+             */
+
+            var i, j, j, k;
+
+            var returnObj = {};
+
+            var zeroThItem      = apiResponse[0],
+                zeroThDateKey   = _.keys( zeroThItem )[0],
+                zeroThDateData  = zeroThItem[zeroThDateKey],
+                uuid;
+            for ( i = 0, j = dateData.length; i < j; i++ ) {
+                uuid = dateData[i]['room_type'] + '__' + dateData[i]['room_type_id'];
+                returnObj[uuid] = {};
+            };
+
+            var ithDateKey,
+                ithDateData,
+                ithUuid,
+                makeCopy;
+            for ( i = 0, j = apiResponse.length; i < j; i++ ) {
+                ithDateKey  = _.keys( apiResponse[i] )[0];
+                ithDateData = apiResponse[i][ithDateData];
+
+                for ( k = 0, l = ithDateData.length; k < l; k++ ) {
+                    makeCopy = angular.copy( ithDateData[k] );
+
+                    ithUuid = makeCopy['room_type'] + '__' + makeCopy['room_type_id'];
+
+                    returnObj[ithUuid][ithDateKey] = angular.copy( makeCopy );
+                };
+            };
+
+            return returnObj;
+        };
 
 
 
