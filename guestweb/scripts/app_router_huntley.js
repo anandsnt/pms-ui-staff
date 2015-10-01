@@ -101,6 +101,19 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 });
 
 
+	$stateProvider.state('externalVerification', {
+	 	url: '/externalVerification',
+	 	templateUrl: '/assets/checkoutnow/partials/Huntley/externalVerification.html',
+	 	controller : 'externalVerificationViewController',
+	 	title: 'External verification'
+	 }).state('externalVerificationError', {
+	 	url: '/verificationError',
+	 	templateUrl: '/assets/checkoutnow/partials/Huntley/externalVerificationError.html',
+	 	controller:'verificationErrorController',
+	 	title: 'External verification Error'
+	 });
+
+
 
 	$stateProvider.state('noOptionAvailable', {
     	url: '/noOptionAvailable',

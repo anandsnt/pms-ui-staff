@@ -117,6 +117,11 @@ sntRover.controller('overbookingAlertCtrl', ['$scope',
             computeCalendarData();
         };
 
+        $scope.viewRoomRatesCalendar = function() {
+            $scope.toggleCalendar();
+            $scope.closeDialog();
+        };
+
         renderFullCalendar();
     }
 ]);

@@ -2,10 +2,13 @@ sntRover.service('RVGuestCardLoyaltySrv',['$q', 'RVBaseWebSrv', function($q, RVB
 
 	this.loyalties = {};
 	var that =this;
+	var hlps = {};
+    var ffps = {};
 
 	this.fetchLoyalties = function(param){
 		var deferred = $q.defer();
  		var user_id = param.userID;
+ 		
 		this.fetchUserMemberships = function(){
 			var url =  	'/staff/user_memberships.json?user_id='+ user_id;
 			RVBaseWebSrv.getJSON(url).then(function(data) {
@@ -19,8 +22,9 @@ sntRover.service('RVGuestCardLoyaltySrv',['$q', 'RVBaseWebSrv', function($q, RVB
 
 
 		this.fetchHotelLoyalties = function(param){
-		var url =  '/staff/user_memberships/get_available_hlps.json';
+			var url =  '/staff/user_memberships/get_available_hlps.json';
 			RVBaseWebSrv.getJSON(url).then(function(data) {
+				hlps                            =  data;
 				that.loyalties.hotelLoyaltyData =  data;
 				this.fetchUserMemberships();
 			},function(data){
@@ -29,13 +33,20 @@ sntRover.service('RVGuestCardLoyaltySrv',['$q', 'RVBaseWebSrv', function($q, RVB
 			return deferred.promise;
 	    };
 
-		var url =  '/staff/user_memberships/get_available_ffps.json';
-		RVBaseWebSrv.getJSON(url).then(function(data) {
-			that.loyalties.freaquentLoyaltyData =  data;
-			this.fetchHotelLoyalties();
-		},function(data){
-			deferred.reject(data);
-		});
+	    if(isEmpty(hlps) || isEmpty(ffps)){
+	    	var url =  '/staff/user_memberships/get_available_ffps.json';
+			RVBaseWebSrv.getJSON(url).then(function(data) {
+				ffps                                =  data;
+				that.loyalties.freaquentLoyaltyData =  data;
+				this.fetchHotelLoyalties();
+			},function(data){
+				deferred.reject(data);
+			});
+	    }else{
+	    	that.loyalties.freaquentLoyaltyData = ffps;
+	    	that.loyalties.hotelLoyaltyData     = hlps;
+	    	this.fetchUserMemberships();
+	    };			
 		return deferred.promise;
 
 	};

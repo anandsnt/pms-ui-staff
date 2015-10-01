@@ -1,6 +1,13 @@
 sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
     function($q, RVBaseWebSrvV2) {
         var that = this;
+        this.reservation = {
+                                'settings':{},
+                                'roomTypes':{},
+                                'businessDate':{}
+                            };
+
+
 
         this.fetchBaseSearchData = function() {
             var deferred = $q.defer();
@@ -27,14 +34,18 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
                 return deferred.promise;
             };
 
-            var url = '/api/hotel_settings/show_hotel_reservation_settings';
-            RVBaseWebSrvV2.getJSON(url).then(function(data) {
-                that.reservation = {};
-                that.reservation.settings = data;
-                that.fetchRoomTypes();
-            }, function(errorMessage) {
-                deferred.reject(errorMessage);
-            });
+            if(isEmpty(that.reservation.settings) && isEmpty(that.reservation.roomTypes) && isEmpty(that.reservation.businessDate)){
+                var url = '/api/hotel_settings/show_hotel_reservation_settings';
+                RVBaseWebSrvV2.getJSON(url).then(function(data) {        
+                    that.reservation.settings = data;
+                    that.fetchRoomTypes();
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+            }else{
+                deferred.resolve(that.reservation);
+            };
+            
             return deferred.promise;
         };
 

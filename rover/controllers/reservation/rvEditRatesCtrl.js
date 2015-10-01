@@ -1,7 +1,7 @@
 sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 	'$stateParams', '$timeout', 'ngDialog',
-	'RVReservationCardSrv',
-	function($scope, $rootScope, $stateParams, $timeout, ngDialog, RVReservationCardSrv) {
+	'RVReservationCardSrv', 'rvPermissionSrv',
+	function($scope, $rootScope, $stateParams, $timeout, ngDialog, RVReservationCardSrv, rvPermissionSrv) {
 		
 		BaseCtrl.call (this, $scope);
 
@@ -114,7 +114,8 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 				pastDay = (new tzIndependentDate($rootScope.businessDate) >= new tzIndependentDate(date));
 			}
 
-			return (stayDetails.rateDetails.is_discount_allowed == 'false' || pastDay);
+			return (!rvPermissionSrv.getPermissionValue('UPDATE_AND_OVERWRITE_RATE_AMOUNT') ||
+				stayDetails.rateDetails.is_discount_allowed == 'false' || pastDay);
 		};
 
 		/**

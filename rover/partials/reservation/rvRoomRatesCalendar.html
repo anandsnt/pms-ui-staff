@@ -1,0 +1,42 @@
+<!-- Rooms & Rates -->
+<div id="room-rates-content" class="reservations-content-wrapper" ng-controller="RVRoomRatesCalendarCtrl">
+	
+	<!-- Filters -->
+	<div class="reservation-filters">
+		<!-- Change room type visible for the calendar -->
+		<div id="change-room-type" class="select" ng-hide="calendarType == 'BEST_AVAILABLE'">
+			<select ng-model="roomTypeForCalendar"
+                ng-options="roomType.id as roomType.name for roomType in availabilityDetails.room_types" ng-change=""ng-disabled="!isRoomTypeChangeAllowed()">
+                <option value="" disabled selected translate>RESV_ALL_ROOMS</option>
+            </select>
+		</div>
+		<div id="change-room-type" class="select" ng-hide="calendarType == 'BEST_AVAILABLE'">
+			<select ng-model="roomTypeForCalendar"
+                ng-options="roomType.id as roomType.name for roomType in availabilityDetails.room_types" ng-change=""ng-disabled="!isRoomTypeChangeAllowed()">
+                <option value="" disabled selected translate>RESV_ALL_RATES</option>
+            </select>
+		</div>
+		<ul id="filter-calendar">
+			<li id="show-types" ng-class="{'active': stateCheck.calendarState.calendarType == 'ROOM_TYPE'}" ng-click="selectedRoomTypesCalOption()" translate>ROOM_TYPES</li>
+			<li id="show-bar" ng-class="{'active': stateCheck.calendarState.calendarType == 'BEST_AVAILABLE'}" ng-click="selectedBestAvailableRatesCalOption()" translate>BEST_AVAILABLE</li>
+		</ul>
+	</div>
+
+	<!-- Calendar -->
+	<div id="room-rates-calendar" class="reservation-content stay-dates-content scrollable" ng-iscroll="room-rates-calendar">
+		<div class="wrapper">
+			<two-month-calendar event-sources-left='eventSources.left' event-sources-right='eventSources.right' left-calendar-options='leftCalendarOptions' right-calendar-options='rightCalendarOptions' next-button-click-handler='nextButtonClickHandler()' prev-button-click-handler='prevButtonClickHandler()' disable-prev-button ='disablePrevButton'></two-month-calendar>
+		</div>
+
+
+		<!-- Legend -->
+		<ul class="calendar-legend">
+    		<li><span class="check-in"></span>Arrival</li>
+    		<li><span class="check-in unavailable"></span>Arrival Unavailable</li>
+    		<li><span class="check-out"></span>Departure</li>
+    		<li><span class="availabile"></span>Available</li>
+    		<li><span class="unavailable"></span>No Room Type Availability</li>
+    		<li><span class="restrictions">R</span>Restrictions Apply</li>
+		</ul>
+	</div>
+</div>

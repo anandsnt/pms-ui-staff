@@ -1,3 +1,10 @@
+<div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> 
+
+<!-- navigation -->
+    <ng-include src="'assets/partials/zestStation/rvTabletHeader.html'"></ng-include>
+    
+    <!-------- CONTENT -------->
+
     <!--  Home -->
     <ng-include src="'assets/partials/zestStation/rvStationMain.html'" ></ng-include>
 
@@ -33,6 +40,12 @@
 
     <!--  Check-in Select Keys -->
     <ng-include src="'assets/partials/zestStation/kiosk/specific/select-keys-after-checkin.html'" ></ng-include>
+    
+    <!--  add guests to reservation -->
+    <ng-include src="'assets/partials/zestStation/kiosk/specific/additional-guests.html'" ></ng-include>
+    
+    <!--  card swipe -->
+    <ng-include src="'assets/partials/zestStation/kiosk/generic/nav-2-options.html'" ></ng-include>
 
     <!--  admin screen initial -->
     <ng-include src="'assets/partials/zestStation/kiosk/generic/modal.html'" ></ng-include>
