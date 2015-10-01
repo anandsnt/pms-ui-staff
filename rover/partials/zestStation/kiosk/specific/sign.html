@@ -1,16 +1,25 @@
 
-        <!-- Content -->
-        <section id="main" class="centered" role="main" ng-hide='at !== "cc-sign"' click-touch='resetTime()'>
-            <div id="content">
-                <h1>Sign The Screen</h1>
+<!-- Content -->
+<section id="main" class="centered" role="main" ng-hide='at !== "cc-sign"' click-touch='resetTime()'>
+    <div id="content">
+        <h1>Sign The Screen</h1>
                 <form type="post" action="" id="signature">
-                    <canvas class="pad"></canvas>
-                    <input type="hidden" name="output" />
-                </form>
-                <div id="actions" style="margin-bottom: -30px;">
-                    <button type="button" class="button transparent prev" click-touch='navToPrev()'>Clear</button>
-                    <button type="button" class="button next" ng-mode="{{signature}}" touch-press="submitSignature()">Next</button>
-                </div>
+        <form id="signature-pad" class="complete-registration form" style=' height: 295px; border-radius: 8px;'>
+            <div>
+                    <div class="sig">
+                        <div width='100%' class='station-sign' id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" ng-mouseleave="enableScroll()">
+
+                        </div>
+                    </div>
             </div>
-<ng-include src="'assets/partials/zestStation/rvTabletFooter.html'" ></ng-include>
-        </section>
+        </form>
+        </form>
+                    
+
+        <div id="actions" style="margin-bottom: -30px;">
+            <button type="button" class="button transparent prev" touch-press='clearSignature()'>Clear</button>
+            <button type="button" class="button next" ng-mode="{{signature}}" touch-press="submitSignature()">Next</button>
+        </div>
+    </div>
+    <ng-include src="'assets/partials/zestStation/rvTabletFooter.html'" ></ng-include>
+</section>
