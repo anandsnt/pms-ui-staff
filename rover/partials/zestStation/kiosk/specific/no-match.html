@@ -16,18 +16,32 @@
                 <li class="break">
                     <span>Or</span>
                 </li>
-                <li>
+                <li ng-show="selectedFindBy === 'find-by-email'">
                     <button type="button" class="button option" touch-press='goToScreen($event,"re-enter-email", true, "no-match")'>
                         <ng-include src="'assets/css/zestStation/icons/keyboard.svg'"></ng-include>
                     </button>
                     Re-Enter
                     <span>"{{input.lastEmailValue}}"</span>
                 </li>
+                <li ng-show="selectedFindBy === 'find-by-confirmation'">
+                    <button type="button" class="button option" touch-press='goToScreen($event,"re-enter-confirmation", true, "no-match")'>
+                        <ng-include src="'assets/css/zestStation/icons/confirmation.svg'"></ng-include>
+                    </button>
+                    Re-Enter
+                    <span>"{{input.lastConfirmationValue}}"</span>
+                </li>
+                <li ng-show="selectedFindBy === 'find-by-date'">
+                    <button type="button" class="button option" touch-press='goToScreen($event,"re-enter-date", true, "no-match")'>
+                        <ng-include src="'assets/css/zestStation/icons/moon.svg'"></ng-include>
+                    </button>
+                    Re-Enter
+                    <span>"{{input.date}}"</span>
+                </li>
                 <li class="break">
                     <span>Or</span>
                 </li>
                 <li>
-                    <button type="button" class="button option" touch-press='goToScreen($event,"talk-to-", true, "no-match")'>
+                    <button type="button" class="button option" touch-press='goToScreen($event,"talk-to-staff", true, "no-match")'>
                         <ng-include src="'assets/css/zestStation/icons/staff.svg'"></ng-include>
                     </button>
                     Talk
