@@ -538,7 +538,7 @@
     "HOUSE_OVERBOOK": "Room Block Allocation exceeds House Availability.",
     "HOUSE_AND_ROOMTYPE_OVERBOOK": "Room Block Allocation exceeds Room Type availability and House availability.",
     "INSUFFICIENT_INV_GROUP_REVIEW_ROOM_BLOCK":"Insufficient Inventory on Group, please review Group Room Block",
-    "ROOM_TYPE_NOT_CONFIGURED_IN_GROUP":"Room type is not configured in Group, please review and try again"
+    "ROOM_TYPE_NOT_CONFIGURED_IN_GROUP":"Room type is not configured in Group, please review"
 
 
 ,	
@@ -1189,4 +1189,10 @@
     "NOT_DEFINED": "Not Defined",
     "DONT_PRINT_RATE" : "Don't Print Rate"
 
-}
+,
+
+
+    "TERMS_AGREE_TEXT": "Please agree to the Terms and Conditions below in order to check in.",
+    "TERMS_SUBHEADING": "subheader",
+    "TERMS_SUBHEADING_TEXT": "subheader"
+            }

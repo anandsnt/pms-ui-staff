@@ -993,4 +993,18 @@
 "GUEST_ACTIONS_SWITCH_LABEL": "Guest Actions With ADD ONS",
 "DISPLAY_ADDONS_SWITCH_LABEL": "Display purchased Add Ons",
 "ALLOW_CANCELLATION_SWITCH_LABEL": "Allow cancellation of purchased Add Ons",
-"AVAILABLE_ADDONS_SWITCH_LABEL" : "Display available Add Ons and enable purchasing"}
+"AVAILABLE_ADDONS_SWITCH_LABEL" : "Display available Add Ons and enable purchasing",
+
+"ZESTSTATION_TITLE": "Zest Station Settings",
+"ZESTSTATION_BACK": "Back to Zest",
+"COLOR_SEC_LABEL": "Color details",
+        
+"TEXT_COLOR": "Text Color",
+"BUTTON_COLOR": "Button Color",
+"BG_COLOR": "Background Color",
+"TRANS_COLOR": "Transparent Color",
+"IN_FIELD_BG": "Input Field Background",
+"HEADER_ICONS_COLOR": "Header Icons Color",
+"HEADER_ICONS_COLOR_PRESSED": "Header Icons Color (Pressed)"
+        
+        }

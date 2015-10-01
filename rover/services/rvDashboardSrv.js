@@ -25,7 +25,6 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
 		return deferred.promise;
 	};
         
-        
         this.getUserRole = function(id, $scope){
             var deferred = $q.defer();
             var url = '/admin/users/'+id+'/edit.json';

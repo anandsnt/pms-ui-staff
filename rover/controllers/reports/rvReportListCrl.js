@@ -42,14 +42,13 @@ sntRover.controller('RVReportListCrl', [
                 // to process the filters for this report
                 reportUtils.processFilters(report[i], {
                     'guaranteeTypes'   : $scope.$parent.guaranteeTypes,
-                    'chargeGroups'     : $scope.$parent.chargeGroups,
-                    'chargeCodes'      : $scope.$parent.chargeCodes,
                     'markets'          : $scope.$parent.markets,
                     'sources'          : $scope.$parent.sources,
                     'origins'          : $scope.$parent.origins,
                     'codeSettings'     : $scope.$parent.codeSettings,
                     'holdStatus'       : $scope.$parent.holdStatus,
-                    'addonGroups'      : $scope.$parent.addonGroups,
+                    'chargeNAddonGroups' : $scope.$parent.chargeNAddonGroups,
+                    'chargeCodes'      : $scope.$parent.chargeCodes,
                     'addons'           : $scope.$parent.addons,
                     'reservationStatus': $scope.$parent.reservationStatus
                 });

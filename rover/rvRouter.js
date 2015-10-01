@@ -28,30 +28,22 @@ sntRover.config([
             controller: 'roverController',
             resolve: {
                 hotelDetails: function(RVHotelDetailsSrv) {
-                    if (localStorage['isKiosk'] == 'true'){
-                        return;
-                    }
                     return RVHotelDetailsSrv.fetchHotelDetails();
                 },
                 userInfoDetails: function(RVDashboardSrv) {
                         return RVDashboardSrv.fetchUserInfo();
                 },
                 permissions: function (rvPermissionSrv) {
-                    if (localStorage['isKiosk'] == 'true'){
-                        return;
-                    }
                     return rvPermissionSrv.fetchRoverPermissions();
                 }
             }
 
 
         });
-
-        $stateProvider.state('kiosk', {
-                url: '/kiosk',
-                templateUrl: '/assets/partials/zestStation/kiosk/specific/home.html',
-                controller: 'rvTabletCtrl',
-                title: 'Zest Station'
+         $stateProvider.state('station', {
+            url: '/zest_station',
+            templateUrl: '/assets/partials/zestStation/kiosk/specific/home.html',
+            controller: 'rvTabletCtrl'
         });
 
     }
