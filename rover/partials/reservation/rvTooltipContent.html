@@ -1,20 +1,22 @@
-<divstyle="width:400px;">
-	<div style="width:50%; float:left">
-		<div>
-			<div ng-click='callback'>{{object.person}}</div>
-			<div>bed&breakfast</div>
-		</div>
-		<div>
-			<div>adr</div>
-			<div></div>
-		</div>
-		<div>
-			<div>room type</div>
-			<div>delux room</div>
-		</div>
-		<div>
-			<div>rooms available</div>
-			<div>7</div>
-		</div>
-	</div>
+<div class="tooltip">
+   <!-- Add class "has-restrictions" if restrictions will be shown in the tooltip -->
+   <!-- Details, only show those that apply -->
+   <ul class="details">
+      <li><span class="label">Rate</span><strong>{Rate Name}</strong></li>
+      <li><span class="label">ADR</span><strong>${Rate Value}</strong></li>
+      <li><span class="label">Room Type</span><strong>{Room Type}</strong></li>
+      <li><span class="label">Rooms Available</span><strong>{#}</strong></li>
+   </ul>
+   <!-- Restrictions, only show those that apply -->
+   <ul class="restriction-info">
+      <li><span class="label">Restrictions apply</span></li>
+      <li><span class="restriction-icon bg-red closed"></span>Closed</li>
+      <li><span class="restriction-icon bg-red arrival"></span>Closed to Arrival</li>
+      <li><span class="restriction-icon bg-red"></span>Closed to Departure</li>
+      <li><span class="restriction-icon bg-blue">{#}</span>Min. Length of Stay</li>
+      <li><span class="restriction-icon bg-grey">{#}</span>Max. Length of Stay</li>
+      <li><span class="restriction-icon bg-purple">{#}</span>Min. Stay Trough</li>
+      <li><span class="restriction-icon bg-green">{#}</span>Min. Advance Booking</li>
+      <li><span class="restriction-icon bg-grey">{#}</span>Max. Advance Booking</li>
+   </ul>
 </div>
