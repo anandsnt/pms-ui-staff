@@ -87,7 +87,30 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			if (dayHouseAvailability <= 0) {
 				return dayHouseAvailability.toString();
 			}
-			return "";
+
+			if(isInBestAvailableMode()) {
+				return findBestAvailableRateAgainstDate(dailyData).toString();
+			}
+		};
+
+		/**
+		 * [findBestAvailableRateAgainstDate description]
+		 * @return {[type]} [description]
+		 */
+		var findBestAvailableRateAgainstDate = function(dailyData) {
+			var availabileRates = dailyData.rates,
+				availableRoomRates = _.pluck (availabileRates, "room_rates"),				
+				minAmongRate = _.min (_.pluck(availableRoomRates[0], 'single')),
+				bestAvailableRate = minAmongRate;
+
+			for (var i = 1; i < availableRoomRates.length; i++) {
+				minAmongRate = _.min (_.pluck(availableRoomRates[i], 'single'));
+				if (minAmongRate <=  bestAvailableRate){
+					bestAvailableRate = minAmongRate;
+				}
+			}
+
+			return bestAvailableRate;
 		};
 
 		/**
@@ -338,6 +361,30 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		 */
 		var switchToBestAvailableRateMode = function () {
 			$scope.stateCheck.calendarState.calendarType = "BEST_AVAILABLE";
+		};
+
+		/**
+		 * [isInBestAvailableMode description]
+		 * @return {Boolean}
+		 */
+		var isInBestAvailableMode = function() {
+			return ($scope.stateCheck.calendarState.calendarType === "BEST_AVAILABLE");
+		};
+
+		/**
+		 * [isInRoomTypeSelectedMode description]
+		 * @return {Boolean}
+		 */
+		var isInRoomTypeSelectedMode = function() {
+			return ($scope.stateCheck.calendarState.calendarType === "ROOM_TYPE");
+		};
+
+		/**
+		 * [isRestrictionIncludeInSearch description]
+		 * @return {Boolean}
+		 */
+		var isRestrictionIncludedInSearch = function() {
+			return ($scope.stateCheck.calendarState.searchWithRestrictions);
 		};
 
 		/**
