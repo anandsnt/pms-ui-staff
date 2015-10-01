@@ -105,7 +105,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 
 			for (var i = 1; i < availableRoomRates.length; i++) {
 				minAmongRate = _.min (_.pluck(availableRoomRates[i], 'single'));
-				if (minAmongRate <=  bestAvailableRate){
+				if (minAmongRate !== null && minAmongRate <=  bestAvailableRate){
 					bestAvailableRate = minAmongRate;
 				}
 			}
