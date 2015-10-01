@@ -3,15 +3,18 @@
 <section id="main" class="centered" role="main" ng-hide='at !== "cc-sign"' click-touch='resetTime()'>
     <div id="content">
         <h1>Sign The Screen</h1>
-        <form id="signature-pad" class="complete-registration form" style=' height: 130px; border-radius: 8px;'>
+                <form type="post" action="" id="signature">
+        <form id="signature-pad" class="complete-registration form" style=' height: 295px; border-radius: 8px;'>
             <div>
                     <div class="sig">
-                        <div width='100%' id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" ng-mouseleave="enableScroll()">
+                        <div width='100%' class='station-sign' id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" ng-mouseleave="enableScroll()">
 
                         </div>
                     </div>
             </div>
         </form>
+        </form>
+                    
 
         <div id="actions" style="margin-bottom: -30px;">
             <button type="button" class="button transparent prev" touch-press='clearSignature()'>Clear</button>

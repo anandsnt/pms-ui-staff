@@ -82,25 +82,6 @@ sntRover.controller('rvTabletCtrl', [
             };
             
             
-            $scope.arrivalDateOptions = {
-                showOn: 'button',
-                dateFormat: 'MM-dd-yyyy',
-                numberOfMonths: 2,
-                yearRange: '-0:',
-                minDate: tzIndependentDate(new Date()),
-                beforeShow: function(input, inst) {
-                    $('#ui-datepicker-div').addClass('reservation arriving');
-                },
-                onClose: function(dateText, inst) {
-                    //in order to remove the that flickering effect while closing
-                    $timeout(function() {
-                        $('#ui-datepicker-div').removeClass('reservation arriving');
-                    }, 200);
-
-                }
-            };
-            
-            
             var setTitle = function() {
                 var title = $scope.hotel.title;
                 //yes, we are setting the heading and title
@@ -133,7 +114,7 @@ sntRover.controller('rvTabletCtrl', [
                     $scope.$emit('hideLoader');
                 };
                 $scope.invokeApi(rvTabletSrv.fetchHotelSettings, {}, fetchHotelCompleted);
-                //$scope.invokeApi(rvTabletSrv.fetchSettings, {}, fetchCompleted);
+                $scope.invokeApi(rvTabletSrv.fetchSettings, {}, fetchCompleted);
                 setTitle();
                 
                 $('.root-view').addClass('kiosk');
@@ -190,8 +171,9 @@ sntRover.controller('rvTabletCtrl', [
                 $scope.adminIdleTimePrompt = $scope.idleSettingsPopup.prompt;
                 $scope.adminIdleTimeMax = $scope.idleSettingsPopup.max;  
                 
-                $scope.settings.adminIdleTimeEnabled = $scope.idleSettingsPopup.enabled;
-                
+                if ($scope.settings){
+                    $scope.settings.adminIdleTimeEnabled = $scope.idleSettingsPopup.enabled;
+                }
                 var saveCompleted = function(data){
                     //fetch the idle timer settings
                     var saved = {
@@ -905,7 +887,7 @@ sntRover.controller('rvTabletCtrl', [
                             console.log('done');
                                 //$scope.goToScreen(null, 'terms-conditions', true, $scope.from);
                                 $scope.goToScreen(null, 'key-success', true, $scope.from);
-                            
+                                $scope.$apply() 
                         },1000);
                         $scope.hideNavBtns = false;
                         break;
@@ -917,10 +899,14 @@ sntRover.controller('rvTabletCtrl', [
                         break;
                         
                     case "terms-conditions":
+                        $scope.termsHeading = "";
+                        $scope.subHeading = "";
                         $scope.subHeadingText = "";
                         $scope.headingText = "Terms & Conditions";
+                        
                         $scope.agreeButtonText = "I Agree";
                         $scope.cancelButtonText = "Cancel";
+                        
                         $scope.at = 'terms-conditions';
                        // stateToGoTo = 'station.tab-kiosk-terms-conditions';
                         $scope.hideNavBtns = false;
@@ -1102,7 +1088,7 @@ sntRover.controller('rvTabletCtrl', [
                 console.info($scope.prevStateNav);
             };
             $scope.agreeTerms = function(){
-                $scope.goToScreen(null, 'last_confirm', true);
+                $scope.goToScreen(null, 'make-keys', true);
             };
             $scope.skipEmailEntryAfterSwipe = function(){
                 if ($scope.from === 'card-swipe'){
@@ -1112,25 +1098,35 @@ sntRover.controller('rvTabletCtrl', [
                     $scope.goToScreen(null, 'terms-conditions', true, 'input-email');
                 }
             };
+            $scope.d = new Date("08/30/2015");
+            $scope.d.setDate($scope.d.getDate()-2);
+            
+            $scope.today = new Date();
+            //$scope.yesterday = new Date($scope.today.getTime() - 86400000);
+            $scope.yesterday = new Date($scope.today.getTime());//placeholder
+            
+            
             $scope.dateOptions = {
                 changeYear: true,
                 changeMonth: true,
-                minDate: tzIndependentDate(new Date()),
+                dateFormat: 'MM-dd-yy',
+                minDate: new Date($scope.yesterday),
                 yearRange: "0:+10",
                 onSelect: function(value) {
-                    console.log(arguments);
                     $scope.input.date = value;
-                    console.log($scope.input.date);
                     var d = $scope.input.date;
                     var text = d.split('/');
-                    
-                    $('#datepicker').val(text[2]+'-'+text[0]+'-'+text[1]);
+                    if ($scope.input.date){
+                        $('#datepicker').val(text[2]+'-'+text[0]+'-'+text[1]);
+                        $('#datepicker').val(value);
+                        $state.setDate = $scope.input.date;
+                    }
                     ngDialog.close();
                 }
         };
         
         
-                        $scope.addGuestsHeading = 'Additional Guests';
+        $scope.addGuestsHeading = 'Additional Guests';
         $scope.removeGuest = function(i){//where i is the index in $scope.selectedReservation.guest_details
             var guests = [];
             for (var x in $scope.selectedReservation.guest_details){
@@ -1143,17 +1139,22 @@ sntRover.controller('rvTabletCtrl', [
 	$scope.showDatePicker = function(){
             ngDialog.open({
                     template: '/assets/partials/zestStation/datePicker.html',
-                    //controller: 'ADcampaignDatepicker',
                     className: 'ngdialog-theme-default',
                     scope: $scope,
                     closeByDocument: true
                 });
                 setTimeout(function(){
-                        $('.ui-datepicker-inline').removeClass('ui-datepicker-inline');
+                        $('.ui-datepicker-inline').removeClass('ui-datepicker-inline');//this was causing issues in ipad
+                        $('.ngdialog-content').addClass('station-date-picker');
+                        if ($state.setDate){
+                            var d = $state.setDate.split('-');
+                            var day = parseInt(d[1]), month = parseInt(new Date($state.setDate).getMonth()), year  = parseInt(d[2]);
+                            $('#picker').datepicker('setDate', new Date(year, month, day));
+                        }
+                        
                 },5);
                 $scope.openDialog = ngDialog;
 	};
-            
             
             
             
