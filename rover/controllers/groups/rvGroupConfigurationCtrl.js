@@ -1038,7 +1038,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             }
         }
 
-        $scope.detachCardFromGroup = function() {
+        $scope.detachCardFromGroup = function(card) {
             // warn about billing info
             var dataForPopup = {
                 cardType: card
