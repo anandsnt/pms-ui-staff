@@ -546,6 +546,14 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/zestStationConfig'
 		});
 
+        $stateProvider.state('admin.zDirectSetup', {
+            templateUrl: '/assets/partials/ZDirectSetup/adZDirectSetup.html',
+            controller: 'adExternalInterfaceCtrl',
+            interface_id: 4,
+            simple_name: 'ZDirect',
+            url : '/zDirectSetup'
+        });
+
 		$stateProvider.state('admin.emailBlacklist', {
 			templateUrl: '/assets/partials/EmailBlackList/adEmailBlackList.html',
 			controller: 'ADEmailBlackListCtrl',
