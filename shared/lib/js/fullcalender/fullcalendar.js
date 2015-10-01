@@ -5243,6 +5243,8 @@ function DayEventRenderer() {
 		// render the HTML. innerHTML is considerably faster than jQuery's .html()
 		renderContainer[0].innerHTML = html;
 
+		t.calendar.options.compiler(renderContainer[0])(t.calendar.options.compile_scope);
+
 		// retrieve the individual elements
 		elements = renderContainer.children();
 
@@ -5383,7 +5385,7 @@ function DayEventRenderer() {
 			" class='" + classNames.join(' ') + "'" +
 			" data-date='" + htmlEscape(formatDate(event.start, 'yyyy-MM-dd')) + "'" + 
 			" data-rate='" + htmlEscape(event.rate || '') + "'" + 
-			" data-room-type='" + htmlEscape(event.roomType || '') + "'" + 
+			" data-room-type='" + htmlEscape(event.roomType || '') + "'" + "qtipfc qtip-template='/assets/partials/reservation/rvTooltipContent.html'"+
 			" style=" +
 				"'" +
 				"position:absolute;" +

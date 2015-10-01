@@ -211,7 +211,7 @@ angular.module('ui.calendar', [])
       return {};
     };
   }])
-  .directive('uiCalendar', ['uiCalendarConfig', function(uiCalendarConfig) {
+  .directive('uiCalendar', ['uiCalendarConfig', '$locale', '$compile', function(uiCalendarConfig, $locale, $compile) {
     return {
       restrict: 'A',
       scope: {eventSources:'=ngModel',calendarWatchEvent: '&'},
@@ -259,10 +259,12 @@ angular.module('ui.calendar', [])
         };
 
         scope.initCalendar = function(){
+          var opts = {compiler:$compile, compile_scope:scope};
+          angular.extend(opts, options);
           if (!calendar) {
             calendar = angular.element(elm).html('');
           }
-          calendar.fullCalendar(options);
+          calendar.fullCalendar(opts);
           if(attrs.calendar) {
             uiCalendarConfig.calendars[attrs.calendar] = calendar;
           }          
