@@ -127,9 +127,6 @@ sntRover.controller('rvGroupConfigurationCtrl', [
         //Move date, from date, end date change
         (function(){
 
-            /* modesAvailable = ["DEFAULT", "START_DATE_LEFT_MOVE", "START_DATE_RIGHT_MOVE", 
-                                "END_DATE_LEFT_MOVE", "END_DATE_RIGHT_MOVE", 
-                                "COMPLETE_MOVE"] */
             var activeMode = null,
                 lastSuccessCallback = null,
                 lastFailureCallback = null,
@@ -141,9 +138,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @return {undefined}
              */
             var setMode = function(mode) {
-                var modesAvailable = ["DEFAULT", "START_DATE_LEFT_MOVE", "START_DATE_RIGHT_MOVE", 
-                                "END_DATE_LEFT_MOVE", "END_DATE_RIGHT_MOVE", 
-                                "COMPLETE_MOVE"];
+                var modesAvailable = ["DEFAULT", "CHANGE_DATES", "COMPLETE_MOVE"];
 
                 if (mode && mode !== null) {
                     mode        = mode.toString().toUpperCase();
@@ -397,15 +392,6 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 });
             };
 
-            /**
-             * Called when user cancels a change date popup
-             * @return {undefined}
-             */
-            $scope.cancelChangeDatesAction = function() {
-                $scope.closeDialog ();
-                if (lastCancelCallback)
-                    lastCancelCallback();
-             };
 
             /**
              * [successCallBackOfMoveDatesAPI description]
@@ -682,6 +668,10 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 setMode ("COMPLETE_MOVE");
             };
 
+            var triggerdChangeDateActions = function() {
+                setMode ("CHANGE_DATES");
+            };
+
             /**
              * to set to default mode
              * @return {undefined}
@@ -699,11 +689,19 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             }
 
             /**
-             * [isInCompleteMoveMode description]
-             * @return {Boolean} [description]
+             * Returns true if in move group mode.
+             * @return {Boolean} True for move mode.
              */
             var isInCompleteMoveMode = function() {            
                 return (activeMode === "COMPLETE_MOVE");
+            };
+
+            /**
+             * Returns true if in arr/dept date left/right change mode.
+             * @return {Boolean} True for date change mode.
+             */
+            var isInChangeDatesMode = function() {
+                return (activeMode === "CHANGE_DATES");
             };
 
             /**
@@ -711,8 +709,26 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @return {[type]} [description]
              */
             var cancelMoveAction = function() {
-                setToDefaultMode ();
+                // time out to prevent outside click event firing.
+                $timeout(function(){
+                    setToDefaultMode ();
+                }, 100);
             };
+
+            /**
+             * Called when user cancels a change date popup
+             * @return {undefined}
+             */
+            $scope.cancelChangeDatesAction = function() {
+                $scope.closeDialog ();
+                if (lastCancelCallback)
+                    lastCancelCallback();
+
+                // time out to prevent outside click event firing.
+                $timeout(function(){
+                    setToDefaultMode ();
+                }, 100);
+             };
 
             /**
              * to get various move dates from child controllers
@@ -723,18 +739,20 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     shouldShowMoveButton         : shouldShowMoveButton,
                     clickedOnMoveButton          : clickedOnMoveButton,
                     triggerEarlierArrDateChange  : triggerEarlierArrivalDateChange,
-                    triggerLaterArrDateChange    : triggerLaterArrivalDateChange,                    
+                    triggerLaterArrDateChange    : triggerLaterArrivalDateChange,
                     arrDateLeftChangeAllowed     : arrDateLeftChangeAllowed,
                     arrDateRightChangeAllowed    : arrDateRightChangeAllowed,
                     triggerEarlierDepDateChange  : triggerEarlierDepartureDateChange,
-                    triggerLaterDepDateChange    : triggerLaterDepartureDateChange,                     
+                    triggerLaterDepDateChange    : triggerLaterDepartureDateChange,
                     depDateLeftChangeAllowed     : depDateLeftChangeAllowed,
-                    depDateRightChangeAllowed    : depDateRightChangeAllowed, 
+                    depDateRightChangeAllowed    : depDateRightChangeAllowed,
                     showDateChangeInvalidWarning : showDateChangeInvalidWarning,
                     isInCompleteMoveMode         : isInCompleteMoveMode,
+                    isInChangeDatesMode          : isInChangeDatesMode,
                     clickedOnMoveSaveButton      : clickedOnMoveSaveButton,
                     cancelMoveAction             : cancelMoveAction,
-                    setToDefaultMode             : setToDefaultMode
+                    setToDefaultMode             : setToDefaultMode,
+                    triggerdChangeDateActions    : triggerdChangeDateActions
                 };
             };
         }());
