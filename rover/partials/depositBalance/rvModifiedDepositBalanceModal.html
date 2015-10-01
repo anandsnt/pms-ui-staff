@@ -5,8 +5,7 @@
 			<span class="icons icon-close invert"> </span>
 		</button>
 		<!-- Left side -->
-		
-		<fieldset class="content-left">
+		<fieldset class="content-left" ng-show="passData.origin=='STAYCARD'">
 			<strong class="h2 message">Balance</strong>
 			<ul id="expenses" class="expenses">
 				<li>
@@ -48,6 +47,40 @@
 				</li>
 			</ul>
 		</fieldset>
+
+		<fieldset class="content-left" ng-show="passData.origin=='GROUP'">
+            <strong class="h2 message">Balance</strong>
+            <ul id="expenses" class="expenses">
+                <li ng-show="depositBalanceData.account_type=='GROUP'">Projected Room Revenue
+                	<span>{{currencySymbol}}{{depositBalanceData.projected_revenue_details.room_revenue | number:2}}</span>
+                </li>
+                <li ng-show="depositBalanceData.account_type=='GROUP'">Projected Add-On Revenue
+                	<span>{{currencySymbol}}{{depositBalanceData.projected_revenue_details.package_revenue | number:2}}</span>
+                </li>
+                <li ng-show="depositBalanceData.account_type=='GROUP'">Projected Tax Excl.
+                	<span>{{currencySymbol}}{{depositBalanceData.projected_revenue_details.exclusive_tax | number:2}}</span>
+                </li>
+                <li class="total" ng-show="depositBalanceData.account_type=='GROUP'">Total Projected Revenue 
+                	<span>{{currencySymbol}}{{depositBalanceData.projected_revenue_details.total_revenue | number:2}}</span>
+                </li>
+                <li>Actual Room Revenue
+                	<span>{{currencySymbol}}{{depositBalanceData.actual_revenue_details.room_revenue | number:2}}</span>
+                </li>
+                <li>Actual Add-On Revenue
+                	<span>{{currencySymbol}}{{depositBalanceData.actual_revenue_details.package_revenue | number:2 }}</span>
+                </li>
+                <li>Actual Tax Excl.
+                	<span>{{currencySymbol}}{{depositBalanceData.actual_revenue_details.exclusive_tax | number:2}}</span>
+                </li>
+                <li class="deposit">Total Balance 
+                	<span class="red">{{currencySymbol}}{{depositBalanceData.current_balance | number:2}}</span>
+                </li>
+                <li class="balance">Payments Received 
+                	<span class="green">{{currencySymbol}}{{depositBalanceData.payments_received | number:2}}</span>
+                </li>
+            </ul>
+        </fieldset>
+
 		<!-- Right side -->
 		<fieldset class="content-right">
 			<strong class="h2 message">Deposit</strong>
@@ -160,7 +193,7 @@
 			        <label for="reference">Reference</label>
 			        <input name="reference" id="reference" ng-model="referanceText" type="text" />
 			    </div>
-			    <div class="entry full-width add-to-guest payment-checkbox-container" style="float:left;" ng-show="isAddToGuestCardVisible && !depositPaidSuccesFully && shouldShowMakePaymentScreen">
+			    <div class="entry full-width add-to-guest payment-checkbox-container" style="float:left;" ng-show="isAddToGuestCardVisible && !depositPaidSuccesFully && shouldShowMakePaymentScreen && passData.origin=='STAYCARD'">
 			        <label class="checkbox add-to-guest" ng-class="{'checked': depositBalanceMakePaymentData.add_to_guest_card}" >
 			        	<span class="icon-form icon-checkbox" ng-class="{'checked': depositBalanceMakePaymentData.add_to_guest_card}"></span>
 						<input type="checkbox" ng-model="depositBalanceMakePaymentData.add_to_guest_card" >

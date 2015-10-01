@@ -1,8 +1,12 @@
-<section id="main" class="centered" role="main" ng-show='at === "admin-login-screen"' click-touch='resetTime()'>
+<section id="main" class="centered" role="main" ng-show='at === "admin-login-screen" || at === "key-success" || at === "last_confirm" || at === "talk-to-staff"' click-touch='resetTime()'>
     <div id="content">
         <h1>{{headingText}}</h1>
         <h2>{{subHeadingText}}</h2>
-        <button type="button" class="button" touch-press="loginAdmin()">LOGIN</button>
-        <button type="button" class="button" touch-press="goToLast()">Exit</button>
+        <!-- Admin -->
+        <button ng-hide="at !== 'admin-login-screen' || modalBtn1 === ''" type="button" class="button" touch-press="loginAdmin()">{{modalBtn1}}</button>
+        <button ng-hide="at !== 'admin-login-screen' || modalBtn2 === ''" type="button" class="button" touch-press="goToLast()">{{modalBtn2}}</button>
+        <!-- -->
+        <button ng-show="at === 'key-success' && modalBtn1 !== ''"       type="button" class="button" touch-press="deliverRegistration()">{{modalBtn1}}</button>
+        <button ng-show="at === 'last_confirm' && modalBtn2 !== ''"       type="button" class="button" touch-press="navToHome()">{{modalBtn2}}</button> <!-- always exit/return to home -->
     </div>
 </section>
