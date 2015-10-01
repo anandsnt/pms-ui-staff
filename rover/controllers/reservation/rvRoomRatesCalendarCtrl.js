@@ -103,6 +103,15 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				minAmongRate = _.min (_.pluck(availableRoomRates[0], 'single')),
 				bestAvailableRate = minAmongRate;
 
+			//if restriction not included in search
+			if (!isRestrictionIncludedInSearch()) {
+				_.each (availableRoomRates, function(eachRoomRate){
+					eachRoomRate = _.filter(eachRoomRate.room_rates, function(rate) {
+						return (rate.restrictions.length === 0)
+					});
+				})
+			}
+
 			for (var i = 1; i < availableRoomRates.length; i++) {
 				minAmongRate = _.min (_.pluck(availableRoomRates[i], 'single'));
 				if (minAmongRate !== null && minAmongRate <=  bestAvailableRate){
