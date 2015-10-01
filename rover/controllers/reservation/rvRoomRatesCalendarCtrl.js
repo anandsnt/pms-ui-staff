@@ -9,7 +9,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		//inheriting some useful things
 		BaseCtrl.call(this, $scope);
 		
-		var that = this;
+		var that = this, availabilityData = null;
 
 		var getFirstDayOfMonth = function(date) {
 			var date = new Date(date),
@@ -91,6 +91,20 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		};
 
 		/**
+		 * when a day is rendered, this callback will fire
+		 * @param  {Object} date
+		 * @param  {DOMNode} cell
+		 */
+		var dayRendered = function(date, cell) {
+			var formattedDate = $filter('date')(date, $rootScope.dateFormatForAPI);
+			var correspondingEventData = _.findWhere(availabilityData.results, {'date': formattedDate});
+
+			if (typeof correspondingEventData !== "undefined") {
+
+			}
+		};
+
+		/**
 		 * against each day, we need to form event data
 		 * @param  {Object} dailyData
 		 * @return {Object}
@@ -133,7 +147,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		 * ui-calendar requires an array of events to render
 		 * this method is to form those events	
 		 */
-		var formCalendarEvents = function(availabilityData) {
+		var formCalendarEvents = function() {
 			var calendarData = {
 				left: [],
 				right: []
@@ -163,7 +177,10 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		var successCallBackOfFetchCalendarAvailabilityData = function(data) {
 			$scope.stateVariables.rooms = data.room_types;
 			$scope.stateVariables.rates = data.rates;
-			formCalendarEvents (data);
+			availabilityData = data;
+
+			renderFullCalendar();
+			formCalendarEvents ();
 		};
 
 		/**
@@ -235,13 +252,13 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				disableResizing: false,
 				contentHeight: 320,
 				weekMode: 'fixed',
-				ignoreTimezone: false // For ignoring timezone,
+				ignoreTimezone: false, // For ignoring timezone,
+				dayRender 	: dayRendered
 			};
 
-			$scope.leftCalendarOptions = dclone(fullCalendarOptions);
+			$scope.leftCalendarOptions = _.extend({}, fullCalendarOptions);
 
-			// //Setting events for right calendar
-			$scope.rightCalendarOptions = dclone(fullCalendarOptions);
+			$scope.rightCalendarOptions = _.extend({}, fullCalendarOptions);
 
 			// //Set month of rigt calendar
 			$scope.rightCalendarOptions.month = $scope.leftCalendarOptions.month + 1;
@@ -254,7 +271,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		$scope.selectedBestAvailableRatesCalOption = function() {
 			switchToBestAvailableRateMode ();
 		};
-		
+
 		/**
 		 * Event handler for Room type view selecton
 		 */
@@ -286,7 +303,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			}
 			$scope.disablePrevButton = $scope.isPrevButtonDisabled();
 			startDate = new Date($scope.leftCalendarOptions.year, $scope.leftCalendarOptions.month);
-			resetCalenarEventModel();
+			resetCalenarEventModel ();
 			fetchCalendarAvailabilityData(getFirstDayOfMonth(startDate), getLastDayOfNextMonth(startDate));
 		};
 
@@ -368,7 +385,6 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			var firstDayOfCal = getFirstDayOfMonth($scope.checkinDateInCalender),
 				lastDayOfNextMonth = getLastDayOfNextMonth($scope.checkinDateInCalender);
 			
-			renderFullCalendar();
 			fetchCalendarAvailabilityData (firstDayOfCal, lastDayOfNextMonth);
 		};
 
