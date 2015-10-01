@@ -258,7 +258,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				// CICO-6079
 				var calculatedAmount = $scope.roomAvailability[roomId].ratedetails[date] && $scope.roomAvailability[roomId].ratedetails[date][rateId].rate ||
 					$scope.roomAvailability[roomId].ratedetails[$scope.reservationData.arrivalDate][rateId].rate;
-				calculatedAmount = parseFloat(calculatedAmount).toFixed(2);
+				calculatedAmount =  $filter('number')(calculatedAmount, 2);
 				details.rateDetails = {
 					actual_amount: calculatedAmount,
 					modified_amount: calculatedAmount,
