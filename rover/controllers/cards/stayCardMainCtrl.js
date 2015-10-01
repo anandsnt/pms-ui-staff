@@ -362,7 +362,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 				/* CICO-20270: Redirect to rooms and rates if contracted rate was previously selected
 				 * else reload staycard after detaching card */
-				if (response.contracted_rate_was_selected) {
+				if (response.contracted_rate_was_present) {
 					$scope.navigateToRoomAndRates({
 						disableBackToStaycard: true
 					});
