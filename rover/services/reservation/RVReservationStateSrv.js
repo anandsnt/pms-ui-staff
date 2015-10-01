@@ -28,6 +28,42 @@ sntRover.service('RVReservationStateService', [
 			return rateAddons.associated_addons;
 		};
 
+		self.getGroupCustomRateModel = function(id, name) {			
+			return {
+				id: 'GROUP_CUSTOM_' + id,
+				name: "Custom Rate for Group " + name,
+				description: "Custom Group Rate",
+				account_id: null,
+				is_rate_shown_on_guest_bill: false,
+				is_suppress_rate_on: false,
+				is_discount_allowed: true,
+				rate_type: {
+					id: null,
+					name: "Group Rate"
+				},
+				deposit_policy: {
+					id: null,
+					name: "",
+					description: ""
+				},
+				cancellation_policy: {
+					id: null,
+					name: "",
+					description: ""
+				},
+				market_segment: {
+					id: null,
+					name: ""
+				},
+				source: {
+					id: null,
+					name: ""
+				},
+				is_member: false,
+				linked_promotion_ids: []
+			}
+		}
+
 
 		/**
 		 * Method to calculate the applicable amount the particular selected addon
@@ -219,14 +255,14 @@ sntRover.service('RVReservationStateService', [
 		};
 
 
-		var processAssociatedAddonsForEachRoomRate = function (associatedAddons, stayDates, for_date, activeRoom, numNights, arrival, departure){
+		var processAssociatedAddonsForEachRoomRate = function(associatedAddons, stayDates, for_date, activeRoom, numNights, arrival, departure) {
 			var addonsApplied = [],
 				addonRate = 0.0,
 				inclusiveAddonsAmount = 0.0,
 				adultsOnTheDay = stayDates[for_date].guests.adults,
 				childrenOnTheDay = stayDates[for_date].guests.children;
 
-	
+
 			return addonsApplied;
 		};
 
@@ -261,10 +297,10 @@ sntRover.service('RVReservationStateService', [
 					room: roomType.availability,
 					group: roomType.group_availability
 				}
-			});			
+			});
 		};
 
-		var processRatesForNormalRatesAgainstDate = function (rooms, stayDates, roomRate, for_date, ratesMeta, additionalData, arrival, departure, activeRoom, numNights, membershipValidity) {
+		var processRatesForNormalRatesAgainstDate = function(rooms, stayDates, roomRate, for_date, ratesMeta, additionalData, arrival, departure, activeRoom, numNights, membershipValidity) {
 			var adultsOnTheDay = stayDates[for_date].guests.adults,
 				childrenOnTheDay = stayDates[for_date].guests.children,
 				houseAvailability = roomRate.house.availability,
@@ -280,18 +316,22 @@ sntRover.service('RVReservationStateService', [
 				currentRoomId = null,
 				currentRoom = null,
 				roomRatesToBeParsed = roomRate.rates,
-				isCustomRate = false;	
+				isCustomRate = false;
 
 			if ('custom_group_rate' in roomRate) {
-				roomRatesToBeParsed.push ({room_rates: roomRate.custom_group_rate.room_rates, id:_.uniqueId(), isCustomRate: true });
+				roomRatesToBeParsed.push({
+					room_rates: roomRate.custom_group_rate.room_rates,
+					id: 'GROUP_CUSTOM_' + selectedGroup,
+					isCustomRate: true
+				});
 			}
-			
+
 			_.each(roomRatesToBeParsed, function(rate) {
 				rate_id = rate.id;
 				taxes = rate.taxes;
 				isCustomRate = rate.isCustomRate;
-				_.each(rate.room_rates, function(room_rate) {						
-						associatedAddons = isCustomRate ? [] : self.fetchAssociatedAddons(rate_id),
+				_.each(rate.room_rates, function(room_rate) {
+					associatedAddons = isCustomRate ? [] : self.fetchAssociatedAddons(rate_id),
 						addonRate = 0.0,
 						taxForAddons = {
 							incl: 0.0,
@@ -371,7 +411,7 @@ sntRover.service('RVReservationStateService', [
 						});
 					}
 
-					if ($(rooms[currentRoomId].rates).index(rate_id) < 0) {
+					if (rooms[currentRoomId].rates.indexOf(rate_id) < 0) {
 						rooms[currentRoomId].rates.push(rate_id);
 					}
 
@@ -492,10 +532,10 @@ sntRover.service('RVReservationStateService', [
 		 * @return {[type]}           [description]
 		 */
 		self.parseRoomRates = function(roomRates, arrival, departure, stayDates, activeRoom, numNights, additionalData, membershipValidity) {
-			var rooms = {},				
+			var rooms = {},
 				displayDates = [],
 				ratesMeta = [],
-				roomDetails = [],				
+				roomDetails = [],
 				for_date = null;
 
 			$(roomRates.room_types).each(function(i, d) {
@@ -505,6 +545,11 @@ sntRover.service('RVReservationStateService', [
 			_.each(roomRates.rates, function(rate) {
 				ratesMeta[rate.id] = rate;
 			});
+
+			if (!!additionalData.group.id) {
+				var customRate = self.getGroupCustomRateModel(additionalData.group.id, additionalData.group.name);
+				ratesMeta[customRate.id] = customRate;
+			};
 
 			// Parse through all room-rate combinations.
 			_.each(roomRates.results, function(roomRate) {
@@ -524,10 +569,10 @@ sntRover.service('RVReservationStateService', [
 				}
 
 				//step1: Initial population of the rooms array
-				populateRoomArrayForAgainstDate (rooms, roomRate.room_types, for_date, roomDetails);
+				populateRoomArrayForAgainstDate(rooms, roomRate.room_types, for_date, roomDetails);
 
 				//step2: Parse the rates and populate the object created for rooms in step1
-				processRatesForNormalRatesAgainstDate (rooms, stayDates, roomRate, for_date, ratesMeta, additionalData, arrival, departure, activeRoom, numNights, membershipValidity);
+				processRatesForNormalRatesAgainstDate(rooms, stayDates, roomRate, for_date, ratesMeta, additionalData, arrival, departure, activeRoom, numNights, membershipValidity);
 
 			});
 
