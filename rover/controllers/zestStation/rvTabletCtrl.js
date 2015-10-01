@@ -1,5 +1,6 @@
 sntRover.controller('rvTabletCtrl', [
         '$scope',
+        'rvGroupSrv',
         '$document',
         '$state',
         '$timeout',
@@ -7,6 +8,7 @@ sntRover.controller('rvTabletCtrl', [
         'ngDialog',
         '$window',
     function($scope, 
+        rvGroupSrv, 
         $document, 
         $state, 
         $timeout, 
@@ -115,8 +117,21 @@ sntRover.controller('rvTabletCtrl', [
                     //fetch the idle timer settings
                     $scope.$emit('hideLoader');
                 };
+                var fetchBizDateComplete = function(data){
+                    console.log('data.business_date: '+data.business_date);
+                    if (data){
+                        if (data.business_date){
+                            var d = data.business_date;
+                            var a = d.split('-');
+                            var yr = a[0], day = a[2], mo = a[1];
+                            $scope.business_date = new Date(yr, mo, day);
+                        }
+                    }
+                };
+                
                 $scope.invokeApi(rvTabletSrv.fetchHotelSettings, {}, fetchHotelCompleted);
                 $scope.invokeApi(rvTabletSrv.fetchSettings, {}, fetchCompleted);
+                $scope.invokeApi(rvGroupSrv.fetchHotelBusinessDate, {}, fetchBizDateComplete);
                 setTitle();
                 
                 $('.root-view').addClass('kiosk');
@@ -603,16 +618,21 @@ sntRover.controller('rvTabletCtrl', [
                     case 'find-by-date':{
                             //fetch reservation by last name + departure date
                        
-                        findBy = 'date';
+                        findBy = 'departure_date';
                         $scope.from = at;
                         $scope.setLast($scope.from);
                         $scope.clearInputText();
+                        
+                            var d = $state.setDate.split('-');
+                            var day = parseInt(d[1]), month = parseInt(new Date($state.setDate).getMonth()), year  = parseInt(d[2]);
+                        
+                        var dateInput = year+'-'+month+'-'+day;;
                         
                         $scope.selectedFindBy = 'find-by-date';
                         $scope.invokeApi(rvTabletSrv.fetchReservations, {
                             'find_by':findBy,
                             'last_name':$scope.input.last_name,
-                            'value': $scope.input.date
+                            'value': dateInput
                         }, fetchCompleted);
                         break;
                     };
@@ -1116,21 +1136,20 @@ sntRover.controller('rvTabletCtrl', [
                     $scope.goToScreen(null, 'terms-conditions', true, 'input-email');
                 }
             };
-            $scope.d = new Date("08/30/2015");
-            $scope.d.setDate($scope.d.getDate()-2);
             
-            $scope.today = new Date();
+            //$scope.today = new Date();
             //$scope.yesterday = new Date($scope.today.getTime() - 86400000);
-            $scope.yesterday = new Date($scope.today.getTime());//placeholder
+            //$scope.yesterday = new Date($scope.today.getTime());//placeholder
             
             
             $scope.dateOptions = {
                 changeYear: true,
                 changeMonth: true,
                 dateFormat: 'MM-dd-yy',
-                minDate: new Date($scope.yesterday),
+                minDate: $scope.business_date,
                 yearRange: "0:+10",
                 onSelect: function(value) {
+                    console.log('min date: '+$scope.business_date)
                     $scope.input.date = value;
                     var d = $scope.input.date;
                     var text = d.split('/');
@@ -1171,7 +1190,7 @@ sntRover.controller('rvTabletCtrl', [
                             var day = parseInt(d[1]), month = parseInt(new Date($state.setDate).getMonth()), year  = parseInt(d[2]);
                             $('#picker').datepicker('setDate', new Date(year, month, day));
                         }
-                        
+                        $scope.$apply();
                 },5);
                 $scope.openDialog = ngDialog;
 	};

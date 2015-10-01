@@ -45,15 +45,20 @@ sntRover.service('rvTabletSrv',
                 };
                 
                 this.fetchReservations = function (param) {
-                    var filter = '';
+                    var filter = '', due_in;
                     if (param.last_name){
                          filter = '?last_name='+param.last_name;
                     }
                     if (param.find_by !='' && param.last_name !=''){
                         filter += '&'+param.find_by+'='+param.value;
                     }
+                    if (filter !== ''){
+                        due_in = '&due_in=true';
+                    } else {
+                        due_in = '?due_in=true';
+                    }
                     var deferred = $q.defer(),
-                            url = '/api/reservations'+filter;
+                            url = '/api/reservations'+filter+due_in;
                         /*
                          * confirmation_number
                             departure_date
