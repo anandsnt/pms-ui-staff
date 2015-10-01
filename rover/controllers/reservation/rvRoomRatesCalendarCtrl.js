@@ -249,18 +249,17 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			$scope.disablePrevButton = $scope.isPrevButtonDisabled();
 
 			refreshScroller();
-
 		};
-
 
 		$scope.selectedBestAvailableRatesCalOption = function() {
-			$scope.stateCheck.calendarState.calendarType = 'BEST_AVAILABLE';
+			switchToBestAvailableRateMode ();
 		};
+		
 		/**
 		 * Event handler for Room type view selecton
 		 */
 		$scope.selectedRoomTypesCalOption = function() {
-			$scope.stateCheck.calendarState.calendarType = 'ROOM_TYPE';
+			switchToRoomTypeMode ();
 		};
 
 
