@@ -50,29 +50,30 @@
         </div>
 
         <!-- Action summary -->
-        <div class="content-right" ng-show="actionSelected === 'selected'"> 
+        <div class="content-right" ng-show="actionSelected === 'selected'" ng-click="stopEditDescription(this, $event)"> 
             <div class="summary">
-                <div id="action-summary">
-                    <h3>{{selectedAction.description}}</h3>
-                    <div class="info assigned">
+                <div id="action-summary"><!-- only in overlay hide -->
+                    <h3 ng-show="!editingDescriptionInline" ng-click="startEditDescription()">{{selectedAction.description}}</h3>
+                    <h3 id="input-description"  ng-click="startEditDescription()" ng-show="editingDescriptionInline"><input ng-model="selectedAction.description" type="text"/></h3> <!-- both elements have listeners to start editing to validate blur or not -->
+                    <div class="info assigned"  ng-hide="!isStandAlone && selectedAction.action_task_type !== 'TRACE'">
                         <span class="label">Assigned To</span>
                         {{selectedAction.assigned_to.name}}
                     </div>
-                    <div class="info created">
+                    <div class="info created" ng-hide="!isStandAlone && selectedAction.action_task_type !== 'TRACE'" >
                         <span class="label" ng-if="!selectedAction.created_by_null">Created By</span>
                         <span class="label" ng-if="selectedAction.created_by_null">Created </span>
                         {{selectedAction.created_by.name}} {{selectedAction.created_at_date}} &#8226; {{selectedAction.created_at_time}} 
                     </div>
-                    <div class="entry action-info date" ng-click="showSelectCalendar()" ng-class="{'overlay': selectedAction.date_completed}">
+                    <div class="entry action-info date" ng-click="showSelectCalendar()" ng-class="{'overlay': selectedAction.date_completed}" ng-hide="!isStandAlone && selectedAction.action_task_type !== 'TRACE'">
                         <label for="due-date">Date Due</label>
                         <button class="clear-query"> <!-- Add class "visible" to show (when date is not blank) -->
                             <span class="icons icon-clear-search">Clear query</span>
                         </button>
                         <input id="due-date" type="text" class="datepicker" value="{{selectedAction.due_at_date}}" readonly />
                     </div>
-                    <div ng-show="selectCalendarShow" class="ngmodal-uidate-wrap" id="selectCalendar" ng-include="'/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html'">
+                    <div class="ngmodal-uidate-wrap" id="selectCalendar" ng-include="'/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html'"  ng-hide="(!isStandAlone && selectedAction.action_task_type !== 'TRACE') || !selectCalendarShow">
                     </div>
-                    <div class="entry action-info time" ng-class="{'overlay': !selectedAction.hasDate || selectedAction.date_completed}">
+                    <div class="entry action-info time" ng-class="{'overlay': !selectedAction.hasDate || selectedAction.date_completed}"  ng-hide="!isStandAlone && selectedAction.action_task_type !== 'TRACE'">
                         <label for="selected-due-time">Time Due</label>
                         <div class="select">
                             <select id="selected-due-time" ng-model="selectedAction.due_at_time" ng-options="time.value for time in timeFieldValue" ng-change="onTimeChange()">
@@ -81,15 +82,16 @@
                     </div>
                 </div>
 
-                <div class="notice" ng-show="selectedAction.date_completed" ng-hide="!selectedAction.date_completed">
+                <div class="notice" ng-hide="!selectedAction.date_completed || (!isStandAlone && selectedAction.action_task_type !== 'TRACE')">
                     <span>Completed By</span>
                     {{selectedAction.completed_by.name}} {{selectedAction.date_completed}} &#8226; {{selectedAction.time_completed}}
                 </div> 
                 
-                <div class="detail-actions col-2" ng-hide="selectedAction.date_completed">
-                    <button type="button" class="button white brand-text" ng-show="!selectedAction.assigned" ng-hide="selectedAction.assigned" ng-click="assignAction()">Assign</button> <!-- Change text to "Reassign" for assigned action -->
-                    <button type="button" class="button white brand-text" ng-show="selectedAction.assigned" ng-hide="!selectedAction.assigned" ng-click="reassignAction()">Re-Assign</button> <!-- Change text to "Reassign" for assigned action -->
-                    <button type="button" class="button white green-text" ng-click="completeAction()">Complete</button>
+                <div class="detail-actions col-2" ng-hide="(isStandAlone && selectedAction.date_completed) || (!isStandAlone && selectedAction.action_task_type === 'REQUEST')">
+                    <button ng-hide="(!isStandAlone && selectedAction.action_task_type !== 'TRACE') || selectedAction.assigned" type="button" class="button white brand-text" ng-click="assignAction()">Assign</button> <!-- Change text to "Reassign" for assigned action -->
+                    <button ng-hide="(!isStandAlone && selectedAction.action_task_type !== 'TRACE') || !selectedAction.assigned" type="button" class="button white brand-text" ng-click="reassignAction()">Re-Assign</button> <!-- Change text to "Reassign" for assigned action -->
+                    <button ng-hide="!isStandAlone && selectedAction.action_task_type !== 'TRACE'" type="button" class="button white green-text" ng-click="completeAction()">Complete</button> <!-- THESE HIDDEN FOR SPECIALS -->
+                    <button ng-show="!isStandAlone && selectedAction.action_task_type === 'ALERT'" type="button" class="button white green-text" ng-click="completeAction()">Delete</button>
                 </div>
 
 

@@ -38,6 +38,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.reservationId = '';
         $scope.isStandAlone = true;
         
+        $scope.editingDescriptionInline = false;
+        
         var init = function() {
             if ($rootScope.isStandAlone){
                 $scope.isStandAlone = true;
@@ -56,10 +58,37 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
            };
             $scope.$watch('RVReservationCardSrv.data',  setActionsCount);
             $scope.setUpData();
+            
             if (!$scope.isStandAlone){
                 $scope.syncActions($scope.reservationId);
             }
         };
+        
+        
+        $scope.stopEditDescription = function(el, evt){
+            if (!$scope.starting){
+                setTimeout(function(){
+                    $scope.editingDescriptionInline = false;       
+                },50);
+            } else {
+                 $scope.startEditDescription();   
+            }   
+
+        };
+        $scope.starting = false;
+        $scope.startEditDescription = function(el){
+            $scope.starting = true;
+            if (!$scope.isStandAlone){
+            //   if ($scope.selectedAction.action_task_type === 'TRACE'){
+                $scope.editingDescriptionInline = true;
+            // }
+                $scope.starting = false;
+            } else {
+                $scope.starting = false;
+                $scope.editingDescriptionInline = false;
+            }
+        };
+        
         $scope.actionsSyncd = false;
         $scope.syncActions = function(id){
             /*
@@ -68,7 +97,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
              */
             var onSuccess = function(data){
               $scope.actions.totalCount = data.total_count;
-              $scope.actions.pendingCount = data.pending_action_count;
+              $scope.actions.pendingCount = data.pending_count;
               $scope.actionsSyncd = true;
               $scope.$emit('hideLoader');
             };
@@ -82,7 +111,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.setInitialActionsCount = function(data){
             if (data){
                 $scope.actions.totalCount = data.action_count;
-                $scope.actions.pendingCount = data.pending_count;
+                $scope.actions.pendingCount = data.pending_action_count;
                 var pending = $scope.actions.pendingCount, total = $scope.actions.totalCount;
 
                 if (total === 0){
@@ -209,8 +238,10 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.invokeApi(rvActionTasksSrv.fetchDepartments, data, onSuccess, onFailure);
         };
         $scope.selectAction = function(a){
+            
             var action = a;
             $scope.selectedAction = action;
+            
             $scope.setRightPane('selected');
             $scope.clearAssignSection();
         };
@@ -606,6 +637,17 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         list[x].created_at_time = getTimeFromDateStr(list[x].created_at, 'created_at_time');
                         list[x].created_at_date = getStrParsedFormattedDate(list[x].created_at);
                     }
+                    
+                    if (list[x].action_task_type === 'REQUEST' || list[x].action_task_type === 'ALERT'){
+                        if (list[x].assigned_to)    {
+                            list[x].assigned_to.name = "Specials";
+                        } else {
+                            list[x].assigned_to = {
+                                name: 'Specials'
+                            };   
+                        }
+                    }
+                    
                 }
                 $scope.actions = list;
 
