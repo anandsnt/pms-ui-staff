@@ -12,32 +12,11 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
   	* @return {object} user details
   	*/
 	this.fetchUserInfo = function(){
-            var kioskParams = '';
-            if (localStorage['kioskUser']){
-                kioskParams = localStorage['kioskUser'];
-            }
 		var deferred = $q.defer();
-		var url =  '/api/rover_header_info.json'+kioskParams;
+		var url =  '/api/rover_header_info.json';
 		RVBaseWebSrv.getJSON(url).then(function(data) {
-                    
-		var fetchUserRolesData = function(){
-			var url = '/api/roles.json'+kioskParams;
-
-			rvBaseWebSrvV2.getJSON(url).then(function(data) {
-				userDetails.userRoles = data.user_roles;
-			    deferred.resolve(userDetails.userRolesData);
-                            
-                            
-			},function(data){
-			    deferred.reject(data);
-			});
-			return deferred.promise;
-		};
-                
-                
                 
 		userDetails = data;
-                fetchUserRolesData();//needed to detect kiosk role until included in userRoleDetails (future sprint)
                 
 			deferred.resolve(data);
 		},function(data){
@@ -45,7 +24,6 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
 		});
 		return deferred.promise;
 	};
-        
         
         this.getUserRole = function(id, $scope){
             var deferred = $q.defer();
@@ -61,7 +39,7 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
                                 role = data.user_roles[x];
                                 if (roleId == role){
                                     roles.push({'name': userDetails.userRoles[i].name, 'id':userDetails.userRoles[i].value});
-                                    if (userDetails.userRoles[i].name === 'Kiosk'){
+                                    if (userDetails.userRoles[i].name === 'Kiosk' || userDetails.userRoles[i].name === 'Zest Station'){
                                         userDetails.hasKioskRole = true;
                                     }
                                 }
@@ -107,12 +85,8 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
 	};
 
 	this.fetchHotelDetails = function(){
-            var kioskParams = '';
-            if (localStorage['kioskUser']){
-                kioskParams = localStorage['kioskUser'];
-            }
 		var deferred = $q.defer();
-		var url = '/api/hotel_settings.json'+kioskParams;
+		var url = '/api/hotel_settings.json';
 		RVBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		},function(errorMessage){

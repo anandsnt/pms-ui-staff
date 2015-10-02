@@ -8,7 +8,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 					'$filter',
 					'$timeout',
 					'rvPermissionSrv',
-                                        'RVReservationCardSrv',
+                    'RVReservationCardSrv',
 		function($scope,
 				ngDialog,
 				$rootScope,
@@ -19,21 +19,23 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				$timeout, rvPermissionSrv, RVReservationCardSrv){
 
 	BaseCtrl.call(this, $scope);
+
 	//adding a flag to be set after some timeout to remove flickering action in iPad
 	$scope.pageloadingOver = false;
 	$timeout(function() {
-			$scope.pageloadingOver = true;
-		}, 3500);
+		$scope.pageloadingOver = true;
+	}, 3500);
 
 	$scope.shouldShowWaiting = false;
 	$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG", true);
-	angular.forEach($scope.depositBalanceData.data.existing_payments, function(value, key) {
+
+	angular.forEach($scope.depositBalanceData.data.existing_payments, function (value, key) {
 		value.isSelected = false;
 		value.mli_token = value.ending_with; //For common payment HTML to work - Payment modifications story
 		value.card_expiry = value.expiry_date;//Same comment above
 	});
 
-        $scope.depositWithGiftCard = false;
+    $scope.depositWithGiftCard = false;
 	$scope.depositPaidSuccesFully = false;
 	$scope.shouldShowExistingCards = true;
 	$scope.shouldShowAddNewCard   = true;
@@ -41,11 +43,13 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.showExistingAndAddNewPayments = true;
 	$scope.showOnlyAddCard = false;
 	$scope.cardsList =[];
-	angular.forEach($scope.depositBalanceData.data.existing_payments, function(obj, index){
-				if (obj.is_credit_card) {
-		 		 	$scope.cardsList.push(obj);
-				};
-			});
+
+	angular.forEach($scope.depositBalanceData.data.existing_payments, function (obj, index) {
+		if (obj.is_credit_card) {
+ 		 	$scope.cardsList.push(obj);
+		}
+	});
+
 	$scope.addmode = ($scope.cardsList.length>0) ? false :true;
 	$scope.shouldShowMakePaymentButton = true;
 	$scope.shouldShowMakePaymentScreen = true;
@@ -54,10 +58,12 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.depositBalanceMakePaymentData = {};
 	$scope.depositBalanceMakePaymentData.amount = parseFloat($scope.depositBalanceData.data.balance_deposit_amount).toFixed(2);
 	$scope.refundAmount = 0;
-	if($scope.depositBalanceMakePaymentData.amount < 0){
-		$scope.refundAmount = (-1)*parseFloat($scope.depositBalanceMakePaymentData.amount);
+
+	if ($scope.depositBalanceMakePaymentData.amount < 0) {
+		$scope.refundAmount = (-1) * parseFloat($scope.depositBalanceMakePaymentData.amount);
 		$scope.shouldShowMakePaymentButton = false;
 	}
+
 	$scope.depositBalanceMakePaymentData.add_to_guest_card = false;
 	$scope.makePaymentButtonDisabled = true;
 	$scope.isDisplayReference = false;
@@ -69,6 +75,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.isManual = false;
 	$scope.setScroller('cardsList',{'click':true, 'tap':true});
 	$scope.setScroller('deopositdue');
+
 	var refreshScroll = function() {
 		$timeout(function() {
 			$scope.refreshScroller('deopositdue');
@@ -82,79 +89,85 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	};
 
 	$scope.reservationData.reservation_card.payment_method_used = ($scope.reservationData.reservation_card.payment_method_used) ? $scope.reservationData.reservation_card.payment_method_used :"";
-        $scope.validPayment = true;
-	$scope.disableMakePayment = function(){
-            if (!$scope.validPayment){
-                return false;
-            } else {
-		 if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined"){
-			return ($scope.depositBalanceMakePaymentData.payment_type.length > 0) ? false :true;
-		}
-		else{
-			return true;
-		};
-            }
+    $scope.validPayment = true;
+
+	$scope.disableMakePayment = function () {
+        if (!$scope.validPayment){
+            return false;
+        } 
+        else {
+			if (typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined") {
+				return ($scope.depositBalanceMakePaymentData.payment_type.length > 0) ? false :true;
+			}
+			else {
+				return true;
+			}
+	    }
 	};
-        $scope.showingDepositModal = false;
-        $scope.$watch('depositBalanceMakePaymentData.payment_type',function(to, from){
-            if (to === 'GIFT_CARD'){
-                $scope.depositWithGiftCard = true;
-                $scope.showingDepositModal = true;
+
+    $scope.showingDepositModal = false;
+
+    $scope.$watch('depositBalanceMakePaymentData.payment_type',function (to, from) {
+        if (to === 'GIFT_CARD'){
+            $scope.depositWithGiftCard = true;
+            $scope.showingDepositModal = true;
+        } else {
+            $scope.depositWithGiftCard = false;
+            $scope.showingDepositModal = false;
+            //$scope.isGiftCard = false;//removes duplicate card_input fields when toggling between credit card and gift card due to multi-controller use
+        }
+    });
+        
+    $scope.giftCardAmountAvailable = false;
+    $scope.giftCardAvailableBalance = 0;
+
+    $scope.$on('giftCardAvailableBalance',function(e, giftCardData){
+       $scope.giftCardAvailableBalance = giftCardData.amount;
+    });
+
+    $scope.timer = null;
+
+    $scope.cardNumberInput = function (n, e) {
+        if ($scope.depositWithGiftCard){
+            var len = n.length;
+            $scope.num = n;
+            if (len >= 8 && len <= 22){
+                //then go check the balance of the card
+                $('[name=card-number]').keydown(function(){
+                    clearTimeout($scope.timer); 
+                    $scope.timer = setTimeout($scope.fetchGiftCardBalance, 1500);
+                });
             } else {
-                $scope.depositWithGiftCard = false;
-                $scope.showingDepositModal = false;
-                //$scope.isGiftCard = false;//removes duplicate card_input fields when toggling between credit card and gift card due to multi-controller use
+                //hide the field and reset the amount stored
+                $scope.giftCardAmountAvailable = false;
             }
-        });
-        
-        
-        
-        
-            $scope.giftCardAmountAvailable = false;
-            $scope.giftCardAvailableBalance = 0;
-            $scope.$on('giftCardAvailableBalance',function(e, giftCardData){
+        }
+    };
+
+    $scope.num;
+
+    $scope.fetchGiftCardBalance = function () {
+        if ($scope.depositWithGiftCard){
+               //switch this back for the UI if the payment was a gift card
+           var fetchGiftCardBalanceSuccess = function (giftCardData) {
                $scope.giftCardAvailableBalance = giftCardData.amount;
-            });
-            $scope.timer = null;
-            $scope.cardNumberInput = function(n, e){
-                if ($scope.depositWithGiftCard){
-                    var len = n.length;
-                    $scope.num = n;
-                    if (len >= 8 && len <= 22){
-                        //then go check the balance of the card
-                        $('[name=card-number]').keydown(function(){
-                            clearTimeout($scope.timer); 
-                            $scope.timer = setTimeout($scope.fetchGiftCardBalance, 1500);
-                        });
-                    } else {
-                        //hide the field and reset the amount stored
-                        $scope.giftCardAmountAvailable = false;
-                    }
-                }
-            };
-            $scope.num;
-            $scope.fetchGiftCardBalance = function() {
-                if ($scope.depositWithGiftCard){
-                       //switch this back for the UI if the payment was a gift card
-                   var fetchGiftCardBalanceSuccess = function(giftCardData){
-                       $scope.giftCardAvailableBalance = giftCardData.amount;
-                       $scope.giftCardAmountAvailable = true;
-                       $scope.$emit('giftCardAvailableBalance',giftCardData);
-                       //data.expiry_date //unused at this time
-                       $scope.$emit('hideLoader');
-                   };
-                   $scope.invokeApi(RVReservationCardSrv.checkGiftCardBalance, {'card_number':$scope.num}, fetchGiftCardBalanceSuccess);
-               } else {
-                   $scope.giftCardAmountAvailable = false;
-               }
-            };
+               $scope.giftCardAmountAvailable = true;
+               $scope.$emit('giftCardAvailableBalance',giftCardData);
+               //data.expiry_date //unused at this time
+               $scope.$emit('hideLoader');
+           };
+           $scope.invokeApi(RVReservationCardSrv.checkGiftCardBalance, {'card_number':$scope.num}, fetchGiftCardBalanceSuccess);
+       } else {
+           $scope.giftCardAmountAvailable = false;
+       }
+    };
         
 	/**
 	* function to check whether the user has permission
 	* to make payment
 	* @return {Boolean}
 	*/
-	$scope.hasPermissionToMakePayment = function() {
+	$scope.hasPermissionToMakePayment = function () {
 		return rvPermissionSrv.getPermissionValue ('MAKE_PAYMENT');
 	};
 
@@ -162,14 +175,14 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	* function to determine the visibility of Make Payment button
 	* @return {Boolean}
 	*/
-	$scope.hideMakePayment = function() {
+	$scope.hideMakePayment = function () {
 		return (!$scope.hasPermissionToMakePayment());
 	};
 
 	/*
 	 * class based on the make payment button status
 	 */
-	$scope.showMakePaymentButtonStatus = function(){
+	$scope.showMakePaymentButtonStatus = function () {
 		var buttonClass = "";
 		if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined"){
 			buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0 && $scope.validPayment) ? "green" :"grey";
@@ -183,7 +196,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		return buttonClass;
 	};
 
-	$scope.showRefundButtonStatus = function(){
+	$scope.showRefundButtonStatus = function () {
 		var buttonClass = "";
 		if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined"){
 			buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0) ? "blue" :"grey";
@@ -206,18 +219,19 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.paymentId = $scope.reservationData.reservation_card.payment_details.id;
 	}
 	else{
-            // Please check CICO-12046
-            if($scope.isStandAlone){
-                    $scope.depositBalanceMakePaymentData.payment_type = angular.copy($scope.reservationData.reservation_card.payment_method_used);
-            }
+        // Please check CICO-12046
+        if($scope.isStandAlone){
+                $scope.depositBalanceMakePaymentData.payment_type = angular.copy($scope.reservationData.reservation_card.payment_method_used);
+        }
 	};
+
 	if($rootScope.paymentGateway === "sixpayments"){
     	//initilayy C&P ACTIVE
     	$scope.shouldCardAvailable = false;
     	$scope.makePaymentButtonDisabled = false;
     }
 
-	var checkReferencetextAvailableForCC = function(){
+	var checkReferencetextAvailableForCC = function () {
 		angular.forEach($scope.depositBalanceData.data.credit_card_types, function(value, key) {
 			if($scope.depositBalanceMakePaymentData.card_code.toUpperCase() === value.cardcode){
 				$scope.isDisplayReference = (value.is_display_reference)? true:false;
@@ -225,7 +239,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		});
 	};
 
-	var checkReferencetextAvailableFornonCC = function(){
+	var checkReferencetextAvailableFornonCC = function () {
 		angular.forEach($scope.passData.details.paymentTypes, function(value, key) {
 			if(value.name === $scope.depositBalanceMakePaymentData.payment_type){
 				$scope.isDisplayReference =  (value.is_display_reference)? true:false;
@@ -237,42 +251,38 @@ sntRover.controller('RVDepositBalanceCtrl',[
 					$scope.feeData.feesInfo = value.charge_code.fees_information;
 					$scope.setupFeeData();
 				}
-
-
-
 			}
 		});
 	};
-	$scope.changePaymentType = function(){
-		if($scope.depositBalanceMakePaymentData.payment_type === "CC" || $scope.depositBalanceMakePaymentData.payment_type === "GIFT_CARD"){
-                    
-                    
-                    if ($scope.depositBalanceMakePaymentData.payment_type === "CC"){
-                        $scope.shouldShowIframe = true;
-                        $rootScope.$broadcast('creditCardSelected');
-                    }
-                    if ($scope.depositBalanceMakePaymentData.payment_type === "GIFT_CARD"){
-                        if(!$rootScope.isStandAlone){
-                            $scope.initFromCashDeposit = true;
-                          }
-                        
-                        $rootScope.$broadcast('giftCardSelected');
-                        $scope.shouldShowIframe = false;
-                        $rootScope.depositUsingGiftCard = true;
-                        $scope.depositWithGiftCard = true;
-                    } else {
-                        $scope.depositWithGiftCard = false;
-                        $rootScope.depositUsingGiftCard = false;
-                    }
+
+	$scope.changePaymentType = function () {
+		if($scope.depositBalanceMakePaymentData.payment_type === "CC" || $scope.depositBalanceMakePaymentData.payment_type === "GIFT_CARD"){          
+            if ($scope.depositBalanceMakePaymentData.payment_type === "CC"){
+                $scope.shouldShowIframe = true;
+                $rootScope.$broadcast('creditCardSelected');
+            }
+            if ($scope.depositBalanceMakePaymentData.payment_type === "GIFT_CARD"){
+                if(!$rootScope.isStandAlone){
+                    $scope.initFromCashDeposit = true;
+                }
+                
+                $rootScope.$broadcast('giftCardSelected');
+                $scope.shouldShowIframe = false;
+                $rootScope.depositUsingGiftCard = true;
+                $scope.depositWithGiftCard = true;
+            } else {
+                $scope.depositWithGiftCard = false;
+                $rootScope.depositUsingGiftCard = false;
+            }
 			if($rootScope.paymentGateway !== "sixpayments"){
 				$scope.shouldShowMakePaymentScreen       = false;
 				$scope.shouldShowExistingCards =  ($scope.cardsList.length>0) ? true :false;
 				$scope.addmode = ($scope.cardsList.length>0) ? false :true;
-                                
-                                if ($scope.depositBalanceMakePaymentData.payment_type === "GIFT_CARD"){
-                                    $scope.shouldShowExistingCards = true;
-                                    $scope.addmode = true;
-                                }
+                
+                if ($scope.depositBalanceMakePaymentData.payment_type === "GIFT_CARD"){
+                    $scope.shouldShowExistingCards = true;
+                    $scope.addmode = true;
+                }
                                 
 				refreshScroll();
 			} else {
@@ -287,22 +297,23 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				checkReferencetextAvailableFornonCC();
                                 $scope.depositWithGiftCard = false;
                                 $rootScope.depositUsingGiftCard = false;
-		};
-                
-                $rootScope.$emit('depositUsingGiftCardChange');
+		};      
+        $rootScope.$emit('depositUsingGiftCardChange');
 	};
-	$scope.changeOnsiteCallIn = function(){
+
+	$scope.changeOnsiteCallIn = function () {
 		$scope.shouldShowMakePaymentScreen = ($scope.isManual) ? false:true;
 		$scope.shouldShowExistingCards =  ($scope.cardsList.length>0) ? true :false;
 		$scope.addmode = ($scope.cardsList.length>0) ? false :true;
 		//in case c&p no need to show attached CC
-		$scope.shouldCardAvailable 				 = ($scope.shouldShowMakePaymentScreen) ? false: true;
+		$scope.shouldCardAvailable = ($scope.shouldShowMakePaymentScreen) ? false: true;
 		refreshScroll();
 	};
+
 	/*
 	 * on succesfully created the token
 	 */
-	$scope.$on("TOKEN_CREATED", function(e, tokenDetails){
+	$scope.$on("TOKEN_CREATED", function (e, tokenDetails) {
 		$scope.cardValues = tokenDetails;
 	    var cardExpiry = "";
 	    if(!$scope.cardValues.tokenDetails.isSixPayment){
@@ -317,9 +328,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		          	"card_expiry": cardExpiry,
 		          	"payment_type": "CC"
 		   };
-
-
-		} else {
+		} 
+		else {
 			cardExpiry = ($scope.cardValues.tokenDetails.expiry!=='') ? "20"+$scope.cardValues.tokenDetails.expiry.substring(0, 2)+"-"+$scope.cardValues.tokenDetails.expiry.substring(2, 4)+"-01" : "";
 			$scope.shouldShowIframe 	   			 = false;
 			$scope.shouldShowMakePaymentScreen       = true;
@@ -348,11 +358,9 @@ sntRover.controller('RVDepositBalanceCtrl',[
 					$scope.cardValues.tokenDetails.expiry.substring(2, 4)+" / "+$scope.cardValues.tokenDetails.expiry.substring(0, 2):
 					$scope.cardValues.cardDetails.expiryMonth+" / "+$scope.cardValues.cardDetails.expiryYear;
       	$scope.invokeApi(RVPaymentSrv.savePaymentDetails, dataToApiToAddNewCard, $scope.successSavePayment);
-
-
 	});
 
-	$scope.$on("MLI_ERROR", function(e,data){
+	$scope.$on("MLI_ERROR", function (e,data) {
 		$scope.errorMessage = data;
 	});
 
@@ -360,7 +368,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	var zeroAmount = parseFloat("0.00");
 
 	// CICO-11591 : To show or hide fees calculation details.
-	$scope.isShowFees = function(){
+	$scope.isShowFees = function () {
 		var isShowFees = false;
 		var feesData = $scope.feeData;
 		if(typeof feesData === 'undefined' || typeof feesData.feesInfo === 'undefined' || feesData.feesInfo === null){
@@ -370,15 +378,13 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			if($scope.depositBalanceMakePaymentData.amount >= 0){
 				isShowFees = (($rootScope.paymentGateway !== 'sixpayments' || $scope.isManual || $scope.depositBalanceMakePaymentData.payment_type !=='CC') && $scope.depositBalanceMakePaymentData.payment_type !=="") ? true:false;
 			}
-
 		}
 		return isShowFees;
 	};
 
 	// CICO-9457 : To calculate fee
-	$scope.calculateFee = function(){
+	$scope.calculateFee = function () {
 		if($scope.isStandAlone){
-
 			var feesInfo = $scope.feeData.feesInfo;
 			var amountSymbol = "";
 			var feePercent  = zeroAmount;
@@ -418,8 +424,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	};
 
 	// CICO-9457 : Data for fees details.
-	$scope.setupFeeData = function(){
-
+	$scope.setupFeeData = function () {
 		var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
 		var defaultAmount = $scope.depositBalanceMakePaymentData ?
 		 	parseFloat($scope.depositBalanceMakePaymentData.amount) : zeroAmount;
@@ -447,44 +452,41 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	};
 
 	// CICO-12408 : To calculate Total of fees and amount to pay.
-	$scope.calculateTotalAmount = function(amount) {
-
+	$scope.calculateTotalAmount = function (amount) {
 		var feesAmount  = (typeof $scope.feeData.calculatedFee === 'undefined' || $scope.feeData.calculatedFee === '' || $scope.feeData.calculatedFee === '-') ? zeroAmount : parseFloat($scope.feeData.calculatedFee);
 		var amountToPay = (typeof amount === 'undefined' || amount ==='') ? zeroAmount : parseFloat(amount);
 
 		$scope.feeData.totalOfValueAndFee = parseFloat(amountToPay + feesAmount).toFixed(2);
 	};
         
-        $scope.emitCancelCardSelection = function(){
-            if(!$rootScope.isStandAlone){
-                    ngDialog.close();
-            }
-            $scope.depositWithGiftCard = false;
-            $scope.$emit('cancelCardSelection');
-            $scope.cardselectedIndex = -1;
-            //in case of hotel with MLI iframe will not be present
-            if(!!$("#sixIframe").length){
-                    var iFrame = document.getElementById('sixIframe');
-                    iFrame.src = iFrame.src;
-            };
+    $scope.emitCancelCardSelection = function () {
+        if(!$rootScope.isStandAlone){
+                ngDialog.close();
+        }
+        $scope.depositWithGiftCard = false;
+        $scope.$emit('cancelCardSelection');
+        $scope.cardselectedIndex = -1;
+
+        //in case of hotel with MLI iframe will not be present
+        if(!!$("#sixIframe").length){
+            var iFrame = document.getElementById('sixIframe');
+            iFrame.src = iFrame.src;
         };
+    };
 
 	// CICO-9457 : Data for fees details - standalone only.
 	if($scope.isStandAlone)	{
 		if(!($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.depositBalanceMakePaymentData.payment_type === "CC")){
-
-
 			$scope.feeData.feesInfo = $scope.depositBalanceData.data.selected_payment_fees_details;
 			$scope.setupFeeData();
 		}
-
 	}
         
 
 	/*
 	 * call make payment API on clicks select payment
 	 */
-	$scope.clickedMakePayment = function(){
+	$scope.clickedMakePayment = function () {
 		var dataToSrv = {
 			"postData": {
 				"payment_type": $scope.depositBalanceMakePaymentData.payment_type,
@@ -494,42 +496,44 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			"reservation_id": $scope.reservationData.reservation_card.reservation_id
 		};
                 
-                if ($scope.depositBalanceMakePaymentData.payment_type === 'GIFT_CARD' || $rootScope.useDepositGiftCard){
-                    var card_number;
-                    if ($scope.reservationData.reservation_card.payment_details.card_number !== ''){
-                        card_number = $scope.reservationData.reservation_card.payment_details.card_number;
-                    } else {
-                        if ($scope.showingDepositModal || $rootScope.useDepositGiftCard){
-                            if ($rootScope.useDepositGiftCard){
-                                dataToSrv.postData.payment_type = 'GIFT_CARD';
-                                card_number = $.trim($scope.cardData.cardNumber);
-                            }
-                            card_number = $.trim($scope.cardData.cardNumber);
-                        } else {
-                            card_number = $.trim($('#card-number').val());//trim to remove whitespaces from copy-paste
-                        }
-                        
+        if ($scope.depositBalanceMakePaymentData.payment_type === 'GIFT_CARD' || $rootScope.useDepositGiftCard){
+            var card_number;
+            if ($scope.reservationData.reservation_card.payment_details.card_number !== ''){
+                card_number = $scope.reservationData.reservation_card.payment_details.card_number;
+            } else {
+                if ($scope.showingDepositModal || $rootScope.useDepositGiftCard){
+                    if ($rootScope.useDepositGiftCard){
+                        dataToSrv.postData.payment_type = 'GIFT_CARD';
+                        card_number = $.trim($scope.cardData.cardNumber);
                     }
-                    dataToSrv.postData.card_number = card_number;
-                    
+                    card_number = $.trim($scope.cardData.cardNumber);
+                } else {
+                    card_number = $.trim($('#card-number').val());//trim to remove whitespaces from copy-paste
                 }
+                
+            }
+            dataToSrv.postData.card_number = card_number;
+            
+        }
                 
 		if($scope.depositBalanceMakePaymentData.payment_type === "CC" || $scope.depositBalanceMakePaymentData.payment_type === 'GIFT_CARD'){
 			if (typeof($scope.depositBalanceMakePaymentData.card_code) !== "undefined") {
 				dataToSrv.postData.credit_card_type = $scope.depositBalanceMakePaymentData.card_code.toUpperCase();
-                                if ($rootScope.useDepositGiftCard){
-                                    delete dataToSrv.postData.credit_card_type;
-                                }
+                if ($rootScope.useDepositGiftCard){
+                    delete dataToSrv.postData.credit_card_type;
+                }
 			}
 		}
 
-		if($scope.isAddToGuestCardVisible){
+		if($scope.isAddToGuestCardVisible) {
 		  dataToSrv.postData.add_to_guest_card	= $scope.depositBalanceMakePaymentData.add_to_guest_card;
 		}
-		if($scope.isDisplayReference){
+
+		if($scope.isDisplayReference) {
 			dataToSrv.postData.reference_text = $scope.referanceText;
-		};
-		if($scope.isShowFees()){
+		}
+
+		if($scope.isShowFees()) {
 			if($scope.feeData.calculatedFee) {
 				dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
 			}
@@ -537,11 +541,13 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				dataToSrv.postData.fees_charge_code_id = $scope.feeData.feesInfo.charge_code_id;
 			}
 		}
-                if ($rootScope.useDepositGiftCard){
-                                dataToSrv.postData.payment_type = 'GIFT_CARD';
-                                dataToSrv.postData.card_number = $.trim($('#card-number').val());
-                                delete dataToSrv.postData.payment_type_id;
-                            }
+
+        if ($rootScope.useDepositGiftCard) {
+            dataToSrv.postData.payment_type = 'GIFT_CARD';
+            dataToSrv.postData.card_number = $.trim($('#card-number').val());
+            delete dataToSrv.postData.payment_type_id;
+        }
+
 		if($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && ($scope.depositBalanceMakePaymentData.payment_type === "CC" || $scope.depositBalanceMakePaymentData.payment_type === 'GIFT_CARD')){
 			dataToSrv.postData.is_emv_request = true;
 			$scope.shouldShowWaiting = true;
@@ -561,51 +567,49 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successMakePayment);
 		}
 	};
+
 	/*
 	 * On saving new card success
 	 * show the make payment screen and make payment button active
 	 * setting payment id
 	 */
-        $scope.giftCardAvailableBalance = '';
-        $scope.$on('giftCardAvailableBalance',function(e, giftCardData){
-            $scope.giftCardAvailableBalance = giftCardData.amount;
-            $scope.giftCardAmountAvailable = true;
-        });
-        
-        $rootScope.$on('validatedGiftCardPmt',function(n, valid){
-            if (valid){
-               $scope.validPayment = true;
-           } else {
-               $scope.validPayment = false;
-           }
-        });
-        $scope.updatedAmountToPay = function(amt){
-            //used if checking against gift card balance
-               if ($scope.depositBalanceMakePaymentData.payment_type === 'GIFT_CARD'){
-                   var bal = $scope.giftCardAvailableBalance;
-                if (bal){
-                    var avail = parseFloat(bal).toFixed(2);
-                    var toPay = parseFloat(amt).toFixed(2);
-                    avail = parseFloat(avail);
-                    toPay = parseFloat(toPay);
-                    if (avail < toPay){
-                        $scope.validPayment = false;
-                    } else {
-                        $scope.validPayment = true;
-                    }
+    $scope.giftCardAvailableBalance = '';
+    $scope.$on('giftCardAvailableBalance',function (e, giftCardData) {
+        $scope.giftCardAvailableBalance = giftCardData.amount;
+        $scope.giftCardAmountAvailable = true;
+    });
+    
+    $rootScope.$on('validatedGiftCardPmt',function (n, valid) {
+        if (valid){
+           $scope.validPayment = true;
+       } else {
+           $scope.validPayment = false;
+       }
+    });
+
+    $scope.updatedAmountToPay = function (amt) {
+        //used if checking against gift card balance
+           if ($scope.depositBalanceMakePaymentData.payment_type === 'GIFT_CARD'){
+               var bal = $scope.giftCardAvailableBalance;
+            if (bal){
+                var avail = parseFloat(bal).toFixed(2);
+                var toPay = parseFloat(amt).toFixed(2);
+                avail = parseFloat(avail);
+                toPay = parseFloat(toPay);
+                if (avail < toPay){
+                    $scope.validPayment = false;
+                } else {
+                    $scope.validPayment = true;
                 }
-            } else {
-                $scope.validPayment = true;
             }
-            $rootScope.$broadcast('validatedGiftCardPmt',$scope.validPayment);
-            
-        };
-        
-        
-	$scope.successSavePayment = function(data){
-            
-                
-                $scope.$emit("hideLoader");
+        } else {
+            $scope.validPayment = true;
+        }
+        $rootScope.$broadcast('validatedGiftCardPmt',$scope.validPayment); 
+    };
+    
+	$scope.successSavePayment = function (data) {   
+	    $scope.$emit("hideLoader");
 		$scope.shouldShowIframe 	   			 = false;
 		$scope.shouldShowMakePaymentScreen       = true;
 		$scope.showAddtoGuestCard    			 = false;
@@ -614,33 +618,28 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.makePaymentButtonDisabled         = false;
 		$scope.paymentId = data.id;
 		$scope.shouldCardAvailable 				 = true;
-		$scope.isAddToGuestCardVisible 			 = true;
-                
-               
+		$scope.isAddToGuestCardVisible 			 = true;    
 	};
 
-
-
-	$scope.closeDepositModal = function(){
+	$scope.closeDepositModal = function () {
 		$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG", false);
 		$scope.closeDialog();
 	};
+
 	/*
 	 * Make payment button success
 	 * Update balance data in staycard
 	 * closing the modal
 	 */
-	$scope.successMakePayment = function(data){
+	$scope.successMakePayment = function (data) {
 		$scope.$emit("hideLoader");
-
 
 		if($scope.reservationData.reservation_card.is_rates_suppressed === "false" || $scope.reservationData.reservation_card.is_rates_suppressed === false){
 			$scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.depositBalanceMakePaymentData.amount);
 
 		}
 
-
-		if($scope.isAddToGuestCardVisible){
+		if ($scope.isAddToGuestCardVisible) {
 			var cardCode = $scope.depositBalanceMakePaymentData.card_code.toLowerCase();
 			var cardNumber = $scope.depositBalanceMakePaymentData.ending_with;
 			var cardName = "";
@@ -666,12 +665,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		}
 
 		if($rootScope.paymentGateway === "sixpayments" && $scope.isManual){
-
-
 			$scope.authorizedCode = data.authorization_code;
 		}
-
-
 
 		$scope.depositPaidSuccesFully = true;
 
@@ -679,14 +674,12 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$rootScope.$broadcast("UPDATE_DEPOSIT_BALANCE", data);
 		// Update reservation type
 		$rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id);
-
-
 	};
 
 	/*
 	 * Show the selected cards list in make payment screen
 	 */
-	$scope.setCreditCardFromList = function(index){
+	$scope.setCreditCardFromList = function (index) {
 		$scope.shouldShowIframe 	   			 = false;
 		$scope.shouldShowMakePaymentScreen       = true;
 		$scope.showAddtoGuestCard    			 = false;
@@ -702,7 +695,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.depositBalanceMakePaymentData.card_expiry = $scope.depositBalanceData.data.existing_payments[index].card_expiry;
 		checkReferencetextAvailableForCC();
 
-		if($scope.isStandAlone){
+		if ($scope.isStandAlone) {
 			// Setup fees info
 			$scope.feeData.feesInfo = dclone($scope.depositBalanceData.data.existing_payments[index].fees_information,[]);;
 			$scope.setupFeeData();
@@ -712,12 +705,12 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	/*
 	 * Card selected from centralized controler
 	 */
-	$scope.$on('cardSelected',function(e,data){
+	$scope.$on('cardSelected',function (e, data) {
 		$scope.shouldCardAvailable 				 = true;
 		$scope.setCreditCardFromList(data.index);
 	});
 
-	$scope.showAddCardSection = function(){
+	$scope.showAddCardSection = function () {
 		$scope.shouldShowIframe 	   			 = false;
 		$scope.shouldShowMakePaymentScreen       = false;
 		$scope.showAddtoGuestCard    			 = false;
@@ -726,21 +719,23 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.makePaymentButtonDisabled         = false;
 		refreshScroll();
 	};
-	$scope.$on('cancelCardSelection',function(e,data){
+
+	$scope.$on('cancelCardSelection',function (e,data) {
 		$scope.shouldShowMakePaymentScreen       = true;
 
 		$scope.addmode                 			 = false;
 		$scope.depositBalanceMakePaymentData.payment_type = "";
 	});
 
-	$scope.$on("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN", function(e, swipedCardDataToRender){
+	$scope.$on("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN", function (e, swipedCardDataToRender){
 		$scope.shouldShowMakePaymentScreen       = false;
 		$scope.addmode                 			 = true;
 		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 		//Not good
 		$scope.swipedCardHolderName = swipedCardDataToRender.nameOnCard;
 	});
-	$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
+
+	$scope.$on("SWIPED_DATA_TO_SAVE", function (e, swipedCardDataToSave){
 		$scope.depositBalanceMakePaymentData.card_code   = swipedCardDataToSave.cardType.toLowerCase();
 		$scope.depositBalanceMakePaymentData.ending_with = swipedCardDataToSave.cardNumber.slice(-4);
 		$scope.depositBalanceMakePaymentData.card_expiry  = swipedCardDataToSave.cardExpiryMonth+"/"+swipedCardDataToSave.cardExpiryYear;
@@ -754,9 +749,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		data.card_expiry = "20"+swipedCardDataToSave.cardExpiryYear+"-"+swipedCardDataToSave.cardExpiryMonth+"-01";
 
 		$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.successSavePayment);
-
-
 	});
+
 	//CICO-12488
 	$scope.changePaymentType();
 }]);

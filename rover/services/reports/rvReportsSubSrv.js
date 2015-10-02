@@ -70,7 +70,7 @@ sntRover.service('RVreportsSubSrv', [
 			});
 		};
 
-		service.fetchChargeGroups = function() {
+		service.fetchChargeNAddonGroups = function() {
 			return callApi({
 				method : 'getJSON',
 				url    : 'api/charge_groups',
@@ -83,6 +83,15 @@ sntRover.service('RVreportsSubSrv', [
 				method : 'getJSON',
 				url    : 'api/charge_codes?is_get_all_charge_codes=true',
 				resKey : 'results'
+			});
+		};
+
+		service.fetchAddons = function (params) {
+			return callApi({
+				method  : 'postJSON',
+				url     : 'api/addons/detail',
+				params  : params,
+				resKey  : 'results'
 			});
 		};
 
@@ -134,22 +143,22 @@ sntRover.service('RVreportsSubSrv', [
 			});
 		};
 
-		service.fetchAddonGroups = function() {
-			return callApi({
-				method  : 'getJSON',
-				url     : 'api/charge_groups',
-				resKey  : 'results'
-			});
-		};
+		// service.fetchAddonGroups = function() {
+		// 	return callApi({
+		// 		method  : 'getJSON',
+		// 		url     : 'api/charge_groups',
+		// 		resKey  : 'results'
+		// 	});
+		// };
 
-		service.fetchAddons = function (params) {
-			return callApi({
-				method  : 'postJSON',
-				url     : 'api/addons/detail',
-				params  : params,
-				resKey  : 'results'
-			});
-		};
+		// service.fetchAddons = function (params) {
+		// 	return callApi({
+		// 		method  : 'postJSON',
+		// 		url     : 'api/addons/detail',
+		// 		params  : params,
+		// 		resKey  : 'results'
+		// 	});
+		// };
 
 		service.fetchReservationStatus = function() {
 			return callApi({

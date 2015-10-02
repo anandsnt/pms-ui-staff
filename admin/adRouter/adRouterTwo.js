@@ -539,6 +539,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
                         simple_name: 'Synxis',
 			url : '/synxisSetup'
 		});
+                
+		$stateProvider.state('admin.zestStationConfig', {
+			templateUrl: '/assets/partials/zestStation/adZestStationCfg.html',
+			controller: 'ADZestStationCtrl',
+			url : '/zestStationConfig'
+		});
 
 		$stateProvider.state('admin.emailBlacklist', {
 			templateUrl: '/assets/partials/EmailBlackList/adEmailBlackList.html',

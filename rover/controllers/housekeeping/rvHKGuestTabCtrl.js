@@ -12,6 +12,9 @@ sntRover.controller('RVHKGuestTabCtrl', [
 		BaseCtrl.call(this, $scope);
 		// keep ref to room details in local scope
 		$scope.roomDetails = $scope.$parent.roomDetails;
+
+		var $_updateRoomDetails = $scope.$parent.updateRoomDetails;
+
 		$scope.hasCheckOutReservationPermission = function() {
         	return rvPermissionSrv.getPermissionValue('CHECK_OUT_RESERVATION');
     	};
@@ -31,25 +34,69 @@ sntRover.controller('RVHKGuestTabCtrl', [
 			$scope.message = Message.data ;
 			$scope.roomDetails.reservation_is_due_out = false;
 			$scope.isSuccess = true;
-			$scope.roomDetails.current_hk_status = 'DIRTY';
 			$scope.roomDetails.is_occupied = 'false';
 			$scope.$emit('hideLoader');
-			ngDialog.open({
-                template: '/assets/partials/housekeeping/rvCheckoutDialogPopup.html',
-                scope: $scope,
-                closeByDocument: true
-            });
+
+            if ( 'true' === $scope.roomDetails.enable_room_status_at_checkout ) {
+				ngDialog.open({
+					template: '/assets/partials/housekeeping/rvCheckoutDialogWithHkStatusPopup.html',
+					scope: $scope,
+					closeByDocument: true
+				});
+			} else {
+				ngDialog.open({
+					template: '/assets/partials/housekeeping/rvCheckoutDialogPopup.html',
+					scope: $scope,
+					closeByDocument: true
+				});
+			};
 		};
 
 		var failureCheckout = function(Errors){
-			$scope.message = Errors.errors[0];
+			if ( !!Errors && Errors.hasOwnProperty('errors') ) {
+				$scope.message = Errors.errors[0];
+			};
 			$scope.isSuccess = false;
 			$scope.$emit('hideLoader');
+
 			ngDialog.open({
 				template: '/assets/partials/housekeeping/rvCheckoutDialogPopup.html',
 				scope: $scope,
 				closeByDocument: true
-            });
+			});
+		};
+
+		$scope.flag = {
+			roomStatusReady: false
+		};
+
+		$scope.manualRoomStatusChange = function() {
+			var callback = function(data){
+				$scope.$emit('hideLoader');
+				$_updateRoomDetails( 'current_hk_status', $scope.roomDetails.current_hk_status );
+			};
+
+			var hkStatusId;
+			if ( !! $scope.flag.roomStatusReady ) {
+				if( 'true' === $scope.roomDetails.checkin_inspected_only ){
+					hkStatusId = 2;
+				}
+				else{
+					hkStatusId = 1;
+				}
+			} else {
+				hkStatusId = 3;
+			};
+
+			$scope.roomDetails.current_hk_status = _.find($scope.roomDetails.hk_status_list, { id: hkStatusId }).value;
+
+			var data = {
+				'room_no'     : $scope.roomDetails.current_room_no,
+				'hkstatus_id' : hkStatusId
+			};
+
+			$scope.closeDialog();
+			$scope.invokeApi(RVHkRoomDetailsSrv.updateHKStatus, data, callback);
 		};
 
 		var init = function(){

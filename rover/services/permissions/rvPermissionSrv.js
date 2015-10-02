@@ -26,19 +26,6 @@ sntRover.service('rvPermissionSrv',
 		});
 		return deferred.promise;
 	};
-	this.fetchRoverPermissionsKiosk = function() {
-		var deferred = $q.defer(),
-
-			url = '/api/permissions'+localStorage['kioskUser'];
-
-		rvBaseWebSrvV2.getJSON(url).then(function(data) {
-			roverPermissions = data.permissions;
-			deferred.resolve(data);
-		},function(data){
-			deferred.reject(data);
-		});
-		return deferred.promise;
-	};
 
 	/**
 	* method exposed for others to check permissions

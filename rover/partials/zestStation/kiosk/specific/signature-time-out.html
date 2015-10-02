@@ -1,0 +1,27 @@
+
+<section id="main" class="centered" role="main" ng-hide='at !== "cc-sign-time-out"' click-touch='resetTime()'>
+<div id="content">
+    <h1>Are you still there?</h1>
+    <h2>We haven't deteceted your signature. Please select one of the following:</h2>
+    <nav id="options" role="nav">
+        <ul role="menu">
+            <li>
+                <button type="button" class="button option" touch-press='goToScreen($event,"cc-sign", true, "reservation-details")'>
+                    <ng-include src="'assets/css/zestStation/icons/pen.svg'"></ng-include>
+                </button>
+                Re-Sign
+            </li>
+            <li class="break">
+                <span>Or</span>
+            </li>
+            <li>
+                <button type="button" class="button option" touch-press='goToScreen($event,"talk-to-staff", true, "cc-sign")'>
+                    <ng-include src="'assets/css/zestStation/icons/staff.svg'"></ng-include>
+                </button>
+                Speak
+                <span>To a Staff Member</span>
+            </li>
+        </ul>
+    </nav>
+</div>
+</section>
