@@ -248,17 +248,20 @@ sntRover.controller('rvTabletCtrl', [
             };
             
             $scope.idlePopup = function() {
-                    
                 if ($scope.at === 'cc-sign'){
+                    //$scope.goToScreen({},'timeout',true, 'idle');
                     $scope.goToScreen(null, 'cc-sign-time-out', true, 'cc-sign');
+                    $scope.$apply();
                 } else {
-                ngDialog.open({
-                        template: '/assets/partials/zestStation/rvTabletIdlePopup.html',
-                        className: 'ngdialog-theme-default',
-                        scope: $scope,
-                        closeByDocument: false,
-                        closeByEscape: false
-                    });
+                    if ($scope.at !== 'home' && $scope.at !== 'cc-sign' && $scope.at !== 'cc-sign-time-out'){
+                        ngDialog.open({
+                                template: '/assets/partials/zestStation/rvTabletIdlePopup.html',
+                                className: 'ngdialog-theme-default',
+                                scope: $scope,
+                                closeByDocument: false,
+                                closeByEscape: false
+                        });
+                    }
                 }
                     
             };
@@ -311,8 +314,11 @@ sntRover.controller('rvTabletCtrl', [
             };
             $scope.resetTime = function(){
                 $scope.closePopup();
-               clearInterval($scope.idleTimer);
-               $scope.startCounter();
+            if ($scope.at !== 'home'){ 
+                clearInterval($scope.idleTimer);
+                $scope.startCounter();
+            }
+               
             };
             
             $scope.startCounter = function(){
@@ -320,7 +326,7 @@ sntRover.controller('rvTabletCtrl', [
                 
                     var timer = time, minutes, seconds;
                     var timerInt = setInterval(function () {
-                        if ($scope.idle_timer_enabled){
+                        if ($scope.idle_timer_enabled && $scope.at !== 'home'){
                                 
                                 minutes = parseInt(timer / 60, 10);
                                 seconds = parseInt(timer % 60, 10);
@@ -336,7 +342,9 @@ sntRover.controller('rvTabletCtrl', [
                                 
                                 if (--timer < 0) {
                                     setTimeout(function(){
-                                        $scope.goToScreen({},'home',true, 'idle');
+                                        //setup a timeout @ logic depending on which screen you are, you may get a "Are you still there" different look
+                                        //like re-swipe card, etc.;
+                                        $scope.handleIdleTimeout();
                                     },1000);
                                     
                                     clearInterval(timerInt);
@@ -346,6 +354,10 @@ sntRover.controller('rvTabletCtrl', [
                         }
                     }, 1000);
                     $scope.idleTimer = timerInt;
+            };
+            
+            $scope.handleIdleTimeout = function(){
+                $scope.navToHome();
             };
             
             $scope.closePopup = function(){
@@ -494,6 +506,9 @@ sntRover.controller('rvTabletCtrl', [
             $scope.navToHome = function(){
                 $scope.prevStateNav = [];
                 $scope.goToScreen(null, 'home', true);
+                $scope.clearInputText();
+                $scope.clearSignature();
+                $scope.$apply();
             };
             
             $scope.lastTextInput = '';
@@ -505,7 +520,7 @@ sntRover.controller('rvTabletCtrl', [
                 }
                 console.log('from: '+$scope.from);
                 //lose focus of inputfield to drop keyboard in mobile
-                $('#logo').focus();
+                $scope.hideKeyboard();
                 
                 var fetchCompleted = function(data){
                     
@@ -721,16 +736,29 @@ sntRover.controller('rvTabletCtrl', [
                 }
             };
 
+            $scope.hideKeyboard = function(){
+                var field = document.createElement('input');
+                field.setAttribute('type', 'text');
+                document.body.appendChild(field);
+
+                setTimeout(function() {
+                    field.focus();
+                    setTimeout(function() {
+                        field.setAttribute('style', 'display:none;');
+                    }, 50);
+                }, 50);
+            };
             $scope.goToScreen = function(event, screen, override, from){
                 console.log('here: ', arguments);
-                $('#logo').focus();
+                $scope.hideKeyboard();
+                //alert('focused')
                 //screen = check-in, check-out, pickup-key;
                 var stateToGoTo, cancel = false;
                 if (typeof screen === null || typeof screen === typeof undefined){
                       screen = 'home';
                 }
                 if (typeof from !== null && typeof from !== typeof undefined){
-                    if (from !== $scope.from){
+                    if (from !== $scope.from && from !== 'idle'){
                         $scope.from = from;
                         $scope.setLast($scope.from);
                     }
@@ -790,6 +818,13 @@ sntRover.controller('rvTabletCtrl', [
                         $scope.subHeadingText = '';
                         $scope.inputTextPlaceholder = '';
                         $scope.hideNavBtns = false;
+                        break;
+                        
+                    case 'timeout':
+                        if ($scope.at === 'card-swipe' || $scope.at === 'cc-sign'){
+                            $scope.headingText = 'Are you still there';
+                            $scope.subHeadingText = 'Please select one of the following';
+                        }
                         break;
                         
                     case "card-swipe":
@@ -1150,13 +1185,13 @@ sntRover.controller('rvTabletCtrl', [
                 yearRange: "0:+10",
                 onSelect: function(value) {
                     console.log('min date: '+$scope.business_date)
-                    $scope.input.date = value;
-                    var d = $scope.input.date;
+                   // $scope.input.date = value;
+                    var d = value;
                     var text = d.split('/');
-                    if ($scope.input.date){
+                    if (value){
                         $('#datepicker').val(text[2]+'-'+text[0]+'-'+text[1]);
                         $('#datepicker').val(value);
-                        $state.setDate = $scope.input.date;
+                        $state.setDate = value;
                     }
                     ngDialog.close();
                 }
