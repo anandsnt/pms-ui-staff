@@ -1161,7 +1161,8 @@ sntRover.controller('rvTabletCtrl', [
                 $scope.resetTime();
             };
             $scope.agreeTerms = function(){
-                $scope.goToScreen(null, 'select-keys-after-checkin', true);
+                //$scope.goToScreen(null, 'select-keys-after-checkin', true);
+                $scope.goToScreen(null, 'card-swipe', true);
             };
             $scope.skipEmailEntryAfterSwipe = function(){
                 if ($scope.from === 'card-swipe'){
