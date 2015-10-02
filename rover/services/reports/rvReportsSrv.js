@@ -125,9 +125,25 @@ sntRover.service('RVreportsSrv', [
 			};
 
 			// fetch charge groups & add to payload
-			if ( hasFilter['INCLUDE_CHARGE_GROUP'] ) {
-				subSrv.fetchChargeGroups()
-					.then( success.bind(null, 'chargeGroups'), failed.bind(null, 'chargeGroups', []) );
+			if ( hasFilter['INCLUDE_CHARGE/ADDON_GROUP'] ) {
+				// subSrv.fetchChargeGroups()
+				// 	.then( success.bind(null, 'chargeGroups'), failed.bind(null, 'chargeGroups', []) );
+
+				// NOTE: caching nothing due to dependecies
+				// NOTE: two API completing in one if
+				subSrv.fetchChargeNAddonGroups()
+					.then(function(data) {
+						success( 'chargeNAddonGroups', data );
+
+						var getAddonGroupId = {
+							'addon_group_ids' : _.pluck(data, 'id')
+						};
+
+						if ( hasFilter['ADDONS'] ) {
+							subSrv.fetchAddons( getAddonGroupId )
+									.then(success.bind(null, 'addons'), failed.bind(null, 'addons', []));
+						};
+					}, failed.bind(null, 'chargeNAddonGroups', []));
 			};
 
 			// fetch charge groups & add to payload
@@ -177,31 +193,31 @@ sntRover.service('RVreportsSrv', [
 			};
 
 			// fetch addon groups & add to payload
-			if ( hasFilter['ADDON_GROUPS'] ) {
+			// if ( hasFilter['ADDON_GROUPS'] ) {
 				
-				// NOTE: caching nothing due to dependecies
-				// NOTE: two API completing in one if
-				subSrv.fetchAddonGroups()
-					.then(function(data) {
-						success( 'addonGroups', data );
+			// 	// NOTE: caching nothing due to dependecies
+			// 	// NOTE: two API completing in one if
+			// 	subSrv.fetchAddonGroups()
+			// 		.then(function(data) {
+			// 			success( 'addonGroups', data );
 
-						var getAddonGroupId = function() {
-							return {
-								'addon_group_ids' : _.pluck(data, 'id')
-							};
-						};
+			// 			var getAddonGroupId = function() {
+			// 				return {
+			// 					'addon_group_ids' : _.pluck(data, 'id')
+			// 				};
+			// 			};
 
-						if ( hasFilter['ADDONS'] ) {
-							subSrv.fetchAddons( getAddonGroupId() )
-									.then(success.bind(null, 'addons'), failed.bind(null, 'addons', []));
-						};
-					}, failed.bind(null, 'addonGroups', []));
-			};
+			// 			if ( hasFilter['ADDONS'] ) {
+			// 				subSrv.fetchAddons( getAddonGroupId() )
+			// 						.then(success.bind(null, 'addons'), failed.bind(null, 'addons', []));
+			// 			};
+			// 		}, failed.bind(null, 'addonGroups', []));
+			// };
 
 			// fetch reservation status & add to payload
 			if ( hasFilter['RESERVATION_STATUS'] ) {
 				if ( service.payloadCache.hasOwnProperty('reservationStatus') ) {
-					success( 'reservationStatus', service.payloadCache.addons );
+					success( 'reservationStatus', service.payloadCache.reservationStatus );
 				} else {
 					subSrv.fetchReservationStatus()
 						.then( success.bind(null, 'reservationStatus'), failed.bind(null, 'reservationStatus', []) );
@@ -235,12 +251,17 @@ sntRover.service('RVreportsSrv', [
 						hasFilter['INCLUDE_GUARANTEE_TYPE'] = true;
 					};
 
-					if ( ! hasFilter.hasOwnProperty('INCLUDE_CHARGE_GROUP') && 'INCLUDE_CHARGE_GROUP' === eachFilter.value ) {
-						hasFilter['INCLUDE_CHARGE_GROUP'] = true;
+					// since API for 'charge group' and 'addon group' are the same
+					if ( (! hasFilter.hasOwnProperty('INCLUDE_CHARGE_GROUP') && 'INCLUDE_CHARGE_GROUP' === eachFilter.value) || (! hasFilter.hasOwnProperty('ADDON_GROUPS') && 'ADDON_GROUPS' == eachFilter.value) ) {
+						hasFilter['INCLUDE_CHARGE/ADDON_GROUP'] = true;
 					};
 
 					if ( ! hasFilter.hasOwnProperty('INCLUDE_CHARGE_CODE') && 'INCLUDE_CHARGE_CODE' === eachFilter.value ) {
 						hasFilter['INCLUDE_CHARGE_CODE'] = true;
+					};
+
+					if ( ! hasFilter.hasOwnProperty('ADDONS') && 'ADDONS' == eachFilter.value ) {
+						hasFilter['ADDONS'] = true;
 					};
 
 					if ( ! hasFilter.hasOwnProperty('CHOOSE_MARKET') && 'CHOOSE_MARKET' === eachFilter.value ) {
@@ -259,13 +280,13 @@ sntRover.service('RVreportsSrv', [
 						hasFilter['HOLD_STATUS'] = true;
 					};
 
-					if ( ! hasFilter.hasOwnProperty('ADDON_GROUPS') && 'ADDON_GROUPS' == eachFilter.value ) {
-						hasFilter['ADDON_GROUPS'] = true;
-					};
+					// if ( ! hasFilter.hasOwnProperty('ADDON_GROUPS') && 'ADDON_GROUPS' == eachFilter.value ) {
+					// 	hasFilter['ADDON_GROUPS'] = true;
+					// };
 
-					if ( ! hasFilter.hasOwnProperty('ADDONS') && 'ADDONS' == eachFilter.value ) {
-						hasFilter['ADDONS'] = true;
-					};
+					// if ( ! hasFilter.hasOwnProperty('ADDONS') && 'ADDONS' == eachFilter.value ) {
+					// 	hasFilter['ADDONS'] = true;
+					// };
 
 					if ( ! hasFilter.hasOwnProperty('RESERVATION_STATUS') && 'RESERVATION_STATUS' == eachFilter.value ) {
 						hasFilter['RESERVATION_STATUS'] = true;

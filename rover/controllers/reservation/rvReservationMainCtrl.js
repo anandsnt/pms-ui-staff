@@ -799,7 +799,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     _.each(room.stayDates, function(staydata, date) {
                         reservationStayDetails.push({
                             date: date,
-                            rate_id: (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id, // In case of the last day, send the first day's occupancy
+                            // In case of the last day, send the first day's occupancy
+                            rate_id: (function() {
+                                var rate = (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id;
+                                return rate.toString().match(/GROUP_CUSTOM_/) ? null : rate
+                            })(),
                             room_type_id: room.roomTypeId,
                             room_id: room.room_id,
                             adults_count: (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydata.guests.adults),
@@ -817,8 +821,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             //  end of payload changes
             data.stay_dates = stay;
 
-            data.company_id = $scope.reservationData.company.id;
-            data.travel_agent_id = $scope.reservationData.travelAgent.id;
+            data.company_id = $scope.reservationData.company.id || $scope.reservationData.group.company;
+            data.travel_agent_id = $scope.reservationData.travelAgent.id || $scope.reservationData.group.travelAgent;
             data.group_id = $scope.reservationData.group.id;
 
             // DEMOGRAPHICS
@@ -1100,6 +1104,15 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         };
 
         this.attachCompanyTACardRoutings = function() {
+            // CICO-20161
+            /**
+             * In this case there does not need to be any prompt for Rate or Billing Information to copy, 
+             * since all primary reservation information should come from the group itself.
+             */
+            if (!!$scope.reservationData.group.id) {
+                return false;
+            }
+            
             var fetchSuccessofDefaultRouting = function(data) {
                 $scope.$emit("hideLoader");
                 $scope.routingInfo = data;

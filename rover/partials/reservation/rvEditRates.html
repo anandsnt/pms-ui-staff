@@ -33,7 +33,7 @@
 		                        </td>
 		                        <td class="edit" ng-if="stayDay.rateDetails.is_suppressed != 'true'">
 		                        	{{currencySymbol}}
-		                        	<input ng-disabled="stayDay.rateDetails.is_discount_allowed == 'false' || pastDay(date) || !!reservationData.group.name" type="text" value="" ng-model="stayDay.rateDetails.modified_amount" />
+		                        	<input ng-disabled="shouldDisableRateChange(stayDay, date)" type="text" value="" ng-model="stayDay.rateDetails.modified_amount" />
 		                        </td>
 		                        <td class="edit" ng-if="stayDay.rateDetails.is_suppressed == 'true'">
 		                        	SR
@@ -41,7 +41,7 @@
 		                    </tr>		                    
 		                </tbody>
 		            </table>
-		            <div class="entry full-width" ng-disabled="stayDay.rateDetails.is_discount_allowed == 'false' || pastDay(date)">
+		            <div class="entry full-width">
 		                <label ng-hide="otherData.forceAdjustmentReason" for="adjustment-reason">
 		                	Adjustment reason (<span>optional</span>)
 		                </label>

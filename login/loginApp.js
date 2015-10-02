@@ -4,11 +4,10 @@ var login = angular.module('login',['ui.router', 'ng-iscroll', 'documentTouchMov
  * Set page Titles
  */
 login.run(function($rootScope){
-
-	$rootScope.$on('$stateChangeStart',
-		function(event, toState, toParams, fromState, fromParams){
-		$rootScope.title =toState.title;
-	});
+    $rootScope.$on('$stateChangeStart',
+            function(event, toState, toParams, fromState, fromParams){
+            $rootScope.title =toState.title;
+    });
 });
 
 
@@ -41,16 +40,10 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	  * @param {object} status of login and data
 	  */
 	 $scope.successCallback = function(data){
-                var params = '';
-                 if (data.redirect_url === '/kiosk'){
-                     params = '?user_credentials='+data.user_credentials;
-                     $state.isKiosk = true;
+                 if (data.redirect_url === '/zest_station'){
                      localStorage['isKiosk'] = true;
-                     localStorage['kioskUser'] = params;
                  } else {
-                     $state.isKiosk = false;
                      localStorage['isKiosk'] = false;
-                     localStorage['kioskUser'] = '';
                  }
 	 	//Clear all session storage contents. We are starting a new session.
 	 	var i = sessionStorage.length;
@@ -68,11 +61,8 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	 		 $scope.hasLoader = true;
 	 		 //we need to show the animation before redirecting to the url, so introducing a timeout there
                         setTimeout(function(){
-                                $window.location.href = data.redirect_url+params;
+                                $window.location.href = data.redirect_url;
                         }, 300);
-                         
-                         
-
 	 	}
 	 };
 	 /*

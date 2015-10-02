@@ -15,14 +15,19 @@ sntRover.factory('RVReportUtilsFac', [
          * @return {Object}                 Processed CG & CC
          */
         var __adjustChargeGroupsCodes = function (chargeGroupsAry, chargeCodesAry, setting) {
-            var newChargeGroupsAry = [],
+            var chargeGroupsAryCopy,
+                chargeCodesAryCopy,
+                newChargeGroupsAry = [],
                 newChargeCodesAry  = [],
                 paymentId          = null,
                 cgAssociated       = false,
                 paymentEntry       = {};
 
+            chargeGroupsAryCopy = angular.copy( chargeGroupsAry );
+            chargeCodesAryCopy = angular.copy( chargeCodesAry );
+
             if ( 'REMOVE_PAYMENTS' === setting ) {
-                _.each(chargeGroupsAry, function (each) {
+                _.each(chargeGroupsAryCopy, function (each) {
                     if ( each.name !== 'Payments' ) {
                         each.selected = true;
                         newChargeGroupsAry.push( each );
@@ -31,7 +36,7 @@ sntRover.factory('RVReportUtilsFac', [
                     };
                 });
 
-                _.each(chargeCodesAry, function (each) {
+                _.each(chargeCodesAryCopy, function (each) {
                     cgAssociated = _.find(each['associcated_charge_groups'], function(idObj) {
                         return idObj.id === paymentId;
                     });
@@ -44,7 +49,7 @@ sntRover.factory('RVReportUtilsFac', [
             }
 
             if ( 'ONLY_PAYMENTS' === setting ) {
-                paymentEntry = _.find(chargeGroupsAry, function(each) {
+                paymentEntry = _.find(chargeGroupsAryCopy, function(each) {
                     return 'Payments' === each.name;
                 });
 
@@ -53,7 +58,7 @@ sntRover.factory('RVReportUtilsFac', [
                     paymentEntry.selected = true;
                     newChargeGroupsAry.push(paymentEntry);
 
-                    _.each(chargeCodesAry, function (each) {
+                    _.each(chargeCodesAryCopy, function (each) {
                         cgAssociated = _.find(each['associcated_charge_groups'], function(idObj) {
                             return idObj.id === paymentId;
                         });
@@ -452,11 +457,11 @@ sntRover.factory('RVReportUtilsFac', [
 
                 if ( (filter.value === 'INCLUDE_CHARGE_CODE' || filter.value === 'INCLUDE_CHARGE_GROUP') && _.isEmpty(processedCGCC) ) {
                     if ( report['title'] === reportNames['DAILY_TRANSACTIONS'] ) {
-                        processedCGCC = __adjustChargeGroupsCodes( data.chargeGroups, data.chargeCodes, 'REMOVE_PAYMENTS' );
+                        processedCGCC = __adjustChargeGroupsCodes( data.chargeNAddonGroups, data.chargeCodes, 'REMOVE_PAYMENTS' );
                     };
 
                     if ( report['title'] === reportNames['DAILY_PAYMENTS'] ) {
-                        processedCGCC = __adjustChargeGroupsCodes( data.chargeGroups, data.chargeCodes, 'ONLY_PAYMENTS' );
+                        processedCGCC = __adjustChargeGroupsCodes( data.chargeNAddonGroups, data.chargeCodes, 'ONLY_PAYMENTS' );
                     };
                 };
 
@@ -750,7 +755,7 @@ sntRover.factory('RVReportUtilsFac', [
                     });
                 };
 
-                if ( filter.value === 'ADDON_GROUPS') {
+                if ( filter.value === 'ADDON_GROUPS' && data.chargeNAddonGroups.length ) {
                     __setData(report, 'hasAddonGroups', {
                         type         : 'FAUX_SELECT',
                         filter       : filter,
@@ -758,11 +763,11 @@ sntRover.factory('RVReportUtilsFac', [
                         selectAll    : true,
                         defaultTitle : 'Select Addon Group',
                         title        : 'All Selected',
-                        data         : selectAllAddonGroups( angular.copy(data.addonGroups) ),
+                        data         : selectAllAddonGroups( angular.copy(data.chargeNAddonGroups) ),
                     });
                 };
 
-                if ( filter.value === 'ADDONS') {
+                if ( filter.value === 'ADDONS' && data.addons.length ) {
                     __setData(report, 'hasAddons', {
                         type         : 'FAUX_SELECT',
                         filter       : filter,
@@ -774,7 +779,7 @@ sntRover.factory('RVReportUtilsFac', [
                     });
                 };
 
-                if ( filter.value === 'RESERVATION_STATUS') {
+                if ( filter.value === 'RESERVATION_STATUS' && data.reservationStatus.length ) {
                     __setData(report, 'hasReservationStatus', {
                         type         : 'FAUX_SELECT',
                         filter       : filter,
