@@ -46,6 +46,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             } else {
                 $scope.isStandAlone = false;
             }
+            
             if ($scope.$parent.reservationData.reservation_card.reservation_id){
                 $scope.reservationId = $scope.$parent.reservationData.reservation_card.reservation_id;
             }
@@ -64,25 +65,66 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             }
         };
         
-        
-        $scope.stopEditDescription = function(el, evt){
+        $scope.updateActionDescription = function(description_old, description_new){
+            var params = {
+                'reservation_id':$scope.$parent.reservationData.reservation_card.reservation_id,
+                'action_task':{
+                    'id':$scope.selectedAction.id
+                }
+            };
+            params.action_task.description = description_new;
+            
+            var onSuccess = function(response){
+                        $scope.savingDescription = false;
+                        $scope.$emit('hideLoader');
+            };
+            var onFailure = function(response){
+                        $scope.savingDescription = false;
+                        $scope.$emit('hideLoader');
+            };
+            if ($scope.savingDescription){
+                $scope.invokeApi(rvActionTasksSrv.updateNewAction, params, onSuccess, onFailure);
+            }
+        };
+        $scope.savingDescription = false;
+        $scope.stopEditDescription = function(el, evt, save){
             if (!$scope.starting){
                 setTimeout(function(){
-                    $scope.editingDescriptionInline = false;       
-                },50);
+                    $scope.editingDescriptionInline = false;
+                    
+                if (!$scope.isStandAlone){
+                    //then push the change up if different value than before;
+                    if ($scope.editingDescriptionValue !== $scope.selectedAction.description && !save){
+                        ///push up
+                        if (!$scope.savingDescription){
+                            $scope.savingDescription = true;
+                            $scope.updateActionDescription($scope.editingDescriptionValue, $scope.selectedAction.description);
+                        }
+                    }
+                    if (save){//override listen for the user to hit "Enter" and will save the content of the description and stop editing
+                        if (!$scope.savingDescription){
+                            $scope.savingDescription = true;
+                            $scope.updateActionDescription($scope.editingDescriptionValue, $scope.selectedAction.description);
+                        }
+                    }
+                    
+                    
+                }
+                },250);
             } else {
                  $scope.startEditDescription();   
             }   
 
         };
         $scope.starting = false;
-        $scope.startEditDescription = function(el){
+        $scope.startEditDescription = function(){
             $scope.starting = true;
             if (!$scope.isStandAlone){
-            //   if ($scope.selectedAction.action_task_type === 'TRACE'){
-                $scope.editingDescriptionInline = true;
-            // }
+                if ($scope.selectedAction.action_task_type === 'TRACE'){//only overlay traces for now (sprint 37) CICO-17112
+                    $scope.editingDescriptionInline = true;
+                }
                 $scope.starting = false;
+                $scope.editingDescriptionValue = $scope.selectedAction.description;
             } else {
                 $scope.starting = false;
                 $scope.editingDescriptionInline = false;

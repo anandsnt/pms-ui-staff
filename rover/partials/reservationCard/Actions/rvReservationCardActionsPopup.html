@@ -60,7 +60,7 @@
             <div class="summary">
                 <div id="action-summary"><!-- only in overlay hide -->
                     <h3 ng-show="!editingDescriptionInline" ng-click="startEditDescription()">{{selectedAction.description}}</h3>
-                    <h3 id="input-description"  ng-click="startEditDescription()" ng-show="editingDescriptionInline"><input ng-model="selectedAction.description" type="text"/></h3> <!-- both elements have listeners to start editing to validate blur or not -->
+                    <h3 id="input-description"  ng-click="startEditDescription()" ng-show="editingDescriptionInline"><input ng-keydown="startEditDescription()" ng-enter="stopEditDescription(null, null, true)" ng-model="selectedAction.description" type="text"/></h3> <!-- both elements have listeners to start editing to validate blur or not -->
                     <div class="info assigned"  ng-hide="!isStandAlone && selectedAction.action_task_type !== 'TRACE'">
                         <span class="label">Assigned To</span>
                         {{selectedAction.assigned_to.name}}
