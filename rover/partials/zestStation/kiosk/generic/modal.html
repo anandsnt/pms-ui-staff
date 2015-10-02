@@ -6,7 +6,10 @@
         <button ng-hide="(at !== 'admin-login-screen' && at !== 'talk-to-staff') || modalBtn1 === ''" type="button" class="button" touch-press="loginAdmin()">{{modalBtn1}}</button>
         <button ng-hide="at !== 'admin-login-screen' || modalBtn2 === ''" type="button" class="button" touch-press="goToLast()">{{modalBtn2}}</button>
         <!-- -->
-        <button ng-show="at === 'key-success' && modalBtn1 !== ''"       type="button" class="button" touch-press="deliverRegistration()">{{modalBtn1}}</button>
+        <button ng-show="at === 'key-success' && modalBtn1 !== '' && input.madeKey === 1 && input.makeKeys === 1" type="button" class="button" touch-press="deliverRegistration()">{{modalBtn1}}</button>
+        <button ng-show="at === 'key-success' && modalBtn1 !== '' && input.madeKey === 1 && input.makeKeys === 2" type="button" class="button" touch-press="goToScreen(null, 'make-keys', true, 'key-success')">{{modalBtn1}}</button>
+        <button ng-show="at === 'key-success' && modalBtn1 !== '' && input.madeKey === 2 && input.makeKeys === 2" type="button" class="button" touch-press="deliverRegistration()">{{modalBtn1}}</button>
+        
         <button ng-show="at === 'last_confirm' && modalBtn2 !== ''"       type="button" class="button" touch-press="navToHome()">{{modalBtn2}}</button> <!-- always exit/return to home -->
     </div>
 </section>
