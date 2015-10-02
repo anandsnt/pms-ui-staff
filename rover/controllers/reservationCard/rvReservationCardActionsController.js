@@ -120,7 +120,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.startEditDescription = function(){
             $scope.starting = true;
             if (!$scope.isStandAlone){
-                if ($scope.selectedAction.action_task_type === 'TRACE'){//only overlay traces for now (sprint 37) CICO-17112
+                if ($scope.isTrace($scope.selectedAction.action_task_type)){//only overlay traces for now (sprint 37) CICO-17112
                     $scope.editingDescriptionInline = true;
                 }
                 $scope.starting = false;
@@ -280,7 +280,6 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.invokeApi(rvActionTasksSrv.fetchDepartments, data, onSuccess, onFailure);
         };
         $scope.selectAction = function(a){
-            
             var action = a;
             $scope.selectedAction = action;
             
@@ -290,7 +289,6 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.setRightPane = function(toView){
             //selected, new, assign, comment
             $scope.actionSelected = toView;
-
         };
         $scope.clearNewAction = function(){
             $scope.closeSelectedCalendar();
@@ -360,8 +358,6 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             var month = spl[0], day = spl[1], year = spl[2];
             return month+newSpl+day+newSpl+year;
         };
-
-
 
 
 	$scope.setUpData = function() {
@@ -587,6 +583,16 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         list[x].date_completed = getFormattedDate(list[x].completed_at);
                         list[x].time_completed = getCompletedTimeFromDateMilli(list[x].completed_at);
                     }
+                    if ($scope.isRequest(list[x].action_task_type) || $scope.isAlert(list[x].action_task_type)){
+                        
+                        if (list[x].assigned_to)    {
+                            list[x].assigned_to.name = "Specials";
+                        } else {
+                            list[x].assigned_to = {
+                                name: 'Specials'
+                            };   
+                        }
+                    }
                 }
 
 
@@ -640,6 +646,46 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             var hour = strArray[0], min = strArray[1];
             return getFormattedTime(hour+''+min);
         };
+        $scope.capped = function(str){
+            if (str){
+                var s = str.toLowerCase();
+                s[0].toUpperCase();
+            }
+            return s;
+        };
+        
+        $scope.eitherString = function(str, val){
+            if (val){
+                if (str === val){
+                    return true;
+                } else if (str === val.toUpperCase()){
+                    return true;
+                } else if (str === val.toLowerCase()){
+                    return true;
+                } else if (str === $scope.capped(val)){
+                    return true;
+                } else return false;
+            } else return false;
+        };
+        
+        $scope.isAlert = function(v){
+           var str = 'ALERT';
+           if ($scope.eitherString(str, v)){//checks all cases upper/lower/first letter cap
+               return true;
+           } else return false;
+        };
+        $scope.isRequest = function(v){
+           var str = 'REQUEST';
+           if ($scope.eitherString(str, v)){//checks all cases upper/lower/first letter cap
+               return true;
+           } else return false;
+        };
+        $scope.isTrace = function(v){
+           var str = 'TRACE';
+           if ($scope.eitherString(str, v)){//checks all cases upper/lower/first letter cap
+               return true;
+           } else return false;
+        };
 
         $scope.fetchActionsList = function(){
             $scope.fetchDepartments();//store this to use in assignments of department
@@ -680,7 +726,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         list[x].created_at_date = getStrParsedFormattedDate(list[x].created_at);
                     }
                     
-                    if (list[x].action_task_type === 'REQUEST' || list[x].action_task_type === 'ALERT'){
+                    if ($scope.isRequest(list[x].action_task_type) || $scope.isAlert(list[x].action_task_type)){
+                        
                         if (list[x].assigned_to)    {
                             list[x].assigned_to.name = "Specials";
                         } else {
