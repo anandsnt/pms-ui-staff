@@ -25,7 +25,12 @@ sntRover.service('RVReservationStateService', [
 			var rateAddons = _.findWhere(self.metaData.rateAddons, {
 				rate_id: rateId
 			});
-			return rateAddons.associated_addons;
+                        if (rateAddons.associated_addons){
+                            return rateAddons.associated_addons;
+                        } else {
+                            return null;
+                        }
+			
 		};
 
 		self.getGroupCustomRateModel = function(id, name) {			
