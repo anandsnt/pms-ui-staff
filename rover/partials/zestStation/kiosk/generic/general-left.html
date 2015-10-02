@@ -5,15 +5,14 @@
         <div id="flex-holder">
             <div id="textual" class="pull-left"> <!-- Add ng-scroll here -->
                 <div class="wrapper">
-                    <h4 translate>TERMS_AGREE_TEXT</h4>
+                    <h4><label>{{termsHeading}}</label></h4>
                     {{hotel_terms_and_conditions}}    
-                
                 </div>
             </div>
             <div id="actions" class="pull-right">
-                <button type="button" class="button" touch-press="agreeTerms()" >TERMS_ACCEPT</button>
-                <button type="button" class="button transparent" touch-press="cancelAtTerms()" >TERMS_CANCEL</button>
-                <p><strong translate>TERMS_SUBHEADING</strong><label translate>TERMS_SUBHEADING_TEXT</label></p>
+                <button type="button" class="button" touch-press="agreeTerms()" ><label>{{agreeButtonText}}</label></button>
+                <button type="button" class="button transparent" touch-press="cancelAtTerms()" ><label>{{cancelButtonText}}</label></button>
+                <p><strong translate>{{subHeading}}</strong><label>{{subHeadingText}}</label></p>
             </div>
         </div>
     </div>

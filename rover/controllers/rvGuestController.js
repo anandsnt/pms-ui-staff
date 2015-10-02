@@ -1423,13 +1423,13 @@ sntRover.controller('guestCardController', [
 			$event.stopPropagation();
 
 			if (cardData.account_type === 'COMPANY') {
-				if (!!cardData.rate && $state.current.name !== "rover.reservation.staycard.mainCard.roomType") {
+				if (!!cardData.rate && $state.current.name !== "rover.reservation.staycard.mainCard.roomType" && !$scope.reservationData.group.id) {
 					showContractRatePopup(cardData);
 				} else {
 					$scope.selectCompany(cardData);
 				}
 			} else if (cardData.account_type === 'TRAVELAGENT') {
-				if (!!cardData.rate && $state.current.name !== "rover.reservation.staycard.mainCard.roomType") {
+				if (!!cardData.rate && $state.current.name !== "rover.reservation.staycard.mainCard.roomType" && !$scope.reservationData.group.id) {
 					showContractRatePopup(cardData);
 				} else {
 					$scope.selectTravelAgent(cardData);

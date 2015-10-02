@@ -1,4 +1,4 @@
-<section id="main" class="centered" role="main" ng-hide='at !== "select-keys"' click-touch='resetTime()'>
+<section id="main" class="centered" role="main" ng-hide='at !== "select-keys-after-checkin"' click-touch='resetTime()'>
         <div id="content">
             <h2 class="no-margin">Congratulations {{selectedReservation.guest_details[0].first_name}}.</h2>
             <h1>You are now officially checked in to room:</h1>
@@ -8,15 +8,15 @@
             <div id="keys">
                 <h2>How many keys do you need?</h2>
                 <div id="key-options">
-                    <button type="button" class="button" touch-press="goToScreen($event, 'make-keys')">1</button>
-                    <button type="button" class="button" touch-press="goToScreen($event, 'make-keys')">2</button>
+                    <button type="button" class="button" touch-press="input.makeKeys = 1; goToScreen($event, 'make-keys');">1</button>
+                    <button type="button" class="button" touch-press="input.makeKeys = 2; goToScreen($event, 'make-keys');">2</button>
                 </div>
             </div>
             <div id="actions" class="align-left small-text">
                 <!--p>Additional Guests:
                     <br />{Add'l Guest 1} <!-- Repeat this for each Add'l guest >
                 </p-->
-                <button type="button" class="button transparent">Add / Remove Guests</button>
+                <!--button type="button" class="button transparent">Add / Remove Guests</button-->
             </div>
         </div>
         <ng-include src="'assets/partials/zestStation/rvTabletFooter.html'" ></ng-include>

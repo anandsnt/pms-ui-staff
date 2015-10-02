@@ -77,7 +77,11 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.reservation.staycard.mainCard.roomType', {
+<<<<<<< HEAD
             url: '/roomType/:from_date/:to_date/:fromState:view/:company_id/:travel_agent_id/:group_id/:promotion_code/:disable_back_staycard',
+=======
+            url: '/roomType/:from_date/:to_date/:fromState/:view/:company_id/:travel_agent_id/:group_id/:promotion_code',
+>>>>>>> develop
             templateUrl: '/assets/partials/reservation/rvRoomTypesList.html',
             controller: 'RVReservationRoomTypeCtrl',
             onEnter: function($stateParams) {

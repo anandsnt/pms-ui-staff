@@ -1,40 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        {../_include/head.html}
-    </head>
-    <body id="{hotel-id}"> <!-- hotel-id should be hotel name, like "zoku", "yotel" or "grand-hotel". We can then apply specific styles throughtout the entire app based on this id value -->
-        
-        <!-- Header -->
-        {../_include/navigation.html}   
-        
+
         <!-- Content -->
-        <section id="main" role="main">
-            <div id="content">
-                <h1>Heading Text Here</h1>
-                <h2>Subhead Text Here</h2>
+      <section id="main" class="centered test" role="main" ng-show='at === "card-swipe" || at === "deliver-registration" || at ===  "timeout"' click-touch='resetTime()'>
+     <div id="content">
+            <h1>{{headingText}}</h1>
+            <h2>{{subHeadingText}}</h2>
                 <nav id="options" role="nav">
                     <ul role="menu">
-                        <li>
-                            <button type="button" class="button option">
-                                {../assets/icons/{icon}.svg}
+                         <li ng-show='show.swipecardScreen && at === "card-swipe"'>
+                            <button type="button" class="button option" touch-press='goToScreen($event,"cc-sign", false, "card-swipe")'>
+                                <ng-include src="'assets/css/zestStation/icons/creditcard.svg'"></ng-include>
                             </button>
-                            Option #1
-                            <span>Option 1 Add'l Text</span>
+                            <span translate>Please Swipe Credit Card</span>
                         </li>
-                        <li class="break">
+                         <li ng-show='at === "deliver-registration"'> 
+                            <button type="button" class="button option" touch-press='goToScreen($event,"print-delivery", false, "deliver-registration")'>
+                                <ng-include src="'assets/css/zestStation/icons/print.svg'"></ng-include>
+                            </button>
+                            <span translate>Print</span>
+                        </li>
+                        <li class="break" ng-show='at === "deliver-registration"'>
                             <span>Or</span>
                         </li>
-                        <li>
-                            <button type="button" class="button option">
-                                {../assets/icons/{icon}.svg}
+                         <li ng-show='at === "deliver-registration"'> 
+                            <button type="button" class="button option" touch-press='goToScreen($event,"email-delivery", false, "deliver-registration")'>
+                                <ng-include src="'assets/css/zestStation/icons/email.svg'"></ng-include>
                             </button>
-                            Option #2
-                            <span>Option 2 Add'l Text</span>
+                            <span translate>E-Mail</span>
                         </li>
                     </ul>
+                    
+                    
                 </nav>
             </div>
+        <ng-include src="'assets/partials/zestStation/rvTabletFooter.html'" ></ng-include>
         </section>
-    </body>
-</html>
