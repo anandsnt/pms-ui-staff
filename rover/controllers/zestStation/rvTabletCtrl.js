@@ -500,8 +500,12 @@ sntRover.controller('rvTabletCtrl', [
             
             
             $scope.navToPrev = function(){
-                var from = $scope.from, toScreen = $scope.prevStateNav.pop();
-                
+                var from = $scope.from, toScreen;
+                if ($scope.prevStateNav.length === 0){
+                    toScreen = $scope.from;
+                } else {
+                     toScreen = $scope.prevStateNav.pop();
+                }
                 $scope.goToScreen(null, toScreen, true);
             };
             
