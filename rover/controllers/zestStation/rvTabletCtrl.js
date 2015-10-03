@@ -24,7 +24,7 @@ sntRover.controller('rvTabletCtrl', [
             };
             
             $scope.debug = false;
-            $scope.debugAt = 'terms-conditions';
+            $scope.debugAt = 'find-by-date';
             
             $scope.title = $scope.hotel.title;
             $scope.showHeader = true;
@@ -120,7 +120,6 @@ sntRover.controller('rvTabletCtrl', [
                 var fetchHotelCompleted = function(data){
                     $scope.hotel_settings = data;
                     $scope.hotel_terms_and_conditions = $sce.trustAsHtml($scope.hotel_settings.terms_and_conditions).$$unwrapTrustedValue();
-                    console.log('terms:',$scope.hotel_terms_and_conditions)
                     //fetch the idle timer settings
                     $scope.$emit('hideLoader');
                 };
@@ -131,6 +130,7 @@ sntRover.controller('rvTabletCtrl', [
                             var d = data.business_date;
                             var a = d.split('-');
                             var yr = a[0], day = a[2], mo = a[1];
+                            console.log(yr+'.'+mo+'.'+day)
                             $scope.business_date = new Date(yr, mo, day);
                         }
                     }
@@ -644,11 +644,18 @@ sntRover.controller('rvTabletCtrl', [
                         $scope.from = at;
                         $scope.setLast($scope.from);
                         $scope.clearInputText();
-                        
                             var d = $state.setDate.split('-');
-                            var day = parseInt(d[1]), month = parseInt(new Date($state.setDate).getMonth()), year  = parseInt(d[2]);
-                        
-                        var dateInput = year+'-'+month+'-'+day;;
+                            var day = parseInt(d[1]), 
+                            year = parseInt(d[2]),
+                            month = parseInt($scope.getMonthN(d[0]))+1;
+                            
+                            if (day < 10){
+                                day  = '0'+day;
+                            }
+                            if (month < 10){
+                                month = '0'+month;
+                            }
+                        var dateInput = year+'-'+month+'-'+day;
                         
                         $scope.selectedFindBy = 'find-by-date';
                         $scope.invokeApi(rvTabletSrv.fetchReservations, {
@@ -695,7 +702,16 @@ sntRover.controller('rvTabletCtrl', [
             $scope.deliverRegistration = function(){
                $scope.goToScreen(null, 'deliver-registration', true, 'key-success');
             };
-            
+            $scope.getMonthN = function(mo){
+                var monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+              ];
+              for (var i in monthNames){
+                  if (monthNames[i].toLowerCase() == mo.toLowerCase()){
+                        return i;
+                  }
+              }
+            };
 
             $scope.addGuestToReservation = function(){
                 var first = $scope.input.addguest_first,
@@ -731,7 +747,6 @@ sntRover.controller('rvTabletCtrl', [
                 var haveValidGuestEmail = guestEmailEnteredOrOnReservation();//also sets the email to use for delivery
                 
                 //detect if coming from email input
-                console.log('haveValidGuestEmail: '+haveValidGuestEmail)
                 if (haveValidGuestEmail){
                         $scope.goToScreen(null, 'select-keys-after-checkin', true, $scope.from);
                     return;
@@ -1254,22 +1269,22 @@ sntRover.controller('rvTabletCtrl', [
             
             
             $scope.dateOptions = {
-                changeYear: true,
-                changeMonth: true,
                 dateFormat: 'MM-dd-yy',
                 minDate: $scope.business_date,
                 yearRange: "0:+10",
                 onSelect: function(value) {
-                    console.log('min date: '+$scope.business_date)
-                   // $scope.input.date = value;
                     var d = value;
                     var text = d.split('/');
                     if (value){
                         $('#datepicker').val(text[2]+'-'+text[0]+'-'+text[1]);
                         $('#datepicker').val(value);
                         $state.setDate = value;
+                        setTimeout(function(){
+                            $scope.showDatePick = false;  
+                            $scope.$apply();
+                        },150);
                     }
-                    ngDialog.close();
+                    
                 }
         };
         
@@ -1286,24 +1301,18 @@ sntRover.controller('rvTabletCtrl', [
                 $scope.selectedReservation.guest_details = guests;
             }
         };
+        $scope.showDatePick = false;
 	$scope.showDatePicker = function(){
-            ngDialog.open({
-                    template: '/assets/partials/zestStation/datePicker.html',
-                    className: 'ngdialog-theme-default',
-                    scope: $scope,
-                    closeByDocument: true
-                });
+                $scope.showDatePick = true;
                 setTimeout(function(){
-                        $('.ui-datepicker-inline').removeClass('ui-datepicker-inline');//this was causing issues in ipad
-                        $('.ngdialog-content').addClass('station-date-picker');
+                      //  $('.ui-datepicker-inline').removeClass('ui-datepicker-inline');//this was causing issues in ipad
+                       // $('.ngdialog-content').addClass('station-date-picker');
                         if ($state.setDate){
                             var d = $state.setDate.split('-');
                             var day = parseInt(d[1]), month = parseInt(new Date($state.setDate).getMonth()), year  = parseInt(d[2]);
                             $('#picker').datepicker('setDate', new Date(year, month, day));
                         }
-                        $scope.$apply();
                 },5);
-                $scope.openDialog = ngDialog;
 	};
             
             
