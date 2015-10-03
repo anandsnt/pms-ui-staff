@@ -7,6 +7,7 @@ sntRover.controller('rvTabletCtrl', [
         'rvTabletSrv',
         'ngDialog',
         '$window',
+        '$sce',
     function($scope, 
         rvGroupSrv, 
         $document, 
@@ -14,12 +15,17 @@ sntRover.controller('rvTabletCtrl', [
         $timeout, 
         rvTabletSrv, 
         ngDialog,
-        $window) {
+        $window,
+        $sce) {
                 
             BaseCtrl.call(this, $scope);
             $scope.hotel = {
                 "title": "Zoku"
             };
+            
+            $scope.debug = false;
+            $scope.debugAt = 'terms-conditions';
+            
             $scope.title = $scope.hotel.title;
             $scope.showHeader = true;
             $scope.reservationsPerPage = 3;//in select
@@ -113,7 +119,8 @@ sntRover.controller('rvTabletCtrl', [
                 };
                 var fetchHotelCompleted = function(data){
                     $scope.hotel_settings = data;
-                    $scope.hotel_terms_and_conditions = $scope.hotel_settings.terms_and_conditions;
+                    $scope.hotel_terms_and_conditions = $sce.trustAsHtml($scope.hotel_settings.terms_and_conditions).$$unwrapTrustedValue();
+                    console.log('terms:',$scope.hotel_terms_and_conditions)
                     //fetch the idle timer settings
                     $scope.$emit('hideLoader');
                 };
@@ -749,6 +756,28 @@ sntRover.controller('rvTabletCtrl', [
                     }, 50);
                 }, 50);
             };
+            
+            
+            
+            
+            $scope.scrollId = 'textual';
+            
+            $scope.scrollerOptions = {click: true, preventDefault: false};
+            
+            $scope.setScroll = function() {
+                //setting scroller things
+                $scope.setScroller($scope.scrollId, $scope.scrollerOptions);
+                setTimeout(function(){
+                    $scope.refreshScroller($scope.scrollId);
+                },500);
+            };
+            sntRover.filter('unsafe', function($sce) {
+                return function(val) {
+                    return $sce.trustAsHtml(val);
+                };
+            });
+            
+
             $scope.goToScreen = function(event, screen, override, from){
                 console.log('here: ', arguments);
            //     $scope.hideKeyboard();
@@ -770,6 +799,11 @@ sntRover.controller('rvTabletCtrl', [
                 
                 switch(screen){
                     case "home":
+                        if ($scope.debug){
+                            console.log('debugging, going to: '+$scope.debugAt)
+                            $scope.goToScreen(null, $scope.debugAt, true);
+                            break;
+                        }
                         $scope.at = 'home';
                         //stateToGoTo = 'station';
                         $scope.hideNavBtns = true;
@@ -1017,6 +1051,7 @@ sntRover.controller('rvTabletCtrl', [
                         $scope.cancelButtonText = "Cancel";
                         
                         $scope.at = 'terms-conditions';
+                        setTimeout(function(){$scope.setScroll()},200)
                        // stateToGoTo = 'station.tab-kiosk-terms-conditions';
                         $scope.hideNavBtns = false;
                         break;
