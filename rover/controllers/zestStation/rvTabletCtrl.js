@@ -440,17 +440,17 @@ sntRover.controller('rvTabletCtrl', [
                   
                   
                   //in-view elements
-                  $scope.selectedReservation.reservation_details.daily_rate  = avgDailyRate;
+                  $scope.selectedReservation.reservation_details.daily_rate  = parseFloat(avgDailyRate).toFixed(2);
                   
-                  $scope.selectedReservation.reservation_details.package_price = packageRate;
+                  $scope.selectedReservation.reservation_details.package_price = parseFloat(packageRate).toFixed(2);
                   
-                  $scope.selectedReservation.reservation_details.taxes = taxes;
+                  $scope.selectedReservation.reservation_details.taxes = parseFloat(taxes).toFixed(2);
                   
-                  $scope.selectedReservation.reservation_details.sub_total = subtotal;
+                  $scope.selectedReservation.reservation_details.sub_total = parseFloat(subtotal).toFixed(2);
                   
-                  $scope.selectedReservation.reservation_details.deposits = deposits;
+                  $scope.selectedReservation.reservation_details.deposits = parseFloat(deposits).toFixed(2);
                   
-                  $scope.selectedReservation.reservation_details.balance = balanceDue;
+                  $scope.selectedReservation.reservation_details.balance = parseFloat(balanceDue).toFixed(2);
                  
                  $scope.$emit('hideLoader');
             };
