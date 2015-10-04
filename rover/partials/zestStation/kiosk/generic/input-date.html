@@ -9,7 +9,7 @@
                 <input id="datepicker"  placeholder="" class="hasDatepicker" ng-model="input.date" readonly click-touch="showDatePicker()">
             </div>
             <div class="entry action">
-                <button type="button" class="button" click-touch="inputTextHandler(at, input.date)">Next</button>
+                <button type="button" class="button" click-touch="inputTextHandler(at, input.date)" ng-class="{'overlay grey': !input.date}">Next</button>
             </div>
         </form>
     </div>

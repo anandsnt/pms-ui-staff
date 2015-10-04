@@ -31,6 +31,32 @@ sntRover.service('rvTabletSrv',
                 };
                 
                 
+                this.printRegistration = function (data) {//to get terms & conditions
+                    var deferred = $q.defer();
+                    var id= data.id;
+                    var url = '/api/reservations/'+id+'/print_registration_card';
+                    rvBaseWebSrvV2.getJSON(url).then(function (data) {
+                        deferred.resolve(data);
+                    }, function (data) {
+                        deferred.reject(data);
+                    });
+                    return deferred.promise;
+                };
+                
+                this.sendRegistrationByEmail = function (data) {//to get terms & conditions
+                    var deferred = $q.defer();
+                    var id= data.id;
+                    var url = '/api/reservations/'+id+'/email_registration_card';
+
+                    rvBaseWebSrvV2.getJSON(url).then(function (data) {
+                        deferred.resolve(data);
+                    }, function (data) {
+                        deferred.reject(data);
+                    });
+                    return deferred.promise;
+                };
+                
+                
                 this.fetchReservationDetails = function (param) {
                     var deferred = $q.defer(),
                             url = '/staff/staycards/reservation_details.json?reservation='+param.id;
@@ -75,6 +101,18 @@ sntRover.service('rvTabletSrv',
                     return deferred.promise;
                 };
                 
+                
+                this.checkInGuest = function (params) {
+                    var deferred = $q.defer(),
+                            url = '/staff/checkin';
+
+                    rvBaseWebSrvV2.postJSON(url, params).then(function (data) {
+                        deferred.resolve(data);
+                    }, function (data) {
+                        deferred.reject(data);
+                    });
+                    return deferred.promise;
+                };
                 
                 this.saveSettings = function (params) {
                     var deferred = $q.defer(),

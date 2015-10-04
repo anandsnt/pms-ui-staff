@@ -1,7 +1,11 @@
-<section id="main" class="centered" role="main" ng-show='at === "admin-login-screen" || at === "key-success" || at === "last_confirm" || at === "talk-to-staff"' click-touch='resetTime()'>
+<section id="main" class="centered" role="main" ng-show='at === "admin-login-screen" || at === "key-success" || at === "error" || at === "last_confirm" || at === "talk-to-staff"' click-touch='resetTime()'>
     <div id="content">
         <h1>{{headingText}}</h1>
         <h2>{{subHeadingText}}</h2>
+        <!-- General error -->
+        <button ng-show="at === 'error'" type="button" class="button" touch-press="navToHome()">{{modalBtn1}}</button>
+        
+        
         <!-- Admin -->
         <button ng-show="at === 'admin-login-screen'" type="button" class="button" touch-press="loginAdmin()">{{modalBtn1}}</button>
         <button ng-show="at === 'admin-login-screen'" type="button" class="button" touch-press="goToLast()">{{modalBtn2}}</button>
