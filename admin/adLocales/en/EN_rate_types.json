@@ -7,4 +7,10 @@
 "RATE_SEQUENCE": "Rate Sequence",
 "ROOM_AND_RATES_SCREEN": "Room and Rates Screen",
 "RATE_MANAGER": "Rate Manager",
-"DASHBOARD": "Dashboard"
+"DASHBOARD": "Dashboard",
+
+
+"ACTIONS_USERNAME": "Username",
+"ACTIONS_DATETIME": "Date / Time",
+"ACTIONS_ACTION_TYPE": "Action Type",
+"ACTIONS_ACTION_DETAILS": "Details"
