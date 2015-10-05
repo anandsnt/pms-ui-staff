@@ -102,7 +102,6 @@ sntRover.controller('RVDailyProdReportCtrl', [
 		});
 
 
-
 		var calThings = function() {
 			var SUB_HEADER_NAMES = [
 				'Rooms #',
@@ -143,14 +142,16 @@ sntRover.controller('RVDailyProdReportCtrl', [
 
 			$scope.rightPaneWidth = 0;
 
-			var results = $scope.results;
+			var results = $scope.results,
+				actualNam;
 
 			for( roomKey in results ) {
 				if ( ! results.hasOwnProperty(roomKey) ) {
 					continue;
 				};
 
-				$scope.roomNames.push( roomKey );
+				actualName = roomKey.split('__')[0];
+				$scope.roomNames.push( actualName || 'NA' );
 
 				roomObj = results[roomKey];
 				allDatesValInRoom = [];
@@ -192,11 +193,11 @@ sntRover.controller('RVDailyProdReportCtrl', [
 
 					if ( 2 == $scope.colSpan ) {
 						eachDateVal.push({
-							value   : dateObj['available_rooms_count'],
+							value   : dateObj['total_reservations_count'],
 							isAvail : true
 						});
 						eachDateVal.push({
-							value   : dateObj['total_rooms_count'],
+							value   : dateObj['available_rooms_count'],
 							isAvail : true,
 							cls     : 'last-day'
 						});
@@ -216,11 +217,11 @@ sntRover.controller('RVDailyProdReportCtrl', [
 						});
 					} else if ( 5 == $scope.colSpan ) {
 						eachDateVal.push({
-							value   : dateObj['available_rooms_count'],
+							value   : dateObj['total_reservations_count'],
 							isAvail : true
 						});
 						eachDateVal.push({
-							value   : dateObj['total_rooms_count'],
+							value   : dateObj['available_rooms_count'],
 							isAvail : true
 						});
 						eachDateVal.push({
@@ -263,8 +264,6 @@ sntRover.controller('RVDailyProdReportCtrl', [
 		init();
 
 		function reInit (argument) {
-			console.log('reinit');
-
 			calThings();
 		};
 

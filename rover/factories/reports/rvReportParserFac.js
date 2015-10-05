@@ -11,10 +11,10 @@ sntRover.factory('RVReportParserFac', [
 
 
 
-        factory.parseAPI = function ( reportName, apiResponse, options ) {
+        factory.parseAPI = function ( reportName, apiResponse, options, resultTotalRow ) {
 
             if ( reportName === reportNames['DAILY_PRODUCTION'] ) {
-                return _.isEmpty(apiResponse) ? apiResponse : $_parseDailyProduction( reportName, apiResponse, options );
+                return _.isEmpty(apiResponse) ? apiResponse : $_parseDailyProduction( reportName, apiResponse, options, resultTotalRow );
             }
 
             // a very special parser for daily transaction report
@@ -57,31 +57,14 @@ sntRover.factory('RVReportParserFac', [
 
 
 
-        function $_parseDailyProduction ( reportName, apiResponse, options ) {
+        function $_parseDailyProduction ( reportName, apiResponse, options, resultTotalRow ) {
             /**
              * we are gonna transform the actual api response with the following strucutre:
              * 
-             * [{
-             *      '2015-04-01': [{
-             *          ...
-             *          room_type_id: 1,
-             *          room_type: 'bunk'
-             *      }, {
-             *          ...
-             *          room_type_id: 2,
-             *          room_type: 'classic'
-             *      }]
-             * }, {
-             *      '2015-04-02': [{
-             *          ...
-             *          room_type_id: 1,
-             *          room_type: 'bunk'
-             *      }, {
-             *          ...
-             *          room_type_id: 2,
-             *          room_type: 'classic'
-             *      }]
-             * }]
+             * {
+             *      '2015-04-01': [{room_type, room_type_id}, {room_type, room_type_id}],
+             *      '2015-04-02': [{room_type, room_type_id}, {room_type, room_type_id}]
+             * }
              * 
              * to the following structure:
              *
@@ -111,34 +94,48 @@ sntRover.factory('RVReportParserFac', [
              * WHY? Coz we have to!
              */
 
-            var i, j, j, k;
+            var i, j;
 
             var returnObj = {};
 
-            var zeroThItem      = apiResponse[0],
-                zeroThDateKey   = _.keys( zeroThItem )[0],
-                zeroThDateData  = zeroThItem[zeroThDateKey],
-                uuid;
-            for ( i = 0, j = dateData.length; i < j; i++ ) {
-                uuid = dateData[i]['room_type'] + '__' + dateData[i]['room_type_id'];
+            var zerothKey  = _.keys( apiResponse )[0],
+                zerothData = apiResponse[zerothKey];
+
+            for ( i = 0, j = zerothData.length; i < j; i++ ) {
+                uuid = zerothData[i]['room_type'] + '__' + zerothData[i]['room_type_id'];
                 returnObj[uuid] = {};
             };
 
-            var ithDateKey,
-                ithDateData,
+            var dateData,
+                makeCopy,
                 ithUuid,
-                makeCopy;
-            for ( i = 0, j = apiResponse.length; i < j; i++ ) {
-                ithDateKey  = _.keys( apiResponse[i] )[0];
-                ithDateData = apiResponse[i][ithDateData];
+                roomName;
 
-                for ( k = 0, l = ithDateData.length; k < l; k++ ) {
-                    makeCopy = angular.copy( ithDateData[k] );
-
-                    ithUuid = makeCopy['room_type'] + '__' + makeCopy['room_type_id'];
-
-                    returnObj[ithUuid][ithDateKey] = angular.copy( makeCopy );
+            for (dateKey in apiResponse) {
+                if ( ! apiResponse.hasOwnProperty(dateKey) ) {
+                    continue;
                 };
+
+                var dateData = apiResponse[dateKey];
+
+                for (i = 0, j = dateData.length; i < j; i ++) {
+                    makeCopy = angular.copy( dateData[i] );
+                    ithUuid  = makeCopy['room_type'] + '__' + makeCopy['room_type_id'];
+
+                    returnObj[ithUuid][dateKey] = angular.copy( makeCopy );
+                };
+            };
+
+            /**
+             * so we need to transform the resultTotalRow for
+             * blah blah blah.. I will wirte later
+             */
+            var totalDatekey;
+
+            returnObj['Totals'] = {};
+            for (i = 0, j = resultTotalRow.length; i < j; i ++) {
+                totalDatekey = _.keys( resultTotalRow[i] )[0];
+                returnObj['Totals'][totalDatekey] = angular.copy( resultTotalRow[i][totalDatekey] );
             };
 
             return returnObj;
