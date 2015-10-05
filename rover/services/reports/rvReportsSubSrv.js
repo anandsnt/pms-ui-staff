@@ -26,16 +26,6 @@ sntRover.service('RVreportsSubSrv', [
 			};
 
 			var failed = function(data) {
-
-				// TEST CODE, REMOVE BEFORE MERGE
-				if ( options.url.indexOf('/submit') ) {
-					deferred.resolve({
-						results: winResult
-					});
-					return
-				};
-				// TEST CODE, REMOVE BEFORE MERGE
-
 				deferred.reject( data || {} );
 			};
 			
