@@ -571,9 +571,9 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			params.reservation_id = $scope.reservationData.reservationId;
 
 			if (card === 'travel_agent') {
-				params.travel_agent_id = $scope.reservationData.travelAgent.id;
+				params.travel_agent_id = $scope.reservationDetails.travelAgent.id;
 			} else if (card === 'company') {
-				params.company_id = $scope.reservationData.company.id;
+				params.company_id = $scope.reservationDetails.companyCard.id
 			}
 
 			$scope.invokeApi(RVReservationSummarySrv.fetchDefaultRoutingInfo, params, fetchSuccessofDefaultRouting);
