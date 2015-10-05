@@ -357,6 +357,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			 * @param {object} API response
 			 */
 			var onRemoveCardSuccessCallBack = function(response) {
+				$scope.$emit('hideLoader');
 				$scope.cardRemoved(removedCard);
 				$scope.$broadcast("CARD_REMOVED", removedCard);
 
