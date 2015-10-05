@@ -940,16 +940,23 @@ sntRover.controller('rvGroupConfigurationCtrl', [
 
         }
         /** CICO-20270: a 470 failure response indicates that transactions exist
-         * in bill routing. we need to show user a warning in this case
+         * in bill routing. we need to show user a warning in this case.
+         * @param {object} API response object.
          */
-        var showRemoveCardsAPIErrorPopup = function() {
-            ngDialog.open({
-                template: '/assets/partials/cards/popups/detachCardsAPIErrorPopup.html',
-                className: 'ngdialog-theme-default stay-card-alerts',
-                scope: $scope,
-                closeByDocument: false,
-                closeByEscape: false
-            });
+        var showRemoveCardsAPIErrorPopup = function(errors) {
+            var data = {
+                errorMessages: errors.errorMessage
+            };
+            $timeout(function(){
+                ngDialog.open({
+                    template: '/assets/partials/groups/summary/popups/detachCardsAPIErrorPopup.html',
+                    className: 'ngdialog-theme-default stay-card-alerts',
+                    scope: $scope,
+                    closeByDocument: false,
+                    closeByEscape: false,
+                    data: JSON.stringify(data)
+                });
+            }, 500);
         };
 
         /**
@@ -974,10 +981,10 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                         if(error.hasOwnProperty ('httpStatus')) {
                             switch (error.httpStatus) {
                                 case 470:
-                                    showRemoveCardsAPIErrorPopup();
+                                    showRemoveCardsAPIErrorPopup(error);
                                     break;
                                 default:
-                                    $scope.errorMessage = error;
+                                    $scope.errorMessage = error.errorMessage;
                                     break;
                             }
                         }
