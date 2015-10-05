@@ -939,7 +939,18 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             }
 
         }
-
+        /** CICO-20270: a 470 failure response indicates that transactions exist
+         * in bill routing. we need to show user a warning in this case
+         */
+        var showRemoveCardsAPIErrorPopup = function() {
+            ngDialog.open({
+                template: '/assets/partials/cards/popups/detachCardsAPIErrorPopup.html',
+                className: 'ngdialog-theme-default stay-card-alerts',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        };
 
         /**
          * Update the group data
@@ -957,11 +968,26 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                         $scope.groupSummaryMemento = angular.copy($scope.groupConfigData.summary);
                         return true;
                     },
-                    onGroupUpdateFailure = function(errorMessage) {
-                        //client controllers should get an infromation whether updation was a failure
-                        $scope.$broadcast("FAILED_TO_UPDATE_GROUP_INFO", errorMessage);
-                        $scope.errorMessage = errorMessage;
-                        return false;
+                    onGroupUpdateFailure = function(error) {
+                        /* CICO-20270: Since we are expecting some custom http error status in the response
+                         * and we are using that to acknowledge error with card detaching.*/
+                        if(error.hasOwnProperty ('httpStatus')) {
+                            switch (error.httpStatus) {
+                                case 470:
+                                    showRemoveCardsAPIErrorPopup();
+                                    break;
+                                default:
+                                    $scope.errorMessage = error;
+                                    break;
+                            }
+                        }
+
+                        else {
+                            //client controllers should get an infromation whether updation was a failure
+                            $scope.$broadcast("FAILED_TO_UPDATE_GROUP_INFO", error);
+                            $scope.errorMessage = error;
+                            return false;
+                        }
                     };
 
                 var summaryData = _.extend({}, $scope.groupConfigData.summary);
@@ -1012,6 +1038,20 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             }
         }
 
+        $scope.detachCardFromGroup = function(card) {
+            // warn about billing info
+            var dataForPopup = {
+                cardType: card
+            }
+            ngDialog.open({
+                template: '/assets/partials/groups/summary/popups/detachCardWarningPopup.html',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false,
+                data: JSON.stringify(dataForPopup)
+            });
+        };
+
         /**
          * Autocompletions for company/travel agent
          * @return {None}
@@ -1049,7 +1089,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     $scope.groupConfigData.summary.company.name = ui.item.label;
                     $scope.groupConfigData.summary.company.id = ui.item.value;
                     if (!$scope.isInAddMode()) {
-                        $scope.updateGroupSummary();                        
+                        $scope.updateGroupSummary();
                     }
                     $scope.$broadcast("COMPANY_CARD_CHANGED");
                     runDigestCycle();
@@ -1060,7 +1100,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                         $scope.groupConfigData.summary.company = {
                             id: ""
                         }
-                        $scope.updateGroupSummary();                        
+                        $scope.detachCardFromGroup('company');
                     }
                     $scope.$broadcast("COMPANY_CARD_CHANGED");
                 }
@@ -1090,7 +1130,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     $scope.groupConfigData.summary.travel_agent.name = ui.item.label;
                     $scope.groupConfigData.summary.travel_agent.id = ui.item.value;
                     if (!$scope.isInAddMode()) {
-                        $scope.updateGroupSummary();                        
+                        $scope.updateGroupSummary();
                     }
                     $scope.$broadcast("TA_CARD_CHANGED");
                     runDigestCycle();
@@ -1101,7 +1141,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                         $scope.groupConfigData.summary.travel_agent = {
                             id: ""
                         }
-                        $scope.updateGroupSummary();                        
+                        $scope.detachCardFromGroup('travel_agent');
                     }
                     $scope.$broadcast("TA_CARD_CHANGED");
                 }

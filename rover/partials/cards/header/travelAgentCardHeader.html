@@ -22,7 +22,10 @@
             <button class="button blank ng-scope" type="button" ng-click="clickedDiscardCard('travel_agent')" translate="">Discard</button>
         </div>
         <div class="card-actions" ng-hide="viewState.isAddNewCard">
-            <button id="company-new-contract" type="button" class="button red pull-right" ng-show="allowDetachAgent()" ng-click="detachCard('travel_agent')" translate="">Detach Card</button>
+            <button id="company-new-contract" type="button" class="button red pull-right"
+            ng-class="{ grey: shouldDisableTACardDetachButton()}"
+            ng-disabled="shouldDisableTACardDetachButton()"
+            ng-click="detachTACard()" translate="">Detach Card</button>
         </div>
 	</section>
 	<section ng-if="searchMode">
