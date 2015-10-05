@@ -88,9 +88,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				return dayHouseAvailability.toString();
 			}
 
-			if(isInBestAvailableMode()) {
 				return findBestAvailableRateAgainstDate(dailyData).toString();
-			}
 		};
 
 		/**
@@ -98,23 +96,48 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		 * @return {[type]} [description]
 		 */
 		var findBestAvailableRateAgainstDate = function(dailyData) {
-			var availabileRates = dailyData.rates,
-				availableRoomRates = _.pluck (availabileRates, "room_rates"),				
-				minAmongRate = _.min (_.pluck(availableRoomRates[0], 'single')),
+			var availabileRates = _.reject(dailyData.rates, function(rate){
+					$scope.stateVariables.selectedRate = $scope.stateVariables.selectedRate == null? "" : $scope.stateVariables.selectedRate;
+					return (isInRoomTypeSelectedMode() && rate.id !== $scope.stateVariables.selectedRate && $scope.stateVariables.selectedRate != "");
+				}),
+				availableRoomRates = _.pluck (availabileRates, "room_rates"),
+				firstAvailableRoomRate = _.reject(availableRoomRates[0],function(room_rate){
+					return !isRoomRateFiltered(room_rate);
+				}),			
+				minAmongRate = _.min (_.pluck(firstAvailableRoomRate, 'single')),
 				minAmongRate = minAmongRate === null ? 0 : minAmongRate,
 				bestAvailableRate = minAmongRate,
 				eachAvailableRoomRate = null;
 
 			for (var i = 1; i < availableRoomRates.length; i++) {
-				eachAvailableRoomRate = _.reject(availableRoomRates[i], {single: null});
+				eachAvailableRoomRate = _.reject(availableRoomRates[i], function(room_rate){
+					return !isRoomRateFiltered(room_rate);
+				});
 				minAmongRate = _.min (_.pluck(eachAvailableRoomRate, 'single'));
 				if (minAmongRate !== null && minAmongRate <=  bestAvailableRate){
 					bestAvailableRate = minAmongRate;
 				}
 			}
 
-			return bestAvailableRate;
+			return bestAvailableRate == Infinity ? "" : bestAvailableRate;
 		};
+
+		/**To filter the room rates
+		 * [isRoomRateFiltered description]
+		 * @return {object} [description]
+		 */
+		var isRoomRateFiltered = function(room_rate){
+			if(room_rate.single == null)
+				return false;
+			else{
+				$scope.stateVariables.selectedRoom = $scope.stateVariables.selectedRoom == null? "" : $scope.stateVariables.selectedRoom;
+				if(isInRoomTypeSelectedMode() && room_rate.room_type_id !== $scope.stateVariables.selectedRoom && $scope.stateVariables.selectedRoom != "")
+					return false;
+				else if(isRestrictionIncludedInSearch && room_rate.restrictions.length == 0)
+					return false;
+			}
+			return true;
+		}
 
 		/**
 		 * when a day is rendered, this callback will fire
@@ -142,7 +165,8 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				start 		: new tzIndependentDate (dailyData.date),
 				end 		: new tzIndependentDate (dailyData.date),
 				editable 	: false,
-				title 		: getTitleAgainstDailyData (dailyData)
+				title 		: getTitleAgainstDailyData (dailyData),
+				tooltipData : {}
 			};
 
 			return eventData;
@@ -272,7 +296,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 					right: ''
 				},
 				year: $scope.confirmedCheckinDate.getFullYear(), // Check in year
-				month: $scope.confirmedCheckinDate.getMonth(), // Check in month (month is zero based)
+				month: typeof $scope.leftCalendarOptions == 'undefined'?$scope.confirmedCheckinDate.getMonth():$scope.leftCalendarOptions.month, // Check in month (month is zero based)
 				day: $scope.confirmedCheckinDate.getDate(), // Check in day
 				editable: true,
 				disableResizing: false,
@@ -296,6 +320,8 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 
 		$scope.selectedBestAvailableRatesCalOption = function() {
 			switchToBestAvailableRateMode ();
+			resetCalenarEventModel();
+			formCalendarEvents();
 		};
 
 		/**
@@ -303,7 +329,16 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		 */
 		$scope.selectedRoomTypesCalOption = function() {
 			switchToRoomTypeMode ();
+			resetCalenarEventModel();
+			formCalendarEvents();
+
 		};
+
+		$scope.filtersUpdated = function () {
+			resetCalenarEventModel();
+			formCalendarEvents();
+
+		}
 
 
 		$scope.isPrevButtonDisabled = function() {
@@ -357,6 +392,8 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		 */
 		var switchToRoomTypeMode = function () {
 			$scope.stateCheck.calendarState.calendarType = "ROOM_TYPE";
+			
+
 		};
 
 		/**
@@ -364,6 +401,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		 */
 		var switchToBestAvailableRateMode = function () {
 			$scope.stateCheck.calendarState.calendarType = "BEST_AVAILABLE";
+			
 		};
 
 		/**
