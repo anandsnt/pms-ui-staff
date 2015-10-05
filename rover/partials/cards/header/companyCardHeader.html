@@ -23,7 +23,10 @@
             <button id="company-new-contract" type="button" class="button red pull-right" ng-click="detachCard('company')" translate="" ng-hide="viewState.isAddNewCard">Detach Card</button>
         </div>
         <div class="card-actions" ng-hide="viewState.isAddNewCard">
-            <button id="company-new-contract" ng-show="allowDetachCompany()" type="button" class="button red pull-right" ng-click="detachCard('company')" translate="">Detach Card</button>
+            <button id="company-new-contract" type="button"class="button red pull-right"
+            ng-class="{ grey: shouldDisableCompanyCardDetachButton()}"
+            ng-disabled="shouldDisableCompanyCardDetachButton()"
+            ng-click="detachCompanyCard()" translate="">Detach Card</button>
         </div>
     </section>
     <section ng-if="searchMode">

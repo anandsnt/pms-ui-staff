@@ -258,7 +258,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				timer += 300;
 			}
 
-			if (!isCardSame.group) {
+			// CICO-20547 do NOT init group cards for overlays
+			if (!isCardSame.group && $rootScope.isStandAlone) {
 				$timeout(function() {
 					$scope.$broadcast('groupDetached');
 					$scope.initGroupCard($scope.reservationDetails.group.id);
@@ -279,8 +280,9 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$timeout(function() {
 					$scope.$broadcast('travelAgentDetached');
 					$scope.initTravelAgentCard();
-				}, timer);
-			}
+				}, timer);				
+			}	
+			
 
 			// The future counts of the cards attached with the reservation
 			// will be received here!
@@ -301,6 +303,32 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		});
 
 		/**
+		 * to navigate to room & rates screen
+		 * @return {[type]} [description]
+		 */
+		$scope.navigateToRoomAndRates = function(options) {
+			var resData 		  	  = $scope.reservationData,
+				disableBackToStaycard = (options && options.disableBackToStaycard);
+
+			$state.go('rover.reservation.staycard.mainCard.roomType', {
+				from_date 			 : resData.arrivalDate,
+				to_date 			 : resData.departureDate,
+				fromState 			 : function() {
+											if ($state.current.name === "rover.reservation.staycard.reservationcard.reservationdetails") {
+												return 'STAY_CARD'
+											} else {
+												return $state.current.name
+											}
+										}(),
+				company_id 			 : resData.company.id,
+				travel_agent_id		 : resData.travelAgent.id,
+				group_id 			 : resData.group && resData.group.id,
+				allotment_id 		 : resData.allotment && resData.allotment.id,
+				disable_back_staycard: disableBackToStaycard
+			});
+		};
+
+		/**
 		 * if we wanted to reload particular staycard details
 		 * @return {undeifned} [description]
 		 */
@@ -319,81 +347,137 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		$scope.isInStayCardScreen = function() {
 			return ($scope.viewState.identifier === "STAY_CARD");
 		};
-		$scope.removeCard = function(card, future) {
-			// This method returns the numnber of cards attached to the staycard
-			var checkNumber = function() {
-					var x = 0;
-					_.each($scope.reservationDetails, function(d, i) {
-						if (typeof d.id !== 'undefined' && d.id !== '' && d.id !== null) {
-							x++;
-						}
+
+		// closure for remove card logics
+		(function() {
+			var removedCard = null;
+
+			/**
+			 * Final success callback for card removal API
+			 * @param {object} API response
+			 */
+			var onRemoveCardSuccessCallBack = function(response) {
+				$scope.$emit('hideLoader');
+				$scope.cardRemoved(removedCard);
+				$scope.$broadcast("CARD_REMOVED", removedCard);
+
+				/* CICO-20270: Redirect to rooms and rates if contracted rate was previously selected
+				 * else reload staycard after detaching card */
+				if (response.contracted_rate_was_present) {
+					$scope.navigateToRoomAndRates({
+						disableBackToStaycard: true
 					});
-					return x;
-				},
-				onRemoveSuccess = function() {
-					$scope.cardRemoved(card);
-					$scope.$emit('hideLoader');
-					/**
-					 * 	Reload the stay card if any of the attached cards are changed! >>> 7078 / 7370
-					 * 	the state would be STAY_CARD in the reservation edit mode also.. hence checking for confirmation id in the state params
-					 * 	The confirmationId will not be in the reservation edit/create stateParams except for the confirmation screen...
-					 * 	However, in the confirmation screen the identifier would be "CONFIRM"
-					 */
-					if ($scope.viewState.identifier === "STAY_CARD" && typeof $stateParams.confirmationId !== "undefined") {
-						$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-							"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
-							"confirmationId": $stateParams.confirmationId,
-							"isrefresh": false
+				}
+				else {
+					that.reloadStaycard();
+				}
+			};
+
+			var onRemoveCardFailureCallBack = function(error) {
+				$scope.$emit('hideLoader');
+				if(error.hasOwnProperty ('httpStatus')) {
+					if (error.httpStatus === 470) {
+						/* CICO-20270: a 470 failure response indicates that transactions exist
+						 * in bill routing. we need to show user a warning in this case */
+					 	var data = {
+					 		errorMessages: error.errorMessage
+					 	};
+ 						ngDialog.open({
+							template: '/assets/partials/cards/popups/detachCardsAPIErrorPopup.html',
+							className: 'ngdialog-theme-default stay-card-alerts',
+							scope: $scope,
+							closeByDocument: false,
+							closeByEscape: false,
+							data: JSON.stringify(data)
+						});
+					} else {
+						$scope.errorMessage = error;
+					}
+				}
+			};
+
+			/**
+			 * Handle individual, remove success
+			 * @param {object} API response
+			 */
+			var onRemoveEachCardSuccessCallBack = function(response) {
+
+			};
+
+			/**
+			 * This function calls API for every reservations present in reservationsData.
+			 * @param {object} Reservation data
+			 */
+			var callRemoveCardsAPIforAllReservations = function(reservationData, card, cardId) {
+				var promises = [];
+				// Loop through the reservation ids and call the cancel API for each of them
+				_.each(reservationData.reservationIds, function(reservationId) {
+					var params = {
+						'reservation': reservationId,
+						'cardType': card,
+						'cardId': cardId
+					};
+					promises.push(RVCompanyCardSrv.removeCard(params)
+								.then(onRemoveEachCardSuccessCallBack));
+				});
+				$q.all(promises).then(onRemoveCardSuccessCallBack, onRemoveCardFailureCallBack);
+			};
+
+			var callRemoveCardsAPIforReservation = function(card, cardId) {
+				var params = {
+				'reservation': (typeof $stateParams.id === "undefined") ? $scope.reservationData.reservationId : $stateParams.id,
+				'cardType': card,
+				'cardId': cardId
+				};
+				$scope.invokeApi(RVCompanyCardSrv.removeCard,
+								 params,
+								 onRemoveCardSuccessCallBack,
+								 onRemoveCardFailureCallBack);
+			};
+
+			$scope.removeCard = function(card, cardId) {
+				var cardId 			   = cardId || null,
+					totalCardsAttached = _.filter($scope.reservationDetails, function(card) {
+											return !!card.id;
+										 }).length;
+				removedCard = card;
+				//Cannot Remove the last card... Tell user not to select another card
+				if (totalCardsAttached > 1 && card !== "") {
+					var reservationData 		= $scope.reservationData,
+						hasMultipleReservations = (reservationData &&
+												   reservationData.reservationIds &&
+												   reservationData.reservationIds.length > 1);
+
+					if (hasMultipleReservations) {
+						$scope.$emit('showLoader');
+						callRemoveCardsAPIforAllReservations(reservationData, card, cardId)
+
+					} else {
+						callRemoveCardsAPIforReservation(card, cardId);
+					}
+
+				}
+				else {
+					//Bring up alert here
+					if ($scope.viewState.pendingRemoval.status || cardId) {
+						$scope.viewState.pendingRemoval.status = false;
+						$scope.viewState.pendingRemoval.cardType = "";
+						// If user has not replaced a new card, keep this one. Else remove this card
+						// The below flag tracks the card and has to be reset once a new card has been linked,
+						// along with a call to remove the flagged card
+						$scope.viewState.lastCardSlot = card;
+						var templateUrl = '/assets/partials/cards/alerts/cardRemoval.html';
+						ngDialog.open({
+							template: templateUrl,
+							className: 'ngdialog-theme-default stay-card-alerts',
+							scope: $scope,
+							closeByDocument: false,
+							closeByEscape: false
 						});
 					}
-				},
-				onRemoveFailure = function() {
-					$scope.$emit('hideLoader');
-				},
-				onEachRemoveSuccess = function() {
-					// Handle indl, remove success
-				};
-
-			//Cannot Remove the last card... Tell user not to select another card
-			if (checkNumber() > 1 && card !== "") {
-				if ($scope.reservationData && $scope.reservationData.reservationIds && $scope.reservationData.reservationIds.length > 1) {
-					var promises = []; // Use this array to push the promises returned for every call
-					$scope.$emit('showLoader');
-					// Loop through the reservation ids and call the cancel API for each of them
-					_.each($scope.reservationData.reservationIds, function(reservationId) {
-						promises.push(RVCompanyCardSrv.removeCard({
-							'reservation': reservationId,
-							'cardType': card
-						}).then(onEachRemoveSuccess));
-					});
-					$q.all(promises).then(onRemoveSuccess, onRemoveFailure);
-				} else {
-					$scope.invokeApi(RVCompanyCardSrv.removeCard, {
-						'reservation': typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
-						'cardType': card
-					}, onRemoveSuccess, onRemoveFailure);
 				}
-
-			} else {
-				//Bring up alert here
-				if ($scope.viewState.pendingRemoval.status) {
-					$scope.viewState.pendingRemoval.status = false;
-					$scope.viewState.pendingRemoval.cardType = "";
-					// If user has not replaced a new card, keep this one. Else remove this card
-					// The below flag tracks the card and has to be reset once a new card has been linked,
-					// along with a call to remove the flagged card
-					$scope.viewState.lastCardSlot = card;
-					var templateUrl = '/assets/partials/cards/alerts/cardRemoval.html';
-					ngDialog.open({
-						template: templateUrl,
-						className: 'ngdialog-theme-default stay-card-alerts',
-						scope: $scope,
-						closeByDocument: false,
-						closeByEscape: false
-					});
-				}
-			}
-		};
+			};
+		})();
 
 		$scope.noRoutingToReservation = function() {
 			ngDialog.close();
@@ -487,9 +571,9 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			params.reservation_id = $scope.reservationData.reservationId;
 
 			if (card === 'travel_agent') {
-				params.travel_agent_id = $scope.reservationData.travelAgent.id;
+				params.travel_agent_id = $scope.reservationDetails.travelAgent.id;
 			} else if (card === 'company') {
-				params.company_id = $scope.reservationData.company.id;
+				params.company_id = $scope.reservationDetails.companyCard.id
 			}
 
 			$scope.invokeApi(RVReservationSummarySrv.fetchDefaultRoutingInfo, params, fetchSuccessofDefaultRouting);
@@ -588,9 +672,11 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.guestCardData.contactInfo.birthday = null;
 			}
 			if (card === 'company') {
+				$scope.reservationData.company.id = "";
 				$scope.reservationDetails.companyCard.id = "";
 				$scope.reservationDetails.companyCard.futureReservations = 0;
 			} else if (card === 'travel_agent') {
+				$scope.reservationData.travelAgent.id = "";
 				$scope.reservationDetails.travelAgent.id = "";
 				$scope.reservationDetails.travelAgent.futureReservations = 0;
 			}
@@ -808,7 +894,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			var self = this;
 			angular.forEach($scope.reservationData.rooms, function(room) {
 				var refData = _.findWhere(tData.rooms, {
-					room_no: room.room_no
+					roomNumber: room.roomNumber
 				});
 				room.stayDates = {};
 				rateIdSet.push(refData.rateId);

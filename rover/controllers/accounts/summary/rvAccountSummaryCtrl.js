@@ -1,10 +1,8 @@
-sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', '$stateParams', 'RVPaymentSrv', 'RVDepositBalanceSrv','rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'ngDialog', 'rvPermissionSrv',
-	function($scope, $rootScope, $filter, $stateParams, RVPaymentSrv, RVDepositBalanceSrv, rvAccountsConfigurationSrv, RVReservationSummarySrv, ngDialog, rvPermissionSrv) {
+sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', '$stateParams', 'RVPaymentSrv', 'RVDepositBalanceSrv','rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'ngDialog', 'rvPermissionSrv', 'RVReservationCardSrv',
+	function($scope, $rootScope, $filter, $stateParams, RVPaymentSrv, RVDepositBalanceSrv, rvAccountsConfigurationSrv, RVReservationSummarySrv, ngDialog, rvPermissionSrv , RVReservationCardSrv) {
 		BaseCtrl.call(this, $scope);
 
 		var summaryMemento = {};
-		$scope.paymentTypes =[];
-
 
 		/**
 		 * to run angular digest loop,
@@ -105,6 +103,10 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			return $rootScope.currencySymbol + $filter('number')(amount, 2);
 		};
 
+		//Update the balance after payment
+		$scope.$on("BALANCE_AFTER_PAYMENT", function (event, balance) {
+			$scope.accountConfigData.summary.balance = balance;
+		});
 
 		/**
 		 * Place holder method for future implementation of mandatory demographic data
@@ -307,42 +309,73 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			}
 		});
 
-		// CICO-16913
-		$scope.openDepositBalanceModal = function() {
-			$scope.invokeApi(RVPaymentSrv.fetchAvailPayments, {}, successCallBackOfFetchPayment);
-            //$rootScope.fromStayCard = true;
-            
-			//"posting_account_id": $scope.accountConfigData.summary.posting_account_id
-			var dataToSrv = {
-				"reservationId": 1331927
-			};
-			$scope.invokeApi(RVDepositBalanceSrv.getDepositBalanceData, dataToSrv, $scope.successCallBackFetchDepositBalance);
-		};
+		// -- CICO-16913 - Implement Deposit / Balance screen in Accounts -- //
 
+		$scope.paymentTypes = [];
+		$scope.creditCardTypes = [];
+
+		// Prefetching payment details
 		var successCallBackOfFetchPayment = function (data) {
 			$scope.$emit('hideLoader');
 			$scope.paymentTypes = data;
+			angular.forEach($scope.paymentTypes, function (item, key) {
+				if(item.name == 'CC'){
+					$scope.creditCardTypes = item.values;
+				}
+			});
+		};
+		$scope.invokeApi(RVPaymentSrv.fetchAvailPayments, {}, successCallBackOfFetchPayment);
+		// Show DEPOSIT/BALANCE popup 
+		$scope.openDepositBalanceModal = function() {
+			var dataToSrv = {
+				"posting_account_id": $scope.accountConfigData.summary.posting_account_id
+			};
+			$scope.invokeApi(RVDepositBalanceSrv.getRevenueDetails, dataToSrv, $scope.successCallBackFetchDepositBalance);
 		};
  
 		$scope.successCallBackFetchDepositBalance = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.depositBalanceData = data;
+			
 			$scope.passData = {
 				"origin": "GROUP",
 				"details": {
 					"firstName": "",
 					"lastName": "",
-					"paymentTypes": $scope.paymentTypes
+					"paymentTypes": $scope.paymentTypes,
+					"accountId" : $scope.accountConfigData.summary.posting_account_id
 				}
 			};
 
 			ngDialog.open({
 				template: '/assets/partials/depositBalance/rvModifiedDepositBalanceModal.html',
-				controller: 'RVDepositBalanceCtrl',
+				controller: 'RVDepositBalanceAccountsCtrl',
 				className: 'ngdialog-theme-default1',
 				closeByDocument: false,
 				scope: $scope
 			});
 		};
+
+		/*
+		 *	MLI SWIPE actions
+		 */
+		var processSwipedData = function(swipedCardData) {
+			var swipeOperationObj = new SwipeOperation();
+			var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
+			$scope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
+		};
+		// Catching Swipe here 
+		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
+			var swipeOperationObj = new SwipeOperation();
+			var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
+			var tokenizeSuccessCallback = function(tokenValue) {
+				$scope.$emit('hideLoader');
+				swipedCardData.token = tokenValue;
+				processSwipedData(swipedCardData);
+			};
+			$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback );
+		});
+
+		// -- CICO-16913 - Implement Deposit / Balance screen in Accounts -- //
 	}
 ]);

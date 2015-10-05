@@ -60,7 +60,7 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$
          * @return {Boolean}
          */
         $scope.isTravelAgentAttachedToReservation = function() {            
-            return ($scope.reservationDetails && $scope.reservationDetails.travelAgent && $scope.reservationDetails.travelAgent.id.trim() !== '');
+            return ($scope.reservationDetails && $scope.reservationDetails.travelAgent && $scope.reservationDetails.travelAgent.id.toString().trim() !== '');
         };
 
         /**
@@ -68,7 +68,7 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$
          * @return {Boolean}
          */
         $scope.isAllotmentCardAttachedToReservation = function() {            
-            return ($scope.reservationDetails && $scope.reservationDetails.allotment && $scope.reservationDetails.allotment.id.trim() !== '');
+            return ($scope.reservationDetails && $scope.reservationDetails.allotment && $scope.reservationDetails.allotment.id.toString().trim() !== '');
         };
 
         /**

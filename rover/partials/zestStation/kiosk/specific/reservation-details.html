@@ -15,8 +15,8 @@
                             <span>{{selectedReservation.guest_details.length}} residents</span>
                             {{selectedReservation.stay_dates[0].room_type}}
                         </p>
-                        <p ng-show="{{selectedReservation.guest_details.length > 1}}" ng-hide="{{selectedReservation.guest_details.length == 1}}">Additional Guests ({{selectedReservation.guest_details.length}})</p>
-                        <button type="button" class="button">Add / Remove Guests</button>
+                        <p ng-show="{{selectedReservation.guest_details.length > 1}}" ng-hide="{{selectedReservation.guest_details.length == 1}}">Additional Guests ({{selectedReservation.guest_details.length-1}})</p>
+                        <button type="button" class="button" touch-press="goToScreen(null, 'add-guests', true, 'reservation-details')">Add / Remove Guests</button>
                     </div>
                     <ul id="rate">
                         <li>Nights<span>{{selectedReservation.stay_dates.length}}</span></li>
@@ -30,7 +30,8 @@
                 </div>
             </div>
             <div id="actions" class="pull-right">
-                <button type="button" class="button" touch-press="goToScreen(null, 'cc-sign', true, 'reservation-details')">Next</button>
+                <!-- button type="button" class="button" touch-press="goToScreen(null, 'cc-sign', true, 'reservation-details')">Next</button -->
+                <button type="button" class="button" touch-press="goToScreen(null, 'terms-conditions', true, 'reservation-details')">Next</button>
                 <p><strong>Questions?</strong>Tap “Cancel” and see a sidekick.</p>
             </div>
         </div>

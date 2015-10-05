@@ -799,7 +799,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     _.each(room.stayDates, function(staydata, date) {
                         reservationStayDetails.push({
                             date: date,
-                            rate_id: (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id, // In case of the last day, send the first day's occupancy
+                            // In case of the last day, send the first day's occupancy
+                            rate_id: (function() {
+                                var rate = (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id;
+                                return rate.toString().match(/GROUP_CUSTOM_/) ? null : rate
+                            })(),
                             room_type_id: room.roomTypeId,
                             room_id: room.room_id,
                             adults_count: (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydata.guests.adults),
