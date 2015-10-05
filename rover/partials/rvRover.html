@@ -2,17 +2,17 @@
 
 <!-- Removed the animation class added while drawer menu open/close as it may be conflicting with ui-view animations -->
 <div class="container" ng-click="closeDrawerMenu()" ng-class="{ 'return-back': returnBack }" ng-show="!kiosk">
-
-	<!-- Availability -->
-	<div ng-show="shouldShowAvailabilityHouseButton()" id="availability" ng-controller="rvAvailabilityButtonController" 
-		ng-class="{	'availability-open': showAvailability, 
-					'availability-closing': isClosing}">
-		<a href="#availability" class="availability-toggle " ng-class="{'active': showAvailability}" ng-click="clickedOnAvailabilityButton()">Menu</a> <!-- Add class "active" when open -->
-		<div class="availability-container" ng-include="getAvailabilityTemplateUrl()"></div>
-	</div>
 	<div class="ui-router-wrapper">		
 		<div ui-view class="main-view"></div>
 	</div>
+</div>
+
+<!-- Availability -->
+<div ng-show="shouldShowAvailabilityHouseButton()" id="availability" ng-controller="rvAvailabilityButtonController" 
+	ng-class="{	'availability-open': showAvailability, 
+				'availability-closing': isClosing}">
+	<a href="#availability" class="availability-toggle " ng-class="{'active': showAvailability}" ng-click="clickedOnAvailabilityButton()">Menu</a> <!-- Add class "active" when open -->
+	<div class="availability-container" ng-include="getAvailabilityTemplateUrl()"></div>
 </div>
 
 <!-- Menu -->
