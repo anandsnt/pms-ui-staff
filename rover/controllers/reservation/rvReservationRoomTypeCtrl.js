@@ -170,8 +170,14 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 						$scope.stateCheck.suppressedRates.push(d.id);
 					}
 				});
+				if (!!$scope.reservationData.group.id) {					
+					 var customRate = RVReservationStateService.getGroupCustomRateModel($scope.reservationData.group.id, $scope.reservationData.group.name);
+					 rates[customRate.id] = customRate;
+				};
+
 				$scope.displayData.allRates = rates;
 				$scope.reservationData.ratesMeta = rates;
+
 				$scope.roomAvailability = $scope.getAvailability(roomRates);
 				//Filter for rooms which are available and have rate information
 				$scope.displayData.allRooms = $(roomRates.room_types).filter(function() {
@@ -1699,6 +1705,11 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		}
 
 		var setBackButton = function() {
+			// CICO-20270: to force selection of a rate after removing a card with contracted rate.
+			if($stateParams.disable_back_staycard){
+				return;
+			}
+
 			// smart switch btw edit reservation flow and create reservation flow
 			if (!!$state.params && $state.params.isFromChangeStayDates) {
 				$rootScope.setPrevState = {
