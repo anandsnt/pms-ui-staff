@@ -8,7 +8,7 @@
 </div>
 
 <!-- Availability -->
-<div ng-show="shouldShowAvailabilityHouseButton()" id="availability" ng-controller="rvAvailabilityButtonController" 
+<div ng-show="!kiosk && shouldShowAvailabilityHouseButton()" id="availability" ng-controller="rvAvailabilityButtonController" 
 	ng-class="{	'availability-open': showAvailability, 
 				'availability-closing': isClosing}">
 	<a href="#availability" class="availability-toggle " ng-class="{'active': showAvailability}" ng-click="clickedOnAvailabilityButton()">Menu</a> <!-- Add class "active" when open -->
