@@ -3,7 +3,8 @@ angular.module('twoMonthscalendar', []).directive('twoMonthCalendar', function()
     return {
         restrict: 'AE',
         scope: {
-            eventSources:'=eventSources',
+            eventSourcesLeft: '=',
+            eventSourcesRight: '=',
             leftCalendarOptions: '=leftCalendarOptions',
             rightCalendarOptions: '=rightCalendarOptions',
             nextButtonClickHandler: '&',
