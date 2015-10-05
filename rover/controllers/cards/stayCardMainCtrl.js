@@ -894,7 +894,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			var self = this;
 			angular.forEach($scope.reservationData.rooms, function(room) {
 				var refData = _.findWhere(tData.rooms, {
-					room_no: room.room_no
+					roomNumber: room.roomNumber
 				});
 				room.stayDates = {};
 				rateIdSet.push(refData.rateId);
