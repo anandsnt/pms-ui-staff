@@ -457,7 +457,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportNames['DAILY_PRODUCTION']:
-					$scope.hasReportTotals    = false;
+					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/dailyProduction/rvDailyProductionReport.html';
 					break;
