@@ -835,23 +835,29 @@ sntRover.controller('rvTabletCtrl', [
                         }
                     }
                */  
-                var reservation_id = $scope.selectedReservation.id,
+                 var reservation_id = $scope.selectedReservation.id,
                         payment_type = $scope.selectedReservation.payment_type,
-                        signature;
+                        signature = $scope.signatureData;
                 
-                if ($scope.selectedReservation.payment_method_used === 'CC'){
-                    signature = $scope.signatureData;
-                } else {
-                    signature = null;
+                
+                //if ($scope.selectedReservation.payment_method_used === 'CC'){
+                 //   signature = $scope.signatureData;
+                //} else {
+                   // signature = null;
                     //cash or other pmt, ignore credit card stuff
                     
                     $scope.invokeApi(rvTabletSrv.checkInGuest, {
-                        'reservation_id':reservation_id,
-                        'payment_type': {
-                            'payment_type':payment_type
-                        }
+                        'reservation_id':reservation_id, 
+                        "authorize_credit_card": false,
+                        "do_not_cc_auth": false,
+                        "is_promotions_and_email_set": false,
+                        "no_post": "",
+                        'signature':signature
+                       // 'payment_type': {
+                        //    'payment_type':payment_type
+                        //}
                     }, $scope.afterGuestCheckinCallback, $scope.afterGuestCheckinCallback);
-                }
+               // }
                         
                 
             };
