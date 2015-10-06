@@ -34,17 +34,29 @@
                     <li ng-repeat="action in actions" click-touch="selectAction(action)" ng-class="{'active': action.id == selectedAction.id}"> <!-- Add class "overdue" when past due date. Add class "active" when selected, first one should be active by default when screen is loaded -->
                         <span class="icons icon-action icon-{{action.action_status}}" 
                               ng-class="{'active': action.id == selectedAction.id, 
-                                          'action-set-mid': (isStandAlone && action.over_due == false && action.action_task_type == null) || (isStandAlone && action.action_status === 'COMPLETED') || (!isStandAlone && action.action_status === 'COMPLETED'  && action.action_task_type === 'REQUEST')}"> <!-- makes each icon a white version for visibility when section is 'active'-->
+                                          'action-set-mid': (isStandAlone && action.over_due == false && action.action_task_type == null) || 
+                                          (isStandAlone && action.action_status === 'COMPLETED') || 
+                                          (!isStandAlone && action.action_status === 'COMPLETED'  && action.action_task_type === 'REQUEST')
+                              }"> <!-- makes each icon a white version for visibility when section is 'active'-->
                             <!-- If overdue, output "Overdue " -->
+                            
                             <!--{Alert|Trace|Request} -->
-                            <span ng-if="(action.over_due && action.action_status !== 'COMPLETED' && isStandAlone) || (!isStandAlone && action.over_due && action.action_status !== 'COMPLETED' && action.action_task_type === 'TRACE')" 
+                            <span ng-if="(action.over_due && action.action_status !== 'COMPLETED' && isStandAlone) || 
+                                    (!isStandAlone && action.over_due && action.action_status !== 'COMPLETED' && action.action_task_type === 'TRACE')" 
                                   class="actions-overdue-font" 
                                   ng-class="{'active': action.id == selectedAction.id}" translate>OVERDUE</span><br />
-                            <span class="actions-overdue-font" 
+                            
+                                  
+                                  
+                                  <span class="actions-overdue-font" 
                                   ng-class="{'active': action.id == selectedAction.id}">
                                 {{action.action_task_type}}</span>
                             
                         </span>
+                        
+                        
+                        
+                        
                         <div class="data">
                             <h3>{{action.description}}</h3>
                             <em ng-show="!isTrace(action.action_task_type) && !isRequest(action.action_task_type) && !isAlert(action.action_task_type)">{{action.due_at_date}} &#8226; {{action.due_at_time.value}}</em>
@@ -58,11 +70,23 @@
         </div>
 
         <!-- Action summary -->
-        <div class="content-right" ng-show="actionSelected === 'selected'" ng-click="stopEditDescription(this, $event)"> 
+        <div class="content-right" ng-show="actionSelected === 'selected'" ng-click="stopEditClick()"> 
             <div class="summary">
                 <div id="action-summary"><!-- only in overlay hide -->
+                    
+                    
+                    <!-- DISPLAY FIELD (LABEL) -->
                     <h3 ng-show="!editingDescriptionInline" ng-click="startEditDescription()">{{selectedAction.description}}</h3>
-                    <h3 id="input-description"  ng-click="startEditDescription()" ng-show="editingDescriptionInline"><input ng-keydown="startEditDescription()" ng-enter="stopEditDescription(null, null, true)" ng-model="selectedAction.description" type="text"/></h3> <!-- both elements have listeners to start editing to validate blur or not -->
+                    
+                    
+                    <!-- INPUT FIELD -->
+                    <h3 id="input-description"  ng-click="startEditDescription()" ng-show="editingDescriptionInline">
+                        <input ng-keydown="startEditDescription()" ng-enter="stopEditClick('enter')" ng-model="selectedAction.description" type="text" class="inline-edit-action-title"/> <!-- -->
+                    </h3> <!-- both elements have listeners to start editing to validate blur or not -->
+                    
+                    
+                    
+                    
                     <div class="info assigned"  ng-hide="!isStandAlone && !isTrace(selectedAction.action_task_type)">
                         <span class="label">Assigned To</span>
                         {{selectedAction.assigned_to.name}}
@@ -99,7 +123,7 @@
                     <button ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || selectedAction.assigned" type="button" class="button white brand-text" ng-click="assignAction()">Assign</button> <!-- Change text to "Reassign" for assigned action -->
                     <button ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || !selectedAction.assigned" type="button" class="button white brand-text" ng-click="reassignAction()">Re-Assign</button> <!-- Change text to "Reassign" for assigned action -->
                     <button ng-hide="!isStandAlone && !isTrace(selectedAction.action_task_type)" type="button" class="button white green-text" ng-click="completeAction()">Complete</button> <!-- THESE HIDDEN FOR SPECIALS -->
-                    <button ng-show="!isStandAlone && isAlert(selectedAction.action_task_type)" type="button" class="button white green-text" ng-click="completeAction()">Delete</button>
+                    <button ng-show="!isStandAlone && isAlert(selectedAction.action_task_type)" type="button" class="button white green-text centered-action-btn" ng-click="completeAction('delete',selectedAction)">Delete</button>
                 </div>
 
 
