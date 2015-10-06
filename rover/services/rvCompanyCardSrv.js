@@ -177,7 +177,8 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 
 		this.removeCard = function(data) {
 			var request = {
-				type: data.cardType
+				type: data.cardType,
+				id: data.cardId
 			};
 			var deferred = $q.defer();
 			var url = '/api/reservations/' + data.reservation + '/cards/remove';

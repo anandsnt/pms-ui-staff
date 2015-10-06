@@ -106,3 +106,10 @@
     <li>Total Adjusted Revenue<span>{{ summaryCounts.total_amt_adjusted_revenue | currency:currencySymbol:2 }}</span></li>
     <li>Variance<span ng-class="{ red: summaryCounts.rate_adjustment_variance < 0 }">{{ summaryCounts.rate_adjustment_variance | currency:currencySymbol:2 }}</span></li>
 </ul>
+
+<!-- Daily production report -->
+<ul ng-if="isThisReport( 'DAILY_PRODUCTION' )" class="totals">
+    <li>Rate Revenue<span>{{ summaryCounts.rate_revenue | currency:currencySymbol:2 }}</span></li>
+    <li>ADR<span>{{ summaryCounts.adr | currency:currencySymbol:2 }}</span></li>
+    <li>Actual Revenue<span>{{ summaryCounts.actual_revenue | currency:currencySymbol:2 }}</span></li>
+</ul>

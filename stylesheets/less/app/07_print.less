@@ -1510,6 +1510,35 @@ table {
 
                     strong { font-weight: 600; }
 
+                    .switch-button {
+                        font-size: 8pt;
+                        line-height: 14px;
+                        text-transform: uppercase;
+                        color: @grey3;
+                        font-weight: 400;
+                        .show;
+
+                        .data-off,
+                        .data-on { margin: 0; }
+                        
+                        input,
+                        .data-on { .hide; }
+
+                        &.on {
+                            color: @textColor;
+                            text-decoration: none;
+                            font-weight: 600;
+
+                            .data-off { .hide; }
+                            .data-on { .show; }
+                        }
+                    }
+
+                    &.action-row { 
+                        padding: 4px 4pt 4px 8pt;
+                        height: 36px; 
+                    }
+
                     &.double-row {
                         line-height: 28pt;
                         height: 38px;

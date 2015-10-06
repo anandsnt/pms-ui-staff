@@ -1131,7 +1131,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				$scope.headers         = response.headers || [];
 				$scope.subHeaders      = response.sub_headers || [];
 				$scope.results         = response.results || [];
-				$scope.resultsTotalRow = response.results_total_row || 0;
+				$scope.resultsTotalRow = response.results_total_row || [];
 				$scope.summaryCounts   = response.summary_counts || [];
 				$scope.reportGroupedBy = response.group_by || '';
 
