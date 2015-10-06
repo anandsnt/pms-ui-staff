@@ -22,7 +22,7 @@
                         <li>Nights<span>{{selectedReservation.total_nights}}</span></li>
                         <li>Average Daily Rate<span>€{{selectedReservation.reservation_details.daily_rate}}</span></li>
                         <li ng-if="selectedReservation.reservation_details.package_price > 0" class="break">Office Pacakge<span>€{{selectedReservation.reservation_details.package_price}}</span></li>
-                        <li class="sub">Taxes<span>€{{selectedReservation.reservation_details.taxes}}</span></li>
+                        <li class="sub">Taxes / Fees<span>€{{selectedReservation.reservation_details.taxes}}</span></li>
                         <li class="sub">Subtotal<span>€{{selectedReservation.reservation_details.sub_total}}</span></li>
                         <li class="sub">Deposits<span>- €{{selectedReservation.reservation_details.deposits}}</span></li>
                         <li class="total">Balance due<span>€{{selectedReservation.reservation_details.balance}}</span></li>
