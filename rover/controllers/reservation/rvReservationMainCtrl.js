@@ -576,7 +576,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 view: "DEFAULT",
                 fromState: fromState,
                 company_id: $scope.reservationData.company.id,
-                travel_agent_id: $scope.reservationData.travelAgent.id
+                travel_agent_id: $scope.reservationData.travelAgent.id,
+                group_id: $scope.reservationData.group.id
             });
         };
 

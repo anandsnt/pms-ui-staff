@@ -47,7 +47,9 @@
                         </span>
                         <div class="data">
                             <h3>{{action.description}}</h3>
-                            <em>{{action.due_at_date}} &#8226; {{action.due_at_time.value}}</em>
+                            <em ng-show="!isTrace(action.action_task_type) && !isRequest(action.action_task_type) && !isAlert(action.action_task_type)">{{action.due_at_date}} &#8226; {{action.due_at_time.value}}</em>
+                            <em ng-show="isTrace(action.action_task_type)">{{action.due_at_date}}</em>
+                            <em ng-show="isRequest(action.action_task_type) || isAlert(action.action_task_type)"></em>
                         </div>
                         <span class="department">{{action.assigned_to.name}}</span>
                     </li>
