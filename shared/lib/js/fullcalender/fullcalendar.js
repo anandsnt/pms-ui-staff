@@ -5405,8 +5405,13 @@ function DayEventRenderer() {
 		html +=
 			"<span class='fc-event-day'>" +
 			htmlEscape(event.day || '') +
-			"</span>" +
-			"<span class='fc-event-title'>" +
+			"</span>" ;
+			if (event.toolTipData.restrictions.length > 0){
+				html +=" <span>" +
+			'R' +
+			"</span>" ;
+			}
+			html += "<span class='fc-event-title'>" +
 			htmlEscape(event.title || '') +
 			"</span>" +		
 			"</div>";

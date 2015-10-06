@@ -100,11 +100,12 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 					return (isInRoomTypeSelectedMode() && rate.id !== $scope.stateVariables.selectedRate && $scope.stateVariables.selectedRate != "");
 				}),
 				availableRoomRates = _.pluck (availabileRates, "room_rates"),
-				minAvailableRoomRate = _.reject(availableRoomRates[0],function(room_rate){
+				firstAvailableRoomRate = _.reject(availableRoomRates[0],function(room_rate){
 					return !isRoomRateFiltered(room_rate);
-				}),			
-				minAmongRate = _.min (_.pluck(minAvailableRoomRate, 'single')),
-				min_room_rate = _.findWhere(minAvailableRoomRate, {single:minAmongRate}), 
+				}),
+				minAvailableRoomRate = 	availableRoomRates[0];		
+				minAmongRate = _.min (_.pluck(firstAvailableRoomRate, 'single')),
+				min_room_rate = _.findWhere(firstAvailableRoomRate, {single:minAmongRate}), 
 				minAmongRate = minAmongRate === null ? 0 : minAmongRate,
 				bestAvailableRate = minAmongRate,
 
@@ -124,14 +125,23 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			bestAvailableRate = bestAvailableRate == Infinity ? "" : bestAvailableRate;
 			var bestRateData = {};
 			bestRateData.bestAvailableRate = bestAvailableRate;
-			bestRateData.room_type_name = _.findWhere($scope.stateVariables.rooms, {id:min_room_rate.room_type_id}).name;
-			bestRateData.rate_name = _.findWhere($scope.stateVariables.rates, {id: _.findWhere(availabileRates, {room_rates: minAvailableRoomRate}).id}).name;
-			bestRateData.availability = min_room_rate.availability;
-			_.each(min_room_rate.restrictions, function(restriction){
+			if(bestAvailableRate != ''){
+				bestRateData.room_type_name = _.findWhere($scope.stateVariables.rooms, {id:min_room_rate.room_type_id}).name;
+				bestRateData.rate_name = _.findWhere($scope.stateVariables.rates, {id: _.findWhere(availabileRates, {room_rates: minAvailableRoomRate}).id}).name;
+				bestRateData.availability = min_room_rate.availability;
+				_.each(min_room_rate.restrictions, function(restriction){
 
 				restriction.value = _.findWhere($scope.stateVariables.restriction_types, {id:restriction.restriction_type_id}).value;
 			});
 			bestRateData.restrictions = min_room_rate.restrictions;
+			}else{
+				bestRateData.room_type_name = "";
+				bestRateData.rate_name = "";
+				bestRateData.availability = "";
+				bestRateData.restrictions = [];
+			}
+			
+			
 			
 
 			return bestRateData;
@@ -148,7 +158,10 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				$scope.stateVariables.selectedRoom = $scope.stateVariables.selectedRoom == null? "" : $scope.stateVariables.selectedRoom;
 				if(isInRoomTypeSelectedMode() && room_rate.room_type_id !== $scope.stateVariables.selectedRoom && $scope.stateVariables.selectedRoom != "")
 					return false;
-				else if(isRestrictionIncludedInSearch && room_rate.restrictions.length == 0)
+				else if(isRestrictionIncludedInSearch() && room_rate.restrictions.length == 0)
+					return false;
+				else if(isInBestAvailableMode() && isShowAvailableRoomsSelected() && room_rate.availability
+					<= 0)
 					return false;
 			}
 			return true;
@@ -164,7 +177,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			var correspondingEventData = _.findWhere(availabilityData.results, {'date': formattedDate});
 
 			if (typeof correspondingEventData !== "undefined") {
-				
+
 			}
 		};
 
@@ -337,6 +350,11 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			refreshScroller();
 		};
 
+		$scope.$on('availableRateFiltersUpdated', function(event){
+			resetCalenarEventModel();
+			formCalendarEvents();
+		});
+
 		$scope.selectedBestAvailableRatesCalOption = function() {
 			switchToBestAvailableRateMode ();
 			resetCalenarEventModel();
@@ -445,6 +463,14 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		 */
 		var isRestrictionIncludedInSearch = function() {
 			return ($scope.stateCheck.calendarState.searchWithRestrictions);
+		};
+
+		/**
+		 * [isShowAvailableRoomsSelected description]
+		 * @return {Boolean}
+		 */
+		var isShowAvailableRoomsSelected = function() {
+			return ($scope.stateCheck.calendarState.showOnlyAvailableRooms);
 		};
 
 		/**
