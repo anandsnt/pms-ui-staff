@@ -269,6 +269,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			$scope.stateVariables.rates = data.rates;
 			$scope.stateVariables.restriction_types = data.restriction_types;
 			availabilityData = data;
+			$scope.showCalender = true;
 
 			renderFullCalendar();
 			formCalendarEvents ();
@@ -487,6 +488,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		 */
 		var initializeVariables = function() {
 			var resData = $scope.reservationData;
+			$scope.showCalender = false; 
 			$scope.eventSources = {
 				left: [],
 				right: []
