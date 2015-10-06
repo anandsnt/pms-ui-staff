@@ -324,7 +324,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				travel_agent_id		 : resData.travelAgent.id,
 				group_id 			 : resData.group && resData.group.id,
 				allotment_id 		 : resData.allotment && resData.allotment.id,
-				disable_back_staycard: disableBackToStaycard
+				disable_back_staycard: disableBackToStaycard,
+				view 				 : "ROOM_RATE"
 			});
 		};
 
@@ -687,6 +688,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		$scope.cardReplaced = function(card, cardData) {
 			if (card === 'company') {
 				$scope.reservationDetails.companyCard.id = cardData.id;
+				$scope.reservationData.company.id = cardData.id;
 				$scope.initCompanyCard();
 				//clean search data
 				$scope.searchData.companyCard.companyName = "";
@@ -699,6 +701,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.$broadcast('companySearchStopped');
 			} else if (card === 'travel_agent') {
 				$scope.reservationDetails.travelAgent.id = cardData.id;
+				$scope.reservationData.travelAgent.id = cardData.id;
 				$scope.initTravelAgentCard();
 				// clean search data
 				$scope.searchData.travelAgentCard.travelAgentName = "";

@@ -803,7 +803,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                             // In case of the last day, send the first day's occupancy
                             rate_id: (function() {
                                 var rate = (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id;
-                                return rate.toString().match(/GROUP_CUSTOM_/) ? null : rate
+                                return (rate === null || rate.toString().match(/GROUP_CUSTOM_/)) ? null : rate
                             })(),
                             room_type_id: room.roomTypeId,
                             room_id: room.room_id,
