@@ -111,6 +111,15 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 
 				eachAvailableRoomRate = null;
 
+			//if restriction not included in search
+			if (!isRestrictionIncludedInSearch()) {
+				_.each (availableRoomRates, function(eachRoomRate){
+					eachRoomRate = _.filter(eachRoomRate.room_rates, function(rate) {
+						return (rate.restrictions.length === 0)
+					});
+				})
+			}
+
 			for (var i = 1; i < availableRoomRates.length; i++) {
 				eachAvailableRoomRate = _.reject(availableRoomRates[i], function(room_rate){
 					return !isRoomRateFiltered(room_rate);
