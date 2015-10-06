@@ -54,6 +54,7 @@
     "ADDITIONAL_EMAIL_ADDRESS": "Additional Email Address",
 
     "RESV_ALL_ROOMS" : "All Room Types",
+    "RESV_ALL_RATES" : "All Rate Types",
     "NO_ROOM_RATE_MSG": "No Availability. Please select to show Closed Rates or change Room Type selection.",
     "NO_AVAILABILITY": "No Availability",
     "RESV_RECOMMENDED" : "Recommended",
@@ -105,6 +106,8 @@
     "NO":"No",
     "SHOW_STAY_DATES": "Show Stay Dates",
     "SHOW_CLOSED_RATES": "Show Closed Rates",
+    "ONLY_AVAILABLE_ROOMS" : "Only Available Rooms",
+    "SEARCH_WITH_RESTRICTIONS" : "Search With Restrictions",
     "VAR_OCCUPANCY": "Varying Occupancy per Stay Date",
     "INVALID_EMAIL_MESSAGE": "Please enter a valid email address",
     "INVALID_CREDIT_CARD": "There is a problem with your credit card",
