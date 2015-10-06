@@ -5385,7 +5385,8 @@ function DayEventRenderer() {
 			" class='" + classNames.join(' ') + "'" +
 			" data-date='" + htmlEscape(formatDate(event.start, 'yyyy-MM-dd')) + "'" + 
 			" data-rate='" + htmlEscape(event.rate || '') + "'" + 
-			" data-room-type='" + htmlEscape(event.roomType || '') + "'" + "qtipfc qtip-template='/assets/partials/reservation/rvTooltipContent.html'"+
+			" data-room-type='" + htmlEscape(event.roomType || '') + "'" +
+			// "qtipfc qtip-template='/assets/partials/reservation/rvTooltipContent.html'"+
 			" style=" +
 				"'" +
 				"position:absolute;" +
