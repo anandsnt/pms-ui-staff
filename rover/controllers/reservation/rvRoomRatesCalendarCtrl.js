@@ -8,324 +8,133 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 	function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filter, $timeout) {
 		//inheriting some useful things
 		BaseCtrl.call(this, $scope);
-		
-		var that = this, availabilityData = null;
+		var that = this,
+			currentMasterData,
+			setTitleAndScroller = function() {
+				$scope.heading = $filter('translate')('CHANGE_STAY_DATES_TITLE');
+				$scope.setTitle($scope.heading);
+				//scroller options
+				$scope.setScroller('room-rates-calendar');
+			},
+			refreshScroller = function() {
+				$timeout(function() {
+					$scope.refreshScroller('room-rates-calendar');
+				}, 1000);
+			},
+			getFirstDayOfMonth = function(date) {
+				var date = new Date(date),
+					y = date.getFullYear(),
+					m = date.getMonth();
+				return $filter('date')(new Date(y, m, 1), 'yyyy-MM-dd');
+			},
+			getLastDayOfMonth = function(date) {
+				var date = new Date(date),
+					y = date.getFullYear(),
+					m = date.getMonth();
+				return $filter('date')(new Date(y, m + 1, 0), 'yyyy-MM-dd');
+			},
+			getLastDayOfNextMonth = function(date) {
+				var date = new Date(date),
+					y = date.getFullYear(),
+					m = date.getMonth();
+				return $filter('date')(new Date(y, m + 2, 0), 'yyyy-MM-dd');
 
-		var getFirstDayOfMonth = function(date) {
-			var date = new Date(date),
-				y = date.getFullYear(),
-				m = date.getMonth();
+			},
+			resetCalendarEvents = function() {
+				$scope.eventSources.left.length = 0;
+				$scope.eventSources.right.length = 0;
 
-			return $filter('date')(new Date(y, m, 1), $rootScope.dateFormatForAPI);
-		};
+				var calendarData = {
+						left: [],
+						right: []
+					},
+					arrivalDateString = $scope.reservationData.arrivalDate,
+					departureDateString = $scope.reservationData.departureDate;
 
-		var getLastDayOfMonth = function(date) {
-			var date = new Date(date),
-				y = date.getFullYear(),
-				m = date.getMonth();
+				_.each(currentMasterData.results, function(dailyStat) {
+					dayAvailabilityToDisplay = dailyStat.house.availability;
 
-			return $filter('date')(new Date(y, m + 1, 0), $rootScope.dateFormatForAPI);
-		};
+					var eventData = {
+						day: (function() {
+							if (dailyStat.date === arrivalDateString || dailyStat.date === departureDateString) {
+								return new tzIndependentDate(dailyStat.date).getDate().toString();
+							}
+							return "";
+						})(),
+						className: (function() {
+							var classes = "";
+							if (dailyStat.date === arrivalDateString) {
+								classes += 'check-in ';
+							} else if (dailyStat.date === departureDateString) {
+								classes += 'check-out ';
+							}
 
-		var getLastDayOfNextMonth = function(date) {
-			var date = new Date(date),
-				y = date.getFullYear(),
-				m = date.getMonth();
-
-			return $filter('date')(new Date(y, m + 2, 0), $rootScope.dateFormatForAPI);
-		};
-
-		/**
-		 * for each day in calendar, we need to form day data for event source
-		 * @param  {Object} dailyData
-		 * @return {String}
-		 */
-		var getDayDataAgainstDailyData = function (dailyData) {
-			var arrivalDateString 	= $scope.reservationData.arrivalDate,
-				departureDateString = $scope.reservationData.departureDate;
-
-			if (dailyData.date === arrivalDateString || dailyData.date === departureDateString) {
-				return new tzIndependentDate(dailyData.date).getDate().toString();
-			}
-			return "";
-		};
-
-		/**
-		 * According to each day, we need to pass seperate CSS class
-		 * @param  {Object} dailyData
-		 * @return {String}
-		 */
-		var getClassNameAgainstDailyData = function (dailyData) {
-			var classes = "",
-				rData 	= $scope.reservationData,
-				dayHouseAvailability = dailyData.house.availability;
-
-			//if the date is checkin/checkout 
-			if (dailyData.date === rData.arrivalDate) {
-				classes += 'check-in ';
-			} 
-			else if (dailyData.date === rData.departureDate) {
-				classes += 'check-out ';
-			}
-
-			//if day house availability is 0 or less
-			if (dayHouseAvailability <= 0) {
-				classes += 'unavailable ';
-			} else if (dailyData.date !== rData.departureDate) {
-				classes += 'available ';
-			}
-			return classes;
-		};
-
-		/**
-		 * Will form the title from here
-		 * @param  {Object} dailyData
-		 * @return {String}
-		 */
-		var getTitleAgainstDailyData = function (dailyData) {
-			var dayHouseAvailability = dailyData.house.availability;
-			if (dayHouseAvailability <= 0) {
-				return dayHouseAvailability.toString();
-			}else
-				return "";				
-		};
-
-		/**
-		 * [findBestAvailableRateAgainstDate description]
-		 * @return {[type]} [description]
-		 */
-		var findBestAvailableRateAgainstDate = function(dailyData) {
-			var availabileRates = _.reject(dailyData.rates, function(rate){
-					$scope.stateVariables.selectedRate = $scope.stateVariables.selectedRate == null? "" : $scope.stateVariables.selectedRate;
-					return (isInRoomTypeSelectedMode() && rate.id !== $scope.stateVariables.selectedRate && $scope.stateVariables.selectedRate != "");
-				}),
-				availableRoomRates = _.pluck (availabileRates, "room_rates"),
-				firstAvailableRoomRate = _.reject(availableRoomRates[0],function(room_rate){
-					return !isRoomRateFiltered(room_rate);
-				}),
-				minAvailableRoomRate = 	availableRoomRates[0];		
-				minAmongRate = _.min (_.pluck(firstAvailableRoomRate, 'single')),
-				min_room_rate = _.findWhere(firstAvailableRoomRate, {single:minAmongRate}), 
-				minAmongRate = minAmongRate === null ? 0 : minAmongRate,
-				bestAvailableRate = minAmongRate,
-
-				eachAvailableRoomRate = null;
-
-			//if restriction not included in search
-			if (!isRestrictionIncludedInSearch()) {
-				_.each (availableRoomRates, function(eachRoomRate){
-					eachRoomRate = _.filter(eachRoomRate.room_rates, function(rate) {
-						return (rate.restrictions.length === 0)
-					});
-				})
-			}
-
-			for (var i = 1; i < availableRoomRates.length; i++) {
-				eachAvailableRoomRate = _.reject(availableRoomRates[i], function(room_rate){
-					return !isRoomRateFiltered(room_rate);
+							if (dayAvailabilityToDisplay <= 0) {
+								classes += 'unavailable ';
+							} else if (dailyStat.date !== departureDateString) {
+								classes += 'available ';
+							}
+							return classes;
+						})(),
+						start: new tzIndependentDate(dailyStat.date),
+						end: new tzIndependentDate(dailyStat.date),
+						editable: false,
+						title: (function() {
+							if (dayAvailabilityToDisplay <= 0) {
+								return dayAvailabilityToDisplay.toString();
+							}
+							return "";
+						})()
+					};
+					if ($scope.leftCalendarOptions.month === new tzIndependentDate(dailyStat.date).getMonth()) {
+						calendarData.left.push(eventData);
+					} else if ($scope.rightCalendarOptions.month === new tzIndependentDate(dailyStat.date).getMonth()) {
+						calendarData.right.push(eventData);
+					}
 				});
-				minAmongRate = _.min (_.pluck(eachAvailableRoomRate, 'single'));
-				if (minAmongRate !== null && minAmongRate <=  bestAvailableRate){
-					bestAvailableRate = minAmongRate;
-					minAvailableRoomRate = availableRoomRates[i];
-					min_room_rate = _.findWhere(eachAvailableRoomRate, {single:minAmongRate});
-				}
-			}
-			bestAvailableRate = bestAvailableRate == Infinity ? "" : bestAvailableRate;
-			var bestRateData = {};
-			bestRateData.bestAvailableRate = bestAvailableRate;
-			if(bestAvailableRate != ''){
-				bestRateData.room_type_name = _.findWhere($scope.stateVariables.rooms, {id:min_room_rate.room_type_id}).name;
-				bestRateData.rate_name = _.findWhere($scope.stateVariables.rates, {id: _.findWhere(availabileRates, {room_rates: minAvailableRoomRate}).id}).name;
-				bestRateData.availability = min_room_rate.availability;
-				_.each(min_room_rate.restrictions, function(restriction){
 
-				restriction.value = _.findWhere($scope.stateVariables.restriction_types, {id:restriction.restriction_type_id}).value;
-			});
-			bestRateData.restrictions = min_room_rate.restrictions;
-			}else{
-				bestRateData.room_type_name = "";
-				bestRateData.rate_name = "";
-				bestRateData.availability = "";
-				bestRateData.restrictions = [];
-			}
-			
-			
-			
-
-			return bestRateData;
-		};
-
-		/**To filter the room rates
-		 * [isRoomRateFiltered description]
-		 * @return {object} [description]
-		 */
-		var isRoomRateFiltered = function(room_rate){
-			if(room_rate.single == null)
-				return false;
-			else{
-				$scope.stateVariables.selectedRoom = $scope.stateVariables.selectedRoom == null? "" : $scope.stateVariables.selectedRoom;
-				if(isInRoomTypeSelectedMode() && room_rate.room_type_id !== $scope.stateVariables.selectedRoom && $scope.stateVariables.selectedRoom != "")
-					return false;
-				else if(isRestrictionIncludedInSearch() && room_rate.restrictions.length == 0)
-					return false;
-				else if(isInBestAvailableMode() && isShowAvailableRoomsSelected() && room_rate.availability
-					<= 0)
-					return false;
-			}
-			return true;
-		}
-
-		/**
-		 * when a day is rendered, this callback will fire
-		 * @param  {Object} date
-		 * @param  {DOMNode} cell
-		 */
-		var dayRendered = function(date, cell) {
-			var formattedDate = $filter('date')(date, $rootScope.dateFormatForAPI);
-			var correspondingEventData = _.findWhere(availabilityData.results, {'date': formattedDate});
-
-			if (typeof correspondingEventData !== "undefined") {
-
-			}
-		};
-
-		/**
-		 * against each day, we need to form event data
-		 * @param  {Object} dailyData
-		 * @return {Object}
-		 */
-		var formEventData = function (dailyData) {
-
-			var bestRateData = findBestAvailableRateAgainstDate(dailyData);
-			var title = getTitleAgainstDailyData (dailyData);
-			var eventData = {
-				day 		: getDayDataAgainstDailyData (dailyData),
-				className 	: getClassNameAgainstDailyData (dailyData),
-				start 		: new tzIndependentDate (dailyData.date),
-				end 		: new tzIndependentDate (dailyData.date),
-				editable 	: false,
-				title 		: title == ""? bestRateData.bestAvailableRate.toString() : title,
-				toolTipData : bestRateData
+				$scope.eventSources.left.push(calendarData.left);
+				$scope.eventSources.right.push(calendarData.right);
+			},
+			getCalendarData = function(from, to) {
+				$scope.invokeApi(RVStayDatesCalendarSrv.fetchCalendarData, {
+					from_date: from,
+					to_date: to
+				}, function(data) { //Success Callback
+					$scope.$emit('hideLoader');
+					console.log(data);
+					currentMasterData = data;
+					resetCalendarEvents();
+				}, function(errorMessage) { // Failure Callback
+					$scope.errorMessage = errorMessage;
+				});
 			};
 
-			return eventData;
-		};
 
-		/**
-		 * whether we are processing on the left side calendar
-		 * @param  {Object}  dailyData
-		 * @return {Boolean}
-		 */
-		var isProcessingLeftSideCalendar = function(dailyData) {
-			//if the month of left calndr and date are same, it means
-			return ($scope.leftCalendarOptions.month === new tzIndependentDate(dailyData.date).getMonth());
-		};
-
-		/**
-		 * whether we are processing on the right side calendar
-		 * @param  {Object}  dailyData
-		 * @return {Boolean}
-		 */
-		var isProcessingRightSideCalendar = function(dailyData) {
-			//if the month of right calndr and date are same, it means
-			return ($scope.rightCalendarOptions.month === new tzIndependentDate(dailyData.date).getMonth());
-		};
-
-
-		/**
-		 * ui-calendar requires an array of events to render
-		 * this method is to form those events	
-		 */
-		var formCalendarEvents = function() {
-			var calendarData = {
+		this.init = function() {
+			$scope.eventSources = {
 				left: [],
 				right: []
-			},
-			eventData = null;
+			};
+			$scope.$emit('roomTypesCalOptionSelected');
+			if ($scope.reservationData.rooms[0].roomTypeId === "") {
+				$scope.stateCheck.calendarState.calendarType = "BEST_AVAILABLE";
+			}
+			$scope.checkinDateInCalender = $scope.confirmedCheckinDate = tzIndependentDate($scope.reservationData.arrivalDate);
+			$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = tzIndependentDate($scope.reservationData.departureDate);
 
-			_.each(availabilityData.results, function(dailyData) {
-				eventData = formEventData(dailyData);
-
-				if (isProcessingLeftSideCalendar(dailyData)) {
-					calendarData.left.push(eventData);
-				} 
-				else if (isProcessingRightSideCalendar(dailyData)) {
-					calendarData.right.push(eventData);
-				}
-			});
-
-			//updating the left, right side calendar data model with new ones
-			$scope.eventSources.left.push(calendarData.left);
-			$scope.eventSources.right.push(calendarData.right);
-		};
-		
-		/**
-		 * success call back of calendar details fetch
-		 * @param  {Object} API response	 
-		 */
-		var successCallBackOfFetchCalendarAvailabilityData = function(data) {
-			$scope.stateVariables.rooms = data.room_types;
-			$scope.stateVariables.rates = data.rates;
-			$scope.stateVariables.restriction_types = data.restriction_types;
-			availabilityData = data;
-
-			renderFullCalendar();
-			formCalendarEvents ();
+			//finalRoomType - Room type finally selected by the user. corresponds to the bottom select box
+			//roomTypeForCalendar - Room type which specifies the calendar data
+			$scope.finalRoomType = $scope.roomTypeForCalendar = $scope.reservationData.rooms[0].roomTypeId;
+			that.renderFullCalendar();
+			getCalendarData(getFirstDayOfMonth($scope.checkinDateInCalender), getLastDayOfNextMonth($scope.checkinDateInCalender));
 		};
 
-		/**
-		 * to fetch calendar availability data
-		 * @param  {String} from date
-		 * @param  {String} to date
-		 */
-		var fetchCalendarAvailabilityData = function(from, to) {
-			var params = {
-                from_date: from,
-				to_date: to
-            };
-
-            var options = {
-                params: params,
-                successCallBack: successCallBackOfFetchCalendarAvailabilityData
-            };
-
-            $scope.callAPI(RVStayDatesCalendarSrv.fetchCalendarData, options);
-		};
-
-		/**
-		 * to reset the event model that we are passing to calendar
-		 */
-		var resetCalenarEventModel = function() {
-			$scope.eventSources.left.length = 0;
-			$scope.eventSources.right.length = 0;
-		};
-
-		/**
-		 * to set title & iScroll object
-		 */
-		var	setTitleAndScroller = function() {
-			//heading & title
-			$scope.heading = $filter('translate')('CHANGE_STAY_DATES_TITLE');
-			$scope.setTitle ($scope.heading);
-			
-			//scroller options
-			$scope.setScroller ('room-rates-calendar');
-		};
-
-		/**
-		 * method to refresh scroller
-		 */
-		var	refreshScroller = function() {
-			$timeout(function() {
-				$scope.refreshScroller('room-rates-calendar');
-			}, 100);
-		};
 
 		/**
 		 * Set the calendar options to display the calendar
 		 */
-		var renderFullCalendar = function() {
+		this.renderFullCalendar = function() {
 			//calender options used by full calender, related settings are done here
 			var fullCalendarOptions = {
 				height: 450,
@@ -337,19 +146,19 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 					right: ''
 				},
 				year: $scope.confirmedCheckinDate.getFullYear(), // Check in year
-				month: typeof $scope.leftCalendarOptions == 'undefined'?$scope.confirmedCheckinDate.getMonth():$scope.leftCalendarOptions.month, // Check in month (month is zero based)
+				month: $scope.confirmedCheckinDate.getMonth(), // Check in month (month is zero based)
 				day: $scope.confirmedCheckinDate.getDate(), // Check in day
 				editable: true,
 				disableResizing: false,
 				contentHeight: 320,
 				weekMode: 'fixed',
-				ignoreTimezone: false, // For ignoring timezone,
-				dayRender 	: dayRendered
+				ignoreTimezone: false // For ignoring timezone,
 			};
 
-			$scope.leftCalendarOptions = _.extend({}, fullCalendarOptions);
+			$scope.leftCalendarOptions = dclone(fullCalendarOptions);
 
-			$scope.rightCalendarOptions = _.extend({}, fullCalendarOptions);
+			// //Setting events for right calendar
+			$scope.rightCalendarOptions = dclone(fullCalendarOptions);
 
 			// //Set month of rigt calendar
 			$scope.rightCalendarOptions.month = $scope.leftCalendarOptions.month + 1;
@@ -357,34 +166,19 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			$scope.disablePrevButton = $scope.isPrevButtonDisabled();
 
 			refreshScroller();
+
 		};
 
-		$scope.$on('availableRateFiltersUpdated', function(event){
-			resetCalenarEventModel();
-			formCalendarEvents();
-		});
 
 		$scope.selectedBestAvailableRatesCalOption = function() {
-			switchToBestAvailableRateMode ();
-			resetCalenarEventModel();
-			formCalendarEvents();
+			$scope.stateCheck.calendarState.calendarType = 'BEST_AVAILABLE';
 		};
-
 		/**
 		 * Event handler for Room type view selecton
 		 */
 		$scope.selectedRoomTypesCalOption = function() {
-			switchToRoomTypeMode ();
-			resetCalenarEventModel();
-			formCalendarEvents();
-
+			$scope.stateCheck.calendarState.calendarType = 'ROOM_TYPE';
 		};
-
-		$scope.filtersUpdated = function () {
-			resetCalenarEventModel();
-			formCalendarEvents();
-
-		}
 
 
 		$scope.isPrevButtonDisabled = function() {
@@ -410,8 +204,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			}
 			$scope.disablePrevButton = $scope.isPrevButtonDisabled();
 			startDate = new Date($scope.leftCalendarOptions.year, $scope.leftCalendarOptions.month);
-			resetCalenarEventModel ();
-			fetchCalendarAvailabilityData(getFirstDayOfMonth(startDate), getLastDayOfNextMonth(startDate));
+			getCalendarData(getFirstDayOfMonth(startDate), getLastDayOfNextMonth(startDate));
 		};
 
 		/**
@@ -433,116 +226,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			changeMonth('BACKWARD');
 		};
 
-		/**
-		 * to switch to Room type selected mode
-		 */
-		var switchToRoomTypeMode = function () {
-			$scope.stateCheck.calendarState.calendarType = "ROOM_TYPE";
-			
-
-		};
-
-		/**
-		 * to switch to best available rate mode
-		 */
-		var switchToBestAvailableRateMode = function () {
-			$scope.stateCheck.calendarState.calendarType = "BEST_AVAILABLE";
-			
-		};
-
-		/**
-		 * [isInBestAvailableMode description]
-		 * @return {Boolean}
-		 */
-		var isInBestAvailableMode = function() {
-			return ($scope.stateCheck.calendarState.calendarType === "BEST_AVAILABLE");
-		};
-
-		/**
-		 * [isInRoomTypeSelectedMode description]
-		 * @return {Boolean}
-		 */
-		var isInRoomTypeSelectedMode = function() {
-			return ($scope.stateCheck.calendarState.calendarType === "ROOM_TYPE");
-		};
-
-		/**
-		 * [isRestrictionIncludeInSearch description]
-		 * @return {Boolean}
-		 */
-		var isRestrictionIncludedInSearch = function() {
-			return ($scope.stateCheck.calendarState.searchWithRestrictions);
-		};
-
-		/**
-		 * [isShowAvailableRoomsSelected description]
-		 * @return {Boolean}
-		 */
-		var isShowAvailableRoomsSelected = function() {
-			return ($scope.stateCheck.calendarState.showOnlyAvailableRooms);
-		};
-
-		/**
-		 * to initialize variables in controllers
-		 */
-		var initializeVariables = function() {
-			var resData = $scope.reservationData;
-			$scope.eventSources = {
-				left: [],
-				right: []
-			};
-
-			$scope.stateVariables = {
-				selectedRoom: parseInt(resData.tabs[$scope.viewState.currentTab].roomTypeId, 10) || "",
-				selectedRate: parseInt(resData.rooms[$scope.stateCheck.roomDetails.firstIndex].rateId, 10) || "",
-				rooms: [],
-				rates: []
-			};
-
-			$scope.checkinDateInCalender = $scope.confirmedCheckinDate = tzIndependentDate(resData.arrivalDate);
-			$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = tzIndependentDate(resData.departureDate);			
-
-			//finalRoomType - Room type finally selected by the user. corresponds to the bottom select box
-			//roomTypeForCalendar - Room type which specifies the calendar data
-			$scope.finalRoomType = $scope.roomTypeForCalendar = resData.rooms[0].roomTypeId;
-		};
-
-		/**
-		 * we need to set mode initialliy
-		 */
-		var chooseMode = function() {
-			if (!!$scope.stateVariables.selectedRoom) {
-				switchToRoomTypeMode ();
-			}
-			else {
-				switchToBestAvailableRateMode ();
-			}
-			$scope.$emit('roomTypesCalOptionSelected');
-		};
-
-		/**
-		 * to show calender initially
-		 */
-		var fetchAndShowCalendar = function() {
-			var firstDayOfCal = getFirstDayOfMonth($scope.checkinDateInCalender),
-				lastDayOfNextMonth = getLastDayOfNextMonth($scope.checkinDateInCalender);
-			
-			fetchCalendarAvailabilityData (firstDayOfCal, lastDayOfNextMonth);
-		};
-
-		/**
-		 * to what we need to in initial time
-		 */
-		var initializeMe = function() {
-
-			initializeVariables();
-
-			setTitleAndScroller();
-
-			chooseMode();
-
-			fetchAndShowCalendar();
-		}();
+		this.init();
 
 	}
 ]);

@@ -55,7 +55,6 @@ sntRover.service('RVReservationPackageSrv', ['$http', '$q', 'rvBaseWebSrvV2', fu
 			addonItem.quantity = 1;
 			addonItem.is_inclusive = item.is_inclusive;
 		}
-		addonItem.chargefullweeksonly = item.charge_full_weeks_only;
 		return addonItem;
 	};
 
