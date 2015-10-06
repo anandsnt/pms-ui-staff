@@ -324,7 +324,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				travel_agent_id		 : resData.travelAgent.id,
 				group_id 			 : resData.group && resData.group.id,
 				allotment_id 		 : resData.allotment && resData.allotment.id,
-				disable_back_staycard: disableBackToStaycard
+				disable_back_staycard: disableBackToStaycard,
+				view 				 : "ROOM_RATE"
 			});
 		};
 
