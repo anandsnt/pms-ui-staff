@@ -165,7 +165,7 @@ angular.module('ui.calendar', [])
           return config;
       };
   }])
-  .directive('uiCalendar', ['uiCalendarConfig', '$locale', '$compile', function(uiCalendarConfig, $locale, $compile) {
+  .directive('uiCalendar', ['uiCalendarConfig', '$locale', function(uiCalendarConfig, $locale) {
     // Configure to use locale names by default
     var tValues = function(data) {
       // convert {0: "Jan", 1: "Feb", ...} to ["Jan", "Feb", ...]
@@ -223,16 +223,12 @@ angular.module('ui.calendar', [])
         };
 
         scope.init = function(){
-          var opts = {compiler:$compile, compile_scope:scope};
-          angular.extend(opts, options);
-          scope.calendar.fullCalendar(opts);
-          
+          scope.calendar.fullCalendar(options);
         };
 
         eventSourcesWatcher.onAdded = function(source) {
           scope.calendar.fullCalendar('addEventSource', source);
           sourcesChanged = true;
-           
         };
 
         eventSourcesWatcher.onRemoved = function(source) {
@@ -242,7 +238,6 @@ angular.module('ui.calendar', [])
 
         eventsWatcher.onAdded = function(event) {
           scope.calendar.fullCalendar('renderEvent', event);
-
         };
 
         eventsWatcher.onRemoved = function(event) {
@@ -266,7 +261,6 @@ angular.module('ui.calendar', [])
             scope.destroy();
             scope.init();
         });
-
       }
     };
 }]);

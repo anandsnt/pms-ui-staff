@@ -238,13 +238,12 @@ sntRover.service('RVReservationStateService', [
 		};
 
 
-		self.shouldPostAddon = function(frequency, present, arrival, departure, chargefullweeksonly) {
+		self.shouldPostAddon = function(frequency, present, arrival) {
 			if (frequency === 0 && present === arrival) {
 				return true;
 			}
 			var dayIndex = parseInt((new tzIndependentDate(present) - new tzIndependentDate(arrival)) / (24 * 3600 * 1000), 10);
-			var remainingDayIndex = parseInt((new tzIndependentDate(departure) - new tzIndependentDate(present)) / (24 * 3600 * 1000), 10);
-			return (dayIndex % frequency === 0)&&(remainingDayIndex >= frequency);
+			return dayIndex % frequency === 0;
 		};
 
 		self.applyDiscount = function(amount, discount, numNights) {
@@ -378,7 +377,7 @@ sntRover.service('RVReservationStateService', [
 						_.each(associatedAddons, function(addon) {
 							var currentAddonAmount = parseFloat(self.getAddonAmount(addon.amount_type.value, parseFloat(addon.amount), adultsOnTheDay, childrenOnTheDay)),
 								taxOnCurrentAddon = 0.0,
-								shouldPostAddon = self.shouldPostAddon(addon.post_type.frequency, for_date, arrival, addon.charge_full_weeks_only);
+								shouldPostAddon = self.shouldPostAddon(addon.post_type.frequency, for_date, arrival);
 							if (applyPromotion) {
 								currentAddonAmount = parseFloat(self.applyDiscount(currentAddonAmount, code.discount, numNights));
 							}
@@ -579,6 +578,7 @@ sntRover.service('RVReservationStateService', [
 
 				//step2: Parse the rates and populate the object created for rooms in step1
 				processRatesForNormalRatesAgainstDate(rooms, stayDates, roomRate, for_date, ratesMeta, additionalData, arrival, departure, activeRoom, numNights, membershipValidity);
+
 			});
 
 			return {
