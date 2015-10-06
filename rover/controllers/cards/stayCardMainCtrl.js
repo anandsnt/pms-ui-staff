@@ -687,6 +687,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		$scope.cardReplaced = function(card, cardData) {
 			if (card === 'company') {
 				$scope.reservationDetails.companyCard.id = cardData.id;
+				$scope.reservationData.company.id = cardData.id;
 				$scope.initCompanyCard();
 				//clean search data
 				$scope.searchData.companyCard.companyName = "";
@@ -699,6 +700,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.$broadcast('companySearchStopped');
 			} else if (card === 'travel_agent') {
 				$scope.reservationDetails.travelAgent.id = cardData.id;
+				$scope.reservationData.travelAgent.id = cardData.id;
 				$scope.initTravelAgentCard();
 				// clean search data
 				$scope.searchData.travelAgentCard.travelAgentName = "";
