@@ -1,5 +1,5 @@
-admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExternalInterfaceCommonSrv','adSiteminderSetupSrv', 'adSynxisSetupSrv', 'adGivexSetupSrv', '$state', '$filter', '$stateParams',
-    function ($scope, $controller, adExternalInterfaceCommonSrv, adSiteminderSetupSrv, adSynxisSetupSrv,adGivexSetupSrv, $state, $filter, $stateParams) {
+admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExternalInterfaceCommonSrv','adSiteminderSetupSrv', 'adSynxisSetupSrv', 'adZDirectSetupSrv', 'adGivexSetupSrv', '$state', '$filter', '$stateParams',
+    function ($scope, $controller, adExternalInterfaceCommonSrv, adSiteminderSetupSrv, adSynxisSetupSrv, adZDirectSetupSrv, adGivexSetupSrv, $state, $filter, $stateParams) {
 	$scope.$emit("changedSelectedMenu", 8);
         $scope.errorMessage = '';
         $scope.successMessage = '';
@@ -39,6 +39,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
         $scope.interfaceConfig = {//controller to find the proper service controller, name to update success/fail messages with proper view/title
             'admin.sitemindersSetup':{'controller':adSiteminderSetupSrv, 'name':$scope.simpleName, 'service_name': 'adSiteminderSetupSrv'},
             'admin.synxisSetup': {'controller':adSynxisSetupSrv, 'name':$scope.simpleName, 'service_name': 'adSynxisSetupSrv'},
+            'admin.zDirectSetup': {'controller':adZDirectSetupSrv, 'name':$scope.simpleName, 'service_name': 'adZDirectSetupSrv'},
             'admin.givexSetup': {'controller':adGivexSetupSrv, 'name':$scope.simpleName, 'service_name': 'adGivexSetupSrv'}
         };
         $scope.init = function(){

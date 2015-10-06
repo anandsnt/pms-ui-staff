@@ -357,6 +357,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			 * @param {object} API response
 			 */
 			var onRemoveCardSuccessCallBack = function(response) {
+				$scope.$emit('hideLoader');
 				$scope.cardRemoved(removedCard);
 				$scope.$broadcast("CARD_REMOVED", removedCard);
 
@@ -378,13 +379,19 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					if (error.httpStatus === 470) {
 						/* CICO-20270: a 470 failure response indicates that transactions exist
 						 * in bill routing. we need to show user a warning in this case */
+					 	var data = {
+					 		errorMessages: error.errorMessage
+					 	};
  						ngDialog.open({
 							template: '/assets/partials/cards/popups/detachCardsAPIErrorPopup.html',
 							className: 'ngdialog-theme-default stay-card-alerts',
 							scope: $scope,
 							closeByDocument: false,
-							closeByEscape: false
+							closeByEscape: false,
+							data: JSON.stringify(data)
 						});
+					} else {
+						$scope.errorMessage = error;
 					}
 				}
 			};
@@ -452,7 +459,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				}
 				else {
 					//Bring up alert here
-					if ($scope.viewState.pendingRemoval.status) {
+					if ($scope.viewState.pendingRemoval.status || cardId) {
 						$scope.viewState.pendingRemoval.status = false;
 						$scope.viewState.pendingRemoval.cardType = "";
 						// If user has not replaced a new card, keep this one. Else remove this card
@@ -564,9 +571,9 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			params.reservation_id = $scope.reservationData.reservationId;
 
 			if (card === 'travel_agent') {
-				params.travel_agent_id = $scope.reservationData.travelAgent.id;
+				params.travel_agent_id = $scope.reservationDetails.travelAgent.id;
 			} else if (card === 'company') {
-				params.company_id = $scope.reservationData.company.id;
+				params.company_id = $scope.reservationDetails.companyCard.id
 			}
 
 			$scope.invokeApi(RVReservationSummarySrv.fetchDefaultRoutingInfo, params, fetchSuccessofDefaultRouting);
@@ -887,7 +894,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			var self = this;
 			angular.forEach($scope.reservationData.rooms, function(room) {
 				var refData = _.findWhere(tData.rooms, {
-					room_no: room.room_no
+					roomNumber: room.roomNumber
 				});
 				room.stayDates = {};
 				rateIdSet.push(refData.rateId);
