@@ -436,7 +436,7 @@ sntRover.controller('rvTabletCtrl', [
                     var nites, avgDailyRate, packageRate, taxes, subtotal, deposits, balanceDue;
                     //console.log(info)
                     nites = parseInt(info.total_nights);
-                    
+                    $scope.selectedReservation.total_nights = nites;
                     avgDailyRate = parseFloat(info.deposit_attributes.room_cost).toFixed(2);
                     
                     deposits = parseFloat(info.deposit_attributes.deposit_paid).toFixed(2);
