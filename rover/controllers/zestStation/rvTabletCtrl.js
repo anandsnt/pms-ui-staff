@@ -109,7 +109,7 @@ sntRover.controller('rvTabletCtrl', [
             $scope.headingText = 'Header Text Here';
             $scope.subHeadingText = 'Subheader Text Here';
             $scope.inputTextPlaceholder = 'Input Text Here';
-            
+            $scope.currencySymbol = '';
             var initTabletConfig = function(){
 //                $('head').append('<link rel="stylesheet" type="text/css" href="../assets/css/zestStation/zoku.css">');
                 //$scope.settings = $rootScope.kiosk;
@@ -123,16 +123,16 @@ sntRover.controller('rvTabletCtrl', [
                     $scope.hotel_settings = data;
                     $scope.hotel_terms_and_conditions = $sce.trustAsHtml($scope.hotel_settings.terms_and_conditions).$$unwrapTrustedValue();
                     //fetch the idle timer settings
+                $scope.currencySymbol = $scope.hotel_settings.currency.symbol;
                     $scope.$emit('hideLoader');
                 };
+    
                 var fetchBizDateComplete = function(data){
-                    console.log('data.business_date: '+data.business_date);
                     if (data){
                         if (data.business_date){
                             var d = data.business_date;
                             var a = d.split('-');
                             var yr = a[0], day = a[2], mo = a[1];
-                            console.log(yr+'.'+mo+'.'+day);
                             $scope.business_date = new Date(yr, mo, day);
                             $scope.resetDatePicker();
                         }
@@ -362,8 +362,7 @@ sntRover.controller('rvTabletCtrl', [
 
                                 minutes = minutes < 10 ? "0" + minutes : minutes;
                                 seconds = seconds < 10 ? "0" + seconds : seconds;
-
-                                console.log(minutes + ":" + seconds);
+                                //console.log(minutes + ":" + seconds);
                                 
                                 if (timer === promptTime){
                                     $scope.idlePopup();
@@ -427,6 +426,11 @@ sntRover.controller('rvTabletCtrl', [
                     'id': r.confirmation_number
                 }, $scope.onSuccessFetchReservationDetails);
             };
+            //$scope
+            $scope.formatCurrency = function(amt){
+               return parseFloat(amt).toFixed(2);
+            };
+            
             
             $scope.onSuccessFetchReservationDetails = function(data){
                     $scope.selectedReservation.reservation_details = data;
