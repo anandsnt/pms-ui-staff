@@ -32,11 +32,10 @@
             <div class="scrollable" ng-iscroll="rvActionListScroller" ng-iscroll-delay="500"> <!-- Attach iScroll here -->
                 <ul class="wrapper">
                     <li ng-repeat="action in actions" click-touch="selectAction(action)" ng-class="{'active': action.id == selectedAction.id}"> <!-- Add class "overdue" when past due date. Add class "active" when selected, first one should be active by default when screen is loaded -->
-                        <span class="icons icon-action icon-{{action.action_status}}" 
+                        <span ng-hide="!isStandAlone && action.action_task_type === 'REQUEST'" class="icons icon-action icon-{{action.action_status}}" 
                               ng-class="{'active': action.id == selectedAction.id, 
                                           'action-set-mid': (isStandAlone && action.over_due == false && action.action_task_type == null) || 
-                                          (isStandAlone && action.action_status === 'COMPLETED') || 
-                                          (!isStandAlone && action.action_status === 'COMPLETED'  && action.action_task_type === 'REQUEST')
+                                          (isStandAlone && action.action_status === 'COMPLETED')
                               }"> <!-- makes each icon a white version for visibility when section is 'active'-->
                             <!-- If overdue, output "Overdue " -->
                             
@@ -53,7 +52,22 @@
                                 {{action.action_task_type}}</span>
                             
                         </span>
-                        
+                        <span ng-show="!isStandAlone && action.action_task_type === 'REQUEST'" class="icon-action special-request-icon" 
+                              ng-class="{'active': action.id == selectedAction.id,'special-request-icon':
+                                          (!isStandAlone && action.action_status === 'COMPLETED'  && action.action_task_type === 'REQUEST')
+                              }"> <!-- makes each icon a white version for visibility when section is 'active'-->
+                            <!-- If overdue, output "Overdue " -->
+                            
+                            <!--{Alert|Trace|Request} -->
+                            <span ng-if="(!isStandAlone && action.over_due && action.action_status !== 'COMPLETED' && action.action_task_type === 'TRACE')" 
+                                  class="actions-overdue-font" 
+                                  ng-class="{'active': action.id == selectedAction.id}" translate>OVERDUE</span><br />
+                                  
+                                  <span class="actions-overdue-font" style="margin-left:2px;" 
+                                  ng-class="{'active': action.id == selectedAction.id}">
+                                {{action.action_task_type}}</span>
+                            
+                        </span>
                         
                         
                         
