@@ -585,6 +585,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         list[x].date_completed = getFormattedDate(list[x].completed_at);
                         list[x].time_completed = getCompletedTimeFromDateMilli(list[x].completed_at);
                     }
+                    
                 }
 
 
@@ -600,13 +601,17 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         for (var i in $scope.actions){
                             actionItem = $scope.actions[i];
                             if (actionItem.id === listItem.id){
-                                $scope.actions[i] = listItem;
-                                inActions = true;
-                            }
-                            if (!$scope.isStandAlone){
-                                if (del && selected){//flag to delete an item (overlay)
-                                    if (selected.id === listItem.id){
-                                        inActions = true;//skips 
+                                if ($scope.isStandAlone){
+                                    $scope.actions[i] = listItem;
+                                    inActions = true;
+                                } else if (!$scope.isStandAlone){
+                                    if (del === 'delete'){//flag to delete an item (overlay)
+                                        if (selected.id === listItem.id){
+                                            inActions = true;//skips 
+                                        }
+                                    } else {
+                                        $scope.actions[i] = listItem;
+                                        inActions = true;
                                     }
                                 }
                             }
@@ -616,14 +621,25 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         }
                     }
                 }
-
+                
+                
                 $scope.fetchActionsCount();
                 $scope.setActionsHeaderInfo();
+                var isStandAlone = $scope.isStandAlone;
                 if ($scope.lastSelectedItemId){
                     for (var a in $scope.actions){
-                        if ($scope.lastSelectedItemId === $scope.actions[a].id){
-                            $scope.selectAction($scope.actions[a]);
+                        if (isStandAlone){
+                            if ($scope.lastSelectedItemId === $scope.actions[a].id){
+                                $scope.selectAction($scope.actions[a]);
+                            }
+                        } else if (!$scope.isStandAlone){
+                            if ($scope.lastSelectedItemId === $scope.actions[a].id && !del){
+                                $scope.selectAction($scope.actions[a]);
+                            } else {
+                                $scope.selectAction($scope.actions[0]);
+                            }
                         }
+                        
                     }
                 } else {
                     $scope.setDefaultActionSelected(0);
@@ -638,6 +654,16 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.invokeApi(rvActionTasksSrv.getActionsTasksList, data, onSuccess, onFailure);
 
         };
+        
+        
+        $scope.isDeletePending = function(id, a){
+            for (var i in a){
+                if (a[i] === id){
+                    return true;
+                }
+            } return false;
+        };
+        
         $scope.convertMilTime = function(milStr){
           //converts "16:10:00" into "04:10 PM"
             var str = milStr.split(' ');
