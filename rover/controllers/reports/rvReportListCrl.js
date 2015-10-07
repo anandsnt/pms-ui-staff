@@ -90,9 +90,36 @@ sntRover.controller('RVReportListCrl', [
 
 
         // show hide filter toggle
-        $scope.toggleFilter = function() {
-            this.item.show_filter = this.item.show_filter ? false : true;
-            $scope.refreshScroller( LIST_ISCROLL_ATTR );
+        $scope.toggleFilter = function(reportItem) {
+            // this.item.show_filter = this.item.show_filter ? false : true;
+            // $scope.refreshScroller( LIST_ISCROLL_ATTR );
+
+            var toggle = function() {
+                reportItem.show_filter = reportItem.show_filter ? false : true;
+                $scope.refreshScroller( LIST_ISCROLL_ATTR );
+            };
+
+            var callback = function() {
+                $scope.$emit( 'hideLoader' );
+                toggle();
+            };
+
+            // this is always be false since (check the next comment)
+            if ( !! reportItem.allFiltersProcessed ) {
+                toggle();
+            }
+
+            // we are gonna keep this for future
+            // else if ( reportUtils.allFiltersProcessed(reportItem) ) {
+            //     reportItem.allFiltersProcessed = true;
+            //     toggle();
+            // }
+
+            else {
+                $scope.$emit( 'showLoader' );
+                reportUtils.findFillFilters( reportItem['filters'], $scope.$parent.reportList )
+                    .then( callback );
+            };
         };
 
         $scope.setnGenReport = function() {
