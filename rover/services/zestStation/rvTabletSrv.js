@@ -75,7 +75,7 @@ sntRover.service('rvTabletSrv',
                 
                 this.fetchAddonDetails = function (param) {
                     var deferred = $q.defer(),
-                            url = '/reservation_addons?reservation_id='+param.id;
+                            url = '/staff/staycards/reservation_addons?reservation_id='+param.id;
 
                     rvBaseWebSrvV2.getJSON(url).then(function (data) {
                         deferred.resolve(data);
