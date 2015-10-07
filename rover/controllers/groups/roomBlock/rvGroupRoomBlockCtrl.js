@@ -1618,6 +1618,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 					failureCallBack 	: failureCallBackOfEarlierArrivalDateChange,
 					cancelPopupCallBack	: cancelCallBackofDateChange
 				};
+			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerEarlierArrDateChange (options);
 		};
 
@@ -1634,6 +1635,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				cancelPopupCallBack	: cancelCallBackofDateChange,
 				message 			: "GROUP_EARLIER_DEP_DATE_CHANGE_WARNING"
 			}
+			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.showDateChangeInvalidWarning(options);
 		};
 
@@ -1642,6 +1644,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				cancelPopupCallBack	: cancelCallBackofDateChange,
 				message 			: "GROUP_LATER_ARR_DATE_CHANGE_WARNING"
 			}
+			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.showDateChangeInvalidWarning(options);
 		};
 
@@ -1659,6 +1662,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 					failureCallBack 	: failureCallBackOfEarlierArrivalDateChange,
 					cancelPopupCallBack	: cancelCallBackofDateChange
 				};
+			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerLaterArrDateChange (options);
 		};
 
@@ -1696,6 +1700,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 					failureCallBack 	: failureCallBackOfEarlierDepartureDateChange,
 					cancelPopupCallBack	: cancelCallBackofDateChange
 				};
+			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerEarlierDepDateChange (options);
 		};
 
@@ -1730,6 +1735,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 					failureCallBack 	: failureCallBackOfLaterDepartureDateChange,
 					cancelPopupCallBack	: cancelCallBackofDateChange
 				};
+			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerLaterDepDateChange (options);
 		};
 

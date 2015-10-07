@@ -23,6 +23,17 @@ sntRover.service('rvActionTasksSrv',['$q', 'BaseWebSrvV2', function( $q, BaseWeb
             });
             return deferred.promise;
 	};
+	this.syncActionCount = function(id){
+            var deferred = $q.defer();
+            var url = "/api/action_tasks/sync_with_external_pms?reservation_id="+id;
+
+            BaseWebSrvV2.getJSON(url).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+	};
 
 	this.postNewAction = function(params){
             var deferred = $q.defer();

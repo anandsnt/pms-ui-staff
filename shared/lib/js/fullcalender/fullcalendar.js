@@ -5243,8 +5243,6 @@ function DayEventRenderer() {
 		// render the HTML. innerHTML is considerably faster than jQuery's .html()
 		renderContainer[0].innerHTML = html;
 
-		t.calendar.options.compiler(renderContainer[0])(t.calendar.options.compile_scope);
-
 		// retrieve the individual elements
 		elements = renderContainer.children();
 
@@ -5406,13 +5404,8 @@ function DayEventRenderer() {
 		html +=
 			"<span class='fc-event-day'>" +
 			htmlEscape(event.day || '') +
-			"</span>" ;
-			if (event.toolTipData.restrictions.length > 0){
-				html +=" <span>" +
-			'R' +
-			"</span>" ;
-			}
-			html += "<span class='fc-event-title'>" +
+			"</span>" +
+			"<span class='fc-event-title'>" +
 			htmlEscape(event.title || '') +
 			"</span>" +		
 			"</div>";

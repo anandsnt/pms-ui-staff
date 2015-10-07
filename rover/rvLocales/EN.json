@@ -400,11 +400,9 @@
     "AVAILABLE_AMOUNT": "Available amount",
     "AMOUNT": "Amount",
     "SAVE": "Save",
-    "CANCEL": "Cancel"
-
-
-
-	
+    "CANCEL": "Cancel",
+    "COMPANY_CARD_DETACH_BILLING_INFO_WARNING": "Removing card may update Billing and Rate Information",
+    "COMPANY_CARD_DETACH_TRANSACTION_EXIST_ERROR": "Charges have been routed to the Company / Travel Agent account, please adjust Billing Information prior to removing entity."
 ,    
     
     "GREETING_MORNING": "Good Morning",
@@ -832,6 +830,7 @@
     "ADDITIONAL_EMAIL_ADDRESS": "Additional Email Address",
 
     "RESV_ALL_ROOMS" : "All Room Types",
+    "RESV_ALL_RATES" : "All Rate Types",
     "NO_ROOM_RATE_MSG": "No Availability. Please select to show Closed Rates or change Room Type selection.",
     "NO_AVAILABILITY": "No Availability",
     "RESV_RECOMMENDED" : "Recommended",
@@ -883,6 +882,8 @@
     "NO":"No",
     "SHOW_STAY_DATES": "Show Stay Dates",
     "SHOW_CLOSED_RATES": "Show Closed Rates",
+    "ONLY_AVAILABLE_ROOMS" : "Only Available Rooms",
+    "SEARCH_WITH_RESTRICTIONS" : "Search With Restrictions",
     "VAR_OCCUPANCY": "Varying Occupancy per Stay Date",
     "INVALID_EMAIL_MESSAGE": "Please enter a valid email address",
     "INVALID_CREDIT_CARD": "There is a problem with your credit card",
@@ -1194,5 +1195,7 @@
 
     "TERMS_AGREE_TEXT": "Please agree to the Terms and Conditions below in order to check in.",
     "TERMS_SUBHEADING": "subheader",
-    "TERMS_SUBHEADING_TEXT": "subheader"
+    "TERMS_SUBHEADING_TEXT": "subheader",
+    "TERMS_ACCEPT": "Accept",
+    "TERMS_CANCEL": "Cancel"
             }

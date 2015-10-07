@@ -163,6 +163,22 @@ sntRover.controller('guestCardController', [
 		});
 
 		/**
+		 * Every logic to disable the detach company card button.
+		 */
+		$scope.shouldDisableCompanyCardDetachButton = function() {
+			var isGroupReservation = !!$scope.reservationDetails.group.id;
+			return (isGroupReservation);
+		};
+
+		/**
+		 * Every logic to disable the detach TA card button.
+		 */
+		$scope.shouldDisableTACardDetachButton = function() {
+			var isGroupReservation = !!$scope.reservationDetails.group.id;
+			return (isGroupReservation);
+		};
+
+		/**
 		 * scroller options
 		 */
 		$scope.resizableOptions = {
@@ -550,71 +566,115 @@ sntRover.controller('guestCardController', [
 			}
 		}
 
-		$scope.detachCard = function(cardType) {
+		var showDetachCardsAPIErrorPopup = function() {
+			ngDialog.open({
+				template: '/assets/partials/cards/popups/detachCardsAPIErrorPopup.html',
+				scope: $scope,
+				closeByDocument: false,
+				closeByEscape: false
+			});
+		};
+
+		var showDetachCardsAPIWarningPopup = function(dataForPopup) {
+			ngDialog.open({
+				template: '/assets/partials/cards/popups/detachCardsAPIWarningPopup.html',
+				scope: $scope,
+				closeByDocument: false,
+				closeByEscape: false,
+				data: JSON.stringify(dataForPopup)
+			});
+		};
+
+		/**
+		 * Function to handle detaching of company card card.
+		 * If not in create mode, API call is made and billing info is removed
+		 * @return {undefined}
+		 */
+		$scope.detachCompanyCard = function() {
+			// in Create mode no API call is needed
 			if ($scope.viewState.identifier === "CREATION") {
-				if (cardType === "guest") {
+				var resDetails = $scope.reservationDetails;
+
+				resetReservationData.resetCompanyCard();
+				$scope.showContractedRates({
+					companyCard: resDetails.companyCard.id,
+					travelAgent: resDetails.travelAgent.id
+				});
+				$scope.$broadcast("companyCardDetached");
+			}
+			else {
+				// billing info may be deleted; so warn user
+				var dataForPopup = {
+					cardTypeText: "Company Card",
+					cardType: "company",
+					cardId: $scope.reservationDetails.companyCard.id
+				}
+				showDetachCardsAPIWarningPopup(dataForPopup);
+			}
+		};
+
+		$scope.detachTACard = function() {
+			// in Create mode no API call is needed
+			if ($scope.viewState.identifier === "CREATION") {
+				var resDetails = $scope.reservationDetails;
+
+				resetReservationData.resetTravelAgent();
+				$scope.showContractedRates({
+					companyCard: resDetails.companyCard.id,
+					travelAgent: resDetails.travelAgent.id
+				});
+				$scope.$broadcast("travelAgentDetached");
+			}
+			else {
+				// billing info may be deleted; so warn user
+				var dataForPopup = {
+					cardTypeText: "Travel Agent Card",
+					cardType: "travel_agent",
+					cardId: $scope.reservationDetails.travelAgent.id
+				}
+				showDetachCardsAPIWarningPopup(dataForPopup);
+			}
+		};
+
+		$scope.detachGuestCard = function() {
+			// in Create mode no API call is needed
+			if ($scope.viewState.identifier === "CREATION") {
 					resetReservationData.resetGuest();
 					$scope.$broadcast("guestCardDetached");
-				} else if (cardType === "company") {
-					resetReservationData.resetCompanyCard();
-					$scope.reservationDetails.companyCard.id = "";
-					$scope.showContractedRates({
-						companyCard: $scope.reservationDetails.companyCard.id,
-						travelAgent: $scope.reservationDetails.travelAgent.id
-					});
-					$scope.$broadcast("companyCardDetached");
-				} else if (cardType === "travel_agent") {
-					resetReservationData.resetTravelAgent();
-					$scope.reservationDetails.travelAgent.id = "";
-					$scope.showContractedRates({
-						companyCard: $scope.reservationDetails.companyCard.id,
-						travelAgent: $scope.reservationDetails.travelAgent.id
-					});
-					$scope.$broadcast("travelAgentDetached");
+			}
+			else {
+				var dataForPopup = {
+					cardTypeText: "Guest Card",
+					cardType: "guest"
 				}
-			} else {
-				var cards = {
-					"guest": "Guest Card",
-					"company": "Company Card",
-					"travel_agent": "Travel Agent Card"
-				};
-
 				ngDialog.open({
 					template: '/assets/partials/cards/alerts/detachCard.html',
 					className: 'ngdialog-theme-default stay-card-alerts',
 					scope: $scope,
 					closeByDocument: false,
 					closeByEscape: false,
-					data: JSON.stringify({
-						cardTypeText: cards[cardType],
-						cardType: cardType
-					})
+					data: JSON.stringify(dataForPopup)
 				});
 			}
 		};
-		$scope.deleteCard = function(cardType) {
-			if (cardType === 'travel_agent') {
+
+		$scope.deleteCard = function(cardType, cardId) {
+			$scope.closeDialog();
+			$timeout(function() {
+				$scope.closeGuestCard();
+				$scope.removeCard(cardType, cardId);
+			}, 700);
+		};
+
+		$scope.$on("CARD_REMOVED", function(event, card) {
+			if (card === 'travel_agent') {
 				$scope.$broadcast('travelAgentDetached');
-				$scope.viewState.pendingRemoval.status = true;
-				$scope.viewState.pendingRemoval.cardType = "travel_agent";
-			} else if (cardType === 'company') {
+			} else if (card === 'company') {
 				$scope.$broadcast('companyCardDetached');
-				$scope.viewState.pendingRemoval.status = true;
-				$scope.viewState.pendingRemoval.cardType = "company";
-				$scope.showContractedRates({
-					companyCard: '',
-					travelAgent: $scope.reservationDetails.travelAgent.id
-				});
-			} else if (cardType === 'guest') {
+			} else if (card === 'guest') {
 				$scope.$broadcast('guestCardDetached');
-				$scope.viewState.pendingRemoval.status = true;
-				$scope.viewState.pendingRemoval.cardType = "guest";
-				$scope.showContractedRates({
-					companyCard: $scope.reservationDetails.companyCard.id,
-					travelAgent: ''
-				});
 			}
-		};
+		});
 
 		// init staycard header
 
@@ -932,28 +992,6 @@ sntRover.controller('guestCardController', [
 				scope: $scope,
 				closeByDocument: false,
 				closeByEscape: false
-			});
-		};
-		/**
-		 * to navigate to room & rates screen
-		 * @return {[type]} [description]
-		 */
-		$scope.navigateToRoomAndRates = function() {
-			var resData = $scope.reservationData;
-			$state.go('rover.reservation.staycard.mainCard.roomType', {
-				from_date: resData.arrivalDate,
-				to_date: resData.departureDate,
-				fromState: function() {
-					if ($state.current.name === "rover.reservation.staycard.reservationcard.reservationdetails") {
-						return 'STAY_CARD'
-					} else {
-						return $state.current.name
-					}
-				}(),
-				company_id: resData.company.id,
-				travel_agent_id: resData.travelAgent.id,
-				group_id: resData.group && resData.group.id,
-				allotment_id: resData.allotment && resData.allotment.id
 			});
 		};
 
