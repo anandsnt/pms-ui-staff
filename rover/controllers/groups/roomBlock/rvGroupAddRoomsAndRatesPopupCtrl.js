@@ -167,7 +167,7 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 		};
 
 		var failureCallBackOfSaveNewRoomTypesAndRates = function(error) {
-			$scope.$emit("showErrorMessage", error);
+			$scope.errorMessage = error;
 		};
 
 		/**
@@ -196,8 +196,8 @@ sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 		 * types and rates.  
 		 */ 
 		$scope.checkIfGroupCustomRateChanged = function() {
-			ngDialog.close();
 			if (isGroupCustomRateChanged()) {
+				ngDialog.close();
 				$scope.$emit("updateRate", $scope.selectedRoomTypeAndRates);
 			}
 			else {
