@@ -452,7 +452,7 @@ sntRover.controller('rvTabletCtrl', [
                     
                     subtotal = parseFloat(info.deposit_attributes.sub_total).toFixed(2);
                     
-                    balanceDue = parseFloat(info.deposit_attributes.total_cost_of_stay).toFixed(2);
+                    balanceDue = parseFloat(info.deposit_attributes.outstanding_stay_total).toFixed(2);
                     
                     //console.info('balanceDue',balanceDue, 'subtotal',subtotal, 'deposits',deposits)
                     
@@ -487,10 +487,21 @@ sntRover.controller('rvTabletCtrl', [
                      console.info('got addons');
                      console.log(addonData);
                      $scope.$emit('hideLoader');
+                     $scope.selectedReservation.addons = addonData.existing_packages;
+                     
+                     var items = $scope.selectedReservation.addons.length;
+                     for (var i=0; i < items; i++){
+                         if (i === (items-1)){
+                             $scope.selectedReservation.addons[i].isLastAddon = true;
+                         } else {
+                             $scope.selectedReservation.addons[i].isLastAddon = false;
+                         }
+                     }
+                     
                  };
                  console.log('fetch using this', info);
                   $scope.invokeApi(rvTabletSrv.fetchAddonDetails, {
-                            'id':info.confirmation_num
+                            'id':info.reservation_id
                         }, fetchCompleted);
                  
                     $scope.$emit('hideLoader');
@@ -533,12 +544,15 @@ sntRover.controller('rvTabletCtrl', [
             $scope.prevStateNav = [];
             
             
-            $scope.navToPrev = function(){
+            $scope.navToPrev = function(nopop){
                 var from = $scope.from, toScreen;
                 if ($scope.prevStateNav.length === 0){
                     toScreen = $scope.from;
                 } else {
-                     toScreen = $scope.prevStateNav.pop();
+                    if (!nopop){
+                        toScreen = $scope.prevStateNav.pop();
+                    }
+                     
                 }
                 $scope.goToScreen(null, toScreen, true);
             };
