@@ -5406,15 +5406,20 @@ function DayEventRenderer() {
 			htmlEscape(event.day || '') +
 
 			"</span>" ;
-			if (event.toolTipData.restrictions.length > 0){
+			if(typeof event.toolTipData !== 'undefined' && typeof event.currencySymbol !== 'undefined'){
+				if (event.toolTipData.restrictions.length > 0){
 				html +=" <span>" +
 						'R' +
 						"</span>" ;
+			    }
+			    html += "<span class='fc-event-title'>";
+		        if (event.title != "" && _.contains(event.classNames, 'available'){
+			        html += htmlEscape(event.currencySymbol);
+		        }
+			}else {
+				html += "<span class='fc-event-title'>";
 			}
-			html += "<span class='fc-event-title'>";
-		if (event.title != ""){
-			html += htmlEscape(event.currencySymbol);
-		}
+			
 		html +=	htmlEscape(event.title || '') +
 			"</span>" +		
 			"</div>";
