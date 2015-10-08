@@ -5409,11 +5409,14 @@ function DayEventRenderer() {
 			"</span>" ;
 			if (event.toolTipData.restrictions.length > 0){
 				html +=" <span>" +
-			'R' +
-			"</span>" ;
+						'R' +
+						"</span>" ;
 			}
-			html += "<span class='fc-event-title'>" +
-			htmlEscape(event.title || '') +
+			html += "<span class='fc-event-title'>";
+		if (event.title != ""){
+			html += htmlEscape(event.currencySymbol);
+		}
+		html +=	htmlEscape(event.title || '') +
 			"</span>" +		
 			"</div>";
 		if (segment.isEnd && isEventResizable(event)) {

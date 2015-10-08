@@ -64,7 +64,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			},
 			calendarState: {
 				showOnlyAvailableRooms: true,
-				searchWithRestrictions: false,
+				searchWithRestrictions: true,
 				calendarType: "BEST_AVAILABLE"
 			}
 		};
