@@ -5404,9 +5404,18 @@ function DayEventRenderer() {
 		html +=
 			"<span class='fc-event-day'>" +
 			htmlEscape(event.day || '') +
-			"</span>" +
-			"<span class='fc-event-title'>" +
-			htmlEscape(event.title || '') +
+
+			"</span>" ;
+			if (event.toolTipData.restrictions.length > 0){
+				html +=" <span>" +
+						'R' +
+						"</span>" ;
+			}
+			html += "<span class='fc-event-title'>";
+		if (event.title != ""){
+			html += htmlEscape(event.currencySymbol);
+		}
+		html +=	htmlEscape(event.title || '') +
 			"</span>" +		
 			"</div>";
 		if (segment.isEnd && isEventResizable(event)) {
