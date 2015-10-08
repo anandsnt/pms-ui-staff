@@ -23,7 +23,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: zdirect.enabled }" ng-click="toggleSMClicked()">
+                                <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: data.data.product_cross_customer.active }" ng-click="toggleSMClicked()">
                                     <input type="checkbox" name="zdirect-setup-active" id="zdirect-setup-active">
                                     <span class="switch-icon"></span>
                                 </div>
@@ -35,12 +35,13 @@
                 
                 <br>
 
-                <ad-textbox value="zdirect.username" name="user-name" id="user-name" label="{{'ZDIRECT_USERNAME_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
-                <ad-textbox value="zdirect.password" inputtype="password" name="pass-word" id="pass-word" label="{{'ZDIRECT_PASSWORD_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
-                <ad-textbox value="zdirect.url" inputtype="access-url" name="access-url" id="access-url" label="{{'ZDIRECT_ACCESS_URL_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
-                <ad-textbox value="zdirect.customer_name" inputtype="access-customer-name" name="access-customer-name" id="access-customer-name" label="{{'ZDIRECT_CUSTOMER_NAME_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
-                <ad-textbox value="zdirect.property_name" inputtype="access-property-name" name="access-property-name" id="access-property-name" label="{{'ZDIRECT_PROPERTY_NAME_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
-
+                <ad-textbox value="data.data.product_cross_customer.tracker_user_name" name="user-name" id="user-name" label="{{'ZDIRECT_USERNAME_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
+                <ad-textbox value="data.data.product_cross_customer.tracker_pass_word" inputtype="password" name="pass-word" id="pass-word" label="{{'ZDIRECT_PASSWORD_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
+                <ad-textbox value="data.data.product_cross_customer.tracker_access_url" inputtype="access-url" name="access-url" id="access-url" label="{{'ZDIRECT_ACCESS_URL_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
+                <ad-textbox value="data.data.product_cross_customer.hotel_code" inputtype="hotel-code" name="hotel-code" id="hotel-code" label="{{'SITEMINDER_HOTEL_CODE_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
+                 <ad-dropdown-name name="default-origin" savemodel="data.data.product_cross_customer.default_origin" id="default-origin" valueproperty="value" property="name" list="booking.booking_origins" label="{{'ZDIRECT_DEFAULT_BOOKING_ORIGIN'| translate}}" styleclass="full-width"></ad-dropdown-name>
+                <ad-dropdown-name name="default-payment" savemodel="data.data.product_cross_customer.default_payment_id" id="default-payment" valueproperty="id" property="description" list="payments.payments" label="{{'ZDIRECT_DEFAULT_PAYMENT_METHOD'| translate}}" styleclass="full-width"  style="padding-left: 15px;"></ad-dropdown-name>
+           
             </fieldset>
 
             <div class="actions float">

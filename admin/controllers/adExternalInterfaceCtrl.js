@@ -187,22 +187,10 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             url: '',
             secondary_url: ''
         };
-
-      $scope.zdirect = {
-        enabled:false,
-        username: '',
-        password: '',
-        url: '',
-        customer_name: '',
-        property_name: ''
-      };
         $scope.fetchSetupSuccessCallback = function (data) {
             if ($scope.interfaceName === 'Givex'){
                 $scope.givex = data;
                 $scope.$emit('hideLoader');
-            } else if ($scope.interfaceName === 'ZDirect'){
-              $scope.zdirect = data;
-              $scope.$emit('hideLoader');
             } else {
             
                 $scope.data = data;
@@ -220,16 +208,14 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             $scope.invokeApi(adExternalInterfaceCommonSrv.fetchPaymethods, {}, fetchPaymethodsSuccess);
         };
         $scope.fetchSetup = function () {
-            if ($scope.interfaceName === 'Givex'){
-              $scope.invokeApi(adGivexSetupSrv.fetchSetup, {}, $scope.fetchSetupSuccessCallback, $scope.fetchSetupFailCallback);
-            } else if ($scope.interfaceName === 'ZDirect'){
-              $scope.invokeApi(adZDirectSetupSrv.fetchSetup, {}, $scope.fetchSetupSuccessCallback, $scope.fetchSetupFailCallback);
+            if ($scope.interfaceName !== 'Givex'){
+                $scope.invokeApi(adExternalInterfaceCommonSrv.fetchSetup, {'interface_id':$scope.interfaceId}, $scope.fetchSetupSuccessCallback, $scope.fetchSetupFailCallback);
             } else {
-              $scope.invokeApi(adExternalInterfaceCommonSrv.fetchSetup, {'interface_id':$scope.interfaceId}, $scope.fetchSetupSuccessCallback, $scope.fetchSetupFailCallback);
+                $scope.invokeApi(adGivexSetupSrv.fetchSetup, {}, $scope.fetchSetupSuccessCallback, $scope.fetchSetupFailCallback);
             }
         };
 	var fetchOriginsSuccessCallback = function(data) {
-            if ($scope.interfaceName !== 'Givex' && $scope.interfaceName !== 'ZDirect'){
+            if ($scope.interfaceName !== 'Givex'){
 		$scope.$emit('hideLoader');
                 $scope.isLoading = false;
 		$scope.booking.booking_origins = data.booking_origins;
@@ -238,7 +224,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
 	};
 
 	var fetchPaymethodsSuccess = function(data) {
-            if ($scope.interfaceName !== 'Givex' && $scope.interfaceName !== 'ZDirect'){
+            if ($scope.interfaceName !== 'Givex'){
 		$scope.$emit('hideLoader');
                 $scope.isLoading = false;
 		$scope.payments.payments = data.payments;
@@ -246,7 +232,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             }
 	};
 
-        if ($scope.interfaceName === 'Givex' || $scope.interfaceName === 'ZDirect'){
+        if ($scope.interfaceName === 'Givex'){
             // Set the selected payment and origin
             var setPayment = function(){
                 var value = parseInt($scope.data.data.product_cross_customer.default_payment_id);
@@ -287,19 +273,17 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             var unwantedKeys = ["available_trackers","bookmark_count","bookmarks","current_hotel","hotel_list","menus","interface_types"];
             var saveData = dclone($scope.data, unwantedKeys);
             
-            if ($scope.interfaceName === 'Givex'){
-              $scope.invokeApi($scope.serviceController.saveSetup, $scope.givex, saveSetupSuccessCallback, saveSetupFailureCallback);
-            } else if ($scope.interfaceName === 'ZDirect') {
-              $scope.invokeApi($scope.serviceController.saveSetup, $scope.zdirect, saveSetupSuccessCallback, saveSetupFailureCallback);
+            if ($scope.interfaceName !== 'Givex'){
+                //these values currently coming back as strings, parse to int before sending back
+                if (saveData.data.product_cross_customer.default_origin) {
+                    saveData.data.product_cross_customer.default_origin = parseInt($scope.data.data.product_cross_customer.default_origin);
+                }
+                if (saveData.data.product_cross_customer.default_payment_id) {
+                    saveData.data.product_cross_customer.default_payment_id = parseInt($scope.data.data.product_cross_customer.default_payment_id);
+                }
+                $scope.invokeApi($scope.serviceController.saveSetup, saveData, saveSetupSuccessCallback, saveSetupFailureCallback);
             } else {
-              //these values currently coming back as strings, parse to int before sending back
-              if (saveData.data.product_cross_customer.default_origin) {
-                saveData.data.product_cross_customer.default_origin = parseInt($scope.data.data.product_cross_customer.default_origin);
-              }
-              if (saveData.data.product_cross_customer.default_payment_id) {
-                saveData.data.product_cross_customer.default_payment_id = parseInt($scope.data.data.product_cross_customer.default_payment_id);
-              }
-              $scope.invokeApi($scope.serviceController.saveSetup, saveData, saveSetupSuccessCallback, saveSetupFailureCallback);
+                $scope.invokeApi($scope.serviceController.saveSetup, $scope.givex, saveSetupSuccessCallback, saveSetupFailureCallback);
             }
         };
         //////////////////////
@@ -317,9 +301,6 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             if ($scope.interfaceName === 'Givex'){
                 $scope.givex.enabled = !$scope.givex.enabled;
                 $scope.saveSetup();
-            } else if ($scope.interfaceName === 'ZDirect'){
-              $scope.zdirect.enabled = !$scope.zdirect.enabled;
-              $scope.saveSetup();
             } else {
                 if ($scope.data.data){
                     if ($scope.data.data.product_cross_customer){
@@ -342,7 +323,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
 
         $scope.setRefreshTime = function(){
             
-            if ($scope.interfaceName !== 'Givex' && $scope.interfaceName !== 'ZDirect'){
+            if ($scope.interfaceName !== 'Givex'){
                 if ($scope.data.data.product_cross_customer.full_refresh !== null){
                    $scope.lastRefreshedTime = new Date($scope.data.data.product_cross_customer.full_refresh);
                    $scope.lastRefreshedTimeRef = $scope.formatDate(new Date($scope.data.data.product_cross_customer.full_refresh));
