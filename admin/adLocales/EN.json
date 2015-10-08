@@ -640,6 +640,12 @@
 "DASHBOARD": "Dashboard",
 
 
+"ACTIONS_USERNAME": "Username",
+"ACTIONS_DATETIME": "Date / Time",
+"ACTIONS_ACTION_TYPE": "Action Type",
+"ACTIONS_ACTION_DETAILS": "Details",
+
+
 "MARKET":"Markets",
 "USE_MARKETS":"Use markets",
 "MARKET_NAME_PLACEHOLDER":"Enter market name",
@@ -795,6 +801,7 @@
     "RESERVATION_ONLY":"Reservation Only",
     "MANUAL_POSTING":"Manual Posting",
     "FORECAST_FOR_NEXT_DAY":"Forecast for Next Day",
+    "CHARGE_FULL_WEEKS_ONLY":"Charge full weeks only",
     "EDIT":"Edit",
     "ADD_NEW_SMALL":"Add New",
     "ADD_ON":"Add-On",

@@ -40,8 +40,6 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		$scope.activeUserList = payload.activeUserList;
 		$scope.guaranteeTypes = payload.guaranteeTypes;
-		$scope.chargeGroups   = payload.chargeGroups;
-		$scope.chargeCodes    = payload.chargeCodes;
 
 		$scope.markets = payload.markets;
 		$scope.sources = payload.sources;
@@ -49,10 +47,12 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		$scope.codeSettings = payload.codeSettings;
 		$scope.holdStatus   = payload.holdStatus;
-
-		$scope.addonGroups       = payload.addonGroups;
-		$scope.addons            = payload.addons;
+		
 		$scope.reservationStatus = payload.reservationStatus;
+
+		$scope.chargeNAddonGroups = payload.chargeNAddonGroups;
+		$scope.chargeCodes        = payload.chargeCodes;
+		$scope.addons             = payload.addons;
 
 
 		$scope.showReportDetails = false;
@@ -1131,7 +1131,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				$scope.headers         = response.headers || [];
 				$scope.subHeaders      = response.sub_headers || [];
 				$scope.results         = response.results || [];
-				$scope.resultsTotalRow = response.results_total_row || 0;
+				$scope.resultsTotalRow = response.results_total_row || [];
 				$scope.summaryCounts   = response.summary_counts || [];
 				$scope.reportGroupedBy = response.group_by || '';
 

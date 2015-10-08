@@ -15,14 +15,19 @@ sntRover.factory('RVReportUtilsFac', [
          * @return {Object}                 Processed CG & CC
          */
         var __adjustChargeGroupsCodes = function (chargeGroupsAry, chargeCodesAry, setting) {
-            var newChargeGroupsAry = [],
+            var chargeGroupsAryCopy,
+                chargeCodesAryCopy,
+                newChargeGroupsAry = [],
                 newChargeCodesAry  = [],
                 paymentId          = null,
                 cgAssociated       = false,
                 paymentEntry       = {};
 
+            chargeGroupsAryCopy = angular.copy( chargeGroupsAry );
+            chargeCodesAryCopy = angular.copy( chargeCodesAry );
+
             if ( 'REMOVE_PAYMENTS' === setting ) {
-                _.each(chargeGroupsAry, function (each) {
+                _.each(chargeGroupsAryCopy, function (each) {
                     if ( each.name !== 'Payments' ) {
                         each.selected = true;
                         newChargeGroupsAry.push( each );
@@ -31,7 +36,7 @@ sntRover.factory('RVReportUtilsFac', [
                     };
                 });
 
-                _.each(chargeCodesAry, function (each) {
+                _.each(chargeCodesAryCopy, function (each) {
                     cgAssociated = _.find(each['associcated_charge_groups'], function(idObj) {
                         return idObj.id === paymentId;
                     });
@@ -41,10 +46,8 @@ sntRover.factory('RVReportUtilsFac', [
                         newChargeCodesAry.push( each );
                     };
                 });
-            }
-
-            if ( 'ONLY_PAYMENTS' === setting ) {
-                paymentEntry = _.find(chargeGroupsAry, function(each) {
+            } else if ( 'ONLY_PAYMENTS' === setting ) {
+                paymentEntry = _.find(chargeGroupsAryCopy, function(each) {
                     return 'Payments' === each.name;
                 });
 
@@ -53,7 +56,7 @@ sntRover.factory('RVReportUtilsFac', [
                     paymentEntry.selected = true;
                     newChargeGroupsAry.push(paymentEntry);
 
-                    _.each(chargeCodesAry, function (each) {
+                    _.each(chargeCodesAryCopy, function (each) {
                         cgAssociated = _.find(each['associcated_charge_groups'], function(idObj) {
                             return idObj.id === paymentId;
                         });
@@ -64,6 +67,16 @@ sntRover.factory('RVReportUtilsFac', [
                         };
                     });
                 };
+            } else {
+                _.each(chargeGroupsAryCopy, function(each) {
+                    each.selected = true;
+                    newChargeGroupsAry.push(each);
+                });
+
+                _.each(chargeCodesAryCopy, function(each) {
+                    each.selected = true;
+                    newChargeCodesAry.push(each);
+                });
             };
 
             return {
@@ -144,7 +157,10 @@ sntRover.factory('RVReportUtilsFac', [
             'INCLUDE_BOTH'       : true,
             'EXCLUDE_NON_GTD'    : true,
             'SHOW_RATE_ADJUSTMENTS_ONLY' : true,
-            'INCLUDE_TAX'        : true
+            'INCLUDE_TAX'        : true,
+            'INCLUDE_TAX_RATE': true,
+            'INCLUDE_ADDON_RATE': true,
+            'INCLUDE_ADDONS': true
         };
 
         var __displayFilterNames = {
@@ -196,6 +212,12 @@ sntRover.factory('RVReportUtilsFac', [
 
             // if filter value is either of these, must include when report submit
             if ( objRef['title'] == reportNames['FORECAST_GUEST_GROUPS'] ) {
+                objRef['hasGeneralOptions']['title'] = filter.description;
+            };
+
+            // if filter is this, make it selected by default
+            if ( objRef['title'] == reportNames['DAILY_PRODUCTION'] && filter.value == 'INCLUDE_ADDONS' ) {
+                selected = true;
                 objRef['hasGeneralOptions']['title'] = filter.description;
             };
 
@@ -320,6 +342,10 @@ sntRover.factory('RVReportUtilsFac', [
                     report['reportIconCls'] = 'icon-report icon-group';
                     break;
 
+                case reportNames['DAILY_PRODUCTION']:
+                    report['reportIconCls'] = 'icon-report icon-forecast';
+                    break;
+
                 default:
                     report['reportIconCls'] = 'icon-report';
                     break;
@@ -401,6 +427,11 @@ sntRover.factory('RVReportUtilsFac', [
                     report['canRemoveDate'] = true;
                     break;
 
+                case reportNames['DAILY_PRODUCTION']:
+                    report['hasDateLimit']  = false;
+                    report['canRemoveDate'] = true;
+                    break;
+
                 default:
                     report['hasDateLimit'] = false;     // CICO-16820: Changed to false
                     break;
@@ -421,6 +452,7 @@ sntRover.factory('RVReportUtilsFac', [
 
             // pre-process charge groups and charge codes
             var processedCGCC = {};
+
             // create DS for options combo box
             __setData(report, 'hasGeneralOptions', {
                 type         : 'FAUX_SELECT',
@@ -452,11 +484,11 @@ sntRover.factory('RVReportUtilsFac', [
 
                 if ( (filter.value === 'INCLUDE_CHARGE_CODE' || filter.value === 'INCLUDE_CHARGE_GROUP') && _.isEmpty(processedCGCC) ) {
                     if ( report['title'] === reportNames['DAILY_TRANSACTIONS'] ) {
-                        processedCGCC = __adjustChargeGroupsCodes( data.chargeGroups, data.chargeCodes, 'REMOVE_PAYMENTS' );
-                    };
-
-                    if ( report['title'] === reportNames['DAILY_PAYMENTS'] ) {
-                        processedCGCC = __adjustChargeGroupsCodes( data.chargeGroups, data.chargeCodes, 'ONLY_PAYMENTS' );
+                        processedCGCC = __adjustChargeGroupsCodes( data.chargeNAddonGroups, data.chargeCodes, 'REMOVE_PAYMENTS' );
+                    } else if ( report['title'] === reportNames['DAILY_PAYMENTS'] ) {
+                        processedCGCC = __adjustChargeGroupsCodes( data.chargeNAddonGroups, data.chargeCodes, 'ONLY_PAYMENTS' );
+                    } else {
+                        processedCGCC = __adjustChargeGroupsCodes( data.chargeNAddonGroups, data.chargeCodes, '' );
                     };
                 };
 
@@ -750,7 +782,7 @@ sntRover.factory('RVReportUtilsFac', [
                     });
                 };
 
-                if ( filter.value === 'ADDON_GROUPS') {
+                if ( filter.value === 'ADDON_GROUPS' && data.chargeNAddonGroups.length ) {
                     __setData(report, 'hasAddonGroups', {
                         type         : 'FAUX_SELECT',
                         filter       : filter,
@@ -758,11 +790,11 @@ sntRover.factory('RVReportUtilsFac', [
                         selectAll    : true,
                         defaultTitle : 'Select Addon Group',
                         title        : 'All Selected',
-                        data         : selectAllAddonGroups( angular.copy(data.addonGroups) ),
+                        data         : selectAllAddonGroups( angular.copy(data.chargeNAddonGroups) ),
                     });
                 };
 
-                if ( filter.value === 'ADDONS') {
+                if ( filter.value === 'ADDONS' && data.addons.length ) {
                     __setData(report, 'hasAddons', {
                         type         : 'FAUX_SELECT',
                         filter       : filter,
@@ -774,7 +806,7 @@ sntRover.factory('RVReportUtilsFac', [
                     });
                 };
 
-                if ( filter.value === 'RESERVATION_STATUS') {
+                if ( filter.value === 'RESERVATION_STATUS' && data.reservationStatus.length ) {
                     __setData(report, 'hasReservationStatus', {
                         type         : 'FAUX_SELECT',
                         filter       : filter,

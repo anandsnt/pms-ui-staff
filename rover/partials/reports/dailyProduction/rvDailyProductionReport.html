@@ -1,0 +1,92 @@
+<!-- Report content -->
+<div ng-show="hasNoResults" class="report-content no-content">
+    <div class="info">
+        <span class="icon-no-content icon-reports"></span>
+        <strong class="h1">No reports found</strong>
+        <span class="h2">Try changing search criteria or modify dates</span>
+    </div>
+</div>
+
+<!-- <div ng-hide="hasNoResults" -->
+<div ng-hide="hasNoResults" id="report-content" class="report-content statistics" ng-controller="RVDailyProdReportCtrl">
+
+	<!-- Left side - table legend. Number of list items here should be identical to the number of table rows on the right side  -->
+    <div class="statistics-headings">
+        <div class="scrollable" ng-iscroll="left-pane-scroll"> <!-- Attach iscroll here, should scroll vertically. While scrolling it should update iscoll on the right side as well -->
+            <ul class="wrapper">
+                <li class="main-heading action-row"> <!-- Toggle what's shown in grid (only 1 item can be disabled, never both!) -->
+                    <div class="switch-button" ng-class="{ 'on': uiFilter.showAvailability }"> <!-- Remove class 'on' if not checked, disable second switch button, update width set in L188, update colspan on L192 -->
+                        <input id="daily-production-availability" ng-model="uiFilter.showAvailability" type="checkbox" />
+                        <label class="data-off">
+                            <span class="value">Availability</span>
+                            <span class="switch-icon">Hidden</span>
+                        </label>
+                        <label class="data-on">
+                            <span class="switch-icon">Showing</span>
+                            <span class="value">Availability</span>
+                        </label>
+                    </div>
+                    <div class="switch-button" ng-class="{ 'on': uiFilter.showRevenue }"> <!-- Remove class 'on' if not checked, disable first switch button, update width set in L188, update colspan on L192-->
+                        <input id="daily-production-revenue" ng-model="uiFilter.showRevenue" type="checkbox" />
+                        <label class="data-off">
+                            <span class="value">Revenue</span>
+                            <span class="switch-icon">Hidden</span>
+                        </label>
+                        <label class="data-on">
+                            <span class="switch-icon">Showing</span>
+                            <span class="value">Revenue</span>
+                        </label>
+                    </div>
+                </li>
+                <li ng-repeat="name in roomNames track by $index">
+                	<span ng-show="!$last">{{ name }}</span>
+                	<strong ng-show="$last">{{ name }}</strong>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Right side - table numbers. Number of table rows here should be identical to the number of list items on the left side -->
+    <div class="statistics-content scrollable" ng-iscroll="right-pane-scroll"><!-- Attach iscroll here, should scroll vertically and horizontally. While scrolling vertically it should update iscoll on the left side as well -->
+
+        <div class="wrapper" style="width: {{ rightPaneWidth }}px;">
+            <table class="statistics-reports">
+                <thead>
+                    <tr>
+                    	<th ng-repeat="item in headerTop track by $index" colspan="{{ colSpan }}">{{ item }}</th><!-- When L156 is on and L167 is off, colspan is 2. When L156 is off and L167 is on, colspan is 3. When both L156 and L167 are on, colspan is 5 -->
+                    </tr>
+                    <tr class="bottom-row">
+                    	<th ng-repeat="item in headerBot track by $index" class="{{ item.cls }}">{{ item.name }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- For individual rates use this -->
+                    <tr ng-repeat="rowData in reportData track by $index" ng-init="outerLast = $last">
+                    	<td ng-repeat="item in rowData track by $index" class="{{ item.cls }}">
+                    		<em ng-show="!outerLast && item.isAvail">{{ item.value }}</em>
+                    		<span ng-show="!outerLast && item.isRev">{{ item.value }}</span>
+                    		<strong ng-show="outerLast">{{ item.value }}</strong>
+                    	</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- 
+    RIGHT SIDE WRAPPER WIDTH NEEDS TO BE SET INLINE IN ORDER FOR SCROLLING TO WORK OK
+    Table cell width 80px, which is our base to calculate wrapper's width. 
+    Other parameters are: L156 and L167 can be on or off
+        - If we're showing both L156 AND L167, wrapper = number of days * 400 ==> 80px * 5 cells
+        - If we're showing ONLY L156, wrapper = number of days * 160 ==> 80px * 2 cells
+        - If we're showing ONLY L167, wrapper = number of days * 240 ==> 80px * 3 cells
+-->
+
+<div class="search-pagination hk-pagination" ng-show="!disablePrevBtn || !disableNextBtn">
+    <!-- removed buttons since they include +300ms delay on touch pads -->
+    <label class="button dark-grey next" ng-click="fetchNextPage()" ng-class="{'disabled': disableNextBtn}">Next</label>
+    <label class="button dark-grey prev" ng-click="fetchPrevPage()" ng-class="{'disabled': disablePrevBtn}">Previous</label>
+    <p>Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong id="total-count">{{ netTotalCount }}</strong> items</p>
+</div>

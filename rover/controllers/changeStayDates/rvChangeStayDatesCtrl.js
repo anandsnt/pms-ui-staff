@@ -47,6 +47,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			//Data from Resolve method
 			$scope.stayDetails = stayDateDetails;
 			$scope.stayDetails.isOverlay = false;
+			$scope.stayDetails.validDays = [];
 			//For future comparison / reset
 			$scope.checkinDateInCalender = $scope.confirmedCheckinDate = tzIndependentDate($scope.stayDetails.details.arrival_date);
 			$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = tzIndependentDate($scope.stayDetails.details.departure_date);
@@ -500,8 +501,8 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			var newDateSelected = event.start;
 
 			// we are storing the available first date & last date for easiness of the following code
-			var availableStartDate = tzIndependentDate($scope.stayDetails.calendarDetails.available_dates[0].date);
-			var availableLastDate = tzIndependentDate($scope.stayDetails.calendarDetails.available_dates[$scope.stayDetails.calendarDetails.available_dates.length - 1].date);
+			var availableStartDate = tzIndependentDate($scope.stayDetails.validDays[0].date);
+			var availableLastDate = tzIndependentDate($scope.stayDetails.validDays[$scope.stayDetails.validDays.length - 1].date);
 
 			// also we are storing the current business date for easiness of the following code
 			var currentBusinessDate = tzIndependentDate($scope.stayDetails.calendarDetails.current_business_date);
@@ -611,14 +612,37 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 
 		$scope.getEventSourceObject = function(checkinDate, checkoutDate) {
-			var events = [];
+			/**
+			 * CICO-19733
+			 * Kindly note that the API (calendar.json) now returns all the dates in the range
+			 * Three new params added to the API:
+			 * 			is_house_available: true/false
+			 *  		is_room_type_available: true/false
+			 *  		is_restricted: true/false 
+			 */
 
-			var reservationStatus = $scope.stayDetails.calendarDetails.reservation_status;
+			var events = [],
+				calEvt = {},
+				reservationStatus = $scope.stayDetails.calendarDetails.reservation_status,
+				// Check the permissions the user has
+				canOverbookHouse = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE'),
+				canOverbookRoomType = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE'),
+				canBookRestrictedRate = rvPermissionSrv.getPermissionValue('BOOK_RESTRICTED_ROOM_RATE'),
+				//Introducing this variable to ensure that in case of user having no permissions to go beyond; hide further dates
+				extendThrough = true,
+				thisDate;
 
-			var thisDate;
-			var calEvt = {};
+			// Reset validDays array
+			$scope.stayDetails.validDays = [];
+
 			$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
+
+				var preventOverbookHouse = !this.is_house_available && !canOverbookHouse,
+					preventOverbookRoomType = !this.is_room_type_available && !canOverbookRoomType,
+					preventBookingRestrictedRate = this.is_restricted && !canBookRestrictedRate;
+
 				calEvt = {};
+
 				//Fixing the timezone issue related with fullcalendar
 				thisDate = tzIndependentDate(this.date);
 				if (this.is_sr === "true") {
@@ -675,7 +699,14 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 					calEvt.className = "type-available";
 				}
 
-				events.push(calEvt);
+				if (preventOverbookHouse || preventBookingRestrictedRate || preventOverbookRoomType) {
+					extendThrough = false;
+				}
+
+				if (extendThrough || ((thisDate.getTime() >= checkinDate.getTime()) && (thisDate.getTime() <= checkoutDate.getTime()))) {
+					events.push(calEvt);
+					$scope.stayDetails.validDays.push(this);
+				}
 			});
 			return events;
 		};
@@ -698,7 +729,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			});
 		}
 
-		$scope.goToRoomAndRates = function() {			
+		$scope.goToRoomAndRates = function() {
 			navigateToRateAndRates();
 		};
 

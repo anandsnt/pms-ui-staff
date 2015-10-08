@@ -148,6 +148,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					failureCallBack : failureCallBackOfEarlierArrivalDateChange,
 					cancelPopupCallBack	: cancelCallBackofDateChange
 				};
+			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerEarlierArrDateChange (options);
 		};	
 
@@ -173,6 +174,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					failureCallBack : failureCallBackOfEarlierArrivalDateChange,
 					cancelPopupCallBack	: cancelCallBackofDateChange
 				};
+			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerLaterArrDateChange (options);
 		};
 
@@ -210,6 +212,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					failureCallBack : failureCallBackOfEarlierDepartureDateChange,
 					cancelPopupCallBack	: cancelCallBackofDateChange
 				};
+			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerEarlierDepDateChange (options);
 		};	
 
@@ -244,6 +247,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					failureCallBack : failureCallBackOfLaterDepartureDateChange,
 					cancelPopupCallBack	: cancelCallBackofDateChange
 				};
+			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerLaterDepDateChange (options);
 		};
 
@@ -252,6 +256,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				cancelPopupCallBack	: cancelCallBackofDateChange,
 				message 			: "GROUP_EARLIER_DEP_DATE_CHANGE_WARNING"
 			}
+			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.showDateChangeInvalidWarning(options);
 		};
 
@@ -260,6 +265,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				cancelPopupCallBack	: cancelCallBackofDateChange,
 				message 			: "GROUP_LATER_ARR_DATE_CHANGE_WARNING"
 			}
+			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.showDateChangeInvalidWarning(options);
 		};
 
@@ -317,7 +323,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			if ($scope.isInAddMode() || (targetElement.id === 'summary') ||
 				targetElement.id === "cancel-action" || //TODO: Need to check with Dilip/Shiju PC for more about this
 				whetherSummaryDataChanged() ||
-				$scope.groupSummaryData.isDemographicsPopupOpen || $scope.isUpdateInProgress) {
+				$scope.groupSummaryData.isDemographicsPopupOpen ||
+				$scope.isUpdateInProgress ||
+				$scope.changeDatesActions.isInCompleteMoveMode() ||
+				$scope.changeDatesActions.isInChangeDatesMode() ) {
 
 				return;
 			}
@@ -325,7 +334,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$scope.isUpdateInProgress = true;
 
 			//call the updateGroupSummary method from the parent controller
-			//$scope.updateGroupSummary();
+			$scope.updateGroupSummary();
 		});
 
 		/**
@@ -384,13 +393,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				else {
 					triggerLaterArrivalDateChange();
 				}
-			}
-
-			// let the date update if it is future group as well is in edit mode
-			else if (!$scope.isInAddMode() && !refData.is_a_past_group){
-				$timeout(function() {
-					$scope.updateGroupSummary();
-				}, 100);				
 			}
 
 			//setting the min date for end Date
