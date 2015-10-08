@@ -109,7 +109,7 @@ sntRover.controller('rvTabletCtrl', [
             $scope.headingText = 'Header Text Here';
             $scope.subHeadingText = 'Subheader Text Here';
             $scope.inputTextPlaceholder = 'Input Text Here';
-            
+            $scope.currencySymbol = '';
             var initTabletConfig = function(){
 //                $('head').append('<link rel="stylesheet" type="text/css" href="../assets/css/zestStation/zoku.css">');
                 //$scope.settings = $rootScope.kiosk;
@@ -123,16 +123,16 @@ sntRover.controller('rvTabletCtrl', [
                     $scope.hotel_settings = data;
                     $scope.hotel_terms_and_conditions = $sce.trustAsHtml($scope.hotel_settings.terms_and_conditions).$$unwrapTrustedValue();
                     //fetch the idle timer settings
+                $scope.currencySymbol = $scope.hotel_settings.currency.symbol;
                     $scope.$emit('hideLoader');
                 };
+    
                 var fetchBizDateComplete = function(data){
-                    console.log('data.business_date: '+data.business_date);
                     if (data){
                         if (data.business_date){
                             var d = data.business_date;
                             var a = d.split('-');
                             var yr = a[0], day = a[2], mo = a[1];
-                            console.log(yr+'.'+mo+'.'+day);
                             $scope.business_date = new Date(yr, mo, day);
                             $scope.resetDatePicker();
                         }
@@ -148,6 +148,7 @@ sntRover.controller('rvTabletCtrl', [
             };
             $scope.datePickerMin;
             $scope.resetDatePicker = function(){
+                        $scope.showDatePick = false;
                         var defaultDate = $scope.business_date+'';//for datepicker
                         var d = defaultDate.split(' ');
                         //day of wk = d[0]
@@ -361,8 +362,7 @@ sntRover.controller('rvTabletCtrl', [
 
                                 minutes = minutes < 10 ? "0" + minutes : minutes;
                                 seconds = seconds < 10 ? "0" + seconds : seconds;
-
-                                console.log(minutes + ":" + seconds);
+                                //console.log(minutes + ":" + seconds);
                                 
                                 if (timer === promptTime){
                                     $scope.idlePopup();
@@ -426,6 +426,11 @@ sntRover.controller('rvTabletCtrl', [
                     'id': r.confirmation_number
                 }, $scope.onSuccessFetchReservationDetails);
             };
+            //$scope
+            $scope.formatCurrency = function(amt){
+               return parseFloat(amt).toFixed(2);
+            };
+            
             
             $scope.onSuccessFetchReservationDetails = function(data){
                     $scope.selectedReservation.reservation_details = data;
@@ -436,7 +441,7 @@ sntRover.controller('rvTabletCtrl', [
                     var nites, avgDailyRate, packageRate, taxes, subtotal, deposits, balanceDue;
                     //console.log(info)
                     nites = parseInt(info.total_nights);
-                    
+                    $scope.selectedReservation.total_nights = nites;
                     avgDailyRate = parseFloat(info.deposit_attributes.room_cost).toFixed(2);
                     
                     deposits = parseFloat(info.deposit_attributes.deposit_paid).toFixed(2);
@@ -451,7 +456,7 @@ sntRover.controller('rvTabletCtrl', [
                     
                     subtotal = parseFloat(info.deposit_attributes.sub_total).toFixed(2);
                     
-                    balanceDue = parseFloat(info.deposit_attributes.total_cost_of_stay).toFixed(2);
+                    balanceDue = parseFloat(info.deposit_attributes.outstanding_stay_total).toFixed(2);
                     
                     //console.info('balanceDue',balanceDue, 'subtotal',subtotal, 'deposits',deposits)
                     
@@ -480,7 +485,30 @@ sntRover.controller('rvTabletCtrl', [
                   
                   $scope.selectedReservation.reservation_details.balance = parseFloat(balanceDue).toFixed(2);
                  
-                 $scope.$emit('hideLoader');
+                 
+                 //reservation_addons?reservation_id=1646512
+                 var fetchCompleted = function(addonData){
+                     console.info('got addons');
+                     console.log(addonData);
+                     $scope.$emit('hideLoader');
+                     $scope.selectedReservation.addons = addonData.existing_packages;
+                     
+                     var items = $scope.selectedReservation.addons.length;
+                     for (var i=0; i < items; i++){
+                         if (i === (items-1)){
+                             $scope.selectedReservation.addons[i].isLastAddon = true;
+                         } else {
+                             $scope.selectedReservation.addons[i].isLastAddon = false;
+                         }
+                     }
+                     
+                 };
+                 console.log('fetch using this', info);
+                  $scope.invokeApi(rvTabletSrv.fetchAddonDetails, {
+                            'id':info.reservation_id
+                        }, fetchCompleted);
+                 
+                    $scope.$emit('hideLoader');
             };
             
             $scope.modalBtn1 = 'LOGIN';
@@ -520,12 +548,15 @@ sntRover.controller('rvTabletCtrl', [
             $scope.prevStateNav = [];
             
             
-            $scope.navToPrev = function(){
+            $scope.navToPrev = function(nopop){
                 var from = $scope.from, toScreen;
                 if ($scope.prevStateNav.length === 0){
                     toScreen = $scope.from;
                 } else {
-                     toScreen = $scope.prevStateNav.pop();
+                    if (!nopop){
+                        toScreen = $scope.prevStateNav.pop();
+                    }
+                     
                 }
                 $scope.goToScreen(null, toScreen, true);
             };

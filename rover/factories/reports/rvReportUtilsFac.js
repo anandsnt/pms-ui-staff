@@ -444,6 +444,27 @@ sntRover.factory('RVReportUtilsFac', [
 
 
 
+        factory.addIncludeUserFilter = function( report ) {
+            switch ( report['title'] ) {
+                case reportNames['LOGIN_AND_OUT_ACTIVITY']:
+                case reportNames['RATE_ADJUSTMENTS_REPORT']:
+                case reportNames['RESERVATIONS_BY_USER']:
+                    report['filters'].push({
+                        'value': "INCLUDE_USER_NAMES",
+                        'description': "Include User Names"
+                    });
+                    break;
+
+                default:
+                    // no op
+                    break;
+            };
+        };
+
+
+
+
+
 
         /**
          * Process the filters and create proper DS to show and play in UI
@@ -690,7 +711,7 @@ sntRover.factory('RVReportUtilsFac', [
 
 
 
-        factory.findFillFilters = function( filters, reportList ) {
+        factory.findFillFilters = function( reportItem, reportList ) {
             var deferred = $q.defer();
 
             var requested = 0,
@@ -698,9 +719,24 @@ sntRover.factory('RVReportUtilsFac', [
 
             var checkAllCompleted = function() {
                 if ( completed == requested ) {
+
+                    // tryin to figure out if all the filters for this
+                    // reportItem has been filled, if so make it 'allFiltersProcessed'
+                    anyFilterLeft = _.find(filters, function(each) {
+                        return ! each.hasOwnProperty( 'filled' );
+                    });
+
+                    if ( undefined == anyFilterLeft ) {
+                        reportItem.allFiltersProcessed = true;
+                    };
+
+                    // finally resolve the promise
                     deferred.resolve();
                 };
             };
+
+            var filters       = reportItem['filters'],
+                anyFilterLeft = undefined;
 
             _.each(filters, function(filter) {
 
@@ -757,14 +793,17 @@ sntRover.factory('RVReportUtilsFac', [
                             reportsSubSrv.fetchAddons({ 'addon_group_ids' : _.pluck(chargeNAddonGroups, 'id') })
                                 .then( fillAGAs.bind(null, chargeNAddonGroups) );
                         });
+                }
+
+                else {
+                    // no op
                 };
-            });
+            });           
             
             // lets just resolve the deferred already!
             if ( 0 == requested ) {
                 checkAllCompleted();
             };
-
 
 
             function fillGarntTypes (data) {

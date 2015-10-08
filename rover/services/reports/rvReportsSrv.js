@@ -77,7 +77,7 @@ sntRover.service('RVreportsSrv', [
 
 				// since payload will have two additional keys
 				// 'reportsResponse' and 'codeSettings'
-				if ( payloads - filters === 2 ) {
+				if ( payloads - filters === 1 ) {
 
 					// save it to $vault
 					service.payloadCache = angular.copy( payload );
@@ -105,14 +105,14 @@ sntRover.service('RVreportsSrv', [
 				.then( success.bind(null, 'codeSettings'), failed.bind(null, 'codeSettings', {}) );
 
 			// fetch active users & add to payload
-			if ( hasFilter['ACTIVE_USERS'] ) {
-				if ( service.payloadCache.hasOwnProperty('activeUserList') ) {
-					success( 'activeUserList', service.payloadCache.activeUserList );
-				} else {
-					subSrv.fetchActiveUsers()
-						.then( success.bind(null, 'activeUserList'), failed.bind(null, 'activeUserList', []) );
-				};
-			};
+			// if ( hasFilter['ACTIVE_USERS'] ) {
+			// 	if ( service.payloadCache.hasOwnProperty('activeUserList') ) {
+			// 		success( 'activeUserList', service.payloadCache.activeUserList );
+			// 	} else {
+			// 		subSrv.fetchActiveUsers()
+			// 			.then( success.bind(null, 'activeUserList'), failed.bind(null, 'activeUserList', []) );
+			// 	};
+			// };
 
 			// // fetch gurantee types & add to payload
 			// if ( hasFilter['INCLUDE_GUARANTEE_TYPE'] ) {

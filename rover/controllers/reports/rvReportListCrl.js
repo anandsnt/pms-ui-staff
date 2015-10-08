@@ -39,6 +39,10 @@ sntRover.controller('RVReportListCrl', [
                 // add required flags this report
                 reportUtils.applyFlags( report[i] );
 
+                // add users filter for needed reports
+                // unfortunately this is not sent from server
+                reportUtils.addIncludeUserFilter( report[i] );
+
                 // to process the filters for this report
                 reportUtils.processFilters(report[i], {
                     'guaranteeTypes'   : $scope.$parent.guaranteeTypes,
@@ -104,20 +108,11 @@ sntRover.controller('RVReportListCrl', [
                 toggle();
             };
 
-            // this is always be false since (check the next comment)
             if ( !! reportItem.allFiltersProcessed ) {
                 toggle();
-            }
-
-            // we are gonna keep this for future
-            // else if ( reportUtils.allFiltersProcessed(reportItem) ) {
-            //     reportItem.allFiltersProcessed = true;
-            //     toggle();
-            // }
-
-            else {
+            } else {
                 $scope.$emit( 'showLoader' );
-                reportUtils.findFillFilters( reportItem['filters'], $scope.$parent.reportList )
+                reportUtils.findFillFilters( reportItem, $scope.$parent.reportList )
                     .then( callback );
             };
         };
