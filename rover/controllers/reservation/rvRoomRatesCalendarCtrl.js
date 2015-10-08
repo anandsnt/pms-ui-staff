@@ -258,6 +258,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			//updating the left, right side calendar data model with new ones
 			$scope.eventSources.left.push(calendarData.left);
 			$scope.eventSources.right.push(calendarData.right);
+			refreshScroller();
 		};
 		
 		/**

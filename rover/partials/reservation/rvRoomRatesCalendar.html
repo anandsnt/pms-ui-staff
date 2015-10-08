@@ -25,8 +25,8 @@
 	<!-- Calendar -->
 	<div id="room-rates-calendar" class="reservation-content stay-dates-content scrollable" >
 		<div ng-iscroll="room-rates-calendar" style="height:300px;">
-			<div class="wrapper" ng-if="showCalender">
-				<two-month-calendar event-sources-left='eventSources.left' event-sources-right='eventSources.right' left-calendar-options='leftCalendarOptions' right-calendar-options='rightCalendarOptions' next-button-click-handler='nextButtonClickHandler()' prev-button-click-handler='prevButtonClickHandler()' disable-prev-button ='disablePrevButton'></two-month-calendar>
+			<div class="wrapper" style="height:430px;">
+				<two-month-calendar ng-if="showCalender" event-sources-left='eventSources.left' event-sources-right='eventSources.right' left-calendar-options='leftCalendarOptions' right-calendar-options='rightCalendarOptions' next-button-click-handler='nextButtonClickHandler()' prev-button-click-handler='prevButtonClickHandler()' disable-prev-button ='disablePrevButton'></two-month-calendar>
 			</div>
 		</div>
 
