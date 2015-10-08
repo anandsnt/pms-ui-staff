@@ -188,11 +188,13 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             secondary_url: ''
         };
         $scope.fetchSetupSuccessCallback = function (data) {
-            if ($scope.interfaceName === 'Givex'){
-                $scope.givex = data;
-                $scope.$emit('hideLoader');
+            if ($scope.interfaceName === 'Givex') {
+              $scope.givex = data;
+              $scope.$emit('hideLoader');
+            } else if($scope.interfaceName === 'ZDirect'){
+              $scope.data = data;
+              $scope.$emit('hideLoader');
             } else {
-            
                 $scope.data = data;
 
                 //load up origins and payment methods
@@ -215,7 +217,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             }
         };
 	var fetchOriginsSuccessCallback = function(data) {
-            if ($scope.interfaceName !== 'Givex'){
+            if ($scope.interfaceName !== 'Givex' && $scope.interfaceName !== 'ZDirect'){
 		$scope.$emit('hideLoader');
                 $scope.isLoading = false;
 		$scope.booking.booking_origins = data.booking_origins;
@@ -224,7 +226,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
 	};
 
 	var fetchPaymethodsSuccess = function(data) {
-            if ($scope.interfaceName !== 'Givex'){
+            if ($scope.interfaceName !== 'Givex' && $scope.interfaceName !== 'ZDirect'){
 		$scope.$emit('hideLoader');
                 $scope.isLoading = false;
 		$scope.payments.payments = data.payments;
@@ -232,7 +234,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             }
 	};
 
-        if ($scope.interfaceName === 'Givex'){
+        if ($scope.interfaceName === 'Givex' || $scope.interfaceName === 'ZDirect'){
             // Set the selected payment and origin
             var setPayment = function(){
                 var value = parseInt($scope.data.data.product_cross_customer.default_payment_id);
@@ -273,17 +275,19 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
             var unwantedKeys = ["available_trackers","bookmark_count","bookmarks","current_hotel","hotel_list","menus","interface_types"];
             var saveData = dclone($scope.data, unwantedKeys);
             
-            if ($scope.interfaceName !== 'Givex'){
-                //these values currently coming back as strings, parse to int before sending back
-                if (saveData.data.product_cross_customer.default_origin) {
-                    saveData.data.product_cross_customer.default_origin = parseInt($scope.data.data.product_cross_customer.default_origin);
-                }
-                if (saveData.data.product_cross_customer.default_payment_id) {
-                    saveData.data.product_cross_customer.default_payment_id = parseInt($scope.data.data.product_cross_customer.default_payment_id);
-                }
-                $scope.invokeApi($scope.serviceController.saveSetup, saveData, saveSetupSuccessCallback, saveSetupFailureCallback);
+            if ($scope.interfaceName === 'Givex'){
+              $scope.invokeApi($scope.serviceController.saveSetup, $scope.givex, saveSetupSuccessCallback, saveSetupFailureCallback);
+            } else if ($scope.interfaceName === 'ZDirect'){
+              $scope.invokeApi($scope.serviceController.saveSetup, saveData, saveSetupSuccessCallback, saveSetupFailureCallback);
             } else {
-                $scope.invokeApi($scope.serviceController.saveSetup, $scope.givex, saveSetupSuccessCallback, saveSetupFailureCallback);
+              //these values currently coming back as strings, parse to int before sending back
+              if (saveData.data.product_cross_customer.default_origin) {
+                saveData.data.product_cross_customer.default_origin = parseInt($scope.data.data.product_cross_customer.default_origin);
+              }
+              if (saveData.data.product_cross_customer.default_payment_id) {
+                saveData.data.product_cross_customer.default_payment_id = parseInt($scope.data.data.product_cross_customer.default_payment_id);
+              }
+              $scope.invokeApi($scope.serviceController.saveSetup, saveData, saveSetupSuccessCallback, saveSetupFailureCallback);
             }
         };
         //////////////////////
