@@ -181,11 +181,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.rightColSpan = 5;
 					break;
 
-				case reportNames['AR_SUMMARY_REPORT']:
-					$scope.leftColSpan = 5;
-					$scope.rightColSpan = 5;
-					break;
-
 				case reportNames['LOGIN_AND_OUT_ACTIVITY']:
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 3;
@@ -339,13 +334,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 					};
 					break;
 
-				/*case reportNames['AR_SUMMARY_REPORT']:
-					$scope.$parent.summaryCounts = {
-						'records'   : totals[0]['records'],
-						'balance' : totals[1]['balance']
-					};
-					break;*/
-
 				default:
 					// no op
 			};
@@ -483,7 +471,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				console.log("here");
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = true;
-					$scope.detailsTemplateUrl = '/assets/partials/reports/accountsReceivableSummary/rvAccountsReceivableSummary.html';
+					$scope.detailsTemplateUrl = '/assets/partials/reports/accountsReceivablesSummary/rvAccountsReceivablesSummary.html';
 					break;
 
 				default:
