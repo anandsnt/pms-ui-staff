@@ -1,0 +1,30 @@
+<!-- Report content -->
+<div id="report-content" class="report-content scrollable"> <!-- Add class "with-pagination" if pagination is shown -->
+    <div class="wrapper">
+        <table class="balance-reports">
+            <thead>
+                <tr>
+                    <!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
+                    "sorting-asc" when ASC sorting
+                    "sorting-desc" when DESC sorting -->
+                    <th><span class="sort" ng-class="{ 'sorting-asc': true === item.roomSortDir, 'sorting-desc': false === item.roomSortDir }" ng-click="sortResultBy(item)">Account Name</span></th>
+                    <th><span class="sort">Account #</span></th>
+                    <th><span>Corporate ID / IATA #</span></th>
+                    <th><span>Commision</span></th>
+                    <th><span class="sort">Balance</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="row-break" ng-repeat="item in results">
+                    <td class="name">
+                        <strong>{{item.account_name}}</strong>
+                    </td>
+                    <td>{{item.account_no}}</td>
+                    <td>{{item.corporate_id}}</td>
+                    <td> {{item.commission}}</td>
+                    <td class="balance" ng-class="{'red': item.balance > 0, 'green': item.balance < 0}">{{currencySymbol}}{{item.balance}}</td>
+                </tr>
+            </tbody>
+        </table>            
+    </div>
+</div>

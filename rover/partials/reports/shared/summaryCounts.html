@@ -43,10 +43,11 @@
     <li>Late Check Out Revenue<span class="brand-colors">{{ summaryCounts.revenue | currency:currencySymbol:2 }}</span></li>
 </ul>
 
-
-
-
-
+<!-- Accounts Receivable Summary -->
+<ul ng-if="isThisReport( 'ACCOUNTS_RECEIVABLE_SUMMARY' )" class="totals">
+    <li>Records<span>{{ summaryCounts.total_records }}</span></li>
+    <li>Balance Amount<span class="brand-colors">{{ summaryCounts.total_balance | currency:currencySymbol:2 }}</span></li>
+</ul>
 
 <!-- Early Check In -->
 <ul ng-if="isThisReport( 'EARLY_CHECKIN' )" class="totals">
