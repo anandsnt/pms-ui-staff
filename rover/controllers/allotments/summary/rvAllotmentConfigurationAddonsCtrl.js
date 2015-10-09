@@ -46,50 +46,53 @@ sntRover.controller('rvAllotmentConfigurationAddonsCtrl', [
 			$scope.closeAllotmentAddonsScreen();
 		};
 
+		/**
+		 *
+		 */
+		var successCallBackFetchAddons = function(data) {
+			var inclusiveAddons = _.where(data.rate_addons, {
+				is_inclusive: true
+			});
+
+			$scope.allotmentConfigData.addons.inclusiveAddons = inclusiveAddons;
+			$scope.addons = [];
+			$scope.$emit("hideLoader");
+			// remove null values
+			$scope.addons = [];
+			$scope.$emit("hideLoader");
+			angular.forEach(data.results, function(item) {
+				if (item !== null) {
+					var addonItem = {};
+					addonItem.id = item.id;
+					addonItem.isBestSeller = item.bestseller;
+					addonItem.category = item.charge_group.name;
+					addonItem.title = item.name;
+					addonItem.description = item.description;
+					addonItem.price = item.amount;
+					addonItem.taxes = item.taxes;
+					addonItem.stay = "";
+					if (item.amount_type !== "") {
+						addonItem.stay = item.amount_type.description;
+					}
+					if (item.post_type !== "") {
+						if (addonItem.stay !== "") {
+							addonItem.stay += " / " + item.post_type.description;
+						} else {
+							addonItem.stay = item.post_type.description;
+						}
+					}
+					addonItem.amountType = item.amount_type;
+					addonItem.postType = item.post_type;
+					addonItem.amountTypeDesc = item.amount_type.description;
+					addonItem.postTypeDesc = item.post_type.description;
+					$scope.addons.push(addonItem);
+				}
+			});
+
+			refreshAddonsScroller();
+		};
+
 		$scope.fetchAddons = function(paramChargeGrpId) {
-			var successCallBackFetchAddons = function(data) {
-				var inclusiveAddons = [];
-				angular.forEach(data.rate_addons, function(item) {
-					if (item.is_inclusive) {
-						inclusiveAddons.push(item);
-					}
-				});
-				$scope.allotmentConfigData.addons.inclusiveAddons = inclusiveAddons;
-				$scope.addons = [];
-				$scope.$emit("hideLoader");
-				angular.forEach(data.results, function(item) {
-					if (item !== null) {
-						var addonItem = {};
-						addonItem.id = item.id;
-						addonItem.isBestSeller = item.bestseller;
-						addonItem.category = item.charge_group.name;
-						addonItem.title = item.name;
-						addonItem.description = item.description;
-						addonItem.price = item.amount;
-						addonItem.taxes = item.taxes;
-						addonItem.stay = "";
-						if (item.amount_type !== "") {
-							addonItem.stay = item.amount_type.description;
-						}
-						if (item.post_type !== "") {
-							if (addonItem.stay !== "") {
-								addonItem.stay += " / " + item.post_type.description;
-							} else {
-								addonItem.stay = item.post_type.description;
-							}
-						}
-						addonItem.amountType = item.amount_type;
-						addonItem.postType = item.post_type;
-						addonItem.amountTypeDesc = item.amount_type.description;
-						addonItem.postTypeDesc = item.post_type.description;
-						$scope.addons.push(addonItem);
-					}
-				});
-
-				refreshAddonsScroller();
-			};
-
-
 			var chargeAllotmentId = paramChargeGrpId === undefined ? '' : paramChargeGrpId;
 			var is_bestseller = paramChargeGrpId === undefined ? true : false;
 
@@ -125,44 +128,50 @@ sntRover.controller('rvAllotmentConfigurationAddonsCtrl', [
 			});
 		};
 
-		$scope.selectAddon = function(addon, addonCount) {
-			var onEnhanceSuccess = function(data) {
-					$scope.allotmentConfigData.selectedAddons = data;
-					$scope.computeAddonsCount();
-					$scope.openAddonsPopup();
-				},
-				onEnhanceFailure = function(errorMessage) {
-					$scope.errorMessage = errorMessage;
-				};
+		var onEnhanceSuccess = function(data) {
+			$scope.allotmentConfigData.selectedAddons = data;
+			$scope.computeAddonsCount();
+			$scope.openAddonsPopup();
+		};
 
-			$scope.callAPI(rvAllotmentConfigurationSrv.addAllotmentEnhancement, {
+		var onEnhanceFailure = function(errorMessage) {
+			$scope.errorMessage = errorMessage;
+		};
+
+		$scope.selectAddon = function(addon, addonCount) {
+			var params = {
+				"addon_id": addon.id,
+				"addon_count": parseInt(addonCount),
+				"id": $scope.allotmentConfigData.summary.allotment_id
+			};
+			var options = {
 				successCallBack: onEnhanceSuccess,
 				failureCallBack: onEnhanceFailure,
-				params: {
-					"addon_id": addon.id,
-					"addon_count": parseInt(addonCount),
-					"id": $scope.allotmentConfigData.summary.allotment_id
-				}
-			});
+				params: params
+			};
+			$scope.callAPI(rvAllotmentConfigurationSrv.addAllotmentEnhancement, options);
+		};
+
+		var onRemoveAddonSuccess = function(data) {
+			$scope.allotmentConfigData.selectedAddons = data;
+			$scope.computeAddonsCount();
+		};
+
+		var onRemoveAddonFailure = function(errorMessage) {
+			$scope.errorMessage = errorMessage;
 		};
 
 		$scope.removeAddon = function(addon) {
-			var onRemoveAddonSuccess = function(data) {
-					$scope.allotmentConfigData.selectedAddons = data;
-					$scope.computeAddonsCount();
-				},
-				onRemoveAddonFailure = function(errorMessage) {
-					$scope.errorMessage = errorMessage;
-				};
-
-			$scope.callAPI(rvAllotmentConfigurationSrv.removeAllotmentEnhancement, {
+			var params  = {
+				"addon_id": addon.id,
+				"id": $scope.allotmentConfigData.summary.allotment_id
+			};
+			var options = {
 				successCallBack: onRemoveAddonSuccess,
 				failureCallBack: onRemoveAddonFailure,
-				params: {
-					"addon_id": addon.id,
-					"id": $scope.allotmentConfigData.summary.allotment_id
-				}
-			});
+				params: params
+			}
+			$scope.callAPI(rvAllotmentConfigurationSrv.removeAllotmentEnhancement, options);
 		};
 	}
 ]);

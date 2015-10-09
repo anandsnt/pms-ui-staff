@@ -150,28 +150,29 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
 
         };
 
-        var preLoadTransactionsData = function() {
-            var onTransactionFetchSuccess = function(data) {
+        var onTransactionFetchSuccess = function(data) {
 
-                $scope.$emit('hideloader');
-                $scope.transactionsDetails = data;
-                $scope.allotmentConfigData.activeTab = 'TRANSACTIONS';
+            $scope.$emit('hideloader');
+            $scope.transactionsDetails = data;
+            $scope.allotmentConfigData.activeTab = 'TRANSACTIONS';
 
-                /*
-                 * Adding billValue and oldBillValue with data. Adding with each bills fees details
-                 * To handle move to bill action
-                 * Added same value to two different key because angular is two way binding
-                 * Check in HTML moveToBillAction
-                 */
-                angular.forEach($scope.transactionsDetails.bills, function(value, key) {
-                    angular.forEach(value.total_fees.fees_details, function(feesValue, feesKey) {
+            /*
+             * Adding billValue and oldBillValue with data. Adding with each bills fees details
+             * To handle move to bill action
+             * Added same value to two different key because angular is two way binding
+             * Check in HTML moveToBillAction
+             */
+            angular.forEach($scope.transactionsDetails.bills, function(value, key) {
+                angular.forEach(value.total_fees.fees_details, function(feesValue, feesKey) {
 
-                        feesValue.billValue = value.bill_number; //Bill value append with bill details
-                        feesValue.oldBillValue = value.bill_number; // oldBillValue used to identify the old billnumber
-                    });
+                    feesValue.billValue = value.bill_number; //Bill value append with bill details
+                    feesValue.oldBillValue = value.bill_number; // oldBillValue used to identify the old billnumber
                 });
+            });
 
-            };
+        };
+
+        var preLoadTransactionsData = function() {
             var params = {
                 "account_id": $scope.accountConfigData.summary.posting_account_id
             };
@@ -221,6 +222,17 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
 
             return tabAndUrls[$scope.allotmentConfigData.activeTab];
         };
+        var onAllotmentSaveSuccess = function(data) {
+            $scope.allotmentConfigData.summary.allotment_id = data.allotment_id;
+            $state.go('rover.allotments.config', {
+                id: data.allotment_id
+            });
+            $stateParams.id = data.allotment_id;
+        };
+
+        var onAllotmentSaveFailure = function(errorMessage) {
+            $scope.errorMessage = errorMessage;
+        };
 
         /**
          * Save the new Allotment
@@ -230,28 +242,17 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             $scope.errorMessage = "";
             if (rvPermissionSrv.getPermissionValue('CREATE_ALLOTMENT_SUMMARY') && !$scope.allotmentConfigData.summary.allotment_id) {
                 if (ifMandatoryValuesEntered()) {
-                    var onAllotmentSaveSuccess = function(data) {
-                            $scope.allotmentConfigData.summary.allotment_id = data.allotment_id;
-                            $state.go('rover.allotments.config', {
-                                id: data.allotment_id
-                            });
-                            $stateParams.id = data.allotment_id;
-                        },
-                        onAllotmentSaveFailure = function(errorMessage) {
-                            $scope.errorMessage = errorMessage;
-                        };
-
                     if (!$scope.allotmentConfigData.summary.rate) {
                         $scope.allotmentConfigData.summary.rate = -1;
                     }
-
-                    $scope.callAPI(rvAllotmentConfigurationSrv.saveAllotmentSummary, {
+                    var options = {
                         successCallBack: onAllotmentSaveSuccess,
                         failureCallBack: onAllotmentSaveFailure,
                         params: {
                             summary: $scope.allotmentConfigData.summary
                         }
-                    });
+                    };
+                    $scope.callAPI(rvAllotmentConfigurationSrv.saveAllotmentSummary, options);
                 } else {
                     $scope.errorMessage = ["Allotment's name, from date, to date, room release date and hold status are mandatory"];
                 }
@@ -261,6 +262,18 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
 
         };
 
+        var onAllotmentUpdateSuccess = function(data) {
+            //client controllers should get an infromation whether updation was success
+            $scope.$broadcast("UPDATED_ALLOTMENT_INFO", angular.copy($scope.allotmentConfigData.summary));
+            $scope.allotmentSummaryMemento = angular.copy($scope.allotmentConfigData.summary);
+            return true;
+        };
+        var onAllotmentUpdateFailure = function(errorMessage) {
+            //client controllers should get an infromation whether updation was a failure
+            $scope.$broadcast("FAILED_TO_UPDATE_ALLOTMENT_INFO", errorMessage);
+            $scope.errorMessage = errorMessage;
+            return false;
+        };
 
         /**
          * Update the allotment data
@@ -272,19 +285,6 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 if (angular.equals($scope.allotmentSummaryMemento, $scope.allotmentConfigData.summary)) {
                     return false;
                 }
-                var onAllotmentUpdateSuccess = function(data) {
-                        //client controllers should get an infromation whether updation was success
-                        $scope.$broadcast("UPDATED_ALLOTMENT_INFO", angular.copy($scope.allotmentConfigData.summary));
-                        $scope.allotmentSummaryMemento = angular.copy($scope.allotmentConfigData.summary);
-                        return true;
-                    },
-                    onAllotmentUpdateFailure = function(errorMessage) {
-                        //client controllers should get an infromation whether updation was a failure
-                        $scope.$broadcast("FAILED_TO_UPDATE_ALLOTMENT_INFO", errorMessage);
-                        $scope.errorMessage = errorMessage;
-                        return false;
-                    };
-
                 var summaryData = _.extend({}, $scope.allotmentConfigData.summary);
                 summaryData.block_from = $filter('date')(summaryData.block_from, $rootScope.dateFormatForAPI);
                 summaryData.block_to = $filter('date')(summaryData.block_to, $rootScope.dateFormatForAPI);
@@ -472,7 +472,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
         };
 
         $scope.updateAndBack = function() {
-            if ($scope.allotmentConfigData.activeTab === "SUMMARY") {
+            if (!$scope.isInAddMode() && $scope.allotmentConfigData.activeTab === "SUMMARY") {
                 $scope.updateAllotmentSummary();
             } else if ($scope.allotmentConfigData.activeTab === "ACCOUNT") {
                 $scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');
