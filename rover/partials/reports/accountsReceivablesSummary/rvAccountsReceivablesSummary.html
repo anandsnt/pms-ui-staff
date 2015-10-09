@@ -7,7 +7,7 @@
                     <!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
                     "sorting-asc" when ASC sorting
                     "sorting-desc" when DESC sorting -->
-                    <th><span class="sort" ng-class="{ 'sorting-asc': true === item.roomSortDir, 'sorting-desc': false === item.roomSortDir }" ng-click="sortResultBy(item)">Account Name</span></th>
+                    <th><span class="sort" ng-click="sortResultBy()">Account Name</span></th>
                     <th><span class="sort">Account #</span></th>
                     <th><span>Corporate ID / IATA #</span></th>
                     <th><span>Commision</span></th>

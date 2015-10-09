@@ -44,9 +44,9 @@
 </ul>
 
 <!-- Accounts Receivable Summary -->
-<ul ng-if="isThisReport( 'ACCOUNTS_RECEIVABLE_SUMMARY' )" class="totals">
-    <li>Records<span>{{ summaryCounts.total_records }}</span></li>
-    <li>Balance Amount<span class="brand-colors">{{ summaryCounts.total_balance | currency:currencySymbol:2 }}</span></li>
+<ul ng-if="isThisReport( 'AR_SUMMARY_REPORT' )" class="totals">
+    <li>Records<span>{{ summaryCounts.records }}</span></li>
+    <li>Balance Amount<span class="brand-colors">{{ summaryCounts.balance | currency:currencySymbol:2 }}</span></li>
 </ul>
 
 <!-- Early Check In -->
