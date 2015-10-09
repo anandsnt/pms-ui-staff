@@ -494,6 +494,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['DEPOSIT_REPORT']:
 					template = '/assets/partials/reports/generalReportRows/rvDepositReportRow.html';
 					break;
+				case reportNames['GROUP_DEPOSIT_REPORT']:
+					template = '/assets/partials/reports/generalReportRows/rvDepositReportRow.html';
+					break;
 				case reportNames['IN_HOUSE_GUEST']:
 					template = '/assets/partials/reports/generalReportRows/rvInHouseReportRow.html';
 					break;
