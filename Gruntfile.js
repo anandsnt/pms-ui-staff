@@ -173,4 +173,5 @@ module.exports = function(grunt) {
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
     grunt.registerTask('server', ['clean', 'ngtemplates', 'shell', 'watch']);
+    grunt.registerTask('rebuild', ['clean', 'concat', 'ngtemplates']);
 };
