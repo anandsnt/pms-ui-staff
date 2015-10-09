@@ -28,8 +28,8 @@ admin.service('adSiteminderSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
             //ota/full_refresh/:interface_id
             var start_date = '', end_date = '';
             if (data.start_date && data.end_date){
-                start_date = '?start_date='+data.start_date;
-                end_date = '&end_date='+data.end_date;
+                start_date = '?'+data.start_date;
+                end_date = '&'+data.end_date;
             }
             
 		var deferred = $q.defer();
