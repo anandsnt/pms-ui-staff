@@ -564,7 +564,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				view: 'DEFAULT',
 				fromState: $state.current.name,
 				company_id: $scope.$parent.reservationData.company.id,
-				travel_agent_id: $scope.$parent.reservationData.travelAgent.id
+				travel_agent_id: $scope.$parent.reservationData.travelAgent.id,
+				group_id: $scope.$parent.reservationData.group.id
 			});
 		}
 
@@ -794,7 +795,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			};
 
 			var arrivalDate = tzIndependentDate($scope.editStore.arrival),
-				departureDate = tzIndependentDate($scope.editStore.departure);
+			departureDate = tzIndependentDate($scope.editStore.departure);
 			$scope.reservationParentData.arrivalDate = $filter('date')(arrivalDate, 'yyyy-MM-dd');
 			$scope.reservationParentData.departureDate = $filter('date')(departureDate, 'yyyy-MM-dd');
 			$scope.reservationParentData.numNights = Math.floor((Date.parse(departureDate) - Date.parse(arrivalDate)) / 86400000);

@@ -4,16 +4,16 @@
 	<!-- Filters -->
 	<div class="reservation-filters">
 		<!-- Change room type visible for the calendar -->
-		<div id="change-room-type" class="select" ng-hide="calendarType == 'BEST_AVAILABLE'">
-			<select ng-model="roomTypeForCalendar"
-                ng-options="roomType.id as roomType.name for roomType in availabilityDetails.room_types" ng-change=""ng-disabled="!isRoomTypeChangeAllowed()">
-                <option value="" disabled selected translate>RESV_ALL_ROOMS</option>
+		<div id="change-room-type" class="select" ng-show="stateCheck.calendarState.calendarType == 'ROOM_TYPE'">
+			<select ng-model="stateVariables.selectedRoom" ng-change="filtersUpdated()"
+                ng-options="room.id as room.name for room in stateVariables.rooms">
+                <option value="" selected translate>RESV_ALL_ROOMS</option>
             </select>
 		</div>
-		<div id="change-room-type" class="select" ng-hide="calendarType == 'BEST_AVAILABLE'">
-			<select ng-model="roomTypeForCalendar"
-                ng-options="roomType.id as roomType.name for roomType in availabilityDetails.room_types" ng-change=""ng-disabled="!isRoomTypeChangeAllowed()">
-                <option value="" disabled selected translate>RESV_ALL_RATES</option>
+		<div id="change-room-type" class="select" ng-show="stateCheck.calendarState.calendarType == 'ROOM_TYPE'">
+			<select ng-model="stateVariables.selectedRate" ng-change="filtersUpdated()"
+                ng-options="rate.id as rate.name for rate in stateVariables.rates">
+                <option value="" selected translate>RESV_ALL_RATES</option>
             </select>
 		</div>
 		<ul id="filter-calendar">
@@ -23,9 +23,11 @@
 	</div>
 
 	<!-- Calendar -->
-	<div id="room-rates-calendar" class="reservation-content stay-dates-content scrollable" ng-iscroll="room-rates-calendar">
-		<div class="wrapper">
-			<two-month-calendar event-sources-left='eventSources.left' event-sources-right='eventSources.right' left-calendar-options='leftCalendarOptions' right-calendar-options='rightCalendarOptions' next-button-click-handler='nextButtonClickHandler()' prev-button-click-handler='prevButtonClickHandler()' disable-prev-button ='disablePrevButton'></two-month-calendar>
+	<div id="room-rates-calendar" class="reservation-content stay-dates-content scrollable" >
+		<div ng-iscroll="room-rates-calendar" style="height:300px;">
+			<div class="wrapper" style="height:350px;">
+				<two-month-calendar ng-if="showCalender" event-sources-left='eventSources.left' event-sources-right='eventSources.right' left-calendar-options='leftCalendarOptions' right-calendar-options='rightCalendarOptions' next-button-click-handler='nextButtonClickHandler()' prev-button-click-handler='prevButtonClickHandler()' disable-prev-button ='disablePrevButton'></two-month-calendar>
+			</div>
 		</div>
 
 

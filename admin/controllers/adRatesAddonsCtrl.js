@@ -326,7 +326,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			singleAddonData.rate_code_only = $scope.singleAddon.rate_code_only;
 			singleAddonData.manual_posting = $scope.singleAddon.manual_posting;
 			singleAddonData.forecast_for_next_day = $scope.singleAddon.forecast_for_next_day;
-			singleAddonData.charge_full_weeks_only = $scope.singleAddon.charge_full_weeks_only;
+			singleAddonData.charge_full_weeks_only = (($scope.singleAddon.post_type_id ===3)&& $scope.singleAddon.is_reservation_only && $scope.singleAddon.charge_full_weeks_only)?true:false;
 
 			// convert dates to system format yyyy-MM-dd
 			// if not date null should be passed - read story CICO-7287

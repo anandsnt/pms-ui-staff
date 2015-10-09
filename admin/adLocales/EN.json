@@ -424,8 +424,16 @@
 "GIVEX_SECONDARY_ACCESS_URL_LABEL": "SECONDARY URL",
 "GIVEX_TIMEOUT_LABEL": "Timeout",
 "GIVEX_REQUESTOR_ID_LABEL": "Requester ID"
-,    
-    
+,
+  "ZDIRECT_SETUP_HEADER": "Z-Direct Setup",
+  "ZDIRECT_ACTIVATE_INACTIVATE": "Activate / Inactivate",
+  "ZDIRECT_SUB_TITLE": "Z-Direct API Access Configuration",
+  "ZDIRECT_USERNAME_LABEL": "User Name",
+  "ZDIRECT_PASSWORD_LABEL": "Password",
+  "ZDIRECT_ACCESS_URL_LABEL": "URL",
+  "ZDIRECT_CUSTOMER_NAME_LABEL": "Customer Name",
+  "ZDIRECT_PROPERTY_NAME_LABEL": "Property Name",
+  "ZDIRECT_HOTEL_CODE_LABEL": "Hotel Code",
     "FROM": "From",
     "TO": "To",
     "GROUPS": "Groups",

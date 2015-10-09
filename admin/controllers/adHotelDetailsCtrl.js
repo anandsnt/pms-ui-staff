@@ -134,7 +134,9 @@ admin.controller('ADHotelDetailsCtrl', [
     *   A post method for Test MliConnectivity for a hotel
     */
 	$scope.clickedTestMliConnectivity = function(){
-
+            if ($('#cert_string').val() !== ''){
+                $scope.certificate = $('#cert_string').val();
+            }
 		var postData = {
 			"mli_chain_code": $scope.data.mli_chain_code,
 			"mli_hotel_code": $scope.data.mli_hotel_code,
