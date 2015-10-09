@@ -566,10 +566,11 @@
 				</label>
 				<div class="file-upload">
 					<span class="input">{{fileName}}</span>
-					<input type="file" ng-model="certificate" accept="*" app-filereader />
+					<input type="file" ng-model="certificate" accept="*" app-filereader emit-data="cert_string" />
 					<button type="button" class="button brand-colors">
 						Attach Certificate
 					</button>
+                                        <input type="text" id="cert_string" hidden>
 				</div>
 			</div>
 			

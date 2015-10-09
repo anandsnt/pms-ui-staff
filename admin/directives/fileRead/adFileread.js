@@ -6,7 +6,8 @@ admin.directive('appFilereader', function($q){
         restrict: 'A'
         , require: '?ngModel'
         ,scope: {
-            fileNameKey:'@fileNameKey'
+            fileNameKey:'@fileNameKey',
+            emitData: '@emitData'
         }
         , link: function(scope, element, attrs, ngModel){
             if(!ngModel) {
@@ -34,6 +35,9 @@ admin.directive('appFilereader', function($q){
 
                     var reader = new FileReader();
                     reader.onload = function(e){
+                    if (scope.emitData !== ''){
+                         $('#'+scope.emitData).val(e.target.result);
+                    }
                         deferred.resolve(e.target.result);
                     };
                     reader.onerror = function(e) {

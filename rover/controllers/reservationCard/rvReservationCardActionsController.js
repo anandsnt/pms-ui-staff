@@ -622,6 +622,15 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     }
                 }
                 
+                //hide the element that was deleted; and refresh the scroller,
+                //this also sets focus to the first item in the list
+                for (var xi in $scope.actions){
+                    if ($scope.actions[xi].id === selected.id){
+                        $scope.actions[xi].is_deleted = true;
+                        refreshScroller();
+                    }
+                }
+                
                 
                 $scope.fetchActionsCount();
                 $scope.setActionsHeaderInfo();
@@ -633,10 +642,26 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                                 $scope.selectAction($scope.actions[a]);
                             }
                         } else if (!$scope.isStandAlone){
+                            //overlay has some alerts which can get deleted; these are just hidden from view until the next full refresh / api call is done
+                            //since the action object still exists, upon deleting an action, select the next (visible) action starting at the index (0)
                             if ($scope.lastSelectedItemId === $scope.actions[a].id && !del){
                                 $scope.selectAction($scope.actions[a]);
                             } else {
-                                $scope.selectAction($scope.actions[0]);
+                                if (!$scope.actions[0].is_deleted){
+                                    $scope.selectAction($scope.actions[0]);
+                                } else {
+                                    if (!$scope.actions[a].is_deleted){
+                                        $scope.selectAction($scope.actions[a]);
+                                    } else {
+                                        for (var i in $scope.actions){//select next non-deleted action
+                                            if (!$scope.actions[i].is_deleted){
+                                                $scope.selectAction($scope.actions[i]);
+                                                $scope.$parent.$emit('hideLoader');
+                                                return;
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                         
