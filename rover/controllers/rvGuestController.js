@@ -801,6 +801,7 @@ sntRover.controller('guestCardController', [
 								companyData.address.state = item.address.state;
 							}
 							if (item.current_contracts.length > 0) {
+								companyData.rateList = item.current_contracts;
 								companyData.rate = item.current_contracts[0];
 								companyData.rate.difference = (function() {
 									if (parseInt(companyData.rate.based_on.value) < 0) {
@@ -1423,13 +1424,13 @@ sntRover.controller('guestCardController', [
 			$event.stopPropagation();
 
 			if (cardData.account_type === 'COMPANY') {
-				if (!!cardData.rate && $state.current.name !== "rover.reservation.staycard.mainCard.roomType" && !$scope.reservationData.group.id) {
+				if ( cardData.isMultipleContracts && $state.current.name !== "rover.reservation.staycard.mainCard.roomType" && !$scope.reservationData.group.id ) {
 					showContractRatePopup(cardData);
 				} else {
 					$scope.selectCompany(cardData);
 				}
 			} else if (cardData.account_type === 'TRAVELAGENT') {
-				if (!!cardData.rate && $state.current.name !== "rover.reservation.staycard.mainCard.roomType" && !$scope.reservationData.group.id) {
+				if ( !!cardData.rate && $state.current.name !== "rover.reservation.staycard.mainCard.roomType" && !$scope.reservationData.group.id ) {
 					showContractRatePopup(cardData);
 				} else {
 					$scope.selectTravelAgent(cardData);
