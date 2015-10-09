@@ -526,7 +526,15 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 		};
 
-		this.attachCompanyTACardRoutings = function(card) {
+		this.attachCompanyTACardRoutings = function(card, cardData) {
+
+			/**
+			 * CICO-20674: when there is more than one contracted rate we 
+			 * should not add any routing info unless a new rate is not chosen
+			 */
+			if ( cardData.isMultipleContracts ) {
+				return false;
+			};
 
 			// CICO-20161
 			/**
@@ -597,7 +605,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 						$scope.viewState.lastCardSlot = "";
 					}
 					$scope.$emit('hideLoader');
-					that.attachCompanyTACardRoutings(card);
+					that.attachCompanyTACardRoutings(card, cardData);
 				},
 				onReplaceFailure = function() {
 					$scope.cardRemoved();
