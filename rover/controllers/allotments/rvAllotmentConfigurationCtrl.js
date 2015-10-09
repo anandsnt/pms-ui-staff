@@ -80,6 +80,47 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
         };
 
         /**
+         * we will update the summary data, when we got this one
+         * @return undefined
+         */
+        var fetchSuccessOfSummaryData = function(data) {
+            var summaryData = $scope.allotmentConfigData.summary; // ref for summary
+            summaryData = _.extend(summaryData, data.allotmentSummary);
+
+            if (!$scope.isInAddMode()) {
+                $scope.allotmentConfigData.summary.block_from = new tzIndependentDate($scope.allotmentConfigData.summary.block_from);
+                $scope.allotmentConfigData.summary.block_to = new tzIndependentDate($scope.allotmentConfigData.summary.block_to);
+            }
+
+            // let others know we have refreshed summary data
+            $scope.$broadcast("UPDATED_ALLOTMENT_INFO");
+        };
+
+       /**
+        * method to fetch summary data
+        * @return undefined
+        */
+       var fetchSummaryData = function() {
+           var params = {
+               "allotmentId": $scope.allotmentConfigData.summary.allotment_id
+           };
+           var options = {
+               successCallBack: fetchSuccessOfSummaryData,
+               params: params
+           };
+
+           $scope.callAPI(rvAllotmentConfigurationSrv.getAllotmentSummary, options);
+       };
+
+        /**
+         * Refresh the allotment summary data when we get this event
+         */
+        $scope.$on("FETCH_SUMMARY", function(event) {
+            event.stopPropagation();
+            fetchSummaryData();
+        });
+
+        /**
          * function to form data model for add/edit mode
          * @return - None
          */
@@ -318,7 +359,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          * @return {Boolean} [description]
          */
         $scope.shouldShowCompanyCardNavigationButton = function() {
-            return (!$scope.isInAddMode() && !!$scope.allotmentConfigData.summary.company.id)
+            return (!$scope.isInAddMode() && !!$scope.allotmentConfigData.summary.company.id);
         };
 
         /**
@@ -326,7 +367,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          * @return {Boolean} [description]
          */
         $scope.shouldShowTravelAgentNavigationButton = function() {
-            return (!$scope.isInAddMode() && !!$scope.allotmentConfigData.summary.travel_agent.id)
+            return (!$scope.isInAddMode() && !!$scope.allotmentConfigData.summary.travel_agent.id);
         };
 
         $scope.goToTACard = function(){            

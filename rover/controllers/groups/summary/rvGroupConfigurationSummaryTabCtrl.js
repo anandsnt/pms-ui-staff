@@ -11,7 +11,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 */
 		var whetherSummaryDataChanged = function() {
 			var currentSummaryData = $scope.groupConfigData.summary;
-			for (key in summaryMemento) {
+			for (var key in summaryMemento) {
 				if (!_.isEqual(currentSummaryData[key], summaryMemento[key])) {
 					return false;
 				}
@@ -48,7 +48,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 		/**
 		 * Our Move date, start date, end date change are defined in parent controller
-		 * We need to share those actions with room block 
+		 * We need to share those actions with room block
 		 * @return undefined
 		 */
 		var initializeChangeDateActions = function () {
@@ -83,14 +83,14 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 					failureCallBack : failureCallBackOfMoveButton
 				};
 			$scope.changeDatesActions.clickedOnMoveSaveButton (options);
-		};		
+		};
 
 		/**
 		 * when clicked on move button. this will triggr
 		 * @return {undefined}
 		 */
-		$scope.clickedOnMoveButton = function() {		
-			_.extend($scope.toDateOptions, 
+		$scope.clickedOnMoveButton = function() {
+			_.extend($scope.toDateOptions,
 			{
 				disabled: true
 			});
@@ -102,15 +102,15 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$scope.fromDateOptions.maxDate = '';
 
 			$scope.changeDatesActions.clickedOnMoveButton ();
-		
+
 		};
 
 		/**
 		 * when clicked on cancel move button. this will triggr
 		 * @return {undefined}
 		 */
-		$scope.clickedOnCancelMoveButton = function() {		
-			_.extend($scope.toDateOptions, 
+		$scope.clickedOnCancelMoveButton = function() {
+			_.extend($scope.toDateOptions,
 			{
 				disabled: false
 			});
@@ -120,7 +120,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 		var cancelCallBackofDateChange = function () {
 			resetDatePickers();
-		}
+		};
 
 		var successCallBackOfEarlierArrivalDateChange = function() {
 			$scope.reloadPage();
@@ -150,7 +150,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				};
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerEarlierArrDateChange (options);
-		};	
+		};
 
 		var successCallBackOfLaterArrivalDateChange = function() {
 			$scope.reloadPage();
@@ -170,8 +170,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				options = {
 					fromDate 		: sumryData.block_from,
 					oldFromDate 	: oldSumryData.block_from,
-					successCallBack : successCallBackOfEarlierArrivalDateChange,
-					failureCallBack : failureCallBackOfEarlierArrivalDateChange,
+					successCallBack : successCallBackOfLaterArrivalDateChange,
+					failureCallBack : failureCallBackOfLaterArrivalDateChange,
 					cancelPopupCallBack	: cancelCallBackofDateChange
 				};
 			$scope.changeDatesActions.triggerdChangeDateActions();
@@ -214,7 +214,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				};
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerEarlierDepDateChange (options);
-		};	
+		};
 
 		/**
 		 * [successCallBackOfLaterDepartureDateChange description]
@@ -255,7 +255,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			var options = {
 				cancelPopupCallBack	: cancelCallBackofDateChange,
 				message 			: "GROUP_EARLIER_DEP_DATE_CHANGE_WARNING"
-			}
+			};
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.showDateChangeInvalidWarning(options);
 		};
@@ -264,7 +264,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			var options = {
 				cancelPopupCallBack	: cancelCallBackofDateChange,
 				message 			: "GROUP_LATER_ARR_DATE_CHANGE_WARNING"
-			}
+			};
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.showDateChangeInvalidWarning(options);
 		};
@@ -363,25 +363,25 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			var refData 		= $scope.groupConfigData.summary,
 				newBlockFrom 	= refData.block_from,
 				oldBlockFrom	= new tzIndependentDate(summaryMemento.block_from);
-			
+
 			if (refData.release_date.toString().trim() === '') {
-				$scope.groupConfigData.summary.release_date = refData.block_from;
+				refData.release_date = refData.block_from;
 			}
 
 			if ($scope.isInAddMode()){
-				updateRateAndSegment();				
-			} 
+				updateRateAndSegment();
+			}
 
 			//if it is is Move Date mode
-			else if ($scope.changeDatesActions.isInCompleteMoveMode()) { 
+			else if ($scope.changeDatesActions.isInCompleteMoveMode()) {
 				var originalStayLength = (util.getDatesBetweenTwoDates (new tzIndependentDate(util.deepCopy(summaryMemento.block_from)), new tzIndependentDate(util.deepCopy(summaryMemento.block_to))).length - 1);
-				$scope.groupConfigData.summary.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
-				$scope.groupConfigData.summary.block_to.setDate(refData.block_to.getDate() + originalStayLength);
+				refData.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+				refData.block_to.setDate(refData.block_to.getDate() + originalStayLength);
 			}
 
 			//arrival left date change
 			else if(newBlockFrom < oldBlockFrom && $scope.changeDatesActions.arrDateLeftChangeAllowed()) {
-				triggerEarlierArrivalDateChange();				
+				triggerEarlierArrivalDateChange();
 			}
 
 			//arrival right date change
@@ -447,8 +447,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			if(!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
 				fetchApplicableRates();
 				$scope.computeSegment();
-			}				
-		}
+			}
+		};
 
 		/**
 		 * when to date choosed, this function will fire
@@ -470,7 +470,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 
 			// check move validity
 			// departure left date change
-			else if(newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {				
+			else if(newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {
 				if(new tzIndependentDate(refData.last_arrival_date) > newBlockTo){
 					triggerEarlierDepartureDateChangeInvalidError();
 				}
@@ -516,11 +516,11 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				cancelledGroup 			= sData.is_cancelled,
 				is_A_PastGroup 			= sData.is_a_past_group,
 				inEditMode 				= !$scope.isInAddMode();
-			
-			return ($scope.isInStaycardScreen()) || ( inEditMode &&  
-				   	( 
-				   	  noOfInhouseIsNotZero 	|| 
-					  cancelledGroup 		|| 
+
+			return ($scope.isInStaycardScreen()) || ( inEditMode &&
+				   	(
+				   	  noOfInhouseIsNotZero 	||
+					  cancelledGroup 		||
 					  is_A_PastGroup
 					)
 				   );
@@ -537,10 +537,10 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				toRightMoveNotAllowed 	= !sData.is_to_date_right_move_allowed,
 				inEditMode 				= !$scope.isInAddMode();
 
-			return ($scope.isInStaycardScreen()) || ( inEditMode &&  
-				   	( 
-				   	 endDateHasPassed 	|| 
-					 cancelledGroup 	||  
+			return ($scope.isInStaycardScreen()) || ( inEditMode &&
+				   	(
+				   	 endDateHasPassed 	||
+					 cancelledGroup 	||
 					 toRightMoveNotAllowed
 					)
 				   );
@@ -575,7 +575,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				disabled: shouldDisableFromDatePicker(),
 				maxDate: $scope.groupConfigData.summary.block_to,
 				minDate: tzIndependentDate($rootScope.businessDate)
-			}, commonDateOptions);			
+			}, commonDateOptions);
 
 			if (sumryData.block_from instanceof Date) {
 				if (tzIndependentDate (sumryData.block_from) < tzIndependentDate($rootScope.businessDate)) {
@@ -588,7 +588,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			//to date options
 			$scope.toDateOptions = _.extend({
 				onSelect: toDateChoosed,
-				disabled: shouldDisableEndDatePicker()				
+				disabled: shouldDisableEndDatePicker()
 			}, commonDateOptions);
 
 			if ($scope.groupConfigData.summary.block_from !== '') {
@@ -669,14 +669,16 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				$scope.errorMessage = ["Please save the group first"];
 				return;
 			}
-			$scope.attachedEntities = {};
-			$scope.attachedEntities.posting_account = {};
-			$scope.attachedEntities.posting_account.id = $scope.groupConfigData.summary.group_id;
-			$scope.attachedEntities.posting_account.name = $scope.accountConfigData.summary.posting_account_name;
-			$scope.attachedEntities.posting_account.logo = "GROUP_DEFAULT";
-			$scope.billingEntity = "GROUP_DEFAULT_BILLING";
+			var summaryData = $scope.groupConfigData.summary;
 
+			$scope.billingEntity = "GROUP_DEFAULT_BILLING";
 			$scope.billingInfoModalOpened = true;
+			$scope.attachedEntities = {};
+			$scope.attachedEntities.posting_account = _.extend({}, {
+				id: summaryData.group_id,
+				name: summaryData.posting_account_name,
+				logo: "GROUP_DEFAULT"
+			});
 
 			ngDialog.open({
 				template: '/assets/partials/bill/rvBillingInformationPopup.html',
@@ -702,35 +704,55 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$scope.closeDialog();
 		};
 
-		$scope.onRateChange = function() {
-			if (!$scope.groupConfigData.summary.group_id) {
-				return false;
-			}
-
-			$scope.invokeApi(rvGroupConfigurationSrv.updateRate, {
-				group_id: $scope.groupConfigData.summary.group_id,
-				rate_id: $scope.groupConfigData.summary.rate
-			}, function(response) {
-				$scope.$emit('hideLoader');
-				if (!response.is_changed && !response.is_room_rate_available) {
-					ngDialog.open({
-						template: '/assets/partials/groups/summary/warnChangeRateNotPossible.html',
-						className: '',
-						scope: $scope,
-						closeByDocument: false,
-						closeByEscape: false
-					});
-					$scope.groupConfigData.summary.rate = summaryMemento.rate;
-				}else{
-				  summaryMemento.rate = $scope.groupConfigData.summary.rate;
-				}
-			}, function(errorMessage) {
-				$scope.$emit('hideLoader');
-				$scope.errorMessage = errorMessage;
-				$scope.groupConfigData.summary.rate = summaryMemento.rate;
+		var showRateChangeWarningPopup = function() {
+			ngDialog.open({
+				template: '/assets/partials/groups/summary/warnChangeRateNotPossible.html',
+				className: '',
+				scope: $scope,
+				closeByDocument: false,
+				closeByEscape: false
 			});
 		};
 
+		var onRateChangeSuccessCallBack = function(response) {
+			$scope.$emit('hideLoader');
+			if (!response.is_changed && !response.is_room_rate_available) {
+				showRateChangeWarningPopup();
+				$scope.groupConfigData.summary.rate = summaryMemento.rate;
+			}
+			else{
+			  summaryMemento.rate = $scope.groupConfigData.summary.rate;
+			}
+		};
+
+		var onRateChangeFailureCallBack = function(errorMessage) {
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = errorMessage;
+			$scope.groupConfigData.summary.rate = summaryMemento.rate;
+		};
+
+		/**
+		 * Triggered when user selects a rate from the rates list.
+		 * @returns {undefined}
+		 */
+		$scope.onRateChange = function() {
+			var summaryData = $scope.groupConfigData.summary;
+
+			if (!summaryData.group_id) {
+				return false;
+			}
+
+			var params = {
+				group_id: summaryData.group_id,
+				rate_id	: summaryData.rate
+			};
+			var options = {
+				successCallBack: onRateChangeSuccessCallBack,
+				failureCallBack: onRateChangeFailureCallBack,
+				params: params
+			};
+			$scope.callAPI(rvGroupConfigurationSrv.updateRate, options);
+		};
 
 		$scope.cancelDemographicChanges = function() {
 			$scope.groupConfigData.summary.demographics = demographicsMemento;
@@ -761,7 +783,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		var onReleaseRoomsSuccess = function(data) {
 			//: Handle successful release
 			$scope.closeDialog();
-			fetchSummaryData();
+			$scope.$emit("FETCH_SUMMARY");
 		};
 
 		/**
@@ -786,7 +808,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				params: params,
 				successCallBack: onReleaseRoomsSuccess,
 				failureCallBack: onReleaseRoomsFailure
-			};				
+			};
 			$scope.callAPI(rvGroupConfigurationSrv.releaseRooms, options);
 		};
 
@@ -831,7 +853,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				params: params,
 				successCallBack: onCancelGroupSuccess,
 				failureCallBack: onCancelGroupFailure
-			};				
+			};
 			$scope.callAPI(rvGroupConfigurationSrv.cancelGroup, options);
 		};
 
@@ -866,9 +888,9 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				isCancelledGroup		= !!sData.is_cancelled,
 				noOfInhouseIsZero       = (sData.total_checked_in_reservations === 0),
 				balIsZero				= (parseFloat(sData.balance) === 0.0);
-			
-			return (hasPermissionToCancel && 
-					isCancelledGroup || 
+
+			return (hasPermissionToCancel &&
+					isCancelledGroup ||
 					(noOfInhouseIsZero && balIsZero));
 		};
 
@@ -907,7 +929,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				params: params,
 				successCallBack: onFetchAddonSuccess,
 				failureCallBack: onFetchAddonFailure
-			};				
+			};
 			$scope.callAPI(rvGroupConfigurationSrv.getGroupEnhancements, options);
 		};
 
@@ -917,7 +939,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			if ($scope.isInAddMode()) {
 				return "";
 			}
-			return $rootScope.currencySymbol + $filter('number')(sData.revenue_actual, 2) + '/ ' + 
+			return $rootScope.currencySymbol + $filter('number')(sData.revenue_actual, 2) + '/ ' +
 					$rootScope.currencySymbol + $filter('number')(sData.revenue_potential, 2);
 		};
 
@@ -1096,19 +1118,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
                                         $scope.swippedCard = true;
 				};
 				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
-			};
+			}
 		});
-
-		/**
-		 * we will update the summary data, when we got this one
-		 * @param  {Object} data
-		 * @return undefined
-		 */
-		var fetchSuccessOfSummaryData = function(data) {
-			$scope.groupConfigData.summary = _.extend($scope.groupConfigData.summary, data.groupSummary);
-
-			summaryMemento = _.extend({}, $scope.groupConfigData.summary);
-		};
 
 		var fetchApplicableRates = function() {
 			var onFetchRatesSuccess = function(data) {
@@ -1138,22 +1149,6 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		};
 
 		/**
-		 * method to fetch summary data
-		 * @return undefined
-		 */
-		var fetchSummaryData = function() {
-			var params = {
-				"groupId": $scope.groupConfigData.summary.group_id
-			};
-			var options = {
-				successCallBack: fetchSuccessOfSummaryData,
-				params: params
-			};
-
-			$scope.callAPI(rvGroupConfigurationSrv.getGroupSummary, options);
-		};
-
-		/**
 		 * when a tab switch is there, parant controller will propogate an event
 		 * we will use this to fetch summary data
 		 */
@@ -1162,8 +1157,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				return;
 			}
 
-			fetchSummaryData();			
-			
+			$scope.$emit("FETCH_SUMMARY");
+
 			//to date picker will be in disabled in move mode
 			//in order to fix the issue of keeping that state even after coming back to this
 			//tab after going to some other tab
@@ -1186,7 +1181,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		$scope.$on ('REFRESH_ALL_CARD_SCROLLERS', function(event){
 			$timeout(function(){
 				$scope.refreshScroller("groupSummaryScroller");
-			}, 100);			
+			}, 100);
 		});
 
 		/**

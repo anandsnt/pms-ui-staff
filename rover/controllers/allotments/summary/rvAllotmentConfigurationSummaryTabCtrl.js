@@ -289,15 +289,16 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				$scope.errorMessage = ["Please save the allotment first"];
 				return;
 			}
+			var summaryData = $scope.allotmentConfigData.summary;
 
-			$scope.attachedEntities = {};
-			$scope.attachedEntities.posting_account = {};
-			$scope.attachedEntities.posting_account.id = $scope.allotmentConfigData.summary.allotment_id;
-			$scope.attachedEntities.posting_account.name = $scope.accountConfigData.summary.posting_account_name;
-			$scope.attachedEntities.posting_account.logo = "ALLOTMENT_DEFAULT";
 			$scope.billingEntity = "ALLOTMENT_DEFAULT_BILLING";
-
 			$scope.billingInfoModalOpened = true;
+			$scope.attachedEntities = {};
+			$scope.attachedEntities.posting_account = _.extend({}, {
+				id: summaryData.allotment_id,
+				name: summaryData.posting_account_name,
+				logo: "ALLOTMENT_DEFAULT"
+			});
 
 			ngDialog.open({
 				template: '/assets/partials/bill/rvBillingInformationPopup.html',
@@ -410,7 +411,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 */
 		var onReleaseRoomsSuccess = function(data) {
 			$scope.closeDialog();
-			fetchSummaryData();
+			$scope.$emit("FETCH_SUMMARY");
 		};
 
 		var onReleaseRoomsFailure = function(data) {
@@ -646,9 +647,12 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		};
 
 		var onRemoveAllotmentNoteSuccess = function(data, params) {
-			$scope.allotmentConfigData.summary.notes = _.without($scope.allotmentConfigData.summary.notes, _.findWhere($scope.allotmentConfigData.summary.notes, {
-				note_id: params.noteId
-			}));
+			var summaryData = $scope.allotmentConfigData.summary;
+			summaryData.notes = _.without(summaryData.notes,
+									_.findWhere(summaryData.notes, {
+										note_id: params.noteId
+									})
+								);
 			$scope.refreshScroller("allotmentSummaryScroller");
 		};
 
@@ -735,11 +739,12 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		};
 
 		var fetchApplicableRates = function() {
+			var summaryData = $scope.allotmentConfigData.summary;
 			var params = {
-				from_date: $filter('date')(tzIndependentDate($scope.allotmentConfigData.summary.block_from), 'yyyy-MM-dd'),
-				to_date: $filter('date')(tzIndependentDate($scope.allotmentConfigData.summary.block_to), 'yyyy-MM-dd'),
-				company_id: ($scope.allotmentConfigData.summary.company && $scope.allotmentConfigData.summary.company.id) || null,
-				travel_agent_id: ($scope.allotmentConfigData.summary.travel_agent && $scope.allotmentConfigData.summary.travel_agent.id) || null
+				from_date: $filter('date')(tzIndependentDate(summaryData.block_from), 'yyyy-MM-dd'),
+				to_date: $filter('date')(tzIndependentDate(summaryData.block_to), 'yyyy-MM-dd'),
+				company_id: (summaryData.company && summaryData.company.id) || null,
+				travel_agent_id: (summaryData.travel_agent && summaryData.travel_agent.id) || null
 			};
 			var options = {
 				successCallBack: onFetchRatesSuccess,
@@ -751,33 +756,6 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		};
 
 		/**
-		 * we will update the summary data, when we got this one
-		 * @param  {Object} data
-		 * @return undefined
-		 */
-		var fetchSuccessOfSummaryData = function(data) {
-			$scope.allotmentConfigData.summary = _.extend($scope.allotmentConfigData.summary, data.allotmentSummary);
-
-			summaryMemento = _.extend({}, $scope.allotmentConfigData.summary);
-		};
-
-		/**
-		 * method to fetch summary data
-		 * @return undefined
-		 */
-		var fetchSummaryData = function() {
-			var params = {
-				"allotmentId": $scope.allotmentConfigData.summary.allotment_id
-			};
-			var options = {
-				successCallBack: fetchSuccessOfSummaryData,
-				params: params
-			};
-
-			$scope.callAPI(rvAllotmentConfigurationSrv.getAllotmentSummary, options);
-		};
-
-		/**
 		 * when a tab switch is there, parant controller will propogate an event
 		 * we will use this to fetch summary data
 		 */
@@ -785,7 +763,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			if (activeTab !== 'SUMMARY') {
 				return;
 			}
-			fetchSummaryData();
+			$scope.$emit("FETCH_SUMMARY");
 
 			//we are resetting the API call in progress check variable
 			$scope.isUpdateInProgress = false;
