@@ -26,8 +26,14 @@ admin.service('adSiteminderSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 
 	this.fullRefresh = function(data){
             //ota/full_refresh/:interface_id
+            var start_date = '', end_date = '';
+            if (data.start_date && data.end_date){
+                start_date = '?'+data.start_date;
+                end_date = '&'+data.end_date;
+            }
+            
 		var deferred = $q.defer();
-		var url = 'admin/ota/full_refresh/'+data.interface_id;
+		var url = 'admin/ota/full_refresh/'+data.interface_id+start_date+end_date;
 		ADBaseWebSrvV2.postJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
