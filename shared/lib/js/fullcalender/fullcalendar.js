@@ -5383,7 +5383,8 @@ function DayEventRenderer() {
 			" class='" + classNames.join(' ') + "'" +
 			" data-date='" + htmlEscape(formatDate(event.start, 'yyyy-MM-dd')) + "'" + 
 			" data-rate='" + htmlEscape(event.rate || '') + "'" + 
-			" data-room-type='" + htmlEscape(event.roomType || '') + "'" + 
+			" data-room-type='" + htmlEscape(event.roomType || '') + "'" +
+			// "qtipfc qtip-template='/assets/partials/reservation/rvTooltipContent.html'"+
 			" style=" +
 				"'" +
 				"position:absolute;" +
@@ -5403,9 +5404,23 @@ function DayEventRenderer() {
 		html +=
 			"<span class='fc-event-day'>" +
 			htmlEscape(event.day || '') +
-			"</span>" +
-			"<span class='fc-event-title'>" +
-			htmlEscape(event.title || '') +
+
+			"</span>" ;
+			if(typeof event.toolTipData !== 'undefined' && typeof event.currencySymbol !== 'undefined'){
+				if (event.toolTipData.restrictions.length > 0){
+				html +=" <span>" +
+						'R' +
+						"</span>" ;
+			    }
+			    html += "<span class='fc-event-title'>";
+		        if (event.title != "" && _.contains(event.classNames, 'available'){
+			        html += htmlEscape(event.currencySymbol);
+		        }
+			}else {
+				html += "<span class='fc-event-title'>";
+			}
+			
+		html +=	htmlEscape(event.title || '') +
 			"</span>" +		
 			"</div>";
 		if (segment.isEnd && isEventResizable(event)) {

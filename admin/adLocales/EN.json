@@ -424,8 +424,16 @@
 "GIVEX_SECONDARY_ACCESS_URL_LABEL": "SECONDARY URL",
 "GIVEX_TIMEOUT_LABEL": "Timeout",
 "GIVEX_REQUESTOR_ID_LABEL": "Requester ID"
-,    
-    
+,
+  "ZDIRECT_SETUP_HEADER": "Z-Direct Setup",
+  "ZDIRECT_ACTIVATE_INACTIVATE": "Activate / Inactivate",
+  "ZDIRECT_SUB_TITLE": "Z-Direct API Access Configuration",
+  "ZDIRECT_USERNAME_LABEL": "User Name",
+  "ZDIRECT_PASSWORD_LABEL": "Password",
+  "ZDIRECT_ACCESS_URL_LABEL": "URL",
+  "ZDIRECT_CUSTOMER_NAME_LABEL": "Customer Name",
+  "ZDIRECT_PROPERTY_NAME_LABEL": "Property Name",
+  "ZDIRECT_HOTEL_CODE_LABEL": "Hotel Code",
     "FROM": "From",
     "TO": "To",
     "GROUPS": "Groups",
@@ -640,6 +648,12 @@
 "DASHBOARD": "Dashboard",
 
 
+"ACTIONS_USERNAME": "Username",
+"ACTIONS_DATETIME": "Date / Time",
+"ACTIONS_ACTION_TYPE": "Action Type",
+"ACTIONS_ACTION_DETAILS": "Details",
+
+
 "MARKET":"Markets",
 "USE_MARKETS":"Use markets",
 "MARKET_NAME_PLACEHOLDER":"Enter market name",
@@ -795,6 +809,7 @@
     "RESERVATION_ONLY":"Reservation Only",
     "MANUAL_POSTING":"Manual Posting",
     "FORECAST_FOR_NEXT_DAY":"Forecast for Next Day",
+    "CHARGE_FULL_WEEKS_ONLY":"Charge full weeks only",
     "EDIT":"Edit",
     "ADD_NEW_SMALL":"Add New",
     "ADD_ON":"Add-On",
@@ -992,4 +1007,18 @@
 "GUEST_ACTIONS_SWITCH_LABEL": "Guest Actions With ADD ONS",
 "DISPLAY_ADDONS_SWITCH_LABEL": "Display purchased Add Ons",
 "ALLOW_CANCELLATION_SWITCH_LABEL": "Allow cancellation of purchased Add Ons",
-"AVAILABLE_ADDONS_SWITCH_LABEL" : "Display available Add Ons and enable purchasing"}
+"AVAILABLE_ADDONS_SWITCH_LABEL" : "Display available Add Ons and enable purchasing",
+
+"ZESTSTATION_TITLE": "Zest Station Settings",
+"ZESTSTATION_BACK": "Back to Zest",
+"COLOR_SEC_LABEL": "Color details",
+        
+"TEXT_COLOR": "Text Color",
+"BUTTON_COLOR": "Button Color",
+"BG_COLOR": "Background Color",
+"TRANS_COLOR": "Transparent Color",
+"IN_FIELD_BG": "Input Field Background",
+"HEADER_ICONS_COLOR": "Header Icons Color",
+"HEADER_ICONS_COLOR_PRESSED": "Header Icons Color (Pressed)"
+        
+        }

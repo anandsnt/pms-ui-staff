@@ -2,9 +2,11 @@ sntRover.factory('RVReportUtilsFac', [
     '$rootScope',
     '$filter',
     '$timeout',
+    '$q',
     'RVReportNamesConst',
     'RVReportFiltersConst',
-    function($rootScope, $filter, $timeout, reportNames, reportFilters) {
+    'RVreportsSubSrv',
+    function($rootScope, $filter, $timeout, $q, reportNames, reportFilters, reportsSubSrv) {
         var factory = {};
 
         /**
@@ -15,14 +17,19 @@ sntRover.factory('RVReportUtilsFac', [
          * @return {Object}                 Processed CG & CC
          */
         var __adjustChargeGroupsCodes = function (chargeGroupsAry, chargeCodesAry, setting) {
-            var newChargeGroupsAry = [],
+            var chargeGroupsAryCopy,
+                chargeCodesAryCopy,
+                newChargeGroupsAry = [],
                 newChargeCodesAry  = [],
                 paymentId          = null,
                 cgAssociated       = false,
                 paymentEntry       = {};
 
+            chargeGroupsAryCopy = angular.copy( chargeGroupsAry );
+            chargeCodesAryCopy = angular.copy( chargeCodesAry );
+
             if ( 'REMOVE_PAYMENTS' === setting ) {
-                _.each(chargeGroupsAry, function (each) {
+                _.each(chargeGroupsAryCopy, function (each) {
                     if ( each.name !== 'Payments' ) {
                         each.selected = true;
                         newChargeGroupsAry.push( each );
@@ -31,7 +38,7 @@ sntRover.factory('RVReportUtilsFac', [
                     };
                 });
 
-                _.each(chargeCodesAry, function (each) {
+                _.each(chargeCodesAryCopy, function (each) {
                     cgAssociated = _.find(each['associcated_charge_groups'], function(idObj) {
                         return idObj.id === paymentId;
                     });
@@ -41,10 +48,8 @@ sntRover.factory('RVReportUtilsFac', [
                         newChargeCodesAry.push( each );
                     };
                 });
-            }
-
-            if ( 'ONLY_PAYMENTS' === setting ) {
-                paymentEntry = _.find(chargeGroupsAry, function(each) {
+            } else if ( 'ONLY_PAYMENTS' === setting ) {
+                paymentEntry = _.find(chargeGroupsAryCopy, function(each) {
                     return 'Payments' === each.name;
                 });
 
@@ -53,7 +58,7 @@ sntRover.factory('RVReportUtilsFac', [
                     paymentEntry.selected = true;
                     newChargeGroupsAry.push(paymentEntry);
 
-                    _.each(chargeCodesAry, function (each) {
+                    _.each(chargeCodesAryCopy, function (each) {
                         cgAssociated = _.find(each['associcated_charge_groups'], function(idObj) {
                             return idObj.id === paymentId;
                         });
@@ -64,6 +69,16 @@ sntRover.factory('RVReportUtilsFac', [
                         };
                     });
                 };
+            } else {
+                _.each(chargeGroupsAryCopy, function(each) {
+                    each.selected = true;
+                    newChargeGroupsAry.push(each);
+                });
+
+                _.each(chargeCodesAryCopy, function(each) {
+                    each.selected = true;
+                    newChargeCodesAry.push(each);
+                });
             };
 
             return {
@@ -144,7 +159,10 @@ sntRover.factory('RVReportUtilsFac', [
             'INCLUDE_BOTH'       : true,
             'EXCLUDE_NON_GTD'    : true,
             'SHOW_RATE_ADJUSTMENTS_ONLY' : true,
-            'INCLUDE_TAX'        : true
+            'INCLUDE_TAX'        : true,
+            'INCLUDE_TAX_RATE': true,
+            'INCLUDE_ADDON_RATE': true,
+            'INCLUDE_ADDONS': true
         };
 
         var __displayFilterNames = {
@@ -196,6 +214,12 @@ sntRover.factory('RVReportUtilsFac', [
 
             // if filter value is either of these, must include when report submit
             if ( objRef['title'] == reportNames['FORECAST_GUEST_GROUPS'] ) {
+                objRef['hasGeneralOptions']['title'] = filter.description;
+            };
+
+            // if filter is this, make it selected by default
+            if ( objRef['title'] == reportNames['DAILY_PRODUCTION'] && filter.value == 'INCLUDE_ADDONS' ) {
+                selected = true;
                 objRef['hasGeneralOptions']['title'] = filter.description;
             };
 
@@ -320,6 +344,10 @@ sntRover.factory('RVReportUtilsFac', [
                     report['reportIconCls'] = 'icon-report icon-group';
                     break;
 
+                case reportNames['DAILY_PRODUCTION']:
+                    report['reportIconCls'] = 'icon-report icon-forecast';
+                    break;
+
                 default:
                     report['reportIconCls'] = 'icon-report';
                     break;
@@ -401,8 +429,34 @@ sntRover.factory('RVReportUtilsFac', [
                     report['canRemoveDate'] = true;
                     break;
 
+                case reportNames['DAILY_PRODUCTION']:
+                    report['hasDateLimit']  = false;
+                    report['canRemoveDate'] = true;
+                    break;
+
                 default:
                     report['hasDateLimit'] = false;     // CICO-16820: Changed to false
+                    break;
+            };
+        };
+
+
+
+
+
+        factory.addIncludeUserFilter = function( report ) {
+            switch ( report['title'] ) {
+                case reportNames['LOGIN_AND_OUT_ACTIVITY']:
+                case reportNames['RATE_ADJUSTMENTS_REPORT']:
+                case reportNames['RESERVATIONS_BY_USER']:
+                    report['filters'].push({
+                        'value': "INCLUDE_USER_NAMES",
+                        'description': "Include User Names"
+                    });
+                    break;
+
+                default:
+                    // no op
                     break;
             };
         };
@@ -421,6 +475,7 @@ sntRover.factory('RVReportUtilsFac', [
 
             // pre-process charge groups and charge codes
             var processedCGCC = {};
+
             // create DS for options combo box
             __setData(report, 'hasGeneralOptions', {
                 type         : 'FAUX_SELECT',
@@ -452,11 +507,11 @@ sntRover.factory('RVReportUtilsFac', [
 
                 if ( (filter.value === 'INCLUDE_CHARGE_CODE' || filter.value === 'INCLUDE_CHARGE_GROUP') && _.isEmpty(processedCGCC) ) {
                     if ( report['title'] === reportNames['DAILY_TRANSACTIONS'] ) {
-                        processedCGCC = __adjustChargeGroupsCodes( data.chargeGroups, data.chargeCodes, 'REMOVE_PAYMENTS' );
-                    };
-
-                    if ( report['title'] === reportNames['DAILY_PAYMENTS'] ) {
-                        processedCGCC = __adjustChargeGroupsCodes( data.chargeGroups, data.chargeCodes, 'ONLY_PAYMENTS' );
+                        processedCGCC = __adjustChargeGroupsCodes( data.chargeNAddonGroups, data.chargeCodes, 'REMOVE_PAYMENTS' );
+                    } else if ( report['title'] === reportNames['DAILY_PAYMENTS'] ) {
+                        processedCGCC = __adjustChargeGroupsCodes( data.chargeNAddonGroups, data.chargeCodes, 'ONLY_PAYMENTS' );
+                    } else {
+                        processedCGCC = __adjustChargeGroupsCodes( data.chargeNAddonGroups, data.chargeCodes, '' );
                     };
                 };
 
@@ -649,144 +704,346 @@ sntRover.factory('RVReportUtilsFac', [
                     };
                 };
 
-
-
-
-                // check for "include guarantee type" and keep a ref to that item
-                // create the filter option only when there is any data
-                if ( filter.value === 'INCLUDE_GUARANTEE_TYPE' && data.guaranteeTypes.length ) {
-                    __setData(report, 'hasGuaranteeType', {
-                        type         : 'FAUX_SELECT',
-                        filter       : filter,
-                        show         : false,
-                        selectAll    : false,
-                        defaultTitle : 'Select Guarantees',
-                        title        : 'Select Guarantees',
-                        data         : angular.copy( data.guaranteeTypes )
-                    });
-                };
-
-                // check for "by charge group" and keep a ref to that item
-                // create the filter option only when there is any data
-                if ( filter.value === 'INCLUDE_CHARGE_GROUP' && processedCGCC.chargeGroups.length ) {
-                    __setData(report, 'hasByChargeGroup', {
-                        type         : 'FAUX_SELECT',
-                        filter       : filter,
-                        show         : false,
-                        selectAll    : true,
-                        defaultTitle : 'Select Groups',
-                        title        : 'All Selected',
-                        data         : angular.copy( processedCGCC.chargeGroups )
-                    });
-                };
-
-                // check for "by charge group" and keep a ref to that item
-                // create the filter option only when there is any data
-                if ( filter.value === 'INCLUDE_CHARGE_CODE' && processedCGCC.chargeCodes.length ) {
-                    __setData(report, 'hasByChargeCode', {
-                        type         : 'FAUX_SELECT',
-                        filter       : filter,
-                        show         : false,
-                        selectAll    : true,
-                        defaultTitle : 'Select Codes',
-                        title        : 'All Selected',
-                        data         : angular.copy( processedCGCC.chargeCodes )
-                    });
-                };
-
-                // check for "show markets" and keep a ref to that item
-                // create the filter option only when there is any data
-                if ( filter.value === 'CHOOSE_MARKET' && data.markets.length ) {
-                    __setData(report, 'hasMarketsList', {
-                        type         : 'FAUX_SELECT',
-                        filter       : filter,
-                        show         : false,
-                        selectAll    : false,
-                        defaultTitle : 'Select Markets',
-                        title        : 'Select Markets',
-                        data         : angular.copy( data.markets )
-                    });
-                };
-
-                // check for "show sources" and keep a ref to that item
-                // create the filter option only when there is any data
-                if ( filter.value === 'CHOOSE_SOURCE' && data.sources.length ) {
-                    __setData(report, 'hasSourcesList', {
-                        type         : 'FAUX_SELECT',
-                        filter       : filter,
-                        show         : false,
-                        selectAll    : false,
-                        defaultTitle : 'Select Sources',
-                        title        : 'Select Sources',
-                        data         : angular.copy( data.sources )
-                    });
-                };
-
-                // check for "show origins" and keep a ref to that item
-                // create the filter option only when there is any data
-                if ( filter.value === 'CHOOSE_BOOKING_ORIGIN' && data.origins.length ) {
-                    __setData(report, 'hasOriginsList', {
-                        type         : 'FAUX_SELECT',
-                        filter       : filter,
-                        show         : false,
-                        selectAll    : false,
-                        defaultTitle : 'Select Origins',
-                        title        : 'Select Origins',
-                        data         : angular.copy( data.origins )
-                    });
-                };
-
-                // check for "hold status" and keep a ref to that item
-                // create the filter option only when there is any data
-                if ( filter.value === 'HOLD_STATUS' && data.holdStatus.length ) {
-                    __setData(report, 'hasHoldStatus', {
-                        type         : 'FAUX_SELECT',
-                        filter       : filter,
-                        show         : false,
-                        selectAll    : false,
-                        defaultTitle : 'Select Hold Status',
-                        title        : 'Select Hold Status',
-                        data         : angular.copy( data.holdStatus )
-                    });
-                };
-
-                if ( filter.value === 'ADDON_GROUPS') {
-                    __setData(report, 'hasAddonGroups', {
-                        type         : 'FAUX_SELECT',
-                        filter       : filter,
-                        show         : false,
-                        selectAll    : true,
-                        defaultTitle : 'Select Addon Group',
-                        title        : 'All Selected',
-                        data         : selectAllAddonGroups( angular.copy(data.addonGroups) ),
-                    });
-                };
-
-                if ( filter.value === 'ADDONS') {
-                    __setData(report, 'hasAddons', {
-                        type         : 'FAUX_SELECT',
-                        filter       : filter,
-                        show         : false,
-                        selectAll    : true,
-                        defaultTitle : 'Select Addon',
-                        title        : 'All Selected',
-                        data         : selectAllAddons( angular.copy(data.addons) )
-                    });
-                };
-
-                if ( filter.value === 'RESERVATION_STATUS') {
-                    __setData(report, 'hasReservationStatus', {
-                        type         : 'FAUX_SELECT',
-                        filter       : filter,
-                        show         : false,
-                        selectAll    : false,
-                        defaultTitle : 'Select Status',
-                        title        : 'Select Status',
-                        data         : angular.copy( data.reservationStatus )
-                    });
-                };
-
             });
+        };
+
+
+
+
+
+        factory.findFillFilters = function( reportItem, reportList ) {
+            var deferred = $q.defer();
+
+            var requested = 0,
+                completed = 0;
+
+            var checkAllCompleted = function() {
+                if ( completed == requested ) {
+
+                    // tryin to figure out if all the filters for this
+                    // reportItem has been filled, if so make it 'allFiltersProcessed'
+                    anyFilterLeft = _.find(filters, function(each) {
+                        return ! each.hasOwnProperty( 'filled' );
+                    });
+
+                    if ( undefined == anyFilterLeft ) {
+                        reportItem.allFiltersProcessed = true;
+                    };
+
+                    // finally resolve the promise
+                    deferred.resolve();
+                };
+            };
+
+            var filters       = reportItem['filters'],
+                anyFilterLeft = undefined;
+
+            _.each(filters, function(filter) {
+
+                if ( 'INCLUDE_GUARANTEE_TYPE' == filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchGuaranteeTypes()
+                        .then( fillGarntTypes );  
+                }
+
+                else if ( 'CHOOSE_MARKET' == filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchMarkets()
+                        .then( fillMarkets );
+                }
+
+                else if ( 'CHOOSE_SOURCE' == filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchSources()
+                        .then( fillSources );
+                }
+
+                else if ( 'CHOOSE_BOOKING_ORIGIN' == filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchBookingOrigins()
+                        .then( fillBookingOrigins );
+                }
+
+                else if ( 'HOLD_STATUS' == filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchHoldStatus()
+                        .then( fillHoldStatus );
+                }
+
+                else if ( 'RESERVATION_STATUS' == filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchReservationStatus()
+                        .then( fillResStatus );
+                }
+
+                else if ( ('INCLUDE_CHARGE_GROUP' == filter.value && ! filter.filled) || ('ADDON_GROUPS' == filter.value && ! filter.filled) ) {
+                    
+                    // fetch charge groups
+                    requested++;
+                    reportsSubSrv.fetchChargeNAddonGroups()
+                        .then(function(chargeNAddonGroups) {
+
+                            // then fetch charge code
+                            requested++;
+                            reportsSubSrv.fetchChargeCodes()
+                                .then( fillCGCC.bind(null, chargeNAddonGroups) );
+
+                            // along with that fetch addons
+                            requested++;
+                            reportsSubSrv.fetchAddons({ 'addon_group_ids' : _.pluck(chargeNAddonGroups, 'id') })
+                                .then( fillAGAs.bind(null, chargeNAddonGroups) );
+                        });
+                }
+
+                else {
+                    // no op
+                };
+            });           
+            
+            // lets just resolve the deferred already!
+            if ( 0 == requested ) {
+                checkAllCompleted();
+            };
+
+
+            function fillGarntTypes (data) {
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'INCLUDE_GUARANTEE_TYPE' });
+
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        __setData(report, 'hasGuaranteeType', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundFilter,
+                            show         : false,
+                            selectAll    : false,
+                            defaultTitle : 'Select Guarantees',
+                            title        : 'Select Guarantees',
+                            data         : angular.copy( data )
+                        });
+                    };
+                });
+
+                completed++
+                checkAllCompleted();
+            };
+
+            function fillMarkets (data) {
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'CHOOSE_MARKET' });
+
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        __setData(report, 'hasMarketsList', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundFilter,
+                            show         : false,
+                            selectAll    : false,
+                            defaultTitle : 'Select Markets',
+                            title        : 'Select Markets',
+                            data         : angular.copy( data )
+                        });
+                    };
+                });
+
+                completed++
+                checkAllCompleted();
+            };
+
+            function fillSources (data) {
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'CHOOSE_SOURCE' });
+
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        __setData(report, 'hasSourcesList', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundFilter,
+                            show         : false,
+                            selectAll    : false,
+                            defaultTitle : 'Select Sources',
+                            title        : 'Select Sources',
+                            data         : angular.copy( data )
+                        });
+                        report['filters']['filled'] = true;
+                    };
+                });
+
+                completed++
+                checkAllCompleted();
+            };
+
+            function fillBookingOrigins (data) {
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'CHOOSE_BOOKING_ORIGIN' });
+
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        __setData(report, 'hasOriginsList', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundFilter,
+                            show         : false,
+                            selectAll    : false,
+                            defaultTitle : 'Select Origins',
+                            title        : 'Select Origins',
+                            data         : angular.copy( data )
+                        });
+                    };
+                });
+
+                completed++
+                checkAllCompleted();
+            };
+
+            function fillHoldStatus (data) {
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'HOLD_STATUS' });
+
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        __setData(report, 'hasHoldStatus', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundFilter,
+                            show         : false,
+                            selectAll    : false,
+                            defaultTitle : 'Select Hold Status',
+                            title        : 'Select Hold Status',
+                            data         : angular.copy( data )
+                        });
+                    };
+                });
+
+                completed++
+                checkAllCompleted();
+            };
+
+            function fillResStatus (data) {
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'RESERVATION_STATUS' });
+
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        __setData(report, 'hasReservationStatus', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundFilter,
+                            show         : false,
+                            selectAll    : false,
+                            defaultTitle : 'Select Status',
+                            title        : 'Select Status',
+                            data         : angular.copy( data )
+                        });
+                    };
+                });
+
+                completed++
+                checkAllCompleted();
+            };
+
+            // fill charge group and charge codes
+            function fillCGCC (chargeNAddonGroups, chargeCodes) {
+                var foundCG,
+                    foundCC,
+                    processedCGCC;
+
+                _.each(reportList, function(report) {
+
+                    if ( report['title'] === reportNames['DAILY_TRANSACTIONS'] ) {
+                        processedCGCC = __adjustChargeGroupsCodes( chargeNAddonGroups, chargeCodes, 'REMOVE_PAYMENTS' );
+                    } else if ( report['title'] === reportNames['DAILY_PAYMENTS'] ) {
+                        processedCGCC = __adjustChargeGroupsCodes( chargeNAddonGroups, chargeCodes, 'ONLY_PAYMENTS' );
+                    } else {
+                        processedCGCC = __adjustChargeGroupsCodes( chargeNAddonGroups, chargeCodes, '' );
+                    };
+
+                    foundCG = _.find(report['filters'], { value: 'INCLUDE_CHARGE_GROUP' });
+
+                    if ( !! foundCG ) {
+                        foundCG['filled'] = true;
+                        __setData(report, 'hasByChargeGroup', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundCG,
+                            show         : false,
+                            selectAll    : true,
+                            defaultTitle : 'Select Groups',
+                            title        : 'All Selected',
+                            data         : angular.copy( processedCGCC.chargeGroups )
+                        });
+                    };
+
+                    foundCG = _.find(report['filters'], { value: 'INCLUDE_CHARGE_CODE' });
+
+                    if ( !!foundCG ) {
+                        foundCG['filled'] = true;
+                        __setData(report, 'hasByChargeCode', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundCG,
+                            show         : false,
+                            selectAll    : true,
+                            defaultTitle : 'Select Codes',
+                            title        : 'All Selected',
+                            data         : angular.copy( processedCGCC.chargeCodes )
+                        });
+                    };
+                });
+
+                completed += 2;
+                checkAllCompleted();
+            };
+
+            // fill addon group and addons
+            function fillAGAs (chargeNAddonGroups, addons) {
+                var foundAG,
+                    foundAs;
+
+                _.each(reportList, function(report) {
+                    foundAG = _.find(report['filters'], { value: 'ADDON_GROUPS' });
+
+                    if ( !! foundAG ) {
+                        foundAG['filled'] = true;
+                        __setData(report, 'hasAddonGroups', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundAG,
+                            show         : false,
+                            selectAll    : true,
+                            defaultTitle : 'Select Addon Group',
+                            title        : 'All Selected',
+                            data         : selectAllAddonGroups( angular.copy(chargeNAddonGroups) ),
+                        });
+                    };
+
+                    foundAs = _.find(report['filters'], { value: 'ADDONS' });
+
+                    if ( !!foundAs ) {
+                        foundAs['filled'] = true;
+                        __setData(report, 'hasAddons', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundAs,
+                            show         : false,
+                            selectAll    : true,
+                            defaultTitle : 'Select Addon',
+                            title        : 'All Selected',
+                            data         : selectAllAddons( angular.copy(addons) )
+                        });
+                    };
+                });
+
+                completed++
+                checkAllCompleted();
+            };
+
+            return deferred.promise;
         };
 
 

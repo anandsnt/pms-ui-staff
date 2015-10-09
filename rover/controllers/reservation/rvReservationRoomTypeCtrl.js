@@ -9,6 +9,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		$scope.showLessRates = false;
 		$scope.isHouseAvailable = false;
 
+
 		$scope.restrictionColorClass = {
 			'CLOSED': 'red',
 			'CLOSED_ARRIVAL': 'red',
@@ -43,7 +44,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				allDays: false,
 				oneDay: false
 			},
-			activeMode: "ROOM_RATE",
+			activeMode: $stateParams.view && $stateParams.view === "CALENDAR" ? "CALENDAR" : "ROOM_RATE",
 			stayDatesMode: false,
 			selectedStayDate: "",
 			guestOptionsIsEditable: false,
@@ -60,6 +61,11 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			selectedRoomRate: {
 				rateId: "",
 				roomId: ""
+			},
+			calendarState: {
+				showOnlyAvailableRooms: true,
+				searchWithRestrictions: true,
+				calendarType: "BEST_AVAILABLE"
 			}
 		};
 
@@ -164,8 +170,14 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 						$scope.stateCheck.suppressedRates.push(d.id);
 					}
 				});
+				if (!!$scope.reservationData.group.id) {					
+					 var customRate = RVReservationStateService.getGroupCustomRateModel($scope.reservationData.group.id, $scope.reservationData.group.name);
+					 rates[customRate.id] = customRate;
+				};
+
 				$scope.displayData.allRates = rates;
 				$scope.reservationData.ratesMeta = rates;
+
 				$scope.roomAvailability = $scope.getAvailability(roomRates);
 				//Filter for rooms which are available and have rate information
 				$scope.displayData.allRooms = $(roomRates.room_types).filter(function() {
@@ -252,7 +264,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				// CICO-6079
 				var calculatedAmount = $scope.roomAvailability[roomId].ratedetails[date] && $scope.roomAvailability[roomId].ratedetails[date][rateId].rate ||
 					$scope.roomAvailability[roomId].ratedetails[$scope.reservationData.arrivalDate][rateId].rate;
-				calculatedAmount = parseFloat(calculatedAmount).toFixed(2);
+				calculatedAmount =  $filter('number')(calculatedAmount, 2);
 				details.rateDetails = {
 					actual_amount: calculatedAmount,
 					modified_amount: calculatedAmount,
@@ -1515,19 +1527,14 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 		$scope.to_trusted = function(html_code) {
 			return $sce.trustAsHtml(html_code);
-		}
-
-
+		};
 
 		$scope.toggleCalendar = function() {
-			//CICO-15042, CICO-15042 Disable navigation to the calendar screen temporarily
-			//$scope.stateCheck.activeMode = $scope.stateCheck.activeMode === "ROOM_RATE" ? "CALENDAR" : "ROOM_RATE";
-			//$scope.heading = $scope.stateCheck.activeMode === "ROOM_RATE" ? "Rooms & Rates" : " Change Stay Dates";
-			$scope.stateCheck.activeMode = 'ROOM_RATE';
-			$scope.heading = "Rooms & Rates";
+			$scope.stateCheck.activeMode = $scope.stateCheck.activeMode === "ROOM_RATE" ? "CALENDAR" : "ROOM_RATE";
+			$scope.heading = $scope.stateCheck.activeMode === "ROOM_RATE" ? "Rooms & Rates" : " Rate Calendar";
 			$scope.setHeadingTitle($scope.heading);
-			//$("#rooms-and-rates-header .data-off span").toggleClass("value switch-icon");
-		}
+			$("#rooms-and-rates-header .data-off span").toggleClass("value switch-icon");
+		};
 
 		$scope.showStayDateDetails = function(selectedDate) {
 			// by pass departure stay date from stay dates manipulation
@@ -1698,6 +1705,11 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		}
 
 		var setBackButton = function() {
+			// CICO-20270: to force selection of a rate after removing a card with contracted rate.
+			if($stateParams.disable_back_staycard){
+				return;
+			}
+
 			// smart switch btw edit reservation flow and create reservation flow
 			if (!!$state.params && $state.params.isFromChangeStayDates) {
 				$rootScope.setPrevState = {
@@ -1887,5 +1899,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			alertAddonOverbooking(true);
 		};
 
+		$scope.toggleSearchWithRestrictions = function(){
+			$scope.stateCheck.calendarState.searchWithRestrictions = !$scope.stateCheck.calendarState.searchWithRestrictions;
+		};
+
+		$scope.toggleShowOnlyAvailable = function(){
+			$scope.stateCheck.calendarState.showOnlyAvailableRooms = !$scope.stateCheck.calendarState.showOnlyAvailableRooms;
+		};
 	}
 ]);

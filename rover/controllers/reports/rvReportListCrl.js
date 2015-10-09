@@ -39,17 +39,20 @@ sntRover.controller('RVReportListCrl', [
                 // add required flags this report
                 reportUtils.applyFlags( report[i] );
 
+                // add users filter for needed reports
+                // unfortunately this is not sent from server
+                reportUtils.addIncludeUserFilter( report[i] );
+
                 // to process the filters for this report
                 reportUtils.processFilters(report[i], {
                     'guaranteeTypes'   : $scope.$parent.guaranteeTypes,
-                    'chargeGroups'     : $scope.$parent.chargeGroups,
-                    'chargeCodes'      : $scope.$parent.chargeCodes,
                     'markets'          : $scope.$parent.markets,
                     'sources'          : $scope.$parent.sources,
                     'origins'          : $scope.$parent.origins,
                     'codeSettings'     : $scope.$parent.codeSettings,
                     'holdStatus'       : $scope.$parent.holdStatus,
-                    'addonGroups'      : $scope.$parent.addonGroups,
+                    'chargeNAddonGroups' : $scope.$parent.chargeNAddonGroups,
+                    'chargeCodes'      : $scope.$parent.chargeCodes,
                     'addons'           : $scope.$parent.addons,
                     'reservationStatus': $scope.$parent.reservationStatus
                 });
@@ -91,9 +94,27 @@ sntRover.controller('RVReportListCrl', [
 
 
         // show hide filter toggle
-        $scope.toggleFilter = function() {
-            this.item.show_filter = this.item.show_filter ? false : true;
-            $scope.refreshScroller( LIST_ISCROLL_ATTR );
+        $scope.toggleFilter = function(reportItem) {
+            // this.item.show_filter = this.item.show_filter ? false : true;
+            // $scope.refreshScroller( LIST_ISCROLL_ATTR );
+
+            var toggle = function() {
+                reportItem.show_filter = reportItem.show_filter ? false : true;
+                $scope.refreshScroller( LIST_ISCROLL_ATTR );
+            };
+
+            var callback = function() {
+                $scope.$emit( 'hideLoader' );
+                toggle();
+            };
+
+            if ( !! reportItem.allFiltersProcessed ) {
+                toggle();
+            } else {
+                $scope.$emit( 'showLoader' );
+                reportUtils.findFillFilters( reportItem, $scope.$parent.reportList )
+                    .then( callback );
+            };
         };
 
         $scope.setnGenReport = function() {
