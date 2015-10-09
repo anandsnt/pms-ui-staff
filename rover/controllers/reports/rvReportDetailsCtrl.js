@@ -154,6 +154,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.isCondensedPrint = true;
 					break;
 
+				case reportNames['AR_SUMMARY_REPORT']:
+					$scope.hasNoTotals = false;
+					$scope.showSortBy = true;
+					break;
+
 				default:
 					break;
 			};
@@ -172,6 +177,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportNames['UPSELL']:
+					$scope.leftColSpan = 5;
+					$scope.rightColSpan = 5;
+					break;
+
+				case reportNames['AR_SUMMARY_REPORT']:
 					$scope.leftColSpan = 5;
 					$scope.rightColSpan = 5;
 					break;
@@ -329,6 +339,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 					};
 					break;
 
+				/*case reportNames['AR_SUMMARY_REPORT']:
+					$scope.$parent.summaryCounts = {
+						'records'   : totals[0]['records'],
+						'balance' : totals[1]['balance']
+					};
+					break;*/
+
 				default:
 					// no op
 			};
@@ -461,7 +478,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.showReportHeader   = true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/dailyProduction/rvDailyProductionReport.html';
 					break;
-					
+				
+				case reportNames['AR_SUMMARY_REPORT']:
+				console.log("here");
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/accountsReceivableSummary/rvAccountsReceivableSummary.html';
+					break;
 
 				default:
 					$scope.hasReportTotals    = true;
@@ -730,6 +753,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			var orientation = 'portrait';
 
 			switch( $scope.chosenReport.title ) {
+				case reportNames['AR_SUMMARY_REPORT']:
 				case reportNames['ARRIVAL']:
 				case reportNames['IN_HOUSE_GUEST']:
 				case reportNames['DEPARTURE']:
@@ -821,10 +845,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			return string.indexOf( subString ) > -1;
 		};
-
-
-
-
 
 		var reportSubmited = $scope.$on(reportMsgs['REPORT_SUBMITED'], function() {
 			$_pageNo = 1;
