@@ -59,27 +59,21 @@ var DiaryContent = React.createClass({
 	},
 	__onDragStop: function(e, left, top, row_item_data) {
 		var state 			= this.state,
-			rowHeight 		= state.display.row_height + state.display.row_height_margin,
+			props 			= this.props,			
+			display 		= props.display,
+			rowHeight 		= display.row_height + display.row_height_margin,
 			viewport 		= state.viewport.element(),
 			curPos 			= e.pageY - state.iscroll.grid.y - viewport.offset().top,// e.pageY - viewport.offset().top - state.iscroll.grid.y    viewport[0].scrollTop + e.pageY - viewport.offset().top - state.iscroll.grid.y,
 			rowNumber 		= Math.floor(curPos / rowHeight),
+			rowNumber       = (rowNumber < 0) ? 0 : rowNumber,
+			rowNumber       = (rowNumber > (display.total_rows - 1)) ? (display.total_rows - 1) : rowNumber,
 			row_data 		= state.data[rowNumber],
 			delta 			= Number((left - row_item_data.left).toFixed(3)),
-			props 			= this.props,			
-			display 		= props.display,
 			delta_x 		= e.pageX - state.origin_x, 
 			x_origin 		= (display.x_n instanceof Date ? display.x_n.getTime() : display.x_n), 
 			px_per_int 		= display.px_per_int,
 			px_per_ms 		= display.px_per_ms;
 			
-
-		//console.log((left -props.display.x_0 - props.iscroll.grid.x))
-		
-		/*row_item_data.left = left;*/
-		var right = row_item_data.departure + delta;
-		
-		//row_item_data.arrival = left / state.display.px_per_ms + state.display.x_n; //.x_origin;
-		//row_item_data.departure = right / state.display.px_per_ms + state.display.x_n; //.x_origin;
 		
 		this.setState({
 			currentResizeItem: row_item_data,
@@ -133,7 +127,7 @@ var DiaryContent = React.createClass({
 			var data 	= props.data,
 			display = props.display,
 			rowHeight = display.row_height + display.row_height_margin,
-			rowNumber = state.edit.active ? _.indexOf(_.pluck(data, 'id'), state.edit.originalRowItem.id) - 2 : 0,
+			rowNumber = state.edit.active ? _.indexOf(_.pluck(data, 'id'), props.currentResizeItem.room_id) - 2 : 0,
 			rowNumber = rowNumber > 0 ? rowNumber : 0;
 
 			var scrollYPos = rowNumber * rowHeight;
@@ -295,7 +289,8 @@ var DiaryContent = React.createClass({
 		display.px_per_hr 			= viewport.width / viewport.hours;
 		display.px_per_int  		= display.px_per_hr / display.intervals_per_hour;
 		display.px_per_ms 			= display.px_per_int / 900000;
-		display.x_0 				= viewport.row_header_right;                 
+		display.x_0 				= viewport.row_header_right;     
+		display.total_rows			= scope.gridProps.data.length;            
 		//display.x_origin 			= filter.arrival_date.getTime();
         display.x_origin_start_time = filter.arrival_time;
         display.scrollTo            = (display.x_origin - display.x_n) * display.px_per_ms;

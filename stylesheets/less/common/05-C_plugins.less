@@ -216,6 +216,20 @@
 							.gradient (@logoGradientStart, @logoGradientEnd);
 						}
 					}
+
+					&.room-out {
+						a {
+							color: @red;
+							background: rgba(230,56,56,.3);
+
+							&.ui-state-active {
+								color: @white;
+								.gradient (@redStart, @redEnd);
+							}
+
+							&.ui-state-highlight { color: @white; }
+						}
+					}
 				}
 			}
 		}
