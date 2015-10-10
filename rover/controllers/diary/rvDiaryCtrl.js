@@ -1083,21 +1083,26 @@ sntRover
 			rt_filter = (_.isEmpty(filter.room_type) || (filter.room_type && angular.lowercase(filter.room_type.id) === 'all')  ? undefined : filter.room_type.id),
 			rate_type = filter.rate_type,			
 			account_id = (filter.rate_type == 'Corporate' && filter.rate && filter.rate != '' ) ? filter.rate.id : undefined, 
-			GUID = "avl-101";//No need to manipulate this thing from service part, we are deciding
-			console.log('start_date.getTime(): ' + start_date.getTime() + " (getIndex * 900000): " + (getIndex * 900000));
+			GUID = "avl-101";//No need to manipulate this thing from service part, we are deciding			
+	
+			
+			if(start.isOnDST()){
+				/*var selected_hour_min = $scope.gridProps.filter.arrival_time.split(":"),
+					hour = selected_hour_min[0],
+					min  = selected_hour_min[1];
+				start.setHours(hour, min);*/
+				console.log('ys hhh');
+				start.setMinutes(start.getMinutes() - start.getDSTDifference());
+			}
+			if(end.isOnDST()){
+				end.setMinutes(end.getMinutes() - end.getDSTDifference());
+			}
+
 			if(this.availability.resize.current_arrival_time !== null && 
 				this.availability.resize.current_departure_time !== null){
 				start = new Date(this.availability.resize.current_arrival_time);
 				end = new Date(this.availability.resize.current_departure_time);
-			}	
-			console.log(start);
-			if(start.isOnDST()){
-				var selected_hour_min = $("#arrival-time option:selected").text().split(":"),
-					hour = selected_hour_min[0],
-					min  = selected_hour_min[1];
-				start.setHours(hour, min);
 			}
-			console.log(start);
 
 		var paramsToReturn = {
 			start_date: start,
