@@ -157,6 +157,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['AR_SUMMARY_REPORT']:
 					$scope.hasNoTotals = false;
 					$scope.showSortBy = true;
+					$scope.isBalanceReport = true;
 					break;
 
 				default:
@@ -248,6 +249,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportNames['GROUP_PICKUP_REPORT']:
 					$scope.leftColSpan = 6;
+					$scope.rightColSpan = 3;
+					break;
+
+				case reportNames['AR_SUMMARY_REPORT']:
+					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 3;
 					break;
 
@@ -466,13 +472,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.showReportHeader   = true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/dailyProduction/rvDailyProductionReport.html';
 					break;
-				
-				case reportNames['AR_SUMMARY_REPORT']:
-				console.log("here");
-					$scope.hasReportTotals    = true;
-					$scope.showReportHeader   = true;
-					$scope.detailsTemplateUrl = '/assets/partials/reports/accountsReceivablesSummary/rvAccountsReceivablesSummary.html';
-					break;
 
 				default:
 					$scope.hasReportTotals    = true;
@@ -489,6 +488,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 			switch ( $scope.parsedApiFor ) {
 
 				// general reports rows
+				case reportNames['AR_SUMMARY_REPORT']:
+					template = '/assets/partials/reports/accountsReceivablesSummary/rvAccountsReceivablesSummaryRow.html';
+					break;
 				case reportNames['ARRIVAL']:
 					template = '/assets/partials/reports/generalReportRows/rvArrivalReportRow.html';
 					break;
