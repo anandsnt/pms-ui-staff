@@ -128,6 +128,18 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				!hasPermissionToEditRoomBlock());
 		};
 
+		$scope.shouldShowRoomBlockActions = function() {
+			return $scope.hasBookingDataChanged && $scope.shouldHideAddRoomsButton();
+		};
+
+		$scope.shouldShowApplyToHeldCountsButton = function() {
+			return $scope.allotmentConfigData.activeGridView === 'CONTRACT';
+		};
+
+		$scope.shouldShowApplyToContractButton = function() {
+			return $scope.allotmentConfigData.activeGridView === 'CONTRACT';
+		};
+
 		/**
 		 * well, do we wanted to show triple button
 		 * if there is any key 'triple' found in room type.dates (array of objects),
@@ -431,7 +443,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 						// check if overbooking case has occured due to a new change
 						var alreadyOverbooked = _.filter(editedRoomTypeDetails.dates,
 							function(dateData) {
-								var newTotal 		 = $scope.getTotalBookedOfIndividualRoomType(dateData);
+								var newTotal 		 = $scope.getTotalHeldOfIndividualRoomType(dateData);
 									detailHasChanged = dateData.old_total != newTotal;
 								return (dateData.availability < 0 && !detailHasChanged);
 							});
@@ -564,11 +576,142 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		/**
-		 * to get the total booked agsint a indivual room type
+		 * to get the total contracted agsint all room types for a day
 		 * @param {Object} - room type data
 		 * @return {Integer}
 		 */
-		$scope.getTotalBookedOfIndividualRoomType = function(roomType) {
+		$scope.getTotalContractedOfDay = function(dateIndex) {
+			var cInt 	= util.convertToInteger,
+				total 	= 0;
+
+			_.each($scope.allotmentConfigData.summary.selected_room_types_and_bookings, function(roomType) {
+				var dateData = roomType.dates[dateIndex];
+
+				//since user may have entered wrong input
+				dateData.single_contract = (dateData.single_contract !== '') ? cInt(dateData.single_contract) : '';
+				dateData.double_contract = (dateData.double_contract !== '') ? cInt(dateData.double_contract) : '';
+
+				//the area of 'night watch man', they may be active or sleeping
+				var quadruple = 0;
+				if (dateData.quadruple_contract) {
+					dateData.quadruple_contract = cInt(dateData.quadruple_contract);
+					quadruple = dateData.quadruple_contract;
+				}
+				var triple = 0;
+				if (dateData.triple_contract) {
+					dateData.triple_contract = cInt(dateData.triple_contract);
+					triple = dateData.triple_contract;
+				}
+
+				total += (cInt(dateData.single_contract) + cInt(dateData.double_contract) + (triple) + (quadruple));
+
+			});
+
+			return total;
+		};
+
+		/**
+		 * to get the total held agsint all room types for a day
+		 * @param {Object} - room type data
+		 * @return {Integer}
+		 */
+		$scope.getTotalHeldOfDay = function(dateIndex) {
+			var cInt 	= util.convertToInteger,
+				total 	= 0;
+
+			_.each($scope.allotmentConfigData.summary.selected_room_types_and_bookings, function(roomType) {
+				var dateData = roomType.dates[dateIndex];
+
+				//since user may have entered wrong input
+				dateData.single = (dateData.single !== '') ? cInt(dateData.single) : '';
+				dateData.double = (dateData.double !== '') ? cInt(dateData.double) : '';
+
+				//the area of 'night watch man', they may be active or sleeping
+				var quadruple = 0;
+				if (dateData.quadruple) {
+					dateData.quadruple = cInt(dateData.quadruple);
+					quadruple = dateData.quadruple;
+				}
+				var triple = 0;
+				if (dateData.triple) {
+					dateData.triple = cInt(dateData.triple);
+					triple = dateData.triple;
+				}
+
+				total += (cInt(dateData.single) + cInt(dateData.double) + (triple) + (quadruple));
+			});
+
+			return total;
+		};
+
+		/**
+		 * to get the total picked up agsint all room types for a day
+		 * @param {Object} - room type data
+		 * @return {Integer}
+		 */
+		$scope.getTotalPickedUpOfDay = function(dateIndex) {
+			var cInt 	= util.convertToInteger,
+				total 	= 0;
+
+			_.each($scope.allotmentConfigData.summary.selected_room_types_and_bookings, function(roomType) {
+				var dateData = roomType.dates[dateIndex];
+
+				//since user may have entered wrong input
+				dateData.single_pickup = (dateData.single_pickup !== '') ? cInt(dateData.single_pickup) : '';
+				dateData.double_pickup = (dateData.double_pickup !== '') ? cInt(dateData.double_pickup) : '';
+
+				//the area of 'night watch man', they may be active or sleeping
+				var quadruple = 0;
+				if (dateData.quadruple_pickup) {
+					dateData.quadruple_pickup = cInt(dateData.quadruple_pickup);
+					quadruple = dateData.quadruple_pickup;
+				}
+				var triple = 0;
+				if (dateData.triple_pickup) {
+					dateData.triple_pickup = cInt(dateData.triple_pickup);
+					triple = dateData.triple_pickup;
+				}
+
+				total += (cInt(dateData.single_pickup) + cInt(dateData.double_pickup) + (triple) + (quadruple));
+
+			});
+
+			return total;
+		};
+
+		/**
+		 * to get the total contracted agsint a indivual room type
+		 * @param {Object} - room type data
+		 * @return {Integer}
+		 */
+		$scope.getTotalContractedOfIndividualRoomType = function(roomType) {
+			var cInt = util.convertToInteger;
+
+			//since user may have entered wrong input
+			roomType.single_contract = (roomType.single_contract !== '') ? cInt(roomType.single_contract) : '';
+			roomType.double_contract = (roomType.double_contract !== '') ? cInt(roomType.double_contract) : '';
+
+			//the area of 'night watch man', they may be active or sleeping
+			var quadruple = 0;
+			if (roomType.quadruple_contract) {
+				roomType.quadruple_contract = cInt(roomType.quadruple_contract);
+				quadruple = roomType.quadruple_contract;
+			}
+			var triple = 0;
+			if (roomType.triple_contract) {
+				roomType.triple_contract = cInt(roomType.triple_contract);
+				triple = roomType.triple_contract;
+			}
+
+			return (cInt(roomType.single_contract) + cInt(roomType.double_contract) + (triple) + (quadruple));
+		};
+
+		/**
+		 * to get the total held agsint a indivual room type
+		 * @param {Object} - room type data
+		 * @return {Integer}
+		 */
+		$scope.getTotalHeldOfIndividualRoomType = function(roomType) {
 			var cInt = util.convertToInteger;
 
 			//since user may have entered wrong input
@@ -648,7 +791,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			_.each(dateWiseAllotmentedData, function(el) {
 				sum = 0;
 				_.each(el, function(eachDateData) {
-					sum += $scope.getTotalBookedOfIndividualRoomType(eachDateData);
+					sum += $scope.getTotalHeldOfIndividualRoomType(eachDateData);
 				});
 				totalBookedOfEachDate.push(sum);
 			});
@@ -845,12 +988,14 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * Success callback of room block details API
 		 */
 		var successCallBackOfFetchRoomBlockGridDetails = function(data) {
+			// We have resetted the data.
+			$scope.hasBookingDataChanged = false;
 
 			//we need indivual room type total bookings of each date initially,
 			//we are using this for overbooking calculation
 			_.each(data.results, function(eachRoomType) {
 				_.each(eachRoomType.dates, function(dateData) {
-					dateData.old_total = $scope.getTotalBookedOfIndividualRoomType(dateData);
+					dateData.old_total = $scope.getTotalHeldOfIndividualRoomType(dateData);
 				});
 			});
 
@@ -1003,7 +1148,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {String} [with px]
 		 */
 		$scope.getWidthForRoomBlockTimeLine = function() {
-			return ($scope.allotmentConfigData.summary.selected_room_types_and_occupanies.length * 190 + 40) + 'px';
+			return ($scope.allotmentConfigData.summary.selected_room_types_and_occupanies.length * 280 + 40) + 'px';
 		};
 
 		/**
@@ -1151,6 +1296,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 */
 		var initializeVariables = function () {
 
+			$scope.allotmentConfigData.activeGridView = 'CONTRACT';
+
 			//we use this to ensure that we will call the API only if there is any change in the data
 			summaryMemento = _.extend({}, $scope.allotmentConfigData.summary);
 
@@ -1197,7 +1344,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			if ($scope.allotmentConfigData.activeTab === "ROOM_BLOCK") {
 				initializeRoomBlockDetails();
 			}
-        	$scope.allotmentConfigData.activeGridView = 'CONTRACT';
+        	
 		}();
 
 
