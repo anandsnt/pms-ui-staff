@@ -112,8 +112,7 @@
 			}
 		}
 
-		&.allotment-card,
-		&.group-allotment-card {
+		&.allotment-card {
 			.ui-resizable-handle {
 				&.ui-resizable-s {
 					background-color: @allotmentcard;
@@ -121,6 +120,20 @@
 
 					@media @highdpi {
 						background-image: @icons2x, @allotmentcardTexture;
+						background-size: 120px, 40px;
+					}
+				}
+			}
+		}
+
+		&.group-allotment-card {
+			.ui-resizable-handle {
+				&.ui-resizable-s {
+					background-color: mix(@allotmentcard, @groupcard, 50%);
+					background-image: @icons;
+
+					@media @highdpi {
+						background-image: @icons2x;
 						background-size: 120px, 40px;
 					}
 				}
