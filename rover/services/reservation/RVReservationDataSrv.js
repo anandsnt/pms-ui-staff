@@ -140,6 +140,13 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 					code: "",
 					company: "",
 					travelAgent: ""
+				},
+				allotment: {
+					id: "",
+					name: "",
+					code: "",
+					company: "",
+					travelAgent: ""
 				}
 			};
 		};

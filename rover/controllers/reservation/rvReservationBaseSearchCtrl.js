@@ -533,6 +533,20 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         });
                     });
                 }
+
+                if ($scope.reservationData.rooms.length === 1 && !!data.allotments && data.allotments.length > 0) {
+                    _.each(data.allotments, function(allotment) {
+                        companyCardResults.push({
+                            label: allotment.name,
+                            value: allotment.name,
+                            type: 'ALLOTMENT',
+                            id: allotment.id,
+                            code: allotment.code,
+                            company: allotment.company_id,
+                            travelAgent: allotment.travel_agent_id
+                        });
+                    });
+                }
                 // call response callback function
                 // with the processed results array
                 response(companyCardResults);
@@ -544,6 +558,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     $scope.invokeApi(RVReservationBaseSearchSrv.fetchCompanyCard, {
                         'query': request.term,
                         'include_group': $scope.reservationData.rooms.length === 1,
+                        'include_allotment': $scope.reservationData.rooms.length === 1,
                         'from_date': $scope.reservationData.arrivalDate,
                         'to_date': $scope.reservationData.departureDate,
                     }, processDisplay);
@@ -567,6 +582,20 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     $scope.codeSearchText = "";
                     $scope.companySearchText = "";
                 }
+
+                if (!!$scope.reservationData.allotment.id) { // Reset in case of group
+                    $scope.reservationData.allotment = {
+                        id: "",
+                        name: "",
+                        code: "",
+                        company: "",
+                        travelAgent: ""
+                    };
+                    $scope.codeSearchText = "";
+                    $scope.companySearchText = "";
+                }
+
+
             } else if (request.term.length > 2) {
                 fetchData();
             }
@@ -579,6 +608,15 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.reservationData.company.corporateid = ui.item.corporateid;
             } else if (ui.item.type === 'GROUP') {
                 $scope.reservationData.group = {
+                    id: ui.item.id,
+                    name: ui.item.label,
+                    code: ui.item.code,
+                    company: ui.item.company,
+                    travelAgent: ui.item.travelAgent
+                };
+                $scope.codeSearchText = ui.item.code;
+            } else if (ui.item.type === 'ALLOTMENT') {
+                $scope.reservationData.allotment = {
                     id: ui.item.id,
                     name: ui.item.label,
                     code: ui.item.code,
