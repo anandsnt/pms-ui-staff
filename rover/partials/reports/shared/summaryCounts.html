@@ -69,6 +69,13 @@
     <li>Past Due<span class="red">{{ summaryCounts.total_deposit_passed | currency:currencySymbol:2 }}</span></li>
 </ul>
 
+<!-- Group Deposit Report -->
+<ul ng-if="isThisReport( 'GROUP_DEPOSIT_REPORT' )" class="totals">
+    <li>Due<span>{{ summaryCounts.total_deposit_due | currency:currencySymbol:2 }}</span></li>
+    <li>Paid<span class="green">{{ summaryCounts.total_deposit_paid | currency:currencySymbol:2 }}</span></li>
+    <li>Past Due<span class="red">{{ summaryCounts.total_deposit_passed | currency:currencySymbol:2 }}</span></li>
+</ul>
+
 <!-- Reservations By User -->
 <ul ng-if="isThisReport( 'RESERVATIONS_BY_USER' )" class="totals">
     <li>User<span>{{ summaryCounts.total_users }}</span></li>

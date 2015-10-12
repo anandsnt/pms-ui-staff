@@ -154,6 +154,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.isCondensedPrint = true;
 					break;
 
+				case reportNames['GROUP_DEPOSIT_REPORT']:
+					$scope.isDepositReport = true;
+					break;
+
 				default:
 					break;
 			};
@@ -243,6 +247,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportNames['GROUP_PICKUP_REPORT']:
 					$scope.leftColSpan = 6;
+					$scope.rightColSpan = 3;
+					break;
+
+				case reportNames['GROUP_DEPOSIT_REPORT']:
+					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 3;
 					break;
 

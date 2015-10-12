@@ -301,6 +301,10 @@ sntRover.factory('RVReportUtilsFac', [
                     report['reportIconCls'] = 'icon-report icon-deposit';
                     break;
 
+                case reportNames['GROUP_DEPOSIT_REPORT']:
+                    report['reportIconCls'] = 'icon-report icon-deposit';
+                    break;
+
                 case reportNames['OCCUPANCY_REVENUE_SUMMARY']:
                     report['reportIconCls'] = 'icon-report icon-occupancy';
                     break;
@@ -885,6 +889,21 @@ sntRover.factory('RVReportUtilsFac', [
             // need to reorder the sort_by options
             // for deposit report in the following order
             if ( report['title'] === reportNames['DEPOSIT_REPORT'] ) {
+                var reservationSortBy = angular.copy( report['sort_fields'][4] ),
+                    dueDateSortBy     = angular.copy( report['sort_fields'][1] ),
+                    paidDateSortBy    = angular.copy( report['sort_fields'][2] );
+
+                report['sort_fields'][0] = reservationSortBy;
+                report['sort_fields'][1] = null;
+                report['sort_fields'][2] = dueDateSortBy;
+                report['sort_fields'][3] = null;
+                report['sort_fields'][4] = paidDateSortBy;
+                report['sort_fields'][5] = null;
+            };
+
+            // need to reorder the sort_by options
+            // for group deposit report in the following order
+            if ( report['title'] === reportNames['GROUP_DEPOSIT_REPORT'] ) {
                 var reservationSortBy = angular.copy( report['sort_fields'][4] ),
                     dueDateSortBy     = angular.copy( report['sort_fields'][1] ),
                     paidDateSortBy    = angular.copy( report['sort_fields'][2] );
