@@ -43,11 +43,6 @@
     <li>Late Check Out Revenue<span class="brand-colors">{{ summaryCounts.revenue | currency:currencySymbol:2 }}</span></li>
 </ul>
 
-
-
-
-
-
 <!-- Early Check In -->
 <ul ng-if="isThisReport( 'EARLY_CHECKIN' )" class="totals">
     <li>Early Check In<span>{{ summaryCounts.total_early_checkins }}</span></li>
@@ -70,8 +65,8 @@
 <!-- Deposit Report -->
 <ul ng-if="isThisReport( 'DEPOSIT_REPORT' )" class="totals">
     <li>Due<span>{{ summaryCounts.total_deposit_due | currency:currencySymbol:2 }}</span></li>
-    <li>Paid<span>{{ summaryCounts.total_deposit_paid | currency:currencySymbol:2 }}</span></li>
-    <li>Past Due<span class="green">{{ summaryCounts.total_deposit_passed | currency:currencySymbol:2 }}</span></li>
+    <li>Paid<span class="green">{{ summaryCounts.total_deposit_paid | currency:currencySymbol:2 }}</span></li>
+    <li>Past Due<span class="red">{{ summaryCounts.total_deposit_passed | currency:currencySymbol:2 }}</span></li>
 </ul>
 
 <!-- Reservations By User -->
