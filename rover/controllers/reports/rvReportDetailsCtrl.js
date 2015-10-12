@@ -510,6 +510,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 					template = '/assets/partials/reports/generalReportRows/rvGroupPickupReportRow.html';
 					break;
 
+				case reportNames['GUEST_BALANCE_REPORT']:
+					template = '/assets/partials/reports/generalReportRows/rvGuestBalanceReportRow.html';
+					break;
 
 				// RESERVATIONS_BY_USER report row
 				case reportNames['RESERVATIONS_BY_USER']:

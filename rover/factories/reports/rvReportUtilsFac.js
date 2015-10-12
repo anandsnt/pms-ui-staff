@@ -346,15 +346,15 @@ sntRover.factory('RVReportUtilsFac', [
                     report['reportIconCls'] = 'icon-report icon-forecast';
                     break;
 
+                case reportNames['GUEST_BALANCE_REPORT']:
+                    report['reportIconCls'] = 'icon-report icon-balance';
+                    break;
+
                 default:
                     report['reportIconCls'] = 'icon-report';
                     break;
             };
         };
-
-
-
-
 
 
         /**
@@ -815,6 +815,18 @@ sntRover.factory('RVReportUtilsFac', [
                         defaultTitle : 'Select Status',
                         title        : 'Select Status',
                         data         : angular.copy( data.reservationStatus )
+                    });
+                };
+
+                if ( filter.value === 'GUEST_OR_ACCOUNT' && data.guestOrAccount.length ) {
+                    __setData(report, 'hasGuestOrAccountFilter', {
+                        type         : 'FAUX_SELECT',
+                        filter       : filter,
+                        show         : false,
+                        selectAll    : true,
+                        defaultTitle : 'Select',
+                        title        : 'Select',
+                        data         : angular.copy( data.guestOrAccount )
                     });
                 };
 

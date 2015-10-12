@@ -1,0 +1,26 @@
+<tr class="row-break">
+    <td class="name">
+        <strong>{Account/Guest Name}</strong>
+        <em>{Account/Reservation No.}</em>
+    </td>
+    <td class="room">
+        {Room No.}
+    </td>
+    <td class="status">
+        <!-- Reservation Status -->
+        <span class="guest-status small-icon {reservation-status}">reservation-status</span>
+        <!-- For Account Status use this instead:
+        <em class="{'blue' for inhoues, 'red' for due out/closed or 'green' for open}">{Account Status}</em> -->
+    </td>
+    <td>
+        <div class="date">
+            <span class="icons time check-in"></span>
+            <span>{Arrival Date / Group Start}</span>
+        </div>
+        <div class="date">
+            <span class="icons time check-out"></span>
+            <span>{Departure Date / Group End}</span>
+        </div>
+    </td>
+    <td class="balance {'red' if > 0, 'green' if < 0}">${balance}</td>
+</tr>
