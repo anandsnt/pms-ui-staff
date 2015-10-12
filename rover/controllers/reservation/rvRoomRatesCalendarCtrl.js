@@ -206,7 +206,8 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				end 		: new tzIndependentDate (dailyData.date),
 				editable 	: false,
 				title 		: title == ""? bestRateData.bestAvailableRate.toString() : title,
-				toolTipData : bestRateData
+				toolTipData : bestRateData,
+				currencySymbol : $scope.currencySymbol
 			};
 
 			return eventData;
@@ -258,6 +259,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			//updating the left, right side calendar data model with new ones
 			$scope.eventSources.left.push(calendarData.left);
 			$scope.eventSources.right.push(calendarData.right);
+			refreshScroller();
 		};
 		
 		/**
