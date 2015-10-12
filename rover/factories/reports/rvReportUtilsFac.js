@@ -1027,6 +1027,19 @@ sntRover.factory('RVReportUtilsFac', [
                     report['untilPaidDate'] = _getDates.businessDate;
                     break;
 
+                // arrival date range must be from business date to a week after
+                // deposit date range must the current business date
+                case reportNames['GROUP_DEPOSIT_REPORT']:
+                    report['fromArrivalDate']  = _getDates.businessDate;
+                    report['untilArrivalDate'] = _getDates.aWeekAfter;
+                    /**/
+                    report['fromDepositDate']  = _getDates.businessDate;
+                    report['untilDepositDate'] = _getDates.businessDate;
+                    /**/
+                    report['fromPaidDate']  = _getDates.businessDate;
+                    report['untilPaidDate'] = _getDates.businessDate;
+                    break;
+
                 // date range must be yesterday - relative to current business date
                 case reportNames['OCCUPANCY_REVENUE_SUMMARY']:
                     report['fromDate']  = _getDates.yesterday;
