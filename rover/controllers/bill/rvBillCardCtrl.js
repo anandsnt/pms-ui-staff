@@ -762,17 +762,38 @@ sntRover.controller('RVbillCardController',
      /*
 	  * Handle swipe action in bill card
 	  */
-
+         if (!$scope.uiOptions){
+             $scope.uiOptions = {};
+         }
+            $scope.uiOptions.isIpad = navigator.userAgent.match(/iPad/i) != null;
 	 $scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 	 	if(!$scope.isGuestCardVisible){
 
 	 	    if($scope.paymentModalOpened){
 				swipedCardData.swipeFrom = "payButton";
+                                
+                                
+                                
 			} else if ($scope.billingInfoModalOpened) {
 				swipedCardData.swipeFrom = "billingInfo";
+                                
+                                
+                                
 			} else {
 				swipedCardData.swipeFrom = "viewBill";
-			}
+                                
+                                
+                                
+			};
+                        
+                        if ($scope.uiOptions.isIpad){
+                            alert('swipe debugging, please ignore: swipefrom == '+swipedCardData.swipeFrom);
+                        }
+                        
+                        
+                        
+                        
+                        
 			var swipeOperationObj = new SwipeOperation();
 			var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
 			var tokenizeSuccessCallback = function(tokenValue){
@@ -787,6 +808,9 @@ sntRover.controller('RVbillCardController',
 	 	 }
 
 
+                        if ($scope.uiOptions.isIpad){
+                            alert('swipe debugging, please ignore: $scope.isGuestCardVisible: '+$scope.isGuestCardVisible);
+                        }
 
 	});
 	 /*
