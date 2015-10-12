@@ -289,8 +289,9 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 */
 		$scope.copySingleValueToOtherBlocks = function(cellData, rowData) {
 			_.each(rowData.dates, function(element) {
-				element.single = cellData.single;
-				element.single_pickup = cellData.single_pickup;
+				/*element.single = cellData.single;
+				element.single_pickup = cellData.single_pickup;*/
+				element.single_contract = cellData.single_contract;
 			});
 			//we chnged something
 			$scope.bookingDataChanging();
@@ -305,8 +306,9 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 */
 		$scope.copyDoubleValueToOtherBlocks = function(cellData, rowData) {
 			_.each(rowData.dates, function(element) {
-				element.double = cellData.double;
-				element.double_pickup = cellData.double_pickup;
+				/*element.double = cellData.double;
+				element.double_pickup = cellData.double_pickup;*/
+				element.double_contract = cellData.double_contract;
 			});
 			//we chnged something
 			$scope.bookingDataChanging();
@@ -321,8 +323,9 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 */
 		$scope.copyTripleValueToOtherBlocks = function(cellData, rowData) {
 			_.each(rowData.dates, function(element) {
-				element.triple = cellData.triple;
-				element.triple_pickup = cellData.triple_pickup;
+				/*element.triple = cellData.triple;
+				element.triple_pickup = cellData.triple_pickup;*/
+				element.triple_contract = cellData.triple_contract;
 			});
 			//we chnged something
 			$scope.bookingDataChanging();
@@ -337,8 +340,9 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 */
 		$scope.copyQuadrupleValueToOtherBlocks = function(cellData, rowData) {
 			_.each(rowData.dates, function(element) {
-				element.quadruple = cellData.quadruple;
-				element.quadruple_pickup = cellData.quadruple_pickup;
+				/*element.quadruple = cellData.quadruple;
+				element.quadruple_pickup = cellData.quadruple_pickup;*/
+				element.quadruple_contract = cellData.quadruple_contract;
 			});
 			//we chnged something
 			$scope.bookingDataChanging();
