@@ -106,12 +106,12 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			runDigestCycle();
 		};
 
-		var onFetchDemographicsSuccess = function(demographicsData) {
+		var onFetchSegmentDataSuccess = function(demographicsData) {
 				$scope.allotmentSummaryData.demographics = demographicsData.demographics;
 				updateSegment();
 		};
 
-		var onFetchDemographicsFailure = function(errorMessage) {
+		var onFetchSegmentDataFailure = function(errorMessage) {
 
 		};
 
@@ -145,8 +145,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		$scope.computeSegment = function() {
 			if ($scope.allotmentSummaryData.demographics === null) {
 				var options = {
-					successCallBack: onFetchDemographicsSuccess,
-					failureCallBack: onFetchDemographicsFailure
+					successCallBack: onFetchSegmentDataSuccess,
+					failureCallBack: onFetchSegmentDataFailure
 				}
 				$scope.callAPI(RVReservationSummarySrv.fetchInitialData, options);
 			} else {
@@ -237,8 +237,6 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 */
 		var showDemographicsPopup = function() {
 			$scope.allotmentSummaryData.isDemographicsPopupOpen = true;
-
-
 			demographicsMemento = angular.copy($scope.allotmentConfigData.summary.demographics);
 			ngDialog.open({
 				template: '/assets/partials/allotments/summary/allotmentDemographicsPopup.html',
@@ -252,6 +250,15 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			});
 		};
 
+		var onFetchDemographicsSuccess = function(demographicsData) {
+			$scope.allotmentSummaryData.demographics = demographicsData.demographics;
+			showDemographicsPopup();
+		};
+
+		var onFetchDemographicsFailure = function(errorMessage) {
+
+		};
+
 		/**
 		 * Demographics Popup Handler
 		 * @return undefined
@@ -262,19 +269,12 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				$scope.errorMessage = ["Please save the allotment first"];
 				return;
 			}
-
 			$scope.errorMessage = "";
 
-			var onFetchDemographicsSuccess = function(demographicsData) {
-					$scope.allotmentSummaryData.demographics = demographicsData.demographics;
-					showDemographicsPopup();
-				},
-				onFetchDemographicsFailure = function(errorMessage) {
-				},
-				options = {
-					successCallBack: onFetchDemographicsSuccess,
-					failureCallBack: onFetchDemographicsFailure
-				};
+			var options = {
+				successCallBack: onFetchDemographicsSuccess,
+				failureCallBack: onFetchDemographicsFailure
+			};
 
 			if ($scope.allotmentSummaryData.demographics === null) {
 				$scope.callAPI(RVReservationSummarySrv.fetchInitialData, options);
@@ -289,14 +289,16 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				$scope.errorMessage = ["Please save the allotment first"];
 				return;
 			}
-			$scope.attachedEntities = {};
-			$scope.attachedEntities.posting_account = {};
-			$scope.attachedEntities.posting_account.id = $scope.allotmentConfigData.summary.allotment_id;
-			$scope.attachedEntities.posting_account.name = $scope.accountConfigData.summary.posting_account_name;
-			$scope.attachedEntities.posting_account.logo = "ALLOTMENT_DEFAULT";
-			$scope.billingEntity = "ALLOTMENT_DEFAULT_BILLING";
+			var summaryData = $scope.allotmentConfigData.summary;
 
+			$scope.billingEntity = "ALLOTMENT_DEFAULT_BILLING";
 			$scope.billingInfoModalOpened = true;
+			$scope.attachedEntities = {};
+			$scope.attachedEntities.posting_account = _.extend({}, {
+				id: summaryData.allotment_id,
+				name: summaryData.posting_account_name,
+				logo: "ALLOTMENT_DEFAULT"
+			});
 
 			ngDialog.open({
 				template: '/assets/partials/bill/rvBillingInformationPopup.html',
@@ -370,11 +372,16 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			}
 
 			var params = {
-				allotment_id: $scope.allotmentConfigData.summary.allotment_id,
-				rate_id: $scope.allotmentConfigData.summary.rate
+				allotment_id: summaryData.allotment_id,
+				rate_id: summaryData.rate
 			};
 
-			$scope.invokeApi(rvAllotmentConfigurationSrv.updateRate, params, onRateChangeSuccess, onRateChangeFailure);
+			var options = {
+				successCallBack: onReleaseRoomsSuccess,
+				failureCallBack: onReleaseRoomsFailure,
+				params: params
+			};
+			$scope.callAPI(rvAllotmentConfigurationSrv.updateRate, options);
 		};
 
 
@@ -404,7 +411,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 */
 		var onReleaseRoomsSuccess = function(data) {
 			$scope.closeDialog();
-			fetchSummaryData();
+			$scope.$emit("FETCH_SUMMARY");
 		};
 
 		var onReleaseRoomsFailure = function(data) {
@@ -434,29 +441,32 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			$scope.closeDialog();
 		};
 
-		$scope.cancelAllotment = function(cancellationReason) {
-			var onCancelAllotmentSuccess = function() {
-					// reload the allotmentSummary
-					$scope.closeDialog();
-					$state.go('rover.allotments.config', {
-						id: $scope.allotmentConfigData.summary.allotment_id
-					}, {
-						reload: true
-					});
+		var onCancelAllotmentSuccess = function() {
+			// reload the allotmentSummary
+			$scope.closeDialog();
+			$state.go('rover.allotments.config', {
+				id: $scope.allotmentConfigData.summary.allotment_id
+			}, {
+				reload: true
+			});
+		};
 
-				},
-				onCancelAllotmentFailure = function(errorMessage) {
-					$scope.errorMessage = errorMessage;
-					$scope.abortCancelAllotment();
-				};
-			$scope.callAPI(rvAllotmentConfigurationSrv.cancelAllotment, {
+		var onCancelAllotmentFailure = function(errorMessage) {
+			$scope.errorMessage = errorMessage;
+			$scope.abortCancelAllotment();
+		};
+
+		$scope.cancelAllotment = function(cancellationReason) {
+			var params  = {
+				allotment_id: $scope.allotmentConfigData.summary.allotment_id,
+				reason: cancellationReason
+			};
+			var options = {
 				successCallBack: onCancelAllotmentSuccess,
 				failureCallBack: onCancelAllotmentFailure,
-				params: {
-					allotment_id: $scope.allotmentConfigData.summary.allotment_id,
-					reason: cancellationReason
-				}
-			});
+				params: params
+			};
+			$scope.callAPI(rvAllotmentConfigurationSrv.cancelAllotment, options);
 		};
 
 		$scope.onHoldStatusChange = function() {
@@ -489,32 +499,33 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			return (rvPermissionSrv.getPermissionValue('CANCEL_GROUP') && !!$scope.allotmentConfigData.summary.is_cancelled || ($scope.allotmentConfigData.summary.total_checked_in_reservations === 0 && parseFloat($scope.allotmentConfigData.summary.balance) === 0.0));
 		};
 
+		var onFetchAddonSuccess = function(data) {
+			$scope.allotmentConfigData.selectedAddons = data;
+			if ($scope.allotmentConfigData.selectedAddons.length > 0) {
+				$scope.openAddonsPopup();
+			} else {
+				$scope.manageAddons();
+			}
+		};
+
+		var onFetchAddonFailure = function(errorMessage) {
+			$scope.errorMessage = errorMessage;
+		};
+
 		/**
 		 * Method to show addons popup
 		 * @return undefined
 		 */
 		$scope.viewAddons = function() {
-			var onFetchAddonSuccess = function(data) {
-					$scope.allotmentConfigData.selectedAddons = data;
-					if ($scope.allotmentConfigData.selectedAddons.length > 0) {
-						$scope.openAddonsPopup();
-					} else {
-						$scope.manageAddons();
-					}
-				},
-				onFetchAddonFailure = function(errorMessage) {
-					$scope.errorMessage = errorMessage;
-				};
-
-			$scope.callAPI(rvAllotmentConfigurationSrv.getAllotmentEnhancements, {
+			var options = {
 				successCallBack: onFetchAddonSuccess,
 				failureCallBack: onFetchAddonFailure,
 				params: {
 					"id": $scope.allotmentConfigData.summary.allotment_id
 				}
-			});
+			};
+			$scope.callAPI(rvAllotmentConfigurationSrv.getAllotmentEnhancements, options);
 		};
-
 
 		$scope.getRevenue = function() {
 			if ($scope.isInAddMode()) {
@@ -522,7 +533,6 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			}
 			return $rootScope.currencySymbol + $filter('number')($scope.allotmentConfigData.summary.revenue_actual, 2) + '/ ' + $rootScope.currencySymbol + $filter('number')($scope.allotmentConfigData.summary.revenue_potential, 2);
 		};
-
 
 		/**
 		 * Method used open the addons popup
@@ -538,59 +548,77 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			});
 		};
 
+		var onFetchAddonsListSuccess = function(addonsData) {
+			$scope.allotmentConfigData.addons = addonsData;
+			$scope.openAllotmentAddonsScreen();
+		};
+
+		var onFetchAddonsListFailure = function(errorMessage) {
+
+		};
+
 		/**
-		 * manage addons selection/ updates
+		 * manage addons selection/ updates.
+		 * Fetch addons list first and show manage screen.
 		 * @return undefined
 		 */
 		$scope.manageAddons = function() {
-
 			if ($scope.isInAddMode()) {
 				// If the allotment has not been saved yet, prompt user for the same
 				$scope.errorMessage = ["Please save the allotment to manage Add-ons"];
 				return;
 			}
-
 			$scope.errorMessage = "";
 
-			// ADD ONS button: pop up standard Add On screen - same functionality as on Stay Card, select new or show small window and indicator for existing Add Ons
-			var onFetchAddonsSuccess = function(addonsData) {
-					$scope.allotmentConfigData.addons = addonsData;
-					$scope.openAllotmentAddonsScreen();
-				},
-				onFetchAddonsFailure = function(errorMessage) {
-				};
-
-			$scope.callAPI(RVReservationAddonsSrv.fetchAddonData, {
-				successCallBack: onFetchAddonsSuccess,
-				failureCallBack: onFetchAddonsFailure,
-				params: {
+			var params  = {
 					from_date: $scope.allotmentConfigData.summary.block_from,
 					to_date: $scope.allotmentConfigData.summary.block_to,
 					is_active: true,
 					is_not_rate_only: true
+				},
+				options = {
+					successCallBack: onFetchAddonsListSuccess,
+					failureCallBack: onFetchAddonsListFailure,
+					params: params
 				}
-			});
+			$scope.callAPI(RVReservationAddonsSrv.fetchAddonData, options);
 		};
 
-		$scope.removeAddon = function(addon) {
-			var onRemoveAddonSuccess = function(data) {
-					$scope.allotmentConfigData.selectedAddons = data;
-					$scope.computeAddonsCount();
-				},
-				onRemoveAddonFailure = function(errorMessage) {
-					$scope.errorMessage = errorMessage;
-				};
+		var onRemoveAddonSuccess = function(data) {
+			$scope.allotmentConfigData.selectedAddons = data;
+			$scope.computeAddonsCount();
+		};
 
-			$scope.callAPI(rvAllotmentConfigurationSrv.removeAllotmentEnhancement, {
-				successCallBack: onRemoveAddonSuccess,
-				failureCallBack: onRemoveAddonFailure,
-				params: {
+		var onRemoveAddonFailure = function(errorMessage) {
+			$scope.errorMessage = errorMessage;
+		};
+
+		/**
+		 * Call to remove a specific addon from enhancements.
+		 * @param {object} Addon object
+		 */
+		$scope.removeAddon = function(addon) {
+			var params  = {
 					"addon_id": addon.id,
 					"id": $scope.allotmentConfigData.summary.allotment_id
-				}
-			});
+				},
+				options = {
+					successCallBack: onRemoveAddonSuccess,
+					failureCallBack: onRemoveAddonFailure,
+					params: params
+				};
+			$scope.callAPI(rvAllotmentConfigurationSrv.removeAllotmentEnhancement, options);
 		};
 
+		var onSaveAllotmentNoteSuccess = function(data) {
+			$scope.allotmentConfigData.summary.notes = data.notes;
+			$scope.allotmentSummaryData.newNote = "";
+			$scope.refreshScroller("allotmentSummaryScroller");
+		};
+
+		var onSaveAllotmentNoteFailure = function(errorMessage) {
+			$scope.errorMessage = errorMessage;
+		};
 
 		/**
 		 * Method to save a note
@@ -602,46 +630,42 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				$scope.errorMessage = ["Please save the allotment to Post Note"];
 				return;
 			}
-
-
-
 			$scope.errorMessage = "";
 
-
-			if ($scope.allotmentSummaryData.newNote) {
-				var onSaveAllotmentNoteSuccess = function(data) {
-						$scope.allotmentConfigData.summary.notes = data.notes;
-						$scope.allotmentSummaryData.newNote = "";
-						$scope.refreshScroller("allotmentSummaryScroller");
-					},
-					onSaveAllotmentNoteFailure = function(errorMessage) {
-						$scope.errorMessage = errorMessage;
-					};
-
-				$scope.callAPI(rvAllotmentConfigurationSrv.saveAllotmentNote, {
+			var params  = {
+					"notes": $scope.allotmentSummaryData.newNote,
+					"allotment_id": $scope.allotmentConfigData.summary.allotment_id
+				},
+				options = {
 					successCallBack: onSaveAllotmentNoteSuccess,
 					failureCallBack: onSaveAllotmentNoteFailure,
-					params: {
-						"notes": $scope.allotmentSummaryData.newNote,
-						"allotment_id": $scope.allotmentConfigData.summary.allotment_id
-					}
-				});
-			} else {
+					params: params
+				};
+			if ($scope.allotmentSummaryData.newNote) {
+				$scope.callAPI(rvAllotmentConfigurationSrv.saveAllotmentNote, options);
 			}
 		};
 
-		$scope.removeAllotmentNote = function(noteId) {
-			var onRemoveAllotmentNoteSuccess = function(data, params) {
-					$scope.allotmentConfigData.summary.notes = _.without($scope.allotmentConfigData.summary.notes, _.findWhere($scope.allotmentConfigData.summary.notes, {
-						note_id: params.noteId
-					}));
-					$scope.refreshScroller("allotmentSummaryScroller");
-				},
-				onRemoveAllotmentNoteFailure = function(errorMessage) {
-					$scope.errorMessage = errorMessage;
-				};
+		var onRemoveAllotmentNoteSuccess = function(data, params) {
+			var summaryData = $scope.allotmentConfigData.summary;
+			summaryData.notes = _.without(summaryData.notes,
+									_.findWhere(summaryData.notes, {
+										note_id: params.noteId
+									})
+								);
+			$scope.refreshScroller("allotmentSummaryScroller");
+		};
 
-			$scope.callAPI(rvAllotmentConfigurationSrv.removeAllotmentNote, {
+		var onRemoveAllotmentNoteFailure = function(errorMessage) {
+			$scope.errorMessage = errorMessage;
+		};
+
+		/**
+		 * deletes a specific note.
+		 * @param {int} id of the note.
+		 */
+		$scope.removeAllotmentNote = function(noteId) {
+			var options = {
 				successCallBack: onRemoveAllotmentNoteSuccess,
 				failureCallBack: onRemoveAllotmentNoteFailure,
 				params: {
@@ -650,9 +674,9 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				successCallBackParameters: {
 					"noteId": noteId
 				}
-			});
+			};
+			$scope.callAPI(rvAllotmentConfigurationSrv.removeAllotmentNote, options);
 		};
-
 
 		var getPassData = function() {
 			var passData = {
@@ -664,7 +688,6 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			};
 			return passData;
 		};
-
 
 		$scope.$on('HANDLE_MODAL_OPENED', function(event) {
 			$scope.billingInfoModalOpened = false;
@@ -701,58 +724,35 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			};
 		});
 
-		/**
-		 * we will update the summary data, when we got this one
-		 * @param  {Object} data
-		 * @return undefined
-		 */
-		var fetchSuccessOfSummaryData = function(data) {
-			$scope.allotmentConfigData.summary = _.extend($scope.allotmentConfigData.summary, data.allotmentSummary);
+		var onFetchRatesSuccess = function(data) {
+			// split result to contracted vs others for enabling grouping on the dropdown
+			$scope.allotmentSummaryData.rates = _.where(data.results, {
+				is_contracted: false
+			});
 
-			summaryMemento = _.extend({}, $scope.allotmentConfigData.summary);
+			$scope.allotmentSummaryData.contractedRates = _.where(data.results, {
+				is_contracted: true
+			});
+		};
+		var onFetchRatesFailure = function(errorMessage) {
+			$scope.errorMessage = errorMessage;
 		};
 
 		var fetchApplicableRates = function() {
-			var onFetchRatesSuccess = function(data) {
-					// split result to contracted vs others for enabling grouping on the dropdown
-					$scope.allotmentSummaryData.rates = _.where(data.results, {
-						is_contracted: false
-					});
-
-					$scope.allotmentSummaryData.contractedRates = _.where(data.results, {
-						is_contracted: true
-					});
-				},
-				onFetchRatesFailure = function(errorMessage) {
-					$scope.errorMessage = errorMessage;
-				};
-
-			$scope.callAPI(rvAllotmentConfigurationSrv.getRates, {
-				successCallBack: onFetchRatesSuccess,
-				failureCallBack: onFetchRatesFailure,
-				params: {
-					from_date: $filter('date')(tzIndependentDate($scope.allotmentConfigData.summary.block_from), 'yyyy-MM-dd'),
-					to_date: $filter('date')(tzIndependentDate($scope.allotmentConfigData.summary.block_to), 'yyyy-MM-dd'),
-					company_id: ($scope.allotmentConfigData.summary.company && $scope.allotmentConfigData.summary.company.id) || null,
-					travel_agent_id: ($scope.allotmentConfigData.summary.travel_agent && $scope.allotmentConfigData.summary.travel_agent.id) || null
-				}
-			});
-		};
-
-		/**
-		 * method to fetch summary data
-		 * @return undefined
-		 */
-		var fetchSummaryData = function() {
+			var summaryData = $scope.allotmentConfigData.summary;
 			var params = {
-				"allotmentId": $scope.allotmentConfigData.summary.allotment_id
+				from_date: $filter('date')(tzIndependentDate(summaryData.block_from), 'yyyy-MM-dd'),
+				to_date: $filter('date')(tzIndependentDate(summaryData.block_to), 'yyyy-MM-dd'),
+				company_id: (summaryData.company && summaryData.company.id) || null,
+				travel_agent_id: (summaryData.travel_agent && summaryData.travel_agent.id) || null
 			};
 			var options = {
-				successCallBack: fetchSuccessOfSummaryData,
+				successCallBack: onFetchRatesSuccess,
+				failureCallBack: onFetchRatesFailure,
 				params: params
 			};
 
-			$scope.callAPI(rvAllotmentConfigurationSrv.getAllotmentSummary, options);
+			$scope.callAPI(rvAllotmentConfigurationSrv.getRates, options);
 		};
 
 		/**
@@ -763,7 +763,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			if (activeTab !== 'SUMMARY') {
 				return;
 			}
-			fetchSummaryData();
+			$scope.$emit("FETCH_SUMMARY");
 
 			//we are resetting the API call in progress check variable
 			$scope.isUpdateInProgress = false;
