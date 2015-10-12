@@ -1414,9 +1414,14 @@ sntRover.controller('guestCardController', [
 			//we will be in card opened mode, so closing
 			$scope.closeGuestCard();
 
-			$timeout(function() {
-				$scope.navigateToRoomAndRates();
-			}, 3000);
+			/**
+			 * CICO-20674: when there is more than one contracted rate we 
+			 * should take the user to room and rates screen after applying the routing info
+			 */
+			// $timeout(function() {
+			// 	$scope.navigateToRoomAndRates();
+			// }, 3000);
+			// CICO-20161
 		};
 
 		// To handle card selection from COMPANY / TA.
