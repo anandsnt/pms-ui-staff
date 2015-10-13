@@ -225,9 +225,11 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
 
         };
 
-        $scope.reloadPage = function() {
+        $scope.reloadPage = function(tab) {
+            tab = tab || "SUMMARY";
             $state.go('rover.allotments.config', {
-                id: $scope.allotmentConfigData.summary.allotment_id
+                id: $scope.allotmentConfigData.summary.allotment_id,
+                activeTab: tab
             }, {
                 reload: true
             });
