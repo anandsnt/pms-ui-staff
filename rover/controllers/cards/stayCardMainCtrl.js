@@ -526,8 +526,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 		};
 
-		this.attachCompanyTACardRoutings = function(card) {
-
+		this.attachCompanyTACardRoutings = function(card, cardData) {
 			// CICO-20161
 			/**
 			 * In this case there does not need to be any prompt for Rate or Billing Information to copy, 
@@ -580,6 +579,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			$scope.invokeApi(RVReservationSummarySrv.fetchDefaultRoutingInfo, params, fetchSuccessofDefaultRouting);
 		};
 
+		$scope.newCardData = {};
 		$scope.replaceCard = function(card, cardData, future) {
 			if (card === 'company') {
 				$scope.reservationData.company.id = cardData.id;
@@ -597,7 +597,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 						$scope.viewState.lastCardSlot = "";
 					}
 					$scope.$emit('hideLoader');
-					that.attachCompanyTACardRoutings(card);
+					$scope.newCardData = cardData;
+					that.attachCompanyTACardRoutings();
 				},
 				onReplaceFailure = function() {
 					$scope.cardRemoved();
@@ -638,7 +639,13 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		 * 	However, in the confirmation screen the identifier would be "CONFIRM"
 		 */
 		this.reloadStaycard = function() {
-			if ($scope.viewState.identifier === "STAY_CARD" && typeof $stateParams.confirmationId !== "undefined") {
+			/**
+			 * CICO-20674: when there is more than one contracted rate we 
+			 * should take the user to room and rates screen after applying the routing info
+			 */
+			if ( $scope.newCardData.hasOwnProperty('isMultipleContracts') && true == $scope.newCardData.isMultipleContracts && $state.current.name !== "rover.reservation.staycard.mainCard.roomType" && !$scope.reservationData.group.id ) {
+				$scope.navigateToRoomAndRates();
+			} else if ($scope.viewState.identifier === "STAY_CARD" && typeof $stateParams.confirmationId !== "undefined") {
 				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
 					"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
 					"confirmationId": $stateParams.confirmationId,

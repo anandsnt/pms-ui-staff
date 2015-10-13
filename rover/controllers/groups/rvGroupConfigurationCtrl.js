@@ -1239,17 +1239,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 param = prevParam;
             };
 
-            console.log( _.indexOf(reservationFlow.forRoutes, prevName) );
-
-            console.log( _.indexOf(flowStates, prevName) );
-
             return {
                 'title' : title,
                 'name'  : name,
                 'param' : param
             };
         })( $rootScope );
-        console.log( resolvedBackBtn );
 
         $scope.updateAndBack = function() {
             if ( !$scope.isInAddMode() && 'SUMMARY' === $scope.groupConfigData.activeTab ) {
