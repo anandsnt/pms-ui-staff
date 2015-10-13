@@ -1,0 +1,9 @@
+<tr class="row-break" ng-repeat="item in results">
+    <td class="name">
+        <strong>{{item.account_name}}</strong>
+    </td>
+    <td>{{item.account_no}}</td>
+    <td>{{item.corporate_id}}</td>
+    <td><span ng-if="item.commission.type === 'amount'">{{currencySymbol}}</span>{{item.commission.amount}}<span ng-if="item.commission.type === 'percent'">%</span></td>
+    <td class="balance" ng-class="{'red': item.balance > 0, 'green': item.balance < 0}">{{currencySymbol}}{{item.balance | number:2}}</td>
+</tr>

@@ -348,15 +348,15 @@ sntRover.factory('RVReportUtilsFac', [
                     report['reportIconCls'] = 'icon-report icon-forecast';
                     break;
 
+                case reportNames['AR_SUMMARY_REPORT']:
+                    report['reportIconCls'] = 'icon-report icon-balance';
+                    break;
+
                 default:
                     report['reportIconCls'] = 'icon-report';
                     break;
             };
         };
-
-
-
-
 
 
         /**

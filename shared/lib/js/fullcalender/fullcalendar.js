@@ -5413,7 +5413,7 @@ function DayEventRenderer() {
 						"</span>" ;
 			    }
 			    html += "<span class='fc-event-title'>";
-		        if (event.title != "" && _.contains(event.classNames, 'available'){
+		        if (event.title != "" && _.contains(event.classNames, 'available')){
 			        html += htmlEscape(event.currencySymbol);
 		        }
 			}else {
