@@ -88,8 +88,9 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             summaryData = _.extend(summaryData, data.allotmentSummary);
 
             if (!$scope.isInAddMode()) {
-                $scope.allotmentConfigData.summary.block_from = new tzIndependentDate($scope.allotmentConfigData.summary.block_from);
-                $scope.allotmentConfigData.summary.block_to = new tzIndependentDate($scope.allotmentConfigData.summary.block_to);
+                summaryData.block_from = new tzIndependentDate(summaryData.block_from);
+                summaryData.block_to = new tzIndependentDate(summaryData.block_to);
+                summaryData.rate = parseInt(summaryData.rate);
             }
 
             // let others know we have refreshed summary data
@@ -256,7 +257,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
         $scope.getCurrentTabUrl = function() {
             var tabAndUrls = {
                 'SUMMARY': '/assets/partials/allotments/summary/rvAllotmentConfigurationSummaryTab.html',
-                'DETAILS': '/assets/partials/allotments/details/rvAllotmentConfigurationDetailsTab.html',
+                'ROOM_BLOCK': '/assets/partials/allotments/details/rvAllotmentConfigurationRoomBlockTab.html',
                 'RESERVATIONS': '/assets/partials/allotments/reservations/rvAllotmentReservationsListTab.html',
                 'ACTIVITY': '/assets/partials/allotments/activity/rvAllotmentActivityTab.html'
             };
