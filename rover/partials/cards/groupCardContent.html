@@ -1,6 +1,6 @@
 <div ng-controller="RVGroupCardCtrl">
-    <!-- Company Card Content -->
-    <div id="group-card-content" class="card-tabs card-content" ng-class="UICardContentCls('group-card')" ng-if="!searchMode">
+    <!-- Group Card Content -->
+    <div id="group-card-content" class="card-tabs card-content" ng-class="UICardContentCls('group-card')" ng-if="!searchMode && !!reservationData.group.id">
         <ul id="group-card-tabs-nav" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
             <li class="ui-tabs-active">
                 <a translate>SUMMARY</a>
@@ -9,50 +9,62 @@
         <!-- Company - Contact Information -->
         <span ng-include="'/assets/partials/groups/summary/rvGroupConfigurationSummaryTab.html'"></span>
     </div>
-    <!-- Company Search -->
+
+    <!-- Allotment Card Content -->
+    <div id="group-card-content" class="card-tabs card-content" ng-class="UICardContentCls('group-card')" ng-if="!searchMode && !!reservationData.allotment.id">
+        <ul id="group-card-tabs-nav" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+            <li class="ui-tabs-active">
+                <a translate>SUMMARY</a>
+            </li>
+        </ul>
+        <!-- Company - Contact Information -->
+        <span ng-include="'/assets/partials/allotments/summary/rvAllotmentConfigurationSummaryTab.html'"></span>
+    </div>
+
+    <!-- Group & Allotment Search -->
     <div id="company-card-content" class="card-search card-content" ng-class="UICardContentCls('group-card')" ng-if="searchMode">
         <div id="search-group-content" class="search-cards scrollable">
             <!-- Company Card Results listing -->
             <div ng-controller="groupResults" class="wrapper" ng-show="searchingGroups && searchedGroups.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="groupResultsScroll" ng-iscroll-delay='500'>
                 <ul id="search-group-results" class="search-results">
-                    <li class="group" ng-repeat="group in searchedGroups" ngrepeatend ngrepeatstarted>
-                        <a ng-click="selectGroup(group, $event)">
+                    <li class="group" ng-repeat="result in searchedGroups" ngrepeatend ngrepeatstarted>
+                        <a ng-click="selectToGroupORAllotment(result, $event)">
                             <div class="data">
-                                <h2 ng-bind-html="{{stringify(escapeNull(group.group_name))}} | highlight:searchData.groupCard.name:false">              </h2>
-                                <span class="confirmation" ng-bind-html="{{stringify(escapeNull(group.group_code))}} | highlight:searchData.groupCard.code:false"></span>
+                                <h2 ng-bind-html="{{stringify(escapeNull(result.name))}} | highlight:searchData.groupCard.name:false">              </h2>
+                                <span class="confirmation" ng-bind-html="{{stringify(escapeNull(result.code))}} | highlight:searchData.groupCard.code:false"></span>
                                 <!-- If linked company exists: -->
-                                <span class="icons icon-guest-company" ng-hide="isEmpty(group.company)">
-                                    {{group.company}}
+                                <span class="icons icon-guest-company" ng-hide="isEmpty(result.company)">
+                                    {{result.company}}
                                 </span>
                                 <!-- If linked travel agent exists: -->
-                                <span class="icons icon-guest-travelagent" ng-hide="isEmpty(group.travel_agent)">
-                                    {{group.travel_agent}}
+                                <span class="icons icon-guest-travelagent" ng-hide="isEmpty(result.travel_agent)">
+                                    {{result.travel_agent}}
                                 </span>
                             </div>
                             <div class="arrival">
-                                <span class="guest-status" ng-class="getGuestClassForArrival(group)">
+                                <span class="guest-status" ng-class="getGuestClassForArrival(result)">
                                     <!--{arrival or cancel}-->
                                 </span>
-                                <time datetime="group.arrival_date">
-                                    {{formatDateForUI(group.arrival_date)}}
+                                <time datetime="result.arrival_date">
+                                    {{formatDateForUI(result.arrival_date)}}
                                 </time>
                             </div>
                             <div class="departure">
-                                <span class="guest-status" ng-class="getGuestClassForDeparture(group)">
+                                <span class="guest-status" ng-class="getGuestClassForDeparture(result)">
                                 <!--{departure or cancel} -->
                                 </span>
-                                <time datetime="group.departure_date">
-                                    {{formatDateForUI(group.departure_date)}}
+                                <time datetime="result.departure_date">
+                                    {{formatDateForUI(result.departure_date)}}
                                 </time>
                             </div>
-                            <div class="blocked" ng-class="getClassAgainstHoldStatus(group)">
+                            <div class="blocked" ng-class="getClassAgainstHoldStatus(result)">
                                 <!-- If Status = Tentative, add class "tentative" -->
-                                <strong>{{group.total_booked === null? '0':group.total_booked}}</strong>
-                                <span>{{group.hold_status}}</span>
+                                <strong>{{result.total_booked === null? '0':result.total_booked}}</strong>
+                                <span>{{result.hold_status}}</span>
                             </div>
-                            <div class="picked" ng-class="getClassAgainstPickedStatus(group)">
+                            <div class="picked" ng-class="getClassAgainstPickedStatus(result)">
                                 <!-- Add class "green" if No. > 0, or class "red" if cancelled -->
-                                <strong>{{group.total_picked_count === null? '0' :group.total_picked_count}}</strong>
+                                <strong>{{result.total_picked_count === null? '0' :result.total_picked_count}}</strong>
                                 <span>Picked Up</span>
                             </div>
                         </a>

@@ -1,5 +1,5 @@
-sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter', 'RVContactInfoSrv', '$q', 'RVReservationStateService', 'RVReservationDataService', 'rvGroupConfigurationSrv',
-	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter, RVContactInfoSrv, $q, RVReservationStateService, RVReservationDataService, rvGroupConfigurationSrv) {
+sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter', 'RVContactInfoSrv', '$q', 'RVReservationStateService', 'RVReservationDataService', 'rvGroupConfigurationSrv', 'rvAllotmentConfigurationSrv',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter, RVContactInfoSrv, $q, RVReservationStateService, RVReservationDataService, rvGroupConfigurationSrv, rvAllotmentConfigurationSrv) {
 		BaseCtrl.call(this, $scope);
 		//Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
@@ -139,6 +139,27 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		};
 
 		/**
+		 * CB on success of allotments fetch
+		 * @param  {[type]} response [description]
+		 * @return {[type]}          [description]
+		 */
+		var onAllotmentSummaryFetchSuccess = function(response) {
+			_.extend($scope.allotmentConfigData, {
+				activeTab: 'SUMMARY', // Possible values are SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY
+				summary: response.allotmentSummary,
+				selectAddons: false, // To be set to true while showing addons full view
+				addons: {},
+				selectedAddons: []
+			});
+		};
+
+		var onAllotmentsHoldListFetchSuccess = function(holdStatusList) {
+			_.extend($scope.allotmentConfigData, {
+				holdStatusList: holdStatusList.data.hold_status
+			});
+		};
+
+		/**
 		 * [successCallBackOfGroupHoldListFetch description]
 		 * @param  {[type]} holdStatusList [description]
 		 * @return {[type]}                [description]
@@ -157,6 +178,12 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		var successFetchOfAllReqdForGroupDetailsShowing = function(data) {
 			$scope.$broadcast('groupCardAvailable');
 			$scope.$broadcast('groupSummaryDataChanged', $scope.groupConfigData);
+			$scope.$emit("hideLoader");
+		};
+
+		var onInitAllotmentSuccess = function(data) {
+			$scope.$broadcast('allotmentCardAvailable');
+			$scope.$broadcast('allotmentSummaryDataChanged', $scope.allotmentConfigData);
 			$scope.$emit("hideLoader");
 		};
 
@@ -199,6 +226,35 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			//Lets start the processing
 			$q.all(promises)
 				.then(successFetchOfAllReqdForGroupDetailsShowing, failedToFetchOfAllReqdForGroupDetailsShowing);
+		};
+
+		/**
+		 * [initAllotmentCard description]
+		 * @param  {[type]} allotmentId [description]
+		 * @return {[type]}             [description]
+		 */
+		$scope.initAllotmentCard = function(allotmentId) {
+			var promises = [];
+
+			$scope.$emit('showLoader');
+
+			$scope.allotmentConfigData = {
+				activeScreen: 'STAY_CARD'
+			};
+
+			// Preload the summary data and the hold status options
+			promises.push(rvAllotmentConfigurationSrv
+				.getAllotmentSummary({
+					allotmentId: allotmentId
+				}).then(onAllotmentSummaryFetchSuccess)
+			);
+			promises.push(rvGroupConfigurationSrv
+				.getHoldStatusList({
+					is_allotment: true
+				}).then(onAllotmentsHoldListFetchSuccess)
+			);
+			$q.all(promises)
+				.then(onInitAllotmentSuccess, failedToFetchOfAllReqdForGroupDetailsShowing);
 		};
 
 		// fetch reservation company card details
@@ -275,14 +331,14 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				timer += 300;
 
 			}
-			
+
 			if (!isCardSame.agent) {
 				$timeout(function() {
 					$scope.$broadcast('travelAgentDetached');
 					$scope.initTravelAgentCard();
-				}, timer);				
-			}	
-			
+				}, timer);
+			}
+
 
 			// The future counts of the cards attached with the reservation
 			// will be received here!
@@ -307,26 +363,26 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		 * @return {[type]} [description]
 		 */
 		$scope.navigateToRoomAndRates = function(options) {
-			var resData 		  	  = $scope.reservationData,
+			var resData = $scope.reservationData,
 				disableBackToStaycard = (options && options.disableBackToStaycard);
 
 			$state.go('rover.reservation.staycard.mainCard.roomType', {
-				from_date 			 : resData.arrivalDate,
-				to_date 			 : resData.departureDate,
-				fromState 			 : function() {
-											if ($state.current.name === "rover.reservation.staycard.reservationcard.reservationdetails") {
-												return 'STAY_CARD'
-											} else {
-												return $state.current.name
-											}
-										}(),
-				company_id 			 : resData.company.id,
-				allotment_id 		 : resData.allotment.id,
-				travel_agent_id		 : resData.travelAgent.id,
-				group_id 			 : resData.group && resData.group.id,
-				allotment_id 		 : resData.allotment && resData.allotment.id,
+				from_date: resData.arrivalDate,
+				to_date: resData.departureDate,
+				fromState: function() {
+					if ($state.current.name === "rover.reservation.staycard.reservationcard.reservationdetails") {
+						return 'STAY_CARD'
+					} else {
+						return $state.current.name
+					}
+				}(),
+				company_id: resData.company.id,
+				allotment_id: resData.allotment.id,
+				travel_agent_id: resData.travelAgent.id,
+				group_id: resData.group && resData.group.id,
+				allotment_id: resData.allotment && resData.allotment.id,
 				disable_back_staycard: disableBackToStaycard,
-				view 				 : "ROOM_RATE"
+				view: "ROOM_RATE"
 			});
 		};
 
@@ -369,22 +425,21 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					$scope.navigateToRoomAndRates({
 						disableBackToStaycard: true
 					});
-				}
-				else {
+				} else {
 					that.reloadStaycard();
 				}
 			};
 
 			var onRemoveCardFailureCallBack = function(error) {
 				$scope.$emit('hideLoader');
-				if(error.hasOwnProperty ('httpStatus')) {
+				if (error.hasOwnProperty('httpStatus')) {
 					if (error.httpStatus === 470) {
 						/* CICO-20270: a 470 failure response indicates that transactions exist
 						 * in bill routing. we need to show user a warning in this case */
-					 	var data = {
-					 		errorMessages: error.errorMessage
-					 	};
- 						ngDialog.open({
+						var data = {
+							errorMessages: error.errorMessage
+						};
+						ngDialog.open({
 							template: '/assets/partials/cards/popups/detachCardsAPIErrorPopup.html',
 							className: 'ngdialog-theme-default stay-card-alerts',
 							scope: $scope,
@@ -420,35 +475,35 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 						'cardId': cardId
 					};
 					promises.push(RVCompanyCardSrv.removeCard(params)
-								.then(onRemoveEachCardSuccessCallBack));
+						.then(onRemoveEachCardSuccessCallBack));
 				});
 				$q.all(promises).then(onRemoveCardSuccessCallBack, onRemoveCardFailureCallBack);
 			};
 
 			var callRemoveCardsAPIforReservation = function(card, cardId) {
 				var params = {
-				'reservation': (typeof $stateParams.id === "undefined") ? $scope.reservationData.reservationId : $stateParams.id,
-				'cardType': card,
-				'cardId': cardId
+					'reservation': (typeof $stateParams.id === "undefined") ? $scope.reservationData.reservationId : $stateParams.id,
+					'cardType': card,
+					'cardId': cardId
 				};
 				$scope.invokeApi(RVCompanyCardSrv.removeCard,
-								 params,
-								 onRemoveCardSuccessCallBack,
-								 onRemoveCardFailureCallBack);
+					params,
+					onRemoveCardSuccessCallBack,
+					onRemoveCardFailureCallBack);
 			};
 
 			$scope.removeCard = function(card, cardId) {
-				var cardId 			   = cardId || null,
+				var cardId = cardId || null,
 					totalCardsAttached = _.filter($scope.reservationDetails, function(card) {
-											return !!card.id;
-										 }).length;
+						return !!card.id;
+					}).length;
 				removedCard = card;
 				//Cannot Remove the last card... Tell user not to select another card
 				if (totalCardsAttached > 1 && card !== "") {
-					var reservationData 		= $scope.reservationData,
+					var reservationData = $scope.reservationData,
 						hasMultipleReservations = (reservationData &&
-												   reservationData.reservationIds &&
-												   reservationData.reservationIds.length > 1);
+							reservationData.reservationIds &&
+							reservationData.reservationIds.length > 1);
 
 					if (hasMultipleReservations) {
 						$scope.$emit('showLoader');
@@ -458,8 +513,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 						callRemoveCardsAPIforReservation(card, cardId);
 					}
 
-				}
-				else {
+				} else {
 					//Bring up alert here
 					if ($scope.viewState.pendingRemoval.status || cardId) {
 						$scope.viewState.pendingRemoval.status = false;
@@ -643,7 +697,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			 * CICO-20674: when there is more than one contracted rate we 
 			 * should take the user to room and rates screen after applying the routing info
 			 */
-			if ( $scope.newCardData.hasOwnProperty('isMultipleContracts') && true == $scope.newCardData.isMultipleContracts && $state.current.name !== "rover.reservation.staycard.mainCard.roomType" && !$scope.reservationData.group.id ) {
+			if ($scope.newCardData.hasOwnProperty('isMultipleContracts') && true == $scope.newCardData.isMultipleContracts && $state.current.name !== "rover.reservation.staycard.mainCard.roomType" && !$scope.reservationData.group.id) {
 				$scope.navigateToRoomAndRates();
 			} else if ($scope.viewState.identifier === "STAY_CARD" && typeof $stateParams.confirmationId !== "undefined") {
 				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {

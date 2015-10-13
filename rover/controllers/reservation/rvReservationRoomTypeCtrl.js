@@ -300,6 +300,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				company_id: $scope.reservationData.company.id,
 				travel_agent_id: $scope.reservationData.travelAgent.id,
 				group_id: $scope.reservationData.group.id,
+				allotment_id: $scope.reservationData.allotment.id,
 				promotion_code: $scope.reservationData.searchPromoCode
 			}, fetchSuccess);
 
