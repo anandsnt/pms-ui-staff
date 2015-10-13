@@ -393,9 +393,21 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$scope.clickedOnApplyToHeldCountsButton = function() {
 			var roomBlockData = $scope.allotmentConfigData.summary.selected_room_types_and_bookings;
 			console.log(roomBlockData);
-			// TODO
-			//    plan 1: copy contracted value to held counts by force and call saveRoomBlock()
-			// 	  plan 2: give a flag to API and let them handle rest of the stuff
+			// plan A: copy contracted value to held counts by force and call saveRoomBlock()
+			_.each(roomBlockData, function(roomtype) {
+				_.each(roomtype.dates, function(dateData) {
+					dateData.single = dateData.single_contract;
+					dateData.double = dateData.double_contract;
+
+					if (dateData.triple) {
+						dateData.triple = dateData.triple_contract;
+					}
+					if (dateData.quadruple_contract) {
+						dateData.quadruple = dateData.quadruple_contract;
+					}
+				});
+			});
+			$scope.saveRoomBlock(false);
 		};
 
 		/**
