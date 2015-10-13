@@ -32,33 +32,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$scope.isEmpty = util.isEmpty;
 
 		/**
-		 * Function to decide whether to disable Update block button
-		 * if nopermission to update grp summary
-		 * @return {Boolean}
-		 */
-		$scope.shouldDisableUpdateBlockButton = function() {
-			return !hasPermissionToEditSummaryAllotment();
-		};
-
-		/**
-		 * Function to decide whether to hide Create block button
-		 * once click the create button, it become hidden
-		 * @return {Boolean}
-		 */
-		$scope.shouldHideCreateBlockButton = function() {
-			return ($scope.createButtonClicked);
-		};
-
-		/**
-		 * Function to decide whether to hide Update button
-		 * if from date & to date is not defined will return true
-		 * @return {Boolean}
-		 */
-		$scope.shouldHideUpdateButton = function() {
-			return !$scope.createButtonClicked;
-		};
-
-		/**
 		 * Function to decide whether to hide 'Add Rooms Button'
 		 * @return {Boolean}
 		 */
@@ -87,22 +60,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		/**
-		 * should we wanted to show the save button for room type booking change
-		 * @return {Boolean}
-		 */
-		$scope.shouldShowSaveButton = function() {
-			return $scope.hasBookingDataChanged && $scope.shouldHideAddRoomsButton();
-		};
-
-		/**
-		 * should we wanted to show the save button for room type booking change
-		 * @return {Boolean}
-		 */
-		$scope.shouldShowDiscardButton = function() {
-			return $scope.hasBookingDataChanged && $scope.shouldHideAddRoomsButton();
-		};
-
-		/**
 		 * Has Permission To Create group room block
 		 * @return {Boolean}
 		 */
@@ -126,6 +83,14 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$scope.shouldDisableAddRoomsAndRate = function() {
 			return (!hasPermissionToCreateRoomBlock() &&
 				!hasPermissionToEditRoomBlock());
+		};
+
+		/**
+		 * should we wanted to show the discard button for room type booking change
+		 * @return {Boolean}
+		 */
+		$scope.shouldShowDiscardButton = function() {
+			return $scope.hasBookingDataChanged && $scope.shouldHideAddRoomsButton();
 		};
 
 		$scope.shouldShowRoomBlockActions = function() {
@@ -392,7 +357,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 */
 		$scope.clickedOnApplyToHeldCountsButton = function() {
 			var roomBlockData = $scope.allotmentConfigData.summary.selected_room_types_and_bookings;
-			console.log(roomBlockData);
 			// plan A: copy contracted value to held counts by force and call saveRoomBlock()
 			_.each(roomBlockData, function(roomtype) {
 				_.each(roomtype.dates, function(dateData) {
@@ -454,7 +418,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 		/**
 		 * Handles the failure case of inventory save
-		 * A 407 status for response means overbooking occurs.
+		 * A 470 status for response means overbooking occurs.
 		 * @param 	{object} 	API response
 		 * @returns {undefined}
 		 */
@@ -531,21 +495,19 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$scope.saveRoomBlock = function(forceOverbook) {
 			forceOverbook = forceOverbook || false;
 
-			$timeout(function() {
-				//TODO : Make API call to save the room block.
-				var params = {
-					allotment_id: $scope.allotmentConfigData.summary.allotment_id,
-					results: $scope.allotmentConfigData.summary.selected_room_types_and_bookings,
-					forcefully_overbook_and_assign_rooms: forceOverbook
-				};
+			//TODO : Make API call to save the room block.
+			var params = {
+				allotment_id: $scope.allotmentConfigData.summary.allotment_id,
+				results: $scope.allotmentConfigData.summary.selected_room_types_and_bookings,
+				forcefully_overbook_and_assign_rooms: forceOverbook
+			};
 
-				var options = {
-					params: params,
-					successCallBack: successCallBackOfSaveRoomBlock,
-					failureCallBack: failureCallBackOfSaveRoomBlock
-				};
-				$scope.callAPI(rvAllotmentConfigurationSrv.saveRoomBlockBookings, options);
-			}, 0);
+			var options = {
+				params: params,
+				successCallBack: successCallBackOfSaveRoomBlock,
+				failureCallBack: failureCallBackOfSaveRoomBlock
+			};
+			$scope.callAPI(rvAllotmentConfigurationSrv.saveRoomBlockBookings, options);
 		};
 
 		/**
@@ -613,34 +575,20 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 		/**
 		 * to get the total contracted agsint all room types for a day
-		 * @param {Object} - room type data
+		 * @param {integer} - nth Day
 		 * @return {Integer}
 		 */
 		$scope.getTotalContractedOfDay = function(dateIndex) {
-			var cInt 	= util.convertToInteger,
-				total 	= 0;
+			var cInt 			= util.convertToInteger,
+				total 			= 0,
+		    	roomBlockData 	= $scope.allotmentConfigData.summary.selected_room_types_and_bookings;
 
-			_.each($scope.allotmentConfigData.summary.selected_room_types_and_bookings, function(roomType) {
-				var dateData = roomType.dates[dateIndex];
+		    // Loop each roomtype and calculate the total contracted number for the date
+			_.each(roomBlockData, function(roomType) {
+				var dateData 		= roomType.dates[dateIndex],
+					roomtypeTotal 	= $scope.getTotalContractedOfIndividualRoomType(dateData);
 
-				//since user may have entered wrong input
-				dateData.single_contract = (dateData.single_contract !== '') ? cInt(dateData.single_contract) : '';
-				dateData.double_contract = (dateData.double_contract !== '') ? cInt(dateData.double_contract) : '';
-
-				//the area of 'night watch man', they may be active or sleeping
-				var quadruple = 0;
-				if (dateData.quadruple_contract) {
-					dateData.quadruple_contract = cInt(dateData.quadruple_contract);
-					quadruple = dateData.quadruple_contract;
-				}
-				var triple = 0;
-				if (dateData.triple_contract) {
-					dateData.triple_contract = cInt(dateData.triple_contract);
-					triple = dateData.triple_contract;
-				}
-
-				total += (cInt(dateData.single_contract) + cInt(dateData.double_contract) + (triple) + (quadruple));
-
+				total += roomtypeTotal;
 			});
 
 			return total;
@@ -652,29 +600,16 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Integer}
 		 */
 		$scope.getTotalHeldOfDay = function(dateIndex) {
-			var cInt 	= util.convertToInteger,
-				total 	= 0;
+			var cInt 			= util.convertToInteger,
+				total 			= 0,
+		    	roomBlockData 	= $scope.allotmentConfigData.summary.selected_room_types_and_bookings;
 
-			_.each($scope.allotmentConfigData.summary.selected_room_types_and_bookings, function(roomType) {
-				var dateData = roomType.dates[dateIndex];
+		    // Loop each roomtype and calculate the total contracted number for the date
+			_.each(roomBlockData, function(roomType) {
+				var dateData 		= roomType.dates[dateIndex],
+					roomtypeTotal 	= $scope.getTotalHeldOfIndividualRoomType(dateData);
 
-				//since user may have entered wrong input
-				dateData.single = (dateData.single !== '') ? cInt(dateData.single) : '';
-				dateData.double = (dateData.double !== '') ? cInt(dateData.double) : '';
-
-				//the area of 'night watch man', they may be active or sleeping
-				var quadruple = 0;
-				if (dateData.quadruple) {
-					dateData.quadruple = cInt(dateData.quadruple);
-					quadruple = dateData.quadruple;
-				}
-				var triple = 0;
-				if (dateData.triple) {
-					dateData.triple = cInt(dateData.triple);
-					triple = dateData.triple;
-				}
-
-				total += (cInt(dateData.single) + cInt(dateData.double) + (triple) + (quadruple));
+				total += roomtypeTotal;
 			});
 
 			return total;
@@ -686,30 +621,16 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Integer}
 		 */
 		$scope.getTotalPickedUpOfDay = function(dateIndex) {
-			var cInt 	= util.convertToInteger,
-				total 	= 0;
+			var cInt 			= util.convertToInteger,
+				total 			= 0,
+		    	roomBlockData 	= $scope.allotmentConfigData.summary.selected_room_types_and_bookings;
 
-			_.each($scope.allotmentConfigData.summary.selected_room_types_and_bookings, function(roomType) {
-				var dateData = roomType.dates[dateIndex];
+		    // Loop each roomtype and calculate the total contracted number for the date
+			_.each(roomBlockData, function(roomType) {
+				var dateData 		= roomType.dates[dateIndex],
+					roomtypeTotal 	= $scope.getTotalPickedUpOfIndividualRoomType(dateData);
 
-				//since user may have entered wrong input
-				dateData.single_pickup = (dateData.single_pickup !== '') ? cInt(dateData.single_pickup) : '';
-				dateData.double_pickup = (dateData.double_pickup !== '') ? cInt(dateData.double_pickup) : '';
-
-				//the area of 'night watch man', they may be active or sleeping
-				var quadruple = 0;
-				if (dateData.quadruple_pickup) {
-					dateData.quadruple_pickup = cInt(dateData.quadruple_pickup);
-					quadruple = dateData.quadruple_pickup;
-				}
-				var triple = 0;
-				if (dateData.triple_pickup) {
-					dateData.triple_pickup = cInt(dateData.triple_pickup);
-					triple = dateData.triple_pickup;
-				}
-
-				total += (cInt(dateData.single_pickup) + cInt(dateData.double_pickup) + (triple) + (quadruple));
-
+				total += roomtypeTotal;
 			});
 
 			return total;
@@ -966,7 +887,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				successCallBack: successCallBackOfSaveNewRoomTypesAndRates
 			};
 			$scope.callAPI(rvAllotmentConfigurationSrv.updateSelectedRoomTypesAndRates, options);
-		}
+		};
 
 		var successCallBackOfSaveNewRoomTypesAndRates = function () {
 			$scope.fetchRoomBlockGridDetails();
@@ -990,34 +911,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				room_type_and_rates: selectedRoomTypeAndRates
 			};
 			return params;
-		};
-
-
-		/**
-		 * when Add Room & Rates button clicked, we will save new room Block
-		 * @return None
-		 */
-		$scope.clickedOnUpdateButton = function() {
-			//we dont wanted to show room block details for some time
-			$scope.allotmentConfigData.summary.selected_room_types_and_bookings = [];
-			$scope.allotmentConfigData.summary.selected_room_types_and_occupanies = [];
-
-			//unsetting the copied details
-			$scope.copy_selected_room_types_and_bookings = [];
-
-			//updating central model with newly formed data
-			_.extend(
-				$scope.allotmentConfigData.summary, {
-					block_from: $scope.startDate,
-					block_to: $scope.endDate,
-					hold_status: $scope.selectedHoldStatus
-				}
-			);
-
-			//callinng the update API calling
-			$scope.updateAllotmentSummary();
-			//has data updated from this view, block from date or to date
-			$scope.hasBlockDataUpdated = true;
 		};
 
 		/**
