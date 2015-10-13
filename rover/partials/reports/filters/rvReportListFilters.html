@@ -331,6 +331,21 @@
     </div>
 </div>
 
+<div class="options" ng-if="item.hasGuestOrAccountFilter.data.length" ng-click="catchFauxSelectClick($event, 'hasGuestOrAccountFilter')">
+    <label for="group-deposit-status">Guest/Account</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasGuestOrAccountFilter)">{{ item.hasGuestOrAccountFilter.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasGuestOrAccountFilter.show }">
+        <label class="checkbox inline" ng-show="item.hasGuestOrAccountFilter.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasGuestOrAccountFilter.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasGuestOrAccountFilter.selectAll" ng-change="fauxSelectChange(item, item.hasGuestOrAccountFilter, true)"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="each in item.hasGuestOrAccountFilter.data">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : each.selected }"></span>
+            <input type="checkbox" ng-model="each.selected" ng-change="fauxSelectChange(item.id, item.hasGuestOrAccountFilter)"> {{ each.name }}
+        </label>
+    </div>
+</div>
+
 <div class="sort" ng-if="item.sortByOptions">
     <label>Sort By</label>
     <div class="select">

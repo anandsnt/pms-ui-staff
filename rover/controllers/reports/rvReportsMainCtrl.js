@@ -1065,6 +1065,25 @@ sntRover.controller('RVReportsMainCtrl', [
 				};
 			};
 
+			if ( report.hasOwnProperty('hasGuestOrAccountFilter') ) {
+				selected = _.where(report['hasGuestOrAccountFilter']['data'], { selected: true });
+
+				if ( selected.length > 0 ) {
+					key         = reportParams['GUEST_OR_ACCOUNT'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(each) {
+						params[key].push( each.id );
+						/**/
+						$scope.appliedFilter.guestOrAccount.push( each.status );
+					});
+
+					// in case if all reservation status are selected
+					if ( report['hasGuestOrAccountFilter']['data'].length === selected.length ) {
+						$scope.appliedFilter.guestOrAccount = ['All Selected'];
+					};
+				};
+			};
 
 			// need to reset the "group by" if any new filter has been applied
 			// Added a patch to ignore the following for addon forecast report

@@ -204,6 +204,15 @@ sntRover.service('RVreportsSubSrv', [
 			});
 		};
 
+		service.fetchGuestOrAccount = function() {
+			return callApi({
+				name   : 'guestOrAccount',
+				method : 'getJSON',
+				url    : 'api/reservations/status',
+				resKey : 'guest_or_account'
+			});
+		};
+
 		service.fetchAddonReservations = function(params) {
 			return callApi({
 				name   : 'addonReservations',

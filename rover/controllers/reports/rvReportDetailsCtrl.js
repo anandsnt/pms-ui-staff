@@ -256,6 +256,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 3;
 					break;
+					
+				case reportNames['GUEST_BALANCE_REPORT']:
+					$scope.leftColSpan = 2;
+					$scope.rightColSpan = 3;
+					break;
 
 				default:
 					$scope.leftColSpan = 2;
@@ -523,6 +528,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 					template = '/assets/partials/reports/generalReportRows/rvGroupPickupReportRow.html';
 					break;
 
+				case reportNames['GUEST_BALANCE_REPORT']:
+					template = '/assets/partials/reports/generalReportRows/rvGuestBalanceReportRow.html';
+					break;
 
 				// RESERVATIONS_BY_USER report row
 				case reportNames['RESERVATIONS_BY_USER']:

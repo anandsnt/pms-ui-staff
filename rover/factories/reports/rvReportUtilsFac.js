@@ -352,6 +352,10 @@ sntRover.factory('RVReportUtilsFac', [
                     report['reportIconCls'] = 'icon-report icon-balance';
                     break;
 
+                case reportNames['GUEST_BALANCE_REPORT']:
+                    report['reportIconCls'] = 'icon-report icon-balance';
+                    break;
+
                 default:
                     report['reportIconCls'] = 'icon-report';
                     break;
@@ -776,6 +780,12 @@ sntRover.factory('RVReportUtilsFac', [
                         .then( fillResStatus );
                 }
 
+                else if ( 'GUEST_OR_ACCOUNT' == filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchGuestOrAccount()
+                        .then( fillGuestOrAccount );
+                }
+
                 else if ( ('INCLUDE_CHARGE_GROUP' == filter.value && ! filter.filled) || ('ADDON_GROUPS' == filter.value && ! filter.filled) ) {
                     
                     // fetch charge groups
@@ -804,7 +814,6 @@ sntRover.factory('RVReportUtilsFac', [
             if ( 0 == requested ) {
                 checkAllCompleted();
             };
-
 
             function fillGarntTypes (data) {
                 var foundFilter;
@@ -943,6 +952,30 @@ sntRover.factory('RVReportUtilsFac', [
                             defaultTitle : 'Select Status',
                             title        : 'Select Status',
                             data         : angular.copy( data )
+                        });
+                    };
+                });
+
+                completed++
+                checkAllCompleted();
+            };
+
+            function fillGuestOrAccount (data) {
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'GUEST_OR_ACCOUNT' });
+
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        __setData(report, 'hasGuestOrAccountFilter', {
+                            type         : 'FAUX_SELECT',
+                            filter       : filter,
+                            show         : false,
+                            selectAll    : true,
+                            defaultTitle : 'Select',
+                            title        : 'Select',
+                            data         : angular.copy( data.guestOrAccount )
                         });
                     };
                 });
