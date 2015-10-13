@@ -383,7 +383,27 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 */
 		$scope.clickedOnSaveButton = function() {
 			// do not force overbooking for the first time
+			$scope.saveRoomBlock(false);
+		};
 
+		/**
+		 * CICO-19121:
+		 * Fired when user clickes on the button in contract view.
+		 */
+		$scope.clickedOnApplyToHeldCountsButton = function() {
+			var roomBlockData = $scope.allotmentConfigData.summary.selected_room_types_and_bookings;
+			console.log(roomBlockData);
+			// TODO
+			//    plan 1: copy contracted value to held counts by force and call saveRoomBlock()
+			// 	  plan 2: give a flag to API and let them handle rest of the stuff
+		};
+
+		/**
+		 * CICO-19121:
+		 * Fired when user clickes on the button in contract view.
+		 */
+		$scope.clickedOnUpdateContractButton = function() {
+			// Saving updated contract count does not affect inventory.
 			$scope.saveRoomBlock(false);
 		};
 
