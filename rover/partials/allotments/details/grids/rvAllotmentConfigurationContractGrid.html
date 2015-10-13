@@ -85,7 +85,7 @@
             <ul style="width:{{getWidthForRoomBlockTimeLine()}};" class="wrapper">
                 <li ng-repeat="occupancy in allotmentConfigData.summary.selected_room_types_and_occupanies">
                     <div class="inner">
-                        <span>{{occupancy.date.toComponents().date.weekday}}</span>
+                        <span>{{formatDateForUI(occupancy.date, fulldayInWeek)}}</span>
                         <strong>{{formatDateForUI(occupancy.date, monthAndDate)}}</strong>
                         <em>{{occupancy.occupancy}}% Occupancy</em>
                     </div>
