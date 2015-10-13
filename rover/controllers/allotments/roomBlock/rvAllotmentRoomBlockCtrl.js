@@ -481,6 +481,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 						$scope.saveRoomBlock(true);
 					}
 				}
+			} else {
+				$scope.errorMessage = error;
 			}
 		};
 
@@ -941,6 +943,10 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			refreshScroller();
 		};
 
+		var failureCallBackOfFetchRoomBlockGridDetails = function(error) {
+			$scope.errorMessage = errorMessage;
+		};
+
 		/**
 		 * To fetch room block details
 		 * @return {undefined}
@@ -959,61 +965,11 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 			var options = {
 				params: params,
-				successCallBack: successCallBackOfFetchRoomBlockGridDetails
+				successCallBack: successCallBackOfFetchRoomBlockGridDetails,
+				failureCallBack: failureCallBackOfFetchRoomBlockGridDetails
 			};
 			$scope.callAPI(rvAllotmentConfigurationSrv.getRoomBlockGridDetails, options);
 		};
-
-        /**
-         * [successFetchOfAllReqdForRoomBlock description]
-         * @param  {object} data
-         * @return {undefined}
-         */
-        var successFetchOfAllReqdForRoomBlock = function(data) {
-            $scope.$emit('hideLoader');
-        };
-
-        /**
-         * [successFetchOfAllReqdForRoomBlock description]
-         * @param  {object} error message from API
-         * @return {undefined}
-         */
-        var failedToFetchOfAllReqdForRoomBlock = function(errorMessage) {
-            $scope.$emit('hideLoader');
-            $scope.errorMessage = errorMessage;
-        };
-
-        /**
-         * we have to call multiple API on initial screen, which we can't use our normal function in teh controller
-         * depending upon the API fetch completion, loader may disappear.
-         * @return {[type]} [description]
-         */
-        var callInitialAPIs = function() {
-        	var hasNeccessaryPermission = (hasPermissionToCreateRoomBlock() &&
-				hasPermissionToEditRoomBlock());
-
-			if (!hasNeccessaryPermission) {
-				$scope.errorMessage = ['Sorry, You dont have enough permission to proceed!!'];
-				return;
-			}
-
-			var paramsForRoomBlockDetails = {
-				allotment_id: $scope.allotmentConfigData.summary.allotment_id
-			};
-
-            var promises = [];
-            //we are not using our normal API calling since we have multiple API calls needed
-            $scope.$emit('showLoader');
-
-            promises.push(rvAllotmentConfigurationSrv
-                .getRoomBlockGridDetails(paramsForRoomBlockDetails)
-                .then(successCallBackOfFetchRoomBlockGridDetails)
-            );
-
-            //Lets start the processing
-            $q.all(promises)
-                .then(successFetchOfAllReqdForRoomBlock, failedToFetchOfAllReqdForRoomBlock);
-        };
 
 		/**
 		 * when a tab switch is there, parant controller will propogate
@@ -1024,7 +980,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				return;
 			}
 			$scope.$emit("FETCH_SUMMARY");
-			callInitialAPIs();
+			$scope.fetchRoomBlockGridDetails();
 		});
 
 		/**
@@ -1241,7 +1197,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {undefined}
 		 */
 		var initializeRoomBlockDetails = function(){
-			callInitialAPIs();
+			$scope.fetchRoomBlockGridDetails();
 		};
 
 		/**
@@ -1273,7 +1229,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			if ($scope.allotmentConfigData.activeTab === "ROOM_BLOCK") {
 				initializeRoomBlockDetails();
 			}
-        	
+
 		}();
 
 
