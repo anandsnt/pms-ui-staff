@@ -1087,13 +1087,13 @@ sntRover.factory('RVReportUtilsFac', [
             if ( report['title'] === reportNames['AR_SUMMARY_REPORT']) {
                 var nameSortBy = angular.copy( report['sort_fields'][2] ),
                     accountSortBy = angular.copy( report['sort_fields'][0] ),
-                    balancetSortBy = angular.copy( report['sort_fields'][1] );
+                    balanceSortBy = angular.copy( report['sort_fields'][1] );
 
                 report['sort_fields'][0] = nameSortBy;
                 report['sort_fields'][1] = accountSortBy;
                 report['sort_fields'][2] = null;
                 report['sort_fields'][3] = null;
-                report['sort_fields'][4] = balancetSortBy;
+                report['sort_fields'][4] = balanceSortBy;
             };
 
             // for in-house report the sort by items must be
