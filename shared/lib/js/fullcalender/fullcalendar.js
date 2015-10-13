@@ -5406,7 +5406,9 @@ function DayEventRenderer() {
 			htmlEscape(event.day || '') +
 
 			"</span>" ;
+
 			if(typeof event.toolTipData !== 'undefined' && typeof event.currencySymbol !== 'undefined'){
+
 				if (event.toolTipData.restrictions.length > 0){
 				html +=" <span>" +
 						'R' +
@@ -5419,7 +5421,6 @@ function DayEventRenderer() {
 			}else {
 				html += "<span class='fc-event-title'>";
 			}
-			
 		html +=	htmlEscape(event.title || '') +
 			"</span>" +		
 			"</div>";
@@ -5437,6 +5438,7 @@ function DayEventRenderer() {
 		// SOLUTION: initially set them as visibility:hidden ?
 
 		return html;
+
 	}
 
 
