@@ -86,6 +86,16 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		/**
+		 * Logic to decide whether the room block grid view select box should be disabled.
+		 * @return {Boolean}
+		 */
+		 $scope.shouldDisableGridViewSwitch = function() {
+		 	var roomTypesConfigured = scope.allotmentConfigData.summary.selected_room_types_and_bookings.length > 0;
+
+		 	return (!roomTypesConfigured);
+		 };
+
+		/**
 		 * should we wanted to show the discard button for room type booking change
 		 * @return {Boolean}
 		 */
@@ -332,6 +342,15 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			if (!$scope.$$phase) {
 				$scope.$digest();
 			}
+		};
+
+		/**
+		 * Fired when user changes the active grid view from the select box
+		 * @return {undefined}
+		 */
+		$scope.activeGridViewChanged = function() {
+			// Discard all the changes in current view
+			$scope.clickedOnDiscardButton();
 		};
 
 		/**

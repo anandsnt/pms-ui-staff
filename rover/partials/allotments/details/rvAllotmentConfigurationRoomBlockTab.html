@@ -6,7 +6,8 @@
             <div class="select">
                 <select id="allotment-grid-view"
                     ng-model="allotmentConfigData.activeGridView"
-                    ng-change="alert('Grid view changing..'); clickedOnDiscardButton()">
+                    ng-disabled="shouldDisableGridViewSwitch()"
+                    ng-change="activeGridViewChanged()">
                     <option value="CONTRACT" selected>Contract</option>
                     <option value="CURRENT">Current Status</option>
                     <option value="RELEASE">Release Dates</option>
