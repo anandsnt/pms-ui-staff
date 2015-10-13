@@ -64,7 +64,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			if (dailyData.date === rData.arrivalDate) {
 				classes += 'check-in ';
 			} 
-			else if (dailyData.date === rData.departureDate) {
+			if (dailyData.date === rData.departureDate) {
 				classes += 'check-out ';
 			}
 
@@ -165,9 +165,11 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				return false;
 			else{
 				$scope.stateVariables.selectedRoom = $scope.stateVariables.selectedRoom == null? "" : $scope.stateVariables.selectedRoom;
-				if(isInRoomTypeSelectedMode() && room_rate.room_type_id !== $scope.stateVariables.selectedRoom && $scope.stateVariables.selectedRoom != "")
+				if(room_rate.restrictions.length == 1 && room_rate.restrictions[0].id == 1)
 					return false;
-				else if(isRestrictionIncludedInSearch() && room_rate.restrictions.length == 0)
+				else if(isInRoomTypeSelectedMode() && room_rate.room_type_id !== $scope.stateVariables.selectedRoom && $scope.stateVariables.selectedRoom != "")
+					return false;
+				else if(!isRestrictionIncludedInSearch() && room_rate.restrictions.length > 0)
 					return false;
 				else if(isInBestAvailableMode() && isShowAvailableRoomsSelected() && room_rate.availability
 					<= 0)
