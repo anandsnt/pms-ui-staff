@@ -357,7 +357,28 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
                 $scope.refreshDatePickerData.end_date_for_display = $scope.refreshDatePickerData.start_date_for_display;
             }
         };
-        
+        $scope.validateEndDate = function(){
+            //upon selecting a start date; if the start date < the end date, the end date value needs to be updated to match the same day,
+            //otherwise the datepicker has the old date that was input
+            //start date
+            var d = $scope.refreshDatePickerData.start_date_for_display.split('-');
+            var sYr = parseInt(d[0]), sMo = parseInt(d[1]), sDay = parseInt(d[2]);
+            
+            //end date
+            var ed = $scope.refreshDatePickerData.end_date_for_display.split('-');
+            var eYr = parseInt(ed[0]), eMo = parseInt(ed[1]), eDay = parseInt(ed[2]);
+            
+              var s = new Date(sYr, sMo-1, sDay),
+              e = new Date(eYr, eMo-1, eDay);
+              
+              var start_date = s.valueOf(),
+              end_date = e.valueOf();
+              if (end_date < start_date){
+                  $scope.refreshDatePickerData.end_date = $scope.refreshDatePickerData.start_date;
+                  $scope.refreshDatePickerData.end_date_for_display = $scope.refreshDatePickerData.start_date_for_display;
+              }
+            
+        };
         $scope.setUpDatePicker = function(){
             $scope.refreshDatePickerData.start_date = $rootScope.businessDate;
             $scope.refreshDatePickerData.start_date_for_display = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
@@ -370,6 +391,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
                     $scope.refreshDatePickerData.start_date_for_display = $filter('date')(tzIndependentDate($scope.refreshDatePickerData.start_date), 'yyyy-MM-dd');
                     $scope.endDateOptions.minDate = tzIndependentDate($scope.refreshDatePickerData.start_date);
                     $scope.endDateOptions.maxDate = tzIndependentDate($scope.getDateOptionsStrMinusDays($scope.refreshDatePickerData.start_date));//n days from the start date (max range of days = 2nd arg)
+                    $scope.validateEndDate();
                 }
             };
             
@@ -411,40 +433,33 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
             
             if ($scope.interfaceName !== 'Givex'){
                 /*this refresh timer disabled now that we can send date ranges for refresh
-                 * 
+               */
                 if ($scope.data.data.product_cross_customer.full_refresh !== null){
                    $scope.lastRefreshedTime = new Date($scope.data.data.product_cross_customer.full_refresh);
                    $scope.lastRefreshedTimeRef = $scope.formatDate(new Date($scope.data.data.product_cross_customer.full_refresh));
                    $scope.lastRefreshedTimeObj = new Date($scope.data.data.product_cross_customer.full_refresh);
 
-                   var n = new Date();
-                   var nd = n.valueOf();
-                   var twentyFourHrs = 86400000;
-
-
-                   if ((nd-$scope.lastRefreshedTimeObj.valueOf()) > twentyFourHrs){
-                       $scope.refreshButtonEnabled = 'enabled';
-                   } else {
-                       $scope.refreshButtonEnabled = 'disabled';
-                   }
                    
                    $scope.lastRefreshedTimeMark = $scope.timeSince($scope.lastRefreshedTimeObj.valueOf());
+                   
                     if (!$scope.initTimeout){
                         $scope.countdownTimer();
                         $scope.initTimeout = true;
                     }
                }
-               */
                
                
            }
         };
 
         $scope.runFullRefresh = function(){
-            var lastRefreshed = $scope.data.data.product_cross_customer.full_refresh, refreshNowDate = new Date();
-            var refreshNow = refreshNowDate.valueOf(), data = {}; data.interface_id = $scope.data.data.product_cross_customer.interface_id;
+            var lastRefreshed = $scope.data.data.product_cross_customer.full_refresh;
+            var data = {}; 
+            data.interface_id = $scope.data.data.product_cross_customer.interface_id;
+            
             data.start_date = $scope.refreshDatePickerData.start_date;
             data.end_date = $scope.refreshDatePickerData.end_date;
+            
             if (lastRefreshed !== null){
                 try {
                     var lastRefreshedDate = new Date($scope.data.data.product_cross_customer.full_refresh);
@@ -468,13 +483,9 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
                 $scope.errorMessage = $scope.interfaceName+' Full Refresh Failed' + msg;
                 $scope.$emit('hideLoader');
             };
-            if ((lastRefreshed < refreshNow) || lastRefreshed === null){
-                //run refresh
-                $scope.invokeApi($scope.serviceController.fullRefresh, data, fullRefreshSuccess, fullRefreshFail);
-
-            } else {
-                //update w/ error (should display)
-            }
+            
+            //run refresh
+            $scope.invokeApi($scope.serviceController.fullRefresh, data, fullRefreshSuccess, fullRefreshFail);
         };
 
         // Test connection button click action
