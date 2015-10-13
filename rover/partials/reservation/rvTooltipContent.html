@@ -1,16 +1,16 @@
-<div class="tooltip" ng-if= "object.bestAvailableRate != ''">
+<div class="tooltip">
    <!-- Add class "has-restrictions" if restrictions will be shown in the tooltip -->
    <!-- Details, only show those that apply -->
    <ul class="details">
-      <li><span class="label">Rate</span><strong>{{object.rate_name}}</strong></li>
-      <li ng-if="object.bestAvailableRate != ''"><span class="label">ADR</span><strong>${{object.bestAvailableRate}}</strong></li>
-      <li><span class="label">Room Type</span><strong>{{object.room_type_name}}</strong></li>
-      <li><span class="label">Rooms Available</span><strong>{{object.availability}}</strong></li>
+      <li><span class="label">Rate</span><strong>{{object.event.toolTipData.rate_name}}</strong></li>
+      <li ng-if="object.event.title != ''"><span class="label">ADR</span><strong>{{ object.event.currencySymbol + object.event.title}}</strong></li>
+      <li><span class="label">Room Type</span><strong>{{object.event.toolTipData.room_type_name}}</strong></li>
+      <li><span class="label">Rooms Available</span><strong>{{object.event.toolTipData.availability}}</strong></li>
    </ul>
    <!-- Restrictions, only show those that apply -->
-   <ul class="restriction-info" ng-if="object.restrictions.length > 0">
+   <ul class="restriction-info" ng-if="object.event.toolTipData.restrictions.length > 0">
       <li><span class="label">Restrictions apply</span></li>
-      <li ng-repeat = "restriction in object.restrictions">
+      <li ng-repeat = "restriction in object.event.toolTipData.restrictions">
       	<span  class="restriction-icon" ng-class = "{
       				 'bg-red' : {{restriction.restriction_type_id == 1 || restriction.restriction_type_id == 2 || restriction.restriction_type_id == 3}},
       				 'closed': {{restriction.restriction_type_id == 1}}, 

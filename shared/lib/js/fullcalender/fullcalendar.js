@@ -5386,12 +5386,13 @@ function DayEventRenderer() {
 			" class='" + classNames.join(' ') + "'" +
 			" data-date='" + htmlEscape(formatDate(event.start, 'yyyy-MM-dd')) + "'" + 
 			" data-rate='" + htmlEscape(event.rate || '') + "'" + 
-			" data-room-type='" + htmlEscape(event.roomType || '') + "'" +
-
-			"qtipfc qtip-template='/assets/partials/reservation/rvTooltipContent.html'"+
-			"qtip-template-object='segments[" + index + "]'" +
-
-			" style=" +
+			" data-room-type='" + htmlEscape(event.roomType || '') + "'";
+            if(segment.event.title !== ""){
+               html += "qtipfc qtip-template='/assets/partials/reservation/rvTooltipContent.html'"+
+			"qtip-template-object='segments[" + index + "]'";
+            }
+			
+            html += " style=" +
 				"'" +
 				"position:absolute;" +
 				"left:" + segment.left + "px;" +
