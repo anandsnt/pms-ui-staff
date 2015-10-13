@@ -1,20 +1,25 @@
-<divstyle="width:400px;">
-	<div style="width:50%; float:left">
-		<div>
-			<div ng-click='callback'>{{object.person}}</div>
-			<div>bed&breakfast</div>
-		</div>
-		<div>
-			<div>adr</div>
-			<div></div>
-		</div>
-		<div>
-			<div>room type</div>
-			<div>delux room</div>
-		</div>
-		<div>
-			<div>rooms available</div>
-			<div>7</div>
-		</div>
-	</div>
+<div class="tooltip" ng-if= "object.bestAvailableRate != ''">
+   <!-- Add class "has-restrictions" if restrictions will be shown in the tooltip -->
+   <!-- Details, only show those that apply -->
+   <ul class="details">
+      <li><span class="label">Rate</span><strong>{{object.rate_name}}</strong></li>
+      <li ng-if="object.bestAvailableRate != ''"><span class="label">ADR</span><strong>${{object.bestAvailableRate}}</strong></li>
+      <li><span class="label">Room Type</span><strong>{{object.room_type_name}}</strong></li>
+      <li><span class="label">Rooms Available</span><strong>{{object.availability}}</strong></li>
+   </ul>
+   <!-- Restrictions, only show those that apply -->
+   <ul class="restriction-info" ng-if="object.restrictions.length > 0">
+      <li><span class="label">Restrictions apply</span></li>
+      <li ng-repeat = "restriction in object.restrictions">
+      	<span  class="restriction-icon" ng-class = "{
+      				 'bg-red' : {{restriction.restriction_type_id == 1 || restriction.restriction_type_id == 2 || restriction.restriction_type_id == 3}},
+      				 'closed': {{restriction.restriction_type_id == 1}}, 
+      				 'arrival': {{restriction.restriction_type_id == 2}},
+      				 'bg-blue': {{restriction.restriction_type_id == 4}},
+      				 'bg-grey': {{restriction.restriction_type_id == 5}},
+      				 'bg-purple': {{restriction.restriction_type_id == 6 || restriction.restriction_type_id == 8 }},
+      				 'bg-green': {{restriction.restriction_type_id == 7}}}">
+      				 {{(restriction.days || "")}}
+      	</span>{{restriction.value}}</li>
+   </ul>
 </div>

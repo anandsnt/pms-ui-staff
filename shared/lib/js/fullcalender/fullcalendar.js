@@ -5243,6 +5243,8 @@ function DayEventRenderer() {
 		// render the HTML. innerHTML is considerably faster than jQuery's .html()
 		renderContainer[0].innerHTML = html;
 
+		t.calendar.options.compiler(renderContainer[0])(t.calendar.options.compile_scope);
+
 		// retrieve the individual elements
 		elements = renderContainer.children();
 
@@ -5334,8 +5336,9 @@ function DayEventRenderer() {
 	// Build a concatenated HTML string for an array of segments
 	function buildHTML(segments) {
 		var html = '';
+		t.calendar.options.compile_scope.segments = segments;
 		for (var i=0; i<segments.length; i++) {
-			html += buildHTMLForSegment(segments[i]);
+			html += buildHTMLForSegment(segments[i], i);
 		}
 		return html;
 	}
@@ -5345,7 +5348,7 @@ function DayEventRenderer() {
 	// Relies on the following properties:
 	// - `segment.event` (from `buildSegmentsForEvent`)
 	// - `segment.left` (from `calculateHorizontals`)
-	function buildHTMLForSegment(segment) {
+	function buildHTMLForSegment(segment, index) {
 		var html = '';
 		var isRTL = opt('isRTL');
 		var event = segment.event;
@@ -5384,7 +5387,10 @@ function DayEventRenderer() {
 			" data-date='" + htmlEscape(formatDate(event.start, 'yyyy-MM-dd')) + "'" + 
 			" data-rate='" + htmlEscape(event.rate || '') + "'" + 
 			" data-room-type='" + htmlEscape(event.roomType || '') + "'" +
-			// "qtipfc qtip-template='/assets/partials/reservation/rvTooltipContent.html'"+
+
+			"qtipfc qtip-template='/assets/partials/reservation/rvTooltipContent.html'"+
+			"qtip-template-object='segments[" + index + "]'" +
+
 			" style=" +
 				"'" +
 				"position:absolute;" +
