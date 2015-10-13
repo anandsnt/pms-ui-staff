@@ -1,0 +1,16 @@
+<div id="siteminder-date-picker">
+    <table>
+        <tr>
+            <th style="left:22%; position:relative;">Start</th>
+            <th style="left:22%; position:relative;">End</th>
+        </tr>
+        <tr>
+            <td><div ui-date="startDateOptions" ng-model="refreshDatePickerData.start_date" ui-date-format="yy-mm-dd"></div></td>
+            <td><div ui-date="endDateOptions" ng-model="refreshDatePickerData.end_date" ui-date-format="yy-mm-dd"></div></td>
+        </tr>
+        <tr>
+            <td style="left:26%; position:relative;"><button type="button" class="button blue sm-refresh-btn" style="margin-right:15px;" ng-click="closeDialog()">Cancel</button></td>
+            <td style="left:3%; position:relative;"><button type="button" class="button green sm-refresh-btn" ng-class="{'overlay': refreshButtonEnabled === 'disabled'}" ng-click="runFullRefresh()">Run</button></td>
+        </tr>
+    </table>
+</div>
