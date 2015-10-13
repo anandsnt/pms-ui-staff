@@ -12,12 +12,16 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		var that = this, availabilityData = null;
 
 		var getFirstDayOfMonth = function(date) {
+			return getDayOfMonth(date, 1);
+		};
+
+		var getDayOfMonth = function(date, day){
 			var date = new Date(date),
 				y = date.getFullYear(),
 				m = date.getMonth();
 
-			return $filter('date')(new Date(y, m, 1), $rootScope.dateFormatForAPI);
-		};
+			return $filter('date')(new Date(y, m, day), $rootScope.dateFormatForAPI);
+		}
 
 		var getLastDayOfMonth = function(date) {
 			var date = new Date(date),
@@ -59,6 +63,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			var classes = "",
 				rData 	= $scope.reservationData,
 				dayHouseAvailability = dailyData.house.availability;
+				
 
 			//if the date is checkin/checkout 
 			if (dailyData.date === rData.arrivalDate) {
@@ -69,7 +74,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			}
 
 			//if day house availability is 0 or less
-			if (dayHouseAvailability <= 0) {
+			if (dayHouseAvailability <= 0 || !isRoomTypeAvailable(dailyData)) {
 				classes += 'unavailable ';
 			} else if (dailyData.date !== rData.departureDate) {
 				classes += 'available ';
@@ -90,12 +95,30 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				return "";				
 		};
 
+		var isRoomTypeAvailable = function(dailyData){
+			    var room_type_availability = $scope.stateVariables.selectedRoom == null? "" : $scope.stateVariables.selectedRoom;
+                if(room_type_availability !== "" && dailyData.room_types[room_type_availability] <= 0)
+                	return false;
+                return true;
+		}
+
+		var getEmptyRateDetails = function(){
+                var bestRateData = {};
+			    bestRateData.room_type_name = "";
+				bestRateData.rate_name = "";
+				bestRateData.availability = "";
+				bestRateData.restrictions = [];
+				return bestRateData;
+		}
+
 		/**
 		 * [findBestAvailableRateAgainstDate description]
 		 * @return {[type]} [description]
 		 */
 		var findBestAvailableRateAgainstDate = function(dailyData) {
-			var availabileRates = _.reject(dailyData.rates, function(rate){
+
+            if(isRoomTypeAvailable(dailyData)){
+            	var availabileRates = _.reject(dailyData.rates, function(rate){
 					$scope.stateVariables.selectedRate = $scope.stateVariables.selectedRate == null? "" : $scope.stateVariables.selectedRate;
 					return (isInRoomTypeSelectedMode() && rate.id !== $scope.stateVariables.selectedRate && $scope.stateVariables.selectedRate != "");
 				}),
@@ -103,7 +126,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				firstAvailableRoomRate = _.reject(availableRoomRates[0],function(room_rate){
 					return !isRoomRateFiltered(room_rate);
 				}),
-				minAvailableRoomRate = 	availableRoomRates[0];		
+				minAvailableRoomRate = 	availableRoomRates[0],		
 				minAmongRate = _.min (_.pluck(firstAvailableRoomRate, 'single')),
 				min_room_rate = _.findWhere(firstAvailableRoomRate, {single:minAmongRate}), 
 				minAmongRate = minAmongRate === null ? 0 : minAmongRate,
@@ -111,15 +134,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 
 				eachAvailableRoomRate = null;
 
-			//if restriction not included in search
-			if (!isRestrictionIncludedInSearch()) {
-				_.each (availableRoomRates, function(eachRoomRate){
-					eachRoomRate = _.filter(eachRoomRate.room_rates, function(rate) {
-						return (rate.restrictions.length === 0)
-					});
-				})
-			}
-
+			
 			for (var i = 1; i < availableRoomRates.length; i++) {
 				eachAvailableRoomRate = _.reject(availableRoomRates[i], function(room_rate){
 					return !isRoomRateFiltered(room_rate);
@@ -144,16 +159,15 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			});
 			bestRateData.restrictions = min_room_rate.restrictions;
 			}else{
-				bestRateData.room_type_name = "";
-				bestRateData.rate_name = "";
-				bestRateData.availability = "";
-				bestRateData.restrictions = [];
+				bestRateData = _.extend(bestRateData, getEmptyRateDetails());
 			}
-			
-			
-			
-
 			return bestRateData;
+            }else{
+                var rateData = getEmptyRateDetails();
+                rateData.bestAvailableRate = dailyData.room_types[$scope.stateVariables.selectedRoom];
+                return rateData;
+            }
+            
 		};
 
 		/**To filter the room rates
@@ -164,8 +178,10 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			if(room_rate.single == null)
 				return false;
 			else{
+                
 				$scope.stateVariables.selectedRoom = $scope.stateVariables.selectedRoom == null? "" : $scope.stateVariables.selectedRoom;
-				if(room_rate.restrictions.length == 1 && room_rate.restrictions[0].id == 1)
+				
+				if(_.findWhere(room_rate.restrictions, {id:1}) != 'undefined')
 					return false;
 				else if(isInRoomTypeSelectedMode() && room_rate.room_type_id !== $scope.stateVariables.selectedRoom && $scope.stateVariables.selectedRoom != "")
 					return false;
@@ -530,7 +546,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		 * to show calender initially
 		 */
 		var fetchAndShowCalendar = function() {
-			var firstDayOfCal = getFirstDayOfMonth($scope.checkinDateInCalender),
+			var firstDayOfCal = getDayOfMonth($scope.checkinDateInCalender, parseInt(tzIndependentDate($rootScope.businessDate).getDate())),
 				lastDayOfNextMonth = getLastDayOfNextMonth($scope.checkinDateInCalender);
 			
 			fetchCalendarAvailabilityData (firstDayOfCal, lastDayOfNextMonth);

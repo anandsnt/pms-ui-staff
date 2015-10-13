@@ -139,8 +139,8 @@
 <div class="single-date" ng-if="item.hasSingleDateFilter">
     <label>Date</label>
     <div class="has-datepicker">
-        <input ng-if="item.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptions" ng-model="item.singleValueDate" ng-change="dateChanged(item, 'hasSingleDateFilter')" readonly>
-        <input ng-if="!item.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.singleValueDate" ng-change="dateChanged(item, 'hasSingleDateFilter')" readonly>
+        <input ng-if="item.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptions" ng-model="item.singleValueDate" ng-change="dateChanged(item, 'hasSingleDateFilter')" placeholder="Select Date" readonly>
+        <input ng-if="!item.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.singleValueDate" ng-change="dateChanged(item, 'hasSingleDateFilter')" placeholder="Select Date" readonly>
         <button ng-if="item.canRemoveDate" ng-class="{'visible': item.hasSingleDateFilter.showRemove}" class="clear-query">
             <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'hasSingleDateFilter')">Clear query</span>
         </button>

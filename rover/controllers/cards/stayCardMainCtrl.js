@@ -561,10 +561,9 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					$scope.contractRoutingType = "COMPANY";
 					that.showConfirmRoutingPopup($scope.contractRoutingType, $scope.reservationData.company.id);
 					return false;
-				} else {
-					that.reloadStaycard();
 				}
 
+				that.reloadStaycard();
 			};
 
 			var params = {};
@@ -574,7 +573,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				params.travel_agent_id = $scope.reservationDetails.travelAgent.id;
 			} else if (card === 'company') {
 				params.company_id = $scope.reservationDetails.companyCard.id
-			}
+			};
 
 			$scope.invokeApi(RVReservationSummarySrv.fetchDefaultRoutingInfo, params, fetchSuccessofDefaultRouting);
 		};
@@ -598,7 +597,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					}
 					$scope.$emit('hideLoader');
 					$scope.newCardData = cardData;
-					that.attachCompanyTACardRoutings();
+					that.attachCompanyTACardRoutings(card, cardData);
 				},
 				onReplaceFailure = function() {
 					$scope.cardRemoved();
