@@ -16,17 +16,25 @@
 
         <div class="actions" ng-show="shouldShowRoomBlockActions()">
             <!-- If block was created -->
-            <button type="button" class="button red hidden"
+            <button type="button" class="button red"
+                ng-show="shouldShowDiscardButton()"
                 ng-click="clickedOnDiscardButton()">
                 Discard Changes
             </button>
-            <button type="button" class="button brand-colors hidden"
+            <button type="button" class="button brand-colors"
+                ng-show="shouldShowApplyToHeldCountsButton()"
                 ng-click="clickedOnApplyToHeldCountsButton()">
                 Apply to Held Room Counts
             </button>
-            <button type="button" class="button green hidden"
+            <button type="button" class="button green"
+                ng-show="shouldShowApplyToContractButton()"
                 ng-click="clickedOnUpdateContractButton()">
                 Update Contract
+            </button>
+            <button type="button" class="button green hidden"
+                ng-show="shouldShowApplyToHeldToContractButton()"
+                ng-click="clickedOnApplyToHeldToContractButton()">
+                Apply To Held Count To Contract
             </button>
         </div>
     </div>
