@@ -4,7 +4,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         $scope.errorMessage = '';
         $scope.successMessage = '';
         $scope.isLoading = true;
-        $scope.refreshButtonEnabled = '';
+        $scope.refreshButtonEnabled = 'enabled';
         $scope.lastRefreshedTimeObj;
         $scope.lastRefreshedTimeRef = '';
         $scope.initTimeout = false;
@@ -332,18 +332,9 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
             start_date: $rootScope.businessDate,
             end_date: '',
             end_date_for_display: '',
-            start_date_for_display: ''
+            start_date_for_display: $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd')
         };
-        $scope.enableRun = function(){
-            if ($scope.refreshDatePickerData.start_date && $scope.refreshDatePickerData.end_date){
-                if ($scope.refreshButtonEnabled !== 'disabled' && $scope.refreshButtonEnabled !== ''){
-                    $scope.refreshButtonEnabled = 'enabled';
-                } else {
-                    
-                }
-                
-            }
-        };
+        
         $scope.getDateOptionsStrMinusDays = function(day){
             day = day+'';
             var i = day.split('-');
@@ -357,7 +348,19 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
             var n = new Date(nYear, nMonth-1, nDayDate);
             return n;
         };
+        
+        $scope.setDefaultEndDate = function(){
+            if ($scope.refreshDatePickerData.start_date){
+                $scope.refreshDatePickerData.end_date = $scope.refreshDatePickerData.start_date;
+            }
+            if ($scope.refreshDatePickerData.start_date_for_display){
+                $scope.refreshDatePickerData.end_date_for_display = $scope.refreshDatePickerData.start_date_for_display;
+            }
+        };
+        
         $scope.setUpDatePicker = function(){
+            $scope.refreshDatePickerData.start_date = $rootScope.businessDate;
+            $scope.refreshDatePickerData.start_date_for_display = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
             
             $scope.startDateOptions = {
                 changeYear: false,
@@ -365,8 +368,6 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
                 minDate: tzIndependentDate($rootScope.businessDate),
                 onSelect: function(dateText, inst) {
                     $scope.refreshDatePickerData.start_date_for_display = $filter('date')(tzIndependentDate($scope.refreshDatePickerData.start_date), 'yyyy-MM-dd');
-                    $scope.enableRun();
-                    //console.log('set min date: '+tzIndependentDate($scope.refreshDatePickerData.start_date))
                     $scope.endDateOptions.minDate = tzIndependentDate($scope.refreshDatePickerData.start_date);
                     $scope.endDateOptions.maxDate = tzIndependentDate($scope.getDateOptionsStrMinusDays($scope.refreshDatePickerData.start_date));//n days from the start date (max range of days = 2nd arg)
                 }
@@ -375,10 +376,8 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
              $scope.endDateOptions = {
                 changeYear: false,
                 changeMonth: true,
-             //   minDate: tzIndependentDate($scope.refreshDatePickerData.start_date),
                 onSelect: function(dateText, inst) {
                     $scope.refreshDatePickerData.end_date_for_display = $filter('date')(tzIndependentDate($scope.refreshDatePickerData.end_date), 'yyyy-MM-dd');
-                    $scope.enableRun();
                 }
             };
             
@@ -390,7 +389,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
                 $scope.endDateOptions.maxDate = tzIndependentDate($scope.getDateOptionsStrMinusDays($rootScope.businessDate));//n days from the start date (max range of days = 2nd arg)
            
             }
-                    
+            $scope.setDefaultEndDate();
             
         };
         $scope.setUpDatePicker();
@@ -399,7 +398,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         };
         
 	$scope.showDatePicker = function(){
-            $scope.setUpDatePicker();
+            $scope.setUpDatePicker();//this sets up default start and end date
             ngDialog.open({
                 template: '/assets/partials/SiteminderSetup/adSiteminderDatepicker.html',
                 className: 'ngdialog-theme-default single-calendar-modal siteminder-date-picker',
@@ -411,6 +410,8 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         $scope.setRefreshTime = function(){
             
             if ($scope.interfaceName !== 'Givex'){
+                /*this refresh timer disabled now that we can send date ranges for refresh
+                 * 
                 if ($scope.data.data.product_cross_customer.full_refresh !== null){
                    $scope.lastRefreshedTime = new Date($scope.data.data.product_cross_customer.full_refresh);
                    $scope.lastRefreshedTimeRef = $scope.formatDate(new Date($scope.data.data.product_cross_customer.full_refresh));
@@ -433,6 +434,9 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
                         $scope.initTimeout = true;
                     }
                }
+               */
+               
+               
            }
         };
 
