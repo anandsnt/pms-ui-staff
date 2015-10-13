@@ -321,6 +321,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 											}
 										}(),
 				company_id 			 : resData.company.id,
+				allotment_id 		 : resData.allotment.id,
 				travel_agent_id		 : resData.travelAgent.id,
 				group_id 			 : resData.group && resData.group.id,
 				allotment_id 		 : resData.allotment && resData.allotment.id,

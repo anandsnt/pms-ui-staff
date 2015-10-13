@@ -386,6 +386,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         'to_date': $scope.reservationData.departureDate,
                         'fromState': $state.current.name,
                         'company_id': $scope.reservationData.company.id,
+                        'allotment_id': $scope.reservationData.allotment.id,
                         'travel_agent_id': $scope.reservationData.travelAgent.id,
                         'group_id': $scope.reservationData.group.id,
                         'promotion_code': $scope.reservationData.searchPromoCode

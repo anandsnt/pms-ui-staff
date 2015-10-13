@@ -22,9 +22,13 @@ sntRover.directive('autoComplete', ['highlightFilter',
                             defIconText = '',
                             $image = '';
 
-                        switch ( item.type ) {
+                        switch (item.type) {
                             case 'COMPANY':
                                 defIcon = 'icon-company';
+                                break;
+
+                            case 'ALLOTMENT':
+                                defIcon = 'icon-allotment';
                                 break;
 
                             case 'TRAVELAGENT':
