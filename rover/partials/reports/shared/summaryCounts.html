@@ -43,11 +43,6 @@
     <li>Late Check Out Revenue<span class="brand-colors">{{ summaryCounts.revenue | currency:currencySymbol:2 }}</span></li>
 </ul>
 
-
-
-
-
-
 <!-- Early Check In -->
 <ul ng-if="isThisReport( 'EARLY_CHECKIN' )" class="totals">
     <li>Early Check In<span>{{ summaryCounts.total_early_checkins }}</span></li>
@@ -112,4 +107,10 @@
     <li>Rate Revenue<span>{{ summaryCounts.rate_revenue | currency:currencySymbol:2 }}</span></li>
     <li>ADR<span>{{ summaryCounts.adr | currency:currencySymbol:2 }}</span></li>
     <li>Actual Revenue<span>{{ summaryCounts.actual_revenue | currency:currencySymbol:2 }}</span></li>
+</ul>
+
+<!-- Guest Balance Report -->
+<ul ng-if="isThisReport( 'GUEST_BALANCE_REPORT' )" class="totals">
+    <li>Records<span>{{ summaryCounts.records }}</span></li>
+    <li>Balance Amount<span class="red">{{ summaryCounts.balance | currency:currencySymbol:2 }}</span></li>
 </ul>

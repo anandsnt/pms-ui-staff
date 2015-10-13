@@ -246,6 +246,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.rightColSpan = 3;
 					break;
 
+				case reportNames['GUEST_BALANCE_REPORT']:
+					$scope.leftColSpan = 2;
+					$scope.rightColSpan = 3;
+					break;
+
 				default:
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 2;
