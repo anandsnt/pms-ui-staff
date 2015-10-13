@@ -1,0 +1,49 @@
+<form id="allotment-room-block" name="allotment-room-block" class="form card-tab inner-header rooms" ng-controller="rvAllotmentRoomBlockCtrl">
+
+    <div id="allotment-room-block-header" class="tab-header with-filters">
+        <div class="entry status" ng-class="{'hidden': shouldHideHoldStatus()}">
+            <label for="allotment-grid-view" tralslate>Grid View</label>
+            <div class="select">
+                <select id="allotment-grid-view"
+                    ng-model="allotmentConfigData.activeGridView"
+                    ng-change="alert('Grid view changing..'); clickedOnDiscardButton()">
+                    <option value="CONTRACT" selected>Contract</option>
+                    <option value="CURRENT">Current Status</option>
+                    <option value="RELEASE">Release Dates</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="actions" ng-show="shouldShowRoomBlockActions()">
+            <!-- If block was created -->
+            <button type="button" class="button red hidden"
+                ng-click="clickedOnDiscardButton()">
+                Discard Changes
+            </button>
+            <button type="button" class="button brand-colors hidden"
+                ng-click="clickedOnApplyToHeldCountsButton()">
+                Apply to Held Room Counts
+            </button>
+            <button type="button" class="button green hidden"
+                ng-click="clickedOnUpdateContractButton()">
+                Update Contract
+            </button>
+        </div>
+    </div>
+    <div id="allotment-room-block-content" class="tab-details">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <!-- Allotment Roomblock Grid views - Toggled by select box. -->
+        <ng-include src="'/assets/partials/allotments/details/grids/rvAllotmentConfigurationContractGrid.html'"
+            ng-if="allotmentConfigData.activeGridView == 'CONTRACT'">
+        </ng-include>
+
+        <ng-include src="'/assets/partials/allotments/details/grids/rvAllotmentConfigurationCurrentGrid.html'"
+            ng-if="allotmentConfigData.activeGridView == 'CURRENT'">
+        </ng-include>
+
+        <ng-include src="'/assets/partials/allotments/details/grids/rvAllotmentConfigurationReleaseGrid.html'"
+            ng-if="allotmentConfigData.activeGridView == 'RELEASE'">
+        </ng-include>
+
+    </div>
+</form>
