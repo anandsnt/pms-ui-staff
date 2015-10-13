@@ -24,5 +24,6 @@ sntRover.constant('RVReportNamesConst', {
 	'RATE_ADJUSTMENTS_REPORT'      : 'Rate Adjustment Report',
 	'GROUP_PICKUP_REPORT'          : 'Group Pick Up Report',
 	'ADDON_FORECAST'               : 'Add-On Forecast',
-	'DAILY_PRODUCTION'             : 'Daily Production by Room Type'
+	'DAILY_PRODUCTION'             : 'Daily Production by Room Type',
+	'AR_SUMMARY_REPORT'			   : 'A/R Summary Report'
 });
