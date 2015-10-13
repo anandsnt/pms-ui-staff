@@ -5406,13 +5406,16 @@ function DayEventRenderer() {
 			htmlEscape(event.day || '') +
 
 			"</span>" ;
-			if (event.toolTipData.restrictions.length > 0){
+			if(event.toolTipData !== 'undefined'){
+				if (event.toolTipData.restrictions.length > 0){
 				html +=" <span>" +
 						'R' +
 						"</span>" ;
+			    }
 			}
+			
 			html += "<span class='fc-event-title'>";
-		if (event.title != ""){
+		if (event.title != "" &&  _.contains(event.className,"available") && event.currencySymbol !== 'undefined'){
 			html += htmlEscape(event.currencySymbol);
 		}
 		html +=	htmlEscape(event.title || '') +
@@ -5432,6 +5435,7 @@ function DayEventRenderer() {
 		// SOLUTION: initially set them as visibility:hidden ?
 
 		return html;
+
 	}
 
 

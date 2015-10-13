@@ -12,12 +12,16 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		var that = this, availabilityData = null;
 
 		var getFirstDayOfMonth = function(date) {
+			return getDayOfMonth(date, 1);
+		};
+
+		var getDayOfMonth = function(date, day){
 			var date = new Date(date),
 				y = date.getFullYear(),
 				m = date.getMonth();
 
-			return $filter('date')(new Date(y, m, 1), $rootScope.dateFormatForAPI);
-		};
+			return $filter('date')(new Date(y, m, day), $rootScope.dateFormatForAPI);
+		}
 
 		var getLastDayOfMonth = function(date) {
 			var date = new Date(date),
@@ -542,7 +546,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		 * to show calender initially
 		 */
 		var fetchAndShowCalendar = function() {
-			var firstDayOfCal = getFirstDayOfMonth($scope.checkinDateInCalender),
+			var firstDayOfCal = getDayOfMonth($scope.checkinDateInCalender, parseInt(tzIndependentDate($rootScope.businessDate).getDate())),
 				lastDayOfNextMonth = getLastDayOfNextMonth($scope.checkinDateInCalender);
 			
 			fetchCalendarAvailabilityData (firstDayOfCal, lastDayOfNextMonth);
