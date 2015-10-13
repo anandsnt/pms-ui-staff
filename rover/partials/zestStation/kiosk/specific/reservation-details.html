@@ -20,16 +20,18 @@
                     </div>
                     <ul id="rate">
                         <li>Nights<span>{{selectedReservation.total_nights}}</span></li>
-                        <li>Average Daily Rate<span>{{currencySymbol}}{{selectedReservation.reservation_details.daily_rate}}</span></li>
+                        <li ng-hide="is_rates_suppressed" >Average Daily Rate<span>{{currencySymbol}}{{selectedReservation.reservation_details.daily_rate}}</span></li>
                         
-                        <li ng-repeat="addon in selectedReservation.addons" ng-class="{'break':addon.isLastAddon}">
+                        <li ng-hide="is_rates_suppressed" ng-repeat="addon in selectedReservation.addons">
                             {{addon.name}} ({{addon.addon_count}})
                             <span>{{currencySymbol}}{{formatCurrency(addon.amount)}}</span>
                         </li>
                         
-                        <li class="sub">Taxes / Fees<span>{{currencySymbol}}{{selectedReservation.reservation_details.taxes}}</span></li>
-                        <li class="sub">Subtotal<span>{{currencySymbol}}{{selectedReservation.reservation_details.sub_total}}</span></li>
-                        <li class="sub">Deposits<span>- {{currencySymbol}}{{selectedReservation.reservation_details.deposits}}</span></li>
+                        <li class="break"></li>
+                        
+                        <li ng-hide="is_rates_suppressed" class="sub">Taxes / Fees<span>{{currencySymbol}}{{selectedReservation.reservation_details.taxes}}</span></li>
+                        <li ng-hide="is_rates_suppressed" class="sub">Subtotal<span>{{currencySymbol}}{{selectedReservation.reservation_details.sub_total}}</span></li>
+                        <li ng-hide="is_rates_suppressed" class="sub">Deposits<span>- {{currencySymbol}}{{selectedReservation.reservation_details.deposits}}</span></li>
                         <li class="total">Balance due<span>{{currencySymbol}}{{selectedReservation.reservation_details.balance}}</span></li>
                     </ul>
                 </div>
