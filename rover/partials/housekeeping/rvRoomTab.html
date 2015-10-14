@@ -61,8 +61,8 @@
                             <span id="room-out-to-year" class="year">{{ updateService.to_date | date:'yyyy' }}</span>
                         </div>
 
-                        <!--to time-->
-                        <div class="select">
+                        <!--to time--> 
+                        <div class="select" ng-show="shouldShowTimeSelector()">
                             <select id="room-out-to-time" class="placeholder" ng-model="updateService.end_time">
                                 <option value="" selected>To Time</option>
                                 <option value="{{timeSelector.value}}" ng-repeat="timeSelector in timeSelectorList" ng-selected="updateService.end_time==timeSelector.value">{{timeSelector.text}}</option>
