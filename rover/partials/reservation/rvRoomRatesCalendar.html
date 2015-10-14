@@ -33,12 +33,17 @@
 
 		<!-- Legend -->
 		<ul class="calendar-legend">
-    		<li><span class="check-in"></span>Arrival</li>
-    		<li><span class="check-in unavailable"></span>Arrival Unavailable</li>
-    		<li><span class="check-out"></span>Departure</li>
-    		<li><span class="availabile"></span>Available</li>
-    		<li><span class="unavailable"></span>No Room Type Availability</li>
-    		<li><span class="restrictions">R</span>Restrictions Apply</li>
+    		<li><span class="check-in"></span>{{'ARRIVAL'|translate}}</li>
+    		<li><span class="check-in unavailable"></span>{{'ARRIVAL_UNAVAILABLE'|translate}}</li>
+    		<li><span class="check-out"></span>{{'DEPARTURE'|translate}}</li>
+    		<li><span class="availabile"></span>{{'AVAILABLE'|translate}}</li>
+    		<li ng-show="(stateVariables.selectedRoom !== null && stateVariables.selectedRoom !== '')&& stateCheck.calendarState.calendarType == 'ROOM_TYPE'"><span class="unavailable"></span>
+    			{{'NO_ROOM_TYPE_AVAILABLE'|translate}}
+    		</li>
+    		<li ng-hide="(stateVariables.selectedRoom !== null && stateVariables.selectedRoom !== '')&& stateCheck.calendarState.calendarType == 'ROOM_TYPE'"><span class="unavailable"></span>
+    			{{'NO_HOUSE_AVAILABLE'|translate}}
+    		</li>
+    		<li><span class="restrictions">R</span>{{'RESTRICTIONS_APPLY'|translate}}</li>
 		</ul>
 	</div>
 </div>

@@ -4843,7 +4843,6 @@
 					background: @red; 
 
 					.fc-event-title { 
-						text-indent: 9999px; 
 						background: @icons no-repeat 5px -155px; 
 
 						@media @highdpi {
@@ -4889,8 +4888,7 @@
 				&.check-in {
 					.fc-event-inner {
 						.fc-event-title { 
-							margin-top: -25px;
-							text-indent: 9999px; 
+							margin-top: -25px; 
 						}
 					}
 				}
@@ -4903,7 +4901,7 @@
 				}  
 
 				/* Restore looks when dragging ***/
-				/*&.ui-draggable-dragging {
+				&.ui-draggable-dragging {
 					.fc-event-inner { height: 50px !important; }
 
 					&.check-in {
@@ -4916,11 +4914,10 @@
 					}
 					&.check-out {
 						.fc-event-inner {
-							.fc-event-title { text-indent: 9999px; }
 							.fc-event-day { .show; }
 						}
 					} 
-				}*/
+				}
 			}
 		}		
 	
