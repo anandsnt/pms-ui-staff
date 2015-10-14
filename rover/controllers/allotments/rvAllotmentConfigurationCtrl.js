@@ -330,6 +330,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                     return false;
                 }
                 var summaryData = _.extend({}, $scope.allotmentConfigData.summary);
+                summaryData     = _.omit(summaryData, ["selected_room_types_and_rates", "selected_room_types_and_occupanies", "selected_room_types_and_bookings"]);
                 summaryData.block_from = $filter('date')(summaryData.block_from, $rootScope.dateFormatForAPI);
                 summaryData.block_to = $filter('date')(summaryData.block_to, $rootScope.dateFormatForAPI);
                 summaryData.release_date = $filter('date')(summaryData.release_date, $rootScope.dateFormatForAPI);
@@ -373,13 +374,13 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             return (!$scope.isInAddMode() && !!$scope.allotmentConfigData.summary.travel_agent.id);
         };
 
-        $scope.goToTACard = function(){            
+        $scope.goToTACard = function(){
             $state.go('rover.companycarddetails', {
                 id: summaryData.allotmentSummary.travel_agent.id,
                 type: 'TRAVELAGENT'
             });
         };
-        
+
         $scope.goToCompanyCard = function(){
             $state.go('rover.companycarddetails', {
                 id: summaryData.allotmentSummary.company.id,
@@ -396,14 +397,15 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
         };
 
         $scope.onCompanyCardChange = function() {
-            if ($scope.allotmentConfigData.summary.company && $scope.allotmentConfigData.summary.company.name === "") {
-                $scope.allotmentConfigData.summary.company = null;
+            var summaryData = $scope.allotmentConfigData.summary;
+            if (summaryData.company && summaryData.company.name === "") {
+                summaryData.company = null;
             }
         };
 
         $scope.onTravelAgentCardChange = function() {
-            if ($scope.allotmentConfigData.summary.travel_agent && $scope.allotmentConfigData.summary.travel_agent.name === "") {
-                $scope.allotmentConfigData.summary.travel_agent = null;
+            if (summaryData.travel_agent && summaryData.travel_agent.name === "") {
+                summaryData.travel_agent = null;
             }
         };
 
