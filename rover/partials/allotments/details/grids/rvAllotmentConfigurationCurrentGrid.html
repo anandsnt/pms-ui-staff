@@ -140,7 +140,7 @@
                         class="cell" disabled />
                     <!-- we will show this quick arrow only in first column -->
                     <button ng-if="!$index"
-                        ng-click="copySingleValueToOtherBlocks(dateData, roomType)"
+                        ng-click="copySingleHeldValueToOtherBlocks(dateData, roomType)"
                         type="button"
                         class="admin-icons icon-mover-right">
                         Copy to all days
@@ -155,7 +155,7 @@
                         delay="100"
                         function-to-fire="bookingDataChanging"
                         ng-model="dateData.double"
-                        class="cell" disabled />
+                        class="cell" />
                     <input type="text"
                         rv-delay-textbox
                         delay="100"
@@ -165,7 +165,7 @@
 
                     <!-- we will show this quick arrow only in first column -->
                     <button ng-if="!$index"
-                        ng-click="copyDoubleValueToOtherBlocks(dateData, roomType)"
+                        ng-click="copyDoubleHeldValueToOtherBlocks(dateData, roomType)"
                         type="button"
                         class="admin-icons icon-mover-right">
                         Copy to all days
@@ -179,7 +179,7 @@
                         delay="100"
                         function-to-fire="bookingDataChanging"
                         ng-model="dateData.triple"
-                        class="cell" disabled />
+                        class="cell" />
                     <input type="text"
                         rv-delay-textbox
                         delay="100"
@@ -189,7 +189,7 @@
 
                     <!-- we will show this quick arrow only in first column -->
                     <button ng-if="!$index"
-                        ng-click="copyTripleValueToOtherBlocks(dateData, roomType)"
+                        ng-click="copyTripleHeldValueToOtherBlocks(dateData, roomType)"
                         type="button"
                         class="admin-icons icon-mover-right">
                         Copy to all days
@@ -203,14 +203,8 @@
                         rv-delay-textbox
                         delay="100"
                         function-to-fire="bookingDataChanging"
-                        ng-disabled="shouldDisableQuadrupleEntryBox(dateData, roomType)"
-                        ng-model="dateData.quadruple_contract" class="cell" />
-                    <input type="text"
-                        rv-delay-textbox
-                        delay="100"
-                        function-to-fire="bookingDataChanging"
                         ng-model="dateData.quadruple"
-                        class="cell" disabled />
+                        class="cell" />
                     <input type="text"
                         rv-delay-textbox
                         delay="100"
@@ -219,14 +213,12 @@
                         class="cell" disabled />
                     <!-- we will show this quick arrow only in first column -->
                     <button ng-if="!$index"
-                        ng-click="copyQuadrupleValueToOtherBlocks(dateData, roomType)"
+                        ng-click="copyQuadrupleHeldValueToOtherBlocks(dateData, roomType)"
                         type="button"
                         class="admin-icons icon-mover-right">
                         Copy to all days
                     </button>
                 </div>
-                
-                <!-- <div class="line small cellspan hidden"> -->
                 <div class="line small cellspan" ng-class="{'hidden' : !roomType.isCollapsed}">
                     <em class="cellspan">
                         {{'AVAILABILITY_GROUP'|translate}}
