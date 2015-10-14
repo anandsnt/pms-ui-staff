@@ -463,11 +463,11 @@ sntRover.service('RVReservationStateService', [
 						day: new tzIndependentDate(for_date),
 						availabilityCount: (function(){
 							if(ratesMeta[rate_id].rate_type.name === "Group Rates" || !!selectedGroup){
-							 	rooms[currentRoomId].availabilityNumbers[for_date].group;
+							 	return rooms[currentRoomId].availabilityNumbers[for_date].group;
 							} else if(ratesMeta[rate_id].rate_type.name === "Group Rates" || !!selectedAllotment){
-								rooms[currentRoomId].availabilityNumbers[for_date].allotment;
+								return rooms[currentRoomId].availabilityNumbers[for_date].allotment;
 							}else{
-								rooms[currentRoomId].availabilityNumbers[for_date].room;
+								return rooms[currentRoomId].availabilityNumbers[for_date].room;
 							}
 						})(),
 						taxForAddons: taxForAddons,
