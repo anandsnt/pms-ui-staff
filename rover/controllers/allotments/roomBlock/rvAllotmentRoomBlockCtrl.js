@@ -1075,11 +1075,27 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 		/**
 		 * To get css width for grid timeline
+		 * For each column 280px is predefined
+		 * @return {String} [with px]
+		 */
+		$scope.getWidthForContractViewTimeLine = function() {
+			return ($scope.allotmentConfigData.summary.selected_room_types_and_occupanies.length * 280 + 40) + 'px';
+		};
+
+		/**
 		 * For each column 190px is predefined
 		 * @return {String} [with px]
 		 */
-		$scope.getWidthForRoomBlockTimeLine = function() {
-			return ($scope.allotmentConfigData.summary.selected_room_types_and_occupanies.length * 280 + 40) + 'px';
+		$scope.getWidthForCurrentViewTimeLine = function() {
+			return ($scope.allotmentConfigData.summary.selected_room_types_and_occupanies.length * 190 + 40) + 'px';
+		};
+
+		/**
+		 * For each column 190px is predefined
+		 * @return {String} [with px]
+		 */
+		$scope.getWidthForReleaseViewTimeLine = function() {
+			return ($scope.allotmentConfigData.summary.selected_room_types_and_occupanies.length * 190 + 40) + 'px';
 		};
 
 		/**

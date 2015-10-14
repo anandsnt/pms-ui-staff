@@ -82,7 +82,7 @@
             ng-iscroll="room_rates_timeline_scroller"
             ng-show="shouldHideAddRoomsButton()">
 
-            <ul style="width:{{getWidthForRoomBlockTimeLine()}};" class="wrapper">
+            <ul style="width:{{getWidthForContractViewTimeLine()}};" class="wrapper">
                 <li ng-repeat="occupancy in allotmentConfigData.summary.selected_room_types_and_occupanies">
                     <div class="inner">
                         <span>{{formatDateForUI(occupancy.date, fulldayInWeek)}}</span>
@@ -109,7 +109,7 @@
         <!-- Room block grid -->
         <div class="room-block-grid extended-timeline cols-3 scrollable" ng-iscroll="room_rates_grid_scroller"
             ng-show="shouldHideAddRoomsButton()">
-            <div class="wrapper" style="width:{{getWidthForRoomBlockTimeLine()}};">
+            <div class="wrapper" style="width:{{getWidthForContractViewTimeLine()}};">
                 <!-- REPEAT ROW FOR ALL ROOM TYPES SELECTED -->
                 <div class="row" ng-repeat="roomType in allotmentConfigData.summary.selected_room_types_and_bookings">
                     <!-- REPEAT COLUMN FOR ALL DAYS IN THE BLOCK -->
