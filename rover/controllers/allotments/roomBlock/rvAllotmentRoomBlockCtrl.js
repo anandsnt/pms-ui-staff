@@ -90,7 +90,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		 $scope.shouldDisableGridViewSwitch = function() {
-		 	var roomTypesConfigured = scope.allotmentConfigData.summary.selected_room_types_and_bookings.length > 0;
+		 	var roomTypesConfigured = $scope.allotmentConfigData.summary.selected_room_types_and_bookings.length > 0;
 
 		 	return (!roomTypesConfigured);
 		 };
