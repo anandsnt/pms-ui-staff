@@ -345,23 +345,27 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
                         endTime         = null,
                         time            = null,
                         date_to_pass    = null,
-                        matchedRooms    = [];
+                        matchedRooms    = [],
+                        hour            = null,
+                        min             = null;
 
 
                     _.each(inactiveRooms, function(value, key) {
-
-                        _.each(value, function(eachRoom){
-                            date_to_pass = new tzIndependentDate(key);
-                            date_to_pass.setHours(0, 0, 0);
-                            time = util.gridTimeComponents(date_to_pass, 24);
+                        
+                        _.each(value, function(eachRoom) {
                             if(eachRoom.room_id === room.id) {
-                                
+                                //start time                     
+                                hour = eachRoom.from_time.split(":") [0];
+                                min = eachRoom.from_time.split(":") [1];
                                 startTime = new tzIndependentDate(key);
-                                startTime.setHours (eachRoom.from_time.split(":") [0], eachRoom.from_time.split(":") [1], 0)
+                                startTime.setHours (hour, min, 0);
                                 
-                                endTime   = new tzIndependentDate(key);
-                                endTime.setHours (eachRoom.to_time.split(":") [0], eachRoom.to_time.split(":") [1], 0)
-                                
+                                //end time
+                                hour = eachRoom.to_time.split(":") [0];
+                                min = eachRoom.to_time.split(":") [1];
+                                endTime = new tzIndependentDate(key);
+                                endTime.setHours (hour, min, 0);
+
                                 room.room_inactive_slots.push({
                                     'startTime': startTime,
                                     'endTime'  : endTime,
