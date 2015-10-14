@@ -376,6 +376,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$scope.activeGridViewChanged = function() {
 			// Discard all the changes in current view
 			$scope.clickedOnDiscardButton();
+
+			$timeout( reinit, 500 );
 		};
 
 		/**
@@ -1079,7 +1081,20 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {String} [with px]
 		 */
 		$scope.getWidthForContractViewTimeLine = function() {
-			return ($scope.allotmentConfigData.summary.selected_room_types_and_occupanies.length * 280 + 40) + 'px';
+			// 270 + 160 since:
+			// each col width is 270
+			// first col width is 310
+			// so additional on first is 310 - 270 = 160
+			var v = $scope.allotmentConfigData.summary.selected_room_types_and_occupanies.length;
+
+			var t = v * 270 + 160;
+
+			if ( v > 0 ) {
+				console.log(v);
+				console.log(t);
+			};
+			
+			return ($scope.allotmentConfigData.summary.selected_room_types_and_occupanies.length * 270 + 160) + 'px';
 		};
 
 		/**
@@ -1292,6 +1307,13 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 		}();
 
+		var reinit = function() {
 
+			//setting scrollers
+			setScroller();
+
+			// accoridion
+			setUpAccordion();
+		};
 	}
 ]);

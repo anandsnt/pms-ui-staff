@@ -370,7 +370,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          * @return {Boolean} [description]
          */
         $scope.shouldShowTravelAgentNavigationButton = function() {
-            return (!$scope.isInAddMode() && !!$scope.allotmentConfigData.summary.travel_agent.id);
+            return ( !$scope.isInAddMode() && (null !== $scope.allotmentConfigData.summary.travel_agent && !!$scope.allotmentConfigData.summary.travel_agent.id) );
         };
 
         $scope.goToTACard = function(){            

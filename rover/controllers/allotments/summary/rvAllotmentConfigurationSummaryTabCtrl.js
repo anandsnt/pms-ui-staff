@@ -61,7 +61,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			$scope.isUpdateInProgress = true;
 
 			//call the updateAllotmentSummary method from the parent controller
-			// $scope.updateAllotmentSummary();
+			$scope.updateAllotmentSummary();
 		});
 
 		/**
