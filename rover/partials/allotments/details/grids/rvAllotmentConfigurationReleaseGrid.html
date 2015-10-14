@@ -16,18 +16,20 @@
 <div class="room-block-actions release-range" ng-show="shouldHideAddRoomsButton()">
     <div class="entry">
         <label for="allotment-release-range">Release Range (In Days)</label>
-        <input id="allotment-release-range" type="text" class="highlight" value="" />
+        <input id="allotment-release-range" type="text" class="highlight" ng-model="allotmentConfigData.summary.common_ui_release_days" />
         <button type="button" class="admin-icons icon-mover-right"
-            ng-click="copyReleaseRangeToAllBlocks()">
+            ng-click="copyReleaseRangeToAllBlocks(allotmentConfigData.summary.common_ui_release_days)">
             Fill
         </button>
     </div>
     <button type="button" class="button green"
-        ng-show="shouldShowReleaseRangeActions()">
+        ng-show="releaseDaysEdited"
+        ng-click="saveReleaseDaysEdit()">
         Apply
     </button>
     <button type="button" class="button red"
-        ng-show="shouldShowReleaseRangeActions()">
+        ng-show="releaseDaysEdited"
+        ng-click="resetReleaseDaysEdit()">
         Cancel
     </button>
 </div>
@@ -103,9 +105,9 @@
             <div class="column">
                 <!-- Release Total for Day -->
                 <div class="line">
-                    <input type="text" value="{COUNT}" class="highlight" disabled />
+                    <input type="text" class="highlight" ng-model="occupancy.ui_release_days" />
                     <button type="button" class="admin-icons icon-mover-right"
-                        ng-click="copyReleaseRangeDown()">
+                        ng-click="copyReleaseRangeDown(occupancy.ui_release_days, $index)">
                         Fill
                     </button>
                 </div>

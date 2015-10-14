@@ -993,8 +993,18 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			_.each(data.results, function(eachRoomType) {
 				_.each(eachRoomType.dates, function(dateData) {
 					dateData.old_total = $scope.getTotalHeldOfIndividualRoomType(dateData);
+
+					// keeping original release days
+					dateData['old_release_days'] = dateData['release_days'];
 				});
 			});
+
+			// adding DS for ui release days for each occupancy and
+			// for common
+			_.each(data.occupancy, function(eachOcc) {
+				eachOcc['ui_release_days'] = '';
+			});
+			$scope.allotmentConfigData.summary.common_ui_release_days = '';
 
 			$scope.allotmentConfigData.summary.selected_room_types_and_bookings = data.results;
 			$scope.allotmentConfigData.summary.selected_room_types_and_occupanies = data.occupancy;
@@ -1007,6 +1017,64 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 			//we changed data, so
 			refreshScroller();
+		};
+
+		$scope.releaseDaysEdited = false;
+
+		$scope.copyReleaseRangeDown = function(days, index) {
+			var value = days * 1;
+
+			if ( isNaN(value) ) {
+				return;
+			};
+			
+			_.each($scope.allotmentConfigData.summary.selected_room_types_and_bookings, function(each) {
+				if ( each.hasOwnProperty('dates') && each['dates'][index] ) {
+					each['dates'][index]['release_days'] = value;
+					$scope.releaseDaysEdited = true;
+				};
+			});
+		};
+
+		$scope.copyReleaseRangeToAllBlocks = function(days) {
+			var value = days * 1;
+
+			if ( isNaN(value) ) {
+				return;
+			};
+
+			_.each($scope.allotmentConfigData.summary.selected_room_types_and_occupanies, function(each) {
+				each['ui_release_days'] = value;
+			});
+
+			_.each($scope.allotmentConfigData.summary.selected_room_types_and_bookings, function(each) {
+				_.each(each['dates'], function(date) {
+					date['release_days'] = value;
+				});
+			});
+
+			$scope.releaseDaysEdited = true;
+		};
+
+		$scope.resetReleaseDaysEdit = function() {
+			$scope.allotmentConfigData.summary.common_ui_release_days = '';
+
+			_.each($scope.allotmentConfigData.summary.selected_room_types_and_occupanies, function(each) {
+				each['ui_release_days'] = '';
+			});
+
+			_.each($scope.allotmentConfigData.summary.selected_room_types_and_bookings, function(each) {
+				_.each(each['dates'], function(date) {
+					date['release_days'] = date['old_release_days'];
+				});
+			});
+
+			$scope.releaseDaysEdited = false;
+		};
+
+		$scope.saveReleaseDaysEdit = function() {
+			$scope.saveRoomBlock(false);
+			$scope.releaseDaysEdited = false;
 		};
 
 		var failureCallBackOfFetchRoomBlockGridDetails = function(error) {
