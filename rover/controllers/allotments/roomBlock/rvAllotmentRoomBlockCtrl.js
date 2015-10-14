@@ -23,6 +23,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		var summaryMemento;
 		var update_existing_reservations_rate = false;
 		var roomsAndRatesSelected;
+		var updated_contract_counts = false;
 
 		/**
 		 * util function to check whether a string is empty
@@ -95,24 +96,47 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 	return (!roomTypesConfigured);
 		 };
 
+		 /**
+		  * Apply to held counts button will be disabled by default.
+		  * It should be enabled after clicking apply to contract button.
+		  * @return {Boolean} Whether button should be disabled or not
+		  */
+		 $scope.shouldDisableApplyToHeldCountsButton = function() {
+		 	return (!updated_contract_counts);
+		 };
+
+		 $scope.shouldDisableApplyToContractButton = function() {
+		 	return (updated_contract_counts);
+		 };
+
 		/**
 		 * should we wanted to show the discard button for room type booking change
 		 * @return {Boolean}
 		 */
 		$scope.shouldShowDiscardButton = function() {
-			return $scope.hasBookingDataChanged && $scope.shouldHideAddRoomsButton();
+			return ( $scope.hasBookingDataChanged &&
+				  	$scope.shouldHideAddRoomsButton() );
 		};
 
+		/**
+		 * Should we show buttons in roomblock
+		 */
 		$scope.shouldShowRoomBlockActions = function() {
-			return $scope.hasBookingDataChanged && $scope.shouldHideAddRoomsButton();
+			return $scope.shouldHideAddRoomsButton();
 		};
 
 		$scope.shouldShowApplyToHeldCountsButton = function() {
-			return $scope.allotmentConfigData.activeGridView === 'CONTRACT';
+			var hasBookingDataChanged = $scope.hasBookingDataChanged,
+				isInContractGridView  = $scope.allotmentConfigData.activeGridView === 'CONTRACT';
+
+			return ( updated_contract_counts || (hasBookingDataChanged && isInContractGridView) );
 		};
 
 		$scope.shouldShowApplyToContractButton = function() {
-			return $scope.allotmentConfigData.activeGridView === 'CONTRACT';
+			var hasBookingDataChanged = $scope.hasBookingDataChanged,
+				isInContractGridView  = $scope.allotmentConfigData.activeGridView === 'CONTRACT';
+
+			return ( hasBookingDataChanged && isInContractGridView );
 		};
 
 		/**
@@ -330,6 +354,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$scope.bookingDataChanging = function() {
 			//we are changing the model to
 			$scope.hasBookingDataChanged = true;
+			updated_contract_counts = false;
 			runDigestCycle();
 		};
 
@@ -421,6 +446,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				$scope.saveRoomBlock(true);
 				return false;
 			}
+
+			updated_contract_counts = !updated_contract_counts;
 
 			//we have saved everything we have
 			//so our data is new

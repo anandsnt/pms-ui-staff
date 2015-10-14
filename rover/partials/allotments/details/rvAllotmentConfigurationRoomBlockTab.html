@@ -22,12 +22,18 @@
                 ng-click="clickedOnDiscardButton()">
                 Discard Changes
             </button>
-            <button type="button" class="button brand-colors"
+            <button type="button" class="button"
+                ng-class="{ 'grey': shouldDisableApplyToHeldCountsButton(),
+                            'brand-colors': !shouldDisableApplyToHeldCountsButton()
+                          }"
+                ng-disabled="shouldDisableApplyToHeldCountsButton()"
                 ng-show="shouldShowApplyToHeldCountsButton()"
                 ng-click="clickedOnApplyToHeldCountsButton()">
                 Apply to Held Room Counts
             </button>
             <button type="button" class="button green"
+                ng-class="{ 'grey': shouldDisableApplyToContractButton() }"
+                ng-disabled="shouldDisableApplyToContractButton()"
                 ng-show="shouldShowApplyToContractButton()"
                 ng-click="clickedOnUpdateContractButton()">
                 Update Contract
