@@ -476,7 +476,7 @@ sntRover.service('RVReservationStateService', [
 						appliedPromotion: code,
 						isMember: ratesMeta[rate_id].is_member && membershipValidity,
 						isGroupRate: ratesMeta[rate_id].rate_type.name === "Group Rates" || !!selectedGroup,
-						isAllotmentRate: ratesMeta[rate_id].rate_type.name === "Allotment Rates" || !!selectedAllotment
+						isAllotmentRate: ratesMeta[rate_id].rate_type.name === !!selectedAllotment
 					};
 
 					var currentRoomRateDetails = currentRoom.ratedetails[for_date][rate_id];
