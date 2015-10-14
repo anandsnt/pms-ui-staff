@@ -326,7 +326,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
                 template: '/assets/partials/housekeeping/popups/roomTab/rvRoomTabReservationExist.html',
                 className: '',
                 scope: $scope,
-                data: data,
+                data: JSON.stringify(data),
                 closeByDocument: false,
                 closeByEscape: false
             });
