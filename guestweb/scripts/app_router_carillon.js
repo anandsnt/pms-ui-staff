@@ -9,7 +9,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	$stateProvider.state('checkoutBalance', {
         url: '/checkoutBalance',
         controller: 'checkOutBalanceController',
-       	templateUrl: '/assets/checkoutnow/partials/Huntley/checkoutBalance.html',
+       	templateUrl: '/assets/checkoutnow/partials/Carillon/checkoutBalance.html',
 	    title: 'Balance - Check-out Now'
     })
     .state('checkOutStatus', {
@@ -20,7 +20,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
        	controller: 'checkOutConfirmationController',
-       	templateUrl: '/assets/checkoutnow/partials/Huntley/checkoutConfirmation.html',
+       	templateUrl: '/assets/checkoutnow/partials/Carillon/checkoutConfirmation.html',
 		title: 'Confirm - Check-out Now'
     });
 
