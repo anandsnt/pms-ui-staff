@@ -495,20 +495,21 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                     view: "ROOM_RATE",
                     company_id: $scope.reservationData.company.id,
                     travel_agent_id: $scope.reservationData.travelAgent.id,
-                    group_id: $scope.reservationData.group.id                    
+                    group_id: $scope.reservationData.group.id,
+                    allotment_id: $scope.reservationData.allotment.id                   
                 }
             };
             // }
         }
 
         var save = function() {
-            if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id || $scope.reservationData.group.id) {
+            if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id || $scope.reservationData.group.id || $scope.reservationData.allotment.id) {
                 $scope.saveReservation();
             }
         };
 
         var createReservation = function() {
-            if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id && !$scope.reservationData.group.id) {
+            if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id && !$scope.reservationData.group.id && !$scope.reservationData.allotment.id) {
                 $timeout(function() {
                     $scope.$emit('PROMPTCARD');
                 }, 3000);
@@ -528,7 +529,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 depositPaid = true;
             };
 
-            var idPresent = ($stateParams.mode === 'OTHER' || $stateParams.mode === 'EDIT_HOURLY') ? (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id && !$scope.reservationData.group.id) : true;
+            var idPresent = ($stateParams.mode === 'OTHER' || $stateParams.mode === 'EDIT_HOURLY') ? (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id && !$scope.reservationData.group.id && !$scope.reservationData.allotment.id) : true;
             var isPaymentTypeNotSelected = ((typeof $scope.reservationData.paymentType.type.value === "undefined") || $scope.reservationData.paymentType.type.value.length === 0);
             return (idPresent || isPaymentTypeNotSelected || !depositPaid);
 

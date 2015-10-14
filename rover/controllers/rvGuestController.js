@@ -447,6 +447,14 @@ sntRover.controller('guestCardController', [
 		$scope.cardCls = function() {
 			// evaluate
 			var cls = $scope.UICards[0]; //  current active card
+			if (cls === 'group-card') {
+				if (!!$scope.reservationData.allotment.id) {
+					cls = 'allotment-card';
+				}
+				if (!$scope.reservationData.allotment.id && !$scope.reservationData.group.id) {
+					cls = 'group-allotment-card';
+				}
+			}
 			if ($scope.cardVisible) {
 				cls += " open";
 			}
@@ -778,12 +786,16 @@ sntRover.controller('guestCardController', [
 
 					// concat allotment results too into the search results
 					// NOTE: Common search area for both allotments and the groups
-					$scope.searchedGroups = _.map(data.groups,function(group){
-						return _.extend(group,{type:'GROUP'})
+					$scope.searchedGroups = _.map(data.groups, function(group) {
+						return _.extend(group, {
+							type: 'GROUP'
+						})
 					});
-					
-					$scope.searchedGroups = $scope.searchedGroups.concat(_.map(data.allotments,function(allotment){
-						return _.extend(allotment,{type:'ALLOTMENT'});
+
+					$scope.searchedGroups = $scope.searchedGroups.concat(_.map(data.allotments, function(allotment) {
+						return _.extend(allotment, {
+							type: 'ALLOTMENT'
+						});
 					}));
 
 					$scope.$broadcast('GROUP_SEARCH_ON');
@@ -1210,11 +1222,11 @@ sntRover.controller('guestCardController', [
 			$scope.callAPI(rvGroupSrv.detachGroupFromReservation, options);
 		};
 
-		$scope.selectToGroupORAllotment = function (cardDetail, $event) {
+		$scope.selectToGroupORAllotment = function(cardDetail, $event) {
 			$event.stopPropagation();
-			if(cardDetail.type === 'GROUP'){
+			if (cardDetail.type === 'GROUP') {
 				selectGroup(cardDetail);
-			}else if(cardDetail.type === 'ALLOTMENT'){
+			} else if (cardDetail.type === 'ALLOTMENT') {
 				selectAllotment(cardDetail);
 			}
 		};

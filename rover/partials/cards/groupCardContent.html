@@ -1,6 +1,6 @@
 <div ng-controller="RVGroupCardCtrl">
     <!-- Group Card Content -->
-    <div id="group-card-content" class="card-tabs card-content" ng-class="UICardContentCls('group-card')" ng-if="!searchMode && !!reservationData.group.id">
+    <div id="{{fetchGroupAllotmentCardId('CONTENT')}}" class="card-tabs card-content" ng-class="UICardContentCls('group-card')" ng-if="!searchMode && !!reservationData.group.id">
         <ul id="group-card-tabs-nav" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
             <li class="ui-tabs-active">
                 <a translate>SUMMARY</a>
@@ -11,7 +11,7 @@
     </div>
 
     <!-- Allotment Card Content -->
-    <div id="group-card-content" class="card-tabs card-content" ng-class="UICardContentCls('group-card')" ng-if="!searchMode && !!reservationData.allotment.id">
+    <div id="{{fetchGroupAllotmentCardId('CONTENT')}}" class="card-tabs card-content" ng-class="UICardContentCls('group-card')" ng-if="!searchMode && !!reservationData.allotment.id">
         <ul id="group-card-tabs-nav" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
             <li class="ui-tabs-active">
                 <a translate>SUMMARY</a>
@@ -22,13 +22,14 @@
     </div>
 
     <!-- Group & Allotment Search -->
-    <div id="company-card-content" class="card-search card-content" ng-class="UICardContentCls('group-card')" ng-if="searchMode">
+    <div id="{{fetchGroupAllotmentCardId('CONTENT')}}" class="card-search card-content" ng-class="UICardContentCls('group-card')" ng-if="searchMode">
         <div id="search-group-content" class="search-cards scrollable">
             <!-- Company Card Results listing -->
             <div ng-controller="groupResults" class="wrapper" ng-show="searchingGroups && searchedGroups.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="groupResultsScroll" ng-iscroll-delay='500'>
                 <ul id="search-group-results" class="search-results">
-                    <li class="group" ng-repeat="result in searchedGroups" ngrepeatend ngrepeatstarted>
+                    <li class="group with-image" ng-repeat="result in searchedGroups" ngrepeatend ngrepeatstarted>
                         <a ng-click="selectToGroupORAllotment(result, $event)">
+                            <div class="guest-image icons" ng-class="{'icon-group' : result.type === 'GROUP', 'icon-allotment' : result.type === 'ALLOTMENT'}"></div>
                             <div class="data">
                                 <h2 ng-bind-html="{{stringify(escapeNull(result.name))}} | highlight:searchData.groupCard.name:false">              </h2>
                                 <span class="confirmation" ng-bind-html="{{stringify(escapeNull(result.code))}} | highlight:searchData.groupCard.code:false"></span>
@@ -79,7 +80,7 @@
                     <span class="h2">
                         Check that you didn't mispell the 
                         <strong>
-                            Group Name
+                            Group or Allotment Name
                         </strong> 
                         or 
                         <strong>
@@ -90,8 +91,8 @@
                 <!-- Company Card Empty -->
                 <div class="info" ng-hide='searchingGroups'>
                     <span class="icon-no-content icon-groups"></span>
-                    <strong class="h1">Find Group</strong>
-                    <span class="h2">Search by <strong>Group Name</strong> or <strong>Code</strong></span>
+                    <strong class="h1">Find Allotment or Group</strong>
+                    <span class="h2">Search by Allotment or Group <strong>Name</strong> or <strong>Code</strong></span>
                 </div>
             </div>
         </div>

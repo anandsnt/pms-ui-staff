@@ -171,7 +171,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					}
 				});
 				if (!!$scope.reservationData.group.id) {					
-					 var customRate = RVReservationStateService.getGroupCustomRateModel($scope.reservationData.group.id, $scope.reservationData.group.name);
+					 var customRate = RVReservationStateService.getCustomRateModel($scope.reservationData.group.id, $scope.reservationData.group.name, 'GROUP');
+					 rates[customRate.id] = customRate;
+				};
+
+				if (!!$scope.reservationData.allotment.id) {					
+					 var customRate = RVReservationStateService.getCustomRateModel($scope.reservationData.allotment.id, $scope.reservationData.allotment.name, 'ALLOTMENT');
 					 rates[customRate.id] = customRate;
 				};
 
@@ -1352,7 +1357,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					$scope.activeRoom,
 					$scope.reservationData.numNights, {
 						code: $scope.reservationData.code,
-						group: $scope.reservationData.group
+						group: $scope.reservationData.group,
+						allotment: $scope.reservationData.allotment,
 					},
 					$scope.reservationData.member.isSelected),
 				rooms = parsedRooms.rooms;
