@@ -13,14 +13,23 @@
 </div>
 
 <!-- Room block actions -->
-<div class="room-block-actions release-range">
-	<div class="entry">
-		<label for="allotment-release-range">Release Range (In Days)</label>
-		<input id="allotment-release-range" type="text" class="highlight" value="" />
-		<button type="button" class="admin-icons icon-mover-right">Fill</button>
-	</div>
-	<button type="button" class="button green">Apply</button>
-	<button type="button" class="button red">Cancel</button>
+<div class="room-block-actions release-range" ng-show="shouldHideAddRoomsButton()">
+    <div class="entry">
+        <label for="allotment-release-range">Release Range (In Days)</label>
+        <input id="allotment-release-range" type="text" class="highlight" value="" />
+        <button type="button" class="admin-icons icon-mover-right"
+            ng-click="copyReleaseRangeToAllBlocks()">
+            Fill
+        </button>
+    </div>
+    <button type="button" class="button green"
+        ng-show="shouldShowReleaseRangeActions()">
+        Apply
+    </button>
+    <button type="button" class="button red"
+        ng-show="shouldShowReleaseRangeActions()">
+        Cancel
+    </button>
 </div>
 
 <!-- Room block room types -->
@@ -84,7 +93,7 @@
     ng-iscroll="room_rates_timeline_scroller"
     ng-show="shouldHideAddRoomsButton()">
 
-    <ul style="width:{{getWidthForCurrentViewTimeLine()}};" class="wrapper">
+    <ul style="width:{{getWidthForReleaseViewTimeLine()}};" class="wrapper">
         <li ng-repeat="occupancy in allotmentConfigData.summary.selected_room_types_and_occupanies">
             <div class="inner">
                 <span>{{formatDateForUI(occupancy.date, fulldayInWeek)}}</span>
@@ -94,8 +103,11 @@
             <div class="column">
                 <!-- Release Total for Day -->
                 <div class="line">
-                    <input type="text" value="" class="highlight" />
-                    <button type="button" class="admin-icons icon-mover-right">Fill</button>
+                    <input type="text" value="{COUNT}" class="highlight" disabled />
+                    <button type="button" class="admin-icons icon-mover-right"
+                        ng-click="copyReleaseRangeDown()">
+                        Fill
+                    </button>
                 </div>
             </div>
         </li>
@@ -105,24 +117,20 @@
 <!-- Room block grid -->
 <div class="room-block-grid release-range scrollable" ng-iscroll="room_rates_grid_scroller"
     ng-show="shouldHideAddRoomsButton()">
-    <div class="wrapper" style="width:{{getWidthForCurrentViewTimeLine()}};">
+    <div class="wrapper" style="width:{{getWidthForReleaseViewTimeLine()}};">
         <!-- REPEAT ROW FOR ALL ROOM TYPES SELECTED -->
         <div class="row" ng-repeat="roomType in allotmentConfigData.summary.selected_room_types_and_bookings">
             <!-- REPEAT COLUMN FOR ALL DAYS IN THE BLOCK -->
             <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
             <div class="column" ng-repeat="dateData in roomType.dates">
-            	<!-- Release Total for Room Type -->
+                <!-- Room Type -->
                 <div class="line">
-                    <input type="text" value="" class="highlight" />
-                    <!-- getTotalHeldOfIndividualRoomType(dateData) -->
-                    <!-- release_days -->
+                     <input type="text" value="{{dateData.release_days}}" class="highlight" />
                 </div>
-                <div class="line small" ng-class="{'hidden' : !roomType.isCollapsed}" ng-hide="allotmentConfigData.summary.rate != -1 && roomType.rate_config.single_rate == null">
-                	<!-- Toggle class hidden when .line-toggle (L41) is clicked/tapped -->
+                 <div class="line small" ng-class="{'hidden' : !roomType.isCollapsed}"> <!-- Toggle class hidden when .line-toggle (L41) is clicked/tapped -->
                     <em class="cell">Total</em>
                     <em class="cell">Picked-up</em>
                 </div>
-
                 <!-- Single -->
                 <!-- <div class="line hidden"> -->
                 <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}" ng-hide="allotmentConfigData.summary.rate != -1 && roomType.rate_config.single_rate == null">
@@ -165,7 +173,6 @@
                         function-to-fire="bookingDataChanging"
                         ng-model="dateData.double_pickup"
                         class="cell" disabled />
-
                     <!-- we will show this quick arrow only in first column -->
                     <!-- NOT AVAILABLE -->
                     <!-- <button ng-if="!$index"
@@ -190,7 +197,6 @@
                         function-to-fire="bookingDataChanging"
                         ng-model="dateData.triple_pickup"
                         class="cell" disabled />
-
                     <!-- we will show this quick arrow only in first column -->
                     <!-- NOT AVAILABLE -->
                     <!-- <button ng-if="!$index"
@@ -201,10 +207,9 @@
                     </button> -->
                 </div>
 
-                <!-- NOT PRESENT FOR CURRENT VIEW -->
                 <!-- If L65 is clicked, generate option to add quadruple: -->
                 <!-- // Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
-                <!-- <div class="line" ng-if="shouldShowQuadrupleEntryRow(roomType)" ng-class="{'hidden' : !roomType.isCollapsed}">
+                <div class="line" ng-if="shouldShowQuadrupleEntryRow(roomType)" ng-class="{'hidden' : !roomType.isCollapsed}">
                     <input type="text"
                         rv-delay-textbox
                         delay="100"
@@ -222,17 +227,16 @@
                         delay="100"
                         function-to-fire="bookingDataChanging"
                         ng-model="dateData.quadruple_pickup"
-                        class="cell" disabled /> -->
+                        class="cell" disabled />
                     <!-- we will show this quick arrow only in first column -->
-                    <!-- <button ng-if="!$index"
+                    <button ng-if="!$index"
                         ng-click="copyQuadrupleValueToOtherBlocks(dateData, roomType)"
                         type="button"
                         class="admin-icons icon-mover-right">
                         Copy to all days
                     </button>
-                </div> -->
-                <!-- NOT PRESENT FOR CURRENT VIEW -->
-                
+                </div>
+
                 <!-- <div class="line small cellspan hidden"> -->
                 <div class="line small cellspan" ng-class="{'hidden' : !roomType.isCollapsed}">
                     <em class="cellspan">

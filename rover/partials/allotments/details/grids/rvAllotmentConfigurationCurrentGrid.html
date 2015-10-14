@@ -196,10 +196,9 @@
                     </button>
                 </div>
 
-                <!-- NOT PRESENT FOR CURRENT VIEW -->
                 <!-- If L65 is clicked, generate option to add quadruple: -->
                 <!-- // Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
-                <!-- <div class="line" ng-if="shouldShowQuadrupleEntryRow(roomType)" ng-class="{'hidden' : !roomType.isCollapsed}">
+                <div class="line" ng-if="shouldShowQuadrupleEntryRow(roomType)" ng-class="{'hidden' : !roomType.isCollapsed}">
                     <input type="text"
                         rv-delay-textbox
                         delay="100"
@@ -217,16 +216,15 @@
                         delay="100"
                         function-to-fire="bookingDataChanging"
                         ng-model="dateData.quadruple_pickup"
-                        class="cell" disabled /> -->
+                        class="cell" disabled />
                     <!-- we will show this quick arrow only in first column -->
-                    <!-- <button ng-if="!$index"
+                    <button ng-if="!$index"
                         ng-click="copyQuadrupleValueToOtherBlocks(dateData, roomType)"
                         type="button"
                         class="admin-icons icon-mover-right">
                         Copy to all days
                     </button>
-                </div> -->
-                <!-- NOT PRESENT FOR CURRENT VIEW -->
+                </div>
                 
                 <!-- <div class="line small cellspan hidden"> -->
                 <div class="line small cellspan" ng-class="{'hidden' : !roomType.isCollapsed}">
