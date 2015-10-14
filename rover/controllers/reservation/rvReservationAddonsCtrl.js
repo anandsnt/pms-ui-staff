@@ -259,6 +259,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             amountType: addon.amountType,
                             postType: addon.postType,
                             taxDetail: addon.taxes,
+                            chargefullweeksonly:addon.chargefullweeksonly
                         });
                     }
                 }

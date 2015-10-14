@@ -148,6 +148,7 @@ sntRover.controller('rvTabletCtrl', [
             };
             $scope.datePickerMin;
             $scope.resetDatePicker = function(){
+                        $scope.showDatePick = false;
                         var defaultDate = $scope.business_date+'';//for datepicker
                         var d = defaultDate.split(' ');
                         //day of wk = d[0]
@@ -436,7 +437,7 @@ sntRover.controller('rvTabletCtrl', [
                     var nites, avgDailyRate, packageRate, taxes, subtotal, deposits, balanceDue;
                     //console.log(info)
                     nites = parseInt(info.total_nights);
-                    
+                    $scope.selectedReservation.total_nights = nites;
                     avgDailyRate = parseFloat(info.deposit_attributes.room_cost).toFixed(2);
                     
                     deposits = parseFloat(info.deposit_attributes.deposit_paid).toFixed(2);
@@ -480,7 +481,19 @@ sntRover.controller('rvTabletCtrl', [
                   
                   $scope.selectedReservation.reservation_details.balance = parseFloat(balanceDue).toFixed(2);
                  
-                 $scope.$emit('hideLoader');
+                 
+                 //reservation_addons?reservation_id=1646512
+                 var fetchCompleted = function(addonData){
+                     console.info('got addons');
+                     console.log(addonData);
+                     $scope.$emit('hideLoader');
+                 };
+                 console.log('fetch using this', info);
+                  $scope.invokeApi(rvTabletSrv.fetchAddonDetails, {
+                            'id':info.confirmation_num
+                        }, fetchCompleted);
+                 
+                    $scope.$emit('hideLoader');
             };
             
             $scope.modalBtn1 = 'LOGIN';

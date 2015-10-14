@@ -63,7 +63,6 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			var classes = "",
 				rData 	= $scope.reservationData,
 				dayHouseAvailability = dailyData.house.availability;
-				
 
 			//if the date is checkin/checkout 
 			if (dailyData.date === rData.arrivalDate) {
@@ -134,7 +133,6 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 
 				eachAvailableRoomRate = null;
 
-			
 			for (var i = 1; i < availableRoomRates.length; i++) {
 				eachAvailableRoomRate = _.reject(availableRoomRates[i], function(room_rate){
 					return !isRoomRateFiltered(room_rate);
