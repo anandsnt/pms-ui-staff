@@ -1081,20 +1081,11 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {String} [with px]
 		 */
 		$scope.getWidthForContractViewTimeLine = function() {
-			// 270 + 160 since:
-			// each col width is 270
-			// first col width is 310
-			// so additional on first is 310 - 270 = 160
-			var v = $scope.allotmentConfigData.summary.selected_room_types_and_occupanies.length;
-
-			var t = v * 270 + 160;
-
-			if ( v > 0 ) {
-				console.log(v);
-				console.log(t);
-			};
-			
-			return ($scope.allotmentConfigData.summary.selected_room_types_and_occupanies.length * 270 + 160) + 'px';
+			// first col width = 310
+			// rest col width = 270
+			// no idea why 310 - 270 = 40 breaks but 110 works
+			// no idea where this extra 60 comes from			
+			return ($scope.allotmentConfigData.summary.selected_room_types_and_occupanies.length * 270 + 110) + 'px';
 		};
 
 		/**
