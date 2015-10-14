@@ -9,13 +9,13 @@
 			</div>
 			<!-- show posting message -->
 			<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
-				<p class="msg-head brown-text">Your request is being processed.</p>
-				<p class="msg-body brown-text">This may take a few seconds..... please wait!</p>
+				<p class="msg-head black-text">Your request is being processed.</p>
+				<p class="msg-body black-text">This may take a few seconds..... please wait!</p>
 			</div>
 			<!-- show error message -->
 			<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-				<p class="msg-head brown-text">Our apologies, something went wrong, please complete your check-out at our front desk.</p>
-				<p class="msg-body brown-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="brown-text">{{hotelPhone}}.</a></p>
+				<p class="msg-head black-text">Our apologies, something went wrong, please complete your check-out at our front desk.</p>
+				<p class="msg-body black-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="black-text">{{hotelPhone}}.</a></p>
 			</div>
 			<!-- top section starts here-->
 			<div class="row check-inout-wrapper toggle-pos-rel" ng-show="optionsAvailable && !isFetching && !netWorkError">
