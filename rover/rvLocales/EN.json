@@ -830,6 +830,7 @@
     "ADDITIONAL_EMAIL_ADDRESS": "Additional Email Address",
 
     "RESV_ALL_ROOMS" : "All Room Types",
+    "RESV_ALL_RATES" : "All Rate Types",
     "NO_ROOM_RATE_MSG": "No Availability. Please select to show Closed Rates or change Room Type selection.",
     "NO_AVAILABILITY": "No Availability",
     "RESV_RECOMMENDED" : "Recommended",
@@ -866,21 +867,27 @@
     "NIGHTS":"nights",
     "CHECKIN":"check-in",
     "CHECKOUT":"check-out",
+    "AVAILABLE" : "Available",
     "SELECT_ROOM_TYPE":"Select Room Type",
     "SET_DATES":"Set Dates", 
     "DRAG_AND_DROP_TEXT":"Drag &amp; drop to change stay dates",
     "ARRIVAL":"Arrival",
+    "ARRIVAL_UNAVAILABLE" : "Arrival Unavailable",
     "MID_STAY":"Mid stay",
+    "RESTRICTIONS_APPLY" : "Restrictions Apply",
     "DEPARTURE":"Departure",
     "ROOM_TYPE_AVAILABLE":"Room Type available",
     "NO_TYPE_AVAILABLE":"No Type availability",
     "NO_HOUSE_AVAILABLE":"No House availability",
+    "NO_ROOM_TYPE_AVAILABLE" : "NO Room Type available",
     "HOUSE":"House",
     "OVERBOOK_TEXT":"availability on one or more of the selected dates. Overbook?",
     "YES":"Yes",
     "NO":"No",
     "SHOW_STAY_DATES": "Show Stay Dates",
     "SHOW_CLOSED_RATES": "Show Closed Rates",
+    "ONLY_AVAILABLE_ROOMS" : "Only Available Rooms",
+    "SEARCH_WITH_RESTRICTIONS" : "Search With Restrictions",
     "VAR_OCCUPANCY": "Varying Occupancy per Stay Date",
     "INVALID_EMAIL_MESSAGE": "Please enter a valid email address",
     "INVALID_CREDIT_CARD": "There is a problem with your credit card",
@@ -912,6 +919,7 @@
     "CONFIRM_RESERVATION"   : "Confirm Reservation",
     "RESERVATION_CONFIRMATION" : "Reservation Confirmation",
     "RESERVATION_CANCELLED" : "Reservation cancelled"
+
 
 ,    
     

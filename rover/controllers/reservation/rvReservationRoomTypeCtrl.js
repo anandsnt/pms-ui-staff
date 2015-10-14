@@ -64,7 +64,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			},
 			calendarState: {
 				showOnlyAvailableRooms: true,
-				searchWithRestrictions: false,
+				searchWithRestrictions: true,
 				calendarType: "BEST_AVAILABLE"
 			}
 		};
@@ -1901,10 +1901,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 		$scope.toggleSearchWithRestrictions = function(){
 			$scope.stateCheck.calendarState.searchWithRestrictions = !$scope.stateCheck.calendarState.searchWithRestrictions;
+		    $scope.$broadcast('availableRateFiltersUpdated');
 		};
 
 		$scope.toggleShowOnlyAvailable = function(){
 			$scope.stateCheck.calendarState.showOnlyAvailableRooms = !$scope.stateCheck.calendarState.showOnlyAvailableRooms;
+		    $scope.$broadcast('availableRateFiltersUpdated');
 		};
 	}
 ]);
