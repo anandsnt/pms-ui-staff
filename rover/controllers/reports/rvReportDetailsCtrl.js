@@ -899,14 +899,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 	     * @return {String} [class name]
 	     */
 	    $scope.getReservationClass = function (reservationStatus) {
-	    	console.log("here");
 	        var class_ = '';
 	        switch (reservationStatus.toUpperCase()) {
 	            case "RESERVED":
 	                class_ = 'arrival';
 	                break;
 
-	            case "CHECKING_IN":
+	            case "DUE IN":
 	                class_ = 'check-in';
 	                break;
 
@@ -914,7 +913,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 	                class_ = 'inhouse';
 	                break;
 
-	            case "CHECKING_OUT":
+	            case "DUE OUT":
 	                class_ = 'check-out';
 	                break;
 
@@ -929,6 +928,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 	            case "NOSHOW":
 	            case "NOSHOW_CURRENT":
 	                class_ = 'no-show';
+	                break;
+
+	            case "IN HOUSE":
+	                class_ = 'inhouse';
 	                break;
 
 	            default:

@@ -828,25 +828,6 @@ sntRover.controller('RVReportsMainCtrl', [
 				});
 			};
 
-			// reset 'chosenOptions' and generate params for selected guest or account
-			if ( report['hasGuestOrAccountFilter']['data'].length ) {
-				report.chosenOptions = {};
-				/**/
-				_.each(report['hasGuestOrAccountFilter']['data'], function(each) {
-					if ( each.selected ) {
-						key                             = each.paramKey;
-						params[key]                     = true;
-						report.chosenOptions[key] = true;
-						/**/
-						$scope.appliedFilter.options.push( each.description );
-					} else if ( ! each.selected && each.mustSend ) {
-						key         = each.paramKey;
-						params[key] = false;
-					};
-				});
-			};
-
-
 			// generate params for selected displays
 			if ( report['hasDisplay']['data'].length ) {
 				_.each(report['hasDisplay']['data'], function(each) {

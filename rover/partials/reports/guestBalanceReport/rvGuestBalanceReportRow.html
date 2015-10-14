@@ -8,9 +8,9 @@
     </td>
     <td class="status">
         <!-- Reservation Status -->
-        <span class="guest-status small-icon" ng-if="item.status" ng-class="getReservationClass(item.status)"></span>
+        <span class="guest-status small-icon" ng-if="item.reservation_status" ng-class="getReservationClass(item.reservation_status)"></span>
         <!-- For Account Status -->
-        <!-- <em ng-if="item.account_status" ng-class="{'blue': item.account_status === 'inhouse', 'red': item.account_status === 'due out' || item.account_status === 'closed', 'green': item.account_status === 'open'}">{{item.account_status}}</em>  -->
+        <em ng-if="item.account_status" ng-class="{'red': item.account_status === 'CLOSED', 'green': item.account_status === 'OPEN'}">{{item.account_status}}</em> 
     </td>
     <td>
         <div class="date">
@@ -22,5 +22,5 @@
             <span>{{item.to_date}}</span>
         </div>
     </td>
-    <td class="balance" ng-class="{'red': item.balance_amount > 0, 'green': item.balance_amount < 0}">{{currencySymbol}}{{item.balance_amount | number: 2}}</td>
+    <td class="balance" ng-class="{'red': item.balance_amount > 0, 'green': item.balance_amount < 0}">{{item.balance_amount | currency:currencySymbol:2}}</td>
 </tr>
