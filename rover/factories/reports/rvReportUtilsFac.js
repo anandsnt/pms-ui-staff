@@ -1244,8 +1244,8 @@ sntRover.factory('RVReportUtilsFac', [
             // need to reorder the sort_by options
             // for guest balance report in the following order
             if ( report['title'] === reportNames['GUEST_BALANCE_REPORT'] ) {
-                var name = angular.copy( report['sort_fields'][0] ),
-                    balance = angular.copy( report['sort_fields'][1] );
+                var balance = angular.copy( report['sort_fields'][0] ),
+                    name = angular.copy( report['sort_fields'][1] );
 
                 report['sort_fields'][0] = name;
                 report['sort_fields'][1] = null;
