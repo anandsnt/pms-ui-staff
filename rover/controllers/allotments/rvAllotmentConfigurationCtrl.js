@@ -362,7 +362,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          * @return {Boolean} [description]
          */
         $scope.shouldShowCompanyCardNavigationButton = function() {
-            return (!$scope.isInAddMode() && !!$scope.allotmentConfigData.summary.company.id);
+            return ( !$scope.isInAddMode() && (null !== $scope.allotmentConfigData.summary.company && !!$scope.allotmentConfigData.summary.company.id) );
         };
 
         /**
