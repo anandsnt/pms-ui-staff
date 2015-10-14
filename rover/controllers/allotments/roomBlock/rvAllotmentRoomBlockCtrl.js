@@ -280,19 +280,25 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		/**
-		 * to copy the single & single_pick up value entered in the column
+		 * to copy the single-contract value entered in the column
 		 * to the row
 		 * @param {Object} - cell data
 		 * @param {Object} - row data
 		 * @return undefined
 		 */
-		$scope.copySingleValueToOtherBlocks = function(cellData, rowData) {
+		$scope.copySingleContractValueToOtherBlocks = function(cellData, rowData) {
 			_.each(rowData.dates, function(element) {
-				/*element.single = cellData.single;
-				element.single_pickup = cellData.single_pickup;*/
 				element.single_contract = cellData.single_contract;
 			});
-			//we chnged something
+			//we changed something
+			$scope.bookingDataChanging();
+		};
+
+		$scope.copySingleHeldValueToOtherBlocks = function(cellData, rowData) {
+			_.each(rowData.dates, function(element) {
+				element.single = cellData.single;
+			});
+			//we changed something
 			$scope.bookingDataChanging();
 		};
 
@@ -303,11 +309,17 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @param {Object} - row data
 		 * @return undefined
 		 */
-		$scope.copyDoubleValueToOtherBlocks = function(cellData, rowData) {
+		$scope.copyDoubleContractValueToOtherBlocks = function(cellData, rowData) {
 			_.each(rowData.dates, function(element) {
-				/*element.double = cellData.double;
-				element.double_pickup = cellData.double_pickup;*/
 				element.double_contract = cellData.double_contract;
+			});
+			//we chnged something
+			$scope.bookingDataChanging();
+		};
+
+		$scope.copyDoubleHeldValueToOtherBlocks = function(cellData, rowData) {
+			_.each(rowData.dates, function(element) {
+				element.double = cellData.double;
 			});
 			//we chnged something
 			$scope.bookingDataChanging();
@@ -320,11 +332,17 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @param {Object} - row data
 		 * @return undefined
 		 */
-		$scope.copyTripleValueToOtherBlocks = function(cellData, rowData) {
+		$scope.copyTripleContractValueToOtherBlocks = function(cellData, rowData) {
 			_.each(rowData.dates, function(element) {
-				/*element.triple = cellData.triple;
-				element.triple_pickup = cellData.triple_pickup;*/
 				element.triple_contract = cellData.triple_contract;
+			});
+			//we chnged something
+			$scope.bookingDataChanging();
+		};
+
+		$scope.copyTripleHeldValueToOtherBlocks = function(cellData, rowData) {
+			_.each(rowData.dates, function(element) {
+				element.triple = cellData.triple;
 			});
 			//we chnged something
 			$scope.bookingDataChanging();
@@ -337,11 +355,17 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @param {Object} - row data
 		 * @return undefined
 		 */
-		$scope.copyQuadrupleValueToOtherBlocks = function(cellData, rowData) {
+		$scope.copyQuadrupleContractValueToOtherBlocks = function(cellData, rowData) {
 			_.each(rowData.dates, function(element) {
-				/*element.quadruple = cellData.quadruple;
-				element.quadruple_pickup = cellData.quadruple_pickup;*/
 				element.quadruple_contract = cellData.quadruple_contract;
+			});
+			//we chnged something
+			$scope.bookingDataChanging();
+		};
+
+		$scope.copyQuadrupleHeldValueToOtherBlocks = function(cellData, rowData) {
+			_.each(rowData.dates, function(element) {
+				element.quadruple = cellData.quadruple;
 			});
 			//we chnged something
 			$scope.bookingDataChanging();
