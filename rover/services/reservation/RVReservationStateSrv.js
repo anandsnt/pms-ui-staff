@@ -305,8 +305,7 @@ sntRover.service('RVReservationStateService', [
 				}
 				rooms[roomTypeId].availabilityNumbers[date] = {
 					room: roomType.availability,
-					group: roomType.group_availability,
-					allotment: roomType.allotment_availability
+					group: roomType.group_availability
 				}
 			});
 		};
@@ -464,8 +463,8 @@ sntRover.service('RVReservationStateService', [
 						availabilityCount: (function(){
 							if(ratesMeta[rate_id].rate_type.name === "Group Rates" || !!selectedGroup){
 							 	return rooms[currentRoomId].availabilityNumbers[for_date].group;
-							} else if(ratesMeta[rate_id].rate_type.name === "Group Rates" || !!selectedAllotment){
-								return rooms[currentRoomId].availabilityNumbers[for_date].allotment;
+							} else if(!!selectedAllotment){
+								return room_rate.allotment_availability;
 							}else{
 								return rooms[currentRoomId].availabilityNumbers[for_date].room;
 							}
