@@ -373,9 +373,21 @@ sntRover.controller('RVbillCardController',
 	}
 	};
 
-
+        $scope.putInQueue = false;
 	$scope.init = function(reservationBillData){
-
+                
+                var viaQueue = false;
+                    if ($scope.$parent){
+                        if ($scope.$parent.reservation){
+                            viaQueue = $scope.$parent.reservation.check_in_via_queue;
+                        }
+                    }
+                
+                if ($rootScope.advanced_queue_flow_enabled && viaQueue){
+                    $scope.putInQueue = true;
+                } else {
+                    $scope.putInQueue = false;
+                }
 		/*
 		 * Adding billValue and oldBillValue with data. Adding with each bills fees details
 		 * To handle move to bill action
