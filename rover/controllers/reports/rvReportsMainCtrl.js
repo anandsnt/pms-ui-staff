@@ -609,7 +609,8 @@ sntRover.controller('RVReportsMainCtrl', [
 				'holdStatuses' : [],
 				'addonGroups'  : [],
 				'addons'       : [],
-				'reservationStatus' : []
+				'reservationStatus' : [],
+				'guestOrAccount': []
 			};
 
 			// include dates
@@ -827,6 +828,25 @@ sntRover.controller('RVReportsMainCtrl', [
 				});
 			};
 
+			// reset 'chosenOptions' and generate params for selected guest or account
+			if ( report['hasGuestOrAccountFilter']['data'].length ) {
+				report.chosenOptions = {};
+				/**/
+				_.each(report['hasGuestOrAccountFilter']['data'], function(each) {
+					if ( each.selected ) {
+						key                             = each.paramKey;
+						params[key]                     = true;
+						report.chosenOptions[key] = true;
+						/**/
+						$scope.appliedFilter.options.push( each.description );
+					} else if ( ! each.selected && each.mustSend ) {
+						key         = each.paramKey;
+						params[key] = false;
+					};
+				});
+			};
+
+
 			// generate params for selected displays
 			if ( report['hasDisplay']['data'].length ) {
 				_.each(report['hasDisplay']['data'], function(each) {
@@ -835,6 +855,18 @@ sntRover.controller('RVReportsMainCtrl', [
 						params[key] = true;
 						/**/
 						$scope.appliedFilter.display.push( each.description );
+					};
+				});
+			};
+
+			// generate params for guest or account
+			if ( report['hasGuestOrAccountFilter']['data'].length ) {
+				_.each(report['hasGuestOrAccountFilter']['data'], function(each) {
+					if ( each.selected ) {
+						key         = each.paramKey;
+						params[key] = true;
+						/**/
+						$scope.appliedFilter.guestOrAccount.push( each.description );
 					};
 				});
 			};
@@ -1061,26 +1093,6 @@ sntRover.controller('RVReportsMainCtrl', [
 					// in case if all reservation status are selected
 					if ( report['hasReservationStatus']['data'].length === selected.length ) {
 						$scope.appliedFilter.reservationStatus = ['All Reservation Status'];
-					};
-				};
-			};
-
-			if ( report.hasOwnProperty('hasGuestOrAccountFilter') ) {
-				selected = _.where(report['hasGuestOrAccountFilter']['data'], { selected: true });
-
-				if ( selected.length > 0 ) {
-					key         = reportParams['GUEST_OR_ACCOUNT'];
-					params[key] = [];
-					/**/
-					_.each(selected, function(each) {
-						params[key].push( each.id );
-						/**/
-						$scope.appliedFilter.guestOrAccount.push( each.status );
-					});
-
-					// in case if all reservation status are selected
-					if ( report['hasGuestOrAccountFilter']['data'].length === selected.length ) {
-						$scope.appliedFilter.guestOrAccount = ['All Selected'];
 					};
 				};
 			};
@@ -1368,6 +1380,5 @@ sntRover.controller('RVReportsMainCtrl', [
 				collision: 'flip'
 			}
 		}, ctgAutoCompleteCommon);
-
 	}
 ]);

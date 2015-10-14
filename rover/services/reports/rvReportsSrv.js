@@ -262,11 +262,6 @@ sntRover.service('RVreportsSrv', [
 					// if ( ! hasFilter.hasOwnProperty('RESERVATION_STATUS') && 'RESERVATION_STATUS' == eachFilter.value ) {
 					// 	hasFilter['RESERVATION_STATUS'] = true;
 					// };
-
-					if ( ! hasFilter.hasOwnProperty('GUEST_OR_ACCOUNT') && 'GUEST_OR_ACCOUNT' == eachFilter.value ) {
-						hasFilter['GUEST_OR_ACCOUNT'] = true;
-					};
-
 				});
 			});
 

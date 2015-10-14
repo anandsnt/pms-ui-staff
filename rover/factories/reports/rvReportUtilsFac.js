@@ -172,6 +172,11 @@ sntRover.factory('RVReportUtilsFac', [
             'INCLUDE_SEGMENT' : true
         };
 
+        var _guestOrAccountFilterNames = {
+            'GUEST': true,
+            'ACCOUNT': true
+        };
+
         /**
          * Create a DS representing the found filter into the general options DS
          * @param {Object} objRef The ith report object
@@ -244,9 +249,18 @@ sntRover.factory('RVReportUtilsFac', [
             });
         };
 
-
-
-
+        /**
+         * Create a DS representing the found filter into the display DS
+         * @param {Object} objRef The ith report object
+         * @param {Object} filter The ith report's filter object
+         */
+        var __pushGuestOrAccountData = function(objRef, filter) {
+            objRef['hasGuestOrAccountFilter']['data'].push({
+                paramKey    : filter.value.toLowerCase(),
+                description : filter.description,
+                selected    : true
+            });
+        };
 
 
         /**
@@ -503,6 +517,16 @@ sntRover.factory('RVReportUtilsFac', [
                 data         : []
             });
 
+            // create DS for guest or account
+            __setData(report, 'hasGuestOrAccountFilter', {
+                type         : 'FAUX_SELECT',
+                show         : false,
+                selectAll    : true,
+                defaultTitle : 'Select',
+                title        : 'All Selected',
+                data         : []
+            });
+
             // track all the dates avaliable on this report
             report.allDates = [];
 
@@ -708,12 +732,14 @@ sntRover.factory('RVReportUtilsFac', [
                     };
                 };
 
+                // fill up DS for options combo box
+                if ( _guestOrAccountFilterNames[filter.value] ) {
+                    __pushGuestOrAccountData( report, filter );
+                };
+
+
             });
         };
-
-
-
-
 
         factory.findFillFilters = function( reportItem, reportList ) {
             var deferred = $q.defer();
@@ -778,12 +804,6 @@ sntRover.factory('RVReportUtilsFac', [
                     requested++;
                     reportsSubSrv.fetchReservationStatus()
                         .then( fillResStatus );
-                }
-
-                else if ( 'GUEST_OR_ACCOUNT' == filter.value && ! filter.filled ) {
-                    requested++;
-                    reportsSubSrv.fetchGuestOrAccount()
-                        .then( fillGuestOrAccount );
                 }
 
                 else if ( ('INCLUDE_CHARGE_GROUP' == filter.value && ! filter.filled) || ('ADDON_GROUPS' == filter.value && ! filter.filled) ) {
@@ -938,10 +958,8 @@ sntRover.factory('RVReportUtilsFac', [
 
             function fillResStatus (data) {
                 var foundFilter;
-
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'RESERVATION_STATUS' });
-
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
                         __setData(report, 'hasReservationStatus', {
@@ -952,30 +970,6 @@ sntRover.factory('RVReportUtilsFac', [
                             defaultTitle : 'Select Status',
                             title        : 'Select Status',
                             data         : angular.copy( data )
-                        });
-                    };
-                });
-
-                completed++
-                checkAllCompleted();
-            };
-
-            function fillGuestOrAccount (data) {
-                var foundFilter;
-
-                _.each(reportList, function(report) {
-                    foundFilter = _.find(report['filters'], { value: 'GUEST_OR_ACCOUNT' });
-
-                    if ( !! foundFilter ) {
-                        foundFilter['filled'] = true;
-                        __setData(report, 'hasGuestOrAccountFilter', {
-                            type         : 'FAUX_SELECT',
-                            filter       : filter,
-                            show         : false,
-                            selectAll    : true,
-                            defaultTitle : 'Select',
-                            title        : 'Select',
-                            data         : angular.copy( data.guestOrAccount )
                         });
                     };
                 });
@@ -1246,6 +1240,19 @@ sntRover.factory('RVReportUtilsFac', [
                 report['sort_fields'][7] = null;
                 report['sort_fields'][8] = null;
             };
+
+            // need to reorder the sort_by options
+            // for guest balance report in the following order
+            if ( report['title'] === reportNames['GUEST_BALANCE_REPORT'] ) {
+                var name = angular.copy( report['sort_fields'][0] ),
+                    balance = angular.copy( report['sort_fields'][1] );
+
+                report['sort_fields'][0] = name;
+                report['sort_fields'][1] = null;
+                report['sort_fields'][2] = null;
+                report['sort_fields'][3] = null;
+                report['sort_fields'][4] = balance;
+            };
         };
 
 
@@ -1413,11 +1420,6 @@ sntRover.factory('RVReportUtilsFac', [
 
             return _ret;
         };
-
-
-
-
-
 
         return factory;
     }

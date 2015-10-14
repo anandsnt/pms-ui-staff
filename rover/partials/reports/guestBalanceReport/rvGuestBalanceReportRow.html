@@ -1,4 +1,4 @@
-<tr class="row-break" ng-repeat="item in result">
+<tr class="row-break" ng-repeat="item in results">
     <td class="name">
         <strong>{{item.name}}</strong>
         <em>{{item.number}}</em>
@@ -8,9 +8,9 @@
     </td>
     <td class="status">
         <!-- Reservation Status -->
-        <span class="guest-status small-icon" ng-if="item.reservation_status" ng-class="getReservationClass(item.reservation_status)"></span>
+        <span class="guest-status small-icon" ng-if="item.status" ng-class="getReservationClass(item.status)"></span>
         <!-- For Account Status -->
-        <em ng-if="item.account_status" ng-class="{'blue': item.account_status === 'inhouse', 'red': item.account_status === 'due out' || item.account_status === 'closed', 'green': item.account_status === 'open'}">{{item.account_status}}</em>
+        <!-- <em ng-if="item.account_status" ng-class="{'blue': item.account_status === 'inhouse', 'red': item.account_status === 'due out' || item.account_status === 'closed', 'green': item.account_status === 'open'}">{{item.account_status}}</em>  -->
     </td>
     <td>
         <div class="date">

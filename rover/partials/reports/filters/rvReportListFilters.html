@@ -341,7 +341,7 @@
         </label>
         <label class="checkbox inline" ng-repeat="each in item.hasGuestOrAccountFilter.data">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : each.selected }"></span>
-            <input type="checkbox" ng-model="each.selected" ng-change="fauxSelectChange(item.id, item.hasGuestOrAccountFilter)"> {{ each.name }}
+            <input type="checkbox" ng-model="each.selected" ng-change="fauxSelectChange(item.id, item.hasGuestOrAccountFilter)"> {{ each.description }}
         </label>
     </div>
 </div>

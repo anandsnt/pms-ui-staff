@@ -160,6 +160,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.isBalanceReport = true;
 					break;
 
+				case reportNames['GUEST_BALANCE_REPORT']:
+					$scope.hasNoTotals = false;
+					$scope.showSortBy = true;
+					$scope.isBalanceReport = true;
+					break;
+
 				default:
 					break;
 			};
@@ -529,7 +535,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportNames['GUEST_BALANCE_REPORT']:
-					template = '/assets/partials/reports/generalReportRows/rvGuestBalanceReportRow.html';
+					template = '/assets/partials/reports/guestBalanceReport/rvGuestBalanceReportRow.html';
 					break;
 
 				// RESERVATIONS_BY_USER report row
@@ -887,12 +893,58 @@ sntRover.controller('RVReportDetailsCtrl', [
 			refreshScroll();
 		});
 
+		/**
+	     * function to get reservation class against reservation status
+	     * @param {String} [reservationStatus] [description]
+	     * @return {String} [class name]
+	     */
+	    $scope.getReservationClass = function (reservationStatus) {
+	    	console.log("here");
+	        var class_ = '';
+	        switch (reservationStatus.toUpperCase()) {
+	            case "RESERVED":
+	                class_ = 'arrival';
+	                break;
+
+	            case "CHECKING_IN":
+	                class_ = 'check-in';
+	                break;
+
+	            case "CHECKEDIN":
+	                class_ = 'inhouse';
+	                break;
+
+	            case "CHECKING_OUT":
+	                class_ = 'check-out';
+	                break;
+
+	            case "CHECKEDOUT":
+	                class_ = 'departed';
+	                break;
+
+	            case "CANCELED":
+	                class_ = 'cancel';
+	                break;
+
+	            case "NOSHOW":
+	            case "NOSHOW_CURRENT":
+	                class_ = 'no-show';
+	                break;
+
+	            default:
+	                class_ = '';
+	                break;
+	        }
+	        return class_;
+	    };
+
 		// removing event listners when scope is destroyed
 		$scope.$on( 'destroy', reportSubmited );
 		$scope.$on( 'destroy', reportUpdated );
 		$scope.$on( 'destroy', reportPageChanged );
 		$scope.$on( 'destroy', reportPrinting );
 		$scope.$on( 'destroy', reportAPIfailed );
-
     }
+
 ]);
+
