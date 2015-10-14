@@ -181,7 +181,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
                 
 				$scope.stateVariables.selectedRoom = $scope.stateVariables.selectedRoom == null? "" : $scope.stateVariables.selectedRoom;
 				
-				if(typeof _.findWhere(room_rate.restrictions, {id:1}) !== 'undefined')
+				if(typeof _.findWhere(room_rate.restrictions, {restriction_type_id:1}) !== 'undefined')
 					return false;
 				else if(isInRoomTypeSelectedMode() && room_rate.room_type_id !== $scope.stateVariables.selectedRoom && $scope.stateVariables.selectedRoom != "")
 					return false;
@@ -225,7 +225,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				editable 	: false,
 				title 		: title == ""? bestRateData.bestAvailableRate.toString() : title,
 				toolTipData : bestRateData,
-				currencySymbol : $scope.currencySymbol
+				currencySymbol : bestRateData.bestAvailableRate > 0 ? $scope.currencySymbol : ""
 			};
 
 			return eventData;

@@ -5387,7 +5387,7 @@ function DayEventRenderer() {
 			" data-date='" + htmlEscape(formatDate(event.start, 'yyyy-MM-dd')) + "'" + 
 			" data-rate='" + htmlEscape(event.rate || '') + "'" + 
 			" data-room-type='" + htmlEscape(event.roomType || '') + "'";
-            if(segment.event.title !== ""){
+            if(segment.event.title !== "" && event.toolTipData !== 'undefined'){
                html += "qtipfc qtip-template='/assets/partials/reservation/rvTooltipContent.html'"+
 			"qtip-template-object='segments[" + index + "]'";
             }
