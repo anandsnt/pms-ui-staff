@@ -17,6 +17,12 @@
 			      <span class="switch-icon">Ready</span>
 		      </label>
 		   </div>
+                    <div>
+                   <label for="room-status">Current Status: 
+			      <span translate>  {{reservationBillData.room_ready_status}}</span>
+		      </label>
+		   </div>
+                   
 		</div>
 		<button id="ok" class="button modal-close" ng-class="{'red':status==='error','green':status === 'success'}" ng-click="okButtonClicked()">
 			Ok

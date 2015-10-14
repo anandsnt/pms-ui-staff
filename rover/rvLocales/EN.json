@@ -867,15 +867,19 @@
     "NIGHTS":"nights",
     "CHECKIN":"check-in",
     "CHECKOUT":"check-out",
+    "AVAILABLE" : "Available",
     "SELECT_ROOM_TYPE":"Select Room Type",
     "SET_DATES":"Set Dates", 
     "DRAG_AND_DROP_TEXT":"Drag &amp; drop to change stay dates",
     "ARRIVAL":"Arrival",
+    "ARRIVAL_UNAVAILABLE" : "Arrival Unavailable",
     "MID_STAY":"Mid stay",
+    "RESTRICTIONS_APPLY" : "Restrictions Apply",
     "DEPARTURE":"Departure",
     "ROOM_TYPE_AVAILABLE":"Room Type available",
     "NO_TYPE_AVAILABLE":"No Type availability",
     "NO_HOUSE_AVAILABLE":"No House availability",
+    "NO_ROOM_TYPE_AVAILABLE" : "NO Room Type available",
     "HOUSE":"House",
     "OVERBOOK_TEXT":"availability on one or more of the selected dates. Overbook?",
     "YES":"Yes",
@@ -915,6 +919,7 @@
     "CONFIRM_RESERVATION"   : "Confirm Reservation",
     "RESERVATION_CONFIRMATION" : "Reservation Confirmation",
     "RESERVATION_CANCELLED" : "Reservation cancelled"
+
 
 ,    
     

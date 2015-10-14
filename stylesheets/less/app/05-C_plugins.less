@@ -112,8 +112,7 @@
 			}
 		}
 
-		&.allotment-card,
-		&.group-allotment-card {
+		&.allotment-card {
 			.ui-resizable-handle {
 				&.ui-resizable-s {
 					background-color: @allotmentcard;
@@ -121,6 +120,20 @@
 
 					@media @highdpi {
 						background-image: @icons2x, @allotmentcardTexture;
+						background-size: 120px, 40px;
+					}
+				}
+			}
+		}
+
+		&.group-allotment-card {
+			.ui-resizable-handle {
+				&.ui-resizable-s {
+					background-color: mix(@allotmentcard, @groupcard, 50%);
+					background-image: @icons;
+
+					@media @highdpi {
+						background-image: @icons2x;
 						background-size: 120px, 40px;
 					}
 				}
@@ -4869,7 +4882,6 @@
 					background: @red; 
 
 					.fc-event-title { 
-						text-indent: 9999px; 
 						background: @icons no-repeat 5px -155px; 
 
 						@media @highdpi {
@@ -4915,8 +4927,7 @@
 				&.check-in {
 					.fc-event-inner {
 						.fc-event-title { 
-							margin-top: -25px;
-							text-indent: 9999px; 
+							margin-top: -25px; 
 						}
 					}
 				}
@@ -4942,7 +4953,6 @@
 					}
 					&.check-out {
 						.fc-event-inner {
-							.fc-event-title { text-indent: 9999px; }
 							.fc-event-day { .show; }
 						}
 					} 
