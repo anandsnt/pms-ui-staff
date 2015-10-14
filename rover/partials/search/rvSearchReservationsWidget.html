@@ -57,10 +57,11 @@
 						</div>	
 
 						<!-- if none of these exsist for the guest don't output the entire div (and add class "no-guest-info" to div.data) -->
-	                    <div class="guest-info" ng-hide="escapeNull(row.company)=='' && escapeNull(row.travel_agent)=='' && escapeNull(row.group)==''">
+	                    <div class="guest-info" ng-hide="escapeNull(row.company)=='' && escapeNull(row.travel_agent)=='' && escapeNull(row.group)=='' && escapeNull(row.allotment)==''">
 	                        <span class="icons icon-guest-company" ng-hide="escapeNull(row.company)==''" ng-bind-html="escapeNull(row.company)|highlight:textInQueryBox:false"></span> 
 	                        <span class="icons icon-guest-travelagent" ng-hide="escapeNull(row.travel_agent)==''" ng-bind-html="escapeNull(row.travel_agent)|highlight:textInQueryBox:false"></span>
 	                        <span class="icons icon-group" ng-hide="escapeNull(row.group)==''" ng-bind-html="escapeNull(row.group)|highlight:textInQueryBox:false"></span> 
+	                        <span class="icons icon-allotment" ng-hide="escapeNull(row.allotment)==''" ng-bind-html="escapeNull(row.allotment)|highlight:textInQueryBox:false"></span> 
 	                    </div>
 
 						<!-- Display the arrival date and Room number-->

@@ -300,7 +300,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 				company: cards.company_id || "",
 				travelAgent: cards.travel_agent_id || ""
 			};
-			reservationData.group = { //allotment
+			reservationData.allotment = { //allotment
 				id: stayCard.allotment_id,
 				name: stayCard.allotment_name,
 				company: cards.company_id || "",
