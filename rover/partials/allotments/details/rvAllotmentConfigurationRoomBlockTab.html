@@ -48,17 +48,20 @@
     <div id="allotment-room-block-content" class="tab-details">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <!-- Allotment Roomblock Grid views - Toggled by select box. -->
-        <ng-include src="'/assets/partials/allotments/details/grids/rvAllotmentConfigurationContractGrid.html'"
+        <!-- <ng-include src="'/assets/partials/allotments/details/grids/rvAllotmentConfigurationContractGrid.html'"
             ng-if="allotmentConfigData.activeGridView == 'CONTRACT'">
-        </ng-include>
+        </ng-include> -->
+        <div ng-if="allotmentConfigData.activeGridView == 'CONTRACT'" ng-include="'/assets/partials/allotments/details/grids/rvAllotmentConfigurationContractGrid.html'"></div>
 
-        <ng-include src="'/assets/partials/allotments/details/grids/rvAllotmentConfigurationCurrentGrid.html'"
+        <!-- <ng-include src="'/assets/partials/allotments/details/grids/rvAllotmentConfigurationCurrentGrid.html'"
             ng-if="allotmentConfigData.activeGridView == 'CURRENT'">
-        </ng-include>
+        </ng-include> -->
+        <div ng-if="allotmentConfigData.activeGridView == 'CURRENT'" ng-include="'/assets/partials/allotments/details/grids/rvAllotmentConfigurationCurrentGrid.html'"></div>
 
-        <ng-include src="'/assets/partials/allotments/details/grids/rvAllotmentConfigurationReleaseGrid.html'"
+        <!-- <ng-include src="'/assets/partials/allotments/details/grids/rvAllotmentConfigurationReleaseGrid.html'"
             ng-if="allotmentConfigData.activeGridView == 'RELEASE'">
-        </ng-include>
+        </ng-include> -->
+        <div ng-if="allotmentConfigData.activeGridView == 'RELEASE'" ng-include="'/assets/partials/allotments/details/grids/rvAllotmentConfigurationReleaseGrid.html'"></div>
 
     </div>
 </form>

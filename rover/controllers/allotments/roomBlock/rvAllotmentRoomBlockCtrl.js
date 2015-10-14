@@ -1101,8 +1101,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 					//we have to refresh scroller afetr that
 					refreshScroller();
-
-
 				}
 
 			};
