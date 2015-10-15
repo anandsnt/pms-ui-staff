@@ -15,7 +15,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
     .state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/checkoutnow/partials/Huntley/checkOutStatus.html',
+       	templateUrl: '/assets/checkoutnow/partials/Carillon/checkOutStatus.html',
 		title: 'Status - Check-out Now'
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
@@ -33,12 +33,12 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	title: 'Check-out'
 	 }).state('checkOutLaterOptions', {
 	 	url: '/checkOutLaterOptions',
-		templateUrl: '/assets/checkoutlater/partials/Huntley/checkOutLater.html',
+		templateUrl: '/assets/checkoutlater/partials/Carillon/checkOutLater.html',
 	 	controller: 'checkOutLaterController',
 		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
 		url: '/checkOutLaterOptions/:id',
-		templateUrl: '/assets/checkoutlater/partials/Huntley/checkOutLaterSuccess.html',
+		templateUrl: '/assets/checkoutlater/partials/Carillon/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Check-out Later'
 	 });
@@ -86,7 +86,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-	 	templateUrl: '/assets/checkoutnow/partials/Huntley/ccVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Carillon/ccVerification.html',
 	 	controller : 'ccVerificationViewController',
 	 	title: 'CC verification'
 	 });
@@ -104,7 +104,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
 	$stateProvider.state('noOptionAvailable', {
     	url: '/noOptionAvailable',
-	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	templateUrl: '/assets/preCheckin/partials/Carillon/noOption.html',
 	 	title: 'Feature not available'
 	});
 
