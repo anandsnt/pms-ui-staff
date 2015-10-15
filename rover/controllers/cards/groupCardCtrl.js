@@ -10,6 +10,14 @@ sntRover.controller('RVGroupCardCtrl', ['$scope', '$rootScope', 'RVCompanyCardSr
 			}, 500);
 		});
 
+		$scope.$on('allotmentCardAvailable', function(obj, isNew) {
+			$scope.searchMode = false;
+			$timeout(function() {
+				// $scope.groupSummaryMemento = angular.copy($scope.groupConfigData.summary);
+				$scope.$emit('hideLoader');
+			}, 500);
+		});
+
 		$scope.isInAddMode = function() {
 			return false;
 		}
@@ -22,8 +30,20 @@ sntRover.controller('RVGroupCardCtrl', ['$scope', '$rootScope', 'RVCompanyCardSr
 			}
 		};
 
+		$scope.fetchGroupAllotmentCardId = function(section) {
+			var suffix = section === "HEAD" ? 'header' : 'content';
+
+			if (!!$scope.reservationData.group.id) {
+				return 'group-card-' + suffix;
+
+			} else if (!!$scope.reservationData.allotment.id) {
+				return 'allotment-card-' + suffix;
+			}
+			return 'group-allotment-card-' + suffix;
+		};
+
 		$scope.$on("groupCardDetached", function() {
-			$scope.searchMode = true;			
+			$scope.searchMode = true;
 		});
 
 		$scope.$on("GROUP_SEARCH_ON", function() {

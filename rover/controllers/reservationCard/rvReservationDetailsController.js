@@ -280,7 +280,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			guest: $scope.reservationDetails.guestCard.id,
 			company: $scope.reservationDetails.companyCard.id,
 			agent: $scope.reservationDetails.travelAgent.id,
-			group: $scope.reservationDetails.group.id
+			group: $scope.reservationDetails.group.id,
+			allotment: $scope.reservationDetails.allotment.id
 		};
 		//also reload the loyalty card / frequent flyer section
 		$rootScope.$broadcast('reload-loyalty-section-data', {});
@@ -289,6 +290,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		$scope.reservationDetails.companyCard.id = reservationListData.company_id === null ? "" : reservationListData.company_id;
 		$scope.reservationDetails.travelAgent.id = reservationListData.travel_agent_id === null ? "" : reservationListData.travel_agent_id;
 		$scope.reservationDetails.group.id = reservationDetails.reservation_card.group_id || '';
+		$scope.reservationDetails.allotment.id = reservationDetails.reservation_card.allotment_id || '';
 
 		angular.copy(reservationListData, $scope.reservationListData);
 		$scope.populateDataModel(reservationDetails);
@@ -297,7 +299,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			guest: $scope.reservationDetails.guestCard.id === existingCards.guest,
 			company: $scope.reservationDetails.companyCard.id === existingCards.company,
 			agent: $scope.reservationDetails.travelAgent.id === existingCards.agent,
-			group: $scope.reservationDetails.group.id === existingCards.group
+			group: $scope.reservationDetails.group.id === existingCards.group,
+			allotment: $scope.reservationDetails.allotment.id === existingCards.allotment
 		});
 		//CICO-7078
 
