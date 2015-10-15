@@ -96,7 +96,9 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			}else if(!isRoomTypeAvailable(dailyData)){
                 return (dailyData.room_types[$scope.stateVariables.selectedRoom]).toString();
 			}else if($scope.stateVariables.selectedRoom !== '' && $scope.stateVariables.selectedRate !== ''){
-                var filtered_room = _.findWhere(_.findWhere(dailyData.rates, {id:$scope.stateVariables.selectedRate}).room_rates, {room_type_id:$scope.stateVariables.selectedRoom});
+				var filtered_rate = _.findWhere(dailyData.rates, {id:$scope.stateVariables.selectedRate});
+
+                var filtered_room = typeof filtered_rate !== 'undefined' ? _.findWhere(filtered_rate.room_rates, {room_type_id:$scope.stateVariables.selectedRoom}): undefined ;
                 if(typeof filtered_room != 'undefined' &&  filtered_room.availability <= 0)
                 	return room_availability.toString();
                 else if(typeof filtered_room == 'undefined')
