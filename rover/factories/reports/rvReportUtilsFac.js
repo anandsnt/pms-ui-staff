@@ -400,6 +400,11 @@ sntRover.factory('RVReportUtilsFac', [
                     report['canRemoveDate'] = true;
                     break;
 
+                case reportNames['GROUP_DEPOSIT_REPORT']:
+                    report['hasDateLimit']  = false;
+                    report['canRemoveDate'] = true;
+                    break;
+
                 case reportNames['OCCUPANCY_REVENUE_SUMMARY']:                    
                     report['hasPrevDateLimit'] = true;
                     break;
@@ -464,11 +469,6 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
             };
         };
-
-
-
-
-
 
         /**
          * Process the filters and create proper DS to show and play in UI
@@ -570,6 +570,20 @@ sntRover.factory('RVReportUtilsFac', [
                         untilModel : 'untilArrivalDate'
                     });
                     report.allDates.push( 'hasArrivalDateFilter' );
+                };
+
+                // check for group start date filter and keep a ref to that item
+                if ( filter.value === 'GROUP_START_DATE_RANGE' ) {
+                    report['hasGroupStartDateRange'] = filter;
+
+                    // track - showRemove flag, model names.
+                    // push date name to 'allDates'
+                    angular.extend(report['hasGroupStartDateRange'], {
+                        showRemove : true,
+                        fromModel  : 'groupStartDate',
+                        untilModel : 'groupEndDate'
+                    });
+                    report.allDates.push( 'hasGroupStartDateRange' );
                 };
 
                 // check for Deposit due date range filter and keep a ref to that item
@@ -1289,8 +1303,8 @@ sntRover.factory('RVReportUtilsFac', [
                 // arrival date range must be from business date to a week after
                 // deposit date range must the current business date
                 case reportNames['GROUP_DEPOSIT_REPORT']:
-                    report['fromArrivalDate']  = _getDates.businessDate;
-                    report['untilArrivalDate'] = _getDates.aWeekAfter;
+                    report['groupStartDate']  = _getDates.businessDate;
+                    report['groupEndDate'] = _getDates.aWeekAfter;
                     /**/
                     report['fromDepositDate']  = _getDates.businessDate;
                     report['untilDepositDate'] = _getDates.businessDate;

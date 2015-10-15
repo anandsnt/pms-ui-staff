@@ -33,7 +33,7 @@
 
 
     <td ng-if="each.isSubTotal"></td>
-    <td ng-if="each.isSubTotal"><strong>Total Due</strong></td>
+    <td ng-if="each.isSubTotal"><strong>Balance</strong></td>
 	<td ng-if="each.isSubTotal"class="red"><strong>{{ each.deposit_due_amount | currency:currencySymbol:2 }}</strong></td>
 	<td ng-if="each.isSubTotal"><strong>Total Paid</strong></td>
 	<td ng-if="each.isSubTotal" class="green"><strong>{{ each.paid_amount | currency:currencySymbol:2 }}</strong></td>
