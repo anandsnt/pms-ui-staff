@@ -62,7 +62,7 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 		 */
 		this.saveRoomBlockBookings = function(params) {
 			var deferred = $q.defer(),
-				url = '/api/allotmets/save_inventories';
+				url = '/api/allotments/save_inventories';
 
 
 			rvBaseWebSrvV2.postJSON(url, params).then(

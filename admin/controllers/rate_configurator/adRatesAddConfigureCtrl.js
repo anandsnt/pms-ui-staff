@@ -429,7 +429,11 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             setData.dateRangeId = dateRangeId;
             selectedIndex = index;
             //Check if values exist in the Rate Manager
-            checkForRateSetUpdateInRateManager(setData);
+            if(!!setData.id){ //CICO-20263
+                checkForRateSetUpdateInRateManager(setData);
+            }else{
+                callSaveOrUpdateSet();
+            }
         };
 
         $scope.moveAllSingleToDouble = function(index) {

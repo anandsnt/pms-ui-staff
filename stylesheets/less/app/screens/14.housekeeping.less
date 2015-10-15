@@ -236,7 +236,7 @@
                 margin-left: 10px;
                 overflow: hidden;
                 height: 60px;
-                .calc-width(50, 10);
+                .calc-width(100, 190);
                 .show;
                 .pull-left;
 
@@ -244,6 +244,7 @@
                     font-size: 36px;
                     line-height: .8em;
                     font-weight: 600;
+                    .nowrap();
                 }
 
                 span {
@@ -252,6 +253,7 @@
                     font-weight: 600;
                     text-transform: uppercase;
                     .show;
+                    .nowrap();
                 }
             }
 
@@ -447,7 +449,9 @@
                     margin-bottom: 20px;
 
                     .entry {
-                        margin-bottom: 10px;
+                        padding-bottom: 20px;
+                        margin-bottom: 20px;
+                        .box-shadow(0 1px 0 rgba(0,0,0,.1));
 
                         label {
                             font-size: 14px;
@@ -535,7 +539,7 @@
 
                 &.scrollable {
                     padding: 0;
-                    .calc-height(100, 80);
+                    .calc-height(100, 60);
 
                     .wrapper { padding: 0 20px 20px 20px; }
 
@@ -612,6 +616,7 @@
 
             .icon-room {
                 margin-top: 10px;
+                .calc-width(100, 250);
 
                 h1 { font-size: 48px; }
                 span { font-size: 14px; }
@@ -727,6 +732,7 @@
                 margin-top: 5px;
                 padding-left: 90px;
                 height: 80px;
+                .calc-width(100, 310);
 
                 h1 { font-size: 60px; }
                 span { font-size: 18px; }
@@ -764,13 +770,14 @@
                     margin-bottom: 0;
 
                     .entry {
-                        margin-bottom: 20px;
+                        padding-bottom: 0;
+                        .box-shadow(none);
 
-                        input,
-                        select {
+                        input {
                             font-size: 18px;
                             line-height: 60px;
                             min-height: 60px;
+                            padding: 0 10px;
                             .size(60px, 100%);
                         }
 
@@ -833,13 +840,13 @@
                     }
 
                     &#actions {
-
                         .button { width: 50%; }
                     }
                 }
 
                 &.scrollable {
                     padding: 0;
+                    .calc-height(100, 80);
 
                     .wrapper {  padding: 0 25% 20px 25%; }
                 }

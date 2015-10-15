@@ -280,7 +280,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			guest: $scope.reservationDetails.guestCard.id,
 			company: $scope.reservationDetails.companyCard.id,
 			agent: $scope.reservationDetails.travelAgent.id,
-			group: $scope.reservationDetails.group.id
+			group: $scope.reservationDetails.group.id,
+			allotment: $scope.reservationDetails.allotment.id
 		};
 		//also reload the loyalty card / frequent flyer section
 		$rootScope.$broadcast('reload-loyalty-section-data', {});
@@ -289,6 +290,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		$scope.reservationDetails.companyCard.id = reservationListData.company_id === null ? "" : reservationListData.company_id;
 		$scope.reservationDetails.travelAgent.id = reservationListData.travel_agent_id === null ? "" : reservationListData.travel_agent_id;
 		$scope.reservationDetails.group.id = reservationDetails.reservation_card.group_id || '';
+		$scope.reservationDetails.allotment.id = reservationDetails.reservation_card.allotment_id || '';
 
 		angular.copy(reservationListData, $scope.reservationListData);
 		$scope.populateDataModel(reservationDetails);
@@ -297,7 +299,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			guest: $scope.reservationDetails.guestCard.id === existingCards.guest,
 			company: $scope.reservationDetails.companyCard.id === existingCards.company,
 			agent: $scope.reservationDetails.travelAgent.id === existingCards.agent,
-			group: $scope.reservationDetails.group.id === existingCards.group
+			group: $scope.reservationDetails.group.id === existingCards.group,
+			allotment: $scope.reservationDetails.allotment.id === existingCards.allotment
 		});
 		//CICO-7078
 
@@ -381,20 +384,40 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 			if ($scope.isDepositBalanceScreenOpened) {
 				swipedCardData.swipeFrom = "depositBalance";
+                                
+                                
 			} else if ($scope.isCancelReservationPenaltyOpened) {
 				swipedCardData.swipeFrom = "cancelReservationPenalty";
+                                
+                                
+                                
 			} else if ($scope.isStayCardDepositScreenOpened) {
 				swipedCardData.swipeFrom = "stayCardDeposit";
+                                
+                                
+                                
 			} else if ($scope.isGuestCardVisible) {
 				swipedCardData.swipeFrom = "guestCard";
+                                
+                                
+                                
 			} else {
 				swipedCardData.swipeFrom = "stayCard";
 			}
+                        
+                        
+                        
+                        
+                        
 			var swipeOperationObj = new SwipeOperation();
 			var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
 			var tokenizeSuccessCallback = function(tokenValue) {
 				$scope.$emit('hideLoader');
 				swipedCardData.token = tokenValue;
+                                
+                                
+                                console.log('got token from swipe, showing payment model:');
+                                console.info('data: ',swipedCardData);
 				$scope.showAddNewPaymentModel(swipedCardData);
                                 $scope.swippedCard = true;
 			};
@@ -564,7 +587,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				view: 'DEFAULT',
 				fromState: $state.current.name,
 				company_id: $scope.$parent.reservationData.company.id,
-				travel_agent_id: $scope.$parent.reservationData.travelAgent.id
+				travel_agent_id: $scope.$parent.reservationData.travelAgent.id,
+				group_id: $scope.$parent.reservationData.group.id
 			});
 		}
 
@@ -664,13 +688,28 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 
 				passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
 				if (swipedCardDataToRender.swipeFrom !== "depositBalance" && swipedCardDataToRender.swipeFrom !== "cancelReservationPenalty" && swipedCardDataToRender.swipeFrom !== "stayCardDeposit") {
+                                    
+                                    
+                                    
 					$scope.openPaymentDialogModal(passData, paymentData);
 				} else if (swipedCardDataToRender.swipeFrom === "stayCardDeposit") {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_STAY_CARD_DEPOSIT_SCREEN', swipedCardDataToRender);
+                                        
+                                        
+                                        
 				} else if (swipedCardDataToRender.swipeFrom === "depositBalance") {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
+                                        
+                                        
+                                        
+                                        
 				} else {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_CANCEL_RESERVATION_PENALTY_SCREEN', swipedCardDataToRender);
+                                        
+                                        
+                                        
+                                        
+                                        
 				}
 			} else {
 				passData.details.swipedDataToRenderInScreen = {};
@@ -794,7 +833,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			};
 
 			var arrivalDate = tzIndependentDate($scope.editStore.arrival),
-				departureDate = tzIndependentDate($scope.editStore.departure);
+			departureDate = tzIndependentDate($scope.editStore.departure);
 			$scope.reservationParentData.arrivalDate = $filter('date')(arrivalDate, 'yyyy-MM-dd');
 			$scope.reservationParentData.departureDate = $filter('date')(departureDate, 'yyyy-MM-dd');
 			$scope.reservationParentData.numNights = Math.floor((Date.parse(departureDate) - Date.parse(arrivalDate)) / 86400000);

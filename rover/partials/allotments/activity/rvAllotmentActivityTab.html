@@ -1,7 +1,4 @@
-<form id="allotment-activity" name="allotment-activity" ng-click="clearErrorMessage()" class="form card-tab scrollable" ng-controller="rvAllotmentConfigurationSummaryTabCtrl" ng-iscroll="groupSummaryScroller" ng-iscroll-delay="500" outside-click-handler>
-    <div class="wrapper">
-        <div class="holder left">
-            <strong class="h3">Not Implemented</strong>
-        </div>
-    </div>
-</form>
+<!-- Allotment Card Tab - Activity Log -->
+<div ng-controller = "rvAllotmentActivityCtrl">
+	<div ng-include="'/assets/partials/activityLog/rvActivityLogTemplate.html'"></div>
+</div>

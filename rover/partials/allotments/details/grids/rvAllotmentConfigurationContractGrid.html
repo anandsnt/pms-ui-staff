@@ -1,0 +1,265 @@
+<!-- If new allotment and/or room block have not been set: -->
+        <div class="no-content" ng-hide="shouldHideAddRoomsButton()">
+            <div class="info">
+                <a ng-click="clickedOnAddRoomsAndRatesButton()" class="button"
+                    ng-disabled="shouldDisableAddRoomsAndRate()"
+                    ng-class="{	'green': !shouldDisableAddRoomsAndRate(),
+	            				'grey': shouldDisableAddRoomsAndRate()}"
+                    translate>
+	            	ADD_ROOMS_AND_RATE
+	            </a>
+                <!-- // Button should have class "hidden" until block is created -->
+            </div>
+        </div>
+
+        <!-- Room block actions -->
+        <div class="room-block-actions extended-timeline" ng-show="shouldHideAddRoomsButton()">
+            <button type="butotn" class="button blue"
+                ng-click="clickedOnAddRoomsAndRatesButton()"
+                translate>
+                ROOMS_AND_RATES
+            </button>
+        </div>
+
+        <!-- Room block room types -->
+        <div class="room-block-sidebar extended-timeline scrollable" ng-show="shouldHideAddRoomsButton()"
+            ng-iscroll="room_block_scroller">
+            <div class="wrapper">
+                <!-- Toggle class "open" when .line-toggle is clicked/tapped -->
+                <div ng-class="{'open' : roomtype_rate.isCollapsed}"
+                    class="row"
+                    ng-repeat="roomtype_rate in allotmentConfigData.summary.selected_room_types_and_bookings"
+                    ui-jq="accordion"
+                    ui-options="accordionInitiallyNotCollapsedOptions"
+                    ng-init="roomtype_rate.isCollapsed = true">
+
+                    <!-- Toggle class "active" when clicked/tapped -->
+                    <p class="line line-toggle"
+                        ng-class="{'active' : roomtype_rate.isCollapsed}"
+                        ng-click="roomtype_rate.isCollapsed = !roomtype_rate.isCollapsed">
+                        {{roomtype_rate.room_type_name}}
+                    </p>
+                    <!-- Toggle class "hidden" when .line-toggle is clicked/tapped -->
+                    <ul ng-class="{'hidden' : !roomtype_rate.isCollapsed}">
+                        <li class="line" translate ng-hide="allotmentConfigData.summary.rate != -1 && roomtype_rate.rate_config.single_rate == null">SINGLE</li>
+                        <li class="line" translate ng-hide="allotmentConfigData.summary.rate != -1 && roomtype_rate.rate_config.double_rate == null">DOUBLE</li>
+                        <li class="line small add"
+                            ng-if="!shouldShowTripleEntryRow(roomtype_rate) && allotmentConfigData.summary.rate == -1"
+                            ng-click="addTripleEntryRow(roomtype_rate)"
+                            ng-class="{'add': !shouldDisableAddTripleButton(roomtype_rate)}"
+                            translate>
+                            ADD_TRIPLE
+                        </li>
+                        <li class="line"
+                            ng-if="shouldShowTripleEntryRow(roomtype_rate)"
+                            translate>
+                            TRIPLE
+                        </li>
+                        <li class="line"
+                            ng-if="shouldShowQuadrupleEntryRow(roomtype_rate)"
+                            translate>
+                            QUADRUPLE
+                        </li>
+                        <li class="line small"
+                            ng-if="!shouldShowQuadrupleEntryRow(roomtype_rate) && shouldShowTripleEntryRow(roomtype_rate) && allotmentConfigData.summary.rate == -1"
+
+                            ng-click="addQuadrupleEntryRow(roomtype_rate)"
+                            ng-class="{'add': !shouldDisableAddQuadrupleButton(roomtype_rate)}"
+                            translate>
+                            ADD_QUADRUPLE
+                        </li>
+                        <!-- When clicked, add L110-113 -->
+                        <!-- When + Add Triple is clicked, show option to add quadruple:
+	                    <li  translate></li> // When clicked, add L115-118 -->
+                        <li class="line small add" ng-if="shouldShowQuadrupleEntryRow(roomtype_rate) && shouldShowTripleEntryRow(roomtype_rate)"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Room block days -->
+        <div class="room-block-timeline extended-timeline cols-3 scrollable"
+            ng-iscroll="room_rates_timeline_scroller"
+            ng-show="shouldHideAddRoomsButton()">
+
+            <ul style="width:{{getWidthForContractViewTimeLine()}};" class="wrapper">
+                <li ng-repeat="occupancy in allotmentConfigData.summary.selected_room_types_and_occupanies">
+                    <div class="inner">
+                        <span>{{formatDateForUI(occupancy.date, fulldayInWeek)}}</span>
+                        <strong>{{formatDateForUI(occupancy.date, monthAndDate)}}</strong>
+                        <em>{{occupancy.occupancy}}% Occupancy</em>
+                    </div>
+                    <div class="column">
+                        <div class="line small">
+                            <em class="cell">Contract</em>
+                            <em class="cell">Held</em>
+                            <em class="cell">Picked-up</em>
+                        </div>
+                        <!-- Total for Day -->
+                        <div class="line">
+                            <input type="text" value="{{getTotalContractedOfDay($index)}}" class="cell" disabled />
+                            <input type="text" value="{{getTotalHeldOfDay($index)}}" class="cell" disabled />
+                            <input type="text" value="{{getTotalPickedUpOfDay($index)}}" class="cell" disabled />
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Room block grid -->
+        <div class="room-block-grid extended-timeline cols-3 scrollable" ng-iscroll="room_rates_grid_scroller"
+            ng-show="shouldHideAddRoomsButton()">
+            <div class="wrapper" style="width:{{getWidthForContractViewTimeLine()}};">
+                <!-- REPEAT ROW FOR ALL ROOM TYPES SELECTED -->
+                <div class="row" ng-repeat="roomType in allotmentConfigData.summary.selected_room_types_and_bookings">
+                    <!-- REPEAT COLUMN FOR ALL DAYS IN THE BLOCK -->
+                    <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
+                    <div class="column" ng-repeat="dateData in roomType.dates">
+                        <!-- Room Type -->
+                        <div class="line">
+                            <input type="text"
+                                value="{{getTotalContractedOfIndividualRoomType(dateData)}}"
+                                class="cell" disabled />
+                            <input type="text"
+                                value="{{getTotalHeldOfIndividualRoomType(dateData)}}"
+                                class="cell" disabled />
+                            <input type="text"
+                                value="{{getTotalPickedUpOfIndividualRoomType(dateData)}}" class="cell" disabled />
+                        </div>
+                        <!-- Single -->
+                        <!-- <div class="line hidden"> -->
+                        <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}" ng-hide="allotmentConfigData.summary.rate != -1 && roomType.rate_config.single_rate == null">
+                            <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
+                            <!-- we are not going behind ng-change, it will trigger everytime there is acharctr chnge, so we ae using our delay text box -->
+                            <input type="text"
+                                rv-delay-textbox
+                                delay="100"
+                                function-to-fire="bookingDataChanging"
+                                ng-disabled="shouldDisableSingleEntryBox(dateData, roomType)"
+                                ng-model="dateData.single_contract" class="cell" />
+                            <input type="text"
+                                rv-delay-textbox
+                                delay="100"
+                                function-to-fire="bookingDataChanging"
+                                ng-model="dateData.single"
+                                class="cell" disabled />
+                            <input type="text"
+                                rv-delay-textbox
+                                delay="100"
+                                function-to-fire="bookingDataChanging"
+                                ng-model="dateData.single_pickup"
+                                class="cell" disabled />
+                            <!-- we will show this quick arrow only in first column -->
+                            <button ng-if="!$index"
+                                ng-click="copySingleContractValueToOtherBlocks(dateData, roomType)"
+                                type="button"
+                                class="admin-icons icon-mover-right">
+                                Copy to all days
+                            </button>
+                        </div>
+                        <!-- Double -->
+                        <!-- <div class="line hidden"> -->
+                        <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}" ng-hide="allotmentConfigData.summary.rate != -1 && roomType.rate_config.double_rate == null">
+                            <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
+                            <input type="text"
+                                rv-delay-textbox
+                                delay="100"
+                                ng-disabled="shouldDisableDoubleEntryBox(dateData, roomType)"
+                                function-to-fire="bookingDataChanging"
+                                ng-model="dateData.double_contract" class="cell" />
+                            <input type="text"
+                                rv-delay-textbox
+                                delay="100"
+                                function-to-fire="bookingDataChanging"
+                                ng-model="dateData.double"
+                                class="cell" disabled />
+                            <input type="text"
+                                rv-delay-textbox
+                                delay="100"
+                                function-to-fire="bookingDataChanging"
+                                ng-model="dateData.double_pickup"
+                                class="cell" disabled />
+
+                            <!-- we will show this quick arrow only in first column -->
+                            <button ng-if="!$index"
+                                ng-click="copyDoubleContractValueToOtherBlocks(dateData, roomType)"
+                                type="button"
+                                class="admin-icons icon-mover-right">
+                                Copy to all days
+                            </button>
+                        </div>
+                        <!-- If L63 is clicked, generate option to add triple: -->
+                        <!-- // Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
+                        <div class="line" ng-if="shouldShowTripleEntryRow(roomType)" ng-class="{'hidden' : !roomType.isCollapsed}">
+                            <input type="text"
+                                rv-delay-textbox
+                                delay="100"
+                                ng-disabled="shouldDisableTripleEntryBox(dateData, roomType)"
+                                function-to-fire="bookingDataChanging"
+                                ng-model="dateData.triple_contract"
+                                class="cell"  />
+                            <input type="text"
+                                rv-delay-textbox
+                                delay="100"
+                                function-to-fire="bookingDataChanging"
+                                ng-model="dateData.triple"
+                                class="cell" disabled />
+                            <input type="text"
+                                rv-delay-textbox
+                                delay="100"
+                                function-to-fire="bookingDataChanging"
+                                ng-model="dateData.triple_pickup"
+                                class="cell" disabled />
+
+                            <!-- we will show this quick arrow only in first column -->
+                            <button ng-if="!$index"
+                                ng-click="copyTripleContractValueToOtherBlocks(dateData, roomType)"
+                                type="button"
+                                class="admin-icons icon-mover-right">
+                                Copy to all days
+                            </button>
+                        </div>
+                        <!-- If L65 is clicked, generate option to add quadruple: -->
+                        <!-- // Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
+                        <div class="line" ng-if="shouldShowQuadrupleEntryRow(roomType)" ng-class="{'hidden' : !roomType.isCollapsed}">
+                            <input type="text"
+                                rv-delay-textbox
+                                delay="100"
+                                function-to-fire="bookingDataChanging"
+                                ng-disabled="shouldDisableQuadrupleEntryBox(dateData, roomType)"
+                                ng-model="dateData.quadruple_contract" class="cell" />
+                            <input type="text"
+                                rv-delay-textbox
+                                delay="100"
+                                function-to-fire="bookingDataChanging"
+                                ng-model="dateData.quadruple"
+                                class="cell" disabled />
+                            <input type="text"
+                                rv-delay-textbox
+                                delay="100"
+                                function-to-fire="bookingDataChanging"
+                                ng-model="dateData.quadruple_pickup"
+                                class="cell" disabled />
+                            <!-- we will show this quick arrow only in first column -->
+                            <button ng-if="!$index"
+                                ng-click="copyQuadrupleContractValueToOtherBlocks(dateData, roomType)"
+                                type="button"
+                                class="admin-icons icon-mover-right">
+                                Copy to all days
+                            </button>
+                        </div>
+                        <!-- <div class="line small cellspan hidden"> -->
+                        <div class="line small cellspan" ng-class="{'hidden' : !roomType.isCollapsed}">
+                            <em class="cellspan">
+                                {{'AVAILABILITY_GROUP'|translate}}
+                                <span
+                                ng-class="{'green': (dateData.availability>0),
+                                'red': (dateData.availability==0) }">
+                                    {{dateData.availability}}
+                                </span>
+                            </em>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>

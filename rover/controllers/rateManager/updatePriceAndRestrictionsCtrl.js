@@ -757,7 +757,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootSco
                 if (rateView){
                     delete data.rate_ids;
                 } else {//in room view remove the rate_id param
-                    delete data.rate_id;  
+//                    delete data.rate_id;  
                 }
                // delete data.room_ids;
             }

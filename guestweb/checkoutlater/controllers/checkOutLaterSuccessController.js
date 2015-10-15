@@ -80,7 +80,7 @@
 			$rootScope.checkoutTime = $scope.lateCheckOut.time +':00 '+$scope.lateCheckOut.ap;
 		 	$rootScope.checkoutTimessage = "Your new check-out time is ";
 		 	$rootScope.isLateCheckoutAvailable = false;
-		 	$scope.keyExpiry = "Your room keys are set to expire for the checkout time of "+$rootScope.checkoutTime+". Please see a guest service agent at the front desk to re-activate your keys for the late checkout time selected.";
+		 	$scope.keyExpiry = "Your room keys are set to expire for the checkout time of "+$scope.oldCheckoutTime+". Please see a guest service agent at the front desk to re-activate your keys for the late checkout time selected.";
 
 		}
 	    else{
