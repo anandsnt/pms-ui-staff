@@ -6,11 +6,6 @@ sntRover.factory('RVReportParserFac', [
     function($rootScope, $filter, $timeout, reportNames) {
         var factory = {};
 
-
-
-
-
-
         factory.parseAPI = function ( reportName, apiResponse, options, resultTotalRow ) {
 
             if ( reportName === reportNames['DAILY_PRODUCTION'] ) {

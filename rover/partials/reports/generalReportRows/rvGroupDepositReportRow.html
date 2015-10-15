@@ -1,0 +1,40 @@
+<tr ng-repeat="each in results track by $index" class="{{ each.className }}" ngrepeatend>
+	<td ng-if="each.isReport" class="name" rowspan="{{ each.rowspan }}"> <!-- Set rowspan as {no. of records + 1} E.g. if there are 5 records for reservation, rowspan should be set to 6. That means we'll show 5 records + 1 totals row -->
+		<div class="info">
+			<strong>{{ each.name }}</strong>
+			<em>{{ each.reservation_no }}</em>
+		</div>
+		<div class="dates">
+			<div class="date">
+				<span class="guest-status small-icon check-in">check-in</span>
+				<span>{{ each.arrival_date | date : dateFormat }}</span>
+				<span>{{ each.arrival_time }}</span>
+				<span>NIGHTS {{ each.no_of_nights }}</span>
+			</div>
+		</div>
+		<div class="guest-info">
+			<span ng-if="each.company_name" class="icons icon-guest-company">{{ each.company_name }}</span>
+			<span ng-if="each.travel_agent_name" class="icons icon-guest-travelagent">{{ each.travel_agent_name }}</span>
+			<span ng-if="each.group_name" class="icons icon-group">{{ each.group_name }}</span>
+		</div>
+	</td>
+	<td ng-if="each.isReport" ng-class="{ 'red': each.deposit_payment_status == 'PAST DUE', 'green': each.deposit_payment_status == 'PAID' }">{{ each.deposit_payment_status }}</td>
+    <td ng-if="each.isReport">{{ each.due_date | date : dateFormat }}</td>
+    <td ng-if="each.isReport">{{ each.deposit_due_amount | currency:currencySymbol:2 }}</td>
+    <td ng-if="each.isReport">{{ each.paid_date | date : dateFormat }}</td>
+    <td ng-if="each.isReport">{{ each.paid_amount | currency:currencySymbol:2 }}</td>
+
+
+	<td ng-if="each.isSubReport" ng-class="{ 'red': each.deposit_payment_status == 'PAST DUE', 'green': each.deposit_payment_status == 'PAID' }">{{ each.deposit_payment_status }}</td>
+    <td ng-if="each.isSubReport">{{ each.due_date | date : dateFormat }}</td>
+    <td ng-if="each.isSubReport">{{ each.deposit_due_amount | currency:currencySymbol:2 }}</td>
+    <td ng-if="each.isSubReport">{{ each.paid_date | date : dateFormat }}</td>
+    <td ng-if="each.isSubReport">{{ each.paid_amount | currency:currencySymbol:2 }}</td>
+
+
+    <td ng-if="each.isSubTotal"></td>
+    <td ng-if="each.isSubTotal"><strong>Total Due</strong></td>
+	<td ng-if="each.isSubTotal"class="red"><strong>{{ each.deposit_due_amount | currency:currencySymbol:2 }}</strong></td>
+	<td ng-if="each.isSubTotal"><strong>Total Paid</strong></td>
+	<td ng-if="each.isSubTotal" class="green"><strong>{{ each.paid_amount | currency:currencySymbol:2 }}</strong></td>
+</tr>

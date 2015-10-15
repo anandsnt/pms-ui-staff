@@ -517,7 +517,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					template = '/assets/partials/reports/generalReportRows/rvDepositReportRow.html';
 					break;
 				case reportNames['GROUP_DEPOSIT_REPORT']:
-					template = '/assets/partials/reports/generalReportRows/rvDepositReportRow.html';
+					template = '/assets/partials/reports/generalReportRows/rvGroupDepositReportRow.html';
 					break;
 				case reportNames['IN_HOUSE_GUEST']:
 					template = '/assets/partials/reports/generalReportRows/rvInHouseReportRow.html';
@@ -760,6 +760,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['IN_HOUSE_GUEST']:
 				case reportNames['DEPARTURE']:
 				case reportNames['DEPOSIT_REPORT']:
+				case reportNames['GROUP_DEPOSIT_REPORT']:
 				case reportNames['CANCELLATION_NO_SHOW']:
 				case reportNames['WEB_CHECK_OUT_CONVERSION']:
 				case reportNames['WEB_CHECK_IN_CONVERSION']:
