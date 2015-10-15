@@ -20,9 +20,11 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$q,
 		dateFilter) {
 
-		var summaryMemento;
-		var update_existing_reservations_rate = false;
-		var roomsAndRatesSelected;
+		var summaryMemento,
+			update_existing_reservations_rate = false,
+			roomsAndRatesSelected,
+			updated_contract_counts = false,
+			updated_current_counts = false;
 
 		/**
 		 * util function to check whether a string is empty
@@ -86,23 +88,84 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		/**
+		 * Logic to decide whether the room block grid view select box should be disabled.
+		 * @return {Boolean}
+		 */
+		 $scope.shouldDisableGridViewSwitch = function() {
+		 	var roomTypesConfigured = $scope.allotmentConfigData.summary.selected_room_types_and_bookings.length > 0;
+
+		 	return (!roomTypesConfigured);
+		 };
+
+		 /**
+		  * Apply to held counts button will be disabled by default.
+		  * It should be enabled after clicking apply to contract button.
+		  * @return {Boolean} Whether button should be disabled or not
+		  */
+		 $scope.shouldDisableApplyToHeldCountsButton = function() {
+		 	return (!updated_contract_counts);
+		 };
+
+		 $scope.shouldDisableApplyToContractButton = function() {
+		 	return (updated_contract_counts);
+		 };
+
+
+		 /**
+		  * Apply to held counts to contract button will be disabled by default.
+		  * It should be enabled after clicking apply to current button.
+		  * @return {Boolean} Whether button should be disabled or not
+		  */
+		 $scope.shouldDisableApplyToHeldToContractButton = function() {
+		 	return (!updated_current_counts);
+		 };
+
+		 $scope.shouldDisableApplyToCurrrentButton = function() {
+		 	return (updated_current_counts);
+		 };
+
+		/**
 		 * should we wanted to show the discard button for room type booking change
 		 * @return {Boolean}
 		 */
 		$scope.shouldShowDiscardButton = function() {
-			return $scope.hasBookingDataChanged && $scope.shouldHideAddRoomsButton();
+			return ( $scope.hasBookingDataChanged &&
+				  	$scope.shouldHideAddRoomsButton() );
 		};
 
+		/**
+		 * Should we show buttons in roomblock
+		 */
 		$scope.shouldShowRoomBlockActions = function() {
-			return $scope.hasBookingDataChanged && $scope.shouldHideAddRoomsButton();
+			return $scope.shouldHideAddRoomsButton();
 		};
 
 		$scope.shouldShowApplyToHeldCountsButton = function() {
-			return $scope.allotmentConfigData.activeGridView === 'CONTRACT';
+			var hasBookingDataChanged = $scope.hasBookingDataChanged,
+				isInContractGridView  = $scope.allotmentConfigData.activeGridView === 'CONTRACT';
+
+			return ( isInContractGridView && ( updated_contract_counts || hasBookingDataChanged ) );
 		};
 
 		$scope.shouldShowApplyToContractButton = function() {
-			return $scope.allotmentConfigData.activeGridView === 'CONTRACT';
+			var hasBookingDataChanged = $scope.hasBookingDataChanged,
+				isInContractGridView  = $scope.allotmentConfigData.activeGridView === 'CONTRACT';
+
+			return ( hasBookingDataChanged && isInContractGridView );
+		};
+
+		$scope.shouldShowApplyToCurrentButton = function() {
+			var hasBookingDataChanged = $scope.hasBookingDataChanged,
+				isInCurrentGridView  = $scope.allotmentConfigData.activeGridView === 'CURRENT';
+
+			return ( hasBookingDataChanged && isInCurrentGridView );
+		};
+
+		$scope.shouldShowApplyToHeldToContractButton = function() {
+			var hasBookingDataChanged = $scope.hasBookingDataChanged,
+				isInCurrentGridView	  = $scope.allotmentConfigData.activeGridView === 'CURRENT';
+
+			return ( isInCurrentGridView && ( updated_current_counts || hasBookingDataChanged ) );
 		};
 
 		/**
@@ -246,19 +309,25 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		/**
-		 * to copy the single & single_pick up value entered in the column
+		 * to copy the single-contract value entered in the column
 		 * to the row
 		 * @param {Object} - cell data
 		 * @param {Object} - row data
 		 * @return undefined
 		 */
-		$scope.copySingleValueToOtherBlocks = function(cellData, rowData) {
+		$scope.copySingleContractValueToOtherBlocks = function(cellData, rowData) {
 			_.each(rowData.dates, function(element) {
-				/*element.single = cellData.single;
-				element.single_pickup = cellData.single_pickup;*/
 				element.single_contract = cellData.single_contract;
 			});
-			//we chnged something
+			//we changed something
+			$scope.bookingDataChanging();
+		};
+
+		$scope.copySingleHeldValueToOtherBlocks = function(cellData, rowData) {
+			_.each(rowData.dates, function(element) {
+				element.single = cellData.single;
+			});
+			//we changed something
 			$scope.bookingDataChanging();
 		};
 
@@ -269,11 +338,17 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @param {Object} - row data
 		 * @return undefined
 		 */
-		$scope.copyDoubleValueToOtherBlocks = function(cellData, rowData) {
+		$scope.copyDoubleContractValueToOtherBlocks = function(cellData, rowData) {
 			_.each(rowData.dates, function(element) {
-				/*element.double = cellData.double;
-				element.double_pickup = cellData.double_pickup;*/
 				element.double_contract = cellData.double_contract;
+			});
+			//we chnged something
+			$scope.bookingDataChanging();
+		};
+
+		$scope.copyDoubleHeldValueToOtherBlocks = function(cellData, rowData) {
+			_.each(rowData.dates, function(element) {
+				element.double = cellData.double;
 			});
 			//we chnged something
 			$scope.bookingDataChanging();
@@ -286,11 +361,17 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @param {Object} - row data
 		 * @return undefined
 		 */
-		$scope.copyTripleValueToOtherBlocks = function(cellData, rowData) {
+		$scope.copyTripleContractValueToOtherBlocks = function(cellData, rowData) {
 			_.each(rowData.dates, function(element) {
-				/*element.triple = cellData.triple;
-				element.triple_pickup = cellData.triple_pickup;*/
 				element.triple_contract = cellData.triple_contract;
+			});
+			//we chnged something
+			$scope.bookingDataChanging();
+		};
+
+		$scope.copyTripleHeldValueToOtherBlocks = function(cellData, rowData) {
+			_.each(rowData.dates, function(element) {
+				element.triple = cellData.triple;
 			});
 			//we chnged something
 			$scope.bookingDataChanging();
@@ -303,11 +384,17 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @param {Object} - row data
 		 * @return undefined
 		 */
-		$scope.copyQuadrupleValueToOtherBlocks = function(cellData, rowData) {
+		$scope.copyQuadrupleContractValueToOtherBlocks = function(cellData, rowData) {
 			_.each(rowData.dates, function(element) {
-				/*element.quadruple = cellData.quadruple;
-				element.quadruple_pickup = cellData.quadruple_pickup;*/
 				element.quadruple_contract = cellData.quadruple_contract;
+			});
+			//we chnged something
+			$scope.bookingDataChanging();
+		};
+
+		$scope.copyQuadrupleHeldValueToOtherBlocks = function(cellData, rowData) {
+			_.each(rowData.dates, function(element) {
+				element.quadruple = cellData.quadruple;
 			});
 			//we chnged something
 			$scope.bookingDataChanging();
@@ -320,6 +407,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$scope.bookingDataChanging = function() {
 			//we are changing the model to
 			$scope.hasBookingDataChanged = true;
+			updated_contract_counts = false;
+			updated_current_counts = false;
 			runDigestCycle();
 		};
 
@@ -332,6 +421,17 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			if (!$scope.$$phase) {
 				$scope.$digest();
 			}
+		};
+
+		/**
+		 * Fired when user changes the active grid view from the select box
+		 * @return {undefined}
+		 */
+		$scope.activeGridViewChanged = function() {
+			// Discard all the changes in current view
+			$scope.clickedOnDiscardButton();
+
+			$timeout( reinit, 500 );
 		};
 
 		/**
@@ -377,8 +477,36 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		/**
 		 * CICO-19121:
 		 * Fired when user clickes on the button in contract view.
+		 * Saving updated contract count does not affect inventory.
 		 */
 		$scope.clickedOnUpdateContractButton = function() {
+			$scope.saveRoomBlock(false, true);
+		};
+
+		/**
+		 * CICO-19121:
+		 * Copy held counts to contracts
+		 */
+		$scope.clickedOnApplyToHeldToContractButton = function() {
+			var roomBlockData = $scope.allotmentConfigData.summary.selected_room_types_and_bookings;
+			// plan A: copy held value to contracted counts by force and call saveRoomBlock()
+			_.each(roomBlockData, function(roomtype) {
+				_.each(roomtype.dates, function(dateData) {
+					dateData.single_contract = dateData.single;
+					dateData.double_contract = dateData.double;
+
+					if (dateData.triple) {
+						dateData.triple_contract = dateData.triple;
+					}
+					if (dateData.quadruple_contract) {
+						dateData.quadruple_contract = dateData.quadruple;
+					}
+				});
+			});
+			$scope.saveRoomBlock(false, true);
+		};
+
+		$scope.clickedOnUpdateCurrentButton = function() {
 			// Saving updated contract count does not affect inventory.
 			$scope.saveRoomBlock(false);
 		};
@@ -393,6 +521,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 			//and our isn't changed
 			$scope.hasBookingDataChanged = false;
+			updated_contract_counts = false;
+			updated_current_counts = false;
 		};
 
 		var successCallBackOfSaveRoomBlock = function(data) {
@@ -402,6 +532,9 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				$scope.saveRoomBlock(true);
 				return false;
 			}
+
+			updated_contract_counts = !updated_contract_counts;
+			updated_current_counts = !updated_current_counts;
 
 			//we have saved everything we have
 			//so our data is new
@@ -481,6 +614,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 						$scope.saveRoomBlock(true);
 					}
 				}
+			} else {
+				$scope.errorMessage = error;
 			}
 		};
 
@@ -492,14 +627,16 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @param {boolean} forceOverbook
 		 * @return undefined
 		 */
-		$scope.saveRoomBlock = function(forceOverbook) {
+		$scope.saveRoomBlock = function(forceOverbook, isContratUpdate) {
 			forceOverbook = forceOverbook || false;
+			isContratUpdate = isContratUpdate || false;
 
 			//TODO : Make API call to save the room block.
 			var params = {
 				allotment_id: $scope.allotmentConfigData.summary.allotment_id,
 				results: $scope.allotmentConfigData.summary.selected_room_types_and_bookings,
-				forcefully_overbook_and_assign_rooms: forceOverbook
+				forcefully_overbook_and_assign_rooms: forceOverbook,
+				is_contract_save: isContratUpdate
 			};
 
 			var options = {
@@ -533,7 +670,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			// Show overbooking message
 			var dialogData = {
 				message: message
-			}
+			};
 
 			ngDialog.open({
 				template: '/assets/partials/allotments/details/rvAllotmentWarnOverBookingPopup.html',
@@ -925,8 +1062,18 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			_.each(data.results, function(eachRoomType) {
 				_.each(eachRoomType.dates, function(dateData) {
 					dateData.old_total = $scope.getTotalHeldOfIndividualRoomType(dateData);
+
+					// keeping original release days
+					dateData['old_release_days'] = dateData['release_days'];
 				});
 			});
+
+			// adding DS for ui release days for each occupancy and
+			// for common
+			_.each(data.occupancy, function(eachOcc) {
+				eachOcc['ui_release_days'] = '';
+			});
+			$scope.allotmentConfigData.summary.common_ui_release_days = '';
 
 			$scope.allotmentConfigData.summary.selected_room_types_and_bookings = data.results;
 			$scope.allotmentConfigData.summary.selected_room_types_and_occupanies = data.occupancy;
@@ -939,6 +1086,77 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 			//we changed data, so
 			refreshScroller();
+		};
+
+		$scope.releaseDaysEdited = false;
+
+		$scope.copyReleaseRangeDown = function(days, index) {
+			var value = days * 1;
+
+			if ( '' == days || isNaN(value) ) {
+				return;
+			};
+
+			_.each($scope.allotmentConfigData.summary.selected_room_types_and_bookings, function(each) {
+				if ( each.hasOwnProperty('dates') && each['dates'][index] ) {
+					each['dates'][index]['release_days'] = value;
+					$scope.releaseDaysEdited = true;
+				};
+			});
+		};
+
+		/**
+		 * Allotment release view
+		 * Propogate release range entry across all dates and room types.
+		 */
+		$scope.copyReleaseRangeToAllBlocks = function(days) {
+			var value = days * 1;
+
+			if ( '' == days || isNaN(value) ) {
+				return;
+			};
+
+			_.each($scope.allotmentConfigData.summary.selected_room_types_and_occupanies, function(each) {
+				each['ui_release_days'] = value;
+			});
+
+			_.each($scope.allotmentConfigData.summary.selected_room_types_and_bookings, function(each) {
+				_.each(each['dates'], function(date) {
+					date['release_days'] = value;
+				});
+			});
+
+			$scope.releaseDaysEdited = true;
+		};
+
+		$scope.releaseDateChanging = function() {
+			$scope.releaseDaysEdited = true;
+			runDigestCycle();
+		};
+
+		$scope.resetReleaseDaysEdit = function() {
+			$scope.allotmentConfigData.summary.common_ui_release_days = '';
+
+			_.each($scope.allotmentConfigData.summary.selected_room_types_and_occupanies, function(each) {
+				each['ui_release_days'] = '';
+			});
+
+			_.each($scope.allotmentConfigData.summary.selected_room_types_and_bookings, function(each) {
+				_.each(each['dates'], function(date) {
+					date['release_days'] = date['old_release_days'];
+				});
+			});
+
+			$scope.releaseDaysEdited = false;
+		};
+
+		$scope.saveReleaseDaysEdit = function() {
+			$scope.saveRoomBlock(false);
+			$scope.releaseDaysEdited = false;
+		};
+
+		var failureCallBackOfFetchRoomBlockGridDetails = function(error) {
+			$scope.errorMessage = errorMessage;
 		};
 
 		/**
@@ -959,61 +1177,11 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 			var options = {
 				params: params,
-				successCallBack: successCallBackOfFetchRoomBlockGridDetails
+				successCallBack: successCallBackOfFetchRoomBlockGridDetails,
+				failureCallBack: failureCallBackOfFetchRoomBlockGridDetails
 			};
 			$scope.callAPI(rvAllotmentConfigurationSrv.getRoomBlockGridDetails, options);
 		};
-
-        /**
-         * [successFetchOfAllReqdForRoomBlock description]
-         * @param  {object} data
-         * @return {undefined}
-         */
-        var successFetchOfAllReqdForRoomBlock = function(data) {
-            $scope.$emit('hideLoader');
-        };
-
-        /**
-         * [successFetchOfAllReqdForRoomBlock description]
-         * @param  {object} error message from API
-         * @return {undefined}
-         */
-        var failedToFetchOfAllReqdForRoomBlock = function(errorMessage) {
-            $scope.$emit('hideLoader');
-            $scope.errorMessage = errorMessage;
-        };
-
-        /**
-         * we have to call multiple API on initial screen, which we can't use our normal function in teh controller
-         * depending upon the API fetch completion, loader may disappear.
-         * @return {[type]} [description]
-         */
-        var callInitialAPIs = function() {
-        	var hasNeccessaryPermission = (hasPermissionToCreateRoomBlock() &&
-				hasPermissionToEditRoomBlock());
-
-			if (!hasNeccessaryPermission) {
-				$scope.errorMessage = ['Sorry, You dont have enough permission to proceed!!'];
-				return;
-			}
-
-			var paramsForRoomBlockDetails = {
-				allotment_id: $scope.allotmentConfigData.summary.allotment_id
-			};
-
-            var promises = [];
-            //we are not using our normal API calling since we have multiple API calls needed
-            $scope.$emit('showLoader');
-
-            promises.push(rvAllotmentConfigurationSrv
-                .getRoomBlockGridDetails(paramsForRoomBlockDetails)
-                .then(successCallBackOfFetchRoomBlockGridDetails)
-            );
-
-            //Lets start the processing
-            $q.all(promises)
-                .then(successFetchOfAllReqdForRoomBlock, failedToFetchOfAllReqdForRoomBlock);
-        };
 
 		/**
 		 * when a tab switch is there, parant controller will propogate
@@ -1024,7 +1192,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				return;
 			}
 			$scope.$emit("FETCH_SUMMARY");
-			callInitialAPIs();
+			$scope.fetchRoomBlockGridDetails();
 		});
 
 		/**
@@ -1073,11 +1241,27 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 		/**
 		 * To get css width for grid timeline
+		 * For each column 280px is predefined
+		 * @return {String} [with px]
+		 */
+		$scope.getWidthForContractViewTimeLine = function() {
+			return ($scope.allotmentConfigData.summary.selected_room_types_and_occupanies.length * 280 + 40) + 'px';
+		};
+
+		/**
 		 * For each column 190px is predefined
 		 * @return {String} [with px]
 		 */
-		$scope.getWidthForRoomBlockTimeLine = function() {
-			return ($scope.allotmentConfigData.summary.selected_room_types_and_occupanies.length * 280 + 40) + 'px';
+		$scope.getWidthForCurrentViewTimeLine = function() {
+			return ($scope.allotmentConfigData.summary.selected_room_types_and_occupanies.length * 190 + 40) + 'px';
+		};
+
+		/**
+		 * For each column 190px is predefined
+		 * @return {String} [with px]
+		 */
+		$scope.getWidthForReleaseViewTimeLine = function() {
+			return ($scope.allotmentConfigData.summary.selected_room_types_and_occupanies.length * 190 + 40) + 'px';
 		};
 
 		/**
@@ -1099,8 +1283,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 					//we have to refresh scroller afetr that
 					refreshScroller();
-
-
 				}
 
 			};
@@ -1232,7 +1414,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 			//since we are recieving two ouside click event on tapping outside, we wanted to check and act
 			$scope.isUpdateInProgress = false;
-		}
+		};
 
 
 
@@ -1241,7 +1423,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {undefined}
 		 */
 		var initializeRoomBlockDetails = function(){
-			callInitialAPIs();
+			$scope.fetchRoomBlockGridDetails();
 		};
 
 		/**
@@ -1273,9 +1455,16 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			if ($scope.allotmentConfigData.activeTab === "ROOM_BLOCK") {
 				initializeRoomBlockDetails();
 			}
-        	
+
 		}();
 
+		var reinit = function() {
 
+			//setting scrollers
+			setScroller();
+
+			// accoridion
+			setUpAccordion();
+		};
 	}
 ]);

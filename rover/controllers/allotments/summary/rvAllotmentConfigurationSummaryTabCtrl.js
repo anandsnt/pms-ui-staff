@@ -50,13 +50,25 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 * @return undefined
 		 */
 		$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
-			if ($scope.isInAddMode() || (targetElement && (targetElement.id === 'summary' ||
-				targetElement.id === "cancel-action" )) || //TODO: Need to check with Dilip/Shiju PC for more about this
-				whetherSummaryDataChanged() ||
-				$scope.allotmentSummaryData.isDemographicsPopupOpen || $scope.isUpdateInProgress) {
+			var isInaddMode 		= $scope.isInAddMode(),
+				incorrectTarget 	= (targetElement &&
+										(targetElement.id === 'summary' ||
+										 targetElement.id === "cancel-action"
+										)
+									  ),
+				summaryDataChanged 	= whetherSummaryDataChanged(),
+				demographicsOpen 	= $scope.allotmentSummaryData.isDemographicsPopupOpen,
+				tabIsNotSummary 	= $scope.allotmentConfigData.activeTab !== "SUMMARY",
+				updateInProgress 	= $scope.isUpdateInProgress;
 
+
+			if ( incorrectTarget 	|| isInaddMode 		||
+				summaryDataChanged 	|| demographicsOpen ||
+				tabIsNotSummary 	|| updateInProgress ) {
+				// No need to call update summary
 				return;
 			}
+
 			//yes, summary data update is in progress
 			$scope.isUpdateInProgress = true;
 
@@ -120,7 +132,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				demographics 	= $scope.allotmentSummaryData.demographics,
 				blockFromDate	= configSummaryData.block_from,
 				blockToDate		= configSummaryData.block_to,
-				aptSegment		= "" //Variable to store the suitable segment ID;
+				aptSegment		= ""; //Variable to store the suitable segment ID;
 
 			// CICO-15107 --
 			if (!!blockToDate && !!blockFromDate) {
@@ -147,7 +159,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				var options = {
 					successCallBack: onFetchSegmentDataSuccess,
 					failureCallBack: onFetchSegmentDataFailure
-				}
+				};
 				$scope.callAPI(RVReservationSummarySrv.fetchInitialData, options);
 			} else {
 				updateSegment();
@@ -580,7 +592,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 					successCallBack: onFetchAddonsListSuccess,
 					failureCallBack: onFetchAddonsListFailure,
 					params: params
-				}
+				};
 			$scope.callAPI(RVReservationAddonsSrv.fetchAddonData, options);
 		};
 
@@ -721,7 +733,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 					processSwipedData(swipedCardData);
 				};
 				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
-			};
+			}
 		});
 
 		var onFetchRatesSuccess = function(data) {
