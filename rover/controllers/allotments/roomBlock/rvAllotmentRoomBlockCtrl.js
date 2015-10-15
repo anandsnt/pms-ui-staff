@@ -401,24 +401,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		/**
-		 * Allotment release view
-		 * Propogate release range entry across all dates and room types.
-		 */
-		$scope.copyReleaseRangeToAllBlocks = function() {
-			var roomBlockData 	= $scope.allotmentConfigData.summary.selected_room_types_and_bookings;
-			// loop through days and call copyReleaseRangeToAllRoomTypesInADay
-			// TODO
-		};
-
-		/**
-		 * Allotment release view
-		 * Propogate release range entry downwards
-		 */
-		$scope.copyReleaseRangeToAllRoomTypesInADay = function() {
-			// TODO Loop through roomtypes
-		};
-
-		/**
 		 * when the booking data changing
 		 * @return undefined
 		 */
@@ -1112,7 +1094,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			if ( '' == days || isNaN(value) ) {
 				return;
 			};
-			
+
 			_.each($scope.allotmentConfigData.summary.selected_room_types_and_bookings, function(each) {
 				if ( each.hasOwnProperty('dates') && each['dates'][index] ) {
 					each['dates'][index]['release_days'] = value;
@@ -1121,6 +1103,10 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			});
 		};
 
+		/**
+		 * Allotment release view
+		 * Propogate release range entry across all dates and room types.
+		 */
 		$scope.copyReleaseRangeToAllBlocks = function(days) {
 			var value = days * 1;
 
