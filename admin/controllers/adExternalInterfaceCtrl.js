@@ -1,10 +1,10 @@
-admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExternalInterfaceCommonSrv', 'adSiteminderSetupSrv', 'adSynxisSetupSrv', 'adZDirectSetupSrv', 'adGivexSetupSrv', '$state', '$filter', '$stateParams',
-  function ($scope, $controller, adExternalInterfaceCommonSrv, adSiteminderSetupSrv, adSynxisSetupSrv, adZDirectSetupSrv, adGivexSetupSrv, $state, $filter, $stateParams) {
+admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'ngDialog', 'adExternalInterfaceCommonSrv', 'adSiteminderSetupSrv', 'adSynxisSetupSrv', 'adZDirectSetupSrv', 'adGivexSetupSrv', '$state', '$filter', '$stateParams',
+  function ($scope, $controller, ngDialog, adExternalInterfaceCommonSrv, adSiteminderSetupSrv, adSynxisSetupSrv, adZDirectSetupSrv, adGivexSetupSrv, $state, $filter, $stateParams) {
     $scope.$emit("changedSelectedMenu", 8);
     $scope.errorMessage = '';
     $scope.successMessage = '';
     $scope.isLoading = true;
-    $scope.refreshButtonEnabled = '';
+    $scope.refreshButtonEnabled = 'enabled';
     $scope.lastRefreshedTimeObj;
     $scope.lastRefreshedTimeRef = '';
     $scope.initTimeout = false;
@@ -444,32 +444,28 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'adExterna
 	};
         
 
-    $scope.setRefreshTime = function () {
+        $scope.setRefreshTime = function(){
+            
+            if ($scope.interfaceName !== 'Givex'){
+                /*this refresh timer disabled now that we can send date ranges for refresh
+               */
+                if ($scope.data.data.product_cross_customer.full_refresh !== null){
+                   $scope.lastRefreshedTime = new Date($scope.data.data.product_cross_customer.full_refresh);
+                   $scope.lastRefreshedTimeRef = $scope.formatDate(new Date($scope.data.data.product_cross_customer.full_refresh));
+                   $scope.lastRefreshedTimeObj = new Date($scope.data.data.product_cross_customer.full_refresh);
 
-      if ($scope.interfaceName !== 'Givex') {
-        if ($scope.data.data.product_cross_customer.full_refresh !== null) {
-          $scope.lastRefreshedTime = new Date($scope.data.data.product_cross_customer.full_refresh);
-          $scope.lastRefreshedTimeRef = $scope.formatDate(new Date($scope.data.data.product_cross_customer.full_refresh));
-          $scope.lastRefreshedTimeObj = new Date($scope.data.data.product_cross_customer.full_refresh);
-
-          var n = new Date();
-          var nd = n.valueOf();
-          var twentyFourHrs = 86400000;
-
-
-          if ((nd - $scope.lastRefreshedTimeObj.valueOf()) > twentyFourHrs) {
-            $scope.refreshButtonEnabled = 'enabled';
-          } else {
-            $scope.refreshButtonEnabled = 'disabled';
-          }
-          $scope.lastRefreshedTimeMark = $scope.timeSince($scope.lastRefreshedTimeObj.valueOf());
-          if (!$scope.initTimeout) {
-            $scope.countdownTimer();
-            $scope.initTimeout = true;
-          }
-        }
-      }
-    };
+                   
+                   $scope.lastRefreshedTimeMark = $scope.timeSince($scope.lastRefreshedTimeObj.valueOf());
+                   
+                    if (!$scope.initTimeout){
+                        $scope.countdownTimer();
+                        $scope.initTimeout = true;
+                    }
+               }
+               
+               
+           }
+        };
 
     $scope.runFullRefresh = function () {
       var lastRefreshed = $scope.data.data.product_cross_customer.full_refresh, refreshNowDate = new Date();
