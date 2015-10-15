@@ -6,7 +6,8 @@
             <div class="select">
                 <select id="allotment-grid-view"
                     ng-model="allotmentConfigData.activeGridView"
-                    ng-change="alert('Grid view changing..'); clickedOnDiscardButton()">
+                    ng-disabled="shouldDisableGridViewSwitch()"
+                    ng-change="activeGridViewChanged()">
                     <option value="CONTRACT" selected>Contract</option>
                     <option value="CURRENT">Current Status</option>
                     <option value="RELEASE">Release Dates</option>
@@ -21,12 +22,18 @@
                 ng-click="clickedOnDiscardButton()">
                 Discard Changes
             </button>
-            <button type="button" class="button brand-colors"
+            <button type="button" class="button"
+                ng-class="{ 'grey': shouldDisableApplyToHeldCountsButton(),
+                            'brand-colors': !shouldDisableApplyToHeldCountsButton()
+                          }"
+                ng-disabled="shouldDisableApplyToHeldCountsButton()"
                 ng-show="shouldShowApplyToHeldCountsButton()"
                 ng-click="clickedOnApplyToHeldCountsButton()">
                 Apply to Held Room Counts
             </button>
             <button type="button" class="button green"
+                ng-class="{ 'grey': shouldDisableApplyToContractButton() }"
+                ng-disabled="shouldDisableApplyToContractButton()"
                 ng-show="shouldShowApplyToContractButton()"
                 ng-click="clickedOnUpdateContractButton()">
                 Update Contract
@@ -41,17 +48,11 @@
     <div id="allotment-room-block-content" class="tab-details">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <!-- Allotment Roomblock Grid views - Toggled by select box. -->
-        <ng-include src="'/assets/partials/allotments/details/grids/rvAllotmentConfigurationContractGrid.html'"
-            ng-if="allotmentConfigData.activeGridView == 'CONTRACT'">
-        </ng-include>
+        <div ng-if="allotmentConfigData.activeGridView == 'CONTRACT'" ng-include="'/assets/partials/allotments/details/grids/rvAllotmentConfigurationContractGrid.html'"></div>
 
-        <ng-include src="'/assets/partials/allotments/details/grids/rvAllotmentConfigurationCurrentGrid.html'"
-            ng-if="allotmentConfigData.activeGridView == 'CURRENT'">
-        </ng-include>
+        <div ng-if="allotmentConfigData.activeGridView == 'CURRENT'" ng-include="'/assets/partials/allotments/details/grids/rvAllotmentConfigurationCurrentGrid.html'"></div>
 
-        <ng-include src="'/assets/partials/allotments/details/grids/rvAllotmentConfigurationReleaseGrid.html'"
-            ng-if="allotmentConfigData.activeGridView == 'RELEASE'">
-        </ng-include>
+        <div ng-if="allotmentConfigData.activeGridView == 'RELEASE'" ng-include="'/assets/partials/allotments/details/grids/rvAllotmentConfigurationReleaseGrid.html'"></div>
 
     </div>
 </form>
