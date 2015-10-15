@@ -477,10 +477,10 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		/**
 		 * CICO-19121:
 		 * Fired when user clickes on the button in contract view.
+		 * Saving updated contract count does not affect inventory.
 		 */
 		$scope.clickedOnUpdateContractButton = function() {
-			// Saving updated contract count does not affect inventory.
-			$scope.saveRoomBlock(false);
+			$scope.saveRoomBlock(false, true);
 		};
 
 		/**
@@ -503,7 +503,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 					}
 				});
 			});
-			$scope.saveRoomBlock(false);
+			$scope.saveRoomBlock(false, true);
 		};
 
 		$scope.clickedOnUpdateCurrentButton = function() {
@@ -627,14 +627,16 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @param {boolean} forceOverbook
 		 * @return undefined
 		 */
-		$scope.saveRoomBlock = function(forceOverbook) {
+		$scope.saveRoomBlock = function(forceOverbook, isContratUpdate) {
 			forceOverbook = forceOverbook || false;
+			isContratUpdate = isContratUpdate || false;
 
 			//TODO : Make API call to save the room block.
 			var params = {
 				allotment_id: $scope.allotmentConfigData.summary.allotment_id,
 				results: $scope.allotmentConfigData.summary.selected_room_types_and_bookings,
-				forcefully_overbook_and_assign_rooms: forceOverbook
+				forcefully_overbook_and_assign_rooms: forceOverbook,
+				is_contract_save: isContratUpdate
 			};
 
 			var options = {
@@ -668,7 +670,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			// Show overbooking message
 			var dialogData = {
 				message: message
-			}
+			};
 
 			ngDialog.open({
 				template: '/assets/partials/allotments/details/rvAllotmentWarnOverBookingPopup.html',
@@ -1416,7 +1418,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 			//since we are recieving two ouside click event on tapping outside, we wanted to check and act
 			$scope.isUpdateInProgress = false;
-		}
+		};
 
 
 
