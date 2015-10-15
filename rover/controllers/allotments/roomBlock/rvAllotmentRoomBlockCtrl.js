@@ -20,10 +20,11 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$q,
 		dateFilter) {
 
-		var summaryMemento;
-		var update_existing_reservations_rate = false;
-		var roomsAndRatesSelected;
-		var updated_contract_counts = false;
+		var summaryMemento,
+			update_existing_reservations_rate = false,
+			roomsAndRatesSelected,
+			updated_contract_counts = false,
+			updated_current_counts = false;
 
 		/**
 		 * util function to check whether a string is empty
@@ -109,6 +110,20 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 	return (updated_contract_counts);
 		 };
 
+
+		 /**
+		  * Apply to held counts to contract button will be disabled by default.
+		  * It should be enabled after clicking apply to current button.
+		  * @return {Boolean} Whether button should be disabled or not
+		  */
+		 $scope.shouldDisableApplyToHeldToContractButton = function() {
+		 	return (!updated_current_counts);
+		 };
+
+		 $scope.shouldDisableApplyToCurrrentButton = function() {
+		 	return (updated_current_counts);
+		 };
+
 		/**
 		 * should we wanted to show the discard button for room type booking change
 		 * @return {Boolean}
@@ -129,7 +144,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			var hasBookingDataChanged = $scope.hasBookingDataChanged,
 				isInContractGridView  = $scope.allotmentConfigData.activeGridView === 'CONTRACT';
 
-			return ( updated_contract_counts || (hasBookingDataChanged && isInContractGridView) );
+			return ( isInContractGridView && ( updated_contract_counts || hasBookingDataChanged ) );
 		};
 
 		$scope.shouldShowApplyToContractButton = function() {
@@ -137,6 +152,20 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				isInContractGridView  = $scope.allotmentConfigData.activeGridView === 'CONTRACT';
 
 			return ( hasBookingDataChanged && isInContractGridView );
+		};
+
+		$scope.shouldShowApplyToCurrentButton = function() {
+			var hasBookingDataChanged = $scope.hasBookingDataChanged,
+				isInCurrentGridView  = $scope.allotmentConfigData.activeGridView === 'CURRENT';
+
+			return ( hasBookingDataChanged && isInCurrentGridView );
+		};
+
+		$scope.shouldShowApplyToHeldToContractButton = function() {
+			var hasBookingDataChanged = $scope.hasBookingDataChanged,
+				isInCurrentGridView	  = $scope.allotmentConfigData.activeGridView === 'CURRENT';
+
+			return ( isInCurrentGridView && ( updated_current_counts || hasBookingDataChanged ) );
 		};
 
 		/**
@@ -397,6 +426,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			//we are changing the model to
 			$scope.hasBookingDataChanged = true;
 			updated_contract_counts = false;
+			updated_current_counts = false;
 			runDigestCycle();
 		};
 
@@ -472,6 +502,34 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		/**
+		 * CICO-19121:
+		 * Copy held counts to contracts
+		 */
+		$scope.clickedOnApplyToHeldToContractButton = function() {
+			var roomBlockData = $scope.allotmentConfigData.summary.selected_room_types_and_bookings;
+			// plan A: copy held value to contracted counts by force and call saveRoomBlock()
+			_.each(roomBlockData, function(roomtype) {
+				_.each(roomtype.dates, function(dateData) {
+					dateData.single_contract = dateData.single;
+					dateData.double_contract = dateData.double;
+
+					if (dateData.triple) {
+						dateData.triple_contract = dateData.triple;
+					}
+					if (dateData.quadruple_contract) {
+						dateData.quadruple_contract = dateData.quadruple;
+					}
+				});
+			});
+			$scope.saveRoomBlock(false);
+		};
+
+		$scope.clickedOnUpdateCurrentButton = function() {
+			// Saving updated contract count does not affect inventory.
+			$scope.saveRoomBlock(false);
+		};
+
+		/**
 		 * when discard button clicked, we will set the booking data with old copy
 		 * @return None
 		 */
@@ -481,6 +539,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 			//and our isn't changed
 			$scope.hasBookingDataChanged = false;
+			updated_contract_counts = false;
+			updated_current_counts = false;
 		};
 
 		var successCallBackOfSaveRoomBlock = function(data) {
@@ -492,6 +552,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			}
 
 			updated_contract_counts = !updated_contract_counts;
+			updated_current_counts = !updated_current_counts;
 
 			//we have saved everything we have
 			//so our data is new

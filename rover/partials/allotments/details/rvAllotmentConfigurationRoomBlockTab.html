@@ -38,10 +38,21 @@
                 ng-click="clickedOnUpdateContractButton()">
                 Update Contract
             </button>
-            <button type="button" class="button green hidden"
+            <button type="button" class="button"
+                ng-class="{ 'grey': shouldDisableApplyToHeldToContractButton(),
+                            'brand-colors': !shouldDisableApplyToHeldToContractButton()
+                          }"
+                ng-disabled="shouldDisableApplyToHeldToContractButton()"
                 ng-show="shouldShowApplyToHeldToContractButton()"
                 ng-click="clickedOnApplyToHeldToContractButton()">
                 Apply To Held Count To Contract
+            </button>
+            <button type="button" class="button green"
+                ng-class="{ 'grey': shouldDisableApplyToCurrrentButton() }"
+                ng-disabled="shouldDisableApplyToCurrrentButton()"
+                ng-show="shouldShowApplyToCurrentButton()"
+                ng-click="clickedOnUpdateCurrentButton()">
+                Update Current
             </button>
         </div>
     </div>
