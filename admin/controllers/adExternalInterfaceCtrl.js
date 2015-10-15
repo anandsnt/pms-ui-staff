@@ -1,5 +1,5 @@
-admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'ngDialog', 'adExternalInterfaceCommonSrv', 'adSiteminderSetupSrv', 'adSynxisSetupSrv', 'adZDirectSetupSrv', 'adGivexSetupSrv', '$state', '$filter', '$stateParams',
-  function ($scope, $controller, ngDialog, adExternalInterfaceCommonSrv, adSiteminderSetupSrv, adSynxisSetupSrv, adZDirectSetupSrv, adGivexSetupSrv, $state, $filter, $stateParams) {
+admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controller', 'ngDialog', 'adExternalInterfaceCommonSrv', 'adSiteminderSetupSrv', 'adSynxisSetupSrv', 'adZDirectSetupSrv', 'adGivexSetupSrv', '$state', '$filter', '$stateParams',
+  function ($scope, $rootScope, $controller, ngDialog, adExternalInterfaceCommonSrv, adSiteminderSetupSrv, adSynxisSetupSrv, adZDirectSetupSrv, adGivexSetupSrv, $state, $filter, $stateParams) {
     $scope.$emit("changedSelectedMenu", 8);
     $scope.errorMessage = '';
     $scope.successMessage = '';
@@ -287,10 +287,6 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'ngDialog'
       };
       var unwantedKeys = ["available_trackers", "bookmark_count", "bookmarks", "current_hotel", "hotel_list", "menus", "interface_types"];
       var saveData = dclone($scope.data, unwantedKeys);
-      
-        if ($scope.simpleName === 'Siteminder'){
-            saveData.data.product_cross_customer.from_date = $scope.refreshDatePickerData.end_date;
-        }
 
       if ($scope.interfaceName === 'Givex') {
         $scope.invokeApi($scope.serviceController.saveSetup, $scope.givex, saveSetupSuccessCallback, saveSetupFailureCallback);
@@ -469,11 +465,11 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'ngDialog'
 
     $scope.runFullRefresh = function () {
       var lastRefreshed = $scope.data.data.product_cross_customer.full_refresh, refreshNowDate = new Date();
-      var refreshNow = refreshNowDate.valueOf(), data = {};
-      
-      
-      
+      var data = {};
+      data.start_date = $scope.refreshDatePickerData.start_date;
+      data.end_date = $scope.refreshDatePickerData.end_date;
       data.interface_id = $scope.data.data.product_cross_customer.interface_id;
+      
       if (lastRefreshed !== null) {
         try {
           var lastRefreshedDate = new Date($scope.data.data.product_cross_customer.full_refresh);
@@ -497,13 +493,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$controller', 'ngDialog'
         $scope.errorMessage = $scope.interfaceName + ' Full Refresh Failed' + msg;
         $scope.$emit('hideLoader');
       };
-      if ((lastRefreshed < refreshNow) || lastRefreshed === null) {
-        //run refresh
         $scope.invokeApi($scope.serviceController.fullRefresh, data, fullRefreshSuccess, fullRefreshFail);
-
-      } else {
-        //update w/ error
-      }
     };
 
     // Test connection button click action
