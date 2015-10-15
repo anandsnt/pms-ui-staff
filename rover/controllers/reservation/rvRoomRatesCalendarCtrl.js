@@ -19,7 +19,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			var date = new Date(date),
 				y = date.getFullYear(),
 				m = date.getMonth();
-
+            day = m == parseInt(tzIndependentDate($rootScope.businessDate).getMonth()) ? parseInt(tzIndependentDate($rootScope.businessDate).getDate()) : day;
 			return $filter('date')(new Date(y, m, day), $rootScope.dateFormatForAPI);
 		}
 
@@ -71,9 +71,10 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			if (dailyData.date === rData.departureDate) {
 				classes += 'check-out ';
 			}
-
+            
+            var title = getTitleAgainstDailyData(dailyData);
 			//if day house availability is 0 or less
-			if (getTitleAgainstDailyData(dailyData) !== "") {
+			if ( title !== "" || title == "undefined") {
 				classes += 'unavailable ';
 			} else if (dailyData.date !== rData.departureDate) {
 				classes += 'available ';
@@ -98,6 +99,8 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
                 var filtered_room = _.findWhere(_.findWhere(dailyData.rates, {id:$scope.stateVariables.selectedRate}).room_rates, {room_type_id:$scope.stateVariables.selectedRoom});
                 if(typeof filtered_room != 'undefined' &&  filtered_room.availability <= 0)
                 	return room_availability.toString();
+                else if(typeof filtered_room == 'undefined')
+                	return "undefined";
 			}
 			return "";				
 		};
@@ -160,7 +163,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				bestRateData.availability = min_room_rate.availability;
 				_.each(min_room_rate.restrictions, function(restriction){
 
-				restriction.value = _.findWhere($scope.stateVariables.restriction_types, {id:restriction.restriction_type_id}).value;
+				restriction.description = _.findWhere($scope.stateVariables.restriction_types, {id:restriction.restriction_type_id}).description;
 			});
 			bestRateData.restrictions = min_room_rate.restrictions;
 			}else{
