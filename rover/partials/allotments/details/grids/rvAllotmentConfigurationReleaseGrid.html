@@ -127,7 +127,12 @@
             <div class="column" ng-repeat="dateData in roomType.dates">
                 <!-- Room Type -->
                 <div class="line">
-                     <input type="text" value="{{dateData.release_days}}" class="highlight" />
+                    <input type="text"
+                    	value="{{dateData.release_days}}"
+                    	class="highlight"
+                    	rv-delay-textbox
+                        delay="100"
+                    	function-to-fire="releaseDateChanging" />
                 </div>
                  <div class="line small" ng-class="{'hidden' : !roomType.isCollapsed}"> <!-- Toggle class hidden when .line-toggle (L41) is clicked/tapped -->
                     <em class="cell">Total</em>

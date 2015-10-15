@@ -1048,7 +1048,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$scope.copyReleaseRangeDown = function(days, index) {
 			var value = days * 1;
 
-			if ( isNaN(value) ) {
+			if ( '' == days || isNaN(value) ) {
 				return;
 			};
 			
@@ -1063,7 +1063,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$scope.copyReleaseRangeToAllBlocks = function(days) {
 			var value = days * 1;
 
-			if ( isNaN(value) ) {
+			if ( '' == days || isNaN(value) ) {
 				return;
 			};
 
@@ -1078,6 +1078,11 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			});
 
 			$scope.releaseDaysEdited = true;
+		};
+
+		$scope.releaseDateChanging = function() {
+			$scope.releaseDaysEdited = true;
+			runDigestCycle();
 		};
 
 		$scope.resetReleaseDaysEdit = function() {
