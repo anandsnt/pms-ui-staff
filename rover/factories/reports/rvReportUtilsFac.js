@@ -941,13 +941,13 @@ sntRover.factory('RVReportUtilsFac', [
                         customData = angular.copy( data );
                         if ( report['title'] === reportNames['DEPOSIT_REPORT'] ) {
                             customData = [
-                                {id: -2, status: "DUE IN"},
-                                {id: -1, status: "DUE OUT"},
-                                {id: 1,  status: "RESERVED"},
-                                {id: 2,  status: "CHECKED IN"},
-                                {id: 3,  status: "CHECKED OUT"},
-                                {id: 4,  status: "NO SHOW"},
-                                {id: 5,  status: "CANCEL"}
+                                {id: -2, status: "DUE IN", selected: true},
+                                {id: -1, status: "DUE OUT", selected: true},
+                                {id: 1,  status: "RESERVED", selected: true},
+                                {id: 2,  status: "CHECKED IN", selected: true},
+                                {id: 3,  status: "CHECKED OUT", selected: true},
+                                {id: 4,  status: "NO SHOW", selected: true},
+                                {id: 5,  status: "CANCEL", selected: true}
                             ];
                         };
 
