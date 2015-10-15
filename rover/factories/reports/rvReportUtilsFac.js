@@ -928,13 +928,29 @@ sntRover.factory('RVReportUtilsFac', [
             };
 
             function fillResStatus (data) {
-                var foundFilter;
+                var foundFilter,
+                    customData;
 
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'RESERVATION_STATUS' });
 
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
+
+                        // CICO-20405: Required custom data for only deposit reports ¯\_(ツ)_/¯
+                        customData = angular.copy( data );
+                        if ( report['title'] === reportNames['DEPOSIT_REPORT'] ) {
+                            customData = [
+                                {id: -2, status: "DUE IN"},
+                                {id: -1, status: "DUE OUT"},
+                                {id: 1,  status: "RESERVED"},
+                                {id: 2,  status: "CHECKED IN"},
+                                {id: 3,  status: "CHECKED OUT"},
+                                {id: 4,  status: "NO SHOW"},
+                                {id: 5,  status: "CANCEL"}
+                            ];
+                        };
+
                         __setData(report, 'hasReservationStatus', {
                             type         : 'FAUX_SELECT',
                             filter       : foundFilter,
@@ -942,7 +958,7 @@ sntRover.factory('RVReportUtilsFac', [
                             selectAll    : false,
                             defaultTitle : 'Select Status',
                             title        : 'Select Status',
-                            data         : angular.copy( data )
+                            data         : angular.copy( customData )
                         });
                     };
                 });
