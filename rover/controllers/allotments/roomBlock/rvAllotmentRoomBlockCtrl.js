@@ -647,7 +647,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			forceOverbook = forceOverbook || false;
 			isContratUpdate = isContratUpdate || false;
 
-			//TODO : Make API call to save the room block.
 			var params = {
 				allotment_id: $scope.allotmentConfigData.summary.allotment_id,
 				results: $scope.allotmentConfigData.summary.selected_room_types_and_bookings,
@@ -661,6 +660,20 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				failureCallBack: failureCallBackOfSaveRoomBlock
 			};
 			$scope.callAPI(rvAllotmentConfigurationSrv.saveRoomBlockBookings, options);
+		};
+
+		$scope.saveReleaseDays = function() {
+			var params = {
+				allotment_id: $scope.allotmentConfigData.summary.allotment_id,
+				results: $scope.allotmentConfigData.summary.selected_room_types_and_bookings
+			};
+
+			var options = {
+				params: params,
+				successCallBack: successCallBackOfSaveRoomBlock,
+				failureCallBack: failureCallBackOfSaveRoomBlock
+			};
+			$scope.callAPI(rvAllotmentConfigurationSrv.saveRoomBlockReleaseDays, options);
 		};
 
 		/**
@@ -1167,7 +1180,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		$scope.saveReleaseDaysEdit = function() {
-			$scope.saveRoomBlock(false);
+			$scope.saveReleaseDays();
 			$scope.releaseDaysEdited = false;
 		};
 

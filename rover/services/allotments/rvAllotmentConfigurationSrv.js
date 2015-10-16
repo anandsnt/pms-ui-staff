@@ -78,6 +78,27 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 		};
 
 		/**
+		 * To save the selected Room types and its bookings
+		 * @return {Promise}
+		 */
+		this.saveRoomBlockReleaseDays = function(params) {
+			var deferred = $q.defer(),
+				url = '/api/allotments/update_release_date';
+
+
+			rvBaseWebSrvV2.postJSON(url, params).then(
+				function(data) {
+					deferred.resolve(data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;
+		};
+
+		/**
 		 * Function to get Room Block Grid Details
 		 * @param {param} -allotment id
 		 * @return {Promise} -
