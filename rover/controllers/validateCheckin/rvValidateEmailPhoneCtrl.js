@@ -33,7 +33,6 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
             $rootScope.reservationQueueWatch = 1;
 
             $rootScope.$on('putGuestInQueue',function(){
-                console.log('caught: putGuestInQueue')
                 $scope.putGuestInQueue = true;
                 $rootScope.putGuestInQueue = true;
                 
@@ -41,7 +40,6 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
                 $rootScope.checkGuestInFromQueue = false;
             });
             $rootScope.$on('checkGuestInFromQueue',function(){
-                console.info('checkGuestInFromQueue: ')
                 $scope.checkGuestInFromQueue = true;
                 $rootScope.checkGuestInFromQueue = true;
                 
@@ -49,7 +47,6 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
                 $rootScope.putGuestInQueue = false;
             });
             $rootScope.$on('normalCheckInNotQueued',function(){
-                console.info('normalCheckInNotQueued: ')
                 $scope.checkGuestInFromQueue = false;
                 $rootScope.checkGuestInFromQueue = false;
                 
@@ -90,19 +87,13 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 	$scope.goToNextView = function(){
             var avoidingBillCard = false;
             
-            console.log('$rootScope.checkGuestInFromQueue: '+$rootScope.checkGuestInFromQueue)
-            console.log('$rootScope.putGuestInQueue: '+$rootScope.putGuestInQueue)
-            
             if ((!$scope.checkGuestInFromQueue || !$rootScope.checkGuestInFromQueue) && ($scope.putGuestInQueue || $rootScope.putGuestInQueue)){
                 avoidingBillCard = true;
             } else {
                  avoidingBillCard = false;
             }
-            console.info('avoidingBillCard: '+avoidingBillCard);
-            console.info('$scope.checkGuestInFromQueue: '+$scope.checkGuestInFromQueue);
             
             
-            console.info(($scope.putGuestInQueue || $rootScope.putGuestInQueue), !$scope.roomAssignmentNeeded(),  !$scope.upsellNeeded(),  !$scope.checkGuestInFromQueue)
             if ($scope.readyToPutInQueue() && avoidingBillCard){
                 //close dialog (which is done at this point, then just upadate the queue)
                 $rootScope.$emit('putInQueueAdvanced');
