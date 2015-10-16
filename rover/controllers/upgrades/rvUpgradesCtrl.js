@@ -281,11 +281,36 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 		$scope.getHorizontalScrollWidth = function() {
 			return 465 * $scope.upgradesList.length;
 		};
-		$scope.goToCheckinScreen = function() {
+                
+                
+                $scope.putGuestInQueue = false;
+                if (!$rootScope.reservationUpgradeWatch){//alternative to $destroy, this is an init-once method
+                    $rootScope.reservationUpgradeWatch = 1;
+
+                    $rootScope.$on('putGuestInQueue',function(){
+                        if ($rootScope.advanced_queue_flow_enabled){
+                            $scope.putGuestInQueue = true;
+                        } else {
+                            $scope.putGuestInQueue = false;
+                        }
+                        
+                    });
+                }
+                
+		$scope.goToCheckinScreen = function(putGuestInQueue) {
+                    var adv = $rootScope.advanced_queue_flow_enabled;
+                    var viaQueue = $scope.$parent.reservation.check_in_via_queue;
+
+                    if ($scope.putGuestInQueue || (adv && viaQueue)){
+                        $rootScope.$emit('putInQueueAdvanced');
+                        $scope.backToStayCard();
+                    } else {
 			$state.go('rover.reservation.staycard.billcard', {
 				"reservationId": $scope.reservationData.reservation_card.reservation_id,
 				"clickedButton": "checkinButton"
 			});
+                    }
+                        
 		};
 
 		/**
