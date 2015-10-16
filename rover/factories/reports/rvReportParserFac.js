@@ -6,11 +6,6 @@ sntRover.factory('RVReportParserFac', [
     function($rootScope, $filter, $timeout, reportNames) {
         var factory = {};
 
-
-
-
-
-
         factory.parseAPI = function ( reportName, apiResponse, options, resultTotalRow ) {
 
             if ( reportName === reportNames['DAILY_PRODUCTION'] ) {
@@ -35,8 +30,13 @@ sntRover.factory('RVReportParserFac', [
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseGroupPickupReport( reportName, apiResponse, options );
             }
 
-            // a very special parser for deposit report
+            // a very special parser for guest deposit report
             else if ( reportName === reportNames['DEPOSIT_REPORT'] ) {
+                return _.isEmpty(apiResponse) ? apiResponse : $_parseDepositReport( reportName, apiResponse, options );
+            }
+
+            // a very special parser for group deposit report
+            else if ( reportName === reportNames['GROUP_DEPOSIT_REPORT'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseDepositReport( reportName, apiResponse, options );
             }
 
@@ -704,13 +704,19 @@ sntRover.factory('RVReportParserFac', [
                         });
                         returnAry.push( customData );
                     }
-                };
+                }
+
+                else {
+                    angular.extend(makeCopy, {
+                        'isReport': true,
+                        'className': 'row-break'
+                    });
+                    returnAry.push(makeCopy);
+                }
 
             };
-
             return returnAry;
         };
-
 
 
         /**
@@ -819,8 +825,6 @@ sntRover.factory('RVReportParserFac', [
 
             return returnObj;
         };
-
-
 
         return factory;
     }
