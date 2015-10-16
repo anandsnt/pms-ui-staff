@@ -1101,9 +1101,9 @@ sntRover.factory('RVReportUtilsFac', [
             // ordered in a specific way as per the design
             // [name - account - balance] > TO > [balance - account - name]
             if ( report['title'] === reportNames['AR_SUMMARY_REPORT']) {
-                var nameSortBy = angular.copy( report['sort_fields'][2] ),
-                    accountSortBy = angular.copy( report['sort_fields'][0] ),
-                    balanceSortBy = angular.copy( report['sort_fields'][1] );
+                var nameSortBy    = angular.copy( _.find(report['sort_fields'], { 'value': 'ACCOUNT_NAME' }) ),
+                    accountSortBy = angular.copy( _.find(report['sort_fields'], { 'value': 'ACCOUNT_NO' }) ),
+                    balanceSortBy = angular.copy( _.find(report['sort_fields'], { 'value': 'BALANCE' }) );
 
                 report['sort_fields'][0] = nameSortBy;
                 report['sort_fields'][1] = accountSortBy;
