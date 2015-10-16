@@ -142,28 +142,28 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 		$scope.shouldShowApplyToHeldCountsButton = function() {
 			var hasBookingDataChanged = $scope.hasBookingDataChanged,
-				isInContractGridView  = $scope.allotmentConfigData.activeGridView === 'CONTRACT';
+				isInContractGridView  = $scope.activeGridView === 'CONTRACT';
 
 			return ( isInContractGridView && ( updated_contract_counts || hasBookingDataChanged ) );
 		};
 
 		$scope.shouldShowApplyToContractButton = function() {
 			var hasBookingDataChanged = $scope.hasBookingDataChanged,
-				isInContractGridView  = $scope.allotmentConfigData.activeGridView === 'CONTRACT';
+				isInContractGridView  = $scope.activeGridView === 'CONTRACT';
 
 			return ( hasBookingDataChanged && isInContractGridView );
 		};
 
 		$scope.shouldShowApplyToCurrentButton = function() {
 			var hasBookingDataChanged = $scope.hasBookingDataChanged,
-				isInCurrentGridView  = $scope.allotmentConfigData.activeGridView === 'CURRENT';
+				isInCurrentGridView  = $scope.activeGridView === 'CURRENT';
 
 			return ( hasBookingDataChanged && isInCurrentGridView );
 		};
 
 		$scope.shouldShowApplyToHeldToContractButton = function() {
 			var hasBookingDataChanged = $scope.hasBookingDataChanged,
-				isInCurrentGridView	  = $scope.allotmentConfigData.activeGridView === 'CURRENT';
+				isInCurrentGridView	  = $scope.activeGridView === 'CURRENT';
 
 			return ( isInCurrentGridView && ( updated_current_counts || hasBookingDataChanged ) );
 		};
@@ -423,6 +423,18 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			}
 		};
 
+		(function() {
+			var gridViewTemplates = {
+				CONTRACT: '/assets/partials/allotments/details/grids/rvAllotmentConfigurationContractGrid.html',
+				CURRENT: '/assets/partials/allotments/details/grids/rvAllotmentConfigurationCurrentGrid.html',
+				RELEASE: '/assets/partials/allotments/details/grids/rvAllotmentConfigurationReleaseGrid.html'
+			};
+
+			$scope.getGridViewTemplateurl = function(mode) {
+				return gridViewTemplates[mode] || gridViewTemplates.CONTRACT;
+			};
+		})();
+
 		/**
 		 * Fired when user changes the active grid view from the select box
 		 * @return {undefined}
@@ -430,7 +442,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$scope.activeGridViewChanged = function() {
 			// Discard all the changes in current view
 			$scope.clickedOnDiscardButton();
-
+			$scope.gridViewTemplateUrl = $scope.getGridViewTemplateurl($scope.activeGridView);
 			$timeout( reinit, 500 );
 		};
 
@@ -1406,8 +1418,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {undefined}
 		 */
 		var initializeVariables = function () {
-
-			$scope.allotmentConfigData.activeGridView = 'CONTRACT';
+			$scope.activeGridView = 'CONTRACT';
+			$scope.gridViewTemplateUrl = $scope.getGridViewTemplateurl($scope.activeGridView);
 
 			//we use this to ensure that we will call the API only if there is any change in the data
 			summaryMemento = _.extend({}, $scope.allotmentConfigData.summary);
