@@ -704,13 +704,19 @@ sntRover.factory('RVReportParserFac', [
                         });
                         returnAry.push( customData );
                     }
-                };
+                }
+
+                else {
+                    angular.extend(makeCopy, {
+                        'isReport': true,
+                        'className': 'row-break'
+                    });
+                    returnAry.push(makeCopy);
+                }
 
             };
-
             return returnAry;
         };
-
 
 
         /**

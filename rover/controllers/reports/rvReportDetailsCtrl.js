@@ -404,7 +404,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 				'checkRateAdjust' : $scope.chosenReport.chosenOptions['show_rate_adjustments_only']
 			};
 			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, parseAPIoptions, $scope.$parent.resultsTotalRow) );
-
 			// if there are any results
 			$scope.hasNoResults = _.isEmpty( $scope.$parent.results );
 

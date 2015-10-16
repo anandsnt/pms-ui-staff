@@ -1304,12 +1304,12 @@ sntRover.factory('RVReportUtilsFac', [
                 // deposit date range must the current business date
                 case reportNames['GROUP_DEPOSIT_REPORT']:
                     report['groupStartDate']  = _getDates.businessDate;
-                    report['groupEndDate'] = _getDates.aWeekAfter;
+                    report['groupEndDate'] = _getDates.twentyEightDaysAfter;
                     /**/
-                    report['fromDepositDate']  = _getDates.businessDate;
-                    report['untilDepositDate'] = _getDates.businessDate;
+                    /*report['fromDepositDate']  = _getDates.businessDate;
+                    report['untilDepositDate'] = _getDates.businessDate;*/
                     /**/
-                    report['fromPaidDate']  = _getDates.businessDate;
+                    report['fromPaidDate']  = _getDates.twentyEightDaysBefore;
                     report['untilPaidDate'] = _getDates.businessDate;
                     break;
 
@@ -1357,9 +1357,6 @@ sntRover.factory('RVReportUtilsFac', [
         };
 
 
-
-
-
         // HELPER: create meaningful date names
         factory.processDate = function ( customDate, xDays ) {
             var _dateVal      = customDate ? tzIndependentDate(customDate) : $rootScope.businessDate,
@@ -1376,6 +1373,8 @@ sntRover.factory('RVReportUtilsFac', [
                 'tomorrow'     : new Date(_year, _month, _date + 1),
                 'aWeekAgo'     : new Date(_year, _month, _date - 7),
                 'aWeekAfter'   : new Date(_year, _month, _date + 7),
+                'twentyEightDaysBefore': new Date(_year, _month, _date - 28),
+                'twentyEightDaysAfter' : new Date(_year, _month, _date + 28),
                 'aMonthAfter'  : new Date(_year, _month, _date + 30)
             };
 
