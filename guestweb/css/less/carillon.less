@@ -41,6 +41,9 @@ body,.qr-code-image{
 .jumbotron .check-inout-wrapper{
 	border:none !important;
 }
+.no-top-padding{
+    padding-top:0px !important;
+ }
 .eden_logo_bg{
 	padding:0 !important;
 }
@@ -144,7 +147,6 @@ body,.qr-code-image{
 	font-weight:300;
 	font-family: 'Source Sans Pro';
 }
-
 /* responsive starts here */
 @media (min-width: 992px) {
 	.jumbotron .check-inout-wrapper{
@@ -296,7 +298,7 @@ body,.qr-code-image{
 
 .departure-date{
    p:first-child{
-       color:@brown;
+       color:@white;
    }
   
 }
@@ -305,18 +307,21 @@ body,.qr-code-image{
 }
 
 .pickadate-cell .pickadate-disabled, .pickadate-cell .pickadate-enabled, .pickadate-cell .pickadate-outofrange-disabled{
-    background-color:#DEDCD0 !important;
-}
-.pickadate-cell .pickadate-active{
-    background-color:#c5ab00 !important;
-    color:@white !important;
+    background-color:#E5E5E5 !important;
+    color:#E5E5E5 !important;
 }
 .pickadate-cell .pickadate-enabled, .pickadate-prev,.pickadate-next {
+	background-color:#E5E5E5 !important;
+    color:#18171c !important;
+}
+.pickadate-cell .pickadate-active{
+    background-color:#49B7C2 !important;
     color:#18171c !important;
 }
 .pickadate-controls{
     a, a:hover
     {
+    	background-color:white !important;
         color:#18171c !important;
     }
 }
