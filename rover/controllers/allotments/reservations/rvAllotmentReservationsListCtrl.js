@@ -221,7 +221,8 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
 
             //date picker options - Reservation to From
             $scope.reservationAddToDateOptions = _.extend({
-                onSelect: reservationAddToDateChoosed
+                onSelect: reservationAddToDateChoosed,
+                minDate: new tzIndependentDate(refData.block_from)
             }, commonDateOptions);
 
             //date picker options - Reservation Add From
