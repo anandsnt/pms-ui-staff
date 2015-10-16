@@ -12,14 +12,14 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		var that = this, availabilityData = null;
 
 		var getFirstDayOfMonth = function(date) {
-			return getDayOfMonth(date, 1);
+			return getDayOfMonth(date);
 		};
 
-		var getDayOfMonth = function(date, day){
+		var getDayOfMonth = function(date){
 			var date = new Date(date),
 				y = date.getFullYear(),
 				m = date.getMonth();
-            day = m == parseInt(tzIndependentDate($rootScope.businessDate).getMonth()) ? parseInt(tzIndependentDate($rootScope.businessDate).getDate()) : day;
+            day = m > parseInt(tzIndependentDate($rootScope.businessDate).getMonth()) ? 1 : parseInt(tzIndependentDate($rootScope.businessDate).getDate());
 			return $filter('date')(new Date(y, m, day), $rootScope.dateFormatForAPI);
 		}
 
@@ -235,7 +235,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				else if(isInBestAvailableMode() && isShowAvailableRoomsSelected() && room_rate.availability
 					<= 0)
 					return false;
-				else if(isInRoomTypeSelectedMode() && room_rate.availability
+				else if(isInRoomTypeSelectedMode() && $scope.stateVariables.selectedRoom === "" && room_rate.availability
 					<= 0)
 					return false;
 				else if(dailyData.date === $scope.reservationData.arrivalDate && typeof _.findWhere(room_rate.restrictions, {restriction_type_id:2}) !== 'undefined')
@@ -596,7 +596,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		 * to show calender initially
 		 */
 		var fetchAndShowCalendar = function() {
-			var firstDayOfCal = getDayOfMonth($scope.checkinDateInCalender, parseInt(tzIndependentDate($rootScope.businessDate).getDate())),
+			var firstDayOfCal = getDayOfMonth($scope.checkinDateInCalender),
 				lastDayOfNextMonth = getLastDayOfNextMonth($scope.checkinDateInCalender);
 			
 			fetchCalendarAvailabilityData (firstDayOfCal, lastDayOfNextMonth);
