@@ -986,7 +986,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		/**
 		 * To open Room Block Pickedup Reservations Popup.
 		 */
-		$scope.$on('updateRate', function (event, selectedRoomTypeAndRates) {
+		var updateRateEvent = $scope.$on('updateRate', function (event, selectedRoomTypeAndRates) {
 			roomsAndRatesSelected = selectedRoomTypeAndRates;
 			ngDialog.open({
 				template: '/assets/partials/allotments/details/rvAllotmentRoomBlockPickedupReservationsPopup.html',
@@ -1216,7 +1216,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * when a tab switch is there, parant controller will propogate
 		 * API, we will get this event, we are using this to fetch new room block deails
 		 */
-		$scope.$on("ALLOTMENT_TAB_SWITCHED", function(event, activeTab) {
+		var tabSwitchEvent = $scope.$on("ALLOTMENT_TAB_SWITCHED", function(event, activeTab) {
 			if (activeTab !== 'ROOM_BLOCK') {
 				return;
 			}
@@ -1228,7 +1228,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * When group summary is updated by some trigger, parant controller will propogate
 		 * API, we will get this event, we are using this to fetch new room block deails
 		 */
-		$scope.$on("UPDATED_ALLOTMENT_INFO", function(event) {
+		var summaryUpdateEvent = $scope.$on("UPDATED_ALLOTMENT_INFO", function(event) {
 			summaryMemento = _.extend({}, $scope.allotmentConfigData.summary);
 			//to prevent from initial API calling and only exectutes when group from_date, to_date,status updaet success
 			if ($scope.hasBlockDataUpdated) {
@@ -1239,10 +1239,15 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		/**
 		 * when failed to update data
 		 */
-		$scope.$on("FAILED_TO_UPDATE_ALLOTMENT_INFO", function(event, errorMessage) {
+		var summaryUpdateFailEvent = $scope.$on("FAILED_TO_UPDATE_ALLOTMENT_INFO", function(event, errorMessage) {
 			$scope.$parent.errorMessage = errorMessage;
 		});
 
+		// removing event listners when scope is destroyed
+		$scope.$on( 'destroy', updateRateEvent );
+		$scope.$on( 'destroy', tabSwitchEvent );
+		$scope.$on( 'destroy', summaryUpdateEvent );
+		$scope.$on( 'destroy', summaryUpdateFailEvent );
 		/**
 		 * we want to display date in what format set from hotel admin
 		 * @param {String/DateObject}
