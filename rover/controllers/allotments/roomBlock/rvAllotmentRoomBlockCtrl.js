@@ -440,10 +440,14 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {undefined}
 		 */
 		$scope.activeGridViewChanged = function() {
-			// Discard all the changes in current view
-			$scope.clickedOnDiscardButton();
-			$scope.gridViewTemplateUrl = $scope.getGridViewTemplateurl($scope.activeGridView);
-			$timeout( reinit, 500 );
+			$scope.$emit('showLoader');
+			$timeout(function() {
+				// Discard all the changes in current view
+				$scope.clickedOnDiscardButton();
+				$scope.gridViewTemplateUrl = $scope.getGridViewTemplateurl($scope.activeGridView);
+				$scope.$emit("hideLoader");
+				$timeout(reinit, 400);
+			}, 0);
 		};
 
 		/**
