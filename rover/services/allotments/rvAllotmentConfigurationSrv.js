@@ -78,7 +78,7 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 		};
 
 		/**
-		 * To save the selected Room types and its bookings
+		 * To save the selected Room types and its release days
 		 * @return {Promise}
 		 */
 		this.saveRoomBlockReleaseDays = function(params) {
@@ -86,7 +86,7 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 				url = '/api/allotments/update_release_date';
 
 
-			rvBaseWebSrvV2.postJSON(url, params).then(
+			rvBaseWebSrvV2.putJSON(url, params).then(
 				function(data) {
 					deferred.resolve(data);
 				},
