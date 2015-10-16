@@ -45,7 +45,7 @@
 							<!-- <img ng-repeat="image in row.images" ng-src="{{image.guest_image}}" ng-class="{'first-image':(row.images.length >1 && image.is_primary==true), 'second-image':(row.images.length >1 && image.is_primary==false)}"> -->
 							<span class="vip" ng-show="row.vip==true">VIP</span>
 						</figure>
-						<div class="data" ng-class="{'no-guest-info': escapeNull(row.company)=='' && escapeNull(row.travel_agent)=='' && escapeNull(row.group)==''}">  <!-- TODO:   verify Add class "no-guest-info" if there's no company, ta and group attached -->
+						<div class="data" ng-class="{'no-guest-info': escapeNull(row.company)=='' && escapeNull(row.travel_agent)=='' && escapeNull(row.group)=='' && escapeNull(row.allotment)==''}">  <!-- TODO:   verify Add class "no-guest-info" if there's no company, ta and group attached -->
 							<h2 ng-class="{'grey' : row.is_accompanying_guest=='1'}">
                                 <span class="no-margin-right" ng-bind-html="escapeNull(row.lastname)|highlight:textInQueryBox:false"></span>,
 								<span ng-bind-html="escapeNull(row.firstname)|highlight:textInQueryBox:false"></span>
@@ -57,10 +57,11 @@
 						</div>	
 
 						<!-- if none of these exsist for the guest don't output the entire div (and add class "no-guest-info" to div.data) -->
-	                    <div class="guest-info" ng-hide="escapeNull(row.company)=='' && escapeNull(row.travel_agent)=='' && escapeNull(row.group)==''">
-	                        <span class="icons icon-guest-company" ng-hide="escapeNull(row.company)==''" ng-bind-html="escapeNull(row.company)|highlight:textInQueryBox:false"></span> 
-	                        <span class="icons icon-guest-travelagent" ng-hide="escapeNull(row.travel_agent)==''" ng-bind-html="escapeNull(row.travel_agent)|highlight:textInQueryBox:false"></span>
-	                        <span class="icons icon-group" ng-hide="escapeNull(row.group)==''" ng-bind-html="escapeNull(row.group)|highlight:textInQueryBox:false"></span> 
+	                    <div class="guest-info" ng-hide="escapeNull(row.company)=='' && escapeNull(row.travel_agent)=='' && escapeNull(row.group)=='' && escapeNull(row.allotment)==''">
+	                        <span class="icons icon-guest-company" ng-if="escapeNull(row.company)!=''" ng-bind-html="escapeNull(row.company)|highlight:textInQueryBox:false"></span> 
+	                        <span class="icons icon-guest-travelagent" ng-if="escapeNull(row.travel_agent)!=''" ng-bind-html="escapeNull(row.travel_agent)|highlight:textInQueryBox:false"></span>
+	                        <span class="icons icon-group" ng-if="escapeNull(row.group)!=''" ng-bind-html="escapeNull(row.group)|highlight:textInQueryBox:false"></span> 
+	                        <span class="icons icon-allotment" ng-if="escapeNull(row.allotment)!=''" ng-bind-html="escapeNull(row.allotment)|highlight:textInQueryBox:false"></span> 
 	                    </div>
 
 						<!-- Display the arrival date and Room number-->

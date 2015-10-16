@@ -171,7 +171,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					}
 				});
 				if (!!$scope.reservationData.group.id) {					
-					 var customRate = RVReservationStateService.getGroupCustomRateModel($scope.reservationData.group.id, $scope.reservationData.group.name);
+					 var customRate = RVReservationStateService.getCustomRateModel($scope.reservationData.group.id, $scope.reservationData.group.name, 'GROUP');
+					 rates[customRate.id] = customRate;
+				};
+
+				if (!!$scope.reservationData.allotment.id) {					
+					 var customRate = RVReservationStateService.getCustomRateModel($scope.reservationData.allotment.id, $scope.reservationData.allotment.name, 'ALLOTMENT');
 					 rates[customRate.id] = customRate;
 				};
 
@@ -300,6 +305,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				company_id: $scope.reservationData.company.id,
 				travel_agent_id: $scope.reservationData.travelAgent.id,
 				group_id: $scope.reservationData.group.id,
+				allotment_id: $scope.reservationData.allotment.id,
 				promotion_code: $scope.reservationData.searchPromoCode
 			}, fetchSuccess);
 
@@ -1351,7 +1357,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					$scope.activeRoom,
 					$scope.reservationData.numNights, {
 						code: $scope.reservationData.code,
-						group: $scope.reservationData.group
+						group: $scope.reservationData.group,
+						allotment: $scope.reservationData.allotment,
 					},
 					$scope.reservationData.member.isSelected),
 				rooms = parsedRooms.rooms;
@@ -1901,10 +1908,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 		$scope.toggleSearchWithRestrictions = function(){
 			$scope.stateCheck.calendarState.searchWithRestrictions = !$scope.stateCheck.calendarState.searchWithRestrictions;
+		    $scope.$broadcast('availableRateFiltersUpdated');
 		};
 
 		$scope.toggleShowOnlyAvailable = function(){
 			$scope.stateCheck.calendarState.showOnlyAvailableRooms = !$scope.stateCheck.calendarState.showOnlyAvailableRooms;
+		    $scope.$broadcast('availableRateFiltersUpdated');
 		};
 	}
 ]);

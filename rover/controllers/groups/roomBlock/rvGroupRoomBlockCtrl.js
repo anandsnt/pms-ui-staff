@@ -1156,17 +1156,6 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		/**
-		 * we will update the summary data, when we got this one
-		 * @param  {Object} data
-		 * @return undefined
-		 */
-		var fetchSuccessOfSummaryData = function(data) {
-			$scope.groupConfigData.summary = _.extend($scope.groupConfigData.summary, data.groupSummary);
-
-			summaryMemento = _.extend({}, $scope.groupConfigData.summary);
-		};
-
-		/**
 		 * Success callback of room block details API
 		 */
 		var successCallBackOfFetchRoomBlockGridDetails = function(data) {
@@ -1261,16 +1250,6 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
                 .then(successCallBackOfFetchRoomBlockGridDetails)
             );
 
-            // params for summary data fetch
-            var paramsForSummaryDataFetch = {
-				"groupId": $scope.groupConfigData.summary.group_id
-			};
-            promises.push(rvGroupConfigurationSrv
-                .getGroupSummary(paramsForSummaryDataFetch)
-                .then(fetchSuccessOfSummaryData)
-            );
-
-
             //Lets start the processing
             $q.all(promises)
                 .then(successFetchOfAllReqdForRoomBlock, failedToFetchOfAllReqdForRoomBlock);
@@ -1284,25 +1263,26 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			if (activeTab !== 'ROOM_BLOCK') {
 				return;
 			}
-
+			$scope.$emit("FETCH_SUMMARY");
 			callInitialAPIs();
 
 			//end date picker will be in disabled in move mode
 			//in order to fix the issue of keeping that state even after coming back to this
 			//tab after going to some other tab
-			_.extend($scope.endDateOptions, 
+			_.extend($scope.endDateOptions,
 			{
 				disabled: shouldDisableEndDatePicker()
-			});			
+			});
 
 			initializeChangeDateActions ();
 		});
 
 		/**
-		 * when a tab switch is there, parant controller will propogate
+		 * When group summary is updated by some trigger, parant controller will propogate
 		 * API, we will get this event, we are using this to fetch new room block deails
 		 */
 		$scope.$on("UPDATED_GROUP_INFO", function(event) {
+			summaryMemento = _.extend({}, $scope.groupConfigData.summary);
 			//to prevent from initial API calling and only exectutes when group from_date, to_date,status updaet success
 			if ($scope.hasBlockDataUpdated) {
 				$scope.fetchRoomBlockGridDetails();

@@ -1081,6 +1081,21 @@ sntRover.factory('RVReportUtilsFac', [
                 report['sort_fields'][2] = dateSortBy;
             };
 
+            // for AR Summary report the sort by items must be
+            // ordered in a specific way as per the design
+            // [name - account - balance] > TO > [balance - account - name]
+            if ( report['title'] === reportNames['AR_SUMMARY_REPORT']) {
+                var nameSortBy = angular.copy( report['sort_fields'][2] ),
+                    accountSortBy = angular.copy( report['sort_fields'][0] ),
+                    balanceSortBy = angular.copy( report['sort_fields'][1] );
+
+                report['sort_fields'][0] = nameSortBy;
+                report['sort_fields'][1] = accountSortBy;
+                report['sort_fields'][2] = null;
+                report['sort_fields'][3] = null;
+                report['sort_fields'][4] = balanceSortBy;
+            };
+
             // for in-house report the sort by items must be
             // ordered in a specific way as per the design
             // [name - room] > TO > [room - name]
