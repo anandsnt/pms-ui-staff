@@ -128,10 +128,10 @@
                 <!-- Room Type -->
                 <div class="line">
                     <input type="text"
-                    	value="{{dateData.release_days}}"
                     	class="highlight"
                     	rv-delay-textbox
                         delay="100"
+                        ng-model="dateData.release_days"
                     	function-to-fire="releaseDateChanging" />
                 </div>
                  <div class="line small" ng-class="{'hidden' : !roomType.isCollapsed}"> <!-- Toggle class hidden when .line-toggle (L41) is clicked/tapped -->
@@ -144,16 +144,10 @@
                     <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                     <!-- we are not going behind ng-change, it will trigger everytime there is acharctr chnge, so we ae using our delay text box -->
                     <input type="text"
-                        rv-delay-textbox
-                        delay="100"
-                        function-to-fire="bookingDataChanging"
-                        ng-model="dateData.single"
+                        value="{{dateData.single}}"
                         class="cell" disabled /> <!-- Add attr "disabled" when group is canceled -->
                     <input type="text"
-                        rv-delay-textbox
-                        delay="100"
-                        function-to-fire="bookingDataChanging"
-                        ng-model="dateData.single_pickup"
+                        value="{{dateData.single_pickup}}"
                         class="cell" disabled />
                     <!-- we will show this quick arrow only in first column -->
                     <!-- NOT AVAILABLE -->
@@ -169,16 +163,10 @@
                 <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}" ng-hide="allotmentConfigData.summary.rate != -1 && roomType.rate_config.double_rate == null">
                     <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                     <input type="text"
-                        rv-delay-textbox
-                        delay="100"
-                        function-to-fire="bookingDataChanging"
-                        ng-model="dateData.double"
+                        value="{{dateData.double}}"
                         class="cell" disabled />
                     <input type="text"
-                        rv-delay-textbox
-                        delay="100"
-                        function-to-fire="bookingDataChanging"
-                        ng-model="dateData.double_pickup"
+                        value="{{dateData.double_pickup}}"
                         class="cell" disabled />
                     <!-- we will show this quick arrow only in first column -->
                     <!-- NOT AVAILABLE -->
@@ -193,16 +181,10 @@
                 <!-- // Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                 <div class="line" ng-if="shouldShowTripleEntryRow(roomType)" ng-class="{'hidden' : !roomType.isCollapsed}">
                     <input type="text"
-                        rv-delay-textbox
-                        delay="100"
-                        function-to-fire="bookingDataChanging"
-                        ng-model="dateData.triple"
+                        value="{{dateData.triple}}"
                         class="cell" disabled />
                     <input type="text"
-                        rv-delay-textbox
-                        delay="100"
-                        function-to-fire="bookingDataChanging"
-                        ng-model="dateData.triple_pickup"
+                        value="{{dateData.triple_pickup}}"
                         class="cell" disabled />
                 </div>
 
@@ -210,16 +192,10 @@
                 <!-- // Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                 <div class="line" ng-if="shouldShowQuadrupleEntryRow(roomType)" ng-class="{'hidden' : !roomType.isCollapsed}">
                     <input type="text"
-                        rv-delay-textbox
-                        delay="100"
-                        function-to-fire="bookingDataChanging"
-                        ng-model="dateData.quadruple"
+                        value="{{dateData.quadruple}}"
                         class="cell" disabled />
                     <input type="text"
-                        rv-delay-textbox
-                        delay="100"
-                        function-to-fire="bookingDataChanging"
-                        ng-model="dateData.quadruple_pickup"
+                        value="{{dateData.quadruple_pickup}}"
                         class="cell" disabled />
                 </div>
 
