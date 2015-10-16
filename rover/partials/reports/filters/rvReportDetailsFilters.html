@@ -206,7 +206,30 @@
         </div>
 
 
-
+        <!-- item_27: arrival date range -->
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasGroupStartDateRange" ng-class="{'active': filterItemsToggle.item_27}" ng-click="toggleFilterItems('item_27')">
+            <span class="title">{{ chosenReport.hasGroupStartDateRange.description }}</span>
+        </a>
+        <div class="settings-content" ng-if="chosenReport.hasGroupStartDateRange" ng-class="{'hidden': !filterItemsToggle.item_27}">
+            <div class="entry date-range">
+                <label for="arrival-range-from">From</label>
+                <div class="has-datepicker">
+                    <input ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.groupStartDate" ng-change="dateChanged(chosenReport, 'hasGroupStartDateRange')" readonly>
+                    <input ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="chosenReport.groupStartDate" ng-change="dateChanged(chosenReport, 'hasGroupStartDateRange')" readonly>
+                    <button ng-if="chosenReport.canRemoveArrivalDate" ng-class="{'visible': chosenReport.hasGroupStartDateRange.showRemove}" class="clear-query">
+                        <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'hasGroupStartDateRange')">Clear query</span>
+                    </button>
+                </div>
+                <label for="arrival-range-to">To</label>
+                <div class="has-datepicker">
+                    <input ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.groupEndDate" ng-change="dateChanged(chosenReport, 'hasGroupStartDateRange')" readonly>
+                    <input ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.groupEndDate" ng-change="dateChanged(chosenReport, 'hasGroupStartDateRange')" readonly>
+                    <button ng-if="chosenReport.canRemoveArrivalDate" ng-class="{'visible': chosenReport.hasGroupStartDateRange.showRemove}" class="clear-query">
+                        <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'hasGroupStartDateRange')">Clear query</span>
+                    </button>
+                </div>
+            </div>
+        </div>
 
 
 
