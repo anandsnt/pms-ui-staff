@@ -433,7 +433,13 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			$scope.getGridViewTemplateurl = function(mode) {
 				return gridViewTemplates[mode] || gridViewTemplates.CONTRACT;
 			};
+
 		})();
+
+		$scope.setActiveGridView = function(mode) {
+			$scope.activeGridView = mode;
+			$scope.gridViewTemplateUrl = $scope.getGridViewTemplateurl($scope.activeGridView);
+		};
 
 		/**
 		 * Fired when user changes the active grid view from the select box
@@ -1083,6 +1089,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * Success callback of room block details API
 		 */
 		var successCallBackOfFetchRoomBlockGridDetails = function(data) {
+			var summaryData = $scope.allotmentConfigData.summary;
+
 			// We have resetted the data.
 			$scope.hasBookingDataChanged = false;
 
@@ -1102,10 +1110,10 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			_.each(data.occupancy, function(eachOcc) {
 				eachOcc['ui_release_days'] = '';
 			});
-			$scope.allotmentConfigData.summary.common_ui_release_days = '';
+			summaryData.common_ui_release_days = '';
 
-			$scope.allotmentConfigData.summary.selected_room_types_and_bookings = data.results;
-			$scope.allotmentConfigData.summary.selected_room_types_and_occupanies = data.occupancy;
+			summaryData.selected_room_types_and_bookings = data.results;
+			summaryData.selected_room_types_and_occupanies = data.occupancy;
 
 			//our total pickup count may change on coming from other tab (CICO-16835)
 			$scope.totalPickups = data.total_picked_count;
@@ -1222,6 +1230,14 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			}
 			$scope.$emit("FETCH_SUMMARY");
 			$scope.fetchRoomBlockGridDetails();
+
+			// If allotment does not have room block configured change grid view to contract.
+			if ($scope.allotmentConfigData.summary.rooms_total === 0) {
+				$scope.setActiveGridView('CONTRACT');
+			}
+			else {
+				$scope.setActiveGridView('CURRENT');
+			}
 		});
 
 		/**
@@ -1440,8 +1456,13 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {undefined}
 		 */
 		var initializeVariables = function () {
-			$scope.activeGridView = 'CONTRACT';
-			$scope.gridViewTemplateUrl = $scope.getGridViewTemplateurl($scope.activeGridView);
+			// If allotment does not have room block configured change grid view to contract.
+			if ($scope.allotmentConfigData.summary.rooms_total === 0) {
+				$scope.setActiveGridView('CONTRACT');
+			}
+			else {
+				$scope.setActiveGridView('CURRENT');
+			}
 
 			//we use this to ensure that we will call the API only if there is any change in the data
 			summaryMemento = _.extend({}, $scope.allotmentConfigData.summary);
