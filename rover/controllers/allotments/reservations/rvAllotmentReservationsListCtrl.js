@@ -59,6 +59,14 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         };
 
         /**
+         * @param  {Date}
+         * @return {String}
+         */
+        var getApiFormattedDate = function(date) {
+            return ($filter('date')(new tzIndependentDate(date), $rootScope.dateFormatForAPI));
+        };
+
+        /**
          * Function to decide whether to show 'no reservations' screen
          * if reservations list is empty, will return true
          * @return {Boolean}
@@ -121,10 +129,13 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
 
             // we will clear end date if chosen start date is greater than end date
             if ($scope.reservationAddFromDate > $scope.reservationAddToDate) {
-                $scope.reservationAddToDate = '';
+                $scope.reservationAddToDate = $scope.reservationAddFromDate;
             }
 
             runDigestCycle();
+
+            //calling the api for populating the room type and max. possible held count
+            $scope.fetchConfiguredRoomTypeDetails ();
         };
 
         /**
@@ -137,10 +148,13 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
 
             // we will clear end date if chosen start date is greater than end date
             if ($scope.reservationAddFromDate > $scope.reservationAddToDate) {
-                $scope.reservationAddFromDate = '';
+                $scope.reservationAddFromDate = $scope.reservationAddToDate;
             }
 
             runDigestCycle();
+
+            //calling the api for populating the room type and max. possible held count
+            $scope.fetchConfiguredRoomTypeDetails ();
         };
 
         /**
@@ -190,10 +204,12 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
                 numberOfMonths: 1
             };
 
+            var possibleDefaultDate = refData.block_from;
+
             //if we are in edit mode, we have to set the min/max date
             if (!$scope.isInAddMode()) {
                 _.extend(commonDateOptions, {
-                    minDate: new tzIndependentDate(refData.block_from),
+                    minDate: new tzIndependentDate($rootScope.businessDate),
                     maxDate: new tzIndependentDate(refData.block_to)
                 });
             }
@@ -210,21 +226,27 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
 
             //date picker options - Reservation Add From
             $scope.reservationSearchFromDateOptions = _.extend({
+                minDate: '',
                 onSelect: reservationSearchFromDateChoosed
             }, commonDateOptions);
 
             //date picker options - Reservation to From
             $scope.reservationSearchToDateOptions = _.extend({
+                minDate: '',
                 onSelect: reservationSearchToDateChoosed
             }, commonDateOptions);
 
+            if (possibleDefaultDate < new tzIndependentDate($rootScope.businessDate)) {
+                possibleDefaultDate = new tzIndependentDate($rootScope.businessDate);
+            }
+
             //default from date, as per CICO-13900 it will be block_from date
-            $scope.reservationAddFromDate = refData.block_from;
+            $scope.reservationAddFromDate = possibleDefaultDate;
 
             //default to date, as per CICO-13900 it will be block_to date
             $scope.reservationAddToDate = refData.block_to;
 
-            $scope.reservationSearchFromDate = refData.block_from;
+            $scope.reservationSearchFromDate = possibleDefaultDate;
             $scope.reservationSearchToDate = refData.block_to;
         };
 
@@ -318,7 +340,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
          * API, we will get this event, we are using this to fetch new room block deails
          */
         $scope.$on("ALLOTMENT_TAB_SWITCHED", function(event, activeTab) {
-            if (activeTab !== 'ROOMING') {
+            if (activeTab !== 'RESERVATIONS') {
                 return;
             }
             //calling initially required APIs
@@ -398,6 +420,14 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         };
 
         /**
+         * utiltiy function for setting scroller and things
+         * return - None
+         */
+        var refreshScrollers = function() {
+            $scope.refreshScroller('rooming_list');
+        };
+
+        /**
          * to set the active left side menu
          * @return {undefined}
          */
@@ -457,6 +487,17 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         };
 
         /**
+         * @return {Obect}
+         */
+        var formParamsForConfiguredRoomTypeFetch = function() {
+            return {
+                id: $scope.allotmentConfigData.summary.allotment_id,
+                from_date: getApiFormattedDate ($scope.reservationAddFromDate),
+                to_date: getApiFormattedDate ($scope.reservationAddToDate)
+            };
+        };
+
+        /**
          * [fetchRoomingDetails description]
          * @return {[type]} [description]
          */
@@ -469,9 +510,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
                 return;
             }
 
-            var params = {
-                id: $scope.allotmentConfigData.summary.group_id
-            };
+            var params = formParamsForConfiguredRoomTypeFetch();
 
             var options = {
                 params: params,
@@ -567,7 +606,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
          */
         var formFetchReservationsParams = function() {
             var params = {
-                group_id: $scope.allotmentConfigData.summary.allotment_id,
+                id: $scope.allotmentConfigData.summary.allotment_id,
                 per_page: $scope.perPage,
                 page: $scope.page,
                 sorting_field: $scope.sorting_field,
@@ -627,6 +666,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
             $scope.errorMessage = errorMessage;
         };
 
+
         /**
          * we have to call multiple API on initial screen, which we can't use our normal function in teh controller
          * depending upon the API fetch completion, loader may disappear.
@@ -645,10 +685,8 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
             //we are not using our normal API calling since we have multiple API calls needed
             $scope.$emit('showLoader');
 
-            //rooming details fetch
-            var paramsForRoomingDetails = {
-                id: $scope.allotmentConfigData.summary.group_id
-            };
+            //roomtypes fetch
+            var paramsForRoomingDetails = formParamsForConfiguredRoomTypeFetch();
             promises.push(rvAllotmentReservationsListSrv
                 .getRoomTypesConfiguredAgainstGroup(paramsForRoomingDetails)
                 .then(successCallBackOfFetchConfiguredRoomTypeDetails)
@@ -683,7 +721,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
             setDatePickerOptions();
 
             //setting scrollers
-            //setScroller();
+            setScroller();
 
             //we have a list of scope varibales which we wanted to initialize
             initializeVariables();

@@ -7,7 +7,7 @@ sntRover.service('rvAllotmentReservationsListSrv', ['$q', 'rvBaseWebSrvV2', 'rvU
 		 */
 		this.fetchReservations = function(params) {
 			var deferred = $q.defer(),
-				allotment_id = params.allotment_id,
+				allotment_id = params.id,
 				url = '/api/allotments/' + allotment_id + "/reservations";
 
 			var data = {
@@ -35,11 +35,12 @@ sntRover.service('rvAllotmentReservationsListSrv', ['$q', 'rvBaseWebSrvV2', 'rvU
 		 */
 		this.getRoomTypesConfiguredAgainstGroup = function(params) {
 			var deferred = $q.defer(),
-				allotment_id = params.allotment_id,
+				allotment_id = params.id,
+				data = _.omit(params, 'id'),
 				url = '/api/allotments/' + allotment_id + "/room_types";
 
 
-			rvBaseWebSrvV2.getJSON(url).then(
+			rvBaseWebSrvV2.getJSON(url, data).then(
 				function(data) {
 					deferred.resolve(data);
 				},
