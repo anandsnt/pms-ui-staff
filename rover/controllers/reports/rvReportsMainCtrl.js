@@ -400,6 +400,8 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.sortByChanged = function(item) {
             var _sortBy;
 
+            console.log(item.chosenSortBy);
+
             // un-select sort dir of others
             // and get a ref to the chosen item
             _.each(item.sortByOptions, function(each) {
