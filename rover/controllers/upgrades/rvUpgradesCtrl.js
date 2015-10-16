@@ -12,18 +12,33 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 
 		$scope.heading = 'Room Upgrades';
 		$scope.setHeadingTitle($scope.heading);
+                
+                $scope.buttonText = {
+                  noThanks: 'NO THANKS, proceed with Check In'  
+                };
+                
+                $scope.initAdvQueCheck = function(){
+                    var adv = $rootScope.advanced_queue_flow_enabled;
+                    var viaQueue = $scope.$parent.reservation.check_in_via_queue;
+                    $scope.buttonText.noThanks = 'No Thanks, proceed with Check In';
 
-
-		$scope.$parent.myScrollOptions = {
-			'upgradesView': {
-				scrollX: true,
-				scrollY: false,
-				scrollbars: true,
-				snap: false,
-				hideScrollbar: false,
-				preventDefault: false
-			}
-		};
+                    if (adv && viaQueue){
+                        $scope.buttonText.noThanks = 'No thanks, proceed to queue';
+                    }
+                };
+                $scope.initAdvQueCheck();
+                if (typeof $scope.$parent === typeof {}){
+                    $scope.$parent.myScrollOptions = {
+                            'upgradesView': {
+                                    scrollX: true,
+                                    scrollY: false,
+                                    scrollbars: true,
+                                    snap: false,
+                                    hideScrollbar: false,
+                                    preventDefault: false
+                            }
+                    };
+                }
 
 		$scope.reservationData = $scope.$parent.reservation;
 		$scope.upgradesList = [];
@@ -47,7 +62,11 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 				$scope.setUpgradesDescriptionInitialStatuses();
 				$scope.$emit('hideLoader');
 				setTimeout(function() {
-						$scope.$parent.myScroll['upgradesView'].refresh();
+                                            if (typeof $scope.$parent === typeof {}){
+                                                if (typeof $scope.$parent.myScroll === typeof {}){
+                                                    $scope.$parent.myScroll['upgradesView'].refresh();
+                                                }
+                                            }
 					},
 					3000);
 			};

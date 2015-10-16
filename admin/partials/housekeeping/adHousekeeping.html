@@ -10,6 +10,7 @@
 					<ad-toggle-button label="{{'USE_INSPECTED_ROOM_STATUS' | translate}}" is-checked="data.use_inspected" div-class=""></ad-toggle-button>
 					<ad-toggle-button label="{{'USE_PICKUP_ROOM_STATUS' | translate}}" is-checked="data.use_pickup" div-class=""></ad-toggle-button>
 					<ad-toggle-button label="{{'ENABLE_QUEUE_ROOMS' | translate}}" is-checked="data.is_queue_rooms_on" div-class=""></ad-toggle-button>
+					<ad-toggle-button label="{{'ENABLE_ADVANCED_QUEUE_PRECHECKIN' | translate}}" is-checked="advanced_queue_flow_enabled" div-class=""></ad-toggle-button>
 					<ad-toggle-button label="{{'ROOM ASSIGNMENT HIGHEST TO LOWEST' | translate}}" is-checked="data.list_rooms_in_highest_to_lowest_floor_order" div-class=""></ad-toggle-button>
 					<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.email" label = "{{'EMAIL_ACCOUNTS_TO_RECIEVE_QUEUE_RES_ALERT'| translate}} " placeholder = "{{'EMAIL_ACCOUNTS_TO_RECIEVE_QUEUE_RES_ALERT'|translate }}" disabled="!data.is_queue_rooms_on" ></ad-textarea>	
 					<ad-checkbox is-disabled="!data.use_inspected" is-checked="data.checkin_inspected_only" label="{{'CHECK_IN_TO_INSPECTED_ROOMS_ONLY' | translate}}" div-class="full-width"></ad-checkbox>

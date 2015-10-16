@@ -8,6 +8,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 	$scope.saveData.phone = "";
 	$scope.saveData.guest_id = "";
 	$scope.saveData.user_id = "";
+        $scope.putInQueue = false;
 
 
 	//CICO-13907
@@ -98,5 +99,17 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 		$scope.closeDialog();
 		$scope.goToNextView();
 	};
+        
+        $scope.initAdvQueCheck = function(){
+            var adv = $rootScope.advanced_queue_flow_enabled;
+            var viaQueue = $scope.reservationData.check_in_via_queue;
+
+            if (adv && viaQueue){
+               $scope.putInQueue = true;
+            } else {
+                $scope.putInQueue = false;
+            }
+        };
+        $scope.initAdvQueCheck();
 	$scope.$emit('hideLoader');
 }]);
