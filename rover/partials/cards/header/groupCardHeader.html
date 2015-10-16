@@ -23,7 +23,7 @@
             <button type="button" class="button blue" ng-hide="true">Duplicate</button>
             <!-- If in Stay Card or Create Reservation, show these instead: -->
             <button type="button" class="button brand-colors" ng-click="gotoGroupDetails()">Group Details</button>
-            <button type="button" class="button red" ng-click="removeGroupCard()">Remove Group</button>
+            <button type="button" class="button red" ng-click="detachFromGroupORAllotment()">Remove Group</button>
         </div>
     </section>
     <!-- This following section is for allotments (Only if an allotment is selected)-->
@@ -49,7 +49,7 @@
             <button type="button" class="button blue" ng-hide="true">Duplicate</button>
             <!-- If in Stay Card or Create Reservation, show these instead: -->
             <button type="button" class="button brand-colors" ng-click="gotoAllotmentDetails()">Details</button>
-            <button type="button" class="button red" ng-click="removeAllotmentCard()">Detach</button>
+            <button type="button" class="button red" ng-click="detachFromGroupORAllotment()">Detach</button>
         </div>
     </section>
 
