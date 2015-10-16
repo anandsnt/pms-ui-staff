@@ -154,6 +154,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.isCondensedPrint = true;
 					break;
 
+				case reportNames['GROUP_DEPOSIT_REPORT']:
+					$scope.isDepositReport = true;
+					break;
+					
 				case reportNames['AR_SUMMARY_REPORT']:
 					$scope.hasNoTotals = false;
 					$scope.showSortBy = true;
@@ -255,6 +259,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportNames['GROUP_PICKUP_REPORT']:
 					$scope.leftColSpan = 6;
+					$scope.rightColSpan = 3;
+					break;
+
+				case reportNames['GROUP_DEPOSIT_REPORT']:
+					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 3;
 					break;
 
@@ -406,7 +415,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 				'checkRateAdjust' : $scope.chosenReport.chosenOptions['show_rate_adjustments_only']
 			};
 			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, parseAPIoptions, $scope.$parent.resultsTotalRow) );
-
 			// if there are any results
 			$scope.hasNoResults = _.isEmpty( $scope.$parent.results );
 
@@ -517,6 +525,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 				case reportNames['DEPOSIT_REPORT']:
 					template = '/assets/partials/reports/generalReportRows/rvDepositReportRow.html';
+					break;
+				case reportNames['GROUP_DEPOSIT_REPORT']:
+					template = '/assets/partials/reports/generalReportRows/rvGroupDepositReportRow.html';
 					break;
 				case reportNames['IN_HOUSE_GUEST']:
 					template = '/assets/partials/reports/generalReportRows/rvInHouseReportRow.html';
@@ -762,6 +773,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['IN_HOUSE_GUEST']:
 				case reportNames['DEPARTURE']:
 				case reportNames['DEPOSIT_REPORT']:
+				case reportNames['GROUP_DEPOSIT_REPORT']:
 				case reportNames['CANCELLATION_NO_SHOW']:
 				case reportNames['WEB_CHECK_OUT_CONVERSION']:
 				case reportNames['WEB_CHECK_IN_CONVERSION']:

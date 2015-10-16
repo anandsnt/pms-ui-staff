@@ -5387,7 +5387,7 @@ function DayEventRenderer() {
 			" data-date='" + htmlEscape(formatDate(event.start, 'yyyy-MM-dd')) + "'" + 
 			" data-rate='" + htmlEscape(event.rate || '') + "'" + 
 			" data-room-type='" + htmlEscape(event.roomType || '') + "'";
-            if(segment.event.title !== ""){
+            if(segment.event.toolTipData && segment.event.toolTipData.bestAvailableRate !== "" && event.toolTipData !== 'undefined'){
                html += "qtipfc qtip-template='/assets/partials/reservation/rvTooltipContent.html'"+
 			"qtip-template-object='segments[" + index + "]'";
             }
@@ -5422,12 +5422,13 @@ function DayEventRenderer() {
 						"</span>" ;
 			    }
 			    html += "<span class='fc-event-title'>";
-		        if (event.title != "" && _.contains(event.classNames, 'available')){
+		        if (parseInt(event.title) > 0 && event.currencySymbol !== 'undefined'){
 			        html += htmlEscape(event.currencySymbol);
 		        }
 			}else {
 				html += "<span class='fc-event-title'>";
 			}
+			
 		html +=	htmlEscape(event.title || '') +
 			"</span>" +		
 			"</div>";

@@ -11,6 +11,7 @@ sntRover.constant('RVReportNamesConst', {
 	'BOOKING_SOURCE_MARKET_REPORT' : 'Booking Source & Market Report',
 	'CANCELLATION_NO_SHOW'         : 'Cancellation & No Show',
 	'DEPOSIT_REPORT'               : 'Deposit Report',
+	'GROUP_DEPOSIT_REPORT'         : 'Group Deposit Report',
 	'LOGIN_AND_OUT_ACTIVITY'       : 'Login and out Activity',
 	'OCCUPANCY_REVENUE_SUMMARY'    : 'Occupancy & Revenue Summary',
 	'RESERVATIONS_BY_USER'         : 'Reservations By User',

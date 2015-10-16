@@ -317,6 +317,10 @@ sntRover.factory('RVReportUtilsFac', [
                     report['reportIconCls'] = 'icon-report icon-deposit';
                     break;
 
+                case reportNames['GROUP_DEPOSIT_REPORT']:
+                    report['reportIconCls'] = 'icon-report icon-deposit';
+                    break;
+
                 case reportNames['OCCUPANCY_REVENUE_SUMMARY']:
                     report['reportIconCls'] = 'icon-report icon-occupancy';
                     break;
@@ -414,6 +418,11 @@ sntRover.factory('RVReportUtilsFac', [
                     report['canRemoveDate'] = true;
                     break;
 
+                case reportNames['GROUP_DEPOSIT_REPORT']:
+                    report['hasDateLimit']  = false;
+                    report['canRemoveDate'] = true;
+                    break;
+
                 case reportNames['OCCUPANCY_REVENUE_SUMMARY']:                    
                     report['hasPrevDateLimit'] = true;
                     break;
@@ -478,11 +487,6 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
             };
         };
-
-
-
-
-
 
         /**
          * Process the filters and create proper DS to show and play in UI
@@ -594,6 +598,20 @@ sntRover.factory('RVReportUtilsFac', [
                         untilModel : 'untilArrivalDate'
                     });
                     report.allDates.push( 'hasArrivalDateFilter' );
+                };
+
+                // check for group start date filter and keep a ref to that item
+                if ( filter.value === 'GROUP_START_DATE_RANGE' ) {
+                    report['hasGroupStartDateRange'] = filter;
+
+                    // track - showRemove flag, model names.
+                    // push date name to 'allDates'
+                    angular.extend(report['hasGroupStartDateRange'], {
+                        showRemove : true,
+                        fromModel  : 'groupStartDate',
+                        untilModel : 'groupEndDate'
+                    });
+                    report.allDates.push( 'hasGroupStartDateRange' );
                 };
 
                 // check for Deposit due date range filter and keep a ref to that item
@@ -957,11 +975,28 @@ sntRover.factory('RVReportUtilsFac', [
             };
 
             function fillResStatus (data) {
-                var foundFilter;
+                var foundFilter,
+                    customData;
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'RESERVATION_STATUS' });
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
+
+                        // CICO-20405: Required custom data for only deposit reports ¯\_(ツ)_/¯
+                        customData = angular.copy( data );
+                        if ( report['title'] === reportNames['DEPOSIT_REPORT'] ) {
+                            customData = [
+                                {id: -2, status: "DUE IN", selected: true},
+                                {id: -1, status: "DUE OUT", selected: true},
+                                {id: 1,  status: "RESERVED", selected: true},
+                                {id: 2,  status: "CHECKED IN", selected: true},
+                                {id: 3,  status: "CHECKED OUT", selected: true},
+                                {id: 4,  status: "NO SHOW", selected: true},
+                                {id: 5,  status: "CANCEL", selected: true}
+                            ];
+                        };
+
                         __setData(report, 'hasReservationStatus', {
                             type         : 'FAUX_SELECT',
                             filter       : foundFilter,
@@ -969,7 +1004,7 @@ sntRover.factory('RVReportUtilsFac', [
                             selectAll    : false,
                             defaultTitle : 'Select Status',
                             title        : 'Select Status',
-                            data         : angular.copy( data )
+                            data         : angular.copy( customData )
                         });
                     };
                 });
@@ -1112,9 +1147,9 @@ sntRover.factory('RVReportUtilsFac', [
             // ordered in a specific way as per the design
             // [name - account - balance] > TO > [balance - account - name]
             if ( report['title'] === reportNames['AR_SUMMARY_REPORT']) {
-                var nameSortBy = angular.copy( report['sort_fields'][2] ),
-                    accountSortBy = angular.copy( report['sort_fields'][0] ),
-                    balanceSortBy = angular.copy( report['sort_fields'][1] );
+                var nameSortBy    = angular.copy( _.find(report['sort_fields'], { 'value': 'ACCOUNT_NAME' }) ),
+                    accountSortBy = angular.copy( _.find(report['sort_fields'], { 'value': 'ACCOUNT_NO' }) ),
+                    balanceSortBy = angular.copy( _.find(report['sort_fields'], { 'value': 'BALANCE' }) );
 
                 report['sort_fields'][0] = nameSortBy;
                 report['sort_fields'][1] = accountSortBy;
@@ -1152,6 +1187,21 @@ sntRover.factory('RVReportUtilsFac', [
             // need to reorder the sort_by options
             // for deposit report in the following order
             if ( report['title'] === reportNames['DEPOSIT_REPORT'] ) {
+                var reservationSortBy = angular.copy( report['sort_fields'][4] ),
+                    dueDateSortBy     = angular.copy( report['sort_fields'][1] ),
+                    paidDateSortBy    = angular.copy( report['sort_fields'][2] );
+
+                report['sort_fields'][0] = reservationSortBy;
+                report['sort_fields'][1] = null;
+                report['sort_fields'][2] = dueDateSortBy;
+                report['sort_fields'][3] = null;
+                report['sort_fields'][4] = paidDateSortBy;
+                report['sort_fields'][5] = null;
+            };
+
+            // need to reorder the sort_by options
+            // for group deposit report in the following order
+            if ( report['title'] === reportNames['GROUP_DEPOSIT_REPORT'] ) {
                 var reservationSortBy = angular.copy( report['sort_fields'][4] ),
                     dueDateSortBy     = angular.copy( report['sort_fields'][1] ),
                     paidDateSortBy    = angular.copy( report['sort_fields'][2] );
@@ -1307,6 +1357,19 @@ sntRover.factory('RVReportUtilsFac', [
                     report['untilPaidDate'] = _getDates.businessDate;
                     break;
 
+                // arrival date range must be from business date to a week after
+                // deposit date range must the current business date
+                case reportNames['GROUP_DEPOSIT_REPORT']:
+                    report['groupStartDate']  = _getDates.businessDate;
+                    report['groupEndDate'] = _getDates.twentyEightDaysAfter;
+                    /**/
+                    /*report['fromDepositDate']  = _getDates.businessDate;
+                    report['untilDepositDate'] = _getDates.businessDate;*/
+                    /**/
+                    report['fromPaidDate']  = _getDates.twentyEightDaysBefore;
+                    report['untilPaidDate'] = _getDates.businessDate;
+                    break;
+
                 // date range must be yesterday - relative to current business date
                 case reportNames['OCCUPANCY_REVENUE_SUMMARY']:
                     report['fromDate']  = _getDates.yesterday;
@@ -1351,9 +1414,6 @@ sntRover.factory('RVReportUtilsFac', [
         };
 
 
-
-
-
         // HELPER: create meaningful date names
         factory.processDate = function ( customDate, xDays ) {
             var _dateVal      = customDate ? tzIndependentDate(customDate) : $rootScope.businessDate,
@@ -1370,6 +1430,8 @@ sntRover.factory('RVReportUtilsFac', [
                 'tomorrow'     : new Date(_year, _month, _date + 1),
                 'aWeekAgo'     : new Date(_year, _month, _date - 7),
                 'aWeekAfter'   : new Date(_year, _month, _date + 7),
+                'twentyEightDaysBefore': new Date(_year, _month, _date - 28),
+                'twentyEightDaysAfter' : new Date(_year, _month, _date + 28),
                 'aMonthAfter'  : new Date(_year, _month, _date + 30)
             };
 

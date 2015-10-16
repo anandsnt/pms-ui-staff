@@ -1,0 +1,381 @@
+@charset: "utf-8";
+/*Accent colors*/
+@white:#fff;
+@black:#000;
+@green:#c5ab00;
+@lightgreen:#d6c559;
+@brown:#7e6e3b;
+@gold:#A99A6F;
+
+body,.qr-code-image{
+	background-color: #DBD9D6 !important; 
+	background-image: none;
+}
+.jumbotron .container{
+	width:100%;
+}
+.gold-bg{
+	background:@gold !important;
+}
+.light-green-bg{
+	background:#d6c559 !important;
+}
+.black-bg{
+	background:#3F3F3D !important;
+}
+.green-text{
+	color:#c5ab00 !important;
+}
+.black-text, .loading-text{
+	color:#000000  !important;
+}
+.white-bg{
+	background:@white !important;
+}
+.white-text{
+	color:@white !important;
+}
+.black-text{
+	color:@black !important;
+}
+.jumbotron .check-inout-wrapper{
+	border:none !important;
+}
+.no-top-padding{
+    padding-top:0px !important;
+ }
+.eden_logo_bg{
+	padding:0 !important;
+}
+.room-number-text{
+	text-align:left;
+}
+.margin-10{
+	margin-top:10px;
+}
+.green-text{
+	color:#c5ab00 !important;
+}
+.checkout-now-bg{
+	background:#70706E !important;	
+}
+.checkout-later-bg{
+	background:#3F3F3D !important;	
+}
+
+.checkouttime1 {
+    background: none repeat scroll 0 0 #979795;
+}
+.checkouttime2 {
+    background: none repeat scroll 0 0 #70706E;
+}
+.checkouttime3 {
+    background: none repeat scroll 0 0 #3F3F3D;
+}
+.checkout-later-back-button,.no-thanks a{
+	color: @black !important;
+}
+.no-thanks{
+	color:@black !important;
+	a{
+		border-bottom: 1px solid @black !important;
+	}
+}
+.checkout-status{
+	border-top:none !important;
+	border-bottom:none !important;
+}
+
+.guest-room-description{
+	color:#000 !important;
+}
+.link-btn.with-bg{
+	padding:10px !important;
+}
+
+.qr-code-image .qr-code-info{
+	margin-bottom: 10px !important;
+}
+
+
+.headtext{
+	font-size:44px !important;
+}
+.chekout-time{
+	font-size:24px !important;
+}
+
+
+.container-top-padding{
+	padding-top:50px !important;
+}
+.room_container{
+	form{
+		.room-number-text{
+			font-size:16px  !important;
+		}
+	}
+}
+.shadow {
+	background: none repeat scroll 0 0 #efefef;
+   -moz-box-shadow:    inset 2px 2px 3px #d1d1d1;
+   -webkit-box-shadow: inset 2px 2px 3px #d1d1d1;
+    box-shadow:         inset 2px 2px 3px #d1d1d1;
+    border: medium none !important;
+}
+
+.room-input{
+	height:50px !important;
+}
+
+.img-responsive.img-center{
+	max-width:auto !important;
+	max-height:auto !important;
+	padding:0 !important;
+}
+
+.verti-ruler {
+    background: none repeat scroll 0 0 #D3D3D3;
+}
+.get-key{
+	text-align:center;
+	color:#000;
+	padding: 0 7%;
+}
+
+.social-heading{
+	font-weight:300;
+	font-family: 'Source Sans Pro';
+}
+/* responsive starts here */
+@media (min-width: 992px) {
+	.jumbotron .check-inout-wrapper{
+  		padding: 40px 0 !important;
+  	}
+  	.now-later-options.cabin-number{
+  		max-width:280px !important;
+  	}
+  	.leadtext {
+    	padding: 21px 140px;
+	}
+	.checkin-button-padding{
+		padding-top:20%;
+	}
+	.checkin-key-padding{
+		padding-top:10px !important;
+	}
+	.qr-code-image{
+		margin: 0 auto;
+    	width: 60%;
+	}
+	.chekin-heading{
+		font-size:44px !important;
+	}
+	.chekin-heading{
+		font-size:44px !important;
+	}
+	.qr-code-info{
+		ol{
+			max-width:350px !important;
+		}
+	}
+
+	.pre-checkin-complete{
+		width:40% !important;
+		.msg-body{
+			padding: 30px 10% 0 !important;
+		}
+	}
+
+}
+
+@media (max-width: 992px) {
+	.padding-10{
+  		padding: 0px 10px !important;
+  	}
+  	.jumbotron .checkin-wrapper{
+  		padding: 25px 0 !important;
+  	}
+
+}
+
+@media (max-width: 480px) {
+	
+	.pre-checkin-complete{
+		p:nth-of-type(1){
+			font-size:24px !important;
+		}
+	}
+
+	.chekin-heading{
+		font-size:24px !important;
+	}
+	.qr-code-info{
+		ol{
+			padding-left:0px !important;
+			max-width:350px !important;
+			li{
+				font-size:14px !important;
+			}
+		} 
+		
+	}
+
+	.foot-text.second-in {
+	    padding: 0 40px !important;
+	}
+	.checkout-time-container{
+		span{
+			font-size:16px !important;
+		}
+	}
+	.chekout-time{
+		font-size:16px !important;
+	}
+
+	.headtext{
+		.main-heading{
+			font-size:30px !important;
+		}		
+		font-size:30px !important;
+	}
+	.headtext{
+		font-size:30px !important;
+	}
+	.cabin_number_field{
+		padding-top:20px;
+	}
+	.now-later-options.cabin-number{
+  		max-width:280px !important;
+  		margin:0 auto;
+  	}
+  	.container-top-padding{
+		padding-top:20px !important;
+	}
+	.thanks-msg{
+		font-size:24px;
+		padding:20% !important;
+	}
+	.latecheckout-charged {
+    	padding: 10% 0 7%;
+	}
+	.extra-head-pad{
+		padding-top:10px;
+		padding-bottom:10px;
+	}
+}
+
+
+
+.date-picker-header{
+  background-color: #18171c;
+}
+.pickadate-cell li {
+ border: 1px solid #fff;
+}
+
+.date-picker-ok{
+	color:#c5ab00 !important;
+}
+
+.date-picker-back{
+	color:@brown !important;
+}
+.date-picker-wrap{
+  background-color: @white !important;
+  background-image: linear-gradient(to bottom, @white, @white);
+}
+.pickadate-cell .pickadate-disabled,
+.pickadate-cell .pickadate-disabled a {
+  color: #959595 !important;
+}
+
+.date-picker-ok{
+  padding-top: 18px;
+  background:  url(/assets/img/eden_resorts/done_icon.png) 25px 0px no-repeat !important;
+  color:#fff;
+}
+
+.departure-date{
+   p:first-child{
+       color:@white;
+   }
+  
+}
+.pickadate-centered-heading, .pickadate-cell .pickadate-head{
+	color:#18171c;
+}
+
+.pickadate-cell .pickadate-disabled, .pickadate-cell .pickadate-enabled, .pickadate-cell .pickadate-outofrange-disabled{
+    background-color:#E5E5E5 !important;
+    color:#E5E5E5 !important;
+}
+.pickadate-cell .pickadate-enabled, .pickadate-prev,.pickadate-next {
+	background-color:#E5E5E5 !important;
+    color:#18171c !important;
+}
+.pickadate-cell .pickadate-active{
+    background-color:#49B7C2 !important;
+    color:#18171c !important;
+}
+.pickadate-controls{
+    a, a:hover
+    {
+    	background-color:white !important;
+        color:#18171c !important;
+    }
+}
+
+.pickadate-cell{
+	.pickadate-active{
+		color:#fff !important;
+	}
+}
+
+.upgrade-details .upgrades-btn{
+	background:@green !important;
+}
+
+.checkin-room-number{
+	background:#000 !important;
+	border-radius: 15px;
+    font-size: 24px;
+    padding: 2px 29px;
+    font-weight: 300;
+}
+.qr-code-info {
+	margin:0 auto !important;
+	text-align:center !important;
+	ol{
+		text-align:left !important;
+		margin:0 auto !important;
+	}
+}
+
+.row.checkin-wrapper.line-top.checkin-details.no-bottom-padding {
+    padding-bottom: 0 !important;
+}
+a, a:hover {
+   color: @brown !important;
+}
+.row .date-container {
+    border-bottom: 1px solid #D3D3D3;
+}
+.upgrades-label{
+  color:#000000 !important;
+}
+
+.pre-checkin-complete{
+
+	margin: 0 auto;
+    width: 90%;
+
+	p:nth-of-type(2){
+		border-bottom: 1px solid black;
+		 padding-bottom: 8px; 
+		 margin:0 auto;
+	}
+	p{
+		font-weight: 400 !important;
+	}
+}

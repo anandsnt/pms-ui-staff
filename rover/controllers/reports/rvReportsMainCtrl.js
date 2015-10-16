@@ -125,7 +125,8 @@ sntRover.controller('RVReportsMainCtrl', [
 			item_23: false,
 			item_24: false,
 			item_25: false,
-			item_26: false
+			item_26: false,
+			item_27: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -647,6 +648,18 @@ sntRover.controller('RVReportsMainCtrl', [
 				/**/
 				$scope.appliedFilter['arrivalFromDate'] = angular.copy( report.fromArrivalDate );
 				$scope.appliedFilter['arrivalToDate']   = angular.copy( report.untilArrivalDate );
+			};
+
+			// include group start dates -- IFF both the limits of date range have been selected
+			if (!!report.hasGroupStartDateRange && !!report.groupStartDate && !!report.groupEndDate) {
+				fromKey  = reportParams['GROUP_START_DATE'];
+				untilKey = reportParams['GROUP_END_DATE'];
+				/**/
+				params[fromKey]  = $filter('date')(report.groupStartDate, 'yyyy/MM/dd');
+				params[untilKey] = $filter('date')(report.groupEndDate, 'yyyy/MM/dd');
+				/**/
+				$scope.appliedFilter['groupFromDate'] = angular.copy( report.groupStartDate );
+				$scope.appliedFilter['groupToDate']   = angular.copy( report.groupEndDate );
 			};
 
 			// include deposit due dates
