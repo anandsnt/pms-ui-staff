@@ -72,8 +72,15 @@
 <!-- Deposit Report -->
 <ul ng-if="isThisReport( 'DEPOSIT_REPORT' )" class="totals">
     <li>Due<span>{{ summaryCounts.total_deposit_due | currency:currencySymbol:2 }}</span></li>
-    <li>Paid<span>{{ summaryCounts.total_deposit_paid | currency:currencySymbol:2 }}</span></li>
-    <li>Past Due<span class="green">{{ summaryCounts.total_deposit_passed | currency:currencySymbol:2 }}</span></li>
+    <li>Paid<span class="green">{{ summaryCounts.total_deposit_paid | currency:currencySymbol:2 }}</span></li>
+    <li>Past Due<span class="red">{{ summaryCounts.total_deposit_passed | currency:currencySymbol:2 }}</span></li>
+</ul>
+
+<!-- Group Deposit Report -->
+<ul ng-if="isThisReport( 'GROUP_DEPOSIT_REPORT' )" class="totals">
+    <!-- <li>Due<span>{{ summaryCounts.total_deposit_due | currency:currencySymbol:2 }}</span></li> -->
+    <li>Paid<span class="green">{{ summaryCounts.total_deposit_paid | currency:currencySymbol:2 }}</span></li>
+    <!-- <li>Past Due<span class="red">{{ summaryCounts.total_deposit_passed | currency:currencySymbol:2 }}</span></li> -->
 </ul>
 
 <!-- Reservations By User -->
@@ -114,4 +121,10 @@
     <li>Rate Revenue<span>{{ summaryCounts.rate_revenue | currency:currencySymbol:2 }}</span></li>
     <li>ADR<span>{{ summaryCounts.adr | currency:currencySymbol:2 }}</span></li>
     <li>Actual Revenue<span>{{ summaryCounts.actual_revenue | currency:currencySymbol:2 }}</span></li>
+</ul>
+
+<!-- Guest Balance Report -->
+<ul ng-if="isThisReport( 'GUEST_BALANCE_REPORT' )" class="totals">
+    <li>Records<span>{{ summaryCounts.records }}</span></li>
+    <li>Balance Amount<span class="red">{{ summaryCounts.balance_amount | currency:currencySymbol:2 }}</span></li>
 </ul>
