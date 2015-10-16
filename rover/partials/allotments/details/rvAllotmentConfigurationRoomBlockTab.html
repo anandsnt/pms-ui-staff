@@ -5,7 +5,7 @@
             <label for="allotment-grid-view" tralslate>Grid View</label>
             <div class="select">
                 <select id="allotment-grid-view"
-                    ng-model="allotmentConfigData.activeGridView"
+                    ng-model="activeGridView"
                     ng-disabled="shouldDisableGridViewSwitch()"
                     ng-change="activeGridViewChanged()">
                     <option value="CONTRACT" selected>Contract</option>
@@ -59,11 +59,7 @@
     <div id="allotment-room-block-content" class="tab-details">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <!-- Allotment Roomblock Grid views - Toggled by select box. -->
-        <div ng-if="allotmentConfigData.activeGridView == 'CONTRACT'" ng-include="'/assets/partials/allotments/details/grids/rvAllotmentConfigurationContractGrid.html'"></div>
-
-        <div ng-if="allotmentConfigData.activeGridView == 'CURRENT'" ng-include="'/assets/partials/allotments/details/grids/rvAllotmentConfigurationCurrentGrid.html'"></div>
-
-        <div ng-if="allotmentConfigData.activeGridView == 'RELEASE'" ng-include="'/assets/partials/allotments/details/grids/rvAllotmentConfigurationReleaseGrid.html'"></div>
+        <div ng-include="gridViewTemplateUrl"></div>
 
     </div>
 </form>
