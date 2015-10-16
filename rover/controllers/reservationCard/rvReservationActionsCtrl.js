@@ -204,8 +204,27 @@ sntRover.controller('reservationActionsController', [
 				checkin_date: $scope.reservationData.reservation_card.arrival_date
 			});
 		};
+                
+                
+                
+                
+                $scope.checkGuestInFromQueue  = function(){
+                    $rootScope.$broadcast('checkGuestInFromQueue');
+                };
+                $scope.reservationIsQueued = function(){
+                    //checks current reservation data to see if it is in Queue or not
+                    console.log('*.is_reservation_queued: '+$scope.reservationData.reservation_card.is_reservation_queued);
+                    if ($scope.reservationData.reservation_card.is_reservation_queued === 'true'){
+                        return true;
+                    } else return false;
+                };
 
 		var startCheckin = function() {
+                    console.log('*.check_in_via_queue: '+$scope.reservationData.check_in_via_queue);
+                    if (!$scope.reservationData.check_in_via_queue && $scope.reservationIsQueued()){
+                        $scope.checkGuestInFromQueue();
+                        return;
+                    } else {
 			var afterRoomUpdate = function() {
 				if (!!$scope.guestCardData.userId) {
 					if (($scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "false" || $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "" || $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === null) && ($scope.guestCardData.contactInfo.email === '' || $scope.guestCardData.contactInfo.phone === '' || $scope.guestCardData.contactInfo.email === null || $scope.guestCardData.contactInfo.phone === null)) {
@@ -278,6 +297,9 @@ sntRover.controller('reservationActionsController', [
 						$scope.reservationData.reservation_card.room_status = data.is_ready === "true" ? 'READY' : 'NOTREADY';
 						$scope.reservationData.reservation_card.fo_status = data.is_occupied === "true" ? 'OCCUPIED' : 'VACANT';
 						//CICO-14777 Yotel - Hourly Setup: Checkin with not ready room assigned should redirect to diary
+                                                
+                                                
+                                                
 						if (shouldRedirectToDiary()) {
 							gotoDiaryInEditMode();
 						} else {
@@ -292,6 +314,7 @@ sntRover.controller('reservationActionsController', [
 				// just cont.
 				afterRoomUpdate();
 			}
+                    }
 		};
 
 		$scope.$on("PROCEED_CHECKIN", function() {
@@ -347,7 +370,7 @@ sntRover.controller('reservationActionsController', [
 			$scope.$emit('UPDATE_QUEUE_ROOMS_COUNT', 'add');
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.reservation_id, $scope.reservationData);
                         
-                        
+                        $rootScope.$emit('goToStayCardFromAddToQueue');
 		};
                 
 		$scope.successRemoveFromQueueCallBack = function() {
@@ -359,21 +382,34 @@ sntRover.controller('reservationActionsController', [
 
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.reservation_id, $scope.reservationData);
 		};
-
+                
+                
+                
+                
+                var putInQueueAdvancedCall = $rootScope.$on('putInQueueAdvanced',function(){
+                        $scope.putInQueueAdvanced($scope.reservationData.reservation_card.reservation_id);
+                        putInQueueAdvancedCall = null;//one off, deregister immediately
+                    });
+                        
+                $scope.putInQueueAdvanced = function(reservationId){
+                    $scope.reservationData.check_in_via_queue = false;//set flag for checking in via put-in-queue
+                    var data = {
+                            "reservationId": reservationId,
+                            "status": "true"
+                    };
+                    $scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successPutInQueueCallBack);
+                };
+                
 		$scope.putInQueue = function(reservationId) {
                     
                     var useAdvancedQueFlow = $rootScope.advanced_queue_flow_enabled;
                         if (useAdvancedQueFlow){
                             $scope.reservationData.check_in_via_queue = true;//set flag for checking in via put-in-queue
                             $scope.goToCheckin();
-                            
-                            
-                            
                         } else {
                             /*
                              * put in queue will be done later, after cc auth
                              */
-                            
                             
                             $scope.reservationData.check_in_via_queue = false;//set flag for checking in via put-in-queue
                             var data = {
@@ -381,12 +417,13 @@ sntRover.controller('reservationActionsController', [
                                     "status": "true"
                             };
                             $scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successPutInQueueCallBack);
-                        
-                    
                     }
 		};
 
 		$scope.removeFromQueue = function(reservationId) {
+                    //debuggin
+                    //$scope.putInQueue(reservationId);
+                    //return;
 			var data = {
 				"reservationId": reservationId,
 				"status": false
