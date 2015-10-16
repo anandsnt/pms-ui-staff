@@ -1197,22 +1197,21 @@ sntRover.controller('RVbillCardController',
         $scope.goToStayCardFromAddToQueue = function(){
             $scope.goBackToStayCard();
         };
-        $scope.checkGuestInFromQueue = function(){
-            $scope.clickedManualAuth();
-        };
         
-        var goStayCardFromAddToQueue = $rootScope.$on('goToStayCardFromAddToQueue', function() {
-                    $scope.goToStayCardFromAddToQueue();
-                    goStayCardFromAddToQueue = null;//deregister immediately
+        
+        $scope.checkGuestInFromQueue = false;
+        if (!$rootScope.reservationBillWatch){//alternative to $destroy, this is an init-once method
+            $rootScope.reservationBillWatch = 1;
+
+            $rootScope.$on('goToStayCardFromAddToQueue',function(){
+                 $scope.goToStayCardFromAddToQueue();
+
             });
-        var checkInFromQueue = $rootScope.$on('checkGuestInFromQueue', function() {
-                    $scope.checkGuestInFromQueue();
-                    checkInFromQueue = null; //deregister immediately
+            $rootScope.$on('checkGuestInFromQueue', function() {
+                $scope.checkGuestInFromQueue = true;
+                $scope.initCompleteCheckin(false, '[]');
             });
-        
-        
-        
-        
+        }
         
 	//CICO-13907
 	$scope.hasAnySharerCheckedin = function(){
@@ -1235,7 +1234,7 @@ sntRover.controller('RVbillCardController',
              * in Standalone, $scope.putInQueue should always be false; (until we start supporting standalone put in queue)
              */
             
-		if(isCheckinWithoutAuth || $scope.putInQueue){
+		if(isCheckinWithoutAuth || ($scope.putInQueue && !$scope.checkGuestInFromQueue)){
                         //$scope.putInQueue is set to true when going through the overlay -> put in queue advanced flow process (basically the same as check-in, without CC auth-CICO-19673)
                         //--- also the guest is not checked-in, so the user gets redirected back to the stay card, where they will see the option to "remove from queue"
                         //--- this also updates the flow for check-in, if (reservation was queue'd, then we will skip upgrade page, T&C page and credit card authorization
@@ -1243,6 +1242,7 @@ sntRover.controller('RVbillCardController',
                         data.authorize_credit_card = false;        
                         if ($scope.putInQueue){
                             $rootScope.$emit('putInQueueAdvanced');
+                            
                         }else {
                             // Perform checkin process without authorization..
                             $scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback, $scope.completeCheckinFailureCallback);
@@ -1398,7 +1398,7 @@ sntRover.controller('RVbillCardController',
         
         
 	// To handle complete checkin button click
-	$scope.clickedCompleteCheckin = function(isCheckinWithoutPreAuthPopup){
+	$scope.clickedCompleteCheckin = function(isCheckinWithoutPreAuthPopup, checkInQueuedRoom){
             
 		if($scope.hasAnySharerCheckedin()){
 			// Do nothing , Keep going checkin process , it is a sharer reservation..
@@ -1427,6 +1427,12 @@ sntRover.controller('RVbillCardController',
                         
                         
 		} else {
+                    $scope.initCompleteCheckin(isCheckinWithoutPreAuthPopup, signatureData);
+		}
+                
+	};
+        
+        $scope.initCompleteCheckin = function(isCheckinWithoutPreAuthPopup, signatureData){
                     
 			if($scope.validateEmailNeeded()){
                             ngDialog.open({
@@ -1445,13 +1451,11 @@ sntRover.controller('RVbillCardController',
                             var data;
                             if($scope.isSwipeHappenedDuringCheckin){
                                  data = $scope.getCheckinSwipeData(signatureData, addToGuest);
+	 		    } else if ($scope.checkGuestInFromQueue) {
+	 		    	 data = $scope.getCheckinNonSwipeData(signatureData);  
 	 		    } else {
 	 		    	 data = $scope.getCheckinNonSwipeData(signatureData);  
 	 		    }
-                            
-                            
-                            
-                            
                             if (!$scope.putInQueue){
                                 setFlagForPreAuthPopup();
                             }
@@ -1471,9 +1475,7 @@ sntRover.controller('RVbillCardController',
                                 performCCAuthAndCheckinProcess(data,true);
                             }
 			}
-		}
-	};
-        
+        };
         
         
 	// To handle success callback of complete checkout
