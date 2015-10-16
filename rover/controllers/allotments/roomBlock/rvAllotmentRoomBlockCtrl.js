@@ -142,28 +142,28 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 		$scope.shouldShowApplyToHeldCountsButton = function() {
 			var hasBookingDataChanged = $scope.hasBookingDataChanged,
-				isInContractGridView  = $scope.allotmentConfigData.activeGridView === 'CONTRACT';
+				isInContractGridView  = $scope.activeGridView === 'CONTRACT';
 
 			return ( isInContractGridView && ( updated_contract_counts || hasBookingDataChanged ) );
 		};
 
 		$scope.shouldShowApplyToContractButton = function() {
 			var hasBookingDataChanged = $scope.hasBookingDataChanged,
-				isInContractGridView  = $scope.allotmentConfigData.activeGridView === 'CONTRACT';
+				isInContractGridView  = $scope.activeGridView === 'CONTRACT';
 
 			return ( hasBookingDataChanged && isInContractGridView );
 		};
 
 		$scope.shouldShowApplyToCurrentButton = function() {
 			var hasBookingDataChanged = $scope.hasBookingDataChanged,
-				isInCurrentGridView  = $scope.allotmentConfigData.activeGridView === 'CURRENT';
+				isInCurrentGridView  = $scope.activeGridView === 'CURRENT';
 
 			return ( hasBookingDataChanged && isInCurrentGridView );
 		};
 
 		$scope.shouldShowApplyToHeldToContractButton = function() {
 			var hasBookingDataChanged = $scope.hasBookingDataChanged,
-				isInCurrentGridView	  = $scope.allotmentConfigData.activeGridView === 'CURRENT';
+				isInCurrentGridView	  = $scope.activeGridView === 'CURRENT';
 
 			return ( isInCurrentGridView && ( updated_current_counts || hasBookingDataChanged ) );
 		};
@@ -423,15 +423,37 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			}
 		};
 
+		(function() {
+			var gridViewTemplates = {
+				CONTRACT: '/assets/partials/allotments/details/grids/rvAllotmentConfigurationContractGrid.html',
+				CURRENT: '/assets/partials/allotments/details/grids/rvAllotmentConfigurationCurrentGrid.html',
+				RELEASE: '/assets/partials/allotments/details/grids/rvAllotmentConfigurationReleaseGrid.html'
+			};
+
+			$scope.getGridViewTemplateurl = function(mode) {
+				return gridViewTemplates[mode] || gridViewTemplates.CONTRACT;
+			};
+
+		})();
+
+		$scope.setActiveGridView = function(mode) {
+			$scope.activeGridView = mode;
+			$scope.gridViewTemplateUrl = $scope.getGridViewTemplateurl($scope.activeGridView);
+		};
+
 		/**
 		 * Fired when user changes the active grid view from the select box
 		 * @return {undefined}
 		 */
 		$scope.activeGridViewChanged = function() {
-			// Discard all the changes in current view
-			$scope.clickedOnDiscardButton();
-
-			$timeout( reinit, 500 );
+			$scope.$emit('showLoader');
+			$timeout(function() {
+				// Discard all the changes in current view
+				$scope.clickedOnDiscardButton();
+				$scope.gridViewTemplateUrl = $scope.getGridViewTemplateurl($scope.activeGridView);
+				$scope.$emit("hideLoader");
+				$timeout(reinit, 400);
+			}, 0);
 		};
 
 		/**
@@ -631,7 +653,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			forceOverbook = forceOverbook || false;
 			isContratUpdate = isContratUpdate || false;
 
-			//TODO : Make API call to save the room block.
 			var params = {
 				allotment_id: $scope.allotmentConfigData.summary.allotment_id,
 				results: $scope.allotmentConfigData.summary.selected_room_types_and_bookings,
@@ -645,6 +666,20 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				failureCallBack: failureCallBackOfSaveRoomBlock
 			};
 			$scope.callAPI(rvAllotmentConfigurationSrv.saveRoomBlockBookings, options);
+		};
+
+		$scope.saveReleaseDays = function() {
+			var params = {
+				allotment_id: $scope.allotmentConfigData.summary.allotment_id,
+				results: $scope.allotmentConfigData.summary.selected_room_types_and_bookings
+			};
+
+			var options = {
+				params: params,
+				successCallBack: successCallBackOfSaveRoomBlock,
+				failureCallBack: failureCallBackOfSaveRoomBlock
+			};
+			$scope.callAPI(rvAllotmentConfigurationSrv.saveRoomBlockReleaseDays, options);
 		};
 
 		/**
@@ -957,7 +992,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		/**
 		 * To open Room Block Pickedup Reservations Popup.
 		 */
-		$scope.$on('updateRate', function (event, selectedRoomTypeAndRates) {
+		var updateRateEvent = $scope.$on('updateRate', function (event, selectedRoomTypeAndRates) {
 			roomsAndRatesSelected = selectedRoomTypeAndRates;
 			ngDialog.open({
 				template: '/assets/partials/allotments/details/rvAllotmentRoomBlockPickedupReservationsPopup.html',
@@ -1054,6 +1089,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * Success callback of room block details API
 		 */
 		var successCallBackOfFetchRoomBlockGridDetails = function(data) {
+			var summaryData = $scope.allotmentConfigData.summary;
+
 			// We have resetted the data.
 			$scope.hasBookingDataChanged = false;
 
@@ -1073,10 +1110,10 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			_.each(data.occupancy, function(eachOcc) {
 				eachOcc['ui_release_days'] = '';
 			});
-			$scope.allotmentConfigData.summary.common_ui_release_days = '';
+			summaryData.common_ui_release_days = '';
 
-			$scope.allotmentConfigData.summary.selected_room_types_and_bookings = data.results;
-			$scope.allotmentConfigData.summary.selected_room_types_and_occupanies = data.occupancy;
+			summaryData.selected_room_types_and_bookings = data.results;
+			summaryData.selected_room_types_and_occupanies = data.occupancy;
 
 			//our total pickup count may change on coming from other tab (CICO-16835)
 			$scope.totalPickups = data.total_picked_count;
@@ -1151,7 +1188,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		$scope.saveReleaseDaysEdit = function() {
-			$scope.saveRoomBlock(false);
+			$scope.saveReleaseDays();
 			$scope.releaseDaysEdited = false;
 		};
 
@@ -1187,19 +1224,27 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * when a tab switch is there, parant controller will propogate
 		 * API, we will get this event, we are using this to fetch new room block deails
 		 */
-		$scope.$on("ALLOTMENT_TAB_SWITCHED", function(event, activeTab) {
+		var tabSwitchEvent = $scope.$on("ALLOTMENT_TAB_SWITCHED", function(event, activeTab) {
 			if (activeTab !== 'ROOM_BLOCK') {
 				return;
 			}
 			$scope.$emit("FETCH_SUMMARY");
 			$scope.fetchRoomBlockGridDetails();
+
+			// If allotment does not have room block configured change grid view to contract.
+			if ($scope.allotmentConfigData.summary.rooms_total === 0) {
+				$scope.setActiveGridView('CONTRACT');
+			}
+			else {
+				$scope.setActiveGridView('CURRENT');
+			}
 		});
 
 		/**
 		 * When group summary is updated by some trigger, parant controller will propogate
 		 * API, we will get this event, we are using this to fetch new room block deails
 		 */
-		$scope.$on("UPDATED_ALLOTMENT_INFO", function(event) {
+		var summaryUpdateEvent = $scope.$on("UPDATED_ALLOTMENT_INFO", function(event) {
 			summaryMemento = _.extend({}, $scope.allotmentConfigData.summary);
 			//to prevent from initial API calling and only exectutes when group from_date, to_date,status updaet success
 			if ($scope.hasBlockDataUpdated) {
@@ -1210,10 +1255,15 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		/**
 		 * when failed to update data
 		 */
-		$scope.$on("FAILED_TO_UPDATE_ALLOTMENT_INFO", function(event, errorMessage) {
+		var summaryUpdateFailEvent = $scope.$on("FAILED_TO_UPDATE_ALLOTMENT_INFO", function(event, errorMessage) {
 			$scope.$parent.errorMessage = errorMessage;
 		});
 
+		// removing event listners when scope is destroyed
+		$scope.$on( 'destroy', updateRateEvent );
+		$scope.$on( 'destroy', tabSwitchEvent );
+		$scope.$on( 'destroy', summaryUpdateEvent );
+		$scope.$on( 'destroy', summaryUpdateFailEvent );
 		/**
 		 * we want to display date in what format set from hotel admin
 		 * @param {String/DateObject}
@@ -1406,8 +1456,13 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {undefined}
 		 */
 		var initializeVariables = function () {
-
-			$scope.allotmentConfigData.activeGridView = 'CONTRACT';
+			// If allotment does not have room block configured change grid view to contract.
+			if ($scope.allotmentConfigData.summary.rooms_total === 0) {
+				$scope.setActiveGridView('CONTRACT');
+			}
+			else {
+				$scope.setActiveGridView('CURRENT');
+			}
 
 			//we use this to ensure that we will call the API only if there is any change in the data
 			summaryMemento = _.extend({}, $scope.allotmentConfigData.summary);
