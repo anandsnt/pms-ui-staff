@@ -1,3 +1,8 @@
+/*
+	guest details Ctrl 
+	If the admin settings for this is turned on , this screen will be shown and user can
+	update the guest details here.
+*/
 (function() {
 	var guestDetailsController = function($scope,$rootScope,$state,guestDetailsService,$modal) {
 

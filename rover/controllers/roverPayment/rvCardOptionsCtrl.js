@@ -148,7 +148,16 @@ sntRover.controller('RVCardOptionsCtrl',
 			var lastName = guestData.lname;
 			iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" +firstName + "&card_holder_last_name=" + lastName + "&service_action=createtoken&time="+time;
 			var iFrame = document.getElementById('sixIframe');
-			iFrame.src = iFrameUrl;
+			try{
+			 	iFrame.src = iFrameUrl;
+			}catch(ex){
+				// CICO-21044
+				// Hiding ugly exception thrown in console
+				// happens when MLI is shown and no sixpayment iFrame is configured
+				// TODO: Investigate further and elimitate this function call
+				console.warn(ex.name, ex.message);
+			}
+			
 		};
 		$scope.$on("refreshIframe", function(e, guestData){
 			$scope.refreshIframeWithGuestData(guestData);

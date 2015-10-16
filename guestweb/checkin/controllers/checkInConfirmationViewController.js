@@ -1,3 +1,9 @@
+/*
+	Checkin confimation Ctrl 
+	The user enetered card number and departure number are verified.
+	However if the operation is autocheckin and the reservation has non CC payment type, then the card entry is not required.
+	The reservation details will be the  in the API response of the verification API.
+*/
 
 (function() {
 	var checkInConfirmationViewController = function($scope,$modal,$rootScope,$state, dateFilter, $filter, checkinConfirmationService,checkinDetailsService) {

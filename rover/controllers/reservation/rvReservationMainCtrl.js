@@ -805,7 +805,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                             rate_id: (function() {
                                 var rate = (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id;
                                 // in case of custom rates (rates without IDs send them as null.... the named ids used within the UI controllers are just for tracking and arent saved)
-                                return rate.toString().match(/_CUSTOM_/) ? null : rate
+                                return rate && rate.toString().match(/_CUSTOM_/) ? null : rate
                             })(),
                             room_type_id: room.roomTypeId,
                             room_id: room.room_id,
