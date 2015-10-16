@@ -80,14 +80,15 @@
         <!-- Room block days -->
         <div class="room-block-timeline extended-timeline cols-3 scrollable"
             ng-iscroll="room_rates_timeline_scroller"
-            ng-show="shouldHideAddRoomsButton()">
+            ng-show="shouldHideAddRoomsButton()"
+            bindonce>
 
-            <ul style="width:{{getWidthForContractViewTimeLine()}};" class="wrapper">
+            <ul bo-style="{'width': getWidthForContractViewTimeLine()}" class="wrapper">
                 <li ng-repeat="occupancy in allotmentConfigData.summary.selected_room_types_and_occupanies">
                     <div class="inner">
-                        <span>{{formatDateForUI(occupancy.date, fulldayInWeek)}}</span>
-                        <strong>{{formatDateForUI(occupancy.date, monthAndDate)}}</strong>
-                        <em>{{occupancy.occupancy}}% Occupancy</em>
+                        <span bo-text="formatDateForUI(occupancy.date, fulldayInWeek)"></span>
+                        <strong bo-text="formatDateForUI(occupancy.date, monthAndDate)"></strong>
+                        <em><i bo-text="occupancy.occupancy"></i><i>% Occupancy</i></em>
                     </div>
                     <div class="column">
                         <div class="line small">
@@ -99,7 +100,7 @@
                         <div class="line">
                             <input type="text" value="{{getTotalContractedOfDay($index)}}" class="cell" disabled />
                             <input type="text" value="{{getTotalHeldOfDay($index)}}" class="cell" disabled />
-                            <input type="text" value="{{getTotalPickedUpOfDay($index)}}" class="cell" disabled />
+                            <input type="text" bo-value="getTotalPickedUpOfDay($index)" class="cell" disabled />
                         </div>
                     </div>
                 </li>
