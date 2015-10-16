@@ -93,14 +93,15 @@
 <!-- Room block days -->
 <div class="room-block-timeline release-range scrollable"
     ng-iscroll="room_rates_timeline_scroller"
-    ng-show="shouldHideAddRoomsButton()">
+    ng-show="shouldHideAddRoomsButton()"
+    bindonce>
 
-    <ul style="width:{{getWidthForReleaseViewTimeLine()}};" class="wrapper">
+    <ul bo-style="{'width': getWidthForReleaseViewTimeLine()}" class="wrapper">
         <li ng-repeat="occupancy in allotmentConfigData.summary.selected_room_types_and_occupanies">
             <div class="inner">
-                <span>{{formatDateForUI(occupancy.date, fulldayInWeek)}}</span>
-                <strong>{{formatDateForUI(occupancy.date, monthAndDate)}}</strong>
-                <em>{{occupancy.occupancy}}% Occupancy</em>
+                <span bo-text="formatDateForUI(occupancy.date, fulldayInWeek)"></span>
+                <strong bo-text="formatDateForUI(occupancy.date, monthAndDate)"></strong>
+                <em><i bo-text="occupancy.occupancy"></i><i>% Occupancy</i></em>
             </div>
             <div class="column">
                 <!-- Release Total for Day -->
@@ -128,6 +129,7 @@
                 <!-- Room Type -->
                 <div class="line">
                     <input type="text"
+                        class="highlight" 
                     	ng-model="dateData.release_days" />
                 </div>
                  <div class="line small" ng-class="{'hidden' : !roomType.isCollapsed}"> <!-- Toggle class hidden when .line-toggle (L41) is clicked/tapped -->

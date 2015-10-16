@@ -449,8 +449,13 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			$scope.$emit('showLoader');
 			$timeout(function() {
 				// Discard all the changes in current view
-				$scope.clickedOnDiscardButton();
+				// only if there are any changes
+				if ( $scope.shouldShowDiscardButton() ) {
+					$scope.clickedOnDiscardButton();
+				};
+
 				$scope.gridViewTemplateUrl = $scope.getGridViewTemplateurl($scope.activeGridView);
+
 				$scope.$emit("hideLoader");
 				$timeout(reinit, 400);
 			}, 0);
@@ -538,8 +543,21 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return None
 		 */
 		$scope.clickedOnDiscardButton = function() {
-			$scope.allotmentConfigData.summary.selected_room_types_and_bookings =
-				util.deepCopy($scope.copy_selected_room_types_and_bookings);
+
+			//$scope.allotmentConfigData.summary.selected_room_types_and_bookings = util.deepCopy($scope.copy_selected_room_types_and_bookings);
+			// put back the original data, not using deep copy since its bad :(
+			// this can be improved further if we can know which fields have been changed 
+			_.each($scope.allotmentConfigData.summary.selected_room_types_and_bookings, function(eachRoomType) {
+				_.each(eachRoomType.dates, function(dateData) {
+					dateData['double']          = dateData['old_double'];
+					dateData['double_contract'] = dateData['old_double_contract'];
+					dateData['double_pickup']   = dateData['old_double_pickup'];
+					dateData['release_days']    = dateData['old_release_days'];
+					dateData['single']          = dateData['old_single'];
+					dateData['single_contract'] = dateData['old_single_contract'];
+					dateData['single_pickup']   = dateData['old_single_pickup'];
+				});
+			});
 
 			//and our isn't changed
 			$scope.hasBookingDataChanged = false;
@@ -560,8 +578,21 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 			//we have saved everything we have
 			//so our data is new
-			$scope.copy_selected_room_types_and_bookings =
-				angular.copy($scope.allotmentConfigData.summary.selected_room_types_and_bookings);
+			// $scope.copy_selected_room_types_and_bookings =
+			// 	angular.copy($scope.allotmentConfigData.summary.selected_room_types_and_bookings);
+
+			// since deep suxx
+			_.each($scope.allotmentConfigData.summary.selected_room_types_and_bookings, function(eachRoomType) {
+				_.each(eachRoomType.dates, function(dateData) {
+					dateData['old_double']          = dateData['double'];
+					dateData['old_double_contract'] = dateData['double_contract'];
+					dateData['old_double_pickup']   = dateData['double_pickup'];
+					dateData['old_release_days']    = dateData['release_days'];
+					dateData['old_single']          = dateData['single'];
+					dateData['old_single_contract'] = dateData['single_contract'];
+					dateData['old_single_pickup']   = dateData['single_pickup'];
+				});
+			});
 
 			$scope.hasBookingDataChanged = false;
 			$scope.allotmentConfigData.summary.rooms_total = $scope.getMaxOfBookedRooms();
@@ -1094,14 +1125,21 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			// We have resetted the data.
 			$scope.hasBookingDataChanged = false;
 
-			//we need indivual room type total bookings of each date initially,
-			//we are using this for overbooking calculation
 			_.each(data.results, function(eachRoomType) {
 				_.each(eachRoomType.dates, function(dateData) {
+
+					//we need indivual room type total bookings of each date initially,
+					//we are using this for overbooking calculation
 					dateData.old_total = $scope.getTotalHeldOfIndividualRoomType(dateData);
 
-					// keeping original release days
-					dateData['old_release_days'] = dateData['release_days'];
+					// keeping original data
+					dateData['old_double']          = dateData['double'];
+					dateData['old_double_contract'] = dateData['double_contract'];
+					dateData['old_double_pickup']   = dateData['double_pickup'];
+					dateData['old_release_days']    = dateData['release_days'];
+					dateData['old_single']          = dateData['single'];
+					dateData['old_single_contract'] = dateData['single_contract'];
+					dateData['old_single_pickup']   = dateData['single_pickup'];
 				});
 			});
 
@@ -1119,7 +1157,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			$scope.totalPickups = data.total_picked_count;
 
 			//we need the copy of selected_room_type, we ned to use these to show save/discard button
-			$scope.copy_selected_room_types_and_bookings = util.deepCopy(data.results);
+			// not using any more!
+			//$scope.copy_selected_room_types_and_bookings = util.deepCopy(data.results);
 
 			//we changed data, so
 			refreshScroller();
