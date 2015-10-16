@@ -82,7 +82,7 @@
             ng-iscroll="room_rates_timeline_scroller"
             ng-show="shouldHideAddRoomsButton()">
 
-            <ul style="width:{{getWidthForRoomBlockTimeLine()}};" class="wrapper">
+            <ul style="width:{{getWidthForContractViewTimeLine()}};" class="wrapper">
                 <li ng-repeat="occupancy in allotmentConfigData.summary.selected_room_types_and_occupanies">
                     <div class="inner">
                         <span>{{formatDateForUI(occupancy.date, fulldayInWeek)}}</span>
@@ -109,7 +109,7 @@
         <!-- Room block grid -->
         <div class="room-block-grid extended-timeline cols-3 scrollable" ng-iscroll="room_rates_grid_scroller"
             ng-show="shouldHideAddRoomsButton()">
-            <div class="wrapper" style="width:{{getWidthForRoomBlockTimeLine()}};">
+            <div class="wrapper" style="width:{{getWidthForContractViewTimeLine()}};">
                 <!-- REPEAT ROW FOR ALL ROOM TYPES SELECTED -->
                 <div class="row" ng-repeat="roomType in allotmentConfigData.summary.selected_room_types_and_bookings">
                     <!-- REPEAT COLUMN FOR ALL DAYS IN THE BLOCK -->
@@ -151,7 +151,7 @@
                                 class="cell" disabled />
                             <!-- we will show this quick arrow only in first column -->
                             <button ng-if="!$index"
-                                ng-click="copySingleValueToOtherBlocks(dateData, roomType)"
+                                ng-click="copySingleContractValueToOtherBlocks(dateData, roomType)"
                                 type="button"
                                 class="admin-icons icon-mover-right">
                                 Copy to all days
@@ -182,7 +182,7 @@
 
                             <!-- we will show this quick arrow only in first column -->
                             <button ng-if="!$index"
-                                ng-click="copyDoubleValueToOtherBlocks(dateData, roomType)"
+                                ng-click="copyDoubleContractValueToOtherBlocks(dateData, roomType)"
                                 type="button"
                                 class="admin-icons icon-mover-right">
                                 Copy to all days
@@ -213,7 +213,7 @@
 
                             <!-- we will show this quick arrow only in first column -->
                             <button ng-if="!$index"
-                                ng-click="copyTripleValueToOtherBlocks(dateData, roomType)"
+                                ng-click="copyTripleContractValueToOtherBlocks(dateData, roomType)"
                                 type="button"
                                 class="admin-icons icon-mover-right">
                                 Copy to all days
@@ -242,7 +242,7 @@
                                 class="cell" disabled />
                             <!-- we will show this quick arrow only in first column -->
                             <button ng-if="!$index"
-                                ng-click="copyQuadrupleValueToOtherBlocks(dateData, roomType)"
+                                ng-click="copyQuadrupleContractValueToOtherBlocks(dateData, roomType)"
                                 type="button"
                                 class="admin-icons icon-mover-right">
                                 Copy to all days
@@ -252,12 +252,12 @@
                         <div class="line small cellspan" ng-class="{'hidden' : !roomType.isCollapsed}">
                             <em class="cellspan">
                                 {{'AVAILABILITY_GROUP'|translate}}
-                                    <span
-                                    ng-class="{'green': (dateData.availability>0),
-                                    'red': (dateData.availability==0) }">
-                                        {{dateData.availability}}
-                                    </span>
-                                </em>
+                                <span
+                                ng-class="{'green': (dateData.availability>0),
+                                'red': (dateData.availability==0) }">
+                                    {{dateData.availability}}
+                                </span>
+                            </em>
                         </div>
                     </div>
                 </div>

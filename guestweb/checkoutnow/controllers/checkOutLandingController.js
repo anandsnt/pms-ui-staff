@@ -2,7 +2,7 @@ snt.controller('checkOutLandingController', ['$rootScope','$location','$state','
 
 
 	$scope.pageValid = false;
-
+	// Check if user is trying to access this page when he/she don't have access for this page
 	if($rootScope.isCheckedin){
 		$state.go('checkinSuccess');
 	}
