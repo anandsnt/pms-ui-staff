@@ -93,6 +93,8 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			$scope.stateVariables.selectedRate = $scope.stateVariables.selectedRate == null? "" : $scope.stateVariables.selectedRate;
 			if (dayHouseAvailability <= 0) {
 				return dayHouseAvailability.toString();
+			}else if(isInBestAvailableMode()){
+				return "";
 			}else if(!isRoomTypeAvailable(dailyData)){
                 return (dailyData.room_types[$scope.stateVariables.selectedRoom]).toString();
 			}else if($scope.stateVariables.selectedRoom !== '' && $scope.stateVariables.selectedRate !== ''){
