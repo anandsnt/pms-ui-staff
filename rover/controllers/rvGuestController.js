@@ -116,7 +116,11 @@ sntRover.controller('guestCardController', [
 				var preventClicking = false;
 			}
 		};
-
+                
+		$scope.$on("swipeAtGuestCard", function() {
+			$scope.guestCardTabSwitch("guest-credit");
+		});
+                
 		$scope.$on("resetGuestTab", function() {
 			$scope.guestCardTabSwitch("guest-contact");
 		});

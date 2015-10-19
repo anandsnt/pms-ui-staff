@@ -491,8 +491,6 @@ sntRover.controller('roverController',
     });
 
     $scope.successCallBackSwipe = function(data) {
-        console.log('swipped with data;');
-        console.info(data);
       $scope.$broadcast('SWIPE_ACTION', data);
     };
 
