@@ -127,10 +127,12 @@
                 <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}" ng-hide="allotmentConfigData.summary.rate != -1 && roomType.rate_config.single_rate == null">
                     <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                     <!-- we are not going behind ng-change, it will trigger everytime there is acharctr chnge, so we ae using our delay text box -->
+                    <!--  Disabled unless occupancy is contracted! -->
                     <input type="text"
                         rv-delay-textbox
                         delay="100"
                         function-to-fire="bookingDataChanging"
+                        ng-disabled="!dateData.single_contract"
                         ng-model="dateData.single"
                         class="cell" /> <!-- Add attr "disabled" when group is canceled -->
                     <input type="text"
@@ -151,11 +153,13 @@
                 <!-- <div class="line hidden"> -->
                 <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}" ng-hide="allotmentConfigData.summary.rate != -1 && roomType.rate_config.double_rate == null">
                     <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
+                    <!--  Disabled unless occupancy is contracted! -->
                     <input type="text"
                         rv-delay-textbox
                         delay="100"
                         function-to-fire="bookingDataChanging"
                         ng-model="dateData.double"
+                        ng-disabled="!dateData.double_contract" 
                         class="cell" />
                     <input type="text"
                         rv-delay-textbox
@@ -175,11 +179,13 @@
                 <!-- If L63 is clicked, generate option to add triple: -->
                 <!-- // Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                 <div class="line" ng-if="shouldShowTripleEntryRow(roomType)" ng-class="{'hidden' : !roomType.isCollapsed}">
+                    <!--  Disabled unless occupancy is contracted! -->
                     <input type="text"
                         rv-delay-textbox
                         delay="100"
                         function-to-fire="bookingDataChanging"
                         ng-model="dateData.triple"
+                        ng-disabled="!dateData.triple_contract"
                         class="cell" />
                     <input type="text"
                         rv-delay-textbox
@@ -200,10 +206,12 @@
                 <!-- If L65 is clicked, generate option to add quadruple: -->
                 <!-- // Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                 <div class="line" ng-if="shouldShowQuadrupleEntryRow(roomType)" ng-class="{'hidden' : !roomType.isCollapsed}">
+                    <!--  Disabled unless occupancy is contracted! -->
                     <input type="text"
                         rv-delay-textbox
                         delay="100"
                         function-to-fire="bookingDataChanging"
+                        ng-disabled="!dateData.quadruple_contract"
                         ng-model="dateData.quadruple"
                         class="cell" />
                     <input type="text"

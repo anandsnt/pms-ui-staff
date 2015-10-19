@@ -4,6 +4,7 @@ admin.controller('adHousekeepingCtrl',['$state', '$scope', '$rootScope', 'ADHote
 	$scope.isRoverCheckinRFID = false;
 	var fetchSuccess = function(data){
 		$scope.data = data.housekeeping;
+                $scope.advanced_queue_flow_enabled = data.advanced_queue_flow_enabled;
 		$scope.$emit('hideLoader');
 		$scope.watchInspectedStatus();
 	};
@@ -22,6 +23,7 @@ admin.controller('adHousekeepingCtrl',['$state', '$scope', '$rootScope', 'ADHote
 		};
 		var dict = {};
 		dict.housekeeping = $scope.data;
+                dict.advanced_queue_flow_enabled = $scope.advanced_queue_flow_enabled;
 
 		$scope.invokeApi(ADHotelSettingsSrv.update, dict, successCallbackSave);
 	};
