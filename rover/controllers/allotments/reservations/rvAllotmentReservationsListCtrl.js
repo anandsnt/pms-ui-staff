@@ -359,6 +359,114 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     };
 
     /**
+     * [onBackgroundImageLoaded description]
+     * @return {[type]} [description]
+     */
+    var onBackgroundImageLoaded = function() {
+      //unbinding the events & removing the elements inorder to prevent memory leaks
+      $(this).off('load');
+      $(this).remove();
+
+      //yes we have everything we wanted
+      window.print();
+
+      //if we are in the app
+      $timeout(function() {
+          if (sntapp.cordovaLoaded) {
+              cordova.exec(
+                  function(success) {},
+                  function(error) {},
+                  'RVCardPlugin',
+                  'printWebView', []
+              );
+          };
+      }, 300);
+
+
+      $timeout(function() {
+          $scope.print_type = '';
+          removePrintOrientation();
+          $scope.reservations = util.deepCopy($scope.resevationsBeforePrint);
+          $scope.resevationsBeforePrint = [];
+      }, 1200);           
+    };
+
+
+    /**
+     * to print rooming list
+     * this method requires '$scope.resevationsBeforePrint', so please check where all it is assigning
+     * @return undefined
+     */
+    var printRoomingList = function() {
+        //changing the orientation to landscape
+        addPrintOrientation();
+
+        //as part of https://stayntouch.atlassian.net/browse/CICO-14384?focusedCommentId=48871&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-48871
+        //We dont know the icon background-image loaded or not. We need to start print preview
+        //only when it is loaded, this is wrong practice (accessing DOM elements from controller), but there is no option
+        var $container  = $('#print-orientation'),
+            bg          = $container.css('background-image'),
+            src         = bg.replace(/(^url\()|(\)$|[\"\'])/g, ''),
+            $img        = $('<img>').attr('src', src).on('load', onBackgroundImageLoaded);
+    };
+
+    /**
+     * event triggered by ngrepeatend directive
+     * mainly used to referesh scroller/printing
+     */
+    $scope.$on('NG_REPEAT_COMPLETED_RENDERING', function(event) {
+        $timeout(function() {
+            if ($scope.print_type === 'rooming_list') {
+                printRoomingList();
+            }
+        }, 500);
+    });
+
+    /**
+     * add the print orientation before printing
+     * @return - None
+     */
+    var addPrintOrientation = function() {
+        $('body').append("<style id='print-orientation'>@page { size: landscape; }</style>");
+    };
+
+    /**
+     * remove the print orientation before printing
+     * @return - None
+     */
+    var removePrintOrientation = function() {
+        $('#print-orientation').remove();
+    };
+
+    /**
+     * Function - Successful callback of printRoomingList.Prints fetched Rooming List.
+     * @return - None
+     */
+    var successCallBackOfFetchAllReservationsForPrint = function(data) {
+        $scope.resevationsBeforePrint = util.deepCopy($scope.reservations);
+        $scope.reservations = data.results;
+        $scope.print_type = 'rooming_list';
+        //if you are looking for where the HELL this list is printing
+        //look for "NG_REPEAT_COMPLETED_RENDERING", thanks!!
+    };
+
+    /**
+     * Function to fetch Rooming list for print.
+     * @return - None
+     */
+    $scope.fetchReservationsForPrintingRoomingList = function() {
+        var params = {
+            id: $scope.allotmentConfigData.summary.allotment_id,
+            per_page: 1000 //assuming that there will be max of 1000 res. for an allotment
+        };
+        var options = {
+            params: params,
+            successCallBack: successCallBackOfFetchAllReservationsForPrint
+        };
+        $scope.callAPI(rvAllotmentReservationsListSrv.fetchReservations, options);
+    };
+
+    /**
      * when a tab switch is there, parant controller will propogate
      * API, we will get this event, we are using this to fetch new room block deails
      */
