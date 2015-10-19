@@ -72,6 +72,18 @@ sntRover.service('rvAllotmentReservationsListSrv', ['$q', 'rvBaseWebSrvV2', 'rvU
 			return deferred.promise;
 		};
 
+		this.removeReservation = function(data) {
+			var deferred = $q.defer(),
+				url = 'api/group_reservations/' + data.id + '/cancel';
+			rvBaseWebSrvV2.postJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;
+		};
+
 		/**
 		 * to send reservation list to some email
 		 * @param  {[type]} data [description]
