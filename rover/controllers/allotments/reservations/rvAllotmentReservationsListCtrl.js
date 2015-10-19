@@ -605,14 +605,26 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
          * utility function to form API params for group search
          * return {Object}
          */
-        var formFetchReservationsParams = function() {
+        var formFetchReservationsParams = function(isSearching) {
+
             var params = {
                 id: $scope.allotmentConfigData.summary.allotment_id,
-                per_page: $scope.perPage,
-                page: $scope.page,
-                sorting_field: $scope.sorting_field,
-                sort_dir: $scope.sort_dir
+                payLoad : {
+                    per_page: $scope.perPage,
+                    page: $scope.page,
+                    sort_field: $scope.sorting_field,
+                    sort_dir: $scope.sort_dir
+                }
             };
+
+            if(isSearching){
+                _.extend(params.payLoad, {
+                    start_date: $filter('date')(tzIndependentDate($scope.reservationSearchFromDate), 'yyyy-MM-dd'),
+                    end_date: $filter('date')(tzIndependentDate($scope.reservationSearchToDate), 'yyyy-MM-dd'),
+                    query: $scope.searchQuery
+                });
+            }
+
             return params;
         };
 
@@ -620,8 +632,8 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
          * to fetch reservations against group
          * @return - None
          */
-        $scope.fetchReservations = function() {
-            var params = formFetchReservationsParams();
+        $scope.fetchReservations = function(isSearching) {
+            var params = formFetchReservationsParams(isSearching);
             var options = {
                 params: params,
                 successCallBack: successCallBackOfFetchReservations
@@ -706,6 +718,27 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
             $q.all(promises)
                 .then(successFetchOfAllReqdForRoomingList, failedToFetchOfAllReqdForRoomingList);
         };
+
+
+        /**
+         * Function to handle input of search queries from the reservation list tab
+         * @return {[type]} [description]
+         */
+         $scope.searchAllotmentReservations = function() {
+
+            switch ($scope.searchQuery.length) {
+                case 0:
+                    console.log('reset');
+                    break;
+                case 1:
+                case 2:
+                    console.log('do nothing');
+                    break;
+                default:
+                    $scope.fetchReservations(true);
+            }
+        };
+
 
         /**
          * Function to initialise allotment reservation list
