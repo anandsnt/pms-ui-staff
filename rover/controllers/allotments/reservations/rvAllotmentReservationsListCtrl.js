@@ -660,20 +660,21 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      */
     var formFetchReservationsParams = function(isSearching) {
       var params = {
-        id: $scope.allotmentConfigData.summary.allotment_id,
-        payLoad: {
-          per_page: $scope.perPage,
-          page: $scope.page,
+        id      : $scope.allotmentConfigData.summary.allotment_id,
+        payLoad : {
+          per_page  : $scope.perPage,
+          page      : $scope.page,
           sort_field: $scope.sorting_field,
-          sort_dir: $scope.sort_dir
+          sort_dir  : $scope.sort_dir
         }
       };
 
       if (isSearching) {
-        _.extend(params.payLoad, {
-          start_date: getApiFormattedDate($scope.reservationSearchFromDate),
-          end_date: getApiFormattedDate($scope.reservationSearchToDate),
-          query: $scope.searchQuery
+        _.extend(params.payLoad,
+        {
+          start_date  : getApiFormattedDate($scope.reservationSearchFromDate),
+          end_date    : getApiFormattedDate($scope.reservationSearchToDate),
+          query       : $scope.searchQuery
         });
       }
 
@@ -699,11 +700,11 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      */
     var showNoRoomTypesAttachedPopUp = function(argument) {
       ngDialog.open({
-        template: '/assets/partials/groups/rooming/popups/general/rvGroupRoomingNoRoomTypeAttachedPopUp.html',
-        className: '',
-        scope: $scope,
-        closeByDocument: false,
-        closeByEscape: false
+        template        : '/assets/partials/groups/rooming/popups/general/rvGroupRoomingNoRoomTypeAttachedPopUp.html',
+        className       : '',
+        scope           : $scope,
+        closeByDocument : false,
+        closeByEscape   : false
       });
     };
 
