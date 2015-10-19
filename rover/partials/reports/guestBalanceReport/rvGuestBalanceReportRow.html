@@ -13,14 +13,14 @@
         <em ng-if="item.account_status" ng-class="{'red': item.account_status === 'CLOSED', 'green': item.account_status === 'OPEN'}">{{item.account_status}}</em> 
     </td>
     <td>
-        <div class="date">
+        <div class="date" ng-if="item.from_date">
             <span class="icons time check-in"></span>
             <span>{{item.from_date}}</span>
         </div>
-        <div class="date">
+        <div class="date" ng-if="item.to_date">
             <span class="icons time check-out"></span>
             <span>{{item.to_date}}</span>
         </div>
     </td>
-    <td class="balance" ng-class="{'red': item.balance_amount > 0, 'green': item.balance_amount < 0}">{{item.balance_amount | currency:currencySymbol:2}}</td>
+    <td class="balance" ng-class="{'red': item.balance > 0, 'green': item.balance < 0}">{{item.balance | currency:currencySymbol:2}}</td>
 </tr>
