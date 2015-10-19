@@ -194,7 +194,7 @@
                         <input id="guest-id" value="{Guest}" type="checkbox" ng-click="addOrRemoveFromSelectedReservation(reservation)" ng-disabled="!!groupConfigData.summary.is_cancelled">
                     </label>
                 </div>
-                <a ng-click="clickedOnReservation(reservation)">
+                <a ng-click="onClickReservation(reservation)">
                     <div class="data">
                         <h2 ng-show="!isGuestBlank(reservation)">
                             {{reservation.lastname}}, {{reservation.firstname}}
@@ -235,7 +235,7 @@
                         </div>                        
                         <div class="reservation-status">
                             <!-- No status if it's a new room -->
-                            <span class="guest-status" ng-class="getReservationClass(reservation.reservation_status)">{{reservation.reservation_status}}</span>
+                            <span class="guest-status" ng-class="getReservationClass(reservation)">{{reservation.reservation_status}}</span>
                         </div>
                     </a>
                 </li>

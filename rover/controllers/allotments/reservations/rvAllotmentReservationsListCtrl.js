@@ -12,6 +12,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
   '$state',
   '$window',
   '$stateParams',
+  'rvGroupRoomingListSrv',
   function(
     $scope,
     $rootScope,
@@ -25,7 +26,8 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     rvAllotmentConfigurationSrv,
     $state,
     $window,
-    $stateParams) {
+    $stateParams,
+    rvGroupRoomingListSrv) {
 
     BaseCtrl.call(this, $scope);
 
@@ -1117,6 +1119,198 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       return classes;
     };
 
+    /*local scope for reservation edit popup showing
+(function() {
+    var selectedReservation;
+    var successCallBackOfListOfFreeRoomsAvailable = function(data) {
+        var roomId = selectedReservation.room_id,
+            assignedRoom = [];
+        selectedReservation.roomsAvailableToAssign = [];
+        if (roomId !== null && roomId !== '') {
+            assignedRoom = [{
+                id: roomId,
+                room_number: selectedReservation.room_no
+            }];
+        }
+        //Since we have to include already assigned rooms in the select box, merging with rooms coming from the api
+        selectedReservation.roomsAvailableToAssign = assignedRoom.concat(data.rooms);
+    };
+    var successFetchOfAllReqdForReservationEdit = function() {
+        var reservationData = angular.copy(selectedReservation),
+            room_type_id_list = null,
+            containNonEditableRoomType = null,
+            roomTypesForEditPopup = null,
+            allowedRoomTypes = null;
+        _.extend($scope.roomingListState, {
+            editedReservationStart: selectedReservation.arrival_date,
+            editedReservationEnd: selectedReservation.departure_date
+        });
+        //as per CICO-17082, we need to show the room type in select box of edit with others
+        //but should be disabled
+        room_type_id_list = _.pluck($scope.roomTypesAndData, 'room_type_id');
+        containNonEditableRoomType = !_.contains(room_type_id_list, parseInt(selectedReservation.room_type_id));
+        if (containNonEditableRoomType) {
+            roomTypesForEditPopup = [{
+                room_type_id: selectedReservation.room_type_id,
+                room_type_name: selectedReservation.room_type_name
+            }];
+            allowedRoomTypes = _.union(roomTypesForEditPopup,
+                util.deepCopy($scope.roomTypesAndData));
+        } else {
+            allowedRoomTypes = (util.deepCopy($scope.roomTypesAndData));
+        }
+        _.extend(reservationData, {
+            arrival_date: new tzIndependentDate(reservationData.arrival_date),
+            departure_date: new tzIndependentDate(reservationData.departure_date),
+            //Pls note, roomsFreeToAssign include already assigned room of that particular reservation
+            roomsFreeToAssign: selectedReservation.roomsAvailableToAssign,
+            allowedRoomTypes: allowedRoomTypes
+        });
+        //inorder to tackle the empty entry showing in case of no rooms available to assign/or prev. set as N/A
+        if (reservationData.room_id === null) {
+            reservationData.room_id = '';
+        }
+        $scope.$emit('hideLoader');
+        //we've everything to show popup
+        showEditReservationPopup(reservationData);
+    };
+    var failedToFetchOfAllReqdForReservationEdit = function(errorMessage) {
+        $scope.$emit('hideLoader');
+        $scope.errorMessage = errorMessage;
+    };
+    var callNeccessaryApiForReservationDetailsShowing = function(reservation) {
+        var promises = [];
+        //we are not using our normal API calling since we have multiple API calls needed
+        $scope.$emit('showLoader');
+        //rooming details fetch
+        var paramsForListOfFreeRooms = {
+            reserevation_id: reservation.id,
+            num_of_rooms_to_fetch: 5,
+            room_type_id: reservation.room_type_id
+        };
+        promises.push(rvGroupRoomingListSrv
+            .getFreeAvailableRooms(paramsForListOfFreeRooms)
+            .then(successCallBackOfListOfFreeRoomsAvailable)
+        );
+        //Lets start the processing
+        $q.all(promises)
+            .then(successFetchOfAllReqdForReservationEdit, failedToFetchOfAllReqdForReservationEdit);
+    };
+    var showEditReservationPopup = function(reservationData) {
+        ngDialog.open({
+            template: '/assets/partials/groups/rooming/popups/editReservation/rvGroupEditRoomingListItem.html',
+            className: '',
+            scope: $scope,
+            closeByDocument: false,
+            closeByEscape: false,
+            controller: 'rvGroupReservationEditCtrl',
+            data: JSON.stringify(reservationData)
+        });
+    };
+    $scope.clickedOnReservation = function (reservation) {
+        selectedReservation = reservation;
+        callNeccessaryApiForReservationDetailsShowing (reservation);
+    };
+}());
+*/
+
+    (function() {
+      var selectedReservation;
+
+      var showEditReservationPopup = function(reservationData) {
+        ngDialog.open({
+              template: '/assets/partials/allotments/reservations/popups/editReservation/rvAllotmentEditRoomingListItem.html',
+              className: '',
+              scope: $scope,
+              closeByDocument: false,
+              closeByEscape: false,
+              controller: 'rvAllotmentReservationEditCtrl',
+              data: JSON.stringify(reservationData)
+            });
+      };
+
+      var onSuccessGetFreeRooms = function(data) {
+        var roomId = selectedReservation.room_id,
+            assignedRoom = [];
+
+        selectedReservation.roomsAvailableToAssign = [];
+
+        if (roomId !== null && roomId !== '') {
+          assignedRoom = [{
+            id: roomId,
+            room_number: selectedReservation.room_no
+          }];
+        }
+
+        //Since we have to include already assigned rooms in the select box, merging with rooms coming from the api
+        selectedReservation.roomsAvailableToAssign = assignedRoom.concat(data.rooms);
+
+        var reservationData = angular.copy(selectedReservation),
+                    room_type_id_list = null,
+                    containNonEditableRoomType = null,
+                    roomTypesForEditPopup = null,
+                    allowedRoomTypes = null;
+
+        _.extend($scope.roomingListState, {
+          editedReservationStart: selectedReservation.arrival_date,
+          editedReservationEnd: selectedReservation.departure_date
+        });
+
+        //as per CICO-17082, we need to show the room type in select box of edit with others
+        //but should be disabled
+        room_type_id_list = _.pluck($scope.roomTypesAndData, 'room_type_id');
+        containNonEditableRoomType = !_.contains(room_type_id_list, parseInt(selectedReservation.room_type_id));
+
+        if (containNonEditableRoomType) {
+          roomTypesForEditPopup = [{
+            room_type_id: selectedReservation.room_type_id,
+            room_type_name: selectedReservation.room_type_name
+          }];
+          allowedRoomTypes = _.union(roomTypesForEditPopup,
+              util.deepCopy($scope.roomTypesAndData));
+        } else {
+          allowedRoomTypes = (util.deepCopy($scope.roomTypesAndData));
+        }
+
+        _.extend(reservationData, {
+          arrival_date: new tzIndependentDate(reservationData.arrival_date),
+          departure_date: new tzIndependentDate(reservationData.departure_date),
+          //Pls note, roomsFreeToAssign include already assigned room of that particular reservation
+          roomsFreeToAssign: selectedReservation.roomsAvailableToAssign,
+          allowedRoomTypes: allowedRoomTypes
+        });
+
+        //inorder to tackle the empty entry showing in case of no rooms available to assign/or prev. set as N/A
+        if (reservationData.room_id === null) {
+          reservationData.room_id = '';
+        }
+
+        $scope.$emit('hideLoader');
+
+        //we've everything to show popup
+        showEditReservationPopup(reservationData);
+
+      };
+
+      var onFailureGetFreeRooms = function(argument) {
+        $scope.$emit('hideLoader');
+        $scope.errorMessage = errorMessage;
+      };
+
+      $scope.onClickReservation = function(reservation) {
+        selectedReservation = reservation;
+        $scope.callAPI(rvGroupRoomingListSrv.getFreeAvailableRooms, {
+          params: {
+            reserevation_id: reservation.id,
+            num_of_rooms_to_fetch: 5,
+            room_type_id: reservation.room_type_id
+          },
+          successCallBack: onSuccessGetFreeRooms,
+          failureCallBack: onFailureGetFreeRooms
+        });
+      };
+    }());
+
     /**
      * Function to initialise allotment reservation list
      * @return - None
@@ -1147,7 +1341,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       if (isInRoomingList && (amDirectlyComingToRoomingList)) {
           $timeout(function(){
               callInitialAPIs();
-          }, 10);           
+          }, 10);
       }*/
     }();
   }
