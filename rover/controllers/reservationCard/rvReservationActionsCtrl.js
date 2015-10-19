@@ -204,49 +204,139 @@ sntRover.controller('reservationActionsController', [
 				checkin_date: $scope.reservationData.reservation_card.arrival_date
 			});
 		};
+                
+                
+                
+                
+                $scope.checkGuestInFromQueue  = function(){
+                    $scope.initCheckInFlow();
+                };
+                
+                $scope.reservationMissingPhone = function(){
+                    if (
+                            (   $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "false" || 
+                                $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "" || 
+                                $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === null
+                            ) && (
+                                $scope.guestCardData.contactInfo.email === '' || 
+                                $scope.guestCardData.contactInfo.phone === '' || 
+                                $scope.guestCardData.contactInfo.email === null || 
+                                $scope.guestCardData.contactInfo.phone === null
+                            )
+                        ) {
+                        return true;
+                    } else return false;
+                };
+                
+                
+                $scope.reservationIsQueued = function(){
+                    //checks current reservation data to see if it is in Queue or not
+                    if ($scope.reservationData.reservation_card.is_reservation_queued === 'true'){
+                        return true;
+                    } else return false;
+                };
+                
+                $scope.roomAssignmentNeeded = function(){
+                    if ($scope.reservationData.reservation_card.room_number === '' || $scope.reservationData.reservation_card.room_status === 'NOTREADY' || $scope.reservationData.reservation_card.fo_status === 'OCCUPIED'){
+                        return true;
+                    } else return false;
+                };
+                $scope.upsellNeeded = function(){
+                    
+                    
+                    if ($scope.reservationData.reservation_card.is_force_upsell === "true" && $scope.reservationData.reservation_card.is_upsell_available === "true"){
+                        return true;
+                    } else return false;
+                };
+                
+                
+                
+                $scope.initCheckInFlow = function(){
+                    var checkingInQueued = (!$scope.reservationData.check_in_via_queue && $scope.reservationIsQueued());
+                            //CICO-13907 : If any sharer of the reservation is checked in, do not allow to go to room assignment or upgrades screen
+                            if ($scope.hasAnySharerCheckedin() || checkingInQueued) {
+                                    $state.go('rover.reservation.staycard.billcard', {
+                                            "reservationId": $scope.reservationData.reservation_card.reservation_id,
+                                            "clickedButton": "checkinButton",
+                                            "userId": $scope.guestCardData.userId
+                                    });
+                                    return false;
+                            } else if ($scope.reservationData.check_in_via_queue && !$scope.roomAssignmentNeeded() && !$scope.upsellNeeded()){
+                                //just put them in the queue
+                               $scope.putInQueueAdvanced($scope.reservationData.reservation_card.reservation_id);
+                               return;
+                            }
 
+                            if ($scope.roomAssignmentNeeded()) {
+                                    //TO DO:Go to room assignemt view
+                                    $state.go("rover.reservation.staycard.roomassignment", {
+                                            "reservation_id": $scope.reservationData.reservation_card.reservation_id,
+                                            "room_type": $scope.reservationData.reservation_card.room_type_code,
+                                            "clickedButton": "checkinButton"
+                                    });
+                            } else if ($scope.upsellNeeded()) {
+                    //TO DO : gO TO ROOM UPGRAFED VIEW
+                                    $state.go('rover.reservation.staycard.upgrades', {
+                                            "reservation_id": $scope.reservationData.reservation_card.reservation_id,
+                                            "clickedButton": "checkinButton"
+                                    });
+                            } else {
+                                    $state.go('rover.reservation.staycard.billcard', {
+                                            "reservationId": $scope.reservationData.reservation_card.reservation_id,
+                                            "clickedButton": "checkinButton",
+                                            "userId": $scope.guestCardData.userId
+                                    });
+                            }
+                };
+                
+                $scope.checkInFromQueued = function(){
+                    var useAdvancedQueFlow = $rootScope.advanced_queue_flow_enabled;
+                    if (!useAdvancedQueFlow){
+                        return false;
+                    }
+                    
+                    if (!$scope.reservationData.check_in_via_queue && $scope.reservationIsQueued()){
+                        return true;
+                    } else return false;
+                };
+                
 		var startCheckin = function() {
+                    if ($scope.checkInFromQueued()){
+                        $scope.checkGuestInFromQueue();
+                        return;
+                    } else {
 			var afterRoomUpdate = function() {
 				if (!!$scope.guestCardData.userId) {
-					if (($scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "false" || $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "" || $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === null) && ($scope.guestCardData.contactInfo.email === '' || $scope.guestCardData.contactInfo.phone === '' || $scope.guestCardData.contactInfo.email === null || $scope.guestCardData.contactInfo.phone === null)) {
+					if ($scope.reservationMissingPhone()) {
 						$scope.$emit('showLoader');
+                                                
+                                                
+                                            var useAdvancedQueFlow = $rootScope.advanced_queue_flow_enabled;
+                                            if (useAdvancedQueFlow){
+                                                if ($scope.reservationData.check_in_via_queue){
+                                                    $scope.putGuestInQueue = true;
+                                                    setTimeout(function(){
+                                                        $rootScope.$emit('putGuestInQueue');
+                                                        $scope.putGuestInQueue = true;
+                                                    },750);
+                                                } else if (!$scope.reservationData.check_in_via_queue && $scope.reservationIsQueued()){
+                                                    setTimeout(function(){
+                                                        $rootScope.$emit('checkGuestInFromQueue');
+                                                    },750);
+                                                } else {
+                                                        $rootScope.$emit('normalCheckInNotQueued');
+                                                }
+                                            }
+                                            
 						ngDialog.open({
 							template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
 							controller: 'RVValidateEmailPhoneCtrl',
 							scope: $scope
 						});
-
+                                                
+                                                
 					} else {
-						//CICO-13907 : If any sharer of the reservation is checked in, do not allow to go to room assignment or upgrades screen
-						if ($scope.hasAnySharerCheckedin()) {
-							$state.go('rover.reservation.staycard.billcard', {
-								"reservationId": $scope.reservationData.reservation_card.reservation_id,
-								"clickedButton": "checkinButton",
-								"userId": $scope.guestCardData.userId
-							});
-							return false;
-						}
-
-						if ($scope.reservationData.reservation_card.room_number === '' || $scope.reservationData.reservation_card.room_status === 'NOTREADY' || $scope.reservationData.reservation_card.fo_status === 'OCCUPIED') {
-							//TO DO:Go to room assignemt view
-							$state.go("rover.reservation.staycard.roomassignment", {
-								"reservation_id": $scope.reservationData.reservation_card.reservation_id,
-								"room_type": $scope.reservationData.reservation_card.room_type_code,
-								"clickedButton": "checkinButton"
-							});
-						} else if ($scope.reservationData.reservation_card.is_force_upsell === "true" && $scope.reservationData.reservation_card.is_upsell_available === "true") {
-							//TO DO : gO TO ROOM UPGRAFED VIEW
-							$state.go('rover.reservation.staycard.upgrades', {
-								"reservation_id": $scope.reservationData.reservation_card.reservation_id,
-								"clickedButton": "checkinButton"
-							});
-						} else {
-							$state.go('rover.reservation.staycard.billcard', {
-								"reservationId": $scope.reservationData.reservation_card.reservation_id,
-								"clickedButton": "checkinButton",
-								"userId": $scope.guestCardData.userId
-							});
-						}
+                                            $scope.initCheckInFlow();
 					}
 				} else {
 					//Prompt user to add a Guest Card
@@ -278,6 +368,9 @@ sntRover.controller('reservationActionsController', [
 						$scope.reservationData.reservation_card.room_status = data.is_ready === "true" ? 'READY' : 'NOTREADY';
 						$scope.reservationData.reservation_card.fo_status = data.is_occupied === "true" ? 'OCCUPIED' : 'VACANT';
 						//CICO-14777 Yotel - Hourly Setup: Checkin with not ready room assigned should redirect to diary
+                                                
+                                                
+                                                
 						if (shouldRedirectToDiary()) {
 							gotoDiaryInEditMode();
 						} else {
@@ -292,6 +385,7 @@ sntRover.controller('reservationActionsController', [
 				// just cont.
 				afterRoomUpdate();
 			}
+                    }
 		};
 
 		$scope.$on("PROCEED_CHECKIN", function() {
@@ -302,45 +396,58 @@ sntRover.controller('reservationActionsController', [
 		 * Before checking in we check if any deposit is left else noraml checkin
 		 *
 		 **************************************************************************/
-
+                
 		$scope.goToCheckin = function() {
-			startCheckin();
+                    startCheckin();
 		};
-
 		/******************************************/
-		$scope.showPutInQueue = function(isQueueRoomsOn, isReservationQueued, reservationStatus) {
-			var displayPutInQueue = false;
-			//In standalone hotels we do not show the putInQueue option
-			if ($rootScope.isStandAlone) {
-				return displayPutInQueue;
-			}
-			if (reservationStatus === 'CHECKING_IN' || reservationStatus === 'NOSHOW_CURRENT') {
-				if (isQueueRoomsOn === "true" && isReservationQueued === "false") {
-					displayPutInQueue = true;
-				}
-			}
-			return displayPutInQueue;
+		$scope.showPutInQueue = function() {
+                     //In standalone hotels we do not show the putInQueue option
+                    if ($rootScope.isStandAlone) {
+                        return false;
+                    } else {
+                        var isQueueRoomsOn = $scope.reservationData.reservation_card.is_queue_rooms_on, 
+                            isReservationQueued = $scope.reservationData.reservation_card.is_reservation_queued, 
+                            reservationStatus = $scope.reservationData.reservation_card.reservation_status;
+
+                        var displayPutInQueue = false;
+                        if (reservationStatus === 'CHECKING_IN' || reservationStatus === 'NOSHOW_CURRENT') {
+                            if (isQueueRoomsOn === "true" && isReservationQueued === "false") {
+                                    displayPutInQueue = true;
+                            }
+                        }
+                        return displayPutInQueue;
+                    }
 		};
+                
+		$scope.showRemoveFromQueue = function() {
+                    var isQueueRoomsOn = $scope.reservationData.reservation_card.is_queue_rooms_on, 
+                            isReservationQueued = $scope.reservationData.reservation_card.is_reservation_queued, 
+                            reservationStatus = $scope.reservationData.reservation_card.reservation_status;
 
-		$scope.showRemoveFromQueue = function(isQueueRoomsOn, isReservationQueued, reservationStatus) {
+                    var displayPutInQueue = false;
+                    if (reservationStatus === 'CHECKING_IN' || reservationStatus === 'NOSHOW_CURRENT') {
+                        if (isQueueRoomsOn === "true" && isReservationQueued === "true") {
+                                displayPutInQueue = true;
+                        }
+                    }
 
-			var displayPutInQueue = false;
-			if (reservationStatus === 'CHECKING_IN' || reservationStatus === 'NOSHOW_CURRENT') {
-				if (isQueueRoomsOn === "true" && isReservationQueued === "true") {
-					displayPutInQueue = true;
-				}
-			}
-			return displayPutInQueue;
+                    return displayPutInQueue;
 		};
-
+                
 		$scope.successPutInQueueCallBack = function() {
 			$scope.$emit('hideLoader');
 			$scope.reservationData.reservation_card.is_reservation_queued = "true";
 			$scope.$emit('UPDATE_QUEUE_ROOMS_COUNT', 'add');
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.reservation_id, $scope.reservationData);
+                        
+                        var useAdvancedQueFlow = $rootScope.advanced_queue_flow_enabled;
+                        if (useAdvancedQueFlow){
+                            $rootScope.$emit('goToStayCardFromAddToQueue');
+                        }
+                        
 		};
-
-
+                
 		$scope.successRemoveFromQueueCallBack = function() {
 			$scope.$emit('hideLoader');
 			$scope.reservationData.reservation_card.is_reservation_queued = "false";
@@ -350,16 +457,50 @@ sntRover.controller('reservationActionsController', [
 
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.reservation_id, $scope.reservationData);
 		};
-
+                
+                
+                if (!$rootScope.reservationWatch){//alternative to $destroy, this is an init-once method
+                    $rootScope.reservationWatch = 1;
+                    $rootScope.$on('putInQueueAdvanced',function(){
+                        $scope.putInQueueAdvanced($scope.reservationData.reservation_card.reservation_id);
+                    });
+                }
+                
+                $scope.reservationData.check_in_via_queue = false;
+                $scope.putInQueueAdvanced = function(reservationId){
+                    $scope.reservationData.check_in_via_queue = false;//set flag for checking in via put-in-queue
+                    var data = {
+                            "reservationId": reservationId,
+                            "status": "true"
+                    };
+                    $scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successPutInQueueCallBack, $scope.successPutInQueueCallBack);
+                };
+                
 		$scope.putInQueue = function(reservationId) {
-			var data = {
-				"reservationId": reservationId,
-				"status": "true"
-			};
-			$scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successPutInQueueCallBack);
+                    
+                        var useAdvancedQueFlow = $rootScope.advanced_queue_flow_enabled;
+                        if (useAdvancedQueFlow){
+                            $scope.reservationData.check_in_via_queue = true;//set flag for checking in via put-in-queue
+                            
+                            $scope.goToCheckin();
+                        } else {
+                            /*
+                             * put in queue will be done later, after cc auth
+                             */
+                            
+                            $scope.reservationData.check_in_via_queue = false;//set flag for checking in via put-in-queue
+                            var data = {
+                                    "reservationId": reservationId,
+                                    "status": "true"
+                            };
+                            $scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successPutInQueueCallBack);
+                    }
 		};
 
 		$scope.removeFromQueue = function(reservationId) {
+                    //debuggin
+                    //$scope.putInQueue(reservationId);
+                    //return;
 			var data = {
 				"reservationId": reservationId,
 				"status": false

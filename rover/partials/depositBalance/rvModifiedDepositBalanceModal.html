@@ -85,14 +85,25 @@
 		<fieldset class="content-right">
 			<strong class="h2 message">Deposit</strong>
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-			<div class="dates notice">
+			<div class="dates notice" ng-if="depositBalanceData.data.deposit_dues">
             	<strong>Deposit Due</strong>
             	<div class="scrollable" ng-iscroll="deopositdue" >
                 	<ul class="wrapper ">
                     	<li ng-repeat="depositDue in depositBalanceData.data.deposit_dues" ng-class="{'paid': depositDue.paid, 'due': !depositDue.paid}"> 
-                    	<!-- If in past/paid, add class "paid". If it's due, add class "due" -->
                         {{depositDue.due_date | date : dateFormat}}
                         <span>{{currencySymbol}}{{depositDue.due_amount}}</span>                    	
+                    	</li>                 
+                	</ul>
+            	</div>
+        	</div>
+        	
+        	<div class="dates notice" ng-if="depositBalanceData.paid_deposits">
+            	<strong>Deposit Paid</strong>
+            	<div class="scrollable" ng-iscroll="deopositdue" >
+                	<ul class="wrapper ">
+                    	<li ng-repeat="paidDeposit in depositBalanceData.paid_deposits" class="due">
+                        {{paidDeposit.date | date : dateFormat}}
+                        <span>{{currencySymbol}}{{paidDeposit.amount}}</span>                    	
                     	</li>                 
                 	</ul>
             	</div>
