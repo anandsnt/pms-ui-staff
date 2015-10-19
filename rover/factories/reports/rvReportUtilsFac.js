@@ -1295,10 +1295,11 @@ sntRover.factory('RVReportUtilsFac', [
             // for guest balance report in the following order
             if ( report['title'] === reportNames['GUEST_BALANCE_REPORT'] ) {
                 var balance = angular.copy( _.find(report['sort_fields'], { 'value': 'BALANCE' }) ),
-                    name    = angular.copy( _.find(report['sort_fields'], { 'value': 'NAME' }) );
+                    name    = angular.copy( _.find(report['sort_fields'], { 'value': 'NAME' }) ),
+                    room    = angular.copy( _.find(report['sort_fields'], { 'value': 'ROOM_NO' }) );
 
                 report['sort_fields'][0] = name;
-                report['sort_fields'][1] = null;
+                report['sort_fields'][1] = room;
                 report['sort_fields'][2] = null;
                 report['sort_fields'][3] = null;
                 report['sort_fields'][4] = balance;
