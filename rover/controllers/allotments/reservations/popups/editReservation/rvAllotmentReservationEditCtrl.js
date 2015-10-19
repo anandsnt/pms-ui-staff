@@ -393,7 +393,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
       };
 
       var computeReservationStatusFlags = function(reservation) {
-        var rStatus = reservation.reservation_status;
+        var rStatus = reservation.status;
         return {
           isCheckedOut: rStatus === 'CHECKEDOUT',
           isUneditable: rStatus === 'CANCELED',

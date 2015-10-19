@@ -36,6 +36,18 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 					activeTab: "ROOMING"
 				}
 			};
+		} else if ($scope.previousState.name === "rover.allotments.config" || $rootScope.stayCardStateBookMark.previousState === 'rover.allotments.config') {
+			if ($scope.previousState.name === "rover.allotments.config") {
+				setNavigationBookMark();
+			}
+			$rootScope.setPrevState = {
+				title: 'ALLOTMENT DETAILS',
+				name: 'rover.allotments.config',
+				param: {
+					id: $rootScope.stayCardStateBookMark.previousStateParams.id,
+					activeTab: "RESERVATIONS"
+				}
+			};
 		} else if ($stateParams.isFromCards) {
 			setNavigationBookMark();
 			$rootScope.setPrevState = {
