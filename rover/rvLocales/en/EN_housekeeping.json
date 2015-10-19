@@ -86,4 +86,7 @@
 	"STAYOVERS" : "Stayovers",
 	"COMPLETED" : "Completed",
 	"NO_EMPLOYEES_SELECTED" : "No employees selected.",
-	"SELECT_EMPLOYEES_TO_ASSIGN" : "Select employees to assign rooms."
+	"SELECT_EMPLOYEES_TO_ASSIGN" : "Select employees to assign rooms.",
+	"WEB_IN_PROGRESS_HOUSE_KEEPING": "Web Booking In Progress. OOO/OOS request can not be completed"
+
+

@@ -1,4 +1,7 @@
-
+/*
+	Early Checkin final Ctrl 
+	The early checkin purcahse is done here on entering to this page itself.
+*/
 (function() {
 	var earlyCheckinFinalController = function($scope,$rootScope,$state,$stateParams,earlyCheckinService) {
 

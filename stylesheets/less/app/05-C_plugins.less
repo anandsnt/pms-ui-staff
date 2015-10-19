@@ -345,6 +345,32 @@
 				}
 
 				&.medium { width: 380px; }
+
+				&.room-ooo {
+					width: 100%;
+
+					.message { margin-bottom: 10px; }
+
+					.guest {
+						font-size: 14px;
+						text-align: center;
+						text-transform: uppercase;
+						margin: 20px 0;
+						padding: 10px;
+						color: darken(@yellow, 30);
+						background: lighten(@yellow, 20);
+						border: 1px solid @yellow;
+						#border-radius > .rounded(3px);
+
+						strong { 
+							font-size: 24px; 
+							text-transform: none;
+							.show;
+						}
+					}
+
+					@media only screen and (min-width: 768px) { width: 340px; }
+				}
 			}
 
 			/* Confirmation modal window ***/
@@ -4856,7 +4882,6 @@
 					background: @red; 
 
 					.fc-event-title { 
-						text-indent: 9999px; 
 						background: @icons no-repeat 5px -155px; 
 
 						@media @highdpi {
@@ -4902,8 +4927,7 @@
 				&.check-in {
 					.fc-event-inner {
 						.fc-event-title { 
-							margin-top: -25px;
-							text-indent: 9999px; 
+							margin-top: -25px; 
 						}
 					}
 				}
@@ -4929,7 +4953,6 @@
 					}
 					&.check-out {
 						.fc-event-inner {
-							.fc-event-title { text-indent: 9999px; }
 							.fc-event-day { .show; }
 						}
 					} 

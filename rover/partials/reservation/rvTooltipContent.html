@@ -3,7 +3,7 @@
    <!-- Details, only show those that apply -->
    <ul class="details">
       <li><span class="label">Rate</span><strong>{{object.event.toolTipData.rate_name}}</strong></li>
-      <li ng-if="object.event.title != ''"><span class="label">ADR</span><strong>{{ object.event.currencySymbol + object.event.title}}</strong></li>
+      <li ><span class="label">ADR</span><strong>{{ object.event.currencySymbol + object.event.toolTipData.bestAvailableRate}}</strong></li>
       <li><span class="label">Room Type</span><strong>{{object.event.toolTipData.room_type_name}}</strong></li>
       <li><span class="label">Rooms Available</span><strong>{{object.event.toolTipData.availability}}</strong></li>
    </ul>
@@ -20,6 +20,6 @@
       				 'bg-purple': {{restriction.restriction_type_id == 6 || restriction.restriction_type_id == 8 }},
       				 'bg-green': {{restriction.restriction_type_id == 7}}}">
       				 {{(restriction.days || "")}}
-      	</span>{{restriction.value}}</li>
+      	</span>{{restriction.description}}</li>
    </ul>
 </div>
