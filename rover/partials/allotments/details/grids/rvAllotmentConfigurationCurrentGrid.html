@@ -28,7 +28,7 @@
         <!-- Toggle class "open" when .line-toggle is clicked/tapped -->
         <div ng-class="{'open' : roomtype_rate.isCollapsed}"
             class="row"
-            ng-repeat="roomtype_rate in allotmentConfigData.summary.selected_room_types_and_bookings"
+            ng-repeat="roomtype_rate in allotmentConfigData.roomblock.selected_room_types_and_bookings"
             ui-jq="accordion"
             ui-options="accordionInitiallyNotCollapsedOptions"
             ng-init="roomtype_rate.isCollapsed = true">
@@ -84,7 +84,7 @@
     bindonce>
 
     <ul class="wrapper" bindonce style="width:{{getWidthForCurrentViewTimeLine()}};">
-        <li ng-repeat="occupancy in allotmentConfigData.summary.selected_room_types_and_occupanies">
+        <li ng-repeat="occupancy in allotmentConfigData.roomblock.selected_room_types_and_occupanies">
             <div class="inner">
                 <span bo-text="formatDateForUI(occupancy.date, fulldayInWeek)"></span>
                 <strong bo-text="formatDateForUI(occupancy.date, monthAndDate)"></strong>
@@ -110,7 +110,7 @@
     ng-show="shouldHideAddRoomsButton()">
     <div class="wrapper" bindonce style="width:{{getWidthForCurrentViewTimeLine()}};">
         <!-- REPEAT ROW FOR ALL ROOM TYPES SELECTED -->
-        <div class="row" ng-repeat="roomType in allotmentConfigData.summary.selected_room_types_and_bookings">
+        <div class="row" ng-repeat="roomType in allotmentConfigData.roomblock.selected_room_types_and_bookings">
             <!-- REPEAT COLUMN FOR ALL DAYS IN THE BLOCK -->
             <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
             <div class="column" ng-repeat="dateData in roomType.dates">
